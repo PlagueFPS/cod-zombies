@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
+import { ThemeProvider } from "@/contexts/ThemeProvider";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -20,10 +21,17 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body className={ manrope.className }>
-        <Navbar />
-        <main className="mt-20 mb-4">
-         { children }
-        </main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main className="mt-20 mb-4">
+          { children }
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
