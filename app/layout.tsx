@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar/Navbar";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body className={ manrope.className }>
+        <Navbar />
         <main className="mt-20 mb-4">
          { children }
         </main>
