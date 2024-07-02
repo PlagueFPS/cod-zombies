@@ -15,6 +15,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "contentful": "^10.12.4",
+    "embla-carousel-react": "^8.1.6",
     "lucide-react": "^0.399.0",
     "next": "14.2.4",
     "next-themes": "^0.3.0",

@@ -1,0 +1,35 @@
+[
+  {
+    "ts": "2024-07-02T05:40:51.558Z",
+    "level": "error",
+    "error": {
+      "originalError": {
+        "name": "NotFound",
+        "message": "{\n  \"status\": 404,\n  \"statusText\": \"Not Found\",\n  \"message\": \"The resource could not be found.\",\n  \"details\": {\n    \"type\": \"Space\",\n    \"id\": \"%7B%7BSPACE_ID%7D%7D\"\n  },\n  \"request\": {\n    \"url\": \"/spaces/{{SPACE_ID}}\",\n    \"headers\": {\n      \"Accept\": \"application/json, text/plain, */*\",\n      \"Content-Type\": \"application/vnd.contentful.management.v1+json\",\n      \"X-Contentful-User-Agent\": \"app contentful.export/7.19.77; feature library-export; sdk contentful-management.js/0.0.0-determined-by-semantic-release; platform node.js/v21.0.0; os Windows/v21.0.0;\",\n      \"CF-Sequence\": \"aff70733-4038-4ded-a148-84d5ff036fa3\",\n      \"Authorization\": \"Bearer ...dz4v8\",\n      \"User-Agent\": \"axios/1.4.0\",\n      \"Accept-Encoding\": \"gzip, compress, deflate, br\"\n    },\n    \"method\": \"get\"\n  },\n  \"requestId\": \"eb1aecc6-9009-4607-b1d7-4d2bd533e606\"\n}"
+      },
+      "data": {
+        "status": 404,
+        "statusText": "Not Found",
+        "message": "The resource could not be found.",
+        "details": {
+          "type": "Space",
+          "id": "%7B%7BSPACE_ID%7D%7D"
+        },
+        "request": {
+          "url": "/spaces/{{SPACE_ID}}",
+          "headers": {
+            "Accept": "application/json, text/plain, */*",
+            "Content-Type": "application/vnd.contentful.management.v1+json",
+            "X-Contentful-User-Agent": "app contentful.export/7.19.77; feature library-export; sdk contentful-management.js/0.0.0-determined-by-semantic-release; platform node.js/v21.0.0; os Windows/v21.0.0;",
+            "CF-Sequence": "aff70733-4038-4ded-a148-84d5ff036fa3",
+            "Authorization": "Bearer ...dz4v8",
+            "User-Agent": "axios/1.4.0",
+            "Accept-Encoding": "gzip, compress, deflate, br"
+          },
+          "method": "get"
+        },
+        "requestId": "eb1aecc6-9009-4607-b1d7-4d2bd533e606"
+      }
+    }
+  }
+]
