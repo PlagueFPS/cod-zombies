@@ -1,17 +1,9 @@
-import { Badge } from "@/components/ui/badge";
+import MapGridLoader from "@/components/Loaders/MapGridLoader";
+import MapGrid from "@/components/MapGrid/MapGrid";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TypeFeaturedMapsSkeleton } from "@/contentful/Types/contentful-types";
-import { DATE_OPTIONS } from "@/utils/constants";
-import { getPosts, resolveAsset, resolveEntry } from "@/utils/contentful-utils";
-import Image from "next/image";
-import Link from "next/link";
+import { Suspense } from "react";
 
-
-export default async function Home() {
-  const posts = await getPosts<TypeFeaturedMapsSkeleton>({ content_type: 'featuredMaps', order: ['-sys.createdAt'] })
-  const featuredMaps = posts.items
-
+export default function Home() {
   return (
     <div className="container flex flex-col gap-12 justify-center items-center text-foreground">
       <section className="flex flex-col items-center justify-center gap-4 text-center max-w-2xl">
@@ -25,49 +17,9 @@ export default async function Home() {
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
-          { featuredMaps.map(map => {
-            const { title, description, date, image, gameCategory, slug } = map.fields
-            const mapImage = resolveAsset(image)
-            const category = resolveEntry(gameCategory)
-
-            return (
-              <>
-                <Link key={ map.sys.id } href={ `/maps/${slug}` } className="max-h-[450px] h-full">
-                  <Card className="relative h-full group hover:border-primary cursor-pointer transition-all overflow-hidden">
-                    <Badge className="absolute top-2 right-2 z-20">{ category?.fields.title }</Badge>
-                    <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full rotate-[55deg] scale-150 opacity-25 blur-2xl">
-                      <picture className="w-full h-full">
-                        <Image 
-                          src={ `https:${mapImage?.fields?.file?.url}` }
-                          alt=""
-                          fill
-                          className="object-cover"
-                          />
-                      </picture>
-                    </div>
-                    <CardHeader className="flex flex-grow">
-                      <picture className="relative overflow-hidden h-44 w-full rounded-md">
-                        <Image 
-                          src={ `https:${mapImage?.fields?.file?.url}` }
-                          alt=""
-                          fill
-                          sizes="384px"
-                          className="object-cover"
-                        />
-                      </picture>
-                      <CardTitle className="group-hover:text-primary transition-all">{ title }</CardTitle>
-                      <CardDescription>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</CardDescription>
-                    </CardHeader>
-                    <CardContent className="-mt-4">
-                      <p>{ description }</p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </>
-            )
-          })}
-        </div>
+        <Suspense fallback={<MapGridLoader />}>
+          <MapGrid />
+        </Suspense>
       </section>
     </div>
   );
