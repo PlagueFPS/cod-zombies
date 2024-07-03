@@ -20,7 +20,7 @@ export default function MapCard({ map }: MapCardProps) {
     <Link key={ map.sys.id } href={ `/maps/${slug}` } className="max-h-[450px] h-full">
       <Card className="relative h-full group hover:border-primary cursor-pointer transition-all overflow-hidden">
         <Badge className="absolute top-2 right-2 z-20">{ category?.fields.title }</Badge>
-        <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full rotate-[55deg] scale-150 opacity-25 blur-2xl">
+        <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
           <picture className="w-full h-full">
             <Image 
               src={ `https:${mapImage?.fields?.file?.url}` }
