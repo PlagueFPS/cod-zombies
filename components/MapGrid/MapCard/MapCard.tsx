@@ -44,7 +44,7 @@ export default function MapCard({ map }: MapCardProps) {
           <CardDescription>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</CardDescription>
         </CardHeader>
         <CardContent className="-mt-4">
-          <p>{ description }</p>
+          <p className='text-sm'>{ description }</p>
         </CardContent>
       </Card>
     </Link>

@@ -1,9 +1,8 @@
-import { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
-import { getPosts } from '@/utils/contentful-utils'
+import { getAllMaps } from '@/utils/contentful-utils'
 import MapCard from './MapCard/MapCard'
 
 export default async function MapGrid() {
-  const posts = await getPosts<TypeFeaturedMapsSkeleton>({ content_type: 'featuredMaps', order: ['-sys.createdAt'] })
+  const posts = await getAllMaps()
   const featuredMaps = posts.items
 
   return (
