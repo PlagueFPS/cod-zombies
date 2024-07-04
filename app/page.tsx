@@ -1,4 +1,5 @@
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
+import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
 import MapGrid from "@/components/MapGrid/MapGrid";
 import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
@@ -17,6 +18,9 @@ export default function Home() {
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>
+        <Suspense>
+          <MapFilters />
+        </Suspense>
         <Suspense fallback={<MapGridLoader />}>
           <MapGrid />
         </Suspense>
