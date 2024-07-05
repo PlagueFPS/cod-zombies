@@ -17,7 +17,7 @@ export default function MapFilters() {
 
   return (
     <ScrollArea className="-mt-4">
-      <div className="flex w-max gap-3">
+      <div className="flex w-max gap-3 text-foreground/80">
         { gameList.map((game, i) => (
           <Button 
             key={ `${game.id}_${i}` } 

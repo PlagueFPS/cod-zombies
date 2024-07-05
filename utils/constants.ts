@@ -26,10 +26,10 @@ export const gameList = [
     id: 'black-ops-cold-war',
     name: 'Black Ops Cold War'
   },
-  {
-    id: 'black-ops-6',
-    name: 'Black Ops 6'
-  },
+  // {
+  //   id: 'black-ops-6',
+  //   name: 'Black Ops 6'
+  // },
 ]
 export const validateSearchParams = (rawCategory: string | string[] | undefined) => {
   let category: GameCategory | undefined = undefined
@@ -53,8 +53,8 @@ export const validateSearchParams = (rawCategory: string | string[] | undefined)
     case 'black-ops-cold-war':
       category = 'black-ops-cold-war'
       break
-    case 'black-ops-6':
-      category = 'black-ops-6'
+    // case 'black-ops-6':
+    //   category = 'black-ops-6'
   }
 
   return { category }

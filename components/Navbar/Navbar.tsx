@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import React from 'react'
-import NavLink from './NavLink/NavLink'
+import { Suspense } from 'react'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import Sidebar from './Sidebar/Sidebar'
+import SearchBar from '../SearchBar/SearchBar'
 
 export default function Navbar() {
   return (
@@ -13,22 +13,10 @@ export default function Navbar() {
             Call of Duty: <span className='text-primary'>Zombies</span>
           </h1>
         </Link>
-        <div className='hidden md:flex items-center gap-2 px-4 h-full font-semibold text-foreground/80'>
-          <NavLink href='/black-ops-1' className='flex items-center h-fit rounded-md py-2 px-4 cursor-pointer hover:outline hover:outline-1 hover:outline-primary'>
-            <span>Black Ops 1</span>
-          </NavLink>
-          <NavLink href='/black-ops-2' className='flex items-center h-fit rounded-md py-2 px-4 cursor-pointer hover:outline hover:outline-1 hover:outline-primary'>
-            <span>Black Ops 2</span>
-          </NavLink>
-          <NavLink href='/black-ops-3' className='flex items-center h-fit rounded-md py-2 px-4 cursor-pointer hover:outline hover:outline-1 hover:outline-primary'>
-            <span>Black Ops 3</span>
-          </NavLink>
-          <NavLink href='/black-ops-4' className='flex items-center h-fit rounded-md py-2 px-4 cursor-pointer hover:outline hover:outline-1 hover:outline-primary'>
-            <span>Black Ops 4</span>
-          </NavLink>
-          <NavLink href='/black-ops-cold-war' className='flex items-center rounded-md h-fit py-2 px-4 cursor-pointer hover:outline hover:outline-1 hover:outline-primary'>
-            <span>Black Ops Cold War</span>
-          </NavLink>
+        <div className='hidden md:flex justify-between items-center h-full'>
+          <Suspense>
+            <SearchBar />
+          </Suspense>
           <ThemeToggle />
         </div>
         <Sidebar />
