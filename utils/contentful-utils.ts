@@ -2,6 +2,7 @@ import type { Asset, EntriesQueries, Entry, EntrySkeletonType, UnresolvedLink } 
 import { client } from "@/contentful/contentful"
 import { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import { unstable_cache as cache } from "next/cache";
+import { GameCategory } from "@/types/GameCategory";
 
 export const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) => {
   const response = await client.getEntries<T>(searchParams)
@@ -16,7 +17,7 @@ export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCate
   if ('fields' in entry && entry.fields) return entry
 }
 
-export const getAllMaps = cache(async () => {
+const getAllMaps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt']
@@ -27,7 +28,7 @@ export const getAllMaps = cache(async () => {
   tags: ['featuredMaps']
 })
 
-export const getBO1Maps = cache(async () => {
+const getBO1Maps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -40,7 +41,7 @@ export const getBO1Maps = cache(async () => {
   tags: ['bo1-Maps']
 })
 
-export const getBO2Maps = cache(async () => {
+const getBO2Maps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -53,7 +54,7 @@ export const getBO2Maps = cache(async () => {
   tags: ['bo2-Maps']
 })
 
-export const getBO3Maps = cache(async () => {
+const getBO3Maps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -66,7 +67,7 @@ export const getBO3Maps = cache(async () => {
   tags: ['bo3-Maps']
 })
 
-export const getBO4Maps = cache(async () => {
+const getBO4Maps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -79,7 +80,7 @@ export const getBO4Maps = cache(async () => {
   tags: ['bo4-Maps']
 })
 
-export const getColdWarMaps = cache(async () => {
+const getColdWarMaps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -92,7 +93,7 @@ export const getColdWarMaps = cache(async () => {
   tags: ['cw-Maps']
 })
 
-export const getBO6Maps = cache(async () => {
+const getBO6Maps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -104,3 +105,22 @@ export const getBO6Maps = cache(async () => {
 }, ['black-ops-6-maps'], {
   tags: ['bo6-Maps']
 })
+
+export const getMaps = (category?: GameCategory) => {
+  switch(category) {
+    default: 
+      return getAllMaps()
+    case 'black-ops-1':
+      return getBO1Maps()
+    case 'black-ops-2':
+      return getBO2Maps()
+    case 'black-ops-3':
+      return getBO3Maps()
+    case 'black-ops-4':
+      return getBO4Maps()
+    case 'black-ops-cold-war':
+      return getColdWarMaps()
+    case 'black-ops-6':
+      return getBO6Maps()
+  }
+}

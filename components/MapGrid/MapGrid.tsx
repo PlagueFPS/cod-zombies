@@ -1,8 +1,13 @@
-import { getAllMaps } from '@/utils/contentful-utils'
+import type { GameCategory } from '@/types/GameCategory'
+import { getMaps } from '@/utils/contentful-utils'
 import MapCard from './MapCard/MapCard'
 
-export default async function MapGrid() {
-  const posts = await getAllMaps()
+interface MapGridProps {
+  category: GameCategory | undefined
+}
+
+export default async function MapGrid({ category }: MapGridProps) {
+  const posts = await getMaps(category)
   const featuredMaps = posts.items
 
   return (

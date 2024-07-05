@@ -1,0 +1,1 @@
+export type GameCategory = 'black-ops-1' | 'black-ops-2' | 'black-ops-3' | 'black-ops-4' | 'black-ops-cold-war' | 'black-ops-6'

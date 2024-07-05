@@ -2,9 +2,17 @@ import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
 import MapGrid from "@/components/MapGrid/MapGrid";
 import { Button } from "@/components/ui/button";
+import { validateSearchParams } from "@/utils/constants";
 import { Suspense } from "react";
 
-export default function Home() {
+interface PageProps {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default function Home({ searchParams }: PageProps) {
+  const { category } = validateSearchParams(searchParams.category)
+
   return (
     <div className="container flex flex-col gap-12 justify-center items-center text-foreground">
       <section className="flex flex-col items-center justify-center gap-4 text-center max-w-2xl">
@@ -22,7 +30,7 @@ export default function Home() {
           <MapFilters />
         </Suspense>
         <Suspense fallback={<MapGridLoader />}>
-          <MapGrid />
+          <MapGrid category={ category } />
         </Suspense>
       </section>
     </div>
