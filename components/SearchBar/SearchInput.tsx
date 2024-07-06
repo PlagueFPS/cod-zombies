@@ -32,7 +32,7 @@ export default function SearchInput({ maps }: SearchInputProps) {
       <Button variant="outline" className="gap-8 text-foreground/70" onClick={ () => setOpen(!open) }>
         Search for maps...
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-          <span className="text-xs">⌘</span>K
+          <span className="text-xs">Ctrl+K</span>
         </kbd>
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>
@@ -41,7 +41,7 @@ export default function SearchInput({ maps }: SearchInputProps) {
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Black Ops 1">
             { maps.filter(map => map.category === 'Black Ops 1').map((map, i) => (
-              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` }>       
+              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` } onClick={ () => setOpen(!open) }>       
                 <CommandItem>
                   <span className="blur-none">{ map.title }</span>
                 </CommandItem>
