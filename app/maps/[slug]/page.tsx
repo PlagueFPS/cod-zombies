@@ -1,4 +1,3 @@
-import styles from './MapPage.module.css'
 import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS } from "@/utils/constants"
 import { getMaps, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
@@ -8,7 +7,6 @@ import { notFound } from "next/navigation"
 import { renderOptions } from '@/contentful/renderOptions'
 import revalidateMaps from '@/utils/actions'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
-import { cn } from '@/lib/utils'
 
 interface MapPageProps {
   params: { 
@@ -85,7 +83,7 @@ export default async function MapPage({ params }: MapPageProps) {
           <div>{ category?.fields.title }</div>
         </div>
       </div>
-      <div className={ cn(styles.body, richStyles.body) }>
+      <div className={ richStyles.body }>
         { documentToReactComponents(body, renderOptions) }
       </div>
     </article>

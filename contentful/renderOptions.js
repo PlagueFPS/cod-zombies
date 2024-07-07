@@ -12,18 +12,19 @@ export const renderOptions = {
     [INLINES.HYPERLINK]: (node) => {
       if (node.data.uri.startsWith(youtube_url)) {
         return (
-          <div>
+          <>
             <h3 className='text-foreground font-semibold'>{ node.content[0].value }</h3>
             <iframe 
               width="560" 
-              height="315" 
+              height="415" 
               src={ node.data.uri.replace('youtu.be/', 'www.youtube-nocookie.com/embed/') }
+              className='w-full rounded'
               title="YouTube video player" 
               frameborder="0" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
               referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen></iframe>
-          </div>
+          </>
         )
       }
       else if (node.data.uri.startsWith(website_url)) {
