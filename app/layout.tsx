@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
@@ -8,7 +8,7 @@ interface LayoutProps {
   children: React.ReactNode
 }
 
-const manrope = Manrope({ 
+const inter = Inter({ 
   subsets: ["latin"]
 });
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className={ manrope.className }>
+      <body className={ inter.className }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

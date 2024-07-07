@@ -1,0 +1,27 @@
+.body p {
+  @apply my-8 tracking-wide leading-6 text-foreground/80
+}
+
+.body b, .body strong {
+  @apply font-extrabold
+}
+
+.body a {
+  @apply relative text-primary underline hover:no-underline
+}
+
+.body blockquote {
+  @apply m-0
+}
+
+.body ul, .body ol {
+  @apply p-4 bg-secondary rounded list-disc
+}
+
+.body ul li, .body ol li {
+  @apply my-4 mx-8 marker:font-extrabold
+}
+
+.body ul li p, .body ol p {
+  @apply m-0
+}

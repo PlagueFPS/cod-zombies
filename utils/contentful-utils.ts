@@ -25,7 +25,8 @@ const getAllMaps = cache(async () => {
 
   return posts
 }, ['all-maps'], {
-  tags: ['featuredMaps']
+  tags: ['featuredMaps'],
+  revalidate: 60 // temp revalidate number for development only
 })
 
 const getBO1Maps = cache(async () => {
@@ -51,7 +52,7 @@ const getBO2Maps = cache(async () => {
 
   return posts
 }, ['black-ops-2-maps'], {
-  tags: ['bo2-Maps']
+  tags: ['bo2-Maps'],
 })
 
 const getBO3Maps = cache(async () => {

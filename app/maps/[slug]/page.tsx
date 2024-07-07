@@ -1,14 +1,19 @@
 import styles from './MapPage.module.css'
+import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS } from "@/utils/constants"
 import { getMaps, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { Metadata } from "next"
-import Image from "next/image"
 import { notFound } from "next/navigation"
 import { renderOptions } from '@/contentful/renderOptions'
+import revalidateMaps from '@/utils/actions'
+import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
+import { cn } from '@/lib/utils'
 
 interface MapPageProps {
-  params: { slug: string }
+  params: { 
+    slug: string
+  }
 }
 
 export const generateStaticParams = async () => {
@@ -55,37 +60,34 @@ export default async function MapPage({ params }: MapPageProps) {
   const maps = posts.items
   const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
-  const { title, description, image, gameCategory, date, body } = map.fields
+  const { title, image, gameCategory, date, body } = map.fields
   const mapImage = resolveAsset(image)
-  const mapCategory = resolveEntry(gameCategory)
+  const category = resolveEntry(gameCategory)
+  revalidateMaps() // REMOVE THIS BEFORE PRODUCTION
 
   return (
-    <div className="container flex justify-center px-16 items-center">
-      <section className="flex flex-col items-center justify-center gap-4 text-center">
-        <h1 className="text-primary flex flex-col font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-          { title } <span className="text-foreground text-2xl sm:text-3xl md:text-4xl lg:text-5xl">Main Quest Guide</span>
+    <article className='flex flex-col justify-center items-center'>
+      <div className='relative w-full'>
+        <div className='absolute top-0 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
+          <FeaturedImage featuredImage={ mapImage } />
+        </div>
+        <div className='relative z-20 mt-8 mx-auto w-full max-w-screen-xl'>
+          <FeaturedImage featuredImage={ mapImage } className='xl:rounded-lg overflow-hidden' />
+        </div>
+      </div>
+      <div className='relative z-20 flex flex-col justify-center gap-4 mt-16 mb-4 px-8 pb-12 w-full max-w-screen-xl border-b-2 border-border'>
+        <h1 className='font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl'>
+          { title }
         </h1>
-        <div className="flex gap-2 w-full max-w-4xl text-foreground/80 text-xs md:text-sm lg:text-base -mb-2">
-          <span>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</span>
-          <span>•</span>
-          <span>{ mapCategory?.fields.title }</span>
+        <div className='flex items-center flex-wrap gap-y-2 gap-x-4 text-muted-foreground'>
+          <div>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+          <div>•</div>
+          <div>{ category?.fields.title }</div>
         </div>
-        <picture className="relative overflow-hidden h-full w-full max-w-4xl rounded-lg">
-          <Image 
-            src={ `https:${mapImage?.fields?.file?.url}` }
-            alt=""
-            width={ mapImage?.fields.file?.details.image?.width }
-            height={ mapImage?.fields.file?.details.image?.height }
-            className="object-cover"
-          />
-        </picture>
-        <p className="text-foreground/80 text-sm md:text-base lg:text-lg max-w-[80ch]">
-          { description }
-        </p>
-        <div className={ styles.body }>
-          { documentToReactComponents(body, renderOptions) }
-        </div>
-      </section>
-    </div>
+      </div>
+      <div className={ cn(styles.body, richStyles.body) }>
+        { documentToReactComponents(body, renderOptions) }
+      </div>
+    </article>
   )
 }
