@@ -20,10 +20,9 @@ export const renderOptions = {
               src={ node.data.uri.replace('youtu.be/', 'www.youtube-nocookie.com/embed/') }
               className='w-full rounded'
               title="YouTube video player" 
-              frameborder="0" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen></iframe>
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen></iframe>
           </>
         )
       }
@@ -50,7 +49,7 @@ export const renderOptions = {
       return <Heading1>{ children }</Heading1>
     },
     [BLOCKS.HEADING_2]: (node, children) => {
-      return <Heading2>{ children }</Heading2>
+      return <Heading2 id={ node.content[0].value.toLowerCase().replace(/ /g, '-') }>{ children }</Heading2>
     },
   }
 }

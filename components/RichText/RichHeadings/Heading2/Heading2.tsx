@@ -1,9 +1,11 @@
-interface Heading2Props {
+import type { DetailedHTMLProps, HTMLAttributes } from "react"
+
+interface Heading2Props extends DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> {
   children: string[]
 }
 
-export default function Heading2({ children }: Heading2Props) {
+export default function Heading2({ id, children }: Heading2Props) {
   return (
-    <h2 className="mt-16 mb-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">{ children }</h2>
+    <h2 id={ id } className="mt-16 mb-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold">{ children }</h2>
   )
 }

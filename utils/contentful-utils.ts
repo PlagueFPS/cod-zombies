@@ -3,6 +3,7 @@ import { client } from "@/contentful/contentful"
 import { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import { unstable_cache as cache } from "next/cache";
 import { GameCategory } from "@/types/GameCategory";
+import { Headings } from "@/types/Headings";
 
 export const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) => {
   const response = await client.getEntries<T>(searchParams)
@@ -17,6 +18,23 @@ export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCate
   if ('fields' in entry && entry.fields) return entry
 }
 
+export const extractHeadings = (content: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => {
+  const headings: Headings[] = []
+  content.fields.body.content.forEach(node => {
+    if (node.nodeType === 'heading-2' || node.nodeType === 'heading-3') {
+      if (node.content[0].nodeType === 'text') {
+        headings.push({
+          type: node.nodeType,
+          text: node.content[0].value,
+          id: node.content[0].value.toLowerCase().replace(/ /g, '-')
+        })
+      }
+    }
+  })
+
+  return headings
+}
+
 const getAllMaps = cache(async () => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
@@ -26,7 +44,6 @@ const getAllMaps = cache(async () => {
   return posts
 }, ['all-maps'], {
   tags: ['featuredMaps'],
-  revalidate: 60 // temp revalidate number for development only
 })
 
 const getBO1Maps = cache(async () => {
