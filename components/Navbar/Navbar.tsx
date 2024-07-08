@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
-import Sidebar from './Sidebar/Sidebar'
 import SearchBar from '../SearchBar/SearchBar'
 
 export default function Navbar() {
@@ -13,13 +12,12 @@ export default function Navbar() {
             Call of Duty: <span className='text-primary'>Zombies</span>
           </h1>
         </Link>
-        <div className='hidden md:flex justify-between items-center h-full'>
+        <div className='flex justify-between items-center h-full'>
           <Suspense>
             <SearchBar />
           </Suspense>
           <ThemeToggle />
         </div>
-        <Sidebar />
       </div>
     </header>
   )

@@ -3,6 +3,7 @@ import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, C
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 interface SearchInputProps {
   maps: {
@@ -29,7 +30,10 @@ export default function SearchInput({ maps }: SearchInputProps) {
 
   return (
     <>
-      <Button variant="outline" className="gap-8 text-foreground/70" onClick={ () => setOpen(!open) }>
+      <Button variant="outline" size="icon" className="sm:hidden mr-2" onClick={ () => setOpen(!open) }>
+        <Search size={ 20 } />
+      </Button>
+      <Button variant="outline" className="hidden sm:flex gap-8 text-foreground/70" onClick={ () => setOpen(!open) }>
         Search for maps...
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           <span className="text-xs">Ctrl+K</span>
