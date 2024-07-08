@@ -12,6 +12,7 @@ export default function RichImage({ asset }: RichImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null!)
   const url = `https:${asset?.fields.file?.url}`
+  const description = asset?.fields.description
 
   const handleImageLoaded = () => {
     setImageLoaded(true)
@@ -26,7 +27,7 @@ export default function RichImage({ asset }: RichImageProps) {
     <figure className="relative m-0 w-full h-auto">
       { !imageLoaded && (
         <div className="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center">
-          <div className="relative h-16 w-16 border-4 border-solid border-border rounded-full rotate-0 animate-spin" />
+          <div className="relative h-16 w-16 border-[6px] border-solid border-r-transparent border-border rounded-full animate-spin" />
         </div>
       )}
       <picture 
@@ -35,15 +36,20 @@ export default function RichImage({ asset }: RichImageProps) {
           imageLoaded ? 'opacity-100' : 'opacity-0'
         )}>
         <Image 
-          src={ `${url}?fm=jpg` }
+          src={ `${url}?w=1280&h=720&fm=jpg` }
           alt=""
           width={ 1920 }
           height={ 1080 }
           ref={ imageRef }
           onLoad={ handleImageLoaded }
-          className={cn('flex justify-center items-center w-auto h-auto opacity-100 animate-in')}
+          className={cn('flex justify-center items-center w-auto h-auto rounded-lg opacity-100 animate-fade-in')}
         />
       </picture>
+      <figcaption className="flex justify-center items-center mt-2 mb-4 w-auto">
+        <>
+          { description }
+        </>
+      </figcaption>
     </figure>
   )
 }

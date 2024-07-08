@@ -28,7 +28,7 @@ export default function FeaturedImage({ featuredImage, quality, className }: Fea
     <figure className="relative m-0 w-full h-auto">
       { !imageLoaded && (
         <div className="absolute top-0 bottom-0 right-0 left-0 flex justify-center items-center">
-          <div className="relative h-16 w-16 border-4 border-solid border-border rounded-full rotate-0 animate-spin" />
+          <div className="relative h-16 w-16 border-[6px] border-solid border-r-transparent border-border rounded-full animate-spin" />
         </div>
       )}
       <picture 
@@ -38,14 +38,14 @@ export default function FeaturedImage({ featuredImage, quality, className }: Fea
           imageLoaded ? 'opacity-100' : 'opacity-0'
         )}>
         <Image 
-          src={ `${featuredImageURL}?fm=jpg` }
+          src={ `${featuredImageURL}?w=1280&h=720&fm=jpg` }
           alt=""
           width={ 1920 }
           height={ 1080 }
           ref={ imageRef }
           onLoad={ handleImageLoaded }
           quality={ quality }
-          className={cn('flex justify-center items-center w-auto h-auto opacity-100 animate-in', className)}
+          className={cn('flex justify-center items-center w-auto h-auto opacity-100 animate-fade-in', className)}
         />
       </picture>
     </figure>

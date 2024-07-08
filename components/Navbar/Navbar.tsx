@@ -7,7 +7,7 @@ import SearchBar from '../SearchBar/SearchBar'
 export default function Navbar() {
   return (
     <header>
-      <nav className='container flex justify-between items-center w-full border-b border-border px-2 h-20'>
+      <div className='container flex justify-between items-center w-full border-b border-border px-2 h-20'>
         <Link href='/'>
           <h1 className='font-bold text-2xl text-center'>
             Call of Duty: <span className='text-primary'>Zombies</span>
@@ -20,7 +20,7 @@ export default function Navbar() {
           <ThemeToggle />
         </div>
         <Sidebar />
-      </nav>
+      </div>
     </header>
   )
 }

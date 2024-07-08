@@ -10,7 +10,7 @@
 }
 
 .body p {
-  @apply my-8 tracking-wide leading-6 text-foreground/80
+  @apply my-8 tracking-wide leading-6 text-foreground/90
 }
 
 .body b, .body strong {
@@ -18,7 +18,7 @@
 }
 
 .body a {
-  @apply relative text-primary underline hover:no-underline
+  @apply relative text-primary underline hover:no-underline transition-all
 }
 
 .body blockquote {
