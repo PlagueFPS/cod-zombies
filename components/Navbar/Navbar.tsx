@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import SearchBar from '../SearchBar/SearchBar'
+import SearchBarLoader from '../Loaders/SearchBarLoader'
 
 export default function Navbar() {
   return (
@@ -13,7 +14,7 @@ export default function Navbar() {
           </h1>
         </Link>
         <div className='flex justify-between items-center h-full'>
-          <Suspense>
+          <Suspense fallback={<SearchBarLoader />}>
             <SearchBar />
           </Suspense>
           <ThemeToggle />

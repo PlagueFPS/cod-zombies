@@ -18,9 +18,9 @@ export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCate
   if ('fields' in entry && entry.fields) return entry
 }
 
-export const extractHeadings = (content: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => {
+export const extractHeadings = (entry: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => {
   const headings: Headings[] = []
-  content.fields.body.content.forEach(node => {
+  entry.fields.body.content.forEach(node => {
     if (node.nodeType === 'heading-2' || node.nodeType === 'heading-3') {
       if (node.content[0].nodeType === 'text') {
         headings.push({

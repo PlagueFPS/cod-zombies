@@ -1,5 +1,5 @@
 ## TODO
-- Make loaders for map filters and search bar
+- Make loaders for search bar
 - (?) Add pagination or load more option when displaying all maps only
 
 ## Generating type definitions for content types for Contentful
