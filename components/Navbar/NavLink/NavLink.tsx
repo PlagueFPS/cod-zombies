@@ -22,7 +22,7 @@ export default function NavLink({ href, children, className, exact, ariaLabel, t
       aria-label={ ariaLabel }
       target={ target }
       rel={ target ? "noreferrer" : undefined }
-      className={ isActive ? `${className} border-b border-secondary` : className }
+      className={ isActive ? `${className} text-primary` : className }
     >
       { children }
     </Link>

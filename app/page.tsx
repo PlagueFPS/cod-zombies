@@ -1,6 +1,7 @@
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
 import MapGrid from "@/components/MapGrid/MapGrid";
+import TempButton from "@/components/TempButton";
 import { validateSearchParams } from "@/utils/constants";
 import { Suspense } from "react";
 
@@ -19,6 +20,7 @@ export default function Home({ searchParams }: PageProps) {
           Unlock the Secrets of Call of Duty: <span className="text-primary">Zombies</span>
         </h2>
         <p className="text-foreground/90 text-sm md:text-base lg:text-lg">Explore our comprehensive guides to the most challenging and rewarding easter eggs in the Call of Duty Zombies universe</p>
+        <TempButton />
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>

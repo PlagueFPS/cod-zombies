@@ -2,13 +2,16 @@ import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS } from "@/utils/constants"
 import { extractHeadings, getMaps, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
-import { Metadata } from "next"
+import next, { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { renderOptions } from '@/contentful/renderOptions'
-import revalidateMaps from '@/utils/actions'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import Link from 'next/link'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import NavLink from '@/components/Navbar/NavLink/NavLink'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 interface MapPageProps {
   params: { 
@@ -60,15 +63,30 @@ export default async function MapPage({ params }: MapPageProps) {
   const maps = posts.items
   const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
+
   const { title, image, gameCategory, date, body } = map.fields
   const mapImage = resolveAsset(image)
   const category = resolveEntry(gameCategory)
   const headings = extractHeadings(map)
-  revalidateMaps() // REMOVE THIS BEFORE PRODUCTION
 
   return (
     <div className='container px-0 flex justify-center mx-auto'>
       <article className='flex flex-col flex-grow justify-center items-center'>
+        <Breadcrumb className='mr-auto ml-4'>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <NavLink exact href='/'>Home</NavLink>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <NavLink exact href={ `/maps/${params.slug}` }>{ title }</NavLink>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className='relative w-full'>
           <div className='absolute top-0 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
             <FeaturedImage featuredImage={ mapImage } />
