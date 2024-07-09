@@ -24,9 +24,7 @@ export default function Home({ searchParams }: PageProps) {
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>
-        <Suspense>
-          <MapFilters />
-        </Suspense>
+        <MapFilters category={ category } />
         <Suspense fallback={<MapGridLoader />}>
           <MapGrid category={ category } />
         </Suspense>

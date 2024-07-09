@@ -2,7 +2,7 @@ import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS } from "@/utils/constants"
 import { extractHeadings, getMaps, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
-import next, { Metadata } from "next"
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { renderOptions } from '@/contentful/renderOptions'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
@@ -10,28 +10,26 @@ import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import Link from 'next/link'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import NavLink from '@/components/Navbar/NavLink/NavLink'
-import { Button } from '@/components/ui/button'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 interface MapPageProps {
   params: { 
+    category: string | undefined
     slug: string
   }
 }
 
 export const generateStaticParams = async () => {
-  const posts = await getMaps()
-  const maps = posts.items
+  const maps = await getMaps()
 
-  return maps.map(map => ({
+  return maps.items.map(map => ({
+    category: resolveEntry(map.fields.gameCategory)?.fields.slug,
     slug: map.fields.slug
   }))
 }
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
-  const posts = await getMaps()
-  const maps = posts.items
-  const map = maps.find(map => map.fields.slug === params.slug)
+  const maps = await getMaps()
+  const map = maps.items.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
   const { title, description, image } = map.fields
   const mapImage = resolveAsset(image)
@@ -41,7 +39,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
     openGraph: {
       title,
       description,
-      url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/maps/${params.slug}`,
+      url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${params.category}/${params.slug}`,
       images: {
         url: `https:${mapImage?.fields?.file?.url}?q=75`,
         width: mapImage?.fields?.file?.details.image?.width,
@@ -59,9 +57,8 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 }
 
 export default async function MapPage({ params }: MapPageProps) {
-  const posts = await getMaps()
-  const maps = posts.items
-  const map = maps.find(map => map.fields.slug === params.slug)
+  const maps = await getMaps()
+  const map = maps.items.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
 
   const { title, image, gameCategory, date, body } = map.fields
@@ -82,7 +79,13 @@ export default async function MapPage({ params }: MapPageProps) {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact href={ `/maps/${params.slug}` }>{ title }</NavLink>
+                <NavLink exact href={ `/?category=${params.category}` }>{ category?.fields.title }</NavLink>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <NavLink exact href={ `/${params.category}/${params.slug}` }>{ title }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -103,7 +106,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <div>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             <div>•</div>
             <div>
-              <Link href={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}?category=${category?.fields.slug}` } className='hover:text-primary transition-all'>
+              <Link href={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}?category=${params.category}` } className='hover:text-primary transition-all'>
                 { category?.fields.title }
               </Link>
             </div>
