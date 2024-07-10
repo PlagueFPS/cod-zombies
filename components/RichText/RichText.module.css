@@ -22,6 +22,10 @@
 }
 
 .body blockquote {
+  @apply flex flex-col justify-center items-center gap-4 mx-8 p-8 bg-secondary border rounded
+}
+
+.body blockquote p {
   @apply m-0
 }
 
