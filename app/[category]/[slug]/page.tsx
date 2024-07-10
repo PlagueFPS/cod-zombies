@@ -98,11 +98,11 @@ export default async function MapPage({ params }: MapPageProps) {
             <FeaturedImage featuredImage={ mapImage } className='xl:rounded-lg overflow-hidden' />
           </div>
         </div>
-        <div className='relative z-20 flex flex-col justify-center gap-4 mt-16 mb-4 px-8 pb-12 w-full max-w-screen-xl border-b-2'>
+        <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 pb-12 w-full max-w-screen-xl border-b-2'>
           <h1 className='font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl'>
             { title }
           </h1>
-          <div className='flex items-center flex-wrap gap-y-2 gap-x-4 text-muted-foreground'>
+          <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
             <div>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             <div>•</div>
             <div>

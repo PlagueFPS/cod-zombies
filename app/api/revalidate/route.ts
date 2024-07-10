@@ -1,8 +1,9 @@
 import { revalidateTag } from "next/cache"
 
-export default async function POST() {
-  console.log('Revalidating Maps...')
+export async function POST() {
+  console.log('Revalidating maps and categories...')
   revalidateTag('maps')
-  console.log('Maps Revalidated')
-  return Response.json({ message: 'Maps Revalidated' }, { status: 201 })
+  revalidateTag('categories')
+  console.log('Maps and Categories Revalidated')
+  return Response.json({ message: 'Maps and Categories Revalidated' }, { status: 201 })
 }

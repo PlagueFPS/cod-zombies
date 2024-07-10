@@ -10,8 +10,8 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export default function Home({ searchParams }: PageProps) {
-  const { category } = validateSearchParams(searchParams.category)
+export default async function Home({ searchParams }: PageProps) {
+  const { category, gameCategories } = await validateSearchParams(searchParams.category)
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
@@ -24,7 +24,7 @@ export default function Home({ searchParams }: PageProps) {
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>
-        <MapFilters category={ category } />
+        <MapFilters currentCategory={ category } gameCategories={ gameCategories } />
         <Suspense fallback={<MapGridLoader />}>
           <MapGrid category={ category } />
         </Suspense>

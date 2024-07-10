@@ -1,21 +1,23 @@
-import { getMaps, resolveEntry } from "@/utils/contentful-utils"
+import { getGameCategories, getMaps, resolveEntry } from "@/utils/contentful-utils"
 import SearchInput from "./SearchInput"
 
 export default async function SearchBar() {
-  const posts = await getMaps()
-  const maps = posts.items.map(post => {
-    const category = resolveEntry(post.fields.gameCategory)
+  const maps = (await getMaps()).items.map(map => {
+    const category = resolveEntry(map.fields.gameCategory)
     
     return {
-      title: post.fields.title,
-      slug: post.fields.slug,
-      category: category?.fields.title
+      title: map.fields.title,
+      slug: map.fields.slug,
+      category: {
+        slug: category?.fields.slug
+      }
     }
   })
+  const gameCategories = await getGameCategories()
 
   return (
     <div className="flex justify-center items-center w-1/2">
-      <SearchInput maps={ maps } />
+      <SearchInput maps={ maps } gameCategories={ gameCategories } />
     </div>
   )
 }

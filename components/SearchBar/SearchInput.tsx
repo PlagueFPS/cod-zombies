@@ -1,7 +1,8 @@
 "use client"
+import { GameCategory } from "@/types/GameCategory";
+import { useEffect, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
@@ -9,11 +10,17 @@ interface SearchInputProps {
   maps: {
     title: string
     slug: string
-    category: string | undefined
+    category: {
+      slug: string | undefined
+    }
+  }[]
+  gameCategories: {
+    slug: GameCategory
+    title: string
   }[]
 }
 
-export default function SearchInput({ maps }: SearchInputProps) {
+export default function SearchInput({ maps, gameCategories }: SearchInputProps) {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -43,60 +50,17 @@ export default function SearchInput({ maps }: SearchInputProps) {
         <CommandInput placeholder="Type a map or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Black Ops 1">
-            { maps.filter(map => map.category === 'Black Ops 1').map((map, i) => (
-              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` } onClick={ () => setOpen(!open) }>       
-                <CommandItem>
-                  <span className="blur-none">{ map.title }</span>
-                </CommandItem>
-              </Link>
-            ))}
-          </CommandGroup>
-          <CommandGroup heading="Black Ops 2">
-            { maps.filter(map => map.category === 'Black Ops 2').map((map, i) => (
-              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` }>       
-                <CommandItem>
-                  <span className="blur-none">{ map.title }</span>
-                </CommandItem>
-              </Link>
-            ))}
-          </CommandGroup>
-          <CommandGroup heading="Black Ops 3">
-            { maps.filter(map => map.category === 'Black Ops 3').map((map, i) => (
-              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` }>       
-                <CommandItem>
-                  <span className="blur-none">{ map.title }</span>
-                </CommandItem>
-              </Link>
-            ))}
-          </CommandGroup>
-          <CommandGroup heading="Black Ops 4">
-            { maps.filter(map => map.category === 'Black Ops 4').map((map, i) => (
-              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` }>       
-                <CommandItem>
-                  <span className="blur-none">{ map.title }</span>
-                </CommandItem>
-              </Link>
-            ))}
-          </CommandGroup>
-          <CommandGroup heading="Black Ops Cold War">
-            { maps.filter(map => map.category === 'Black Ops Cold War').map((map, i) => (
-              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` }>       
-                <CommandItem>
-                  <span className="blur-none">{ map.title }</span>
-                </CommandItem>
-              </Link>
-            ))}
-          </CommandGroup>
-          {/* <CommandGroup heading="Black Ops 6">
-            { maps.filter(map => map.category === 'Black Ops 6').map((map, i) => (
-              <Link key={ `${map.slug}_${i}` } href={ `/maps/${map.slug}` }>       
-                <CommandItem>
-                  <span className="blur-none">{ map.title }</span>
-                </CommandItem>
-              </Link>
-            ))}
-          </CommandGroup> */}
+          { gameCategories.map(game => (
+            <CommandGroup heading={ game.title } key={ game.slug }>
+              { maps.filter(map => map.category.slug === game.slug).map(map => (
+                <Link key={ `${game.slug}_${map.slug}` } href={ `/${map.category.slug}/${map.slug}` } onClick={ () => setOpen(!open) }>
+                  <CommandItem>
+                    <span className="blur-none">{ map.title }</span>
+                  </CommandItem>
+                </Link>
+              ))}
+            </CommandGroup>
+          ))}
         </CommandList>
       </CommandDialog>
     </>

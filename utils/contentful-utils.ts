@@ -47,3 +47,17 @@ export const getMaps = cache(async (category?: GameCategory) => {
 }, ['all-maps'], {
   tags: ['maps']
 })
+
+export const getGameCategories = cache(async () => {
+  const games = await getPosts<TypeGameCategorySkeleton>({
+    content_type: 'gameCategory',
+    order: ['sys.createdAt']
+  })
+
+  return games.items.map(game => ({
+    slug: game.fields.slug as GameCategory,
+    title: game.fields.title
+  }))
+}, ['game-categories'], {
+  tags: ['categories']
+})

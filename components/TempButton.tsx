@@ -16,7 +16,7 @@ export default function TempButton() {
 
   return (
     <Button onClick={ onClick } className="mt-8">
-      Revalidate Maps
+      Revalidate Data
     </Button>
   )
 }

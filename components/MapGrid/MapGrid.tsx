@@ -7,12 +7,11 @@ interface MapGridProps {
 }
 
 export default async function MapGrid({ category }: MapGridProps) {
-  const posts = await getMaps(category)
-  const featuredMaps = posts.items
+  const maps = await getMaps(category)
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
-      { featuredMaps.map(map => (
+      { maps.items.map(map => (
         <MapCard key={ map.sys.id } map={ map } />
       ))}
     </div>
