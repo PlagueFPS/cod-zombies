@@ -33,11 +33,12 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
   if (!map) notFound()
   const { title, description, image } = map.fields
   const mapImage = resolveAsset(image)
+  const pageTitle = `${title} - Cod Zombies Guides`
   const metadata: Metadata = {
-    title,
+    title: pageTitle,
     description,
     openGraph: {
-      title,
+      title: pageTitle,
       description,
       url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${params.category}/${params.slug}`,
       images: {
@@ -47,7 +48,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       }
     },
     twitter: {
-      title,
+      title: pageTitle,
       description,
       card: 'summary_large_image'
     }
