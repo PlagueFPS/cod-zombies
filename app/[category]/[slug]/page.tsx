@@ -79,7 +79,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact href={ `/?category=${params.category}` }>{ category?.fields.title }</NavLink>
+                <NavLink exact href={ `/${params.category}` }>{ category?.fields.title }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

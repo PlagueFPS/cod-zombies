@@ -1,17 +1,13 @@
+import { getGameCategories } from "@/utils/contentful-utils";
+import TempButton from "@/components/TempButton";
+import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
 import MapGrid from "@/components/MapGrid/MapGrid";
-import TempButton from "@/components/TempButton";
-import { validateSearchParams } from "@/utils/constants";
 import { Suspense } from "react";
 
-interface PageProps {
-  params: { slug: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
-
-export default async function Home({ searchParams }: PageProps) {
-  const { category, gameCategories } = await validateSearchParams(searchParams.category)
+export default function Home() {
+  const gameCategories = getGameCategories()
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
@@ -24,9 +20,11 @@ export default async function Home({ searchParams }: PageProps) {
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>
-        <MapFilters currentCategory={ category } gameCategories={ gameCategories } />
+        <Suspense fallback={<MapFiltersLoader />}>
+          <MapFilters gameCategories={ gameCategories } />
+        </Suspense>
         <Suspense fallback={<MapGridLoader />}>
-          <MapGrid category={ category } />
+          <MapGrid />
         </Suspense>
       </section>
     </div>

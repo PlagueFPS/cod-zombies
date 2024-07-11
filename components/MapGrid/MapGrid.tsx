@@ -3,7 +3,7 @@ import { getMaps } from '@/utils/contentful-utils'
 import MapCard from './MapCard/MapCard'
 
 interface MapGridProps {
-  category: GameCategory | undefined
+  category?: GameCategory | undefined
 }
 
 export default async function MapGrid({ category }: MapGridProps) {
