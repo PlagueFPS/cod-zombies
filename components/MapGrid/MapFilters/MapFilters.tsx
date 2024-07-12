@@ -20,7 +20,7 @@ export default function MapFilters({ currentCategory, gameCategories }: MapFilte
   const categories = gameCategories instanceof Promise ? use(gameCategories) : gameCategories
   const router = useRouter()
 
-  const updateSearchParams = (category: string) => {
+  const updateCategory = (category: string) => {
     if (currentCategory === category) return router.push('/')
     else return router.push(`/${category}`)
   }
@@ -33,7 +33,7 @@ export default function MapFilters({ currentCategory, gameCategories }: MapFilte
             key={ `${game.slug}_${i}` } 
             size="sm" 
             variant={ currentCategory === game.slug ? "secondary" : "outline" } 
-            onClick={ () => updateSearchParams(game.slug) }
+            onClick={ () => updateCategory(game.slug) }
           >
             { game.title }
           </Button>
