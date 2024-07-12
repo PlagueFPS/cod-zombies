@@ -23,8 +23,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
-      rootMargin: '0px',
-      threshold: 1.0
+      rootMargin: '0px 0px -75% 0px',
+      threshold: 0.75
     })
 
     headings.forEach(heading => {

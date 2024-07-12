@@ -17,7 +17,7 @@
   @apply font-extrabold
 }
 
-.body a {
+.body p a {
   @apply relative text-primary underline hover:no-underline transition-all
 }
 

@@ -8,9 +8,10 @@ interface FeaturedImageProps {
   featuredImage: Asset | undefined
   quality?: number
   className?: string
+  priority?: boolean
 }
 
-export default function FeaturedImage({ featuredImage, quality, className }: FeaturedImageProps) {
+export default function FeaturedImage({ featuredImage, quality, className, priority }: FeaturedImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null!)
   const featuredImageURL = featuredImage ? `https:${featuredImage.fields.file?.url}` : '/article-img-placeholder.jpg'
@@ -46,6 +47,7 @@ export default function FeaturedImage({ featuredImage, quality, className }: Fea
           onLoad={ handleImageLoaded }
           quality={ quality }
           className={cn('flex justify-center items-center w-auto h-auto opacity-100 animate-fade-in', className)}
+          priority={ priority }
         />
       </picture>
     </figure>
