@@ -108,7 +108,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <div>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             <div>•</div>
             <div>
-              <Link href={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}?category=${params.category}` } className='hover:text-primary transition-all'>
+              <Link href={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${params.category}` } className='hover:text-primary transition-all'>
                 { category?.fields.title }
               </Link>
             </div>
@@ -118,7 +118,7 @@ export default async function MapPage({ params }: MapPageProps) {
           { documentToReactComponents(body, renderOptions) }
         </div>
       </article>
-      <aside className='hidden xl:block sticky top-4 pl-4 h-full'>
+      <aside className='hidden xl:block sticky top-4 pl-8 h-full'>
         <TableOfContents headings={ headings } />
       </aside>
     </div>

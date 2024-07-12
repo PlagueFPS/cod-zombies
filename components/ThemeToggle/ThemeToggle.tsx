@@ -14,7 +14,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme()
   
   return (
-    <div className="flex w-fit rounded-full border p-1" role="radiogroup">
+    <div className="flex w-fit rounded-full border p-0.5" role="radiogroup">
       <Button 
         variant="outline" 
         size="icon" 
@@ -22,8 +22,8 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         type="button" 
         title="Light" 
         aria-label="Switch to light theme" 
-        className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none hover:bg-transparent", className, {
-          'text-foreground': theme === 'light'
+        className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
+          'text-foreground bg-accent': theme === 'light'
         })}
         onClick={ () => setTheme("light") }
       >
@@ -36,8 +36,8 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         type="button" 
         title="System" 
         aria-label="Switch to system theme" 
-        className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none hover:bg-transparent", className, {
-          'text-foreground': theme === 'system' 
+        className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
+          'text-foreground bg-accent': theme === 'system' 
         })}
         onClick={ () => setTheme("system") }
       >
@@ -50,8 +50,8 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         type="button" 
         title="Dark" 
         aria-label="Switch to dark theme" 
-        className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none hover:bg-transparent", className, {
-          'text-foreground': theme === 'dark'
+        className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
+          'text-foreground bg-accent': theme === 'dark'
         })}
         onClick={ () => setTheme("dark") }
       >

@@ -1,5 +1,4 @@
 ## TODO
-- Make loader for [slug] route
 - (?) Add pagination or load more option when displaying all maps only
 
 ## Generating type definitions for content types for Contentful
