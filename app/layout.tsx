@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -13,8 +14,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Cod Zombies Guides",
-  description: "Unlock the secrets of Call of Duty Zombies by reading our comprehensive guides to the most challenging and rewarding easter eggs in the Call of Duty Zombies universe",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION
 };
 
 export default function RootLayout({ children }: LayoutProps) {
