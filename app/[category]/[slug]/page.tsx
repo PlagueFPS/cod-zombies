@@ -1,5 +1,5 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { checkPriority, DATE_OPTIONS } from "@/utils/constants"
+import { DATE_OPTIONS } from "@/utils/constants"
 import { extractHeadings, getMaps, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { Metadata } from "next"
@@ -66,7 +66,6 @@ export default async function MapPage({ params }: MapPageProps) {
   const mapImage = resolveAsset(image)
   const category = resolveEntry(gameCategory)
   const headings = extractHeadings(map)
-  const isPriority = checkPriority(params.slug)
 
   return (
     <div className='container px-0 flex justify-center mx-auto'>
@@ -94,10 +93,10 @@ export default async function MapPage({ params }: MapPageProps) {
         </Breadcrumb>
         <div className='relative w-full'>
           <div className='absolute top-0 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
-            <FeaturedImage featuredImage={ mapImage } priority={ isPriority } />
+            <FeaturedImage featuredImage={ mapImage } priority />
           </div>
           <div className='relative z-20 mt-8 mx-auto w-full max-w-screen-xl'>
-            <FeaturedImage featuredImage={ mapImage } priority={ isPriority } className='xl:rounded-lg overflow-hidden' />
+            <FeaturedImage featuredImage={ mapImage } priority className='xl:rounded-lg overflow-hidden' />
           </div>
         </div>
         <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 pb-12 w-full max-w-screen-xl border-b-2'>

@@ -1,6 +1,4 @@
 "use client"
-
-import * as React from "react"
 import { Moon, Sun, Monitor } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
@@ -12,7 +10,7 @@ interface ThemeToggleProps {
 
 export default function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme()
-  
+
   return (
     <div className="flex w-fit rounded-full border p-0.5" role="radiogroup">
       <Button 
@@ -21,7 +19,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         role="radio" 
         type="button" 
         title="Light" 
-        aria-label="Switch to light theme" 
+        aria-label="Switch to light theme"
         className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
           'text-foreground bg-accent': theme === 'light'
         })}
@@ -35,7 +33,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         role="radio" 
         type="button" 
         title="System" 
-        aria-label="Switch to system theme" 
+        aria-label="Switch to system theme"
         className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
           'text-foreground bg-accent': theme === 'system' 
         })}

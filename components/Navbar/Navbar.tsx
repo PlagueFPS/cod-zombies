@@ -1,8 +1,15 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
-import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import SearchBar from '../SearchBar/SearchBar'
 import SearchBarLoader from '../Loaders/SearchBarLoader'
+import dynamic from 'next/dynamic'
+import ThemeToggleLoader from '../Loaders/ThemeToggleLoader'
+
+// dynamic import to avoid hydration error for theme based styles
+const ThemeToggle = dynamic(() => import('@/components/ThemeToggle/ThemeToggle'), {
+  ssr: false,
+  loading: () => <ThemeToggleLoader />
+})
 
 export default function Navbar() {
   return (

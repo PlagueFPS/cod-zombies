@@ -5,5 +5,5 @@ in the Call of Duty Zombies universe`
 export const DATE_OPTIONS: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
 
 export const checkPriority = (slug: string): boolean => {
-  return slug === 'forsaken' || slug === 'mauer-der-toten'
+  return slug === 'forsaken' || slug === 'mauer-der-toten' || slug === 'firebase-z' || slug === 'die-maschine'
 }
