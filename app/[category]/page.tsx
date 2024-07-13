@@ -2,6 +2,7 @@ import MapGridLoader from "@/components/Loaders/MapGridLoader"
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters"
 import MapGrid from "@/components/MapGrid/MapGrid"
 import TempButton from "@/components/TempButton"
+import { SITE_TITLE } from "@/utils/constants"
 import { getGameCategories } from "@/utils/contentful-utils"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -24,7 +25,7 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
   const categories = await getGameCategories()
   const category = categories.find(category => category.slug === params.category)
   if (!category) notFound()
-  const title = `${category.title} | Cod Zombies Guides`
+  const title = `${category.title} - ${SITE_TITLE}`
   const description = `Explore our comprehensive guides to the most challenging and rewarding easter eggs in ${category.title}`
   const metadata: Metadata = {
     title,

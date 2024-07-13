@@ -1,5 +1,5 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { DATE_OPTIONS } from "@/utils/constants"
+import { DATE_OPTIONS, SITE_TITLE } from "@/utils/constants"
 import { extractHeadings, getMaps, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { Metadata } from "next"
@@ -33,7 +33,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
   if (!map) notFound()
   const { title, description, image } = map.fields
   const mapImage = resolveAsset(image)
-  const pageTitle = `${title} - Cod Zombies Guides`
+  const pageTitle = `${title} - ${SITE_TITLE}`
   const metadata: Metadata = {
     title: pageTitle,
     description,
