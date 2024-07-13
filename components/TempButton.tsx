@@ -1,8 +1,7 @@
 "use client"
-
 import { Button } from "./ui/button"
 
-export default function TempButton() {
+export default function TempButton() { // TEMP BUTTON FOR DEVELOPMENT DATA REVALIDATION
   const onClick = async () => {
     try {
       await fetch('http://localhost:3000/api/revalidate', {
