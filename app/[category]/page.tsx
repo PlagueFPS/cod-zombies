@@ -55,7 +55,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           Unlock the Secrets of Call of Duty: <span className="text-primary">Zombies</span>
         </h2>
         <p className="text-foreground/90 text-sm md:text-base lg:text-lg">
-          Explore our comprehensive guides to the most challenging and rewarding easter eggs in { category.title }
+          Explore our comprehensive guides to the most challenging and rewarding main quests in { category.title }
         </p>
         <TempButton />
       </section>
