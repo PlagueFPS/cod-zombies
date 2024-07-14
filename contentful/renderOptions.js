@@ -1,6 +1,5 @@
 import { INLINES, BLOCKS } from '@contentful/rich-text-types'
 import RichImage from '@/components/RichText/RichImage/RichImage'
-import Heading1 from '@/components/RichText/RichHeadings/Heading1/Heading1'
 import Heading2 from '@/components/RichText/RichHeadings/Heading2/Heading2'
 import Heading3 from '@/components/RichText/RichHeadings/Heading3/Heading3'
 import Link from 'next/link'
@@ -53,9 +52,6 @@ export const renderOptions = {
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
       const asset = node.data.target
       return <RichImage asset={ asset } />
-    },
-    [BLOCKS.HEADING_1]: (node, children) => {
-      return <Heading1>{ children }</Heading1>
     },
     [BLOCKS.HEADING_2]: (node, children) => {
       return <Heading2 id={ node.content[0].value.toLowerCase().replace(/ /g, '-') }>{ children }</Heading2>
