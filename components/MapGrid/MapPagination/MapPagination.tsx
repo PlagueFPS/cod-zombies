@@ -15,7 +15,11 @@ export default function MapPagination({ currentPage, totalPages }: MapPagination
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href={`/?page=${prevPage}`} aria-disabled={ previousDisabled } />
+          <PaginationPrevious 
+            href={`/?page=${prevPage}`} 
+            aria-disabled={ previousDisabled }
+            className={ previousDisabled ? 'opacity-25 pointer-events-none' : '' }
+          />
         </PaginationItem>
         { [...Array(totalPages).keys()].map(page => (
           <PaginationItem key={ page }>
@@ -23,7 +27,11 @@ export default function MapPagination({ currentPage, totalPages }: MapPagination
           </PaginationItem>
         ))}
         <PaginationItem>
-          <PaginationNext href={`/?page=${nextPage}`} aria-disabled={ nextDisabled } />
+          <PaginationNext 
+            href={`/?page=${nextPage}`} 
+            aria-disabled={ nextDisabled }
+            className={ nextDisabled ? 'opacity-25 pointer-events-none' : '' }
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

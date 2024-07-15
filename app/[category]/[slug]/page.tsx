@@ -10,6 +10,10 @@ import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import Link from 'next/link'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import NavLink from '@/components/Navbar/NavLink/NavLink'
+import type { Entry } from 'contentful'
+import { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
+import { Button } from '@/components/ui/button'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface MapPageProps {
   params: { 
@@ -61,11 +65,13 @@ export default async function MapPage({ params }: MapPageProps) {
   const maps = await getMaps()
   const map = maps.items.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
-
   const { title, image, gameCategory, date, body } = map.fields
   const mapImage = resolveAsset(image)
   const category = resolveEntry(gameCategory)
   const headings = extractHeadings(map)
+  const mapIndex = maps.items.indexOf(map)
+  const prevMap = maps.items[mapIndex + 1]
+  const nextMap = maps.items[mapIndex - 1]
 
   return (
     <div className='container px-0 flex justify-center mx-auto'>
@@ -116,6 +122,10 @@ export default async function MapPage({ params }: MapPageProps) {
         <div className={ richStyles.body }>
           { documentToReactComponents(body, renderOptions) }
         </div>
+        <div className='flex justify-between items-center w-full px-8'>
+          { prevMap && <PreviousOrNextMap map={ prevMap } prev /> }
+          { nextMap && <PreviousOrNextMap map={ nextMap } /> }
+        </div>
       </article>
       <aside className='hidden xl:block sticky top-4 pl-8 h-full'>
         <TableOfContents headings={ headings } />
@@ -123,3 +133,26 @@ export default async function MapPage({ params }: MapPageProps) {
     </div>
   )
 }
+
+ const PreviousOrNextMap = ({ map, prev }: { map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, prev?: boolean }) => {
+  const { title, gameCategory, slug } = map.fields
+  const category = resolveEntry(gameCategory)
+
+  return (
+    <Button variant="outline" asChild>
+      <Link href={ `/${category?.fields.slug}/${slug}` }>
+        { prev ? (
+          <>
+            <ChevronLeft className='h-4 w-4' />
+            <span>{ title }</span>
+          </>
+        ) : (
+          <>
+            <span>{ title }</span>
+            <ChevronRight className='h-4 w-4' />
+          </>
+        )}
+      </Link>
+    </Button>
+  )
+ }
