@@ -1,13 +1,15 @@
 import type { GameCategory } from '@/types/GameCategory'
 import { getMaps } from '@/utils/contentful-utils'
 import MapCard from './MapCard/MapCard'
+import { MAP_LIMIT } from '@/utils/constants'
 
 interface MapGridProps {
   category?: GameCategory | undefined
+  skip?: number
 }
 
-export default async function MapGrid({ category }: MapGridProps) {
-  const maps = await getMaps(category)
+export default async function MapGrid({ category, skip }: MapGridProps) {
+  const maps = await getMaps(category, skip, MAP_LIMIT)
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">

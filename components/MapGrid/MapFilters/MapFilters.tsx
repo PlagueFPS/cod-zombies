@@ -1,23 +1,18 @@
 "use client"
 import { GameCategory } from "@/types/GameCategory";
-import { use } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface MapFiltersProps {
   currentCategory?: GameCategory
-  gameCategories: Promise<{
-    title: string
-    slug: GameCategory
-  }[]> | {
+  gameCategories: {
     title: string,
     slug: GameCategory
   }[]
 }
 
 export default function MapFilters({ currentCategory, gameCategories }: MapFiltersProps) {
-  const categories = gameCategories instanceof Promise ? use(gameCategories) : gameCategories
   const router = useRouter()
 
   const updateCategory = (category: string) => {
@@ -28,7 +23,7 @@ export default function MapFilters({ currentCategory, gameCategories }: MapFilte
   return (
     <ScrollArea className="-mt-4">
       <div className="flex w-max gap-3 text-foreground/80">
-        { categories.map((game, i) => (
+        { gameCategories.map((game, i) => (
           <Button 
             key={ `${game.slug}_${i}` } 
             size="sm" 

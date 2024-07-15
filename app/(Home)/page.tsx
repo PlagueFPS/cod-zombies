@@ -1,13 +1,22 @@
 import { getGameCategories } from "@/utils/contentful-utils";
+import { getSkipAndPage } from "@/utils/functions";
 import TempButton from "@/components/TempButton";
-import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
 import MapGrid from "@/components/MapGrid/MapGrid";
 import { Suspense } from "react";
+import MapPagination from "@/components/MapGrid/MapPagination/MapPagination";
 
-export default function Home() {
-  const gameCategories = getGameCategories()
+interface HomePageProps {
+  searchParams: { 
+    [key: string]: string | string[] | undefined 
+  }
+}
+
+export default async function Home({ searchParams }: HomePageProps) {
+  const { page } = searchParams
+  const gameCategories = await getGameCategories()
+  const { skip, currentPage, totalPages } = await getSkipAndPage(page)
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
@@ -20,12 +29,11 @@ export default function Home() {
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>
-        <Suspense fallback={<MapFiltersLoader />}>
-          <MapFilters gameCategories={ gameCategories } />
-        </Suspense>
+        <MapFilters gameCategories={ gameCategories } />
         <Suspense fallback={<MapGridLoader />}>
-          <MapGrid />
+          <MapGrid skip={ skip } />
         </Suspense>
+        <MapPagination currentPage={ currentPage } totalPages={ totalPages } />
       </section>
     </div>
   );

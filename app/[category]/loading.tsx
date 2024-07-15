@@ -1,6 +1,6 @@
 "use client"
 import HomePageLoader from "@/components/Loaders/HomePageLoader";
-import { capatilize } from "@/utils/constants";
+import { capatilize } from "@/utils/functions";
 import { usePathname } from "next/navigation";
 
 export default function CategoryPageLoader() {

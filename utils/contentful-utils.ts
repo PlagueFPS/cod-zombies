@@ -35,12 +35,14 @@ export const extractHeadings = (entry: Entry<TypeFeaturedMapsSkeleton, undefined
   return headings
 }
 
-export const getMaps = cache(async (category?: GameCategory) => {
+export const getMaps = cache(async (category?: GameCategory, skip?: number, limit?: number) => {
   const posts = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
     'fields.gameCategory.sys.contentType.sys.id': 'gameCategory',
-    'fields.gameCategory.fields.slug[match]': category ?? null
+    'fields.gameCategory.fields.slug[match]': category ?? null,
+    skip,
+    limit
   })
  
   return posts

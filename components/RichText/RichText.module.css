@@ -18,7 +18,7 @@
 }
 
 .body p a {
-  @apply relative text-primary underline hover:no-underline transition-all
+  @apply relative text-primary underline underline-offset-4 hover:no-underline transition-all
 }
 
 .body blockquote {
