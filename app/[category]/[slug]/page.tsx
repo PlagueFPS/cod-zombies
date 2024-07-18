@@ -15,6 +15,7 @@ import type { Entry } from 'contentful'
 import { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import BackToTopButton from '@/components/BackToTopButton/BackToTopButton'
 
 interface MapPageProps {
   params: { 
@@ -99,7 +100,7 @@ export default async function MapPage({ params }: MapPageProps) {
           </BreadcrumbList>
         </Breadcrumb>
         <div className='relative w-full'>
-          <div className='absolute top-0 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
+          <div className='absolute top-1/4 xl:top-16 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
             <FeaturedImage featuredImage={ mapImage } priority quality={ 1 } />
           </div>
           <div className='relative z-20 mt-8 mx-auto w-full max-w-screen-xl'>
@@ -131,6 +132,7 @@ export default async function MapPage({ params }: MapPageProps) {
       <aside className='hidden xl:block sticky top-4 pl-8 h-full'>
         <TableOfContents headings={ headings } />
       </aside>
+      <BackToTopButton mobile />
     </div>
   )
 }
