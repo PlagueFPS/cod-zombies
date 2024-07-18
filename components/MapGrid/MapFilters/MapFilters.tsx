@@ -22,7 +22,7 @@ export default function MapFilters({ currentCategory, gameCategories }: MapFilte
 
   return (
     <ScrollArea className="-mt-4">
-      <div className="flex w-max gap-3 text-foreground/80">
+      <div className="flex w-max gap-3">
         { gameCategories.map((game, i) => (
           <Button 
             key={ `${game.slug}_${i}` } 

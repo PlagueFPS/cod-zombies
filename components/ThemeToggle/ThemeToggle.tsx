@@ -19,7 +19,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         role="radio" 
         type="button" 
         title="Light"
-        aria-current={ theme === 'light' }
+        aria-checked={ theme === 'light' }
         aria-label="Switch to light theme"
         className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
           'text-foreground bg-accent': theme === 'light'
@@ -34,7 +34,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         role="radio" 
         type="button" 
         title="System"
-        aria-current={ theme === 'system' }
+        aria-checked={ theme === 'system' }
         aria-label="Switch to system theme"
         className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
           'text-foreground bg-accent': theme === 'system' 
@@ -49,7 +49,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
         role="radio" 
         type="button" 
         title="Dark"
-        aria-current={ theme === 'dark' }
+        aria-checked={ theme === 'dark' }
         aria-label="Switch to dark theme" 
         className={cn("bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none", className, {
           'text-foreground bg-accent': theme === 'dark'

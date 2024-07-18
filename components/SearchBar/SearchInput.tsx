@@ -37,7 +37,7 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
 
   return (
     <>
-      <Button variant="outline" size="icon" className="sm:hidden mr-2" onClick={ () => setOpen(!open) }>
+      <Button variant="outline" size="icon" className="sm:hidden mr-2" onClick={ () => setOpen(!open) } title="open search menu">
         <Search className="h-5 w-5" />
       </Button>
       <Button variant="outline" className="hidden sm:flex gap-8 text-foreground/70" onClick={ () => setOpen(!open) }>
