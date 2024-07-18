@@ -1,4 +1,4 @@
-import { getGameCategories } from "@/utils/contentful-utils";
+import { getGameCategories } from "@/utils/data";
 import { getSkipAndPage } from "@/utils/functions";
 import TempButton from "@/components/TempButton";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";

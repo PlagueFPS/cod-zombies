@@ -1,6 +1,7 @@
 import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS, SITE_TITLE } from "@/utils/constants"
-import { extractHeadings, getMaps, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
+import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
+import { getMaps } from '@/utils/data'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"

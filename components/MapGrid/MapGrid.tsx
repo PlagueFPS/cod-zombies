@@ -1,5 +1,5 @@
 import type { GameCategory } from '@/types/GameCategory'
-import { getMaps } from '@/utils/contentful-utils'
+import { getMaps } from '@/utils/data'
 import MapCard from './MapCard/MapCard'
 import { MAP_LIMIT } from '@/utils/constants'
 

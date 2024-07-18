@@ -1,4 +1,5 @@
-import { getGameCategories, getMaps, resolveEntry } from "@/utils/contentful-utils"
+import { resolveEntry } from "@/utils/contentful-utils"
+import { getMaps, getGameCategories } from "@/utils/data"
 import SearchInput from "./SearchInput"
 
 export default async function SearchBar() {
