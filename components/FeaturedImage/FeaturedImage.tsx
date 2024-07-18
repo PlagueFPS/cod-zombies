@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
 interface FeaturedImageProps {
-  featuredImage: Asset | undefined
+  featuredImage: Asset<undefined, string> | undefined
   quality?: number
   className?: string
   priority?: boolean
@@ -34,19 +34,19 @@ export default function FeaturedImage({ featuredImage, quality, className, prior
       )}
       <picture 
         className={cn(
-          'flex justify-center items-center w-auto h-auto animate-fade-in',
+          'flex justify-center items-center w-full h-auto animate-fade-in',
           className, 
           imageLoaded ? 'opacity-100' : 'opacity-0'
         )}>
         <Image 
-          src={ `${featuredImageURL}?w=1280&h=720&fm=jpg` }
+          src={ `${featuredImageURL}?fm=jpg` }
           alt=""
-          width={ 1920 }
-          height={ 1080 }
+          width={ featuredImage?.fields.file?.details.image?.width }
+          height={ featuredImage?.fields.file?.details.image?.height }
           ref={ imageRef }
           onLoad={ handleImageLoaded }
           quality={ quality }
-          className={cn('flex justify-center items-center w-auto h-auto opacity-100 animate-fade-in', className)}
+          className={cn('flex justify-center items-center w-full h-auto opacity-100 animate-fade-in', className)}
           priority={ priority }
         />
       </picture>

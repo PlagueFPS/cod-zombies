@@ -100,7 +100,7 @@ export default async function MapPage({ params }: MapPageProps) {
         </Breadcrumb>
         <div className='relative w-full'>
           <div className='absolute top-0 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
-            <FeaturedImage featuredImage={ mapImage } priority />
+            <FeaturedImage featuredImage={ mapImage } priority quality={ 1 } />
           </div>
           <div className='relative z-20 mt-8 mx-auto w-full max-w-screen-xl'>
             <FeaturedImage featuredImage={ mapImage } priority className='xl:rounded-lg overflow-hidden' />

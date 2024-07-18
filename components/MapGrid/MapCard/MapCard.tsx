@@ -25,7 +25,7 @@ export default function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
       <Card className="relative h-full group hover:border-primary cursor-pointer transition-all overflow-hidden">
         <Badge className="absolute top-2 right-2 z-20">{ category?.fields.title }</Badge>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
-          <FeaturedImage featuredImage={ mapImage } priority={ priority } />
+          <FeaturedImage featuredImage={ mapImage } priority={ priority } quality={ 1 } />
         </div>
         <CardHeader className="flex flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
