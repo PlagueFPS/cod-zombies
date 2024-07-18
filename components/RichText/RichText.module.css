@@ -40,7 +40,3 @@
 .body ul li p, .body ol p {
   @apply m-0
 }
-
-.body iframe {
-  @apply mt-4
-}

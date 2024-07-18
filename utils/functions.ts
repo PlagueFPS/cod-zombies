@@ -10,3 +10,9 @@ export const capatilize = (text: string) => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
     .join(" ") // Join the words back into a single string
 }
+
+export const getYouTubeVideoID = (url: string) => {
+  const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}

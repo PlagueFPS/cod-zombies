@@ -1,8 +1,10 @@
 import { INLINES, BLOCKS } from '@contentful/rich-text-types'
+import Link from 'next/link'
+import { YouTubeEmbed } from '@next/third-parties/google'
+import { getYouTubeVideoID  } from '@/utils/functions'
 import RichImage from '@/components/RichText/RichImage/RichImage'
 import Heading2 from '@/components/RichText/RichHeadings/Heading2/Heading2'
 import Heading3 from '@/components/RichText/RichHeadings/Heading3/Heading3'
-import Link from 'next/link'
 
 const website_url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}`
 const youtube_url = 'https://youtu.be/'
@@ -14,16 +16,8 @@ export const renderOptions = {
       if (node.data.uri.startsWith(youtube_url)) {
         return (
           <>
-            <h3 className='text-foreground font-semibold'>{ node.content[0].value }</h3>
-            <iframe 
-              width="560" 
-              height="415" 
-              src={ node.data.uri.replace('youtu.be/', 'www.youtube-nocookie.com/embed/') }
-              className='w-full rounded'
-              title="YouTube video player" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen></iframe>
+            <h3 className='text-foreground font-semibold mb-4'>{ node.content[0].value }</h3>
+            <YouTubeEmbed videoid={ getYouTubeVideoID(node.data.uri) } style={{ width: '100%', height: '100%' }} />
           </>
         )
       }
