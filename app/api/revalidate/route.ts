@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
 import { revalidateTag } from "next/cache"
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   const headersList = headers()
   const secret = headersList.get('X-Contentful-Webhook-Secret')
   
