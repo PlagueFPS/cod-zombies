@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
+import Footer from "@/components/Footer/Footer";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps) {
           <main className="mt-28 xl:mt-10 mb-4">
           { children }
           </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
