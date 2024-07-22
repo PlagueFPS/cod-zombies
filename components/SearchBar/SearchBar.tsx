@@ -3,7 +3,7 @@ import { getMaps, getGameCategories } from "@/data/data"
 import SearchInput from "./SearchInput"
 
 export default async function SearchBar() {
-  const maps = (await getMaps()).items.map(map => {
+  const maps = (await getMaps()).maps.map(map => {
     const category = resolveEntry(map.fields.gameCategory)
     
     return {

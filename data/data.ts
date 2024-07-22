@@ -1,12 +1,18 @@
 import 'server-only'
+import type { EntriesQueries, EntrySkeletonType } from 'contentful';
+import { client } from '@/contentful/contentful';
 import { unstable_cache as cache } from "next/cache";
 import { GameCategory } from "@/types/GameCategory";
-import { getPosts } from "@/utils/contentful-utils";
 import { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import { MAP_LIMIT } from '@/utils/constants';
 
+const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) => {
+  const response = await client.getEntries<T>(searchParams)
+  return response
+}
+
 export const getMaps = cache(async (category?: GameCategory, skip?: number, limit?: number) => {
-  const posts = await getPosts<TypeFeaturedMapsSkeleton>({
+  const maps = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
     'fields.gameCategory.sys.contentType.sys.id': 'gameCategory',
@@ -15,7 +21,10 @@ export const getMaps = cache(async (category?: GameCategory, skip?: number, limi
     limit
   })
  
-  return posts
+  return {
+    totalMaps: maps.total,
+    maps: maps.items
+  }
 }, ['all-maps'], {
   tags: ['maps']
 })
@@ -35,8 +44,8 @@ export const getGameCategories = cache(async () => {
 })
 
 export const getSkipAndPage = async (unvalidatedPage: string | string[] | undefined) => {
-  const maps = await getMaps()
-  const totalPages = Math.ceil(maps.total / MAP_LIMIT)
+  const { totalMaps } = await getMaps()
+  const totalPages = Math.ceil(totalMaps / MAP_LIMIT)
   let page = unvalidatedPage ? +unvalidatedPage : 1
   if (page > totalPages) page = totalPages
   else if (page <= 1 || isNaN(page)) page = 1

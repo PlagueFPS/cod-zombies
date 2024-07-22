@@ -25,17 +25,17 @@ interface MapPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const maps = await getMaps()
+  const { maps } = await getMaps()
 
-  return maps.items.map(map => ({
+  return maps.map(map => ({
     category: resolveEntry(map.fields.gameCategory)?.fields.slug,
     slug: map.fields.slug
   }))
 }
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
-  const maps = await getMaps()
-  const map = maps.items.find(map => map.fields.slug === params.slug)
+  const { maps } = await getMaps()
+  const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
   const { title, description, image } = map.fields
   const mapImage = resolveAsset(image)
@@ -64,16 +64,16 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 }
 
 export default async function MapPage({ params }: MapPageProps) {
-  const maps = await getMaps()
-  const map = maps.items.find(map => map.fields.slug === params.slug)
+  const { maps } = await getMaps()
+  const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
   const { title, image, gameCategory, date, body } = map.fields
   const mapImage = resolveAsset(image)
   const category = resolveEntry(gameCategory)
   const headings = extractHeadings(map)
-  const mapIndex = maps.items.indexOf(map)
-  const prevMap = maps.items[mapIndex + 1]
-  const nextMap = maps.items[mapIndex - 1]
+  const mapIndex = maps.indexOf(map)
+  const prevMap = maps[mapIndex + 1]
+  const nextMap = maps[mapIndex - 1]
 
   return (
     <div className='container px-0 flex justify-center mx-auto'>
