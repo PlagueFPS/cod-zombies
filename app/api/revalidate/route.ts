@@ -10,7 +10,7 @@ export async function PUT(req: NextRequest) {
     const tag = req.nextUrl.searchParams.get('tag')
     if (tag) {
       revalidateTag(tag)
-      return Response.json({ message: `${tag} revalidated`, time: Date.now() }, { status: 201 })
+      return Response.json({ message: `${tag} revalidated`, time: Date.now() }, { status: 204 })
     }
     else return Response.json({ message: 'No tag provided' }, { status: 401 })
   }

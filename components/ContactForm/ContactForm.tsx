@@ -1,0 +1,76 @@
+"use client"
+import { useFormState } from "react-dom";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { submitContactForm } from "@/utils/actions";
+import FormError from "../ui/form-error";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+
+export default function ContactForm() {
+  const [state, action, isPending] = useFormState(submitContactForm, {})
+
+  return (
+      <form action={ action } className="flex flex-col gap-4">
+        <div className="space-y-1">
+          <Label htmlFor="email">Email</Label>
+          <Input 
+            type="email"
+            name="email"
+            id="email"
+            placeholder="e.g JohnSmith@example.com"
+            aria-describedby="email-error"
+          />
+          { state.errors?.email && (
+            <FormError id="email-error">
+              { state.errors.email.map(error => (
+                <p key={ error }>{ error }</p>
+              ))}
+            </FormError>
+          )}
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="subject">Subject</Label>
+          <Select defaultValue="Feedback" name="subject" required>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a email subject..." aria-describedby="subject-error" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Feedback">Feedback</SelectItem>
+              <SelectItem value="Suggestion">Suggestion</SelectItem>
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+          { state.errors?.subject && (
+            <FormError id="subject-error">
+              { state.errors.subject.map(error => (
+                <p key={ error }>{ error }</p>
+              ))}
+            </FormError>
+          )}
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="body">Body</Label>
+          <Textarea
+            name="body"
+            id="body"
+            placeholder="What can we help you with?"
+            maxLength={ 1000 }
+            aria-describedby="body-error"
+            required
+          />
+          { state.errors?.body && (
+            <FormError id="body-error">
+              { state.errors.body.map(error => (
+                <p key={ error }>{ error }</p>
+              ))}
+            </FormError>
+          )}
+        </div>
+        <Button type="submit" aria-disabled={ isPending } disabled={ isPending } className="w-fit">
+          { isPending ? "Submitting..." : "Submit" }
+        </Button>
+      </form>
+  )
+}

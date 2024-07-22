@@ -30,11 +30,13 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <main className="mt-28 xl:mt-10 mb-4">
-          { children }
-          </main>
-          <Footer />
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="mt-28 xl:mt-10 mb-4 flex-grow">
+              { children }
+            </main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>

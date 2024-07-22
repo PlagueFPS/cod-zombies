@@ -58,10 +58,10 @@
     }
 
     html {
-      @apply scroll-smooth;
+      @apply scroll-smooth h-full;
     }
     body {
-      @apply bg-background text-foreground;
+      @apply bg-background text-foreground h-full;
     }
 
     a {
