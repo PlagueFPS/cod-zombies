@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
 import Footer from "@/components/Footer/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -30,13 +31,14 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-dvh">
             <Navbar />
             <main className="mt-28 xl:mt-10 mb-4 flex-grow">
               { children }
             </main>
             <Footer />
           </div>
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

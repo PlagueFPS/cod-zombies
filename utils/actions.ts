@@ -19,6 +19,7 @@ export async function updateData() {
 export async function submitContactForm(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = ContactFormSchema.safeParse(Object.fromEntries(formData))
   if (!validatedFields.success) return {
+    success: false,
     message: 'Invalid Fields. Failed to submit form',
     errors: validatedFields.error.flatten().fieldErrors
   }
@@ -38,10 +39,11 @@ export async function submitContactForm(prevState: FormState, formData: FormData
       body: encodedFormData
     })
 
-    return { message: 'Thank you for submitting! Your submission has been received.' }
+    return { success: true, message: 'Thank you for submitting! Your submission has been received.' }
   } catch (error) {
-    if (error instanceof Error) return { message: error.message }
+    if (error instanceof Error) return { success: false, message: error.message }
     else return {
+      success: false,
       message: 'Failed to submit form.'
     }
   }

@@ -9,7 +9,7 @@ const Copyright = dynamic(() => import('@/components/Footer/Copyright/Copyright'
 
 export default function Footer() {
   return (
-    <footer className='container relative text-sm flex justify-between items-center p-8 border-t mt-auto'>
+    <footer className='container relative text-sm flex flex-col-reverse gap-4 sm:flex-row justify-between items-center p-8 border-t mt-auto'>
       <div className="flex gap-2 justify-center items-center text-sm text-muted-foreground">
         <Copyright />
         <div className="flex gap-1">
@@ -18,7 +18,8 @@ export default function Footer() {
         </div>
       </div>
       <div>
-        <Dialog>
+        <ContactForm />
+        {/* <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline">
               Contact Us
@@ -31,7 +32,7 @@ export default function Footer() {
             </DialogHeader>
             <ContactForm />
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </div>
     </footer>
   )
