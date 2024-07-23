@@ -31,7 +31,7 @@ export default function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
         </div>
         <CardHeader className="flex flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
-            <FeaturedImage featuredImage={ mapImage } className='h-44 object-cover' priority={ priority } />
+            <FeaturedImage featuredImage={ mapImage } className='h-44 object-cover' priority={ priority } quality={ 25 } />
           </div>
           <CardTitle className="group-hover:text-primary transition-all">{ title }</CardTitle>
           <CardDescription>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</CardDescription>
