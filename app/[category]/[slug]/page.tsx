@@ -16,6 +16,7 @@ import { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import BackToTopButton from '@/components/BackToTopButton/BackToTopButton'
+import { Badge } from '@/components/ui/badge'
 
 interface MapPageProps {
   params: { 
@@ -108,17 +109,16 @@ export default async function MapPage({ params }: MapPageProps) {
           </div>
         </div>
         <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 pb-12 w-full max-w-screen-xl border-b-2'>
-          <h2 className='font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl'>
-            { title }
-          </h2>
+          <div className='flex w-full justify-between items-center'>
+            <h2 className='font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl'>
+              { title }
+            </h2>
+            <Badge className='bg-orange-700 border-primary hover:bg-orange-800'>{ category?.fields.title }</Badge>
+          </div>
           <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
-            <div>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+            <div>Published: { new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             <div>•</div>
-            <div>
-              <Link href={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${params.category}` } className='hover:text-primary transition-all'>
-                { category?.fields.title }
-              </Link>
-            </div>
+            <div>Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
           </div>
         </div>
         <div className={ richStyles.body }>

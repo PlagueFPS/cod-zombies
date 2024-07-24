@@ -1,6 +1,4 @@
 import dynamic from "next/dynamic"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Button } from "../ui/button"
 import ContactForm from "../ContactForm/ContactForm"
 
 const Copyright = dynamic(() => import('@/components/Footer/Copyright/Copyright'), {
@@ -19,20 +17,6 @@ export default function Footer() {
       </div>
       <div>
         <ContactForm />
-        {/* <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline">
-              Contact Us
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Contact Form</DialogTitle>
-              <DialogDescription>Share your feedback, suggestions, or other thoughts with us</DialogDescription>
-            </DialogHeader>
-            <ContactForm />
-          </DialogContent>
-        </Dialog> */}
       </div>
     </footer>
   )

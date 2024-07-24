@@ -54,7 +54,7 @@
 
   @layer base {
     * {
-      @apply border-border;
+      @apply border-border box-border;
     }
 
     html {

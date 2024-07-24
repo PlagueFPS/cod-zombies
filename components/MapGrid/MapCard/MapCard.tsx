@@ -23,7 +23,7 @@ export default function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
   return (
     <Link key={ map.sys.id } href={ `/${category?.fields.slug}/${slug}` } className="max-h-[450px] h-full">
       <Card className="relative h-full group hover:border-primary cursor-pointer transition-all overflow-hidden">
-        <Badge className="absolute top-2 right-2 z-20">
+        <Badge className="absolute top-2 right-2 z-20 bg-orange-700 border-primary hover:bg-orange-800">
           { category?.fields.title }
         </Badge>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
