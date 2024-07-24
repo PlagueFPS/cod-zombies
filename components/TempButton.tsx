@@ -4,7 +4,7 @@ import { updateData } from "@/utils/actions"
 
 export default function TempButton() { // TEMP BUTTON FOR DEVELOPMENT DATA REVALIDATION
   return (
-    <Button onClick={ async () => updateData() } className="mt-8">
+    <Button onClick={ async () => updateData() } className="mt-8" variant="destructive">
       Revalidate Data
     </Button>
   )
