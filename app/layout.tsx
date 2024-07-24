@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
+import { GLOBAL_OG_IMAGE, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -17,9 +17,30 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: SITE_TITLE,
-  description: SITE_DESCRIPTION
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_WEBSITE_URL}`),
+  title: {
+    template: `%s - ${SITE_TITLE}`,
+    default: SITE_TITLE
+  },
+  description: SITE_DESCRIPTION,
+  creator: 'Angel Pichardo',
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    ...GLOBAL_OG_IMAGE.openGraph
+  },
+  twitter: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  }
 };
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0c0a09' },
+  ]
+}
 
 export default function RootLayout({ children }: LayoutProps) {
   return (

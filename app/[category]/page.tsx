@@ -1,12 +1,12 @@
+import { getGameCategories } from "@/data/data"
+import { notFound } from "next/navigation"
+import type { Metadata } from "next"
+import { GLOBAL_OG_IMAGE } from "@/utils/constants"
+import { Suspense } from "react"
 import MapGridLoader from "@/components/Loaders/MapGridLoader"
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters"
 import MapGrid from "@/components/MapGrid/MapGrid"
 import TempButton from "@/components/TempButton"
-import { SITE_TITLE } from "@/utils/constants"
-import { getGameCategories } from "@/data/data"
-import type { Metadata } from "next"
-import { notFound } from "next/navigation"
-import { Suspense } from "react"
 
 interface CategoryPageProps {
   params: {
@@ -25,12 +25,13 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
   const categories = await getGameCategories()
   const category = categories.find(category => category.slug === params.category)
   if (!category) notFound()
-  const title = `${category.title} - ${SITE_TITLE}`
-  const description = `Explore our comprehensive guides to the most challenging and rewarding easter eggs in ${category.title}`
+  const title = category.title
+  const description = `Explore our comprehensive guides to the most challenging and rewarding main quests in ${category.title}`
   const metadata: Metadata = {
     title,
     description,
     openGraph: {
+      ...GLOBAL_OG_IMAGE.openGraph,
       title,
       description
     },

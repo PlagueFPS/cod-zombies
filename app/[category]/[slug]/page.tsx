@@ -1,5 +1,5 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { DATE_OPTIONS, SITE_TITLE } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_IMAGE } from "@/utils/constants"
 import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { getMaps } from '@/data/data'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
@@ -40,14 +40,14 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
   if (!map) notFound()
   const { title, description, image } = map.fields
   const mapImage = resolveAsset(image)
-  const pageTitle = `${title} - ${SITE_TITLE}`
   const metadata: Metadata = {
-    title: pageTitle,
+    title,
     description,
     openGraph: {
-      title: pageTitle,
+      ...GLOBAL_OG_IMAGE.openGraph,
+      title,
       description,
-      url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${params.category}/${params.slug}`,
+      url: `/${params.category}/${params.slug}`,
       images: {
         url: `https:${mapImage?.fields?.file?.url}?q=75`,
         width: mapImage?.fields?.file?.details.image?.width,
@@ -55,7 +55,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       }
     },
     twitter: {
-      title: pageTitle,
+      title,
       description,
       card: 'summary_large_image'
     }
