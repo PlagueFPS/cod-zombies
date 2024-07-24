@@ -10,7 +10,7 @@
 }
 
 .body p {
-  @apply my-8 tracking-wide leading-6 text-foreground/90
+  @apply my-8 tracking-wide leading-6
 }
 
 .body b, .body strong {
@@ -31,6 +31,10 @@
 
 .body ul, .body ol {
   @apply p-4 bg-secondary-alternative rounded list-disc
+}
+
+.body ul ul, .body ol ol {
+  @apply -mt-4 list-[circle]
 }
 
 .body ul li, .body ol li {

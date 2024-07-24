@@ -47,7 +47,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   return (
     <nav className="flex flex-col gap-4">
       <div className="font-bold">On this page</div>
-      <ul className="flex flex-col gap-3 text-foreground/80 font-medium text-sm">
+      <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm">
         { headings.map(heading => (
           <li 
             key={ heading.id } 
