@@ -26,12 +26,18 @@ export const metadata: Metadata = {
   creator: 'Angel Pichardo',
   openGraph: {
     ...GLOBAL_OG_IMAGE.openGraph,
-    title: SITE_TITLE,
+    title: {
+      template: `%s - ${SITE_TITLE}`,
+      default: SITE_TITLE
+    },
     description: SITE_DESCRIPTION,
     url: '/',
   },
   twitter: {
-    title: SITE_TITLE,
+    title: {
+      template: `%s - ${SITE_TITLE}`,
+      default: SITE_TITLE
+    },
     description: SITE_DESCRIPTION,
   }
 };
