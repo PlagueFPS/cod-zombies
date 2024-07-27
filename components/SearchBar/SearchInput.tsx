@@ -6,6 +6,7 @@ import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, C
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import { DialogDescription, DialogTitle } from "../ui/dialog";
 
 interface SearchInputProps {
   maps: {
@@ -54,6 +55,8 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
         </kbd>
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>
+        <DialogTitle className="sr-only">Search Bar</DialogTitle>
+        <DialogDescription className="sr-only">Search for maps</DialogDescription>
         <CommandInput placeholder="Type a map or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>

@@ -77,7 +77,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const nextMap = maps[mapIndex - 1]
 
   return (
-    <div className='container px-0 flex justify-center mx-auto'>
+    <div className='container px-0 flex flex-col-reverse gap-4 -mt-10 xl:mt-0 xl:gap-8 xl:flex-row justify-center mx-auto'>
       <article className='flex flex-col flex-grow justify-center items-center'>
         <Breadcrumb className='mr-auto ml-4'>
           <BreadcrumbList>
@@ -95,7 +95,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact href={ `/${params.category}/${params.slug}` }>{ title }</NavLink>
+                <NavLink exact href={ `/${params.category}/${params.slug}` } className='font-medium'>{ title }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -110,7 +110,7 @@ export default async function MapPage({ params }: MapPageProps) {
         </div>
         <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 pb-12 w-full max-w-screen-xl border-b-2'>
           <div className='flex w-full justify-between items-center'>
-            <h2 className='font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl'>
+            <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl'>
               { title }
             </h2>
             <Badge className='bg-orange-700 border-primary hover:bg-orange-800'>{ category?.fields.title }</Badge>
@@ -129,9 +129,7 @@ export default async function MapPage({ params }: MapPageProps) {
           { nextMap && <PreviousOrNextMap map={ nextMap } /> }
         </div>
       </article>
-      <aside className='hidden xl:block sticky top-4 pl-8 h-full'>
-        <TableOfContents headings={ headings } />
-      </aside>
+      <TableOfContents headings={ headings } />
       <BackToTopButton mobile />
     </div>
   )

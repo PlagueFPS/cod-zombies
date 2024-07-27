@@ -13,7 +13,7 @@ const ThemeToggle = dynamic(() => import('@/components/ThemeToggle/ThemeToggle')
 
 export default function Navbar() {
   return (
-    <header className='fixed xl:static z-30 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 top-0 w-full'>
+    <header className='sticky xl:static z-30 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 top-0 w-full'>
       <div className='container flex justify-between items-center w-full border-b border-border px-2 h-20'>
         <Link href='/'>
           <h1 className='font-bold text-xl sm:text-2xl text-center'>

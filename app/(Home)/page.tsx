@@ -5,7 +5,6 @@ import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
 import MapGrid from "@/components/MapGrid/MapGrid";
 import { Suspense } from "react";
 import MapPagination from "@/components/MapGrid/MapPagination/MapPagination";
-import { SITE_DESCRIPTION } from "@/utils/constants";
 
 interface HomePageProps {
   searchParams: { 
@@ -24,7 +23,9 @@ export default async function Home({ searchParams }: HomePageProps) {
         <h2 className="font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
           Unlock the Secrets of Call of Duty: <span className="text-primary">Zombies</span>
         </h2>
-        <p className="text-foreground/90 text-sm md:text-base lg:text-lg">{ SITE_DESCRIPTION }</p>
+        <p className="text-foreground/90 text-sm md:text-base lg:text-lg">
+          Explore our comprehensive guides to the most challenging and rewarding main quests in the Call of Duty: Zombies Universe
+        </p>
         { process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' && <TempButton /> }
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
