@@ -130,7 +130,7 @@ export default async function MapPage({ params }: MapPageProps) {
         </div>
       </article>
       <TableOfContents headings={ headings } />
-      <BackToTopButton mobile />
+      <BackToTopButton type='button' mobile />
     </div>
   )
 }

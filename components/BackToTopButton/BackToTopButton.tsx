@@ -14,7 +14,7 @@ export default function BackToTopButton({ mobile, ...props }: BackToTopButtonPro
   return (
     <>
       { mobile ? (
-        <Button onClick={ scrollBackToTop } size="icon" className='fixed xl:hidden bottom-16 right-4 rounded-full z-20' title='Back to Top'>
+        <Button onClick={ scrollBackToTop } size="icon" className='fixed xl:hidden bottom-16 right-4 rounded-full z-20' title='Back to Top' {...props}>
           <ArrowUp className='h-6 w-6' />
         </Button>
       ) : (

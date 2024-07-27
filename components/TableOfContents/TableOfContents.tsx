@@ -59,22 +59,24 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
         <aside className="sticky top-4 h-full">
           <nav className="flex flex-col gap-4">
             <div className="font-bold">On this page</div>
-            <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm">
-              { headings.map(heading => (
-                <li 
-                  key={ heading.id } 
-                  className={cn("hover:text-primary w-fit transition-all", 
-                    { 'pl-4 text-muted-foreground': heading.type === 'heading-3',
-                      'text-primary': activeSection === heading.id,
-                    })}
-                >
-                  <Link href={ `#${heading.id}` }>
-                    { heading.text }
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <BackToTopButton size="sm" variant="outline" />
+            <ScrollArea>
+              <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm max-h-[70vh]">
+                { headings.map(heading => (
+                  <li 
+                    key={ heading.id } 
+                    className={cn("hover:text-primary w-fit transition-all", 
+                      { 'pl-4 text-muted-foreground': heading.type === 'heading-3',
+                        'text-primary': activeSection === heading.id,
+                      })}
+                  >
+                    <Link href={ `#${heading.id}` }>
+                      { heading.text }
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </ScrollArea>
+            <BackToTopButton type="button" size="sm" variant="outline" />
           </nav>
         </aside>
       ) : (
@@ -98,9 +100,9 @@ const MobileTableOfContents = ({ headings, activeSection }: MobileTableOfContent
             <SheetTitle>On this page</SheetTitle>
             <SheetDescription className="sr-only">Table of contents for this page</SheetDescription>
           </SheetHeader>
-          <ScrollArea className="h-full">
+          <ScrollArea>
             <nav className="flex flex-col gap-4">
-              <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm">
+              <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm max-h-full">
                 { headings.map(heading => (
                   <li 
                     key={ heading.id } 
