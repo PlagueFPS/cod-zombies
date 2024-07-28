@@ -1,6 +1,6 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -39,7 +39,7 @@
     --primary: 20.5 90.2% 48.2%;
     --primary-foreground: 60 9.1% 97.8%;
     --secondary: 12 6.5% 15.1%;
-    --secondary-2: 12 6.5% 6%;
+    --secondary-2: 12 6.5% 3%;
     --secondary-foreground: 60 9.1% 97.8%;
     --muted: 12 6.5% 15.1%;
     --muted-foreground: 24 5.4% 63.9%;

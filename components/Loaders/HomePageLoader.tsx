@@ -19,7 +19,7 @@ export default function HomePageLoader({ category }: HomePageLoaderProps) {
           </span>
         </h1>
         <p className="text-sm md:text-base lg:text-lg">
-          Explore our comprehensive guides to the most challenging and rewarding easter eggs in { category ?? "the Call of Duty Zombies universe"}
+          Explore our comprehensive guides to the most challenging and rewarding main quests in { category ?? "Call of Duty Zombies" }
         </p>
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">

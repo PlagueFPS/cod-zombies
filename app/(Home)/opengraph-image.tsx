@@ -6,7 +6,7 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 export default async function OGImage() {
-  const interExtraBold = fetch(new URL('../Inter-ExtraBold.ttf', import.meta.url)).then((res) => res.arrayBuffer())
+  const interExtraBold = fetch(new URL('./Inter-ExtraBold.ttf', import.meta.url)).then((res) => res.arrayBuffer())
   // light: linear-gradient(180deg, #545454, #000)
   // dark: linear-gradient(180deg, #fff, #adadad)
 

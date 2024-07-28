@@ -39,6 +39,7 @@ export const metadata: Metadata = {
       default: SITE_TITLE
     },
     description: SITE_DESCRIPTION,
+    card: 'summary_large_image',
   }
 };
 

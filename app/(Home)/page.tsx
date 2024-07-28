@@ -30,7 +30,7 @@ export default async function Home({ searchParams }: HomePageProps) {
           </span>
         </h1>
         <p className="text-sm md:text-base lg:text-lg">
-          Explore our comprehensive guides to the most challenging and rewarding main quests in the Call of Duty: Zombies Universe
+          Explore our comprehensive guides to the most challenging and rewarding main quests in Call of Duty: Zombies
         </p>
         { process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' && <TempButton /> }
       </section>
