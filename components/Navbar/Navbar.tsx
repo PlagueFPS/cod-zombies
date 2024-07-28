@@ -16,9 +16,10 @@ export default function Navbar() {
     <header className='sticky xl:static z-30 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 top-0 w-full'>
       <div className='container flex justify-between items-center w-full border-b border-border px-2 h-20'>
         <Link href='/'>
-          <h1 className='font-extrabold text-xl sm:text-2xl text-center'>
-            Call of Duty: <span className='text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-primary'>Zombies</span>
-          </h1>
+          <div className='font-extrabold text-xl sm:text-2xl text-center'>
+            Call of Duty:
+            <span className='text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-primary'> Zombies</span>
+          </div>
         </Link>
         <div className='flex justify-between items-center h-full'>
           <Suspense fallback={<SearchBarLoader />}>

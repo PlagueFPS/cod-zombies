@@ -110,7 +110,7 @@ export default async function MapPage({ params }: MapPageProps) {
         </div>
         <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 pb-12 w-full max-w-screen-xl border-b-2'>
           <div className='flex w-full justify-between items-center'>
-            <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl'>
+            <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2'>
               { title }
             </h2>
             <Badge className='bg-orange-700 border-primary hover:bg-orange-800'>{ category?.fields.title }</Badge>
