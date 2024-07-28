@@ -1,5 +1,5 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { DATE_OPTIONS, GLOBAL_OG_IMAGE } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_PROPS } from "@/utils/constants"
 import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { getMaps } from '@/data/data'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
@@ -44,7 +44,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
     title,
     description,
     openGraph: {
-      ...GLOBAL_OG_IMAGE.openGraph,
+      ...GLOBAL_OG_PROPS.openGraph,
       title,
       description,
       url: `/${params.category}/${params.slug}`,

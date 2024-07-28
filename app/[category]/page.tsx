@@ -1,7 +1,7 @@
 import { getGameCategories } from "@/data/data"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { GLOBAL_OG_IMAGE } from "@/utils/constants"
+import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { Suspense } from "react"
 import MapGridLoader from "@/components/Loaders/MapGridLoader"
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters"
@@ -31,13 +31,19 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
     title,
     description,
     openGraph: {
-      ...GLOBAL_OG_IMAGE.openGraph,
+      ...GLOBAL_OG_PROPS.openGraph,
       title,
-      description
+      description,
+      images: {
+        url: `https:${category.image?.fields.file?.url}?q=75`,
+        width: category.image?.fields.file?.details.image?.width,
+        height: category.image?.fields.file?.details.image?.height,
+      }
     },
     twitter: {
       title,
-      description
+      description,
+      card: 'summary_large_image',
     }
   }
 

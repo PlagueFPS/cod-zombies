@@ -5,6 +5,7 @@ import { unstable_cache as cache } from "next/cache";
 import { GameCategory } from "@/types/GameCategory";
 import { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import { MAP_LIMIT } from '@/utils/constants';
+import { resolveAsset } from '@/utils/contentful-utils';
 
 const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) => {
   const response = await client.getEntries<T>(searchParams)
@@ -37,7 +38,8 @@ export const getGameCategories = cache(async () => {
 
   return games.items.map(game => ({
     slug: game.fields.slug as GameCategory,
-    title: game.fields.title
+    title: game.fields.title,
+    image: resolveAsset(game.fields.image)
   }))
 }, ['game-categories'], {
   tags: ['categories']

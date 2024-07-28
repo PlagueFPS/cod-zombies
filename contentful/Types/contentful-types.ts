@@ -16,6 +16,7 @@ export interface TypeGameCategoryFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
     description: EntryFieldTypes.Symbol;
+    image: EntryFieldTypes.AssetLink;
 }
 
 export type TypeGameCategorySkeleton = EntrySkeletonType<TypeGameCategoryFields, "gameCategory">;
