@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import BackToTopButton from '@/components/BackToTopButton/BackToTopButton'
 import { Badge } from '@/components/ui/badge'
+import ShareButton from '@/components/ShareButton/ShareButton'
 
 interface MapPageProps {
   params: { 
@@ -108,17 +109,22 @@ export default async function MapPage({ params }: MapPageProps) {
             <FeaturedImage featuredImage={ mapImage } priority className='xl:rounded-lg overflow-hidden' />
           </div>
         </div>
-        <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 pb-12 w-full max-w-screen-xl border-b-2'>
+        <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-12 w-full max-w-screen-xl border-b-2'>
           <div className='flex w-full justify-between items-center'>
             <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2'>
               { title }
             </h2>
             <Badge className='bg-orange-700 border-primary hover:bg-orange-800'>{ category?.fields.title }</Badge>
           </div>
-          <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
-            <div>Published: { new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
-            <div>•</div>
-            <div>Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+          <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
+            <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
+              <div>Published: { new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+              <div>•</div>
+              <div>Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+            </div>
+            <div className='flex items-center justify-center'>
+              <ShareButton title={ title } url={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${params.category}/${params.slug}` } />
+            </div>
           </div>
         </div>
         <div className={ richStyles.body }>

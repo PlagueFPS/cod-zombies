@@ -25,6 +25,7 @@
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-share": "^5.1.0",
     "server-only": "^0.0.1",
     "sonner": "^1.5.0",
     "tailwindcss-animate": "^1.0.7",
