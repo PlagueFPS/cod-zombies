@@ -7,12 +7,10 @@ export const contentType = 'image/png'
 
 export default async function OGImage() {
   const interExtraBold = fetch(new URL('./Inter-ExtraBold.ttf', import.meta.url)).then((res) => res.arrayBuffer())
-  // light: linear-gradient(180deg, #545454, #000)
-  // dark: linear-gradient(180deg, #fff, #adadad)
 
   return new ImageResponse((
     <div 
-      tw='flex flex-col items-center justify-center h-full tracking-tight w-full bg-black text-[#333] text-7xl'
+      tw='flex flex-col items-center justify-center h-full tracking-tight w-full bg-black text-[#333] text-8xl'
     >
       <span style={{
         background: 'linear-gradient(180deg, #fff, #adadad)',

@@ -34,6 +34,7 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
       ...GLOBAL_OG_PROPS.openGraph,
       title,
       description,
+      url: `/${category.slug}`,
       images: {
         url: `https:${category.image?.fields.file?.url}?q=75`,
         width: category.image?.fields.file?.details.image?.width,
