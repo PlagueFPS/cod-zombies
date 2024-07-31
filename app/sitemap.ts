@@ -3,8 +3,9 @@ import { resolveEntry } from "@/utils/contentful-utils";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { maps } = await getMaps()
-  const categories = await getGameCategories()
+  const mapsPromise = getMaps()
+  const categoriesPromise = getGameCategories()
+  const [{ maps }, categories] = await Promise.all([mapsPromise, categoriesPromise])
 
   return [
     {

@@ -14,8 +14,9 @@ interface HomePageProps {
 
 export default async function Home({ searchParams }: HomePageProps) {
   const { page } = searchParams
-  const gameCategories = await getGameCategories()
-  const { skip, currentPage, totalPages } = await getSkipAndPage(page)
+  const categoriesPromise = getGameCategories()
+  const pagePromise = getSkipAndPage(page)
+  const [gameCategories, { skip, currentPage, totalPages }] = await Promise.all([categoriesPromise, pagePromise])
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
