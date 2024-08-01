@@ -1,5 +1,4 @@
 "use server"
-import { env } from "./env"
 import { revalidateTag } from "next/cache"
 import { FormState } from "@/types/FormState"
 import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema } from "@/types/validationSchemas"
@@ -9,7 +8,7 @@ import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema } from "@
 // REVALIDATED VIA A CONTENTFUL WEBHOOK at /api/revalidate
 // THIS IS ONLY NEEDED SINCE UNSTABLE_CACHE IS STILL IN BETA
 export async function updateData() {
-  if (env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
+  if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
     console.log('Revalidating data...')
     revalidateTag('maps')
     revalidateTag('categories')
