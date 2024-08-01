@@ -18,6 +18,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import BackToTopButton from '@/components/BackToTopButton/BackToTopButton'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
+import { env } from '@/utils/env'
 
 interface MapPageProps {
   params: { 
@@ -123,14 +124,14 @@ export default async function MapPage({ params }: MapPageProps) {
               <div>Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             </div>
             <div className='flex items-center justify-center'>
-              <ShareButton title={ title } url={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
+              <ShareButton title={ title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
             </div>
           </div>
         </div>
         <div className={ richStyles.body }>
           { documentToReactComponents(body, renderOptions) }
         </div>
-        <div className='flex justify-between items-center w-full px-8'>
+        <div className='flex justify-between items-center w-full px-4'>
           { prevMap && <PreviousOrNextMap map={ prevMap } prev /> }
           { nextMap && <PreviousOrNextMap map={ nextMap } /> }
         </div>

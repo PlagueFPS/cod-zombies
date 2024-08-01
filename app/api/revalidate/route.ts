@@ -1,12 +1,13 @@
 import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
+import { env } from "@/utils/env"
 import { revalidateTag } from "next/cache"
 
 export async function PUT(req: NextRequest) {
   const headersList = headers()
   const secret = headersList.get('X-Contentful-Webhook-Secret')
   
-  if (secret === process.env.REVALIDATE_SECRET) {
+  if (secret === env.REVALIDATE_SECRET) {
     const tag = req.nextUrl.searchParams.get('tag')
     if (tag) {
       revalidateTag(tag)

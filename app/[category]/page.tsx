@@ -6,7 +6,6 @@ import { Suspense } from "react"
 import MapGridLoader from "@/components/Loaders/MapGridLoader"
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters"
 import MapGrid from "@/components/MapGrid/MapGrid"
-import TempButton from "@/components/TempButton"
 
 interface CategoryPageProps {
   params: {
@@ -65,7 +64,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <p className="text-foreground/90 text-sm md:text-base lg:text-lg">
           Explore our comprehensive guides to the most challenging and rewarding main quests in { category.title }
         </p>
-        { process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' && <TempButton /> }
       </section>
       <section className="flex flex-col gap-8 justify-center w-full">
         <h2 className="font-bold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">Featured Maps</h2>

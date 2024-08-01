@@ -1,8 +1,9 @@
 import { createClient } from 'contentful'
+import { env } from '@/utils/env'
 
 export const client = createClient({
-  space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
-  environment: process.env.NEXT_PUBLIC_CONTENTFUL_ENVIRONMENT,
-  accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
-  host: process.env.NEXT_PUBLIC_CONTENTFUL_HOSTNAME
+  space: env.CONTENTFUL_SPACE_ID,
+  environment: env.CONTENTFUL_ENVIRONMENT,
+  accessToken: env.CONTENTFUL_PREVIEW_ACCESS_TOKEN,
+  host: env.CONTENTFUL_PREVIEW_HOSTNAME
 })

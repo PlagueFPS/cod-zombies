@@ -1,6 +1,7 @@
+import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import { env } from "@/utils/env";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
@@ -17,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`${process.env.NEXT_PUBLIC_WEBSITE_URL}`),
+  metadataBase: new URL(env.NEXT_PUBLIC_WEBSITE_URL),
   title: {
     template: `%s - ${SITE_TITLE}`,
     default: SITE_TITLE
