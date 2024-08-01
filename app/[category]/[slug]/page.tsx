@@ -90,13 +90,13 @@ export default async function MapPage({ params }: MapPageProps) {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact href={ `/${params.category}` }>{ category?.fields.title }</NavLink>
+                <NavLink exact href={ `/${category?.fields.slug}` }>{ category?.fields.title }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact href={ `/${params.category}/${params.slug}` } className='font-medium'>{ title }</NavLink>
+                <NavLink exact active href={ `/${category?.fields.slug}/${params.slug}` } className='font-medium'>{ title }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -123,7 +123,7 @@ export default async function MapPage({ params }: MapPageProps) {
               <div>Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             </div>
             <div className='flex items-center justify-center'>
-              <ShareButton title={ title } url={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${params.category}/${params.slug}` } />
+              <ShareButton title={ title } url={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
             </div>
           </div>
         </div>

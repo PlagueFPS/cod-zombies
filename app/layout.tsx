@@ -62,7 +62,7 @@ export default function RootLayout({ children }: LayoutProps) {
         >
           <div className="flex flex-col min-h-dvh">
             <Navbar />
-            <main className="mt-10 xl:mt-10 mb-4 flex-grow">
+            <main className="mt-10 mb-4 flex-grow">
               { children }
             </main>
             <Footer />

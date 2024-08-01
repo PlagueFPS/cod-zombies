@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "@/lib/utils"
 import type { LinkProps } from "next/link"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -10,9 +11,10 @@ interface Props extends LinkProps {
   exact?: boolean
   ariaLabel?: string
   target?: string
+  active?: boolean
 }
 
-export default function NavLink({ href, children, className, exact, ariaLabel, target }: Props) {
+export default function NavLink({ href, children, className, exact, ariaLabel, target, active }: Props) {
   const pathname = usePathname()
   const isActive = exact ? pathname === href : pathname.startsWith(href)
 
@@ -22,7 +24,7 @@ export default function NavLink({ href, children, className, exact, ariaLabel, t
       aria-label={ ariaLabel }
       target={ target }
       rel={ target ? "noreferrer" : undefined }
-      className={ isActive ? `${className} text-primary` : className }
+      className={cn(className, { 'text-primary': isActive ||  active })}
     >
       { children }
     </Link>
