@@ -1,4 +1,4 @@
-export interface Headings {
+export interface Heading {
   type: string,
   text: string,
   id: string

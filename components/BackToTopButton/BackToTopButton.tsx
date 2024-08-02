@@ -8,7 +8,7 @@ interface BackToTopButtonProps extends ButtonProps {
 
 export default function BackToTopButton({ mobile, ...props }: BackToTopButtonProps) {
   const scrollBackToTop = () => {
-    window.scrollTo(0,0)
+    window.scroll({ behavior: 'smooth', left: 0, top: 0 })
   }
 
   return (

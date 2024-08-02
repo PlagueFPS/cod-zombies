@@ -57,10 +57,6 @@
     * {
       @apply border-border box-border;
     }
-
-    html {
-      @apply scroll-smooth h-full;
-    }
     body {
       @apply bg-background text-foreground h-full;
     }

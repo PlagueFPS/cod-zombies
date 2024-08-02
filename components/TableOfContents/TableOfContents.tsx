@@ -1,16 +1,16 @@
 "use client"
-import { Headings } from "@/types/Headings"
+import { Heading } from "@/types/Heading"
 import Link from "next/link"
 import BackToTopButton from "../BackToTopButton/BackToTopButton"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { useScreen }from "@/hooks/useScreen"
 import { Menu } from "lucide-react"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { ScrollArea } from "../ui/scroll-area"
 
 interface TableOfContentsProps {
-  headings: Headings[]
+  headings: Heading[]
 }
 
 interface MobileTableOfContentsProps extends TableOfContentsProps {
@@ -111,9 +111,11 @@ const MobileTableOfContents = ({ headings, activeSection }: MobileTableOfContent
                         'text-primary': activeSection === heading.id,
                       })}
                   >
-                    <Link href={ `#${heading.id}` }>
-                      { heading.text }
-                    </Link>
+                    <SheetClose asChild>
+                      <Link href={ `#${heading.id}` }>
+                        { heading.text }
+                      </Link>
+                    </SheetClose>
                   </li>
                 ))}
               </ul>
