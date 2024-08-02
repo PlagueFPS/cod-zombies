@@ -12,7 +12,7 @@ const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQuerie
   return response
 }
 
-export const getMaps = cache(async (category?: GameCategory, skip?: number, limit?: number) => {
+const fetchMaps = cache(async (category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -29,6 +29,35 @@ export const getMaps = cache(async (category?: GameCategory, skip?: number, limi
 }, ['all-maps'], {
   tags: ['maps']
 })
+
+export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
+  if (!draftMode) {
+    console.log('fetching cached maps')
+    return await fetchMaps(category, skip, limit)
+  }
+  else {
+    console.log('fetching uncached maps')
+    const maps = await getPosts<TypeFeaturedMapsSkeleton>({
+      content_type: 'featuredMaps',
+      order: ['-sys.createdAt'],
+      'fields.gameCategory.sys.contentType.sys.id': 'gameCategory',
+      'fields.gameCategory.fields.slug[match]': category ?? null,
+      skip,
+      limit
+    })
+   
+    return {
+      totalMaps: maps.total,
+      maps: maps.items
+    }
+  }
+}
+
+export const getMapBySlug = async (slug: string) => {
+  const { maps } = await getMaps()
+  const map = maps.find(map => map.fields.slug === slug)
+  return map
+}
 
 export const getGameCategories = cache(async () => {
   const games = await getPosts<TypeGameCategorySkeleton>({

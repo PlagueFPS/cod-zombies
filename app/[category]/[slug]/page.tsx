@@ -1,7 +1,7 @@
 import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS } from "@/utils/constants"
 import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
-import { getMaps } from '@/data/data'
+import { getMapBySlug, getMaps } from '@/data/data'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -18,6 +18,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import BackToTopButton from '@/components/BackToTopButton/BackToTopButton'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
+import { draftMode } from 'next/headers'
 
 interface MapPageProps {
   params: { 
@@ -36,8 +37,7 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
-  const { maps } = await getMaps()
-  const map = maps.find(map => map.fields.slug === params.slug)
+  const map = await getMapBySlug(params.slug)
   if (!map) notFound()
   const { title, description, image } = map.fields
   const mapImage = resolveAsset(image)
@@ -66,7 +66,8 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 }
 
 export default async function MapPage({ params }: MapPageProps) {
-  const { maps } = await getMaps()
+  const { isEnabled } = draftMode()
+  const { maps } = await getMaps(isEnabled)
   const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
   const { title, image, gameCategory, date, body } = map.fields
@@ -114,6 +115,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2'>
               { title }
             </h2>
+            { isEnabled && <Badge className='bg-purple-700 border-purple-800 hover:bg-purple-800'>Draft</Badge> }
             <Badge className='bg-orange-700 border-primary hover:bg-orange-800'>{ category?.fields.title }</Badge>
           </div>
           <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
