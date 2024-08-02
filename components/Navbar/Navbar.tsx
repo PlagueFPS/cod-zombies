@@ -4,7 +4,6 @@ import SearchBar from '../SearchBar/SearchBar'
 import SearchBarLoader from '../Loaders/SearchBarLoader'
 import dynamic from 'next/dynamic'
 import ThemeToggleLoader from '../Loaders/ThemeToggleLoader'
-import TempButton from '../TempButton'
 
 // dynamic import to avoid hydration error for theme based styles
 const ThemeToggle = dynamic(() => import('@/components/ThemeToggle/ThemeToggle'), {
@@ -22,7 +21,6 @@ export default function Navbar() {
             <span className='text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-primary'> Zombies</span>
           </div>
         </Link>
-        { process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' && <TempButton /> }
         <div className='flex justify-between items-center h-full'>
           <Suspense fallback={<SearchBarLoader />}>
             <SearchBar />

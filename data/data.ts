@@ -1,18 +1,19 @@
 import 'server-only'
 import type { EntriesQueries, EntrySkeletonType } from 'contentful';
-import { client } from '@/contentful/contentful';
+import { initializeContentfulClient } from '@/contentful/contentful';
 import { unstable_cache as cache } from "next/cache";
 import { GameCategory } from "@/types/GameCategory";
 import { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import { MAP_LIMIT } from '@/utils/constants';
 import { resolveAsset } from '@/utils/contentful-utils';
 
-const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) => {
+const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
+  const client = initializeContentfulClient(draftMode)
   const response = await client.getEntries<T>(searchParams)
   return response
 }
 
-const fetchMaps = cache(async (category?: GameCategory, skip?: number, limit?: number) => {
+const fetchMaps = cache(async (draftMode?, category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -20,7 +21,7 @@ const fetchMaps = cache(async (category?: GameCategory, skip?: number, limit?: n
     'fields.gameCategory.fields.slug[match]': category ?? null,
     skip,
     limit
-  })
+  }, draftMode)
  
   return {
     totalMaps: maps.total,
@@ -31,12 +32,10 @@ const fetchMaps = cache(async (category?: GameCategory, skip?: number, limit?: n
 })
 
 export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
-  if (!draftMode) {
-    console.log('fetching cached maps')
-    return await fetchMaps(category, skip, limit)
+  if (!draftMode && process.env.NODE_ENV !== 'development') {
+    return await fetchMaps(draftMode, category, skip, limit)
   }
   else {
-    console.log('fetching uncached maps')
     const maps = await getPosts<TypeFeaturedMapsSkeleton>({
       content_type: 'featuredMaps',
       order: ['-sys.createdAt'],
@@ -44,7 +43,7 @@ export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip
       'fields.gameCategory.fields.slug[match]': category ?? null,
       skip,
       limit
-    })
+    }, draftMode)
    
     return {
       totalMaps: maps.total,

@@ -115,8 +115,10 @@ export default async function MapPage({ params }: MapPageProps) {
             <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2'>
               { title }
             </h2>
-            { isEnabled && <Badge className='bg-purple-700 border-purple-800 hover:bg-purple-800'>Draft</Badge> }
-            <Badge className='bg-orange-700 border-primary hover:bg-orange-800'>{ category?.fields.title }</Badge>
+            <div className='flex items-center justify-center gap-4 w-fit'>
+              { isEnabled && <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft Mode</Badge> }
+              <Badge className='bg-orange-700 border-primary hover:bg-orange-700'>{ category?.fields.title }</Badge>
+            </div>
           </div>
           <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
             <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>

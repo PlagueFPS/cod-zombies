@@ -1,20 +1,6 @@
 "use server"
-import { revalidateTag } from "next/cache"
 import { FormState } from "@/types/FormState"
 import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema } from "@/types/validationSchemas"
-
-// THIS SERVER ACTION IS ONLY FOR UPDATING CACHED DATA
-// IN A DEVELOPMENT ENVIRONMENT, PRODUCTION DATA WILL BE
-// REVALIDATED VIA A CONTENTFUL WEBHOOK at /api/revalidate
-// THIS IS ONLY NEEDED SINCE UNSTABLE_CACHE IS STILL IN BETA
-export async function updateData() {
-  if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
-    console.log('Revalidating data...')
-    revalidateTag('maps')
-    revalidateTag('categories')
-    console.log('Maps and Categories Revalidated')
-  }
-}
 
 export async function submitContactForm(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = ContactFormSchema.safeParse(Object.fromEntries(formData))
