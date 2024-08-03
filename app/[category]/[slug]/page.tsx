@@ -1,5 +1,5 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { DATE_OPTIONS, GLOBAL_OG_PROPS } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_PROPS, WEBSITE_URL } from "@/utils/constants"
 import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { getMapBySlug, getMaps } from '@/data/data'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
@@ -129,7 +129,7 @@ export default async function MapPage({ params }: MapPageProps) {
               <div>Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             </div>
             <div className='flex items-center justify-center'>
-              <ShareButton title={ title } url={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
+              <ShareButton title={ title } url={ `${WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
             </div>
           </div>
         </div>

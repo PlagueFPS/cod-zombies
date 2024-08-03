@@ -1,8 +1,9 @@
 "use client"
-import LinkSVG from "@/SVGs/LinkSVG"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import type { DetailedHTMLProps, HTMLAttributes } from "react"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
+import { WEBSITE_URL } from "@/utils/constants"
+import LinkSVG from "@/SVGs/LinkSVG"
 
 interface Heading2Props extends DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> {
   children: string[]
@@ -14,7 +15,7 @@ export default function Heading3({ id, children }: Heading2Props) {
   return (
     <h3 id={ id } className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold scroll-m-36 md:scroll-m-8">
       <Link 
-        href={ `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${pathname}#${id}` } 
+        href={ `${WEBSITE_URL}/${pathname}#${id}` } 
         className="flex gap-4 justify-center items-center w-fit hover:text-primary transition-all group"
       >
           { children }

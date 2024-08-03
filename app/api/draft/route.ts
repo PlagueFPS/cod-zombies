@@ -3,6 +3,7 @@ import { getMapBySlug } from '@/data/data'
 import { resolveEntry } from '@/utils/contentful-utils'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { WEBSITE_URL } from '@/utils/constants'
  
 export async function GET(request: Request) {
   // Parse query string parameters
@@ -28,5 +29,5 @@ export async function GET(request: Request) {
  
   // Redirect to the path from the fetched map
   // We don't redirect to searchParams.slug as that might lead to open redirect vulnerabilities
-  redirect(`${process.env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${map.fields.slug}`)
+  redirect(`${WEBSITE_URL}/${category?.fields.slug}/${map.fields.slug}`)
 }

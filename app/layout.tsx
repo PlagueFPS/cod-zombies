@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
-import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
+import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE, WEBSITE_URL } from "@/utils/constants";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`${process.env.NEXT_PUBLIC_WEBSITE_URL}`),
+  metadataBase: new URL(`${WEBSITE_URL}`),
   title: {
     template: `%s - ${SITE_TITLE}`,
     default: SITE_TITLE

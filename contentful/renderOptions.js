@@ -2,6 +2,7 @@ import { INLINES, BLOCKS } from '@contentful/rich-text-types'
 import Link from 'next/link'
 import { YouTubeEmbed } from '@next/third-parties/google'
 import { getYouTubeVideoID  } from '@/utils/functions'
+import { WEBSITE_URL } from '@/utils/constants'
 import RichImage from '@/components/RichText/RichImage/RichImage'
 import Heading2 from '@/components/RichText/RichHeadings/Heading2/Heading2'
 import Heading3 from '@/components/RichText/RichHeadings/Heading3/Heading3'
@@ -20,7 +21,7 @@ export const renderOptions = {
           </>
         )
       }
-      else if (node.data.uri.startsWith(process.env.NEXT_PUBLIC_WEBSITE_URL)) {
+      else if (node.data.uri.startsWith(WEBSITE_URL)) {
         return (
           <Link href={ node.data.uri }>
             { node.content[0].value }
@@ -29,7 +30,7 @@ export const renderOptions = {
       }
       else if (node.data.uri.startsWith(dev_url)) {
         return (
-          <Link href={ node.data.uri.replace(dev_url, process.env.NEXT_PUBLIC_WEBSITE_URL) }>
+          <Link href={ node.data.uri.replace(dev_url, WEBSITE_URL) }>
             { node.content[0].value }
           </Link>
         )
