@@ -1,20 +1,23 @@
+import type { Map } from '@/types/Map'
+import type { EntryProps, KeyValueMap } from 'contentful-management'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { isPriority } from '@/utils/functions'
 import { DATE_OPTIONS } from '@/utils/constants'
-import { resolveAsset, resolveEntry } from '@/utils/contentful-utils'
-import type { Entry } from 'contentful'
+import { resolveAsset, resolveEntry, resolveMap } from '@/utils/contentful-utils'
 import Link from 'next/link'
+import { draftMode } from 'next/headers'
 
 interface MapCardProps {
-  map: Entry<TypeFeaturedMapsSkeleton, undefined, string>
+  map: Map | EntryProps<KeyValueMap>
   mapIndex: number
   totalMaps: number
 }
 
-export default function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
+export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardProps) {
+  const { isEnabled } = draftMode()
+  const map = resolveMap(mapEntry)
   const { title, description, date, image, gameCategory, slug } = map.fields
   const mapImage = resolveAsset(image)
   const category = resolveEntry(gameCategory)
@@ -23,9 +26,13 @@ export default function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
   return (
     <Link key={ map.sys.id } href={ `/${category?.fields.slug}/${slug}` } className="max-h-[450px] h-full">
       <Card className="relative h-full group hover:border-primary cursor-pointer transition-all overflow-hidden">
-        <Badge className="absolute top-2 right-2 z-20 bg-orange-700 border-primary hover:bg-orange-800">
-          { category?.fields.title }
-        </Badge>
+        <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
+          { isEnabled && map.isUnpublished ? <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft</Badge> : null }
+          { isEnabled && map.hasChanged ? <Badge className='bg-blue-600 border-blue-800 hover:bg-blue-600'>Changed</Badge> : null }
+          <Badge className="bg-orange-700 border-primary hover:bg-orange-700">
+            { category?.fields.title }
+          </Badge>
+        </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
           <FeaturedImage featuredImage={ mapImage } priority={ priority } quality={ 1 } />
         </div>

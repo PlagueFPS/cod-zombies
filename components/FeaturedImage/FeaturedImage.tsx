@@ -41,8 +41,8 @@ export default function FeaturedImage({ featuredImage, quality, className, prior
         <Image 
           src={ `${featuredImageURL}?fm=jpg` }
           alt=""
-          width={ featuredImage?.fields.file?.details.image?.width }
-          height={ featuredImage?.fields.file?.details.image?.height }
+          width={ featuredImage?.fields.file?.details.image?.width ?? 1920 }
+          height={ featuredImage?.fields.file?.details.image?.height ?? 1080 }
           ref={ imageRef }
           onLoad={ handleImageLoaded }
           quality={ quality }

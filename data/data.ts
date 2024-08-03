@@ -1,16 +1,57 @@
 import 'server-only'
+import type { Map } from '@/types/Map';
 import type { EntriesQueries, EntrySkeletonType } from 'contentful';
+import type { GameCategory } from "@/types/GameCategory";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import { initializeContentfulClient } from '@/contentful/contentful';
+import { managementClient } from '@/contentful/contentful-managment'
 import { unstable_cache as cache } from "next/cache";
-import { GameCategory } from "@/types/GameCategory";
-import { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import { MAP_LIMIT } from '@/utils/constants';
 import { resolveAsset } from '@/utils/contentful-utils';
+interface GetMapsReturn {
+  totalMaps: number
+  maps: Map[],
+}
 
 const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
   const client = initializeContentfulClient(draftMode)
   const response = await client.getEntries<T>(searchParams)
   return response
+}
+
+const getDraftOrChangedPosts = async (category?: GameCategory, skip?: number, limit?: number) => {
+  const maps = await managementClient.entry.getMany({
+    query: {
+      content_type: 'featuredMaps',
+      'fields.gameCategory.sys.contentType.sys.id': 'gameCategory',
+      'fields.gameCategory.fields.slug[match]': category ?? null,
+      skip,
+      limit
+    }
+  })
+
+  const draftMaps = maps.items.filter(map => !map.sys.publishedVersion)
+  const changedMaps = maps.items.filter(map => !!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2)
+  return {
+    changedMaps,
+    draftMaps
+  }
+}
+
+const getPublishedPosts = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
+  const maps = await getPosts<TypeFeaturedMapsSkeleton>({
+    content_type: 'featuredMaps',
+    order: ['-sys.createdAt'],
+    'fields.gameCategory.sys.contentType.sys.id': 'gameCategory',
+    'fields.gameCategory.fields.slug[match]': category ?? null,
+    skip,
+    limit
+  }, draftMode)
+ 
+  return {
+    totalMaps: maps.total,
+    maps: maps.items
+  }
 }
 
 const fetchMaps = cache(async (draftMode?, category?: GameCategory, skip?: number, limit?: number) => {
@@ -31,29 +72,33 @@ const fetchMaps = cache(async (draftMode?, category?: GameCategory, skip?: numbe
   tags: ['maps']
 })
 
-export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
-  if (!draftMode && process.env.NODE_ENV !== 'development') {
+export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number): Promise<GetMapsReturn> => {
+  if (!draftMode) {
     return await fetchMaps(draftMode, category, skip, limit)
   }
   else {
-    const maps = await getPosts<TypeFeaturedMapsSkeleton>({
-      content_type: 'featuredMaps',
-      order: ['-sys.createdAt'],
-      'fields.gameCategory.sys.contentType.sys.id': 'gameCategory',
-      'fields.gameCategory.fields.slug[match]': category ?? null,
-      skip,
-      limit
-    }, draftMode)
-   
+    const publishedPostsPromise = getPublishedPosts(draftMode, category, skip, limit)
+    const draftOrChangedPostsPromise = getDraftOrChangedPosts(category, skip, limit)
+    const [{ maps, totalMaps }, { draftMaps, changedMaps }] = await Promise.all([publishedPostsPromise, draftOrChangedPostsPromise])
+
     return {
-      totalMaps: maps.total,
-      maps: maps.items
+      totalMaps,
+      maps: maps.map(map => {
+        const isChanged = changedMaps.find(post => post.sys.id === map.sys.id)
+        const isUnpublished = draftMaps.find(post => post.sys.id === map.sys.id)
+
+        return {
+          ...map,
+          hasChanged: isChanged ? true : false,
+          isUnpublished: isUnpublished ? true : false
+        }
+      })
     }
   }
 }
 
-export const getMapBySlug = async (slug: string) => {
-  const { maps } = await getMaps()
+export const getMapBySlug = async (slug: string, draftMode?: boolean) => {
+  const { maps } = await getMaps(draftMode)
   const map = maps.find(map => map.fields.slug === slug)
   return map
 }

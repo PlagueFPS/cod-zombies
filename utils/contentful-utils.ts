@@ -1,6 +1,8 @@
 import type { Asset, Entry, UnresolvedLink } from "contentful";
-import { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
-import { Heading } from "@/types/Heading";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
+import type { Heading } from "@/types/Heading";
+import type { Map } from "@/types/Map";
+import type { EntryProps, KeyValueMap } from "contentful-management";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if ('fields' in asset && asset.fields.file) return asset
@@ -9,6 +11,8 @@ export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, s
 export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCategorySkeleton, undefined, string>) => {
   if ('fields' in entry && entry.fields) return entry
 }
+
+export const resolveMap = (entry: Map | EntryProps<KeyValueMap>) => entry as Map
 
 export const extractHeadings = (entry: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => {
   const headings: Heading[] = []
