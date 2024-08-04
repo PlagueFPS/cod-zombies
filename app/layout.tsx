@@ -1,9 +1,9 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import Navbar from "@/components/Navbar/Navbar";
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE, WEBSITE_URL } from "@/utils/constants";
+import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -60,8 +60,8 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <main className="mt-10 mb-4 flex-grow">
+          <Header />
+          <main className="mt-10 mb-4 flex-grow" role="main" tabIndex={ -1 }>
             { children }
           </main>
           <Footer />

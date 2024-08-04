@@ -1,7 +1,6 @@
 import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 export interface TypeFeaturedMapsFields {
     title: EntryFieldTypes.Symbol;
-    date: EntryFieldTypes.Date;
     slug: EntryFieldTypes.Symbol;
     gameCategory: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     image: EntryFieldTypes.AssetLink;
