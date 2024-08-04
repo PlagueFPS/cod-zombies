@@ -53,20 +53,18 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className={ inter.className }>
+      <body className={ `${inter.className} flex flex-col min-h-dvh` }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-dvh">
-            <Navbar />
-            <main className="mt-10 mb-4 flex-grow" role="main">
-              { children }
-            </main>
-            <Footer />
-          </div>
+          <Navbar />
+          <main className="mt-10 mb-4 flex-grow">
+            { children }
+          </main>
+          <Footer />
           <Toaster richColors />
         </ThemeProvider>
       </body>

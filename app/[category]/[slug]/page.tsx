@@ -71,7 +71,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const { maps } = await getMaps(isEnabled)
   const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
-  const { title, image, gameCategory, date, body } = map.fields
+  const { title, image, gameCategory, body } = map.fields
   const mapImage = resolveAsset(image)
   const category = resolveEntry(gameCategory)
   const headings = extractHeadings(map)
@@ -124,9 +124,7 @@ export default async function MapPage({ params }: MapPageProps) {
           </div>
           <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
             <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
-              <div>Published: { new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
-              <div>•</div>
-              <div>Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+              <div>Last Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
             </div>
             <div className='flex items-center justify-center'>
               <ShareButton title={ title } url={ `${WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />

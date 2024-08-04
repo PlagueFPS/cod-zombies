@@ -18,7 +18,7 @@ interface MapCardProps {
 export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardProps) {
   const { isEnabled } = draftMode()
   const map = resolveMap(mapEntry)
-  const { title, description, date, image, gameCategory, slug } = map.fields
+  const { title, description, image, gameCategory, slug } = map.fields
   const mapImage = resolveAsset(image)
   const category = resolveEntry(gameCategory)
   const priority = isPriority(mapIndex, totalMaps)
@@ -41,7 +41,7 @@ export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardP
             <FeaturedImage featuredImage={ mapImage } className='h-44 object-cover' priority={ priority } quality={ 25 } />
           </div>
           <CardTitle className="group-hover:text-primary transition-all">{ title }</CardTitle>
-          <CardDescription>{ new Date(date).toLocaleDateString(undefined, DATE_OPTIONS) }</CardDescription>
+          <CardDescription>{ new Date(map.sys.createdAt).toLocaleDateString(undefined, DATE_OPTIONS) }</CardDescription>
         </CardHeader>
         <CardContent className="-mt-4">
           <p className='text-sm'>{ description }</p>

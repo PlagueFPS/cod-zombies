@@ -3,6 +3,7 @@ import type { Map } from '@/types/Map';
 import type { EntriesQueries, EntrySkeletonType } from 'contentful';
 import type { GameCategory } from "@/types/GameCategory";
 import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
+import type { Game } from '@/types/Game';
 import { initializeContentfulClient } from '@/contentful/contentful';
 import { managementClient } from '@/contentful/contentful-managment'
 import { unstable_cache as cache } from "next/cache";
@@ -103,7 +104,7 @@ export const getMapBySlug = async (slug: string, draftMode?: boolean) => {
   return map
 }
 
-export const getGameCategories = cache(async () => {
+export const getGameCategories = cache(async (): Promise<Game[]> => {
   const games = await getPosts<TypeGameCategorySkeleton>({
     content_type: 'gameCategory',
     order: ['sys.createdAt']

@@ -15,9 +15,7 @@ export default function Footer() {
           <span>Zombies Guides</span>
         </div>
       </div>
-      <div>
-        <ContactForm />
-      </div>
+      <ContactForm />
     </footer>
   )
 }
