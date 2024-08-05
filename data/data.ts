@@ -6,13 +6,9 @@ import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/conte
 import type { Game } from '@/types/Game';
 import { initializeContentfulClient } from '@/contentful/contentful';
 import { managementClient } from '@/contentful/contentful-managment'
-import { unstable_cache as cache } from "next/cache";
+import { cache } from 'react';
 import { MAP_LIMIT } from '@/utils/constants';
 import { resolveAsset } from '@/utils/contentful-utils';
-interface GetMapsReturn {
-  totalMaps: number
-  maps: Map[],
-}
 
 const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
   const client = initializeContentfulClient(draftMode)
@@ -20,7 +16,7 @@ const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQuerie
   return response
 }
 
-const getDraftOrChangedPosts = async (category?: GameCategory, skip?: number, limit?: number) => {
+const getDraftOrChangedPosts = cache(async (category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await managementClient.entry.getMany({
     query: {
       content_type: 'featuredMaps',
@@ -37,7 +33,7 @@ const getDraftOrChangedPosts = async (category?: GameCategory, skip?: number, li
     changedMaps,
     draftMaps
   }
-}
+})
 
 const getPublishedPosts = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
@@ -55,7 +51,7 @@ const getPublishedPosts = async (draftMode?: boolean, category?: GameCategory, s
   }
 }
 
-const fetchCachedMaps = cache(async (draftMode?, category?: GameCategory, skip?: number, limit?: number) => {
+const fetchMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -69,13 +65,11 @@ const fetchCachedMaps = cache(async (draftMode?, category?: GameCategory, skip?:
     totalMaps: maps.total,
     maps: maps.items
   }
-}, ['all-maps'], {
-  tags: ['maps']
-})
+}
 
-export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number): Promise<{ totalMaps: number, maps: Map[], }> => {
+export const getMaps = cache(async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number): Promise<{ totalMaps: number, maps: Map[], }> => {
   if (!draftMode && process.env.NODE_ENV !== 'development') {
-    return await fetchCachedMaps(draftMode, category, skip, limit)
+    return await fetchMaps(draftMode, category, skip, limit)
   }
   else {
     const publishedPostsPromise = getPublishedPosts(draftMode, category, skip, limit)
@@ -96,7 +90,7 @@ export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip
       })
     }
   }
-}
+})
 
 export const getMapBySlug = async (slug: string, draftMode?: boolean) => {
   const { maps } = await getMaps(draftMode)
@@ -115,8 +109,6 @@ export const getGameCategories = cache(async (): Promise<Game[]> => {
     title: game.fields.title,
     image: resolveAsset(game.fields.image)
   }))
-}, ['game-categories'], {
-  tags: ['categories']
 })
 
 export const getSkipAndPage = async (unvalidatedPage: string | string[] | undefined) => {
