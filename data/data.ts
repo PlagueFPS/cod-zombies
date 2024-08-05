@@ -55,7 +55,7 @@ const getPublishedPosts = async (draftMode?: boolean, category?: GameCategory, s
   }
 }
 
-const fetchMaps = cache(async (draftMode?, category?: GameCategory, skip?: number, limit?: number) => {
+const fetchCachedMaps = cache(async (draftMode?, category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -73,9 +73,9 @@ const fetchMaps = cache(async (draftMode?, category?: GameCategory, skip?: numbe
   tags: ['maps']
 })
 
-export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number): Promise<GetMapsReturn> => {
-  if (!draftMode) {
-    return await fetchMaps(draftMode, category, skip, limit)
+export const getMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number): Promise<{ totalMaps: number, maps: Map[], }> => {
+  if (!draftMode && process.env.NODE_ENV !== 'development') {
+    return await fetchCachedMaps(draftMode, category, skip, limit)
   }
   else {
     const publishedPostsPromise = getPublishedPosts(draftMode, category, skip, limit)

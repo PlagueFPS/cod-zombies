@@ -1,5 +1,5 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { DATE_OPTIONS, GLOBAL_OG_PROPS, WEBSITE_URL } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, WEBSITE_URL } from "@/utils/constants"
 import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { getMapBySlug, getMaps } from '@/data/data'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
@@ -117,8 +117,8 @@ export default async function MapPage({ params }: MapPageProps) {
               { title }
             </h2>
             <div className='flex items-center justify-center gap-4 w-fit'>
-              { isEnabled && map.isUnpublished ? <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft</Badge> : null }
-              { isEnabled && map.hasChanged ? <Badge className='bg-blue-600 border-blue-800 hover:bg-blue-600'>Changed</Badge> : null }
+              { (isEnabled || IN_DEVELOPMENT) && map.isUnpublished ? <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft</Badge> : null }
+              { (isEnabled || IN_DEVELOPMENT) && map.hasChanged ? <Badge className='bg-blue-600 border-blue-800 hover:bg-blue-600'>Changed</Badge> : null }
               <Badge className='bg-orange-700 border-primary hover:bg-orange-700'>{ category?.fields.title }</Badge>
             </div>
           </div>

@@ -39,7 +39,7 @@ export default function FeaturedImage({ featuredImage, quality, className, prior
           imageLoaded ? 'opacity-100' : 'opacity-0'
         )}>
         <Image 
-          src={ `${featuredImageURL}?fm=jpg` }
+          src={ `${featuredImageURL}` }
           alt=""
           width={ featuredImage?.fields.file?.details.image?.width ?? 1920 }
           height={ featuredImage?.fields.file?.details.image?.height ?? 1080 }

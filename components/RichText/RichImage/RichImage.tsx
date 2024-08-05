@@ -5,13 +5,13 @@ import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
 interface RichImageProps {
-  asset: Asset | undefined
+  asset: Asset<undefined, string> | undefined
 }
 
 export default function RichImage({ asset }: RichImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null!)
-  const url = `https:${asset?.fields.file?.url}`
+  const url = asset ? `https:${asset?.fields.file?.url}` : '/article-img-placeholder.jpg'
   const description = asset?.fields.description
 
   const handleImageLoaded = () => {
@@ -36,10 +36,10 @@ export default function RichImage({ asset }: RichImageProps) {
           imageLoaded ? 'opacity-100' : 'opacity-0'
         )}>
         <Image 
-          src={ `${url}?w=1280&h=720&fm=jpg` }
+          src={ url }
           alt=""
-          width={ 1920 }
-          height={ 1080 }
+          width={ asset?.fields.file?.details.image?.width ?? 1920 }
+          height={ asset?.fields.file?.details.image?.height ?? 1080 }
           ref={ imageRef }
           onLoad={ handleImageLoaded }
           className={cn('flex justify-center items-center w-auto h-auto rounded-lg opacity-100 animate-fade-in')}

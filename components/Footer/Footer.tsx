@@ -3,6 +3,7 @@ import ContactForm from "../ContactForm/ContactForm"
 
 const Copyright = dynamic(() => import('@/components/Footer/Copyright/Copyright'), {
   ssr: false,
+  loading: () => <div>&copy; { new Date().getFullYear() }</div>
 })
 
 export default function Footer() {
