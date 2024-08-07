@@ -45,7 +45,7 @@ export default function RichImage({ asset }: RichImageProps) {
           className={cn('flex justify-center items-center w-auto h-auto rounded-lg opacity-100 animate-fade-in')}
         />
       </picture>
-      <figcaption className="flex justify-center items-center mt-2 mb-4 w-auto">
+      <figcaption className="flex justify-center items-center mt-2 mb-4 w-auto italic px-4 xl:px-8">
         <>
           { description }
         </>
