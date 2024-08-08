@@ -37,12 +37,13 @@ export default function RichImage({ asset }: RichImageProps) {
         )}>
         <Image 
           src={ url }
-          alt=""
+          alt={ description ?? '' }
           width={ asset?.fields.file?.details.image?.width ?? 1920 }
-          height={ asset?.fields.file?.details.image?.height ?? 1080 }
+          height={ asset?.fields.file?.details.image?.width ?? 1080 }
+          sizes="(max-width: 400px) 100vw, (max-width: 768px) 50vw, 33vw"
           ref={ imageRef }
           onLoad={ handleImageLoaded }
-          className={cn('flex justify-center items-center w-auto h-auto rounded-lg opacity-100 animate-fade-in')}
+          className={cn('flex justify-center items-center w-auto h-full rounded-lg opacity-100 animate-fade-in')}
         />
       </picture>
       <figcaption className="flex justify-center items-center mt-2 mb-4 w-auto italic px-4 xl:px-8">

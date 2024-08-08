@@ -9,9 +9,11 @@ export default function HeroSection({ text }: HeroSectionProps) {
         <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad]">
           Unlock the Secrets of
         </span>
-        <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2">
-          Call of Duty: 
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-primary"> Zombies</span>
+        <span className="flex justify-center items-center gap-1">
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2">
+            Call of Duty: 
+          </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-primary pb-2"> Zombies</span>
         </span>
       </h1>
       <p className="text-sm md:text-base lg:text-lg">

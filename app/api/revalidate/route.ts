@@ -21,13 +21,13 @@ export async function PUT(req: NextRequest) {
       } 
       case 'path': {
         const body = await req.json()
-        const slug = body["slug"]
+        const slug = body.slug
         const map = await getMapBySlug(slug)
         if (!map) return Response.json({ revalidated: false, message: 'Invalid Slug' }, { status: 401 })
         const category = resolveEntry(map.fields.gameCategory)
         const path = `/${category?.fields.slug}/${map.fields.slug}`
         revalidatePath(path)
-        return Response.json({ revalidate: true, message: `${path} revalidated`, time: Date.now() }, { status: 201 })
+        return Response.json({ revalidated: true, message: `${path} revalidated`, time: Date.now() }, { status: 201 })
       }
     }
     

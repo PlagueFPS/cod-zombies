@@ -9,9 +9,10 @@ interface FeaturedImageProps {
   quality?: number
   className?: string
   priority?: boolean
+  sizes?: string
 }
 
-export default function FeaturedImage({ featuredImage, quality, className, priority }: FeaturedImageProps) {
+export default function FeaturedImage({ featuredImage, quality, className, priority, sizes }: FeaturedImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null!)
   const featuredImageURL = featuredImage ? `https:${featuredImage.fields.file?.url}` : '/article-img-placeholder.jpg'
@@ -43,6 +44,7 @@ export default function FeaturedImage({ featuredImage, quality, className, prior
           alt=""
           width={ featuredImage?.fields.file?.details.image?.width ?? 1920 }
           height={ featuredImage?.fields.file?.details.image?.height ?? 1080 }
+          sizes={ sizes }
           ref={ imageRef }
           onLoad={ handleImageLoaded }
           quality={ quality }

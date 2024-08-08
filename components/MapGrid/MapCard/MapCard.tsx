@@ -34,11 +34,17 @@ export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardP
           </Badge>
         </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
-          <FeaturedImage featuredImage={ mapImage } priority={ priority } quality={ 1 } />
+          <FeaturedImage featuredImage={ mapImage } priority={ priority } sizes='322px' quality={ 1 } />
         </div>
         <CardHeader className="flex flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
-            <FeaturedImage featuredImage={ mapImage } className='h-44 object-cover' priority={ priority } quality={ 25 } />
+            <FeaturedImage 
+              featuredImage={ mapImage }
+              sizes='600px'
+              className='h-44 object-cover' 
+              priority={ priority } 
+              quality={ 50 } 
+            />
           </div>
           <CardTitle className="group-hover:text-primary transition-all">{ title }</CardTitle>
           <CardDescription>{ new Date(map.sys.createdAt).toLocaleDateString(undefined, DATE_OPTIONS) }</CardDescription>

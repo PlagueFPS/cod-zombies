@@ -16,27 +16,33 @@ export default async function OGImage() {
         background: 'linear-gradient(180deg, #fff, #adadad)',
         color: 'transparent',
         backgroundClip: 'text',
+        WebkitBackgroundClip: 'text',
       }}>
         Unlock the secrets of
       </span>
-      <span style={{
-        background: 'linear-gradient(180deg, #fff, #adadad)',
-        color: 'transparent',
-        backgroundClip: 'text',
-        paddingBottom: '1rem',
-        marginLeft: '0.5rem'
-      }}>
-        Call of Duty: 
+      <div tw='flex justify-center items-center'>
+        <span style={{
+          background: 'linear-gradient(180deg, #fff, #adadad)',
+          color: 'transparent',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          paddingBottom: '0.5rem',
+          marginLeft: '0.5rem'
+        }}>
+          Call of Duty: 
+        </span>
         <span style={{ 
             background: 'linear-gradient(to bottom, #fb923c, #f97316, #ea580c)', 
             color: 'transparent', 
             backgroundClip: 'text',
-            marginLeft: '0.5rem'
+            WebkitBackgroundClip: 'text',
+            marginLeft: '0.5rem',
+            paddingBottom: '0.5rem'
           }}
         >
           Zombies
         </span>
-      </span>
+      </div>
     </div>
   ), {
     ...size,

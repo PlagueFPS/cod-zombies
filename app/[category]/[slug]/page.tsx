@@ -105,10 +105,21 @@ export default async function MapPage({ params }: MapPageProps) {
         </Breadcrumb>
         <div className='relative w-full'>
           <div className='absolute top-8 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
-            <FeaturedImage featuredImage={ mapImage } priority quality={ 1 } className='xl:rounded-lg' />
+            <FeaturedImage
+              featuredImage={ mapImage } 
+              sizes='(max-width: 1280px) 100vw, 1120px'
+              priority 
+              quality={ 1 } 
+              className='xl:rounded-lg'
+            />
           </div>
           <div className='relative z-20 mt-8 mx-auto w-full max-w-screen-xl'>
-            <FeaturedImage featuredImage={ mapImage } priority className='xl:rounded-lg overflow-hidden' />
+            <FeaturedImage 
+              featuredImage={ mapImage }
+              sizes='(max-width: 1280px) 100vw, 75vw'
+              priority 
+              className='xl:rounded-lg overflow-hidden' 
+            />
           </div>
         </div>
         <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-12 w-full max-w-screen-xl border-b-2'>
