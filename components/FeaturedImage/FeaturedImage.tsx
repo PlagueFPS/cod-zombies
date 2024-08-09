@@ -13,7 +13,7 @@ interface FeaturedImageProps {
   sizes?: string
 }
 
-export default function FeaturedImage({ featuredImage, alt, quality, className, priority, sizes }: FeaturedImageProps) {
+export default function FeaturedImage({ featuredImage, alt = "", quality = 75, className, priority, sizes }: FeaturedImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null!)
   const featuredImageURL = featuredImage ? `https:${featuredImage.fields.file?.url}` : '/article-img-placeholder.jpg'
@@ -42,7 +42,7 @@ export default function FeaturedImage({ featuredImage, alt, quality, className, 
         )}>
         <Image 
           src={ `${featuredImageURL}` }
-          alt={ alt ?? "" }
+          alt={ alt }
           width={ featuredImage?.fields.file?.details.image?.width ?? 1920 }
           height={ featuredImage?.fields.file?.details.image?.height ?? 1080 }
           sizes={ sizes }

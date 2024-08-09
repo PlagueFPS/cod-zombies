@@ -1,13 +1,18 @@
 "use client"
 import { useState, useEffect } from 'react'
 
-export const useScreen = () => {
+export const useScreen = (breakpoint?: number) => {
   const [isDesktop, setDesktop] = useState(false)
 
   useEffect(() => {
     const handleWindowResize = () => {
-      if (window.innerWidth > 1280) setDesktop(true)
-      else setDesktop(false)
+      if (breakpoint) {
+        if (window.innerWidth > breakpoint) setDesktop(true)
+        else setDesktop(false)
+      } else {
+        if (window.innerWidth > 1280) setDesktop(true)
+        else setDesktop(false)
+      }
     }
 
     handleWindowResize()
