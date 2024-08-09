@@ -1,7 +1,8 @@
 "use client"
 import type { Asset } from "contentful"
-import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
+import placeholderImage from "@/public/article-img-placeholder.jpg"
 import { cn } from "@/lib/utils"
 
 interface RichImageProps {
@@ -11,7 +12,7 @@ interface RichImageProps {
 export default function RichImage({ asset }: RichImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null!)
-  const url = asset ? `https:${asset?.fields.file?.url}` : '/article-img-placeholder.jpg'
+  const url = asset ? `https:${asset?.fields.file?.url}` : placeholderImage
   const description = asset?.fields.description
 
   const handleImageLoaded = () => {
@@ -38,9 +39,9 @@ export default function RichImage({ asset }: RichImageProps) {
         <Image 
           src={ url }
           alt={ description ?? '' }
-          width={ asset?.fields.file?.details.image?.width ?? 1920 }
-          height={ asset?.fields.file?.details.image?.width ?? 1080 }
-          sizes="(max-width: 400px) 100vw, (max-width: 768px) 50vw, 33vw"
+          width={ asset?.fields.file?.details.image?.width }
+          height={ asset?.fields.file?.details.image?.width }
+          sizes="(max-width: 828px) 85vw, (max-width: 1280px) 50vw, 33vw"
           ref={ imageRef }
           onLoad={ handleImageLoaded }
           className={cn('flex justify-center items-center w-full h-full rounded-lg opacity-100 animate-fade-in')}
