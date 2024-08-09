@@ -1,8 +1,8 @@
 "use client"
-import { GameCategory } from "@/types/GameCategory";
-import { useRouter } from "next/navigation";
+import type { GameCategory } from "@/types/GameCategory";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Link from "next/link";
 
 interface MapFiltersProps {
   currentCategory?: GameCategory
@@ -13,11 +13,9 @@ interface MapFiltersProps {
 }
 
 export default function MapFilters({ currentCategory, gameCategories }: MapFiltersProps) {
-  const router = useRouter()
-
-  const updateCategory = (category: string) => {
-    if (currentCategory === category) return router.push('/')
-    else return router.push(`/${category}`)
+  const getHref = (category: GameCategory) => {
+    if (currentCategory === category) return '/'
+    else return `/${category}`
   }
 
   return (
@@ -28,9 +26,11 @@ export default function MapFilters({ currentCategory, gameCategories }: MapFilte
             key={ `${game.slug}_${i}` } 
             size="sm" 
             variant={ currentCategory === game.slug ? "secondary" : "outline" } 
-            onClick={ () => updateCategory(game.slug) }
+            asChild
           >
-            { game.title }
+            <Link href={ getHref(game.slug) }>
+              { game.title }
+            </Link>
           </Button>
         ))}
       </div>

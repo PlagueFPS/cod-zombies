@@ -40,10 +40,11 @@ export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardP
           <div className='relative overflow-hidden h-full w-full rounded-md'>
             <FeaturedImage 
               featuredImage={ mapImage }
+              alt={ `${title} map image` }
               sizes='600px'
               className='h-44 object-cover' 
               priority={ priority } 
-              quality={ 50 } 
+              quality={ 50 }
             />
           </div>
           <CardTitle className="group-hover:text-primary transition-all">{ title }</CardTitle>

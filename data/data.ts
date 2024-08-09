@@ -7,8 +7,9 @@ import type { Game } from '@/types/Game';
 import { initializeContentfulClient } from '@/contentful/contentful';
 import { managementClient } from '@/contentful/contentful-managment'
 import { cache } from 'react';
-import { MAP_LIMIT } from '@/utils/constants';
+import { IN_DEVELOPMENT, MAP_LIMIT } from '@/utils/constants';
 import { resolveAsset } from '@/utils/contentful-utils';
+import { sortMaps } from '@/utils/functions';
 
 const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
   const client = initializeContentfulClient(draftMode)
@@ -63,12 +64,12 @@ const fetchMaps = async (draftMode?: boolean, category?: GameCategory, skip?: nu
  
   return {
     totalMaps: maps.total,
-    maps: maps.items
+    maps: maps.items.sort(sortMaps)
   }
 }
 
 export const getMaps = cache(async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number): Promise<{ totalMaps: number, maps: Map[], }> => {
-  if (!draftMode && process.env.NODE_ENV !== 'development') {
+  if (!draftMode && !IN_DEVELOPMENT) {
     return await fetchMaps(draftMode, category, skip, limit)
   }
   else {

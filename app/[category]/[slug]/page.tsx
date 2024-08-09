@@ -116,7 +116,7 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className='relative z-20 mt-8 mx-auto w-full max-w-screen-xl'>
             <FeaturedImage 
               featuredImage={ mapImage }
-              sizes='(max-width: 1280px) 100vw, 75vw'
+              sizes='(max-width: 1280px) 100vw, 1280px'
               priority 
               className='xl:rounded-lg overflow-hidden' 
             />
