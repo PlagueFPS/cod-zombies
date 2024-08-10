@@ -107,7 +107,7 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className='absolute top-8 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
             <FeaturedImage
               featuredImage={ mapImage } 
-              sizes='(max-width: 1280px) 100vw, 1120px'
+              sizes='(max-width: 1280px) 100vw, 1111.58px'
               priority 
               quality={ 1 } 
               className='xl:rounded-lg'
@@ -116,7 +116,7 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className='relative z-20 mt-8 mx-auto w-full max-w-screen-xl'>
             <FeaturedImage 
               featuredImage={ mapImage }
-              sizes='(max-width: 1280px) 100vw, 1280px'
+              sizes='(max-width: 1280px) 100vw, 1200px'
               priority 
               className='xl:rounded-lg overflow-hidden' 
             />

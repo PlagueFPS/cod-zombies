@@ -41,9 +41,9 @@ export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardP
             <FeaturedImage 
               featuredImage={ mapImage }
               alt={ `${title} map image` }
-              sizes='600px'
+              sizes='272px'
               className='h-44 object-cover' 
-              priority={ priority } 
+              priority={ priority }
               quality={ 50 }
             />
           </div>
