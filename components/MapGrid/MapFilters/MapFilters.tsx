@@ -1,4 +1,3 @@
-"use client"
 import type { GameCategory } from "@/types/GameCategory";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";

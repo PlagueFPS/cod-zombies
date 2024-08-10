@@ -44,7 +44,6 @@ export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardP
               sizes='272px'
               className='h-44 object-cover' 
               priority={ priority }
-              quality={ 50 }
             />
           </div>
           <CardTitle className="group-hover:text-primary transition-all">{ title }</CardTitle>
