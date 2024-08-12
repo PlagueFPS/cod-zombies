@@ -17,6 +17,10 @@ export const capatilize = (text: string) => {
     .join(" ") // Join the words back into a single string
 }
 
+export const slugify = (text: string) => {
+  return text.toLowerCase().replace(/ /g, '-')
+}
+
 export const getYouTubeVideoID = (url: string) => {
   const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
   const match = url.match(regex);

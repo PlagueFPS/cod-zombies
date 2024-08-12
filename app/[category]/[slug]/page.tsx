@@ -2,10 +2,8 @@ import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, WEBSITE_URL } from "@/utils/constants"
 import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import { getMapBySlug, getMaps } from '@/data/data'
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { renderOptions } from '@/contentful/renderOptions'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import Link from 'next/link'
@@ -19,6 +17,7 @@ import BackToTopButton from '@/components/BackToTopButton/BackToTopButton'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'
+import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 
 interface MapPageProps {
   params: { 
@@ -143,7 +142,7 @@ export default async function MapPage({ params }: MapPageProps) {
           </div>
         </div>
         <div className={ richStyles.body }>
-          { documentToReactComponents(body, renderOptions) }
+          <RichTextRenderer body={ body } slug={ params.slug } />
         </div>
         <div className='flex justify-between items-center w-full px-4'>
           { prevMap && <PreviousOrNextMap map={ prevMap } prev /> }
