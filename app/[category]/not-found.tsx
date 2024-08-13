@@ -1,4 +1,4 @@
-import { NotFoundBreadcrumbs, NotFoundButtons, NotFoundDescription } from '@/components/NotFound/ui'
+import { NotFoundBreadcrumbs, NotFoundButtons, NotFoundDescription } from '@/components/ui/notFound'
 
 export default function CategoryNotFound() {
   return (

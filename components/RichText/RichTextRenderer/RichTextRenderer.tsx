@@ -1,7 +1,7 @@
 import { Document, INLINES, BLOCKS } from "@contentful/rich-text-types"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { YouTubeEmbed } from "@next/third-parties/google"
-import { getYouTubeVideoID } from "@/utils/functions"
+import { getYouTubeVideoID, slugify } from "@/utils/functions"
 import { WEBSITE_URL } from "@/utils/constants"
 import Link from "next/link"
 import RichImage from "../RichImage/RichImage"
@@ -56,10 +56,10 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         return <RichImage asset={ asset } />
       },
       [BLOCKS.HEADING_2]: (node: any, children: any) => {
-        return <Heading2 id={ node.content[0].value.toLowerCase().replace(/ /g, '-') }>{ children }</Heading2>
+        return <Heading2 id={ slugify(node.content[0].value) }>{ children }</Heading2>
       },
       [BLOCKS.HEADING_3]: (node: any, children: any) => {
-        return <Heading3 id={ node.content[0].value.toLowerCase().replace(/ /g, '-') }>{ children }</Heading3>
+        return <Heading3 id={ slugify(node.content[0].value) }>{ children }</Heading3>
       },
       [BLOCKS.EMBEDDED_ENTRY]: () => {
         switch(slug) {

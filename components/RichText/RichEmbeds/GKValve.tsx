@@ -3,6 +3,7 @@ import ValveRoutes from "@/data/GKValves.json"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { slugify } from "@/utils/functions"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
 const locations = [
   'Armory',
@@ -20,23 +21,23 @@ interface Location {
 }
 
 export default function GKValve() {
+  const [currentLocations, setCurrentLocations] = useState<Location[]>([])
   const [values, setValues] = useState({
     firstValue: '',
     secondValue: ''
   })
-  const [currentLocations, setCurrentLocations] = useState<Location[]>([])
 
   useEffect(() => {
     const getRoute = () => {
       const searchString = `${values.firstValue} to ${values.secondValue}`
-      const entries: Location[] = []
+      const locations: Location[] = []
       for (const key in ValveRoutes) {
         if (searchString === key) {
           const route = ValveRoutes[key as keyof valveRoutes]
-          const entry = Object.entries(route)
-          entry.forEach(entry => {
+          const entries = Object.entries(route)
+          entries.forEach(entry => {
             const [location, value] = entry
-            entries.push({
+            locations.push({
               name: location,
               value: value
             })
@@ -44,7 +45,7 @@ export default function GKValve() {
         }
       }
 
-      setCurrentLocations(entries)
+      setCurrentLocations(locations)
     }
 
     if (values.firstValue && values.secondValue) getRoute()
@@ -52,7 +53,7 @@ export default function GKValve() {
 
   return (
     <section className="flex flex-col justify-center items-center gap-8">
-      <div className="flex justify-between items-center gap-16 w-full">
+      <div className="flex justify-center items-center gap-8 md:gap-16 w-full">
         <Select onValueChange={ value => setValues(prevState => ({...prevState, firstValue: value })) }>
           <SelectTrigger className="text-green-700 dark:text-green-500">
             <SelectValue placeholder="Select Green Light Location" />
@@ -88,23 +89,25 @@ export default function GKValve() {
           </SelectContent>
         </Select>
       </div>
-      { currentLocations.length > 0 && (
-        <ul className="w-full">
-          { currentLocations.map(location => (
-            <li key={ location.name }>
-              { location.value ? (
-                <>
-                  Set <strong>{ location.name }</strong> valve to <strong>{ location.value }</strong>
-                </>
-              ) : (
-                <>
-                  <strong>{ location.name }</strong> valve has your pink code cylinder 
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className={cn("w-full hidden", {
+        'block animate-fade-in': currentLocations.length > 0,
+      })}>
+        { currentLocations.map(location => (
+          <li key={ location.name }>
+            { location.value ? (
+              <>
+                Set <strong className={cn({
+                  'text-green-700 dark:text-green-400': location.name === values.firstValue 
+                  })}>{ location.name }</strong> valve to <strong>{ location.value }</strong>
+              </>
+            ) : (
+              <>
+                <strong className="text-pink-700 dark:text-pink-400">{ location.name }</strong> valve has your pink code cylinder 
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
