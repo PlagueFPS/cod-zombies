@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { useTableOfContents } from "@/hooks/useTableOfContents"
 import { useScreen }from "@/hooks/useScreen"
 import { ScrollArea } from "../ui/scroll-area"
+import MobileTableOfContents from "./MobileTableOfContents"
 
 interface TableOfContentsProps {
   headings: Heading[]
@@ -18,7 +19,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   return (
     <>
       { isDesktop ? (
-        <aside className="sticky top-4 right-8 h-full z-20">
+        <aside className="sticky top-4 h-fit">
           <nav className="flex flex-col gap-4">
             <div className="font-bold">On this page</div>
             <ScrollArea>
@@ -38,10 +39,10 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                 ))}
               </ul>
             </ScrollArea>
-            <BackToTopButton type="button" size="sm" variant="outline" />
           </nav>
+          <BackToTopButton type="button" size="sm" variant="outline" className="mt-4" />
         </aside>
-      ) : null}
+      ) : <MobileTableOfContents headings={ headings } activeHeading={ activeHeading } /> }
     </>
   )
 }

@@ -80,9 +80,9 @@ export default async function MapPage({ params }: MapPageProps) {
   const nextMap = maps[mapIndex - 1]
 
   return (
-    <div className='relative flex justify-center xl:gap-4'>
-      <div className='container px-0 flex flex-col-reverse gap-4 -mt-10 xl:mt-0 xl:gap-8 xl:flex-row justify-center'>
-        <article className='flex flex-col flex-grow justify-center items-center'>
+    <div className='flex flex-col xl:flex-row'>
+      <div className='container flex flex-col-reverse gap-4 -mt-10 px-0 xl:gap-12 xl:flex-row xl:mt-0 justify-center w-full'>
+        <article className='flex xl:flex-1 flex-col flex-grow justify-center items-center px-0'>
           <Breadcrumb className='mr-auto ml-4'>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -146,15 +146,14 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className={ richStyles.body }>
             <RichTextRenderer body={ body } slug={ params.slug } />
           </div>
-          <div className='flex flex-col xl:flex-row xl:justify-between items-center w-full mt-8 gap-8 px-4 xl:px-8'>
+          <div className='flex flex-col xl:flex-row xl:justify-between items-center w-full mt-8 gap-8 px-4'>
             { prevMap && <PreviousOrNextMap map={ prevMap } prev /> }
             { nextMap && <PreviousOrNextMap map={ nextMap } /> }
           </div>
         </article>
-        <MobileTableOfContents headings={ headings } />
+        <TableOfContents headings={ headings } />
         <BackToTopButton type='button' mobile />
       </div>
-      <TableOfContents headings={ headings } />
     </div>
   )
 }
