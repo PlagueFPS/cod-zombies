@@ -3,6 +3,7 @@ import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/conte
 import type { Heading } from "@/types/Heading";
 import type { Map } from "@/types/Map";
 import type { EntryProps, KeyValueMap } from "contentful-management";
+import { slugify } from "./functions";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if ('fields' in asset && asset.fields.file) return asset
@@ -23,7 +24,7 @@ export const extractHeadings = (entry: Entry<TypeFeaturedMapsSkeleton, undefined
         headings.push({
           type: node.nodeType,
           text: node.content[0].value,
-          id: node.content[0].value.toLowerCase().replace(/ /g, '-')
+          id: slugify(node.content[0].value)
         })
       }
     }

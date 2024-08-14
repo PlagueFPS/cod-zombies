@@ -5,9 +5,7 @@ import { usePathname } from "next/navigation"
 import { WEBSITE_URL } from "@/utils/constants"
 import LinkSVG from "@/SVGs/LinkSVG"
 
-interface Heading2Props extends DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> {
-  children: string[],
-}
+interface Heading2Props extends DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> {}
 
 export default function Heading2({ id, children }: Heading2Props) {
   const pathname = usePathname()
