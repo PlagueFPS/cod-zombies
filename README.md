@@ -1,4 +1,5 @@
 ## TODO
+- fine tune positioning of the desktop table of contents
 
 ## Generating type definitions for content types for Contentful
 - Run the following command: 
