@@ -105,13 +105,13 @@ export default async function MapPage({ params }: MapPageProps) {
             </BreadcrumbList>
           </Breadcrumb>
           <div className='relative w-full'>
-            <div className='absolute top-0 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-2xl overflow-hidden'>
+            <div className='absolute top-4 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
               <FeaturedImage
                 featuredImage={ mapImage } 
                 sizes='(max-width: 1280px) 100vw, 1111.58px'
                 priority 
                 quality={ 1 } 
-                className='xl:rounded-lg'
+                className='xl:rounded-lg scale-[2]'
               />
             </div>
             <div className='relative z-20 mt-8 w-full max-w-screen-xl xl:mx-4'>
@@ -164,21 +164,21 @@ export default async function MapPage({ params }: MapPageProps) {
   const featuredImage = resolveAsset(image)
 
   return (
-      <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary border-2 rounded-lg overflow-hidden max-w-xl transition-all'>
+      <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary border-2 rounded-lg overflow-hidden w-fit transition-all'>
         <article className={cn('relative h-full flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
               featuredImage={ featuredImage }
-              sizes='(max-width: 1280px) 320px, 270px'
+              sizes='(max-width: 1280px) 320px, 234px'
               quality={ 1 }
               className='object-cover scale-[2]'
             />
           </div>
-          <div className='relative z-20 w-full max-w-80 overflow-hidden rounded-lg'>
+          <div className='relative z-20 w-full  max-w-80 overflow-hidden rounded-lg'>
             <FeaturedImage
               featuredImage={ featuredImage }
               alt={ `${title} map image` }
-              sizes='(max-width: 1280px) 320px, 270px'
+              sizes='(max-width: 1280px) 320px, 234px'
               className='object-cover'
             />
           </div>

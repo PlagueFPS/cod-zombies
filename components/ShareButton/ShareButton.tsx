@@ -42,7 +42,7 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
       <DialogContent className='gap-6'>
         <DialogHeader>
           <DialogTitle>Share on Social Media</DialogTitle>
-          <DialogDescription>Share a link of the current page to a social platform of your choosing</DialogDescription>
+          <DialogDescription>Share a link of the current page to a social platform</DialogDescription>
         </DialogHeader>
         <div className='grid grid-cols-3 items-center gap-y-4 w-full'>
           <div className='flex flex-col items-center justify-center gap-2 text-xs'>

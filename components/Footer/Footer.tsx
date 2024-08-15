@@ -18,12 +18,17 @@ const ThemeToggle = dynamic(() => import('@/components/ThemeToggle/ThemeToggle')
 export default function Footer() {
   return (
     <footer className='container relative text-sm flex flex-col-reverse gap-4 sm:flex-row justify-between items-center p-8 border-t mt-auto' role="contentinfo" tabIndex={ -1 }>
-      <div className="flex gap-2 justify-center items-center text-sm text-muted-foreground">
-        <Copyright />
-        <div className="flex gap-1">
-          Call of Duty:
-          <span>Zombies Guides</span>
+      <div className="flex flex-col gap-2 items-center xl:items-start justify-center text-xs text-muted-foreground max-w-sm">
+        <div className="flex gap-1.5 justify-center items-center">
+          <Copyright />
+          <div className="flex gap-1">
+            Call of Duty:
+            <span>Zombies Guides</span>
+          </div>
         </div>
+        <span>
+          All content, including but not limited to images, logos, and trademarks related to Activision games, are property of Activision Publishing, Inc. and its respective owners.
+        </span>
       </div>
       <div className="flex gap-8 justify-center items-center border-b pb-4 sm:border-none sm:pb-0">
         <ContactForm />

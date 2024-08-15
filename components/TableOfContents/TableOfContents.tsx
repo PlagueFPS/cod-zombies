@@ -19,7 +19,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   return (
     <>
       { isDesktop ? (
-        <aside className="sticky top-4 h-fit">
+        <aside className="sticky top-4 h-fit z-30">
           <nav className="flex flex-col gap-4">
             <div className="font-bold">On this page</div>
             <ScrollArea>
