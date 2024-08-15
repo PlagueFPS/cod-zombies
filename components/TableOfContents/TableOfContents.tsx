@@ -20,7 +20,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
     <>
       { isDesktop ? (
         <aside className="sticky top-4 h-fit z-30">
-          <nav className="flex flex-col gap-4">
+          <nav className="flex flex-col gap-4 border-b pb-3">
             <div className="font-bold">On this page</div>
             <ScrollArea>
               <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm max-h-[70vh]">
@@ -40,7 +40,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
               </ul>
             </ScrollArea>
           </nav>
-          <BackToTopButton type="button" size="sm" variant="outline" className="mt-4" />
+          <BackToTopButton type="button" size="sm" variant="outline" className="mt-3" />
         </aside>
       ) : <MobileTableOfContents headings={ headings } activeHeading={ activeHeading } /> }
     </>

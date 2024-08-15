@@ -174,7 +174,7 @@ export default async function MapPage({ params }: MapPageProps) {
               className='object-cover scale-[2]'
             />
           </div>
-          <div className='relative z-20 w-full  max-w-80 overflow-hidden rounded-lg'>
+          <div className='relative z-20 w-full max-w-80 overflow-hidden rounded-lg'>
             <FeaturedImage
               featuredImage={ featuredImage }
               alt={ `${title} map image` }
@@ -182,7 +182,7 @@ export default async function MapPage({ params }: MapPageProps) {
               className='object-cover'
             />
           </div>
-          <div className='relative z-20 flex flex-col justify-center w-full gap-2 px-4 pt-4 mb-auto'>
+          <div className='relative z-20 flex flex-col justify-center w-fit gap-2 px-4 pt-4 mb-auto'>
             <h2 className='font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad]'>
               { title }
             </h2>
