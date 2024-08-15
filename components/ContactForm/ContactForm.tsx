@@ -1,7 +1,7 @@
 "use client"
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "../ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose, DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -36,7 +36,7 @@ export default function ContactForm() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Contact Form</DialogTitle>
-          <DialogDescription>Share your feedback, suggestions, or other thoughts with us</DialogDescription>
+          <DialogDescription>Contact the team behind Call of Duty: Zombies Guides</DialogDescription>
         </DialogHeader>
         <form action={ action } className="flex flex-col gap-4">
           <div className="space-y-1">
@@ -94,14 +94,14 @@ export default function ContactForm() {
               </FormError>
             )}
           </div>
-          <div className="flex justify-between items-center">
-           <SubmitButton className="w-fit" />
+          <DialogFooter>
            <DialogClose asChild>
-            <Button variant="destructive" className="w-fit">
+            <Button variant="outline" className="w-fit">
               Cancel
             </Button>
            </DialogClose>
-          </div>
+           <SubmitButton className="w-fit" />
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

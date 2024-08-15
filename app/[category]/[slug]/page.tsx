@@ -83,7 +83,7 @@ export default async function MapPage({ params }: MapPageProps) {
     <div className='flex flex-col xl:flex-row'>
       <div className='container flex flex-col-reverse gap-4 -mt-10 px-0 xl:gap-12 xl:flex-row xl:mt-0 justify-center w-full'>
         <article className='flex xl:flex-1 flex-col flex-grow justify-center items-center px-0'>
-          <Breadcrumb className='mr-auto ml-4'>
+          <Breadcrumb className='relative z-30 mr-auto ml-4'>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
