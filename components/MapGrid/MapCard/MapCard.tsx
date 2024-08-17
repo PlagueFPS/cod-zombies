@@ -8,6 +8,7 @@ import { DATE_OPTIONS, IN_DEVELOPMENT } from '@/utils/constants'
 import { resolveAsset, resolveEntry, resolveMap } from '@/utils/contentful-utils'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
+import { generateBlurDataURL } from '@/lib/generateBlurDataURL'
 
 interface MapCardProps {
   map: Map | EntryProps<KeyValueMap>
@@ -15,11 +16,12 @@ interface MapCardProps {
   totalMaps: number
 }
 
-export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardProps) {
+export default async function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardProps) {
   const { isEnabled } = draftMode()
   const map = resolveMap(mapEntry)
   const { title, description, image, gameCategory, slug } = map.fields
   const mapImage = resolveAsset(image)
+  const blurDataURL = await generateBlurDataURL(mapImage?.fields.file?.url)
   const category = resolveEntry(gameCategory)
   const priority = isPriority(mapIndex, totalMaps)
 
@@ -34,7 +36,7 @@ export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardP
           </Badge>
         </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
-          <FeaturedImage featuredImage={ mapImage } priority={ priority } sizes='322px' quality={ 1 } />
+          <FeaturedImage featuredImage={ mapImage } blurDataURL={ blurDataURL } priority={ priority } sizes='322px' quality={ 1 } />
         </div>
         <CardHeader className="flex flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
@@ -42,6 +44,7 @@ export default function MapCard({ map: mapEntry, mapIndex, totalMaps }: MapCardP
               featuredImage={ mapImage }
               alt={ `${title} map image` }
               sizes='272px'
+              blurDataURL={ blurDataURL }
               className='h-44 object-cover' 
               priority={ priority }
             />

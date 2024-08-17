@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils"
 
 interface RichImageProps {
   asset: Asset<undefined, string> | undefined
+  blurDataURL: string | null
 }
 
-export default function RichImage({ asset }: RichImageProps) {
+export default function RichImage({ asset, blurDataURL }: RichImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
   const url = asset ? `https:${asset?.fields.file?.url}` : placeholderImage
@@ -29,11 +30,11 @@ export default function RichImage({ asset }: RichImageProps) {
   return (
     <figure className="relative m-0 w-full h-auto">
       <picture className="relative w-full h-auto">
-        { !imageLoaded && (
+        {/* { !imageLoaded && (
           <div className="absolute top-0 bottom-0 right-0 left-0 aspect-video h-auto flex justify-center items-center border w-full rounded-lg">
             <div className="relative h-16 w-16 border-[6px] border-solid border-r-transparent border-border rounded-full animate-spin" />
           </div>
-        )}
+        )} */}
         <Image 
           src={ url }
           alt={ description ?? '' }
@@ -41,6 +42,8 @@ export default function RichImage({ asset }: RichImageProps) {
           height={ asset?.fields.file?.details.image?.width }
           sizes="(max-width: 828px) calc(100vw - 16px), 775.5"
           ref={ imageRef }
+          blurDataURL={ blurDataURL ?? undefined }
+          placeholder={ blurDataURL ? 'blur' : undefined }
           onLoad={ () => setImageLoaded(true) }
           className={cn('flex justify-center items-center w-full h-full aspect-video rounded-lg', {
             'animate-fade-in': imageLoaded

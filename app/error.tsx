@@ -9,7 +9,7 @@ export default function RootError({ error, reset }: ErrorProps) {
 
   useEffect(() => {
     console.error(error)
-  }, [])
+  }, [error])
 
   return (
     <div className="flex flex-col justify-center items-center h-[75vh] gap-16">

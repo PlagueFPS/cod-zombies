@@ -8,6 +8,7 @@ import RichImage from "../RichImage/RichImage"
 import Heading2 from "../RichHeadings/Heading2/Heading2"
 import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
+import { generateBlurDataURL } from "@/lib/generateBlurDataURL"
 
 interface RichTextRendererProps {
   body: Document
@@ -51,9 +52,10 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
           )
         }   
       },
-      [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+      [BLOCKS.EMBEDDED_ASSET]: async (node: any) => {
         const asset = node.data.target
-        return <RichImage asset={ asset } />
+        const blurDataURL = await generateBlurDataURL(asset?.fields.file?.url)
+        return <RichImage asset={ asset } blurDataURL={ blurDataURL } />
       },
       [BLOCKS.HEADING_2]: (node: any, children: any) => {
         return <Heading2 id={ slugify(node.content[0].value) }>{ children }</Heading2>

@@ -19,6 +19,7 @@ import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
+import { generateBlurDataURL } from '@/lib/generateBlurDataURL'
 
 interface MapPageProps {
   params: { 
@@ -73,6 +74,7 @@ export default async function MapPage({ params }: MapPageProps) {
   if (!map) notFound()
   const { title, image, gameCategory, body } = map.fields
   const mapImage = resolveAsset(image)
+  const blurDataURL = await generateBlurDataURL(mapImage?.fields.file?.url)
   const category = resolveEntry(gameCategory)
   const headings = extractHeadings(map)
   const mapIndex = maps.indexOf(map)
@@ -108,6 +110,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <div className='absolute top-4 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
               <FeaturedImage
                 featuredImage={ mapImage } 
+                blurDataURL={ blurDataURL }
                 sizes='(max-width: 1280px) 100vw, 1111.58px'
                 priority 
                 quality={ 1 } 
@@ -117,6 +120,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <div className='relative z-20 mt-8 w-full max-w-screen-xl xl:mx-4'>
               <FeaturedImage 
                 featuredImage={ mapImage }
+                blurDataURL={ blurDataURL }
                 sizes='(max-width: 1280px) 100vw, 1200px'
                 priority 
                 className='xl:rounded-lg overflow-hidden' 
@@ -158,10 +162,11 @@ export default async function MapPage({ params }: MapPageProps) {
   )
 }
 
- const PreviousOrNextMap = ({ map, prev }: { map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, prev?: boolean }) => {
+ const PreviousOrNextMap = async ({ map, prev }: { map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, prev?: boolean }) => {
   const { title, description, gameCategory, image, slug } = map.fields
   const category = resolveEntry(gameCategory)
   const featuredImage = resolveAsset(image)
+  const blurDataURL = await generateBlurDataURL(featuredImage?.fields.file?.url)
 
   return (
       <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary border-2 rounded-lg overflow-hidden w-fit transition-all'>
@@ -169,6 +174,7 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
               featuredImage={ featuredImage }
+              blurDataURL={ blurDataURL }
               sizes='(max-width: 1280px) 320px, 234px'
               quality={ 1 }
               className='object-cover scale-[2]'
@@ -177,6 +183,7 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className='relative z-20 w-full max-w-80 overflow-hidden rounded-lg'>
             <FeaturedImage
               featuredImage={ featuredImage }
+              blurDataURL={ blurDataURL }
               alt={ `${title} map image` }
               sizes='(max-width: 1280px) 320px, 234px'
               className='object-cover'

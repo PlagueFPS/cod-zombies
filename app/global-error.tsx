@@ -3,10 +3,10 @@ import type { ErrorProps } from "@/types/Error"
 import { ErrorButton, ErrorTitle } from "@/components/ui/error"
 import { useEffect } from "react"
 
-export default function globalError({ error, reset }: ErrorProps) {
+export default function GlobalError({ error, reset }: ErrorProps) {
   useEffect(() => {
     console.error(error)
-  }, [])
+  }, [error])
 
   return (
     <html lang="en">
