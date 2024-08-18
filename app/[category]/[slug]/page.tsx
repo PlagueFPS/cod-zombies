@@ -21,6 +21,7 @@ import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRen
 import { cn } from '@/lib/utils'
 import { generateBlurDataURL } from '@/lib/generateBlurDataURL'
 import { Suspense } from 'react'
+import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
 
 interface MapPageProps {
   params: { 
@@ -157,12 +158,12 @@ export default async function MapPage({ params }: MapPageProps) {
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 { prevMap && (
-                  <Suspense>
+                  <Suspense fallback={<PreviousOrNextMapLoader prev />}>
                     <PreviousOrNextMap map={ prevMap } prev />
                   </Suspense>
                 )}
                 { nextMap && (
-                  <Suspense>
+                  <Suspense fallback={<PreviousOrNextMapLoader />}>
                     <PreviousOrNextMap map={ nextMap } />
                   </Suspense>
                 )}
