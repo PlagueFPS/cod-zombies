@@ -30,11 +30,6 @@ export default function RichImage({ asset, blurDataURL }: RichImageProps) {
   return (
     <figure className="relative m-0 w-full h-auto">
       <picture className="relative w-full h-auto">
-        {/* { !imageLoaded && (
-          <div className="absolute top-0 bottom-0 right-0 left-0 aspect-video h-auto flex justify-center items-center border w-full rounded-lg">
-            <div className="relative h-16 w-16 border-[6px] border-solid border-r-transparent border-border rounded-full animate-spin" />
-          </div>
-        )} */}
         <Image 
           src={ url }
           alt={ description ?? '' }

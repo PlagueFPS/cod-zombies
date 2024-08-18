@@ -3,6 +3,8 @@ import { getMaps } from '@/data/data'
 import MapCard from './MapCard/MapCard'
 import { MAP_LIMIT } from '@/utils/constants'
 import { draftMode } from 'next/headers'
+import { Suspense } from 'react'
+import MapCardLoader from '../Loaders/MapCardLoader'
 
 interface MapGridProps {
   category?: GameCategory | undefined
@@ -17,7 +19,9 @@ export default async function MapGrid({ category, skip }: MapGridProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
       <>
         { maps.map((map, index) => (
-          <MapCard key={ map.sys.id } map={ map } mapIndex={ index } totalMaps={ totalMaps } />
+          <Suspense key={ map.sys.id } fallback={<MapCardLoader />}>
+            <MapCard map={ map } mapIndex={ index } totalMaps={ totalMaps } />
+          </Suspense>
         ))}
       </>
     </div>

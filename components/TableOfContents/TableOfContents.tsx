@@ -19,9 +19,9 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   return (
     <>
       { isDesktop ? (
-        <aside className="sticky top-4 h-fit z-30">
+        <aside className='sticky top-4 ml-4 flex-shrink-0 w-[340px] h-fit border rounded-lg px-6'>
           <nav className="flex flex-col gap-4 border-b pb-3">
-            <div className="font-bold">On this page</div>
+            <div className="font-bold mx-auto mt-4">On this page</div>
             <ScrollArea>
               <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm max-h-[70vh]">
                 { headings.map(heading => (
@@ -40,7 +40,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
               </ul>
             </ScrollArea>
           </nav>
-          <BackToTopButton type="button" size="sm" variant="outline" className="mt-3" />
+          <BackToTopButton type="button" size="sm" variant="outline" className="my-4" />
         </aside>
       ) : <MobileTableOfContents headings={ headings } activeHeading={ activeHeading } /> }
     </>

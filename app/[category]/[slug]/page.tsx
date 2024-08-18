@@ -20,6 +20,7 @@ import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
 import { generateBlurDataURL } from '@/lib/generateBlurDataURL'
+import { Suspense } from 'react'
 
 interface MapPageProps {
   params: { 
@@ -82,83 +83,96 @@ export default async function MapPage({ params }: MapPageProps) {
   const nextMap = maps[mapIndex - 1]
 
   return (
-    <div className='flex flex-col xl:flex-row'>
-      <div className='container flex flex-col-reverse gap-4 -mt-10 px-0 xl:gap-12 xl:flex-row xl:mt-0 justify-center w-full'>
-        <article className='flex xl:flex-1 flex-col flex-grow justify-center items-center px-0'>
-          <Breadcrumb className='relative z-30 mr-auto ml-4'>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <NavLink exact href='/'>Home</NavLink>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <NavLink exact href={ `/${category?.fields.slug}` }>{ category?.fields.title }</NavLink>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <NavLink exact active href={ `/${category?.fields.slug}/${params.slug}` } className='font-medium'>{ title }</NavLink>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <div className='relative w-full'>
-            <div className='absolute top-4 right-0 left-0 z-10 mx-auto w-full max-w-screen-2xl opacity-35 blur-3xl overflow-hidden'>
-              <FeaturedImage
-                featuredImage={ mapImage } 
-                blurDataURL={ blurDataURL }
-                sizes='(max-width: 1280px) 100vw, 1111.58px'
-                priority 
-                quality={ 1 } 
-                className='xl:rounded-lg scale-[2]'
-              />
-            </div>
-            <div className='relative z-20 mt-8 w-full max-w-screen-xl xl:mx-4'>
-              <FeaturedImage 
-                featuredImage={ mapImage }
-                blurDataURL={ blurDataURL }
-                sizes='(max-width: 1280px) 100vw, 1200px'
-                priority 
-                className='xl:rounded-lg overflow-hidden' 
-              />
-            </div>
-          </div>
-          <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-12 w-full max-w-screen-xl border-b-2'>
-            <div className='flex w-full justify-between items-center'>
-              <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2'>
-                { title }
-              </h2>
-              <div className='flex items-center justify-center gap-4 w-fit'>
-                { (isEnabled || IN_DEVELOPMENT) && map.isUnpublished ? <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft</Badge> : null }
-                { (isEnabled || IN_DEVELOPMENT) && map.hasChanged ? <Badge className='bg-blue-600 border-blue-800 hover:bg-blue-600'>Changed</Badge> : null }
-                <Badge className='bg-orange-700 border-primary hover:bg-orange-700'>{ category?.fields.title }</Badge>
+    <section className='flex justify-center w-full -mt-10 xl:mt-0'>
+      <div className='flex flex-col justify-start items-center max-w-[1920px] mx-auto xl:mx-4 w-full'>
+        <div className='flex flex-col-reverse xl:flex-row flex-grow w-full'>
+          <article className='flex flex-col items-center justify-center w-full'>
+            <div className='relative w-full mt-16 xl:mt-8'>
+              <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl overflow-hidden'>
+                <FeaturedImage
+                  featuredImage={ mapImage } 
+                  blurDataURL={ blurDataURL }
+                  sizes='(max-width: 1280px) 100vw, 1111.58px'
+                  priority 
+                  quality={ 1 } 
+                  className='xl:rounded-lg scale-[2]'
+                />
+              </div>
+              <div className='relative z-20 max-w-screen-xl mx-auto'>
+                <FeaturedImage 
+                  featuredImage={ mapImage }
+                  blurDataURL={ blurDataURL }
+                  sizes='(max-width: 1280px) 100vw, 1280px'
+                  priority 
+                  className='xl:rounded-lg overflow-hidden' 
+                />
+                <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
+                  <Breadcrumb className='mr-auto'>
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                          <NavLink exact href='/'>Home</NavLink>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                          <NavLink exact href={ `/${category?.fields.slug}` }>{ category?.fields.title }</NavLink>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                          <NavLink exact active href={ `/${category?.fields.slug}/${params.slug}` } className='font-medium'>{ title }</NavLink>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </div>
               </div>
             </div>
-            <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
-              <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
-                <div>Last Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+            <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-12 w-full max-w-screen-xl border-b-2'>
+              <div className='flex w-full justify-between items-center'>
+                <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2'>
+                  { title }
+                </h2>
+                <div className='flex items-center justify-center gap-4 w-fit'>
+                  { (isEnabled || IN_DEVELOPMENT) && map.isUnpublished ? <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft</Badge> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && map.hasChanged ? <Badge className='bg-blue-600 border-blue-800 hover:bg-blue-600'>Changed</Badge> : null }
+                  <Badge className='bg-orange-700 border-primary hover:bg-orange-700'>{ category?.fields.title }</Badge>
+                </div>
               </div>
-              <div className='flex items-center justify-center'>
-                <ShareButton title={ title } url={ `${WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
+              <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
+                <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
+                  <div>Last Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+                </div>
+                <div className='flex items-center justify-center'>
+                  <ShareButton title={ title } url={ `${WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
+                </div>
               </div>
             </div>
-          </div>
-          <div className={ richStyles.body }>
-            <RichTextRenderer body={ body } slug={ params.slug } />
-          </div>
-          <div className='flex flex-col xl:flex-row xl:justify-between items-center w-full mt-8 gap-8 px-4'>
-            { prevMap && <PreviousOrNextMap map={ prevMap } prev /> }
-            { nextMap && <PreviousOrNextMap map={ nextMap } /> }
-          </div>
-        </article>
-        <TableOfContents headings={ headings } />
-        <BackToTopButton type='button' mobile />
+            <div className={ richStyles.body }>
+              <RichTextRenderer body={ body } slug={ params.slug } />
+            </div>
+            <div className='flex flex-row justify-center items-center w-full mt-8'>
+              <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
+                { prevMap && (
+                  <Suspense>
+                    <PreviousOrNextMap map={ prevMap } prev />
+                  </Suspense>
+                )}
+                { nextMap && (
+                  <Suspense>
+                    <PreviousOrNextMap map={ nextMap } />
+                  </Suspense>
+                )}
+              </div>
+            </div>
+          </article>
+          <TableOfContents headings={ headings } />
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 
@@ -169,7 +183,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const blurDataURL = await generateBlurDataURL(featuredImage?.fields.file?.url)
 
   return (
-      <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary border-2 rounded-lg overflow-hidden w-fit transition-all'>
+      <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-all'>
         <article className={cn('relative h-full flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
@@ -180,12 +194,12 @@ export default async function MapPage({ params }: MapPageProps) {
               className='object-cover scale-[2]'
             />
           </div>
-          <div className='relative z-20 w-full max-w-80 overflow-hidden rounded-lg'>
+          <div className='relative z-20 max-w-sm w-full overflow-hidden rounded-lg'>
             <FeaturedImage
               featuredImage={ featuredImage }
               blurDataURL={ blurDataURL }
               alt={ `${title} map image` }
-              sizes='(max-width: 1280px) 320px, 234px'
+              sizes='(max-width: 1280px) 320px, 364px'
               className='object-cover'
             />
           </div>
@@ -193,7 +207,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <h2 className='font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad]'>
               { title }
             </h2>
-            <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
+            <p className='flex-shrink-0 text-sm line-clamp-3 text-ellipsis'>{ description }</p>
             <div className={cn('flex items-center mt-4 pb-4 transition-all group-hover:text-primary', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
               { prev ? (
                 <>

@@ -1,3 +1,4 @@
+import type { Asset } from "contentful"
 import { Document, INLINES, BLOCKS } from "@contentful/rich-text-types"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { YouTubeEmbed } from "@next/third-parties/google"
@@ -9,10 +10,16 @@ import Heading2 from "../RichHeadings/Heading2/Heading2"
 import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
 import { generateBlurDataURL } from "@/lib/generateBlurDataURL"
+import { Suspense } from "react"
+import RichImageLoader from "@/components/Loaders/RichImageLoader"
 
 interface RichTextRendererProps {
   body: Document
   slug: string
+}
+
+interface RichImageWrapperProps {
+  asset: Asset<undefined, string> | undefined
 }
 
 const youtube_url = 'https://youtu.be/'
@@ -52,10 +59,13 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
           )
         }   
       },
-      [BLOCKS.EMBEDDED_ASSET]: async (node: any) => {
+      [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
         const asset = node.data.target
-        const blurDataURL = await generateBlurDataURL(asset?.fields.file?.url)
-        return <RichImage asset={ asset } blurDataURL={ blurDataURL } />
+        return (
+          <Suspense fallback={<RichImageLoader />}>
+            <RichImageWrapper asset={ asset } />
+          </Suspense>
+        )
       },
       [BLOCKS.HEADING_2]: (node: any, children: any) => {
         return <Heading2 id={ slugify(node.content[0].value) }>{ children }</Heading2>
@@ -73,4 +83,9 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
   }
 
   return documentToReactComponents(body, renderOptions)
+}
+
+const RichImageWrapper = async ({ asset }: RichImageWrapperProps) => {
+  const blurDataURL = await generateBlurDataURL(asset?.fields.file?.url)
+  return <RichImage asset={ asset } blurDataURL={ blurDataURL } />
 }
