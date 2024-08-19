@@ -81,7 +81,7 @@ export default function ContactForm() {
             <Textarea
               name="body"
               id="body"
-              placeholder="What can we help you with?"
+              placeholder="Write your message here"
               maxLength={ 1000 }
               aria-describedby="body-error"
               required

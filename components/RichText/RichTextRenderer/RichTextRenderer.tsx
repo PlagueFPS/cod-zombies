@@ -12,6 +12,7 @@ import GKValve from "../RichEmbeds/GKValve"
 import { generateBlurDataURL } from "@/lib/generateBlurDataURL"
 import { Suspense } from "react"
 import RichImageLoader from "@/components/Loaders/RichImageLoader"
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 interface RichTextRendererProps {
   body: Document
@@ -78,6 +79,47 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
           case 'gorod-krovi':
             return <GKValve />
         }
+      },
+      [BLOCKS.TABLE]: (node: any, children: any) => {
+        return (
+          <div className="border rounded-lg w-full">
+            <Table>
+              { children }
+            </Table>
+          </div>
+        )
+      },
+      [BLOCKS.TABLE_ROW]: (node: any, children: any) => {
+        if (node.content[0].nodeType === 'table-header-cell') {
+          return (
+            <TableHeader>
+              <TableRow>{ children }</TableRow>
+            </TableHeader>
+          )
+        }
+        else return (
+          <TableBody>
+            <TableRow>{ children }</TableRow>
+          </TableBody>
+        )
+      },
+      [BLOCKS.TABLE_HEADER_CELL]: (node: any, children: any) => {
+        return <TableHead>{ children }</TableHead>
+      },
+      [BLOCKS.TABLE_CELL]: (node: any) => {
+        const values = node.content[0].content.map((content: any) => content.value)
+        const listItems: string[] = values.join(',').split(',').map((word: string) => word.trim())
+        return (
+          <TableCell>
+            <ul className="space-y-2">
+              { listItems.map((listItem, index) => (
+                <li key={`${listItem}_${index}`}>
+                  { listItem }
+                </li>
+              ))}
+            </ul>
+          </TableCell>
+        )
       }
     }
   }

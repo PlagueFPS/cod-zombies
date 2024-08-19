@@ -34,7 +34,7 @@ export const useTableOfContents = (headings: Heading[]) => {
         }
       })
     }
-  }, [])
+  }, [headings])
 
   return { activeHeading }
 }

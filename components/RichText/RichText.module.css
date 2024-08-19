@@ -44,3 +44,19 @@
 .body ul li p, .body ol p {
   @apply m-0
 }
+
+.body table {
+  @apply table-fixed
+}
+
+.body table th p {
+  @apply m-0 text-sm tracking-normal
+}
+
+.body table ul {
+  @apply p-0 list-none bg-transparent w-full
+}
+
+.body table ul li {
+  @apply m-0 w-full
+}

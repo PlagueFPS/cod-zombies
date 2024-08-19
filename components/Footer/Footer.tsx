@@ -26,7 +26,7 @@ export default function Footer() {
             <span>Zombies Guides</span>
           </div>
         </div>
-        <span>
+        <span className="tracking-tight">
           All content, including but not limited to images, logos, and trademarks related to Activision games, are property of Activision Publishing, Inc. and its respective owners.
         </span>
       </div>
