@@ -81,7 +81,7 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         }
       },
       [BLOCKS.TABLE]: (node: any, children: any) => {
-        const tableRows: any[] = children.filter((child: any) => child.type.render.displayName === 'TableRow')
+        const tableRows: any[] = children.filter((child: any) => child.type === TableRow)
         return (
           <div className="border rounded-lg w-full">
             <Table>
