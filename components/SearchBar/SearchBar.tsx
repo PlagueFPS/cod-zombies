@@ -2,9 +2,14 @@ import type { GameCategory } from "@/types/GameCategory"
 import { resolveEntry } from "@/utils/contentful-utils"
 import { getMaps, getGameCategories } from "@/data/data"
 import SearchInput from "./SearchInput"
+import { draftMode } from "next/headers"
 
 export default async function SearchBar() {
-  const maps = (await getMaps()).maps.map(map => {
+  const { isEnabled } = draftMode()
+  const mapsPromise = getMaps(isEnabled)
+  const gameCategoriesPromise = getGameCategories()
+  const [{ maps }, gameCategories] = await Promise.all([mapsPromise, gameCategoriesPromise])
+  const modifiedMaps = maps.map(map => {
     const category = resolveEntry(map.fields.gameCategory)
     
     return {
@@ -13,11 +18,11 @@ export default async function SearchBar() {
       category: category?.fields.slug as GameCategory
     }
   })
-  const gameCategories = await getGameCategories()
+  const modifiedGameCategories = gameCategories.reverse()
 
   return (
     <div className="flex justify-center items-center w-fit">
-      <SearchInput maps={ maps } gameCategories={ gameCategories } />
+      <SearchInput maps={ modifiedMaps } gameCategories={ modifiedGameCategories } />
     </div>
   )
 }

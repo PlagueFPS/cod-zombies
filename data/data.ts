@@ -17,7 +17,7 @@ const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQuerie
   return response
 }
 
-const getDraftOrChangedPosts = cache(async (category?: GameCategory, skip?: number, limit?: number) => {
+const getDraftOrChangedPosts = async (category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await managementClient.entry.getMany({
     query: {
       content_type: 'featuredMaps',
@@ -34,7 +34,7 @@ const getDraftOrChangedPosts = cache(async (category?: GameCategory, skip?: numb
     changedMaps,
     draftMaps
   }
-})
+}
 
 const getPublishedPosts = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
@@ -93,11 +93,11 @@ export const getMaps = cache(async (draftMode?: boolean, category?: GameCategory
   }
 })
 
-export const getMapBySlug = async (slug: string, draftMode?: boolean) => {
+export const getMapBySlug = cache(async (slug: string, draftMode?: boolean) => {
   const { maps } = await getMaps(draftMode)
   const map = maps.find(map => map.fields.slug === slug)
   return map
-}
+})
 
 export const getGameCategories = cache(async (): Promise<Game[]> => {
   const games = await getPosts<TypeGameCategorySkeleton>({
