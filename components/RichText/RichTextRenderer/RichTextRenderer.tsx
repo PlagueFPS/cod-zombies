@@ -81,27 +81,22 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         }
       },
       [BLOCKS.TABLE]: (node: any, children: any) => {
+        const tableRows: any[] = children.filter((child: any) => child.type.render.displayName === 'TableRow')
         return (
           <div className="border rounded-lg w-full">
             <Table>
-              { children }
+              <TableHeader>
+                { tableRows.length > 0 && tableRows[0] }
+              </TableHeader>
+              <TableBody>
+                { tableRows.slice(1) }
+              </TableBody>
             </Table>
           </div>
         )
       },
       [BLOCKS.TABLE_ROW]: (node: any, children: any) => {
-        if (node.content[0].nodeType === 'table-header-cell') {
-          return (
-            <TableHeader>
-              <TableRow>{ children }</TableRow>
-            </TableHeader>
-          )
-        }
-        else return (
-          <TableBody>
-            <TableRow>{ children }</TableRow>
-          </TableBody>
-        )
+        return <TableRow>{ children }</TableRow>
       },
       [BLOCKS.TABLE_HEADER_CELL]: (node: any, children: any) => {
         return <TableHead>{ children }</TableHead>
