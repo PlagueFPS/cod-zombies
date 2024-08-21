@@ -17,11 +17,11 @@ export default function ContactForm() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    if (state.success && !state.errors) {
+    if (state.success) {
       setOpen(false)
       toast.success(state.message)
     }
-    else if (state.success === false) {
+    else if (!state.success) {
       toast.error(state.message)
     }
   }, [state])
