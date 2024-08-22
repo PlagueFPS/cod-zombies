@@ -18,11 +18,11 @@ export default async function SearchBar() {
       category: category?.fields.slug as GameCategory
     }
   })
-  const modifiedGameCategories = gameCategories.reverse()
+  const categories = gameCategories
 
   return (
     <div className="flex justify-center items-center w-fit">
-      <SearchInput maps={ modifiedMaps } gameCategories={ modifiedGameCategories } />
+      <SearchInput maps={ modifiedMaps } gameCategories={ categories.reverse() } />
     </div>
   )
 }

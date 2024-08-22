@@ -1,10 +1,10 @@
 "use client"
+import { useTableOfContents } from "@/hooks/useTableOfContents"
+import { useScreen }from "@/hooks/useScreen"
 import { Heading } from "@/types/Heading"
 import Link from "next/link"
 import BackToTopButton from "../BackToTopButton/BackToTopButton"
 import { cn } from "@/lib/utils"
-import { useTableOfContents } from "@/hooks/useTableOfContents"
-import { useScreen }from "@/hooks/useScreen"
 import { ScrollArea } from "../ui/scroll-area"
 import MobileTableOfContents from "./MobileTableOfContents"
 
