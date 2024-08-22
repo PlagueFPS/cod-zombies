@@ -56,7 +56,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
       <HeroSection text={ category.title } />
-      <FeaturedMaps currentCategory={ category.slug } gameCategories={ categories } />
+      <FeaturedMaps currentCategory={ category.slug } />
     </div>
   )
 }

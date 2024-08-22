@@ -1,13 +1,12 @@
-import type { Game } from "@/types/Game"
 import type { GameCategory } from "@/types/GameCategory"
 import { Suspense } from "react"
 import MapFilters from "../MapGrid/MapFilters/MapFilters"
 import MapGridLoader from "../Loaders/MapGridLoader"
 import MapGrid from "../MapGrid/MapGrid"
 import MapPagination from "../MapGrid/MapPagination/MapPagination"
+import MapFiltersLoader from "../Loaders/MapFiltersLoader"
 
 interface ComponentProps {
-  gameCategories: Game[]
   currentCategory?: GameCategory
 }
 
@@ -25,13 +24,15 @@ interface PaginationOptionalProps {
 
 type FeaturedMapsProps = (PaginationRequiredProps | PaginationOptionalProps) & ComponentProps
 
-export default function FeaturedMaps({ gameCategories, currentCategory, skip, currentPage, totalPages }: FeaturedMapsProps) {
+export default function FeaturedMaps({ currentCategory, skip, currentPage, totalPages }: FeaturedMapsProps) {
   return (
     <section className="flex flex-col gap-8 justify-center w-full">
       <h2 className="font-extrabold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad]">
           Featured Maps
       </h2>
-      <MapFilters currentCategory={ currentCategory } gameCategories={ gameCategories } />
+      <Suspense fallback={<MapFiltersLoader />}>
+        <MapFilters currentCategory={ currentCategory }  />
+      </Suspense>
       <Suspense fallback={<MapGridLoader />}>
         <MapGrid category={ currentCategory } skip={ skip } />
       </Suspense>

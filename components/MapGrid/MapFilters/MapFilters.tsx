@@ -1,17 +1,16 @@
 import type { GameCategory } from "@/types/GameCategory";
+import { getGameCategories } from "@/data/data";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Link from "next/link";
 
 interface MapFiltersProps {
   currentCategory?: GameCategory
-  gameCategories: {
-    title: string,
-    slug: GameCategory
-  }[]
 }
 
-export default function MapFilters({ currentCategory, gameCategories }: MapFiltersProps) {
+export default async function MapFilters({ currentCategory }: MapFiltersProps) {
+  const gameCategories = await getGameCategories()
+  
   const getHref = (category: GameCategory) => {
     if (currentCategory === category) return '/'
     else return `/${category}`
