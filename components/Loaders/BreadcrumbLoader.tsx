@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "../ui/breadcrumb"
 import NavLink from "../NavLink/NavLink"
-import { capatilize } from "@/utils/functions"
+import { checkParams } from "@/utils/functions"
 
 export default function BreadcrumbLoader() {
   const { category, slug } = useParams()
@@ -18,13 +18,13 @@ export default function BreadcrumbLoader() {
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <NavLink exact href={ `/${category}` }>{ !Array.isArray(category) ? capatilize(category) : null }</NavLink>
+            <NavLink exact href={ `/${category}` }>{ checkParams(category) }</NavLink>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <NavLink exact active href={ `/${category}/${slug}` } className='font-medium'>{ !Array.isArray(slug) ? capatilize(slug) : null }</NavLink>
+            <NavLink exact active href={ `/${category}/${slug}` } className='font-medium'>{ checkParams(slug) }</NavLink>
           </BreadcrumbLink>
         </BreadcrumbItem>
       </BreadcrumbList>

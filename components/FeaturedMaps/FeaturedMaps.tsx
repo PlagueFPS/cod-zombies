@@ -5,26 +5,16 @@ import MapGridLoader from "../Loaders/MapGridLoader"
 import MapGrid from "../MapGrid/MapGrid"
 import MapPagination from "../MapGrid/MapPagination/MapPagination"
 import MapFiltersLoader from "../Loaders/MapFiltersLoader"
+import MapPaginationLoader from "../Loaders/MapPaginationLoader"
 
-interface ComponentProps {
+interface FeaturedMapsProps {
+  searchParams?: { 
+    [key: string]: string | string[] | undefined 
+  }
   currentCategory?: GameCategory
 }
 
-interface PaginationRequiredProps {
-  skip: number
-  currentPage: number
-  totalPages: number
-}
-
-interface PaginationOptionalProps {
-  currentPage?: never
-  totalPages?: never
-  skip?: never
-}
-
-type FeaturedMapsProps = (PaginationRequiredProps | PaginationOptionalProps) & ComponentProps
-
-export default function FeaturedMaps({ currentCategory, skip, currentPage, totalPages }: FeaturedMapsProps) {
+export default function FeaturedMaps({ searchParams, currentCategory }: FeaturedMapsProps) {
   return (
     <section className="flex flex-col gap-8 justify-center w-full">
       <h2 className="font-extrabold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad]">
@@ -34,9 +24,13 @@ export default function FeaturedMaps({ currentCategory, skip, currentPage, total
         <MapFilters currentCategory={ currentCategory }  />
       </Suspense>
       <Suspense fallback={<MapGridLoader />}>
-        <MapGrid category={ currentCategory } skip={ skip } />
+        <MapGrid searchParams={ searchParams } category={ currentCategory } />
       </Suspense>
-      { (currentPage && totalPages) ? <MapPagination currentPage={ currentPage } totalPages={ totalPages } /> : null }
+      { !currentCategory ? (
+        <Suspense fallback={<MapPaginationLoader />}>
+          <MapPagination searchParams={ searchParams } />
+        </Suspense>
+      ) : null}
     </section>
   )
 }

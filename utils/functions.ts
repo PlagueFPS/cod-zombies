@@ -17,6 +17,10 @@ export const capatilize = (text: string) => {
     .join(" ") // Join the words back into a single string
 }
 
+export const checkParams = (param: string | string[] | undefined) => {
+  return (param && !Array.isArray(param)) ? param : null
+}
+
 export const slugify = (text: string) => {
   return text.toLowerCase().replace(/ /g, '-')
 }

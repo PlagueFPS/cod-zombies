@@ -1,11 +1,14 @@
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { getPagination } from "@/data/data"
 
 interface MapPaginationProps {
-  currentPage: number
-  totalPages: number
+  searchParams?: { 
+    [key: string]: string | string[] | undefined 
+  }
 }
 
-export default function MapPagination({ currentPage, totalPages }: MapPaginationProps) {
+export default async function MapPagination({ searchParams }: MapPaginationProps) {
+  const { currentPage, totalPages } = await getPagination(searchParams ? searchParams.page : undefined)
   const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
   const nextPage = currentPage + 1 > totalPages ? totalPages : currentPage + 1
   const previousDisabled = prevPage === currentPage ? true : false
