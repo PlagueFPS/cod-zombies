@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 
 interface Props extends LinkProps {
   href: string
-  children: string | JSX.Element | React.ReactNode
+  children: string | React.ReactNode
   className?: string
   exact?: boolean
   ariaLabel?: string
