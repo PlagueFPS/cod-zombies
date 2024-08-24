@@ -22,10 +22,10 @@
     "contentful": "^10.12.4",
     "contentful-management": "^11.31.1",
     "lucide-react": "^0.399.0",
-    "next": "^14.2.5",
+    "next": "^15.0.0-rc.0",
     "next-themes": "^0.3.0",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19.0.0-rc-b57d2823-20240822",
+    "react-dom": "^19.0.0-rc-b57d2823-20240822",
     "react-share": "^5.1.0",
     "server-only": "^0.0.1",
     "sharp": "^0.33.5",
@@ -35,13 +35,17 @@
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "npm:types-react@19.0.0-rc.0",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.0",
     "eslint": "^8",
-    "eslint-config-next": "14.2.4",
+    "eslint-config-next": "^15.0.0-rc.0",
     "postcss": "^8",
     "tailwind-merge": "^2.4.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@19.0.0-rc.0",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.0"
   }
 }

@@ -1,6 +1,5 @@
 "use client"
-import { useFormState } from "react-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useActionState } from "react";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose, DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -9,11 +8,10 @@ import { submitContactForm } from "@/utils/actions";
 import FormError from "../ui/form-error";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import SubmitButton from "../SubmitButton/SubmitButton";
 import { toast } from "sonner";
 
 export default function ContactForm() {
-  const [state, action] = useFormState(submitContactForm, { success: false })
+  const [state, action, isPending] = useActionState(submitContactForm, { success: false })
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -100,7 +98,9 @@ export default function ContactForm() {
               Cancel
             </Button>
            </DialogClose>
-           <SubmitButton className="w-fit" />
+           <Button type="submit" aria-disabled={ isPending } disabled={ isPending } className="w-fit">
+              { isPending ? "Submitting..." : "Submit" }
+           </Button>
           </DialogFooter>
         </form>
       </DialogContent>
