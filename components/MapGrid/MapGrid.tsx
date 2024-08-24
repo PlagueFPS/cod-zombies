@@ -1,5 +1,5 @@
 import type { GameCategory } from '@/types/GameCategory'
-import { getMaps } from '@/data/data'
+import { getMaps, getPagination } from '@/data/data'
 import MapCard from './MapCard/MapCard'
 import { MAP_LIMIT } from '@/utils/constants'
 import { draftMode } from 'next/headers'
@@ -7,12 +7,15 @@ import { Suspense } from 'react'
 import MapCardLoader from '../Loaders/MapCardLoader'
 
 interface MapGridProps {
+  searchParams?: {
+    [key: string]: string | string[] | undefined
+  }
   category?: GameCategory | undefined
-  skip?: number
 }
 
-export default async function MapGrid({ category, skip }: MapGridProps) {
+export default async function MapGrid({ searchParams, category }: MapGridProps) {
   const { isEnabled } = draftMode()
+  const { skip } = await getPagination(searchParams ? searchParams.page : undefined)
   const { maps, totalMaps } = await getMaps(isEnabled, category, skip, MAP_LIMIT)
   
   return (

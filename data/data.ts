@@ -112,7 +112,7 @@ export const getGameCategories = cache(async (): Promise<Game[]> => {
   }))
 })
 
-export const getSkipAndPage = async (unvalidatedPage: string | string[] | undefined) => {
+export const getPagination = cache(async (unvalidatedPage: string | string[] | undefined) => {
   const { totalMaps } = await getMaps()
   const totalPages = Math.ceil(totalMaps / MAP_LIMIT)
   let page = unvalidatedPage ? +unvalidatedPage : 1
@@ -125,4 +125,4 @@ export const getSkipAndPage = async (unvalidatedPage: string | string[] | undefi
     skip,
     totalPages
   }
-}
+})
