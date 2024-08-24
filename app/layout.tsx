@@ -50,8 +50,6 @@ export const viewport: Viewport = {
   ]
 }
 
-export const experimental_ppr = true
-
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">

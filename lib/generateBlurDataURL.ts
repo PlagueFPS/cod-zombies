@@ -3,7 +3,7 @@ import sharp from "sharp"
 
 export const generateBlurDataURL = async (imageURL: string | URL | undefined) => {
   if (imageURL) {
-    const response = await fetch(`https:${imageURL}?fm=jpg`, { cache: 'no-store' })
+    const response = await fetch(`https:${imageURL}?fm=jpg`)
     if (!response.ok) {
       console.error(`Error fetching ${imageURL}`)
       return null
