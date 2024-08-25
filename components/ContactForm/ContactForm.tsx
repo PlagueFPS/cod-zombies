@@ -11,7 +11,7 @@ import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
 
 export default function ContactForm() {
-  const [state, action, isPending] = useActionState(submitContactForm, { success: false })
+  const [state, action, pending] = useActionState(submitContactForm, { success: false })
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -98,8 +98,8 @@ export default function ContactForm() {
               Cancel
             </Button>
            </DialogClose>
-           <Button type="submit" aria-disabled={ isPending } disabled={ isPending } className="w-fit">
-              { isPending ? "Submitting..." : "Submit" }
+           <Button type="submit" aria-disabled={ pending } disabled={ pending } className="w-fit">
+              { pending ? "Submitting..." : "Submit" }
            </Button>
           </DialogFooter>
         </form>
