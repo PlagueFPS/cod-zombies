@@ -25,15 +25,8 @@ export const useTableOfContents = (headings: Heading[]) => {
         observer.observe(element)
       }
     })
-
-    return () => {
-      headings.forEach(heading => {
-        const element = document.getElementById(heading.id)
-        if (element) {
-          observer.unobserve(element)
-        }
-      })
-    }
+    
+    return () => observer.disconnect()
   }, [headings])
 
   return { activeHeading }
