@@ -10,7 +10,7 @@ interface HomePageProps {
 export default async function Home({ searchParams }: HomePageProps) {
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
-      <HeroSection text="Call of Duty: Zombies" />
+      <HeroSection />
       <FeaturedMaps searchParams={ searchParams } />
     </div>
   );

@@ -1,8 +1,8 @@
 interface HeroSectionProps {
-  text: string
+  text?: string
 }
 
-export default function HeroSection({ text }: HeroSectionProps) {
+export default function HeroSection({ text = "Call of Duty: Zombies" }: HeroSectionProps) {
   return (
     <section className="flex flex-col items-center justify-center gap-4 text-center max-w-2xl">
       <h1 className="flex flex-col font-extrabold text-3xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
