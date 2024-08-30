@@ -182,7 +182,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const blurDataURL = await generateBlurDataURL(featuredImage?.fields.file?.url)
 
   return (
-      <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-all'>
+      <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
         <article className={cn('relative h-full flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 

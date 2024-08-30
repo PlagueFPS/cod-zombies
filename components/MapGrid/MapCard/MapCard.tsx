@@ -26,8 +26,9 @@ export default async function MapCard({ map: mapEntry, mapIndex, totalMaps }: Ma
   const priority = isPriority(mapIndex, totalMaps)
 
   return (
-    <Link key={ map.sys.id } href={ `/${category?.fields.slug}/${slug}` } className="max-h-[450px] h-full">
-      <Card className="relative h-full group hover:border-primary cursor-pointer transition-all overflow-hidden">
+    <Link key={ map.sys.id } href={ `/${category?.fields.slug}/${slug}` } className="max-h-[450px] h-full group outline-none" aria-label={ `View Guide for ${title}` }>
+      <div className='sr-only'>View Guide for { title }</div>
+      <Card className="relative h-full group-hover:border-primary group-hover:scale-105 group-focus-visible:scale-105 group-focus-visible:border-primary cursor-pointer transition-transform overflow-hidden">
         <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
           { (isEnabled || IN_DEVELOPMENT) && map.isUnpublished ? <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft</Badge> : null }
           { (isEnabled || IN_DEVELOPMENT) && map.hasChanged ? <Badge className='bg-blue-600 border-blue-800 hover:bg-blue-600'>Changed</Badge> : null }
@@ -38,7 +39,7 @@ export default async function MapCard({ map: mapEntry, mapIndex, totalMaps }: Ma
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
           <FeaturedImage featuredImage={ mapImage } blurDataURL={ blurDataURL } priority={ priority } sizes='322px' quality={ 1 } />
         </div>
-        <CardHeader className="flex flex-grow">
+        <CardHeader className="flex gap-2 flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
             <FeaturedImage 
               featuredImage={ mapImage }
@@ -49,12 +50,11 @@ export default async function MapCard({ map: mapEntry, mapIndex, totalMaps }: Ma
               priority={ priority }
             />
           </div>
-          <CardTitle className="group-hover:text-primary transition-all">{ title }</CardTitle>
-          <CardDescription>{ new Date(map.sys.createdAt).toLocaleDateString(undefined, DATE_OPTIONS) }</CardDescription>
+          <div className='space-y-2'>
+            <CardTitle className="group-hover:text-primary group-focus-visible:text-primary transition-all">{ title }</CardTitle>
+            <CardDescription className='text-foreground/85'>{ description }</CardDescription>
+          </div>
         </CardHeader>
-        <CardContent className="-mt-4">
-          <p className='text-sm'>{ description }</p>
-        </CardContent>
       </Card>
     </Link>
   )
