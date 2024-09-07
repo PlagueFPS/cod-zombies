@@ -21,13 +21,13 @@
   @apply relative text-primary underline underline-offset-4 hover:no-underline transition-all
 }
 
-.body blockquote {
+/* .body blockquote {
   @apply flex flex-col justify-center items-center gap-4 mx-8 p-8 bg-secondary-alternative border rounded
 }
 
 .body blockquote p {
   @apply m-0 italic
-}
+} */
 
 .body ul, .body ol {
   @apply p-4 bg-secondary-alternative rounded list-disc

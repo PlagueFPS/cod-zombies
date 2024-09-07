@@ -13,6 +13,7 @@ import { generateBlurDataURL } from "@/lib/generateBlurDataURL"
 import { Suspense } from "react"
 import RichImageLoader from "@/components/Loaders/RichImageLoader"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import RichBlockquote from "../RichBlockquote/RichBlockquote"
 
 interface RichTextRendererProps {
   body: Document
@@ -79,6 +80,14 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
           case 'gorod-krovi':
             return <GKValve />
         }
+      },
+      [BLOCKS.QUOTE]: (node: any, children: any) => {
+        const title = node.content[0].content[0].value.replace(':', '')
+        return (
+          <RichBlockquote title={ title }>
+            { children }
+          </RichBlockquote>
+        )
       },
       [BLOCKS.TABLE]: (node: any, children: any) => {
         const tableRows: any[] = children.filter((child: any) => child.type === TableRow)

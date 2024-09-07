@@ -53,6 +53,18 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        theme: {
+          50: 'hsl(25, 100%, 95%)',
+          100: 'hsl(25, 100%, 90%)',
+          200: 'hsl(25, 100%, 80%)',
+          300: 'hsl(25, 100%, 70%)',
+          400: 'hsl(25, 100%, 60%)',
+          500: 'hsl(25, 100%, 49%)', // Our main theme color
+          600: 'hsl(25, 100%, 39%)',
+          700: 'hsl(25, 100%, 29%)',
+          800: 'hsl(25, 100%, 19%)',
+          900: 'hsl(25, 100%, 9%)',
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
