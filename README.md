@@ -1,6 +1,5 @@
 ## TODO
 - (?) Create a seperate form for reporting issues
-- remove Important Note text from blockquotes programatically
 
 ## Generating type definitions for content types for Contentful
 - Run the following command: 

@@ -1,4 +1,4 @@
-import { Document, INLINES, BLOCKS } from "@contentful/rich-text-types"
+import { Document, INLINES, BLOCKS, MARKS } from "@contentful/rich-text-types"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { YouTubeEmbed } from "@next/third-parties/google"
 import { getYouTubeVideoID, slugify } from "@/utils/functions"
@@ -10,6 +10,7 @@ import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import RichBlockquote from "../RichBlockquote/RichBlockquote"
+import React from "react"
 
 interface RichTextRendererProps {
   body: Document
@@ -83,9 +84,8 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         }
       },
       [BLOCKS.QUOTE]: (node: any, children: any) => {
-        const title = node.content[0].content[0].value.replace(':', '')
         return (
-          <RichBlockquote title={ title }>
+          <RichBlockquote>
             { children }
           </RichBlockquote>
         )
@@ -125,7 +125,7 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
             </ul>
           </TableCell>
         )
-      }
+      },
     }
   }
 
