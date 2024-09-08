@@ -1,7 +1,6 @@
 ## TODO
 - (?) Create a seperate form for reporting issues
-- rewrite revalidate API
-- overwrite media in Contentful with new image/avif format images using management API 
+- remove Important Note text from blockquotes programatically
 
 ## Generating type definitions for content types for Contentful
 - Run the following command: 
