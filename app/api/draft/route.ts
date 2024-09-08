@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server'
 import { getMapBySlug } from '@/data/data'
-import { resolveEntry } from '@/utils/contentful-utils'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { WEBSITE_URL } from '@/utils/constants'
@@ -20,7 +19,7 @@ export async function GET(req: NextRequest) {
   if (!map) {
     return new Response('Invalid slug', { status: 401 })
   }
-  const category = resolveEntry(map.fields.gameCategory)
+  const category = map.fields.gameCategory
   // Enable Draft Mode by setting the cookie
   draftMode().enable()
  

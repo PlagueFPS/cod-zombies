@@ -8,7 +8,7 @@ import { initializeContentfulClient } from '@/contentful/contentful';
 import { managementClient } from '@/contentful/contentful-managment'
 import { cache } from 'react';
 import { IN_DEVELOPMENT, MAP_LIMIT } from '@/utils/constants';
-import { resolveAsset } from '@/utils/contentful-utils';
+import { resolveAsset, resolveEntry } from '@/utils/contentful-utils';
 import { sortMaps } from '@/utils/functions';
 
 const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
@@ -61,10 +61,24 @@ const fetchMaps = async (draftMode?: boolean, category?: GameCategory, skip?: nu
     skip,
     limit
   }, draftMode)
+  
+  const featuredMaps = maps.items.map(map => {
+    const mapImage = resolveAsset(map.fields.image)
+    const category = resolveEntry(map.fields.gameCategory)
+
+    return {
+      ...map,
+      fields: {
+        ...map.fields,
+        image: mapImage,
+        gameCategory: category
+      }
+    }
+  })
  
   return {
     totalMaps: maps.total,
-    maps: maps.items.sort(sortMaps)
+    maps: featuredMaps.sort(sortMaps)
   }
 }
 
@@ -82,9 +96,16 @@ export const getMaps = cache(async (draftMode?: boolean, category?: GameCategory
       maps: maps.map(map => {
         const isChanged = changedMaps.find(post => post.sys.id === map.sys.id)
         const isUnpublished = draftMaps.find(post => post.sys.id === map.sys.id)
+        const mapImage = resolveAsset(map.fields.image)
+        const category = resolveEntry(map.fields.gameCategory)
 
         return {
           ...map,
+          fields: {
+            ...map.fields,
+            image: mapImage,
+            gameCategory: category
+          },
           hasChanged: isChanged ? true : false,
           isUnpublished: isUnpublished ? true : false
         }

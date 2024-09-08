@@ -2,7 +2,6 @@ import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { getMapBySlug } from "@/data/data"
-import { resolveEntry } from "@/utils/contentful-utils"
 
 export async function PUT(req: NextRequest) {
   const headersList = headers()
@@ -24,7 +23,7 @@ export async function PUT(req: NextRequest) {
         const slug = body.slug
         const map = await getMapBySlug(slug)
         if (!map) return Response.json({ revalidated: false, message: 'Invalid Slug' }, { status: 401 })
-        const category = resolveEntry(map.fields.gameCategory)
+        const category = map.fields.gameCategory
         const path = `/${category?.fields.slug}/${map.fields.slug}`
         revalidatePath(path)
         return Response.json({ revalidated: true, message: `${path} revalidated` }, { status: 201 })

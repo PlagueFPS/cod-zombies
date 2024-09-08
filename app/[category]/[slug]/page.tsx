@@ -1,6 +1,6 @@
 import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, WEBSITE_URL } from "@/utils/constants"
-import { extractHeadings, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
+import { extractHeadings } from "@/utils/contentful-utils"
 import { getMapBySlug, getMaps } from '@/data/data'
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -9,8 +9,6 @@ import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import Link from 'next/link'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import NavLink from '@/components/NavLink/NavLink'
-import type { Entry } from 'contentful'
-import { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
@@ -20,6 +18,7 @@ import { cn } from '@/lib/utils'
 import { generateBlurDataURL } from '@/lib/generateBlurDataURL'
 import { Suspense } from 'react'
 import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
+import type { Map } from '@/types/Map'
 
 interface MapPageProps {
   params: { 
@@ -32,7 +31,7 @@ export const generateStaticParams = async () => {
   const { maps } = await getMaps()
 
   return maps.map(map => ({
-    category: resolveEntry(map.fields.gameCategory)?.fields.slug,
+    category: map.fields.gameCategory?.fields.slug,
     slug: map.fields.slug
   }))
 }
@@ -42,7 +41,6 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
   const map = await getMapBySlug(params.slug, isEnabled)
   if (!map) notFound()
   const { title, description, image } = map.fields
-  const mapImage = resolveAsset(image)
   const metadata: Metadata = {
     title,
     description,
@@ -52,9 +50,9 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       description,
       url: `/${params.category}/${params.slug}`,
       images: {
-        url: `https:${mapImage?.fields?.file?.url}?q=75`,
-        width: mapImage?.fields?.file?.details.image?.width,
-        height: mapImage?.fields?.file?.details.image?.height
+        url: `https:${image?.fields?.file?.url}?q=75`,
+        width: image?.fields?.file?.details.image?.width,
+        height: image?.fields?.file?.details.image?.height
       }
     },
     twitter: {
@@ -72,10 +70,8 @@ export default async function MapPage({ params }: MapPageProps) {
   const { maps } = await getMaps(isEnabled)
   const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
-  const { title, image, gameCategory, body } = map.fields
-  const mapImage = resolveAsset(image)
-  const blurDataURL = await generateBlurDataURL(mapImage?.fields.file?.url)
-  const category = resolveEntry(gameCategory)
+  const { title, image, gameCategory: category, body } = map.fields
+  const blurDataURL = await generateBlurDataURL(image?.fields.file?.url)
   const headings = extractHeadings(map)
   const mapIndex = maps.indexOf(map)
   const prevMap = maps[mapIndex + 1]
@@ -89,7 +85,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <div className='relative w-full mt-16 xl:mt-8'>
               <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl overflow-hidden'>
                 <FeaturedImage
-                  featuredImage={ mapImage } 
+                  featuredImage={ image } 
                   blurDataURL={ blurDataURL }
                   sizes='(max-width: 1280px) 100vw, 1111.58px'
                   priority 
@@ -99,7 +95,7 @@ export default async function MapPage({ params }: MapPageProps) {
               </div>
               <div className='relative z-20 max-w-screen-xl mx-auto'>
                 <FeaturedImage 
-                  featuredImage={ mapImage }
+                  featuredImage={ image }
                   blurDataURL={ blurDataURL }
                   sizes='(max-width: 1280px) 100vw, 1280px'
                   priority 
@@ -175,18 +171,16 @@ export default async function MapPage({ params }: MapPageProps) {
   )
 }
 
- const PreviousOrNextMap = async ({ map, prev }: { map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, prev?: boolean }) => {
-  const { title, description, gameCategory, image, slug } = map.fields
-  const category = resolveEntry(gameCategory)
-  const featuredImage = resolveAsset(image)
-  const blurDataURL = await generateBlurDataURL(featuredImage?.fields.file?.url)
+ const PreviousOrNextMap = async ({ map, prev }: { map: Map, prev?: boolean }) => {
+  const { title, description, gameCategory: category, image, slug } = map.fields
+  const blurDataURL = await generateBlurDataURL(image?.fields.file?.url)
 
   return (
       <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
         <article className={cn('relative h-full flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
-              featuredImage={ featuredImage }
+              featuredImage={ image }
               blurDataURL={ blurDataURL }
               sizes='(max-width: 1280px) 320px, 234px'
               quality={ 1 }
@@ -195,7 +189,7 @@ export default async function MapPage({ params }: MapPageProps) {
           </div>
           <div className='relative z-20 max-w-sm w-full overflow-hidden rounded-lg'>
             <FeaturedImage
-              featuredImage={ featuredImage }
+              featuredImage={ image }
               blurDataURL={ blurDataURL }
               alt={ `${title} map image` }
               sizes='(max-width: 1280px) 320px, 364px'
