@@ -1,5 +1,4 @@
 "use client"
-import type { GameCategory } from "@/types/GameCategory";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useScreen } from "@/hooks/useScreen";
@@ -13,10 +12,10 @@ interface SearchInputProps {
   maps: {
     title: string
     slug: string
-    category: GameCategory
+    category: string | undefined
   }[]
   gameCategories: {
-    slug: GameCategory
+    slug: string
     title: string
   }[]
 }
@@ -38,7 +37,7 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
     return () => document.removeEventListener("keydown", down)
   }, [])
 
-  const onSelectHandler = (category: GameCategory, mapSlug: string) => {
+  const onSelectHandler = (category: string | undefined, mapSlug: string) => {
     setOpen(false)
     router.push(`/${category}/${mapSlug}`)
   }

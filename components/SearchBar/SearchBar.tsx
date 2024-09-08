@@ -1,4 +1,3 @@
-import type { GameCategory } from "@/types/GameCategory"
 import { getMaps, getGameCategories } from "@/data/data"
 import SearchInput from "./SearchInput"
 import { draftMode } from "next/headers"
@@ -14,7 +13,7 @@ export default async function SearchBar() {
     return {
       title: map.fields.title,
       slug: map.fields.slug,
-      category: category?.fields.slug as GameCategory
+      category: category?.fields.slug
     }
   })
   const modifiedCategories = [...gameCategories].reverse()

@@ -1,4 +1,3 @@
-import type { GameCategory } from '@/types/GameCategory'
 import { getMaps, getPagination } from '@/data/data'
 import MapCard from './MapCard/MapCard'
 import { MAP_LIMIT } from '@/utils/constants'
@@ -8,7 +7,7 @@ interface MapGridProps {
   searchParams?: {
     [key: string]: string | string[] | undefined
   }
-  category?: GameCategory | undefined
+  category?: string
 }
 
 export default async function MapGrid({ searchParams, category }: MapGridProps) {

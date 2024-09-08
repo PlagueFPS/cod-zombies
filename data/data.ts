@@ -1,9 +1,7 @@
 import 'server-only'
 import type { Map } from '@/types/Map';
 import type { EntriesQueries, EntrySkeletonType } from 'contentful';
-import type { GameCategory } from "@/types/GameCategory";
 import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
-import type { Game } from '@/types/Game';
 import { initializeContentfulClient } from '@/contentful/contentful';
 import { managementClient } from '@/contentful/contentful-management'
 import { cache } from 'react';
@@ -17,7 +15,7 @@ const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQuerie
   return response
 }
 
-const getDraftOrChangedPosts = async (category?: GameCategory, skip?: number, limit?: number) => {
+const getDraftOrChangedPosts = async (category?: string, skip?: number, limit?: number) => {
   const maps = await managementClient.entry.getMany({
     query: {
       content_type: 'featuredMaps',
@@ -36,7 +34,7 @@ const getDraftOrChangedPosts = async (category?: GameCategory, skip?: number, li
   }
 }
 
-const getPublishedPosts = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
+const getPublishedPosts = async (draftMode?: boolean, category?: string, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -52,7 +50,7 @@ const getPublishedPosts = async (draftMode?: boolean, category?: GameCategory, s
   }
 }
 
-const fetchMaps = async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number) => {
+const fetchMaps = async (draftMode?: boolean, category?: string, skip?: number, limit?: number) => {
   const maps = await getPosts<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -82,7 +80,7 @@ const fetchMaps = async (draftMode?: boolean, category?: GameCategory, skip?: nu
   }
 }
 
-export const getMaps = cache(async (draftMode?: boolean, category?: GameCategory, skip?: number, limit?: number): Promise<{ totalMaps: number, maps: Map[], }> => {
+export const getMaps = cache(async (draftMode?: boolean, category?: string, skip?: number, limit?: number): Promise<{ totalMaps: number, maps: Map[], }> => {
   if (!draftMode && !IN_DEVELOPMENT) {
     return await fetchMaps(draftMode, category, skip, limit)
   }
@@ -120,14 +118,14 @@ export const getMapBySlug = cache(async (slug: string, draftMode?: boolean) => {
   return map
 })
 
-export const getGameCategories = cache(async (): Promise<Game[]> => {
+export const getGameCategories = cache(async () => {
   const games = await getPosts<TypeGameCategorySkeleton>({
     content_type: 'gameCategory',
     order: ['sys.createdAt']
   })
 
   return games.items.map(game => ({
-    slug: game.fields.slug as GameCategory,
+    slug: game.fields.slug,
     title: game.fields.title,
     image: resolveAsset(game.fields.image)
   }))

@@ -1,4 +1,3 @@
-import type { GameCategory } from "@/types/GameCategory"
 import { Suspense } from "react"
 import MapFilters from "../MapGrid/MapFilters/MapFilters"
 import MapGridLoader from "../Loaders/MapGridLoader"
@@ -11,7 +10,7 @@ interface FeaturedMapsProps {
   searchParams?: { 
     [key: string]: string | string[] | undefined 
   }
-  currentCategory?: GameCategory
+  currentCategory?: string
 }
 
 export default function FeaturedMaps({ searchParams, currentCategory }: FeaturedMapsProps) {
