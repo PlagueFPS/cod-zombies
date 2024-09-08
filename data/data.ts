@@ -5,7 +5,7 @@ import type { GameCategory } from "@/types/GameCategory";
 import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import type { Game } from '@/types/Game';
 import { initializeContentfulClient } from '@/contentful/contentful';
-import { managementClient } from '@/contentful/contentful-managment'
+import { managementClient } from '@/contentful/contentful-management'
 import { cache } from 'react';
 import { IN_DEVELOPMENT, MAP_LIMIT } from '@/utils/constants';
 import { resolveAsset, resolveEntry } from '@/utils/contentful-utils';
