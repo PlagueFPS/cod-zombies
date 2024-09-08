@@ -1,6 +1,6 @@
 "use server"
 import { FormState } from "@/types/FormState"
-import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema } from "@/types/validationSchemas"
+import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema } from "@/utils/validationSchemas"
 
 export async function submitContactForm(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = ContactFormSchema.safeParse(Object.fromEntries(formData))
