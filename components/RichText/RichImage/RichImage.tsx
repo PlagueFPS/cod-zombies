@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import placeholderImage from "@/public/article-img-placeholder.jpg"
 import { cn } from "@/lib/utils"
+import ImageLoader from "@/components/Loaders/ImageLoader"
 
 interface RichImageProps {
   asset: Asset<undefined, string> | undefined
@@ -30,6 +31,7 @@ export default function RichImage({ asset, quality, className }: RichImageProps)
 
   return (
     <figure className="relative m-0 w-full h-auto">
+      { !imageLoaded && <ImageLoader /> }
       <picture className="relative w-full h-auto">
         <Image 
           src={ url }

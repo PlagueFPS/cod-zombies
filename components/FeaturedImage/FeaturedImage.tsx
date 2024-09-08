@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import placeholderImage from "@/public/article-img-placeholder.jpg"
 import { cn } from "@/lib/utils"
+import ImageLoader from "../Loaders/ImageLoader"
 
 interface FeaturedImageProps {
   featuredImage: Asset<undefined, string> | undefined
@@ -33,6 +34,7 @@ export default function FeaturedImage({ featuredImage, alt = "", quality = 75, c
 
   return (
     <figure className="relative m-0 w-full h-auto">
+      { !imageLoaded && <ImageLoader /> }
       <picture className={cn('flex justify-center items-center w-full h-auto')}>
         <Image 
           src={ featuredImageURL }
