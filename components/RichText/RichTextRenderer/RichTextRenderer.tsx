@@ -1,4 +1,3 @@
-import type { Asset } from "contentful"
 import { Document, INLINES, BLOCKS } from "@contentful/rich-text-types"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { YouTubeEmbed } from "@next/third-parties/google"
@@ -9,19 +8,12 @@ import RichImage from "../RichImage/RichImage"
 import Heading2 from "../RichHeadings/Heading2/Heading2"
 import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
-import { generateBlurDataURL } from "@/lib/generateBlurDataURL"
-import { Suspense } from "react"
-import RichImageLoader from "@/components/Loaders/RichImageLoader"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import RichBlockquote from "../RichBlockquote/RichBlockquote"
 
 interface RichTextRendererProps {
   body: Document
   slug: string
-}
-
-interface RichImageWrapperProps {
-  asset: Asset<undefined, string> | undefined
 }
 
 const youtube_url = 'https://youtu.be/'
@@ -64,9 +56,18 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
         const asset = node.data.target
         return (
-          <Suspense fallback={<RichImageLoader />}>
-            <RichImageWrapper asset={ asset } />
-          </Suspense>
+          <div className="relative w-full">
+            <div className="absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl overflow-hidden">
+              <RichImage 
+                asset={ asset }
+                quality={ 1 }
+                className="scale-[1.5]"
+              />
+            </div>
+            <div className="relative z-20">
+              <RichImage asset={ asset } />
+            </div>
+          </div>
         )
       },
       [BLOCKS.HEADING_2]: (node: any, children: any) => {
@@ -129,9 +130,4 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
   }
 
   return documentToReactComponents(body, renderOptions)
-}
-
-const RichImageWrapper = async ({ asset }: RichImageWrapperProps) => {
-  const blurDataURL = await generateBlurDataURL(asset?.fields.file?.url)
-  return <RichImage asset={ asset } blurDataURL={ blurDataURL } />
 }

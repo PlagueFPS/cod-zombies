@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils"
 
 interface FeaturedImageProps {
   featuredImage: Asset<undefined, string> | undefined
-  blurDataURL: string | null
   alt?: string
   quality?: number
   className?: string
@@ -15,7 +14,7 @@ interface FeaturedImageProps {
   sizes?: string
 }
 
-export default function FeaturedImage({ featuredImage, blurDataURL, alt = "", quality = 75, className, priority, sizes }: FeaturedImageProps) {
+export default function FeaturedImage({ featuredImage, alt = "", quality = 75, className, priority, sizes }: FeaturedImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageError, setImageError] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -44,11 +43,9 @@ export default function FeaturedImage({ featuredImage, blurDataURL, alt = "", qu
           ref={ imageRef }
           onLoad={ () => setImageLoaded(true) }
           onError={ () => setImageError(true) }
-          blurDataURL={ blurDataURL ?? undefined }
-          placeholder={ blurDataURL ? 'blur' : undefined }
           quality={ quality }
-          className={cn('flex justify-center items-center w-full h-auto opacity-100', className, {
-            'animate-fade-in': imageLoaded
+          className={cn('flex justify-center items-center w-full h-auto opacity-0', className, {
+            'animate-fade-in opacity-100': imageLoaded
           })}
           priority={ priority }
         />
@@ -58,8 +55,8 @@ export default function FeaturedImage({ featuredImage, blurDataURL, alt = "", qu
             alt="Placeholder Image"
             placeholder="blur"
             onLoad={ () => setImageLoaded(true) }
-            className={cn('flex justify-center items-center w-full h-auto opacity-100', className, {
-              'animate-fade-in': imageLoaded
+            className={cn('flex justify-center items-center w-full h-auto opacity-0', className, {
+              'animate-fade-in opacity-100': imageLoaded
             })}
           />
         )}

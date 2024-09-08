@@ -15,9 +15,6 @@ import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
-import { generateBlurDataURL } from '@/lib/generateBlurDataURL'
-import { Suspense } from 'react'
-import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
 import type { Map } from '@/types/Map'
 
 interface MapPageProps {
@@ -70,8 +67,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const { maps } = await getMaps(isEnabled)
   const map = maps.find(map => map.fields.slug === params.slug)
   if (!map) notFound()
-  const { title, image, gameCategory: category, body } = map.fields
-  const blurDataURL = await generateBlurDataURL(image?.fields.file?.url)
+  const { title, image, gameCategory: category, slug, body } = map.fields
   const headings = extractHeadings(map)
   const mapIndex = maps.indexOf(map)
   const prevMap = maps[mapIndex + 1]
@@ -86,7 +82,6 @@ export default async function MapPage({ params }: MapPageProps) {
               <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl overflow-hidden'>
                 <FeaturedImage
                   featuredImage={ image } 
-                  blurDataURL={ blurDataURL }
                   sizes='(max-width: 1280px) 100vw, 1111.58px'
                   priority 
                   quality={ 1 } 
@@ -96,7 +91,6 @@ export default async function MapPage({ params }: MapPageProps) {
               <div className='relative z-20 max-w-screen-xl mx-auto'>
                 <FeaturedImage 
                   featuredImage={ image }
-                  blurDataURL={ blurDataURL }
                   sizes='(max-width: 1280px) 100vw, 1280px'
                   priority 
                   className='xl:rounded-lg overflow-hidden' 
@@ -118,7 +112,7 @@ export default async function MapPage({ params }: MapPageProps) {
                       <BreadcrumbSeparator />
                       <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                          <NavLink exact active href={ `/${category?.fields.slug}/${params.slug}` } className='font-medium'>{ title }</NavLink>
+                          <NavLink exact active href={ `/${category?.fields.slug}/${slug}` } className='font-medium'>{ title }</NavLink>
                         </BreadcrumbLink>
                       </BreadcrumbItem>
                     </BreadcrumbList>
@@ -147,19 +141,15 @@ export default async function MapPage({ params }: MapPageProps) {
               </div>
             </div>
             <div className={ richStyles.body }>
-              <RichTextRenderer body={ body } slug={ params.slug } />
+              <RichTextRenderer body={ body } slug={ slug } />
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 { prevMap && (
-                  <Suspense fallback={<PreviousOrNextMapLoader prev />}>
-                    <PreviousOrNextMap map={ prevMap } prev />
-                  </Suspense>
+                  <PreviousOrNextMap map={ prevMap } prev />
                 )}
                 { nextMap && (
-                  <Suspense fallback={<PreviousOrNextMapLoader />}>
-                    <PreviousOrNextMap map={ nextMap } />
-                  </Suspense>
+                  <PreviousOrNextMap map={ nextMap } />
                 )}
               </div>
             </div>
@@ -171,9 +161,8 @@ export default async function MapPage({ params }: MapPageProps) {
   )
 }
 
- const PreviousOrNextMap = async ({ map, prev }: { map: Map, prev?: boolean }) => {
+ const PreviousOrNextMap = ({ map, prev }: { map: Map, prev?: boolean }) => {
   const { title, description, gameCategory: category, image, slug } = map.fields
-  const blurDataURL = await generateBlurDataURL(image?.fields.file?.url)
 
   return (
       <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
@@ -181,7 +170,6 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
               featuredImage={ image }
-              blurDataURL={ blurDataURL }
               sizes='(max-width: 1280px) 320px, 234px'
               quality={ 1 }
               className='object-cover scale-[2]'
@@ -190,7 +178,6 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className='relative z-20 max-w-sm w-full overflow-hidden rounded-lg'>
             <FeaturedImage
               featuredImage={ image }
-              blurDataURL={ blurDataURL }
               alt={ `${title} map image` }
               sizes='(max-width: 1280px) 320px, 364px'
               className='object-cover'

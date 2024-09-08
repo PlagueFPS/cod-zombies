@@ -6,7 +6,6 @@ import { isPriority } from '@/utils/functions'
 import { IN_DEVELOPMENT } from '@/utils/constants'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
-import { generateBlurDataURL } from '@/lib/generateBlurDataURL'
 
 interface MapCardProps {
   map: Map
@@ -17,7 +16,6 @@ interface MapCardProps {
 export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
   const { isEnabled } = draftMode()
   const { title, description, image, gameCategory: category, slug } = map.fields
-  const blurDataURL = await generateBlurDataURL(image?.fields.file?.url)
   const priority = isPriority(mapIndex, totalMaps)
 
   return (
@@ -32,7 +30,7 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
           </Badge>
         </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
-          <FeaturedImage featuredImage={ image } blurDataURL={ blurDataURL } priority={ priority } sizes='322px' quality={ 1 } />
+          <FeaturedImage featuredImage={ image } priority={ priority } sizes='322px' quality={ 1 } />
         </div>
         <CardHeader className="flex gap-2 flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
@@ -40,7 +38,6 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
               featuredImage={ image }
               alt={ `${title} map image` }
               sizes='272px'
-              blurDataURL={ blurDataURL }
               className='h-44 object-cover' 
               priority={ priority }
             />
