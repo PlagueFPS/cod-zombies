@@ -126,9 +126,9 @@ export default async function MapPage({ params }: MapPageProps) {
                   { title }
                 </h2>
                 <div className='flex items-center justify-center gap-4 w-fit'>
-                  { (isEnabled || IN_DEVELOPMENT) && map.isUnpublished ? <Badge className='bg-purple-600 border-purple-800 hover:bg-purple-600'>Draft</Badge> : null }
-                  { (isEnabled || IN_DEVELOPMENT) && map.hasChanged ? <Badge className='bg-blue-600 border-blue-800 hover:bg-blue-600'>Changed</Badge> : null }
-                  <Badge className='bg-orange-700 border-primary hover:bg-orange-700'>{ category?.fields.title }</Badge>
+                  { (isEnabled || IN_DEVELOPMENT) && map.isUnpublished ? <Badge className='badge-draft-gradient'>Draft</Badge> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && map.hasChanged ? <Badge className='badge-changed-gradient'>Changed</Badge> : null }
+                  <Badge className='badge-primary-gradient'>{ category?.fields.title }</Badge>
                 </div>
               </div>
               <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>

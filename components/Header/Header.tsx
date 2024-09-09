@@ -9,8 +9,10 @@ export default function Header() {
       <div className='container flex justify-between items-center w-full border-b border-border px-2 h-20'>
         <Link href='/' aria-label='Go to Call of Duty: Zombies Guides Home Page'>
           <div className='font-extrabold text-xl sm:text-2xl text-center'>
-            Call of Duty:
-            <span className='text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-primary'> Zombies</span>
+            <span className='text-gradient'>
+              Call of Duty:
+            </span>
+            <span className='text-primary-gradient'> Zombies</span>
           </div>
         </Link>
         <div className='flex justify-between items-center h-full'>

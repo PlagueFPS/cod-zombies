@@ -125,8 +125,7 @@ export const getGameCategories = cache(async () => {
   })
 
   return games.items.map(game => ({
-    slug: game.fields.slug,
-    title: game.fields.title,
+    ...game.fields,
     image: resolveAsset(game.fields.image)
   }))
 })
