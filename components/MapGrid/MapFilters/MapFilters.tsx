@@ -23,7 +23,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
           <Button 
             key={ `${game.slug}_${i}` } 
             size="sm" 
-            variant={ currentCategory === game.slug ? "secondary" : "outline" } 
+            variant={ "outline" }
             asChild
             className={cn({
               "badge-primary-gradient border": currentCategory === game.slug

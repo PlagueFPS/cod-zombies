@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
  
   // This secret should only be known to this route handler and the CMS
   if (secret !== process.env.DRAFT_SECRET || !slug) {
-    return new Response('Invalid token', { status: 401 })
+    return new Response('Unauthorized Request', { status: 403 })
   }
  
   // Fetch the headless CMS to check if the provided `slug` exists

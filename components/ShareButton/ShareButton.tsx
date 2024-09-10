@@ -28,7 +28,7 @@ interface ShareButtonProps extends ButtonProps {
 export default function ShareButton({ title, url, ...props }: ShareButtonProps) {
   const handleCopy = () => {
     navigator.clipboard.writeText(url)
-    toast.success('Copied to Clipboard!')
+    toast.success('URL Copied to Clipboard!', { duration: 1500 })
   }
 
   return (

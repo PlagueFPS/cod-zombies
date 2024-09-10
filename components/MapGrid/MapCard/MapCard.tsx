@@ -43,7 +43,7 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
             />
           </div>
           <div className='space-y-2'>
-            <CardTitle className="group-hover:text-primary group-focus-visible:text-primary transition-all">{ title }</CardTitle>
+            <CardTitle className="group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">{ title }</CardTitle>
             <CardDescription className='text-foreground/85'>{ description }</CardDescription>
           </div>
         </CardHeader>

@@ -37,3 +37,4 @@ next-env.d.ts
 
 .vercel
 newmedia
+upload-assets.ts
