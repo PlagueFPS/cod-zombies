@@ -126,6 +126,13 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
           </TableCell>
         )
       },
+    },
+    renderMark: {
+      [MARKS.ITALIC]: (text: any) => {
+        console.log(text)
+        if (text?.props?.children === 'Important Note: ') return null
+        else return <i>{ text }</i>
+      }
     }
   }
 
