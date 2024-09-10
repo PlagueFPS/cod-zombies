@@ -15,7 +15,7 @@ const getPosts = async <T extends EntrySkeletonType>(searchParams: EntriesQuerie
   return response
 }
 
-const getDraftOrChangedPosts = async (category?: string, skip?: number, limit?: number) => {
+const getDraftOrChangedMaps = async (category?: string, skip?: number, limit?: number) => {
   const maps = await managementClient.entry.getMany({
     query: {
       content_type: 'featuredMaps',
@@ -31,22 +31,6 @@ const getDraftOrChangedPosts = async (category?: string, skip?: number, limit?: 
   return {
     changedMaps,
     draftMaps
-  }
-}
-
-const getPublishedPosts = async (draftMode?: boolean, category?: string, skip?: number, limit?: number) => {
-  const maps = await getPosts<TypeFeaturedMapsSkeleton>({
-    content_type: 'featuredMaps',
-    order: ['-sys.createdAt'],
-    'fields.gameCategory.sys.contentType.sys.id': 'gameCategory',
-    'fields.gameCategory.fields.slug[match]': category ?? null,
-    skip,
-    limit
-  }, draftMode)
- 
-  return {
-    totalMaps: maps.total,
-    maps: maps.items
   }
 }
 
@@ -85,27 +69,20 @@ export const getMaps = cache(async (draftMode?: boolean, category?: string, skip
     return await fetchMaps(draftMode, category, skip, limit)
   }
   else {
-    const publishedPostsPromise = getPublishedPosts(draftMode, category, skip, limit)
-    const draftOrChangedPostsPromise = getDraftOrChangedPosts(category, skip, limit)
-    const [{ maps, totalMaps }, { draftMaps, changedMaps }] = await Promise.all([publishedPostsPromise, draftOrChangedPostsPromise])
+    const draftOrChangedPromise = getDraftOrChangedMaps(category, skip, limit)
+    const publishedPromise = fetchMaps(draftMode, category, skip, limit)
+    const [{ maps, totalMaps }, { draftMaps, changedMaps }] = await Promise.all([publishedPromise, draftOrChangedPromise])
 
     return {
       totalMaps,
       maps: maps.map(map => {
-        const isChanged = changedMaps.find(post => post.sys.id === map.sys.id)
-        const isUnpublished = draftMaps.find(post => post.sys.id === map.sys.id)
-        const mapImage = resolveAsset(map.fields.image)
-        const category = resolveEntry(map.fields.gameCategory)
+        const isChanged = !!changedMaps.find(m => m.sys.id === map.sys.id)
+        const isDraft = !!draftMaps.find(m => m.sys.id === map.sys.id)
 
         return {
           ...map,
-          fields: {
-            ...map.fields,
-            image: mapImage,
-            gameCategory: category
-          },
-          hasChanged: isChanged ? true : false,
-          isUnpublished: isUnpublished ? true : false
+          isChanged,
+          isDraft
         }
       })
     }

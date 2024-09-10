@@ -126,8 +126,8 @@ export default async function MapPage({ params }: MapPageProps) {
                   { title }
                 </h2>
                 <div className='flex items-center justify-center gap-4 w-fit'>
-                  { (isEnabled || IN_DEVELOPMENT) && map.isUnpublished ? <Badge className='badge-draft-gradient'>Draft</Badge> : null }
-                  { (isEnabled || IN_DEVELOPMENT) && map.hasChanged ? <Badge className='badge-changed-gradient'>Changed</Badge> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <Badge className='badge-draft-gradient'>Draft</Badge> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <Badge className='badge-changed-gradient'>Changed</Badge> : null }
                   <Badge className='badge-primary-gradient'>{ category?.fields.title }</Badge>
                 </div>
               </div>

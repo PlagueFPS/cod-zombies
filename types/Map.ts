@@ -10,6 +10,6 @@ export interface Map extends Omit<Entry<TypeFeaturedMapsSkeleton, undefined, str
     description: string;
     body: Document;
   }
-  hasChanged?: boolean
-  isUnpublished?: boolean
+  isChanged?: boolean
+  isDraft?: boolean
 }

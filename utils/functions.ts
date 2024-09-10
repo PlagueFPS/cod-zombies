@@ -59,7 +59,9 @@ export const sortMaps = (x: Map, y: Map) => {
     "die-maschine": 23,
     "firebase-z": 24,
     "mauer-der-toten": 25,
-    "forsaken": 26
+    "forsaken": 26,
+    "terminus": 27,
+    "liberty-falls": 28,
   }
 
   let a = mapOrder[x.fields.slug]
