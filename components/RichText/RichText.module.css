@@ -21,16 +21,8 @@
   @apply relative text-primary underline underline-offset-4 hover:no-underline transition-all
 }
 
-/* .body blockquote {
-  @apply flex flex-col justify-center items-center gap-4 mx-8 p-8 bg-secondary-alternative border rounded
-}
-
-.body blockquote p {
-  @apply m-0 italic
-} */
-
 .body ul, .body ol {
-  @apply p-4 bg-secondary-alternative rounded list-disc
+  @apply p-4 rounded-lg border list-disc
 }
 
 .body ul ul, .body ol ol {
@@ -54,7 +46,7 @@
 }
 
 .body table ul {
-  @apply p-0 list-none bg-transparent w-full
+  @apply p-0 list-none bg-transparent w-full border-none
 }
 
 .body table ul li {
