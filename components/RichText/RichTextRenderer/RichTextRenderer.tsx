@@ -7,8 +7,8 @@ import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import RichBlockquote from "../RichBlockquote/RichBlockquote"
-import React from "react"
 import RichLink from "../RichLink/RichLink"
+import RichTable from "../RichTable/RichTable"
 
 interface RichTextRendererProps {
   body: Document
@@ -58,39 +58,10 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         )
       },
       [BLOCKS.TABLE]: (node: any, children: any) => {
-        const tableRows: any[] = children.filter((child: any) => child.type === TableRow)
+        const headings: string[] = node.content[0].content.map((node: any) => node.content[0].content[0].value)
+        const bodyRows: any[] = node.content.slice(1).map((row: any) => row.content)
         return (
-          <div className="border rounded-lg w-full">
-            <Table>
-              <TableHeader>
-                { tableRows.length > 0 && tableRows[0] }
-              </TableHeader>
-              <TableBody>
-                { tableRows.slice(1) }
-              </TableBody>
-            </Table>
-          </div>
-        )
-      },
-      [BLOCKS.TABLE_ROW]: (node: any, children: any) => {
-        return <TableRow>{ children }</TableRow>
-      },
-      [BLOCKS.TABLE_HEADER_CELL]: (node: any, children: any) => {
-        return <TableHead>{ children }</TableHead>
-      },
-      [BLOCKS.TABLE_CELL]: (node: any) => {
-        const values = node.content[0].content.map((content: any) => content.value)
-        const listItems: string[] = values.join(',').split(',').map((word: string) => word.trim())
-        return (
-          <TableCell>
-            <ul className="space-y-2">
-              { listItems.map((listItem, index) => (
-                <li key={`${listItem}_${index}`}>
-                  { listItem }
-                </li>
-              ))}
-            </ul>
-          </TableCell>
+          <RichTable headings={ headings } bodyRows={ bodyRows } />
         )
       },
     },

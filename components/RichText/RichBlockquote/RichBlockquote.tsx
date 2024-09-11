@@ -15,7 +15,7 @@ export default function RichBlockquote({ children }: BlockquoteProps) {
               Important Note
             </div>
           </div>
-          <div className="text-orange-700 dark:text-orange-300">
+          <div className="text-orange-700 dark:text-orange-300 italic">
             {children}
           </div>
         </div>

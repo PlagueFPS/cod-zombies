@@ -92,7 +92,7 @@
       text-purple-800 from-purple-50 via-purple-200 to-purple-50 border-purple-400
     }
 
-    /* .button-active-gradient {
-      @apply bg
-    } */
+    .table-header-gradient {
+      @apply bg-gradient-to-r from-orange-300 to-orange-400 dark:from-orange-900 dark:to-orange-950
+    }
   }
