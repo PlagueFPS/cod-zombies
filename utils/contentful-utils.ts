@@ -12,8 +12,6 @@ export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCate
   if ('fields' in entry && entry.fields) return entry
 }
 
-// export const resolveMap = (entry: Map | EntryProps<KeyValueMap>) => entry as Map
-
 export const extractHeadings = (entry: Map) => {
   const headings: Heading[] = []
 

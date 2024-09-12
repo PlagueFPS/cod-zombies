@@ -1,3 +1,4 @@
+import 'server-only'
 import { createClient } from 'contentful-management'
 
 export const managementClient = createClient({

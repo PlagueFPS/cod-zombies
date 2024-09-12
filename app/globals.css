@@ -91,8 +91,4 @@
       @apply bg-gradient-to-tr dark:from-purple-950 dark:via-purple-800 dark:to-purple-950 dark:border-purple-600 dark:text-purple-100
       text-purple-800 from-purple-50 via-purple-200 to-purple-50 border-purple-400
     }
-
-    .table-header-gradient {
-      @apply bg-gradient-to-r from-orange-300 to-orange-400 dark:from-orange-900 dark:to-orange-950
-    }
   }

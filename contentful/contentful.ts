@@ -1,3 +1,4 @@
+import "server-only"
 import { IN_DEVELOPMENT } from '@/utils/constants'
 import { createClient } from 'contentful'
 
