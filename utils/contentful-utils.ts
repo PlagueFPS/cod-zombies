@@ -16,7 +16,7 @@ export const extractHeadings = (entry: Map) => {
   const headings: Heading[] = []
 
   entry.fields.body.content.forEach(node => {
-    if (node.nodeType === 'heading-2' || node.nodeType === 'heading-3') {
+    if (node.nodeType.includes('heading-')) {
       if (node.content[0].nodeType === 'text') {
         headings.push({
           type: node.nodeType,

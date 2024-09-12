@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import RichBlockquote from "../RichBlockquote/RichBlockquote"
 import RichLink from "../RichLink/RichLink"
 import RichTable from "../RichTable/RichTable"
+import Heading4 from "../RichHeadings/Heading4/Heading4"
 
 interface RichTextRendererProps {
   body: Document
@@ -43,6 +44,9 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       },
       [BLOCKS.HEADING_3]: (node: any, children: any) => {
         return <Heading3 id={ slugify(node.content[0].value) }>{ children }</Heading3>
+      },
+      [BLOCKS.HEADING_4]: (node: any, children: any) => {
+        return <Heading4 id={ slugify(node.content[0].value) }>{ children }</Heading4>
       },
       [BLOCKS.EMBEDDED_ENTRY]: () => {
         switch(slug) {
