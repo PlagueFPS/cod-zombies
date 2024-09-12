@@ -31,7 +31,7 @@ export async function submitContactForm(prevState: FormState, formData: FormData
   })
   if (!res.ok) return {
     success: false,
-    message: 'Failed to submit form',
+    message: 'Something Went Wrong! Failed to submit form',
   }
 
   return { success: true, message: 'Thank you for submitting! Your submission has been received' }
