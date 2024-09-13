@@ -22,7 +22,11 @@ export const checkParams = (param: string | string[] | undefined) => {
 }
 
 export const slugify = (text: string) => {
-  return text.toLowerCase().replace(/ /g, '-')
+  return text.toLowerCase()
+    .replace(/ /g, '-') // Replace spaces with hyphens
+    .replace(/\//g, '-') // Replace slashes with hyphens
+    .replace(/&/g, "and") // Replaces "&" symbol with the text "and"
+    
 }
 
 export const getYouTubeVideoID = (url: string) => {
