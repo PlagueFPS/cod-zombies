@@ -2,11 +2,15 @@
   @apply relative z-20 max-w-[80ch] px-4
 }
 
+.body h2 {
+  @apply relative z-40
+}
+
 .body h3,
 .body h4,
 .body h5,
 .body h6 {
-  @apply mt-8 mx-0
+  @apply relative z-40 mt-8 mx-0
 }
 
 .body p {
