@@ -25,6 +25,10 @@
   @apply relative z-30 text-orange-600 font-medium dark:text-primary underline underline-offset-4 hover:no-underline transition-all
 }
 
+.body blockquote p {
+  @apply my-0
+}
+
 .body ul, .body ol {
   @apply p-4 rounded-lg border list-disc
 }

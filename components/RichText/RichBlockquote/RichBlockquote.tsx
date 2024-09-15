@@ -1,4 +1,4 @@
-import { AlertCircle } from "lucide-react"
+import { Info } from "lucide-react"
 
 interface BlockquoteProps {
   children: React.ReactNode
@@ -6,20 +6,13 @@ interface BlockquoteProps {
 
 export default function RichBlockquote({ children }: BlockquoteProps) {
   return (
-    <blockquote className="space-y-6 p-4">
-      <div className="my-8 overflow-hidden rounded-xl bg-gradient-to-br from-orange-100 via-orange-50 to-white p-[1px] shadow-lg dark:from-orange-700 dark:to-orange-800">
-        <div className="rounded-xl bg-gradient-to-br from-orange-50 via-white to-orange-50 p-6 backdrop-blur-sm dark:from-orange-950 dark:via-black dark:to-orange-950">
-          <div className="flex items-center gap-3 mb-4">
-            <AlertCircle className="h-5 w-5 text-orange-700 dark:text-orange-400" aria-hidden="true" />
-            <div className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-b from-orange-700 to-orange-900 dark:from-orange-200 dark:via-orange-300 dark:to-orange-400">
-              Important Note
-            </div>
-          </div>
-          <div className="text-orange-700 dark:text-orange-300 italic">
-            {children}
-          </div>
-        </div>
-      </div>
+    <blockquote className="dark:bg-orange-900/20 bg-orange-100/20 border dark:border-orange-800 border-orange-200 rounded-lg p-4 mt-6 shadow-lg">
+      <p className="dark:text-orange-300 text-orange-700 flex items-start">
+        <Info className="w-5 h-5 mr-2 flex-shrink-0 dark:text-orange-400 text-orange-800" />
+        <em>
+          { children }
+        </em>
+      </p>
     </blockquote>
   )
 }
