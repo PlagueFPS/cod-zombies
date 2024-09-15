@@ -6,7 +6,7 @@ interface Heading4Props extends DetailedHTMLProps<HTMLAttributes<HTMLHeadingElem
 
 export default function Heading4({ id, children }: Heading4Props) {
   return (
-    <h4 id={ id } className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold scroll-m-36 md:scroll-m-8">
+    <h4 id={ id } className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold scroll-m-36 md:scroll-m-8 mb-8">
       <Link 
         href={ `#${id}` } 
         className="flex gap-4 justify-center items-center w-fit hover:text-primary transition-all group"

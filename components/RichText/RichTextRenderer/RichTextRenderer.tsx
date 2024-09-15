@@ -5,11 +5,11 @@ import RichImage from "../RichImage/RichImage"
 import Heading2 from "../RichHeadings/Heading2/Heading2"
 import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import RichBlockquote from "../RichBlockquote/RichBlockquote"
 import RichLink from "../RichLink/RichLink"
 import RichTable from "../RichTable/RichTable"
 import Heading4 from "../RichHeadings/Heading4/Heading4"
+import RichParagraph from "../RichParagraph/RichParagraph"
 
 interface RichTextRendererProps {
   body: Document
@@ -38,6 +38,9 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
             </div>
           </div>
         )
+      },
+      [BLOCKS.PARAGRAPH]: (node: any, children: any) => {
+        return <RichParagraph>{ children }</RichParagraph>
       },
       [BLOCKS.HEADING_2]: (node: any, children: any) => {
         return <Heading2 id={ slugify(node.content[0].value) }>{ children }</Heading2>
