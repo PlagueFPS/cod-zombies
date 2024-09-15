@@ -9,7 +9,7 @@ interface RichTableProps {
 
 export default function RichTable({ headings, bodyRows }: RichTableProps) {                 
   return (
-    <div className='border rounded-lg w-full overflow-hidden shadow-2xl dark:shadow-orange-500/20 my-12'>
+    <div className='border rounded-lg w-full overflow-hidden shadow-2xl my-12'>
       <Table>
         <TableHeader className='rounded-t-xl overflow-hidden dark:border-orange-700'>
           <TableRow>
