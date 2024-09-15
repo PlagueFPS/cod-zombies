@@ -1,7 +1,6 @@
 "use client"
 import { useTableOfContents } from "@/hooks/useTableOfContents"
 import { useScreen }from "@/hooks/useScreen"
-import { useEffect, useRef } from "react"
 import { Heading } from "@/types/Heading"
 import Link from "next/link"
 import BackToTopButton from "../BackToTopButton/BackToTopButton"
@@ -14,48 +13,8 @@ interface TableOfContentsProps {
 }
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
-  const { activeHeading } = useTableOfContents(headings)
+  const { activeHeading, scrollAreaRef, setHeadingRef } = useTableOfContents(headings)
   const { isDesktop } = useScreen()
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
-  const headingRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
-
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>
-    if (activeHeading && scrollAreaRef.current) {
-      const scrollViewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement
-      const activeItem = headingRefs.current.get(activeHeading)
-
-      if (scrollViewport && activeItem) {
-        const scrollRect = scrollViewport.getBoundingClientRect()
-        const itemRect = activeItem.getBoundingClientRect()
-
-        if (itemRect.top < scrollRect.top || itemRect.bottom > scrollRect.bottom) {
-          const itemTop = activeItem.offsetTop - scrollViewport.offsetTop
-          const targetScrollTop = itemRect.top < scrollRect.top
-            ? itemTop // Scroll up
-            : itemTop - scrollRect.height + itemRect.height // Scroll down
-
-          scrollViewport.style.scrollBehavior = 'smooth'
-          scrollViewport.scrollTop = targetScrollTop
-          timeoutId = setTimeout(() => {
-            scrollViewport.style.scrollBehavior = 'auto'
-          }, 1000)
-        }
-      }
-    }
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId)
-    }
-  }, [activeHeading])
-
-  const setHeadingRef = (id: string) => (el: HTMLAnchorElement | null) => {
-    if (el) {
-      headingRefs.current.set(id, el)
-    } else {
-      headingRefs.current.delete(id)
-    }
-  }
 
   return (
     <>

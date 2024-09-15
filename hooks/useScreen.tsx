@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
-
+/**
+ * 
+ * @param breakpoint number used to define a custom breakpoint at which `isDesktop` becomes true. Defaults to 1280
+ */
 export const useScreen = (breakpoint?: number) => {
   const [isDesktop, setDesktop] = useState(false)
 
@@ -17,7 +20,7 @@ export const useScreen = (breakpoint?: number) => {
     handleWindowResize()
     window.addEventListener('resize', handleWindowResize)
     return () => window.removeEventListener('resize', handleWindowResize)
-  }, [])
+  }, [breakpoint])
 
   return { isDesktop }
 }
