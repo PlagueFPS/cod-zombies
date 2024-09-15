@@ -9,7 +9,7 @@ import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import Link from 'next/link'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import NavLink from '@/components/NavLink/NavLink'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Slash } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'
@@ -103,13 +103,17 @@ export default async function MapPage({ params }: MapPageProps) {
                           <NavLink exact href='/'>Home</NavLink>
                         </BreadcrumbLink>
                       </BreadcrumbItem>
-                      <BreadcrumbSeparator />
+                      <BreadcrumbSeparator>
+                        <Slash />
+                      </BreadcrumbSeparator>
                       <BreadcrumbItem>
                         <BreadcrumbLink asChild>
                           <NavLink exact href={ `/${category?.fields.slug}` }>{ category?.fields.title }</NavLink>
                         </BreadcrumbLink>
                       </BreadcrumbItem>
-                      <BreadcrumbSeparator />
+                      <BreadcrumbSeparator>
+                        <Slash />
+                      </BreadcrumbSeparator>
                       <BreadcrumbItem>
                         <BreadcrumbLink asChild>
                           <NavLink exact active href={ `/${category?.fields.slug}/${slug}` } className='font-medium'>{ title }</NavLink>
