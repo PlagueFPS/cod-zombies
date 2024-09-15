@@ -34,7 +34,7 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
               />
             </div>
             <div className="relative z-20">
-              <RichImage asset={ asset } />
+              <RichImage asset={ asset } quality={ 100 } />
             </div>
           </div>
         )
