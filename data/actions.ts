@@ -31,12 +31,12 @@ export async function subscribeToNewsletter(prevState: NewsletterFormState, form
   }
 
   
-  const { data: createData, error: createError } = await resend.contacts.create({
+  const { error: createError } = await resend.contacts.create({
     email: email,
     audienceId: serverEnv.RESEND_AUDIENCE_ID 
   })
-  if (createError || !createData) {
-    console.error(createError?.message)
+  if (createError) {
+    console.error(createError.message)
     return {
       success: false,
       message: 'Failed to Subscribe! Please Try Again.'
@@ -69,7 +69,7 @@ export async function submitContactForm(prevState: ContactFormState, formData: F
   }
 
   const encodedFormData = new URLSearchParams(data).toString()
-  const res = await fetch(`https://docs.google.com/forms/u/0/d/e/1FAIpQLScKL8ybe9YXuG_snRdu-2L--6pGtuSv-RYm7_RmRP11SA_yOw/formResponse`, {
+  const res = await fetch(serverEnv.GOOGLE_FORM_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
