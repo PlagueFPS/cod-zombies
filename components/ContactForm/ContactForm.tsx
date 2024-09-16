@@ -17,10 +17,10 @@ export default function ContactForm() {
   useEffect(() => {
     if (state.success) {
       setOpen(false)
-      toast.success(state.message)
+      toast.success(state.message, { position: 'bottom-right' })
     }
     else if (!state.success) {
-      toast.error(state.message)
+      toast.error(state.message, { position: 'bottom-right' })
     }
   }, [state])
 
