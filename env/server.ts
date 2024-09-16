@@ -11,7 +11,6 @@ export const serverEnv = createEnv({
     RESEND_AUDIENCE_ID: z.string().min(1),
     CONTENTFUL_ACCESS_TOKEN: z.string().min(1),
     CONTENTFUL_PREVIEW_ACCESS_TOKEN: z.string().min(1),
-    NEWSLETTER_SECRET: z.string().min(1),
   },
   experimental__runtimeEnv: process.env
 });
