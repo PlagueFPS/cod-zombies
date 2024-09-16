@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { getGameCategories, getMaps } from "@/data/data";
-import { WEBSITE_URL } from "@/utils/constants"
+import { clientEnv } from "@/env/client";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const mapsPromise = getMaps()
@@ -9,13 +9,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: `${WEBSITE_URL}`
+      url: `${clientEnv.NEXT_PUBLIC_WEBSITE_URL}`
     },
     ...categories.map(category => ({
-      url: `${WEBSITE_URL}/${category.slug}`,
+      url: `${clientEnv.NEXT_PUBLIC_WEBSITE_URL}/${category.slug}`,
     })),
     ...maps.map(map => ({
-      url: `${WEBSITE_URL}/${map.fields.gameCategory?.fields.slug}/${map.fields.slug}`,
+      url: `${clientEnv.NEXT_PUBLIC_WEBSITE_URL}/${map.fields.gameCategory?.fields.slug}/${map.fields.slug}`,
       lastModified: new Date(map.sys.updatedAt)
     }))
   ]

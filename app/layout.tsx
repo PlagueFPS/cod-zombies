@@ -2,7 +2,8 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans"
 import { ThemeProvider } from "@/contexts/ThemeProvider";
-import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE, WEBSITE_URL } from "@/utils/constants";
+import { clientEnv } from "@/env/client";
+import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -12,7 +13,7 @@ interface LayoutProps {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`${WEBSITE_URL}`),
+  metadataBase: new URL(`${clientEnv.NEXT_PUBLIC_WEBSITE_URL}`),
   title: {
     template: `%s - ${SITE_TITLE}`,
     default: SITE_TITLE

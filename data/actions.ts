@@ -2,6 +2,7 @@
 import type { ContactFormState, NewsletterFormState } from "@/types/FormStates"
 import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { Resend } from 'resend'
+import { serverEnv } from "@/env/server"
 
 export async function subscribeToNewsletter(prevState: NewsletterFormState, formData: FormData): Promise<NewsletterFormState> {
   const validatedFields = NewsletterFormSchema.safeParse(Object.fromEntries(formData))
@@ -11,10 +12,10 @@ export async function subscribeToNewsletter(prevState: NewsletterFormState, form
     errors: validatedFields.error.flatten().fieldErrors
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  const resend = new Resend(serverEnv.RESEND_API_KEY)
   const { email } = validatedFields.data
   
-  const { data, error } = await resend.contacts.list({ audienceId: process.env.RESEND_AUDIENCE_ID! })
+  const { data, error } = await resend.contacts.list({ audienceId: serverEnv.RESEND_AUDIENCE_ID })
   if (error || !data) {
     console.error(error?.message)
     return {
@@ -32,7 +33,7 @@ export async function subscribeToNewsletter(prevState: NewsletterFormState, form
   
   const { data: createData, error: createError } = await resend.contacts.create({
     email: email,
-    audienceId: process.env.RESEND_AUDIENCE_ID!
+    audienceId: serverEnv.RESEND_AUDIENCE_ID 
   })
   if (createError || !createData) {
     console.error(createError?.message)

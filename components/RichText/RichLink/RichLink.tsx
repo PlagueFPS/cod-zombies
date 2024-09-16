@@ -1,4 +1,4 @@
-import { WEBSITE_URL } from "@/utils/constants"
+import { clientEnv } from "@/env/client"
 import { getYouTubeVideoID } from "@/utils/functions"
 import { YouTubeEmbed } from "@next/third-parties/google"
 import Link from "next/link"
@@ -19,7 +19,7 @@ export default function RichLink({ node }: RichLinkProps) {
       </>
     )
   }
-  else if (node.data.uri.startsWith(WEBSITE_URL)) {
+  else if (node.data.uri.startsWith(clientEnv.NEXT_PUBLIC_WEBSITE_URL)) {
     return (
       <Link href={ node.data.uri }>
         { node.content[0].value }
@@ -28,7 +28,7 @@ export default function RichLink({ node }: RichLinkProps) {
   }
   else if (node.data.uri.startsWith(dev_url)) {
     return (
-      <Link href={ node.data.uri.replace(dev_url, WEBSITE_URL) }>
+      <Link href={ node.data.uri.replace(dev_url, clientEnv.NEXT_PUBLIC_WEBSITE_URL) }>
         { node.content[0].value }
       </Link>
     )

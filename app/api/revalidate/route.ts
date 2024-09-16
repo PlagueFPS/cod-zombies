@@ -2,12 +2,13 @@ import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { getMapBySlug } from "@/data/data"
+import { serverEnv } from "@/env/server"
 
 export async function PUT(req: NextRequest) {
   const headersList = headers()
   const secret = headersList.get('X-Contentful-Webhook-Secret')
  
-  if (secret !== process.env.REVALIDATE_SECRET) {
+  if (secret !== serverEnv.REVALIDATE_SECRET) {
     return Response.json({ revalidated: false, message: 'Unauthorized Request' }, { status: 403 })
   }
 
