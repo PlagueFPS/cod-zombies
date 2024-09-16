@@ -16,4 +16,9 @@ export const NewsletterFormSchema = z.object({
   email: z.string().email(),
 })
 
+export const ContentfulWebhookBodySchema = z.object({
+  slug: z.string().min(1),
+  version: z.number().min(1)
+})
+
 export interface ContactGoogleForm extends z.infer<typeof ContactGoogleFormSchema> {}
