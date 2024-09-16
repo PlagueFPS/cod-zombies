@@ -12,4 +12,8 @@ export const ContactFormSchema = z.object({
   body: z.string().max(1000, "Cannot exceed 1000 characters")
 })
 
+export const NewsletterFormSchema = z.object({
+  email: z.string().email(),
+})
+
 export interface ContactGoogleForm extends z.infer<typeof ContactGoogleFormSchema> {}

@@ -1,7 +1,15 @@
 "use client"
+import { cn } from "@/lib/utils"
+import { DetailedHTMLProps, HTMLAttributes } from "react"
 
-export default function Copyright() {
+interface CopyrightProps extends DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement> {
+  className?: string
+}
+
+export default function Copyright({ className }: CopyrightProps) {
   return (
-    <div>&copy; { new Date().getFullYear() }</div>
+    <p className={cn("text-sm text-muted-foreground", className)}>
+      &copy; { new Date().getFullYear() } Call of Duty: Zombies Guides
+    </p>
   )
 }

@@ -1,8 +1,54 @@
 "use server"
-import { FormState } from "@/types/FormState"
-import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema } from "@/utils/validationSchemas"
+import type { ContactFormState, NewsletterFormState } from "@/types/FormStates"
+import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
+import { Resend } from 'resend'
 
-export async function submitContactForm(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function subscribeToNewsletter(prevState: NewsletterFormState, formData: FormData): Promise<NewsletterFormState> {
+  const validatedFields = NewsletterFormSchema.safeParse(Object.fromEntries(formData))
+  if (!validatedFields.success) return {
+    success: false,
+    message: 'Invalid Email. Failed to subscribe to newsletter',
+    errors: validatedFields.error.flatten().fieldErrors
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY)
+  const { email } = validatedFields.data
+  
+  const { data, error } = await resend.contacts.list({ audienceId: process.env.RESEND_AUDIENCE_ID! })
+  if (error || !data) {
+    console.error(error?.message)
+    return {
+      success: false,
+      message: "Something Went Wrong! Please Try Again.",
+    }
+  }
+  
+  const contact = data.data.find(contact => contact.email === email)
+  if (contact) return {
+    success: false,
+    message: 'That email has already subscribed!'
+  }
+
+  
+  const { data: createData, error: createError } = await resend.contacts.create({
+    email: email,
+    audienceId: process.env.RESEND_AUDIENCE_ID!
+  })
+  if (createError || !createData) {
+    console.error(createError?.message)
+    return {
+      success: false,
+      message: 'Failed to Subscribe! Please Try Again.'
+    }
+  }
+
+  return {
+    success: true,
+    message: 'Thank You For Subscribing!'
+  }
+}
+
+export async function submitContactForm(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
   const validatedFields = ContactFormSchema.safeParse(Object.fromEntries(formData))
   if (!validatedFields.success) return {
     success: false,
