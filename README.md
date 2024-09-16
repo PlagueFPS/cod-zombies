@@ -1,5 +1,9 @@
 ## TODO
-- (?) Create a seperate form for reporting issues
+- Create a seperate form for reporting issues
+- Setup discord server for users of the site
+- Integrate an API that posts new releases to a discord annoucement channel
+- Add authentication using NextAuth
+- (?) a known issues section that pulls issues from a discord forum channel
 
 ## Generating type definitions for content types for Contentful
 - Run the following command: 
