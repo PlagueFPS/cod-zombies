@@ -1,14 +1,14 @@
 import 'server-only'
 import { createClient } from 'contentful-management'
-import { serverEnv } from '@/env/server'
+import { env } from '@/env'
 
 export const managementClient = createClient({
-  accessToken: serverEnv.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN,
+  accessToken: env.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN,
 }, 
 { 
   type: "plain", 
   defaults: {
-    spaceId: serverEnv.CONTENTFUL_SPACE_ID,
+    spaceId: env.CONTENTFUL_SPACE_ID,
     environmentId: 'master'
   }
 })

@@ -4,8 +4,7 @@ import { fileURLToPath } from "url";
 const jiti = createJiti(fileURLToPath(import.meta.url))
 
 // Import env here to validate during build. Jiti used to import .ts files
-jiti("./env/client")
-jiti("./env/server")
+jiti("./env")
 
 const nextConfig = {
   experimental: {

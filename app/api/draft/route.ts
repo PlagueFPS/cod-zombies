@@ -2,15 +2,14 @@ import type { NextRequest } from 'next/server'
 import { getMapBySlug } from '@/data/data'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { clientEnv } from '@/env/client'
-import { serverEnv } from '@/env/server'
+import { env } from '@/env'
  
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret')
   const slug = req.nextUrl.searchParams.get('slug')
  
   // This secret should only be known to this route handler and the CMS
-  if (secret !== serverEnv.DRAFT_SECRET || !slug) {
+  if (secret !== env.DRAFT_SECRET || !slug) {
     return new Response('Unauthorized Request', { status: 403 })
   }
  
@@ -26,5 +25,5 @@ export async function GET(req: NextRequest) {
  
   // Redirect to the path from the fetched map
   // We don't redirect to searchParams.slug as that might lead to open redirect vulnerabilities
-  redirect(`${clientEnv.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${map.fields.slug}`)
+  redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${map.fields.slug}`)
 }

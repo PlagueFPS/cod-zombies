@@ -2,7 +2,7 @@
 import type { ContactFormState, NewsletterFormState } from "@/types/FormStates"
 import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { Resend } from 'resend'
-import { serverEnv } from "@/env/server"
+import { env } from "@/env"
 
 export async function subscribeToNewsletter(prevState: NewsletterFormState, formData: FormData): Promise<NewsletterFormState> {
   const validatedFields = NewsletterFormSchema.safeParse(Object.fromEntries(formData))
@@ -12,10 +12,10 @@ export async function subscribeToNewsletter(prevState: NewsletterFormState, form
     errors: validatedFields.error.flatten().fieldErrors
   }
 
-  const resend = new Resend(serverEnv.RESEND_API_KEY)
+  const resend = new Resend(env.RESEND_API_KEY)
   const { email } = validatedFields.data
   
-  const { data, error } = await resend.contacts.list({ audienceId: serverEnv.RESEND_AUDIENCE_ID })
+  const { data, error } = await resend.contacts.list({ audienceId: env.RESEND_AUDIENCE_ID })
   if (error || !data) {
     console.error(error?.message)
     return {
@@ -33,7 +33,7 @@ export async function subscribeToNewsletter(prevState: NewsletterFormState, form
   
   const { error: createError } = await resend.contacts.create({
     email: email,
-    audienceId: serverEnv.RESEND_AUDIENCE_ID 
+    audienceId: env.RESEND_AUDIENCE_ID 
   })
   if (createError) {
     console.error(createError.message)
@@ -69,7 +69,7 @@ export async function submitContactForm(prevState: ContactFormState, formData: F
   }
 
   const encodedFormData = new URLSearchParams(data).toString()
-  const res = await fetch(serverEnv.GOOGLE_FORM_ENDPOINT, {
+  const res = await fetch(env.GOOGLE_FORM_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'

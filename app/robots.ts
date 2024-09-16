@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { clientEnv } from "@/env/client";
+import { env } from "@/env";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: `${clientEnv.NEXT_PUBLIC_WEBSITE_URL}/sitemap.xml`
+    sitemap: `${env.NEXT_PUBLIC_WEBSITE_URL}/sitemap.xml`
   }
 }

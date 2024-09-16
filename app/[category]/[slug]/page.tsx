@@ -16,7 +16,7 @@ import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
 import type { Map } from '@/types/Map'
-import { clientEnv } from '@/env/client'
+import { env } from '@/env'
 
 interface MapPageProps {
   params: { 
@@ -141,7 +141,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   <div>Last Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
                 </div>
                 <div className='flex items-center justify-center'>
-                  <ShareButton title={ title } url={ `${clientEnv.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
+                  <ShareButton title={ title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
                 </div>
               </div>
             </div>

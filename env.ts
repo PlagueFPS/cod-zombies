@@ -1,7 +1,7 @@
 import { createEnv } from "@t3-oss/env-nextjs"
 import { z } from "zod";
 
-export const serverEnv = createEnv({
+export const env = createEnv({
   server: {
     REVALIDATE_SECRET: z.string().min(32),
     CONTENTFUL_SPACE_ID: z.string().min(1),
@@ -13,5 +13,10 @@ export const serverEnv = createEnv({
     CONTENTFUL_PREVIEW_ACCESS_TOKEN: z.string().min(1),
     GOOGLE_FORM_ENDPOINT: z.string().url(),
   },
-  experimental__runtimeEnv: process.env
+  client: {
+    NEXT_PUBLIC_WEBSITE_URL: z.string().url(),
+  },
+  experimental__runtimeEnv: {
+    NEXT_PUBLIC_WEBSITE_URL: process.env.NEXT_PUBLIC_WEBSITE_URL,
+  }
 });
