@@ -64,8 +64,6 @@ export const getFeaturedMapsByCategory = cache(async (draftMode: boolean, catego
   }, draftMode)
   
   const featuredMapsDTO = await createFeaturedMapsDTO(featuredMaps.items)
-  const tranzit = featuredMaps.items.find(map => map.fields.slug === 'tranzit')
-  console.log(process.env.NODE_ENV, tranzit?.sys.createdAt)
   return {
     featuredMaps: featuredMapsDTO,
     totalMaps: featuredMaps.total
