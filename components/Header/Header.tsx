@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import SearchBar from '@/components/SearchBar/SearchBar'
 import SearchBarLoader from '@/components/Loaders/SearchBarLoader'
+import FeedbackForm from '../FeedbackForm/FeedbackForm'
 
 export default function Header() {
   return (
@@ -15,7 +16,8 @@ export default function Header() {
             <span className='text-primary-gradient'> Zombies</span>
           </div>
         </Link>
-        <div className='flex justify-between items-center h-full'>
+        <div className='flex justify-center items-center gap-2 w-fit h-full ml-auto'>
+          <FeedbackForm />
           <Suspense fallback={<SearchBarLoader />}>
             <SearchBar />
           </Suspense>

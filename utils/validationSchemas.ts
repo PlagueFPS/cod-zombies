@@ -1,18 +1,15 @@
 import { z } from "zod";
 
-export interface ContactGoogleForm extends z.infer<typeof ContactGoogleFormSchema> {}
 export interface SearchParams extends z.infer<typeof SearchParamsSchema> {}
 
-export const ContactGoogleFormSchema = z.object({
-  'entry.404032380': z.string().email(), // email
-  'entry.1808584294': z.enum(['Suggestion', 'Feedback', 'Other']), // subject
-  'entry.1626527007': z.string().max(1000, "Cannot exceed 1000 characters") // body
-})
-
-export const ContactFormSchema = z.object({
-  email: z.string().email(),
-  subject: z.enum(['Suggestion', 'Feedback', 'Other']),
-  body: z.string().max(1000, "Cannot exceed 1000 characters")
+export const FeedbackFormSchema = z.object({
+  title: z.string({ required_error: "Title is required" }).min(1),
+  email: z.string().email().optional(),
+  name: z.string().optional(),
+  label: z.enum(['featureRequest', 'idea', 'issue', 'question', 'complaint', 'other'], {
+    required_error: "Label is required",
+  }),
+  feedback: z.string({ required_error: "Feedback is required" }).min(1)
 })
 
 export const NewsletterFormSchema = z.object({

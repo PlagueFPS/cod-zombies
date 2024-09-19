@@ -1,6 +1,6 @@
 "use server"
-import type { ContactFormState, NewsletterFormState } from "@/types/FormStates"
-import { ContactFormSchema, ContactGoogleForm, ContactGoogleFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
+import type { FeedbackFormState, NewsletterFormState } from "@/types/FormStates"
+import { FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { Resend } from 'resend'
 import { env } from "@/env"
 
@@ -49,33 +49,29 @@ export async function subscribeToNewsletter(prevState: NewsletterFormState, form
   }
 }
 
-export async function submitContactForm(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
-  const validatedFields = ContactFormSchema.safeParse(Object.fromEntries(formData))
+export async function submitFeedbackForm(prevState: FeedbackFormState, formData: FormData): Promise<FeedbackFormState> {
+  const validatedFields = FeedbackFormSchema.safeParse(Object.fromEntries(formData))
   if (!validatedFields.success) return {
     success: false,
     message: 'Invalid Fields. Failed to submit form',
     errors: validatedFields.error.flatten().fieldErrors
   }
-
-  const contactGoogleForm: ContactGoogleForm = {
-    "entry.404032380": validatedFields.data.email,
-    "entry.1808584294": validatedFields.data.subject,
-    "entry.1626527007": validatedFields.data.body
-  }
-  const { data, success } = ContactGoogleFormSchema.safeParse(contactGoogleForm)
-  if (!success) return {
-    success: false,
-    message: 'Invalid Data. Failed to submit form',
-  }
-
-  const encodedFormData = new URLSearchParams(data).toString()
-  const res = await fetch(env.GOOGLE_FORM_ENDPOINT, {
-    method: 'POST',
+  
+  const res = await fetch("https://projectplannerai.com/api/feedback", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      "Content-Type": "application/json",
     },
-    body: encodedFormData
+    body: JSON.stringify({
+      projectId: env.PROJECT_PLANNER_ID,
+      title: validatedFields.data.title,
+      name: validatedFields.data.name,
+      email: validatedFields.data.email,
+      label: validatedFields.data.label,
+      feedback: validatedFields.data.feedback,
+    }),
   })
+  
   if (!res.ok) return {
     success: false,
     message: 'Something Went Wrong! Failed to submit form',

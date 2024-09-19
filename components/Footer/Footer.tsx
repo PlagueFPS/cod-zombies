@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic"
-import ContactForm from "../ContactForm/ContactForm"
 import ThemeToggleLoader from "../Loaders/ThemeToggleLoader"
 import Newsletter from "../Newsletter/Newsletter"
 
@@ -24,7 +23,6 @@ export default function Footer() {
         </div>
         <Newsletter />
         <div className="flex justify-center md:justify-end space-x-4">
-          <ContactForm />
           <ThemeToggle />
         </div>
       </div>
