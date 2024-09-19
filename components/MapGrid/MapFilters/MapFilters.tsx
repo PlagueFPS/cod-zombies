@@ -1,4 +1,5 @@
-import { getGameCategories } from "@/data/data";
+import { draftMode } from "next/headers";
+import { getGameCategories } from "@/data/gameCategory";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Link from "next/link";
@@ -9,7 +10,8 @@ interface MapFiltersProps {
 }
 
 export default async function MapFilters({ currentCategory }: MapFiltersProps) {
-  const gameCategories = await getGameCategories()
+  const { isEnabled } = draftMode()
+  const gameCategories = await getGameCategories(isEnabled)
   
   const getHref = (category: string) => {
     if (currentCategory === category) return '/'

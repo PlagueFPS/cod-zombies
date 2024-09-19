@@ -1,7 +1,8 @@
-import { getGameCategories } from "@/data/data"
+import { getGameCategories } from "@/data/gameCategory"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { draftMode } from "next/headers"
 import HeroSection from "@/components/HeroSection/HeroSection"
 import FeaturedMaps from "@/components/FeaturedMaps/FeaturedMaps"
 
@@ -12,14 +13,15 @@ interface CategoryPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const categories = await getGameCategories()
+  const categories = await getGameCategories(IN_DEVELOPMENT)
   return categories.map(category => ({
     category: category.slug
   }))
 }
 
 export const generateMetadata = async ({ params }: CategoryPageProps) => {
-  const categories = await getGameCategories()
+  const { isEnabled } = draftMode()
+  const categories = await getGameCategories(isEnabled)
   const category = categories.find(category => category.slug === params.category)
   if (!category) notFound()
   const title = category.title
@@ -49,7 +51,8 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const categories = await getGameCategories()
+  const { isEnabled } = draftMode()
+  const categories = await getGameCategories(isEnabled)
   const category = categories.find(category => category.slug === params.category)
   if (!category) notFound()
 

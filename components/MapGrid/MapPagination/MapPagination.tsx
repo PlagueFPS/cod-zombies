@@ -1,16 +1,16 @@
+import { type SearchParams, validateSearchParams } from "@/utils/validationSchemas"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
-import { getPagination } from "@/data/data"
+import { getPaginatedFeaturedMaps } from "@/data/featuredMaps"
+import { draftMode } from "next/headers"
 
 interface MapPaginationProps {
-  searchParams?: { 
-    [key: string]: string | string[] | undefined 
-  }
+  searchParams?: SearchParams
 }
 
 export default async function MapPagination({ searchParams }: MapPaginationProps) {
-  const { currentPage, totalPages } = await getPagination(searchParams ? searchParams.page : undefined)
-  const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
-  const nextPage = currentPage + 1 > totalPages ? totalPages : currentPage + 1
+  const { isEnabled } = draftMode()
+  const { page } = validateSearchParams(searchParams)
+  const { currentPage, totalPages, prevPage, nextPage } = await getPaginatedFeaturedMaps(isEnabled, page)
   const previousDisabled = prevPage === currentPage ? true : false
   const nextDisabled = nextPage === currentPage ? true : currentPage === totalPages ? true : false
 

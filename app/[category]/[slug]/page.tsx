@@ -1,7 +1,7 @@
 import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
-import { getMapBySlug, getMaps } from '@/data/data'
+import { getFeaturedMapBySlug, getFeaturedMaps } from "@/data/featuredMaps"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
@@ -15,8 +15,8 @@ import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
-import type { Map } from '@/types/Map'
 import { env } from '@/env'
+import type { FeaturedMap } from '@/types/FeaturedMap'
 
 interface MapPageProps {
   params: { 
@@ -26,19 +26,19 @@ interface MapPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const { maps } = await getMaps()
+  const { featuredMaps } = await getFeaturedMaps(IN_DEVELOPMENT)
 
-  return maps.map(map => ({
-    category: map.fields.gameCategory?.fields.slug,
-    slug: map.fields.slug
+  return featuredMaps.map(map => ({
+    category: map.gameCategory?.fields.slug,
+    slug: map.slug
   }))
 }
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
   const { isEnabled } = draftMode()
-  const map = await getMapBySlug(params.slug, isEnabled)
+  const map = await getFeaturedMapBySlug(isEnabled, params.slug)
   if (!map) notFound()
-  const { title, description, image } = map.fields
+  const { title, description, image } = map
   const metadata: Metadata = {
     title,
     description,
@@ -65,14 +65,14 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 
 export default async function MapPage({ params }: MapPageProps) {
   const { isEnabled } = draftMode()
-  const { maps } = await getMaps(isEnabled)
-  const map = maps.find(map => map.fields.slug === params.slug)
+  const { featuredMaps } = await getFeaturedMaps(isEnabled)
+  const map = featuredMaps.find(map => map.slug === params.slug)
   if (!map) notFound()
-  const { title, image, gameCategory: category, slug, body } = map.fields
+  const { title, image, gameCategory: category, slug, updatedAt, isDraft, isChanged, body } = map
   const headings = extractHeadings(map)
-  const mapIndex = maps.indexOf(map)
-  const prevMap = maps[mapIndex + 1]
-  const nextMap = maps[mapIndex - 1]
+  const mapIndex = featuredMaps.indexOf(map)
+  const prevMap = featuredMaps[mapIndex + 1]
+  const nextMap = featuredMaps[mapIndex - 1]
 
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
@@ -131,14 +131,14 @@ export default async function MapPage({ params }: MapPageProps) {
                   { title }
                 </h2>
                 <div className='flex items-center justify-center gap-4 w-fit'>
-                  { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <Badge className='badge-draft-gradient'>Draft</Badge> : null }
-                  { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <Badge className='badge-changed-gradient'>Changed</Badge> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && isDraft ? <Badge className='badge-draft-gradient'>Draft</Badge> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && isChanged ? <Badge className='badge-changed-gradient'>Changed</Badge> : null }
                   <Badge className='badge-primary-gradient'>{ category?.fields.title }</Badge>
                 </div>
               </div>
               <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
                 <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
-                  <div>Last Updated: { new Date(map.sys.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+                  <div>Last Updated: { new Date(updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
                 </div>
                 <div className='flex items-center justify-center'>
                   <ShareButton title={ title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
@@ -166,8 +166,8 @@ export default async function MapPage({ params }: MapPageProps) {
   )
 }
 
- const PreviousOrNextMap = ({ map, prev }: { map: Map, prev?: boolean }) => {
-  const { title, description, gameCategory: category, image, slug } = map.fields
+ const PreviousOrNextMap = ({ map, prev }: { map: FeaturedMap, prev?: boolean }) => {
+  const { title, description, gameCategory: category, image, slug } = map
 
   return (
       <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>

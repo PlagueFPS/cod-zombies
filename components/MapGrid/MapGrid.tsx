@@ -1,27 +1,43 @@
-import { getMaps, getPagination } from '@/data/data'
 import MapCard from './MapCard/MapCard'
-import { MAP_LIMIT } from '@/utils/constants'
 import { draftMode } from 'next/headers'
+import { getFeaturedMapsByCategory, getPaginatedFeaturedMaps } from '@/data/featuredMaps'
+import { type SearchParams, validateSearchParams } from '@/utils/validationSchemas'
 
 interface MapGridProps {
-  searchParams?: {
-    [key: string]: string | string[] | undefined
-  }
+  searchParams?: SearchParams
   category?: string
 }
 
 export default async function MapGrid({ searchParams, category }: MapGridProps) {
   const { isEnabled } = draftMode()
-  const { skip } = await getPagination(searchParams ? searchParams.page : undefined)
-  const { maps, totalMaps } = await getMaps(isEnabled, category, skip, MAP_LIMIT)
-  
+  const { page } = validateSearchParams(searchParams)
+  const { featuredMaps, totalMaps } = await chooseMapGridMaps(isEnabled, page, category)
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center animate-fade-in">
       <>
-        { maps.map((map, index) => (
-          <MapCard key={ map.sys.id } map={ map } mapIndex={ index } totalMaps={ totalMaps } />
+        { featuredMaps.map((map, index) => (
+          <MapCard key={ map.id } map={ map } mapIndex={ index } totalMaps={ totalMaps } />
         ))}
       </>
     </div>
   )
+}
+
+const chooseMapGridMaps = async (isEnabled: boolean, page: number, category: string | undefined) => {
+  if (category) {
+    const { featuredMaps, totalMaps } = await getFeaturedMapsByCategory(isEnabled, category)
+    return {
+      featuredMaps,
+      totalMaps
+    }
+  } else {
+    if (page) {
+      const { featuredMaps, totalMaps } = await getPaginatedFeaturedMaps(isEnabled, page)
+      return {
+      featuredMaps,
+      totalMaps
+      }
+    } else throw new Error('Expected page parameter')
+  }
 }

@@ -1,10 +1,9 @@
+import type { SearchParams } from "@/utils/validationSchemas";
 import HeroSection from "@/components/HeroSection/HeroSection";
 import FeaturedMaps from "@/components/FeaturedMaps/FeaturedMaps";
 
 interface HomePageProps {
-  searchParams: { 
-    [key: string]: string | string[] | undefined 
-  }
+  searchParams: SearchParams
 }
 
 export default async function Home({ searchParams }: HomePageProps) {

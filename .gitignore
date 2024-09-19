@@ -38,3 +38,4 @@ next-env.d.ts
 .vercel
 newassets
 upload-assets.ts
+copy-images.ts

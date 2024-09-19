@@ -1,3 +1,4 @@
+import type { SearchParams } from "@/utils/validationSchemas"
 import { Suspense } from "react"
 import MapFilters from "../MapGrid/MapFilters/MapFilters"
 import MapGridLoader from "../Loaders/MapGridLoader"
@@ -7,9 +8,7 @@ import MapFiltersLoader from "../Loaders/MapFiltersLoader"
 import MapPaginationLoader from "../Loaders/MapPaginationLoader"
 
 interface FeaturedMapsProps {
-  searchParams?: { 
-    [key: string]: string | string[] | undefined 
-  }
+  searchParams?: SearchParams
   currentCategory?: string
 }
 
