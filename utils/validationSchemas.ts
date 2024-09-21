@@ -17,8 +17,7 @@ export const NewsletterFormSchema = z.object({
 })
 
 export const ContentfulWebhookBodySchema = z.object({
-  slug: z.string().min(1),
-  publishedCounter: z.number().min(1)
+  mapId: z.string().min(1),
 })
 
 const stringOrStringArray = z.union([z.string(), z.array(z.string())])

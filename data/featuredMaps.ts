@@ -82,6 +82,12 @@ export const getFeaturedMapBySlug = cache(async (draftMode: boolean, slug: strin
   return featuredMap
 })
 
+export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) => {
+  const { featuredMaps } = await getFeaturedMaps(draftMode)
+  const featuredMap = featuredMaps.find(map => map.id === id)
+  return featuredMap
+})
+
 const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleton, undefined, string>[]) => {
   const { draftMaps, changedMaps } = await getDraftsOrChanged()
 

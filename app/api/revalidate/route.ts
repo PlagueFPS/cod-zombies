@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
-import { getFeaturedMapBySlug } from "@/data/featuredMaps"
+import { getFeaturedMapById } from "@/data/featuredMaps"
 import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 
@@ -18,9 +18,9 @@ export async function PUT(req: NextRequest) {
     return Response.json({ revalidated: false, message: 'Invalid Request Body' }, { status: 400 })
   }
 
-  const { slug } = bodyValidation.data
+  const { mapId } = bodyValidation.data
   // Manually setting draftMode to false to prevent trying to revalidate draft content
-  const map = await getFeaturedMapBySlug(false, slug)
+  const map = await getFeaturedMapById(false, mapId)
   if (!map) return Response.json({ revalidated: false, message: 'Map Not Found' }, { status: 404 })
     
   const category = map.gameCategory
