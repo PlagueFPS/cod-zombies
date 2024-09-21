@@ -14,9 +14,22 @@ export const getGameCategories = cache(async (draftMode: boolean) => {
   return createGameCategoryDTO(gameCategories.items)
 })
 
+export const getGameCategoryBySlug = cache(async (draftMode: boolean, slug: string) => {
+  const categories = await getGameCategories(draftMode)
+  const category = categories.find(cateogry => cateogry.slug === slug)
+  return category
+})
+
+export const getGameCategoryById = cache(async (draftMode: boolean, id: string) => {
+  const categories = await getGameCategories(draftMode)
+  const category = categories.find(cateogry => cateogry.slug === id)
+  return category
+})
+
 const createGameCategoryDTO = (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
   return gameCategorys.map(gameCategory => ({
     ...gameCategory.fields,
+    id: gameCategory.sys.id,
     image: resolveAsset(gameCategory.fields.image)
   }))
 }

@@ -1,4 +1,4 @@
-import { getGameCategories } from "@/data/gameCategory"
+import { getGameCategories, getGameCategoryBySlug } from "@/data/gameCategory"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
@@ -21,8 +21,7 @@ export const generateStaticParams = async () => {
 
 export const generateMetadata = async ({ params }: CategoryPageProps) => {
   const { isEnabled } = draftMode()
-  const categories = await getGameCategories(isEnabled)
-  const category = categories.find(category => category.slug === params.category)
+  const category = await getGameCategoryBySlug(isEnabled, params.category)
   if (!category) notFound()
   const title = category.title
   const description = `Explore our comprehensive guides to the most challenging and rewarding main quests in ${category.title}`
