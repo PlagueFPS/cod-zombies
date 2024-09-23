@@ -7,6 +7,7 @@ import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import NextTopLoader from "nextjs-toploader";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -56,6 +57,10 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
+          <NextTopLoader 
+            showSpinner={ false }
+            color="#ea580c" // primary color in hex
+          />
           <Header />
           <main className="mt-10 mb-4 flex-grow" role="main" tabIndex={ -1 }>
             { children }

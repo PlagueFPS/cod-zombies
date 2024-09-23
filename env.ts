@@ -11,7 +11,6 @@ export const env = createEnv({
     RESEND_AUDIENCE_ID: z.string().min(1),
     CONTENTFUL_ACCESS_TOKEN: z.string().min(1),
     CONTENTFUL_PREVIEW_ACCESS_TOKEN: z.string().min(1),
-    GOOGLE_FORM_ENDPOINT: z.string().url(),
     PROJECT_PLANNER_ID: z.string().min(1),
   },
   client: {
