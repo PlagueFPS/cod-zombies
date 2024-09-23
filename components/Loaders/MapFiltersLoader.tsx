@@ -9,7 +9,7 @@ export default function MapFiltersLoader() {
       <div className="flex w-max gap-3 text-foreground/80">
         { [...Array(6).keys()].map(i => (
           <Button 
-            key={ i } 
+            key={ `map-filter-${i}` } 
             size="sm" 
             variant={ "outline" } 
             className={cn('animate-pulse bg-secondary h-9 w-[105px]', {

@@ -13,7 +13,7 @@ export default function MapPaginationLoader() {
           />
         </PaginationItem>
         { [...Array(3).keys()].map(page => (
-          <PaginationItem key={ page }>
+          <PaginationItem key={ `pagination-item-${page}` }>
             <PaginationLink href={`/?page=${page + 1}`}>{ page + 1 }</PaginationLink>
           </PaginationItem>
         ))}
