@@ -188,12 +188,12 @@ export default async function MapPage({ params }: MapPageProps) {
               className='object-cover rounded-lg h-full'
             />
           </div>
-          <div className='relative z-20 flex flex-col justify-center w-full gap-2 px-4 pt-4 mb-auto'>
-            <h2 className='font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad]'>
+          <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4'>
+            <h2 className='font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
               { title }
             </h2>
             <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
-            <div className={cn('flex items-center mt-4 pb-4 transition-all group-hover:text-primary', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
+            <div className={cn('flex items-center mt-4 pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
               { prev ? (
                 <>
                   <ChevronLeft />
