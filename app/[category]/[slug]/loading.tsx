@@ -49,7 +49,7 @@ export default function MapPageLoader() {
               <div className="font-bold mx-auto mt-4">On this page</div>
               <div className="flex flex-col gap-3 max-h-[70vh]">
                 { [...Array(16).keys()].map(i => (
-                  <div key={ i } className="w-3/4 h-5 bg-secondary animate-pulse rounded-lg" />
+                  <div key={ `table-of-contents-item-${i}` } className="w-3/4 h-5 bg-secondary animate-pulse rounded-lg" />
                 ))}
               </div>
             </div>
