@@ -171,7 +171,7 @@ export default async function MapPage({ params }: MapPageProps) {
 
   return (
       <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
-        <article className={cn('relative h-full flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
+        <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
               featuredImage={ image }
@@ -180,19 +180,19 @@ export default async function MapPage({ params }: MapPageProps) {
               className='object-cover scale-[2]'
             />
           </div>
-          <div className='relative z-20 max-w-sm w-full overflow-hidden rounded-lg'>
+          <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full overflow-hidden'>
             <FeaturedImage
               featuredImage={ image }
               alt={ `${title} map image` }
               sizes='(max-width: 1280px) 320px, 364px'
-              className='object-cover'
+              className='object-cover rounded-lg h-full'
             />
           </div>
-          <div className='relative z-20 flex flex-col justify-center w-fit gap-2 px-4 pt-4 mb-auto'>
+          <div className='relative z-20 flex flex-col justify-center w-full gap-2 px-4 pt-4 mb-auto'>
             <h2 className='font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad]'>
               { title }
             </h2>
-            <p className='flex-shrink-0 text-sm line-clamp-3 text-ellipsis'>{ description }</p>
+            <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
             <div className={cn('flex items-center mt-4 pb-4 transition-all group-hover:text-primary', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
               { prev ? (
                 <>
