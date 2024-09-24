@@ -23,7 +23,7 @@ import {
 import FormError from "../ui/form-error"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
-import { Loader2 } from "lucide-react"
+import { Loader2, MessageCircleHeart } from "lucide-react"
 
 interface FeedbackFormProps {
   className?: string
@@ -47,7 +47,10 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
     <div className="flex justify-center items-center min-h-screen">
       <Dialog open={ open } onOpenChange={ setOpen }>
         <DialogTrigger asChild>
-          <Button variant="outline" className={cn("rounded-sm", className)}>Feedback</Button>
+          <Button variant="outline" size="sm" className={cn("rounded-sm gap-2 text-muted-foreground", className)}>
+            <MessageCircleHeart className="size-5" />
+            Feedback
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

@@ -42,20 +42,23 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
 
   return (
     <>
-      <Button type="button" variant="outline" className="hidden sm:flex gap-8 text-foreground/70 w-fit" onClick={ () => setOpen(!open) }>
-        Search for maps...
-        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+      <Button type="button" size="sm" variant="outline" className="relative hidden sm:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm" onClick={ () => setOpen(!open) }>
+        <Search className="size-5" />
+        <span className="text-sm">
+          Search Maps
+        </span>
+        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100">
           <span className="text-xs">Ctrl+K</span>
         </kbd>
       </Button>
-      <Button type="button" variant="outline" className="flex gap-3 sm:hidden text-foreground/70 w-fit" onClick={ () => setOpen(!open) }>
+      <Button type="button" size="sm" variant="outline" className="flex gap-3 sm:hidden text-foreground/70 w-fit" onClick={ () => setOpen(!open) }>
         <Search className="h-5 w-5" />
         Search
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>
         <DialogTitle className="sr-only">Search Bar</DialogTitle>
         <DialogDescription className="sr-only">Search for maps</DialogDescription>
-        <CommandInput placeholder="Type a map or search..." />
+        <CommandInput placeholder="Search for maps" />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           { gameCategories.map(game => (
