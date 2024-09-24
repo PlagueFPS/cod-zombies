@@ -1,7 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useScreen } from "@/hooks/useScreen";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -23,7 +22,6 @@ interface SearchInputProps {
 export default function SearchInput({ maps, gameCategories }: SearchInputProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const { isDesktop } = useScreen(640)
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -44,20 +42,15 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
 
   return (
     <>
-      <Button type="button" variant="outline" className="flex gap-3 sm:gap-8 text-foreground/70 w-fit" onClick={ () => setOpen(!open) }>
-        { isDesktop ? (
-          <>
-            Search for maps...
-            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-              <span className="text-xs">Ctrl+K</span>
-            </kbd>
-          </>
-        ) : (
-          <>
-            <Search className="h-5 w-5" />
-            Search
-          </>
-          )}
+      <Button type="button" variant="outline" className="hidden sm:flex gap-8 text-foreground/70 w-fit" onClick={ () => setOpen(!open) }>
+        Search for maps...
+        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+          <span className="text-xs">Ctrl+K</span>
+        </kbd>
+      </Button>
+      <Button type="button" variant="outline" className="flex gap-3 sm:hidden text-foreground/70 w-fit" onClick={ () => setOpen(!open) }>
+        <Search className="h-5 w-5" />
+        Search
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>
         <DialogTitle className="sr-only">Search Bar</DialogTitle>

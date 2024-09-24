@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
  * 
  * @param breakpoint number used to define a custom breakpoint at which `isDesktop` becomes true. Defaults to 1280
  */
-export const useScreen = (breakpoint?: number) => {
+export const useMediaQuery = (breakpoint?: number) => {
   const [isDesktop, setDesktop] = useState(false)
 
   useEffect(() => {

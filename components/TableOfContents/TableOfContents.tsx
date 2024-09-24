@@ -1,6 +1,6 @@
 "use client"
 import { useTableOfContents } from "@/hooks/useTableOfContents"
-import { useScreen }from "@/hooks/useScreen"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { Heading } from "@/types/Heading"
 import Link from "next/link"
 import BackToTopButton from "../BackToTopButton/BackToTopButton"
@@ -14,7 +14,7 @@ interface TableOfContentsProps {
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
   const { activeHeading, scrollAreaRef, setHeadingRef } = useTableOfContents(headings)
-  const { isDesktop } = useScreen()
+  const { isDesktop } = useMediaQuery()
 
   return (
     <>
