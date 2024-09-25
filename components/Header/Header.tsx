@@ -11,9 +11,9 @@ export default function Header() {
         <Link href='/' aria-label='Go to Call of Duty: Zombies Guides Home Page'>
           <div className='font-extrabold text-xl sm:text-2xl text-center'>
             <span className='text-gradient'>
-              Call of Duty:
+              COD:
             </span>
-            <span className='text-primary-gradient'> Zombies</span>
+            <span className='text-primary-gradient'> Zombies Guides</span>
           </div>
         </Link>
         <div className='flex justify-center items-center gap-2 w-fit h-full ml-auto'>

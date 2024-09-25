@@ -51,9 +51,8 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
           <span className="text-xs">Ctrl+K</span>
         </kbd>
       </Button>
-      <Button type="button" size="sm" variant="outline" className="flex gap-3 sm:hidden text-foreground/70 w-fit" onClick={ () => setOpen(!open) }>
-        <Search className="h-5 w-5" />
-        Search
+      <Button type="button" size="icon" variant="ghost" className="flex sm:hidden text-muted-foreground" onClick={ () => setOpen(!open) }>
+        <Search className="size-6" />
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>
         <DialogTitle className="sr-only">Search Bar</DialogTitle>

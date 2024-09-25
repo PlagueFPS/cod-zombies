@@ -30,8 +30,9 @@ export default function MobileTableOfContents({ headings, activeHeading }: Mobil
                 { headings.map(heading => (
                   <li 
                     key={ heading.id } 
-                    className={cn("hover:text-primary w-fit transition-all", 
-                      { 'pl-4 text-muted-foreground': heading.type === 'heading-3',
+                    className={cn("hover:text-primary w-fit transition-colors", 
+                      { 'pl-3 text-foreground/70 font-medium': heading.type === 'heading-3',
+                        'pl-6 text-muted-foreground font-normal': heading.type === 'heading-4',
                         'text-primary': activeHeading === heading.id,
                       })}
                   >

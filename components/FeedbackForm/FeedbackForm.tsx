@@ -44,15 +44,18 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
   }, [state])
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center">
       <Dialog open={ open } onOpenChange={ setOpen }>
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm" className={cn("rounded-sm gap-2 text-muted-foreground", className)}>
+          <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)}>
             <MessageCircleHeart className="size-5" />
             Feedback
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) }>
+          <MessageCircleHeart className="size-6" />
+        </Button>
+        <DialogContent className="rounded-lg">
           <DialogHeader>
             <DialogTitle>Feedback Form</DialogTitle>
             <DialogDescription>
