@@ -4,25 +4,17 @@ import { Search } from 'lucide-react'
 export default function SearchBarLoader() {
   return (
     <div className='flex justify-center items-center w-fit'>
-      <Button 
-        type="button" 
-        variant="outline"
-        aria-disabled
-        className=" hidden sm:flex gap-8 text-foreground/70 w-fit pointer-events-none sm:animate-pulse"
-      >
-        Search for maps...
-        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+      <Button type="button" size="sm" variant="outline" disabled className="relative hidden sm:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm animate-pulse">
+        <Search className="size-5" />
+        <span className="text-sm">
+          Search Maps
+        </span>
+        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100">
           <span className="text-xs">Ctrl+K</span>
         </kbd>
       </Button>
-      <Button 
-        type="button" 
-        variant="outline"
-        aria-disabled
-        className="flex sm:hidden gap-3 text-foreground/70 w-fit pointer-events-none animate-pulse sm:animate-none"
-      >
-        <Search className="h-5 w-5" />
-        Search
+      <Button type="button" size="icon" variant="ghost" disabled className="flex sm:hidden text-muted-foreground animate-pulse">
+        <Search className="size-6" />
       </Button>
     </div>
   )
