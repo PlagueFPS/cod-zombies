@@ -20,7 +20,7 @@ export default async function SearchBar() {
   const modifiedCategories = [...gameCategories].reverse()
 
   return (
-    <div className="flex justify-center items-center w-fit">
+    <div className="flex justify-center items-center w-fit animate-fade-in">
       <SearchInput maps={ modifiedMaps } gameCategories={ modifiedCategories } />
     </div>
   )
