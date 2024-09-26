@@ -30,15 +30,15 @@ interface FeedbackFormProps {
 }
 
 export default function FeedbackForm({ className }: FeedbackFormProps) {
-  const [state, action, pending] = useActionState(submitFeedbackForm, { success: false })
+  const [state, action, pending] = useActionState(submitFeedbackForm, undefined)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    if (state.success) {
+    if (state && state.success) {
       setOpen(false)
       toast.success(state.message)
     }
-    else if (!state.success) {
+    else if (state && !state.success) {
       toast.error(state.message)
     }
   }, [state])
@@ -64,7 +64,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
           </DialogHeader>
           <form action={ action } className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
+              <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
                 name="title"
@@ -72,7 +72,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                 required
                 aria-describedby="title-error"
               />
-              { state.errors?.title && (
+              { state?.errors?.title && (
                 <FormError id="title-error">
                   { state.errors.title.map(error => (
                     <p key={ error }>{ error }</p>
@@ -81,7 +81,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email (Optional)</Label>
               <Input
                 id="email"
                 name="email"
@@ -89,7 +89,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                 type="email"
                 aria-describedby="email-error"
               />
-              { state.errors?.email && (
+              { state?.errors?.email && (
                 <FormError id="email-error">
                   { state.errors.email.map(error => (
                     <p key={ error }>{ error }</p>
@@ -98,23 +98,23 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Name (Optional)</Label>
               <Input
                 id="name"
                 name="name"
                 placeholder="Enter your name"
                 aria-describedby="name-error"
               />
-              { state.errors?.name && (
+              { state?.errors?.name && (
                 <FormError id="name-error">
-                  { state.errors.name.map(error => (
+                  { state?.errors?.name.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="label">Label *</Label>
+              <Label htmlFor="label">Label</Label>
               <Select required aria-describedby="label-error" name="label">
                 <SelectTrigger>
                   <SelectValue placeholder="Select a label" />
@@ -128,16 +128,16 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
-              { state.errors?.label && (
+              { state?.errors?.label && (
                 <FormError id="label-error">
-                  { state.errors.label.map(error => (
+                  { state?.errors?.label.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="feedback">Your Feedback *</Label>
+              <Label htmlFor="feedback">Your Feedback</Label>
               <Textarea
                 name="feedback"
                 id="feedback"
@@ -145,9 +145,9 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                 required
                 aria-describedby="feedback-error"
               />
-              { state.errors?.feedback && (
+              { state?.errors?.feedback && (
                 <FormError id="feedback-error">
-                  { state.errors.feedback.map(error => (
+                  { state?.errors?.feedback.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>

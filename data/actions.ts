@@ -1,10 +1,9 @@
 "use server"
-import type { FeedbackFormState, NewsletterFormState } from "@/types/FormStates"
 import { FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { Resend } from 'resend'
 import { env } from "@/env"
 
-export async function subscribeToNewsletter(prevState: NewsletterFormState, formData: FormData): Promise<NewsletterFormState> {
+export async function subscribeToNewsletter(prevState: unknown, formData: FormData) {
   const validatedFields = NewsletterFormSchema.safeParse(Object.fromEntries(formData))
   if (!validatedFields.success) return {
     success: false,
@@ -49,14 +48,14 @@ export async function subscribeToNewsletter(prevState: NewsletterFormState, form
   }
 }
 
-export async function submitFeedbackForm(prevState: FeedbackFormState, formData: FormData): Promise<FeedbackFormState> {
+export async function submitFeedbackForm(prevState: unknown, formData: FormData) {
   const validatedFields = FeedbackFormSchema.safeParse(Object.fromEntries(formData))
   if (!validatedFields.success) return {
     success: false,
     message: 'Invalid Fields. Failed to submit form',
     errors: validatedFields.error.flatten().fieldErrors
   }
-  
+
   const res = await fetch("https://projectplannerai.com/api/feedback", {
     method: "POST",
     headers: {

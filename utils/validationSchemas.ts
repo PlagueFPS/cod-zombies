@@ -4,7 +4,7 @@ export interface SearchParams extends z.infer<typeof SearchParamsSchema> {}
 
 export const FeedbackFormSchema = z.object({
   title: z.string({ required_error: "Title is required" }).min(1),
-  email: z.string().email().optional(),
+  email: z.string().email({ message: "Invalid email address" }).optional(),
   name: z.string().optional(),
   label: z.enum(['featureRequest', 'idea', 'issue', 'question', 'complaint', 'other'], {
     required_error: "Label is required",
