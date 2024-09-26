@@ -34,7 +34,8 @@ const SearchParamsSchema = z.object({
   }),
 })
 
-export const validateSearchParams = (input: SearchParams | undefined) => {
+export const validateSearchParams = async (searchParams: Promise<SearchParams> | undefined) => {
+  const input = await searchParams
   if (!input) return { page: 1 }
   return SearchParamsSchema.parse(input)
 }

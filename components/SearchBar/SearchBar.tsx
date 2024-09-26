@@ -4,7 +4,7 @@ import { getGameCategories } from "@/data/gameCategory"
 import SearchInput from "./SearchInput"
 
 export default async function SearchBar() {
-  const { isEnabled } = draftMode()
+  const { isEnabled } = await draftMode()
   const mapsPromise = getFeaturedMaps(isEnabled)
   const gameCategoriesPromise = getGameCategories(isEnabled)
   const [{ featuredMaps }, gameCategories] = await Promise.all([mapsPromise, gameCategoriesPromise])

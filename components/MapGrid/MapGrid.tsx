@@ -4,13 +4,14 @@ import { getFeaturedMapsByCategory, getPaginatedFeaturedMaps } from '@/data/feat
 import { type SearchParams, validateSearchParams } from '@/utils/validationSchemas'
 
 interface MapGridProps {
-  searchParams?: SearchParams
+  searchParams?: Promise<SearchParams>
   category?: string
 }
 
 export default async function MapGrid({ searchParams, category }: MapGridProps) {
-  const { isEnabled } = draftMode()
-  const { page } = validateSearchParams(searchParams)
+  const draftModePromise = draftMode()
+  const searchParamsPromise = validateSearchParams(searchParams)
+  const [{ isEnabled }, { page }] = await Promise.all([draftModePromise, searchParamsPromise])
   const { featuredMaps, totalMaps } = await chooseMapGridMaps(isEnabled, page, category)
 
   return (

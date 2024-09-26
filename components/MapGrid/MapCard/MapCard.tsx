@@ -14,7 +14,7 @@ interface MapCardProps {
 }
 
 export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
-  const { isEnabled } = draftMode()
+  const { isEnabled } = await draftMode()
   const { id, title, description, image, gameCategory: category, slug, isDraft, isChanged } = map
   const priority = isPriority(mapIndex, totalMaps)
   

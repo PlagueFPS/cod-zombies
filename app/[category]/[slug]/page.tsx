@@ -19,10 +19,10 @@ import { env } from '@/env'
 import type { FeaturedMap } from '@/types/FeaturedMap'
 
 interface MapPageProps {
-  params: { 
+  params: Promise<{ 
     category: string | undefined
     slug: string
-  }
+  }>
 }
 
 export const generateStaticParams = async () => {
@@ -35,8 +35,10 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
-  const { isEnabled } = draftMode()
-  const map = await getFeaturedMapBySlug(isEnabled, params.slug)
+  const paramsPromise = params
+  const draftModePromise = draftMode()
+  const [{ slug, category }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
+  const map = await getFeaturedMapBySlug(isEnabled, slug)
   if (!map) notFound()
   const { title, description, image } = map
   const metadata: Metadata = {
@@ -46,7 +48,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       ...GLOBAL_OG_PROPS.openGraph,
       title,
       description,
-      url: `/${params.category}/${params.slug}`,
+      url: `/${category}/${slug}`,
       images: {
         url: `https:${image?.fields?.file?.url}?q=75`,
         width: image?.fields?.file?.details.image?.width,
@@ -64,11 +66,13 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 }
 
 export default async function MapPage({ params }: MapPageProps) {
-  const { isEnabled } = draftMode()
+  const paramsPromise = params
+  const draftModePromise = draftMode()
+  const [{ slug }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
   const { featuredMaps } = await getFeaturedMaps(isEnabled)
-  const map = featuredMaps.find(map => map.slug === params.slug)
+  const map = featuredMaps.find(map => map.slug === slug)
   if (!map) notFound()
-  const { title, image, gameCategory: category, slug, updatedAt, isDraft, isChanged, body } = map
+  const { title, image, gameCategory: category, updatedAt, isDraft, isChanged, body } = map
   const headings = extractHeadings(map)
   const mapIndex = featuredMaps.indexOf(map)
   const prevMap = featuredMaps[mapIndex + 1]
@@ -141,7 +145,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   <div>Last Updated: { new Date(updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
                 </div>
                 <div className='flex items-center justify-center'>
-                  <ShareButton title={ title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${params.slug}` } />
+                  <ShareButton title={ title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${slug}` } />
                 </div>
               </div>
             </div>
@@ -193,7 +197,7 @@ export default async function MapPage({ params }: MapPageProps) {
               { title }
             </h2>
             <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
-            <div className={cn('flex items-center mt-4 pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
+            <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
               { prev ? (
                 <>
                   <ChevronLeft />

@@ -7,9 +7,9 @@ import HeroSection from "@/components/HeroSection/HeroSection"
 import FeaturedMaps from "@/components/FeaturedMaps/FeaturedMaps"
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     category: string
-  }
+  }>
 }
 
 export const generateStaticParams = async () => {
@@ -20,8 +20,10 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: CategoryPageProps) => {
-  const { isEnabled } = draftMode()
-  const category = await getGameCategoryBySlug(isEnabled, params.category)
+  const paramsPromise = params
+  const draftModePromise = draftMode()
+  const [{ category: slug }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
+  const category = await getGameCategoryBySlug(isEnabled, slug)
   if (!category) notFound()
   const title = category.title
   const description = `Explore our comprehensive guides to the most challenging and rewarding main quests in ${category.title}`
@@ -50,9 +52,11 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { isEnabled } = draftMode()
+  const paramsPromise = params
+  const draftModePromise = draftMode()
+  const [{ category: slug }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
   const categories = await getGameCategories(isEnabled)
-  const category = categories.find(category => category.slug === params.category)
+  const category = categories.find(category => category.slug === slug)
   if (!category) notFound()
 
   return (

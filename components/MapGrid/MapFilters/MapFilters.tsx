@@ -10,7 +10,7 @@ interface MapFiltersProps {
 }
 
 export default async function MapFilters({ currentCategory }: MapFiltersProps) {
-  const { isEnabled } = draftMode()
+  const { isEnabled } = await draftMode()
   const gameCategories = await getGameCategories(isEnabled)
   
   const getHref = (category: string) => {

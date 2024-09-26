@@ -23,8 +23,8 @@ export async function GET(req: NextRequest) {
   }
   const category = map.gameCategory
   // Enable Draft Mode by setting the cookie
-  draftMode().enable()
- 
+  const { enable } = await draftMode()
+  enable()
   // Redirect to the path from the fetched map
   // We don't redirect to searchParams.slug as that might lead to open redirect vulnerabilities
   redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${map.slug}`)

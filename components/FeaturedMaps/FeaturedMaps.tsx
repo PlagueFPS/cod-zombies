@@ -8,7 +8,7 @@ import MapFiltersLoader from "../Loaders/MapFiltersLoader"
 import MapPaginationLoader from "../Loaders/MapPaginationLoader"
 
 interface FeaturedMapsProps {
-  searchParams?: SearchParams
+  searchParams?: Promise<SearchParams>
   currentCategory?: string
 }
 

@@ -4,12 +4,13 @@ import { getPaginatedFeaturedMaps } from "@/data/featuredMaps"
 import { draftMode } from "next/headers"
 
 interface MapPaginationProps {
-  searchParams?: SearchParams
+  searchParams?: Promise<SearchParams>
 }
 
 export default async function MapPagination({ searchParams }: MapPaginationProps) {
-  const { isEnabled } = draftMode()
-  const { page } = validateSearchParams(searchParams)
+  const draftModePromise = draftMode()
+  const searchParamsPromise = validateSearchParams(searchParams)
+  const [{ isEnabled }, { page }] = await Promise.all([draftModePromise, searchParamsPromise])
   const { currentPage, totalPages, prevPage, nextPage } = await getPaginatedFeaturedMaps(isEnabled, page)
   const previousDisabled = prevPage === currentPage ? true : false
   const nextDisabled = nextPage === currentPage ? true : currentPage === totalPages ? true : false

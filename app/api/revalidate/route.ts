@@ -6,7 +6,7 @@ import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 
 export async function PUT(req: NextRequest) {
-  const headersList = headers()
+  const headersList = await headers()
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
  
   if (secret !== env.REVALIDATE_SECRET) {

@@ -3,7 +3,7 @@ import HeroSection from "@/components/HeroSection/HeroSection";
 import FeaturedMaps from "@/components/FeaturedMaps/FeaturedMaps";
 
 interface HomePageProps {
-  searchParams: SearchParams
+  searchParams: Promise<SearchParams>
 }
 
 export default async function Home({ searchParams }: HomePageProps) {
