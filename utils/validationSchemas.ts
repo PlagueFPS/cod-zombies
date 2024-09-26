@@ -1,19 +1,21 @@
 import { z } from "zod";
+import { zfd } from "zod-form-data";
 
 export interface SearchParams extends z.infer<typeof SearchParamsSchema> {}
+export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
 
-export const FeedbackFormSchema = z.object({
-  title: z.string({ required_error: "Title is required" }).min(1),
-  email: z.string().email({ message: "Invalid email address" }).optional(),
-  name: z.string().optional(),
-  label: z.enum(['featureRequest', 'idea', 'issue', 'question', 'complaint', 'other'], {
+export const FeedbackFormSchema = zfd.formData({
+  title: zfd.text(z.string({ required_error: "Title is required" }).min(1)),
+  email: zfd.text(z.string().email({ message: "Invalid email address" }).optional()),
+  name: zfd.text(z.string().optional()),
+  label: zfd.text(z.enum(['featureRequest', 'idea', 'issue', 'question', 'complaint', 'other'], {
     required_error: "Label is required",
-  }),
-  feedback: z.string({ required_error: "Feedback is required" }).min(1)
+  })),
+  feedback: zfd.text(z.string({ required_error: "Feedback is required" }).min(1))
 })
 
-export const NewsletterFormSchema = z.object({
-  email: z.string().email(),
+export const NewsletterFormSchema = zfd.formData({
+  email: zfd.text(z.string().email()),
 })
 
 export const ContentfulWebhookBodySchema = z.object({

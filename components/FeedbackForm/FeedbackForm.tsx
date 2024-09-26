@@ -1,5 +1,7 @@
 "use client"
-import { useActionState, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import { useAction } from "next-safe-action/hooks"
+import { customOnError, customOnSuccess } from "@/lib/safe-action"
 import { submitFeedbackForm } from "@/data/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,7 +23,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import FormError from "../ui/form-error"
-import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import { Loader2, MessageCircleHeart } from "lucide-react"
 
@@ -30,18 +31,18 @@ interface FeedbackFormProps {
 }
 
 export default function FeedbackForm({ className }: FeedbackFormProps) {
-  const [state, action, pending] = useActionState(submitFeedbackForm, undefined)
   const [open, setOpen] = useState(false)
+  const { result, execute, isPending } = useAction(submitFeedbackForm, {
+    onSuccess: ({ data }) => customOnSuccess(data?.success, data?.message),
+    onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
+  })
+  const { data, validationErrors } = result
 
   useEffect(() => {
-    if (state && state.success) {
+    if (data?.success) {
       setOpen(false)
-      toast.success(state.message)
     }
-    else if (state && !state.success) {
-      toast.error(state.message)
-    }
-  }, [state])
+  }, [data])
 
   return (
     <div className="flex justify-center items-center">
@@ -62,7 +63,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               We appreciate your feedback. Please fill out the form below.
             </DialogDescription>
           </DialogHeader>
-          <form action={ action } className="space-y-4">
+          <form action={ execute } className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
               <Input
@@ -72,9 +73,9 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                 required
                 aria-describedby="title-error"
               />
-              { state?.errors?.title && (
+              { validationErrors?.title?._errors && (
                 <FormError id="title-error">
-                  { state.errors.title.map(error => (
+                  { validationErrors.title._errors?.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>
@@ -89,9 +90,9 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                 type="email"
                 aria-describedby="email-error"
               />
-              { state?.errors?.email && (
+              { validationErrors?.email?._errors && (
                 <FormError id="email-error">
-                  { state.errors.email.map(error => (
+                  { validationErrors.email._errors?.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>
@@ -105,9 +106,9 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                 placeholder="Enter your name"
                 aria-describedby="name-error"
               />
-              { state?.errors?.name && (
+              { validationErrors?.name?._errors && (
                 <FormError id="name-error">
-                  { state?.errors?.name.map(error => (
+                  { validationErrors.name._errors?.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>
@@ -128,9 +129,9 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
-              { state?.errors?.label && (
+              { validationErrors?.label?._errors && (
                 <FormError id="label-error">
-                  { state?.errors?.label.map(error => (
+                  { validationErrors.label._errors?.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>
@@ -145,16 +146,16 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
                 required
                 aria-describedby="feedback-error"
               />
-              { state?.errors?.feedback && (
+              { validationErrors?.feedback?._errors && (
                 <FormError id="feedback-error">
-                  { state?.errors?.feedback.map(error => (
+                  { validationErrors.feedback._errors?.map(error => (
                     <p key={ error }>{ error }</p>
                   ))}
                 </FormError>
               )}
             </div>
-            <Button type="submit" className="w-full" disabled={ pending }>
-              { pending ? (
+            <Button type="submit" className="w-full" disabled={ isPending }>
+              { isPending ? (
                 <div className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Submitting...

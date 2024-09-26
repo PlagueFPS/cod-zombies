@@ -66,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps) {
             { children }
           </main>
           <Footer />
-          <Toaster richColors position="top-center" />
+          <Toaster richColors position="top-center" closeButton />
         </ThemeProvider>
       </body>
     </html>
