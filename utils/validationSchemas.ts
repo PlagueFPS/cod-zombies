@@ -15,14 +15,30 @@ export const FeedbackFormSchema = zfd.formData({
 })
 
 export const NewsletterFormSchema = zfd.formData({
-  email: zfd.text(z.string().email()),
+  email: zfd.text(z.string().email({ message: "Invalid email address" })),
 })
 
-export const ContentfulWebhookBodySchema = z.object({
-  mapId: z.string().min(1),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-})
+// Base schema for common fields
+const BaseContentfulWebhookBodySchema = z.object({
+  createdAt: z.string({ required_error: "Created At is required" }).datetime(),
+  updatedAt: z.string({ required_error: "Updated At is required" }).datetime(),
+});
+
+// Schema for payloads with mapId
+export const MapContentfulWebhookBodySchema = BaseContentfulWebhookBodySchema.extend({
+  mapId: z.string({ required_error: "Map Id is required" }).min(1),
+});
+
+// Schema for payloads with categoryId
+export const CategoryContentfulWebhookBodySchema = BaseContentfulWebhookBodySchema.extend({
+  categoryId: z.string({ required_error: "Category Id is required" }).min(1),
+});
+
+// Union type to represent either case
+export const ContentfulWebhookBodySchema = z.discriminatedUnion('type', [
+  MapContentfulWebhookBodySchema.extend({ type: z.literal('map') }),
+  CategoryContentfulWebhookBodySchema.extend({ type: z.literal('category') }),
+]);
 
 const stringOrStringArray = z.union([z.string(), z.array(z.string())])
 
