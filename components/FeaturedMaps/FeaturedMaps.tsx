@@ -1,7 +1,6 @@
 import type { SearchParams } from "@/utils/validationSchemas"
 import { Suspense } from "react"
 import MapFilters from "../MapGrid/MapFilters/MapFilters"
-import MapGridLoader from "../Loaders/MapGridLoader"
 import MapGrid from "../MapGrid/MapGrid"
 import MapPagination from "../MapGrid/MapPagination/MapPagination"
 import MapFiltersLoader from "../Loaders/MapFiltersLoader"
@@ -21,9 +20,7 @@ export default function FeaturedMaps({ searchParams, currentCategory }: Featured
       <Suspense fallback={<MapFiltersLoader />}>
         <MapFilters currentCategory={ currentCategory }  />
       </Suspense>
-      <Suspense fallback={<MapGridLoader />}>
-        <MapGrid searchParams={ searchParams } category={ currentCategory } />
-      </Suspense>
+      <MapGrid searchParams={ searchParams } category={ currentCategory } />
       { !currentCategory ? (
         <Suspense fallback={<MapPaginationLoader />}>
           <MapPagination searchParams={ searchParams } />
