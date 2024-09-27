@@ -12,3 +12,6 @@ export const GLOBAL_OG_PROPS = {
     type: 'website',
   }
 } satisfies Metadata
+export const CACHE_KEYS = {
+  GAME_CATEGORIES: 'game-categories'
+} as const
