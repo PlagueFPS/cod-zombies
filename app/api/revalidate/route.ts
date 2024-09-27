@@ -24,8 +24,12 @@ export async function PUT(req: NextRequest) {
   if (!map) return Response.json({ revalidated: false, message: 'Map Not Found' }, { status: 404 })
     
   const category = map.gameCategory
-  const path = `/${category?.fields.slug}/${map.slug}`
+  const mapPath = `/${category?.fields.slug}/${map.slug}`
+  const categoryPath = `/${category?.fields.slug}`
 
-  revalidatePath(path)
-  return Response.json({ revalidated: true, message: `${path} Revalidated` }, { status: 201 })
+  // revalidate the map page
+  revalidatePath(mapPath)
+  // revalidate the game category page
+  revalidatePath(categoryPath)
+  return Response.json({ revalidated: true, message: `${mapPath} and ${categoryPath} Revalidated` }, { status: 201 })
 }
