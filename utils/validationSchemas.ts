@@ -20,8 +20,8 @@ export const NewsletterFormSchema = zfd.formData({
 
 export const ContentfulWebhookBodySchema = z.object({
   mapId: z.string().min(1),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 })
 
 const stringOrStringArray = z.union([z.string(), z.array(z.string())])

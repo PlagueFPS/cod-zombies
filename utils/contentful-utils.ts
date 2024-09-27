@@ -29,3 +29,9 @@ export const extractHeadings = (entry: FeaturedMap) => {
 
   return headings
 }
+
+export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
+  const createdAtDate = new Date(createdAt)
+  const updatedAtDate = new Date(updatedAt)
+  return createdAtDate.getTime() === updatedAtDate.getTime()
+}

@@ -2,7 +2,7 @@ import "server-only"
 import { getEntries } from "@/contentful/contentful"
 import type { TypeFeaturedMapsSkeleton } from "@/contentful/Types/contentful-types"
 import { cache } from "react"
-import { resolveAsset, resolveEntry } from "@/utils/contentful-utils"
+import { isFirstTimePublish, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import type { Entry } from "contentful"
 import { managementClient } from "@/contentful/contentful-management"
 import { MAP_LIMIT } from "@/utils/constants"
@@ -104,7 +104,8 @@ const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleto
       image: mapImage,
       gameCategory: category,
       isDraft: draft,
-      isChanged: changed
+      isChanged: changed,
+      isNew: isFirstTimePublish(featuredMap.sys.createdAt, featuredMap.sys.updatedAt) // Not complete, we have no control over when the new badge should go away
     }
   })
 }
