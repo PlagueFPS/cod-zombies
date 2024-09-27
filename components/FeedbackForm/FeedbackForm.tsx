@@ -76,7 +76,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               { validationErrors?.title?._errors && (
                 <FormError id="title-error">
                   { validationErrors.title._errors?.map(error => (
-                    <p key={ error }>{ error }</p>
+                    <p key={ `title-error-${error}` }>{ error }</p>
                   ))}
                 </FormError>
               )}
@@ -93,7 +93,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               { validationErrors?.email?._errors && (
                 <FormError id="email-error">
                   { validationErrors.email._errors?.map(error => (
-                    <p key={ error }>{ error }</p>
+                    <p key={ `email-error-${error}` }>{ error }</p>
                   ))}
                 </FormError>
               )}
@@ -109,7 +109,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               { validationErrors?.name?._errors && (
                 <FormError id="name-error">
                   { validationErrors.name._errors?.map(error => (
-                    <p key={ error }>{ error }</p>
+                    <p key={ `name-error-${error}` }>{ error }</p>
                   ))}
                 </FormError>
               )}
@@ -132,7 +132,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               { validationErrors?.label?._errors && (
                 <FormError id="label-error">
                   { validationErrors.label._errors?.map(error => (
-                    <p key={ error }>{ error }</p>
+                    <p key={ `label-error-${error}` }>{ error }</p>
                   ))}
                 </FormError>
               )}
@@ -149,7 +149,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               { validationErrors?.feedback?._errors && (
                 <FormError id="feedback-error">
                   { validationErrors.feedback._errors?.map(error => (
-                    <p key={ error }>{ error }</p>
+                    <p key={ `feedback-error-${error}` }>{ error }</p>
                   ))}
                 </FormError>
               )}

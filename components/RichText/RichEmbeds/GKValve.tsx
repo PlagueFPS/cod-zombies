@@ -63,7 +63,7 @@ export default function GKValve() {
               { locations.map(location => {
                 if (location === values.secondValue) return null
                 else return (
-                  <SelectItem key={ slugify(location) } value={ location }>
+                  <SelectItem key={ `green-valve-${slugify(location)}` } value={ location }>
                     { location }
                   </SelectItem>
                 )
@@ -80,7 +80,7 @@ export default function GKValve() {
               { locations.map(location => {
                 if (location === values.firstValue) return null
                 else return (
-                  <SelectItem key={ slugify(location) } value={ location }>
+                  <SelectItem key={ `pink-valve-${slugify(location)}` } value={ location }> 
                     { location }
                   </SelectItem>
                 )
@@ -93,7 +93,7 @@ export default function GKValve() {
         'block animate-fade-in': currentLocations.length > 0,
       })}>
         { currentLocations.map(location => (
-          <li key={ location.name }>
+          <li key={ `valve-${slugify(location.name)}` }>
             { location.value ? (
               <>
                 Set <strong className={cn({
