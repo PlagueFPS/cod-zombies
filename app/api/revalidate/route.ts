@@ -45,18 +45,18 @@ export async function DELETE(req: NextRequest) {
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
  
   if (secret !== env.REVALIDATE_SECRET) {
-    return Response.json({ revalidated: false, message: 'Unauthorized Request' }, { status: 401 })
+    return Response.json({ deleted: false, message: 'Unauthorized Request' }, { status: 401 })
   }
   
   const bodyValidation = ContentfulWebhookBodySchema.safeParse(await req.json())
   if (!bodyValidation.success) {
-    return Response.json({ revalidated: false, message: 'Invalid Request Body' }, { status: 400 })
+    return Response.json({ deleted: false, message: 'Invalid Request Body' }, { status: 400 })
   }
 
   const { mapId } = bodyValidation.data
   // Manually setting draftMode to true to be able to remove unpublished maps
   const map = await getFeaturedMapById(true, mapId)
-  if (!map) return Response.json({ revalidated: false, message: 'Map Not Found' }, { status: 404 })
+  if (!map) return Response.json({ deleted: false, message: 'Map Not Found' }, { status: 404 })
 
   const category = map.gameCategory
   const mapPath = `/${category?.fields.slug}/${map.slug}`
@@ -65,5 +65,5 @@ export async function DELETE(req: NextRequest) {
   revalidatePath(mapPath)
   revalidatePath(categoryPath)
 
-  return Response.json({ revalidated: true, message: `${mapPath} and ${categoryPath} Revalidated` }, { status: 201 })
+  return Response.json({ deleted: true, message: `${mapPath} and ${categoryPath} Revalidated` }, { status: 200 })
 }
