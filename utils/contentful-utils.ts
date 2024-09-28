@@ -3,6 +3,7 @@ import type { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-typ
 import type { Heading } from "@/types/Heading";
 import type { FeaturedMap } from "@/types/FeaturedMap";
 import { slugify } from "./functions";
+import { getNewMapId } from "@/lib/kv";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if ('fields' in asset && asset.fields.file) return asset
@@ -34,4 +35,9 @@ export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
   const createdAtDate = new Date(createdAt)
   const updatedAtDate = new Date(updatedAt)
   return createdAtDate.getTime() === updatedAtDate.getTime()
+}
+
+export const isNewMap = async (mapId: string) => {
+  const value = await getNewMapId(mapId)
+  return value !== null
 }

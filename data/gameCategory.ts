@@ -6,8 +6,8 @@ import type { Entry } from "contentful"
 import { resolveAsset } from "@/utils/contentful-utils"
 import { unstable_cache } from "next/cache"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-
-const CACHE_TAG = CACHE_KEYS.GAME_CATEGORIES
+import { managementClient } from "@/contentful/contentful-management"
+import { getAllNewCategoryIds } from "@/lib/kv"
 
 const fetchGameCategories = async (draftMode: boolean) => {
   const gameCategories = await getEntries<TypeGameCategorySkeleton>({
@@ -15,13 +15,13 @@ const fetchGameCategories = async (draftMode: boolean) => {
     order: ['sys.createdAt']
   }, draftMode)
 
-  return createGameCategoryDTO(gameCategories.items)
+  return await createGameCategoryDTO(gameCategories.items)
 }
 
 const cachedFetchGameCategories = unstable_cache(
   fetchGameCategories,
   ['game-categories'],
-  { tags: [CACHE_TAG] }
+  { tags: [CACHE_KEYS.GAME_CATEGORIES] }
 )
 
 export const getGameCategories = cache(async (draftMode: boolean) => {
@@ -43,10 +43,47 @@ export const getGameCategoryById = cache(async (draftMode: boolean, id: string) 
   }
 )
 
-const createGameCategoryDTO = (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
-  return gameCategorys.map(gameCategory => ({
-    ...gameCategory.fields,
-    id: gameCategory.sys.id,
-    image: resolveAsset(gameCategory.fields.image)
-  }))
+const createGameCategoryDTO = async(gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
+  const { draftCategoryIds, changedCategoryIds } = await getDraftsOrChanged()
+  const newCategoryIds = await getAllNewCategoryIds()
+
+  return gameCategorys.map(gameCategory => {
+    const categoryImage = resolveAsset(gameCategory.fields.image)
+    const isDraft = draftCategoryIds.has(gameCategory.sys.id)
+    const isChanged = changedCategoryIds.has(gameCategory.sys.id)
+    const isNew = newCategoryIds.has(gameCategory.sys.id)
+
+    return {
+      ...gameCategory.fields,
+      id: gameCategory.sys.id,
+      image: categoryImage,
+      isDraft: isDraft,
+      isChanged: isChanged,
+      isNew: isNew
+    }
+  })
+}
+
+const getDraftsOrChanged = async () => {
+  const categories = await managementClient.entry.getMany({
+    query: {
+      content_type: 'gameCategory'
+    }
+  })
+
+  const draftCategoryIds = new Set<string>()
+  const changedCategoryIds = new Set<string>()
+  
+  categories.items.forEach(category => {
+    if (!category.sys.publishedVersion) {
+      draftCategoryIds.add(category.sys.id)
+    } else if (!!category.sys.publishedVersion && category.sys.version >= category.sys.publishedVersion + 2) {
+      changedCategoryIds.add(category.sys.id)
+    }
+  })
+  
+  return {
+    draftCategoryIds,
+    changedCategoryIds
+  }
 }

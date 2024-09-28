@@ -2,10 +2,11 @@ import "server-only"
 import { getEntries } from "@/contentful/contentful"
 import type { TypeFeaturedMapsSkeleton } from "@/contentful/Types/contentful-types"
 import { cache } from "react"
-import { isFirstTimePublish, resolveAsset, resolveEntry } from "@/utils/contentful-utils"
+import { resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import type { Entry } from "contentful"
 import { managementClient } from "@/contentful/contentful-management"
 import { MAP_LIMIT } from "@/utils/constants"
+import { getAllNewMapIds } from "@/lib/kv"
 
 /**
  * 
@@ -89,13 +90,15 @@ export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) =
 })
 
 const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleton, undefined, string>[]) => {
-  const { draftMaps, changedMaps } = await getDraftsOrChanged()
+  const { draftMapIds, changedMapIds } = await getDraftsOrChanged()
+  const newMapIds = await getAllNewMapIds()
 
   return featuredMaps.map(featuredMap => {
     const mapImage = resolveAsset(featuredMap.fields.image)
     const category = resolveEntry(featuredMap.fields.gameCategory)
-    const draft = draftMaps.some(map => map.sys.id === featuredMap.sys.id)
-    const changed = changedMaps.some(map => map.sys.id === featuredMap.sys.id)
+    const isDraft = draftMapIds.has(featuredMap.sys.id)
+    const isChanged = changedMapIds.has(featuredMap.sys.id)
+    const isNew = newMapIds.has(featuredMap.sys.id)
     
     return {
       ...featuredMap.fields,
@@ -103,9 +106,9 @@ const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleto
       updatedAt: featuredMap.sys.updatedAt,
       image: mapImage,
       gameCategory: category,
-      isDraft: draft,
-      isChanged: changed,
-      isNew: isFirstTimePublish(featuredMap.sys.createdAt, featuredMap.sys.updatedAt) // Not complete, we have no control over when the new badge should go away
+      isDraft: isDraft,
+      isChanged: isChanged,
+      isNew: isNew
     }
   })
 }
@@ -117,10 +120,19 @@ const getDraftsOrChanged = async () => {
     }
   })
   
-  const draftMaps = featuredMaps.items.filter(map => !map.sys.publishedVersion)
-  const changedMaps = featuredMaps.items.filter(map => !!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2)
+  const draftMapIds = new Set<string>()
+  const changedMapIds = new Set<string>()
+
+  featuredMaps.items.forEach(map => {
+    if (!map.sys.publishedVersion) {
+      draftMapIds.add(map.sys.id)
+    } else if (!!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2) {
+      changedMapIds.add(map.sys.id)
+    }
+  })
+
   return {
-    draftMaps,
-    changedMaps
+    draftMapIds,
+    changedMapIds
   }
 }
