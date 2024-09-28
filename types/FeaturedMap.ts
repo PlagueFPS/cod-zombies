@@ -13,4 +13,5 @@ export interface FeaturedMap {
   body: Document
   isDraft: boolean
   isChanged: boolean
+  isNew: boolean
 }

@@ -98,7 +98,7 @@ const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleto
     const category = resolveEntry(featuredMap.fields.gameCategory)
     const isDraft = draftMapIds.has(featuredMap.sys.id)
     const isChanged = changedMapIds.has(featuredMap.sys.id)
-    const isNew = newMapIds.has(featuredMap.sys.id)
+    const isNew = newMapIds?.has(featuredMap.sys.id)
     
     return {
       ...featuredMap.fields,

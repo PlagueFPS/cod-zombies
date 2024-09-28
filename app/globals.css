@@ -92,4 +92,9 @@
       @apply bg-gradient-to-tr dark:from-purple-950 dark:via-purple-800 dark:to-purple-950 dark:border-purple-600 dark:text-purple-100
       text-purple-800 from-purple-50 via-purple-200 to-purple-50 border-purple-400
     }
+
+    .badge-new-gradient {
+      @apply bg-gradient-to-tr dark:from-green-950 dark:via-green-800 dark:to-green-950 dark:border-green-600 dark:text-green-100
+      text-green-800 from-green-50 via-green-200 to-green-50 border-green-400
+    }
   }

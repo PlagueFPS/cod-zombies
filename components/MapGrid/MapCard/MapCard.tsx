@@ -6,6 +6,7 @@ import { isPriority } from '@/utils/functions'
 import { IN_DEVELOPMENT } from '@/utils/constants'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
+import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 
 interface MapCardProps {
   map: FeaturedMap
@@ -15,7 +16,7 @@ interface MapCardProps {
 
 export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
   const { isEnabled } = await draftMode()
-  const { title, description, image, gameCategory: category, slug, isDraft, isChanged } = map
+  const { title, description, image, gameCategory: category, slug, isDraft, isChanged, isNew } = map
   const priority = isPriority(mapIndex, totalMaps)
   
   return (
@@ -23,8 +24,9 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
       <div className='sr-only'>View Guide for { title }</div>
       <Card className="relative h-full group-hover:border-primary group-hover:scale-105 group-focus-visible:scale-105 group-focus-visible:border-primary cursor-pointer transition-transform overflow-hidden">
         <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
-          { (isEnabled || IN_DEVELOPMENT) && isDraft ? <Badge className='badge-draft-gradient'>Draft</Badge> : null }
-          { (isEnabled || IN_DEVELOPMENT) && isChanged ? <Badge className='badge-changed-gradient'>Changed</Badge> : null }
+          { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
+          { isNew ? <NewBadge /> : null }
           <Badge className='badge-primary-gradient'>
             { category?.fields.title }
           </Badge>

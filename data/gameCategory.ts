@@ -51,7 +51,7 @@ const createGameCategoryDTO = async(gameCategorys: Entry<TypeGameCategorySkeleto
     const categoryImage = resolveAsset(gameCategory.fields.image)
     const isDraft = draftCategoryIds.has(gameCategory.sys.id)
     const isChanged = changedCategoryIds.has(gameCategory.sys.id)
-    const isNew = newCategoryIds.has(gameCategory.sys.id)
+    const isNew = newCategoryIds?.has(gameCategory.sys.id)
 
     return {
       ...gameCategory.fields,
