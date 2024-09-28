@@ -16,14 +16,15 @@ export async function PUT(req: NextRequest) {
   const encoder = new TextEncoder()
   const secretBuffer = encoder.encode(secret || '')
   const validSecretBuffer = encoder.encode(env.REVALIDATE_SECRET)
- 
+  const webhookBody = await req.json()
+
   if (!timingSafeEqual(secretBuffer, validSecretBuffer)) {
     return Response.json({ revalidated: false, message: 'Unauthorized Request' }, { status: 401 })
   }
 
-  const payload = ContentfulWebhookBodySchema.safeParse(await req.json())
+  const payload = ContentfulWebhookBodySchema.safeParse(webhookBody)
   if (!payload.success) {
-    return Response.json({ revalidated: false, message: 'Invalid Request Body', errors: payload.error.message }, { status: 400 })
+    return Response.json({ revalidated: false, message: 'Invalid Request Body', errors: payload.error.flatten().fieldErrors }, { status: 400 })
   }
 
   switch (payload.data.type) {
@@ -68,22 +69,22 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   // This endpoint is for removing unpublished maps via revalidation from the frontend
-  // We do not delete any data from Contentful or a Database
   const headersList = await headers()
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
   const encoder = new TextEncoder()
   const secretBuffer = encoder.encode(secret || '')
   const validSecretBuffer = encoder.encode(env.REVALIDATE_SECRET)
+  const webhookBody = await req.json()
  
   if (!timingSafeEqual(secretBuffer, validSecretBuffer)) {
-    return Response.json({ deleted: false, message: 'Unauthorized Request' }, { status: 401 })
+    return Response.json({ removed: false, message: 'Unauthorized Request' }, { status: 401 })
   }
   
-  const payload = ContentfulWebhookBodySchema.safeParse(await req.json())
+  const payload = ContentfulWebhookBodySchema.safeParse(webhookBody)
   if (!payload.success) {
-    return Response.json({ deleted: false, message: 'Invalid Request Body', errors: payload.error.message }, { status: 400 })
+    return Response.json({ removed: false, message: 'Invalid Request Body', errors: payload.error.flatten().fieldErrors }, { status: 400 })
   }
 
   switch (payload.data.type) {
@@ -91,7 +92,7 @@ export async function DELETE(req: NextRequest) {
       const { mapId } = payload.data
       // Manually setting draftMode to true to be able to remove unpublished maps
       const map = await getFeaturedMapById(true, mapId)
-      if (!map) return Response.json({ deleted: false, message: 'Map Not Found' }, { status: 404 })
+      if (!map) return Response.json({ removed: false, message: 'Map Not Found' }, { status: 404 })
       
       const category = map.gameCategory
       const mapPath = `/${category?.fields.slug}/${map.slug}`
@@ -100,17 +101,20 @@ export async function DELETE(req: NextRequest) {
       // revalidate anywhere the map exists to remove it
       revalidatePath(mapPath)
       revalidatePath(categoryPath)
-      return Response.json({ deleted: true, message: `${mapPath} and ${categoryPath} Revalidated` }, { status: 200 })
+      return Response.json({ removed: true, message: `${mapPath} and ${categoryPath} Revalidated` }, { status: 200 })
     }
     case 'category': {
       const { categoryId } = payload.data
       // Manually setting draftMode to true to be able to remove unpublished categories
       const category = await getGameCategoryById(true, categoryId)
-      if (!category) return Response.json({ deleted: false, message: 'Category Not Found' }, { status: 404 })
+      if (!category) return Response.json({ removed: false, message: 'Category Not Found' }, { status: 404 })
 
       // Invalidate the category data set
       revalidateTag(CACHE_KEYS.GAME_CATEGORIES)
-      return Response.json({ deleted: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 200 })
+      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 200 })
+    }
+    default: {
+      return Response.json({ removed: false, message: 'Invalid Request Type' }, { status: 400 })
     }
   }
 }
