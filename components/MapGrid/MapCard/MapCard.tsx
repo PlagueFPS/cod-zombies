@@ -24,9 +24,9 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
       <div className='sr-only'>View Guide for { title }</div>
       <Card className="relative h-full group-hover:border-primary group-hover:scale-105 group-focus-visible:scale-105 group-focus-visible:border-primary cursor-pointer transition-transform overflow-hidden">
         <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
+          { isNew ? <NewBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
-          { isNew ? <NewBadge /> : null }
           <Badge className='badge-primary-gradient'>
             { category?.fields.title }
           </Badge>
