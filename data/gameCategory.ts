@@ -87,3 +87,12 @@ const getDraftsOrChanged = async () => {
     changedCategoryIds
   }
 }
+// const testFetchCategory = async (id: string) => {
+//   const cacheKey = `category-${id}`
+  
+//   const fetchCategories = unstable_cache(async () => {
+//     const category = await getGameCategoryById(false, id)
+//     return category
+//   }, [id], { tags: [cacheKey] })
+//   return fetchCategories()
+// }
