@@ -1,7 +1,7 @@
 import type { Asset, Entry, UnresolvedLink } from "contentful";
 import type { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
 import type { Heading } from "@/types/Heading";
-import type { FeaturedMap } from "@/types/FeaturedMap";
+import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
 import { getNewMapId } from "@/lib/kv";
 
@@ -13,10 +13,10 @@ export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCate
   if ('fields' in entry && entry.fields) return entry
 }
 
-export const extractHeadings = (entry: FeaturedMap) => {
+export const extractHeadings = (body: Document) => {
   const headings: Heading[] = []
 
-  entry.body.content.forEach(node => {
+  body.content.forEach(node => {
     if (node.nodeType.includes('heading-')) {
       if (node.content[0].nodeType === 'text') {
         headings.push({

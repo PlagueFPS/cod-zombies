@@ -17,6 +17,7 @@ import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRen
 import { cn } from '@/lib/utils'
 import { env } from '@/env'
 import type { FeaturedMap } from '@/types/FeaturedMap'
+import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 
 interface MapPageProps {
   params: Promise<{ 
@@ -72,8 +73,8 @@ export default async function MapPage({ params }: MapPageProps) {
   const { featuredMaps } = await getFeaturedMaps(isEnabled)
   const map = featuredMaps.find(map => map.slug === slug)
   if (!map) notFound()
-  const { title, image, gameCategory: category, updatedAt, isDraft, isChanged, body } = map
-  const headings = extractHeadings(map)
+  const { title, image, gameCategory: category, updatedAt, isDraft, isChanged, isNew, body } = map
+  const headings = extractHeadings(body)
   const mapIndex = featuredMaps.indexOf(map)
   const prevMap = featuredMaps[mapIndex + 1]
   const nextMap = featuredMaps[mapIndex - 1]
@@ -135,8 +136,9 @@ export default async function MapPage({ params }: MapPageProps) {
                   { title }
                 </h2>
                 <div className='flex items-center justify-center gap-4 w-fit'>
-                  { (isEnabled || IN_DEVELOPMENT) && isDraft ? <Badge className='badge-draft-gradient'>Draft</Badge> : null }
-                  { (isEnabled || IN_DEVELOPMENT) && isChanged ? <Badge className='badge-changed-gradient'>Changed</Badge> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
+                  { isNew ? <NewBadge /> : null }
                   <Badge className='badge-primary-gradient'>{ category?.fields.title }</Badge>
                 </div>
               </div>

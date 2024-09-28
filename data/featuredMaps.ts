@@ -7,6 +7,7 @@ import type { Entry } from "contentful"
 import { managementClient } from "@/contentful/contentful-management"
 import { MAP_LIMIT } from "@/utils/constants"
 import { getAllNewMapIds } from "@/lib/kv"
+import { FeaturedMap } from "@/types/FeaturedMap"
 
 /**
  * 
@@ -98,7 +99,7 @@ const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleto
     const category = resolveEntry(featuredMap.fields.gameCategory)
     const isDraft = draftMapIds.has(featuredMap.sys.id)
     const isChanged = changedMapIds.has(featuredMap.sys.id)
-    const isNew = newMapIds?.has(featuredMap.sys.id)
+    const isNew = !!newMapIds?.has(featuredMap.sys.id)
     
     return {
       ...featuredMap.fields,

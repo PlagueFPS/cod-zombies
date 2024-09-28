@@ -1,7 +1,12 @@
 import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
 
-export const DraftBadge = () => <Badge className='badge-draft-gradient'>Draft</Badge>
+interface CustomBadgeProps { 
+  className?: string
+}
 
-export const ChangedBadge = () => <Badge className='badge-changed-gradient'>Changed</Badge>
+export const DraftBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-draft-gradient', className)}>Draft</Badge>
 
-export const NewBadge = () => <Badge className='badge-new-gradient'>New</Badge>
+export const ChangedBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-changed-gradient', className)}>Changed</Badge>
+
+export const NewBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-new-gradient', className)}>New</Badge>
