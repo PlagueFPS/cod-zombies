@@ -8,7 +8,7 @@ export const storeNewMapId = async (mapId: string, createdAt: string) => {
 }
 
 export const getNewMapId = async (mapId: string) => {
-  const value = await kv.get(`${NEW_MAP_PREFIX}${mapId}`)
+  const value = await kv.get<string>(`${NEW_MAP_PREFIX}${mapId}`)
   if (!value) return
   return value
 }
@@ -16,16 +16,9 @@ export const getNewMapId = async (mapId: string) => {
 export const getAllNewMapIds = async () => {
   const keys = await kv.keys(`${NEW_MAP_PREFIX}*`)
   if (keys.length > 0) {
-    const values = await kv.mget(...keys)
-    const newMapIds = new Set<string>()
-    keys.forEach((key, index) => {
-      if (values[index]) {
-        newMapIds.add(key.replace(NEW_MAP_PREFIX, ""))
-      }
-    })
-
-    return newMapIds
+    return new Set(keys.map(key => key.replace(NEW_MAP_PREFIX, "")))
   }
+  return new Set<string>()
 }
 
 export const storeNewCategoryId = async (categoryId: string, createdAt: string) => {
@@ -33,7 +26,7 @@ export const storeNewCategoryId = async (categoryId: string, createdAt: string) 
 }
 
 export const getNewCategoryId = async (categoryId: string) => {
-  const value = await kv.get(`${NEW_CATEGORY_PREFIX}${categoryId}`)
+  const value = await kv.get<string>(`${NEW_CATEGORY_PREFIX}${categoryId}`)
   if (!value) return
   return value
 }
@@ -41,14 +34,7 @@ export const getNewCategoryId = async (categoryId: string) => {
 export const getAllNewCategoryIds = async () => {
   const keys = await kv.keys(`${NEW_CATEGORY_PREFIX}*`)
   if (keys.length > 0) {
-    const values = await kv.mget(...keys)
-    const newCategoryIds = new Set<string>()
-    keys.forEach((key, index) => {
-      if (values[index]) {
-        newCategoryIds.add(key.replace(NEW_CATEGORY_PREFIX, ""))
-      }
-    })
-  
-    return newCategoryIds
+    return new Set(keys.map(key => key.replace(NEW_CATEGORY_PREFIX, "")))
   }
+  return new Set<string>()
 }
