@@ -1,49 +1,86 @@
 import "server-only"
+import { nextCache } from "@/data/cache"
 import { cache } from "react"
 import { getEntries } from "@/contentful/contentful"
 import { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
 import type { Entry } from "contentful"
 import { resolveAsset } from "@/utils/contentful-utils"
-import { unstable_cache } from "next/cache"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { managementClient } from "@/contentful/contentful-management"
 import { getAllNewCategoryIds } from "@/lib/kv"
+import { z } from "zod"
 
-const fetchGameCategories = async (draftMode: boolean) => {
+export const getGameCategories = cache(async (draftMode: boolean) => {
+  // if (IN_DEVELOPMENT || draftMode) {
+  //   return fetchGameCategories(true)
+  // }
+  return getCategoriesFromCache()
+})
+
+export const getGameCategoryBySlug = cache(async (draftMode: boolean, categorySlug: string) => {
+  // if (IN_DEVELOPMENT || draftMode) {
+  //   return fetchGameCategoryBySlug(categorySlug)
+  // }
+  return getCategoryBySlugFromCache({ categorySlug })
+})
+
+export const getGameCategoryById = cache(async (draftMode: boolean, categoryId: string) => {
+  // if (IN_DEVELOPMENT || draftMode) {
+  //   return fetchGameCategoryById(categoryId)
+  // }
+  return getCategoryByIdFromCache({ categoryId})
+}
+)
+
+const fetchGameCategories = cache(async (draftMode: boolean) => {
   const gameCategories = await getEntries<TypeGameCategorySkeleton>({
     content_type: 'gameCategory',
     order: ['sys.createdAt']
   }, draftMode)
 
-  return await createGameCategoryDTO(gameCategories.items)
-}
-
-const cachedFetchGameCategories = unstable_cache(
-  fetchGameCategories,
-  ['game-categories'],
-  { tags: [CACHE_KEYS.GAME_CATEGORIES] }
-)
-
-export const getGameCategories = cache(async (draftMode: boolean) => {
-  if (IN_DEVELOPMENT || draftMode) {
-    return fetchGameCategories(true)
-  }
-  return cachedFetchGameCategories(false)
+  return createGameCategoryDTO(gameCategories.items)
 })
 
-export const getGameCategoryBySlug = cache(async (draftMode: boolean, slug: string) => {
-    const categories = await getGameCategories(draftMode)
-    return categories.find(category => category.slug === slug)
-  }
-)
+const fetchGameCategoryById = cache(async (categoryId: string) => {
+  const categories = await fetchGameCategories(false)
+  const category = categories.find(category => category.id === categoryId)
+  return category
+})
 
-export const getGameCategoryById = cache(async (draftMode: boolean, id: string) => {
-    const categories = await getGameCategories(draftMode)
-    return categories.find(category => category.id === id)
-  }
-)
+const fetchGameCategoryBySlug = cache(async (categorySlug: string) => {
+  const categories = await fetchGameCategories(false)
+  const category = categories.find(category => category.slug === categorySlug)
+  return category
+})
 
-const createGameCategoryDTO = async(gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
+const getCategoryByIdFromCache = nextCache({
+  args: {
+    categoryId: z.string(),
+  },
+  fn: ({ categoryId }) => fetchGameCategoryById(categoryId),
+  revalidateTags: async ({ categoryId }) => {
+    const category = await fetchGameCategoryById(categoryId)
+    return category ? [`${CACHE_KEYS.GAME_CATEGORIES}-${category.id}`] : []
+  }
+})
+
+const getCategoryBySlugFromCache = nextCache({
+  args: {
+    categorySlug: z.string(),
+  },
+  fn: ({ categorySlug }) => fetchGameCategoryBySlug(categorySlug),
+  revalidateTags: async ({ categorySlug }) => {
+    const category = await fetchGameCategoryBySlug(categorySlug)
+    return category ? [`${CACHE_KEYS.GAME_CATEGORIES}-${category.id}`] : []
+  }
+})
+
+const getCategoriesFromCache = nextCache({
+  fn: () => fetchGameCategories(false),
+  revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES]
+})
+
+const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
   const { draftCategoryIds, changedCategoryIds } = await getDraftsOrChanged()
   const newCategoryIds = await getAllNewCategoryIds()
 
@@ -87,12 +124,3 @@ const getDraftsOrChanged = async () => {
     changedCategoryIds
   }
 }
-// const testFetchCategory = async (id: string) => {
-//   const cacheKey = `category-${id}`
-  
-//   const fetchCategories = unstable_cache(async () => {
-//     const category = await getGameCategoryById(false, id)
-//     return category
-//   }, [id], { tags: [cacheKey] })
-//   return fetchCategories()
-// }
