@@ -5,6 +5,8 @@ import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { draftMode } from "next/headers"
 import HeroSection from "@/components/HeroSection/HeroSection"
 import FeaturedMaps from "@/components/FeaturedMaps/FeaturedMaps"
+import { use } from "react"
+import { capatilize } from "@/utils/functions"
 
 interface CategoryPageProps {
   params: Promise<{
@@ -20,9 +22,7 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: CategoryPageProps) => {
-  const paramsPromise = params
-  const draftModePromise = draftMode()
-  const [{ category: slug }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
+  const [{ category: slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const category = await getGameCategoryBySlug(isEnabled, slug)
   if (!category) notFound()
   const title = category.title
@@ -36,9 +36,9 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
       description,
       url: `/${category.slug}`,
       images: {
-        url: `https:${category.image?.fields.file?.url}?q=75`,
-        width: category.image?.fields.file?.details.image?.width,
-        height: category.image?.fields.file?.details.image?.height,
+        url: `https:${category.image.url}?q=75`,
+        width: category.image.width,
+        height: category.image.height,
       }
     },
     twitter: {
@@ -51,18 +51,13 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
   return metadata
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
-  const paramsPromise = params
-  const draftModePromise = draftMode()
-  const [{ category: slug }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
-  const categories = await getGameCategories(isEnabled)
-  const category = categories.find(category => category.slug === slug)
-  if (!category) notFound()
+export default function CategoryPage({ params }: CategoryPageProps) {
+  const { category } = use(params)
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
-      <HeroSection text={ category.title } />
-      <FeaturedMaps currentCategory={ category.slug } />
+      <HeroSection text={ capatilize(category) } />
+      <FeaturedMaps currentCategory={ category } />
     </div>
   )
 }

@@ -1,5 +1,4 @@
 "use client"
-import type { Asset } from "contentful"
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import placeholderImage from "@/public/article-img-placeholder.jpg"
@@ -7,7 +6,11 @@ import { cn } from "@/lib/utils"
 import ImageLoader from "../Loaders/ImageLoader"
 
 interface FeaturedImageProps {
-  featuredImage: Asset<undefined, string> | undefined
+  featuredImage: {
+    url: string | undefined,
+    width: number | undefined,
+    height: number | undefined
+  }
   alt?: string
   quality?: number
   className?: string
@@ -19,7 +22,7 @@ export default function FeaturedImage({ featuredImage, alt = "", quality = 75, c
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageError, setImageError] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
-  const featuredImageURL = featuredImage ? `https:${featuredImage.fields.file?.url}` : placeholderImage
+  const featuredImageURL = featuredImage ? `https:${featuredImage.url}` : placeholderImage
 
   useEffect(() => {
     const img = imageRef.current
@@ -39,8 +42,8 @@ export default function FeaturedImage({ featuredImage, alt = "", quality = 75, c
         <Image 
           src={ featuredImageURL }
           alt={ alt }
-          width={ featuredImage?.fields.file?.details.image?.width }
-          height={ featuredImage?.fields.file?.details.image?.height }
+          width={ featuredImage.width }
+          height={ featuredImage.height }
           sizes={ sizes }
           ref={ imageRef }
           onLoad={ () => setImageLoaded(true) }

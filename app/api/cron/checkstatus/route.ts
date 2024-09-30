@@ -1,9 +1,8 @@
 import { headers } from "next/headers"
 import { env } from "@/env"
 import { kv } from "@vercel/kv"
-import { getFeaturedMapById } from "@/data/featuredMaps"
 import { CACHE_KEYS, NEW_CATEGORY_PREFIX, NEW_MAP_PREFIX } from "@/utils/constants"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidateTag } from "next/cache"
 import { authorizedRequest } from "@/utils/functions"
 
 export async function GET() {
@@ -23,10 +22,7 @@ export async function GET() {
 
           if (!exists) {
             const mapId = key.replace(NEW_MAP_PREFIX, "")
-            const map = await getFeaturedMapById(false, mapId) // Manually setting draftMode to false to prevent trying to revalidate draft content
-            if (!map) continue
-            const category = map.gameCategory
-            revalidatePath(`/${category?.fields.slug}/${map.slug}`) // Key has expired, revalidate the corresponding path
+            revalidateTag(`${CACHE_KEYS.FEATURED_MAPS}-${mapId}`) // Key has expired, revalidate the corresponding path
           }
         } 
         catch (error) {

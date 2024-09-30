@@ -1,16 +1,18 @@
-import type { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
-import type { Asset, Entry } from "contentful"
-import type { Document } from "@contentful/rich-text-types"
-
 export interface FeaturedMap {
   id: string
   slug: string
   title: string
   description: string
-  image: Asset<undefined, string> | undefined
-  gameCategory: Entry<TypeGameCategorySkeleton, undefined, string> | undefined
+  image: {
+    url: string | undefined
+    width: number | undefined
+    height: number | undefined
+  }
+  gameCategory: {
+    title: string | undefined
+    slug: string | undefined
+  }
   updatedAt: string
-  body: Document
   isDraft: boolean
   isChanged: boolean
   isNew: boolean

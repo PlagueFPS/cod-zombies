@@ -27,5 +27,5 @@ export async function GET(req: NextRequest) {
   enable()
   // Redirect to the path from the fetched map
   // We don't redirect to searchParams.slug as that might lead to open redirect vulnerabilities
-  redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${map.slug}`)
+  redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${category.slug}/${map.slug}`)
 }

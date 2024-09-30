@@ -20,7 +20,7 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
   const priority = isPriority(mapIndex, totalMaps)
   
   return (
-    <Link href={ `/${category?.fields.slug}/${slug}` } className="max-h-[450px] h-full group outline-none" aria-label={ `View Guide for ${title}` }>
+    <Link href={ `/${category.slug}/${slug}` } className="max-h-[450px] h-full group outline-none" aria-label={ `View Guide for ${title}` }>
       <div className='sr-only'>View Guide for { title }</div>
       <Card className="relative h-full group-hover:border-primary group-hover:scale-105 group-focus-visible:scale-105 group-focus-visible:border-primary cursor-pointer transition-transform overflow-hidden">
         <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
@@ -28,7 +28,7 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
           { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
           <Badge className='badge-primary-gradient'>
-            { category?.fields.title }
+            { category.title }
           </Badge>
         </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">

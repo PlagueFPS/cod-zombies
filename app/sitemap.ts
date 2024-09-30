@@ -5,9 +5,7 @@ import { IN_DEVELOPMENT } from "@/utils/constants";
 import { getGameCategories } from "@/data/gameCategory";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const featuredMapsPromise = getFeaturedMaps(IN_DEVELOPMENT)
-  const categoriesPromise = getGameCategories(IN_DEVELOPMENT)
-  const [{ featuredMaps }, categories] = await Promise.all([featuredMapsPromise, categoriesPromise])
+  const [{ featuredMaps }, categories] = await Promise.all([getFeaturedMaps(IN_DEVELOPMENT), getGameCategories(IN_DEVELOPMENT)])
 
   return [
     {
@@ -17,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${category.slug}`,
     })),
     ...featuredMaps.map(map => ({
-      url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.gameCategory?.fields.slug}/${map.slug}`,
+      url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.gameCategory.slug}/${map.slug}`,
       lastModified: new Date(map.updatedAt)
     }))
   ]

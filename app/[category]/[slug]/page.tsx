@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils'
 import { env } from '@/env'
 import type { FeaturedMap } from '@/types/FeaturedMap'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
+import { Suspense } from 'react'
 
 interface MapPageProps {
   params: Promise<{ 
@@ -30,15 +31,13 @@ export const generateStaticParams = async () => {
   const { featuredMaps } = await getFeaturedMaps(IN_DEVELOPMENT)
 
   return featuredMaps.map(map => ({
-    category: map.gameCategory?.fields.slug,
+    category: map.gameCategory.slug,
     slug: map.slug
   }))
 }
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
-  const paramsPromise = params
-  const draftModePromise = draftMode()
-  const [{ slug, category }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
+  const [{ slug, category }, { isEnabled }] = await Promise.all([params, draftMode()])
   const map = await getFeaturedMapBySlug(isEnabled, slug)
   if (!map) notFound()
   const { title, description, image } = map
@@ -51,9 +50,9 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       description,
       url: `/${category}/${slug}`,
       images: {
-        url: `https:${image?.fields?.file?.url}?q=75`,
-        width: image?.fields?.file?.details.image?.width,
-        height: image?.fields?.file?.details.image?.height
+        url: `https:${image.url}?q=75`,
+        width: image.width,
+        height: image.height
       }
     },
     twitter: {
@@ -67,17 +66,11 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 }
 
 export default async function MapPage({ params }: MapPageProps) {
-  const paramsPromise = params
-  const draftModePromise = draftMode()
-  const [{ slug }, { isEnabled }] = await Promise.all([paramsPromise, draftModePromise])
-  const { featuredMaps } = await getFeaturedMaps(isEnabled)
-  const map = featuredMaps.find(map => map.slug === slug)
+  const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
+  const map = await getFeaturedMapBySlug(isEnabled, slug)
   if (!map) notFound()
   const { title, image, gameCategory: category, updatedAt, isDraft, isChanged, isNew, body } = map
   const headings = extractHeadings(body)
-  const mapIndex = featuredMaps.indexOf(map)
-  const prevMap = featuredMaps[mapIndex + 1]
-  const nextMap = featuredMaps[mapIndex - 1]
 
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
@@ -114,7 +107,7 @@ export default async function MapPage({ params }: MapPageProps) {
                       </BreadcrumbSeparator>
                       <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                          <NavLink exact href={ `/${category?.fields.slug}` }>{ category?.fields.title }</NavLink>
+                          <NavLink exact href={ `/${category.slug}` }>{ category.title }</NavLink>
                         </BreadcrumbLink>
                       </BreadcrumbItem>
                       <BreadcrumbSeparator>
@@ -122,7 +115,7 @@ export default async function MapPage({ params }: MapPageProps) {
                       </BreadcrumbSeparator>
                       <BreadcrumbItem>
                         <BreadcrumbLink asChild>
-                          <NavLink exact active href={ `/${category?.fields.slug}/${slug}` } className='font-medium'>{ title }</NavLink>
+                          <NavLink exact active href={ `/${category.slug}/${slug}` } className='font-medium'>{ title }</NavLink>
                         </BreadcrumbLink>
                       </BreadcrumbItem>
                     </BreadcrumbList>
@@ -139,7 +132,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
                   { isNew ? <NewBadge /> : null }
-                  <Badge className='badge-primary-gradient'>{ category?.fields.title }</Badge>
+                  <Badge className='badge-primary-gradient'>{ category.title }</Badge>
                 </div>
               </div>
               <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
@@ -147,7 +140,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   <div>Last Updated: { new Date(updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
                 </div>
                 <div className='flex items-center justify-center'>
-                  <ShareButton title={ title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${category?.fields.slug}/${slug}` } />
+                  <ShareButton title={ title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${category.slug}/${slug}` } />
                 </div>
               </div>
             </div>
@@ -156,12 +149,9 @@ export default async function MapPage({ params }: MapPageProps) {
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
-                { prevMap && (
-                  <PreviousOrNextMap map={ prevMap } prev />
-                )}
-                { nextMap && (
-                  <PreviousOrNextMap map={ nextMap } />
-                )}
+                <Suspense fallback={ <div>Loading...</div> }> 
+                  <PreviousOrNextMap map={ map } />
+                </Suspense>
               </div>
             </div>
           </article>
@@ -172,11 +162,26 @@ export default async function MapPage({ params }: MapPageProps) {
   )
 }
 
- const PreviousOrNextMap = ({ map, prev }: { map: FeaturedMap, prev?: boolean }) => {
+ const PreviousOrNextMap = async ({ map }: { map: FeaturedMap }) => {
+  const { isEnabled } = await draftMode()
+  const { featuredMaps } = await getFeaturedMaps(isEnabled)
+  const mapIndex = featuredMaps.indexOf(map)
+  const prevMap = featuredMaps[mapIndex - 1]
+  const nextMap = featuredMaps[mapIndex + 1]
+
+  return (
+    <>
+      { prevMap && <PrevOrNextMapCard map={ prevMap } prev /> }
+      { nextMap && <PrevOrNextMapCard map={ nextMap } /> }
+    </>
+  )
+ }
+
+ const PrevOrNextMapCard = ({ map, prev }: { map: FeaturedMap, prev?: boolean }) => {
   const { title, description, gameCategory: category, image, slug } = map
 
   return (
-      <Link href={ `/${category?.fields.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
+    <Link href={ `/${category.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
         <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
