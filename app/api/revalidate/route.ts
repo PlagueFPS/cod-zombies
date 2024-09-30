@@ -1,23 +1,20 @@
 import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
-import { timingSafeEqual } from "crypto"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { getFeaturedMapById } from "@/data/featuredMaps"
 import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 import { isFirstTimePublish } from "@/utils/contentful-utils"
 import { CACHE_KEYS } from "@/utils/constants"
-import { storeNewCategoryId, storeNewMapId } from "@/lib/kv"
+import { storeNewCategoryId, storeNewMapId } from "@/data/kv"
+import { authorizedRequest } from "@/utils/functions"
 
 export async function PUT(req: NextRequest) {
   const headersList = await headers()
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
-  const encoder = new TextEncoder()
-  const secretBuffer = encoder.encode(secret || '')
-  const validSecretBuffer = encoder.encode(env.REVALIDATE_SECRET)
   const webhookBody = await req.json()
 
-  if (!timingSafeEqual(secretBuffer, validSecretBuffer)) {
+  if (!authorizedRequest(secret, env.REVALIDATE_SECRET)) {
     return Response.json({ revalidated: false, message: 'Unauthorized Request' }, { status: 401 })
   }
 
@@ -53,6 +50,7 @@ export async function PUT(req: NextRequest) {
     }  
     case 'category': {
       const { categoryId, createdAt, updatedAt } = payload.data
+
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the categoryId as new for 1 week
         await storeNewCategoryId(categoryId, createdAt)
@@ -66,12 +64,9 @@ export async function PATCH(req: NextRequest) {
   // This endpoint is for removing unpublished maps & categories via revalidation from the frontend
   const headersList = await headers()
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
-  const encoder = new TextEncoder()
-  const secretBuffer = encoder.encode(secret || '')
-  const validSecretBuffer = encoder.encode(env.REVALIDATE_SECRET)
   const webhookBody = await req.json()
  
-  if (!timingSafeEqual(secretBuffer, validSecretBuffer)) {
+  if (!authorizedRequest(secret, env.REVALIDATE_SECRET)) {
     return Response.json({ removed: false, message: 'Unauthorized Request' }, { status: 401 })
   }
   
@@ -98,6 +93,7 @@ export async function PATCH(req: NextRequest) {
     }
     case 'category': {
       const { categoryId } = payload.data
+
       // Invalidate the category ID
       revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}-${categoryId}`)
       return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES}-${categoryId} Revalidated` }, { status: 200 })

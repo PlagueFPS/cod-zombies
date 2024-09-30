@@ -7,7 +7,7 @@ import type { Entry } from "contentful"
 import { resolveAsset } from "@/utils/contentful-utils"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { managementClient } from "@/contentful/contentful-management"
-import { getAllNewCategoryIds } from "@/lib/kv"
+import { getAllNewCategoryIds } from "@/data/kv"
 import { z } from "zod"
 
 export const getGameCategories = cache(async (draftMode: boolean) => {

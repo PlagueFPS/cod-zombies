@@ -6,8 +6,7 @@ import { resolveAsset, resolveEntry } from "@/utils/contentful-utils"
 import type { Entry } from "contentful"
 import { managementClient } from "@/contentful/contentful-management"
 import { MAP_LIMIT } from "@/utils/constants"
-import { getAllNewMapIds } from "@/lib/kv"
-import { FeaturedMap } from "@/types/FeaturedMap"
+import { getAllNewMapIds } from "@/data/kv"
 
 /**
  * 

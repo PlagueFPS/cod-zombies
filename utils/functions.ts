@@ -1,3 +1,5 @@
+import { timingSafeEqual } from "crypto"
+
 export const isPriority = (mapIndex: number, totalMaps: number) => {
   if (mapIndex < totalMaps - (totalMaps - 4)) return true
   else return false
@@ -27,4 +29,11 @@ export const getYouTubeVideoID = (url: string) => {
   const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
   const match = url.match(regex);
   return match ? match[1] : null;
+}
+
+export const authorizedRequest = (secret: string | null, validSecret: string) => {
+  const encoder = new TextEncoder()
+  const secretBuffer = encoder.encode(secret || '')
+  const validSecretBuffer = encoder.encode(validSecret)
+  return timingSafeEqual(secretBuffer, validSecretBuffer)
 }

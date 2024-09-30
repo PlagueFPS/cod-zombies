@@ -1,54 +1,62 @@
 import { headers } from "next/headers"
 import { env } from "@/env"
-import { timingSafeEqual } from "crypto"
 import { kv } from "@vercel/kv"
 import { getFeaturedMapById } from "@/data/featuredMaps"
-import { getGameCategoryById } from "@/data/gameCategory"
 import { CACHE_KEYS, NEW_CATEGORY_PREFIX, NEW_MAP_PREFIX } from "@/utils/constants"
 import { revalidatePath, revalidateTag } from "next/cache"
+import { authorizedRequest } from "@/utils/functions"
 
 export async function GET() {
   const headersList = await headers()
   const secret = headersList.get('Authorization')
-  const encoder = new TextEncoder()
-  const secretBuffer = encoder.encode(secret || '')
-  const validSecretBuffer = encoder.encode(`Bearer ${env.CRON_SECRET}`)
 
-  if (!timingSafeEqual(secretBuffer, validSecretBuffer)) {
+  if (!authorizedRequest(secret, `Bearer ${env.CRON_SECRET}`)) {
     return Response.json({ success: false, message: 'Unauthorized Request' }, { status: 401 })
   }
 
-  const mapKeys = await kv.keys(`${NEW_MAP_PREFIX}*`)
-  const categoryKeys = await kv.keys(`${NEW_CATEGORY_PREFIX}*`)
+  try {
+    const mapKeys = await kv.keys(`${NEW_MAP_PREFIX}*`)
+    if (mapKeys.length > 0) {
+      for (const key of mapKeys) {
+        try {
+          const exists = await kv.exists(key)
+
+          if (!exists) {
+            const mapId = key.replace(NEW_MAP_PREFIX, "")
+            const map = await getFeaturedMapById(false, mapId) // Manually setting draftMode to false to prevent trying to revalidate draft content
+            if (!map) continue
+            const category = map.gameCategory
+            revalidatePath(`/${category?.fields.slug}/${map.slug}`) // Key has expired, revalidate the corresponding path
+          }
+        } 
+        catch (error) {
+          console.error(`[CRON] Error processing map key: ${key}`, error)
+        }
+      }
+    }
+
+    const categoryKeys = await kv.keys(`${NEW_CATEGORY_PREFIX}*`)
+    if (categoryKeys.length > 0) {
+      for (const key of categoryKeys) {
+        try {
+          const exists = await kv.exists(key)
   
-  if (mapKeys.length > 0) {
-    for (const key of mapKeys) {
-      const exists = await kv.exists(key)
-      if (!exists) {
-        const mapId = key.replace(NEW_MAP_PREFIX, "")
-        // Manually setting draftMode to false to prevent trying to revalidate draft content
-        const map = await getFeaturedMapById(false, mapId)
-        if (!map) continue
-        const category = map.gameCategory
-        // Key has expired, revalidate the corresponding path
-        revalidatePath(`/${category?.fields.slug}/${map.slug}`)
+          if (!exists) {
+          const categoryId = key.replace(NEW_CATEGORY_PREFIX, "")
+          revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}-${categoryId}`) // Key has expired, revalidate the corresponding tag
+          }
+        } 
+        catch (error) {
+          console.error(`[CRON] Error processing category key: ${key}`, error)
+        }
       }
     }
+  } 
+  catch (error) {
+    console.error("[CRON] Error in checkstatus cron job", error)
+    return Response.json({ success: false }, { status: 500 })
   }
 
-  if (categoryKeys.length > 0) {
-    for (const key of categoryKeys) {
-      const exists = await kv.exists(key)
-      if (!exists) {
-        const categoryId = key.replace(NEW_CATEGORY_PREFIX, "")
-        // Manually setting draftMode to false to prevent trying to revalidate draft content
-        const category = await getGameCategoryById(false, categoryId)
-        if (!category) continue
-        // Key has expired, revalidate the corresponding tag
-        revalidateTag(CACHE_KEYS.GAME_CATEGORIES)
-      }
-    }
-  }
-
+  console.log("[CRON] checkstatus cron job completed")
   return Response.json({ success: true })
 }
