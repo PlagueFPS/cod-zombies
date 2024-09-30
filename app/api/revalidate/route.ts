@@ -3,7 +3,6 @@ import { headers } from "next/headers"
 import { timingSafeEqual } from "crypto"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { getFeaturedMapById } from "@/data/featuredMaps"
-import { getGameCategoryById } from "@/data/gameCategory"
 import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 import { isFirstTimePublish } from "@/utils/contentful-utils"
@@ -54,23 +53,17 @@ export async function PUT(req: NextRequest) {
     }  
     case 'category': {
       const { categoryId, createdAt, updatedAt } = payload.data
-      // Manually setting draftMode to false to prevent trying to revalidate draft content
-      const category = await getGameCategoryById(false, categoryId)
-      if (!category) return Response.json({ revalidated: false, message: 'Category Not Found' }, { status: 404 })
-      
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the categoryId as new for 1 week
         await storeNewCategoryId(categoryId, createdAt)
       }
-        // Invalidate the category data set
-        revalidateTag(CACHE_KEYS.GAME_CATEGORIES)
-        return Response.json({ revalidated: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 201 })
+      return Response.json({ updated: true, message: `${categoryId} stored as new` }, { status: 201 })
     }
   }
 }
 
 export async function PATCH(req: NextRequest) {
-  // This endpoint is for removing unpublished maps via revalidation from the frontend
+  // This endpoint is for removing unpublished maps & categories via revalidation from the frontend
   const headersList = await headers()
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
   const encoder = new TextEncoder()
@@ -105,13 +98,9 @@ export async function PATCH(req: NextRequest) {
     }
     case 'category': {
       const { categoryId } = payload.data
-      // Manually setting draftMode to true to be able to remove unpublished categories
-      const category = await getGameCategoryById(true, categoryId)
-      if (!category) return Response.json({ removed: false, message: 'Category Not Found' }, { status: 404 })
-
-      // Invalidate the category data set
-      revalidateTag(CACHE_KEYS.GAME_CATEGORIES)
-      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 200 })
+      // Invalidate the category ID
+      revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}-${categoryId}`)
+      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES}-${categoryId} Revalidated` }, { status: 200 })
     }
     default: {
       return Response.json({ removed: false, message: 'Invalid Request Type' }, { status: 400 })

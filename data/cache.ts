@@ -14,7 +14,7 @@ type NextCacheOptions<TArgs extends Record<string, z.ZodType<any, any>> | undefi
 };
 
 /**
- * This function creates a cached function using Next.js's unstable_cache, with a type-safe wrapper for arguments and return types.
+ * This function creates a memoized cached function using Next.js's unstable_cache and react's cache, with a type-safe wrapper for arguments and return types.
  * 
  * @param  args - Object where the keys are arguments and the values are Zod Types.
  * @param  fn - The function to be cached. This function must return a promise and receives the parsed context as its argument.
