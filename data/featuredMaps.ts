@@ -77,7 +77,7 @@ const getFeaturedMapFromCache = nextCache({
     mapId: z.string(),
     draftMode: z.literal(false)
   },
-  fn: async ({ mapId, draftMode }) => {
+  handler: async ({ mapId, draftMode }) => {
     const map = await fetchFeaturedMap(draftMode, mapId)
     if (map) {
       const { body, ...restOfMap } = map
@@ -85,9 +85,8 @@ const getFeaturedMapFromCache = nextCache({
     }
     return null
   },
-  revalidateTags: async ({ mapId, draftMode }) => {
-    const map = await fetchFeaturedMap(draftMode, mapId)
-    return map ? [`${CACHE_KEYS.FEATURED_MAPS}-${map.id}`] : []
+  revalidateTags: ({ result }) => {
+    return result ? [`${CACHE_KEYS.FEATURED_MAPS}-${result.id}`] : []
   }
 })
 

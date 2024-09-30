@@ -33,11 +33,9 @@ const getCategoryFromCache = nextCache({
     categoryIdOrSlug: z.string(),
     draftMode: z.literal(false)
   },
-  fn: ({ categoryIdOrSlug, draftMode }) => fetchGameCategory(draftMode, categoryIdOrSlug),
-  revalidateTags: async ({ categoryIdOrSlug, draftMode }) => {
-    // Make sure we cache the category by id even if slug provided
-    const category = await fetchGameCategory(draftMode, categoryIdOrSlug)
-    return category ? [`${CACHE_KEYS.GAME_CATEGORIES}-${category.id}`] : []
+  handler: ({ categoryIdOrSlug, draftMode }) => fetchGameCategory(draftMode, categoryIdOrSlug),
+  revalidateTags: async ({ result }) => {
+    return result ? [`${CACHE_KEYS.GAME_CATEGORIES}-${result.id}`] : []
   }
 })
 
