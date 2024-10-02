@@ -23,12 +23,12 @@ interface PaginatedFeaturedMapsResult extends FeaturedMapsResult {
 async function getFeaturedMapsBase(draftMode: boolean): Promise<FeaturedMapsResult>
 async function getFeaturedMapsBase(draftMode: boolean, page: number): Promise<PaginatedFeaturedMapsResult>
 async function getFeaturedMapsBase(draftMode: boolean, page?: number): Promise<FeaturedMapsResult | PaginatedFeaturedMapsResult> {
-  // if (IN_DEVELOPMENT || draftMode) {
-  //   const { featuredMaps, totalMaps } = await fetchFeaturedMaps(true)
-  //   if (page) return getPaginatedFeaturedMaps(featuredMaps, totalMaps, page)
-  //   return { featuredMaps, totalMaps }
-  // }
-  const { featuredMaps, totalMaps } = await getFeaturedMapsFromCache(false)
+  if (IN_DEVELOPMENT || draftMode) {
+    const { featuredMaps, totalMaps } = await fetchFeaturedMaps(true)
+    if (page) return getPaginatedFeaturedMaps(featuredMaps, totalMaps, page)
+    return { featuredMaps, totalMaps }
+  }
+  const { featuredMaps, totalMaps } = await getFeaturedMapsFromCache()
   if (page) return getPaginatedFeaturedMaps(featuredMaps, totalMaps, page)
   return {
     featuredMaps,
@@ -37,8 +37,10 @@ async function getFeaturedMapsBase(draftMode: boolean, page?: number): Promise<F
 }
 
 export const getFeaturedMaps = cache(getFeaturedMapsBase)
+export const getFeaturedMapBySlug = cache(async (draftMode: boolean, slug: string) => fetchFeaturedMap(draftMode, slug))
+export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) => fetchFeaturedMap(draftMode, id))
 
-const getPaginatedFeaturedMaps = cache(async (featuredMaps: FeaturedMap[], totalMaps: number, page: number) => {
+const getPaginatedFeaturedMaps = async (featuredMaps: FeaturedMap[], totalMaps: number, page: number) => {
   const totalPages = Math.ceil(totalMaps / MAP_LIMIT)
   const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
   const paginatedFeaturedMaps = featuredMaps.slice((currentPage - 1) * MAP_LIMIT, currentPage * MAP_LIMIT)
@@ -53,32 +55,23 @@ const getPaginatedFeaturedMaps = cache(async (featuredMaps: FeaturedMap[], total
     prevPage,
     nextPage
   }
-})
+}
 
-export const getFeaturedMapBySlug = cache(async (draftMode: boolean, slug: string) => {
-  return fetchFeaturedMap(draftMode, slug)
-})
-
-export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) => {
-  return fetchFeaturedMap(draftMode, id)
-})
-
-const getFeaturedMapsFromCache = cache(async (draftMode: false) => {
-  const { featuredMaps, totalMaps } = await fetchFeaturedMaps(draftMode)
-  const cachedMaps = await Promise.all(featuredMaps.map(({ id }) => getFeaturedMapFromCache({ mapId: id, draftMode })))
+const getFeaturedMapsFromCache = async () => {
+  const { featuredMaps, totalMaps } = await fetchFeaturedMaps(false)
+  const cachedMaps = await Promise.all(featuredMaps.map(({ id }) => getFeaturedMapFromCache({ mapId: id })))
   return {
     featuredMaps: cachedMaps.filter(map => map !== null),
     totalMaps
   }
-})
+}
 
 const getFeaturedMapFromCache = nextCache({
   args: {
     mapId: z.string(),
-    draftMode: z.literal(false)
   },
-  handler: async ({ mapId, draftMode }) => {
-    const map = await fetchFeaturedMap(draftMode, mapId)
+  handler: async ({ mapId }) => {
+    const map = await fetchFeaturedMap(false, mapId)
     if (map) {
       const { body, ...restOfMap } = map
       return restOfMap
@@ -90,7 +83,7 @@ const getFeaturedMapFromCache = nextCache({
   }
 })
 
-const fetchFeaturedMaps = cache(async (draftMode: boolean) => {
+const fetchFeaturedMaps = async (draftMode: boolean) => {
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -101,9 +94,9 @@ const fetchFeaturedMaps = cache(async (draftMode: boolean) => {
     featuredMaps: featuredMapsDTO,
     totalMaps: featuredMaps.total
   }
-})
+}
 
-const fetchFeaturedMap = cache(async (draftMode: boolean, idOrSlug: string) => {
+const fetchFeaturedMap = async (draftMode: boolean, idOrSlug: string) => {
   const { featuredMaps } = await fetchFeaturedMaps(draftMode)
   return featuredMaps.find(map => map.id === idOrSlug || map.slug === idOrSlug)
-})
+}

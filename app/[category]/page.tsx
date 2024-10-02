@@ -1,13 +1,16 @@
 import { getGameCategories, getGameCategoryBySlug } from "@/data/gameCategory"
-import { notFound } from "next/navigation"
-import type { Metadata } from "next"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { draftMode } from "next/headers"
+import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 import HeroSection from "@/components/HeroSection/HeroSection"
-import FeaturedMaps from "@/components/FeaturedMaps/FeaturedMaps"
-import { use } from "react"
 import { capatilize } from "@/utils/functions"
-
+import { Suspense, use } from "react"
+import MapSection from "@/components/MapSection/MapSection"
+import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader"
+import MapFilters from "@/components/MapGrid/MapFilters/MapFilters"
+import MapGridLoader from "@/components/Loaders/MapGridLoader"
+import CategoryMapGrid from "@/components/MapGrid/CategoryMapGrid"
 interface CategoryPageProps {
   params: Promise<{
     category: string
@@ -57,7 +60,14 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
       <HeroSection text={ capatilize(category) } />
-      <FeaturedMaps currentCategory={ category } />
+      <MapSection>
+        <Suspense fallback={<MapFiltersLoader />}>
+          <MapFilters currentCategory={ category } />
+        </Suspense>
+        <Suspense fallback={<MapGridLoader />}>
+          <CategoryMapGrid category={ category } />
+        </Suspense>
+      </MapSection>
     </div>
   )
 }
