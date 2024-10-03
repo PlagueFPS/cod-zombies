@@ -67,7 +67,7 @@ export const nextCache = <
         const handlerResult = await result
         return handlerResult
       },
-      isContextPopulated ? Object.entries(context).flat().map(String) : undefined, // keyParts
+      isContextPopulated ? Object.entries(context).flat().map(String) : [], // keyParts
       { // options
         tags: tags,
         revalidate

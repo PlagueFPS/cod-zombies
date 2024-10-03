@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server'
-import { fetchFeaturedMapById } from '@/data/featuredMaps'
+import { getFeaturedMapById } from '@/data/featuredMaps'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { env } from '@/env'
@@ -16,14 +16,13 @@ export async function GET(req: NextRequest) {
   // Fetch the headless CMS to check if the provided map exists
   // Manually setting draftMode to true because we are trying to fetch draft content
   // Before we even enable the draft mode cookie
-  const map = await fetchFeaturedMapById(true, entryId)
+  const map = await getFeaturedMapById(true, entryId)
   // If the map doesn't exist prevent draft mode from being enabled
   if (!map) {
     return new Response('Invalid slug', { status: 401 })
   }
   // Enable Draft Mode by setting the cookie
-  const { enable } = await draftMode()
-  enable()
+  (await draftMode()).enable()
   // Redirect to the path from the fetched map
   redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category.slug}/${map.slug}`)
 }

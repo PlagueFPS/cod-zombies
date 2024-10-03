@@ -8,7 +8,7 @@ import { nextCache } from "./cache"
 import { z } from "zod"
 import type { MinifiedFeaturedMap } from "@/types/FeaturedMap"
 
-export const fetchFeaturedMaps = async (draftMode: boolean) => {
+export const getFeaturedMaps = cache(async (draftMode: boolean) => {
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -16,9 +16,9 @@ export const fetchFeaturedMaps = async (draftMode: boolean) => {
   }, draftMode)
   
   return await createFeaturedMapsDTO(featuredMaps.items)
-}
+})
 
-export const fetchFeaturedMapById = async (draftMode: boolean, id: string) => {
+export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) => {
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
     content_type: 'featuredMaps',
     order: ['-sys.createdAt'],
@@ -28,7 +28,7 @@ export const fetchFeaturedMapById = async (draftMode: boolean, id: string) => {
   
   const featuredMapsDTO = await createFeaturedMapsDTO(featuredMaps.items)
   return featuredMapsDTO.find(map => map.id === id)
-}
+})
 
 export const getFeaturedMapsByCategory = async (draftMode: boolean, category: string) => {
   if (draftMode || IN_DEVELOPMENT) {
@@ -41,13 +41,6 @@ export const getFeaturedMapBySlug = async (draftMode: boolean, slug: string) => 
     return await INTERNAL_getFeaturedMapBySlug(draftMode, slug)
   }
   else return await getCachedFeaturedMap({ slug })
-}
-
-export const getSearchMaps = async (draftMode: boolean) => {
-  if (draftMode || IN_DEVELOPMENT) {
-    return await INTERNAL_getSearchMaps(draftMode)
-  }
-  else return await getCachedSearchMaps()
 }
 
 export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number) => {
@@ -80,13 +73,6 @@ const getCachedFeaturedMapsByCategory = nextCache({
   },
   revalidateTags: ({ category }) => 
     [CACHE_KEYS.FEATURED_MAPS.ALL, CACHE_KEYS.FEATURED_MAPS.CATEGORY(category)]
-})
-
-const getCachedSearchMaps = nextCache({
-  handler: async () => {
-    return await INTERNAL_getSearchMaps(false)
-  },
-  revalidateTags: () => [CACHE_KEYS.FEATURED_MAPS.ALL, CACHE_KEYS.FEATURED_MAPS.SEARCH]
 })
 
 const getCachedFeaturedMap = nextCache({
@@ -132,24 +118,6 @@ const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page:
     prevPage,
     nextPage
   }
-})
-
-const INTERNAL_getSearchMaps = cache(async (draftMode: boolean) => {
-  const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
-    content_type: 'featuredMaps',
-    order: ['-sys.createdAt'],
-    select: ["sys.id", "fields.title", "fields.slug", "fields.gameCategory"]
-  }, draftMode)
-
-  const featuredMapsDTO = await createFeaturedMapsDTO(featuredMaps.items)
-  const searchMaps = featuredMapsDTO.map(map => ({
-    id: map.id,
-    title: map.title,
-    slug: map.slug,
-    category: map.category.slug
-  }))
-
-  return searchMaps
 })
 
 const INTERNAL_getFeaturedMapBySlug = cache(async (draftMode: boolean, slug: string) => {

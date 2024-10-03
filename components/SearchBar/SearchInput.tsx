@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -10,18 +10,21 @@ import { DialogDescription, DialogTitle } from "../ui/dialog";
 interface SearchInputProps {
   maps: {
     id: string
-    title: string
     slug: string
-    category: string
+    title: string
+    category: {
+      title: string
+      slug: string
+    }
   }[]
-  gameCategories: {
+  categories: {
     id: string
     slug: string
     title: string
   }[]
 }
 
-export default function SearchInput({ maps, gameCategories }: SearchInputProps) {
+export default function SearchInput({ maps, categories }: SearchInputProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
 
@@ -62,11 +65,11 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
         <CommandInput placeholder="Search for maps" />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          { gameCategories.map(game => (
+          { categories.map(game => (
             <CommandGroup heading={ game.title } key={ game.id }>
-              { maps.filter(map => map.category === game.slug).map(map => (
-                <Link key={ `${game.id}_${map.id}` } href={ `/${map.category}/${map.slug}` } onClick={ () => setOpen(false) }>
-                  <CommandItem onSelect={ () => onSelectHandler(map.category, map.slug) }>
+              { maps.filter(map => map.category.slug === game.slug).map(map => (
+                <Link key={ `${game.id}_${map.id}` } href={ `/${map.category.slug}/${map.slug}` } onClick={ () => setOpen(false) }>
+                  <CommandItem onSelect={ () => onSelectHandler(map.category.slug, map.slug) }>
                     <span className="blur-none">{ map.title }</span>
                   </CommandItem>
                 </Link>

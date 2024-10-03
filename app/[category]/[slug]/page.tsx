@@ -1,7 +1,7 @@
 import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
-import { fetchFeaturedMaps, getFeaturedMapBySlug } from "@/data/featuredMaps"
+import { getFeaturedMapBySlug, getFeaturedMaps } from "@/data/featuredMaps"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
@@ -28,7 +28,7 @@ interface MapPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const featuredMaps = await fetchFeaturedMaps(IN_DEVELOPMENT)
+  const featuredMaps = await getFeaturedMaps(IN_DEVELOPMENT)
 
   return featuredMaps.map(map => ({
     category: map.category.slug,
@@ -164,7 +164,7 @@ export default async function MapPage({ params }: MapPageProps) {
 
  const PreviousOrNextMap = async ({ map }: { map: FeaturedMap }) => {
   const { isEnabled } = await draftMode()
-  const featuredMaps = await fetchFeaturedMaps(isEnabled)
+  const featuredMaps = await getFeaturedMaps(isEnabled)
   const mapIndex = featuredMaps.indexOf(map)
   const prevMap = featuredMaps[mapIndex - 1]
   const nextMap = featuredMaps[mapIndex + 1]
