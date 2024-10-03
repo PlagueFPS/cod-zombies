@@ -75,5 +75,5 @@ export const nextCache = <
     );
 
     return cachedHandler()
-  })
+  }) as (args: TArgs extends undefined ? void : InferArgs<TArgs>) => Promise<TReturn>
 }
