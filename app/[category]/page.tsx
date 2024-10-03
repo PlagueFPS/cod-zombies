@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import HeroSection from "@/components/HeroSection/HeroSection"
 import { capatilize } from "@/utils/functions"
-import { Suspense, use } from "react"
+import { Suspense } from "react"
 import MapSection from "@/components/MapSection/MapSection"
 import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader"
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters"
@@ -54,8 +54,8 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
   return metadata
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const { category } = use(params)
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { category } = await params
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
