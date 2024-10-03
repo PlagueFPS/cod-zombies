@@ -19,7 +19,7 @@ export const createAction = createSafeActionClient({
   }
 })
 
-interface Error {
+interface CustomError {
   serverError?: string
   validationErrors?: {
     _errors?: string[];
@@ -27,7 +27,7 @@ interface Error {
   bindArgsValidationErrors?: readonly [] | undefined;
 }
 
-export const customOnError = (error: Error, customErrorMessage: string) => {
+export const customOnError = (error: CustomError, customErrorMessage: string) => {
   if (error.serverError) {
     toast.error(error.serverError, { position: 'bottom-right', duration: 5000 })
   }
