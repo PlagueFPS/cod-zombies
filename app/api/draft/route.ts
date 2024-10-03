@@ -1,31 +1,29 @@
 import type { NextRequest } from 'next/server'
-import { getFeaturedMapBySlug } from '@/data/featuredMaps'
+import { fetchFeaturedMapById } from '@/data/featuredMaps'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { env } from '@/env'
  
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret')
-  const slug = req.nextUrl.searchParams.get('slug')
+  const entryId = req.nextUrl.searchParams.get('entryId')
  
   // This secret should only be known to this route handler and the CMS
-  if (secret !== env.DRAFT_SECRET || !slug) {
+  if (secret !== env.DRAFT_SECRET || !entryId) {
     return new Response('Unauthorized Request', { status: 403 })
   }
  
-  // Fetch the headless CMS to check if the provided `slug` exists
-  // Manually setting draftMode to true because we are trying to fetch possible draft content
+  // Fetch the headless CMS to check if the provided map exists
+  // Manually setting draftMode to true because we are trying to fetch draft content
   // Before we even enable the draft mode cookie
-  const map = await getFeaturedMapBySlug(true, slug)
-  // If the slug doesn't exist prevent draft mode from being enabled
+  const map = await fetchFeaturedMapById(true, entryId)
+  // If the map doesn't exist prevent draft mode from being enabled
   if (!map) {
     return new Response('Invalid slug', { status: 401 })
   }
-  const category = map.gameCategory
   // Enable Draft Mode by setting the cookie
   const { enable } = await draftMode()
   enable()
   // Redirect to the path from the fetched map
-  // We don't redirect to searchParams.slug as that might lead to open redirect vulnerabilities
-  redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${category.slug}/${map.slug}`)
+  redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category.slug}/${map.slug}`)
 }

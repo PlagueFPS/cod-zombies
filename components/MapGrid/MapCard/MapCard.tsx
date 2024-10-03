@@ -1,4 +1,4 @@
-import type { FeaturedMap } from '@/types/FeaturedMap'
+import type { MinifiedFeaturedMap } from '@/types/FeaturedMap'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,14 +9,14 @@ import { draftMode } from 'next/headers'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 
 interface MapCardProps {
-  map: FeaturedMap
+  map: MinifiedFeaturedMap
   mapIndex: number
   totalMaps: number
 }
 
 export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
   const { isEnabled } = await draftMode()
-  const { title, description, image, gameCategory: category, slug, isDraft, isChanged, isNew } = map
+  const { title, description, image, category, slug, isDraft, isChanged, isNew } = map
   const priority = isPriority(mapIndex, totalMaps)
   
   return (

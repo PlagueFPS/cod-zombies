@@ -1,3 +1,5 @@
+import type { Document } from "@contentful/rich-text-types"
+type Date = `${number}-${number}-${number}T${number}:${number}:${number}Z`
 export interface FeaturedMap {
   id: string
   slug: string
@@ -8,12 +10,15 @@ export interface FeaturedMap {
     width: number | undefined
     height: number | undefined
   }
-  gameCategory: {
-    title: string | undefined
-    slug: string | undefined
+  category: {
+    title: string
+    slug: string
   }
-  updatedAt: string
+  body: Document
+  updatedAt: Date
   isDraft: boolean
   isChanged: boolean
   isNew: boolean
 }
+
+export interface MinifiedFeaturedMap extends Omit<FeaturedMap, "body"> {}

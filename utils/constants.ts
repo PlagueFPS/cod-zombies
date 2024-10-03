@@ -16,5 +16,11 @@ export const GLOBAL_OG_PROPS = {
 } satisfies Metadata
 export const CACHE_KEYS = {
   GAME_CATEGORIES: 'game-categories',
-  FEATURED_MAPS: 'featured-maps'
+  FEATURED_MAPS: {
+    ALL: "featured-maps",
+    SEARCH: "featured-maps-search",
+    PAGINATION: (page: number) => `featured-maps-pagination-${page}`,
+    POST: (id: string) => `featured-maps-${id}`,
+    CATEGORY: (category: string) => `featured-maps-${category}`
+  }
 } as const

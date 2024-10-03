@@ -9,11 +9,13 @@ import { DialogDescription, DialogTitle } from "../ui/dialog";
 
 interface SearchInputProps {
   maps: {
+    id: string
     title: string
     slug: string
-    category: string | undefined
+    category: string
   }[]
   gameCategories: {
+    id: string
     slug: string
     title: string
   }[]
@@ -61,9 +63,9 @@ export default function SearchInput({ maps, gameCategories }: SearchInputProps) 
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           { gameCategories.map(game => (
-            <CommandGroup heading={ game.title } key={ game.slug }>
+            <CommandGroup heading={ game.title } key={ game.id }>
               { maps.filter(map => map.category === game.slug).map(map => (
-                <Link key={ `${game.slug}_${map.slug}` } href={ `/${map.category}/${map.slug}` } onClick={ () => setOpen(false) }>
+                <Link key={ `${game.id}_${map.id}` } href={ `/${map.category}/${map.slug}` } onClick={ () => setOpen(false) }>
                   <CommandItem onSelect={ () => onSelectHandler(map.category, map.slug) }>
                     <span className="blur-none">{ map.title }</span>
                   </CommandItem>

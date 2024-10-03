@@ -7,11 +7,11 @@ import { getAllNewCategoryIds, getAllNewMapIds } from "@/data/kv";
 import { managementClient } from "@/contentful/contentful-management";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
-  if ('fields' in asset && asset.fields.file) return asset
+  if (asset && 'fields' in asset && asset.fields.file) return asset
 }
 
 export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCategorySkeleton, undefined, string>) => {
-  if ('fields' in entry && entry.fields) return entry
+  if (entry && 'fields' in entry && entry.fields) return entry
 }
 
 export const extractHeadings = (body: Document) => {
@@ -32,6 +32,10 @@ export const extractHeadings = (body: Document) => {
   return headings
 }
 
+export const calculateSkip = (page: number, limit: number) => {
+  return page <= 1 ? 0 : (limit * page) - limit
+}
+
 export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
   const createdAtDate = new Date(createdAt)
   const updatedAtDate = new Date(updatedAt)
@@ -50,11 +54,14 @@ export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMaps
     const isNew = newMapIds.has(featuredMap.sys.id)
     
     return {
-      ...featuredMap.fields,
       id: featuredMap.sys.id,
       updatedAt: featuredMap.sys.updatedAt,
+      slug: featuredMap.fields.slug,
+      title: featuredMap.fields.title,
+      description: featuredMap.fields.description,
+      body: featuredMap.fields.body,
       image: createImageDTO(mapImage),
-      gameCategory: createMapCategoryDTO(category),
+      category: createMapCategoryDTO(category),
       isDraft: isDraft,
       isChanged: isChanged,
       isNew: isNew
@@ -92,9 +99,10 @@ const createImageDTO = (image: Asset<undefined, string> | undefined) => {
 }
 
 const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, undefined, string> | undefined) => {
+  if (!category) throw new Error("Expected map to have a category")
   return {
-    title: category?.fields.title,
-    slug: category?.fields.slug
+    title: category.fields.title,
+    slug: category.fields.slug
   }
 }
 

@@ -9,7 +9,7 @@ type InferArgs<T> = T extends Record<string, z.ZodType<any, any>>
 type NextCacheOptions<TArgs, TReturn> = {
   args?: TArgs;
   handler: (ctx: InferArgs<TArgs>) => Promise<TReturn>;
-  revalidateTags?: (ctx: InferArgs<TArgs> & { result: TReturn }) => Promise<string[]> | string[];
+  revalidateTags?: (ctx: InferArgs<TArgs> & { result: Promise<TReturn> }) => Promise<string[]> | string[];
   revalidate?: number | false;
 };
 
@@ -52,21 +52,24 @@ export const nextCache = <
     const context = { ...parsedArgs };
     Object.freeze(context);
 
-    const isContextPopulated = Object.keys(context).length > 0;
-    let tags: string[] | undefined;
+    const isContextPopulated = Object.keys(context).length > 0
+    const result = handler(context as InferArgs<TArgs>)
+    const tags: string[] = []
+
+    if (revalidateTags) {
+      const revalidateTagsResult = revalidateTags({...context, result } as InferArgs<TArgs> & { result: Promise<TReturn> }) 
+      const cacheTags = revalidateTagsResult instanceof Promise ? await revalidateTagsResult : revalidateTagsResult
+      tags.push(...cacheTags)
+    }
 
     const cachedHandler = unstable_cache(
       async () => {
-        const result = await handler(context as InferArgs<TArgs>)
-        if (revalidateTags) {
-          const revalidateTagsResult = revalidateTags({...context, result } as InferArgs<TArgs> & { result: TReturn }) 
-          tags = revalidateTagsResult instanceof Promise ? await revalidateTagsResult : revalidateTagsResult
-        }
-        return result
+        const handlerResult = await result
+        return handlerResult
       },
       isContextPopulated ? Object.entries(context).flat().map(String) : undefined, // keyParts
       { // options
-        tags,
+        tags: tags,
         revalidate
       }
     );

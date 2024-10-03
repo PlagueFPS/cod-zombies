@@ -5,59 +5,40 @@ import { getEntries } from "@/contentful/contentful"
 import { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
 import { createGameCategoryDTO } from "@/utils/contentful-utils"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { z } from "zod"
 
 export const getGameCategories = cache(async (draftMode: boolean) => {
   if (IN_DEVELOPMENT || draftMode) {
     return fetchGameCategories(true)
   }
-  return getCategories(false)
+  return await getCachedCategories()
 })
 
-export const getGameCategoryBySlug = cache(async (draftMode: boolean, categorySlug: string) => {
+export const getGameCategoryBySlug = cache(async (draftMode: boolean, slug: string) => {
   if (IN_DEVELOPMENT || draftMode) {
-    return fetchGameCategory(true, categorySlug)
+    return fetchGameCategory(true, slug)
   }
-  return getCategoryFromCache({ categoryIdOrSlug: categorySlug, draftMode: false })
+  const categories = await getCachedCategories()
+  return categories.find(category => category.slug === slug)
 })
 
-export const getGameCategoryById = cache(async (draftMode: boolean, categoryId: string) => {
-  if (IN_DEVELOPMENT || draftMode) {
-    return fetchGameCategory(true, categoryId)
-  }
-  return getCategoryFromCache({ categoryIdOrSlug: categoryId, draftMode: false })
-})
-
-const getCategoryFromCache = nextCache({
-  args: {
-    categoryIdOrSlug: z.string(),
-    draftMode: z.literal(false)
+const getCachedCategories = nextCache({
+  handler: async () => {
+    const categories = await fetchGameCategories(false)
+    return categories
   },
-  handler: ({ categoryIdOrSlug, draftMode }) => fetchGameCategory(draftMode, categoryIdOrSlug),
-  revalidateTags: async ({ result }) => {
-    return result ? [`${CACHE_KEYS.GAME_CATEGORIES}-${result.id}`] : []
-  }
+  revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES]
 })
 
-const getCategories = cache(async (draftMode: false) => {
-  // We fetch all categories and then check if they are in the cache
-  // This allows the content to be updated both when a individual category is updated
-  // or when a new category is added without invalidating the entire cache
-  const allCategories = await fetchGameCategories(false)
-  const categories = await Promise.all(allCategories.map(({ id }) => getCategoryFromCache({ categoryIdOrSlug: id, draftMode })))
-  return categories.filter(category => category !== null)
-})
-
-const fetchGameCategories = cache(async (draftMode: boolean) => {
+export const fetchGameCategories = async (draftMode: boolean) => {
   const gameCategories = await getEntries<TypeGameCategorySkeleton>({
     content_type: 'gameCategory',
     order: ['sys.createdAt'],
   }, draftMode)
 
-  return createGameCategoryDTO(gameCategories.items)
-})
+  return await createGameCategoryDTO(gameCategories.items)
+}
 
-const fetchGameCategory = cache(async (draftMode: boolean, categoryIdOrSlug: string) => {
+const fetchGameCategory = async (draftMode: boolean, categoryIdOrSlug: string) => {
   const categories = await fetchGameCategories(draftMode)
   const categoryById = categories.find(category => category.id === categoryIdOrSlug)
   if (!categoryById) {
@@ -68,4 +49,4 @@ const fetchGameCategory = cache(async (draftMode: boolean, categoryIdOrSlug: str
     return categoryBySlug
   }
   return categoryById
-})
+}

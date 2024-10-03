@@ -1,7 +1,7 @@
 import richStyles from '@/components/RichText/RichText.module.css'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
-import { getFeaturedMapBySlug, getFeaturedMaps } from "@/data/featuredMaps"
+import { fetchFeaturedMaps, getFeaturedMapBySlug } from "@/data/featuredMaps"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
@@ -28,10 +28,10 @@ interface MapPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const { featuredMaps } = await getFeaturedMaps(IN_DEVELOPMENT)
+  const featuredMaps = await fetchFeaturedMaps(IN_DEVELOPMENT)
 
   return featuredMaps.map(map => ({
-    category: map.gameCategory.slug,
+    category: map.category.slug,
     slug: map.slug
   }))
 }
@@ -69,7 +69,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const map = await getFeaturedMapBySlug(isEnabled, slug)
   if (!map) notFound()
-  const { title, image, gameCategory: category, updatedAt, isDraft, isChanged, isNew, body } = map
+  const { title, image, category, updatedAt, isDraft, isChanged, isNew, body } = map
   const headings = extractHeadings(body)
 
   return (
@@ -164,7 +164,7 @@ export default async function MapPage({ params }: MapPageProps) {
 
  const PreviousOrNextMap = async ({ map }: { map: FeaturedMap }) => {
   const { isEnabled } = await draftMode()
-  const { featuredMaps } = await getFeaturedMaps(isEnabled)
+  const featuredMaps = await fetchFeaturedMaps(isEnabled)
   const mapIndex = featuredMaps.indexOf(map)
   const prevMap = featuredMaps[mapIndex - 1]
   const nextMap = featuredMaps[mapIndex + 1]
@@ -178,7 +178,7 @@ export default async function MapPage({ params }: MapPageProps) {
  }
 
  const PrevOrNextMapCard = ({ map, prev }: { map: FeaturedMap, prev?: boolean }) => {
-  const { title, description, gameCategory: category, image, slug } = map
+  const { title, description, category, image, slug } = map
 
   return (
     <Link href={ `/${category.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>

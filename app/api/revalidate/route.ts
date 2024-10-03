@@ -27,27 +27,32 @@ export async function PUT(req: NextRequest) {
       const { mapId, createdAt, updatedAt } = payload.data 
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
-        // store the mapId as new for 1 week
+        // store the mapId as new for 1 week and revalidate all map data
         await storeNewMapId(mapId, createdAt)
-        return Response.json({ updated: true, message: `${mapId} stored as new` }, { status: 201 })
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
+        return Response.json({ revalidated: true, message: `${mapId} stored as new` }, { status: 201 })
       }
       else { // revalidate the specific map if it is an updated map
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS}-${mapId}`)
-        return Response.json({ revalidated: true, message: `${CACHE_KEYS.FEATURED_MAPS}-${mapId} Revalidated` }, { status: 201 })
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.POST(mapId)}}`)
+        return Response.json({ revalidated: true, message: `${CACHE_KEYS.FEATURED_MAPS.POST(mapId)} Revalidated` }, { status: 201 })
       }
     }  
     case 'category': {
       const { categoryId, createdAt, updatedAt } = payload.data
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
-        // store the categoryId as new for 1 week
+        // store the categoryId as new for 1 week and revalidate all category data
         await storeNewCategoryId(categoryId, createdAt)
-        return Response.json({ updated: true, message: `${categoryId} stored as new` }, { status: 201 })
+        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+        return Response.json({ revalidated: true, message: `${categoryId} stored as new` }, { status: 201 })
       }
-      else { // revalidate the specific category if it is an updated category
-        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}-${categoryId}`)
-        return Response.json({ revalidated: true, message: `${CACHE_KEYS.GAME_CATEGORIES}-${categoryId} Revalidated` }, { status: 201 })
+      else { // revalidate all category data
+        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+        return Response.json({ revalidated: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 201 })
       }
+    }
+    default: {
+      return Response.json({ revalidated: false, message: "Invalid Request Type" }, { status: 400 })
     }
   }
 }
@@ -69,18 +74,14 @@ export async function PATCH(req: NextRequest) {
 
   switch (payload.data.type) {
     case 'map': {
-      const { mapId } = payload.data
-
-      // Invalidate the map ID
-      revalidateTag(`${CACHE_KEYS.FEATURED_MAPS}-${mapId}`)
-      return Response.json({ removed: true, message: `${CACHE_KEYS.FEATURED_MAPS}-${mapId} Revalidated` }, { status: 200 })
+      // revalidate all map data
+      revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
+      return Response.json({ removed: true, message: `${CACHE_KEYS.FEATURED_MAPS.ALL} Revalidated` }, { status: 200 })
     }
     case 'category': {
-      const { categoryId } = payload.data
-
-      // Invalidate the category ID
-      revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}-${categoryId}`)
-      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES}-${categoryId} Revalidated` }, { status: 200 })
+      // revalidate all category data
+      revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 200 })
     }
     default: {
       return Response.json({ removed: false, message: 'Invalid Request Type' }, { status: 400 })

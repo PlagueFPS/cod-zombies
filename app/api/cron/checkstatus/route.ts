@@ -21,8 +21,7 @@ export async function GET() {
           const exists = await kv.exists(key)
 
           if (!exists) {
-            const mapId = key.replace(NEW_MAP_PREFIX, "")
-            revalidateTag(`${CACHE_KEYS.FEATURED_MAPS}-${mapId}`) // Key has expired, revalidate the corresponding path
+            revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`) // Key has expired, revalidate any data that uses this map
           }
         } 
         catch (error) {
@@ -38,8 +37,7 @@ export async function GET() {
           const exists = await kv.exists(key)
   
           if (!exists) {
-          const categoryId = key.replace(NEW_CATEGORY_PREFIX, "")
-          revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}-${categoryId}`) // Key has expired, revalidate the corresponding tag
+            revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`) // Key has expired, revalidate any data that uses this category
           }
         } 
         catch (error) {

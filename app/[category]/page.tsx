@@ -60,7 +60,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
       <HeroSection text={ capatilize(category) } />
-      <MapSection>
+      <MapSection category={ capatilize(category) }>
         <Suspense fallback={<MapFiltersLoader />}>
           <MapFilters currentCategory={ category } />
         </Suspense>

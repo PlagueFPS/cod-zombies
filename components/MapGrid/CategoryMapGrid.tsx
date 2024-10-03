@@ -1,4 +1,4 @@
-import { getFeaturedMaps } from "@/data/featuredMaps"
+import { getFeaturedMapsByCategory } from "@/data/featuredMaps"
 import { draftMode } from "next/headers"
 import { Suspense } from "react"
 import MapCardLoader from "../Loaders/MapCardLoader"
@@ -10,11 +10,11 @@ interface CategoryMapGridProps {
 
 export default async function CategoryMapGrid({ category }: CategoryMapGridProps) {
   const { isEnabled } = await draftMode()
-  const { featuredMaps, totalMaps } = await getFeaturedMaps(isEnabled)
+  const { featuredMaps, totalMaps } = await getFeaturedMapsByCategory(isEnabled, category)
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
-      { featuredMaps.filter(map => map.gameCategory.slug === category).map((map, index) => (
+      { featuredMaps.map((map, index) => (
         <Suspense key={ map.id } fallback={<MapCardLoader />}>
           <MapCard map={ map } mapIndex={ index } totalMaps={ totalMaps } />
         </Suspense>
