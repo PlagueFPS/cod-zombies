@@ -21,6 +21,10 @@ export const getGameCategoryBySlug = async (draftMode: boolean, slug: string) =>
   return categories.find(category => category.slug === slug)
 }
 
+export const getGameCategoryById = async (draftMode: boolean, id: string) => {
+  return await INTERNAL_getGameCategory(draftMode, id)
+}
+
 const getCachedCategories = nextCache({
   handler: async () => {
     const categories = await INTERNAL_getGameCategories(false)

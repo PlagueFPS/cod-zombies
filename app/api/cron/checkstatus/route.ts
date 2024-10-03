@@ -1,9 +1,7 @@
 import { headers } from "next/headers"
-import { env } from "@/env"
-import { kv } from "@vercel/kv"
-import { CACHE_KEYS, NEW_CATEGORY_PREFIX, NEW_MAP_PREFIX } from "@/utils/constants"
-import { revalidateTag } from "next/cache"
 import { authorizedRequest } from "@/utils/functions"
+import { env } from "@/env"
+import { enforceNewCategoryStatus, enforceNewMapStatus } from "@/data/kv"
 
 export async function GET() {
   const headersList = await headers()
@@ -14,37 +12,8 @@ export async function GET() {
   }
 
   try {
-    const mapKeys = await kv.keys(`${NEW_MAP_PREFIX}*`)
-    if (mapKeys.length > 0) {
-      for (const key of mapKeys) {
-        try {
-          const exists = await kv.exists(key)
-
-          if (!exists) {
-            revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`) // Key has expired, revalidate any data that uses this map
-          }
-        } 
-        catch (error) {
-          console.error(`[CRON] Error processing map key: ${key}`, error)
-        }
-      }
-    }
-
-    const categoryKeys = await kv.keys(`${NEW_CATEGORY_PREFIX}*`)
-    if (categoryKeys.length > 0) {
-      for (const key of categoryKeys) {
-        try {
-          const exists = await kv.exists(key)
-  
-          if (!exists) {
-            revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`) // Key has expired, revalidate any data that uses this category
-          }
-        } 
-        catch (error) {
-          console.error(`[CRON] Error processing category key: ${key}`, error)
-        }
-      }
-    }
+    await enforceNewMapStatus()
+    await enforceNewCategoryStatus()
   } 
   catch (error) {
     console.error("[CRON] Error in checkstatus cron job", error)
@@ -52,5 +21,5 @@ export async function GET() {
   }
 
   console.log("[CRON] checkstatus cron job completed")
-  return Response.json({ success: true })
+  return Response.json({ success: true }, { status: 200 })
 }

@@ -1,11 +1,12 @@
 import { kv } from "@vercel/kv"
-import { NEW_CATEGORY_PREFIX, NEW_MAP_PREFIX } from "@/utils/constants"
+import { CACHE_KEYS, IN_DEVELOPMENT, MAX_NEW_TIME, NEW_CATEGORY_PREFIX, NEW_MAP_PREFIX } from "@/utils/constants"
 import { cache } from "react"
-
-const oneWeek = 7 * 24 * 60 * 60 // 1 week in seconds
+import { revalidateTag } from "next/cache"
+import { getFeaturedMapById } from "./featuredMaps"
+import { getGameCategoryById } from "./gameCategory"
 
 export const storeNewMapId = cache(async (mapId: string, createdAt: string) => {
-  await kv.set(`${NEW_MAP_PREFIX}${mapId}`, createdAt, { ex: oneWeek, nx: true })
+  await kv.set(`${NEW_MAP_PREFIX}${mapId}`, createdAt)
 })
 
 export const getAllNewMapIds = cache(async () => {
@@ -14,10 +15,86 @@ export const getAllNewMapIds = cache(async () => {
 })
 
 export const storeNewCategoryId = cache(async (categoryId: string, createdAt: string) => {
-  await kv.set(`${NEW_CATEGORY_PREFIX}${categoryId}`, createdAt, { ex: oneWeek, nx: true })
+  await kv.set(`${NEW_CATEGORY_PREFIX}${categoryId}`, createdAt)
 })
 
 export const getAllNewCategoryIds = cache(async () => {
   const keys = await kv.keys(`${NEW_CATEGORY_PREFIX}*`)
   return new Set(keys.map(key => key.replace(NEW_CATEGORY_PREFIX, "")))
 })
+
+export const enforceNewMapStatus = async () => {
+  const mapKeys = await kv.keys(`${NEW_MAP_PREFIX}*`)
+
+  for (const key of mapKeys) {
+    const mapID = key.replace(NEW_MAP_PREFIX, "")
+    try {
+      const createdAt = await kv.get(key)
+      if (!createdAt) continue
+      if (typeof createdAt !== 'string') {
+        await kv.del(key)
+        continue
+      }
+
+      const currentTime = Date.now()
+      const creationTime = new Date(createdAt).getTime()
+
+      if (currentTime - creationTime > MAX_NEW_TIME) {
+        await kv.del(key)
+        const map = await getFeaturedMapById(IN_DEVELOPMENT, mapID)
+        if (!map) {
+          // If the map is not found, skip revalidation
+          console.error(`Could not find map for ID: ${mapID}`)
+          continue
+        }
+        // Revalidate the first page of pagination since it was new
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
+        // Revalidate the map post
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.POST(map.id)}`)
+        // Revalidate the relevant category page map data
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.CATEGORY(map.category.slug)}`)
+      } else continue
+
+    }
+    catch(error) {
+      console.error(`Error processing map key: ${key}`, error)
+      continue
+    }
+  }
+}
+
+export const enforceNewCategoryStatus = async () => {
+  const categoryKeys = await kv.keys(`${NEW_CATEGORY_PREFIX}*`)
+
+  for (const key of categoryKeys) {
+    const categoryID = key.replace(NEW_CATEGORY_PREFIX, "")
+    try {
+      const createdAt = await kv.get(key)
+      if (!createdAt) continue
+      if (typeof createdAt !== 'string') {
+        await kv.del(key)
+        continue
+      }
+
+      const currentTime = Date.now()
+      const creationTime = new Date(createdAt).getTime()
+
+      if (currentTime - creationTime > MAX_NEW_TIME) {
+        await kv.del(key)
+        const category = await getGameCategoryById(IN_DEVELOPMENT, categoryID)
+        if (!category) {
+          // If the category is not found, skip revalidation
+          console.error(`Could not find category for ID: ${categoryID}`)
+          continue
+        }
+        // Revalidate all category data
+        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+      } else continue
+
+    }
+    catch(error) {
+      console.error(`Error processing category key: ${key}`, error)
+      continue
+    }
+  }
+}
