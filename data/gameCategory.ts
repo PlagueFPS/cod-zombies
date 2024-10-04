@@ -14,15 +14,11 @@ export const getGameCategories = async (draftMode: boolean) => {
 }
 
 export const getGameCategoryBySlug = async (draftMode: boolean, slug: string) => {
-  if (IN_DEVELOPMENT || draftMode) {
-    return INTERNAL_getGameCategory(true, slug)
-  }
-  const categories = await getCachedCategories()
-  return categories.find(category => category.slug === slug)
+  return await INTERNAL_getGameCategoryBySlug(draftMode, slug)
 }
 
 export const getGameCategoryById = async (draftMode: boolean, id: string) => {
-  return await INTERNAL_getGameCategory(draftMode, id)
+  return await INTERNAL_getGameCategoryById(draftMode, id)
 }
 
 const getCachedCategories = nextCache({
@@ -42,15 +38,14 @@ const INTERNAL_getGameCategories = cache(async (draftMode: boolean) => {
   return await createGameCategoryDTO(gameCategories.items)
 })
 
-const INTERNAL_getGameCategory = cache(async (draftMode: boolean, categoryIdOrSlug: string) => {
+const INTERNAL_getGameCategoryById = cache(async (draftMode: boolean, id: string) => {
   const categories = await INTERNAL_getGameCategories(draftMode)
-  const categoryById = categories.find(category => category.id === categoryIdOrSlug)
-  if (!categoryById) {
-    const categoryBySlug = categories.find(category => category.slug === categoryIdOrSlug)
-    if (!categoryBySlug) {
-      return null
-    }
-    return categoryBySlug
-  }
+  const categoryById = categories.find(category => category.id === id)
   return categoryById
+})
+
+const INTERNAL_getGameCategoryBySlug = cache(async (draftMode: boolean, slug: string) => {
+  const categories = await INTERNAL_getGameCategories(draftMode)
+  const categoryBySlug = categories.find(category => category.slug === slug)
+  return categoryBySlug
 })

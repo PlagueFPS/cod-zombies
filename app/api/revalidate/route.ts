@@ -1,12 +1,14 @@
 import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
-import { revalidateTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 import { isFirstTimePublish } from "@/utils/contentful-utils"
-import { CACHE_KEYS } from "@/utils/constants"
+import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { storeNewCategoryId, storeNewMapId } from "@/data/kv"
 import { authorizedRequest } from "@/utils/functions"
+import { getFeaturedMapById } from "@/data/featuredMaps"
+import { getGameCategoryById } from "@/data/gameCategory"
 
 export async function PUT(req: NextRequest) {
   const headersList = await headers()
@@ -14,12 +16,12 @@ export async function PUT(req: NextRequest) {
   const webhookBody = await req.json()
 
   if (!authorizedRequest(secret, env.REVALIDATE_SECRET)) {
-    return Response.json({ revalidated: false, message: 'Unauthorized Request' }, { status: 401 })
+    return Response.json({ updated: false, message: 'Unauthorized Request' }, { status: 401 })
   }
 
   const payload = ContentfulWebhookBodySchema.safeParse(webhookBody)
   if (!payload.success) {
-    return Response.json({ revalidated: false, message: 'Invalid Request Body', errors: payload.error.flatten().fieldErrors }, { status: 400 })
+    return Response.json({ updated: false, message: 'Invalid Request Body', errors: payload.error.flatten().fieldErrors }, { status: 400 })
   }
 
   switch (payload.data.type) {
@@ -29,30 +31,39 @@ export async function PUT(req: NextRequest) {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the mapId as new for 1 week and revalidate all map data
         await storeNewMapId(mapId, createdAt)
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
-        return Response.json({ revalidated: true, message: `${mapId} stored as new` }, { status: 201 })
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
+        return Response.json({ updated: true, message: `${mapId} stored as new` }, { status: 201 })
       }
       else { // revalidate the specific map if it is an updated map
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.POST(mapId)}}`)
-        return Response.json({ revalidated: true, message: `${CACHE_KEYS.FEATURED_MAPS.POST(mapId)} Revalidated` }, { status: 201 })
+        const map = await getFeaturedMapById(IN_DEVELOPMENT, mapId)
+        if (!map) return Response.json({ revalidate: false, message: 'Map not found' }, { status: 404 })
+        
+        const path = `/${map.category.slug}/${map.slug}`
+        revalidatePath(path)
+        return Response.json({ updated: true, message: `${path} Revalidated` }, { status: 201 })
       }
     }  
     case 'category': {
       const { categoryId, createdAt, updatedAt } = payload.data
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
-        // store the categoryId as new for 1 week and revalidate all category data
+        // store the categoryId as new and revalidate all category data
         await storeNewCategoryId(categoryId, createdAt)
         revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
-        return Response.json({ revalidated: true, message: `${categoryId} stored as new` }, { status: 201 })
+        return Response.json({ updated: true, message: `${categoryId} stored as new` }, { status: 201 })
       }
-      else { // revalidate all category data
+      else {
+        const category = await getGameCategoryById(IN_DEVELOPMENT, categoryId)
+        if (!category) return Response.json({ updated: false, message: 'Category not found' }, { status: 404 })
+
+        // revalidate all category data and the path to re-run generateMetadata
         revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
-        return Response.json({ revalidated: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 201 })
+        revalidatePath(`/${category.slug}`)
+        return Response.json({ updated: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 201 })
       }
     }
     default: {
-      return Response.json({ revalidated: false, message: "Invalid Request Type" }, { status: 400 })
+      return Response.json({ updated: false, message: "Invalid Request Type" }, { status: 400 })
     }
   }
 }
@@ -74,14 +85,35 @@ export async function PATCH(req: NextRequest) {
 
   switch (payload.data.type) {
     case 'map': {
-      // revalidate all map data
+      const { mapId } = payload.data
+
+      // manually setting draftMode to true because we are fetching an unpublished map
+      const map = await getFeaturedMapById(true, mapId)
+      if (!map) return Response.json({ removed: false, message: 'Map not found' }, { status: 404 })
+      const mapPath = `/${map.category.slug}/${map.slug}`
+      const categoryPath = `/${map.category.slug}`
+
+      // revalidate all map data, the slug, and the category page to remove it
       revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
-      return Response.json({ removed: true, message: `${CACHE_KEYS.FEATURED_MAPS.ALL} Revalidated` }, { status: 200 })
+      revalidatePath(mapPath)
+      revalidatePath(categoryPath)
+      return Response.json({ 
+        removed: true, 
+        message: `${CACHE_KEYS.FEATURED_MAPS.ALL}, ${categoryPath}, and ${mapPath} Revalidated` 
+      }, { status: 200 })
     }
     case 'category': {
-      // revalidate all category data
+      const { categoryId } = payload.data
+
+      // manually setting draftMode to true because we are fetching an unpublished map
+      const category = await getGameCategoryById(true, categoryId)
+      if (!category) return Response.json({ removed: false, message: 'Category not found' }, { status: 404 })
+      const categoryPath = `${category.slug}`
+
+      // revalidate all category data and the category page to remove it
       revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
-      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 200 })
+      revalidatePath(categoryPath)
+      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} and ${categoryPath} Revalidated` }, { status: 200 })
     }
     default: {
       return Response.json({ removed: false, message: 'Invalid Request Type' }, { status: 400 })

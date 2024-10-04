@@ -20,7 +20,5 @@ export const CACHE_KEYS = {
   FEATURED_MAPS: {
     ALL: "featured-maps",
     PAGINATION: (page: number) => `featured-maps-pagination-${page}`,
-    POST: (id: string) => `featured-maps-${id}`,
-    CATEGORY: (category: string) => `featured-maps-${category}`
   }
 } as const

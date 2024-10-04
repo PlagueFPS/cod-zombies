@@ -1,12 +1,12 @@
 import "server-only"
+import { cache } from "react"
+import { nextCache } from "./cache"
 import { getEntries } from "@/contentful/contentful"
 import type { TypeFeaturedMapsSkeleton } from "@/contentful/Types/contentful-types"
-import { cache } from "react"
+import type { MinifiedFeaturedMap } from "@/types/FeaturedMap"
 import { calculateSkip, createFeaturedMapsDTO } from "@/utils/contentful-utils"
 import { CACHE_KEYS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
-import { nextCache } from "./cache"
 import { z } from "zod"
-import type { MinifiedFeaturedMap } from "@/types/FeaturedMap"
 
 export const getFeaturedMaps = cache(async (draftMode: boolean) => {
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
@@ -31,16 +31,11 @@ export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) =
 })
 
 export const getFeaturedMapsByCategory = async (draftMode: boolean, category: string) => {
-  if (draftMode || IN_DEVELOPMENT) {
-    return await INTERNAL_getFeaturedMapsByCategory(draftMode, category)
-  } else return getCachedFeaturedMapsByCategory({ category })
+  return await INTERNAL_getFeaturedMapsByCategory(draftMode, category)
 }
 
 export const getFeaturedMapBySlug = async (draftMode: boolean, slug: string) => {
-  if (draftMode || IN_DEVELOPMENT) {
-    return await INTERNAL_getFeaturedMapBySlug(draftMode, slug)
-  }
-  else return await getCachedFeaturedMap({ slug })
+  return await INTERNAL_getFeaturedMapBySlug(draftMode, slug)
 }
 
 export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number) => {
@@ -63,33 +58,6 @@ const getCachedPaginatedFeaturedMaps = nextCache({
       CACHE_KEYS.FEATURED_MAPS.PAGINATION(page)
     ],
 })
-
-const getCachedFeaturedMapsByCategory = nextCache({
-  args: {
-    category: z.string().trim()
-  },
-  handler: async ({ category }) => {
-    return await INTERNAL_getFeaturedMapsByCategory(false, category)
-  },
-  revalidateTags: ({ category }) => 
-    [CACHE_KEYS.FEATURED_MAPS.ALL, CACHE_KEYS.FEATURED_MAPS.CATEGORY(category)]
-})
-
-const getCachedFeaturedMap = nextCache({
-  args: {
-    slug: z.string().trim()
-  },
-  handler: async ({ slug }) => {
-    return await INTERNAL_getFeaturedMapBySlug(false, slug)
-  },
-  revalidateTags: async ({ slug }) => {
-    const map = await INTERNAL_getFeaturedMapBySlug(false, slug)
-    if (!map) return []
-
-    return [`${CACHE_KEYS.FEATURED_MAPS.ALL}`, `${CACHE_KEYS.FEATURED_MAPS.POST(map.id)}`]
-  }
-})
-
 
 const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page: number) => {
   const skip = calculateSkip(page, MAP_LIMIT)

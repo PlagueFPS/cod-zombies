@@ -1,7 +1,7 @@
 import { kv } from "@vercel/kv"
 import { CACHE_KEYS, IN_DEVELOPMENT, MAX_NEW_TIME, NEW_CATEGORY_PREFIX, NEW_MAP_PREFIX } from "@/utils/constants"
 import { cache } from "react"
-import { revalidateTag } from "next/cache"
+import { revalidateTag, revalidatePath } from "next/cache"
 import { getFeaturedMapById } from "./featuredMaps"
 import { getGameCategoryById } from "./gameCategory"
 
@@ -49,10 +49,8 @@ export const enforceNewMapStatus = async () => {
         }
         // Revalidate the first page of pagination since it was new
         revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
-        // Revalidate the map post
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.POST(map.id)}`)
-        // Revalidate the relevant category page map data
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.CATEGORY(map.category.slug)}`)
+        // Revalidate the category page the map belongs too
+        revalidatePath(`/${map.category.slug}`)
       } else continue
 
     }

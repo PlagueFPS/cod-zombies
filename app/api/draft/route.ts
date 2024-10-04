@@ -3,19 +3,17 @@ import { getFeaturedMapById } from '@/data/featuredMaps'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { env } from '@/env'
+import { authorizedRequest } from '@/utils/functions'
  
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret')
   const entryId = req.nextUrl.searchParams.get('entryId')
  
-  // This secret should only be known to this route handler and the CMS
-  if (secret !== env.DRAFT_SECRET || !entryId) {
-    return new Response('Unauthorized Request', { status: 403 })
+  if (!authorizedRequest(secret, env.DRAFT_SECRET) || !entryId) {
+    return new Response('Unauthorized Request', { status: 401 })
   }
  
-  // Fetch the headless CMS to check if the provided map exists
   // Manually setting draftMode to true because we are trying to fetch draft content
-  // Before we even enable the draft mode cookie
   const map = await getFeaturedMapById(true, entryId)
   // If the map doesn't exist prevent draft mode from being enabled
   if (!map) {
