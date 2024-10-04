@@ -1,4 +1,6 @@
 import { Document, INLINES, BLOCKS, MARKS } from "@contentful/rich-text-types"
+import { Suspense } from "react"
+import ImageLoader from "@/components/Loaders/ImageLoader"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { slugify } from "@/utils/functions"
 import RichImage from "../RichImage/RichImage"
@@ -27,14 +29,18 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         return (
           <div className="relative w-full">
             <div className="absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl overflow-hidden">
-              <RichImage 
-                asset={ asset }
-                quality={ 1 }
-                className="scale-[1.5]"
-              />
+              <Suspense fallback={<ImageLoader />}>
+                <RichImage 
+                  asset={ asset }
+                  quality={ 1 }
+                  className="scale-[1.5]"
+                />
+              </Suspense>
             </div>
             <div className="relative z-20">
-              <RichImage asset={ asset } quality={ 100 } />
+              <Suspense fallback={<ImageLoader />}>
+                <RichImage asset={ asset } quality={ 100 } />
+              </Suspense>
             </div>
           </div>
         )

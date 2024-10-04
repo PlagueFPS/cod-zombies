@@ -7,6 +7,8 @@ import { IN_DEVELOPMENT } from '@/utils/constants'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
+import { Suspense } from 'react'
+import ImageLoader from '@/components/Loaders/ImageLoader'
 
 interface MapCardProps {
   map: MinifiedFeaturedMap
@@ -32,17 +34,21 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
           </Badge>
         </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
-          <FeaturedImage featuredImage={ image } priority={ priority } sizes='322px' quality={ 1 } />
+          <Suspense fallback={<ImageLoader />}>
+            <FeaturedImage featuredImage={ image } priority={ priority } sizes='322px' quality={ 1 } />
+          </Suspense>
         </div>
         <CardHeader className="flex gap-2 flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
-            <FeaturedImage 
-              featuredImage={ image }
-              alt={ `${title} map image` }
-              sizes='272px'
-              className='h-44 object-cover' 
-              priority={ priority }
-            />
+            <Suspense fallback={<ImageLoader />}>
+              <FeaturedImage 
+                featuredImage={ image }
+                alt={ `${title} map image` }
+                sizes='272px'
+                className='h-44 object-cover' 
+                priority={ priority }
+              />
+            </Suspense>
           </div>
           <div className='space-y-2'>
             <CardTitle className="group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">{ title }</CardTitle>
