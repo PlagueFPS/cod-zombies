@@ -20,6 +20,7 @@ import type { FeaturedMap } from '@/types/FeaturedMap'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 import { Suspense } from 'react'
 import ImageLoader from '@/components/Loaders/ImageLoader'
+import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
 
 interface MapPageProps {
   params: Promise<{ 
@@ -154,7 +155,7 @@ export default async function MapPage({ params }: MapPageProps) {
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
-                <Suspense fallback={ <div>Loading...</div> }> 
+                <Suspense fallback={<PreviousOrNextMapLoader />}> 
                   <PreviousOrNextMap map={ map } />
                 </Suspense>
               </div>
