@@ -67,6 +67,10 @@
     a {
       @apply transition-all
     }
+
+    input {
+      @apply aria-[invalid=true]:border-red-600
+    }
   }
 
   @layer utilities {

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import SearchBar from '@/components/SearchBar/SearchBar'
 import SearchBarLoader from '@/components/Loaders/SearchBarLoader'
-import FeedbackForm from '../FeedbackForm/FeedbackForm'
+import FeedbackForm from '@/components/FeedbackForm/FeedbackForm'
 
 export default function Header() {
   return (
