@@ -40,7 +40,7 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
         </div>
         <CardHeader className="flex gap-2 flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
-            <Suspense fallback={<ImageLoader />}>
+            <Suspense fallback={<ImageLoader className='h-44 relative border' />}>
               <FeaturedImage 
                 featuredImage={ image }
                 alt={ `${title} map image` }

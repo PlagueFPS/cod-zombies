@@ -38,7 +38,7 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
               </Suspense>
             </div>
             <div className="relative z-20">
-              <Suspense fallback={<ImageLoader />}>
+              <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
                 <RichImage asset={ asset } quality={ 100 } />
               </Suspense>
             </div>

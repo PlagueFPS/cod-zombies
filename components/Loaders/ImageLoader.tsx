@@ -1,6 +1,12 @@
-export default function ImageLoader() {
+import { cn } from "@/lib/utils"
+
+interface ImageLoaderProps {
+  className?: string
+}
+
+export default function ImageLoader({ className }: ImageLoaderProps) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center rounded-lg" aria-hidden="true">
+    <div className={cn("absolute inset-0 flex items-center justify-center rounded-lg", className)} aria-hidden="true">
       <div className="w-16 h-16 border-[6px] border-border border-r-transparent rounded-full animate-spin" />
     </div>
   )

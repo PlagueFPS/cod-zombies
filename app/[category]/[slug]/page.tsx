@@ -91,7 +91,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 </Suspense>
               </div>
               <div className='relative z-20 max-w-screen-xl mx-auto'>
-                <Suspense fallback={<ImageLoader />}>
+                <Suspense fallback={<ImageLoader className={`relative border h-[calc(50vw)] xl:h-[720px]`} />}>
                   <FeaturedImage 
                     featuredImage={ image }
                     sizes='(max-width: 1280px) 100vw, 1280px'
