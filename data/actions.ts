@@ -6,6 +6,7 @@ import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { headers } from "next/headers"
 import { rateLimitByIp } from "@/lib/ratelimit"
 import { sendInternalEmailUseCase } from "@/usecases/email"
+import { IN_DEVELOPMENT } from "@/utils/constants"
 
 export const subscribeToNewsletter = createAction
   .use(async ({ next }) => {
@@ -43,7 +44,7 @@ export const submitFeedbackForm = createAction
 
     const result = await submitFeedbackUseCase(parsedInput)
 
-    if (result.success) await sendInternalEmailUseCase({
+    if (result.success && !IN_DEVELOPMENT) await sendInternalEmailUseCase({
       subject: 'New Feedback Submitted',
       message: `${parsedInput.name ?? "Someone"} submitted some feedback. Make sure to take a look.`
     })
