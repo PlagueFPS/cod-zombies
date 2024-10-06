@@ -1,8 +1,5 @@
 "use client"
 import HeroSection from '@/components/HeroSection/HeroSection'
-import MapFiltersLoader from '@/components/Loaders/MapFiltersLoader'
-import MapGridLoader from '@/components/Loaders/MapGridLoader'
-import MapPaginationLoader from '@/components/Loaders/MapPaginationLoader'
 import { capatilize, checkParams } from '@/utils/functions'
 import { useParams } from 'next/navigation'
 
@@ -16,8 +13,6 @@ export default function CategoryLoading() {
         <h2 className='font-extrabold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl text-gradient'>
           { value ? capatilize(value) : 'Featured Maps' }
         </h2>
-        <MapFiltersLoader />
-        <MapGridLoader />
       </section>
     </div>
   )

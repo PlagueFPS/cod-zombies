@@ -21,9 +21,9 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
   return (
     <ScrollArea className="-mt-4 animate-fade-in">
       <div className="flex w-max gap-3">
-        { gameCategories.map((game, i) => (
+        { gameCategories.map(game => (
           <Button 
-            key={ `${game.slug}_${i}` } 
+            key={ game.id } 
             size="sm" 
             variant={ "outline" }
             asChild

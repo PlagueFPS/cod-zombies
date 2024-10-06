@@ -7,7 +7,7 @@ export default function MapPaginationLoader() {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious 
-            href={`#}`} 
+            href={`#`} 
             aria-disabled={ true }
             className={ 'opacity-25 pointer-events-none' }
           />
