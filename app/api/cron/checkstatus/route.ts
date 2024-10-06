@@ -9,7 +9,10 @@ export async function GET() {
   const secret = headersList.get('Authorization')
 
   if (!authorizedRequest(secret, `Bearer ${env.CRON_SECRET}`)) {
-    await sendInternalEmailUseCase("Cron Job Auth Error", "Auth failed, a secret somewhere is not configured correctly")
+    await sendInternalEmailUseCase({ 
+      subject: "Cron Job Auth Error", 
+      message: "Auth failed, a secret somewhere is not configured correctly"
+    })
     return Response.json({ success: false, message: 'Unauthorized Request' }, { status: 401 })
   }
 
@@ -19,7 +22,10 @@ export async function GET() {
   } 
   catch (error) {
     console.error("[CRON] Error in checkstatus cron job", error)
-    await sendInternalEmailUseCase("Cron Job Error", "Error in checkstatus cron job, check your logs")
+    await sendInternalEmailUseCase({ 
+      subject: "Cron Job Error", 
+      message: "Error in checkstatus cron job, check your logs"
+    })
     return Response.json({ success: false }, { status: 500 })
   }
 

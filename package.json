@@ -6,7 +6,10 @@
     "dev": "next dev --turbo --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel": "vercel login",
+    "link": "vercel link",
+    "pull": "vercel env pull"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^15.22.1",
