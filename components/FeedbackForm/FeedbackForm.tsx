@@ -8,6 +8,7 @@ import { FeedbackFormSchema } from "@/utils/validationSchemas"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { ScrollArea } from "../ui/scroll-area"
 import {
   Dialog,
   DialogContent,
@@ -74,123 +75,125 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               We appreciate your feedback. Please fill out the form below.
             </DialogDescription>
           </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={ handleSubmitWithAction } className="space-y-6">
-              <FormField 
-                control={ form.control }
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input 
-                        {...field} 
-                        required 
-                        placeholder="Enter a title for your feedback" 
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      This could be something like, maps, user experience, visuals, etc.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField 
-                control={ form.control }
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email (optional)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        {...field}
-                        type="email" 
-                        placeholder="your@email.com"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      The email we will use to potentially contact you.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField 
-                control={ form.control }
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name (optional)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        {...field}
-                        placeholder="Enter your name" 
-                      />
-                    </FormControl>
-                    <FormDescription className="">
-                      The name we will use to address you via email.
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField 
-                control={ form.control }
-                name="label"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Feedback Label</FormLabel>
-                    <Select required onValueChange={ field.onChange } defaultValue={ field.value }>
+          <ScrollArea className="max-h-[70dvh] pr-4">
+            <Form {...form}>
+              <form onSubmit={ handleSubmitWithAction } className="space-y-6">
+                <FormField 
+                  control={ form.control }
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Title</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a label" />
-                        </SelectTrigger>
+                        <Input 
+                          {...field} 
+                          required 
+                          placeholder="Enter a title for your feedback" 
+                        />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="featureRequest">Feature Request</SelectItem>
-                        <SelectItem value="issue">Issue</SelectItem>
-                        <SelectItem value="question">Question</SelectItem>
-                        <SelectItem value="idea">Idea</SelectItem>
-                        <SelectItem value="complaint">Complaint</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Choose a label that best describes your feedback.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField 
-                control={ form.control }
-                name="feedback"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Your Feedback</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        {...field}
-                        required
-                        placeholder="What can we improve?"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Please provide constructive and actionable feedback to help us improve.
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={ isPending }>
-                { isPending ? (
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Submitting...
-                  </div>
-                ) : 'Submit Feedback' }
-              </Button>
-            </form>
-          </Form>
+                      <FormDescription>
+                        This could be something like, maps, user experience, visuals, etc.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField 
+                  control={ form.control }
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email (optional)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          {...field}
+                          type="email" 
+                          placeholder="your@email.com"
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        The email we will use to potentially contact you.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField 
+                  control={ form.control }
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name (optional)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          {...field}
+                          placeholder="Enter your name" 
+                        />
+                      </FormControl>
+                      <FormDescription className="">
+                        The name we will use to address you via email.
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField 
+                  control={ form.control }
+                  name="label"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Feedback Label</FormLabel>
+                      <Select required onValueChange={ field.onChange } defaultValue={ field.value }>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a label" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="featureRequest">Feature Request</SelectItem>
+                          <SelectItem value="issue">Issue</SelectItem>
+                          <SelectItem value="question">Question</SelectItem>
+                          <SelectItem value="idea">Idea</SelectItem>
+                          <SelectItem value="complaint">Complaint</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Choose a label that best describes your feedback.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField 
+                  control={ form.control }
+                  name="feedback"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Your Feedback</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          {...field}
+                          required
+                          placeholder="What can we improve?"
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Please provide constructive and actionable feedback to help us improve.
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
+          </ScrollArea>
+          <Button type="submit" onClick={ handleSubmitWithAction } className="w-full" disabled={ isPending }>
+            { isPending ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Submitting...
+              </div>
+            ) : 'Submit Feedback' }
+          </Button>
         </DialogContent>
       </Dialog>
     </div>
