@@ -47,10 +47,14 @@ export const enforceNewMapStatus = async () => {
           console.error(`Could not find map for ID: ${mapID}`)
           continue
         }
+        const categoryPath = `/${map.category.slug}`
+        const mapPath = `/${map.category.slug}/${map.slug}`
         // Revalidate the first page of pagination since it was new
         revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
         // Revalidate the category page the map belongs too
-        revalidatePath(`/${map.category.slug}`)
+        revalidatePath(categoryPath)
+        // Revalidate the map slug page
+        revalidatePath(mapPath)
       } else continue
 
     }
