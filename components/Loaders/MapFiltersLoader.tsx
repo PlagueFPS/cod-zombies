@@ -11,8 +11,10 @@ export default function MapFiltersLoader() {
           <Button 
             key={ `map-filter-${i}` } 
             size="sm" 
-            variant={ "outline" } 
-            className={cn('animate-pulse bg-secondary h-9 w-[105px]', {
+            variant={ "outline" }
+            disabled
+            aria-disabled
+            className={cn('animate-pulse bg-muted h-9 w-[105px]', {
               'w-[157px]': i === 4
             })}
           />

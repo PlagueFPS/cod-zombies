@@ -8,7 +8,7 @@ export default function MapPaginationLoader() {
         <PaginationItem>
           <PaginationPrevious 
             href={`#`} 
-            aria-disabled={ true }
+            aria-disabled
             className={ 'opacity-25 pointer-events-none' }
           />
         </PaginationItem>
@@ -20,7 +20,7 @@ export default function MapPaginationLoader() {
         <PaginationItem>
           <PaginationNext 
             href={`#`} 
-            aria-disabled={ true }
+            aria-disabled
             className={ 'opacity-25 pointer-events-none' }
           />
         </PaginationItem>

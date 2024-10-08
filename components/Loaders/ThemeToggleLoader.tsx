@@ -12,6 +12,8 @@ export default function ThemeToggleLoader() {
         type="button" 
         title="Light" 
         aria-label="Switch to light theme"
+        disabled
+        aria-disabled 
         className="bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none"
       >
         <Sun className="h-4 w-4 transition-all" />
@@ -23,6 +25,8 @@ export default function ThemeToggleLoader() {
         type="button" 
         title="System" 
         aria-label="Switch to system theme"
+        disabled
+        aria-disabled 
         className="bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none"
       >
         <Monitor className="h-4 w-4 transition-all" />
@@ -33,7 +37,9 @@ export default function ThemeToggleLoader() {
         role="radio" 
         type="button" 
         title="Dark" 
-        aria-label="Switch to dark theme" 
+        aria-label="Switch to dark theme"
+        disabled
+        aria-disabled 
         className="bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none"
       >
         <Moon className="h-4 w-4 transition-all" />
