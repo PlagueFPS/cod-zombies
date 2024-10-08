@@ -51,7 +51,7 @@ export default function CategoryLoading() {
               />
             </PaginationItem>
             { [...Array(3).keys()].map(page => (
-              <PaginationItem key={ `pagination-home-loader-item-${page}` }>
+              <PaginationItem key={ `pagination-category-loader-item-${page}` }>
                 <PaginationLink href={`/?page=${page + 1}`}>{ page + 1 }</PaginationLink>
               </PaginationItem>
             ))}

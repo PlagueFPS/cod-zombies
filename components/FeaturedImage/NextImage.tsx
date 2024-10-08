@@ -32,7 +32,7 @@ export default function NextImage({ featuredImage, avif, webp, alt = "", quality
 
   return (
     <figure className="relative m-0 w-full h-auto">
-      { (!imageLoaded && !fallbackLoaded) && <ImageLoader /> }
+      { (!imageLoaded && !fallbackLoaded) && <ImageLoader className="border" /> }
       <picture className={cn('flex justify-center items-center w-full h-auto')}>
         <Image 
           src={ featuredImageURL }

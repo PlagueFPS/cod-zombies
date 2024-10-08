@@ -3,6 +3,7 @@ import BackToTopButton from "@/components/BackToTopButton/BackToTopButton";
 import BreadcrumbLoader from "@/components/Loaders/BreadcrumbLoader";
 import { Button } from "@/components/ui/button";
 import { Menu, Share2 } from "lucide-react";
+import ImageLoader from "@/components/Loaders/ImageLoader";
 
 
 export default function MapPageLoader() {
@@ -16,9 +17,7 @@ export default function MapPageLoader() {
             
             {/* Image and breadcrumb loaders */}
               <div className="relative z-20 max-w-screen-xl h-[calc(50vw)] w-full xl:h-[720px] mx-auto">
-                <div className="absolute top-0 bottom-0 right-0 left-0 h-auto xl:h-[720px] flex justify-center items-center border w-full rounded-none xl:rounded-lg">
-                  <div className="relative h-16 w-16 border-[6px] border-solid border-r-transparent border-border rounded-full animate-spin" />
-                </div>
+                <ImageLoader className="h-full w-full border" />
                 <div className="absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex justify-center w-full">
                   <BreadcrumbLoader />
                 </div>

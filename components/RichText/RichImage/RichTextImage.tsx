@@ -27,7 +27,7 @@ export default function RichTextImage({ asset, avif, webp, quality, className }:
 
   return (
     <figure className="relative m-0 w-full h-auto">
-      { (!imageLoaded && !fallbackLoaded) && <ImageLoader /> }
+      { (!imageLoaded && !fallbackLoaded) && <ImageLoader className="border" /> }
       <picture className="relative w-full h-auto">
         <Image 
           src={ url }
