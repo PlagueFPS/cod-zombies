@@ -13,7 +13,7 @@ interface MobileTableOfContentsProps {
 
 export default function MobileTableOfContents({ headings, activeHeading }: MobileTableOfContentsProps) {
   return (
-    <div className="sticky top-20 z-40 p-3 border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
+    <div className="block xl:hidden sticky top-20 z-40 p-3 border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
       <Sheet>
         <SheetTrigger className="flex gap-2 items-center">
           <Menu className="h-5 w-5" />
