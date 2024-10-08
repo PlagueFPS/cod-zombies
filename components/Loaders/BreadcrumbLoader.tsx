@@ -3,6 +3,7 @@ import { useParams } from "next/navigation"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "../ui/breadcrumb"
 import NavLink from "../NavLink/NavLink"
 import { checkParams } from "@/utils/functions"
+import { Slash } from "lucide-react"
 
 export default function BreadcrumbLoader() {
   const { category, slug } = useParams()
@@ -15,13 +16,17 @@ export default function BreadcrumbLoader() {
             <NavLink exact href='/'>Home</NavLink>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator />
+        <BreadcrumbSeparator>
+          <Slash />
+        </BreadcrumbSeparator>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <NavLink exact href={ `/${category}` }>{ checkParams(category) }</NavLink>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator />
+        <BreadcrumbSeparator>
+          <Slash />
+        </BreadcrumbSeparator>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <NavLink exact active href={ `/${category}/${slug}` } className='font-medium'>{ checkParams(slug) }</NavLink>
