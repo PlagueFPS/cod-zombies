@@ -4,10 +4,10 @@ import { cache } from "react"
 import { getEntries } from "@/contentful/contentful"
 import { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
 import { createGameCategoryDTO } from "@/utils/contentful-utils"
-import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
+import { CACHE_KEYS } from "@/utils/constants"
 
 export const getGameCategories = async (draftMode: boolean) => {
-  if (IN_DEVELOPMENT || draftMode) {
+  if (draftMode) {
     return INTERNAL_getGameCategories(true)
   }
   return await getCachedCategories()

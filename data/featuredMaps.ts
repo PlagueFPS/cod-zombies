@@ -39,7 +39,7 @@ export const getFeaturedMapBySlug = async (draftMode: boolean, slug: string) => 
 }
 
 export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number) => {
-  if (draftMode || IN_DEVELOPMENT) {
+  if (draftMode) {
     return await INTERNAL_getPaginatedFeaturedMaps(draftMode, page)
   }
   else return await getCachedPaginatedFeaturedMaps({ page })
