@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { Button, type ButtonProps } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerDescription } from "../ui/drawer"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerDescription, DrawerHandle } from "../ui/drawer"
 import { cn } from "@/lib/utils"
 
 interface ModalProps extends ButtonProps {
@@ -23,7 +23,7 @@ export default function Modal({ children, triggerIcon, triggerText, title, descr
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)} {...props}>
           { triggerIcon }
-          <span className="hidden xl:inline-block">{ triggerText }</span>
+          <span>{ triggerText }</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="rounded-lg">
@@ -45,6 +45,7 @@ export default function Modal({ children, triggerIcon, triggerText, title, descr
         </Button>
       </DrawerTrigger>
       <DrawerContent className="rounded-lg">
+        <DrawerHandle />
         <DrawerHeader>
           <DrawerTitle>{ title }</DrawerTitle>
           <DrawerDescription>{ description }</DrawerDescription>
