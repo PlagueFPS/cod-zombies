@@ -1,5 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit"
 import { kv } from "@vercel/kv"
+import { createHash } from "crypto"
 
 /**
  * 
@@ -11,7 +12,8 @@ export const rateLimitByIp = async (ip: string, amount: number, duration: number
     redis: kv,
     limiter: Ratelimit.slidingWindow(amount, `${duration} s`)
   })
-  const { success, reset } = await ratelimit.limit(ip)
+  const hashedIp = createHash('sha256').update(ip).digest('hex')
+  const { success, reset } = await ratelimit.limit(hashedIp)
   const retryAfter = reset - Date.now()
   return { rateLimited: !success, retryAfter }
 }
