@@ -44,6 +44,7 @@
     "sharp": "^0.33.5",
     "sonner": "^1.5.0",
     "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.0.0",
     "zod": "^3.23.8",
     "zod-form-data": "^2.0.2"
   },
