@@ -5,7 +5,7 @@ import { getEntries } from "@/contentful/contentful"
 import type { TypeFeaturedMapsSkeleton } from "@/contentful/Types/contentful-types"
 import type { MinifiedFeaturedMap } from "@/types/FeaturedMap"
 import { calculateSkip, createFeaturedMapsDTO } from "@/utils/contentful-utils"
-import { CACHE_KEYS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
+import { CACHE_KEYS, MAP_LIMIT } from "@/utils/constants"
 import { z } from "zod"
 
 export const getFeaturedMaps = cache(async (draftMode: boolean) => {

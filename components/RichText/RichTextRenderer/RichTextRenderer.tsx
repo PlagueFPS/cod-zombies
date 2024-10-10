@@ -3,7 +3,6 @@ import { Suspense } from "react"
 import ImageLoader from "@/components/Loaders/ImageLoader"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { slugify } from "@/utils/functions"
-import RichImage from "../RichImage/RichImage"
 import Heading2 from "../RichHeadings/Heading2/Heading2"
 import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
@@ -12,6 +11,8 @@ import RichLink from "../RichLink/RichLink"
 import RichTable from "../RichTable/RichTable"
 import Heading4 from "../RichHeadings/Heading4/Heading4"
 import RichParagraph from "../RichParagraph/RichParagraph"
+import ContentfulImage from "@/components/ContentfulImage/ContentfulImage"
+import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 
 interface RichTextRendererProps {
   body: Document
@@ -26,21 +27,30 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       },
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
         const asset = node.data.target
+        const imageProps = {
+          featuredImage: {
+            url: asset.fields.file.url,
+            width: asset.fields.file.details.image.width,
+            height: asset.fields.file.details.image.height
+          },
+          sizes: "(max-width: 828px) calc(100vw - 16px), 776px"
+        } 
+
         return (
           <div className="relative w-full">
             <div className="absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl overflow-hidden">
-              <Suspense fallback={<ImageLoader />}>
-                <RichImage 
-                  asset={ asset }
-                  quality={ 1 }
-                  className="scale-[1.5]"
-                />
-              </Suspense>
+                <FeaturedImage {...imageProps} description={ asset.fields.description } quality={ 1 } className="scale-[1.5] rounded-lg" >
+                  <Suspense fallback={<ImageLoader className="border" />}>
+                    <ContentfulImage {...imageProps} className="rounded-lg" />
+                  </Suspense>
+                </FeaturedImage>
             </div>
             <div className="relative z-20">
-              <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
-                <RichImage asset={ asset } quality={ 100 } />
-              </Suspense>
+                <FeaturedImage {...imageProps} quality={ 100 } description={ asset.fields.description } className="rounded-lg">
+                  <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
+                    <ContentfulImage {...imageProps} className="rounded-lg" />
+                  </Suspense>
+                </FeaturedImage>
             </div>
           </div>
         )

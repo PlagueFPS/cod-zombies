@@ -21,6 +21,7 @@ import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/Cu
 import { Suspense } from 'react'
 import ImageLoader from '@/components/Loaders/ImageLoader'
 import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
+import ContentfulImage from '@/components/ContentfulImage/ContentfulImage'
 
 interface MapPageProps {
   params: Promise<{ 
@@ -81,25 +82,40 @@ export default async function MapPage({ params }: MapPageProps) {
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
               <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl overflow-hidden'>
-                <Suspense fallback={<ImageLoader />}>
                   <FeaturedImage
                     featuredImage={ image } 
                     sizes='(max-width: 1280px) 100vw, 1111.58px'
                     priority 
                     quality={ 1 } 
                     className='xl:rounded-lg scale-[2]'
-                  />
-                </Suspense>
+                  >
+                    <Suspense fallback={<ImageLoader />}>
+                      <ContentfulImage 
+                        featuredImage={ image }
+                        sizes='(max-width: 1280px) 100vw, 1111.58px'
+                        priority
+                        quality={ 1 }
+                        className='xl:rounded-lg scale-[2]'
+                      />
+                    </Suspense>
+                  </FeaturedImage>
               </div>
               <div className='relative z-20 max-w-screen-xl mx-auto'>
-                <Suspense fallback={<ImageLoader className={`relative border h-[calc(50vw)] xl:h-[720px]`} />}>
                   <FeaturedImage 
                     featuredImage={ image }
                     sizes='(max-width: 1280px) 100vw, 1280px'
                     priority 
                     className='xl:rounded-lg overflow-hidden' 
-                  />
-                </Suspense>
+                  >
+                    <Suspense fallback={<ImageLoader className={`relative border h-[calc(50vw)] xl:h-[720px]`} />}>
+                      <ContentfulImage 
+                        featuredImage={ image }
+                        sizes='(max-width: 1280px) 100vw, 1280px'
+                        priority
+                        className='xl:rounded-lg overflow-hidden'
+                      />
+                    </Suspense>
+                  </FeaturedImage>
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
                   <Breadcrumb className='mr-auto'>
                     <BreadcrumbList>
@@ -185,29 +201,44 @@ export default async function MapPage({ params }: MapPageProps) {
 
  const PrevOrNextMapCard = ({ map, prev }: { map: FeaturedMap, prev?: boolean }) => {
   const { title, description, category, image, slug } = map
+  const alt = `${title} map image`
 
   return (
     <Link href={ `/${category.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
         <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
-            <Suspense fallback={<ImageLoader />}>
               <FeaturedImage 
                 featuredImage={ image }
                 sizes='(max-width: 1280px) 320px, 234px'
                 quality={ 1 }
                 className='object-cover scale-[2]'
-              />
-            </Suspense>
+              >
+                <Suspense fallback={<ImageLoader />}>
+                  <ContentfulImage 
+                    featuredImage={ image }
+                    sizes='(max-width: 1280px) 320px, 234px'
+                    quality={ 1 }
+                    className='object-cover scale-[2]'
+                  />
+                </Suspense>
+              </FeaturedImage>
           </div>
           <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full overflow-hidden'>
-            <Suspense fallback={<ImageLoader />}>
               <FeaturedImage
                 featuredImage={ image }
-                alt={ `${title} map image` }
+                alt={ alt }
                 sizes='(max-width: 1280px) 320px, 364px'
                 className='object-cover rounded-lg h-full'
-              />
-            </Suspense>
+              >
+                <Suspense fallback={<ImageLoader />}>
+                  <ContentfulImage 
+                    featuredImage={ image }
+                    alt={ alt }
+                    sizes='(max-width: 1280px) 320px, 364px'
+                    className='object-cover rounded-lg h-full'
+                  />
+                </Suspense>
+              </FeaturedImage>
           </div>
           <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4'>
             <h2 className='font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
