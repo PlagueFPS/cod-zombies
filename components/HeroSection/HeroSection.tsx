@@ -16,7 +16,7 @@ export default function HeroSection({ text }: HeroSectionProps) {
           <span className="text-primary-gradient pb-2">Zombies</span>
         </span>
       </h1>
-      <p className="text-sm md:text-base lg:text-lg">
+      <p className="text-base md:text-lg">
         Explore our comprehensive guides to the most challenging and rewarding main quests in { text }
       </p>
     </section>
