@@ -72,7 +72,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
       className={ className }
       >
       <Form {...form}>
-        <form onSubmit={ handleSubmitWithAction } className="flex flex-col px-4 pb-4 md:pb-0">
+        <form onSubmit={ handleSubmitWithAction } className="flex flex-col pl-4">
           <ScrollArea className="h-[60dvh] pr-4">
             <div className="space-y-6 pb-4">
               <FormField 
@@ -182,7 +182,7 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
               />
             </div>
           </ScrollArea>
-          <Button type="submit" className="w-full mt-4 md:mt-0" disabled={ isPending }>
+          <Button type="submit" className="w-full" disabled={ isPending }>
             { isPending ? (
               <div className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
