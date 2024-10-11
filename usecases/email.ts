@@ -10,7 +10,7 @@ export const sendInternalEmailUseCase = async ({ subject, message }: InternalEma
   const resend = new Resend(env.RESEND_API_KEY)
   await resend.emails.send({
     from: `Cod Zombies Guides <support@codzombiesguides.com>`,
-    to: ['anticrebel@gmail.com'],
+    to: ['codzombiesguidesteam@gmail.com'],
     subject,
     html: `<p>${ message }</p>`
   })
