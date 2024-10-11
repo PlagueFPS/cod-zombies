@@ -1,12 +1,10 @@
-import { useMediaQuery } from "@/hooks/useMediaQuery"
+"use client"
+import { useRouter } from "next/navigation"
 import { Button, type ButtonProps } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerDescription } from "../ui/drawer"
 import { cn } from "@/lib/utils"
 
 interface ModalProps extends ButtonProps {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   children: React.ReactNode
   triggerIcon: React.ReactNode
   triggerText: string
@@ -14,12 +12,11 @@ interface ModalProps extends ButtonProps {
   description: string
 }
 
-export default function Modal({ children, triggerIcon, triggerText, title, description, className, open, setOpen, ...props }: ModalProps) {
-  const isDesktop = useMediaQuery(768)
+export default function Modal({ children, triggerIcon, triggerText, title, description, className, ...props }: ModalProps) {
+  const router = useRouter()
 
-  if (isDesktop) {
   return (
-    <Dialog open={ open } onOpenChange={ setOpen }>
+    <Dialog open onOpenChange={ () => router.back() }>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)} {...props}>
           { triggerIcon }
@@ -34,23 +31,5 @@ export default function Modal({ children, triggerIcon, triggerText, title, descr
         { children }
       </DialogContent>
     </Dialog>
-    )
-  }
-
-  return (
-    <Drawer open={ open } onOpenChange={ setOpen }>
-      <DrawerTrigger asChild>
-        <Button variant="ghost" size="sm" className={cn("flex rounded-sm gap-2 text-muted-foreground", className)} {...props}>
-          { triggerIcon }
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent className="rounded-lg">
-        <DrawerHeader>
-          <DrawerTitle>{ title }</DrawerTitle>
-          <DrawerDescription>{ description }</DrawerDescription>
-        </DrawerHeader>
-        { children }
-      </DrawerContent>
-    </Drawer>
   )
 }
