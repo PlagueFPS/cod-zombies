@@ -4,6 +4,7 @@ import { cache } from "react"
 import { revalidateTag, revalidatePath } from "next/cache"
 import { getFeaturedMapById } from "./featuredMaps"
 import { getGameCategoryById } from "./gameCategory"
+import { sendInternalEmailUseCase } from "@/usecases/email"
 
 export const storeNewMapId = cache(async (mapId: string, createdAt: string) => {
   await kv.set(`${NEW_MAP_PREFIX}${mapId}`, createdAt)
@@ -50,15 +51,22 @@ export const enforceNewMapStatus = async () => {
         const categoryPath = `/${map.category.slug}`
         const mapPath = `/${map.category.slug}/${map.slug}`
         // Revalidate the first page of pagination since it was new
+        // This is to update the Data Cache
         revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
         // Revalidate the category page the map belongs too
+        // This is to update the ISR cache
         revalidatePath(categoryPath)
         // Revalidate the map slug page
+        // This is to update the ISR cache
         revalidatePath(mapPath)
       } else continue
 
     }
     catch(error) {
+      await sendInternalEmailUseCase({
+        subject: "Map Status Error",
+        message: `Error processing map key: ${key}`
+      })
       console.error(`Error processing map key: ${key}`, error)
       continue
     }
@@ -89,12 +97,18 @@ export const enforceNewCategoryStatus = async () => {
           console.error(`Could not find category for ID: ${categoryID}`)
           continue
         }
-        // Revalidate all category data
+        // Revalidate the category data to update the Data Cache
         revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+        // Revalidate the path to update the ISR cache
+        revalidatePath(`/${category.slug}`)
       } else continue
 
     }
     catch(error) {
+      await sendInternalEmailUseCase({
+        subject: "Category Status Error",
+        message: `Error processing category key: ${key}`
+      })
       console.error(`Error processing category key: ${key}`, error)
       continue
     }

@@ -29,7 +29,8 @@ export async function PUT(req: NextRequest) {
       const { mapId, createdAt, updatedAt } = payload.data 
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
-        // store the mapId as new for 1 week and revalidate all map data
+        // store the mapId as new for 1 week 
+        // revalidate only first page of maps to show the new map
         await storeNewMapId(mapId, createdAt)
         revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
         return Response.json({ updated: true, message: `${mapId} stored as new` }, { status: 201 })
@@ -93,8 +94,9 @@ export async function PATCH(req: NextRequest) {
       const mapPath = `/${map.category.slug}/${map.slug}`
       const categoryPath = `/${map.category.slug}`
 
-      // revalidate all map data, the slug, and the category page to remove it
+      // revalidate the map data to update the Data Cache
       revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
+      // revalidate the map and category page to update the ISR cache
       revalidatePath(mapPath)
       revalidatePath(categoryPath)
       return Response.json({ 
@@ -108,10 +110,11 @@ export async function PATCH(req: NextRequest) {
       // manually setting draftMode to true because we are fetching an unpublished map
       const category = await getGameCategoryById(true, categoryId)
       if (!category) return Response.json({ removed: false, message: 'Category not found' }, { status: 404 })
-      const categoryPath = `${category.slug}`
+      const categoryPath = `/${category.slug}`
 
-      // revalidate all category data and the category page to remove it
+      // revalidate the category data to update the Data Cache
       revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+      // revalidate the category page to update the ISR cache
       revalidatePath(categoryPath)
       return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} and ${categoryPath} Revalidated` }, { status: 200 })
     }
