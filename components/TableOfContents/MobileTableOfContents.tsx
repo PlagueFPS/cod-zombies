@@ -29,7 +29,7 @@ export default function MobileTableOfContents({ headings, activeHeading }: Mobil
               <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm max-h-full">
                 { headings.map(heading => (
                   <li 
-                    key={ heading.id } 
+                    key={ `mobile-toc-${heading.id}` }
                     className={cn("hover:text-primary w-fit transition-colors", 
                       { 'pl-3 text-foreground/70 font-medium': heading.type === 'heading-3',
                         'pl-6 text-muted-foreground font-normal': heading.type === 'heading-4',

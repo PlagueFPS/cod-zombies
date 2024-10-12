@@ -6,6 +6,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ChangedBadge, DraftBadge, NewBadge } from "@/components/CustomBadges/CustomBadges";
 import { IN_DEVELOPMENT } from "@/utils/constants";
+import { Fragment } from "react";
 
 interface MapFiltersProps {
   currentCategory?: string
@@ -25,9 +26,8 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
       <div className="inline-block pt-3">
         <div className="relative inline-flex w-max gap-2">
           { gameCategories.map(game => (
-            <>
+            <Fragment key={ game.id }>
               <Button 
-                key={ game.id } 
                 size="sm" 
                 variant={ "outline" }
                 asChild
@@ -44,7 +44,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
               { game.isNew ? <NewBadge className="absolute -top-3 -right-3 z-10" /> : null }
               { (isEnabled || IN_DEVELOPMENT) && game.isChanged ? <ChangedBadge className="absolute -top-3 -right-3 z-10" /> : null }
               { (isEnabled || IN_DEVELOPMENT) && game.isDraft ? <DraftBadge className="absolute -top-3 -right-3 z-10" /> : null }
-            </>
+            </Fragment>
           ))}
         </div>
       </div>

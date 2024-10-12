@@ -14,7 +14,7 @@ export default function HomeLoading() {
         <h2 className='font-extrabold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl text-gradient'>Featured Maps</h2>
         <ScrollArea className="-mt-4 relative overflow-hidden">
           <div className="flex w-max gap-3 text-foreground/80">
-            { [...Array(6).keys()].map(i => (
+            { Array.from({ length: 6 }, (_, i) => (
               <Button 
                 key={ `map-home-filter-${i}` } 
                 size="sm" 
@@ -30,7 +30,7 @@ export default function HomeLoading() {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
-          {[...Array(MAP_LIMIT).keys()].map(i => (
+          { Array.from({ length: MAP_LIMIT }, (_, i) => (
             <MapCardLoader key={ `map-card-home-loader-${i}` } />
           ))}
         </div>
@@ -43,8 +43,8 @@ export default function HomeLoading() {
                 className={ 'opacity-25 pointer-events-none' }
               />
             </PaginationItem>
-            { [...Array(3).keys()].map(page => (
-              <PaginationItem key={ `pagination-home-loader-item-${page}` }>
+            { Array.from({ length: 3 }, (_, page) => (
+              <PaginationItem key={ `pagination-home-loader-item-${page + 1}` }>
                 <PaginationLink href={`/?page=${page + 1}`}>{ page + 1 }</PaginationLink>
               </PaginationItem>
             ))}

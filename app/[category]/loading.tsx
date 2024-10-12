@@ -21,7 +21,7 @@ export default function CategoryLoading() {
         </h2>
         <ScrollArea className="-mt-4 relative overflow-hidden">
           <div className="flex w-max gap-3 text-foreground/80">
-            { [...Array(6).keys()].map(i => (
+            { Array.from({ length: 5 }, (_, i) => (
               <Button 
                 key={ `map-category-filter-${i}` } 
                 size="sm" 
@@ -37,7 +37,7 @@ export default function CategoryLoading() {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
-          {[...Array(MAP_LIMIT).keys()].map(i => (
+          { Array.from({ length: MAP_LIMIT }, (_, i) => (
             <MapCardLoader key={ `map-card-category-loader-${i}` } />
           ))}
         </div>
@@ -50,9 +50,9 @@ export default function CategoryLoading() {
                 className={ 'opacity-25 pointer-events-none' }
               />
             </PaginationItem>
-            { [...Array(3).keys()].map(page => (
-              <PaginationItem key={ `pagination-category-loader-item-${page}` }>
-                <PaginationLink href={`/?page=${page + 1}`}>{ page + 1 }</PaginationLink>
+            { Array.from({ length: 3 }, (_, i) => (
+              <PaginationItem key={ `pagination-category-loader-item-${i}` }>
+                <PaginationLink href={`/?page=${i + 1}`}>{ i + 1 }</PaginationLink>
               </PaginationItem>
             ))}
             <PaginationItem>

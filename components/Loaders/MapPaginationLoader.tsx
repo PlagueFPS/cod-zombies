@@ -12,8 +12,8 @@ export default function MapPaginationLoader() {
             className={ 'opacity-25 pointer-events-none' }
           />
         </PaginationItem>
-        { [...Array(3).keys()].map(page => (
-          <PaginationItem key={ `pagination-loader-item-${page}` }>
+        { Array.from({ length: 3 }, (_, page) => (
+          <PaginationItem key={ `pagination-loader-item-${page + 1}` }>
             <PaginationLink href={`/?page=${page + 1}`}>{ page + 1 }</PaginationLink>
           </PaginationItem>
         ))}

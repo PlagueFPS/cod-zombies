@@ -7,7 +7,7 @@ export default function MapFiltersLoader() {
   return (
     <ScrollArea className="-mt-4 relative overflow-hidden">
       <div className="flex w-max gap-3 text-foreground/80">
-        { [...Array(6).keys()].map(i => (
+        { Array.from({ length: 6 }, (_, i) => (
           <Button 
             key={ `map-filter-${i}` } 
             size="sm" 
