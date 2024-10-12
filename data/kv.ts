@@ -4,7 +4,7 @@ import { cache } from "react"
 import { revalidateTag, revalidatePath } from "next/cache"
 import { getFeaturedMapById } from "./featuredMaps"
 import { getGameCategoryById } from "./gameCategory"
-import { sendInternalEmailUseCase } from "@/usecases/email"
+import { submitFeedbackUseCase } from "@/usecases/feedback"
 
 export const storeNewMapId = cache(async (mapId: string, createdAt: string) => {
   await kv.set(`${NEW_MAP_PREFIX}${mapId}`, createdAt)
@@ -63,9 +63,11 @@ export const enforceNewMapStatus = async () => {
 
     }
     catch(error) {
-      await sendInternalEmailUseCase({
-        subject: "Map Status Error",
-        message: `Error processing map key: ${key}`
+      await submitFeedbackUseCase({
+        title: "Map Status Error",
+        name: "KV Enforcement",
+        label: "issue",
+        feedback: `Error processing map key: ${key}`
       })
       console.error(`Error processing map key: ${key}`, error)
       continue
@@ -105,9 +107,11 @@ export const enforceNewCategoryStatus = async () => {
 
     }
     catch(error) {
-      await sendInternalEmailUseCase({
-        subject: "Category Status Error",
-        message: `Error processing category key: ${key}`
+      await submitFeedbackUseCase({
+        title: "Category Status Error",
+        name: "KV Enforcement",
+        label: "issue",
+        feedback: `Error processing category key: ${key}`
       })
       console.error(`Error processing category key: ${key}`, error)
       continue

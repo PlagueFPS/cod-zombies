@@ -1,5 +1,6 @@
 import { env } from "@/env"
 import type { FeedbackForm } from "@/utils/validationSchemas"
+import { sendInternalEmailUseCase } from "./email"
 
 export const submitFeedbackUseCase = async (input: FeedbackForm) => {
   const { title, name, email, label, feedback } = input
@@ -23,5 +24,9 @@ export const submitFeedbackUseCase = async (input: FeedbackForm) => {
     message: 'Something Went Wrong! Failed to submit form',
   }
 
+  await sendInternalEmailUseCase({
+    subject: `New "${label}" Feedback Submission`,
+    message: `${name ?? "Someone"} has submitted feedback for "${title}".`
+  })
   return { success: true, message: 'Thank you for submitting! Your submission has been received' }
 }

@@ -2,16 +2,18 @@ import { headers } from "next/headers"
 import { authorizedRequest } from "@/utils/functions"
 import { env } from "@/env"
 import { enforceNewCategoryStatus, enforceNewMapStatus } from "@/data/kv"
-import { sendInternalEmailUseCase } from "@/usecases/email"
+import { submitFeedbackUseCase } from "@/usecases/feedback"
 
 export async function GET() {
   const headersList = await headers()
   const secret = headersList.get('Authorization')
 
   if (!authorizedRequest(secret, `Bearer ${env.CRON_SECRET}`)) {
-    await sendInternalEmailUseCase({ 
-      subject: "Cron Job Auth Error", 
-      message: "Auth failed, a secret somewhere is not configured correctly"
+    await submitFeedbackUseCase({
+      title: "Cron Job Auth Error",
+      name: "Cron Job",
+      label: "issue",
+      feedback: "Auth failed, a secret somewhere is not configured correctly"
     })
     return Response.json({ success: false, message: 'Unauthorized Request' }, { status: 401 })
   }
@@ -22,9 +24,11 @@ export async function GET() {
   } 
   catch (error) {
     console.error("[CRON] Error in checkstatus cron job", error)
-    await sendInternalEmailUseCase({ 
-      subject: "Cron Job Error", 
-      message: "Error in checkstatus cron job, check your logs"
+    await submitFeedbackUseCase({
+      title: "Cron Job Error",
+      name: "Cron Job",
+      label: "issue",
+      feedback: "Error in checkstatus cron job, check your logs"
     })
     return Response.json({ success: false }, { status: 500 })
   }

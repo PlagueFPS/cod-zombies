@@ -8,10 +8,12 @@ interface InternalEmailProps {
 
 export const sendInternalEmailUseCase = async ({ subject, message }: InternalEmailProps) => {
   const resend = new Resend(env.RESEND_API_KEY)
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: `Cod Zombies Guides <support@codzombiesguides.com>`,
     to: ['codzombiesguidesteam@gmail.com'],
     subject,
     html: `<p>${ message }</p>`
   })
+
+  if (error) console.error(error)
 }
