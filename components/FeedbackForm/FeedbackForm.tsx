@@ -5,7 +5,7 @@ import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hoo
 import { submitFeedbackForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FeedbackFormSchema } from "@/utils/validationSchemas"
-import { Button } from "@/components/ui/button"
+import { Button, type ButtonProps } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "../ui/scroll-area"
@@ -36,11 +36,11 @@ import {
 import { cn } from "@/lib/utils"
 import { Loader2, MessageCircleHeart } from "lucide-react"
 
-interface FeedbackFormProps {
+interface FeedbackFormProps extends ButtonProps {
   className?: string
 }
 
-export default function FeedbackForm({ className }: FeedbackFormProps) {
+export default function FeedbackForm({ className, ...props }: FeedbackFormProps) {
   const [open, setOpen] = useState(false)
   const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
     formProps: {
@@ -60,12 +60,12 @@ export default function FeedbackForm({ className }: FeedbackFormProps) {
     <div className="flex justify-center items-center">
       <Dialog open={ open } onOpenChange={ setOpen }>
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)}>
+          <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)} {...props}>
             <MessageCircleHeart className="size-5" />
             Feedback
           </Button>
         </DialogTrigger>
-        <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) }>
+        <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) } {...props}>
           <MessageCircleHeart className="size-6" />
         </Button>
         <DialogContent className="rounded-lg">

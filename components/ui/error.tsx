@@ -8,7 +8,7 @@ interface ErrorTitleProps {
 
 export function ErrorTitle({ children, className }: ErrorTitleProps) {
   return (
-    <h1 className={cn(`font-extrabold text-2xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl 
+    <h1 className={cn(`text-center font-extrabold text-4xl tracking-tight md:text-5xl lg:text-6xl 
       text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2`, className)}>
       { children }
     </h1>
@@ -25,7 +25,7 @@ export function ErrorButton({ children, ...props }: ButtonProps) {
 
 export function ErrorDescription({ children, className }: ErrorTitleProps) {
   return (
-    <p className={cn('text-sm md:text-base lg:text-lg max-w-[80ch]', className)}>
+    <p className={cn('text-base lg:text-lg max-w-[80ch]', className)}>
       { children }
     </p>
   )
