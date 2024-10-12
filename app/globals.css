@@ -83,22 +83,22 @@
     }
 
     .badge-primary-gradient {
-      @apply bg-transparent bg-gradient-to-tr dark:border-primary dark:from-orange-950 dark:via-orange-800 dark:to-orange-950 dark:text-orange-100
+      @apply bg-transparent bg-gradient-to-tr dark:border-primary dark:from-orange-950 dark:via-orange-800 dark:to-orange-950 dark:text-orange-200
       text-orange-800 from-orange-50 via-orange-200 to-orange-50 border-orange-400
     }
 
     .badge-changed-gradient {
-      @apply bg-gradient-to-tr dark:from-blue-950 dark:via-blue-800 dark:to-blue-950 dark:border-blue-600 dark:text-blue-100
+      @apply bg-gradient-to-tr dark:from-blue-950 dark:via-blue-800 dark:to-blue-950 dark:border-blue-600 dark:text-blue-200
       text-blue-800 from-blue-50 via-blue-200 to-blue-50 border-blue-400
     }
 
     .badge-draft-gradient {
-      @apply bg-gradient-to-tr dark:from-purple-950 dark:via-purple-800 dark:to-purple-950 dark:border-purple-600 dark:text-purple-100
+      @apply bg-gradient-to-tr dark:from-purple-950 dark:via-purple-800 dark:to-purple-950 dark:border-purple-600 dark:text-purple-200
       text-purple-800 from-purple-50 via-purple-200 to-purple-50 border-purple-400
     }
 
     .badge-new-gradient {
-      @apply bg-gradient-to-tr dark:from-green-950 dark:via-green-800 dark:to-green-950 dark:border-green-600 dark:text-green-100
+      @apply bg-gradient-to-tr dark:from-green-950 dark:via-green-800 dark:to-green-950 dark:border-green-600 dark:text-green-200
       text-green-800 from-green-50 via-green-200 to-green-50 border-green-400
     }
   }
