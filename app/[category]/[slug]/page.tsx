@@ -187,9 +187,9 @@ export default async function MapPage({ params }: MapPageProps) {
  const PreviousOrNextMap = async ({ map }: { map: FeaturedMap }) => {
   const { isEnabled } = await draftMode()
   const featuredMaps = await getFeaturedMaps(isEnabled)
-  const mapIndex = featuredMaps.indexOf(map)
-  const prevMap = featuredMaps[mapIndex - 1]
-  const nextMap = featuredMaps[mapIndex + 1]
+  const mapIndex = featuredMaps.findIndex(m => m.slug === map.slug)
+  const prevMap = featuredMaps[mapIndex + 1]
+  const nextMap = featuredMaps[mapIndex - 1]
 
   return (
     <>
