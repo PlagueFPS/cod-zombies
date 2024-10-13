@@ -37,7 +37,7 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         } 
 
         return (
-          <div className="relative w-full">
+          <div className="relative w-full mt-8">
             <div className="absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl overflow-hidden">
                 <FeaturedImage {...imageProps} description={ asset.fields.description } quality={ 1 } className="scale-[1.5] rounded-lg" >
                   <Suspense fallback={<ImageLoader className="border" />}>
