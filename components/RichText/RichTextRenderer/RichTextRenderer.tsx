@@ -1,4 +1,5 @@
 import { Document, INLINES, BLOCKS, MARKS } from "@contentful/rich-text-types"
+import type { ImageProps } from "@/types/Image"
 import { Suspense } from "react"
 import ImageLoader from "@/components/Loaders/ImageLoader"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
@@ -27,26 +28,27 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       },
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
         const asset = node.data.target
-        const imageProps = {
+        const imageProps: ImageProps = {
           featuredImage: {
             url: asset.fields.file.url,
             width: asset.fields.file.details.image.width,
             height: asset.fields.file.details.image.height
           },
-          sizes: "(max-width: 828px) calc(100vw - 16px), 776px"
+          sizes: "(max-width: 828px) calc(100vw - 16px), 776px",
+          quality: 100
         } 
 
         return (
           <div className="relative w-full mt-8">
             <div className="absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl overflow-hidden">
-                <FeaturedImage {...imageProps} description={ asset.fields.description } quality={ 1 } className="scale-[1.5] rounded-lg" >
-                  <Suspense fallback={<ImageLoader className="border" />}>
-                    <ContentfulImage {...imageProps} className="rounded-lg" />
-                  </Suspense>
-                </FeaturedImage>
+              <FeaturedImage {...imageProps} description={ asset.fields.description } className="scale-[1.5] rounded-lg">
+                <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
+                  <ContentfulImage {...imageProps} className="scale-[1.5] rounded-lg" />
+                </Suspense>
+              </FeaturedImage>
             </div>
             <div className="relative z-20">
-                <FeaturedImage {...imageProps} quality={ 100 } description={ asset.fields.description } className="rounded-lg">
+                <FeaturedImage {...imageProps} description={ asset.fields.description } className="rounded-lg">
                   <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
                     <ContentfulImage {...imageProps} className="rounded-lg" />
                   </Suspense>

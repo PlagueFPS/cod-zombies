@@ -84,17 +84,15 @@ export default async function MapPage({ params }: MapPageProps) {
               <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl overflow-hidden'>
                   <FeaturedImage
                     featuredImage={ image } 
-                    sizes='(max-width: 1280px) 100vw, 1111.58px'
+                    sizes='(max-width: 1280px) 100vw, 1280px'
                     priority 
-                    quality={ 1 } 
                     className='xl:rounded-lg scale-[2]'
                   >
                     <Suspense fallback={<ImageLoader />}>
                       <ContentfulImage 
                         featuredImage={ image }
-                        sizes='(max-width: 1280px) 100vw, 1111.58px'
+                        sizes='(max-width: 1280px) 100vw, 1280px'
                         priority
-                        quality={ 1 }
                         className='xl:rounded-lg scale-[2]'
                       />
                     </Suspense>
@@ -209,15 +207,13 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
               <FeaturedImage 
                 featuredImage={ image }
-                sizes='(max-width: 1280px) 320px, 234px'
-                quality={ 1 }
+                sizes='32px'
                 className='object-cover scale-[2]'
               >
                 <Suspense fallback={<ImageLoader />}>
                   <ContentfulImage 
                     featuredImage={ image }
-                    sizes='(max-width: 1280px) 320px, 234px'
-                    quality={ 1 }
+                    sizes='32px'
                     className='object-cover scale-[2]'
                   />
                 </Suspense>
