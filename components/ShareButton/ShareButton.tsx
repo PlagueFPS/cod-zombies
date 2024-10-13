@@ -89,9 +89,10 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
               id='link'
               defaultValue={ url }
               readOnly
+              className='text-sm'
             />
           </div>
-          <Button type='submit' size="sm" className='px-3' onClick={ handleCopy }>
+          <Button type='button' variant="outline" size="sm" className='text-primary px-3' onClick={ handleCopy }>
             <span className='sr-only'>Copy</span>
             <Copy className='h-4 w-4' />
           </Button>
