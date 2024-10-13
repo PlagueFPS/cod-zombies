@@ -17,8 +17,8 @@ export default function FeaturedImage({ children, featuredImage, description, al
 
   return (
     <figure className="relative m-0 w-full h-auto">
-      { (!imageLoaded && !imageErrored) ? <ImageLoader className="border" /> : null }
-      <picture className={cn('flex justify-center items-center w-full h-auto')}>
+      <picture className='relative flex justify-center items-center w-full h-auto'>
+        { (!imageLoaded && !imageErrored) ? <ImageLoader className="border" /> : null }
         { !imageErrored ? 
           <Image 
             src={ featuredImageURL }
