@@ -69,7 +69,7 @@ export default function SearchInput({ maps, categories }: SearchInputProps) {
             <CommandGroup heading={ game.title } key={ game.id }>
               { maps.filter(map => map.category.slug === game.slug).map(map => (
                 <Link key={ `${game.id}_${map.id}` } href={ `/${map.category.slug}/${map.slug}` } onClick={ () => setOpen(false) }>
-                  <CommandItem onSelect={ () => onSelectHandler(map.category.slug, map.slug) }>
+                  <CommandItem onSelect={ () => onSelectHandler(map.category.slug, map.slug) } className="cursor-pointer">
                     <span className="blur-none">{ map.title }</span>
                   </CommandItem>
                 </Link>
