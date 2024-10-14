@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { customOnError, customOnSuccess } from "@/lib/safe-action"
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { submitFeedbackForm } from "@/data/actions"
@@ -35,6 +35,8 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { Loader2, MessageCircleHeart } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 interface FeedbackFormProps extends ButtonProps {
   className?: string
@@ -55,20 +57,52 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
       onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
     }
   })
+  const isDesktop = useMediaQuery(640)
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      const isInputElement = event.target instanceof HTMLInputElement 
+        || event.target instanceof HTMLTextAreaElement
+        || event.target instanceof HTMLSelectElement
+
+      if ((event.key === 'f' || event.key === 'F') && !event.ctrlKey && !event.altKey && !event.metaKey && !isInputElement) {
+        setOpen(true)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    }
+  }, [])
 
   return (
     <div className="flex justify-center items-center">
       <Dialog open={ open } onOpenChange={ setOpen }>
-        <DialogTrigger asChild>
-          <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)} {...props}>
-            <MessageCircleHeart className="size-5" />
-            Feedback
-          </Button>
-        </DialogTrigger>
-        <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) } {...props}>
-          <MessageCircleHeart className="size-6" />
-        </Button>
-        <DialogContent className="rounded-lg">
+        <TooltipProvider delayDuration={ 0 }>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)} {...props}>
+                  <MessageCircleHeart className="size-5" />
+                  Feedback
+                </Button>
+              </DialogTrigger>
+            </TooltipTrigger>
+            { !isDesktop && (
+              <TooltipTrigger asChild className="flex sm:hidden">
+                <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) } {...props}>
+                  <MessageCircleHeart className="size-6" />
+                </Button>
+              </TooltipTrigger>
+            )}
+            <TooltipContent className="px-3 py-1 rounded-sm">
+              Open Feedback <kbd className="ml-1 inline-flex border bg-popover rounded px-2 py-1 font-bold text-sm h-[22px] w-[22px] items-center justify-center">F</kbd>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <DialogContent className="rounded-lg" onCloseAutoFocus={ (event) => event.preventDefault() }>
           <DialogHeader>
             <DialogTitle>Feedback Form</DialogTitle>
             <DialogDescription>
