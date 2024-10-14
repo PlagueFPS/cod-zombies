@@ -3,14 +3,11 @@ import { FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSche
 import { createAction } from "@/lib/safe-action"
 import { subscribeEmailUseCase } from "@/usecases/newsletter"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
-import { headers } from "next/headers"
 import { rateLimitByIp } from "@/lib/ratelimit"
 
 export const subscribeToNewsletter = createAction
   .use(async ({ next }) => {
-    const headerList = await headers()
-    const ip = headerList.get('x-forwarded-for') ?? "127.0.0.1"
-    const { rateLimited, retryAfter } = await rateLimitByIp(ip, 1, 10)
+    const { rateLimited, retryAfter } = await rateLimitByIp(1, 10)
     return next({ ctx: { rateLimited, retryAfter }})
   })
   .metadata({ actionName: "subscribeToNewsletter" })
@@ -27,9 +24,7 @@ export const subscribeToNewsletter = createAction
 
 export const submitFeedbackForm = createAction
   .use(async ({ next }) => {
-    const headerList = await headers()
-    const ip = headerList.get('x-forwarded-for') ?? "127.0.0.1"
-    const { rateLimited, retryAfter } = await rateLimitByIp(ip, 5, 10)
+    const { rateLimited, retryAfter } = await rateLimitByIp(5, 10)
     return next({ ctx: { rateLimited, retryAfter }})
   })
   .metadata({ actionName: "submitFeedbackForm" })
