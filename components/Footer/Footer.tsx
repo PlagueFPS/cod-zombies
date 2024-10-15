@@ -1,8 +1,9 @@
 import { Suspense } from "react"
-import Newsletter from "../Newsletter/Newsletter"
-import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper"
 import Copyright from "./Copyright/Copyright"
 import CopyrightLoader from "../Loaders/CopyrightLoader"
+import Newsletter from "../Newsletter/Newsletter"
+import ContactForm from "../ContactForm/ContactForm"
+import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper"
 
 export default function Footer() {
   return (
@@ -15,7 +16,10 @@ export default function Footer() {
         </div>
         <Newsletter />
         <div className="flex justify-center md:justify-end space-x-4">
-          <ThemeToggleWrapper />
+          <div className="flex items-center gap-4">
+            <ContactForm />
+            <ThemeToggleWrapper />
+          </div>
         </div>
       </div>
     </footer>

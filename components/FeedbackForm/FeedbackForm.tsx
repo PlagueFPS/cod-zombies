@@ -35,8 +35,6 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { Loader2, MessageCircleHeart } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
-import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 interface FeedbackFormProps extends ButtonProps {
   className?: string
@@ -46,7 +44,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
   const [open, setOpen] = useState(false)
   const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
     formProps: {
-      mode: 'onChange',
+      mode: 'onBlur',
     },
     actionProps: {
       onSuccess: ({ data }) => {
@@ -57,7 +55,6 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
       onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
     }
   })
-  const isDesktop = useMediaQuery(640)
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -70,39 +67,29 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
       }
     }
 
-    window.addEventListener('keydown', handleKeyPress);
+    window.addEventListener('keydown', handleKeyPress)
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener('keydown', handleKeyPress)
     }
   }, [])
 
   return (
     <div className="flex justify-center items-center">
       <Dialog open={ open } onOpenChange={ setOpen }>
-        <TooltipProvider delayDuration={ 0 }>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className={cn("hidden sm:flex rounded-sm gap-2 text-muted-foreground", className)} {...props}>
-                  <MessageCircleHeart className="size-5" />
-                  Feedback
-                </Button>
-              </DialogTrigger>
-            </TooltipTrigger>
-            { !isDesktop && (
-              <TooltipTrigger asChild className="flex sm:hidden">
-                <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) } {...props}>
-                  <MessageCircleHeart className="size-6" />
-                </Button>
-              </TooltipTrigger>
-            )}
-            <TooltipContent className="px-3 py-1 rounded-sm">
-              Open Feedback <kbd className="ml-1 inline-flex border bg-popover rounded px-2 py-1 font-bold text-sm h-[22px] w-[22px] items-center justify-center">F</kbd>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <DialogContent className="rounded-lg" onCloseAutoFocus={ (event) => event.preventDefault() }>
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm" className={cn("hidden sm:flex gap-2 rounded-sm text-muted-foreground", className)} {...props}>
+            <MessageCircleHeart className="size-5" />
+            Feedback
+            <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100">
+              <span className="text-xs">F</span>
+            </kbd>
+          </Button>
+        </DialogTrigger>
+        <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) } {...props}>
+          <MessageCircleHeart className="size-6" />
+        </Button>
+        <DialogContent className="rounded-lg">
           <DialogHeader>
             <DialogTitle>Feedback Form</DialogTitle>
             <DialogDescription>
@@ -168,6 +155,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
                         <FormDescription className="">
                           The name we will use to address you via email.
                         </FormDescription>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -215,6 +203,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
                         <FormDescription>
                           Please provide constructive and actionable feedback to help us improve.
                         </FormDescription>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />

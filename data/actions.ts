@@ -1,9 +1,10 @@
 "use server"
-import { FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
+import { ContactFormSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { createAction } from "@/lib/safe-action"
+import { rateLimitByIp } from "@/lib/ratelimit"
 import { subscribeEmailUseCase } from "@/usecases/newsletter"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
-import { rateLimitByIp } from "@/lib/ratelimit"
+import { sendContactEmailUseCase } from "@/usecases/email"
 
 export const subscribeToNewsletter = createAction
   .use(async ({ next }) => {
@@ -36,5 +37,22 @@ export const submitFeedbackForm = createAction
     }
 
     const result = await submitFeedbackUseCase(parsedInput)
+    return result
+  })
+
+export const submitContactForm = createAction
+  .use(async ({ next }) => {
+    const { rateLimited, retryAfter } = await rateLimitByIp(5, 10)
+    return next({ ctx: { rateLimited, retryAfter }})
+  })
+  .metadata({ actionName: "submitContactForm" })
+  .schema(ContactFormSchema)
+  .action(async ({ ctx, parsedInput }) => {
+    if (ctx.rateLimited) return {
+      success: false,
+      message: `Too many requests! Please try again in ${ctx.retryAfter} ms.`
+    }
+    
+    const result = await sendContactEmailUseCase(parsedInput)
     return result
   })
