@@ -17,6 +17,7 @@ export const env = createEnv({
     KV_REST_API_URL: z.string().url(),
     KV_REST_API_TOKEN: z.string().min(1),
     KV_REST_API_READ_ONLY_TOKEN: z.string().min(1),
+    DISCORD_WEBHOOK_URL: z.string().url(),
   },
   client: {
     NEXT_PUBLIC_WEBSITE_URL: z.string().url(),
