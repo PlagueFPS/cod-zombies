@@ -1,7 +1,8 @@
 import { env } from "@/env"
 import { getYouTubeVideoID } from "@/utils/functions"
 import { YouTubeEmbed } from "@next/third-parties/google"
-import { ExternalLink } from "lucide-react"
+import ExternalLink from "@/components/ExternalLink/ExternalLink"
+import { ExternalLinkIcon } from "lucide-react"
 import Link from "next/link"
 
 interface RichLinkProps {
@@ -36,10 +37,10 @@ export default function RichLink({ node }: RichLinkProps) {
   }
   else {
     return (
-      <a href={ node.data.uri } target='_blank' rel='noopener noreferrer' className='flex items-center w-fit'>
+      <ExternalLink href={ node.data.uri } className='flex items-center w-fit'>
         { node.content[0].value }
-        <ExternalLink className='w-4 h-4 ml-1' />
-      </a>
+        <ExternalLinkIcon className='w-4 h-4 ml-1' />
+      </ExternalLink>
     )
   }
 }

@@ -4,15 +4,28 @@ import CopyrightLoader from "../Loaders/CopyrightLoader"
 import Newsletter from "../Newsletter/Newsletter"
 import ContactForm from "../ContactForm/ContactForm"
 import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper"
+import Discord from "@/SVGs/DiscordSVG"
+import { Separator } from "../ui/seperator"
+import Reddit from "@/SVGs/Reddit"
+import ExternalLink from "../ExternalLink/ExternalLink"
 
 export default function Footer() {
   return (
     <footer className='container relative text-sm flex flex-col items-center py-8 px-4 border-t m-auto' role="contentinfo" tabIndex={ -1 }>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-        <div className="text-center md:text-left">
+        <div className="flex flex-col items-start justify-center gap-4 text-center md:text-left">
           <Suspense fallback={<CopyrightLoader />}>
             <Copyright />
           </Suspense>
+          <div className="flex items-center gap-3 text-muted-foreground">
+            <ExternalLink href="https://discord.gg/KTaNschgEj">
+              <Discord className="size-5" />
+            </ExternalLink>
+            <Separator orientation="vertical" className="h-5" />
+            <ExternalLink href="https://www.reddit.com/r/CODZombies/">
+              <Reddit className="size-5" />
+            </ExternalLink>
+          </div>
         </div>
         <Newsletter />
         <div className="flex justify-center md:justify-end space-x-4">
