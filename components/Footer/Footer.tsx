@@ -18,7 +18,7 @@ export default function Footer() {
             <Copyright />
           </Suspense>
           <div className="flex items-center gap-3 text-muted-foreground">
-            <ExternalLink href="https://discord.gg/KTaNschgEj">
+            <ExternalLink href="https://discord.gg/callofduty">
               <Discord className="size-5" />
             </ExternalLink>
             <Separator orientation="vertical" className="h-5" />
