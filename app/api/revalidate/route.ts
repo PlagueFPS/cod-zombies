@@ -9,7 +9,6 @@ import { storeNewCategoryId, storeNewMapId } from "@/data/kv"
 import { authorizedRequest } from "@/utils/functions"
 import { getFeaturedMapById } from "@/data/featuredMaps"
 import { getGameCategoryById } from "@/data/gameCategory"
-import { sendDiscordMessageUseCase } from "@/usecases/discord"
 
 export async function PUT(req: NextRequest) {
   const headersList = await headers()
@@ -27,26 +26,19 @@ export async function PUT(req: NextRequest) {
 
   switch (payload.data.type) {
     case 'map': {
-      const { mapId, createdAt, updatedAt } = payload.data
-      const map = await getFeaturedMapById(IN_DEVELOPMENT, mapId)
-      if (!map) return Response.json({ revalidate: false, message: 'Map not found' }, { status: 404 })
+      const { mapId, createdAt, updatedAt } = payload.data 
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the mapId as new for 1 week 
         // revalidate only first page of maps to show the new map
         await storeNewMapId(mapId, createdAt)
         revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
-
-        // Once a map is published, post to discord via a webhook
-        const { error } = await sendDiscordMessageUseCase(map, createdAt)
-        return Response.json({ 
-          updated: true, 
-          message: `${mapId} stored as new`,
-          postedToDiscord: !error,
-          discordError: error 
-        }, { status: 201 })
+        return Response.json({ updated: true, message: `${mapId} stored as new` }, { status: 201 })
       }
-      else { // revalidate the specific map if it is an updated map        
+      else { // revalidate the specific map if it is an updated map
+        const map = await getFeaturedMapById(IN_DEVELOPMENT, mapId)
+        if (!map) return Response.json({ revalidate: false, message: 'Map not found' }, { status: 404 })
+        
         const path = `/${map.category.slug}/${map.slug}`
         revalidatePath(path)
         return Response.json({ updated: true, message: `${path} Revalidated` }, { status: 201 })
