@@ -4,7 +4,8 @@ import "./env"
 const nextConfig: NextConfig = {
   experimental: {
     ppr: true,
-    pprFallbacks: true
+    pprFallbacks: true,
+    after: true,
   },
   images: {
     formats:['image/avif','image/webp'],
