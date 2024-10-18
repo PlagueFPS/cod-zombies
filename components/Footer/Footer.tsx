@@ -13,7 +13,7 @@ export default function Footer() {
   return (
     <footer className='container relative text-sm flex flex-col items-center py-8 px-4 border-t m-auto' role="contentinfo" tabIndex={ -1 }>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-        <div className="flex flex-col items-start justify-center gap-4 text-center md:text-left">
+        <div className="flex md:flex-col flex-col-reverse order-last md:order-first items-center md:items-start justify-center gap-4 text-center md:text-left">
           <Suspense fallback={<CopyrightLoader />}>
             <Copyright />
           </Suspense>
@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
         </div>
         <Newsletter />
-        <div className="flex justify-center md:justify-end space-x-4">
+        <div className="flex justify-center md:justify-end space-x-4 order-first md:order-last">
           <div className="flex items-center gap-4">
             <ContactForm />
             <ThemeToggleWrapper />
