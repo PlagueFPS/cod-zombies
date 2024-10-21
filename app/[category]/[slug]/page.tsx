@@ -219,7 +219,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 </Suspense>
               </FeaturedImage>
           </div>
-          <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full overflow-hidden'>
+          <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
               <FeaturedImage
                 featuredImage={ image }
                 alt={ alt }
