@@ -2,10 +2,15 @@ import type { NextConfig } from "next";
 import "./env"
 
 const nextConfig: NextConfig = {
+  logging: {
+    fetches: {
+      hmrRefreshes: true,
+    }
+  },
   experimental: {
     ppr: true,
-    pprFallbacks: true,
     after: true,
+    serverComponentsHmrCache: true,
   },
   images: {
     formats:['image/avif','image/webp'],
