@@ -1,5 +1,5 @@
-import type { Asset, Entry, UnresolvedLink } from "contentful";
-import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
+import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeZombieItemsSkeleton } from "@/contentful/Types/contentful-types";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
@@ -10,7 +10,7 @@ export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, s
   if (asset && 'fields' in asset && asset.fields.file) return asset
 }
 
-export const resolveEntry = (entry: UnresolvedLink<"Entry"> | Entry<TypeGameCategorySkeleton, undefined, string>) => {
+export const resolveEntry = <T extends EntrySkeletonType>(entry: UnresolvedLink<"Entry"> | Entry<T, undefined, string>) => {
   if (entry && 'fields' in entry && entry.fields) return entry
 }
 
@@ -30,6 +30,32 @@ export const extractHeadings = (body: Document) => {
   })
 
   return headings
+}
+
+export const formatTableCellData = (cellContent: any[]) => {
+  let values: string[] = []
+  let listItems: string[] = []
+  let embeddedItems: Entry<TypeZombieItemsSkeleton, undefined, string>[] = []
+  const badgeItems = listItems.join(',').split(',').map(item => item.trim())
+
+  cellContent.forEach(content => {
+    switch(content.nodeType) {
+      default: // default in this case is "text"
+        if (!content.value.includes(',')) values.push(content.value)
+        else listItems.push(content.value)
+        break
+      case 'embedded-entry-inline':
+        embeddedItems.push(content.data.target)
+        break
+    }
+  })
+  
+  
+  return {
+    values,
+    badgeItems,
+    embeddedItems: embeddedItems.map(item => createItemTooltipDTO(item))
+  }
 }
 
 export const calculateSkip = (page: number, limit: number) => {
@@ -88,6 +114,18 @@ export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategor
       isNew: isNew
     }
   })
+}
+
+export const createItemTooltipDTO = (item: Entry<TypeZombieItemsSkeleton, undefined, string>) => {
+  const itemImage = resolveAsset(item.fields.image)
+  const itemCategory = resolveEntry(item.fields.category)
+
+  return {
+    title: item.fields.title,
+    image: createImageDTO(itemImage),
+    category: itemCategory,
+    description: item.fields.description
+  }
 }
 
 const createImageDTO = (image: Asset<undefined, string> | undefined) => {

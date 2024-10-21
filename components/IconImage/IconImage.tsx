@@ -1,24 +1,22 @@
 "use client"
 import type { ImageProps } from "@/types/Image"
 import { useImageState } from "@/hooks/useImageState"
-import placeholderImage from "@/public/article-img-placeholder.jpg"
-import ImageLoader from "../Loaders/ImageLoader"
-import Image from "next/image"
 import { cn } from "@/lib/utils"
+import ImageLoader from "../Loaders/ImageLoader"
+import PlaceholderImage from "@/public/article-img-placeholder.jpg"
+import Image from "next/image"
 
-interface FeaturedImageProps extends ImageProps {
+interface IconImageProps extends ImageProps {
   children: React.ReactNode
-  description?: string
 }
 
-export default function FeaturedImage({ children, featuredImage, description, alt = "", quality = 75, className, priority, sizes }: FeaturedImageProps) {
+export default function IconImage({ children, featuredImage, alt = "", quality = 75, className, priority, sizes }: IconImageProps) {
   const { imageRef, imageLoaded, imageErrored, setImageLoaded, setImageErrored } = useImageState()
-  const featuredImageURL = featuredImage ? `https:${featuredImage.url}` : placeholderImage
+  const featuredImageURL = featuredImage ? `https:${featuredImage.url}` : PlaceholderImage
 
   return (
-    <figure className="relative m-0 flex flex-col justify-center items-center w-full h-auto">
-      { (!imageLoaded && !imageErrored) ? <ImageLoader className="border" /> : null }
-      { !imageErrored ? 
+    <>
+      { !imageErrored ?
         <Image 
           src={ featuredImageURL }
           alt={ alt }
@@ -33,18 +31,11 @@ export default function FeaturedImage({ children, featuredImage, description, al
             'animate-fade-in opacity-100': imageLoaded
           })}
           priority={ priority }
-        /> : null}
+        /> : null }
       {/* children here represents a dynamic server component which serves a backup image
           based on the users browsers
       */}
       { imageErrored ? children : null }
-      { description ? (
-        <figcaption className="flex font-medium justify-center items-center mt-2 mb-4 w-auto italic px-4 xl:px-8">
-          <>
-          { description }
-          </>
-        </figcaption>
-      ) : null }
-    </figure>
+    </>
   )
 }

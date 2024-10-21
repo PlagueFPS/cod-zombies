@@ -2,7 +2,11 @@ import type { ImageProps } from "@/types/Image"
 import { headers } from "next/headers"
 import BackupImage from "./BackupImage"
 
-export default async function ContentfulImage({ ...props }: ImageProps) {
+interface ContentfulImageProps extends ImageProps {
+  loadingFallback?: React.JSX.Element
+}
+
+export default async function ContentfulImage({ loadingFallback, ...props }: ContentfulImageProps) {
   const headerList = await headers()
   const accept = headerList.get('Accept') || ''
   
@@ -10,6 +14,7 @@ export default async function ContentfulImage({ ...props }: ImageProps) {
     <BackupImage 
       {...props}
       acceptHeader={ accept }
+      loadingFallback={ loadingFallback }
     />
   )
 }

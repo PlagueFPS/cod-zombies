@@ -10,9 +10,10 @@ import { useEffect, useState } from "react"
 
 interface BackupImageProps extends ImageProps {
   acceptHeader: string
+  loadingFallback?: React.JSX.Element
 }
 
-export default function BackupImage({ featuredImage, acceptHeader, alt = "", quality = 75, className, priority, sizes }: BackupImageProps) {
+export default function BackupImage({ featuredImage, acceptHeader, loadingFallback, alt = "", quality = 75, className, priority, sizes }: BackupImageProps) {
   const { 
     imageRef, 
     fallbackRef, 
@@ -34,7 +35,7 @@ export default function BackupImage({ featuredImage, acceptHeader, alt = "", qua
 
   return (
     <>
-     { (!imageLoaded && !imageErrored) ? <ImageLoader className="border" /> : null }
+     { (!imageLoaded && !imageErrored) ? loadingFallback || <ImageLoader className="border" /> : null }
      { !fallbackLoaded && (
         <Image 
           loader={({ src, width, quality }) => contentfulImageLoader({ src, width, quality, avif, webp })}

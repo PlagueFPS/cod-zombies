@@ -14,6 +14,8 @@ import Heading4 from "../RichHeadings/Heading4/Heading4"
 import RichParagraph from "../RichParagraph/RichParagraph"
 import ContentfulImage from "@/components/ContentfulImage/ContentfulImage"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
+import ItemTooltip from "../RichEmbeds/ItemTooltip"
+import { createItemTooltipDTO } from "@/utils/contentful-utils"
 
 interface RichTextRendererProps {
   body: Document
@@ -25,6 +27,14 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
     renderNode: {
       [INLINES.HYPERLINK]: (node: any) => {
         return <RichLink node={ node } />
+      },
+      [INLINES.EMBEDDED_ENTRY]: (node: any) => {
+        return (
+          <ItemTooltip 
+            item={ createItemTooltipDTO(node.data.target) } 
+            className="font-bold items-baseline align-baseline gap-1.5 text-orange-600 dark:text-orange-200 decoration-dotted"
+          />
+        )
       },
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
         const asset = node.data.target

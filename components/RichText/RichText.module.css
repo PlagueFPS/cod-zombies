@@ -14,7 +14,7 @@
 }
 
 .body p {
-  @apply my-8 tracking-wide leading-6
+  @apply my-8 tracking-wide
 }
 
 .body b, .body strong {
