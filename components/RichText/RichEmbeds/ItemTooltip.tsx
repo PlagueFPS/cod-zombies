@@ -23,7 +23,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
   return (
     <TooltipProvider delayDuration={ 200 }>
       <Tooltip>
-        <TooltipTrigger className={cn('relative inline-flex items-center gap-2 underline underline-offset-4 hover:no-underline', className)}>
+        <TooltipTrigger className={cn('relative inline-flex items-center gap-2 underline decoration-dotted underline-offset-4 hover:no-underline', className)}>
           <IconImage featuredImage={ image } alt={ title } sizes='24px' className='absolute left-0 top-0 bottom-0 h-6 w-6'>
             <Suspense>
               <ContentfulImage featuredImage={ image } sizes='24px' className='h-5 w-5' />

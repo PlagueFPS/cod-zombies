@@ -26,7 +26,11 @@
 }
 
 .body blockquote p {
-  @apply my-0
+  @apply my-0 italic
+}
+
+.body blockquote button {
+  @apply italic
 }
 
 .body ul, .body ol {
