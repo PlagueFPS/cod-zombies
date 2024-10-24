@@ -4,7 +4,7 @@ import { nextCache } from "./cache"
 import { getEntries } from "@/contentful/contentful"
 import type { TypeFeaturedMapsSkeleton } from "@/contentful/Types/contentful-types"
 import type { MinifiedFeaturedMap } from "@/types/FeaturedMap"
-import { calculateSkip, createFeaturedMapsDTO } from "@/utils/contentful-utils"
+import { calculateSkip, createFeaturedMapsDTO, sortMaps } from "@/utils/contentful-utils"
 import { CACHE_KEYS, MAP_LIMIT } from "@/utils/constants"
 import { z } from "zod"
 
@@ -14,8 +14,9 @@ export const getFeaturedMaps = cache(async (draftMode: boolean) => {
     order: ['-sys.createdAt'],
     select: ["sys.id", "sys.updatedAt", "fields"]
   }, draftMode)
-  
-  return await createFeaturedMapsDTO(featuredMaps.items)
+  const sortedMaps = featuredMaps.items.sort(sortMaps)
+
+  return await createFeaturedMapsDTO(sortedMaps)
 })
 
 export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) => {
@@ -25,8 +26,9 @@ export const getFeaturedMapById = cache(async (draftMode: boolean, id: string) =
     'sys.id': id,
     select: ["sys.id", "sys.updatedAt", "fields"]
   }, draftMode)
+  const sortedMaps = featuredMaps.items.sort(sortMaps)
   
-  const featuredMapsDTO = await createFeaturedMapsDTO(featuredMaps.items)
+  const featuredMapsDTO = await createFeaturedMapsDTO(sortedMaps)
   return featuredMapsDTO.find(map => map.id === id)
 })
 
@@ -71,8 +73,9 @@ const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page:
     skip,
     limit: MAP_LIMIT
   }, draftMode)
+  const sortedMaps = featuredMaps.items.sort(sortMaps)
 
-  const featuredMapsDTO = await createFeaturedMapsDTO(featuredMaps.items)
+  const featuredMapsDTO = await createFeaturedMapsDTO(sortedMaps)
   const totalPages = Math.ceil(featuredMaps.total / MAP_LIMIT)
   const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
   const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
@@ -94,8 +97,9 @@ const INTERNAL_getFeaturedMapBySlug = cache(async (draftMode: boolean, slug: str
     'fields.slug': slug,
     select: ["sys.id", "sys.updatedAt", "fields"]
   }, draftMode)
+  const sortedMaps = featuredMaps.items.sort(sortMaps)
 
-  const featuredMapsDTO = await createFeaturedMapsDTO(featuredMaps.items)
+  const featuredMapsDTO = await createFeaturedMapsDTO(sortedMaps)
   return featuredMapsDTO.find(map => map.slug === slug)
 })
 
@@ -110,8 +114,9 @@ const INTERNAL_getFeaturedMapsByCategory = cache(async (draftMode: boolean, cate
     ],
     order: ["-sys.createdAt"]
   }, draftMode)
+  const sortedMaps = featuredMaps.items.sort(sortMaps)
 
-  const featuredMapsDTO: MinifiedFeaturedMap[] = await createFeaturedMapsDTO(featuredMaps.items)
+  const featuredMapsDTO: MinifiedFeaturedMap[] = await createFeaturedMapsDTO(sortedMaps)
   return {
     featuredMaps: featuredMapsDTO,
     totalMaps: featuredMaps.total

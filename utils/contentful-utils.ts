@@ -5,6 +5,7 @@ import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
 import { getAllNewCategoryIds, getAllNewMapIds } from "@/data/kv";
 import { managementClient } from "@/contentful/contentful-management";
+import { MAP_ORDER } from "./constants";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if (asset && 'fields' in asset && asset.fields.file) return asset
@@ -30,6 +31,12 @@ export const extractHeadings = (body: Document) => {
   })
 
   return headings
+}
+
+export const sortMaps = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, map2: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => {
+  let a = MAP_ORDER[map.fields.slug]
+  let b = MAP_ORDER[map2.fields.slug]
+  return a === b ? 0 : a > b ? -1 : 1
 }
 
 export const formatTableCellData = (cellContent: any[]) => {
