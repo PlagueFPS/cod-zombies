@@ -17,13 +17,16 @@ export const GLOBAL_OG_PROPS = {
 } satisfies Metadata
 export const CACHE_KEYS = {
   /** Cache key for all game categories */
-  GAME_CATEGORIES: 'game-categories',
+  GAME_CATEGORIES: { 
+    /** Cache key for all category data */
+    ALL: 'game-categories'
+  },
   FEATURED_MAPS: {
     /** Cache key for all pagination pages */
     ALL: "featured-maps",
     /** Cache key for a specific pagination page */
-    PAGINATION: (page: number) => `featured-maps-pagination-${page}`,
-  }
+    PAGINATION: (page: number) => `featured-maps-pagination-${page}`
+  },
 } as const
 export const MAP_ORDER: { [x: string]: number } = {
   "ascension": 0,

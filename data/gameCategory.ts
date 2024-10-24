@@ -26,7 +26,7 @@ const getCachedCategories = nextCache({
     const categories = await INTERNAL_getGameCategories(false)
     return categories
   },
-  revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES]
+  revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES.ALL]
 })
 
 const INTERNAL_getGameCategories = cache(async (draftMode: boolean) => {
