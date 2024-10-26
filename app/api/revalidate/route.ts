@@ -60,7 +60,7 @@ export async function PUT(req: NextRequest) {
         // revalidate all category data and the path to re-run generateMetadata
         revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
         revalidatePath(`/${category.slug}`)
-        return Response.json({ updated: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 201 })
+        return Response.json({ updated: true, message: `${CACHE_KEYS.GAME_CATEGORIES.ALL} Revalidated` }, { status: 201 })
       }
     }
     default: {
@@ -116,7 +116,7 @@ export async function PATCH(req: NextRequest) {
       revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
       // revalidate the category page to update the ISR cache
       revalidatePath(categoryPath)
-      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} and ${categoryPath} Revalidated` }, { status: 200 })
+      return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES.ALL} and ${categoryPath} Revalidated` }, { status: 200 })
     }
     default: {
       return Response.json({ removed: false, message: 'Invalid Request Type' }, { status: 400 })
