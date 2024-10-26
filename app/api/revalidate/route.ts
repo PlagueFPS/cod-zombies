@@ -50,7 +50,7 @@ export async function PUT(req: NextRequest) {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the categoryId as new and revalidate all category data
         await storeNewCategoryId(categoryId, createdAt)
-        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
         return Response.json({ updated: true, message: `${categoryId} stored as new` }, { status: 201 })
       }
       else {
@@ -58,7 +58,7 @@ export async function PUT(req: NextRequest) {
         if (!category) return Response.json({ updated: false, message: 'Category not found' }, { status: 404 })
 
         // revalidate all category data and the path to re-run generateMetadata
-        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
         revalidatePath(`/${category.slug}`)
         return Response.json({ updated: true, message: `${CACHE_KEYS.GAME_CATEGORIES} Revalidated` }, { status: 201 })
       }
@@ -113,7 +113,7 @@ export async function PATCH(req: NextRequest) {
       const categoryPath = `/${category.slug}`
 
       // revalidate the category data to update the Data Cache
-      revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+      revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
       // revalidate the category page to update the ISR cache
       revalidatePath(categoryPath)
       return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES} and ${categoryPath} Revalidated` }, { status: 200 })

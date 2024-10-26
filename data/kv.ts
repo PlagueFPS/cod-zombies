@@ -100,7 +100,7 @@ export const enforceNewCategoryStatus = async () => {
           continue
         }
         // Revalidate the category data to update the Data Cache
-        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES}`)
+        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
         // Revalidate the path to update the ISR cache
         revalidatePath(`/${category.slug}`)
       } else continue
