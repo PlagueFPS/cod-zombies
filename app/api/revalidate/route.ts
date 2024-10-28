@@ -41,6 +41,7 @@ export async function PUT(req: NextRequest) {
         
         const path = `/${map.category.slug}/${map.slug}`
         revalidatePath(path)
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
         return Response.json({ updated: true, message: `${path} Revalidated` }, { status: 201 })
       }
     }  

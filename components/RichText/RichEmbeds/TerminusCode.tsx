@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { TerminusCodeSchema } from "@/utils/validationSchemas"
 import { toast } from "sonner"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
@@ -52,15 +52,15 @@ export default function TerminusCode() {
             </div>
           ))}
         </div>
-        <div className="mt-4 text-center text-sm">
-          { values.x && values.y && values.z ? (
+        <div className="mt-4 text-center text-base">
+          { Object.values(values).every(Boolean) ? (
             <>
-              <span>Your code is:</span>
+              <span>Your Code:</span>
               <span className="ml-1 font-bold">
                 { solveEquations(values) }
               </span>
             </>
-            ) : "Your code is:" }
+            ) : "Enter your values" }
         </div>
       </CardContent>
     </Card>
