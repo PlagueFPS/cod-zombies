@@ -5,8 +5,9 @@ import { getEntries } from "@/contentful/contentful"
 import type { TypeFeaturedMapsSkeleton } from "@/contentful/Types/contentful-types"
 import type { MinifiedFeaturedMap } from "@/types/FeaturedMap"
 import { calculateSkip, createFeaturedMapsDTO, sortMaps } from "@/utils/contentful-utils"
-import { CACHE_KEYS, MAP_LIMIT } from "@/utils/constants"
+import { CACHE_KEYS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 import { z } from "zod"
+import { revalidateTag } from "next/cache"
 
 export const getFeaturedMaps = cache(async (draftMode: boolean) => {
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
@@ -45,6 +46,16 @@ export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number)
     return await INTERNAL_getPaginatedFeaturedMaps(draftMode, page)
   }
   else return await getCachedPaginatedFeaturedMaps({ page })
+}
+
+export const revalidatePagination = async (mapId: string) => {
+  const maps = await getFeaturedMaps(IN_DEVELOPMENT)
+  const mapIndex = maps.findIndex(map => map.id === mapId)
+  if (mapIndex === -1) return -1
+
+  const paginationPage = Math.floor(mapIndex / MAP_LIMIT) + 1
+  console.log(paginationPage)
+  // revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(paginationPage)}`)
 }
 
 const getCachedPaginatedFeaturedMaps = nextCache({

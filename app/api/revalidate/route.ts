@@ -7,7 +7,7 @@ import { isFirstTimePublish } from "@/utils/contentful-utils"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { storeNewCategoryId, storeNewMapId } from "@/data/kv"
 import { authorizedRequest } from "@/utils/functions"
-import { getFeaturedMapById } from "@/data/featuredMaps"
+import { getFeaturedMapById, revalidatePagination } from "@/data/featuredMaps"
 import { getGameCategoryById } from "@/data/gameCategory"
 
 export async function PUT(req: NextRequest) {
@@ -41,7 +41,9 @@ export async function PUT(req: NextRequest) {
         
         const path = `/${map.category.slug}/${map.slug}`
         revalidatePath(path)
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
+
+        // revalidate the paginated page the map currently lives on
+        await revalidatePagination(mapId)
         return Response.json({ updated: true, message: `${path} Revalidated` }, { status: 201 })
       }
     }  
