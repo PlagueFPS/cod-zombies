@@ -7,7 +7,8 @@ import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
-import NextTopLoader from "nextjs-toploader";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -57,10 +58,6 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <NextTopLoader 
-            showSpinner={ false }
-            color="#ea580c" // primary color in hex
-          />
           <Header />
           <main className="mt-10 mb-4 flex-grow" role="main" tabIndex={ -1 }>
             { children }
@@ -68,6 +65,8 @@ export default function RootLayout({ children }: LayoutProps) {
           <Footer />
           <Toaster richColors position="top-center" closeButton />
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
