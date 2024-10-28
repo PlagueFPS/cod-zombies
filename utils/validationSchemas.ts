@@ -46,6 +46,12 @@ export const ContentfulWebhookBodySchema = z.discriminatedUnion('type', [
   CategoryContentfulWebhookBodySchema.extend({ type: z.literal('category') }),
 ]);
 
+export const TerminusCodeSchema = z.object({
+  x: z.coerce.number().nonnegative().int().max(99),
+  y: z.coerce.number().nonnegative().int().max(99),
+  z: z.coerce.number().nonnegative().int().max(99),
+})
+
 const stringOrStringArray = z.union([z.string(), z.array(z.string())])
 
 const SearchParamsSchema = z.object({

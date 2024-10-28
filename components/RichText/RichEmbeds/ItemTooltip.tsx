@@ -29,7 +29,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
               <ContentfulImage featuredImage={ image } sizes='24px' className='h-5 w-5' />
             </Suspense>
           </IconImage>
-          <span className='ml-7'>
+          <span className='ml-7 mr-1'>
             { title }
           </span>
         </TooltipTrigger>

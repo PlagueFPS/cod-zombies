@@ -16,6 +16,7 @@ import ContentfulImage from "@/components/ContentfulImage/ContentfulImage"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import ItemTooltip from "../RichEmbeds/ItemTooltip"
 import { createItemTooltipDTO } from "@/utils/contentful-utils"
+import TerminusCode from "../RichEmbeds/TerminusCode"
 
 interface RichTextRendererProps {
   body: Document
@@ -83,6 +84,8 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         switch(slug) {
           case 'gorod-krovi':
             return <GKValve />
+          case 'terminus':
+            return <TerminusCode />
         }
       },
       [BLOCKS.QUOTE]: (node: any, children: any) => {
