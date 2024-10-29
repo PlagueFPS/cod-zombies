@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "db:migrate && next dev --turbo --hostname 0.0.0.0",
+    "dev": "next dev --turbo --hostname 0.0.0.0",
     "build": "next build",
-    "start": "db:migrate && next start",
+    "start": "next start",
     "lint": "next lint",
     "vercel": "vercel login",
     "link": "vercel link",
