@@ -4,7 +4,12 @@ import { cache } from "react"
 import { getEntries } from "@/contentful/contentful"
 import { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
 import { createGameCategoryDTO } from "@/utils/contentful-utils"
-import { CACHE_KEYS } from "@/utils/constants"
+import { CACHE_KEYS, IN_DEVELOPMENT, MAX_NEW_TIME } from "@/utils/constants"
+import { db } from "@/db/db"
+import { categories } from "@/db/schema"
+import { revalidateTag, revalidatePath } from "next/cache"
+import { submitFeedbackUseCase } from "@/usecases/feedback"
+import { eq } from "drizzle-orm"
 
 export const getGameCategories = async (draftMode: boolean) => {
   if (draftMode) {
@@ -19,6 +24,76 @@ export const getGameCategoryBySlug = async (draftMode: boolean, slug: string) =>
 
 export const getGameCategoryById = async (draftMode: boolean, id: string) => {
   return await INTERNAL_getGameCategoryById(draftMode, id)
+}
+
+export const storeNewCategoryId = cache(async (categoryId: string, createdAt: string) => {
+  await db.insert(categories).values({ categoryId, contentful_createdAt: createdAt })
+})
+
+export const getAllNewCategoryIds = cache(async () => {
+  console.log("ran get new category IDs")
+  const categoryIds = await db.select({ categoryId: categories.categoryId }).from(categories)
+  return categoryIds
+})
+
+export const enforceNewCategoryStatus = async () => {
+  try {
+    const newCategories = await db.select({ 
+      categoryId: categories.categoryId, 
+      contentful_createdAt: categories.contentful_createdAt 
+    }).from(categories)
+  
+    newCategories.forEach(async category => {
+      try {
+        if (!category.contentful_createdAt) return
+        if (typeof category.contentful_createdAt !== 'string') {
+          await db.delete(categories).where(eq(categories.categoryId, category.categoryId))
+          return
+        }
+    
+        const currentTime = Date.now()
+        const creationTime = new Date(category.contentful_createdAt).getTime()
+    
+        if (currentTime - creationTime > MAX_NEW_TIME) {
+          await db.delete(categories).where(eq(categories.categoryId, category.categoryId))
+          const gameCategory = await getGameCategoryById(IN_DEVELOPMENT, category.categoryId)
+          if (!gameCategory) {
+            // If the map is not found, skip revalidation
+            console.error(`Could not find map for ID: ${category.categoryId}`)
+            return
+          }
+    
+          const categoryPath = `/${gameCategory.slug}`
+          // Revalidate the category data
+          // This is to update the Data Cache
+          revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
+          // Revalidate the category page the map belongs too
+          // This is to update the ISR cache
+          revalidatePath(categoryPath)
+        } else return
+      }
+      catch(error) {
+        await submitFeedbackUseCase({
+          title: "Category Status Error",
+          name: "New Category Enforcement",
+          label: "issue",
+          feedback: `Error processing category id: ${category.categoryId}`
+        })
+        console.error(`Error processing category id: ${category.categoryId}`, error)
+        return
+      }
+    })
+  }
+  catch(error) {
+    await submitFeedbackUseCase({
+      title: "Category Status Error",
+      name: "New Category Enforcement",
+      label: "issue",
+      feedback: `Error processing categories ${error}`
+    })
+    console.error(`Error processing categories`, error)
+    return
+  }
 }
 
 const getCachedCategories = nextCache({

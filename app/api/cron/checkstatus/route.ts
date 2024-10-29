@@ -1,7 +1,8 @@
 import { headers } from "next/headers"
 import { authorizedRequest } from "@/utils/functions"
 import { env } from "@/env"
-import { enforceNewCategoryStatus, enforceNewMapStatus } from "@/data/kv"
+import { enforceNewMapStatus } from "@/data/featuredMaps"
+import { enforceNewCategoryStatus } from "@/data/gameCategory"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 
 export async function GET() {

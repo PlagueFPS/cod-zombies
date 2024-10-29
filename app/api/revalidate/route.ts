@@ -5,7 +5,8 @@ import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 import { isFirstTimePublish } from "@/utils/contentful-utils"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { storeNewCategoryId, storeNewMapId } from "@/data/kv"
+import { storeNewMapId } from "@/data/featuredMaps"
+import { storeNewCategoryId } from "@/data/gameCategory"
 import { authorizedRequest } from "@/utils/functions"
 import { getFeaturedMapById, revalidatePagination } from "@/data/featuredMaps"
 import { getGameCategoryById } from "@/data/gameCategory"
@@ -43,8 +44,8 @@ export async function PUT(req: NextRequest) {
         revalidatePath(path)
 
         // revalidate the paginated page the map currently lives on
-        await revalidatePagination(mapId)
-        return Response.json({ updated: true, message: `${path} Revalidated` }, { status: 201 })
+        const { paginationPage } = await revalidatePagination(mapId)
+        return Response.json({ updated: true, message: `${path} and ${paginationPage} Revalidated` }, { status: 201 })
       }
     }  
     case 'category': {
