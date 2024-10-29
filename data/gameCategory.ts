@@ -27,7 +27,7 @@ export const getGameCategoryById = async (draftMode: boolean, id: string) => {
 }
 
 export const storeNewCategoryId = cache(async (categoryId: string, createdAt: string) => {
-  await db.insert(categories).values({ categoryId, contentful_createdAt: createdAt })
+  await db.insert(categories).values({ categoryId, publishedAt: createdAt })
 })
 
 export const getAllNewCategoryIds = cache(async () => {
@@ -40,19 +40,19 @@ export const enforceNewCategoryStatus = async () => {
   try {
     const newCategories = await db.select({ 
       categoryId: categories.categoryId, 
-      contentful_createdAt: categories.contentful_createdAt 
+      publishedAt: categories.publishedAt 
     }).from(categories)
   
     newCategories.forEach(async category => {
       try {
-        if (!category.contentful_createdAt) return
-        if (typeof category.contentful_createdAt !== 'string') {
+        if (!category.publishedAt) return
+        if (typeof category.publishedAt !== 'string') {
           await db.delete(categories).where(eq(categories.categoryId, category.categoryId))
           return
         }
     
         const currentTime = Date.now()
-        const creationTime = new Date(category.contentful_createdAt).getTime()
+        const creationTime = new Date(category.publishedAt).getTime()
     
         if (currentTime - creationTime > MAX_NEW_TIME) {
           await db.delete(categories).where(eq(categories.categoryId, category.categoryId))

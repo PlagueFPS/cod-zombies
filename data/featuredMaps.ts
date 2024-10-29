@@ -65,7 +65,7 @@ export const revalidatePagination = async (mapId: string) => {
 
 export const storeNewMapId = cache(async (mapId: string, createdAt: string) => {
   console.log("ran store new map ID")
-  await db.insert(maps).values({ mapId, contentful_createdAt: createdAt })
+  await db.insert(maps).values({ mapId, publishedAt: createdAt })
 })
 
 export const getAllNewMapIds = cache(async () => {
@@ -75,20 +75,20 @@ export const getAllNewMapIds = cache(async () => {
 
 export const enforceNewMapStatus = async () => {
   try {
-   const newMaps = await db.select({ 
+   const newMaps = await db.select({
      mapId: maps.mapId, 
-     contentful_createdAt: maps.contentful_createdAt 
+     publishedAt: maps.publishedAt 
    }).from(maps)
  
    newMaps.forEach(async map => {
-     if (!map.contentful_createdAt) return
-     if (typeof map.contentful_createdAt !== 'string') {
+     if (!map.publishedAt) return
+     if (typeof map.publishedAt !== 'string') {
        await db.delete(maps).where(eq(maps.mapId, map.mapId))
        return
      }
  
      const currentTime = Date.now()
-     const creationTime = new Date(map.contentful_createdAt).getTime()
+     const creationTime = new Date(map.publishedAt).getTime()
  
      if (currentTime - creationTime > MAX_NEW_TIME) {
        await db.delete(maps).where(eq(maps.mapId, map.mapId))

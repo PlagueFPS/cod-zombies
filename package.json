@@ -4,13 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbo --hostname 0.0.0.0",
+    "dev": "db:migrate && next dev --turbo --hostname 0.0.0.0",
     "build": "next build",
-    "start": "next start",
+    "start": "db:migrate && next start",
     "lint": "next lint",
     "vercel": "vercel login",
     "link": "vercel link",
-    "pull": "vercel env pull"
+    "pull": "vercel env pull",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^15.22.1",
