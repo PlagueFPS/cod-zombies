@@ -3,7 +3,7 @@ import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeZombieItem
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
-import { getAllNewCategoryIds, getAllNewMapIds } from "@/data/kv";
+// import { getAllNewCategoryIds, getAllNewMapIds } from "@/data/kv";
 import { managementClient } from "@/contentful/contentful-management";
 import { MAP_ORDER } from "./constants";
 
@@ -77,14 +77,14 @@ export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
 
 export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleton, undefined, string>[]) => {
   const { draftIds, changedIds } = await getDraftsOrChanged("featuredMaps")
-  const newMapIds = await getAllNewMapIds()
+  // const newMapIds = await getAllNewMapIds()
 
   return featuredMaps.map(featuredMap => {
     const mapImage = resolveAsset(featuredMap.fields.image)
     const category = resolveEntry(featuredMap.fields.gameCategory)
     const isDraft = draftIds.has(featuredMap.sys.id)
     const isChanged = changedIds.has(featuredMap.sys.id)
-    const isNew = newMapIds.has(featuredMap.sys.id)
+    // const isNew = newMapIds.has(featuredMap.sys.id)
     
     return {
       id: featuredMap.sys.id,
@@ -97,20 +97,20 @@ export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMaps
       category: createMapCategoryDTO(category),
       isDraft: isDraft,
       isChanged: isChanged,
-      isNew: isNew
+      isNew: featuredMap.fields.slug === 'terminus' || featuredMap.fields.slug === 'liberty-falls' ? true : false
     }
   })
 }
 
 export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
   const { draftIds, changedIds } = await getDraftsOrChanged("gameCategory")
-  const newCategoryIds = await getAllNewCategoryIds()
+  // const newCategoryIds = await getAllNewCategoryIds()
 
   return gameCategorys.map(gameCategory => {
     const categoryImage = resolveAsset(gameCategory.fields.image)
     const isDraft = draftIds.has(gameCategory.sys.id)
     const isChanged = changedIds.has(gameCategory.sys.id)
-    const isNew = newCategoryIds.has(gameCategory.sys.id)
+    // const isNew = newCategoryIds.has(gameCategory.sys.id)
 
     return {
       ...gameCategory.fields,
@@ -118,7 +118,7 @@ export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategor
       image: createImageDTO(categoryImage),
       isDraft: isDraft,
       isChanged: isChanged,
-      isNew: isNew
+      isNew: gameCategory.fields.slug === 'black-ops-6' ? true : false
     }
   })
 }
