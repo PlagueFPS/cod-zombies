@@ -12,9 +12,7 @@ import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { eq } from "drizzle-orm"
 
 export const getGameCategories = async (draftMode: boolean) => {
-  if (draftMode) {
-    return INTERNAL_getGameCategories(true)
-  }
+  if (draftMode) return INTERNAL_getGameCategories(true)
   return await getCachedCategories()
 }
 
@@ -30,11 +28,10 @@ export const storeNewCategoryId = cache(async (categoryId: string, createdAt: st
   await db.insert(categories).values({ categoryId, publishedAt: createdAt })
 })
 
-export const getAllNewCategoryIds = cache(async () => {
-  console.log("ran get new category IDs")
-  const categoryIds = await db.select({ categoryId: categories.categoryId }).from(categories)
-  return categoryIds
-})
+export const getAllNewCategoryIds = async (draftMode: boolean) => {
+  if (draftMode) return await INTERNAL_getAllNewCategoryIds()
+  return await getCachedNewCategoryIds()
+}
 
 export const enforceNewCategoryStatus = async () => {
   try {
@@ -104,6 +101,14 @@ const getCachedCategories = nextCache({
   revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES.ALL]
 })
 
+const getCachedNewCategoryIds = nextCache({
+  handler: async () => {
+    return await INTERNAL_getAllNewCategoryIds()
+  },
+  revalidateTags: () => 
+    [`${CACHE_KEYS.GAME_CATEGORIES.ALL}`,`${CACHE_KEYS.GAME_CATEGORIES.IDs}`]
+})
+
 const INTERNAL_getGameCategories = cache(async (draftMode: boolean) => {
   const gameCategories = await getEntries<TypeGameCategorySkeleton>({
     content_type: 'gameCategory',
@@ -123,4 +128,9 @@ const INTERNAL_getGameCategoryBySlug = cache(async (draftMode: boolean, slug: st
   const categories = await INTERNAL_getGameCategories(draftMode)
   const categoryBySlug = categories.find(category => category.slug === slug)
   return categoryBySlug
+})
+
+const INTERNAL_getAllNewCategoryIds = cache(async () => {
+  const categoryIds = await db.select({ categoryId: categories.categoryId }).from(categories)
+  return categoryIds
 })

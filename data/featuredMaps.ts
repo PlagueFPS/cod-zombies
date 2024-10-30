@@ -46,10 +46,13 @@ export const getFeaturedMapBySlug = async (draftMode: boolean, slug: string) => 
 }
 
 export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number) => {
-  if (draftMode) {
-    return await INTERNAL_getPaginatedFeaturedMaps(draftMode, page)
-  }
-  else return await getCachedPaginatedFeaturedMaps({ page })
+  if (draftMode) return await INTERNAL_getPaginatedFeaturedMaps(draftMode, page)
+  return await getCachedPaginatedFeaturedMaps({ page })
+}
+
+export const getAllNewMapIDs = async (draftMode: boolean) => {
+  if (draftMode) return await INTERNAL_getAllNewMapIds()
+  return await getCachedNewMapIDs()
 }
 
 export const revalidatePagination = async (mapId: string) => {
@@ -58,19 +61,12 @@ export const revalidatePagination = async (mapId: string) => {
   if (mapIndex === -1) return { paginationPage: null }
 
   const paginationPage = Math.floor(mapIndex / MAP_LIMIT) + 1
-  console.log(`Revalidating page:`, paginationPage)
   revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(paginationPage)}`)
   return { paginationPage }
 }
 
 export const storeNewMapId = cache(async (mapId: string, createdAt: string) => {
-  console.log("ran store new map ID")
   await db.insert(maps).values({ mapId, publishedAt: createdAt })
-})
-
-export const getAllNewMapIds = cache(async () => {
-  const mapIDs = await db.select({ mapId: maps.mapId }).from(maps)
-  return mapIDs
 })
 
 export const enforceNewMapStatus = async () => {
@@ -138,6 +134,13 @@ const getCachedPaginatedFeaturedMaps = nextCache({
     ],
 })
 
+const getCachedNewMapIDs = nextCache({
+  handler: async () => {
+    return await INTERNAL_getAllNewMapIds()
+  },
+  revalidateTags: () => [`${CACHE_KEYS.FEATURED_MAPS.IDs}`]
+})
+
 const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page: number) => {
   const skip = calculateSkip(page, MAP_LIMIT)
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
@@ -198,4 +201,9 @@ const INTERNAL_getFeaturedMapsByCategory = cache(async (draftMode: boolean, cate
     featuredMaps: featuredMapsDTO,
     totalMaps: featuredMaps.total
   }
+})
+
+const INTERNAL_getAllNewMapIds = cache(async () => {
+  const mapIDs = await db.select({ mapId: maps.mapId }).from(maps)
+  return mapIDs
 })
