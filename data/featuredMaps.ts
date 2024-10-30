@@ -50,7 +50,7 @@ export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number)
   return await getCachedPaginatedFeaturedMaps({ page })
 }
 
-export const getAllNewMapIDs = async (draftMode: boolean) => {
+export const getAllNewMapIds = async (draftMode: boolean) => {
   if (draftMode) return await INTERNAL_getAllNewMapIds()
   return await getCachedNewMapIDs()
 }
