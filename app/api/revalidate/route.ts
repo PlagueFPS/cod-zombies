@@ -31,9 +31,10 @@ export async function PUT(req: NextRequest) {
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the mapId as new for 1 week 
-        // revalidate only first page of maps to show the new map
+        // revalidate all pagination pages to correctly update each page
+        // Since a new map is being added
         await storeNewMapId(mapId, createdAt)
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
+        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
         return Response.json({ updated: true, message: `${mapId} stored as new` }, { status: 201 })
       }
       else { // revalidate the specific map if it is an updated map

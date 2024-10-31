@@ -106,7 +106,7 @@ const getCachedNewCategoryIds = nextCache({
     return await INTERNAL_getAllNewCategoryIds()
   },
   revalidateTags: () => 
-    [`${CACHE_KEYS.GAME_CATEGORIES.ALL}`,`${CACHE_KEYS.GAME_CATEGORIES.IDs}`]
+    [`${CACHE_KEYS.GAME_CATEGORIES.IDs}`]
 })
 
 const INTERNAL_getGameCategories = cache(async (draftMode: boolean) => {
