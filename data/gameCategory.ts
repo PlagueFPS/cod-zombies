@@ -28,9 +28,8 @@ export const storeNewCategoryId = cache(async (categoryId: string, createdAt: st
   await db.insert(categories).values({ categoryId, publishedAt: createdAt })
 })
 
-export const getAllNewCategoryIds = async (draftMode: boolean) => {
-  if (draftMode) return await INTERNAL_getAllNewCategoryIds()
-  return await getCachedNewCategoryIds()
+export const getAllNewCategoryIds = async () => {
+  return await INTERNAL_getAllNewCategoryIds()
 }
 
 export const enforceNewCategoryStatus = async () => {
@@ -99,14 +98,6 @@ const getCachedCategories = nextCache({
     return categories
   },
   revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES.ALL]
-})
-
-const getCachedNewCategoryIds = nextCache({
-  handler: async () => {
-    return await INTERNAL_getAllNewCategoryIds()
-  },
-  revalidateTags: () => 
-    [`${CACHE_KEYS.GAME_CATEGORIES.IDs}`]
 })
 
 const INTERNAL_getGameCategories = cache(async (draftMode: boolean) => {

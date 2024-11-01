@@ -19,17 +19,13 @@ export const CACHE_KEYS = {
   /** Cache key for all game categories */
   GAME_CATEGORIES: { 
     /** Cache key for all category data */
-    ALL: 'game-categories',
-    /** Cache key for new category IDs */
-    IDs: 'game-categories-ids'
+    ALL: 'game-categories'
   },
   FEATURED_MAPS: {
     /** Cache key for all pagination pages */
     ALL: "featured-maps",
     /** Cache key for a specific pagination page */
     PAGINATION: (page: number) => `featured-maps-pagination-${page}`,
-    /** Cache key for new map IDs */
-    IDs: "featured-maps-ids"
   },
 } as const
 export const MAP_ORDER: { [x: string]: number } = {

@@ -50,9 +50,8 @@ export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number)
   return await getCachedPaginatedFeaturedMaps({ page })
 }
 
-export const getAllNewMapIds = async (draftMode: boolean) => {
-  if (draftMode) return await INTERNAL_getAllNewMapIds()
-  return await getCachedNewMapIDs()
+export const getAllNewMapIds = async () => {
+  return await INTERNAL_getAllNewMapIds()
 }
 
 export const revalidatePagination = async (mapId: string) => {
@@ -132,13 +131,6 @@ const getCachedPaginatedFeaturedMaps = nextCache({
       CACHE_KEYS.FEATURED_MAPS.ALL, 
       CACHE_KEYS.FEATURED_MAPS.PAGINATION(page)
     ],
-})
-
-const getCachedNewMapIDs = nextCache({
-  handler: async () => {
-    return await INTERNAL_getAllNewMapIds()
-  },
-  revalidateTags: () => [`${CACHE_KEYS.FEATURED_MAPS.IDs}`]
 })
 
 const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page: number) => {

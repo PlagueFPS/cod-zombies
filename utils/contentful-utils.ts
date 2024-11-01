@@ -6,7 +6,7 @@ import { slugify } from "./functions";
 import { getAllNewMapIds } from "@/data/featuredMaps";
 import { getAllNewCategoryIds } from "@/data/gameCategory";
 import { managementClient } from "@/contentful/contentful-management";
-import { IN_DEVELOPMENT, MAP_ORDER } from "./constants";
+import { MAP_ORDER } from "./constants";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if (asset && 'fields' in asset && asset.fields.file) return asset
@@ -77,8 +77,10 @@ export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
 }
 
 export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleton, undefined, string>[]) => {
-  const { draftIds, changedIds } = await getDraftsOrChanged("featuredMaps")
-  const newMapIds = await getAllNewMapIds(IN_DEVELOPMENT)
+  const [{ draftIds, changedIds }, newMapIds] = await Promise.all([
+    getDraftsOrChanged("featuredMaps"), 
+    getAllNewMapIds()
+  ])
 
   return featuredMaps.map(featuredMap => {
     const mapImage = resolveAsset(featuredMap.fields.image)
@@ -104,8 +106,10 @@ export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMaps
 }
 
 export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
-  const { draftIds, changedIds } = await getDraftsOrChanged("gameCategory")
-  const newCategoryIds = await getAllNewCategoryIds(IN_DEVELOPMENT)
+  const [{ draftIds, changedIds }, newCategoryIds] = await Promise.all([
+    getDraftsOrChanged("gameCategory"), 
+    getAllNewCategoryIds()
+  ])
 
   return gameCategorys.map(gameCategory => {
     const categoryImage = resolveAsset(gameCategory.fields.image)
