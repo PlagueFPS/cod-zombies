@@ -44,12 +44,13 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
   const map = await getFeaturedMapBySlug(isEnabled, slug)
   if (!map) notFound()
   const { title, description, image } = map
+  const seoTitle = `${title} Main Quest`
   const metadata: Metadata = {
-    title,
+    title: seoTitle,
     description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
-      title,
+      title: seoTitle,
       description,
       url: `/${category}/${slug}`,
       images: {
@@ -59,7 +60,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       }
     },
     twitter: {
-      title,
+      title: seoTitle,
       description,
       card: 'summary_large_image'
     }

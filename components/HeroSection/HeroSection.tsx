@@ -17,7 +17,7 @@ export default function HeroSection({ text }: HeroSectionProps) {
         </span>
       </h1>
       <p className="text-base md:text-lg">
-        Explore our comprehensive guides to the most challenging and rewarding main quests in { text }
+        Explore our comprehensive guides to the most challenging and rewarding Main Quests and Easter Eggs in { text }
       </p>
     </section>
   )
