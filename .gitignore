@@ -37,5 +37,6 @@ next-env.d.ts
 
 .vercel
 newassets
+oldassets
 upload-assets.ts
 db/migrations/meta
