@@ -78,8 +78,15 @@ export const enforceNewMapStatus = async () => {
    newMaps.forEach(async map => {
      if (!map.publishedAt) return
      if (typeof map.publishedAt !== 'string') {
-       await db.delete(maps).where(eq(maps.mapId, map.mapId))
-       return
+      await db.delete(maps).where(eq(maps.mapId, map.mapId))
+      console.log(`Stored Map publishedAt was not a string. Check storing logic`, map.publishedAt)
+      await submitFeedbackUseCase({
+        title: "Map Status Error",
+        name: "New Map Enforcement",
+        label: "issue",
+        feedback: `Stored Map publishedAt was not a string. Check storing logic. ID: ${map.mapId}`
+      })
+      return
      }
  
      const currentTime = Date.now()
@@ -91,6 +98,12 @@ export const enforceNewMapStatus = async () => {
        if (!featuredMap) {
          // If the map is not found, skip revalidation
          console.error(`Could not find map for ID: ${map.mapId}`)
+         await submitFeedbackUseCase({
+          title: "Map Status Error",
+          name: "New Map Enforcement",
+          label: "issue",
+          feedback: `Could not find map for ID: ${map.mapId}`
+        })
          return
        }
  

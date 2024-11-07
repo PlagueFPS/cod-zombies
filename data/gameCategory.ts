@@ -44,6 +44,13 @@ export const enforceNewCategoryStatus = async () => {
         if (!category.publishedAt) return
         if (typeof category.publishedAt !== 'string') {
           await db.delete(categories).where(eq(categories.categoryId, category.categoryId))
+          console.log(`Stored Category publishedAt was not a string. Check storing logic`, category.publishedAt)
+          await submitFeedbackUseCase({
+            title: "Category Status Error",
+            name: "New Category Enforcement",
+            label: "issue",
+            feedback: `Stored Category publishedAt was not a string. Check storing logic. ID: ${category.categoryId}`
+          })
           return
         }
     
@@ -56,6 +63,12 @@ export const enforceNewCategoryStatus = async () => {
           if (!gameCategory) {
             // If the map is not found, skip revalidation
             console.error(`Could not find map for ID: ${category.categoryId}`)
+            await submitFeedbackUseCase({
+              title: "Category Status Error",
+              name: "New Category Enforcement",
+              label: "issue",
+              feedback: `Could not find map for ID: ${category.categoryId}`
+            })
             return
           }
     
