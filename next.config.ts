@@ -17,7 +17,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.ctfassets.net',
+        hostname: `images.ctfassets.net`,
+        pathname: `/${process.env.CONTENTFUL_SPACE_ID}/**`,
       }
     ],
     minimumCacheTTL: 31536000, // 1 year in seconds
