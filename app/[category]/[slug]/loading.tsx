@@ -51,7 +51,7 @@ export default function MapPageLoader() {
           <div className="hidden xl:block sticky top-4 ml-4 flex-shrink-0 w-[340px] h-fit border rounded-lg px-6">
             <div className="flex flex-col gap-4 border-b pb-3">
               <div className="font-bold mx-auto mt-4">On this page</div>
-              <div className="flex flex-col gap-3 max-h-[70vh]">
+              <div className="flex flex-col gap-3 h-[70vh]">
                 { Array.from({ length: 16 }, (_, i) => (
                   <Skeleton key={ `table-of-contents-item-${i}` } className="w-3/4 h-5" />
                 ))}
