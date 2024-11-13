@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans"
+import { Geist } from 'next/font/google'
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { env } from "@/env";
 import { GLOBAL_OG_PROPS, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
@@ -48,10 +48,14 @@ export const viewport: Viewport = {
   ]
 }
 
+const geist = Geist({
+  subsets: ['latin'],
+})
+
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className={ `${GeistSans.className} flex flex-col min-h-dvh` }>
+      <body className={ `${geist.className} flex flex-col min-h-dvh` }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
