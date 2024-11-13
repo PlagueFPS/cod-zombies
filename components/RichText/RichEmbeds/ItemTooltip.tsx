@@ -33,7 +33,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
             { title }
           </span>
         </TooltipTrigger>
-        <TooltipContent className='max-w-[80ch] text-orange-900 dark:text-orange-200 bg-background border-orange-600'>
+        <TooltipContent className='max-w-[80ch] bg-[hsl(240,10%,6%)] border-orange-200/30 text-orange-200'>
           { description }
         </TooltipContent>
       </Tooltip>
