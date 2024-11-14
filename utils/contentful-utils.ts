@@ -3,9 +3,8 @@ import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeZombieItem
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
-import { getAllNewMapIds } from "@/data/featuredMaps";
+import { getAllNewMapIds, getDraftsOrChanged } from "@/data/featuredMaps";
 import { getAllNewCategoryIds } from "@/data/gameCategory";
-import { managementClient } from "@/contentful/contentful-management";
 import { MAP_ORDER } from "./constants";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
@@ -153,29 +152,5 @@ const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, undefine
   return {
     title: category.fields.title,
     slug: category.fields.slug
-  }
-}
-
-const getDraftsOrChanged = async (contentType: "featuredMaps" | "gameCategory") => {
-  const featuredMaps = await managementClient.entry.getMany({
-    query: {
-      content_type: contentType
-    }
-  })
-  
-  const draftIds = new Set<string>()
-  const changedIds = new Set<string>()
-
-  featuredMaps.items.forEach(map => {
-    if (!map.sys.publishedVersion) {
-      draftIds.add(map.sys.id)
-    } else if (!!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2) {
-      changedIds.add(map.sys.id)
-    }
-  })
-
-  return {
-    draftIds,
-    changedIds
   }
 }

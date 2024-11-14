@@ -12,6 +12,7 @@ import { maps } from "@/db/schema"
 import { revalidateTag, revalidatePath } from "next/cache"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { eq } from "drizzle-orm"
+import { managementClient } from "@/contentful/contentful-management"
 
 export const getFeaturedMaps = cache(async (draftMode: boolean) => {
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
@@ -53,6 +54,30 @@ export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number)
 export const getAllNewMapIds = async () => {
   return await INTERNAL_getAllNewMapIds()
 }
+
+export const getDraftsOrChanged = cache(async (contentType: "featuredMaps" | "gameCategory") => {
+  const featuredMaps = await managementClient.entry.getMany({
+    query: {
+      content_type: contentType
+    }
+  })
+  
+  const draftIds = new Set<string>()
+  const changedIds = new Set<string>()
+
+  featuredMaps.items.forEach(map => {
+    if (!map.sys.publishedVersion) {
+      draftIds.add(map.sys.id)
+    } else if (!!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2) {
+      changedIds.add(map.sys.id)
+    }
+  })
+
+  return {
+    draftIds,
+    changedIds
+  }
+})
 
 export const revalidatePagination = async (mapId: string) => {
   const maps = await getFeaturedMaps(IN_DEVELOPMENT)
