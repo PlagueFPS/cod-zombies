@@ -52,7 +52,7 @@ export const getPaginatedFeaturedMaps = async (draftMode: boolean, page: number)
 }
 
 export const getAllNewMapIds = async () => {
-  return await INTERNAL_getAllNewMapIds()
+  return await getCachedAllNewMapIds()
 }
 
 export const getDraftsOrChanged = cache(async (contentType: "featuredMaps" | "gameCategory") => {
@@ -134,9 +134,12 @@ export const enforceNewMapStatus = async () => {
  
        const categoryPath = `/${featuredMap.category.slug}`
        const mapPath = `/${categoryPath}/${featuredMap.slug}`
-       // Revalidate the first page of pagination since it was new
+       // Revalidate the first page of pagination & Ids since it was new
        // This is to update the Data Cache
-       expireTag(CACHE_KEYS.FEATURED_MAPS.PAGINATION(1))
+       expireTag(
+        CACHE_KEYS.FEATURED_MAPS.PAGINATION(1),
+        CACHE_KEYS.FEATURED_MAPS.IDS
+      )
        // Revalidate the category page the map belongs too
        // This is to update the ISR cache
        expirePath(categoryPath)
@@ -169,6 +172,16 @@ const getCachedPaginatedFeaturedMaps = nextCache({
       CACHE_KEYS.FEATURED_MAPS.ALL, 
       CACHE_KEYS.FEATURED_MAPS.PAGINATION(page)
     ],
+})
+
+const getCachedAllNewMapIds = nextCache({
+  handler: async () => {
+    return await INTERNAL_getAllNewMapIds()
+  },
+  revalidateTags: () => [
+    CACHE_KEYS.FEATURED_MAPS.ALL, 
+    CACHE_KEYS.FEATURED_MAPS.IDS
+  ]
 })
 
 const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page: number) => {

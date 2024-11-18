@@ -29,7 +29,7 @@ export const storeNewCategoryId = cache(async (categoryId: string, createdAt: st
 })
 
 export const getAllNewCategoryIds = async () => {
-  return await INTERNAL_getAllNewCategoryIds()
+  return await getCachedAllNewCategoryIds()
 }
 
 export const enforceNewCategoryStatus = async () => {
@@ -111,6 +111,16 @@ const getCachedCategories = nextCache({
     return categories
   },
   revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES.ALL]
+})
+
+const getCachedAllNewCategoryIds = nextCache({
+  handler: async () => {
+    return await INTERNAL_getAllNewCategoryIds()
+  },
+  revalidateTags: () => [
+    CACHE_KEYS.GAME_CATEGORIES.ALL, 
+    CACHE_KEYS.GAME_CATEGORIES.IDS
+  ]
 })
 
 const INTERNAL_getGameCategories = cache(async (draftMode: boolean) => {
