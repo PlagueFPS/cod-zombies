@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { expirePath, expireTag } from "next/cache"
 import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 import { isFirstTimePublish } from "@/utils/contentful-utils"
@@ -14,12 +14,13 @@ import { getGameCategoryById } from "@/data/gameCategory"
 export async function PUT(req: NextRequest) {
   const headersList = await headers()
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
-  const webhookBody = await req.json()
+  const webhookBodyPromise = req.json()
 
   if (!authorizedRequest(secret, env.REVALIDATE_SECRET)) {
     return Response.json({ updated: false, message: 'Unauthorized Request' }, { status: 401 })
   }
 
+  const webhookBody = await webhookBodyPromise
   const payload = ContentfulWebhookBodySchema.safeParse(webhookBody)
   if (!payload.success) {
     return Response.json({ updated: false, message: 'Invalid Request Body', errors: payload.error.flatten().fieldErrors }, { status: 400 })
@@ -34,7 +35,7 @@ export async function PUT(req: NextRequest) {
         // revalidate all pagination pages to correctly update each page
         // Since a new map is being added
         await storeNewMapId(mapId, createdAt)
-        revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
+        expireTag(CACHE_KEYS.FEATURED_MAPS.ALL)
         return Response.json({ updated: true, message: `${mapId} stored as new` }, { status: 201 })
       }
       else { // revalidate the specific map if it is an updated map
@@ -42,7 +43,7 @@ export async function PUT(req: NextRequest) {
         if (!map) return Response.json({ revalidate: false, message: 'Map not found' }, { status: 404 })
         
         const path = `/${map.category.slug}/${map.slug}`
-        revalidatePath(path)
+        expirePath(path)
 
         // revalidate the paginated page the map currently lives on
         const { paginationPage } = await revalidatePagination(mapId)
@@ -55,7 +56,7 @@ export async function PUT(req: NextRequest) {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the categoryId as new and revalidate all category data
         await storeNewCategoryId(categoryId, createdAt)
-        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
+        expireTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
         return Response.json({ updated: true, message: `${categoryId} stored as new` }, { status: 201 })
       }
       else {
@@ -63,8 +64,8 @@ export async function PUT(req: NextRequest) {
         if (!category) return Response.json({ updated: false, message: 'Category not found' }, { status: 404 })
 
         // revalidate all category data and the path to re-run generateMetadata
-        revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
-        revalidatePath(`/${category.slug}`)
+        expireTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+        expirePath(`/${category.slug}`)
         return Response.json({ updated: true, message: `${CACHE_KEYS.GAME_CATEGORIES.ALL} Revalidated` }, { status: 201 })
       }
     }
@@ -78,12 +79,13 @@ export async function PATCH(req: NextRequest) {
   // This endpoint is for removing unpublished maps & categories via revalidation from the frontend
   const headersList = await headers()
   const secret = headersList.get('X-Contentful-Revalidate-Secret')
-  const webhookBody = await req.json()
+  const webhookBodyPromise = req.json()
  
   if (!authorizedRequest(secret, env.REVALIDATE_SECRET)) {
     return Response.json({ removed: false, message: 'Unauthorized Request' }, { status: 401 })
   }
   
+  const webhookBody = await webhookBodyPromise
   const payload = ContentfulWebhookBodySchema.safeParse(webhookBody)
   if (!payload.success) {
     return Response.json({ removed: false, message: 'Invalid Request Body', errors: payload.error.flatten().fieldErrors }, { status: 400 })
@@ -100,10 +102,10 @@ export async function PATCH(req: NextRequest) {
       const categoryPath = `/${map.category.slug}`
 
       // revalidate the map data to update the Data Cache
-      revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.ALL}`)
+      expireTag(CACHE_KEYS.FEATURED_MAPS.ALL)
       // revalidate the map and category page to update the ISR cache
-      revalidatePath(mapPath)
-      revalidatePath(categoryPath)
+      expirePath(mapPath)
+      expirePath(categoryPath)
       return Response.json({ 
         removed: true, 
         message: `${CACHE_KEYS.FEATURED_MAPS.ALL}, ${categoryPath}, and ${mapPath} Revalidated` 
@@ -118,9 +120,9 @@ export async function PATCH(req: NextRequest) {
       const categoryPath = `/${category.slug}`
 
       // revalidate the category data to update the Data Cache
-      revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
+      expireTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
       // revalidate the category page to update the ISR cache
-      revalidatePath(categoryPath)
+      expirePath(categoryPath)
       return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES.ALL} and ${categoryPath} Revalidated` }, { status: 200 })
     }
     default: {

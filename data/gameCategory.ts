@@ -7,7 +7,7 @@ import { createGameCategoryDTO } from "@/utils/contentful-utils"
 import { CACHE_KEYS, IN_DEVELOPMENT, MAX_NEW_TIME } from "@/utils/constants"
 import { db } from "@/db/db"
 import { categories } from "@/db/schema"
-import { revalidateTag, revalidatePath } from "next/cache"
+import { expirePath, expireTag } from "next/cache"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { eq } from "drizzle-orm"
 
@@ -75,10 +75,10 @@ export const enforceNewCategoryStatus = async () => {
           const categoryPath = `/${gameCategory.slug}`
           // Revalidate the category data
           // This is to update the Data Cache
-          revalidateTag(`${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
+          expireTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
           // Revalidate the category page the map belongs too
           // This is to update the ISR cache
-          revalidatePath(categoryPath)
+          expirePath(categoryPath)
         } else return
       }
       catch(error) {

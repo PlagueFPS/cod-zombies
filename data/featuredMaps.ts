@@ -9,7 +9,7 @@ import { CACHE_KEYS, IN_DEVELOPMENT, MAP_LIMIT, MAX_NEW_TIME } from "@/utils/con
 import { z } from "zod"
 import { db } from "@/db/db"
 import { maps } from "@/db/schema"
-import { revalidateTag, revalidatePath } from "next/cache"
+import { expirePath, expireTag } from "next/cache"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { eq } from "drizzle-orm"
 import { managementClient } from "@/contentful/contentful-management"
@@ -85,7 +85,7 @@ export const revalidatePagination = async (mapId: string) => {
   if (mapIndex === -1) return { paginationPage: null }
 
   const paginationPage = Math.floor(mapIndex / MAP_LIMIT) + 1
-  revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(paginationPage)}`)
+  expireTag(CACHE_KEYS.FEATURED_MAPS.PAGINATION(paginationPage))
   return { paginationPage }
 }
 
@@ -136,13 +136,13 @@ export const enforceNewMapStatus = async () => {
        const mapPath = `/${categoryPath}/${featuredMap.slug}`
        // Revalidate the first page of pagination since it was new
        // This is to update the Data Cache
-       revalidateTag(`${CACHE_KEYS.FEATURED_MAPS.PAGINATION(1)}`)
+       expireTag(CACHE_KEYS.FEATURED_MAPS.PAGINATION(1))
        // Revalidate the category page the map belongs too
        // This is to update the ISR cache
-       revalidatePath(categoryPath)
+       expirePath(categoryPath)
        // Revalidate the map slug page
        // This is to update the ISR cache
-       revalidatePath(mapPath)
+       expirePath(mapPath)
      } else return
    })
   } catch(error) {
