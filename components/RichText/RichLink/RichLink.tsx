@@ -11,6 +11,7 @@ interface RichLinkProps {
 
 const youtube_url = 'https://youtu.be/'
 const dev_url = 'http://localhost:3000'
+const alt_dev_url = 'https://localhost:3000'
 
 export default function RichLink({ node }: RichLinkProps) {
   if (node.data.uri.startsWith(youtube_url)) {
@@ -28,9 +29,9 @@ export default function RichLink({ node }: RichLinkProps) {
       </Link>
     )
   }
-  else if (node.data.uri.startsWith(dev_url)) {
+  else if (node.data.uri.startsWith(dev_url) || node.data.uri.startsWith(alt_dev_url)) {
     return (
-      <Link href={ node.data.uri.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL) }>
+      <Link href={ node.data.uri.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL).replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) }>
         { node.content[0].value }
       </Link>
     )

@@ -39,4 +39,4 @@ next-env.d.ts
 newassets
 oldassets
 upload-assets.ts
-db/migrations/meta
+db/migrations
