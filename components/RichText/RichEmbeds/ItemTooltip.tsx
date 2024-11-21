@@ -6,7 +6,7 @@ import ContentfulImage from '@/components/ContentfulImage/ContentfulImage'
 import { cn } from '@/lib/utils'
 
 interface ItemTooltipProps {
-  item: ReturnType<typeof createItemTooltipDTO>
+  item: Awaited<ReturnType<typeof createItemTooltipDTO>>
   className?: string
 }
 
@@ -44,7 +44,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
   )
 }
 
-const ItemTooltipContent = ({ item }: { item: ReturnType<typeof createItemTooltipDTO> }) => {
+const ItemTooltipContent = ({ item }: { item: Awaited<ReturnType<typeof createItemTooltipDTO>> }) => {
   const { title, image, description, rarity, type } = item
 
   return (

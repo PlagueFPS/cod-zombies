@@ -4,8 +4,8 @@ import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
 import { getAllNewMapIds, getDraftsOrChanged } from "@/data/featuredMaps";
-import { getAllNewCategoryIds } from "@/data/gameCategory";
-import { MAP_ORDER } from "./constants";
+import { getAllNewCategoryIds, getGameCategoryById } from "@/data/gameCategory";
+import { IN_DEVELOPMENT, MAP_ORDER } from "./constants";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if (asset && 'fields' in asset && asset.fields.file) return asset
@@ -39,7 +39,7 @@ export const sortMaps = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>
   return a === b ? 0 : a > b ? -1 : 1
 }
 
-export const formatTableCellData = (cellContent: any[]) => {
+export const formatTableCellData = async (cellContent: any[]) => {
   let values: string[] = []
   let listItems: string[] = []
   let embeddedItems: ZombieItem[] = []
@@ -61,7 +61,7 @@ export const formatTableCellData = (cellContent: any[]) => {
   return {
     values,
     badgeItems,
-    embeddedItems: embeddedItems.map(item => createItemTooltipDTO(item))
+    embeddedItems: await Promise.all(embeddedItems.map(async item => await createItemTooltipDTO(item)))
   }
 }
 
@@ -81,7 +81,7 @@ export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMaps
     getAllNewMapIds()
   ])
 
-  return featuredMaps.map(featuredMap => {
+  return await Promise.all(featuredMaps.map(async featuredMap => {
     const mapImage = resolveAsset(featuredMap.fields.image)
     const category = resolveEntry(featuredMap.fields.gameCategory)
     const isDraft = draftIds.has(featuredMap.sys.id)
@@ -96,12 +96,12 @@ export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMaps
       description: featuredMap.fields.description,
       body: featuredMap.fields.body,
       image: createImageDTO(mapImage),
-      category: createMapCategoryDTO(category),
+      category: await createMapCategoryDTO(category),
       isDraft: isDraft,
       isChanged: isChanged,
       isNew: isNew
     }
-  })
+  }))
 }
 
 export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
@@ -127,7 +127,7 @@ export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategor
   })
 }
 
-export const createItemTooltipDTO = (item: ZombieItem) => {
+export const createItemTooltipDTO = async (item: ZombieItem) => {
   const itemImage = resolveAsset(item.fields.image)
   const itemCategory = resolveEntry(item.fields.game)
 
@@ -135,7 +135,7 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
     return {
       title: item.fields.title,
       image: createImageDTO(itemImage),
-      category: createMapCategoryDTO(itemCategory),
+      category: await createMapCategoryDTO(itemCategory),
       description: item.fields.description,
       rarity: item.fields.rarity,
       type: item.fields.type
@@ -145,7 +145,7 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
   return {
     title: item.fields.title,
     image: createImageDTO(itemImage),
-    category: createMapCategoryDTO(itemCategory),
+    category: await createMapCategoryDTO(itemCategory, item.fields.game.sys.id),
     description: item.fields.description
   }
 }
@@ -158,7 +158,17 @@ const createImageDTO = (image: Asset<undefined, string> | undefined) => {
   }
 }
 
-const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, undefined, string> | undefined) => {
+const createMapCategoryDTO = async (category: Entry<TypeGameCategorySkeleton, undefined, string> | undefined, gameCategoryId?: string) => {
+  if (!category && gameCategoryId) {
+    const category = await getGameCategoryById(IN_DEVELOPMENT, gameCategoryId)
+    if (!category) throw new Error("Expected category to exist")
+
+    return {
+      title: category.title,
+      slug: category.slug
+    }
+  }
+
   if (!category) throw new Error("Expected map to have a category")
   return {
     title: category.fields.title,

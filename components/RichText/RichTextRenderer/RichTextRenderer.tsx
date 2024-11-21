@@ -29,10 +29,11 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       [INLINES.HYPERLINK]: (node: any) => {
         return <RichLink node={ node } />
       },
-      [INLINES.EMBEDDED_ENTRY]: (node: any) => {
+      [INLINES.EMBEDDED_ENTRY]: async (node: any) => {
+        const item = await createItemTooltipDTO(node.data.target)
         return (
           <ItemTooltip 
-            item={ createItemTooltipDTO(node.data.target) } 
+            item={ item } 
             className="font-bold items-baseline align-baseline gap-1.5 text-orange-600 dark:text-orange-200 decoration-dotted"
           />
         )

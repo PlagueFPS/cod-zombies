@@ -24,8 +24,8 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
         <TableBody>
           { bodyRows.map((row, index) => (
             <TableRow key={ `table-row-${index}` } className={cn("hover:bg-orange-100 dark:hover:bg-muted/50",{ "bg-orange-50 dark:bg-background": index % 2 === 0 })}>
-              { row.map((cell: any, cellIndex: number) => {
-                const { values, badgeItems, embeddedItems } = formatTableCellData(cell.content[0].content)
+              { row.map(async (cell: any, cellIndex: number) => {
+                const { values, badgeItems, embeddedItems } = await formatTableCellData(cell.content[0].content)
 
                 return (
                   <TableCell key={ `table-cell-${cellIndex}` } className='text-orange-800 dark:text-orange-200'>
