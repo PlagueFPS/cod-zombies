@@ -1,5 +1,5 @@
 import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
-import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeZombieItemsSkeleton } from "@/contentful/Types/contentful-types";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, ZombieItem } from "@/contentful/Types/contentful-types";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
@@ -42,7 +42,7 @@ export const sortMaps = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>
 export const formatTableCellData = (cellContent: any[]) => {
   let values: string[] = []
   let listItems: string[] = []
-  let embeddedItems: Entry<TypeZombieItemsSkeleton, undefined, string>[] = []
+  let embeddedItems: ZombieItem[] = []
   const badgeItems = listItems.join(',').split(',').map(item => item.trim())
 
   cellContent.forEach(content => {
@@ -127,14 +127,25 @@ export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategor
   })
 }
 
-export const createItemTooltipDTO = (item: Entry<TypeZombieItemsSkeleton, undefined, string>) => {
+export const createItemTooltipDTO = (item: ZombieItem) => {
   const itemImage = resolveAsset(item.fields.image)
-  const itemCategory = resolveEntry(item.fields.category)
+  const itemCategory = resolveEntry(item.fields.game)
+
+  if ('rarity' in item.fields) {
+    return {
+      title: item.fields.title,
+      image: createImageDTO(itemImage),
+      category: createMapCategoryDTO(itemCategory),
+      description: item.fields.description,
+      rarity: item.fields.rarity,
+      type: item.fields.type
+    }
+  }
 
   return {
     title: item.fields.title,
     image: createImageDTO(itemImage),
-    category: itemCategory,
+    category: createMapCategoryDTO(itemCategory),
     description: item.fields.description
   }
 }

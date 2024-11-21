@@ -89,9 +89,9 @@ export const revalidatePagination = async (mapId: string) => {
   return { paginationPage }
 }
 
-export const storeNewMapId = cache(async (mapId: string, createdAt: string) => {
+export const storeNewMapId = async (mapId: string, createdAt: string) => {
   await db.insert(maps).values({ mapId, publishedAt: createdAt })
-})
+}
 
 export const enforceNewMapStatus = async () => {
   try {

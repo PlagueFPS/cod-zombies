@@ -21,21 +21,51 @@ export interface TypeGameCategoryFields {
 export type TypeGameCategorySkeleton = EntrySkeletonType<TypeGameCategoryFields, "gameCategory">;
 export type TypeGameCategory<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeGameCategorySkeleton, Modifiers, Locales>;
 
-export interface TypeItemCategoryFields {
+export interface TypePerksFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
-}
-
-export type TypeItemCategorySkeleton = EntrySkeletonType<TypeItemCategoryFields, "itemCategory">;
-export type TypeItemCategory<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeItemCategorySkeleton, Modifiers, Locales>;
-
-export interface TypeZombieItemsFields {
-    title: EntryFieldTypes.Symbol;
-    slug: EntryFieldTypes.Symbol;
-    category: EntryFieldTypes.EntryLink<TypeItemCategorySkeleton>;
+    game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     image: EntryFieldTypes.AssetLink;
     description: EntryFieldTypes.Text;
 }
 
-export type TypeZombieItemsSkeleton = EntrySkeletonType<TypeZombieItemsFields, "zombieItems">;
-export type TypeZombieItems<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeZombieItemsSkeleton, Modifiers, Locales>;
+export type TypePerksSkeleton = EntrySkeletonType<TypePerksFields, "perks">;
+export type TypePerks<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypePerksSkeleton, Modifiers, Locales>;
+
+export interface TypeGobblegumsFields {
+    title: EntryFieldTypes.Symbol;
+    slug: EntryFieldTypes.Symbol;
+    rarity: EntryFieldTypes.Symbol<"Classic" | "Epic" | "Legendary" | "Mega" | "Rare" | "Rare-Mega" | "Ultra" | "Ultra-Rare Mega">;
+    type?: EntryFieldTypes.Symbol<"Round-Based" | "Time-Based" | "Player-Activated" | "Immediate">;
+    game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
+    image: EntryFieldTypes.AssetLink;
+    description: EntryFieldTypes.Text;
+}
+
+export type TypeGobblegumsSkeleton = EntrySkeletonType<TypeGobblegumsFields, "gobblegums">;
+export type TypeGobblegums<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeGobblegumsSkeleton, Modifiers, Locales>;
+
+export interface TypeFieldUpgradesFields {
+    title: EntryFieldTypes.Symbol;
+    slug: EntryFieldTypes.Symbol;
+    game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
+    image: EntryFieldTypes.AssetLink;
+    description: EntryFieldTypes.Text;
+}
+
+export type TypeFieldUpgradesSkeleton = EntrySkeletonType<TypeFieldUpgradesFields, "fieldUpgrades">;
+export type TypeFieldUpgrades<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeFieldUpgradesSkeleton, Modifiers, Locales>;
+
+export interface TypeAmmoModsFields {
+    title: EntryFieldTypes.Symbol;
+    slug: EntryFieldTypes.Symbol;
+    game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
+    image: EntryFieldTypes.AssetLink;
+    description: EntryFieldTypes.Text;
+}
+
+export type TypeAmmoModsSkeleton = EntrySkeletonType<TypeAmmoModsFields, "ammoMods">;
+export type TypeAmmoMods<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeAmmoModsSkeleton, Modifiers, Locales>;
+
+export type ZombieItem = Entry<TypeAmmoModsSkeleton, undefined, string> | Entry<TypeFieldUpgradesSkeleton, undefined, string> 
+    | Entry<TypeGobblegumsSkeleton, undefined, string> | Entry<TypePerksSkeleton, undefined, string>

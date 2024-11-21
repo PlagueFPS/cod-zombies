@@ -2,7 +2,6 @@
 import type { ImageProps } from "@/types/Image"
 import { useImageState } from "@/hooks/useImageState"
 import { cn } from "@/lib/utils"
-import ImageLoader from "../Loaders/ImageLoader"
 import PlaceholderImage from "@/public/article-img-placeholder.jpg"
 import Image from "next/image"
 

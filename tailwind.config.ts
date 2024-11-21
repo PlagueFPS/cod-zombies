@@ -78,6 +78,16 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-in-out",
       },
+      backgroundImage: {
+        "gobblegum-time-based": 'radial-gradient(circle at top,rgba(0,255,64,.25),hsl(240,10%,6%) 80%)',
+        "gobblegum-round-based": 'radial-gradient(circle at top,rgba(0,68,255,.25),hsl(240,10%,6%) 80%)',
+        "gobblegum-immediate": 'radial-gradient(circle at top,rgba(255,153,0,.25),hsl(240,10%,6%) 80%)',
+        "gobblegum-player-activated": 'radial-gradient(circle at top,rgba(195,0,255,.25),hsl(240,10%,6%) 80%)',
+        "gobblegum-ultra": 'radial-gradient(circle at top,rgba(255,0,0,.25),hsl(240,10%,6%) 80%)',
+        "gobblegum-legendary": 'radial-gradient(circle at top,rgba(255,153,0,.25),hsl(240,10%,6%) 80%)',
+        "gobblegum-epic": 'radial-gradient(circle at top,rgba(195,0,255,.25),hsl(240,10%,6%) 80%)',
+        "gobblegum-rare": 'radial-gradient(circle at top,rgba(0,68,255,.25),hsl(240,10%,6%) 80%)',
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
