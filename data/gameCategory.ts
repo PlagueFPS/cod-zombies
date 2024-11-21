@@ -1,5 +1,4 @@
 import "server-only"
-import { nextCache } from "@/data/cache"
 import { cache } from "react"
 import { getEntries } from "@/contentful/contentful"
 import { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
@@ -7,7 +6,7 @@ import { createGameCategoryDTO } from "@/utils/contentful-utils"
 import { CACHE_KEYS, IN_DEVELOPMENT, MAX_NEW_TIME } from "@/utils/constants"
 import { db } from "@/db/db"
 import { categories } from "@/db/schema"
-import { expirePath, expireTag } from "next/cache"
+import { expirePath, expireTag, unstable_cache } from "next/cache"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { eq } from "drizzle-orm"
 
@@ -105,23 +104,21 @@ export const enforceNewCategoryStatus = async () => {
   }
 }
 
-const getCachedCategories = nextCache({
-  handler: async () => {
+const getCachedCategories = unstable_cache(async () => {
     const categories = await INTERNAL_getGameCategories(false)
     return categories
   },
-  revalidateTags: () => [CACHE_KEYS.GAME_CATEGORIES.ALL]
-})
+  [],
+  { tags: [CACHE_KEYS.GAME_CATEGORIES.ALL] })
 
-const getCachedAllNewCategoryIds = nextCache({
-  handler: async () => {
+const getCachedAllNewCategoryIds = unstable_cache(async () => {
     return await INTERNAL_getAllNewCategoryIds()
   },
-  revalidateTags: () => [
+  [],
+  { tags: [
     CACHE_KEYS.GAME_CATEGORIES.ALL, 
     CACHE_KEYS.GAME_CATEGORIES.IDS
-  ]
-})
+  ]})
 
 const INTERNAL_getGameCategories = cache(async (draftMode: boolean) => {
   const gameCategories = await getEntries<TypeGameCategorySkeleton>({
