@@ -129,13 +129,11 @@ export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategor
 
 export const createItemTooltipDTO = (item: ZombieItem) => {
   const itemImage = resolveAsset(item.fields.image)
-  const itemCategory = resolveEntry(item.fields.game)
 
   if ('rarity' in item.fields) {
     return {
       title: item.fields.title,
       image: createImageDTO(itemImage),
-      category: createMapCategoryDTO(itemCategory),
       description: item.fields.description,
       rarity: item.fields.rarity,
       type: item.fields.type
@@ -145,7 +143,6 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
   return {
     title: item.fields.title,
     image: createImageDTO(itemImage),
-    category: createMapCategoryDTO(itemCategory),
     description: item.fields.description
   }
 }
