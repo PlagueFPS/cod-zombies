@@ -31,10 +31,12 @@ export default function GKValve() {
     const getRoute = () => {
       const searchString = `${values.firstValue} to ${values.secondValue}`
       const locations: Location[] = []
+
       for (const key in ValveRoutes) {
         if (searchString === key) {
           const route = ValveRoutes[key as keyof valveRoutes]
           const entries = Object.entries(route)
+          
           entries.forEach(entry => {
             const [location, value] = entry
             locations.push({
