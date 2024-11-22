@@ -12,7 +12,7 @@ import { maps } from "@/db/schema"
 import { expirePath, expireTag } from "next/cache"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { eq } from "drizzle-orm"
-import { managementClient } from "@/contentful/contentful-management"
+import { managementClient } from "@/contentful/contentfulManagement"
 
 export const getFeaturedMaps = cache(async (draftMode: boolean) => {
   const featuredMaps = await getEntries<TypeFeaturedMapsSkeleton>({
