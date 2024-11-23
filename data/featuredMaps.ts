@@ -9,7 +9,7 @@ import { CACHE_KEYS, IN_DEVELOPMENT, MAP_LIMIT, MAX_NEW_TIME } from "@/utils/con
 import { z } from "zod"
 import { db } from "@/db/db"
 import { maps } from "@/db/schema"
-import { expirePath, expireTag } from "next/cache"
+import { expirePath, expireTag, unstable_cache } from "next/cache"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { eq } from "drizzle-orm"
 import { managementClient } from "@/contentful/contentfulManagement"
@@ -174,14 +174,10 @@ const getCachedPaginatedFeaturedMaps = nextCache({
     ],
 })
 
-const getCachedAllNewMapIds = nextCache({
-  handler: async () => {
-    return await INTERNAL_getAllNewMapIds()
-  },
-  revalidateTags: () => [
-    CACHE_KEYS.FEATURED_MAPS.ALL, 
-    CACHE_KEYS.FEATURED_MAPS.IDS
-  ]
+const getCachedAllNewMapIds = unstable_cache(async () => {
+  return await INTERNAL_getAllNewMapIds()
+}, [], {
+  tags: [CACHE_KEYS.FEATURED_MAPS.ALL, CACHE_KEYS.FEATURED_MAPS.IDS]
 })
 
 const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page: number) => {
