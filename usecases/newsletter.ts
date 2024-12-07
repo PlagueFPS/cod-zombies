@@ -1,7 +1,7 @@
 import "server-only"
 import { Resend } from 'resend'
 import { env } from '@/env'
-import { unstable_after } from "next/server"
+import { after } from "next/server"
 
 export const subscribeEmailUseCase = async (email: string) => {
   const resend = new Resend(env.RESEND_API_KEY)
@@ -15,7 +15,7 @@ export const subscribeEmailUseCase = async (email: string) => {
     }
   }
 
-  unstable_after(() => {
+  after(() => {
     const unsubscribedContacts = contacts.data.filter(contact => contact.unsubscribed)
     if (unsubscribedContacts.length > 0) {
       unsubscribedContacts.forEach(async (contact) => {

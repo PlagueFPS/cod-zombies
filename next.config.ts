@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     ppr: true,
-    after: true,
     serverComponentsHmrCache: true,
   },
   images: {

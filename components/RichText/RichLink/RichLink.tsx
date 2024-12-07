@@ -29,7 +29,7 @@ export default function RichLink({ node }: RichLinkProps) {
       </Link>
     )
   }
-  else if (node.data.uri.startsWith(dev_url) || node.data.uri.startsWith(alt_dev_url)) {
+  else if (node.data.uri.startsWith(dev_url) || node.data.uri.startsWith(alt_dev_url) || node.data.uri.startsWith('/')) {
     return (
       <Link href={ node.data.uri.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL).replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) }>
         { node.content[0].value }

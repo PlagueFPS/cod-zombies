@@ -21,7 +21,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@neondatabase/serverless": "^0.10.1",
     "@next-safe-action/adapter-react-hook-form": "^1.0.13",
-    "@next/third-parties": "^15.0.4-canary.17",
+    "@next/third-parties": "15.0.4-canary.46",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-popover": "^1.1.2",
@@ -41,11 +41,11 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.35.3",
     "lucide-react": "^0.399.0",
-    "next": "^15.0.4-canary.17",
+    "next": "15.0.4-canary.46",
     "next-safe-action": "^7.9.3",
     "next-themes": "^0.3.0",
-    "react": "^19.0.0-rc-45804af1-20241021",
-    "react-dom": "^19.0.0-rc-45804af1-20241021",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-hook-form": "^7.53.0",
     "react-share": "^5.1.0",
     "resend": "^4.0.0",
@@ -57,9 +57,10 @@
     "zod-form-data": "^2.0.2"
   },
   "devDependencies": {
+    "@contentful/rich-text-types": "^17.0.0",
     "@types/node": "^20",
-    "@types/react": "npm:types-react@rc",
-    "@types/react-dom": "npm:types-react-dom@rc",
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
     "drizzle-kit": "^0.26.2",
     "eslint": "^9.12.0",
     "eslint-config-next": "^15.0.0-rc.1",
@@ -68,9 +69,5 @@
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5"
-  },
-  "overrides": {
-    "@types/react": "npm:types-react@rc",
-    "@types/react-dom": "npm:types-react-dom@rc"
   }
 }
