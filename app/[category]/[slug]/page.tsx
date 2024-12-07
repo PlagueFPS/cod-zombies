@@ -54,7 +54,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       description,
       url: `/${category}/${slug}`,
       images: {
-        url: `https:${image.url}?q=75`,
+        url: `https:${image.url}?q=75&fm=jpg`,
         width: image.width,
         height: image.height
       }

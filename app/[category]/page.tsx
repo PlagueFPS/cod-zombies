@@ -39,7 +39,7 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
       description,
       url: `/${category.slug}`,
       images: {
-        url: `https:${category.image.url}?q=75`,
+        url: `https:${category.image.url}?q=75&fm=jpg`,
         width: category.image.width,
         height: category.image.height,
       }
