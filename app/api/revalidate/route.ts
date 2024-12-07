@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server"
 import { headers } from "next/headers"
-import { expirePath, expireTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { env } from "@/env"
 import { ContentfulWebhookBodySchema } from "@/utils/validationSchemas"
 import { isFirstTimePublish } from "@/utils/contentful-utils"
@@ -35,7 +35,7 @@ export async function PUT(req: NextRequest) {
         // revalidate all pagination pages to correctly update each page
         // Since a new map is being added
         await storeNewMapId(mapId, createdAt)
-        expireTag(CACHE_KEYS.FEATURED_MAPS.ALL)
+        revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
         return Response.json({ updated: true, message: `${mapId} stored as new` }, { status: 201 })
       }
       else { // revalidate the specific map if it is an updated map
@@ -43,7 +43,7 @@ export async function PUT(req: NextRequest) {
         if (!map) return Response.json({ revalidate: false, message: 'Map not found' }, { status: 404 })
         
         const path = `/${map.category.slug}/${map.slug}`
-        expirePath(path)
+        revalidatePath(path)
 
         // revalidate the paginated page the map currently lives on
         const { paginationPage } = await revalidatePagination(mapId)
@@ -56,7 +56,7 @@ export async function PUT(req: NextRequest) {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // store the categoryId as new and revalidate all category data
         await storeNewCategoryId(categoryId, createdAt)
-        expireTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+        revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
         return Response.json({ updated: true, message: `${categoryId} stored as new` }, { status: 201 })
       }
       else {
@@ -64,8 +64,8 @@ export async function PUT(req: NextRequest) {
         if (!category) return Response.json({ updated: false, message: 'Category not found' }, { status: 404 })
 
         // revalidate all category data and the path to re-run generateMetadata
-        expireTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-        expirePath(`/${category.slug}`)
+        revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+        revalidatePath(`/${category.slug}`)
         return Response.json({ updated: true, message: `${CACHE_KEYS.GAME_CATEGORIES.ALL} Revalidated` }, { status: 201 })
       }
     }
@@ -102,10 +102,10 @@ export async function PATCH(req: NextRequest) {
       const categoryPath = `/${map.category.slug}`
 
       // revalidate the map data to update the Data Cache
-      expireTag(CACHE_KEYS.FEATURED_MAPS.ALL)
+      revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
       // revalidate the map and category page to update the ISR cache
-      expirePath(mapPath)
-      expirePath(categoryPath)
+      revalidatePath(mapPath)
+      revalidatePath(categoryPath)
       return Response.json({ 
         removed: true, 
         message: `${CACHE_KEYS.FEATURED_MAPS.ALL}, ${categoryPath}, and ${mapPath} Revalidated` 
@@ -120,9 +120,9 @@ export async function PATCH(req: NextRequest) {
       const categoryPath = `/${category.slug}`
 
       // revalidate the category data to update the Data Cache
-      expireTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+      revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
       // revalidate the category page to update the ISR cache
-      expirePath(categoryPath)
+      revalidatePath(categoryPath)
       return Response.json({ removed: true, message: `${CACHE_KEYS.GAME_CATEGORIES.ALL} and ${categoryPath} Revalidated` }, { status: 200 })
     }
     default: {
