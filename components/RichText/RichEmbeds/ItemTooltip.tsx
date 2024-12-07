@@ -29,7 +29,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                 { title }
               </span>
             </TooltipTrigger>
-            <TooltipContent className={cn('max-w-sm w-[384px] bg-[hsl(240,10%,6%)] border-orange-200/30 text-orange-200 p-0', {
+            <TooltipContent className={cn('max-w-sm w-[384px] bg-[hsl(240,10%,6%)] border-orange-200/30 text-orange-200 p-0 z-[100]', {
               'border-red-300': rarity === 'Ultra',
               'border-orange-300': rarity === 'Legendary',
               'border-purple-300': rarity === 'Epic',

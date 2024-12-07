@@ -1,5 +1,5 @@
 .body {
-  @apply relative z-20 max-w-[80ch] px-4
+  @apply relative max-w-[80ch] px-4
 }
 
 .body h2 {
