@@ -103,6 +103,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   <FeaturedImage 
                     featuredImage={ image }
                     sizes='(max-width: 1280px) 100vw, 1280px'
+                    quality={ 100 }
                     priority 
                     className='xl:rounded-lg overflow-hidden' 
                   >
@@ -110,6 +111,7 @@ export default async function MapPage({ params }: MapPageProps) {
                       <ContentfulImage 
                         featuredImage={ image }
                         sizes='(max-width: 1280px) 100vw, 1280px'
+                        quality={ 100 }
                         priority
                         className='xl:rounded-lg overflow-hidden'
                       />

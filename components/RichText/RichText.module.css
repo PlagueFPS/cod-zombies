@@ -3,14 +3,14 @@
 }
 
 .body h2 {
-  @apply relative z-40
+  @apply relative z-30
 }
 
 .body h3,
 .body h4,
 .body h5,
 .body h6 {
-  @apply relative z-40 mt-8 mx-0
+  @apply relative z-30 mt-8 mx-0
 }
 
 .body p {
