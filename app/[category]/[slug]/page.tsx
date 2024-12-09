@@ -238,7 +238,7 @@ export default async function MapPage({ params }: MapPageProps) {
               </FeaturedImage>
           </div>
           <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4'>
-            <h2 className='font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
+            <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
               { title }
             </h2>
             <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>

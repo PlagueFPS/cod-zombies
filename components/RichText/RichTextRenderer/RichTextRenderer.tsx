@@ -59,11 +59,11 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
               </FeaturedImage>
             </div>
             <div className="relative z-20">
-                <FeaturedImage {...imageProps} description={ asset.fields.description } className="rounded-lg">
-                  <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
-                    <ContentfulImage {...imageProps} className="rounded-lg" />
-                  </Suspense>
-                </FeaturedImage>
+              <FeaturedImage {...imageProps} description={ asset.fields.description } className="rounded-lg">
+                <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
+                  <ContentfulImage {...imageProps} className="rounded-lg" />
+                </Suspense>
+              </FeaturedImage>
             </div>
           </div>
         )

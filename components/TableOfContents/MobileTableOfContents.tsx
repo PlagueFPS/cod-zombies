@@ -19,7 +19,7 @@ export default function MobileTableOfContents({ headings, activeHeading }: Mobil
           <Menu className="h-5 w-5" />
           <div className="font-bold">On this page</div>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col gap-4">
+        <SheetContent side="left" className="flex flex-col gap-4 z-[100]">
           <SheetHeader className="border-b pb-3">
             <SheetTitle>On this page</SheetTitle>
             <SheetDescription className="sr-only">Table of contents for this page</SheetDescription>
