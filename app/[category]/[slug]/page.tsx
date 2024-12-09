@@ -82,19 +82,19 @@ export default async function MapPage({ params }: MapPageProps) {
         <div className='flex flex-col-reverse xl:flex-row flex-grow w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
-              <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl overflow-hidden'>
+              <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl'>
                   <FeaturedImage
                     featuredImage={ image } 
                     sizes='(max-width: 1280px) 100vw, 1280px'
                     priority 
-                    className='xl:rounded-lg scale-[2]'
+                    className='xl:rounded-lg'
                   >
                     <Suspense fallback={<ImageLoader />}>
                       <ContentfulImage 
                         featuredImage={ image }
                         sizes='(max-width: 1280px) 100vw, 1280px'
                         priority
-                        className='xl:rounded-lg scale-[2]'
+                        className='xl:rounded-lg'
                       />
                     </Suspense>
                   </FeaturedImage>
