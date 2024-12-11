@@ -8,6 +8,7 @@ import Discord from "@/SVGs/DiscordSVG"
 import { Separator } from "../ui/seperator"
 import Reddit from "@/SVGs/Reddit"
 import ExternalLink from "../ExternalLink/ExternalLink"
+import X from "@/SVGs/XSVG"
 
 export default function Footer() {
   return (
@@ -18,6 +19,10 @@ export default function Footer() {
             <Copyright />
           </Suspense>
           <div className="flex items-center gap-3 text-muted-foreground">
+            <ExternalLink href="https://x.com/CodZombiesGuide">
+              <X className="size-5" />
+            </ExternalLink>
+            <Separator orientation="vertical" className="h-5" />
             <ExternalLink href="https://discord.gg/callofduty">
               <Discord className="size-5" />
             </ExternalLink>
