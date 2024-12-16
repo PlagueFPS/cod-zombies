@@ -147,7 +147,7 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
   }
 }
 
-const createImageDTO = (image: Asset<undefined, string> | undefined) => {
+export const createImageDTO = (image: Asset<undefined, string> | undefined) => {
   return {
     url: image?.fields.file?.url,
     width: image?.fields.file?.details?.image?.width,

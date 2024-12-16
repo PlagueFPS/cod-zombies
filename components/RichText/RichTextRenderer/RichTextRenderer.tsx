@@ -1,7 +1,4 @@
 import { Document, INLINES, BLOCKS, MARKS } from "@contentful/rich-text-types"
-import type { ImageProps } from "@/types/Image"
-import { Suspense } from "react"
-import ImageLoader from "@/components/Loaders/ImageLoader"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { slugify } from "@/utils/functions"
 import Heading2 from "../RichHeadings/Heading2/Heading2"
@@ -12,11 +9,10 @@ import RichLink from "../RichLink/RichLink"
 import RichTable from "../RichTable/RichTable"
 import Heading4 from "../RichHeadings/Heading4/Heading4"
 import RichParagraph from "../RichParagraph/RichParagraph"
-import ContentfulImage from "@/components/ContentfulImage/ContentfulImage"
-import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import ItemTooltip from "../RichEmbeds/ItemTooltip"
 import { createItemTooltipDTO } from "@/utils/contentful-utils"
 import TerminusCode from "../RichEmbeds/TerminusCode"
+import RichImage from "../RichImage/RichImage"
 
 interface RichTextRendererProps {
   body: Document
@@ -38,35 +34,8 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         )
       },
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
-        const asset = node.data.target
-        const imageProps: ImageProps = {
-          featuredImage: {
-            url: asset.fields.file.url,
-            width: asset.fields.file.details.image.width,
-            height: asset.fields.file.details.image.height
-          },
-          sizes: "(max-width: 828px) calc(100vw - 16px), 776px",
-          quality: 100
-        } 
-
-        return (
-          <div className="relative w-full mt-8">
-            <div className="absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-2xl">
-              <FeaturedImage {...imageProps} description={ asset.fields.description } className="rounded-lg">
-                <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
-                  <ContentfulImage {...imageProps} className="rounded-lg" />
-                </Suspense>
-              </FeaturedImage>
-            </div>
-            <div className="relative z-20">
-              <FeaturedImage {...imageProps} description={ asset.fields.description } className="rounded-lg">
-                <Suspense fallback={<ImageLoader className="relative h-[calc(50dvw)] lg:h-[446px] border mb-14" />}>
-                  <ContentfulImage {...imageProps} className="rounded-lg" />
-                </Suspense>
-              </FeaturedImage>
-            </div>
-          </div>
-        )
+        const asset = node.data.target 
+        return <RichImage asset={ asset } />
       },
       [BLOCKS.PARAGRAPH]: (node: any, children: any) => {
         return <RichParagraph>{ children }</RichParagraph>
@@ -95,7 +64,7 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
           </RichBlockquote>
         )
       },
-      [BLOCKS.TABLE]: (node: any, children: any) => {
+      [BLOCKS.TABLE]: (node: any) => {
         const headings: string[] = node.content[0].content.map((node: any) => node.content[0].content[0].value)
         const bodyRows: any[] = node.content.slice(1).map((row: any) => row.content)
         return (
