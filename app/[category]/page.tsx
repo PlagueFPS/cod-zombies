@@ -6,7 +6,7 @@ import type { Metadata } from "next"
 import HeroSection from "@/components/HeroSection/HeroSection"
 import { capatilize } from "@/utils/functions"
 import { Suspense } from "react"
-import MapSection from "@/components/MapSection/MapSection"
+import GridSection from "@/components/GridSection/GridSection"
 import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader"
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters"
 import MapGridLoader from "@/components/Loaders/MapGridLoader"
@@ -60,14 +60,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
       <HeroSection text={ capatilize(category) } />
-      <MapSection category={ capatilize(category) }>
+      <GridSection title={ `${capatilize(category)} Maps` }>
         <Suspense fallback={<MapFiltersLoader />}>
           <MapFilters currentCategory={ category } />
         </Suspense>
         <Suspense fallback={<MapGridLoader />}>
           <CategoryMapGrid category={ category } />
         </Suspense>
-      </MapSection>
+      </GridSection>
     </div>
   )
 }

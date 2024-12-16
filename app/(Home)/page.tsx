@@ -1,6 +1,6 @@
 import type { SearchParams } from "@/utils/validationSchemas";
 import HeroSection from "@/components/HeroSection/HeroSection";
-import MapSection from "@/components/MapSection/MapSection";
+import GridSection from "@/components/GridSection/GridSection";
 import { Suspense } from "react";
 import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader";
 import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
@@ -17,7 +17,7 @@ export default function Home({ searchParams }: HomePageProps) {
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
       <HeroSection text="Call of Duty: Zombies" />
-      <MapSection>
+      <GridSection title="Featured Maps">
         <Suspense fallback={<MapFiltersLoader />}>
           <MapFilters />
         </Suspense>
@@ -27,7 +27,7 @@ export default function Home({ searchParams }: HomePageProps) {
         <Suspense fallback={<MapPaginationLoader />}>
           <MapPagination searchParams={ searchParams } />
         </Suspense>
-      </MapSection>
+      </GridSection>
     </div>
   );
 }
