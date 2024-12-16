@@ -7,9 +7,7 @@ import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import Link from 'next/link'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
-import NavLink from '@/components/NavLink/NavLink'
-import { ChevronLeft, ChevronRight, Slash } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'
@@ -22,6 +20,7 @@ import { Suspense } from 'react'
 import ImageLoader from '@/components/Loaders/ImageLoader'
 import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
 import ContentfulImage from '@/components/ContentfulImage/ContentfulImage'
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 
 interface MapPageProps {
   params: Promise<{ 
@@ -118,31 +117,11 @@ export default async function MapPage({ params }: MapPageProps) {
                     </Suspense>
                   </FeaturedImage>
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
-                  <Breadcrumb className='mr-auto'>
-                    <BreadcrumbList>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink asChild>
-                          <NavLink exact href='/'>Home</NavLink>
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator>
-                        <Slash />
-                      </BreadcrumbSeparator>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink asChild>
-                          <NavLink exact href={ `/${category.slug}` }>{ category.title }</NavLink>
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator>
-                        <Slash />
-                      </BreadcrumbSeparator>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink asChild>
-                          <NavLink exact active href={ `/${category.slug}/${slug}` } className='font-medium'>{ title }</NavLink>
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
+                  <Breadcrumbs links={[
+                      { title: category.title, href: `/${category.slug}` },
+                      { title: title, href: `/${category.slug}/${slug}`, active: true }
+                    ]}
+                  />
                 </div>
               </div>
             </div>

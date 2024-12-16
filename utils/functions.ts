@@ -14,7 +14,7 @@ export const capatilize = (text: string) => {
 }
 
 export const checkParams = (param: string | string[] | undefined) => {
-  return (param && !Array.isArray(param)) ? param : null
+  return (param && !Array.isArray(param)) ? param : ""
 }
 
 export const slugify = (text: string) => {
