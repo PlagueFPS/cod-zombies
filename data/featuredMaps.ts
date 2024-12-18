@@ -55,6 +55,19 @@ export const getAllNewMapIds = async () => {
   return await getCachedAllNewMapIds()
 }
 
+export const getFeaturedMapFilters = async (draftMode: boolean) => {
+  if (draftMode) {
+    const featuredMaps = await getFeaturedMaps(draftMode)
+    return featuredMaps.map(map => ({
+      id: map.id,
+      slug: map.slug,
+      title: map.title
+    }))
+  }
+
+  return await getCachedFeaturedMapFilters()
+}
+
 export const getDraftsOrChanged = cache(async (contentType: "featuredMaps" | "gameCategory") => {
   const featuredMaps = await managementClient.entry.getMany({
     query: {
@@ -177,6 +190,15 @@ const getCachedAllNewMapIds = unstable_cache(async () => {
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL, CACHE_KEYS.FEATURED_MAPS.IDS]
 })
+
+const getCachedFeaturedMapFilters = unstable_cache(async () => {
+  const featuredMaps = await getFeaturedMaps(false)
+  return featuredMaps.map(map => ({
+    id: map.id,
+    title: map.title,
+    slug: map.slug
+  }))
+}, [], { tags: [CACHE_KEYS.FEATURED_MAPS.ALL]})
 
 const INTERNAL_getPaginatedFeaturedMaps = cache(async (draftMode: boolean, page: number) => {
   const skip = calculateSkip(page, MAP_LIMIT)
