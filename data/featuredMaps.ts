@@ -68,7 +68,7 @@ export const getFeaturedMapFilters = async (draftMode: boolean) => {
   return await getCachedFeaturedMapFilters()
 }
 
-export const getDraftsOrChanged = cache(async (contentType: "featuredMaps" | "gameCategory") => {
+export const getDraftsOrChanged = cache(async (contentType: "featuredMaps" | "gameCategory" | "sideQuests") => {
   const featuredMaps = await managementClient.entry.getMany({
     query: {
       content_type: contentType

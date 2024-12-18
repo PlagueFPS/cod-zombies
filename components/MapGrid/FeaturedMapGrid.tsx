@@ -10,7 +10,9 @@ interface FeaturedMapGridProps {
 }
 
 export default async function FeaturedMapGrid({ searchParams }: FeaturedMapGridProps) {
-  const [{ isEnabled }, { page }] = await Promise.all([draftMode(), validateSearchParams(searchParams)])
+  const draftModePromise = draftMode()
+  const searchParamsPromise = validateSearchParams(searchParams)
+  const [{ isEnabled }, { page }] = await Promise.all([draftModePromise, searchParamsPromise])
   const { featuredMaps, totalMaps } = await getPaginatedFeaturedMaps(isEnabled, page)
 
   return (

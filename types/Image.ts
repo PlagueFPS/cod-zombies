@@ -3,7 +3,7 @@ export interface ImageProps {
     url: string | undefined,
     width: number | undefined,
     height: number | undefined
-  }
+  } | null
   alt?: string
   quality?: number
   className?: string

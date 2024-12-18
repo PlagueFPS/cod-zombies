@@ -40,8 +40,8 @@ export default function BackupImage({ featuredImage, acceptHeader, loadingFallba
         <Image 
           loader={({ src, width, quality }) => contentfulImageLoader({ src, width, quality, avif, webp })}
           src={ featuredImageURL }
-          width={ featuredImage.width }
-          height={ featuredImage.height }
+          width={ featuredImage?.width }
+          height={ featuredImage?.height }
           alt={ alt }
           sizes={ sizes }
           ref={ imageRef }
@@ -49,6 +49,7 @@ export default function BackupImage({ featuredImage, acceptHeader, loadingFallba
           onError={ () => setImageErrored(true) }
           quality={ quality }
           priority={ priority }
+          placeholder={ !featuredImage ? "blur" : undefined }
           className={cn('flex justify-center items-center w-full h-auto aspect-video opacity-0', className, {
             'animate-fade-in opacity-100': imageLoaded
           })}

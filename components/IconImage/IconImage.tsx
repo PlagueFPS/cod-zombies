@@ -19,8 +19,8 @@ export default function IconImage({ children, featuredImage, alt = "", quality =
         <Image 
           src={ featuredImageURL }
           alt={ alt }
-          width={ featuredImage.width }
-          height={ featuredImage.height }
+          width={ featuredImage?.width }
+          height={ featuredImage?.height }
           sizes={ sizes }
           ref={ imageRef }
           onLoad={ () => setImageLoaded(true) }

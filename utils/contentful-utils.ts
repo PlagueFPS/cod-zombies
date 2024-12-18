@@ -1,5 +1,5 @@
 import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
-import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, ZombieItem } from "@/contentful/Types/contentful-types";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeSideQuestsSkeleton, ZombieItem } from "@/contentful/Types/contentful-types";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
@@ -104,6 +104,31 @@ export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMaps
   })
 }
 
+export const createSideQuestsDTO = async (sideQuests: Entry<TypeSideQuestsSkeleton, undefined, string>[]) => {
+  const { draftIds, changedIds } = await getDraftsOrChanged("sideQuests")
+  return sideQuests.map(quest => {
+    const questImage = quest.fields.image ? resolveAsset(quest.fields.image) : null
+    const questGame = resolveEntry(quest.fields.game)
+    const questMap = resolveEntry(quest.fields.map)
+    const isDraft = draftIds.has(quest.sys.id)
+    const isChanged = changedIds.has(quest.sys.id)
+    
+    return {
+      id: quest.sys.id,
+      updatedAt: quest.sys.updatedAt,
+      slug: quest.fields.slug,
+      title: quest.fields.title,
+      description: quest.fields.description,
+      content: quest.fields.content,
+      image: questImage ? createImageDTO(questImage) : null,
+      game: createMapCategoryDTO(questGame),
+      map: createQuestMapDTO(questMap),
+      isDraft,
+      isChanged,
+    }
+  })
+}
+
 export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
   const [{ draftIds, changedIds }, newCategoryIds] = await Promise.all([
     getDraftsOrChanged("gameCategory"), 
@@ -160,5 +185,13 @@ const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, undefine
   return {
     title: category.fields.title,
     slug: category.fields.slug
+  }
+}
+
+const createQuestMapDTO = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string> | undefined) => {
+  if (!map) throw new Error("Expected quest to have a map")
+  return {
+    title: map.fields.title,
+    slug: map.fields.slug
   }
 }

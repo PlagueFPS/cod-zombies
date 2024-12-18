@@ -22,8 +22,8 @@ export default function FeaturedImage({ children, featuredImage, description, al
         <Image 
           src={ featuredImageURL }
           alt={ alt }
-          width={ featuredImage.width }
-          height={ featuredImage.height }
+          width={ featuredImage?.width }
+          height={ featuredImage?.height }
           sizes={ sizes }
           ref={ imageRef }
           onLoad={ () => setImageLoaded(true) }
@@ -33,6 +33,7 @@ export default function FeaturedImage({ children, featuredImage, description, al
             'animate-fade-in opacity-100': imageLoaded
           })}
           priority={ priority }
+          placeholder={ !featuredImage ? "blur" : undefined }
         /> : null}
       {/* children here represents a dynamic server component which serves a backup image
           based on the users browsers

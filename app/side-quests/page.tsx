@@ -1,7 +1,9 @@
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
+import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
 import QuestFilters from "@/components/QuestFilters/QuestFilters";
+import QuestGrid from "@/components/QuestGrid/QuestGrid";
 import { Suspense } from "react";
 
 
@@ -17,6 +19,9 @@ export default function SideQuests() {
         <GridSection title="Featured Side Quests">
           <Suspense fallback={<QuestFilterLoader />}>
             <QuestFilters />
+          </Suspense>
+          <Suspense fallback={<MapGridLoader />}>
+            <QuestGrid />
           </Suspense>
         </GridSection>
       </div>
