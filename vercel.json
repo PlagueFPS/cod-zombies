@@ -1,9 +1,14 @@
 {
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "pnpm install",
   "crons": [
     {
       "path": "/api/cron/checkstatus",
       "schedule": "0 0 * * *"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "side-quests-feature": false
+    }
+  }
 }
