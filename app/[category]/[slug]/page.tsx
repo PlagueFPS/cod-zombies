@@ -87,6 +87,7 @@ export default async function MapPage({ params }: MapPageProps) {
                     sizes='(max-width: 1280px) 100vw, 1280px'
                     priority 
                     className='xl:rounded-lg'
+                    quality={ 1 }
                   >
                     <Suspense fallback={<ImageLoader />}>
                       <ContentfulImage 
@@ -94,6 +95,7 @@ export default async function MapPage({ params }: MapPageProps) {
                         sizes='(max-width: 1280px) 100vw, 1280px'
                         priority
                         className='xl:rounded-lg'
+                        quality={ 1 }
                       />
                     </Suspense>
                   </FeaturedImage>
@@ -103,7 +105,6 @@ export default async function MapPage({ params }: MapPageProps) {
                     featuredImage={ image }
                     sizes='(max-width: 1280px) 100vw, 1280px'
                     quality={ 100 }
-                    priority 
                     className='xl:rounded-lg overflow-hidden' 
                   >
                     <Suspense fallback={<ImageLoader className={`relative border h-[calc(50vw)] xl:h-[720px]`} />}>
@@ -111,7 +112,6 @@ export default async function MapPage({ params }: MapPageProps) {
                         featuredImage={ image }
                         sizes='(max-width: 1280px) 100vw, 1280px'
                         quality={ 100 }
-                        priority
                         className='xl:rounded-lg overflow-hidden'
                       />
                     </Suspense>
@@ -189,13 +189,15 @@ export default async function MapPage({ params }: MapPageProps) {
           <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
               <FeaturedImage 
                 featuredImage={ image }
-                sizes='32px'
+                sizes='(max-width: 1280px) 320px, 364px'
+                quality={ 1 }
                 className='object-cover scale-[2]'
               >
                 <Suspense fallback={<ImageLoader />}>
                   <ContentfulImage 
                     featuredImage={ image }
-                    sizes='32px'
+                    sizes='(max-width: 1280px) 320px, 364px'
+                    quality={ 1 }
                     className='object-cover scale-[2]'
                   />
                 </Suspense>

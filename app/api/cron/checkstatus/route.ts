@@ -20,8 +20,17 @@ export async function GET() {
   }
 
   try {
-    await enforceNewMapStatus()
-    await enforceNewCategoryStatus()
+    const mapEnforce = enforceNewMapStatus()
+    const categoryEnforce = enforceNewCategoryStatus()
+    const [{ status: mapStatus }, { status: categoryStatus }] = await Promise.allSettled([mapEnforce, categoryEnforce])
+    
+    if (mapStatus === "rejected" && categoryStatus === "rejected") {
+      throw new Error("Both map and category enforcement failed")
+    } else if (mapStatus === "rejected") {
+      throw new Error("Map enforcement failed")
+    } else if (categoryStatus === "rejected") {
+      throw new Error("category enforcement failed")
+    }
   } 
   catch (error) {
     console.error("[CRON] Error in checkstatus cron job", error)

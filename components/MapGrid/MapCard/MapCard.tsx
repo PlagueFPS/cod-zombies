@@ -36,12 +36,13 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
           </Badge>
         </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
-            <FeaturedImage featuredImage={ image } priority={ priority } sizes='272px'>
+            <FeaturedImage featuredImage={ image } priority={ priority } quality={ 1 } sizes='272px'>
               <Suspense fallback={<ImageLoader />}>
                 <ContentfulImage 
                   featuredImage={ image }
                   priority={ priority }
                   sizes='272px'
+                  quality={ 1 }
                 />
               </Suspense>
             </FeaturedImage>
@@ -53,7 +54,6 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
                 alt={ alt }
                 sizes='272px'
                 className='h-44 object-cover' 
-                priority={ priority }
               >
                 <Suspense fallback={<ImageLoader className='h-44 relative border' />}>
                   <ContentfulImage 
@@ -61,7 +61,6 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
                     alt={ alt }
                     sizes='272px'
                     className='h-44 object-cover'
-                    priority={ priority }
                   />
                 </Suspense>
               </FeaturedImage>
