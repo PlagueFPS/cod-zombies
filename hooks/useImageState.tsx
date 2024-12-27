@@ -7,6 +7,7 @@ export const useImageState = () => {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [fallbackLoaded, setFallbackLoaded] = useState(false)
   const [imageErrored, setImageErrored] = useState(false)
+  const [fallbackErrored, setFallbackErrored] = useState(false)
 
   return {
     imageRef,
@@ -14,8 +15,10 @@ export const useImageState = () => {
     imageLoaded,
     fallbackLoaded,
     imageErrored,
+    fallbackErrored,
     setImageLoaded,
     setFallbackLoaded,
     setImageErrored,
+    setFallbackErrored,
   }
 }

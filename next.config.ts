@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   logging: {
     fetches: {
       hmrRefreshes: true,
+      fullUrl: true,
     }
   },
   experimental: {

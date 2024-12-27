@@ -17,9 +17,7 @@ import { env } from '@/env'
 import type { FeaturedMap } from '@/types/FeaturedMap'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 import { Suspense } from 'react'
-import ImageLoader from '@/components/Loaders/ImageLoader'
 import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
-import ContentfulImage from '@/components/ContentfulImage/ContentfulImage'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 
 interface MapPageProps {
@@ -88,17 +86,7 @@ export default async function MapPage({ params }: MapPageProps) {
                     priority 
                     className='xl:rounded-lg'
                     quality={ 1 }
-                  >
-                    <Suspense fallback={<ImageLoader />}>
-                      <ContentfulImage 
-                        featuredImage={ image }
-                        sizes='(max-width: 1280px) 100vw, 1280px'
-                        priority
-                        className='xl:rounded-lg'
-                        quality={ 1 }
-                      />
-                    </Suspense>
-                  </FeaturedImage>
+                  />
               </div>
               <div className='relative z-20 max-w-screen-xl mx-auto'>
                   <FeaturedImage 
@@ -106,16 +94,7 @@ export default async function MapPage({ params }: MapPageProps) {
                     sizes='(max-width: 1280px) 100vw, 1280px'
                     quality={ 100 }
                     className='xl:rounded-lg overflow-hidden' 
-                  >
-                    <Suspense fallback={<ImageLoader className={`relative border h-[calc(50vw)] xl:h-[720px]`} />}>
-                      <ContentfulImage 
-                        featuredImage={ image }
-                        sizes='(max-width: 1280px) 100vw, 1280px'
-                        quality={ 100 }
-                        className='xl:rounded-lg overflow-hidden'
-                      />
-                    </Suspense>
-                  </FeaturedImage>
+                  />
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
                   <Breadcrumbs links={[
                       { title: category.title, href: `/${category.slug}` },
@@ -185,61 +164,43 @@ export default async function MapPage({ params }: MapPageProps) {
 
   return (
     <Link href={ `/${category.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
-        <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
-          <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
-              <FeaturedImage 
-                featuredImage={ image }
-                sizes='(max-width: 1280px) 320px, 364px'
-                quality={ 1 }
-                className='object-cover scale-[2]'
-              >
-                <Suspense fallback={<ImageLoader />}>
-                  <ContentfulImage 
-                    featuredImage={ image }
-                    sizes='(max-width: 1280px) 320px, 364px'
-                    quality={ 1 }
-                    className='object-cover scale-[2]'
-                  />
-                </Suspense>
-              </FeaturedImage>
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
+        <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
+            <FeaturedImage 
+              featuredImage={ image }
+              sizes='(max-width: 1280px) 320px, 364px'
+              quality={ 1 }
+              className='object-cover scale-[2]'
+            />
+        </div>
+        <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
+            <FeaturedImage
+              featuredImage={ image }
+              alt={ alt }
+              sizes='(max-width: 1280px) 320px, 364px'
+              className='object-cover rounded-lg h-full'
+            />
+        </div>
+        <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4'>
+          <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
+            { title }
+          </h2>
+          <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
+          <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
+            { prev ? (
+              <>
+                <ChevronLeft />
+                <span>Previous Map</span>
+              </>
+            ) : (
+              <>
+                <span className='ml-auto'>Next Map</span>
+                <ChevronRight />
+              </>
+            )}
           </div>
-          <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
-              <FeaturedImage
-                featuredImage={ image }
-                alt={ alt }
-                sizes='(max-width: 1280px) 320px, 364px'
-                className='object-cover rounded-lg h-full'
-              >
-                <Suspense fallback={<ImageLoader />}>
-                  <ContentfulImage 
-                    featuredImage={ image }
-                    alt={ alt }
-                    sizes='(max-width: 1280px) 320px, 364px'
-                    className='object-cover rounded-lg h-full'
-                  />
-                </Suspense>
-              </FeaturedImage>
-          </div>
-          <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4'>
-            <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
-              { title }
-            </h2>
-            <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
-            <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
-              { prev ? (
-                <>
-                  <ChevronLeft />
-                  <span>Previous Map</span>
-                </>
-              ) : (
-                <>
-                  <span className='ml-auto'>Next Map</span>
-                  <ChevronRight />
-                </>
-              )}
-            </div>
-          </div>
-        </article>
-      </Link>
+        </div>
+      </article>
+    </Link>
   )
  }

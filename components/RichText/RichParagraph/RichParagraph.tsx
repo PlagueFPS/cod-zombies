@@ -5,6 +5,6 @@ interface RichParagraphProps extends DetailedHTMLProps<HTMLAttributes<HTMLParagr
 
 export default function RichParagraph({ children, ...props }: RichParagraphProps) {
   return (
-    <p {...props} className="relative z-40">{ children }</p>
+    <p {...props}>{ children }</p>
   )
 }

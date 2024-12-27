@@ -76,9 +76,11 @@ export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
 }
 
 export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleton, undefined, string>[]) => {
-  const [{ draftIds, changedIds }, newMapIds] = await Promise.all([
-    getDraftsOrChanged("featuredMaps"), 
-    getAllNewMapIds()
+  const newIdsPromise = getAllNewMapIds()
+  const draftOrChangedPromise = getDraftsOrChanged("featuredMaps")
+  const [{ draftIds, changedIds }, newIds] = await Promise.all([
+    draftOrChangedPromise,
+    newIdsPromise
   ])
 
   return featuredMaps.map(featuredMap => {
@@ -86,7 +88,7 @@ export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMaps
     const category = resolveEntry(featuredMap.fields.gameCategory)
     const isDraft = draftIds.has(featuredMap.sys.id)
     const isChanged = changedIds.has(featuredMap.sys.id)
-    const isNew = !!newMapIds.find(map => map.mapId === featuredMap.sys.id)
+    const isNew = !!newIds.find(map => map.mapId === featuredMap.sys.id)
     
     return {
       id: featuredMap.sys.id,
@@ -130,16 +132,18 @@ export const createSideQuestsDTO = async (sideQuests: Entry<TypeSideQuestsSkelet
 }
 
 export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
-  const [{ draftIds, changedIds }, newCategoryIds] = await Promise.all([
-    getDraftsOrChanged("gameCategory"), 
-    getAllNewCategoryIds()
+  const newIdsPromise = getAllNewCategoryIds()
+  const draftOrChangedPromise = getDraftsOrChanged("gameCategory")
+  const [{ draftIds, changedIds }, newIds] = await Promise.all([
+    draftOrChangedPromise,
+    newIdsPromise
   ])
 
   return gameCategorys.map(gameCategory => {
     const categoryImage = resolveAsset(gameCategory.fields.image)
     const isDraft = draftIds.has(gameCategory.sys.id)
     const isChanged = changedIds.has(gameCategory.sys.id)
-    const isNew = !!newCategoryIds.find(category => category.categoryId === gameCategory.sys.id)
+    const isNew = !!newIds.find(category => category.categoryId === gameCategory.sys.id)
 
     return {
       ...gameCategory.fields,

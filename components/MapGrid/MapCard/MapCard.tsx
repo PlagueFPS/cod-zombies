@@ -1,7 +1,5 @@
 import type { MinifiedFeaturedMap } from '@/types/FeaturedMap'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
-import ContentfulImage from '@/components/ContentfulImage/ContentfulImage'
-import { Suspense } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { isPriority } from '@/utils/functions'
@@ -9,7 +7,6 @@ import { IN_DEVELOPMENT } from '@/utils/constants'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
-import ImageLoader from '@/components/Loaders/ImageLoader'
 
 interface MapCardProps {
   map: MinifiedFeaturedMap
@@ -36,16 +33,12 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
           </Badge>
         </div>
         <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
-            <FeaturedImage featuredImage={ image } priority={ priority } quality={ 1 } sizes='272px'>
-              <Suspense fallback={<ImageLoader />}>
-                <ContentfulImage 
-                  featuredImage={ image }
-                  priority={ priority }
-                  sizes='272px'
-                  quality={ 1 }
-                />
-              </Suspense>
-            </FeaturedImage>
+            <FeaturedImage 
+              featuredImage={ image } 
+              priority={ priority } 
+              quality={ 1 } 
+              sizes='272px' 
+            />
         </div>
         <CardHeader className="flex gap-2 flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
@@ -54,16 +47,7 @@ export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps
                 alt={ alt }
                 sizes='272px'
                 className='h-44 object-cover' 
-              >
-                <Suspense fallback={<ImageLoader className='h-44 relative border' />}>
-                  <ContentfulImage 
-                    featuredImage={ image }
-                    alt={ alt }
-                    sizes='272px'
-                    className='h-44 object-cover'
-                  />
-                </Suspense>
-              </FeaturedImage>
+              />
           </div>
           <div className='space-y-2'>
             <CardTitle className="group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">{ title }</CardTitle>

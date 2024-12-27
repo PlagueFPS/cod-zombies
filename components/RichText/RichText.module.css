@@ -12,7 +12,6 @@
 .body h6 {
   @apply relative z-30 mt-8 mx-0
 }
-
 .body p {
   @apply my-8 tracking-wide
 }

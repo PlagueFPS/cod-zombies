@@ -2,16 +2,25 @@
 import type { ImageProps } from "@/types/Image"
 import { useImageState } from "@/hooks/useImageState"
 import { cn } from "@/lib/utils"
-import PlaceholderImage from "@/public/article-img-placeholder.jpg"
 import Image from "next/image"
+import { customImageLoader } from "@/utils/imageLoader"
 
-interface IconImageProps extends ImageProps {
-  children: React.ReactNode
-}
+export default function IconImage({ featuredImage, alt = "", quality = 75, className, priority, sizes }: ImageProps) {
+  const { 
+    imageRef, 
+    imageLoaded, 
+    imageErrored,
+    fallbackRef,
+    fallbackLoaded,
+    fallbackErrored,
+    setImageLoaded, 
+    setImageErrored,
+    setFallbackLoaded,
+    setFallbackErrored,
+  } = useImageState()
+  const featuredImageURL = featuredImage ? `https:${featuredImage.url}` : null
 
-export default function IconImage({ children, featuredImage, alt = "", quality = 75, className, priority, sizes }: IconImageProps) {
-  const { imageRef, imageLoaded, imageErrored, setImageLoaded, setImageErrored } = useImageState()
-  const featuredImageURL = featuredImage ? `https:${featuredImage.url}` : PlaceholderImage
+  if (!featuredImageURL) return null
 
   return (
     <>
@@ -30,11 +39,26 @@ export default function IconImage({ children, featuredImage, alt = "", quality =
             'animate-fade-in opacity-100': imageLoaded
           })}
           priority={ priority }
-        /> : null }
-      {/* children here represents a dynamic server component which serves a backup image
-          based on the users browsers
-      */}
-      { imageErrored ? children : null }
+        /> : null}
+      { imageErrored && !fallbackErrored ? (
+        <Image 
+          src={ featuredImageURL }
+          loader={({ src, width, quality }) => customImageLoader({ src, width, quality })}
+          alt={ alt }
+          width={ featuredImage?.width }
+          height={ featuredImage?.height }
+          sizes={ sizes }
+          ref={ fallbackRef }
+          onLoad={ () => setFallbackLoaded(true) }
+          onError={ () => setFallbackErrored(true) }
+          quality={ quality }
+          className={cn('flex justify-center items-center w-full h-auto aspect-video opacity-0', className, {
+            'animate-fade-in opacity-100': fallbackLoaded
+          })}
+          priority={ priority }
+          placeholder={ !featuredImage ? "blur" : undefined }
+        />
+      ) : null}
     </>
   )
 }
