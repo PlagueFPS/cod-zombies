@@ -1,22 +1,28 @@
 import "server-only"
-import { IN_DEVELOPMENT } from '@/utils/constants'
 import { createClient, type EntriesQueries, type EntrySkeletonType } from 'contentful'
 import { env } from "@/env"
+import { IN_DEVELOPMENT } from "@/utils/constants"
 
-const initializeContentfulClient = (draftMode?: boolean) => {
-  const space = env.CONTENTFUL_SPACE_ID
-  const accessToken = (draftMode || IN_DEVELOPMENT) ? env.CONTENTFUL_PREVIEW_ACCESS_TOKEN : env.CONTENTFUL_ACCESS_TOKEN
-  const host = (draftMode || IN_DEVELOPMENT) ? 'preview.contentful.com' : 'cdn.contentful.com'
+export const prodClient = createClient({
+  space: env.CONTENTFUL_SPACE_ID,
+  accessToken: env.CONTENTFUL_ACCESS_TOKEN,
+  host: 'cdn.contentful.com'
+})
 
-  return createClient({
-    space,
-    accessToken: accessToken,
-    host
-  })
-}
+export const previewClient = createClient({
+  space: env.CONTENTFUL_SPACE_ID,
+  accessToken: env.CONTENTFUL_PREVIEW_ACCESS_TOKEN,
+  host: 'preview.contentful.com'
+})
 
 export const getEntries = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
-  const client = initializeContentfulClient(draftMode)
+  const client = (draftMode || IN_DEVELOPMENT) ? previewClient : prodClient
   const response = await client.getEntries<T>(searchParams)
   return response
+}
+
+export const getEntry = async <T extends EntrySkeletonType>(entryId: string, draftMode?: boolean) => {
+  const client = (draftMode || IN_DEVELOPMENT) ? previewClient : prodClient
+  const entry = await client.getEntry<T>(entryId)
+  return entry
 }

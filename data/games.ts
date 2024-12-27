@@ -1,0 +1,99 @@
+import 'server-only'
+import { CACHE_KEYS } from '@/utils/constants'
+import { unstable_cache } from 'next/cache'
+import { cache } from 'react'
+import { getEntries } from '@/contentful/contentful'
+import { TypeGameCategorySkeleton } from '@/contentful/Types/contentful-types'
+import { managementClient } from '@/contentful/contentfulManagement'
+import { db } from '@/db/db'
+import { categories } from '@/db/schema'
+import { createImageDTO, resolveAsset } from '@/utils/contentful-utils'
+
+export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
+  const gameIdsPromise = getGameIds()
+  const gamesPromise = getEntries<TypeGameCategorySkeleton>({
+    content_type: 'gameCategory',
+    order: ['-fields.releaseDate'],
+    select: [
+      "sys.id",
+      "sys.updatedAt",
+      "fields.title",
+      "fields.slug",
+    ]
+  }, draftMode)
+  const [{ changedIds, draftIds, newIds }, games] = await Promise.all([gameIdsPromise, gamesPromise])
+  return games.items.map(game => {
+    const isDraft = draftIds.has(game.sys.id)
+    const isChanged = changedIds.has(game.sys.id)
+    const isNew = !!newIds.find(g => g.categoryId === game.sys.id)
+    return {
+      id: game.sys.id,
+      title: game.fields.title,
+      slug: game.fields.slug,
+      isDraft,
+      isChanged,
+      isNew
+    }
+  })
+}, [], {
+  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
+}))
+
+export const getGameBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
+  const games = await getEntries<TypeGameCategorySkeleton>({
+    content_type: 'gameCategory',
+    'fields.slug': slug,
+    select: [
+      "sys.id",
+      "fields.title",
+      "fields.slug",
+      "fields.image"
+    ]
+  }, draftMode)
+
+ const game = games.items[0]
+ return {
+    id: game.sys.id,
+    title: game.fields.title,
+    slug: game.fields.slug,
+    image: createImageDTO(resolveAsset(game.fields.image))
+  }
+}, [], {
+  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
+}))
+
+const getDraftsAndChanged = cache(unstable_cache(async () => {
+  const games = await managementClient.entry.getMany({
+    query: {
+      content_type: 'gameCategory'
+    }
+  })
+  const draftIds = new Set<string>()
+  const changedIds = new Set<string>()
+
+    games.items.forEach(game => {
+      if (!game.sys.publishedVersion) {
+        draftIds.add(game.sys.id)
+      } else if (!!game.sys.publishedVersion && game.sys.version >= game.sys.publishedVersion + 2) {
+        changedIds.add(game.sys.id)
+      }
+    })
+
+    return { draftIds, changedIds }
+}, [], {
+  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
+}))
+
+const getNewGameIds = cache(unstable_cache(async () => {
+  const ids = await db.select({ categoryId: categories.categoryId }).from(categories)
+  return ids
+}, [], {
+  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
+}))
+
+const getGameIds = cache(async () => {
+  const newIdsPromise = getNewGameIds()
+  const draftAndChangedPromise = getDraftsAndChanged()
+  const [newIds, { changedIds, draftIds }] = await Promise.all([newIdsPromise, draftAndChangedPromise])
+  return { newIds, changedIds, draftIds }
+})

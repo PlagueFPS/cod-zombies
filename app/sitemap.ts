@@ -1,20 +1,22 @@
 import { MetadataRoute } from "next";
-import { env } from "@/env";
-import { getFeaturedMaps } from "@/data/featuredMaps";
 import { IN_DEVELOPMENT } from "@/utils/constants";
-import { getGameCategories } from "@/data/gameCategory";
+import { getMaps } from "@/data/maps";
+import { getGames } from "@/data/games";
+import { env } from "@/env";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [featuredMaps, categories] = await Promise.all([getFeaturedMaps(IN_DEVELOPMENT), getGameCategories(IN_DEVELOPMENT)])
+  const mapsPromise = getMaps(IN_DEVELOPMENT)
+  const gamesPromise = getGames(IN_DEVELOPMENT)
+  const [maps, games] = await Promise.all([mapsPromise, gamesPromise])
 
   return [
     {
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}`
     },
-    ...categories.map(category => ({
-      url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${category.slug}`,
+    ...games.map(game => ({
+      url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${game.slug}`,
     })),
-    ...featuredMaps.map(map => ({
+    ...maps.map(map => ({
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category.slug}/${map.slug}`,
       lastModified: new Date(map.updatedAt)
     }))

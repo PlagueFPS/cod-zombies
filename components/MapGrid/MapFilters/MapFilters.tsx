@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers";
-import { getGameCategories } from "@/data/gameCategory";
+import { getGames } from "@/data/games";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Link from "next/link";
@@ -14,7 +14,7 @@ interface MapFiltersProps {
 
 export default async function MapFilters({ currentCategory }: MapFiltersProps) {
   const { isEnabled } = await draftMode()
-  const gameCategories = await getGameCategories(isEnabled)
+  const games = await getGames(isEnabled)
   
   const getHref = (category: string) => {
     if (currentCategory === category) return '/'
@@ -25,7 +25,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
     <ScrollArea className="-mt-6 animate-fade-in">
       <div className="inline-block pt-3">
         <div className="relative inline-flex w-max gap-2">
-          { gameCategories.map(game => (
+          { games.map(game => (
             <Fragment key={ game.id }>
               <Button 
                 size="sm" 
@@ -37,7 +37,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
                   focus-visible:border focus-visible:border-primary focus-visible:badge-primary-gradient focus-visible:ring-0`
                 )}
               >
-                <Link href={ getHref(game.slug) } aria-label={ game.description }>
+                <Link href={ getHref(game.slug) }>
                   { game.title }
                 </Link>
               </Button>
@@ -45,7 +45,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
               { (isEnabled || IN_DEVELOPMENT) && game.isChanged ? <ChangedBadge className="absolute -top-3 -right-3 z-10" /> : null }
               { (isEnabled || IN_DEVELOPMENT) && game.isDraft ? <DraftBadge className="absolute -top-3 -right-3 z-10" /> : null }
             </Fragment>
-          ))}
+          )).reverse()}
         </div>
       </div>
       <ScrollBar orientation="horizontal" />

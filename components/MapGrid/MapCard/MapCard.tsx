@@ -1,4 +1,4 @@
-import type { MinifiedFeaturedMap } from '@/types/FeaturedMap'
+import type { FeaturedMap } from '@/types/FeaturedMap'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,7 +9,7 @@ import { draftMode } from 'next/headers'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 
 interface MapCardProps {
-  map: MinifiedFeaturedMap
+  map: Omit<FeaturedMap, "body" | "updatedAt">
   mapIndex: number
   totalMaps: number
 }

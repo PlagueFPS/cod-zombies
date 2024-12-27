@@ -14,6 +14,7 @@ export type TypeAmmoMods<Modifiers extends ChainModifiers, Locales extends Local
 export interface TypeFeaturedMapsFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    releaseDate: EntryFieldTypes.Date;
     gameCategory: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     image: EntryFieldTypes.AssetLink;
     description: EntryFieldTypes.Text;
@@ -37,6 +38,7 @@ export type TypeFieldUpgrades<Modifiers extends ChainModifiers, Locales extends 
 export interface TypeGameCategoryFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    releaseDate: EntryFieldTypes.Date;
     description: EntryFieldTypes.Symbol;
     image: EntryFieldTypes.AssetLink;
 }
@@ -80,6 +82,3 @@ export interface TypeSideQuestsFields {
 
 export type TypeSideQuestsSkeleton = EntrySkeletonType<TypeSideQuestsFields, "sideQuests">;
 export type TypeSideQuests<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeSideQuestsSkeleton, Modifiers, Locales>;
-
-export type ZombieItem = Entry<TypeAmmoModsSkeleton, undefined, string> | Entry<TypeFieldUpgradesSkeleton, undefined, string> 
-    | Entry<TypeGobblegumsSkeleton, undefined, string> | Entry<TypePerksSkeleton, undefined, string>

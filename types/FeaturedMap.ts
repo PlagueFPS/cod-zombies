@@ -20,5 +20,3 @@ export interface FeaturedMap {
   isChanged: boolean
   isNew: boolean
 }
-
-export interface MinifiedFeaturedMap extends Omit<FeaturedMap, "body"> {}

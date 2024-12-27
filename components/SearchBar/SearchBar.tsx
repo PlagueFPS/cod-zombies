@@ -1,22 +1,22 @@
 import { draftMode } from "next/headers"
-import { getFeaturedMaps } from "@/data/featuredMaps"
-import { getGameCategories } from "@/data/gameCategory"
 import SearchInput from "./SearchInput"
+import { getMapSearchData } from "@/data/maps"
+import { getGames } from "@/data/games"
 
 export default async function SearchBar() {
   const { isEnabled } = await draftMode()
-  const [featuredMaps, gameCategories] = await Promise.all([getFeaturedMaps(isEnabled), getGameCategories(isEnabled)])
-  const modifiedCategories = [...gameCategories].reverse()
-  const searchMaps = featuredMaps.map(map => ({
-    id: map.id,
-    title: map.title,
-    slug: map.slug,
-    category: map.category
+  const mapsPromise = getMapSearchData(isEnabled)
+  const gamesPromise = getGames(isEnabled)
+  const [maps, games] = await Promise.all([mapsPromise, gamesPromise])
+  const modifiedCategories = games.map(game => ({
+    id: game.id,
+    title: game.title,
+    slug: game.slug
   }))
 
   return (
     <div className="flex justify-center items-center w-fit animate-fade-in">
-      <SearchInput maps={ searchMaps } categories={ modifiedCategories } />
+      <SearchInput maps={ maps } categories={ modifiedCategories } />
     </div>
   )
 }

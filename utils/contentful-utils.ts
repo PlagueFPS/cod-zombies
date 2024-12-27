@@ -1,10 +1,11 @@
 import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
-import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeSideQuestsSkeleton, ZombieItem } from "@/contentful/Types/contentful-types";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeSideQuestsSkeleton } from "@/contentful/Types/contentful-types";
+import type { ZombieItem } from "@/types/ZombieItem";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
-import { getAllNewMapIds, getDraftsOrChanged } from "@/data/featuredMaps";
-import { getAllNewCategoryIds } from "@/data/gameCategory";
+// import { getAllNewMapIds, getDraftsOrChanged } from "@/data/featuredMaps";
+// import { getAllNewCategoryIds } from "@/data/gameCategory";
 import { MAP_ORDER } from "./constants";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
@@ -75,86 +76,99 @@ export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
   return createdAtDate.getTime() === updatedAtDate.getTime()
 }
 
-export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleton, undefined, string>[]) => {
-  const newIdsPromise = getAllNewMapIds()
-  const draftOrChangedPromise = getDraftsOrChanged("featuredMaps")
-  const [{ draftIds, changedIds }, newIds] = await Promise.all([
-    draftOrChangedPromise,
-    newIdsPromise
-  ])
+// export const createFeaturedMapsDTO = async (featuredMaps: Entry<TypeFeaturedMapsSkeleton, undefined, string>[], withBody?: boolean) => {
+//   const newIdsPromise = getAllNewMapIds()
+//   const draftOrChangedPromise = getDraftsOrChanged("featuredMaps")
+//   const [{ draftIds, changedIds }, newIds] = await Promise.all([
+//     draftOrChangedPromise,
+//     newIdsPromise
+//   ])
 
-  return featuredMaps.map(featuredMap => {
-    const mapImage = resolveAsset(featuredMap.fields.image)
-    const category = resolveEntry(featuredMap.fields.gameCategory)
-    const isDraft = draftIds.has(featuredMap.sys.id)
-    const isChanged = changedIds.has(featuredMap.sys.id)
-    const isNew = !!newIds.find(map => map.mapId === featuredMap.sys.id)
+//   return featuredMaps.map(featuredMap => {
+//     const mapImage = resolveAsset(featuredMap.fields.image)
+//     const category = resolveEntry(featuredMap.fields.gameCategory)
+//     const isDraft = draftIds.has(featuredMap.sys.id)
+//     const isChanged = changedIds.has(featuredMap.sys.id)
+//     const isNew = !!newIds.find(map => map.mapId === featuredMap.sys.id)
     
-    return {
-      id: featuredMap.sys.id,
-      updatedAt: featuredMap.sys.updatedAt,
-      slug: featuredMap.fields.slug,
-      title: featuredMap.fields.title,
-      description: featuredMap.fields.description,
-      body: featuredMap.fields.body,
-      image: createImageDTO(mapImage),
-      category: createMapCategoryDTO(category),
-      isDraft: isDraft,
-      isChanged: isChanged,
-      isNew: isNew
-    }
-  })
-}
+//     if (withBody) {
+//       return {
+//         id: featuredMap.sys.id,
+//         updatedAt: featuredMap.sys.updatedAt,
+//         slug: featuredMap.fields.slug,
+//         title: featuredMap.fields.title,
+//         description: featuredMap.fields.description,
+//         body: featuredMap.fields.body,
+//         image: createImageDTO(mapImage),
+//         category: createMapCategoryDTO(category),
+//         isDraft: isDraft,
+//         isChanged: isChanged,
+//         isNew: isNew
+//       }
+//     } else return {
+//         id: featuredMap.sys.id,
+//         updatedAt: featuredMap.sys.updatedAt,
+//         slug: featuredMap.fields.slug,
+//         title: featuredMap.fields.title,
+//         description: featuredMap.fields.description,
+//         image: createImageDTO(mapImage),
+//         category: createMapCategoryDTO(category),
+//         isDraft: isDraft,
+//         isChanged: isChanged,
+//         isNew: isNew
+//     }
+//   })
+// }
 
-export const createSideQuestsDTO = async (sideQuests: Entry<TypeSideQuestsSkeleton, undefined, string>[]) => {
-  const { draftIds, changedIds } = await getDraftsOrChanged("sideQuests")
-  return sideQuests.map(quest => {
-    const questImage = quest.fields.image ? resolveAsset(quest.fields.image) : null
-    const questGame = resolveEntry(quest.fields.game)
-    const questMap = resolveEntry(quest.fields.map)
-    const isDraft = draftIds.has(quest.sys.id)
-    const isChanged = changedIds.has(quest.sys.id)
+// export const createSideQuestsDTO = async (sideQuests: Entry<TypeSideQuestsSkeleton, undefined, string>[]) => {
+//   const { draftIds, changedIds } = await getDraftsOrChanged("sideQuests")
+//   return sideQuests.map(quest => {
+//     const questImage = quest.fields.image ? resolveAsset(quest.fields.image) : null
+//     const questGame = resolveEntry(quest.fields.game)
+//     const questMap = resolveEntry(quest.fields.map)
+//     const isDraft = draftIds.has(quest.sys.id)
+//     const isChanged = changedIds.has(quest.sys.id)
     
-    return {
-      id: quest.sys.id,
-      updatedAt: quest.sys.updatedAt,
-      slug: quest.fields.slug,
-      title: quest.fields.title,
-      description: quest.fields.description,
-      content: quest.fields.content,
-      image: questImage ? createImageDTO(questImage) : null,
-      game: createMapCategoryDTO(questGame),
-      map: createQuestMapDTO(questMap),
-      isDraft,
-      isChanged,
-    }
-  })
-}
+//     return {
+//       id: quest.sys.id,
+//       updatedAt: quest.sys.updatedAt,
+//       slug: quest.fields.slug,
+//       title: quest.fields.title,
+//       description: quest.fields.description,
+//       content: quest.fields.content,
+//       image: questImage ? createImageDTO(questImage) : null,
+//       game: createMapCategoryDTO(questGame),
+//       map: createQuestMapDTO(questMap),
+//       isDraft,
+//       isChanged,
+//     }
+//   })
+// }
 
-export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
-  const newIdsPromise = getAllNewCategoryIds()
-  const draftOrChangedPromise = getDraftsOrChanged("gameCategory")
-  const [{ draftIds, changedIds }, newIds] = await Promise.all([
-    draftOrChangedPromise,
-    newIdsPromise
-  ])
+// export const createGameCategoryDTO = async (gameCategorys: Entry<TypeGameCategorySkeleton, undefined, string>[]) => {
+//   const newIdsPromise = getAllNewCategoryIds()
+//   const draftOrChangedPromise = getDraftsOrChanged("gameCategory")
+//   const [{ draftIds, changedIds }, newIds] = await Promise.all([
+//     draftOrChangedPromise,
+//     newIdsPromise
+//   ])
 
-  return gameCategorys.map(gameCategory => {
-    const categoryImage = resolveAsset(gameCategory.fields.image)
-    const isDraft = draftIds.has(gameCategory.sys.id)
-    const isChanged = changedIds.has(gameCategory.sys.id)
-    const isNew = !!newIds.find(category => category.categoryId === gameCategory.sys.id)
+//   return gameCategorys.map(gameCategory => {
+//     const categoryImage = resolveAsset(gameCategory.fields.image)
+//     const isDraft = draftIds.has(gameCategory.sys.id)
+//     const isChanged = changedIds.has(gameCategory.sys.id)
+//     const isNew = !!newIds.find(category => category.categoryId === gameCategory.sys.id)
 
-    return {
-      ...gameCategory.fields,
-      id: gameCategory.sys.id,
-      image: createImageDTO(categoryImage),
-      isDraft: isDraft,
-      isChanged: isChanged,
-      isNew: isNew
-    }
-  })
-}
+//     return {
+//       ...gameCategory.fields,
+//       id: gameCategory.sys.id,
+//       image: createImageDTO(categoryImage),
+//       isDraft: isDraft,
+//       isChanged: isChanged,
+//       isNew: isNew
+//     }
+//   })
+// }
 
 export const createItemTooltipDTO = (item: ZombieItem) => {
   const itemImage = resolveAsset(item.fields.image)
@@ -184,7 +198,7 @@ export const createImageDTO = (image: Asset<undefined, string> | undefined) => {
   }
 }
 
-const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, undefined, string> | undefined) => {
+export const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, undefined, string> | undefined) => {
   if (!category) throw new Error("Expected map to have a category")
   return {
     title: category.fields.title,

@@ -1,7 +1,7 @@
 import richStyles from '@/components/RichText/RichText.module.css'
+import { getMaps, getMapBySlug } from '@/data/maps'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
-import { getFeaturedMapBySlug, getFeaturedMaps } from "@/data/featuredMaps"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
@@ -28,7 +28,7 @@ interface MapPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const featuredMaps = await getFeaturedMaps(IN_DEVELOPMENT)
+  const featuredMaps = await getMaps(IN_DEVELOPMENT)
 
   return featuredMaps.map(map => ({
     category: map.category.slug,
@@ -38,7 +38,7 @@ export const generateStaticParams = async () => {
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
   const [{ slug, category }, { isEnabled }] = await Promise.all([params, draftMode()])
-  const map = await getFeaturedMapBySlug(isEnabled, slug)
+  const map = await getMapBySlug(isEnabled, slug)
   if (!map) notFound()
   const { title, description, image } = map
   const seoTitle = `${title} Main Quest`
@@ -68,7 +68,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 
 export default async function MapPage({ params }: MapPageProps) {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
-  const map = await getFeaturedMapBySlug(isEnabled, slug)
+  const map = await getMapBySlug(isEnabled, slug)
   if (!map) notFound()
   const { title, image, category, updatedAt, isDraft, isChanged, isNew, body } = map
   const headings = extractHeadings(body)
@@ -145,26 +145,34 @@ export default async function MapPage({ params }: MapPageProps) {
 
  const PreviousOrNextMap = async ({ map }: { map: FeaturedMap }) => {
   const { isEnabled } = await draftMode()
-  const featuredMaps = await getFeaturedMaps(isEnabled)
+  const featuredMaps = await getMaps(isEnabled)
   const mapIndex = featuredMaps.findIndex(m => m.slug === map.slug)
   const prevMap = featuredMaps[mapIndex + 1]
   const nextMap = featuredMaps[mapIndex - 1]
 
   return (
     <>
-      { prevMap && <PrevOrNextMapCard map={ prevMap } prev /> }
-      { nextMap && <PrevOrNextMapCard map={ nextMap } /> }
+      { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
+      { nextMap && <PrevOrNextMapCard map={ nextMap } isEnabled={ isEnabled } /> }
     </>
   )
  }
 
- const PrevOrNextMapCard = ({ map, prev }: { map: FeaturedMap, prev?: boolean }) => {
-  const { title, description, category, image, slug } = map
+ const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: Omit<FeaturedMap, "body">, isEnabled: boolean, prev?: boolean }) => {
+  const { title, description, category, image, slug, isChanged, isDraft, isNew } = map
   const alt = `${title} map image`
 
   return (
     <Link href={ `/${category.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
       <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
+        <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
+          { isNew ? <NewBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
+          <Badge className='badge-primary-gradient'>
+            { category.title }
+          </Badge>
+        </div>
         <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
               featuredImage={ image }
@@ -177,7 +185,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <FeaturedImage
               featuredImage={ image }
               alt={ alt }
-              sizes='(max-width: 1280px) 320px, 364px'
+              sizes='(max-width: 1280px) 320px, 384px'
               className='object-cover rounded-lg h-full'
             />
         </div>
