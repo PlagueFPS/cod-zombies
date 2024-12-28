@@ -14,7 +14,7 @@ export const GLOBAL_OG_PROPS = {
   }
 } satisfies Metadata
 export const CACHE_KEYS = {
-  /** Cache key for all game categories */
+  /** Cache key for all game data */
   GAME_CATEGORIES: { 
     /** Cache key for all category data */
     ALL: 'game-categories',
@@ -22,13 +22,17 @@ export const CACHE_KEYS = {
     IDS: 'game-categories-ids'
   },
   FEATURED_MAPS: {
-    /** Cache key for all pagination pages */
+    /** Cache key for all map data */
     ALL: "featured-maps",
     /** Cache key for a specific pagination page */
     PAGINATION: (page: number) => `featured-maps-pagination-${page}`,
     /** Cache key for all new map ids */
     IDS: "featured-maps-ids"
   },
+  SIDE_QUESTS: {
+    /** Cache key for all side quests data */
+    ALL: 'side-quests'
+  }
 } as const
 export const MAP_ORDER: { [x: string]: number } = {
   "ascension": 0,

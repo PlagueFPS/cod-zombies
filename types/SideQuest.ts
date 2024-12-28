@@ -9,7 +9,7 @@ export interface SideQuest {
       url: string | undefined;
       width: number | undefined;
       height: number | undefined;
-  } | null;
+  };
   game: {
     title: string
     slug: string

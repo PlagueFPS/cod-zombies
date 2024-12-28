@@ -1,5 +1,5 @@
 import { getGames, getGameBySlug } from "@/data/games"
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
@@ -18,7 +18,7 @@ interface CategoryPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const categories = await getGames(IN_DEVELOPMENT)
+  const categories = await getGames(false)
   return categories.map(category => ({
     category: category.slug
   }))

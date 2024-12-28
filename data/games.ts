@@ -11,18 +11,9 @@ import { createImageDTO, resolveAsset } from '@/utils/contentful-utils'
 
 export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   const gameIdsPromise = getGameIds()
-  const gamesPromise = getEntries<TypeGameCategorySkeleton>({
-    content_type: 'gameCategory',
-    order: ['-fields.releaseDate'],
-    select: [
-      "sys.id",
-      "sys.updatedAt",
-      "fields.title",
-      "fields.slug",
-    ]
-  }, draftMode)
+  const gamesPromise = INTERNAL_getGameData(draftMode)
   const [{ changedIds, draftIds, newIds }, games] = await Promise.all([gameIdsPromise, gamesPromise])
-  return games.items.map(game => {
+  return games.map(game => {
     const isDraft = draftIds.has(game.sys.id)
     const isChanged = changedIds.has(game.sys.id)
     const isNew = !!newIds.find(g => g.categoryId === game.sys.id)
@@ -40,18 +31,11 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
 }))
 
 export const getGameBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
-  const games = await getEntries<TypeGameCategorySkeleton>({
-    content_type: 'gameCategory',
-    'fields.slug': slug,
-    select: [
-      "sys.id",
-      "fields.title",
-      "fields.slug",
-      "fields.image"
-    ]
-  }, draftMode)
+  const games = await INTERNAL_getGameData(draftMode)
 
- const game = games.items[0]
+ const game = games.find(g => g.fields.slug === slug)
+ if (!game) return null
+ 
  return {
     id: game.sys.id,
     title: game.fields.title,
@@ -96,4 +80,18 @@ const getGameIds = cache(async () => {
   const draftAndChangedPromise = getDraftsAndChanged()
   const [newIds, { changedIds, draftIds }] = await Promise.all([newIdsPromise, draftAndChangedPromise])
   return { newIds, changedIds, draftIds }
+})
+
+const INTERNAL_getGameData = cache(async (draftMode: boolean) => {
+  const games = await getEntries<TypeGameCategorySkeleton>({
+    content_type: 'gameCategory',
+    order: ['-fields.releaseDate'],
+    select: [
+      "sys.id",
+      "sys.updatedAt",
+      "fields"
+    ]
+  }, draftMode)
+
+  return games.items
 })

@@ -28,7 +28,7 @@ interface MapPageProps {
 }
 
 export const generateStaticParams = async () => {
-  const featuredMaps = await getMaps(IN_DEVELOPMENT)
+  const featuredMaps = await getMaps(false)
 
   return featuredMaps.map(map => ({
     category: map.category.slug,
@@ -70,7 +70,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const map = await getMapBySlug(isEnabled, slug)
   if (!map) notFound()
-  const { title, image, category, updatedAt, isDraft, isChanged, isNew, body } = map
+  const { title, image, category, updatedAt, releaseDate, isDraft, isChanged, isNew, body } = map
   const headings = extractHeadings(body)
 
   return (
@@ -117,7 +117,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 </div>
               </div>
               <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
-                <div className='flex items-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
+                <div className='flex flex-col items-center justify-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
                   <div>Last Updated: { new Date(updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
                 </div>
                 <div className='flex items-center justify-center'>

@@ -206,7 +206,7 @@ export const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, u
   }
 }
 
-const createQuestMapDTO = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string> | undefined) => {
+export const createQuestMapDTO = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string> | undefined) => {
   if (!map) throw new Error("Expected quest to have a map")
   return {
     title: map.fields.title,

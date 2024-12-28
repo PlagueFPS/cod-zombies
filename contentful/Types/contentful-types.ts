@@ -74,7 +74,7 @@ export interface TypeSideQuestsFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
     description: EntryFieldTypes.Text;
-    image?: EntryFieldTypes.AssetLink;
+    image: EntryFieldTypes.AssetLink;
     map: EntryFieldTypes.EntryLink<TypeFeaturedMapsSkeleton>;
     game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     content: EntryFieldTypes.RichText;
