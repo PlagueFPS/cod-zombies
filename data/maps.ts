@@ -131,6 +131,30 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
+  export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
+    const maps = await INTERNAL_getMapData(draftMode)
+    const map = maps.find(m => m.sys.id === id)
+    if (!map) return null
+
+    return {
+      id: map.sys.id,
+      slug: map.fields.slug,
+      category: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
+    }
+  }, [], {
+    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
+  }))
+
+  export const storeNewMapId = async (mapId: string, createdAt: string) => {
+    try {
+      await db.insert(maps).values({ mapId, publishedAt: createdAt })
+      return { error: null }
+    } catch (error) {
+      console.error(error)
+      return { error: "Failed to store new map Id. Check server logs for more information." }
+    }
+  }
+
   const getMapIds = cache(async () => {
     const newIdsPromise = getNewMapIds()
     const draftAndChangedPromise = getDraftsAndChanged()

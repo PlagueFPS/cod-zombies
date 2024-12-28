@@ -46,6 +46,28 @@ export const getGameBySlug = cache(unstable_cache(async (draftMode: boolean, slu
   tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
 }))
 
+export const getGameById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
+  const games = await INTERNAL_getGameData(draftMode)
+  const game = games.find(g => g.sys.id === id)
+  if (!game) return null
+
+  return {
+    slug: game.fields.slug
+  }
+}, [], {
+  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
+}))
+
+export const storeNewGameId = async (gameId: string, createdAt: string) => {
+  try {
+    await db.insert(categories).values({ categoryId: gameId, publishedAt: createdAt })
+    return { error: null }
+  } catch (error) {
+    console.error(error)
+    return { error: "Failed to store game ID. Check server logs for more information."}
+  }
+}
+
 const getDraftsAndChanged = cache(unstable_cache(async () => {
   const games = await managementClient.entry.getMany({
     query: {

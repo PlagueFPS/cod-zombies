@@ -14,6 +14,8 @@ import { cache } from 'react'
 import { unstable_cache } from 'next/cache'
 import { Entry } from 'contentful'
 import { managementClient } from '@/contentful/contentfulManagement'
+import { db } from '@/db/db'
+import { quests } from '@/db/schema'
 
 export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number) => {
   const skip = calculateSkip(page, MAP_LIMIT)
@@ -50,6 +52,30 @@ export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boo
 }, [], {
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
 }))
+
+export const getQuestById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
+  const quests = await INTERNAL_getSideQuestData(draftMode)
+  const quest = quests.find(q => q.sys.id === id)
+  if (!quest) return null
+
+  return {
+    slug: quest.fields.slug,
+    map: createQuestMapDTO(resolveEntry(quest.fields.map)).slug,
+    game: createMapCategoryDTO(resolveEntry(quest.fields.game)).slug
+  }
+}, [], {
+  tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
+}))
+
+export const storeNewQuestId = async (id: string, createdAt: string) => {
+  try {
+    await db.insert(quests).values({ questId: id, publishedAt: createdAt })
+    return { error: null }
+  } catch (error) {
+    console.error(error)
+    return { error: `Failed to store quest ID: ${id}`}
+  }
+}
 
 const getDraftsAndChanged = cache(unstable_cache(async () => {
   const quests = await managementClient.entry.getMany({

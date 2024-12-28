@@ -24,6 +24,12 @@ export const ContactFormSchema = zfd.formData({
   message: zfd.text(z.string({ required_error: "Message is required" }).min(1)),
 })
 
+export const RevalidateWebhookBodySchema = z.object({
+  entryId: z.string().min(1),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime()
+})
+
 // Base schema for common fields
 const BaseContentfulWebhookBodySchema = z.object({
   createdAt: z.string({ required_error: "Created At is required" }).datetime(),
