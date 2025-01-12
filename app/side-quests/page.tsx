@@ -4,10 +4,14 @@ import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
 import QuestFilters from "@/components/QuestFilters/QuestFilters";
 import QuestGrid from "@/components/QuestGrid/QuestGrid";
+import { SearchParams } from "@/utils/validationSchemas";
 import { Suspense } from "react";
 
+interface ISideQuests {
+  searchParams: Promise<SearchParams>
+}
 
-export default function SideQuests() {
+export default function SideQuests({ searchParams }: ISideQuests) {
   return (
     <div className='flex flex-col gap-16 justify-center items-center w-full'>
       <div className="container flex flex-col gap-16 justify-center items-center">
@@ -21,7 +25,7 @@ export default function SideQuests() {
             <QuestFilters />
           </Suspense>
           <Suspense fallback={<MapGridLoader />}>
-            <QuestGrid />
+            <QuestGrid searchParams={ searchParams } />
           </Suspense>
         </GridSection>
       </div>

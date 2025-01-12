@@ -17,11 +17,19 @@ import { managementClient } from '@/contentful/contentfulManagement'
 import { db } from '@/db/db'
 import { quests } from '@/db/schema'
 
-export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number) => {
+export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number, category?: string) => {
   const skip = calculateSkip(page, MAP_LIMIT)
-  const sideQuests = await INTERNAL_getSideQuestData(draftMode)
-  const paginatedQuests = sideQuests.slice(skip, (MAP_LIMIT * page))
+  const sideQuestsData = await INTERNAL_getSideQuestData(draftMode)
+  let sideQuests = sideQuestsData
 
+  if (category) {
+    sideQuests = sideQuestsData.filter(q => 
+      resolveEntry(q.fields.game)?.fields.slug === category ||
+      resolveEntry(q.fields.map)?.fields.slug === category
+    )
+  }
+  
+  const paginatedQuests = sideQuests.slice(skip, (MAP_LIMIT * page))
   const sideQuestsDTO = await Promise.all(paginatedQuests.map(async quest => {
     const { category, image, isChanged, isDraft, map } = await resolveQuestData(quest)
     return {

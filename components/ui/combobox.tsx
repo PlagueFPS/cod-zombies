@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import Link from "next/link"
 
 interface Filter {
   id: string
@@ -25,15 +26,22 @@ interface Filter {
   title: string
 }
 
-interface ComboboxProps {
-  filters: Filter[]
-  games: Filter[]
-  maps: Filter[]
+interface MapFilter extends Filter {
+  category: {
+    title: string,
+    slug: string
+  }
 }
 
-export function Combobox({ filters, games, maps }: ComboboxProps) {
+interface ComboboxProps {
+  filters: (Filter | MapFilter)[]
+  games: Filter[]
+  maps: MapFilter[]
+  currentFilter?: string
+}
+
+export function Combobox({ filters, games, maps, currentFilter }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -44,8 +52,8 @@ export function Combobox({ filters, games, maps }: ComboboxProps) {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
-            ? filters.find((filters) => filters.slug === value)?.title
+          {currentFilter
+            ? filters.find(f => f.slug === currentFilter)?.title
             : "Filter by Game or Map"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -57,42 +65,39 @@ export function Combobox({ filters, games, maps }: ComboboxProps) {
             <CommandEmpty>No filter found.</CommandEmpty>
             <CommandGroup heading="Games">
               {games.map((game) => (
-                <CommandItem
-                  key={ game.id }
-                  value={ game.slug }
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === game.title ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  { game.title }
-                </CommandItem>
+                <Link key={ game.id } href={ `/side-quests/${game.slug}` } onClick={ () => setOpen(false) }>
+                  <CommandItem
+                    value={ game.slug }
+                    onSelect={ () => setOpen(false) }
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        currentFilter === game.slug ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    { game.title }
+                  </CommandItem>
+                </Link>
               ))}
             </CommandGroup>
             <CommandGroup heading="Maps">
               {maps.map((map) => (
-                <CommandItem
-                  key={ map.id }
-                  value={ map.slug }
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === map.title ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  { map.title }
-                </CommandItem>
+                <Link key={ map.id } href={ `/side-quests/${map.category.slug}/${map.slug}` }>
+                  <CommandItem
+                    key={ map.id }
+                    value={ map.slug }
+                    onSelect={ () => setOpen(false) }
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        currentFilter === map.slug ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    { map.title }
+                  </CommandItem>
+                </Link>
               ))}
             </CommandGroup>
           </CommandList>
