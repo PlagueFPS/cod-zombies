@@ -17,6 +17,24 @@ import { managementClient } from '@/contentful/contentfulManagement'
 import { db } from '@/db/db'
 import { quests } from '@/db/schema'
 
+export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
+  const quests = await INTERNAL_getSideQuestData(draftMode)
+  return await Promise.all(quests.map(async q => {
+    const { category: game, ...rest } = await resolveQuestData(q)
+    return {
+      ...rest,
+      id: q.sys.id,
+      updatedAt: q.sys.updatedAt,
+      title: q.fields.title,
+      slug: q.fields.slug,
+      description: q.fields.description,
+      game,
+    }
+  }))
+}, [], {
+  tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
+}))
+
 export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number, category?: string) => {
   const skip = calculateSkip(page, MAP_LIMIT)
   const sideQuestsData = await INTERNAL_getSideQuestData(draftMode)
@@ -70,6 +88,25 @@ export const getQuestById = cache(unstable_cache(async (draftMode: boolean, id: 
     slug: quest.fields.slug,
     map: createQuestMapDTO(resolveEntry(quest.fields.map)).slug,
     game: createMapCategoryDTO(resolveEntry(quest.fields.game)).slug
+  }
+}, [], {
+  tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
+}))
+
+export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
+  const quests = await INTERNAL_getSideQuestData(draftMode)
+  const q = quests.find(q => q.fields.slug === slug)
+  if (!q) return null
+  const { category: game, ...rest } = await resolveQuestData(q)
+  return {
+    ...rest,
+    id: q.sys.id,
+    updatedAt: q.sys.updatedAt,
+    title: q.fields.title,
+    slug: q.fields.slug,
+    description: q.fields.description,
+    content: q.fields.content,
+    game
   }
 }, [], {
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]

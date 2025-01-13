@@ -2,17 +2,18 @@
 import { useParams, usePathname } from "next/navigation"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "../ui/breadcrumb"
 import NavLink from "../NavLink/NavLink"
-import { capatilize, checkParams } from "@/utils/functions"
+import { capatilize } from "@/utils/functions"
 import { Button } from "../ui/button"
 import Link from "next/link"
 
 type NotFoundBreadcrumbsProps = 
-  | { categoryPage: true; mapPage?: never }
-  | { mapPage: true; categoryPage?: never }
+  | { categoryPage: true; mapPage?: never; questPage?: never }
+  | { mapPage: true; categoryPage?: never; questPage?: never }
+  | { questPage: true; categoryPage?: never; mapPage?: never }
 
-export function NotFoundBreadcrumbs({ categoryPage, mapPage }: NotFoundBreadcrumbsProps) {
-  const { category, slug } = useParams()
-
+export function NotFoundBreadcrumbs({ categoryPage, mapPage, questPage }: NotFoundBreadcrumbsProps) {
+  const params = useParams()
+  
   return (
     <Breadcrumb className='mr-auto ml-4'>
       <BreadcrumbList>
@@ -22,26 +23,46 @@ export function NotFoundBreadcrumbs({ categoryPage, mapPage }: NotFoundBreadcrum
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        { categoryPage ? (
+        { categoryPage && (
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <NavLink href={ `/${category}` }>Category Not Found</NavLink>
+              <NavLink href={ `/${params.category}` }>Category Not Found</NavLink>
             </BreadcrumbLink>
           </BreadcrumbItem>
-        ) : (
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <NavLink href={ `/${category}` }>{ checkParams(category) }</NavLink>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          )
+        )
         }
         { mapPage &&
           <>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <NavLink href={ `/${params.category}` }>{ params.category }</NavLink>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink href={ `/${category}/${slug}` } className='font-medium'>Map Not Found</NavLink>
+                <NavLink href={ `/${params.category}/${params.slug}` } className='font-medium'>Map Not Found</NavLink>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </>
+        }
+        { questPage && 
+          <>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <NavLink href={ `/side-quests/${params.game}` }>{ params.game }</NavLink>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <NavLink href={ `/side-quests/${params.game}/${params.map}` }>{ params.map }</NavLink>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <NavLink href={ `/side-quests/${params.game}/${params.map}/${params.slug}` } className='font-medium'>Side Quest Not Found</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </>
@@ -51,16 +72,16 @@ export function NotFoundBreadcrumbs({ categoryPage, mapPage }: NotFoundBreadcrum
   )
 }
 
-export function NotFoundButtons({ categoryPage, mapPage }: NotFoundBreadcrumbsProps) {
-  const { category } = useParams()
+export function NotFoundButtons({ categoryPage, mapPage, questPage }: NotFoundBreadcrumbsProps) {
+  const params = useParams()
   
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center w-fit gap-8">
       { mapPage ? (
         <>
           <Button asChild variant="outline">
-            <Link href={`/${category}`}>
-              View { checkParams(category) } Maps
+            <Link href={`/${params.category}`}>
+              View { params.category } Maps
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -77,20 +98,38 @@ export function NotFoundButtons({ categoryPage, mapPage }: NotFoundBreadcrumbsPr
             </Link>
           </Button>
         </>
+      ) : questPage ? (
+        <>
+          <Button asChild variant="outline">
+            <Link href={`/side-quests/${params.game}/${params.map}`}>
+              View { params.map } Side Quests
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href={`/side-quests/${params.game}`}>
+              View { params.game } Side Quests
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/side-quests">
+              View all Side Quests
+            </Link>
+          </Button>
+        </>
       ) : null}
     </div>
   )
 }
 
-export function NotFoundDescription({ categoryPage, mapPage }: NotFoundBreadcrumbsProps) {
-  const { category, slug } = useParams()
+export function NotFoundDescription({ categoryPage, mapPage, questPage }: NotFoundBreadcrumbsProps) {
+  const params = useParams()
   const pathname = usePathname()
 
   return (
     <p className="text-sm md:text-base lg:text-lg">
-      The requested { categoryPage ? "category" : mapPage ? "map" : "content" }
+      The requested { categoryPage ? "category" : mapPage ? "map" : questPage ? "side quest" : "content" }
       <span className="font-bold text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-primary mx-1">
-        { categoryPage ? checkParams(category) : mapPage ? checkParams(slug) : capatilize(pathname) }
+        { categoryPage ? params.category : mapPage ? params.slug : pathname }
       </span>
       does not exist or could not be found
     </p>

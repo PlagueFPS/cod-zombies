@@ -6,7 +6,6 @@ import { Fragment } from "react"
 interface Link {
   href: string
   title: string
-  active?: boolean
 }
 
 interface BreadcrumbsProps {

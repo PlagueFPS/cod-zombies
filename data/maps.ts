@@ -90,7 +90,6 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     return {
       id: map.sys.id,
       updatedAt: map.sys.updatedAt,
-      releaseDate: map.fields.releaseDate,
       title: map.fields.title,
       slug: map.fields.slug,
       description: map.fields.description,

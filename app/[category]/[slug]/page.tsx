@@ -70,7 +70,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const map = await getMapBySlug(isEnabled, slug)
   if (!map) notFound()
-  const { title, image, category, updatedAt, releaseDate, isDraft, isChanged, isNew, body } = map
+  const { title, image, category, updatedAt, isDraft, isChanged, isNew, body } = map
   const headings = extractHeadings(body)
 
   return (
