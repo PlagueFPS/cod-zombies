@@ -1,3 +1,4 @@
+import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
 import GridSection from "@/components/GridSection/GridSection"
 import MapGridLoader from "@/components/Loaders/MapGridLoader"
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader"
@@ -30,23 +31,24 @@ export const generateMetadata = async ({ params }: ISideQuestCategoryPage): Prom
   const [{ game: slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const game = await getGameBySlug(isEnabled, slug)
   if (!game) notFound()
-  const description = `Explore our comprehensive guides to the hidden Side Quests beyond the Main Story in ${game.title}`
+  const title = `${game.title} Side Quests`
+  const description = `Explore our comprehensive guides to the hidden Side Quests and Easter Eggs beyond the Main Story in ${game.title}`
   return {
-    title: game.title,
+    title,
     description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
-      title: game.title,
+      title,
       description,
       url: `/side-quests/${game.slug}`,
       images: {
-        url: `https:${game.image.url}?q=75&fm=jpg`,
-        width: game.image.width,
-        height: game.image.height
+        url: `https:${game.image.url}?w=1260&h=630&q=75&fm=jpg`,
+        width: 1260,
+        height: 630
       },
     },
     twitter: {
-      title: game.title,
+      title,
       description,
       card: 'summary_large_image'
     }
@@ -58,6 +60,12 @@ export default async function SideQuestCategoryPage({ searchParams, params }: IS
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
+      <Breadcrumbs 
+          links={[
+            { title: 'Side Quests', href: '/side-quests' },
+            { title: capatilize(game), href: `/side-quests/${game}`, active: true }
+          ]}
+        />
       <GridSection title={ `${capatilize(game)} Side Quests` }>
         <Suspense fallback={<QuestFilterLoader />}>
           <QuestFilters currentFilter={ game } />

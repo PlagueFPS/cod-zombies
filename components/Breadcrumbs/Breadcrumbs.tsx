@@ -3,7 +3,6 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import NavLink from "../NavLink/NavLink"
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
-
 interface Link {
   href: string
   title: string
@@ -21,7 +20,7 @@ export default function Breadcrumbs({ links, className }: BreadcrumbsProps) {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <NavLink exact href='/'>Home</NavLink>
+            <NavLink href='/'>Home</NavLink>
           </BreadcrumbLink>
         </BreadcrumbItem>
         { links.map(link => (
@@ -31,7 +30,7 @@ export default function Breadcrumbs({ links, className }: BreadcrumbsProps) {
             </BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact href={ link.href } active={ link.active }>{ link.title }</NavLink>
+                <NavLink href={ link.href }>{ link.title }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Fragment>

@@ -18,20 +18,20 @@ export function NotFoundBreadcrumbs({ categoryPage, mapPage }: NotFoundBreadcrum
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <NavLink exact href='/'>Home</NavLink>
+            <NavLink href='/'>Home</NavLink>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         { categoryPage ? (
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <NavLink exact href={ `/${category}` }>Category Not Found</NavLink>
+              <NavLink href={ `/${category}` }>Category Not Found</NavLink>
             </BreadcrumbLink>
           </BreadcrumbItem>
         ) : (
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact href={ `/${category}` }>{ checkParams(category) }</NavLink>
+                <NavLink href={ `/${category}` }>{ checkParams(category) }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
           )
@@ -41,7 +41,7 @@ export function NotFoundBreadcrumbs({ categoryPage, mapPage }: NotFoundBreadcrum
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink exact active href={ `/${category}/${slug}` } className='font-medium'>Map Not Found</NavLink>
+                <NavLink href={ `/${category}/${slug}` } className='font-medium'>Map Not Found</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </>

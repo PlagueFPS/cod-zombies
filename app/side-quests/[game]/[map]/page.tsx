@@ -1,3 +1,4 @@
+import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
 import GridSection from "@/components/GridSection/GridSection"
 import MapGridLoader from "@/components/Loaders/MapGridLoader"
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader"
@@ -32,23 +33,24 @@ export const generateMetadata = async ({ params }: ISideQuestMapPage): Promise<M
   const [{ map: slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const map = await getMapBySlug(isEnabled, slug)
   if (!map) notFound()
-  const description = `Explore our comprehensive guides to the hidden Side Quests beyond the Main Story in ${map.title}`
+  const title = `${map.title} Side Quests`
+  const description = `Explore our comprehensive guides to the hidden Side Quests and Easter Eggs beyond the Main Story in ${map.title}`
   return {
-    title: map.title,
+    title,
     description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
-      title: map.title,
+      title,
       description,
       url: `/side-quests/${map.category.slug}/${map.slug}`,
       images: {
-        url: `https:${map.image.url}?q=75&fm=jpg`,
-        width: map.image.width,
-        height: map.image.height
+        url: `https:${map.image.url}?w=1260&h=630&q=75&fm=jpg`,
+        width: 1260,
+        height: 630
       },
     },
     twitter: {
-      title: map.title,
+      title,
       description,
       card: 'summary_large_image'
     }
@@ -56,10 +58,17 @@ export const generateMetadata = async ({ params }: ISideQuestMapPage): Promise<M
 }
 
 export default async function SideQuestMapPage({ searchParams, params }: ISideQuestMapPage) {
-  const { map } = await params
+  const { map, game } = await params
 
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
+      <Breadcrumbs 
+          links={[
+            { title: 'Side Quests', href: '/side-quests' },
+            { title: capatilize(game), href: `/side-quests/${game}` },
+            { title: capatilize(map), href: `/side-quests/${game}/${map}`, active: true }
+          ]}
+        />
       <GridSection title={ `${capatilize(map)} Side Quests` }>
         <Suspense fallback={<QuestFilterLoader />}>
           <QuestFilters currentFilter={ map } />
