@@ -35,6 +35,22 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
 }))
 
+export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean) => {
+  const quests = await INTERNAL_getSideQuestData(draftMode)
+  return await Promise.all(quests.map(async q => {
+    const { category: game, map } = await resolveQuestData(q)
+    return {
+      id: q.sys.id,
+      title: q.fields.title,
+      slug: q.fields.slug,
+      game,
+      map
+    }
+  }))
+}, [], {
+  tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
+}))
+
 export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number, category?: string) => {
   const skip = calculateSkip(page, MAP_LIMIT)
   const sideQuestsData = await INTERNAL_getSideQuestData(draftMode)

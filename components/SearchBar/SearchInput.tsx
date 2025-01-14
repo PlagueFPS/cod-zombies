@@ -1,11 +1,12 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Book, BookText, Search } from "lucide-react";
 import { DialogDescription, DialogTitle } from "../ui/dialog";
+import { cn } from "@/lib/utils";
 
 interface SearchInputProps {
   maps: {
@@ -22,11 +23,43 @@ interface SearchInputProps {
     slug: string
     title: string
   }[]
+  quests: {
+    id: string
+    slug: string
+    title: string
+    game: {
+      title: string
+      slug: string
+    }
+    map: {
+      title: string
+      slug: string
+    }
+  }[]
 }
 
-export default function SearchInput({ maps, categories }: SearchInputProps) {
+const filters = [
+  { name: "All", icon: Search },
+  { name: "Main Quests", icon: BookText },
+  { name: "Side Quests", icon: Book }
+]
+
+export default function SearchInput({ maps, categories, quests }: SearchInputProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [filter, setFilter] = useState("All")
+
+  const questMaps = useMemo(() => {
+    const questMaps: typeof maps = []
+    quests.forEach(q => {
+      maps.forEach(m => {
+        if (m.slug === q.map.slug) questMaps.push(m)
+        return
+      })
+    })
+
+    return questMaps
+  }, [maps, quests])
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -40,9 +73,9 @@ export default function SearchInput({ maps, categories }: SearchInputProps) {
     return () => document.removeEventListener("keydown", down)
   }, [])
 
-  const onSelectHandler = (category: string | undefined, mapSlug: string) => {
+  const onSelectHandler = (url: string) => {
     setOpen(false)
-    router.push(`/${category}/${mapSlug}`)
+    router.push(url)
   }
 
   return (
@@ -50,7 +83,7 @@ export default function SearchInput({ maps, categories }: SearchInputProps) {
       <Button type="button" size="sm" variant="outline" className="relative hidden sm:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm" onClick={ () => setOpen(!open) }>
         <Search className="size-5" />
         <span className="text-sm">
-          Search Maps
+          Search Quests...
         </span>
         <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100">
           <span className="text-xs">Ctrl+K</span>
@@ -61,22 +94,60 @@ export default function SearchInput({ maps, categories }: SearchInputProps) {
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>
         <DialogTitle className="sr-only">Search Bar</DialogTitle>
-        <DialogDescription className="sr-only">Search for maps</DialogDescription>
-        <CommandInput placeholder="Search for maps" />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          { categories.map(game => (
-            <CommandGroup heading={ game.title } key={ game.id }>
-              { maps.filter(map => map.category.slug === game.slug).map(map => (
-                <Link key={ `${game.id}_${map.id}` } href={ `/${map.category.slug}/${map.slug}` } onClick={ () => setOpen(false) }>
-                  <CommandItem onSelect={ () => onSelectHandler(map.category.slug, map.slug) } className="cursor-pointer">
-                    <span className="blur-none">{ map.title }</span>
-                  </CommandItem>
-                </Link>
-              ))}
-            </CommandGroup>
+        <DialogDescription className="sr-only">Search for quests</DialogDescription>
+        <div className="flex p-2 gap-1">
+          { filters.map(f => (
+            <Button
+              key={ f.name }
+              size={"sm"}
+              variant="outline"
+              onClick={ () => setFilter(f.name) }
+              className={cn("flex items-center space-x-1 text-xs h-5 rounded-lg p-2 py-3", {
+                'badge-primary-gradient': filter === f.name
+              })}
+            >
+              <f.icon className="size-4" />
+              <span className="blur-none">{ f.name }</span>
+            </Button>
           ))}
-        </CommandList>
+        </div>
+        <CommandInput placeholder="Search for quests" className="text-base" />
+        <div className="relative">
+          <CommandList className="transition-all duration-300 ease-in-out">
+            <CommandEmpty>No results found.</CommandEmpty>
+            { filter === "All" || filter === "Main Quests" ? (
+              <>
+                { categories.map(game => (
+                  <CommandGroup heading={ `${game.title} Main Quests` } key={ game.id }>
+                    { maps.map(m => m.category.slug !== game.slug ? null : (
+                      <CommandItem key={ `${game.id}_${m.id}` } onSelect={ () => onSelectHandler(`/${m.category.slug}/${m.slug}`) }>
+                        <Link href={ `/${m.category.slug}/${m.slug}` } onClick={ () => setOpen(false) }>
+                          <span className="blur-none">{ m.title }</span>
+                        </Link>
+                      </CommandItem>
+                      )
+                    )}
+                  </CommandGroup>
+                ))}
+              </>
+            ) : null}
+            { filter === "All" || filter === "Side Quests" ? (
+              <>
+                { questMaps.map(m => (
+                  <CommandGroup heading={ `${m.title} Side Quests` } key={ m.id }>
+                    { quests.map(q => q.map.slug !== m.slug ? null : (
+                      <CommandItem key={ `${q.id}_${m.id}` } onSelect={ () => onSelectHandler(`/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`) }>
+                        <Link href={ `/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}` } onClick={ () => setOpen(false) }>
+                          <span className="blur-none">{ q.title }</span>
+                        </Link>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                ))}
+              </>
+            ) : null}
+          </CommandList>
+        </div>
       </CommandDialog>
     </>
   )

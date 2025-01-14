@@ -6,18 +6,17 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { MAP_LIMIT } from '@/utils/constants'
-import { capatilize, checkParams } from '@/utils/functions'
+import { capatilize } from '@/utils/functions'
 import { useParams } from 'next/navigation'
 
 export default function CategoryPageLoader() {
   const { category } = useParams()
-  const value = checkParams(category)
   return (
     <div className='container flex flex-col gap-16 justify-center items-center'>
-      <HeroSection text={ value ? capatilize(value) : '' } />
+      <HeroSection text={ typeof category === "string" ? capatilize(category) : '' } />
       <section className='flex flex-col gap-8 justify-center w-full'>
         <h2 className='font-extrabold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl text-gradient'>
-          { value ? capatilize(value) : 'Featured Maps' }
+          { typeof category === "string" ? capatilize(category) : 'Featured Maps' }
         </h2>
         <ScrollArea className="-mt-4 relative overflow-hidden">
           <div className="flex w-max gap-3 text-foreground/80">

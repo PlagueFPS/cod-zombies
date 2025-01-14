@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation"
-import { capatilize, checkParams } from "@/utils/functions"
+import { capatilize } from "@/utils/functions"
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
 
 export default function BreadcrumbLoader() {
@@ -8,8 +8,8 @@ export default function BreadcrumbLoader() {
 
   return (
     <Breadcrumbs links={[
-      { title: capatilize(checkParams(category)), href: `/${category}` },
-      { title: capatilize(checkParams(slug)), href: `/${category}/${slug}`, active: true }
+      { title: typeof category === "string" ? capatilize(category) : "", href: `/${category}` },
+      { title: typeof slug === "string" ? capatilize(slug) : "", href: `/${category}/${slug}` }
     ]} />
   )
 }
