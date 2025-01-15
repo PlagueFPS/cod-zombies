@@ -1,7 +1,7 @@
 import { getMapSearchData } from '@/data/maps'
 import { getGames } from '@/data/games'
 import { draftMode } from 'next/headers'
-import { Combobox } from '../ui/combobox'
+import { Combobox } from '@/components/ui/combobox'
 
 interface IQuestFilters {
   currentFilter?: string
