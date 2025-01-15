@@ -2,8 +2,10 @@ import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
 import GridSection from "@/components/GridSection/GridSection"
 import MapGridLoader from "@/components/Loaders/MapGridLoader"
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader"
-import QuestFilters from "@/components/QuestFilters/QuestFilters"
+import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader"
+import QuestFilters from "@/components/QuestGrid/QuestFilters/QuestFilters"
 import QuestGrid from "@/components/QuestGrid/QuestGrid"
+import QuestPagination from "@/components/QuestGrid/QuestPagination/QuestPagination"
 import { getGameBySlug, getGames } from "@/data/games"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { capatilize } from "@/utils/functions"
@@ -72,6 +74,9 @@ export default async function SideQuestCategoryPage({ searchParams, params }: IS
         </Suspense>
         <Suspense fallback={<MapGridLoader />}>
           <QuestGrid searchParams={ searchParams } category={ game } />
+        </Suspense>
+        <Suspense fallback={<QuestPaginationLoader game={ game } />}>
+          <QuestPagination searchParams={ searchParams } params={ params } />
         </Suspense>
       </GridSection>
     </div>
