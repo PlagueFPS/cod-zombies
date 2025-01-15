@@ -39,7 +39,7 @@ export default function SideQuests({ searchParams }: ISideQuests) {
       <div className="container flex flex-col gap-16 justify-center items-center">
       <Breadcrumbs 
           links={[
-            { title: 'Side Quests', href: '/side-quests', active: true },
+            { title: 'Side Quests', href: '/side-quests' },
           ]}
         />
         <GridSection title="Featured Side Quests">

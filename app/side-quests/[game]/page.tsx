@@ -63,11 +63,11 @@ export default async function SideQuestCategoryPage({ searchParams, params }: IS
       <Breadcrumbs 
           links={[
             { title: 'Side Quests', href: '/side-quests' },
-            { title: capatilize(game), href: `/side-quests/${game}`, active: true }
+            { title: capatilize(game), href: `/side-quests/${game}` }
           ]}
         />
       <GridSection title={ `${capatilize(game)} Side Quests` }>
-        <Suspense fallback={<QuestFilterLoader />}>
+        <Suspense fallback={<QuestFilterLoader text={ capatilize(game) } />}>
           <QuestFilters currentFilter={ game } />
         </Suspense>
         <Suspense fallback={<MapGridLoader />}>

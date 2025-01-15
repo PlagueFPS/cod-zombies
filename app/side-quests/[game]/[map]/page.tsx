@@ -66,11 +66,11 @@ export default async function SideQuestMapPage({ searchParams, params }: ISideQu
           links={[
             { title: 'Side Quests', href: '/side-quests' },
             { title: capatilize(game), href: `/side-quests/${game}` },
-            { title: capatilize(map), href: `/side-quests/${game}/${map}`, active: true }
+            { title: capatilize(map), href: `/side-quests/${game}/${map}` }
           ]}
         />
       <GridSection title={ `${capatilize(map)} Side Quests` }>
-        <Suspense fallback={<QuestFilterLoader />}>
+        <Suspense fallback={<QuestFilterLoader text={ capatilize(map) } />}>
           <QuestFilters currentFilter={ map } />
         </Suspense>
         <Suspense fallback={<MapGridLoader />}>

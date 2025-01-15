@@ -35,7 +35,7 @@ export function NotFoundBreadcrumbs({ categoryPage, mapPage, questPage }: NotFou
           <>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink href={ `/${params.category}` }>{ params.category }</NavLink>
+                <NavLink href={ `/${params.category}` }>{ capatilize(String(params.category)) }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -50,13 +50,13 @@ export function NotFoundBreadcrumbs({ categoryPage, mapPage, questPage }: NotFou
           <>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink href={ `/side-quests/${params.game}` }>{ params.game }</NavLink>
+                <NavLink href={ `/side-quests/${params.game}` }>{ capatilize(String(params.game)) }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <NavLink href={ `/side-quests/${params.game}/${params.map}` }>{ params.map }</NavLink>
+                <NavLink href={ `/side-quests/${params.game}/${params.map}` }>{ capatilize(String(params.map)) }</NavLink>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -81,7 +81,7 @@ export function NotFoundButtons({ categoryPage, mapPage, questPage }: NotFoundBr
         <>
           <Button asChild variant="outline">
             <Link href={`/${params.category}`}>
-              View { params.category } Maps
+              View { capatilize(String(params.category)) } Maps
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -102,12 +102,12 @@ export function NotFoundButtons({ categoryPage, mapPage, questPage }: NotFoundBr
         <>
           <Button asChild variant="outline">
             <Link href={`/side-quests/${params.game}/${params.map}`}>
-              View { params.map } Side Quests
+              View { capatilize(String(params.map)) } Side Quests
             </Link>
           </Button>
           <Button asChild variant="outline">
             <Link href={`/side-quests/${params.game}`}>
-              View { params.game } Side Quests
+              View { capatilize(String(params.game)) } Side Quests
             </Link>
           </Button>
           <Button asChild variant="outline">
@@ -129,7 +129,7 @@ export function NotFoundDescription({ categoryPage, mapPage, questPage }: NotFou
     <p className="text-sm md:text-base lg:text-lg">
       The requested { categoryPage ? "category" : mapPage ? "map" : questPage ? "side quest" : "content" }
       <span className="font-bold text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-primary mx-1">
-        { categoryPage ? params.category : mapPage ? params.slug : pathname }
+        { categoryPage ? capatilize(String(params.category)) : mapPage ? capatilize(String(params.slug)) : pathname }
       </span>
       does not exist or could not be found
     </p>
