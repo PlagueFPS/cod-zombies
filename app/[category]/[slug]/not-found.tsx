@@ -5,10 +5,14 @@ import { useParams } from "next/navigation"
 
 export default function MapNotFound() {
   const { category, slug } = useParams()
-  const items: { href: string, text: string }[] = [
-    { href: `/${category}`, text: capatilize(String(category)) },
-    { href: `/${category}/${slug}`, text: capatilize(String(slug)) }
+  const items: { href: string, title: string }[] = [
+    { href: `/${category}`, title: capatilize(String(category)) },
+    { href: `/${category}/${slug}`, title: capatilize(String(slug)) }
   ]
 
-  return <NotFoundContent items={ items } resource="Map" param={ String(slug) } />
+  return (
+    <>
+      <NotFoundContent items={ items } resource="Map" param={ String(slug) } />
+    </>
+  )
 }

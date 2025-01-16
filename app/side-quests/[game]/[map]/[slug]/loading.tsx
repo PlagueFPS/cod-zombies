@@ -1,7 +1,7 @@
-import MapPageLoader from '@/components/Loaders/MapPageLoader'
+import QuestPageLoader from '@/components/Loaders/QuestPageLoader'
 
-export default function SideQuestPageLoading() {
+export default function QuestPageLoading() {
   return (
-    <MapPageLoader />
+    <QuestPageLoader />
   )
 }

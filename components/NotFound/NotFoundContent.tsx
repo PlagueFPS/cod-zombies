@@ -1,12 +1,14 @@
 import NotFoundBreadcrumbs from "@/components/NotFound/NotFoundBreadcrumbs"
 import { capatilize } from "@/utils/functions"
+import { Button } from "../ui/button"
+import Link from "next/link"
 
 interface INotFoundContent {
   param: string
   resource: string
   items: {
     href: string
-    text: string
+    title: string
   }[]
 }
 
@@ -27,7 +29,30 @@ export default function NotFoundContent({ resource, items, param }: INotFoundCon
             does not exist or could not be found
           </p>
         </div>
+        <NotFoundButtons items={ items } resource={ resource } />
       </div>
+    </div>
+  )
+}
+
+const NotFoundButtons = ({ items, resource }: Omit<INotFoundContent, "param">) => {
+  const text = resource === 'Quest' ? "Side Quests" : "Main Quests"
+  const newItems = items.slice(0, -1)
+  return (
+    <div className="flex flex-col sm:flex-row justify-between items-center w-fit gap-8">
+      { newItems.length > 0 ? newItems.map(item => (
+        <Button variant={"outline"} asChild>
+          <Link href={ item.href }>
+            View all { item.title } { item.title === "Side Quests" ? null : text }
+          </Link>
+        </Button>
+      )) : (
+        <Button variant={"outline"} asChild>
+          <Link href='/'>
+            View all Main Quests
+          </Link>
+        </Button>
+      )}
     </div>
   )
 }

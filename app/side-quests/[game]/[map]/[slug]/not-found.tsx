@@ -5,11 +5,11 @@ import { useParams } from "next/navigation"
 
 export default function QuestNotFound() {
   const { game, map, slug } = useParams()
-  const items: { href: string, text: string }[] = [
-    { href: `/side-quests`, text: 'Side Quests' },
-    { href: `/side-quests/${game}`, text: capatilize(String(game)) },
-    { href: `/side-quests/${game}/${map}`, text: capatilize(String(map)) },
-    { href: `/side-quests/${game}/${map}/${slug}`, text: capatilize(String(slug))}
+  const items: { href: string, title: string }[] = [
+    { href: `/side-quests`, title: 'Side Quests' },
+    { href: `/side-quests/${game}`, title: capatilize(String(game)) },
+    { href: `/side-quests/${game}/${map}`, title: capatilize(String(map)) },
+    { href: `/side-quests/${game}/${map}/${slug}`, title: capatilize(String(slug))}
   ]
 
   return <NotFoundContent items={ items } resource="Quest" param={ String(slug) } />
