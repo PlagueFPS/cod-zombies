@@ -13,10 +13,8 @@ interface FeaturedImageProps extends ImageProps {
 
 export default function FeaturedImage({ featuredImage, description, alt = "", quality = 75, className, priority, sizes }: FeaturedImageProps) {
   const { 
-    imageRef, 
     imageLoaded, 
     imageErrored,
-    fallbackRef,
     fallbackLoaded,
     fallbackErrored,
     setImageLoaded, 
@@ -36,7 +34,6 @@ export default function FeaturedImage({ featuredImage, description, alt = "", qu
           width={ featuredImage?.width }
           height={ featuredImage?.height }
           sizes={ sizes }
-          ref={ imageRef }
           onLoad={ () => setImageLoaded(true) }
           onError={ () => setImageErrored(true) }
           quality={ quality }
@@ -55,7 +52,6 @@ export default function FeaturedImage({ featuredImage, description, alt = "", qu
             width={ featuredImage?.width }
             height={ featuredImage?.height }
             sizes={ sizes }
-            ref={ fallbackRef }
             onLoad={ () => setFallbackLoaded(true) }
             onError={ () => setFallbackErrored(true) }
             quality={ quality }

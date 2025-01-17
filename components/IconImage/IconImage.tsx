@@ -7,10 +7,8 @@ import { customImageLoader } from "@/utils/imageLoader"
 
 export default function IconImage({ featuredImage, alt = "", quality = 75, className, priority, sizes }: ImageProps) {
   const { 
-    imageRef, 
     imageLoaded, 
     imageErrored,
-    fallbackRef,
     fallbackLoaded,
     fallbackErrored,
     setImageLoaded, 
@@ -31,7 +29,6 @@ export default function IconImage({ featuredImage, alt = "", quality = 75, class
           width={ featuredImage?.width }
           height={ featuredImage?.height }
           sizes={ sizes }
-          ref={ imageRef }
           onLoad={ () => setImageLoaded(true) }
           onError={ () => setImageErrored(true) }
           quality={ quality }
@@ -48,7 +45,6 @@ export default function IconImage({ featuredImage, alt = "", quality = 75, class
           width={ featuredImage?.width }
           height={ featuredImage?.height }
           sizes={ sizes }
-          ref={ fallbackRef }
           onLoad={ () => setFallbackLoaded(true) }
           onError={ () => setFallbackErrored(true) }
           quality={ quality }

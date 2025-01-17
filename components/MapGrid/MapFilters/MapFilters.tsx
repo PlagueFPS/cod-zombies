@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ChangedBadge, DraftBadge, NewBadge } from "@/components/CustomBadges/CustomBadges";
 import { IN_DEVELOPMENT } from "@/utils/constants";
 import { Fragment } from "react";
+import FilterLogo from "./FilterLogo";
 
 interface MapFiltersProps {
   currentCategory?: string
@@ -27,8 +28,8 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
         <div className="relative inline-flex w-max gap-2">
           { games.map(game => (
             <Fragment key={ game.id }>
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 variant={ "outline" }
                 asChild
                 className={cn({
@@ -37,8 +38,15 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
                   focus-visible:border focus-visible:border-primary focus-visible:badge-primary-gradient focus-visible:ring-0`
                 )}
               >
-                <Link href={ getHref(game.slug) }>
-                  { game.title }
+                <Link href={ getHref(game.slug) } className="flex justify-center items-center gap-2">
+                  <FilterLogo
+                    slug={ game.slug }
+                    alt={ `${game.title} Logo` }
+                    width={ 24 } 
+                    height={ 24 } 
+                    className="size-6" 
+                  />
+                  <span>{ game.title }</span>
                 </Link>
               </Button>
               { game.isNew ? <NewBadge className="absolute -top-3 -right-3 z-10" /> : null }
