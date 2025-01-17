@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { Book, BookText, Search } from "lucide-react";
 import { DialogDescription, DialogTitle } from "../ui/dialog";
 import { cn } from "@/lib/utils";
@@ -62,7 +61,7 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
   }, [maps, quests])
 
   useEffect(() => {
-    const down = (e: KeyboardEvent) => {
+    const down = (e: globalThis.KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setOpen((open) => !open)
@@ -95,6 +94,7 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
       <CommandDialog open={ open } onOpenChange={ setOpen }>
         <DialogTitle className="sr-only">Search Bar</DialogTitle>
         <DialogDescription className="sr-only">Search for quests</DialogDescription>
+        <CommandInput placeholder="Search for quests" className="text-base" />
         <div className="flex p-2 gap-1">
           { filters.map(f => (
             <Button
@@ -111,19 +111,21 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
             </Button>
           ))}
         </div>
-        <CommandInput placeholder="Search for quests" className="text-base" />
         <div className="relative">
-          <CommandList className="transition-all duration-300 ease-in-out">
+          <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             { filter === "All" || filter === "Main Quests" ? (
               <>
                 { categories.map(game => (
                   <CommandGroup heading={ `${game.title} Main Quests` } key={ game.id }>
                     { maps.map(m => m.category.slug !== game.slug ? null : (
-                      <CommandItem key={ `${game.id}_${m.id}` } onSelect={ () => onSelectHandler(`/${m.category.slug}/${m.slug}`) }>
-                        <Link href={ `/${m.category.slug}/${m.slug}` } onClick={ () => setOpen(false) }>
-                          <span className="blur-none">{ m.title }</span>
-                        </Link>
+                      <CommandItem 
+                        key={ `${game.id}_${m.id}` } 
+                        onSelect={() => onSelectHandler(`/${m.category.slug}/${m.slug}`)}
+                        className="gap-2 cursor-pointer"
+                        >
+                        <BookText className="size-4" />
+                        <span className="blur-none">{ m.title }</span>
                       </CommandItem>
                       )
                     )}
@@ -136,10 +138,13 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
                 { questMaps.map(m => (
                   <CommandGroup heading={ `${m.title} Side Quests` } key={ m.id }>
                     { quests.map(q => q.map.slug !== m.slug ? null : (
-                      <CommandItem key={ `${q.id}_${m.id}` } onSelect={ () => onSelectHandler(`/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`) }>
-                        <Link href={ `/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}` } onClick={ () => setOpen(false) }>
-                          <span className="blur-none">{ q.title }</span>
-                        </Link>
+                      <CommandItem 
+                        key={ `${q.id}_${m.id}` } 
+                        onSelect={() => onSelectHandler(`/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`)}
+                        className="gap-2"
+                        >
+                        <Book className="size-4" />
+                        <span className="blur-none">{ q.title }</span>
                       </CommandItem>
                     ))}
                   </CommandGroup>
