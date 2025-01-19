@@ -49,15 +49,8 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
   const [filter, setFilter] = useState("All")
 
   const questMaps = useMemo(() => {
-    const questMaps: typeof maps = []
-    quests.forEach(q => {
-      maps.forEach(m => {
-        if (m.slug === q.map.slug) questMaps.push(m)
-        return
-      })
-    })
-
-    return questMaps
+    const mapSlugs = new Set(quests.map(q => q.map.slug))
+    return maps.filter(m => mapSlugs.has(m.slug))
   }, [maps, quests])
 
   useEffect(() => {
@@ -141,7 +134,7 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
                       <CommandItem 
                         key={ `${q.id}_${m.id}` } 
                         onSelect={() => onSelectHandler(`/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`)}
-                        className="gap-2"
+                        className="gap-2 cursor-pointer"
                         >
                         <Book className="size-4" />
                         <span className="blur-none">{ q.title }</span>
