@@ -5,20 +5,20 @@ import { cn } from '@/lib/utils'
 
 export default function MapFiltersLoader() {
   return (
-    <ScrollArea className="-mt-4 relative overflow-hidden">
-      <div className="flex w-max gap-3 text-foreground/80">
-        { Array.from({ length: 6 }, (_, i) => (
-          <Button 
-            key={ `map-filter-${i}` } 
-            size="sm" 
-            variant={ "outline" }
-            disabled
-            aria-disabled
-            className={cn('animate-pulse bg-muted h-9 w-[105px]', {
-              'w-[157px]': i === 4
-            })}
-          />
-        ))}
+    <ScrollArea className="-mt-6 relative overflow-hidden">
+      <div className='inline-block pt-3'>
+        <div className="inline-flex w-max gap-2">
+          { Array.from({ length: 6 }, (_, i) => (
+            <Button 
+              key={ `map-filter-${i}` } 
+              size="sm" 
+              variant={ "outline" }
+              disabled
+              aria-disabled
+              className={cn('animate-pulse bg-muted h-9 w-[138px]')}
+            />
+          ))}
+        </div>
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
