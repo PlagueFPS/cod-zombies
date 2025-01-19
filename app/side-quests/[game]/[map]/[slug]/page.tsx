@@ -5,6 +5,7 @@ import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
 import ShareButton from "@/components/ShareButton/ShareButton"
 import TableOfContents from "@/components/TableOfContents/TableOfContents"
+import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { getQuestBySlug, getQuests } from "@/data/sideQuests"
 import { env } from "@/env"
@@ -13,6 +14,12 @@ import { extractHeadings } from "@/utils/contentful-utils"
 import type { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
+import { Suspense } from "react"
+import { SideQuest } from "@/types/SideQuest"
+import { ChevronRight } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
+import { cn } from "@/lib/utils"
+import PreviousOrNextMapLoader from "@/components/Loaders/PreviousOrNextMapLoader"
 
 interface ISideQuestSlugPage {
   params: Promise<{ 
@@ -121,10 +128,89 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
             <div className={ richStyles.body }>
               <RichTextRenderer body={ q.content } slug={ slug } />
             </div>
+            <div className='flex flex-row justify-center items-center w-full mt-8'>
+              <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
+                <Suspense fallback={<PreviousOrNextMapLoader />}> 
+                  <PrevOrNextQuest quest={ q } />
+                </Suspense>
+              </div>
+            </div>
           </article>
           <TableOfContents headings={ headings } />
         </div>
       </div>
     </section>
+  )
+}
+
+const PrevOrNextQuest = async ({ quest }: { quest: SideQuest }) => {
+  const { isEnabled } = await draftMode()
+  const quests = await getQuests(isEnabled)
+  const questIndex = quests.findIndex(q => q.slug === quest.slug)
+  const prevQuest = quests[questIndex + 1]
+  const nextQuest = quests[questIndex - 1]
+  return (
+    <>
+      { prevQuest && <PrevOrNextQuestCard quest={ prevQuest } isEnabled={ isEnabled } prev /> }
+      { nextQuest && <PrevOrNextQuestCard quest={ nextQuest } isEnabled={ isEnabled } />}
+    </>
+  )
+}
+
+const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest, "content">, isEnabled: boolean, prev?: boolean }) => {
+  const { title, description, game, image, slug, map, isChanged, isDraft } = quest
+  const alt = `${map.title} map image`
+
+  return (
+    <Link href={ `/side-quests/${game.slug}/${map.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
+        <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
+          {/* { isNew ? <NewBadge /> : null } */}
+          { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
+          <Badge className='badge-primary-gradient'>
+            { map.title }
+          </Badge>
+          <Badge className='badge-primary-gradient'>
+            { game.title }
+          </Badge>
+        </div>
+        <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
+            <FeaturedImage 
+              featuredImage={ image }
+              sizes='(max-width: 1280px) 320px, 364px'
+              quality={ 1 }
+              className='object-cover scale-[2]'
+            />
+        </div>
+        <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
+            <FeaturedImage
+              featuredImage={ image }
+              alt={ alt }
+              sizes='(max-width: 1280px) 320px, 384px'
+              className='object-cover rounded-lg h-full'
+            />
+        </div>
+        <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
+          <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
+            { title }
+          </h2>
+          <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
+          <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
+            { prev ? (
+              <>
+                <ChevronLeft />
+                <span>Previous Quest</span>
+              </>
+            ) : (
+              <>
+                <span className='ml-auto'>Next Quest</span>
+                <ChevronRight />
+              </>
+            )}
+          </div>
+        </div>
+      </article>
+    </Link>
   )
 }

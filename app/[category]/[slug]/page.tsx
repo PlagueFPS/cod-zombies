@@ -98,7 +98,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
                   <Breadcrumbs links={[
                       { title: category.title, href: `/${category.slug}` },
-                      { title: title, href: `/${category.slug}/${slug}`, active: true }
+                      { title: title, href: `/${category.slug}/${slug}` }
                     ]}
                   />
                 </div>

@@ -1,3 +1,5 @@
+import type { Document } from "@contentful/rich-text-types";
+
 export interface SideQuest {
   id: string;
   updatedAt: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
