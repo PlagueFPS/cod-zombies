@@ -1,6 +1,6 @@
 import 'server-only'
-import { CACHE_KEYS } from '@/utils/constants'
-import { unstable_cache } from 'next/cache'
+import { CACHE_KEYS, MAX_NEW_TIME } from '@/utils/constants'
+import { revalidateTag, unstable_cache } from 'next/cache'
 import { cache } from 'react'
 import { getEntries } from '@/contentful/contentful'
 import { TypeGameCategorySkeleton } from '@/contentful/Types/contentful-types'
@@ -8,6 +8,8 @@ import { managementClient } from '@/contentful/contentfulManagement'
 import { db } from '@/db/db'
 import { categories } from '@/db/schema'
 import { createImageDTO, resolveAsset } from '@/utils/contentful-utils'
+import { eq } from 'drizzle-orm'
+import { submitFeedbackUseCase } from '@/usecases/feedback'
 
 export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   const gameIdsPromise = getGameIds()
@@ -65,6 +67,37 @@ export const storeNewGameId = async (gameId: string, createdAt: string) => {
   } catch (error) {
     console.error(error)
     return { error: "Failed to store game ID. Check server logs for more information."}
+  }
+}
+
+export const enforceNewGameStatus = async () => {
+  try {
+    const newGames = await db.select({
+      categoryId: categories.categoryId,
+      publishedAt: categories.publishedAt
+    }).from(categories)
+    
+    for (const game of newGames) {
+      if (!game.publishedAt) continue
+      const currentTime = Date.now()
+      const publishedTime = new Date(game.publishedAt).getTime()
+
+      if (currentTime - publishedTime > MAX_NEW_TIME) {
+        console.log(`[CATEGORY ENFORCEMENT] deleting ${game.categoryId} from DB...`)
+        await db.delete(categories).where(eq(categories.categoryId, game.categoryId))
+        console.log(`[CATEGORY ENFORCEMENT] revalidating ${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
+        revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+      } else continue
+    }
+  } catch (error) {
+    console.error(`[CATEGORY ENFORCEMENT] Error enforcing categories: ${error}`)
+    const { success } = await submitFeedbackUseCase({
+      title: "Category Status Error",
+      name: "New Category Enforcement",
+      label: "issue",
+      feedback: `Error enforcing categories ${error}`
+    })
+    if (!success) console.error(`[CATEGORY ENFORCEMENT] Failed to submit feedback`)
   }
 }
 

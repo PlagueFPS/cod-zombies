@@ -1,7 +1,7 @@
 import 'server-only'
-import { unstable_cache } from 'next/cache'
+import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache'
 import { cache } from 'react'
-import { CACHE_KEYS, MAP_LIMIT } from '@/utils/constants'
+import { CACHE_KEYS, IN_DEVELOPMENT, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
 import { getEntries } from '@/contentful/contentful'
 import type { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { calculateSkip, createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
@@ -9,6 +9,8 @@ import { db } from '@/db/db'
 import { maps } from '@/db/schema'
 import { managementClient } from '@/contentful/contentfulManagement'
 import { Entry } from 'contentful'
+import { eq } from 'drizzle-orm'
+import { submitFeedbackUseCase } from '@/usecases/feedback'
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const maps = await INTERNAL_getMapData(draftMode)
@@ -151,6 +153,37 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     } catch (error) {
       console.error(error)
       return { error: "Failed to store new map Id. Check server logs for more information." }
+    }
+  }
+
+  export const enforceNewMapStatus = async () => {
+    try {
+      const newMaps = await db.select({ 
+        mapId: maps.mapId, 
+        publishedAt: maps.publishedAt 
+      }).from(maps)
+
+      for (const map of newMaps) {
+        if (!map.publishedAt) continue
+        const currentTime = Date.now()
+        const publishedTime = new Date(map.publishedAt).getTime()
+
+        if (currentTime - publishedTime > MAX_NEW_TIME) {
+          console.log(`[MAP ENFORCEMENT] Deleting Map ${map.mapId} from DB...`)
+          await db.delete(maps).where(eq(maps.mapId, map.mapId))
+          console.log(`[MAP ENFORCEMENT] revalidating ${CACHE_KEYS.FEATURED_MAPS.ALL}`)
+          revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
+        } else continue
+      }
+    } catch (error) {
+      console.error(`[MAP ENFORCEMENT] Error enforcing maps: ${error}`)
+      const { success } = await submitFeedbackUseCase({
+        title: "Map Status Error",
+        name: "New Map Enforcement",
+        label: "issue",
+        feedback: `Error enforcing maps: ${error}`
+      })
+      if (!success) console.error(`[MAP ENFORCEMENT] Failed to submit feedback`)
     }
   }
 

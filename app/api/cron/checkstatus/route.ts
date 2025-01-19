@@ -1,8 +1,8 @@
 import { headers } from "next/headers"
 import { authorizedRequest } from "@/utils/functions"
 import { env } from "@/env"
-import { enforceNewMapStatus } from "@/data/featuredMaps"
-import { enforceNewCategoryStatus } from "@/data/gameCategory"
+import { enforceNewMapStatus } from "@/data/maps"
+import { enforceNewGameStatus } from "@/data/games"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 
 export async function GET() {
@@ -21,15 +21,15 @@ export async function GET() {
 
   try {
     const mapEnforce = enforceNewMapStatus()
-    const categoryEnforce = enforceNewCategoryStatus()
+    const categoryEnforce = enforceNewGameStatus()
     const [{ status: mapStatus }, { status: categoryStatus }] = await Promise.allSettled([mapEnforce, categoryEnforce])
     
     if (mapStatus === "rejected" && categoryStatus === "rejected") {
-      throw new Error("Both map and category enforcement failed")
+      throw new Error("[CRON] Both map and category enforcement failed")
     } else if (mapStatus === "rejected") {
-      throw new Error("Map enforcement failed")
+      throw new Error("[CRON] Map enforcement failed")
     } else if (categoryStatus === "rejected") {
-      throw new Error("category enforcement failed")
+      throw new Error("[CRON] category enforcement failed")
     }
   } 
   catch (error) {

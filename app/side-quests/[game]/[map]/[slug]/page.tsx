@@ -44,7 +44,7 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
       description: q.description,
       url: `/side-quests/${game}/${map}/${slug}`,
       images: {
-        url: `https:${q.image.url}?w=1260&w=630&q=75&fm=jpg`,
+        url: `https:${q.image.url}?w=1260&h=630&q=75&fm=jpg`,
         width: 1260,
         height: 630
       },
