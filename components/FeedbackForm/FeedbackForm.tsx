@@ -62,7 +62,14 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
         || event.target instanceof HTMLTextAreaElement
         || event.target instanceof HTMLSelectElement
 
-      if ((event.key === 'f' || event.key === 'F') && !event.ctrlKey && !event.altKey && !event.metaKey && !isInputElement) {
+      if (
+        (event.key === 'f' || event.key === 'F') && 
+        !event.shiftKey && 
+        !event.ctrlKey && 
+        !event.altKey && 
+        !event.metaKey && 
+        !isInputElement
+      ) {
         setOpen(true)
       }
     }

@@ -15,7 +15,7 @@ interface HomePageProps {
 
 export default function Home({ searchParams }: HomePageProps) {
   return (
-    <div className="container flex flex-col gap-16 justify-center items-center">
+    <div className="container flex flex-col gap-12 justify-center items-center">
       <HeroSection text="Call of Duty: Zombies" />
       <GridSection title="Featured Maps">
         <Suspense fallback={<MapFiltersLoader />}>

@@ -37,36 +37,6 @@ export const useTableOfContents = (headings: Heading[]) => {
     return () => observer.disconnect()
   }, [headings])
 
-  // Effect for handling the Table of Contents auto-scroll logic
-  // useEffect(() => {
-  //   let timeoutId: ReturnType<typeof setTimeout>
-  //   if (activeHeading && scrollAreaRef.current) {
-  //     const scrollViewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLDivElement
-  //     const activeItem = headingRefs.current.get(activeHeading)
-
-  //     if (scrollViewport && activeItem) {
-  //       const scrollRect = scrollViewport.getBoundingClientRect()
-  //       const itemRect = activeItem.getBoundingClientRect()
-
-  //       if (itemRect.top < scrollRect.top || itemRect.bottom > scrollRect.bottom) {
-  //         const itemTop = activeItem.offsetTop - scrollViewport.offsetTop
-  //         const targetScrollTop = itemRect.top < scrollRect.top
-  //           ? itemTop // Scroll up
-  //           : itemTop - scrollRect.height + itemRect.height // Scroll down
-
-  //         scrollViewport.style.scrollBehavior = 'smooth'
-  //         scrollViewport.scrollTop = targetScrollTop
-  //         timeoutId = setTimeout(() => {
-  //           scrollViewport.style.scrollBehavior = 'auto'
-  //         }, 1000)
-  //       }
-  //     }
-  //   }
-
-  //   return () => {
-  //     if (timeoutId) clearTimeout(timeoutId)
-  //   }
-  // }, [activeHeading])
   /**
    * 
    * @param id the heading id
