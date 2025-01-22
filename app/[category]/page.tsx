@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return (
     <div className="container flex flex-col gap-16 justify-center items-center">
       <HeroSection text={ capatilize(category) } />
-      <GridSection title={ `${capatilize(category)} Maps` }>
+      <GridSection title={ `${capatilize(category)} Main Quests` }>
         <Suspense fallback={<MapFiltersLoader />}>
           <MapFilters currentCategory={ category } />
         </Suspense>

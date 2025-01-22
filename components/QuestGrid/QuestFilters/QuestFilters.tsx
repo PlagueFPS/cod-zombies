@@ -1,7 +1,8 @@
 import { getMapSearchData } from '@/data/maps'
-import { getGames } from '@/data/games'
+import { getGameSearchData } from '@/data/games'
 import { draftMode } from 'next/headers'
 import { Combobox } from '@/components/ui/combobox'
+import { getQuestSearchData } from '@/data/sideQuests'
 
 interface IQuestFilters {
   currentFilter?: string
@@ -10,15 +11,18 @@ interface IQuestFilters {
 export default async function QuestFilters({ currentFilter }: IQuestFilters) {
   const { isEnabled } = await draftMode()
   const mapsPromise = getMapSearchData(isEnabled)
-  const gamesPromise = getGames(isEnabled)
-  const [maps, games] = await Promise.all([mapsPromise, gamesPromise])
-  const mapFilters = maps.map(map => ({
+  const gamesPromise = getGameSearchData(isEnabled)
+  const questsPromise = getQuestSearchData(isEnabled)
+  const [maps, games, quests] = await Promise.all([mapsPromise, gamesPromise, questsPromise])
+  const questMaps = new Set(quests.map(q => q.map.slug))
+  const questGames = new Set(quests.map(q => q.game.slug))
+  const mapFilters = maps.filter(m => questMaps.has(m.slug)).map(map => ({
     id: map.id,
     title: map.title,
     slug: map.slug,
     category: map.category
   }))
-  const gameFilters = games.map(game => ({
+  const gameFilters = games.filter(g => questGames.has(g.slug)).map(game => ({
     id: game.id,
     title: game.title,
     slug: game.slug

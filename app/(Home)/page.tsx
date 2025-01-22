@@ -17,7 +17,7 @@ export default function Home({ searchParams }: HomePageProps) {
   return (
     <div className="container flex flex-col gap-12 justify-center items-center">
       <HeroSection text="Call of Duty: Zombies" />
-      <GridSection title="Featured Maps">
+      <GridSection title="Main Quests">
         <Suspense fallback={<MapFiltersLoader />}>
           <MapFilters />
         </Suspense>

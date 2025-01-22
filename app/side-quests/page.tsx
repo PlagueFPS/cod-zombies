@@ -44,7 +44,7 @@ export default function SideQuests({ searchParams }: ISideQuests) {
             { title: 'Side Quests', href: '/side-quests' },
           ]}
         />
-        <GridSection title="Featured Side Quests">
+        <GridSection title="Side Quests">
           <Suspense fallback={<QuestFilterLoader />}>
             <QuestFilters />
           </Suspense>

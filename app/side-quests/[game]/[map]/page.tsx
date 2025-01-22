@@ -6,7 +6,8 @@ import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader"
 import QuestFilters from "@/components/QuestGrid/QuestFilters/QuestFilters"
 import QuestGrid from "@/components/QuestGrid/QuestGrid"
 import QuestPagination from "@/components/QuestGrid/QuestPagination/QuestPagination"
-import { getMapBySlug, getMapSearchData } from "@/data/maps"
+import { getMapBySlug } from "@/data/maps"
+import { getQuestSearchData } from "@/data/sideQuests"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { capatilize } from "@/utils/functions"
 import { SearchParams } from "@/utils/validationSchemas"
@@ -24,10 +25,10 @@ interface ISideQuestMapPage {
 }
 
 export const generateStaticParams = async () => {
-  const maps = await getMapSearchData(false)
-  return maps.map(m => ({
-    game: m.category.slug,
-    map: m.slug
+  const quests = await getQuestSearchData(false)
+  return quests.map(q => ({
+    game: q.game.slug,
+    map: q.map.slug
   }))
 }
 
