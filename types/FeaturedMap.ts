@@ -1,6 +1,7 @@
 import type { Document } from "@contentful/rich-text-types"
 type Date = `${number}-${number}-${number}T${number}:${number}:${number}Z`
-export interface FeaturedMap {
+
+export interface FeaturedMapWithoutBody {
   id: string
   slug: string
   title: string
@@ -14,9 +15,11 @@ export interface FeaturedMap {
     title: string
     slug: string
   }
-  body: Document
   updatedAt: Date
   isDraft: boolean
   isChanged: boolean
   isNew: boolean
+}
+export interface FeaturedMapWithBody extends FeaturedMapWithoutBody {
+  body: Document
 }

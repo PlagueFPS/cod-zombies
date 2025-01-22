@@ -1,7 +1,7 @@
 import 'server-only'
-import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache'
+import { revalidateTag, unstable_cache } from 'next/cache'
 import { cache } from 'react'
-import { CACHE_KEYS, IN_DEVELOPMENT, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
+import { CACHE_KEYS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
 import { getEntries } from '@/contentful/contentful'
 import type { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { calculateSkip, createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
@@ -11,6 +11,7 @@ import { managementClient } from '@/contentful/contentfulManagement'
 import { Entry } from 'contentful'
 import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
+import { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const maps = await INTERNAL_getMapData(draftMode)
@@ -83,24 +84,62 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  export const getMapBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
+  // We're creating some function overloads to keep the return typesafe
+  // this way typescript knows if body actually exists in the result or not
+  // based on the params passed; avoiding needing to always check for the body ourselves
+  function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody: true): Promise<FeaturedMapWithBody | null>
+  function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody?: false): Promise<FeaturedMapWithoutBody | null>
+  function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody?: boolean): Promise<FeaturedMapWithBody | FeaturedMapWithoutBody | null>
+  // Actual function implementation
+  async function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody = false): Promise<FeaturedMapWithBody | FeaturedMapWithoutBody | null> {
     const maps = await INTERNAL_getMapData(draftMode)
     const map = maps.find(m => m.fields.slug === slug)
     if (!map) return null
     const { category, image, isChanged, isDraft, isNew } = await resolveMapData(map)
 
-    return {
+    if (withBody) return {
       id: map.sys.id,
+      slug: map.fields.slug,
       updatedAt: map.sys.updatedAt,
       title: map.fields.title,
-      slug: map.fields.slug,
       description: map.fields.description,
       body: map.fields.body,
       category,
       image,
       isChanged,
       isDraft,
-      isNew
+      isNew,
+    }
+    
+    return {
+      id: map.sys.id,
+      slug: map.fields.slug,
+      updatedAt: map.sys.updatedAt,
+      title: map.fields.title,
+      description: map.fields.description,
+      category,
+      image,
+      isChanged,
+      isDraft,
+      isNew,
+    }
+  }
+  // We expose only the cached and memoized version of the function to be called externally
+  export const getMapBySlug = cache(unstable_cache(INTERNAL_getMapBySlug, [], {
+    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
+  }))
+
+  export const getMapMetadata = cache(unstable_cache(async (draftMode: boolean, identifier: string) => {
+    const maps = await INTERNAL_getMapData(draftMode)
+    const map = maps.find(m => m.fields.slug === identifier || m.sys.id === identifier)
+    if (!map) return null
+    const { category, image, } = await resolveMapData(map)
+    return {
+      id: map.sys.id,
+      slug: map.fields.slug,
+      title: map.fields.title,
+      image,
+      category
     }
   }, [], {
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]

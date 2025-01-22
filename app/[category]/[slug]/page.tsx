@@ -14,7 +14,7 @@ import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
 import { env } from '@/env'
-import type { FeaturedMap } from '@/types/FeaturedMap'
+import type { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 import { Suspense } from 'react'
 import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
@@ -38,7 +38,11 @@ export const generateStaticParams = async () => {
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
   const [{ slug, category }, { isEnabled }] = await Promise.all([params, draftMode()])
-  const map = await getMapBySlug(isEnabled, slug)
+  // we pass true here to avoid reading more data than we need to.
+  // this same function is called lower in the page so instead of
+  // reading from two different cache entries, we read from one and memoize
+  // the value for re-use within the render, saving resources/cost.
+  const map = await getMapBySlug(isEnabled, slug, true)
   if (!map) notFound()
   const { title, description, image } = map
   const seoTitle = `${title} Main Quest`
@@ -68,7 +72,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 
 export default async function MapPage({ params }: MapPageProps) {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
-  const map = await getMapBySlug(isEnabled, slug)
+  const map = await getMapBySlug(isEnabled, slug, true)
   if (!map) notFound()
   const { title, image, category, updatedAt, isDraft, isChanged, isNew, body } = map
   const headings = extractHeadings(body)
@@ -143,7 +147,7 @@ export default async function MapPage({ params }: MapPageProps) {
   )
 }
 
- const PreviousOrNextMap = async ({ map }: { map: FeaturedMap }) => {
+ const PreviousOrNextMap = async ({ map }: { map: FeaturedMapWithBody }) => {
   const { isEnabled } = await draftMode()
   const featuredMaps = await getMaps(isEnabled)
   const mapIndex = featuredMaps.findIndex(m => m.slug === map.slug)
@@ -158,7 +162,7 @@ export default async function MapPage({ params }: MapPageProps) {
   )
  }
 
- const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: Omit<FeaturedMap, "body">, isEnabled: boolean, prev?: boolean }) => {
+ const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: FeaturedMapWithoutBody, isEnabled: boolean, prev?: boolean }) => {
   const { title, description, category, image, slug, isChanged, isDraft, isNew } = map
   const alt = `${title} map image`
 
