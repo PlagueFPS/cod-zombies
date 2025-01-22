@@ -32,6 +32,17 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
 }))
 
+export const getGameSearchData = cache(unstable_cache(async (draftMode: boolean) => {
+  const games = await INTERNAL_getGameData(draftMode)
+  return games.map(g => ({
+    id: g.sys.id,
+    title: g.fields.title,
+    slug: g.fields.slug
+  }))
+}, [], {
+  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
+}))
+
 export const getGameBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
   const games = await INTERNAL_getGameData(draftMode)
 
