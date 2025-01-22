@@ -1,9 +1,10 @@
 import { env } from "@/env"
 import type { FeedbackForm } from "@/utils/validationSchemas"
 import { sendInternalEmailUseCase } from "./email"
+import { after } from "next/server"
 
 export const submitFeedbackUseCase = async (input: FeedbackForm) => {
-  const { title, name, email, label, feedback } = input
+  const { title, label, feedback } = input
   const res = await fetch("https://projectplannerai.com/api/feedback", {
     method: "POST",
     headers: {
@@ -12,8 +13,6 @@ export const submitFeedbackUseCase = async (input: FeedbackForm) => {
     body: JSON.stringify({
       projectId: env.PROJECT_PLANNER_ID,
       title,
-      name,
-      email,
       label,
       feedback,
     }),
@@ -24,9 +23,11 @@ export const submitFeedbackUseCase = async (input: FeedbackForm) => {
     message: 'Something Went Wrong! Failed to submit form',
   }
 
-  await sendInternalEmailUseCase({
-    subject: `New "${label}" Feedback Submission`,
-    message: `${name ?? "Someone"} has submitted feedback for "${title}".`
+  after(async () => {
+    await sendInternalEmailUseCase({
+      subject: `New "${label}" Feedback Submission`,
+      message: `"Someone" has submitted feedback for "${title}".`
+    })
   })
   return { success: true, message: 'Thank you for submitting! Your submission has been received' }
 }

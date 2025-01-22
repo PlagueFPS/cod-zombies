@@ -34,7 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
-import { Loader2, MessageCircleHeart } from "lucide-react"
+import { Loader2, MessageCircleHeart, Send } from "lucide-react"
 
 interface FeedbackFormProps extends ButtonProps {
   className?: string
@@ -44,7 +44,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
   const [open, setOpen] = useState(false)
   const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
     formProps: {
-      mode: 'onBlur',
+      mode: 'onChange',
     },
     actionProps: {
       onSuccess: ({ data }) => {
@@ -57,6 +57,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
   })
 
   useEffect(() => {
+    const controller = new AbortController()
     const handleKeyPress = (event: KeyboardEvent) => {
       const isInputElement = event.target instanceof HTMLInputElement 
         || event.target instanceof HTMLTextAreaElement
@@ -74,10 +75,12 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
       }
     }
 
-    window.addEventListener('keydown', handleKeyPress)
+    window.addEventListener('keydown', handleKeyPress, {
+      signal: controller.signal
+    })
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPress)
+      controller.abort()
     }
   }, [])
 
@@ -105,7 +108,6 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={ handleSubmitWithAction }>
-              <ScrollArea className="h-[55dvh] pr-4">
                 <div className="space-y-6 pb-4">
                   <FormField 
                     control={ form.control }
@@ -117,50 +119,11 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
                           <Input 
                             {...field} 
                             required 
-                            placeholder="Enter a title for your feedback" 
+                            placeholder="Feedback Title" 
                           />
                         </FormControl>
                         <FormDescription>
-                          This could be something like, maps, user experience, visuals, etc.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField 
-                    control={ form.control }
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email (optional)</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field}
-                            type="email" 
-                            placeholder="your@email.com"
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          The email we will use to potentially contact you.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField 
-                    control={ form.control }
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (optional)</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field}
-                            placeholder="Enter your name" 
-                          />
-                        </FormControl>
-                        <FormDescription className="">
-                          The name we will use to address you via email.
+                          This could be something like, quests, experience, visuals, etc.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -175,7 +138,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
                         <Select required onValueChange={ field.onChange } defaultValue={ field.value }>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select a label" />
+                              <SelectValue placeholder="Choose a label" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -215,14 +178,18 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
                     )}
                   />
                 </div>
-              </ScrollArea>
               <Button type="submit" className="w-full mt-4" disabled={ isPending }>
                 { isPending ? (
                   <div className="flex items-center gap-2">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Submitting...
                   </div>
-                ) : 'Submit Feedback' }
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Send className="size-4" />
+                    <span>Submit Feedback</span>
+                  </div>
+                ) }
               </Button>
             </form>
           </Form>

@@ -6,8 +6,6 @@ export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
 
 export const FeedbackFormSchema = zfd.formData({
   title: zfd.text(z.string({ required_error: "Title is required" }).min(1)),
-  email: zfd.text(z.string().email({ message: "Invalid email address" }).optional()),
-  name: zfd.text(z.string().optional()),
   label: zfd.text(z.enum(['featureRequest', 'idea', 'issue', 'question', 'complaint', 'other'], {
     required_error: "Label is required",
   })),
