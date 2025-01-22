@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   creator: 'Angel Pichardo',
+  verification: {
+    google: 'wgrEcrtUWVglsvPl05UfwC8pqkk8KfP-uQellDbz-gs'
+  },
+  category: "gaming",
   openGraph: {
     ...GLOBAL_OG_PROPS.openGraph,
     title: {
