@@ -6,16 +6,15 @@ import { capatilize } from "@/utils/functions"
 import { MAP_LIMIT } from "@/utils/constants"
 import MapCardLoader from "./MapCardLoader"
 import { Pagination } from "../ui/pagination"
-import { Button } from "../ui/button";
-import { ChevronsUpDown } from "lucide-react";
 import QuestFilterLoader from "./QuestFilterLoader";
+import GridSection from "../GridSection/GridSection";
 
 export default function SideQuestsPageLoader() {
   const { game, map } = useParams()
   const links: { title: string, href: string }[] = [
     { title: 'Side Quests', href: `/side-quests` },
   ]
-  let title = "Featured Side Quests"
+  let title = "Side Quests"
 
   if (game && map) {
     title = `${capatilize(String(map))} Side Quests`
@@ -36,10 +35,7 @@ export default function SideQuestsPageLoader() {
     <div className="flex flex-col gap-16 justify-center items-center w-full">
       <div className='container flex flex-col gap-16 justify-center items-center'>
         <Breadcrumbs links={ links } />
-        <section className='flex flex-col gap-8 justify-center w-full'>
-          <h2 className='font-extrabold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl text-gradient'>
-            { title }
-          </h2>
+        <GridSection title={ title }>
           <QuestFilterLoader 
             text={ map ? capatilize(String(map)) : game ? capatilize(String(game)) : undefined }
           />  
@@ -71,7 +67,7 @@ export default function SideQuestsPageLoader() {
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-        </section>
+        </GridSection>
       </div>
     </div>
   )

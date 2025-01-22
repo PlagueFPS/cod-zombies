@@ -5,13 +5,13 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { MAP_LIMIT } from '@/utils/constants'
+import GridSection from '@/components/GridSection/GridSection'
 
 export default function HomeLoader() {
   return (
     <div className='container flex flex-col gap-16 justify-center items-center'>
       <HeroSection text='Call of Duty: Zombies' />
-      <section className='flex flex-col gap-8 justify-center w-full'>
-        <h2 className='font-extrabold text-2xl tracking-tight sm:text-3xl md:text-4xl lg:text-5xl text-gradient'>Featured Maps</h2>
+      <GridSection title='Main Quests'>
         <ScrollArea className="-mt-4 relative overflow-hidden">
           <div className="flex w-max gap-3 text-foreground/80">
             { Array.from({ length: 6 }, (_, i) => (
@@ -57,7 +57,7 @@ export default function HomeLoader() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </section>
+      </GridSection>
     </div>
   )
 }

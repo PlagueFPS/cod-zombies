@@ -1,5 +1,6 @@
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
+import HeroSection from "@/components/HeroSection/HeroSection";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
 import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader";
@@ -37,9 +38,9 @@ export const generateMetadata = (): Metadata => {
 
 export default function SideQuests({ searchParams }: ISideQuests) {
   return (
-    <div className='flex flex-col gap-16 justify-center items-center w-full'>
-      <div className="container flex flex-col gap-16 justify-center items-center">
-      <Breadcrumbs 
+    <div className='flex flex-col justify-center items-center w-full'>
+      <div className="container flex flex-col gap-12 justify-center items-center">
+        <Breadcrumbs 
           links={[
             { title: 'Side Quests', href: '/side-quests' },
           ]}
