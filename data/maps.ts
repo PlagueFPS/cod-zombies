@@ -218,7 +218,6 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       console.error(`[MAP ENFORCEMENT] Error enforcing maps: ${error}`)
       const { success } = await submitFeedbackUseCase({
         title: "Map Status Error",
-        name: "New Map Enforcement",
         label: "issue",
         feedback: `Error enforcing maps: ${error}`
       })

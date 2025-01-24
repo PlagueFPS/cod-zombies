@@ -2,7 +2,6 @@ import type { FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { isPriority } from '@/utils/functions'
 import { IN_DEVELOPMENT } from '@/utils/constants'
 import Link from 'next/link'
 import { draftMode } from 'next/headers'
@@ -11,13 +10,12 @@ import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/Cu
 interface MapCardProps {
   map: Omit<FeaturedMapWithoutBody, "updatedAt">
   mapIndex: number
-  totalMaps: number
 }
 
-export default async function MapCard({ map, mapIndex, totalMaps }: MapCardProps) {
+export default async function MapCard({ map, mapIndex }: MapCardProps) {
   const { isEnabled } = await draftMode()
   const { title, description, image, category, slug, isDraft, isChanged, isNew } = map
-  const priority = isPriority(mapIndex, totalMaps)
+  const priority = mapIndex === 0
   const alt = `${title} map image`
   
   return (

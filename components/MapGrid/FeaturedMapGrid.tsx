@@ -13,13 +13,13 @@ export default async function FeaturedMapGrid({ searchParams }: FeaturedMapGridP
   const draftModePromise = draftMode()
   const searchParamsPromise = validateSearchParams(searchParams)
   const [{ isEnabled }, { page }] = await Promise.all([draftModePromise, searchParamsPromise])
-  const { maps, totalMaps } = await getPaginatedMaps(isEnabled, page)
+  const { maps } = await getPaginatedMaps(isEnabled, page)
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
       { maps.map((map, index) => (
         <Suspense key={ map.id } fallback={<MapCardLoader />}>
-          <MapCard map={ map } mapIndex={ index } totalMaps={ totalMaps } />
+          <MapCard map={ map } mapIndex={ index } />
         </Suspense>
       ))}
     </div>
