@@ -104,7 +104,6 @@ export const enforceNewGameStatus = async () => {
     console.error(`[CATEGORY ENFORCEMENT] Error enforcing categories: ${error}`)
     const { success } = await submitFeedbackUseCase({
       title: "Category Status Error",
-      name: "New Category Enforcement",
       label: "issue",
       feedback: `Error enforcing categories ${error}`
     })

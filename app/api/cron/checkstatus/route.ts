@@ -12,7 +12,6 @@ export async function GET() {
   if (!authorizedRequest(secret, `Bearer ${env.CRON_SECRET}`)) {
     await submitFeedbackUseCase({
       title: "Cron Job Auth Error",
-      name: "Cron Job",
       label: "issue",
       feedback: "Auth failed, a secret somewhere is not configured correctly"
     })
@@ -36,7 +35,6 @@ export async function GET() {
     console.error("[CRON] Error in checkstatus cron job", error)
     await submitFeedbackUseCase({
       title: "Cron Job Error",
-      name: "Cron Job",
       label: "issue",
       feedback: "Error in checkstatus cron job, check your logs"
     })

@@ -26,7 +26,7 @@ export const submitFeedbackUseCase = async (input: FeedbackForm) => {
   after(async () => {
     await sendInternalEmailUseCase({
       subject: `New "${label}" Feedback Submission`,
-      message: `"Someone" has submitted feedback for "${title}".`
+      message: `Someone has submitted feedback for "${title}".`
     })
   })
   return { success: true, message: 'Thank you for submitting! Your submission has been received' }

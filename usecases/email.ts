@@ -21,6 +21,7 @@ export const sendInternalEmailUseCase = async ({ subject, message }: InternalEma
   })
 
   if (error) console.error(error)
+  return { error }
 }
 
 export const sendContactEmailUseCase = async ({ name, email, message }: EmailProps) => {
