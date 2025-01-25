@@ -13,7 +13,8 @@ interface IQuestPagination {
 
 export default async function QuestPagination({ searchParams, params }: IQuestPagination) {
   const [{ isEnabled }, { page }, questParams] = await Promise.all([draftMode(), validateSearchParams(searchParams), params])
-  const { currentPage, totalPages, prevPage, nextPage } = await getPaginatedSideQuests(isEnabled, page)
+  const category = questParams?.map ? questParams.map : questParams?.game ? questParams.game : undefined
+  const { currentPage, totalPages, prevPage, nextPage } = await getPaginatedSideQuests(isEnabled, page, category)
   const previousDisabled = prevPage === currentPage ? true : false
   const nextDisabled = nextPage === currentPage ? true : currentPage === totalPages ? true : false
   let href = '/side-quests'
