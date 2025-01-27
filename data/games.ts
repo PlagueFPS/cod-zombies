@@ -89,7 +89,6 @@ export const enforceNewGameStatus = async () => {
     }).from(categories)
     
     for (const game of newGames) {
-      if (!game.publishedAt) continue
       const currentTime = Date.now()
       const publishedTime = new Date(game.publishedAt).getTime()
 

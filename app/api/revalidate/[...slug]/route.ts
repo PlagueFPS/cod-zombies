@@ -1,6 +1,6 @@
 import { getGameById, storeNewGameId } from "@/data/games";
 import { getMapById, storeNewMapId } from "@/data/maps";
-import { getQuestById } from "@/data/sideQuests";
+import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
 import { env } from "@/env";
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants";
 import { isFirstTimePublish } from "@/utils/contentful-utils";
@@ -62,10 +62,9 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     }
     case 'side-quests': {
       if (isFirstTimePublish(createdAt, updatedAt)) {
-        // TODO: Enable quest storing once feature is no longer new
-        // const { error } = await storeNewQuestId(entryId, createdAt)
+        const { error } = await storeNewQuestId(entryId, createdAt)
         revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
-        return Response.json({ revalidated: true }, { status: 201 })
+        return Response.json({ revalidated: true, message: error ?? `${entryId} stored as new` }, { status: 201 })
       }
 
       const quest = await getQuestById(IN_DEVELOPMENT, entryId)

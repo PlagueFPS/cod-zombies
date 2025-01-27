@@ -203,7 +203,6 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       }).from(maps)
 
       for (const map of newMaps) {
-        if (!map.publishedAt) continue
         const currentTime = Date.now()
         const publishedTime = new Date(map.publishedAt).getTime()
 

@@ -1,7 +1,7 @@
 import 'server-only'
 import { getEntries } from '@/contentful/contentful'
 import { TypeSideQuestsSkeleton } from '@/contentful/Types/contentful-types'
-import { CACHE_KEYS, MAP_LIMIT } from '@/utils/constants'
+import { CACHE_KEYS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
 import { 
   calculateSkip, 
   createImageDTO, 
@@ -11,11 +11,13 @@ import {
   resolveEntry 
 } from '@/utils/contentful-utils'
 import { cache } from 'react'
-import { unstable_cache } from 'next/cache'
+import { revalidateTag, unstable_cache } from 'next/cache'
 import { Entry } from 'contentful'
 import { managementClient } from '@/contentful/contentfulManagement'
 import { db } from '@/db/db'
 import { quests } from '@/db/schema'
+import { eq } from 'drizzle-orm'
+import { submitFeedbackUseCase } from '@/usecases/feedback'
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   const quests = await INTERNAL_getSideQuestData(draftMode)
@@ -135,6 +137,35 @@ export const storeNewQuestId = async (id: string, createdAt: string) => {
   } catch (error) {
     console.error(error)
     return { error: `Failed to store quest ID: ${id}`}
+  }
+}
+
+export const enforceNewQuestStatus = async () => {
+  try {
+    const newQuests = await db.select({
+      questId: quests.questId,
+      publishedAt: quests.publishedAt
+    }).from(quests)
+
+    for (const quest of newQuests) {
+      const currentTime = Date.now()
+      const publishedTime = new Date(quest.publishedAt).getTime()
+
+      if (currentTime - publishedTime > MAX_NEW_TIME) {
+        console.log(`[QUEST ENFORCEMENT] Deleting Quest ${quest.questId} from DB...`)
+        await db.delete(quests).where(eq(quests.questId, quest.questId))
+        console.log(`[QUEST ENFORCEMENT] revalidating ${CACHE_KEYS.SIDE_QUESTS.ALL}`)
+        revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
+      } else continue
+    }
+  } catch (error) {
+    console.error(`[QUEST ENFORCEMENT] Error enforcing quests: ${error}`)
+      const { success } = await submitFeedbackUseCase({
+        title: "Quest Status Error",
+        label: "issue",
+        feedback: `Error enforcing quests: ${error}`
+      })
+      if (!success) console.error(`[QUEST ENFORCEMENT] Failed to submit feedback`)
   }
 }
 
