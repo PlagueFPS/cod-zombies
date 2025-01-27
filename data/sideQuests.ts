@@ -1,7 +1,7 @@
 import 'server-only'
 import { getEntries } from '@/contentful/contentful'
 import { TypeSideQuestsSkeleton } from '@/contentful/Types/contentful-types'
-import { CACHE_KEYS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
+import { CACHE_KEYS, DATE_OPTIONS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
 import { 
   calculateSkip, 
   createImageDTO, 
@@ -211,6 +211,7 @@ const resolveQuestData = cache(async (quest: Entry<TypeSideQuestsSkeleton, undef
 const INTERNAL_getSideQuestData = cache(async (draftMode: boolean) => {
   const quests = await getEntries<TypeSideQuestsSkeleton>({
     content_type: 'sideQuests',
+    order: ["-sys.createdAt"],
     select: [
       "sys.id",
       "sys.updatedAt",
@@ -218,5 +219,13 @@ const INTERNAL_getSideQuestData = cache(async (draftMode: boolean) => {
     ] 
   }, draftMode)
 
-  return quests.items
+  const sortedQuests = quests.items.sort((a, b) => {
+    const aGame = resolveEntry(a.fields.game)?.fields.releaseDate!
+    const bGame = resolveEntry(b.fields.game)?.fields.releaseDate!
+    const aDate = new Date(aGame).getTime()
+    const bDate = new Date(bGame).getTime()
+    return aDate < bDate ? 1 : -1
+  })
+
+  return sortedQuests
 })
