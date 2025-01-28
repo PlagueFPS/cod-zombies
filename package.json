@@ -15,7 +15,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "ci": "db:migrate && pnpm run build"
+    "ci": "pnpm run db:migrate && pnpm run build"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "16.0.1",
