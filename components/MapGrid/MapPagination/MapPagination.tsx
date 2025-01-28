@@ -25,7 +25,7 @@ export default async function MapPagination({ searchParams }: MapPaginationProps
         </PaginationItem>
         { [...Array(totalPages).keys()].map(page => (
           <PaginationItem key={ `pagination-item-${page}` }>
-            <PaginationLink prefetch={ false } href={`/?page=${page + 1}`} isActive={ currentPage === page + 1 }>{ page + 1 }</PaginationLink>
+            <PaginationLink href={`/?page=${page + 1}`} isActive={ currentPage === page + 1 }>{ page + 1 }</PaginationLink>
           </PaginationItem>
         ))}
         <PaginationItem>

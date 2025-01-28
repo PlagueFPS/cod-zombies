@@ -37,7 +37,7 @@ export default async function QuestPagination({ searchParams, params }: IQuestPa
         </PaginationItem>
         { [...Array(totalPages).keys()].map(page => (
           <PaginationItem key={ `pagination-item-${page}` }>
-            <PaginationLink prefetch={ false } href={`${href}?page=${page + 1}`} isActive={ currentPage === page + 1 }>{ page + 1 }</PaginationLink>
+            <PaginationLink href={`${href}?page=${page + 1}`} isActive={ currentPage === page + 1 }>{ page + 1 }</PaginationLink>
           </PaginationItem>
         ))}
         <PaginationItem>
