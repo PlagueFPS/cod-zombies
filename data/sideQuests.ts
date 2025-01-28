@@ -218,5 +218,13 @@ const INTERNAL_getSideQuestData = cache(async (draftMode: boolean) => {
     ] 
   }, draftMode)
 
-  return quests.items
+  const sortedQuests = quests.items.sort((a, b) => {
+    const aMap = resolveEntry(a.fields.map)?.fields.releaseDate!
+    const bMap = resolveEntry(b.fields.map)?.fields.releaseDate!
+    const aDate = new Date(aMap).getTime()
+    const bDate = new Date(bMap).getTime()
+    return aDate < bDate ? 1 : aDate === bDate ? 0 : -1
+  })
+
+  return sortedQuests
 })
