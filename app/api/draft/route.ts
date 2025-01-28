@@ -4,7 +4,7 @@ import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { env } from '@/env'
 import { authorizedRequest } from '@/utils/functions'
- 
+// TODO: Allow side quests to be previewed
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret')
   const entryId = req.nextUrl.searchParams.get('entryId')
