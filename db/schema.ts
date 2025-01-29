@@ -2,7 +2,7 @@ import { pgTable, serial, text, timestamp, index } from 'drizzle-orm/pg-core';
 
 export const maps = pgTable('new_maps', {
   id: serial("id").primaryKey(),
-  mapId: text('map_id').notNull(),
+  mapId: text('map_id').unique().notNull(),
   publishedAt: text('published_at').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (t) => [
@@ -11,7 +11,7 @@ export const maps = pgTable('new_maps', {
 
 export const categories = pgTable('new_categories', {
   id: serial("id").primaryKey(),
-  categoryId: text('category_id').notNull(),
+  categoryId: text('category_id').unique().notNull(),
   publishedAt: text('published_at').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (t) => [
@@ -20,7 +20,7 @@ export const categories = pgTable('new_categories', {
 
 export const quests = pgTable('new_quests', {
   id: serial("id").primaryKey(),
-  questId: text('quest_id').notNull(),
+  questId: text('quest_id').unique().notNull(),
   publishedAt: text('published_at').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (t) => [
