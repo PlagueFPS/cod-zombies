@@ -10,7 +10,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import type { NextRequest } from "next/server";
 
 interface RouteParams {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string[] }>
 }
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
@@ -29,7 +29,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
   }
 
   const { entryId, createdAt, updatedAt } = body.data
-  switch(slug) {
+  switch(slug[0]) {
     case 'maps': {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         const { error } = await storeNewMapId(entryId, createdAt)
@@ -76,7 +76,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       return Response.json({ revalidated: true, message: `${path} and quest data revalidated` }, { status: 201 })
     }
     default: {
-      return Response.json({ revalidated: false, message: 'Invalid Params' }, { status: 400 })
+      return Response.json({ revalidated: false, message: `Invalid Params: ${slug}` }, { status: 400 })
     }
   }
 }
