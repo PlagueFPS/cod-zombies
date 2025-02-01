@@ -2,6 +2,7 @@ import { IEmail } from "@/emails/NewReleaseEmail"
 import { env } from "@/env"
 import { type CreateBatchOptions, Resend } from "resend"
 import NewReleaseEmail from "@/emails/NewReleaseEmail"
+import { render } from "@react-email/components"
 
 interface EmailProps {
   name: string
@@ -52,6 +53,10 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
 
 export const sendBatchReleaseEmail = async (props: IEmail) => {
   const resend = new Resend(env.RESEND_API_KEY)
+  // start render work as early as possible
+  const emailTextPromise = render(NewReleaseEmail(props), {
+    plainText: true
+  })
   const { data: contacts, error } = await resend.contacts.list({
     audienceId: env.RESEND_AUDIENCE_ID
   })
@@ -63,13 +68,15 @@ export const sendBatchReleaseEmail = async (props: IEmail) => {
       message: error?.message || "Something Went Wrong! Please Try Again."
     }
   }
-
+  
+  const emailText = await emailTextPromise
   const emails: CreateBatchOptions = contacts.data.filter(contact => !contact.unsubscribed).map(contact => {
     return {
       from: "COD: Zombies Guides <support@codzombiesguides.com>",
       to: contact.email,
       subject: "New Release!",
       react: NewReleaseEmail(props),
+      text: emailText,
     }
   })
 
