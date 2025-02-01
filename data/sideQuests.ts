@@ -1,7 +1,7 @@
 import 'server-only'
 import { getEntries } from '@/contentful/contentful'
 import { TypeSideQuestsSkeleton } from '@/contentful/Types/contentful-types'
-import { CACHE_KEYS, DATE_OPTIONS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
+import { CACHE_KEYS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
 import { 
   calculateSkip, 
   createImageDTO, 
@@ -13,7 +13,7 @@ import {
 import { cache } from 'react'
 import { revalidateTag, unstable_cache } from 'next/cache'
 import { Entry } from 'contentful'
-import { managementClient } from '@/contentful/contentfulManagement'
+import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { db } from '@/db/db'
 import { quests } from '@/db/schema'
 import { eq } from 'drizzle-orm'
@@ -170,11 +170,7 @@ export const enforceNewQuestStatus = async () => {
 }
 
 const getDraftsAndChanged = cache(unstable_cache(async () => {
-  const quests = await managementClient.entry.getMany({
-    query: {
-      content_type: "sideQuests"
-    }
-  })
+  const quests = await getManagementEntries("sideQuests")
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
 

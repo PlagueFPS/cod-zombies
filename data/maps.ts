@@ -7,7 +7,7 @@ import type { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-typ
 import { calculateSkip, createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
 import { db } from '@/db/db'
 import { maps } from '@/db/schema'
-import { managementClient } from '@/contentful/contentfulManagement'
+import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { Entry } from 'contentful'
 import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
@@ -239,11 +239,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
   }))
 
   const getDraftsAndChanged = cache(unstable_cache(async () => {
-    const maps = await managementClient.entry.getMany({
-      query: {
-        content_type: "featuredMaps"
-      }
-    })
+    const maps = await getManagementEntries('featuredMaps')
     const draftIds = new Set<string>()
     const changedIds = new Set<string>()
 

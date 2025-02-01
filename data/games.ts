@@ -4,7 +4,7 @@ import { revalidateTag, unstable_cache } from 'next/cache'
 import { cache } from 'react'
 import { getEntries } from '@/contentful/contentful'
 import { TypeGameCategorySkeleton } from '@/contentful/Types/contentful-types'
-import { managementClient } from '@/contentful/contentfulManagement'
+import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { db } from '@/db/db'
 import { categories } from '@/db/schema'
 import { createImageDTO, resolveAsset } from '@/utils/contentful-utils'
@@ -111,11 +111,7 @@ export const enforceNewGameStatus = async () => {
 }
 
 const getDraftsAndChanged = cache(unstable_cache(async () => {
-  const games = await managementClient.entry.getMany({
-    query: {
-      content_type: 'gameCategory'
-    }
-  })
+  const games = await getManagementEntries("gameCategory")
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
 
