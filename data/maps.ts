@@ -129,22 +129,6 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  export const getMapMetadata = cache(unstable_cache(async (draftMode: boolean, identifier: string) => {
-    const maps = await INTERNAL_getMapData(draftMode)
-    const map = maps.find(m => m.fields.slug === identifier || m.sys.id === identifier)
-    if (!map) return null
-    const { category, image, } = await resolveMapData(map)
-    return {
-      id: map.sys.id,
-      slug: map.fields.slug,
-      title: map.fields.title,
-      image,
-      category
-    }
-  }, [], {
-    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-  }))
-
   export const getMapsByCategory = cache(unstable_cache(async (draftMode: boolean, category: string) => {
     const featuredMaps = await INTERNAL_getMapData(draftMode)
     const categoryMaps = featuredMaps.filter(m => resolveEntry(m.fields.gameCategory)?.fields.slug === category)
@@ -179,6 +163,9 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     return {
       id: map.sys.id,
       slug: map.fields.slug,
+      title: map.fields.title,
+      description: map.fields.description,
+      image: createImageDTO(resolveAsset(map.fields.image)),
       category: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
     }
   }, [], {
