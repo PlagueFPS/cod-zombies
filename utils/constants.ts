@@ -6,6 +6,7 @@ export const SITE_DESCRIPTION = "Unlock the secrets of Call of Duty: Zombies and
 export const DATE_OPTIONS: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
 export const MAP_LIMIT = 12
 export const MAX_NEW_TIME = 14 * 24 * 60 * 60 * 1000 // 2 weeks in milliseconds
+export const MAX_QUEST_NEW_TIME = 7 * 24 * 60 * 60 * 1000 // 1 week in milliseconds
 export const GLOBAL_OG_PROPS = {
   openGraph: {
     siteName: SITE_TITLE,
