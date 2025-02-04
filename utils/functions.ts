@@ -30,5 +30,13 @@ export const authorizedRequest = (secret: string | null, validSecret: string) =>
   const encoder = new TextEncoder()
   const secretBuffer = encoder.encode(secret || '')
   const validSecretBuffer = encoder.encode(validSecret)
-  return timingSafeEqual(secretBuffer, validSecretBuffer)
+  // This function needs to be wrapped in a try/catch
+  // because it will throw an error if the byteLength the compared strings
+  // is not the same, instead of just returning false which is annoying.
+  try {
+    return timingSafeEqual(secretBuffer, validSecretBuffer)
+  } catch (error) {
+    console.error(error)
+    return false
+  }
 }
