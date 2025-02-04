@@ -20,9 +20,11 @@ import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
-  const quests = await INTERNAL_getSideQuestData(draftMode)
+  const questsPromise = INTERNAL_getSideQuestData(draftMode)
+  const questIdsPromise = getDraftsAndChanged()
+  const [quests, questIds] = await Promise.all([questsPromise, questIdsPromise])
   return await Promise.all(quests.map(async q => {
-    const { category: game, ...rest } = await resolveQuestData(q)
+    const { category: game, ...rest } = await resolveQuestData(q, questIds)
     return {
       ...rest,
       id: q.sys.id,
@@ -38,9 +40,11 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
 }))
 
 export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean) => {
-  const quests = await INTERNAL_getSideQuestData(draftMode)
+  const questsPromise = INTERNAL_getSideQuestData(draftMode)
+  const questIdsPromise = getDraftsAndChanged()
+  const [quests, questIds] = await Promise.all([questsPromise, questIdsPromise])
   return await Promise.all(quests.map(async q => {
-    const { category: game, map } = await resolveQuestData(q)
+    const { category: game, map } = await resolveQuestData(q, questIds)
     return {
       id: q.sys.id,
       title: q.fields.title,
@@ -55,7 +59,9 @@ export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean
 
 export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number, category?: string) => {
   const skip = calculateSkip(page, MAP_LIMIT)
-  const sideQuestsData = await INTERNAL_getSideQuestData(draftMode)
+  const questsPromise = INTERNAL_getSideQuestData(draftMode)
+  const questIdsPromise = getDraftsAndChanged()
+  const [sideQuestsData, questIds] = await Promise.all([questsPromise, questIdsPromise])
   let sideQuests = sideQuestsData
 
   if (category) {
@@ -67,7 +73,7 @@ export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boo
   
   const paginatedQuests = sideQuests.slice(skip, (MAP_LIMIT * page))
   const sideQuestsDTO = await Promise.all(paginatedQuests.map(async quest => {
-    const { category, image, isChanged, isDraft, map } = await resolveQuestData(quest)
+    const { category, image, isChanged, isDraft, map } = await resolveQuestData(quest, questIds)
     return {
       id: quest.sys.id,
       title: quest.fields.title,
@@ -112,10 +118,12 @@ export const getQuestById = cache(unstable_cache(async (draftMode: boolean, id: 
 }))
 
 export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
-  const quests = await INTERNAL_getSideQuestData(draftMode)
+  const questsPromise = INTERNAL_getSideQuestData(draftMode)
+  const questIdsPromise = getDraftsAndChanged()
+  const [quests, questIds] = await Promise.all([questsPromise, questIdsPromise])
   const q = quests.find(q => q.fields.slug === slug)
   if (!q) return null
-  const { category: game, ...rest } = await resolveQuestData(q)
+  const { category: game, ...rest } = await resolveQuestData(q, questIds)
   return {
     ...rest,
     id: q.sys.id,
@@ -187,8 +195,8 @@ const getDraftsAndChanged = cache(unstable_cache(async () => {
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
 }))
 
-const resolveQuestData = cache(async (quest: Entry<TypeSideQuestsSkeleton, undefined, string>) => {
-  const { changedIds, draftIds } = await getDraftsAndChanged()
+const resolveQuestData = cache(async (quest: Entry<TypeSideQuestsSkeleton, undefined, string>, questIds: Awaited<ReturnType<typeof getDraftsAndChanged>>) => {
+  const { changedIds, draftIds } = questIds
   const image = createImageDTO(resolveAsset(quest.fields.image))
   const map = createQuestMapDTO(resolveEntry(quest.fields.map))
   const category = createMapCategoryDTO(resolveEntry(quest.fields.game))

@@ -14,10 +14,12 @@ import { submitFeedbackUseCase } from '@/usecases/feedback'
 import { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
-  const maps = await INTERNAL_getMapData(draftMode)
+  const mapsPromise = INTERNAL_getMapData(draftMode)
+  const mapIdsPromise = getMapIds()
+  const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
 
   return await Promise.all(maps.map(async map => {
-    const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map)
+    const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map, mapIds)
     return {
       id: map.sys.id,
       title: map.fields.title,
@@ -49,12 +51,14 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
 }))
 
 export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, page: number) => {
-  const featuredMaps = await INTERNAL_getMapData(draftMode)
+  const featuredMapsPromise = INTERNAL_getMapData(draftMode)
+  const mapIdsPromise = getMapIds()
+  const [featuredMaps, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
   const skip = calculateSkip(page, MAP_LIMIT)
   const paginatedMaps = featuredMaps.slice(skip, (MAP_LIMIT * page))
 
   const maps = await Promise.all(paginatedMaps.map(async map => {
-    const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map)
+    const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map, mapIds)
     return {
       id: map.sys.id,
       title: map.fields.title,
@@ -92,10 +96,12 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
   function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody?: boolean): Promise<FeaturedMapWithBody | FeaturedMapWithoutBody | null>
   // Actual function implementation
   async function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody = false): Promise<FeaturedMapWithBody | FeaturedMapWithoutBody | null> {
-    const maps = await INTERNAL_getMapData(draftMode)
+    const mapsPromise = INTERNAL_getMapData(draftMode)
+    const mapIdsPromise = getMapIds()
+    const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
     const map = maps.find(m => m.fields.slug === slug)
     if (!map) return null
-    const { category, image, isChanged, isDraft, isNew } = await resolveMapData(map)
+    const { category, image, isChanged, isDraft, isNew } = await resolveMapData(map, mapIds)
 
     if (withBody) return {
       id: map.sys.id,
@@ -130,10 +136,12 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
   }))
 
   export const getMapsByCategory = cache(unstable_cache(async (draftMode: boolean, category: string) => {
-    const featuredMaps = await INTERNAL_getMapData(draftMode)
+    const featuredMapsPromise = INTERNAL_getMapData(draftMode)
+    const mapIdsPromise = getMapIds()
+    const [featuredMaps, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
     const categoryMaps = featuredMaps.filter(m => resolveEntry(m.fields.gameCategory)?.fields.slug === category)
     const maps = await Promise.all(categoryMaps.map(async map => {
-      const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map)
+      const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map, mapIds)
       return {
         id: map.sys.id,
         title: map.fields.title,
@@ -211,26 +219,14 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     }
   }
 
-  const getMapIds = cache(async () => {
-    const newIdsPromise = getNewMapIds()
-    const draftAndChangedPromise = getDraftsAndChanged()
-    const [newIds, { draftIds, changedIds }] = await Promise.all([newIdsPromise, draftAndChangedPromise])
-    return { newIds, draftIds, changedIds }
-  })
-
-  const getNewMapIds = cache(unstable_cache(async () => {
-    const ids = await db.select({ mapId: maps.mapId }).from(maps)
-    return ids
-  }, [], {
-    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-  }))
-
-  const getDraftsAndChanged = cache(unstable_cache(async () => {
-    const maps = await getManagementEntries('featuredMaps')
+  const getMapIds = cache(unstable_cache(async () => {
+    const newIdsPromise = db.select({ mapId: maps.mapId }).from(maps)
+    const mapsPromise = getManagementEntries("featuredMaps")
+    const [newIds, managementMaps] = await Promise.all([newIdsPromise, mapsPromise])
     const draftIds = new Set<string>()
     const changedIds = new Set<string>()
 
-    maps.items.forEach(map => {
+    managementMaps.items.forEach(map => {
       if (!map.sys.publishedVersion) {
         draftIds.add(map.sys.id)
       } else if (!!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2) {
@@ -238,13 +234,13 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       }
     })
 
-    return { draftIds, changedIds }
+    return { newIds, draftIds, changedIds }
   }, [], {
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  const resolveMapData = cache(async (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => {
-    const { newIds, draftIds, changedIds } = await getMapIds()
+  const resolveMapData = cache(async (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Awaited<ReturnType<typeof getMapIds>>) => {
+    const { changedIds, draftIds, newIds } = mapIds
     const image = createImageDTO(resolveAsset(map.fields.image))
     const category = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
     const isDraft = draftIds.has(map.sys.id)

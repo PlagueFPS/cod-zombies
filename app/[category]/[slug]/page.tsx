@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils'
 import { env } from '@/env'
 import type { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
-import { Suspense } from 'react'
+import { cache, Suspense } from 'react'
 import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 
@@ -36,14 +36,22 @@ export const generateStaticParams = async () => {
   }))
 }
 
+const getPageData = cache(async (draftMode: boolean, slug: string) => {
+  const map = await getMapBySlug(draftMode, slug, true)
+  if (!map) notFound()
+  const maps = await getMaps(draftMode)
+  const mapIndex = maps.findIndex(m => m.slug === map.slug)
+
+  return {
+    map,
+    prevMap: maps[mapIndex + 1],
+    nextMap: maps[mapIndex - 1]
+  }
+})
+
 export const generateMetadata = async ({ params }: MapPageProps) => {
   const [{ slug, category }, { isEnabled }] = await Promise.all([params, draftMode()])
-  // we pass true here to avoid reading more data than we need to.
-  // this same function is called lower in the page so instead of
-  // reading from two different cache entries, we read from one and memoize
-  // the value for re-use within the render, saving resources/cost.
-  const map = await getMapBySlug(isEnabled, slug, true)
-  if (!map) notFound()
+  const { map } = await getPageData(isEnabled, slug)
   const { title, description, image } = map
   const seoTitle = `${title} Main Quest`
   const metadata: Metadata = {
@@ -72,8 +80,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 
 export default async function MapPage({ params }: MapPageProps) {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
-  const map = await getMapBySlug(isEnabled, slug, true)
-  if (!map) notFound()
+  const { map, nextMap, prevMap } = await getPageData(isEnabled, slug)
   const { title, image, category, updatedAt, isDraft, isChanged, isNew, body } = map
   const headings = extractHeadings(body)
 
@@ -134,9 +141,8 @@ export default async function MapPage({ params }: MapPageProps) {
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
-                <Suspense fallback={<PreviousOrNextMapLoader />}> 
-                  <PreviousOrNextMap map={ map } />
-                </Suspense>
+                { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
+                { nextMap && <PrevOrNextMapCard map={ nextMap } isEnabled={ isEnabled } /> }
               </div>
             </div>
           </article>
@@ -146,21 +152,6 @@ export default async function MapPage({ params }: MapPageProps) {
     </section>
   )
 }
-
- const PreviousOrNextMap = async ({ map }: { map: FeaturedMapWithBody }) => {
-  const { isEnabled } = await draftMode()
-  const featuredMaps = await getMaps(isEnabled)
-  const mapIndex = featuredMaps.findIndex(m => m.slug === map.slug)
-  const prevMap = featuredMaps[mapIndex + 1]
-  const nextMap = featuredMaps[mapIndex - 1]
-
-  return (
-    <>
-      { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
-      { nextMap && <PrevOrNextMapCard map={ nextMap } isEnabled={ isEnabled } /> }
-    </>
-  )
- }
 
  const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: FeaturedMapWithoutBody, isEnabled: boolean, prev?: boolean }) => {
   const { title, description, category, image, slug, isChanged, isDraft, isNew } = map

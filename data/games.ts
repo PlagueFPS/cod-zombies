@@ -110,37 +110,25 @@ export const enforceNewGameStatus = async () => {
   }
 }
 
-const getDraftsAndChanged = cache(unstable_cache(async () => {
-  const games = await getManagementEntries("gameCategory")
+const getGameIds = cache(unstable_cache(async () => {
+  const idsPromise = db.select({ categoryId: categories.categoryId }).from(categories)
+  const gamesPromise = getManagementEntries("gameCategory")
+  const [newIds, managementGames] = await Promise.all([idsPromise, gamesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
 
-    games.items.forEach(game => {
-      if (!game.sys.publishedVersion) {
-        draftIds.add(game.sys.id)
-      } else if (!!game.sys.publishedVersion && game.sys.version >= game.sys.publishedVersion + 2) {
-        changedIds.add(game.sys.id)
-      }
-    })
+  managementGames.items.forEach(game => {
+    if (!game.sys.publishedVersion) {
+      draftIds.add(game.sys.id)
+    } else if (!!game.sys.publishedVersion && game.sys.version >= game.sys.publishedVersion + 2) {
+      changedIds.add(game.sys.id)
+    }
+  })
 
-    return { draftIds, changedIds }
+  return { newIds, draftIds, changedIds }
 }, [], {
   tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
 }))
-
-const getNewGameIds = cache(unstable_cache(async () => {
-  const ids = await db.select({ categoryId: categories.categoryId }).from(categories)
-  return ids
-}, [], {
-  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
-}))
-
-const getGameIds = cache(async () => {
-  const newIdsPromise = getNewGameIds()
-  const draftAndChangedPromise = getDraftsAndChanged()
-  const [newIds, { changedIds, draftIds }] = await Promise.all([newIdsPromise, draftAndChangedPromise])
-  return { newIds, changedIds, draftIds }
-})
 
 const INTERNAL_getGameData = cache(async (draftMode: boolean) => {
   const games = await getEntries<TypeGameCategorySkeleton>({
