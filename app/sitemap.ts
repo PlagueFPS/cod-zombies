@@ -9,12 +9,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const gamesPromise = getGames(false)
   const questsProimse = getQuests(false)
   const [maps, games, quests] = await Promise.all([mapsPromise, gamesPromise, questsProimse])
+  const searchMaps = maps.filter(map => !map.isComingSoon)
 
   const generateGameDate = (slug: string, type: "maps" | "quests") => {
     let date: typeof maps[0]["updatedAt"] | undefined
     
     if (type === "maps") {
-      date = maps.find(m => m.category.slug === slug)?.updatedAt
+      date = searchMaps.find(m => m.category.slug === slug)?.updatedAt
     } else if (type === "quests") {
       date = quests.find(q => q.game.slug === slug)?.updatedAt
     }
@@ -42,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${game.slug}`,
       lastModified: generateGameDate(game.slug, "maps")
     })),
-    ...maps.map(map => ({
+    ...searchMaps.map(map => ({
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category.slug}/${map.slug}`,
       lastModified: new Date(map.updatedAt)
     })),
@@ -50,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${g.slug}`,
       lastModified: generateGameDate(g.slug, "quests")
     })),
-    ...maps.map(m => ({
+    ...searchMaps.map(m => ({
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${m.category.slug}/${m.slug}`,
       lastModified: generateMapDate(m.slug)
     })),

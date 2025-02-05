@@ -14,6 +14,7 @@ export type TypeAmmoMods<Modifiers extends ChainModifiers, Locales extends Local
 export interface TypeFeaturedMapsFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    isComingSoon?: EntryFieldTypes.Boolean,
     releaseDate: EntryFieldTypes.Date;
     gameCategory: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     image: EntryFieldTypes.AssetLink;

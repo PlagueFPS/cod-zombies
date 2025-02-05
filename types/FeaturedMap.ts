@@ -19,6 +19,7 @@ export interface FeaturedMapWithoutBody {
   isDraft: boolean
   isChanged: boolean
   isNew: boolean
+  isComingSoon: boolean
 }
 export interface FeaturedMapWithBody extends FeaturedMapWithoutBody {
   body: Document

@@ -14,10 +14,9 @@ import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
 import { env } from '@/env'
-import type { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
-import { ChangedBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
-import { cache, Suspense } from 'react'
-import PreviousOrNextMapLoader from '@/components/Loaders/PreviousOrNextMapLoader'
+import type { FeaturedMapWithoutBody } from '@/types/FeaturedMap'
+import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
+import { cache } from 'react'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 
 interface MapPageProps {
@@ -27,18 +26,11 @@ interface MapPageProps {
   }>
 }
 
-export const generateStaticParams = async () => {
-  const featuredMaps = await getMaps(false)
-
-  return featuredMaps.map(map => ({
-    category: map.category.slug,
-    slug: map.slug
-  }))
-}
-
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
   const map = await getMapBySlug(draftMode, slug, true)
-  if (!map) notFound()
+  if (!map || (map.isComingSoon && !draftMode && !IN_DEVELOPMENT)) {
+    notFound()
+  }
   const maps = await getMaps(draftMode)
   const mapIndex = maps.findIndex(m => m.slug === map.slug)
 
@@ -48,6 +40,15 @@ const getPageData = cache(async (draftMode: boolean, slug: string) => {
     nextMap: maps[mapIndex - 1]
   }
 })
+
+export const generateStaticParams = async () => {
+  const featuredMaps = await getMaps(false)
+
+  return featuredMaps.filter(map => !map.isComingSoon).map(map => ({
+    category: map.category.slug,
+    slug: map.slug
+  }))
+}
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
   const [{ slug, category }, { isEnabled }] = await Promise.all([params, draftMode()])
@@ -81,7 +82,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
 export default async function MapPage({ params }: MapPageProps) {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const { map, nextMap, prevMap } = await getPageData(isEnabled, slug)
-  const { title, image, category, updatedAt, isDraft, isChanged, isNew, body } = map
+  const { title, image, category, updatedAt, isDraft, isChanged, isNew, isComingSoon, body } = map
   const headings = extractHeadings(body)
 
   return (
@@ -124,7 +125,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 <div className='flex items-center justify-center gap-4 w-fit'>
                   { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
-                  { isNew ? <NewBadge /> : null }
+                  { (isEnabled || IN_DEVELOPMENT) && isComingSoon ? <ComingSoonBadge /> : isNew ? <NewBadge /> : null }
                   <Badge className='badge-primary-gradient'>{ category.title }</Badge>
                 </div>
               </div>
@@ -155,14 +156,20 @@ export default async function MapPage({ params }: MapPageProps) {
 }
 
  const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: FeaturedMapWithoutBody, isEnabled: boolean, prev?: boolean }) => {
-  const { title, description, category, image, slug, isChanged, isDraft, isNew } = map
+  const { title, description, category, image, slug, isChanged, isDraft, isNew, isComingSoon } = map
   const alt = `${title} map image`
+  const href = isComingSoon ? '#' : `/${category.slug}/${slug}`
 
   return (
-    <Link href={ `/${category.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
+    <Link 
+      href={ href }
+      className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform', {
+        'pointer-events-none opacity-50': isComingSoon,
+      })}
+    >
       <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
-          { isNew ? <NewBadge /> : null }
+          { isComingSoon ? <ComingSoonBadge /> : isNew ? <NewBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
           <Badge className='badge-primary-gradient'>
@@ -185,7 +192,7 @@ export default async function MapPage({ params }: MapPageProps) {
               className='object-cover rounded-lg h-full'
             />
         </div>
-        <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4'>
+        <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
           <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
             { title }
           </h2>

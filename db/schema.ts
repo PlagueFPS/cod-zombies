@@ -1,10 +1,13 @@
-import { pgTable, serial, text, timestamp, index } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, timestamp, index, pgEnum } from 'drizzle-orm/pg-core';
+
+export const statusEnum = pgEnum("status", ["Coming Soon", "Published"])
 
 export const maps = pgTable('new_maps', {
   id: serial("id").primaryKey(),
   mapId: text('map_id').unique().notNull(),
   publishedAt: text('published_at').notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
+  status: statusEnum("status"),
 }, (t) => [
   index("map_id_idx").on(t.mapId)
 ])

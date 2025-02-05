@@ -1,5 +1,5 @@
 import { getGameById, storeNewGameId } from "@/data/games";
-import { getMapById, storeNewMapId } from "@/data/maps";
+import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps";
 import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
 import { env } from "@/env";
 import { sendBatchReleaseEmail } from "@/usecases/email";
@@ -37,26 +37,62 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       const path = `/${map.category}/${map.slug}`
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
-        const { error } = await storeNewMapId(entryId, createdAt)
+        // we must keep track of the status seperately
+        // the only reason is to ensure we do not send multiple emails for the same updated content
+        const { error } = await storeNewMapId(entryId, createdAt, map.isComingSoon ? "Coming Soon" : "Published")
         revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
-        const { success, message } = await sendBatchReleaseEmail({
-          title: map.title,
-          description: map.description,
-          image: map.image,
-          redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}${path}`,
-          redirectText: "View Quest"
-        })
+
+        if (!map.isComingSoon) {
+          const { success, message } = await sendBatchReleaseEmail({
+            title: map.title,
+            description: map.description,
+            image: map.image,
+            redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}${path}`,
+            redirectText: "View Guide"
+          })
+
+          return Response.json({ 
+            revalidated: true, 
+            message: error ?? `${entryId} stored as new`,
+            emailSuccess: success,
+            emailMessage: message
+          }, { status: 201 })
+        }
         
         return Response.json({ 
           revalidated: true, 
           message: error ?? `${entryId} stored as new`,
-          emailSuccess: success,
-          emailMessage: message
         }, { status: 201 })
       }
       
+      // If the map is being updated/re-published
       revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
       revalidatePath(path)
+      const { status } = await getMapStatus(entryId)
+      
+      // If previously stored status was "Coming Soon" and status is no longer "Coming Soon" in Contentful
+      // update stored status and send out release emails to users
+      if (status === "Coming Soon" && !map.isComingSoon) {
+        const emailPromise = sendBatchReleaseEmail({
+          title: map.title,
+          description: map.description,
+          image: map.image,
+          redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}${path}`,
+          redirectText: "View Guide"
+        })
+        const statusPromise = updateMapStatus(entryId)
+        const [{ success, message }, { error }] = await Promise.all([emailPromise, statusPromise])
+
+        return Response.json({
+          revalidated: true,
+          message: `${path} and map data revalidated`,
+          statusUpdated: error ? false : true,
+          statusError: error,
+          emailSuccess: success,
+          emailMessage: message
+        })
+      }
+
       return Response.json({ revalidated: true, message: `${path} and map data revalidated` }, { status: 201 })
     }
     case 'games': {

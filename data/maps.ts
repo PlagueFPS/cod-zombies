@@ -26,6 +26,7 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
       slug: map.fields.slug,
       updatedAt: map.sys.updatedAt,
       description: map.fields.description,
+      isComingSoon: map.fields.isComingSoon ?? false,
       category,
       image,
       isDraft,
@@ -40,7 +41,7 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
 export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) => {
   const maps = await INTERNAL_getMapData(draftMode)
 
-  return maps.map(map => ({
+  return maps.filter(map => !map.fields.isComingSoon).map(map => ({
     id: map.sys.id,
     title: map.fields.title,
     slug: map.fields.slug,
@@ -64,6 +65,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       title: map.fields.title,
       slug: map.fields.slug,
       description: map.fields.description,
+      isComingSoon: map.fields.isComingSoon ?? false,
       category,
       image,
       isDraft,
@@ -110,6 +112,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       title: map.fields.title,
       description: map.fields.description,
       body: map.fields.body,
+      isComingSoon: map.fields.isComingSoon ?? false,
       category,
       image,
       isChanged,
@@ -123,6 +126,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       updatedAt: map.sys.updatedAt,
       title: map.fields.title,
       description: map.fields.description,
+      isComingSoon: map.fields.isComingSoon ?? false,
       category,
       image,
       isChanged,
@@ -147,6 +151,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
         title: map.fields.title,
         slug: map.fields.slug,
         description: map.fields.description,
+        isComingSoon: map.fields.isComingSoon ?? false,
         category,
         image,
         isDraft,
@@ -173,6 +178,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       slug: map.fields.slug,
       title: map.fields.title,
       description: map.fields.description,
+      isComingSoon: map.fields.isComingSoon ?? false,
       image: createImageDTO(resolveAsset(map.fields.image)),
       category: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
     }
@@ -180,13 +186,35 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  export const storeNewMapId = async (mapId: string, createdAt: string) => {
+  export const storeNewMapId = async (mapId: string, createdAt: string, status: "Coming Soon" | "Published") => {
     try {
-      await db.insert(maps).values({ mapId, publishedAt: createdAt })
+      await db.insert(maps).values({ mapId, publishedAt: createdAt, status })
       return { error: null }
     } catch (error) {
       console.error(error)
       return { error: "Failed to store new map Id. Check server logs for more information." }
+    }
+  }
+
+  export const getMapStatus = async (mapId: string) => {
+    try {
+      const status = await db.select({ 
+        status: maps.status 
+      }).from(maps).where(eq(maps.mapId, mapId)).limit(1)
+      return status[0]
+    } catch (error) {
+      console.error(error)
+      return { status: null }
+    }
+  }
+
+  export const updateMapStatus = async (mapId: string) => {
+    try {
+      await db.update(maps).set({ status: "Published" }).where(eq(maps.mapId, mapId))
+      return { error: null }
+    } catch (error) {
+      console.error(error)
+      return { error: "Failed to update map status. Check server logs for more information." }
     }
   }
 
@@ -263,7 +291,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       select: [
         "sys.id",
         "sys.updatedAt",
-        "fields"
+        "fields",
       ],
     }, draftMode)
 
