@@ -104,6 +104,7 @@ export default async function MapPage({ params }: MapPageProps) {
                     featuredImage={ image }
                     sizes='(max-width: 1280px) 100vw, 1280px'
                     quality={ 100 }
+                    priority
                     className='xl:rounded-lg overflow-hidden' 
                   />
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
