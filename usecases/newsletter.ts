@@ -39,7 +39,8 @@ export const subscribeEmailUseCase = async (email: string) => {
   
   const { error: createError } = await resend.contacts.create({
     email: email,
-    audienceId: env.RESEND_AUDIENCE_ID 
+    audienceId: env.RESEND_AUDIENCE_ID,
+    unsubscribed: false,
   })
   if (createError) {
     console.error(createError.message)
@@ -52,5 +53,45 @@ export const subscribeEmailUseCase = async (email: string) => {
   return {
     success: true,
     message: 'Thank You For Subscribing!'
+  }
+}
+
+export const unsubscribeEmailUseCase = async (email: string) => {
+  const resend = new Resend(env.RESEND_API_KEY)
+  const { data: contacts, error } = await resend.contacts.list({ 
+    audienceId: env.RESEND_AUDIENCE_ID 
+  })
+
+  if (error || !contacts) {
+    console.error(error?.message)
+    return {
+      success: false,
+      message: "Something Went Wrong! Please Try Again.",
+    }
+  }
+
+  const contact = contacts.data.find(contact => contact.email === email)
+  if (!contact) return {
+    success: false,
+    message: "That email is not currently subscribed."
+  }
+
+  const { error: removeError } = await resend.contacts.remove({
+    audienceId: env.RESEND_AUDIENCE_ID,
+    id: contact.id,
+    email: contact.email,
+  })
+
+  if (removeError) {
+    console.error(removeError.message)
+    return {
+      success: false,
+      message: "Failed to unsubscribe! Please Try Again."
+    }
+  }
+
+  return {
+    success: true,
+    message: `${email} successfully unsubscribed! You will no longer receive emails from us.`
   }
 }

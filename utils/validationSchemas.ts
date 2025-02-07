@@ -68,6 +68,15 @@ const SearchParamsSchema = z.object({
   }),
 })
 
+export const UnsubscribePageSchema = z.object({
+  token: z.string().uuid(),
+  email: stringOrStringArray
+  .transform(val => {
+    if (Array.isArray(val)) val = val[0]
+    return val
+  })
+})
+
 export const validateSearchParams = async (searchParams: Promise<SearchParams> | undefined) => {
   const input = await searchParams
   if (!input) return { page: 1 }

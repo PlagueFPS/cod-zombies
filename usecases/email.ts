@@ -74,9 +74,13 @@ export const sendBatchReleaseEmail = async (props: INewReleaseEmail) => {
     return {
       from: "COD: Zombies Guides <support@codzombiesguides.com>",
       to: contact.email,
-      subject: "New Release!",
+      subject: `New Guide Release: ${props.title}`,
       react: NewReleaseEmail(props),
       text: emailText,
+      headers: {
+        'List-Unsubscribe': `<https://codzombiesguides.com/api/emails/unsubscribe?contactId=${contact.id}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
+      }
     }
   })
 
@@ -93,4 +97,20 @@ export const sendBatchReleaseEmail = async (props: INewReleaseEmail) => {
     success: true,
     message: "Batch emails successfully sent."
   }
+}
+
+export const getContactById = async (contactId: string) => {
+  const resend = new Resend(env.RESEND_API_KEY)
+  const { data, error } = await resend.contacts.get({
+    audienceId: env.RESEND_AUDIENCE_ID,
+    id: contactId
+  })
+
+  if (error || !data) return {
+    contact: null,
+    success: false,
+    message: error?.message
+  }
+
+  return { contact: data }
 }

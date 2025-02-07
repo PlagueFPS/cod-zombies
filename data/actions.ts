@@ -1,7 +1,7 @@
 "use server"
 import { ContactFormSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { createAction } from "@/lib/safe-action"
-import { subscribeEmailUseCase } from "@/usecases/newsletter"
+import { subscribeEmailUseCase, unsubscribeEmailUseCase } from "@/usecases/newsletter"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { sendContactEmailUseCase } from "@/usecases/email"
 
@@ -28,3 +28,11 @@ export const submitContactForm = createAction
     const result = await sendContactEmailUseCase(parsedInput)
     return result
   })
+
+export const unsubscribeToNewsletter = createAction
+.metadata({ actionName: "unsubscribeToNewsletter" })
+.schema(NewsletterFormSchema)
+.action(async ({ parsedInput: { email }}) => {
+  const result = await unsubscribeEmailUseCase(email)
+  return result
+})
