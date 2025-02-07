@@ -1,4 +1,4 @@
-import { IEmail } from "@/emails/NewReleaseEmail"
+import { INewReleaseEmail } from "@/emails/NewReleaseEmail"
 import { env } from "@/env"
 import { type CreateBatchOptions, Resend } from "resend"
 import NewReleaseEmail from "@/emails/NewReleaseEmail"
@@ -51,7 +51,7 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
   }
 }
 
-export const sendBatchReleaseEmail = async (props: IEmail) => {
+export const sendBatchReleaseEmail = async (props: INewReleaseEmail) => {
   const resend = new Resend(env.RESEND_API_KEY)
   // start render work as early as possible
   const emailTextPromise = render(NewReleaseEmail(props), {
