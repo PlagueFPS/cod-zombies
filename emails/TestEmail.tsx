@@ -1,30 +1,20 @@
-import {
-  Html,
-  Head,
-  Body,
-  Button,
-  Img,
-  Container,
-  Heading,
-  Preview,
-  Text,
-  Section,
-  Hr
-} from "@react-email/components"
+import { Body, Button, Container, Head, Heading, Hr, Html, Img, Preview, Section, Text } from "@react-email/components"
 
-export interface INewReleaseEmail {
-  title: string
-  description: string
+const testData = {
+  title: "The Tomb",
+  description: "Cursed catacombs guard a gate to a world of darkness. Follow in the footsteps of a doomed explorer. Pass the Trials of the Damned. Claim the fabled Sentinel Artifact.",
   image: {
-    url: string | undefined
-    width: number | undefined
-    height: number | undefined
-  }
-  redirectTo: string
-  redirectText: string
+    url: '//images.ctfassets.net/sppryayp8tgu/01QspJrfdPHLwCC3tOEXp6/0d5e881f67db4661dcddd5b660e9ffcc/the-tomb.avif',
+    width: 1920,
+    height: 1032,
+  },
+  redirectTo: "/black-ops-6/the-tomb",
+  redirectText: "View Guide"
 }
 
-export default function NewReleaseEmail({ title, description, image, redirectTo, redirectText }: INewReleaseEmail) {
+export const NewGuideEmail = () => {
+  const { description, image, redirectText, redirectTo, title } = testData
+
   return (
     <Html>
       <Head />
@@ -70,6 +60,8 @@ export default function NewReleaseEmail({ title, description, image, redirectTo,
     </Html>
   )
 }
+
+export default NewGuideEmail
 
 const main = {
   backgroundColor: "hsl(0, 0%, 100%)",
@@ -143,3 +135,4 @@ const footer = {
   lineHeight: "16px",
   textAlign: "center" as const,
 }
+
