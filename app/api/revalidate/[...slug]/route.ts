@@ -2,7 +2,7 @@ import { getGameById, storeNewGameId } from "@/data/games";
 import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps";
 import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
 import { env } from "@/env";
-import { sendBatchReleaseEmail } from "@/usecases/email";
+import { sendBatchReleaseEmailUseCase } from "@/usecases/email";
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants";
 import { isFirstTimePublish } from "@/utils/contentful-utils";
 import { authorizedRequest } from "@/utils/functions";
@@ -43,7 +43,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
 
         if (!map.isComingSoon) {
-          const { success, message } = await sendBatchReleaseEmail({
+          const { success, message } = await sendBatchReleaseEmailUseCase({
             title: map.title,
             description: map.description,
             image: map.image,
@@ -73,7 +73,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       // If previously stored status was "Coming Soon" and status is no longer "Coming Soon" in Contentful
       // update stored status and send out release emails to users
       if (status === "Coming Soon" && !map.isComingSoon) {
-        const emailPromise = sendBatchReleaseEmail({
+        const emailPromise = sendBatchReleaseEmailUseCase({
           title: map.title,
           description: map.description,
           image: map.image,

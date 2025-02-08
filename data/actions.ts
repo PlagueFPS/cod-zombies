@@ -1,9 +1,8 @@
 "use server"
 import { ContactFormSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { createAction } from "@/lib/safe-action"
-import { subscribeEmailUseCase, unsubscribeEmailUseCase } from "@/usecases/newsletter"
+import { sendContactEmailUseCase, subscribeEmailUseCase, unsubscribeEmailUseCase } from "@/usecases/email"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
-import { sendContactEmailUseCase } from "@/usecases/email"
 
 export const subscribeToNewsletter = createAction
   .metadata({ actionName: "subscribeToNewsletter" })

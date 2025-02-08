@@ -9,7 +9,8 @@ import {
   Preview,
   Text,
   Section,
-  Hr
+  Hr,
+  Link
 } from "@react-email/components"
 
 export interface INewReleaseEmail {
@@ -22,9 +23,10 @@ export interface INewReleaseEmail {
   }
   redirectTo: string
   redirectText: string
+  contactId: string
 }
 
-export default function NewReleaseEmail({ title, description, image, redirectTo, redirectText }: INewReleaseEmail) {
+export default function NewReleaseEmail({ title, description, image, redirectTo, redirectText, contactId }: INewReleaseEmail) {
   return (
     <Html>
       <Head />
@@ -64,7 +66,7 @@ export default function NewReleaseEmail({ title, description, image, redirectTo,
             </Button>
           </Section>
           <Hr style={hr} />
-          <Text style={footer}>© {new Date().getFullYear()} Call of Duty: Zombies Guides.</Text>
+          <Text style={footer}>© {new Date().getFullYear()} Call of Duty: Zombies Guides. • <Link href={`https://codzombiesguides.com/api/emails/unsubscribe?contactId=${contactId}`}>Unsubscribe</Link></Text>
         </Container>
       </Body>
     </Html>
@@ -142,4 +144,9 @@ const footer = {
   fontSize: "12px",
   lineHeight: "16px",
   textAlign: "center" as const,
+}
+
+const link = {
+  color: "hsl(24.6 95% 53.1%)",
+  textDecoration: "underline",
 }

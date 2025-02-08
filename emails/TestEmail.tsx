@@ -1,4 +1,4 @@
-import { Body, Button, Container, Head, Heading, Hr, Html, Img, Preview, Section, Text } from "@react-email/components"
+import { Body, Button, Container, Head, Heading, Hr, Html, Img, Link, Preview, Section, Text } from "@react-email/components"
 
 const testData = {
   title: "The Tomb",
@@ -12,6 +12,8 @@ const testData = {
   redirectText: "View Guide"
 }
 
+// This email is a dummy version of the NewReleaseEmail to test locally
+// The actual email depends on request time data so cannot be accurately tested
 export const NewGuideEmail = () => {
   const { description, image, redirectText, redirectTo, title } = testData
 
@@ -54,7 +56,7 @@ export const NewGuideEmail = () => {
             </Button>
           </Section>
           <Hr style={hr} />
-          <Text style={footer}>© {new Date().getFullYear()} Call of Duty: Zombies Guides.</Text>
+          <Text style={footer}>© {new Date().getFullYear()} Call of Duty: Zombies Guides. • <Link style={ link } href={`https://codzombiesguides.com/api/emails/unsubscribe?contactId=`}>Unsubscribe</Link></Text>
         </Container>
       </Body>
     </Html>
@@ -136,3 +138,7 @@ const footer = {
   textAlign: "center" as const,
 }
 
+const link = {
+  color: "hsl(24.6 95% 53.1%)",
+  textDecoration: "underline",
+}
