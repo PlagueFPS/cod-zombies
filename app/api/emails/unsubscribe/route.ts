@@ -1,6 +1,5 @@
 import { env } from "@/env";
-import { getContactById } from "@/usecases/email";
-import { unsubscribeEmailUseCase } from "@/usecases/newsletter";
+import { getContactById, unsubscribeEmailUseCase } from "@/usecases/email";
 import type { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
