@@ -19,15 +19,15 @@ export default function Footer() {
             <Copyright />
           </Suspense>
           <div className="flex items-center gap-3 text-muted-foreground">
-            <ExternalLink href="https://x.com/CodZombiesGuide">
+            <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
               <X className="size-5" />
             </ExternalLink>
             <Separator orientation="vertical" className="h-5" />
-            <ExternalLink href="https://discord.gg/callofduty">
+            <ExternalLink href="https://discord.gg/callofduty" title="Discord" aria-label="Join the Official Call of Duty Discord">
               <Discord className="size-5" />
             </ExternalLink>
             <Separator orientation="vertical" className="h-5" />
-            <ExternalLink href="https://www.reddit.com/r/CODZombies/">
+            <ExternalLink href="https://www.reddit.com/r/CODZombies/" title="Reddit" aria-label="Join the Official Call of Duty: Zombies Subreddit">
               <Reddit className="size-5" />
             </ExternalLink>
           </div>

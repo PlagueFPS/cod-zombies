@@ -81,7 +81,15 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
           <span className="text-xs">Ctrl+K</span>
         </kbd>
       </Button>
-      <Button type="button" size="icon" variant="ghost" className="flex sm:hidden text-muted-foreground" onClick={ () => setOpen(!open) }>
+      <Button 
+        type="button" 
+        size="icon" 
+        variant="ghost" 
+        className="flex sm:hidden text-muted-foreground" 
+        onClick={ () => setOpen(!open) }
+        title="Search"
+        aria-label="Search for Quests"
+      >
         <Search className="size-6" />
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>

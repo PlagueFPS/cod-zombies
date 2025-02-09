@@ -24,7 +24,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                 <TooltipTrigger className={cn('relative inline-flex justify-center items-center gap-2 underline decoration-dotted underline-offset-4 hover:no-underline', className)}>
                   <IconImage 
                     featuredImage={ image }
-                    alt={ title }
+                    alt={ `${title} Image` }
                     sizes='24px'
                     className='my-auto h-6 w-6'
                   />

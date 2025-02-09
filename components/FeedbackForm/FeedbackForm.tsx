@@ -96,7 +96,15 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
             </kbd>
           </Button>
         </DialogTrigger>
-        <Button variant="ghost" size="icon" className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} onClick={ () => setOpen(!open) } {...props}>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} 
+          onClick={ () => setOpen(!open) }
+          title="Feedback"
+          aria-label="Give us your Feedback"
+          {...props}
+        >
           <MessageCircleHeart className="size-6" />
         </Button>
         <DialogContent className="rounded-lg">
