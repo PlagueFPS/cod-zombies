@@ -3,7 +3,8 @@ import { getYouTubeVideoID } from "@/utils/functions"
 import { YouTubeEmbed } from "@next/third-parties/google"
 import ExternalLink from "@/components/ExternalLink/ExternalLink"
 import { ExternalLinkIcon } from "lucide-react"
-import Link from "next/link"
+// import Link from "next/link"
+import { CustomLink } from "@/components/CustomLink/CustomLink"
 
 interface RichLinkProps {
   node: any
@@ -24,16 +25,16 @@ export default function RichLink({ node }: RichLinkProps) {
   }
   else if (node.data.uri.startsWith(env.NEXT_PUBLIC_WEBSITE_URL)) {
     return (
-      <Link href={ node.data.uri }>
+      <CustomLink href={ node.data.uri }>
         { node.content[0].value }
-      </Link>
+      </CustomLink>
     )
   }
   else if (node.data.uri.startsWith(dev_url) || node.data.uri.startsWith(alt_dev_url) || node.data.uri.startsWith('/')) {
     return (
-      <Link href={ node.data.uri.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL).replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) }>
+      <CustomLink href={ node.data.uri.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL).replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) }>
         { node.content[0].value }
-      </Link>
+      </CustomLink>
     )
   }
   else {

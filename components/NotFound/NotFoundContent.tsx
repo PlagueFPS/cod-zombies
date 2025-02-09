@@ -1,7 +1,8 @@
 import NotFoundBreadcrumbs from "@/components/NotFound/NotFoundBreadcrumbs"
 import { capatilize } from "@/utils/functions"
 import { Button } from "../ui/button"
-import Link from "next/link"
+// import Link from "next/link"
+import { CustomLink } from "../CustomLink/CustomLink"
 
 interface INotFoundContent {
   param: string
@@ -42,15 +43,15 @@ const NotFoundButtons = ({ items, resource }: Omit<INotFoundContent, "param">) =
     <div className="flex flex-col sm:flex-row justify-between items-center w-fit gap-8">
       { newItems.length > 0 ? newItems.map(item => (
         <Button variant={"outline"} asChild>
-          <Link href={ item.href }>
+          <CustomLink href={ item.href }>
             View all { item.title } { item.title === "Side Quests" ? null : text }
-          </Link>
+          </CustomLink>
         </Button>
       )) : (
         <Button variant={"outline"} asChild>
-          <Link href='/'>
+          <CustomLink href='/'>
             View all Main Quests
-          </Link>
+          </CustomLink>
         </Button>
       )}
     </div>

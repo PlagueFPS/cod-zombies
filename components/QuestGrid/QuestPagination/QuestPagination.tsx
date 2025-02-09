@@ -2,6 +2,9 @@ import { type SearchParams, validateSearchParams } from "@/utils/validationSchem
 import { draftMode } from "next/headers"
 import { getPaginatedSideQuests } from "@/data/sideQuests"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { Button } from "@/components/ui/button"
+// import Link from "next/link"
+import { CustomLink } from "@/components/CustomLink/CustomLink"
 
 interface IQuestPagination {
   searchParams: Promise<SearchParams>
@@ -35,9 +38,12 @@ export default async function QuestPagination({ searchParams, params }: IQuestPa
             className={ previousDisabled ? 'opacity-25 pointer-events-none' : '' }
           />
         </PaginationItem>
-        { [...Array(totalPages).keys()].map(page => (
-          <PaginationItem key={ `pagination-item-${page}` }>
-            <PaginationLink href={`${href}?page=${page + 1}`} isActive={ currentPage === page + 1 }>{ page + 1 }</PaginationLink>
+        { Array.from({ length: totalPages }, (_, page) => (
+          <PaginationItem key={ `quest-pagination-item-${page}` }>
+            {/* <PaginationLink href={`${href}?page=${page + 1}`} isActive={ currentPage === page + 1 }>{ page + 1 }</PaginationLink> */}
+            <Button asChild size={"icon"} variant={ currentPage === page + 1 ? "outline" : "ghost" }>
+              <CustomLink aria-current={ currentPage === page + 1 ? "page" : undefined } href={`${href}?page=${page + 1}`}>{ page + 1 }</CustomLink>
+            </Button>
           </PaginationItem>
         ))}
         <PaginationItem>

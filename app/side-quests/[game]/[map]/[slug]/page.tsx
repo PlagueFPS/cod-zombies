@@ -5,7 +5,7 @@ import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
 import ShareButton from "@/components/ShareButton/ShareButton"
 import TableOfContents from "@/components/TableOfContents/TableOfContents"
-import Link from "next/link"
+// import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { getQuestBySlug, getQuests } from "@/data/sideQuests"
 import { env } from "@/env"
@@ -20,6 +20,7 @@ import { ChevronRight } from "lucide-react"
 import { ChevronLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import PreviousOrNextMapLoader from "@/components/Loaders/PreviousOrNextMapLoader"
+import { CustomLink } from "@/components/CustomLink/CustomLink"
 
 interface ISideQuestSlugPage {
   params: Promise<{ 
@@ -164,7 +165,7 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
   const alt = `${map.title} map image`
 
   return (
-    <Link href={ `/side-quests/${game.slug}/${map.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
+    <CustomLink href={ `/side-quests/${game.slug}/${map.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
       <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
           {/* { isNew ? <NewBadge /> : null } */}
@@ -213,6 +214,6 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
           </div>
         </div>
       </article>
-    </Link>
+    </CustomLink>
   )
 }

@@ -3,10 +3,11 @@ import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { IN_DEVELOPMENT } from '@/utils/constants'
-import Link from 'next/link'
+// import Link from 'next/link'
 import { draftMode } from 'next/headers'
 import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
 import { cn } from '@/lib/utils'
+import { CustomLink } from '@/components/CustomLink/CustomLink'
 
 interface MapCardProps {
   map: Omit<FeaturedMapWithoutBody, "updatedAt">
@@ -21,7 +22,7 @@ export default async function MapCard({ map, mapIndex }: MapCardProps) {
   const href =  isComingSoon ? '#' : `/${category.slug}/${slug}`
   
   return (
-    <Link 
+    <CustomLink 
       href={ href } 
       className={cn("max-h-[450px] h-full group outline-none", { 'pointer-events-none opacity-50': isComingSoon })}
       aria-label={ `View Guide for ${title}` } 
@@ -62,6 +63,6 @@ export default async function MapCard({ map, mapIndex }: MapCardProps) {
           </div>
         </CardHeader>
       </Card>
-    </Link>
+    </CustomLink>
   )
 }

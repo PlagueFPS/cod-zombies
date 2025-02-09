@@ -2,12 +2,13 @@ import { draftMode } from "next/headers";
 import { getGames } from "@/data/games";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import Link from "next/link";
+// import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ChangedBadge, DraftBadge, NewBadge } from "@/components/CustomBadges/CustomBadges";
 import { IN_DEVELOPMENT } from "@/utils/constants";
 import { Fragment } from "react";
 import FilterLogo from "./FilterLogo";
+import { CustomLink } from "@/components/CustomLink/CustomLink";
 
 interface MapFiltersProps {
   currentCategory?: string
@@ -38,7 +39,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
                   focus-visible:border focus-visible:border-primary focus-visible:badge-primary-gradient focus-visible:ring-0`
                 )}
               >
-                <Link href={ getHref(game.slug) } className="flex justify-center items-center gap-2">
+                <CustomLink href={ getHref(game.slug) } className="flex justify-center items-center gap-2">
                   <FilterLogo
                     slug={ game.slug }
                     alt={ `${game.title} Logo` }
@@ -47,7 +48,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
                     className="size-6" 
                   />
                   <span>{ game.title }</span>
-                </Link>
+                </CustomLink>
               </Button>
               { game.isNew ? <NewBadge className="absolute -top-3 -right-3 z-10" /> : null }
               { (isEnabled || IN_DEVELOPMENT) && game.isChanged ? <ChangedBadge className="absolute -top-3 -right-3 z-10" /> : null }

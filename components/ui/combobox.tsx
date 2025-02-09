@@ -18,7 +18,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import Link from "next/link"
+// import Link from "next/link"
+import { CustomLink } from "../CustomLink/CustomLink"
 
 interface Filter {
   id: string
@@ -65,7 +66,7 @@ export function Combobox({ filters, games, maps, currentFilter }: ComboboxProps)
             <CommandEmpty>No filter found.</CommandEmpty>
             <CommandGroup heading="Games">
               {games.map((game) => (
-                <Link key={ game.id } href={ `/side-quests/${game.slug}` } onClick={ () => setOpen(false) }>
+                <CustomLink key={ game.id } href={ `/side-quests/${game.slug}` } onClick={ () => setOpen(false) }>
                   <CommandItem
                     value={ game.slug }
                     onSelect={ () => setOpen(false) }
@@ -78,12 +79,12 @@ export function Combobox({ filters, games, maps, currentFilter }: ComboboxProps)
                     />
                     { game.title }
                   </CommandItem>
-                </Link>
+                </CustomLink>
               ))}
             </CommandGroup>
             <CommandGroup heading="Maps">
               {maps.map((map) => (
-                <Link key={ map.id } href={ `/side-quests/${map.category.slug}/${map.slug}` }>
+                <CustomLink key={ map.id } href={ `/side-quests/${map.category.slug}/${map.slug}` }>
                   <CommandItem
                     key={ map.id }
                     value={ map.slug }
@@ -97,7 +98,7 @@ export function Combobox({ filters, games, maps, currentFilter }: ComboboxProps)
                     />
                     { map.title }
                   </CommandItem>
-                </Link>
+                </CustomLink>
               ))}
             </CommandGroup>
           </CommandList>

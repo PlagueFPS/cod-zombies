@@ -6,7 +6,8 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import TableOfContents from '@/components/TableOfContents/TableOfContents'
-import Link from 'next/link'
+// import Link from 'next/link'
+import { CustomLink } from '@/components/CustomLink/CustomLink'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
@@ -161,7 +162,7 @@ export default async function MapPage({ params }: MapPageProps) {
   const href = isComingSoon ? '#' : `/${category.slug}/${slug}`
 
   return (
-    <Link 
+    <CustomLink 
       href={ href }
       className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform', {
         'pointer-events-none opacity-50': isComingSoon,
@@ -212,6 +213,6 @@ export default async function MapPage({ params }: MapPageProps) {
           </div>
         </div>
       </article>
-    </Link>
+    </CustomLink>
   )
  }

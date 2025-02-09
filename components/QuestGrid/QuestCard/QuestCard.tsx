@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import type { SideQuest } from "@/types/SideQuest"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import Link from "next/link"
+// import Link from "next/link"
+import { CustomLink } from "@/components/CustomLink/CustomLink"
 
 interface QuestCardProps {
   quest: Omit<SideQuest, "content" | "updatedAt">
@@ -17,7 +18,7 @@ export default function QuestCard({ quest, isEnabled }: QuestCardProps) {
 
   return (
     <article className="max-h-[450px] h-full group outline-none">
-      <Link href={ `/side-quests/${game.slug}/${map.slug}/${slug}` } aria-label={ `View Guide for ${title}` }>
+      <CustomLink href={ `/side-quests/${game.slug}/${map.slug}/${slug}` } aria-label={ `View Guide for ${title}` }>
         <div className='sr-only'>View Guide for { title }</div>
         <Card className="relative h-full group-hover:border-primary group-hover:scale-105 group-focus-visible:scale-105 group-focus-visible:border-primary cursor-pointer transition-transform overflow-hidden animate-fade-in">
           <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
@@ -54,7 +55,7 @@ export default function QuestCard({ quest, isEnabled }: QuestCardProps) {
             </div>
           </CardHeader>
         </Card>
-      </Link>
+      </CustomLink>
     </article>
   )
 }

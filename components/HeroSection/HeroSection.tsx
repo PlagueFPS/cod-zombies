@@ -1,7 +1,8 @@
-import Link from "next/link"
+// import Link from "next/link"
 import { Button } from "../ui/button"
 import { Book } from "lucide-react"
 import { NewBadge } from "../CustomBadges/CustomBadges"
+import { CustomLink } from "../CustomLink/CustomLink"
 
 interface HeroSectionProps {
   text: string
@@ -26,11 +27,11 @@ export default function HeroSection({ text }: HeroSectionProps) {
       </p>
       <div className="flex items-center justify-center w-full mt-8">
         <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
-          <Link href="/side-quests" className="relative flex gap-2 rounded-sm items-center justify-center">
+          <CustomLink href="/side-quests" className="relative flex gap-2 rounded-sm items-center justify-center">
             <NewBadge className="absolute -top-3 -right-3" />
             <Book className="size-4" />
             <span>View Side Quests</span>
-          </Link>
+          </CustomLink>
         </Button>
       </div>
     </section>
