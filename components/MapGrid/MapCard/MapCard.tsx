@@ -38,12 +38,13 @@ export default async function MapCard({ map, mapIndex }: MapCardProps) {
             { category.title }
           </Badge>
         </div>
-        <div className="absolute -top-10 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full scale-[2.5] opacity-25 blur-2xl">
+        <div className="absolute inset-0 z-10 flex items-center w-full h-full opacity-25 blur-2xl">
             <FeaturedImage 
               featuredImage={ image } 
               priority={ priority } 
-              quality={ 1 } 
-              sizes='272px' 
+              quality={ 1 }
+              sizes='32px'
+              className='aspect-square scale-150'
             />
         </div>
         <CardHeader className="flex gap-2 flex-grow">

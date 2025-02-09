@@ -14,7 +14,7 @@ export default function FilterLogo({ slug, ...props }: IFilterLogo) {
   return (
     <img 
       {...props}
-      src={`/${slug}_logo.png`}
+      src={`/${slug}_logo.webp`}
       onError={() => setImageErrored(true)}
     />
   )

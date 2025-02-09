@@ -94,7 +94,7 @@ export default async function MapPage({ params }: MapPageProps) {
               <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl'>
                   <FeaturedImage
                     featuredImage={ image } 
-                    sizes='(max-width: 1280px) 100vw, 1280px'
+                    sizes='32px'
                     priority 
                     className='xl:rounded-lg'
                     quality={ 1 }
@@ -176,12 +176,12 @@ export default async function MapPage({ params }: MapPageProps) {
             { category.title }
           </Badge>
         </div>
-        <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
+        <div className={cn('absolute inset-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
               featuredImage={ image }
-              sizes='(max-width: 1280px) 320px, 364px'
+              sizes='32px'
               quality={ 1 }
-              className='object-cover scale-[2]'
+              className='scale-110'
             />
         </div>
         <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>

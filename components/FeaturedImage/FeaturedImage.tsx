@@ -11,7 +11,15 @@ interface FeaturedImageProps extends ImageProps {
   description?: string
 }
 
-export default function FeaturedImage({ featuredImage, description, alt = "", quality = 75, className, priority, sizes }: FeaturedImageProps) {
+export default function FeaturedImage({ 
+  featuredImage, 
+  description, 
+  alt = "", 
+  quality = 75, 
+  className, 
+  priority, 
+  sizes, 
+}: FeaturedImageProps) {
   const { 
     imageLoaded, 
     imageErrored,
