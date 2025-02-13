@@ -82,7 +82,6 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                     featuredImage={ q.image } 
                     sizes='(max-width: 1280px) 100vw, 1280px'
                     priority 
-                    className='xl:rounded-lg'
                     quality={ 1 }
                   />
               </div>

@@ -96,7 +96,6 @@ export default async function MapPage({ params }: MapPageProps) {
                     featuredImage={ image } 
                     sizes='32px'
                     priority 
-                    className='xl:rounded-lg'
                     quality={ 1 }
                   />
               </div>
