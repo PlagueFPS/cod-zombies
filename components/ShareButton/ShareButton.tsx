@@ -39,7 +39,7 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
           <Share2 className='w-4 h-4' />
         </Button>
       </DialogTrigger>
-      <DialogContent className='gap-6'>
+      <DialogContent className='gap-6 rounded-lg'>
         <DialogHeader>
           <DialogTitle>Share on Social Media</DialogTitle>
           <DialogDescription>Share a link of the current page to a social platform</DialogDescription>

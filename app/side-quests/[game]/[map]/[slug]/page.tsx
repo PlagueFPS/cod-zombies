@@ -5,7 +5,6 @@ import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
 import ShareButton from "@/components/ShareButton/ShareButton"
 import TableOfContents from "@/components/TableOfContents/TableOfContents"
-// import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { getQuestBySlug, getQuests } from "@/data/sideQuests"
 import { env } from "@/env"
@@ -107,8 +106,8 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
               </div>
             </div>
             <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-12 w-full max-w-screen-xl border-b-2'>
-              <div className='flex w-full justify-between items-center'>
-                <h2 className='font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2'>
+              <div className='flex flex-col-reverse md:flex-row w-full justify-between items-start md:items-center gap-4 md:gap-0'>
+                <h2 className='font-extrabold text-3xl md:text-4xl lg:text-5xl text-gradient pb-2'>
                   { q.title }
                 </h2>
                 <div className='flex items-center justify-center gap-4 w-fit'>
@@ -119,7 +118,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                   <Badge className='badge-primary-gradient'>{ q.map.title }</Badge>
                 </div>
               </div>
-              <div className='flex flex-col md:flex-row items-start md:items-center gap-8 pb-4 md:gap-0 md:pb-0 md:justify-between'>
+              <div className='flex items-center gap-0 pb-4 md:pb-0 justify-between'>
                 <div className='flex flex-col items-center justify-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
                   <div>Last Updated: { new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
                 </div>
