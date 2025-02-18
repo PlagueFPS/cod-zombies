@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: `%s - ${SITE_TITLE}`,
     default: SITE_TITLE
   },
-  description: SITE_DESCRIPTION,
+  description: SITE_DESCRIPTION(),
   creator: 'Angel Pichardo',
   verification: {
     google: 'wgrEcrtUWVglsvPl05UfwC8pqkk8KfP-uQellDbz-gs'
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
       template: `%s - ${SITE_TITLE}`,
       default: SITE_TITLE
     },
-    description: SITE_DESCRIPTION,
+    description: SITE_DESCRIPTION(),
     url: '/',
   },
   twitter: {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
       template: `%s - ${SITE_TITLE}`,
       default: SITE_TITLE
     },
-    description: SITE_DESCRIPTION,
+    description: SITE_DESCRIPTION(),
     card: 'summary_large_image',
   }
 };

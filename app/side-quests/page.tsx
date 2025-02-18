@@ -1,6 +1,5 @@
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
-import HeroSection from "@/components/HeroSection/HeroSection";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
 import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader";

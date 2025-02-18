@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 
 export const IN_DEVELOPMENT = process.env.NODE_ENV === 'development'
 export const SITE_TITLE = 'Call of Duty: Zombies Guides'
-export const SITE_DESCRIPTION = "Unlock the secrets of Call of Duty: Zombies and explore our comprehensive guides to the most challenging and rewarding Main Quests and Easter Eggs in Call of Duty: Zombies."
+export const SITE_DESCRIPTION = (text: string = "Call of Duty: Zombies") => 
+  `Explore our comprehensive guides to the most challenging and rewarding Main Quests, Side Quests, and Easter Eggs in ${text}.`
 export const DATE_OPTIONS: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }
 export const MAP_LIMIT = 12
 export const MAX_NEW_TIME = 14 * 24 * 60 * 60 * 1000 // 2 weeks in milliseconds

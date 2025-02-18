@@ -1,5 +1,5 @@
 import { getGames, getGameBySlug } from "@/data/games"
-import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { GLOBAL_OG_PROPS, SITE_DESCRIPTION } from "@/utils/constants"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
@@ -29,7 +29,7 @@ export const generateMetadata = async ({ params }: CategoryPageProps) => {
   const category = await getGameBySlug(isEnabled, slug)
   if (!category) notFound()
   const title = category.title
-  const description = `Explore our comprehensive guides to the most challenging and rewarding main quests in ${category.title}`
+  const description = SITE_DESCRIPTION(category.title)
   const metadata: Metadata = {
     title,
     description,

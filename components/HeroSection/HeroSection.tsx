@@ -1,6 +1,7 @@
 import { Button } from "../ui/button"
 import { Book } from "lucide-react"
 import { CustomLink } from "../CustomLink/CustomLink"
+import { SITE_DESCRIPTION } from "@/utils/constants"
 
 interface HeroSectionProps {
   text: string
@@ -21,7 +22,7 @@ export default function HeroSection({ text }: HeroSectionProps) {
         </span>
       </h1>
       <p className="text-base md:text-lg">
-        Explore our comprehensive guides to the most challenging and rewarding Main Quests and Easter Eggs in { text }
+        { SITE_DESCRIPTION(text) }
       </p>
       <div className="flex items-center justify-center w-full mt-8">
         <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
