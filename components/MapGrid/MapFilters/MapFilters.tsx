@@ -9,6 +9,7 @@ import { IN_DEVELOPMENT } from "@/utils/constants";
 import { Fragment } from "react";
 import FilterLogo from "./FilterLogo";
 import { CustomLink } from "@/components/CustomLink/CustomLink";
+import { getMaps } from "@/data/maps";
 
 interface MapFiltersProps {
   currentCategory?: string
@@ -16,7 +17,11 @@ interface MapFiltersProps {
 
 export default async function MapFilters({ currentCategory }: MapFiltersProps) {
   const { isEnabled } = await draftMode()
-  const games = await getGames(isEnabled)
+  const gamesPromise = getGames(isEnabled)
+  const mapsPromise = getMaps(isEnabled)
+  const [games, maps] = await Promise.all([gamesPromise, mapsPromise])
+  const mapGames = new Set(maps.map(m => m.category.slug))
+  const gameFilters = games.filter(g => mapGames.has(g.slug))
   
   const getHref = (category: string) => {
     if (currentCategory === category) return '/'
@@ -27,7 +32,7 @@ export default async function MapFilters({ currentCategory }: MapFiltersProps) {
     <ScrollArea className="-mt-6 animate-fade-in">
       <div className="inline-block pt-3">
         <div className="relative inline-flex w-max gap-2">
-          { games.map(game => (
+          { gameFilters.map(game => (
             <Fragment key={ game.id }>
               <Button
                 size="sm"
