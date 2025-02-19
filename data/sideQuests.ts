@@ -32,6 +32,7 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
       title: q.fields.title,
       slug: q.fields.slug,
       description: q.fields.description,
+      timeToRead: q.fields.timeToRead,
       game,
     }
   }))
@@ -132,6 +133,7 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
     slug: q.fields.slug,
     description: q.fields.description,
     content: q.fields.content,
+    timeToRead: q.fields.timeToRead,
     game
   }
 }, [], {

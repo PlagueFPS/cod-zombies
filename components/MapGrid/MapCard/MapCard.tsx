@@ -3,9 +3,8 @@ import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { IN_DEVELOPMENT } from '@/utils/constants'
-// import Link from 'next/link'
 import { draftMode } from 'next/headers'
-import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge } from '@/components/CustomBadges/CustomBadges'
+import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, DifficultyBadge } from '@/components/CustomBadges/CustomBadges'
 import { cn } from '@/lib/utils'
 import { CustomLink } from '@/components/CustomLink/CustomLink'
 
@@ -16,7 +15,7 @@ interface MapCardProps {
 
 export default async function MapCard({ map, mapIndex }: MapCardProps) {
   const { isEnabled } = await draftMode()
-  const { title, description, image, category, slug, isDraft, isChanged, isNew, isComingSoon } = map
+  const { title, description, image, category, slug, isDraft, isChanged, isNew, isComingSoon, difficulty } = map
   const priority = mapIndex === 0
   const alt = `${title} map image`
   const href =  isComingSoon ? '#' : `/${category.slug}/${slug}`
@@ -35,6 +34,7 @@ export default async function MapCard({ map, mapIndex }: MapCardProps) {
           { isComingSoon ? <ComingSoonBadge /> : isNew ? <NewBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
+          <DifficultyBadge difficulty={ difficulty } />
           <Badge className='badge-primary-gradient'>
             { category.title }
           </Badge>

@@ -101,4 +101,19 @@
       @apply bg-gradient-to-tr dark:from-green-950 dark:via-green-800 dark:to-green-950 dark:border-green-600 dark:text-green-200
       text-green-800 from-green-50 via-green-200 to-green-50 border-green-400
     }
+
+    .badge-easy-gradient {
+      @apply bg-gradient-to-tr dark:from-teal-950 dark:via-teal-800 dark:to-teal-950 dark:border-teal-600 dark:text-teal-200
+      text-teal-800 from-teal-50 via-teal-200 to-teal-50 border-teal-400
+    }
+
+    .badge-medium-gradient {
+      @apply bg-gradient-to-tr dark:from-yellow-950 dark:via-yellow-800 dark:to-yellow-950 dark:border-yellow-600 dark:text-yellow-200
+      text-yellow-800 from-yellow-50 via-yellow-200 to-yellow-50 border-yellow-400
+    }
+
+    .badge-hard-gradient {
+      @apply bg-gradient-to-tr dark:from-red-950 dark:via-red-800 dark:to-red-950 dark:border-red-600 dark:text-red-200
+      text-red-800 from-red-50 via-red-200 to-red-50 border-red-400
+    }
   }

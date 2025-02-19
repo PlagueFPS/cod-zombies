@@ -14,8 +14,10 @@ export type TypeAmmoMods<Modifiers extends ChainModifiers, Locales extends Local
 export interface TypeFeaturedMapsFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
-    isComingSoon?: EntryFieldTypes.Boolean,
     releaseDate: EntryFieldTypes.Date;
+    isComingSoon?: EntryFieldTypes.Boolean;
+    difficulty: EntryFieldTypes.Symbol<"Easy" | "Hard" | "Medium">;
+    timeToRead: EntryFieldTypes.Integer;
     gameCategory: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     image: EntryFieldTypes.AssetLink;
     description: EntryFieldTypes.Text;
@@ -74,12 +76,33 @@ export type TypePerks<Modifiers extends ChainModifiers, Locales extends LocaleCo
 export interface TypeSideQuestsFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
-    description: EntryFieldTypes.Text;
-    image: EntryFieldTypes.AssetLink;
-    map: EntryFieldTypes.EntryLink<TypeFeaturedMapsSkeleton>;
+    timeToRead: EntryFieldTypes.Integer;
     game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
+    map: EntryFieldTypes.EntryLink<TypeFeaturedMapsSkeleton>;
+    image: EntryFieldTypes.AssetLink;
+    description: EntryFieldTypes.Text;
     content: EntryFieldTypes.RichText;
 }
 
 export type TypeSideQuestsSkeleton = EntrySkeletonType<TypeSideQuestsFields, "sideQuests">;
 export type TypeSideQuests<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeSideQuestsSkeleton, Modifiers, Locales>;
+
+export interface TypeZombiesFields {
+    name: EntryFieldTypes.Symbol;
+    slug: EntryFieldTypes.Symbol;
+    description: EntryFieldTypes.Symbol;
+    image: EntryFieldTypes.AssetLink;
+    type: EntryFieldTypes.Symbol<"Boss" | "Elite" | "Normal" | "Special">;
+    games: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>>;
+    weaknesses?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeAmmoModsSkeleton>>;
+    weakPoints: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
+    speed: EntryFieldTypes.Symbol<"Fast" | "Medium" | "Slow">;
+    spawnBehavior: EntryFieldTypes.Symbol;
+    attacks: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
+    baseHealth: EntryFieldTypes.Integer;
+    doesHealthScale: EntryFieldTypes.Boolean;
+    combatStrategy: EntryFieldTypes.RichText;
+}
+
+export type TypeZombiesSkeleton = EntrySkeletonType<TypeZombiesFields, "zombies">;
+export type TypeZombies<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeZombiesSkeleton, Modifiers, Locales>;
