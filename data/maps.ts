@@ -19,8 +19,9 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
 
   return await Promise.all(maps.map(async map => {
-    const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map, mapIds)
+    const mapData = await resolveMapData(map, mapIds)
     return {
+      ...mapData,
       id: map.sys.id,
       title: map.fields.title,
       slug: map.fields.slug,
@@ -28,11 +29,6 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
       description: map.fields.description,
       isComingSoon: map.fields.isComingSoon ?? false,
       difficulty: map.fields.difficulty,
-      category,
-      image,
-      isDraft,
-      isChanged,
-      isNew
     }
   }))
 }, [], {
@@ -60,19 +56,15 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
   const paginatedMaps = featuredMaps.slice(skip, (MAP_LIMIT * page))
 
   const maps = await Promise.all(paginatedMaps.map(async map => {
-    const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map, mapIds)
+    const mapData = await resolveMapData(map, mapIds)
     return {
+      ...mapData,
       id: map.sys.id,
       title: map.fields.title,
       slug: map.fields.slug,
       description: map.fields.description,
       isComingSoon: map.fields.isComingSoon ?? false,
       difficulty: map.fields.difficulty,
-      category,
-      image,
-      isDraft,
-      isChanged,
-      isNew
     }
   }))
     const totalPages = Math.ceil(featuredMaps.length / MAP_LIMIT)
@@ -105,9 +97,10 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
     const map = maps.find(m => m.fields.slug === slug)
     if (!map) return null
-    const { category, image, isChanged, isDraft, isNew } = await resolveMapData(map, mapIds)
+    const mapData = await resolveMapData(map, mapIds)
 
     if (withBody) return {
+      ...mapData,
       id: map.sys.id,
       slug: map.fields.slug,
       updatedAt: map.sys.updatedAt,
@@ -117,14 +110,10 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       isComingSoon: map.fields.isComingSoon ?? false,
       difficulty: map.fields.difficulty,
       timeToRead: map.fields.timeToRead,
-      category,
-      image,
-      isChanged,
-      isDraft,
-      isNew,
     }
     
     return {
+      ...mapData,
       id: map.sys.id,
       slug: map.fields.slug,
       updatedAt: map.sys.updatedAt,
@@ -132,11 +121,6 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       description: map.fields.description,
       isComingSoon: map.fields.isComingSoon ?? false,
       difficulty: map.fields.difficulty,
-      category,
-      image,
-      isChanged,
-      isDraft,
-      isNew,
     }
   }
   // We expose only the cached and memoized version of the function to be called externally
@@ -150,19 +134,15 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     const [featuredMaps, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
     const categoryMaps = featuredMaps.filter(m => resolveEntry(m.fields.gameCategory)?.fields.slug === category)
     const maps = await Promise.all(categoryMaps.map(async map => {
-      const { category, image, isDraft, isChanged, isNew } = await resolveMapData(map, mapIds)
+      const mapData = await resolveMapData(map, mapIds)
       return {
+        ...mapData,
         id: map.sys.id,
         title: map.fields.title,
         slug: map.fields.slug,
         description: map.fields.description,
         isComingSoon: map.fields.isComingSoon ?? false,
         difficulty: map.fields.difficulty,
-        category,
-        image,
-        isDraft,
-        isChanged,
-        isNew
       }
     }))
 
@@ -256,9 +236,10 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
   const getMapIds = cache(unstable_cache(async () => {
     const newIdsPromise = db.select({ mapId: maps.mapId }).from(maps)
     const mapsPromise = getManagementEntries("featuredMaps")
-    const [newIds, managementMaps] = await Promise.all([newIdsPromise, mapsPromise])
+    const [newMapIds, managementMaps] = await Promise.all([newIdsPromise, mapsPromise])
     const draftIds = new Set<string>()
     const changedIds = new Set<string>()
+    const newIds = new Set<string>(newMapIds.map(id => id.mapId))
 
     managementMaps.items.forEach(map => {
       if (!map.sys.publishedVersion) {
@@ -279,7 +260,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     const category = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
     const isDraft = draftIds.has(map.sys.id)
     const isChanged = changedIds.has(map.sys.id)
-    const isNew = !!newIds.find(m => m.mapId === map.sys.id)
+    const isNew = newIds.has(map.sys.id)
 
     return {
       image,

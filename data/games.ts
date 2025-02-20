@@ -18,14 +18,14 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   return games.map(game => {
     const isDraft = draftIds.has(game.sys.id)
     const isChanged = changedIds.has(game.sys.id)
-    const isNew = !!newIds.find(g => g.categoryId === game.sys.id)
+    const isNew = newIds.has(game.sys.id)
     return {
       id: game.sys.id,
       title: game.fields.title,
       slug: game.fields.slug,
       isDraft,
       isChanged,
-      isNew
+      isNew,
     }
   })
 }, [], {
@@ -113,9 +113,10 @@ export const enforceNewGameStatus = async () => {
 const getGameIds = cache(unstable_cache(async () => {
   const idsPromise = db.select({ categoryId: categories.categoryId }).from(categories)
   const gamesPromise = getManagementEntries("gameCategory")
-  const [newIds, managementGames] = await Promise.all([idsPromise, gamesPromise])
+  const [newGameIds, managementGames] = await Promise.all([idsPromise, gamesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
+  const newIds = new Set<string>(newGameIds.map(id => id.categoryId))
 
   managementGames.items.forEach(game => {
     if (!game.sys.publishedVersion) {

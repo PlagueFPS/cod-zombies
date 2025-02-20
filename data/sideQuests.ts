@@ -21,7 +21,7 @@ import { submitFeedbackUseCase } from '@/usecases/feedback'
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
-  const questIdsPromise = getDraftsAndChanged()
+  const questIdsPromise = getQuestIds()
   const [quests, questIds] = await Promise.all([questsPromise, questIdsPromise])
   return await Promise.all(quests.map(async q => {
     const { category: game, ...rest } = await resolveQuestData(q, questIds)
@@ -42,7 +42,7 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
 
 export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean) => {
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
-  const questIdsPromise = getDraftsAndChanged()
+  const questIdsPromise = getQuestIds()
   const [quests, questIds] = await Promise.all([questsPromise, questIdsPromise])
   return await Promise.all(quests.map(async q => {
     const { category: game, map } = await resolveQuestData(q, questIds)
@@ -61,7 +61,7 @@ export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean
 export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number, category?: string) => {
   const skip = calculateSkip(page, MAP_LIMIT)
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
-  const questIdsPromise = getDraftsAndChanged()
+  const questIdsPromise = getQuestIds()
   const [sideQuestsData, questIds] = await Promise.all([questsPromise, questIdsPromise])
   let sideQuests = sideQuestsData
 
@@ -74,17 +74,14 @@ export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boo
   
   const paginatedQuests = sideQuests.slice(skip, (MAP_LIMIT * page))
   const sideQuestsDTO = await Promise.all(paginatedQuests.map(async quest => {
-    const { category, image, isChanged, isDraft, map } = await resolveQuestData(quest, questIds)
+    const { category: game, ...rest } = await resolveQuestData(quest, questIds)
     return {
+      ...rest,
       id: quest.sys.id,
       title: quest.fields.title,
       slug: quest.fields.slug,
       description: quest.fields.description,
-      game: category,
-      image,
-      map,
-      isChanged,
-      isDraft
+      game
     }
   }))
   const totalPages = Math.ceil(sideQuests.length / MAP_LIMIT)
@@ -120,7 +117,7 @@ export const getQuestById = cache(unstable_cache(async (draftMode: boolean, id: 
 
 export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
-  const questIdsPromise = getDraftsAndChanged()
+  const questIdsPromise = getQuestIds()
   const [quests, questIds] = await Promise.all([questsPromise, questIdsPromise])
   const q = quests.find(q => q.fields.slug === slug)
   if (!q) return null
@@ -179,12 +176,15 @@ export const enforceNewQuestStatus = async () => {
   }
 }
 
-const getDraftsAndChanged = cache(unstable_cache(async () => {
-  const quests = await getManagementEntries("sideQuests")
+const getQuestIds = cache(unstable_cache(async () => {
+  const newIdsPromise = db.select({ questId: quests.questId }).from(quests)
+  const questsPromise = getManagementEntries("sideQuests")
+  const [newQuestIds, managementQuests] = await Promise.all([newIdsPromise, questsPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
+  const newIds = new Set<string>(newQuestIds.map(q => q.questId))
 
-  quests.items.forEach(quest => {
+  managementQuests.items.forEach(quest => {
     if (!quest.sys.publishedVersion) {
       draftIds.add(quest.sys.id)
     } else if (!!quest.sys.publishedVersion && quest.sys.version >= quest.sys.publishedVersion + 2) {
@@ -192,25 +192,27 @@ const getDraftsAndChanged = cache(unstable_cache(async () => {
     }
   })
 
-  return { draftIds, changedIds }
+  return { newIds, draftIds, changedIds }
 }, [], {
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
 }))
 
-const resolveQuestData = cache(async (quest: Entry<TypeSideQuestsSkeleton, undefined, string>, questIds: Awaited<ReturnType<typeof getDraftsAndChanged>>) => {
-  const { changedIds, draftIds } = questIds
+const resolveQuestData = cache(async (quest: Entry<TypeSideQuestsSkeleton, undefined, string>, questIds: Awaited<ReturnType<typeof getQuestIds>>) => {
+  const { changedIds, draftIds, newIds } = questIds
   const image = createImageDTO(resolveAsset(quest.fields.image))
   const map = createQuestMapDTO(resolveEntry(quest.fields.map))
   const category = createMapCategoryDTO(resolveEntry(quest.fields.game))
   const isDraft = draftIds.has(quest.sys.id)
   const isChanged = changedIds.has(quest.sys.id)
+  const isNew = newIds.has(quest.sys.id)
 
   return {
     image,
     map,
     category,
     isDraft,
-    isChanged
+    isChanged,
+    isNew
   }
 })
 

@@ -22,4 +22,5 @@ export interface SideQuest {
   };
   isDraft: boolean;
   isChanged: boolean;
+  isNew: boolean;
 }

@@ -1,6 +1,6 @@
 import richStyles from "@/components/RichText/RichText.module.css"
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
-import { ChangedBadge, DraftBadge } from "@/components/CustomBadges/CustomBadges"
+import { ChangedBadge, DraftBadge, NewBadge } from "@/components/CustomBadges/CustomBadges"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
 import ShareButton from "@/components/ShareButton/ShareButton"
@@ -112,7 +112,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 <div className='flex items-center justify-center gap-4 w-fit'>
                   { (isEnabled || IN_DEVELOPMENT) && q.isDraft ? <DraftBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && q.isChanged ? <ChangedBadge /> : null }
-                  {/* { q.isNew ? <NewBadge /> : null } */}
+                  { q.isNew ? <NewBadge /> : null }
                   <Badge className='badge-primary-gradient'>{ q.game.title }</Badge>
                   <Badge className='badge-primary-gradient'>{ q.map.title }</Badge>
                 </div>
