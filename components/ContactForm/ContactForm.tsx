@@ -72,7 +72,7 @@ export default function ContactForm({ className }: ContactFormProps) {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is the name you want to be addressed by.
+                      Name you want to be addressed by.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -93,7 +93,7 @@ export default function ContactForm({ className }: ContactFormProps) {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is the email you want to be contacted at.
+                      Email you want to be contacted at.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -113,7 +113,7 @@ export default function ContactForm({ className }: ContactFormProps) {
                       />
                     </FormControl>
                     <FormDescription>
-                      This is the message you want to send to the team.
+                      Message you want to send to the team.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

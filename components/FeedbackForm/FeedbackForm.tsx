@@ -131,7 +131,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
                           />
                         </FormControl>
                         <FormDescription>
-                          This could be something like, quests, experience, visuals, etc.
+                          Quests, Experience, Visuals, etc.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
