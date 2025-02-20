@@ -19,6 +19,8 @@ import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Copy, Share2 } from 'lucide-react'
 import { toast } from 'sonner'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
+import { useState } from 'react'
 
 interface ShareButtonProps extends ButtonProps {
   title: string
@@ -26,19 +28,28 @@ interface ShareButtonProps extends ButtonProps {
 }
 
 export default function ShareButton({ title, url, ...props }: ShareButtonProps) {
+  const [open, setOpen] = useState(false)
+  
   const handleCopy = () => {
     navigator.clipboard.writeText(url)
     toast.success('URL Copied to Clipboard!', { duration: 1500 })
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" {...props} className='gap-2'>
-          <span>Share</span>
-          <Share2 className='w-4 h-4' />
-        </Button>
-      </DialogTrigger>
+    <Dialog open={ open } onOpenChange={ setOpen }>
+      <TooltipProvider delayDuration={ 200 }>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon" {...props} onClick={ () => setOpen(true) }>
+              <span className='sr-only'>Share</span>
+              <Share2 className='size-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            Share
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DialogContent className='gap-6 rounded-lg'>
         <DialogHeader>
           <DialogTitle>Share on Social Media</DialogTitle>

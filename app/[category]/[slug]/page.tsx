@@ -115,7 +115,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 </div>
               </div>
             </div>
-            <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-12 w-full max-w-screen-xl border-b-2'>
+            <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 w-full max-w-screen-xl border-b-2'>
               <div className='flex flex-col-reverse md:flex-row w-full justify-between items-start md:items-center gap-4 md:gap-0'>
                 <h2 className='font-extrabold text-3xl md:text-4xl lg:text-5xl text-gradient pb-2'>
                   { map.title }
@@ -128,17 +128,19 @@ export default async function MapPage({ params }: MapPageProps) {
                   <Badge className='badge-primary-gradient'>{ map.category.title }</Badge>
                 </div>
               </div>
-              <div className='flex flex-row items-center justify-start gap-2 text-muted-foreground text-xs md:text-sm'>
+              <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm md:text-sm'>
                 <div>Last Updated: { new Date(map.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
-                <span>&bull;</span>
+                <span className='hidden md:inline'>&bull;</span>
                 <div className='flex gap-1 items-center'>
                   <Clock className='size-4' />
                   { map.timeToRead } min read
                 </div>
               </div>
-              {/* <div className='flex items-center justify-end py-4 md:py-0'>
-                <ShareButton title={ map.title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category.slug}/${slug}` } />
-              </div> */}
+              <ShareButton 
+                title={ map.title } 
+                url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category.slug}/${slug}` } 
+                className='ml-auto text-muted-foreground mb-2 md:mb-0' 
+              />
             </div>
             <div className={ richStyles.body }>
               <RichTextRenderer body={ map.body } slug={ slug } />

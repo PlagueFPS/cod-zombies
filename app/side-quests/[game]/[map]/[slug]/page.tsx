@@ -15,7 +15,7 @@ import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { SideQuest } from "@/types/SideQuest"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Clock } from "lucide-react"
 import { ChevronLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import PreviousOrNextMapLoader from "@/components/Loaders/PreviousOrNextMapLoader"
@@ -104,7 +104,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 </div>
               </div>
             </div>
-            <div className='relative z-20 flex flex-col justify-center gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-12 w-full max-w-screen-xl border-b-2'>
+            <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 w-full max-w-screen-xl border-b-2'>
               <div className='flex flex-col-reverse md:flex-row w-full justify-between items-start md:items-center gap-4 md:gap-0'>
                 <h2 className='font-extrabold text-3xl md:text-4xl lg:text-5xl text-gradient pb-2'>
                   { q.title }
@@ -117,14 +117,19 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                   <Badge className='badge-primary-gradient'>{ q.map.title }</Badge>
                 </div>
               </div>
-              <div className='flex items-center gap-0 pb-4 md:pb-0 justify-between'>
-                <div className='flex flex-col items-center justify-center flex-wrap gap-y-2 gap-x-2 text-muted-foreground text-sm'>
-                  <div>Last Updated: { new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
-                </div>
-                <div className='flex items-center justify-center'>
-                  <ShareButton title={ q.title } url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${slug}` } />
+              <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm md:text-sm'>
+                <div>Last Updated: { new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+                <span className='hidden md:inline'>&bull;</span>
+                <div className='flex gap-1 items-center'>
+                  <Clock className='size-4' />
+                  { q.timeToRead } min read
                 </div>
               </div>
+              <ShareButton 
+                title={ q.title } 
+                url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${slug}` } 
+                className="ml-auto text-muted-foreground mb-2 md:mb-0"
+                />
             </div>
             <div className={ richStyles.body }>
               <RichTextRenderer body={ q.content } slug={ slug } />
