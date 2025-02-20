@@ -18,8 +18,8 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const mapIdsPromise = getMapIds()
   const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
 
-  return await Promise.all(maps.map(async map => {
-    const mapData = await resolveMapData(map, mapIds)
+  return maps.map(map => {
+    const mapData = resolveMapData(map, mapIds)
     return {
       ...mapData,
       id: map.sys.id,
@@ -30,7 +30,7 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
       isComingSoon: map.fields.isComingSoon ?? false,
       difficulty: map.fields.difficulty,
     }
-  }))
+  })
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
@@ -48,15 +48,31 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
-export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, page: number) => {
+export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, page: number, game?: string | string[], difficulty?: string | string[]) => {
+  const skip = calculateSkip(page, MAP_LIMIT)
   const featuredMapsPromise = INTERNAL_getMapData(draftMode)
   const mapIdsPromise = getMapIds()
-  const [featuredMaps, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
-  const skip = calculateSkip(page, MAP_LIMIT)
-  const paginatedMaps = featuredMaps.slice(skip, (MAP_LIMIT * page))
+  const [mapsData, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
+  let featuredMaps = mapsData
+  
+  if (game) {
+    if (Array.isArray(game) && game.length > 0) {
+      featuredMaps = featuredMaps.filter(map => game.includes(createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug))
+    } else if (typeof game === 'string') {
+      featuredMaps = featuredMaps.filter(map => createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug === game)
+    }
+  }
+  if (difficulty) {
+    if (Array.isArray(difficulty) && difficulty.length > 0) {
+      featuredMaps = featuredMaps.filter(map => difficulty.includes(map.fields.difficulty.toLowerCase()))
+    } else if (typeof difficulty === 'string') {
+      featuredMaps = featuredMaps.filter(map => map.fields.difficulty.toLowerCase() === difficulty)
+    }
+  }
 
-  const maps = await Promise.all(paginatedMaps.map(async map => {
-    const mapData = await resolveMapData(map, mapIds)
+  const paginatedMaps = featuredMaps.slice(skip, (MAP_LIMIT * page))
+  const maps = paginatedMaps.map(map => {
+    const mapData = resolveMapData(map, mapIds)
     return {
       ...mapData,
       id: map.sys.id,
@@ -66,7 +82,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       isComingSoon: map.fields.isComingSoon ?? false,
       difficulty: map.fields.difficulty,
     }
-  }))
+  })
     const totalPages = Math.ceil(featuredMaps.length / MAP_LIMIT)
     const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
     const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
@@ -97,7 +113,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
     const map = maps.find(m => m.fields.slug === slug)
     if (!map) return null
-    const mapData = await resolveMapData(map, mapIds)
+    const mapData = resolveMapData(map, mapIds)
 
     if (withBody) return {
       ...mapData,
@@ -128,31 +144,31 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  export const getMapsByCategory = cache(unstable_cache(async (draftMode: boolean, category: string) => {
-    const featuredMapsPromise = INTERNAL_getMapData(draftMode)
-    const mapIdsPromise = getMapIds()
-    const [featuredMaps, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
-    const categoryMaps = featuredMaps.filter(m => resolveEntry(m.fields.gameCategory)?.fields.slug === category)
-    const maps = await Promise.all(categoryMaps.map(async map => {
-      const mapData = await resolveMapData(map, mapIds)
-      return {
-        ...mapData,
-        id: map.sys.id,
-        title: map.fields.title,
-        slug: map.fields.slug,
-        description: map.fields.description,
-        isComingSoon: map.fields.isComingSoon ?? false,
-        difficulty: map.fields.difficulty,
-      }
-    }))
+  // export const getMapsByCategory = cache(unstable_cache(async (draftMode: boolean, category: string) => {
+  //   const featuredMapsPromise = INTERNAL_getMapData(draftMode)
+  //   const mapIdsPromise = getMapIds()
+  //   const [featuredMaps, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
+  //   const categoryMaps = featuredMaps.filter(m => resolveEntry(m.fields.gameCategory)?.fields.slug === category)
+  //   const maps = await Promise.all(categoryMaps.map(async map => {
+  //     const mapData = await resolveMapData(map, mapIds)
+  //     return {
+  //       ...mapData,
+  //       id: map.sys.id,
+  //       title: map.fields.title,
+  //       slug: map.fields.slug,
+  //       description: map.fields.description,
+  //       isComingSoon: map.fields.isComingSoon ?? false,
+  //       difficulty: map.fields.difficulty,
+  //     }
+  //   }))
 
-    return {
-      maps,
-      totalMaps: categoryMaps.length
-    }
-  }, [], {
-    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-  }))
+  //   return {
+  //     maps,
+  //     totalMaps: categoryMaps.length
+  //   }
+  // }, [], {
+  //   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
+  // }))
 
   export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
     const maps = await INTERNAL_getMapData(draftMode)
@@ -254,7 +270,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  const resolveMapData = cache(async (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Awaited<ReturnType<typeof getMapIds>>) => {
+  const resolveMapData = cache((map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Awaited<ReturnType<typeof getMapIds>>) => {
     const { changedIds, draftIds, newIds } = mapIds
     const image = createImageDTO(resolveAsset(map.fields.image))
     const category = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))

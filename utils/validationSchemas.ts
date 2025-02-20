@@ -66,6 +66,24 @@ const SearchParamsSchema = z.object({
     const parsed = parseInt(val || '1', 10)
     return isNaN(parsed) || parsed < 1 ? 1 : parsed
   }),
+  game: stringOrStringArray
+  .optional()
+  .transform(val => {
+    if (Array.isArray(val)) val = val[0]
+    return val
+  }),
+  map: stringOrStringArray
+  .optional()
+  .transform(val => {
+    if (Array.isArray(val)) val = val[0]
+    return val
+  }),
+  difficulty: stringOrStringArray
+  .optional()
+  .transform(val => {
+    if (Array.isArray(val)) val = val[0]
+    return val
+  })
 })
 
 export const UnsubscribePageSchema = z.object({

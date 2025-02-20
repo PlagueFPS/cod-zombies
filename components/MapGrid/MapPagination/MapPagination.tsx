@@ -11,8 +11,8 @@ interface MapPaginationProps {
 }
 
 export default async function MapPagination({ searchParams }: MapPaginationProps) {
-  const [{ isEnabled }, { page }] = await Promise.all([draftMode(), validateSearchParams(searchParams)])
-  const { currentPage, totalPages, prevPage, nextPage } = await getPaginatedMaps(isEnabled, page)
+  const [{ isEnabled }, { page, game, difficulty }] = await Promise.all([draftMode(), validateSearchParams(searchParams)])
+  const { currentPage, totalPages, prevPage, nextPage } = await getPaginatedMaps(isEnabled, page, game, difficulty)
   const previousDisabled = prevPage === currentPage ? true : false
   const nextDisabled = nextPage === currentPage ? true : currentPage === totalPages ? true : false
  
