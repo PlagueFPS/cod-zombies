@@ -19,14 +19,17 @@ interface MapFiltersProps {
 const difficulties = [
   {
     id: "easy",
+    slug: "easy",
     title: "Easy",
   },
   {
     id: "medium",
+    slug: "medium",
     title: "Medium",
   },
   {
     id: "hard",
+    slug: "hard",
     title: "Hard",
   }
 ]

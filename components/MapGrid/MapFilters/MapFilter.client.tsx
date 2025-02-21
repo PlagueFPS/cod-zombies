@@ -20,6 +20,7 @@ interface IMapFiltersClient {
   }[]
   difficulties: {
     id: string
+    slug: string
     title: string
   }[]
 }
@@ -97,7 +98,8 @@ export default function MapFilterClient({ draftMode, games, difficulties }: IMap
 
 interface IMapFilterCombobox {
   data: {
-    id: string
+    id?: string
+    slug: string
     title: string
   }[]
   currentSelection: string[]
@@ -132,7 +134,7 @@ const MapFilterCombobox = ({ data, currentSelection, title, placeholder, toggleP
               <div className="space-y-2 py-2">
                 { data.map(item => (
                   <CommandItem key={ item.id } className="flex gap-2 items-center rounded">
-                    <Checkbox id={ item.id } checked={ currentSelection.includes(item.id) } onCheckedChange={ () => toggleParam(item.id) } />
+                    <Checkbox id={ item.id } checked={ currentSelection.includes(item.slug) } onCheckedChange={ () => toggleParam(item.slug) } />
                     <Label htmlFor={ item.id } className="cursor-pointer font-normal">{ item.title }</Label>
                   </CommandItem>
                 ))}
