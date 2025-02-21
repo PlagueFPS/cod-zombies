@@ -1,10 +1,15 @@
 "use client"
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CommandInput, Command, CommandList, CommandEmpty, CommandItem, CommandGroup } from "@/components/ui/command";
+import { CommandInput, Command, CommandList, CommandEmpty, CommandItem, CommandGroup, CommandSeparator } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CirclePlus, Gamepad2 } from "lucide-react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/seperator";
+import { cn } from "@/lib/utils";
+import { capatilize } from "@/utils/functions";
+import { CirclePlus, Gamepad2, Trash, Trash2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -74,25 +79,46 @@ export default function MapFilterClient({ draftMode, games, difficulties }: IMap
     router.push(`/?${params.toString()}`, { scroll: false })
   }
 
+  const clearAllFilters = () => {
+    const params = new URLSearchParams(searchParams)
+    params.delete("game")
+    params.delete("difficulty")
+    router.push(`/?${params.toString()}`, { scroll: false })
+  }
+
   return (
-    <div className="flex gap-2 items-center w-full">
-      <MapFilterCombobox
-        data={ games }
-        currentSelection={ selectedGames }
-        title="Game"
-        placeholder="Game"
-        toggleParam={ toggleGame }
-        clearParam={ clearGames }
-      />
-      <MapFilterCombobox
-        data={ difficulties }
-        currentSelection={ selectedDifficulties }
-        title="Difficulty"
-        placeholder="Difficulty"
-        toggleParam={ toggleDifficulty }
-        clearParam={ clearDifficulties }
-      />
-    </div>
+    <ScrollArea className="-mt-4">
+      <div className="flex gap-2 items-center w-full">
+        <MapFilterCombobox
+          data={ games }
+          currentSelection={ selectedGames }
+          title="Game"
+          placeholder="Game"
+          toggleParam={ toggleGame }
+          clearParam={ clearGames }
+        />
+        <MapFilterCombobox
+          data={ difficulties }
+          currentSelection={ selectedDifficulties }
+          title="Difficulty"
+          placeholder="Difficulty"
+          toggleParam={ toggleDifficulty }
+          clearParam={ clearDifficulties }
+        />
+        { selectedGames.length > 0 || selectedDifficulties.length > 0 ? (
+          <Button
+            variant="outline"
+            size={"sm"}
+            className="gap-2 border-red-600 border-dashed text-red-900 dark:text-red-300"
+            onClick={ clearAllFilters }
+          >
+          <Trash2 className="size-4 text-red-800 dark:text-red-500" />
+          Clear Filters
+        </Button>
+        ) : null}
+      </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }
 
@@ -117,17 +143,29 @@ const MapFilterCombobox = ({ data, currentSelection, title, placeholder, toggleP
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
+          size={"sm"}
           role="combobox"
           aria-expanded={ open }
-          className="gap-2 border-dashed"
+          className="gap-2 border-dashed border-primary/25"
         >
-          <CirclePlus className="size-5 text-primary" />
+          <CirclePlus className="size-4 text-primary" />
           { title }
+          { currentSelection.length > 0 && (
+            <>
+              <Separator orientation="vertical" className="h-5" />
+              <Badge className={cn('badge-primary-gradient', {
+                'badge-easy-gradient': currentSelection.length === 1 && title === 'Difficulty' && currentSelection[0] === 'easy',
+                'badge-medium-gradient': currentSelection.length === 1 && title === 'Difficulty' && currentSelection[0] === 'medium',
+                'badge-hard-gradient': currentSelection.length === 1 && title === 'Difficulty' && currentSelection[0] === 'hard',
+              })}>{ currentSelection.length === 1 ? capatilize(currentSelection[0]) : currentSelection.length }</Badge>
+            </>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder={ placeholder } />
+          {/* No need to search currently, add back if needed */}
+          {/* <CommandInput placeholder={ placeholder } /> */}
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
@@ -135,11 +173,22 @@ const MapFilterCombobox = ({ data, currentSelection, title, placeholder, toggleP
                 { data.map(item => (
                   <CommandItem key={ item.id } className="flex gap-2 items-center rounded">
                     <Checkbox id={ item.id } checked={ currentSelection.includes(item.slug) } onCheckedChange={ () => toggleParam(item.slug) } />
-                    <Label htmlFor={ item.id } className="cursor-pointer font-normal">{ item.title }</Label>
+                    <Label htmlFor={ item.id } className="cursor-pointer font-normal w-full">{ item.title }</Label>
                   </CommandItem>
                 ))}
               </div>
             </CommandGroup>
+            { currentSelection.length > 0 && (
+              <>
+                <CommandSeparator />
+                <CommandGroup>
+                  <CommandItem onSelect={ () => clearParam() } className="flex gap-2 items-center justify-center cursor-pointer">
+                    <Trash className="size-4 text-red-800 dark:text-red-500" />
+                    Clear { title } Filters
+                  </CommandItem>
+                </CommandGroup>
+              </>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
