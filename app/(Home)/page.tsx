@@ -8,7 +8,14 @@ import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import FeaturedMapGrid from "@/components/MapGrid/FeaturedMapGrid";
 import MapPaginationLoader from "@/components/Loaders/MapPaginationLoader";
 import MapPagination from "@/components/MapGrid/MapPagination/MapPagination";
+import type { Metadata } from "next";
+import { env } from "@/env";
 
+export const metadata: Metadata = {
+  alternates: {
+    canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}`
+  }
+}
 interface HomePageProps {
   searchParams: Promise<SearchParams>
 }

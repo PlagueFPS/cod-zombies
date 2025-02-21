@@ -6,6 +6,7 @@ import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader";
 import QuestFilters from "@/components/QuestGrid/QuestFilters/QuestFilters";
 import QuestGrid from "@/components/QuestGrid/QuestGrid";
 import QuestPagination from "@/components/QuestGrid/QuestPagination/QuestPagination";
+import { env } from "@/env";
 import { GLOBAL_OG_PROPS } from "@/utils/constants";
 import { SearchParams } from "@/utils/validationSchemas";
 import { Metadata } from "next";
@@ -31,6 +32,9 @@ export const generateMetadata = (): Metadata => {
       title,
       description,
       card: 'summary_large_image'
+    },
+    alternates: {
+      canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests`
     }
   }
 }
