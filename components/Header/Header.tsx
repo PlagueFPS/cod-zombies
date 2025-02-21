@@ -1,4 +1,3 @@
-// import Link from 'next/link'
 import { Suspense } from 'react'
 import SearchBar from '@/components/SearchBar/SearchBar'
 import SearchBarLoader from '@/components/Loaders/SearchBarLoader'

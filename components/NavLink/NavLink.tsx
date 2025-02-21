@@ -1,7 +1,6 @@
 "use client"
 import { cn } from "@/lib/utils"
 import type { LinkProps } from "next/link"
-// import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { CustomLink } from "../CustomLink/CustomLink"
 

@@ -3,7 +3,6 @@ import { getYouTubeVideoID } from "@/utils/functions"
 import { YouTubeEmbed } from "@next/third-parties/google"
 import ExternalLink from "@/components/ExternalLink/ExternalLink"
 import { ExternalLinkIcon } from "lucide-react"
-// import Link from "next/link"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
 
 interface RichLinkProps {

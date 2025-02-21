@@ -3,7 +3,6 @@ import { draftMode } from "next/headers"
 import { getPaginatedSideQuests } from "@/data/sideQuests"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
-// import Link from "next/link"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
 
 interface IQuestPagination {

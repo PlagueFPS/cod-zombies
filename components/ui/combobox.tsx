@@ -18,7 +18,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-// import Link from "next/link"
 import { CustomLink } from "../CustomLink/CustomLink"
 
 interface Filter {

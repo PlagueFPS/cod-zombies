@@ -144,32 +144,6 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  // export const getMapsByCategory = cache(unstable_cache(async (draftMode: boolean, category: string) => {
-  //   const featuredMapsPromise = INTERNAL_getMapData(draftMode)
-  //   const mapIdsPromise = getMapIds()
-  //   const [featuredMaps, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
-  //   const categoryMaps = featuredMaps.filter(m => resolveEntry(m.fields.gameCategory)?.fields.slug === category)
-  //   const maps = await Promise.all(categoryMaps.map(async map => {
-  //     const mapData = await resolveMapData(map, mapIds)
-  //     return {
-  //       ...mapData,
-  //       id: map.sys.id,
-  //       title: map.fields.title,
-  //       slug: map.fields.slug,
-  //       description: map.fields.description,
-  //       isComingSoon: map.fields.isComingSoon ?? false,
-  //       difficulty: map.fields.difficulty,
-  //     }
-  //   }))
-
-  //   return {
-  //     maps,
-  //     totalMaps: categoryMaps.length
-  //   }
-  // }, [], {
-  //   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-  // }))
-
   export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
     const maps = await INTERNAL_getMapData(draftMode)
     const map = maps.find(m => m.sys.id === id)

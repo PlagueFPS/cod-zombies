@@ -1,7 +1,6 @@
 import NotFoundBreadcrumbs from "@/components/NotFound/NotFoundBreadcrumbs"
 import { capatilize } from "@/utils/functions"
 import { Button } from "../ui/button"
-// import Link from "next/link"
 import { CustomLink } from "../CustomLink/CustomLink"
 
 interface INotFoundContent {
