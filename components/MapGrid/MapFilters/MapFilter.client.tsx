@@ -2,7 +2,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CommandInput, Command, CommandList, CommandEmpty, CommandItem, CommandGroup, CommandSeparator } from "@/components/ui/command";
+import { Command, CommandList, CommandEmpty, CommandItem, CommandGroup, CommandSeparator } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";

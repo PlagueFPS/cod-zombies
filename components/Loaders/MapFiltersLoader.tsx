@@ -1,26 +1,24 @@
-import { ScrollArea } from '@radix-ui/react-scroll-area'
-import { ScrollBar } from '../ui/scroll-area'
 import { Button } from '../ui/button'
-import { cn } from '@/lib/utils'
+import { CirclePlus } from 'lucide-react'
 
 export default function MapFiltersLoader() {
   return (
-    <ScrollArea className="-mt-6 relative overflow-hidden">
-      <div className='inline-block pt-3'>
-        <div className="inline-flex w-max gap-2">
-          { Array.from({ length: 6 }, (_, i) => (
-            <Button 
-              key={ `map-filter-${i}` } 
-              size="sm" 
-              variant={ "outline" }
-              disabled
-              aria-disabled
-              className={cn('animate-pulse bg-muted h-9 w-[138px]')}
-            />
-          ))}
-        </div>
-      </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+    <div className='-mt-4 flex gap-2 items-center w-full'>
+      { ["Game", "Difficulty"].map((filter, index) => (
+        <Button
+          key={ `${filter}-${index}` }
+          variant='outline'
+          size='sm'
+          role='combobox'
+          aria-expanded={ false }
+          disabled
+          aria-disabled
+          className='gap-2 border-dashed border-primary/25'
+        >
+          <CirclePlus className='size-4 text-primary' />
+          { filter }
+        </Button>
+      ))}
+    </div>
   )
 }
