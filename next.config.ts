@@ -56,6 +56,31 @@ const nextConfig: NextConfig = {
         destination: '/?game=black-ops-6',
         permanent: true,
       },
+      {
+        source: '/side-quests/black-ops-6',
+        destination: '/side-quests?game=black-ops-6',
+        permanent: true,
+      },
+      {
+        source: '/side-quests/black-ops-6/liberty-falls',
+        destination: '/side-quests?map=liberty-falls',
+        permanent: true,
+      },
+      {
+        source: '/side-quests/black-ops-6/terminus',
+        destination: '/side-quests?map=terminus',
+        permanent: true,
+      },
+      {
+        source: '/side-quests/black-ops-6/citadelle-des-morts',
+        destination: '/side-quests?map=citadelle-des-morts',
+        permanent: true,
+      },
+      {
+        source: '/side-quests/black-ops-6/the-tomb',
+        destination: '/side-quests?map=the-tomb',
+        permanent: true,
+      },
     ]
   },
 };
