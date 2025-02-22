@@ -58,7 +58,7 @@ const geist = Geist({
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={ `${geist.className} flex flex-col min-h-dvh` }>
         <ThemeProvider
           attribute="class"

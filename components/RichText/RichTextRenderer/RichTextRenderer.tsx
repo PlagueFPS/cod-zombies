@@ -8,7 +8,6 @@ import RichBlockquote from "../RichBlockquote/RichBlockquote"
 import RichLink from "../RichLink/RichLink"
 import RichTable from "../RichTable/RichTable"
 import Heading4 from "../RichHeadings/Heading4/Heading4"
-import RichParagraph from "../RichParagraph/RichParagraph"
 import ItemTooltip from "../RichEmbeds/ItemTooltip"
 import { createItemTooltipDTO } from "@/utils/contentful-utils"
 import TerminusCode from "../RichEmbeds/TerminusCode"
@@ -36,9 +35,6 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
         const asset = node.data.target 
         return <RichImage asset={ asset } />
-      },
-      [BLOCKS.PARAGRAPH]: (node: any, children: any) => {
-        return <RichParagraph>{ children }</RichParagraph>
       },
       [BLOCKS.HEADING_2]: (node: any, children: any) => {
         return <Heading2 id={ slugify(node.content[0].value) }>{ children }</Heading2>
