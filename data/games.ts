@@ -7,7 +7,6 @@ import { TypeGameCategorySkeleton } from '@/contentful/Types/contentful-types'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { db } from '@/db/db'
 import { categories } from '@/db/schema'
-import { createImageDTO, resolveAsset } from '@/utils/contentful-utils'
 import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
 
@@ -39,22 +38,6 @@ export const getGameSearchData = cache(unstable_cache(async (draftMode: boolean)
     title: g.fields.title,
     slug: g.fields.slug
   }))
-}, [], {
-  tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
-}))
-
-export const getGameBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
-  const games = await INTERNAL_getGameData(draftMode)
-
- const game = games.find(g => g.fields.slug === slug)
- if (!game) return null
- 
- return {
-    id: game.sys.id,
-    title: game.fields.title,
-    slug: game.fields.slug,
-    image: createImageDTO(resolveAsset(game.fields.image))
-  }
 }, [], {
   tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
 }))

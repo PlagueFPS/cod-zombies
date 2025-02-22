@@ -4,7 +4,7 @@ import { cache } from 'react'
 import { CACHE_KEYS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
 import { getEntries } from '@/contentful/contentful'
 import type { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
-import { calculateSkip, createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
+import { createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
 import { db } from '@/db/db'
 import { maps } from '@/db/schema'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
@@ -47,58 +47,6 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
-
-// export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, page: number, game?: string | string[], difficulty?: string | string[]) => {
-//   const skip = calculateSkip(page, MAP_LIMIT)
-//   const featuredMapsPromise = INTERNAL_getMapData(draftMode)
-//   const mapIdsPromise = getMapIds()
-//   const [mapsData, mapIds] = await Promise.all([featuredMapsPromise, mapIdsPromise])
-//   let featuredMaps = mapsData
-  
-//   if (game) {
-//     if (Array.isArray(game) && game.length > 0) {
-//       featuredMaps = featuredMaps.filter(map => game.includes(createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug))
-//     } else if (typeof game === 'string') {
-//       featuredMaps = featuredMaps.filter(map => createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug === game)
-//     }
-//   }
-//   if (difficulty) {
-//     if (Array.isArray(difficulty) && difficulty.length > 0) {
-//       featuredMaps = featuredMaps.filter(map => difficulty.includes(map.fields.difficulty.toLowerCase()))
-//     } else if (typeof difficulty === 'string') {
-//       featuredMaps = featuredMaps.filter(map => map.fields.difficulty.toLowerCase() === difficulty)
-//     }
-//   }
-
-//   const paginatedMaps = featuredMaps.slice(skip, (MAP_LIMIT * page))
-//   const maps = paginatedMaps.map(map => {
-//     const mapData = resolveMapData(map, mapIds)
-//     return {
-//       ...mapData,
-//       id: map.sys.id,
-//       title: map.fields.title,
-//       slug: map.fields.slug,
-//       description: map.fields.description,
-//       isComingSoon: map.fields.isComingSoon ?? false,
-//       difficulty: map.fields.difficulty,
-//     }
-//   })
-//     const totalPages = Math.ceil(featuredMaps.length / MAP_LIMIT)
-//     const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
-//     const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
-//     const nextPage = currentPage + 1 > totalPages ? totalPages : currentPage + 1
-
-//     return {
-//       maps,
-//       totalMaps: featuredMaps.length,
-//       totalPages,
-//       currentPage,
-//       prevPage,
-//       nextPage
-//     }
-//   }, [], {
-//     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-//   }))
 
   // We're creating some function overloads to keep the return typesafe
   // this way typescript knows if body actually exists in the result or not
