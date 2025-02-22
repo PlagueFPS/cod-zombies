@@ -34,7 +34,6 @@ export default async function MapFilters() {
   return (
     <Suspense fallback={<MapFiltersLoader />}>
       <MapFilterClient 
-        draftMode={ isEnabled }
         games={ gameFilters }
         difficulties={ difficulties }
       />

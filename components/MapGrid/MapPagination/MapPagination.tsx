@@ -24,11 +24,12 @@ export default function MapPagination({ maps }: IMapPagination) {
 
   const updateURL = (page: number) => {
     const params = new URLSearchParams({ page: page.toString() });
-    if (game) {
-      (Array.isArray(game) ? game : [game]).forEach(g => params.append('game', g));
+    
+    if (game.length > 0) {
+      game.forEach(g => params.append('game', g));
     }
-    if (difficulty) {
-      (Array.isArray(difficulty) ? difficulty : [difficulty]).forEach(d => params.append('difficulty', d));
+    if (difficulty.length > 0) {
+      difficulty.forEach(d => params.append('difficulty', d));
     }
 
     window.history.pushState(null, '', `?${params.toString()}`);
@@ -65,7 +66,7 @@ export default function MapPagination({ maps }: IMapPagination) {
               </PaginationItem>
             ))}
             <PaginationItem>
-              <Button 
+              <Button
                 aria-label="Go to next page"
                 aria-current={ currentPage === totalPages ? "page" : undefined }
                 variant={"ghost"}

@@ -32,7 +32,6 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
       title: q.fields.title,
       slug: q.fields.slug,
       description: q.fields.description,
-      timeToRead: q.fields.timeToRead,
       game,
     }
   }))
@@ -58,48 +57,48 @@ export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
 }))
 
-export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number, category?: string) => {
-  const skip = calculateSkip(page, MAP_LIMIT)
-  const questsPromise = INTERNAL_getSideQuestData(draftMode)
-  const questIdsPromise = getQuestIds()
-  const [sideQuestsData, questIds] = await Promise.all([questsPromise, questIdsPromise])
-  let sideQuests = sideQuestsData
+// export const getPaginatedSideQuests = cache(unstable_cache(async (draftMode: boolean, page: number, category?: string) => {
+//   const skip = calculateSkip(page, MAP_LIMIT)
+//   const questsPromise = INTERNAL_getSideQuestData(draftMode)
+//   const questIdsPromise = getQuestIds()
+//   const [sideQuestsData, questIds] = await Promise.all([questsPromise, questIdsPromise])
+//   let sideQuests = sideQuestsData
 
-  if (category) {
-    sideQuests = sideQuestsData.filter(q => 
-      resolveEntry(q.fields.game)?.fields.slug === category ||
-      resolveEntry(q.fields.map)?.fields.slug === category
-    )
-  }
+//   if (category) {
+//     sideQuests = sideQuestsData.filter(q => 
+//       resolveEntry(q.fields.game)?.fields.slug === category ||
+//       resolveEntry(q.fields.map)?.fields.slug === category
+//     )
+//   }
   
-  const paginatedQuests = sideQuests.slice(skip, (MAP_LIMIT * page))
-  const sideQuestsDTO = await Promise.all(paginatedQuests.map(async quest => {
-    const { category: game, ...rest } = await resolveQuestData(quest, questIds)
-    return {
-      ...rest,
-      id: quest.sys.id,
-      title: quest.fields.title,
-      slug: quest.fields.slug,
-      description: quest.fields.description,
-      game
-    }
-  }))
-  const totalPages = Math.ceil(sideQuests.length / MAP_LIMIT)
-  const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
-  const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
-  const nextPage = currentPage + 1 > totalPages ? totalPages : currentPage + 1
+//   const paginatedQuests = sideQuests.slice(skip, (MAP_LIMIT * page))
+//   const sideQuestsDTO = await Promise.all(paginatedQuests.map(async quest => {
+//     const { category: game, ...rest } = await resolveQuestData(quest, questIds)
+//     return {
+//       ...rest,
+//       id: quest.sys.id,
+//       title: quest.fields.title,
+//       slug: quest.fields.slug,
+//       description: quest.fields.description,
+//       game
+//     }
+//   }))
+//   const totalPages = Math.ceil(sideQuests.length / MAP_LIMIT)
+//   const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
+//   const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
+//   const nextPage = currentPage + 1 > totalPages ? totalPages : currentPage + 1
 
-  return {
-    sideQuests: sideQuestsDTO,
-    totalQuests: sideQuestsDTO.length,
-    totalPages,
-    currentPage,
-    prevPage,
-    nextPage
-  }
-}, [], {
-  tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
-}))
+//   return {
+//     sideQuests: sideQuestsDTO,
+//     totalQuests: sideQuestsDTO.length,
+//     totalPages,
+//     currentPage,
+//     prevPage,
+//     nextPage
+//   }
+// }, [], {
+//   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
+// }))
 
 export const getQuestById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
   const quests = await INTERNAL_getSideQuestData(draftMode)

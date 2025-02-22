@@ -8,11 +8,13 @@ import { CustomLink } from "@/components/CustomLink/CustomLink"
 
 interface QuestCardProps {
   quest: Omit<SideQuest, "content" | "updatedAt">
-  isEnabled: boolean
+  questIndex: number
+  draftMode: boolean
 }
 
-export default function QuestCard({ quest: q, isEnabled }: QuestCardProps) {
-  const priority = true
+export default function QuestCard({ quest: q, questIndex, draftMode }: QuestCardProps) {
+  const priority = questIndex === 0
+  const alt = `${q.title} map image`
 
   return (
     <article className="max-h-[450px] h-full group outline-none">
@@ -21,8 +23,8 @@ export default function QuestCard({ quest: q, isEnabled }: QuestCardProps) {
         <Card className="relative h-full group-hover:border-primary group-hover:scale-105 group-focus-visible:scale-105 group-focus-visible:border-primary cursor-pointer transition-transform overflow-hidden animate-fade-in">
           <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
             { q.isNew ? <NewBadge /> : null }
-            { (isEnabled || IN_DEVELOPMENT) && q.isDraft ? <DraftBadge /> : null }
-            { (isEnabled || IN_DEVELOPMENT) && q.isChanged ? <ChangedBadge /> : null }
+            { (draftMode || IN_DEVELOPMENT) && q.isDraft ? <DraftBadge /> : null }
+            { (draftMode || IN_DEVELOPMENT) && q.isChanged ? <ChangedBadge /> : null }
             <Badge className='badge-primary-gradient'>
               { q.map.title }
             </Badge>
@@ -42,7 +44,7 @@ export default function QuestCard({ quest: q, isEnabled }: QuestCardProps) {
             <div className='relative overflow-hidden h-full w-full rounded-md'>
                 <FeaturedImage 
                   featuredImage={ q.image }
-                  alt="Side Quest Image"
+                  alt={ alt }
                   sizes='272px'
                   className='h-44 object-cover' 
                 />

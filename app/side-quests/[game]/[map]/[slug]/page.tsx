@@ -96,8 +96,8 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
                   <Breadcrumbs links={[
                       { title: 'Side Quests', href: `/side-quests` },
-                      { title: q.game.title, href: `/side-quests/${q.game.slug}` },
-                      { title: q.map.title, href: `/side-quests/${q.game.slug}/${q.map.slug}` },
+                      { title: q.game.title, href: `/side-quests?game=${q.game.slug}` },
+                      { title: q.map.title, href: `/side-quests?game=${q.game.slug}&map=${q.map.slug}` },
                       { title: q.title, href: `/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}` }
                     ]}
                   />
@@ -164,26 +164,25 @@ const PrevOrNextQuest = async ({ quest }: { quest: SideQuest }) => {
 }
 
 const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest, "content">, isEnabled: boolean, prev?: boolean }) => {
-  const { title, description, game, image, slug, map, isChanged, isDraft } = quest
-  const alt = `${map.title} map image`
+  const alt = `${quest.map.title} map image`
 
   return (
-    <CustomLink href={ `/side-quests/${game.slug}/${map.slug}/${slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
+    <CustomLink href={ `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
       <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
-          {/* { isNew ? <NewBadge /> : null } */}
-          { (isEnabled || IN_DEVELOPMENT) && isDraft ? <DraftBadge /> : null }
-          { (isEnabled || IN_DEVELOPMENT) && isChanged ? <ChangedBadge /> : null }
+          { quest.isNew ? <NewBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null }
           <Badge className='badge-primary-gradient'>
-            { map.title }
+            { quest.map.title }
           </Badge>
           <Badge className='badge-primary-gradient'>
-            { game.title }
+            { quest.game.title }
           </Badge>
         </div>
         <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
-              featuredImage={ image }
+              featuredImage={ quest.image }
               sizes='(max-width: 1280px) 320px, 364px'
               quality={ 1 }
               className='object-cover scale-[2]'
@@ -191,7 +190,7 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
         </div>
         <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
             <FeaturedImage
-              featuredImage={ image }
+              featuredImage={ quest.image }
               alt={ alt }
               sizes='(max-width: 1280px) 320px, 384px'
               className='object-cover rounded-lg h-full'
@@ -199,9 +198,9 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
         </div>
         <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
           <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
-            { title }
+            { quest.title }
           </h2>
-          <p className='text-sm line-clamp-3 text-ellipsis'>{ description }</p>
+          <p className='text-sm line-clamp-3 text-ellipsis'>{ quest.description }</p>
           <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
             { prev ? (
               <>

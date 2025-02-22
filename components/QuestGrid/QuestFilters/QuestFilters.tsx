@@ -1,14 +1,12 @@
 import { getMapSearchData } from '@/data/maps'
 import { getGameSearchData } from '@/data/games'
 import { draftMode } from 'next/headers'
-import { Combobox } from '@/components/ui/combobox'
 import { getQuestSearchData } from '@/data/sideQuests'
+import { Suspense } from 'react'
+import QuestFiltersClient from './QuestFilters.client'
+import QuestFilterLoader from '@/components/Loaders/QuestFilterLoader'
 
-interface IQuestFilters {
-  currentFilter?: string
-}
-
-export default async function QuestFilters({ currentFilter }: IQuestFilters) {
+export default async function QuestFilters() {
   const { isEnabled } = await draftMode()
   const mapsPromise = getMapSearchData(isEnabled)
   const gamesPromise = getGameSearchData(isEnabled)
@@ -20,7 +18,6 @@ export default async function QuestFilters({ currentFilter }: IQuestFilters) {
     id: map.id,
     title: map.title,
     slug: map.slug,
-    game: map.game
   }))
   const gameFilters = games.filter(g => questGames.has(g.slug)).map(game => ({
     id: game.id,
@@ -29,11 +26,11 @@ export default async function QuestFilters({ currentFilter }: IQuestFilters) {
   }))
 
   return (
-    <Combobox 
-      filters={ [...mapFilters, ...gameFilters] } 
-      maps={ mapFilters } 
-      games={ gameFilters }
-      currentFilter={ currentFilter }
-    />
+    <Suspense fallback={<QuestFilterLoader />}>
+      <QuestFiltersClient 
+        games={ gameFilters }
+        maps={ mapFilters }
+      />
+    </Suspense>
   )
 }

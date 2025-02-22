@@ -1,23 +1,24 @@
-import React from 'react'
 import { Button } from '../ui/button'
-import { ChevronsUpDown } from 'lucide-react'
+import { CirclePlus } from 'lucide-react'
 
-interface IQuestFilterLoader {
-  text?: string
-}
-
-export default function QuestFilterLoader({ text = "Filter by Game or Map" }: IQuestFilterLoader) {
+export default function QuestFilterLoader() {
   return (
-    <Button 
-      variant="outline" 
-      className='w-[200px] justify-between animate-pulse' 
-      role='combobox' 
-      aria-expanded={ false }
-      disabled
-      aria-disabled
-    >
-      { text }
-      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-    </Button>
+    <div className='-mt-4 flex gap-2 items-center w-full'>
+      { ["Game", "Map"].map((filter, index) => (
+        <Button
+          key={ `quest-${filter}-${index}` }
+          variant='outline'
+          size='sm'
+          role='combobox'
+          aria-expanded={ false }
+          disabled
+          aria-disabled
+          className='gap-2 border-dashed border-primary/25'
+        >
+          <CirclePlus className='size-4 text-primary' />
+          { filter }
+        </Button>
+      ))}
+    </div>
   )
 }

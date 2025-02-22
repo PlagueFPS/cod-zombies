@@ -2,19 +2,12 @@ import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
-import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader";
 import QuestFilters from "@/components/QuestGrid/QuestFilters/QuestFilters";
 import QuestGrid from "@/components/QuestGrid/QuestGrid";
-import QuestPagination from "@/components/QuestGrid/QuestPagination/QuestPagination";
 import { env } from "@/env";
 import { GLOBAL_OG_PROPS } from "@/utils/constants";
-import { SearchParams } from "@/utils/validationSchemas";
 import { Metadata } from "next";
 import { Suspense } from "react";
-
-interface ISideQuests {
-  searchParams: Promise<SearchParams>
-}
 
 export const generateMetadata = (): Metadata => {
   const title = 'Side Quests'
@@ -39,7 +32,7 @@ export const generateMetadata = (): Metadata => {
   }
 }
 
-export default function SideQuests({ searchParams }: ISideQuests) {
+export default function SideQuests() {
   return (
     <div className='flex flex-col justify-center items-center w-full'>
       <div className="container flex flex-col gap-12 justify-center items-center">
@@ -53,10 +46,7 @@ export default function SideQuests({ searchParams }: ISideQuests) {
             <QuestFilters />
           </Suspense>
           <Suspense fallback={<MapGridLoader />}>
-            <QuestGrid searchParams={ searchParams } />
-          </Suspense>
-          <Suspense fallback={<QuestPaginationLoader />}>
-            <QuestPagination searchParams={ searchParams } />
+            <QuestGrid  />
           </Suspense>
         </GridSection>
       </div>
