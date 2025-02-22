@@ -20,7 +20,7 @@ export default async function QuestFilters({ currentFilter }: IQuestFilters) {
     id: map.id,
     title: map.title,
     slug: map.slug,
-    category: map.category
+    game: map.game
   }))
   const gameFilters = games.filter(g => questGames.has(g.slug)).map(game => ({
     id: game.id,

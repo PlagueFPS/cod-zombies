@@ -11,7 +11,7 @@ export interface FeaturedMapWithoutBody {
     width: number | undefined
     height: number | undefined
   }
-  category: {
+  game: {
     title: string
     slug: string
   }

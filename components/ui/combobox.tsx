@@ -27,7 +27,7 @@ interface Filter {
 }
 
 interface MapFilter extends Filter {
-  category: {
+  game: {
     title: string,
     slug: string
   }
@@ -83,7 +83,7 @@ export function Combobox({ filters, games, maps, currentFilter }: ComboboxProps)
             </CommandGroup>
             <CommandGroup heading="Maps">
               {maps.map((map) => (
-                <CustomLink key={ map.id } href={ `/side-quests/${map.category.slug}/${map.slug}` }>
+                <CustomLink key={ map.id } href={ `/side-quests/${map.game.slug}/${map.slug}` }>
                   <CommandItem
                     key={ map.id }
                     value={ map.slug }

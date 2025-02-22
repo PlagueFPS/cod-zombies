@@ -12,12 +12,12 @@ interface SearchInputProps {
     id: string
     slug: string
     title: string
-    category: {
+    game: {
       title: string
       slug: string
     }
   }[]
-  categories: {
+  games: {
     id: string
     slug: string
     title: string
@@ -43,7 +43,7 @@ const filters = [
   { name: "Side Quests", icon: Book }
 ]
 
-export default function SearchInput({ maps, categories, quests }: SearchInputProps) {
+export default function SearchInput({ maps, games, quests }: SearchInputProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("All")
@@ -117,12 +117,12 @@ export default function SearchInput({ maps, categories, quests }: SearchInputPro
             <CommandEmpty>No results found.</CommandEmpty>
             { filter === "All" || filter === "Main Quests" ? (
               <>
-                { categories.map(game => (
+                { games.map(game => (
                   <CommandGroup heading={ `${game.title} Main Quests` } key={ game.id }>
-                    { maps.map(m => m.category.slug !== game.slug ? null : (
+                    { maps.map(m => m.game.slug !== game.slug ? null : (
                       <CommandItem 
                         key={ `${game.id}_${m.id}` } 
-                        onSelect={() => onSelectHandler(`/${m.category.slug}/${m.slug}`)}
+                        onSelect={() => onSelectHandler(`/${m.game.slug}/${m.slug}`)}
                         className="gap-2 cursor-pointer"
                         >
                         <BookText className="size-4" />

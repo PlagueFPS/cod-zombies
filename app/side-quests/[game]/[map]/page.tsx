@@ -45,7 +45,7 @@ export const generateMetadata = async ({ params }: ISideQuestMapPage): Promise<M
       ...GLOBAL_OG_PROPS.openGraph,
       title,
       description,
-      url: `/side-quests/${map.category.slug}/${map.slug}`,
+      url: `/side-quests/${map.game.slug}/${map.slug}`,
       images: {
         url: `https:${map.image.url}?w=1260&h=630&q=75&fm=jpg`,
         width: 1260,

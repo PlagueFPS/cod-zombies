@@ -28,7 +28,7 @@ export default async function MapFilters() {
   const gamesPromise = getGames(isEnabled)
   const mapsPromise = getMaps(isEnabled)
   const [games, maps] = await Promise.all([gamesPromise, mapsPromise])
-  const mapGames = new Set(maps.map(m => m.category.slug))
+  const mapGames = new Set(maps.map(m => m.game.slug))
   const gameFilters = games.filter(g => mapGames.has(g.slug))
 
   return (

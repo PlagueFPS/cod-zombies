@@ -20,9 +20,9 @@ export async function GET() {
   }
 
   const mapEnforce = enforceNewMapStatus()
-  const categoryEnforce = enforceNewGameStatus()
+  const gameEnforce = enforceNewGameStatus()
   const questEnforce = enforceNewQuestStatus()
-  await Promise.all([mapEnforce, categoryEnforce, questEnforce])
+  await Promise.all([mapEnforce, gameEnforce, questEnforce])
 
   console.log("[CRON] checkstatus cron job completed")
   return Response.json({ success: true }, { status: 200 })

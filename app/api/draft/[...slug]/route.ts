@@ -29,7 +29,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
       const draft = await draftMode()
       draft.enable()
-      redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category}/${map.slug}`)
+      redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game}/${map.slug}`)
     }
     case 'side-quests': {
       const quest = await getQuestById(true, entryId)

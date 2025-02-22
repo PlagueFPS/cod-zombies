@@ -4,10 +4,10 @@ import { capatilize } from "@/utils/functions"
 import { useParams } from "next/navigation"
 
 export default function MapNotFound() {
-  const { category, slug } = useParams()
+  const { game, slug } = useParams()
   const items: { href: string, title: string }[] = [
-    { href: `/${category}`, title: capatilize(String(category)) },
-    { href: `/${category}/${slug}`, title: capatilize(String(slug)) }
+    { href: `/${game}`, title: capatilize(String(game)) },
+    { href: `/${game}/${slug}`, title: capatilize(String(slug)) }
   ]
 
   return (

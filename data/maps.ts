@@ -42,7 +42,7 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
     id: map.sys.id,
     title: map.fields.title,
     slug: map.fields.slug,
-    category: createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
+    game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
   }))
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
@@ -156,7 +156,7 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
       description: map.fields.description,
       isComingSoon: map.fields.isComingSoon ?? false,
       image: createImageDTO(resolveAsset(map.fields.image)),
-      category: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
+      game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
     }
   }, [], {
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
@@ -247,14 +247,14 @@ export const getPaginatedMaps = cache(unstable_cache(async (draftMode: boolean, 
   const resolveMapData = cache((map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Awaited<ReturnType<typeof getMapIds>>) => {
     const { changedIds, draftIds, newIds } = mapIds
     const image = createImageDTO(resolveAsset(map.fields.image))
-    const category = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
+    const game = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
     const isDraft = draftIds.has(map.sys.id)
     const isChanged = changedIds.has(map.sys.id)
     const isNew = newIds.has(map.sys.id)
 
     return {
       image,
-      category,
+      game,
       isDraft,
       isChanged,
       isNew

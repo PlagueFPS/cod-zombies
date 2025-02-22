@@ -21,7 +21,7 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 
 interface MapPageProps {
   params: Promise<{ 
-    category: string | undefined
+    game: string | undefined
     slug: string
   }>
 }
@@ -45,13 +45,13 @@ export const generateStaticParams = async () => {
   const featuredMaps = await getMaps(false)
 
   return featuredMaps.filter(map => !map.isComingSoon).map(map => ({
-    category: map.category.slug,
+    game: map.game.slug,
     slug: map.slug
   }))
 }
 
 export const generateMetadata = async ({ params }: MapPageProps) => {
-  const [{ slug, category }, { isEnabled }] = await Promise.all([params, draftMode()])
+  const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
   const { map } = await getPageData(isEnabled, slug)
   const { title, description, image } = map
   const seoTitle = `${title} Main Quest`
@@ -62,7 +62,7 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       ...GLOBAL_OG_PROPS.openGraph,
       title: seoTitle,
       description,
-      url: `/${category}/${slug}`,
+      url: `/${game}/${slug}`,
       images: {
         url: `https:${image.url}?q=75&fm=jpg`,
         width: image.width,
@@ -108,8 +108,8 @@ export default async function MapPage({ params }: MapPageProps) {
                   />
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
                   <Breadcrumbs links={[
-                      { title: map.category.title, href: `/?game=${map.category.slug}` },
-                      { title: map.title, href: `/${map.category.slug}/${slug}` }
+                      { title: map.game.title, href: `/?game=${map.game.slug}` },
+                      { title: map.title, href: `/${map.game.slug}/${slug}` }
                     ]}
                   />
                 </div>
@@ -125,7 +125,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null }
                   <DifficultyBadge difficulty={ map.difficulty } />
-                  <Badge className='badge-primary-gradient'>{ map.category.title }</Badge>
+                  <Badge className='badge-primary-gradient'>{ map.game.title }</Badge>
                 </div>
               </div>
               <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm md:text-sm'>
@@ -138,7 +138,7 @@ export default async function MapPage({ params }: MapPageProps) {
               </div>
               <ShareButton 
                 title={ map.title } 
-                url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.category.slug}/${slug}` } 
+                url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game.slug}/${slug}` } 
                 className='ml-auto text-muted-foreground mb-2 md:mb-0' 
               />
             </div>
@@ -161,7 +161,7 @@ export default async function MapPage({ params }: MapPageProps) {
 
  const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: FeaturedMapWithoutBody, isEnabled: boolean, prev?: boolean }) => {
   const alt = `${map.title} map image`
-  const href = map.isComingSoon ? '#' : `/${map.category.slug}/${map.slug}`
+  const href = map.isComingSoon ? '#' : `/${map.game.slug}/${map.slug}`
 
   return (
     <CustomLink 
@@ -177,7 +177,7 @@ export default async function MapPage({ params }: MapPageProps) {
           { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null }
           <DifficultyBadge difficulty={ map.difficulty } />
           <Badge className='badge-primary-gradient'>
-            { map.category.title }
+            { map.game.title }
           </Badge>
         </div>
         <div className={cn('absolute inset-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>

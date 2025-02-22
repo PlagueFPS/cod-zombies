@@ -34,7 +34,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     case 'maps': {
       const map = await getMapById(IN_DEVELOPMENT, entryId)
       if (!map) return Response.json({ revalidated: false, message: `Map not found ID: ${entryId}`}, { status: 404 })
-      const path = `/${map.category}/${map.slug}`
+      const path = `/${map.game}/${map.slug}`
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // we must keep track of the status seperately

@@ -10,7 +10,7 @@ export default async function SearchBar() {
   const gamesPromise = getGames(isEnabled)
   const questsPromise = getQuestSearchData(isEnabled)
   const [maps, games, quests] = await Promise.all([mapsPromise, gamesPromise, questsPromise])
-  const modifiedCategories = games.map(game => ({
+  const modifiedGames = games.map(game => ({
     id: game.id,
     title: game.title,
     slug: game.slug
@@ -20,7 +20,7 @@ export default async function SearchBar() {
     <div className="flex justify-center items-center w-fit animate-fade-in">
       <SearchInput 
         maps={ maps } 
-        categories={ modifiedCategories }
+        games={ modifiedGames }
         quests={ quests } 
       />
     </div>

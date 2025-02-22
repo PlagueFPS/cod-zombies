@@ -1,3 +1,4 @@
+import { ReadonlyURLSearchParams } from "next/navigation";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
@@ -80,8 +81,12 @@ export const UnsubscribePageSchema = z.object({
   })
 })
 
-export const validateSearchParams = async (searchParams: Promise<SearchParams> | undefined) => {
-  const input = await searchParams
+export const validateSearchParams = async (searchParams: Promise<SearchParams> | ReadonlyURLSearchParams | undefined) => {
+  let input
+
+  if (searchParams instanceof Promise) input = await searchParams
+  else input = searchParams
+
   if (!input) return { page: 1 }
   return SearchParamsSchema.parse(input)
 }

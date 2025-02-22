@@ -4,12 +4,12 @@ import { capatilize } from "@/utils/functions"
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
 
 export default function BreadcrumbLoader() {
-  const { category, slug } = useParams()
+  const { game, slug } = useParams()
 
   return (
     <Breadcrumbs links={[
-      { title: typeof category === "string" ? capatilize(category) : "", href: `/${category}` },
-      { title: typeof slug === "string" ? capatilize(slug) : "", href: `/${category}/${slug}` }
+      { title: typeof game === "string" ? capatilize(game) : "", href: `/?game=${game}` },
+      { title: typeof slug === "string" ? capatilize(slug) : "", href: `/${game}/${slug}` }
     ]} />
   )
 }
