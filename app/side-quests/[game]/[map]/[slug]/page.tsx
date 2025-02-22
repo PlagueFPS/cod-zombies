@@ -97,7 +97,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                   <Breadcrumbs links={[
                       { title: 'Side Quests', href: `/side-quests` },
                       { title: q.game.title, href: `/side-quests?game=${q.game.slug}` },
-                      { title: q.map.title, href: `/side-quests?game=${q.game.slug}&map=${q.map.slug}` },
+                      { title: q.map.title, href: `/side-quests?map=${q.map.slug}` },
                       { title: q.title, href: `/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}` }
                     ]}
                   />
