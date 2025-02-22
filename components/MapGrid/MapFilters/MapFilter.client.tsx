@@ -9,8 +9,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/seperator";
 import { cn } from "@/lib/utils";
 import { capatilize } from "@/utils/functions";
-import { CirclePlus, Gamepad2, Trash, Trash2 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { CirclePlus, Trash, Trash2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface IMapFiltersClient {
@@ -31,7 +31,6 @@ interface IMapFiltersClient {
 }
 
 export default function MapFilterClient({ draftMode, games, difficulties }: IMapFiltersClient) {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [selectedGames, setSelectedGames] = useState(searchParams.getAll("game"))
   const [selectedDifficulties, setSelectedDifficulties] = useState(searchParams.getAll("difficulty"))
@@ -51,7 +50,7 @@ export default function MapFilterClient({ draftMode, games, difficulties }: IMap
 
     setSelectedGames(newSelectedGames)
     newSelectedGames.forEach(game => params.append("game", game))
-    router.push(`/?${params.toString()}`, { scroll: false })
+    window.history.pushState(null, '', `?${params.toString()}`)
   }
 
   const toggleDifficulty = (difficulty: string) => {
@@ -64,26 +63,26 @@ export default function MapFilterClient({ draftMode, games, difficulties }: IMap
 
     setSelectedDifficulties(newSelectedDifficulties)
     newSelectedDifficulties.forEach(difficulty => params.append("difficulty", difficulty))
-    router.push(`/?${params.toString()}`, { scroll: false })
+    window.history.pushState(null, '', `?${params.toString()}`)
   }
 
   const clearGames = () => {
     const params = new URLSearchParams(searchParams)
     params.delete("game")
-    router.push(`/?${params.toString()}`, { scroll: false })
+    window.history.pushState(null, '', `?${params.toString()}`)
   }
 
   const clearDifficulties = () => {
     const params = new URLSearchParams(searchParams)
     params.delete("difficulty")
-    router.push(`/?${params.toString()}`, { scroll: false })
+    window.history.pushState(null, '', `?${params.toString()}`)
   }
 
   const clearAllFilters = () => {
     const params = new URLSearchParams(searchParams)
     params.delete("game")
     params.delete("difficulty")
-    router.push(`/?${params.toString()}`, { scroll: false })
+    window.history.pushState(null, '', `?${params.toString()}`)
   }
 
   return (
