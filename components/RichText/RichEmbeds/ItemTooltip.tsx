@@ -18,7 +18,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
   return (
     <>
       { isDesktop ? (
-          <div className='hidden sm:inline-block'>
+          <span className='hidden sm:inline-block'>
             <TooltipProvider delayDuration={ 200 }>
               <Tooltip>
                 <TooltipTrigger className={cn('relative inline-flex justify-center items-center gap-2 underline decoration-dotted underline-offset-4 hover:no-underline', className)}>
@@ -47,11 +47,11 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          </div>
+          </span>
       ) : (
-        <div className='inline-block sm:hidden'>
+        <span className='inline-block sm:hidden'>
           <ItemPopover item={ item } className={ className } />
-        </div>
+        </span>
       )}
     </>
   )

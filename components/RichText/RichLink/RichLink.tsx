@@ -17,7 +17,7 @@ export default function RichLink({ node }: RichLinkProps) {
   if (node.data.uri.startsWith(youtube_url)) {
     return (
       <>
-        <h3 className='text-foreground font-semibold mb-4'>{ node.content[0].value }</h3>
+        <span className='text-foreground font-semibold mb-4 inline-block'>{ node.content[0].value }</span>
         <YouTubeEmbed videoid={ getYouTubeVideoID(node.data.uri) ?? '' } style='border-radius: var(--radius);'  />
       </>
     )
