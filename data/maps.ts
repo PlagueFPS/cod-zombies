@@ -125,7 +125,7 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
       const status = await db.select({ 
         status: maps.status 
       }).from(maps).where(eq(maps.mapId, mapId)).limit(1)
-      return status[0]
+      return { status: status[0]?.status }
     } catch (error) {
       console.error(error)
       return { status: null }
