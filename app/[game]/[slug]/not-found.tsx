@@ -9,10 +9,13 @@ export default function MapNotFound() {
     { href: `/${game}`, title: capatilize(String(game)) },
     { href: `/${game}/${slug}`, title: capatilize(String(slug)) }
   ]
+  let resource = "Map"
+
+  if (game === 'side-quests') resource = 'Side Quest'
 
   return (
     <>
-      <NotFoundContent items={ items } resource="Map" param={ String(slug) } />
+      <NotFoundContent items={ items } resource={ resource } param={ String(slug) } />
     </>
   )
 }

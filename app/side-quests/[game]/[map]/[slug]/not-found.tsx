@@ -12,5 +12,5 @@ export default function QuestNotFound() {
     { href: `/side-quests/${game}/${map}/${slug}`, title: capatilize(String(slug))}
   ]
 
-  return <NotFoundContent items={ items } resource="Quest" param={ String(slug) } />
+  return <NotFoundContent items={ items } resource="Side Quest" param={ String(slug) } />
 }
