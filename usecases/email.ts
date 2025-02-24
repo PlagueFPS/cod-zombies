@@ -110,7 +110,7 @@ export const unsubscribeEmailUseCase = async (email: string) => {
 
 export const sendInternalEmailUseCase = async ({ subject, message }: InternalEmailProps) => {
   const { error } = await resend.emails.send({
-    from: `Cod Zombies Guides <support@codzombiesguides.com>`,
+    from: `COD: Zombies Guides <support@codzombiesguides.com>`,
     to: 'codzombiesguidesteam@gmail.com',
     subject,
     text: message,
