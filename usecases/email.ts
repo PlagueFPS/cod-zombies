@@ -147,7 +147,7 @@ export const sendBroadcastEmailUseCase = async (props: INewReleaseEmail) => {
   const { data, error } = await resend.broadcasts.create({
     audienceId: env.RESEND_AUDIENCE_ID,
     from: "COD: Zombies Guides <support@codzombiesguides.com>",
-    subject: props.title,
+    subject: `${props.title} Guide Release!`,
     react: NewReleaseEmail(props),
     name: `${props.title} Release`
   })
