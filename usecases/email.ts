@@ -1,8 +1,7 @@
 import { INewReleaseEmail } from "@/emails/NewReleaseEmail"
 import { env } from "@/env"
-import { type CreateBatchOptions, Resend } from "resend"
+import { Resend } from "resend"
 import NewReleaseEmail from "@/emails/NewReleaseEmail"
-import { render } from "@react-email/components"
 import { after } from "next/server"
 
 interface EmailProps {
@@ -144,47 +143,28 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
   }
 }
 
-export const sendBatchReleaseEmailUseCase = async (props: Omit<INewReleaseEmail, "contactId">) => {
-  const { data: contacts, error } = await resend.contacts.list({
-    audienceId: env.RESEND_AUDIENCE_ID
+export const sendBroadcastEmailUseCase = async (props: INewReleaseEmail) => {
+  const { data, error } = await resend.broadcasts.create({
+    audienceId: env.RESEND_AUDIENCE_ID,
+    from: "COD: Zombies Guides <support@codzombiesguides.com>",
+    subject: props.title,
+    react: NewReleaseEmail(props),
+    name: `${props.title} Release`
   })
-
-  if (error || !contacts) {
-    console.error(error?.message)
+  
+  if (error || !data) {
+    console.error(error)
     return {
       success: false,
       message: error?.message || "Something Went Wrong! Please Try Again."
     }
   }
+
+  await resend.broadcasts.send(data.id)
   
-  const emails: CreateBatchOptions = await Promise.all(contacts.data.filter(contact => !contact.unsubscribed).map(async contact => {
-    return {
-      from: "COD: Zombies Guides <support@codzombiesguides.com>",
-      to: contact.email,
-      subject: `New Guide Release: ${props.title}`,
-      react: NewReleaseEmail({ ...props, contactId: contact.id }),
-      text: await render(NewReleaseEmail({ ...props, contactId: contact.id }), {
-        plainText: true
-      }),
-      headers: {
-        'List-Unsubscribe': `<https://codzombiesguides.com/api/emails/unsubscribe?contactId=${contact.id}>`,
-        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
-      }
-    }
-  }))
-
-  const { error: batchError } = await resend.batch.send(emails)
-  if (batchError) {
-    console.error(batchError.message)
-    return {
-      success: false,
-      message: batchError.message
-    }
-  }
-
   return {
     success: true,
-    message: "Batch emails successfully sent."
+    message: 'Broadcast sent successfully!'
   }
 }
 

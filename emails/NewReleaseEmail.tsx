@@ -9,8 +9,7 @@ import {
   Preview,
   Text,
   Section,
-  Hr,
-  Link
+  Hr
 } from "@react-email/components"
 
 export interface INewReleaseEmail {
@@ -23,10 +22,9 @@ export interface INewReleaseEmail {
   }
   redirectTo: string
   redirectText: string
-  contactId: string
 }
 
-export default function NewReleaseEmail({ title, description, image, redirectTo, redirectText, contactId }: INewReleaseEmail) {
+export default function NewReleaseEmail({ title, description, image, redirectTo, redirectText }: INewReleaseEmail) {
   return (
     <Html>
       <Head />
@@ -40,7 +38,7 @@ export default function NewReleaseEmail({ title, description, image, redirectTo,
             textAlign: "center",
           }}>
             <Img 
-              src="https://codzombiesguides.com/icon.png"
+              src="https://codzombiesguides.com/logo.webp"
               alt="Call of Duty: Zombies Guides Logo"
               width={ 512 }
               height={ 512 }
@@ -65,8 +63,6 @@ export default function NewReleaseEmail({ title, description, image, redirectTo,
               { redirectText }
             </Button>
           </Section>
-          <Hr style={hr} />
-          <Text style={footer}>© {new Date().getFullYear()} Call of Duty: Zombies Guides. • <Link href={`https://codzombiesguides.com/api/emails/unsubscribe?contactId=${contactId}`}>Unsubscribe</Link></Text>
         </Container>
       </Body>
     </Html>

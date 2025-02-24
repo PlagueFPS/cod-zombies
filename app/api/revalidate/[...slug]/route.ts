@@ -2,7 +2,7 @@ import { getGameById, storeNewGameId } from "@/data/games";
 import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps";
 import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
 import { env } from "@/env";
-import { sendBatchReleaseEmailUseCase } from "@/usecases/email";
+import { sendBroadcastEmailUseCase } from "@/usecases/email";
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants";
 import { isFirstTimePublish } from "@/utils/contentful-utils";
 import { authorizedRequest } from "@/utils/functions";
@@ -38,12 +38,12 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
       if (isFirstTimePublish(createdAt, updatedAt)) {
         // we must keep track of the status seperately
-        // the only reason is to ensure we do not send multiple emails for the same updated content
+        // the only reason is to ensure we do not send multiple broadcasts for the same updated content
         const { error } = await storeNewMapId(entryId, createdAt, map.isComingSoon ? "Coming Soon" : "Published")
         revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
 
         if (!map.isComingSoon) {
-          const { success, message } = await sendBatchReleaseEmailUseCase({
+          const { success, message } = await sendBroadcastEmailUseCase({
             title: map.title,
             description: map.description,
             image: map.image,
@@ -54,8 +54,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
           return Response.json({ 
             revalidated: true, 
             message: error ?? `${entryId} stored as new`,
-            emailSuccess: success,
-            emailMessage: message
+            broadcastSuccess: success,
+            broadcastMessage: message
           }, { status: 201 })
         }
         
@@ -71,9 +71,9 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       const { status } = await getMapStatus(entryId)
       
       // If previously stored status was "Coming Soon" and status is no longer "Coming Soon" in Contentful
-      // update stored status and send out release emails to users
+      // update stored status and send out release broadcasts to users
       if (status === "Coming Soon" && !map.isComingSoon) {
-        const emailPromise = sendBatchReleaseEmailUseCase({
+        const broadcastPromise = sendBroadcastEmailUseCase({
           title: map.title,
           description: map.description,
           image: map.image,
@@ -81,16 +81,16 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
           redirectText: "View Guide"
         })
         const statusPromise = updateMapStatus(entryId)
-        const [{ success, message }, { error }] = await Promise.all([emailPromise, statusPromise])
+        const [{ success, message }, { error }] = await Promise.all([broadcastPromise, statusPromise])
 
         return Response.json({
           revalidated: true,
           message: `${path} and map data revalidated`,
           statusUpdated: error ? false : true,
           statusError: error,
-          emailSuccess: success,
-          emailMessage: message
-        })
+          broadcastSuccess: success,
+          broadcastMessage: message
+        }, { status: 201 })
       }
 
       return Response.json({ revalidated: true, message: `${path} and map data revalidated` }, { status: 201 })
