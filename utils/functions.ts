@@ -1,10 +1,5 @@
 import { timingSafeEqual } from "crypto"
 
-export const isPriority = (mapIndex: number, totalMaps: number) => {
-  if (mapIndex < totalMaps - (totalMaps - 4)) return true
-  else return false
-}
-
 export const capatilize = (text: string) => {
   return text
     .replace(/-/g, " ") // Replace hyphens with spaces
@@ -38,5 +33,56 @@ export const authorizedRequest = (secret: string | null, validSecret: string) =>
   } catch (error) {
     console.error(error)
     return false
+  }
+}
+
+/**
+ * A type representing a successful result
+ */
+type Success<T> = {
+  success: true;
+  data: T;
+  error: null;
+};
+
+/**
+ * A type representing a failed result
+ */
+type Failure = {
+  success: false;
+  data: null;
+  error: Error;
+};
+
+/**
+ * A union type representing either a successful or failed result
+ */
+type Result<T> = Success<T> | Failure;
+
+/**
+ * Safely executes an async operation and returns a structured result
+ * 
+ * @param promiseOrFn - Either a promise or a function that returns a promise
+ * @returns A Result object containing either the data or error
+ */
+export async function tryCatch<T>(
+  promiseOrFn: Promise<T> | (() => Promise<T>)
+): Promise<Result<T>> {
+  try {
+    const data = typeof promiseOrFn === 'function'
+      ? await promiseOrFn()
+      : await promiseOrFn;
+      
+    return {
+      success: true,
+      data,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: error instanceof Error ? error : new Error(String(error)),
+    };
   }
 }

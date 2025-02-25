@@ -2,7 +2,7 @@ import "server-only"
 import { createClient, type EntriesQueries, type EntrySkeletonType } from 'contentful'
 import { env } from "@/env"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import { contentfulFetchWithRetry } from "@/utils/contentful-utils"
+import { tryCatch } from "@/utils/functions"
 
 export const prodClient = createClient({
   space: env.CONTENTFUL_SPACE_ID,
@@ -18,16 +18,10 @@ export const previewClient = createClient({
 
 export const getEntries = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
   const client = (draftMode || IN_DEVELOPMENT) ? previewClient : prodClient
-  return contentfulFetchWithRetry(async () => {
-    const entries = await client.getEntries<T>(searchParams)
-    return entries
-  })
+  return await tryCatch(client.getEntries<T>(searchParams))
 }
 
 export const getEntry = async <T extends EntrySkeletonType>(entryId: string, draftMode?: boolean) => {
   const client = (draftMode || IN_DEVELOPMENT) ? previewClient : prodClient
-  return contentfulFetchWithRetry(async () => {
-    const entry = await client.getEntry<T>(entryId)
-    return entry
-  })
+  return await tryCatch(client.getEntry<T>(entryId))
 }

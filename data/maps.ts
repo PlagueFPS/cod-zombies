@@ -1,7 +1,7 @@
 import 'server-only'
 import { revalidateTag, unstable_cache } from 'next/cache'
 import { cache } from 'react'
-import { CACHE_KEYS, MAP_LIMIT, MAX_NEW_TIME } from '@/utils/constants'
+import { CACHE_KEYS, MAX_NEW_TIME } from '@/utils/constants'
 import { getEntries } from '@/contentful/contentful'
 import type { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
@@ -12,6 +12,7 @@ import { Entry } from 'contentful'
 import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
 import { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
+import { tryCatch } from '@/utils/functions'
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const mapsPromise = INTERNAL_getMapData(draftMode)
@@ -92,133 +93,144 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
     tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
   }))
 
-  export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
-    const maps = await INTERNAL_getMapData(draftMode)
-    const map = maps.find(m => m.sys.id === id)
-    if (!map) return null
+export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
+  const maps = await INTERNAL_getMapData(draftMode)
+  const map = maps.find(m => m.sys.id === id)
+  if (!map) return null
 
-    return {
-      id: map.sys.id,
-      slug: map.fields.slug,
-      title: map.fields.title,
-      description: map.fields.description,
-      isComingSoon: map.fields.isComingSoon ?? false,
-      image: createImageDTO(resolveAsset(map.fields.image)),
-      game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
-    }
-  }, [], {
-    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-  }))
+  return {
+    id: map.sys.id,
+    slug: map.fields.slug,
+    title: map.fields.title,
+    description: map.fields.description,
+    isComingSoon: map.fields.isComingSoon ?? false,
+    image: createImageDTO(resolveAsset(map.fields.image)),
+    game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
+  }
+}, [], {
+  tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
+}))
 
-  export const storeNewMapId = async (mapId: string, createdAt: string, status: "Coming Soon" | "Published") => {
-    try {
-      await db.insert(maps).values({ mapId, publishedAt: createdAt, status })
-      return { error: null }
-    } catch (error) {
-      console.error(error)
-      return { error: "Failed to store new map Id. Check server logs for more information." }
-    }
+export const storeNewMapId = async (mapId: string, createdAt: string, status: "Coming Soon" | "Published") => {
+  return await tryCatch(db.insert(maps).values({ mapId, publishedAt: createdAt, status }))
+}
+
+export const getMapStatus = async (mapId: string) => {
+  const { data, error } = await tryCatch(db.select({ 
+    status: maps.status 
+  }).from(maps).where(eq(maps.mapId, mapId)).limit(1))
+
+  if (error) {
+    console.error(error)
+    return { status: null }
   }
 
-  export const getMapStatus = async (mapId: string) => {
-    try {
-      const status = await db.select({ 
-        status: maps.status 
-      }).from(maps).where(eq(maps.mapId, mapId)).limit(1)
-      return { status: status[0]?.status }
-    } catch (error) {
-      console.error(error)
-      return { status: null }
-    }
-  }
+  return { status: data[0]?.status }
+}
 
-  export const updateMapStatus = async (mapId: string) => {
-    try {
-      await db.update(maps).set({ status: "Published" }).where(eq(maps.mapId, mapId))
-      return { error: null }
-    } catch (error) {
-      console.error(error)
-      return { error: "Failed to update map status. Check server logs for more information." }
-    }
-  }
+export const updateMapStatus = async (mapId: string) => {
+  return await tryCatch(db.update(maps).set({ status: "Published" }).where(eq(maps.mapId, mapId)))
+}
 
-  export const enforceNewMapStatus = async () => {
-    try {
-      const newMaps = await db.select({ 
-        mapId: maps.mapId, 
-        publishedAt: maps.publishedAt 
-      }).from(maps)
+export const enforceNewMapStatus = async () => {
+  const { data: newMaps, error: selectError } = await tryCatch(db.select({ 
+    mapId: maps.mapId, 
+    publishedAt: maps.publishedAt 
+  }).from(maps))
 
-      for (const map of newMaps) {
-        const currentTime = Date.now()
-        const publishedTime = new Date(map.publishedAt).getTime()
-
-        if (currentTime - publishedTime > MAX_NEW_TIME) {
-          console.log(`[MAP ENFORCEMENT] Deleting Map ${map.mapId} from DB...`)
-          await db.delete(maps).where(eq(maps.mapId, map.mapId))
-          console.log(`[MAP ENFORCEMENT] revalidating ${CACHE_KEYS.FEATURED_MAPS.ALL}`)
-          revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
-        } else continue
-      }
-    } catch (error) {
-      console.error(`[MAP ENFORCEMENT] Error enforcing maps: ${error}`)
-      const { success } = await submitFeedbackUseCase({
-        title: "Map Status Error",
-        label: "issue",
-        feedback: `Error enforcing maps: ${error}`
-      })
-      if (!success) console.error(`[MAP ENFORCEMENT] Failed to submit feedback`)
-    }
-  }
-
-  const getMapIds = cache(unstable_cache(async () => {
-    const newIdsPromise = db.select({ mapId: maps.mapId }).from(maps)
-    const mapsPromise = getManagementEntries("featuredMaps")
-    const [newMapIds, managementMaps] = await Promise.all([newIdsPromise, mapsPromise])
-    const draftIds = new Set<string>()
-    const changedIds = new Set<string>()
-    const newIds = new Set<string>(newMapIds.map(id => id.mapId))
-
-    managementMaps.items.forEach(map => {
-      if (!map.sys.publishedVersion) {
-        draftIds.add(map.sys.id)
-      } else if (!!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2) {
-        changedIds.add(map.sys.id)
-      }
+  if (selectError) {
+    console.error(selectError)
+    await submitFeedbackUseCase({
+      title: "Map Selection Error",
+      label: "issue",
+      feedback: `Error selecting new maps. check server logs for more information.`
     })
+    return
+  }
 
+  for (const map of newMaps) {
+    const currentTime = Date.now()
+    const publishedTime = new Date(map.publishedAt).getTime()
+
+    if (currentTime - publishedTime > MAX_NEW_TIME) {
+      console.log(`[MAP ENFORCEMENT] Deleting Map ${map.mapId} from DB...`)
+      const { error: deleteError } = await tryCatch(db.delete(maps).where(eq(maps.mapId, map.mapId)))
+      
+      if (deleteError) {
+        console.error(deleteError)
+        await submitFeedbackUseCase({
+          title: "Map Deletion Error",
+          label: "issue",
+          feedback: `Error deleting map ${map.mapId}. check server logs for more information.`
+        })
+        continue
+      }
+
+      console.log(`[MAP ENFORCEMENT] revalidating ${CACHE_KEYS.FEATURED_MAPS.ALL}`)
+      revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
+    } else continue
+  }
+}
+
+const getMapIds = cache(unstable_cache(async () => {
+  const newMapsPromise = tryCatch(db.select({ mapId: maps.mapId }).from(maps))
+  const mapsPromise = getManagementEntries("featuredMaps")
+  const [{ data: newMaps, error: newMapsError }, { data: managementMaps, error }] = await Promise.all([newMapsPromise, mapsPromise])
+  const draftIds = new Set<string>()
+  const changedIds = new Set<string>()
+  const newIds = new Set<string>()
+
+  if (error || newMapsError) {
+    console.error(error ?? newMapsError)
     return { newIds, draftIds, changedIds }
-  }, [], {
-    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-  }))
+  }
 
-  const resolveMapData = cache((map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Awaited<ReturnType<typeof getMapIds>>) => {
-    const { changedIds, draftIds, newIds } = mapIds
-    const image = createImageDTO(resolveAsset(map.fields.image))
-    const game = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
-    const isDraft = draftIds.has(map.sys.id)
-    const isChanged = changedIds.has(map.sys.id)
-    const isNew = newIds.has(map.sys.id)
-
-    return {
-      image,
-      game,
-      isDraft,
-      isChanged,
-      isNew
+  newMaps.forEach(map => newIds.add(map.mapId))
+  managementMaps.items.forEach(map => {
+    if (!map.sys.publishedVersion) {
+      draftIds.add(map.sys.id)
+    } else if (!!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2) {
+      changedIds.add(map.sys.id)
     }
   })
 
-  const INTERNAL_getMapData = cache(async (draftMode: boolean) => {
-    const maps = await getEntries<TypeFeaturedMapsSkeleton>({
-      content_type: "featuredMaps",
-      order: ["-fields.releaseDate"],
-      select: [
-        "sys.id",
-        "sys.updatedAt",
-        "fields",
-      ],
-    }, draftMode)
+  return { newIds, draftIds, changedIds }
+}, [], {
+  tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
+}))
 
-    return maps.items
-  })
+const resolveMapData = cache((map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Awaited<ReturnType<typeof getMapIds>>) => {
+  const { changedIds, draftIds, newIds } = mapIds
+  const image = createImageDTO(resolveAsset(map.fields.image))
+  const game = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
+  const isDraft = draftIds.has(map.sys.id)
+  const isChanged = changedIds.has(map.sys.id)
+  const isNew = newIds.has(map.sys.id)
+
+  return {
+    image,
+    game,
+    isDraft,
+    isChanged,
+    isNew
+  }
+})
+
+const INTERNAL_getMapData = cache(async (draftMode: boolean) => {
+  const { data, error} = await getEntries<TypeFeaturedMapsSkeleton>({
+    content_type: "featuredMaps",
+    order: ["-fields.releaseDate"],
+    select: [
+      "sys.id",
+      "sys.updatedAt",
+      "fields",
+    ],
+  }, draftMode)
+
+  if (error) {
+    console.error(error)
+    return []
+  }
+
+  return data.items
+})

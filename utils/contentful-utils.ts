@@ -4,25 +4,6 @@ import type { ZombieItem } from "@/types/ZombieItem";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify } from "./functions";
-import { MAP_ORDER } from "./constants";
-
-export const contentfulFetchWithRetry = async <T>(fetchFn: () => Promise<T>, retries = 5) => {
-  for (let attempt = 0; attempt < retries; attempt++) {
-    try {
-      return await fetchFn()
-    } catch (error) {
-      if (attempt === retries - 1) {
-        throw error
-      }
-
-      console.warn(`Attempt ${attempt + 1} failed. Retrying in 1600ms`)
-      await new Promise(resolve => setTimeout(resolve, 1600))
-    }
-  }
-
-  // This should never be reached
-  throw new Error('Exhausted retries')
-}
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if (asset && 'fields' in asset && asset.fields.file) return asset
@@ -48,12 +29,6 @@ export const extractHeadings = (body: Document) => {
   })
 
   return headings
-}
-
-export const sortMaps = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, map2: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => {
-  let a = MAP_ORDER[map.fields.slug]
-  let b = MAP_ORDER[map2.fields.slug]
-  return a === b ? 0 : a > b ? -1 : 1
 }
 
 export const formatTableCellData = (cellContent: any[]) => {

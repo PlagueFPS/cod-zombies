@@ -9,6 +9,7 @@ import { db } from '@/db/db'
 import { categories } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
+import { tryCatch } from '@/utils/functions'
 
 export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   const gameIdsPromise = getGameIds()
@@ -55,53 +56,63 @@ export const getGameById = cache(unstable_cache(async (draftMode: boolean, id: s
 }))
 
 export const storeNewGameId = async (gameId: string, createdAt: string) => {
-  try {
-    await db.insert(categories).values({ categoryId: gameId, publishedAt: createdAt })
-    return { error: null }
-  } catch (error) {
-    console.error(error)
-    return { error: "Failed to store game ID. Check server logs for more information."}
-  }
+  return await tryCatch(db.insert(categories).values({ categoryId: gameId, publishedAt: createdAt }))
 }
 
 export const enforceNewGameStatus = async () => {
-  try {
-    const newGames = await db.select({
-      categoryId: categories.categoryId,
-      publishedAt: categories.publishedAt
-    }).from(categories)
-    
-    for (const game of newGames) {
-      const currentTime = Date.now()
-      const publishedTime = new Date(game.publishedAt).getTime()
+  const { data: newGames, error: selectError } = await tryCatch(db.select({
+    categoryId: categories.categoryId,
+    publishedAt: categories.publishedAt
+  }).from(categories))
 
-      if (currentTime - publishedTime > MAX_NEW_TIME) {
-        console.log(`[CATEGORY ENFORCEMENT] deleting ${game.categoryId} from DB...`)
-        await db.delete(categories).where(eq(categories.categoryId, game.categoryId))
-        console.log(`[CATEGORY ENFORCEMENT] revalidating ${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
-        revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-      } else continue
-    }
-  } catch (error) {
-    console.error(`[CATEGORY ENFORCEMENT] Error enforcing categories: ${error}`)
-    const { success } = await submitFeedbackUseCase({
-      title: "Category Status Error",
+  if (selectError) {
+    console.error(`[CATEGORY ENFORCEMENT] Error selecting new categories`, selectError)
+    await submitFeedbackUseCase({
+      title: "Category Selection Error",
       label: "issue",
-      feedback: `Error enforcing categories ${error}`
+      feedback: `Error selecting new categories. check server logs for more information.`
     })
-    if (!success) console.error(`[CATEGORY ENFORCEMENT] Failed to submit feedback`)
+    return
+  }
+
+  for (const game of newGames) {
+    const currentTime = Date.now()
+    const publishedTime = new Date(game.publishedAt).getTime()
+
+    if (currentTime - publishedTime > MAX_NEW_TIME) {
+      console.log(`[CATEGORY ENFORCEMENT] deleting ${game.categoryId} from DB...`)
+      const { error: deleteError } = await tryCatch(db.delete(categories).where(eq(categories.categoryId, game.categoryId)))
+
+      if (deleteError) {
+        console.error(`[CATEGORY ENFORCEMENT] Error deleting category: ${game.categoryId}`,deleteError)
+        await submitFeedbackUseCase({
+          title: "Category Deletion Error",
+          label: "issue",
+          feedback: `Error deleting category: ${game.categoryId} - check server logs for more information.`
+        })
+        continue
+      }
+
+      console.log(`[CATEGORY ENFORCEMENT] revalidating ${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
+      revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+    } else continue
   }
 }
 
 const getGameIds = cache(unstable_cache(async () => {
   const idsPromise = db.select({ categoryId: categories.categoryId }).from(categories)
   const gamesPromise = getManagementEntries("gameCategory")
-  const [newGameIds, managementGames] = await Promise.all([idsPromise, gamesPromise])
+  const [newGameIds, { data, error }] = await Promise.all([idsPromise, gamesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>(newGameIds.map(id => id.categoryId))
 
-  managementGames.items.forEach(game => {
+  if (error) {
+    console.error(error)
+    return { newIds, draftIds, changedIds }
+  }
+
+  data.items.forEach(game => {
     if (!game.sys.publishedVersion) {
       draftIds.add(game.sys.id)
     } else if (!!game.sys.publishedVersion && game.sys.version >= game.sys.publishedVersion + 2) {
@@ -115,7 +126,7 @@ const getGameIds = cache(unstable_cache(async () => {
 }))
 
 const INTERNAL_getGameData = cache(async (draftMode: boolean) => {
-  const games = await getEntries<TypeGameCategorySkeleton>({
+  const { data, error } = await getEntries<TypeGameCategorySkeleton>({
     content_type: 'gameCategory',
     order: ['-fields.releaseDate'],
     select: [
@@ -125,5 +136,10 @@ const INTERNAL_getGameData = cache(async (draftMode: boolean) => {
     ]
   }, draftMode)
 
-  return games.items
+  if (error) {
+    console.error(error)
+    return []
+  }
+
+  return data.items
 })

@@ -36,14 +36,3 @@ export const CACHE_KEYS = {
     ALL: 'side-quests'
   }
 } as const
-export const MAP_ORDER: { [x: string]: number } = {
-  "ascension": 0,
-  "call-of-the-dead": 1,
-  "shangri-la": 2,
-  "moon": 3,
-  "tranzit": 4,
-  "die-rise": 5,
-  "mob-of-the-dead": 6,
-  "buried": 7,
-  "origins": 8
-}

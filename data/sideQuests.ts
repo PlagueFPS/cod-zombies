@@ -17,6 +17,7 @@ import { db } from '@/db/db'
 import { quests } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
+import { tryCatch } from '@/utils/functions'
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
@@ -93,52 +94,69 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
 }))
 
 export const storeNewQuestId = async (id: string, createdAt: string) => {
-  try {
-    await db.insert(quests).values({ questId: id, publishedAt: createdAt })
-    return { error: null }
-  } catch (error) {
-    console.error(error)
-    return { error: `Failed to store quest ID: ${id}`}
-  }
+  return await tryCatch(db.insert(quests).values({ questId: id, publishedAt: createdAt }))
 }
 
 export const enforceNewQuestStatus = async () => {
-  try {
-    const newQuests = await db.select({
-      questId: quests.questId,
-      publishedAt: quests.publishedAt
-    }).from(quests)
+  const { data: newQuests, error: selectError } = await tryCatch(db.select({
+    questId: quests.questId,
+    publishedAt: quests.publishedAt
+  }).from(quests))
 
-    for (const quest of newQuests) {
-      const currentTime = Date.now()
-      const publishedTime = new Date(quest.publishedAt).getTime()
+  if (selectError) {
+    console.error(selectError)
+    await submitFeedbackUseCase({
+      title: "Quest Selection Error",
+      label: "issue",
+      feedback: `Error selecting new quests. check server logs for more information.`
+    })
+    return
+  }
 
-      if (currentTime - publishedTime > MAX_NEW_TIME) {
-        console.log(`[QUEST ENFORCEMENT] Deleting Quest ${quest.questId} from DB...`)
-        await db.delete(quests).where(eq(quests.questId, quest.questId))
-        console.log(`[QUEST ENFORCEMENT] revalidating ${CACHE_KEYS.SIDE_QUESTS.ALL}`)
-        revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
-      } else continue
-    }
-  } catch (error) {
-    console.error(`[QUEST ENFORCEMENT] Error enforcing quests: ${error}`)
-      const { success } = await submitFeedbackUseCase({
-        title: "Quest Status Error",
-        label: "issue",
-        feedback: `Error enforcing quests: ${error}`
-      })
-      if (!success) console.error(`[QUEST ENFORCEMENT] Failed to submit feedback`)
+  for (const quest of newQuests) {
+    const currentTime = Date.now()
+    const publishedTime = new Date(quest.publishedAt).getTime()
+
+    if (currentTime - publishedTime > MAX_NEW_TIME) {
+      console.log(`[QUEST ENFORCEMENT] Deleting Quest ${quest.questId} from DB...`)
+      const { error: deleteError } = await tryCatch(db.delete(quests).where(eq(quests.questId, quest.questId)))
+      
+      if (deleteError) {
+        console.error(deleteError)
+        await submitFeedbackUseCase({
+          title: "Quest Deletion Error",
+          label: "issue",
+          feedback: `Error deleting quest ${quest.questId}. check server logs for more information.`
+        })
+      }
+
+      console.log(`[QUEST ENFORCEMENT] revalidating ${CACHE_KEYS.SIDE_QUESTS.ALL}`)
+      revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
+    } else continue
   }
 }
 
 const getQuestIds = cache(unstable_cache(async () => {
-  const newIdsPromise = db.select({ questId: quests.questId }).from(quests)
+  const newQuestsPromise = tryCatch(db.select({ questId: quests.questId }).from(quests))
   const questsPromise = getManagementEntries("sideQuests")
-  const [newQuestIds, managementQuests] = await Promise.all([newIdsPromise, questsPromise])
+  const [{ 
+    data: newQuestIds, 
+    error: newQuestsError 
+  }, 
+  { 
+    data: managementQuests, 
+    error: managementError 
+  }] = await Promise.all([newQuestsPromise, questsPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
-  const newIds = new Set<string>(newQuestIds.map(q => q.questId))
+  const newIds = new Set<string>()
 
+  if (newQuestsError || managementError) {
+    console.error(newQuestsError ?? managementError)
+    return { newIds, draftIds, changedIds }
+  }
+  
+  newQuestIds.forEach(quest => newIds.add(quest.questId))
   managementQuests.items.forEach(quest => {
     if (!quest.sys.publishedVersion) {
       draftIds.add(quest.sys.id)
@@ -172,7 +190,7 @@ const resolveQuestData = cache(async (quest: Entry<TypeSideQuestsSkeleton, undef
 })
 
 const INTERNAL_getSideQuestData = cache(async (draftMode: boolean) => {
-  const quests = await getEntries<TypeSideQuestsSkeleton>({
+  const { data: quests, error} = await getEntries<TypeSideQuestsSkeleton>({
     content_type: 'sideQuests',
     select: [
       "sys.id",
@@ -180,6 +198,11 @@ const INTERNAL_getSideQuestData = cache(async (draftMode: boolean) => {
       "fields"
     ] 
   }, draftMode)
+
+  if (error) {
+    console.error(error)
+    return []
+  }
 
   const sortedQuests = quests.items.sort((a, b) => {
     const aMap = resolveEntry(a.fields.map)?.fields.releaseDate!
