@@ -25,15 +25,17 @@ export const authorizedRequest = (secret: string, validSecret: string) => {
   const encoder = new TextEncoder()
   const secretBuffer = encoder.encode(secret)
   const validSecretBuffer = encoder.encode(validSecret)
-  // This function needs to be wrapped in a try/catch
-  // because it will throw an error if the byteLength the compared strings
+  // `timingSafeEqual` needs to be wrapped in a try/catch
+  // because it will throw an error if the byteLength of the compared strings
   // is not the same, instead of just returning false which is annoying.
-  try {
-    return timingSafeEqual(secretBuffer, validSecretBuffer)
-  } catch (error) {
+  const { data, error } = tryCatchSync(() => timingSafeEqual(secretBuffer, validSecretBuffer))
+
+  if (error) {
     console.error(error)
     return false
   }
+
+  return data
 }
 
 /**
@@ -72,6 +74,34 @@ export async function tryCatch<T>(
     const data = TypeGuards.isFunction(promiseOrFn)
       ? await promiseOrFn()
       : await promiseOrFn;
+      
+    return {
+      success: true,
+      data,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      error: error instanceof Error ? error : new Error(String(error)),
+    };
+  }
+}
+
+/**
+ * Safely executes a synchronous operation and returns a structured result
+ * 
+ * @param valueOrFn - Either a value or a function that returns a value
+ * @returns A Result object containing either the data or error
+ */
+export function tryCatchSync<T>(
+  valueOrFn: T | (() => T)
+): Result<T> {
+  try {
+    const data = TypeGuards.isFunction(valueOrFn)
+      ? (valueOrFn as Function)()
+      : valueOrFn;
       
     return {
       success: true,
