@@ -16,7 +16,7 @@ interface RouteParams {
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
   const { slug } = await params
-  const secret = req.headers.get('X-Contentful-Revalidate-Secret')
+  const secret = req.headers.get('X-Contentful-Revalidate-Secret') || ''
   const webhookBodyPromise = req.json()
 
   if (!authorizedRequest(secret, env.REVALIDATE_SECRET)) {

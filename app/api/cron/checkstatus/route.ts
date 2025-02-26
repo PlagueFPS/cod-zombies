@@ -8,7 +8,7 @@ import { enforceNewQuestStatus } from "@/data/sideQuests"
 
 export async function GET() {
   const headersList = await headers()
-  const secret = headersList.get('Authorization')
+  const secret = headersList.get('Authorization') || ''
 
   if (!authorizedRequest(secret, `Bearer ${env.CRON_SECRET}`)) {
     await submitFeedbackUseCase({

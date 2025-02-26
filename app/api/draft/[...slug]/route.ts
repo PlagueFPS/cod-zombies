@@ -12,11 +12,13 @@ interface RouteParams {
 
 export async function GET(req: NextRequest, { params }: RouteParams) {
   const { slug } = await params
-  const secret = req.nextUrl.searchParams.get('secret')
+  const secret = req.nextUrl.searchParams.get('secret') || ''
   const entryId = req.nextUrl.searchParams.get('entryId')
   console.log(`Contentful Headers: ${req.headers}`)
 
-  if (!authorizedRequest(secret, env.DRAFT_SECRET) || !entryId) {
+  if (!entryId) return new Response('Missing entryId', { status: 400 })
+
+  if (!authorizedRequest(secret, env.DRAFT_SECRET)) {
     return new Response('Unauthorized Request', { status: 401 })
   }
 

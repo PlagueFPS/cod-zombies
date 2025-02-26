@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation"
-import { capatilize } from "@/utils/functions"
+import { capatilize, TypeGuards } from "@/utils/functions"
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
 
 export default function BreadcrumbLoader() {
@@ -8,8 +8,8 @@ export default function BreadcrumbLoader() {
 
   return (
     <Breadcrumbs links={[
-      { title: typeof game === "string" ? capatilize(game) : "", href: `/?game=${game}` },
-      { title: typeof slug === "string" ? capatilize(slug) : "", href: `/${game}/${slug}` }
+      { title: TypeGuards.isString(game) ? capatilize(game) : "", href: `/?game=${game}` },
+      { title: TypeGuards.isString(slug) ? capatilize(slug) : "", href: `/${game}/${slug}` }
     ]} />
   )
 }

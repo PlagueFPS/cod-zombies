@@ -1,6 +1,7 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
+import { TypeGuards } from "./functions";
 
 export interface SearchParams extends z.infer<typeof SearchParamsSchema> {}
 export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
@@ -63,7 +64,7 @@ const SearchParamsSchema = z.object({
   page: stringOrStringArray
   .optional()
   .transform(val => {
-    if (Array.isArray(val)) val = val[0]
+    if (TypeGuards.isArray(val)) val = val[0]
     const parsed = parseInt(val || '1', 10)
     return isNaN(parsed) || parsed < 1 ? 1 : parsed
   }),
@@ -76,7 +77,7 @@ export const UnsubscribePageSchema = z.object({
   token: z.string().uuid(),
   email: stringOrStringArray
   .transform(val => {
-    if (Array.isArray(val)) val = val[0]
+    if (TypeGuards.isArray(val)) val = val[0]
     return val
   })
 })

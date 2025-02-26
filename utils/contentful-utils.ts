@@ -3,14 +3,14 @@ import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/conte
 import type { ZombieItem } from "@/types/ZombieItem";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
-import { slugify } from "./functions";
+import { slugify, TypeGuards } from "./functions";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
-  if (asset && 'fields' in asset && asset.fields.file) return asset
+  if (asset && TypeGuards.hasProperty(asset, 'fields') && asset.fields.file) return asset
 }
 
 export const resolveEntry = <T extends EntrySkeletonType>(entry: UnresolvedLink<"Entry"> | Entry<T, undefined, string>) => {
-  if (entry && 'fields' in entry && entry.fields) return entry
+  if (entry && TypeGuards.hasProperty(entry, 'fields') && entry.fields) return entry
 }
 
 export const extractHeadings = (body: Document) => {
@@ -70,7 +70,7 @@ export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
 export const createItemTooltipDTO = (item: ZombieItem) => {
   const itemImage = resolveAsset(item.fields.image)
 
-  if ('rarity' in item.fields) {
+  if (TypeGuards.hasProperty(item.fields, 'rarity')) {
     return {
       title: item.fields.title,
       image: createImageDTO(itemImage),

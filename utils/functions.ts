@@ -21,9 +21,9 @@ export const getYouTubeVideoID = (url: string) => {
   return match ? match[1] : null;
 }
 
-export const authorizedRequest = (secret: string | null, validSecret: string) => {
+export const authorizedRequest = (secret: string, validSecret: string) => {
   const encoder = new TextEncoder()
-  const secretBuffer = encoder.encode(secret || '')
+  const secretBuffer = encoder.encode(secret)
   const validSecretBuffer = encoder.encode(validSecret)
   // This function needs to be wrapped in a try/catch
   // because it will throw an error if the byteLength the compared strings
@@ -69,7 +69,7 @@ export async function tryCatch<T>(
   promiseOrFn: Promise<T> | (() => Promise<T>)
 ): Promise<Result<T>> {
   try {
-    const data = typeof promiseOrFn === 'function'
+    const data = TypeGuards.isFunction(promiseOrFn)
       ? await promiseOrFn()
       : await promiseOrFn;
       
@@ -85,4 +85,28 @@ export async function tryCatch<T>(
       error: error instanceof Error ? error : new Error(String(error)),
     };
   }
+}
+
+export const TypeGuards = {
+  isFunction(value: unknown): value is Function {
+    return typeof value === 'function'
+  },
+  isNumber(value: unknown): value is number {
+    return typeof value === 'number'
+  },
+  isString(value: unknown): value is string {
+    return typeof value === 'string'
+  },
+  isBoolean(value: unknown): value is boolean {
+    return typeof value === 'boolean'
+  },
+  isArray<T>(value: unknown): value is T[] {
+    return Array.isArray(value)
+  },
+  isObject(value: unknown): value is object {
+    return typeof value === 'object' && value !== null && !this.isArray(value)
+  },
+  hasProperty<K extends string>(obj: unknown, prop: K): obj is { [P in K]: unknown } {
+    return this.isObject(obj) && prop in obj
+  },
 }
