@@ -90,7 +90,7 @@ export default async function MapPage({ params }: MapPageProps) {
         <div className='flex flex-col-reverse xl:flex-row flex-grow w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
-              <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl'>
+              <div className='hidden dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl'>
                   <FeaturedImage
                     featuredImage={ map.image } 
                     sizes='32px'
@@ -166,11 +166,11 @@ export default async function MapPage({ params }: MapPageProps) {
   return (
     <CustomLink 
       href={ href }
-      className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform', {
+      className={cn('group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-all', {
         'pointer-events-none opacity-50': map.isComingSoon,
       })}
     >
-      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden dark:shadow-none', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
           { map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null } 
           { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null }
@@ -180,7 +180,7 @@ export default async function MapPage({ params }: MapPageProps) {
             { map.game.title }
           </Badge>
         </div>
-        <div className={cn('absolute inset-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
+        <div className='hidden dark:flex absolute inset-0 z-10 items-center w-full h-full opacity-35 blur-2xl'>
             <FeaturedImage 
               featuredImage={ map.image }
               sizes='32px'
@@ -197,9 +197,9 @@ export default async function MapPage({ params }: MapPageProps) {
             />
         </div>
         <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
-          <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
+          <h3 className='text-xl font-semibold group-hover:text-primary-gradient'>
             { map.title }
-          </h2>
+          </h3>
           <p className='text-sm line-clamp-3 text-ellipsis'>{ map.description }</p>
           <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
             { prev ? (

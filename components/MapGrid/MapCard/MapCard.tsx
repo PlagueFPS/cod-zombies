@@ -26,7 +26,13 @@ export default function MapCard({ map, mapIndex, draftMode }: MapCardProps) {
       aria-disabled={ map.isComingSoon }
     >
       <div className='sr-only'>View Guide for { map.title }</div>
-      <Card className="relative h-full group-hover:border-primary group-hover:scale-105 group-focus-visible:scale-105 group-focus-visible:border-primary cursor-pointer transition-transform overflow-hidden animate-fade-in">
+      <Card
+        className={`
+          relative h-full group-hover:border-primary group-hover:scale-105 
+          group-focus-visible:scale-105 group-focus-visible:border-primary 
+          cursor-pointer transition-transform overflow-hidden animate-fade-in 
+          shadow-xl dark:shadow-none`}
+      >
         <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
           {/* This technically can be true at the same time so we check for coming soon first */}
           { map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null }
@@ -37,14 +43,14 @@ export default function MapCard({ map, mapIndex, draftMode }: MapCardProps) {
             { map.game.title }
           </Badge>
         </div>
-        <div className="absolute inset-0 z-10 flex items-center w-full h-full opacity-25 blur-2xl">
-            <FeaturedImage 
-              featuredImage={ map.image } 
-              priority={ priority } 
-              quality={ 1 }
-              sizes='32px'
-              className='aspect-square scale-150'
-            />
+        <div className="hidden dark:flex absolute inset-0 z-10 items-center w-full h-full opacity-25 blur-2xl">
+          <FeaturedImage 
+            featuredImage={ map.image } 
+            priority={ priority } 
+            quality={ 1 }
+            sizes='32px'
+            className='aspect-square scale-150'
+          />
         </div>
         <CardHeader className="flex gap-2 flex-grow">
           <div className='relative overflow-hidden h-full w-full rounded-md'>
