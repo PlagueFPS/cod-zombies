@@ -32,24 +32,28 @@ export const extractHeadings = (body: Document) => {
 }
 
 export const formatTableCellData = (cellContent: any[]) => {
-  let values: string[] = []
-  let listItems: string[] = []
-  let embeddedItems: ZombieItem[] = []
-  const badgeItems = listItems.join(',').split(',').map(item => item.trim())
-
+  const values: string[] = []
+  const embeddedItems: ZombieItem[] = []
+  let badgeItems: string[] =  []
+  
   cellContent.forEach(content => {
     switch(content.nodeType) {
       default: // default in this case is "text"
-        if (!content.value.includes(',')) values.push(content.value)
-        else listItems.push(content.value)
+        if (TypeGuards.hasProperty(content, 'value') && TypeGuards.isString(content.value)) {
+          if (content.value.includes(',')) {
+            const items = content.value.split(',').map(item => item.trim())
+            badgeItems = [...badgeItems, ...items]
+          } else {
+            values.push(content.value)
+          }
+        }
         break
       case 'embedded-entry-inline':
         embeddedItems.push(content.data.target)
         break
     }
   })
-  
-  
+
   return {
     values,
     badgeItems,
