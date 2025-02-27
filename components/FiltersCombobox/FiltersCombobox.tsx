@@ -9,6 +9,10 @@ import { capatilize } from "@/utils/functions"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../ui/command"
 import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
+import { useImageState } from "@/hooks/useImageState"
+import Image, { ImageProps } from "next/image"
+import { DifficultyBadge } from "../CustomBadges/CustomBadges"
+import type { Difficulty } from "@/types/FeaturedMap"
 
 interface IFiltersCombobox {
   data: {
@@ -51,7 +55,7 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-52 p-0">
         <Command>
           { enableInput && <CommandInput placeholder={ inputPlaceholder } /> }
           <CommandList>
@@ -61,7 +65,10 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
                 { data.map(item => (
                   <CommandItem key={ item.id } className="flex gap-2 items-center rounded">
                     <Checkbox id={ item.id } checked={ currentSelection.includes(item.slug) } onCheckedChange={ () => toggleParam(item.slug) } />
-                    <Label htmlFor={ item.id } className="cursor-pointer font-normal w-full">{ item.title }</Label>
+                    { title === "Game" ? <FilterLogo slug={ item.slug } className="size-4" /> : null }
+                    <Label htmlFor={ item.id } className="cursor-pointer font-normal w-full">
+                      { title === "Difficulty" ? <DifficultyBadge difficulty={ item.title as Difficulty } /> : item.title }
+                    </Label>
                   </CommandItem>
                 ))}
               </div>
@@ -85,3 +92,29 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
 }
 
 export default FiltersCombobox
+
+interface IFilterLogo extends Omit<ImageProps, "src" | "alt"> {
+  slug: string
+}
+
+const FilterLogo = ({ slug, ...props }: IFilterLogo) => {
+  const { imageLoaded, setImageLoaded,imageErrored, setImageErrored } = useImageState()
+
+  if (imageErrored) return null
+
+  return (
+    <Image
+      {...props}
+      unoptimized
+      src={`/${slug}_logo.webp`}
+      alt={ `${slug} Logo` }
+      height={ 32 }
+      width={ 32 }
+      onError={ () => setImageErrored(true) }
+      onLoad={ () => setImageLoaded(true) }
+      className={cn('opacity-0', props.className, {
+        'animate-fade-in opacity-100': imageLoaded
+      })}
+    />
+  )
+}
