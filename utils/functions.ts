@@ -1,33 +1,50 @@
 import { timingSafeEqual } from "crypto"
 
+/**
+ * Capitalizes the first letter of each word in a string, replacing hyphens with spaces.
+ * @param text - The input string to be capitalized.
+ * @returns The capitalized string with spaces instead of hyphens.
+ */
 export const capatilize = (text: string) => {
   return text
-    .replace(/-/g, " ") // Replace hyphens with spaces
-    .split(" ") // Split the string into an array of words
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-    .join(" ") // Join the words back into a single string
+    .replace(/-/g, " ")
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
 }
 
+/**
+ * Converts a string to a URL-friendly slug.
+ * @param text - The input string to be slugified.
+ * @returns The slugified string in lowercase, with spaces, slashes, and commas replaced by hyphens, and '&' replaced with 'and'.
+ */
 export const slugify = (text: string) => {
   return text.toLowerCase()
-    .replace(/[ /,]+/g, '-') // Replaces slashes, spaces, and commas with hyphens
-    .replace(/&/g, "and") // Replaces "&" symbol with the text "and"
-    
+    .replace(/[ /,]+/g, '-')
+    .replace(/&/g, "and")
 }
 
+/**
+ * Extracts the YouTube video ID from a given URL.
+ * @param url - The YouTube video URL.
+ * @returns The extracted video ID, or null if not found.
+ */
 export const getYouTubeVideoID = (url: string) => {
   const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
   const match = url.match(regex);
   return match ? match[1] : null;
 }
 
+/**
+ * Performs a timing-safe comparison of two secrets.
+ * @param secret - The secret to be validated.
+ * @param validSecret - The known valid secret.
+ * @returns True if the secrets match, false otherwise.
+ */
 export const authorizedRequest = (secret: string, validSecret: string) => {
   const encoder = new TextEncoder()
   const secretBuffer = encoder.encode(secret)
   const validSecretBuffer = encoder.encode(validSecret)
-  // `timingSafeEqual` needs to be wrapped in a try/catch
-  // because it will throw an error if the byteLength of the compared strings
-  // is not the same, instead of just returning false which is annoying.
   const { data, error } = tryCatchSync(() => timingSafeEqual(secretBuffer, validSecretBuffer))
 
   if (error) {
@@ -118,24 +135,66 @@ export function tryCatchSync<T>(
 }
 
 export const TypeGuards = {
+  /**
+   * Checks if the value is a function.
+   * @param value - The value to check.
+   * @returns True if the value is a function, false otherwise.
+   */
   isFunction(value: unknown): value is Function {
     return typeof value === 'function'
   },
+
+  /**
+   * Checks if the value is a number.
+   * @param value - The value to check.
+   * @returns True if the value is a number, false otherwise.
+   */
   isNumber(value: unknown): value is number {
     return typeof value === 'number'
   },
+
+  /**
+   * Checks if the value is a string.
+   * @param value - The value to check.
+   * @returns True if the value is a string, false otherwise.
+   */
   isString(value: unknown): value is string {
     return typeof value === 'string'
   },
+
+  /**
+   * Checks if the value is a boolean.
+   * @param value - The value to check.
+   * @returns True if the value is a boolean, false otherwise.
+   */
   isBoolean(value: unknown): value is boolean {
     return typeof value === 'boolean'
   },
+
+  /**
+   * Checks if the value is an array.
+   * @param value - The value to check.
+   * @returns True if the value is an array, false otherwise.
+   */
   isArray<T>(value: unknown): value is T[] {
     return Array.isArray(value)
   },
+
+  /**
+   * Checks if the value is an object (excluding arrays and null).
+   * @param value - The value to check.
+   * @returns True if the value is an object, false otherwise.
+   */
   isObject(value: unknown): value is object {
     return typeof value === 'object' && value !== null && !this.isArray(value)
   },
+
+  /**
+   * Checks if the object has a specific property.
+   * @param obj - The object to check.
+   * @param prop - The property to look for.
+   * @returns True if the object has the specified property, false otherwise.
+   */
   hasProperty<K extends string>(obj: unknown, prop: K): obj is { [P in K]: unknown } {
     return this.isObject(obj) && prop in obj
   },
