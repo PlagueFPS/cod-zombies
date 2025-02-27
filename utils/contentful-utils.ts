@@ -31,12 +31,14 @@ export const extractHeadings = (body: Document) => {
   return headings
 }
 
-export const formatTableCellData = (cellContent: any[]) => {
+export const formatTableCellData = (cellContent: unknown[]) => {
   const values: string[] = []
   const embeddedItems: ZombieItem[] = []
   let badgeItems: string[] =  []
   
   cellContent.forEach(content => {
+    if (!TypeGuards.isObject(content) || !TypeGuards.hasProperty(content, 'nodeType')) return
+
     switch(content.nodeType) {
       default: // default in this case is "text"
         if (TypeGuards.hasProperty(content, 'value') && TypeGuards.isString(content.value)) {
@@ -49,7 +51,14 @@ export const formatTableCellData = (cellContent: any[]) => {
         }
         break
       case 'embedded-entry-inline':
-        embeddedItems.push(content.data.target)
+        if (
+          !TypeGuards.hasProperty(content, 'data') || 
+          !TypeGuards.isObject(content.data) || 
+          !TypeGuards.hasProperty(content.data, 'target')
+        ) return
+        
+        // At this point we know it is a ZombieItem
+        embeddedItems.push(content.data.target as ZombieItem)
         break
     }
   })
