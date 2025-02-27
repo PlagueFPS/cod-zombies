@@ -4,9 +4,9 @@ import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
 import { useSearchParams } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
-import QuestCard from "./QuestCard/QuestCard"
 import QuestPaginationLoader from "../Loaders/QuestPaginationLoader"
 import QuestPagination from "./QuestPagination/QuestPagination"
+import QuestPreviewCard from "../QuestPreviewCard/QuestPreviewCard"
 
 interface IQuestGridClient {
   quests: Omit<SideQuest, "content" | "updatedAt">[]
@@ -41,7 +41,7 @@ export default function QuestGridClient({ quests, draftMode }: IQuestGridClient)
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
         { paginatedQuests.length > 0 ?  paginatedQuests.map((quest, index) => (
-            <QuestCard 
+            <QuestPreviewCard 
               key={ quest.id }
               quest={ quest } 
               questIndex={ index } 

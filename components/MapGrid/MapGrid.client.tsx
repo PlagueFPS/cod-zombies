@@ -1,12 +1,12 @@
 "use client"
 import { Suspense, useEffect, useState } from "react"
-import MapCard from "./MapCard/MapCard"
 import type { FeaturedMapWithoutBody } from "@/types/FeaturedMap"
 import { useSearchParams } from "next/navigation"
 import { calculateSkip } from "@/utils/contentful-utils"
 import { MAP_LIMIT } from "@/utils/constants"
 import MapPaginationLoader from "../Loaders/MapPaginationLoader"
 import MapPagination from "./MapPagination/MapPagination"
+import QuestPreviewCard from "../QuestPreviewCard/QuestPreviewCard"
 
 interface IMapGridClient {
   maps: Omit<FeaturedMapWithoutBody, "updatedAt">[]
@@ -41,7 +41,7 @@ export default function MapGridClient({ maps, draftMode }: IMapGridClient) {
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
         { paginatedMaps.length > 0 ?  paginatedMaps.map((map, index) => (
-            <MapCard key={ map.id } map={ map } mapIndex={ index } draftMode={ draftMode } />
+            <QuestPreviewCard key={ map.id } quest={ map } questIndex={ index } draftMode={ draftMode } />
           )) : (
             <p className="col-span-4 text-center text-muted-foreground">No quests found with the selected filters.</p>
           )}
