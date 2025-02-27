@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import type { Difficulty } from '@/types/FeaturedMap'
 
 interface CustomBadgeProps { 
   className?: string
@@ -9,7 +10,7 @@ export const DraftBadge = ({ className }: CustomBadgeProps) => <Badge className=
 export const ChangedBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-changed-gradient', className)}>Changed</Badge>
 export const NewBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-new-gradient', className)}>New</Badge>
 export const ComingSoonBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-changed-gradient', className)}>Coming Soon</Badge>
-export const DifficultyBadge = ({ className, difficulty }: CustomBadgeProps & { difficulty: "Easy" | "Medium" | "Hard" }) => 
+export const DifficultyBadge = ({ className, difficulty }: CustomBadgeProps & { difficulty: Difficulty }) => 
   <Badge className={cn({
     'badge-easy-gradient': difficulty === "Easy",
     'badge-medium-gradient': difficulty === "Medium",

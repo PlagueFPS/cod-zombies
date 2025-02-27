@@ -20,9 +20,11 @@ export interface FeaturedMapWithoutBody {
   isChanged: boolean
   isNew: boolean
   isComingSoon: boolean
-  difficulty: "Easy" | "Medium" | "Hard"
+  difficulty: Difficulty
 }
 export interface FeaturedMapWithBody extends FeaturedMapWithoutBody {
   body: Document
   timeToRead: number
 }
+
+export type Difficulty = "Easy" | "Medium" | "Hard"
