@@ -2,9 +2,9 @@ import HeroSection from "@/components/HeroSection/HeroSection";
 import GridSection from "@/components/GridSection/GridSection";
 import { Suspense } from "react";
 import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader";
-import MapFilters from "@/components/MapGrid/MapFilters/MapFilters";
+import { MainQuestFilters } from "@/components/QuestFilters/QuestFilters";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
-import MapGrid from "@/components/MapGrid/MapGrid";
+import { MainQuestGrid } from "@/components/QuestGrid/QuestGrid";
 import type { Metadata } from "next";
 import { env } from "@/env";
 
@@ -20,10 +20,10 @@ export default function Home() {
       <HeroSection text="Call of Duty: Zombies" />
       <GridSection title="Main Quests">
         <Suspense fallback={<MapFiltersLoader />}>
-          <MapFilters />
+          <MainQuestFilters />
         </Suspense>
         <Suspense fallback={<MapGridLoader />}>
-          <MapGrid  />
+          <MainQuestGrid  />
         </Suspense>
       </GridSection>
     </div>

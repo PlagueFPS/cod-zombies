@@ -1,19 +1,20 @@
 "use client"
 import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
-import { SideQuest } from "@/types/SideQuest"
 import { useSearchParams } from "next/navigation"
 import { MAP_LIMIT } from "@/utils/constants"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import type { FilteredQuests } from "@/types/FilteredQuests"
 
 interface IQuestPagination {
-  quests: Omit<SideQuest, "content" | "updatedAt">[]
+  quests: FilteredQuests
 }
 
 export default function QuestPagination({ quests }: IQuestPagination) {
   const searchParams = useSearchParams()
   const game = searchParams.getAll("game")
   const map = searchParams.getAll("map")
+  const difficulty = searchParams.getAll("difficulty")
   const page = parseInt(searchParams.get("page") || "1")
   const totalPages = Math.ceil(quests.length / MAP_LIMIT)
   const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
@@ -27,10 +28,15 @@ export default function QuestPagination({ quests }: IQuestPagination) {
     if (game.length > 0) {
       game.forEach(g => params.append('game', g));
     }
+
     if (map.length > 0) {
       map.forEach(m => params.append('map', m));
     }
-  
+
+    if (difficulty.length > 0) {
+      difficulty.forEach(d => params.append('difficulty', d));
+    }
+    
     window.history.pushState(null, '', `?${params.toString()}`);
   }
 

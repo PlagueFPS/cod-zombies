@@ -13,7 +13,7 @@ export default function ClearFiltersButton({ className, ...props }: IClearFilter
       {...props}
     >
     <Trash2 className="size-4 text-red-800 dark:text-red-500" />
-    Clear Filters
+    Clear
   </Button>
   )
 }

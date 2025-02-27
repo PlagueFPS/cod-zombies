@@ -2,8 +2,8 @@ import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
 import MapGridLoader from "@/components/Loaders/MapGridLoader";
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
-import QuestFilters from "@/components/QuestGrid/QuestFilters/QuestFilters";
-import QuestGrid from "@/components/QuestGrid/QuestGrid";
+import { SideQuestFilters } from "@/components/QuestFilters/QuestFilters";
+import { SideQuestGrid } from "@/components/QuestGrid/QuestGrid";
 import { env } from "@/env";
 import { GLOBAL_OG_PROPS } from "@/utils/constants";
 import { Metadata } from "next";
@@ -43,10 +43,10 @@ export default function SideQuests() {
         />
         <GridSection title="Side Quests">
           <Suspense fallback={<QuestFilterLoader />}>
-            <QuestFilters />
+            <SideQuestFilters />
           </Suspense>
           <Suspense fallback={<MapGridLoader />}>
-            <QuestGrid  />
+            <SideQuestGrid  />
           </Suspense>
         </GridSection>
       </div>
