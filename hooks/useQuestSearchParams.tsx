@@ -3,7 +3,71 @@ import { useSearchParams } from "next/navigation"
 import { MAP_LIMIT } from "@/utils/constants"
 import { useCallback } from "react"
 
-export function useQuestSearchParams() {
+interface QuestSearchParamsResult {
+  /** Array of selected game parameter values */
+  gameParams: string[];
+  /** Array of selected map parameter values */
+  mapParams: string[];
+  /** Array of selected difficulty parameter values */
+  difficultyParams: string[];
+  /** Current page number */
+  page: number;
+  /** Next.js searchParams object */
+  searchParams: ReturnType<typeof useSearchParams>;
+  /**
+   * Updates the page parameter in the URL.
+   * 
+   * @param newPage - The new page number to set in the URL
+   */
+  updatePage: (newPage: number) => void;
+  /**
+   * Function to validate and adjust the page parameter.
+   * 
+   * @param totalItems - The total number of items in the filtered list
+   * @returns The validated and adjusted page number
+   */
+  validatePageParam: (totalItems: number) => number;
+  /**
+  * Clears all filter parameters from the URL.
+  */
+  clearAllFilters: () => void;
+  /**
+   * Toggles a parameter value in the URL.
+   * 
+   * @param paramName - The name of the parameter to toggle
+   * @param value - The value to toggle
+   * @param currentValues - The current values of the parameter
+   * @returns The new values of the parameter after toggling
+   */
+  toggleParam: (paramName: string, value: string, currentValues: string[]) => string[];
+  /**
+   * Clears a specific parameter from the URL.
+   * 
+   * @param paramName - The name of the parameter to clear
+   */
+  clearParam: (paramName: string) => void;
+  /**
+   * Creates a new `URLSearchParams` object with the current search parameters.
+   * 
+   * @returns A new `URLSearchParams` object initialized with the current search parameters
+   */
+  createParams: () => URLSearchParams;
+  /**
+   * Updates the URL with the provided search parameters.
+   * 
+   * @param params - The URLSearchParams object to use for updating the URL
+   */
+  updateURLParams: (params: URLSearchParams) => void;
+}
+
+/**
+ * Custom hook for managing quest-related search parameters in the URL.
+ * Provides utilities for reading, updating, and validating search parameters.
+ * 
+ * @returns An object containing the current search parameters and utility functions
+ * to manipulate them.
+ */
+export function useQuestSearchParams(): QuestSearchParamsResult {
   const searchParams = useSearchParams()
   
   // Extract common parameters
@@ -12,25 +76,21 @@ export function useQuestSearchParams() {
   const difficultyParams = searchParams.getAll("difficulty")
   const pageParam = searchParams.get("page")
   const page = pageParam ? parseInt(pageParam) : 1
-  
-  // Helper function to update URL with new parameters
+
   const updateURLParams = useCallback((params: URLSearchParams) => {
     window.history.pushState(null, '', `?${params.toString()}`)
   }, [])
   
-  // Helper function to create a new URLSearchParams object with current params
   const createParams = useCallback(() => {
     return new URLSearchParams(searchParams.toString())
   }, [searchParams])
   
-  // Function to update page parameter
   const updatePage = useCallback((newPage: number) => {
     const params = createParams()
     params.set("page", newPage.toString())
     updateURLParams(params)
   }, [createParams, updateURLParams])
   
-  // Function to validate and adjust page parameter based on total items
   const validatePageParam = useCallback((totalItems: number) => {
     const totalPages = Math.ceil(totalItems / MAP_LIMIT)
     
@@ -46,7 +106,6 @@ export function useQuestSearchParams() {
     return page
   }, [page, updatePage])
   
-  // Function to clear all filter parameters
   const clearAllFilters = useCallback(() => {
     const params = createParams()
     params.delete("game")
@@ -55,7 +114,6 @@ export function useQuestSearchParams() {
     updateURLParams(params)
   }, [createParams, updateURLParams])
   
-  // Function to toggle a parameter value
   const toggleParam = useCallback((paramName: string, value: string, currentValues: string[]) => {
     const params = createParams()
     params.delete(paramName)
@@ -70,7 +128,6 @@ export function useQuestSearchParams() {
     return newValues
   }, [createParams, updateURLParams])
   
-  // Function to clear a specific parameter
   const clearParam = useCallback((paramName: string) => {
     const params = createParams()
     params.delete(paramName)
