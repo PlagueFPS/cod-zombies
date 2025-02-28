@@ -4,12 +4,12 @@ import type { SideQuest } from "@/types/SideQuest"
 import type { FeaturedMapWithoutBody } from "@/types/FeaturedMap"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
-import { useSearchParams } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
 import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader"
 import QuestPagination from "@/components/QuestPagination/QuestPagination"
 import QuestPreviewCard from "@/components/QuestPreviewCard/QuestPreviewCard"
 import { TypeGuards } from "@/utils/functions"
+import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 
 interface IQuestGridClient {
   quests: Omit<FeaturedMapWithoutBody, "updatedAt">[] | Omit<SideQuest, "content" | "updatedAt">[]
@@ -17,33 +17,32 @@ interface IQuestGridClient {
 }
 
 export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
-  const searchParams = useSearchParams()
+  const { searchParams, gameParams, mapParams, difficultyParams, page, validatePageParam } = useQuestSearchParams()
   const [filteredQuests, setFilteredQuests] = useState<FilteredQuests>(quests)
-  const game = searchParams.getAll("game")
-  const map = searchParams.getAll("map")
-  const difficulty = searchParams.getAll("difficulty")
-  const pageParam = searchParams.get("page")
-  const page = pageParam ? parseInt(pageParam) : 1
   const skip = calculateSkip(page, MAP_LIMIT);
   const paginatedQuests = filteredQuests.slice(skip, (MAP_LIMIT * page))
 
  useEffect(() => {
   let filtered: FilteredQuests = quests
 
-  if (game.length > 0) {
-    filtered = filtered.filter(quest => game.includes(quest.game.slug))
+  if (gameParams.length > 0) {
+    filtered = filtered.filter(quest => gameParams.includes(quest.game.slug))
   }
 
-  if (difficulty.length > 0) {
-    filtered = filtered.filter(quest => TypeGuards.hasProperty(quest, "difficulty") && difficulty.includes(quest.difficulty.toLowerCase()))
+  if (difficultyParams.length > 0) {
+    filtered = filtered.filter(quest => TypeGuards.hasProperty(quest, "difficulty") && difficultyParams.includes(quest.difficulty.toLowerCase()))
   }
 
-  if (map.length > 0) {
-    filtered = filtered.filter(quest => TypeGuards.hasProperty(quest, "map") && map.includes(quest.map.slug))
+  if (mapParams.length > 0) {
+    filtered = filtered.filter(quest => TypeGuards.hasProperty(quest, "map") && mapParams.includes(quest.map.slug))
   }
 
   setFilteredQuests(filtered)
  }, [searchParams])
+
+ useEffect(() => {
+  validatePageParam(filteredQuests.length)
+ }, [filteredQuests, validatePageParam])
 
   return (
     <>
