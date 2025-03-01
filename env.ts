@@ -13,7 +13,9 @@ export const env = createEnv({
     CONTENTFUL_PREVIEW_ACCESS_TOKEN: z.string().min(1),
     PROJECT_PLANNER_ID: z.string().min(1),
     CRON_SECRET: z.string().min(32),
-    DATABASE_URL: z.string().url()
+    DATABASE_URL: z.string().url(),
+    REDIS_URL: z.string().url(),
+    REDIS_TOKEN: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_WEBSITE_URL: z.string().url(),

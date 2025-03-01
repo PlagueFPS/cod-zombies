@@ -20,16 +20,10 @@ export const CACHE_KEYS = {
   GAME_CATEGORIES: { 
     /** Cache key for all category data */
     ALL: 'game-categories',
-    /** Cache key for all category ids */
-    IDS: 'game-categories-ids'
   },
   FEATURED_MAPS: {
     /** Cache key for all map data */
     ALL: "featured-maps",
-    /** Cache key for a specific pagination page */
-    PAGINATION: (page: number) => `featured-maps-pagination-${page}`,
-    /** Cache key for all new map ids */
-    IDS: "featured-maps-ids"
   },
   SIDE_QUESTS: {
     /** Cache key for all side quests data */

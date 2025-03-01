@@ -13,6 +13,7 @@ import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
 import { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import { tryCatch } from '@/utils/functions'
+import { NEW_ENTRY_KV } from '@/lib/redis'
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const mapsPromise = INTERNAL_getMapData(draftMode)
@@ -112,20 +113,18 @@ export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: st
 }))
 
 export const storeNewMapId = async (mapId: string, createdAt: string, status: "Coming Soon" | "Published") => {
-  return await tryCatch(db.insert(maps).values({ mapId, publishedAt: createdAt, status }))
+  return await tryCatch(NEW_ENTRY_KV.set(mapId, createdAt, status))
 }
 
 export const getMapStatus = async (mapId: string) => {
-  const { data, error } = await tryCatch(db.select({ 
-    status: maps.status 
-  }).from(maps).where(eq(maps.mapId, mapId)).limit(1))
+  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(mapId))
 
   if (error) {
     console.error(error)
     return { status: null }
   }
 
-  return { status: data[0]?.status }
+  return { status: data.status }
 }
 
 export const updateMapStatus = async (mapId: string) => {

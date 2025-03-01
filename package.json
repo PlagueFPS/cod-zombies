@@ -37,6 +37,7 @@
     "@radix-ui/react-tooltip": "1.1.5",
     "@react-email/components": "0.0.32",
     "@t3-oss/env-nextjs": "0.11.1",
+    "@upstash/redis": "^1.34.4",
     "@vercel/analytics": "1.4.1",
     "@vercel/speed-insights": "1.1.0",
     "class-variance-authority": "0.7.1",

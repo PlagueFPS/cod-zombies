@@ -5,11 +5,9 @@ import { cache } from 'react'
 import { getEntries } from '@/contentful/contentful'
 import { TypeGameCategorySkeleton } from '@/contentful/Types/contentful-types'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
-import { db } from '@/db/db'
-import { categories } from '@/db/schema'
-import { eq } from 'drizzle-orm'
 import { submitFeedbackUseCase } from '@/usecases/feedback'
 import { tryCatch } from '@/utils/functions'
+import { NEW_ENTRY_KV } from '@/lib/redis'
 
 export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   const gameIdsPromise = getGameIds()
@@ -56,68 +54,72 @@ export const getGameById = cache(unstable_cache(async (draftMode: boolean, id: s
 }))
 
 export const storeNewGameId = async (gameId: string, createdAt: string) => {
-  return await tryCatch(db.insert(categories).values({ categoryId: gameId, publishedAt: createdAt }))
+  return await tryCatch(NEW_ENTRY_KV.set(gameId, createdAt, "Published"))
 }
 
 export const enforceNewGameStatus = async () => {
-  const { data: newGames, error: selectError } = await tryCatch(db.select({
-    categoryId: categories.categoryId,
-    publishedAt: categories.publishedAt
-  }).from(categories))
-
-  if (selectError) {
-    console.error(`[CATEGORY ENFORCEMENT] Error selecting new categories`, selectError)
+  const { data, error } = await tryCatch(NEW_ENTRY_KV.getAll())
+  if (error || !data) {
+    console.error(`[GAME ENFORCEMENT] Error getting new games. Check server logs for more information.`, error)
     await submitFeedbackUseCase({
-      title: "Category Selection Error",
+      title: "Game Selection Error",
       label: "issue",
-      feedback: `Error selecting new categories. check server logs for more information.`
+      feedback: `Error getting new games. Check server logs for more information.`
     })
     return
   }
 
-  for (const game of newGames) {
+  data.forEach(async game => {
+    if (!game.createdAt) return
     const currentTime = Date.now()
-    const publishedTime = new Date(game.publishedAt).getTime()
+    const publishedTime = new Date(game.createdAt).getTime()
 
     if (currentTime - publishedTime > MAX_NEW_TIME) {
-      console.log(`[CATEGORY ENFORCEMENT] deleting ${game.categoryId} from DB...`)
-      const { error: deleteError } = await tryCatch(db.delete(categories).where(eq(categories.categoryId, game.categoryId)))
-
-      if (deleteError) {
-        console.error(`[CATEGORY ENFORCEMENT] Error deleting category: ${game.categoryId}`,deleteError)
+      console.log(`[GAME ENFORCEMENT] Deleting Game ${game.entryId} from KV...`)
+      const { error } = await tryCatch(NEW_ENTRY_KV.del(game.entryId))
+      if (error) {
+        console.error(error)
         await submitFeedbackUseCase({
-          title: "Category Deletion Error",
+          title: "Game Deletion Error",
           label: "issue",
-          feedback: `Error deleting category: ${game.categoryId} - check server logs for more information.`
+          feedback: `Error deleting game ${game.entryId}. check server logs for more information.`
         })
-        continue
+        return
       }
 
-      console.log(`[CATEGORY ENFORCEMENT] revalidating ${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
+      console.log(`[GAME ENFORCEMENT] revalidating ${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
       revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-    } else continue
-  }
+    } else return
+
+  })
 }
 
 const getGameIds = cache(unstable_cache(async () => {
-  const idsPromise = db.select({ categoryId: categories.categoryId }).from(categories)
   const gamesPromise = getManagementEntries("gameCategory")
-  const [newGameIds, { data, error }] = await Promise.all([idsPromise, gamesPromise])
+  const newGamesPromise = tryCatch(NEW_ENTRY_KV.getAll())
+  const [games, newGames] = await Promise.all([gamesPromise, newGamesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
-  const newIds = new Set<string>(newGameIds.map(id => id.categoryId))
+  const newIds = new Set<string>()
 
-  if (error) {
-    console.error(error)
-    return { newIds, draftIds, changedIds }
+  if (games.error || !games.data) {
+    console.error(`Error getting management games`, games.error)
+  }
+  
+  if (newGames.error || !newGames.data) {
+    console.error(`Error getting new games`, newGames.error)
   }
 
-  data.items.forEach(game => {
+  games.data?.items.forEach(game => {
     if (!game.sys.publishedVersion) {
       draftIds.add(game.sys.id)
     } else if (!!game.sys.publishedVersion && game.sys.version >= game.sys.publishedVersion + 2) {
       changedIds.add(game.sys.id)
     }
+  })
+
+  newGames.data?.forEach(game => {
+    if (game.entryId) newIds.add(game.entryId)
   })
 
   return { newIds, draftIds, changedIds }
