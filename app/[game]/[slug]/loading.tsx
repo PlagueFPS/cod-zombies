@@ -1,6 +1,6 @@
-import MapPageLoader from "@/components/Loaders/MapPageLoader";
+import QuestPageLoader from "@/components/Loaders/QuestPageLoader";
 
 
 export default function MapPageLoading() {
-  return <MapPageLoader />
+  return <QuestPageLoader mainQuest />
 }

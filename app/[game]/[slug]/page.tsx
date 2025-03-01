@@ -128,7 +128,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   <Badge className='badge-primary-gradient'>{ map.game.title }</Badge>
                 </div>
               </div>
-              <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm md:text-sm'>
+              <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm'>
                 <div>Last Updated: { new Date(map.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
                 <span className='hidden md:inline'>&bull;</span>
                 <div className='flex gap-1 items-center'>
