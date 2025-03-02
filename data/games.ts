@@ -1,11 +1,10 @@
 import 'server-only'
-import { CACHE_KEYS, MAX_NEW_TIME } from '@/utils/constants'
-import { revalidateTag, unstable_cache } from 'next/cache'
+import { CACHE_KEYS } from '@/utils/constants'
+import { unstable_cache } from 'next/cache'
 import { cache } from 'react'
 import { getEntries } from '@/contentful/contentful'
 import { TypeGameCategorySkeleton } from '@/contentful/Types/contentful-types'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
-import { submitFeedbackUseCase } from '@/usecases/feedback'
 import { tryCatch } from '@/utils/functions'
 import { NEW_ENTRY_KV } from '@/lib/redis'
 
@@ -54,50 +53,13 @@ export const getGameById = cache(unstable_cache(async (draftMode: boolean, id: s
 }))
 
 export const storeNewGameId = async (gameId: string, createdAt: string) => {
-  return await tryCatch(NEW_ENTRY_KV.set(gameId, createdAt, "Published"))
-}
-
-export const enforceNewGameStatus = async () => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.getAll())
-  if (error || !data) {
-    console.error(`[GAME ENFORCEMENT] Error getting new games. Check server logs for more information.`, error)
-    await submitFeedbackUseCase({
-      title: "Game Selection Error",
-      label: "issue",
-      feedback: `Error getting new games. Check server logs for more information.`
-    })
-    return
-  }
-
-  data.forEach(async game => {
-    if (!game.createdAt) return
-    const currentTime = Date.now()
-    const publishedTime = new Date(game.createdAt).getTime()
-
-    if (currentTime - publishedTime > MAX_NEW_TIME) {
-      console.log(`[GAME ENFORCEMENT] Deleting Game ${game.entryId} from KV...`)
-      const { error } = await tryCatch(NEW_ENTRY_KV.del(game.entryId))
-      if (error) {
-        console.error(error)
-        await submitFeedbackUseCase({
-          title: "Game Deletion Error",
-          label: "issue",
-          feedback: `Error deleting game ${game.entryId}. check server logs for more information.`
-        })
-        return
-      }
-
-      console.log(`[GAME ENFORCEMENT] revalidating ${CACHE_KEYS.GAME_CATEGORIES.ALL}`)
-      revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-    } else return
-
-  })
+  return await tryCatch(NEW_ENTRY_KV.set(gameId, createdAt, "Published", "game"))
 }
 
 const getGameIds = cache(unstable_cache(async () => {
   const gamesPromise = getManagementEntries("gameCategory")
-  const newGamesPromise = tryCatch(NEW_ENTRY_KV.getAll())
-  const [games, newGames] = await Promise.all([gamesPromise, newGamesPromise])
+  const newEntriesPromise = tryCatch(NEW_ENTRY_KV.getAll())
+  const [games, newEntries] = await Promise.all([gamesPromise, newEntriesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
@@ -106,8 +68,8 @@ const getGameIds = cache(unstable_cache(async () => {
     console.error(`Error getting management games`, games.error)
   }
   
-  if (newGames.error || !newGames.data) {
-    console.error(`Error getting new games`, newGames.error)
+  if (newEntries.error || !newEntries.data) {
+    console.error(`Error getting new games`, newEntries.error)
   }
 
   games.data?.items.forEach(game => {
@@ -118,8 +80,9 @@ const getGameIds = cache(unstable_cache(async () => {
     }
   })
 
-  newGames.data?.forEach(game => {
-    if (game.entryId) newIds.add(game.entryId)
+  newEntries.data?.forEach(entry => {
+    if (entry.type !== "game") return
+    newIds.add(entry.entryId)
   })
 
   return { newIds, draftIds, changedIds }

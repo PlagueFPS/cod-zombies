@@ -1,7 +1,7 @@
 import 'server-only'
 import { getEntries } from '@/contentful/contentful'
 import { TypeSideQuestsSkeleton } from '@/contentful/Types/contentful-types'
-import { CACHE_KEYS, MAX_NEW_TIME } from '@/utils/constants'
+import { CACHE_KEYS } from '@/utils/constants'
 import {  
   createImageDTO, 
   createMapCategoryDTO, 
@@ -10,14 +10,11 @@ import {
   resolveEntry 
 } from '@/utils/contentful-utils'
 import { cache } from 'react'
-import { revalidateTag, unstable_cache } from 'next/cache'
+import { unstable_cache } from 'next/cache'
 import { Entry } from 'contentful'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
-import { db } from '@/db/db'
-import { quests } from '@/db/schema'
-import { eq } from 'drizzle-orm'
-import { submitFeedbackUseCase } from '@/usecases/feedback'
 import { tryCatch } from '@/utils/functions'
+import { NEW_ENTRY_KV } from '@/lib/redis'
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
@@ -94,75 +91,36 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
 }))
 
 export const storeNewQuestId = async (id: string, createdAt: string) => {
-  return await tryCatch(db.insert(quests).values({ questId: id, publishedAt: createdAt }))
-}
-
-export const enforceNewQuestStatus = async () => {
-  const { data: newQuests, error: selectError } = await tryCatch(db.select({
-    questId: quests.questId,
-    publishedAt: quests.publishedAt
-  }).from(quests))
-
-  if (selectError) {
-    console.error(selectError)
-    await submitFeedbackUseCase({
-      title: "Quest Selection Error",
-      label: "issue",
-      feedback: `Error selecting new quests. check server logs for more information.`
-    })
-    return
-  }
-
-  for (const quest of newQuests) {
-    const currentTime = Date.now()
-    const publishedTime = new Date(quest.publishedAt).getTime()
-
-    if (currentTime - publishedTime > MAX_NEW_TIME) {
-      console.log(`[QUEST ENFORCEMENT] Deleting Quest ${quest.questId} from DB...`)
-      const { error: deleteError } = await tryCatch(db.delete(quests).where(eq(quests.questId, quest.questId)))
-      
-      if (deleteError) {
-        console.error(deleteError)
-        await submitFeedbackUseCase({
-          title: "Quest Deletion Error",
-          label: "issue",
-          feedback: `Error deleting quest ${quest.questId}. check server logs for more information.`
-        })
-      }
-
-      console.log(`[QUEST ENFORCEMENT] revalidating ${CACHE_KEYS.SIDE_QUESTS.ALL}`)
-      revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
-    } else continue
-  }
+  return await tryCatch(NEW_ENTRY_KV.set(id, createdAt, "Published", "sideQuest"))
 }
 
 const getQuestIds = cache(unstable_cache(async () => {
-  const newQuestsPromise = tryCatch(db.select({ questId: quests.questId }).from(quests))
   const questsPromise = getManagementEntries("sideQuests")
-  const [{ 
-    data: newQuestIds, 
-    error: newQuestsError 
-  }, 
-  { 
-    data: managementQuests, 
-    error: managementError 
-  }] = await Promise.all([newQuestsPromise, questsPromise])
+  const newEntriesPromise = tryCatch(NEW_ENTRY_KV.getAll())
+  const [quests, newEntries] = await Promise.all([questsPromise, newEntriesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
 
-  if (newQuestsError || managementError) {
-    console.error(newQuestsError ?? managementError)
-    return { newIds, draftIds, changedIds }
+  if (quests.error || !quests.data) {
+    console.error(`Error getting management side quests`, quests.error)
   }
   
-  newQuestIds.forEach(quest => newIds.add(quest.questId))
-  managementQuests.items.forEach(quest => {
+  if (newEntries.error || !newEntries.data) {
+    console.error(`Error getting new side quests`, newEntries.error)
+  }
+
+  quests.data?.items.forEach(quest => {
     if (!quest.sys.publishedVersion) {
       draftIds.add(quest.sys.id)
     } else if (!!quest.sys.publishedVersion && quest.sys.version >= quest.sys.publishedVersion + 2) {
       changedIds.add(quest.sys.id)
     }
+  })
+
+  newEntries.data?.forEach(entry => {
+    if (entry.type !== "sideQuest") return
+    newIds.add(entry.entryId)
   })
 
   return { newIds, draftIds, changedIds }
