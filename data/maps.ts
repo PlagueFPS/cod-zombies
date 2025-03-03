@@ -10,6 +10,7 @@ import { Entry } from 'contentful'
 import { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import { tryCatch } from '@/utils/functions'
 import { NEW_ENTRY_KV } from '@/lib/redis'
+import { EntryStatus } from '@/types/EntryEnforcement'
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const mapsPromise = INTERNAL_getMapData(draftMode)
@@ -108,15 +109,20 @@ export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: st
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
-export const storeNewMapId = async (mapId: string, createdAt: string, status: "Coming Soon" | "Published") => {
+export const storeNewMapId = async (mapId: string, createdAt: string, status: EntryStatus) => {
   return await tryCatch(NEW_ENTRY_KV.set(mapId, createdAt, status, "mainQuest"))
 }
 
 export const getMapStatus = async (mapId: string) => {
   const { data, error } = await tryCatch(NEW_ENTRY_KV.get(mapId))
 
-  if (error || !data) {
+  if (error) {
     console.error(error)
+    return { status: null }
+  }
+
+  if (!data) {
+    console.warn("No data found for map ID: ", mapId)
     return { status: null }
   }
 
@@ -125,9 +131,14 @@ export const getMapStatus = async (mapId: string) => {
 
 export const updateMapStatus = async (mapId: string) => {
   const { data, error } = await tryCatch(NEW_ENTRY_KV.get(mapId))
-  if (error || !data) {
+  if (error) {
     console.error(error)
     return { error }
+  }
+  
+  if (!data) {
+    console.warn("No data found for map ID: ", mapId)
+    return { error: null }
   }
   
   const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(mapId, data.createdAt, "Published", "mainQuest"))
@@ -147,11 +158,11 @@ const getMapIds = cache(unstable_cache(async () => {
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
 
-  if (maps.error || !maps.data) {
+  if (maps.error) {
     console.error(`Error getting management maps`, maps.error)
   }
   
-  if (newEntries.error || !newEntries.data) {
+  if (newEntries.error) {
     console.error(`Error getting new maps`, newEntries.error)
   }
 
