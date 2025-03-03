@@ -32,7 +32,7 @@ export default function IconImage({ featuredImage, alt = "", quality = 75, class
           onLoad={ () => setImageLoaded(true) }
           onError={ () => setImageErrored(true) }
           quality={ quality }
-          className={cn('flex justify-center items-center w-full h-auto aspect-video opacity-0', className, {
+          className={cn('flex justify-center items-center w-full h-auto opacity-0', className, {
             'animate-fade-in opacity-100': imageLoaded
           })}
           priority={ priority }

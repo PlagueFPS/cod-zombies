@@ -26,7 +26,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                     featuredImage={ image }
                     alt={ `${title} Image` }
                     sizes='24px'
-                    className='my-auto h-6 w-6'
+                    className='my-auto h-6 w-auto'
                   />
                   <span className='text-center mr-1.5'>
                     { title }
@@ -67,7 +67,7 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
           featuredImage={ image }
           alt={ title }
           sizes='24px'
-          className='my-auto h-6 w-6'
+          className='my-auto h-6 w-auto'
         />
           <span className={cn('text-center mr-1.5 underline decoration-dotted underline-offset-4 group-hover:no-underline', {
             'truncate': title.length > 18
@@ -128,7 +128,7 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
             featuredImage={ image }
             alt={ title }
             sizes='80px'
-            className='relative z-10 size-20 p-2'
+            className='relative z-10 h-20 w-auto p-2'
           />
       </div>
       <div className="relative -mt-5 z-10">
