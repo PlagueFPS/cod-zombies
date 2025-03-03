@@ -1,8 +1,12 @@
 "use server"
 import { ContactFormSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
-import { createAction } from "@/lib/safe-action"
+import { ActionError, createAction } from "@/lib/safe-action"
 import { sendContactEmailUseCase, subscribeEmailUseCase } from "@/usecases/email"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
+import { IN_DEVELOPMENT } from "@/utils/constants"
+import { draftMode } from "next/headers"
+import { z } from "zod"
+import { redirect } from "next/navigation"
 
 export const subscribeToNewsletter = createAction
   .metadata({ actionName: "subscribeToNewsletter" })
@@ -23,4 +27,29 @@ export const submitContactForm = createAction
   .schema(ContactFormSchema)
   .action(async ({ parsedInput }) => {
     return await sendContactEmailUseCase(parsedInput)
+  })
+
+export const toggleDraftMode = createAction
+  .metadata({ actionName: "toggleDraftMode" })
+  .schema(z.object({
+    pathname: z.string()
+  }))
+  .use(async ({ next }) => {
+    if (!IN_DEVELOPMENT) {
+      throw new ActionError("This action is not available in production")
+    }
+
+    return next()
+  })
+  .action(async ({ parsedInput: { pathname } }) => {
+    const draft = await draftMode()
+    if (draft.isEnabled) {
+      draft.disable()
+      console.log("Draft mode disabled")
+      redirect(pathname)
+    } else {
+      draft.enable()
+      console.log("Draft mode enabled")
+      redirect(pathname)
+    }
   })
