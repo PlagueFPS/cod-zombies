@@ -42,23 +42,22 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
   const [{ slug, game, map }, { isEnabled }] = await Promise.all([params, draftMode()])
   const q = await getQuestBySlug(isEnabled, slug)
   if (!q) notFound()
-  const title = `${q.title} Side Quest`
   return {
-    title,
+    title: q.title,
     description: q.description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
-      title,
+      title: q.title,
       description: q.description,
       url: `/side-quests/${game}/${map}/${slug}`,
       images: {
-        url: `https:${q.image.url}?w=1260&h=630&q=75&fm=jpg`,
-        width: 1260,
+        url: `https:${q.image.url}?w=1200&h=630&q=75&fm=jpg`,
+        width: 1200,
         height: 630
       },
     },
     twitter: {
-      title,
+      title: q.title,
       description: q.description,
       card: 'summary_large_image'
     }

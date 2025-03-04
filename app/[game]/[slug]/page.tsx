@@ -28,7 +28,7 @@ interface MapPageProps {
 
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
   const map = await getMapBySlug(draftMode, slug, true)
-  if (!map || (map.isComingSoon && !draftMode && !IN_DEVELOPMENT)) {
+  if (!map || (map.isComingSoon && !draftMode || !IN_DEVELOPMENT)) {
     notFound()
   }
   const maps = await getMaps(draftMode)
@@ -53,24 +53,24 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({ params }: MapPageProps) => {
   const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
   const { map } = await getPageData(isEnabled, slug)
-  const { title, description, image } = map
-  const seoTitle = `${title} Main Quest`
+  const { title, image, game: mapGame } = map
+  const description = `Complete the main quest/easter egg for the ${mapGame.title} zombies map ${title} with our detailed step-by-step guide!`
   const metadata: Metadata = {
-    title: seoTitle,
+    title,
     description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
-      title: seoTitle,
+      title,
       description,
       url: `/${game}/${slug}`,
       images: {
-        url: `https:${image.url}?q=75&fm=jpg`,
-        width: image.width,
-        height: image.height
+        url: `https:${image.url}?w=1200&h=630&q=75&fm=jpg`,
+        width: 1200,
+        height: 630
       }
     },
     twitter: {
-      title: seoTitle,
+      title,
       description,
       card: 'summary_large_image'
     }

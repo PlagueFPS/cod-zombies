@@ -11,7 +11,7 @@ import { Suspense } from "react";
 
 export const generateMetadata = (): Metadata => {
   const title = 'Side Quests'
-  const description = 'Explore our comprehensive guides to the hidden Side Quests and Easter Eggs beyond the Main Story in Call of Duty: Zombies'
+  const description = 'Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.'
   return {
     title,
     description,

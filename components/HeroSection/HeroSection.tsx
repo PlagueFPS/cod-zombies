@@ -1,13 +1,8 @@
 import { Button } from "../ui/button"
 import { Book } from "lucide-react"
 import { CustomLink } from "../CustomLink/CustomLink"
-import { SITE_DESCRIPTION } from "@/utils/constants"
 
-interface HeroSectionProps {
-  text: string
-}
-
-export default function HeroSection({ text }: HeroSectionProps) {
+export default function HeroSection() {
   return (
     <section className="flex flex-col items-center justify-center gap-4 text-center max-w-2xl">
       <h1 className="flex flex-col font-extrabold text-3xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
@@ -22,7 +17,7 @@ export default function HeroSection({ text }: HeroSectionProps) {
         </span>
       </h1>
       <p className="text-base md:text-lg">
-        { SITE_DESCRIPTION(text) }
+        Explore our comprehensive guides to the most challenging and rewarding Main Quests, Side Quests, and Easter Eggs in Call of Duty: Zombies.
       </p>
       <div className="flex items-center justify-center w-full mt-8">
         <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
