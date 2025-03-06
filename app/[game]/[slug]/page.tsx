@@ -28,7 +28,7 @@ interface MapPageProps {
 
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
   const map = await getMapBySlug(draftMode, slug, true)
-  if (!map || (map.isComingSoon && !draftMode || !IN_DEVELOPMENT)) {
+  if (!map) {
     notFound()
   }
   const maps = await getMaps(draftMode)
