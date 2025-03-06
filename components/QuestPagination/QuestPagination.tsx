@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button"
 import { MAP_LIMIT } from "@/utils/constants"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { FilteredQuests } from "@/types/FilteredQuests"
-import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
+import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
 
 interface IQuestPagination {
   quests: FilteredQuests
 }
 
 export default function QuestPagination({ quests }: IQuestPagination) {
-  const { page, updatePage } = useQuestSearchParams()
+  const { page, updatePage } = useSiteSearchParams()
   const totalPages = Math.ceil(quests.length / MAP_LIMIT)
   const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
   const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1

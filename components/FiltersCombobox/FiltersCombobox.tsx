@@ -57,7 +57,7 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
       </PopoverTrigger>
       <PopoverContent className="w-52 p-0">
         <Command>
-          { enableInput && <CommandInput placeholder={ inputPlaceholder } /> }
+          { enableInput && <CommandInput placeholder={ inputPlaceholder ?? title } /> }
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>

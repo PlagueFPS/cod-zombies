@@ -27,5 +27,9 @@ export const CACHE_KEYS = {
   SIDE_QUESTS: {
     /** Cache key for all side quests data */
     ALL: 'side-quests'
+  },
+  ZOMBIES: {
+    /** Cache key for all zombie data */
+    ALL: 'zombies'
   }
 } as const

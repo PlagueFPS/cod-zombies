@@ -2,30 +2,19 @@
 import ClearFiltersButton from "@/components/FiltersCombobox/ClearFiltersButton"
 import FiltersCombobox from "@/components/FiltersCombobox/FiltersCombobox"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
+import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
+import { Filter } from "@/types/Filter"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 interface IQuestFiltersClient {
-  games: {
-    id: string
-    slug: string
-    title: string
-  }[]
-  maps: {
-    id: string
-    slug: string
-    title: string
-  }[]
-  difficulties: {
-    id: string
-    slug: string
-    title: string
-  }[]
+  games: Filter[]
+  maps: Filter[]
+  difficulties: Filter[]
 }
 
 export default function QuestFiltersClient({ games, maps, difficulties }: IQuestFiltersClient) {
-  const { searchParams, mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } = useQuestSearchParams()
+  const { searchParams, mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } = useSiteSearchParams()
   const pathname = usePathname()
   const [selectedGames, setSelectedGames] = useState(gameParams)
   const [selectedMaps, setSelectedMaps] = useState(mapParams)
