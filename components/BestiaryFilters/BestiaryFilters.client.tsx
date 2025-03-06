@@ -49,7 +49,7 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
           toggleParam={ toggleType }
           clearParam={ () => clearParam("type") }
         />
-        <FiltersCombobox 
+        <FiltersCombobox
           data={ games }
           currentSelection={ selectedGames }
           title="Game"
@@ -62,8 +62,6 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
           title="Map"
           toggleParam={ toggleMap }
           clearParam={ () => clearParam("map") }
-          enableInput
-          inputPlaceholder="Search maps"
         />
         { selectedGames.length > 0 || selectedMaps.length > 0 || selectedTypes.length > 0 ? (
           <ClearFiltersButton onClick={ clearAllFilters } />

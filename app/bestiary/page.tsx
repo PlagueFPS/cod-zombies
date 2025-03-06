@@ -1,4 +1,5 @@
 import BestiaryFilters from "@/components/BestiaryFilters/BestiaryFilters";
+import BestiaryGrid from "@/components/BestiaryGrid/BestiaryGrid";
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
 import BestiaryFiltersLoader from "@/components/Loaders/BestiaryFiltersLoader";
@@ -14,9 +15,12 @@ export default function BestiaryPage() {
           ]}
         />
         <GridSection title="Bestiary">
-          <p className="text-lg text-muted-foreground">Explore the different zombie types featured in Call of Duty: Zombies</p>
+          <p className="text-lg text-muted-foreground -mt-7 mb-2">Explore a collection of zombie types featured in Call of Duty: Zombies</p>
           <Suspense fallback={<BestiaryFiltersLoader />}>
             <BestiaryFilters />
+          </Suspense>
+          <Suspense>
+            <BestiaryGrid />
           </Suspense>
         </GridSection>
       </div>

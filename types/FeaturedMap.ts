@@ -1,5 +1,5 @@
 import type { Document } from "@contentful/rich-text-types"
-type Date = `${number}-${number}-${number}T${number}:${number}:${number}Z`
+export type Date = `${number}-${number}-${number}T${number}:${number}:${number}Z`
 
 export interface FeaturedMapWithoutBody {
   id: string
