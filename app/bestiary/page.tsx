@@ -3,6 +3,7 @@ import BestiaryGrid from "@/components/BestiaryGrid/BestiaryGrid";
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
 import BestiaryFiltersLoader from "@/components/Loaders/BestiaryFiltersLoader";
+import BestiaryGridLoader from "@/components/Loaders/BestiaryGridLoader";
 import { Suspense } from "react";
 
 export default function BestiaryPage() {
@@ -19,7 +20,7 @@ export default function BestiaryPage() {
           <Suspense fallback={<BestiaryFiltersLoader />}>
             <BestiaryFilters />
           </Suspense>
-          <Suspense>
+          <Suspense fallback={<BestiaryGridLoader />}>
             <BestiaryGrid />
           </Suspense>
         </GridSection>
