@@ -6,7 +6,8 @@ import { calculateSkip } from "@/utils/contentful-utils"
 import { useEffect, useState } from "react"
 import FeaturedImage from "../FeaturedImage/FeaturedImage"
 import { Badge } from "../ui/badge"
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { TypeBadge } from "../CustomBadges/CustomBadges"
 
 interface IBestiaryGridClient {
   zombies: Omit<Zombie, "updatedAt">[]
@@ -69,10 +70,12 @@ function ZombiePreviewCard({ zombie, zombieIndex, draftMode }: IZombiePreviewCar
 
   return (
     <article className="max-h-[450px] h-full group outline-none">
-      <Card className="h-full rounded-xl bg-background">
-        <CardHeader className="relative h-64 overflow-hidden space-y-0 p-0">
+      <Card className="h-full rounded-xl bg-background overflow-hidden cursor-pointer shadow-lg hover:shadow-primary/50">
+        <CardHeader className="relative overflow-hidden h-60 space-y-0 p-0">
           <div className="absolute z-20 top-2 right-2 flex items-center justify-center gap-1">
-            <Badge className="badge-primary-gradient">{ zombie.type }</Badge>
+            {/* { zombie.isNew ? <NewBadge /> : null } */}
+            {/* { (draftMode || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null } */}
+            <TypeBadge type={ zombie.type } />
             <Badge className="badge-primary-gradient">{ zombie.games[0].title }</Badge>
           </div>
           <FeaturedImage 
@@ -80,14 +83,16 @@ function ZombiePreviewCard({ zombie, zombieIndex, draftMode }: IZombiePreviewCar
             alt={ alt }
             sizes="320px"
             priority={ priority }
-            className="w-full h-full object-cover aspect-square rounded-t-xl"
+            className="w-full h-full object-cover aspect-square rounded-t-xl transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent"></div>
-          <div className="absolute bottom-4 left-4">
-            <CardTitle className="text-2xl font-bold drop-shadow-lg">{ zombie.name }</CardTitle>
+          <div className="block absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+          <div className="absolute bottom-2 left-4">
+            <CardTitle className="text-2xl font-semibold drop-shadow-lg text-background dark:text-foreground">{ zombie.name }</CardTitle>
           </div>
         </CardHeader>
-        <CardDescription className="p-4">{ zombie.description }</CardDescription>
+        <CardContent className="flex flex-col justify-center gap-2 mt-2">
+          <CardDescription>{ zombie.description }</CardDescription>
+        </CardContent>
       </Card>
     </article>
   )

@@ -117,7 +117,7 @@ export function tryCatchSync<T>(
 ): Result<T> {
   try {
     const data = TypeGuards.isFunction(valueOrFn)
-      ? (valueOrFn as Function)()
+      ? valueOrFn()
       : valueOrFn;
       
     return {

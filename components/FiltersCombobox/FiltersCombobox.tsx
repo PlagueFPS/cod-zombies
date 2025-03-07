@@ -11,8 +11,9 @@ import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
 import { useImageState } from "@/hooks/useImageState"
 import Image, { ImageProps } from "next/image"
-import { DifficultyBadge } from "../CustomBadges/CustomBadges"
+import { DifficultyBadge, TypeBadge } from "../CustomBadges/CustomBadges"
 import type { Difficulty } from "@/types/FeaturedMap"
+import { ZombieType } from "@/types/Zombie"
 
 interface IFiltersCombobox {
   data: {
@@ -46,11 +47,17 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
           { currentSelection.length > 0 && (
             <>
               <Separator orientation="vertical" className="h-5" />
-              <Badge className={cn('badge-primary-gradient', {
-                'badge-easy-gradient': currentSelection.length === 1 && title === 'Difficulty' && currentSelection[0] === 'easy',
-                'badge-medium-gradient': currentSelection.length === 1 && title === 'Difficulty' && currentSelection[0] === 'medium',
-                'badge-hard-gradient': currentSelection.length === 1 && title === 'Difficulty' && currentSelection[0] === 'hard',
-              })}>{ currentSelection.length === 1 ? capatilize(currentSelection[0]) : currentSelection.length }</Badge>
+              { currentSelection.length === 1 ? (
+                <>
+                  { 
+                    title === 'Difficulty' ? <DifficultyBadge difficulty={ capatilize(currentSelection[0]) as Difficulty } /> 
+                    : title === 'Type' ? <TypeBadge type={ capatilize(currentSelection[0]) as ZombieType } /> 
+                    : <Badge className="badge-primary-gradient">{ capatilize(currentSelection[0]) }</Badge>
+                  }
+                </>
+              ) : (
+                <Badge className="badge-primary-gradient">{ currentSelection.length }</Badge>
+              )}
             </>
           )}
         </Button>
@@ -67,7 +74,10 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
                     <Checkbox id={ item.id } checked={ currentSelection.includes(item.slug) } onCheckedChange={ () => toggleParam(item.slug) } />
                     { title === "Game" ? <FilterLogo slug={ item.slug } className="size-4" /> : null }
                     <Label htmlFor={ item.id } className="cursor-pointer font-normal w-full">
-                      { title === "Difficulty" ? <DifficultyBadge difficulty={ item.title as Difficulty } /> : item.title }
+                      { title === "Difficulty" ? <DifficultyBadge difficulty={ item.title as Difficulty } /> 
+                        : title === "Type" ? <TypeBadge type={ item.title as ZombieType } /> 
+                        : item.title 
+                      }
                     </Label>
                   </CommandItem>
                 ))}

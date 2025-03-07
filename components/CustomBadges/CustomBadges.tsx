@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import type { Difficulty } from '@/types/FeaturedMap'
+import type { ZombieType } from '@/types/Zombie'
 
 interface CustomBadgeProps { 
   className?: string
@@ -16,3 +17,10 @@ export const DifficultyBadge = ({ className, difficulty }: CustomBadgeProps & { 
     'badge-medium-gradient': difficulty === "Medium",
     'badge-hard-gradient': difficulty === "Hard",
   }, className)}>{ difficulty }</Badge>
+export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: ZombieType }) => 
+  <Badge className={cn({
+    'badge-easy-gradient': type === "Normal",
+    'badge-medium-gradient': type === "Special",
+    'badge-elite-gradient': type === "Elite",
+    'badge-hard-gradient': type === "Boss",
+  }, className)}>{ type }</Badge>
