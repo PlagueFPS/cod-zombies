@@ -16,7 +16,9 @@ export default function BestiaryPage() {
           ]}
         />
         <GridSection title="Bestiary">
-          <p className="text-lg text-muted-foreground -mt-7 mb-2">Explore a collection of zombie types featured in Call of Duty: Zombies</p>
+          <p className="text-lg text-muted-foreground -mt-7 mb-2">
+            Learn about the weaknesses, behavior, and strategies to defeat the undead horde.
+          </p>
           <Suspense fallback={<BestiaryFiltersLoader />}>
             <BestiaryFilters />
           </Suspense>
