@@ -1,5 +1,5 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { getMaps, getMapBySlug } from '@/data/maps'
+import { getMaps, getMapBySlug, getMapSearchData } from '@/data/maps'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 import { Metadata } from "next"
@@ -42,9 +42,9 @@ const getPageData = cache(async (draftMode: boolean, slug: string) => {
 })
 
 export const generateStaticParams = async () => {
-  const featuredMaps = await getMaps(false)
+  const featuredMaps = await getMapSearchData(false)
 
-  return featuredMaps.filter(map => !map.isComingSoon).map(map => ({
+  return featuredMaps.map(map => ({
     game: map.game.slug,
     slug: map.slug
   }))

@@ -4,7 +4,29 @@ import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
 import BestiaryFiltersLoader from "@/components/Loaders/BestiaryFiltersLoader";
 import BestiaryGridLoader from "@/components/Loaders/BestiaryGridLoader";
+import { env } from "@/env";
+import { GLOBAL_OG_PROPS } from "@/utils/constants";
+import type { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: 'Bestiary',
+  description: 'Discover & kill undead zombies in COD Zombies with our detailed step-by-step guides.',
+  openGraph: {
+    ...GLOBAL_OG_PROPS.openGraph,
+    title: 'Bestiary',
+    description: 'Discover & kill undead zombies in COD Zombies with our detailed step-by-step guides.',
+    url: '/bestiary'
+  },
+  twitter: {
+    title: 'Bestiary',
+    description: 'Discover & kill undead zombies in COD Zombies with our detailed step-by-step guides.',
+    card: 'summary_large_image'
+  },
+  alternates: {
+    canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary`,
+  }
+}
 
 export default function BestiaryPage() {
   return (

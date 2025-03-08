@@ -1,16 +1,16 @@
 "use client"
 import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
-import type { Zombie } from "@/types/Zombie"
-import { MAP_LIMIT } from "@/utils/constants"
+import type { MinifiedZombie } from "@/types/Zombie"
+import { IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
 import { useEffect, useState } from "react"
 import FeaturedImage from "../FeaturedImage/FeaturedImage"
 import { Badge } from "../ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { TypeBadge } from "../CustomBadges/CustomBadges"
+import { ChangedBadge, DraftBadge, NewBadge, TypeBadge } from "../CustomBadges/CustomBadges"
 
 interface IBestiaryGridClient {
-  zombies: Omit<Zombie, "updatedAt">[]
+  zombies: MinifiedZombie[]
   draftMode: boolean
 }
 
@@ -59,7 +59,7 @@ export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGrid
 }
 
 interface IZombiePreviewCard {
-  zombie: Omit<Zombie, "updatedAt">
+  zombie: MinifiedZombie
   zombieIndex: number
   draftMode: boolean
 }
@@ -73,8 +73,9 @@ function ZombiePreviewCard({ zombie, zombieIndex, draftMode }: IZombiePreviewCar
       <Card className="h-full rounded-xl bg-background overflow-hidden cursor-pointer shadow-lg hover:shadow-primary/50">
         <CardHeader className="relative overflow-hidden h-60 space-y-0 p-0">
           <div className="absolute z-20 top-2 right-2 flex items-center justify-center gap-1">
-            {/* { zombie.isNew ? <NewBadge /> : null } */}
-            {/* { (draftMode || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null } */}
+            { zombie.isNew ? <NewBadge /> : null }
+            { (draftMode || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
+            { (draftMode || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
             <TypeBadge type={ zombie.type } />
             <Badge className="badge-primary-gradient">{ zombie.games[0].title }</Badge>
           </div>

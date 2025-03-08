@@ -14,7 +14,7 @@ export const managementClient = createClient({
   }
 })
 
-export const getManagementEntries = async (contentType: "featuredMaps" | "gameCategory" | "sideQuests") => {
+export const getManagementEntries = async (contentType: "featuredMaps" | "gameCategory" | "sideQuests" | "zombies") => {
   return await tryCatch(managementClient.entry.getMany({
     query: {
       content_type: contentType
