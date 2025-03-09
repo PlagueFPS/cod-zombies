@@ -3,9 +3,9 @@ import type { TypeReferencedMapsSkeleton, TypeZombiesSkeleton } from "@/contentf
 import type { Entry } from "contentful"
 import { getEntries } from "@/contentful/contentful"
 import { cache } from "react"
-import { 
-  createAmmoModDTO,
+import {
   createImageDTO, 
+  createItemTooltipDTO, 
   createMapCategoryDTO, 
   createQuestMapDTO, 
   resolveAsset, 
@@ -131,7 +131,11 @@ const resolveZombieData = cache((zombie: Entry<TypeZombiesSkeleton, undefined, s
   const image = createImageDTO(resolveAsset(zombie.fields.image))
   const games = zombie.fields.games.map(game => createMapCategoryDTO(resolveEntry(game)))
   const maps = zombie.fields.maps.map(map => createQuestMapDTO(resolveEntry(map)))
-  const elementalWeakness = zombie.fields.elementalWeakness?.map(weakness => createAmmoModDTO(resolveEntry(weakness)))
+  const elementalWeakness = zombie.fields.elementalWeakness?.map(weakness => {
+    const item = resolveEntry(weakness)
+    if (!item) return
+    return createItemTooltipDTO(item)
+  }).filter(weakness => !!weakness)
   const isDraft = draftIds.has(zombie.sys.id)
   const isChanged = changedIds.has(zombie.sys.id)
   const isNew = newIds.has(zombie.sys.id)

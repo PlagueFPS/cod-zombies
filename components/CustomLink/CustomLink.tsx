@@ -1,14 +1,14 @@
 "use client"
 import Link, { type LinkProps } from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, AnchorHTMLAttributes } from "react"
 
 interface ICustomLink extends LinkProps {
   children: React.ReactNode
   className?: string
 }
 
-export function CustomLink({ children, href, ...props }: ICustomLink) {
+export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
   const router = useRouter()
   const [isPrefetching, setIsPrefetching] = useState(false)
 

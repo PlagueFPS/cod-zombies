@@ -1,5 +1,5 @@
 import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
-import type { TypeAmmoModsSkeleton, TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeReferencedMapsSkeleton } from "@/contentful/Types/contentful-types";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeReferencedMapsSkeleton } from "@/contentful/Types/contentful-types";
 import type { ZombieItem } from "@/types/ZombieItem";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
@@ -85,6 +85,7 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
 
   if (TypeGuards.hasProperty(item.fields, 'rarity')) {
     return {
+      id: item.sys.id,
       title: item.fields.title,
       image: createImageDTO(itemImage),
       description: item.fields.description,
@@ -94,6 +95,7 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
   }
 
   return {
+    id: item.sys.id,
     title: item.fields.title,
     image: createImageDTO(itemImage),
     description: item.fields.description
@@ -121,17 +123,5 @@ export const createQuestMapDTO = <T extends TypeReferencedMapsSkeleton | TypeFea
   return {
     title: map.fields.title,
     slug: map.fields.slug
-  }
-}
-
-export const createAmmoModDTO = <T extends TypeAmmoModsSkeleton>(ammoMod: Entry<T, undefined, string> | undefined) => {
-  if (!ammoMod) throw new Error("Expected zombie to have an elemental weakness")
-  if (!TypeGuards.isObject(ammoMod.fields.image)) throw new Error("Expected ammo mod to have an image")
-  
-  return {
-    id: ammoMod.sys.id,
-    title: ammoMod.fields.title,
-    slug: ammoMod.fields.slug,
-    image: createImageDTO(resolveAsset(ammoMod.fields.image))
   }
 }

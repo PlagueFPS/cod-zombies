@@ -65,7 +65,7 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
       <PopoverTrigger className={cn('inline-flex justify-center items-center gap-2 group', className)}>
         <IconImage 
           featuredImage={ image }
-          alt={ title }
+          alt={ `${title} Image` }
           sizes='24px'
           className='my-auto h-6 w-auto'
         />
@@ -126,7 +126,7 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
         <div className="absolute top-0 bottom-0 left-0 right-0 mx-auto bg-black bg-opacity-25 w-20 rounded-full z-[9]" />
           <IconImage 
             featuredImage={ image }
-            alt={ title }
+            alt={ `${title} Image` }
             sizes='80px'
             className='relative z-10 h-20 w-auto p-2'
           />
