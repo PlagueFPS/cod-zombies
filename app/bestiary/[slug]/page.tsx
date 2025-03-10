@@ -181,7 +181,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
               </div>
               <div>
                 <h3 className="text-lg font-semibold flex items-center gap-2 mb-2">
-                  <AlertTriangle className="size-5 text-orange-300" />
+                  <AlertTriangle className="size-5 text-orange-800 dark:text-orange-300" />
                   Elemental Weaknesses
                 </h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
