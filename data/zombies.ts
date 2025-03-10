@@ -8,6 +8,7 @@ import {
   createItemTooltipDTO, 
   createMapCategoryDTO, 
   createQuestMapDTO, 
+  createZombieAttackDTO, 
   resolveAsset, 
   resolveEntry 
 } from "@/utils/contentful-utils"
@@ -23,7 +24,7 @@ export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
   const [zombies, zombieIds] = await Promise.all([zombiesPromise, zombieIdsPromise])
 
   return zombies.map(zombie => {
-    const { elementalWeakness, ...rest } = resolveZombieData(zombie, zombieIds)
+    const { elementalWeakness, attacks, ...rest } = resolveZombieData(zombie, zombieIds)
     return {
       ...rest,
       id: zombie.sys.id,
@@ -78,7 +79,6 @@ export const getZombieBySlug = cache(unstable_cache(async (draftMode: boolean, s
     weakPoints: zombie.fields.weakPoints,
     speed: zombie.fields.speed,
     spawnBehavior: zombie.fields.spawnBehavior,
-    attacks: zombie.fields.attacks,
     combatStrategy: zombie.fields.combatStrategy,
   }
 }, [], {
@@ -131,6 +131,7 @@ const resolveZombieData = cache((zombie: Entry<TypeZombiesSkeleton, undefined, s
   const image = createImageDTO(resolveAsset(zombie.fields.image))
   const games = zombie.fields.games.map(game => createMapCategoryDTO(resolveEntry(game)))
   const maps = zombie.fields.maps.map(map => createQuestMapDTO(resolveEntry(map)))
+  const attacks = zombie.fields.attacks.map(attack => createZombieAttackDTO(resolveEntry(attack)))
   const elementalWeakness = zombie.fields.elementalWeakness?.map(weakness => {
     const item = resolveEntry(weakness)
     if (!item) return
@@ -144,6 +145,7 @@ const resolveZombieData = cache((zombie: Entry<TypeZombiesSkeleton, undefined, s
     image,
     games,
     maps,
+    attacks,
     elementalWeakness,
     isDraft,
     isChanged,

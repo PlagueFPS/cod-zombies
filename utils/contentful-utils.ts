@@ -1,5 +1,5 @@
 import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
-import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeReferencedMapsSkeleton } from "@/contentful/Types/contentful-types";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeReferencedMapsSkeleton, TypeZombieAttacksSkeleton } from "@/contentful/Types/contentful-types";
 import type { ZombieItem } from "@/types/ZombieItem";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
@@ -123,5 +123,15 @@ export const createQuestMapDTO = <T extends TypeReferencedMapsSkeleton | TypeFea
   return {
     title: map.fields.title,
     slug: map.fields.slug
+  }
+}
+
+export const createZombieAttackDTO = (attack: Entry<TypeZombieAttacksSkeleton, undefined, string> | undefined) => {
+  if (!attack) throw new Error("Expected zombie to have an attack")
+  return {
+    id: attack.sys.id,
+    name: attack.fields.name,
+    range: attack.fields.range,
+    description: attack.fields.description
   }
 }

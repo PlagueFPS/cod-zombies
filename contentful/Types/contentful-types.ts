@@ -95,6 +95,15 @@ export interface TypeSideQuestsFields {
 export type TypeSideQuestsSkeleton = EntrySkeletonType<TypeSideQuestsFields, "sideQuests">;
 export type TypeSideQuests<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeSideQuestsSkeleton, Modifiers, Locales>;
 
+export interface TypeZombieAttacksFields {
+    name: EntryFieldTypes.Symbol;
+    range: EntryFieldTypes.Symbol<"Long" | "Medium" | "Short">;
+    description: EntryFieldTypes.Text;
+}
+
+export type TypeZombieAttacksSkeleton = EntrySkeletonType<TypeZombieAttacksFields, "zombieAttacks">;
+export type TypeZombieAttacks<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeZombieAttacksSkeleton, Modifiers, Locales>;
+
 export interface TypeZombiesFields {
     name: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
@@ -105,10 +114,10 @@ export interface TypeZombiesFields {
     games: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>>;
     maps: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeFeaturedMapsSkeleton | TypeReferencedMapsSkeleton>>;
     elementalWeakness?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeAmmoModsSkeleton>>;
+    attacks: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeZombieAttacksSkeleton>>;
     weakPoints: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
     speed: EntryFieldTypes.Symbol<"Fast" | "Medium" | "Slow">;
     spawnBehavior: EntryFieldTypes.Symbol;
-    attacks: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
     combatStrategy: EntryFieldTypes.RichText;
 }
 

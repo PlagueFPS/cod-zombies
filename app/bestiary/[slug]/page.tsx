@@ -2,14 +2,26 @@ import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
 import { TypeBadge } from "@/components/CustomBadges/CustomBadges"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import ItemTooltip from "@/components/RichText/RichEmbeds/ItemTooltip"
+import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
 import ShareButton from "@/components/ShareButton/ShareButton"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { getZombieBySlug, getZombies, getZombieSearchData } from "@/data/zombies"
 import { env } from "@/env"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { AlertTriangle, BookOpen, Eye, Gamepad2, Map, Target, Zap } from "lucide-react"
+import { 
+  AlertTriangle, 
+  BookOpen, 
+  Eye, 
+  Footprints, 
+  Gamepad2, 
+  Info, 
+  Map, 
+  Swords, 
+  Target, 
+  Zap 
+} from "lucide-react"
 import type { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
@@ -174,8 +186,8 @@ export default async function ZombiePage({ params }: IZombiePage) {
                   Weak Points
                 </h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
-                  { zombie.weakPoints.map(weakPoint => (
-                    <Badge className="badge-hard-gradient w-fit">{ weakPoint }</Badge>
+                  { zombie.weakPoints.map((weakPoint, index) => (
+                    <Badge key={ `${weakPoint}-${index}` } className="badge-hard-gradient w-fit">{ weakPoint }</Badge>
                   ))}
                 </div>
               </div>
@@ -195,7 +207,52 @@ export default async function ZombiePage({ params }: IZombiePage) {
         </CardContent>
       </Card>
       {/* Main Content Grid */}
-
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Attacks Section */}
+        <Card className="bg-background">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-3 border-b pb-2">
+              <Swords className="size-6 text-primary" />
+              <h3 className="text-xl font-bold">Attacks</h3>
+            </div>
+            <div className="space-y-4">
+              { zombie.attacks.map(attack => (
+                <div key={ attack.id } className="p-3 border rounded-lg">
+                  <div className="flex flex-wrap justify-between items-start gap-2 mb-2">
+                    <h4 className="font-semibold">{ attack.name }</h4>
+                    <div className="flex flex-wrap gap-1">
+                      <Badge variant={"outline"}>Range: { attack.range }</Badge>
+                    </div>
+                  </div>
+                  <CardDescription>{ attack.description }</CardDescription>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        {/* Spawn Behavior Section */}
+        <Card className="bg-background">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-3 border-b pb-2">
+              <Footprints className="size-6 text-purple-600 dark:text-purple-300" />
+              <h3 className="text-xl font-bold">Spawn Behavior</h3>
+            </div>
+            <CardDescription>{ zombie.spawnBehavior }</CardDescription>
+          </CardContent>
+        </Card>
+        {/* Combat Strategy Section */}
+        <Card className="bg-background">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-3 border-b pb-2">
+              <Info className="size-6 text-green-600 dark:text-green-300" />
+              <h3 className="text-xl font-bold">Combat Strategy</h3>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              <RichTextRenderer body={ zombie.combatStrategy } slug={ zombie.slug } />
+            </div>
+          </CardContent>
+        </Card>
+      </section>
     </article>
   )
 }
