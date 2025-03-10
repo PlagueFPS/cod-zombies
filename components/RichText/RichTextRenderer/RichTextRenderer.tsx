@@ -28,7 +28,7 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
         return (
           <ItemTooltip 
             item={ createItemTooltipDTO(node.data.target) } 
-            className="font-bold items-baseline align-baseline gap-1.5 text-orange-600 dark:text-orange-200"
+            className="font-bold items-baseline align-baseline gap-1.5"
           />
         )
       },

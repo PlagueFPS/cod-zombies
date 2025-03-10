@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress"
 import { getZombieBySlug, getZombies, getZombieSearchData } from "@/data/zombies"
 import { env } from "@/env"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { AlertTriangle, BookOpen, Eye, Gamepad2, Map, Zap } from "lucide-react"
+import { AlertTriangle, BookOpen, Eye, Gamepad2, Map, Target, Zap } from "lucide-react"
 import type { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
@@ -146,29 +146,42 @@ export default async function ZombiePage({ params }: IZombiePage) {
               </div>
               <div>
                 <h3 className="text-lg font-semibold flex items-center gap-2 mb-2">
-                  <Map className="size-5 text-foreground" />
+                  <Map className="size-5 text-blue-500" />
                   Map Appearances
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
                   { zombie.slug !== "zombie"
-                    ? zombie.maps.map(map => <Badge key={ map.slug } className="mt-1 badge-primary-gradient">{ map.title }</Badge>) 
+                    ? zombie.maps.map(map => <Badge key={ map.slug } className="mt-1 badge-changed-gradient">{ map.title }</Badge>) 
                     : <span className="text-muted-foreground text-sm">Appears in all maps</span> }
                 </div>
               </div>
               <div>
                 <h3 className="text-lg font-semibold flex items-center gap-2 mb-2">
-                  <Gamepad2 className="size-5 text-foreground" />
+                  <Gamepad2 className="size-5 text-orange-500" />
                   Game Appearances
                 </h3>
-                <div className="flex flex-wrap items-center gap-2">
-                  { zombie.slug !== "zombie"
-                    ? zombie.games.map(game => <Badge key={ game.slug } className="mt-1 badge-primary-gradient">{ game.title }</Badge>) 
-                    : <span className="text-muted-foreground text-sm">Appears in all maps</span> }
+                <div className="flex flex-wrap items-center gap-2">                 
+                  { zombie.games.map(game => 
+                    <Badge key={ game.slug } className="mt-1 badge-primary-gradient">
+                      { game.title }
+                    </Badge>
+                  )}
                 </div>
               </div>
               <div>
                 <h3 className="text-lg font-semibold flex items-center gap-2 mb-2">
-                  <AlertTriangle className="size-5 text-foreground" />
+                  <Target className="size-5 text-red-500" />
+                  Weak Points
+                </h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
+                  { zombie.weakPoints.map(weakPoint => (
+                    <Badge className="badge-hard-gradient w-fit">{ weakPoint }</Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold flex items-center gap-2 mb-2">
+                  <AlertTriangle className="size-5 text-orange-300" />
                   Elemental Weaknesses
                 </h3>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
