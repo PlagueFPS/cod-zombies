@@ -65,7 +65,7 @@ interface QuestSearchParamsResult {
 type Param = "type" | "map" | "game" | "difficulty"
 
 /**
- * Custom hook for managing quest-related search parameters in the URL.
+ * Custom hook for managing site search parameters in the URL.
  * Provides utilities for reading, updating, and validating search parameters.
  * 
  * @returns An object containing the current search parameters and utility functions

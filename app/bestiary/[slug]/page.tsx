@@ -164,7 +164,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                 <div className="flex flex-wrap items-center gap-2">
                   { zombie.slug !== "zombie"
                     ? zombie.maps.map(map => <Badge key={ map.slug } className="mt-1 badge-changed-gradient">{ map.title }</Badge>) 
-                    : <span className="text-muted-foreground text-sm">Appears in all maps</span> }
+                    : <Badge className="mt-1 badge-changed-gradient">Appears in all maps</Badge> }
                 </div>
               </div>
               <div>
