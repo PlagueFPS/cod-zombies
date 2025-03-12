@@ -70,31 +70,28 @@ function ZombiePreviewCard({ zombie, zombieIndex, draftMode }: IZombiePreviewCar
   const alt = `${zombie.name} Image`
 
   return (
-    <article className="max-h-[450px] h-full group outline-none">
+    <article className="h-full group outline-none">
       <CustomLink href={`/bestiary/${zombie.slug}`} aria-label={`Go to ${zombie.name} page`}>
-        <Card className="h-full rounded-xl bg-background overflow-hidden cursor-pointer shadow-lg hover:shadow-primary/50">
-          <CardHeader className="relative overflow-hidden h-60 space-y-0 p-0">
-            <div className="absolute z-20 top-2 right-2 flex items-center justify-center gap-1">
+        <Card className="overflow-hidden w-full transition-all shadow-lg hover:shadow-primary bg-background">
+          <div className="relative w-full border-b overflow-hidden">
+            <FeaturedImage 
+              featuredImage={ zombie.image }
+              priority={ priority }
+              alt={ alt }
+              sizes="280px"
+              className="h-60 object-top object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
+          <CardContent className="p-4">
+            <div className="flex flex-wrap gap-2 items-center">
               { zombie.isNew ? <NewBadge /> : null }
               { (draftMode || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
               { (draftMode || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
               <TypeBadge type={ zombie.type } />
               <Badge className="badge-primary-gradient">{ zombie.games[0].title }</Badge>
             </div>
-            <FeaturedImage 
-              featuredImage={ zombie.image }
-              alt={ alt }
-              sizes="320px"
-              priority={ priority }
-              className="w-full h-full object-cover aspect-square rounded-t-xl transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="block absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-            <div className="absolute bottom-2 left-4">
-              <CardTitle className="text-2xl font-semibold drop-shadow-lg text-background dark:text-foreground">{ zombie.name }</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="flex flex-col justify-center gap-2 mt-2">
-            <CardDescription>{ zombie.description }</CardDescription>
+            <CardTitle className="font-extrabold text-2xl mt-2 text-gradient">{ zombie.name }</CardTitle>
+            <CardDescription className="line-clamp-3">{ zombie.description }</CardDescription>
           </CardContent>
         </Card>
       </CustomLink>
