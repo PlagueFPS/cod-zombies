@@ -121,7 +121,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                 quality={ 100 }
                 sizes="422px"
                 priority
-                className="relative w-full aspect-square rounded-lg shadow-lg overflow-hidden mb-4 object-cover"
+                className="relative w-full aspect-square rounded-lg shadow-lg overflow-hidden mb-4 object-cover object-top"
               />
               <div className="w-full space-y-3">
                 <div>

@@ -1,6 +1,7 @@
+"use client"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination'
 
-export default function QuestPaginationLoader() {
+export default function GridPaginationLoader() {
   return (
     <Pagination>
       <PaginationContent>

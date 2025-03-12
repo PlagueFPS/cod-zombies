@@ -3,12 +3,14 @@ import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
 import type { MinifiedZombie } from "@/types/Zombie"
 import { IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import FeaturedImage from "../FeaturedImage/FeaturedImage"
 import { Badge } from "../ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardDescription, CardTitle } from "../ui/card"
 import { ChangedBadge, DraftBadge, NewBadge, TypeBadge } from "../CustomBadges/CustomBadges"
 import { CustomLink } from "../CustomLink/CustomLink"
+import GridPagination from "../GridPagination/GridPagination"
+import GridPaginationLoader from "../Loaders/GridPaginationLoader"
 
 interface IBestiaryGridClient {
   zombies: MinifiedZombie[]
@@ -44,18 +46,23 @@ export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGrid
   }, [filteredZombies, validatePageParam])
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
-      { paginatedZombies.length > 0 ? paginatedZombies.map((zombie, index) => (
-        <ZombiePreviewCard 
-          key={ zombie.id }
-          zombie={ zombie }
-          zombieIndex={ index }
-          draftMode={ draftMode }
-        />
-      )) : (
-        <p className="col-span-4 text-center text-muted-foreground">No zombies found with the selected filters.</p>
-      )}
-    </div>
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
+        { paginatedZombies.length > 0 ? paginatedZombies.map((zombie, index) => (
+          <ZombiePreviewCard 
+            key={ zombie.id }
+            zombie={ zombie }
+            zombieIndex={ index }
+            draftMode={ draftMode }
+          />
+        )) : (
+          <p className="col-span-4 text-center text-muted-foreground">No zombies found with the selected filters.</p>
+        )}
+      </div>
+      <Suspense fallback={<GridPaginationLoader />}>
+        <GridPagination data={ filteredZombies } />
+      </Suspense>
+    </>
   )
 }
 

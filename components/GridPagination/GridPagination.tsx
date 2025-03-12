@@ -3,16 +3,15 @@ import { Pagination, PaginationContent, PaginationItem } from "@/components/ui/p
 import { Button } from "@/components/ui/button"
 import { MAP_LIMIT } from "@/utils/constants"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import type { FilteredQuests } from "@/types/FilteredQuests"
 import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
 
-interface IQuestPagination {
-  quests: FilteredQuests
+interface IGridPagination {
+  data: unknown[]
 }
 
-export default function QuestPagination({ quests }: IQuestPagination) {
+export default function GridPagination({ data }: IGridPagination) {
   const { page, updatePage } = useSiteSearchParams()
-  const totalPages = Math.ceil(quests.length / MAP_LIMIT)
+  const totalPages = Math.ceil(data.length / MAP_LIMIT)
   const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
   const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
   const nextPage = currentPage + 1 > totalPages ? totalPages : currentPage + 1
