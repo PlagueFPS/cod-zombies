@@ -1,7 +1,7 @@
 "use client"
 import Link, { type LinkProps } from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, AnchorHTMLAttributes } from "react"
+import { useState, AnchorHTMLAttributes, useEffect } from "react"
 
 interface ICustomLink extends LinkProps {
   children: React.ReactNode
@@ -59,4 +59,26 @@ export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTM
       { children }
     </Link>
   )
+}
+
+export const HashLinkHandler = () => {
+  const [attemptCount, setAttemptCount] = useState(0)
+
+  useEffect(() => {
+    if (!window.location.hash || attemptCount >= 5) return
+    const hash = window.location.hash.substring(1)
+    const element = document.getElementById(hash)
+
+    if (element) {
+      element.scrollIntoView({ behavior: 'instant' })
+    } else if (attemptCount < 5) {
+      const timer = setTimeout(() => {
+        setAttemptCount(prev => prev + 1)
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+    
+  }, [attemptCount])
+
+  return null
 }
