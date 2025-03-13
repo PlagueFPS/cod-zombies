@@ -67,6 +67,9 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
           <RichTable headings={ headings } bodyRows={ bodyRows } />
         )
       },
+      [BLOCKS.HR]: () => {
+        return <hr className="my-2" />
+      }
     },
     renderMark: {
       [MARKS.ITALIC]: (text: any) => {

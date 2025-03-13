@@ -185,7 +185,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                   <Target className="size-5 text-red-500" />
                   Weak Points
                 </h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
+                <div className="flex flex-wrap items-center gap-2">
                   { zombie.weakPoints.map((weakPoint, index) => (
                     <Badge key={ `${weakPoint}-${index}` } className="badge-hard-gradient w-fit">{ weakPoint }</Badge>
                   ))}
@@ -196,7 +196,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                   <AlertTriangle className="size-5 text-orange-800 dark:text-orange-300" />
                   Elemental Weaknesses
                 </h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
+                <div className="flex flex-wrap items-center gap-2">
                   { zombie.elementalWeakness?.map(weakness => <ItemTooltip key={ weakness.id } item={ weakness } />) ?? (
                     <span className="text-muted-foreground">No elemental weaknesses</span>
                   )}
