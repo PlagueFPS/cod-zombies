@@ -1,5 +1,7 @@
+import BestiaryCard from "@/components/BestiaryCard/BestiaryCard"
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
-import { TypeBadge } from "@/components/CustomBadges/CustomBadges"
+import { ChangedBadge, DraftBadge, NewBadge, TypeBadge } from "@/components/CustomBadges/CustomBadges"
+import { CustomLink } from "@/components/CustomLink/CustomLink"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import ItemTooltip from "@/components/RichText/RichEmbeds/ItemTooltip"
 import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
@@ -9,10 +11,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress"
 import { getZombieBySlug, getZombies, getZombieSearchData } from "@/data/zombies"
 import { env } from "@/env"
-import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { cn } from "@/lib/utils"
+import { MinifiedZombie } from "@/types/Zombie"
+import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { 
   AlertTriangle, 
   BookOpen, 
+  ChevronLeft, 
+  ChevronRight, 
   Eye, 
   Footprints, 
   Gamepad2, 
@@ -253,6 +259,71 @@ export default async function ZombiePage({ params }: IZombiePage) {
           </CardContent>
         </Card>
       </section>
+      <section className='flex flex-row justify-center items-center w-full mt-8'>
+        <div className='flex flex-col lg:flex-row justify-center items-center px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
+          { prevZombie && <PrevOrNextZombie zombie={ prevZombie } isEnabled={ isEnabled } prev /> }
+          { nextZombie && <PrevOrNextZombie zombie={ nextZombie } isEnabled={ isEnabled } /> }
+        </div>
+      </section>
     </article>
+  )
+}
+
+const PrevOrNextZombie = ({ zombie, isEnabled, prev }: { zombie: MinifiedZombie, isEnabled: boolean, prev?: boolean }) => {
+  const alt = `${zombie.name} image`
+  const href = `/bestiary/${zombie.slug}`
+
+  return (
+    <CustomLink 
+      href={ href }
+      className='group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-all'
+    >
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden dark:shadow-none', { 'xl:flex-row-reverse': prev })}>
+        <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
+          { zombie.isNew ? <NewBadge /> : null } 
+          { (isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
+          <TypeBadge type={ zombie.type } />
+          <Badge className='badge-primary-gradient'>
+            { zombie.games[0].title }
+          </Badge>
+        </div>
+        <div className='hidden dark:flex absolute inset-0 z-10 items-center w-full h-full opacity-35 blur-2xl'>
+            <FeaturedImage 
+              featuredImage={ zombie.image }
+              sizes='32px'
+              quality={ 1 }
+              className='scale-110'
+            />
+        </div>
+        <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
+            <FeaturedImage
+              featuredImage={ zombie.image }
+              alt={ alt }
+              sizes='(max-width: 1280px) 320px, 384px'
+              className='object-cover object-top rounded-lg h-full'
+            />
+        </div>
+        <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
+          <h3 className='text-xl font-semibold group-hover:text-primary-gradient'>
+            { zombie.name }
+          </h3>
+          <p className='text-sm line-clamp-3 text-ellipsis'>{ zombie.description }</p>
+          <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
+            { prev ? (
+              <>
+                <ChevronLeft />
+                <span>Previous Zombie</span>
+              </>
+            ) : (
+              <>
+                <span className='ml-auto'>Next Zombie</span>
+                <ChevronRight />
+              </>
+            )}
+          </div>
+        </div>
+      </article>
+    </CustomLink>
   )
 }
