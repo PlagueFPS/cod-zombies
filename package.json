@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start --turbopack",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
     "vercel": "vercel login",
     "link": "vercel link",

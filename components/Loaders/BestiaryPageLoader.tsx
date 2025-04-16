@@ -1,8 +1,8 @@
 import React from 'react'
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs'
 import GridSection from '../GridSection/GridSection'
-import BestiaryGridLoader from './BestiaryGridLoader'
 import BestiaryFiltersLoader from './BestiaryFiltersLoader'
+import GridLoader from './GridLoader'
 
 export default function BestiaryPageLoader() {
   const links: { title: string, href: string }[] = [
@@ -18,7 +18,7 @@ export default function BestiaryPageLoader() {
             Learn about the weaknesses, behavior, and strategies to defeat the undead horde.
           </p>
           <BestiaryFiltersLoader />
-          <BestiaryGridLoader />
+          <GridLoader />
         </GridSection>
       </div>
     </div>

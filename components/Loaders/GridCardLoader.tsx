@@ -2,7 +2,7 @@ import { Card, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 import ImageLoader from "./ImageLoader";
 
-export default function MapCardLoader() {
+export default function GridCardLoader() {
   return (
     <Card className="relative h-[400px] w-[322px]">
       {/* Badge loader */}

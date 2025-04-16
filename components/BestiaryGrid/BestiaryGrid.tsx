@@ -2,7 +2,7 @@ import { getZombies } from "@/data/zombies"
 import { draftMode } from "next/headers"
 import { Suspense } from "react"
 import BestiaryGridClient from "./BestiaryGrid.client"
-import BestiaryGridLoader from "../Loaders/BestiaryGridLoader"
+import GridLoader from "../Loaders/GridLoader"
 
 export default async function BestiaryGrid() {
   const { isEnabled } = await draftMode()
@@ -13,7 +13,7 @@ export default async function BestiaryGrid() {
   })
 
   return (
-    <Suspense fallback={<BestiaryGridLoader />}>
+    <Suspense fallback={<GridLoader />}>
       <BestiaryGridClient zombies={ clientZombies } draftMode={ isEnabled } />
     </Suspense>
   )

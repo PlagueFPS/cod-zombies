@@ -1,7 +1,7 @@
 import { PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
 import { MAP_LIMIT } from "@/utils/constants"
-import MapCardLoader from "./MapCardLoader"
+import GridCardLoader from "./GridCardLoader"
 import { Pagination } from "../ui/pagination"
 import QuestFilterLoader from "./QuestFilterLoader";
 import GridSection from "../GridSection/GridSection";
@@ -19,7 +19,7 @@ export default function SideQuestsPageLoader() {
           <QuestFilterLoader />  
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
             { Array.from({ length: MAP_LIMIT }, (_, i) => (
-              <MapCardLoader key={ `quest-card-loader-${i}` } />
+              <GridCardLoader key={ `quest-card-loader-${i}` } />
             ))}
           </div>
           <Pagination>
