@@ -11,16 +11,16 @@ import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: 'Bestiary',
-  description: 'Discover & kill undead zombies in COD Zombies with our detailed step-by-step guides.',
+  description: 'Learn about the weaknesses, behavior, and strategies to defeat the undead horde in Call of Duty: Zombies.',
   openGraph: {
     ...GLOBAL_OG_PROPS.openGraph,
     title: 'Bestiary',
-    description: 'Discover & kill undead zombies in COD Zombies with our detailed step-by-step guides.',
+    description: 'Learn about the weaknesses, behavior, and strategies to defeat the undead horde in Call of Duty: Zombies.',
     url: '/bestiary'
   },
   twitter: {
     title: 'Bestiary',
-    description: 'Discover & kill undead zombies in COD Zombies with our detailed step-by-step guides.',
+    description: 'Learn about the weaknesses, behavior, and strategies to defeat the undead horde in Call of Duty: Zombies.',
     card: 'summary_large_image'
   },
   alternates: {
