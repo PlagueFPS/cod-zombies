@@ -72,15 +72,15 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
       description: zombie.description,
       url: `/${zombie.slug}`,
       images: {
-        url: `https:${zombie.image.url}?w=1200&h=630&q=75&fm=jpg`,
-        width: 1200,
-        height: 630
+        url: `https:${zombie.image.url}?w=600&h=600&q=75&fm=jpg`,
+        width: 600,
+        height: 600
       }
     },
     twitter: {
       title: zombie.name,
       description: zombie.description,
-      card: 'summary_large_image',
+      card: 'summary',
     }
   }
 }
