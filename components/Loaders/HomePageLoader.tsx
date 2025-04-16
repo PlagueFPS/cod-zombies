@@ -1,8 +1,8 @@
 import HeroSection from '@/components/HeroSection/HeroSection'
 import GridSection from '@/components/GridSection/GridSection'
 import MapFiltersLoader from './MapFiltersLoader'
-import MapGridLoader from './MapGridLoader'
-import MapPaginationLoader from './MapPaginationLoader'
+import GridLoader from './GridLoader'
+import GridPaginationLoader from './GridPaginationLoader'
 
 export default function HomeLoader() {
   return (
@@ -10,8 +10,8 @@ export default function HomeLoader() {
       <HeroSection />
       <GridSection title='Main Quests'>
         <MapFiltersLoader />
-        <MapGridLoader />
-        <MapPaginationLoader />
+        <GridLoader />
+        <GridPaginationLoader />
       </GridSection>
     </div>
   )

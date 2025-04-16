@@ -24,14 +24,14 @@ export default function RichLink({ node }: RichLinkProps) {
   }
   else if (node.data.uri.startsWith(env.NEXT_PUBLIC_WEBSITE_URL)) {
     return (
-      <CustomLink href={ node.data.uri }>
+      <CustomLink href={ node.data.uri } className="inline-flex text-orange-600 font-medium dark:text-primary underline underline-offset-4 hover:no-underline transition-all">
         { node.content[0].value }
       </CustomLink>
     )
   }
   else if (node.data.uri.startsWith(dev_url) || node.data.uri.startsWith(alt_dev_url) || node.data.uri.startsWith('/')) {
     return (
-      <CustomLink href={ node.data.uri.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL).replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) }>
+      <CustomLink href={ node.data.uri.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL).replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) } className="inline-flex text-orange-600 font-medium dark:text-primary underline underline-offset-4 hover:no-underline transition-all">
         { node.content[0].value }
       </CustomLink>
     )

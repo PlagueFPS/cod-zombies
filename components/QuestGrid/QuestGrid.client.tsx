@@ -5,11 +5,11 @@ import type { FeaturedMapWithoutBody } from "@/types/FeaturedMap"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
 import { Suspense, useEffect, useState } from "react"
-import QuestPaginationLoader from "@/components/Loaders/QuestPaginationLoader"
-import QuestPagination from "@/components/QuestPagination/QuestPagination"
+import GridPaginationLoader from "@/components/Loaders/GridPaginationLoader"
+import GridPagination from "@/components/GridPagination/GridPagination"
 import QuestPreviewCard from "@/components/QuestPreviewCard/QuestPreviewCard"
 import { TypeGuards } from "@/utils/functions"
-import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
+import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
 
 interface IQuestGridClient {
   quests: Omit<FeaturedMapWithoutBody, "updatedAt">[] | Omit<SideQuest, "content" | "updatedAt">[]
@@ -17,7 +17,7 @@ interface IQuestGridClient {
 }
 
 export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
-  const { searchParams, gameParams, mapParams, difficultyParams, page, validatePageParam } = useQuestSearchParams()
+  const { searchParams, gameParams, mapParams, difficultyParams, page, validatePageParam } = useSiteSearchParams()
   const [filteredQuests, setFilteredQuests] = useState<FilteredQuests>(quests)
   const skip = calculateSkip(page, MAP_LIMIT);
   const paginatedQuests = filteredQuests.slice(skip, (MAP_LIMIT * page))
@@ -58,8 +58,8 @@ export default function QuestGridClient({ quests, draftMode }: IQuestGridClient)
             <p className="col-span-4 text-center text-muted-foreground">No quests found with the selected filters.</p>
           )}
       </div>
-      <Suspense fallback={<QuestPaginationLoader />}>
-        <QuestPagination quests={ filteredQuests } />
+      <Suspense fallback={<GridPaginationLoader />}>
+        <GridPagination data={ filteredQuests } />
       </Suspense>
     </>
   )

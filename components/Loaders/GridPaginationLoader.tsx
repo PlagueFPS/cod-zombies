@@ -1,7 +1,7 @@
-import React from 'react'
+"use client"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination'
 
-export default function MapPaginationLoader() {
+export default function GridPaginationLoader() {
   return (
     <Pagination>
       <PaginationContent>
@@ -12,9 +12,9 @@ export default function MapPaginationLoader() {
             className={ 'opacity-25 pointer-events-none' }
           />
         </PaginationItem>
-        { Array.from({ length: 3 }, (_, page) => (
+        { Array.from({ length: 5 }, (_, page) => (
           <PaginationItem key={ `pagination-loader-item-${page + 1}` }>
-            <PaginationLink href={`/?page=${page + 1}`}>{ page + 1 }</PaginationLink>
+            <PaginationLink href={`/side-quests?page=${page + 1}`}>{ page + 1 }</PaginationLink>
           </PaginationItem>
         ))}
         <PaginationItem>

@@ -1,5 +1,5 @@
 import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
-import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types";
+import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeReferencedMapsSkeleton, TypeZombieAttacksSkeleton } from "@/contentful/Types/contentful-types";
 import type { ZombieItem } from "@/types/ZombieItem";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
@@ -85,6 +85,7 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
 
   if (TypeGuards.hasProperty(item.fields, 'rarity')) {
     return {
+      id: item.sys.id,
       title: item.fields.title,
       image: createImageDTO(itemImage),
       description: item.fields.description,
@@ -94,6 +95,7 @@ export const createItemTooltipDTO = (item: ZombieItem) => {
   }
 
   return {
+    id: item.sys.id,
     title: item.fields.title,
     image: createImageDTO(itemImage),
     description: item.fields.description
@@ -116,10 +118,20 @@ export const createMapCategoryDTO = (category: Entry<TypeGameCategorySkeleton, u
   }
 }
 
-export const createQuestMapDTO = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string> | undefined) => {
+export const createQuestMapDTO = <T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(map: Entry<T, undefined, string> | undefined) => {
   if (!map) throw new Error("Expected quest to have a map")
   return {
     title: map.fields.title,
     slug: map.fields.slug
+  }
+}
+
+export const createZombieAttackDTO = (attack: Entry<TypeZombieAttacksSkeleton, undefined, string> | undefined) => {
+  if (!attack) throw new Error("Expected zombie to have an attack")
+  return {
+    id: attack.sys.id,
+    name: attack.fields.name,
+    range: attack.fields.range,
+    description: attack.fields.description
   }
 }

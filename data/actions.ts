@@ -7,6 +7,7 @@ import { IN_DEVELOPMENT } from "@/utils/constants"
 import { draftMode } from "next/headers"
 import { z } from "zod"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 
 export const subscribeToNewsletter = createAction
   .metadata({ actionName: "subscribeToNewsletter" })
@@ -46,10 +47,12 @@ export const toggleDraftMode = createAction
     if (draft.isEnabled) {
       draft.disable()
       console.log("Draft mode disabled")
+      revalidatePath(pathname)
       redirect(pathname)
     } else {
       draft.enable()
       console.log("Draft mode enabled")
+      revalidatePath(pathname)
       redirect(pathname)
     }
   })

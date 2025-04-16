@@ -1,9 +1,6 @@
-import { ReadonlyURLSearchParams } from "next/navigation";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { TypeGuards } from "./functions";
 
-export interface SearchParams extends z.infer<typeof SearchParamsSchema> {}
 export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
 
 export const FeedbackFormSchema = zfd.formData({
@@ -57,37 +54,3 @@ export const TerminusCodeSchema = z.object({
   y: z.coerce.number().nonnegative().int().max(99),
   z: z.coerce.number().nonnegative().int().max(99),
 })
-
-const stringOrStringArray = z.union([z.string(), z.array(z.string())])
-
-const SearchParamsSchema = z.object({
-  page: stringOrStringArray
-  .optional()
-  .transform(val => {
-    if (TypeGuards.isArray(val)) val = val[0]
-    const parsed = parseInt(val || '1', 10)
-    return isNaN(parsed) || parsed < 1 ? 1 : parsed
-  }),
-  game: stringOrStringArray.optional(),
-  map: stringOrStringArray.optional(),
-  difficulty: stringOrStringArray.optional()
-})
-
-export const UnsubscribePageSchema = z.object({
-  token: z.string().uuid(),
-  email: stringOrStringArray
-  .transform(val => {
-    if (TypeGuards.isArray(val)) val = val[0]
-    return val
-  })
-})
-
-export const validateSearchParams = async (searchParams: Promise<SearchParams> | ReadonlyURLSearchParams | undefined) => {
-  let input
-
-  if (searchParams instanceof Promise) input = await searchParams
-  else input = searchParams
-
-  if (!input) return { page: 1 }
-  return SearchParamsSchema.parse(input)
-}

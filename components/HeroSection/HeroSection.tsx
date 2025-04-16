@@ -1,6 +1,7 @@
 import { Button } from "../ui/button"
-import { Book } from "lucide-react"
+import { Book, Brain } from "lucide-react"
 import { CustomLink } from "../CustomLink/CustomLink"
+import { NewBadge } from "../CustomBadges/CustomBadges"
 
 export default function HeroSection() {
   return (
@@ -19,11 +20,18 @@ export default function HeroSection() {
       <p className="text-base md:text-lg">
         Explore our comprehensive guides to the most challenging and rewarding Main Quests, Side Quests, and Easter Eggs in Call of Duty: Zombies.
       </p>
-      <div className="flex items-center justify-center w-full mt-8">
+      <div className="flex flex-wrap items-center justify-center w-full gap-4 mt-8">
         <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
           <CustomLink href="/side-quests" className="flex gap-2 rounded-sm items-center justify-center">
             <Book className="size-4" />
             <span>View Side Quests</span>
+          </CustomLink>
+        </Button>
+        <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
+          <CustomLink href="/bestiary" className="relative flex gap-2 rounded-sm items-center justify-center">
+            <NewBadge className="absolute -top-2.5 -right-3" />
+            <Brain className="size-4" />
+            <span>View Bestiary</span>
           </CustomLink>
         </Button>
       </div>

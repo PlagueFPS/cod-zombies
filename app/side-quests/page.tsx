@@ -1,6 +1,6 @@
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
 import GridSection from "@/components/GridSection/GridSection";
-import MapGridLoader from "@/components/Loaders/MapGridLoader";
+import GridLoader from "@/components/Loaders/GridLoader";
 import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
 import { SideQuestFilters } from "@/components/QuestFilters/QuestFilters";
 import { SideQuestGrid } from "@/components/QuestGrid/QuestGrid";
@@ -9,26 +9,22 @@ import { GLOBAL_OG_PROPS } from "@/utils/constants";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-export const generateMetadata = (): Metadata => {
-  const title = 'Side Quests'
-  const description = 'Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.'
-  return {
-    title,
-    description,
-    openGraph: {
-      ...GLOBAL_OG_PROPS.openGraph,
-      title,
-      description,
-      url: `/side-quests`
-    },
-    twitter: {
-      title,
-      description,
-      card: 'summary_large_image'
-    },
-    alternates: {
-      canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests`
-    }
+export const metadata: Metadata = {
+  title: 'Side Quests',
+  description: 'Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.',
+  openGraph: {
+    ...GLOBAL_OG_PROPS.openGraph,
+    title: 'Side Quests',
+    description: 'Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.',
+    url: '/side-quests'
+  },
+  twitter: {
+    title: 'Side Quests',
+    description: 'Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.',
+    card: 'summary_large_image'
+  },
+  alternates: {
+    canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests`
   }
 }
 
@@ -45,7 +41,7 @@ export default function SideQuests() {
           <Suspense fallback={<QuestFilterLoader />}>
             <SideQuestFilters />
           </Suspense>
-          <Suspense fallback={<MapGridLoader />}>
+          <Suspense fallback={<GridLoader />}>
             <SideQuestGrid  />
           </Suspense>
         </GridSection>

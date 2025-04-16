@@ -2,11 +2,13 @@ import { MetadataRoute } from "next";
 import { getMaps } from "@/data/maps";
 import { env } from "@/env";
 import { getQuests } from "@/data/sideQuests";
+import { getZombies } from "@/data/zombies";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const mapsPromise = getMaps(false)
   const questsProimse = getQuests(false)
-  const [maps, quests] = await Promise.all([mapsPromise, questsProimse])
+  const zombiesPromise = getZombies(false)
+  const [maps, quests, zombies] = await Promise.all([mapsPromise, questsProimse, zombiesPromise])
   const searchMaps = maps.filter(map => !map.isComingSoon)
 
   return [
@@ -26,5 +28,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`,
       lastModified: new Date(q.updatedAt),
     })),
+    {
+      url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary`,
+      lastModified: new Date(zombies[0].updatedAt)
+    },
+    ...zombies.map(z => ({
+      url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${z.slug}`,
+      lastModified: new Date(z.updatedAt)
+    }))
   ]
 }

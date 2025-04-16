@@ -1,12 +1,12 @@
 import richStyles from '@/components/RichText/RichText.module.css'
-import { getMaps, getMapBySlug } from '@/data/maps'
+import { getMaps, getMapBySlug, getMapSearchData } from '@/data/maps'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import TableOfContents from '@/components/TableOfContents/TableOfContents'
-import { CustomLink } from '@/components/CustomLink/CustomLink'
+import { CustomLink, HashLinkHandler } from '@/components/CustomLink/CustomLink'
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
@@ -28,7 +28,7 @@ interface MapPageProps {
 
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
   const map = await getMapBySlug(draftMode, slug, true)
-  if (!map) {
+  if (!map || map.isComingSoon) {
     notFound()
   }
   const maps = await getMaps(draftMode)
@@ -42,9 +42,9 @@ const getPageData = cache(async (draftMode: boolean, slug: string) => {
 })
 
 export const generateStaticParams = async () => {
-  const featuredMaps = await getMaps(false)
+  const featuredMaps = await getMapSearchData(false)
 
-  return featuredMaps.filter(map => !map.isComingSoon).map(map => ({
+  return featuredMaps.map(map => ({
     game: map.game.slug,
     slug: map.slug
   }))
@@ -155,6 +155,7 @@ export default async function MapPage({ params }: MapPageProps) {
           <TableOfContents headings={ headings } />
         </div>
       </div>
+      <HashLinkHandler />
     </section>
   )
 }

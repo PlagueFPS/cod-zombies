@@ -3,7 +3,7 @@ import { getQuests } from "@/data/sideQuests"
 import { draftMode } from "next/headers"
 import { Suspense } from "react"
 import QuestGridClient from "./QuestGrid.client"
-import MapGridLoader from "@/components/Loaders/MapGridLoader"
+import GridLoader from "@/components/Loaders/GridLoader"
 
 export async function MainQuestGrid() {
   const { isEnabled } = await draftMode()
@@ -14,7 +14,7 @@ export async function MainQuestGrid() {
   })
 
   return (
-    <Suspense fallback={<MapGridLoader />}>
+    <Suspense fallback={<GridLoader />}>
       <QuestGridClient quests={ clientMaps } draftMode={ isEnabled } />
     </Suspense>
   )
@@ -29,7 +29,7 @@ export async function SideQuestGrid() {
   })
 
   return (
-    <Suspense fallback={<MapGridLoader />}>
+    <Suspense fallback={<GridLoader />}>
       <QuestGridClient quests={ clientQuests } draftMode={ isEnabled } />
     </Suspense>
   )

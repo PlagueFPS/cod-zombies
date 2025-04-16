@@ -77,6 +77,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
               <FeaturedImage 
                 featuredImage={ quest.image } 
                 priority={ priority }
+                alt={ alt }
                 sizes='272px'
                 className="h-44 object-cover"
               />

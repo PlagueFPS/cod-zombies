@@ -42,7 +42,6 @@ export interface TypeGameCategoryFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
     releaseDate: EntryFieldTypes.Date;
-    description: EntryFieldTypes.Symbol;
     image: EntryFieldTypes.AssetLink;
 }
 
@@ -73,6 +72,15 @@ export interface TypePerksFields {
 export type TypePerksSkeleton = EntrySkeletonType<TypePerksFields, "perks">;
 export type TypePerks<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypePerksSkeleton, Modifiers, Locales>;
 
+export interface TypeReferencedMapsFields {
+    title: EntryFieldTypes.Symbol;
+    slug: EntryFieldTypes.Symbol;
+    releaseDate: EntryFieldTypes.Date;
+}
+
+export type TypeReferencedMapsSkeleton = EntrySkeletonType<TypeReferencedMapsFields, "referencedMaps">;
+export type TypeReferencedMaps<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeReferencedMapsSkeleton, Modifiers, Locales>;
+
 export interface TypeSideQuestsFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
@@ -87,20 +95,29 @@ export interface TypeSideQuestsFields {
 export type TypeSideQuestsSkeleton = EntrySkeletonType<TypeSideQuestsFields, "sideQuests">;
 export type TypeSideQuests<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeSideQuestsSkeleton, Modifiers, Locales>;
 
+export interface TypeZombieAttacksFields {
+    name: EntryFieldTypes.Symbol;
+    range: EntryFieldTypes.Symbol<"Long" | "Medium" | "Short">;
+    description: EntryFieldTypes.Text;
+}
+
+export type TypeZombieAttacksSkeleton = EntrySkeletonType<TypeZombieAttacksFields, "zombieAttacks">;
+export type TypeZombieAttacks<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeZombieAttacksSkeleton, Modifiers, Locales>;
+
 export interface TypeZombiesFields {
     name: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    releaseDate: EntryFieldTypes.Date;
     description: EntryFieldTypes.Symbol;
     image: EntryFieldTypes.AssetLink;
     type: EntryFieldTypes.Symbol<"Boss" | "Elite" | "Normal" | "Special">;
     games: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>>;
-    weaknesses?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeAmmoModsSkeleton>>;
+    maps: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeFeaturedMapsSkeleton | TypeReferencedMapsSkeleton>>;
+    elementalWeakness?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeAmmoModsSkeleton>>;
+    attacks: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeZombieAttacksSkeleton>>;
     weakPoints: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
     speed: EntryFieldTypes.Symbol<"Fast" | "Medium" | "Slow">;
     spawnBehavior: EntryFieldTypes.Symbol;
-    attacks: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
-    baseHealth: EntryFieldTypes.Integer;
-    doesHealthScale: EntryFieldTypes.Boolean;
     combatStrategy: EntryFieldTypes.RichText;
 }
 

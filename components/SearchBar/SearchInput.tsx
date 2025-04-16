@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
-import { Book, BookText, Search } from "lucide-react";
+import { Book, BookText, Brain, Search } from "lucide-react";
 import { DialogDescription, DialogTitle } from "../ui/dialog";
 import { cn } from "@/lib/utils";
 
@@ -35,15 +35,21 @@ interface SearchInputProps {
       slug: string
     }
   }[]
+  zombies: {
+    id: string
+    slug: string
+    title: string
+  }[]
 }
 
 const filters = [
   { name: "All", icon: Search },
   { name: "Main Quests", icon: BookText },
-  { name: "Side Quests", icon: Book }
+  { name: "Side Quests", icon: Book },
+  { name: "Zombies", icon: Brain }
 ]
 
-export default function SearchInput({ maps, games, quests }: SearchInputProps) {
+export default function SearchInput({ maps, games, quests, zombies }: SearchInputProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("All")
@@ -75,7 +81,7 @@ export default function SearchInput({ maps, games, quests }: SearchInputProps) {
       <Button type="button" size="sm" variant="outline" className="relative hidden sm:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm" onClick={ () => setOpen(!open) }>
         <Search className="size-5" />
         <span className="text-sm">
-          Search Quests...
+          Search Guides...
         </span>
         <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100">
           <span className="text-xs">Ctrl+K</span>
@@ -88,14 +94,14 @@ export default function SearchInput({ maps, games, quests }: SearchInputProps) {
         className="flex sm:hidden text-muted-foreground" 
         onClick={ () => setOpen(!open) }
         title="Search"
-        aria-label="Search for Quests"
+        aria-label="Search Guides"
       >
         <Search className="size-6" />
       </Button>
       <CommandDialog open={ open } onOpenChange={ setOpen }>
         <DialogTitle className="sr-only">Search Bar</DialogTitle>
         <DialogDescription className="sr-only">Search for quests</DialogDescription>
-        <CommandInput placeholder="Search for quests" className="text-base" />
+        <CommandInput placeholder="Search guides, zombies" className="text-base" />
         <div className="flex p-2 gap-1">
           { filters.map(f => (
             <Button
@@ -151,6 +157,16 @@ export default function SearchInput({ maps, games, quests }: SearchInputProps) {
                   </CommandGroup>
                 ))}
               </>
+            ) : null}
+            { filter === "All" || filter === "Zombies" ? (
+              <CommandGroup heading="Zombies">
+                { zombies.map(zombie => (
+                  <CommandItem key={ zombie.id } onSelect={() => onSelectHandler(`/bestiary/${zombie.slug}`)} className="gap-2 cursor-pointer">
+                    <Brain className="size-4" />
+                    <span className="blur-none">{ zombie.title }</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
             ) : null}
           </CommandList>
         </div>

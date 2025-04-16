@@ -116,4 +116,9 @@
       @apply bg-gradient-to-tr dark:from-red-950 dark:via-red-800 dark:to-red-950 dark:border-red-600 dark:text-red-200
       text-red-800 from-red-50 via-red-200 to-red-50 border-red-400
     }
+
+    .badge-elite-gradient {
+      @apply bg-gradient-to-tr dark:from-rose-950 dark:via-rose-800 dark:to-rose-950 dark:border-rose-600 dark:text-rose-200
+      text-rose-800 from-rose-50 via-rose-200 to-rose-50 border-rose-400
+    }
   }

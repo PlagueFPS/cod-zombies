@@ -3,7 +3,7 @@ import GridSection from "@/components/GridSection/GridSection";
 import { Suspense } from "react";
 import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader";
 import { MainQuestFilters } from "@/components/QuestFilters/QuestFilters";
-import MapGridLoader from "@/components/Loaders/MapGridLoader";
+import GridLoader from "@/components/Loaders/GridLoader";
 import { MainQuestGrid } from "@/components/QuestGrid/QuestGrid";
 import type { Metadata } from "next";
 import { env } from "@/env";
@@ -22,7 +22,7 @@ export default function Home() {
         <Suspense fallback={<MapFiltersLoader />}>
           <MainQuestFilters />
         </Suspense>
-        <Suspense fallback={<MapGridLoader />}>
+        <Suspense fallback={<GridLoader />}>
           <MainQuestGrid  />
         </Suspense>
       </GridSection>

@@ -10,6 +10,8 @@ interface QuestSearchParamsResult {
   mapParams: string[];
   /** Array of selected difficulty parameter values */
   difficultyParams: string[];
+  /** Array of selected type parameter values */
+  typeParams: string[];
   /** Current page number */
   page: number;
   /** Next.js searchParams object */
@@ -39,13 +41,13 @@ interface QuestSearchParamsResult {
    * @param currentValues - The current values of the parameter
    * @returns The new values of the parameter after toggling
    */
-  toggleParam: (paramName: string, value: string, currentValues: string[]) => string[];
+  toggleParam: (paramName: Param, value: string, currentValues: string[]) => string[];
   /**
    * Clears a specific parameter from the URL.
    * 
    * @param paramName - The name of the parameter to clear
    */
-  clearParam: (paramName: string) => void;
+  clearParam: (paramName: Param) => void;
   /**
    * Creates a new `URLSearchParams` object with the current search parameters.
    * 
@@ -60,20 +62,23 @@ interface QuestSearchParamsResult {
   updateURLParams: (params: URLSearchParams) => void;
 }
 
+type Param = "type" | "map" | "game" | "difficulty"
+
 /**
- * Custom hook for managing quest-related search parameters in the URL.
+ * Custom hook for managing site search parameters in the URL.
  * Provides utilities for reading, updating, and validating search parameters.
  * 
  * @returns An object containing the current search parameters and utility functions
  * to manipulate them.
  */
-export function useQuestSearchParams(): QuestSearchParamsResult {
+export function useSiteSearchParams(): QuestSearchParamsResult {
   const searchParams = useSearchParams()
   
   // Extract common parameters
   const gameParams = searchParams.getAll("game")
   const mapParams = searchParams.getAll("map")
   const difficultyParams = searchParams.getAll("difficulty")
+  const typeParams = searchParams.getAll("type")
   const pageParam = searchParams.get("page")
   const page = pageParam ? parseInt(pageParam) : 1
 
@@ -111,10 +116,11 @@ export function useQuestSearchParams(): QuestSearchParamsResult {
     params.delete("game")
     params.delete("map")
     params.delete("difficulty")
+    params.delete("type")
     updateURLParams(params)
   }, [createParams, updateURLParams])
   
-  const toggleParam = useCallback((paramName: string, value: string, currentValues: string[]) => {
+  const toggleParam = useCallback((paramName: Param, value: string, currentValues: string[]) => {
     const params = createParams()
     params.delete(paramName)
     
@@ -128,7 +134,7 @@ export function useQuestSearchParams(): QuestSearchParamsResult {
     return newValues
   }, [createParams, updateURLParams])
   
-  const clearParam = useCallback((paramName: string) => {
+  const clearParam = useCallback((paramName: Param) => {
     const params = createParams()
     params.delete(paramName)
     updateURLParams(params)
@@ -139,6 +145,7 @@ export function useQuestSearchParams(): QuestSearchParamsResult {
     gameParams,
     mapParams,
     difficultyParams,
+    typeParams,
     page,
     searchParams,
     
