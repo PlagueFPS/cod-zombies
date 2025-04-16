@@ -1,5 +1,4 @@
 import BestiaryBreadcrumbsLoader from '@/components/Loaders/BestiaryBreadcrumbLoader'
-import GridCardLoader from '@/components/Loaders/GridCardLoader'
 import ImageLoader from '@/components/Loaders/ImageLoader'
 import PrevOrNextCardLoader from '@/components/Loaders/PrevOrNextCardLoader'
 import { Button } from '@/components/ui/button'

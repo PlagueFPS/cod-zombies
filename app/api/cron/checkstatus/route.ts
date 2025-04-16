@@ -70,6 +70,10 @@ export async function GET() {
         console.log(`[STATUS ENFORCEMENT] Revalidating game categories...`)
         revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
       }
+      if (typesToRevalidate.includes("zombie")) {
+        console.log(`[STATUS ENFORCEMENT] Revalidating zombies...`)
+        revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
+      }
   }
 
   console.log("[CRON] checkstatus cron job completed")
