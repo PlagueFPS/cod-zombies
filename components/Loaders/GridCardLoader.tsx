@@ -7,7 +7,8 @@ export default function GridCardLoader() {
     <Card className="relative h-[400px] w-[322px]">
       {/* Badge loader */}
       <div className="absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1">
-        <Skeleton className="rounded-full w-36 h-6" />
+        <Skeleton className="rounded-full w-24 h-6" />
+        <Skeleton className="rounded-full w-24 h-6" />
       </div>
       {/* Content Loader */}
       <CardHeader className="flex gap-2 flex-grow">
