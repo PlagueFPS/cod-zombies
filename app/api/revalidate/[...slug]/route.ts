@@ -1,6 +1,7 @@
 import { getGameById, storeNewGameId } from "@/data/games";
 import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps";
 import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
+import { getZombieById, storeNewZombieId } from "@/data/zombies";
 import { env } from "@/env";
 import { sendBroadcastEmailUseCase } from "@/usecases/email";
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants";
@@ -124,6 +125,20 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
       revalidatePath(path)
       return Response.json({ revalidated: true, message: `${path} and quest data revalidated` }, { status: 201 })
+    }
+    case 'zombies': {
+      if (isFirstTimePublish(createdAt, updatedAt)) {
+        const { error } = await storeNewZombieId(entryId, createdAt)
+        revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
+        return Response.json({ revalidated: true, message: error ?? `${entryId} stored as new` }, { status: 201 })
+      }
+
+      const zombie = await getZombieById(IN_DEVELOPMENT, entryId)
+      if (!zombie) return Response.json({ revalidated: false, message: `zombie not found ID: ${entryId}`}, { status: 404 })
+      const path = `/bestiary/${zombie.slug}`
+      revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
+      revalidatePath(path)
+      return Response.json({ revalidated: true, message: `${path} and zombie data revalidated` }, { status: 201 })
     }
     default: {
       return Response.json({ revalidated: false, message: `Invalid Params: ${slug}` }, { status: 400 })

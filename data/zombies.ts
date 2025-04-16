@@ -85,12 +85,28 @@ export const getZombieBySlug = cache(unstable_cache(async (draftMode: boolean, s
   tags: [CACHE_KEYS.ZOMBIES.ALL]
 }))
 
+export const getZombieById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
+  const zombies = await INTERNAL_getZombies(draftMode)
+  const zombie = zombies.find(z => z.sys.id === id)
+  if (!zombie) return null
+  
+  return {
+    slug: zombie.fields.slug
+  }
+}, [], {
+  tags: [CACHE_KEYS.ZOMBIES.ALL]
+}))
+
 export const getReferencedMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const maps = await INTERNAL_getReferencedMaps(draftMode)
   return maps.map(map => ({...createQuestMapDTO(map), id: map.sys.id }))
 }, [], {
   tags: [CACHE_KEYS.ZOMBIES.ALL]
 }))
+
+export const storeNewZombieId = async (zombieId: string, createdAt: string) => {
+  return await tryCatch(NEW_ENTRY_KV.set(zombieId, createdAt, "Published", "zombie"))
+}
 
 const getZombieIds = cache(unstable_cache(async () => {
   const zombiesPromise = getManagementEntries("zombies")
