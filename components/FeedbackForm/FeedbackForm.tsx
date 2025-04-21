@@ -88,7 +88,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
     <div className="flex justify-center items-center">
       <Dialog open={ open } onOpenChange={ setOpen }>
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm" className={cn("hidden sm:flex gap-2 rounded-sm text-muted-foreground", className)} {...props}>
+          <Button variant="outline" size="sm" className={cn("flex gap-2 rounded-sm text-muted-foreground", className)} {...props}>
             <MessageCircleHeart className="size-5" />
             Feedback
             <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100">
@@ -96,17 +96,6 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
             </kbd>
           </Button>
         </DialogTrigger>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className={cn("flex sm:hidden rounded-sm text-muted-foreground", className)} 
-          onClick={ () => setOpen(!open) }
-          title="Feedback"
-          aria-label="Give us your Feedback"
-          {...props}
-        >
-          <MessageCircleHeart className="size-6" />
-        </Button>
         <DialogContent className="rounded-lg">
           <DialogHeader>
             <DialogTitle>Feedback Form</DialogTitle>

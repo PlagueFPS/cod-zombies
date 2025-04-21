@@ -8,6 +8,7 @@ import { DialogDescription, DialogTitle } from "../ui/dialog";
 import { cn } from "@/lib/utils";
 
 interface SearchInputProps {
+  showFull?: boolean
   maps: {
     id: string
     slug: string
@@ -49,7 +50,7 @@ const filters = [
   { name: "Zombies", icon: Brain }
 ]
 
-export default function SearchInput({ maps, games, quests, zombies }: SearchInputProps) {
+export default function SearchInput({ showFull, maps, games, quests, zombies }: SearchInputProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("All")
@@ -78,12 +79,12 @@ export default function SearchInput({ maps, games, quests, zombies }: SearchInpu
 
   return (
     <>
-      <Button type="button" size="sm" variant="outline" className="relative hidden sm:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm" onClick={ () => setOpen(!open) }>
+      <Button type="button" size="sm" variant="outline" className={cn("relative hidden sm:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm", { 'flex': showFull })} onClick={ () => setOpen(!open) }>
         <Search className="size-5" />
         <span className="text-sm">
           Search Guides...
         </span>
-        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100">
+        <kbd className={cn("ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-muted text-muted-foreground font-medium opacity-100", { 'hidden': showFull })}>
           <span className="text-xs">Ctrl+K</span>
         </kbd>
       </Button>
@@ -91,7 +92,7 @@ export default function SearchInput({ maps, games, quests, zombies }: SearchInpu
         type="button" 
         size="icon" 
         variant="ghost" 
-        className="flex sm:hidden text-muted-foreground" 
+        className={cn("flex sm:hidden text-muted-foreground", { 'hidden': showFull })} 
         onClick={ () => setOpen(!open) }
         title="Search"
         aria-label="Search Guides"

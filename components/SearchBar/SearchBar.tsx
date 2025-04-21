@@ -5,7 +5,11 @@ import { getGames } from "@/data/games"
 import { getQuestSearchData } from "@/data/sideQuests"
 import { getZombieSearchData } from "@/data/zombies"
 
-export default async function SearchBar() {
+interface ISearchBar {
+  showFull?: boolean
+}
+
+export default async function SearchBar({ showFull }: ISearchBar) {
   const { isEnabled } = await draftMode()
   const mapsPromise = getMapSearchData(isEnabled)
   const gamesPromise = getGames(isEnabled)
@@ -30,6 +34,7 @@ export default async function SearchBar() {
         games={ modifiedGames }
         quests={ quests }
         zombies={ modifiedZombies }
+        showFull={ showFull }
       />
     </div>
   )

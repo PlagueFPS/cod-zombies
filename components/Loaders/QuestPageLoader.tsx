@@ -61,7 +61,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
           </div>
 
           {/* Table of Contents loader */}
-          <div className="hidden xl:block sticky top-4 ml-4 flex-shrink-0 w-[340px] h-fit border rounded-lg px-6">
+          <div className="hidden xl:block sticky top-24 ml-4 flex-shrink-0 w-[340px] h-fit border rounded-lg px-6">
             <div className="flex flex-col gap-4 border-b pb-3">
               <div className="font-bold mx-auto mt-4">On this page</div>
               <div className="flex flex-col gap-3 h-[70vh]">
@@ -74,7 +74,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
           </div>
 
           {/* Mobile table of contents loader */}
-          <div className="sticky xl:hidden top-20 z-30 p-3 border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
+          <div className="sticky xl:hidden top-16 z-30 p-3 border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
             <div className="flex gap-2 items-center">
                 <Menu className="h-5 w-5 animate-pulse" />
                 <div className="font-bold">On this page</div>

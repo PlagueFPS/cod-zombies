@@ -20,7 +20,7 @@ export default function HeroSection() {
       <p className="text-base md:text-lg">
         Explore our comprehensive guides to the most challenging and rewarding Main Quests, Side Quests, and Easter Eggs in Call of Duty: Zombies.
       </p>
-      <div className="flex flex-wrap items-center justify-center w-full gap-4 mt-8">
+      {/* <div className="flex flex-wrap items-center justify-center w-full gap-4 mt-8">
         <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
           <CustomLink href="/side-quests" className="flex gap-2 rounded-sm items-center justify-center">
             <Book className="size-4" />
@@ -34,7 +34,7 @@ export default function HeroSection() {
             <span>View Bestiary</span>
           </CustomLink>
         </Button>
-      </div>
+      </div> */}
     </section>
   )
 }
