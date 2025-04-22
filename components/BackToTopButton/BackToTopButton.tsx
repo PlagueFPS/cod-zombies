@@ -1,8 +1,8 @@
 "use client"
 import { ArrowUp } from 'lucide-react'
-import { Button, ButtonProps } from '../ui/button'
+import { Button } from '../ui/button'
 
-interface BackToTopButtonProps extends ButtonProps {
+interface BackToTopButtonProps extends React.ComponentProps<"button"> {
   mobile?: boolean
 }
 

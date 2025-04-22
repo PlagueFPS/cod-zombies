@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { Button, type ButtonProps } from "./button"
+import { Button } from "./button"
 
 interface ErrorTitleProps {
   children: React.ReactNode
@@ -15,7 +15,7 @@ export function ErrorTitle({ children, className }: ErrorTitleProps) {
   )
 }
 
-export function ErrorButton({ children, ...props }: ButtonProps) {
+export function ErrorButton({ children, ...props }: React.ComponentProps<"button">) {
   return (
     <Button {...props}>
       { children }

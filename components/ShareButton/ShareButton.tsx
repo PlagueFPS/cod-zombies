@@ -1,5 +1,5 @@
 "use client"
-import { Button, type ButtonProps } from '../ui/button'
+import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { 
   EmailIcon,
@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 import { useState } from 'react'
 
-interface ShareButtonProps extends ButtonProps {
+interface ShareButtonProps extends React.ComponentProps<"button"> {
   title: string
   url: string
 }

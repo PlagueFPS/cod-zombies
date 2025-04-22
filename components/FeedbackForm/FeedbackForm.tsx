@@ -5,10 +5,9 @@ import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hoo
 import { submitFeedbackForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FeedbackFormSchema } from "@/utils/validationSchemas"
-import { Button, type ButtonProps } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { ScrollArea } from "../ui/scroll-area"
 import {
   Dialog,
   DialogContent,
@@ -36,7 +35,7 @@ import {
 import { cn } from "@/lib/utils"
 import { Loader2, MessageCircleHeart, Send } from "lucide-react"
 
-interface FeedbackFormProps extends ButtonProps {
+interface FeedbackFormProps extends React.ComponentProps<"button"> {
   className?: string
 }
 
