@@ -51,8 +51,11 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
             { isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null }
             { (draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null }
             { (draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null }
-            { TypeGuards.hasProperty(quest, "difficulty") ? 
-              <DifficultyBadge difficulty={ quest.difficulty } /> : 
+            { TypeGuards.hasProperty(quest, "difficulty") ? (
+                <>
+                  { quest.difficulty && <DifficultyBadge difficulty={ quest.difficulty } /> }
+                </>
+              ) :
               (
                 <Badge className='badge-primary-gradient'>
                   { quest.map.title }

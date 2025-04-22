@@ -124,7 +124,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null }
-                  <DifficultyBadge difficulty={ map.difficulty } />
+                  { map.difficulty && <DifficultyBadge difficulty={ map.difficulty } /> }
                   <Badge className='badge-primary-gradient'>{ map.game.title }</Badge>
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default async function MapPage({ params }: MapPageProps) {
           { map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null } 
           { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null }
-          <DifficultyBadge difficulty={ map.difficulty } />
+          { map.difficulty && <DifficultyBadge difficulty={ map.difficulty } /> }
           <Badge className='badge-primary-gradient'>
             { map.game.title }
           </Badge>
