@@ -19,9 +19,9 @@ export default function PreviousOrNextMapLoader() {
 
         <div className="relative z-20 flex flex-col justify-center w-full gap-2 px-4 pt-4 mb-auto">
           <Skeleton className="w-1/2 h-6" />
-          <Skeleton className="flex-shrink-0 w-full h-4" />
-          <Skeleton className="flex-shrink-0 w-full h-4" />
-          <Skeleton className="flex-shrink-0 w-full h-4" />
+          <Skeleton className="shrink-0 w-full h-4" />
+          <Skeleton className="shrink-0 w-full h-4" />
+          <Skeleton className="shrink-0 w-full h-4" />
           <div className='flex items-center mt-4 pb-4 transition-all xl:-ml-2'>
             <ChevronLeft />
             <span>Previous Map</span>
@@ -42,9 +42,9 @@ export default function PreviousOrNextMapLoader() {
           </div>
           <div className="relative z-20 flex flex-col justify-center w-full gap-2 px-4 pt-4 mb-auto">
             <Skeleton className="w-1/2 h-6" />
-            <Skeleton className="flex-shrink-0 w-full h-4" />
-            <Skeleton className="flex-shrink-0 w-full h-4" />
-            <Skeleton className="flex-shrink-0 w-full h-4" />
+            <Skeleton className="shrink-0 w-full h-4" />
+            <Skeleton className="shrink-0 w-full h-4" />
+            <Skeleton className="shrink-0 w-full h-4" />
             <div className='flex items-center mt-4 pb-4 transition-all xl:-mr-2'>
               <span className='ml-auto'>Next Map</span>
               <ChevronRight />

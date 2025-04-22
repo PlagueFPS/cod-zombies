@@ -3,7 +3,7 @@ import { SideQuest } from "@/types/SideQuest"
 import { TypeGuards } from "@/utils/functions"
 import { CustomLink } from "../CustomLink/CustomLink"
 import { cn } from "@/lib/utils"
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { ChangedBadge, ComingSoonBadge, DifficultyBadge, DraftBadge, NewBadge } from "../CustomBadges/CustomBadges"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import { Badge } from "../ui/badge"
@@ -33,7 +33,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
   }
 
   return (
-    <article className={cn("max-h-[450px] h-full group outline-none", {
+    <article className={cn("max-h-110 h-full group outline-hidden", {
       'pointer-events-none opacity-50': isComingSoon
     })}>
       <CustomLink 
@@ -57,12 +57,12 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
                 </>
               ) :
               (
-                <Badge className='badge-primary-gradient'>
+                <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>
                   { quest.map.title }
                 </Badge>
               )
             }
-            <Badge className='badge-primary-gradient'>
+            <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>
               { quest.game.title }
             </Badge>
           </div>
@@ -75,20 +75,18 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
               className='aspect-square scale-150'
             />
           </div>
-          <CardHeader className="flex gap-2 flex-grow">
-            <div className='relative overflow-hidden h-full w-full rounded-md'>
+          <CardHeader className="flex flex-col gap-2">
+            <div className='relative overflow-hidden h-full w-full'>
               <FeaturedImage 
                 featuredImage={ quest.image } 
                 priority={ priority }
                 alt={ alt }
                 sizes='272px'
-                className="h-44 object-cover"
+                className="h-44 object-cover rounded-md"
               />
             </div>
-            <div className="space-y-2">
-              <CardTitle className="group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">{ quest.title }</CardTitle>
-              <CardDescription className="text-foreground/85">{ quest.description }</CardDescription>
-            </div>
+            <CardTitle className="text-xl group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">{ quest.title }</CardTitle>
+            <CardDescription className="text-foreground/85">{ quest.description }</CardDescription>
           </CardHeader>
         </Card>
       </CustomLink>

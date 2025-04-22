@@ -9,7 +9,7 @@ interface MapSectionProps {
 export default function GridSection({ title, children, className }: MapSectionProps) {
   return (
     <section className={cn("flex flex-col gap-8 justify-center w-full", className)}>
-      <h2 className="font-extrabold text-5xl tracking-tight lg:text-6xl text-gradient">
+      <h2 className="font-extrabold text-5xl tracking-tight lg:text-6xl text-gradient dark:dark-text-gradient">
          { title }
       </h2>
       { children }

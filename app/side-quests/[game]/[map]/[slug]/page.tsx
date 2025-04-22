@@ -73,10 +73,10 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
       <div className='flex flex-col justify-start items-center max-w-[1920px] mx-auto xl:mx-4 w-full'>
-        <div className='flex flex-col-reverse xl:flex-row flex-grow w-full'>
+        <div className='flex flex-col-reverse xl:flex-row grow w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
-              <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl'>
+              <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
                   <FeaturedImage
                     featuredImage={ q.image } 
                     sizes='(max-width: 1280px) 100vw, 1280px'
@@ -84,7 +84,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                     quality={ 1 }
                   />
               </div>
-              <div className='relative z-20 max-w-screen-xl mx-auto'>
+              <div className='relative z-20 max-w-7xl mx-auto'>
                   <FeaturedImage 
                     featuredImage={ q.image }
                     sizes='(max-width: 1280px) 100vw, 1280px'
@@ -103,17 +103,17 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 </div>
               </div>
             </div>
-            <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 w-full max-w-screen-xl border-b-2'>
+            <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 w-full max-w-7xl border-b-2'>
               <div className='flex flex-col-reverse md:flex-row w-full justify-between items-start md:items-center gap-4 md:gap-0'>
-                <h2 className='font-extrabold text-3xl md:text-4xl lg:text-5xl text-gradient pb-2'>
+                <h2 className='font-extrabold text-3xl md:text-4xl lg:text-5xl text-gradient dark:dark-text-gradient pb-2'>
                   { q.title }
                 </h2>
                 <div className='flex items-center justify-center gap-4 w-fit'>
                   { (isEnabled || IN_DEVELOPMENT) && q.isDraft ? <DraftBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && q.isChanged ? <ChangedBadge /> : null }
                   { q.isNew ? <NewBadge /> : null }
-                  <Badge className='badge-primary-gradient'>{ q.game.title }</Badge>
-                  <Badge className='badge-primary-gradient'>{ q.map.title }</Badge>
+                  <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ q.game.title }</Badge>
+                  <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ q.map.title }</Badge>
                 </div>
               </div>
               <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm md:text-sm'>
@@ -134,7 +134,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
               <RichTextRenderer body={ q.content } slug={ slug } />
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
-              <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
+              <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 <Suspense fallback={<PreviousOrNextMapLoader />}> 
                   <PrevOrNextQuest quest={ q } />
                 </Suspense>
@@ -172,10 +172,10 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
           { quest.isNew ? <NewBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null }
-          <Badge className='badge-primary-gradient'>
+          <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>
             { quest.map.title }
           </Badge>
-          <Badge className='badge-primary-gradient'>
+          <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>
             { quest.game.title }
           </Badge>
         </div>
@@ -184,7 +184,7 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
               featuredImage={ quest.image }
               sizes='(max-width: 1280px) 320px, 364px'
               quality={ 1 }
-              className='object-cover scale-[2]'
+              className='object-cover scale-200'
             />
         </div>
         <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
@@ -196,7 +196,7 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
             />
         </div>
         <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
-          <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b text-gradient'>
+          <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-linear-to-b text-gradient dark:dark-text-gradient'>
             { quest.title }
           </h2>
           <p className='text-sm line-clamp-3 text-ellipsis'>{ quest.description }</p>

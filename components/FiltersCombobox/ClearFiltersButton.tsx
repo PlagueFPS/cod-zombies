@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils'
-import { Button, ButtonProps } from '../ui/button'
+import { Button } from '../ui/button'
 import { Trash2 } from 'lucide-react'
 
-interface IClearFiltersButton extends ButtonProps {}
+interface IClearFiltersButton extends React.ComponentProps<"button"> {}
 
 export default function ClearFiltersButton({ className, ...props }: IClearFiltersButton) {
   return (

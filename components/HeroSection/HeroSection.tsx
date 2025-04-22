@@ -1,17 +1,12 @@
-import { Button } from "../ui/button"
-import { Book, Brain } from "lucide-react"
-import { CustomLink } from "../CustomLink/CustomLink"
-import { NewBadge } from "../CustomBadges/CustomBadges"
-
 export default function HeroSection() {
   return (
     <section className="flex flex-col items-center justify-center gap-4 text-center max-w-2xl">
       <h1 className="flex flex-col font-extrabold text-3xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
-        <span className="text-gradient">
+        <span className="text-gradient dark:dark-text-gradient">
           Unlock the Secrets of
         </span>
         <span className="flex justify-center items-center gap-3">
-          <span className="text-gradient pb-2">
+          <span className="text-gradient dark:dark-text-gradient pb-2">
             Call of Duty: 
           </span>
           <span className="text-primary-gradient pb-2">Zombies</span>
@@ -20,21 +15,6 @@ export default function HeroSection() {
       <p className="text-base md:text-lg">
         Explore our comprehensive guides to the most challenging and rewarding Main Quests, Side Quests, and Easter Eggs in Call of Duty: Zombies.
       </p>
-      {/* <div className="flex flex-wrap items-center justify-center w-full gap-4 mt-8">
-        <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
-          <CustomLink href="/side-quests" className="flex gap-2 rounded-sm items-center justify-center">
-            <Book className="size-4" />
-            <span>View Side Quests</span>
-          </CustomLink>
-        </Button>
-        <Button asChild variant={"outline"} size={"sm"} className="badge-primary-gradient">
-          <CustomLink href="/bestiary" className="relative flex gap-2 rounded-sm items-center justify-center">
-            <NewBadge className="absolute -top-2.5 -right-3" />
-            <Brain className="size-4" />
-            <span>View Bestiary</span>
-          </CustomLink>
-        </Button>
-      </div> */}
     </section>
   )
 }

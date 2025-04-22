@@ -5,7 +5,7 @@ import Newsletter from "../Newsletter/Newsletter"
 import ContactForm from "../ContactForm/ContactForm"
 import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper"
 import Discord from "@/SVGs/DiscordSVG"
-import { Separator } from "../ui/seperator"
+import { Separator } from "../ui/separator"
 import Reddit from "@/SVGs/Reddit"
 import ExternalLink from "../ExternalLink/ExternalLink"
 import X from "@/SVGs/XSVG"
@@ -24,11 +24,11 @@ export default function Footer() {
             <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
               <X className="size-5" />
             </ExternalLink>
-            <Separator orientation="vertical" className="h-5" />
+            <Separator orientation="vertical" className="min-h-5" />
             <ExternalLink href="https://discord.gg/callofduty" title="Discord" aria-label="Join the Official Call of Duty Discord">
               <Discord className="size-5" />
             </ExternalLink>
-            <Separator orientation="vertical" className="h-5" />
+            <Separator orientation="vertical" className="min-h-5" />
             <ExternalLink href="https://www.reddit.com/r/CODZombies/" title="Reddit" aria-label="Join the Official Call of Duty: Zombies Subreddit">
               <Reddit className="size-5" />
             </ExternalLink>

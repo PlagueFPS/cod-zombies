@@ -9,7 +9,7 @@ interface ErrorTitleProps {
 export function ErrorTitle({ children, className }: ErrorTitleProps) {
   return (
     <h1 className={cn(`text-center font-extrabold text-4xl tracking-tight md:text-5xl lg:text-6xl 
-      text-transparent bg-clip-text bg-gradient-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2`, className)}>
+      text-transparent bg-clip-text bg-linear-to-b from-[#545454] to-black dark:from-white dark:to-[#adadad] pb-2`, className)}>
       { children }
     </h1>
   )

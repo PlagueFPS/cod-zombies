@@ -36,7 +36,7 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
                       <div className='flex flex-wrap gap-1'>
                         { badgeItems.map((item, index) => {
                           if (item) return (
-                            <Badge key={ `table-cell-badge-${index}` } className='badge-primary-gradient' variant={"outline"}>{ item }</Badge>
+                            <Badge key={ `table-cell-badge-${index}` } className='badge-primary-gradient dark:dark-badge-primary-gradient' variant={"outline"}>{ item }</Badge>
                           )
                         })}
                       </div>

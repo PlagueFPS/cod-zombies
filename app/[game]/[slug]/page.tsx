@@ -87,10 +87,10 @@ export default async function MapPage({ params }: MapPageProps) {
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
       <div className='flex flex-col justify-start items-center max-w-[1920px] mx-auto xl:mx-4 w-full'>
-        <div className='flex flex-col-reverse xl:flex-row flex-grow w-full'>
+        <div className='flex flex-col-reverse xl:flex-row grow w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
-              <div className='hidden dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-screen-xl'>
+              <div className='hidden dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
                   <FeaturedImage
                     featuredImage={ map.image } 
                     sizes='32px'
@@ -98,7 +98,7 @@ export default async function MapPage({ params }: MapPageProps) {
                     quality={ 1 }
                   />
               </div>
-              <div className='relative z-20 max-w-screen-xl mx-auto'>
+              <div className='relative z-20 max-w-7xl mx-auto'>
                   <FeaturedImage 
                     featuredImage={ map.image }
                     sizes='(max-width: 1280px) 100vw, 1280px'
@@ -115,9 +115,9 @@ export default async function MapPage({ params }: MapPageProps) {
                 </div>
               </div>
             </div>
-            <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 w-full max-w-screen-xl border-b-2'>
+            <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 w-full max-w-7xl border-b-2'>
               <div className='flex flex-col-reverse md:flex-row w-full justify-between items-start md:items-center gap-4 md:gap-0'>
-                <h2 className='font-extrabold text-3xl md:text-4xl lg:text-5xl text-gradient pb-2'>
+                <h2 className='font-extrabold text-3xl md:text-4xl lg:text-5xl text-gradient dark:dark-text-gradient pb-2'>
                   { map.title }
                 </h2>
                 <div className='flex items-center justify-center gap-4 w-fit'>
@@ -125,7 +125,7 @@ export default async function MapPage({ params }: MapPageProps) {
                   { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null }
                   { map.difficulty && <DifficultyBadge difficulty={ map.difficulty } /> }
-                  <Badge className='badge-primary-gradient'>{ map.game.title }</Badge>
+                  <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ map.game.title }</Badge>
                 </div>
               </div>
               <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm'>
@@ -146,7 +146,7 @@ export default async function MapPage({ params }: MapPageProps) {
               <RichTextRenderer body={ map.body } slug={ slug } />
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
-              <div className='flex flex-col lg:flex-row justify-center items-center max-w-screen-xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
+              <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
                 { nextMap && <PrevOrNextMapCard map={ nextMap } isEnabled={ isEnabled } /> }
               </div>
@@ -177,7 +177,7 @@ export default async function MapPage({ params }: MapPageProps) {
           { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null }
           { map.difficulty && <DifficultyBadge difficulty={ map.difficulty } /> }
-          <Badge className='badge-primary-gradient'>
+          <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>
             { map.game.title }
           </Badge>
         </div>

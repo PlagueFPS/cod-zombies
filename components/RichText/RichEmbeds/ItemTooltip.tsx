@@ -42,7 +42,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                     { title }
                   </span>
                 </TooltipTrigger>
-                <TooltipContent className={cn('max-w-sm w-[384px] bg-background border-orange-800/30 dark:border-orange-200/30 text-orange-800 dark:text-orange-200 p-0', {
+                <TooltipContent className={cn('max-w-sm w-[384px] bg-background border border-orange-800/30 dark:border-orange-200/30 text-orange-800 dark:text-orange-200 p-0', {
                   'border-red-600 dark:border-red-300': rarity === 'Ultra',
                   'border-orange-600 dark:border-orange-300': rarity === 'Legendary',
                   'border-purple-600 dark:border-purple-300': rarity === 'Epic',
@@ -85,7 +85,7 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
             { title }
           </span>
       </PopoverTrigger>
-      <PopoverContent side='top' className={cn('max-w-sm w-[360px] bg-background border-orange-800/30 dark:border-orange-200/30 text-orange-800 dark:text-orange-200 p-0', {
+      <PopoverContent side='top' className={cn('max-w-sm bg-background border border-orange-800/30 dark:border-orange-200/30 text-orange-800 dark:text-orange-200 p-0', {
         'border-red-600 dark:border-red-300': rarity === 'Ultra',
         'border-orange-600 dark:border-orange-300': rarity === 'Legendary',
         'border-purple-600 dark:border-purple-300': rarity === 'Epic',
@@ -133,7 +133,7 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
         </div>
       </div>
       <div className="relative flex justify-center items-center">
-        <div className="absolute top-0 bottom-0 left-0 right-0 mx-auto bg-opacity-25 w-20 rounded-full z-[9]" />
+        <div className="absolute top-0 bottom-0 left-0 right-0 mx-auto bg-opacity-25 w-20 rounded-full z-9" />
           <IconImage 
             featuredImage={ image }
             alt={ `${title} Image` }

@@ -61,6 +61,8 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
           currentSelection={ selectedMaps }
           title="Map"
           toggleParam={ toggleMap }
+          enableInput
+          inputPlaceholder="Search Map"
           clearParam={ () => clearParam("map") }
         />
         { selectedGames.length > 0 || selectedMaps.length > 0 || selectedTypes.length > 0 ? (

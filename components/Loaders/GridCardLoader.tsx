@@ -11,7 +11,7 @@ export default function GridCardLoader() {
         <Skeleton className="rounded-full w-24 h-6" />
       </div>
       {/* Content Loader */}
-      <CardHeader className="flex gap-2 flex-grow">
+      <CardHeader className="flex gap-2 grow">
         <div className="relative h-full w-full rounded-md">
           <ImageLoader className="h-44 relative border" />
         </div>

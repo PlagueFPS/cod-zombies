@@ -16,7 +16,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <>
-      <aside className='hidden xl:block sticky top-24 ml-4 z-40 flex-shrink-0 w-[340px] h-fit border rounded-lg px-6'>
+      <aside className='hidden xl:block sticky top-24 ml-4 z-40 shrink-0 w-85 h-fit border rounded-lg px-6'>
         <nav className="flex flex-col gap-4 border-b pb-3">
           <div className="font-bold mx-auto mt-4">On this page</div>
           <ScrollArea ref={ scrollAreaRef } className="h-[70vh]">

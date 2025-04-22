@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 export default function BestiaryPage() {
   return (
     <div className="flex flex-col justify-center items-center w-full">
-      <div className="container flex flex-col gap-12 justify-center items-center">
+      <div className="container flex flex-col gap-10 justify-center items-center">
         <Breadcrumbs 
           links={[
             { title: 'Bestiary', href: '/bestiary' },

@@ -109,13 +109,13 @@ export default async function ZombiePage({ params }: IZombiePage) {
           { title: zombie.name, href: `/bestiary/${zombie.slug}` }
         ]} />
       </div>
-      <Card className="mb-6 border-2 overflow-hidden bg-background">
-        <div className="bg-muted py-2 px-4 flex justify-between items-center">
+      <Card className="mb-6 border-2 overflow-hidden bg-background pt-0">
+        <div className="bg-accent py-2 px-4 flex justify-between items-center">
           <TypeBadge type={ zombie.type } />
           <ShareButton title={ zombie.name } url={`${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`} />
         </div>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-3xl md:text-4xl font-extrabold text-gradient">{ zombie.name }</CardTitle>
+        <CardHeader>
+          <CardTitle className="text-3xl md:text-4xl font-extrabold text-gradient dark:dark-text-gradient">{ zombie.name }</CardTitle>
         </CardHeader>
         <CardContent>
           <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -169,8 +169,8 @@ export default async function ZombiePage({ params }: IZombiePage) {
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
                   { zombie.slug !== "zombie"
-                    ? zombie.maps.map(map => <Badge key={ map.slug } className="mt-1 badge-changed-gradient">{ map.title }</Badge>) 
-                    : <Badge className="mt-1 badge-changed-gradient">Appears in all maps</Badge> }
+                    ? zombie.maps.map(map => <Badge key={ map.slug } className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient">{ map.title }</Badge>) 
+                    : <Badge className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient">Appears in all maps</Badge> }
                 </div>
               </div>
               <div>
@@ -180,7 +180,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">                 
                   { zombie.games.map(game => 
-                    <Badge key={ game.slug } className="mt-1 badge-primary-gradient">
+                    <Badge key={ game.slug } className="mt-1 badge-primary-gradient dark:dark-badge-primary-gradient">
                       { game.title }
                     </Badge>
                   )}
@@ -193,7 +193,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
                   { zombie.weakPoints.map((weakPoint, index) => (
-                    <Badge key={ `${weakPoint}-${index}` } className="badge-hard-gradient w-fit">{ weakPoint }</Badge>
+                    <Badge key={ `${weakPoint}-${index}` } className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">{ weakPoint }</Badge>
                   ))}
                 </div>
               </div>
@@ -215,7 +215,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
       {/* Main Content Grid */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Attacks Section */}
-        <Card className="bg-background">
+        <Card className="bg-background pt-0">
           <CardContent className="pt-6">
             <div className="flex items-center gap-2 mb-3 border-b pb-2">
               <Swords className="size-6 text-primary" />
@@ -237,7 +237,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
           </CardContent>
         </Card>
         {/* Spawn Behavior Section */}
-        <Card className="bg-background">
+        <Card className="bg-background pt-0">
           <CardContent className="pt-6">
             <div className="flex items-center gap-2 mb-3 border-b pb-2">
               <Footprints className="size-6 text-purple-600 dark:text-purple-300" />
@@ -247,7 +247,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
           </CardContent>
         </Card>
         {/* Combat Strategy Section */}
-        <Card className="bg-background">
+        <Card className="bg-background pt-0">
           <CardContent className="pt-6">
             <div className="flex items-center gap-2 mb-3 border-b pb-2">
               <Info className="size-6 text-green-600 dark:text-green-300" />
@@ -284,7 +284,7 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: { zombie: MinifiedZombie,
           { (isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
           <TypeBadge type={ zombie.type } />
-          <Badge className='badge-primary-gradient'>
+          <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>
             { zombie.games[0].title }
           </Badge>
         </div>

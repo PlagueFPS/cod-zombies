@@ -18,7 +18,7 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 
 
   return (
-    <article className="max-h-[450px] h-full group outline-none">
+    <article className="max-h-113 h-full group outline-hidden">
       <CustomLink href={ `/bestiary/${zombie.slug}` } aria-label={ `View details for ${zombie.name}` }>
         <Card className={`
           relative h-full group-hover:border-primary group-hover:scale-105 
@@ -31,7 +31,7 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
             { (draftMode || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
             { (draftMode || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
             <TypeBadge type={ zombie.type } />
-            <Badge className='badge-primary-gradient'>
+            <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>
               { zombie.games[0].title }
             </Badge>
           </div>
@@ -44,20 +44,18 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
               className='aspect-square scale-150'
             />
           </div>
-          <CardHeader className="flex gap-2 flex-grow">
-            <div className='relative overflow-hidden h-full w-full rounded-md'>
+          <CardHeader className="flex flex-col gap-2">
+            <div className='relative overflow-hidden size-full'>
               <FeaturedImage 
                 featuredImage={ zombie.image } 
                 priority={ priority }
                 alt={ alt }
                 sizes='272px'
-                className="h-44 object-cover object-top"
+                className="h-44 object-cover object-top rounded-md"
               />
             </div>
-            <div className="space-y-2">
-              <CardTitle className="group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">{ zombie.name }</CardTitle>
-              <CardDescription className="text-foreground/85">{ zombie.description }</CardDescription>
-            </div>
+            <CardTitle className="text-xl group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">{ zombie.name }</CardTitle>
+            <CardDescription className="text-foreground/85">{ zombie.description }</CardDescription>
           </CardHeader>
         </Card>
       </CustomLink>

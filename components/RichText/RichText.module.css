@@ -1,65 +1,104 @@
 .body {
-  @apply relative max-w-[80ch] px-4
+  position: relative;
+  max-width: 80ch;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .body h2 {
-  @apply relative z-30
+  position: relative;
+  z-index: 30;
 }
 
 .body h3,
 .body h4,
 .body h5,
 .body h6 {
-  @apply relative z-30 mt-8 mx-0
+  position: relative;
+  z-index: 30;
+  margin: 2rem 0 0 0;
 }
 .body p {
-  @apply my-8 tracking-wide
+  margin: 2rem 0;
+  letter-spacing: 0.025em;
 }
 
 .body b, .body strong {
-  @apply font-extrabold
+  font-weight: 800;
 }
 
 .body p a {
-  @apply relative inline-flex z-30 text-orange-600 font-medium dark:text-primary underline underline-offset-4 hover:no-underline transition-all
+  position: relative;
+  display: inline-flex;
+  z-index: 30;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: var(--color-orange-600);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.body p a:hover {
+  text-decoration: none;
 }
 
 .body blockquote p {
-  @apply my-0 italic
+  margin-top: 0;
+  margin-bottom: 0;
+  font-style: italic;
 }
 
 .body blockquote button {
-  @apply italic
+  font-style: italic;
 }
 
 .body ul, .body ol {
-  @apply p-4 rounded-lg border list-disc
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg, var(--radius));
+  list-style-type: disc;
 }
 
 .body ul ul, .body ol ol {
-  @apply -mt-4 list-[circle]
+  margin-top: -1rem;
+  list-style-type: circle;
 }
 
 .body ul li, .body ol li {
-  @apply my-4 mx-8 marker:font-extrabold
+  margin: 1rem 2rem;
+
+}
+
+body ul li::marker, .body ol li::marker {
+  font-weight: 800;
 }
 
 .body ul li p, .body ol p {
-  @apply m-0
+  margin: 0;
 }
 
 .body table {
-  @apply table-fixed
+  table-layout: fixed;
 }
 
 .body table th p {
-  @apply m-0 text-sm tracking-normal
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: calc(1.25 / 0.875);
+  letter-spacing: 0em;
 }
 
 .body table ul {
-  @apply p-0 list-none bg-transparent w-full border-none
+  padding: 0;
+  list-style-type: none;
+  background-color: transparent;
+  width: 100%;
+  border-style: none;
 }
 
 .body table ul li {
-  @apply m-0 w-full
+  margin: 0;
+  width: 100%;
 }

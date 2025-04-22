@@ -111,7 +111,7 @@ export default function SearchInput({ showFull, maps, games, quests, zombies }: 
               variant="outline"
               onClick={ () => setFilter(f.name) }
               className={cn("flex items-center space-x-1 text-xs h-5 rounded-lg p-2 py-3", {
-                'badge-primary-gradient': filter === f.name
+                'badge-primary-gradient dark:dark-badge-primary-gradient': filter === f.name
               })}
             >
               <f.icon className="size-4" />

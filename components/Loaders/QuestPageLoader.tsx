@@ -15,12 +15,12 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
     // Container loaders
     <div className="flex justify-center w-full -mt-10 xl:mt-0">
       <div className="flex flex-col justify-start items-center max-w-[1920px] mx-auto xl:mx-4 w-full">
-        <div className="flex flex-col-reverse xl:flex-row flex-grow w-full">
+        <div className="flex flex-col-reverse xl:flex-row grow w-full">
           <div className="flex flex-col items-center justify-center w-full">
             <div className="relative w-full mt-16 xl:mt-8">
             
             {/* Image and breadcrumb loaders */}
-              <div className="relative z-20 max-w-screen-xl h-[calc(50vw)] w-full xl:h-[720px] mx-auto">
+              <div className="relative z-20 max-w-7xl h-[calc(50vw)] w-full xl:h-180 mx-auto">
                 <ImageLoader className="h-full w-full border" />
                 <div className="absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex justify-center w-full">
                   { mainQuest ? <BreadcrumbLoader /> : <QuestBreadcrumbsLoader /> }
@@ -28,12 +28,12 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
               </div>
 
               {/* Map content loader */}
-              <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 max-w-screen-xl mx-auto border-b-2'>
+              <div className='relative z-20 flex flex-col justify-center gap-2 md:gap-4 mt-8 px-4 md:mt-16 mb-4 md:px-8 md:pb-6 max-w-7xl mx-auto border-b-2'>
                 <div className="flex flex-col-reverse md:flex-row w-full justify-between items-start md:items-center gap-4 md:gap-0">
                   <Skeleton className="h-6 sm:h-7 md:h-9 lg:h-12 w-1/3 pb-2" />
                   <div className="flex items-center justify-center gap-4 w-fit">
-                    <Skeleton className="h-6 w-24 badge-primary-gradient" />
-                    <Skeleton className="h-6 w-24 badge-primary-gradient" />
+                    <Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
+                    <Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
                   </div>
                 </div>
                 <div className="flex flex-col-reverse items-start justify-start md:flex-row md:items-center gap-2 text-sm">
@@ -61,7 +61,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
           </div>
 
           {/* Table of Contents loader */}
-          <div className="hidden xl:block sticky top-24 ml-4 flex-shrink-0 w-[340px] h-fit border rounded-lg px-6">
+          <div className="hidden xl:block sticky top-24 ml-4 shrink-0 w-85 h-fit border rounded-lg px-6">
             <div className="flex flex-col gap-4 border-b pb-3">
               <div className="font-bold mx-auto mt-4">On this page</div>
               <div className="flex flex-col gap-3 h-[70vh]">
@@ -74,7 +74,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
           </div>
 
           {/* Mobile table of contents loader */}
-          <div className="sticky xl:hidden top-16 z-30 p-3 border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
+          <div className="sticky xl:hidden top-16 z-30 p-3 border-b bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60 w-full">
             <div className="flex gap-2 items-center">
                 <Menu className="h-5 w-5 animate-pulse" />
                 <div className="font-bold">On this page</div>

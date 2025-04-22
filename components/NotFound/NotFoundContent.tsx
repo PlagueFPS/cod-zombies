@@ -17,9 +17,9 @@ export default function NotFoundContent({ resource, items, pathname, param }: IN
   return (
     <div className="container flex flex-col h-full">
       { items && <NotFoundBreadcrumbs items={ items } /> }
-      <div className="flex flex-col flex-grow justify-center items-center gap-12 h-[75vh]">
+      <div className="flex flex-col grow justify-center items-center gap-12 h-3/4">
         <div className="flex flex-col justify-center items-center gap-4">
-          <h1 className="text-gradient font-extrabold text-2xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+          <h1 className="text-gradient dark:dark-text-gradient font-extrabold text-2xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
             { resource } could not be found
           </h1>
           <p className="text-sm md:text-base lg:text-lg">

@@ -31,13 +31,16 @@ export const metadata: Metadata = {
 export default function SideQuests() {
   return (
     <div className='flex flex-col justify-center items-center w-full'>
-      <div className="container flex flex-col gap-12 justify-center items-center">
+      <div className="container flex flex-col gap-10 justify-center items-center">
         <Breadcrumbs 
           links={[
             { title: 'Side Quests', href: '/side-quests' },
           ]}
         />
         <GridSection title="Side Quests">
+          <p className="text-lg text-muted-foreground -mt-7 mb-2">
+            Discover the hidden secrets and rewards beyond the main story.
+          </p>
           <Suspense fallback={<QuestFilterLoader />}>
             <SideQuestFilters />
           </Suspense>

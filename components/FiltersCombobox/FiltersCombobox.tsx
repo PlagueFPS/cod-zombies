@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Button } from "../ui/button"
 import { CirclePlus, Trash } from "lucide-react"
-import { Separator } from "../ui/seperator"
+import { Separator } from "../ui/separator"
 import { Badge } from "../ui/badge"
 import { cn } from "@/lib/utils"
 import { capatilize } from "@/utils/functions"
@@ -46,17 +46,17 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
           { title }
           { currentSelection.length > 0 && (
             <>
-              <Separator orientation="vertical" className="h-5" />
+              <Separator orientation="vertical" className="min-h-5" />
               { currentSelection.length === 1 ? (
                 <>
                   { 
                     title === 'Difficulty' ? <DifficultyBadge difficulty={ capatilize(currentSelection[0]) as Difficulty } /> 
                     : title === 'Type' ? <TypeBadge type={ capatilize(currentSelection[0]) as ZombieType } /> 
-                    : <Badge className="badge-primary-gradient">{ capatilize(currentSelection[0]) }</Badge>
+                    : <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{ capatilize(currentSelection[0]) }</Badge>
                   }
                 </>
               ) : (
-                <Badge className="badge-primary-gradient">{ currentSelection.length }</Badge>
+                <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{ currentSelection.length }</Badge>
               )}
             </>
           )}
@@ -70,8 +70,8 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
             <CommandGroup>
               <div className="space-y-2 py-2">
                 { data.map(item => (
-                  <CommandItem key={ item.id } className="flex gap-2 items-center rounded">
-                    <Checkbox id={ item.id } checked={ currentSelection.includes(item.slug) } onCheckedChange={ () => toggleParam(item.slug) } />
+                  <CommandItem key={ item.id } className="flex gap-2 items-center rounded data-[selected=true]:bg-transparent">
+                    <Checkbox id={ item.id } checked={ currentSelection.includes(item.slug) } onCheckedChange={ () => toggleParam(item.slug) } className="cursor-pointer" />
                     { title === "Game" ? <FilterLogo slug={ item.slug } className="size-4" /> : null }
                     <Label htmlFor={ item.id } className="cursor-pointer font-normal w-full">
                       { title === "Difficulty" ? <DifficultyBadge difficulty={ item.title as Difficulty } /> 

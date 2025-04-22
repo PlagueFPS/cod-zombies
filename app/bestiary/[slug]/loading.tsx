@@ -15,7 +15,7 @@ export default function ZombiePageLoader() {
       </div>
       <Card className="mb-6 border-2 overflow-hidden bg-background">
         <div className="bg-muted py-2 px-4 flex justify-between items-center">
-          <Skeleton className='h-6 w-24 badge-medium-gradient' />
+          <Skeleton className='h-6 w-24 badge-medium-gradient dark:dark-badge-medium-gradient' />
           <Button 
             variant={"ghost"} 
             size={"icon"} 
@@ -73,7 +73,7 @@ export default function ZombiePageLoader() {
                   Map Appearances
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Skeleton className='h-6 w-24 badge-changed-gradient' />
+                  <Skeleton className='h-6 w-24 badge-changed-gradient dark:dark-badge-changed-gradient' />
                 </div>
               </div>
               <div>
@@ -82,7 +82,7 @@ export default function ZombiePageLoader() {
                   Game Appearances
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">                 
-                  <Skeleton className='h-6 w-24 badge-primary-gradient' />
+                  <Skeleton className='h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient' />
                 </div>
               </div>
               <div>
@@ -91,7 +91,7 @@ export default function ZombiePageLoader() {
                   Weak Points
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Skeleton className='h-6 w-24 badge-hard-gradient' />
+                  <Skeleton className='h-6 w-24 badge-hard-gradient dark:dark-badge-hard-gradient' />
                 </div>
               </div>
               <div>

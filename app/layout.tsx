@@ -70,7 +70,7 @@ export default function RootLayout({ children }: LayoutProps) {
           disableTransitionOnChange
         >
           <Header />
-          <main className="mt-10 mb-4 flex-grow" role="main" tabIndex={ -1 }>
+          <main className="mt-10 mb-4 grow" role="main" tabIndex={ -1 }>
             { children }
           </main>
           <Footer />

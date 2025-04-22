@@ -10,8 +10,8 @@ import Sidebar from './Sidebar'
 
 export default function Header() {
   return (
-    <header className='sticky z-[100] top-0 w-full' role='banner' tabIndex={ -1 }>
-      <div className='max-w-screen-xl mx-auto flex items-center w-full border-b sm:border sm:shadow-xl sm:rounded-md sm:mt-4 border-border px-2 h-16 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+    <header className='sticky z-100 top-0 w-full' role='banner' tabIndex={ -1 }>
+      <div className='max-w-7xl mx-auto flex items-center w-full border-b sm:border sm:shadow-xl sm:rounded-md sm:mt-4 border-border px-2 h-16 bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60'>
         <CustomLink href='/' aria-label='Go to Home Page' className='flex items-center justify-center gap-2 mr-auto'>
           <Image
             unoptimized
@@ -20,7 +20,7 @@ export default function Header() {
             className='size-5 rounded'
           />
           <div className='font-extrabold text-xl text-center'>
-            <span className='text-gradient'>
+            <span className='text-gradient dark:dark-text-gradient'>
               COD:
             </span>
             <span className='text-primary-gradient'> Zombies Guides</span>

@@ -13,8 +13,8 @@ export default function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoad
     <div className='group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-all'>
       <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden dark:shadow-none', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
-          <Skeleton className="h-6 w-24 badge-medium-gradient" />
-          <Skeleton className="h-6 w-24 badge-primary-gradient" />
+          <Skeleton className="h-6 w-24 badge-medium-gradient dark:dark-badge-medium-gradient" />
+          <Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
         </div>
         <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
           <ImageLoader className="h-full w-full border" />

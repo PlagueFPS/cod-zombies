@@ -19,7 +19,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <main className="mt-10 mb-4 flex-grow" role="main">
+          <main className="mt-10 mb-4 grow" role="main">
             <div className="flex flex-col justify-center items-center h-[75vh] gap-16">
               <div className="flex flex-col justify-center items-center gap-4 mx-auto">
                 <ErrorTitle>Oh no! Something went wrong!</ErrorTitle>
