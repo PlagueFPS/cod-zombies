@@ -28,7 +28,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
                 </ErrorDescription>
               </div>
               <div className="flex justify-center items-center gap-4">
-                <FeedbackForm size="default" variant="outline" />
+                <FeedbackForm />
                 <ErrorButton onClick={ () => reset() } variant="destructive">
                   Try again
                 </ErrorButton>
