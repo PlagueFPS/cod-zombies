@@ -13,10 +13,10 @@ importers:
         version: 16.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@hookform/resolvers':
         specifier: 5.0.1
-        version: 5.0.1(react-hook-form@7.56.0(react@19.1.0))
+        version: 5.0.1(react-hook-form@7.54.1(react@19.1.0))
       '@next-safe-action/adapter-react-hook-form':
         specifier: 1.0.14
-        version: 1.0.14(@hookform/resolvers@5.0.1(react-hook-form@7.56.0(react@19.1.0)))(next-safe-action@7.10.5(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(zod@3.24.1))(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-hook-form@7.56.0(react@19.1.0))(react@19.1.0)
+        version: 1.0.14(@hookform/resolvers@5.0.1(react-hook-form@7.54.1(react@19.1.0)))(next-safe-action@7.10.5(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(zod@3.24.1))(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-hook-form@7.54.1(react@19.1.0))(react@19.1.0)
       '@next/third-parties':
         specifier: 15.3.1
         version: 15.3.1(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
@@ -102,8 +102,8 @@ importers:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
       react-hook-form:
-        specifier: 7.56.0
-        version: 7.56.0(react@19.1.0)
+        specifier: ^7.54.1
+        version: 7.54.1(react@19.1.0)
       react-share:
         specifier: 5.1.1
         version: 5.1.1(react@19.1.0)
@@ -3514,8 +3514,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  react-hook-form@7.56.0:
-    resolution: {integrity: sha512-U2QQgx5z2Y8Z0qlXv3W19hWHJgfKdWMz0O/osuY+o+CYq568V2R/JhzC6OAXfR8k24rIN0Muan2Qliaq9eKs/g==}
+  react-hook-form@7.54.1:
+    resolution: {integrity: sha512-PUNzFwQeQ5oHiiTUO7GO/EJXGEtuun2Y1A59rLnZBBj+vNEOWt/3ERTiG1/zt7dVeJEM+4vDX/7XQ/qanuvPMg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -4338,10 +4338,10 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
-  '@hookform/resolvers@5.0.1(react-hook-form@7.56.0(react@19.1.0))':
+  '@hookform/resolvers@5.0.1(react-hook-form@7.54.1(react@19.1.0))':
     dependencies:
       '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.56.0(react@19.1.0)
+      react-hook-form: 7.54.1(react@19.1.0)
 
   '@humanfs/core@0.19.1': {}
 
@@ -4535,14 +4535,14 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@next-safe-action/adapter-react-hook-form@1.0.14(@hookform/resolvers@5.0.1(react-hook-form@7.56.0(react@19.1.0)))(next-safe-action@7.10.5(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(zod@3.24.1))(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-hook-form@7.56.0(react@19.1.0))(react@19.1.0)':
+  '@next-safe-action/adapter-react-hook-form@1.0.14(@hookform/resolvers@5.0.1(react-hook-form@7.54.1(react@19.1.0)))(next-safe-action@7.10.5(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(zod@3.24.1))(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-hook-form@7.54.1(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@hookform/resolvers': 5.0.1(react-hook-form@7.56.0(react@19.1.0))
+      '@hookform/resolvers': 5.0.1(react-hook-form@7.54.1(react@19.1.0))
       next: 15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-safe-action: 7.10.5(next@15.3.1-canary.8(@babel/core@7.24.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(zod@3.24.1)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-      react-hook-form: 7.56.0(react@19.1.0)
+      react-hook-form: 7.54.1(react@19.1.0)
 
   '@next/env@15.1.2': {}
 
@@ -7204,7 +7204,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  react-hook-form@7.56.0(react@19.1.0):
+  react-hook-form@7.54.1(react@19.1.0):
     dependencies:
       react: 19.1.0
 
