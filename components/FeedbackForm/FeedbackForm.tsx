@@ -44,6 +44,11 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
   const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
     formProps: {
       mode: 'onChange',
+      defaultValues: {
+        feedback: "",
+        label: "featureRequest",
+        title: "",
+      },
     },
     actionProps: {
       onSuccess: ({ data }) => {
@@ -125,7 +130,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
                       </FormItem>
                     )}
                   />
-                  <FormField 
+                  <FormField
                     control={ form.control }
                     name="label"
                     render={({ field }) => (
