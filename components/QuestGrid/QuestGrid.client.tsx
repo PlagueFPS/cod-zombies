@@ -30,7 +30,7 @@ export default function QuestGridClient({ quests, draftMode }: IQuestGridClient)
   }
 
   if (difficultyParams.length > 0) {
-    filtered = filtered.filter(quest => TypeGuards.hasProperty(quest, "difficulty") && difficultyParams.includes(quest.difficulty.toLowerCase()))
+    filtered = filtered.filter(quest => TypeGuards.hasProperty(quest, "difficulty") && quest.difficulty && difficultyParams.includes(quest.difficulty.toLowerCase()))
   }
 
   if (mapParams.length > 0) {
