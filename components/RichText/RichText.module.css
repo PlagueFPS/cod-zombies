@@ -71,7 +71,7 @@
 
 }
 
-body ul li::marker, .body ol li::marker {
+.body ul li::marker, .body ol li::marker {
   font-weight: 800;
 }
 
