@@ -13,9 +13,9 @@ export default function ZombiePageLoader() {
       <div className="absolute -top-5 left-5 z-30 pl-4 xl:pl-0 flex w-full justify-center">
         <BestiaryBreadcrumbsLoader />
       </div>
-      <Card className="mb-6 border-2 overflow-hidden bg-background">
+      <Card className="mb-6 border-2 overflow-hidden bg-background pt-0">
         <div className="bg-muted py-2 px-4 flex justify-between items-center">
-          <Skeleton className='h-6 w-24 badge-medium-gradient dark:dark-badge-medium-gradient' />
+          <Skeleton className='h-5.5 w-16 badge-medium-gradient dark:dark-badge-medium-gradient' />
           <Button 
             variant={"ghost"} 
             size={"icon"} 
@@ -27,7 +27,7 @@ export default function ZombiePageLoader() {
             <Share2 className="h-4 w-4" />
           </Button>
         </div>
-        <CardHeader className="pb-2">
+        <CardHeader>
           <Skeleton className='h-9 md:h-10 w-1/4' />
         </CardHeader>
         <CardContent>
