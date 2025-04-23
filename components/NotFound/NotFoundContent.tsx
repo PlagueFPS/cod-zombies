@@ -43,7 +43,7 @@ const NotFoundButtons = ({ items }: Omit<INotFoundContent, "param" | "resource">
       { newItems.length > 0 ? newItems.map(item => (
         <Button variant={"outline"} asChild>
           <CustomLink href={ item.href }>
-            View all { item.title }
+            View { item.title }
           </CustomLink>
         </Button>
       )) : (
