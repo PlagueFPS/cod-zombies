@@ -13,7 +13,7 @@ import Image from "next/image";
 export default function Sidebar() {
   return (
     <Sheet>
-      <SheetTrigger className="sm:hidden" title="Toggle Nav" asChild>
+      <SheetTrigger className="lg:hidden" title="Toggle Nav" asChild>
         <Button size={"icon"} variant={"ghost"}>
           <Menu className="text-muted-foreground size-6" />
         </Button>

@@ -10,8 +10,8 @@ import Sidebar from './Sidebar'
 
 export default function Header() {
   return (
-    <header className='sticky z-100 top-0 w-full' role='banner' tabIndex={ -1 }>
-      <div className='max-w-7xl mx-auto flex items-center w-full border-b sm:border sm:shadow-lg sm:dark:shadow-none sm:rounded-md sm:mt-4 border-border px-2 h-16 bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60'>
+    <header className='sticky z-100 top-0 w-full lg:px-4' role='banner' tabIndex={ -1 }>
+      <div className='max-w-7xl mx-auto flex items-center w-full border-b lg:border lg:shadow-lg lg:dark:shadow-none lg:rounded-md lg:mt-4 border-border px-2 h-16 bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60'>
         <CustomLink href='/' aria-label='Go to Home Page' className='flex items-center justify-center gap-2 mr-auto'>
           <Image
             unoptimized
@@ -26,7 +26,7 @@ export default function Header() {
             <span className='text-primary-gradient'> Zombies Guides</span>
           </div>
         </CustomLink>
-        <div className='hidden sm:flex justify-center items-center gap-8 w-fit h-full text-muted-foreground mr-8'>
+        <div className='hidden lg:flex justify-center items-center gap-8 w-fit h-full text-muted-foreground mr-8'>
           <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
             <Book className='size-4 text-orange-400 dark:text-orange-200' />
             <span className='text-shadow-2xs text-shadow-white dark:text-shadow-none font-medium'>Side Quests</span>
@@ -37,7 +37,7 @@ export default function Header() {
           </CustomLink>
         </div>
         <div className='flex justify-center items-center gap-2 w-fit h-full'>
-          <FeedbackForm className='hidden sm:flex' />
+          <FeedbackForm className='hidden lg:flex' />
           <Suspense fallback={<SearchBarLoader />}>
             <SearchBar />
           </Suspense>

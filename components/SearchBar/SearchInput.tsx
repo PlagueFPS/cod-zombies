@@ -80,7 +80,7 @@ export default function SearchInput({ showFull, maps, games, quests, zombies }: 
 
   return (
     <>
-      <Button type="button" size="sm" variant="outline" className={cn("relative hidden sm:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm", { 'flex': showFull })} onClick={ () => setOpen(!open) }>
+      <Button type="button" size="sm" variant="outline" className={cn("relative hidden lg:flex gap-x-2 w-64 text-muted-foreground text-xs rounded-sm", { 'flex': showFull })} onClick={ () => setOpen(!open) }>
         <Search className="size-5" />
         <span className="text-sm">
           Search Guides...
@@ -93,7 +93,7 @@ export default function SearchInput({ showFull, maps, games, quests, zombies }: 
         type="button" 
         size="icon" 
         variant="ghost" 
-        className={cn("flex sm:hidden text-muted-foreground", { 'hidden': showFull })} 
+        className={cn("flex lg:hidden text-muted-foreground", { 'hidden': showFull })} 
         onClick={ () => setOpen(!open) }
         title="Search"
         aria-label="Search Guides"
