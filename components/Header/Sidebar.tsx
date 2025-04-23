@@ -1,6 +1,6 @@
 import { Book, Brain, Home, Menu } from "lucide-react";
 import { Button } from "../ui/button";
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "../ui/sheet";
 import { CustomLink } from "../CustomLink/CustomLink";
 import ExternalLink from "../ExternalLink/ExternalLink";
 import { Separator } from "../ui/separator";
@@ -19,31 +19,37 @@ export default function Sidebar() {
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col z-200">
-        <SheetHeader className="border-b w-full pb-4 mt-4">
-          <CustomLink href={'/'} aria-label="Go to Home Page" className="flex items-center justify-center gap-2">
-            <Image 
-              unoptimized
-              src={ Logo }
-              alt='Call of Duty: Zombies Guides Logo'
-              className='size-5 rounded'
-            />
-            <div className='font-extrabold text-xl text-center'>
-              <span className='text-gradient dark:dark-text-gradient'>
-                COD:
-              </span>
-              <span className='text-primary-gradient'> Zombies Guides</span>
-          </div>
-          </CustomLink>
+        <SheetHeader className="border-b w-full pb-4 mt-6">
+          <SheetClose asChild>
+            <CustomLink href={'/'} aria-label="Go to Home Page" className="flex items-center justify-center gap-2">
+              <Image 
+                unoptimized
+                src={ Logo }
+                alt='Call of Duty: Zombies Guides Logo'
+                className='size-5 rounded'
+              />
+              <div className='font-extrabold text-xl text-center'>
+                <span className='text-gradient dark:dark-text-gradient'>
+                  COD:
+                </span>
+                <span className='text-primary-gradient'> Zombies Guides</span>
+            </div>
+            </CustomLink>
+          </SheetClose>
         </SheetHeader>
         <div className="flex flex-col items-start gap-6 pl-4 text-muted-foreground text-lg pb-4 w-full">
-          <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
-            <Book className='size-5 text-orange-400 dark:text-orange-200' />
-            <span className="font-medium">Side Quests</span>
-          </CustomLink>
-          <CustomLink href='/bestiary' aria-label='Go to Bestiary page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
-            <Brain className='size-5 text-orange-400 dark:text-orange-200' />
-            <span className="font-medium">Bestiary</span>
-          </CustomLink>
+          <SheetClose asChild>
+            <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
+              <Book className='size-5 text-orange-400 dark:text-orange-200' />
+              <span className="font-medium">Side Quests</span>
+            </CustomLink>
+          </SheetClose>
+          <SheetClose asChild>
+            <CustomLink href='/bestiary' aria-label='Go to Bestiary page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
+              <Brain className='size-5 text-orange-400 dark:text-orange-200' />
+              <span className="font-medium">Bestiary</span>
+            </CustomLink>
+          </SheetClose>
         </div>
         <SheetFooter className="flex flex-row justify-evenly items-center w-full gap-3 text-muted-foreground mt-auto">
           <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
