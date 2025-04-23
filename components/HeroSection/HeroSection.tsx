@@ -12,7 +12,7 @@ export default function HeroSection() {
           <span className="text-primary-gradient pb-2">Zombies</span>
         </span>
       </h1>
-      <p className="text-base md:text-lg">
+      <p className="text-foreground/75 md:text-lg">
         Explore our comprehensive guides to the most challenging and rewarding Main Quests, Side Quests, and Easter Eggs in Call of Duty: Zombies.
       </p>
     </section>

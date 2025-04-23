@@ -31,14 +31,14 @@ export const metadata: Metadata = {
 export default function BestiaryPage() {
   return (
     <div className="flex flex-col justify-center items-center w-full">
-      <div className="container flex flex-col gap-10 justify-center items-center">
+      <div className="container flex flex-col gap-6 justify-center items-center">
         <Breadcrumbs 
           links={[
             { title: 'Bestiary', href: '/bestiary' },
           ]}
         />
         <GridSection title="Bestiary">
-          <p className="text-lg text-muted-foreground -mt-7 mb-2">
+          <p className="sm:text-lg text-muted-foreground -mt-6 mb-2">
             Learn about the weaknesses, behavior, and strategies to defeat the undead horde.
           </p>
           <Suspense fallback={<BestiaryFiltersLoader />}>
