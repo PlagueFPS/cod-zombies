@@ -3,6 +3,7 @@ import Breadcrumbs from '../Breadcrumbs/Breadcrumbs'
 import GridSection from '../GridSection/GridSection'
 import BestiaryFiltersLoader from './BestiaryFiltersLoader'
 import GridLoader from './GridLoader'
+import GridPaginationLoader from './GridPaginationLoader'
 
 export default function BestiaryPageLoader() {
   const links: { title: string, href: string }[] = [
@@ -19,6 +20,7 @@ export default function BestiaryPageLoader() {
           </p>
           <BestiaryFiltersLoader />
           <GridLoader />
+          <GridPaginationLoader pages={ 7 } />
         </GridSection>
       </div>
     </div>

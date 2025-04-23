@@ -1,10 +1,8 @@
-import { PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
 import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
-import { MAP_LIMIT } from "@/utils/constants"
-import GridCardLoader from "./GridCardLoader"
-import { Pagination } from "../ui/pagination"
 import QuestFilterLoader from "./QuestFilterLoader";
 import GridSection from "../GridSection/GridSection";
+import GridLoader from "./GridLoader";
+import GridPaginationLoader from "./GridPaginationLoader";
 
 export default function SideQuestsPageLoader() {
   const links: { title: string, href: string }[] = [
@@ -12,39 +10,16 @@ export default function SideQuestsPageLoader() {
   ]
 
   return (
-    <div className="flex flex-col gap-16 justify-center items-center w-full">
-      <div className='container flex flex-col gap-16 justify-center items-center'>
+    <div className="flex flex-col justify-center items-center w-full">
+      <div className='container flex flex-col gap-10 justify-center items-center'>
         <Breadcrumbs links={ links } />
         <GridSection title="Side Quests">
+          <p className="text-lg text-muted-foreground -mt-7 mb-2">
+            Discover the hidden secrets and rewards beyond the main story.
+          </p>
           <QuestFilterLoader />  
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 items-center">
-            { Array.from({ length: MAP_LIMIT }, (_, i) => (
-              <GridCardLoader key={ `quest-card-loader-${i}` } />
-            ))}
-          </div>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  href={`#`} 
-                  aria-disabled
-                  className={ 'opacity-25 pointer-events-none' }
-                />
-              </PaginationItem>
-              { Array.from({ length: 3 }, (_, page) => (
-                <PaginationItem key={ `pagination-quest-loader-item-${page + 1}` }>
-                  <PaginationLink href={`${links.at(-1)?.href}?page=${page + 1}`}>{ page + 1 }</PaginationLink>
-                </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext 
-                  href={`#`} 
-                  aria-disabled
-                  className={ 'opacity-25 pointer-events-none' }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <GridLoader />
+          <GridPaginationLoader pages={ 5 } />
         </GridSection>
       </div>
     </div>

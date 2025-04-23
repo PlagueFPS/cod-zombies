@@ -32,7 +32,7 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
   
   const handleCopy = async() => {
     await navigator.clipboard.writeText(url)
-    toast.success('URL Copied to Clipboard!', { duration: 1500 })
+    toast.success('URL Copied to Clipboard!', { duration: 1500, position: "bottom-center" })
   }
 
   return (

@@ -1,7 +1,11 @@
 "use client"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination'
 
-export default function GridPaginationLoader() {
+interface IGridPaginationLoader {
+  pages?: number
+}
+
+export default function GridPaginationLoader({ pages = 3 }: IGridPaginationLoader) {
   return (
     <Pagination>
       <PaginationContent>
@@ -12,9 +16,9 @@ export default function GridPaginationLoader() {
             className={ 'opacity-25 pointer-events-none' }
           />
         </PaginationItem>
-        { Array.from({ length: 5 }, (_, page) => (
+        { Array.from({ length: pages }, (_, page) => (
           <PaginationItem key={ `pagination-loader-item-${page + 1}` }>
-            <PaginationLink href={`/side-quests?page=${page + 1}`}>{ page + 1 }</PaginationLink>
+            <PaginationLink href={`?page=${page + 1}`}>{ page + 1 }</PaginationLink>
           </PaginationItem>
         ))}
         <PaginationItem>

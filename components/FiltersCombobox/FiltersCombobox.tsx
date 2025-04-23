@@ -40,7 +40,7 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
           size={"sm"}
           role="combobox"
           aria-expanded={ open }
-          className="gap-2 border-dashed border-primary/25"
+          className="gap-2 border-dashed"
         >
           <CirclePlus className="size-4 text-primary" />
           { title }

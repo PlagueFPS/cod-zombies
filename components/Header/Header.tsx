@@ -11,7 +11,7 @@ import Sidebar from './Sidebar'
 export default function Header() {
   return (
     <header className='sticky z-100 top-0 w-full' role='banner' tabIndex={ -1 }>
-      <div className='max-w-7xl mx-auto flex items-center w-full border-b sm:border sm:shadow-xl sm:rounded-md sm:mt-4 border-border px-2 h-16 bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60'>
+      <div className='max-w-7xl mx-auto flex items-center w-full border-b sm:border sm:shadow-lg sm:dark:shadow-none sm:rounded-md sm:mt-4 border-border px-2 h-16 bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60'>
         <CustomLink href='/' aria-label='Go to Home Page' className='flex items-center justify-center gap-2 mr-auto'>
           <Image
             unoptimized
@@ -29,11 +29,11 @@ export default function Header() {
         <div className='hidden sm:flex justify-center items-center gap-8 w-fit h-full text-muted-foreground mr-8'>
           <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
             <Book className='size-4 text-orange-400 dark:text-orange-200' />
-            <span>Side Quests</span>
+            <span className='text-shadow-md text-shadow-white dark:text-shadow-none'>Side Quests</span>
           </CustomLink>
           <CustomLink href='/bestiary' aria-label='Go to Bestiary page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
             <Brain className='size-4 text-orange-400 dark:text-orange-200' />
-            <span>Bestiary</span>
+            <span className='text-shadow-md text-shadow-white dark:text-shadow-none'>Bestiary</span>
           </CustomLink>
         </div>
         <div className='flex justify-center items-center gap-2 w-fit h-full'>

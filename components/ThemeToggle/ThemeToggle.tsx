@@ -24,7 +24,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
               type="button" 
               aria-checked={ theme === 'light' }
               aria-label="Switch to light theme"
-              className={cn("bg-transparent text-muted-foreground size-8 rounded-full border-none", className, {
+              className={cn("bg-transparent cursor-pointer text-muted-foreground size-8 rounded-full border-none", className, {
                 'text-foreground bg-accent': theme === 'light'
               })}
               onClick={ () => setTheme("light") }
@@ -45,7 +45,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
               type="button" 
               aria-checked={ theme === 'system' }
               aria-label="Switch to system theme"
-              className={cn("bg-transparent text-muted-foreground size-8 rounded-full border-none", className, {
+              className={cn("bg-transparent cursor-pointer text-muted-foreground size-8 rounded-full border-none", className, {
                 'text-foreground bg-accent': theme === 'system' 
               })}
               onClick={ () => setTheme("system") }
@@ -66,7 +66,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
               type="button" 
               aria-checked={ theme === 'dark' }
               aria-label="Switch to dark theme" 
-              className={cn("bg-transparent text-muted-foreground size-8 rounded-full border-none", className, {
+              className={cn("bg-transparent cursor-pointer text-muted-foreground size-8 rounded-full border-none", className, {
                 'text-foreground bg-accent': theme === 'dark'
               })}
               onClick={ () => setTheme("dark") }

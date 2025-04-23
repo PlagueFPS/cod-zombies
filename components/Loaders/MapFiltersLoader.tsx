@@ -13,7 +13,7 @@ export default function MapFiltersLoader() {
           aria-expanded={ false }
           disabled
           aria-disabled
-          className='gap-2 border-dashed border-primary/25'
+          className='gap-2 border-dashed'
         >
           <CirclePlus className='size-4 text-primary' />
           { filter }

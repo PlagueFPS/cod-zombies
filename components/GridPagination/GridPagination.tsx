@@ -1,10 +1,11 @@
 "use client"
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from "@/components/ui/pagination"
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
 import { MAP_LIMIT } from "@/utils/constants"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
+import { cn } from "@/lib/utils"
 
 interface IGridPagination {
   data: unknown[]
@@ -69,33 +70,17 @@ export default function GridPagination({ data }: IGridPagination) {
   return (
     <Pagination>
       <PaginationContent>
-        <PaginationItem>
-          <Button
-            aria-label="Go to previous page"
-            variant={"ghost"}
-            aria-current={ currentPage === 1 ? "page" : undefined }
-            onClick={ () => updatePage(prevPage) }
-            aria-disabled={ previousDisabled }
-            className={ previousDisabled ? 'opacity-25 pointer-events-none' : 'gap-1 pl-2.5' }
-          >
-            <ChevronLeft className="size-4" />
-            <span>Prev</span>
-          </Button>
-        </PaginationItem>
+        <PaginationPrevious 
+          onClick={ () => updatePage(prevPage) }
+          aria-disabled={ previousDisabled }
+          className={cn({ 'opacity-25 pointer-events-none': previousDisabled })}
+        />
         { renderPaginationItems() }
-        <PaginationItem>
-          <Button
-            aria-label="Go to next page"
-            variant={"ghost"}
-            aria-current={ currentPage === totalPages ? "page" : undefined }
-            onClick={ () => updatePage(nextPage) }
-            aria-disabled={ nextDisabled }
-            className={ nextDisabled ? 'opacity-25 pointer-events-none' : 'gap-1 pr-2.5' }
-          >
-            <span>Next</span>
-            <ChevronRight className="size-4" />
-          </Button>
-        </PaginationItem>
+        <PaginationNext 
+          onClick={ () => updatePage(nextPage) }
+          aria-disabled={ nextDisabled }
+          className={cn({ 'opacity-25 pointer-events-none': nextDisabled })}
+        />
       </PaginationContent>
     </Pagination>
   )
