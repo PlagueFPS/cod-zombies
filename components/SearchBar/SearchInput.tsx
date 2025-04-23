@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Book, BookText, Brain, Search } from "lucide-react";
 import { DialogDescription, DialogTitle } from "../ui/dialog";
 import { cn } from "@/lib/utils";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 interface SearchInputProps {
   showFull?: boolean
@@ -103,22 +104,25 @@ export default function SearchInput({ showFull, maps, games, quests, zombies }: 
         <DialogTitle className="sr-only">Search Bar</DialogTitle>
         <DialogDescription className="sr-only">Search for quests</DialogDescription>
         <CommandInput placeholder="Search guides, zombies" className="text-base" />
-        <div className="flex p-2 gap-1">
-          { filters.map(f => (
-            <Button
-              key={ f.name }
-              size={"sm"}
-              variant="outline"
-              onClick={ () => setFilter(f.name) }
-              className={cn("flex items-center space-x-1 text-xs h-5 rounded-lg p-2 py-3", {
-                'badge-primary-gradient dark:dark-badge-primary-gradient': filter === f.name
-              })}
-            >
-              <f.icon className="size-4" />
-              <span className="blur-none">{ f.name }</span>
-            </Button>
-          ))}
-        </div>
+        <ScrollArea>
+          <div className="flex p-2 gap-1">
+            { filters.map(f => (
+              <Button
+                key={ f.name }
+                size={"sm"}
+                variant="outline"
+                onClick={ () => setFilter(f.name) }
+                className={cn("flex items-center text-xs h-5 rounded-lg p-2 py-3", {
+                  'badge-primary-gradient dark:dark-badge-primary-gradient': filter === f.name
+                })}
+              >
+                <f.icon className="size-4" />
+                <span className="blur-none">{ f.name }</span>
+              </Button>
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" hidden />
+        </ScrollArea>
         <div className="relative">
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>

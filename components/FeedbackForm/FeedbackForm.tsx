@@ -44,11 +44,6 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
   const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
     formProps: {
       mode: 'onChange',
-      defaultValues: {
-        feedback: "",
-        label: "featureRequest",
-        title: "",
-      },
     },
     actionProps: {
       onSuccess: ({ data }) => {

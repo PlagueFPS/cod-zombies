@@ -35,18 +35,14 @@ export default function Sidebar() {
           </div>
           </CustomLink>
         </SheetHeader>
-        <div className="flex flex-col items-start gap-6 px-2 text-muted-foreground text-lg pb-4 w-full">
-          <CustomLink href='/' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
-            <Home className='size-5 text-orange-400 dark:text-orange-200' />
-            <span>Home</span>
-          </CustomLink>
+        <div className="flex flex-col items-start gap-6 pl-4 text-muted-foreground text-lg pb-4 w-full">
           <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
             <Book className='size-5 text-orange-400 dark:text-orange-200' />
-            <span>Side Quests</span>
+            <span className="font-medium">Side Quests</span>
           </CustomLink>
           <CustomLink href='/bestiary' aria-label='Go to Bestiary page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
             <Brain className='size-5 text-orange-400 dark:text-orange-200' />
-            <span>Bestiary</span>
+            <span className="font-medium">Bestiary</span>
           </CustomLink>
         </div>
         <SheetFooter className="flex flex-row justify-evenly items-center w-full gap-3 text-muted-foreground mt-auto">

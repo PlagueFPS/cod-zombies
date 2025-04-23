@@ -32,7 +32,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
               <Sun className="size-4 transition-all" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent className="bg-background border">
+          <TooltipContent>
             Light
           </TooltipContent>
         </Tooltip>
@@ -53,7 +53,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
               <Monitor className="size-4 transition-all" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent className="bg-background border">
+          <TooltipContent>
             System
           </TooltipContent>
         </Tooltip>
@@ -74,7 +74,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
               <Moon className="size-4 transition-all" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent className="bg-background border">
+          <TooltipContent>
             Dark
           </TooltipContent>
         </Tooltip>

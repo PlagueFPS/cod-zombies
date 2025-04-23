@@ -28,7 +28,7 @@ export default function ContactForm({ className }: ContactFormProps) {
   const [open, setOpen] = useState(false)
   const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitContactForm, zodResolver(ContactFormSchema), {
     formProps: {
-      mode: 'onBlur',
+      mode: 'onChange',
     },
     actionProps: {
       onSuccess: ({ data }) => {
