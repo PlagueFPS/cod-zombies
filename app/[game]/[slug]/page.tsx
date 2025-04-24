@@ -86,26 +86,26 @@ export default async function MapPage({ params }: MapPageProps) {
 
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
-      <div className='flex flex-col justify-start items-center max-w-[1920px] mx-auto xl:mx-4 w-full'>
+      <div className='flex flex-col justify-start items-center max-w-(--desktop) mx-auto xl:mx-4 w-full'>
         <div className='flex flex-col-reverse xl:flex-row grow w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
-              <div className='hidden dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
-                  <FeaturedImage
-                    featuredImage={ map.image } 
-                    sizes='32px'
-                    priority 
-                    quality={ 1 }
-                  />
+              <div className='hidden sm:dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
+                <FeaturedImage
+                  featuredImage={ map.image } 
+                  sizes='32px'
+                  priority 
+                  quality={ 1 }
+                />
               </div>
               <div className='relative z-20 max-w-7xl mx-auto'>
-                  <FeaturedImage 
-                    featuredImage={ map.image }
-                    sizes='(max-width: 1280px) 100vw, 1280px'
-                    quality={ 100 }
-                    priority
-                    className='xl:rounded-lg overflow-hidden' 
-                  />
+                <FeaturedImage 
+                  featuredImage={ map.image }
+                  sizes='(max-width: 1280px) 100vw, 1280px'
+                  quality={ 100 }
+                  priority
+                  className='xl:rounded-lg overflow-hidden' 
+                />
                 <div className='absolute -top-10 left-0 z-30 pl-4 xl:pl-0 flex w-full justify-center'>
                   <Breadcrumbs links={[
                       { title: map.game.title, href: `/?game=${map.game.slug}` },
@@ -167,11 +167,11 @@ export default async function MapPage({ params }: MapPageProps) {
   return (
     <CustomLink 
       href={ href }
-      className={cn('group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-all', {
+      className={cn('group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-all', {
         'pointer-events-none opacity-50': map.isComingSoon,
       })}
     >
-      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden dark:shadow-none', { 'xl:flex-row-reverse': prev })}>
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
           { map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null } 
           { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null }

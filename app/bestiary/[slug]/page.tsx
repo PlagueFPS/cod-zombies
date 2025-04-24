@@ -120,14 +120,23 @@ export default async function ZombiePage({ params }: IZombiePage) {
         <CardContent>
           <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Image and Stats */}
-            <div className="flex flex-col items-center">
+            <div className="relative flex flex-col items-center">
+              <div className="hidden dark:block absolute inset-0 mx-auto w-full opacity-35 blur-3xl">
+                <FeaturedImage 
+                  featuredImage={ zombie.image }
+                  quality={ 1 }
+                  sizes="32px"
+                  priority
+                  className="w-full aspect-square rounded-lg mb-4 object-cover object-top"
+                />
+              </div>
               <FeaturedImage 
                 featuredImage={ zombie.image }
                 alt={ `${zombie.name} image`}
                 quality={ 100 }
                 sizes="422px"
                 priority
-                className="relative w-full aspect-square rounded-lg shadow-lg overflow-hidden mb-4 object-cover object-top"
+                className="w-full aspect-square rounded-lg shadow-lg dark:shadow-none overflow-hidden mb-4 object-cover object-top"
               />
               <div className="w-full space-y-3">
                 <div>
@@ -276,9 +285,9 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: { zombie: MinifiedZombie,
   return (
     <CustomLink 
       href={ href }
-      className='group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-all'
+      className='group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-all'
     >
-      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden dark:shadow-none', { 'xl:flex-row-reverse': prev })}>
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
           { zombie.isNew ? <NewBadge /> : null } 
           { (isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }

@@ -72,14 +72,14 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
-      <div className='flex flex-col justify-start items-center max-w-[1920px] mx-auto xl:mx-4 w-full'>
+      <div className='flex flex-col justify-start items-center max-w-(--desktop) mx-auto xl:mx-4 w-full'>
         <div className='flex flex-col-reverse xl:flex-row grow w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
-              <div className='absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
+              <div className='hidden sm:dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
                   <FeaturedImage
                     featuredImage={ q.image } 
-                    sizes='(max-width: 1280px) 100vw, 1280px'
+                    sizes='32px'
                     priority 
                     quality={ 1 }
                   />
@@ -166,7 +166,10 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
   const alt = `${quest.map.title} map image`
 
   return (
-    <CustomLink href={ `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}` } className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full overflow-hidden transition-transform'>
+    <CustomLink 
+      href={ `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}` } 
+      className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-transform'
+    >
       <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
           { quest.isNew ? <NewBadge /> : null }
@@ -179,12 +182,12 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
             { quest.game.title }
           </Badge>
         </div>
-        <div className={cn('absolute top-0 left-0 right-0 bottom-0 z-10 flex items-center w-full h-full opacity-35 blur-2xl')}>
+        <div className={cn('hidden absolute top-0 left-0 right-0 bottom-0 z-10 dark:flex items-center w-full h-full opacity-35 blur-2xl')}>
             <FeaturedImage 
               featuredImage={ quest.image }
-              sizes='(max-width: 1280px) 320px, 364px'
+              sizes='32px'
               quality={ 1 }
-              className='object-cover scale-200'
+              className='scale-110'
             />
         </div>
         <div className='relative flex items-center justify-center z-20 max-w-sm h-full w-full rounded-lg overflow-hidden'>
