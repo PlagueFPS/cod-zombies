@@ -5,7 +5,7 @@ import Heading2 from "../RichHeadings/Heading2/Heading2"
 import Heading3 from "../RichHeadings/Heading3/Heading3"
 import GKValve from "../RichEmbeds/GKValve"
 import RichBlockquote from "../RichBlockquote/RichBlockquote"
-import RichLink from "../RichLink/RichLink"
+import RichLink, { youtube_url } from "../RichLink/RichLink"
 import RichTable from "../RichTable/RichTable"
 import Heading4 from "../RichHeadings/Heading4/Heading4"
 import ItemTooltip from "../RichEmbeds/ItemTooltip"
@@ -44,6 +44,18 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       },
       [BLOCKS.HEADING_4]: (node: any, children: any) => {
         return <Heading4 id={ slugify(node.content[0].value) }>{ children }</Heading4>
+      },
+      [BLOCKS.PARAGRAPH]: (node: any, children: any) => {
+        let renderDiv = false
+        node.content.forEach((node: any) => {
+          if (node.nodeType ===  INLINES.HYPERLINK && node.data.uri.startsWith(youtube_url)) {
+            return renderDiv = true
+          }
+        })
+
+        if (renderDiv) return <div>{ children }</div>
+
+        return <p>{ children }</p>
       },
       [BLOCKS.EMBEDDED_ENTRY]: () => {
         switch(slug) {

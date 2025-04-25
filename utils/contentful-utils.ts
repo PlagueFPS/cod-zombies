@@ -4,6 +4,7 @@ import type { ZombieItem } from "@/types/ZombieItem";
 import type { Heading } from "@/types/Heading";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify, TypeGuards } from "./functions";
+import { youtube_url } from "@/components/RichText/RichLink/RichLink";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if (asset && TypeGuards.hasProperty(asset, 'fields') && asset.fields.file) return asset
@@ -25,6 +26,16 @@ export const extractHeadings = (body: Document) => {
           id: slugify(node.content[0].value)
         })
       }
+    } else if (node.content.some(node => node.nodeType === "hyperlink")) {
+      node.content.forEach((node: any) => {
+        if (node.nodeType === "hyperlink" && node.data.uri.startsWith(youtube_url)) {
+          headings.push({
+            type: 'heading-3',
+            text: node.content[0].value,
+            id: slugify(node.content[0].value)
+          })
+        }
+      })
     }
   })
 

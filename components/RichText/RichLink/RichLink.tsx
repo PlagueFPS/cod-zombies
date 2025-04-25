@@ -1,15 +1,16 @@
 import { env } from "@/env"
-import { getYouTubeVideoID } from "@/utils/functions"
+import { getYouTubeVideoID, slugify } from "@/utils/functions"
 import { YouTubeEmbed } from "@next/third-parties/google"
 import ExternalLink from "@/components/ExternalLink/ExternalLink"
 import { ExternalLinkIcon } from "lucide-react"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
+import Heading3 from "../RichHeadings/Heading3/Heading3"
 
 interface RichLinkProps {
   node: any
 }
 
-const youtube_url = 'https://youtu.be/'
+export const youtube_url = 'https://youtu.be/'
 const dev_url = 'http://localhost:3000'
 const alt_dev_url = 'https://localhost:3000'
 
@@ -17,7 +18,7 @@ export default function RichLink({ node }: RichLinkProps) {
   if (node.data.uri.startsWith(youtube_url)) {
     return (
       <>
-        <span className='text-foreground font-semibold mb-4 inline-block'>{ node.content[0].value }</span>
+        <Heading3 id={ slugify(node.content[0].value) } className='pb-4'>{ node.content[0].value }</Heading3>
         <YouTubeEmbed videoid={ getYouTubeVideoID(node.data.uri) ?? '' } style='border-radius: var(--radius);'  />
       </>
     )
