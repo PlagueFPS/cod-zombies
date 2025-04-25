@@ -164,83 +164,43 @@
 
   --background-image-gobblegum-time-based: radial-gradient(
     circle at top,
-    rgba(0, 255, 64, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-time-based: radial-gradient(
-    circle at top,
-    rgba(0, 255, 64, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.87 0.278077 144.4054 / 25%),
+    var(--color-background) 80%
   );
   --background-image-gobblegum-round-based: radial-gradient(
     circle at top,
-    rgba(0, 68, 255, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-round-based: radial-gradient(
-    circle at top,
-    rgba(0, 68, 255, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.51 0.2767 263.67 / 25%),
+    var(--color-background) 80%
   );
   --background-image-gobblegum-immediate: radial-gradient(
     circle at top,
-    rgba(255, 153, 0, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-immediate: radial-gradient(
-    circle at top,
-    rgba(255, 153, 0, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.77 0.1738 64.55 / 25%),
+    var(--color-background) 80%
   );
   --background-image-gobblegum-player-activated: radial-gradient(
     circle at top,
-    rgba(195, 0, 255, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-player-activated: radial-gradient(
-    circle at top,
-    rgba(195, 0, 255, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.61 0.3044 314.02 / 25%),
+    var(--color-background) 80%
   );
   --background-image-gobblegum-ultra: radial-gradient(
     circle at top,
-    rgba(255, 0, 0, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-ultra: radial-gradient(
-    circle at top,
-    rgba(255, 0, 0, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.63 0.2577 29.23 / 25%),
+    var(--color-background) 80%
   );
   --background-image-gobblegum-legendary: radial-gradient(
     circle at top,
-    rgba(255, 153, 0, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-legendary: radial-gradient(
-    circle at top,
-    rgba(255, 153, 0, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.77 0.1738 64.55 / 25%),
+    var(--color-background) 80%
   );
   --background-image-gobblegum-epic: radial-gradient(
     circle at top,
-    rgba(195, 0, 255, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-epic: radial-gradient(
-    circle at top,
-    rgba(195, 0, 255, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.61 0.3044 314.02 / 25%),
+    var(--color-background) 80%
   );
   --background-image-gobblegum-rare: radial-gradient(
     circle at top,
-    rgba(0, 68, 255, 0.25),
-    hsl(240, 10%, 6%) 80%
-  );
-  --background-image-gobblegum-light-rare: radial-gradient(
-    circle at top,
-    rgba(0, 68, 255, 0.25),
-    hsl(0 0% 100%) 80%
+    oklch(0.51 0.2767 263.67 / 25%),
+    var(--color-background) 80%
   );
 
   @keyframes accordion-down {
