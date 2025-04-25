@@ -28,7 +28,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                     sizes='24px'
                     className='my-auto h-6 w-auto'
                   />
-                  <span className={cn('text-center mr-1.5 underline text-orange-800 dark:text-orange-200 decoration-dotted underline-offset-4 group-hover:no-underline', {
+                  <span className={cn('text-center mr-1.5 underline text-orange-700 dark:text-orange-200 decoration-dotted decoration-orange-700 dark:decoration-orange-200 underline-offset-4 group-hover:no-underline', {
                     'text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300': rarity === 'Ultra',
                     'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': rarity === 'Legendary',
                     'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': rarity === 'Epic',
@@ -42,16 +42,20 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                     { title }
                   </span>
                 </TooltipTrigger>
-                <TooltipContent className={cn('max-w-sm w-[384px] bg-background border border-orange-800/30 dark:border-orange-200/30 text-orange-800 dark:text-orange-200 p-0', {
-                  'border-red-600 dark:border-red-300': rarity === 'Ultra',
-                  'border-orange-600 dark:border-orange-300': rarity === 'Legendary',
-                  'border-purple-600 dark:border-purple-300': rarity === 'Epic',
-                  'border-blue-600 dark:border-blue-300': rarity === 'Rare'
+                <TooltipContent className={cn(`
+                  max-w-sm w-full bg-background shadow-xs border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0
+                  shadow-orange-600 dark:shadow-orange-200
+                  `, 
+                  {
+                  'shadow-red-600 border-red-600/25 dark:shadow-red-300 dark:border-red-300/30': rarity === 'Ultra',
+                  'shadow-orange-600 border-orange-600/25 dark:shadow-orange-300 dark:border-orange-300/30': rarity === 'Legendary',
+                  'shadow-purple-600 border-purple-600/25 dark:shadow-purple-300 dark:border-purple-300/30': rarity === 'Epic',
+                  'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': rarity === 'Rare'
                 }, {
-                  'border-green-600 dark:border-green-300': type === 'Time-Based',
-                  'border-blue-600 dark:border-blue-300': type === 'Round-Based',
-                  'border-yellow-600 dark:border-yellow-300': type === 'Immediate',
-                  'border-purple-600 dark:border-purple-300': type === 'Player-Activated'
+                  'shadow-green-600 border-green-600/30 dark:shadow-green-300 dark:border-green-300/30': type === 'Time-Based',
+                  'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': type === 'Round-Based',
+                  'shadow-yellow-600 border-yellow-600/30 dark:shadow-yellow-300 dark:border-yellow-300/30': type === 'Immediate',
+                  'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': type === 'Player-Activated'
                 })}>
                   { <ItemTooltipContent item={ item } /> }
                 </TooltipContent>
@@ -79,23 +83,35 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
           sizes='24px'
           className='my-auto h-6 w-auto'
         />
-          <span className={cn('text-center mr-1.5 underline decoration-dotted underline-offset-4 group-hover:no-underline', {
-            'truncate': title.length > 18
-          })}>
+          <span className={cn('text-center mr-1.5 underline text-orange-700 dark:text-orange-200 decoration-dotted decoration-orange-700 dark:decoration-orange-200 underline-offset-4 group-hover:no-underline', {
+            'text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300': rarity === 'Ultra',
+            'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': rarity === 'Legendary',
+            'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': rarity === 'Epic',
+            'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': rarity === 'Rare'
+            }, {
+            'text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300': type === 'Time-Based',
+            'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': type === 'Round-Based',
+            'text-yellow-600 decoration-yellow-600 dark:text-yellow-300 dark:decoration-yellow-300': type === 'Immediate',
+            'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': type === 'Player-Activated'
+            }, { 
+              'truncate': title.length > 18 
+            })}>
             { title }
           </span>
       </PopoverTrigger>
-      <PopoverContent side='top' className={cn('max-w-sm bg-background border border-orange-800/30 dark:border-orange-200/30 text-orange-800 dark:text-orange-200 p-0', {
-        'border-red-600 dark:border-red-300': rarity === 'Ultra',
-        'border-orange-600 dark:border-orange-300': rarity === 'Legendary',
-        'border-purple-600 dark:border-purple-300': rarity === 'Epic',
-        'border-blue-600 dark:border-blue-300': rarity === 'Rare'
-      }, {
-        'border-green-600 dark:border-green-300': type === 'Time-Based',
-        'border-blue-600 dark:border-blue-300': type === 'Round-Based',
-        'border-yellow-600 dark:border-yellow-300': type === 'Immediate',
-        'border-purple-600 dark:border-purple-300': type === 'Player-Activated'
-      })}>
+      <PopoverContent side='top' className={cn(`
+          max-w-sm w-full bg-background shadow-xs shadow-orange-600 dark:shadow-orange-200 
+          border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0`, {
+          'shadow-red-600 border-red-600/30 dark:shadow-red-300 dark:border-red-300/30': rarity === 'Ultra',
+          'shadow-orange-600 border-orange-600/30 dark:shadow-orange-300 dark:border-orange-300/30': rarity === 'Legendary',
+          'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': rarity === 'Epic',
+          'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': rarity === 'Rare'
+        }, {
+          'shadow-green-600 border-green-600/30 dark:shadow-green-300 dark:border-green-300/30': type === 'Time-Based',
+          'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': type === 'Round-Based',
+          'shadow-yellow-600 border-yellow-600/30 dark:shadow-yellow-300 dark:border-yellow-300/30': type === 'Immediate',
+          'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': type === 'Player-Activated'
+        })}>
         <ItemTooltipContent item={ item } />
       </PopoverContent>
     </Popover>
@@ -107,15 +123,15 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
 
   return (
     <div className={cn('relative flex flex-col w-full py-2 px-4 rounded-md', {
-      'bg-gobblegum-light-ultra dark:bg-gobblegum-ultra': rarity === 'Ultra',
-      'bg-gobblegum-light-legendary dark:bg-gobblegum-legendary': rarity === 'Legendary',
-      'bg-gobblegum-light-epic dark:bg-gobblegum-epic': rarity === 'Epic',
-      'bg-gobblegum-light-rare dark:bg-gobblegum-rare': rarity === 'Rare'
+      'bg-gobblegum-ultra': rarity === 'Ultra',
+      'bg-gobblegum-legendary': rarity === 'Legendary',
+      'bg-gobblegum-epic': rarity === 'Epic',
+      'bg-gobblegum-rare': rarity === 'Rare'
     }, {
-      'bg-gobblegum-light-time-based dark:bg-gobblegum-time-based': type === 'Time-Based',
-      'bg-gobblegum-light-round-based dark:bg-gobblegum-round-based': type === 'Round-Based',
-      'bg-gobblegum-light-immediate dark:bg-gobblegum-immediate': type === 'Immediate',
-      'bg-gobblegum-light-player-activated dark:bg-gobblegum-player-activated': type === 'Player-Activated'
+      'bg-gobblegum-time-based': type === 'Time-Based',
+      'bg-gobblegum-round-based': type === 'Round-Based',
+      'bg-gobblegum-immediate': type === 'Immediate',
+      'bg-gobblegum-player-activated': type === 'Player-Activated'
     })}>
       <div className='absolute top-4 left-4'>
         <div className={cn('text-sm', {
@@ -157,7 +173,7 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
         </div>
       </div>
       <div className="pb-8 mt-6">
-        <div className={cn('text-sm text-orange-800 dark:text-orange-200/90 text-center', {
+        <div className={cn('text-sm text-orange-800 dark:text-orange-200 text-center', {
           'text-red-600 dark:text-red-300': rarity === 'Ultra',
           'text-orange-600 dark:text-orange-300': rarity === 'Legendary', 
           'text-purple-600 dark:text-purple-300': rarity === 'Epic',
