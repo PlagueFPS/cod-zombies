@@ -69,7 +69,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
           <Progress value={ progress } className="h-1" />
         </div>
       </aside>
-    <MobileTableOfContents headings={ headings } activeHeading={ activeHeading } />
+    <MobileTableOfContents headings={ headings } activeHeading={ activeHeading } currentHeading={ currentHeading } />
    </>
   )
 }

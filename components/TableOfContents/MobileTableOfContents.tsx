@@ -9,22 +9,23 @@ import { Menu } from "lucide-react"
 interface MobileTableOfContentsProps {
   headings: Heading[]
   activeHeading: string
+  currentHeading: Heading | undefined
 }
 
-export default function MobileTableOfContents({ headings, activeHeading }: MobileTableOfContentsProps) {
+export default function MobileTableOfContents({ headings, activeHeading, currentHeading }: MobileTableOfContentsProps) {
   return (
     <div className="block xl:hidden sticky top-16 z-40 p-3 border-b bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60 w-full">
       <Sheet>
         <SheetTrigger className="flex gap-2 items-center">
           <Menu className="h-5 w-5" />
-          <div className="font-bold">On this page</div>
+          <h3 className="font-bold">{ currentHeading?.text || "Introduction" }</h3>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col gap-4 z-100">
-          <SheetHeader className="border-b pb-3">
+        <SheetContent side="left" className="flex flex-col items-center gap-4 z-100">
+          <SheetHeader>
             <SheetTitle>On this page</SheetTitle>
             <SheetDescription className="sr-only">Table of contents for this page</SheetDescription>
           </SheetHeader>
-          <ScrollArea>
+          <ScrollArea className="max-h-[85dvh] overflow-hidden px-4 border-t py-4">
             <nav className="flex flex-col gap-4">
               <ul className="flex flex-col gap-3 text-foreground/90 font-medium text-sm max-h-full">
                 { headings.map(heading => (

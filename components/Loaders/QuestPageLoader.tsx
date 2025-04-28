@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Clock, Menu, Share2 } from "lucide-react";
 import ImageLoader from "@/components/Loaders/ImageLoader";
 import QuestBreadcrumbsLoader from "./QuestBreadcrumbsLoader";
+import TableOfContentsLoader from "./TableOfContentsLoader";
 
 interface IQuestPageLoader {
   mainQuest: boolean
@@ -59,28 +60,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
               <div className="h-screen" />
             </div>
           </div>
-
-          {/* Table of Contents loader */}
-          <div className="hidden xl:block sticky top-24 ml-4 shrink-0 w-85 h-fit border rounded-lg px-6">
-            <div className="flex flex-col gap-4 border-b pb-3">
-              <div className="font-bold mx-auto mt-4">On this page</div>
-              <div className="flex flex-col gap-3 h-[70vh]">
-                { Array.from({ length: 16 }, (_, i) => (
-                  <Skeleton key={ `table-of-contents-item-${i}` } className="w-3/4 h-5" />
-                ))}
-              </div>
-            </div>
-            <BackToTopButton type="button" size={"sm"} variant={"outline"} className="my-4" />
-          </div>
-
-          {/* Mobile table of contents loader */}
-          <div className="sticky xl:hidden top-16 z-30 p-3 border-b bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60 w-full">
-            <div className="flex gap-2 items-center">
-                <Menu className="h-5 w-5 animate-pulse" />
-                <div className="font-bold">On this page</div>
-            </div>
-          </div>
-
+          <TableOfContentsLoader />
         </div>
       </div>
     </div>
