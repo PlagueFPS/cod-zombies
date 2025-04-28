@@ -10,22 +10,6 @@ interface ICustomLink extends LinkProps {
 
 export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
   const router = useRouter()
-  const [isPrefetching, setIsPrefetching] = useState(false)
-
-  const startPrefetch = () => {
-    if (!isPrefetching) {
-      setIsPrefetching(true)
-      router.prefetch(String(href))
-    }
-  }
-
-  const handleMouseEnter = () => {
-    startPrefetch()
-  }
-
-  const handleFocus = () => {
-    startPrefetch()
-  }
 
   const handleNavigation = (
     e: React.MouseEvent<HTMLAnchorElement> | 
@@ -49,11 +33,11 @@ export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTM
   return (
     <Link
       href={ href }
-      prefetch={ false }
-      onMouseEnter={ handleMouseEnter }
-      onFocus={ handleFocus }
       onMouseDown={ handleNavigation }
       onKeyDown={ handleNavigation }
+      // We use this to prevent double navigations since we use `router.push()`
+      // for mouse/key down navigations, resulting in a seemingly faster experience.
+      onNavigate={ (e) => e.preventDefault() }
       {...props}
     >
       { children }
