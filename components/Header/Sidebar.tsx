@@ -37,7 +37,7 @@ export default function Sidebar() {
             </CustomLink>
           </SheetClose>
         </SheetHeader>
-        <div className="flex flex-col items-start gap-6 pl-4 text-muted-foreground text-lg pb-4 w-full">
+        <nav className="flex flex-col items-start gap-6 pl-4 text-muted-foreground text-lg pb-4 w-full">
           <SheetClose asChild>
             <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
               <Book className='size-5 text-orange-400 dark:text-orange-200' />
@@ -50,7 +50,7 @@ export default function Sidebar() {
               <span className="font-medium">Bestiary</span>
             </CustomLink>
           </SheetClose>
-        </div>
+        </nav>
         <SheetFooter className="flex flex-row justify-evenly items-center w-full gap-3 text-muted-foreground mt-auto">
           <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
             <X className="size-5" />
