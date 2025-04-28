@@ -130,7 +130,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 className="ml-auto text-muted-foreground mb-2 md:mb-0"
                 />
             </div>
-            <div className={ richStyles.body }>
+            <div id="body" className={ richStyles.body }>
               <RichTextRenderer body={ q.content } slug={ slug } />
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>

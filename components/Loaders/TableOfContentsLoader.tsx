@@ -2,6 +2,7 @@ import React from 'react'
 import { Progress } from '../ui/progress'
 import { Button } from '../ui/button'
 import { ChevronDown, Menu } from 'lucide-react'
+import { ScrollArea } from '../ui/scroll-area'
 
 export default function TableOfContentsLoader() {
   return (
@@ -29,6 +30,9 @@ export default function TableOfContentsLoader() {
                 { "Introduction" }
             </Button>
           </div>
+          <ScrollArea className="max-h-[60vh] overflow-hidden grid gap-1 transition-all duration-300 grid-rows-[0fr]">
+            <ul className="flex flex-col gap-3 text-foreground/90 font-semibold text-sm overflow-hidden border-t py-4 pl-1" />
+          </ScrollArea>
         </div>
         <div className="mt-4 py-4 border-t">
           <div className="flex justify-between items-center mb-2">
