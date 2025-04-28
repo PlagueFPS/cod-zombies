@@ -117,11 +117,19 @@ export const sendBroadcastEmailUseCase = async (props: INewReleaseEmail) => {
     console.error(error)
     return {
       success: false,
-      message: error?.message || "Something Went Wrong! Please Try Again."
+      message: error?.message || "Failed to create broadcast. Check server logs."
     }
   }
 
-  await resend.broadcasts.send(data.id)
+  const { data: sendData, error: sendError } = await resend.broadcasts.send(data.id)
+
+  if (sendError || !sendData) {
+    console.error(sendError)
+    return {
+      success: false,
+      message: sendError?.message || "Failed to send broadcast. Check server logs."
+    }
+  }
   
   return {
     success: true,
