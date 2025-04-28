@@ -6,7 +6,7 @@ interface Heading2Props extends DetailedHTMLProps<HTMLAttributes<HTMLHeadingElem
 
 export default function Heading2({ id, children }: Heading2Props) {
   return (
-    <h2 id={ id } className="text-2xl md:text-3xl lg:text-4xl font-extrabold scroll-m-36 md:scroll-m-16 mt-16 mb-4">
+    <h2 id={ id } className="text-2xl md:text-3xl lg:text-4xl font-extrabold scroll-m-36 mt-16 mb-4">
       <Link 
         href={ `#${id}` }
         className="flex gap-4 justify-center items-center w-fit hover:text-primary transition-all group"

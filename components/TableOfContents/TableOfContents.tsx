@@ -2,25 +2,70 @@
 import { useTableOfContents } from "@/hooks/useTableOfContents"
 import { Heading } from "@/types/Heading"
 import Link from "next/link"
-import BackToTopButton from "../BackToTopButton/BackToTopButton"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "../ui/scroll-area"
 import MobileTableOfContents from "./MobileTableOfContents"
+import { useEffect, useRef, useState } from "react"
+import { Button } from "../ui/button"
+import { ChevronDown, ChevronUp } from "lucide-react"
+import { Progress } from "../ui/progress"
 
 interface TableOfContentsProps {
   headings: Heading[]
 }
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
-  const { activeHeading, scrollAreaRef, setHeadingRef } = useTableOfContents(headings)
+  const { activeHeading } = useTableOfContents(headings)
+  const [progress, setProgress] = useState(0)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const articleRef = useRef<HTMLElement | null>(null)
+  const currentHeading = headings.find(heading => heading.id === activeHeading)
+
+  useEffect(() => {
+    articleRef.current = document.getElementById("body")
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!articleRef.current) return
+
+      const totalHeight = articleRef.current.scrollHeight - window.innerHeight
+      const scrollPosition = window.scrollY
+      const progress = Math.min(Math.round((scrollPosition / totalHeight) * 100), 100)
+
+      setProgress(progress)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <>
-      <aside className='hidden xl:block sticky top-24 ml-4 z-40 shrink-0 w-85 h-fit border rounded-lg px-6'>
-        <nav className="flex flex-col gap-4 border-b pb-3">
-          <div className="font-bold mx-auto mt-4">On this page</div>
-          <ScrollArea ref={ scrollAreaRef } className="h-[70vh]">
-            <ul className="flex flex-col gap-3 text-foreground/90 font-semibold text-sm">
+      <aside className='hidden xl:block sticky top-24 ml-4 z-40 shrink-0 w-85 h-fit border rounded-lg px-6 shadow-md dark:shadow-none'>
+        <div className="flex flex-col gap-4 pt-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-muted-foreground">CURRENT SECTION</h3>
+            <Button 
+              variant={"ghost"} 
+              size={"sm"} 
+              onClick={() => setIsExpanded(!isExpanded)}
+              aria-label={ isExpanded ? "Collapse table of contents" : "Expand table of contents" }
+              >
+              { isExpanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" /> }
+            </Button>
+          </div>
+          <div>
+            <Button
+              variant={"ghost"}
+              className="w-full justify-start font-medium rounded-sm bg-accent dark:bg-accent/50"
+              onClick={() => setIsExpanded(!isExpanded)}
+              >
+                { currentHeading?.text || "Introduction" }
+            </Button>
+          </div>
+          <ScrollArea className={cn("max-h-[60vh] overflow-hidden grid gap-1 transition-all duration-300 grid-rows-[0fr]", { 'grid-rows-[1fr]': isExpanded })}>
+            <ul className={cn("flex flex-col gap-3 text-foreground/90 font-semibold text-sm overflow-hidden border-t py-4 pl-1", { 'border-none': !isExpanded })}>
               { headings.map(heading => (
                 <li 
                   key={ `desktop-toc-${heading.id}` }
@@ -30,15 +75,21 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                       'text-primary': activeHeading === heading.id,
                     })}
                 >
-                  <Link ref={ setHeadingRef(heading.id) } href={ `#${heading.id}` }>
+                  <Link href={ `#${heading.id}` } onNavigate={ () => setIsExpanded(false) }>
                     { heading.text }
                   </Link>
                 </li>
               ))}
             </ul>
           </ScrollArea>
-        </nav>
-        <BackToTopButton type="button" size="sm" variant="outline" className="my-4" />
+        </div>
+        <div className="mt-4 py-4 border-t">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-muted-foreground">Guide progress</span>
+            <span className="text-xs font-medium">{ progress }%</span>
+          </div>
+          <Progress value={ progress } className="h-1" />
+        </div>
       </aside>
     <MobileTableOfContents headings={ headings } activeHeading={ activeHeading } />
    </>

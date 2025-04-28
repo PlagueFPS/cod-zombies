@@ -142,7 +142,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 className='ml-auto text-muted-foreground mb-2 md:mb-0' 
               />
             </div>
-            <div className={ richStyles.body }>
+            <div id='body' className={ richStyles.body }>
               <RichTextRenderer body={ map.body } slug={ slug } />
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>

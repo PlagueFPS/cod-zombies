@@ -3,13 +3,9 @@ import { useEffect, useRef, useState } from "react"
 /**
  * 
  * @returns `activeHeading` - the current heading of the section within view
- * @returns `scrollAreaRef` - ref to pass into the `ScrollArea` component's `ref` attribute
- * @returns `setHeadingRef` - function to pass into the element rendering the heading text's `ref` attribute
  */
 export const useTableOfContents = (headings: Heading[]) => {
   const [activeHeading, setActiveHeading] = useState('')
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
-  const headingRefs = useRef<Map<string, HTMLAnchorElement>>(new Map())
 
   // Effect for handling detecting the activeHeading
   useEffect(() => {
@@ -37,17 +33,5 @@ export const useTableOfContents = (headings: Heading[]) => {
     return () => observer.disconnect()
   }, [headings])
 
-  /**
-   * 
-   * @param id the heading id
-   */
-  const setHeadingRef = (id: string) => (el: HTMLAnchorElement | null) => {
-    if (el) {
-      headingRefs.current.set(id, el)
-    } else {
-      headingRefs.current.delete(id)
-    }
-  }
-
-  return { activeHeading, scrollAreaRef, setHeadingRef }
+  return { activeHeading }
 }
