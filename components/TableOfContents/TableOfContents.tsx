@@ -15,30 +15,8 @@ interface TableOfContentsProps {
 }
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
-  const { activeHeading } = useTableOfContents(headings)
-  const [progress, setProgress] = useState(0)
+  const { activeHeading, currentHeading, progress } = useTableOfContents(headings, "body")
   const [isExpanded, setIsExpanded] = useState(false)
-  const articleRef = useRef<HTMLElement | null>(null)
-  const currentHeading = headings.find(heading => heading.id === activeHeading)
-
-  useEffect(() => {
-    articleRef.current = document.getElementById("body")
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!articleRef.current) return
-
-      const totalHeight = articleRef.current.scrollHeight - window.innerHeight
-      const scrollPosition = window.scrollY
-      const progress = Math.min(Math.round((scrollPosition / totalHeight) * 100), 100)
-
-      setProgress(progress)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   return (
     <>

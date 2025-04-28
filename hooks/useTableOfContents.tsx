@@ -1,11 +1,38 @@
 import type { Heading } from "@/types/Heading"
 import { useEffect, useRef, useState } from "react"
 /**
- * 
- * @returns `activeHeading` - the current heading of the section within view
+ * @param `headings` - array of headings to observe
+ * @param `articleId` - id of the parent wrapper of the headings
+ * @returns `activeHeading` - the current heading id of the section within view
+ * @returns `currentHeading` - the full heading object of the active heading
+ * @returns `progress` - the users current progress on the page
  */
-export const useTableOfContents = (headings: Heading[]) => {
+export const useTableOfContents = (headings: Heading[], articleId: string) => {
   const [activeHeading, setActiveHeading] = useState('')
+  const [progress, setProgress] = useState(0)
+  const articleRef = useRef<HTMLElement | null>(null)
+  const currentHeading = headings.find(heading => heading.id === activeHeading)
+
+  useEffect(() => {
+    articleRef.current = document.getElementById(articleId)
+  }, [])
+
+  // Effect for handling the users guide progress
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!articleRef.current) return
+
+      const totalHeight = articleRef.current.scrollHeight - window.innerHeight
+      const scrollPosition = window.scrollY
+      const progress = Math.min(Math.round((scrollPosition / totalHeight) * 100), 100)
+
+      setProgress(progress)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
 
   // Effect for handling detecting the activeHeading
   useEffect(() => {
@@ -33,5 +60,5 @@ export const useTableOfContents = (headings: Heading[]) => {
     return () => observer.disconnect()
   }, [headings])
 
-  return { activeHeading }
+  return { activeHeading, currentHeading, progress }
 }
