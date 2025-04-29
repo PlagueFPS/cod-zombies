@@ -36,14 +36,14 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                   }, {
                     'text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300': type === 'Time-Based',
                     'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': type === 'Round-Based',
-                    'text-yellow-600 decoration-yellow-600 dark:text-yellow-300 dark:decoration-yellow-300': type === 'Immediate',
+                    'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': type === 'Immediate',
                     'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': type === 'Player-Activated'
                   })}>
                     { title }
                   </span>
                 </TooltipTrigger>
                 <TooltipContent className={cn(`
-                  max-w-sm w-full bg-background shadow-xs border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0
+                  w-sm bg-background shadow-xs border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0
                   shadow-orange-600 dark:shadow-orange-200
                   `, 
                   {
@@ -54,7 +54,7 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
                 }, {
                   'shadow-green-600 border-green-600/30 dark:shadow-green-300 dark:border-green-300/30': type === 'Time-Based',
                   'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': type === 'Round-Based',
-                  'shadow-yellow-600 border-yellow-600/30 dark:shadow-yellow-300 dark:border-yellow-300/30': type === 'Immediate',
+                  'shadow-orange-600 border-orange-600/30 dark:shadow-orange-300 dark:border-orange-300/30': type === 'Immediate',
                   'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': type === 'Player-Activated'
                 })}>
                   { <ItemTooltipContent item={ item } /> }
@@ -91,7 +91,7 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
             }, {
             'text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300': type === 'Time-Based',
             'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': type === 'Round-Based',
-            'text-yellow-600 decoration-yellow-600 dark:text-yellow-300 dark:decoration-yellow-300': type === 'Immediate',
+            'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': type === 'Immediate',
             'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': type === 'Player-Activated'
             }, { 
               'truncate': title.length > 18 
@@ -100,8 +100,8 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
           </span>
       </PopoverTrigger>
       <PopoverContent side='top' className={cn(`
-          max-w-sm w-full bg-background shadow-xs shadow-orange-600 dark:shadow-orange-200 
-          border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0`, {
+          w-full bg-background shadow-xs shadow-orange-600 dark:shadow-orange-200 
+        border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0`, {
           'shadow-red-600 border-red-600/30 dark:shadow-red-300 dark:border-red-300/30': rarity === 'Ultra',
           'shadow-orange-600 border-orange-600/30 dark:shadow-orange-300 dark:border-orange-300/30': rarity === 'Legendary',
           'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': rarity === 'Epic',
@@ -109,7 +109,7 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
         }, {
           'shadow-green-600 border-green-600/30 dark:shadow-green-300 dark:border-green-300/30': type === 'Time-Based',
           'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': type === 'Round-Based',
-          'shadow-yellow-600 border-yellow-600/30 dark:shadow-yellow-300 dark:border-yellow-300/30': type === 'Immediate',
+          'shadow-orange-600 border-orange-600/30 dark:shadow-orange-300 dark:border-orange-300/30': type === 'Immediate',
           'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': type === 'Player-Activated'
         })}>
         <ItemTooltipContent item={ item } />
@@ -142,7 +142,7 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
         }, {
           'text-green-600 dark:text-green-300': type === 'Time-Based',
           'text-blue-600 dark:text-blue-300': type === 'Round-Based',
-          'text-yellow-600 dark:text-yellow-300': type === 'Immediate',
+          'text-orange-600 dark:text-orange-300': type === 'Immediate',
           'text-purple-600 dark:text-purple-300': type === 'Player-Activated'
         })}>
           { rarity }
@@ -166,7 +166,7 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
         }, {
           'text-green-600 dark:text-green-300': type === 'Time-Based',
           'text-blue-600 dark:text-blue-300': type === 'Round-Based',
-          'text-yellow-600 dark:text-yellow-300': type === 'Immediate',
+          'text-orange-600 dark:text-orange-300': type === 'Immediate',
           'text-purple-600 dark:text-purple-300': type === 'Player-Activated'
         })}>
           { title }
@@ -181,7 +181,7 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
         }, {
           'text-green-600 dark:text-green-300': type === 'Time-Based',
           'text-blue-600 dark:text-blue-300': type === 'Round-Based',
-          'text-yellow-600 dark:text-yellow-300': type === 'Immediate',
+          'text-orange-600 dark:text-orange-300': type === 'Immediate',
           'text-purple-600 dark:text-purple-300': type === 'Player-Activated'
         })}>
           { description }

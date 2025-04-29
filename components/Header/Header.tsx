@@ -10,8 +10,8 @@ import Sidebar from './Sidebar'
 
 export default function Header() {
   return (
-    <header className='sticky z-100 top-0 w-full lg:px-4' role='banner' tabIndex={ -1 }>
-      <div className='max-w-7xl mx-auto flex items-center w-full border-b lg:border lg:shadow-lg lg:dark:shadow-none lg:rounded-md lg:mt-4 border-border px-2 h-16 bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60'>
+    <header className='sticky z-100 top-0 w-full lg:px-4' tabIndex={ -1 }>
+      <div className='max-w-7xl mx-auto flex items-center w-full border-b lg:border lg:shadow-lg lg:dark:shadow-none lg:rounded-md lg:mt-4 px-2 h-16 bg-background/90 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs'>
         <CustomLink href='/' aria-label='Go to Home Page' className='flex items-center justify-center gap-2 mr-auto'>
           <Image
             unoptimized
