@@ -30,27 +30,23 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
                 return (
                   <TableCell key={ `table-cell-${cellIndex}` } className='text-orange-800 dark:text-orange-200 text-xs md:text-sm'>
                     { values.map((value, index) => {
-                      if (value) return (
-                        <span key={ `table-cell-value-${index}-${value}` }>
-                          { value }
-                        </span>
-                      )
+                      if (value) return value
                     })}
                     { badgeItems.length > 0 && (
-                      <div className='flex flex-wrap gap-1'>
+                      <span className='inline-flex flex-col gap-2 items-start'>
                         { badgeItems.map((item, index) => {
                           if (item) return (
                             <Badge key={ `table-cell-badge-${index}` } className='badge-primary-gradient dark:dark-badge-primary-gradient' variant={"outline"}>{ item }</Badge>
                           )
                         })}
-                      </div>
+                      </span>
                     )}
                     { embeddedItems.length > 0 && (
-                      <div className='flex flex-wrap gap-1'>
+                      <span className='inline-flex flex-col gap-2 items-start'>
                         { embeddedItems.map((item, index) => (
                           <ItemTooltip key={ `${item.title}-${index}` } item={ item } />
                         ))}
-                      </div>
+                      </span>
                     )}
                   </TableCell>
                 )

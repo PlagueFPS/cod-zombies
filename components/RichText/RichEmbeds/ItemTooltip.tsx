@@ -18,54 +18,50 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
   return (
     <>
       { isDesktop ? (
-          <span className='hidden sm:inline-block'>
-            <TooltipProvider delayDuration={ 200 }>
-              <Tooltip>
-                <TooltipTrigger className={cn('relative inline-flex justify-center items-center gap-2 group', className)}>
-                  <IconImage 
-                    featuredImage={ image }
-                    alt={ `${title} Image` }
-                    sizes='24px'
-                    className='my-auto h-6 w-auto'
-                  />
-                  <span className={cn('text-center mr-1.5 underline text-orange-700 dark:text-orange-200 decoration-dotted decoration-orange-700 dark:decoration-orange-200 underline-offset-4 group-hover:no-underline', {
-                    'text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300': rarity === 'Ultra',
-                    'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': rarity === 'Legendary',
-                    'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': rarity === 'Epic',
-                    'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': rarity === 'Rare'
-                  }, {
-                    'text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300': type === 'Time-Based',
-                    'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': type === 'Round-Based',
-                    'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': type === 'Immediate',
-                    'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': type === 'Player-Activated'
-                  })}>
-                    { title }
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent className={cn(`
-                  w-sm bg-background shadow-xs border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0
-                  shadow-orange-600 dark:shadow-orange-200
-                  `, 
-                  {
-                  'shadow-red-600 border-red-600/25 dark:shadow-red-300 dark:border-red-300/30': rarity === 'Ultra',
-                  'shadow-orange-600 border-orange-600/25 dark:shadow-orange-300 dark:border-orange-300/30': rarity === 'Legendary',
-                  'shadow-purple-600 border-purple-600/25 dark:shadow-purple-300 dark:border-purple-300/30': rarity === 'Epic',
-                  'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': rarity === 'Rare'
+          <TooltipProvider delayDuration={ 200 }>
+            <Tooltip>
+              <TooltipTrigger className={cn('relative inline-flex justify-center items-center gap-2 group', className)}>
+                <IconImage 
+                  featuredImage={ image }
+                  alt={ `${title} Image` }
+                  sizes='24px'
+                  className='my-auto h-6 w-auto'
+                />
+                <span className={cn('text-center mr-1.5 underline text-orange-700 dark:text-orange-200 decoration-dotted decoration-orange-700 dark:decoration-orange-200 underline-offset-4 group-hover:no-underline', {
+                  'text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300': rarity === 'Ultra',
+                  'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': rarity === 'Legendary',
+                  'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': rarity === 'Epic',
+                  'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': rarity === 'Rare'
                 }, {
-                  'shadow-green-600 border-green-600/30 dark:shadow-green-300 dark:border-green-300/30': type === 'Time-Based',
-                  'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': type === 'Round-Based',
-                  'shadow-orange-600 border-orange-600/30 dark:shadow-orange-300 dark:border-orange-300/30': type === 'Immediate',
-                  'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': type === 'Player-Activated'
+                  'text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300': type === 'Time-Based',
+                  'text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300': type === 'Round-Based',
+                  'text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300': type === 'Immediate',
+                  'text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300': type === 'Player-Activated'
                 })}>
-                  { <ItemTooltipContent item={ item } /> }
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </span>
+                  { title }
+                </span>
+              </TooltipTrigger>
+              <TooltipContent className={cn(`
+                w-sm bg-background shadow-xs border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0
+                shadow-orange-600 dark:shadow-orange-200
+                `, 
+                {
+                'shadow-red-600 border-red-600/25 dark:shadow-red-300 dark:border-red-300/30': rarity === 'Ultra',
+                'shadow-orange-600 border-orange-600/25 dark:shadow-orange-300 dark:border-orange-300/30': rarity === 'Legendary',
+                'shadow-purple-600 border-purple-600/25 dark:shadow-purple-300 dark:border-purple-300/30': rarity === 'Epic',
+                'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': rarity === 'Rare'
+              }, {
+                'shadow-green-600 border-green-600/30 dark:shadow-green-300 dark:border-green-300/30': type === 'Time-Based',
+                'shadow-blue-600 border-blue-600/30 dark:shadow-blue-300 dark:border-blue-300/30': type === 'Round-Based',
+                'shadow-orange-600 border-orange-600/30 dark:shadow-orange-300 dark:border-orange-300/30': type === 'Immediate',
+                'shadow-purple-600 border-purple-600/30 dark:shadow-purple-300 dark:border-purple-300/30': type === 'Player-Activated'
+              })}>
+                { <ItemTooltipContent item={ item } /> }
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
       ) : (
-        <span className='inline-block sm:hidden'>
-          <ItemPopover item={ item } className={ className } />
-        </span>
+        <ItemPopover item={ item } className={ className } />
       )}
     </>
   )
