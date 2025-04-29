@@ -4,7 +4,7 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTi
 import { ScrollArea } from "../ui/scroll-area"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { Menu } from "lucide-react"
+import { ChevronsRight } from "lucide-react"
 
 interface MobileTableOfContentsProps {
   headings: Heading[]
@@ -14,10 +14,10 @@ interface MobileTableOfContentsProps {
 
 export default function MobileTableOfContents({ headings, activeHeading, currentHeading }: MobileTableOfContentsProps) {
   return (
-    <div className="block xl:hidden sticky top-16 z-40 p-3 border-b bg-background/90 backdrop-blur-sm supports-backdrop-filter:bg-background/60 w-full">
+    <div className="block xl:hidden sticky top-16 z-40 p-3 border-b bg-background/90 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs w-full">
       <Sheet>
-        <SheetTrigger className="flex gap-2 items-center">
-          <Menu className="h-5 w-5" />
+        <SheetTrigger className="flex gap-1 items-center">
+          <ChevronsRight className="size-5" />
           <h3 className="font-bold">{ currentHeading?.text || "Introduction" }</h3>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col items-center gap-4 z-100">
@@ -33,7 +33,7 @@ export default function MobileTableOfContents({ headings, activeHeading, current
                     key={ `mobile-toc-${heading.id}` }
                     className={cn("hover:text-primary w-fit transition-colors", 
                       { 'pl-3 text-foreground/70 font-medium': heading.type === 'heading-3',
-                        'pl-6 text-muted-foreground font-normal': heading.type === 'heading-4',
+                        'pl-6 text-foreground/50 font-normal': heading.type === 'heading-4',
                         'text-primary': activeHeading === heading.id,
                       })}
                   >

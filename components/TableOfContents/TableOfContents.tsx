@@ -49,7 +49,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                   key={ `desktop-toc-${heading.id}` }
                   className={cn("hover:text-primary w-fit transition-colors", 
                     { 'pl-3 text-foreground/70 font-medium': heading.type === 'heading-3',
-                      'pl-6 text-muted-foreground font-normal': heading.type === 'heading-4',
+                      'pl-6 text-foreground/50 font-normal': heading.type === 'heading-4',
                       'text-primary': activeHeading === heading.id,
                     })}
                 >
