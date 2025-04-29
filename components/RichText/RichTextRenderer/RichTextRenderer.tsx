@@ -12,6 +12,7 @@ import ItemTooltip from "../RichEmbeds/ItemTooltip"
 import { createItemTooltipDTO } from "@/utils/contentful-utils"
 import TerminusCode from "../RichEmbeds/TerminusCode"
 import RichImage from "../RichImage/RichImage"
+import { OrderedList, UnorderedList } from "../RichTextLists/RichTextLists"
 
 interface RichTextRendererProps {
   body: Document
@@ -81,6 +82,20 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
       },
       [BLOCKS.HR]: () => {
         return <hr className="my-2" />
+      },
+      [BLOCKS.UL_LIST]: (node: any, children: any) => {
+        return (
+          <UnorderedList>
+            { children }
+          </UnorderedList>
+        )
+      },
+      [BLOCKS.OL_LIST]: (node: any, children: any) => {
+        return (
+          <OrderedList>
+            { children }
+          </OrderedList>
+        )
       }
     },
     renderMark: {

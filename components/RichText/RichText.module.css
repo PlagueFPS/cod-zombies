@@ -54,13 +54,6 @@
   font-style: italic;
 }
 
-.body ul, .body ol {
-  padding: 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg, var(--radius));
-  list-style-type: disc;
-}
-
 .body ul ul, .body ol ol {
   margin-top: -1rem;
   list-style-type: circle;
