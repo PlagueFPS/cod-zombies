@@ -12,7 +12,7 @@ interface RichTableProps {
 
 export default function RichTable({ headings, bodyRows }: RichTableProps) {                 
   return (
-    <div className='border rounded-lg w-full overflow-hidden shadow-2xl my-12'>
+    <div className='border rounded-lg w-full overflow-hidden shadow-xl dark:shadow-none my-8 md:my-12'>
       <Table>
         <TableHeader className='rounded-t-xl overflow-hidden dark:border-orange-700'>
           <TableRow>
@@ -28,9 +28,13 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
                 const { values, badgeItems, embeddedItems } = formatTableCellData(cell.content[0].content)
 
                 return (
-                  <TableCell key={ `table-cell-${cellIndex}` } className='text-orange-800 dark:text-orange-200'>
-                    { values.map(value => {
-                      if (value) return value
+                  <TableCell key={ `table-cell-${cellIndex}` } className='text-orange-800 dark:text-orange-200 text-xs md:text-sm'>
+                    { values.map((value, index) => {
+                      if (value) return (
+                        <span key={ `table-cell-value-${index}-${value}` }>
+                          { value }
+                        </span>
+                      )
                     })}
                     { badgeItems.length > 0 && (
                       <div className='flex flex-wrap gap-1'>

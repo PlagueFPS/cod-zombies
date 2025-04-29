@@ -100,7 +100,7 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
           </span>
       </PopoverTrigger>
       <PopoverContent side='top' className={cn(`
-          w-full bg-background shadow-xs shadow-orange-600 dark:shadow-orange-200 
+          w-sm bg-background shadow-xs shadow-orange-600 dark:shadow-orange-200 
         border-orange-600/30 dark:border-orange-200/30 text-orange-600 dark:text-orange-200 p-0`, {
           'shadow-red-600 border-red-600/30 dark:shadow-red-300 dark:border-red-300/30': rarity === 'Ultra',
           'shadow-orange-600 border-orange-600/30 dark:shadow-orange-300 dark:border-orange-300/30': rarity === 'Legendary',
