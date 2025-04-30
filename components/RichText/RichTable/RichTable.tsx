@@ -10,11 +10,11 @@ interface RichTableProps {
   bodyRows: any[]
 }
 
-export default function RichTable({ headings, bodyRows }: RichTableProps) {                 
+export default function RichTable({ headings, bodyRows }: RichTableProps) {          
   return (
-    <div className='border rounded-lg w-full overflow-hidden shadow-xl dark:shadow-none my-8 md:my-12'>
+    <div className='border rounded-lg shadow-xl overflow-x-auto dark:shadow-none my-8 md:my-12'>
       <Table>
-        <TableHeader className='rounded-t-xl overflow-hidden dark:border-orange-700'>
+        <TableHeader className='rounded-t-xl dark:border-orange-700'>
           <TableRow>
             { headings.map(heading => (
               <TableHead key={ `table-heading-${slugify(heading)}` } className='text-orange-900 dark:text-orange-500'>{ heading }</TableHead>
@@ -28,7 +28,7 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
                 const { values, badgeItems, embeddedItems } = formatTableCellData(cell.content[0].content)
 
                 return (
-                  <TableCell key={ `table-cell-${cellIndex}` } className='text-orange-800 dark:text-orange-200 text-xs md:text-sm'>
+                  <TableCell key={ `table-cell-${cellIndex}` } className='text-orange-800 dark:text-orange-200'>
                     { values.map((value, index) => {
                       if (value) return value
                     })}

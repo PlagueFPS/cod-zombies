@@ -1,4 +1,3 @@
-import BestiaryCard from "@/components/BestiaryCard/BestiaryCard"
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
 import { ChangedBadge, DraftBadge, NewBadge, TypeBadge } from "@/components/CustomBadges/CustomBadges"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
@@ -262,9 +261,12 @@ export default async function ZombiePage({ params }: IZombiePage) {
               <Info className="size-6 text-green-600 dark:text-green-300" />
               <h3 className="text-xl font-bold">Combat Strategy</h3>
             </div>
-            <div className="text-sm text-muted-foreground">
-              <RichTextRenderer body={ zombie.combatStrategy } slug={ zombie.slug } />
-            </div>
+            <RichTextRenderer 
+              body={ zombie.combatStrategy } 
+              slug={ zombie.slug }
+              overrideStyles 
+              className="text-sm text-muted-foreground" 
+            />
           </CardContent>
         </Card>
       </section>

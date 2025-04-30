@@ -1,8 +1,8 @@
-.body {
-  position: relative;
-  max-width: 80ch;
-  padding-left: 1rem;
-  padding-right: 1rem;
+/* This style is hacky solution to prevent container overflow on screens smaller than 80ch,
+    and allow for table horizontal scrolling as intended.
+*/
+.body * { 
+  max-width: 90vw;
 }
 
 .body h2 {
@@ -70,28 +70,4 @@
 
 .body ul li p, .body ol p {
   margin: 0;
-}
-
-.body table {
-  table-layout: fixed;
-}
-
-.body table th p {
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: calc(1.25 / 0.875);
-  letter-spacing: 0em;
-}
-
-.body table ul {
-  padding: 0;
-  list-style-type: none;
-  background-color: transparent;
-  width: 100%;
-  border-style: none;
-}
-
-.body table ul li {
-  margin: 0;
-  width: 100%;
 }

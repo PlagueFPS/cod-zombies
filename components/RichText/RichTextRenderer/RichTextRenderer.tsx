@@ -1,3 +1,4 @@
+import richStyles from "@/components/RichText/RichText.module.css"
 import { Document, INLINES, BLOCKS, MARKS } from "@contentful/rich-text-types"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { slugify } from "@/utils/functions"
@@ -13,13 +14,16 @@ import { createItemTooltipDTO } from "@/utils/contentful-utils"
 import TerminusCode from "../RichEmbeds/TerminusCode"
 import RichImage from "../RichImage/RichImage"
 import { OrderedList, UnorderedList } from "../RichTextLists/RichTextLists"
+import { cn } from "@/lib/utils"
 
 interface RichTextRendererProps {
   body: Document
   slug: string
+  overrideStyles?: boolean
+  className?: string
 }
 
-export default function RichTextRenderer({ body, slug }: RichTextRendererProps) {
+export default function RichTextRenderer({ body, slug, overrideStyles, className }: RichTextRendererProps) {
   const renderOptions = {
     renderNode: {
       [INLINES.HYPERLINK]: (node: any) => {
@@ -106,5 +110,9 @@ export default function RichTextRenderer({ body, slug }: RichTextRendererProps) 
     }
   }
 
-  return documentToReactComponents(body, renderOptions)
+  return (
+    <div id="body" className={ overrideStyles ? className : cn("relative max-w-[80ch] px-4 mx-auto", richStyles.body, className) }>
+      { documentToReactComponents(body, renderOptions) }
+    </div>
+  )
 }

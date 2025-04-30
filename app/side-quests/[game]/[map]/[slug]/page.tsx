@@ -1,4 +1,3 @@
-import richStyles from "@/components/RichText/RichText.module.css"
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
 import { ChangedBadge, DraftBadge, NewBadge } from "@/components/CustomBadges/CustomBadges"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
@@ -130,9 +129,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 className="ml-auto text-muted-foreground mb-2 md:mb-0"
                 />
             </div>
-            <div id="body" className={ richStyles.body }>
-              <RichTextRenderer body={ q.content } slug={ slug } />
-            </div>
+            <RichTextRenderer body={ q.content } slug={ slug } />
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 <Suspense fallback={<PreviousOrNextMapLoader />}> 

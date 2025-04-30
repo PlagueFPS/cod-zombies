@@ -1,4 +1,3 @@
-import richStyles from '@/components/RichText/RichText.module.css'
 import { getMaps, getMapBySlug, getMapSearchData } from '@/data/maps'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
@@ -142,9 +141,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 className='ml-auto text-muted-foreground mb-2 md:mb-0' 
               />
             </div>
-            <div id='body' className={ richStyles.body }>
-              <RichTextRenderer body={ map.body } slug={ slug } />
-            </div>
+            <RichTextRenderer body={ map.body } slug={ slug } />
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
