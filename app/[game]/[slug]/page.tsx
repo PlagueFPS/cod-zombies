@@ -142,8 +142,9 @@ export default async function MapPage({ params }: MapPageProps) {
               />
             </div>
             { map.isComingSoon ? (
-              <div className='mx-auto text-muted-foreground text'>
-                This article is currently being written! Check back soon to see the full main quest guide for { map.title }
+              <div className='relative max-w-[80ch] px-4 mx-auto text-center space-y-2 my-20'>
+                <p className='text-xl font-bold'>This article is currently being written and will take some time before being ready.</p>
+                <p className='text-foreground/90'>Check back soon or subscribe to our newsletter at the bottom of this page to be notified when this guide is ready!</p>
               </div>
             ) : <RichTextRenderer body={ map.body } slug={ slug } /> }
             <div className='flex flex-row justify-center items-center w-full mt-8'>
