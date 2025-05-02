@@ -81,7 +81,10 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
           redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}${path}`,
           redirectText: "View Guide"
         })
-        const statusPromise = updateMapStatus(entryId)
+        // We override the old creation timestamp with the updated one
+        // to reflect that the "new" timer starts now instead of from the old creation
+        // when the map was "Coming Soon" and not new
+        const statusPromise = updateMapStatus(entryId, updatedAt)
         const [{ success, message }, { error }] = await Promise.all([broadcastPromise, statusPromise])
 
         return Response.json({

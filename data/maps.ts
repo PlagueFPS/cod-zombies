@@ -129,7 +129,7 @@ export const getMapStatus = async (mapId: string) => {
   return { status: data.status }
 }
 
-export const updateMapStatus = async (mapId: string) => {
+export const updateMapStatus = async (mapId: string, updatedAt: string) => {
   const { data, error } = await tryCatch(NEW_ENTRY_KV.get(mapId))
   if (error) {
     console.error(error)
@@ -141,7 +141,7 @@ export const updateMapStatus = async (mapId: string) => {
     return { error: null }
   }
   
-  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(mapId, data.createdAt, "Published", "mainQuest"))
+  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(mapId, updatedAt, "Published", "mainQuest"))
   if (updateError) {
     console.error(updateError)
     return { error: updateError }
