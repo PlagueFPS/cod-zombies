@@ -33,23 +33,21 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
   }
 
   return (
-    <article className={cn("max-h-110 h-full group outline-hidden", {
-      'pointer-events-none opacity-50': isComingSoon
-    })}>
+    <article className={cn("group max-h-110 h-full outline-hidden", { 'pointer-events-none': isComingSoon })}>
       <CustomLink 
         href={ resolveHref() } 
         aria-label={ `View Guide for ${quest.title}` }
         aria-disabled={ isComingSoon }
       >
-        <Card className={`
+        <Card className={cn(`
           relative h-full group-hover:border-primary group-hover:scale-105 
           group-focus-visible:scale-105 group-focus-visible:border-primary 
           cursor-pointer transition-transform overflow-hidden animate-fade-in 
-          shadow-xl dark:shadow-none`}
+          shadow-xl dark:shadow-none`, { 'opacity-75 dark:opacity-50': isComingSoon })}
         >
           <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
-            { isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null }
             { (draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null }
+            { isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null }
             { (draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null }
             { TypeGuards.hasProperty(quest, "difficulty") ? (
                 <>

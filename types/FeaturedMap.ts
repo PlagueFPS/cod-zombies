@@ -20,7 +20,7 @@ export interface FeaturedMapWithoutBody {
   isChanged: boolean
   isNew: boolean
   isComingSoon: boolean
-  difficulty: Difficulty | undefined
+  difficulty: Difficulty | null
 }
 export interface FeaturedMapWithBody extends FeaturedMapWithoutBody {
   body: Document

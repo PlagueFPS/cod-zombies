@@ -27,7 +27,7 @@ interface MapPageProps {
 
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
   const map = await getMapBySlug(draftMode, slug, true)
-  if (!map || map.isComingSoon) {
+  if (!map) {
     notFound()
   }
   const maps = await getMaps(draftMode)
@@ -141,7 +141,11 @@ export default async function MapPage({ params }: MapPageProps) {
                 className='ml-auto text-muted-foreground mb-2 md:mb-0' 
               />
             </div>
-            <RichTextRenderer body={ map.body } slug={ slug } />
+            { map.isComingSoon ? (
+              <div className='mx-auto text-muted-foreground text'>
+                This article is currently being written! Check back soon to see the full main quest guide for { map.title }
+              </div>
+            ) : <RichTextRenderer body={ map.body } slug={ slug } /> }
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
@@ -149,7 +153,7 @@ export default async function MapPage({ params }: MapPageProps) {
               </div>
             </div>
           </article>
-          <TableOfContents headings={ headings } />
+          <TableOfContents headings={ map.isComingSoon ? [] : headings } />
         </div>
       </div>
       <HashLinkHandler />

@@ -27,7 +27,7 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
       updatedAt: map.sys.updatedAt,
       description: map.fields.description,
       isComingSoon: map.fields.isComingSoon ?? false,
-      difficulty: map.fields.difficulty,
+      difficulty: map.fields.difficulty ?? null,
     }
   })
 }, [], {
@@ -71,7 +71,7 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
       description: map.fields.description,
       body: map.fields.body,
       isComingSoon: map.fields.isComingSoon ?? false,
-      difficulty: map.fields.difficulty,
+      difficulty: map.fields.difficulty ?? null,
       timeToRead: map.fields.timeToRead,
     }
     
@@ -83,7 +83,7 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
       title: map.fields.title,
       description: map.fields.description,
       isComingSoon: map.fields.isComingSoon ?? false,
-      difficulty: map.fields.difficulty,
+      difficulty: map.fields.difficulty ?? null,
     }
   }
   // We expose only the cached and memoized version of the function to be called externally
