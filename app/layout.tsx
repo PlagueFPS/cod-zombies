@@ -12,6 +12,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import DraftMode from "@/components/DraftMode/DraftMode";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: LayoutProps) {
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
+        <GoogleAnalytics gaId="G-2M6PMT6Z3R" />
         {/* Custom draft mode toggle for development */}
         { IN_DEVELOPMENT && (
           <Suspense fallback={<Skeleton className="rounded-full size-10" />}>
