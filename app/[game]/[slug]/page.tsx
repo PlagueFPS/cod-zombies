@@ -6,7 +6,7 @@ import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import { CustomLink, HashLinkHandler } from '@/components/CustomLink/CustomLink'
-import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock, ThumbsDown, ThumbsUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'
@@ -17,6 +17,7 @@ import type { FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, DifficultyBadge } from '@/components/CustomBadges/CustomBadges'
 import { cache } from 'react'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
+import GuideFeedback from '@/components/GuideFeedback/GuideFeedback'
 
 interface MapPageProps {
   params: Promise<{ 
@@ -147,6 +148,9 @@ export default async function MapPage({ params }: MapPageProps) {
                 <p className='text-foreground/90'>Check back soon or subscribe to our newsletter at the bottom of this page to be notified when this guide is ready!</p>
               </div>
             ) : <RichTextRenderer body={ map.body } slug={ slug } /> }
+            <div className='flex justify-center items-center w-full'>
+              <GuideFeedback />
+            </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }

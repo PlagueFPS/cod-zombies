@@ -4,10 +4,6 @@ import { zfd } from "zod-form-data";
 export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
 
 export const FeedbackFormSchema = zfd.formData({
-  title: zfd.text(z.string({ required_error: "Title is required" }).min(1)),
-  label: zfd.text(z.enum(['featureRequest', 'idea', 'issue', 'question', 'complaint', 'other'], {
-    required_error: "Label is required",
-  })),
   feedback: zfd.text(z.string({ required_error: "Feedback is required" }).min(1))
 })
 

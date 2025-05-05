@@ -6,7 +6,7 @@ import { after } from "next/server"
 import { tryCatch } from "@/utils/functions"
 
 export const submitFeedbackUseCase = async (input: FeedbackForm) => {
-  const { title, label, feedback } = input
+  const { feedback } = input
   const { data: res, error } = await tryCatch(fetch("https://projectplannerai.com/api/feedback", {
     method: "POST",
     headers: {
@@ -14,8 +14,6 @@ export const submitFeedbackUseCase = async (input: FeedbackForm) => {
     },
     body: JSON.stringify({
       projectId: env.PROJECT_PLANNER_ID,
-      title,
-      label,
       feedback,
     }),
   }))
@@ -27,8 +25,8 @@ export const submitFeedbackUseCase = async (input: FeedbackForm) => {
 
   after(async () => {
     await sendInternalEmailUseCase({
-      subject: `New "${label}" Feedback Submission`,
-      message: `Someone has submitted feedback for "${title}".`
+      subject: `New Feedback Submission`,
+      message: `You have a new feedback submission that needs review.`
     })
   })
   return { success: true, message: 'Thank you for submitting! Your submission has been received' }

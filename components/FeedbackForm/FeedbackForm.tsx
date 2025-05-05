@@ -6,7 +6,6 @@ import { submitFeedbackForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FeedbackFormSchema } from "@/utils/validationSchemas"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Dialog,
@@ -25,13 +24,6 @@ import {
   FormLabel, 
   FormMessage 
 } from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { Loader2, MessageCircleHeart, Send } from "lucide-react"
 
@@ -70,6 +62,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
         !event.metaKey && 
         !isInputElement
       ) {
+        event.preventDefault()
         setOpen(true)
       }
     }
@@ -97,73 +90,22 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
         </DialogTrigger>
         <DialogContent className="rounded-lg">
           <DialogHeader>
-            <DialogTitle>Feedback Form</DialogTitle>
-            <DialogDescription>
-              We appreciate your feedback. Please fill out the form below.
-            </DialogDescription>
+            <DialogTitle>Feedback Submission</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={ handleSubmitWithAction }>
                 <div className="space-y-6 pb-4">
                   <FormField 
                     control={ form.control }
-                    name="title"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Title</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            required 
-                            placeholder="Feedback Title" 
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Quests, Experience, Visuals, etc.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={ form.control }
-                    name="label"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Feedback Label</FormLabel>
-                        <Select required onValueChange={ field.onChange } defaultValue={ field.value }>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Choose a label" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="featureRequest">Feature Request</SelectItem>
-                            <SelectItem value="issue">Issue</SelectItem>
-                            <SelectItem value="question">Question</SelectItem>
-                            <SelectItem value="idea">Idea</SelectItem>
-                            <SelectItem value="complaint">Complaint</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormDescription>
-                          Choose a label that best describes your feedback.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField 
-                    control={ form.control }
                     name="feedback"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Your Feedback</FormLabel>
                         <FormControl>
                           <Textarea 
                             {...field}
                             required
                             placeholder="What can we improve?"
+                            className="min-h-24"
                           />
                         </FormControl>
                         <FormDescription>
