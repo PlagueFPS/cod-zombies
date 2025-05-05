@@ -5,8 +5,13 @@ import { sendInternalEmailUseCase } from "./email"
 import { after } from "next/server"
 import { tryCatch } from "@/utils/functions"
 
-export const submitFeedbackUseCase = async (input: FeedbackForm) => {
-  const { feedback } = input
+interface Input extends FeedbackForm {
+  title?: string
+  label?: "idea" | "issue" | "question" | "complaint" | "featureRequest" | "other"
+}
+
+export const submitFeedbackUseCase = async (input: Input) => {
+  const { title, label, feedback } = input
   const { data: res, error } = await tryCatch(fetch("https://projectplannerai.com/api/feedback", {
     method: "POST",
     headers: {
@@ -14,6 +19,8 @@ export const submitFeedbackUseCase = async (input: FeedbackForm) => {
     },
     body: JSON.stringify({
       projectId: env.PROJECT_PLANNER_ID,
+      title,
+      label,
       feedback,
     }),
   }))
