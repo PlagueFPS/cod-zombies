@@ -149,7 +149,7 @@ export default async function MapPage({ params }: MapPageProps) {
               </div>
             ) : <RichTextRenderer body={ map.body } slug={ slug } /> }
             <div className='flex justify-center items-center w-full'>
-              <GuideFeedback />
+              <GuideFeedback guideTitle={ map.title } />
             </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>

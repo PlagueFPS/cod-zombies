@@ -19,8 +19,8 @@ export const submitFeedbackUseCase = async (input: Input) => {
     },
     body: JSON.stringify({
       projectId: env.PROJECT_PLANNER_ID,
-      title,
-      label,
+      name: title,
+      label: label ?? "other",
       feedback,
     }),
   }))

@@ -4,6 +4,7 @@ import { zfd } from "zod-form-data";
 export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
 
 export const FeedbackFormSchema = zfd.formData({
+  title: zfd.text(z.string()).optional(),
   feedback: zfd.text(z.string({ required_error: "Feedback is required" }).min(1))
 })
 

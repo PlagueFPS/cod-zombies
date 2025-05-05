@@ -12,12 +12,19 @@ import { FeedbackFormSchema } from "@/utils/validationSchemas"
 import { customOnError, customOnSuccess } from "@/lib/safe-action"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 
-export default function GuideFeedback() {
+interface IGuideFeedback {
+  guideTitle: string
+}
+
+export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
   const [vote, setVote] = useState<"Liked" | "Disliked" | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
     formProps: {
       mode: 'onChange',
+      defaultValues: {
+        title: guideTitle
+      }
     },
     actionProps: {
       onSuccess: ({ data }) => {
@@ -26,7 +33,7 @@ export default function GuideFeedback() {
         setVote(null)
       },
       onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
-    }
+    },
   })
 
   useEffect(() => {

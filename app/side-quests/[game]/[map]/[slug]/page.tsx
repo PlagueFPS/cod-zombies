@@ -19,6 +19,7 @@ import { ChevronLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import PreviousOrNextMapLoader from "@/components/Loaders/PreviousOrNextMapLoader"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
+import GuideFeedback from "@/components/GuideFeedback/GuideFeedback"
 
 interface ISideQuestSlugPage {
   params: Promise<{ 
@@ -130,6 +131,9 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 />
             </div>
             <RichTextRenderer body={ q.content } slug={ slug } />
+            <div className='flex justify-center items-center w-full'>
+              <GuideFeedback guideTitle={ q.title } />
+            </div>
             <div className='flex flex-row justify-center items-center w-full mt-8'>
               <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
                 <Suspense fallback={<PreviousOrNextMapLoader />}> 
