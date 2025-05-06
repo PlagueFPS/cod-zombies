@@ -11,6 +11,7 @@ import ExternalLink from "../ExternalLink/ExternalLink"
 import X from "@/SVGs/XSVG"
 import FeedbackForm from "../FeedbackForm/FeedbackForm"
 import MobileOnly from "../ui/mobile-only"
+import { CustomLink } from "../CustomLink/CustomLink"
 
 export default function Footer() {
   return (
@@ -50,6 +51,11 @@ export default function Footer() {
             </div>
           </MobileOnly>
         </div>
+      </div>
+      <div className="flex items-center justify-center md:justify-start md:mt-2 w-full text-xs text-muted-foreground">
+        <CustomLink href={"/privacy-policy"} className="underline underline-offset-2 hover:text-foreground dark:hover:text-foreground/80 hover:no-underline">
+          Privacy Policy
+        </CustomLink>
       </div>
     </footer>
   )

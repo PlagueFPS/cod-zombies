@@ -123,3 +123,12 @@ export interface TypeZombiesFields {
 
 export type TypeZombiesSkeleton = EntrySkeletonType<TypeZombiesFields, "zombies">;
 export type TypeZombies<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeZombiesSkeleton, Modifiers, Locales>;
+
+export interface TypeLegalFields {
+    title: EntryFieldTypes.Symbol;
+    slug: EntryFieldTypes.Symbol;
+    content: EntryFieldTypes.RichText;
+}
+
+export type TypeLegalSkeleton = EntrySkeletonType<TypeLegalFields, "legal">;
+export type TypeLegal<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<TypeLegalSkeleton, Modifiers, Locales>;

@@ -31,5 +31,11 @@ export const CACHE_KEYS = {
   ZOMBIES: {
     /** Cache key for all zombie data */
     ALL: 'zombies'
+  },
+  LEGAL: {
+    /** Cache key for all legal data */
+    ALL: 'legal',
+    /** Cache key for privacy-policy data */
+    POLICY: 'privacy-policy',
   }
 } as const
