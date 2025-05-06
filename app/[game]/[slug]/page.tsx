@@ -128,19 +128,21 @@ export default async function MapPage({ params }: MapPageProps) {
                   <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ map.game.title }</Badge>
                 </div>
               </div>
-              <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm'>
-                <div>Last Updated: { new Date(map.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
-                <span className='hidden md:inline'>&bull;</span>
-                <div className='flex gap-1 items-center'>
-                  <Clock className='size-4' />
-                  { map.timeToRead } min read
+              <div className='flex justify-between items-center text-muted-foreground text-sm'>
+                <div className='flex flex-col-reverse items-start justify-center gap-2 pb-6 xl:flex-row xl:pb-0'>
+                  <div>Last Updated: { new Date(map.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+                  <span className='hidden md:inline'>&bull;</span>
+                  <div className='flex gap-1 items-center'>
+                    <Clock className='size-4' />
+                    { map.timeToRead } min read
+                  </div>
                 </div>
+                <ShareButton 
+                  title={ map.title } 
+                  url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game.slug}/${slug}` } 
+                  className='ml-auto text-muted-foreground mb-2 md:mb-0' 
+                />
               </div>
-              <ShareButton 
-                title={ map.title } 
-                url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game.slug}/${slug}` } 
-                className='ml-auto text-muted-foreground mb-2 md:mb-0' 
-              />
             </div>
             { map.isComingSoon ? (
               <div className='relative max-w-[80ch] px-4 mx-auto text-center space-y-2 my-20'>

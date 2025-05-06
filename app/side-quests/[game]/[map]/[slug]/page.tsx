@@ -116,19 +116,21 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                   <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ q.map.title }</Badge>
                 </div>
               </div>
-              <div className='flex flex-col-reverse items-start md:flex-row md:items-center justify-start gap-2 text-muted-foreground text-sm md:text-sm'>
-                <div>Last Updated: { new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
-                <span className='hidden md:inline'>&bull;</span>
-                <div className='flex gap-1 items-center'>
-                  <Clock className='size-4' />
-                  { q.timeToRead } min read
+              <div className='flex justify-between items-center text-muted-foreground text-sm'>
+                <div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 xl:flex-row xl:pb-0">
+                  <div>Last Updated: { new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS) }</div>
+                  <span className='hidden md:inline'>&bull;</span>
+                  <div className='flex gap-1 items-center'>
+                    <Clock className='size-4' />
+                    { q.timeToRead } min read
+                  </div>
                 </div>
+                <ShareButton 
+                  title={ q.title } 
+                  url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${slug}` } 
+                  className="ml-auto text-muted-foreground mb-2 md:mb-0"
+                  />
               </div>
-              <ShareButton 
-                title={ q.title } 
-                url={ `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${slug}` } 
-                className="ml-auto text-muted-foreground mb-2 md:mb-0"
-                />
             </div>
             <RichTextRenderer body={ q.content } slug={ slug } />
             <div className='flex justify-center items-center w-full'>

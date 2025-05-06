@@ -12,7 +12,7 @@ interface RichTableProps {
 
 export default function RichTable({ headings, bodyRows }: RichTableProps) {          
   return (
-    <div className='border rounded-lg shadow-xl overflow-x-auto dark:shadow-none my-8 md:my-12'>
+    <div className='border rounded-lg shadow-xl overflow-x-auto dark:shadow-none my-8'>
       <Table>
         <TableHeader className='rounded-t-xl dark:border-orange-700'>
           <TableRow>

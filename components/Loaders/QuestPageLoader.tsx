@@ -37,25 +37,27 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
                     <Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
                   </div>
                 </div>
-                <div className="flex flex-col-reverse items-start justify-start md:flex-row md:items-center gap-2 text-sm">
-                  <Skeleton className="h-5 w-52" />
-                  <span className="hidden md:inline">&bull;</span>
-                  <div className="flex gap-1 items-center text-muted-foreground">
-                    <Clock className="size-4" />
-                    <Skeleton className="h-5 w-4" />
-                    min read
+                <div className="flex justify-between items-center">
+                  <div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 xl:flex-row xl:pb-0">
+                    <Skeleton className="h-5 w-52" />
+                    <span className="hidden md:inline">&bull;</span>
+                    <div className="flex gap-1 items-center text-muted-foreground">
+                      <Clock className="size-4" />
+                      <Skeleton className="h-5 w-4" />
+                      min read
+                    </div>
                   </div>
+                  <Button 
+                    variant={"ghost"} 
+                    size={"icon"} 
+                    disabled 
+                    aria-disabled
+                    className="ml-auto text-muted-foreground mb-2 md:mb-0 animate-pulse" 
+                  >
+                    <span className="sr-only">Share</span>
+                    <Share2 className="h-4 w-4" />
+                  </Button>
                 </div>
-                <Button 
-                  variant={"ghost"} 
-                  size={"icon"} 
-                  disabled 
-                  aria-disabled
-                  className="ml-auto text-muted-foreground mb-2 md:mb-0 animate-pulse" 
-                >
-                  <span className="sr-only">Share</span>
-                  <Share2 className="h-4 w-4" />
-                </Button>
               </div>
               <div className="h-screen" />
             </div>
