@@ -1,4 +1,5 @@
 import { getGameById, storeNewGameId } from "@/data/games";
+import { getLegalDocById } from "@/data/legal";
 import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps";
 import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
 import { getZombieById, storeNewZombieId } from "@/data/zombies";
@@ -142,6 +143,14 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
       revalidatePath(path)
       return Response.json({ revalidated: true, message: `${path} and zombie data revalidated` }, { status: 201 })
+    }
+    case 'legal': {
+      const legalDoc = await getLegalDocById(IN_DEVELOPMENT, entryId)
+      if (!legalDoc) return Response.json({ revalidated: false, message: `legal doc not found ID: ${entryId}` }, { status: 404 })
+      const path = `/${legalDoc.slug}`
+      revalidateTag(CACHE_KEYS.LEGAL.ALL)
+      revalidatePath(path)
+      return Response.json({ revalidated: true, message: `${path} and legal data revalidated` }, { status: 201 })
     }
     default: {
       return Response.json({ revalidated: false, message: `Invalid Params: ${slug}` }, { status: 400 })

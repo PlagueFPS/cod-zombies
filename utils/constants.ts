@@ -35,7 +35,5 @@ export const CACHE_KEYS = {
   LEGAL: {
     /** Cache key for all legal data */
     ALL: 'legal',
-    /** Cache key for privacy-policy data */
-    POLICY: 'privacy-policy',
   }
 } as const

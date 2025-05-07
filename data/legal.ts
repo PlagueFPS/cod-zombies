@@ -28,7 +28,20 @@ export const getLegalDocBySlug = cache(unstable_cache(async (draftMode: boolean,
     content: doc.fields.content,
   }
 }, [], {
-  tags: [CACHE_KEYS.LEGAL.ALL, CACHE_KEYS.LEGAL.POLICY]
+  tags: [CACHE_KEYS.LEGAL.ALL]
+}))
+
+export const getLegalDocById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
+  const legalDocs = await INTERNAL_getLegalDocuments(draftMode)
+  const doc = legalDocs.find(doc => doc.sys.id === id)
+  if (!doc) return null
+
+  return {
+    id: doc.sys.id,
+    slug: doc.fields.slug
+  }
+}, [], {
+  tags: [CACHE_KEYS.LEGAL.ALL]
 }))
 
 const INTERNAL_getLegalDocuments = cache(async (draftMode: boolean) => {
