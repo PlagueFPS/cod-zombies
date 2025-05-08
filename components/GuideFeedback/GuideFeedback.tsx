@@ -10,7 +10,7 @@ import { submitFeedbackForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FeedbackFormSchema } from "@/utils/validationSchemas"
 import { customOnError, customOnSuccess } from "@/lib/safe-action"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+import { Form, FormControl, FormField, FormItem } from "../ui/form"
 
 interface IGuideFeedback {
   guideTitle: string
@@ -37,9 +37,13 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
   })
 
   useEffect(() => {
-    if (!textareaRef.current) return
+    if (vote && textareaRef.current) {
+      const timeout = setTimeout(() => {
+        textareaRef.current?.focus()
+      }, 300)
 
-    if (vote) textareaRef.current.focus()
+      return () => clearTimeout(timeout)
+    }
   }, [vote])
 
   return (
@@ -63,8 +67,8 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
           />
         </div>
       </div>
-      <div className={cn("transition-all duration-300 overflow-hidden h-0 opacity-0", {
-        'h-40 opacity-100': vote,
+      <div className={cn("transition-all duration-300 overflow-hidden max-h-0 opacity-0 will-change-auto transform-gpu", {
+        'max-h-50 opacity-100': vote,
       })}>
         <Form {...form}>
           <form onSubmit={ handleSubmitWithAction } className="flex flex-col gap-4 h-full w-full pb-2">
@@ -78,26 +82,25 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
                       {...field}
                       required
                       placeholder="Your feedback"
-                      className="resize-none focus-visible:ring-0"
+                      className="min-h-26 resize-none focus-visible:ring-0"
                       ref={ textareaRef }
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex items-center mt-auto">
-              <Badge className={cn("w-fit h-6 transition-colors hidden", {
-                'inline-flex': vote,
+              <Badge className={cn("inline-flex w-fit h-6 transition-colors", {
                 'badge-new-gradient dark:dark-badge-new-gradient': vote === 'Liked',
                 'badge-hard-gradient dark:dark-badge-hard-gradient': vote === 'Disliked',
-              })}>{ vote === "Liked" ? "Helpful" : "Not Helpful" }</Badge>
+                'badge-primary-gradient dark:dark-badge-primary-gradient': !vote,
+              })}>{ vote === "Liked" ? "Helpful" : vote === "Disliked" ? "Not Helpful" : "Undecided" }</Badge>
               <Button 
                 type="submit" 
                 size={"sm"} 
                 variant={"outline"} 
                 className="w-fit gap-2 self-end ml-auto"
-                disabled={ isPending }
+                disabled={ isPending || !form.watch("feedback") }
               >
                 { isPending ? (
                   <>
