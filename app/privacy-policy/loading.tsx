@@ -20,7 +20,7 @@ export default function PrivacyPolicyLoading() {
               </h2>
               <span className="text-muted-foreground text-sm">Last Updated: { <Skeleton className='inline-block w-20 h-2.5' /> }</span>
             </div>
-            <Skeleton className='h-[150dvh] w-full max-w-[80ch]' />
+            <Skeleton className='h-[150dvh] w-full max-w-[80ch] dark:bg-accent/50' />
           </section>
         </div>
       </div>

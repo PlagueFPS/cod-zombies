@@ -59,7 +59,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
                   </Button>
                 </div>
               </div>
-              <Skeleton className="h-[150dvh] w-full max-w-[80ch] mx-auto" />
+              <Skeleton className="h-[150dvh] w-full max-w-[80ch] mx-auto dark:bg-accent/50" />
             </div>
           </div>
           <TableOfContentsLoader />
