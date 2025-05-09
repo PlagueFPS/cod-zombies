@@ -4,6 +4,7 @@ import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data
 import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
 import { getZombieById, storeNewZombieId } from "@/data/zombies";
 import { env } from "@/env";
+import type { AllowedSlugs } from "@/types/EntryEnforcement";
 import { sendBroadcastEmailUseCase } from "@/usecases/email";
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants";
 import { isFirstTimePublish } from "@/utils/contentful-utils";
@@ -16,58 +17,63 @@ interface RouteParams {
   params: Promise<{ slug: string[] }>
 }
 
+const RevalidateResponse = {
+  notFound(type: string, entryId: string) {
+    return Response.json({ revalidated: false, message: `${type} not found ID: ${entryId}` }, { status: 404 })
+  },
+  success(message: string, broadcast?: { success: boolean, message: string }) {
+    return Response.json({ revalidated: true, message, broadcast }, { status: 201 })
+  },
+  error(message: string, status: number = 400) {
+    return Response.json({ revalidated: false, message }, { status })
+  }
+} as const
+
 export async function PUT(req: NextRequest, { params }: RouteParams) {
   const { slug } = await params
   const secret = req.headers.get('X-Contentful-Revalidate-Secret') || ''
   const webhookBodyPromise = req.json()
 
   if (!authorizedRequest(secret, env.REVALIDATE_SECRET)) {
-    return Response.json({ revalidated: false, message: 'Unauthorized Request' }, { status: 401 })
+    return RevalidateResponse.error("Unauthorized Request", 401)
   }
 
   const webhookBody = await webhookBodyPromise
   const body = RevalidateWebhookBodySchema.safeParse(webhookBody)
   if (!body.success) {
-    return Response.json({ revalidated: false, message: 'Invalid Request Body', errors: body.error.flatten().fieldErrors })
+    return RevalidateResponse.error(`Invalid Payload Body: ${body.error.flatten().fieldErrors}`)
   }
 
   const { entryId, createdAt, updatedAt } = body.data
-  switch(slug[0]) {
+  switch(slug[0] as AllowedSlugs) {
     case 'maps': {
-      const map = await getMapById(IN_DEVELOPMENT, entryId)
-      if (!map) return Response.json({ revalidated: false, message: `Map not found ID: ${entryId}`}, { status: 404 })
-      const path = `/${map.game}/${map.slug}`
-
       if (isFirstTimePublish(createdAt, updatedAt)) {
-        // we must keep track of the status seperately
-        // the only reason is to ensure we do not send multiple broadcasts for the same updated content
+        // Must bypass cache since data has not been revalidated yet
+        const map = await getMapById(true, entryId)
+        if (!map) return RevalidateResponse.notFound("map", entryId)
         const { error } = await storeNewMapId(entryId, createdAt, map.isComingSoon ? "Coming Soon" : "Published")
-        revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
+        if (error) return RevalidateResponse.error(error.message, 500)
 
+        revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
         if (!map.isComingSoon) {
-          const { success, message } = await sendBroadcastEmailUseCase({
+          const broadcast = await sendBroadcastEmailUseCase({
             title: map.title,
             description: map.description,
             image: map.image,
-            redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}${path}`,
+            redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game}/${map.slug}`,
             redirectText: "View Guide"
           })
 
-          return Response.json({ 
-            revalidated: true, 
-            message: error ?? `${entryId} stored as new`,
-            broadcastSuccess: success,
-            broadcastMessage: message
-          }, { status: 201 })
+          return RevalidateResponse.success(`${entryId} stored as new`, broadcast)
         }
         
-        return Response.json({ 
-          revalidated: true, 
-          message: error ?? `${entryId} stored as new`,
-        }, { status: 201 })
+        return RevalidateResponse.success(`${entryId} stored as new`)
       }
       
       // If the map is being updated/re-published
+      const map = await getMapById(IN_DEVELOPMENT, entryId)
+      if (!map) return RevalidateResponse.notFound("map", entryId)
+      const path = `/${map.game}/${map.slug}`
       revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
       revalidatePath(path)
       const { status } = await getMapStatus(entryId)
@@ -86,74 +92,73 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         // to reflect that the "new" timer starts now instead of from the old creation
         // when the map was "Coming Soon" and not new
         const statusPromise = updateMapStatus(entryId, updatedAt)
-        const [{ success, message }, { error }] = await Promise.all([broadcastPromise, statusPromise])
+        const [broadcast, { error }] = await Promise.all([broadcastPromise, statusPromise])
 
-        return Response.json({
-          revalidated: true,
-          message: `${path} and map data revalidated`,
-          statusUpdated: error ? false : true,
-          statusError: error,
-          broadcastSuccess: success,
-          broadcastMessage: message
-        }, { status: 201 })
+        return RevalidateResponse.success(`${path} and map data revalidated. Status Error: ${error}`, broadcast)
       }
 
-      return Response.json({ revalidated: true, message: `${path} and map data revalidated` }, { status: 201 })
+      return RevalidateResponse.success(`${path} and map data revalidated`)
     }
     case 'games': {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         const { error } = await storeNewGameId(entryId, createdAt)
+        if (error) return RevalidateResponse.error(error.message, 500)
+
         revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-        return Response.json({ revalidated: true, message: error ?? `${entryId} stored as new` }, { status: 201 })
+        return RevalidateResponse.success(`${entryId} stored as new`)
       }
 
       const game = await getGameById(IN_DEVELOPMENT, entryId)
-      if (!game) return Response.json({ revalidated: false, message: `Game not found ID: ${entryId}`}, { status: 404 })
+      if (!game) return RevalidateResponse.notFound("game", entryId)
       const path = `/${game.slug}`
       
       revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
       revalidatePath(path)
-      return Response.json({ revalidated: true, message: `${path} and game data revalidated` }, { status: 201 })
+      return RevalidateResponse.success(`${path} and game data revalidated`)
     }
     case 'side-quests': {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         const { error } = await storeNewQuestId(entryId, createdAt)
+        if (error) return RevalidateResponse.error(error.message, 500)
+
         revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
-        return Response.json({ revalidated: true, message: error ?? `${entryId} stored as new` }, { status: 201 })
+        return RevalidateResponse.success(`${entryId} stored as new`)
       }
 
       const quest = await getQuestById(IN_DEVELOPMENT, entryId)
-      if (!quest) return Response.json({ revalidated: false, message: `quest not found ID: ${entryId}`}, { status: 404 })
+      if (!quest) return RevalidateResponse.notFound("quest", entryId)
       const path = `/side-quests/${quest.game}/${quest.map}/${quest.slug}`
       
       revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
       revalidatePath(path)
-      return Response.json({ revalidated: true, message: `${path} and quest data revalidated` }, { status: 201 })
+      return RevalidateResponse.success(`${path} and quest data revalidated`)
     }
     case 'zombies': {
       if (isFirstTimePublish(createdAt, updatedAt)) {
         const { error } = await storeNewZombieId(entryId, createdAt)
+        if (error) return RevalidateResponse.error(error.message, 500)
+
         revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
-        return Response.json({ revalidated: true, message: error ?? `${entryId} stored as new` }, { status: 201 })
+        return RevalidateResponse.success(`${entryId} stored as new`)
       }
 
       const zombie = await getZombieById(IN_DEVELOPMENT, entryId)
-      if (!zombie) return Response.json({ revalidated: false, message: `zombie not found ID: ${entryId}`}, { status: 404 })
+      if (!zombie) return RevalidateResponse.notFound("zombie", entryId)
       const path = `/bestiary/${zombie.slug}`
       revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
       revalidatePath(path)
-      return Response.json({ revalidated: true, message: `${path} and zombie data revalidated` }, { status: 201 })
+      return RevalidateResponse.success(`${path} and zombie data revalidated`)
     }
     case 'legal': {
       const legalDoc = await getLegalDocById(IN_DEVELOPMENT, entryId)
-      if (!legalDoc) return Response.json({ revalidated: false, message: `legal doc not found ID: ${entryId}` }, { status: 404 })
+      if (!legalDoc) return RevalidateResponse.notFound("legal", entryId)
       const path = `/${legalDoc.slug}`
       revalidateTag(CACHE_KEYS.LEGAL.ALL)
       revalidatePath(path)
-      return Response.json({ revalidated: true, message: `${path} and legal data revalidated` }, { status: 201 })
+      return RevalidateResponse.success(`${path} and legal data revalidated`)
     }
     default: {
-      return Response.json({ revalidated: false, message: `Invalid Params: ${slug}` }, { status: 400 })
+      return RevalidateResponse.error(`Invalid Params: ${slug}`)
     }
   }
 }
