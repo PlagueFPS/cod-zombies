@@ -123,7 +123,7 @@ export default async function MapPage({ params }: MapPageProps) {
                 <div className='flex items-center justify-center gap-4 w-fit'>
                   { (isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null }
-                  { (isEnabled || IN_DEVELOPMENT) && map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null }
+                  {  map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null }
                   { map.difficulty && <DifficultyBadge difficulty={ map.difficulty } /> }
                   <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ map.game.title }</Badge>
                 </div>

@@ -108,6 +108,7 @@ export interface TypeZombiesFields {
     name: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
     releaseDate: EntryFieldTypes.Date;
+    isComingSoon?: EntryFieldTypes.Boolean;
     description: EntryFieldTypes.Symbol;
     image: EntryFieldTypes.AssetLink;
     type: EntryFieldTypes.Symbol<"Boss" | "Elite" | "Normal" | "Special">;

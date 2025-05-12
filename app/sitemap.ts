@@ -16,14 +16,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     zombiesPromise, 
     legalPromise
   ])
-  const searchMaps = maps.filter(map => !map.isComingSoon)
 
   return [
     {
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}`,
       lastModified: new Date(maps[0].updatedAt),
     },
-    ...searchMaps.map(map => ({
+    ...maps.filter(map => !map.isComingSoon).map(map => ({
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game.slug}/${map.slug}`,
       lastModified: new Date(map.updatedAt)
     })),
@@ -39,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary`,
       lastModified: new Date(zombies[0].updatedAt)
     },
-    ...zombies.map(z => ({
+    ...zombies.filter(z => !z.isComingSoon).map(z => ({
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${z.slug}`,
       lastModified: new Date(z.updatedAt)
     })),

@@ -14,7 +14,7 @@ export default function ZombiePageLoader() {
         <BestiaryBreadcrumbsLoader />
       </div>
       <Card className="mb-6 border-2 overflow-hidden bg-background pt-0">
-        <div className="bg-muted py-2 px-4 flex justify-between items-center">
+        <div className="bg-accent dark:bg-accent/50 py-2 px-4 flex justify-between items-center">
           <Skeleton className='h-5.5 w-16 badge-medium-gradient dark:dark-badge-medium-gradient' />
           <Button 
             variant={"ghost"} 

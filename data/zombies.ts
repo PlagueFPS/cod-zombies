@@ -17,6 +17,7 @@ import { unstable_cache } from "next/cache"
 import { getManagementEntries } from "@/contentful/contentfulManagement"
 import { tryCatch } from "@/utils/functions"
 import { NEW_ENTRY_KV } from "@/lib/redis"
+import { EntryStatus } from "@/types/EntryEnforcement"
 
 export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
   const zombiesPromise = INTERNAL_getZombies(draftMode)
@@ -33,6 +34,7 @@ export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
       description: zombie.fields.description,
       type: zombie.fields.type,
       updatedAt: zombie.sys.updatedAt,
+      isComingSoon: zombie.fields.isComingSoon ?? false,
     }
   })
 }, [], {
@@ -44,7 +46,7 @@ export const getZombieSearchData = cache(unstable_cache(async (draftMode: boolea
   const zombieIdsPromise = getZombieIds()
   const [zombies, zombieIds] = await Promise.all([zombiesPromise, zombieIdsPromise])
 
-  return zombies.map(zombie => {
+  return zombies.filter(z => !z.fields.isComingSoon).map(zombie => {
     const { games, maps } = resolveZombieData(zombie, zombieIds)
     return {
       id: zombie.sys.id,
@@ -80,6 +82,7 @@ export const getZombieBySlug = cache(unstable_cache(async (draftMode: boolean, s
     speed: zombie.fields.speed,
     spawnBehavior: zombie.fields.spawnBehavior,
     combatStrategy: zombie.fields.combatStrategy,
+    isComingSoon: zombie.fields.isComingSoon ?? false,
   }
 }, [], {
   tags: [CACHE_KEYS.ZOMBIES.ALL]
@@ -91,7 +94,9 @@ export const getZombieById = cache(unstable_cache(async (draftMode: boolean, id:
   if (!zombie) return null
   
   return {
-    slug: zombie.fields.slug
+    id: zombie.sys.id,
+    slug: zombie.fields.slug,
+    isComingSoon: zombie.fields.isComingSoon ?? false,
   }
 }, [], {
   tags: [CACHE_KEYS.ZOMBIES.ALL]
@@ -104,8 +109,46 @@ export const getReferencedMaps = cache(unstable_cache(async (draftMode: boolean)
   tags: [CACHE_KEYS.ZOMBIES.ALL]
 }))
 
-export const storeNewZombieId = async (zombieId: string, createdAt: string) => {
-  return await tryCatch(NEW_ENTRY_KV.set(zombieId, createdAt, "Published", "zombie"))
+export const storeNewZombieId = async (zombieId: string, createdAt: string, status: EntryStatus) => {
+  return await tryCatch(NEW_ENTRY_KV.set(zombieId, createdAt, status, "zombie"))
+}
+
+export const getZombieStatus = async (zombieId: string) => {
+  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(zombieId))
+
+  if (error) {
+    console.error(error)
+    return { status: null }
+  }
+
+  if (!data) {
+    console.warn(`No data found for zombie ID: ${zombieId}`)
+    return { status: null }
+  }
+
+  return { status: data.status }
+}
+
+export const updateZombieStatus = async (zombieId: string, updatedAt: string) => {
+  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(zombieId))
+
+  if (error) {
+    console.error(error)
+    return { status: null }
+  }
+
+  if (!data) {
+    console.warn(`No data found for zombie ID: ${zombieId}`)
+    return { status: null }
+  }
+
+  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(zombieId, updatedAt, "Published", "zombie"))
+  if (updateError) {
+    console.error(updateError)
+    return { error: updateError }
+  }
+
+  return { error: null }
 }
 
 const getZombieIds = cache(unstable_cache(async () => {

@@ -38,6 +38,7 @@ export interface Zombie {
   isNew: boolean
   isChanged: boolean
   isDraft: boolean
+  isComingSoon: boolean
   combatStrategy: Document
 }
 

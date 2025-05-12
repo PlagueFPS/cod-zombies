@@ -47,8 +47,8 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
         >
           <div className='absolute top-2 right-2 z-20 w-fit flex items-center justify-center gap-1'>
             { (draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null }
-            { isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null }
             { (draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null }
+            { isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null }
             { TypeGuards.hasProperty(quest, "difficulty") ? (
                 <>
                   { quest.difficulty && <DifficultyBadge difficulty={ quest.difficulty } /> }

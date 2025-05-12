@@ -1,5 +1,5 @@
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
-import { ChangedBadge, DraftBadge, NewBadge, TypeBadge } from "@/components/CustomBadges/CustomBadges"
+import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "@/components/CustomBadges/CustomBadges"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import ItemTooltip from "@/components/RichText/RichEmbeds/ItemTooltip"
@@ -38,7 +38,7 @@ interface IZombiePage {
 
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
   const zombie = await getZombieBySlug(draftMode, slug)
-  if (!zombie) {
+  if (!zombie || zombie.isComingSoon) {
     notFound()
   }
   const zombies = await getZombies(draftMode)
@@ -109,8 +109,13 @@ export default async function ZombiePage({ params }: IZombiePage) {
         ]} />
       </div>
       <Card className="mb-6 border-2 overflow-hidden bg-background pt-0">
-        <div className="bg-accent py-2 px-4 flex justify-between items-center">
-          <TypeBadge type={ zombie.type } />
+        <div className="bg-accent dark:bg-accent/50 py-2 px-4 flex justify-between items-center">
+          <div className="flex items-center justify-center gap-4 w-fit">
+          { (isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
+          { (isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
+          {  zombie.isNew ? <NewBadge /> : null }
+            <TypeBadge type={ zombie.type } />
+          </div>
           <ShareButton title={ zombie.name } url={`${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`} />
         </div>
         <CardHeader>
@@ -142,18 +147,18 @@ export default async function ZombiePage({ params }: IZombiePage) {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Eye className="size-5 text-orange-500" />
-                      <span className="text-muted-foreground">First Appeared In</span>
+                      <span className="text-foreground dark:text-foreground/80">First Appeared In</span>
                     </div>
-                    <span className="text-muted-foreground">{ zombie.maps[0].title }</span>
+                    <span className="text-foreground dark:text-foreground/80">{ zombie.maps[0].title }</span>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Zap className="size-5 text-yellow-500" />
-                      <span className="text-muted-foreground">Speed</span>
+                      <span className="text-foreground dark:text-foreground/80">Speed</span>
                     </div>
-                    <span className="text-muted-foreground">{ zombie.speed }</span>
+                    <span className="text-foreground dark:text-foreground/80">{ zombie.speed }</span>
                   </div>
                   <Progress value={ speedProgress() } className="h-2 mt-1" />
                 </div>
@@ -166,7 +171,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                   <BookOpen className="size-5 text-foreground" />
                   Description
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-foreground dark:text-foreground/80">
                   { zombie.description }
                 </p>
               </div>
@@ -212,7 +217,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
                   { zombie.elementalWeakness?.map(weakness => <ItemTooltip key={ weakness.id } item={ weakness } />) ?? (
-                    <span className="text-muted-foreground">No elemental weaknesses</span>
+                    <span className="text-foreground dark:text-foreground/80">No elemental weaknesses</span>
                   )}
                 </div>
               </div>
@@ -238,7 +243,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
                       <Badge variant={"outline"}>Range: { attack.range }</Badge>
                     </div>
                   </div>
-                  <CardDescription>{ attack.description }</CardDescription>
+                  <CardDescription className="text-foreground dark:text-foreground/80">{ attack.description }</CardDescription>
                 </div>
               ))}
             </div>
@@ -251,7 +256,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
               <Footprints className="size-6 text-purple-600 dark:text-purple-300" />
               <h3 className="text-xl font-bold">Spawn Behavior</h3>
             </div>
-            <CardDescription>{ zombie.spawnBehavior }</CardDescription>
+            <CardDescription className="text-foreground dark:text-foreground/80">{ zombie.spawnBehavior }</CardDescription>
           </CardContent>
         </Card>
         {/* Combat Strategy Section */}
@@ -265,7 +270,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
               body={ zombie.combatStrategy } 
               slug={ zombie.slug }
               overrideStyles 
-              className="text-sm text-muted-foreground" 
+              className="text-sm text-foreground dark:text-foreground/80" 
             />
           </CardContent>
         </Card>
