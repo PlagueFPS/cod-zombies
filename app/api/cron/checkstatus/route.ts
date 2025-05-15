@@ -7,6 +7,14 @@ import { CACHE_KEYS, MAX_NEW_TIME, MAX_QUEST_NEW_TIME } from "@/utils/constants"
 import { revalidateTag } from "next/cache"
 import { EntryType } from "@/types/EntryEnforcement"
 
+const REVALIDATION_MAP: Record<EntryType, string> = {
+  mainQuest: CACHE_KEYS.FEATURED_MAPS.ALL,
+  game: CACHE_KEYS.GAME_CATEGORIES.ALL,
+  sideQuest: CACHE_KEYS.SIDE_QUESTS.ALL,
+  zombie: CACHE_KEYS.ZOMBIES.ALL,
+  legal: CACHE_KEYS.LEGAL.ALL,
+}
+
 export async function GET() {
   const headersList = await headers()
   const secret = headersList.get('Authorization') || ''
@@ -17,65 +25,55 @@ export async function GET() {
       label: "issue",
       feedback: "Auth failed, a secret somewhere is not configured correctly"
     })
-    return Response.json({ success: false, message: 'Unauthorized Request' }, { status: 401 })
+    return new Response("Unauthorized Request", { status: 401 })
   }
 
   const { data, error } = await tryCatch(NEW_ENTRY_KV.getAll())
   if (error || !data) {
-    console.error(`[STATUS ENFORCEMENT] Error getting new entries. Check server logs for more information.`, error)
+    console.error(`[STATUS ENFORCEMENT] Error getting new entries:`, error)
     await submitFeedbackUseCase({
       title: "Status Enforcement Error",
       label: "issue",
       feedback: `Error getting new entries. Check server logs for more information.`
     })
-    return Response.json({ sucess: false, message: error.message }, { status: 500 })
+    return new Response(error.message, { status: 500 })
   }
   
-  const idsToDelete: string[] = []
-  const typesToRevalidate: EntryType[] = []
+  const idsToDelete: Set<string> = new Set([])
+  const typesToRevalidate: Set<EntryType> = new Set([])
 
-  data.forEach(async entry => {
+  data.forEach(entry => {
     const currentTime = Date.now()
     const publishedTime = new Date(entry.createdAt).getTime()
     const ttl = entry.type === "sideQuest" ? MAX_QUEST_NEW_TIME : MAX_NEW_TIME
 
     if (currentTime - publishedTime > ttl) {
-      idsToDelete.push(entry.entryId)
-      typesToRevalidate.push(entry.type)
+      idsToDelete.add(entry.entryId)
+      typesToRevalidate.add(entry.type)
     }
   })
 
-  if (idsToDelete.length > 0) {
-      console.log(`[STATUS ENFORCEMENT] Deleting ${idsToDelete.length} entries from KV...`)
-      const { error } = await tryCatch(NEW_ENTRY_KV.delAll(idsToDelete))
-      
-      if (error) {
-        console.error(error)
-        await submitFeedbackUseCase({
-          title: "Status Enforcement Error",
-          label: "issue",
-          feedback: `Error deleting entries. Check server logs for more information.`
-        })
-      }
+  if (idsToDelete.size > 0) {
+    const { error } = await tryCatch(NEW_ENTRY_KV.delAll([...idsToDelete]))      
+    if (error) {
+      console.error(`[STATUS ENFORCEMENT] Error deleting entries`, error)
+      await submitFeedbackUseCase({
+        title: "Status Enforcement Error",
+        label: "issue",
+        feedback: `Error deleting entries. Check server logs for more information.`
+      })
+    }
+    console.log(`[STATUS ENFORCEMENT] Deleted ${idsToDelete.size} entries from KV.`)
 
-      if (typesToRevalidate.includes("mainQuest")) {
-        console.log(`[STATUS ENFORCEMENT] Revalidating main quests...`) 
-        revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
+    typesToRevalidate.forEach(type => {
+      const cacheKey = REVALIDATION_MAP[type]
+      if (cacheKey) {
+        revalidateTag(cacheKey)
+        console.log(`[STATUS ENFORCEMENT] Revalidated ${type} data.`)
       }
-      if (typesToRevalidate.includes("sideQuest")) {
-        console.log(`[STATUS ENFORCEMENT] Revalidating side quests...`)
-        revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
-      }
-      if (typesToRevalidate.includes("game")) {
-        console.log(`[STATUS ENFORCEMENT] Revalidating game categories...`)
-        revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-      }
-      if (typesToRevalidate.includes("zombie")) {
-        console.log(`[STATUS ENFORCEMENT] Revalidating zombies...`)
-        revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
-      }
+    })
   }
 
   console.log("[CRON] checkstatus cron job completed")
-  return Response.json({ success: true }, { status: 200 })
+  return new Response("ok", { status: 200 })
 }
