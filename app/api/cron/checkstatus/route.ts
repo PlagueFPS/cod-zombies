@@ -13,7 +13,7 @@ const REVALIDATION_MAP: Record<EntryType, string> = {
   sideQuest: CACHE_KEYS.SIDE_QUESTS.ALL,
   zombie: CACHE_KEYS.ZOMBIES.ALL,
   legal: CACHE_KEYS.LEGAL.ALL,
-}
+} as const
 
 export async function GET() {
   const headersList = await headers()
