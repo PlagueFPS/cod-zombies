@@ -2,6 +2,9 @@ import { z } from "zod";
 import { zfd } from "zod-form-data";
 
 export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
+export type AllowedSlugs = z.infer<typeof AllowedSlugsSchema>
+
+export const AllowedSlugsSchema = z.enum(["maps", "games", "side-quests", "zombies", "legal"])
 
 export const FeedbackFormSchema = zfd.formData({
   title: zfd.text(z.string()).optional(),

@@ -6,7 +6,7 @@ import { authorizedRequest } from '@/utils/functions'
 import { getQuestById } from '@/data/sideQuests'
 import { getZombieById } from '@/data/zombies'
 import { getLegalDocById } from '@/data/legal'
-import type { AllowedSlugs } from '@/types/EntryEnforcement'
+import type { AllowedSlugs } from '@/utils/validationSchemas'
 
 interface RouteParams {
   params: Promise<{ slug: string[] }>

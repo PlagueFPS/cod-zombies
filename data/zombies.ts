@@ -95,7 +95,11 @@ export const getZombieById = cache(unstable_cache(async (draftMode: boolean, id:
   
   return {
     id: zombie.sys.id,
+    title: zombie.fields.name,
     slug: zombie.fields.slug,
+    type: zombie.fields.type,
+    description: zombie.fields.description,
+    image: createImageDTO(resolveAsset(zombie.fields.image)),
     isComingSoon: zombie.fields.isComingSoon ?? false,
   }
 }, [], {

@@ -1,8 +1,10 @@
 import "server-only"
 import { env } from "@/env"
-import { Resend } from "resend"
+import { CreateBroadcastOptions, Resend } from "resend"
 import { after } from "next/server"
-import { IQuestRelease, QuestReleaseEmail } from "@/emails/QuestReleaseEmail"
+import QuestReleaseEmail, { IQuestRelease } from "@/emails/QuestReleaseEmail"
+import ZombieReleaseEmail, { IZombieRelease } from "@/emails/ZombieReleaseEmail"
+import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
 
 interface EmailProps {
   name: string
@@ -104,13 +106,37 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
 }
 
 export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
-  const { data, error } = await resend.broadcasts.create({
+  return await sendBroadcast(props.title, {
     audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD: Zombies Guides <newsletter@codzombiesguides.com>",
+    from: "COD: Zombies Guides <updates@codzombiesguides.com>",
     subject: `New ${props.type} Quest Guide Release!`,
     react: QuestReleaseEmail(props),
     name: `${props.title} Release`
   })
+}
+
+export const sendZombieReleaseBroadcast = async (props: IZombieRelease) => {
+  return await sendBroadcast(props.title, {
+    audienceId: env.RESEND_AUDIENCE_ID,
+    from: "COD: Zombies Guides <updates@codzombiesguides.com>",
+    subject: `New ${props.type} Zombie Release!`,
+    react: ZombieReleaseEmail(props),
+    name: `${props.title} Release`
+  })
+}
+
+export const sendLegalUpdateBroadcast = async () => {
+  return await sendBroadcast("Privacy Policy", {
+    audienceId: env.RESEND_AUDIENCE_ID,
+    from: "COD: Zombies Guides <legal@codzombiesguides.com>",
+    subject: `Privacy Policy Update Notice`,
+    react: PrivacyPolicyUpdateEmail(),
+    name: "Privacy Policy Update"
+  })
+}
+
+const sendBroadcast = async (title: string, payload: CreateBroadcastOptions) => {
+  const { data, error } = await resend.broadcasts.create(payload)
 
   if (error || !data) {
     console.error(error)
@@ -131,20 +157,6 @@ export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
 
   return {
     success: true,
-    message: `${props.title} Broadcast sent successfully!`
-  }
-}
-
-export const sendZombieReleaseBroadcast = async (props: Omit<IQuestRelease, "type">) => {
-  return {
-    success: true,
-    message: `${props.title} Broadcast send successfully!`
-  }
-}
-
-export const sendLegalUpdateBroadcast = async (props: Omit<IQuestRelease, "type" | "image">) => {
-  return {
-    success: true,
-    message: `${props.title} Broadcast send successfully!`
+    message: `${title} Broadcast sent successfully!`
   }
 }
