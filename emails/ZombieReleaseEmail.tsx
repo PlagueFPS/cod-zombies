@@ -12,27 +12,21 @@ import {
   Text,
   Tailwind,
 } from '@react-email/components';
+import type { IQuestRelease } from './QuestReleaseEmail';
+import type { ZombieType } from '@/types/Zombie';
 
-export interface IQuestRelease {
-  type: "Main" | "Side",
-  title: string,
-  description: string,
-  image: {
-    url: string | undefined
-    width: number | undefined
-    height: number | undefined
-  }
-  redirectUrl: string
+export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
+  type: ZombieType
 }
 
-export default function QuestReleaseEmail({ type, title, description, image, redirectUrl }: IQuestRelease) {
+export default function ZombieReleaseEmail({ type, title, description, image, redirectUrl }: IZombieRelease) {
   const currentYear = new Date().getFullYear()
 
   return (
     <Html>
       <Tailwind>
         <Head>
-          <title>New { type } Quest Guide Released</title>
+          <title>New { type } Zombie Released</title>
           <Preview>We've just published a new guide you might be interested in</Preview>
         </Head>
         <Body className="bg-gray-100 font-sans py-[40px]">
@@ -54,11 +48,11 @@ export default function QuestReleaseEmail({ type, title, description, image, red
             <Hr className="border-solid border-orange-200 my-[24px]" />
             
             <Heading className="text-[24px] font-bold text-gray-800 my-[24px]">
-              New { type } Quest Guide Released
+              New { type } Zombie Released
             </Heading>
             
             <Text className="text-[16px] text-gray-600 mb-[16px]">
-              We're excited to share our latest zombies guide with you:
+              Introducing the latest addition to the zombies bestiary:
             </Text>
             
             <Section className="bg-orange-50 rounded-[8px] p-[16px] mb-[24px] border-l-[4px] border-solid border-orange-500">
@@ -70,7 +64,7 @@ export default function QuestReleaseEmail({ type, title, description, image, red
               </Text>
             </Section>
             
-            {/* Article Preview Image */}
+            {/* Zombie Preview Image */}
             <Section className="mb-[24px]">
               <Img
                 src={ `https://${image.url}?fm=jpg` }
@@ -78,7 +72,7 @@ export default function QuestReleaseEmail({ type, title, description, image, red
                 className="w-full h-auto object-cover rounded-[8px]"
               />
               <Text className="text-[14px] text-gray-500 italic mt-[8px] text-center m-0">
-                A visual preview of { title }
+                A visual preview of an { title }
               </Text>
             </Section>
             
@@ -88,13 +82,19 @@ export default function QuestReleaseEmail({ type, title, description, image, red
 
             <ul className="list-disc pl-[24px] mb-[24px]">
               <li className="text-[16px] text-gray-600 mb-[8px]">
-                Requirements for completion
+                How fast they are
               </li>
               <li className="text-[16px] text-gray-600 mb-[8px]">
-                Detailed explanations for each step
+                Their Elemental Weaknesses
               </li>
               <li className="text-[16px] text-gray-600 mb-[8px]">
-                Tips to circumvent common pain points
+                Detailed description of their attacks
+              </li>
+              <li className="text-[16px] text-gray-600 mb-[8px]">
+                Their Spawn Behavior
+              </li>
+              <li className="text-[16px] text-gray-600 mb-[8px]">
+                Combat Strategies to defeat them
               </li>
             </ul>
             
@@ -108,7 +108,7 @@ export default function QuestReleaseEmail({ type, title, description, image, red
             </Section>
             
             <Text className="text-[16px] text-gray-600 mb-[16px]">
-              Don't miss out on our future guides! We publish new guides for every main/side quest to help you complete them and earn their rewards.
+              Don't miss out on our future guides! We publish new guides for every zombie type to help you understand and defeat them.
             </Text>
             
             <Hr className="border-solid border-gray-200 my-[24px]" />
