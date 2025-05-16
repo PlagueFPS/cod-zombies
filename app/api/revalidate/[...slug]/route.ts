@@ -1,11 +1,11 @@
-import { getGameById, storeNewGameId } from "@/data/games";
+import { storeNewGameId } from "@/data/games";
 import { getLegalDocById } from "@/data/legal";
 import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps";
 import { getQuestById, storeNewQuestId } from "@/data/sideQuests";
 import { getZombieById, getZombieStatus, storeNewZombieId, updateZombieStatus } from "@/data/zombies";
 import { env } from "@/env";
 import type { AllowedSlugs } from "@/types/EntryEnforcement";
-import { sendBroadcastEmailUseCase } from "@/usecases/email";
+import { sendQuestReleaseBroadcast} from "@/usecases/email";
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants";
 import { isFirstTimePublish } from "@/utils/contentful-utils";
 import { authorizedRequest } from "@/utils/functions";
@@ -57,12 +57,12 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
 
         if (!map.isComingSoon) {
-          const broadcast = await sendBroadcastEmailUseCase({
+          const broadcast = await sendQuestReleaseBroadcast({
+            type: "Main",
             title: map.title,
             description: map.description,
             image: map.image,
-            redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game}/${map.slug}`,
-            redirectText: "View Guide"
+            redirectUrl: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game}/${map.slug}`,
           })
 
           return RevalidateResponse.success(`${entryId} stored as new`, broadcast)
@@ -82,12 +82,12 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
       if (status === "Coming Soon" && !map.isComingSoon) {
         const statusPromise = updateMapStatus(entryId, updatedAt)
-        const broadcastPromise = sendBroadcastEmailUseCase({
+        const broadcastPromise = sendQuestReleaseBroadcast({
+          type: "Main",
           title: map.title,
           description: map.description,
           image: map.image,
-          redirectTo: `${env.NEXT_PUBLIC_WEBSITE_URL}${path}`,
-          redirectText: "View Guide"
+          redirectUrl: `${env.NEXT_PUBLIC_WEBSITE_URL}${path}`,
         })
 
         const [broadcast, { error }] = await Promise.all([broadcastPromise, statusPromise])
@@ -106,14 +106,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
         return RevalidateResponse.success(`${entryId} stored as new`)
       }
 
-      const game = await getGameById(IN_DEVELOPMENT, entryId)
-      if (!game) return RevalidateResponse.notFound("game", entryId)
-
-      const path = `/${game.slug}`
       revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-      revalidatePath(path)
-
-      return RevalidateResponse.success(`${path} and game data revalidated`)
+      return RevalidateResponse.success(`game data revalidated.`)
     }
     case 'side-quests': {
       if (isFirstTimePublish(createdAt, updatedAt)) {

@@ -56,6 +56,43 @@ export const storeNewGameId = async (gameId: string, createdAt: string) => {
   return await tryCatch(NEW_ENTRY_KV.set(gameId, createdAt, "Published", "game"))
 }
 
+export const getGameStatus = async (gameId: string) => {
+  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(gameId))
+
+  if (error) {
+    console.error(error)
+    return { status: null }
+  }
+
+  if (!data) {
+    console.warn("No data found for game ID: ", gameId)
+    return { status: null }
+  }
+
+  return { status: data.status }
+}
+
+export const updateGameStatus = async (gameId: string, updatedAt: string) => {
+  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(gameId))
+  if (error) {
+    console.error(error)
+    return { error }
+  }
+  
+  if (!data) {
+    console.warn("No data found for game ID: ", gameId)
+    return { error: null }
+  }
+  
+  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(gameId, updatedAt, "Published", "game"))
+  if (updateError) {
+    console.error(updateError)
+    return { error: updateError }
+  }
+
+  return { error: null }
+}
+
 const getGameIds = cache(unstable_cache(async () => {
   const gamesPromise = getManagementEntries("gameCategory")
   const newEntriesPromise = tryCatch(NEW_ENTRY_KV.getAll())

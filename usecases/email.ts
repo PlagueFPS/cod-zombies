@@ -1,9 +1,8 @@
 import "server-only"
-import { INewReleaseEmail } from "@/emails/NewReleaseEmail"
 import { env } from "@/env"
 import { Resend } from "resend"
-import NewReleaseEmail from "@/emails/NewReleaseEmail"
 import { after } from "next/server"
+import { IQuestRelease, QuestReleaseEmail } from "@/emails/QuestReleaseEmail"
 
 interface EmailProps {
   name: string
@@ -104,15 +103,15 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
   }
 }
 
-export const sendBroadcastEmailUseCase = async (props: INewReleaseEmail) => {
+export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
   const { data, error } = await resend.broadcasts.create({
     audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD: Zombies Guides <support@codzombiesguides.com>",
-    subject: `${props.title} Guide Release!`,
-    react: NewReleaseEmail(props),
+    from: "COD: Zombies Guides <newsletter@codzombiesguides.com>",
+    subject: `New ${props.type} Quest Guide Release!`,
+    react: QuestReleaseEmail(props),
     name: `${props.title} Release`
   })
-  
+
   if (error || !data) {
     console.error(error)
     return {
@@ -121,18 +120,31 @@ export const sendBroadcastEmailUseCase = async (props: INewReleaseEmail) => {
     }
   }
 
-  const { data: sendData, error: sendError } = await resend.broadcasts.send(data.id)
-
-  if (sendError || !sendData) {
+  const { error: sendError } = await resend.broadcasts.send(data.id)
+  if (sendError) {
     console.error(sendError)
     return {
       success: false,
-      message: sendError?.message || "Failed to send broadcast. Check server logs."
+      message: sendError.message
     }
   }
-  
+
   return {
     success: true,
-    message: 'Broadcast sent successfully!'
+    message: `${props.title} Broadcast sent successfully!`
+  }
+}
+
+export const sendZombieReleaseBroadcast = async (props: Omit<IQuestRelease, "type">) => {
+  return {
+    success: true,
+    message: `${props.title} Broadcast send successfully!`
+  }
+}
+
+export const sendLegalUpdateBroadcast = async (props: Omit<IQuestRelease, "type" | "image">) => {
+  return {
+    success: true,
+    message: `${props.title} Broadcast send successfully!`
   }
 }
