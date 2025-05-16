@@ -35,7 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+.vscode
 newassets
 oldassets
 upload-assets.ts
