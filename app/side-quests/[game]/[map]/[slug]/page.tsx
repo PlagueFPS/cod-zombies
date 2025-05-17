@@ -1,5 +1,5 @@
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
-import { ChangedBadge, DraftBadge, NewBadge } from "@/components/CustomBadges/CustomBadges"
+import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge } from "@/components/CustomBadges/CustomBadges"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
 import ShareButton from "@/components/ShareButton/ShareButton"
@@ -111,7 +111,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                 <div className='flex items-center justify-center gap-4 w-fit'>
                   { (isEnabled || IN_DEVELOPMENT) && q.isDraft ? <DraftBadge /> : null }
                   { (isEnabled || IN_DEVELOPMENT) && q.isChanged ? <ChangedBadge /> : null }
-                  { q.isNew ? <NewBadge /> : null }
+                  { q.isComingSoon ? <ComingSoonBadge /> : q.isNew ? <NewBadge /> : null }
                   <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ q.game.title }</Badge>
                   <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>{ q.map.title }</Badge>
                 </div>
@@ -132,7 +132,12 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
                   />
               </div>
             </div>
-            <RichTextRenderer body={ q.content } slug={ slug } />
+            { q.isComingSoon ? (
+              <div className='relative max-w-[80ch] px-4 mx-auto text-center space-y-2 my-20'>
+                <p className='text-xl font-bold'>This article is currently being written and will take some time before being ready.</p>
+                <p className='text-foreground/90'>Check back soon or subscribe to our newsletter at the bottom of this page to be notified when this guide is ready!</p>
+              </div>
+            ) : <RichTextRenderer body={ q.content } slug={ slug } /> }
             <div className='flex justify-center items-center w-full'>
               <GuideFeedback guideTitle={ q.title } />
             </div>
@@ -144,7 +149,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
               </div>
             </div>
           </article>
-          <TableOfContents headings={ headings } />
+          <TableOfContents headings={ q.isComingSoon ? [] : headings } />
         </div>
       </div>
     </section>
@@ -167,15 +172,18 @@ const PrevOrNextQuest = async ({ quest }: { quest: SideQuest }) => {
 
 const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest, "content">, isEnabled: boolean, prev?: boolean }) => {
   const alt = `${quest.map.title} map image`
+  const href = quest.isComingSoon ? '#' : `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 
   return (
     <CustomLink 
-      href={ `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}` } 
-      className='group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-transform'
+      href={ href } 
+      className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-transform', {
+        'pointer-events-none opacity-50': quest.isComingSoon,
+      })}
     >
       <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
-          { quest.isNew ? <NewBadge /> : null }
+          { quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null }
           <Badge className='badge-primary-gradient dark:dark-badge-primary-gradient'>

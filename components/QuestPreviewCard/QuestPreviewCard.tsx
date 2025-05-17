@@ -3,7 +3,7 @@ import { SideQuest } from "@/types/SideQuest"
 import { TypeGuards } from "@/utils/functions"
 import { CustomLink } from "../CustomLink/CustomLink"
 import { cn } from "@/lib/utils"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { ChangedBadge, ComingSoonBadge, DifficultyBadge, DraftBadge, NewBadge } from "../CustomBadges/CustomBadges"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import { Badge } from "../ui/badge"
@@ -18,18 +18,16 @@ interface IQuestPreviewCard {
 export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQuestPreviewCard) {
   const priority = questIndex === 0
   const alt = `${quest.title} map image`
-  const isComingSoon = TypeGuards.hasProperty(quest, "isComingSoon") && quest.isComingSoon
+  const isComingSoon = quest.isComingSoon
   
   const resolveHref = () => {
-    if (TypeGuards.hasProperty(quest, "isComingSoon")) {
-      return quest.isComingSoon ? "#" : `/${quest.game.slug}/${quest.slug}`
-    } 
+    if (quest.isComingSoon) return '#'
 
     if (TypeGuards.hasProperty(quest, "map")) {
       return `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
     }
 
-    return '#'
+    return `/${quest.game.slug}/${quest.slug}`
   }
 
   return (
