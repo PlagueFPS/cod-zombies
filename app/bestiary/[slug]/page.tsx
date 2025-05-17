@@ -111,9 +111,9 @@ export default async function ZombiePage({ params }: IZombiePage) {
       <Card className="mb-6 border-2 overflow-hidden bg-background pt-0">
         <div className="bg-accent dark:bg-accent/50 py-2 px-4 flex justify-between items-center">
           <div className="flex items-center justify-center gap-4 w-fit">
-          { (isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
-          { (isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
-          {  zombie.isNew ? <NewBadge /> : null }
+            { (isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
+            { (isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null }
+            { zombie.isNew ? <NewBadge /> : null }
             <TypeBadge type={ zombie.type } />
           </div>
           <ShareButton title={ zombie.name } url={`${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`} />

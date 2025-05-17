@@ -16,7 +16,7 @@ export default async function SearchBar({ showFull }: ISearchBar) {
   const questsPromise = getQuestSearchData(isEnabled)
   const zombiesPromise = getZombieSearchData(isEnabled)
   const [maps, games, quests, zombies] = await Promise.all([mapsPromise, gamesPromise, questsPromise, zombiesPromise])
-  const modifiedGames = games.map(game => ({
+  const modifiedGames = games.filter(g => !g.isComingSoon).map(game => ({
     id: game.id,
     title: game.title,
     slug: game.slug
