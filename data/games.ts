@@ -20,6 +20,7 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
       id: game.sys.id,
       title: game.fields.title,
       slug: game.fields.slug,
+      isComingSoon: game.fields.isComingSoon ?? false,
       isDraft,
       isChanged,
       isNew,
@@ -31,7 +32,7 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
 
 export const getGameSearchData = cache(unstable_cache(async (draftMode: boolean) => {
   const games = await INTERNAL_getGameData(draftMode)
-  return games.map(g => ({
+  return games.filter(g => !g.fields.isComingSoon).map(g => ({
     id: g.sys.id,
     title: g.fields.title,
     slug: g.fields.slug
@@ -46,7 +47,9 @@ export const getGameById = cache(unstable_cache(async (draftMode: boolean, id: s
   if (!game) return null
 
   return {
-    slug: game.fields.slug
+    id: game.sys.id,
+    slug: game.fields.slug,
+    isComingSoon: game.fields.isComingSoon ?? false,
   }
 }, [], {
   tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]

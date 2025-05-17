@@ -47,49 +47,29 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
-  // We're creating some function overloads to keep the return typesafe
-  // this way typescript knows if body actually exists in the result or not
-  // based on the params passed; avoiding needing to always check for the body ourselves
-  function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody: true): Promise<FeaturedMapWithBody | null>
-  function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody?: false): Promise<FeaturedMapWithoutBody | null>
-  function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody?: boolean): Promise<FeaturedMapWithBody | FeaturedMapWithoutBody | null>
-  // Actual function implementation
-  async function INTERNAL_getMapBySlug(draftMode: boolean, slug: string, withBody = false): Promise<FeaturedMapWithBody | FeaturedMapWithoutBody | null> {
-    const mapsPromise = INTERNAL_getMapData(draftMode)
-    const mapIdsPromise = getMapIds()
-    const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
-    const map = maps.find(m => m.fields.slug === slug)
-    if (!map) return null
-    const mapData = resolveMapData(map, mapIds)
+export const getMapBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
+  const mapsPromise = INTERNAL_getMapData(draftMode)
+  const mapIdsPromise = getMapIds()
+  const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
+  const map = maps.find(m => m.fields.slug === slug)
+  if (!map) return null
+  const mapData = resolveMapData(map, mapIds)
 
-    if (withBody) return {
-      ...mapData,
-      id: map.sys.id,
-      slug: map.fields.slug,
-      updatedAt: map.sys.updatedAt,
-      title: map.fields.title,
-      description: map.fields.description,
-      body: map.fields.body,
-      isComingSoon: map.fields.isComingSoon ?? false,
-      difficulty: map.fields.difficulty ?? null,
-      timeToRead: map.fields.timeToRead,
-    }
-    
-    return {
-      ...mapData,
-      id: map.sys.id,
-      slug: map.fields.slug,
-      updatedAt: map.sys.updatedAt,
-      title: map.fields.title,
-      description: map.fields.description,
-      isComingSoon: map.fields.isComingSoon ?? false,
-      difficulty: map.fields.difficulty ?? null,
-    }
+  return {
+    ...mapData,
+    id: map.sys.id,
+    slug: map.fields.slug,
+    updatedAt: map.sys.updatedAt,
+    title: map.fields.title,
+    description: map.fields.description,
+    body: map.fields.body,
+    isComingSoon: map.fields.isComingSoon ?? false,
+    difficulty: map.fields.difficulty ?? null,
+    timeToRead: map.fields.timeToRead,
   }
-  // We expose only the cached and memoized version of the function to be called externally
-  export const getMapBySlug = cache(unstable_cache(INTERNAL_getMapBySlug, [], {
-    tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
-  }))
+}, [], {
+  tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
+}))
 
 export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
   const maps = await INTERNAL_getMapData(draftMode)

@@ -1,8 +1,6 @@
 import { getEntries } from "@/contentful/contentful";
 import { TypeLegalSkeleton } from "@/contentful/Types/contentful-types";
-import { NEW_ENTRY_KV } from "@/lib/redis";
 import { CACHE_KEYS } from "@/utils/constants";
-import { tryCatch } from "@/utils/functions";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 
@@ -45,47 +43,6 @@ export const getLegalDocById = cache(unstable_cache(async (draftMode: boolean, i
 }, [], {
   tags: [CACHE_KEYS.LEGAL.ALL]
 }))
-
-export const storeNewLegalDocId = async (id: string, createdAt: string) => {
-  return await tryCatch(NEW_ENTRY_KV.set(id, createdAt, "Published", "legal"))
-}
-
-export const getLegalDocStatus = async (legalId: string) => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(legalId))
-
-  if (error) {
-    console.error(error)
-    return { status: null }
-  }
-
-  if (!data) {
-    console.warn("No data found for legal doc ID: ", legalId)
-    return { status: null }
-  }
-
-  return { status: data.status }
-}
-
-export const updateLegalDocStatus = async (legalId: string, updatedAt: string) => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(legalId))
-  if (error) {
-    console.error(error)
-    return { error }
-  }
-  
-  if (!data) {
-    console.warn("No data found for legal doc ID: ", legalId)
-    return { error: null }
-  }
-  
-  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(legalId, updatedAt, "Published", "legal"))
-  if (updateError) {
-    console.error(updateError)
-    return { error: updateError }
-  }
-
-  return { error: null }
-}
 
 const INTERNAL_getLegalDocuments = cache(async (draftMode: boolean) => {
   const { data, error } = await getEntries<TypeLegalSkeleton>({

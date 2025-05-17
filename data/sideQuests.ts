@@ -26,6 +26,7 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
       ...rest,
       id: q.sys.id,
       updatedAt: q.sys.updatedAt,
+      isComingSoon: q.fields.isComingSoon ?? false,
       title: q.fields.title,
       slug: q.fields.slug,
       description: q.fields.description,
@@ -40,7 +41,7 @@ export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
   const questIdsPromise = getQuestIds()
   const [quests, questIds] = await Promise.all([questsPromise, questIdsPromise])
-  return await Promise.all(quests.map(async q => {
+  return await Promise.all(quests.filter(q => !q.fields.isComingSoon).map(async q => {
     const { category: game, map } = await resolveQuestData(q, questIds)
     return {
       id: q.sys.id,
@@ -60,7 +61,12 @@ export const getQuestById = cache(unstable_cache(async (draftMode: boolean, id: 
   if (!quest) return null
 
   return {
+    id: quest.sys.id,
     slug: quest.fields.slug,
+    title: quest.fields.title,
+    description: quest.fields.description,
+    image: createImageDTO(resolveAsset(quest.fields.image)),
+    isComingSoon: quest.fields.isComingSoon ?? false,
     map: createQuestMapDTO(resolveEntry(quest.fields.map)).slug,
     game: createMapCategoryDTO(resolveEntry(quest.fields.game)).slug
   }
@@ -79,6 +85,7 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
     ...rest,
     id: q.sys.id,
     updatedAt: q.sys.updatedAt,
+    isComingSoon: q.fields.isComingSoon ?? false,
     title: q.fields.title,
     slug: q.fields.slug,
     description: q.fields.description,

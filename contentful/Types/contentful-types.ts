@@ -41,6 +41,7 @@ export type TypeFieldUpgrades<Modifiers extends ChainModifiers, Locales extends 
 export interface TypeGameCategoryFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    isComingSoon?: EntryFieldTypes.Boolean;
     releaseDate: EntryFieldTypes.Date;
     image: EntryFieldTypes.AssetLink;
 }
@@ -84,6 +85,7 @@ export type TypeReferencedMaps<Modifiers extends ChainModifiers, Locales extends
 export interface TypeSideQuestsFields {
     title: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    isComingSoon?: EntryFieldTypes.Boolean;
     timeToRead: EntryFieldTypes.Integer;
     game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     map: EntryFieldTypes.EntryLink<TypeFeaturedMapsSkeleton>;

@@ -27,7 +27,7 @@ interface MapPageProps {
 }
 
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
-  const map = await getMapBySlug(draftMode, slug, true)
+  const map = await getMapBySlug(draftMode, slug)
   if (!map) {
     notFound()
   }
@@ -50,12 +50,12 @@ export const generateStaticParams = async () => {
   }))
 }
 
-export const generateMetadata = async ({ params }: MapPageProps) => {
+export const generateMetadata = async ({ params }: MapPageProps): Promise<Metadata> => {
   const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
   const { map } = await getPageData(isEnabled, slug)
   const { title, image, game: mapGame } = map
   const description = `Complete the main quest/easter egg for the ${mapGame.title} zombies map ${title} with our detailed step-by-step guide!`
-  const metadata: Metadata = {
+  return {
     title,
     description,
     openGraph: {
@@ -75,8 +75,6 @@ export const generateMetadata = async ({ params }: MapPageProps) => {
       card: 'summary_large_image'
     }
   }
-
-  return metadata
 }
 
 export default async function MapPage({ params }: MapPageProps) {

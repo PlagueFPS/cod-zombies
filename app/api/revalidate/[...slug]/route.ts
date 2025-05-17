@@ -26,7 +26,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     }
   
     const slugResult = AllowedSlugsSchema.safeParse(slug[0])
-    if (!slugResult.success) return new Response(`Invalid Params: ${slug[0]}`, { status: 400 })
+    if (!slugResult.success) return new Response(`Invalid Params: ${slugResult.error.flatten().fieldErrors}`, { status: 400 })
   
     const handler = RevalidateHandlers[slugResult.data]
     return handler(body.data)

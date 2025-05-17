@@ -5,11 +5,12 @@ import { revalidateTag } from "next/cache"
 import { isFirstTimePublish } from "./contentful-utils"
 import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps"
 import { CACHE_KEYS } from "./constants"
-import { sendQuestReleaseBroadcast, sendZombieReleaseBroadcast } from "@/usecases/email"
+import { sendLegalUpdateBroadcast, sendQuestReleaseBroadcast, sendZombieReleaseBroadcast } from "@/usecases/email"
 import { env } from "@/env"
-import { storeNewGameId } from "@/data/games"
-import { storeNewQuestId } from "@/data/sideQuests"
+import { getGameById, getGameStatus, storeNewGameId, updateGameStatus } from "@/data/games"
+import { getQuestById, getQuestStatus, storeNewQuestId, updateQuestStatus } from "@/data/sideQuests"
 import { getZombieById, getZombieStatus, storeNewZombieId, updateZombieStatus } from "@/data/zombies"
+import { getLegalDocById } from "@/data/legal"
 
 interface RevalidateData {
   entryId: string
@@ -98,19 +99,55 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
     return RevalidateResponse.success(`Map data revalidated.`)
   },
   games: async ({ entryId, createdAt, updatedAt }) => {
+    const game = await getGameById(true, entryId)
+    if (!game) return RevalidateResponse.notFound("game", entryId)
+
     if (isFirstTimePublish(createdAt, updatedAt)) {
-      return handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.GAME_CATEGORIES.ALL, storeNewGameId, "Published")
+      const status = game.isComingSoon ? "Coming Soon" : "Published"
+      return await handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.GAME_CATEGORIES.ALL, storeNewGameId, status)
     }
 
+    const { status } = await getGameStatus(entryId)
     revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+
+    if (status === "Coming Soon" && !game.isComingSoon) {
+      const { error } = await updateGameStatus(entryId, updatedAt)
+      if (error) return RevalidateResponse.success(`Game data revalidated; Status Error: ${error}`)
+    }
+
     return RevalidateResponse.success(`Game data revalidated.`)
   },
   "side-quests": async ({ entryId, createdAt, updatedAt }) => {
+    const quest = await getQuestById(true, entryId)
+    if (!quest) return RevalidateResponse.notFound("quest", entryId)
+    const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${quest.game}/${quest.map}/${quest.slug}`
+
     if (isFirstTimePublish(createdAt, updatedAt)) {
-      return handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.SIDE_QUESTS.ALL, storeNewQuestId, "Published")
+      const status = quest.isComingSoon ? "Coming Soon" : "Published"
+      const result = await handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.SIDE_QUESTS.ALL, storeNewQuestId, status)
+
+      if (result.status !== 201) return result
+
+      if (!quest.isComingSoon) {
+        const broadcast = await sendQuestBroadcast("Side", quest, url)
+        return RevalidateResponse.success(`${entryId} stored as new.`, broadcast)
+      }
+
+      return result
     }
 
+    const { status } = await getQuestStatus(entryId)
     revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
+
+    if (status === "Coming Soon" && !quest.isComingSoon) {
+      const updatePromise = updateQuestStatus(entryId, updatedAt)
+      const broadcastPromise = sendQuestBroadcast("Side", quest, url)
+      const [broadcast, { error }] = await Promise.all([broadcastPromise, updatePromise])
+
+      if (error) return RevalidateResponse.success(`Side Quest data revalidated; Status Error: ${error}`, broadcast)
+      return RevalidateResponse.success(`Side Quest data revalidated.`, broadcast)
+    }
+
     return RevalidateResponse.success(`Side Quest data revalidated.`)
   },
   zombies: async ({ entryId, createdAt, updatedAt }) => {
@@ -153,8 +190,16 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
 
     return RevalidateResponse.success(`Zombie data revalidated.`)
   },
-  legal: async () => {
+  legal: async ({ entryId, createdAt, updatedAt }) => {
+    const legalDoc = await getLegalDocById(true, entryId)
+    if (!legalDoc) return RevalidateResponse.notFound('legal', entryId)
     revalidateTag(CACHE_KEYS.LEGAL.ALL)
-    return RevalidateResponse.success(`legal data revalidated.`)
+
+    if (isFirstTimePublish(createdAt, updatedAt)) {
+      return RevalidateResponse.success(`legal data revalidated.`)
+    }
+
+    const broadcast = await sendLegalUpdateBroadcast()
+    return RevalidateResponse.success(`legal data revalidated.`, broadcast)
   }
 }
