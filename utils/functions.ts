@@ -1,4 +1,4 @@
-import { timingSafeEqual } from "crypto"
+import { createHash, randomBytes, timingSafeEqual } from "crypto"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens with spaces.
@@ -198,4 +198,44 @@ export const TypeGuards = {
   hasProperty<K extends string>(obj: unknown, prop: K): obj is { [P in K]: unknown } {
     return this.isObject(obj) && prop in obj
   },
+}
+  /**
+   * Generates a secure token.
+   * @param value - The value to secure.
+   * @returns the generated secure token.
+   */
+export const generateToken = (value: string) => {
+  const salt = randomBytes(16).toString('hex')
+  const expiresAt = Date.now() + 24 * 60 * 60 * 1000
+  const payload = `${value}:${salt}:${expiresAt}`
+  const hash = createHash("sha256").update(payload).digest("hex")
+
+  return Buffer.from(`${payload}:${hash}`).toString("base64url")
+}
+/**
+   * Verifies a securely generated token.
+   * @param token - the secure token to verify.
+   * @returns True or false for token validity, and the decoded value if valid.
+   */
+export const verifyToken = (token: string) => {
+  try {
+    const decoded = Buffer.from(token, "base64url").toString()
+    const [value, salt, expiresAtStr, originalHash] = decoded.split(":")
+  
+    const expiresAt = parseInt(expiresAtStr, 10)
+    if (Date.now() > expiresAt) return {
+      valid: false
+    }
+  
+    const payload = `${value}:${salt}:${expiresAt}`
+    const hash = createHash("sha256").update(payload).digest('hex')
+  
+    if (hash !== originalHash) return {
+      valid: false
+    }
+  
+    return { valid: true, value }
+  } catch {
+    return { valid: false }
+  }
 }

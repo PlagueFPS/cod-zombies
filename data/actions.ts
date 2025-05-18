@@ -1,7 +1,7 @@
 "use server"
 import { ContactFormSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { ActionError, createAction } from "@/lib/safe-action"
-import { sendContactEmailUseCase, subscribeEmailUseCase } from "@/usecases/email"
+import { requestUnsubscribeUseCase, sendContactEmailUseCase, subscribeEmailUseCase } from "@/usecases/email"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import { draftMode } from "next/headers"
@@ -14,6 +14,13 @@ export const subscribeToNewsletter = createAction
   .schema(NewsletterFormSchema)
   .action(async ({ parsedInput: { email } }) => {
     return await subscribeEmailUseCase(email)
+  })
+
+export const requestUnsubscribe = createAction
+  .metadata({ actionName: "requestUnsubscribe"})
+  .schema(NewsletterFormSchema)
+  .action(async ({ parsedInput: { email }}) => {
+    return await requestUnsubscribeUseCase(email)
   })
 
 export const submitFeedbackForm = createAction

@@ -5,6 +5,8 @@ import { after } from "next/server"
 import QuestReleaseEmail, { IQuestRelease } from "@/emails/QuestReleaseEmail"
 import ZombieReleaseEmail, { IZombieRelease } from "@/emails/ZombieReleaseEmail"
 import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
+import { generateToken, verifyToken } from "@/utils/functions"
+import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
 
 interface EmailProps {
   name: string
@@ -67,6 +69,63 @@ export const subscribeEmailUseCase = async (email: string) => {
   return {
     success: true,
     message: 'Thank You For Subscribing!'
+  }
+}
+
+export const requestUnsubscribeUseCase = async (email: string) => {
+  const { data: contacts, error } = await resend.contacts.list({ audienceId: env.RESEND_AUDIENCE_ID })
+
+  if (error || !contacts) {
+    console.error(error?.message)
+    return {
+      success: false,
+      message: "Something Went Wrong! Please Try Again.",
+    }
+  }
+
+  const contact = contacts.data.find(contact => contact.email === email)
+  if (!contact) return {
+    success: false,
+    message: "That email is not currently subscribed."
+  }
+
+  const token = generateToken(email)
+  const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/unsubscribe?token=${token}`
+  const { error: sendError } = await resend.emails.send({
+    from: "COD: Zombies Guides <support@codzombiesguides.com>",
+    to: email,
+    subject: "Confirm your unsubscribe request",
+    react: UnsubscribeEmail({ unsubscribeUrl })
+  })
+
+  if (sendError) return {
+    success: false,
+    message: "Failed to send confirmation email. Please Try Again."
+  }
+
+  return { success: true, message: "Confirmation email sent! Check your inbox."}
+}
+
+export const processUnsubscribe = async (token: string) => {
+  const { valid, value } = verifyToken(token)
+  if (!valid || !value) return {
+    success: false,
+    message: "Invalid or expired unsubscribe link. Please request a new one."
+  }
+
+  const { error } = await resend.contacts.remove({
+    audienceId: env.RESEND_AUDIENCE_ID,
+    email: value,
+  })
+
+  if (error) return {
+    success: false,
+    message: "Failed to process your request. Please try again."
+  }
+
+  return {
+    success: true,
+    message: "You have been successfully unsubscribed."
   }
 }
 
