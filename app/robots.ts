@@ -6,6 +6,11 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: [
+        '/newsletter/unsubscribe',
+        '/newsletter/unsubscribe/error', 
+        '/newsletter/unsubscribe/success',
+      ]
     },
     sitemap: `${env.NEXT_PUBLIC_WEBSITE_URL}/sitemap.xml`
   }

@@ -1,7 +1,12 @@
+import type { Metadata } from 'next';
 import { Button } from "@/components/ui/button"
 import { AlertCircle } from "lucide-react"
 import type { SearchParams } from "next/dist/server/request/search-params"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
+
+export const metadata: Metadata = {
+  title: 'Unsubscribe Failed'
+}
 
 export default async function UnsubscribeErrorPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const { message } = await searchParams

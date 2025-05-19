@@ -1,6 +1,11 @@
+import type { Metadata } from 'next';
 import { Button } from "@/components/ui/button"
 import { CheckCircle2 } from "lucide-react"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
+
+export const metadata: Metadata = {
+  title: 'Successfully Unsubscribed'
+}
 
 export default function UnsubscribeSuccessPage() {
   return (

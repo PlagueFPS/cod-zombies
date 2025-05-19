@@ -1,4 +1,9 @@
+import type { Metadata } from 'next';
 import UnsubscribeForm from "@/components/UnsubscribeForm/UnsubscribeForm";
+
+export const metadata: Metadata = {
+  title: "Newsletter Unsubscribe"
+}
 
 export default function NewsletterUnsubscribePage() {
   return (
