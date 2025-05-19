@@ -1,7 +1,6 @@
 import "server-only"
 import { env } from "@/env"
 import { CreateBroadcastOptions, Resend } from "resend"
-import { after } from "next/server"
 import QuestReleaseEmail, { IQuestRelease } from "@/emails/QuestReleaseEmail"
 import ZombieReleaseEmail, { IZombieRelease } from "@/emails/ZombieReleaseEmail"
 import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
@@ -21,34 +20,17 @@ interface InternalEmailProps extends Pick<EmailProps, 'message'> {
 const resend = new Resend(env.RESEND_API_KEY)
 
 export const subscribeEmailUseCase = async (email: string) => {
-  const { data: contacts, error } = await resend.contacts.list({ audienceId: env.RESEND_AUDIENCE_ID })
+  const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
 
-  if (error || !contacts) {
-    console.error(error?.message)
+  if (error) {
+    console.error(error.message)
     return {
       success: false,
       message: "Something Went Wrong! Please Try Again.",
     }
   }
-
-  after(() => {
-    const unsubscribedContacts = contacts.data.filter(contact => contact.unsubscribed)
-    if (unsubscribedContacts.length > 0) {
-      unsubscribedContacts.forEach(async (contact) => {
-        const { error: removeError } = await resend.contacts.remove({ 
-          audienceId: env.RESEND_AUDIENCE_ID, 
-          id: contact.id 
-        })
-
-        if (removeError) {
-          console.error(removeError.message)
-        }
-      })
-    }
-  })
   
-  const contact = contacts.data.find(contact => contact.email === email)
-  if (contact) return {
+  if (data) return {
     success: false,
     message: 'That email has already subscribed!'
   }
@@ -56,8 +38,8 @@ export const subscribeEmailUseCase = async (email: string) => {
   const { error: createError } = await resend.contacts.create({
     email: email,
     audienceId: env.RESEND_AUDIENCE_ID,
-    unsubscribed: false,
   })
+
   if (createError) {
     console.error(createError.message)
     return {
@@ -73,18 +55,18 @@ export const subscribeEmailUseCase = async (email: string) => {
 }
 
 export const requestUnsubscribeUseCase = async (email: string) => {
-  const { data: contacts, error } = await resend.contacts.list({ audienceId: env.RESEND_AUDIENCE_ID })
+  // const { data: contacts, error } = await resend.contacts.list({ audienceId: env.RESEND_AUDIENCE_ID })
+  const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
 
-  if (error || !contacts) {
-    console.error(error?.message)
+  if (error) {
+    console.error(error.message)
     return {
       success: false,
       message: "Something Went Wrong! Please Try Again.",
     }
   }
 
-  const contact = contacts.data.find(contact => contact.email === email)
-  if (!contact) return {
+  if (!data) return {
     success: false,
     message: "That email is not currently subscribed."
   }
@@ -144,7 +126,6 @@ export const sendInternalEmailUseCase = async ({ subject, message }: InternalEma
 }
 
 export const sendContactEmailUseCase = async ({ name, email, message }: EmailProps) => {
-  const resend = new Resend(env.RESEND_API_KEY)
   const { error } = await resend.emails.send({
     from: `${name} <support@codzombiesguides.com>`,
     replyTo: email,
