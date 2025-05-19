@@ -1,12 +1,13 @@
+import UnsubscribeForm from "@/components/UnsubscribeForm/UnsubscribeForm";
 
 export default function NewsletterUnsubscribePage() {
   return (
-    <div className="max-w-md mx-auto py-12 px-4">
-      <h1 className="text-2xl font-bold mb-6">Unsubscribe from Newsletter</h1>
+    <div className="max-w-xl mx-auto py-12 px-4">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-6">Unsubscribe from Newsletter</h1>
       <p className="mb-6 text-muted-foreground">
         Enter your email address below. We'll send you a confirmation link to complete the unsubscribe process.
       </p>
-      {/* <UnsubscribeForm /> */}
+      <UnsubscribeForm />
     </div>
   )
 }

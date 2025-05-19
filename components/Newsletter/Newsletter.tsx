@@ -1,3 +1,4 @@
+import { CustomLink } from '../CustomLink/CustomLink'
 import NewsletterForm from './NewsletterForm'
 
 export default function Newsletter() {
@@ -6,6 +7,12 @@ export default function Newsletter() {
       <div className='text-base'>Subscribe to our newsletter</div>
       <p className='text-sm text-muted-foreground mb-2'>Stay updated on new releases, important updates, and features.</p>
       <NewsletterForm />
+      <CustomLink 
+        href="/newsletter/unsubscribe" 
+        className='underline underline-offset-4 hover:no-underline text-muted-foreground hover:text-foreground text-xs mt-2'
+        >
+        Unsubscribe
+      </CustomLink>
     </div>
   )
 }

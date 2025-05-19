@@ -92,15 +92,18 @@ export const requestUnsubscribeUseCase = async (email: string) => {
   const token = generateToken(email)
   const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/unsubscribe?token=${token}`
   const { error: sendError } = await resend.emails.send({
-    from: "COD: Zombies Guides <support@codzombiesguides.com>",
+    from: "COD Zombies Guides <support@codzombiesguides.com>",
     to: email,
     subject: "Confirm your unsubscribe request",
     react: UnsubscribeEmail({ unsubscribeUrl })
   })
 
-  if (sendError) return {
-    success: false,
-    message: "Failed to send confirmation email. Please Try Again."
+  if (sendError) {
+    console.error(sendError)
+    return {
+      success: false,
+      message: "Failed to send confirmation email. Please Try Again."
+    }
   }
 
   return { success: true, message: "Confirmation email sent! Check your inbox."}
@@ -131,7 +134,7 @@ export const processUnsubscribe = async (token: string) => {
 
 export const sendInternalEmailUseCase = async ({ subject, message }: InternalEmailProps) => {
   const { error } = await resend.emails.send({
-    from: `COD: Zombies Guides <support@codzombiesguides.com>`,
+    from: `COD Zombies Guides <support@codzombiesguides.com>`,
     to: 'codzombiesguidesteam@gmail.com',
     subject,
     text: message,
@@ -167,7 +170,7 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
 export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
   return await sendBroadcast(props.title, {
     audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD: Zombies Guides <updates@codzombiesguides.com>",
+    from: "COD Zombies Guides <updates@codzombiesguides.com>",
     subject: `New ${props.type} Quest Guide Release!`,
     react: QuestReleaseEmail(props),
     name: `${props.title} Release`
@@ -177,7 +180,7 @@ export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
 export const sendZombieReleaseBroadcast = async (props: IZombieRelease) => {
   return await sendBroadcast(props.title, {
     audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD: Zombies Guides <updates@codzombiesguides.com>",
+    from: "COD Zombies Guides <updates@codzombiesguides.com>",
     subject: `New ${props.type} Zombie Release!`,
     react: ZombieReleaseEmail(props),
     name: `${props.title} Release`
@@ -187,7 +190,7 @@ export const sendZombieReleaseBroadcast = async (props: IZombieRelease) => {
 export const sendLegalUpdateBroadcast = async () => {
   return await sendBroadcast("Privacy Policy", {
     audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD: Zombies Guides <legal@codzombiesguides.com>",
+    from: "COD Zombies Guides <legal@codzombiesguides.com>",
     subject: `Privacy Policy Update Notice`,
     react: PrivacyPolicyUpdateEmail(),
     name: "Privacy Policy Update"
