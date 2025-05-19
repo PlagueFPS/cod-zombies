@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Loader2 } from "lucide-react"
-import { customOnError, customOnSuccess } from "@/lib/safe-action"
+import { customOnError, customOnSuccess } from "@/lib/utils"
 
 export default function NewsletterForm() {
   const { execute, isPending } = useAction(subscribeToNewsletter, {

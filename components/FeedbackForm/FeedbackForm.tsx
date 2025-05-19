@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { customOnError, customOnSuccess } from "@/lib/safe-action"
+import { customOnError, customOnSuccess } from "@/lib/utils"
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { submitFeedbackForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"

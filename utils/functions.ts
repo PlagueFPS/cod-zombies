@@ -1,3 +1,4 @@
+import { env } from "@/env"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
 
 /**
@@ -200,9 +201,9 @@ export const TypeGuards = {
   },
 }
   /**
-   * Generates a secure token.
+   * Generates a unique secure token.
    * @param value - The value to secure.
-   * @returns the generated secure token.
+   * @returns the generated unique secure token.
    */
 export const generateToken = (value: string) => {
   const salt = randomBytes(16).toString('hex')
@@ -238,4 +239,12 @@ export const verifyToken = (token: string) => {
   } catch {
     return { valid: false }
   }
+}
+/**
+ * Generates a hash for the provided identifier.
+ * @param identifier - the value to hash.
+ * @returns The generated hashed value.
+ */
+export const hashIdentifier = (identifier: string) => {
+  return createHash("sha256").update(`${identifier}:${env.HASH_SALT}`).digest("hex")
 }

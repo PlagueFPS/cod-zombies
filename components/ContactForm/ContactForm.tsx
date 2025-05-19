@@ -4,7 +4,7 @@ import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hoo
 import { submitContactForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ContactFormSchema } from "@/utils/validationSchemas"
-import { customOnError, customOnSuccess } from "@/lib/safe-action"
+import { customOnError, customOnSuccess } from "@/lib/utils"
 import { 
   Dialog, 
   DialogContent,

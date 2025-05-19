@@ -1,6 +1,6 @@
 "use server"
 import { ContactFormSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
-import { ActionError, createAction } from "@/lib/safe-action"
+import { ActionError, createAction, ratelimitAction } from "@/lib/safe-action"
 import { requestUnsubscribeUseCase, sendContactEmailUseCase, subscribeEmailUseCase } from "@/usecases/email"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { IN_DEVELOPMENT } from "@/utils/constants"
@@ -9,17 +9,29 @@ import { z } from "zod"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 
-export const subscribeToNewsletter = createAction
+export const subscribeToNewsletter = ratelimitAction
   .metadata({ actionName: "subscribeToNewsletter" })
   .schema(NewsletterFormSchema)
-  .action(async ({ parsedInput: { email } }) => {
+  .action(async ({ ctx, parsedInput: { email } }) => {
+    if (ctx.limited) return {
+      success: false,
+      message: ctx.message,
+      remaining: ctx.remaining
+    }
+
     return await subscribeEmailUseCase(email)
   })
 
-export const requestUnsubscribe = createAction
+export const requestUnsubscribe = ratelimitAction
   .metadata({ actionName: "requestUnsubscribe"})
   .schema(NewsletterFormSchema)
-  .action(async ({ parsedInput: { email }}) => {
+  .action(async ({ ctx, parsedInput: { email }}) => {
+    if (ctx.limited) return {
+      success: false,
+      message: ctx.message,
+      remaining: ctx.remaining
+    }
+
     return await requestUnsubscribeUseCase(email)
   })
 

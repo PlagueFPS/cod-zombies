@@ -1,6 +1,6 @@
 "use client"
 import { requestUnsubscribe } from "@/data/actions"
-import { customOnError, customOnSuccess } from "@/lib/safe-action"
+import { customOnError, customOnSuccess } from "@/lib/utils"
 import { useAction } from "next-safe-action/hooks"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"

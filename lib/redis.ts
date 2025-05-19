@@ -2,10 +2,17 @@ import "server-only"
 import { env } from "@/env"
 import type { EntryStatus, EntryType } from "@/types/EntryEnforcement"
 import { Redis } from "@upstash/redis"
+import { Ratelimit } from "@upstash/ratelimit"
 
 export const redis = new Redis({
   url: env.REDIS_URL,
   token: env.REDIS_TOKEN
+})
+
+export const ratelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1h"),
+  analytics: true,
 })
 
 interface RedisResponse {

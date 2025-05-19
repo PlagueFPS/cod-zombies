@@ -16,6 +16,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     REDIS_URL: z.string().url(),
     REDIS_TOKEN: z.string().min(1),
+    HASH_SALT: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_WEBSITE_URL: z.string().url(),

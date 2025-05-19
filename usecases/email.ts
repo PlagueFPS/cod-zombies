@@ -55,7 +55,6 @@ export const subscribeEmailUseCase = async (email: string) => {
 }
 
 export const requestUnsubscribeUseCase = async (email: string) => {
-  // const { data: contacts, error } = await resend.contacts.list({ audienceId: env.RESEND_AUDIENCE_ID })
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
 
   if (error) {
