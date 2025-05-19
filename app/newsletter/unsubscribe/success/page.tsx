@@ -12,7 +12,7 @@ export default function UnsubscribeSuccessPage() {
       <p className="mb-6 text-muted-foreground">
         You have been successfully unsubscribed from our newsletter. We're sorry to see you go!
       </p>
-      <Button asChild>
+      <Button variant={"outline"} asChild>
         <CustomLink href="/">Return to Homepage</CustomLink>
       </Button>
     </div>

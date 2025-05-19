@@ -68,7 +68,7 @@ export const subscribeEmailUseCase = async (email: string) => {
 
   return {
     success: true,
-    message: 'Thank You For Subscribing!'
+    message: 'Subscribtion successful! Thank you for subscribing.'
   }
 }
 
