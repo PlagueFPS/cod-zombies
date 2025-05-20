@@ -35,7 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vscode
 newassets
 oldassets
 upload-assets.ts

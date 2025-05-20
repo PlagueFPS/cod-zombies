@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zfd } from "zod-form-data";
+import { zfd } from "zod-form-data"
 
 export interface FeedbackForm extends z.infer<typeof FeedbackFormSchema> {}
 export type AllowedSlugs = z.infer<typeof AllowedSlugsSchema>
@@ -8,7 +8,7 @@ export const AllowedSlugsSchema = z.enum(["maps", "games", "side-quests", "zombi
 
 export const FeedbackFormSchema = zfd.formData({
   title: zfd.text(z.string()).optional(),
-  feedback: zfd.text(z.string({ required_error: "Feedback is required" }).min(1))
+  feedback: zfd.text(z.string({ required_error: "Feedback is required" }).nonempty()),
 })
 
 export const NewsletterFormSchema = zfd.formData({
@@ -16,13 +16,13 @@ export const NewsletterFormSchema = zfd.formData({
 })
 
 export const ContactFormSchema = zfd.formData({
-  name: zfd.text(z.string({ required_error: "Name is required" }).min(1)),
+  name: zfd.text(z.string({ required_error: "Name is required" }).nonempty()),
   email: zfd.text(z.string({ required_error: "Email is required" }).email({ message: "Invalid email address" })),
-  message: zfd.text(z.string({ required_error: "Message is required" }).min(1)),
+  message: zfd.text(z.string({ required_error: "Message is required" }).nonempty()),
 })
 
 export const RevalidateWebhookBodySchema = z.object({
-  entryId: z.string().min(1),
+  entryId: z.string().nonempty(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime()
 })
