@@ -32,3 +32,7 @@ export const TerminusCodeSchema = z.object({
   y: z.coerce.number().nonnegative().int().max(99),
   z: z.coerce.number().nonnegative().int().max(99),
 })
+
+export const DraftModeSchema = z.object({
+  pathname: z.string().nonempty()
+})

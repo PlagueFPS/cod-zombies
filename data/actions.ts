@@ -1,11 +1,9 @@
 "use server"
-import { ContactFormSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
-import { ActionError, createAction, ratelimitAction } from "@/lib/safe-action"
+import { ContactFormSchema, DraftModeSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
+import { createAction, developmentAction, ratelimitAction } from "@/lib/safe-action"
 import { requestUnsubscribeUseCase, sendContactEmailUseCase, subscribeEmailUseCase } from "@/usecases/email"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
-import { IN_DEVELOPMENT } from "@/utils/constants"
 import { draftMode } from "next/headers"
-import { z } from "zod"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 
@@ -49,18 +47,9 @@ export const submitContactForm = createAction
     return await sendContactEmailUseCase(parsedInput)
   })
 
-export const toggleDraftMode = createAction
+export const toggleDraftMode = developmentAction
   .metadata({ actionName: "toggleDraftMode" })
-  .schema(z.object({
-    pathname: z.string()
-  }))
-  .use(async ({ next }) => {
-    if (!IN_DEVELOPMENT) {
-      throw new ActionError("This action is not available in production")
-    }
-
-    return next()
-  })
+  .schema(DraftModeSchema)
   .action(async ({ parsedInput: { pathname } }) => {
     const draft = await draftMode()
     if (draft.isEnabled) {

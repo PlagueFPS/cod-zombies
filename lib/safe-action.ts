@@ -2,8 +2,9 @@ import "server-only"
 import { createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE } from "next-safe-action"
 import { z } from "zod"
 import { headers } from "next/headers"
-import { generateToken, hashIdentifier } from "@/utils/functions"
+import { hashIdentifier } from "@/utils/functions"
 import { ratelimit } from "./redis"
+import { IN_DEVELOPMENT } from "@/utils/constants"
 
 export class ActionError extends Error {}
 
@@ -52,4 +53,25 @@ export const ratelimitAction = createSafeActionClient({
   }
 
   return next({ ctx: { limited: false }})
+})
+
+export const developmentAction = createSafeActionClient({
+  defineMetadataSchema: () => z.object({
+    actionName: z.string(),
+  }),
+  handleServerError: (error) => {
+    console.error(error)
+
+    if (error instanceof ActionError) {
+      return error.message
+    }
+
+    return DEFAULT_SERVER_ERROR_MESSAGE
+  }
+}).use(({ next }) => {
+  if (!IN_DEVELOPMENT) {
+    throw new ActionError("This action is not available in production")
+  }
+
+  return next()
 })
