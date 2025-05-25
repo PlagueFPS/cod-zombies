@@ -12,6 +12,7 @@ export const GLOBAL_OG_PROPS = {
     siteName: SITE_TITLE,
     locale: 'en_US',
     type: 'website',
+    emails: ['codzombiesguidesteam@gmail.com'],
   }
 } satisfies Metadata
 export const CACHE_KEYS = {
