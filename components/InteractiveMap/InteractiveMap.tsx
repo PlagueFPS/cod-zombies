@@ -15,7 +15,7 @@ const mapLayers: MapLayer[] = [
   {
     id: "layer1",
     name: "Main Floor",
-    image: "/layers/map-layer-1.png",
+    image: "/layers/map-layer-1.webp",
     markers: [
       {
         id: "m1",
@@ -54,7 +54,7 @@ const mapLayers: MapLayer[] = [
   {
     id: "layer2",
     name: "Lower Level",
-    image: "/layers/map-layer-2.png",
+    image: "/layers/map-layer-2.webp",
     markers: [
       {
         id: "m5",
@@ -156,13 +156,29 @@ export default function MapPage() {
   const currentImageDimensions = imageDimensions[currentLayer.id]
 
   useEffect(() => {
-    const loadImageDimensions = () => {
+    const loadImageDimensions = async () => {
       const dimensions: Record<string, ImageDimensions> = {}
 
       for (const layer of mapLayers) {
-        dimensions[layer.id] = {
-          width: 1000,
-          height: 1000
+        try {
+          const img = new Image()
+          img.crossOrigin = "anonymous"
+
+          await new Promise((resolve, reject) => {
+            img.onload = () => {
+              dimensions[layer.id] = {
+                width: img.naturalWidth,
+                height: img.naturalHeight,
+              }
+              resolve(img)
+            }
+            img.onerror = reject
+            img.src = layer.image
+          })
+        } catch (error) {
+          console.error(`Failed to load image for layer ${layer.id}:`, error)
+          // Fallback dimensions
+          dimensions[layer.id] = { width: 1920, height: 1080 }
         }
       }
 
@@ -263,7 +279,7 @@ export default function MapPage() {
         { currentImageDimensions && (
           <ImageOverlay 
             key={ currentLayer.id }
-            url={ `${env.NEXT_PUBLIC_WEBSITE_URL}${currentLayer.image}` }
+            url={ currentLayer.image }
             bounds={ getImageBounds() }
           />
         )}
