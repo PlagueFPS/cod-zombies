@@ -1,10 +1,16 @@
+export interface MapConfig {
+  id: string
+  title: string
+  layers: MapLayer[]
+}
+
 export interface MapMarker {
   id: string
   x: number
   y: number
   title: string
   description: string
-  type: "objective" | "spawn" | "item" | "danger"
+  type: MarkerType
 }
 
 export interface MapLayer {
@@ -25,3 +31,6 @@ export interface MapController {
   onZoomChange: (zoom: number) => void
   currentImageDimensions: ImageDimensions | null
 }
+
+export type MarkerType = "perk" | "ammo-cache" | "weapon-wall-buy" | "objective" | "pack-a-punch" 
+| "door-buy" | "trap" | "armor-wall-buy" | "mystery-box" | "rampage-inducer" | "exfil" | "arsenal" | "crafting-table"
