@@ -22,7 +22,7 @@ const resend = new Resend(env.RESEND_API_KEY)
 export const subscribeEmailUseCase = async (email: string) => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
 
-  if (error) {
+  if (error && error.name !== "not_found") {
     console.error(error.message)
     return {
       success: false,
@@ -57,7 +57,7 @@ export const subscribeEmailUseCase = async (email: string) => {
 export const requestUnsubscribeUseCase = async (email: string) => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
 
-  if (error) {
+  if (error && error.name !== "not_found") {
     console.error(error.message)
     return {
       success: false,
