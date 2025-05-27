@@ -149,8 +149,7 @@ function MapController({ imageDimensions, onZoomChange }: MapController) {
 
   useMapEvents({
     zoomend: () => {
-      const zoom = map.getZoom()
-      onZoomChange(zoom)
+      onZoomChange(map.getZoom())
     },
     click: logClickCoordinates(imageDimensions)
   })
@@ -158,8 +157,11 @@ function MapController({ imageDimensions, onZoomChange }: MapController) {
   useEffect(() => {
     if (imageDimensions) {
       const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
-      map.setView(center, 0)
+      map.setView(center, 0, { animate: false })
       map.fitBounds([[0, 0], [imageDimensions.height, imageDimensions.width]])
+      setTimeout(() => {
+        map.setZoom(0, { animate: false })
+      }, 0)
     }
 
   }, [map, imageDimensions])
