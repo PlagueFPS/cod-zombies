@@ -22,7 +22,6 @@ export interface ImageDimensions {
 export interface MapController {
   imageDimensions: ImageDimensions | null
   onZoomChange: (zoom: number) => void
-  currentImageDimensions: ImageDimensions | null
 }
 
 export type MarkerType = "perk" | "ammo-cache" | "weapon-wall-buy" | "objective" | "pack-a-punch" 
