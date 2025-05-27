@@ -12,6 +12,7 @@ export interface MapMarker {
   title: string
   description: string
   type: MarkerType
+  icon: string
 }
 
 export interface ImageDimensions {

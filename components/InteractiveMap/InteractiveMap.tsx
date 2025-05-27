@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import CustomMarker from './CustomMarker'
+import { capatilize } from "@/utils/functions"
 
 const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
   if (!e.latlng || !imageDimensions) return
@@ -119,22 +121,23 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         )}
 
         { imageDimensions && mapConfig.markers.map(marker => (
-          <Marker
+          <CustomMarker
             key={ marker.id }
+            marker={ marker }
             position={convertToLeafletCoords(marker.x, marker.y)}
           >
             <Popup>
               <div className="p-2">
                 <div className="flex items-center gap-2 mb-1">
                   <Badge className="badge-primary-gradient dark:badge-primary-gradient">
-                    { marker.type }
+                    { capatilize(marker.type) }
                   </Badge>
                 </div>
                 <h3 className="font-semibold text-sm">{ marker.title }</h3>
                 <p className="text-xs mt-1 text-muted-foreground">{ marker.description }</p>
               </div>
             </Popup>
-          </Marker>
+          </CustomMarker>
         ))}
       </MapContainer>
     </div>
