@@ -1,7 +1,8 @@
 export interface MapConfig {
   id: string
   title: string
-  layers: MapLayer[]
+  image: string
+  markers: MapMarker[]
 }
 
 export interface MapMarker {
@@ -13,20 +14,12 @@ export interface MapMarker {
   type: MarkerType
 }
 
-export interface MapLayer {
-  id: string
-  name: string
-  image: string
-  markers: MapMarker[]
-}
-
 export interface ImageDimensions {
   width: number
   height: number
 }
 
 export interface MapController {
-  currentLayer: MapLayer
   imageDimensions: ImageDimensions | null
   onZoomChange: (zoom: number) => void
   currentImageDimensions: ImageDimensions | null
