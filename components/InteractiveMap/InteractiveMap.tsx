@@ -1,6 +1,6 @@
 "use client"
 import 'leaflet/dist/leaflet.css'
-import type { ImageDimensions, MapConfig, MapController } from "@/types/InteractiveMap"
+import type { ImageDimensions, Location, MapConfig, MapController } from "@/types/InteractiveMap"
 import { CRS, LatLng, LatLngBounds, LatLngTuple, LeafletMouseEvent, Map } from "leaflet"
 import { ImageOverlay, MapContainer, Marker, Popup, useMap, useMapEvents } from "react-leaflet"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -52,7 +52,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
     loadImageDimensions()
   }, [])
 
-  const convertToLeafletCoords = useCallback((x: number, y: number): LatLng => {
+  const convertToLeafletCoords = useCallback(({ x, y }: Location): LatLng => {
     if (!imageDimensions) return new LatLng(0, 0)
     return new LatLng(
       imageDimensions.height - y * imageDimensions.height, 
@@ -120,25 +120,27 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
           />
         )}
 
-        { imageDimensions && mapConfig.markers.map(marker => (
-          <CustomMarker
-            key={ marker.id }
-            marker={ marker }
-            position={convertToLeafletCoords(marker.x, marker.y)}
-          >
-            <Popup>
-              <div className="p-2">
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge className="badge-primary-gradient dark:badge-primary-gradient">
-                    { capatilize(marker.type) }
-                  </Badge>
+        { imageDimensions && mapConfig.markers.map(marker => {
+          return marker.locations.map(location => (
+            <CustomMarker
+              key={ `${marker.id}-${location.x}-${location.y}` }
+              marker={ marker }
+              position={convertToLeafletCoords(location)}
+            >
+              <Popup>
+                <div className="p-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge className="badge-primary-gradient dark:badge-primary-gradient">
+                      { capatilize(marker.type) }
+                    </Badge>
+                  </div>
+                  <h3 className="font-semibold text-sm">{ marker.title }</h3>
+                  <p className="text-xs mt-1 text-muted-foreground">{ marker.description }</p>
                 </div>
-                <h3 className="font-semibold text-sm">{ marker.title }</h3>
-                <p className="text-xs mt-1 text-muted-foreground">{ marker.description }</p>
-              </div>
-            </Popup>
-          </CustomMarker>
-        ))}
+              </Popup>
+            </CustomMarker>
+          ))
+        })}
       </MapContainer>
     </div>
   )

@@ -7,12 +7,11 @@ export interface MapConfig {
 
 export interface MapMarker {
   id: string
-  x: number
-  y: number
   title: string
   description: string
   type: MarkerType
   icon: string
+  locations: Location[]
 }
 
 export interface ImageDimensions {
@@ -23,6 +22,11 @@ export interface ImageDimensions {
 export interface MapController {
   imageDimensions: ImageDimensions | null
   onZoomChange: (zoom: number) => void
+}
+
+export interface Location {
+  x: number
+  y: number
 }
 
 export type MarkerType = "perk" | "ammo-cache" | "weapon-wall-buy" | "objective" | "pack-a-punch" 

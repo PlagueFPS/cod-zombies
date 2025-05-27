@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { MapMarker } from '@/types/InteractiveMap'
+import type { MapMarker } from '@/types/InteractiveMap'
 import Image from 'next/image'
 import { DivIcon,type LatLng } from 'leaflet'
 import { Marker as LeafletMarker } from 'react-leaflet'
+import { cn } from '@/lib/utils'
 
 interface CustomMarkerProps {
   marker: MapMarker
@@ -26,16 +27,17 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
       html: iconElement,
       className: 'custom-marker-container',
       iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32],
+      iconAnchor: [16, 16],
+      popupAnchor: [0, -16]
     })
 
     if (markerRef.current.setIcon) {
       markerRef.current.setIcon(customIcon)
     }
 
+    // wait for react to finish rendering before unmounting
     return () => {
-      root.unmount()
+      setTimeout(() => root.unmount(), 0)
     }
   }, [marker])
 
@@ -57,7 +59,7 @@ function MarkerIcon({ marker }: { marker: MapMarker }) {
         alt={ marker.title } 
         width={ 128 } 
         height={ 128 }
-        className='size-8 object-contain'
+        className={cn('size-8 object-contain', { 'size-6': marker.type === "perk" })}
         onError={ () => setError(true) }
       /> : (
         <div className='size-8 bg-primary rounded-full' />
