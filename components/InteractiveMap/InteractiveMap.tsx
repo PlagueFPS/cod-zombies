@@ -101,7 +101,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         ref={ mapRef }
         center={
           imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] 
-          : [512, 512]
+          : [1024, 1024]
         }
         zoom={ 0 }
         minZoom={ -2 }

@@ -26,7 +26,8 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
       html: iconElement,
       className: 'custom-marker-container',
       iconSize: [32, 32],
-      iconAnchor: [16, 0],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
     })
 
     if (markerRef.current.setIcon) {
