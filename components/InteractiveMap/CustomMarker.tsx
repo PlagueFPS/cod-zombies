@@ -52,14 +52,14 @@ function MarkerIcon({ marker }: { marker: MapMarker }) {
   const [error, setError] = useState(false)
 
   return (
-    <div className='flex items-center justify-center size-8'>
+    <div className='flex items-center justify-center'>
      { !error ? <Image
         unoptimized
         src={ marker.icon } 
         alt={ marker.title } 
         width={ 128 } 
         height={ 128 }
-        className={cn('size-8 object-contain', { 'size-6': marker.type === "perk" })}
+        className={cn('size-8', { 'size-6': marker.type === "perk" && marker.id !== 'der-wunderfizz' })}
         onError={ () => setError(true) }
       /> : (
         <div className='size-8 bg-primary rounded-full' />

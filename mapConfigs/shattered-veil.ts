@@ -220,7 +220,114 @@ const shatteredVeil: MapConfig = {
       title: "Der Wunderfizz",
       description: "Single machine for all perks, appearing on Round 25.",
       icon: "/icons/der-wunderfizz.webp",
-      locations: [{ x: 0.745, y: 507 }]
+      locations: [{ x: 0.745, y: 0.507 }]
+    },
+    {
+      id: "gobblegum-machine",
+      type: "gobblegum-machine",
+      title: "Gobblegum Machine",
+      description: "Activate the Gobblegum Machine for a gobblegum in your pack.",
+      icon: "/icons/gobblegum.webp",
+      locations: [
+        { x: 0.246, y: 0.559 },
+        { x: 0.381, y: 0.552 },
+        { x: 0.346, y: 0.324 },
+        { x: 0.591, y: 0.292 },
+        { x: 0.479, y: 0.255 },
+        { x: 0.823, y: 0.529 }
+      ]
+    },
+    {
+      id: "arsenal",
+      type: "arsenal",
+      title: "Arsenal",
+      description: "Apply ammo mods or upgrade the rarity of your weapon with salvage.",
+      icon: "/icons/arsenal.webp",
+      locations: [
+        { x: 0.501, y: 0.400 },
+        { x: 0.728, y: 0.614 },
+        { x: 0.434, y: 0.206 }
+      ]
+    },
+    {
+      id: "trap",
+      type: "trap",
+      title: "Trap",
+      description: "Activate the trap to aid your survival against the undead.",
+      icon: "/icons/trap.webp",
+      locations: [
+        { x: 0.177, y: 0.571 },
+        { x: 0.276, y: 0.490 },
+        { x: 0.531, y: 0.353 },
+        { x: 0.390, y: 0.371 },
+        { x: 0.764, y: 0.530 }
+      ]
+    },
+    {
+      id: "rampage-inducer",
+      type: "rampage-inducer",
+      title: "Rampage Inducer",
+      description: "Activate to make zombies faster and more aggresive until Round 55 or deactivated.",
+      icon: "/icons/rampage-inducer.webp",
+      locations: [{ x: 0.259, y: 0.614 }]
+    },
+    {
+      id: "power-door",
+      type: "power-door",
+      title: "Power Door",
+      description: "You must activate the power to open this door.",
+      icon: "/icons/power-door.webp",
+      locations: [{ x: 0.422, y: 0.336 }]
+    },
+    {
+      id: "door-buy",
+      type: "door-buy",
+      title: "Door Buy",
+      description: "You must purchase this door to open it.",
+      icon: "/icons/door-buy.webp",
+      locations: [
+        { x: 0.263, y: 0.523 },
+        { x: 0.314, y: 0.573 },
+        { x: 0.334, y: 0.514 },
+        { x: 0.405, y: 0.602 },
+        { x: 0.473, y: 0.447 },
+        { x: 0.504, y: 0.388 },
+        { x: 0.517, y: 0.379 },
+        { x: 0.429, y: 0.352 },
+        { x: 0.359, y: 0.360 },
+        { x: 0.598, y: 0.280 },
+        { x: 0.531, y: 0.226 },
+        { x: 0.437, y: 0.226 },
+        { x: 0.681, y: 0.557 }
+      ]
+    },
+    {
+      id: "crafting-table",
+      type: "crafting-table",
+      title: "Crafting Table",
+      description: "Purchase scorestreaks, tacticals, and lethals for salvage.",
+      icon: "/icons/crafting-table.webp",
+      locations: [
+        { x: 0.492, y: 0.576 },
+        { x: 0.486, y: 0.231 },
+        { x: 0.850, y: 0.379 }
+      ]
+    },
+    {
+      id: "pack-a-punch",
+      type: "pack-a-punch",
+      title: "Pack-a-Punch",
+      description: "Upgrade your weapon up to three total times with points.",
+      icon: "/icons/pack-a-punch.webp",
+      locations: [{ x: 0.810, y: 0.447 }]
+    },
+    {
+      id: "exfil",
+      type: "exfil",
+      title: "Exfil",
+      description: "Call for an exfil. First appears on Round 11, then every 5 rounds afterwards.",
+      icon: "/icons/exfil.webp",
+      locations: [{ x: 0.299, y: 0.551 }]
     }
   ]
 }
