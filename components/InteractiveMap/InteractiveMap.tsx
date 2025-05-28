@@ -110,6 +110,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         style={{ height: "100vh", width: "100vw" }}
         zoomControl={ false }
         attributionControl={ false }
+        className='bg-accent! dark:bg-accent/25!'
       >
         <MapController imageDimensions={ imageDimensions } onZoomChange={ setZoom } />
         { imageDimensions && (
@@ -127,16 +128,14 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
               marker={ marker }
               position={convertToLeafletCoords(location)}
             >
-              <Popup>
-                <div className="p-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Badge className="badge-primary-gradient dark:badge-primary-gradient">
-                      { capatilize(marker.type) }
-                    </Badge>
-                  </div>
-                  <h3 className="font-semibold text-sm">{ location.title || marker.title }</h3>
-                  <p className="text-xs mt-1 text-muted-foreground">{ location.description || marker.description }</p>
+              <Popup className='custom-popup'>
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+                    { capatilize(marker.type) }
+                  </Badge>
                 </div>
+                <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient">{ location.title || marker.title }</h3>
+                <p className="text-sm text-foreground/90">{ location.description || marker.description }</p>
               </Popup>
             </CustomMarker>
           ))
@@ -184,7 +183,7 @@ function MapController({ imageDimensions, onZoomChange }: MapController) {
   }, [map, imageDimensions])
 
   return (
-    <div className="absolute top-4 left-4 z-100 flex gap-2">
+    <div className="absolute top-4 left-4 z-400 flex gap-2">
       <Badge variant={"outline"} className="bg-background/80">
         <div className="flex gap-2">
           <Button variant={"ghost"} size={"icon"} onClick={ handleZoomIn } title="Zoom In">

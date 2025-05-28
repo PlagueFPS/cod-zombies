@@ -120,6 +120,26 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
+  .custom-marker-container {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .custom-popup .leaflet-popup-content-wrapper {
+    background: var(--color-background) !important;
+    color: var(--color-foreground);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-primary);
+  }
+
+  .custom-popup .leaflet-popup-tip {
+    background: var(--color-background) !important;
+    border: 1px solid var(--color-primary);
+  }
+
+  .custom-popup .leaflet-popup-close-button {
+    color: var(--color-muted-foreground) !important;
+  }
 }
 @theme {
   --color-border: var(--border);
