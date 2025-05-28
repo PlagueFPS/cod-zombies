@@ -3,4 +3,3 @@ export const mapRegistry = {
 } as const
 
 export type MapId = keyof typeof mapRegistry
-

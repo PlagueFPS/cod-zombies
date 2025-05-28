@@ -134,8 +134,8 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
                       { capatilize(marker.type) }
                     </Badge>
                   </div>
-                  <h3 className="font-semibold text-sm">{ marker.title }</h3>
-                  <p className="text-xs mt-1 text-muted-foreground">{ marker.description }</p>
+                  <h3 className="font-semibold text-sm">{ location.title || marker.title }</h3>
+                  <p className="text-xs mt-1 text-muted-foreground">{ location.description || marker.description }</p>
                 </div>
               </Popup>
             </CustomMarker>

@@ -27,8 +27,12 @@ export interface MapController {
 export interface Location {
   x: number
   y: number
+  title?: string
+  description?: string
 }
 
-export type MarkerType = "perk" | "ammo-cache" | "weapon-wall-buy" | "objective" | "pack-a-punch" 
+export type MarkerType = "perk" | "ammo-cache" | "weapon-wall-buy" | "pack-a-punch" 
 | "door-buy" | "trap" | "armor-wall-buy" | "mystery-box" | "rampage-inducer" | "exfil" | "arsenal" 
-| "crafting-table" | "gobblegum-machine" | "power-door"
+| "crafting-table" | "gobblegum-machine" | "power-door" | "portal" | "workbench"
+
+export type Perks = "quick-revive" | "speed-cola" | "juggernog" | "double-tap" | "phd-flopper" | "stamin-up" | "death-perception" | "elemental-pop"
