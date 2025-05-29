@@ -15,6 +15,174 @@ const shatteredVeil: MapConfig = {
       locations: [{ x: 0.212, y: 0.607 }]
     },
     {
+      id: "shems-henge",
+      type: "label",
+      title: "Shem's Henge",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.342, y: 0.617 }]
+    },
+    {
+      id: "conservatory",
+      type: "label",
+      title: "Conservatory",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.263, y: 0.477 }]
+    },
+    {
+      id: "motor-court",
+      type: "label",
+      title: "Motor Court",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.463, y: 0.514 }]
+    },
+    {
+      id: "grand-foyer",
+      type: "label",
+      title: "Grand Foyer",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.471, y: 0.396 }]
+    },
+    {
+      id: "east-foyer",
+      type: "label",
+      title: "East Foyer",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.541, y: 0.373 }]
+    },
+    {
+      id: "library",
+      type: "label",
+      title: "Library",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.590, y: 0.320 }]
+    },
+    {
+      id: "study",
+      type: "label",
+      title: "Study",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.573, y: 0.264 }]
+    },
+    {
+      id: "east-balcony",
+      type: "label",
+      title: "East Balcony",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.554, y: 0.233 }]
+    },
+    {
+      id: "rear-patio",
+      type: "label",
+      title: "Rear Patio",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.481, y: 0.199 }]
+    },
+    {
+      id: "banquet-hall",
+      type: "label",
+      title: "Banquet Hall",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.472, y: 0.272 }]
+    },
+    {
+      id: "west-balcony",
+      type: "label",
+      title: "West Balcony",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.398, y: 0.230 }]
+    },
+    {
+      id: "bottlery",
+      type: "label",
+      title: "Bottlery",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.428, y: 0.250 }]
+    },
+    {
+      id: "directors-quarters",
+      type: "label",
+      title: "Director's Quarters",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.400, y: 0.302 }]
+    },
+    {
+      id: "nursery",
+      type: "label",
+      title: "Nursery",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.391, y: 0.383 }],
+    },
+    {
+      id: "south-west-balcony",
+      type: "label",
+      title: "South West Balcony",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.357, y: 0.389 }]
+    },
+    {
+      id: "west-hallways",
+      type: "label",
+      title: "West Hallways",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.419, y: 0.328 }]
+    },
+    {
+      id: "mainframe-chamber",
+      type: "label",
+      title: "Mainframe Chamber",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.810, y: 0.404 }]
+    },
+    {
+      id: "security-overlook",
+      type: "label",
+      title: "Security Overlook",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.810, y: 0.459 }]
+    },
+    {
+      id: "service-tunnel",
+      type: "label",
+      title: "Service Tunnel",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.710, y: 0.515 }]
+    },
+    {
+      id: "supply-depot",
+      type: "label",
+      title: "Supply Depot",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.704, y: 0.597 }]
+    },
+    {
+      id: "armory",
+      type: "label",
+      title: "Armory",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.671, y: 0.597 }]
+    },
+    {
       ...perks["quick-revive"],
       locations: [{ x: 0.231, y: 0.473 }]
     },
@@ -179,8 +347,14 @@ const shatteredVeil: MapConfig = {
     {
       ...sharedMarkers.portal,
       locations: [
-        { x: 0.238, y: 0.638 },
-        { x: 0.706, y: 0.626 }
+        { x: 0.238, y: 0.638,
+          title: "Garden Pond Portal",
+          description: "Teleport to the Supply Depot"
+        },
+        { x: 0.706, y: 0.626, 
+          title: "Supply Depot Portal",
+          description: "Teleport to the Garden Pond"
+        }
       ]
     },
     {

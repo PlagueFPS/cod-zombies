@@ -120,6 +120,10 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
+
+  .leaflet-container, .leaflet-container * {
+    font-family: var(--font-geist) !important;
+  }
   .custom-marker-container {
     background: transparent !important;
     border: none !important;

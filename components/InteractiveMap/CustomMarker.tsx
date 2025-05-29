@@ -59,7 +59,7 @@ function MarkerIcon({ marker }: { marker: MapMarker }) {
   if (marker.type === "label") {
     return (
       <div className='flex items-center justify-center whitespace-nowrap text-sm text-foreground'>
-        <span className='rounded-md shadow-lg bg-background/35 px-2 py-1'>
+        <span className='rounded shadow-lg bg-background/35 px-2 py-1'>
           { marker.title }
         </span>
       </div>

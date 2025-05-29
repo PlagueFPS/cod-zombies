@@ -58,12 +58,14 @@ export const viewport: Viewport = {
 
 const geist = Geist({
   subsets: ['latin'],
+  display: "swap",
+  variable: "--font-geist"
 })
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={ `${geist.className} flex flex-col min-h-dvh` }>
+      <body className={ `${geist.className} ${geist.variable} flex flex-col min-h-dvh` }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
