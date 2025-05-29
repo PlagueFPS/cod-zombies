@@ -215,6 +215,30 @@ const shatteredVeil: MapConfig = {
       locations: [{ x: 0.671, y: 0.597 }]
     },
     {
+      id: "serpent-mound",
+      type: "label",
+      title: "Serpent Mound",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.641, y: 0.414 }]
+    },
+    {
+      id: "distillery",
+      type: "label",
+      title: "Distillery",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.245, y: 0.344 }]
+    },
+    {
+      id: "ravine",
+      type: "label",
+      title: "Ravine",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.559, y: 0.657 }]
+    },
+    {
       ...perks["quick-revive"],
       locations: [{ x: 0.231, y: 0.473 }]
     },
@@ -257,7 +281,10 @@ const shatteredVeil: MapConfig = {
         { x: 0.575, y: 0.328 },
         { x: 0.492, y: 0.184 },
         { x: 0.772, y: 0.378 },
-        { x: 0.631, y: 0.510 }
+        { x: 0.631, y: 0.510 },
+        { x: 0.561, y: 0.702 },
+        { x: 0.557, y: 0.609 },
+        { x: 0.658, y: 0.457 }
       ]
     },
     {
@@ -504,6 +531,14 @@ const shatteredVeil: MapConfig = {
       icon: "/icons/weapon-wall-buy.webp",
       type: "weapon-wall-buy",
       locations: [{ x: 0.7015, y: 0.590 }]
+    },
+    {
+      id: "pu-21",
+      title: "PU-21",
+      description: "Purchase a PU-21 Light Machine Gun off the wall.",
+      icon: "/icons/weapon-wall-buy.webp",
+      type: "weapon-wall-buy",
+      locations: [{ x: 0.607, y: 0.425 }]
     }
   ]
 }
