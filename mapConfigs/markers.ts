@@ -1,7 +1,7 @@
 import type { MapMarker, MarkerType, Perks } from "@/types/InteractiveMap";
 
 interface Marker extends Omit<MapMarker, "locations"> {}
-type SharedMarkerType = Exclude<Exclude<MarkerType, "perk">, "weapon-wall-buy"> | "der-wunderfizz"
+type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label"> | "der-wunderfizz"
 
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
@@ -93,7 +93,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
   "mystery-box": {
     id: "mystery-box",
     title: 'Mystery Box Location',
-    description: "Spin the Mystery Box for a random weapon.",
+    description: "Purchase a random weapon.",
     icon: "/icons/mystery-box.webp",
     type: "mystery-box",
   },

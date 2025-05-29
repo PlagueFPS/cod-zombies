@@ -15,6 +15,22 @@ const shatteredVeil: MapConfig = {
       locations: [{ x: 0.212, y: 0.607 }]
     },
     {
+      id: "lower-terrace",
+      type: "label",
+      title: "Lower Terrace",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.287, y: 0.550 }]
+    },
+    {
+      id: "upper-terrace",
+      type: "label",
+      title: "Upper Terrace",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.373, y: 0.558 }]
+    },
+    {
       id: "shems-henge",
       type: "label",
       title: "Shem's Henge",
@@ -45,6 +61,14 @@ const shatteredVeil: MapConfig = {
       description: "",
       icon: null,
       locations: [{ x: 0.471, y: 0.396 }]
+    },
+    {
+      id: "overlook",
+      type: "label",
+      title: "Overlook",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.472, y: 0.351 }]
     },
     {
       id: "east-foyer",
@@ -85,6 +109,14 @@ const shatteredVeil: MapConfig = {
       description: "",
       icon: null,
       locations: [{ x: 0.481, y: 0.199 }]
+    },
+    {
+      id: "kitchen",
+      type: "label",
+      title: "Kitchen",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.505, y: 0.245 }]
     },
     {
       id: "banquet-hall",
