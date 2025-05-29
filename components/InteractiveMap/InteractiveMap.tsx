@@ -128,15 +128,17 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
               marker={ marker }
               position={convertToLeafletCoords(location)}
             >
-              <Popup className='custom-popup'>
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-                    { capatilize(marker.type) }
-                  </Badge>
-                </div>
-                <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient">{ location.title || marker.title }</h3>
-                <p className="text-sm text-foreground/90">{ location.description || marker.description }</p>
-              </Popup>
+              { marker.type !== "label" ? (
+                <Popup className='custom-popup'>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+                      { capatilize(marker.type) }
+                    </Badge>
+                  </div>
+                  <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient">{ location.title || marker.title }</h3>
+                  <p className="text-sm text-foreground/90">{ location.description || marker.description }</p>
+                </Popup>
+              ) : null}
             </CustomMarker>
           ))
         })}

@@ -42,7 +42,12 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
   }, [marker])
 
   return (
-    <LeafletMarker ref={ markerRef } position={ position }>
+    <LeafletMarker 
+      ref={ markerRef } 
+      position={ position }
+      interactive={ marker.type !== "label" }
+      zIndexOffset={ marker.type === "label" ? -1000 : 1000}
+    >
       { children }
     </LeafletMarker>
   )
@@ -51,9 +56,19 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
 function MarkerIcon({ marker }: { marker: MapMarker }) {
   const [error, setError] = useState(false)
 
+  if (marker.type === "label") {
+    return (
+      <div className='flex items-center justify-center whitespace-nowrap text-sm text-foreground'>
+        <span className='rounded-md shadow-lg bg-background/35 px-2 py-1'>
+          { marker.title }
+        </span>
+      </div>
+    )
+  }
+
   return (
     <div className='flex items-center justify-center'>
-     { !error ? <Image
+     { !error && marker.icon ? <Image
         unoptimized
         src={ marker.icon } 
         alt={ marker.title } 

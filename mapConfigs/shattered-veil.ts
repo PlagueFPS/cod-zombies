@@ -7,6 +7,14 @@ const shatteredVeil: MapConfig = {
   image: "/layers/shattered-veil.webp",
   markers: [
     {
+      id: "garden-pond",
+      type: "label",
+      title: "Garden Pond",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.212, y: 0.607 }]
+    },
+    {
       ...perks["quick-revive"],
       locations: [{ x: 0.231, y: 0.473 }]
     },
