@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import type { MapMarker } from '@/types/InteractiveMap'
 import Image from 'next/image'
 import { DivIcon,type LatLng } from 'leaflet'
-import { Marker as LeafletMarker } from 'react-leaflet'
+import { Marker as LeafletMarker, useMap } from 'react-leaflet'
 import { cn } from '@/lib/utils'
 
 interface CustomMarkerProps {
@@ -14,6 +14,7 @@ interface CustomMarkerProps {
 
 export default function CustomMarker({ marker, position, children }: CustomMarkerProps) {
   const markerRef = useRef<any>(null)
+  const map = useMap()
 
   useEffect(() => {
     if (!markerRef.current) return
@@ -41,12 +42,20 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
     }
   }, [marker])
 
+  const handleClick = () => {
+    if (marker.type === "label") return
+    map.flyTo(position, map.getZoom())
+  }
+
   return (
     <LeafletMarker 
       ref={ markerRef } 
       position={ position }
       interactive={ marker.type !== "label" }
-      zIndexOffset={ marker.type === "label" ? -1000 : 1000}
+      zIndexOffset={ marker.type === "label" ? -1000 : 1000 }
+      eventHandlers={{
+        click: handleClick,
+      }}
     >
       { children }
     </LeafletMarker>
