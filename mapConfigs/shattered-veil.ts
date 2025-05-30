@@ -437,7 +437,7 @@ const shatteredVeil: MapConfig = {
       ]
     },
     {
-      id: "gs45-wall-buy",
+      id: "gs45",
       title: "GS45",
       description: "Purchase a GS45 Pistol off the wall.",
       icon: "/icons/weapon-wall-buy.webp",

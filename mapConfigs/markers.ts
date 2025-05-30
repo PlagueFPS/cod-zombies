@@ -1,4 +1,4 @@
-import type { MapMarker, MarkerType, Perks } from "@/types/InteractiveMap";
+import type { MapMarker, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
 
 interface Marker extends Omit<MapMarker, "locations"> {}
 type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label"> | "der-wunderfizz"
@@ -171,5 +171,120 @@ export const perks: Record<Perks, Marker> = {
     description: "Attacks can trigger random Ammo Mods.",
     icon: "/icons/elemental-pop.webp",
     type: "perk",
+  },
+  "deadshot-daiquiri": {
+    id: "deadshot-daiquiri",
+    title: "Deadshot Daiquiri",
+    description: "Improve ADS precision and increase critical damage.",
+    icon: "/icons/deadshot-daiquiri.webp",
+    type: "perk"
+  },
+  "melee-macchiato": {
+    id: "melee-macchiato",
+    title: "Melee Macchiato",
+    description: "Replace weapon gun butt with a deadly punch.",
+    icon: "/icons/melee-macchiato.webp",
+    type: "perk"
+  },
+  "vulture-aid": {
+    id: "vulture-aid",
+    title: "Vulture Aid",
+    description: "Increase the variety of loot dropped by enemies.",
+    icon: "/icons/vulture-aid.webp",
+    type: "perk"
+  }
+}
+
+export const weapons: Record<Weapons, Marker> = {
+  gs45: {
+    id: "gs45",
+    title: "GS45",
+    description: "Purchase a GS45 Pistol off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "tanto.22": {
+    id: "tanto.22",
+    title: "Tanto .22",
+    description: "Purchase a Tanto .22 SMG off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "marine-sp": {
+    id: "marine-sp",
+    title: "Marine SP",
+    description: "Purchase a Marine SP Shotgun off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "ames-85": {
+    id: "ames-85",
+    title: "AMES 85",
+    description: "Purchase a AMES 85 Assault Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  xm4: {
+    id: "xm4",
+    title: "XM4",
+    description: "Purchase a XM4 Assault Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "ak-74": {
+    id: "ak-74",
+    title: "AK-74",
+    description: "Purchase a AK-74 Assault Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "aek-973": {
+    id: "aek-973",
+    title: "AEK-973",
+    description: "Purchase a AEK-973 Marksman Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "lr-7.62": {
+    id: "lr-7.62",
+    title: "LR 7.62",
+    description: "Purchase a LR 7.62 Sniper Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "gpmg-7": {
+    id: "gpmg-7",
+    title: "GPMG-7",
+    description: "Purchase a GPMG-7 Light Machine Gun off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "asg-89": {
+    id: "asg-89",
+    title: "ASG-89",
+    description: "Purchase a ASG-89 Shotgun off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "pu-21": {
+    id: "pu-21",
+    title: "PU-21",
+    description: "Purchase a PU-21 Light Machine Gun off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "kompakt-92": {
+    id: "kompakt-92",
+    title: "Kompakt-92",
+    description: "Purchase a Kompakt-92 SMG off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "swat-5.56": {
+    id: "swat-5.56",
+    title: "Swat 5.56",
+    description: "Purchase a Swat 5.56 Marksman Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
   }
 }
