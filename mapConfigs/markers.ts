@@ -6,6 +6,13 @@ type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label"
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+  "fast-travel": {
+    id: "fast-travel",
+    type: "fast-travel",
+    title: "Fast Travel",
+    description: "Use to fast travel to another section of the map.",
+    icon: "/icons/fast-travel.webp"
+  },
   "pack-a-punch": {
     id: "pack-a-punch",
     type: "pack-a-punch",
@@ -195,6 +202,7 @@ export const perks: Record<Perks, Marker> = {
   }
 }
 
+// All weapons appearing as wall-buys on any of the maps
 export const weapons: Record<Weapons, Marker> = {
   gs45: {
     id: "gs45",
