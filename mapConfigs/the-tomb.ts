@@ -1,4 +1,4 @@
-import { MapConfig } from "@/types/InteractiveMap";
+import type { MapConfig } from "@/types/InteractiveMap";
 import { perks, sharedMarkers, weapons } from "./markers";
 
 const theTomb: MapConfig = {
