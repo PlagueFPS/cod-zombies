@@ -40,4 +40,5 @@ export type Perks = "quick-revive" | "speed-cola" | "juggernog" | "double-tap" |
 | "vulture-aid"
 
 export type Weapons = "gs45" | "kompakt-92" | "tanto.22" | "marine-sp" | "ames-85" | "xm4" 
-| "ak-74" | "aek-973" | "swat-5.56" | "lr-7.62" | "gpmg-7" | "asg-89" | "pu-21"
+| "ak-74" | "aek-973" | "swat-5.56" | "lr-7.62" | "gpmg-7" | "asg-89" | "pu-21" | "as-val"
+| "ksv"
