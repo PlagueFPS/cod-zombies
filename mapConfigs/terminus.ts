@@ -207,6 +207,18 @@ const terminus: MapConfig = {
       locations: [{ x: 0.493, y: 0.347 }]
     },
     {
+      id: "aetherium-maturation-pod",
+      title: "Aetherium Maturation Pod",
+      type: "objective",
+      description: "Activate and defend the A.M.P. to restore power to the area.",
+      icon: "/icons/amp.webp",
+      locations: [
+        { x: 0.490, y: 0.470 },
+        { x: 0.498, y: 0.552 },
+        { x: 0.863, y: 0.782 },
+      ]
+    },
+    {
       ...sharedMarkers["ammo-cache"],
       locations: [
         { x: 0.485, y: 0.489 },

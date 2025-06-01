@@ -1,7 +1,7 @@
 import type { MapMarker, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
 
 interface Marker extends Omit<MapMarker, "locations"> {}
-type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label"> | "der-wunderfizz"
+type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label" | "objective"> | "der-wunderfizz"
 
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
