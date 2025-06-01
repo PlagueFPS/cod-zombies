@@ -43,7 +43,6 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
   }, [marker])
 
   const handleClick = () => {
-    if (marker.type === "label") return
     map.flyTo(position, map.getZoom())
   }
 
@@ -51,7 +50,6 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
     <LeafletMarker 
       ref={ markerRef } 
       position={ position }
-      interactive={ marker.type !== "label" }
       zIndexOffset={ marker.type === "label" ? -1000 : 1000 }
       eventHandlers={{
         click: handleClick,
