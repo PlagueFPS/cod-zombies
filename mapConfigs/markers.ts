@@ -6,6 +6,13 @@ type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label"
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+  "vehicle-spawn": {
+    id: "vehicle-spawn",
+    type: "vehicle-spawn",
+    title: "Vehicle Spawn",
+    description: "Spawn a Boat.",
+    icon: "/icons/boat.webp",
+  },
   "fast-travel": {
     id: "fast-travel",
     type: "fast-travel",
@@ -204,6 +211,48 @@ export const perks: Record<Perks, Marker> = {
 
 // All weapons appearing as wall-buys on any of the maps
 export const weapons: Record<Weapons, Marker> = {
+  "xmg": {
+    id: "xmg",
+    title: "XMG",
+    description: "Purchase a XMG Light Machine Gun off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "svd": {
+    id: "svd",
+    title: "SVD",
+    description: "Purchase a SVD Marksman Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "tsarkov-7.62": {
+    id: "tsarkov-7.62",
+    title: "Tsarkov 7.62",
+    description: "Purchase a Tsarkov 7.62 Marksman Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "pp-919": {
+    id: "pp-919",
+    title: "PP-919",
+    description: "Purchase a PP-919 SMG off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "goblin-mk2": {
+    id: "goblin-mk2",
+    title: "Goblin MK2",
+    description: "Purchase a Goblin MK2 Marksman Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
+  "c9": {
+    id: "c9",
+    title: "C9",
+    description: "Purchase a C9 SMG off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy",
+  },
   "ksv": {
     id: "ksv",
     title: "KSV",
