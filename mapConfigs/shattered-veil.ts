@@ -1,5 +1,5 @@
 import type { MapConfig } from "@/types/InteractiveMap";
-import { sharedMarkers, perks } from "./markers";
+import { sharedMarkers, perks, weapons } from "./markers";
 
 const shatteredVeil: MapConfig = {
   id: "shattered-veil",
@@ -437,107 +437,55 @@ const shatteredVeil: MapConfig = {
       ]
     },
     {
-      id: "gs45",
-      title: "GS45",
-      description: "Purchase a GS45 Pistol off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons.gs45,
       locations: [{ x: 0.230, y: 0.597 }]
     },
     {
-      id: "kompakt-92",
-      title: "Kompakt-92",
-      description: "Purchase a Kompakt-92 SMG off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["kompakt-92"],
       locations: [{ x: 0.318, y: 0.630 }]
     },
     {
-      id: "tanto.22",
-      title: "Tanto .22",
-      description: "Purchase a Tanto .22 SMG off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["tanto.22"],
       locations: [{ x: 0.302, y: 0.452 }]
     },
     {
-      id: "marine-sp",
-      title: "Marine SP",
-      description: "Purchase a Marine SP Shotgun off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["marine-sp"],
       locations: [{ x: 0.488, y: 0.517 }]
     },
     {
-      id: "ames-85",
-      title: "AMES 85",
-      description: "Purchase a AMES 85 Assault Rifle off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["ames-85"],
       locations: [{ x: 0.473, y: 0.360 }]
     },
     {
-      id: "xm4",
-      title: "XM4",
-      description: "Purchase a XM4 Assault Rifle off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons.xm4,
       locations: [{ x: 0.417, y: 0.370 }]
     },
     {
-      id: "ak-74",
-      title: "AK-74",
-      description: "Purchase a AK-74 Assault Rifle off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["ak-74"],
       locations: [{ x: 0.530, y: 0.380 }]
     },
     {
-      id: "aek-973",
-      title: "AEK-973",
-      description: "Purchase a AEK-973 Marksman Rifle off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["aek-973"],
       locations: [{ x: 0.443, y: 0.327 }]
     },
     {
-      id: "swat-5.56",
-      title: "Swat 5.56",
-      description: "Purchase a Swat 5.56 Marksman Rifle off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["swat-5.56"],
       locations: [{ x: 0.602, y: 0.252 }]
     },
     {
-      id: "lr-7.62",
-      title: "LR 7.62",
-      description: "Purchase a LR 7.62 Sniper Rifle off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["lr-7.62"],
       locations: [{ x: 0.481, y: 0.184 }]
     },
     {
-      id: "gpmg-7",
-      title: "GPMG-7",
-      description: "Purchase a GPMG-7 Light Machine Gun off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["gpmg-7"],
       locations: [{ x: 0.850, y: 0.450 }]
     },
     {
-      id: "asg-89",
-      title: "ASG-89",
-      description: "Purchase a ASG-89 Shotgun off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["asg-89"],
       locations: [{ x: 0.7015, y: 0.590 }]
     },
     {
-      id: "pu-21",
-      title: "PU-21",
-      description: "Purchase a PU-21 Light Machine Gun off the wall.",
-      icon: "/icons/weapon-wall-buy.webp",
-      type: "weapon-wall-buy",
+      ...weapons["pu-21"],
       locations: [{ x: 0.607, y: 0.425 }]
     }
   ]
