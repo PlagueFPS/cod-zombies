@@ -1,6 +1,7 @@
 export interface MapConfig {
   id: string
   title: string
+  description: string
   image: string
   markers: MapMarker[]
 }

@@ -4,6 +4,7 @@ import { perks, sharedMarkers, weapons } from "./markers";
 const terminus: MapConfig = {
   id: 'terminus',
   title: "Terminus",
+  description: "",
   image: "/layers/terminus.webp",
   markers: [
     {

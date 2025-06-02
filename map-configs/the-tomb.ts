@@ -4,6 +4,7 @@ import { perks, sharedMarkers, weapons } from "./markers";
 const theTomb: MapConfig = {
   id: "the-tomb",
   title: "The Tomb",
+  description: "",
   image: "/layers/the-tomb.webp",
   markers: [
     {
