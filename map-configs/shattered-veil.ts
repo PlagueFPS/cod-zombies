@@ -20,7 +20,7 @@ const shatteredVeil: MapConfig = {
       title: "Lower Terrace",
       description: "",
       icon: null,
-      locations: [{ x: 0.287, y: 0.550 }]
+      locations: [{ x: 0.287, y: 0.540 }]
     },
     {
       id: "upper-terrace",
@@ -28,7 +28,7 @@ const shatteredVeil: MapConfig = {
       title: "Upper Terrace",
       description: "",
       icon: null,
-      locations: [{ x: 0.373, y: 0.558 }]
+      locations: [{ x: 0.373, y: 0.560 }]
     },
     {
       id: "shems-henge",
@@ -237,6 +237,57 @@ const shatteredVeil: MapConfig = {
       description: "",
       icon: null,
       locations: [{ x: 0.559, y: 0.657 }]
+    },
+    {
+      id: "aether-plant",
+      type: "objective",
+      title: "Aether Plant Spawn",
+      description: "Destroy this plant with fire damage to obtain a Plant Seed.",
+      icon: "/icons/aether-plant.webp",
+      locations: [
+        { x: 0.201, y: 0.597 },
+        { x: 0.200, y: 0.566 },
+        { x: 0.234, y: 0.455 },
+        { x: 0.248, y: 0.442 },
+        { x: 0.329, y: 0.645 },
+        { x: 0.356, y: 0.656 },
+        { x: 0.514, y: 0.567 },
+        { x: 0.511, y: 0.491 },
+        { x: 0.452, y: 0.461 },
+        { x: 0.338, y: 0.357 },
+        { x: 0.365, y: 0.409 },
+        { x: 0.398, y: 0.242 },
+        { x: 0.505, y: 0.184 },
+      ]
+    },
+    {
+      id: "janus-crate",
+      type: "objective",
+      title: "Janus Crate",
+      description: "Each crate drops salvage. Destroy 8 crates to obtain the Essence Bomb.",
+      icon: "/icons/janus-crate.webp",
+      locations: [
+        { x: 0.260, y: 0.622 },
+        { x: 0.271, y: 0.552 },
+        { x: 0.305, y: 0.480 },
+        { x: 0.336, y: 0.539 },
+        { x: 0.316, y: 0.604 },
+        { x: 0.508, y: 0.542 },
+        { x: 0.422, y: 0.479 },
+        { x: 0.484, y: 0.424 },
+        { x: 0.515, y: 0.358 },
+        { x: 0.505, y: 0.345 },
+        { x: 0.430, y: 0.322 },
+        { x: 0.581, y: 0.292 },
+        { x: 0.354, y: 0.387 },
+        { x: 0.577, y: 0.243 },
+        { x: 0.506, y: 0.198 },
+        { x: 0.385, y: 0.227 },
+        { x: 0.795, y: 0.483 },
+        { x: 0.705, y: 0.492 },
+        { x: 0.643, y: 0.556 },
+        { x: 0.677, y: 0.593 }
+      ]
     },
     {
       ...perks["quick-revive"],
