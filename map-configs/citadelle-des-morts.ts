@@ -4,6 +4,7 @@ import { perks, sharedMarkers, weapons } from "./markers";
 const citadelleDesMorts: MapConfig = {
   id: "citadelle-des-morts",
   title: "Citadelle Des Morts",
+  game: "Black Ops 6",
   description: "",
   image: "/layers/citadelle-des-morts.webp",
   markers: [

@@ -4,6 +4,7 @@ import { perks, sharedMarkers, weapons } from "./markers";
 const libertyFalls: MapConfig = {
   id: "liberty-falls",
   title: "Liberty Falls",
+  game: "Black Ops 6",
   description: "",
   image: '/layers/liberty-falls.webp',
   markers: [

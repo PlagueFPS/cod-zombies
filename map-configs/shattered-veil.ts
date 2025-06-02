@@ -4,6 +4,7 @@ import { sharedMarkers, perks, weapons } from "./markers";
 const shatteredVeil: MapConfig = {
   id: "shattered-veil",
   title: "Shattered Veil",
+  game: "Black Ops 6",
   description: "View key spawns and locations for important items like Janus Crates, Plant Seeds, and more with our in-depth interactive map for Shattered Veil.",
   image: "/layers/shattered-veil.webp",
   markers: [
