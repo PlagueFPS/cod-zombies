@@ -2,7 +2,7 @@ import InteractiveMapWrapper from '@/components/InteractiveMap/InteractiveMapWra
 import { getMapConfig } from '@/data/interactive-map'
 
 export default async function MapPage() {
-  const mapConfig = await getMapConfig("terminus")
+  const mapConfig = await getMapConfig("liberty-falls")
 
   return <InteractiveMapWrapper mapConfig={ mapConfig } />
 }

@@ -1,5 +1,5 @@
 import "server-only"
-import { type MapId, mapRegistry } from "@/mapConfigs"
+import { type MapId, mapRegistry } from "@/map-configs"
 import { cache } from "react"
 
 export const getMapConfig = cache(async (mapId: MapId) => {
