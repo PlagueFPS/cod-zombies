@@ -1,6 +1,7 @@
-import { Book, Brain, Home, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
-import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, SheetTitle } from "../ui/sheet";
+import { ROUTES } from "@/utils/constants";
 import { CustomLink } from "../CustomLink/CustomLink";
 import ExternalLink from "../ExternalLink/ExternalLink";
 import { Separator } from "../ui/separator";
@@ -19,6 +20,7 @@ export default function Sidebar() {
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col z-200">
+        <SheetTitle className="sr-only">Sidebar</SheetTitle>
         <SheetHeader className="border-b w-full pb-4 mt-6">
           <SheetClose asChild>
             <CustomLink href={'/'} aria-label="Go to Home Page" className="flex items-center justify-center gap-2">
@@ -38,20 +40,20 @@ export default function Sidebar() {
           </SheetClose>
         </SheetHeader>
         <nav className="flex flex-col items-start gap-6 pl-4 text-muted-foreground text-lg pb-4 w-full">
-          <SheetClose asChild>
-            <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
-              <Book className='size-5 text-orange-400 dark:text-orange-200' />
-              <span className="font-medium">Side Quests</span>
-            </CustomLink>
-          </SheetClose>
-          <SheetClose asChild>
-            <CustomLink href='/bestiary' aria-label='Go to Bestiary page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
-              <Brain className='size-5 text-orange-400 dark:text-orange-200' />
-              <span className="font-medium">Bestiary</span>
-            </CustomLink>
-          </SheetClose>
+          { ROUTES.map(route => (
+            <SheetClose key={ route.id } asChild>
+              <CustomLink 
+                href={ route.href } 
+                aria-label={`Go to ${route.title} page`} 
+                className='flex items-center justify-center gap-2 hover:text-foreground transition-all'
+              >
+                <route.icon className='size-5 text-orange-400 dark:text-orange-200' />
+                <span className="font-medium">{ route.title }</span>
+              </CustomLink>
+            </SheetClose>
+          ))}
         </nav>
-        <SheetFooter className="flex flex-row justify-evenly items-center w-full gap-3 text-muted-foreground mt-auto">
+        <SheetFooter className="flex flex-row justify-evenly items-center w-full gap-3 text-muted-foreground mt-auto mb-4">
           <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
             <X className="size-5" />
           </ExternalLink>
