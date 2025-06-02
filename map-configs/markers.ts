@@ -211,6 +211,13 @@ export const perks: Record<Perks, Marker> = {
 
 // All weapons appearing as wall-buys on any of the maps
 export const weapons: Record<Weapons, Marker> = {
+  "dm-10": {
+    id: "dm-10",
+    title: "DM-10",
+    description: "Purchase a DM-10 Marksman Rifle off the wall.",
+    icon: "/icons/weapon-wall-buy.webp",
+    type: "weapon-wall-buy"
+  },
   "xmg": {
     id: "xmg",
     title: "XMG",
