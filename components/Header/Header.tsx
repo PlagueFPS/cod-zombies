@@ -5,7 +5,7 @@ import FeedbackForm from '@/components/FeedbackForm/FeedbackForm'
 import { CustomLink } from '../CustomLink/CustomLink'
 import Image from 'next/image'
 import Logo from "@/public/logo.webp"
-import { Book, Brain } from 'lucide-react'
+import { ROUTES } from '@/utils/constants'
 import Sidebar from './Sidebar'
 
 export default function Header() {
@@ -27,14 +27,17 @@ export default function Header() {
           </div>
         </CustomLink>
         <nav className='hidden lg:flex justify-center items-center gap-8 w-fit h-full text-muted-foreground mr-8'>
-          <CustomLink href='/side-quests' aria-label='Go to Side Quests page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
-            <Book className='size-4 text-orange-400 dark:text-orange-200' />
-            <span className='text-shadow-2xs text-shadow-white dark:text-shadow-none font-medium'>Side Quests</span>
-          </CustomLink>
-          <CustomLink href='/bestiary' aria-label='Go to Bestiary page' className='flex items-center justify-center gap-2 hover:text-foreground transition-all'>
-            <Brain className='size-4 text-orange-400 dark:text-orange-200' />
-            <span className='text-shadow-2xs text-shadow-white dark:text-shadow-none font-medium'>Bestiary</span>
-          </CustomLink>
+          { ROUTES.map(route => (
+            <CustomLink 
+              key={ route.id } 
+              href={ route.href } 
+              aria-label={`Go to ${route.title} page`}
+              className='flex items-center justify-center gap-2 hover:text-foreground transition-all'
+            >
+              <route.icon className='size-4 text-orange-400 dark:text-orange-200' />
+              <span className='text-shadow-2xs text-shadow-white dark:text-shadow-none font-medium'>{ route.title }</span>
+            </CustomLink>
+          ))}
         </nav>
         <div className='flex justify-center items-center gap-2 w-fit h-full'>
           <FeedbackForm className='hidden lg:flex' />
