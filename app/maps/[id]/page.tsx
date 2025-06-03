@@ -4,6 +4,7 @@ import InteractiveMapWrapper from '@/components/InteractiveMap/InteractiveMapWra
 import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
 import { env } from '@/env';
 import { notFound } from 'next/navigation';
+import { GLOBAL_OG_PROPS } from '@/utils/constants';
 
 interface IInteractiveMapPage {
   params: Promise<{ id: MapId }>
@@ -26,6 +27,7 @@ export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise
     title,
     description: map.description,
     openGraph: {
+      ...GLOBAL_OG_PROPS.openGraph,
       title,
       description: map.description,
       url: `/maps/${map.id}`,
