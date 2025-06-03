@@ -1,6 +1,6 @@
 "use client"
 import 'leaflet/dist/leaflet.css'
-import type { ImageDimensions, Location, MapConfig, MapController } from "@/types/InteractiveMap"
+import type { ImageDimensions, Location, MapConfig, MapController, MapMarker } from "@/types/InteractiveMap"
 import { CRS, LatLng, LatLngBounds, LatLngTuple, LeafletMouseEvent, Map } from "leaflet"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -23,7 +23,7 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
 export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) {
   const { searchParams, filterParams } = useMapSearchParams()
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-  const [currentMarkers, setMarkers] = useState(mapConfig.markers)
+  const [filteredMarkers, setMarkers] = useState<MapMarker[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const mapRef = useRef<Map>(null)
 
@@ -58,7 +58,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
     let markers = mapConfig.markers
 
     if (filterParams.length > 0) {
-      markers = markers.filter(marker => !filterParams.includes(marker.type))
+      markers = mapConfig.markers.filter(marker => !filterParams.includes(marker.type))
     }
 
     setMarkers(markers)
@@ -123,7 +123,9 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         />
       )}
 
-      { imageDimensions && currentMarkers.map(marker => {
+      { imageDimensions && mapConfig.markers.map(marker => {
+        if (!filteredMarkers.includes(marker)) return null
+
         return marker.locations.map(location => (
           <CustomMarker
             key={ `${marker.id}-${location.x}-${location.y}` }

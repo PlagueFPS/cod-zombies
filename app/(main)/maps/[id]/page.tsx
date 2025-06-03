@@ -8,6 +8,7 @@ import { GLOBAL_OG_PROPS } from '@/utils/constants';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
 import MapSidebar from '@/components/InteractiveMap/MapSidebar';
+import { Suspense } from 'react';
 
 interface IInteractiveMapPage {
   params: Promise<{ id: MapId }>
@@ -60,7 +61,9 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
 
   return (
     <SidebarProvider defaultOpen={ defaultOpen }>
-      <MapSidebar availableMaps={ availableMaps } />
+      <Suspense fallback={<div>Loading Sidebar...</div>}>
+        <MapSidebar mapConfig={ config } availableMaps={ availableMaps } />
+      </Suspense>
       <div className='-mt-10 relative flex-1 h-screen w-screen overflow-hidden'>
         <InteractiveMapWrapper mapConfig={ config } />
       </div>

@@ -1,19 +1,32 @@
 "use client"
+import type { MapConfig, MarkerType } from "@/types/InteractiveMap"
 import type { MapId } from "@/map-configs"
 import { useParams } from "next/navigation"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger } from "../ui/sidebar"
+import { useMemo } from "react"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger } from "../ui/sidebar"
 import { capatilize } from "@/utils/functions"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { ChevronDown } from "lucide-react"
 import { CustomLink } from "../CustomLink/CustomLink"
+import { Switch } from "../ui/switch"
+import { useMapSearchParams } from "@/hooks/useMapSearchParams"
 
 interface IMapSidebar {
+  mapConfig: MapConfig
   availableMaps: MapId[]
 }
 
-export default function MapSidebar({ availableMaps }: IMapSidebar) {
+export default function MapSidebar({ mapConfig, availableMaps }: IMapSidebar) {
+  const { toggleParam, filterParams } = useMapSearchParams()
   const { id } = useParams()
   const currentMap = capatilize(String(id))
+  const uniqueMarkerTypes = useMemo(() => 
+    Array.from(new Set(mapConfig.markers.map(marker => marker.type))
+  ), [mapConfig.markers])
+
+  const handleCheckedChange = (type: MarkerType) => {
+    toggleParam("filtered", type, filterParams)
+  }
 
   return (
     <Sidebar side="left" collapsible="offcanvas" className="z-400 mt-16">
@@ -45,6 +58,20 @@ export default function MapSidebar({ availableMaps }: IMapSidebar) {
       <SidebarContent className="bg-background">
         <SidebarGroup>
           <SidebarGroupLabel>Filters</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              { uniqueMarkerTypes.map(type => (
+                <SidebarMenuItem key={ type }>
+                  <span>{ capatilize(type) }</span>
+                  <Switch 
+                    id={`${type}-filter`} 
+                    defaultChecked
+                    onCheckedChange={ () => handleCheckedChange(type) }
+                  />
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
