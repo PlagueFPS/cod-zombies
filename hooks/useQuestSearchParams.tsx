@@ -71,7 +71,7 @@ type Param = "type" | "map" | "game" | "difficulty"
  * @returns An object containing the current search parameters and utility functions
  * to manipulate them.
  */
-export function useSiteSearchParams(): QuestSearchParamsResult {
+export function useQuestSearchParams(): QuestSearchParamsResult {
   const searchParams = useSearchParams()
   
   // Extract common parameters

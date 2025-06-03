@@ -1,9 +1,8 @@
 "use client"
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { Pagination, PaginationContent, PaginationItem, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
 import { MAP_LIMIT } from "@/utils/constants"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
+import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import { cn } from "@/lib/utils"
 
@@ -12,7 +11,7 @@ interface IGridPagination {
 }
 
 export default function GridPagination({ data }: IGridPagination) {
-  const { page, updatePage } = useSiteSearchParams()
+  const { page, updatePage } =useQuestSearchParams()
   const isDesktop = useMediaQuery(640)
   const totalPages = Math.ceil(data.length / MAP_LIMIT)
   const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1

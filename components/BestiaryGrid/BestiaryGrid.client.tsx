@@ -1,5 +1,5 @@
 "use client"
-import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
+import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import type { MinifiedZombie } from "@/types/Zombie"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
@@ -14,7 +14,7 @@ interface IBestiaryGridClient {
 }
 
 export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGridClient) {
-  const { searchParams, gameParams, mapParams, typeParams, page, validatePageParam } = useSiteSearchParams()
+  const { searchParams, gameParams, mapParams, typeParams, page, validatePageParam } = useQuestSearchParams()
   const [filteredZombies, setFilteredZombies] = useState(zombies)
   const skip = calculateSkip(page, MAP_LIMIT)
   const paginatedZombies = filteredZombies.slice(skip, (MAP_LIMIT * page))

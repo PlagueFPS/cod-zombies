@@ -2,7 +2,7 @@
 import 'leaflet/dist/leaflet.css'
 import type { ImageDimensions, Location, MapConfig, MapController } from "@/types/InteractiveMap"
 import { CRS, LatLng, LatLngBounds, LatLngTuple, LeafletMouseEvent, Map } from "leaflet"
-import { ImageOverlay, MapContainer, Marker, Popup, useMap, useMapEvents } from "react-leaflet"
+import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -22,6 +22,7 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
 export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) {
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [currentMarkers, setMarkers] = useState(mapConfig.markers)
   const mapRef = useRef<Map>(null)
 
   useEffect(() => {
@@ -110,7 +111,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         />
       )}
 
-      { imageDimensions && mapConfig.markers.map(marker => {
+      { imageDimensions && currentMarkers.map(marker => {
         return marker.locations.map(location => (
           <CustomMarker
             key={ `${marker.id}-${location.x}-${location.y}` }

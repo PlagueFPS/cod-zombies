@@ -9,7 +9,7 @@ import GridPaginationLoader from "@/components/Loaders/GridPaginationLoader"
 import GridPagination from "@/components/GridPagination/GridPagination"
 import QuestPreviewCard from "@/components/QuestPreviewCard/QuestPreviewCard"
 import { TypeGuards } from "@/utils/functions"
-import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
+import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 
 interface IQuestGridClient {
   quests: Omit<FeaturedMapWithoutBody, "updatedAt">[] | Omit<SideQuest, "content" | "updatedAt">[]
@@ -17,7 +17,7 @@ interface IQuestGridClient {
 }
 
 export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
-  const { searchParams, gameParams, mapParams, difficultyParams, page, validatePageParam } = useSiteSearchParams()
+  const { searchParams, gameParams, mapParams, difficultyParams, page, validatePageParam } = useQuestSearchParams()
   const [filteredQuests, setFilteredQuests] = useState<FilteredQuests>(quests)
   const skip = calculateSkip(page, MAP_LIMIT);
   const paginatedQuests = filteredQuests.slice(skip, (MAP_LIMIT * page))
