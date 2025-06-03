@@ -34,6 +34,7 @@ export const useMapSearchParams = () => {
   }, [createParams, updateURLParams])
 
   return {
+    searchParams,
     filterParams,
     updateURLParams,
     toggleParam,

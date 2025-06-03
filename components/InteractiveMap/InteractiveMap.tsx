@@ -10,6 +10,7 @@ import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import CustomMarker from './CustomMarker'
 import { capatilize } from "@/utils/functions"
+import { useMapSearchParams } from '@/hooks/useMapSearchParams'
 
 const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
   if (!e.latlng || !imageDimensions) return
@@ -20,9 +21,10 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
 }
 
 export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) {
+  const { searchParams, filterParams } = useMapSearchParams()
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [currentMarkers, setMarkers] = useState(mapConfig.markers)
+  const [isLoading, setIsLoading] = useState(true)
   const mapRef = useRef<Map>(null)
 
   useEffect(() => {
@@ -51,6 +53,16 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
 
     loadImageDimensions()
   }, [])
+
+  useEffect(() => {
+    let markers = mapConfig.markers
+
+    if (filterParams.length > 0) {
+      markers = markers.filter(marker => !filterParams.includes(marker.type))
+    }
+
+    setMarkers(markers)
+  }, [searchParams])
 
   const convertToLeafletCoords = useCallback(({ x, y }: Location): LatLng => {
     if (!imageDimensions) return new LatLng(0, 0)

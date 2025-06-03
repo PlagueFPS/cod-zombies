@@ -1,6 +1,7 @@
 "use client"
 import type { MapConfig } from "@/types/InteractiveMap"
 import dynamic from "next/dynamic"
+import { Suspense } from "react"
 
 const InteractiveMap = dynamic(() => import('@/components/InteractiveMap/InteractiveMap'), {
   ssr: false,
@@ -8,5 +9,9 @@ const InteractiveMap = dynamic(() => import('@/components/InteractiveMap/Interac
 })
 
 export default function InteractiveMapWrapper({ mapConfig }: { mapConfig: MapConfig }) {
-  return <InteractiveMap mapConfig={ mapConfig } />
+  return (
+    <Suspense fallback={<div>Loading Map...</div>}>
+      <InteractiveMap mapConfig={ mapConfig } />
+    </Suspense>
+  )
 }
