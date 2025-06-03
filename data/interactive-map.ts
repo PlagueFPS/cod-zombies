@@ -1,14 +1,11 @@
 import "server-only"
 import { type MapId, mapRegistry } from "@/map-configs"
 import { cache } from "react"
+import { tryCatch } from "@/utils/functions"
 
 export const getMapConfig = cache(async (mapId: MapId) => {
   const config = mapRegistry[mapId]
-  if (!config) {
-    throw new Error(`Map config for ${mapId} not found`)
-  }
-
-  return await config()
+  return await tryCatch(config())
 })
 
 export const getAvailableMaps = () => {
