@@ -21,7 +21,6 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
 
 export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) {
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-  const [zoom, setZoom] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const mapRef = useRef<Map>(null)
 
@@ -88,10 +87,9 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
       {/* Map Info */}
-      <div className="absolute top-4 right-4 z-100">
+      <div className="absolute top-4 right-4 z-400">
         <Card className="bg-card/80">
           <h2 className="font-bold text-lg text-gradient dark:dark-text-gradient">{ mapConfig.title }</h2>
-          <p className="text-muted-foreground text-sm">Zoom: { zoom }</p>
         </Card>
       </div>
 
@@ -112,7 +110,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         attributionControl={ false }
         className='bg-accent! dark:bg-accent/25!'
       >
-        <MapController imageDimensions={ imageDimensions } onZoomChange={ setZoom } />
+        <MapController imageDimensions={ imageDimensions } />
         { imageDimensions && (
           <ImageOverlay 
             key={ mapConfig.id }
@@ -147,13 +145,10 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
   )
 }
 
-function MapController({ imageDimensions, onZoomChange }: MapController) {
+function MapController({ imageDimensions }: MapController) {
   const map = useMap()
 
   useMapEvents({
-    zoomend: () => {
-      onZoomChange(map.getZoom())
-    },
     click: logClickCoordinates(imageDimensions)
   })
 

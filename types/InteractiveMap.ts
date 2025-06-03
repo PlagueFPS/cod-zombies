@@ -23,7 +23,6 @@ export interface ImageDimensions {
 
 export interface MapController {
   imageDimensions: ImageDimensions | null
-  onZoomChange: (zoom: number) => void
 }
 
 export interface Location {
