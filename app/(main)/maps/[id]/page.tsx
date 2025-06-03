@@ -5,7 +5,7 @@ import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
 import { env } from '@/env';
 import { notFound } from 'next/navigation';
 import { GLOBAL_OG_PROPS } from '@/utils/constants';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
 import MapSidebar from '@/components/InteractiveMap/MapSidebar';
 
@@ -61,7 +61,9 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
   return (
     <SidebarProvider defaultOpen={ defaultOpen }>
       <MapSidebar availableMaps={ availableMaps } />
-      <InteractiveMapWrapper mapConfig={ config } />
+      <div className='-mt-10 relative flex-1 h-screen w-screen overflow-hidden'>
+        <InteractiveMapWrapper mapConfig={ config } />
+      </div>
     </SidebarProvider>
   )
 }

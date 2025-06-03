@@ -85,63 +85,53 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
   )
 
   return (
-    <div className="relative flex-1 h-screen w-screen overflow-hidden">
-      {/* Map Info */}
-      <div className="absolute top-4 right-4 z-400">
-        <Card className="bg-card/80">
-          <h2 className="font-bold text-lg text-gradient dark:dark-text-gradient">{ mapConfig.title }</h2>
-        </Card>
-      </div>
+    <MapContainer
+      key={ mapConfig.id }
+      ref={ mapRef }
+      center={
+        imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] 
+        : [1024, 1024]
+      }
+      zoom={ 0 }
+      minZoom={ -2 }
+      maxZoom={ 3 }
+      crs={ CRS.Simple }
+      style={{ height: "100vh", width: "100vw" }}
+      zoomControl={ false }
+      attributionControl={ false }
+      className='bg-accent! dark:bg-secondary-alternative!'
+    >
+      <MapController imageDimensions={ imageDimensions } />
+      { imageDimensions && (
+        <ImageOverlay 
+          key={ mapConfig.id }
+          url={ mapConfig.image }
+          bounds={ getImageBounds() }
+        />
+      )}
 
-      {/* Leaflet Map */}
-      <MapContainer
-        key={ mapConfig.id }
-        ref={ mapRef }
-        center={
-          imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] 
-          : [1024, 1024]
-        }
-        zoom={ 0 }
-        minZoom={ -2 }
-        maxZoom={ 3 }
-        crs={ CRS.Simple }
-        style={{ height: "100vh", width: "100vw" }}
-        zoomControl={ false }
-        attributionControl={ false }
-        className='bg-accent! dark:bg-accent/25!'
-      >
-        <MapController imageDimensions={ imageDimensions } />
-        { imageDimensions && (
-          <ImageOverlay 
-            key={ mapConfig.id }
-            url={ mapConfig.image }
-            bounds={ getImageBounds() }
-          />
-        )}
-
-        { imageDimensions && mapConfig.markers.map(marker => {
-          return marker.locations.map(location => (
-            <CustomMarker
-              key={ `${marker.id}-${location.x}-${location.y}` }
-              marker={ marker }
-              position={convertToLeafletCoords(location)}
-            >
-              { marker.type !== "label" ? (
-                <Popup className='custom-popup'>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-                      { capatilize(marker.type) }
-                    </Badge>
-                  </div>
-                  <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient">{ location.title || marker.title }</h3>
-                  <p className="text-sm text-foreground/90">{ location.description || marker.description }</p>
-                </Popup>
-              ) : null}
-            </CustomMarker>
-          ))
-        })}
-      </MapContainer>
-    </div>
+      { imageDimensions && mapConfig.markers.map(marker => {
+        return marker.locations.map(location => (
+          <CustomMarker
+            key={ `${marker.id}-${location.x}-${location.y}` }
+            marker={ marker }
+            position={convertToLeafletCoords(location)}
+          >
+            { marker.type !== "label" ? (
+              <Popup className='custom-popup'>
+                <div className="flex items-center gap-2 mb-1">
+                  <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+                    { capatilize(marker.type) }
+                  </Badge>
+                </div>
+                <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient">{ location.title || marker.title }</h3>
+                <p className="text-sm text-foreground/90">{ location.description || marker.description }</p>
+              </Popup>
+            ) : null}
+          </CustomMarker>
+        ))
+      })}
+    </MapContainer>
   )
 }
 

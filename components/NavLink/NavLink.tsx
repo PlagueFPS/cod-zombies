@@ -19,7 +19,7 @@ export default function NavLink({ href, children, className, ariaLabel }: Props)
     <CustomLink 
       href={ href }
       aria-label={ ariaLabel }
-      className={cn(className, { 'text-primary': isActive })}
+      className={cn(className, { 'text-orange-600 dark:text-orange-200': isActive })}
     >
       { children }
     </CustomLink>

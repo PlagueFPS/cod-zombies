@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { GLOBAL_OG_PROPS } from '@/utils/constants';
-import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
+import { getAvailableMaps } from '@/data/interactive-map'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import GridSection from '@/components/GridSection/GridSection';
 import { Suspense } from 'react';
@@ -26,7 +26,7 @@ export default function MapsPage() {
   const maps = getAvailableMaps()
 
   return (
-    <div className='flex flex-col justify-center items-center w-full'>
+    <div className='flex-col justify-center items-center w-full'>
       <div className='container flex flex-col gap-6 justify-center items-center'>
         <Breadcrumbs 
           links={[

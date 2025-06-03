@@ -16,8 +16,8 @@ export default function MapSidebar({ availableMaps }: IMapSidebar) {
   const currentMap = capatilize(String(id))
 
   return (
-    <Sidebar side="left" collapsible="offcanvas" className="z-400">
-      <SidebarHeader>
+    <Sidebar side="left" collapsible="offcanvas" className="z-400 mt-16">
+      <SidebarHeader className="bg-background">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center">
             <DropdownMenu>
@@ -42,7 +42,7 @@ export default function MapSidebar({ availableMaps }: IMapSidebar) {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="bg-background">
         <SidebarGroup>
           <SidebarGroupLabel>Filters</SidebarGroupLabel>
         </SidebarGroup>
