@@ -6,7 +6,7 @@ import { CustomLink } from '../CustomLink/CustomLink'
 import Image from 'next/image'
 import Logo from "@/public/logo.webp"
 import { ROUTES } from '@/utils/constants'
-import Sidebar from './Sidebar'
+import Sidebar from './AppSidebar'
 
 export default function Header() {
   return (

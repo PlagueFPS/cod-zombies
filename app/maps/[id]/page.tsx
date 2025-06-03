@@ -5,6 +5,9 @@ import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
 import { env } from '@/env';
 import { notFound } from 'next/navigation';
 import { GLOBAL_OG_PROPS } from '@/utils/constants';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { cookies } from 'next/headers';
+import MapSidebar from '@/components/InteractiveMap/MapSidebar';
 
 interface IInteractiveMapPage {
   params: Promise<{ id: MapId }>
@@ -46,9 +49,19 @@ export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise
 }
 
 export default async function InteractiveMapPage({ params }: IInteractiveMapPage) {
+  const cookiePromise = cookies()
   const { id } = await params
   const { data: config, error } = await getMapConfig(id)
   if (error) notFound()
+  
+  const cookieStore = await cookiePromise
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
+  const availableMaps = getAvailableMaps()
 
-  return <InteractiveMapWrapper mapConfig={ config } />
+  return (
+    <SidebarProvider defaultOpen={ defaultOpen }>
+      <MapSidebar availableMaps={ availableMaps } />
+      <InteractiveMapWrapper mapConfig={ config } />
+    </SidebarProvider>
+  )
 }

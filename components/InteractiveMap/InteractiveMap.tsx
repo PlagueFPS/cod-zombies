@@ -85,7 +85,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
   )
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
+    <div className="relative flex-1 h-screen w-screen overflow-hidden">
       {/* Map Info */}
       <div className="absolute top-4 right-4 z-400">
         <Card className="bg-card/80">

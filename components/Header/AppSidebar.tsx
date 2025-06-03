@@ -11,7 +11,7 @@ import X from "@/SVGs/XSVG";
 import Logo from "@/public/logo.webp"
 import Image from "next/image";
 
-export default function Sidebar() {
+export default function AppSidebar() {
   return (
     <Sheet>
       <SheetTrigger className="lg:hidden" title="Toggle Nav" asChild>
