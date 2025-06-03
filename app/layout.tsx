@@ -4,8 +4,6 @@ import { Geist } from 'next/font/google'
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { env } from "@/env";
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -72,11 +70,7 @@ export default function RootLayout({ children }: LayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="mt-10 mb-4 grow" role="main" tabIndex={ -1 }>
-            { children }
-          </main>
-          <Footer />
+          { children }
           <Toaster richColors position="top-center" closeButton />
         </ThemeProvider>
         <Analytics />
