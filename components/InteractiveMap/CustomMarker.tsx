@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import type { MapMarker } from '@/types/InteractiveMap'
 import Image from 'next/image'
-import { DivIcon,type LatLng } from 'leaflet'
+import { type DivIcon, divIcon, type LatLng } from 'leaflet'
 import { Marker as LeafletMarker, useMap } from 'react-leaflet'
 import { cn } from '@/lib/utils'
 
@@ -13,18 +13,17 @@ interface CustomMarkerProps {
 }
 
 export default function CustomMarker({ marker, position, children }: CustomMarkerProps) {
-  const markerRef = useRef<any>(null)
   const map = useMap()
+  const [icon, setIcon] = useState<DivIcon | null>(null)
 
   useEffect(() => {
-    if (!markerRef.current) return
     const iconElement = document.createElement('div')
     iconElement.className = 'custom-marker'
 
     const root = createRoot(iconElement)
     root.render(<MarkerIcon marker={ marker } />)
 
-    const customIcon = new DivIcon({
+    const customIcon = divIcon({
       html: iconElement,
       className: 'custom-marker-container',
       iconSize: [32, 32],
@@ -32,10 +31,7 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
       popupAnchor: [0, -16]
     })
 
-    if (markerRef.current.setIcon) {
-      markerRef.current.setIcon(customIcon)
-    }
-
+    setIcon(customIcon)
     // wait for react to finish rendering before unmounting
     return () => {
       setTimeout(() => root.unmount(), 0)
@@ -47,16 +43,20 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
   }
 
   return (
-    <LeafletMarker 
-      ref={ markerRef } 
-      position={ position }
-      zIndexOffset={ marker.type === "label" ? -1000 : 1000 }
-      eventHandlers={{
-        click: handleClick,
-      }}
-    >
-      { children }
-    </LeafletMarker>
+    <>
+      { icon ? (
+        <LeafletMarker
+          icon={ icon }
+          position={ position }
+          zIndexOffset={ marker.type === "label" ? -1000 : 1000 }
+          eventHandlers={{
+            click: handleClick,
+          }}
+        >
+          { children }
+        </LeafletMarker>
+      ) : null}
+    </>
   )
 }
 
