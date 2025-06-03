@@ -19,7 +19,7 @@ export const generateStaticParams = () => {
 export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise<Metadata> => {
   const { id } = await params
   const { data: map, error } = await getMapConfig(id)
-  if (error) notFound()
+  if (error || !map) notFound()
   const title = `${map.title} Interactive Map`
 
   return {

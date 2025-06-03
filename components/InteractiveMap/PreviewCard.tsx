@@ -10,7 +10,8 @@ interface IPreviewCard {
 }
 
 export default async function PreviewCard({ mapId, index }: IPreviewCard) {
-  const map = await getMapConfig(mapId)
+  const { data: map, error } = await getMapConfig(mapId)
+  if (error) return null
 
   return (
     <CustomLink 

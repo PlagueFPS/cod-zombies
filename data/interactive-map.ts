@@ -5,7 +5,7 @@ import { tryCatch } from "@/utils/functions"
 
 export const getMapConfig = cache(async (mapId: MapId) => {
   const config = mapRegistry[mapId]
-  return await tryCatch(config())
+  return await tryCatch(config)
 })
 
 export const getAvailableMaps = () => {
