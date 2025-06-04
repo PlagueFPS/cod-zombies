@@ -88,7 +88,7 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
           objectives={ objectiveMarkers } 
         />
       </Suspense>
-      <div className='-mt-10 relative flex-1 h-screen w-screen overflow-hidden'>
+      <div className='relative -mt-10 flex-1 h-screen w-screen overflow-hidden'>
         <InteractiveMapWrapper mapConfig={ config } />
       </div>
     </SidebarProvider>

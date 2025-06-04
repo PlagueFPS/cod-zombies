@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card"
 import CustomMarker from './CustomMarker'
 import { capatilize } from "@/utils/functions"
 import { useMapSearchParams } from '@/hooks/useMapSearchParams'
+import { Separator } from '../ui/separator'
 
 const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
   if (!e.latlng || !imageDimensions) return
@@ -87,7 +88,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
   }, [imageDimensions])
 
   if (isLoading) return (
-    <div className="h-screen w-screen flex items-center justify-center">
+    <div className="h-full w-full flex items-center justify-center">
       <Card className="p-6 bg-card/80">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
@@ -109,10 +110,10 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
       minZoom={ -2 }
       maxZoom={ 3 }
       crs={ CRS.Simple }
-      style={{ height: "100vh", width: "100vw" }}
+      style={{ height: "100%", width: "100%" }}
       zoomControl={ false }
       attributionControl={ false }
-      className='bg-accent! dark:bg-secondary-alternative!'
+      className='relative bg-accent! dark:bg-secondary-alternative!'
     >
       <MapController imageDimensions={ imageDimensions } />
       { imageDimensions && (
@@ -185,16 +186,18 @@ function MapController({ imageDimensions }: MapController) {
   }, [map, imageDimensions])
 
   return (
-    <div className="absolute top-4 left-4 z-400 flex gap-2">
-      <Badge variant={"outline"} className="bg-background/80">
-        <div className="flex gap-2">
+    <div className="absolute top-4 right-4 z-400 flex gap-2">
+      <Badge variant={"outline"} className="bg-background/80 rounded-md">
+        <div className="flex flex-col gap-1">
           <Button variant={"ghost"} size={"icon"} onClick={ handleZoomIn } title="Zoom In">
             <ZoomIn className="size-4" />
           </Button>
+          <Separator orientation='horizontal' />
           <Button variant={"ghost"} size={"icon"} onClick={ handleZoomOut } title="Zoom Out">
             <ZoomOut className="size-4" />
           </Button>
-          <Button variant={"ghost"} size={"icon"} onClick={ handleReset } title="Reset Map">
+          <Separator orientation='horizontal' />
+          <Button variant={"ghost"} size={"icon"} onClick={ handleReset } title="Reset Zoom">
             <RotateCcw className="size-4" />
           </Button>
         </div>
