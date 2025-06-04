@@ -4,7 +4,7 @@ import type { MapId } from "@/map-configs"
 import { useParams } from "next/navigation"
 import { capatilize } from "@/utils/functions"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { ChevronDown, MapPin } from "lucide-react"
+import { ChevronDown, MapPin, PanelLeftOpenIcon } from "lucide-react"
 import { CustomLink } from "../CustomLink/CustomLink"
 import { Switch } from "../ui/switch"
 import { useMapSearchParams } from "@/hooks/useMapSearchParams"
@@ -27,8 +27,10 @@ import {
   SidebarMenu, 
   SidebarMenuButton, 
   SidebarMenuItem, 
-  SidebarTrigger 
+  SidebarTrigger, 
+  useSidebar
 } from "../ui/sidebar"
+import { Button } from "../ui/button"
 
 interface IMapSidebar {
   availableMaps: MapId[]
@@ -303,4 +305,22 @@ function MarkerFilterIcon({ type, objectiveId }: { type: MarkerType, objectiveId
         />
       )
   }
+}
+
+export function CustomSideBarTrigger() {
+  const { toggleSidebar, state } = useSidebar()
+
+  if (state === "collapsed") return (
+    <Button
+      variant={"ghost"}
+      size={"icon"}
+      className="absolute top-4 left-4 size-7 z-500"
+      onClick={ () => toggleSidebar() }
+    >
+      <PanelLeftOpenIcon className="size-4" />
+      <span className="sr-only">Toggle Sidebar</span>
+    </Button>
+  )
+
+  return null
 }

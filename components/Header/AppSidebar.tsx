@@ -19,7 +19,7 @@ export default function AppSidebar() {
           <Menu className="text-muted-foreground size-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col z-200">
+      <SheetContent className="flex flex-col z-900">
         <SheetTitle className="sr-only">Sidebar</SheetTitle>
         <SheetHeader className="border-b w-full pb-4 mt-6">
           <SheetClose asChild>

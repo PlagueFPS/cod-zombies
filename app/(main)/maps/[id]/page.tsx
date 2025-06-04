@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation';
 import { GLOBAL_OG_PROPS } from '@/utils/constants';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
-import MapSidebar from '@/components/InteractiveMap/MapSidebar';
+import MapSidebar, { CustomSideBarTrigger } from '@/components/InteractiveMap/MapSidebar';
 import { Suspense } from 'react';
 import { markerTypeToCategory } from '@/map-configs/markers';
 
@@ -89,6 +89,7 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
         />
       </Suspense>
       <div className='relative -mt-10 flex-1 h-screen w-screen overflow-hidden'>
+        <CustomSideBarTrigger />
         <InteractiveMapWrapper mapConfig={ config } />
       </div>
     </SidebarProvider>
