@@ -65,7 +65,16 @@ const geist = Geist({
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={ `${geist.className} ${geist.variable} flex flex-col min-h-dvh` }>
+      <body className={ `${geist.className} ${geist.variable} flex flex-col min-h-dvh 
+        [&::-webkit-scrollbar]:w-2 
+        [&::-webkit-scrollbar-track]:bg-transparent
+        [&::-webkit-scrollbar-thumb]:rounded-full 
+        [&::-webkit-scrollbar-thumb]:bg-neutral-400
+        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
+        [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 
+        dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600
+        ` 
+      }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

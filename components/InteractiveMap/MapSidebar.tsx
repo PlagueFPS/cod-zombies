@@ -2,7 +2,6 @@
 import type { MapMarker, MarkerCategory, MarkerType } from "@/types/InteractiveMap"
 import type { MapId } from "@/map-configs"
 import { useParams } from "next/navigation"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger } from "../ui/sidebar"
 import { capatilize } from "@/utils/functions"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { ChevronDown, MapPin } from "lucide-react"
@@ -16,7 +15,20 @@ import Discord from "@/SVGs/DiscordSVG"
 import Reddit from "@/SVGs/Reddit"
 import X from "@/SVGs/XSVG"
 import ExternalLink from "../ExternalLink/ExternalLink"
-import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper"
+import { cn } from "@/lib/utils"
+import { 
+  Sidebar, 
+  SidebarContent, 
+  SidebarFooter, 
+  SidebarGroup, 
+  SidebarGroupContent,
+  SidebarGroupLabel, 
+  SidebarHeader, 
+  SidebarMenu, 
+  SidebarMenuButton, 
+  SidebarMenuItem, 
+  SidebarTrigger 
+} from "../ui/sidebar"
 
 interface IMapSidebar {
   availableMaps: MapId[]
@@ -37,30 +49,34 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
     <Sidebar side="left" collapsible="offcanvas" className="z-400 mt-16">
       <SidebarHeader className="bg-background border-b">
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center">
+          <SidebarMenuItem className="flex items-center gap-2">
+            <SidebarTrigger className="mr-auto" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton className="border bg-input/30 border-input hover:bg-input/50 cursor-pointer">
                   { currentMap }
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="z-400">
                 { availableMaps.map(map => (
-                  <DropdownMenuItem key={ map }>
-                    <CustomLink href={`/maps/${map}`} aria-label={`Go to ${capatilize(map)} interacitve map page`} className="w-full">
+                  <DropdownMenuItem key={ map } className={cn({'pointer-events-none': map === id })}>
+                    <CustomLink 
+                      href={`/maps/${map}`} 
+                      aria-label={`Go to ${capatilize(map)} interacitve map page`} 
+                      aria-disabled={ map === id }
+                      className={cn("w-full", { 'pointer-events-none text-muted-foreground': map === id })}
+                    >
                       { capatilize(map) }
                     </CustomLink>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <SidebarTrigger className="ml-auto" />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-
-      <SidebarContent className="bg-background [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-background [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-accent">
+      <SidebarContent className="bg-background [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-background [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-700">
           { groups.general.length > 0 && (
             <Collapsible defaultOpen className="group/collapsible">
               <SidebarGroup>
@@ -227,10 +243,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
           )}
       </SidebarContent>
       <SidebarFooter className="mb-16 bg-background border-t">
-        <SidebarMenu className="gap-4">
-          <SidebarMenuItem className="flex justify-center">
-            <ThemeToggleWrapper />
-          </SidebarMenuItem>
+        <SidebarMenu className="py-4">
           <SidebarMenuItem>
             <div className="flex justify-evenly items-center gap-3 text-muted-foreground">
               <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
