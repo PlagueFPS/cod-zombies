@@ -28,9 +28,7 @@ import {
   SidebarMenuButton, 
   SidebarMenuItem, 
   SidebarTrigger, 
-  useSidebar
 } from "../ui/sidebar"
-import { Button } from "../ui/button"
 
 interface IMapSidebar {
   availableMaps: MapId[]
@@ -48,7 +46,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
   }
 
   return (
-    <Sidebar side="left" collapsible="offcanvas" className="z-400 mt-16">
+    <Sidebar side="left" collapsible="offcanvas" className="z-900 mt-16">
       <SidebarHeader className="bg-background border-b">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
@@ -60,7 +58,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="z-400">
+              <DropdownMenuContent className="z-950">
                 { availableMaps.map(map => (
                   <DropdownMenuItem key={ map } className={cn({'pointer-events-none': map === id })}>
                     <CustomLink 
@@ -305,22 +303,4 @@ function MarkerFilterIcon({ type, objectiveId }: { type: MarkerType, objectiveId
         />
       )
   }
-}
-
-export function CustomSideBarTrigger() {
-  const { toggleSidebar, state } = useSidebar()
-
-  if (state === "collapsed") return (
-    <Button
-      variant={"ghost"}
-      size={"icon"}
-      className="absolute top-4 left-4 size-7 z-500"
-      onClick={ () => toggleSidebar() }
-    >
-      <PanelLeftOpenIcon className="size-4" />
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
-  )
-
-  return null
 }

@@ -8,9 +8,10 @@ import { notFound } from 'next/navigation';
 import { GLOBAL_OG_PROPS } from '@/utils/constants';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
-import MapSidebar, { CustomSideBarTrigger } from '@/components/InteractiveMap/MapSidebar';
+import MapSidebar from '@/components/InteractiveMap/MapSidebar';
 import { Suspense } from 'react';
 import { markerTypeToCategory } from '@/map-configs/markers';
+import { CustomSideBarTrigger } from '@/components/InteractiveMap/CustomSidebarTrigger';
 
 interface IInteractiveMapPage {
   params: Promise<{ id: MapId }>
