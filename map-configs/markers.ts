@@ -1,7 +1,7 @@
-import type { MapMarker, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
+import type { MapMarker, MarkerCategory, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
 
 interface Marker extends Omit<MapMarker, "locations"> {}
-type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label" | "objective"> | "der-wunderfizz"
+type SharedMarkerType = Exclude<MarkerType, "perks" | "weapon-wall-buy" | "label" | "objective"> | "der-wunderfizz"
 
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
@@ -88,11 +88,11 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
     type: "gobblegum-machine",
     title: "Gobblegum Machine",
     description: "Activate the Gobblegum Machine for a gobblegum in your pack.",
-    icon: "/icons/gobblegum.webp",
+    icon: "/icons/gobblegum-machine.webp",
   },
   "der-wunderfizz": {
     id: "der-wunderfizz",
-    type: "perk",
+    type: "perks",
     title: "Der Wunderfizz",
     description: "Single machine for all perks, appearing on Round 25.",
     icon: "/icons/der-wunderfizz.webp",
@@ -135,77 +135,77 @@ export const perks: Record<Perks, Marker> = {
     title: "Quick Revive",
     description: "Recover health and revive allies faster.",
     icon: "/icons/quick-revive.webp",
-    type: "perk",
+    type: "perks",
   },
   "speed-cola": {
     id: "speed-cola",
     title: "Speed Cola",
     description: "Increase reload speed.",
     icon: "/icons/speed-cola.webp",
-    type: "perk",
+    type: "perks",
   },
   "juggernog": {
     id: "Juggernog",
     title: "Juggernog",
     description: "Increase base health.",
     icon: "/icons/juggernog.webp",
-    type: "perk",
+    type: "perks",
   },
   "double-tap": {
     id: "double-tap",
     title: "Double Tap",
     description: "Increase rate of fire.",
     icon: "/icons/double-tap.webp",
-    type: "perk",
+    type: "perks",
   },
   "phd-flopper": {
     id: "phd-flopper",
     title: "PHD Flopper",
     description: "Explosive dive to prone and immunity to self-inflicted explosive damage.",
     icon: "/icons/phd-flopper.webp",
-    type: "perk",
+    type: "perks",
   },
   "stamin-up": {
     id: "stamin-up",
     title: "Stamin-Up",
     description: "Increase movement speed.",
     icon: "/icons/stamin-up.webp",
-    type: "perk",
+    type: "perks",
   },
   "death-perception": {
     id: "death-perception",
     title: "Death Perception",
     description: "Obscured enemies are keylined.",
     icon: "/icons/death-perception.webp",
-    type: "perk",
+    type: "perks",
   },
   "elemental-pop": {
     id: "elemental-pop",
     title: "Elemental Pop",
     description: "Attacks can trigger random Ammo Mods.",
     icon: "/icons/elemental-pop.webp",
-    type: "perk",
+    type: "perks",
   },
   "deadshot-daiquiri": {
     id: "deadshot-daiquiri",
     title: "Deadshot Daiquiri",
     description: "Improve ADS precision and increase critical damage.",
     icon: "/icons/deadshot-daiquiri.webp",
-    type: "perk"
+    type: "perks"
   },
   "melee-macchiato": {
     id: "melee-macchiato",
     title: "Melee Macchiato",
     description: "Replace weapon gun butt with a deadly punch.",
     icon: "/icons/melee-macchiato.webp",
-    type: "perk"
+    type: "perks"
   },
   "vulture-aid": {
     id: "vulture-aid",
     title: "Vulture Aid",
     description: "Increase the variety of loot dropped by enemies.",
     icon: "/icons/vulture-aid.webp",
-    type: "perk"
+    type: "perks"
   }
 }
 
@@ -365,4 +365,35 @@ export const weapons: Record<Weapons, Marker> = {
     icon: "/icons/weapon-wall-buy.webp",
     type: "weapon-wall-buy",
   }
+}
+
+export const markerTypeToCategory: Record<MarkerType, MarkerCategory> = {
+  // General
+  "label": "general",
+  "trap": "general",
+  "door-buy": "general",
+  "power-door": "general",
+  "rampage-inducer": "general",
+  "exfil": "general",
+
+  // Equipment
+  "crafting-table": "equipment",
+  "mystery-box": "equipment",
+  "workbench": "equipment",
+  "ammo-cache": "equipment",
+  "weapon-wall-buy": "equipment",
+  
+  //upgrades
+  "perks": "upgrades",
+  "arsenal": "upgrades",
+  "pack-a-punch": "upgrades",
+  "armor-wall-buy": "upgrades",
+  "gobblegum-machine": "upgrades",
+
+  // Transportation
+  "fast-travel": "transportation",
+  "portal": "transportation",
+  "vehicle-spawn": "transportation",
+
+  "objective": "general"
 }

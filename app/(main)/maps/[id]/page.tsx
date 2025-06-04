@@ -1,5 +1,6 @@
 import type { MapId } from '@/map-configs';
 import type { Metadata } from 'next';
+import type { MarkerCategory, MarkerType } from '@/types/InteractiveMap';
 import InteractiveMapWrapper from '@/components/InteractiveMap/InteractiveMapWrapper'
 import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
 import { env } from '@/env';
@@ -9,6 +10,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
 import MapSidebar from '@/components/InteractiveMap/MapSidebar';
 import { Suspense } from 'react';
+import { markerTypeToCategory } from '@/map-configs/markers';
 
 interface IInteractiveMapPage {
   params: Promise<{ id: MapId }>
@@ -58,11 +60,33 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
   const cookieStore = await cookiePromise
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
   const availableMaps = getAvailableMaps()
+  const uniqueMarkerTypes = Array.from(new Set(config.markers.map(marker => marker.type)))
+  const groups: Record<MarkerCategory, MarkerType[]> = {
+    general: [],
+    equipment: [],
+    upgrades: [],
+    transportation: []
+  }
+
+  uniqueMarkerTypes.forEach(type => {
+    if (type === "objective") return
+
+    const category = markerTypeToCategory[type]
+    if (category) {
+      groups[category].push(type)
+    }
+  })
+
+  const objectiveMarkers = config.markers.filter(marker => marker.type === "objective")
 
   return (
     <SidebarProvider defaultOpen={ defaultOpen }>
       <Suspense fallback={<div>Loading Sidebar...</div>}>
-        <MapSidebar mapConfig={ config } availableMaps={ availableMaps } />
+        <MapSidebar 
+          groups={ groups }
+          availableMaps={ availableMaps } 
+          objectives={ objectiveMarkers } 
+        />
       </Suspense>
       <div className='-mt-10 relative flex-1 h-screen w-screen overflow-hidden'>
         <InteractiveMapWrapper mapConfig={ config } />
