@@ -8,7 +8,7 @@ const compat = new FlatCompat({
 
 export default [
   ...compat.config({
-    extends: ['eslint:recommended', 'next'],
+    extends: ['eslint:recommended', 'next/core-web-vitals', 'next/typescript', 'next'],
     plugins: ['eslint-plugin-react-hooks', 'eslint-plugin-react']
   })
 ]
