@@ -60,9 +60,11 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
   if (error) notFound()
   
   const cookieStore = await cookiePromise
-  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
   const availableMaps = getAvailableMaps()
+  const sidebarState = cookieStore.get("sidebar_state")?.value
+  const defaultOpen = sidebarState ? sidebarState === "true" : true
   const uniqueMarkerTypes = Array.from(new Set(config.markers.map(marker => marker.type)))
+  const objectiveMarkers = config.markers.filter(marker => marker.type === "objective")
   const groups: Record<MarkerCategory, MarkerType[]> = {
     general: [],
     equipment: [],
@@ -78,8 +80,6 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
       groups[category].push(type)
     }
   })
-
-  const objectiveMarkers = config.markers.filter(marker => marker.type === "objective")
 
   return (
     <SidebarProvider defaultOpen={ defaultOpen }>
