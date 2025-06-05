@@ -30,6 +30,8 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "../ui/sidebar"
+import ShareButton from "../ShareButton/ShareButton"
+import { env } from "@/env"
 
 interface IMapSidebar {
   availableMaps: MapId[]
@@ -256,6 +258,11 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
               <ExternalLink href="https://www.reddit.com/r/CODZombies/" title="Reddit" aria-label="Join the Official Call of Duty: Zombies Subreddit">
                 <Reddit className="size-5" />
               </ExternalLink>
+              <Separator orientation="vertical" className="min-h-5" />
+              <ShareButton 
+                title={ `${currentMap} interactive map` } 
+                url={`${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}`} 
+              />
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
