@@ -5,7 +5,12 @@ import { useSidebar } from "../ui/sidebar"
 import { cn } from "@/lib/utils"
 
 export function CustomSideBarTrigger() {
-  const { toggleSidebar, isMobile, state } = useSidebar()
+  const { toggleSidebar, isMobile, openMobile, open } = useSidebar()
+
+  const closedState = () => {
+    if (isMobile) return !openMobile
+    else return !open
+  }
 
   return (
     <Button
@@ -13,7 +18,7 @@ export function CustomSideBarTrigger() {
       onClick={ () => toggleSidebar() }
       aria-label="Toggle Sidebar"
       className={cn("hidden opacity-0 absolute top-4 left-4 z-500 bg-background/90 dark:bg-background/90 p-4", {
-        'inline-flex opacity-100 animate-fade-in': state === 'collapsed'
+        'inline-flex opacity-100 animate-fade-in': closedState()
       })}
     >
       <PanelLeftOpenIcon className="size-5" />

@@ -162,7 +162,7 @@
   }
 
   .no-scroll {
-    overflow-y: hidden;
+    overflow: hidden;
   }
 }
 @theme inline {
