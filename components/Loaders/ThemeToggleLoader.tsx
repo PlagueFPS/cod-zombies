@@ -1,48 +1,21 @@
 import React from 'react'
 import { Button } from '../ui/button'
-import { Monitor, Moon, Sun } from 'lucide-react'
+import { Sun } from 'lucide-react'
 
 export default function ThemeToggleLoader() {
   return (
-    <div className="flex w-fit rounded-full border p-0.5" role="radiogroup">
+    <div className="flex w-fit p-0.5">
       <Button 
         variant="outline" 
         size="icon" 
-        role="radio" 
         type="button" 
-        title="Light" 
-        aria-label="Switch to light theme"
+        aria-label="Toggle Theme"
+        title="Toggle Theme"
         disabled
         aria-disabled 
-        className="bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none"
+        className="bg-transparent text-muted-foreground size-8 rounded-full border-none"
       >
-        <Sun className="h-4 w-4 transition-all" />
-      </Button>
-      <Button 
-        variant="outline" 
-        size="icon" 
-        role="radio" 
-        type="button" 
-        title="System" 
-        aria-label="Switch to system theme"
-        disabled
-        aria-disabled 
-        className="bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none"
-      >
-        <Monitor className="h-4 w-4 transition-all" />
-      </Button>
-      <Button 
-        variant="outline" 
-        size="icon" 
-        role="radio" 
-        type="button" 
-        title="Dark" 
-        aria-label="Switch to dark theme"
-        disabled
-        aria-disabled 
-        className="bg-transparent text-muted-foreground w-8 h-8 rounded-full border-none"
-      >
-        <Moon className="h-4 w-4 transition-all" />
+        <Sun className="size-4 transition-all" />
       </Button>
     </div>
   )
