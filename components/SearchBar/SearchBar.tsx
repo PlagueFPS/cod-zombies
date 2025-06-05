@@ -4,6 +4,7 @@ import { getMapSearchData } from "@/data/maps"
 import { getGames } from "@/data/games"
 import { getQuestSearchData } from "@/data/sideQuests"
 import { getZombieSearchData } from "@/data/zombies"
+import { getAvailableMaps } from "@/data/interactive-map"
 
 interface ISearchBar {
   showFull?: boolean
@@ -15,6 +16,7 @@ export default async function SearchBar({ showFull }: ISearchBar) {
   const gamesPromise = getGames(isEnabled)
   const questsPromise = getQuestSearchData(isEnabled)
   const zombiesPromise = getZombieSearchData(isEnabled)
+  const availableMaps = getAvailableMaps()
   const [maps, games, quests, zombies] = await Promise.all([mapsPromise, gamesPromise, questsPromise, zombiesPromise])
   const modifiedGames = games.filter(g => !g.isComingSoon).map(game => ({
     id: game.id,
@@ -35,6 +37,7 @@ export default async function SearchBar({ showFull }: ISearchBar) {
         quests={ quests }
         zombies={ modifiedZombies }
         showFull={ showFull }
+        availableMaps={ availableMaps }
       />
     </div>
   )

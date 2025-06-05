@@ -3,10 +3,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
-import { Book, BookText, Brain, Search } from "lucide-react";
+import { Book, BookText, Brain, Map, Search } from "lucide-react";
 import { DialogDescription, DialogTitle } from "../ui/dialog";
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { capatilize } from "@/utils/functions";
 
 interface SearchInputProps {
   showFull?: boolean
@@ -42,16 +43,18 @@ interface SearchInputProps {
     slug: string
     title: string
   }[]
+  availableMaps: string[]
 }
 
 const filters = [
   { name: "All", icon: Search },
   { name: "Main Quests", icon: BookText },
   { name: "Side Quests", icon: Book },
-  { name: "Zombies", icon: Brain }
+  { name: "Zombies", icon: Brain },
+  { name: "Maps", icon: Map }
 ]
 
-export default function SearchInput({ showFull, maps, games, quests, zombies }: SearchInputProps) {
+export default function SearchInput({ showFull, maps, games, quests, zombies, availableMaps }: SearchInputProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [filter, setFilter] = useState("All")
@@ -169,6 +172,16 @@ export default function SearchInput({ showFull, maps, games, quests, zombies }: 
                   <CommandItem key={ zombie.id } onSelect={() => onSelectHandler(`/bestiary/${zombie.slug}`)} className="gap-2 cursor-pointer">
                     <Brain className="size-4" />
                     <span className="blur-none">{ zombie.title }</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            ) : null}
+            { filter === "All" || filter === "Maps" ? (
+              <CommandGroup heading="Interactive Maps">
+                { availableMaps.map(map => (
+                  <CommandItem key={ map } onSelect={ () => onSelectHandler(`/maps/${map}`) } className="gap-2 cursor-pointer">
+                    <Map className="size-4" />
+                    <span className="blur-none">{ `${capatilize(map)} Interactive Map` }</span>
                   </CommandItem>
                 ))}
               </CommandGroup>
