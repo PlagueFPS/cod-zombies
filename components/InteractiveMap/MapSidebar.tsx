@@ -96,7 +96,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                           </div>
                           <Switch 
                             id={`${type}-filter`} 
-                            defaultChecked
+                            defaultChecked={ !filterParams.includes(type) }
                             onCheckedChange={ () => handleCheckedChange(type) }
                             className="ml-auto cursor-pointer"
                           />
@@ -129,7 +129,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                           </div>
                           <Switch 
                             id={`${type}-filter`} 
-                            defaultChecked
+                            defaultChecked={ !filterParams.includes(type) }
                             onCheckedChange={ () => handleCheckedChange(type) }
                             className="ml-auto cursor-pointer"
                           />
@@ -162,7 +162,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                           </div>
                           <Switch 
                             id={`${type}-filter`} 
-                            defaultChecked
+                            defaultChecked={ !filterParams.includes(type) }
                             onCheckedChange={ () => handleCheckedChange(type) }
                             className="ml-auto cursor-pointer"
                           />
@@ -195,7 +195,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                           </div>
                           <Switch 
                             id={`${objective.id}-filter`} 
-                            defaultChecked
+                            defaultChecked={ !filterParams.includes(objective.id) }
                             onCheckedChange={ () => handleCheckedChange(objective.id) }
                             className="ml-auto cursor-pointer"
                           />
@@ -228,7 +228,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                           </div>
                           <Switch 
                             id={`${type}-filter`} 
-                            defaultChecked
+                            defaultChecked={ !filterParams.includes(type) }
                             onCheckedChange={ () => handleCheckedChange(type) }
                             className="ml-auto cursor-pointer"
                           />
