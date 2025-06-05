@@ -7,7 +7,6 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
-import { Card } from "@/components/ui/card"
 import CustomMarker from './CustomMarker'
 import { capatilize } from "@/utils/functions"
 import { useMapSearchParams } from '@/hooks/useMapSearchParams'
@@ -25,7 +24,6 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
   const { searchParams, filterParams } = useMapSearchParams()
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
   const [filteredMarkers, setMarkers] = useState<MapMarker[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const mapRef = useRef<Map>(null)
 
   useEffect(() => {
@@ -47,8 +45,6 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         })
       } catch (error) {
         console.error(`Failed to load map:`, error)
-      } finally {
-        setIsLoading(false)
       }
     }
 
@@ -89,17 +85,6 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
       [imageDimensions.height, imageDimensions.width] // Northeast Corner
     ])
   }, [imageDimensions])
-
-  if (isLoading) return (
-    <div className="h-full w-full flex items-center justify-center">
-      <Card className="p-6 bg-card/80">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p>Loading map layers...</p>
-        </div>
-      </Card>
-    </div>
-  )
 
   return (
     <MapContainer
