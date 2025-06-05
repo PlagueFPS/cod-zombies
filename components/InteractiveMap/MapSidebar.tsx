@@ -1,7 +1,7 @@
 "use client"
 import type { MapMarker, MarkerCategory, MarkerType } from "@/types/InteractiveMap"
 import type { MapId } from "@/map-configs"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { capatilize } from "@/utils/functions"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { ChevronDown, MapPin, PanelLeftOpenIcon } from "lucide-react"
@@ -27,7 +27,8 @@ import {
   SidebarMenu, 
   SidebarMenuButton, 
   SidebarMenuItem, 
-  SidebarTrigger, 
+  SidebarTrigger,
+  useSidebar,
 } from "../ui/sidebar"
 
 interface IMapSidebar {
@@ -37,6 +38,7 @@ interface IMapSidebar {
 }
 
 export default function MapSidebar({ groups, objectives, availableMaps }: IMapSidebar) {
+  const router = useRouter()
   const { toggleParam, filterParams } = useMapSearchParams()
   const { id } = useParams()
   const currentMap = capatilize(String(id))
@@ -45,12 +47,15 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
     toggleParam("filtered", type, filterParams)
   }
 
+  const handleClick = (map: string) => {
+    router.push(`/maps/${map}`)
+  }
+
   return (
     <Sidebar side="left" collapsible="offcanvas" className="z-900 mt-16">
       <SidebarHeader className="bg-background border-b">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarTrigger className="mr-auto" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="border bg-input/30 border-input hover:bg-input/50 cursor-pointer">
@@ -58,21 +63,15 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="z-950">
+              <DropdownMenuContent className="z-900">
                 { availableMaps.map(map => (
-                  <DropdownMenuItem key={ map } className={cn({'pointer-events-none': map === id })}>
-                    <CustomLink 
-                      href={`/maps/${map}`} 
-                      aria-label={`Go to ${capatilize(map)} interacitve map page`} 
-                      aria-disabled={ map === id }
-                      className={cn("w-full", { 'pointer-events-none text-muted-foreground': map === id })}
-                    >
-                      { capatilize(map) }
-                    </CustomLink>
+                  <DropdownMenuItem key={ map } className={cn({'pointer-events-none': map === id })} onClick={() => handleClick(map) }>
+                    <span className={cn({'text-muted-foreground': map === id })}>{ capatilize(map) }</span>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            <SidebarTrigger className="ml-auto" />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
