@@ -41,7 +41,7 @@ export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise
       description: map.description,
       url: `/maps/${map.id}`,
       images: {
-        url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.id}-preview.webp`,
+        url: `${env.NEXT_PUBLIC_WEBSITE_URL}/previews/${map.id}-preview.webp`,
         width: 640,
         height: 360
       },

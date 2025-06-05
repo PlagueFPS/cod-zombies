@@ -4,12 +4,14 @@ import { env } from "@/env";
 import { getQuests } from "@/data/sideQuests";
 import { getZombies } from "@/data/zombies";
 import { getLegalDocuments } from "@/data/legal";
+import { getAvailableMaps } from "@/data/interactive-map";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const mapsPromise = getMaps(false)
   const questsProimse = getQuests(false)
   const zombiesPromise = getZombies(false)
   const legalPromise = getLegalDocuments(false)
+  const interactiveMaps = getAvailableMaps()
   const [maps, quests, zombies, legalDocs] = await Promise.all([
     mapsPromise, 
     questsProimse, 
@@ -41,6 +43,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...zombies.filter(z => !z.isComingSoon).map(z => ({
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${z.slug}`,
       lastModified: new Date(z.updatedAt)
+    })),
+    ...interactiveMaps.map(map => ({
+      url: `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${map}`,
     })),
     ...legalDocs.map(doc => ({
       url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${doc.slug}`,
