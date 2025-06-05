@@ -17,7 +17,7 @@ export function CustomSideBarTrigger() {
       variant={"outline"}
       onClick={ () => toggleSidebar() }
       aria-label="Toggle Sidebar"
-      className={cn("hidden opacity-0 absolute top-4 left-4 z-500 bg-background/90 dark:bg-background/90 p-4", {
+      className={cn("hidden opacity-0 fixed top-18 left-4 z-500 bg-background/90 dark:bg-background/90 p-4", {
         'inline-flex opacity-100 animate-fade-in': closedState()
       })}
     >

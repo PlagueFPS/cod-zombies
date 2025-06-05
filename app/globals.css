@@ -293,6 +293,10 @@
   }
 }
 
+@utility header-view-height {
+  height: calc(100svh - 4rem) !important;
+}
+
 @utility text-gradient {
   color: transparent;
   background-clip: text;

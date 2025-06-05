@@ -12,7 +12,6 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -83,7 +82,6 @@ export default function RootLayout({ children }: LayoutProps) {
         >
           <Header />
           { children }
-          <Footer />
           <Toaster richColors position="top-center" closeButton />
         </ThemeProvider>
         <Analytics />

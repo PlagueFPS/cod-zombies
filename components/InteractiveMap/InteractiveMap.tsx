@@ -174,7 +174,7 @@ function MapController({ imageDimensions }: MapController) {
   }, [map, imageDimensions])
 
   return (
-    <div className="absolute top-4 right-4 z-400 flex gap-2">
+    <div className="fixed top-18 right-4 z-500 flex gap-2">
       <Badge variant={"outline"} className="bg-background/80 rounded-md">
         <div className="flex flex-col gap-1">
           <Button variant={"ghost"} size={"icon"} onClick={ handleZoomIn } title="Zoom In">
