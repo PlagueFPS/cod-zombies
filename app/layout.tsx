@@ -4,8 +4,6 @@ import { Geist } from 'next/font/google'
 import { ThemeProvider } from "@/contexts/ThemeProvider";
 import { env } from "@/env";
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -13,6 +11,7 @@ import DraftMode from "@/components/DraftMode/DraftMode";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import Header from "@/components/Header/Header";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -58,12 +57,23 @@ export const viewport: Viewport = {
 
 const geist = Geist({
   subsets: ['latin'],
+  display: "swap",
+  variable: "--font-geist"
 })
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={ `${geist.className} flex flex-col min-h-dvh` }>
+      <body className={ `${geist.className} ${geist.variable} flex flex-col min-h-dvh 
+        [&::-webkit-scrollbar]:w-2 
+        [&::-webkit-scrollbar-track]:bg-transparent
+        [&::-webkit-scrollbar-thumb]:rounded-full 
+        [&::-webkit-scrollbar-thumb]:bg-neutral-400
+        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700
+        [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 
+        dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600
+        ` 
+      }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -71,10 +81,7 @@ export default function RootLayout({ children }: LayoutProps) {
           disableTransitionOnChange
         >
           <Header />
-          <main className="mt-10 mb-4 grow" role="main" tabIndex={ -1 }>
-            { children }
-          </main>
-          <Footer />
+          { children }
           <Toaster richColors position="top-center" closeButton />
         </ThemeProvider>
         <Analytics />

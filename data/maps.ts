@@ -7,7 +7,6 @@ import type { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-typ
 import { createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { Entry } from 'contentful'
-import { FeaturedMapWithBody, FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import { tryCatch } from '@/utils/functions'
 import { NEW_ENTRY_KV } from '@/lib/redis'
 import { EntryStatus } from '@/types/EntryEnforcement'

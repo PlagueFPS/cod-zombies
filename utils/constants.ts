@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Book, Brain, Map } from "lucide-react"
 
 export const IN_DEVELOPMENT = process.env.NODE_ENV === 'development'
 export const SITE_TITLE = 'Call of Duty: Zombies Guides'
@@ -38,3 +39,23 @@ export const CACHE_KEYS = {
     ALL: 'legal',
   }
 } as const
+export const ROUTES = [
+  {
+    id: "side-quests",
+    title: "Side Quests",
+    href: "/side-quests",
+    icon: Book
+  },
+  {
+    id: "bestiary",
+    title: "Bestiary",
+    href: "/bestiary",
+    icon: Brain
+  },
+  {
+    id: "maps",
+    title: "Maps",
+    href: "/maps",
+    icon: Map
+  }
+] as const

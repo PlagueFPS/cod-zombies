@@ -1,5 +1,5 @@
 "use client"
-import { useSiteSearchParams } from "@/hooks/useSiteSearchParams"
+import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import { Filter } from "@/types/Filter"
 import { useEffect, useState } from "react"
 import FiltersCombobox from "../FiltersCombobox/FiltersCombobox"
@@ -13,7 +13,7 @@ interface BestiaryFiltersClientProps {
 }
 
 export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFiltersClientProps) {
-  const { searchParams, mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } = useSiteSearchParams()
+  const { searchParams, mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } = useQuestSearchParams()
   const [selectedTypes, setSelectedTypes] = useState(typeParams)
   const [selectedGames, setSelectedGames] = useState(gameParams)
   const [selectedMaps, setSelectedMaps] = useState(mapParams)

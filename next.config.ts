@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   experimental: {
     ppr: true,
     serverComponentsHmrCache: true,
+    reactCompiler: true,
   },
   images: {
     formats:['image/avif','image/webp'],

@@ -6,9 +6,10 @@ import { useState, AnchorHTMLAttributes, useEffect } from "react"
 interface ICustomLink extends LinkProps {
   children: React.ReactNode
   className?: string
+  beforeNavigate?: () => void
 }
 
-export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
+export function CustomLink({ children, href, beforeNavigate, ...props }: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
   const router = useRouter()
 
   const handleNavigation = (
@@ -26,6 +27,7 @@ export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTM
       ('button' in e && e.button === 0 || 'key' in e && e.key === 'Enter')
     ) {
       e.preventDefault()
+      beforeNavigate?.()
       router.push(String(href))
     }
   }
