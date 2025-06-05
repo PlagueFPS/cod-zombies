@@ -12,6 +12,7 @@ import MapSidebar from '@/components/InteractiveMap/MapSidebar';
 import { Suspense } from 'react';
 import { markerTypeToCategory } from '@/map-configs/markers';
 import { CustomSideBarTrigger } from '@/components/InteractiveMap/CustomSidebarTrigger';
+import DisableScroll from '@/components/DisableScroll/DisableScroll';
 
 interface IInteractiveMapPage {
   params: Promise<{ id: MapId }>
@@ -82,6 +83,7 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
 
   return (
     <SidebarProvider defaultOpen={ defaultOpen }>
+      <DisableScroll />
       <Suspense fallback={<div>Loading Sidebar...</div>}>
         <MapSidebar 
           groups={ groups }

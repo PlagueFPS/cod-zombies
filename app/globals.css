@@ -160,6 +160,10 @@
   .custom-popup .leaflet-popup-close-button {
     color: var(--color-muted-foreground) !important;
   }
+
+  .no-scroll {
+    overflow-y: hidden;
+  }
 }
 @theme inline {
   --color-border: var(--border);
