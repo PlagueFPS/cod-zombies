@@ -308,5 +308,16 @@ function MarkerFilterIcon({ type, objectiveId }: { type: MarkerType, objectiveId
           className="size-8"
         />
       )
+    case 'vehicle-spawn':
+      return (
+        <Image 
+          unoptimized
+          src={`/icons/boat.webp`}
+          height={ 128 }
+          width={ 128 }
+          alt={`${type} Image`}
+          className="size-8"
+        />
+      )
   }
 }

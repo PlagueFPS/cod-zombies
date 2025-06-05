@@ -213,7 +213,7 @@ const terminus: MapConfig = {
       title: "Aetherium Maturation Pod",
       type: "objective",
       description: "Activate and defend the A.M.P. to restore power to the area.",
-      icon: "/icons/amp.webp",
+      icon: "/icons/aetherium-maturation-pod.webp",
       locations: [
         { x: 0.490, y: 0.470 },
         { x: 0.498, y: 0.552 },
