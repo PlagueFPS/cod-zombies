@@ -10,6 +10,7 @@ import Reddit from "@/SVGs/Reddit";
 import X from "@/SVGs/XSVG";
 import Logo from "@/public/logo.webp"
 import Image from "next/image";
+import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper";
 
 export default function AppSidebar() {
   return (
@@ -54,6 +55,8 @@ export default function AppSidebar() {
           ))}
         </nav>
         <SheetFooter className="flex flex-row justify-evenly items-center w-full gap-3 text-muted-foreground mt-auto mb-4">
+          <ThemeToggleWrapper />
+          <Separator orientation="vertical" className="min-h-5" />
           <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
             <X className="size-5" />
           </ExternalLink>
