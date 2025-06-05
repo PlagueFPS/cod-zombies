@@ -8,6 +8,7 @@ import Logo from "@/public/logo.webp"
 import { ROUTES } from '@/utils/constants'
 import Sidebar from './AppSidebar'
 import NavLink from '../NavLink/NavLink'
+import ThemeToggleWrapper from '../ThemeToggle/ThemeToggleWrapper'
 
 export default function Header() {
   return (
@@ -45,6 +46,7 @@ export default function Header() {
           <Suspense fallback={<SearchBarLoader />}>
             <SearchBar />
           </Suspense>
+          <ThemeToggleWrapper className='hidden lg:inline-flex' />
         </div>
         <Sidebar />
       </div>

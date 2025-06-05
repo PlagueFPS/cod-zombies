@@ -8,6 +8,6 @@ const ThemeToggle = dynamic(() => import('@/components/ThemeToggle/ThemeToggle')
   loading: () => <ThemeToggleLoader />
 })
 
-export default function ThemeToggleWrapper() {
-  return <ThemeToggle />
+export default function ThemeToggleWrapper({ className }: { className?: string }) {
+  return <ThemeToggle className={ className } />
 }
