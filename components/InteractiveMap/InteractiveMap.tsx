@@ -59,7 +59,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
     let markers = mapConfig.markers
 
     if (filterParams.length > 0) {
-      markers = mapConfig.markers.filter(marker => !filterParams.includes(marker.type))
+      markers = mapConfig.markers.filter(marker => !filterParams.includes(marker.id || marker.type))
     }
 
     setMarkers(markers)

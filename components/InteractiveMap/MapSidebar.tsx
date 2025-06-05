@@ -43,7 +43,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
   const { id } = useParams()
   const currentMap = capatilize(String(id))
 
-  const handleCheckedChange = (type: MarkerType) => {
+  const handleCheckedChange = (type: string) => {
     toggleParam("filtered", type, filterParams)
   }
 
@@ -196,7 +196,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
                           <Switch 
                             id={`${objective.id}-filter`} 
                             defaultChecked
-                            onCheckedChange={ () => handleCheckedChange("objective") }
+                            onCheckedChange={ () => handleCheckedChange(objective.id) }
                             className="ml-auto cursor-pointer"
                           />
                       </SidebarMenuItem>
