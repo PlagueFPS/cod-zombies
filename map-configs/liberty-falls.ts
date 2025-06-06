@@ -5,7 +5,7 @@ const libertyFalls: MapConfig = {
   id: "liberty-falls",
   title: "Liberty Falls",
   game: "Black Ops 6",
-  description: "",
+  description: "Learn the locations of everything you need, and more with our in-depth interactive map for Liberty Falls.",
   image: '/layers/liberty-falls.webp',
   markers: [
     {
