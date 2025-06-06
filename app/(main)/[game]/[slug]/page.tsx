@@ -84,8 +84,8 @@ export default async function MapPage({ params }: MapPageProps) {
 
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
-      <div className='flex flex-col justify-start items-center max-w-(--desktop) mx-auto xl:mx-4 w-full'>
-        <div className='flex flex-col-reverse xl:flex-row grow w-full'>
+      <div className='flex flex-col justify-start items-center w-svw mx-auto xl:mx-4'>
+        <div className='flex flex-col-reverse xl:flex-row w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
               <div className='hidden sm:dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
@@ -151,11 +151,9 @@ export default async function MapPage({ params }: MapPageProps) {
             <div className='flex justify-center items-center w-full'>
               <GuideFeedback guideTitle={ map.title } />
             </div>
-            <div className='flex flex-row justify-center items-center w-full mt-8'>
-              <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
-                { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
-                { nextMap && <PrevOrNextMapCard map={ nextMap } isEnabled={ isEnabled } /> }
-              </div>
+            <div className='flex flex-row justify-center items-center w-full mt-8 gap-4'>
+              { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
+              { nextMap && <PrevOrNextMapCard map={ nextMap } isEnabled={ isEnabled } /> }
             </div>
           </article>
           <TableOfContents headings={ map.isComingSoon ? [] : headings } />
@@ -173,7 +171,7 @@ export default async function MapPage({ params }: MapPageProps) {
   return (
     <CustomLink 
       href={ href }
-      className={cn('group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-all', {
+      className={cn('group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm lg:max-w-xl shadow-sm dark:shadow-none overflow-hidden transition-all', {
         'pointer-events-none opacity-50': map.isComingSoon,
       })}
     >

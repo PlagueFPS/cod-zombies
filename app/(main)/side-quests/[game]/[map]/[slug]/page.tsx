@@ -72,8 +72,8 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 
   return (
     <section className='flex justify-center w-full -mt-10 xl:mt-0'>
-      <div className='flex flex-col justify-start items-center max-w-(--desktop) mx-auto xl:mx-4 w-full'>
-        <div className='flex flex-col-reverse xl:flex-row grow w-full'>
+      <div className='flex flex-col justify-start items-center mx-auto xl:mx-4 w-svw'>
+        <div className='flex flex-col-reverse xl:flex-row w-full'>
           <article className='flex flex-col items-center justify-center w-full'>
             <div className='relative w-full mt-16 xl:mt-8'>
               <div className='hidden sm:dark:block absolute top-4 left-0 right-0 z-10 mx-auto w-full opacity-35 blur-3xl max-w-7xl'>
@@ -141,12 +141,10 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
             <div className='flex justify-center items-center w-full'>
               <GuideFeedback guideTitle={ q.title } />
             </div>
-            <div className='flex flex-row justify-center items-center w-full mt-8'>
-              <div className='flex flex-col lg:flex-row justify-center items-center max-w-7xl px-3 mx-auto xl:px-0 xl:ml-auto xl:mr-0 gap-8'>
-                <Suspense fallback={<PreviousOrNextMapLoader />}> 
-                  <PrevOrNextQuest quest={ q } />
-                </Suspense>
-              </div>
+            <div className='flex flex-row justify-center items-center w-full mt-8 gap-4'>
+              <Suspense fallback={<PreviousOrNextMapLoader />}> 
+                <PrevOrNextQuest quest={ q } />
+              </Suspense>
             </div>
           </article>
           <TableOfContents headings={ q.isComingSoon ? [] : headings } />
@@ -177,7 +175,7 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
   return (
     <CustomLink 
       href={ href } 
-      className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-transform', {
+      className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm lg:max-w-lg shadow-sm dark:shadow-none overflow-hidden transition-transform', {
         'pointer-events-none opacity-50': quest.isComingSoon,
       })}
     >

@@ -15,8 +15,8 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
   return (
     // Container loaders
     <div className="flex justify-center w-full -mt-10 xl:mt-0">
-      <div className="flex flex-col justify-start items-center max-w-[1920px] mx-auto xl:mx-4 w-full">
-        <div className="flex flex-col-reverse xl:flex-row grow w-full">
+      <div className="flex flex-col justify-start items-center w-svw mx-auto xl:mx-4">
+        <div className="flex flex-col-reverse xl:flex-row w-full">
           <div className="flex flex-col items-center justify-center w-full">
             <div className="relative w-full mt-16 xl:mt-8">
             
@@ -59,7 +59,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
                   </Button>
                 </div>
               </div>
-              <Skeleton className="h-[150dvh] w-full max-w-[80ch] mx-auto dark:bg-accent/50" />
+              <Skeleton className="h-[150svh] w-full max-w-[80ch] mx-auto dark:bg-accent/50" />
             </div>
           </div>
           <TableOfContentsLoader />
