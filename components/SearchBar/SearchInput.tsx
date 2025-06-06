@@ -1,4 +1,5 @@
 "use client"
+import type { MapSearch, QuestSearch, SearchEntry } from "@/types/Search";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
@@ -11,38 +12,10 @@ import { capatilize } from "@/utils/functions";
 
 interface SearchInputProps {
   showFull?: boolean
-  maps: {
-    id: string
-    slug: string
-    title: string
-    game: {
-      title: string
-      slug: string
-    }
-  }[]
-  games: {
-    id: string
-    slug: string
-    title: string
-  }[]
-  quests: {
-    id: string
-    slug: string
-    title: string
-    game: {
-      title: string
-      slug: string
-    }
-    map: {
-      title: string
-      slug: string
-    }
-  }[]
-  zombies: {
-    id: string
-    slug: string
-    title: string
-  }[]
+  maps: MapSearch[]
+  games: SearchEntry[]
+  quests: QuestSearch[]
+  zombies: SearchEntry[]
   availableMaps: string[]
 }
 
@@ -106,7 +79,7 @@ export default function SearchInput({ showFull, maps, games, quests, zombies, av
       <CommandDialog open={ open } onOpenChange={ setOpen }>
         <DialogTitle className="sr-only">Search Bar</DialogTitle>
         <DialogDescription className="sr-only">Search for quests</DialogDescription>
-        <CommandInput placeholder="Search guides, zombies" className="text-base" />
+        <CommandInput placeholder="Search quest guides, zombies, maps" className="text-base" />
         <ScrollArea>
           <div className="flex p-2 gap-1">
             { filters.map(f => (
