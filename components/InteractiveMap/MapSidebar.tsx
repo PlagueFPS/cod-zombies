@@ -41,7 +41,7 @@ interface IMapSidebar {
 
 export default function MapSidebar({ groups, objectives, availableMaps }: IMapSidebar) {
   const router = useRouter()
-  const { toggleParam, filterParams } = useMapSearchParams()
+  const { toggleParam, filterParams, searchParams } = useMapSearchParams()
   const { id } = useParams()
   const currentMap = capatilize(String(id))
 
@@ -51,6 +51,16 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
 
   const handleClick = (map: string) => {
     router.push(`/maps/${map}`)
+  }
+
+  const createShareableURL = () => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete("filtered")
+
+    filterParams.forEach(filter => params.append("filtered", filter))
+
+    if (params.size > 0) return `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}?${params.toString()}`
+    else return `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}`
   }
 
   return (
@@ -261,7 +271,7 @@ export default function MapSidebar({ groups, objectives, availableMaps }: IMapSi
               <Separator orientation="vertical" className="min-h-5" />
               <ShareButton 
                 title={ `${currentMap} interactive map` } 
-                url={`${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}`} 
+                url={ createShareableURL() }
               />
             </div>
           </SidebarMenuItem>
