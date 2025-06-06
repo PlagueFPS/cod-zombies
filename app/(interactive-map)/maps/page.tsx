@@ -36,7 +36,7 @@ export default function MapsPage() {
               { title: "Maps", href: "/maps" }
             ]}
           />
-          <GridSection title='Interactive Maps'>
+          <GridSection title='Interactive Maps' className='mb-10'>
             <p className='sm:text-lg text-muted-foreground -mt-6 mb-2'>
               Browse our collection of interactive maps showcasing key spawn points, locations, and more.
             </p>
