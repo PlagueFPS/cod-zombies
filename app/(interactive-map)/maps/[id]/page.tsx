@@ -87,7 +87,8 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
         <MapSidebar 
           groups={ groups }
           availableMaps={ availableMaps } 
-          objectives={ objectiveMarkers } 
+          objectives={ objectiveMarkers }
+          uniqueMarkerTypes={ uniqueMarkerTypes } 
         />
       </Suspense>
       <div className='h-svh w-svw'>
