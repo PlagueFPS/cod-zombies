@@ -9,8 +9,6 @@ import { Separator } from "../ui/separator"
 import Reddit from "@/SVGs/Reddit"
 import ExternalLink from "../ExternalLink/ExternalLink"
 import X from "@/SVGs/XSVG"
-import FeedbackForm from "../FeedbackForm/FeedbackForm"
-import MobileOnly from "../ui/mobile-only"
 import { CustomLink } from "../CustomLink/CustomLink"
 
 export default function Footer() {
@@ -37,19 +35,10 @@ export default function Footer() {
         </div>
         <Newsletter />
         <div className="flex justify-center md:justify-end space-x-4 order-first md:order-last">
-          <div className="hidden sm:flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <ContactForm />
             <ThemeToggleWrapper />
           </div>
-          <MobileOnly>
-            <div className="flex flex-col gap-4 items-center justify-center">
-              <div className="flex justify-center items-center gap-4">
-                <ContactForm />
-                <FeedbackForm />
-              </div>
-              <ThemeToggleWrapper />
-            </div>
-          </MobileOnly>
         </div>
       </div>
       <div className="flex items-center justify-center md:justify-start md:mt-2 w-full text-xs text-muted-foreground">
