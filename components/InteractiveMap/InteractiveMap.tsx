@@ -11,9 +11,10 @@ import CustomMarker from './CustomMarker'
 import { capatilize } from "@/utils/functions"
 import { useMapSearchParams } from '@/hooks/useMapSearchParams'
 import { Separator } from '../ui/separator'
+import { IN_DEVELOPMENT } from '@/utils/constants'
 
 const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
-  if (!e.latlng || !imageDimensions) return
+  if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
 
   const x = e.latlng.lng / imageDimensions.width
   const y = 1 - e.latlng.lat / imageDimensions.height // Flip y back to normal
