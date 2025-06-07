@@ -5,7 +5,7 @@ const theTomb: MapConfig = {
   id: "the-tomb",
   title: "The Tomb",
   game: "Black Ops 6",
-  description: "Learn the locations Dig Sites, Dark Aether Lanterns, and more with our in-depth interactive map for The Tomb.",
+  description: "Learn the locations for Dig Spots, Dark Aether Lanterns, and more with our in-depth interactive map for The Tomb.",
   image: "/layers/the-tomb.webp",
   markers: [
     {
@@ -81,6 +81,37 @@ const theTomb: MapConfig = {
       locations: [{ x: 0.772, y: 0.776 }]
     },
     {
+      id: "aether-lantern",
+      type: "objective",
+      title: "Dark Aether Lantern",
+      description: "Creates a pool of fire underneath the lantern when shot, damaging zombies and players. Freezing three in quick succession is required for the Ice Staff upgrade quest.",
+      icon: "/icons/aether-lantern.webp",
+      locations: [
+        { x: 0.246, y: 0.412 },
+        { x: 0.318, y: 0.431 },
+        { x: 0.318, y: 0.391 },
+        { x: 0.359, y: 0.413 },
+        { x: 0.475, y: 0.385 },
+        { x: 0.628, y: 0.413 },
+        { x: 0.626, y: 0.450 },
+        { x: 0.626, y: 0.540 },
+        { x: 0.532, y: 0.604 },
+        { x: 0.335, y: 0.576 },
+        { x: 0.254, y: 0.617 },
+        { x: 0.812, y: 0.512 },
+        { x: 0.812, y: 0.486 },
+        { x: 0.461, y: 0.368 },
+        { x: 0.502, y: 0.385 },
+        { x: 0.516, y: 0.370 },
+        { x: 0.347, y: 0.630 },
+        { x: 0.526, y: 0.664 },
+        { x: 0.640, y: 0.593 },
+        { x: 0.559, y: 0.395 },
+        { x: 0.286, y: 0.649 },
+        { x: 0.485, y: 0.627 },
+      ]
+    },
+    {
       ...sharedMarkers["ammo-cache"],
       locations: [
         { x: 0.157, y: 0.573 },
@@ -114,7 +145,7 @@ const theTomb: MapConfig = {
       ...sharedMarkers.arsenal,
       locations: [
         { x: 0.219, y: 0.558 },
-        { x: 0.773, y: 0.549 },
+        { x: 0.780, y: 0.542 },
       ]
     },
     {

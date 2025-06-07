@@ -83,6 +83,7 @@ function MarkerIcon({ marker }: { marker: MapMarker }) {
         height={ 128 }
         className={cn('size-8', 
           { 'size-6': marker.type === "perks" && marker.id !== 'der-wunderfizz' },
+          { 'size-10': marker.id === 'dark-aether-lantern' }
         )}
         onError={ () => setError(true) }
       /> : (
