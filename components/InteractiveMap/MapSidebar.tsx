@@ -235,7 +235,11 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                     { objectives.map(objective => (
                       <SidebarMenuItem key={ objective.id } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon type={ objective.type } objectiveId={ objective.id } />
+                          <MarkerFilterIcon 
+                            type={ objective.type } 
+                            objectiveId={ objective.id }
+                            objectives={ objectives } 
+                          />
                           <span className="text-base font-medium">{ objective.title }</span>
                         </div>
                         <Switch 
@@ -316,7 +320,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
   )
 }
 
-function MarkerFilterIcon({ type, objectiveId }: { type: MarkerType, objectiveId?: string }) {
+function MarkerFilterIcon({ type, objectiveId, objectives }: { type: MarkerType, objectiveId?: string, objectives?: MapMarker[] }) {
   switch(type) {
     default: 
       return (
@@ -343,10 +347,11 @@ function MarkerFilterIcon({ type, objectiveId }: { type: MarkerType, objectiveId
         />
       )
     case 'objective':
+      const objIcon = objectives?.find(obj => obj.id === objectiveId)?.icon
       return (
         <Image 
           unoptimized
-          src={`/icons/${objectiveId}.webp`}
+          src={ objIcon ?? `/icons/${objectiveId}.webp`}
           height={ 128 }
           width={ 128 }
           alt={ objectiveId ? `${capatilize(objectiveId)} Image` : "" }

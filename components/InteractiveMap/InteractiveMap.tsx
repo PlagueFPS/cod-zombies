@@ -63,7 +63,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
     }
 
     setMarkers(markers)
-  }, [searchParams, filterParams])
+  }, [searchParams, filterParams, mapConfig.markers])
 
   const convertToLeafletCoords = useCallback(({ x, y }: Location): LatLng => {
     if (!imageDimensions) return new LatLng(0, 0)

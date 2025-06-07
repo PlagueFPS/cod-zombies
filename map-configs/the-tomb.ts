@@ -112,6 +112,25 @@ const theTomb: MapConfig = {
       ]
     },
     {
+      id: "dig-spot",
+      type: "objective",
+      title: "Dig Spot",
+      description: "Chance for salvage, equipment, and other items. Digging with Death Perception allows you to get Ancient Gems for the Free Raygun side quest.",
+      icon: "/icons/dig-site.webp",
+      locations: [
+        { x: 0.127, y: 0.502 },
+        { x: 0.320, y: 0.625 },
+        { x: 0.521, y: 0.623 },
+        { x: 0.409, y: 0.653 },
+        { x: 0.688, y: 0.571 },
+        { x: 0.865, y: 0.488 },
+        { x: 0.765, y: 0.450 },
+        { x: 0.502, y: 0.424 },
+        { x: 0.458, y: 0.335 },
+        { x: 0.314, y: 0.378 },
+      ]
+    },
+    {
       ...sharedMarkers["ammo-cache"],
       locations: [
         { x: 0.157, y: 0.573 },
