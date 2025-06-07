@@ -57,13 +57,13 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
 
     if (filterParams.length > 0) {
       markers = mapConfig.markers.filter(marker => {
-        if (marker.type === "objective") return !filterParams.includes(marker.id)
-        else return !filterParams.includes(marker.type)
+        if (marker.type === "objective") return !filterParams.some(param => param === marker.id)
+        else return !filterParams.some(param => param === marker.type)
       })
     }
 
     setMarkers(markers)
-  }, [searchParams])
+  }, [searchParams, filterParams])
 
   const convertToLeafletCoords = useCallback(({ x, y }: Location): LatLng => {
     if (!imageDimensions) return new LatLng(0, 0)
@@ -114,7 +114,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
       )}
 
       { imageDimensions && mapConfig.markers.map(marker => {
-        if (!filteredMarkers.includes(marker)) return null
+        if (!filteredMarkers.some(m => m.id === marker.id)) return null
 
         return marker.locations.map(location => (
           <CustomMarker
@@ -151,10 +151,6 @@ function MapController({ imageDimensions }: MapController) {
     if (imageDimensions) {
       const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
       map.setView(center, 0, { animate: false })
-      map.fitBounds([[0, 0], [imageDimensions.height, imageDimensions.width]])
-      setTimeout(() => {
-        map.setZoom(0, { animate: false })
-      }, 0)
     }
 
   }, [map, imageDimensions])
