@@ -81,7 +81,9 @@ function MarkerIcon({ marker }: { marker: MapMarker }) {
         alt={ marker.title } 
         width={ 128 } 
         height={ 128 }
-        className={cn('size-8', { 'size-6': marker.type === "perks" && marker.id !== 'der-wunderfizz' })}
+        className={cn('size-8', 
+          { 'size-6': marker.type === "perks" && marker.id !== 'der-wunderfizz' },
+        )}
         onError={ () => setError(true) }
       /> : (
         <div className='size-8 bg-primary rounded-full' />

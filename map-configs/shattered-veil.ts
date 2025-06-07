@@ -269,7 +269,7 @@ const shatteredVeil: MapConfig = {
       description: "Each crate drops salvage. Destroy 8 crates to obtain the Essence Bomb.",
       icon: "/icons/janus-crate.webp",
       locations: [
-        { x: 0.260, y: 0.622 },
+        { x: 0.248, y: 0.638 },
         { x: 0.271, y: 0.552 },
         { x: 0.305, y: 0.480 },
         { x: 0.336, y: 0.539 },
@@ -289,6 +289,19 @@ const shatteredVeil: MapConfig = {
         { x: 0.705, y: 0.492 },
         { x: 0.643, y: 0.556 },
         { x: 0.677, y: 0.593 }
+      ]
+    },
+    {
+      id: "aether-crystal",
+      type: "objective",
+      title: "Aether Crystal",
+      description: "Each crystal drops salvage. The crystal emitting a thick essence contains an empty canister used for one of the Ray Gun MKII upgrades.",
+      icon: "/icons/aether-crystal.webp",
+      locations: [
+        { x: 0.240, y: 0.511 },
+        { x: 0.531, y: 0.373 },
+        { x: 0.389, y: 0.409 },
+        { x: 0.645, y: 0.546 },
       ]
     },
     {
