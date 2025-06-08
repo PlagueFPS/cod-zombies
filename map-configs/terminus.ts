@@ -221,7 +221,7 @@ const terminus: MapConfig = {
       title: "Aetherium Maturation Pod",
       type: "objective",
       description: "Activate and defend the A.M.P. to restore power to the area.",
-      icon: "/icons/aetherium-maturation-pod.webp",
+      icon: "/icons/objectives/aetherium-maturation-pod.webp",
       locations: [
         { x: 0.490, y: 0.470 },
         { x: 0.498, y: 0.552 },
@@ -233,7 +233,7 @@ const terminus: MapConfig = {
       title: "Underwater Chest",
       type: "objective",
       description: "Possible Location. Opening this chest will reward you with loot and potentially a Ray Gun, Perks, Aetherium Crystals, and Aether Tools. Open all chests on the map for a guaranteed Free Perk.",
-      icon: "/icons/chest.webp",
+      icon: "/icons/objectives/chest.webp",
       locations: [
         { x: 0.897, y: 0.767 },
         { x: 0.816, y: 0.778 },
@@ -255,7 +255,7 @@ const terminus: MapConfig = {
       title: "Fish Spawn",
       type: "objective",
       description: "Possible Location. Killing these fish with an explosive will reward you with one loot item per fish. Killing a total of 50 fish will reward you with a Perkaholic.",
-      icon: "/icons/fish.webp",
+      icon: "/icons/objectives/fish.webp",
       locations: [
         // Bio Lab
         { x: 0.816, y: 0.763 },
@@ -432,7 +432,7 @@ const terminus: MapConfig = {
       ...sharedMarkers["vehicle-spawn"],
       title: "Boat Spawn",
       description: "Spawns in a boat vehicle.",
-      icon: "/icons/boat.webp",
+      icon: "/icons/transportation/boat.webp",
       locations: [
         { x: 0.877, y: 0.933 },
         { x: 0.489, y: 0.743 },

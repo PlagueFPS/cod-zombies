@@ -85,7 +85,7 @@ const theTomb: MapConfig = {
       type: "objective",
       title: "Dark Aether Lantern",
       description: "Creates a pool of fire underneath the lantern when shot, damaging zombies and players. Freezing three in quick succession is required for the Ice Staff upgrade quest.",
-      icon: "/icons/aether-lantern.webp",
+      icon: "/icons/objectives/aether-lantern.webp",
       locations: [
         { x: 0.246, y: 0.412 },
         { x: 0.318, y: 0.431 },
@@ -116,7 +116,7 @@ const theTomb: MapConfig = {
       type: "objective",
       title: "Dig Spot",
       description: "Chance for salvage, equipment, and other items. Digging with Death Perception allows you to get Ancient Gems for the Free Raygun side quest.",
-      icon: "/icons/dig-site.webp",
+      icon: "/icons/objectives/dig-site.webp",
       locations: [
         { x: 0.127, y: 0.502 },
         { x: 0.320, y: 0.625 },

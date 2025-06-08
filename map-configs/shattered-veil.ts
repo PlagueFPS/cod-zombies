@@ -245,7 +245,7 @@ const shatteredVeil: MapConfig = {
       type: "objective",
       title: "Aether Plant Spawn",
       description: "Destroy this plant with fire damage to obtain a Plant Seed.",
-      icon: "/icons/aether-plant.webp",
+      icon: "/icons/objectives/aether-plant.webp",
       locations: [
         { x: 0.201, y: 0.597 },
         { x: 0.200, y: 0.566 },
@@ -267,7 +267,7 @@ const shatteredVeil: MapConfig = {
       type: "objective",
       title: "Janus Crate",
       description: "Each crate drops salvage. Destroy 8 crates to obtain the Essence Bomb.",
-      icon: "/icons/janus-crate.webp",
+      icon: "/icons/objectives/janus-crate.webp",
       locations: [
         { x: 0.248, y: 0.638 },
         { x: 0.271, y: 0.552 },
@@ -296,7 +296,7 @@ const shatteredVeil: MapConfig = {
       type: "objective",
       title: "Aether Crystal",
       description: "Each crystal drops salvage. The crystal emitting a thick essence contains an empty canister used for one of the Ray Gun MKII upgrades.",
-      icon: "/icons/aether-crystal.webp",
+      icon: "/icons/objectives/aether-crystal.webp",
       locations: [
         { x: 0.240, y: 0.511 },
         { x: 0.531, y: 0.373 },

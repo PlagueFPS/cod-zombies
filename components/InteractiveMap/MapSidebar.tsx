@@ -123,7 +123,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
             <SidebarGroup>
               <SidebarGroupLabel asChild>
                 <CollapsibleTrigger className="hover:bg-accent/50 cursor-pointer mb-2">
-                  General
+                  <span>General</span>
                   <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
@@ -133,7 +133,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                     { groups.general.map(type => (
                       <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon type={ type } />
+                          <MarkerFilterIcon category="general" type={ type } />
                           <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch 
@@ -141,7 +141,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                           defaultChecked={ !filterParams.includes(type) }
                           onCheckedChange={ () => handleCheckedChange(type) }
                           checked={ !filterParams.includes(type) }
-                          className="ml-auto cursor-pointer"
+                          className="data-[state=checked]:bg-blue-500 ml-auto cursor-pointer"
                         />
                     </SidebarMenuItem>
                     ))}
@@ -157,7 +157,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
             <SidebarGroup>
               <SidebarGroupLabel asChild>
                 <CollapsibleTrigger className="hover:bg-accent/50 cursor-pointer mb-2">
-                  Equipment
+                  <span>Equipment</span>
                   <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
@@ -167,7 +167,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                     { groups.equipment.map(type => (
                       <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon type={ type } />
+                          <MarkerFilterIcon category="equipment" type={ type } />
                           <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch 
@@ -175,7 +175,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                           defaultChecked={ !filterParams.includes(type) }
                           onCheckedChange={ () => handleCheckedChange(type) }
                           checked={ !filterParams.includes(type) }
-                          className="ml-auto cursor-pointer"
+                          className="data-[state=checked]:bg-gray-500 ml-auto cursor-pointer"
                         />
                     </SidebarMenuItem>
                     ))}
@@ -191,7 +191,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
             <SidebarGroup>
               <SidebarGroupLabel asChild>
                 <CollapsibleTrigger className="hover:bg-accent/50 cursor-pointer mb-2">
-                  Upgrades
+                  <span>Upgrades</span>
                   <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
@@ -201,7 +201,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                     { groups.upgrades.map(type => (
                       <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon type={ type } />
+                          <MarkerFilterIcon category="upgrades" type={ type } />
                           <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch 
@@ -209,7 +209,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                           defaultChecked={ !filterParams.includes(type) }
                           onCheckedChange={ () => handleCheckedChange(type) }
                           checked={ !filterParams.includes(type) }
-                          className="ml-auto cursor-pointer"
+                          className="data-[state=checked]:bg-yellow-500 ml-auto cursor-pointer"
                         />
                     </SidebarMenuItem>
                     ))}
@@ -273,7 +273,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                     { groups.transportation.map(type => (
                       <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon type={ type } />
+                          <MarkerFilterIcon category="transportation" type={ type } />
                           <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch 
@@ -281,7 +281,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
                           defaultChecked={ !filterParams.includes(type) }
                           onCheckedChange={ () => handleCheckedChange(type) }
                           checked={ !filterParams.includes(type) }
-                          className="ml-auto cursor-pointer"
+                          className="data-[state=checked]:bg-green-500 ml-auto cursor-pointer"
                         />
                     </SidebarMenuItem>
                     ))}
@@ -320,13 +320,20 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
   )
 }
 
-function MarkerFilterIcon({ type, objectiveId, objectives }: { type: MarkerType, objectiveId?: string, objectives?: MapMarker[] }) {
+interface IMarkerFilterIcon {
+  type: MarkerType
+  category?: MarkerCategory
+  objectiveId?: string
+  objectives?: MapMarker[]
+}
+
+function MarkerFilterIcon({ type, category, objectiveId, objectives }: IMarkerFilterIcon) {
   switch(type) {
     default: 
       return (
         <Image 
           unoptimized
-          src={`/icons/${type}.webp`}
+          src={`/icons/${category}/${type}.webp`}
           height={ 128 }
           width={ 128 }
           alt={`${type} Image`}
@@ -334,12 +341,12 @@ function MarkerFilterIcon({ type, objectiveId, objectives }: { type: MarkerType,
         />
       )
     case 'label': 
-      return <MapPin className="size-8 p-1" />
+      return <MapPin className="size-8 p-1 text-blue-500 dark:text-blue-400" />
     case 'perks':
       return (
         <Image 
           unoptimized
-          src={`/icons/juggernog.webp`}
+          src={`/icons/upgrades/juggernog.webp`}
           height={ 128 }
           width={ 128 }
           alt={`Stamin-Up Image`}
@@ -351,7 +358,7 @@ function MarkerFilterIcon({ type, objectiveId, objectives }: { type: MarkerType,
       return (
         <Image 
           unoptimized
-          src={ objIcon ?? `/icons/${objectiveId}.webp`}
+          src={ objIcon ?? `/icons/objectives/${objectiveId}.webp`}
           height={ 128 }
           width={ 128 }
           alt={ objectiveId ? `${capatilize(objectiveId)} Image` : "" }
@@ -362,7 +369,7 @@ function MarkerFilterIcon({ type, objectiveId, objectives }: { type: MarkerType,
       return (
         <Image 
           unoptimized
-          src={`/icons/boat.webp`}
+          src={`/icons/transportation/boat.webp`}
           height={ 128 }
           width={ 128 }
           alt={`${type} Image`}
