@@ -10,8 +10,8 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
     id: "vehicle-spawn",
     type: "vehicle-spawn",
     title: "Vehicle Spawn",
-    description: "Spawn a Boat.",
-    icon: "/icons/boat.webp",
+    description: "",
+    icon: null,
   },
   "fast-travel": {
     id: "fast-travel",

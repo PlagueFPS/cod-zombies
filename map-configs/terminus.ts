@@ -363,12 +363,16 @@ const terminus: MapConfig = {
     },
     {
       ...sharedMarkers["vehicle-spawn"],
+      title: "Boat Spawn",
+      description: "Spawns in a boat vehicle.",
+      icon: "/icons/boat.webp",
       locations: [
         { x: 0.877, y: 0.933 },
         { x: 0.489, y: 0.743 },
         { x: 0.296, y: 0.700 },
         { x: 0.700, y: 0.474 },
         { x: 0.382, y: 0.283 },
+        { x: 0.889, y: 0.753 },
       ]
     },
     {
