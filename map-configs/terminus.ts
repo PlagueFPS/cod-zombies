@@ -57,6 +57,14 @@ const terminus: MapConfig = {
       locations: [{ x: 0.531, y: 0.481 }]
     },
     {
+      id: "armory",
+      type: "label",
+      title: "Armory",
+      description: "",
+      icon: null,
+      locations: [{ x: 0.539, y: 0.463 }]
+    },
+    {
       id: "communications",
       title: "Communications",
       description: "",
@@ -221,6 +229,64 @@ const terminus: MapConfig = {
       ]
     },
     {
+      id: "underwater-chest",
+      title: "Underwater Chest",
+      type: "objective",
+      description: "Possible Location. Opening this chest will reward you with loot and potentially a Ray Gun, Perks, Aetherium Crystals, and Aether Tools. Open all chests on the map for a guaranteed Free Perk.",
+      icon: "/icons/chest.webp",
+      locations: [
+        { x: 0.897, y: 0.767 },
+        { x: 0.816, y: 0.778 },
+        { x: 0.504, y: 0.723 },
+        { x: 0.255, y: 0.586 },
+        { x: 0.221, y: 0.602 },
+        { x: 0.391, y: 0.267 },
+        { x: 0.361, y: 0.312 },
+        { x: 0.726, y: 0.495 },
+        { x: 0.737, y: 0.434 },
+        { x: 0.923, y: 0.836 },
+        { x: 0.220, y: 0.578 },
+        { x: 0.557, y: 0.793 },
+        { x: 0.426, y: 0.712 },
+      ]
+    },
+    {
+      id: "fish-spawn",
+      title: "Fish Spawn",
+      type: "objective",
+      description: "Possible Location. Killing these fish with an explosive will reward you with one loot item per fish. Killing a total of 50 fish will reward you with a Perkaholic.",
+      icon: "/icons/fish.webp",
+      locations: [
+        // Bio Lab
+        { x: 0.816, y: 0.763 },
+        { x: 0.829, y: 0.764 },
+        { x: 0.848, y: 0.747 },
+        { x: 0.872, y: 0.746 },
+        { x: 0.895, y: 0.765 },
+        { x: 0.910, y: 0.767 },
+        // Docks
+        { x: 0.865, y: 0.931 },
+        { x: 0.877, y: 0.923 },
+        { x: 0.888, y: 0.903 },
+        { x: 0.912, y: 0.892 },
+        { x: 0.928, y: 0.911 },
+        { x: 0.918, y: 0.930 },
+        { x: 0.889, y: 0.945 },
+        // Crab Island
+        { x: 0.414, y: 0.703 },
+        { x: 0.495, y: 0.731 },
+        { x: 0.462, y: 0.730 },
+        { x: 0.441, y: 0.714 },
+        // Shipwreck
+        { x: 0.307, y: 0.692 },
+        { x: 0.273, y: 0.713 },
+        { x: 0.255, y: 0.593 },
+        { x: 0.224, y: 0.602 },
+        { x: 0.208, y: 0.587 },
+        { x: 0.246, y: 0.574 },
+      ]
+    },
+    {
       ...sharedMarkers["ammo-cache"],
       locations: [
         { x: 0.485, y: 0.489 },
@@ -341,6 +407,7 @@ const terminus: MapConfig = {
         { x: 0.486, y: 0.620 },
         { x: 0.518, y: 0.620 },
         { x: 0.852, y: 0.889 },
+        { x: 0.941, y: 0.835 },
       ]
     },
     {
