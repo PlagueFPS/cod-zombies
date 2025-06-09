@@ -12,6 +12,7 @@ import { capatilize } from "@/utils/functions"
 import { useMapSearchParams } from '@/hooks/useMapSearchParams'
 import { Separator } from '../ui/separator'
 import { IN_DEVELOPMENT } from '@/utils/constants'
+import { generateMarkerKey } from '@/map-configs/markers'
 
 const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
   if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
@@ -117,10 +118,13 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
         if (!filteredMarkers.some(m => m.id === marker.id)) return null
 
         return marker.locations.map(location => (
+          // These keys are being generated during render based on immutable data
+          // Therefore these are stable keys and do not change during or between renders
           <CustomMarker
-            key={ `${marker.id}-${location.x}-${location.y}` }
+            key={ generateMarkerKey(marker.id, location) }
+            id={ generateMarkerKey(marker.id, location) }
             marker={ marker }
-            position={convertToLeafletCoords(location)}
+            position={ convertToLeafletCoords(location) }
           >
             { marker.type !== "label" ? (
               <Popup className='custom-popup'>

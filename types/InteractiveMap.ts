@@ -35,7 +35,7 @@ export interface Location {
 export type MarkerType = "perks" | "ammo-cache" | "weapon-wall-buy" | "pack-a-punch" 
 | "door-buy" | "trap" | "armor-wall-buy" | "mystery-box" | "rampage-inducer" | "exfil" | "arsenal" 
 | "crafting-table" | "gobblegum-machine" | "power-door" | "portal" | "workbench" | "label" | "fast-travel"
-| "vehicle-spawn" | "objective"
+| "vehicle-spawn" | "objective" | "shovel"
 
 export type Perks = "quick-revive" | "speed-cola" | "juggernog" | "double-tap" | "phd-flopper" 
 | "stamin-up" | "death-perception" | "elemental-pop" | "deadshot-daiquiri" | "melee-macchiato"

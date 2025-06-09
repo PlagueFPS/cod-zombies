@@ -7,12 +7,13 @@ import { Marker as LeafletMarker, useMap } from 'react-leaflet'
 import { cn } from '@/lib/utils'
 
 interface CustomMarkerProps {
+  id: string
   marker: MapMarker
   position: LatLng
   children?: React.ReactNode
 }
 
-export default function CustomMarker({ marker, position, children }: CustomMarkerProps) {
+export default function CustomMarker({ id, marker, position, children }: CustomMarkerProps) {
   const map = useMap()
   const [icon, setIcon] = useState<DivIcon | null>(null)
 
@@ -21,7 +22,7 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
     iconElement.className = 'custom-marker'
 
     const root = createRoot(iconElement)
-    root.render(<MarkerIcon marker={ marker } />)
+    root.render(<MarkerIcon id={ id } marker={ marker } />)
 
     const customIcon = divIcon({
       html: iconElement,
@@ -60,7 +61,7 @@ export default function CustomMarker({ marker, position, children }: CustomMarke
   )
 }
 
-function MarkerIcon({ marker }: { marker: MapMarker }) {
+function MarkerIcon({ marker, id }: { marker: MapMarker, id: string }) {
   const [error, setError] = useState(false)
 
   if (marker.type === "label") {
@@ -74,7 +75,10 @@ function MarkerIcon({ marker }: { marker: MapMarker }) {
   }
 
   return (
-    <div className='flex items-center justify-center'>
+    <div
+      id={ id } 
+      className='flex items-center justify-center'
+    >
      { !error && marker.icon ? <Image
         unoptimized
         src={ marker.icon } 
@@ -83,7 +87,8 @@ function MarkerIcon({ marker }: { marker: MapMarker }) {
         height={ 128 }
         className={cn('size-8', 
           { 'size-6': marker.type === "perks" && marker.id !== 'der-wunderfizz' },
-          { 'size-10': marker.id === 'dark-aether-lantern' }
+          { 'size-10': marker.id === 'dark-aether-lantern' },
+          { 'size-11': marker.id === "shovel" }
         )}
         onError={ () => setError(true) }
       /> : (

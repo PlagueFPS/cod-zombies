@@ -287,6 +287,39 @@ const terminus: MapConfig = {
       ]
     },
     {
+      id: "dig-spot",
+      type: "objective",
+      title: "Dig Spot",
+      description: "Use a shovel to potentially get salvage, equipment, perks, and other items.",
+      icon: "/icons/objectives/dig-site.webp",
+      locations: [
+        { x: 0.819, y: 0.826 },
+        { x: 0.834, y: 0.833 },
+        { x: 0.546, y: 0.781 },
+        { x: 0.397, y: 0.748 },
+        { x: 0.369, y: 0.277 },
+        { x: 0.822, y: 0.864 },
+        { x: 0.807, y: 0.813 },
+        { x: 0.488, y: 0.777 },
+        { x: 0.889, y: 0.867 },
+        { x: 0.887, y: 0.839 },
+        { x: 0.313, y: 0.323 },
+        { x: 0.782, y: 0.473 },
+        { x: 0.772, y: 0.448 },
+        { x: 0.905, y: 0.833 },
+        { x: 0.901, y: 0.807 },
+      ]
+    },
+    {
+      ...sharedMarkers.shovel,
+      locations: [
+        { x: 0.845, y: 0.883 },
+        { x: 0.897, y: 0.825 },
+        { x: 0.342, y: 0.330 },
+        { x: 0.765, y: 0.439 },
+      ]
+    },
+    {
       ...sharedMarkers["ammo-cache"],
       locations: [
         { x: 0.485, y: 0.489 },

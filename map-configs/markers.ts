@@ -1,4 +1,4 @@
-import type { MapMarker, MarkerCategory, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
+import type { Location, MapMarker, MarkerCategory, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
 
 interface Marker extends Omit<MapMarker, "locations"> {}
 type SharedMarkerType = Exclude<MarkerType, "perks" | "weapon-wall-buy" | "label" | "objective"> | "der-wunderfizz"
@@ -6,6 +6,13 @@ type SharedMarkerType = Exclude<MarkerType, "perks" | "weapon-wall-buy" | "label
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+  "shovel": {
+    id: "shovel",
+    type: "shovel",
+    title: "Shovel",
+    description: "Required to begin digging up dig spots around the map.",
+    icon: "/icons/equipment/shovel.webp"
+  },
   "vehicle-spawn": {
     id: "vehicle-spawn",
     type: "vehicle-spawn",
@@ -382,6 +389,7 @@ export const markerTypeToCategory: Record<MarkerType, MarkerCategory> = {
   "workbench": "equipment",
   "ammo-cache": "equipment",
   "weapon-wall-buy": "equipment",
+  "shovel": "equipment",
   
   //upgrades
   "perks": "upgrades",
@@ -397,3 +405,6 @@ export const markerTypeToCategory: Record<MarkerType, MarkerCategory> = {
 
   "objective": "general"
 }
+
+export const generateMarkerKey = (markerId: string, location: Location) => 
+  `${markerId}-${location.x}-${location.y}`
