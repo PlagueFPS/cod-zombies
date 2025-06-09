@@ -6,10 +6,9 @@ import { useState, AnchorHTMLAttributes, useEffect } from "react"
 interface ICustomLink extends LinkProps {
   children: React.ReactNode
   className?: string
-  beforeNavigate?: () => void
 }
 
-export function CustomLink({ children, href, beforeNavigate, ...props }: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
+export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
   const router = useRouter()
 
   const handleNavigation = (
@@ -27,20 +26,22 @@ export function CustomLink({ children, href, beforeNavigate, ...props }: ICustom
       ('button' in e && e.button === 0 || 'key' in e && e.key === 'Enter')
     ) {
       e.preventDefault()
-      beforeNavigate?.()
       router.push(String(href))
     }
   }
 
   return (
     <Link
+      {...props}
       href={ href }
       onMouseDown={ handleNavigation }
       onKeyDown={ handleNavigation }
       // We use this to prevent double navigations since we use `router.push()`
       // for mouse/key down navigations, resulting in a seemingly faster experience.
-      onNavigate={ (e) => e.preventDefault() }
-      {...props}
+      onNavigate={(e) => {
+        e.preventDefault()
+        props?.onNavigate?.(e)
+      }}
     >
       { children }
     </Link>
