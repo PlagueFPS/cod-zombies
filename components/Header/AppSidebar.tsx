@@ -1,3 +1,4 @@
+"use client"
 import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, SheetTitle } from "../ui/sheet";
@@ -12,10 +13,13 @@ import Logo from "@/public/logo.webp"
 import Image from "next/image";
 import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper";
 import NavLink from "../NavLink/NavLink";
+import { useState } from "react";
 
 export default function AppSidebar() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Sheet>
+    <Sheet open={ open } onOpenChange={ setOpen }>
       <SheetTrigger className="lg:hidden" title="Toggle Nav" asChild>
         <Button size={"icon"} variant={"ghost"}>
           <Menu className="text-muted-foreground size-6" />
@@ -43,16 +47,16 @@ export default function AppSidebar() {
         </SheetHeader>
         <nav className="flex flex-col items-start gap-6 pl-4 text-lg pb-4 w-full">
           { ROUTES.map(route => (
-            <SheetClose key={ route.id } asChild>
-              <NavLink
-                href={ route.href } 
-                aria-label={`Go to ${route.title} page`} 
-                className='flex items-center justify-center gap-2 transition-all'
-              >
-                <route.icon className='size-5 text-orange-400 dark:text-orange-200' />
-                <span className="font-medium">{ route.title }</span>
-              </NavLink>
-            </SheetClose>
+            <NavLink
+              key={ route.id }
+              href={ route.href } 
+              aria-label={`Go to ${route.title} page`} 
+              className='flex items-center justify-center gap-2 transition-all'
+              onClick={ () => setOpen(false) }
+            >
+              <route.icon className='size-5 text-orange-400 dark:text-orange-200' />
+              <span className="font-medium">{ route.title }</span>
+            </NavLink>
           ))}
         </nav>
         <SheetFooter className="flex flex-col justify-center items-center w-full gap-4 text-muted-foreground mt-auto mb-4 border-t">

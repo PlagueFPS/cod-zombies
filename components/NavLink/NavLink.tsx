@@ -11,7 +11,7 @@ interface Props extends LinkProps {
   ariaLabel?: string
 }
 
-export default function NavLink({ href, children, className, ariaLabel }: Props) {
+export default function NavLink({ href, children, className, ariaLabel, ...props }: Props) {
   const pathname = usePathname()
   const isActive = pathname === href
 
@@ -20,6 +20,7 @@ export default function NavLink({ href, children, className, ariaLabel }: Props)
       href={ href }
       aria-label={ ariaLabel }
       className={cn(className, { 'text-orange-600 dark:text-orange-200': isActive })}
+      {...props}
     >
       { children }
     </CustomLink>
