@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function UnsubscribeErrorPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const { message } = await searchParams
-  const errorMessage = message || "An error occurred during the unsubscribe process."
+  const errorMessage = decodeURIComponent(String(message)) || "An error occurred during the unsubscribe process."
 
   return (
     <div className="max-w-md mx-auto py-12 px-4 text-center">
