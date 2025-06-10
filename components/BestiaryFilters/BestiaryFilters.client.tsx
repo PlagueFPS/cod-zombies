@@ -2,7 +2,7 @@
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import { Filter } from "@/types/Filter"
 import FiltersCombobox from "../FiltersCombobox/FiltersCombobox"
-import { ScrollArea } from "../ui/scroll-area"
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import ClearFiltersButton from "../FiltersCombobox/ClearFiltersButton"
 
 interface BestiaryFiltersClientProps {
@@ -29,33 +29,34 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
   return (
     <ScrollArea className="-mt-4">
       <div className="flex gap-2 items-center w-full">
-        <FiltersCombobox 
-          data={ types }
-          currentSelection={ typeParams }
+        <FiltersCombobox
+          data={types}
+          currentSelection={typeParams}
           title="Type"
-          toggleParam={ toggleType }
-          clearParam={ () => clearParam("type") }
+          toggleParam={toggleType}
+          clearParam={() => clearParam("type")}
         />
         <FiltersCombobox
-          data={ games }
-          currentSelection={ gameParams }
+          data={games}
+          currentSelection={gameParams}
           title="Game"
-          toggleParam={ toggleGame }
-          clearParam={ () => clearParam("game") }
+          toggleParam={toggleGame}
+          clearParam={() => clearParam("game")}
         />
-        <FiltersCombobox 
-          data={ maps }
-          currentSelection={ mapParams }
+        <FiltersCombobox
+          data={maps}
+          currentSelection={mapParams}
           title="Map"
-          toggleParam={ toggleMap }
+          toggleParam={toggleMap}
           enableInput
           inputPlaceholder="Search Map"
-          clearParam={ () => clearParam("map") }
+          clearParam={() => clearParam("map")}
         />
-        { gameParams.length > 0 || mapParams.length > 0 || typeParams.length > 0 ? (
-          <ClearFiltersButton onClick={ clearAllFilters } />
+        {gameParams.length > 0 || mapParams.length > 0 || typeParams.length > 0 ? (
+          <ClearFiltersButton onClick={clearAllFilters} />
         ) : null}
       </div>
+      <ScrollBar orientation="horizontal" className="sr-only" />
     </ScrollArea>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 import ClearFiltersButton from "@/components/FiltersCombobox/ClearFiltersButton"
 import FiltersCombobox from "@/components/FiltersCombobox/FiltersCombobox"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import { Filter } from "@/types/Filter"
 import { usePathname } from "next/navigation"
@@ -32,36 +32,37 @@ export default function QuestFiltersClient({ games, maps, difficulties }: IQuest
   return (
     <ScrollArea className="-mt-4">
       <div className="flex gap-2 items-center w-full">
-        { isHomePage ? (
+        {isHomePage ? (
           <>
-            <FiltersCombobox 
-              data={ games }
-              currentSelection={ gameParams }
+            <FiltersCombobox
+              data={games}
+              currentSelection={gameParams}
               title="Game"
-              toggleParam={ toggleGame }
-              clearParam={ () => clearParam("game") }
+              toggleParam={toggleGame}
+              clearParam={() => clearParam("game")}
             />
-            <FiltersCombobox 
-              data={ difficulties }
-              currentSelection={ difficultyParams }
+            <FiltersCombobox
+              data={difficulties}
+              currentSelection={difficultyParams}
               title="Difficulty"
-              toggleParam={ toggleDifficulty }
-              clearParam={ () => clearParam("difficulty") }
+              toggleParam={toggleDifficulty}
+              clearParam={() => clearParam("difficulty")}
             />
           </>
         ) : (
-          <FiltersCombobox 
-            data={ maps }
-            currentSelection={ mapParams }
+          <FiltersCombobox
+            data={maps}
+            currentSelection={mapParams}
             title="Map"
-            toggleParam={ toggleMap }
-            clearParam={ () => clearParam("map") }
+            toggleParam={toggleMap}
+            clearParam={() => clearParam("map")}
           />
-        ) }
-        { gameParams.length > 0 || mapParams.length > 0 || difficultyParams.length > 0 ? (
-          <ClearFiltersButton onClick={ clearAllFilters } />
+        )}
+        {gameParams.length > 0 || mapParams.length > 0 || difficultyParams.length > 0 ? (
+          <ClearFiltersButton onClick={clearAllFilters} />
         ) : null}
       </div>
+      <ScrollBar orientation="horizontal" className="sr-only" />
     </ScrollArea>
   )
 }
