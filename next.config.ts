@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import "./env"
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["10.0.0.*"],
   logging: {
     fetches: {
       hmrRefreshes: true,
@@ -14,7 +15,7 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
   },
   images: {
-    formats:['image/avif','image/webp'],
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
