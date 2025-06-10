@@ -22,7 +22,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
     iconElement.className = 'custom-marker'
 
     const root = createRoot(iconElement)
-    root.render(<MarkerIcon id={ id } marker={ marker } />)
+    root.render(<MarkerIcon id={id} marker={marker} />)
 
     const customIcon = divIcon({
       html: iconElement,
@@ -45,16 +45,16 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 
   return (
     <>
-      { icon ? (
+      {icon ? (
         <LeafletMarker
-          icon={ icon }
-          position={ position }
-          zIndexOffset={ marker.type === "label" ? -1000 : 1000 }
+          icon={icon}
+          position={position}
+          zIndexOffset={marker.type === "label" ? -1000 : 1000}
           eventHandlers={{
             click: handleClick,
           }}
         >
-          { children }
+          {children}
         </LeafletMarker>
       ) : null}
     </>
@@ -68,7 +68,7 @@ function MarkerIcon({ marker, id }: { marker: MapMarker, id: string }) {
     return (
       <div className='flex items-center justify-center whitespace-nowrap text-sm text-white'>
         <span className='rounded shadow-lg bg-black/25 px-2 py-1'>
-          { marker.title }
+          {marker.title}
         </span>
       </div>
     )
@@ -76,21 +76,21 @@ function MarkerIcon({ marker, id }: { marker: MapMarker, id: string }) {
 
   return (
     <div
-      id={ id } 
+      id={id}
       className='flex items-center justify-center'
     >
-     { !error && marker.icon ? <Image
+      {!error && marker.icon ? <Image
         unoptimized
-        src={ marker.icon } 
-        alt={ marker.title } 
-        width={ 128 } 
-        height={ 128 }
-        className={cn('size-8', 
+        src={marker.icon}
+        alt={marker.title}
+        width={128}
+        height={128}
+        className={cn('size-8',
           { 'size-6': marker.type === "perks" && marker.id !== 'der-wunderfizz' },
           { 'size-10': marker.id === 'dark-aether-lantern' },
           { 'size-11': marker.id === "shovel" }
         )}
-        onError={ () => setError(true) }
+        onError={() => setError(true)}
       /> : (
         <div className='size-8 bg-primary rounded-full' />
       )}
