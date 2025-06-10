@@ -9,11 +9,11 @@ export default function ClearFiltersButton({ className, ...props }: IClearFilter
     <Button
       variant="outline"
       size={"sm"}
-      className={cn("gap-2 border-red-600 border-dashed text-red-900 dark:text-red-300", className)}
+      className={cn("gap-2 border-red-700 dark:border-red-500", className)}
       {...props}
     >
-    <Trash2 className="size-4 text-red-800 dark:text-red-500" />
-    Clear
+    <Trash2 className="size-4 text-red-600 dark:text-red-400" />
+    <span>Clear</span>
   </Button>
   )
 }

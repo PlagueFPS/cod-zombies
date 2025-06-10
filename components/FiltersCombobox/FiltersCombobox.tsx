@@ -71,9 +71,13 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
               <div className="space-y-2 py-2">
                 { data.map(item => (
                   <CommandItem key={ item.id } className="flex gap-2 items-center rounded data-[selected=true]:bg-transparent">
-                    <Checkbox id={ item.id } checked={ currentSelection.includes(item.slug) } onCheckedChange={ () => toggleParam(item.slug) } className="cursor-pointer" />
+                    <Checkbox  
+                      checked={ currentSelection.includes(item.slug) } 
+                      onCheckedChange={ () => toggleParam(item.slug) } 
+                      className="cursor-pointer" 
+                    />
                     { title === "Game" ? <FilterLogo slug={ item.slug } className="size-4" /> : null }
-                    <Label htmlFor={ item.id } className="cursor-pointer font-normal w-full">
+                    <Label htmlFor={ item.id } className="cursor-pointer font-normal w-full" onClick={ () => toggleParam(item.slug) }>
                       { title === "Difficulty" ? <DifficultyBadge difficulty={ item.title as Difficulty } /> 
                         : title === "Type" ? <TypeBadge type={ item.title as ZombieType } /> 
                         : item.title 
@@ -83,19 +87,16 @@ const FiltersCombobox = ({ data, currentSelection, title, inputPlaceholder, enab
                 ))}
               </div>
             </CommandGroup>
-            { currentSelection.length > 0 && (
-              <>
-                <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem onSelect={ () => clearParam() } className="flex gap-2 items-center justify-center cursor-pointer">
-                    <Trash className="size-4 text-red-800 dark:text-red-500" />
-                    Clear { title } Filters
-                  </CommandItem>
-                </CommandGroup>
-              </>
-            )}
           </CommandList>
         </Command>
+        { currentSelection.length > 0 && (
+          <div className="sticky bottom-0 flex items-center justify-center w-full border-t py-1">
+            <Button variant={"ghost"} size={"sm"} onClick={ clearParam } className="items-center justify-center">
+              <Trash className="size-4 text-red-800 dark:text-red-400" />
+              <span>Clear { title } Filters</span>
+            </Button>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   )
