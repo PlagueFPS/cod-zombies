@@ -5,7 +5,6 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import { Filter } from "@/types/Filter"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
 
 interface IQuestFiltersClient {
   games: Filter[]
@@ -14,32 +13,20 @@ interface IQuestFiltersClient {
 }
 
 export default function QuestFiltersClient({ games, maps, difficulties }: IQuestFiltersClient) {
-  const { searchParams, mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } = useQuestSearchParams()
+  const { mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } = useQuestSearchParams()
   const pathname = usePathname()
-  const [selectedGames, setSelectedGames] = useState(gameParams)
-  const [selectedMaps, setSelectedMaps] = useState(mapParams)
-  const [selectedDifficulties, setSelectedDifficulties] = useState(difficultyParams)
   const isHomePage = pathname === "/"
 
-  useEffect(() => {
-    setSelectedGames(gameParams)
-    setSelectedMaps(mapParams)
-    setSelectedDifficulties(difficultyParams)
-  }, [searchParams])
-
   const toggleGame = (game: string) => {
-    const newSelectedGames = toggleParam("game", game, selectedGames)
-    setSelectedGames(newSelectedGames)
+    toggleParam("game", game, gameParams)
   }
 
   const toggleMap = (map: string) => {
-    const newSelectedMaps = toggleParam("map", map, selectedMaps)
-    setSelectedMaps(newSelectedMaps)
+    toggleParam("map", map, mapParams)
   }
 
   const toggleDifficulty = (difficulty: string) => {
-    const newSelectedDifficulties = toggleParam("difficulty", difficulty, selectedDifficulties)
-    setSelectedDifficulties(newSelectedDifficulties)
+    toggleParam("difficulty", difficulty, difficultyParams)
   }
 
   return (
@@ -49,14 +36,14 @@ export default function QuestFiltersClient({ games, maps, difficulties }: IQuest
           <>
             <FiltersCombobox 
               data={ games }
-              currentSelection={ selectedGames }
+              currentSelection={ gameParams }
               title="Game"
               toggleParam={ toggleGame }
               clearParam={ () => clearParam("game") }
             />
             <FiltersCombobox 
               data={ difficulties }
-              currentSelection={ selectedDifficulties }
+              currentSelection={ difficultyParams }
               title="Difficulty"
               toggleParam={ toggleDifficulty }
               clearParam={ () => clearParam("difficulty") }
@@ -65,13 +52,13 @@ export default function QuestFiltersClient({ games, maps, difficulties }: IQuest
         ) : (
           <FiltersCombobox 
             data={ maps }
-            currentSelection={ selectedMaps }
+            currentSelection={ mapParams }
             title="Map"
             toggleParam={ toggleMap }
             clearParam={ () => clearParam("map") }
           />
         ) }
-        { selectedGames.length > 0 || selectedMaps.length > 0 || selectedDifficulties.length > 0 ? (
+        { gameParams.length > 0 || mapParams.length > 0 || difficultyParams.length > 0 ? (
           <ClearFiltersButton onClick={ clearAllFilters } />
         ) : null}
       </div>

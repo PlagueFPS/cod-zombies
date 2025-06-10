@@ -1,7 +1,6 @@
 "use client"
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import { Filter } from "@/types/Filter"
-import { useEffect, useState } from "react"
 import FiltersCombobox from "../FiltersCombobox/FiltersCombobox"
 import { ScrollArea } from "../ui/scroll-area"
 import ClearFiltersButton from "../FiltersCombobox/ClearFiltersButton"
@@ -13,30 +12,18 @@ interface BestiaryFiltersClientProps {
 }
 
 export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFiltersClientProps) {
-  const { searchParams, mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } = useQuestSearchParams()
-  const [selectedTypes, setSelectedTypes] = useState(typeParams)
-  const [selectedGames, setSelectedGames] = useState(gameParams)
-  const [selectedMaps, setSelectedMaps] = useState(mapParams)
-
-  useEffect(() => {
-    setSelectedTypes(typeParams)
-    setSelectedGames(gameParams)
-    setSelectedMaps(mapParams)
-  }, [searchParams])
+  const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } = useQuestSearchParams()
 
   const toggleGame = (game: string) => {
-    const newSelectedGames = toggleParam("game", game, selectedGames)
-    setSelectedGames(newSelectedGames)
+    toggleParam("game", game, gameParams)
   }
 
   const toggleMap = (map: string) => {
-    const newSelectedMaps = toggleParam("map", map, selectedMaps)
-    setSelectedMaps(newSelectedMaps)
+    toggleParam("map", map, mapParams)
   }
 
   const toggleType = (type: string) => {
-    const newSelectedTypes = toggleParam("type", type, selectedTypes)
-    setSelectedTypes(newSelectedTypes)
+    toggleParam("type", type, typeParams)
   }
 
   return (
@@ -44,28 +31,28 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
       <div className="flex gap-2 items-center w-full">
         <FiltersCombobox 
           data={ types }
-          currentSelection={ selectedTypes }
+          currentSelection={ typeParams }
           title="Type"
           toggleParam={ toggleType }
           clearParam={ () => clearParam("type") }
         />
         <FiltersCombobox
           data={ games }
-          currentSelection={ selectedGames }
+          currentSelection={ gameParams }
           title="Game"
           toggleParam={ toggleGame }
           clearParam={ () => clearParam("game") }
         />
         <FiltersCombobox 
           data={ maps }
-          currentSelection={ selectedMaps }
+          currentSelection={ mapParams }
           title="Map"
           toggleParam={ toggleMap }
           enableInput
           inputPlaceholder="Search Map"
           clearParam={ () => clearParam("map") }
         />
-        { selectedGames.length > 0 || selectedMaps.length > 0 || selectedTypes.length > 0 ? (
+        { gameParams.length > 0 || mapParams.length > 0 || typeParams.length > 0 ? (
           <ClearFiltersButton onClick={ clearAllFilters } />
         ) : null}
       </div>
