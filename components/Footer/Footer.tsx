@@ -42,7 +42,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex items-center justify-center md:justify-start md:mt-2 w-full text-xs text-muted-foreground">
-        <CustomLink href={"/privacy-policy"} className="underline underline-offset-2 hover:text-foreground dark:hover:text-foreground/80 hover:no-underline">
+        <CustomLink prefetch={ false } href={"/privacy-policy"} className="underline underline-offset-2 hover:text-foreground dark:hover:text-foreground/80 hover:no-underline">
           Privacy Policy
         </CustomLink>
       </div>
