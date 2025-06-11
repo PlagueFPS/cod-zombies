@@ -1,29 +1,17 @@
-import { FlatCompat } from '@eslint/eslintrc'
-import js from '@eslint/js'
-import next from '@next/eslint-plugin-next'
-import reactHooks from 'eslint-plugin-react-hooks'
-import typescript from '@typescript-eslint/eslint-plugin'
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-  recommendedConfig: js.configs.recommended,
-})
+  baseDirectory: __dirname,
+});
 
 const eslintConfig = [
-  {
-    plugins: {
-      '@next/next': next,
-      'react-hooks': reactHooks,
-      '@typescript-eslint': typescript,
-      'react-compiler': (await import('eslint-plugin-react-compiler')).default
-    },
-    rules: {
-      ...next.configs.recommended.rules,
-      ...next.configs['core-web-vitals'].rules,
-      ...reactHooks.configs.recommended.rules,
-      'react-compiler/react-compiler': 'error'
-    }
-  }
-]
+  // ...compat.plugins("eslint-plugin-react-complier"),
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+];
 
-export default eslintConfig
+export default eslintConfig;

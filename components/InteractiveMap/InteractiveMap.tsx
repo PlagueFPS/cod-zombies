@@ -51,7 +51,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
     }
 
     loadImageDimensions()
-  }, [])
+  }, [mapConfig.image])
 
   useEffect(() => {
     let markers = mapConfig.markers

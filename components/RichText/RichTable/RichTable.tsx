@@ -2,12 +2,12 @@ import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 import { formatTableCellData } from '@/utils/contentful-utils'
-import { slugify } from '@/utils/functions'
+import { slugify, TypeGuards } from '@/utils/functions'
 import ItemTooltip from '../RichEmbeds/ItemTooltip'
 
 interface RichTableProps {
   headings: string[]
-  bodyRows: any[]
+  bodyRows: unknown[]
 }
 
 export default function RichTable({ headings, bodyRows }: RichTableProps) {          
@@ -24,12 +24,18 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
         <TableBody>
           { bodyRows.map((row, index) => (
             <TableRow key={ `table-row-${index}` } className={cn("hover:bg-orange-100 dark:hover:bg-muted/50",{ "bg-orange-50 dark:bg-background": index % 2 === 0 })}>
-              { row.map((cell: any, cellIndex: number) => {
+              { TypeGuards.isArray(row) && row.map((cell: unknown, cellIndex: number) => {
+                if (!TypeGuards.isObject(cell)) return null
+                if (!TypeGuards.hasProperty(cell, "content")) return null
+                if (!TypeGuards.isArray(cell.content)) return null
+                if (!TypeGuards.hasProperty(cell.content[0], "content")) return null
+                if (!TypeGuards.isArray(cell.content[0].content)) return null
+                
                 const { values, badgeItems, embeddedItems } = formatTableCellData(cell.content[0].content)
 
                 return (
                   <TableCell key={ `table-cell-${cellIndex}` } className='text-orange-800 dark:text-orange-200'>
-                    { values.map((value, index) => {
+                    { values.map(value => {
                       if (value) return value
                     })}
                     { badgeItems.length > 0 && (

@@ -7,14 +7,10 @@ import GridLoader from "../Loaders/GridLoader"
 export default async function BestiaryGrid() {
   const { isEnabled } = await draftMode()
   const zombies = await getZombies(isEnabled)
-  const clientZombies = zombies.map(z => {
-    const { updatedAt, ...rest } = z
-    return rest
-  })
 
   return (
     <Suspense fallback={<GridLoader />}>
-      <BestiaryGridClient zombies={ clientZombies } draftMode={ isEnabled } />
+      <BestiaryGridClient zombies={ zombies } draftMode={ isEnabled } />
     </Suspense>
   )
 }

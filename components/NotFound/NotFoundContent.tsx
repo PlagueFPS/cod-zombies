@@ -41,7 +41,7 @@ const NotFoundButtons = ({ items }: Omit<INotFoundContent, "param" | "resource">
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center w-fit gap-8">
       { newItems.length > 0 ? newItems.map(item => (
-        <Button variant={"outline"} asChild>
+        <Button key={ `${item.title}-${item.href}` } variant={"outline"} asChild>
           <CustomLink href={ item.href }>
             View { item.title }
           </CustomLink>

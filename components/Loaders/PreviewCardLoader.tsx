@@ -1,5 +1,4 @@
 import React from 'react'
-import ImageLoader from './ImageLoader'
 import { Skeleton } from '../ui/skeleton'
 
 export default function PreviewCardLoader() {

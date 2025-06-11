@@ -6,7 +6,7 @@ import { notFound } from "next/navigation"
 import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
 import TableOfContents from '@/components/TableOfContents/TableOfContents'
 import { CustomLink, HashLinkHandler } from '@/components/CustomLink/CustomLink'
-import { ChevronLeft, ChevronRight, Clock, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import ShareButton from '@/components/ShareButton/ShareButton'
 import { draftMode } from 'next/headers'

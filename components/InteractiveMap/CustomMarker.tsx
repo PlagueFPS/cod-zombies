@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import type { MapMarker } from '@/types/InteractiveMap'
 import Image from 'next/image'
@@ -37,7 +37,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
     return () => {
       setTimeout(() => root.unmount(), 0)
     }
-  }, [marker])
+  }, [marker, id])
 
   const handleClick = () => {
     map.flyTo(position, map.getZoom())

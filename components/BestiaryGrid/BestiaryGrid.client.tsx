@@ -14,7 +14,7 @@ interface IBestiaryGridClient {
 }
 
 export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGridClient) {
-  const { searchParams, gameParams, mapParams, typeParams, page, validatePageParam } = useQuestSearchParams()
+  const { gameParams, mapParams, typeParams, page, validatePageParam } = useQuestSearchParams()
   const [filteredZombies, setFilteredZombies] = useState(zombies)
   const skip = calculateSkip(page, MAP_LIMIT)
   const paginatedZombies = filteredZombies.slice(skip, (MAP_LIMIT * page))
@@ -35,7 +35,7 @@ export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGrid
     }
 
     setFilteredZombies(filtered)
-  }, [searchParams])
+  }, [gameParams, mapParams, typeParams, zombies])
 
   useEffect(() => {
     validatePageParam(filteredZombies.length)

@@ -3,9 +3,8 @@ import Link from "next/link"
 import LinkSVG from "@/SVGs/LinkSVG"
 import { cn } from "@/lib/utils"
 
-interface Heading2Props extends DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> {}
 
-export default function Heading3({ id, className, children }: Heading2Props) {
+export default function Heading3({ id, className, children }: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) {
   return (
     <h3 id={ id } className={cn("text-xl md:text-2xl lg:text-3xl font-bold scroll-m-36 mt-8 mb-4", className)}>
       <Link 

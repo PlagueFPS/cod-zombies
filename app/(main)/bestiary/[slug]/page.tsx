@@ -1,5 +1,5 @@
 import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
-import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "@/components/CustomBadges/CustomBadges"
+import { ChangedBadge, DraftBadge, NewBadge, TypeBadge } from "@/components/CustomBadges/CustomBadges"
 import { CustomLink } from "@/components/CustomLink/CustomLink"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 import ItemTooltip from "@/components/RichText/RichEmbeds/ItemTooltip"

@@ -7,7 +7,12 @@ import { CustomLink } from "@/components/CustomLink/CustomLink"
 import Heading3 from "../RichHeadings/Heading3/Heading3"
 
 interface RichLinkProps {
-  node: any
+  node: {
+    data: {
+      uri: string
+    }
+    content: [{ value: string }]
+  }
 }
 
 export const youtube_url = 'https://youtu.be/'

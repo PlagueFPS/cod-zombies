@@ -2,9 +2,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { Trash2 } from 'lucide-react'
 
-interface IClearFiltersButton extends React.ComponentProps<"button"> {}
-
-export default function ClearFiltersButton({ className, ...props }: IClearFiltersButton) {
+export default function ClearFiltersButton({ className, ...props }: React.ComponentProps<"button">) {
   return (
     <Button
       variant="outline"

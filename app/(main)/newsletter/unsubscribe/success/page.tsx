@@ -15,7 +15,7 @@ export default function UnsubscribeSuccessPage() {
       </div>
       <h1 className="text-2xl font-bold mb-4">Successfully Unsubscribed</h1>
       <p className="mb-6 text-muted-foreground">
-        You have been successfully unsubscribed from our newsletter. We're sorry to see you go!
+        You have been successfully unsubscribed from our newsletter. We&apos;re sorry to see you go!
       </p>
       <Button variant={"outline"} asChild>
         <CustomLink href="/">Return to Homepage</CustomLink>

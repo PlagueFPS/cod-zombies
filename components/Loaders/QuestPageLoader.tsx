@@ -1,8 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import BackToTopButton from "@/components/BackToTopButton/BackToTopButton";
 import BreadcrumbLoader from "@/components/Loaders/BreadcrumbLoader";
 import { Button } from "@/components/ui/button";
-import { Clock, Menu, Share2 } from "lucide-react";
+import { Clock, Share2 } from "lucide-react";
 import ImageLoader from "@/components/Loaders/ImageLoader";
 import QuestBreadcrumbsLoader from "./QuestBreadcrumbsLoader";
 import TableOfContentsLoader from "./TableOfContentsLoader";

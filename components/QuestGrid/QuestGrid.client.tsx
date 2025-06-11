@@ -17,7 +17,7 @@ interface IQuestGridClient {
 }
 
 export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
-  const { searchParams, gameParams, mapParams, difficultyParams, page, validatePageParam } = useQuestSearchParams()
+  const { gameParams, mapParams, difficultyParams, page, validatePageParam } = useQuestSearchParams()
   const [filteredQuests, setFilteredQuests] = useState<FilteredQuests>(quests)
   const skip = calculateSkip(page, MAP_LIMIT);
   const paginatedQuests = filteredQuests.slice(skip, (MAP_LIMIT * page))
@@ -38,7 +38,7 @@ export default function QuestGridClient({ quests, draftMode }: IQuestGridClient)
   }
 
   setFilteredQuests(filtered)
- }, [searchParams])
+ }, [difficultyParams, gameParams, mapParams, quests])
 
  useEffect(() => {
   validatePageParam(filteredQuests.length)

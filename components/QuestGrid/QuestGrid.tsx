@@ -8,14 +8,10 @@ import GridLoader from "@/components/Loaders/GridLoader"
 export async function MainQuestGrid() {
   const { isEnabled } = await draftMode()
   const maps = await getMaps(isEnabled)
-  const clientMaps = maps.map(m => {
-    const { updatedAt, ...rest } = m
-    return rest
-  })
 
   return (
     <Suspense fallback={<GridLoader />}>
-      <QuestGridClient quests={ clientMaps } draftMode={ isEnabled } />
+      <QuestGridClient quests={ maps } draftMode={ isEnabled } />
     </Suspense>
   )
 }
@@ -23,14 +19,10 @@ export async function MainQuestGrid() {
 export async function SideQuestGrid() {
   const { isEnabled } = await draftMode()
   const quests = await getQuests(isEnabled)
-  const clientQuests = quests.map(q => {
-    const { updatedAt, ...rest } = q
-    return rest
-  })
 
   return (
     <Suspense fallback={<GridLoader />}>
-      <QuestGridClient quests={ clientQuests } draftMode={ isEnabled } />
+      <QuestGridClient quests={ quests } draftMode={ isEnabled } />
     </Suspense>
   )
 }
