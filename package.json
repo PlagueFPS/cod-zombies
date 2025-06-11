@@ -71,7 +71,6 @@
     "@types/react-leaflet": "^3.0.0",
     "eslint": "9.28.0",
     "eslint-config-next": "15.3.3",
-    "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "postcss": "^8",
     "react-email": "3.0.6",
     "tailwind-merge": "3.2.0",
