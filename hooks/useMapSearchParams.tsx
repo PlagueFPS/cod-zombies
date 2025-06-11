@@ -5,7 +5,8 @@ import { useCallback } from "react"
 export const useMapSearchParams = () => {
   const searchParams = useSearchParams()
   const filterParams = searchParams.getAll("filtered")
-  
+  const searchTerm = searchParams.get("search") || ""
+
   const updateURLParams = useCallback((params: URLSearchParams) => {
     window.history.pushState(null, '', `?${params.toString()}`)
   }, [])
@@ -22,10 +23,10 @@ export const useMapSearchParams = () => {
     const newValues = valuesToToggle.some(v => currentValues.includes(v))
       ? currentValues.filter(v => !value.includes(v))
       : [...currentValues, ...valuesToToggle]
-    
+
     newValues.forEach(v => params.append(paramName, v))
     updateURLParams(params)
-    
+
     return newValues
   }, [createParams, updateURLParams])
 
@@ -38,6 +39,8 @@ export const useMapSearchParams = () => {
   return {
     searchParams,
     filterParams,
+    searchTerm,
+    createParams,
     updateURLParams,
     toggleParam,
     clearParam,
