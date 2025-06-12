@@ -476,6 +476,27 @@ const terminus: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers["audio-log"],
+      locations: [
+        { x: 0.512, y: 0.555, title: "Working Theory" },
+        { x: 0.524, y: 0.488, title: "Ship Manifest Destiny" },
+        { x: 0.559, y: 0.520, title: "Doctor's Orders" },
+        { x: 0.481, y: 0.466, title: "The Hard Way" },
+        { x: 0.429, y: 0.538, title: "Food For Thought" },
+        { x: 0.871, y: 0.732, title: "Onboarding" },
+        { x: 0.852, y: 0.905, title: "I Hope You're Watching" },
+        { x: 0.825, y: 0.804, title: "Red Tape" },
+        { x: 0.899, y: 0.863, title: "Noble Purpose" },
+        { x: 0.535, y: 0.619, title: "Listen..." },
+        { x: 0.485, y: 0.483, title: "Pleasing Results" },
+        { x: 0.342, y: 0.311, title: "Surveyor Says" },
+        { x: 0.230, y: 0.558, title: "Numbers and Faces" },
+        { x: 0.547, y: 0.429, title: "Tougher Than She Looks", description: "You must first acquire the A.M.P. Munition for the Beamsmasher before this audio log appears." },
+        { x: 0.858, y: 0.780, title: "Code Words", description: "Only appears after giving the Hard Drive to Peck to locate Nathan." },
+        { x: 0.231, y: 0.595, title: "Damning Evidence", description: "Only appears after defeating Nathan." }
+      ]
+    },
+    {
       ...perks["deadshot-daiquiri"],
       locations: [{ x: 0.468, y: 0.641 }, { x: 0.838, y: 0.937 }]
     },
