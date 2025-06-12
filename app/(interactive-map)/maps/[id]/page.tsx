@@ -69,7 +69,8 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
     general: [],
     equipment: [],
     upgrades: [],
-    transportation: []
+    transportation: [],
+    intel: []
   }
 
   uniqueMarkerTypes.forEach(type => {

@@ -1,11 +1,18 @@
 import type { Location, MapMarker, MarkerCategory, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
 
-interface Marker extends Omit<MapMarker, "locations"> {}
+type Marker = Omit<MapMarker, "locations">
 type SharedMarkerType = Exclude<MarkerType, "perks" | "weapon-wall-buy" | "label" | "objective"> | "der-wunderfizz"
 
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+  "audio-log": {
+    id: "audio-log",
+    type: "audio-log",
+    title: "Audio Log",
+    description: "Audio recording revealing information on the map and storyline.",
+    icon: "/icons/intel/audio-log.webp"
+  },
   "shovel": {
     id: "shovel",
     type: "shovel",
@@ -402,6 +409,9 @@ export const markerTypeToCategory: Record<MarkerType, MarkerCategory> = {
   "fast-travel": "transportation",
   "portal": "transportation",
   "vehicle-spawn": "transportation",
+
+  // Intel
+  "audio-log": "intel",
 
   "objective": "general"
 }
