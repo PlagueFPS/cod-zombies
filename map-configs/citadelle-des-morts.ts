@@ -311,6 +311,21 @@ const citadelleDesMorts: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers["audio-log"],
+      locations: [
+        { x: 0.576, y: 0.497, title: "Good Afternoon Mr. Richtofen" },
+        { x: 0.378, y: 0.412, title: "You Would've Done the Same" },
+        { x: 0.431, y: 0.666, title: "Historically Speaking" },
+        { x: 0.667, y: 0.341, title: "Get It Done" },
+        { x: 0.467, y: 0.345, title: "Do Your Damn Job" },
+        { x: 0.873, y: 0.265, title: "Fair Enough" },
+        { x: 0.695, y: 0.598, title: "Survival of the Fittest" },
+        { x: 0.323, y: 0.620, title: "The Foundling" },
+        { x: 0.417, y: 0.245, title: "New Horizons" },
+        { x: 0.533, y: 0.202, title: "The Four Bastards" },
+      ]
+    },
+    {
       ...perks["deadshot-daiquiri"],
       locations: [{ x: 0.378, y: 0.583 }]
     },
