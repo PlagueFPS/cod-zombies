@@ -503,6 +503,23 @@ const shatteredVeil: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers["audio-log"],
+      locations: [
+        { x: 0.206, y: 0.585, title: "Shadow Benefactor" },
+        { x: 0.389, y: 0.635, title: "A Way In" },
+        { x: 0.284, y: 0.451, title: "Obstacles" },
+        { x: 0.443, y: 0.565, title: "Cracking Eggheads" },
+        { x: 0.501, y: 0.346, title: "Within Reach" },
+        { x: 0.397, y: 0.217, title: "Thesis Statement" },
+        { x: 0.389, y: 0.404, title: "Bodily Harm" },
+        { x: 0.515, y: 0.255, title: "Specter" },
+        { x: 0.573, y: 0.283, title: "Shem's Folly" },
+        { x: 0.812, y: 0.471, title: "Prime Time" },
+        { x: 0.624, y: 0.512, title: "Particulars" },
+        { x: 0.663, y: 0.591, title: "Serpent Mound" },
+      ]
+    },
+    {
       ...weapons.gs45,
       locations: [{ x: 0.230, y: 0.597 }]
     },
