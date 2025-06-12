@@ -24,13 +24,7 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
         <TableBody>
           { bodyRows.map((row, index) => (
             <TableRow key={ `table-row-${index}` } className={cn("hover:bg-orange-100 dark:hover:bg-muted/50",{ "bg-orange-50 dark:bg-background": index % 2 === 0 })}>
-              { TypeGuards.isArray(row) && row.map((cell: unknown, cellIndex: number) => {
-                if (!TypeGuards.isObject(cell)) return null
-                if (!TypeGuards.hasProperty(cell, "content")) return null
-                if (!TypeGuards.isArray(cell.content)) return null
-                if (!TypeGuards.hasProperty(cell.content[0], "content")) return null
-                if (!TypeGuards.isArray(cell.content[0].content)) return null
-                
+              { TypeGuards.isArray(row) && row.map((cell: any, cellIndex: number) => {
                 const { values, badgeItems, embeddedItems } = formatTableCellData(cell.content[0].content)
 
                 return (

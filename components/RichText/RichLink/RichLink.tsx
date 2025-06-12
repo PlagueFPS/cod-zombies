@@ -11,7 +11,7 @@ interface RichLinkProps {
     data: {
       uri: string
     }
-    content: [{ value: string }]
+    content: { value: string }[]
   }
 }
 
