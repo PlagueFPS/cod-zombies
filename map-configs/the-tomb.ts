@@ -294,6 +294,22 @@ const theTomb: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers["audio-log"],
+      locations: [
+        { x: 0.306, y: 0.543, title: "Look At All The Bodies" },
+        { x: 0.120, y: 0.444, title: "The Infamous Mr. Rhodes" },
+        { x: 0.198, y: 0.530, title: "Retirement Plan" },
+        { x: 0.251, y: 0.425, title: "Grave Robbers" },
+        { x: 0.456, y: 0.342, title: "Spring Time" },
+        { x: 0.549, y: 0.406, title: "Against A Wall" },
+        { x: 0.648, y: 0.486, title: "The Knaves" },
+        { x: 0.786, y: 0.463, title: "Deep Trouble" },
+        { x: 0.668, y: 0.792, title: "Tortured Artist" },
+        { x: 0.302, y: 0.569, title: "A Fabrication" },
+        { x: 0.525, y: 0.615, title: "Making A Monacle" },
+      ]
+    },
+    {
       ...perks["phd-flopper"],
       locations: [{ x: 0.148, y: 0.601 }]
     },
