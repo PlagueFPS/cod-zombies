@@ -329,6 +329,40 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
             </SidebarGroup>
           </Collapsible>
         )}
+
+        { filteredGroups.intel.length > 0 && (
+          <Collapsible defaultOpen className="group/collapsible">
+            <SidebarGroup>
+              <SidebarGroupLabel asChild>
+                <CollapsibleTrigger className="hover:bg-accent/50 cursor-pointer mb-2">
+                  Intel
+                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {filteredGroups.intel.map(type => (
+                      <SidebarMenuItem key={type} className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <MarkerFilterIcon category="intel" type={type} />
+                          <span className="text-base font-medium">{capatilize(type)}</span>
+                        </div>
+                        <Switch
+                          id={`${type}-filter`}
+                          defaultChecked={!filterParams.includes(type)}
+                          onCheckedChange={() => handleCheckedChange(type)}
+                          checked={!filterParams.includes(type)}
+                          className="data-[state=checked]:bg-purple-500 ml-auto cursor-pointer"
+                        />
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        )}
       </SidebarContent>
       <SidebarFooter className="mb-16 bg-background border-t">
         <SidebarMenu className="py-4">

@@ -330,6 +330,20 @@ const libertyFalls: MapConfig = {
        }]
     },
     {
+      ...sharedMarkers["audio-log"],
+      locations: [
+        { x: 0.644, y: 0.630, title: "The Scientist and The Moonshiner" },
+        { x: 0.653, y: 0.359, title: "Quantum Mechnical Failure" },
+        { x: 0.485, y: 0.511, title: "Conspiracy Theorist" },
+        { x: 0.456, y: 0.736, title: "Steel Mountain Rescue" },
+        { x: 0.223, y: 0.642, title: "Bear Witness" },
+        { x: 0.138, y: 0.464, title: "The House Josiah Built" },
+        { x: 0.541, y: 0.494, title: "Money Talks", description: "You must gain access to the vault for this audio log to appear." },
+        { x: 0.614, y: 0.405, title: "Limited Run", description: "You must complete the Aetherella side quest for this audio log to appear." },
+        { x: 0.368, y: 0.460, title: "One Lit Match", description: "You must activate the S.D.G. for this audio log to appear." }
+      ]
+    },
+    {
       ...perks.juggernog,
       locations: [{ x: 0.579, y: 0.420 }]
     },
