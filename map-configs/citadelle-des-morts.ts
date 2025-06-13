@@ -54,7 +54,7 @@ const citadelleDesMorts: MapConfig = {
       title: "Village Ascent",
       description: "",
       icon: null,
-      locations: [{ x: 0.658, y: 0.625 }]
+      locations: [{ x: 0.650, y: 0.635 }]
     },
     {
       id: "upper-village",
@@ -323,6 +323,15 @@ const citadelleDesMorts: MapConfig = {
         { x: 0.323, y: 0.620, title: "The Foundling" },
         { x: 0.417, y: 0.245, title: "New Horizons" },
         { x: 0.533, y: 0.202, title: "The Four Bastards" },
+      ]
+    },
+    {
+      ...sharedMarkers.document,
+      locations: [
+        { x: 0.406, y: 0.579, title: "Family Book", description: "Shoot the stack of papers on the rafters in the barn." },
+        { x: 0.506, y: 0.658, title: "Some Context", description: "Use the Lion Cannon Fast Travel and spam interact when sliding on the Tavern roof to pick up the document." },
+        { x: 0.505, y: 0.134, title: "Statuesque", description: "Interact with piles of books in the Alchemical Lab until the document drops out of one of them." },
+        { x: 0.653, y: 0.622, title: "Intake Form", description: "Obtained from completing the Wishing Well side quest." },
       ]
     },
     {
