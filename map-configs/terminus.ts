@@ -497,6 +497,20 @@ const terminus: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers.document,
+      locations: [
+        { x: 0.488, y: 0.492, title: "Uniquely Qualified", description: "Shoot the stack of papers on the railing of the guard tower to drop the document." },
+        { x: 0.548, y: 0.605, title: "Innovative Technology", description: "Shoot the stack of papers on top of the server closest to the door to drop the document." },
+        { x: 0.468, y: 0.609, title: "On The Horizon", description: "Activate the Void Cannon Trap and the document will spawn in front of the trap once it is done." },
+        { x: 0.448, y: 0.558, title: "Last Minute Transfer", description: "Throw a grenade in the trash can next to the door to drop the document." },
+        { x: 0.420, y: 0.762, title: "Subject File #511", description: "Obtained from one of the dig spots on Crab Island." },
+        { x: 0.520, y: 0.762, title: "Subject File #272", description: "Obtained from one of the dig spots on Crab Island." },
+        { x: 0.343, y: 0.279, title: "Subject File #704", description: "Obtained from one of the dig spots on Temple Island." },
+        { x: 0.773, y: 0.498, title: "Subject File #398", description: "Obtained from one of the dig spots on Castle Rock Island." },
+        { x: 0.926, y: 0.923, title: "What Have You Done?", description: "After defeating Nathan, kill any school of fish under the Sea Tower to drop the document." },
+      ]
+    },
+    {
       ...perks["deadshot-daiquiri"],
       locations: [{ x: 0.468, y: 0.641 }, { x: 0.838, y: 0.937 }]
     },
