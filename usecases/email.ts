@@ -8,17 +8,12 @@ import { generateToken, verifyToken } from "@/utils/functions"
 import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
 import { err, ok, Result } from 'neverthrow'
 import { 
-  BroadcastCreateError, 
   BroadcastDataError, 
-  BroadcastSendError, 
-  ContactCreateError, 
   ContactExistsError, 
-  ContactGetError, 
-  ContactNotFoundError, 
-  ContactRemoveError, 
-  EmailSendError, 
+  ContactNotFoundError,
   ExpiredUnsubscribeLinkError, 
-  InvalidUnsubscribeLinkError,  
+  InvalidUnsubscribeLinkError,
+  UpstreamProviderError,  
 } from "@/types/Error"
 
 interface EmailProps {
@@ -37,16 +32,16 @@ interface EmailSuccess {
   message: string
 }
 
-type SubscribeEmailError = ContactGetError | ContactExistsError | ContactCreateError
-type RequestUnsubscribeError = ContactGetError | ContactNotFoundError | EmailSendError
-type ProccessUnsubscribeError = InvalidUnsubscribeLinkError | ExpiredUnsubscribeLinkError | ContactRemoveError
-type SendBroadcastError = BroadcastCreateError | BroadcastDataError | BroadcastSendError
+type SubscribeEmailError = UpstreamProviderError | ContactExistsError
+type RequestUnsubscribeError = UpstreamProviderError | ContactNotFoundError
+type ProccessUnsubscribeError = InvalidUnsubscribeLinkError | ExpiredUnsubscribeLinkError | UpstreamProviderError
+type SendBroadcastError = UpstreamProviderError | BroadcastDataError
 
 
 export const subscribeEmailUseCase = async (email: string): Promise<Result<EmailSuccess, SubscribeEmailError>> => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
-  if (error && error.name !== "not_found") return err(new ContactGetError(
-    "Your subscribe request failed due to a technical issue on our end. Please try again.", 
+  if (error && error.name !== "not_found") return err(new UpstreamProviderError(
+    "Your subscribe request failed due to a technical issue with our email provider. Please try again.", 
     { cause: error }
   ))
   if (data) return err(new ContactExistsError('Your subscribe request failed because that email has already subscribed!'))
@@ -56,19 +51,19 @@ export const subscribeEmailUseCase = async (email: string): Promise<Result<Email
     audienceId: env.RESEND_AUDIENCE_ID,
   })
 
-  if (createError) return err(new ContactCreateError(
-    "Your subscribe request failed due to a technical issue on our end. Please try again.", 
+  if (createError) return err(new UpstreamProviderError(
+    "Your subscribe request failed due to a technical issue with our email provider. Please try again.", 
     { cause: createError }
   ))
   return ok({
-    message: 'You have EmailSuccessfully subscribed! Thank you for subscribing.'
+    message: 'You have successfully subscribed! Thank you for subscribing.'
   })
 }
 
 export const requestUnsubscribeUseCase = async (email: string): Promise<Result<EmailSuccess, RequestUnsubscribeError>> => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
-  if (error && error.name !== "not_found") return err(new ContactGetError(
-    "We were unable to send unsubscribe link due to a technical issue on our end. Please try again.", 
+  if (error && error.name !== "not_found") return err(new UpstreamProviderError(
+    "We were unable to send unsubscribe link due to a technical issue with our email provider. Please try again.", 
     { cause: error }
   ))
   if (!data) return err(new ContactNotFoundError("That email is not currently subscribed."))
@@ -82,8 +77,8 @@ export const requestUnsubscribeUseCase = async (email: string): Promise<Result<E
     react: UnsubscribeEmail({ unsubscribeUrl })
   })
 
-  if (sendError) return err(new EmailSendError(
-    "We were unable to send unsubscribe link due to a technical issue on our end. Please try again.", 
+  if (sendError) return err(new UpstreamProviderError(
+    "We were unable to send unsubscribe link due to a technical issue with our email provider. Please try again.", 
     { cause: sendError }
   ))
   return ok({ message: "Confirmation email sent! Check your inbox."})
@@ -105,8 +100,8 @@ export const processUnsubscribe = async (token: string): Promise<Result<true, Pr
     email: result.value,
   })
 
-  if (error) return err(new ContactRemoveError(
-    "We were unable to process your unsubscribe request due to a technical issue on our end. Please try again or request a new unsubcribe link.", 
+  if (error) return err(new UpstreamProviderError(
+    "We were unable to process your unsubscribe request due to a technical issue with our email provider. Please try again or request a new unsubcribe link.", 
     { cause: error }
   ))
   return ok(true)
@@ -123,7 +118,7 @@ export const sendInternalEmailUseCase = async ({ subject, message }: InternalEma
   if (error) console.error(error)
 }
 
-export const sendContactEmailUseCase = async ({ name, email, message }: EmailProps): Promise<Result<EmailSuccess, EmailSendError>> => {
+export const sendContactEmailUseCase = async ({ name, email, message }: EmailProps): Promise<Result<EmailSuccess, UpstreamProviderError>> => {
   const { error } = await resend.emails.send({
     from: `${name} <support@codzombiesguides.com>`,
     replyTo: email,
@@ -132,8 +127,8 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
     text: message,
   })
   
-  if (error) return err(new EmailSendError(
-    "We were unable to send your contact email due to a technical issue on our end. Please try again.", 
+  if (error) return err(new UpstreamProviderError(
+    "We were unable to send your contact email due to a technical issue with our email provider. Please try again.", 
     { cause: error }
   ))
   return ok({ message: 'Thank you for contacting us! We will get back to you as soon as possible.' })
@@ -201,11 +196,11 @@ export const sendLegalUpdateBroadcast = async () => {
 
 const sendBroadcast = async (title: string, payload: CreateBroadcastOptions): Promise<Result<EmailSuccess, SendBroadcastError>> => {
   const { data, error } = await resend.broadcasts.create(payload)
-  if (error) return err(new BroadcastCreateError(error.message, { cause: error }))
+  if (error) return err(new UpstreamProviderError(`Failed to create broadcast with email provider: ${error.message}`, { cause: error }))
   if (!data) return err(new BroadcastDataError(`No data was returned for the ${title} broadcast creation.`))
 
   const { error: sendError } = await resend.broadcasts.send(data.id)
-  if (sendError) return err(new BroadcastSendError(sendError.message, { cause: sendError }))
+  if (sendError) return err(new UpstreamProviderError(`Failed to send broadcast with email provider: ${sendError.message}`, { cause: sendError }))
 
   return ok({ message: `${title} Broadcast sent successfully!` })
 }

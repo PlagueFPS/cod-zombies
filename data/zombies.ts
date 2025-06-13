@@ -18,6 +18,7 @@ import { getManagementEntries } from "@/contentful/contentfulManagement"
 import { tryCatch } from "@/utils/functions"
 import { NEW_ENTRY_KV } from "@/lib/redis"
 import { EntryStatus } from "@/types/EntryEnforcement"
+import { UpstreamProviderError } from "@/types/Error"
 
 export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
   const zombiesPromise = INTERNAL_getZombies(draftMode)
@@ -163,15 +164,11 @@ const getZombieIds = cache(unstable_cache(async () => {
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
 
-  if (zombies.error) {
-    console.error(`Error getting management zombies`, zombies.error)
-  }
-
   if (newEntries.error) {
-    console.error(`Error getting new zombies`, newEntries.error)
+    console.error(new UpstreamProviderError(`Redis failed getting new zombies.`, { cause: newEntries.error}))
   }
 
-  zombies.data?.items.forEach(zombie => {
+  zombies.forEach(zombie => {
     if (!zombie.sys.publishedVersion) {
       draftIds.add(zombie.sys.id)
     } else if (!!zombie.sys.publishedVersion && zombie.sys.version >= zombie.sys.publishedVersion + 2) {
@@ -217,7 +214,7 @@ const resolveZombieData = cache((zombie: Entry<TypeZombiesSkeleton, undefined, s
 })
 
 const INTERNAL_getZombies = cache(async (draftMode: boolean) => {
-  const { data, error } = await getEntries<TypeZombiesSkeleton>({
+  return await getEntries<TypeZombiesSkeleton>({
     content_type: "zombies",
     order: ["-fields.releaseDate"],
     select: [
@@ -226,25 +223,11 @@ const INTERNAL_getZombies = cache(async (draftMode: boolean) => {
       "fields",
     ],
   }, draftMode)
-
-  if (error) {
-    console.error(error)
-    return []
-  }
-
-  return data.items
 })
 
 const INTERNAL_getReferencedMaps = cache(async (draftMode: boolean) => {
-  const { data, error } = await getEntries<TypeReferencedMapsSkeleton>({
+  return await getEntries<TypeReferencedMapsSkeleton>({
     content_type: "referencedMaps",
     order: ["-fields.releaseDate"],
   }, draftMode)
-
-  if (error) {
-    console.error(error)
-    return []
-  }
-
-  return data.items
 })

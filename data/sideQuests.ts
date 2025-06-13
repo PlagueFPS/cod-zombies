@@ -15,6 +15,7 @@ import { Entry } from 'contentful'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { tryCatch } from '@/utils/functions'
 import { NEW_ENTRY_KV } from '@/lib/redis'
+import { UpstreamProviderError } from '@/types/Error'
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
@@ -145,16 +146,12 @@ const getQuestIds = cache(unstable_cache(async () => {
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
-
-  if (quests.error || !quests.data) {
-    console.error(`Error getting management side quests`, quests.error)
-  }
   
   if (newEntries.error || !newEntries.data) {
-    console.error(`Error getting new side quests`, newEntries.error)
+    console.error(new UpstreamProviderError(`Redis failed getting new side quests`, { cause: newEntries.error }))
   }
 
-  quests.data?.items.forEach(quest => {
+  quests.forEach(quest => {
     if (!quest.sys.publishedVersion) {
       draftIds.add(quest.sys.id)
     } else if (!!quest.sys.publishedVersion && quest.sys.version >= quest.sys.publishedVersion + 2) {
@@ -192,7 +189,7 @@ const resolveQuestData = cache(async (quest: Entry<TypeSideQuestsSkeleton, undef
 })
 
 const INTERNAL_getSideQuestData = cache(async (draftMode: boolean) => {
-  const { data: quests, error} = await getEntries<TypeSideQuestsSkeleton>({
+  const quests = await getEntries<TypeSideQuestsSkeleton>({
     content_type: 'sideQuests',
     select: [
       "sys.id",
@@ -202,12 +199,7 @@ const INTERNAL_getSideQuestData = cache(async (draftMode: boolean) => {
     order: ["-sys.createdAt"]
   }, draftMode)
 
-  if (error) {
-    console.error(error)
-    return []
-  }
-
-  const sortedQuests = quests.items.sort((a, b) => {
+  const sortedQuests = quests.sort((a, b) => {
     const aMap = resolveEntry(a.fields.map)?.fields.releaseDate
     const bMap = resolveEntry(b.fields.map)?.fields.releaseDate
     const aDate = new Date(aMap!).getTime()

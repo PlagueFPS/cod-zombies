@@ -10,6 +10,7 @@ import { Entry } from 'contentful'
 import { tryCatch } from '@/utils/functions'
 import { NEW_ENTRY_KV } from '@/lib/redis'
 import { EntryStatus } from '@/types/EntryEnforcement'
+import { UpstreamProviderError } from '@/types/Error'
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   const mapsPromise = INTERNAL_getMapData(draftMode)
@@ -136,16 +137,12 @@ const getMapIds = cache(unstable_cache(async () => {
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
-
-  if (maps.error) {
-    console.error(`Error getting management maps`, maps.error)
-  }
   
   if (newEntries.error) {
-    console.error(`Error getting new maps`, newEntries.error)
+    console.error(new UpstreamProviderError(`Redis failed getting new maps`, { cause: newEntries.error }))
   }
 
-  maps.data?.items.forEach(map => {
+  maps.forEach(map => {
     if (!map.sys.publishedVersion) {
       draftIds.add(map.sys.id)
     } else if (!!map.sys.publishedVersion && map.sys.version >= map.sys.publishedVersion + 2) {
@@ -181,7 +178,7 @@ const resolveMapData = cache((map: Entry<TypeFeaturedMapsSkeleton, undefined, st
 })
 
 const INTERNAL_getMapData = cache(async (draftMode: boolean) => {
-  const { data, error } = await getEntries<TypeFeaturedMapsSkeleton>({
+  return await getEntries<TypeFeaturedMapsSkeleton>({
     content_type: "featuredMaps",
     order: ["-fields.releaseDate"],
     select: [
@@ -190,11 +187,4 @@ const INTERNAL_getMapData = cache(async (draftMode: boolean) => {
       "fields",
     ],
   }, draftMode)
-
-  if (error) {
-    console.error(error)
-    return []
-  }
-
-  return data.items
 })

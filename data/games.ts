@@ -7,6 +7,7 @@ import { TypeGameCategorySkeleton } from '@/contentful/Types/contentful-types'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { tryCatch } from '@/utils/functions'
 import { NEW_ENTRY_KV } from '@/lib/redis'
+import { UpstreamProviderError } from '@/types/Error'
 
 export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   const gameIdsPromise = getGameIds()
@@ -103,16 +104,12 @@ const getGameIds = cache(unstable_cache(async () => {
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
-
-  if (games.error || !games.data) {
-    console.error(`Error getting management games`, games.error)
-  }
   
-  if (newEntries.error || !newEntries.data) {
-    console.error(`Error getting new games`, newEntries.error)
+  if (newEntries.error) {
+    console.error(new UpstreamProviderError(`Redis failed getting new games`, { cause: newEntries.error }))
   }
 
-  games.data?.items.forEach(game => {
+  games.forEach(game => {
     if (!game.sys.publishedVersion) {
       draftIds.add(game.sys.id)
     } else if (!!game.sys.publishedVersion && game.sys.version >= game.sys.publishedVersion + 2) {
@@ -131,7 +128,7 @@ const getGameIds = cache(unstable_cache(async () => {
 }))
 
 const INTERNAL_getGameData = cache(async (draftMode: boolean) => {
-  const { data, error } = await getEntries<TypeGameCategorySkeleton>({
+  return await getEntries<TypeGameCategorySkeleton>({
     content_type: 'gameCategory',
     order: ['-fields.releaseDate'],
     select: [
@@ -140,11 +137,4 @@ const INTERNAL_getGameData = cache(async (draftMode: boolean) => {
       "fields"
     ]
   }, draftMode)
-
-  if (error) {
-    console.error(error)
-    return []
-  }
-
-  return data.items
 })

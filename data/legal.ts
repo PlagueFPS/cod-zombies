@@ -45,15 +45,8 @@ export const getLegalDocById = cache(unstable_cache(async (draftMode: boolean, i
 }))
 
 const INTERNAL_getLegalDocuments = cache(async (draftMode: boolean) => {
-  const { data, error } = await getEntries<TypeLegalSkeleton>({
+  return await getEntries<TypeLegalSkeleton>({
     content_type: "legal",
     select: ["sys.id", "sys.updatedAt", "fields"],
   }, draftMode)
-
-  if (error) {
-    console.error(error)
-    return []
-  }
-
-  return data.items
 })

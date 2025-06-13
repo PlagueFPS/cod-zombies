@@ -3,6 +3,7 @@ import { createClient, type EntriesQueries, type EntrySkeletonType } from 'conte
 import { env } from "@/env"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import { tryCatch } from "@/utils/functions"
+import { UpstreamProviderError } from "@/types/Error"
 
 export const prodClient = createClient({
   space: env.CONTENTFUL_SPACE_ID,
@@ -18,10 +19,11 @@ export const previewClient = createClient({
 
 export const getEntries = async <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>, draftMode?: boolean,) => {
   const client = (draftMode || IN_DEVELOPMENT) ? previewClient : prodClient
-  return await tryCatch(client.getEntries<T>(searchParams))
-}
+  const { data, error } = await tryCatch(client.getEntries<T>(searchParams))
+  if (error) {
+    console.error(new UpstreamProviderError(`Contentful query failed with these query params: ${searchParams}`, { cause: error }))
+    return []
+  }
 
-export const getEntry = async <T extends EntrySkeletonType>(entryId: string, draftMode?: boolean) => {
-  const client = (draftMode || IN_DEVELOPMENT) ? previewClient : prodClient
-  return await tryCatch(client.getEntry<T>(entryId))
+  return data.items
 }
