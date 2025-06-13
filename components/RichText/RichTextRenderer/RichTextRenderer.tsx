@@ -70,7 +70,7 @@ export default function RichTextRenderer({ body, slug, overrideStyles, className
             return <TerminusCode />
         }
       },
-      [BLOCKS.QUOTE]: (node: any, children: any) => {
+      [BLOCKS.QUOTE]: (_: any, children: any) => {
         return (
           <RichBlockquote>
             { children }
@@ -87,14 +87,14 @@ export default function RichTextRenderer({ body, slug, overrideStyles, className
       [BLOCKS.HR]: () => {
         return <hr className="my-2" />
       },
-      [BLOCKS.UL_LIST]: (node: any, children: any) => {
+      [BLOCKS.UL_LIST]: (_: any, children: any) => {
         return (
           <UnorderedList>
             { children }
           </UnorderedList>
         )
       },
-      [BLOCKS.OL_LIST]: (node: any, children: any) => {
+      [BLOCKS.OL_LIST]: (_: any, children: any) => {
         return (
           <OrderedList>
             { children }

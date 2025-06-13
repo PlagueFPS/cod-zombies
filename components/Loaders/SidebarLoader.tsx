@@ -15,7 +15,7 @@ export default function SidebarLoader() {
         <PanelLeftClose className="size-4 ml-auto" />
       </div>
       <div className="flex flex-col items-center h-full gap-4 p-4">
-        { Array.from({ length: 12 }, (i, index) => (
+        { Array.from({ length: 12 }, (_, index) => (
           <Skeleton key={ index } className="w-full h-10" />
         ))}
       </div>
