@@ -19,7 +19,16 @@ export const subscribeToNewsletter = ratelimitAction
 
     const result = await subscribeEmailUseCase(email)
     if (result.isErr()) {
-      console.error(result.error)
+      switch(result.error._tag) {
+        default: 
+          console.error(result.error)
+          break
+        case 'CONTACT_EXISTS_ERROR':
+          // Do not log this error on the server-side
+          // since it does not indicate a problem with our service
+          break
+      }
+
       return {
         success: false,
         message: result.error.message 
