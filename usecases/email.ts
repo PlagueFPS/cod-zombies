@@ -140,33 +140,63 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
 }
 
 export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
-  return await sendBroadcast(props.title, {
+  const result = await sendBroadcast(props.title, {
     audienceId: env.RESEND_AUDIENCE_ID,
     from: "COD Zombies Guides <updates@codzombiesguides.com>",
     subject: `New ${props.type} Quest Guide Release!`,
     react: QuestReleaseEmail(props),
     name: `${props.title} Release`
   })
+
+  if (result.isErr()) {
+    console.error(result.error)
+    return { success: false, message: result.error.message }
+  }
+
+  return {
+    success: true,
+    message: result.value.message
+  }
 }
 
 export const sendZombieReleaseBroadcast = async (props: IZombieRelease) => {
-  return await sendBroadcast(props.title, {
+  const result = await sendBroadcast(props.title, {
     audienceId: env.RESEND_AUDIENCE_ID,
     from: "COD Zombies Guides <updates@codzombiesguides.com>",
     subject: `New ${props.type} Zombie Release!`,
     react: ZombieReleaseEmail(props),
     name: `${props.title} Release`
   })
+
+  if (result.isErr()) {
+    console.error(result.error)
+    return { success: false, message: result.error.message }
+  }
+
+  return {
+    success: true,
+    message: result.value.message
+  }
 }
 
 export const sendLegalUpdateBroadcast = async () => {
-  return await sendBroadcast("Privacy Policy", {
+  const result = await sendBroadcast("Privacy Policy", {
     audienceId: env.RESEND_AUDIENCE_ID,
     from: "COD Zombies Guides <legal@codzombiesguides.com>",
     subject: `Privacy Policy Update Notice`,
     react: PrivacyPolicyUpdateEmail(),
     name: "Privacy Policy Update"
   })
+
+  if (result.isErr()) {
+    console.error(result.error)
+    return { success: false, message: result.error.message }
+  }
+
+  return {
+    success: true,
+    message: result.value.message
+  }
 }
 
 const sendBroadcast = async (title: string, payload: CreateBroadcastOptions): Promise<Result<EmailSuccess, SendBroadcastError>> => {
