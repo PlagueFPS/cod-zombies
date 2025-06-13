@@ -520,6 +520,14 @@ const shatteredVeil: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers.document,
+      locations: [
+        { x: 0.593, y: 0.279, title: "Regretfully Yours" },
+        { x: 0.153, y: 0.635, title: "My Warheads", description: "Throw a Combat Axe at the wood left of the zombie body to reveal this document." },
+        { x: 0.550, y: 0.277, title: "A Monstrous Proposal", description: "Obtained from completing the Sleepwalking Free Perk side quest." },
+      ]
+    },
+    {
       ...weapons.gs45,
       locations: [{ x: 0.230, y: 0.597 }]
     },
