@@ -310,6 +310,16 @@ const theTomb: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers.document,
+      locations: [
+        { x: 0.861, y: 0.452, title: "Potts And Pains Pt 1", description: "Shoot the vase on the outside of the map to drop the document." },
+        { x: 0.574, y: 0.516, title: "Potts And Pains Pt 2", description: "Shoot the vase above the portal to drop the document." },
+        { x: 0.521, y: 0.333, title: "Potts And Pains Pt 3", description: "Shoot the vase above Stamin-Up to drop the document." },
+        { x: 0.566, y: 0.622, title: "Potts And Pains Pt 4", description: "Obtained from completing the Zombie Soliders side quest." },
+        { x: 0.356, y: 0.354, title: "Potts And Pains Pt 5", description: "Obtained from completing the Free Ray Gun side quest." },
+      ]
+    },
+    {
       ...perks["phd-flopper"],
       locations: [{ x: 0.148, y: 0.601 }]
     },
