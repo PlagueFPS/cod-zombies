@@ -65,3 +65,10 @@ export class UpstreamProviderError extends Error {
     super(message, options)
   }
 }
+
+export class EntryNotFoundError extends Error {
+  readonly _tag = "ENTRY_NOT_FOUND_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}

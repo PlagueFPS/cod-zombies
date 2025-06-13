@@ -13,9 +13,7 @@ import { cache } from 'react'
 import { unstable_cache } from 'next/cache'
 import { Entry } from 'contentful'
 import { getManagementEntries } from '@/contentful/contentfulManagement'
-import { tryCatch } from '@/utils/functions'
-import { NEW_ENTRY_KV } from '@/lib/redis'
-import { UpstreamProviderError } from '@/types/Error'
+import { getNewEntries } from '@/lib/redis'
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   const questsPromise = INTERNAL_getSideQuestData(draftMode)
@@ -98,58 +96,13 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
 }))
 
-export const storeNewQuestId = async (id: string, createdAt: string) => {
-  return await tryCatch(NEW_ENTRY_KV.set(id, createdAt, "Published", "sideQuest"))
-}
-
-export const getQuestStatus = async (questId: string) => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(questId))
-
-  if (error) {
-    console.error(error)
-    return { status: null }
-  }
-
-  if (!data) {
-    console.warn("No data found for quest ID: ", questId)
-    return { status: null }
-  }
-
-  return { status: data.status }
-}
-
-export const updateQuestStatus = async (questId: string, updatedAt: string) => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(questId))
-  if (error) {
-    console.error(error)
-    return { error }
-  }
-  
-  if (!data) {
-    console.warn("No data found for quest ID: ", questId)
-    return { error: null }
-  }
-  
-  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(questId, updatedAt, "Published", "sideQuest"))
-  if (updateError) {
-    console.error(updateError)
-    return { error: updateError }
-  }
-
-  return { error: null }
-}
-
 const getQuestIds = cache(unstable_cache(async () => {
   const questsPromise = getManagementEntries("sideQuests")
-  const newEntriesPromise = tryCatch(NEW_ENTRY_KV.getAll())
+  const newEntriesPromise = getNewEntries()
   const [quests, newEntries] = await Promise.all([questsPromise, newEntriesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
-  
-  if (newEntries.error || !newEntries.data) {
-    console.error(new UpstreamProviderError(`Redis failed getting new side quests`, { cause: newEntries.error }))
-  }
 
   quests.forEach(quest => {
     if (!quest.sys.publishedVersion) {
@@ -159,7 +112,7 @@ const getQuestIds = cache(unstable_cache(async () => {
     }
   })
 
-  newEntries.data?.forEach(entry => {
+  newEntries.forEach(entry => {
     if (entry.type !== "sideQuest") return
     newIds.add(entry.entryId)
   })

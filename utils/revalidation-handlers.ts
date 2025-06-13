@@ -1,16 +1,17 @@
 import "server-only"
-import type { EntryStatus } from "@/types/EntryEnforcement"
 import type { AllowedSlugs } from "./validationSchemas"
 import { revalidateTag } from "next/cache"
 import { isFirstTimePublish } from "./contentful-utils"
-import { getMapById, getMapStatus, storeNewMapId, updateMapStatus } from "@/data/maps"
 import { CACHE_KEYS } from "./constants"
 import { sendLegalUpdateBroadcast, sendQuestReleaseBroadcast, sendZombieReleaseBroadcast } from "@/usecases/email"
 import { env } from "@/env"
-import { getGameById, getGameStatus, storeNewGameId, updateGameStatus } from "@/data/games"
-import { getQuestById, getQuestStatus, storeNewQuestId, updateQuestStatus } from "@/data/sideQuests"
-import { getZombieById, getZombieStatus, storeNewZombieId, updateZombieStatus } from "@/data/zombies"
+import { getMapById } from "@/data/maps"
+import { getGameById } from "@/data/games"
+import { getQuestById } from "@/data/sideQuests"
+import { getZombieById } from "@/data/zombies"
 import { getLegalDocById } from "@/data/legal"
+import { EntryNotFoundError, UpstreamProviderError } from "@/types/Error"
+import { getEntryStatus, storeNewEntryId, updateEntryStatus } from "@/lib/redis"
 
 interface RevalidateData {
   entryId: string
@@ -28,33 +29,27 @@ interface BroadcastEntry {
   }
 }
 
+interface BroadcastResponse {
+  success: boolean
+  message: string
+}
+
 type RevalidateHandler = (data: RevalidateData) => Promise<Response>
 
 const RevalidateResponse = {
   notFound(type: string, entryId: string) {
     return Response.json({ revalidated: false, message: `${type} not found ID: ${entryId}` }, { status: 404 })
   },
-  success(message: string, broadcast?: { success: boolean, message: string }) {
+  success(message: string, broadcast?: BroadcastResponse): Response {
     return Response.json({ revalidated: true, message, broadcast }, { status: 201 })
   },
-  error(message: string, status: number = 400) {
-    return Response.json({ revalidated: false, message }, { status })
+  successWithStatusError(message: string, statusError: UpstreamProviderError | EntryNotFoundError, broadcast?: BroadcastResponse) {
+    return Response.json({ revalidated: true, message, statusError, broadcast }, { status: 201 })
+  },
+  error<T extends Error>(error: T, status: number = 400) {
+    return Response.json({ revalidated: false, error }, { status })
   }
 } as const
-
-const handleFirstTimePublish = async (
-  entryId: string, 
-  createdAt: string, 
-  cacheKey: string,
-  storeEntry: (id: string, createdAt: string, status: EntryStatus) => Promise<{ error: Error | null }>,
-  status: EntryStatus
-) => {
-    const { error } = await storeEntry(entryId, createdAt, status)
-    if (error) return RevalidateResponse.error(error.message, 500)
-
-    revalidateTag(cacheKey)
-    return RevalidateResponse.success(`${entryId} stored as new`)
-}
 
 const sendQuestBroadcast = async <T extends BroadcastEntry>(type: "Main" | "Side", entry: T, url: string) => {
   return await sendQuestReleaseBroadcast({
@@ -72,27 +67,28 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
 
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = map.isComingSoon ? "Coming Soon" : "Published"
-      const result = await handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.FEATURED_MAPS.ALL, storeNewMapId, status)
-
-      if (result.status !== 201) return result
-
+      const result = await storeNewEntryId(entryId, createdAt, status, "mainQuest")
+      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
+      
+      revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
       if (!map.isComingSoon) {
         const broadcast = await sendQuestBroadcast("Main", map, url)
         return RevalidateResponse.success(`${entryId} stored as new.`, broadcast)
       }
 
-      return result
+      return RevalidateResponse.success(`${entryId} stored as new`)
     }
 
-    const { status } = await getMapStatus(entryId)
     revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
+    const status = await getEntryStatus(entryId)
+    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Map data revalidated.`, status.error)
 
-    if (status === "Coming Soon" && !map.isComingSoon) {
-      const updatePromise = updateMapStatus(entryId, updatedAt)
+    if (status.value === "Coming Soon" && !map.isComingSoon) {
+      const updatePromise = updateEntryStatus(entryId, updatedAt, "mainQuest")
       const broadcastPromise = sendQuestBroadcast('Main', map, url)
-      const [broadcast, { error }] = await Promise.all([broadcastPromise, updatePromise])
+      const [broadcast, updateResult] = await Promise.all([broadcastPromise, updatePromise])
 
-      if (error) return RevalidateResponse.success(`Map data revalidated; Status Error: ${error}`, broadcast)
+      if (updateResult.isErr()) return RevalidateResponse.successWithStatusError(`Map data revalidated`, updateResult.error, broadcast)
       return RevalidateResponse.success(`Map data revalidated.`, broadcast)
     }
 
@@ -104,15 +100,20 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
 
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = game.isComingSoon ? "Coming Soon" : "Published"
-      return await handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.GAME_CATEGORIES.ALL, storeNewGameId, status)
+      const result = await storeNewEntryId(entryId, createdAt, status, "game")
+      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
+      
+      revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+      return RevalidateResponse.success(`${entryId} stored as new`)
     }
 
-    const { status } = await getGameStatus(entryId)
     revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
+    const status = await getEntryStatus(entryId)
+    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Game data revalidated.`, status.error)
 
-    if (status === "Coming Soon" && !game.isComingSoon) {
-      const { error } = await updateGameStatus(entryId, updatedAt)
-      if (error) return RevalidateResponse.success(`Game data revalidated; Status Error: ${error}`)
+    if (status.value === "Coming Soon" && !game.isComingSoon) {
+      const result = await updateEntryStatus(entryId, updatedAt, "game")
+      if (result.isErr()) return RevalidateResponse.successWithStatusError(`Game data revalidated`, result.error)
     }
 
     return RevalidateResponse.success(`Game data revalidated.`)
@@ -124,31 +125,33 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
 
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = quest.isComingSoon ? "Coming Soon" : "Published"
-      const result = await handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.SIDE_QUESTS.ALL, storeNewQuestId, status)
-
-      if (result.status !== 201) return result
+      const result = await storeNewEntryId(entryId, createdAt, status, "sideQuest")
+      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
+      
+      revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
 
       if (!quest.isComingSoon) {
         const broadcast = await sendQuestBroadcast("Side", quest, url)
         return RevalidateResponse.success(`${entryId} stored as new.`, broadcast)
       }
 
-      return result
+      return RevalidateResponse.success(`${entryId} stored as new`)
     }
 
-    const { status } = await getQuestStatus(entryId)
     revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
+    const status = await getEntryStatus(entryId)
+    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Side quest data revalidated.`, status.error)
 
-    if (status === "Coming Soon" && !quest.isComingSoon) {
-      const updatePromise = updateQuestStatus(entryId, updatedAt)
+    if (status.value === "Coming Soon" && !quest.isComingSoon) {
+      const updatePromise = updateEntryStatus(entryId, updatedAt, "sideQuest")
       const broadcastPromise = sendQuestBroadcast("Side", quest, url)
-      const [broadcast, { error }] = await Promise.all([broadcastPromise, updatePromise])
+      const [broadcast, result] = await Promise.all([broadcastPromise, updatePromise])
 
-      if (error) return RevalidateResponse.success(`Side Quest data revalidated; Status Error: ${error}`, broadcast)
+      if (result.isErr()) return RevalidateResponse.successWithStatusError(`Side quest data revalidated`, result.error, broadcast)
       return RevalidateResponse.success(`Side Quest data revalidated.`, broadcast)
     }
 
-    return RevalidateResponse.success(`Side Quest data revalidated.`)
+    return RevalidateResponse.success(`Side quest data revalidated.`)
   },
   zombies: async ({ entryId, createdAt, updatedAt }) => {
     const zombie = await getZombieById(true, entryId)
@@ -164,27 +167,29 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
 
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = zombie.isComingSoon ? "Coming Soon" : "Published"
-      const result = await handleFirstTimePublish(entryId, createdAt, CACHE_KEYS.ZOMBIES.ALL, storeNewZombieId, status)
-
-      if (result.status !== 201) return result
+      const result = await storeNewEntryId(entryId, createdAt, status, "zombie")
+      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
+      
+      revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
 
       if (!zombie.isComingSoon) {
         const broadcast = await sendZombieReleaseBroadcast(broadcastData)
         return RevalidateResponse.success(`${entryId} stored as new.`, broadcast)
       }
 
-      return result
+      return RevalidateResponse.success(`${entryId} stored as new`)
     }
 
-    const { status } = await getZombieStatus(entryId)
     revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
+    const status = await getEntryStatus(entryId)
+    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Zombie data revalidated.`, status.error)
 
-    if (status === "Coming Soon" && !zombie.isComingSoon) {
-      const updatePromise = updateZombieStatus(entryId, updatedAt)
+    if (status.value === "Coming Soon" && !zombie.isComingSoon) {
+      const updatePromise = updateEntryStatus(entryId, updatedAt, "zombie")
       const broadcastPromise = sendZombieReleaseBroadcast(broadcastData)
-      const [broadcast, { error }] = await Promise.all([broadcastPromise, updatePromise])
+      const [broadcast, result] = await Promise.all([broadcastPromise, updatePromise])
 
-      if (error) return RevalidateResponse.success(`Zombie data revalidated; Status Error: ${error}`, broadcast)
+      if (result.isErr()) return RevalidateResponse.successWithStatusError(`Zombie data revalidated`, result.error, broadcast)
       return RevalidateResponse.success(`Zombie data revalidated.`, broadcast)
     }
 

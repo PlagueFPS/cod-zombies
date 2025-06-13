@@ -15,10 +15,7 @@ import {
 import { CACHE_KEYS } from "@/utils/constants"
 import { unstable_cache } from "next/cache"
 import { getManagementEntries } from "@/contentful/contentfulManagement"
-import { tryCatch } from "@/utils/functions"
-import { NEW_ENTRY_KV } from "@/lib/redis"
-import { EntryStatus } from "@/types/EntryEnforcement"
-import { UpstreamProviderError } from "@/types/Error"
+import { getNewEntries } from "@/lib/redis"
 
 export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
   const zombiesPromise = INTERNAL_getZombies(draftMode)
@@ -114,59 +111,13 @@ export const getReferencedMaps = cache(unstable_cache(async (draftMode: boolean)
   tags: [CACHE_KEYS.ZOMBIES.ALL]
 }))
 
-export const storeNewZombieId = async (zombieId: string, createdAt: string, status: EntryStatus) => {
-  return await tryCatch(NEW_ENTRY_KV.set(zombieId, createdAt, status, "zombie"))
-}
-
-export const getZombieStatus = async (zombieId: string) => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(zombieId))
-
-  if (error) {
-    console.error(error)
-    return { status: null }
-  }
-
-  if (!data) {
-    console.warn(`No data found for zombie ID: ${zombieId}`)
-    return { status: null }
-  }
-
-  return { status: data.status }
-}
-
-export const updateZombieStatus = async (zombieId: string, updatedAt: string) => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(zombieId))
-
-  if (error) {
-    console.error(error)
-    return { status: null }
-  }
-
-  if (!data) {
-    console.warn(`No data found for zombie ID: ${zombieId}`)
-    return { status: null }
-  }
-
-  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(zombieId, updatedAt, "Published", "zombie"))
-  if (updateError) {
-    console.error(updateError)
-    return { error: updateError }
-  }
-
-  return { error: null }
-}
-
 const getZombieIds = cache(unstable_cache(async () => {
   const zombiesPromise = getManagementEntries("zombies")
-  const newEntriesPromise = tryCatch(NEW_ENTRY_KV.getAll())
+  const newEntriesPromise = getNewEntries()
   const [zombies, newEntries] = await Promise.all([zombiesPromise, newEntriesPromise])
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
-
-  if (newEntries.error) {
-    console.error(new UpstreamProviderError(`Redis failed getting new zombies.`, { cause: newEntries.error}))
-  }
 
   zombies.forEach(zombie => {
     if (!zombie.sys.publishedVersion) {
@@ -176,7 +127,7 @@ const getZombieIds = cache(unstable_cache(async () => {
     }
   })
 
-  newEntries.data?.forEach(entry => {
+  newEntries.forEach(entry => {
     if (entry.type !== "zombie") return
     newIds.add(entry.entryId)
   })
