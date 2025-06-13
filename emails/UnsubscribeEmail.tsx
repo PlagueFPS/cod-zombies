@@ -48,7 +48,7 @@ export default function UnsubscribeEmail({ unsubscribeUrl }: IUnsubscribeEmail) 
                 We received a request to unsubscribe your email address from our newsletter. To confirm this request, please click the button below.
               </Text>
               <Text className="text-[16px] leading-[24px] text-[#555555] mb-[24px]">
-                If you did not request to unsubscribe, you can safely ignore this email and you'll continue to receive our newsletters.
+                If you did not request to unsubscribe, you can safely ignore this email and you&apos;ll continue to receive our newsletters.
               </Text>
               <Section className="text-center my-[32px]">
                 <Button
@@ -58,6 +58,13 @@ export default function UnsubscribeEmail({ unsubscribeUrl }: IUnsubscribeEmail) 
                   Confirm Unsubscribe
                 </Button>
               </Section>
+              <Text className="text-[14px] text-[#8898aa] italic mb-[24px]">
+                If the button above doesn&apos;t work, you can copy and paste the following link into your browser:
+                <br />
+                <Link href={ unsubscribeUrl } className="underline break-all">
+                  { unsubscribeUrl }
+                </Link>
+              </Text>
               <Text className="text-[14px] text-[#8898aa] italic mb-[24px]">
                 This link will expire in 24 hours for security reasons.
               </Text>
