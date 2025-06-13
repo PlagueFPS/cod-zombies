@@ -1,11 +1,24 @@
 import "server-only"
 import { env } from "@/env"
-import { CreateBroadcastOptions, Resend } from "resend"
+import { type CreateBroadcastOptions, Resend } from "resend"
 import QuestReleaseEmail, { IQuestRelease } from "@/emails/QuestReleaseEmail"
 import ZombieReleaseEmail, { IZombieRelease } from "@/emails/ZombieReleaseEmail"
 import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
 import { generateToken, verifyToken } from "@/utils/functions"
 import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
+import { err, ok, Result } from 'neverthrow'
+import { 
+  BroadcastCreateError, 
+  BroadcastDataError, 
+  BroadcastSendError, 
+  ContactCreateError, 
+  ContactExistsError, 
+  ContactGetError, 
+  ContactNotFoundError, 
+  ContactRemoveError, 
+  EmailSendError, 
+  TokenVerificationError 
+} from "@/types/Error"
 
 interface EmailProps {
   name: string
@@ -19,56 +32,45 @@ interface InternalEmailProps extends Pick<EmailProps, 'message'> {
 
 const resend = new Resend(env.RESEND_API_KEY)
 
-export const subscribeEmailUseCase = async (email: string) => {
-  const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
+interface EmailSuccess {
+  message: string
+}
 
-  if (error && error.name !== "not_found") {
-    console.error(error.message)
-    return {
-      success: false,
-      message: "Something Went Wrong! Please Try Again.",
-    }
-  }
-  
-  if (data) return {
-    success: false,
-    message: 'That email has already subscribed!'
-  }
+type SubscribeEmailError = ContactGetError | ContactExistsError | ContactCreateError
+type RequestUnsubscribeError = ContactGetError | ContactNotFoundError | EmailSendError
+type ProccessUnsubscribeError = TokenVerificationError | ContactRemoveError
+type SendBroadcastError = BroadcastCreateError | BroadcastDataError | BroadcastSendError
+
+
+export const subscribeEmailUseCase = async (email: string): Promise<Result<EmailSuccess, SubscribeEmailError>> => {
+  const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
+  if (error && error.name !== "not_found") return err(new ContactGetError(
+    "Your subscribe request failed due to a technical issue on our end. Please try again.", 
+    { cause: error }
+  ))
+  if (data) return err(new ContactExistsError('Your subscribe request failed because that email has already subscribed!'))
   
   const { error: createError } = await resend.contacts.create({
     email: email,
     audienceId: env.RESEND_AUDIENCE_ID,
   })
 
-  if (createError) {
-    console.error(createError.message)
-    return {
-      success: false,
-      message: 'Failed to Subscribe! Please Try Again.'
-    }
-  }
-
-  return {
-    success: true,
-    message: 'Subscribtion successful! Thank you for subscribing.'
-  }
+  if (createError) return err(new ContactCreateError(
+    "Your subscribe request failed due to a technical issue on our end. Please try again.", 
+    { cause: createError }
+  ))
+  return ok({
+    message: 'You have EmailSuccessfully subscribed! Thank you for subscribing.'
+  })
 }
 
-export const requestUnsubscribeUseCase = async (email: string) => {
+export const requestUnsubscribeUseCase = async (email: string): Promise<Result<EmailSuccess, RequestUnsubscribeError>> => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
-
-  if (error && error.name !== "not_found") {
-    console.error(error.message)
-    return {
-      success: false,
-      message: "Something Went Wrong! Please Try Again.",
-    }
-  }
-
-  if (!data) return {
-    success: false,
-    message: "That email is not currently subscribed."
-  }
+  if (error && error.name !== "not_found") return err(new ContactGetError(
+    "We were unable to send unsubscribe link due to a technical issue on our end. Please try again.", 
+    { cause: error }
+  ))
+  if (!data) return err(new ContactNotFoundError("That email is not currently subscribed."))
 
   const token = generateToken(email)
   const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/unsubscribe?token=${token}`
@@ -79,38 +81,27 @@ export const requestUnsubscribeUseCase = async (email: string) => {
     react: UnsubscribeEmail({ unsubscribeUrl })
   })
 
-  if (sendError) {
-    console.error(sendError)
-    return {
-      success: false,
-      message: "Failed to send confirmation email. Please Try Again."
-    }
-  }
-
-  return { success: true, message: "Confirmation email sent! Check your inbox."}
+  if (sendError) return err(new EmailSendError(
+    "We were unable to send unsubscribe link due to a technical issue on our end. Please try again.", 
+    { cause: sendError }
+  ))
+  return ok({ message: "Confirmation email sent! Check your inbox."})
 }
 
-export const processUnsubscribe = async (token: string) => {
+export const processUnsubscribe = async (token: string): Promise<Result<EmailSuccess, ProccessUnsubscribeError>> => {
   const { valid, value } = verifyToken(token)
-  if (!valid || !value) return {
-    success: false,
-    message: "Invalid or expired unsubscribe link. Please request a new one."
-  }
+  if (!valid || !value) return err(new TokenVerificationError("Invalid or expired unsubscribe link. Please request a new one."))
 
   const { error } = await resend.contacts.remove({
     audienceId: env.RESEND_AUDIENCE_ID,
     email: value,
   })
 
-  if (error) return {
-    success: false,
-    message: "Failed to process your request. Please try again."
-  }
-
-  return {
-    success: true,
-    message: "You have been successfully unsubscribed."
-  }
+  if (error) return err(new ContactRemoveError(
+    "We were unable to process your unsubscribe request due to a technical issue on our end. Please try again or request a new unsubcribe link.", 
+    { cause: error }
+  ))
+  return ok({ message: "You have been EmailSuccessfully unsubscribed." })
 }
 
 export const sendInternalEmailUseCase = async ({ subject, message }: InternalEmailProps) => {
@@ -124,7 +115,7 @@ export const sendInternalEmailUseCase = async ({ subject, message }: InternalEma
   if (error) console.error(error)
 }
 
-export const sendContactEmailUseCase = async ({ name, email, message }: EmailProps) => {
+export const sendContactEmailUseCase = async ({ name, email, message }: EmailProps): Promise<Result<EmailSuccess, EmailSendError>> => {
   const { error } = await resend.emails.send({
     from: `${name} <support@codzombiesguides.com>`,
     replyTo: email,
@@ -133,18 +124,11 @@ export const sendContactEmailUseCase = async ({ name, email, message }: EmailPro
     text: message,
   })
   
-  if (error) {  
-    console.error(error)
-    return {
-      success: false,
-      message: 'Something went wrong! Failed to send email'
-    }
-  }
-  
-  return {
-    success: true,
-    message: 'Thank you for contacting us! We will get back to you as soon as possible.'
-  }
+  if (error) return err(new EmailSendError(
+    "We were unable to send your contact email due to a technical issue on our end. Please try again.", 
+    { cause: error }
+  ))
+  return ok({ message: 'Thank you for contacting us! We will get back to you as soon as possible.' })
 }
 
 export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
@@ -177,28 +161,13 @@ export const sendLegalUpdateBroadcast = async () => {
   })
 }
 
-const sendBroadcast = async (title: string, payload: CreateBroadcastOptions) => {
+const sendBroadcast = async (title: string, payload: CreateBroadcastOptions): Promise<Result<EmailSuccess, SendBroadcastError>> => {
   const { data, error } = await resend.broadcasts.create(payload)
-
-  if (error || !data) {
-    console.error(error)
-    return {
-      success: false,
-      message: error?.message || "Failed to create broadcast. Check server logs."
-    }
-  }
+  if (error) return err(new BroadcastCreateError(error.message, { cause: error }))
+  if (!data) return err(new BroadcastDataError(`No data was returned for the ${title} broadcast creation.`))
 
   const { error: sendError } = await resend.broadcasts.send(data.id)
-  if (sendError) {
-    console.error(sendError)
-    return {
-      success: false,
-      message: sendError.message
-    }
-  }
+  if (sendError) return err(new BroadcastSendError(sendError.message, { cause: sendError }))
 
-  return {
-    success: true,
-    message: `${title} Broadcast sent successfully!`
-  }
+  return ok({ message: `${title} Broadcast sent successfully!` })
 }

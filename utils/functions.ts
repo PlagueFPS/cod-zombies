@@ -46,7 +46,7 @@ export const authorizedRequest = (secret: string, validSecret: string) => {
   const encoder = new TextEncoder()
   const secretBuffer = encoder.encode(secret)
   const validSecretBuffer = encoder.encode(validSecret)
-  const { data, error } = tryCatchSync(() => timingSafeEqual(secretBuffer, validSecretBuffer))
+  const { data, error } = tryCatchSync(timingSafeEqual(secretBuffer, validSecretBuffer))
 
   if (error) {
     console.error(error)
@@ -141,7 +141,7 @@ export const TypeGuards = {
    * @param value - The value to check.
    * @returns True if the value is a function, false otherwise.
    */
-  isFunction(value: unknown): value is Function {
+  isFunction(value: unknown): value is () => void {
     return typeof value === 'function'
   },
 

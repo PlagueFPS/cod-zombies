@@ -17,7 +17,16 @@ export const subscribeToNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    return await subscribeEmailUseCase(email)
+    const result = await subscribeEmailUseCase(email)
+    if (result.isErr()) {
+      console.error(result.error)
+      return {
+        success: false,
+        message: result.error.message 
+      }
+    }
+    
+    return { success: true, message: result.value.message }
   })
 
 export const requestUnsubscribe = ratelimitAction
@@ -30,21 +39,48 @@ export const requestUnsubscribe = ratelimitAction
       remaining: ctx.remaining
     }
 
-    return await requestUnsubscribeUseCase(email)
+    const result = await requestUnsubscribeUseCase(email)
+    if (result.isErr()) {
+      console.error(result.error)
+      return {
+        success: false,
+        message: result.error.message 
+      }
+    }
+    
+    return { success: true, message: result.value.message }
   })
 
 export const submitFeedbackForm = createAction
   .metadata({ actionName: "submitFeedbackForm" })
   .schema(FeedbackFormSchema)
   .action(async ({ parsedInput }) => {
-    return await submitFeedbackUseCase(parsedInput)
+    const result = await submitFeedbackUseCase(parsedInput)
+    if (result.isErr()) {
+      console.error(result.error)
+      return {
+        success: false,
+        message: result.error.message 
+      }
+    }
+    
+    return { success: true, message: result.value.message }
   })
 
 export const submitContactForm = createAction
   .metadata({ actionName: "submitContactForm" })
   .schema(ContactFormSchema)
   .action(async ({ parsedInput }) => {
-    return await sendContactEmailUseCase(parsedInput)
+    const result = await sendContactEmailUseCase(parsedInput)
+    if (result.isErr()) {
+      console.error(result.error)
+      return {
+        success: false,
+        message: result.error.message 
+      }
+    }
+    
+    return { success: true, message: result.value.message }
   })
 
 export const toggleDraftMode = developmentAction

@@ -38,8 +38,10 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
     actionProps: {
       onSuccess: ({ data }) => {
         customOnSuccess(data?.success, data?.message)
-        resetFormAndAction()
-        setOpen(false)
+        if (data?.success) { // only reset and close on successful response from server
+          resetFormAndAction()
+          setOpen(false)
+        }
       },
       onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
     }
