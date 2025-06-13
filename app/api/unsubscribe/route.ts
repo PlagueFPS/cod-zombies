@@ -9,8 +9,16 @@ export async function GET(req: NextRequest) {
   }
 
   const result = await processUnsubscribe(token)
-  if (!result.success) {
-    return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(result.message)}`, req.url))
+  if (result.isErr()) {
+    switch(result.error._tag) {
+      case "EXPIRED_UNSUBSCRIBE_LINK_ERROR":
+        console.log(`[${result.error._tag}]`, result.error)
+        break
+      default:
+        console.error(result.error)
+        break
+    }
+    return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(result.error.message)}`, req.url))
   }
 
   return NextResponse.redirect(new URL(`/newsletter/unsubscribe/success`, req.url))

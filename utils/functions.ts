@@ -1,5 +1,7 @@
 import { env } from "@/env"
+import { TokenExpirationError, TokenVerificationError } from "@/types/Error"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
+import { err, ok, Result as NeverThrowResult } from "neverthrow"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens with spaces.
@@ -218,27 +220,19 @@ export const generateToken = (value: string) => {
    * @param token - the secure token to verify.
    * @returns True or false for token validity, and the decoded value if valid.
    */
-export const verifyToken = (token: string) => {
-  try {
-    const decoded = Buffer.from(token, "base64url").toString()
-    const [value, salt, expiresAtStr, originalHash] = decoded.split(":")
-  
-    const expiresAt = parseInt(expiresAtStr, 10)
-    if (Date.now() > expiresAt) return {
-      valid: false
-    }
-  
-    const payload = `${value}:${salt}:${expiresAt}`
-    const hash = createHash("sha256").update(payload).digest('hex')
-  
-    if (hash !== originalHash) return {
-      valid: false
-    }
-  
-    return { valid: true, value }
-  } catch {
-    return { valid: false }
-  }
+export const verifyToken = (token: string): NeverThrowResult<string, TokenVerificationError | TokenExpirationError> => {
+  const { data: decoded, error } = tryCatchSync(Buffer.from(token, "base64url").toString())
+  if (error) return err(new TokenVerificationError("Invalid Token", { cause: error }))
+
+  const [value, salt, expiresAtStr, originalHash] = decoded.split(":")
+  const expiresAt = parseInt(expiresAtStr, 10)
+  if (Date.now() > expiresAt) return err(new TokenExpirationError("Expired Token"))
+
+  const payload = `${value}:${salt}:${expiresAt}`
+  const hash = createHash("sha256").update(payload).digest('hex')
+  if (hash !== originalHash) return err(new TokenVerificationError("Invalid Token", { cause: new Error("Hash mismatch") }))
+
+  return ok(value)
 }
 /**
  * Generates a hash for the provided identifier.

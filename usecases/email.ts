@@ -17,7 +17,8 @@ import {
   ContactNotFoundError, 
   ContactRemoveError, 
   EmailSendError, 
-  TokenVerificationError 
+  ExpiredUnsubscribeLinkError, 
+  InvalidUnsubscribeLinkError,  
 } from "@/types/Error"
 
 interface EmailProps {
@@ -38,7 +39,7 @@ interface EmailSuccess {
 
 type SubscribeEmailError = ContactGetError | ContactExistsError | ContactCreateError
 type RequestUnsubscribeError = ContactGetError | ContactNotFoundError | EmailSendError
-type ProccessUnsubscribeError = TokenVerificationError | ContactRemoveError
+type ProccessUnsubscribeError = InvalidUnsubscribeLinkError | ExpiredUnsubscribeLinkError | ContactRemoveError
 type SendBroadcastError = BroadcastCreateError | BroadcastDataError | BroadcastSendError
 
 
@@ -88,20 +89,27 @@ export const requestUnsubscribeUseCase = async (email: string): Promise<Result<E
   return ok({ message: "Confirmation email sent! Check your inbox."})
 }
 
-export const processUnsubscribe = async (token: string): Promise<Result<EmailSuccess, ProccessUnsubscribeError>> => {
-  const { valid, value } = verifyToken(token)
-  if (!valid || !value) return err(new TokenVerificationError("Invalid or expired unsubscribe link. Please request a new one."))
+export const processUnsubscribe = async (token: string): Promise<Result<true, ProccessUnsubscribeError>> => {
+  const result = verifyToken(token)
+  if (result.isErr()) {
+    switch(result.error._tag) {
+      case "TOKEN_EXPIRATION_ERROR":
+        return err(new ExpiredUnsubscribeLinkError("The unsubscribe link used has expired. Please request a new one."))
+      case "TOKEN_VERIFICATION_ERROR":
+        return err(new InvalidUnsubscribeLinkError("The unsubscribe link used is invalid. Please request a new one.", { cause: result.error.cause }))
+    }
+  }
 
   const { error } = await resend.contacts.remove({
     audienceId: env.RESEND_AUDIENCE_ID,
-    email: value,
+    email: result.value,
   })
 
   if (error) return err(new ContactRemoveError(
     "We were unable to process your unsubscribe request due to a technical issue on our end. Please try again or request a new unsubcribe link.", 
     { cause: error }
   ))
-  return ok({ message: "You have been EmailSuccessfully unsubscribed." })
+  return ok(true)
 }
 
 export const sendInternalEmailUseCase = async ({ subject, message }: InternalEmailProps) => {

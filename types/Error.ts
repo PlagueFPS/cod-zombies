@@ -52,6 +52,27 @@ export class TokenVerificationError extends Error {
   }
 }
 
+export class TokenExpirationError extends Error {
+  readonly _tag = "TOKEN_EXPIRATION_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
+export class InvalidUnsubscribeLinkError extends Error {
+  readonly _tag = "INVALID_UNSUBSCRIBE_LINK_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
+export class ExpiredUnsubscribeLinkError extends Error {
+  readonly _tag = "EXPIRED_UNSUBSCRIBE_LINK_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
 export class ContactRemoveError extends Error {
   readonly _tag = "CONTACT_REMOVE_ERROR"
   constructor(message: string, options?: ErrorOptions) {
