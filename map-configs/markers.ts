@@ -6,6 +6,13 @@ type SharedMarkerType = Exclude<MarkerType, "perks" | "weapon-wall-buy" | "label
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+  "document": {
+    id: "document",
+    type: "document",
+    title: "Document",
+    description: "Intel document revealing information on the map and storyline.",
+    icon: "/icons/intel/document.webp"
+  },
   "audio-log": {
     id: "audio-log",
     type: "audio-log",
@@ -412,6 +419,7 @@ export const markerTypeToCategory: Record<MarkerType, MarkerCategory> = {
 
   // Intel
   "audio-log": "intel",
+  "document": "intel",
 
   "objective": "general"
 }

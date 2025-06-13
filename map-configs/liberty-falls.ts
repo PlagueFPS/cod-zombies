@@ -344,6 +344,15 @@ const libertyFalls: MapConfig = {
       ]
     },
     {
+      ...sharedMarkers.document,
+      locations: [
+        { x: 0.545, y: 0.486, title: "Politics, Politics", description: "Obtained from opening one of the vault safes." },
+        { x: 0.321, y: 0.431, title: "We Only Take Cash", description: "Obtained from completing the Mister Peeks Car side quest." },
+        { x: 0.652, y: 0.487, title: "Fine Man", description: "Obtained from shooting movie boxes off the shelves in the Fast Forward store." },
+        { x: 0.629, y: 0.388, title: "Final Issue", description: "Obtained from interacting with white cardboard boxes in Olly's Comics. The document will drop out of one of these boxes." },
+      ]
+    },
+    {
       ...perks.juggernog,
       locations: [{ x: 0.579, y: 0.420 }]
     },
