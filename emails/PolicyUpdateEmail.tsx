@@ -49,7 +49,7 @@ export default function PrivacyPolicyUpdateEmail() {
             <Hr className="border-solid border-[#e6ebf1] my-[24px] mx-0" />
             
             <Section>
-              <Heading className="text-[24px] font-bold text-[#333] my-[24px] mx-0">
+              <Heading className="text-[24px] font-bold text-[#333] my-[24px] mx-0 text-center">
                 Privacy Policy Update
               </Heading>
               
@@ -58,11 +58,11 @@ export default function PrivacyPolicyUpdateEmail() {
               </Text>
               
               <Text className="text-[16px] leading-[24px] text-[#333] mb-[16px]">
-                We're writing to inform you about important changes to our Privacy Policy. These updates will take effect on <strong>{ formattedDate }</strong>.
+                We&apos;re writing to inform you about important changes to our Privacy Policy. These updates will take effect on <strong>{ formattedDate }</strong>.
               </Text>
               
               <Text className="text-[16px] leading-[24px] text-[#333] mb-[24px]">
-                We've updated our Privacy Policy to provide more transparency about how we collect, use, and protect your personal information. These changes reflect our ongoing commitment to safeguarding your privacy and ensuring compliance with evolving privacy regulations.
+                We&apos;ve updated our Privacy Policy to provide more transparency about how we collect, use, and protect your personal information. These changes reflect our ongoing commitment to safeguarding your privacy and ensuring compliance with evolving privacy regulations.
               </Text>
               
               <Text className="text-[16px] leading-[24px] text-[#333] mb-[24px]">
@@ -78,15 +78,12 @@ export default function PrivacyPolicyUpdateEmail() {
                 </Button>
               </Section>
               
-              <Text className="text-[16px] leading-[24px] text-[#333] mb-[16px]">
-                If you have any questions about our Privacy Policy, please contact our team at codzombiesguidesteam@gmail.com.
-              </Text>
-              
               <Text className="text-[16px] leading-[24px] text-[#333] mb-[32px]">
+                If you have any questions about our Privacy Policy, please contact our team at codzombiesguidesteam@gmail.com.
                 We value your trust and are committed to protecting your privacy.
               </Text>
               
-              <Text className="text-[16px] leading-[24px] text-[#333] mb-[16px]">
+              <Text className="text-[16px] leading-[24px] text-[#333]">
                 Best regards,
               </Text>
               
@@ -97,14 +94,15 @@ export default function PrivacyPolicyUpdateEmail() {
             
             <Hr className="border-solid border-[#e6ebf1] my-[24px] mx-0" />
             
-            <Section>
-              <Text className="text-[14px] leading-[20px] text-[#8898aa] m-0">
-                © {currentYear} Call of Duty: Zombies Guides. All rights reserved.
+            <Section className='text-center'>
+              <Text className="text-[14px] text-gray-500 m-0 italic">
+                © { currentYear } Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving this email because you opted-in via our website. 
+                You may <Link href={`https://codzombiesguides.com/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
               </Text>
               
               
-              <Text className="text-[14px] leading-[20px] text-[#8898aa] mt-[12px]">
-                <Link href="https://codzombiesguides.com/privacy-policy" className="text-[#8898aa]">
+              <Text className="text-[14px] leading-[20px] text-gray-500 mt-[12px]">
+                <Link href="https://codzombiesguides.com/privacy-policy" className="text-[#8898aa] underline">
                   Privacy Policy
                 </Link>
               </Text>

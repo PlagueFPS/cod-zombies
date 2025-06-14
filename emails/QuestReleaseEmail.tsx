@@ -11,6 +11,7 @@ import {
   Section,
   Text,
   Tailwind,
+  Link,
 } from '@react-email/components';
 
 export interface IQuestRelease {
@@ -33,7 +34,7 @@ export default function QuestReleaseEmail({ type, title, description, image, red
       <Tailwind>
         <Head>
           <title>New { type } Quest Guide Released</title>
-          <Preview>We've just published a new guide you might be interested in</Preview>
+          <Preview>We&apos;ve just published a new guide you might be interested in</Preview>
         </Head>
         <Body className="bg-gray-100 font-sans py-[40px]">
           <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
@@ -53,12 +54,12 @@ export default function QuestReleaseEmail({ type, title, description, image, red
             
             <Hr className="border-solid border-orange-200 my-[24px]" />
             
-            <Heading className="text-[24px] font-bold text-gray-800 my-[24px]">
+            <Heading className="text-[24px] font-bold text-gray-800 my-[24px] text-center">
               New { type } Quest Guide Released
             </Heading>
             
             <Text className="text-[16px] text-gray-600 mb-[16px]">
-              We're excited to share our latest zombies guide with you:
+              We&apos;re excited to share our latest zombies guide with you:
             </Text>
             
             <Section className="bg-orange-50 rounded-[8px] p-[16px] mb-[24px] border-l-[4px] border-solid border-orange-500">
@@ -107,15 +108,21 @@ export default function QuestReleaseEmail({ type, title, description, image, red
               </Button>
             </Section>
             
-            <Text className="text-[16px] text-gray-600 mb-[16px]">
-              Don't miss out on our future guides! We publish new guides for every main/side quest to help you complete them and earn their rewards.
-            </Text>
-            
             <Hr className="border-solid border-gray-200 my-[24px]" />
             
-            <Text className="text-[14px] text-gray-500 m-0">
-              © { currentYear } Call of Duty: Zombies Guides. All rights reserved.
-            </Text>
+            <Section className='text-center'>
+              <Text className="text-[14px] text-gray-500 m-0 italic">
+                © { currentYear } Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving this email because you opted-in via our website. 
+                You may <Link href={`https://codzombiesguides.com/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
+              </Text>
+              
+              
+              <Text className="text-[14px] leading-[20px] text-gray-500 mt-[12px]">
+                <Link href="https://codzombiesguides.com/privacy-policy" className="text-[#8898aa] underline">
+                  Privacy Policy
+                </Link>
+              </Text>
+            </Section>
           </Container>
         </Body>
       </Tailwind>

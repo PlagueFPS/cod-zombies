@@ -11,6 +11,7 @@ import {
   Section,
   Text,
   Tailwind,
+  Link,
 } from '@react-email/components';
 import type { IQuestRelease } from './QuestReleaseEmail';
 import type { ZombieType } from '@/types/Zombie';
@@ -27,7 +28,7 @@ export default function ZombieReleaseEmail({ type, title, description, image, re
       <Tailwind>
         <Head>
           <title>New { type } Zombie Released</title>
-          <Preview>We've just published a new guide you might be interested in</Preview>
+          <Preview>We&apos;ve just published a new guide you might be interested in</Preview>
         </Head>
         <Body className="bg-gray-100 font-sans py-[40px]">
           <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
@@ -47,7 +48,7 @@ export default function ZombieReleaseEmail({ type, title, description, image, re
             
             <Hr className="border-solid border-orange-200 my-[24px]" />
             
-            <Heading className="text-[24px] font-bold text-gray-800 my-[24px]">
+            <Heading className="text-[24px] font-bold text-gray-800 my-[24px] text-center">
               New { type } Zombie Released
             </Heading>
             
@@ -107,15 +108,21 @@ export default function ZombieReleaseEmail({ type, title, description, image, re
               </Button>
             </Section>
             
-            <Text className="text-[16px] text-gray-600 mb-[16px]">
-              Don't miss out on our future guides! We publish new guides for every zombie type to help you understand and defeat them.
-            </Text>
-            
             <Hr className="border-solid border-gray-200 my-[24px]" />
             
-            <Text className="text-[14px] text-gray-500 m-0">
-              © { currentYear } Call of Duty: Zombies Guides. All rights reserved.
-            </Text>
+            <Section className='text-center'>
+              <Text className="text-[14px] text-gray-500 m-0 italic">
+                © { currentYear } Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving this email because you opted-in via our website. 
+                You may <Link href={`https://codzombiesguides.com/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
+              </Text>
+              
+              
+              <Text className="text-[14px] leading-[20px] text-gray-500 mt-[12px]">
+                <Link href="https://codzombiesguides.com/privacy-policy" className="text-[#8898aa] underline">
+                  Privacy Policy
+                </Link>
+              </Text>
+            </Section>
           </Container>
         </Body>
       </Tailwind>
