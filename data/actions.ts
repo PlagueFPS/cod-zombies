@@ -1,7 +1,7 @@
 "use server"
 import { ContactFormSchema, DraftModeSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
 import { createAction, developmentAction, ratelimitAction } from "@/lib/safe-action"
-import { requestUnsubscribeUseCase, sendContactEmailUseCase, subscribeEmailUseCase } from "@/usecases/email"
+import { requestSubscribe, sendContactEmail, requestUnsubscribe } from "@/usecases/email"
 import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { draftMode } from "next/headers"
 import { redirect } from "next/navigation"
@@ -17,7 +17,7 @@ export const subscribeToNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = await subscribeEmailUseCase(email)
+    const result = await requestSubscribe(email)
     if (result.isErr()) {
       switch(result.error._tag) {
         case 'CONTACT_EXISTS_ERROR':
@@ -34,10 +34,10 @@ export const subscribeToNewsletter = ratelimitAction
       }
     }
     
-    return { success: true, message: result.value.message }
+    return { success: true, message: result.value }
   })
 
-export const requestUnsubscribe = ratelimitAction
+export const unsubscribeFromNewsletter = ratelimitAction
   .metadata({ actionName: "requestUnsubscribe"})
   .schema(NewsletterFormSchema)
   .action(async ({ ctx, parsedInput: { email }}) => {
@@ -47,7 +47,7 @@ export const requestUnsubscribe = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = await requestUnsubscribeUseCase(email)
+    const result = await requestUnsubscribe(email)
     if (result.isErr()) {
       switch(result.error._tag) {
         case "CONTACT_NOT_FOUND_ERROR":
@@ -64,7 +64,7 @@ export const requestUnsubscribe = ratelimitAction
       }
     }
     
-    return { success: true, message: result.value.message }
+    return { success: true, message: result.value }
   })
 
 export const submitFeedbackForm = createAction
@@ -87,7 +87,7 @@ export const submitContactForm = createAction
   .metadata({ actionName: "submitContactForm" })
   .schema(ContactFormSchema)
   .action(async ({ parsedInput }) => {
-    const result = await sendContactEmailUseCase(parsedInput)
+    const result = await sendContactEmail(parsedInput)
     if (result.isErr()) {
       console.error(result.error)
       return {

@@ -11,10 +11,13 @@ import {
   BroadcastDataError, 
   ContactExistsError, 
   ContactNotFoundError,
+  ExpiredSubscribeLinkError,
   ExpiredUnsubscribeLinkError, 
+  InvalidSubscribeLinkError, 
   InvalidUnsubscribeLinkError,
   UpstreamProviderError,  
 } from "@/types/Error"
+import SubscribeEmail from "@/emails/SubscribeEmail"
 
 interface EmailProps {
   name: string
@@ -32,35 +35,35 @@ interface EmailSuccess {
   message: string
 }
 
-type SubscribeEmailError = UpstreamProviderError | ContactExistsError
-type RequestUnsubscribeError = UpstreamProviderError | ContactNotFoundError
 type ProccessUnsubscribeError = InvalidUnsubscribeLinkError | ExpiredUnsubscribeLinkError | UpstreamProviderError
-type SendBroadcastError = UpstreamProviderError | BroadcastDataError
+type ProccessSubscribeError = UpstreamProviderError | InvalidSubscribeLinkError | ExpiredSubscribeLinkError
 
-
-export const subscribeEmailUseCase = async (email: string): Promise<Result<EmailSuccess, SubscribeEmailError>> => {
+export const requestSubscribe = async (email: string): Promise<Result<string, UpstreamProviderError | ContactExistsError>> => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
   if (error && error.name !== "not_found") return err(new UpstreamProviderError(
-    "Your subscribe request failed due to a technical issue with our email provider. Please try again.", 
+    "We were unable to send a confirmation email due to a technical issue with our email provider. Please try again.",
     { cause: error }
   ))
-  if (data) return err(new ContactExistsError('Your subscribe request failed because that email has already subscribed!'))
+  if (data) return err(new ContactExistsError("We were unable to send a verification email because that email is already subscribed!"))
   
-  const { error: createError } = await resend.contacts.create({
-    email: email,
-    audienceId: env.RESEND_AUDIENCE_ID,
+  const token = generateToken(email)
+  const subscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
+  const { error: sendError } = await resend.emails.send({
+    from: "COD Zombies Guides <support@codzombiesguides.com>",
+    to: email,
+    subject: "Confirm Your Subscribe Request",
+    react: SubscribeEmail({ subscribeUrl })
   })
 
-  if (createError) return err(new UpstreamProviderError(
-    "Your subscribe request failed due to a technical issue with our email provider. Please try again.", 
-    { cause: createError }
+  if (sendError) return err(new UpstreamProviderError(
+    "We were unable to send a confirmation email due to a technical issue with our email provider. Please try again.",
+    { cause: sendError }
   ))
-  return ok({
-    message: 'You have successfully subscribed! Thank you for subscribing.'
-  })
+
+  return ok("Confirmation email sent! Check your inbox.")
 }
 
-export const requestUnsubscribeUseCase = async (email: string): Promise<Result<EmailSuccess, RequestUnsubscribeError>> => {
+export const requestUnsubscribe = async (email: string): Promise<Result<string, UpstreamProviderError | ContactNotFoundError>> => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
   if (error && error.name !== "not_found") return err(new UpstreamProviderError(
     "We were unable to send unsubscribe link due to a technical issue with our email provider. Please try again.", 
@@ -69,11 +72,11 @@ export const requestUnsubscribeUseCase = async (email: string): Promise<Result<E
   if (!data) return err(new ContactNotFoundError("That email is not currently subscribed."))
 
   const token = generateToken(email)
-  const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/unsubscribe?token=${token}`
+  const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
   const { error: sendError } = await resend.emails.send({
     from: "COD Zombies Guides <support@codzombiesguides.com>",
     to: email,
-    subject: "Confirm your unsubscribe request",
+    subject: "Confirm Your Unsubscribe Request",
     react: UnsubscribeEmail({ unsubscribeUrl })
   })
 
@@ -81,7 +84,31 @@ export const requestUnsubscribeUseCase = async (email: string): Promise<Result<E
     "We were unable to send unsubscribe link due to a technical issue with our email provider. Please try again.", 
     { cause: sendError }
   ))
-  return ok({ message: "Confirmation email sent! Check your inbox."})
+  return ok("Confirmation email sent! Check your inbox.")
+}
+
+export const processSubscribe = async (token: string): Promise<Result<true, ProccessSubscribeError>> => {
+  const result = verifyToken(token)
+  if (result.isErr()) {
+    switch(result.error._tag) {
+      case "TOKEN_EXPIRATION_ERROR":
+        return err(new ExpiredSubscribeLinkError("The ssubscribe link used has expired. Please request a new one."))
+      case "TOKEN_VERIFICATION_ERROR":
+        return err(new InvalidSubscribeLinkError("The ssubscribe link used is invalid. Please request a new one.", { cause: result.error }))
+    }
+  }
+
+  const { error: createError } = await resend.contacts.create({
+    email: result.value,
+    audienceId: env.RESEND_AUDIENCE_ID,
+  })
+
+  if (createError) return err(new UpstreamProviderError(
+    "Your subscribe request failed due to a technical issue with our email provider. Please try again.", 
+    { cause: createError }
+  ))
+
+  return ok(true)
 }
 
 export const processUnsubscribe = async (token: string): Promise<Result<true, ProccessUnsubscribeError>> => {
@@ -91,7 +118,7 @@ export const processUnsubscribe = async (token: string): Promise<Result<true, Pr
       case "TOKEN_EXPIRATION_ERROR":
         return err(new ExpiredUnsubscribeLinkError("The unsubscribe link used has expired. Please request a new one."))
       case "TOKEN_VERIFICATION_ERROR":
-        return err(new InvalidUnsubscribeLinkError("The unsubscribe link used is invalid. Please request a new one.", { cause: result.error.cause }))
+        return err(new InvalidUnsubscribeLinkError("The unsubscribe link used is invalid. Please request a new one.", { cause: result.error }))
     }
   }
 
@@ -107,7 +134,7 @@ export const processUnsubscribe = async (token: string): Promise<Result<true, Pr
   return ok(true)
 }
 
-export const sendInternalEmailUseCase = async ({ subject, message }: InternalEmailProps) => {
+export const sendInternalEmail = async ({ subject, message }: InternalEmailProps) => {
   const { error } = await resend.emails.send({
     from: `COD Zombies Guides <support@codzombiesguides.com>`,
     to: 'codzombiesguidesteam@gmail.com',
@@ -118,7 +145,7 @@ export const sendInternalEmailUseCase = async ({ subject, message }: InternalEma
   if (error) console.error(error)
 }
 
-export const sendContactEmailUseCase = async ({ name, email, message }: EmailProps): Promise<Result<EmailSuccess, UpstreamProviderError>> => {
+export const sendContactEmail = async ({ name, email, message }: EmailProps): Promise<Result<EmailSuccess, UpstreamProviderError>> => {
   const { error } = await resend.emails.send({
     from: `${name} <support@codzombiesguides.com>`,
     replyTo: email,
@@ -194,7 +221,7 @@ export const sendLegalUpdateBroadcast = async () => {
   }
 }
 
-const sendBroadcast = async (title: string, payload: CreateBroadcastOptions): Promise<Result<EmailSuccess, SendBroadcastError>> => {
+const sendBroadcast = async (title: string, payload: CreateBroadcastOptions): Promise<Result<EmailSuccess, UpstreamProviderError | BroadcastDataError>> => {
   const { data, error } = await resend.broadcasts.create(payload)
   if (error) return err(new UpstreamProviderError(`Failed to create broadcast with email provider: ${error.message}`, { cause: error }))
   if (!data) return err(new BroadcastDataError(`No data was returned for the ${title} broadcast creation.`))

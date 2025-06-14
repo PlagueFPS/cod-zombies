@@ -1,7 +1,7 @@
 import "server-only"
 import { env } from "@/env"
 import type { FeedbackForm } from "@/utils/validationSchemas"
-import { sendInternalEmailUseCase } from "./email"
+import { sendInternalEmail } from "./email"
 import { after } from "next/server"
 import { tryCatch } from "@/utils/functions"
 import { err, ok, Result } from "neverthrow"
@@ -37,7 +37,7 @@ export const submitFeedbackUseCase = async (input: Input): Promise<Result<Feedba
   ))
 
   after(async () => {
-    await sendInternalEmailUseCase({
+    await sendInternalEmail({
       subject: `New Feedback Submission`,
       message: `You have a new feedback submission that needs review.`
     })

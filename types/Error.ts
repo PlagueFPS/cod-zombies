@@ -52,6 +52,20 @@ export class ExpiredUnsubscribeLinkError extends Error {
   }
 }
 
+export class InvalidSubscribeLinkError extends Error {
+  readonly _tag = "INVALID_SUBSCRIBE_LINK_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
+export class ExpiredSubscribeLinkError extends Error {
+  readonly _tag = "EXPIRED_SUBSCRIBE_LINK_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
 export class BroadcastDataError extends Error {
   readonly _tag = "BROADCAST_DATA_ERROR"
   constructor(message: string, options?: ErrorOptions) {

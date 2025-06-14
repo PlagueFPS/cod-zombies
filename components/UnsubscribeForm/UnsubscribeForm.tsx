@@ -1,5 +1,5 @@
 "use client"
-import { requestUnsubscribe } from "@/data/actions"
+import { unsubscribeFromNewsletter } from "@/data/actions"
 import { customOnError, customOnSuccess } from "@/lib/utils"
 import { useAction } from "next-safe-action/hooks"
 import { Label } from "../ui/label"
@@ -9,7 +9,7 @@ import { Loader2Icon, Send } from "lucide-react"
 
 
 export default function UnsubscribeForm() {
-  const { execute, isPending } = useAction(requestUnsubscribe, {
+  const { execute, isPending } = useAction(unsubscribeFromNewsletter, {
     onSuccess: ({ data }) => customOnSuccess(data?.success, data?.message),
     onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to attempt to unsubscribe.")
   })
@@ -26,7 +26,7 @@ export default function UnsubscribeForm() {
           disabled={ isPending }
         />
       </div>
-      <Button type="submit" variant={"outline"} disabled={ isPending } className="w-fit gap-2">
+      <Button type="submit" variant={"default"} disabled={ isPending } className="w-fit gap-2">
         { isPending ? (
           <>
             <Loader2Icon className="size-4 animate-spin" />
