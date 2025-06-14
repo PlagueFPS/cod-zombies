@@ -14,6 +14,7 @@ import {
   Text,
 } from '@react-email/components';
 import { DATE_OPTIONS } from '@/utils/constants';
+import { env } from '@/env';
 
 export default function PrivacyPolicyUpdateEmail() {
   const today = new Date();
@@ -35,7 +36,7 @@ export default function PrivacyPolicyUpdateEmail() {
           <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
             <Section className="text-center mb-[32px]">
               <Img
-                src="https://codzombiesguides.com/logo.webp"
+                src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
                 alt={`Site Logo`}
                 width="120"
                 height="50"
@@ -72,7 +73,7 @@ export default function PrivacyPolicyUpdateEmail() {
               <Section className="text-center mb-[32px]">
                 <Button
                   className="bg-orange-600 text-white py-[12px] px-[20px] rounded-[4px] font-medium no-underline text-center box-border"
-                  href="https://codzombiesguides.com/privacy-policy"
+                  href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`}
                 >
                   Review Privacy Policy
                 </Button>
@@ -97,12 +98,12 @@ export default function PrivacyPolicyUpdateEmail() {
             <Section className='text-center'>
               <Text className="text-[14px] text-gray-500 m-0 italic">
                 © { currentYear } Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving this email because you opted-in via our website. 
-                You may <Link href={`https://codzombiesguides.com/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
+                You may <Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
               </Text>
               
               
               <Text className="text-[14px] leading-[20px] text-gray-500 mt-[12px]">
-                <Link href="https://codzombiesguides.com/privacy-policy" className="text-[#8898aa] underline">
+                <Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`} className="text-[#8898aa] underline">
                   Privacy Policy
                 </Link>
               </Text>

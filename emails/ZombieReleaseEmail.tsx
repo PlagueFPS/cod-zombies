@@ -15,6 +15,7 @@ import {
 } from '@react-email/components';
 import type { IQuestRelease } from './QuestReleaseEmail';
 import type { ZombieType } from '@/types/Zombie';
+import { env } from '@/env';
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
   type: ZombieType
@@ -35,7 +36,7 @@ export default function ZombieReleaseEmail({ type, title, description, image, re
             {/* Logo and Site Name */}
             <Section className="text-center mb-[24px]">
               <Img
-                src="https://codzombiesguides.com/logo.webp"
+                src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
                 alt="Site Logo"
                 width="120"
                 height="50"
@@ -113,12 +114,12 @@ export default function ZombieReleaseEmail({ type, title, description, image, re
             <Section className='text-center'>
               <Text className="text-[14px] text-gray-500 m-0 italic">
                 © { currentYear } Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving this email because you opted-in via our website. 
-                You may <Link href={`https://codzombiesguides.com/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
+                You may <Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
               </Text>
               
               
               <Text className="text-[14px] leading-[20px] text-gray-500 mt-[12px]">
-                <Link href="https://codzombiesguides.com/privacy-policy" className="text-[#8898aa] underline">
+                <Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`} className="text-[#8898aa] underline">
                   Privacy Policy
                 </Link>
               </Text>

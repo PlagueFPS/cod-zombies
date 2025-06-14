@@ -1,3 +1,4 @@
+import { env } from '@/env';
 import {
   Body,
   Button,
@@ -29,7 +30,7 @@ export default function SubscribeEmail({ subscribeUrl }: ISubscribeEmail) {
           <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
             <Section className="text-center pt-[16px] pb-[32px]">
               <Img
-                src="https://codzombiesguides.com/logo.webp"
+                src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
                 alt={`Site Logo`}
                 width="120"
                 height="50"
@@ -74,7 +75,7 @@ export default function SubscribeEmail({ subscribeUrl }: ISubscribeEmail) {
                 © {new Date().getFullYear()} Call of Duty: Zombies Guides. All rights reserved.
               </Text>
               <Text className="text-[14px] text-[#8898aa] mt-[16px]">
-                <Link href="https://codzombiesguides.com/privacy-policy" className="text-[#6b7280] underline">
+                <Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`} className="text-[#6b7280] underline">
                   Privacy Policy
                 </Link>
               </Text>
