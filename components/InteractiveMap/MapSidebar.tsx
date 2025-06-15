@@ -1,5 +1,5 @@
 "use client"
-import type { MapMarker, MarkerCategory, MarkerType } from "@/types/InteractiveMap"
+import type { MarkerCategory } from "@/types/InteractiveMap"
 import type { MapId } from "@/map-configs"
 import { useParams, useRouter } from "next/navigation"
 import { capatilize, slugify } from "@/utils/functions"
@@ -30,21 +30,18 @@ import {
 } from "../ui/sidebar"
 import ShareButton from "../ShareButton/ShareButton"
 import { env } from "@/env"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Input } from "../ui/input"
 
 interface IMapSidebar {
   availableMaps: MapId[]
-  groups: Record<MarkerCategory, MarkerType[]>
-  objectives: MapMarker[]
-  uniqueMarkerTypes: MarkerType[]
+  groups: Record<MarkerCategory, Set<string>>
 }
 
-export default function MapSidebar({ groups, objectives, availableMaps, uniqueMarkerTypes }: IMapSidebar) {
+export default function MapSidebar({ groups, availableMaps }: IMapSidebar) {
   const {
     toggleParam,
     filterParams,
-    searchParams,
     clearParam,
     createParams,
     searchTerm,
@@ -55,18 +52,14 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
   const router = useRouter()
   const currentMap = capatilize(String(id))
 
-  const filteredGroups = Object.keys(groups).reduce((acc, category) => {
-    const filteredTypes = groups[category as MarkerCategory].filter(type =>
-      slugify(type).includes(slugify(searchTerm))
-    )
+  const filteredGroups = useMemo(() => Object.keys(groups).reduce((acc, category) => {
+    const filtered = new Set(groups[category as MarkerCategory].values().filter(value =>
+      slugify(value).includes(slugify(searchTerm))
+    ))
 
-    acc[category as MarkerCategory] = filteredTypes
+    acc[category as MarkerCategory] = filtered
     return acc
-  }, {} as Record<MarkerCategory, MarkerType[]>)
-
-  const filteredObjectives = objectives.filter(objective =>
-    slugify(objective.title).includes(slugify(searchTerm))
-  )
+  }, {} as Record<MarkerCategory, Set<string>>), [groups, searchTerm])
 
   const handleCheckedChange = (type: string) => {
     toggleParam("filtered", type, filterParams)
@@ -77,11 +70,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
   }
 
   const createShareableURL = () => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.delete("filtered")
-
-    filterParams.forEach(filter => params.append("filtered", filter))
-
+    const params = createParams()
     if (params.size > 0) return `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}?${params.toString()}`
     else return `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}`
   }
@@ -94,11 +83,9 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
 
     const newValues: string[] = []
 
-    objectives.forEach(objective => newValues.push(objective.id))
-    uniqueMarkerTypes.forEach(type => {
-      if (type === "objective") return
-      newValues.push(type)
-    })
+    for (const category in groups) {
+      groups[category as MarkerCategory].forEach(value => newValues.push(value))
+    }
 
     toggleParam("filtered", newValues, filterParams)
     setToggle("All")
@@ -156,7 +143,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
           </SidebarMenuItem>
         </SidebarMenu>
 
-        {filteredGroups.general.length > 0 && (
+        { filteredGroups.general.size > 0 && (
           <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup>
               <SidebarGroupLabel asChild>
@@ -168,15 +155,14 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {filteredGroups.general.map(type => (
-                      <SidebarMenuItem key={type} className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
+                    {[...filteredGroups.general].map(type => (
+                      <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon category="general" type={type} />
-                          <span className="text-base font-medium">{capatilize(type)}</span>
+                          <MarkerFilterIcon category="general" type={ type } />
+                          <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch
                           id={`${type}-filter`}
-                          defaultChecked={!filterParams.includes(type)}
                           onCheckedChange={() => handleCheckedChange(type)}
                           checked={!filterParams.includes(type)}
                           className="data-[state=checked]:bg-blue-500 ml-auto cursor-pointer"
@@ -190,7 +176,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
           </Collapsible>
         )}
 
-        {filteredGroups.equipment.length > 0 && (
+        { filteredGroups.equipment.size > 0 && (
           <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup>
               <SidebarGroupLabel asChild>
@@ -202,15 +188,14 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {filteredGroups.equipment.map(type => (
-                      <SidebarMenuItem key={type} className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
+                    {[...filteredGroups.equipment].map(type => (
+                      <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon category="equipment" type={type} />
-                          <span className="text-base font-medium">{capatilize(type)}</span>
+                          <MarkerFilterIcon category="equipment" type={ type } />
+                          <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch
                           id={`${type}-filter`}
-                          defaultChecked={!filterParams.includes(type)}
                           onCheckedChange={() => handleCheckedChange(type)}
                           checked={!filterParams.includes(type)}
                           className="data-[state=checked]:bg-gray-500 ml-auto cursor-pointer"
@@ -224,7 +209,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
           </Collapsible>
         )}
 
-        {filteredGroups.upgrades.length > 0 && (
+        { filteredGroups.upgrades.size > 0 && (
           <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup>
               <SidebarGroupLabel asChild>
@@ -236,15 +221,14 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {filteredGroups.upgrades.map(type => (
-                      <SidebarMenuItem key={type} className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
+                    {[...filteredGroups.upgrades].map(type => (
+                      <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon category="upgrades" type={type} />
-                          <span className="text-base font-medium">{capatilize(type)}</span>
+                          <MarkerFilterIcon category="upgrades" type={ type } />
+                          <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch
                           id={`${type}-filter`}
-                          defaultChecked={!filterParams.includes(type)}
                           onCheckedChange={() => handleCheckedChange(type)}
                           checked={!filterParams.includes(type)}
                           className="data-[state=checked]:bg-yellow-500 ml-auto cursor-pointer"
@@ -258,7 +242,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
           </Collapsible>
         )}
 
-        {filteredObjectives.length > 0 && (
+        { filteredGroups.objectives.size > 0 && (
           <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup>
               <SidebarGroupLabel asChild>
@@ -270,21 +254,16 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {filteredObjectives.map(objective => (
-                      <SidebarMenuItem key={objective.id} className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
+                    {[...filteredGroups.objectives].map(type => (
+                      <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon
-                            type={objective.type}
-                            objectiveId={objective.id}
-                            objectives={objectives}
-                          />
-                          <span className="text-base font-medium">{objective.title}</span>
+                          <MarkerFilterIcon category="objectives" type={ type } />
+                          <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch
-                          id={`${objective.id}-filter`}
-                          defaultChecked={!filterParams.includes(objective.id)}
-                          onCheckedChange={() => handleCheckedChange(objective.id)}
-                          checked={!filterParams.includes(objective.id)}
+                          id={`${type}-filter`}
+                          onCheckedChange={() => handleCheckedChange(type)}
+                          checked={!filterParams.includes(type)}
                           className="ml-auto cursor-pointer"
                         />
                       </SidebarMenuItem>
@@ -296,7 +275,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
           </Collapsible>
         )}
 
-        {filteredGroups.transportation.length > 0 && (
+        { filteredGroups.transportation.size > 0 && (
           <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup>
               <SidebarGroupLabel asChild>
@@ -308,15 +287,14 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {filteredGroups.transportation.map(type => (
-                      <SidebarMenuItem key={type} className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
+                    {[...filteredGroups.transportation].map(type => (
+                      <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon category="transportation" type={type} />
-                          <span className="text-base font-medium">{capatilize(type)}</span>
+                          <MarkerFilterIcon category="transportation" type={ type } />
+                          <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch
                           id={`${type}-filter`}
-                          defaultChecked={!filterParams.includes(type)}
                           onCheckedChange={() => handleCheckedChange(type)}
                           checked={!filterParams.includes(type)}
                           className="data-[state=checked]:bg-green-500 ml-auto cursor-pointer"
@@ -330,7 +308,7 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
           </Collapsible>
         )}
 
-        { filteredGroups.intel.length > 0 && (
+        { filteredGroups.intel.size > 0 && (
           <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup>
               <SidebarGroupLabel asChild>
@@ -342,15 +320,14 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
               <CollapsibleContent>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {filteredGroups.intel.map(type => (
-                      <SidebarMenuItem key={type} className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
+                    {[...filteredGroups.intel].map(type => (
+                      <SidebarMenuItem key={ type } className="flex items-center bg-accent dark:bg-accent/25 rounded-md p-2">
                         <div className="flex items-center justify-center gap-1">
-                          <MarkerFilterIcon category="intel" type={type} />
-                          <span className="text-base font-medium">{capatilize(type)}</span>
+                          <MarkerFilterIcon category="intel" type={ type } />
+                          <span className="text-base font-medium">{ capatilize(type) }</span>
                         </div>
                         <Switch
                           id={`${type}-filter`}
-                          defaultChecked={!filterParams.includes(type)}
                           onCheckedChange={() => handleCheckedChange(type)}
                           checked={!filterParams.includes(type)}
                           className="data-[state=checked]:bg-purple-500 ml-auto cursor-pointer"
@@ -393,13 +370,11 @@ export default function MapSidebar({ groups, objectives, availableMaps, uniqueMa
 }
 
 interface IMarkerFilterIcon {
-  type: MarkerType
-  category?: MarkerCategory
-  objectiveId?: string
-  objectives?: MapMarker[]
+  type: string
+  category: MarkerCategory
 }
 
-function MarkerFilterIcon({ type, category, objectiveId, objectives }: IMarkerFilterIcon) {
+function MarkerFilterIcon({ type, category }: IMarkerFilterIcon) {
   switch (type) {
     default:
       return (
@@ -414,38 +389,15 @@ function MarkerFilterIcon({ type, category, objectiveId, objectives }: IMarkerFi
       )
     case 'label':
       return <MapPin className="size-8 p-1 text-blue-500 dark:text-blue-400" />
-    case 'perks':
+    case 'perk':
       return (
         <Image
           unoptimized
           src={`/icons/upgrades/juggernog.webp`}
           height={128}
           width={128}
-          alt={`Stamin-Up Image`}
+          alt={`Juggernog Image`}
           className="size-8 p-1"
-        />
-      )
-    case 'objective':
-      const objIcon = objectives?.find(obj => obj.id === objectiveId)?.icon
-      return (
-        <Image
-          unoptimized
-          src={objIcon ?? `/icons/objectives/${objectiveId}.webp`}
-          height={128}
-          width={128}
-          alt={objectiveId ? `${capatilize(objectiveId)} Image` : ""}
-          className="size-8"
-        />
-      )
-    case 'vehicle-spawn':
-      return (
-        <Image
-          unoptimized
-          src={`/icons/transportation/boat.webp`}
-          height={128}
-          width={128}
-          alt={`${type} Image`}
-          className="size-8"
         />
       )
   }

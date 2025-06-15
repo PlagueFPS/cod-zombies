@@ -1,6 +1,6 @@
 import type { MapId } from '@/map-configs';
 import type { Metadata } from 'next';
-import type { MarkerCategory, MarkerType } from '@/types/InteractiveMap';
+import type { MarkerCategory } from '@/types/InteractiveMap';
 import InteractiveMapWrapper from '@/components/InteractiveMap/InteractiveMapWrapper'
 import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
 import { env } from '@/env';
@@ -10,7 +10,6 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
 import MapSidebar from '@/components/InteractiveMap/MapSidebar';
 import { Suspense } from 'react';
-import { markerTypeToCategory } from '@/map-configs/markers';
 import { CustomSideBarTrigger } from '@/components/InteractiveMap/CustomSidebarTrigger';
 import SidebarLoader from '@/components/Loaders/SidebarLoader';
 
@@ -63,22 +62,44 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
   const availableMaps = getAvailableMaps()
   const sidebarState = cookieStore.get("sidebar_state")?.value
   const defaultOpen = sidebarState ? sidebarState === "true" : true
-  const uniqueMarkerTypes = Array.from(new Set(config.markers.map(marker => marker.type)))
-  const objectiveMarkers = config.markers.filter(marker => marker.type === "objective")
-  const groups: Record<MarkerCategory, MarkerType[]> = {
-    general: [],
-    equipment: [],
-    upgrades: [],
-    transportation: [],
-    intel: []
+  const groups: Record<MarkerCategory, Set<string>> = {
+    general: new Set(),
+    equipment: new Set(),
+    upgrades: new Set(),
+    objectives: new Set(),
+    transportation: new Set(),
+    intel: new Set()
   }
 
-  uniqueMarkerTypes.forEach(type => {
-    if (type === "objective") return
-
-    const category = markerTypeToCategory[type]
-    if (category) {
-      groups[category].push(type)
+  config.markers.forEach(marker => {
+    switch(marker.category) {
+      case "general":
+        if (marker.type && marker.type === "label") {
+          groups.general.add(marker.type)
+        }
+        else groups.general.add(marker.id)
+        break
+      case "equipment":
+        if (marker.type && marker.type === "weapon-wall-buy") {
+          groups.equipment.add(marker.type)
+        }
+        else groups.equipment.add(marker.id)
+        break
+      case "upgrades":
+        if (marker.type && marker.type === "perk") {
+          groups.upgrades.add(marker.type)
+        }
+        else groups.upgrades.add(marker.id)
+        break
+      case "objectives":
+        groups.objectives.add(marker.id)
+        break
+      case "transportation":
+        groups.transportation.add(marker.id)
+        break
+      case "intel":
+        groups.intel.add(marker.id)
+        break
     }
   })
 
@@ -88,8 +109,6 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
         <MapSidebar 
           groups={ groups }
           availableMaps={ availableMaps } 
-          objectives={ objectiveMarkers }
-          uniqueMarkerTypes={ uniqueMarkerTypes } 
         />
       </Suspense>
       <div className='h-svh w-svw'>

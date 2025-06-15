@@ -14,6 +14,10 @@ import { Separator } from '../ui/separator'
 import { IN_DEVELOPMENT } from '@/utils/constants'
 import { generateMarkerKey } from '@/map-configs/markers'
 
+interface IInteractiveMap {
+  mapConfig: MapConfig
+}
+
 const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
   if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
 
@@ -22,7 +26,7 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
   console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
 }
 
-export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) {
+export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
   const { searchParams, filterParams } = useMapSearchParams()
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
   const [filteredMarkers, setMarkers] = useState<MapMarker[]>([])
@@ -58,8 +62,8 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
 
     if (filterParams.length > 0) {
       markers = mapConfig.markers.filter(marker => {
-        if (marker.type === "objective") return !filterParams.some(param => param === marker.id)
-        else return !filterParams.some(param => param === marker.type)
+        if (marker.type) return !filterParams.some(param => param === marker.type)
+        else return !filterParams.some(param => param === marker.id)
       })
     }
 
@@ -130,7 +134,7 @@ export default function InteractiveMap({ mapConfig }: { mapConfig: MapConfig }) 
               <Popup className='custom-popup'>
                 <div className="flex items-center gap-2 mb-1">
                   <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-                    { capatilize(marker.type) }
+                    { marker.type ? capatilize(marker.type) : capatilize(marker.category) }
                   </Badge>
                 </div>
                 <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient">{ location.title || marker.title }</h3>

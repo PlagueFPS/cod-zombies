@@ -86,7 +86,7 @@ function MarkerIcon({ marker, id }: { marker: MapMarker, id: string }) {
         width={128}
         height={128}
         className={cn('size-8',
-          { 'size-6': marker.type === "perks" && marker.id !== 'der-wunderfizz' },
+          { 'size-6': marker.type === "perk" && marker.id !== 'der-wunderfizz' },
           { 'size-10': marker.id === 'dark-aether-lantern' },
           { 'size-11': marker.id === "shovel" }
         )}

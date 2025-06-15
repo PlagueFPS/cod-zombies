@@ -12,6 +12,7 @@ const libertyFalls: MapConfig = {
       id: "abandoned-rooftop",
       title: "Abandoned Rooftop",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.858, y: 0.610 }]
@@ -20,6 +21,7 @@ const libertyFalls: MapConfig = {
       id: "pump-and-pay",
       title: "Pump & Pay",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.789, y: 0.617 }]
@@ -28,6 +30,7 @@ const libertyFalls: MapConfig = {
       id: "east-main-street",
       title: "East Main Street",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.723, y: 0.545 }]
@@ -36,6 +39,7 @@ const libertyFalls: MapConfig = {
       id: "motor-lodge",
       title: "Motor Lodge",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.653, y: 0.631 }]
@@ -44,6 +48,7 @@ const libertyFalls: MapConfig = {
       id: "motor-lodge-alley",
       title: "Motor Lodge Alley",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.616, y: 0.683 }]
@@ -52,6 +57,7 @@ const libertyFalls: MapConfig = {
       id: "fullers-liberty-lanes",
       title: "Fuller's Liberty Lanes",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.520, y: 0.727 }]
@@ -60,6 +66,7 @@ const libertyFalls: MapConfig = {
       id: "west-main-street",
       title: "West Main Street",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.527, y: 0.610 }]
@@ -68,6 +75,7 @@ const libertyFalls: MapConfig = {
       id: "hilltop-stairs",
       title: "Hilltop Stairs",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.387, y: 0.636 }]
@@ -76,6 +84,7 @@ const libertyFalls: MapConfig = {
       id: "hilltop",
       title: "Hilltop",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.331, y: 0.585 }]
@@ -84,6 +93,7 @@ const libertyFalls: MapConfig = {
       id: "forecourt",
       title: "Forecourt",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.259, y: 0.626 }]
@@ -92,6 +102,7 @@ const libertyFalls: MapConfig = {
       id: "dark-aether",
       title: "Dark Aether",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.170, y: 0.604 }]
@@ -100,6 +111,7 @@ const libertyFalls: MapConfig = {
       id: "cemetery",
       title: "Cemetery",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.219, y: 0.516 }]
@@ -108,6 +120,7 @@ const libertyFalls: MapConfig = {
       id: "riverside",
       title: "Riverside",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.716, y: 0.442 }]
@@ -116,6 +129,7 @@ const libertyFalls: MapConfig = {
       id: "radio-house",
       title: "Radio House",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.731, y: 0.354 }]
@@ -124,6 +138,7 @@ const libertyFalls: MapConfig = {
       id: "ollys-comics",
       title: "Olly's Comics",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.628, y: 0.371 }]
@@ -132,6 +147,7 @@ const libertyFalls: MapConfig = {
       id: "backstreet-parking",
       title: "Backstreet Parking",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.617, y: 0.444 }]
@@ -140,6 +156,7 @@ const libertyFalls: MapConfig = {
       id: "grease-trap-patio",
       title: "Grease Trap Patio",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.551, y: 0.401 }]
@@ -148,6 +165,7 @@ const libertyFalls: MapConfig = {
       id: "savings-and-loan",
       title: "Savings & Loan",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.565, y: 0.485 }]
@@ -156,6 +174,7 @@ const libertyFalls: MapConfig = {
       id: "washington-ave",
       title: "Washington Ave.",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.495, y: 0.457 }]
@@ -164,6 +183,7 @@ const libertyFalls: MapConfig = {
       id: "washington-ave-rooftops",
       title: "Washington Ave. Rooftops",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.455, y: 0.516 }]
@@ -172,6 +192,7 @@ const libertyFalls: MapConfig = {
       id: "hill-street",
       title: "Hill Street",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.377, y: 0.496 }]
@@ -180,6 +201,7 @@ const libertyFalls: MapConfig = {
       id: "groundskeepers-yard",
       title: "Groundskeeper's Yard",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.351, y: 0.420 }]
@@ -220,10 +242,6 @@ const libertyFalls: MapConfig = {
         { x: 0.648, y: 0.470 },
         { x: 0.324, y: 0.403 }
       ]
-    },
-    {
-      ...sharedMarkers["der-wunderfizz"],
-      locations: [{ x: 0.596, y: 0.471 }]
     },
     {
       ...sharedMarkers["door-buy"],
@@ -351,6 +369,10 @@ const libertyFalls: MapConfig = {
         { x: 0.652, y: 0.487, title: "Fine Man", description: "Obtained from shooting movie boxes off the shelves in the Fast Forward store." },
         { x: 0.629, y: 0.388, title: "Final Issue", description: "Obtained from interacting with white cardboard boxes in Olly's Comics. The document will drop out of one of these boxes." },
       ]
+    },
+    {
+      ...perks["der-wunderfizz"],
+      locations: [{ x: 0.596, y: 0.471 }]
     },
     {
       ...perks.juggernog,
