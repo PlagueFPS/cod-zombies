@@ -4,7 +4,8 @@ import { useCallback } from "react"
 
 export const useMapSearchParams = () => {
   const searchParams = useSearchParams()
-  const filterParams = searchParams.getAll("filtered")
+  const includeParams = searchParams.getAll("include")
+  const excludeParams = searchParams.getAll("exclude")
   const searchTerm = searchParams.get("search") || ""
 
   const updateURLParams = useCallback((params: URLSearchParams) => {
@@ -36,13 +37,34 @@ export const useMapSearchParams = () => {
     updateURLParams(params)
   }, [createParams, updateURLParams])
 
+  const toggleIncludeParam = useCallback((value: string | string[]) => {
+    return toggleParam("include", value, includeParams)
+  }, [toggleParam, includeParams])
+
+  const toggleExcludeParam = useCallback((value: string | string[]) => {
+    return toggleParam("exclude", value, excludeParams)
+  }, [toggleParam, excludeParams])
+
+  const isIncluded = useCallback((type: string) => {
+    const isIncluded = includeParams.length === 0 || includeParams.includes(type)
+    const isExcluded = excludeParams.includes(type)
+
+    // Include if:
+    // 1. No include params and not excluded
+    // 2. Included and not excluded
+    return (includeParams.length === 0 && !isExcluded) || (isIncluded && !isExcluded)
+  }, [includeParams, excludeParams])
+
   return {
     searchParams,
-    filterParams,
+    includeParams,
+    excludeParams,
     searchTerm,
     createParams,
     updateURLParams,
-    toggleParam,
+    toggleIncludeParam,
+    toggleExcludeParam,
     clearParam,
+    isIncluded
   }
 }

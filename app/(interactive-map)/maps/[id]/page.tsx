@@ -108,7 +108,8 @@ export default async function InteractiveMapPage({ params }: IInteractiveMapPage
       <Suspense fallback={<SidebarLoader />}>
         <MapSidebar 
           groups={ groups }
-          availableMaps={ availableMaps } 
+          availableMaps={ availableMaps }
+          mapMarkers={ config.markers }
         />
       </Suspense>
       <div className='h-svh w-svw'>

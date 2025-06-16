@@ -27,7 +27,7 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
 }
 
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
-  const { searchParams, filterParams } = useMapSearchParams()
+  const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
   const [filteredMarkers, setMarkers] = useState<MapMarker[]>([])
   const mapRef = useRef<Map>(null)
@@ -60,15 +60,15 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
   useEffect(() => {
     let markers = mapConfig.markers
 
-    if (filterParams.length > 0) {
+    if (includeParams.length > 0 || excludeParams.length > 0) {
       markers = mapConfig.markers.filter(marker => {
-        if (marker.type) return !filterParams.some(param => param === marker.type)
-        else return !filterParams.some(param => param === marker.id)
+        const markerId = marker.type || marker.id
+        return isIncluded(markerId)
       })
     }
 
     setMarkers(markers)
-  }, [searchParams, filterParams, mapConfig.markers])
+  }, [includeParams, excludeParams, mapConfig.markers, isIncluded])
 
   const convertToLeafletCoords = useCallback(({ x, y }: Location): LatLng => {
     if (!imageDimensions) return new LatLng(0, 0)
@@ -117,9 +117,12 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
           bounds={ getImageBounds() }
         />
       )}
-
+      {/* We do not map through filteredMarkers for rendering to avoid icon flickering */}
       { imageDimensions && mapConfig.markers.map(marker => {
-        if (!filteredMarkers.some(m => m.id === marker.id)) return null
+        if (!filteredMarkers.some(m => {
+          if (marker.type) return marker.type === m.type
+          return marker.id === m.id
+        })) return null
 
         return marker.locations.map(location => (
           // These keys are being generated during render based on immutable data
