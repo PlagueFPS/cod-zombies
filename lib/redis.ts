@@ -14,7 +14,7 @@ export const redis = new Redis({
 
 export const ratelimit = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(10, "2m"),
+  limiter: Ratelimit.tokenBucket(5, "10s", 100),
   analytics: true,
 })
 
@@ -127,7 +127,7 @@ export const getEntryStatus = async (entryId: string): Promise<Result<EntryStatu
   
   if (!data) {
     const entryNotFound = new EntryNotFoundError(`No data found for entry ID: ${entryId}`)
-    console.info(`[${entryNotFound._tag}] ${entryNotFound.message}`)
+    console.warn(`[${entryNotFound._tag}] ${entryNotFound.message}`)
     return err(entryNotFound)
   }
 
@@ -144,7 +144,7 @@ export const updateEntryStatus = async (entryId: string, updatedAt: string, type
   
   if (!data) {
     const entryNotFound = new EntryNotFoundError(`No data found for entry ID: ${entryId}`)
-    console.info(`[${entryNotFound._tag}] ${entryNotFound.message}`)
+    console.warn(`[${entryNotFound._tag}] ${entryNotFound.message}`)
     return err(entryNotFound)
   }
   
