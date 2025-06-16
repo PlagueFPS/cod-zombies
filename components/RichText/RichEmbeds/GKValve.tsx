@@ -55,7 +55,7 @@ export default function GKValve() {
     <section className="flex flex-col justify-center items-center gap-8">
       <div className="flex justify-center items-center gap-8 md:gap-16 w-full">
         <Select onValueChange={ value => setValues(prevState => ({...prevState, firstValue: value })) }>
-          <SelectTrigger className="text-green-700 dark:text-green-500">
+          <SelectTrigger className="text-green-700 dark:text-green-500 w-full">
             <SelectValue placeholder="Select Green Light Location" />
           </SelectTrigger>
           <SelectContent>
@@ -72,7 +72,7 @@ export default function GKValve() {
           </SelectContent>
         </Select>
         <Select onValueChange={ value => setValues(prevState => ({...prevState, secondValue: value })) }>
-          <SelectTrigger className="text-pink-700 dark:text-pink-500">
+          <SelectTrigger className="text-pink-700 dark:text-pink-500 w-full">
             <SelectValue placeholder="Select Pink Cylinder Location" />
           </SelectTrigger>
           <SelectContent>
@@ -89,7 +89,7 @@ export default function GKValve() {
           </SelectContent>
         </Select>
       </div>
-      <ul className={cn("w-full hidden bg-accent dark:bg-accent/15 rounded p-2", {
+      <ul className={cn("w-full hidden bg-accent dark:bg-accent/20 rounded p-2", {
         'block animate-fade-in': currentLocations.length > 0,
       })}>
         { currentLocations.map(location => (
