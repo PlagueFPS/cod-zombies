@@ -1,14 +1,11 @@
 "use client"
 import type { ErrorProps } from "@/types/Error"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
-import { useEffect } from "react"
 import { ThemeProvider } from "@/contexts/ThemeProvider"
 import FeedbackForm from "@/components/FeedbackForm/FeedbackForm"
 
 export default function GlobalError({ error, reset }: ErrorProps) {
-  useEffect(() => {
-    console.error(error)
-  }, [error])
+  console.error(error.message)
 
   return (
     <html lang="en" className="bg-background">

@@ -1,9 +1,9 @@
 "use client"
 import 'leaflet/dist/leaflet.css'
-import type { ImageDimensions, Location, MapConfig, MapController, MapMarker } from "@/types/InteractiveMap"
+import type { ImageDimensions, Location, MapConfig, MapController } from "@/types/InteractiveMap"
 import { CRS, LatLng, LatLngBounds, LatLngTuple, LeafletMouseEvent, Map } from "leaflet"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
@@ -29,8 +29,15 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
   const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
   const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-  const [filteredMarkers, setMarkers] = useState<MapMarker[]>([])
   const mapRef = useRef<Map>(null)
+  const filteredMarkers = useMemo(() => {
+    if (includeParams.length === 0 && excludeParams.length === 0) return mapConfig.markers
+    
+    return mapConfig.markers.filter(marker => {
+      const markerId = marker.type || marker.id
+      return isIncluded(markerId)
+    })
+  }, [includeParams, excludeParams, mapConfig.markers, isIncluded])
 
   useEffect(() => {
     const loadImageDimensions = async () => {
@@ -56,19 +63,6 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 
     loadImageDimensions()
   }, [mapConfig.image])
-
-  useEffect(() => {
-    let markers = mapConfig.markers
-
-    if (includeParams.length > 0 || excludeParams.length > 0) {
-      markers = mapConfig.markers.filter(marker => {
-        const markerId = marker.type || marker.id
-        return isIncluded(markerId)
-      })
-    }
-
-    setMarkers(markers)
-  }, [includeParams, excludeParams, mapConfig.markers, isIncluded])
 
   const convertToLeafletCoords = useCallback(({ x, y }: Location): LatLng => {
     if (!imageDimensions) return new LatLng(0, 0)
@@ -158,28 +152,25 @@ function MapController({ imageDimensions }: MapController) {
     click: logClickCoordinates(imageDimensions)
   })
 
-  useEffect(() => {
-    if (imageDimensions) {
-      const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
-      map.setView(center, 0, { animate: false })
-    }
+  if (imageDimensions) {
+    const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
+    map.setView(center, 0, { animate: false })
+  }
 
-  }, [map, imageDimensions])
-
-  const handleZoomIn = useCallback(() => {
+  const handleZoomIn = () => {
     map.zoomIn()
-  }, [map])
+  }
 
-  const handleZoomOut = useCallback(() => {
+  const handleZoomOut = () => {
     map.zoomOut()
-  }, [map])
+  }
 
-  const handleReset = useCallback(() => {
+  const handleReset = () => {
     if (imageDimensions) {
       const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
       map.setView(center, 0)
     }
-  }, [map, imageDimensions])
+  }
 
   return (
     <div className="fixed top-18 right-4 z-500 flex gap-2">

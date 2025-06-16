@@ -15,7 +15,7 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 
   useEffect(() => {
     articleRef.current = document.getElementById(articleId)
-  }, [])
+  }, [articleId])
 
   // Effect for handling the users guide progress
   useEffect(() => {

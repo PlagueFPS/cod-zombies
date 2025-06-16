@@ -2,7 +2,7 @@
 import ValveRoutes from "@/data/GKValves.json"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { slugify } from "@/utils/functions"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 
 const locations = [
@@ -21,14 +21,12 @@ interface Location {
 }
 
 export default function GKValve() {
-  const [currentLocations, setCurrentLocations] = useState<Location[]>([])
   const [values, setValues] = useState({
     firstValue: '',
     secondValue: ''
   })
-
-  useEffect(() => {
-    const getRoute = () => {
+  const currentLocations = useMemo(() => {
+    if (values.firstValue && values.secondValue) {
       const searchString = `${values.firstValue} to ${values.secondValue}`
       const locations: Location[] = []
 
@@ -47,10 +45,10 @@ export default function GKValve() {
         }
       }
 
-      setCurrentLocations(locations)
+      return locations
     }
 
-    if (values.firstValue && values.secondValue) getRoute()
+    return []
   }, [values])
 
   return (
@@ -91,11 +89,11 @@ export default function GKValve() {
           </SelectContent>
         </Select>
       </div>
-      <ul className={cn("w-full hidden", {
+      <ul className={cn("w-full hidden bg-accent dark:bg-accent/15 rounded p-2", {
         'block animate-fade-in': currentLocations.length > 0,
       })}>
         { currentLocations.map(location => (
-          <li key={ `valve-${slugify(location.name)}` }>
+          <li key={ `valve-${slugify(location.name)}` } className="list-disc">
             { location.value ? (
               <>
                 Set <strong className={cn({

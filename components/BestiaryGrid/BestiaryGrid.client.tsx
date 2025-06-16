@@ -3,7 +3,7 @@ import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 import type { MinifiedZombie } from "@/types/Zombie"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useMemo } from "react"
 import GridPagination from "../GridPagination/GridPagination"
 import GridPaginationLoader from "../Loaders/GridPaginationLoader"
 import BestiaryCard from "../BestiaryCard/BestiaryCard"
@@ -15,11 +15,7 @@ interface IBestiaryGridClient {
 
 export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGridClient) {
   const { gameParams, mapParams, typeParams, page, validatePageParam } = useQuestSearchParams()
-  const [filteredZombies, setFilteredZombies] = useState(zombies)
-  const skip = calculateSkip(page, MAP_LIMIT)
-  const paginatedZombies = filteredZombies.slice(skip, (MAP_LIMIT * page))
-
-  useEffect(() => {
+  const filteredZombies = useMemo(() => {
     let filtered = zombies
 
     if (gameParams.length > 0) {
@@ -34,12 +30,14 @@ export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGrid
       filtered = filtered.filter(z => typeParams.includes(z.type.toLowerCase()))
     }
 
-    setFilteredZombies(filtered)
+    return filtered
   }, [gameParams, mapParams, typeParams, zombies])
+  const skip = calculateSkip(page, MAP_LIMIT)
+  const paginatedZombies = filteredZombies.slice(skip, (MAP_LIMIT * page))
 
   useEffect(() => {
     validatePageParam(filteredZombies.length)
-  }, [filteredZombies, validatePageParam])
+  }, [filteredZombies.length, validatePageParam])
 
   return (
     <>
