@@ -13,6 +13,7 @@ const terminus: MapConfig = {
       title: "Elevator",
       description: "",
       type: "label",
+      category: "general",
       icon: null,
       locations: [{ x: 0.538, y: 0.429 }]
     },
@@ -20,6 +21,7 @@ const terminus: MapConfig = {
       id: "holding-cells",
       title: "Holding Cells",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.526, y: 0.445 }]
@@ -28,6 +30,7 @@ const terminus: MapConfig = {
       id: "guard-station",
       title: "Guard Station",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.498, y: 0.462 }]
@@ -36,6 +39,7 @@ const terminus: MapConfig = {
       id: "interrogation-rooms",
       title: "Interrogation Rooms",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.470, y: 0.465 }]
@@ -44,6 +48,7 @@ const terminus: MapConfig = {
       id: "security-overlook",
       title: "Security Overlook",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.498, y: 0.483 }]
@@ -52,6 +57,7 @@ const terminus: MapConfig = {
       id: "control-center",
       title: "Control Center",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.531, y: 0.481 }]
@@ -60,6 +66,7 @@ const terminus: MapConfig = {
       id: "armory",
       type: "label",
       title: "Armory",
+      category: "general",
       description: "",
       icon: null,
       locations: [{ x: 0.539, y: 0.463 }]
@@ -68,6 +75,7 @@ const terminus: MapConfig = {
       id: "communications",
       title: "Communications",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.554, y: 0.518 }]
@@ -76,6 +84,7 @@ const terminus: MapConfig = {
       id: "engineering",
       title: "Engineering",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.545, y: 0.558 }]
@@ -84,6 +93,7 @@ const terminus: MapConfig = {
       id: "living-quarters",
       title: "Living Quarters",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.505, y: 0.553 }]
@@ -92,6 +102,7 @@ const terminus: MapConfig = {
       id: "rec-yard",
       title: "Rec Yard",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.477, y: 0.557 }]
@@ -100,6 +111,7 @@ const terminus: MapConfig = {
       id: "storage-area",
       title: "Storage Area",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.471, y: 0.519 }]
@@ -108,6 +120,7 @@ const terminus: MapConfig = {
       id: "mess-hall",
       title: "Mess Hall",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.435, y: 0.554 }]
@@ -116,6 +129,7 @@ const terminus: MapConfig = {
       id: "gun-platform",
       title: "Gun Platform",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.470, y: 0.604 }]
@@ -124,6 +138,7 @@ const terminus: MapConfig = {
       id: "seaside-path",
       title: "Seaside Path",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.435, y: 0.612 }, { x: 0.807, y: 0.909 }]
@@ -132,6 +147,7 @@ const terminus: MapConfig = {
       id: "sea-tower",
       title: "Sea Tower",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.542, y: 0.619 }, { x: 0.903, y: 0.919 }]
@@ -140,6 +156,7 @@ const terminus: MapConfig = {
       id: "crab-island",
       title: "Crab Island",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.460, y: 0.766 }]
@@ -148,6 +165,7 @@ const terminus: MapConfig = {
       id: "castle-rock-island",
       title: "Castle Rock Island",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.758, y: 0.479 }]
@@ -156,6 +174,7 @@ const terminus: MapConfig = {
       id: "temple-island",
       title: "Temple Island",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.335, y: 0.304 }]
@@ -164,6 +183,7 @@ const terminus: MapConfig = {
       id: "shipwreck",
       title: "Shipwreck",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.252, y: 0.641 }]
@@ -172,6 +192,7 @@ const terminus: MapConfig = {
       id: "workshop",
       title: "Workshop",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.228, y: 0.585 }]
@@ -180,6 +201,7 @@ const terminus: MapConfig = {
       id: "docks",
       title: "Docks",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.868, y: 0.911 }]
@@ -188,6 +210,7 @@ const terminus: MapConfig = {
       id: "sea-caves",
       title: "Sea Caves",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.815, y: 0.843 }]
@@ -196,6 +219,7 @@ const terminus: MapConfig = {
       id: "mining-tunnels",
       title: "Mining Tunnels",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.896, y: 0.843 }]
@@ -204,6 +228,7 @@ const terminus: MapConfig = {
       id: "bio-lab",
       title: "Bio Lab",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.863, y: 0.770 }]
@@ -212,6 +237,7 @@ const terminus: MapConfig = {
       id: "submarine-pier",
       title: "Submarine Pier",
       description: "",
+      category: "general",
       type: "label",
       icon: null,
       locations: [{ x: 0.493, y: 0.347 }]
@@ -219,7 +245,7 @@ const terminus: MapConfig = {
     {
       id: "aetherium-maturation-pod",
       title: "Aetherium Maturation Pod",
-      type: "objective",
+      category: "objectives",
       description: "Activate and defend the A.M.P. to restore power to the area.",
       icon: "/icons/objectives/aetherium-maturation-pod.webp",
       locations: [
@@ -231,7 +257,7 @@ const terminus: MapConfig = {
     {
       id: "underwater-chest",
       title: "Underwater Chest",
-      type: "objective",
+      category: "objectives",
       description: "Possible Location. Opening this chest will reward you with loot and potentially a Ray Gun, Perks, Aetherium Crystals, and Aether Tools. Open all chests on the map for a guaranteed Free Perk.",
       icon: "/icons/objectives/chest.webp",
       locations: [
@@ -253,7 +279,7 @@ const terminus: MapConfig = {
     {
       id: "fish-spawn",
       title: "Fish Spawn",
-      type: "objective",
+      category: "objectives",
       description: "Possible Location. Killing these fish with an explosive will reward you with one loot item per fish. Killing a total of 50 fish will reward you with a Perkaholic.",
       icon: "/icons/objectives/fish.webp",
       locations: [
@@ -288,7 +314,7 @@ const terminus: MapConfig = {
     },
     {
       id: "dig-spot",
-      type: "objective",
+      category: "objectives",
       title: "Dig Spot",
       description: "Use a shovel to potentially get salvage, equipment, perks, and other items.",
       icon: "/icons/objectives/dig-site.webp",
@@ -361,10 +387,6 @@ const terminus: MapConfig = {
         { x: 0.825, y: 0.762 },
         { x: 0.365, y: 0.780 },
       ]
-    },
-    {
-      ...sharedMarkers["der-wunderfizz"],
-      locations: [{ x: 0.212, y: 0.550 }]
     },
     {
       ...sharedMarkers["door-buy"],
@@ -509,6 +531,10 @@ const terminus: MapConfig = {
         { x: 0.773, y: 0.498, title: "Subject File #398", description: "Obtained from one of the dig spots on Castle Rock Island." },
         { x: 0.926, y: 0.923, title: "What Have You Done?", description: "After defeating Nathan, kill any school of fish under the Sea Tower to drop the document." },
       ]
+    },
+    {
+      ...perks["der-wunderfizz"],
+      locations: [{ x: 0.212, y: 0.550 }]
     },
     {
       ...perks["deadshot-daiquiri"],

@@ -1,3 +1,5 @@
+import { MARKER_TYPES } from "@/map-configs/markers"
+
 export interface MapConfig {
   id: string
   title: string
@@ -33,10 +35,7 @@ export interface Location {
   description?: string
 }
 
-export type MarkerType = "perk" | "ammo-cache" | "weapon-wall-buy" | "pack-a-punch" 
-| "door-buy" | "trap" | "armor-wall-buy" | "mystery-box" | "rampage-inducer" | "exfil" | "arsenal" 
-| "crafting-table" | "gobblegum-machine" | "power-door" | "portal" | "workbench" | "label" | "fast-travel"
-| "vehicle-spawn" | "objective" | "shovel" | "audio-log" | "document"
+export type MarkerType = typeof MARKER_TYPES[number]
 
 export type Perks = "quick-revive" | "speed-cola" | "juggernog" | "double-tap" | "phd-flopper" 
 | "stamin-up" | "death-perception" | "elemental-pop" | "deadshot-daiquiri" | "melee-macchiato"

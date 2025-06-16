@@ -1,7 +1,15 @@
 import type { Location, MapMarker, MarkerType, Perks, Weapons } from "@/types/InteractiveMap";
 
 type Marker = Omit<MapMarker, "locations">
-type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label" | "objective">
+type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label">
+
+// Every type of marker currently supported
+export const MARKER_TYPES = [
+  "perk", "ammo-cache", "weapon-wall-buy", "pack-a-punch", 
+  "door-buy", "trap", "armor-wall-buy", "mystery-box", "rampage-inducer", "exfil", "arsenal", 
+  "crafting-table", "gobblegum-machine", "power-door", "portal", "workbench", "label", "fast-travel",
+  "vehicle-spawn", "shovel", "audio-log", "document"
+] as const
 
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
