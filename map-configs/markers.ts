@@ -95,7 +95,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
     id: "rampage-inducer",
     category: "general",
     title: "Rampage Inducer",
-    description: "Activate to make zombies faster and more aggresive until Round 55 or deactivated.",
+    description: "Activate to make zombies faster and more aggresive until Round 55 or until deactivated.",
     icon: "/icons/general/rampage-inducer.webp",
   },
   "trap": {
