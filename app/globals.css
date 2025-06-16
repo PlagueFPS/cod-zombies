@@ -149,12 +149,18 @@
     background: var(--color-background) !important;
     color: var(--color-foreground);
     border-radius: var(--radius-md);
-    border: 1px solid var(--color-primary);
+    border: 2px solid var(--color-border);
+    width: 24rem !important;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 
   .custom-popup .leaflet-popup-tip {
     background: var(--color-background) !important;
-    border: 1px solid var(--color-primary);
+    border: 2px solid var(--color-border);
   }
 
   .custom-popup .leaflet-popup-close-button {
@@ -401,4 +407,16 @@
   color: var(--color-rose-200) !important;
   background-image: linear-gradient(to right, var(--color-rose-950), var(--color-rose-800), var(--color-rose-950));
   border-color: var(--color-rose-600) !important;
+}
+
+@utility badge-equipment-gradient {
+  color: var(--color-gray-800) !important;
+  background-image: linear-gradient(to right, var(--color-gray-50), var(--color-gray-200), var(--color-gray-50));
+  border-color: var(--color-gray-400) !important;
+}
+
+@utility dark-badge-equipment-gradient {
+  color: var(--color-gray-200) !important;
+  background-image: linear-gradient(to right, var(--color-gray-900), var(--color-gray-800), var(--color-gray-900));
+  border-color: var(--color-gray-600) !important;
 }

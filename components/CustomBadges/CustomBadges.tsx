@@ -1,10 +1,12 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import type { Difficulty } from '@/types/FeaturedMap'
+import type { MarkerCategory } from '@/types/InteractiveMap'
 import type { ZombieType } from '@/types/Zombie'
 
 interface CustomBadgeProps { 
   className?: string
+  children?: React.ReactNode
 }
 
 export const DraftBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-draft-gradient dark:dark-badge-draft-gradient', className)}>Draft</Badge>
@@ -24,3 +26,14 @@ export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: Zombie
     'badge-elite-gradient dark:dark-badge-elite-gradient': type === "Elite",
     'badge-hard-gradient dark:dark-badge-hard-gradient': type === "Boss",
   }, className)}>{ type }</Badge>
+export const MarkerBadge = ({ className, category, children }: CustomBadgeProps & { category: MarkerCategory }) => 
+  <Badge className={cn({
+    'badge-new-gradient dark:dark-badge-new-gradient': category === "transportation",
+    'badge-changed-gradient dark:dark-badge-changed-gradient': category === "general",
+    'badge-medium-gradient dark:dark-badge-medium-gradient': category === "upgrades",
+    'badge-primary-gradient dark:dark-badge-primary-gradient': category === "objectives",
+    'badge-draft-gradient dark:dark-badge-draft-gradient': category === "intel",
+    'badge-equipment-gradient dark:dark-badge-equipment-gradient': category === "equipment",
+    }, className)}>
+    { children }
+  </Badge>

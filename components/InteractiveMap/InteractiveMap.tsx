@@ -13,6 +13,9 @@ import { useMapSearchParams } from '@/hooks/useMapSearchParams'
 import { Separator } from '../ui/separator'
 import { IN_DEVELOPMENT } from '@/utils/constants'
 import { generateMarkerKey } from '@/map-configs/markers'
+import { MarkerBadge } from '../CustomBadges/CustomBadges'
+import NextImage from 'next/image'
+import { cn } from '@/lib/utils'
 
 interface IInteractiveMap {
   mapConfig: MapConfig
@@ -129,13 +132,28 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
           >
             { marker.type !== "label" ? (
               <Popup className='custom-popup'>
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-                    { marker.type ? capatilize(marker.type) : capatilize(marker.category) }
-                  </Badge>
+                <div className="absolute top-4 left-4 flex items-center gap-2 mb-1 w-full">
+                  <MarkerBadge category={ marker.category }>
+                    { capatilize(marker.category) }
+                  </MarkerBadge>
                 </div>
-                <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient">{ location.title || marker.title }</h3>
-                <p className="text-sm text-foreground/90">{ location.description || marker.description }</p>
+                { marker.icon && (
+                  <div className='flex items-center justify-center w-full'>
+                    <NextImage
+                      unoptimized
+                      src={marker.icon}
+                      alt={marker.title}
+                      width={128}
+                      height={128}
+                      className={cn('size-16',
+                        { 'size-12': marker.type === "perk" && marker.id !== 'der-wunderfizz' },
+                        { 'size-12': marker.id === 'dark-aether-lantern' },
+                      )}
+                    />
+                  </div>
+                )}
+                <h3 className="font-extrabold text-lg text-gradient dark:dark-text-gradient text-center">{ location.title || marker.title }</h3>
+                <p className="text-sm text-foreground/90 px-2 text-center">{ location.description || marker.description }</p>
               </Popup>
             ) : null}
           </CustomMarker>
