@@ -11,6 +11,7 @@ const theTomb: MapConfig = {
     {
       id: "dig-site",
       type: "label",
+      category: "general",
       title: "Dig Site",
       description: "",
       icon: null,
@@ -19,6 +20,7 @@ const theTomb: MapConfig = {
     {
       id: "roman-mausoleum",
       type: "label",
+      category: "general",
       title: "Roman Mausoleum",
       description: "",
       icon: null,
@@ -27,6 +29,7 @@ const theTomb: MapConfig = {
     {
       id: "tombs",
       type: "label",
+      category: "general",
       title: "Tombs",
       description: "",
       icon: null,
@@ -35,6 +38,7 @@ const theTomb: MapConfig = {
     {
       id: "shrine-of-the-hierophants",
       type: "label",
+      category: "general",
       title: "Shrine of the Hierophants",
       description: "",
       icon: null,
@@ -43,6 +47,7 @@ const theTomb: MapConfig = {
     {
       id: "neolithic-catacombs",
       type: "label",
+      category: "general",
       title: "Neolithic Catacombs",
       description: "",
       icon: null,
@@ -51,6 +56,7 @@ const theTomb: MapConfig = {
     {
       id: "ossurary",
       type: "label",
+      category: "general",
       title: "Ossurary",
       description: "",
       icon: null,
@@ -59,6 +65,7 @@ const theTomb: MapConfig = {
     {
       id: "subterranean-temple",
       type: "label",
+      category: "general",
       title: "Subterranean Temple",
       description: "",
       icon: null,
@@ -67,6 +74,7 @@ const theTomb: MapConfig = {
     {
       id: "deep-excavation",
       type: "label",
+      category: "general",
       title: "Deep Excavation",
       description: "",
       icon: null,
@@ -75,6 +83,7 @@ const theTomb: MapConfig = {
     {
       id: "dark-aether-nexus",
       type: "label",
+      category: "general",
       title: "Dark Aether Nexus",
       description: "",
       icon: null,
@@ -82,7 +91,7 @@ const theTomb: MapConfig = {
     },
     {
       id: "aether-lantern",
-      type: "objective",
+      category: "objectives",
       title: "Dark Aether Lantern",
       description: "Creates a pool of fire underneath the lantern when shot, damaging zombies and players. Freezing three in quick succession is required for the Ice Staff upgrade quest.",
       icon: "/icons/objectives/aether-lantern.webp",
@@ -113,7 +122,7 @@ const theTomb: MapConfig = {
     },
     {
       id: "dig-spot",
-      type: "objective",
+      category: "objectives",
       title: "Dig Spot",
       description: "Use a shovel to potentially get salvage, equipment, and other items. Digging with Death Perception allows you to get Ancient Gems for the Free Raygun side quest.",
       icon: "/icons/objectives/dig-site.webp",
@@ -184,10 +193,6 @@ const theTomb: MapConfig = {
         { x: 0.567, y: 0.381 },
         { x: 0.677, y: 0.762 },
       ]
-    },
-    {
-      ...sharedMarkers["der-wunderfizz"],
-      locations: [{ x: 0.665, y: 0.814 }]
     },
     {
       ...sharedMarkers["door-buy"],
@@ -318,6 +323,10 @@ const theTomb: MapConfig = {
         { x: 0.566, y: 0.622, title: "Potts And Pains Pt 4", description: "Obtained from completing the Zombie Soliders side quest." },
         { x: 0.356, y: 0.354, title: "Potts And Pains Pt 5", description: "Obtained from completing the Free Ray Gun side quest." },
       ]
+    },
+    {
+      ...perks["der-wunderfizz"],
+      locations: [{ x: 0.665, y: 0.814 }]
     },
     {
       ...perks["phd-flopper"],

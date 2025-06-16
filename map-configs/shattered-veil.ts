@@ -11,6 +11,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "garden-pond",
       type: "label",
+      category: "general",
       title: "Garden Pond",
       description: "",
       icon: null,
@@ -19,6 +20,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "lower-terrace",
       type: "label",
+      category: "general",
       title: "Lower Terrace",
       description: "",
       icon: null,
@@ -27,6 +29,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "upper-terrace",
       type: "label",
+      category: "general",
       title: "Upper Terrace",
       description: "",
       icon: null,
@@ -35,6 +38,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "shems-henge",
       type: "label",
+      category: "general",
       title: "Shem's Henge",
       description: "",
       icon: null,
@@ -43,6 +47,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "conservatory",
       type: "label",
+      category: "general",
       title: "Conservatory",
       description: "",
       icon: null,
@@ -51,6 +56,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "motor-court",
       type: "label",
+      category: "general",
       title: "Motor Court",
       description: "",
       icon: null,
@@ -59,6 +65,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "grand-foyer",
       type: "label",
+      category: "general",
       title: "Grand Foyer",
       description: "",
       icon: null,
@@ -67,6 +74,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "overlook",
       type: "label",
+      category: "general",
       title: "Overlook",
       description: "",
       icon: null,
@@ -75,6 +83,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "east-foyer",
       type: "label",
+      category: "general",
       title: "East Foyer",
       description: "",
       icon: null,
@@ -83,6 +92,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "library",
       type: "label",
+      category: "general",
       title: "Library",
       description: "",
       icon: null,
@@ -91,6 +101,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "study",
       type: "label",
+      category: "general",
       title: "Study",
       description: "",
       icon: null,
@@ -99,6 +110,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "east-balcony",
       type: "label",
+      category: "general",
       title: "East Balcony",
       description: "",
       icon: null,
@@ -107,6 +119,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "rear-patio",
       type: "label",
+      category: "general",
       title: "Rear Patio",
       description: "",
       icon: null,
@@ -115,6 +128,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "kitchen",
       type: "label",
+      category: "general",
       title: "Kitchen",
       description: "",
       icon: null,
@@ -123,6 +137,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "banquet-hall",
       type: "label",
+      category: "general",
       title: "Banquet Hall",
       description: "",
       icon: null,
@@ -131,6 +146,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "west-balcony",
       type: "label",
+      category: "general",
       title: "West Balcony",
       description: "",
       icon: null,
@@ -139,6 +155,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "bottlery",
       type: "label",
+      category: "general",
       title: "Bottlery",
       description: "",
       icon: null,
@@ -147,6 +164,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "directors-quarters",
       type: "label",
+      category: "general",
       title: "Director's Quarters",
       description: "",
       icon: null,
@@ -155,6 +173,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "nursery",
       type: "label",
+      category: "general",
       title: "Nursery",
       description: "",
       icon: null,
@@ -163,6 +182,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "south-west-balcony",
       type: "label",
+      category: "general",
       title: "South West Balcony",
       description: "",
       icon: null,
@@ -171,6 +191,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "west-hallways",
       type: "label",
+      category: "general",
       title: "West Hallways",
       description: "",
       icon: null,
@@ -179,6 +200,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "mainframe-chamber",
       type: "label",
+      category: "general",
       title: "Mainframe Chamber",
       description: "",
       icon: null,
@@ -187,6 +209,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "security-overlook",
       type: "label",
+      category: "general",
       title: "Security Overlook",
       description: "",
       icon: null,
@@ -195,6 +218,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "service-tunnel",
       type: "label",
+      category: "general",
       title: "Service Tunnel",
       description: "",
       icon: null,
@@ -203,6 +227,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "supply-depot",
       type: "label",
+      category: "general",
       title: "Supply Depot",
       description: "",
       icon: null,
@@ -211,6 +236,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "armory",
       type: "label",
+      category: "general",
       title: "Armory",
       description: "",
       icon: null,
@@ -219,6 +245,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "serpent-mound",
       type: "label",
+      category: "general",
       title: "Serpent Mound",
       description: "",
       icon: null,
@@ -227,6 +254,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "distillery",
       type: "label",
+      category: "general",
       title: "Distillery",
       description: "",
       icon: null,
@@ -235,6 +263,7 @@ const shatteredVeil: MapConfig = {
     {
       id: "ravine",
       type: "label",
+      category: "general",
       title: "Ravine",
       description: "",
       icon: null,
@@ -242,7 +271,7 @@ const shatteredVeil: MapConfig = {
     },
     {
       id: "aether-plant",
-      type: "objective",
+      category: "objectives",
       title: "Aether Plant Spawn",
       description: "Destroy this plant with fire damage to obtain a Plant Seed.",
       icon: "/icons/objectives/aether-plant.webp",
@@ -264,7 +293,7 @@ const shatteredVeil: MapConfig = {
     },
     {
       id: "janus-crate",
-      type: "objective",
+      category: "objectives",
       title: "Janus Crate",
       description: "Each crate drops salvage. Destroy 8 crates to obtain the Essence Bomb.",
       icon: "/icons/objectives/janus-crate.webp",
@@ -293,7 +322,7 @@ const shatteredVeil: MapConfig = {
     },
     {
       id: "aether-crystal",
-      type: "objective",
+      category: "objectives",
       title: "Aether Crystal",
       description: "Each crystal drops salvage. The crystal emitting a thick essence contains an empty canister used for one of the Ray Gun MKII upgrades.",
       icon: "/icons/objectives/aether-crystal.webp",
@@ -335,6 +364,10 @@ const shatteredVeil: MapConfig = {
     {
       ...perks["elemental-pop"],
       locations: [{ x: 0.575, y: 0.223 }]
+    },
+    {
+      ...perks["der-wunderfizz"],
+      locations: [{ x: 0.745, y: 0.507 }]
     },
     {
       ...sharedMarkers["ammo-cache"],
@@ -383,10 +416,6 @@ const shatteredVeil: MapConfig = {
           title: "Tier III Armor"
         }
       ]
-    },
-    {
-      ...sharedMarkers["der-wunderfizz"],
-      locations: [{ x: 0.745, y: 0.507 }]
     },
     {
      ...sharedMarkers["gobblegum-machine"],

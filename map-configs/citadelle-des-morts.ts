@@ -11,6 +11,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "town-square",
       type: "label",
+      category: "general",
       title: "Town Square",
       description: "",
       icon: null,
@@ -19,6 +20,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "tavern",
       type: "label",
+      category: "general",
       title: "Tavern",
       description: "",
       icon: null,
@@ -27,6 +29,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "tavern-cellar",
       type: "label",
+      category: "general",
       title: "Tavern Cellar",
       description: "",
       icon: null,
@@ -35,6 +38,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "nature-path",
       type: "label",
+      category: "general",
       title: "Nature Path",
       description: "",
       icon: null,
@@ -43,6 +47,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "hilltop",
       type: "label",
+      category: "general",
       title: "Hilltop",
       description: "",
       icon: null,
@@ -51,6 +56,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "village-ascent",
       type: "label",
+      category: "general",
       title: "Village Ascent",
       description: "",
       icon: null,
@@ -59,6 +65,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "upper-village",
       type: "label",
+      category: "general",
       title: "Upper Village",
       description: "",
       icon: null,
@@ -67,6 +74,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "courtyard",
       type: "label",
+      category: "general",
       title: "Courtyard",
       description: "",
       icon: null,
@@ -75,6 +83,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "hillside-ramparts",
       type: "label",
+      category: "general",
       title: "Hillside Ramparts",
       description: "",
       icon: null,
@@ -83,6 +92,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "village-ramparts",
       type: "label",
+      category: "general",
       title: "Village Ramparts",
       description: "",
       icon: null,
@@ -91,6 +101,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "entrance-hall",
       type: "label",
+      category: "general",
       title: "Entrance Hall",
       description: "",
       icon: null,
@@ -99,6 +110,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "dining-hall",
       type: "label",
+      category: "general",
       title: "Dining Hall",
       description: "",
       icon: null,
@@ -107,6 +119,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "alchemical-lab",
       type: "label",
+      category: "general",
       title: "Alchemical Lab",
       description: "",
       icon: null,
@@ -115,6 +128,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "sitting-rooms",
       type: "label",
+      category: "general",
       title: "Sitting Rooms",
       description: "",
       icon: null,
@@ -123,6 +137,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "undercroft",
       type: "label",
+      category: "general",
       title: "Undercroft",
       description: "",
       icon: null,
@@ -131,6 +146,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "dungeon",
       type: "label",
+      category: "general",
       title: "Dungeon",
       description: "",
       icon: null,
@@ -139,6 +155,7 @@ const citadelleDesMorts: MapConfig = {
     {
       id: "oubilette-room",
       type: "label",
+      category: "general",
       title: "Oubilette Room",
       description: "",
       icon: null,
@@ -191,10 +208,6 @@ const citadelleDesMorts: MapConfig = {
         { x: 0.486, y: 0.663 },
         { x: 0.466, y: 0.282 }
       ]
-    },
-    {
-      ...sharedMarkers["der-wunderfizz"],
-      locations: [{ x: 0.420, y: 0.619 }]
     },
     {
       ...sharedMarkers["door-buy"],
@@ -269,7 +282,7 @@ const citadelleDesMorts: MapConfig = {
       locations: [{ x: 0.508, y: 0.619,
         title: "Tavern Cellar Portal",
         description: "Teleport to the Entrance Hall."
-       }]
+      }]
     },
     {
       ...sharedMarkers["rampage-inducer"],
@@ -333,6 +346,10 @@ const citadelleDesMorts: MapConfig = {
         { x: 0.505, y: 0.134, title: "Statuesque", description: "Interact with piles of books in the Alchemical Lab until the document drops out of one of them." },
         { x: 0.653, y: 0.622, title: "Intake Form", description: "Obtained from completing the Wishing Well side quest." },
       ]
+    },
+    {
+      ...perks["der-wunderfizz"],
+      locations: [{ x: 0.420, y: 0.619 }]
     },
     {
       ...perks["deadshot-daiquiri"],
