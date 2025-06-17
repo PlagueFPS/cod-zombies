@@ -139,7 +139,9 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
         <SidebarMenu className="px-4 pt-2">
           <SidebarMenuItem>
             <Input
+              type="search"
               placeholder="Filter Search..."
+              aria-label="Filter Search"
               value={searchTerm}
               onChange={handleOnChange}
             />
