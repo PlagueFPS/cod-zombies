@@ -61,14 +61,15 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadata> => {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const { zombie } = await getPageData(isEnabled, slug)
+  const description = `Learn elemental weaknesses, spawn behavior, attacks, and more for the "${zombie.name}" ${zombie.type} zombie.`
 
   return {
     title: zombie.name,
-    description: zombie.description,
+    description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
       title: zombie.name,
-      description: zombie.description,
+      description,
       url: `/${zombie.slug}`,
       images: {
         url: `https:${zombie.image.url}?w=600&h=600&q=75&fm=jpg`,
@@ -78,7 +79,7 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
     },
     twitter: {
       title: zombie.name,
-      description: zombie.description,
+      description,
       card: 'summary',
     }
   }

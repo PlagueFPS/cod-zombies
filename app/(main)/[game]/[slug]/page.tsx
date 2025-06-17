@@ -53,8 +53,9 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({ params }: MapPageProps): Promise<Metadata> => {
   const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
   const { map } = await getPageData(isEnabled, slug)
-  const { title, image, game: mapGame } = map
-  const description = `Complete the main quest/easter egg for the ${mapGame.title} zombies map ${title} with our detailed step-by-step guide!`
+  const { title: mapTitle, image, game: mapGame } = map
+  const title = `${mapTitle} Main Quest`
+  const description = `Learn how to complete the main quest/easter egg for the ${mapGame.title} zombies map ${mapTitle} with our detailed step-by-step walkthrough!`
   return {
     title,
     description,

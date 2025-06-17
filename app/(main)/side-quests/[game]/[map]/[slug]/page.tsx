@@ -42,13 +42,16 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
   const [{ slug, game, map }, { isEnabled }] = await Promise.all([params, draftMode()])
   const q = await getQuestBySlug(isEnabled, slug)
   if (!q) notFound()
+  const title = `${q.title} Side Quest`
+  const description = `Learn how to complete the ${q.title} side quest/easter egg for ${q.map.title} with our detailed step-by-step walkthrough!`
+
   return {
-    title: q.title,
-    description: q.description,
+    title,
+    description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
-      title: q.title,
-      description: q.description,
+      title,
+      description,
       url: `/side-quests/${game}/${map}/${slug}`,
       images: {
         url: `https:${q.image.url}?w=1200&h=630&q=75&fm=jpg`,
@@ -57,8 +60,8 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
       },
     },
     twitter: {
-      title: q.title,
-      description: q.description,
+      title,
+      description,
       card: 'summary_large_image'
     }
   }
