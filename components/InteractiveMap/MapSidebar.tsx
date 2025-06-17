@@ -153,7 +153,9 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
               onClick={toggleFilters}
               className="border bg-accent/30 cursor-pointer justify-center"
             >
-              <span className="tracking-wide">Toggle Filters</span>
+              <span className="tracking-wide">
+                { toggle === "None" ? "Disable Filters" : "Enable Filters" }
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
