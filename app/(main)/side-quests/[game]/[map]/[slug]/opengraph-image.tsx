@@ -1,11 +1,7 @@
 import { getQuestBySlug } from "@/data/sideQuests"
 import { env } from "@/env"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { readFile } from "fs/promises"
 import { ImageResponse } from "next/og"
-import { join } from "path"
-// import { DATE_OPTIONS } from "@/utils/constants"
-// import { env } from "@/env"
 
 export const alt = "Side Quest Preview Image"
 export const size = {
@@ -22,10 +18,9 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const { slug } = await params
   const q = await getQuestBySlug(false, slug)
   if (!q) return null
-  const [boldFont, semiBoldFont, regularFont] = await Promise.all([
-    readFile(join(process.cwd(), "fonts/Geist-Bold.ttf")),
-    readFile(join(process.cwd(), "fonts/Geist-SemiBold.ttf")),
-    readFile(join(process.cwd(), "fonts/Geist-Regular.ttf")),
+  const [boldFont, semiBoldFont] = await Promise.all([
+    fetch(`${env.NEXT_PUBLIC_WEBSITE_URL}/fonts/Geist-Bold.ttf`).then(res => res.arrayBuffer()),
+    fetch(`${env.NEXT_PUBLIC_WEBSITE_URL}/fonts/Geist-SemiBold.ttf`).then(res => res.arrayBuffer()),
   ])
 
   return new ImageResponse(
@@ -52,7 +47,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
         }}
       />
       <div tw="absolute inset-0" style={{
-        backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5), transparent)",
+        backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6), transparent)",
       }} />
       <div tw="absolute bottom-16 right-12 flex items-center justify-center rounded-full">
         <img 
@@ -124,12 +119,6 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
           data: semiBoldFont,
           style: "normal",
           weight: 600,
-        },
-        {
-          name: "Geist",
-          data: regularFont,
-          style: "normal",
-          weight: 400,
         },
       ],
     }
