@@ -34,7 +34,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   }
 
   return new ImageResponse(
-    <div tw="bg-black" style={{
+    <div style={{
         position: "relative",
         display: "flex",
         flexDirection: "column",
@@ -42,6 +42,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
         justifyContent: "center",
         height: "100%",
         width: "100%",
+        backgroundColor: "black",
       }}
       >
       <img 
@@ -56,35 +57,60 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
           opacity: 1,
         }}
       />
-      <div tw="absolute inset-0" style={{
+      <div style={{
+        position: "absolute",
+        top: "0",
+        left: "0",
+        right: "0",
+        bottom: "0",
         backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent)",
       }} />
-      <div tw="absolute bottom-50 left-16 flex items-center justify-center"
-        style={{
+      <div style={{
+          position: "absolute",
+          bottom: "14rem",
+          left: "4rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           gap: "1rem",
         }}
       >
         <span 
-          tw="rounded-full font-semibold text-orange-200 border border-orange-500 px-2.5 py-0.5 text-base"
           style={{
+            padding: "0.25rem 0.625rem",
+            border: "1px solid hsl(25 95% 53.1%)",
+            borderRadius: "9999px",
+            color: "hsl(32 97.7% 83.1%)",
+            fontWeight: "600",
+            fontSize: "1rem",
             backgroundImage: "radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
           }}
         >
           { q.game.title }
         </span>
         <span 
-          tw="rounded-full font-semibold text-orange-200 border border-orange-500 px-2.5 py-0.5 text-base"
           style={{
+            padding: "0.25rem 0.625rem",
+            border: "1px solid hsl(25 95% 53.1%)",
+            borderRadius: "9999px",
+            color: "hsl(32 97.7% 83.1%)",
+            fontWeight: "600",
+            fontSize: "1rem",
             backgroundImage: "radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
           }}
         >
           { q.map.title }
         </span>
       </div>
-      <h1 tw="bottom-20 left-16 font-bold text-7xl tracking-tight" style={{
+      <h1 style={{
         position: "absolute",
+        bottom: "5rem",
+        left: "4rem",
         textAlign: "center",
         color: "white",
+        fontSize: "4.5rem",
+        letterSpacing: "-0.025em",
+        fontWeight: "700",
       }}>
         <span style={{
           paddingBottom: "1rem",
@@ -95,10 +121,17 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
           {q.title}
         </span>
       </h1>
-      <div tw="absolute bottom-20 left-16 flex items-center justify-center font-semibold text-xl"
-        style={{
+      <div style={{
+          position: "absolute",
+          bottom: "5.5rem",
+          left: "4rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           gap: "0.5rem",
           color: "hsl(24 5.4% 63.9%)",
+          fontWeight: "600",
+          fontSize: "1.25rem",
         }}
       >
         <span>{ new Date(q.updatedAt).toLocaleDateString("en-US", DATE_OPTIONS) }</span>
