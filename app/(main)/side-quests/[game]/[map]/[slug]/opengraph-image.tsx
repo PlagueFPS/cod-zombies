@@ -1,6 +1,5 @@
 import { getFontData } from "@/data/og-images"
 import { getQuestBySlug } from "@/data/sideQuests"
-import { env } from "@/env"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { ImageResponse } from "next/og"
 
@@ -60,22 +59,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
       <div tw="absolute inset-0" style={{
         backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6), transparent)",
       }} />
-      <div tw="absolute bottom-16 right-12 flex items-center justify-center rounded-full">
-        <img 
-          src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.png`} 
-          alt="Site Logo" 
-          width={32} 
-          height={32} 
-          tw="h-8 w-8"
-        />
-      </div>
-      <div tw="absolute bottom-50 left-12 flex items-center justify-center"
+      <div tw="absolute bottom-50 left-16 flex items-center justify-center"
         style={{
           gap: "1rem",
         }}
       >
         <span 
-          tw="rounded-full font-semibold text-orange-200 border border-orange-500 px-2.5 py-0.5 text-sm"
+          tw="rounded-full font-semibold text-orange-200 border border-orange-500 px-2.5 py-0.5 text-base"
           style={{
             backgroundImage: "linear-gradient(to right, hsl(13 81.1% 14.5%), hsl(15 79.1% 33.7%), hsl(13 81.1% 14.5%))",
           }}
@@ -83,7 +73,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
           { q.game.title }
         </span>
         <span 
-          tw="rounded-full font-semibold text-orange-200 border border-orange-500 px-2.5 py-0.5 text-sm"
+          tw="rounded-full font-semibold text-orange-200 border border-orange-500 px-2.5 py-0.5 text-base"
           style={{
             backgroundImage: "linear-gradient(to right, hsl(13 81.1% 14.5%), hsl(15 79.1% 33.7%), hsl(13 81.1% 14.5%))",
           }}
@@ -91,7 +81,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
           { q.map.title }
         </span>
       </div>
-      <h1 tw="bottom-20 left-12 font-bold text-7xl tracking-tight" style={{
+      <h1 tw="bottom-20 left-16 font-bold text-7xl tracking-tight" style={{
         position: "absolute",
         textAlign: "center",
         color: "white",
@@ -105,7 +95,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
           {q.title}
         </span>
       </h1>
-      <div tw="absolute bottom-16 left-12 flex items-center justify-center font-semibold text-lg"
+      <div tw="absolute bottom-18 left-16 flex items-center justify-center font-semibold text-xl"
         style={{
           gap: "0.5rem",
           color: "hsl(24 5.4% 63.9%)",
