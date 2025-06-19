@@ -34,7 +34,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   }
 
   return new ImageResponse(
-    <div tw="bg-gray-800" style={{
+    <div tw="bg-black" style={{
         position: "relative",
         display: "flex",
         flexDirection: "column",
@@ -57,7 +57,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
         }}
       />
       <div tw="absolute inset-0" style={{
-        backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6), transparent)",
+        backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent)",
       }} />
       <div tw="absolute bottom-50 left-16 flex items-center justify-center"
         style={{
@@ -95,7 +95,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
           {q.title}
         </span>
       </h1>
-      <div tw="absolute bottom-18 left-16 flex items-center justify-center font-semibold text-xl"
+      <div tw="absolute bottom-20 left-16 flex items-center justify-center font-semibold text-xl"
         style={{
           gap: "0.5rem",
           color: "hsl(24 5.4% 63.9%)",
