@@ -8,7 +8,11 @@ type AllowedFonts = "Geist-Bold.otf" | "Geist-SemiBold.otf"
 
 export const getFontData = async (font: AllowedFonts): Promise<Result<ArrayBuffer, FetchError>> => {
   const baseURL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : env.NEXT_PUBLIC_WEBSITE_URL
-  const { data, error } = await tryCatch(fetch(`${baseURL}/fonts/${font}`))
+  const { data, error } = await tryCatch(fetch(`${baseURL}/fonts/${font}`, {
+    headers: {
+      'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET || ''
+    }
+  }))
   
   if (error) {
     return err(new FetchError(error.message, { cause: error }))

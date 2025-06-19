@@ -24,12 +24,12 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   ])
 
   if (boldFont.isErr()) {
-    console.error(`[${boldFont.error._tag}]`, boldFont.error)
+    console.error(boldFont.error)
     return null
   }
 
   if (semiBoldFont.isErr()) {
-    console.error(`[${semiBoldFont.error._tag}]`, semiBoldFont.error)
+    console.error(semiBoldFont.error)
     return null
   }
 
