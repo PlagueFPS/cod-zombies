@@ -12,6 +12,10 @@ export const getFontData = async (font: AllowedFonts): Promise<Result<ArrayBuffe
     return err(new FetchError(error.message, { cause: error }))
   }
 
+  if (!data.ok) {
+    return err(new FetchError("Missing font data", { cause: data }))
+  }
+
   const buffer = await data.arrayBuffer()
   return ok(buffer)
 }
