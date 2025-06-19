@@ -315,108 +315,108 @@
 
 @utility badge-primary-gradient {
   color: var(--color-orange-800) !important;
-  background-image: linear-gradient(to right, var(--color-orange-50), var(--color-orange-200), var(--color-orange-50));
+  background-image: radial-gradient(circle at top, var(--color-orange-100), var(--color-orange-200));
   border-color: var(--color-orange-400) !important;
 }
 
 @utility dark-badge-primary-gradient {
   color: var(--color-orange-200) !important;
-  background-image: linear-gradient(to right, var(--color-orange-950), var(--color-orange-800), var(--color-orange-950));
+  background-image: radial-gradient(circle at top, var(--color-orange-800), var(--color-orange-900));
   border-color: var(--color-primary) !important;
 }
 
 @utility badge-changed-gradient {
   color: var(--color-blue-800) !important;
-  background-image: linear-gradient(to right, var(--color-blue-50), var(--color-blue-200), var(--color-blue-50));
+  background-image: radial-gradient(circle at top, var(--color-blue-100), var(--color-blue-200));
   border-color: var(--color-blue-400)!important;
 }
 
 @utility dark-badge-changed-gradient {
   color: var(--color-blue-200) !important;
-  background-image: linear-gradient(to right, var(--color-blue-950), var(--color-blue-800), var(--color-blue-950));
+  background-image: radial-gradient(circle at top, var(--color-blue-800), var(--color-blue-900));
   border-color: var(--color-blue-600) !important;
 }
 
 @utility badge-draft-gradient {
   color: var(--color-purple-800) !important;
-  background-image: linear-gradient(to right, var(--color-purple-50), var(--color-purple-200), var(--color-purple-50));
+  background-image: radial-gradient(circle at top, var(--color-purple-100), var(--color-purple-200));
   border-color: var(--color-purple-400) !important;
 }
 
 @utility dark-badge-draft-gradient {
   color: var(--color-purple-200) !important;
-  background-image: linear-gradient(to right, var(--color-purple-950), var(--color-purple-800), var(--color-purple-950));
+  background-image: radial-gradient(circle at top, var(--color-purple-800), var(--color-purple-900));
   border-color: var(--color-purple-600) !important;
 }
 
 @utility badge-new-gradient {
   color: var(--color-green-800) !important;
-  background-image: linear-gradient(to right, var(--color-green-50), var(--color-green-200), var(--color-green-50));
+  background-image: radial-gradient(circle at top, var(--color-green-100), var(--color-green-200));
   border-color: var(--color-green-400) !important;
 }
 
 @utility dark-badge-new-gradient {
   color: var(--color-green-200) !important;
-  background-image: linear-gradient(to right, var(--color-green-950), var(--color-green-800), var(--color-green-950));
+  background-image: radial-gradient(circle at top, var(--color-green-800), var(--color-green-900));
   border-color: var(--color-green-600) !important;
 }
 
 @utility badge-easy-gradient {
   color: var(--color-teal-800) !important;
-  background-image: linear-gradient(to right, var(--color-teal-50), var(--color-teal-200), var(--color-teal-50));
+  background-image: radial-gradient(circle at top, var(--color-teal-100), var(--color-teal-200));
   border-color: var(--color-teal-400) !important;
 }
 
 @utility dark-badge-easy-gradient {
   color: var(--color-teal-200) !important;
-  background-image: linear-gradient(to right, var(--color-teal-950), var(--color-teal-800), var(--color-teal-950));
+  background-image: radial-gradient(circle at top, var(--color-teal-800), var(--color-teal-900));
   border-color: var(--color-teal-600) !important;
 }
 
 @utility badge-medium-gradient {
   color: var(--color-yellow-800) !important;
-  background-image: linear-gradient(to right, var(--color-yellow-50), var(--color-yellow-200), var(--color-yellow-50));
+  background-image: radial-gradient(circle at top, var(--color-yellow-100), var(--color-yellow-200));
   border-color: var(--color-yellow-400) !important;
 }
 
 @utility dark-badge-medium-gradient {
   color: var(--color-yellow-200) !important;
-  background-image: linear-gradient(to right, var(--color-yellow-950), var(--color-yellow-800), var(--color-yellow-950));
+  background-image: radial-gradient(circle at top, var(--color-yellow-800), var(--color-yellow-900));
   border-color: var(--color-yellow-600) !important;
 }
 
 @utility badge-hard-gradient {
   color: var(--color-red-800) !important;
-  background-image: linear-gradient(to right, var(--color-red-50), var(--color-red-200), var(--color-red-50));
+  background-image: radial-gradient(circle at top, var(--color-red-100), var(--color-red-200));
   border-color: var(--color-red-400) !important;
 }
 
 @utility dark-badge-hard-gradient {
   color: var(--color-red-200) !important;
-  background-image: linear-gradient(to right, var(--color-red-950), var(--color-red-800), var(--color-red-950));
+  background-image: radial-gradient(circle at top, var(--color-red-800), var(--color-red-900));
   border-color: var(--color-red-600) !important;
 }
 
 @utility badge-elite-gradient {
   color: var(--color-rose-800) !important;
-  background-image: linear-gradient(to right, var(--color-rose-50), var(--color-rose-200), var(--color-rose-50));
+  background-image: radial-gradient(circle at top, var(--color-rose-100), var(--color-rose-200));
   border-color: var(--color-rose-400) !important;
 }
 
 @utility dark-badge-elite-gradient {
   color: var(--color-rose-200) !important;
-  background-image: linear-gradient(to right, var(--color-rose-950), var(--color-rose-800), var(--color-rose-950));
+  background-image: radial-gradient(circle at top, var(--color-rose-800), var(--color-rose-900));
   border-color: var(--color-rose-600) !important;
 }
 
 @utility badge-equipment-gradient {
   color: var(--color-gray-800) !important;
-  background-image: linear-gradient(to right, var(--color-gray-50), var(--color-gray-200), var(--color-gray-50));
+  background-image: radial-gradient(circle at top, var(--color-gray-100), var(--color-gray-200));
   border-color: var(--color-gray-400) !important;
 }
 
 @utility dark-badge-equipment-gradient {
   color: var(--color-gray-200) !important;
-  background-image: linear-gradient(to right, var(--color-gray-900), var(--color-gray-800), var(--color-gray-900));
+  background-image: radial-gradient(circle at top, var(--color-gray-800), var(--color-gray-900));
   border-color: var(--color-gray-600) !important;
 }
