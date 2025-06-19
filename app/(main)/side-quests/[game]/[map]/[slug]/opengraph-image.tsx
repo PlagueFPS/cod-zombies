@@ -20,8 +20,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const q = await getQuestBySlug(false, slug)
   if (!q) return null
   const [boldFont, semiBoldFont] = await Promise.all([
-    getFontData("Geist-Bold.ttf"),
-    getFontData("Geist-SemiBold.ttf"),
+    getFontData("Geist-Bold.otf"),
+    getFontData("Geist-SemiBold.otf"),
   ])
 
   if (boldFont.isErr()) {
