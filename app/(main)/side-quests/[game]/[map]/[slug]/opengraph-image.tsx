@@ -1,7 +1,8 @@
-import { getFontData } from "@/data/og-images"
 import { getQuestBySlug } from "@/data/sideQuests"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { ImageResponse } from "next/og"
+import { readFile } from "node:fs/promises"
+import { join } from "node:path"
 
 export const alt = "Side Quest Preview Image"
 export const size = {
@@ -19,19 +20,19 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const q = await getQuestBySlug(false, slug)
   if (!q) return null
   const [boldFont, semiBoldFont] = await Promise.all([
-    getFontData("Geist-Bold.otf"),
-    getFontData("Geist-SemiBold.otf"),
+    readFile(join(process.cwd(), "fonts/Geist-Bold.otf")),
+    readFile(join(process.cwd(), "fonts/Geist-SemiBold.otf")),
   ])
 
-  if (boldFont.isErr()) {
-    console.error(boldFont.error)
-    return null
-  }
+  // if (boldFont.isErr()) {
+  //   console.error(boldFont.error)
+  //   return null
+  // }
 
-  if (semiBoldFont.isErr()) {
-    console.error(semiBoldFont.error)
-    return null
-  }
+  // if (semiBoldFont.isErr()) {
+  //   console.error(semiBoldFont.error)
+  //   return null
+  // }
 
   return new ImageResponse(
     <div style={{
@@ -144,13 +145,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
       fonts: [
         {
           name: "Geist",
-          data: boldFont.value,
+          data: boldFont,
           style: "normal",
           weight: 700,
         },
         {
           name: "Geist",
-          data: semiBoldFont.value,
+          data: semiBoldFont,
           style: "normal",
           weight: 600,
         },
