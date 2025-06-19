@@ -7,7 +7,9 @@ import { env } from '@/env'
 type AllowedFonts = "Geist-Bold.otf" | "Geist-SemiBold.otf"
 
 export const getFontData = async (font: AllowedFonts): Promise<Result<ArrayBuffer, FetchError>> => {
-  const { data, error } = await tryCatch(fetch(`${env.NEXT_PUBLIC_WEBSITE_URL}/fonts/${font}`))
+  const baseURL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : env.NEXT_PUBLIC_WEBSITE_URL
+  const { data, error } = await tryCatch(fetch(`${baseURL}/fonts/${font}`))
+  
   if (error) {
     return err(new FetchError(error.message, { cause: error }))
   }
