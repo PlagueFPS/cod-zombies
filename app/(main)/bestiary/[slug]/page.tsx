@@ -61,7 +61,7 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadata> => {
   const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
   const { zombie } = await getPageData(isEnabled, slug)
-  const description = `Learn elemental weaknesses, spawn behavior, attacks, and more for the "${zombie.name}" ${zombie.type} zombie.`
+  const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.name}" ${zombie.type} zombie.`
 
   return {
     title: zombie.name,
@@ -71,16 +71,11 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
       title: zombie.name,
       description,
       url: `/${zombie.slug}`,
-      images: {
-        url: `https:${zombie.image.url}?w=600&h=600&q=75&fm=jpg`,
-        width: 600,
-        height: 600
-      }
     },
     twitter: {
       title: zombie.name,
       description,
-      card: 'summary',
+      card: 'summary_large_image',
     }
   }
 }
