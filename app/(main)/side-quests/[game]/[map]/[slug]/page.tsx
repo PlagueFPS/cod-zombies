@@ -178,11 +178,11 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
   return (
     <CustomLink 
       href={ href } 
-      className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm lg:max-w-lg shadow-sm dark:shadow-none overflow-hidden transition-transform', {
+      className={cn('group hover:border-primary hover:scale-105 border-2 rounded-lg w-full max-w-sm lg:max-w-xl shadow-sm dark:shadow-none overflow-hidden transition-transform', {
         'pointer-events-none opacity-50': quest.isComingSoon,
       })}
     >
-      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center px-2 py-4 overflow-hidden', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
           { quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null }
           { (isEnabled || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null }
@@ -211,11 +211,11 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest
             />
         </div>
         <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
-          <h2 className='text-xl font-extrabold text-transparent bg-clip-text bg-linear-to-b text-gradient dark:dark-text-gradient'>
+          <h2 className={cn('text-xl font-extrabold text-transparent bg-clip-text bg-linear-to-b text-gradient dark:dark-text-gradient', { 'truncate': quest.title.length > 20 })}>
             { quest.title }
           </h2>
           <p className='text-sm line-clamp-3 text-ellipsis'>{ quest.description }</p>
-          <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
+          <div className={cn('flex items-center pb-2 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
             { prev ? (
               <>
                 <ChevronLeft />

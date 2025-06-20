@@ -290,7 +290,7 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: { zombie: MinifiedZombie,
       href={ href }
       className='group hover:border-primary hover:-translate-y-2 border rounded-lg w-full max-w-sm xl:max-w-full shadow-sm dark:shadow-none overflow-hidden transition-all'
     >
-      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center p-2', { 'xl:flex-row-reverse': prev })}>
+      <article className={cn('relative h-full xl:h-48 flex flex-col xl:flex-row items-center px-2 py-4', { 'xl:flex-row-reverse': prev })}>
         <div className={cn('absolute top-2 right-2 z-50 w-fit flex items-center justify-center gap-1')}>
           { zombie.isNew ? <NewBadge /> : null } 
           { (isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null }
@@ -317,11 +317,11 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: { zombie: MinifiedZombie,
             />
         </div>
         <div className='relative z-20 h-full flex flex-col justify-center w-full gap-2 px-4 pt-4 xl:pt-6'>
-          <h3 className='text-xl font-semibold group-hover:text-primary-gradient'>
+          <h3 className={cn('text-xl font-semibold group-hover:text-primary-gradient', { 'truncate': zombie.name.length > 20 })}>
             { zombie.name }
           </h3>
           <p className='text-sm line-clamp-3 text-ellipsis'>{ zombie.description }</p>
-          <div className={cn('flex items-center pb-4 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
+          <div className={cn('flex items-center pb-2 transition-all group-hover:text-primary mt-auto', { 'xl:-ml-2': prev, 'xl:-mr-2': !prev })}>
             { prev ? (
               <>
                 <ChevronLeft />
