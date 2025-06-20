@@ -21,7 +21,7 @@ export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
   type: ZombieType
 }
 
-export default function ZombieReleaseEmail({ type, title, description, image, redirectUrl }: IZombieRelease) {
+export default function ZombieReleaseEmail({ type, title, description, imageUrl, redirectUrl }: IZombieRelease) {
   const currentYear = new Date().getFullYear()
 
   return (
@@ -69,12 +69,12 @@ export default function ZombieReleaseEmail({ type, title, description, image, re
             {/* Zombie Preview Image */}
             <Section className="mb-[24px]">
               <Img
-                src={ `https://${image.url}?fm=jpg` }
+                src={ imageUrl }
                 alt={ `${title} Preview Image` }
                 className="w-full h-auto object-cover rounded-[8px]"
               />
               <Text className="text-[14px] text-gray-500 italic mt-[8px] text-center m-0">
-                A visual preview of an { title }
+                A visual preview of the {`"${title}"`} {type} Zombie
               </Text>
             </Section>
             

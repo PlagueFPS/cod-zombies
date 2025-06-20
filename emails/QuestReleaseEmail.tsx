@@ -18,16 +18,12 @@ import {
 export interface IQuestRelease {
   type: "Main" | "Side",
   title: string,
+  imageUrl: string,
   description: string,
-  image: {
-    url: string | undefined
-    width: number | undefined
-    height: number | undefined
-  }
   redirectUrl: string
 }
 
-export default function QuestReleaseEmail({ type, title, description, image, redirectUrl }: IQuestRelease) {
+export default function QuestReleaseEmail({ type, title, imageUrl, description, redirectUrl  }: IQuestRelease) {
   const currentYear = new Date().getFullYear()
 
   return (
@@ -42,7 +38,7 @@ export default function QuestReleaseEmail({ type, title, description, image, red
             {/* Logo and Site Name */}
             <Section className="text-center mb-[24px]">
               <Img
-                src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
+                src={`http://localhost:3001/logo.webp`}
                 alt="Site Logo"
                 width="120"
                 height="50"
@@ -74,13 +70,13 @@ export default function QuestReleaseEmail({ type, title, description, image, red
             
             {/* Article Preview Image */}
             <Section className="mb-[24px]">
-              <Img
-                src={ `https://${image.url}?fm=jpg` }
+              <Img 
+                src={ imageUrl }
                 alt={ `${title} Preview Image` }
                 className="w-full h-auto object-cover rounded-[8px]"
               />
               <Text className="text-[14px] text-gray-500 italic mt-[8px] text-center m-0">
-                A visual preview of { title }
+                A visual preview of { title } article
               </Text>
             </Section>
             

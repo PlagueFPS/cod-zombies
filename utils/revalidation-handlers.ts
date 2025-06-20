@@ -21,6 +21,7 @@ interface RevalidateData {
 
 interface BroadcastEntry {
   title: string
+  slug: string
   description: string
   image: {
     url: string | undefined
@@ -52,9 +53,14 @@ const RevalidateResponse = {
 } as const
 
 const sendQuestBroadcast = async <T extends BroadcastEntry>(type: "Main" | "Side", entry: T, url: string) => {
+  const imageUrl = type === "Main" 
+    ? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og?type=map&slug=${entry.slug}` 
+    : `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og?type=side-quest&slug=${entry.slug}`
+
   return await sendQuestReleaseBroadcast({
     type,
     redirectUrl: url,
+    imageUrl,
     ...entry,
   })
 }
@@ -160,8 +166,8 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
     const broadcastData = {
       type: zombie.type,
       title: zombie.title,
+      imageUrl: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og?type=zombie&slug=${zombie.slug}`,
       description: zombie.description,
-      image: zombie.image,
       redirectUrl: url,
     }
 

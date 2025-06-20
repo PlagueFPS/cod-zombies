@@ -48,13 +48,16 @@ export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTM
   )
 }
 
+// This component is neccessary for proper handling of hash links
+// In the context of pre-renders, the hash link is not handled by the browser
+// since it does not exist yet, so we need to handle it manually
 export const HashLinkHandler = () => {
   const [attemptCount, setAttemptCount] = useState(0)
 
   useEffect(() => {
     if (!window.location.hash || attemptCount >= 5) return
-    const hash = window.location.hash.substring(1)
-    const element = document.getElementById(hash)
+    const id = window.location.hash.substring(1)
+    const element = document.getElementById(id)
 
     if (element) {
       element.scrollIntoView({ behavior: 'instant' })
