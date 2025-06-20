@@ -38,7 +38,7 @@ export default function QuestReleaseEmail({ type, title, imageUrl, description, 
             {/* Logo and Site Name */}
             <Section className="text-center mb-[24px]">
               <Img
-                src={`http://localhost:3001/logo.webp`}
+                src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
                 alt="Site Logo"
                 width="120"
                 height="50"
