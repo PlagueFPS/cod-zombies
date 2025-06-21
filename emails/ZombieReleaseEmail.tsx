@@ -28,8 +28,8 @@ export default function ZombieReleaseEmail({ type, title, description, imageUrl,
     <Html>
       <Tailwind>
         <Head>
-          <title>New { type } Zombie Released</title>
-          <Preview>We&apos;ve just published a new guide you might be interested in</Preview>
+          <title>New { type } Zombie Release: { title }</title>
+          <Preview>We&apos;ve just published a new zombie breakdown you might be interested in</Preview>
         </Head>
         <Body className="bg-gray-100 font-sans py-[40px]">
           <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
@@ -47,15 +47,7 @@ export default function ZombieReleaseEmail({ type, title, description, imageUrl,
               </Text>
             </Section>
             
-            <Hr className="border-solid border-orange-200 my-[24px]" />
-            
-            <Heading className="text-[24px] font-bold text-gray-800 my-[24px] text-center">
-              New { type } Zombie Released
-            </Heading>
-            
-            <Text className="text-[16px] text-gray-600 mb-[16px]">
-              Introducing the latest addition to the zombies bestiary:
-            </Text>
+            <Hr className="border-solid border-orange-200 my-[24px]" />          
             
             <Section className="bg-orange-50 rounded-[8px] p-[16px] mb-[24px] border-l-[4px] border-solid border-orange-500">
               <Heading className="text-[20px] font-bold text-gray-800 mt-0 mb-[8px]">
@@ -78,34 +70,36 @@ export default function ZombieReleaseEmail({ type, title, description, imageUrl,
               </Text>
             </Section>
             
-            <Text className="text-[16px] text-gray-600 mb-[24px]">
-              This comprehensive guide covers:
-            </Text>
+            <Section className='mb-[24px] bg-gray-100 p-[16px] rounded-[8px]'>
+              <Text className="text-[16px] text-gray-600 mb-[16px] font-semibold">
+                What you can expect from this breakdown:
+              </Text>
 
-            <ul className="list-disc pl-[24px] mb-[24px]">
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                How fast they are
-              </li>
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                Their Elemental Weaknesses
-              </li>
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                Detailed description of their attacks
-              </li>
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                Their Spawn Behavior
-              </li>
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                Combat Strategies to defeat them
-              </li>
-            </ul>
+              <ul className="list-disc pl-[24px] mb-[24px] font-medium">
+                <li className="text-[16px] text-gray-600 mb-[8px]">
+                  How fast they move and how to counteract it
+                </li>
+                <li className="text-[16px] text-gray-600 mb-[8px]">
+                  What elements they are weak against
+                </li>
+                <li className="text-[16px] text-gray-600 mb-[8px]">
+                  Detailed descriptions of their attacks
+                </li>
+                <li className="text-[16px] text-gray-600 mb-[8px]">
+                  When and how they spawn
+                </li>
+                <li className="text-[16px] text-gray-600 mb-[8px]">
+                  How to defeat them effectively
+                </li>
+              </ul>
+            </Section>
             
             <Section className="text-center mb-[32px]">
               <Button
                 className="bg-orange-500 text-white font-bold py-[12px] px-[24px] rounded-[4px] no-underline text-center box-border"
                 href={ redirectUrl }
               >
-                Read the Full Guide
+                View the Full Breakdown
               </Button>
             </Section>
             

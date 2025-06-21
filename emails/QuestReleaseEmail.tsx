@@ -23,15 +23,33 @@ export interface IQuestRelease {
   redirectUrl: string
 }
 
-export default function QuestReleaseEmail({ type, title, imageUrl, description, redirectUrl  }: IQuestRelease) {
+export default function QuestReleaseEmail({ type, title, imageUrl, description, redirectUrl }: IQuestRelease) {
   const currentYear = new Date().getFullYear()
+
+  const getGuideCoverage = () => {
+    const defaultCoverage = [
+      "Requirements for completion",
+      "Detailed explanations for each step with images",
+      "Tips to circumvent common pain points"
+    ]
+    switch(type) {
+      default: return defaultCoverage
+      case "Main":
+        return [
+          ...defaultCoverage, 
+          "Recommended Loadouts", 
+          "Recommended GobbleGums",
+          "Video Guides for visual learners"
+        ]
+    }
+  }
 
   return (
     <Html>
       <Tailwind>
         <Head>
-          <title>New { type } Quest Guide Released</title>
-          <Preview>We&apos;ve just published a new guide you might be interested in</Preview>
+          <title>New { type } Quest Guide: { title }</title>
+          <Preview>We&apos;ve just published a new { type } quest guide you might be interested in</Preview>
         </Head>
         <Body className="bg-gray-100 font-sans py-[40px]">
           <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
@@ -51,14 +69,6 @@ export default function QuestReleaseEmail({ type, title, imageUrl, description, 
             
             <Hr className="border-solid border-orange-200 my-[24px]" />
             
-            <Heading className="text-[24px] font-bold text-gray-800 my-[24px] text-center">
-              New { type } Quest Guide Released
-            </Heading>
-            
-            <Text className="text-[16px] text-gray-600 mb-[16px]">
-              We&apos;re excited to share our latest zombies guide with you:
-            </Text>
-            
             <Section className="bg-orange-50 rounded-[8px] p-[16px] mb-[24px] border-l-[4px] border-solid border-orange-500">
               <Heading className="text-[20px] font-bold text-gray-800 mt-0 mb-[8px]">
                 { title }
@@ -76,25 +86,22 @@ export default function QuestReleaseEmail({ type, title, imageUrl, description, 
                 className="w-full h-auto object-cover rounded-[8px]"
               />
               <Text className="text-[14px] text-gray-500 italic mt-[8px] text-center m-0">
-                A visual preview of { title } article
+                A visual preview of the { title } article
               </Text>
             </Section>
             
-            <Text className="text-[16px] text-gray-600 mb-[24px]">
-              This comprehensive guide covers:
-            </Text>
-
-            <ul className="list-disc pl-[24px] mb-[24px]">
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                Requirements for completion
-              </li>
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                Detailed explanations for each step
-              </li>
-              <li className="text-[16px] text-gray-600 mb-[8px]">
-                Tips to circumvent common pain points
-              </li>
-            </ul>
+            <Section className='my-[24px] bg-gray-100 rounded-[8px] p-[16px]'>
+              <Text className="text-[16px] text-gray-600 mb-[16px] font-semibold">
+                What you can expect from this guide:
+              </Text>
+              <ul className="list-disc pl-[24px] mb-[24px] font-medium">
+                { getGuideCoverage().map((coverage, index) => (
+                  <li key={index} className="text-[16px] text-gray-600 mb-[8px]">
+                    {coverage}
+                  </li>
+                ))}
+              </ul>
+            </Section>
             
             <Section className="text-center mb-[32px]">
               <Button
