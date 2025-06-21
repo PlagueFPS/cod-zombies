@@ -54,8 +54,8 @@ const RevalidateResponse = {
 
 const sendQuestBroadcast = async <T extends BroadcastEntry>(type: "Main" | "Side", entry: T, url: string) => {
   const imageUrl = type === "Main" 
-    ? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og?type=map&slug=${entry.slug}` 
-    : `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og?type=side-quest&slug=${entry.slug}`
+    ? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}` 
+    : `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
 
   return await sendQuestReleaseBroadcast({
     type,
@@ -166,7 +166,7 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
     const broadcastData = {
       type: zombie.type,
       title: zombie.title,
-      imageUrl: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og?type=zombie&slug=${zombie.slug}`,
+      imageUrl: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/zombies/${zombie.slug}`,
       description: zombie.description,
       redirectUrl: url,
     }

@@ -36,3 +36,7 @@ export const TerminusCodeSchema = z.object({
 export const DraftModeSchema = z.object({
   pathname: z.string().nonempty()
 })
+
+export const OGParamsSchema = z.promise(z.object({
+  slug: z.tuple([AllowedSlugsSchema, z.string().nonempty()])
+}))
