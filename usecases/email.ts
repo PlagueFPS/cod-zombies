@@ -4,17 +4,13 @@ import { type CreateBroadcastOptions, Resend } from "resend"
 import QuestReleaseEmail, { IQuestRelease } from "@/emails/QuestReleaseEmail"
 import ZombieReleaseEmail, { IZombieRelease } from "@/emails/ZombieReleaseEmail"
 import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
-import { generateToken, verifyToken } from "@/utils/functions"
+import { generateToken } from "@/utils/functions"
 import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
 import { err, ok, Result } from 'neverthrow'
 import { 
   BroadcastDataError, 
   ContactExistsError, 
   ContactNotFoundError,
-  ExpiredSubscribeLinkError,
-  ExpiredUnsubscribeLinkError, 
-  InvalidSubscribeLinkError, 
-  InvalidUnsubscribeLinkError,
   UpstreamProviderError,  
 } from "@/types/Error"
 import SubscribeEmail from "@/emails/SubscribeEmail"
@@ -34,9 +30,6 @@ const resend = new Resend(env.RESEND_API_KEY)
 interface EmailSuccess {
   message: string
 }
-
-type ProccessUnsubscribeError = InvalidUnsubscribeLinkError | ExpiredUnsubscribeLinkError | UpstreamProviderError
-type ProccessSubscribeError = UpstreamProviderError | InvalidSubscribeLinkError | ExpiredSubscribeLinkError
 
 export const requestSubscribe = async (email: string): Promise<Result<string, UpstreamProviderError | ContactExistsError>> => {
   const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
@@ -87,19 +80,9 @@ export const requestUnsubscribe = async (email: string): Promise<Result<string, 
   return ok("Confirmation email sent! Check your inbox.")
 }
 
-export const processSubscribe = async (token: string): Promise<Result<true, ProccessSubscribeError>> => {
-  const result = verifyToken(token)
-  if (result.isErr()) {
-    switch(result.error._tag) {
-      case "TOKEN_EXPIRATION_ERROR":
-        return err(new ExpiredSubscribeLinkError("The ssubscribe link used has expired. Please request a new one."))
-      case "TOKEN_VERIFICATION_ERROR":
-        return err(new InvalidSubscribeLinkError("The ssubscribe link used is invalid. Please request a new one.", { cause: result.error }))
-    }
-  }
-
+export const processSubscribe = async (email: string): Promise<Result<true, UpstreamProviderError>> => {
   const { error: createError } = await resend.contacts.create({
-    email: result.value,
+    email,
     audienceId: env.RESEND_AUDIENCE_ID,
   })
 
@@ -111,20 +94,10 @@ export const processSubscribe = async (token: string): Promise<Result<true, Proc
   return ok(true)
 }
 
-export const processUnsubscribe = async (token: string): Promise<Result<true, ProccessUnsubscribeError>> => {
-  const result = verifyToken(token)
-  if (result.isErr()) {
-    switch(result.error._tag) {
-      case "TOKEN_EXPIRATION_ERROR":
-        return err(new ExpiredUnsubscribeLinkError("The unsubscribe link used has expired. Please request a new one."))
-      case "TOKEN_VERIFICATION_ERROR":
-        return err(new InvalidUnsubscribeLinkError("The unsubscribe link used is invalid. Please request a new one.", { cause: result.error }))
-    }
-  }
-
+export const processUnsubscribe = async (email: string): Promise<Result<true, UpstreamProviderError>> => {
   const { error } = await resend.contacts.remove({
     audienceId: env.RESEND_AUDIENCE_ID,
-    email: result.value,
+    email,
   })
 
   if (error) return err(new UpstreamProviderError(

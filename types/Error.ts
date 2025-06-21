@@ -86,3 +86,31 @@ export class EntryNotFoundError extends Error {
     super(message, options)
   }
 }
+
+export class SchemaValidationError extends Error {
+  readonly _tag = "SCHEMA_VALIDATION_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
+export class AuthorizationError extends Error {
+  readonly _tag = "AUTHORIZATION_ERROR"
+  constructor(message: string = "Unauthorized Request", options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
+export class RevalidationError extends Error {
+  readonly _tag = "REVALIDATION_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}
+
+export class StatusEnforcementError extends Error {
+  readonly _tag = "STATUS_ENFORCEMENT_ERROR"
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options)
+  }
+}

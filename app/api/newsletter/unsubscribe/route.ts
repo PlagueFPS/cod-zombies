@@ -1,25 +1,36 @@
+import { ExpiredUnsubscribeLinkError, InvalidUnsubscribeLinkError } from "@/types/Error";
 import { processUnsubscribe } from "@/usecases/email";
+import { verifyToken } from "@/utils/functions";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token")
-
   if (!token) {
     return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent("missing-token")}`, req.url))
   }
 
   const decodedToken = decodeURIComponent(token)
-  const result = await processUnsubscribe(decodedToken)
-  if (result.isErr()) {
-    switch(result.error._tag) {
-      case "EXPIRED_UNSUBSCRIBE_LINK_ERROR":
-        console.warn(`[${result.error._tag}]`, result.error)
-        break
+  const tokenResult = verifyToken(decodedToken)
+  if (tokenResult.isErr()) {
+    switch(tokenResult.error._tag) {
       default:
-        console.error(result.error)
-        break
+        console.error(tokenResult.error)
+        return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent("An error occured during the unsubscribe process. Please try again.")}`, req.url))
+      case "TOKEN_EXPIRATION_ERROR":
+        const expiredError = new ExpiredUnsubscribeLinkError("The unsubscribe link used has expired. Please request a new one.", { cause: tokenResult.error })
+        console.warn(expiredError)
+        return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(expiredError.message)}`, req.url))
+      case "TOKEN_VERIFICATION_ERROR":
+        const invalidError = new InvalidUnsubscribeLinkError("The unsubscribe link used is invalid. Please request a new one.", { cause: tokenResult.error })
+        console.warn(invalidError)
+        return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(invalidError.message)}`, req.url))
     }
-    return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(result.error.message)}`, req.url))
+  }
+
+  const process = await processUnsubscribe(tokenResult.value)
+  if (process.isErr()) {
+    console.error(process.error)
+    return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(process.error.message)}`, req.url))
   }
 
   return NextResponse.redirect(new URL(`/newsletter/unsubscribe/success`, req.url))

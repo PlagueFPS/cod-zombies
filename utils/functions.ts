@@ -1,5 +1,5 @@
 import { env } from "@/env"
-import { TokenExpirationError, TokenVerificationError } from "@/types/Error"
+import { AuthorizationError, TokenExpirationError, TokenVerificationError } from "@/types/Error"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
 import { err, ok, Result as NeverThrowResult } from "neverthrow"
 
@@ -42,20 +42,20 @@ export const getYouTubeVideoID = (url: string) => {
  * Performs a timing-safe comparison of two secrets.
  * @param secret - The secret to be validated.
  * @param validSecret - The known valid secret.
- * @returns True if the secrets match, false otherwise.
+ * @returns True if the secrets match.
  */
-export const authorizedRequest = (secret: string, validSecret: string) => {
+export const authorizedRequest = (secret: string, validSecret: string): NeverThrowResult<true, AuthorizationError> => {
   const encoder = new TextEncoder()
   const secretBuffer = encoder.encode(secret)
   const validSecretBuffer = encoder.encode(validSecret)
-  const { data, error } = tryCatchSync(timingSafeEqual(secretBuffer, validSecretBuffer))
+  const { error } = tryCatchSync(timingSafeEqual(secretBuffer, validSecretBuffer))
 
   if (error) {
-    console.error(error)
-    return false
+    const authError = new AuthorizationError(error.message, { cause: error })
+    return err(authError)
   }
 
-  return data
+  return ok(true)
 }
 
 /**
