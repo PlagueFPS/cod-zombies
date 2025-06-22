@@ -138,7 +138,7 @@ export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
   const result = await sendBroadcast(props.title, {
     audienceId: env.RESEND_AUDIENCE_ID,
     from: "COD Zombies Guides <updates@codzombiesguides.com>",
-    subject: `New ${props.type} Quest Guide Release!`,
+    subject: `New ${props.type} Quest Guide: ${props.title}`,
     react: QuestReleaseEmail(props),
     name: `${props.title} Release`
   })
@@ -158,7 +158,7 @@ export const sendZombieReleaseBroadcast = async (props: IZombieRelease) => {
   const result = await sendBroadcast(props.title, {
     audienceId: env.RESEND_AUDIENCE_ID,
     from: "COD Zombies Guides <updates@codzombiesguides.com>",
-    subject: `New ${props.type} Zombie Release!`,
+    subject: `New ${props.type} Zombie Release: ${props.title}`,
     react: ZombieReleaseEmail(props),
     name: `${props.title} Release`
   })

@@ -8,7 +8,6 @@ import {
   Hr,
   Html,
   Img,
-  Preview,
   Section,
   Text,
   Tailwind,
@@ -49,7 +48,6 @@ export default function QuestReleaseEmail({ type, title, imageUrl, description, 
       <Tailwind>
         <Head>
           <title>New { type } Quest Guide: { title }</title>
-          <Preview>We&apos;ve just published a new { type } quest guide you might be interested in</Preview>
         </Head>
         <Body className="bg-gray-100 font-sans py-[40px]">
           <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
