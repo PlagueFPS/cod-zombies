@@ -1,116 +1,26 @@
+import { Data } from "effect"
+
 export interface ErrorProps {
   error: Error & { digest?: string }
   reset: () => void
 }
 
-export class FetchError extends Error {
-  readonly _tag = "FETCH_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class ContactExistsError extends Error {
-  readonly _tag = "CONTACT_EXISTS_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class ContactNotFoundError extends Error {
-  readonly _tag = "CONTACT_NOT_FOUND_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class TokenVerificationError extends Error {
-  readonly _tag = "TOKEN_VERIFICATION_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class TokenExpirationError extends Error {
-  readonly _tag = "TOKEN_EXPIRATION_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class InvalidUnsubscribeLinkError extends Error {
-  readonly _tag = "INVALID_UNSUBSCRIBE_LINK_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class ExpiredUnsubscribeLinkError extends Error {
-  readonly _tag = "EXPIRED_UNSUBSCRIBE_LINK_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class InvalidSubscribeLinkError extends Error {
-  readonly _tag = "INVALID_SUBSCRIBE_LINK_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class ExpiredSubscribeLinkError extends Error {
-  readonly _tag = "EXPIRED_SUBSCRIBE_LINK_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class BroadcastDataError extends Error {
-  readonly _tag = "BROADCAST_DATA_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class UpstreamProviderError extends Error {
-  readonly _tag = "UPSTREAM_PROVIDER_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class EntryNotFoundError extends Error {
-  readonly _tag = "ENTRY_NOT_FOUND_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class SchemaValidationError extends Error {
-  readonly _tag = "SCHEMA_VALIDATION_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class AuthorizationError extends Error {
-  readonly _tag = "AUTHORIZATION_ERROR"
-  constructor(message: string = "Unauthorized Request", options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class RevalidationError extends Error {
-  readonly _tag = "REVALIDATION_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
-
-export class StatusEnforcementError extends Error {
-  readonly _tag = "STATUS_ENFORCEMENT_ERROR"
-  constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-  }
-}
+export class FetchError extends Data.TaggedError("FetchError")<{ message: string, cause: Error | unknown }> {}
+export class ContactExistsError extends Data.TaggedError("ContactExistsError")<{ message: string, cause: Error | unknown }> {}
+export class ContactNotFoundError extends Data.TaggedError("ContactNotFoundError")<{ message: string, cause: Error | unknown }> {}
+export class TokenVerificationError extends Data.TaggedError("TokenVerificationError")<{ message: string, cause: Error | unknown }> {}
+export class TokenExpirationError extends Data.TaggedError("TokenExpirationError")<{ message: string, cause: Error | unknown }> {}
+export class InvalidUnsubscribeLinkError extends Data.TaggedError("InvalidUnsubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
+export class ExpiredUnsubscribeLinkError extends Data.TaggedError("ExpiredUnsubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
+export class InvalidSubscribeLinkError extends Data.TaggedError("InvalidSubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
+export class ExpiredSubscribeLinkError extends Data.TaggedError("ExpiredSubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
+export class BroadcastDataError extends Data.TaggedError("BroadcastDataError")<{ message: string, cause: Error | unknown }> {}
+export class UpstreamProviderError extends Data.TaggedError("UpstreamProviderError")<{ message: string, cause: Error | unknown }> {}
+export class EntryNotFoundError extends Data.TaggedError("EntryNotFoundError")<{ message: string, cause: Error | unknown }> {}
+export class SchemaValidationError extends Data.TaggedError("SchemaValidationError")<{ message: string, cause: Error | unknown }> {}
+export class AuthorizationError extends Data.TaggedError("AuthorizationError")<{ message: string, cause: Error | unknown }> {}
+export class RevalidationError extends Data.TaggedError("RevalidationError")<{ message: string, cause: Error | unknown }> {}
+export class StatusEnforcementError extends Data.TaggedError("StatusEnforcementError")<{ message: string, cause: Error | unknown }> {}
+export class TextParseError extends Data.TaggedError("TextParseError")<{ message: string, cause: Error | unknown }> {}
+export class JSONParseError extends Data.TaggedError("JSONParseError")<{ message: string, cause: Error | unknown }> {}
+export class EmailProviderError extends Data.TaggedError("EmailProviderError")<{ message: string, cause: Error | unknown }> {}

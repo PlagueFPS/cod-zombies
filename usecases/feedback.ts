@@ -1,8 +1,8 @@
 import "server-only"
 import { env } from "@/env"
 import type { FeedbackForm } from "@/utils/validationSchemas"
-import { FetchError } from "@/types/Error"
-import { Effect } from "effect"
+import { FetchError, TextParseError } from "@/types/Error"
+import { Console, Effect } from "effect"
 
 interface Input extends FeedbackForm {
   title?: string
@@ -13,7 +13,8 @@ export const submitFeedbackUseCase = (input: Input) =>
   Effect.gen(function* () {
     const { title, label, feedback } = input
     const res = yield* Effect.tryPromise({
-      try: () => fetch("https://projectplannerai.com/api/feedback", {
+      try: (signal) => fetch("https://projectplannerai.com/api/feedback", {
+        signal,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,15 +26,30 @@ export const submitFeedbackUseCase = (input: Input) =>
           feedback,
         }),
       }),
-      catch: (error) => new FetchError("Failed to submit feedback due to a technical issue on our end. Please try again.", { cause: error }),
+      catch: (error) => new FetchError({
+        message: "Failed to submit feedback due to a technical issue on our end. Please try again.",
+        cause: error
+      }),
     })
 
-    if (!res.ok) return yield* Effect.fail(new FetchError("Failed to submit feedback due to a technical issue on our end. Please try again.", { cause: res }))
+    if (!res.ok) {
+      const resText = yield* Effect.tryPromise({
+        try: () => res.text(),
+        catch: (error) => new TextParseError({
+          message: "Failed to submit feedback due to a technical issue on our end. Please try again.",
+          cause: error
+        }),
+      })
+
+      return yield* Effect.fail(new FetchError({
+        message: "Failed to submit feedback due to a technical issue on our end. Please try again.",
+        cause: resText
+      }))
+    }
     
     return { success: true, message: "Thank you for submitting! Your submission has been received." }
   }).pipe(
-    Effect.withLogSpan("submitFeedbackUseCase"),
-    Effect.catchTags({
-      FETCH_ERROR: (error) => Effect.succeed({ success: false, message: error.message }),
-    }),
+    Effect.withLogSpan("submitFeedback"),
+    Effect.tapErrorCause(error => Console.error(error)),
+    Effect.catchAll(error => Effect.succeed({ success: false, message: error.message }))
   )
