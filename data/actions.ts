@@ -7,6 +7,7 @@ import { draftMode } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { Effect } from "effect"
+import { EmailServiceLive } from "@/lib/services/EmailService"
 
 export const subscribeToNewsletter = ratelimitAction
   .metadata({ actionName: "subscribeToNewsletter" })
@@ -18,24 +19,8 @@ export const subscribeToNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = await requestSubscribe(email)
-    if (result.isErr()) {
-      switch(result.error._tag) {
-        case 'CONTACT_EXISTS_ERROR':
-          console.log(`[${result.error._tag}]`, result.error)
-          break
-        default: 
-          console.error(result.error)
-          break
-      }
-
-      return {
-        success: false,
-        message: result.error.message 
-      }
-    }
-    
-    return { success: true, message: result.value }
+    const result = Effect.provide(requestSubscribe(email), EmailServiceLive)
+    return await Effect.runPromise(result)
   })
 
 export const unsubscribeFromNewsletter = ratelimitAction
@@ -48,24 +33,8 @@ export const unsubscribeFromNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = await requestUnsubscribe(email)
-    if (result.isErr()) {
-      switch(result.error._tag) {
-        case "CONTACT_NOT_FOUND_ERROR":
-          console.log(`[${result.error._tag}]`, result.error)
-          break
-        default:
-          console.error(result.error)
-          break
-      }
-
-      return {
-        success: false,
-        message: result.error.message 
-      }
-    }
-    
-    return { success: true, message: result.value }
+    const result = Effect.provide(requestUnsubscribe(email), EmailServiceLive)
+    return await Effect.runPromise(result)
   })
 
 export const submitFeedbackForm = createAction
@@ -79,16 +48,8 @@ export const submitContactForm = createAction
   .metadata({ actionName: "submitContactForm" })
   .schema(ContactFormSchema)
   .action(async ({ parsedInput }) => {
-    const result = await sendContactEmail(parsedInput)
-    if (result.isErr()) {
-      console.error(result.error)
-      return {
-        success: false,
-        message: result.error.message 
-      }
-    }
-    
-    return { success: true, message: result.value.message }
+    const result = Effect.provide(sendContactEmail(parsedInput), EmailServiceLive)
+    return await Effect.runPromise(result)
   })
 
 export const toggleDraftMode = developmentAction
