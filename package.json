@@ -44,6 +44,7 @@
     "cmdk": "1.0.4",
     "contentful": "11.5.23",
     "contentful-management": "11.52.2",
+    "effect": "^3.16.8",
     "leaflet": "^1.9.4",
     "lucide-react": "0.468.0",
     "neverthrow": "^8.2.0",
