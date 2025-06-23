@@ -1,15 +1,12 @@
 import "server-only"
 import { env } from "@/env"
 import { type CreateBroadcastOptions } from "resend"
-import QuestReleaseEmail, { IQuestRelease } from "@/emails/QuestReleaseEmail"
-import ZombieReleaseEmail, { IZombieRelease } from "@/emails/ZombieReleaseEmail"
+import QuestReleaseEmail, { type IQuestRelease } from "@/emails/QuestReleaseEmail"
+import ZombieReleaseEmail, { type IZombieRelease } from "@/emails/ZombieReleaseEmail"
 import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
 import { generateToken } from "@/utils/functions"
 import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
-import {  
-  ContactExistsError, 
-  ContactNotFoundError,  
-} from "@/types/Error"
+import {  ContactExistsError, ContactNotFoundError } from "@/types/Error"
 import SubscribeEmail from "@/emails/SubscribeEmail"
 import { Console, Effect } from "effect"
 import { EmailService } from "@/lib/services/EmailService"
@@ -41,6 +38,7 @@ export const requestSubscribe = (email: string) =>
     return { success: true, message: "Confirmation email sent! Check your inbox." }
   }).pipe(
     Effect.withLogSpan("request_subscribe"),
+    Effect.tapErrorCause(error => Console.error(error)),
     Effect.catchAll(error => Effect.succeed({ success: false, message: error.message }))
   )
 
@@ -64,6 +62,7 @@ export const requestUnsubscribe = (email: string) =>
     return { success: true, message: "Confirmation email sent! Check your inbox." }
   }).pipe(
     Effect.withLogSpan("request_unsubscribe"),
+    Effect.tapErrorCause(error => Console.error(error)),
     Effect.catchAll(error => Effect.succeed({ success: false, message: error.message }))
   )
 
@@ -74,7 +73,7 @@ export const processSubscribe = (email: string) =>
     return { success: true }
   }).pipe(
     Effect.withLogSpan("process_subscribe"),
-    Effect.tapError(error => Console.error(error)),
+    Effect.tapErrorCause(error => Console.error(error)),
     Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
   )
 
@@ -91,7 +90,7 @@ export const sendContactEmail = (props: EmailProps) =>
     return { success: true, message: "Thank you for contacting us! We will get back to you as soon as possible." }
   }).pipe(
     Effect.withLogSpan("send_contact_email"),
-    Effect.tapError(error => Console.error(error)),
+    Effect.tapErrorCause(error => Console.error(error)),
     Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
   )
 
@@ -136,6 +135,6 @@ const sendBroadcast = (title: string, payload: CreateBroadcastOptions) =>
     return { success: true, message: `${title} Broadcast sent successfully!` }
   }).pipe(
     Effect.withLogSpan("send_broadcast"),
-    Effect.tapError(error => Console.error(error)),
+    Effect.tapErrorCause(error => Console.error(error)),
     Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
   )
