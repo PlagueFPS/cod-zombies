@@ -21,10 +21,6 @@ interface EmailProps {
   message: string
 }
 
-interface InternalEmailProps extends Pick<EmailProps, 'message'> {
-  subject: string
-}
-
 const resend = new Resend(env.RESEND_API_KEY)
 
 interface EmailSuccess {
@@ -105,17 +101,6 @@ export const processUnsubscribe = async (email: string): Promise<Result<true, Up
     { cause: error }
   ))
   return ok(true)
-}
-
-export const sendInternalEmail = async ({ subject, message }: InternalEmailProps) => {
-  const { error } = await resend.emails.send({
-    from: `COD Zombies Guides <support@codzombiesguides.com>`,
-    to: 'codzombiesguidesteam@gmail.com',
-    subject,
-    text: message,
-  })
-
-  if (error) console.error(error)
 }
 
 export const sendContactEmail = async ({ name, email, message }: EmailProps): Promise<Result<EmailSuccess, UpstreamProviderError>> => {

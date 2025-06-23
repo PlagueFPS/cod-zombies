@@ -6,6 +6,7 @@ import { submitFeedbackUseCase } from "@/usecases/feedback"
 import { draftMode } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import { Effect } from "effect"
 
 export const subscribeToNewsletter = ratelimitAction
   .metadata({ actionName: "subscribeToNewsletter" })
@@ -71,16 +72,7 @@ export const submitFeedbackForm = createAction
   .metadata({ actionName: "submitFeedbackForm" })
   .schema(FeedbackFormSchema)
   .action(async ({ parsedInput }) => {
-    const result = await submitFeedbackUseCase(parsedInput)
-    if (result.isErr()) {
-      console.error(result.error)
-      return {
-        success: false,
-        message: result.error.message 
-      }
-    }
-    
-    return { success: true, message: result.value.message }
+    return await Effect.runPromise(submitFeedbackUseCase(parsedInput))
   })
 
 export const submitContactForm = createAction
