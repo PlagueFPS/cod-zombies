@@ -1,19 +1,18 @@
 import "server-only"
 import { env } from "@/env"
-import { type CreateBroadcastOptions, Resend } from "resend"
+import { type CreateBroadcastOptions } from "resend"
 import QuestReleaseEmail, { IQuestRelease } from "@/emails/QuestReleaseEmail"
 import ZombieReleaseEmail, { IZombieRelease } from "@/emails/ZombieReleaseEmail"
 import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
 import { generateToken } from "@/utils/functions"
 import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
-import { err, ok, Result } from 'neverthrow'
-import { 
-  BroadcastDataError, 
+import {  
   ContactExistsError, 
-  ContactNotFoundError,
-  UpstreamProviderError,  
+  ContactNotFoundError,  
 } from "@/types/Error"
 import SubscribeEmail from "@/emails/SubscribeEmail"
+import { Console, Effect } from "effect"
+import { EmailService } from "@/lib/services/EmailService"
 
 interface EmailProps {
   name: string
@@ -21,171 +20,122 @@ interface EmailProps {
   message: string
 }
 
-const resend = new Resend(env.RESEND_API_KEY)
+export const requestSubscribe = (email: string) => 
+  Effect.gen(function*() {
+    const emailService = yield* EmailService
+    const contact = yield* emailService.getContact({ audienceId: env.RESEND_AUDIENCE_ID, email })
+    if (contact) return yield* Effect.fail(new ContactExistsError({
+      message: "We were unable to send a verification email because that email is already subscribed!",
+      cause: new Error(`Contact already subscribed: ${contact.id}`)
+    }))
 
-interface EmailSuccess {
-  message: string
-}
+    const token = generateToken(email)
+    const subscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
-export const requestSubscribe = async (email: string): Promise<Result<string, UpstreamProviderError | ContactExistsError>> => {
-  const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
-  if (error && error.name !== "not_found") return err(new UpstreamProviderError(
-    "We were unable to send a confirmation email due to a technical issue with our email provider. Please try again.",
-    { cause: error }
-  ))
-  if (data) return err(new ContactExistsError("We were unable to send a verification email because that email is already subscribed!"))
-  
-  const token = generateToken(email)
-  const subscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
-  const { error: sendError } = await resend.emails.send({
-    from: "COD Zombies Guides <support@codzombiesguides.com>",
-    to: email,
-    subject: "Confirm Your Subscribe Request",
-    react: SubscribeEmail({ subscribeUrl })
-  })
+    yield* emailService.sendEmail({
+      from: "COD Zombies Guides <support@codzombiesguides.com>",
+      to: email,
+      subject: "Confirm Your Subscribe Request",
+      react: SubscribeEmail({ subscribeUrl })
+    })
+    return { success: true, message: "Confirmation email sent! Check your inbox." }
+  }).pipe(
+    Effect.withLogSpan("request_subscribe"),
+    Effect.catchAll(error => Effect.succeed({ success: false, message: error.message }))
+  )
 
-  if (sendError) return err(new UpstreamProviderError(
-    "We were unable to send a confirmation email due to a technical issue with our email provider. Please try again.",
-    { cause: sendError }
-  ))
+export const requestUnsubscribe = (email: string) => 
+  Effect.gen(function*() {
+    const emailService = yield* EmailService
+    const contact = yield* emailService.getContact({ audienceId: env.RESEND_AUDIENCE_ID, email })
+    if (!contact) return yield* Effect.fail(new ContactNotFoundError({
+      message: "That email is not currently subscribed.",
+      cause: new Error(`Contact not found: ${email}`)
+    }))
 
-  return ok("Confirmation email sent! Check your inbox.")
-}
+    const token = generateToken(email)
+    const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
+    yield* emailService.sendEmail({
+      from: "COD Zombies Guides <support@codzombiesguides.com>",
+      to: email,
+      subject: "Confirm Your Unsubscribe Request",
+      react: UnsubscribeEmail({ unsubscribeUrl })
+    })
+    return { success: true, message: "Confirmation email sent! Check your inbox." }
+  }).pipe(
+    Effect.withLogSpan("request_unsubscribe"),
+    Effect.catchAll(error => Effect.succeed({ success: false, message: error.message }))
+  )
 
-export const requestUnsubscribe = async (email: string): Promise<Result<string, UpstreamProviderError | ContactNotFoundError>> => {
-  const { data, error } = await resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
-  if (error && error.name !== "not_found") return err(new UpstreamProviderError(
-    "We were unable to send unsubscribe link due to a technical issue with our email provider. Please try again.", 
-    { cause: error }
-  ))
-  if (!data) return err(new ContactNotFoundError("That email is not currently subscribed."))
+export const processSubscribe = (email: string) =>
+  Effect.gen(function*() {
+    const emailService = yield* EmailService
+    yield* emailService.createContact({ email, audienceId: env.RESEND_AUDIENCE_ID })
+    return { success: true }
+  }).pipe(
+    Effect.withLogSpan("process_subscribe"),
+    Effect.tapError(error => Console.error(error)),
+    Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
+  )
 
-  const token = generateToken(email)
-  const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
-  const { error: sendError } = await resend.emails.send({
-    from: "COD Zombies Guides <support@codzombiesguides.com>",
-    to: email,
-    subject: "Confirm Your Unsubscribe Request",
-    react: UnsubscribeEmail({ unsubscribeUrl })
-  })
+export const sendContactEmail = (props: EmailProps) => 
+  Effect.gen(function*() {
+    const emailService = yield* EmailService
+    yield* emailService.sendEmail({
+      from: `${props.name} <contact@codzombiesguides.com>`,
+      replyTo: props.email,
+      to: 'codzombiesguidesteam@gmail.com',
+      subject: 'Contact Form Submission',
+      text: props.message,
+    })
+    return { success: true, message: "Thank you for contacting us! We will get back to you as soon as possible." }
+  }).pipe(
+    Effect.withLogSpan("send_contact_email"),
+    Effect.tapError(error => Console.error(error)),
+    Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
+  )
 
-  if (sendError) return err(new UpstreamProviderError(
-    "We were unable to send unsubscribe link due to a technical issue with our email provider. Please try again.", 
-    { cause: sendError }
-  ))
-  return ok("Confirmation email sent! Check your inbox.")
-}
+export const sendQuestReleaseBroadcast = (props: IQuestRelease) =>
+  Effect.gen(function*() {
+    return yield* sendBroadcast(props.title, {
+      audienceId: env.RESEND_AUDIENCE_ID,
+      from: "COD Zombies Guides <updates@codzombiesguides.com>",
+      subject: `New ${props.type} Quest Guide: ${props.title}`,
+      react: QuestReleaseEmail(props),
+      name: `${props.title} Release`
+    })
+  }).pipe(Effect.withLogSpan("send_quest_release_broadcast"))
 
-export const processSubscribe = async (email: string): Promise<Result<true, UpstreamProviderError>> => {
-  const { error: createError } = await resend.contacts.create({
-    email,
-    audienceId: env.RESEND_AUDIENCE_ID,
-  })
+export const sendZombieReleaseBroadcast = (props: IZombieRelease) =>
+  Effect.gen(function*() {
+    return yield* sendBroadcast(props.title, {
+      audienceId: env.RESEND_AUDIENCE_ID,
+      from: "COD Zombies Guides <updates@codzombiesguides.com>",
+      subject: `New ${props.type} Zombie Release: ${props.title}`,
+      react: ZombieReleaseEmail(props),
+      name: `${props.title} Release`
+    })
+  }).pipe(Effect.withLogSpan("send_zombie_release_broadcast"))
 
-  if (createError) return err(new UpstreamProviderError(
-    "Your subscribe request failed due to a technical issue with our email provider. Please try again.", 
-    { cause: createError }
-  ))
+export const sendLegalUpdateBroadcast = () =>
+  Effect.gen(function*() {
+    return yield* sendBroadcast("Privacy Policy", {
+      audienceId: env.RESEND_AUDIENCE_ID,
+      from: "COD Zombies Guides <legal@codzombiesguides.com>",
+      subject: `Privacy Policy Update Notice`,
+      react: PrivacyPolicyUpdateEmail(),
+      name: "Privacy Policy Update"
+    })
+  }).pipe(Effect.withLogSpan("send_legal_update_broadcast"))
 
-  return ok(true)
-}
-
-export const processUnsubscribe = async (email: string): Promise<Result<true, UpstreamProviderError>> => {
-  const { error } = await resend.contacts.remove({
-    audienceId: env.RESEND_AUDIENCE_ID,
-    email,
-  })
-
-  if (error) return err(new UpstreamProviderError(
-    "We were unable to process your unsubscribe request due to a technical issue with our email provider. Please try again or request a new unsubcribe link.", 
-    { cause: error }
-  ))
-  return ok(true)
-}
-
-export const sendContactEmail = async ({ name, email, message }: EmailProps): Promise<Result<EmailSuccess, UpstreamProviderError>> => {
-  const { error } = await resend.emails.send({
-    from: `${name} <support@codzombiesguides.com>`,
-    replyTo: email,
-    to: 'codzombiesguidesteam@gmail.com',
-    subject: 'Contact Form Submission',
-    text: message,
-  })
-  
-  if (error) return err(new UpstreamProviderError(
-    "We were unable to send your contact email due to a technical issue with our email provider. Please try again.", 
-    { cause: error }
-  ))
-  return ok({ message: 'Thank you for contacting us! We will get back to you as soon as possible.' })
-}
-
-export const sendQuestReleaseBroadcast = async (props: IQuestRelease) => {
-  const result = await sendBroadcast(props.title, {
-    audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD Zombies Guides <updates@codzombiesguides.com>",
-    subject: `New ${props.type} Quest Guide: ${props.title}`,
-    react: QuestReleaseEmail(props),
-    name: `${props.title} Release`
-  })
-
-  if (result.isErr()) {
-    console.error(result.error)
-    return { success: false, message: result.error.message }
-  }
-
-  return {
-    success: true,
-    message: result.value.message
-  }
-}
-
-export const sendZombieReleaseBroadcast = async (props: IZombieRelease) => {
-  const result = await sendBroadcast(props.title, {
-    audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD Zombies Guides <updates@codzombiesguides.com>",
-    subject: `New ${props.type} Zombie Release: ${props.title}`,
-    react: ZombieReleaseEmail(props),
-    name: `${props.title} Release`
-  })
-
-  if (result.isErr()) {
-    console.error(result.error)
-    return { success: false, message: result.error.message }
-  }
-
-  return {
-    success: true,
-    message: result.value.message
-  }
-}
-
-export const sendLegalUpdateBroadcast = async () => {
-  const result = await sendBroadcast("Privacy Policy", {
-    audienceId: env.RESEND_AUDIENCE_ID,
-    from: "COD Zombies Guides <legal@codzombiesguides.com>",
-    subject: `Privacy Policy Update Notice`,
-    react: PrivacyPolicyUpdateEmail(),
-    name: "Privacy Policy Update"
-  })
-
-  if (result.isErr()) {
-    console.error(result.error)
-    return { success: false, message: result.error.message }
-  }
-
-  return {
-    success: true,
-    message: result.value.message
-  }
-}
-
-const sendBroadcast = async (title: string, payload: CreateBroadcastOptions): Promise<Result<EmailSuccess, UpstreamProviderError | BroadcastDataError>> => {
-  const { data, error } = await resend.broadcasts.create(payload)
-  if (error) return err(new UpstreamProviderError(`Failed to create broadcast with email provider: ${error.message}`, { cause: error }))
-  if (!data) return err(new BroadcastDataError(`No data was returned for the ${title} broadcast creation.`))
-
-  const { error: sendError } = await resend.broadcasts.send(data.id)
-  if (sendError) return err(new UpstreamProviderError(`Failed to send broadcast with email provider: ${sendError.message}`, { cause: sendError }))
-
-  return ok({ message: `${title} Broadcast sent successfully!` })
-}
+const sendBroadcast = (title: string, payload: CreateBroadcastOptions) =>
+  Effect.gen(function*() {
+    const emailService = yield* EmailService
+    const broadcast = yield* emailService.createBroadcast(payload)
+    yield* emailService.sendBroadcast(broadcast.id)
+    return { success: true, message: `${title} Broadcast sent successfully!` }
+  }).pipe(
+    Effect.withLogSpan("send_broadcast"),
+    Effect.tapError(error => Console.error(error)),
+    Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
+  )

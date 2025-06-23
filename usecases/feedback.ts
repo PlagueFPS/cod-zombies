@@ -49,7 +49,7 @@ export const submitFeedbackUseCase = (input: Input) =>
     
     return { success: true, message: "Thank you for submitting! Your submission has been received." }
   }).pipe(
-    Effect.withLogSpan("submitFeedback"),
+    Effect.withLogSpan("submit_feedback"),
     Effect.tapErrorCause(error => Console.error(error)),
     Effect.catchAll(error => Effect.succeed({ success: false, message: error.message }))
   )

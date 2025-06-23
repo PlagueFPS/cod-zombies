@@ -14,7 +14,6 @@ export class InvalidUnsubscribeLinkError extends Data.TaggedError("InvalidUnsubs
 export class ExpiredUnsubscribeLinkError extends Data.TaggedError("ExpiredUnsubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
 export class InvalidSubscribeLinkError extends Data.TaggedError("InvalidSubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
 export class ExpiredSubscribeLinkError extends Data.TaggedError("ExpiredSubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
-export class BroadcastDataError extends Data.TaggedError("BroadcastDataError")<{ message: string, cause: Error | unknown }> {}
 export class UpstreamProviderError extends Data.TaggedError("UpstreamProviderError")<{ message: string, cause: Error | unknown }> {}
 export class EntryNotFoundError extends Data.TaggedError("EntryNotFoundError")<{ message: string, cause: Error | unknown }> {}
 export class SchemaValidationError extends Data.TaggedError("SchemaValidationError")<{ message: string, cause: Error | unknown }> {}

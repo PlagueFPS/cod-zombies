@@ -1,4 +1,4 @@
-import { Config, Context, Effect, Layer, Redacted } from "effect";
+import { Context, Effect, Layer } from "effect";
 import { ContactNotFoundError, EmailProviderError } from "@/types/Error";
 import { 
   Resend,
@@ -18,6 +18,7 @@ import {
   type SendBroadcastResponseSuccess,
   type GetContactResponseSuccess
 } from "resend";
+import { env } from "@/env";
 
 export interface EmailServiceProps {
   readonly getContact: (params: GetContactOptions) => Effect.Effect<GetContactResponseSuccess, EmailProviderError | ContactNotFoundError, never>
@@ -33,14 +34,13 @@ export class EmailService extends Context.Tag("EmailService")<
   EmailServiceProps
 >() {}
 
+const resend = new Resend(env.RESEND_API_KEY)
+
 export const EmailServiceLive = Layer.succeed(
   EmailService,
   EmailService.of({
     getContact: (params) => 
       Effect.gen(function* () {
-        const redactedApiKey = yield* Config.redacted("RESEND_API_KEY")
-        const apiKey = Redacted.value(redactedApiKey)
-        const resend = new Resend(apiKey)
         const { data, error } = yield* Effect.tryPromise({
           try: () => resend.contacts.get(params),
           catch: (error) => new EmailProviderError({
@@ -61,13 +61,10 @@ export const EmailServiceLive = Layer.succeed(
       
         return data
       }).pipe(
-        Effect.catchTag("ConfigError", error => Effect.dieMessage(error.message))
+        Effect.withLogSpan("get_contact"),
       ),
       createBroadcast: (params, options) => 
         Effect.gen(function* () {
-          const redactedApiKey = yield* Config.redacted("RESEND_API_KEY")
-          const apiKey = Redacted.value(redactedApiKey)
-          const resend = new Resend(apiKey)
           const { data, error } = yield* Effect.tryPromise({
             try: () => resend.broadcasts.create(params, options),
             catch: (error) => new EmailProviderError({
@@ -88,13 +85,10 @@ export const EmailServiceLive = Layer.succeed(
         
           return data
         }).pipe(
-          Effect.catchTag("ConfigError", error => Effect.dieMessage(error.message))
+          Effect.withLogSpan("create_broadcast"),
         ),
       createContact: (params, options) => 
         Effect.gen(function* () {
-          const redactedApiKey = yield* Config.redacted("RESEND_API_KEY")
-          const apiKey = Redacted.value(redactedApiKey)
-          const resend = new Resend(apiKey)
           const { data, error } = yield* Effect.tryPromise({
             try: () => resend.contacts.create(params, options),
             catch: (error) => new EmailProviderError({
@@ -115,13 +109,10 @@ export const EmailServiceLive = Layer.succeed(
         
           return data
         }).pipe(
-          Effect.catchTag("ConfigError", error => Effect.dieMessage(error.message))
+          Effect.withLogSpan("create_contact"),
         ),
       removeContact: (params) => 
         Effect.gen(function* () {
-          const redactedApiKey = yield* Config.redacted("RESEND_API_KEY")
-          const apiKey = Redacted.value(redactedApiKey)
-          const resend = new Resend(apiKey)
           const { data, error } = yield* Effect.tryPromise({
             try: () => resend.contacts.remove(params),
             catch: (error) => new EmailProviderError({
@@ -142,13 +133,10 @@ export const EmailServiceLive = Layer.succeed(
         
           return data
         }).pipe(
-          Effect.catchTag("ConfigError", error => Effect.dieMessage(error.message))
+          Effect.withLogSpan("remove_contact"),
         ),
       sendEmail: (params, options) => 
         Effect.gen(function* () {
-          const redactedApiKey = yield* Config.redacted("RESEND_API_KEY")
-          const apiKey = Redacted.value(redactedApiKey)
-          const resend = new Resend(apiKey)
           const { data, error } = yield* Effect.tryPromise({
             try: () => resend.emails.send(params, options),
             catch: (error) => new EmailProviderError({
@@ -169,13 +157,10 @@ export const EmailServiceLive = Layer.succeed(
         
           return data
         }).pipe(
-          Effect.catchTag("ConfigError", error => Effect.dieMessage(error.message))
+          Effect.withLogSpan("send_email"),
         ),
       sendBroadcast: (params, options) => 
         Effect.gen(function* () {
-          const redactedApiKey = yield* Config.redacted("RESEND_API_KEY")
-          const apiKey = Redacted.value(redactedApiKey)
-          const resend = new Resend(apiKey)
           const { data, error } = yield* Effect.tryPromise({
             try: () => resend.broadcasts.send(params, options),
             catch: (error) => new EmailProviderError({
@@ -196,7 +181,7 @@ export const EmailServiceLive = Layer.succeed(
         
           return data
         }).pipe(
-          Effect.catchTag("ConfigError", error => Effect.dieMessage(error.message))
+          Effect.withLogSpan("send_broadcast"),
         ),
   })
 )
