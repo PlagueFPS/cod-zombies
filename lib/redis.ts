@@ -6,6 +6,8 @@ import { Ratelimit } from "@upstash/ratelimit"
 import { err, ok, Result } from "neverthrow"
 import { EntryNotFoundError, UpstreamProviderError } from "@/types/Error"
 import { tryCatch } from "@/utils/functions"
+import { Effect, Schema } from "effect"
+import { CacheService } from "./services/CacheService"
 
 export const redis = new Redis({
   url: env.REDIS_URL,
@@ -18,33 +20,48 @@ export const ratelimit = new Ratelimit({
   analytics: true,
 })
 
-interface RedisResponse {
-  createdAt: string
-  status: EntryStatus
-  type: EntryType
-}
+export class EntryResponse extends Schema.TaggedClass<EntryResponse>("EntryResponse")("EntryResponse", {
+  entryId: Schema.String,
+  createdAt: Schema.Date,
+  status: Schema.Literal("Coming Soon", "Published"),
+  type: Schema.Literal("mainQuest", "sideQuest", "game", "zombie", "legal")
+}){}
 
-interface EntryResponse extends RedisResponse {
-  entryId: string
-}
+// interface RedisResponse {
+//   createdAt: string
+//   status: EntryStatus
+//   type: EntryType
+// }
+
+// interface EntryResponse extends RedisResponse {
+//   entryId: string
+// }
 
 export const NEW_ENTRY_KV = {
-  key: "contentful:new-entries",
+  key: "contentful:new-entries" as const,
   /**
    * Retrieves an entry by its ID from Redis.
    * @param entryId - The ID of the entry to retrieve.
    * @returns The entry data if found, null otherwise.
    */
-  async get(entryId: string): Promise<EntryResponse | null> {
-    const response = await redis.hget(this.key, entryId)
+  get(entryId: string) {
+    return Effect.gen(this, function*() {
+      const cache = yield* CacheService
+      const response = yield* cache.hget(this.key, entryId)
+      const decodedResponse = yield* Schema.decodeUnknown(EntryResponse)(response)
+      return decodedResponse
+    })
+  }
+  // async get(entryId: string): Promise<EntryResponse | null> {
+  //   const response = await redis.hget(this.key, entryId)
 
-    if (!response) return null
+  //   if (!response) return null
 
-    return {
-      entryId,
-      ...response
-    } as EntryResponse
-  },
+  //   return {
+  //     entryId,
+  //     ...response
+  //   } as EntryResponse
+  // },
   /**
    * Retrieves all entries from Redis.
    * @returns An array of all entry responses.

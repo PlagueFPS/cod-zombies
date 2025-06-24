@@ -24,3 +24,4 @@ export class StatusEnforcementError extends Data.TaggedError("StatusEnforcementE
 export class TextParseError extends Data.TaggedError("TextParseError")<{ message: string, cause: Error | unknown }> {}
 export class JSONParseError extends Data.TaggedError("JSONParseError")<{ message: string, cause: Error | unknown }> {}
 export class EmailProviderError extends Data.TaggedError("EmailProviderError")<{ message: string, cause: Error | unknown }> {}
+export class CacheProviderError extends Data.TaggedError("CacheProviderError")<{ message: string, cause: Error | unknown }> {}

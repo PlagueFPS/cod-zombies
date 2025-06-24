@@ -8,6 +8,7 @@ import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { Effect } from "effect"
 import { EmailService } from "@/lib/services/EmailService"
+import { FetchHttpClient } from "@effect/platform"
 
 export const subscribeToNewsletter = ratelimitAction
   .metadata({ actionName: "subscribeToNewsletter" })
@@ -19,8 +20,10 @@ export const subscribeToNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = Effect.provide(requestSubscribe(email), EmailService.Default)
-    return await Effect.runPromise(result)
+    return requestSubscribe(email).pipe(
+      Effect.provide(EmailService.Default),
+      Effect.runPromise
+    )
   })
 
 export const unsubscribeFromNewsletter = ratelimitAction
@@ -33,23 +36,30 @@ export const unsubscribeFromNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = Effect.provide(requestUnsubscribe(email), EmailService.Default)
-    return await Effect.runPromise(result)
+    return requestUnsubscribe(email).pipe(
+      Effect.provide(EmailService.Default),
+      Effect.runPromise
+    )
   })
 
 export const submitFeedbackForm = createAction
   .metadata({ actionName: "submitFeedbackForm" })
   .schema(FeedbackFormSchema)
   .action(async ({ parsedInput }) => {
-    return await Effect.runPromise(submitFeedbackUseCase(parsedInput))
+    return submitFeedbackUseCase(parsedInput).pipe(
+      Effect.provide(FetchHttpClient.layer),
+      Effect.runPromise
+    )
   })
 
 export const submitContactForm = createAction
   .metadata({ actionName: "submitContactForm" })
   .schema(ContactFormSchema)
   .action(async ({ parsedInput }) => {
-    const result = Effect.provide(sendContactEmail(parsedInput), EmailService.Default)
-    return await Effect.runPromise(result)
+    return sendContactEmail(parsedInput).pipe(
+      Effect.provide(EmailService.Default),
+      Effect.runPromise
+    )
   })
 
 export const toggleDraftMode = developmentAction
