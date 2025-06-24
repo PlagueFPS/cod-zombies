@@ -1,7 +1,9 @@
 import { env } from "@/env"
-import { AuthorizationError, TokenExpirationError, TokenVerificationError } from "@/types/Error"
+import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/Error"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
-import { err, ok, Result as NeverThrowResult } from "neverthrow"
+import { Console, Effect, Duration } from "effect"
+import type { DurationInput } from "effect/Duration"
+import { stringToNumber } from "./validationSchemas"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens with spaces.
@@ -44,19 +46,32 @@ export const getYouTubeVideoID = (url: string) => {
  * @param validSecret - The known valid secret.
  * @returns True if the secrets match.
  */
-export const authorizedRequest = (secret: string, validSecret: string): NeverThrowResult<true, AuthorizationError> => {
-  const encoder = new TextEncoder()
-  const secretBuffer = encoder.encode(secret)
-  const validSecretBuffer = encoder.encode(validSecret)
-  const { error } = tryCatchSync(timingSafeEqual(secretBuffer, validSecretBuffer))
+export const authorizedRequest = (secret: string, validSecret: string) => 
+  Effect.gen(function*() {
+    const encoder = new TextEncoder()
+    const secretBuffer = encoder.encode(secret)
+    const validSecretBuffer = encoder.encode(validSecret)
+    return yield* Effect.try({
+      try: () => timingSafeEqual(secretBuffer, validSecretBuffer),
+      catch: (error) => new AuthorizationError({ message: "Authorization Failed", cause: error })
+    })
+  }).pipe(
+    Effect.withLogSpan("authorized_request"),
+    Effect.tapError(error => Console.error(error)),
+  )
+// export const authorizedRequest = (secret: string, validSecret: string): NeverThrowResult<true, AuthorizationError> => {
+//   const encoder = new TextEncoder()
+//   const secretBuffer = encoder.encode(secret)
+//   const validSecretBuffer = encoder.encode(validSecret)
+//   const { error } = tryCatchSync(timingSafeEqual(secretBuffer, validSecretBuffer))
 
-  if (error) {
-    const authError = new AuthorizationError(error.message, { cause: error })
-    return err(authError)
-  }
+//   if (error) {
+//     const authError = new AuthorizationError(error.message, { cause: error })
+//     return err(authError)
+//   }
 
-  return ok(true)
-}
+//   return ok(true)
+// }
 
 /**
  * A type representing a successful result
@@ -203,37 +218,58 @@ export const TypeGuards = {
   },
 }
   /**
-   * Generates a unique secure token.
+   * Generates a unique, secure, and time-limited token.
    * @param value - The value to secure.
-   * @returns the generated unique secure token.
+   * @param expiresIn - The expiration time of the token.
+   * @returns An Effect that succeeds with the generated unique secure token.
    */
-export const generateToken = (value: string) => {
-  const salt = randomBytes(16).toString('hex')
-  const expiresAt = Date.now() + 24 * 60 * 60 * 1000
-  const payload = `${value}:${salt}:${expiresAt}`
-  const hash = createHash("sha256").update(payload).digest("hex")
+export const generateToken = (value: string, expiresIn: DurationInput) => 
+  Effect.gen(function*() {
+    const salt = randomBytes(16).toString('hex')
+    const expiresInMs = Duration.toMillis(expiresIn)
+    const payload = `${value}:${salt}:${expiresInMs}`
+    const hash = createHash("sha256").update(payload).digest("hex")
 
-  return Buffer.from(`${payload}:${hash}`).toString("base64url")
-}
+    return yield* Effect.try({
+      try: () => Buffer.from(`${payload}:${hash}`).toString("base64url"),
+      catch: (error) => new TokenGenerationError({ message: "Failed to generate token.", cause: error })
+    })
+  }).pipe(
+    Effect.withLogSpan("generate_token"),
+    Effect.tapError(error => Console.error(error)),
+  )
 /**
    * Verifies a securely generated token.
    * @param token - the secure token to verify.
-   * @returns True or false for token validity, and the decoded value if valid.
+   * @returns An Effect that succeeds with the valid token.
    */
-export const verifyToken = (token: string): NeverThrowResult<string, TokenVerificationError | TokenExpirationError> => {
-  const { data: decoded, error } = tryCatchSync(Buffer.from(token, "base64url").toString())
-  if (error) return err(new TokenVerificationError("Invalid Token", { cause: error }))
+export const verifyToken = (token: string) =>
+  Effect.gen(function*() {
+    const buffer = yield* Effect.try({
+      try: () => Buffer.from(token, "base64url").toString(),
+      catch: (error) => new TokenVerificationError({ message: "Invalid Token", cause: error })
+    })
+    const [value, salt, expiresInStr, originalHash] = buffer.split(":")
+    const expiresIn = yield* stringToNumber(expiresInStr)
 
-  const [value, salt, expiresAtStr, originalHash] = decoded.split(":")
-  const expiresAt = parseInt(expiresAtStr, 10)
-  if (Date.now() > expiresAt) return err(new TokenExpirationError("Expired Token"))
+    if (Date.now() > expiresIn) return yield* Effect.fail(new TokenExpirationError({ 
+      message: "Expired Token", 
+      cause: new Error("Current time was greater than the expiration time") 
+    }))
+    
+    const payload = `${value}:${salt}:${expiresIn}`
+    const hash = createHash("sha256").update(payload).digest('hex')
 
-  const payload = `${value}:${salt}:${expiresAt}`
-  const hash = createHash("sha256").update(payload).digest('hex')
-  if (hash !== originalHash) return err(new TokenVerificationError("Invalid Token", { cause: new Error("Hash mismatch") }))
+    if (hash !== originalHash) return yield* Effect.fail(new TokenVerificationError({ 
+      message: "Invalid Token", 
+      cause: new Error("Original hash does not match the calculated hash") 
+    }))
 
-  return ok(value)
-}
+    return value
+  }).pipe(
+    Effect.withLogSpan("verify_token"),
+    Effect.tapError(error => Console.error(error)),
+  )
 /**
  * Generates a hash for the provided identifier.
  * @param identifier - the value to hash.

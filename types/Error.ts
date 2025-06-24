@@ -10,6 +10,7 @@ export class ContactExistsError extends Data.TaggedError("ContactExistsError")<{
 export class ContactNotFoundError extends Data.TaggedError("ContactNotFoundError")<{ message: string, cause: Error | unknown }> {}
 export class TokenVerificationError extends Data.TaggedError("TokenVerificationError")<{ message: string, cause: Error | unknown }> {}
 export class TokenExpirationError extends Data.TaggedError("TokenExpirationError")<{ message: string, cause: Error | unknown }> {}
+export class TokenGenerationError extends Data.TaggedError("TokenGenerationError")<{ message: string, cause: Error | unknown }> {}
 export class InvalidUnsubscribeLinkError extends Data.TaggedError("InvalidUnsubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
 export class ExpiredUnsubscribeLinkError extends Data.TaggedError("ExpiredUnsubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
 export class InvalidSubscribeLinkError extends Data.TaggedError("InvalidSubscribeLinkError")<{ message: string, cause: Error | unknown }> {}

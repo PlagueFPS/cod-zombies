@@ -26,7 +26,7 @@ export const requestSubscribe = (email: string) =>
       cause: new Error(`Contact already subscribed: ${contact.id}`)
     }))
 
-    const token = generateToken(email)
+    const token = yield* generateToken(email, "24 hours")
     const subscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
     yield* emailService.sendEmail({
@@ -51,7 +51,7 @@ export const requestUnsubscribe = (email: string) =>
       cause: new Error(`Contact not found: ${email}`)
     }))
 
-    const token = generateToken(email)
+    const token = yield* generateToken(email, "24 hours")
     const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
     yield* emailService.sendEmail({
       from: "COD Zombies Guides <support@codzombiesguides.com>",
@@ -66,7 +66,7 @@ export const requestUnsubscribe = (email: string) =>
     Effect.catchAll(error => Effect.succeed({ success: false, message: error.message }))
   )
 
-export const processSubscribe = (email: string) =>
+export const subscribeEmail = (email: string) =>
   Effect.gen(function*() {
     const emailService = yield* EmailService
     yield* emailService.createContact({ email, audienceId: env.RESEND_AUDIENCE_ID })
@@ -75,6 +75,15 @@ export const processSubscribe = (email: string) =>
     Effect.withLogSpan("process_subscribe"),
     Effect.tapErrorCause(error => Console.error(error)),
     Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
+  )
+
+export const unsubscribeEmail = (email: string) =>
+  Effect.gen(function*() {
+    const emailService = yield* EmailService
+    return yield* emailService.removeContact({ audienceId: env.RESEND_AUDIENCE_ID, email })
+  }).pipe(
+    Effect.withLogSpan("process_unsubscribe"),
+    Effect.tapError(error => Console.error(error)),
   )
 
 export const sendContactEmail = (props: EmailProps) => 
