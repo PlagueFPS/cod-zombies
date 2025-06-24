@@ -7,7 +7,7 @@ import { draftMode } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { Effect } from "effect"
-import { EmailServiceLive } from "@/lib/services/EmailService"
+import { EmailService } from "@/lib/services/EmailService"
 
 export const subscribeToNewsletter = ratelimitAction
   .metadata({ actionName: "subscribeToNewsletter" })
@@ -19,7 +19,7 @@ export const subscribeToNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = Effect.provide(requestSubscribe(email), EmailServiceLive)
+    const result = Effect.provide(requestSubscribe(email), EmailService.Default)
     return await Effect.runPromise(result)
   })
 
@@ -33,7 +33,7 @@ export const unsubscribeFromNewsletter = ratelimitAction
       remaining: ctx.remaining
     }
 
-    const result = Effect.provide(requestUnsubscribe(email), EmailServiceLive)
+    const result = Effect.provide(requestUnsubscribe(email), EmailService.Default)
     return await Effect.runPromise(result)
   })
 
@@ -48,7 +48,7 @@ export const submitContactForm = createAction
   .metadata({ actionName: "submitContactForm" })
   .schema(ContactFormSchema)
   .action(async ({ parsedInput }) => {
-    const result = Effect.provide(sendContactEmail(parsedInput), EmailServiceLive)
+    const result = Effect.provide(sendContactEmail(parsedInput), EmailService.Default)
     return await Effect.runPromise(result)
   })
 
