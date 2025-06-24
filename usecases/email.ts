@@ -25,7 +25,7 @@ export const requestSubscribe = (email: string) =>
       cause: new Error(`Contact already subscribed: ${contact.id}`)
     }))
 
-    const token = yield* generateToken(email, "24 hours")
+    const token = yield* generateToken(email, "1 day")
     const subscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
     yield* emailService.sendEmail({
@@ -50,7 +50,7 @@ export const requestUnsubscribe = (email: string) =>
       cause: new Error(`Contact not found: ${email}`)
     }))
 
-    const token = yield* generateToken(email, "24 hours")
+    const token = yield* generateToken(email, "1 day")
     const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
     yield* emailService.sendEmail({
       from: "COD Zombies Guides <support@codzombiesguides.com>",

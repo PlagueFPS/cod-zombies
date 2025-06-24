@@ -11,9 +11,8 @@ export async function GET(req: NextRequest) {
 
     const decodedToken = decodeURIComponent(token)
     const email = yield* verifyToken(decodedToken)
-    const result = yield* unsubscribeEmail(email)
-
-    yield* Console.info(result)
+    
+    yield* unsubscribeEmail(email)
     return NextResponse.redirect(new URL(`/newsletter/unsubscribe/success`, req.url))
   }).pipe(
     Effect.withLogSpan("unsubscribe_get_handler"),

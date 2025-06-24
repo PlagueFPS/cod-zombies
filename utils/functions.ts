@@ -3,7 +3,6 @@ import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVe
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
 import { Console, Effect, Duration } from "effect"
 import type { DurationInput } from "effect/Duration"
-import { stringToNumber } from "./validationSchemas"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens with spaces.
@@ -226,7 +225,7 @@ export const TypeGuards = {
 export const generateToken = (value: string, expiresIn: DurationInput) => 
   Effect.gen(function*() {
     const salt = randomBytes(16).toString('hex')
-    const expiresInMs = Duration.toMillis(expiresIn)
+    const expiresInMs = Date.now() + Duration.toMillis(expiresIn)
     const payload = `${value}:${salt}:${expiresInMs}`
     const hash = createHash("sha256").update(payload).digest("hex")
 
@@ -234,10 +233,7 @@ export const generateToken = (value: string, expiresIn: DurationInput) =>
       try: () => Buffer.from(`${payload}:${hash}`).toString("base64url"),
       catch: (error) => new TokenGenerationError({ message: "Failed to generate token.", cause: error })
     })
-  }).pipe(
-    Effect.withLogSpan("generate_token"),
-    Effect.tapError(error => Console.error(error)),
-  )
+  }).pipe(Effect.withLogSpan("generate_token"))
 /**
    * Verifies a securely generated token.
    * @param token - the secure token to verify.
@@ -250,11 +246,12 @@ export const verifyToken = (token: string) =>
       catch: (error) => new TokenVerificationError({ message: "Invalid Token", cause: error })
     })
     const [value, salt, expiresInStr, originalHash] = buffer.split(":")
-    const expiresIn = yield* stringToNumber(expiresInStr)
+    const expiresIn = parseInt(expiresInStr, 10)
+    const now = Date.now()
 
-    if (Date.now() > expiresIn) return yield* Effect.fail(new TokenExpirationError({ 
-      message: "Expired Token", 
-      cause: new Error("Current time was greater than the expiration time") 
+    if (Duration.greaterThan(now, expiresIn)) return yield* Effect.fail(new TokenExpirationError({ 
+      message: "Token has expired", 
+      cause: new Error(`Token expired at ${new Date(expiresIn).toISOString()}`) 
     }))
     
     const payload = `${value}:${salt}:${expiresIn}`
@@ -266,10 +263,7 @@ export const verifyToken = (token: string) =>
     }))
 
     return value
-  }).pipe(
-    Effect.withLogSpan("verify_token"),
-    Effect.tapError(error => Console.error(error)),
-  )
+  }).pipe(Effect.withLogSpan("verify_token"))
 /**
  * Generates a hash for the provided identifier.
  * @param identifier - the value to hash.

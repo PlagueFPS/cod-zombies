@@ -1,4 +1,3 @@
-import { Schema } from "effect";
 import { z } from "zod";
 import { zfd } from "zod-form-data"
 
@@ -41,5 +40,3 @@ export const DraftModeSchema = z.object({
 export const OGParamsSchema = z.promise(z.object({
   slug: z.tuple([AllowedSlugsSchema, z.string().nonempty()])
 }))
-
-export const stringToNumber = Schema.decode(Schema.NumberFromString)

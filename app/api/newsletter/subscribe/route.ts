@@ -11,9 +11,8 @@ export async function GET(req: NextRequest) {
 
     const decodedToken = decodeURIComponent(token)
     const email = yield* verifyToken(decodedToken)
-    const result = yield* subscribeEmail(email)
-
-    yield* Console.info(result)
+    
+    yield* subscribeEmail(email)
     return NextResponse.redirect(new URL(`/newsletter/subscribe/success`, req.url))
   }).pipe(
     Effect.withLogSpan("subscribe_get_handler"),
