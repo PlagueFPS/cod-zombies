@@ -1,4 +1,3 @@
-// import "server-only"
 import { env } from "@/env"
 import { type CreateBroadcastOptions } from "resend"
 import QuestReleaseEmail, { type IQuestRelease } from "@/emails/QuestReleaseEmail"
