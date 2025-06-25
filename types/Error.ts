@@ -36,3 +36,4 @@ export class RemoveContactError extends Data.TaggedError("RemoveContactError")<C
 export class CreateBroadcastError extends Data.TaggedError("CreateBroadcastError")<CommonErrorProps> {}
 export class SendBroadcastError extends Data.TaggedError("SendBroadcastError")<CommonErrorProps> {}
 export class OGImageGenerationError extends Data.TaggedError("OGImageGenerationError")<CommonErrorProps> {}
+export class GetEntriesError extends Data.TaggedError("GetEntriesError")<CommonErrorProps> {}
