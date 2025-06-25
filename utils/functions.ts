@@ -1,7 +1,7 @@
 import { env } from "@/env"
 import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/Error"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
-import { Console, Effect, Duration } from "effect"
+import { Effect, Duration } from "effect"
 import type { DurationInput } from "effect/Duration"
 
 /**
@@ -43,7 +43,7 @@ export const getYouTubeVideoID = (url: string) => {
  * Performs a timing-safe comparison of two secrets.
  * @param secret - The secret to be validated.
  * @param validSecret - The known valid secret.
- * @returns True if the secrets match.
+ * @returns An Effect that succeeds with a boolean.
  */
 export const authorizedRequest = (secret: string, validSecret: string) => 
   Effect.gen(function*() {
@@ -54,23 +54,7 @@ export const authorizedRequest = (secret: string, validSecret: string) =>
       try: () => timingSafeEqual(secretBuffer, validSecretBuffer),
       catch: (error) => new AuthorizationError({ message: "Authorization Failed", cause: error })
     })
-  }).pipe(
-    Effect.withLogSpan("authorized_request"),
-    Effect.tapError(error => Console.error(error)),
-  )
-// export const authorizedRequest = (secret: string, validSecret: string): NeverThrowResult<true, AuthorizationError> => {
-//   const encoder = new TextEncoder()
-//   const secretBuffer = encoder.encode(secret)
-//   const validSecretBuffer = encoder.encode(validSecret)
-//   const { error } = tryCatchSync(timingSafeEqual(secretBuffer, validSecretBuffer))
-
-//   if (error) {
-//     const authError = new AuthorizationError(error.message, { cause: error })
-//     return err(authError)
-//   }
-
-//   return ok(true)
-// }
+  }).pipe(Effect.withLogSpan("authorized_request"))
 
 /**
  * A type representing a successful result
