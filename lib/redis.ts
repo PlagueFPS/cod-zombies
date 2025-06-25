@@ -3,10 +3,8 @@ import { env } from "@/env"
 import type { EntryStatus, EntryType } from "@/types/EntryEnforcement"
 import { Redis } from "@upstash/redis"
 import { Ratelimit } from "@upstash/ratelimit"
-import { err, ok, Result } from "neverthrow"
-import { EntryNotFoundError, UpstreamProviderError } from "@/types/Error"
-import { tryCatch } from "@/utils/functions"
-import { Effect, Schema } from "effect"
+import { EntryNotFoundError } from "@/types/Error"
+import { Console, Effect, Schema } from "effect"
 import { CacheService } from "./services/CacheService"
 
 export const redis = new Redis({
@@ -20,157 +18,120 @@ export const ratelimit = new Ratelimit({
   analytics: true,
 })
 
-export class EntryResponse extends Schema.TaggedClass<EntryResponse>("EntryResponse")("EntryResponse", {
-  entryId: Schema.String,
+export const EntryResponseSchema = Schema.Struct({
   createdAt: Schema.Date,
   status: Schema.Literal("Coming Soon", "Published"),
   type: Schema.Literal("mainQuest", "sideQuest", "game", "zombie", "legal")
-}){}
-
-// interface RedisResponse {
-//   createdAt: string
-//   status: EntryStatus
-//   type: EntryType
-// }
-
-// interface EntryResponse extends RedisResponse {
-//   entryId: string
-// }
+})
 
 export const NEW_ENTRY_KV = {
   key: "contentful:new-entries" as const,
   /**
-   * Retrieves an entry by its ID from Redis.
+   * Retrieves an entry by its ID from Cache.
    * @param entryId - The ID of the entry to retrieve.
-   * @returns The entry data if found, null otherwise.
+   * @returns An Effect that succeeds with the entry data if found, null otherwise.
    */
   get(entryId: string) {
     return Effect.gen(this, function*() {
       const cache = yield* CacheService
       const response = yield* cache.hget(this.key, entryId)
-      const decodedResponse = yield* Schema.decodeUnknown(EntryResponse)(response)
+      const decodedResponse = yield* Schema.decodeUnknown(EntryResponseSchema)(response)
       return decodedResponse
-    })
-  }
-  // async get(entryId: string): Promise<EntryResponse | null> {
-  //   const response = await redis.hget(this.key, entryId)
-
-  //   if (!response) return null
-
-  //   return {
-  //     entryId,
-  //     ...response
-  //   } as EntryResponse
-  // },
-  /**
-   * Retrieves all entries from Redis.
-   * @returns An array of all entry responses.
-   */
-  async getAll(): Promise<EntryResponse[]> {
-    const response = await redis.hgetall(this.key)
-    if (!response) return []
-
-    return Object.entries(response).map(([entryId, entryData]) => {
-      return {
-        entryId,
-        ...entryData as RedisResponse
-      }
-    }).filter(entry => entry !== null)
+    }).pipe(
+      Effect.tapError(error => Console.error(error)),
+      Effect.catchAll(() => Effect.succeed(null))
+    )
   },
   /**
-   * Sets a new entry in Redis.
+   * Retrieves all entries from Cache.
+   * @returns An Effect that succeeds with an array of all entry responses, null otherwise.
+   */
+  getAll() {
+    return Effect.gen(this, function*() {
+      const cache = yield* CacheService
+      const response = yield* cache.hgetall(this.key)
+      if (!response) return null
+
+      return yield* Effect.all(Object.entries(response).map(([entryId, entryData]) => Effect.gen(function*() {
+        const decodedResponse = yield* Schema.decodeUnknown(EntryResponseSchema)(entryData)
+        return {
+          entryId,
+          ...decodedResponse
+        }
+      })), { concurrency: "unbounded" })
+    }).pipe(
+      Effect.tapError(error => Console.error(error)),
+      Effect.catchAll(() => Effect.succeed(null))
+    )
+  },
+  /**
+   * Sets a new entry in Cache.
    * @param entryId - The ID of the entry.
-   * @param createdAt - The creation timestamp.
+   * @param createdAt - The creation date of the entry.
    * @param status - The status of the entry.
    * @param type - The type of the entry.
-   * @returns The number of fields that were added.
+   * @returns An Effect that succeeds with the number of fields that were added.
    */
-  async set(entryId: string, createdAt: string, status: EntryStatus, type: EntryType) {
-    return await redis.hset(this.key, {
-      [entryId]: JSON.stringify({
+  set(entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) {
+    return Effect.gen(this, function*() {
+      const cache = yield* CacheService
+      const encodedResponse = yield* Schema.encodeUnknown(EntryResponseSchema)({
         createdAt,
         status,
         type
       })
-    })
+
+      return yield* cache.hset(this.key, {
+        [entryId]: JSON.stringify(encodedResponse)
+      })
+    }).pipe(
+      Effect.tapError(error => Console.error(error)),
+      Effect.catchAll(() => Effect.succeed(0))
+    )
   },
   /**
-   * Deletes an entry from Redis by its ID.
-   * @param entryId - The ID of the entry to delete.
-   * @returns The number of fields that were removed.
+   * Deletes entries from Cache by their IDs.
+   * @param entryIds - The IDs of the entries to delete.
+   * @returns An Effect that succeeds with the number of entries that were deleted.
    */
-  async del(entryId: string) {
-    return await redis.hdel(this.key, entryId)
+  del(entryIds: string[]) {
+    return Effect.gen(this, function*() {
+      const cache = yield* CacheService
+      return yield* cache.hdel(this.key, entryIds)
+    }).pipe(
+      Effect.tapError(error => Console.error(error)),
+      Effect.catchAll(() => Effect.succeed(0))
+    )
   },
-  /**
-   * Deletes multiple entries from Redis by their IDs.
-   * @param entryIds - An array of entry IDs to delete.
-   * @returns The number of fields that were removed.
-   */
-  async delAll(entryIds: string[]) {
-    return await redis.hdel(this.key, ...entryIds)
-  }
 }
 
-export const getNewEntries = async () => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.getAll())
-  if (error) {
-    const upstreamError = new UpstreamProviderError(`Redis get all failed: ${error.message}`, { cause: error })
-    console.error(upstreamError)
-    return []
-  }
+export const getNewEntries = () => Effect.gen(function*() {
+  const data = yield* NEW_ENTRY_KV.getAll()
+  if (!data) return []
 
   return data
+}).pipe(Effect.withLogSpan("get_new_entries"))
+
+export const storeNewEntryId = (entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) => {
+  return NEW_ENTRY_KV.set(entryId, createdAt, status, type).pipe(Effect.withLogSpan("store_new_entry_id"))
 }
 
-export const storeNewEntryId = async (entryId: string, createdAt: string, status: EntryStatus, type: EntryType): Promise<Result<true, UpstreamProviderError>> => {
-  const { error } = await tryCatch(NEW_ENTRY_KV.set(entryId, createdAt, status, type))
-  if (error) {
-    const upstreamError = new UpstreamProviderError(`Redis set failed: ${error.message}`, { cause: error })
-    console.error(upstreamError)
-    return err(upstreamError)
-  }
+export const getEntryStatus = (entryId: string) => Effect.gen(function*() {
+  const data = yield* NEW_ENTRY_KV.get(entryId)
+  if (!data) return yield* Effect.fail(new EntryNotFoundError({
+    message: `No data found for entry ID: ${entryId}`,
+    cause: null
+  }))
 
-  return ok(true)
-}
+  return data.status
+}).pipe(Effect.withLogSpan("get_entry_status"))
 
-export const getEntryStatus = async (entryId: string): Promise<Result<EntryStatus, UpstreamProviderError | EntryNotFoundError>> => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(entryId))
-  if (error) {
-    const upstreamError = new UpstreamProviderError(`Redis get failed: ${error.message}`, { cause: error })
-    console.error(upstreamError)
-    return err(upstreamError)
-  }
-  
-  if (!data) {
-    const entryNotFound = new EntryNotFoundError(`No data found for entry ID: ${entryId}`)
-    console.warn(`[${entryNotFound._tag}] ${entryNotFound.message}`)
-    return err(entryNotFound)
-  }
+export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryStatus) => Effect.gen(function*() {
+  const data = yield* NEW_ENTRY_KV.get(entryId)
+  if (!data) return yield* Effect.fail(new EntryNotFoundError({
+    message: `No data found for entry ID: ${entryId}`,
+    cause: null
+  }))
 
-  return ok(data.status)
-}
-
-export const updateEntryStatus = async (entryId: string, updatedAt: string, type: EntryType): Promise<Result<true, UpstreamProviderError | EntryNotFoundError>> => {
-  const { data, error } = await tryCatch(NEW_ENTRY_KV.get(entryId))
-  if (error) {
-    const upstreamError = new UpstreamProviderError(`Redis get failed: ${error.message}`, { cause: error })
-    console.error(upstreamError)
-    return err(upstreamError)
-  }
-  
-  if (!data) {
-    const entryNotFound = new EntryNotFoundError(`No data found for entry ID: ${entryId}`)
-    console.warn(`[${entryNotFound._tag}] ${entryNotFound.message}`)
-    return err(entryNotFound)
-  }
-  
-  const { error: updateError } = await tryCatch(NEW_ENTRY_KV.set(entryId, updatedAt, "Published", type))
-  if (updateError) {
-    const upstreamError = new UpstreamProviderError(`Redis set failed: ${updateError.message}`, { cause: updateError })
-    console.error(upstreamError)
-    return err(upstreamError)
-  }
-
-  return ok(true)
-}
+  return yield* NEW_ENTRY_KV.set(entryId, updatedAt, type, data.type)
+}).pipe(Effect.withLogSpan("update_entry_status"))
