@@ -1,7 +1,7 @@
 import { headers } from "next/headers"
 import { authorizedRequest, tryCatch } from "@/utils/functions"
 import { env } from "@/env"
-import { submitFeedbackUseCase } from "@/usecases/feedback"
+import { submitFeedback } from "@/usecases/feedback"
 import { NEW_ENTRY_KV } from "@/lib/redis"
 import { CACHE_KEYS, MAX_NEW_TIME, MAX_QUEST_NEW_TIME } from "@/utils/constants"
 import { revalidateTag } from "next/cache"
@@ -23,7 +23,7 @@ export async function GET() {
 
   if (authResult.isErr()) {
     console.error(authResult.error)
-    await submitFeedbackUseCase({
+    await submitFeedback({
       title: "Cron Job Auth Error",
       label: "issue",
       feedback: authResult.error.message
@@ -35,7 +35,7 @@ export async function GET() {
   if (error || !data) {
     const statusError = new StatusEnforcementError(`Error getting new entries`, { cause: error })
     console.error(statusError)
-    await submitFeedbackUseCase({
+    await submitFeedback({
       title: "Status Enforcement Error",
       label: "issue",
       feedback: statusError.message
@@ -62,7 +62,7 @@ export async function GET() {
     if (error || !data) {
       const statusError = new StatusEnforcementError(`Error deleting entries`, { cause: error })
       console.error(statusError)
-      await submitFeedbackUseCase({
+      await submitFeedback({
         title: "Status Enforcement Error",
         label: "issue",
         feedback: statusError.message

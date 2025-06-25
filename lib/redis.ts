@@ -5,7 +5,7 @@ import { Redis } from "@upstash/redis"
 import { Ratelimit } from "@upstash/ratelimit"
 import { EntryNotFoundError } from "@/types/Error"
 import { Console, Effect, Schema } from "effect"
-import { CacheService } from "./services/CacheService"
+import { Cache } from "./services/Cache"
 
 export const redis = new Redis({
   url: env.REDIS_URL,
@@ -33,7 +33,7 @@ export const NEW_ENTRY_KV = {
    */
   get(entryId: string) {
     return Effect.gen(this, function*() {
-      const cache = yield* CacheService
+      const cache = yield* Cache
       const response = yield* cache.hget(this.key, entryId)
       const decodedResponse = yield* Schema.decodeUnknown(EntryResponseSchema)(response)
       return decodedResponse
@@ -48,7 +48,7 @@ export const NEW_ENTRY_KV = {
    */
   getAll() {
     return Effect.gen(this, function*() {
-      const cache = yield* CacheService
+      const cache = yield* Cache
       const response = yield* cache.hgetall(this.key)
       if (!response) return null
 
@@ -74,7 +74,7 @@ export const NEW_ENTRY_KV = {
    */
   set(entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) {
     return Effect.gen(this, function*() {
-      const cache = yield* CacheService
+      const cache = yield* Cache
       const encodedResponse = yield* Schema.encodeUnknown(EntryResponseSchema)({
         createdAt,
         status,
@@ -96,7 +96,7 @@ export const NEW_ENTRY_KV = {
    */
   del(entryIds: string[]) {
     return Effect.gen(this, function*() {
-      const cache = yield* CacheService
+      const cache = yield* Cache
       return yield* cache.hdel(this.key, entryIds)
     }).pipe(
       Effect.tapError(error => Console.error(error)),

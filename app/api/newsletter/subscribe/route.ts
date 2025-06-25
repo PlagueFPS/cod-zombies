@@ -1,4 +1,4 @@
-import { EmailService } from "@/lib/services/EmailService";
+import { Email } from "@/lib/services/Email";
 import { subscribeEmail } from "@/usecases/email";
 import { verifyToken } from "@/utils/functions";
 import { Console, Effect } from "effect";
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       const message = "An error occured during the subscribe process. Please try again or request a new subscribe token."
       return Effect.succeed(NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)))
     }),
-    Effect.provide(EmailService.Default),
+    Effect.provide(Email.Default),
     Effect.runPromise
   )
 }

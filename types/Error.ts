@@ -5,23 +5,33 @@ export interface ErrorProps {
   reset: () => void
 }
 
-export class FetchError extends Data.TaggedError("FetchError")<{ message: string, cause: Error | unknown }> {}
-export class ContactExistsError extends Data.TaggedError("ContactExistsError")<{ message: string, cause: Error | unknown }> {}
-export class ContactNotFoundError extends Data.TaggedError("ContactNotFoundError")<{ message: string, cause: Error | unknown }> {}
-export class TokenVerificationError extends Data.TaggedError("TokenVerificationError")<{ message: string, cause: Error | unknown }> {}
-export class TokenExpirationError extends Data.TaggedError("TokenExpirationError")<{ message: string, cause: Error | unknown }> {}
-export class TokenGenerationError extends Data.TaggedError("TokenGenerationError")<{ message: string, cause: Error | unknown }> {}
-export class InvalidUnsubscribeLinkError extends Data.TaggedError("InvalidUnsubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
-export class ExpiredUnsubscribeLinkError extends Data.TaggedError("ExpiredUnsubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
-export class InvalidSubscribeLinkError extends Data.TaggedError("InvalidSubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
-export class ExpiredSubscribeLinkError extends Data.TaggedError("ExpiredSubscribeLinkError")<{ message: string, cause: Error | unknown }> {}
-export class UpstreamProviderError extends Data.TaggedError("UpstreamProviderError")<{ message: string, cause: Error | unknown }> {}
-export class EntryNotFoundError extends Data.TaggedError("EntryNotFoundError")<{ message: string, cause: Error | unknown }> {}
-export class SchemaValidationError extends Data.TaggedError("SchemaValidationError")<{ message: string, cause: Error | unknown }> {}
-export class AuthorizationError extends Data.TaggedError("AuthorizationError")<{ message: string, cause: Error | unknown }> {}
-export class RevalidationError extends Data.TaggedError("RevalidationError")<{ message: string, cause: Error | unknown }> {}
-export class StatusEnforcementError extends Data.TaggedError("StatusEnforcementError")<{ message: string, cause: Error | unknown }> {}
-export class TextParseError extends Data.TaggedError("TextParseError")<{ message: string, cause: Error | unknown }> {}
-export class JSONParseError extends Data.TaggedError("JSONParseError")<{ message: string, cause: Error | unknown }> {}
-export class EmailProviderError extends Data.TaggedError("EmailProviderError")<{ message: string, cause: Error | unknown }> {}
-export class CacheProviderError extends Data.TaggedError("CacheProviderError")<{ message: string, cause: Error | unknown }> {}
+interface CommonErrorProps {
+  message?: string
+  cause?: unknown
+}
+
+export class FetchError extends Data.TaggedError("FetchError")<CommonErrorProps> {}
+export class ContactExistsError extends Data.TaggedError("ContactExistsError")<CommonErrorProps> {}
+export class ContactNotFoundError extends Data.TaggedError("ContactNotFoundError")<CommonErrorProps> {}
+export class TokenVerificationError extends Data.TaggedError("TokenVerificationError")<CommonErrorProps> {}
+export class TokenExpirationError extends Data.TaggedError("TokenExpirationError")<CommonErrorProps> {}
+export class TokenGenerationError extends Data.TaggedError("TokenGenerationError")<CommonErrorProps> {}
+export class InvalidUnsubscribeLinkError extends Data.TaggedError("InvalidUnsubscribeLinkError")<CommonErrorProps> {}
+export class ExpiredUnsubscribeLinkError extends Data.TaggedError("ExpiredUnsubscribeLinkError")<CommonErrorProps> {}
+export class InvalidSubscribeLinkError extends Data.TaggedError("InvalidSubscribeLinkError")<CommonErrorProps> {}
+export class ExpiredSubscribeLinkError extends Data.TaggedError("ExpiredSubscribeLinkError")<CommonErrorProps> {}
+export class UpstreamProviderError extends Data.TaggedError("UpstreamProviderError")<CommonErrorProps> {}
+export class EntryNotFoundError extends Data.TaggedError("EntryNotFoundError")<CommonErrorProps> {}
+export class SchemaValidationError extends Data.TaggedError("SchemaValidationError")<CommonErrorProps> {}
+export class AuthorizationError extends Data.TaggedError("AuthorizationError")<CommonErrorProps> {}
+export class RevalidationError extends Data.TaggedError("RevalidationError")<CommonErrorProps> {}
+export class StatusEnforcementError extends Data.TaggedError("StatusEnforcementError")<CommonErrorProps> {}
+export class TextParseError extends Data.TaggedError("TextParseError")<CommonErrorProps> {}
+export class JSONParseError extends Data.TaggedError("JSONParseError")<CommonErrorProps> {}
+export class EmailProviderError extends Data.TaggedError("EmailProviderError")<CommonErrorProps> {}
+export class CacheProviderError extends Data.TaggedError("CacheProviderError")<CommonErrorProps> {}
+export class GetContactError extends Data.TaggedError("GetContactError")<CommonErrorProps> {}
+export class CreateContactError extends Data.TaggedError("CreateContactError")<CommonErrorProps> {}
+export class RemoveContactError extends Data.TaggedError("RemoveContactError")<CommonErrorProps> {}
+export class CreateBroadcastError extends Data.TaggedError("CreateBroadcastError")<CommonErrorProps> {}
+export class SendBroadcastError extends Data.TaggedError("SendBroadcastError")<CommonErrorProps> {}
