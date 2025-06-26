@@ -2,94 +2,149 @@ import 'server-only'
 import { unstable_cache } from 'next/cache'
 import { cache } from 'react'
 import { CACHE_KEYS } from '@/utils/constants'
-import { getEntries } from '@/contentful/contentful'
+import { getEntries, getManagementEntries } from '@/contentful/contentful'
 import type { TypeFeaturedMapsSkeleton } from '@/contentful/Types/contentful-types'
 import { createImageDTO, createMapCategoryDTO, resolveAsset, resolveEntry } from '@/utils/contentful-utils'
-import { getManagementEntries } from '@/contentful/contentfulManagement'
 import { Entry } from 'contentful'
 import { getNewEntries } from '@/lib/redis'
+import { Effect, Layer } from 'effect'
+import { CMS, CMSManagement } from '@/lib/services/CMS'
+import { Cache } from '@/lib/services/Cache'
+
+const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
-  const mapsPromise = INTERNAL_getMapData(draftMode)
-  const mapIdsPromise = getMapIds()
-  const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
+  return Effect.gen(function*() {
+    const maps = yield* INTERNAL_getMapData()
+    if (!maps) return null
 
-  return maps.map(map => {
-    const mapData = resolveMapData(map, mapIds)
-    return {
-      ...mapData,
-      id: map.sys.id,
-      title: map.fields.title,
-      slug: map.fields.slug,
-      updatedAt: map.sys.updatedAt,
-      description: map.fields.description,
-      isComingSoon: map.fields.isComingSoon ?? false,
-      difficulty: map.fields.difficulty ?? null,
-    }
-  })
+    return yield* Effect.forEach(maps, (map) => Effect.gen(function*() {
+      const mapData = yield* resolveMapData(map)
+      return {
+        ...mapData,
+        id: map.sys.id,
+        title: map.fields.title,
+        slug: map.fields.slug,
+        updatedAt: map.sys.updatedAt,
+        description: map.fields.description,
+        isComingSoon: map.fields.isComingSoon ?? false,
+        difficulty: map.fields.difficulty ?? null,
+      }
+    }), { concurrency: "unbounded" })
+  }).pipe(
+    Effect.provide(CMS.Default(draftMode)),
+    Effect.provide(DataLayer),
+    Effect.runPromise
+  )
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
 export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) => {
-  const maps = await INTERNAL_getMapData(draftMode)
-
-  return maps.filter(map => !map.fields.isComingSoon).map(map => ({
-    id: map.sys.id,
-    title: map.fields.title,
-    slug: map.fields.slug,
-    game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
-  }))
+  return Effect.gen(function*() {
+    const maps = yield* INTERNAL_getMapData()
+    if (!maps) return null
+    
+    return maps.filter(map => !map.fields.isComingSoon).map(map => ({
+      id: map.sys.id,
+      title: map.fields.title,
+      slug: map.fields.slug,
+      game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
+    }))
+  }).pipe(
+    Effect.provide(CMS.Default(draftMode)),
+    Effect.runPromise
+  )
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
 export const getMapBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
-  const mapsPromise = INTERNAL_getMapData(draftMode)
-  const mapIdsPromise = getMapIds()
-  const [maps, mapIds] = await Promise.all([mapsPromise, mapIdsPromise])
-  const map = maps.find(m => m.fields.slug === slug)
-  if (!map) return null
-  const mapData = resolveMapData(map, mapIds)
+  return Effect.gen(function*() {
+    const maps = yield* INTERNAL_getMapData()
+    if (!maps) return null
 
-  return {
-    ...mapData,
-    id: map.sys.id,
-    slug: map.fields.slug,
-    updatedAt: map.sys.updatedAt,
-    title: map.fields.title,
-    description: map.fields.description,
-    body: map.fields.body,
-    isComingSoon: map.fields.isComingSoon ?? false,
-    difficulty: map.fields.difficulty ?? null,
-    timeToRead: map.fields.timeToRead,
-  }
+    const map = maps.find(m => m.fields.slug === slug)
+    if (!map) return null
+
+    const mapData = yield* resolveMapData(map)
+
+    return {
+      ...mapData,
+      id: map.sys.id,
+      slug: map.fields.slug,
+      updatedAt: map.sys.updatedAt,
+      title: map.fields.title,
+      description: map.fields.description,
+      body: map.fields.body,
+      isComingSoon: map.fields.isComingSoon ?? false,
+      difficulty: map.fields.difficulty ?? null,
+      timeToRead: map.fields.timeToRead,
+    }
+  }).pipe(
+    Effect.provide(CMS.Default(draftMode)),
+    Effect.provide(DataLayer),
+    Effect.runPromise
+  )
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
 export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: string) => {
-  const maps = await INTERNAL_getMapData(draftMode)
-  const map = maps.find(m => m.sys.id === id)
-  if (!map) return null
+  return Effect.gen(function*() {
+    const maps = yield* INTERNAL_getMapData()
+    if (!maps) return null
 
-  return {
-    id: map.sys.id,
-    slug: map.fields.slug,
-    title: map.fields.title,
-    description: map.fields.description,
-    isComingSoon: map.fields.isComingSoon ?? false,
-    image: createImageDTO(resolveAsset(map.fields.image)),
-    game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
-  }
+    const map = maps.find(m => m.sys.id === id)
+    if (!map) return null
+
+    const mapData = yield* resolveMapData(map)
+
+    return {
+      ...mapData,
+      id: map.sys.id,
+      slug: map.fields.slug,
+      updatedAt: map.sys.updatedAt,
+      title: map.fields.title,
+      description: map.fields.description,
+      body: map.fields.body,
+      isComingSoon: map.fields.isComingSoon ?? false,
+      difficulty: map.fields.difficulty ?? null,
+      timeToRead: map.fields.timeToRead,
+    }
+  }).pipe(
+    Effect.provide(CMS.Default(draftMode)),
+    Effect.provide(DataLayer),
+    Effect.runPromise
+  )
 }, [], {
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
-const getMapIds = cache(unstable_cache(async () => {
-  const mapsPromise = getManagementEntries("featuredMaps")
-  const newEntriesPromise = getNewEntries()
-  const [maps, newEntries] = await Promise.all([mapsPromise, newEntriesPromise])
+const resolveMapData = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => 
+  Effect.gen(function*() {
+    const { draftIds, changedIds, newIds } = yield* getMapIds()
+    const image = createImageDTO(resolveAsset(map.fields.image))
+    const game = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
+    const isDraft = draftIds.has(map.sys.id)
+    const isChanged = changedIds.has(map.sys.id)
+    const isNew = newIds.has(map.sys.id)
+
+    return {
+      image,
+      game,
+      isDraft,
+      isChanged,
+      isNew
+    }
+  })
+
+const getMapIds = cache(() => Effect.gen(function*() {
+  const [maps, newEntries] = yield* Effect.all([
+    getManagementEntries("featuredMaps"), 
+    getNewEntries()
+  ], { concurrency: "unbounded" })
+
   const draftIds = new Set<string>()
   const changedIds = new Set<string>()
   const newIds = new Set<string>()
@@ -108,35 +163,14 @@ const getMapIds = cache(unstable_cache(async () => {
   })
 
   return { newIds, draftIds, changedIds }
-}, [], {
-  tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
-const resolveMapData = cache((map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Awaited<ReturnType<typeof getMapIds>>) => {
-  const { changedIds, draftIds, newIds } = mapIds
-  const image = createImageDTO(resolveAsset(map.fields.image))
-  const game = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
-  const isDraft = draftIds.has(map.sys.id)
-  const isChanged = changedIds.has(map.sys.id)
-  const isNew = newIds.has(map.sys.id)
-
-  return {
-    image,
-    game,
-    isDraft,
-    isChanged,
-    isNew
-  }
-})
-
-const INTERNAL_getMapData = cache(async (draftMode: boolean) => {
-  return await getEntries<TypeFeaturedMapsSkeleton>({
-    content_type: "featuredMaps",
-    order: ["-fields.releaseDate"],
-    select: [
-      "sys.id",
-      "sys.updatedAt",
-      "fields",
-    ],
-  }, draftMode)
-})
+const INTERNAL_getMapData = cache(() => getEntries<TypeFeaturedMapsSkeleton>({
+  content_type: "featuredMaps",
+  order: ["-fields.releaseDate"],
+  select: [
+    "sys.id",
+    "sys.updatedAt",
+    "fields",
+  ],
+}))

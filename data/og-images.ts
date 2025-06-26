@@ -1,27 +1,35 @@
 import 'server-only'
-import { FetchError } from '@/types/Error'
-import { tryCatch } from '@/utils/functions'
-import { err, ok, Result } from 'neverthrow'
 import { env } from '@/env'
+import { Config, Effect, Redacted } from 'effect'
+import { FetchHttpClient, HttpClient } from '@effect/platform'
 
 type AllowedFonts = "Geist-Bold.otf" | "Geist-SemiBold.otf"
 
-export const getFontData = async (font: AllowedFonts): Promise<Result<ArrayBuffer, FetchError>> => {
-  const baseURL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : env.NEXT_PUBLIC_WEBSITE_URL
-  const { data, error } = await tryCatch(fetch(`${baseURL}/fonts/${font}`, {
+export const loadFonts = Effect.gen(function*(){
+  const [boldFont, semiBoldFont] = yield* Effect.all([
+    getFontData("Geist-Bold.otf"),
+    getFontData("Geist-SemiBold.otf")
+  ], { concurrency: "unbounded" })
+
+  return { boldFont, semiBoldFont }
+}).pipe(
+  Effect.withLogSpan("load_fonts"),
+  Effect.tapError(Effect.logError),
+  Effect.catchAll(() => Effect.succeed(null)),
+  Effect.provide(FetchHttpClient.layer),
+  Effect.runPromise
+)
+
+const getFontData = (font: AllowedFonts) => Effect.gen(function*(){
+  const httpClient = yield* HttpClient.HttpClient
+  const automationBypassSecret = yield* Config.redacted("VERCEL_AUTOMATION_BYPASS_SECRET")
+  const baseURL = yield* Config.string("VERCEL_URL").pipe(Effect.catchAll(() => Effect.succeed(env.NEXT_PUBLIC_WEBSITE_URL)))
+
+  const response = yield* httpClient.get(`${baseURL}/fonts/${font}`, {
     headers: {
-      'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET || ''
+      'x-vercel-protection-bypass': Redacted.value(automationBypassSecret)
     }
-  }))
-  
-  if (error) {
-    return err(new FetchError(error.message, { cause: error }))
-  }
+  })
 
-  if (!data.ok) {
-    return err(new FetchError("Missing font data", { cause: data }))
-  }
-
-  const buffer = await data.arrayBuffer()
-  return ok(buffer)
-}
+  return yield* response.arrayBuffer
+})

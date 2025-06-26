@@ -18,11 +18,14 @@ export const ratelimit = new Ratelimit({
   analytics: true,
 })
 
-export const EntryResponseSchema = Schema.Struct({
+const EntryResponseSchema = Schema.Struct({
   createdAt: Schema.Date,
   status: Schema.Literal("Coming Soon", "Published"),
   type: Schema.Literal("mainQuest", "sideQuest", "game", "zombie", "legal")
 })
+
+export const decodeEntryResponse = Schema.decodeUnknown(EntryResponseSchema)
+export const encodeEntryResponse = Schema.encodeUnknown(EntryResponseSchema)
 
 export const NEW_ENTRY_KV = {
   key: "contentful:new-entries" as const,
@@ -35,7 +38,7 @@ export const NEW_ENTRY_KV = {
     return Effect.gen(this, function*() {
       const cache = yield* Cache
       const response = yield* cache.hget(this.key, entryId)
-      const decodedResponse = yield* Schema.decodeUnknown(EntryResponseSchema)(response)
+      const decodedResponse = yield* decodeEntryResponse(response)
       return decodedResponse
     }).pipe(
       Effect.tapError(error => Console.error(error)),
@@ -53,7 +56,7 @@ export const NEW_ENTRY_KV = {
       if (!response) return null
 
       return yield* Effect.all(Object.entries(response).map(([entryId, entryData]) => Effect.gen(function*() {
-        const decodedResponse = yield* Schema.decodeUnknown(EntryResponseSchema)(entryData)
+        const decodedResponse = yield* decodeEntryResponse(entryData)
         return {
           entryId,
           ...decodedResponse
@@ -75,7 +78,7 @@ export const NEW_ENTRY_KV = {
   set(entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) {
     return Effect.gen(this, function*() {
       const cache = yield* Cache
-      const encodedResponse = yield* Schema.encodeUnknown(EntryResponseSchema)({
+      const encodedResponse = yield* encodeEntryResponse({
         createdAt,
         status,
         type
@@ -110,7 +113,7 @@ export const getNewEntries = () => Effect.gen(function*() {
   if (!data) return []
 
   return data
-}).pipe(Effect.withLogSpan("get_new_entries"))
+})
 
 export const storeNewEntryId = (entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) => {
   return NEW_ENTRY_KV.set(entryId, createdAt, status, type).pipe(Effect.withLogSpan("store_new_entry_id"))
@@ -124,7 +127,7 @@ export const getEntryStatus = (entryId: string) => Effect.gen(function*() {
   }))
 
   return data.status
-}).pipe(Effect.withLogSpan("get_entry_status"))
+})
 
 export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryStatus) => Effect.gen(function*() {
   const data = yield* NEW_ENTRY_KV.get(entryId)
@@ -134,4 +137,4 @@ export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryS
   }))
 
   return yield* NEW_ENTRY_KV.set(entryId, updatedAt, type, data.type)
-}).pipe(Effect.withLogSpan("update_entry_status"))
+})

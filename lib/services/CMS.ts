@@ -24,7 +24,12 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
       })
 
     return { getEntries } as const
-  })
+  }).pipe(
+    Effect.withLogSpan("cms"),
+    Effect.catchTags({
+      ConfigError: (error) => Effect.die(error)
+    })
+  )
 }){}
 
 export class CMSManagement extends Effect.Service<CMSManagement>()("CMSManagement", {
@@ -37,5 +42,10 @@ export class CMSManagement extends Effect.Service<CMSManagement>()("CMSManagemen
     }, { type: "plain", defaults: { spaceId, environmentId: "master" }})
 
     return { client } as const
-  })
+  }).pipe(
+    Effect.withLogSpan("cms_management"),
+    Effect.catchTags({
+      ConfigError: (error) => Effect.die(error)
+    })
+  )
 }){}
