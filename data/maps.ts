@@ -32,6 +32,7 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
       }
     }), { concurrency: "unbounded" })
   }).pipe(
+    Effect.withLogSpan("get_maps"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.provide(DataLayer),
     Effect.runPromise
@@ -52,6 +53,7 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
       game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
     }))
   }).pipe(
+    Effect.withLogSpan("get_map_search_data"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -82,6 +84,7 @@ export const getMapBySlug = cache(unstable_cache(async (draftMode: boolean, slug
       timeToRead: map.fields.timeToRead,
     }
   }).pipe(
+    Effect.withLogSpan("get_map_by_slug"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.provide(DataLayer),
     Effect.runPromise
@@ -113,6 +116,7 @@ export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: st
       timeToRead: map.fields.timeToRead,
     }
   }).pipe(
+    Effect.withLogSpan("get_map_by_id"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.provide(DataLayer),
     Effect.runPromise
@@ -137,7 +141,7 @@ const resolveMapData = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>)
       isChanged,
       isNew
     }
-  })
+  }).pipe(Effect.withLogSpan("resolve_map_data"))
 
 const getMapIds = cache(() => Effect.gen(function*() {
   const [maps, newEntries] = yield* Effect.all([
@@ -163,7 +167,7 @@ const getMapIds = cache(() => Effect.gen(function*() {
   })
 
   return { newIds, draftIds, changedIds }
-}))
+}).pipe(Effect.withLogSpan("get_map_ids")))
 
 const INTERNAL_getMapData = cache(() => getEntries<TypeFeaturedMapsSkeleton>({
   content_type: "featuredMaps",

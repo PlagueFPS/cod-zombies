@@ -40,6 +40,7 @@ export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
       }
     }), { concurrency: "unbounded" })
   }).pipe(
+    Effect.withLogSpan("get_zombies"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.provide(DataLayer),
     Effect.runPromise
@@ -67,6 +68,7 @@ export const getZombieSearchData = cache(unstable_cache(async (draftMode: boolea
       }
     }), { concurrency: "unbounded" })
   }).pipe(
+    Effect.withLogSpan("get_zombie_search_data"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.provide(DataLayer),
     Effect.runPromise
@@ -99,6 +101,7 @@ export const getZombieBySlug = cache(unstable_cache(async (draftMode: boolean, s
       isComingSoon: zombie.fields.isComingSoon ?? false,
     }
   }).pipe(
+    Effect.withLogSpan("get_zombie_by_slug"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.provide(DataLayer),
     Effect.runPromise
@@ -124,6 +127,7 @@ export const getZombieById = cache(unstable_cache(async (draftMode: boolean, id:
       isComingSoon: zombie.fields.isComingSoon ?? false,
     }
   }).pipe(
+    Effect.withLogSpan("get_zombie_by_id"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -137,6 +141,7 @@ export const getReferencedMaps = cache(unstable_cache(async (draftMode: boolean)
     if (!maps) return null
     return maps.map(map => ({...createQuestMapDTO(map), id: map.sys.id }))
   }).pipe(
+    Effect.withLogSpan("get_referenced_maps"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -171,7 +176,7 @@ const resolveZombieData = cache((zombie: Entry<TypeZombiesSkeleton, undefined, s
       isChanged,
       isNew
     }
-}))
+}).pipe(Effect.withLogSpan("resolve_zombie_data")))
 
 const getZombieIds = cache(() => Effect.gen(function*(){
     const [zombies, newEntries] = yield* Effect.all([
@@ -197,7 +202,7 @@ const getZombieIds = cache(() => Effect.gen(function*(){
     })
 
     return { newIds, draftIds, changedIds }
-  }))
+  }).pipe(Effect.withLogSpan("get_zombie_ids")))
 
 const INTERNAL_getZombies = cache(() => getEntries<TypeZombiesSkeleton>({
     content_type: "zombies",

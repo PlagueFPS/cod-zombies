@@ -17,6 +17,7 @@ export const getLegalDocuments = cache(unstable_cache(async (draftMode: boolean)
       slug: doc.fields.slug,
     }))
   }).pipe(
+    Effect.withLogSpan("get_legal_documents"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -40,6 +41,7 @@ export const getLegalDocBySlug = cache(unstable_cache(async (draftMode: boolean,
       content: doc.fields.content,
     }
   }).pipe(
+    Effect.withLogSpan("get_legal_doc_by_slug"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -58,6 +60,7 @@ export const getLegalDocById = cache(unstable_cache(async (draftMode: boolean, i
       slug: doc.fields.slug
     }
   }).pipe(
+    Effect.withLogSpan("get_legal_doc_by_id"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )

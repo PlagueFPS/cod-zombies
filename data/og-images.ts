@@ -5,7 +5,7 @@ import { FetchHttpClient, HttpClient } from '@effect/platform'
 
 type AllowedFonts = "Geist-Bold.otf" | "Geist-SemiBold.otf"
 
-export const loadFonts = Effect.gen(function*(){
+export const loadFonts = Effect.gen(function*() {
   const [boldFont, semiBoldFont] = yield* Effect.all([
     getFontData("Geist-Bold.otf"),
     getFontData("Geist-SemiBold.otf")
@@ -32,4 +32,4 @@ const getFontData = (font: AllowedFonts) => Effect.gen(function*(){
   })
 
   return yield* response.arrayBuffer
-})
+}).pipe(Effect.withLogSpan("get_font_data"))

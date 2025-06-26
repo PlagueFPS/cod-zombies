@@ -38,6 +38,7 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
       }
     }))
   }).pipe(
+    Effect.withLogSpan("get_quests"),
     Effect.provide(DataLayer),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
@@ -65,6 +66,7 @@ export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean
       }
     }), { concurrency: "unbounded" })
   }).pipe(
+    Effect.withLogSpan("get_quest_search_data"),
     Effect.provide(DataLayer),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
@@ -92,6 +94,7 @@ export const getQuestById = cache(unstable_cache(async (draftMode: boolean, id: 
       game: createMapCategoryDTO(resolveEntry(quest.fields.game)).slug
     }
   }).pipe(
+    Effect.withLogSpan("get_quest_by_id"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -121,6 +124,7 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
       timeToRead: quest.fields.timeToRead,
     }
   }).pipe(
+    Effect.withLogSpan("get_quest_by_slug"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.provide(DataLayer),
     Effect.runPromise
@@ -172,7 +176,7 @@ const getQuestIds = cache(() => Effect.gen(function*(){
   })
 
   return { newIds, draftIds, changedIds }
-}))
+}).pipe(Effect.withLogSpan("get_quest_ids")))
 
 const INTERNAL_getSideQuestData = cache(() => Effect.gen(function*() {
   const quests = yield* getEntries<TypeSideQuestsSkeleton>({

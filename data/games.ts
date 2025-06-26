@@ -34,6 +34,7 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
       }
     })
   }).pipe(
+    Effect.withLogSpan("get_games"),
     Effect.provide(DataLayer),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
@@ -52,6 +53,7 @@ export const getGameSearchData = cache(unstable_cache(async (draftMode: boolean)
       slug: g.fields.slug
     }))
   }).pipe(
+    Effect.withLogSpan("get_game_search_data"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -73,6 +75,7 @@ export const getGameById = cache(unstable_cache(async (draftMode: boolean, id: s
       isComingSoon: game.fields.isComingSoon ?? false,
     }
   }).pipe(
+    Effect.withLogSpan("get_game_by_id"),
     Effect.provide(CMS.Default(draftMode)),
     Effect.runPromise
   )
@@ -104,7 +107,7 @@ const getGameIds = cache(() => Effect.gen(function*() {
   })
 
   return { newIds, draftIds, changedIds }
-}))
+}).pipe(Effect.withLogSpan("get_game_ids")))
 
 const INTERNAL_getGameData = cache(() => getEntries<TypeGameCategorySkeleton>({
   content_type: "gameCategory",
