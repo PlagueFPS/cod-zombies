@@ -1,5 +1,5 @@
 "use server"
-import { ContactFormSchema, DraftModeSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validationSchemas"
+import { ContactFormSchema, DraftModeSchema, FeedbackFormSchema, NewsletterFormSchema } from "@/utils/validation-schemas"
 import { createAction, developmentAction, ratelimitAction } from "@/lib/safe-action"
 import { requestSubscribe, sendContactEmail, requestUnsubscribe } from "@/usecases/email"
 import { submitFeedback } from "@/usecases/feedback"
@@ -21,6 +21,17 @@ export const subscribeToNewsletter = ratelimitAction
     }
 
     return requestSubscribe(email).pipe(
+      Effect.tapError(Effect.logError),
+      Effect.catchTags({
+        ContactExistsError: (error) => Effect.succeed({ 
+          success: false, 
+          message: error.message
+        })
+      }),
+      Effect.catchAll((_error) => Effect.succeed({ 
+        success: false, 
+        message: "Failed to subscribe due to a technical issue on our end. Please try again." 
+      })),
       Effect.provide(Email.Default),
       Effect.runPromise
     )
@@ -37,6 +48,17 @@ export const unsubscribeFromNewsletter = ratelimitAction
     }
 
     return requestUnsubscribe(email).pipe(
+      Effect.tapError(Effect.logError),
+      Effect.catchTags({
+        ContactNotFoundError: (error) => Effect.succeed({ 
+          success: false, 
+          message: error.message
+        })
+      }),
+      Effect.catchAll((_error) => Effect.succeed({ 
+        success: false, 
+        message: "Failed to unsubscribe due to a technical issue on our end. Please try again." 
+      })),
       Effect.provide(Email.Default),
       Effect.runPromise
     )
@@ -47,6 +69,11 @@ export const submitFeedbackForm = createAction
   .schema(FeedbackFormSchema)
   .action(async ({ parsedInput }) => {
     return submitFeedback(parsedInput).pipe(
+      Effect.tapError(Effect.logError),
+      Effect.catchAll((_error) => Effect.succeed({ 
+        success: false, 
+        message: "Failed to submit feedback due to a technical issue on our end. Please try again." 
+      })),
       Effect.provide(FetchHttpClient.layer),
       Effect.runPromise
     )
@@ -57,6 +84,11 @@ export const submitContactForm = createAction
   .schema(ContactFormSchema)
   .action(async ({ parsedInput }) => {
     return sendContactEmail(parsedInput).pipe(
+      Effect.tapError(Effect.logError),
+      Effect.catchAll((_error) => Effect.succeed({ 
+        success: false, 
+        message: "Failed to submit contact form due to a technical issue on our end. Please try again." 
+      })),
       Effect.provide(Email.Default),
       Effect.runPromise
     )
@@ -66,16 +98,21 @@ export const toggleDraftMode = developmentAction
   .metadata({ actionName: "toggleDraftMode" })
   .schema(DraftModeSchema)
   .action(async ({ parsedInput: { pathname } }) => {
-    const draft = await draftMode()
-    if (draft.isEnabled) {
-      draft.disable()
-      console.log("Draft mode disabled")
-      revalidatePath(pathname)
-      redirect(pathname)
-    } else {
-      draft.enable()
-      console.log("Draft mode enabled")
-      revalidatePath(pathname)
-      redirect(pathname)
-    }
+    return Effect.gen(function*(){
+      const draft = yield* Effect.promise(() => draftMode())
+      if (draft.isEnabled) {
+        draft.disable()
+        yield* Effect.log("Draft mode disabled")
+        revalidatePath(pathname)
+        redirect(pathname)
+      } else {
+        draft.enable()
+        yield* Effect.log("Draft mode enabled")
+        revalidatePath(pathname)
+        redirect(pathname)
+      }
+    }).pipe(
+      Effect.withLogSpan("toggle_draft_mode"),
+      Effect.runPromise
+    )
   })

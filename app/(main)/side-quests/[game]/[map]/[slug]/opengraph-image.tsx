@@ -1,5 +1,5 @@
 import { getFontData } from "@/data/og-images"
-import { getQuestBySlug } from "@/data/sideQuests"
+import { getQuestBySlug } from "@/data/side-quests"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { ImageResponse } from "next/og"
 

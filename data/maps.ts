@@ -16,7 +16,7 @@ const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*() {
     const maps = yield* INTERNAL_getMapData()
-    if (!maps) return null
+    if (!maps) return []
 
     return yield* Effect.forEach(maps, (map) => Effect.gen(function*() {
       const mapData = yield* resolveMapData(map)
@@ -44,7 +44,7 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
 export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*() {
     const maps = yield* INTERNAL_getMapData()
-    if (!maps) return null
+    if (!maps) return []
     
     return maps.filter(map => !map.fields.isComingSoon).map(map => ({
       id: map.sys.id,

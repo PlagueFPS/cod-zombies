@@ -3,7 +3,7 @@ import { Email } from "@/lib/services/Email";
 import { AuthorizationError, JSONParseError } from "@/types/Error";
 import { authorizedRequest } from "@/utils/functions";
 import { RevalidateHandlers } from "@/utils/revalidation-handlers";
-import { AllowedSlugsSchema } from "@/utils/validationSchemas";
+import { AllowedSlugsSchema } from "@/utils/validation-schemas";
 import { Config, Effect, Layer, Redacted, Schema } from "effect";
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";

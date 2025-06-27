@@ -3,7 +3,7 @@ import type { ImageProps } from "@/types/Image"
 import { useImageState } from "@/hooks/useImageState"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import { customImageLoader } from "@/utils/imageLoader"
+import { customImageLoader } from "@/utils/image-loader"
 
 export default function IconImage({ featuredImage, alt = "", quality = 75, className, priority, sizes }: ImageProps) {
   const { 

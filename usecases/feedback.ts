@@ -1,7 +1,7 @@
 import "server-only"
 import { env } from "@/env"
-import type { FeedbackForm } from "@/utils/validationSchemas"
-import { Console, Effect } from "effect"
+import type { FeedbackForm } from "@/utils/validation-schemas"
+import { Effect } from "effect"
 import { HttpBody, HttpClient } from "@effect/platform"
 
 interface Input extends FeedbackForm {
@@ -26,10 +26,5 @@ export const submitFeedback = (input: Input) => Effect.gen(function* () {
   
   return { success: true, message: "Thank you for submitting! Your submission has been received." }
 }).pipe(
-  Effect.withLogSpan("submit_feedback"),
-  Effect.tapError(error => Console.error(error)),
-  Effect.catchAll(() => Effect.succeed({ 
-    success: false,
-    message: "Failed to submit your feedback due to a technical issue on our end. Please try again or contact support if the issue continues." 
-  }))
+  Effect.withLogSpan("submit_feedback")
 )

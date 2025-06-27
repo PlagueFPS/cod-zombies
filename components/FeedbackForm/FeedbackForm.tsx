@@ -4,7 +4,7 @@ import { customOnError, customOnSuccess } from "@/lib/utils"
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { submitFeedbackForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FeedbackFormSchema } from "@/utils/validationSchemas"
+import { FeedbackFormSchema } from "@/utils/validation-schemas"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import {

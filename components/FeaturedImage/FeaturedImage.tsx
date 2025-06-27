@@ -5,7 +5,7 @@ import placeholderImage from "@/public/article-img-placeholder.jpg"
 import ImageLoader from "../Loaders/ImageLoader"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { customImageLoader } from "@/utils/imageLoader"
+import { customImageLoader } from "@/utils/image-loader"
 
 interface FeaturedImageProps extends ImageProps {
   description?: string

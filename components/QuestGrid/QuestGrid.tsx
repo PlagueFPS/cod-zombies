@@ -1,5 +1,5 @@
 import { getMaps } from "@/data/maps"
-import { getQuests } from "@/data/sideQuests"
+import { getQuests } from "@/data/side-quests"
 import { draftMode } from "next/headers"
 import { Suspense } from "react"
 import QuestGridClient from "./QuestGrid.client"

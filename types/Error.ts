@@ -28,7 +28,7 @@ export class RevalidationError extends Data.TaggedError("RevalidationError")<Com
 export class StatusEnforcementError extends Data.TaggedError("StatusEnforcementError")<CommonErrorProps> {}
 export class TextParseError extends Data.TaggedError("TextParseError")<CommonErrorProps> {}
 export class JSONParseError extends Data.TaggedError("JSONParseError")<CommonErrorProps> {}
-export class EmailProviderError extends Data.TaggedError("EmailProviderError")<CommonErrorProps> {}
+export class SendEmailError extends Data.TaggedError("SendEmailError")<CommonErrorProps> {}
 export class GetContactError extends Data.TaggedError("GetContactError")<CommonErrorProps> {}
 export class CreateContactError extends Data.TaggedError("CreateContactError")<CommonErrorProps> {}
 export class RemoveContactError extends Data.TaggedError("RemoveContactError")<CommonErrorProps> {}

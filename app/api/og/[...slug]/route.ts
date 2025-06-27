@@ -5,7 +5,7 @@ import ZombieOpenGraphImage from "@/app/(main)/bestiary/[slug]/opengraph-image"
 import type { ImageResponse } from "next/og"
 import { Effect, Schema } from "effect"
 import { OGImageGenerationError } from "@/types/Error"
-import { AllowedSlugsSchema } from "@/utils/validationSchemas"
+import { AllowedSlugsSchema } from "@/utils/validation-schemas"
 
 interface RouteParams {
   params: Promise<{ slug: string[] }>

@@ -22,7 +22,7 @@ const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*(){
     const quests = yield* INTERNAL_getSideQuestData()
-    if (!quests) return null
+    if (!quests) return []
 
     return yield* Effect.forEach(quests, (quest) => Effect.gen(function*(){
       const { category: game, ...rest } = yield* resolveQuestData(quest)
@@ -50,7 +50,7 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
 export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*() {
     const quests = yield* INTERNAL_getSideQuestData()
-    if (!quests) return null
+    if (!quests) return []
 
     const currentQuests = quests.filter(q => !q.fields.isComingSoon)
 

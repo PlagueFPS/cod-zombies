@@ -5,7 +5,7 @@ import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRen
 import ShareButton from "@/components/ShareButton/ShareButton"
 import TableOfContents from "@/components/TableOfContents/TableOfContents"
 import { Badge } from "@/components/ui/badge"
-import { getQuestBySlug, getQuests } from "@/data/sideQuests"
+import { getQuestBySlug, getQuests } from "@/data/side-quests"
 import { env } from "@/env"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"

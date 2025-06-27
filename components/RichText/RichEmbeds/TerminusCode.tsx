@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { TerminusCodeSchema } from "@/utils/validationSchemas"
+import { TerminusCodeSchema } from "@/utils/validation-schemas"
 import { toast } from "sonner"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"

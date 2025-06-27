@@ -2,7 +2,7 @@ import { draftMode } from "next/headers"
 import SearchInput from "./SearchInput"
 import { getMapSearchData } from "@/data/maps"
 import { getGames } from "@/data/games"
-import { getQuestSearchData } from "@/data/sideQuests"
+import { getQuestSearchData } from "@/data/side-quests"
 import { getZombieSearchData } from "@/data/zombies"
 import { getAvailableMaps } from "@/data/interactive-map"
 

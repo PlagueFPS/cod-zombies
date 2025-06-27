@@ -8,7 +8,7 @@ import { Badge } from "../ui/badge"
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { submitFeedbackForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FeedbackFormSchema } from "@/utils/validationSchemas"
+import { FeedbackFormSchema } from "@/utils/validation-schemas"
 import { customOnError, customOnSuccess } from "@/lib/utils"
 import { Form, FormControl, FormField, FormItem } from "../ui/form"
 

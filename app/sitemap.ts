@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { getMaps } from "@/data/maps";
 import { env } from "@/env";
-import { getQuests } from "@/data/sideQuests";
+import { getQuests } from "@/data/side-quests";
 import { getZombies } from "@/data/zombies";
 import { getLegalDocuments } from "@/data/legal";
 import { getAvailableMaps } from "@/data/interactive-map";

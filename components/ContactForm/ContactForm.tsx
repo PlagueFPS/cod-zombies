@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { submitContactForm } from "@/data/actions"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ContactFormSchema } from "@/utils/validationSchemas"
+import { ContactFormSchema } from "@/utils/validation-schemas"
 import { customOnError, customOnSuccess } from "@/lib/utils"
 import { 
   Dialog, 

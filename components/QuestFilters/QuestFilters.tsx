@@ -1,7 +1,7 @@
 import { getMapSearchData } from '@/data/maps'
 import { getGameSearchData } from '@/data/games'
 import { draftMode } from 'next/headers'
-import { getQuestSearchData } from '@/data/sideQuests'
+import { getQuestSearchData } from '@/data/side-quests'
 import { Suspense } from 'react'
 import QuestFiltersClient from './QuestFilters.client'
 import QuestFilterLoader from '@/components/Loaders/QuestFilterLoader'

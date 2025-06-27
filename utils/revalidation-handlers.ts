@@ -6,7 +6,7 @@ import { sendLegalUpdateBroadcast, sendQuestReleaseBroadcast, sendZombieReleaseB
 import { env } from "@/env"
 import { getMapById } from "@/data/maps"
 import { getGameById } from "@/data/games"
-import { getQuestById } from "@/data/sideQuests"
+import { getQuestById } from "@/data/side-quests"
 import { getZombieById } from "@/data/zombies"
 import { getLegalDocById } from "@/data/legal"
 import { EntryNotFoundError } from "@/types/Error"

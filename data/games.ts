@@ -18,7 +18,8 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
       getGameIds()
     ], { concurrency: "unbounded"})
     
-    if (!games) return null
+    if (!games) return []
+    
     return games.map(game => {
       const isDraft = draftIds.has(game.sys.id)
       const isChanged = changedIds.has(game.sys.id)
@@ -46,7 +47,8 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
 export const getGameSearchData = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*() {
     const games = yield* INTERNAL_getGameData()
-    if (!games) return null
+    if (!games) return []
+
     return games.filter(g => !g.fields.isComingSoon).map(g => ({
       id: g.sys.id,
       title: g.fields.title,

@@ -9,7 +9,7 @@ import { CMS } from "@/lib/services/CMS";
 export const getLegalDocuments = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*(){
     const legalDocs = yield* INTERNAL_getLegalDocuments()
-    if (!legalDocs) return null
+    if (!legalDocs) return []
 
     return legalDocs.map(doc => ({
       id: doc.sys.id,
@@ -53,8 +53,10 @@ export const getLegalDocById = cache(unstable_cache(async (draftMode: boolean, i
   return Effect.gen(function*(){
     const docs = yield* INTERNAL_getLegalDocuments()
     if (!docs) return null
+
     const doc = docs.find(doc => doc.sys.id === id)
     if (!doc) return null
+
     return {
       id: doc.sys.id,
       slug: doc.fields.slug

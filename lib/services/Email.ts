@@ -1,6 +1,13 @@
 import { env } from "@/env";
 import { Effect } from "effect";
-import { CreateBroadcastError, CreateContactError, EmailProviderError, GetContactError, RemoveContactError, SendBroadcastError } from "@/types/Error";
+import { 
+  CreateBroadcastError, 
+  CreateContactError, 
+  GetContactError, 
+  RemoveContactError, 
+  SendBroadcastError, 
+  SendEmailError 
+} from "@/types/Error";
 import { 
   Resend,
   type CreateBroadcastOptions, 
@@ -19,7 +26,7 @@ export class Email extends Effect.Service<Email>()("Email", {
         resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email })
       )
 
-      if (error && error.name !== "not_found") return yield* Effect.fail(new GetContactError({ cause: error }))
+      if (error && error.name !== "not_found") return yield* new GetContactError({ cause: error })
 
       return data
     })
@@ -29,7 +36,7 @@ export class Email extends Effect.Service<Email>()("Email", {
         resend.contacts.create({ audienceId: env.RESEND_AUDIENCE_ID, email })
       )
 
-      if (error) return yield* Effect.fail(new CreateContactError({ cause: error }))
+      if (error) return yield* new CreateContactError({ cause: error })
 
       return data
     })
@@ -39,7 +46,7 @@ export class Email extends Effect.Service<Email>()("Email", {
         resend.contacts.remove({ audienceId: env.RESEND_AUDIENCE_ID, email })
       )
 
-      if (error) return yield* Effect.fail(new RemoveContactError({ cause: error }))
+      if (error) return yield* new RemoveContactError({ cause: error })
 
       return data
     })
@@ -49,7 +56,7 @@ export class Email extends Effect.Service<Email>()("Email", {
         resend.emails.send(params, options)
       )
       
-      if (error) return yield* Effect.fail(new EmailProviderError({ cause: error }))
+      if (error) return yield* new SendEmailError({ cause: error })
 
       return data
     })
@@ -59,7 +66,7 @@ export class Email extends Effect.Service<Email>()("Email", {
         resend.broadcasts.create(params, options)
       )
 
-      if (error) return yield* Effect.fail(new CreateBroadcastError({ cause: error }))
+      if (error) return yield* new CreateBroadcastError({ cause: error })
 
       return data
     })
@@ -69,7 +76,7 @@ export class Email extends Effect.Service<Email>()("Email", {
         resend.broadcasts.send(id, payload)
       )
 
-      if (error) return yield* Effect.fail(new SendBroadcastError({ cause: error }))
+      if (error) return yield* new SendBroadcastError({ cause: error })
 
       return data
     })

@@ -24,7 +24,7 @@ const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*(){
     const zombies = yield* INTERNAL_getZombies()
-    if (!zombies) return null
+    if (!zombies) return []
   
     return yield* Effect.forEach(zombies, (zombie) => Effect.gen(function*() {
       const { elementalWeakness, attacks, ...rest } = yield* resolveZombieData(zombie)
@@ -52,7 +52,7 @@ export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {
 export const getZombieSearchData = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*(){
     const zombies = yield* INTERNAL_getZombies()
-    if (!zombies) return null
+    if (!zombies) return []
 
     const currentZombies = zombies.filter(z => !z.fields.isComingSoon)
 
