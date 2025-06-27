@@ -7,75 +7,74 @@ import { getQuestById } from '@/data/sideQuests'
 import { getZombieById } from '@/data/zombies'
 import { getLegalDocById } from '@/data/legal'
 import { AllowedSlugsSchema } from '@/utils/validationSchemas'
-import { SchemaValidationError } from '@/types/Error'
+import { AuthorizationError, EntryNotFoundError, InvalidRequestError } from '@/types/Error'
+import { Config, Effect, Redacted, Schema } from 'effect'
 
 interface RouteParams {
   params: Promise<{ slug: string[] }>
 }
 
-const DraftResponse = {
-  notFound(type: string) {
-    return Response.json({ message: `${type} not found` }, { status: 404 })
-  },
-  async success(path: string) {
-    const draft = await draftMode()
-    draft.enable()
-    return Response.redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}${path}`)
-  },
-  error<T extends Error>(message: string | T, status: number = 400) {
-    return Response.json({ message }, { status })
-  }
-} as const
+const createSuccessResponse = (path: string) => Effect.gen(function*(){
+  const draft = yield* Effect.promise(() => draftMode())
+  draft.enable()
+  return Response.redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}${path}`)
+})
 
 export async function GET(req: NextRequest, { params }: RouteParams) {
-  const { slug } = await params
-  const secret = req.nextUrl.searchParams.get('secret') || ''
-  const entryId = req.nextUrl.searchParams.get('entryId')
-  const authResult = authorizedRequest(secret, env.DRAFT_SECRET)
+  return Effect.gen(function*(){
+    const { slug } = yield* Effect.promise(() => params)
+    const secret = req.nextUrl.searchParams.get('secret')
+    const entryId = req.nextUrl.searchParams.get('entryId')
 
-  if (authResult.isErr()) {
-    console.error(authResult.error)
-    return DraftResponse.error(authResult.error.message, 401)
-  }
+    if (!secret) return yield* new InvalidRequestError({ message: "Missing secret" })
+    if (!entryId) return yield* new InvalidRequestError({ message: "Missing entryId" })
+    
+    const revalidateSecret = yield* Config.redacted("REVALIDATE_SECRET")
+    const providedSecret = Redacted.make(secret)
 
-  if (!entryId) return DraftResponse.error("Missing entryId")
-
-  const slugResult = AllowedSlugsSchema.safeParse(slug[0])
-  if (!slugResult.success) {
-    const error = new SchemaValidationError(slugResult.error.message, { cause: slugResult.error.flatten().fieldErrors })
-    console.error(error)
-    return DraftResponse.error(error.message, 400)
-  }
-
-  switch(slugResult.data) {
-    case 'maps': {
-      const map = await getMapById(true, entryId)
-      if (!map) return DraftResponse.notFound("map")
-      
-      return await DraftResponse.success(`/${map.game}/${map.slug}`)
-    }
-    case 'side-quests': {
-      const quest = await getQuestById(true, entryId)
-      if (!quest) {
-        return DraftResponse.notFound("quest")
+    const authed = yield* authorizedRequest(Redacted.value(providedSecret), Redacted.value(revalidateSecret))
+    if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
+    
+    const validSlug = yield* Schema.decodeUnknown(AllowedSlugsSchema)(slug[0])
+    switch(validSlug) {
+      case "maps": {
+        const map = yield* Effect.promise(() => getMapById(true, entryId))
+        if (!map) return yield* new EntryNotFoundError({ message: `No map found for entryId: ${entryId}` })
+        
+        return yield* createSuccessResponse(`/${map.game}/${map.slug}`)
       }
-
-      return await DraftResponse.success(`/side-quests/${quest.game}/${quest.map}/${quest.slug}`)
+      case "side-quests": {
+        const quest = yield* Effect.promise(() => getQuestById(true, entryId))
+        if (!quest) return yield* new EntryNotFoundError({ message: `No quest found for entryId: ${entryId}` })
+        
+        return yield* createSuccessResponse(`/side-quests/${quest.game}/${quest.map}/${quest.slug}`)
+      }
+      case "zombies": {
+        const zombie = yield* Effect.promise(() => getZombieById(true, entryId))
+        if (!zombie) return yield* new EntryNotFoundError({ message: `No zombie found for entryId: ${entryId}` })
+        
+        return yield* createSuccessResponse(`/bestiary/${zombie.slug}`)
+      }
+      case "legal": {
+        const doc = yield* Effect.promise(() => getLegalDocById(true, entryId))
+        if (!doc) return yield* new EntryNotFoundError({ message: `No legal document found for entryId: ${entryId}` })
+        
+        return yield* createSuccessResponse(`/${doc.slug}`)
+      }
+      default: {
+        return yield* new InvalidRequestError({ message: `No preview available for this slug: ${validSlug}` })
+      }
     }
-    case 'zombies': {
-      const zombie = await getZombieById(true, entryId)
-      if (!zombie) return DraftResponse.notFound("zombie")
-      
-      return await DraftResponse.success(`/bestiary/${zombie.slug}`)
-    }
-    case 'legal': {
-      const doc = await getLegalDocById(true, entryId)
-      if (!doc) return DraftResponse.notFound('legal')
-      
-      return await DraftResponse.success(`/${doc.slug}`)
-    }
-    default: {
-      return DraftResponse.error(`No preview avaialble for this slug: ${slugResult.data}`, 204)
-    }
-  }
+  }).pipe(
+    Effect.withLogSpan("get_draft_handler"),
+    Effect.tapError(Effect.logError),
+    Effect.catchTags({
+      AuthorizationError: (error) => Effect.succeed(Response.json(error.message, { status: 401 })),
+      EntryNotFoundError: (error) => Effect.succeed(Response.json(error.message, { status: 404 })),
+      InvalidRequestError: (error) => Effect.succeed(Response.json(error.message, { status: 400 })),
+      ParseError: (error) => Effect.succeed(Response.json(error.message, { status: 400 })),
+    }),
+    Effect.catchAll((error) => Effect.succeed(Response.json(error.message, { status: 500 }))),
+    Effect.runPromise
+  )
 }

@@ -1,7 +1,7 @@
 import { Email } from "@/lib/services/Email";
 import { unsubscribeEmail } from "@/usecases/email";
 import { verifyToken } from "@/utils/functions";
-import { Console, Effect } from "effect";
+import { Effect } from "effect";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(new URL(`/newsletter/unsubscribe/success`, req.url))
   }).pipe(
     Effect.withLogSpan("unsubscribe_get_handler"),
-    Effect.tapError(error => Console.error(error)),
+    Effect.tapError(Effect.logError),
     Effect.catchTags({
       TokenExpirationError: () => {
         const message = "The unsubscribe token used has expired. Please request a new one."

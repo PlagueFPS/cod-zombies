@@ -1,10 +1,11 @@
+import { Schema } from "effect";
 import { z } from "zod";
 import { zfd } from "zod-form-data"
 
 export type FeedbackForm = z.infer<typeof FeedbackFormSchema> 
-export type AllowedSlugs = z.infer<typeof AllowedSlugsSchema>
+export type AllowedSlugs = Schema.Schema.Type<typeof AllowedSlugsSchema>
 
-export const AllowedSlugsSchema = z.enum(["maps", "games", "side-quests", "zombies", "legal"])
+export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
 
 export const FeedbackFormSchema = zfd.formData({
   title: zfd.text(z.string()).optional(),
@@ -36,7 +37,3 @@ export const TerminusCodeSchema = z.object({
 export const DraftModeSchema = z.object({
   pathname: z.string().nonempty()
 })
-
-export const OGParamsSchema = z.promise(z.object({
-  slug: z.tuple([AllowedSlugsSchema, z.string().nonempty()])
-}))

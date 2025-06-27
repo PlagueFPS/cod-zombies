@@ -1,12 +1,12 @@
 import { headers } from "next/headers"
 import { authorizedRequest } from "@/utils/functions"
-import { env } from "@/env"
 import { NEW_ENTRY_KV } from "@/lib/redis"
 import { CACHE_KEYS, MAX_NEW_TIME, MAX_QUEST_NEW_TIME } from "@/utils/constants"
 import { revalidateTag } from "next/cache"
 import { EntryType } from "@/types/EntryEnforcement"
-import { Console, Duration, Effect } from "effect"
+import { Config, Duration, Effect, Redacted } from "effect"
 import { Cache } from "@/lib/services/Cache"
+import { AuthorizationError } from "@/types/Error"
 
 const REVALIDATION_MAP: Record<EntryType, string> = {
   mainQuest: CACHE_KEYS.FEATURED_MAPS.ALL,
@@ -20,14 +20,15 @@ export async function GET() {
   return Effect.gen(function*() {
     const headerList = yield* Effect.promise(() => headers())
     const secret = headerList.get("Authorization")
-    if (!secret) return new Response("Missing Auth Header", { status: 401 })
+    if (!secret) return yield* new AuthorizationError({ message: "Missing Auth Header" })
 
-    const authed = yield* authorizedRequest(secret, `Bearer ${env.CRON_SECRET}`)
-    if (!authed) return new Response("Unauthorized Request", { status: 401 })
+    const cronSecret = yield* Config.redacted("CRON_SECRET")
+    const providedSecret = Redacted.make(secret)
+
+    const authed = yield* authorizedRequest(Redacted.value(providedSecret), `Bearer ${Redacted.value(cronSecret)}`)
+    if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
     const newEntries = yield* NEW_ENTRY_KV.getAll()
-    if (!newEntries) return new Response("No New Entries Found", { status: 404 })
-    
     const idsToDelete: Set<string> = new Set([])
     const typesToRevalidate: Set<EntryType> = new Set([])
 
@@ -43,10 +44,7 @@ export async function GET() {
       }
     })
 
-    if (idsToDelete.size > 0) {
-      const deleted = yield* NEW_ENTRY_KV.del([...idsToDelete])
-      if (!deleted) return new Response("Failed to delete new entries", { status: 500 })
-    }
+    if (idsToDelete.size > 0) yield* NEW_ENTRY_KV.del([...idsToDelete])
     
     typesToRevalidate.forEach(type => {
       const cacheKey = REVALIDATION_MAP[type]
@@ -59,7 +57,11 @@ export async function GET() {
     return new Response("ok", { status: 200 })
   }).pipe(
     Effect.withLogSpan("status_enforcement_cron"),
-    Effect.tapError(error => Console.error(error)),
+    Effect.tapError(Effect.logError),
+    Effect.catchTags({
+      AuthorizationError: (error) => Effect.succeed(new Response(error.message, { status: 401 })),
+    }),
+    Effect.catchAll(error => Effect.succeed(new Response(error.message, { status: 500 }))),
     Effect.provide(Cache.Default),
     Effect.runPromise
   )

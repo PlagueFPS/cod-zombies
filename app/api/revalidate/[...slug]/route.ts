@@ -1,8 +1,10 @@
-import { env } from "@/env";
-import { RevalidationError, SchemaValidationError } from "@/types/Error";
+import { Cache } from "@/lib/services/Cache";
+import { Email } from "@/lib/services/Email";
+import { AuthorizationError, JSONParseError } from "@/types/Error";
 import { authorizedRequest } from "@/utils/functions";
 import { RevalidateHandlers } from "@/utils/revalidation-handlers";
-import { AllowedSlugsSchema, RevalidateWebhookBodySchema } from "@/utils/validationSchemas";
+import { AllowedSlugsSchema } from "@/utils/validationSchemas";
+import { Config, Effect, Layer, Redacted, Schema } from "effect";
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 
@@ -10,38 +12,51 @@ interface RouteParams {
   params: Promise<{ slug: string[] }>
 }
 
-export async function PUT(req: NextRequest, { params }: RouteParams) {
-  try {
-    const [{ slug }, headerList] = await Promise.all([params, headers()])
-    const secret = headerList.get('X-Contentful-Revalidate-Secret') || ''
-    const payloadPromise = req.json()
-    const authResult = authorizedRequest(secret, env.REVALIDATE_SECRET)
+const RevalidateWebhookSchema = Schema.Struct({
+  entryId: Schema.String,
+  createdAt: Schema.Date,
+  updatedAt: Schema.Date
+})
 
-    if (authResult.isErr()) {
-      console.error(authResult.error)
-      return Response.json(authResult.error.message, { status: 401 })
-    }
-  
-    const payload = await payloadPromise
-    const body = RevalidateWebhookBodySchema.safeParse(payload)
-    if (!body.success) {
-      const error = new SchemaValidationError(`Invalid Payload Body`, { cause: body.error.flatten().fieldErrors })
-      console.error(error)
-      return Response.json(error.message, { status: 400 })
-    }
-  
-    const slugResult = AllowedSlugsSchema.safeParse(slug[0])
-    if (!slugResult.success) {
-      const error = new SchemaValidationError(`Invalid Params`, { cause: slugResult.error.flatten().fieldErrors })
-      console.error(error)
-      return Response.json(error.message, { status: 400 })
-    }
-  
-    const handler = RevalidateHandlers[slugResult.data]
-    return handler(body.data)
-  } catch(e) {
-    const error = new RevalidationError(`Revalidation Error`, { cause: e })
-    console.error(error)
-    return Response.json(error.message, { status: 500 })
-  }
+const decodeWebhookBody = Schema.decodeUnknown(RevalidateWebhookSchema)
+const decodeSlug = Schema.decodeUnknown(AllowedSlugsSchema)
+
+const RevalidateLayer = Layer.merge(Email.Default, Cache.Default)
+
+export async function PUT(req: NextRequest, { params }: RouteParams) {
+  return Effect.gen(function*(){
+    const [{ slug }, headerList] = yield* Effect.all([
+      Effect.promise(() => params),
+      Effect.promise(() => headers())
+    ], { concurrency: "unbounded" })
+
+    const secretHeader = headerList.get("X-Contentful-Revalidate-Secret") || ''
+    const contentfulSecret = Redacted.make(secretHeader)
+    const revalidateSecret = yield* Config.redacted("REVALIDATE_SECRET")
+    const authed = yield* authorizedRequest(Redacted.value(contentfulSecret), Redacted.value(revalidateSecret))
+    if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
+
+    const payload = yield* Effect.tryPromise({
+      try: () => req.json(),
+      catch: (error) => new JSONParseError({ message: "Failed to parse webhook body", cause: error })
+    })
+
+    const body = yield* decodeWebhookBody(payload)
+    const validSlug = yield* decodeSlug(slug[0])
+    const handler = RevalidateHandlers[validSlug]
+
+    return yield* handler(body)
+  }).pipe(
+    Effect.withLogSpan("put_revalidation_handler"),
+    Effect.tapError(Effect.logError),
+    Effect.catchTags({
+      AuthorizationError: (error) => Effect.succeed(Response.json(error.message, { status: 401 })),
+      EntryNotFoundError: (error) => Effect.succeed(Response.json(error.message, { status: 404 })),
+      ParseError: (error) => Effect.succeed(Response.json(error.message, { status: 400 })),
+      JSONParseError: (error) => Effect.succeed(Response.json(error.message, { status: 400 }))
+    }),
+    Effect.catchAll((error) => Effect.succeed(Response.json(error.message, { status: 500 }))),
+    Effect.provide(RevalidateLayer),
+    Effect.runPromise
+  )
 }

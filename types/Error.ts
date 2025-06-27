@@ -42,3 +42,4 @@ export class DeleteCacheValueError extends Data.TaggedError("DeleteCacheValueErr
 export class StoreNewEntryError extends Data.TaggedError("StoreNewEntryError")<CommonErrorProps> {}
 export class GetEntryStatusError extends Data.TaggedError("GetEntryStatusError")<CommonErrorProps> {}
 export class UpdateEntryStatusError extends Data.TaggedError("UpdateEntryStatusError")<CommonErrorProps> {}
+export class InvalidRequestError extends Data.TaggedError("InvalidRequestError")<CommonErrorProps> {}

@@ -3,14 +3,13 @@ import MapOpenGraphImage from "@/app/(main)/[game]/[slug]/opengraph-image"
 import SideQuestOpenGraphImage from "@/app/(main)/side-quests/[game]/[map]/[slug]/opengraph-image"
 import ZombieOpenGraphImage from "@/app/(main)/bestiary/[slug]/opengraph-image"
 import type { ImageResponse } from "next/og"
-import { Console, Effect, Schema } from "effect"
+import { Effect, Schema } from "effect"
 import { OGImageGenerationError } from "@/types/Error"
+import { AllowedSlugsSchema } from "@/utils/validationSchemas"
 
 interface RouteParams {
   params: Promise<{ slug: string[] }>
 }
-
-const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
 
 const ParamsSchema = Schema.Struct({
   slug: Schema.Tuple(AllowedSlugsSchema, Schema.String)
@@ -51,8 +50,8 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
     return response
   }).pipe(
     Effect.withLogSpan("open_graph_image_handler"),
-    Effect.tapError(error => Console.error(error)),
-    Effect.catchAll((error) => Effect.succeed(new Response(error.message, { status: 500 }))),
+    Effect.tapError(Effect.logError),
+    Effect.catchAll((error) => Effect.succeed(new Response(error.message, { status: 400 }))),
     Effect.runPromise
   )
 }

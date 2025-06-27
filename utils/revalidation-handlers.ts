@@ -142,7 +142,7 @@ export const RevalidateHandlers = {
    * @param params.updatedAt - ISO timestamp of when the entry was last updated
    * @returns An Effect that succeeds with the result of the revalidation
    */
-  sideQuests: ({ entryId, createdAt, updatedAt }: RevalidateData) => Effect.gen(function*(){
+  "side-quests": ({ entryId, createdAt, updatedAt }: RevalidateData) => Effect.gen(function*(){
     const quest = yield* Effect.promise(() => getQuestById(true, entryId))
     if (!quest) return yield* new EntryNotFoundError({
       message: `No quest found for entry ID: ${entryId}`,
