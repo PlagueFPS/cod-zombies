@@ -19,8 +19,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const q = await getQuestBySlug(false, slug)
   if (!q) return null
 
-  const { boldFont, semiBoldFont } = await loadFonts
-  if (!boldFont || !semiBoldFont) return null
+  const fonts = await loadFonts
+  if (!fonts) return null
 
   return new ImageResponse(
     <div style={{
@@ -133,13 +133,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
       fonts: [
         {
           name: "Geist",
-          data: boldFont,
+          data: fonts.boldFont,
           style: "normal",
           weight: 700,
         },
         {
           name: "Geist",
-          data: semiBoldFont,
+          data: fonts.semiBoldFont,
           style: "normal",
           weight: 600,
         },

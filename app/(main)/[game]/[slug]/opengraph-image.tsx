@@ -20,8 +20,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const map = await getMapBySlug(false, slug)
   if (!map) return null
 
-  const { boldFont, semiBoldFont } = await loadFonts
-  if (!boldFont || !semiBoldFont) return null
+  const fonts = await loadFonts
+  if (!fonts) return null
 
   const getDifficultyCSSProps = (): CSSProperties => {
     switch(map.difficulty) {
@@ -158,13 +158,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
       fonts: [
         {
           name: "Geist",
-          data: boldFont,
+          data: fonts.boldFont,
           style: "normal",
           weight: 700,
         },
         {
           name: "Geist",
-          data: semiBoldFont,
+          data: fonts.semiBoldFont,
           style: "normal",
           weight: 600,
         },
