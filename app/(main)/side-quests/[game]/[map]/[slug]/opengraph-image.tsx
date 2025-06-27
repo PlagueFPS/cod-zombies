@@ -1,4 +1,4 @@
-import { getFontData } from "@/data/og-images"
+import { loadFonts } from "@/data/og-images"
 import { getQuestBySlug } from "@/data/side-quests"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { ImageResponse } from "next/og"
@@ -18,20 +18,9 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const { slug } = await params
   const q = await getQuestBySlug(false, slug)
   if (!q) return null
- const [boldFont, semiBoldFont] = await Promise.all([
-  getFontData("Geist-Bold.otf"),
-  getFontData("Geist-SemiBold.otf"),
- ])
 
-  if (boldFont.isErr()) {
-    console.error(boldFont.error)
-    return null
-  }
-
-  if (semiBoldFont.isErr()) {
-    console.error(semiBoldFont.error)
-    return null
-  }
+  const { boldFont, semiBoldFont } = await loadFonts
+  if (!boldFont || !semiBoldFont) return null
 
   return new ImageResponse(
     <div style={{
@@ -144,13 +133,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
       fonts: [
         {
           name: "Geist",
-          data: boldFont.value,
+          data: boldFont,
           style: "normal",
           weight: 700,
         },
         {
           name: "Geist",
-          data: semiBoldFont.value,
+          data: semiBoldFont,
           style: "normal",
           weight: 600,
         },

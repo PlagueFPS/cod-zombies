@@ -1,6 +1,6 @@
 import { GetEntriesError } from "@/types/Error";
 import { createClient, EntrySkeletonType, EntriesQueries } from "contentful";
-import management from "contentful-management"
+import * as management from "contentful-management"
 import { Config, Effect, Redacted } from "effect";
 
 export class CMS extends Effect.Service<CMS>()("CMS", {

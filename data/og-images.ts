@@ -5,20 +5,14 @@ import { FetchHttpClient, HttpClient } from '@effect/platform'
 
 type AllowedFonts = "Geist-Bold.otf" | "Geist-SemiBold.otf"
 
-export const loadFonts = Effect.gen(function*() {
+export const loadFonts =Effect.gen(function*(){
   const [boldFont, semiBoldFont] = yield* Effect.all([
     getFontData("Geist-Bold.otf"),
     getFontData("Geist-SemiBold.otf")
   ], { concurrency: "unbounded" })
 
   return { boldFont, semiBoldFont }
-}).pipe(
-  Effect.withLogSpan("load_fonts"),
-  Effect.tapError(Effect.logError),
-  Effect.catchAll(() => Effect.succeed(null)),
-  Effect.provide(FetchHttpClient.layer),
-  Effect.runPromise
-)
+}).pipe(Effect.runPromise)
 
 const getFontData = (font: AllowedFonts) => Effect.gen(function*(){
   const httpClient = yield* HttpClient.HttpClient
@@ -32,4 +26,9 @@ const getFontData = (font: AllowedFonts) => Effect.gen(function*(){
   })
 
   return yield* response.arrayBuffer
-}).pipe(Effect.withLogSpan("get_font_data"))
+}).pipe(
+  Effect.withLogSpan("get_font_data"),
+  Effect.tapError(Effect.logError),
+  Effect.catchAll(() => Effect.succeed(null)),
+  Effect.provide(FetchHttpClient.layer),
+)
