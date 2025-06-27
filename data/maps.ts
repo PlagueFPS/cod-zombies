@@ -18,8 +18,10 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
     const maps = yield* INTERNAL_getMapData()
     if (!maps) return []
 
-    return yield* Effect.forEach(maps, (map) => Effect.gen(function*() {
-      const mapData = yield* resolveMapData(map)
+    const mapIds = yield* getMapIds
+
+    return maps.map(map => {
+      const mapData = resolveMapData(map, mapIds)
       return {
         ...mapData,
         id: map.sys.id,
@@ -30,7 +32,7 @@ export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {
         isComingSoon: map.fields.isComingSoon ?? false,
         difficulty: map.fields.difficulty ?? null,
       }
-    }), { concurrency: "unbounded" })
+    })
   }).pipe(
     Effect.withLogSpan("get_maps"),
     Effect.provide(CMS.Default(draftMode)),
@@ -69,7 +71,8 @@ export const getMapBySlug = cache(unstable_cache(async (draftMode: boolean, slug
     const map = maps.find(m => m.fields.slug === slug)
     if (!map) return null
 
-    const mapData = yield* resolveMapData(map)
+    const mapIds = yield* getMapIds
+    const mapData = resolveMapData(map, mapIds)
 
     return {
       ...mapData,
@@ -97,14 +100,11 @@ export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: st
   return Effect.gen(function*() {
     const maps = yield* INTERNAL_getMapData()
     if (!maps) return null
-
+    
     const map = maps.find(m => m.sys.id === id)
     if (!map) return null
 
-    const mapData = yield* resolveMapData(map)
-
     return {
-      ...mapData,
       id: map.sys.id,
       slug: map.fields.slug,
       updatedAt: map.sys.updatedAt,
@@ -125,25 +125,7 @@ export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: st
   tags: [CACHE_KEYS.FEATURED_MAPS.ALL]
 }))
 
-const resolveMapData = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>) => 
-  Effect.gen(function*() {
-    const { draftIds, changedIds, newIds } = yield* getMapIds()
-    const image = createImageDTO(resolveAsset(map.fields.image))
-    const game = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
-    const isDraft = draftIds.has(map.sys.id)
-    const isChanged = changedIds.has(map.sys.id)
-    const isNew = newIds.has(map.sys.id)
-
-    return {
-      image,
-      game,
-      isDraft,
-      isChanged,
-      isNew
-    }
-  }).pipe(Effect.withLogSpan("resolve_map_data"))
-
-const getMapIds = cache(() => Effect.gen(function*() {
+const getMapIds = Effect.gen(function*() {
   const [maps, newEntries] = yield* Effect.all([
     getManagementEntries("featuredMaps"), 
     getNewEntries()
@@ -167,7 +149,24 @@ const getMapIds = cache(() => Effect.gen(function*() {
   })
 
   return { newIds, draftIds, changedIds }
-}).pipe(Effect.withLogSpan("get_map_ids")))
+}).pipe(Effect.withLogSpan("get_map_ids"))
+
+const resolveMapData = (map: Entry<TypeFeaturedMapsSkeleton, undefined, string>, mapIds: Effect.Effect.Success<typeof getMapIds>) => {
+  const { draftIds, changedIds, newIds } = mapIds
+  const image = createImageDTO(resolveAsset(map.fields.image))
+  const game = createMapCategoryDTO(resolveEntry(map.fields.gameCategory))
+  const isDraft = draftIds.has(map.sys.id)
+  const isChanged = changedIds.has(map.sys.id)
+  const isNew = newIds.has(map.sys.id)
+
+  return {
+    image,
+    game,
+    isDraft,
+    isChanged,
+    isNew
+  }
+}
 
 const INTERNAL_getMapData = cache(() => getEntries<TypeFeaturedMapsSkeleton>({
   content_type: "featuredMaps",

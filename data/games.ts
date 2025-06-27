@@ -15,7 +15,7 @@ export const getGames = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*() {
     const [games, { changedIds, draftIds, newIds }] = yield* Effect.all([
       INTERNAL_getGameData(), 
-      getGameIds()
+      getGameIds
     ], { concurrency: "unbounded"})
     
     if (!games) return []
@@ -85,7 +85,7 @@ export const getGameById = cache(unstable_cache(async (draftMode: boolean, id: s
   tags: [CACHE_KEYS.GAME_CATEGORIES.ALL]
 }))
 
-const getGameIds = cache(() => Effect.gen(function*() {
+const getGameIds = Effect.gen(function*() {
   const [games, newEntries] = yield* Effect.all([
     getManagementEntries("gameCategory"), 
     getNewEntries()
@@ -109,14 +109,14 @@ const getGameIds = cache(() => Effect.gen(function*() {
   })
 
   return { newIds, draftIds, changedIds }
-}).pipe(Effect.withLogSpan("get_game_ids")))
+}).pipe(Effect.withLogSpan("get_game_ids"))
 
 const INTERNAL_getGameData = cache(() => getEntries<TypeGameCategorySkeleton>({
-  content_type: "gameCategory",
-  order: ["-fields.releaseDate"],
-  select: [
-    "sys.id",
-    "sys.updatedAt",
-    "fields"
-  ]
+    content_type: "gameCategory",
+    order: ["-fields.releaseDate"],
+    select: [
+      "sys.id",
+      "sys.updatedAt",
+      "fields"
+    ]
   }))

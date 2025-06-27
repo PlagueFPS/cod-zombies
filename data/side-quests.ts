@@ -24,8 +24,10 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
     const quests = yield* INTERNAL_getSideQuestData()
     if (!quests) return []
 
-    return yield* Effect.forEach(quests, (quest) => Effect.gen(function*(){
-      const { category: game, ...rest } = yield* resolveQuestData(quest)
+    const questIds = yield* getQuestIds
+
+    return quests.map(quest => {
+      const { category: game, ...rest } = resolveQuestData(quest, questIds)
       return {
         ...rest,
         game,
@@ -36,7 +38,7 @@ export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
         slug: quest.fields.slug,
         description: quest.fields.description,
       }
-    }))
+    })
   }).pipe(
     Effect.withLogSpan("get_quests"),
     Effect.provide(DataLayer),
@@ -52,10 +54,11 @@ export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean
     const quests = yield* INTERNAL_getSideQuestData()
     if (!quests) return []
 
+    const questIds = yield* getQuestIds
     const currentQuests = quests.filter(q => !q.fields.isComingSoon)
 
-    return yield* Effect.forEach(currentQuests, (quest) => Effect.gen(function*(){
-      const { category: game, map } = yield* resolveQuestData(quest)
+    return currentQuests.map(quest => {
+      const { category: game, map } = resolveQuestData(quest, questIds)
 
       return {
         id: quest.sys.id,
@@ -64,7 +67,7 @@ export const getQuestSearchData = cache(unstable_cache(async (draftMode: boolean
         game,
         map
       }
-    }), { concurrency: "unbounded" })
+    })
   }).pipe(
     Effect.withLogSpan("get_quest_search_data"),
     Effect.provide(DataLayer),
@@ -110,7 +113,9 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
     const quest = quests.find(q => q.fields.slug === slug)
     if (!quest) return null
 
-    const { category: game, ...rest } = yield* resolveQuestData(quest)
+    const questIds = yield* getQuestIds
+    const { category: game, ...rest } = resolveQuestData(quest, questIds)
+
     return {
       ...rest,
       game,
@@ -133,8 +138,8 @@ export const getQuestBySlug = cache(unstable_cache(async (draftMode: boolean, sl
   tags: [CACHE_KEYS.SIDE_QUESTS.ALL]
 }))
 
-const resolveQuestData = (quest: Entry<TypeSideQuestsSkeleton, undefined, string>) => Effect.gen(function*(){
-  const { changedIds, draftIds, newIds } = yield* getQuestIds()
+const resolveQuestData = (quest: Entry<TypeSideQuestsSkeleton, undefined, string>, questIds: Effect.Effect.Success<typeof getQuestIds>) => {
+  const { changedIds, draftIds, newIds } = questIds
   const image = createImageDTO(resolveAsset(quest.fields.image))
   const map = createQuestMapDTO(resolveEntry(quest.fields.map))
   const category = createMapCategoryDTO(resolveEntry(quest.fields.game))
@@ -150,9 +155,9 @@ const resolveQuestData = (quest: Entry<TypeSideQuestsSkeleton, undefined, string
     isChanged,
     isNew
   }
-})
+}
 
-const getQuestIds = cache(() => Effect.gen(function*(){
+const getQuestIds = Effect.gen(function*(){
   const [quests, newEntries] = yield* Effect.all([
     getManagementEntries("sideQuests"), 
     getNewEntries()
@@ -176,7 +181,7 @@ const getQuestIds = cache(() => Effect.gen(function*(){
   })
 
   return { newIds, draftIds, changedIds }
-}).pipe(Effect.withLogSpan("get_quest_ids")))
+}).pipe(Effect.withLogSpan("get_quest_ids"))
 
 const INTERNAL_getSideQuestData = cache(() => Effect.gen(function*() {
   const quests = yield* getEntries<TypeSideQuestsSkeleton>({
