@@ -137,8 +137,4 @@ const sendBroadcast = (title: string, payload: CreateBroadcastOptions) => Effect
 
   yield* emails.sendBroadcast(broadcast.id)
   return { success: true, message: `${title} Broadcast sent successfully!` }
-}).pipe(
-  Effect.withLogSpan("send_broadcast"),
-  Effect.tapError(error => Console.error(error)),
-  Effect.catchAll(error => Effect.succeed({ message: error.message, success: false }))
-)
+}).pipe(Effect.withLogSpan("send_broadcast"))

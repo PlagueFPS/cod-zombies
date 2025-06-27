@@ -3,8 +3,8 @@ import { env } from "@/env"
 import type { EntryStatus, EntryType } from "@/types/EntryEnforcement"
 import { Redis } from "@upstash/redis"
 import { Ratelimit } from "@upstash/ratelimit"
-import { EntryNotFoundError } from "@/types/Error"
-import { Console, Effect, Schema } from "effect"
+import { EntryNotFoundError, GetCacheValueError, GetEntriesError, GetEntryStatusError, StoreNewEntryError, UpdateEntryStatusError } from "@/types/Error"
+import { Effect, Schema } from "effect"
 import { Cache } from "./services/Cache"
 
 export const redis = new Redis({
@@ -40,10 +40,7 @@ export const NEW_ENTRY_KV = {
       const response = yield* cache.hget(this.key, entryId)
       const decodedResponse = yield* decodeEntryResponse(response)
       return decodedResponse
-    }).pipe(
-      Effect.tapError(error => Console.error(error)),
-      Effect.catchAll(() => Effect.succeed(null))
-    )
+    })
   },
   /**
    * Retrieves all entries from Cache.
@@ -53,7 +50,10 @@ export const NEW_ENTRY_KV = {
     return Effect.gen(this, function*() {
       const cache = yield* Cache
       const response = yield* cache.hgetall(this.key)
-      if (!response) return null
+      if (!response) return yield* new GetCacheValueError({
+        message: `No data found for key: ${this.key}`,
+        cause: null
+      })
 
       return yield* Effect.all(Object.entries(response).map(([entryId, entryData]) => Effect.gen(function*() {
         const decodedResponse = yield* decodeEntryResponse(entryData)
@@ -62,10 +62,7 @@ export const NEW_ENTRY_KV = {
           ...decodedResponse
         }
       })), { concurrency: "unbounded" })
-    }).pipe(
-      Effect.tapError(error => Console.error(error)),
-      Effect.catchAll(() => Effect.succeed(null))
-    )
+    })
   },
   /**
    * Sets a new entry in Cache.
@@ -87,10 +84,7 @@ export const NEW_ENTRY_KV = {
       return yield* cache.hset(this.key, {
         [entryId]: JSON.stringify(encodedResponse)
       })
-    }).pipe(
-      Effect.tapError(error => Console.error(error)),
-      Effect.catchAll(() => Effect.succeed(0))
-    )
+    })
   },
   /**
    * Deletes entries from Cache by their IDs.
@@ -101,40 +95,57 @@ export const NEW_ENTRY_KV = {
     return Effect.gen(this, function*() {
       const cache = yield* Cache
       return yield* cache.hdel(this.key, entryIds)
-    }).pipe(
-      Effect.tapError(error => Console.error(error)),
-      Effect.catchAll(() => Effect.succeed(0))
-    )
+    })
   },
 }
 
-export const getNewEntries = () => Effect.gen(function*() {
-  const data = yield* NEW_ENTRY_KV.getAll()
-  if (!data) return []
-
-  return data
-})
-
-export const storeNewEntryId = (entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) => {
-  return NEW_ENTRY_KV.set(entryId, createdAt, status, type).pipe(Effect.withLogSpan("store_new_entry_id"))
-}
-
-export const getEntryStatus = (entryId: string) => Effect.gen(function*() {
-  const data = yield* NEW_ENTRY_KV.get(entryId)
-  if (!data) return yield* Effect.fail(new EntryNotFoundError({
-    message: `No data found for entry ID: ${entryId}`,
-    cause: null
+export const getNewEntries = () => NEW_ENTRY_KV.getAll().pipe(
+  Effect.withLogSpan("get_new_entries"),
+  Effect.mapError(error => new GetEntriesError({
+    message: "Failed to get new entries",
+    cause: error
   }))
+)
 
-  return data.status
-})
+export const storeNewEntryId = (entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) => 
+  Effect.gen(function*() {
+    const result = yield* NEW_ENTRY_KV.set(entryId, createdAt, status, type)
+    yield* Effect.log(`Stored ${result} new entry ID: ${entryId}`)
+    return result
+  }).pipe(
+    Effect.withLogSpan("store_new_entry_id"),
+    Effect.mapError(error => new StoreNewEntryError({
+      message: `Failed to store new entry ID: ${entryId}`,
+      cause: error
+    }))
+)
 
-export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryStatus) => Effect.gen(function*() {
-  const data = yield* NEW_ENTRY_KV.get(entryId)
-  if (!data) return yield* Effect.fail(new EntryNotFoundError({
-    message: `No data found for entry ID: ${entryId}`,
-    cause: null
+export const getEntryStatus = (entryId: string) => Effect.gen(function*(){
+  const { status } = yield* NEW_ENTRY_KV.get(entryId)
+  return status
+}).pipe(
+  Effect.withLogSpan("get_entry_status"),
+  Effect.mapError(error => new GetEntryStatusError({
+    message: `Failed to get entry status for entry ID: ${entryId}`,
+    cause: error
   }))
+)
 
-  return yield* NEW_ENTRY_KV.set(entryId, updatedAt, type, data.type)
-})
+export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryStatus) => 
+  Effect.gen(function*() {
+    const data = yield* NEW_ENTRY_KV.get(entryId)
+    if (!data) return yield* new EntryNotFoundError({
+      message: `No data found for entry ID: ${entryId}`,
+      cause: null
+    })
+
+    const result = yield* NEW_ENTRY_KV.set(entryId, updatedAt, type, data.type)
+    yield* Effect.log(`Updated ${result} entry status to "${type}": ${entryId}`)
+    return result
+  }).pipe(
+    Effect.withLogSpan("update_entry_status"),
+    Effect.mapError(error => new UpdateEntryStatusError({
+      message: `Failed to update entry status for entry ID: ${entryId}`,
+      cause: error
+    }))
+  )

@@ -85,10 +85,8 @@ export const calculateSkip = (page: number, limit: number) => {
   return page <= 1 ? 0 : (limit * page) - limit
 }
 
-export const isFirstTimePublish = (createdAt: string, updatedAt: string) => {
-  const createdAtDate = new Date(createdAt)
-  const updatedAtDate = new Date(updatedAt)
-  return createdAtDate.getTime() === updatedAtDate.getTime()
+export const isFirstTimePublish = (createdAt: Date, updatedAt: Date) => {
+  return createdAt.getTime() === updatedAt.getTime()
 }
 
 export const createItemTooltipDTO = (item: ZombieItem) => {

@@ -29,7 +29,6 @@ export class StatusEnforcementError extends Data.TaggedError("StatusEnforcementE
 export class TextParseError extends Data.TaggedError("TextParseError")<CommonErrorProps> {}
 export class JSONParseError extends Data.TaggedError("JSONParseError")<CommonErrorProps> {}
 export class EmailProviderError extends Data.TaggedError("EmailProviderError")<CommonErrorProps> {}
-export class CacheProviderError extends Data.TaggedError("CacheProviderError")<CommonErrorProps> {}
 export class GetContactError extends Data.TaggedError("GetContactError")<CommonErrorProps> {}
 export class CreateContactError extends Data.TaggedError("CreateContactError")<CommonErrorProps> {}
 export class RemoveContactError extends Data.TaggedError("RemoveContactError")<CommonErrorProps> {}
@@ -37,3 +36,9 @@ export class CreateBroadcastError extends Data.TaggedError("CreateBroadcastError
 export class SendBroadcastError extends Data.TaggedError("SendBroadcastError")<CommonErrorProps> {}
 export class OGImageGenerationError extends Data.TaggedError("OGImageGenerationError")<CommonErrorProps> {}
 export class GetEntriesError extends Data.TaggedError("GetEntriesError")<CommonErrorProps> {}
+export class GetCacheValueError extends Data.TaggedError("GetCacheValueError")<CommonErrorProps> {}
+export class SetCacheValueError extends Data.TaggedError("SetCacheValueError")<CommonErrorProps> {}
+export class DeleteCacheValueError extends Data.TaggedError("DeleteCacheValueError")<CommonErrorProps> {}
+export class StoreNewEntryError extends Data.TaggedError("StoreNewEntryError")<CommonErrorProps> {}
+export class GetEntryStatusError extends Data.TaggedError("GetEntryStatusError")<CommonErrorProps> {}
+export class UpdateEntryStatusError extends Data.TaggedError("UpdateEntryStatusError")<CommonErrorProps> {}

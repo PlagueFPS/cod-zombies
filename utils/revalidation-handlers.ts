@@ -1,5 +1,4 @@
 import "server-only"
-import type { AllowedSlugs } from "./validationSchemas"
 import { revalidateTag } from "next/cache"
 import { isFirstTimePublish } from "./contentful-utils"
 import { CACHE_KEYS } from "./constants"
@@ -10,13 +9,14 @@ import { getGameById } from "@/data/games"
 import { getQuestById } from "@/data/sideQuests"
 import { getZombieById } from "@/data/zombies"
 import { getLegalDocById } from "@/data/legal"
-import { EntryNotFoundError, UpstreamProviderError } from "@/types/Error"
+import { EntryNotFoundError } from "@/types/Error"
 import { getEntryStatus, storeNewEntryId, updateEntryStatus } from "@/lib/redis"
+import { Effect } from "effect"
 
 interface RevalidateData {
   entryId: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 interface BroadcastEntry {
@@ -35,133 +35,163 @@ interface BroadcastResponse {
   message: string
 }
 
-type RevalidateHandler = (data: RevalidateData) => Promise<Response>
+const createSuccessResponse = (message: string, broadcast: BroadcastResponse | null) => 
+  Response.json({ revalidated: true, message, broadcast }, { status: 201 })
 
-const RevalidateResponse = {
-  notFound(type: string, entryId: string) {
-    return Response.json({ revalidated: false, message: `${type} not found ID: ${entryId}` }, { status: 404 })
-  },
-  success(message: string, broadcast?: BroadcastResponse): Response {
-    return Response.json({ revalidated: true, message, broadcast }, { status: 201 })
-  },
-  successWithStatusError(message: string, statusError: UpstreamProviderError | EntryNotFoundError, broadcast?: BroadcastResponse) {
-    return Response.json({ revalidated: true, message, statusError, broadcast }, { status: 201 })
-  },
-  error<T extends Error>(error: T, status: number = 400) {
-    return Response.json({ revalidated: false, error }, { status })
-  }
-} as const
-
-const sendQuestBroadcast = async <T extends BroadcastEntry>(type: "Main" | "Side", entry: T, url: string) => {
+const sendQuestBroadcast = <T extends BroadcastEntry>(type: "Main" | "Side", entry: T, url: string) => Effect.gen(function*(){
   const imageUrl = type === "Main" 
     ? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}` 
     : `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
 
-  return await sendQuestReleaseBroadcast({
+  return yield* sendQuestReleaseBroadcast({
     type,
     redirectUrl: url,
     imageUrl,
     ...entry,
   })
-}
+})
 
-export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
-  maps: async ({ entryId, createdAt, updatedAt }) => {
-    const map = await getMapById(true, entryId)
-    if (!map) return RevalidateResponse.notFound("map", entryId)
+/**
+ * Collection of revalidation handlers for different content types.
+ * Each handler manages cache invalidation and status updates for its respective content type.
+ */
+export const RevalidateHandlers = {
+    /**
+   * Handles revalidation for map entries.
+   * - Invalidates the featured maps cache
+   * - Manages entry status updates (Coming Soon/Published)
+   * - Sends notifications for new/updated maps
+   * @param params - The revalidation parameters
+   * @param params.entryId - The ID of the map entry
+   * @param params.createdAt - ISO timestamp of when the entry was created
+   * @param params.updatedAt - ISO timestamp of when the entry was last updated
+   * @returns An Effect that succeeds with the result of the revalidation
+   */
+  maps: ({ entryId, createdAt, updatedAt }: RevalidateData) => Effect.gen(function*(){
+    const map = yield* Effect.promise(() => getMapById(true, entryId))
+    if (!map) return yield* new EntryNotFoundError({
+      message: `No map found for entry ID: ${entryId}`,
+      cause: null
+    })
+    
     const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game}/${map.slug}`
-
+    let broadcast: BroadcastResponse | null = null
+    
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = map.isComingSoon ? "Coming Soon" : "Published"
-      const result = await storeNewEntryId(entryId, createdAt, status, "mainQuest")
-      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
+      yield* storeNewEntryId(entryId, createdAt, status, "mainQuest")
       
-      revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
-      if (!map.isComingSoon) {
-        const broadcast = await sendQuestBroadcast("Main", map, url)
-        return RevalidateResponse.success(`${entryId} stored as new.`, broadcast)
+      if (!map.isComingSoon) broadcast = yield* sendQuestBroadcast("Main", map, url)
+    } 
+    else {
+      const status = yield* getEntryStatus(entryId)
+      if (status === "Coming Soon" && !map.isComingSoon) {
+        const [_, broadcastResult] = yield* Effect.all([
+          updateEntryStatus(entryId, updatedAt, "Published"),
+          sendQuestBroadcast("Main", map, url)
+        ], { concurrency: "unbounded" })
+        
+        broadcast = broadcastResult
       }
-
-      return RevalidateResponse.success(`${entryId} stored as new`)
     }
 
     revalidateTag(CACHE_KEYS.FEATURED_MAPS.ALL)
-    const status = await getEntryStatus(entryId)
-    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Map data revalidated.`, status.error)
+    return createSuccessResponse("Map revalidated", broadcast)
+  }).pipe(Effect.withLogSpan("maps_revalidate_handler")),
 
-    if (status.value === "Coming Soon" && !map.isComingSoon) {
-      const updatePromise = updateEntryStatus(entryId, updatedAt, "mainQuest")
-      const broadcastPromise = sendQuestBroadcast('Main', map, url)
-      const [broadcast, updateResult] = await Promise.all([broadcastPromise, updatePromise])
-
-      if (updateResult.isErr()) return RevalidateResponse.successWithStatusError(`Map data revalidated`, updateResult.error, broadcast)
-      return RevalidateResponse.success(`Map data revalidated.`, broadcast)
-    }
-
-    return RevalidateResponse.success(`Map data revalidated.`)
-  },
-  games: async ({ entryId, createdAt, updatedAt }) => {
-    const game = await getGameById(true, entryId)
-    if (!game) return RevalidateResponse.notFound("game", entryId)
-
+  /**
+   * Handles revalidation for game entries.
+   * - Invalidates the game categories cache
+   * - Manages entry status updates (Coming Soon/Published)
+   * @param params - The revalidation parameters
+   * @param params.entryId - The ID of the game entry
+   * @param params.createdAt - ISO timestamp of when the entry was created
+   * @param params.updatedAt - ISO timestamp of when the entry was last updated
+   * @returns An Effect that succeeds with the result of the revalidation
+   */
+  games: ({ entryId, createdAt, updatedAt }: RevalidateData) => Effect.gen(function*(){
+    const game = yield* Effect.promise(() => getGameById(true, entryId))
+    if (!game) return yield* new EntryNotFoundError({
+      message: `No game found for entry ID: ${entryId}`,
+      cause: null
+    })
+    
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = game.isComingSoon ? "Coming Soon" : "Published"
-      const result = await storeNewEntryId(entryId, createdAt, status, "game")
-      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
-      
-      revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-      return RevalidateResponse.success(`${entryId} stored as new`)
+      yield* storeNewEntryId(entryId, createdAt, status, "game")
+    } 
+    else {
+      const status = yield* getEntryStatus(entryId)
+      if (status === "Coming Soon" && !game.isComingSoon) {
+        yield* updateEntryStatus(entryId, updatedAt, "Published")
+      }
     }
 
     revalidateTag(CACHE_KEYS.GAME_CATEGORIES.ALL)
-    const status = await getEntryStatus(entryId)
-    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Game data revalidated.`, status.error)
+    return createSuccessResponse("Game revalidated", null)
+  }).pipe(Effect.withLogSpan("games_revalidate_handler")),
 
-    if (status.value === "Coming Soon" && !game.isComingSoon) {
-      const result = await updateEntryStatus(entryId, updatedAt, "game")
-      if (result.isErr()) return RevalidateResponse.successWithStatusError(`Game data revalidated`, result.error)
-    }
+  /**
+   * Handles revalidation for side quest entries.
+   * - Invalidates the side quests cache
+   * - Manages entry status updates (Coming Soon/Published)
+   * - Sends notifications for new/updated side quests
+   * @param params - The revalidation parameters
+   * @param params.entryId - The ID of the side quest entry
+   * @param params.createdAt - ISO timestamp of when the entry was created
+   * @param params.updatedAt - ISO timestamp of when the entry was last updated
+   * @returns An Effect that succeeds with the result of the revalidation
+   */
+  sideQuests: ({ entryId, createdAt, updatedAt }: RevalidateData) => Effect.gen(function*(){
+    const quest = yield* Effect.promise(() => getQuestById(true, entryId))
+    if (!quest) return yield* new EntryNotFoundError({
+      message: `No quest found for entry ID: ${entryId}`,
+      cause: null
+    })
 
-    return RevalidateResponse.success(`Game data revalidated.`)
-  },
-  "side-quests": async ({ entryId, createdAt, updatedAt }) => {
-    const quest = await getQuestById(true, entryId)
-    if (!quest) return RevalidateResponse.notFound("quest", entryId)
     const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${quest.game}/${quest.map}/${quest.slug}`
-
+    let broadcast: BroadcastResponse | null = null
+    
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = quest.isComingSoon ? "Coming Soon" : "Published"
-      const result = await storeNewEntryId(entryId, createdAt, status, "sideQuest")
-      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
+      yield* storeNewEntryId(entryId, createdAt, status, "sideQuest")
       
-      revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
+      if (!quest.isComingSoon) broadcast = yield* sendQuestBroadcast("Side", quest, url)
+    } 
+    else {
+      const status = yield* getEntryStatus(entryId)
+      if (status === "Coming Soon" && !quest.isComingSoon) {
+        const [_, broadcastResult] = yield* Effect.all([
+          updateEntryStatus(entryId, updatedAt, "Published"),
+          sendQuestBroadcast("Side", quest, url)
+        ], { concurrency: "unbounded" })
 
-      if (!quest.isComingSoon) {
-        const broadcast = await sendQuestBroadcast("Side", quest, url)
-        return RevalidateResponse.success(`${entryId} stored as new.`, broadcast)
+        broadcast = broadcastResult
       }
-
-      return RevalidateResponse.success(`${entryId} stored as new`)
     }
 
     revalidateTag(CACHE_KEYS.SIDE_QUESTS.ALL)
-    const status = await getEntryStatus(entryId)
-    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Side quest data revalidated.`, status.error)
-
-    if (status.value === "Coming Soon" && !quest.isComingSoon) {
-      const updatePromise = updateEntryStatus(entryId, updatedAt, "sideQuest")
-      const broadcastPromise = sendQuestBroadcast("Side", quest, url)
-      const [broadcast, result] = await Promise.all([broadcastPromise, updatePromise])
-
-      if (result.isErr()) return RevalidateResponse.successWithStatusError(`Side quest data revalidated`, result.error, broadcast)
-      return RevalidateResponse.success(`Side Quest data revalidated.`, broadcast)
-    }
-
-    return RevalidateResponse.success(`Side quest data revalidated.`)
-  },
-  zombies: async ({ entryId, createdAt, updatedAt }) => {
-    const zombie = await getZombieById(true, entryId)
-    if (!zombie) return RevalidateResponse.notFound("zombie", entryId)
+    return createSuccessResponse("Side Quest revalidated", broadcast)
+  }).pipe(Effect.withLogSpan("side_quests_revalidate_handler")),
+  
+  /**
+   * Handles revalidation for zombie entries.
+   * - Invalidates the zombies cache
+   * - Manages entry status updates (Coming Soon/Published)
+   * - Sends notifications for new/updated zombies
+   * @param params - The revalidation parameters
+   * @param params.entryId - The ID of the zombie entry
+   * @param params.createdAt - ISO timestamp of when the entry was created
+   * @param params.updatedAt - ISO timestamp of when the entry was last updated
+   * @returns An Effect that succeeds with the result of the revalidation
+   */
+  zombies: ({ entryId, createdAt, updatedAt }: RevalidateData) => Effect.gen(function*(){
+    const zombie = yield* Effect.promise(() => getZombieById(true, entryId))
+    if (!zombie) return yield* new EntryNotFoundError({
+      message: `No zombie found for entry ID: ${entryId}`,
+      cause: null
+    })
+    
     const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
     const broadcastData = {
       type: zombie.type,
@@ -171,46 +201,54 @@ export const RevalidateHandlers: Record<AllowedSlugs, RevalidateHandler> = {
       redirectUrl: url,
     }
 
+    let broadcast: BroadcastResponse | null = null
+
     if (isFirstTimePublish(createdAt, updatedAt)) {
       const status = zombie.isComingSoon ? "Coming Soon" : "Published"
-      const result = await storeNewEntryId(entryId, createdAt, status, "zombie")
-      if (result.isErr()) return RevalidateResponse.error(result.error, 500)
-      
-      revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
+      yield* storeNewEntryId(entryId, createdAt, status, "zombie")
 
-      if (!zombie.isComingSoon) {
-        const broadcast = await sendZombieReleaseBroadcast(broadcastData)
-        return RevalidateResponse.success(`${entryId} stored as new.`, broadcast)
+      if (!zombie.isComingSoon) broadcast = yield* sendZombieReleaseBroadcast(broadcastData)
+    } 
+    else {
+      const status = yield* getEntryStatus(entryId)
+      if (status === "Coming Soon" && !zombie.isComingSoon) {
+        const [_, broadcastResult] = yield* Effect.all([
+          updateEntryStatus(entryId, updatedAt, "Published"),
+          sendZombieReleaseBroadcast(broadcastData)
+        ], { concurrency: "unbounded" })
+
+        broadcast = broadcastResult
       }
-
-      return RevalidateResponse.success(`${entryId} stored as new`)
     }
 
     revalidateTag(CACHE_KEYS.ZOMBIES.ALL)
-    const status = await getEntryStatus(entryId)
-    if (status.isErr()) return RevalidateResponse.successWithStatusError(`Zombie data revalidated.`, status.error)
+    return createSuccessResponse("Zombie revalidated", broadcast)
+  }).pipe(Effect.withLogSpan("zombies_revalidate_handler")),
+  
+  /**
+   * Handles revalidation for legal document entries.
+   * - Invalidates the legal documents cache
+   * - Sends notifications for updated legal documents
+   * @param params - The revalidation parameters
+   * @param params.entryId - The ID of the legal document entry
+   * @param params.createdAt - ISO timestamp of when the entry was created
+   * @param params.updatedAt - ISO timestamp of when the entry was last updated
+   * @returns An Effect that succeeds with the result of the revalidation
+   */
+  legal: ({ entryId, createdAt, updatedAt }: RevalidateData) => Effect.gen(function*(){
+    const legalDoc = yield* Effect.promise(() => getLegalDocById(true, entryId))
+    if (!legalDoc) return yield* new EntryNotFoundError({
+      message: `No legal document found for entry ID: ${entryId}`,
+      cause: null
+    })
 
-    if (status.value === "Coming Soon" && !zombie.isComingSoon) {
-      const updatePromise = updateEntryStatus(entryId, updatedAt, "zombie")
-      const broadcastPromise = sendZombieReleaseBroadcast(broadcastData)
-      const [broadcast, result] = await Promise.all([broadcastPromise, updatePromise])
-
-      if (result.isErr()) return RevalidateResponse.successWithStatusError(`Zombie data revalidated`, result.error, broadcast)
-      return RevalidateResponse.success(`Zombie data revalidated.`, broadcast)
+    let broadcast: BroadcastResponse | null = null
+    
+    if (!isFirstTimePublish(createdAt, updatedAt)) {
+      broadcast = yield* sendLegalUpdateBroadcast()
     }
-
-    return RevalidateResponse.success(`Zombie data revalidated.`)
-  },
-  legal: async ({ entryId, createdAt, updatedAt }) => {
-    const legalDoc = await getLegalDocById(true, entryId)
-    if (!legalDoc) return RevalidateResponse.notFound('legal', entryId)
+    
     revalidateTag(CACHE_KEYS.LEGAL.ALL)
-
-    if (isFirstTimePublish(createdAt, updatedAt)) {
-      return RevalidateResponse.success(`legal data revalidated.`)
-    }
-
-    const broadcast = await sendLegalUpdateBroadcast()
-    return RevalidateResponse.success(`legal data revalidated.`, broadcast)
-  }
+    return createSuccessResponse("Legal document revalidated", broadcast)
+  }).pipe(Effect.withLogSpan("legal_revalidate_handler"))
 }
