@@ -31,7 +31,7 @@ export default function ContactForm({ className }: ContactFormProps) {
       mode: 'onChange',
     },
     actionProps: {
-      onSuccess: ({ data }: { data: { success: boolean, message: string } }) => {
+      onSuccess: ({ data }: { data: any }) => {
         customOnSuccess(data?.success, data?.message)
         resetFormAndAction()
         setOpen(false)

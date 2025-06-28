@@ -27,12 +27,12 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
       }
     },
     actionProps: {
-      onSuccess: ({ data }) => {
+      onSuccess: ({ data }: { data: any }) => {
         customOnSuccess(data?.success, data?.message)
         resetFormAndAction()
         setVote(null)
       },
-      onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
+      onError: ({ error }: { error: any }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
     },
   })
 

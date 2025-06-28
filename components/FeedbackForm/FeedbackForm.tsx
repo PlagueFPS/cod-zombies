@@ -36,7 +36,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
       mode: 'onChange',
     },
     actionProps: {
-      onSuccess: ({ data }: { data: { success: boolean, message: string } }) => {
+      onSuccess: ({ data }: { data: any }) => {
         customOnSuccess(data?.success, data?.message)
         if (data?.success) { // only reset and close on successful response from server
           resetFormAndAction()
