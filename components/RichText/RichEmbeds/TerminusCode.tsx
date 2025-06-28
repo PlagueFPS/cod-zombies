@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { TerminusCodeSchema } from "@/utils/validation-schemas"
+import { decodeTerminusCode } from "@/utils/validation-schemas"
 import { toast } from "sonner"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -10,14 +10,14 @@ export default function TerminusCode() {
   const [values, setValues] = useState({ x: '', y: '', z: '' })
 
   const solveEquations = (values: { x: string, y: string, z: string }) => {
-    const validValues = TerminusCodeSchema.safeParse(values)
-    if (!validValues.success) {
-      console.error(validValues.error.flatten().fieldErrors)
+    const validValues = decodeTerminusCode(values)
+    if (validValues._tag === "Left") {
+      console.error(validValues.left)
       toast.error(`Invalid Values. Only positive, single digit, or double digit numbers are allowed.`)
       return
     }
 
-    const { x, y, z } = validValues.data
+    const { x, y, z } = validValues.right
     const firstEquation = (2 * x) + 11
     const secondEquation = (2 * z + y) - 5
     const thirdEquation = Math.abs((y + z) - x)
