@@ -13,12 +13,12 @@ export const env = createEnv({
     CONTENTFUL_PREVIEW_ACCESS_TOKEN: Schema.standardSchemaV1(Schema.NonEmptyString),
     PROJECT_PLANNER_ID: Schema.standardSchemaV1(Schema.NonEmptyString),
     CRON_SECRET: Schema.standardSchemaV1(Schema.NonEmptyString),
-    REDIS_URL: Schema.standardSchemaV1(Schema.URL),
+    REDIS_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
     REDIS_TOKEN: Schema.standardSchemaV1(Schema.NonEmptyString),
     HASH_SALT: Schema.standardSchemaV1(Schema.NonEmptyString),
   },
   client: {
-    NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.URL),
+    NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_WEBSITE_URL: process.env.NEXT_PUBLIC_WEBSITE_URL,
