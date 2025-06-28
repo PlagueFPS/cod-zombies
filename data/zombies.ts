@@ -142,7 +142,7 @@ export const getZombieById = cache(unstable_cache(async (draftMode: boolean, id:
 export const getReferencedMaps = cache(unstable_cache(async (draftMode: boolean) => {
   return Effect.gen(function*(){
     const maps = yield* INTERNAL_getReferencedMaps()
-    if (!maps) return null
+    if (!maps) return []
     return maps.map(map => ({...createQuestMapDTO(map), id: map.sys.id }))
   }).pipe(
     Effect.withLogSpan("get_referenced_maps"),
