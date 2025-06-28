@@ -107,13 +107,11 @@ export const getMapById = cache(unstable_cache(async (draftMode: boolean, id: st
     return {
       id: map.sys.id,
       slug: map.fields.slug,
-      updatedAt: map.sys.updatedAt,
       title: map.fields.title,
       description: map.fields.description,
-      body: map.fields.body,
       isComingSoon: map.fields.isComingSoon ?? false,
-      difficulty: map.fields.difficulty ?? null,
-      timeToRead: map.fields.timeToRead,
+      image: createImageDTO(resolveAsset(map.fields.image)),
+      game: createMapCategoryDTO(resolveEntry(map.fields.gameCategory)).slug
     }
   }).pipe(
     Effect.withLogSpan("get_map_by_id"),
