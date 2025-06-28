@@ -19,7 +19,7 @@ export default function DraftModeButton({ draftMode }: IDraftModeButton) {
           <Button 
             variant={"outline"}
             size={"icon"}
-            onClick={async () => await toggleDraftMode({ pathname })}
+            onClick={async () => await toggleDraftMode(undefined, { pathname })}
             title={draftMode ? "Disable Draft Mode" : "Enable Draft Mode"}
             aria-label={draftMode ? "Disable Draft Mode" : "Enable Draft Mode"}
             className='rounded-full size-10 p-1.5'
