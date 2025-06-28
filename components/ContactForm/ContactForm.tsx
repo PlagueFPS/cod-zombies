@@ -31,12 +31,12 @@ export default function ContactForm({ className }: ContactFormProps) {
       mode: 'onChange',
     },
     actionProps: {
-      onSuccess: ({ data }: { data: any }) => {
+      onSuccess: ({ data }: any) => {
         customOnSuccess(data?.success, data?.message)
         resetFormAndAction()
         setOpen(false)
       },
-      onError: ({ error }: { error: any }) => customOnError(error, "Invalid Fields. Failed to submit contact form.")
+      onError: ({ error }: any) => customOnError(error, "Invalid Fields. Failed to submit contact form.")
     }
   })
 
