@@ -7,6 +7,7 @@ export type AllowedSlugs = Schema.Schema.Type<typeof AllowedSlugsSchema>
 export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
 
 export const FeedbackFormSchema = z.object({
+  title: z.string().optional(), // This exist because `guide-feedback.tsx` passes the guide title as a default value
   feedback: z.string({ required_error: "Feedback is required" }).nonempty(),
 })
 
