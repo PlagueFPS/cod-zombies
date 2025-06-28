@@ -1,16 +1,17 @@
 "use client"
 import { cn } from "@/lib/utils"
 import { Loader2, Send, ThumbsDown, ThumbsUp } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useTransition, useRef, useState } from "react"
 import { Textarea } from "../ui/textarea"
 import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
-import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
 import { submitFeedbackForm } from "@/data/actions"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { effectTsResolver } from "@hookform/resolvers/effect-ts"
 import { FeedbackFormSchema } from "@/utils/validation-schemas"
-import { customOnError, customOnSuccess } from "@/lib/utils"
 import { Form, FormControl, FormField, FormItem } from "../ui/form"
+import { useForm } from "react-hook-form"
+import { Schema } from "effect"
+import { toast } from "sonner"
 
 interface IGuideFeedback {
   guideTitle: string
@@ -18,22 +19,16 @@ interface IGuideFeedback {
 
 export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
   const [vote, setVote] = useState<"Liked" | "Disliked" | null>(null)
+  const [isPending, startTransition] = useTransition()
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-  const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
-    formProps: {
-      mode: 'onChange',
-      defaultValues: {
-        title: guideTitle
-      }
-    },
-    actionProps: {
-      onSuccess: ({ data }: any) => {
-        customOnSuccess(data?.success, data?.message)
-        resetFormAndAction()
-        setVote(null)
-      },
-      onError: ({ error }: any) => customOnError(error, "Invalid Fields. Failed to submit feedback")
-    },
+  const form = useForm<Schema.Schema.Type<typeof FeedbackFormSchema>>({
+    resolver: effectTsResolver(FeedbackFormSchema),
+    mode: 'onChange',
+    defaultValues: {
+      title: guideTitle,
+      label: "other",
+      feedback: ""
+    }
   })
 
   useEffect(() => {
@@ -45,6 +40,36 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
       return () => clearTimeout(timeout)
     }
   }, [vote])
+
+  const onSubmit = (data: Schema.Schema.Type<typeof FeedbackFormSchema>) => {
+    startTransition(async () => {
+      const result = await submitFeedbackForm(undefined, { 
+        ...data,
+        title: guideTitle,
+        label: vote === "Disliked" ? "complaint" : "other"
+      })
+      if (result.success) {
+        startTransition(() => {
+          toast.success("Guide feedback submitted!", {
+            description: result.message,
+            duration: 5000,
+            position: 'bottom-right'
+          })
+          form.reset()
+          setVote(null)
+        })
+      }
+      else {
+        startTransition(() => {
+          toast.error("Guide feedback failed!", {
+            description: result.message,
+            duration: 5000,
+            position: 'bottom-right'
+          })
+        })
+      }
+    })
+  }
 
   return (
     <div className={cn('mt-8 shadow-sm dark:shadow-none w-full space-y-2 bg-transparent border rounded-2xl pt-2 px-4 transition-all duration-300 max-w-[250px]', {
@@ -71,7 +96,7 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
         'max-h-50 opacity-100': vote,
       })}>
         <Form {...form}>
-          <form onSubmit={ handleSubmitWithAction } className="flex flex-col gap-4 h-full w-full pb-2">
+          <form onSubmit={ form.handleSubmit(onSubmit) } className="flex flex-col gap-4 h-full w-full pb-2">
             <FormField 
               control={ form.control }
               name="feedback"
@@ -99,8 +124,8 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
                 type="submit" 
                 size={"sm"} 
                 variant={"outline"} 
-                className="w-fit gap-2 self-end ml-auto"
-                disabled={ isPending || !form.watch("feedback") }
+                className="w-fit gap-2 self-end ml-auto mr-1"
+                disabled={ isPending || !form.formState.isValid }
               >
                 { isPending ? (
                   <>

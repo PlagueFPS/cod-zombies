@@ -1,10 +1,11 @@
+import { env } from "@/env";
 import { Cache } from "@/lib/services/Cache";
 import { Email } from "@/lib/services/Email";
 import { AuthorizationError, JSONParseError } from "@/types/Error";
 import { authorizedRequest } from "@/utils/functions";
 import { RevalidateHandlers } from "@/utils/revalidation-handlers";
 import { AllowedSlugsSchema } from "@/utils/validation-schemas";
-import { Config, Effect, Layer, Redacted, Schema } from "effect";
+import { Effect, Layer, Redacted, Schema } from "effect";
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 
@@ -32,7 +33,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
     const secretHeader = headerList.get("X-Contentful-Revalidate-Secret") || ''
     const contentfulSecret = Redacted.make(secretHeader)
-    const revalidateSecret = yield* Config.redacted("REVALIDATE_SECRET")
+    const revalidateSecret = Redacted.make(env.REVALIDATE_SECRET)
     const authed = yield* authorizedRequest(Redacted.value(contentfulSecret), Redacted.value(revalidateSecret))
     if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 

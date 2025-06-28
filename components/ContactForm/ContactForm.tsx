@@ -1,10 +1,8 @@
 "use client"
-import { useState } from "react"
-import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
+import { useState, useTransition } from "react"
 import { submitContactForm } from "@/data/actions"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { effectTsResolver } from "@hookform/resolvers/effect-ts"
 import { ContactFormSchema } from "@/utils/validation-schemas"
-import { customOnError, customOnSuccess } from "@/lib/utils"
 import { 
   Dialog, 
   DialogContent,
@@ -19,6 +17,9 @@ import { Loader2, Mail, Send } from "lucide-react"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
+import { useForm } from "react-hook-form"
+import { Schema } from "effect"
+import { toast } from "sonner"
 
 interface ContactFormProps {
   className?: string
@@ -26,19 +27,42 @@ interface ContactFormProps {
 
 export default function ContactForm({ className }: ContactFormProps) {
   const [open, setOpen] = useState(false)
-  const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitContactForm, zodResolver(ContactFormSchema), {
-    formProps: {
-      mode: 'onChange',
-    },
-    actionProps: {
-      onSuccess: ({ data }: any) => {
-        customOnSuccess(data?.success, data?.message)
-        resetFormAndAction()
-        setOpen(false)
-      },
-      onError: ({ error }: any) => customOnError(error, "Invalid Fields. Failed to submit contact form.")
+  const [isPending, startTransition] = useTransition()
+  const form = useForm<Schema.Schema.Type<typeof ContactFormSchema>>({
+    resolver: effectTsResolver(ContactFormSchema),
+    mode: 'onChange',
+    defaultValues: {
+      email: "",
+      name: "",
+      message: ""
     }
   })
+
+  const onSubmit = (data: Schema.Schema.Type<typeof ContactFormSchema>) => {
+    startTransition(async () => {
+      const result = await submitContactForm(undefined, data)
+      if (result.success) {
+        startTransition(() => {
+          toast.success("Contact form submitted!", {
+            description: result.message,
+            duration: 5000,
+            position: 'bottom-right'
+          })
+          form.reset()
+          setOpen(false)
+        })
+      }
+      else {
+        startTransition(() => {
+          toast.error("Failed to submit contact form!", {
+            description: result.message,
+            duration: 5000,
+            position: 'bottom-right'
+          })
+        })
+      }
+    })
+  }
 
   return (
     <Dialog open={ open } onOpenChange={ setOpen }>
@@ -56,7 +80,7 @@ export default function ContactForm({ className }: ContactFormProps) {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={ handleSubmitWithAction }>
+          <form onSubmit={ form.handleSubmit(onSubmit) }>
             <div className="space-y-6 pb-4">
               <FormField
                 control={ form.control }

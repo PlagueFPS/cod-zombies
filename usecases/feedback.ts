@@ -5,7 +5,6 @@ import { Effect } from "effect"
 import { HttpBody, HttpClient } from "@effect/platform"
 
 interface Input extends FeedbackForm {
-  title?: string
   label?: "idea" | "issue" | "question" | "complaint" | "featureRequest" | "other"
 }
 

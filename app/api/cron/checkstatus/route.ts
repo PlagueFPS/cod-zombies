@@ -4,9 +4,10 @@ import { NEW_ENTRY_KV } from "@/lib/redis"
 import { CACHE_KEYS, MAX_NEW_TIME, MAX_QUEST_NEW_TIME } from "@/utils/constants"
 import { revalidateTag } from "next/cache"
 import { EntryType } from "@/types/EntryEnforcement"
-import { Config, Duration, Effect, Redacted } from "effect"
+import { Duration, Effect, Redacted } from "effect"
 import { Cache } from "@/lib/services/Cache"
 import { AuthorizationError } from "@/types/Error"
+import { env } from "@/env"
 
 const REVALIDATION_MAP: Record<EntryType, string> = {
   mainQuest: CACHE_KEYS.FEATURED_MAPS.ALL,
@@ -22,7 +23,7 @@ export async function GET() {
     const secret = headerList.get("Authorization")
     if (!secret) return yield* new AuthorizationError({ message: "Missing Auth Header" })
 
-    const cronSecret = yield* Config.redacted("CRON_SECRET")
+    const cronSecret = Redacted.make(env.CRON_SECRET)
     const providedSecret = Redacted.make(secret)
 
     const authed = yield* authorizedRequest(Redacted.value(providedSecret), `Bearer ${Redacted.value(cronSecret)}`)

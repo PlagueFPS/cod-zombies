@@ -8,7 +8,7 @@ import { getZombieById } from '@/data/zombies'
 import { getLegalDocById } from '@/data/legal'
 import { AllowedSlugsSchema } from '@/utils/validation-schemas'
 import { AuthorizationError, EntryNotFoundError, InvalidRequestError } from '@/types/Error'
-import { Config, Effect, Redacted, Schema } from 'effect'
+import { Effect, Redacted, Schema } from 'effect'
 
 interface RouteParams {
   params: Promise<{ slug: string[] }>
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     if (!secret) return yield* new InvalidRequestError({ message: "Missing secret" })
     if (!entryId) return yield* new InvalidRequestError({ message: "Missing entryId" })
     
-    const revalidateSecret = yield* Config.redacted("REVALIDATE_SECRET")
+    const revalidateSecret = Redacted.make(env.REVALIDATE_SECRET)
     const providedSecret = Redacted.make(secret)
 
     const authed = yield* authorizedRequest(Redacted.value(providedSecret), Redacted.value(revalidateSecret))
@@ -74,7 +74,6 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       InvalidRequestError: (error) => Effect.succeed(Response.json(error.message, { status: 400 })),
       ParseError: (error) => Effect.succeed(Response.json(error.message, { status: 400 })),
     }),
-    Effect.catchAll((error) => Effect.succeed(Response.json(error.message, { status: 500 }))),
     Effect.runPromise
   )
 }

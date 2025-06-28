@@ -1,24 +1,30 @@
 import { Schema } from "effect";
-import { z } from "zod"
 
-export type FeedbackForm = z.infer<typeof FeedbackFormSchema> 
+export type FeedbackForm = Schema.Schema.Type<typeof FeedbackFormSchema> 
 export type AllowedSlugs = Schema.Schema.Type<typeof AllowedSlugsSchema>
+
+const EmailSchema = Schema.NonEmptyString.pipe(
+  Schema.pattern(
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  )
+).annotations({ message: () => "Invalid Email" })
 
 export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
 
-export const FeedbackFormSchema = z.object({
-  title: z.string().optional(), // This exist because `guide-feedback.tsx` passes the guide title as a default value
-  feedback: z.string({ required_error: "Feedback is required" }).nonempty(),
+export const FeedbackFormSchema = Schema.Struct({
+  title: Schema.optional(Schema.NonEmptyString),
+  label: Schema.optional(Schema.Literal("idea", "issue", "question", "complaint", "featureRequest", "other")),
+  feedback: Schema.NonEmptyString.annotations({ message: () => "Feedback is required" }),
 })
 
-export const NewsletterFormSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+export const NewsletterFormSchema = Schema.Struct({
+  email: EmailSchema,
 })
 
-export const ContactFormSchema = z.object({
-  name: z.string({ required_error: "Name is required" }).nonempty(),
-  email: z.string({ required_error: "Email is required" }).email({ message: "Invalid email address" }),
-  message: z.string({ required_error: "Message is required" }).nonempty(),
+export const ContactFormSchema = Schema.Struct({
+  name: Schema.NonEmptyString.annotations({ message: () => "Name is required" }),
+  email: EmailSchema,
+  message: Schema.NonEmptyString.annotations({ message: () => "Message is required" }),
 })
 
 const terminusCodeSchema = Schema.Struct({
@@ -29,12 +35,6 @@ const terminusCodeSchema = Schema.Struct({
 
 export const decodeTerminusCode = Schema.decodeEither(terminusCodeSchema)
 
-// export const TerminusCodeSchema = z.object({
-//   x: z.coerce.number().nonnegative().int().max(99),
-//   y: z.coerce.number().nonnegative().int().max(99),
-//   z: z.coerce.number().nonnegative().int().max(99),
-// })
-
-export const DraftModeSchema = z.object({
-  pathname: z.string().nonempty()
+export const DraftModeSchema = Schema.Struct({
+  pathname: Schema.NonEmptyString
 })

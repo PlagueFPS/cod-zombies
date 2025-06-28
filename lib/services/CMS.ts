@@ -1,19 +1,21 @@
+import { env } from "@/env";
 import { GetEntriesError } from "@/types/Error";
+import { IN_DEVELOPMENT } from "@/utils/constants";
 import { createClient, EntrySkeletonType, EntriesQueries } from "contentful";
 import * as management from "contentful-management"
-import { Config, Effect, Redacted } from "effect";
+import { Effect, Redacted } from "effect";
 
 export class CMS extends Effect.Service<CMS>()("CMS", {
   effect: (draftMode: boolean) => Effect.gen(function*() {
-    const space = yield* Config.string("CONTENTFUL_SPACE_ID")
-    const host = draftMode ? "preview.contentful.com" : "cdn.contentful.com"
-    const accessToken = yield* draftMode 
-      ? Config.redacted("CONTENTFUL_PREVIEW_ACCESS_TOKEN") 
-      : Config.redacted("CONTENTFUL_ACCESS_TOKEN")
+    const space = Redacted.make(env.CONTENTFUL_SPACE_ID)
+    const host = (draftMode || IN_DEVELOPMENT) ? "preview.contentful.com" : "cdn.contentful.com"
+    const accessToken = (draftMode || IN_DEVELOPMENT)
+      ? Redacted.make(env.CONTENTFUL_PREVIEW_ACCESS_TOKEN) 
+      : Redacted.make(env.CONTENTFUL_ACCESS_TOKEN)
 
     const client = createClient({ 
       accessToken: Redacted.value(accessToken),
-      space,
+      space: Redacted.value(space),
       host
     })
 
@@ -24,28 +26,18 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
       })
 
     return { getEntries } as const
-  }).pipe(
-    Effect.withLogSpan("cms"),
-    Effect.catchTags({
-      ConfigError: (error) => Effect.die(error)
-    })
-  )
+  }).pipe(Effect.withLogSpan("cms"))
 }){}
 
 export class CMSManagement extends Effect.Service<CMSManagement>()("CMSManagement", {
   effect: Effect.gen(function*() {
-    const spaceId = yield* Config.string("CONTENTFUL_SPACE_ID")
-    const accessToken = yield* Config.redacted("CONTENTFUL_MANAGEMENT_ACCESS_TOKEN")
+    const spaceId = Redacted.make(env.CONTENTFUL_SPACE_ID)
+    const accessToken = Redacted.make(env.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN)
 
     const client = management.createClient({
-      accessToken: Redacted.value(accessToken)
-    }, { type: "plain", defaults: { spaceId, environmentId: "master" }})
+      accessToken: Redacted.value(accessToken),
+    }, { type: "plain", defaults: { spaceId: Redacted.value(spaceId), environmentId: "master" }})
 
     return { client } as const
-  }).pipe(
-    Effect.withLogSpan("cms_management"),
-    Effect.catchTags({
-      ConfigError: (error) => Effect.die(error)
-    })
-  )
+  }).pipe(Effect.withLogSpan("cms_management"))
 }){}

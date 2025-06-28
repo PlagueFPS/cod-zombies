@@ -1,9 +1,7 @@
 "use client"
-import { useEffect, useState } from "react"
-import { customOnError, customOnSuccess } from "@/lib/utils"
-import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks"
+import { useEffect, useState, useTransition } from "react"
 import { submitFeedbackForm } from "@/data/actions"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { effectTsResolver } from "@hookform/resolvers/effect-ts"
 import { FeedbackFormSchema } from "@/utils/validation-schemas"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -24,6 +22,9 @@ import {
 } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
 import { Loader2, MessageCircleHeart, Send } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { Schema } from "effect"
+import { toast } from "sonner"
 
 interface FeedbackFormProps extends React.ComponentProps<"button"> {
   className?: string
@@ -31,21 +32,15 @@ interface FeedbackFormProps extends React.ComponentProps<"button"> {
 
 export default function FeedbackForm({ className, ...props }: FeedbackFormProps) {
   const [open, setOpen] = useState(false)
-  const { form, action: { isPending }, handleSubmitWithAction, resetFormAndAction } = useHookFormAction(submitFeedbackForm, zodResolver(FeedbackFormSchema), {
-    formProps: {
-      mode: 'onChange',
-    },
-    actionProps: {
-      onSuccess: ({ data }: any) => {
-        customOnSuccess(data?.success, data?.message)
-        if (data?.success) { // only reset and close on successful response from server
-          resetFormAndAction()
-          setOpen(false)
-        }
-      },
-      onError: ({ error }: any) => customOnError(error, "Invalid Fields. Failed to submit feedback")
+  const [isPending, startTransition] = useTransition()
+  const form = useForm<Schema.Schema.Type<typeof FeedbackFormSchema>>({
+    resolver: effectTsResolver(FeedbackFormSchema),
+    mode: 'onChange',
+    defaultValues: {
+      feedback: ""
     }
   })
+
 
   useEffect(() => {
     const controller = new AbortController()
@@ -76,6 +71,32 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
     }
   }, [])
 
+  const onSubmit = (data: Schema.Schema.Type<typeof FeedbackFormSchema>) => {
+    startTransition(async () => {
+      const result = await submitFeedbackForm(undefined, { ...data, title: "Feedback Form Submission" })
+      if (result.success) {
+        startTransition(() => {
+          toast.success("Feedback submitted successfully!", {
+            description: result.message,
+            duration: 5000,
+            position: 'bottom-right'
+          })
+          form.reset()
+          setOpen(false)
+        })
+      }
+      else {
+        startTransition(() => {
+          toast.error("Failed to submit feedback!", {
+            description: result.message,
+            duration: 5000,
+            position: 'bottom-right'
+          })
+        })
+      }
+    })
+  }
+
   return (
     <div className="flex justify-center items-center">
       <Dialog open={ open } onOpenChange={ setOpen }>
@@ -93,7 +114,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
             <DialogTitle>Feedback Submission</DialogTitle>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={ handleSubmitWithAction }>
+            <form onSubmit={ form.handleSubmit(onSubmit) }>
                 <div className="space-y-6 pb-4">
                   <FormField 
                     control={ form.control }

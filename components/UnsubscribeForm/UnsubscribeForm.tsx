@@ -1,21 +1,37 @@
 "use client"
 import { unsubscribeFromNewsletter } from "@/data/actions"
-import { customOnError, customOnSuccess } from "@/lib/utils"
-import { useAction } from "next-safe-action/hooks"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Loader2Icon, Send } from "lucide-react"
+import { useActionState, useEffect } from "react"
+import { toast } from "sonner"
 
 
 export default function UnsubscribeForm() {
-  const { execute, isPending } = useAction(unsubscribeFromNewsletter, {
-    onSuccess: ({ data }) => customOnSuccess(data?.success, data?.message),
-    onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to attempt to unsubscribe.")
-  })
+  const [state, action, isPending] = useActionState(unsubscribeFromNewsletter, { success: false, message: ""})
+
+  useEffect(() => {
+    if (state.message) {
+      if (!state.success) {
+        toast.error("Failed to send confirmation email!", {
+          description: state.message,
+          duration: 5000,
+          position: 'bottom-right'
+        })
+      }
+      else {
+        toast.success("Confirmation email sent!", {
+          description: state.message,
+          duration: 5000,
+          position: 'bottom-right'
+        })
+      }
+    }
+  }, [state])
 
   return (
-    <form action={ execute as never } className="space-y-4 w-full">
+    <form action={ action } className="space-y-4 w-full">
       <div className="space-y-2">
         <Label htmlFor="email">Email address</Label>
         <Input 

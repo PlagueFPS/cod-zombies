@@ -38,7 +38,7 @@ export const requestSubscribe = (email: string) => Effect.gen(function*() {
     subject: "Confirm Your Subscribe Request",
     react: SubscribeEmail({ subscribeUrl })
   })
-  return { success: true, message: "Confirmation email sent! Check your inbox." }
+  return { success: true, message: "Check your inbox to complete your subscribe request." }
 }).pipe(
   Effect.withLogSpan("request_subscribe")
 )
@@ -61,7 +61,7 @@ export const requestUnsubscribe = (email: string) => Effect.gen(function*() {
     subject: "Confirm Your Unsubscribe Request",
     react: UnsubscribeEmail({ unsubscribeUrl })
   })
-  return { success: true, message: "Confirmation email sent! Check your inbox." }
+  return { success: true, message: "Check your inbox to complete your unsubscribe request." }
 }).pipe(
   Effect.withLogSpan("request_unsubscribe"),
 )

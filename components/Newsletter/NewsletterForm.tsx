@@ -1,20 +1,36 @@
 "use client"
 import { subscribeToNewsletter } from "@/data/actions"
-import { useAction } from "next-safe-action/hooks"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Loader2 } from "lucide-react"
-import { customOnError, customOnSuccess } from "@/lib/utils"
+import { useActionState, useEffect } from "react"
+import { toast } from "sonner"
 
 export default function NewsletterForm() {
-  const { execute, isPending } = useAction(subscribeToNewsletter, {
-    onSuccess: ({ data }) => customOnSuccess(data?.success, data?.message),
-    onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to subscribe to newsletter")
-  })
+  const [state, action, isPending] = useActionState(subscribeToNewsletter, { success: false, message: ""})
+
+  useEffect(() => {
+    if (state.message) {
+      if (!state.success) {
+        toast.error("Failed to send confirmation email!", {
+          description: state.message,
+          duration: 5000,
+          position: 'bottom-right'
+        })
+      }
+      else {
+        toast.success("Confirmation email sent!", {
+          description: state.message,
+          duration: 5000,
+          position: 'bottom-right'
+        })
+      }
+    }
+  }, [state])
 
   return (
-    <form action={ execute as never } className="space-y-4 w-full">
+    <form action={ action } className="space-y-4 w-full">
       <div className="space-y-2">
         <Label htmlFor="email" className="sr-only">Email address</Label>
         <div className="relative">
