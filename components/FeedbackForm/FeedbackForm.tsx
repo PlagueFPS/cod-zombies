@@ -36,14 +36,14 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
       mode: 'onChange',
     },
     actionProps: {
-      onSuccess: ({ data }) => {
+      onSuccess: ({ data }: { data: { success: boolean, message: string } }) => {
         customOnSuccess(data?.success, data?.message)
         if (data?.success) { // only reset and close on successful response from server
           resetFormAndAction()
           setOpen(false)
         }
       },
-      onError: ({ error }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
+      onError: ({ error }: { error: any }) => customOnError(error, "Invalid Fields. Failed to submit feedback")
     }
   })
 

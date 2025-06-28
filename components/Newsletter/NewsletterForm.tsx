@@ -14,7 +14,7 @@ export default function NewsletterForm() {
   })
 
   return (
-    <form action={ execute } className="space-y-4 w-full">
+    <form action={ execute as never } className="space-y-4 w-full">
       <div className="space-y-2">
         <Label htmlFor="email" className="sr-only">Email address</Label>
         <div className="relative">
