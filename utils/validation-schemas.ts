@@ -27,13 +27,13 @@ export const ContactFormSchema = Schema.Struct({
   message: Schema.NonEmptyString.annotations({ message: () => "Message is required" }),
 })
 
-const terminusCodeSchema = Schema.Struct({
+const TerminusCodeSchema = Schema.Struct({
   x: Schema.NumberFromString.pipe(Schema.greaterThanOrEqualTo(0), Schema.lessThanOrEqualTo(99)),
   y: Schema.NumberFromString.pipe(Schema.greaterThanOrEqualTo(0), Schema.lessThanOrEqualTo(99)),
   z: Schema.NumberFromString.pipe(Schema.greaterThanOrEqualTo(0), Schema.lessThanOrEqualTo(99)),
 })
 
-export const decodeTerminusCode = Schema.decodeEither(terminusCodeSchema)
+export const decodeTerminusCode = Schema.decodeEither(TerminusCodeSchema)
 
 export const DraftModeSchema = Schema.Struct({
   pathname: Schema.NonEmptyString

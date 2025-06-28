@@ -43,3 +43,4 @@ export class StoreNewEntryError extends Data.TaggedError("StoreNewEntryError")<C
 export class GetEntryStatusError extends Data.TaggedError("GetEntryStatusError")<CommonErrorProps> {}
 export class UpdateEntryStatusError extends Data.TaggedError("UpdateEntryStatusError")<CommonErrorProps> {}
 export class InvalidRequestError extends Data.TaggedError("InvalidRequestError")<CommonErrorProps> {}
+export class MapConfigError extends Data.TaggedError("MapConfigError")<CommonErrorProps> {}

@@ -1,4 +1,3 @@
-import { env } from "@/env"
 import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/Error"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
 import { Effect, Duration } from "effect"
@@ -50,6 +49,7 @@ export const authorizedRequest = (secret: string, validSecret: string) =>
     const encoder = new TextEncoder()
     const secretBuffer = encoder.encode(secret)
     const validSecretBuffer = encoder.encode(validSecret)
+
     return yield* Effect.try({
       try: () => timingSafeEqual(secretBuffer, validSecretBuffer),
       catch: (error) => new AuthorizationError({ message: "Authorization Failed", cause: error })
@@ -92,34 +92,6 @@ export async function tryCatch<T>(
     const data = TypeGuards.isFunction(promiseOrFn)
       ? await promiseOrFn()
       : await promiseOrFn;
-      
-    return {
-      success: true,
-      data,
-      error: null,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      data: null,
-      error: error instanceof Error ? error : new Error(String(error)),
-    };
-  }
-}
-
-/**
- * Safely executes a synchronous operation and returns a structured result
- * 
- * @param valueOrFn - Either a value or a function that returns a value
- * @returns A Result object containing either the data or error
- */
-export function tryCatchSync<T>(
-  valueOrFn: T | (() => T)
-): Result<T> {
-  try {
-    const data = TypeGuards.isFunction(valueOrFn)
-      ? valueOrFn()
-      : valueOrFn;
       
     return {
       success: true,
@@ -248,11 +220,3 @@ export const verifyToken = (token: string) =>
 
     return value
   }).pipe(Effect.withLogSpan("verify_token"))
-/**
- * Generates a hash for the provided identifier.
- * @param identifier - the value to hash.
- * @returns The generated hashed value.
- */
-export const hashIdentifier = (identifier: string) => {
-  return createHash("sha256").update(`${identifier}:${env.HASH_SALT}`).digest("hex")
-}

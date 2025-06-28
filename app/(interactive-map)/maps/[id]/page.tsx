@@ -26,27 +26,27 @@ export const generateStaticParams = () => {
 
 export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise<Metadata> => {
   const { id } = await params
-  const { data: map, error } = await getMapConfig(id)
-  if (error || !map) notFound()
-  const title = `${map.title} Interactive Map`
+  const config = await getMapConfig(id)
+  if (!config) notFound()
+  const title = `${config.title} Interactive Map`
 
   return {
     title,
-    description: map.description,
+    description: config.description,
     openGraph: {
       ...GLOBAL_OG_PROPS.openGraph,
       title,
-      description: map.description,
-      url: `/maps/${map.id}`,
+      description: config.description,
+      url: `/maps/${config.id}`,
       images: {
-        url: `${env.NEXT_PUBLIC_WEBSITE_URL}/previews/${map.id}-preview.webp`,
+        url: `${env.NEXT_PUBLIC_WEBSITE_URL}/previews/${config.id}-preview.webp`,
         width: 640,
         height: 360
       },
     },
     twitter: {
       title,
-      description: map.description,
+      description: config.description,
       card: 'summary_large_image'
     }
   } 
@@ -55,8 +55,8 @@ export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise
 export default async function InteractiveMapPage({ params }: IInteractiveMapPage) {
   const cookiePromise = cookies()
   const { id } = await params
-  const { data: config, error } = await getMapConfig(id)
-  if (error) notFound()
+  const config = await getMapConfig(id)
+  if (!config) notFound()
   
   const cookieStore = await cookiePromise
   const availableMaps = getAvailableMaps()
