@@ -1,5 +1,5 @@
-import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs"
-import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRenderer"
+import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
+import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import { getLegalDocBySlug } from "@/data/legal"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS } from "@/utils/constants"
 import type { Metadata } from "next"

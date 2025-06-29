@@ -1,10 +1,10 @@
-import HeroSection from "@/components/HeroSection/HeroSection";
-import GridSection from "@/components/GridSection/GridSection";
+import HeroSection from "@/components/hero-section/hero-section";
+import GridSection from "@/components/grid-section/grid-section";
 import { Suspense } from "react";
-import MapFiltersLoader from "@/components/Loaders/MapFiltersLoader";
-import { MainQuestFilters } from "@/components/QuestFilters/QuestFilters";
-import GridLoader from "@/components/Loaders/GridLoader";
-import { MainQuestGrid } from "@/components/QuestGrid/QuestGrid";
+import MapFiltersLoader from "@/components/loaders/map-filters-loader";
+import { MainQuestFilters } from "@/components/quest-filters/quest-filters";
+import GridLoader from "@/components/loaders/grid-loader";
+import { MainQuestGrid } from "@/components/quest-grid/quest-grid";
 import type { Metadata } from "next";
 import { env } from "@/env";
 

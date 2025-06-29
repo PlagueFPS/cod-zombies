@@ -1,5 +1,5 @@
-import InteractiveMapLoader from "@/components/Loaders/InteractiveMapLoader";
-import SidebarLoader from "@/components/Loaders/SidebarLoader";
+import InteractiveMapLoader from "@/components/loaders/interactive-map-loader";
+import SidebarLoader from "@/components/loaders/sidebar-loader";
 
 export default function InteracitveMapLoading() {
   return (

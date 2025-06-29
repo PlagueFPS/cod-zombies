@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
+import Breadcrumbs from '@/components/breadcrumbs/breadcrumbs'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function PrivacyPolicyLoading() {

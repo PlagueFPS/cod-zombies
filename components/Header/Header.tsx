@@ -1,14 +1,14 @@
 import { Suspense } from 'react'
-import SearchBar from '@/components/SearchBar/SearchBar'
-import SearchBarLoader from '@/components/Loaders/SearchBarLoader'
-import FeedbackForm from '@/components/FeedbackForm/FeedbackForm'
-import { CustomLink } from '../CustomLink/CustomLink'
+import SearchBar from '@/components/search-bar/search-bar'
+import SearchBarLoader from '@/components/loaders/search-bar-loader'
+import FeedbackForm from '@/components/feedback-form/feedback-form'
+import { CustomLink } from '@/components/custom-link/custom-link'
 import Image from 'next/image'
 import Logo from "@/public/logo.webp"
 import { ROUTES } from '@/utils/constants'
-import Sidebar from './AppSidebar'
-import NavLink from '../NavLink/NavLink'
-import ThemeToggleWrapper from '../ThemeToggle/ThemeToggleWrapper'
+import Sidebar from '@/components/header/app-sidebar'
+import NavLink from '@/components/nav-link/nav-link'
+import ThemeToggleWrapper from '@/components/theme-toggle/theme-toggle-wrapper'
 
 export default function Header() {
   return (

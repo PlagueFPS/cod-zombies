@@ -1,9 +1,9 @@
-import BestiaryFilters from "@/components/BestiaryFilters/BestiaryFilters";
-import BestiaryGrid from "@/components/BestiaryGrid/BestiaryGrid";
-import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
-import GridSection from "@/components/GridSection/GridSection";
-import BestiaryFiltersLoader from "@/components/Loaders/BestiaryFiltersLoader";
-import GridLoader from "@/components/Loaders/GridLoader";
+import BestiaryFilters from "@/components/bestiary-filters/bestiary-filters";
+import BestiaryGrid from "@/components/bestiary-grid/bestiary-grid";
+import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
+import GridSection from "@/components/grid-section/grid-section";
+import BestiaryFiltersLoader from "@/components/loaders/bestiary-filters-loader";
+import GridLoader from "@/components/loaders/grid-loader";
 import { env } from "@/env";
 import { GLOBAL_OG_PROPS } from "@/utils/constants";
 import type { Metadata } from "next";

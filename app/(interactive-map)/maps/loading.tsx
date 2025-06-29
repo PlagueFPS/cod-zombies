@@ -1,7 +1,7 @@
-import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
-import Footer from '@/components/Footer/Footer'
-import GridSection from '@/components/GridSection/GridSection'
-import PreviewCardLoader from '@/components/Loaders/PreviewCardLoader'
+import Breadcrumbs from '@/components/breadcrumbs/breadcrumbs'
+import Footer from '@/components/footer/footer'
+import GridSection from '@/components/grid-section/grid-section'
+import PreviewCardLoader from '@/components/loaders/preview-card-loader'
 import { getAvailableMaps } from '@/data/interactive-map'
 
 export default function MapsPageLoading() {

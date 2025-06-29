@@ -2,7 +2,7 @@
 import type { ErrorProps } from "@/types/errors"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 import { usePathname } from "next/navigation"
-import FeedbackForm from "@/components/FeedbackForm/FeedbackForm"
+import FeedbackForm from "@/components/feedback-form/feedback-form"
 
 export default function RootError({ error, reset }: ErrorProps) {
   const pathname = usePathname()

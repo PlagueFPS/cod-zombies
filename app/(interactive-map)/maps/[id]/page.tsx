@@ -1,17 +1,17 @@
 import type { MapId } from '@/map-configs';
 import type { Metadata } from 'next';
 import type { MarkerCategory } from '@/map-configs/markers';
-import InteractiveMapWrapper from '@/components/InteractiveMap/InteractiveMapWrapper'
+import InteractiveMapWrapper from '@/components/interactive-map/interactive-map-wrapper'
 import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
 import { env } from '@/env';
 import { notFound } from 'next/navigation';
 import { GLOBAL_OG_PROPS } from '@/utils/constants';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
-import MapSidebar from '@/components/InteractiveMap/MapSidebar';
+import MapSidebar from '@/components/interactive-map/map-sidebar';
 import { Suspense } from 'react';
-import { CustomSideBarTrigger } from '@/components/InteractiveMap/CustomSidebarTrigger';
-import SidebarLoader from '@/components/Loaders/SidebarLoader';
+import { CustomSideBarTrigger } from '@/components/interactive-map/custom-sidebar-trigger';
+import SidebarLoader from '@/components/loaders/sidebar-loader';
 
 interface IInteractiveMapPage {
   params: Promise<{ id: MapId }>

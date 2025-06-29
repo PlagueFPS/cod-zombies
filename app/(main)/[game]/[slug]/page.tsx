@@ -3,20 +3,20 @@ import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants
 import { extractHeadings } from "@/utils/contentful-utils"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import FeaturedImage from '@/components/FeaturedImage/FeaturedImage'
-import TableOfContents from '@/components/TableOfContents/TableOfContents'
-import { CustomLink, HashLinkHandler } from '@/components/CustomLink/CustomLink'
+import FeaturedImage from '@/components/featured-image/featured-image'
+import TableOfContents from '@/components/table-of-contents/table-of-contents'
+import { CustomLink, HashLinkHandler } from '@/components/custom-link/custom-link'
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import ShareButton from '@/components/ShareButton/ShareButton'
+import ShareButton from '@/components/share-button/share-button'
 import { draftMode } from 'next/headers'
-import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
+import RichTextRenderer from '@/components/rich-text/rich-text-renderer/rich-text-renderer'
 import { cn } from '@/lib/utils'
 import { env } from '@/env'
-import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, DifficultyBadge } from '@/components/CustomBadges/CustomBadges'
+import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, DifficultyBadge } from '@/components/custom-badges/custom-badges'
 import { cache } from 'react'
-import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
-import GuideFeedback from '@/components/GuideFeedback/GuideFeedback'
+import Breadcrumbs from '@/components/breadcrumbs/breadcrumbs'
+import GuideFeedback from '@/components/guide-feedback/guide-feedback'
 
 interface MapPageProps {
   params: Promise<{ 

@@ -2,7 +2,7 @@
 import type { ErrorProps } from "@/types/errors"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 import { ThemeProvider } from "@/contexts/ThemeProvider"
-import FeedbackForm from "@/components/FeedbackForm/FeedbackForm"
+import FeedbackForm from "@/components/feedback-form/feedback-form"
 
 export default function GlobalError({ error, reset }: ErrorProps) {
   console.error(error.message)

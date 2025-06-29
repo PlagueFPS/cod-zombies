@@ -6,10 +6,10 @@ import type {
   TypeZombieAttacksSkeleton, 
   ZombieItem 
 } from "@/contentful/Types/contentful-types";
-import type { Heading } from "@/components/TableOfContents/TableOfContents";
+import type { Heading } from "@/components/table-of-contents/table-of-contents";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify, TypeGuards } from "./functions";
-import { youtube_url } from "@/components/RichText/RichLink/RichLink";
+import { youtube_url } from "@/components/rich-text/rich-link/rich-link";
 
 export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
   if (asset && TypeGuards.hasProperty(asset, 'fields') && asset.fields.file) return asset

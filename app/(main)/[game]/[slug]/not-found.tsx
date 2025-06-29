@@ -1,5 +1,5 @@
 "use client"
-import NotFoundContent from "@/components/NotFound/NotFoundContent"
+import NotFoundContent from "@/components/not-found/not-found-content"
 import { capatilize } from "@/utils/functions"
 import { useParams } from "next/navigation"
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Button } from "@/components/ui/button"
 import { CheckCircle2 } from "lucide-react"
-import { CustomLink } from "@/components/CustomLink/CustomLink"
+import { CustomLink } from "@/components/custom-link/custom-link"
 
 export const metadata: Metadata = {
   title: 'Successfully Subscribed'

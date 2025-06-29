@@ -7,11 +7,11 @@ import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import DraftMode from "@/components/DraftMode/DraftMode";
+import DraftMode from "@/components/draft-mode/draft-mode";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import Header from "@/components/Header/Header";
+import Header from "@/components/header/header";
 
 interface LayoutProps {
   children: React.ReactNode

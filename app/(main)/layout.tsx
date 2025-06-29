@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer/Footer"
+import Footer from "@/components/footer/footer"
 
 interface IMainLayout {
   children: React.ReactNode

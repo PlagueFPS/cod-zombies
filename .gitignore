@@ -39,4 +39,3 @@ newassets
 oldassets
 upload-assets.ts
 convert-images.ts
-send-broadcast.ts

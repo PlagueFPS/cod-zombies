@@ -1,5 +1,5 @@
 "use client"
-import NavLink from "../NavLink/NavLink"
+import NavLink from "../nav-link/nav-link"
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
 import { cn } from "@/lib/utils"
@@ -17,7 +17,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "../ui/dropdown-menu"
-import { useMediaQuery } from "@/hooks/useMediaQuery"
+import { useMediaQuery } from "@/hooks/use-media-query"
 interface Link {
   href: string
   title: string

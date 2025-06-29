@@ -1,9 +1,9 @@
-import Breadcrumbs from "@/components/Breadcrumbs/Breadcrumbs";
-import GridSection from "@/components/GridSection/GridSection";
-import GridLoader from "@/components/Loaders/GridLoader";
-import QuestFilterLoader from "@/components/Loaders/QuestFilterLoader";
-import { SideQuestFilters } from "@/components/QuestFilters/QuestFilters";
-import { SideQuestGrid } from "@/components/QuestGrid/QuestGrid";
+import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
+import GridSection from "@/components/grid-section/grid-section";
+import GridLoader from "@/components/loaders/grid-loader";
+import QuestFilterLoader from "@/components/loaders/quest-filter-loader";
+import { SideQuestFilters } from "@/components/quest-filters/quest-filters";
+import { SideQuestGrid } from "@/components/quest-grid/quest-grid";
 import { env } from "@/env";
 import { GLOBAL_OG_PROPS } from "@/utils/constants";
 import { Metadata } from "next";

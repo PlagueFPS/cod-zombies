@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Button } from "@/components/ui/button"
 import { AlertCircle } from "lucide-react"
 import type { SearchParams } from "next/dist/server/request/search-params"
-import { CustomLink } from "@/components/CustomLink/CustomLink"
+import { CustomLink } from "@/components/custom-link/custom-link"
 
 export const metadata: Metadata = {
   title: 'Subscribe Failed'

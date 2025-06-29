@@ -1,5 +1,5 @@
 "use client"
-import NotFoundContent from '@/components/NotFound/NotFoundContent'
+import NotFoundContent from '@/components/not-found/not-found-content'
 import { usePathname } from 'next/navigation'
 
 export default function RootNotFound() {
