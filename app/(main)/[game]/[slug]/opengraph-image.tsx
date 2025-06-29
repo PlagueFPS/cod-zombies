@@ -1,5 +1,5 @@
 import { getMapBySlug } from "@/data/maps"
-import { loadFonts } from "@/data/og-images"
+import { getFontData } from "@/data/og-images"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { ImageResponse } from "next/og"
 import type { CSSProperties } from "react"
@@ -18,10 +18,10 @@ interface IOpenGraphImage {
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const { slug } = await params
   const map = await getMapBySlug(false, slug)
-  if (!map) return null
+  if (!map) return new Response("map not found", { status: 404 })
 
-  const fonts = await loadFonts
-  if (!fonts) return null
+  const font = await getFontData
+  if (!font) return new Response("failed to load font data", { status: 500 })
 
   const getDifficultyCSSProps = (): CSSProperties => {
     switch(map.difficulty) {
@@ -157,17 +157,17 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
       ...size,
       fonts: [
         {
-          name: "Geist",
-          data: fonts.boldFont,
-          style: "normal",
-          weight: 700,
-        },
-        {
-          name: "Geist",
-          data: fonts.semiBoldFont,
+          name: "Geist-SemiBold",
+          data: font.semiBoldFont,
           style: "normal",
           weight: 600,
         },
+        {
+          name: "Geist-Bold",
+          data: font.boldFont,
+          style: "normal",
+          weight: 700,
+        }
       ],
     }
   )

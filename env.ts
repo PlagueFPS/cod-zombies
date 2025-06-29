@@ -16,6 +16,8 @@ export const env = createEnv({
     REDIS_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
     REDIS_TOKEN: Schema.standardSchemaV1(Schema.NonEmptyString),
     HASH_SALT: Schema.standardSchemaV1(Schema.NonEmptyString),
+    VERCEL_AUTOMATION_BYPASS_SECRET: Schema.standardSchemaV1(Schema.NonEmptyString),
+    VERCEL_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
   },
   client: {
     NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),

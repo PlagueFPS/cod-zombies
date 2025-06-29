@@ -70,10 +70,16 @@ export const getMapSearchData = cache(unstable_cache(async (draftMode: boolean) 
 export const getMapBySlug = cache(unstable_cache(async (draftMode: boolean, slug: string) => {
   return Effect.gen(function*() {
     const maps = yield* INTERNAL_getMapData()
-    if (!maps) return null
+    if (!maps) {
+      yield* Effect.logError("failed to load map data")
+      return null
+    }
 
     const map = maps.find(m => m.fields.slug === slug)
-    if (!map) return null
+    if (!map) {
+      yield* Effect.logError(`map with slug ${slug} not found`)
+      return null
+    }
 
     const mapIds = yield* getMapIds
     const mapData = resolveMapData(map, mapIds)

@@ -1,5 +1,5 @@
 import { getZombieBySlug } from "@/data/zombies"
-import { loadFonts } from "@/data/og-images"
+import { getFontData } from "@/data/og-images"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { ImageResponse } from "next/og"
 import type { CSSProperties } from "react"
@@ -20,7 +20,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const zombie = await getZombieBySlug(false, slug)
   if (!zombie) return null
 
-  const fonts = await loadFonts
+  const fonts = await getFontData
   if (!fonts) return null
 
   const getDifficultyCSSProps = (): CSSProperties => {

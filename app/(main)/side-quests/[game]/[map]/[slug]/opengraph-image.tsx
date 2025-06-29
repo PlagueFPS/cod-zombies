@@ -1,4 +1,4 @@
-import { loadFonts } from "@/data/og-images"
+import { getFontData } from "@/data/og-images"
 import { getQuestBySlug } from "@/data/side-quests"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { ImageResponse } from "next/og"
@@ -19,7 +19,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const q = await getQuestBySlug(false, slug)
   if (!q) return null
 
-  const fonts = await loadFonts
+  const fonts = await getFontData
   if (!fonts) return null
 
   return new ImageResponse(

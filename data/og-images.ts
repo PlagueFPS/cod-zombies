@@ -1,33 +1,30 @@
 import 'server-only'
 import { env } from '@/env'
-import { Config, Effect, Redacted } from 'effect'
+import { Effect, Redacted } from 'effect'
+import { IN_DEVELOPMENT } from '@/utils/constants'
 import { FetchHttpClient, HttpClient } from '@effect/platform'
 
-type AllowedFonts = "Geist-Bold.otf" | "Geist-SemiBold.otf"
+export const getFontData = Effect.gen(function*(){
+  const httpClient = (yield* HttpClient.HttpClient).pipe(HttpClient.filterStatusOk)
+  const automationBypassSecret = Redacted.make(env.VERCEL_AUTOMATION_BYPASS_SECRET)
+  const baseURL = IN_DEVELOPMENT ? env.NEXT_PUBLIC_WEBSITE_URL : `https://${env.VERCEL_URL}`
 
-const getFontData = (font: AllowedFonts) => Effect.gen(function*(){
-  const httpClient = yield* HttpClient.HttpClient
-  const automationBypassSecret = yield* Config.redacted("VERCEL_AUTOMATION_BYPASS_SECRET")
-  const baseURL = yield* Config.string("VERCEL_URL").pipe(Effect.catchAll(() => Effect.succeed(env.NEXT_PUBLIC_WEBSITE_URL)))
-
-  const response = yield* httpClient.get(`${baseURL}/fonts/${font}`, {
-    headers: {
-      'x-vercel-protection-bypass': Redacted.value(automationBypassSecret)
-    }
-  })
-
-  return yield* response.arrayBuffer
-}).pipe(Effect.withLogSpan("get_font_data"))
-
-export const loadFonts = Effect.gen(function*(){
   const [boldFont, semiBoldFont] = yield* Effect.all([
-    getFontData("Geist-Bold.otf"),
-    getFontData("Geist-SemiBold.otf")
+    httpClient.get(`${baseURL}/fonts/Geist-Bold.otf`, {
+      headers: {
+        'x-vercel-protection-bypass': Redacted.value(automationBypassSecret)
+      }
+    }).pipe(Effect.flatMap(response => response.arrayBuffer)),
+    httpClient.get(`${baseURL}/fonts/Geist-SemiBold.otf`, {
+      headers: {
+        'x-vercel-protection-bypass': Redacted.value(automationBypassSecret)
+      }
+    }).pipe(Effect.flatMap(response => response.arrayBuffer))
   ], { concurrency: "unbounded" })
 
   return { boldFont, semiBoldFont }
 }).pipe(
-  Effect.withLogSpan("load_fonts"),
+  Effect.withLogSpan("get_font_data"),
   Effect.tapError(Effect.logError),
   Effect.catchAll(() => Effect.succeed(null)),
   Effect.provide(FetchHttpClient.layer),
