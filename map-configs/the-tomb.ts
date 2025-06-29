@@ -5,7 +5,7 @@ const theTomb: MapConfig = {
   id: "the-tomb",
   title: "The Tomb",
   game: "Black Ops 6",
-  description: "Learn the locations for Dig Spots, Dark Aether Lanterns, and more with our in-depth interactive map for The Tomb.",
+  description: "Learn the locations for Dig Spots, Dark Aether Lanterns, and more with our in-depth interactive map for The Tomb in Black Ops 6 Zombies.",
   image: "/layers/the-tomb.webp",
   markers: [
     {

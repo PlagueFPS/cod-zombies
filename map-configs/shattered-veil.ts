@@ -5,7 +5,7 @@ const shatteredVeil: MapConfig = {
   id: "shattered-veil",
   title: "Shattered Veil",
   game: "Black Ops 6",
-  description: "Learn the locations for important items like Janus Crates, Plant Seeds, and more with our in-depth interactive map for Shattered Veil.",
+  description: "Learn the locations of important items like Janus Crates, Plant Seeds, and more with our in-depth interactive map for Shattered Veil in Black Ops 6 Zombies.",
   image: "/layers/shattered-veil.webp",
   markers: [
     {

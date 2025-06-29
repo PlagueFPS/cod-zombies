@@ -5,7 +5,7 @@ const citadelleDesMorts: MapConfig = {
   id: "citadelle-des-morts",
   title: "Citadelle Des Morts",
   game: "Black Ops 6",
-  description: "Learn the locations for Points of Power Traps, Fast Travels, and more with our in-depth interactive map for Citadelle Des Morts.",
+  description: "Learn the locations for Points of Power Traps, Fast Travels, and more with our in-depth interactive map for Citadelle Des Morts in Black Ops 6 Zombies.",
   image: "/layers/citadelle-des-morts.webp",
   markers: [
     {

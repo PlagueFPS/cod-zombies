@@ -5,7 +5,7 @@ const terminus: MapConfig = {
   id: 'terminus',
   title: "Terminus",
   game: "Black Ops 6",
-  description: "Learn the locations for Boat Spawns, Fishing Spots, and more with our in-depth interactive map for Terminus.",
+  description: "Learn the locations for Boat Spawns, Fishing Spots, Underwater Crates, Dig Spots, and more with our in-depth interactive map for Terminus in Black Ops 6 Zombies.",
   image: "/layers/terminus.webp",
   markers: [
     {
