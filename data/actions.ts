@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache"
 import { Effect } from "effect"
 import { Email } from "@/lib/services/Email"
 import { FetchHttpClient } from "@effect/platform"
+import { IN_DEVELOPMENT } from "@/utils/constants"
 
 export const subscribeToNewsletter = createAction(NewsletterFormSchema, async ({ email }) => {
   return requestSubscribe(email).pipe(
@@ -71,22 +72,19 @@ export const submitContactForm = createAction(ContactFormSchema, async (parsedIn
 })
 
 export const toggleDraftMode = createAction(DraftModeSchema, async ({ pathname }) => {
-  return Effect.gen(function*(){
-    const draft = yield* Effect.promise(() => draftMode())
+  if (!IN_DEVELOPMENT) return
 
-    if (draft.isEnabled) {
-      draft.disable()
-      yield* Effect.log("Draft mode disabled")
-      revalidatePath(pathname)
-      redirect(pathname)
-    } 
+  const draft = await draftMode()
 
-    draft.enable()
-    yield* Effect.log("Draft mode enabled")
+  if (draft.isEnabled) {
+    draft.disable()
+    console.log("Draft mode disabled")
     revalidatePath(pathname)
     redirect(pathname)
-  }).pipe(
-    Effect.withLogSpan("toggle_draft_mode"),
-    Effect.runPromise
-  )
+  } 
+
+    draft.enable()
+    console.log("Draft mode enabled")
+    revalidatePath(pathname)
+    redirect(pathname)
 })

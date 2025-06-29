@@ -2,7 +2,6 @@ import "server-only"
 import { env } from "@/env"
 import type { EntryStatus, EntryType } from "@/types/EntryEnforcement"
 import { Redis } from "@upstash/redis"
-import { Ratelimit } from "@upstash/ratelimit"
 import { EntryNotFoundError, GetCacheValueError, GetEntriesError, GetEntryStatusError, StoreNewEntryError, UpdateEntryStatusError } from "@/types/Error"
 import { Effect, Schema } from "effect"
 import { Cache } from "./services/Cache"
@@ -10,12 +9,6 @@ import { Cache } from "./services/Cache"
 export const redis = new Redis({
   url: env.REDIS_URL,
   token: env.REDIS_TOKEN
-})
-
-export const ratelimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.tokenBucket(5, "10s", 100),
-  analytics: true,
 })
 
 const EntryResponseSchema = Schema.Struct({
