@@ -1,15 +1,15 @@
 import { Suspense } from "react"
-import Copyright from "./Copyright/Copyright"
-import CopyrightLoader from "../Loaders/CopyrightLoader"
-import Newsletter from "../Newsletter/Newsletter"
-import ContactForm from "../ContactForm/ContactForm"
-import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper"
+import Copyright from "./copyright/copyright"
+import CopyrightLoader from "../loaders/copyright-loader"
+import Newsletter from "../newsletter/newsletter"
+import ContactForm from "../contact-form/contact-form"
+import ThemeToggleWrapper from "../theme-toggle/theme-toggle-wrapper"
 import Discord from "@/SVGs/DiscordSVG"
 import { Separator } from "../ui/separator"
 import Reddit from "@/SVGs/Reddit"
-import ExternalLink from "../ExternalLink/ExternalLink"
+import ExternalLink from "../external-link/external-link"
 import X from "@/SVGs/XSVG"
-import { CustomLink } from "../CustomLink/CustomLink"
+import { CustomLink } from "../custom-link/custom-link"
 
 export default function Footer() {
   return (

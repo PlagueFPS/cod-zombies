@@ -1,7 +1,7 @@
 import React from 'react'
 import { Skeleton } from '../ui/skeleton'
 import { PanelLeftClose } from 'lucide-react'
-import ExternalLink from '../ExternalLink/ExternalLink'
+import ExternalLink from '../external-link/external-link'
 import XSVG from '@/SVGs/XSVG'
 import { Separator } from '../ui/separator'
 import Discord from '@/SVGs/DiscordSVG'

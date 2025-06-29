@@ -1,4 +1,4 @@
-import richStyles from "@/components/RichText/RichText.module.css"
+import richStyles from "@/components/rich-text/rich-text.module.css"
 import { Document, INLINES, BLOCKS, MARKS } from "@contentful/rich-text-types"
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { slugify } from "@/utils/functions"

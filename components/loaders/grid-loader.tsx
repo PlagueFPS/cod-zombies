@@ -1,5 +1,5 @@
 import { MAP_LIMIT } from "@/utils/constants";
-import GridCardLoader from "./GridCardLoader";
+import GridCardLoader from "./grid-card-loader";
 
 export default function GridLoader() {
   return (

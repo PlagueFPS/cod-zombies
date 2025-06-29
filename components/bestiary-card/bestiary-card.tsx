@@ -1,10 +1,10 @@
 import { type MinifiedZombie } from "@/data/zombies"
-import { CustomLink } from "../CustomLink/CustomLink"
+import { CustomLink } from "../custom-link/custom-link"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "../CustomBadges/CustomBadges"
+import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "../custom-badges/custom-badges"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import { Badge } from "../ui/badge"
-import FeaturedImage from "../FeaturedImage/FeaturedImage"
+import FeaturedImage from "../featured-image/featured-image"
 import { cn } from "@/lib/utils"
 
 interface IBestiaryCard {

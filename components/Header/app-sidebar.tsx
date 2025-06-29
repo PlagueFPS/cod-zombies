@@ -3,16 +3,16 @@ import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, SheetTitle } from "../ui/sheet";
 import { ROUTES } from "@/utils/constants";
-import { CustomLink } from "../CustomLink/CustomLink";
-import ExternalLink from "../ExternalLink/ExternalLink";
+import { CustomLink } from "../custom-link/custom-link";
+import ExternalLink from "../external-link/external-link";
 import { Separator } from "../ui/separator";
 import Discord from "@/SVGs/DiscordSVG";
 import Reddit from "@/SVGs/Reddit";
 import X from "@/SVGs/XSVG";
 import Logo from "@/public/logo.webp"
 import Image from "next/image";
-import ThemeToggleWrapper from "../ThemeToggle/ThemeToggleWrapper";
-import NavLink from "../NavLink/NavLink";
+import ThemeToggleWrapper from "../theme-toggle/theme-toggle-wrapper";
+import NavLink from "../nav-link/nav-link";
 import { useState } from "react";
 
 export default function AppSidebar() {

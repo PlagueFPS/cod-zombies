@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers"
-import SearchInput from "./SearchInput"
+import SearchInput from "./search-input"
 import { getMapSearchData } from "@/data/maps"
 import { getGames } from "@/data/games"
 import { getQuestSearchData } from "@/data/side-quests"

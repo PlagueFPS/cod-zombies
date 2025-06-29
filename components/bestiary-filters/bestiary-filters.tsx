@@ -3,8 +3,8 @@ import { getReferencedMaps, getZombieSearchData } from "@/data/zombies"
 import { getGameSearchData } from "@/data/games"
 import { getMapSearchData } from "@/data/maps"
 import { Suspense } from "react"
-import BestiaryFiltersLoader from "../Loaders/BestiaryFiltersLoader"
-import BestiaryFiltersClient from "./BestiaryFilters.client"
+import BestiaryFiltersLoader from "../loaders/bestiary-filters-loader"
+import BestiaryFiltersClient from "./bestiary-filters.client"
 
 const types = [
   {

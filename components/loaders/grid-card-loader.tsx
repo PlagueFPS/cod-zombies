@@ -1,6 +1,6 @@
 import { Card, CardHeader } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
-import ImageLoader from "./ImageLoader";
+import ImageLoader from "./image-loader";
 
 export default function GridCardLoader() {
   return (

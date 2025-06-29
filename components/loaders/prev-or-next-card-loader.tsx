@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { Skeleton } from "../ui/skeleton"
-import ImageLoader from "./ImageLoader"
+import ImageLoader from "./image-loader"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface IPrevOrNextCardLoader {
