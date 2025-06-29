@@ -1,8 +1,8 @@
 import type { MapId } from "@/map-configs";
 import { getMapConfig } from "@/data/interactive-map";
 import { Badge } from "../ui/badge";
-import { CustomLink } from "../CustomLink/CustomLink";
-import PreviewCardImage from "./PreviewCardImage";
+import { CustomLink } from "../custom-link/custom-link";
+import PreviewCardImage from "./preview-card-image";
 
 interface IPreviewCard {
   mapId: MapId

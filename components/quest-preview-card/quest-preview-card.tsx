@@ -1,13 +1,13 @@
 import type { MinifiedFeaturedMap } from "@/data/maps"
 import type { MinifiedSideQuest } from "@/data/side-quests"
 import { TypeGuards } from "@/utils/functions"
-import { CustomLink } from "../CustomLink/CustomLink"
+import { CustomLink } from "../custom-link/custom-link"
 import { cn } from "@/lib/utils"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { ChangedBadge, ComingSoonBadge, DifficultyBadge, DraftBadge, NewBadge } from "../CustomBadges/CustomBadges"
+import { ChangedBadge, ComingSoonBadge, DifficultyBadge, DraftBadge, NewBadge } from "../custom-badges/custom-badges"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import { Badge } from "../ui/badge"
-import FeaturedImage from "../FeaturedImage/FeaturedImage"
+import FeaturedImage from "../featured-image/featured-image"
 
 interface IQuestPreviewCard {
   quest: MinifiedFeaturedMap | MinifiedSideQuest

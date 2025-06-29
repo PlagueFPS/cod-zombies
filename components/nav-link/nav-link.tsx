@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils"
 import type { LinkProps } from "next/link"
 import { usePathname } from "next/navigation"
-import { CustomLink } from "../CustomLink/CustomLink"
+import { CustomLink } from "../custom-link/custom-link"
 
 interface Props extends LinkProps {
   href: string
