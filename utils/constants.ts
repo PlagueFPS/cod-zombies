@@ -59,3 +59,25 @@ export const ROUTES = [
     icon: Map
   }
 ] as const
+export const PROTECTED_ROUTES = [
+  {
+    path: '/',
+    method: 'POST',
+  },
+  {
+    path: '/side-quests',
+    method: 'POST',
+  },
+  {
+    path: '/bestiary',
+    method: 'POST',
+  },
+  {
+    path: '/maps',
+    method: 'POST',
+  },
+  {
+    path: '/privacy-policy',
+    method: 'POST'
+  }
+]
