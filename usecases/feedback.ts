@@ -9,7 +9,7 @@ interface Input extends FeedbackForm {
 }
 
 export const submitFeedback = (input: Input) => Effect.gen(function* () {
-  const httpClient = yield* HttpClient.HttpClient
+  const httpClient = (yield* HttpClient.HttpClient).pipe(HttpClient.filterStatusOk)
   const { title, label, feedback } = input
   yield* httpClient.post("https://projectplannerai.com/api/feedback", {
     headers: {
