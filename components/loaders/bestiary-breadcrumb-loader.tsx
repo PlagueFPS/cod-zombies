@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation"
-import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
+import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 import { capatilize, TypeGuards } from "@/utils/functions"
 
 export default function BestiaryBreadcrumbsLoader() {

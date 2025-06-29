@@ -1,4 +1,4 @@
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs'
+import Breadcrumbs from '../breadcrumbs/breadcrumbs'
 
 interface IBreadcrumbs {
   items: {

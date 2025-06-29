@@ -1,9 +1,9 @@
 import React from 'react'
-import Breadcrumbs from '../Breadcrumbs/Breadcrumbs'
-import GridSection from '../GridSection/GridSection'
-import BestiaryFiltersLoader from './BestiaryFiltersLoader'
-import GridLoader from './GridLoader'
-import GridPaginationLoader from './GridPaginationLoader'
+import Breadcrumbs from '../breadcrumbs/breadcrumbs'
+import GridSection from '../grid-section/grid-section'
+import BestiaryFiltersLoader from './bestiary-filters-loader'
+import GridLoader from './grid-loader'
+import GridPaginationLoader from './grid-pagination-loader'
 
 export default function BestiaryPageLoader() {
   const links: { title: string, href: string }[] = [

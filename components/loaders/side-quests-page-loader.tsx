@@ -1,8 +1,8 @@
-import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
-import QuestFilterLoader from "./QuestFilterLoader";
-import GridSection from "../GridSection/GridSection";
-import GridLoader from "./GridLoader";
-import GridPaginationLoader from "./GridPaginationLoader";
+import Breadcrumbs from "../breadcrumbs/breadcrumbs"
+import QuestFilterLoader from "./quest-filter-loader";
+import GridSection from "../grid-section/grid-section";
+import GridLoader from "./grid-loader";
+import GridPaginationLoader from "./grid-pagination-loader";
 
 export default function SideQuestsPageLoader() {
   const links: { title: string, href: string }[] = [

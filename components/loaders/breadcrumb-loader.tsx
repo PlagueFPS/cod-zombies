@@ -1,7 +1,7 @@
 "use client"
 import { useParams } from "next/navigation"
 import { capatilize, TypeGuards } from "@/utils/functions"
-import Breadcrumbs from "../Breadcrumbs/Breadcrumbs"
+import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 
 export default function BreadcrumbLoader() {
   const { game, slug } = useParams()

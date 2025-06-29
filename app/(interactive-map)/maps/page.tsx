@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { GLOBAL_OG_PROPS } from '@/utils/constants';
 import { getAvailableMaps } from '@/data/interactive-map'
-import Breadcrumbs from '@/components/breadcrumbs/breadcrumbs';
-import GridSection from '@/components/grid-section/grid-section';
-import { Suspense } from 'react';
-import PreviewCard from '@/components/interactive-map/preview-card';
-import PreviewCardLoader from '@/components/loaders/preview-card-loader';
-import Footer from '@/components/footer/footer';
+import GridSection from '@/components/grid-section/grid-section'
+import { Suspense } from 'react'
+import PreviewCard from '@/components/interactive-map/preview-card'
+import PreviewCardLoader from '@/components/loaders/preview-card-loader'
+import Footer from '@/components/footer/footer'
+import Breadcrumbs from '@/components/breadcrumbs/breadcrumbs'
 
 export const metadata: Metadata = {
   title: "Interactive Maps",
