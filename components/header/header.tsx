@@ -6,7 +6,7 @@ import { CustomLink } from '@/components/custom-link/custom-link'
 import Image from 'next/image'
 import Logo from "@/public/logo.webp"
 import { ROUTES } from '@/utils/constants'
-import AppSidebar from '@/components/header/app-sidebar'
+import AppSidebar from '@/components/app-sidebar/app-sidebar'
 import NavLink from '@/components/nav-link/nav-link'
 import ThemeToggleWrapper from '@/components/theme-toggle/theme-toggle-wrapper'
 

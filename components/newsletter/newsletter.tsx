@@ -1,4 +1,4 @@
-import NewsletterForm from '@/components/newsletter/newsletter-form'
+import NewsletterForm from '@/components/newsletter-form/newsletter-form'
 import { CustomLink } from '@/components/custom-link/custom-link'
 
 export default function Newsletter() {

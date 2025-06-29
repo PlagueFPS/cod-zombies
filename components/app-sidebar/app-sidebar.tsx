@@ -1,18 +1,18 @@
 "use client"
 import { Menu } from "lucide-react";
-import { Button } from "../ui/button";
-import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, SheetTitle } from "../ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { ROUTES } from "@/utils/constants";
-import { CustomLink } from "../custom-link/custom-link";
-import ExternalLink from "../external-link/external-link";
-import { Separator } from "../ui/separator";
+import { CustomLink } from "@/components/custom-link/custom-link";
+import ExternalLink from "@/components/external-link/external-link";
+import { Separator } from "@/components/ui/separator";
 import Discord from "@/SVGs/DiscordSVG";
 import Reddit from "@/SVGs/Reddit";
 import X from "@/SVGs/XSVG";
 import Logo from "@/public/logo.webp"
 import Image from "next/image";
-import ThemeToggleWrapper from "../theme-toggle/theme-toggle-wrapper";
-import NavLink from "../nav-link/nav-link";
+import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper";
+import NavLink from "@/components/nav-link/nav-link";
 import { useState } from "react";
 
 export default function AppSidebar() {
