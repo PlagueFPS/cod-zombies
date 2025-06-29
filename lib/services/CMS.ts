@@ -26,7 +26,7 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
       })
 
     return { getEntries } as const
-  }).pipe(Effect.withLogSpan("cms"))
+  }).pipe(Effect.withLogSpan("cms_default"))
 }){}
 
 export class CMSManagement extends Effect.Service<CMSManagement>()("CMSManagement", {
@@ -39,5 +39,5 @@ export class CMSManagement extends Effect.Service<CMSManagement>()("CMSManagemen
     }, { type: "plain", defaults: { spaceId: Redacted.value(spaceId), environmentId: "master" }})
 
     return { client } as const
-  }).pipe(Effect.withLogSpan("cms_management"))
+  }).pipe(Effect.withLogSpan("cms_management_default"))
 }){}

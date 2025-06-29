@@ -82,5 +82,5 @@ export class Email extends Effect.Service<Email>()("Email", {
     })
 
     return { getContact, createContact, removeContact, sendEmail, createBroadcast, sendBroadcast } as const
-  }),
+  }).pipe(Effect.withLogSpan("email_default")),
 }) {}

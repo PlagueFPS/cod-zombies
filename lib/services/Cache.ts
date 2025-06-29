@@ -35,5 +35,5 @@ export class Cache extends Effect.Service<Cache>()("Cache", {
     })
 
     return { hget, hgetall, hset, hdel } as const
-  })
+  }).pipe(Effect.withLogSpan("cache_default"))
 }) {}
