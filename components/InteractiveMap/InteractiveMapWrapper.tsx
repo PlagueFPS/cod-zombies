@@ -1,5 +1,5 @@
 "use client"
-import type { MapConfig } from "@/types/InteractiveMap"
+import type { MapConfig } from "@/map-configs"
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
 import InteractiveMapLoader from "../Loaders/InteractiveMapLoader"

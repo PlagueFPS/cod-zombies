@@ -1,4 +1,4 @@
-import { getMaps, getMapBySlug, getMapSearchData } from '@/data/maps'
+import { getMaps, getMapBySlug, getMapSearchData, type MinifiedFeaturedMap } from '@/data/maps'
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 import { Metadata } from "next"
@@ -13,7 +13,6 @@ import { draftMode } from 'next/headers'
 import RichTextRenderer from '@/components/RichText/RichTextRenderer/RichTextRenderer'
 import { cn } from '@/lib/utils'
 import { env } from '@/env'
-import type { FeaturedMapWithoutBody } from '@/types/FeaturedMap'
 import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, DifficultyBadge } from '@/components/CustomBadges/CustomBadges'
 import { cache } from 'react'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
@@ -160,7 +159,7 @@ export default async function MapPage({ params }: MapPageProps) {
   )
 }
 
- const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: FeaturedMapWithoutBody, isEnabled: boolean, prev?: boolean }) => {
+ const PrevOrNextMapCard = ({ map, isEnabled, prev }: { map: MinifiedFeaturedMap, isEnabled: boolean, prev?: boolean }) => {
   const alt = `${map.title} map image`
   const href = map.isComingSoon ? '#' : `/${map.game.slug}/${map.slug}`
 

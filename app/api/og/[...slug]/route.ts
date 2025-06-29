@@ -4,7 +4,7 @@ import SideQuestOpenGraphImage from "@/app/(main)/side-quests/[game]/[map]/[slug
 import ZombieOpenGraphImage from "@/app/(main)/bestiary/[slug]/opengraph-image"
 import type { ImageResponse } from "next/og"
 import { Effect, Schema } from "effect"
-import { OGImageGenerationError } from "@/types/Error"
+import { OGImageGenerationError } from "@/types/errors"
 import { AllowedSlugsSchema } from "@/utils/validation-schemas"
 
 interface RouteParams {

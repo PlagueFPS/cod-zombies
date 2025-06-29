@@ -1,5 +1,5 @@
-import { FeaturedMapWithoutBody } from "@/types/FeaturedMap"
-import { SideQuest } from "@/types/SideQuest"
+import type { MinifiedFeaturedMap } from "@/data/maps"
+import type { MinifiedSideQuest } from "@/data/side-quests"
 import { TypeGuards } from "@/utils/functions"
 import { CustomLink } from "../CustomLink/CustomLink"
 import { cn } from "@/lib/utils"
@@ -10,7 +10,7 @@ import { Badge } from "../ui/badge"
 import FeaturedImage from "../FeaturedImage/FeaturedImage"
 
 interface IQuestPreviewCard {
-  quest: Omit<FeaturedMapWithoutBody, "updatedAt"> | Omit<SideQuest, "content" | "updatedAt">
+  quest: MinifiedFeaturedMap | MinifiedSideQuest
   questIndex: number
   draftMode: boolean
 }

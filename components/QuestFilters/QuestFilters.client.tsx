@@ -3,7 +3,7 @@ import ClearFiltersButton from "@/components/FiltersCombobox/ClearFiltersButton"
 import FiltersCombobox from "@/components/FiltersCombobox/FiltersCombobox"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
-import { Filter } from "@/types/Filter"
+import type { Filter } from "@/components/FiltersCombobox/FiltersCombobox"
 import { usePathname } from "next/navigation"
 
 interface IQuestFiltersClient {

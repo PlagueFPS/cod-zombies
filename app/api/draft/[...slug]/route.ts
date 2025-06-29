@@ -7,7 +7,7 @@ import { getQuestById } from '@/data/side-quests'
 import { getZombieById } from '@/data/zombies'
 import { getLegalDocById } from '@/data/legal'
 import { AllowedSlugsSchema } from '@/utils/validation-schemas'
-import { AuthorizationError, EntryNotFoundError, InvalidRequestError } from '@/types/Error'
+import { AuthorizationError, EntryNotFoundError, InvalidRequestError } from '@/types/errors'
 import { Effect, Redacted, Schema } from 'effect'
 
 interface RouteParams {

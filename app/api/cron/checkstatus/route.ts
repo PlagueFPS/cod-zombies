@@ -3,10 +3,10 @@ import { authorizedRequest } from "@/utils/functions"
 import { NEW_ENTRY_KV } from "@/lib/redis"
 import { CACHE_KEYS, MAX_NEW_TIME, MAX_QUEST_NEW_TIME } from "@/utils/constants"
 import { revalidateTag } from "next/cache"
-import { EntryType } from "@/types/EntryEnforcement"
+import { EntryType } from "@/types/entry-enforcement"
 import { Duration, Effect, Redacted } from "effect"
 import { Cache } from "@/lib/services/Cache"
-import { AuthorizationError } from "@/types/Error"
+import { AuthorizationError } from "@/types/errors"
 import { env } from "@/env"
 
 const REVALIDATION_MAP: Record<EntryType, string> = {

@@ -1,4 +1,4 @@
-import type { MapConfig } from "@/types/InteractiveMap";
+import type { MapConfig } from "@/map-configs";
 import { perks, sharedMarkers, weapons } from "./markers";
 
 const citadelleDesMorts: MapConfig = {

@@ -14,7 +14,7 @@ import {
   Link,
 } from '@react-email/components';
 import type { IQuestRelease } from './QuestReleaseEmail';
-import type { ZombieType } from '@/types/Zombie';
+import type { ZombieType } from '@/data/zombies';
 import { env } from '@/env';
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {

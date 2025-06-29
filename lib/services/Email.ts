@@ -7,7 +7,7 @@ import {
   RemoveContactError, 
   SendBroadcastError, 
   SendEmailError 
-} from "@/types/Error";
+} from "@/types/errors";
 import { 
   Resend,
   type CreateBroadcastOptions, 

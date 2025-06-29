@@ -1,5 +1,5 @@
 "use client"
-import type { Heading } from "@/types/Heading"
+import type { Heading } from "@/components/TableOfContents/TableOfContents"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { ScrollArea } from "../ui/scroll-area"
 import Link from "next/link"

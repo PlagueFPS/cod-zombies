@@ -1,4 +1,4 @@
-import type { Heading } from "@/types/Heading"
+import type { Heading } from "@/components/TableOfContents/TableOfContents"
 import { useEffect, useRef, useState } from "react"
 /**
  * @param `headings` - array of headings to observe

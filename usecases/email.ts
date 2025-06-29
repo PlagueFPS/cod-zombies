@@ -9,7 +9,7 @@ import {
   ContactExistsError, 
   ContactNotFoundError, 
   CreateBroadcastError 
-} from "@/types/Error"
+} from "@/types/errors"
 import SubscribeEmail from "@/emails/SubscribeEmail"
 import { Effect } from "effect"
 import { Email } from "@/lib/services/Email"

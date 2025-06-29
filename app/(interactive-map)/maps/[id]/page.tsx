@@ -1,6 +1,6 @@
 import type { MapId } from '@/map-configs';
 import type { Metadata } from 'next';
-import type { MarkerCategory } from '@/types/InteractiveMap';
+import type { MarkerCategory } from '@/map-configs/markers';
 import InteractiveMapWrapper from '@/components/InteractiveMap/InteractiveMapWrapper'
 import { getAvailableMaps, getMapConfig } from '@/data/interactive-map'
 import { env } from '@/env';

@@ -2,7 +2,7 @@ import "server-only"
 import { type MapId, mapRegistry } from "@/map-configs"
 import { cache } from "react"
 import { Effect } from "effect"
-import { MapConfigError } from "@/types/Error"
+import { MapConfigError } from "@/types/errors"
 
 export const getMapConfig = cache((mapId: MapId) => Effect.gen(function*(){
     const config = mapRegistry[mapId]

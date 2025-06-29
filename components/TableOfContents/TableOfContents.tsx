@@ -1,6 +1,5 @@
 "use client"
 import { useTableOfContents } from "@/hooks/useTableOfContents"
-import { Heading } from "@/types/Heading"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "../ui/scroll-area"
@@ -9,6 +8,12 @@ import { useState } from "react"
 import { Button } from "../ui/button"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { Progress } from "../ui/progress"
+
+export interface Heading {
+  type: string,
+  text: string,
+  id: string
+}
 
 interface TableOfContentsProps {
   headings: Heading[]

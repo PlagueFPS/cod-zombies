@@ -12,15 +12,17 @@ import { Label } from "../ui/label"
 import { useImageState } from "@/hooks/useImageState"
 import Image, { ImageProps } from "next/image"
 import { DifficultyBadge, TypeBadge } from "../CustomBadges/CustomBadges"
-import type { Difficulty } from "@/types/FeaturedMap"
-import { ZombieType } from "@/types/Zombie"
+import type { Difficulty } from "@/data/maps"
+import { type ZombieType } from "@/data/zombies"
+
+export interface Filter {
+  id: string
+  slug: string
+  title: string
+}
 
 interface IFiltersCombobox {
-  data: {
-    id?: string
-    slug: string
-    title: string
-  }[]
+  data: Filter[]
   currentSelection: string[]
   title: string
   enableInput?: boolean

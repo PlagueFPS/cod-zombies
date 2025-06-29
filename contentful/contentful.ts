@@ -2,7 +2,7 @@ import "server-only"
 import { type EntriesQueries, type EntrySkeletonType } from 'contentful'
 import { Effect } from "effect"
 import { CMS, CMSManagement } from "@/lib/services/CMS"
-import { GetEntriesError } from "@/types/Error"
+import { GetEntriesError } from "@/types/errors"
 
 export const getEntries = <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) => 
   Effect.gen(function*() {

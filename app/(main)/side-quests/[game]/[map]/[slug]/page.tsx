@@ -5,7 +5,7 @@ import RichTextRenderer from "@/components/RichText/RichTextRenderer/RichTextRen
 import ShareButton from "@/components/ShareButton/ShareButton"
 import TableOfContents from "@/components/TableOfContents/TableOfContents"
 import { Badge } from "@/components/ui/badge"
-import { getQuestBySlug, getQuests } from "@/data/side-quests"
+import { getQuestBySlug, getQuests, MinifiedSideQuest, type SideQuest } from "@/data/side-quests"
 import { env } from "@/env"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
@@ -13,7 +13,6 @@ import type { Metadata } from "next"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
-import { SideQuest } from "@/types/SideQuest"
 import { ChevronRight, Clock } from "lucide-react"
 import { ChevronLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -53,11 +52,6 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
       title,
       description,
       url: `/side-quests/${game}/${map}/${slug}`,
-      // images: {
-      //   url: `https:${q.image.url}?w=1200&h=630&q=75&fm=jpg`,
-      //   width: 1200,
-      //   height: 630
-      // },
     },
     twitter: {
       title,
@@ -171,7 +165,7 @@ const PrevOrNextQuest = async ({ quest }: { quest: SideQuest }) => {
   )
 }
 
-const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: Omit<SideQuest, "content">, isEnabled: boolean, prev?: boolean }) => {
+const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: { quest: MinifiedSideQuest, isEnabled: boolean, prev?: boolean }) => {
   const alt = `${quest.map.title} map image`
   const href = quest.isComingSoon ? '#' : `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 

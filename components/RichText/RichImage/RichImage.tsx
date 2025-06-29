@@ -1,5 +1,5 @@
 import type { Asset } from "contentful"
-import type { ImageProps } from "@/types/Image"
+import type { ImageProps } from "@/types/images"
 import { createImageDTO } from "@/utils/contentful-utils"
 import FeaturedImage from "@/components/FeaturedImage/FeaturedImage"
 

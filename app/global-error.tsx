@@ -1,5 +1,5 @@
 "use client"
-import type { ErrorProps } from "@/types/Error"
+import type { ErrorProps } from "@/types/errors"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 import { ThemeProvider } from "@/contexts/ThemeProvider"
 import FeedbackForm from "@/components/FeedbackForm/FeedbackForm"

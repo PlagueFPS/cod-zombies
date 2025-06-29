@@ -1,7 +1,7 @@
 import { env } from "@/env";
 import { Cache } from "@/lib/services/Cache";
 import { Email } from "@/lib/services/Email";
-import { AuthorizationError, JSONParseError } from "@/types/Error";
+import { AuthorizationError, JSONParseError } from "@/types/errors";
 import { authorizedRequest } from "@/utils/functions";
 import { RevalidateHandlers } from "@/utils/revalidation-handlers";
 import { AllowedSlugsSchema } from "@/utils/validation-schemas";

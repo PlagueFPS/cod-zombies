@@ -1,5 +1,5 @@
 "use client"
-import type { ImageProps } from "@/types/Image"
+import type { ImageProps } from "@/types/images"
 import { useImageState } from "@/hooks/useImageState"
 import placeholderImage from "@/public/article-img-placeholder.jpg"
 import ImageLoader from "../Loaders/ImageLoader"

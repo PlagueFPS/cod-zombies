@@ -1,6 +1,6 @@
 "use client"
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
-import type { MinifiedZombie } from "@/types/Zombie"
+import { type MinifiedZombie } from "@/data/zombies"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
 import { Suspense, useEffect, useMemo } from "react"

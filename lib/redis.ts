@@ -1,8 +1,8 @@
 import "server-only"
 import { env } from "@/env"
-import type { EntryStatus, EntryType } from "@/types/EntryEnforcement"
+import type { EntryStatus, EntryType } from "@/types/entry-enforcement"
 import { Redis } from "@upstash/redis"
-import { EntryNotFoundError, GetCacheValueError, GetEntriesError, GetEntryStatusError, StoreNewEntryError, UpdateEntryStatusError } from "@/types/Error"
+import { EntryNotFoundError, GetCacheValueError, GetEntriesError, GetEntryStatusError, StoreNewEntryError, UpdateEntryStatusError } from "@/types/errors"
 import { Effect, Schema } from "effect"
 import { Cache } from "./services/Cache"
 

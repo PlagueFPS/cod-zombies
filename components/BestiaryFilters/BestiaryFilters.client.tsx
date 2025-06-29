@@ -1,6 +1,6 @@
 "use client"
+import type { Filter } from "../FiltersCombobox/FiltersCombobox"
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
-import { Filter } from "@/types/Filter"
 import FiltersCombobox from "../FiltersCombobox/FiltersCombobox"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import ClearFiltersButton from "../FiltersCombobox/ClearFiltersButton"

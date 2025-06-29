@@ -8,10 +8,9 @@ import ShareButton from "@/components/ShareButton/ShareButton"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { getZombieBySlug, getZombies, getZombieSearchData } from "@/data/zombies"
+import { getZombieBySlug, getZombies, getZombieSearchData, type MinifiedZombie } from "@/data/zombies"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { MinifiedZombie } from "@/types/Zombie"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { 
   AlertTriangle, 

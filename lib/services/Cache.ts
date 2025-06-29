@@ -1,6 +1,6 @@
 import { Effect } from "effect";
 import { redis } from "../redis";
-import { DeleteCacheValueError, GetCacheValueError, SetCacheValueError } from "@/types/Error";
+import { DeleteCacheValueError, GetCacheValueError, SetCacheValueError } from "@/types/errors";
 
 
 export class Cache extends Effect.Service<Cache>()("Cache", {

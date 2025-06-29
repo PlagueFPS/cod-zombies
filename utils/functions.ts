@@ -1,4 +1,4 @@
-import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/Error"
+import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/errors"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
 import { Effect, Duration } from "effect"
 import type { DurationInput } from "effect/Duration"

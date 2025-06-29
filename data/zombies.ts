@@ -19,6 +19,10 @@ import { CMS, CMSManagement } from "@/lib/services/CMS"
 import { Cache } from "@/lib/services/Cache"
 import { Effect, Layer } from "effect"
 
+export type Zombie = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
+export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
+export type ZombieType = "Boss" | "Special" | "Elite" | "Normal"
+
 const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 
 export const getZombies = cache(unstable_cache(async (draftMode: boolean) => {

@@ -9,7 +9,7 @@ import { getGameById } from "@/data/games"
 import { getQuestById } from "@/data/side-quests"
 import { getZombieById } from "@/data/zombies"
 import { getLegalDocById } from "@/data/legal"
-import { EntryNotFoundError } from "@/types/Error"
+import { EntryNotFoundError } from "@/types/errors"
 import { getEntryStatus, storeNewEntryId, updateEntryStatus } from "@/lib/redis"
 import { Effect } from "effect"
 

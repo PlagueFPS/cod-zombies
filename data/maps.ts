@@ -11,6 +11,10 @@ import { Effect, Layer } from 'effect'
 import { CMS, CMSManagement } from '@/lib/services/CMS'
 import { Cache } from '@/lib/services/Cache'
 
+export type FeaturedMap = NonNullable<Awaited<ReturnType<typeof getMapBySlug>>>
+export type MinifiedFeaturedMap = Awaited<ReturnType<typeof getMaps>>[number]
+export type Difficulty = "Easy" | "Medium" | "Hard"
+
 const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 
 export const getMaps = cache(unstable_cache(async (draftMode: boolean) => {

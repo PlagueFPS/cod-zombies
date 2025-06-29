@@ -1,7 +1,12 @@
 import type { Asset, Entry, UnresolvedLink, EntrySkeletonType } from "contentful";
-import type { TypeFeaturedMapsSkeleton, TypeGameCategorySkeleton, TypeReferencedMapsSkeleton, TypeZombieAttacksSkeleton } from "@/contentful/Types/contentful-types";
-import type { ZombieItem } from "@/types/ZombieItem";
-import type { Heading } from "@/types/Heading";
+import type { 
+  TypeFeaturedMapsSkeleton, 
+  TypeGameCategorySkeleton, 
+  TypeReferencedMapsSkeleton, 
+  TypeZombieAttacksSkeleton, 
+  ZombieItem 
+} from "@/contentful/Types/contentful-types";
+import type { Heading } from "@/components/TableOfContents/TableOfContents";
 import type { Document } from "@contentful/rich-text-types";
 import { slugify, TypeGuards } from "./functions";
 import { youtube_url } from "@/components/RichText/RichLink/RichLink";

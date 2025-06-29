@@ -1,8 +1,8 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import type { Difficulty } from '@/types/FeaturedMap'
-import type { MarkerCategory } from '@/types/InteractiveMap'
-import type { ZombieType } from '@/types/Zombie'
+import type { Difficulty } from '@/data/maps'
+import type { MarkerCategory } from '@/map-configs/markers'
+import type { ZombieType } from '@/data/zombies'
 
 interface CustomBadgeProps { 
   className?: string

@@ -1,5 +1,4 @@
 "use client"
-import type { MapSearch, QuestSearch, SearchEntry } from "@/types/Search";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
@@ -9,6 +8,26 @@ import { DialogDescription, DialogTitle } from "../ui/dialog";
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { capatilize } from "@/utils/functions";
+
+interface SearchEntry {
+  id: string
+  slug: string
+  title: string
+}
+
+interface MapSearch extends SearchEntry {
+  game: {
+    title: string
+    slug: string
+  }
+}
+
+interface QuestSearch extends MapSearch {
+  map: {
+    title: string
+    slug: string
+  }
+}
 
 interface SearchInputProps {
   showFull?: boolean

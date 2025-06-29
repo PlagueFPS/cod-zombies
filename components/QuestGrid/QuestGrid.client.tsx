@@ -1,5 +1,6 @@
 "use client"
-import type { FilteredQuests } from "@/types/FilteredQuests"
+import type { MinifiedSideQuest } from "@/data/side-quests"
+import type { MinifiedFeaturedMap } from "@/data/maps"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
 import { Suspense, useEffect, useMemo } from "react"
@@ -10,14 +11,14 @@ import { TypeGuards } from "@/utils/functions"
 import { useQuestSearchParams } from "@/hooks/useQuestSearchParams"
 
 interface IQuestGridClient {
-  quests: FilteredQuests
+  quests: (MinifiedSideQuest | MinifiedFeaturedMap)[]
   draftMode: boolean
 }
 
 export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
   const { gameParams, mapParams, difficultyParams, page, validatePageParam } = useQuestSearchParams()
   const filteredQuests = useMemo(() => {
-    let filtered: FilteredQuests = quests
+    let filtered = quests
 
     if (gameParams.length > 0) {
       filtered = filtered.filter(quest => gameParams.includes(quest.game.slug))
@@ -33,6 +34,7 @@ export default function QuestGridClient({ quests, draftMode }: IQuestGridClient)
 
     return filtered
   }, [difficultyParams, gameParams, mapParams, quests])
+  
   const skip = calculateSkip(page, MAP_LIMIT);
   const paginatedQuests = filteredQuests.slice(skip, (MAP_LIMIT * page))
 

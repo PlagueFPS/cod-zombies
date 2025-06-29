@@ -1,6 +1,7 @@
 "use client"
 import 'leaflet/dist/leaflet.css'
-import type { ImageDimensions, Location, MapConfig, MapController } from "@/types/InteractiveMap"
+import type { MapConfig } from '@/map-configs'
+import type { Location } from '@/map-configs/markers'
 import { CRS, LatLng, LatLngBounds, LatLngTuple, LeafletMouseEvent, Map } from "leaflet"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -16,6 +17,15 @@ import { generateMarkerKey } from '@/map-configs/markers'
 import { MarkerBadge } from '../CustomBadges/CustomBadges'
 import NextImage from 'next/image'
 import { cn } from '@/lib/utils'
+
+export interface ImageDimensions {
+  width: number
+  height: number
+}
+
+export interface MapController {
+  imageDimensions: ImageDimensions | null
+}
 
 interface IInteractiveMap {
   mapConfig: MapConfig

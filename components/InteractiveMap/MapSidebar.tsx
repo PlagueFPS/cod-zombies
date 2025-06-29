@@ -1,5 +1,5 @@
 "use client"
-import type { MapMarker, MarkerCategory } from "@/types/InteractiveMap"
+import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import type { MapId } from "@/map-configs"
 import { useParams, useRouter } from "next/navigation"
 import { capatilize, slugify } from "@/utils/functions"

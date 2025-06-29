@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import type { MapMarker } from '@/types/InteractiveMap'
+import type { MapMarker } from '@/map-configs/markers'
 import Image from 'next/image'
 import { type DivIcon, divIcon, type LatLng } from 'leaflet'
 import { Marker as LeafletMarker, useMap } from 'react-leaflet'

@@ -1,5 +1,5 @@
 "use client"
-import type { ImageProps } from "@/types/Image"
+import type { ImageProps } from "@/types/images"
 import { useImageState } from "@/hooks/useImageState"
 import { cn } from "@/lib/utils"
 import Image from "next/image"

@@ -1,4 +1,4 @@
-import { MinifiedZombie } from "@/types/Zombie"
+import { type MinifiedZombie } from "@/data/zombies"
 import { CustomLink } from "../CustomLink/CustomLink"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "../CustomBadges/CustomBadges"

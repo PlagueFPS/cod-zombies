@@ -17,6 +17,9 @@ import { CMS, CMSManagement } from '@/lib/services/CMS'
 import { Cache } from '@/lib/services/Cache'
 import { Array, Effect, Layer, Order } from 'effect'
 
+export type SideQuest = NonNullable<Awaited<ReturnType<typeof getQuestBySlug>>>
+export type MinifiedSideQuest = Awaited<ReturnType<typeof getQuests>>[number]
+
 const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 
 export const getQuests = cache(unstable_cache(async (draftMode: boolean) => {
