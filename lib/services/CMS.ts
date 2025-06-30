@@ -2,7 +2,7 @@ import { env } from "@/env";
 import { GetEntriesError } from "@/types/errors";
 import { IN_DEVELOPMENT } from "@/utils/constants";
 import { createClient, EntrySkeletonType, EntriesQueries } from "contentful";
-import management from "contentful-management"
+import { createClient as managementCreateClient } from "contentful-management"
 import { Effect, Redacted } from "effect";
 
 export class CMS extends Effect.Service<CMS>()("CMS", {
@@ -34,7 +34,7 @@ export class CMSManagement extends Effect.Service<CMSManagement>()("CMSManagemen
     const spaceId = Redacted.make(env.CONTENTFUL_SPACE_ID)
     const accessToken = Redacted.make(env.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN)
 
-    const client = management.createClient({
+    const client = managementCreateClient({
       accessToken: Redacted.value(accessToken),
     }, { type: "plain", defaults: { spaceId: Redacted.value(spaceId), environmentId: "master" }})
 
