@@ -2,7 +2,7 @@ import { env } from "@/env";
 import { GetEntriesError } from "@/types/errors";
 import { IN_DEVELOPMENT } from "@/utils/constants";
 import { createClient, EntrySkeletonType, EntriesQueries } from "contentful";
-import * as management from "contentful-management"
+import management from "contentful-management"
 import { Effect, Redacted } from "effect";
 
 export class CMS extends Effect.Service<CMS>()("CMS", {
