@@ -1,7 +1,7 @@
 import "server-only"
 import { env } from "@/env"
 import type { FeedbackForm } from "@/utils/validation-schemas"
-import { Effect } from "effect"
+import { Effect, Schedule } from "effect"
 import { HttpBody, HttpClient } from "@effect/platform"
 
 interface Input extends FeedbackForm {
@@ -9,7 +9,10 @@ interface Input extends FeedbackForm {
 }
 
 export const submitFeedback = (input: Input) => Effect.gen(function* () {
-  const httpClient = (yield* HttpClient.HttpClient).pipe(HttpClient.filterStatusOk)
+  const httpClient = (yield* HttpClient.HttpClient).pipe(HttpClient.retryTransient({
+    times: 5,
+    schedule: Schedule.exponential("200 millis"),
+  }), HttpClient.filterStatusOk)
   const { title, label, feedback } = input
   yield* httpClient.post("https://projectplannerai.com/api/feedback", {
     headers: {
