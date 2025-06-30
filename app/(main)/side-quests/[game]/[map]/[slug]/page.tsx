@@ -138,7 +138,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
             <div className='flex justify-center items-center w-full'>
               <GuideFeedback guideTitle={ q.title } />
             </div>
-            <div className='flex flex-row justify-center items-center w-full mt-8 gap-4'>
+            <div className='flex flex-col xl:flex-row justify-center items-center w-full mt-8 gap-4'>
               <Suspense fallback={<PreviousOrNextMapLoader />}> 
                 <PrevOrNextQuest quest={ q } />
               </Suspense>

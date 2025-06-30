@@ -146,7 +146,7 @@ export default async function MapPage({ params }: MapPageProps) {
             <div className='flex justify-center items-center w-full'>
               <GuideFeedback guideTitle={ map.title } />
             </div>
-            <div className='flex flex-row justify-center items-center w-full mt-8 gap-4'>
+            <div className='flex flex-col xl:flex-row justify-center items-center w-full mt-8 gap-4'>
               { prevMap && <PrevOrNextMapCard map={ prevMap } isEnabled={ isEnabled } prev /> }
               { nextMap && <PrevOrNextMapCard map={ nextMap } isEnabled={ isEnabled } /> }
             </div>
