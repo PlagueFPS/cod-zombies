@@ -17,10 +17,10 @@ interface IOpenGraphImage {
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const { slug } = await params
   const q = await getQuestBySlug(false, slug)
-  if (!q) return null
+  if (!q) return new Response("Quest not found", { status: 404 })
 
   const fonts = await getFontData
-  if (!fonts) return null
+  if (!fonts) return new Response("Failed to load font data", { status: 500 })
 
   return new ImageResponse(
     <div style={{

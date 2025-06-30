@@ -8,7 +8,7 @@ import { getZombieById } from '@/data/zombies'
 import { getLegalDocById } from '@/data/legal'
 import { AllowedSlugsSchema } from '@/utils/validation-schemas'
 import { AuthorizationError, EntryNotFoundError, InvalidRequestError } from '@/types/errors'
-import { Effect, Redacted, Schema } from 'effect'
+import { Effect, Match, Redacted, Schema } from 'effect'
 
 interface RouteParams {
   params: Promise<{ slug: string[] }>
@@ -36,35 +36,36 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
     if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
     
     const validSlug = yield* Schema.decodeUnknown(AllowedSlugsSchema)(slug[0])
-    switch(validSlug) {
-      case "maps": {
+
+    const match = Match.value(validSlug).pipe(
+      Match.when("maps", () => Effect.gen(function*(){
         const map = yield* Effect.promise(() => getMapById(true, entryId))
         if (!map) return yield* new EntryNotFoundError({ message: `No map found for entryId: ${entryId}` })
         
         return yield* createSuccessResponse(`/${map.game}/${map.slug}`)
-      }
-      case "side-quests": {
+      })),
+      Match.when("side-quests", () => Effect.gen(function*(){
         const quest = yield* Effect.promise(() => getQuestById(true, entryId))
         if (!quest) return yield* new EntryNotFoundError({ message: `No quest found for entryId: ${entryId}` })
         
         return yield* createSuccessResponse(`/side-quests/${quest.game}/${quest.map}/${quest.slug}`)
-      }
-      case "zombies": {
+      })),
+      Match.when("zombies", () => Effect.gen(function*(){
         const zombie = yield* Effect.promise(() => getZombieById(true, entryId))
         if (!zombie) return yield* new EntryNotFoundError({ message: `No zombie found for entryId: ${entryId}` })
         
         return yield* createSuccessResponse(`/bestiary/${zombie.slug}`)
-      }
-      case "legal": {
+      })),
+      Match.when("legal", () => Effect.gen(function*(){
         const doc = yield* Effect.promise(() => getLegalDocById(true, entryId))
         if (!doc) return yield* new EntryNotFoundError({ message: `No legal document found for entryId: ${entryId}` })
         
         return yield* createSuccessResponse(`/${doc.slug}`)
-      }
-      default: {
-        return yield* new InvalidRequestError({ message: `No preview available for this slug: ${validSlug}` })
-      }
-    }
+      })),
+      Match.orElse((slug) => new InvalidRequestError({ message: `No preview available for this slug: ${slug}` })),
+    )
+
+    return yield* match
   }).pipe(
     Effect.withLogSpan("get_draft_handler"),
     Effect.tapError(Effect.logError),

@@ -18,10 +18,10 @@ interface IOpenGraphImage {
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
   const { slug } = await params
   const zombie = await getZombieBySlug(false, slug)
-  if (!zombie) return null
+  if (!zombie) return new Response("Zombie not found", { status: 404 })
 
   const fonts = await getFontData
-  if (!fonts) return null
+  if (!fonts) return new Response("Failed to load font data", { status: 500 })
 
   const getDifficultyCSSProps = (): CSSProperties => {
     switch(zombie.type) {
