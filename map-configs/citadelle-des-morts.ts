@@ -87,7 +87,7 @@ const citadelleDesMorts: MapConfig = {
       title: "Hillside Ramparts",
       description: "",
       icon: null,
-      locations: [{ x: 0.400, y: 0.458 }]
+      locations: [{ x: 0.4, y: 0.458 }]
     },
     {
       id: "village-ramparts",
@@ -96,7 +96,7 @@ const citadelleDesMorts: MapConfig = {
       title: "Village Ramparts",
       description: "",
       icon: null,
-      locations: [{ x: 0.600, y: 0.458 }]
+      locations: [{ x: 0.6, y: 0.458 }]
     },
     {
       id: "entrance-hall",
@@ -413,7 +413,7 @@ const citadelleDesMorts: MapConfig = {
     },
     {
       ...weapons["gpmg-7"],
-      locations: [{ x: 0.700, y: 0.226 }]
+      locations: [{ x: 0.7, y: 0.226 }]
     },
     {
       ...weapons.ksv,

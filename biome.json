@@ -1,0 +1,74 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+	"vcs": {
+		"enabled": false,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"experimentalScannerIgnores": [
+			"node_modules"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 120,
+		"lineEnding": "lf"
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"performance": {
+				"recommended": true,
+				"noImgElement": "warn"
+			},
+			"correctness": {
+				"recommended": true,
+				"useHookAtTopLevel": "on",
+				"useExhaustiveDependencies": "on",
+				"useJsxKeyInIterable": "on"
+			},
+			"nursery": {
+				"recommended": true,
+				"noUnassignedVariables": "on",
+				"useSortedClasses": {
+					"level": "warn",
+					"fix": "safe",
+					"options": {
+						"attributes": ["className"],
+						"functions": ["cn", "clsx", "twmerge"]
+					}
+				},
+				"useExhaustiveSwitchCases": "on"
+			},
+			"style": {
+				"recommended": true,
+				"useSelfClosingElements": "on",
+				"noUselessElse": "on"
+			},
+			"suspicious": {
+				"recommended": true,
+				"useAwait": "on",
+				"useErrorMessage": "on"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"semicolons": "asNeeded",
+			"arrowParentheses": "asNeeded"
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}

@@ -3,7 +3,7 @@ import { Schema } from "effect"
 
 type ActionFunction<S extends Schema.Schema.AnyNoContext, T> = (
   data: Schema.Schema.Type<S>
-) => Promise<T>
+) => T
 
 export const createAction = <S extends Schema.Schema.AnyNoContext, T>(schema: S, action: ActionFunction<S, T>) => {
   return async (_prevState: unknown, formData: FormData | Schema.Schema.Type<S>) => {
@@ -16,9 +16,9 @@ export const createAction = <S extends Schema.Schema.AnyNoContext, T>(schema: S,
         return { success: false, message: "Invalid fields. Please try again after fixing the error." }
       }
   
-      return action(decoded.right)
+      return await action(decoded.right)
     }
 
-    return action(formData)
+    return await action(formData)
   }
 }

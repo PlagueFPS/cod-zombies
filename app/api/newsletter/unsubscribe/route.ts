@@ -1,37 +1,51 @@
-import { Email } from "@/lib/services/Email";
-import { unsubscribeEmail } from "@/usecases/email";
-import { verifyToken } from "@/utils/functions";
-import { Effect } from "effect";
-import { NextResponse, type NextRequest } from "next/server";
+import { Effect } from "effect"
+import { type NextRequest, NextResponse } from "next/server"
+import { Email } from "@/lib/services/Email"
+import { unsubscribeEmail } from "@/usecases/email"
+import { verifyToken } from "@/utils/functions"
 
 export async function GET(req: NextRequest) {
-  return Effect.gen(function*() {
-    const token = req.nextUrl.searchParams.get("token")
-    if (!token) return NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent("Missing Token")}`, req.url))
+	return await Effect.gen(function* () {
+		const token = req.nextUrl.searchParams.get("token")
+		if (!token)
+			return NextResponse.redirect(
+				new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent("Missing Token")}`, req.url),
+			)
 
-    const decodedToken = decodeURIComponent(token)
-    const email = yield* verifyToken(decodedToken)
-    
-    yield* unsubscribeEmail(email)
-    return NextResponse.redirect(new URL(`/newsletter/unsubscribe/success`, req.url))
-  }).pipe(
-    Effect.withLogSpan("unsubscribe_get_handler"),
-    Effect.tapError(Effect.logError),
-    Effect.catchTags({
-      TokenExpirationError: () => {
-        const message = "The unsubscribe token used has expired. Please request a new one."
-        return Effect.succeed(NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url)))
-      },
-      TokenVerificationError: () => {
-        const message = "The unsubscribe token used is invalid. Please request a new one."
-        return Effect.succeed(NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url)))
-      }
-    }),
-    Effect.catchAll(() => {
-      const message = "An error occured during the unsubscribe process. Please try again or request a new unsubscribe token."
-      return Effect.succeed(NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url)))
-    }),
-    Effect.provide(Email.Default),
-    Effect.runPromise
-  )
+		const decodedToken = decodeURIComponent(token)
+		const email = yield* verifyToken(decodedToken)
+
+		yield* unsubscribeEmail(email)
+		return NextResponse.redirect(new URL(`/newsletter/unsubscribe/success`, req.url))
+	}).pipe(
+		Effect.withLogSpan("unsubscribe_get_handler"),
+		Effect.tapError(Effect.logError),
+		Effect.catchTags({
+			TokenExpirationError: () => {
+				const message = "The unsubscribe token used has expired. Please request a new one."
+				return Effect.succeed(
+					NextResponse.redirect(
+						new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url),
+					),
+				)
+			},
+			TokenVerificationError: () => {
+				const message = "The unsubscribe token used is invalid. Please request a new one."
+				return Effect.succeed(
+					NextResponse.redirect(
+						new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url),
+					),
+				)
+			},
+		}),
+		Effect.catchAll(() => {
+			const message =
+				"An error occured during the unsubscribe process. Please try again or request a new unsubscribe token."
+			return Effect.succeed(
+				NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url)),
+			)
+		}),
+		Effect.provide(Email.Default),
+		Effect.runPromise,
+	)
 }

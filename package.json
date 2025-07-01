@@ -7,7 +7,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "biome lint .",
+    "format": "biome check .",
     "vercel": "vercel login",
     "link": "vercel link",
     "pull": "vercel env pull",
@@ -60,6 +61,7 @@
     "sonner": "1.7.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.0.6",
     "@contentful/rich-text-types": "^17.0.0",
     "@effect/language-service": "^0.21.8",
     "@effect/platform-node": "^0.88.2",

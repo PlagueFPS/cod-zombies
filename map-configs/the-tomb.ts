@@ -1,5 +1,5 @@
-import type { MapConfig } from "@/map-configs";
-import { perks, sharedMarkers, weapons } from "./markers";
+import type { MapConfig } from "@/map-configs"
+import { perks, sharedMarkers, weapons } from "./markers"
 
 const theTomb: MapConfig = {
   id: "the-tomb",
@@ -146,7 +146,7 @@ const theTomb: MapConfig = {
         { x: 0.304, y: 0.426 },
         { x: 0.477, y: 0.630 },
         { x: 0.890, y: 0.520 },
-        { x: 0.690, y: 0.480 },
+        { x: 0.69, y: 0.480 },
       ]
     },
     {
@@ -253,7 +253,7 @@ const theTomb: MapConfig = {
           title: "Dark Aether Nexus Portal",
           description: "Teleport to the Dark Aether Nexus"
         },
-        { x: 0.600, y: 0.776,
+        { x: 0.6, y: 0.776,
           title: "Ossurary Portal",
           description: "Teleport to the Ossurary"
         },

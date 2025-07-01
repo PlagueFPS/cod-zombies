@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react"
 
 export const useMediaQuery = (breakpoint: number | undefined = 1280) => {
-  const [matches, setMatches] = useState(false)
+	const [matches, setMatches] = useState(false)
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(`(min-width: ${breakpoint}px)`)
-    
-    const handleChange = (event: MediaQueryListEvent) => {
-      setMatches(event.matches)
-    };
+	useEffect(() => {
+		const mediaQuery = window.matchMedia(`(min-width: ${breakpoint}px)`)
 
-    // Set initial value
-    setMatches(mediaQuery.matches)
+		const handleChange = (event: MediaQueryListEvent) => {
+			setMatches(event.matches)
+		}
 
-    // Add listener for subsequent changes
-    mediaQuery.addEventListener('change', handleChange)
+		// Set initial value
+		setMatches(mediaQuery.matches)
 
-    // Clean up listener on component unmount
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    }
-  }, [breakpoint])
+		// Add listener for subsequent changes
+		mediaQuery.addEventListener("change", handleChange)
 
-  return matches
+		// Clean up listener on component unmount
+		return () => {
+			mediaQuery.removeEventListener("change", handleChange)
+		}
+	}, [breakpoint])
+
+	return matches
 }

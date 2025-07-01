@@ -4,13 +4,13 @@ import { Schema } from "effect";
 export const env = createEnv({
   server: {
     REVALIDATE_SECRET: Schema.standardSchemaV1(Schema.NonEmptyString),
-    CONTENTFUL_SPACE_ID: Schema.standardSchemaV1(Schema.NonEmptyString),
     DRAFT_SECRET: Schema.standardSchemaV1(Schema.NonEmptyString),
+    CONTENTFUL_SPACE_ID: Schema.standardSchemaV1(Schema.NonEmptyString),
     CONTENTFUL_MANAGEMENT_ACCESS_TOKEN: Schema.standardSchemaV1(Schema.NonEmptyString),
-    RESEND_API_KEY: Schema.standardSchemaV1(Schema.NonEmptyString),
-    RESEND_AUDIENCE_ID: Schema.standardSchemaV1(Schema.NonEmptyString),
     CONTENTFUL_ACCESS_TOKEN: Schema.standardSchemaV1(Schema.NonEmptyString),
     CONTENTFUL_PREVIEW_ACCESS_TOKEN: Schema.standardSchemaV1(Schema.NonEmptyString),
+    RESEND_API_KEY: Schema.standardSchemaV1(Schema.NonEmptyString),
+    RESEND_AUDIENCE_ID: Schema.standardSchemaV1(Schema.NonEmptyString),
     PROJECT_PLANNER_ID: Schema.standardSchemaV1(Schema.NonEmptyString),
     CRON_SECRET: Schema.standardSchemaV1(Schema.NonEmptyString),
     REDIS_URL: Schema.standardSchemaV1(Schema.NonEmptyString),

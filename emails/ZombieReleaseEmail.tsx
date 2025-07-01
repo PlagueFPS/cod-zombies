@@ -1,126 +1,111 @@
 import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Heading,
-  Hr,
-  Html,
-  Img,
-  Preview,
-  Section,
-  Text,
-  Tailwind,
-  Link,
-} from '@react-email/components';
-import type { IQuestRelease } from './QuestReleaseEmail';
-import type { ZombieType } from '@/data/zombies';
-import { env } from '@/env';
+	Body,
+	Button,
+	Container,
+	Head,
+	Heading,
+	Hr,
+	Html,
+	Img,
+	Link,
+	Preview,
+	Section,
+	Tailwind,
+	Text,
+} from "@react-email/components"
+import type { ZombieType } from "@/data/zombies"
+import { env } from "@/env"
+import type { IQuestRelease } from "./QuestReleaseEmail"
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
-  type: ZombieType
+	type: ZombieType
 }
 
 export default function ZombieReleaseEmail({ type, title, description, imageUrl, redirectUrl }: IZombieRelease) {
-  const currentYear = new Date().getFullYear()
+	const currentYear = new Date().getFullYear()
 
-  return (
-    <Html>
-      <Tailwind>
-        <Head>
-          <title>New { type } Zombie Release: { title }</title>
-          <Preview>We&apos;ve just published a new zombie breakdown you might be interested in</Preview>
-        </Head>
-        <Body className="bg-gray-100 font-sans py-[40px]">
-          <Container className="bg-white rounded-[8px] mx-auto p-[20px] max-w-[600px]">
-            {/* Logo and Site Name */}
-            <Section className="text-center mb-[24px]">
-              <Img
-                src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
-                alt="Site Logo"
-                width="120"
-                height="50"
-                className="mx-auto mb-[12px] w-[120px] h-auto object-cover rounded-[10px]"
-              />
-              <Text className="text-[20px] font-bold text-gray-800 m-0">
-                Call of Duty: <span className="text-orange-500">Zombies Guides</span>
-              </Text>
-            </Section>
-            
-            <Hr className="border-solid border-orange-200 my-[24px]" />          
-            
-            <Section className="bg-orange-50 rounded-[8px] p-[16px] mb-[24px] border-l-[4px] border-solid border-orange-500">
-              <Heading className="text-[20px] font-bold text-gray-800 mt-0 mb-[8px]">
-                { title }
-              </Heading>
-              <Text className="text-[16px] text-gray-600 m-0">
-                { description }
-              </Text>
-            </Section>
-            
-            {/* Zombie Preview Image */}
-            <Section className="mb-[24px]">
-              <Img
-                src={ imageUrl }
-                alt={ `${title} Preview Image` }
-                className="w-full h-auto object-cover rounded-[8px]"
-              />
-              <Text className="text-[14px] text-gray-500 italic mt-[8px] text-center m-0">
-                A visual preview of the {`"${title}"`} {type} Zombie
-              </Text>
-            </Section>
-            
-            <Section className='mb-[24px] bg-gray-100 p-[16px] rounded-[8px]'>
-              <Text className="text-[16px] text-gray-600 mb-[16px] font-semibold">
-                What you can expect from this breakdown:
-              </Text>
+	return (
+		<Html>
+			<Tailwind>
+				<Head>
+					<title>
+						New {type} Zombie Release: {title}
+					</title>
+					<Preview>We&apos;ve just published a new zombie breakdown you might be interested in</Preview>
+				</Head>
+				<Body className="bg-gray-100 py-[40px] font-sans">
+					<Container className="mx-auto max-w-[600px] rounded-[8px] bg-white p-[20px]">
+						{/* Logo and Site Name */}
+						<Section className="mb-[24px] text-center">
+							<Img
+								src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
+								alt="Site Logo"
+								width="120"
+								height="50"
+								className="mx-auto mb-[12px] h-auto w-[120px] rounded-[10px] object-cover"
+							/>
+							<Text className="m-0 font-bold text-[20px] text-gray-800">
+								Call of Duty: <span className="text-orange-500">Zombies Guides</span>
+							</Text>
+						</Section>
 
-              <ul className="list-disc pl-[24px] mb-[24px] font-medium">
-                <li className="text-[16px] text-gray-600 mb-[8px]">
-                  How fast they move and how to counteract it
-                </li>
-                <li className="text-[16px] text-gray-600 mb-[8px]">
-                  What elements they are weak against
-                </li>
-                <li className="text-[16px] text-gray-600 mb-[8px]">
-                  Detailed descriptions of their attacks
-                </li>
-                <li className="text-[16px] text-gray-600 mb-[8px]">
-                  When and how they spawn
-                </li>
-                <li className="text-[16px] text-gray-600 mb-[8px]">
-                  How to defeat them effectively
-                </li>
-              </ul>
-            </Section>
-            
-            <Section className="text-center mb-[32px]">
-              <Button
-                className="bg-orange-500 text-white font-bold py-[12px] px-[24px] rounded-[4px] no-underline text-center box-border"
-                href={ redirectUrl }
-              >
-                View the Full Breakdown
-              </Button>
-            </Section>
-            
-            <Hr className="border-solid border-gray-200 my-[24px]" />
-            
-            <Section className='text-center'>
-              <Text className="text-[14px] text-gray-500 m-0 italic">
-                © { currentYear } Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving this email because you opted-in via our website. 
-                You may <Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/newsletter/unsubscribe`}>unsubscribe</Link> at any point you choose.
-              </Text>
-              
-              
-              <Text className="text-[14px] leading-[20px] text-gray-500 mt-[12px]">
-                <Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`} className="text-[#8898aa] underline">
-                  Privacy Policy
-                </Link>
-              </Text>
-            </Section>
-          </Container>
-        </Body>
-      </Tailwind>
-    </Html>
-  )
+						<Hr className="my-[24px] border-orange-200 border-solid" />
+
+						<Section className="mb-[24px] rounded-[8px] border-orange-500 border-l-[4px] border-solid bg-orange-50 p-[16px]">
+							<Heading className="mt-0 mb-[8px] font-bold text-[20px] text-gray-800">{title}</Heading>
+							<Text className="m-0 text-[16px] text-gray-600">{description}</Text>
+						</Section>
+
+						{/* Zombie Preview Image */}
+						<Section className="mb-[24px]">
+							<Img src={imageUrl} alt={`${title} Preview Image`} className="h-auto w-full rounded-[8px] object-cover" />
+							<Text className="m-0 mt-[8px] text-center text-[14px] text-gray-500 italic">
+								A visual preview of the {`"${title}"`} {type} Zombie
+							</Text>
+						</Section>
+
+						<Section className="mb-[24px] rounded-[8px] bg-gray-100 p-[16px]">
+							<Text className="mb-[16px] font-semibold text-[16px] text-gray-600">
+								What you can expect from this breakdown:
+							</Text>
+
+							<ul className="mb-[24px] list-disc pl-[24px] font-medium">
+								<li className="mb-[8px] text-[16px] text-gray-600">How fast they move and how to counteract it</li>
+								<li className="mb-[8px] text-[16px] text-gray-600">What elements they are weak against</li>
+								<li className="mb-[8px] text-[16px] text-gray-600">Detailed descriptions of their attacks</li>
+								<li className="mb-[8px] text-[16px] text-gray-600">When and how they spawn</li>
+								<li className="mb-[8px] text-[16px] text-gray-600">How to defeat them effectively</li>
+							</ul>
+						</Section>
+
+						<Section className="mb-[32px] text-center">
+							<Button
+								className="box-border rounded-[4px] bg-orange-500 px-[24px] py-[12px] text-center font-bold text-white no-underline"
+								href={redirectUrl}
+							>
+								View the Full Breakdown
+							</Button>
+						</Section>
+
+						<Hr className="my-[24px] border-gray-200 border-solid" />
+
+						<Section className="text-center">
+							<Text className="m-0 text-[14px] text-gray-500 italic">
+								© {currentYear} Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving this email
+								because you opted-in via our website. You may{" "}
+								<Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/newsletter/unsubscribe`}>unsubscribe</Link> at any point you
+								choose.
+							</Text>
+
+							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
+								<Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`} className="text-[#8898aa] underline">
+									Privacy Policy
+								</Link>
+							</Text>
+						</Section>
+					</Container>
+				</Body>
+			</Tailwind>
+		</Html>
+	)
 }

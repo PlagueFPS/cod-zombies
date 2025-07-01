@@ -1,5 +1,5 @@
 import "server-only"
-import { type EntriesQueries, type EntrySkeletonType } from 'contentful'
+import type { EntriesQueries, EntrySkeletonType } from 'contentful'
 import { Effect } from "effect"
 import { CMS, CMSManagement } from "@/lib/services/CMS"
 import { GetEntriesError } from "@/types/errors"

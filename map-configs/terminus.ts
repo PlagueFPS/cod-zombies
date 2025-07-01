@@ -1,5 +1,5 @@
-import type { MapConfig } from "@/map-configs";
-import { perks, sharedMarkers, weapons } from "./markers";
+import type { MapConfig } from "@/map-configs"
+import { perks, sharedMarkers, weapons } from "./markers"
 
 const terminus: MapConfig = {
   id: 'terminus',
@@ -491,8 +491,8 @@ const terminus: MapConfig = {
       locations: [
         { x: 0.877, y: 0.933 },
         { x: 0.489, y: 0.743 },
-        { x: 0.296, y: 0.700 },
-        { x: 0.700, y: 0.474 },
+        { x: 0.296, y: 0.7 },
+        { x: 0.7, y: 0.474 },
         { x: 0.382, y: 0.283 },
         { x: 0.889, y: 0.753 },
       ]

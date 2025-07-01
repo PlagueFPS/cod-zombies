@@ -1,37 +1,47 @@
-import { Email } from "@/lib/services/Email";
-import { subscribeEmail } from "@/usecases/email";
-import { verifyToken } from "@/utils/functions";
-import { Effect } from "effect";
-import { NextResponse, type NextRequest } from "next/server";
+import { Effect } from "effect"
+import { type NextRequest, NextResponse } from "next/server"
+import { Email } from "@/lib/services/Email"
+import { subscribeEmail } from "@/usecases/email"
+import { verifyToken } from "@/utils/functions"
 
 export async function GET(req: NextRequest) {
-  return Effect.gen(function* () {
-    const token = req.nextUrl.searchParams.get("token")
-    if (!token) return NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent("Missing Token")}`, req.url))
+	return await Effect.gen(function* () {
+		const token = req.nextUrl.searchParams.get("token")
+		if (!token)
+			return NextResponse.redirect(
+				new URL(`/newsletter/subscribe/error?message=${encodeURIComponent("Missing Token")}`, req.url),
+			)
 
-    const decodedToken = decodeURIComponent(token)
-    const email = yield* verifyToken(decodedToken)
-    
-    yield* subscribeEmail(email)
-    return NextResponse.redirect(new URL(`/newsletter/subscribe/success`, req.url))
-  }).pipe(
-    Effect.withLogSpan("subscribe_get_handler"),
-    Effect.tapError(Effect.logError),
-    Effect.catchTags({
-      TokenExpirationError: () => {
-        const message = "The subscribe token used has expired. Please request a new one."
-        return Effect.succeed(NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)))
-      },
-      TokenVerificationError: () => {
-        const message = "The subscribe token used is invalid. Please request a new one."
-        return Effect.succeed(NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)))
-      }
-    }),
-    Effect.catchAll(() => {
-      const message = "An error occured during the subscribe process. Please try again or request a new subscribe token."
-      return Effect.succeed(NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)))
-    }),
-    Effect.provide(Email.Default),
-    Effect.runPromise
-  )
+		const decodedToken = decodeURIComponent(token)
+		const email = yield* verifyToken(decodedToken)
+
+		yield* subscribeEmail(email)
+		return NextResponse.redirect(new URL(`/newsletter/subscribe/success`, req.url))
+	}).pipe(
+		Effect.withLogSpan("subscribe_get_handler"),
+		Effect.tapError(Effect.logError),
+		Effect.catchTags({
+			TokenExpirationError: () => {
+				const message = "The subscribe token used has expired. Please request a new one."
+				return Effect.succeed(
+					NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)),
+				)
+			},
+			TokenVerificationError: () => {
+				const message = "The subscribe token used is invalid. Please request a new one."
+				return Effect.succeed(
+					NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)),
+				)
+			},
+		}),
+		Effect.catchAll(() => {
+			const message =
+				"An error occured during the subscribe process. Please try again or request a new subscribe token."
+			return Effect.succeed(
+				NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)),
+			)
+		}),
+		Effect.provide(Email.Default),
+		Effect.runPromise,
+	)
 }

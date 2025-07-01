@@ -1,615 +1,606 @@
-import type { MapConfig } from "@/map-configs";
-import { sharedMarkers, perks, weapons } from "./markers";
+import type { MapConfig } from "@/map-configs"
+import { perks, sharedMarkers, weapons } from "./markers"
 
 const shatteredVeil: MapConfig = {
-  id: "shattered-veil",
-  title: "Shattered Veil",
-  game: "Black Ops 6",
-  description: "Learn the locations of important items like Janus Crates, Plant Seeds, and more with our in-depth interactive map for Shattered Veil in Black Ops 6 Zombies.",
-  image: "/layers/shattered-veil.webp",
-  markers: [
-    {
-      id: "garden-pond",
-      type: "label",
-      category: "general",
-      title: "Garden Pond",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.212, y: 0.607 }]
-    },
-    {
-      id: "lower-terrace",
-      type: "label",
-      category: "general",
-      title: "Lower Terrace",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.287, y: 0.540 }]
-    },
-    {
-      id: "upper-terrace",
-      type: "label",
-      category: "general",
-      title: "Upper Terrace",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.373, y: 0.560 }]
-    },
-    {
-      id: "shems-henge",
-      type: "label",
-      category: "general",
-      title: "Shem's Henge",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.342, y: 0.617 }]
-    },
-    {
-      id: "conservatory",
-      type: "label",
-      category: "general",
-      title: "Conservatory",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.263, y: 0.477 }]
-    },
-    {
-      id: "motor-court",
-      type: "label",
-      category: "general",
-      title: "Motor Court",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.463, y: 0.514 }]
-    },
-    {
-      id: "grand-foyer",
-      type: "label",
-      category: "general",
-      title: "Grand Foyer",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.471, y: 0.396 }]
-    },
-    {
-      id: "overlook",
-      type: "label",
-      category: "general",
-      title: "Overlook",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.472, y: 0.351 }]
-    },
-    {
-      id: "east-foyer",
-      type: "label",
-      category: "general",
-      title: "East Foyer",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.541, y: 0.373 }]
-    },
-    {
-      id: "library",
-      type: "label",
-      category: "general",
-      title: "Library",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.590, y: 0.320 }]
-    },
-    {
-      id: "study",
-      type: "label",
-      category: "general",
-      title: "Study",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.573, y: 0.264 }]
-    },
-    {
-      id: "east-balcony",
-      type: "label",
-      category: "general",
-      title: "East Balcony",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.554, y: 0.233 }]
-    },
-    {
-      id: "rear-patio",
-      type: "label",
-      category: "general",
-      title: "Rear Patio",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.481, y: 0.199 }]
-    },
-    {
-      id: "kitchen",
-      type: "label",
-      category: "general",
-      title: "Kitchen",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.505, y: 0.245 }]
-    },
-    {
-      id: "banquet-hall",
-      type: "label",
-      category: "general",
-      title: "Banquet Hall",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.472, y: 0.272 }]
-    },
-    {
-      id: "west-balcony",
-      type: "label",
-      category: "general",
-      title: "West Balcony",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.398, y: 0.230 }]
-    },
-    {
-      id: "bottlery",
-      type: "label",
-      category: "general",
-      title: "Bottlery",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.428, y: 0.250 }]
-    },
-    {
-      id: "directors-quarters",
-      type: "label",
-      category: "general",
-      title: "Director's Quarters",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.400, y: 0.302 }]
-    },
-    {
-      id: "nursery",
-      type: "label",
-      category: "general",
-      title: "Nursery",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.391, y: 0.383 }],
-    },
-    {
-      id: "south-west-balcony",
-      type: "label",
-      category: "general",
-      title: "South West Balcony",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.357, y: 0.389 }]
-    },
-    {
-      id: "west-hallways",
-      type: "label",
-      category: "general",
-      title: "West Hallways",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.419, y: 0.328 }]
-    },
-    {
-      id: "mainframe-chamber",
-      type: "label",
-      category: "general",
-      title: "Mainframe Chamber",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.810, y: 0.404 }]
-    },
-    {
-      id: "security-overlook",
-      type: "label",
-      category: "general",
-      title: "Security Overlook",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.810, y: 0.459 }]
-    },
-    {
-      id: "service-tunnel",
-      type: "label",
-      category: "general",
-      title: "Service Tunnel",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.710, y: 0.515 }]
-    },
-    {
-      id: "supply-depot",
-      type: "label",
-      category: "general",
-      title: "Supply Depot",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.704, y: 0.597 }]
-    },
-    {
-      id: "armory",
-      type: "label",
-      category: "general",
-      title: "Armory",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.671, y: 0.597 }]
-    },
-    {
-      id: "serpent-mound",
-      type: "label",
-      category: "general",
-      title: "Serpent Mound",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.641, y: 0.414 }]
-    },
-    {
-      id: "distillery",
-      type: "label",
-      category: "general",
-      title: "Distillery",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.245, y: 0.344 }]
-    },
-    {
-      id: "ravine",
-      type: "label",
-      category: "general",
-      title: "Ravine",
-      description: "",
-      icon: null,
-      locations: [{ x: 0.559, y: 0.657 }]
-    },
-    {
-      id: "aether-plant",
-      category: "objectives",
-      title: "Aether Plant Spawn",
-      description: "Destroy this plant with fire damage to obtain a Plant Seed.",
-      icon: "/icons/objectives/aether-plant.webp",
-      locations: [
-        { x: 0.201, y: 0.597 },
-        { x: 0.200, y: 0.566 },
-        { x: 0.234, y: 0.455 },
-        { x: 0.248, y: 0.442 },
-        { x: 0.329, y: 0.645 },
-        { x: 0.356, y: 0.656 },
-        { x: 0.514, y: 0.567 },
-        { x: 0.511, y: 0.491 },
-        { x: 0.452, y: 0.461 },
-        { x: 0.338, y: 0.357 },
-        { x: 0.365, y: 0.409 },
-        { x: 0.398, y: 0.242 },
-        { x: 0.505, y: 0.184 },
-      ]
-    },
-    {
-      id: "janus-crate",
-      category: "objectives",
-      title: "Janus Crate",
-      description: "Each crate drops salvage. Destroy 8 crates to obtain the Essence Bomb.",
-      icon: "/icons/objectives/janus-crate.webp",
-      locations: [
-        { x: 0.248, y: 0.638 },
-        { x: 0.271, y: 0.552 },
-        { x: 0.305, y: 0.480 },
-        { x: 0.336, y: 0.539 },
-        { x: 0.316, y: 0.604 },
-        { x: 0.508, y: 0.542 },
-        { x: 0.422, y: 0.479 },
-        { x: 0.484, y: 0.424 },
-        { x: 0.515, y: 0.358 },
-        { x: 0.505, y: 0.345 },
-        { x: 0.430, y: 0.322 },
-        { x: 0.581, y: 0.292 },
-        { x: 0.354, y: 0.387 },
-        { x: 0.577, y: 0.243 },
-        { x: 0.506, y: 0.198 },
-        { x: 0.385, y: 0.227 },
-        { x: 0.795, y: 0.483 },
-        { x: 0.705, y: 0.492 },
-        { x: 0.643, y: 0.556 },
-        { x: 0.677, y: 0.593 },
-        { x: 0.588, y: 0.279 }
-      ]
-    },
-    {
-      id: "aether-crystal",
-      category: "objectives",
-      title: "Aether Crystal",
-      description: "Each crystal drops salvage. The crystal emitting a thick essence contains an empty canister used for one of the Ray Gun MKII upgrades.",
-      icon: "/icons/objectives/aether-crystal.webp",
-      locations: [
-        { x: 0.240, y: 0.511 },
-        { x: 0.531, y: 0.373 },
-        { x: 0.389, y: 0.409 },
-        { x: 0.645, y: 0.546 },
-      ]
-    },
-    {
-      ...perks["quick-revive"],
-      locations: [{ x: 0.231, y: 0.473 }]
-    },
-    {
-      ...perks["speed-cola"],
-      locations: [{ x: 0.415, y: 0.626 }]
-    },
-    {
-      ...perks.juggernog,
-      locations: [{ x: 0.446, y: 0.407 }]
-    },
-    {
-      ...perks["double-tap"],
-      locations: [{ x: 0.481, y: 0.210 }]
-    },
-    {
-      ...perks["phd-flopper"],
-      locations: [{ x: 0.371, y: 0.396 }]
-    },
-    {
-      ...perks["stamin-up"],
-      locations: [{ x: 0.550, y: 0.348 }]
-    },
-    {
-      ...perks["death-perception"],
-      locations: [{ x: 0.439, y: 0.277 }]
-    },
-    {
-      ...perks["elemental-pop"],
-      locations: [{ x: 0.575, y: 0.223 }]
-    },
-    {
-      ...perks["der-wunderfizz"],
-      locations: [{ x: 0.745, y: 0.507 }]
-    },
-    {
-      ...sharedMarkers["ammo-cache"],
-      locations: [
-        { x: 0.172, y: 0.599 },
-        { x: 0.355, y: 0.595 },
-        { x: 0.341, y: 0.495 },
-        { x: 0.428, y: 0.474 },
-        { x: 0.395, y: 0.332 },
-        { x: 0.575, y: 0.328 },
-        { x: 0.492, y: 0.184 },
-        { x: 0.772, y: 0.378 },
-        { x: 0.631, y: 0.510 },
-        { x: 0.561, y: 0.702 },
-        { x: 0.557, y: 0.609 },
-        { x: 0.658, y: 0.457 }
-      ]
-    },
-    {
-      ...sharedMarkers["mystery-box"],
-      locations: [
-        { x: 0.268, y: 0.593 },
-        { x: 0.270, y: 0.431 },
-        { x: 0.379, y: 0.666 },
-        { x: 0.436, y: 0.559 },
-        { x: 0.439, y: 0.435 },
-        { x: 0.602, y: 0.330 },
-        { x: 0.406, y: 0.208 },
-        { x: 0.339, y: 0.341 },
-        { x: 0.674, y: 0.492 }
-      ]
-    },
-    {
-      ...sharedMarkers["armor-wall-buy"],
-      locations: [
-        { x: 0.376, y: 0.368,
-          title: "Tier II Armor"
-        },
-        { x: 0.593, y: 0.345, 
-          title: "Tier II Armor"
-        },
-        { x: 0.460, y: 0.281, 
-          title: "Tier III Armor"
-        },
-        { x: 0.745, y: 0.474, 
-          title: "Tier III Armor"
-        }
-      ]
-    },
-    {
-     ...sharedMarkers["gobblegum-machine"],
-      locations: [
-        { x: 0.246, y: 0.559 },
-        { x: 0.381, y: 0.552 },
-        { x: 0.346, y: 0.324 },
-        { x: 0.591, y: 0.292 },
-        { x: 0.479, y: 0.255 },
-        { x: 0.823, y: 0.529 }
-      ]
-    },
-    {
-      ...sharedMarkers.arsenal,
-      locations: [
-        { x: 0.501, y: 0.400 },
-        { x: 0.728, y: 0.614 },
-        { x: 0.434, y: 0.206 }
-      ]
-    },
-    {
-      ...sharedMarkers.trap,
-      locations: [
-        { x: 0.177, y: 0.571,
-          title: "Dark Aether Field Generator",
-        },
-        { x: 0.276, y: 0.490,
-          title: "Microwave Trap"
-        },
-        { x: 0.531, y: 0.353,
-          title: "Microwave Trap"
-        },
-        { x: 0.390, y: 0.371,
-          title: "Microwave Trap"
-        },
-        { x: 0.764, y: 0.530,
-          title: "Dark Aether Field Generator"
-        }
-      ]
-    },
-    {
-      ...sharedMarkers["rampage-inducer"],
-      locations: [{ x: 0.259, y: 0.614 }]
-    },
-    {
-      ...sharedMarkers["power-door"],
-      locations: [{ x: 0.422, y: 0.336 }]
-    },
-    {
-      ...sharedMarkers["door-buy"],
-      locations: [
-        { x: 0.263, y: 0.523 },
-        { x: 0.314, y: 0.573 },
-        { x: 0.334, y: 0.514 },
-        { x: 0.405, y: 0.602 },
-        { x: 0.473, y: 0.447 },
-        { x: 0.504, y: 0.388 },
-        { x: 0.517, y: 0.379 },
-        { x: 0.429, y: 0.352 },
-        { x: 0.359, y: 0.360 },
-        { x: 0.598, y: 0.280 },
-        { x: 0.531, y: 0.226 },
-        { x: 0.437, y: 0.226 },
-        { x: 0.681, y: 0.557 }
-      ]
-    },
-    {
-      ...sharedMarkers["crafting-table"],
-      locations: [
-        { x: 0.492, y: 0.576 },
-        { x: 0.486, y: 0.231 },
-        { x: 0.850, y: 0.379 }
-      ]
-    },
-    {
-      ...sharedMarkers["pack-a-punch"],
-      locations: [{ x: 0.810, y: 0.447 }]
-    },
-    {
-      ...sharedMarkers.exfil,
-      locations: [{ x: 0.299, y: 0.551 }]
-    },
-    {
-      ...sharedMarkers.portal,
-      locations: [
-        { x: 0.238, y: 0.638,
-          title: "Garden Pond Portal",
-          description: "Teleport to the Supply Depot"
-        },
-        { x: 0.706, y: 0.626, 
-          title: "Supply Depot Portal",
-          description: "Teleport to the Garden Pond"
-        }
-      ]
-    },
-    {
-      ...sharedMarkers.workbench,
-      locations: [
-        { 
-          x: 0.162, y: 0.629, 
-          title: "Ray Gun MKII-R Workbench",
-          description: "Craft the Ray Gun MKII-Rot Blight upgrade at this workbench."
-        },
-        {
-          x: 0.394, y: 0.315,
-          title: "Ray Gun MKII-P Workbench",
-          description: "Craft the Ray Gun MKII-Perservation upgrade at this workbench."
-        },
-        {
-          x: 0.719, y: 0.575,
-          title: "Ray Gun MKII-W Workbench",
-          description: "Craft the Ray Gun MKII-Wraith Fire upgrade at this workbench."
-        }
-      ]
-    },
-    {
-      ...sharedMarkers["audio-log"],
-      locations: [
-        { x: 0.206, y: 0.585, title: "Shadow Benefactor" },
-        { x: 0.389, y: 0.635, title: "A Way In" },
-        { x: 0.284, y: 0.451, title: "Obstacles" },
-        { x: 0.443, y: 0.565, title: "Cracking Eggheads" },
-        { x: 0.501, y: 0.346, title: "Within Reach" },
-        { x: 0.397, y: 0.217, title: "Thesis Statement" },
-        { x: 0.389, y: 0.404, title: "Bodily Harm" },
-        { x: 0.515, y: 0.255, title: "Specter" },
-        { x: 0.573, y: 0.283, title: "Shem's Folly" },
-        { x: 0.812, y: 0.471, title: "Prime Time" },
-        { x: 0.624, y: 0.512, title: "Particulars" },
-        { x: 0.663, y: 0.591, title: "Serpent Mound" },
-      ]
-    },
-    {
-      ...sharedMarkers.document,
-      locations: [
-        { x: 0.593, y: 0.279, title: "Regretfully Yours" },
-        { x: 0.153, y: 0.635, title: "My Warheads", description: "Throw a Combat Axe at the wood left of the zombie body to reveal this document." },
-        { x: 0.550, y: 0.277, title: "A Monstrous Proposal", description: "Obtained from completing the Sleepwalking Free Perk side quest." },
-      ]
-    },
-    {
-      ...weapons.gs45,
-      locations: [{ x: 0.230, y: 0.597 }]
-    },
-    {
-      ...weapons["kompakt-92"],
-      locations: [{ x: 0.318, y: 0.630 }]
-    },
-    {
-      ...weapons["tanto.22"],
-      locations: [{ x: 0.302, y: 0.452 }]
-    },
-    {
-      ...weapons["marine-sp"],
-      locations: [{ x: 0.488, y: 0.517 }]
-    },
-    {
-      ...weapons["ames-85"],
-      locations: [{ x: 0.473, y: 0.360 }]
-    },
-    {
-      ...weapons.xm4,
-      locations: [{ x: 0.417, y: 0.370 }]
-    },
-    {
-      ...weapons["ak-74"],
-      locations: [{ x: 0.530, y: 0.380 }]
-    },
-    {
-      ...weapons["aek-973"],
-      locations: [{ x: 0.443, y: 0.327 }]
-    },
-    {
-      ...weapons["swat-5.56"],
-      locations: [{ x: 0.602, y: 0.252 }]
-    },
-    {
-      ...weapons["lr-7.62"],
-      locations: [{ x: 0.481, y: 0.184 }]
-    },
-    {
-      ...weapons["gpmg-7"],
-      locations: [{ x: 0.850, y: 0.450 }]
-    },
-    {
-      ...weapons["asg-89"],
-      locations: [{ x: 0.7015, y: 0.590 }]
-    },
-    {
-      ...weapons["pu-21"],
-      locations: [{ x: 0.607, y: 0.425 }]
-    }
-  ]
+	id: "shattered-veil",
+	title: "Shattered Veil",
+	game: "Black Ops 6",
+	description:
+		"Learn the locations of important items like Janus Crates, Plant Seeds, and more with our in-depth interactive map for Shattered Veil in Black Ops 6 Zombies.",
+	image: "/layers/shattered-veil.webp",
+	markers: [
+		{
+			id: "garden-pond",
+			type: "label",
+			category: "general",
+			title: "Garden Pond",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.212, y: 0.607 }],
+		},
+		{
+			id: "lower-terrace",
+			type: "label",
+			category: "general",
+			title: "Lower Terrace",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.287, y: 0.54 }],
+		},
+		{
+			id: "upper-terrace",
+			type: "label",
+			category: "general",
+			title: "Upper Terrace",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.373, y: 0.56 }],
+		},
+		{
+			id: "shems-henge",
+			type: "label",
+			category: "general",
+			title: "Shem's Henge",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.342, y: 0.617 }],
+		},
+		{
+			id: "conservatory",
+			type: "label",
+			category: "general",
+			title: "Conservatory",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.263, y: 0.477 }],
+		},
+		{
+			id: "motor-court",
+			type: "label",
+			category: "general",
+			title: "Motor Court",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.463, y: 0.514 }],
+		},
+		{
+			id: "grand-foyer",
+			type: "label",
+			category: "general",
+			title: "Grand Foyer",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.471, y: 0.396 }],
+		},
+		{
+			id: "overlook",
+			type: "label",
+			category: "general",
+			title: "Overlook",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.472, y: 0.351 }],
+		},
+		{
+			id: "east-foyer",
+			type: "label",
+			category: "general",
+			title: "East Foyer",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.541, y: 0.373 }],
+		},
+		{
+			id: "library",
+			type: "label",
+			category: "general",
+			title: "Library",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.59, y: 0.32 }],
+		},
+		{
+			id: "study",
+			type: "label",
+			category: "general",
+			title: "Study",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.573, y: 0.264 }],
+		},
+		{
+			id: "east-balcony",
+			type: "label",
+			category: "general",
+			title: "East Balcony",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.554, y: 0.233 }],
+		},
+		{
+			id: "rear-patio",
+			type: "label",
+			category: "general",
+			title: "Rear Patio",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.481, y: 0.199 }],
+		},
+		{
+			id: "kitchen",
+			type: "label",
+			category: "general",
+			title: "Kitchen",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.505, y: 0.245 }],
+		},
+		{
+			id: "banquet-hall",
+			type: "label",
+			category: "general",
+			title: "Banquet Hall",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.472, y: 0.272 }],
+		},
+		{
+			id: "west-balcony",
+			type: "label",
+			category: "general",
+			title: "West Balcony",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.398, y: 0.23 }],
+		},
+		{
+			id: "bottlery",
+			type: "label",
+			category: "general",
+			title: "Bottlery",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.428, y: 0.25 }],
+		},
+		{
+			id: "directors-quarters",
+			type: "label",
+			category: "general",
+			title: "Director's Quarters",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.4, y: 0.302 }],
+		},
+		{
+			id: "nursery",
+			type: "label",
+			category: "general",
+			title: "Nursery",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.391, y: 0.383 }],
+		},
+		{
+			id: "south-west-balcony",
+			type: "label",
+			category: "general",
+			title: "South West Balcony",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.357, y: 0.389 }],
+		},
+		{
+			id: "west-hallways",
+			type: "label",
+			category: "general",
+			title: "West Hallways",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.419, y: 0.328 }],
+		},
+		{
+			id: "mainframe-chamber",
+			type: "label",
+			category: "general",
+			title: "Mainframe Chamber",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.81, y: 0.404 }],
+		},
+		{
+			id: "security-overlook",
+			type: "label",
+			category: "general",
+			title: "Security Overlook",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.81, y: 0.459 }],
+		},
+		{
+			id: "service-tunnel",
+			type: "label",
+			category: "general",
+			title: "Service Tunnel",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.71, y: 0.515 }],
+		},
+		{
+			id: "supply-depot",
+			type: "label",
+			category: "general",
+			title: "Supply Depot",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.704, y: 0.597 }],
+		},
+		{
+			id: "armory",
+			type: "label",
+			category: "general",
+			title: "Armory",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.671, y: 0.597 }],
+		},
+		{
+			id: "serpent-mound",
+			type: "label",
+			category: "general",
+			title: "Serpent Mound",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.641, y: 0.414 }],
+		},
+		{
+			id: "distillery",
+			type: "label",
+			category: "general",
+			title: "Distillery",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.245, y: 0.344 }],
+		},
+		{
+			id: "ravine",
+			type: "label",
+			category: "general",
+			title: "Ravine",
+			description: "",
+			icon: null,
+			locations: [{ x: 0.559, y: 0.657 }],
+		},
+		{
+			id: "aether-plant",
+			category: "objectives",
+			title: "Aether Plant Spawn",
+			description: "Destroy this plant with fire damage to obtain a Plant Seed.",
+			icon: "/icons/objectives/aether-plant.webp",
+			locations: [
+				{ x: 0.201, y: 0.597 },
+				{ x: 0.2, y: 0.566 },
+				{ x: 0.234, y: 0.455 },
+				{ x: 0.248, y: 0.442 },
+				{ x: 0.329, y: 0.645 },
+				{ x: 0.356, y: 0.656 },
+				{ x: 0.514, y: 0.567 },
+				{ x: 0.511, y: 0.491 },
+				{ x: 0.452, y: 0.461 },
+				{ x: 0.338, y: 0.357 },
+				{ x: 0.365, y: 0.409 },
+				{ x: 0.398, y: 0.242 },
+				{ x: 0.505, y: 0.184 },
+			],
+		},
+		{
+			id: "janus-crate",
+			category: "objectives",
+			title: "Janus Crate",
+			description: "Each crate drops salvage. Destroy 8 crates to obtain the Essence Bomb.",
+			icon: "/icons/objectives/janus-crate.webp",
+			locations: [
+				{ x: 0.248, y: 0.638 },
+				{ x: 0.271, y: 0.552 },
+				{ x: 0.305, y: 0.48 },
+				{ x: 0.336, y: 0.539 },
+				{ x: 0.316, y: 0.604 },
+				{ x: 0.508, y: 0.542 },
+				{ x: 0.422, y: 0.479 },
+				{ x: 0.484, y: 0.424 },
+				{ x: 0.515, y: 0.358 },
+				{ x: 0.505, y: 0.345 },
+				{ x: 0.43, y: 0.322 },
+				{ x: 0.581, y: 0.292 },
+				{ x: 0.354, y: 0.387 },
+				{ x: 0.577, y: 0.243 },
+				{ x: 0.506, y: 0.198 },
+				{ x: 0.385, y: 0.227 },
+				{ x: 0.795, y: 0.483 },
+				{ x: 0.705, y: 0.492 },
+				{ x: 0.643, y: 0.556 },
+				{ x: 0.677, y: 0.593 },
+				{ x: 0.588, y: 0.279 },
+			],
+		},
+		{
+			id: "aether-crystal",
+			category: "objectives",
+			title: "Aether Crystal",
+			description:
+				"Each crystal drops salvage. The crystal emitting a thick essence contains an empty canister used for one of the Ray Gun MKII upgrades.",
+			icon: "/icons/objectives/aether-crystal.webp",
+			locations: [
+				{ x: 0.24, y: 0.511 },
+				{ x: 0.531, y: 0.373 },
+				{ x: 0.389, y: 0.409 },
+				{ x: 0.645, y: 0.546 },
+			],
+		},
+		{
+			...perks["quick-revive"],
+			locations: [{ x: 0.231, y: 0.473 }],
+		},
+		{
+			...perks["speed-cola"],
+			locations: [{ x: 0.415, y: 0.626 }],
+		},
+		{
+			...perks.juggernog,
+			locations: [{ x: 0.446, y: 0.407 }],
+		},
+		{
+			...perks["double-tap"],
+			locations: [{ x: 0.481, y: 0.21 }],
+		},
+		{
+			...perks["phd-flopper"],
+			locations: [{ x: 0.371, y: 0.396 }],
+		},
+		{
+			...perks["stamin-up"],
+			locations: [{ x: 0.55, y: 0.348 }],
+		},
+		{
+			...perks["death-perception"],
+			locations: [{ x: 0.439, y: 0.277 }],
+		},
+		{
+			...perks["elemental-pop"],
+			locations: [{ x: 0.575, y: 0.223 }],
+		},
+		{
+			...perks["der-wunderfizz"],
+			locations: [{ x: 0.745, y: 0.507 }],
+		},
+		{
+			...sharedMarkers["ammo-cache"],
+			locations: [
+				{ x: 0.172, y: 0.599 },
+				{ x: 0.355, y: 0.595 },
+				{ x: 0.341, y: 0.495 },
+				{ x: 0.428, y: 0.474 },
+				{ x: 0.395, y: 0.332 },
+				{ x: 0.575, y: 0.328 },
+				{ x: 0.492, y: 0.184 },
+				{ x: 0.772, y: 0.378 },
+				{ x: 0.631, y: 0.51 },
+				{ x: 0.561, y: 0.702 },
+				{ x: 0.557, y: 0.609 },
+				{ x: 0.658, y: 0.457 },
+			],
+		},
+		{
+			...sharedMarkers["mystery-box"],
+			locations: [
+				{ x: 0.268, y: 0.593 },
+				{ x: 0.27, y: 0.431 },
+				{ x: 0.379, y: 0.666 },
+				{ x: 0.436, y: 0.559 },
+				{ x: 0.439, y: 0.435 },
+				{ x: 0.602, y: 0.33 },
+				{ x: 0.406, y: 0.208 },
+				{ x: 0.339, y: 0.341 },
+				{ x: 0.674, y: 0.492 },
+			],
+		},
+		{
+			...sharedMarkers["armor-wall-buy"],
+			locations: [
+				{ x: 0.376, y: 0.368, title: "Tier II Armor" },
+				{ x: 0.593, y: 0.345, title: "Tier II Armor" },
+				{ x: 0.46, y: 0.281, title: "Tier III Armor" },
+				{ x: 0.745, y: 0.474, title: "Tier III Armor" },
+			],
+		},
+		{
+			...sharedMarkers["gobblegum-machine"],
+			locations: [
+				{ x: 0.246, y: 0.559 },
+				{ x: 0.381, y: 0.552 },
+				{ x: 0.346, y: 0.324 },
+				{ x: 0.591, y: 0.292 },
+				{ x: 0.479, y: 0.255 },
+				{ x: 0.823, y: 0.529 },
+			],
+		},
+		{
+			...sharedMarkers.arsenal,
+			locations: [
+				{ x: 0.501, y: 0.4 },
+				{ x: 0.728, y: 0.614 },
+				{ x: 0.434, y: 0.206 },
+			],
+		},
+		{
+			...sharedMarkers.trap,
+			locations: [
+				{ x: 0.177, y: 0.571, title: "Dark Aether Field Generator" },
+				{ x: 0.276, y: 0.49, title: "Microwave Trap" },
+				{ x: 0.531, y: 0.353, title: "Microwave Trap" },
+				{ x: 0.39, y: 0.371, title: "Microwave Trap" },
+				{ x: 0.764, y: 0.53, title: "Dark Aether Field Generator" },
+			],
+		},
+		{
+			...sharedMarkers["rampage-inducer"],
+			locations: [{ x: 0.259, y: 0.614 }],
+		},
+		{
+			...sharedMarkers["power-door"],
+			locations: [{ x: 0.422, y: 0.336 }],
+		},
+		{
+			...sharedMarkers["door-buy"],
+			locations: [
+				{ x: 0.263, y: 0.523 },
+				{ x: 0.314, y: 0.573 },
+				{ x: 0.334, y: 0.514 },
+				{ x: 0.405, y: 0.602 },
+				{ x: 0.473, y: 0.447 },
+				{ x: 0.504, y: 0.388 },
+				{ x: 0.517, y: 0.379 },
+				{ x: 0.429, y: 0.352 },
+				{ x: 0.359, y: 0.36 },
+				{ x: 0.598, y: 0.28 },
+				{ x: 0.531, y: 0.226 },
+				{ x: 0.437, y: 0.226 },
+				{ x: 0.681, y: 0.557 },
+			],
+		},
+		{
+			...sharedMarkers["crafting-table"],
+			locations: [
+				{ x: 0.492, y: 0.576 },
+				{ x: 0.486, y: 0.231 },
+				{ x: 0.85, y: 0.379 },
+			],
+		},
+		{
+			...sharedMarkers["pack-a-punch"],
+			locations: [{ x: 0.81, y: 0.447 }],
+		},
+		{
+			...sharedMarkers.exfil,
+			locations: [{ x: 0.299, y: 0.551 }],
+		},
+		{
+			...sharedMarkers.portal,
+			locations: [
+				{ x: 0.238, y: 0.638, title: "Garden Pond Portal", description: "Teleport to the Supply Depot" },
+				{ x: 0.706, y: 0.626, title: "Supply Depot Portal", description: "Teleport to the Garden Pond" },
+			],
+		},
+		{
+			...sharedMarkers.workbench,
+			locations: [
+				{
+					x: 0.162,
+					y: 0.629,
+					title: "Ray Gun MKII-R Workbench",
+					description: "Craft the Ray Gun MKII-Rot Blight upgrade at this workbench.",
+				},
+				{
+					x: 0.394,
+					y: 0.315,
+					title: "Ray Gun MKII-P Workbench",
+					description: "Craft the Ray Gun MKII-Perservation upgrade at this workbench.",
+				},
+				{
+					x: 0.719,
+					y: 0.575,
+					title: "Ray Gun MKII-W Workbench",
+					description: "Craft the Ray Gun MKII-Wraith Fire upgrade at this workbench.",
+				},
+			],
+		},
+		{
+			...sharedMarkers["audio-log"],
+			locations: [
+				{ x: 0.206, y: 0.585, title: "Shadow Benefactor" },
+				{ x: 0.389, y: 0.635, title: "A Way In" },
+				{ x: 0.284, y: 0.451, title: "Obstacles" },
+				{ x: 0.443, y: 0.565, title: "Cracking Eggheads" },
+				{ x: 0.501, y: 0.346, title: "Within Reach" },
+				{ x: 0.397, y: 0.217, title: "Thesis Statement" },
+				{ x: 0.389, y: 0.404, title: "Bodily Harm" },
+				{ x: 0.515, y: 0.255, title: "Specter" },
+				{ x: 0.573, y: 0.283, title: "Shem's Folly" },
+				{ x: 0.812, y: 0.471, title: "Prime Time" },
+				{ x: 0.624, y: 0.512, title: "Particulars" },
+				{ x: 0.663, y: 0.591, title: "Serpent Mound" },
+			],
+		},
+		{
+			...sharedMarkers.document,
+			locations: [
+				{ x: 0.593, y: 0.279, title: "Regretfully Yours" },
+				{
+					x: 0.153,
+					y: 0.635,
+					title: "My Warheads",
+					description: "Throw a Combat Axe at the wood left of the zombie body to reveal this document.",
+				},
+				{
+					x: 0.55,
+					y: 0.277,
+					title: "A Monstrous Proposal",
+					description: "Obtained from completing the Sleepwalking Free Perk side quest.",
+				},
+			],
+		},
+		{
+			...weapons.gs45,
+			locations: [{ x: 0.23, y: 0.597 }],
+		},
+		{
+			...weapons["kompakt-92"],
+			locations: [{ x: 0.318, y: 0.63 }],
+		},
+		{
+			...weapons["tanto.22"],
+			locations: [{ x: 0.302, y: 0.452 }],
+		},
+		{
+			...weapons["marine-sp"],
+			locations: [{ x: 0.488, y: 0.517 }],
+		},
+		{
+			...weapons["ames-85"],
+			locations: [{ x: 0.473, y: 0.36 }],
+		},
+		{
+			...weapons.xm4,
+			locations: [{ x: 0.417, y: 0.37 }],
+		},
+		{
+			...weapons["ak-74"],
+			locations: [{ x: 0.53, y: 0.38 }],
+		},
+		{
+			...weapons["aek-973"],
+			locations: [{ x: 0.443, y: 0.327 }],
+		},
+		{
+			...weapons["swat-5.56"],
+			locations: [{ x: 0.602, y: 0.252 }],
+		},
+		{
+			...weapons["lr-7.62"],
+			locations: [{ x: 0.481, y: 0.184 }],
+		},
+		{
+			...weapons["gpmg-7"],
+			locations: [{ x: 0.85, y: 0.45 }],
+		},
+		{
+			...weapons["asg-89"],
+			locations: [{ x: 0.7015, y: 0.59 }],
+		},
+		{
+			...weapons["pu-21"],
+			locations: [{ x: 0.607, y: 0.425 }],
+		},
+	],
 }
 
-export default shatteredVeil;
+export default shatteredVeil
