@@ -1,10 +1,10 @@
 import "server-only"
+import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { HttpBody, HttpClient } from "@effect/platform"
 import { Effect, Schedule } from "effect"
 import { env } from "@/env"
-import type { FeedbackForm } from "@/utils/validation-schemas"
 
-interface Input extends FeedbackForm {
+interface Input extends TFeedbackForm {
 	label?: "idea" | "issue" | "question" | "complaint" | "featureRequest" | "other"
 }
 
