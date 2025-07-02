@@ -1,6 +1,6 @@
+import type { NextRequest } from "next/server"
 import { Effect, Layer, Redacted, Schema } from "effect"
 import { headers } from "next/headers"
-import type { NextRequest } from "next/server"
 import { env } from "@/env"
 import { Cache } from "@/lib/services/Cache"
 import { Email } from "@/lib/services/Email"

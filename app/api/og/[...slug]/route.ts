@@ -1,5 +1,5 @@
-import { Effect, Match, Schema } from "effect"
 import type { NextRequest } from "next/server"
+import { Effect, Match, Schema } from "effect"
 import MapOpenGraphImage from "@/app/(main)/[game]/[slug]/opengraph-image"
 import ZombieOpenGraphImage from "@/app/(main)/bestiary/[slug]/opengraph-image"
 import SideQuestOpenGraphImage from "@/app/(main)/side-quests/[game]/[map]/[slug]/opengraph-image"

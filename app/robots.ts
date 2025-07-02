@@ -1,5 +1,5 @@
-import type { MetadataRoute } from "next";
-import { env } from "@/env";
+import type { MetadataRoute } from "next"
+import { env } from "@/env"
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,9 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
       disallow: [
-        '/newsletter/unsubscribe',
-        '/newsletter/unsubscribe/error', 
-        '/newsletter/unsubscribe/success',
+        '/newsletter/**'
       ]
     },
     sitemap: `${env.NEXT_PUBLIC_WEBSITE_URL}/sitemap.xml`

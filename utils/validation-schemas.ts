@@ -1,7 +1,9 @@
 import { Schema } from "effect";
 
-export type FeedbackForm = Schema.Schema.Type<typeof FeedbackFormSchema> 
-export type AllowedSlugs = Schema.Schema.Type<typeof AllowedSlugsSchema>
+export type TFeedbackForm = Schema.Schema.Type<typeof FeedbackFormSchema> 
+export type TAllowedSlugs = Schema.Schema.Type<typeof AllowedSlugsSchema>
+export type TContactForm = Schema.Schema.Type<typeof ContactFormSchema>
+export type TNewsletterForm = Schema.Schema.Type<typeof NewsletterFormSchema>
 
 const EmailSchema = Schema.NonEmptyString.pipe(
   Schema.pattern(

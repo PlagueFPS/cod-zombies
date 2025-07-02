@@ -7,7 +7,7 @@ interface IMainLayout {
 export default function MainLayout({ children }: IMainLayout) {
   return (
     <>
-      <main className="mt-10 mb-4 grow" role="main">
+      <main className="mt-10 mb-4 grow">
         { children }
       </main>
       <Footer />

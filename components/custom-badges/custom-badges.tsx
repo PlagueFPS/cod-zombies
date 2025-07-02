@@ -1,39 +1,69 @@
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
-import type { Difficulty } from '@/data/maps'
-import type { MarkerCategory } from '@/map-configs/markers'
-import type { ZombieType } from '@/data/zombies'
+import type { Difficulty } from "@/data/maps"
+import type { ZombieType } from "@/data/zombies"
+import type { MarkerCategory } from "@/map-configs/markers"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
-interface CustomBadgeProps { 
-  className?: string
-  children?: React.ReactNode
+interface CustomBadgeProps {
+	className?: string
+	children?: React.ReactNode
 }
 
-export const DraftBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-draft-gradient dark:dark-badge-draft-gradient', className)}>Draft</Badge>
-export const ChangedBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-changed-gradient dark:dark-badge-changed-gradient', className)}>Changed</Badge>
-export const NewBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-new-gradient dark:dark-badge-new-gradient', className)}>New</Badge>
-export const ComingSoonBadge = ({ className }: CustomBadgeProps) => <Badge className={cn('badge-changed-gradient dark:dark-badge-changed-gradient', className)}>Coming Soon</Badge>
-export const DifficultyBadge = ({ className, difficulty }: CustomBadgeProps & { difficulty: Difficulty }) => 
-  <Badge className={cn({
-    'badge-easy-gradient dark:dark-badge-easy-gradient': difficulty === "Easy",
-    'badge-medium-gradient dark:dark-badge-medium-gradient': difficulty === "Medium",
-    'badge-hard-gradient dark:dark-badge-hard-gradient': difficulty === "Hard",
-  }, className)}>{ difficulty }</Badge>
-export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: ZombieType }) => 
-  <Badge className={cn({
-    'badge-easy-gradient dark:dark-badge-easy-gradient': type === "Normal",
-    'badge-medium-gradient dark:dark-badge-medium-gradient': type === "Special",
-    'badge-elite-gradient dark:dark-badge-elite-gradient': type === "Elite",
-    'badge-hard-gradient dark:dark-badge-hard-gradient': type === "Boss",
-  }, className)}>{ type }</Badge>
-export const MarkerBadge = ({ className, category, children }: CustomBadgeProps & { category: MarkerCategory }) => 
-  <Badge className={cn({
-    'badge-new-gradient dark:dark-badge-new-gradient': category === "transportation",
-    'badge-changed-gradient dark:dark-badge-changed-gradient': category === "general",
-    'badge-medium-gradient dark:dark-badge-medium-gradient': category === "upgrades",
-    'badge-primary-gradient dark:dark-badge-primary-gradient': category === "objectives",
-    'badge-draft-gradient dark:dark-badge-draft-gradient': category === "intel",
-    'badge-equipment-gradient dark:dark-badge-equipment-gradient': category === "equipment",
-    }, className)}>
-    { children }
-  </Badge>
+export const DraftBadge = ({ className }: CustomBadgeProps) => (
+	<Badge className={cn("badge-draft-gradient dark:dark-badge-draft-gradient", className)}>Draft</Badge>
+)
+export const ChangedBadge = ({ className }: CustomBadgeProps) => (
+	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>Changed</Badge>
+)
+export const NewBadge = ({ className }: CustomBadgeProps) => (
+	<Badge className={cn("badge-new-gradient dark:dark-badge-new-gradient", className)}>New</Badge>
+)
+export const ComingSoonBadge = ({ className }: CustomBadgeProps) => (
+	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>Coming Soon</Badge>
+)
+export const DifficultyBadge = ({ className, difficulty }: CustomBadgeProps & { difficulty: Difficulty }) => (
+	<Badge
+		className={cn(
+			{
+				"badge-easy-gradient dark:dark-badge-easy-gradient": difficulty === "Easy",
+				"badge-medium-gradient dark:dark-badge-medium-gradient": difficulty === "Medium",
+				"badge-hard-gradient dark:dark-badge-hard-gradient": difficulty === "Hard",
+			},
+			className,
+		)}
+	>
+		{difficulty}
+	</Badge>
+)
+export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: ZombieType }) => (
+	<Badge
+		className={cn(
+			{
+				"badge-easy-gradient dark:dark-badge-easy-gradient": type === "Normal",
+				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Special",
+				"badge-elite-gradient dark:dark-badge-elite-gradient": type === "Elite",
+				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Boss",
+			},
+			className,
+		)}
+	>
+		{type}
+	</Badge>
+)
+export const MarkerBadge = ({ className, category, children }: CustomBadgeProps & { category: MarkerCategory }) => (
+	<Badge
+		className={cn(
+			{
+				"badge-new-gradient dark:dark-badge-new-gradient": category === "transportation",
+				"badge-changed-gradient dark:dark-badge-changed-gradient": category === "general",
+				"badge-medium-gradient dark:dark-badge-medium-gradient": category === "upgrades",
+				"badge-primary-gradient dark:dark-badge-primary-gradient": category === "objectives",
+				"badge-draft-gradient dark:dark-badge-draft-gradient": category === "intel",
+				"badge-equipment-gradient dark:dark-badge-equipment-gradient": category === "equipment",
+			},
+			className,
+		)}
+	>
+		{children}
+	</Badge>
+)

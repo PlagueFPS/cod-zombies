@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 export default function ExternalLink({ children, className, ...props }: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "target" | "rel">) {
   return (

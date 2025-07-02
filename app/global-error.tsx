@@ -1,39 +1,35 @@
 "use client"
 import type { ErrorProps } from "@/types/errors"
+import FeedbackForm from "@/components/feedback-form/feedback-form"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 import { ThemeProvider } from "@/contexts/ThemeProvider"
-import FeedbackForm from "@/components/feedback-form/feedback-form"
 
 export default function GlobalError({ error, reset }: ErrorProps) {
-  console.error(error.message)
+	console.error(error.message)
 
-  return (
-    <html lang="en" className="bg-background">
-      <body className="flex flex-col min-h-dvh">
-      <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="mt-10 mb-4 grow" role="main">
-            <div className="flex flex-col justify-center items-center h-[75vh] gap-16">
-              <div className="flex flex-col justify-center items-center gap-4 mx-auto">
-                <ErrorTitle>Oh no! Something went wrong!</ErrorTitle>
-                <ErrorDescription className="text-center">
-                  An error occured while loading, if you continue to experience this error please use our feedback form to report the issue
-                </ErrorDescription>
-              </div>
-              <div className="flex justify-center items-center gap-4">
-                <FeedbackForm />
-                <ErrorButton onClick={ () => reset() } variant="destructive">
-                  Try again
-                </ErrorButton>
-              </div>
-            </div>
-          </main>
-        </ThemeProvider>
-      </body>
-    </html>
-  )
+	return (
+		<html lang="en" className="bg-background">
+			<body className="flex min-h-dvh flex-col">
+				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+					<main className="mt-10 mb-4 grow">
+						<div className="flex h-[75vh] flex-col items-center justify-center gap-16">
+							<div className="mx-auto flex flex-col items-center justify-center gap-4">
+								<ErrorTitle>Oh no! Something went wrong!</ErrorTitle>
+								<ErrorDescription className="text-center">
+									An error occured while loading, if you continue to experience this error please use our feedback form
+									to report the issue
+								</ErrorDescription>
+							</div>
+							<div className="flex items-center justify-center gap-4">
+								<FeedbackForm />
+								<ErrorButton onClick={() => reset()} variant="destructive">
+									Try again
+								</ErrorButton>
+							</div>
+						</div>
+					</main>
+				</ThemeProvider>
+			</body>
+		</html>
+	)
 }

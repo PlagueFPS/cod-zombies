@@ -1,11 +1,9 @@
 "use client"
-import NotFoundContent from '@/components/not-found/not-found-content'
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation"
+import NotFoundContent from "@/components/not-found/not-found-content"
 
 export default function RootNotFound() {
-  const pathname = usePathname()
+	const pathname = usePathname()
 
-  return (
-    <NotFoundContent resource='Page' pathname={ pathname } />
-  )
+	return <NotFoundContent resource="Page" pathname={pathname} />
 }

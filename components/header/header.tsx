@@ -1,57 +1,50 @@
-import { Suspense } from 'react'
-import SearchBar from '@/components/search-bar/search-bar'
-import SearchBarLoader from '@/components/loaders/search-bar-loader'
-import FeedbackForm from '@/components/feedback-form/feedback-form'
-import { CustomLink } from '@/components/custom-link/custom-link'
-import Image from 'next/image'
+import Image from "next/image"
+import { Suspense } from "react"
+import AppSidebar from "@/components/app-sidebar/app-sidebar"
+import { CustomLink } from "@/components/custom-link/custom-link"
+import FeedbackForm from "@/components/feedback-form/feedback-form"
+import SearchBarLoader from "@/components/loaders/search-bar-loader"
+import NavLink from "@/components/nav-link/nav-link"
+import SearchBar from "@/components/search-bar/search-bar"
+import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper"
 import Logo from "@/public/logo.webp"
-import { ROUTES } from '@/utils/constants'
-import AppSidebar from '@/components/app-sidebar/app-sidebar'
-import NavLink from '@/components/nav-link/nav-link'
-import ThemeToggleWrapper from '@/components/theme-toggle/theme-toggle-wrapper'
+import { ROUTES } from "@/utils/constants"
 
 export default function Header() {
-  return (
-    <header className='sticky z-500 top-0 w-full'>
-      <div className='max-w-screen mx-auto flex items-center px-2 lg:px-8 w-full border-b h-16 bg-background/90 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs'>
-        <CustomLink href='/' aria-label='Go to Home Page' className='flex items-center justify-center gap-2 mr-auto'>
-          <Image
-            unoptimized
-            src={ Logo }
-            alt='Call of Duty: Zombies Guides Logo'
-            className='size-5 rounded'
-          />
-          <div className='font-extrabold text-xl text-center'>
-            <span className='text-gradient dark:dark-text-gradient'>
-              COD:
-            </span>
-            <span className='text-primary-gradient'> Zombies Guides</span>
-          </div>
-        </CustomLink>
-        <nav className='hidden lg:flex justify-center items-center gap-8 w-fit h-full mr-8'>
-          { ROUTES.map(route => (
-            <NavLink 
-              key={ route.id } 
-              href={ route.href } 
-              aria-label={`Go to ${route.title} page`}
-              className='flex items-center justify-center gap-2 hover:text-primary hover:dark:text-orange-200 transition-all'
-            >
-              <route.icon className='size-4 text-orange-400 dark:text-orange-200' />
-              <span className='font-medium'>{ route.title }</span>
-            </NavLink>
-          ))}
-        </nav>
-        <div className='flex justify-center items-center gap-2 w-fit h-full'>
-          <FeedbackForm className='hidden lg:flex' />
-          <Suspense fallback={<SearchBarLoader />}>
-            <SearchBar />
-          </Suspense>
-          <div className='hidden md:inline-flex'>
-            <ThemeToggleWrapper />
-          </div>
-        </div>
-        <AppSidebar />
-      </div>
-    </header>
-  )
+	return (
+		<header className="sticky top-0 z-500 w-full">
+			<div className="mx-auto flex h-16 w-full max-w-screen items-center border-b bg-background/90 px-2 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs lg:px-8">
+				<CustomLink href="/" aria-label="Go to Home Page" className="mr-auto flex items-center justify-center gap-2">
+					<Image unoptimized src={Logo} alt="Call of Duty: Zombies Guides Logo" className="size-5 rounded" />
+					<div className="text-center font-extrabold text-xl">
+						<span className="dark:dark-text-gradient text-gradient">COD:</span>
+						<span className="text-primary-gradient"> Zombies Guides</span>
+					</div>
+				</CustomLink>
+				<nav className="mr-8 hidden h-full w-fit items-center justify-center gap-8 lg:flex">
+					{ROUTES.map(route => (
+						<NavLink
+							key={route.id}
+							href={route.href}
+							aria-label={`Go to ${route.title} page`}
+							className="flex items-center justify-center gap-2 transition-all hover:text-primary hover:dark:text-orange-200"
+						>
+							<route.icon className="size-4 text-orange-400 dark:text-orange-200" />
+							<span className="font-medium">{route.title}</span>
+						</NavLink>
+					))}
+				</nav>
+				<div className="flex h-full w-fit items-center justify-center gap-2">
+					<FeedbackForm className="hidden lg:flex" />
+					<Suspense fallback={<SearchBarLoader />}>
+						<SearchBar />
+					</Suspense>
+					<div className="hidden md:inline-flex">
+						<ThemeToggleWrapper />
+					</div>
+				</div>
+				<AppSidebar />
+			</div>
+		</header>
+	)
 }

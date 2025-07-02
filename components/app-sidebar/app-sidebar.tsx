@@ -1,81 +1,94 @@
 "use client"
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { ROUTES } from "@/utils/constants";
-import { CustomLink } from "@/components/custom-link/custom-link";
-import ExternalLink from "@/components/external-link/external-link";
-import { Separator } from "@/components/ui/separator";
-import Discord from "@/SVGs/DiscordSVG";
-import Reddit from "@/SVGs/Reddit";
-import X from "@/SVGs/XSVG";
+import { Menu } from "lucide-react"
+import Image from "next/image"
+import { useState } from "react"
+import { CustomLink } from "@/components/custom-link/custom-link"
+import ExternalLink from "@/components/external-link/external-link"
+import NavLink from "@/components/nav-link/nav-link"
+import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import {
+	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetFooter,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet"
 import Logo from "@/public/logo.webp"
-import Image from "next/image";
-import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper";
-import NavLink from "@/components/nav-link/nav-link";
-import { useState } from "react";
+import Discord from "@/SVGs/DiscordSVG"
+import Reddit from "@/SVGs/Reddit"
+import X from "@/SVGs/XSVG"
+import { ROUTES } from "@/utils/constants"
 
 export default function AppSidebar() {
-  const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(false)
 
-  return (
-    <Sheet open={ open } onOpenChange={ setOpen }>
-      <SheetTrigger className="lg:hidden" title="Toggle Nav" asChild>
-        <Button size={"icon"} variant={"ghost"}>
-          <Menu className="text-muted-foreground size-6" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="flex flex-col z-900">
-        <SheetTitle className="sr-only">Sidebar</SheetTitle>
-        <SheetHeader className="border-b w-full pb-4">
-          <SheetClose asChild>
-            <CustomLink href={'/'} aria-label="Go to Home Page" className="flex items-center justify-center gap-2">
-              <Image 
-                unoptimized
-                src={ Logo }
-                alt='Call of Duty: Zombies Guides Logo'
-                className='size-5 rounded'
-              />
-              <div className='font-extrabold text-xl text-center'>
-                <span className='text-gradient dark:dark-text-gradient'>
-                  COD:
-                </span>
-                <span className='text-primary-gradient'> Zombies Guides</span>
-            </div>
-            </CustomLink>
-          </SheetClose>
-        </SheetHeader>
-        <nav className="flex flex-col items-start gap-6 pl-4 text-lg pb-4 w-full">
-          { ROUTES.map(route => (
-            <NavLink
-              key={ route.id }
-              href={ route.href } 
-              aria-label={`Go to ${route.title} page`} 
-              className='flex items-center justify-center gap-2 transition-all'
-              onClick={ () => setOpen(false) }
-            >
-              <route.icon className='size-5 text-orange-400 dark:text-orange-200' />
-              <span className="font-medium">{ route.title }</span>
-            </NavLink>
-          ))}
-        </nav>
-        <SheetFooter className="flex flex-col justify-center items-center w-full gap-4 text-muted-foreground mt-auto mb-4 border-t">
-          <ThemeToggleWrapper />
-          <div className="flex justify-evenly items-center gap-3 w-full">
-            <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
-              <X className="size-5" />
-            </ExternalLink>
-            <Separator orientation="vertical" className="min-h-5" />
-            <ExternalLink href="https://discord.gg/callofduty" title="Discord" aria-label="Join the Official Call of Duty Discord">
-              <Discord className="size-5" />
-            </ExternalLink>
-            <Separator orientation="vertical" className="min-h-5" />
-            <ExternalLink href="https://www.reddit.com/r/CODZombies/" title="Reddit" aria-label="Join the Official Call of Duty: Zombies Subreddit">
-              <Reddit className="size-5" />
-            </ExternalLink>
-          </div>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
-  )
+	return (
+		<Sheet open={open} onOpenChange={setOpen}>
+			<SheetTrigger className="lg:hidden" title="Toggle Nav" asChild>
+				<Button size={"icon"} variant={"ghost"}>
+					<Menu className="size-6 text-muted-foreground" />
+				</Button>
+			</SheetTrigger>
+			<SheetContent className="z-900 flex flex-col">
+				<SheetTitle className="sr-only">Sidebar</SheetTitle>
+				<SheetHeader className="w-full border-b pb-4">
+					<SheetClose asChild>
+						<CustomLink href={"/"} aria-label="Go to Home Page" className="flex items-center justify-center gap-2">
+							<Image unoptimized src={Logo} alt="Call of Duty: Zombies Guides Logo" className="size-5 rounded" />
+							<div className="text-center font-extrabold text-xl">
+								<span className="dark:dark-text-gradient text-gradient">COD:</span>
+								<span className="text-primary-gradient"> Zombies Guides</span>
+							</div>
+						</CustomLink>
+					</SheetClose>
+				</SheetHeader>
+				<nav className="flex w-full flex-col items-start gap-6 pb-4 pl-4 text-lg">
+					{ROUTES.map(route => (
+						<NavLink
+							key={route.id}
+							href={route.href}
+							aria-label={`Go to ${route.title} page`}
+							className="flex items-center justify-center gap-2 transition-all"
+							onClick={() => setOpen(false)}
+						>
+							<route.icon className="size-5 text-orange-400 dark:text-orange-200" />
+							<span className="font-medium">{route.title}</span>
+						</NavLink>
+					))}
+				</nav>
+				<SheetFooter className="mt-auto mb-4 flex w-full flex-col items-center justify-center gap-4 border-t text-muted-foreground">
+					<ThemeToggleWrapper />
+					<div className="flex w-full items-center justify-evenly gap-3">
+						<ExternalLink
+							href="https://x.com/CodZombiesGuide"
+							title="Twitter"
+							aria-label="Check out our Twitter profile"
+						>
+							<X className="size-5" />
+						</ExternalLink>
+						<Separator orientation="vertical" className="min-h-5" />
+						<ExternalLink
+							href="https://discord.gg/callofduty"
+							title="Discord"
+							aria-label="Join the Official Call of Duty Discord"
+						>
+							<Discord className="size-5" />
+						</ExternalLink>
+						<Separator orientation="vertical" className="min-h-5" />
+						<ExternalLink
+							href="https://www.reddit.com/r/CODZombies/"
+							title="Reddit"
+							aria-label="Join the Official Call of Duty: Zombies Subreddit"
+						>
+							<Reddit className="size-5" />
+						</ExternalLink>
+					</div>
+				</SheetFooter>
+			</SheetContent>
+		</Sheet>
+	)
 }

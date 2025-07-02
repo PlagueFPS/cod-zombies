@@ -1,33 +1,37 @@
 "use client"
 import { PanelLeftOpenIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 import { useSidebar } from "../ui/sidebar"
-import { cn } from "@/lib/utils"
 
 export function CustomSideBarTrigger() {
-  const { toggleSidebar, isMobile, openMobile, open } = useSidebar()
+	const { toggleSidebar, isMobile, openMobile, open } = useSidebar()
 
-  const closedState = () => {
-    if (isMobile) return !openMobile
-    else return !open
-  }
+	const closedState = () => {
+		if (isMobile) return !openMobile
+		return !open
+	}
 
-  return (
-    <Button
-      variant={"outline"}
-      onClick={ () => toggleSidebar() }
-      aria-label="Toggle Sidebar"
-      className={cn("hidden opacity-0 fixed top-18 left-4 z-500 bg-background/90 dark:bg-background/90 p-4", {
-        'inline-flex opacity-100 animate-fade-in': closedState()
-      })}
-    >
-      <PanelLeftOpenIcon className="size-5" />
-      <span className="sr-only">Toggle Sidebar</span>
-      { !isMobile && (
-        <kbd className={cn("ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 px-1.5 rounded bg-accent dark:bg-accent/25 border text-foreground font-medium opacity-100")}>
-          <span className="text-xs">Ctrl+B</span>
-        </kbd>
-      )}
-    </Button>
-  )
+	return (
+		<Button
+			variant={"outline"}
+			onClick={() => toggleSidebar()}
+			aria-label="Toggle Sidebar"
+			className={cn("fixed top-18 left-4 z-500 hidden bg-background/90 p-4 opacity-0 dark:bg-background/90", {
+				"inline-flex animate-fade-in opacity-100": closedState(),
+			})}
+		>
+			<PanelLeftOpenIcon className="size-5" />
+			<span className="sr-only">Toggle Sidebar</span>
+			{!isMobile && (
+				<kbd
+					className={cn(
+						"pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-accent px-1.5 font-medium text-foreground opacity-100 dark:bg-accent/25",
+					)}
+				>
+					<span className="text-xs">Ctrl+B</span>
+				</kbd>
+			)}
+		</Button>
+	)
 }

@@ -1,16 +1,7 @@
-
 export function UnorderedList({ children }: { children: React.ReactNode }) {
-  return (
-    <ul className="p-2 bg-accent rounded-sm list-disc dark:bg-accent/20">
-      { children }
-    </ul>
-  )
+	return <ul className="list-disc rounded-sm bg-accent p-2 dark:bg-accent/20">{children}</ul>
 }
 
 export function OrderedList({ children }: { children: React.ReactNode }) {
-  return (
-    <ol className="p-2 bg-accent rounded-sm list-decimal dark:bg-accent/20">
-      { children }
-    </ol>
-  )
+	return <ol className="list-decimal rounded-sm bg-accent p-2 dark:bg-accent/20">{children}</ol>
 }

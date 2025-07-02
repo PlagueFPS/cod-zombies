@@ -1,6 +1,6 @@
+import type { NextRequest } from "next/server"
 import { Effect, Match, Redacted, Schema } from "effect"
 import { draftMode } from "next/headers"
-import type { NextRequest } from "next/server"
 import { getLegalDocById } from "@/data/legal"
 import { getMapById } from "@/data/maps"
 import { getQuestById } from "@/data/side-quests"

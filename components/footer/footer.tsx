@@ -1,51 +1,67 @@
 import { Suspense } from "react"
-import Copyright from "./copyright/copyright"
+import Discord from "@/SVGs/DiscordSVG"
+import Reddit from "@/SVGs/Reddit"
+import X from "@/SVGs/XSVG"
+import ContactForm from "../contact-form/contact-form"
+import { CustomLink } from "../custom-link/custom-link"
+import ExternalLink from "../external-link/external-link"
 import CopyrightLoader from "../loaders/copyright-loader"
 import Newsletter from "../newsletter/newsletter"
-import ContactForm from "../contact-form/contact-form"
 import ThemeToggleWrapper from "../theme-toggle/theme-toggle-wrapper"
-import Discord from "@/SVGs/DiscordSVG"
 import { Separator } from "../ui/separator"
-import Reddit from "@/SVGs/Reddit"
-import ExternalLink from "../external-link/external-link"
-import X from "@/SVGs/XSVG"
-import { CustomLink } from "../custom-link/custom-link"
+import Copyright from "./copyright/copyright"
 
 export default function Footer() {
-  return (
-    <footer className='container relative text-sm flex flex-col items-center py-8 px-4 border-t m-auto' role="contentinfo" tabIndex={ -1 }>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-        <div className="flex flex-col-reverse order-last md:order-first items-center md:items-start justify-center gap-4 md:gap-6 text-center md:text-left">
-          <Suspense fallback={<CopyrightLoader />}>
-            <Copyright />
-          </Suspense>
-          <div className="flex items-center gap-3 text-muted-foreground">
-            <ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
-              <X className="size-5" />
-            </ExternalLink>
-            <Separator orientation="vertical" className="min-h-5" />
-            <ExternalLink href="https://discord.gg/callofduty" title="Discord" aria-label="Join the Official Call of Duty Discord">
-              <Discord className="size-5" />
-            </ExternalLink>
-            <Separator orientation="vertical" className="min-h-5" />
-            <ExternalLink href="https://www.reddit.com/r/CODZombies/" title="Reddit" aria-label="Join the Official Call of Duty: Zombies Subreddit">
-              <Reddit className="size-5" />
-            </ExternalLink>
-          </div>
-        </div>
-        <Newsletter />
-        <div className="flex justify-center md:justify-end space-x-4 order-first md:order-last">
-          <div className="flex items-center gap-4">
-            <ContactForm />
-            <ThemeToggleWrapper />
-          </div>
-        </div>
-      </div>
-      <div className="flex items-center justify-center md:justify-start md:mt-2 w-full text-xs text-muted-foreground">
-        <CustomLink prefetch={ false } href={"/privacy-policy"} className="underline underline-offset-2 hover:text-foreground dark:hover:text-foreground/80 hover:no-underline">
-          Privacy Policy
-        </CustomLink>
-      </div>
-    </footer>
-  )
+	return (
+		<footer className="container relative m-auto flex flex-col items-center border-t px-4 py-8 text-sm">
+			<div className="grid grid-cols-1 items-center gap-8 md:grid-cols-3">
+				<div className="order-last flex flex-col-reverse items-center justify-center gap-4 text-center md:order-first md:items-start md:gap-6 md:text-left">
+					<Suspense fallback={<CopyrightLoader />}>
+						<Copyright />
+					</Suspense>
+					<div className="flex items-center gap-3 text-muted-foreground">
+						<ExternalLink
+							href="https://x.com/CodZombiesGuide"
+							title="Twitter"
+							aria-label="Check out our Twitter profile"
+						>
+							<X className="size-5" />
+						</ExternalLink>
+						<Separator orientation="vertical" className="min-h-5" />
+						<ExternalLink
+							href="https://discord.gg/callofduty"
+							title="Discord"
+							aria-label="Join the Official Call of Duty Discord"
+						>
+							<Discord className="size-5" />
+						</ExternalLink>
+						<Separator orientation="vertical" className="min-h-5" />
+						<ExternalLink
+							href="https://www.reddit.com/r/CODZombies/"
+							title="Reddit"
+							aria-label="Join the Official Call of Duty: Zombies Subreddit"
+						>
+							<Reddit className="size-5" />
+						</ExternalLink>
+					</div>
+				</div>
+				<Newsletter />
+				<div className="order-first flex justify-center space-x-4 md:order-last md:justify-end">
+					<div className="flex items-center gap-4">
+						<ContactForm />
+						<ThemeToggleWrapper />
+					</div>
+				</div>
+			</div>
+			<div className="flex w-full items-center justify-center text-muted-foreground text-xs md:mt-2 md:justify-start">
+				<CustomLink
+					prefetch={false}
+					href={"/privacy-policy"}
+					className="underline underline-offset-2 hover:text-foreground hover:no-underline dark:hover:text-foreground/80"
+				>
+					Privacy Policy
+				</CustomLink>
+			</div>
+		</footer>
+	)
 }
