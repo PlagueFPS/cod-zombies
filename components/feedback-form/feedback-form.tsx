@@ -104,7 +104,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 						<DialogTitle>Feedback Submission</DialogTitle>
 					</DialogHeader>
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)}>
+						<form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col">
 							<div className="space-y-6 pb-4">
 								<FormField
 									control={form.control}
@@ -112,7 +112,18 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												<Textarea {...field} required placeholder="What can we improve?" className="min-h-24" />
+												<Textarea
+													{...field}
+													required
+													placeholder="What can we improve?"
+													className="min-h-24"
+													onKeyDown={e => {
+														if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.formState.isValid) {
+															e.preventDefault()
+															form.handleSubmit(onSubmit)()
+														}
+													}}
+												/>
 											</FormControl>
 											<FormDescription>
 												Please provide constructive and actionable feedback to help us improve.
@@ -122,19 +133,32 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 									)}
 								/>
 							</div>
-							<Button type="submit" className="mt-4 w-full" disabled={isPending}>
-								{isPending ? (
-									<div className="flex items-center gap-2">
-										<Loader2 className="h-4 w-4 animate-spin" />
-										Submitting...
-									</div>
-								) : (
-									<div className="flex items-center gap-2">
-										<Send className="size-4" />
-										<span>Submit Feedback</span>
-									</div>
-								)}
-							</Button>
+							<div className="mt-4 flex items-center justify-between">
+								<Button variant={"destructive"} onClick={() => setOpen(false)}>
+									Cancel
+								</Button>
+								<Button type="submit" disabled={isPending || !form.formState.isValid}>
+									{isPending ? (
+										<div className="flex items-center gap-2">
+											<Loader2 className="h-4 w-4 animate-spin" />
+											Submitting...
+										</div>
+									) : (
+										<div className="flex items-center justify-center gap-2 font-medium">
+											<Send className="size-4" />
+											<span>Submit Feedback</span>
+											<div className="flex items-center gap-1">
+												<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+													<span className="text-xs">Ctrl</span>
+												</kbd>
+												<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+													<span className="text-xs">↩</span>
+												</kbd>
+											</div>
+										</div>
+									)}
+								</Button>
+							</div>
 						</form>
 					</Form>
 				</DialogContent>

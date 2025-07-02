@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { ChevronLeft, ChevronRight, Clock } from "lucide-react"
+import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
@@ -110,11 +110,14 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 							</div>
 							<div className="flex items-center justify-between text-muted-foreground text-sm">
 								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 xl:flex-row xl:pb-0">
-									<div>Last Updated: {new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}</div>
+									<div className="flex items-center gap-1">
+										<Calendar className="size-4" />
+										<span>Updated: {new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}</span>
+									</div>
 									<span className="hidden md:inline">&bull;</span>
 									<div className="flex items-center gap-1">
 										<Clock className="size-4" />
-										{q.timeToRead} min read
+										<span>{q.timeToRead} min read</span>
 									</div>
 								</div>
 								<ShareButton

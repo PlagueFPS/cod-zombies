@@ -1,7 +1,7 @@
 "use client"
 import { effectTsResolver } from "@hookform/resolvers/effect-ts"
 import { Loader2, Mail, Send } from "lucide-react"
-import { useState, useTransition } from "react"
+import { type KeyboardEvent, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import {
@@ -62,6 +62,13 @@ export default function ContactForm({ className }: ContactFormProps) {
 		})
 	}
 
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.formState.isValid) {
+			e.preventDefault()
+			form.handleSubmit(onSubmit)()
+		}
+	}
+
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
@@ -76,7 +83,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 					<DialogDescription>Get in touch with the people behind Call of Duty: Zombies Guides.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col">
 						<div className="space-y-6 pb-4">
 							<FormField
 								control={form.control}
@@ -85,7 +92,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 									<FormItem>
 										<FormLabel>Name</FormLabel>
 										<FormControl>
-											<Input {...field} placeholder="Enter your name" required />
+											<Input {...field} placeholder="Enter your name" required onKeyDown={handleKeyDown} />
 										</FormControl>
 										<FormDescription>Name you want to be addressed by.</FormDescription>
 										<FormMessage />
@@ -99,7 +106,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 									<FormItem>
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input {...field} type="email" placeholder="you@example.com" required />
+											<Input {...field} type="email" placeholder="you@example.com" required onKeyDown={handleKeyDown} />
 										</FormControl>
 										<FormDescription>Email you want to be contacted at.</FormDescription>
 										<FormMessage />
@@ -113,7 +120,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 									<FormItem>
 										<FormLabel>Message</FormLabel>
 										<FormControl>
-											<Textarea {...field} placeholder="Enter your message" required />
+											<Textarea {...field} placeholder="Enter your message" required onKeyDown={handleKeyDown} />
 										</FormControl>
 										<FormDescription>Message you want to send to the team.</FormDescription>
 										<FormMessage />
@@ -121,19 +128,32 @@ export default function ContactForm({ className }: ContactFormProps) {
 								)}
 							/>
 						</div>
-						<Button type="submit" className="mt-4 w-full" disabled={isPending}>
-							{isPending ? (
-								<div className="flex items-center gap-2">
-									<Loader2 className="size-4 animate-spin" />
-									Sending...
-								</div>
-							) : (
-								<div className="flex items-center gap-2">
-									<Send className="size-4" />
-									Submit Contact Form
-								</div>
-							)}
-						</Button>
+						<div className="mt-4 flex items-center justify-between">
+							<Button variant={"destructive"} onClick={() => setOpen(false)}>
+								Cancel
+							</Button>
+							<Button type="submit" disabled={isPending || !form.formState.isValid}>
+								{isPending ? (
+									<div className="flex items-center gap-2">
+										<Loader2 className="size-4 animate-spin" />
+										Sending...
+									</div>
+								) : (
+									<div className="flex items-center gap-2">
+										<Send className="size-4" />
+										<span>Submit Contact Form</span>
+										<div className="flex items-center gap-1">
+											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+												<span className="text-xs">Ctrl</span>
+											</kbd>
+											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+												<span className="text-xs">↩</span>
+											</kbd>
+										</div>
+									</div>
+								)}
+							</Button>
+						</div>
 					</form>
 				</Form>
 			</DialogContent>
