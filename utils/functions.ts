@@ -1,6 +1,6 @@
-import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import { Duration, Effect } from "effect"
 import type { DurationInput } from "effect/Duration"
+import { createHash, randomBytes, timingSafeEqual } from "crypto"
+import { Duration, Effect } from "effect"
 import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/errors"
 
 /**
