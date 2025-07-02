@@ -1,13 +1,12 @@
 import "server-only"
 import type { Entry } from "contentful"
-import { Effect, Layer } from "effect"
+import type { TypeReferencedMapsSkeleton, TypeZombiesSkeleton } from "@/contentful/Types/contentful-types"
+import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
-import { getEntries, getManagementEntries } from "@/contentful/contentful"
-import type { TypeReferencedMapsSkeleton, TypeZombiesSkeleton } from "@/contentful/Types/contentful-types"
 import { getNewEntries } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
-import { CMS, CMSManagement } from "@/lib/services/CMS"
+import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
 import {
 	createImageDto,
@@ -15,15 +14,11 @@ import {
 	createMapCategoryDto,
 	createQuestMapDto,
 	createZombieAttackDto,
-	resolveAsset,
-	resolveEntry,
 } from "@/utils/contentful-utils"
 
 export type Zombie = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
 export type ZombieType = "Boss" | "Special" | "Elite" | "Normal"
-
-const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 
 export const getZombies = cache(
 	unstable_cache(
@@ -50,7 +45,7 @@ export const getZombies = cache(
 			}).pipe(
 				Effect.withLogSpan("get_zombies"),
 				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(DataLayer),
+				Effect.provide(Cache.Default),
 				Effect.runPromise,
 			)
 		},
@@ -85,7 +80,7 @@ export const getZombieSearchData = cache(
 			}).pipe(
 				Effect.withLogSpan("get_zombie_search_data"),
 				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(DataLayer),
+				Effect.provide(Cache.Default),
 				Effect.runPromise,
 			)
 		},
@@ -125,7 +120,7 @@ export const getZombieBySlug = cache(
 			}).pipe(
 				Effect.withLogSpan("get_zombie_by_slug"),
 				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(DataLayer),
+				Effect.provide(Cache.Default),
 				Effect.runPromise,
 			)
 		},
@@ -151,7 +146,7 @@ export const getZombieById = cache(
 					slug: zombie.fields.slug,
 					type: zombie.fields.type,
 					description: zombie.fields.description,
-					image: createImageDto(resolveAsset(zombie.fields.image)),
+					image: createImageDto(zombie.fields.image),
 					isComingSoon: zombie.fields.isComingSoon ?? false,
 				}
 			}).pipe(Effect.withLogSpan("get_zombie_by_id"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
@@ -180,19 +175,18 @@ export const getReferencedMaps = cache(
 )
 
 const resolveZombieData = (
-	zombie: Entry<TypeZombiesSkeleton, undefined, string>,
+	zombie: Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	zombieIds: Effect.Effect.Success<typeof getZombieIds>,
 ) => {
 	const { changedIds, draftIds, newIds } = zombieIds
-	const image = createImageDto(resolveAsset(zombie.fields.image))
-	const games = zombie.fields.games.map(game => createMapCategoryDto(resolveEntry(game)))
-	const maps = zombie.fields.maps.map(map => createQuestMapDto(resolveEntry(map)))
-	const attacks = zombie.fields.attacks.map(attack => createZombieAttackDto(resolveEntry(attack)))
+	const image = createImageDto(zombie.fields.image)
+	const games = zombie.fields.games.map(game => createMapCategoryDto(game))
+	const maps = zombie.fields.maps.map(map => createQuestMapDto(map))
+	const attacks = zombie.fields.attacks.map(attack => createZombieAttackDto(attack))
 	const elementalWeakness = zombie.fields.elementalWeakness
 		?.map(weakness => {
-			const item = resolveEntry(weakness)
-			if (!item) return null
-			return createItemTooltipDto(item)
+			if (!weakness) return null
+			return createItemTooltipDto(weakness)
 		})
 		.filter(weakness => !!weakness)
 
@@ -213,7 +207,7 @@ const resolveZombieData = (
 }
 
 const getZombieIds = Effect.gen(function* () {
-	const [zombies, newEntries] = yield* Effect.all([getManagementEntries("zombies"), getNewEntries()], {
+	const [zombies, newEntries] = yield* Effect.all([INTERNAL_getManagementZombies(), getNewEntries()], {
 		concurrency: "unbounded",
 	})
 
@@ -237,17 +231,33 @@ const getZombieIds = Effect.gen(function* () {
 	return { newIds, draftIds, changedIds }
 }).pipe(Effect.withLogSpan("get_zombie_ids"))
 
+const INTERNAL_getManagementZombies = cache(() =>
+	Effect.gen(function* () {
+		const { getManagementEntries } = yield* CMS
+		const zombies = yield* getManagementEntries("zombies")
+		return zombies.items
+	}),
+)
+
 const INTERNAL_getZombies = cache(() =>
-	getEntries<TypeZombiesSkeleton>({
-		content_type: "zombies",
-		order: ["-fields.releaseDate"],
-		select: ["sys.id", "sys.updatedAt", "fields"],
+	Effect.gen(function* () {
+		const { getEntries } = yield* CMS
+		const data = yield* getEntries<TypeZombiesSkeleton>({
+			content_type: "zombies",
+			order: ["-fields.releaseDate"],
+			select: ["sys.id", "sys.updatedAt", "fields"],
+		})
+		return data.items
 	}),
 )
 
 const INTERNAL_getReferencedMaps = cache(() =>
-	getEntries<TypeReferencedMapsSkeleton>({
-		content_type: "referencedMaps",
-		order: ["-fields.releaseDate"],
+	Effect.gen(function* () {
+		const { getEntries } = yield* CMS
+		const data = yield* getEntries<TypeReferencedMapsSkeleton>({
+			content_type: "referencedMaps",
+			order: ["-fields.releaseDate"],
+		})
+		return data.items
 	}),
 )

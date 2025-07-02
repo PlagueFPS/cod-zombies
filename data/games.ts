@@ -1,15 +1,12 @@
 import "server-only"
-import { Effect, Layer } from "effect"
+import type { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
+import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
-import { getEntries, getManagementEntries } from "@/contentful/contentful"
-import type { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
 import { getNewEntries } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
-import { CMS, CMSManagement } from "@/lib/services/CMS"
+import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
-
-const DataLayer = Layer.merge(CMSManagement.Default, Cache.Default)
 
 export const getGames = cache(
 	unstable_cache(
@@ -37,7 +34,7 @@ export const getGames = cache(
 				})
 			}).pipe(
 				Effect.withLogSpan("get_games"),
-				Effect.provide(DataLayer),
+				Effect.provide(Cache.Default),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -97,7 +94,7 @@ export const getGameById = cache(
 )
 
 const getGameIds = Effect.gen(function* () {
-	const [games, newEntries] = yield* Effect.all([getManagementEntries("gameCategory"), getNewEntries()], {
+	const [games, newEntries] = yield* Effect.all([INTERNAL_getManagementGameData(), getNewEntries()], {
 		concurrency: "unbounded",
 	})
 
@@ -121,10 +118,30 @@ const getGameIds = Effect.gen(function* () {
 	return { newIds, draftIds, changedIds }
 }).pipe(Effect.withLogSpan("get_game_ids"))
 
+const INTERNAL_getManagementGameData = cache(() =>
+	Effect.gen(function* () {
+		const { getManagementEntries } = yield* CMS
+		const games = yield* getManagementEntries("gameCategory")
+		return games.items
+	}).pipe(
+		Effect.withLogSpan("internal_get_management_game_data"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
+)
+
 const INTERNAL_getGameData = cache(() =>
-	getEntries<TypeGameCategorySkeleton>({
-		content_type: "gameCategory",
-		order: ["-fields.releaseDate"],
-		select: ["sys.id", "sys.updatedAt", "fields"],
-	}),
+	Effect.gen(function* () {
+		const { getEntries } = yield* CMS
+		const games = yield* getEntries<TypeGameCategorySkeleton>({
+			content_type: "gameCategory",
+			order: ["-fields.releaseDate"],
+			select: ["sys.id", "sys.updatedAt", "fields"],
+		})
+		return games.items
+	}).pipe(
+		Effect.withLogSpan("internal_get_game_data"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
 )

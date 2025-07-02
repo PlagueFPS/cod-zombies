@@ -21,28 +21,24 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 				host,
 			})
 
+			const managementAccessToken = Redacted.make(env.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN)
+			const managementClient = managementCreateClient({ accessToken: Redacted.value(managementAccessToken) }, {
+				type: "plain",
+				defaults: { spaceId: Redacted.value(space), environmentId: "master" },
+			})
+
 			const getEntries = <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) =>
 				Effect.tryPromise({
-					try: () => client.getEntries<T>(searchParams),
-					catch: error => new GetEntriesError({ cause: error }),
+					try: () => client.withoutUnresolvableLinks.getEntries<T>(searchParams),
+					catch: error => new GetEntriesError({ message: "Failed to get entries", cause: error }),
 				})
 
-			return { getEntries } as const
+			const getManagementEntries = (contentType: "featuredMaps" | "gameCategory" | "sideQuests" | "zombies") =>
+				Effect.tryPromise({
+					try: () => managementClient.entry.getMany({ query: { content_type: contentType } }),
+					catch: error => new GetEntriesError({ message: "Failed to get management entries", cause: error }),
+				})
+
+			return { getEntries, getManagementEntries } as const
 		}).pipe(Effect.withLogSpan("cms_default")),
-}) {}
-
-export class CMSManagement extends Effect.Service<CMSManagement>()("CMSManagement", {
-	effect: Effect.sync(() => {
-		const spaceId = Redacted.make(env.CONTENTFUL_SPACE_ID)
-		const accessToken = Redacted.make(env.CONTENTFUL_MANAGEMENT_ACCESS_TOKEN)
-
-		const client = managementCreateClient(
-			{
-				accessToken: Redacted.value(accessToken),
-			},
-			{ type: "plain", defaults: { spaceId: Redacted.value(spaceId), environmentId: "master" } },
-		)
-
-		return { client } as const
-	}).pipe(Effect.withLogSpan("cms_management_default")),
 }) {}

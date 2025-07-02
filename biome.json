@@ -29,7 +29,14 @@
 				"recommended": true,
 				"useHookAtTopLevel": "on",
 				"useExhaustiveDependencies": "on",
-				"useJsxKeyInIterable": "on"
+				"useJsxKeyInIterable": "on",
+				"noUnusedVariables": {
+					"level": "on",
+					"fix": "safe",
+					"options": {
+						"ignoreRestSiblings": true
+					}
+				}
 			},
 			"nursery": {
 				"recommended": true,

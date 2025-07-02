@@ -1,6 +1,5 @@
 import type { Document } from "@contentful/rich-text-types"
-import type { Asset, Entry, EntrySkeletonType, UnresolvedLink } from "contentful"
-import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
+import type { Asset, Entry } from "contentful"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
 import type {
 	TypeFeaturedMapsSkeleton,
@@ -9,17 +8,8 @@ import type {
 	TypeZombieAttacksSkeleton,
 	ZombieItem,
 } from "@/contentful/Types/contentful-types"
+import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
 import { slugify, TypeGuards } from "./functions"
-
-export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
-	if (asset && TypeGuards.hasProperty(asset, "fields") && asset.fields.file) return asset
-}
-
-export const resolveEntry = <T extends EntrySkeletonType>(
-	entry: UnresolvedLink<"Entry"> | Entry<T, undefined, string>,
-) => {
-	if (entry && TypeGuards.hasProperty(entry, "fields") && entry.fields) return entry
-}
 
 export const extractHeadings = (body: Document) => {
 	const headings: Heading[] = []
@@ -98,7 +88,7 @@ export const isFirstTimePublish = (createdAt: Date, updatedAt: Date) => {
 }
 
 export const createItemTooltipDto = (item: ZombieItem) => {
-	const itemImage = resolveAsset(item.fields.image)
+	const itemImage = item.fields.image
 
 	if (TypeGuards.hasProperty(item.fields, "rarity")) {
 		return {
@@ -127,7 +117,9 @@ export const createImageDto = (image: Asset<undefined, string> | undefined) => {
 	}
 }
 
-export const createMapCategoryDto = (category: Entry<TypeGameCategorySkeleton, undefined, string> | undefined) => {
+export const createMapCategoryDto = (
+	category: Entry<TypeGameCategorySkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
+) => {
 	if (!category) throw new Error("Expected map to have a category")
 	return {
 		title: category.fields.title,
@@ -136,7 +128,7 @@ export const createMapCategoryDto = (category: Entry<TypeGameCategorySkeleton, u
 }
 
 export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(
-	map: Entry<T, undefined, string> | undefined,
+	map: Entry<T, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
 ) => {
 	if (!map) throw new Error("Expected quest to have a map")
 	return {
@@ -145,7 +137,9 @@ export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFea
 	}
 }
 
-export const createZombieAttackDto = (attack: Entry<TypeZombieAttacksSkeleton, undefined, string> | undefined) => {
+export const createZombieAttackDto = (
+	attack: Entry<TypeZombieAttacksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
+) => {
 	if (!attack) throw new Error("Expected zombie to have an attack")
 	return {
 		id: attack.sys.id,

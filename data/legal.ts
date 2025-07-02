@@ -1,8 +1,7 @@
+import type { TypeLegalSkeleton } from "@/contentful/Types/contentful-types"
 import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
-import { getEntries } from "@/contentful/contentful"
-import type { TypeLegalSkeleton } from "@/contentful/Types/contentful-types"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
 
@@ -11,7 +10,6 @@ export const getLegalDocuments = cache(
 		async (draftMode: boolean) => {
 			return await Effect.gen(function* () {
 				const legalDocs = yield* INTERNAL_getLegalDocuments()
-				if (!legalDocs) return []
 
 				return legalDocs.map(doc => ({
 					id: doc.sys.id,
@@ -32,7 +30,6 @@ export const getLegalDocBySlug = cache(
 		async (draftMode: boolean, slug: string) => {
 			return await Effect.gen(function* () {
 				const docs = yield* INTERNAL_getLegalDocuments()
-				if (!docs) return null
 
 				const doc = docs.find(doc => doc.fields.slug === slug)
 				if (!doc) return null
@@ -58,7 +55,6 @@ export const getLegalDocById = cache(
 		async (draftMode: boolean, id: string) => {
 			return await Effect.gen(function* () {
 				const docs = yield* INTERNAL_getLegalDocuments()
-				if (!docs) return null
 
 				const doc = docs.find(doc => doc.sys.id === id)
 				if (!doc) return null
@@ -77,8 +73,16 @@ export const getLegalDocById = cache(
 )
 
 const INTERNAL_getLegalDocuments = cache(() =>
-	getEntries<TypeLegalSkeleton>({
-		content_type: "legal",
-		select: ["sys.id", "sys.updatedAt", "fields"],
-	}),
+	Effect.gen(function* () {
+		const { getEntries } = yield* CMS
+		const data = yield* getEntries<TypeLegalSkeleton>({
+			content_type: "legal",
+			select: ["sys.id", "sys.updatedAt", "fields"],
+		})
+		return data.items
+	}).pipe(
+		Effect.withLogSpan("internal_get_legal_documents"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
 )

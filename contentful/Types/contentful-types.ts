@@ -1,8 +1,8 @@
 import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 
 export type Date = `${number}-${number}-${number}T${number}:${number}:${number}Z`
-export type ZombieItem = Entry<TypeAmmoModsSkeleton, undefined, string> | Entry<TypeFieldUpgradesSkeleton, undefined, string> 
-    | Entry<TypeGobblegumsSkeleton, undefined, string> | Entry<TypePerksSkeleton, undefined, string>
+export type ZombieItem = Entry<TypeAmmoModsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | Entry<TypeFieldUpgradesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> 
+    | Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | Entry<TypePerksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 
 export interface TypeAmmoModsFields {
     title: EntryFieldTypes.Symbol;
