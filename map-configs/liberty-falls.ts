@@ -5,7 +5,7 @@ const libertyFalls: MapConfig = {
   id: "liberty-falls",
   title: "Liberty Falls",
   game: "Black Ops 6",
-  description: "Learn the locations of all perks, wall buys, traps, and more with our in-depth interactive map for Liberty Falls in Black Ops 6 Zombies.",
+  description: "Explore Liberty Falls in Black Ops 6 Zombies. Find all perks, Pack-a-Punch, Mystery Box, wall buys, intel, and more with our interactive map.",
   image: '/layers/liberty-falls.webp',
   markers: [
     {

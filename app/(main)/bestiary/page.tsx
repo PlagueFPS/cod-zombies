@@ -12,18 +12,18 @@ import { GLOBAL_OG_PROPS } from "@/utils/constants"
 export const metadata: Metadata = {
 	title: "Bestiary",
 	description:
-		"Learn about the weaknesses, behavior, and strategies to defeat the undead horde in Call of Duty: Zombies.",
+		"Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies.",
 	openGraph: {
 		...GLOBAL_OG_PROPS.openGraph,
 		title: "Bestiary",
 		description:
-			"Learn about the weaknesses, behavior, and strategies to defeat the undead horde in Call of Duty: Zombies.",
+			"Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies.",
 		url: "/bestiary",
 	},
 	twitter: {
 		title: "Bestiary",
 		description:
-			"Learn about the weaknesses, behavior, and strategies to defeat the undead horde in Call of Duty: Zombies.",
+			"Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies.",
 		card: "summary_large_image",
 	},
 	alternates: {
@@ -38,7 +38,7 @@ export default function BestiaryPage() {
 				<Breadcrumbs links={[{ title: "Bestiary", href: "/bestiary" }]} />
 				<GridSection title="Bestiary">
 					<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
-						Learn about the weaknesses, behavior, and strategies to defeat the undead horde.
+						Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies.
 					</p>
 					<Suspense fallback={<BestiaryFiltersLoader />}>
 						<BestiaryFilters />

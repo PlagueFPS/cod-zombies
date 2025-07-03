@@ -12,18 +12,18 @@ import { GLOBAL_OG_PROPS } from "@/utils/constants"
 export const metadata: Metadata = {
 	title: "Side Quests",
 	description:
-		"Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",
+		"Learn how to complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",
 	openGraph: {
 		...GLOBAL_OG_PROPS.openGraph,
 		title: "Side Quests",
 		description:
-			"Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",
+			"Learn how to complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",
 		url: "/side-quests",
 	},
 	twitter: {
 		title: "Side Quests",
 		description:
-			"Discover & complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",
+			"Learn how to complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",
 		card: "summary_large_image",
 	},
 	alternates: {

@@ -4,7 +4,7 @@ import { Book, Brain, MapIcon } from "lucide-react"
 export const IN_DEVELOPMENT = process.env.NODE_ENV === "development"
 export const SITE_TITLE = "Call of Duty: Zombies Guides"
 export const SITE_DESCRIPTION =
-	"Detailed COD Zombies main quest, side quest, and easter egg guides with easy step-by-step explanations to solve even the toughest quests."
+	"Detailed main and side quests step-by-step guides, fully interactive maps, a complete bestiary, and more to give you all the resources you'll need for zombies."
 export const DATE_OPTIONS: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
 export const MAP_LIMIT = 12
 export const MAX_NEW_TIME = 14 * 24 * 60 * 60 * 1000 // 2 weeks in milliseconds
