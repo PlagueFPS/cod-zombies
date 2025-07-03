@@ -3,7 +3,7 @@ import type { createItemTooltipDto } from "@/utils/contentful-utils"
 import IconImage from "@/components/icon-image/icon-image"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useMediaQuery } from "@/hooks/use-media-query"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
 interface ItemTooltipProps {
@@ -12,12 +12,12 @@ interface ItemTooltipProps {
 }
 
 export default function ItemTooltip({ item, className }: ItemTooltipProps) {
-	const isDesktop = useMediaQuery(640)
+	const isMobile = useIsMobile(640)
 	const { title, image, rarity, type } = item
 
 	return (
 		<>
-			{isDesktop ? (
+			{!isMobile ? (
 				<TooltipProvider delayDuration={200}>
 					<Tooltip>
 						<TooltipTrigger className={cn("group relative inline-flex items-center justify-center gap-2", className)}>

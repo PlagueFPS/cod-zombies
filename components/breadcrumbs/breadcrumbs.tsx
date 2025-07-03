@@ -1,7 +1,7 @@
 "use client"
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
-import { useMediaQuery } from "@/hooks/use-media-query"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import NavLink from "../nav-link/nav-link"
 import {
@@ -25,8 +25,8 @@ interface BreadcrumbsProps {
 }
 
 export default function Breadcrumbs({ links, className }: BreadcrumbsProps) {
-	const isDesktop = useMediaQuery(640)
-	const showEllipsis = links.length >= 4 && !isDesktop
+	const isMobile = useIsMobile(640)
+	const showEllipsis = links.length >= 4 && isMobile
 	const menuLinks = showEllipsis ? links.slice(0, -1) : []
 
 	return (

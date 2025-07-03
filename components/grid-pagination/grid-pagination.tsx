@@ -7,7 +7,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination"
-import { useMediaQuery } from "@/hooks/use-media-query"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { useQuestSearchParams } from "@/hooks/use-quest-search-params"
 import { cn } from "@/lib/utils"
 import { MAP_LIMIT } from "@/utils/constants"
@@ -18,7 +18,7 @@ interface IGridPagination {
 
 export default function GridPagination({ data }: IGridPagination) {
 	const { page, updatePage } = useQuestSearchParams()
-	const isDesktop = useMediaQuery(640)
+	const isMobile = useIsMobile(640)
 	const totalPages = Math.ceil(data.length / MAP_LIMIT)
 	const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
 	const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
@@ -28,8 +28,8 @@ export default function GridPagination({ data }: IGridPagination) {
 
 	const renderPaginationItems = () => {
 		const items = []
-		const THRESHOLD = isDesktop ? 7 : 5
-		const SIBLINGS = isDesktop ? 2 : 1
+		const THRESHOLD = !isMobile ? 7 : 5
+		const SIBLINGS = !isMobile ? 2 : 1
 
 		// Helper function to add page button
 		const addPageButton = (pageNum: number) => (
