@@ -1,14 +1,13 @@
 "use server"
 import { FetchHttpClient } from "@effect/platform"
 import { Effect } from "effect"
-import { revalidatePath } from "next/cache"
-import { draftMode } from "next/headers"
+import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import { createAction } from "@/lib/action-helpers"
 import { Email } from "@/lib/services/Email"
 import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/usecases/email"
 import { submitFeedback } from "@/usecases/feedback"
-import { IN_DEVELOPMENT } from "@/utils/constants"
+import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import {
 	ContactFormSchema,
 	DraftModeSchema,
@@ -86,20 +85,12 @@ export const submitContactForm = createAction(ContactFormSchema, async parsedInp
 	)
 })
 
-export const toggleDraftMode = createAction(DraftModeSchema, async ({ pathname }) => {
+export const purgeLocalCache = createAction(DraftModeSchema, async ({ pathname }) => {
 	if (!IN_DEVELOPMENT) return
 
-	const draft = await draftMode()
-
-	if (draft.isEnabled) {
-		draft.disable()
-		console.log("Draft mode disabled")
-		revalidatePath(pathname)
-		redirect(pathname)
-	}
-
-	draft.enable()
-	console.log("Draft mode enabled")
-	revalidatePath(pathname)
+	Object.entries(CACHE_KEYS).forEach(([key, value]) => {
+		console.log(`Revalidating ${key}`)
+		revalidateTag(value.all)
+	})
 	redirect(pathname)
 })

@@ -5,14 +5,11 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { BotIdClient } from "botid/client"
 import { Geist } from "next/font/google"
-import { Suspense } from "react"
-import DraftMode from "@/components/draft-mode/draft-mode"
 import Header from "@/components/header/header"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/contexts/ThemeProvider"
 import { env } from "@/env"
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, PROTECTED_ROUTES, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
+import { GLOBAL_OG_PROPS, PROTECTED_ROUTES, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
 
 interface LayoutProps {
 	children: React.ReactNode
@@ -79,12 +76,6 @@ export default function RootLayout({ children }: LayoutProps) {
 				<Analytics />
 				<SpeedInsights />
 				<GoogleAnalytics gaId="G-2M6PMT6Z3R" />
-				{/* Custom draft mode toggle for development */}
-				{IN_DEVELOPMENT && (
-					<Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
-						<DraftMode />
-					</Suspense>
-				)}
 			</body>
 		</html>
 	)

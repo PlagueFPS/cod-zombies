@@ -22,7 +22,7 @@ export default function MobileTableOfContents({
 	progress,
 }: MobileTableOfContentsProps) {
 	return (
-		<div className="sticky top-16 z-40 block w-full border-b bg-background/90 p-3 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs">
+		<div className="sticky top-16 z-40 block w-full bg-background/90 p-3 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs">
 			<Sheet>
 				<SheetTrigger className="flex flex-col items-center">
 					<div className="flex items-center gap-1">

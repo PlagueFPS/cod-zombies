@@ -1,14 +1,15 @@
 "use client"
 import { ArrowUp } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { Button, type ButtonProps } from "../ui/button"
 
 interface BackToTopButtonProps extends React.ComponentProps<"button"> {
 	mobile?: boolean
 }
 
-export default function BackToTopButton({ mobile, ...props }: BackToTopButtonProps & ButtonProps) {
+export default function BackToTopButton({ mobile, className, ...props }: BackToTopButtonProps & ButtonProps) {
 	const scrollBackToTop = () => {
-		window.scroll({ left: 0, top: 0 })
+		window.scroll({ top: 0, behavior: "smooth" })
 	}
 
 	return (
@@ -17,11 +18,11 @@ export default function BackToTopButton({ mobile, ...props }: BackToTopButtonPro
 				<Button
 					onClick={scrollBackToTop}
 					size="icon"
-					className="fixed right-4 bottom-16 z-20 rounded-full xl:hidden"
+					className={cn("fixed right-4 bottom-16 z-20 rounded-full", className)}
 					title="Back to Top"
 					{...props}
 				>
-					<ArrowUp className="h-6 w-6" />
+					<ArrowUp className="size-6" />
 				</Button>
 			) : (
 				<Button onClick={scrollBackToTop} {...props}>
