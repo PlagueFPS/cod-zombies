@@ -39,6 +39,7 @@
     "@vercel/analytics": "1.5.0",
     "@vercel/speed-insights": "1.2.0",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
+    "botid": "^1.4.1",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.0.4",

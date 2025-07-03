@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { BotIdClient } from "botid/client"
 import { Geist } from "next/font/google"
 import { Suspense } from "react"
 import DraftMode from "@/components/draft-mode/draft-mode"
@@ -11,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/contexts/ThemeProvider"
 import { env } from "@/env"
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
+import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, PROTECTED_ROUTES, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
 
 interface LayoutProps {
 	children: React.ReactNode
@@ -64,6 +65,9 @@ const geist = Geist({
 export default function RootLayout({ children }: LayoutProps) {
 	return (
 		<html lang="en" suppressHydrationWarning>
+			<head>
+				<BotIdClient protect={PROTECTED_ROUTES} />
+			</head>
 			<body
 				className={`${geist.className} ${geist.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2 `}
 			>

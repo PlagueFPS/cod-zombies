@@ -1,5 +1,5 @@
-import { Book, Brain, MapIcon } from "lucide-react"
 import type { Metadata } from "next"
+import { Book, Brain, MapIcon } from "lucide-react"
 
 export const IN_DEVELOPMENT = process.env.NODE_ENV === "development"
 export const SITE_TITLE = "Call of Duty: Zombies Guides"
@@ -66,19 +66,7 @@ export const PROTECTED_ROUTES = [
 		method: "POST",
 	},
 	{
-		path: "/side-quests",
+		path: "/**",
 		method: "POST",
-	},
-	{
-		path: "/bestiary",
-		method: "POST",
-	},
-	{
-		path: "/maps",
-		method: "POST",
-	},
-	{
-		path: "/privacy-policy",
-		method: "POST",
-	},
-] as const
+	}
+]
