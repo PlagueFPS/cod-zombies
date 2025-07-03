@@ -89,8 +89,8 @@ export const purgeLocalCache = createAction(DraftModeSchema, async ({ pathname }
 	if (!IN_DEVELOPMENT) return
 
 	Object.entries(CACHE_KEYS).forEach(([key, value]) => {
-		console.log(`Revalidating ${key}`)
 		revalidateTag(value.all)
+		console.log(`Revalidated: ${key}`)
 	})
 	redirect(pathname)
 })
