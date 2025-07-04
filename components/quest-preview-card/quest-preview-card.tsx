@@ -36,6 +36,18 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 		return `/${quest.game.slug}/${quest.slug}`
 	}
 
+	const renderSpecificBadge = () => {
+		if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
+			return <DifficultyBadge difficulty={quest.difficulty} />
+		}
+		
+		if (Predicate.hasProperty(quest, "map") && quest.map) {
+			return <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{quest.map.title}</Badge>
+		}
+
+		return null
+	}
+
 	return (
 		<article
 			className={cn("group h-full max-h-110 outline-hidden", {
@@ -57,13 +69,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 						{(draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null}
 						{(draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null}
 						{isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
-						{Predicate.hasProperty(quest, "difficulty") ? (
-							<DifficultyBadge difficulty={quest.difficulty} />
-						) : (
-							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-								{quest.map?.title}
-							</Badge>
-						)}
+						{ renderSpecificBadge() }
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.game.title}
 						</Badge>

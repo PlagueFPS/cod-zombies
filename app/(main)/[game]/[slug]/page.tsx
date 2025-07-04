@@ -204,7 +204,7 @@ const PrevOrNextMapCard = ({ map, isEnabled, prev }: PrevOrNextMap) => {
 					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null}
-					<DifficultyBadge difficulty={map.difficulty} />
+					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{map.game.title}</Badge>
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
