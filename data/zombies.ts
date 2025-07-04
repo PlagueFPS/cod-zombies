@@ -24,13 +24,12 @@ export const getZombies = cache(
 	unstable_cache(
 		async (draftMode: boolean) => {
 			return await Effect.gen(function* () {
-				const zombies = yield* INTERNAL_getZombies()
-				if (!zombies) return []
+				const [zombies, zombieIds] = yield* Effect.all([INTERNAL_getZombies(), getZombieIds], {
+					concurrency: "unbounded",
+				})
 
-				const zombieIds = yield* getZombieIds
-
-				return zombies.map(zombie => {
-					const { elementalWeakness, attacks, ...rest } = resolveZombieData(zombie, zombieIds)
+				return yield* Effect.forEach(zombies, zombie => Effect.gen(function*(){
+					const { elementalWeakness, attacks, ...rest } = yield* resolveZombieData(zombie, zombieIds)
 					return {
 						...rest,
 						id: zombie.sys.id,
@@ -41,7 +40,7 @@ export const getZombies = cache(
 						updatedAt: zombie.sys.updatedAt,
 						isComingSoon: zombie.fields.isComingSoon ?? false,
 					}
-				})
+				}))
 			}).pipe(
 				Effect.withLogSpan("get_zombies"),
 				Effect.provide(CMS.Default(draftMode)),
@@ -60,14 +59,13 @@ export const getZombieSearchData = cache(
 	unstable_cache(
 		async (draftMode: boolean) => {
 			return await Effect.gen(function* () {
-				const zombies = yield* INTERNAL_getZombies()
-				if (!zombies) return []
-
+				const [zombies, zombieIds] = yield* Effect.all([INTERNAL_getZombies(), getZombieIds], {
+					concurrency: "unbounded",
+				})
 				const currentZombies = zombies.filter(z => !z.fields.isComingSoon)
-				const zombieIds = yield* getZombieIds
 
-				return currentZombies.map(zombie => {
-					const { games, maps } = resolveZombieData(zombie, zombieIds)
+				return yield* Effect.forEach(currentZombies, zombie => Effect.gen(function*(){
+					const { games, maps } = yield* resolveZombieData(zombie, zombieIds)
 					return {
 						id: zombie.sys.id,
 						name: zombie.fields.name,
@@ -76,7 +74,7 @@ export const getZombieSearchData = cache(
 						games,
 						maps,
 					}
-				})
+				}))
 			}).pipe(
 				Effect.withLogSpan("get_zombie_search_data"),
 				Effect.provide(CMS.Default(draftMode)),
@@ -96,13 +94,13 @@ export const getZombieBySlug = cache(
 		async (draftMode: boolean, slug: string) => {
 			return await Effect.gen(function* () {
 				const zombies = yield* INTERNAL_getZombies()
-				if (!zombies) return null
 
 				const zombie = zombies.find(z => z.fields.slug === slug)
 				if (!zombie) return null
 
 				const zombieIds = yield* getZombieIds
-				const zombieData = resolveZombieData(zombie, zombieIds)
+				const zombieData = yield* resolveZombieData(zombie, zombieIds)
+
 				return {
 					...zombieData,
 					id: zombie.sys.id,
@@ -136,7 +134,7 @@ export const getZombieById = cache(
 		async (draftMode: boolean, id: string) => {
 			return await Effect.gen(function* () {
 				const zombies = yield* INTERNAL_getZombies()
-				if (!zombies) return null
+
 				const zombie = zombies.find(z => z.sys.id === id)
 				if (!zombie) return null
 
@@ -163,8 +161,14 @@ export const getReferencedMaps = cache(
 		async (draftMode: boolean) => {
 			return await Effect.gen(function* () {
 				const maps = yield* INTERNAL_getReferencedMaps()
-				if (!maps) return []
-				return maps.map(map => ({ ...createQuestMapDto(map), id: map.sys.id }))
+
+				return yield* Effect.forEach(maps, map => Effect.gen(function*(){
+					const questMap = yield* createQuestMapDto(map)
+					return {
+						id: map.sys.id,
+						...questMap,
+					}
+				}))
 			}).pipe(Effect.withLogSpan("get_referenced_maps"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
 		},
 		[],
@@ -177,18 +181,16 @@ export const getReferencedMaps = cache(
 const resolveZombieData = (
 	zombie: Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	zombieIds: Effect.Effect.Success<typeof getZombieIds>,
-) => {
+) => Effect.gen(function*(){
 	const { changedIds, draftIds, newIds } = zombieIds
+	const games = yield* Effect.forEach(zombie.fields.games, game => createMapCategoryDto(game))
+	const maps = yield* Effect.forEach(zombie.fields.maps, map => createQuestMapDto(map))
+	const attacks = yield* Effect.forEach(zombie.fields.attacks, attack => createZombieAttackDto(attack))
 	const image = createImageDto(zombie.fields.image)
-	const games = zombie.fields.games.map(game => createMapCategoryDto(game))
-	const maps = zombie.fields.maps.map(map => createQuestMapDto(map))
-	const attacks = zombie.fields.attacks.map(attack => createZombieAttackDto(attack))
-	const elementalWeakness = zombie.fields.elementalWeakness
-		?.map(weakness => {
+	const elementalWeakness = zombie.fields.elementalWeakness?.map(weakness => {
 			if (!weakness) return null
 			return createItemTooltipDto(weakness)
-		})
-		.filter(weakness => !!weakness)
+		}).filter(weakness => !!weakness)
 
 	const isDraft = draftIds.has(zombie.sys.id)
 	const isChanged = changedIds.has(zombie.sys.id)
@@ -204,7 +206,7 @@ const resolveZombieData = (
 		isChanged,
 		isNew,
 	}
-}
+}).pipe(Effect.withLogSpan("resolve_zombie_data"))
 
 const getZombieIds = Effect.gen(function* () {
 	const [zombies, newEntries] = yield* Effect.all([INTERNAL_getManagementZombies(), getNewEntries()], {
@@ -236,7 +238,11 @@ const INTERNAL_getManagementZombies = cache(() =>
 		const { getManagementEntries } = yield* CMS
 		const zombies = yield* getManagementEntries("zombies")
 		return zombies.items
-	}),
+	}).pipe(
+		Effect.withLogSpan("internal_get_management_zombies"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
 )
 
 const INTERNAL_getZombies = cache(() =>
@@ -248,7 +254,11 @@ const INTERNAL_getZombies = cache(() =>
 			select: ["sys.id", "sys.updatedAt", "fields"],
 		})
 		return data.items
-	}),
+	}).pipe(
+		Effect.withLogSpan("internal_get_zombies"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
 )
 
 const INTERNAL_getReferencedMaps = cache(() =>
@@ -259,5 +269,9 @@ const INTERNAL_getReferencedMaps = cache(() =>
 			order: ["-fields.releaseDate"],
 		})
 		return data.items
-	}),
+	}).pipe(
+		Effect.withLogSpan("internal_get_referenced_maps"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
 )

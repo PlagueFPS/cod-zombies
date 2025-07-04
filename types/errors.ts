@@ -34,3 +34,6 @@ export class GetEntryStatusError extends Data.TaggedError("GetEntryStatusError")
 export class UpdateEntryStatusError extends Data.TaggedError("UpdateEntryStatusError")<CommonErrorProps> {}
 export class InvalidRequestError extends Data.TaggedError("InvalidRequestError")<CommonErrorProps> {}
 export class MapConfigError extends Data.TaggedError("MapConfigError")<CommonErrorProps> {}
+export class ZombieAttackNotFoundError extends Data.TaggedError("ZombieAttackNotFoundError")<CommonErrorProps> {}
+export class QuestMapNotFoundError extends Data.TaggedError("QuestMapNotFoundError")<CommonErrorProps> {}
+export class MapCategoryNotFoundError extends Data.TaggedError("MapCategoryNotFoundError")<CommonErrorProps> {}

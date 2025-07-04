@@ -8,8 +8,13 @@ import type {
 	TypeZombieAttacksSkeleton,
 	ZombieItem,
 } from "@/contentful/Types/contentful-types"
-import { Predicate } from "effect"
+import { Effect, Predicate } from "effect"
 import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
+import {
+	MapCategoryNotFoundError,
+	QuestMapNotFoundError,
+	ZombieAttackNotFoundError,
+} from "@/types/errors"
 import { slugify } from "./functions"
 
 export const extractHeadings = (body: Document) => {
@@ -50,8 +55,12 @@ export const formatTableCellData = (cellContent: unknown[]) => {
 
 		switch (content.nodeType) {
 			case "embedded-entry-inline":
-				if (!Predicate.hasProperty(content, "data") || !Predicate.hasProperty(content.data, "target")) return
-				
+				if (
+					!Predicate.hasProperty(content, "data") ||
+					!Predicate.hasProperty(content.data, "target")
+				)
+					return
+
 				embeddedItems.push(content.data.target as ZombieItem)
 				break
 			default: // default in this case is "text"
@@ -114,32 +123,58 @@ export const createImageDto = (image: Asset<undefined, string> | undefined) => {
 
 export const createMapCategoryDto = (
 	category: Entry<TypeGameCategorySkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) => {
-	if (!category) throw new Error("Expected map to have a category")
-	return {
-		title: category.fields.title,
-		slug: category.fields.slug,
-	}
-}
+) =>
+	Effect.gen(function* () {
+		if (!category)
+			return yield* new MapCategoryNotFoundError({
+				message: "Expected map to have a category",
+			})
+		return {
+			title: category.fields.title,
+			slug: category.fields.slug,
+		}
+	}).pipe(
+		Effect.withLogSpan("create_map_category_dto"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(error => Effect.dieMessage(error.message)),
+	)
 
 export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(
 	map: Entry<T, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) => {
-	if (!map) throw new Error("Expected quest to have a map")
-	return {
-		title: map.fields.title,
-		slug: map.fields.slug,
-	}
-}
+) =>
+	Effect.gen(function* () {
+		if (!map)
+			return yield* new QuestMapNotFoundError({
+				message: "Expected quest to have a map",
+			})
+
+		return {
+			title: map.fields.title,
+			slug: map.fields.slug,
+		}
+	}).pipe(
+		Effect.withLogSpan("create_quest_map_dto"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(error => Effect.dieMessage(error.message)),
+	)
 
 export const createZombieAttackDto = (
 	attack: Entry<TypeZombieAttacksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) => {
-	if (!attack) throw new Error("Expected zombie to have an attack")
-	return {
-		id: attack.sys.id,
-		name: attack.fields.name,
-		range: attack.fields.range,
-		description: attack.fields.description,
-	}
-}
+) =>
+	Effect.gen(function* () {
+		if (!attack)
+			return yield* new ZombieAttackNotFoundError({
+				message: "Expected zombie to have an attack",
+			})
+
+		return {
+			id: attack.sys.id,
+			name: attack.fields.name,
+			range: attack.fields.range,
+			description: attack.fields.description,
+		}
+	}).pipe(
+		Effect.withLogSpan("create_zombie_attack_dto"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(error => Effect.dieMessage(error.message)),
+	)

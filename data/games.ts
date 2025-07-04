@@ -16,8 +16,6 @@ export const getGames = cache(
 					concurrency: "unbounded",
 				})
 
-				if (!games) return []
-
 				return games.map(game => {
 					const isDraft = draftIds.has(game.sys.id)
 					const isChanged = changedIds.has(game.sys.id)
@@ -74,7 +72,6 @@ export const getGameById = cache(
 		async (draftMode: boolean, id: string) => {
 			return await Effect.gen(function* () {
 				const games = yield* INTERNAL_getGameData()
-				if (!games) return null
 
 				const game = games.find(g => g.sys.id === id)
 				if (!game) return null
