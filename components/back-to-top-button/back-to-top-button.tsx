@@ -25,7 +25,7 @@ export default function BackToTopButton({ mobile, className, ...props }: BackToT
 					<ArrowUp className="size-6" />
 				</Button>
 			) : (
-				<Button onClick={scrollBackToTop} {...props}>
+				<Button onClick={scrollBackToTop} className={ className } {...props}>
 					Back to Top
 				</Button>
 			)}
