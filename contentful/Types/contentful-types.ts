@@ -20,7 +20,7 @@ export interface TypeFeaturedMapsFields {
     slug: EntryFieldTypes.Symbol;
     releaseDate: EntryFieldTypes.Date;
     isComingSoon?: EntryFieldTypes.Boolean;
-    difficulty?: EntryFieldTypes.Symbol<"Easy" | "Hard" | "Medium">;
+    difficulty: EntryFieldTypes.Symbol<"Easy" | "Hard" | "Medium">;
     timeToRead: EntryFieldTypes.Integer;
     gameCategory: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>;
     image: EntryFieldTypes.AssetLink;

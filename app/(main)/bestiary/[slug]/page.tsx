@@ -35,6 +35,12 @@ interface IZombiePage {
 	params: Promise<{ slug: string }>
 }
 
+interface PrevOrNextZombie {
+	zombie: MinifiedZombie
+	isEnabled: boolean
+	prev?: boolean
+}
+
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
 	const zombie = await getZombieBySlug(draftMode, slug)
 	if (!zombie || zombie.isComingSoon) {
@@ -127,9 +133,8 @@ export default async function ZombiePage({ params }: IZombiePage) {
 							<div className="absolute inset-0 mx-auto hidden w-full opacity-35 blur-3xl dark:block">
 								<FeaturedImage
 									featuredImage={zombie.image}
-									quality={1}
-									sizes="32px"
-									priority
+									quality={100}
+									sizes="422px"
 									className="mb-4 aspect-square w-full rounded-lg object-cover object-top"
 								/>
 							</div>
@@ -299,15 +304,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
 	)
 }
 
-const PrevOrNextZombie = ({
-	zombie,
-	isEnabled,
-	prev,
-}: {
-	zombie: MinifiedZombie
-	isEnabled: boolean
-	prev?: boolean
-}) => {
+const PrevOrNextZombie = ({ zombie, isEnabled, prev }: PrevOrNextZombie) => {
 	const alt = `${zombie.name} image`
 	const href = `/bestiary/${zombie.slug}`
 
@@ -329,7 +326,11 @@ const PrevOrNextZombie = ({
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{zombie.games[0].title}</Badge>
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
-					<FeaturedImage featuredImage={zombie.image} sizes="32px" quality={1} className="scale-110" />
+					<FeaturedImage
+						featuredImage={zombie.image}
+						sizes="(max-width: 1280px) 320px, 384px"
+						className="scale-110"
+					/>
 				</div>
 				<div className="relative z-20 flex h-full w-full max-w-sm items-center justify-center overflow-hidden rounded-lg">
 					<FeaturedImage

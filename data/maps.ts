@@ -31,7 +31,7 @@ export const getMaps = cache(
 						updatedAt: map.sys.updatedAt,
 						description: map.fields.description,
 						isComingSoon: map.fields.isComingSoon ?? false,
-						difficulty: map.fields.difficulty ?? null,
+						difficulty: map.fields.difficulty,
 					}
 				})
 			}).pipe(
@@ -95,7 +95,7 @@ export const getMapBySlug = cache(
 					description: map.fields.description,
 					body: map.fields.body,
 					isComingSoon: map.fields.isComingSoon ?? false,
-					difficulty: map.fields.difficulty ?? null,
+					difficulty: map.fields.difficulty,
 					timeToRead: map.fields.timeToRead,
 				}
 			}).pipe(

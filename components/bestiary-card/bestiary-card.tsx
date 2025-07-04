@@ -37,9 +37,7 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage
 							featuredImage={zombie.image}
-							priority={priority}
-							quality={1}
-							sizes="32px"
+							sizes="272px"
 							className="aspect-square scale-150"
 						/>
 					</div>
@@ -47,8 +45,8 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 						<div className="relative size-full overflow-hidden">
 							<FeaturedImage
 								featuredImage={zombie.image}
-								priority={priority}
 								alt={alt}
+								priority={priority}
 								sizes="272px"
 								className="h-44 rounded-md object-cover object-top"
 							/>

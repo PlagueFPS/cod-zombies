@@ -27,6 +27,12 @@ interface ISideQuestSlugPage {
 	}>
 }
 
+interface PrevOrNextQuest {
+	quest: MinifiedSideQuest
+	isEnabled: boolean
+	prev?: boolean
+}
+
 export const generateStaticParams = async () => {
 	const quests = await getQuests(false)
 	return quests.map(q => ({
@@ -73,7 +79,11 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
-								<FeaturedImage featuredImage={q.image} sizes="32px" priority quality={1} />
+								<FeaturedImage
+									featuredImage={q.image}
+									sizes="(max-width: 1280px) 100vw, 1280px"
+									quality={100}
+								/>
 							</div>
 							<div className="relative z-20 mx-auto max-w-7xl">
 								<FeaturedImage
@@ -170,15 +180,7 @@ const PrevOrNextQuest = async ({ quest }: { quest: SideQuest }) => {
 	)
 }
 
-const PrevOrNextQuestCard = ({
-	quest,
-	isEnabled,
-	prev,
-}: {
-	quest: MinifiedSideQuest
-	isEnabled: boolean
-	prev?: boolean
-}) => {
+const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: PrevOrNextQuest) => {
 	const alt = `${quest.map.title} map image`
 	const href = quest.isComingSoon ? "#" : `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 

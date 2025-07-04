@@ -44,7 +44,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 						{(draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null}
 						{isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 						{TypeGuards.hasProperty(quest, "difficulty") ? (
-							<>{quest.difficulty && <DifficultyBadge difficulty={quest.difficulty} />}</>
+							<DifficultyBadge difficulty={quest.difficulty} />
 						) : (
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{quest.map.title}</Badge>
 						)}
@@ -53,9 +53,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage
 							featuredImage={quest.image}
-							priority={priority}
-							quality={1}
-							sizes="32px"
+							sizes="272px"
 							className="aspect-square scale-150"
 						/>
 					</div>
@@ -63,8 +61,8 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 						<div className="relative h-full w-full overflow-hidden">
 							<FeaturedImage
 								featuredImage={quest.image}
-								priority={priority}
 								alt={alt}
+								priority={priority}
 								sizes="272px"
 								className="h-44 rounded-md object-cover"
 							/>

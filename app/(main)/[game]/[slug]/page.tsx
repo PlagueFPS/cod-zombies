@@ -31,6 +31,12 @@ interface MapPageProps {
 	}>
 }
 
+interface PrevOrNextMap {
+	map: MinifiedFeaturedMap
+	isEnabled: boolean
+	prev?: boolean
+}
+
 const getPageData = cache(async (draftMode: boolean, slug: string) => {
 	const map = await getMapBySlug(draftMode, slug)
 	if (!map) {
@@ -90,7 +96,11 @@ export default async function MapPage({ params }: MapPageProps) {
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
-								<FeaturedImage featuredImage={map.image} sizes="32px" priority quality={1} />
+								<FeaturedImage
+									featuredImage={map.image}
+									sizes="(max-width: 1280px) 100vw, 1280px"
+									quality={100}
+								/>
 							</div>
 							<div className="relative z-20 mx-auto max-w-7xl">
 								<FeaturedImage
@@ -171,15 +181,7 @@ export default async function MapPage({ params }: MapPageProps) {
 	)
 }
 
-const PrevOrNextMapCard = ({
-	map,
-	isEnabled,
-	prev,
-}: {
-	map: MinifiedFeaturedMap
-	isEnabled: boolean
-	prev?: boolean
-}) => {
+const PrevOrNextMapCard = ({ map, isEnabled, prev }: PrevOrNextMap) => {
 	const alt = `${map.title} map image`
 	const href = map.isComingSoon ? "#" : `/${map.game.slug}/${map.slug}`
 
@@ -202,11 +204,16 @@ const PrevOrNextMapCard = ({
 					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null}
-					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
+					<DifficultyBadge difficulty={map.difficulty} />
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{map.game.title}</Badge>
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
-					<FeaturedImage featuredImage={map.image} sizes="32px" quality={1} className="scale-110" />
+					<FeaturedImage
+						featuredImage={map.image}
+						alt={alt}
+						sizes="(max-width: 1280px) 320px, 384px"
+						className="scale-110"
+					/>
 				</div>
 				<div className="relative z-20 flex h-full w-full max-w-sm items-center justify-center overflow-hidden rounded-lg">
 					<FeaturedImage
