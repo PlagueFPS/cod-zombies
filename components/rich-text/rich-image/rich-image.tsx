@@ -16,7 +16,7 @@ export default function RichImage({ asset }: RichImageProps) {
 	return (
 		<div className="relative mt-8 w-full">
 			<div className="absolute top-4 right-0 left-0 z-10 mx-auto w-full opacity-35 blur-2xl">
-				<FeaturedImage {...imageProps} quality={1} description={asset.fields.description} className="rounded-lg" />
+				<FeaturedImage {...imageProps} quality={100} description={asset.fields.description} className="rounded-lg" />
 			</div>
 			<div className="relative z-20">
 				<FeaturedImage {...imageProps} quality={100} description={asset.fields.description} className="rounded-lg" />
