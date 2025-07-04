@@ -96,8 +96,8 @@ importers:
         specifier: 11.5.23
         version: 11.5.23
       contentful-management:
-        specifier: 11.52.2
-        version: 11.52.2
+        specifier: 11.54.1
+        version: 11.54.1
       effect:
         specifier: ^3.16.8
         version: 3.16.8
@@ -2544,8 +2544,8 @@ packages:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
     engines: {node: '>=16'}
 
-  contentful-management@11.52.2:
-    resolution: {integrity: sha512-d/7ydc4HOVKNqT789T9hL0fu4i1U1AthjQV+PfJevwZo4JyzNvh2I5wpaJUqV859bJHSNsTfV6gdtLHg9bx0bA==}
+  contentful-management@11.54.1:
+    resolution: {integrity: sha512-wNBYd4uMbF/nyZuAb98Krpm8SmZJd2N4ekmYq4vPpzaK22oyveE6eaGN0GVCmpFGjTGmJjtLRVIe9VJxdiuwuQ==}
     engines: {node: '>=18'}
 
   contentful-resolve-response@1.9.3:
@@ -5530,7 +5530,7 @@ snapshots:
 
   commander@11.1.0: {}
 
-  contentful-management@11.52.2:
+  contentful-management@11.54.1:
     dependencies:
       '@contentful/rich-text-types': 16.8.5
       axios: 1.9.0
