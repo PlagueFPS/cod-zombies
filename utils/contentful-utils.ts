@@ -8,8 +8,9 @@ import type {
 	TypeZombieAttacksSkeleton,
 	ZombieItem,
 } from "@/contentful/Types/contentful-types"
+import { Predicate } from "effect"
 import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
-import { slugify, TypeGuards } from "./functions"
+import { slugify } from "./functions"
 
 export const extractHeadings = (body: Document) => {
 	const headings: Heading[] = []
@@ -45,22 +46,16 @@ export const formatTableCellData = (cellContent: unknown[]) => {
 	let badgeItems: string[] = []
 
 	cellContent.forEach(content => {
-		if (!TypeGuards.isObject(content) || !TypeGuards.hasProperty(content, "nodeType")) return
+		if (!Predicate.hasProperty(content, "nodeType")) return
 
 		switch (content.nodeType) {
 			case "embedded-entry-inline":
-				if (
-					!TypeGuards.hasProperty(content, "data") ||
-					!TypeGuards.isObject(content.data) ||
-					!TypeGuards.hasProperty(content.data, "target")
-				)
-					return
-
-				// At this point we know it is a ZombieItem
+				if (!Predicate.hasProperty(content, "data") || !Predicate.hasProperty(content.data, "target")) return
+				
 				embeddedItems.push(content.data.target as ZombieItem)
 				break
 			default: // default in this case is "text"
-				if (TypeGuards.hasProperty(content, "value") && TypeGuards.isString(content.value)) {
+				if (Predicate.hasProperty(content, "value") && Predicate.isString(content.value)) {
 					if (content.value.includes(",")) {
 						const items = content.value.split(",").map(item => item.trim())
 						badgeItems = [...badgeItems, ...items]
@@ -90,7 +85,7 @@ export const isFirstTimePublish = (createdAt: Date, updatedAt: Date) => {
 export const createItemTooltipDto = (item: ZombieItem) => {
 	const itemImage = item.fields.image
 
-	if (TypeGuards.hasProperty(item.fields, "rarity")) {
+	if (Predicate.hasProperty(item.fields, "rarity")) {
 		return {
 			id: item.sys.id,
 			title: item.fields.title,

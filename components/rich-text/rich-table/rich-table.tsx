@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { formatTableCellData } from "@/utils/contentful-utils"
-import { slugify, TypeGuards } from "@/utils/functions"
+import { slugify } from "@/utils/functions"
 import ItemTooltip from "../rich-embeds/item-tooltip"
 
 interface RichTableProps {
@@ -31,7 +31,7 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
 								"bg-orange-50 dark:bg-background": index % 2 === 0,
 							})}
 						>
-							{TypeGuards.isArray(row) &&
+							{Array.isArray(row) &&
 								row.map((cell: any, cellIndex: number) => {
 									const { values, badgeItems, embeddedItems } = formatTableCellData(cell.content[0].content)
 

@@ -30,5 +30,8 @@ export const submitFeedback = (input: Input) =>
 			}),
 		})
 
-		return { success: true, message: "Thank you for submitting! Your submission has been received." }
+		return {
+			success: true,
+			message: "Thank you for submitting! Your submission has been received.",
+		}
 	}).pipe(Effect.withLogSpan("submit_feedback"))

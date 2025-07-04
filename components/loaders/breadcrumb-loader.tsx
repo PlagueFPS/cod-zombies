@@ -1,15 +1,18 @@
 "use client"
+import { Predicate } from "effect"
 import { useParams } from "next/navigation"
-import { capatilize, TypeGuards } from "@/utils/functions"
+import { capatilize } from "@/utils/functions"
 import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 
 export default function BreadcrumbLoader() {
-  const { game, slug } = useParams()
+	const { game, slug } = useParams()
 
-  return (
-    <Breadcrumbs links={[
-      { title: TypeGuards.isString(game) ? capatilize(game) : "", href: `/?game=${game}` },
-      { title: TypeGuards.isString(slug) ? capatilize(slug) : "", href: `/${game}/${slug}` }
-    ]} />
-  )
+	return (
+		<Breadcrumbs
+			links={[
+				{ title: Predicate.isString(game) ? capatilize(game) : "", href: `/?game=${game}` },
+				{ title: Predicate.isString(slug) ? capatilize(slug) : "", href: `/${game}/${slug}` },
+			]}
+		/>
+	)
 }

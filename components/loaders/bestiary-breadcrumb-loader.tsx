@@ -1,6 +1,7 @@
 "use client"
+import { Predicate } from "effect"
 import { useParams } from "next/navigation"
-import { capatilize, TypeGuards } from "@/utils/functions"
+import { capatilize } from "@/utils/functions"
 import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 
 export default function BestiaryBreadcrumbsLoader() {
@@ -9,7 +10,7 @@ export default function BestiaryBreadcrumbsLoader() {
 		<Breadcrumbs
 			links={[
 				{ title: `Bestiary`, href: `/bestiary` },
-				{ title: TypeGuards.isString(slug) ? capatilize(slug) : "", href: `/bestiary/${slug}` },
+				{ title: Predicate.isString(slug) ? capatilize(slug) : "", href: `/bestiary/${slug}` },
 			]}
 		/>
 	)

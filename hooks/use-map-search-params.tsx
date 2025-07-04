@@ -1,6 +1,5 @@
 import { useSearchParams } from "next/navigation"
 import { useCallback } from "react"
-import { TypeGuards } from "@/utils/functions"
 
 export const useMapSearchParams = () => {
 	const searchParams = useSearchParams()
@@ -21,7 +20,7 @@ export const useMapSearchParams = () => {
 			const params = createParams()
 			params.delete(paramName)
 
-			const valuesToToggle = TypeGuards.isArray(value) ? value : [value]
+			const valuesToToggle = Array.isArray(value) ? value : [value]
 			const newValues = valuesToToggle.some(v => currentValues.includes(v))
 				? currentValues.filter(v => !value.includes(v))
 				: [...currentValues, ...valuesToToggle]

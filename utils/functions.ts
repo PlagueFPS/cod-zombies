@@ -1,6 +1,6 @@
 import type { DurationInput } from "effect/Duration"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
-import { Duration, Effect } from "effect"
+import { Duration, Effect, Predicate } from "effect"
 import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/errors"
 
 /**
@@ -89,7 +89,7 @@ type Result<T> = Success<T> | Failure
  */
 export async function tryCatch<T>(promiseOrFn: Promise<T> | (() => Promise<T>)): Promise<Result<T>> {
 	try {
-		const data = TypeGuards.isFunction(promiseOrFn) ? await promiseOrFn() : await promiseOrFn
+		const data = Predicate.isFunction(promiseOrFn) ? await promiseOrFn() : await promiseOrFn
 
 		return {
 			success: true,
@@ -103,72 +103,6 @@ export async function tryCatch<T>(promiseOrFn: Promise<T> | (() => Promise<T>)):
 			error: error instanceof Error ? error : new Error(String(error)),
 		}
 	}
-}
-
-export const TypeGuards = {
-	/**
-	 * Checks if the value is a function.
-	 * @param value - The value to check.
-	 * @returns True if the value is a function, false otherwise.
-	 */
-	isFunction(value: unknown): value is () => void {
-		return typeof value === "function"
-	},
-
-	/**
-	 * Checks if the value is a number.
-	 * @param value - The value to check.
-	 * @returns True if the value is a number, false otherwise.
-	 */
-	isNumber(value: unknown): value is number {
-		return typeof value === "number"
-	},
-
-	/**
-	 * Checks if the value is a string.
-	 * @param value - The value to check.
-	 * @returns True if the value is a string, false otherwise.
-	 */
-	isString(value: unknown): value is string {
-		return typeof value === "string"
-	},
-
-	/**
-	 * Checks if the value is a boolean.
-	 * @param value - The value to check.
-	 * @returns True if the value is a boolean, false otherwise.
-	 */
-	isBoolean(value: unknown): value is boolean {
-		return typeof value === "boolean"
-	},
-
-	/**
-	 * Checks if the value is an array.
-	 * @param value - The value to check.
-	 * @returns True if the value is an array, false otherwise.
-	 */
-	isArray<T>(value: unknown): value is T[] {
-		return Array.isArray(value)
-	},
-
-	/**
-	 * Checks if the value is an object (excluding arrays and null).
-	 * @param value - The value to check.
-	 * @returns True if the value is an object, false otherwise.
-	 */
-	isObject(value: unknown): value is object {
-		return typeof value === "object" && value !== null && !this.isArray(value)
-	},
-
-	/**
-	 * Checks if the object has a specific property.
-	 * @param obj - The object to check.
-	 * @param prop - The property to look for.
-	 * @returns True if the object has the specified property, false otherwise.
-	 */
-	hasProperty<K extends string>(obj: unknown, prop: K): obj is { [P in K]: unknown } {
-		return this.isObject(obj) && prop in obj
-	},
 }
 /**
  * Generates a unique, secure, and time-limited token.
