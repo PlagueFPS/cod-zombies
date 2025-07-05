@@ -27,7 +27,7 @@ export default function QuestGridClient({ quests, draftMode }: IQuestGridClient)
 
 		if (difficultyParams.length > 0) {
 			filtered = filtered.filter(quest => {
-				if (Predicate.hasProperty(quest, "difficulty")) {
+				if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
 					return difficultyParams.includes(quest.difficulty.toLowerCase())
 				}
 				return false
