@@ -5,17 +5,22 @@ import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
+import Discord from "@/components/SVGs/DiscordSVG"
+import Reddit from "@/components/SVGs/Reddit"
+import X from "@/components/SVGs/XSVG"
 import { env } from "@/env"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
-import Discord from "@/SVGs/DiscordSVG"
-import Reddit from "@/SVGs/Reddit"
-import X from "@/SVGs/XSVG"
 import { capatilize, slugify } from "@/utils/functions"
 import ExternalLink from "../external-link/external-link"
 import ShareButton from "../share-button/share-button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu"
 import { Input } from "../ui/input"
 import { Separator } from "../ui/separator"
 import {
@@ -40,7 +45,8 @@ interface IMapSidebar {
 }
 
 export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSidebar) {
-	const { clearParam, toggleExcludeParam, createParams, searchTerm, updateURLParams, isIncluded } = useMapSearchParams()
+	const { clearParam, toggleExcludeParam, createParams, searchTerm, updateURLParams, isIncluded } =
+		useMapSearchParams()
 	const { id } = useParams()
 	const [toggle, setToggle] = useState<"All" | "None">("None")
 	const router = useRouter()
@@ -51,7 +57,9 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 			Object.keys(groups).reduce(
 				(acc, category) => {
 					const filtered = new Set(
-						[...groups[category as MarkerCategory]].filter(value => value.includes(slugify(searchTerm))),
+						[...groups[category as MarkerCategory]].filter(value =>
+							value.includes(slugify(searchTerm)),
+						),
 					)
 
 					acc[category as MarkerCategory] = filtered
@@ -75,7 +83,9 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 		if (params.size > 0) {
 			if (params.has("exclude")) {
 				const excludeParams = params.getAll("exclude")
-				const includeParams = mapMarkers.filter(marker => !excludeParams.includes(marker.type || marker.id))
+				const includeParams = mapMarkers.filter(
+					marker => !excludeParams.includes(marker.type || marker.id),
+				)
 				params.delete("exclude")
 				includeParams.forEach(marker => {
 					params.append("include", marker.type || marker.id)
@@ -134,7 +144,9 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 										className={cn({ "pointer-events-none": map === id })}
 										onClick={() => handleClick(map)}
 									>
-										<span className={cn({ "text-muted-foreground": map === id })}>{capatilize(map)}</span>
+										<span className={cn({ "text-muted-foreground": map === id })}>
+											{capatilize(map)}
+										</span>
 									</DropdownMenuItem>
 								))}
 							</DropdownMenuContent>
@@ -157,8 +169,13 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 				</SidebarMenu>
 				<SidebarMenu>
 					<SidebarMenuItem className="mt-2 px-8">
-						<SidebarMenuButton onClick={toggleFilters} className="cursor-pointer justify-center border bg-accent/30">
-							<span className="tracking-wide">{toggle === "None" ? "Disable Filters" : "Enable Filters"}</span>
+						<SidebarMenuButton
+							onClick={toggleFilters}
+							className="cursor-pointer justify-center border bg-accent/30"
+						>
+							<span className="tracking-wide">
+								{toggle === "None" ? "Disable Filters" : "Enable Filters"}
+							</span>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				</SidebarMenu>
@@ -181,7 +198,11 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
 											>
 												<div className="flex items-center justify-center gap-1">
-													<MarkerFilterIcon mapMarkers={mapMarkers} marker={marker} category="general" />
+													<MarkerFilterIcon
+														mapMarkers={mapMarkers}
+														marker={marker}
+														category="general"
+													/>
 													<span className="font-medium text-base">{capatilize(marker)}</span>
 												</div>
 												<Switch
@@ -217,7 +238,11 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
 											>
 												<div className="flex items-center justify-center gap-1">
-													<MarkerFilterIcon mapMarkers={mapMarkers} marker={marker} category="equipment" />
+													<MarkerFilterIcon
+														mapMarkers={mapMarkers}
+														marker={marker}
+														category="equipment"
+													/>
 													<span className="font-medium text-base">{capatilize(marker)}</span>
 												</div>
 												<Switch
@@ -253,7 +278,11 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
 											>
 												<div className="flex items-center justify-center gap-1">
-													<MarkerFilterIcon mapMarkers={mapMarkers} marker={marker} category="upgrades" />
+													<MarkerFilterIcon
+														mapMarkers={mapMarkers}
+														marker={marker}
+														category="upgrades"
+													/>
 													<span className="font-medium text-base">{capatilize(marker)}</span>
 												</div>
 												<Switch
@@ -289,7 +318,11 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
 											>
 												<div className="flex items-center justify-center gap-1">
-													<MarkerFilterIcon mapMarkers={mapMarkers} marker={marker} category="objectives" />
+													<MarkerFilterIcon
+														mapMarkers={mapMarkers}
+														marker={marker}
+														category="objectives"
+													/>
 													<span className="font-medium text-base">{capatilize(marker)}</span>
 												</div>
 												<Switch
@@ -325,7 +358,11 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
 											>
 												<div className="flex items-center justify-center gap-1">
-													<MarkerFilterIcon mapMarkers={mapMarkers} marker={marker} category="transportation" />
+													<MarkerFilterIcon
+														mapMarkers={mapMarkers}
+														marker={marker}
+														category="transportation"
+													/>
 													<span className="font-medium text-base">{capatilize(marker)}</span>
 												</div>
 												<Switch
@@ -361,7 +398,11 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
 											>
 												<div className="flex items-center justify-center gap-1">
-													<MarkerFilterIcon mapMarkers={mapMarkers} marker={marker} category="intel" />
+													<MarkerFilterIcon
+														mapMarkers={mapMarkers}
+														marker={marker}
+														category="intel"
+													/>
 													<span className="font-medium text-base">{capatilize(marker)}</span>
 												</div>
 												<Switch

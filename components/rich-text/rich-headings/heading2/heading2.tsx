@@ -1,6 +1,6 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react"
 import Link from "next/link"
-import LinkSVG from "@/SVGs/LinkSVG"
+import LinkSVG from "@/components/SVGs/LinkSVG"
 
 export default function Heading2({
 	id,

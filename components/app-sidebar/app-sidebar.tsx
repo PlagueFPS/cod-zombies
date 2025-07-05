@@ -5,6 +5,9 @@ import { useState } from "react"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import ExternalLink from "@/components/external-link/external-link"
 import NavLink from "@/components/nav-link/nav-link"
+import Discord from "@/components/SVGs/DiscordSVG"
+import Reddit from "@/components/SVGs/Reddit"
+import X from "@/components/SVGs/XSVG"
 import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
@@ -18,9 +21,6 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet"
 import Logo from "@/public/logo.webp"
-import Discord from "@/SVGs/DiscordSVG"
-import Reddit from "@/SVGs/Reddit"
-import X from "@/SVGs/XSVG"
 import { ROUTES } from "@/utils/constants"
 
 export default function AppSidebar() {
@@ -37,8 +37,17 @@ export default function AppSidebar() {
 				<SheetTitle className="sr-only">Sidebar</SheetTitle>
 				<SheetHeader className="w-full border-b pb-4">
 					<SheetClose asChild>
-						<CustomLink href={"/"} aria-label="Go to Home Page" className="flex items-center justify-center gap-2">
-							<Image unoptimized src={Logo} alt="Call of Duty: Zombies Guides Logo" className="size-5 rounded" />
+						<CustomLink
+							href={"/"}
+							aria-label="Go to Home Page"
+							className="flex items-center justify-center gap-2"
+						>
+							<Image
+								unoptimized
+								src={Logo}
+								alt="Call of Duty: Zombies Guides Logo"
+								className="size-5 rounded"
+							/>
 							<div className="text-center font-extrabold text-xl">
 								<span className="dark:dark-text-gradient text-gradient">COD:</span>
 								<span className="text-primary-gradient"> Zombies Guides</span>
