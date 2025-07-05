@@ -7,9 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"experimentalScannerIgnores": [
-			"node_modules"
-		]
+		"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "!node_modules", "!.next"]
 	},
 	"formatter": {
 		"enabled": true,

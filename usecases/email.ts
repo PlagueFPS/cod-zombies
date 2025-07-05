@@ -1,10 +1,10 @@
-import { Effect } from "effect"
 import type { CreateBroadcastOptions } from "resend"
-import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
-import QuestReleaseEmail, { type IQuestRelease } from "@/emails/QuestReleaseEmail"
-import SubscribeEmail from "@/emails/SubscribeEmail"
-import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
-import ZombieReleaseEmail, { type IZombieRelease } from "@/emails/ZombieReleaseEmail"
+import { Effect } from "effect"
+import PrivacyPolicyUpdateEmail from "@/components/emails/PolicyUpdateEmail"
+import QuestReleaseEmail, { type IQuestRelease } from "@/components/emails/QuestReleaseEmail"
+import SubscribeEmail from "@/components/emails/SubscribeEmail"
+import UnsubscribeEmail from "@/components/emails/UnsubscribeEmail"
+import ZombieReleaseEmail, { type IZombieRelease } from "@/components/emails/ZombieReleaseEmail"
 import { env } from "@/env"
 import { Email } from "@/lib/services/Email"
 import { ContactExistsError, ContactNotFoundError, CreateBroadcastError } from "@/types/errors"
@@ -23,7 +23,8 @@ export const requestSubscribe = (email: string) =>
 		const contact = yield* getContact(email)
 		if (contact)
 			return yield* new ContactExistsError({
-				message: "We were unable to send a confirmation email because that email is already subscribed!",
+				message:
+					"We were unable to send a confirmation email because that email is already subscribed!",
 				cause: new Error(`Contact already subscribed: ${contact}`),
 			})
 
@@ -46,7 +47,8 @@ export const requestUnsubscribe = (email: string) =>
 		const contact = yield* getContact(email)
 		if (!contact)
 			return yield* new ContactNotFoundError({
-				message: "We were unable to send a confirmation email because that email is not currently subscribed!",
+				message:
+					"We were unable to send a confirmation email because that email is not currently subscribed!",
 				cause: new Error(`Contact not found for email: ${email}`),
 			})
 
@@ -88,7 +90,10 @@ export const sendContactEmail = (props: EmailProps) =>
 			subject: "Contact Form Submission",
 			text: props.message,
 		})
-		return { success: true, message: "Thank you for contacting us! We will get back to you as soon as possible." }
+		return {
+			success: true,
+			message: "Thank you for contacting us! We will get back to you as soon as possible.",
+		}
 	}).pipe(Effect.withLogSpan("send_contact_email"))
 
 export const sendQuestReleaseBroadcast = (props: IQuestRelease) => {
