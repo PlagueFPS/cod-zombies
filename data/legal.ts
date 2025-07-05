@@ -1,4 +1,4 @@
-import type { TypeLegalSkeleton } from "@/contentful/Types/contentful-types"
+import type { TypeLegalSkeleton } from "@/types/contentful-types"
 import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"

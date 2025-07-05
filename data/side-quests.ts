@@ -1,6 +1,6 @@
 import "server-only"
 import type { Entry } from "contentful"
-import type { TypeSideQuestsSkeleton } from "@/contentful/Types/contentful-types"
+import type { TypeSideQuestsSkeleton } from "@/types/contentful-types"
 import { Array as Arr, Effect, Order } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"

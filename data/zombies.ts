@@ -1,6 +1,6 @@
 import "server-only"
 import type { Entry } from "contentful"
-import type { TypeReferencedMapsSkeleton, TypeZombiesSkeleton } from "@/contentful/Types/contentful-types"
+import type { TypeReferencedMapsSkeleton, TypeZombiesSkeleton } from "@/types/contentful-types"
 import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"

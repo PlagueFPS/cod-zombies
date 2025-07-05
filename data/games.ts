@@ -1,5 +1,5 @@
 import "server-only"
-import type { TypeGameCategorySkeleton } from "@/contentful/Types/contentful-types"
+import type { TypeGameCategorySkeleton } from "@/types/contentful-types"
 import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"

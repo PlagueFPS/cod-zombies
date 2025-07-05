@@ -7,7 +7,7 @@ import type {
 	TypeReferencedMapsSkeleton,
 	TypeZombieAttacksSkeleton,
 	ZombieItem,
-} from "@/contentful/Types/contentful-types"
+} from "@/types/contentful-types"
 import { Effect, Predicate } from "effect"
 import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
 import {
