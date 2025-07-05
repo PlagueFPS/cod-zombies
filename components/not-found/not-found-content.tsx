@@ -1,5 +1,5 @@
 import NotFoundBreadcrumbs from "@/components/not-found/not-found-breadcrumbs"
-import { capatilize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions"
 import { CustomLink } from "../custom-link/custom-link"
 import { Button } from "../ui/button"
 
@@ -25,7 +25,7 @@ export default function NotFoundContent({ resource, items, pathname, param }: IN
 					<p className="text-sm md:text-base lg:text-lg">
 						The requested {resource}
 						<span className="mx-1 font-bold text-primary-gradient">
-							{param ? capatilize(param) : pathname ? pathname : null}
+							{param ? capitalize(param) : pathname ? pathname : null}
 						</span>
 						does not exist or could not be found
 					</p>

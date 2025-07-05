@@ -13,7 +13,7 @@ import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { generateMarkerKey } from "@/map-configs/markers"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import { capatilize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions"
 import { MarkerBadge } from "../custom-badges/custom-badges"
 import { Separator } from "../ui/separator"
 import CustomMarker from "./custom-marker"
@@ -138,7 +138,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 							{marker.type !== "label" ? (
 								<Popup className="custom-popup">
 									<div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
-										<MarkerBadge category={marker.category}>{capatilize(marker.category)}</MarkerBadge>
+										<MarkerBadge category={marker.category}>{capitalize(marker.category)}</MarkerBadge>
 									</div>
 									{marker.icon && (
 										<div className="flex w-full items-center justify-center">

@@ -5,7 +5,7 @@ import Image, { type ImageProps } from "next/image"
 import { useState } from "react"
 import { useImageState } from "@/hooks/use-image-state"
 import { cn } from "@/lib/utils"
-import { capatilize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions"
 import { DifficultyBadge, TypeBadge } from "../custom-badges/custom-badges"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
@@ -53,13 +53,13 @@ const FiltersCombobox = ({
 
     switch(title) {
       case "Difficulty":
-        return <DifficultyBadge difficulty={capatilize(currentSelection[0]) as Difficulty} />
+        return <DifficultyBadge difficulty={capitalize(currentSelection[0]) as Difficulty} />
       case "Type":
-        return <TypeBadge type={capatilize(currentSelection[0]) as ZombieType} />
+        return <TypeBadge type={capitalize(currentSelection[0]) as ZombieType} />
       default:
         return (
           <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-            {capatilize(currentSelection[0])}
+            {capitalize(currentSelection[0])}
           </Badge>
         )
     }

@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation"
-import { capatilize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions"
 import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 
 export default function QuestBreadcrumbsLoader() {
@@ -9,9 +9,9 @@ export default function QuestBreadcrumbsLoader() {
 		<Breadcrumbs
 			links={[
 				{ title: `Side Quests`, href: `/side-quests` },
-				{ title: capatilize(String(game)), href: `/side-quests?game=${game}` },
-				{ title: capatilize(String(map)), href: `/side-quests?game=${game}&map=${map}` },
-				{ title: capatilize(String(slug)), href: `/side-quests/${game}/${map}/${slug}` },
+				{ title: capitalize(String(game)), href: `/side-quests?game=${game}` },
+				{ title: capitalize(String(map)), href: `/side-quests?game=${game}&map=${map}` },
+				{ title: capitalize(String(slug)), href: `/side-quests/${game}/${map}/${slug}` },
 			]}
 		/>
 	)

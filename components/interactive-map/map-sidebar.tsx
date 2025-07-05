@@ -11,7 +11,7 @@ import X from "@/components/SVGs/XSVG"
 import { env } from "@/env"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
-import { capatilize, slugify } from "@/utils/functions"
+import { capitalize, slugify } from "@/utils/functions"
 import ExternalLink from "../external-link/external-link"
 import ShareButton from "../share-button/share-button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
@@ -50,7 +50,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 	const { id } = useParams()
 	const [toggle, setToggle] = useState<"All" | "None">("None")
 	const router = useRouter()
-	const currentMap = capatilize(String(id))
+	const currentMap = capitalize(String(id))
 
 	const filteredGroups = useMemo(
 		() =>
@@ -145,7 +145,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 										onClick={() => handleClick(map)}
 									>
 										<span className={cn({ "text-muted-foreground": map === id })}>
-											{capatilize(map)}
+											{capitalize(map)}
 										</span>
 									</DropdownMenuItem>
 								))}
@@ -203,7 +203,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 														marker={marker}
 														category="general"
 													/>
-													<span className="font-medium text-base">{capatilize(marker)}</span>
+													<span className="font-medium text-base">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -243,7 +243,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 														marker={marker}
 														category="equipment"
 													/>
-													<span className="font-medium text-base">{capatilize(marker)}</span>
+													<span className="font-medium text-base">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -283,7 +283,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 														marker={marker}
 														category="upgrades"
 													/>
-													<span className="font-medium text-base">{capatilize(marker)}</span>
+													<span className="font-medium text-base">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -323,7 +323,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 														marker={marker}
 														category="objectives"
 													/>
-													<span className="font-medium text-base">{capatilize(marker)}</span>
+													<span className="font-medium text-base">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -363,7 +363,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 														marker={marker}
 														category="transportation"
 													/>
-													<span className="font-medium text-base">{capatilize(marker)}</span>
+													<span className="font-medium text-base">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -403,7 +403,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 														marker={marker}
 														category="intel"
 													/>
-													<span className="font-medium text-base">{capatilize(marker)}</span>
+													<span className="font-medium text-base">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}

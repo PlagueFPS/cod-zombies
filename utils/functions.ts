@@ -1,14 +1,16 @@
 import type { DurationInput } from "effect/Duration"
 import { createHash, randomBytes, timingSafeEqual } from "crypto"
-import { Duration, Effect, Predicate } from "effect"
+import { Duration, Effect } from "effect"
 import { AuthorizationError, TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/errors"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens with spaces.
  * @param text - The input string to be capitalized.
- * @returns The capitalized string with spaces instead of hyphens.
+ * @returns The capitalized string.
+ * @example
+ * capitalize("hello-world") // "Hello World"
  */
-export const capatilize = (text: string) => {
+export const capitalize = (text: string) => {
 	return text
 		.replace(/-/g, " ")
 		.split(" ")
@@ -17,9 +19,11 @@ export const capatilize = (text: string) => {
 }
 
 /**
- * Converts a string to a URL-friendly slug.
+ * Converts a string to a URL-friendly slug, replacing spaces, slashes, and commas with hyphens, and '&' with 'and'.
  * @param text - The input string to be slugified.
- * @returns The slugified string in lowercase, with spaces, slashes, and commas replaced by hyphens, and '&' replaced with 'and'.
+ * @returns The slugified string.
+ * @example
+ * slugify("Hello World") // "hello-world"
  */
 export const slugify = (text: string) => {
 	return text
@@ -57,53 +61,6 @@ export const authorizedRequest = (secret: string, validSecret: string) =>
 			catch: error => new AuthorizationError({ message: "Authorization Failed", cause: error }),
 		})
 	}).pipe(Effect.withLogSpan("authorized_request"))
-
-/**
- * A type representing a successful result
- */
-type Success<T> = {
-	success: true
-	data: T
-	error: null
-}
-
-/**
- * A type representing a failed result
- */
-type Failure = {
-	success: false
-	data: null
-	error: Error
-}
-
-/**
- * A union type representing either a successful or failed result
- */
-type Result<T> = Success<T> | Failure
-
-/**
- * Safely executes an async operation and returns a structured result
- *
- * @param promiseOrFn - Either a promise or a function that returns a promise
- * @returns A Result object containing either the data or error
- */
-export async function tryCatch<T>(promiseOrFn: Promise<T> | (() => Promise<T>)): Promise<Result<T>> {
-	try {
-		const data = Predicate.isFunction(promiseOrFn) ? await promiseOrFn() : await promiseOrFn
-
-		return {
-			success: true,
-			data,
-			error: null,
-		}
-	} catch (error) {
-		return {
-			success: false,
-			data: null,
-			error: error instanceof Error ? error : new Error(String(error)),
-		}
-	}
-}
 /**
  * Generates a unique, secure, and time-limited token.
  * @param value - The value to secure.
@@ -134,27 +91,21 @@ export const verifyToken = (token: string) =>
 			catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
 		})
 		const [value, salt, expiresInStr, originalHash] = buffer.split(":")
-		const expiresIn = parseInt(expiresInStr, 10)
+		const expiresIn = parseInt(expiresInStr, 10) 
 		const now = Date.now()
 
-		if (Duration.greaterThan(now, expiresIn))
-			return yield* Effect.fail(
-				new TokenExpirationError({
+		if (Duration.greaterThan(now, expiresIn)) return yield* new TokenExpirationError({
 					message: "Token has expired",
 					cause: new Error(`Token expired at ${new Date(expiresIn).toISOString()}`),
-				}),
-			)
+				})
 
 		const payload = `${value}:${salt}:${expiresIn}`
 		const hash = createHash("sha256").update(payload).digest("hex")
 
-		if (hash !== originalHash)
-			return yield* Effect.fail(
-				new TokenVerificationError({
-					message: "Invalid Token",
-					cause: new Error("Original hash does not match the calculated hash"),
-				}),
-			)
+		if (hash !== originalHash) return yield* new TokenVerificationError({ 
+			message: "Invalid Token",
+			cause: new Error("Original hash does not match the calculated hash"),
+		})
 
 		return value
 	}).pipe(Effect.withLogSpan("verify_token"))

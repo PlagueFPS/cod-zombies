@@ -1,7 +1,7 @@
 "use client"
 import { Predicate } from "effect"
 import { useParams } from "next/navigation"
-import { capatilize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions"
 import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 
 export default function BreadcrumbLoader() {
@@ -10,8 +10,8 @@ export default function BreadcrumbLoader() {
 	return (
 		<Breadcrumbs
 			links={[
-				{ title: Predicate.isString(game) ? capatilize(game) : "", href: `/?game=${game}` },
-				{ title: Predicate.isString(slug) ? capatilize(slug) : "", href: `/${game}/${slug}` },
+				{ title: Predicate.isString(game) ? capitalize(game) : "", href: `/?game=${game}` },
+				{ title: Predicate.isString(slug) ? capitalize(slug) : "", href: `/${game}/${slug}` },
 			]}
 		/>
 	)

@@ -3,7 +3,7 @@ import { Book, BookText, Brain, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
-import { capatilize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions"
 import { Button } from "../ui/button"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
 import { DialogDescription, DialogTitle } from "../ui/dialog"
@@ -191,7 +191,7 @@ export default function SearchInput({ showFull, maps, games, quests, zombies, av
 										className="cursor-pointer gap-2"
 									>
 										<MapIcon className="size-4" />
-										<span className="blur-none">{`${capatilize(map)} Interactive Map`}</span>
+										<span className="blur-none">{`${capitalize(map)} Interactive Map`}</span>
 									</CommandItem>
 								))}
 							</CommandGroup>
