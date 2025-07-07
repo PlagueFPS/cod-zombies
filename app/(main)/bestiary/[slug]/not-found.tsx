@@ -1,7 +1,7 @@
 "use client"
 import { useParams } from "next/navigation"
 import NotFoundContent from "@/components/not-found/not-found-content"
-import { capitalize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions.client"
 
 export default function QuestNotFound() {
 	const { slug } = useParams()

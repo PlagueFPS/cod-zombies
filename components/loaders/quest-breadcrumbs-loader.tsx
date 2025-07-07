@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation"
-import { capitalize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions.client"
 import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 
 export default function QuestBreadcrumbsLoader() {

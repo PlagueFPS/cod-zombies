@@ -1,5 +1,5 @@
 import NotFoundBreadcrumbs from "@/components/not-found/not-found-breadcrumbs"
-import { capitalize } from "@/utils/functions"
+import { capitalize } from "@/utils/functions.client"
 import { CustomLink } from "../custom-link/custom-link"
 import { Button } from "../ui/button"
 
