@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from "lucide-react"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import ExternalLink from "@/components/external-link/external-link"
 import { env } from "@/env"
-import { getYouTubeVideoId, slugify } from "@/utils/functions"
+import { getYouTubeVideoId, slugify } from "@/utils/functions.client"
 import Heading3 from "../rich-headings/heading3/heading3"
 
 interface RichLinkProps {

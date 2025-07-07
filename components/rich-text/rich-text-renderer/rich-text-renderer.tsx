@@ -3,7 +3,7 @@ import { BLOCKS, type Document, INLINES, MARKS } from "@contentful/rich-text-typ
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { cn } from "@/lib/utils"
 import { createItemTooltipDto } from "@/utils/contentful-utils"
-import { slugify } from "@/utils/functions"
+import { slugify } from "@/utils/functions.client"
 import RichBlockquote from "../rich-blockquote/rich-blockquote"
 import GKValve from "../rich-embeds/gk-valve"
 import ItemTooltip from "../rich-embeds/item-tooltip"

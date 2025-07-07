@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { formatTableCellData } from "@/utils/contentful-utils"
-import { slugify } from "@/utils/functions"
+import { slugify } from "@/utils/functions.client"
 import ItemTooltip from "../rich-embeds/item-tooltip"
 
 interface RichTableProps {

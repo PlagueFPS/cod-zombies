@@ -3,7 +3,7 @@ import { useMemo, useState } from "react"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ValveRoutes from "@/data/gk-valves.json"
 import { cn } from "@/lib/utils"
-import { slugify } from "@/utils/functions"
+import { slugify } from "@/utils/functions.client"
 
 const locations = ["Armory", "Infirmary", "Department Store", "Supply Depot", "Dragon Command", "Tank Factory"]
 
