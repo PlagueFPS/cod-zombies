@@ -107,9 +107,8 @@ export const NEW_ENTRY_KV = {
 
 export const getNewEntries = Effect.fn("getNewEntries")(
 	() => NEW_ENTRY_KV.getAll(),
-	Effect.mapError(
-		error => new GetEntriesError({ message: "Failed to get new entries", cause: error }),
-	),
+	Effect.tapError(Effect.logError),
+	Effect.catchAll(() => Effect.succeed([])),
 )
 
 export const storeNewEntryId = (
@@ -139,13 +138,8 @@ export const getEntryStatus = (entryId: string) =>
 		return status
 	}).pipe(
 		Effect.withSpan("get_entry_status", { attributes: { entryId } }),
-		Effect.mapError(
-			error =>
-				new GetEntryStatusError({
-					message: `Failed to get entry status for entry ID: ${entryId}`,
-					cause: error,
-				}),
-		),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed(null)),
 	)
 
 export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryStatus) =>
