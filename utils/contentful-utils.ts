@@ -120,61 +120,43 @@ export const createImageDto = (image: Asset<undefined, string> | undefined) => {
 		height: image?.fields.file?.details?.image?.height,
 	}
 }
+export const createMapCategoryDto = Effect.fn("createMapCategoryDto")(function*(
+	category: Entry<TypeGameCategorySkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined
+){
+	if (!category) return yield* new MapCategoryNotFoundError({
+		message: "Expected map to have a category",
+	})
 
-export const createMapCategoryDto = (
-	category: Entry<TypeGameCategorySkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) =>
-	Effect.gen(function* () {
-		if (!category)
-			return yield* new MapCategoryNotFoundError({
-				message: "Expected map to have a category",
-			})
-		return {
-			title: category.fields.title,
-			slug: category.fields.slug,
-		}
-	}).pipe(
-		Effect.withLogSpan("create_map_category_dto"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(error => Effect.dieMessage(error.message)),
-	)
+	return {
+		title: category.fields.title,
+		slug: category.fields.slug,
+	}
+}, Effect.tapError(Effect.logError), Effect.catchAll(error => Effect.dieMessage(error.message)))
 
-export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(
+export const createQuestMapDto = Effect.fn("createQuestMapDto")(function*<T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(
 	map: Entry<T, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) =>
-	Effect.gen(function* () {
-		if (!map)
-			return yield* new QuestMapNotFoundError({
-				message: "Expected quest to have a map",
-			})
+){
+	if (!map) return yield* new QuestMapNotFoundError({
+		message: "Expected quest to have a map",
+	})
 
-		return {
-			title: map.fields.title,
-			slug: map.fields.slug,
-		}
-	}).pipe(
-		Effect.withLogSpan("create_quest_map_dto"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(error => Effect.dieMessage(error.message)),
-	)
+	return {
+		title: map.fields.title,
+		slug: map.fields.slug
+	}
+}, Effect.tapError(Effect.logError), Effect.catchAll(error => Effect.dieMessage(error.message)))
 
-export const createZombieAttackDto = (
+export const createZombieAttackDto = Effect.fn("createZombieAttackDto")(function*(
 	attack: Entry<TypeZombieAttacksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) =>
-	Effect.gen(function* () {
-		if (!attack)
-			return yield* new ZombieAttackNotFoundError({
-				message: "Expected zombie to have an attack",
-			})
+){
+	if (!attack) return yield* new ZombieAttackNotFoundError({
+		message: "Expected zombie to have an attack",
+	})
 
-		return {
-			id: attack.sys.id,
-			name: attack.fields.name,
-			range: attack.fields.range,
-			description: attack.fields.description,
-		}
-	}).pipe(
-		Effect.withLogSpan("create_zombie_attack_dto"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(error => Effect.dieMessage(error.message)),
-	)
+	return {
+		id: attack.sys.id,
+		name: attack.fields.name,
+		range: attack.fields.range,
+		description: attack.fields.description
+	}
+}, Effect.tapError(Effect.logError), Effect.catchAll(error => Effect.dieMessage(error.message)))

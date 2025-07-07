@@ -12,9 +12,12 @@ export const getGames = cache(
 	unstable_cache(
 		async (draftMode: boolean) => {
 			return await Effect.gen(function* () {
-				const [games, { changedIds, draftIds, newIds }] = yield* Effect.all([INTERNAL_getGameData(), getGameIds], {
-					concurrency: "unbounded",
-				})
+				const [games, { changedIds, draftIds, newIds }] = yield* Effect.all(
+					[INTERNAL_getGameData(), getGameIds],
+					{
+						concurrency: "unbounded",
+					},
+				)
 
 				return games.map(game => {
 					const isDraft = draftIds.has(game.sys.id)
@@ -58,7 +61,11 @@ export const getGameSearchData = cache(
 						title: g.fields.title,
 						slug: g.fields.slug,
 					}))
-			}).pipe(Effect.withLogSpan("get_game_search_data"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
+			}).pipe(
+				Effect.withLogSpan("get_game_search_data"),
+				Effect.provide(CMS.Default(draftMode)),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{
@@ -81,7 +88,11 @@ export const getGameById = cache(
 					slug: game.fields.slug,
 					isComingSoon: game.fields.isComingSoon ?? false,
 				}
-			}).pipe(Effect.withLogSpan("get_game_by_id"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
+			}).pipe(
+				Effect.withSpan("get_game_by_id", { attributes: { id } }),
+				Effect.provide(CMS.Default(draftMode)),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{
@@ -91,9 +102,12 @@ export const getGameById = cache(
 )
 
 const getGameIds = Effect.gen(function* () {
-	const [games, newEntries] = yield* Effect.all([INTERNAL_getManagementGameData(), getNewEntries()], {
-		concurrency: "unbounded",
-	})
+	const [games, newEntries] = yield* Effect.all(
+		[INTERNAL_getManagementGameData(), getNewEntries()],
+		{
+			concurrency: "unbounded",
+		},
+	)
 
 	const draftIds = new Set<string>()
 	const changedIds = new Set<string>()

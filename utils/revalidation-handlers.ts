@@ -9,7 +9,11 @@ import { getZombieById } from "@/data/zombies"
 import { env } from "@/env"
 import { getEntryStatus, storeNewEntryId, updateEntryStatus } from "@/lib/redis"
 import { EntryNotFoundError } from "@/types/errors"
-import { sendLegalUpdateBroadcast, sendQuestReleaseBroadcast, sendZombieReleaseBroadcast } from "@/usecases/email"
+import {
+	sendLegalUpdateBroadcast,
+	sendQuestReleaseBroadcast,
+	sendZombieReleaseBroadcast,
+} from "@/usecases/email"
 import { CACHE_KEYS } from "./constants"
 import { isFirstTimePublish } from "./contentful-utils"
 
@@ -38,20 +42,23 @@ interface BroadcastResponse {
 const createSuccessResponse = (message: string, broadcast: BroadcastResponse | null) =>
 	Response.json({ revalidated: true, message, broadcast }, { status: 201 })
 
-const sendQuestBroadcast = <T extends BroadcastEntry>(type: "Main" | "Side", entry: T, url: string) =>
-	Effect.gen(function* () {
-		const imageUrl =
-			type === "Main"
-				? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}`
-				: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
+const sendQuestBroadcast = Effect.fn("sendQuestBroadcast")(function* <T extends BroadcastEntry>(
+	type: "Main" | "Side",
+	entry: T,
+	url: string,
+) {
+	const imageUrl =
+		type === "Main"
+			? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}`
+			: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
 
-		return yield* sendQuestReleaseBroadcast({
-			type,
-			redirectUrl: url,
-			imageUrl,
-			...entry,
-		})
+	return yield* sendQuestReleaseBroadcast({
+		type,
+		redirectUrl: url,
+		imageUrl,
+		...entry,
 	})
+})
 
 /**
  * Collection of revalidation handlers for different content types.
@@ -90,7 +97,10 @@ export const RevalidateHandlers = {
 				const status = yield* getEntryStatus(entryId)
 				if (status === "Coming Soon" && !map.isComingSoon) {
 					const [_, broadcastResult] = yield* Effect.all(
-						[updateEntryStatus(entryId, updatedAt, "Published"), sendQuestBroadcast("Main", map, url)],
+						[
+							updateEntryStatus(entryId, updatedAt, "Published"),
+							sendQuestBroadcast("Main", map, url),
+						],
 						{ concurrency: "unbounded" },
 					)
 
@@ -100,7 +110,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.featuredMaps.all)
 			return createSuccessResponse("Map revalidated", broadcast)
-		}).pipe(Effect.withLogSpan("maps_revalidate_handler")),
+		}).pipe(Effect.withSpan("maps_revalidate_handler", { attributes: { entryId } })),
 
 	/**
 	 * Handles revalidation for game entries.
@@ -133,7 +143,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.gameCategories.all)
 			return createSuccessResponse("Game revalidated", null)
-		}).pipe(Effect.withLogSpan("games_revalidate_handler")),
+		}).pipe(Effect.withSpan("games_revalidate_handler", { attributes: { entryId } })),
 
 	/**
 	 * Handles revalidation for side quest entries.
@@ -167,7 +177,10 @@ export const RevalidateHandlers = {
 				const status = yield* getEntryStatus(entryId)
 				if (status === "Coming Soon" && !quest.isComingSoon) {
 					const [_, broadcastResult] = yield* Effect.all(
-						[updateEntryStatus(entryId, updatedAt, "Published"), sendQuestBroadcast("Side", quest, url)],
+						[
+							updateEntryStatus(entryId, updatedAt, "Published"),
+							sendQuestBroadcast("Side", quest, url),
+						],
 						{ concurrency: "unbounded" },
 					)
 
@@ -177,7 +190,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.sideQuests.all)
 			return createSuccessResponse("Side Quest revalidated", broadcast)
-		}).pipe(Effect.withLogSpan("side_quests_revalidate_handler")),
+		}).pipe(Effect.withSpan("side_quests_revalidate_handler", { attributes: { entryId } })),
 
 	/**
 	 * Handles revalidation for zombie entries.
@@ -219,7 +232,10 @@ export const RevalidateHandlers = {
 				const status = yield* getEntryStatus(entryId)
 				if (status === "Coming Soon" && !zombie.isComingSoon) {
 					const [_, broadcastResult] = yield* Effect.all(
-						[updateEntryStatus(entryId, updatedAt, "Published"), sendZombieReleaseBroadcast(broadcastData)],
+						[
+							updateEntryStatus(entryId, updatedAt, "Published"),
+							sendZombieReleaseBroadcast(broadcastData),
+						],
 						{ concurrency: "unbounded" },
 					)
 
@@ -229,7 +245,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.zombies.all)
 			return createSuccessResponse("Zombie revalidated", broadcast)
-		}).pipe(Effect.withLogSpan("zombies_revalidate_handler")),
+		}).pipe(Effect.withSpan("zombies_revalidate_handler", { attributes: { entryId } })),
 
 	/**
 	 * Handles revalidation for legal document entries.
@@ -258,5 +274,5 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.legal.all)
 			return createSuccessResponse("Legal document revalidated", broadcast)
-		}).pipe(Effect.withLogSpan("legal_revalidate_handler")),
+		}).pipe(Effect.withSpan("legal_revalidate_handler", { attributes: { entryId } })),
 }

@@ -22,19 +22,21 @@ export const getMaps = cache(
 					concurrency: "unbounded",
 				})
 
-				return yield* Effect.forEach(maps, map => Effect.gen(function*(){
-					const mapData = yield* resolveMapData(map, mapIds)
-					return {
-						...mapData,
-						id: map.sys.id,
-						title: map.fields.title,
-						slug: map.fields.slug,
-						updatedAt: map.sys.updatedAt,
-						description: map.fields.description,
-						isComingSoon: map.fields.isComingSoon ?? false,
-						difficulty: map.fields.difficulty,
-					}
-				}))
+				return yield* Effect.forEach(maps, map =>
+					Effect.gen(function* () {
+						const mapData = yield* resolveMapData(map, mapIds)
+						return {
+							...mapData,
+							id: map.sys.id,
+							title: map.fields.title,
+							slug: map.fields.slug,
+							updatedAt: map.sys.updatedAt,
+							description: map.fields.description,
+							isComingSoon: map.fields.isComingSoon ?? false,
+							difficulty: map.fields.difficulty,
+						}
+					}),
+				)
 			}).pipe(
 				Effect.withLogSpan("get_maps"),
 				Effect.provide(CMS.Default(draftMode)),
@@ -56,16 +58,21 @@ export const getMapSearchData = cache(
 				const maps = yield* INTERNAL_getMapData()
 				const filteredMaps = maps.filter(map => !map.fields.isComingSoon)
 
-				return yield* Effect.forEach(filteredMaps, map => Effect.gen(function*(){
-					return {
-						id: map.sys.id,
-						title: map.fields.title,
-						slug: map.fields.slug,
-						game: yield* createMapCategoryDto(map.fields.gameCategory),
-					}
-				}))
-
-			}).pipe(Effect.withLogSpan("get_map_search_data"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
+				return yield* Effect.forEach(filteredMaps, map =>
+					Effect.gen(function* () {
+						return {
+							id: map.sys.id,
+							title: map.fields.title,
+							slug: map.fields.slug,
+							game: yield* createMapCategoryDto(map.fields.gameCategory),
+						}
+					}),
+				)
+			}).pipe(
+				Effect.withLogSpan("get_map_search_data"),
+				Effect.provide(CMS.Default(draftMode)),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{
@@ -102,7 +109,7 @@ export const getMapBySlug = cache(
 					timeToRead: map.fields.timeToRead,
 				}
 			}).pipe(
-				Effect.withLogSpan("get_map_by_slug"),
+				Effect.withSpan("get_map_by_slug", { attributes: { slug } }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -139,7 +146,7 @@ export const getMapById = cache(
 					game: game.slug,
 				}
 			}).pipe(
-				Effect.withLogSpan("get_map_by_id"),
+				Effect.withSpan("get_map_by_id", { attributes: { id } }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -179,43 +186,48 @@ const getMapIds = Effect.gen(function* () {
 const resolveMapData = (
 	map: Entry<TypeFeaturedMapsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	mapIds: Effect.Effect.Success<typeof getMapIds>,
-) => Effect.gen(function*(){
-	const { draftIds, changedIds, newIds } = mapIds
-	const image = createImageDto(map.fields.image)
-	const game = yield* createMapCategoryDto(map.fields.gameCategory)
-	const isDraft = draftIds.has(map.sys.id)
-	const isChanged = changedIds.has(map.sys.id)
-	const isNew = newIds.has(map.sys.id)
+) =>
+	Effect.gen(function* () {
+		const { draftIds, changedIds, newIds } = mapIds
+		const image = createImageDto(map.fields.image)
+		const game = yield* createMapCategoryDto(map.fields.gameCategory)
+		const isDraft = draftIds.has(map.sys.id)
+		const isChanged = changedIds.has(map.sys.id)
+		const isNew = newIds.has(map.sys.id)
 
-	return {
-		image,
-		game,
-		isDraft,
-		isChanged,
-		isNew,
-	}
-}).pipe(Effect.withLogSpan("resolve_map_data"))
+		return {
+			image,
+			game,
+			isDraft,
+			isChanged,
+			isNew,
+		}
+	}).pipe(Effect.withLogSpan("resolve_map_data"))
 
-const INTERNAL_getManagementMapData = cache(() => Effect.gen(function*(){
-	const { getManagementEntries } = yield* CMS
-	const data = yield* getManagementEntries("featuredMaps")
-	return data.items
-}).pipe(
-	Effect.withLogSpan("internal_get_management_map_data"),
-	Effect.tapError(Effect.logError),
-	Effect.catchAll(() => Effect.succeed([])),
-))
+const INTERNAL_getManagementMapData = cache(() =>
+	Effect.gen(function* () {
+		const { getManagementEntries } = yield* CMS
+		const data = yield* getManagementEntries("featuredMaps")
+		return data.items
+	}).pipe(
+		Effect.withLogSpan("internal_get_management_map_data"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
+)
 
-const INTERNAL_getMapData = cache(() => Effect.gen(function*(){
-	const { getEntries } = yield* CMS
-	const data = yield* getEntries<TypeFeaturedMapsSkeleton>({
-		content_type: "featuredMaps",
-		order: ["-fields.releaseDate"],
-		select: ["sys.id", "sys.updatedAt", "fields"],
-	})
-	return data.items
-}).pipe(
-	Effect.withLogSpan("internal_get_map_data"),
-	Effect.tapError(Effect.logError),
-	Effect.catchAll(() => Effect.succeed([])),
-))
+const INTERNAL_getMapData = cache(() =>
+	Effect.gen(function* () {
+		const { getEntries } = yield* CMS
+		const data = yield* getEntries<TypeFeaturedMapsSkeleton>({
+			content_type: "featuredMaps",
+			order: ["-fields.releaseDate"],
+			select: ["sys.id", "sys.updatedAt", "fields"],
+		})
+		return data.items
+	}).pipe(
+		Effect.withLogSpan("internal_get_map_data"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(() => Effect.succeed([])),
+	),
+)

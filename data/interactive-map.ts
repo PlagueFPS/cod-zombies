@@ -9,10 +9,11 @@ export const getMapConfig = cache((mapId: MapId) =>
 		const config = mapRegistry[mapId]
 		return yield* Effect.tryPromise({
 			try: () => config,
-			catch: error => new MapConfigError({ message: `Failed to get map config for ${mapId}`, cause: error }),
+			catch: error =>
+				new MapConfigError({ message: `Failed to get map config for ${mapId}`, cause: error }),
 		})
 	}).pipe(
-		Effect.withLogSpan("get_map_config"),
+		Effect.withSpan("get_map_config", { attributes: { mapId } }),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(() => Effect.succeed(null)),
 		Effect.runPromise,

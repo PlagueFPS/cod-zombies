@@ -1,8 +1,8 @@
 import "server-only"
+import type { EntryStatus, EntryType } from "@/types/entry-enforcement"
 import { Redis } from "@upstash/redis"
 import { Effect, Schema } from "effect"
 import { env } from "@/env"
-import type { EntryStatus, EntryType } from "@/types/entry-enforcement"
 import {
 	EntryNotFoundError,
 	GetCacheValueError,
@@ -105,25 +105,25 @@ export const NEW_ENTRY_KV = {
 	},
 }
 
-export const getNewEntries = () =>
-	NEW_ENTRY_KV.getAll().pipe(
-		Effect.withLogSpan("get_new_entries"),
-		Effect.mapError(
-			error =>
-				new GetEntriesError({
-					message: "Failed to get new entries",
-					cause: error,
-				}),
-		),
-	)
+export const getNewEntries = Effect.fn("getNewEntries")(
+	() => NEW_ENTRY_KV.getAll(),
+	Effect.mapError(
+		error => new GetEntriesError({ message: "Failed to get new entries", cause: error }),
+	),
+)
 
-export const storeNewEntryId = (entryId: string, createdAt: Date, status: EntryStatus, type: EntryType) =>
+export const storeNewEntryId = (
+	entryId: string,
+	createdAt: Date,
+	status: EntryStatus,
+	type: EntryType,
+) =>
 	Effect.gen(function* () {
 		const result = yield* NEW_ENTRY_KV.set(entryId, createdAt, status, type)
 		yield* Effect.log(`Stored ${result} new entry ID: ${entryId}`)
 		return result
 	}).pipe(
-		Effect.withLogSpan("store_new_entry_id"),
+		Effect.withSpan("store_new_entry_id", { attributes: { entryId } }),
 		Effect.mapError(
 			error =>
 				new StoreNewEntryError({
@@ -138,7 +138,7 @@ export const getEntryStatus = (entryId: string) =>
 		const { status } = yield* NEW_ENTRY_KV.get(entryId)
 		return status
 	}).pipe(
-		Effect.withLogSpan("get_entry_status"),
+		Effect.withSpan("get_entry_status", { attributes: { entryId } }),
 		Effect.mapError(
 			error =>
 				new GetEntryStatusError({
@@ -161,7 +161,7 @@ export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryS
 		yield* Effect.log(`Updated ${result} entry status to "${type}": ${entryId}`)
 		return result
 	}).pipe(
-		Effect.withLogSpan("update_entry_status"),
+		Effect.withSpan("update_entry_status", { attributes: { entryId } }),
 		Effect.mapError(
 			error =>
 				new UpdateEntryStatusError({

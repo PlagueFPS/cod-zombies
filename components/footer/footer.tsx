@@ -7,7 +7,6 @@ import { CustomLink } from "../custom-link/custom-link"
 import ExternalLink from "../external-link/external-link"
 import CopyrightLoader from "../loaders/copyright-loader"
 import Newsletter from "../newsletter/newsletter"
-import ThemeToggleWrapper from "../theme-toggle/theme-toggle-wrapper"
 import { Separator } from "../ui/separator"
 import Copyright from "./copyright/copyright"
 
@@ -49,7 +48,6 @@ export default function Footer() {
 				<div className="order-first flex justify-center space-x-4 md:order-last md:justify-end">
 					<div className="flex items-center gap-4">
 						<ContactForm />
-						<ThemeToggleWrapper />
 					</div>
 				</div>
 			</div>

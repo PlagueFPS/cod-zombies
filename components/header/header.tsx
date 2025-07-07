@@ -10,13 +10,23 @@ import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper"
 import Logo from "@/public/logo.webp"
 import { IN_DEVELOPMENT, ROUTES } from "@/utils/constants"
 import LocalCacheButton from "../ui/local-cache-button"
+import { Separator } from "../ui/separator"
 
 export default function Header() {
 	return (
 		<header className="sticky top-0 z-500 w-full">
 			<div className="mx-auto flex h-16 w-full max-w-screen items-center border-b bg-background/90 px-2 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs lg:px-8">
-				<CustomLink href="/" aria-label="Go to Home Page" className="mr-auto flex items-center justify-center gap-2">
-					<Image unoptimized src={Logo} alt="Call of Duty: Zombies Guides Logo" className="size-5 rounded" />
+				<CustomLink
+					href="/"
+					aria-label="Go to Home Page"
+					className="mr-auto flex items-center justify-center gap-2"
+				>
+					<Image
+						unoptimized
+						src={Logo}
+						alt="Call of Duty: Zombies Guides Logo"
+						className="size-5 rounded"
+					/>
 					<div className="text-center font-extrabold text-xl">
 						<span className="dark:dark-text-gradient text-gradient">COD:</span>
 						<span className="text-primary-gradient"> Zombies Guides</span>
@@ -42,7 +52,8 @@ export default function Header() {
 					<Suspense fallback={<SearchBarLoader />}>
 						<SearchBar />
 					</Suspense>
-					<div className="hidden md:inline-flex">
+					<div className="hidden items-center gap-2 md:inline-flex">
+						<Separator orientation="vertical" className="min-h-6" />
 						<ThemeToggleWrapper />
 					</div>
 				</div>

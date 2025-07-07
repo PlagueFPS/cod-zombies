@@ -28,19 +28,24 @@ export const getZombies = cache(
 					concurrency: "unbounded",
 				})
 
-				return yield* Effect.forEach(zombies, zombie => Effect.gen(function*(){
-					const { elementalWeakness, attacks, ...rest } = yield* resolveZombieData(zombie, zombieIds)
-					return {
-						...rest,
-						id: zombie.sys.id,
-						name: zombie.fields.name,
-						slug: zombie.fields.slug,
-						description: zombie.fields.description,
-						type: zombie.fields.type,
-						updatedAt: zombie.sys.updatedAt,
-						isComingSoon: zombie.fields.isComingSoon ?? false,
-					}
-				}))
+				return yield* Effect.forEach(zombies, zombie =>
+					Effect.gen(function* () {
+						const { elementalWeakness, attacks, ...rest } = yield* resolveZombieData(
+							zombie,
+							zombieIds,
+						)
+						return {
+							...rest,
+							id: zombie.sys.id,
+							name: zombie.fields.name,
+							slug: zombie.fields.slug,
+							description: zombie.fields.description,
+							type: zombie.fields.type,
+							updatedAt: zombie.sys.updatedAt,
+							isComingSoon: zombie.fields.isComingSoon ?? false,
+						}
+					}),
+				)
 			}).pipe(
 				Effect.withLogSpan("get_zombies"),
 				Effect.provide(CMS.Default(draftMode)),
@@ -64,17 +69,19 @@ export const getZombieSearchData = cache(
 				})
 				const currentZombies = zombies.filter(z => !z.fields.isComingSoon)
 
-				return yield* Effect.forEach(currentZombies, zombie => Effect.gen(function*(){
-					const { games, maps } = yield* resolveZombieData(zombie, zombieIds)
-					return {
-						id: zombie.sys.id,
-						name: zombie.fields.name,
-						slug: zombie.fields.slug,
-						type: zombie.fields.type,
-						games,
-						maps,
-					}
-				}))
+				return yield* Effect.forEach(currentZombies, zombie =>
+					Effect.gen(function* () {
+						const { games, maps } = yield* resolveZombieData(zombie, zombieIds)
+						return {
+							id: zombie.sys.id,
+							name: zombie.fields.name,
+							slug: zombie.fields.slug,
+							type: zombie.fields.type,
+							games,
+							maps,
+						}
+					}),
+				)
 			}).pipe(
 				Effect.withLogSpan("get_zombie_search_data"),
 				Effect.provide(CMS.Default(draftMode)),
@@ -116,7 +123,7 @@ export const getZombieBySlug = cache(
 					isComingSoon: zombie.fields.isComingSoon ?? false,
 				}
 			}).pipe(
-				Effect.withLogSpan("get_zombie_by_slug"),
+				Effect.withSpan("get_zombie_by_slug", { attributes: { slug } }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -147,7 +154,11 @@ export const getZombieById = cache(
 					image: createImageDto(zombie.fields.image),
 					isComingSoon: zombie.fields.isComingSoon ?? false,
 				}
-			}).pipe(Effect.withLogSpan("get_zombie_by_id"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
+			}).pipe(
+				Effect.withSpan("get_zombie_by_id", { attributes: { id } }),
+				Effect.provide(CMS.Default(draftMode)),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{
@@ -162,14 +173,20 @@ export const getReferencedMaps = cache(
 			return await Effect.gen(function* () {
 				const maps = yield* INTERNAL_getReferencedMaps()
 
-				return yield* Effect.forEach(maps, map => Effect.gen(function*(){
-					const questMap = yield* createQuestMapDto(map)
-					return {
-						id: map.sys.id,
-						...questMap,
-					}
-				}))
-			}).pipe(Effect.withLogSpan("get_referenced_maps"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
+				return yield* Effect.forEach(maps, map =>
+					Effect.gen(function* () {
+						const questMap = yield* createQuestMapDto(map)
+						return {
+							id: map.sys.id,
+							...questMap,
+						}
+					}),
+				)
+			}).pipe(
+				Effect.withLogSpan("get_referenced_maps"),
+				Effect.provide(CMS.Default(draftMode)),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{
@@ -181,37 +198,45 @@ export const getReferencedMaps = cache(
 const resolveZombieData = (
 	zombie: Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	zombieIds: Effect.Effect.Success<typeof getZombieIds>,
-) => Effect.gen(function*(){
-	const { changedIds, draftIds, newIds } = zombieIds
-	const games = yield* Effect.forEach(zombie.fields.games, game => createMapCategoryDto(game))
-	const maps = yield* Effect.forEach(zombie.fields.maps, map => createQuestMapDto(map))
-	const attacks = yield* Effect.forEach(zombie.fields.attacks, attack => createZombieAttackDto(attack))
-	const image = createImageDto(zombie.fields.image)
-	const elementalWeakness = zombie.fields.elementalWeakness?.map(weakness => {
-			if (!weakness) return null
-			return createItemTooltipDto(weakness)
-		}).filter(weakness => !!weakness)
+) =>
+	Effect.gen(function* () {
+		const { changedIds, draftIds, newIds } = zombieIds
+		const games = yield* Effect.forEach(zombie.fields.games, game => createMapCategoryDto(game))
+		const maps = yield* Effect.forEach(zombie.fields.maps, map => createQuestMapDto(map))
+		const attacks = yield* Effect.forEach(zombie.fields.attacks, attack =>
+			createZombieAttackDto(attack),
+		)
+		const image = createImageDto(zombie.fields.image)
+		const elementalWeakness = zombie.fields.elementalWeakness
+			?.map(weakness => {
+				if (!weakness) return null
+				return createItemTooltipDto(weakness)
+			})
+			.filter(weakness => !!weakness)
 
-	const isDraft = draftIds.has(zombie.sys.id)
-	const isChanged = changedIds.has(zombie.sys.id)
-	const isNew = newIds.has(zombie.sys.id)
+		const isDraft = draftIds.has(zombie.sys.id)
+		const isChanged = changedIds.has(zombie.sys.id)
+		const isNew = newIds.has(zombie.sys.id)
 
-	return {
-		image,
-		games,
-		maps,
-		attacks,
-		elementalWeakness,
-		isDraft,
-		isChanged,
-		isNew,
-	}
-}).pipe(Effect.withLogSpan("resolve_zombie_data"))
+		return {
+			image,
+			games,
+			maps,
+			attacks,
+			elementalWeakness,
+			isDraft,
+			isChanged,
+			isNew,
+		}
+	}).pipe(Effect.withLogSpan("resolve_zombie_data"))
 
 const getZombieIds = Effect.gen(function* () {
-	const [zombies, newEntries] = yield* Effect.all([INTERNAL_getManagementZombies(), getNewEntries()], {
-		concurrency: "unbounded",
-	})
+	const [zombies, newEntries] = yield* Effect.all(
+		[INTERNAL_getManagementZombies(), getNewEntries()],
+		{
+			concurrency: "unbounded",
+		},
+	)
 
 	const draftIds = new Set<string>()
 	const changedIds = new Set<string>()
@@ -220,7 +245,10 @@ const getZombieIds = Effect.gen(function* () {
 	zombies.forEach(zombie => {
 		if (!zombie.sys.publishedVersion) {
 			draftIds.add(zombie.sys.id)
-		} else if (!!zombie.sys.publishedVersion && zombie.sys.version >= zombie.sys.publishedVersion + 2) {
+		} else if (
+			!!zombie.sys.publishedVersion &&
+			zombie.sys.version >= zombie.sys.publishedVersion + 2
+		) {
 			changedIds.add(zombie.sys.id)
 		}
 	})

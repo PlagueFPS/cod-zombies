@@ -21,19 +21,21 @@ export const getQuests = cache(
 					concurrency: "unbounded",
 				})
 
-				return yield* Effect.forEach(quests, quest => Effect.gen(function*(){
-					const { category: game, ...rest } = yield* resolveQuestData(quest, questIds)
-					return {
-						...rest,
-						game,
-						id: quest.sys.id,
-						updatedAt: quest.sys.updatedAt,
-						isComingSoon: quest.fields.isComingSoon ?? false,
-						title: quest.fields.title,
-						slug: quest.fields.slug,
-						description: quest.fields.description,
-					}
-				}))
+				return yield* Effect.forEach(quests, quest =>
+					Effect.gen(function* () {
+						const { category: game, ...rest } = yield* resolveQuestData(quest, questIds)
+						return {
+							...rest,
+							game,
+							id: quest.sys.id,
+							updatedAt: quest.sys.updatedAt,
+							isComingSoon: quest.fields.isComingSoon ?? false,
+							title: quest.fields.title,
+							slug: quest.fields.slug,
+							description: quest.fields.description,
+						}
+					}),
+				)
 			}).pipe(
 				Effect.withLogSpan("get_quests"),
 				Effect.provide(Cache.Default),
@@ -58,17 +60,19 @@ export const getQuestSearchData = cache(
 
 				const currentQuests = quests.filter(q => !q.fields.isComingSoon)
 
-				return yield* Effect.forEach(currentQuests, quest => Effect.gen(function*(){
-					const { category: game, map } = yield* resolveQuestData(quest, questIds)
+				return yield* Effect.forEach(currentQuests, quest =>
+					Effect.gen(function* () {
+						const { category: game, map } = yield* resolveQuestData(quest, questIds)
 
-					return {
-						id: quest.sys.id,
-						title: quest.fields.title,
-						slug: quest.fields.slug,
-						game,
-						map,
-					}
-				}))
+						return {
+							id: quest.sys.id,
+							title: quest.fields.title,
+							slug: quest.fields.slug,
+							game,
+							map,
+						}
+					}),
+				)
 			}).pipe(
 				Effect.withLogSpan("get_quest_search_data"),
 				Effect.provide(Cache.Default),
@@ -95,12 +99,12 @@ export const getQuestById = cache(
 					return null
 				}
 
-				const [map, game] = yield* Effect.all([
-					createQuestMapDto(quest.fields.map),
-					createMapCategoryDto(quest.fields.game),
-				], {
-					concurrency: "unbounded",
-				})
+				const [map, game] = yield* Effect.all(
+					[createQuestMapDto(quest.fields.map), createMapCategoryDto(quest.fields.game)],
+					{
+						concurrency: "unbounded",
+					},
+				)
 
 				return {
 					id: quest.sys.id,
@@ -112,7 +116,11 @@ export const getQuestById = cache(
 					map: map.slug,
 					game: game.slug,
 				}
-			}).pipe(Effect.withLogSpan("get_quest_by_id"), Effect.provide(CMS.Default(draftMode)), Effect.runPromise)
+			}).pipe(
+				Effect.withSpan("get_quest_by_id", { attributes: { id } }),
+				Effect.provide(CMS.Default(draftMode)),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{
@@ -134,7 +142,7 @@ export const getQuestBySlug = cache(
 				}
 
 				const questIds = yield* getQuestIds
-				const { category: game, ...rest } = yield*resolveQuestData(quest, questIds)
+				const { category: game, ...rest } = yield* resolveQuestData(quest, questIds)
 
 				return {
 					...rest,
@@ -149,7 +157,7 @@ export const getQuestBySlug = cache(
 					timeToRead: quest.fields.timeToRead,
 				}
 			}).pipe(
-				Effect.withLogSpan("get_quest_by_slug"),
+				Effect.withSpan("get_quest_by_slug", { attributes: { slug } }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -165,33 +173,37 @@ export const getQuestBySlug = cache(
 const resolveQuestData = (
 	quest: Entry<TypeSideQuestsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	questIds: Effect.Effect.Success<typeof getQuestIds>,
-) => Effect.gen(function*(){
-	const [map, category] = yield* Effect.all([
-		createQuestMapDto(quest.fields.map),
-		createMapCategoryDto(quest.fields.game),
-	], {
-		concurrency: "unbounded",
-	})
-	const { changedIds, draftIds, newIds } = questIds
-	const image = createImageDto(quest.fields.image)
-	const isDraft = draftIds.has(quest.sys.id)
-	const isChanged = changedIds.has(quest.sys.id)
-	const isNew = newIds.has(quest.sys.id)
+) =>
+	Effect.gen(function* () {
+		const [map, category] = yield* Effect.all(
+			[createQuestMapDto(quest.fields.map), createMapCategoryDto(quest.fields.game)],
+			{
+				concurrency: "unbounded",
+			},
+		)
+		const { changedIds, draftIds, newIds } = questIds
+		const image = createImageDto(quest.fields.image)
+		const isDraft = draftIds.has(quest.sys.id)
+		const isChanged = changedIds.has(quest.sys.id)
+		const isNew = newIds.has(quest.sys.id)
 
-	return {
-		image,
-		map,
-		category,
-		isDraft,
-		isChanged,
-		isNew,
-	}
-})
+		return {
+			image,
+			map,
+			category,
+			isDraft,
+			isChanged,
+			isNew,
+		}
+	})
 
 const getQuestIds = Effect.gen(function* () {
-	const [quests, newEntries] = yield* Effect.all([INTERNAL_getManagementSideQuestData(), getNewEntries()], {
-		concurrency: "unbounded",
-	})
+	const [quests, newEntries] = yield* Effect.all(
+		[INTERNAL_getManagementSideQuestData(), getNewEntries()],
+		{
+			concurrency: "unbounded",
+		},
+	)
 
 	const draftIds = new Set<string>()
 	const changedIds = new Set<string>()
@@ -200,7 +212,10 @@ const getQuestIds = Effect.gen(function* () {
 	quests.forEach(quest => {
 		if (!quest.sys.publishedVersion) {
 			draftIds.add(quest.sys.id)
-		} else if (!!quest.sys.publishedVersion && quest.sys.version >= quest.sys.publishedVersion + 2) {
+		} else if (
+			!!quest.sys.publishedVersion &&
+			quest.sys.version >= quest.sys.publishedVersion + 2
+		) {
 			changedIds.add(quest.sys.id)
 		}
 	})
@@ -221,8 +236,8 @@ const INTERNAL_getManagementSideQuestData = cache(() =>
 	}).pipe(
 		Effect.withLogSpan("internal_get_management_side_quest_data"),
 		Effect.tapError(Effect.logError),
-		Effect.catchAll(() => Effect.succeed([]))
-	)
+		Effect.catchAll(() => Effect.succeed([])),
+	),
 )
 
 const INTERNAL_getSideQuestData = cache(() =>
@@ -244,6 +259,6 @@ const INTERNAL_getSideQuestData = cache(() =>
 	}).pipe(
 		Effect.withLogSpan("internal_get_side_quest_data"),
 		Effect.tapError(Effect.logError),
-		Effect.catchAll(() => Effect.succeed([]))
-	)
+		Effect.catchAll(() => Effect.succeed([])),
+	),
 )
