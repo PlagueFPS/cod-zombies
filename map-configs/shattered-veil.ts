@@ -320,6 +320,7 @@ const shatteredVeil: MapConfig = {
 				{ x: 0.643, y: 0.556 },
 				{ x: 0.677, y: 0.593 },
 				{ x: 0.588, y: 0.279 },
+				{ x: 0.517, y: 0.352 },
 			],
 		},
 		{
@@ -486,8 +487,18 @@ const shatteredVeil: MapConfig = {
 		{
 			...sharedMarkers.portal,
 			locations: [
-				{ x: 0.238, y: 0.638, title: "Garden Pond Portal", description: "Teleport to the Supply Depot" },
-				{ x: 0.706, y: 0.626, title: "Supply Depot Portal", description: "Teleport to the Garden Pond" },
+				{
+					x: 0.238,
+					y: 0.638,
+					title: "Garden Pond Portal",
+					description: "Teleport to the Supply Depot",
+				},
+				{
+					x: 0.706,
+					y: 0.626,
+					title: "Supply Depot Portal",
+					description: "Teleport to the Garden Pond",
+				},
 			],
 		},
 		{
@@ -538,7 +549,8 @@ const shatteredVeil: MapConfig = {
 					x: 0.153,
 					y: 0.635,
 					title: "My Warheads",
-					description: "Throw a Combat Axe at the wood left of the zombie body to reveal this document.",
+					description:
+						"Throw a Combat Axe at the wood left of the zombie body to reveal this document.",
 				},
 				{
 					x: 0.55,
