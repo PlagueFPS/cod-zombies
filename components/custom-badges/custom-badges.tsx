@@ -1,6 +1,7 @@
 import type { Difficulty } from "@/data/maps"
 import type { ZombieType } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
+import type { TypeGobblegumRarity, TypeGobblegumType } from "@/types/contentful-types"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
@@ -10,18 +11,27 @@ interface CustomBadgeProps {
 }
 
 export const DraftBadge = ({ className }: CustomBadgeProps) => (
-	<Badge className={cn("badge-draft-gradient dark:dark-badge-draft-gradient", className)}>Draft</Badge>
+	<Badge className={cn("badge-draft-gradient dark:dark-badge-draft-gradient", className)}>
+		Draft
+	</Badge>
 )
 export const ChangedBadge = ({ className }: CustomBadgeProps) => (
-	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>Changed</Badge>
+	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>
+		Changed
+	</Badge>
 )
 export const NewBadge = ({ className }: CustomBadgeProps) => (
 	<Badge className={cn("badge-new-gradient dark:dark-badge-new-gradient", className)}>New</Badge>
 )
 export const ComingSoonBadge = ({ className }: CustomBadgeProps) => (
-	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>Coming Soon</Badge>
+	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>
+		Coming Soon
+	</Badge>
 )
-export const DifficultyBadge = ({ className, difficulty }: CustomBadgeProps & { difficulty: Difficulty }) => (
+export const DifficultyBadge = ({
+	className,
+	difficulty,
+}: CustomBadgeProps & { difficulty: Difficulty }) => (
 	<Badge
 		className={cn(
 			{
@@ -50,7 +60,11 @@ export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: Zombie
 		{type}
 	</Badge>
 )
-export const MarkerBadge = ({ className, category, children }: CustomBadgeProps & { category: MarkerCategory }) => (
+export const MarkerBadge = ({
+	className,
+	category,
+	children,
+}: CustomBadgeProps & { category: MarkerCategory }) => (
 	<Badge
 		className={cn(
 			{
@@ -65,5 +79,29 @@ export const MarkerBadge = ({ className, category, children }: CustomBadgeProps 
 		)}
 	>
 		{children}
+	</Badge>
+)
+export const RarityBadge = ({
+	className,
+	rarity,
+	type,
+	children
+}: CustomBadgeProps & { rarity: TypeGobblegumRarity, type: TypeGobblegumType }) => (
+	<Badge className={cn(
+		{
+			"badge-hard-gradient dark:dark-badge-hard-gradient": rarity === "Ultra",
+			"badge-primary-gradient dark:dark-badge-primary-gradient": rarity === "Legendary",
+			"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Epic",
+			"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
+		},
+		{
+			"badge-new-gradient dark:dark-badge-new-gradient": type === "Time-Based",
+			"badge-changed-gradient dark:dark-badge-changed-gradient": type === "Round-Based",
+			"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Immediate",
+			"badge-draft-gradient dark:dark-badge-draft-gradient": type === "Player-Activated",
+		}, 
+		className
+	)}>
+		{ children }
 	</Badge>
 )

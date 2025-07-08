@@ -1,5 +1,6 @@
 "use client"
 import type { createItemTooltipDto } from "@/utils/contentful-utils"
+import { RarityBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -20,18 +21,30 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
 			{!isMobile ? (
 				<TooltipProvider delayDuration={200}>
 					<Tooltip>
-						<TooltipTrigger className={cn("group relative inline-flex items-center justify-center gap-2", className)}>
-							<IconImage featuredImage={image} alt={`${title} Image`} sizes="24px" className="my-auto h-6 w-auto" />
+						<TooltipTrigger
+							className={cn(
+								"group relative inline-flex items-center justify-center gap-2",
+								className,
+							)}
+						>
+							<IconImage
+								featuredImage={image}
+								alt={`${title} Image`}
+								sizes="24px"
+								className="my-auto h-6 w-auto"
+							/>
 							<span
 								className={cn(
 									"mr-1.5 text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
 									{
-										"text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300": rarity === "Ultra",
+										"text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300":
+											rarity === "Ultra",
 										"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
 											rarity === "Legendary",
 										"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
 											rarity === "Epic",
-										"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300": rarity === "Rare",
+										"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
+											rarity === "Rare",
 									},
 									{
 										"text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300":
@@ -52,12 +65,14 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
 							className={cn(
 								`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200 `,
 								{
-									"border-red-600/25 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300": rarity === "Ultra",
+									"border-red-600/25 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+										rarity === "Ultra",
 									"border-orange-600/25 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
 										rarity === "Legendary",
 									"border-purple-600/25 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
 										rarity === "Epic",
-									"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300": rarity === "Rare",
+									"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
+										rarity === "Rare",
 								},
 								{
 									"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
@@ -87,23 +102,33 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
 
 	return (
 		<Popover>
-			<PopoverTrigger className={cn("group inline-flex items-center justify-center gap-2", className)}>
-				<IconImage featuredImage={image} alt={`${title} Image`} sizes="24px" className="my-auto h-6 w-auto" />
+			<PopoverTrigger
+				className={cn("group inline-flex items-center justify-center gap-2", className)}
+			>
+				<IconImage
+					featuredImage={image}
+					alt={`${title} Image`}
+					sizes="24px"
+					className="my-auto h-6 w-auto"
+				/>
 				<span
 					className={cn(
 						"mr-1.5 text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
 						{
-							"text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300": rarity === "Ultra",
+							"text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300":
+								rarity === "Ultra",
 							"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
 								rarity === "Legendary",
 							"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
 								rarity === "Epic",
-							"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300": rarity === "Rare",
+							"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
+								rarity === "Rare",
 						},
 						{
 							"text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300":
 								type === "Time-Based",
-							"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300": type === "Round-Based",
+							"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
+								type === "Round-Based",
 							"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
 								type === "Immediate",
 							"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
@@ -122,17 +147,20 @@ const ItemPopover = ({ item, className }: ItemTooltipProps) => {
 				className={cn(
 					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
 					{
-						"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300": rarity === "Ultra",
+						"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+							rarity === "Ultra",
 						"border-orange-600/30 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
 							rarity === "Legendary",
 						"border-purple-600/30 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
 							rarity === "Epic",
-						"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300": rarity === "Rare",
+						"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
+							rarity === "Rare",
 					},
 					{
 						"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
 							type === "Time-Based",
-						"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300": type === "Round-Based",
+						"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
+							type === "Round-Based",
 						"border-orange-600/30 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
 							type === "Immediate",
 						"border-purple-600/30 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
@@ -167,27 +195,16 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
 				},
 			)}
 		>
-			<div className="absolute top-4 left-4">
-				<div
-					className={cn(
-						"text-sm",
-						{
-							"text-red-600 dark:text-red-300": rarity === "Ultra",
-							"text-orange-600 dark:text-orange-300": rarity === "Legendary",
-							"text-purple-600 dark:text-purple-300": rarity === "Epic",
-							"text-blue-600 dark:text-blue-300": rarity === "Rare",
-						},
-						{
-							"text-green-600 dark:text-green-300": type === "Time-Based",
-							"text-blue-600 dark:text-blue-300": type === "Round-Based",
-							"text-orange-600 dark:text-orange-300": type === "Immediate",
-							"text-purple-600 dark:text-purple-300": type === "Player-Activated",
-						},
-					)}
-				>
+			{rarity ? (
+				<RarityBadge rarity={rarity} type={type} className="absolute top-4 left-4">
 					{rarity}
-				</div>
-			</div>
+				</RarityBadge>
+			) : null}
+				{type && rarity ? (
+					<RarityBadge rarity={rarity} type={type} className="absolute top-4 right-4">
+						{type}
+					</RarityBadge>
+				) : null}
 			<div className="relative flex items-center justify-center">
 				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
 				<IconImage
