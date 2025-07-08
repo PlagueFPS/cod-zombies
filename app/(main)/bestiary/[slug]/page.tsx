@@ -153,7 +153,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
 											<Eye className="size-5 text-orange-500" />
 											<span className="text-foreground dark:text-foreground/80">First Appeared In</span>
 										</div>
-										<span className="text-foreground dark:text-foreground/80">{zombie.maps[0].title}</span>
+										{ zombie.maps[0] ? <span className="text-foreground dark:text-foreground/80">{ zombie.maps[0].title }</span> : null }
 									</div>
 								</div>
 								<div>
@@ -323,7 +323,7 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: PrevOrNextZombie) => {
 					{(isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null}
 					<TypeBadge type={zombie.type} />
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{zombie.games[0].title}</Badge>
+					{ zombie.games[0] ? <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{ zombie.games[0].title }</Badge> : null }
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
 					<FeaturedImage

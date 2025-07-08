@@ -112,7 +112,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 						backgroundImage: "radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
-					{zombie.games[0].title}
+					{ zombie.games[0] ? zombie.games[0].title : null }
 				</span>
 				<span
 					style={{

@@ -22,7 +22,7 @@ export const extractHeadings = (body: Document) => {
 
 	body.content.forEach(node => {
 		if (node.nodeType.includes("heading-")) {
-			if (node.content[0].nodeType === "text") {
+			if (node.content[0] && node.content[0].nodeType === "text") {
 				headings.push({
 					type: node.nodeType,
 					text: node.content[0].value,

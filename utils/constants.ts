@@ -5,7 +5,11 @@ export const IN_DEVELOPMENT = process.env.NODE_ENV === "development"
 export const SITE_TITLE = "Call of Duty: Zombies Guides"
 export const SITE_DESCRIPTION =
 	"Detailed main and side quests step-by-step guides, fully interactive maps, a complete bestiary, and more to give you all the resources you'll need for zombies."
-export const DATE_OPTIONS: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
+export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+}
 export const MAP_LIMIT = 12
 export const MAX_NEW_TIME = 14 * 24 * 60 * 60 * 1000 // 2 weeks in milliseconds
 export const MAX_QUEST_NEW_TIME = 7 * 24 * 60 * 60 * 1000 // 1 week in milliseconds
@@ -68,5 +72,5 @@ export const PROTECTED_ROUTES = [
 	{
 		path: "/**",
 		method: "POST",
-	}
+	},
 ]

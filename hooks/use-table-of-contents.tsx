@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
+import { useEffect, useRef, useState } from "react"
 /**
  * @param `headings` - array of headings to observe
  * @param `articleId` - id of the parent wrapper of the headings

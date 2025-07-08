@@ -59,7 +59,7 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 		catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
 	})
 	const [value, salt, expiresInStr, originalHash] = buffer.split(":")
-	const expiresIn = parseInt(expiresInStr, 10)
+	const expiresIn = expiresInStr ? parseInt(expiresInStr, 10) : 0
 	const now = Date.now()
 
 	if (Duration.greaterThan(now, expiresIn))
@@ -71,7 +71,7 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 	const payload = `${value}:${salt}:${expiresIn}`
 	const hash = createHash("sha256").update(payload).digest("hex")
 
-	if (hash !== originalHash)
+	if (hash !== originalHash || !value)
 		return yield* new TokenVerificationError({
 			message: "Invalid Token",
 			cause: new Error("Original hash does not match the calculated hash"),

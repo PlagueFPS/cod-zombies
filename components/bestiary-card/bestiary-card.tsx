@@ -32,7 +32,7 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 						{(draftMode || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null}
 						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
-						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{zombie.games[0].title}</Badge>
+						{ zombie.games[0] ? <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{zombie.games[0].title}</Badge> : null }
 					</div>
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage

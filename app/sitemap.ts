@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	return [
 		{
 			url: `${env.NEXT_PUBLIC_WEBSITE_URL}`,
-			lastModified: new Date(maps[0].updatedAt),
+			lastModified: maps[0] ? new Date(maps[0].updatedAt) : undefined,
 		},
 		...maps
 			.filter(map => !map.isComingSoon)
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			})),
 		{
 			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests`,
-			lastModified: new Date(quests[0].updatedAt),
+			lastModified: quests[0] ? new Date(quests[0].updatedAt) : undefined,
 		},
 		...quests.map((q): MetadataRoute.Sitemap[number] => ({
 			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`,
@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		})),
 		{
 			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary`,
-			lastModified: new Date(zombies[0].updatedAt),
+			lastModified: zombies[0] ? new Date(zombies[0].updatedAt) : undefined,
 		},
 		...zombies
 			.filter(z => !z.isComingSoon)

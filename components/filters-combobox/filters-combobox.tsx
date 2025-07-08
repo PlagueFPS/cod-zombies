@@ -49,7 +49,9 @@ const FiltersCombobox = ({
           {currentSelection.length}
         </Badge>
       )
-    }
+    } 
+		
+		if (!currentSelection[0]) return null
 
     switch(title) {
       case "Difficulty":

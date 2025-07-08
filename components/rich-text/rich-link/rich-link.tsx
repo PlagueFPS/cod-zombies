@@ -20,6 +20,8 @@ const dev_url = "http://localhost:3000"
 const alt_dev_url = "https://localhost:3000"
 
 export default function RichLink({ node }: RichLinkProps) {
+	if (!node.content[0]) return null
+	
 	if (node.data.uri.startsWith(youtube_url)) {
 		return (
 			<>

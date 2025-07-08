@@ -4,11 +4,11 @@ import { Redis } from "@upstash/redis"
 import { Effect, Schema } from "effect"
 import { env } from "@/env"
 import {
+	DeleteEntryError,
 	EntryNotFoundError,
 	GetCacheValueError,
 	GetEntriesError,
-	GetEntryStatusError,
-	StoreNewEntryError,
+	SetEntryError,
 	UpdateEntryStatusError,
 } from "@/types/errors"
 import { Cache } from "./services/Cache"
@@ -40,7 +40,15 @@ export const NEW_ENTRY_KV = {
 			const response = yield* cache.hget(this.key, entryId)
 			const decodedResponse = yield* decodeEntryResponse(response)
 			return decodedResponse
-		})
+		}).pipe(
+			Effect.mapError(
+				error =>
+					new GetEntriesError({
+						message: `Failed to get value for entry: ${entryId}`,
+						cause: error,
+					}),
+			),
+		)
 	},
 	/**
 	 * Retrieves all entries from Cache.
@@ -68,7 +76,11 @@ export const NEW_ENTRY_KV = {
 				),
 				{ concurrency: "unbounded" },
 			)
-		})
+		}).pipe(
+			Effect.mapError(
+				error => new GetEntriesError({ message: "Failed to get all entries.", cause: error }),
+			),
+		)
 	},
 	/**
 	 * Sets a new entry in Cache.
@@ -90,7 +102,11 @@ export const NEW_ENTRY_KV = {
 			return yield* cache.hset(this.key, {
 				[entryId]: JSON.stringify(encodedResponse),
 			})
-		})
+		}).pipe(
+			Effect.mapError(
+				error => new SetEntryError({ message: `Failed to set entry: ${entryId}`, cause: error }),
+			),
+		)
 	},
 	/**
 	 * Deletes entries from Cache by their IDs.
@@ -101,7 +117,15 @@ export const NEW_ENTRY_KV = {
 		return Effect.gen(this, function* () {
 			const cache = yield* Cache
 			return yield* cache.hdel(this.key, entryIds)
-		})
+		}).pipe(
+			Effect.mapError(
+				error =>
+					new DeleteEntryError({
+						message: `Failed to delete the following entries: ${entryIds}`,
+						cause: error,
+					}),
+			),
+		)
 	},
 }
 
@@ -121,16 +145,7 @@ export const storeNewEntryId = (
 		const result = yield* NEW_ENTRY_KV.set(entryId, createdAt, status, type)
 		yield* Effect.log(`Stored ${result} new entry ID: ${entryId}`)
 		return result
-	}).pipe(
-		Effect.withSpan("store_new_entry_id", { attributes: { entryId } }),
-		Effect.mapError(
-			error =>
-				new StoreNewEntryError({
-					message: `Failed to store new entry ID: ${entryId}`,
-					cause: error,
-				}),
-		),
-	)
+	}).pipe(Effect.withSpan("store_new_entry_id", { attributes: { entryId } }))
 
 export const getEntryStatus = (entryId: string) =>
 	Effect.gen(function* () {
