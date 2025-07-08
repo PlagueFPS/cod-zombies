@@ -17,7 +17,7 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
 				<TableHeader className="rounded-t-xl dark:border-orange-700">
 					<TableRow>
 						{headings.map(heading => (
-							<TableHead key={`table-heading-${slugify(heading)}`} className="text-orange-900 dark:text-orange-500">
+							<TableHead key={`table-heading-${slugify(heading)}`} className="text-orange-900 dark:text-orange-400">
 								{heading}
 							</TableHead>
 						))}

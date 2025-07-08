@@ -23,10 +23,15 @@ interface RichTextRendererProps {
 	className?: string
 }
 
-export default function RichTextRenderer({ body, slug, overrideStyles, className }: RichTextRendererProps) {
+export default function RichTextRenderer({
+	body,
+	slug,
+	overrideStyles,
+	className,
+}: RichTextRendererProps) {
 	const renderOptions = {
 		renderNode: {
-			[INLINES.HYPERLINK]: (node: any) => {
+			[INLINES.HYPERLINK]: (node: unknown) => {
 				return <RichLink node={node} />
 			},
 			[INLINES.EMBEDDED_ENTRY]: (node: any) => {
@@ -55,9 +60,9 @@ export default function RichTextRenderer({ body, slug, overrideStyles, className
 				node.content.forEach((node: any) => {
 					if (node.nodeType === INLINES.HYPERLINK && node.data.uri.startsWith(youtube_url)) {
 						renderDiv = true
-            return
+						return
 					}
-          return
+					return
 				})
 
 				if (renderDiv) return <div>{children}</div>
@@ -76,7 +81,9 @@ export default function RichTextRenderer({ body, slug, overrideStyles, className
 				return <RichBlockquote>{children}</RichBlockquote>
 			},
 			[BLOCKS.TABLE]: (node: any) => {
-				const headings: string[] = node.content[0].content.map((node: any) => node.content[0].content[0].value)
+				const headings: string[] = node.content[0].content.map(
+					(node: any) => node.content[0].content[0].value,
+				)
 				const bodyRows: any[] = node.content.slice(1).map((row: any) => row.content)
 				return <RichTable headings={headings} bodyRows={bodyRows} />
 			},
@@ -101,7 +108,11 @@ export default function RichTextRenderer({ body, slug, overrideStyles, className
 	return (
 		<div
 			id="body"
-			className={overrideStyles ? className : cn("relative mx-auto max-w-[80ch] px-4", richStyles.body, className)}
+			className={
+				overrideStyles
+					? className
+					: cn("relative mx-auto max-w-[80ch] px-4", richStyles.body, className)
+			}
 		>
 			{documentToReactComponents(body, renderOptions)}
 		</div>

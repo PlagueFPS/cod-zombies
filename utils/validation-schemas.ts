@@ -40,3 +40,16 @@ export const decodeTerminusCode = Schema.decodeEither(TerminusCodeSchema)
 export const DraftModeSchema = Schema.Struct({
 	pathname: Schema.NonEmptyString,
 })
+
+const RichLinkNodeSchema = Schema.Struct({
+	data: Schema.Struct({
+		uri: Schema.String,
+	}),
+	content: Schema.Array(
+		Schema.Struct({
+			value: Schema.String,
+		}),
+	),
+})
+
+export const decodeRichLinkNode = Schema.decodeUnknownEither(RichLinkNodeSchema)
