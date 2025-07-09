@@ -26,14 +26,20 @@ const RevalidateLayer = Layer.merge(Email.Default, Cache.Default)
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
-		const [{ slug }, headerList] = yield* Effect.all([Effect.promise(() => params), Effect.promise(() => headers())], {
-			concurrency: "unbounded",
-		})
+		const [{ slug }, headerList] = yield* Effect.all(
+			[Effect.promise(() => params), Effect.promise(() => headers())],
+			{
+				concurrency: "unbounded",
+			},
+		)
 
 		const secretHeader = headerList.get("X-Contentful-Revalidate-Secret") || ""
 		const contentfulSecret = Redacted.make(secretHeader)
 		const revalidateSecret = Redacted.make(env.REVALIDATE_SECRET)
-		const authed = yield* authorizedRequest(Redacted.value(contentfulSecret), Redacted.value(revalidateSecret))
+		const authed = yield* authorizedRequest(
+			Redacted.value(contentfulSecret),
+			Redacted.value(revalidateSecret),
+		)
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const payload = yield* Effect.tryPromise({
@@ -41,8 +47,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 			catch: error => new JSONParseError({ message: "Failed to parse webhook body", cause: error }),
 		})
 
-		const body = yield* decodeWebhookBody(payload)
 		const validSlug = yield* decodeSlug(slug[0])
+		const body = yield* decodeWebhookBody(payload)
 		const handler = RevalidateHandlers[validSlug]
 
 		return yield* handler(body)
