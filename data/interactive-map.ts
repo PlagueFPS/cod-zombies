@@ -13,7 +13,7 @@ export const getMapConfig = cache((mapId: MapId) =>
 				new MapConfigError({ message: `Failed to get map config for ${mapId}`, cause: error }),
 		})
 	}).pipe(
-		Effect.withSpan("get_map_config", { attributes: { mapId } }),
+		Effect.withLogSpan("get_map_config"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(() => Effect.succeed(null)),
 		Effect.runPromise,

@@ -28,26 +28,30 @@ export const getZombies = cache(
 					concurrency: "unbounded",
 				})
 
-				return yield* Effect.forEach(zombies, zombie =>
-					Effect.gen(function* () {
-						const { elementalWeakness, attacks, ...rest } = yield* resolveZombieData(
-							zombie,
-							zombieIds,
-						)
-						return {
-							...rest,
-							id: zombie.sys.id,
-							name: zombie.fields.name,
-							slug: zombie.fields.slug,
-							description: zombie.fields.description,
-							type: zombie.fields.type,
-							updatedAt: zombie.sys.updatedAt,
-							isComingSoon: zombie.fields.isComingSoon ?? false,
-						}
-					}),
+				return yield* Effect.forEach(
+					zombies,
+					zombie =>
+						Effect.gen(function* () {
+							const { elementalWeakness, attacks, ...rest } = yield* resolveZombieData(
+								zombie,
+								zombieIds,
+							)
+							return {
+								...rest,
+								id: zombie.sys.id,
+								name: zombie.fields.name,
+								slug: zombie.fields.slug,
+								description: zombie.fields.description,
+								type: zombie.fields.type,
+								updatedAt: zombie.sys.updatedAt,
+								isComingSoon: zombie.fields.isComingSoon ?? false,
+							}
+						}),
+					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_zombies"),
+				Effect.annotateLogs("draftMode", draftMode),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -69,21 +73,25 @@ export const getZombieSearchData = cache(
 				})
 				const currentZombies = zombies.filter(z => !z.fields.isComingSoon)
 
-				return yield* Effect.forEach(currentZombies, zombie =>
-					Effect.gen(function* () {
-						const { games, maps } = yield* resolveZombieData(zombie, zombieIds)
-						return {
-							id: zombie.sys.id,
-							name: zombie.fields.name,
-							slug: zombie.fields.slug,
-							type: zombie.fields.type,
-							games,
-							maps,
-						}
-					}),
+				return yield* Effect.forEach(
+					currentZombies,
+					zombie =>
+						Effect.gen(function* () {
+							const { games, maps } = yield* resolveZombieData(zombie, zombieIds)
+							return {
+								id: zombie.sys.id,
+								name: zombie.fields.name,
+								slug: zombie.fields.slug,
+								type: zombie.fields.type,
+								games,
+								maps,
+							}
+						}),
+					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_zombie_search_data"),
+				Effect.annotateLogs("draftMode", draftMode),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -123,7 +131,8 @@ export const getZombieBySlug = cache(
 					isComingSoon: zombie.fields.isComingSoon ?? false,
 				}
 			}).pipe(
-				Effect.withSpan("get_zombie_by_slug", { attributes: { slug } }),
+				Effect.withLogSpan("get_zombie_by_slug"),
+				Effect.annotateLogs({ slug, draftMode }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -155,7 +164,8 @@ export const getZombieById = cache(
 					isComingSoon: zombie.fields.isComingSoon ?? false,
 				}
 			}).pipe(
-				Effect.withSpan("get_zombie_by_id", { attributes: { id } }),
+				Effect.withLogSpan("get_zombie_by_id"),
+				Effect.annotateLogs({ id, draftMode }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -173,17 +183,21 @@ export const getReferencedMaps = cache(
 			return await Effect.gen(function* () {
 				const maps = yield* INTERNAL_getReferencedMaps()
 
-				return yield* Effect.forEach(maps, map =>
-					Effect.gen(function* () {
-						const questMap = yield* createQuestMapDto(map)
-						return {
-							id: map.sys.id,
-							...questMap,
-						}
-					}),
+				return yield* Effect.forEach(
+					maps,
+					map =>
+						Effect.gen(function* () {
+							const questMap = yield* createQuestMapDto(map)
+							return {
+								id: map.sys.id,
+								...questMap,
+							}
+						}),
+					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_referenced_maps"),
+				Effect.annotateLogs("draftMode", draftMode),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -201,10 +215,16 @@ const resolveZombieData = (
 ) =>
 	Effect.gen(function* () {
 		const { changedIds, draftIds, newIds } = zombieIds
-		const games = yield* Effect.forEach(zombie.fields.games, game => createMapCategoryDto(game))
-		const maps = yield* Effect.forEach(zombie.fields.maps, map => createQuestMapDto(map))
-		const attacks = yield* Effect.forEach(zombie.fields.attacks, attack =>
-			createZombieAttackDto(attack),
+		const games = yield* Effect.forEach(zombie.fields.games, game => createMapCategoryDto(game), {
+			concurrency: "unbounded",
+		})
+		const maps = yield* Effect.forEach(zombie.fields.maps, map => createQuestMapDto(map), {
+			concurrency: "unbounded",
+		})
+		const attacks = yield* Effect.forEach(
+			zombie.fields.attacks,
+			attack => createZombieAttackDto(attack),
+			{ concurrency: "unbounded" },
 		)
 		const image = createImageDto(zombie.fields.image)
 		const elementalWeakness = zombie.fields.elementalWeakness

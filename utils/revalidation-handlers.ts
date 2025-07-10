@@ -110,7 +110,11 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.featuredMaps.all)
 			return createSuccessResponse("Map revalidated", broadcast)
-		}).pipe(Effect.withSpan("maps_revalidate_handler", { attributes: { entryId } })),
+		}).pipe(
+			Effect.withLogSpan("maps_revalidate_handler"),
+			Effect.tap(() => Effect.log(`Successfully revalidated map data`)),
+			Effect.annotateLogs("entryId", entryId),
+		),
 
 	/**
 	 * Handles revalidation for game entries.
@@ -143,7 +147,11 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.gameCategories.all)
 			return createSuccessResponse("Game revalidated", null)
-		}).pipe(Effect.withSpan("games_revalidate_handler", { attributes: { entryId } })),
+		}).pipe(
+			Effect.withLogSpan("games_revalidate_handler"),
+			Effect.tap(() => Effect.log(`Successfully revalidated game data`)),
+			Effect.annotateLogs("entryId", entryId),
+		),
 
 	/**
 	 * Handles revalidation for side quest entries.
@@ -190,7 +198,11 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.sideQuests.all)
 			return createSuccessResponse("Side Quest revalidated", broadcast)
-		}).pipe(Effect.withSpan("side_quests_revalidate_handler", { attributes: { entryId } })),
+		}).pipe(
+			Effect.withLogSpan("side_quests_revalidate_handler"),
+			Effect.tap(() => Effect.log("Successfully revalidated side quest data")),
+			Effect.annotateLogs("entryId", entryId),
+		),
 
 	/**
 	 * Handles revalidation for zombie entries.
@@ -245,7 +257,11 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.zombies.all)
 			return createSuccessResponse("Zombie revalidated", broadcast)
-		}).pipe(Effect.withSpan("zombies_revalidate_handler", { attributes: { entryId } })),
+		}).pipe(
+			Effect.withLogSpan("zombies_revalidate_handler"),
+			Effect.tap(() => Effect.log("Successfully revalidated zombies data")),
+			Effect.annotateLogs("entryId", entryId),
+		),
 
 	/**
 	 * Handles revalidation for legal document entries.
@@ -274,5 +290,9 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.legal.all)
 			return createSuccessResponse("Legal document revalidated", broadcast)
-		}).pipe(Effect.withSpan("legal_revalidate_handler", { attributes: { entryId } })),
+		}).pipe(
+			Effect.withLogSpan("legal_revalidate_handler"),
+			Effect.tap(() => Effect.log("Successfully revalidated legal docs data")),
+			Effect.annotateLogs("entryId", entryId),
+		),
 }

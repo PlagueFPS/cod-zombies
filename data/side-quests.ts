@@ -21,23 +21,27 @@ export const getQuests = cache(
 					concurrency: "unbounded",
 				})
 
-				return yield* Effect.forEach(quests, quest =>
-					Effect.gen(function* () {
-						const { category: game, ...rest } = yield* resolveQuestData(quest, questIds)
-						return {
-							...rest,
-							game,
-							id: quest.sys.id,
-							updatedAt: quest.sys.updatedAt,
-							isComingSoon: quest.fields.isComingSoon ?? false,
-							title: quest.fields.title,
-							slug: quest.fields.slug,
-							description: quest.fields.description,
-						}
-					}),
+				return yield* Effect.forEach(
+					quests,
+					quest =>
+						Effect.gen(function* () {
+							const { category: game, ...rest } = yield* resolveQuestData(quest, questIds)
+							return {
+								...rest,
+								game,
+								id: quest.sys.id,
+								updatedAt: quest.sys.updatedAt,
+								isComingSoon: quest.fields.isComingSoon ?? false,
+								title: quest.fields.title,
+								slug: quest.fields.slug,
+								description: quest.fields.description,
+							}
+						}),
+					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_quests"),
+				Effect.annotateLogs("draftMode", draftMode),
 				Effect.provide(Cache.Default),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
@@ -60,21 +64,25 @@ export const getQuestSearchData = cache(
 
 				const currentQuests = quests.filter(q => !q.fields.isComingSoon)
 
-				return yield* Effect.forEach(currentQuests, quest =>
-					Effect.gen(function* () {
-						const { category: game, map } = yield* resolveQuestData(quest, questIds)
+				return yield* Effect.forEach(
+					currentQuests,
+					quest =>
+						Effect.gen(function* () {
+							const { category: game, map } = yield* resolveQuestData(quest, questIds)
 
-						return {
-							id: quest.sys.id,
-							title: quest.fields.title,
-							slug: quest.fields.slug,
-							game,
-							map,
-						}
-					}),
+							return {
+								id: quest.sys.id,
+								title: quest.fields.title,
+								slug: quest.fields.slug,
+								game,
+								map,
+							}
+						}),
+					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_quest_search_data"),
+				Effect.annotateLogs("draftMode", draftMode),
 				Effect.provide(Cache.Default),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
@@ -117,7 +125,8 @@ export const getQuestById = cache(
 					game: game.slug,
 				}
 			}).pipe(
-				Effect.withSpan("get_quest_by_id", { attributes: { id } }),
+				Effect.withLogSpan("get_quest_by_id"),
+				Effect.annotateLogs({ id, draftMode }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -157,7 +166,8 @@ export const getQuestBySlug = cache(
 					timeToRead: quest.fields.timeToRead,
 				}
 			}).pipe(
-				Effect.withSpan("get_quest_by_slug", { attributes: { slug } }),
+				Effect.withLogSpan("get_quest_by_slug"),
+				Effect.annotateLogs({ slug, draftMode }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,

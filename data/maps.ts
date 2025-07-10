@@ -22,23 +22,27 @@ export const getMaps = cache(
 					concurrency: "unbounded",
 				})
 
-				return yield* Effect.forEach(maps, map =>
-					Effect.gen(function* () {
-						const mapData = yield* resolveMapData(map, mapIds)
-						return {
-							...mapData,
-							id: map.sys.id,
-							title: map.fields.title,
-							slug: map.fields.slug,
-							updatedAt: map.sys.updatedAt,
-							description: map.fields.description,
-							isComingSoon: map.fields.isComingSoon ?? false,
-							difficulty: map.fields.difficulty,
-						}
-					}),
+				return yield* Effect.forEach(
+					maps,
+					map =>
+						Effect.gen(function* () {
+							const mapData = yield* resolveMapData(map, mapIds)
+							return {
+								...mapData,
+								id: map.sys.id,
+								title: map.fields.title,
+								slug: map.fields.slug,
+								updatedAt: map.sys.updatedAt,
+								description: map.fields.description,
+								isComingSoon: map.fields.isComingSoon ?? false,
+								difficulty: map.fields.difficulty,
+							}
+						}),
+					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_maps"),
+				Effect.annotateLogs("draftMode", draftMode),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -58,18 +62,22 @@ export const getMapSearchData = cache(
 				const maps = yield* INTERNAL_getMapData()
 				const filteredMaps = maps.filter(map => !map.fields.isComingSoon)
 
-				return yield* Effect.forEach(filteredMaps, map =>
-					Effect.gen(function* () {
-						return {
-							id: map.sys.id,
-							title: map.fields.title,
-							slug: map.fields.slug,
-							game: yield* createMapCategoryDto(map.fields.gameCategory),
-						}
-					}),
+				return yield* Effect.forEach(
+					filteredMaps,
+					map =>
+						Effect.gen(function* () {
+							return {
+								id: map.sys.id,
+								title: map.fields.title,
+								slug: map.fields.slug,
+								game: yield* createMapCategoryDto(map.fields.gameCategory),
+							}
+						}),
+					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_map_search_data"),
+				Effect.annotateLogs("draftMode", draftMode),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -109,7 +117,8 @@ export const getMapBySlug = cache(
 					timeToRead: map.fields.timeToRead,
 				}
 			}).pipe(
-				Effect.withSpan("get_map_by_slug", { attributes: { slug } }),
+				Effect.withLogSpan("get_map_by_slug"),
+				Effect.annotateLogs({ slug, draftMode }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -146,7 +155,8 @@ export const getMapById = cache(
 					game: game.slug,
 				}
 			}).pipe(
-				Effect.withSpan("get_map_by_id", { attributes: { id } }),
+				Effect.withLogSpan("get_map_by_id"),
+				Effect.annotateLogs({ id, draftMode }),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)

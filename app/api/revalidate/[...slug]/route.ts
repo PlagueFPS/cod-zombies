@@ -54,6 +54,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 		return yield* handler(body)
 	}).pipe(
 		Effect.withLogSpan("put_revalidation_handler"),
+		Effect.tap(() => Effect.log("Data Revalidation Completed.")),
 		Effect.tapError(Effect.logError),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(Response.json(error.message, { status: 401 })),

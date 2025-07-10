@@ -46,7 +46,7 @@ export const getLegalDocBySlug = cache(
 					content: doc.fields.content,
 				}
 			}).pipe(
-				Effect.withSpan("get_legal_doc_by_slug", { attributes: { slug } }),
+				Effect.withLogSpan("get_legal_doc_by_slug"),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -72,7 +72,7 @@ export const getLegalDocById = cache(
 					slug: doc.fields.slug,
 				}
 			}).pipe(
-				Effect.withSpan("get_legal_doc_by_id", { attributes: { id } }),
+				Effect.withLogSpan("get_legal_doc_by_id"),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
