@@ -26,7 +26,10 @@ export async function GET() {
 		const cronSecret = Redacted.make(env.CRON_SECRET)
 		const providedSecret = Redacted.make(secret)
 
-		const authed = yield* authorizedRequest(Redacted.value(providedSecret), `Bearer ${Redacted.value(cronSecret)}`)
+		const authed = yield* authorizedRequest(
+			Redacted.value(providedSecret),
+			`Bearer ${Redacted.value(cronSecret)}`,
+		)
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const newEntries = yield* NEW_ENTRY_KV.getAll()
@@ -37,7 +40,7 @@ export async function GET() {
 			const currentTime = Date.now()
 			const publishedTime = entry.createdAt.getTime()
 			const passedTime = Duration.subtract(currentTime, publishedTime).pipe(Duration.toMillis)
-			const ttl = Duration.toMillis(entry.type === "sideQuest" ? MAX_QUEST_NEW_TIME : MAX_NEW_TIME)
+			const ttl = entry.type === "sideQuest" ? MAX_QUEST_NEW_TIME : MAX_NEW_TIME
 
 			if (Duration.greaterThan(passedTime, ttl)) {
 				idsToDelete.add(entry.entryId)

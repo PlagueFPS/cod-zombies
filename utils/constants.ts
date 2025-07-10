@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Duration } from "effect"
 import { Book, Brain, MapIcon } from "lucide-react"
 
 export const IN_DEVELOPMENT = process.env.NODE_ENV === "development"
@@ -11,8 +12,10 @@ export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
 	day: "numeric",
 }
 export const MAP_LIMIT = 12
-export const MAX_NEW_TIME = 14 * 24 * 60 * 60 * 1000 // 2 weeks in milliseconds
-export const MAX_QUEST_NEW_TIME = 7 * 24 * 60 * 60 * 1000 // 1 week in milliseconds
+/** 2 weeks in milliseconds */
+export const MAX_NEW_TIME = Duration.toMillis("2 weeks")
+/** 1 week in milliseconds */
+export const MAX_QUEST_NEW_TIME = Duration.toMillis("1 week")
 export const GLOBAL_OG_PROPS = {
 	openGraph: {
 		siteName: SITE_TITLE,

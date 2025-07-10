@@ -49,7 +49,8 @@ export const unsubscribeFromNewsletter = createAction(NewsletterFormSchema, asyn
 		Effect.catchAll(_error =>
 			Effect.succeed({
 				success: false,
-				message: "Unsubscribe request failed due to a technical issue on our end. Please try again.",
+				message:
+					"Unsubscribe request failed due to a technical issue on our end. Please try again.",
 			}),
 		),
 		Effect.provide(Email.Default),
@@ -63,7 +64,8 @@ export const submitFeedbackForm = createAction(FeedbackFormSchema, async parsedI
 		Effect.catchAll(_error =>
 			Effect.succeed({
 				success: false,
-				message: "Feedback submission failed due to a technical issue on our end. Please try again.",
+				message:
+					"Feedback submission failed due to a technical issue on our end. Please try again.",
 			}),
 		),
 		Effect.provide(FetchHttpClient.layer),
@@ -77,7 +79,8 @@ export const submitContactForm = createAction(ContactFormSchema, async parsedInp
 		Effect.catchAll(_error =>
 			Effect.succeed({
 				success: false,
-				message: "Contact form submission failed due to a technical issue on our end. Please try again.",
+				message:
+					"Contact form submission failed due to a technical issue on our end. Please try again.",
 			}),
 		),
 		Effect.provide(Email.Default),
