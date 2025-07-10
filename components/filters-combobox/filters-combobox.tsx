@@ -10,7 +10,14 @@ import { DifficultyBadge, TypeBadge } from "../custom-badges/custom-badges"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Checkbox } from "../ui/checkbox"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from "../ui/command"
 import { Label } from "../ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Separator } from "../ui/separator"
@@ -42,41 +49,46 @@ const FiltersCombobox = ({
 }: IFiltersCombobox) => {
 	const [open, setOpen] = useState(false)
 
-  const renderBadge = () => {
-    if (currentSelection.length !== 1) {
-      return (
-        <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-          {currentSelection.length}
-        </Badge>
-      )
-    } 
-		
+	const renderBadge = () => {
+		if (currentSelection.length !== 1) {
+			return (
+				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+					{currentSelection.length}
+				</Badge>
+			)
+		}
+
 		if (!currentSelection[0]) return null
 
-    switch(title) {
-      case "Difficulty":
-        return <DifficultyBadge difficulty={capitalize(currentSelection[0]) as Difficulty} />
-      case "Type":
-        return <TypeBadge type={capitalize(currentSelection[0]) as ZombieType} />
-      default:
-        return (
-          <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-            {capitalize(currentSelection[0])}
-          </Badge>
-        )
-    }
-  }
+		switch (title) {
+			case "Difficulty":
+				return <DifficultyBadge difficulty={capitalize(currentSelection[0]) as Difficulty} />
+			case "Type":
+				return <TypeBadge type={capitalize(currentSelection[0]) as ZombieType} />
+			default:
+				return (
+					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+						{capitalize(currentSelection[0])}
+					</Badge>
+				)
+		}
+	}
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
-				<Button variant={"outline"} size={"sm"} aria-expanded={open} className="gap-2 border-dashed">
+				<Button
+					variant={"outline"}
+					size={"sm"}
+					aria-expanded={open}
+					className="gap-2 border-dashed"
+				>
 					<CirclePlus className="size-4 text-primary" />
 					{title}
 					{currentSelection.length > 0 && (
 						<>
 							<Separator orientation="vertical" className="min-h-5" />
-              { renderBadge() }
+							{renderBadge()}
 						</>
 					)}
 				</Button>
@@ -91,18 +103,22 @@ const FiltersCombobox = ({
 								{data.map(item => (
 									<CommandItem
 										key={item.id}
-										className="flex items-center gap-2 rounded data-[selected=true]:bg-transparent"
+										className="group flex cursor-pointer items-center gap-2 rounded data-[selected=true]:hover:bg-accent data-[selected=true]:focus-within:bg-accent data-[selected=true]:hover:dark:bg-secondary data-[selected=true]:focus-within:dark:bg-secondary"
+										onSelect={() => toggleParam(item.slug)}
+										tabIndex={0}
 									>
 										<Checkbox
 											checked={currentSelection.includes(item.slug)}
 											onCheckedChange={() => toggleParam(item.slug)}
-											className="cursor-pointer"
+											className="cursor-pointer group-data-[selected=true]:bg-background group-data-[selected=true]:dark:bg-background/50"
+											tabIndex={-1}
 										/>
 										{title === "Game" ? <FilterLogo slug={item.slug} className="size-4" /> : null}
 										<Label
 											htmlFor={item.id}
 											className="w-full cursor-pointer font-normal"
 											onClick={() => toggleParam(item.slug)}
+											tabIndex={-1}
 										>
 											{title === "Difficulty" ? (
 												<DifficultyBadge difficulty={item.title as Difficulty} />
@@ -116,16 +132,18 @@ const FiltersCombobox = ({
 								))}
 							</div>
 						</CommandGroup>
+						{currentSelection.length > 0 && (
+							<div className="sticky bottom-0 flex w-full items-center justify-center border-t py-1">
+								<CommandItem onSelect={clearParam} asChild>
+									<Button variant={"ghost"} size={"sm"} className="items-center justify-center">
+										<Trash className="size-4 text-red-800 dark:text-red-400" />
+										<span>Clear {title} Filters</span>
+									</Button>
+								</CommandItem>
+							</div>
+						)}
 					</CommandList>
 				</Command>
-				{currentSelection.length > 0 && (
-					<div className="sticky bottom-0 flex w-full items-center justify-center border-t py-1">
-						<Button variant={"ghost"} size={"sm"} onClick={clearParam} className="items-center justify-center">
-							<Trash className="size-4 text-red-800 dark:text-red-400" />
-							<span>Clear {title} Filters</span>
-						</Button>
-					</div>
-				)}
 			</PopoverContent>
 		</Popover>
 	)
