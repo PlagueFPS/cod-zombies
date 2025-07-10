@@ -81,6 +81,9 @@ export const generateMetadata = async ({ params }: MapPageProps): Promise<Metada
 			description,
 			card: "summary_large_image",
 		},
+		alternates: {
+			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/${game}/${slug}`
+		}
 	}
 }
 

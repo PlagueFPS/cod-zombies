@@ -82,6 +82,9 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
 			description,
 			card: "summary_large_image",
 		},
+		alternates: {
+			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
+		}
 	}
 }
 

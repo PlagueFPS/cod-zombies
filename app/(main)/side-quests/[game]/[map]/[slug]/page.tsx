@@ -63,6 +63,9 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
 			description,
 			card: "summary_large_image",
 		},
+		alternates: {
+			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${game}/${map}/${slug}`
+		}
 	}
 }
 
