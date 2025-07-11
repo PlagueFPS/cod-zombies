@@ -6,7 +6,7 @@ import { Suspense, useEffect, useMemo } from "react"
 import GridPagination from "@/components/grid-pagination/grid-pagination"
 import GridPaginationLoader from "@/components/loaders/grid-pagination-loader"
 import QuestPreviewCard from "@/components/quest-preview-card/quest-preview-card"
-import { useQuestSearchParams } from "@/hooks/use-quest-search-params"
+import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
 
@@ -16,8 +16,7 @@ interface IQuestGridClient {
 }
 
 export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
-	const { gameParams, mapParams, difficultyParams, page, validatePageParam } =
-		useQuestSearchParams()
+	const { gameParams, mapParams, difficultyParams, page, validatePageParam } = useFilterParams()
 	const filteredQuests = useMemo(() => {
 		let filtered = quests
 

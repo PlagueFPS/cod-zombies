@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import ClearFiltersButton from "@/components/filters-combobox/clear-filters-button"
 import FiltersCombobox from "@/components/filters-combobox/filters-combobox"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { useQuestSearchParams } from "@/hooks/use-quest-search-params"
+import { useFilterParams } from "@/hooks/use-filter-params"
 
 interface IQuestFiltersClient {
 	games: Filter[]
@@ -13,8 +13,7 @@ interface IQuestFiltersClient {
 }
 
 export default function QuestFiltersClient({ games, maps, difficulties }: IQuestFiltersClient) {
-	const { mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } =
-		useQuestSearchParams()
+	const { mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } = useFilterParams()
 	const pathname = usePathname()
 	const isHomePage = pathname === "/"
 

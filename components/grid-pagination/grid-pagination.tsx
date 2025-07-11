@@ -7,8 +7,8 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination"
+import { useFilterParams } from "@/hooks/use-filter-params"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useQuestSearchParams } from "@/hooks/use-quest-search-params"
 import { cn } from "@/lib/utils"
 import { MAP_LIMIT } from "@/utils/constants"
 
@@ -17,7 +17,7 @@ interface IGridPagination {
 }
 
 export default function GridPagination({ data }: IGridPagination) {
-	const { page, updatePage } = useQuestSearchParams()
+	const { page, updatePage } = useFilterParams()
 	const isMobile = useIsMobile(640)
 	const totalPages = Math.ceil(data.length / MAP_LIMIT)
 	const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
@@ -80,7 +80,7 @@ export default function GridPagination({ data }: IGridPagination) {
 					aria-disabled={previousDisabled}
 					className={cn({ "pointer-events-none opacity-25": previousDisabled })}
 					tabIndex={previousDisabled ? -1 : 0}
-					onNavigate={(e) => {
+					onNavigate={e => {
 						e.preventDefault()
 						updatePage(prevPage)
 					}}
@@ -91,7 +91,7 @@ export default function GridPagination({ data }: IGridPagination) {
 					aria-disabled={nextDisabled}
 					className={cn({ "pointer-events-none opacity-25": nextDisabled })}
 					tabIndex={nextDisabled ? -1 : 0}
-					onNavigate={(e) => {
+					onNavigate={e => {
 						e.preventDefault()
 						updatePage(nextPage)
 					}}

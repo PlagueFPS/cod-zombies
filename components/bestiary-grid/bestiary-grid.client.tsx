@@ -1,7 +1,7 @@
 "use client"
 import type { MinifiedZombie } from "@/data/zombies"
 import { Suspense, useEffect, useMemo } from "react"
-import { useQuestSearchParams } from "@/hooks/use-quest-search-params"
+import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/contentful-utils"
 import BestiaryCard from "../bestiary-card/bestiary-card"
@@ -14,7 +14,7 @@ interface IBestiaryGridClient {
 }
 
 export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGridClient) {
-	const { gameParams, mapParams, typeParams, page, validatePageParam } = useQuestSearchParams()
+	const { gameParams, mapParams, typeParams, page, validatePageParam } = useFilterParams()
 	const filteredZombies = useMemo(() => {
 		let filtered = zombies
 

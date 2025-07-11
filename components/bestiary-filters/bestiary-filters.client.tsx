@@ -1,6 +1,6 @@
 "use client"
 import type { Filter } from "../filters-combobox/filters-combobox"
-import { useQuestSearchParams } from "@/hooks/use-quest-search-params"
+import { useFilterParams } from "@/hooks/use-filter-params"
 import ClearFiltersButton from "../filters-combobox/clear-filters-button"
 import FiltersCombobox from "../filters-combobox/filters-combobox"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
@@ -12,8 +12,7 @@ interface BestiaryFiltersClientProps {
 }
 
 export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFiltersClientProps) {
-	const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } =
-		useQuestSearchParams()
+	const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } = useFilterParams()
 
 	const toggleGame = (game: string) => {
 		toggleParam("game", game, gameParams)

@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation"
 import { useCallback } from "react"
 import { MAP_LIMIT } from "@/utils/constants"
 
-interface QuestSearchParamsResult {
+interface FilterParamsResult {
 	/** Array of selected game parameter values */
 	gameParams: string[]
 	/** Array of selected map parameter values */
@@ -71,7 +71,7 @@ type Param = "type" | "map" | "game" | "difficulty"
  * @returns An object containing the current search parameters and utility functions
  * to manipulate them.
  */
-export function useQuestSearchParams(): QuestSearchParamsResult {
+export function useFilterParams(): FilterParamsResult {
 	const searchParams = useSearchParams()
 
 	// Extract common parameters
