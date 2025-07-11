@@ -105,12 +105,9 @@ export const getGameById = cache(
 )
 
 const getGameIds = Effect.gen(function* () {
-	const [games, newEntries] = yield* Effect.all(
-		[INTERNAL_getManagementGameData(), getNewEntries()],
-		{
-			concurrency: "unbounded",
-		},
-	)
+	const [games, newEntries] = yield* Effect.all([INTERNAL_getManagementGameData(), getNewEntries], {
+		concurrency: "unbounded",
+	})
 
 	const draftIds = new Set<string>()
 	const changedIds = new Set<string>()

@@ -42,23 +42,19 @@ interface BroadcastResponse {
 const createSuccessResponse = (message: string, broadcast: BroadcastResponse | null) =>
 	Response.json({ revalidated: true, message, broadcast }, { status: 201 })
 
-const sendQuestBroadcast = Effect.fn("sendQuestBroadcast")(function* <T extends BroadcastEntry>(
+const sendQuestBroadcast = <T extends BroadcastEntry>(
 	type: "Main" | "Side",
 	entry: T,
 	url: string,
-) {
-	const imageUrl =
-		type === "Main"
-			? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}`
-			: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
+) =>
+	Effect.gen(function* () {
+		const imageUrl =
+			type === "Main"
+				? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}`
+				: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
 
-	return yield* sendQuestReleaseBroadcast({
-		type,
-		redirectUrl: url,
-		imageUrl,
-		...entry,
-	})
-})
+		return yield* sendQuestReleaseBroadcast({ type, redirectUrl: url, imageUrl, ...entry })
+	}).pipe(Effect.withLogSpan("send_quest_broadcast"))
 
 /**
  * Collection of revalidation handlers for different content types.
@@ -285,7 +281,7 @@ export const RevalidateHandlers = {
 			let broadcast: BroadcastResponse | null = null
 
 			if (!isFirstTimePublish(createdAt, updatedAt)) {
-				broadcast = yield* sendLegalUpdateBroadcast()
+				broadcast = yield* sendLegalUpdateBroadcast
 			}
 
 			revalidateTag(CACHE_KEYS.legal.all)

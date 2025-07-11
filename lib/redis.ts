@@ -129,8 +129,8 @@ export const NEW_ENTRY_KV = {
 	},
 }
 
-export const getNewEntries = Effect.fn("getNewEntries")(
-	() => NEW_ENTRY_KV.getAll(),
+export const getNewEntries = NEW_ENTRY_KV.getAll().pipe(
+	Effect.withLogSpan("get_new_entries"),
 	Effect.tapError(Effect.logError),
 	Effect.catchAll(() => Effect.succeed([])),
 )
@@ -145,7 +145,7 @@ export const storeNewEntryId = (
 		const result = yield* NEW_ENTRY_KV.set(entryId, createdAt, status, type)
 		yield* Effect.log(`Stored ${result} new entry ID: ${entryId}`)
 		return result
-	}).pipe(Effect.withLogSpan("store_new_entry_id"))
+	}).pipe(Effect.withLogSpan("store_new_entry_id"), Effect.annotateLogs("entryId", entryId))
 
 export const getEntryStatus = (entryId: string) =>
 	Effect.gen(function* () {
@@ -153,6 +153,7 @@ export const getEntryStatus = (entryId: string) =>
 		return status
 	}).pipe(
 		Effect.withLogSpan("get_entry_status"),
+		Effect.annotateLogs("entryId", entryId),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(() => Effect.succeed(null)),
 	)
@@ -171,6 +172,7 @@ export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryS
 		return result
 	}).pipe(
 		Effect.withLogSpan("update_entry_status"),
+		Effect.annotateLogs("entryId", entryId),
 		Effect.mapError(
 			error =>
 				new UpdateEntryStatusError({

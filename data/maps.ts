@@ -169,7 +169,7 @@ export const getMapById = cache(
 )
 
 const getMapIds = Effect.gen(function* () {
-	const [maps, newEntries] = yield* Effect.all([INTERNAL_getManagementMapData(), getNewEntries()], {
+	const [maps, newEntries] = yield* Effect.all([INTERNAL_getManagementMapData(), getNewEntries], {
 		concurrency: "unbounded",
 	})
 

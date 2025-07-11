@@ -209,7 +209,7 @@ const resolveQuestData = (
 
 const getQuestIds = Effect.gen(function* () {
 	const [quests, newEntries] = yield* Effect.all(
-		[INTERNAL_getManagementSideQuestData(), getNewEntries()],
+		[INTERNAL_getManagementSideQuestData(), getNewEntries],
 		{
 			concurrency: "unbounded",
 		},

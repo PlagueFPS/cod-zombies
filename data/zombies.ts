@@ -252,7 +252,7 @@ const resolveZombieData = (
 
 const getZombieIds = Effect.gen(function* () {
 	const [zombies, newEntries] = yield* Effect.all(
-		[INTERNAL_getManagementZombies(), getNewEntries()],
+		[INTERNAL_getManagementZombies(), getNewEntries],
 		{
 			concurrency: "unbounded",
 		},
