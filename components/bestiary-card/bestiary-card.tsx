@@ -19,11 +19,11 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 	const href = zombie.isComingSoon ? `#` : `/bestiary/${zombie.slug}`
 
 	return (
-		<article className={cn("group h-full max-h-113 outline-hidden", { "pointer-events-none": zombie.isComingSoon })}>
-			<CustomLink href={href} aria-label={`View details for ${zombie.name}`} aria-disabled={zombie.isComingSoon}>
+		<article className={cn("group h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}>
+			<CustomLink href={href} aria-label={`View details for ${zombie.name}`} aria-disabled={zombie.isComingSoon} className="group outline-none">
 				<Card
 					className={cn(
-						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:border-primary group-focus-visible:scale-105 group-focus-visible:border-primary dark:shadow-none`,
+						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
 						{ "opacity-75 dark:opacity-50": zombie.isComingSoon },
 					)}
 				>

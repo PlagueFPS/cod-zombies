@@ -40,9 +40,13 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 		if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
 			return <DifficultyBadge difficulty={quest.difficulty} />
 		}
-		
+
 		if (Predicate.hasProperty(quest, "map") && quest.map) {
-			return <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{quest.map.title}</Badge>
+			return (
+				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+					{quest.map.title}
+				</Badge>
+			)
 		}
 
 		return null
@@ -50,7 +54,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 
 	return (
 		<article
-			className={cn("group h-full max-h-110 outline-hidden", {
+			className={cn("h-full max-h-110", {
 				"pointer-events-none": isComingSoon,
 			})}
 		>
@@ -58,10 +62,11 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 				href={resolveHref()}
 				aria-label={`View Guide for ${quest.title}`}
 				aria-disabled={isComingSoon}
+				className="group outline-none"
 			>
 				<Card
 					className={cn(
-						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:border-primary group-focus-visible:scale-105 group-focus-visible:border-primary dark:shadow-none`,
+						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
 						{ "opacity-75 dark:opacity-50": isComingSoon },
 					)}
 				>
@@ -69,7 +74,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 						{(draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null}
 						{(draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null}
 						{isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
-						{ renderSpecificBadge() }
+						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.game.title}
 						</Badge>

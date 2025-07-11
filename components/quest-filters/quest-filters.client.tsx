@@ -13,7 +13,8 @@ interface IQuestFiltersClient {
 }
 
 export default function QuestFiltersClient({ games, maps, difficulties }: IQuestFiltersClient) {
-	const { mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } = useQuestSearchParams()
+	const { mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } =
+		useQuestSearchParams()
 	const pathname = usePathname()
 	const isHomePage = pathname === "/"
 
@@ -31,7 +32,7 @@ export default function QuestFiltersClient({ games, maps, difficulties }: IQuest
 
 	return (
 		<ScrollArea className="-mt-4">
-			<div className="flex w-full items-center gap-2">
+			<div className="flex w-full items-center gap-2 py-1 pl-0.5">
 				{isHomePage ? (
 					<>
 						<FiltersCombobox

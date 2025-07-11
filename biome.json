@@ -40,10 +40,9 @@
 				"recommended": true,
 				"noUnassignedVariables": "on",
 				"useSortedClasses": {
-					"level": "warn",
+					"level": "on",
 					"fix": "safe",
 					"options": {
-						"attributes": ["className"],
 						"functions": ["cn", "clsx", "twmerge"]
 					}
 				},

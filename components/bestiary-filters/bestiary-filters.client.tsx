@@ -12,7 +12,8 @@ interface BestiaryFiltersClientProps {
 }
 
 export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFiltersClientProps) {
-	const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } = useQuestSearchParams()
+	const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } =
+		useQuestSearchParams()
 
 	const toggleGame = (game: string) => {
 		toggleParam("game", game, gameParams)
@@ -28,7 +29,7 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
 
 	return (
 		<ScrollArea className="-mt-4">
-			<div className="flex w-full items-center gap-2">
+			<div className="flex w-full items-center gap-2 py-1 pl-0.5">
 				<FiltersCombobox
 					data={types}
 					currentSelection={typeParams}
