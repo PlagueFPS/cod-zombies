@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react"
+import { readFile } from "node:fs/promises"
+import { join } from "node:path"
 import { ImageResponse } from "next/og"
-import { getFontData } from "@/data/og-images"
+// import { getFontData } from "@/data/og-images"
 import { getZombieBySlug } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
 
@@ -20,15 +22,21 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const zombie = await getZombieBySlug(false, slug)
 	if (!zombie) return new Response("Zombie not found", { status: 404 })
 
-	const fonts = await getFontData
-	if (!fonts) return new Response("Failed to load font data", { status: 500 })
+	const [geistSemiBold, geistBold] = await Promise.all([
+		readFile(join(process.cwd(), "assets/Geist-SemiBold.otf")),
+		readFile(join(process.cwd(), "assets/Geist-Bold.otf")),
+	])
+
+	// const fonts = await getFontData
+	// if (!fonts) return new Response("Failed to load font data", { status: 500 })
 
 	const getDifficultyCSSProps = (): CSSProperties => {
 		switch (zombie.type) {
 			case "Normal":
 				return {
 					color: "hsl(169 83.8% 78.2%)",
-					backgroundImage: "radial-gradient(circle at top, hsl(176 69.4% 21.8%), hsl(176 60.8% 19%))",
+					backgroundImage:
+						"radial-gradient(circle at top, hsl(176 69.4% 21.8%), hsl(176 60.8% 19%))",
 					border: "1px solid hsl(175 83.9% 31.6%)",
 				}
 			case "Special":
@@ -40,7 +48,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 			case "Elite":
 				return {
 					color: "hsl(353 96.1% 90%)",
-					backgroundImage: "radial-gradient(circle at top, hsl(343 79.7% 34.7%), hsl(342 75.5% 30.4%))",
+					backgroundImage:
+						"radial-gradient(circle at top, hsl(343 79.7% 34.7%), hsl(342 75.5% 30.4%))",
 					border: "1px solid hsl(347 77.2% 49.8%)",
 				}
 			case "Boss":
@@ -87,7 +96,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 					left: 0,
 					right: 0,
 					bottom: 0,
-					backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent)",
+					backgroundImage:
+						"linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent)",
 				}}
 			/>
 			<div
@@ -109,10 +119,11 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 						color: "hsl(32 97.7% 83.1%)",
 						fontWeight: "600",
 						fontSize: "1rem",
-						backgroundImage: "radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
+						backgroundImage:
+							"radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
-					{ zombie.games[0] ? zombie.games[0].title : null }
+					{zombie.games[0] ? zombie.games[0].title : null}
 				</span>
 				<span
 					style={{
@@ -171,13 +182,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 			fonts: [
 				{
 					name: "Geist",
-					data: fonts.boldFont,
+					data: geistSemiBold,
 					style: "normal",
 					weight: 700,
 				},
 				{
 					name: "Geist",
-					data: fonts.semiBoldFont,
+					data: geistBold,
 					style: "normal",
 					weight: 600,
 				},

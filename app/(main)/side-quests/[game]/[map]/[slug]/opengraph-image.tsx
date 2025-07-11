@@ -1,5 +1,7 @@
+import { readFile } from "node:fs/promises"
+import { join } from "node:path"
 import { ImageResponse } from "next/og"
-import { getFontData } from "@/data/og-images"
+// import { getFontData } from "@/data/og-images"
 import { getQuestBySlug } from "@/data/side-quests"
 import { DATE_OPTIONS } from "@/utils/constants"
 
@@ -19,8 +21,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const q = await getQuestBySlug(false, slug)
 	if (!q) return new Response("Quest not found", { status: 404 })
 
-	const fonts = await getFontData
-	if (!fonts) return new Response("Failed to load font data", { status: 500 })
+	const [geistSemiBold, geistBold] = await Promise.all([
+		readFile(join(process.cwd(), "assets/Geist-SemiBold.otf")),
+		readFile(join(process.cwd(), "assets/Geist-Bold.otf")),
+	])
+
+	// const fonts = await getFontData
+	// if (!fonts) return new Response("Failed to load font data", { status: 500 })
 
 	return new ImageResponse(
 		<div
@@ -54,7 +61,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 					left: "0",
 					right: "0",
 					bottom: "0",
-					backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent)",
+					backgroundImage:
+						"linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent)",
 				}}
 			/>
 			<div
@@ -76,7 +84,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 						color: "hsl(32 97.7% 83.1%)",
 						fontWeight: "600",
 						fontSize: "1rem",
-						backgroundImage: "radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
+						backgroundImage:
+							"radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
 					{q.game.title}
@@ -89,7 +98,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 						color: "hsl(32 97.7% 83.1%)",
 						fontWeight: "600",
 						fontSize: "1rem",
-						backgroundImage: "radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
+						backgroundImage:
+							"radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
 					{q.map.title}
@@ -142,13 +152,13 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 			fonts: [
 				{
 					name: "Geist",
-					data: fonts.boldFont,
+					data: geistSemiBold,
 					style: "normal",
 					weight: 700,
 				},
 				{
 					name: "Geist",
-					data: fonts.semiBoldFont,
+					data: geistBold,
 					style: "normal",
 					weight: 600,
 				},
