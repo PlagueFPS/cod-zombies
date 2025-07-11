@@ -14,14 +14,25 @@ export default async function PreviewCard({ mapId, index }: IPreviewCard) {
 	if (!config) return null
 
 	return (
-		<CustomLink href={`/maps/${config.id}`} aria-label={`View ${config.title} interactive map`} className="group">
+		<CustomLink
+			href={`/maps/${config.id}`}
+			aria-label={`View ${config.title} interactive map`}
+			className="group outline-none"
+		>
 			<div className="flex flex-col items-start justify-center gap-4">
-				<div className="flex w-full items-center justify-center overflow-hidden rounded-md shadow-xl dark:shadow-none">
-					<PreviewCardImage mapId={mapId} title={config.title} priority={index === 0} />
+				<div className="flex w-full items-center justify-center overflow-hidden rounded-md shadow-xl group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none">
+					<PreviewCardImage
+						mapId={mapId}
+						title={config.title}
+						priority={index === 0}
+						className="transition-transform duration-300 will-change-transform group-focus-visible:scale-105"
+					/>
 				</div>
 				<div className="flex flex-col items-start justify-center">
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{config.game}</Badge>
-					<h3 className="font-bold text-xl transition-colors group-hover:text-orange-600 group-hover:dark:text-orange-400">
+					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+						{config.game}
+					</Badge>
+					<h3 className="font-bold text-xl transition-colors group-hover:text-primary group-focus-visible:text-primary">
 						{config.title}
 					</h3>
 				</div>

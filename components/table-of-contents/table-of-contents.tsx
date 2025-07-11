@@ -1,7 +1,7 @@
 "use client"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
+import { useLocalStorage } from "@/hooks/use-local-storage"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTableOfContents } from "@/hooks/use-table-of-contents"
 import { cn } from "@/lib/utils"
@@ -23,7 +23,7 @@ interface TableOfContentsProps {
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
 	const { activeHeading, currentHeading, progress } = useTableOfContents(headings, "body")
-	const [isExpanded, setIsExpanded] = useState(false)
+	const [isExpanded, setIsExpanded] = useLocalStorage("toc-expanded", true)
 	const isMobile = useIsMobile(640)
 
 	return (
@@ -39,7 +39,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 					<BackToTopButton mobile variant={"default"} className="right-4 bottom-8" />
 				</>
 			) : (
-				<aside className="sticky top-24 z-40 ml-4 h-fit w-85 shrink-0 rounded-lg border px-6 shadow-md dark:shadow-none">
+				<aside className="sticky top-26 z-40 ml-4 h-fit w-85 shrink-0 rounded-lg border px-6 shadow-md dark:shadow-none">
 					<div className="flex flex-col gap-4 pt-4">
 						<div className="flex items-center justify-between">
 							<h3 className="font-medium text-muted-foreground text-sm">CURRENT SECTION</h3>
@@ -62,9 +62,12 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 							</Button>
 						</div>
 						<ScrollArea
-							className={cn("grid max-h-[60vh] grid-rows-[0fr] gap-1 overflow-hidden transition-all duration-300", {
-								"grid-rows-[1fr]": isExpanded,
-							})}
+							className={cn(
+								"grid max-h-[60vh] grid-rows-[0fr] gap-1 overflow-hidden transition-all duration-300",
+								{
+									"animate-toc-expand grid-rows-[1fr]": isExpanded,
+								},
+							)}
 						>
 							<ul
 								className={cn(

@@ -9,9 +9,10 @@ interface IPreviewCardImage {
 	mapId: MapId
 	title: string
 	priority?: boolean
+	className?: string
 }
 
-export default function PreviewCardImage({ mapId, title, priority }: IPreviewCardImage) {
+export default function PreviewCardImage({ mapId, title, priority, className }: IPreviewCardImage) {
 	const { imageLoaded, setImageLoaded, imageErrored, setImageErrored } = useImageState()
 
 	return (
@@ -27,7 +28,7 @@ export default function PreviewCardImage({ mapId, title, priority }: IPreviewCar
 					priority={priority}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}
-					className={cn("h-full w-full object-cover opacity-0 transition-all duration-300 group-hover:scale-105", {
+					className={cn("h-full w-full object-cover opacity-0 group-hover:scale-105", className, {
 						"animate-fade-in opacity-100": imageLoaded,
 					})}
 				/>

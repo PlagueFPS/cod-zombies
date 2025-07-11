@@ -63,6 +63,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 				aria-label={`View Guide for ${quest.title}`}
 				aria-disabled={isComingSoon}
 				className="group outline-none"
+				tabIndex={isComingSoon ? -1 : 0}
 			>
 				<Card
 					className={cn(
@@ -96,7 +97,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 								className="h-44 rounded-md object-cover"
 							/>
 						</div>
-						<CardTitle className="text-xl group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">
+						<CardTitle className="text-xl will-change-transform">
 							{quest.title}
 						</CardTitle>
 						<CardDescription className="text-foreground/85">{quest.description}</CardDescription>

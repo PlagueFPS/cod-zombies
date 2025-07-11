@@ -1,4 +1,5 @@
 import { ChevronDown, Menu } from "lucide-react"
+import BackToTopButton from "../back-to-top-button/back-to-top-button"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
 import { ScrollArea } from "../ui/scroll-area"
@@ -28,12 +29,13 @@ export default function TableOfContentsLoader() {
 						<ul className="flex flex-col gap-3 overflow-hidden border-t py-4 pl-1 font-semibold text-foreground/90 text-sm" />
 					</ScrollArea>
 				</div>
-				<div className="mt-4 border-t py-4">
-					<div className="mb-2 flex items-center justify-between">
+				<div className="mt-4 flex flex-col items-center justify-center border-t py-4">
+					<div className="mb-2 flex w-full items-center justify-between">
 						<span className="text-muted-foreground text-sm">Guide progress</span>
-						<span className="font-medium text-xs">{0}%</span>
+						<span className="font-medium text-xs">0%</span>
 					</div>
 					<Progress value={0} className="h-1" />
+					<BackToTopButton disabled aria-disabled className="mt-4" variant={"outline"} />
 				</div>
 			</aside>
 			<MobileTableOfContentsLoader />

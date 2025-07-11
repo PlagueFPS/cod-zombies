@@ -1,7 +1,13 @@
 import type { MinifiedZombie } from "@/data/zombies"
 import { cn } from "@/lib/utils"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import { ChangedBadge, ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "../custom-badges/custom-badges"
+import {
+	ChangedBadge,
+	ComingSoonBadge,
+	DraftBadge,
+	NewBadge,
+	TypeBadge,
+} from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
@@ -19,8 +25,16 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 	const href = zombie.isComingSoon ? `#` : `/bestiary/${zombie.slug}`
 
 	return (
-		<article className={cn("group h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}>
-			<CustomLink href={href} aria-label={`View details for ${zombie.name}`} aria-disabled={zombie.isComingSoon} className="group outline-none">
+		<article
+			className={cn("h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}
+		>
+			<CustomLink
+				href={href}
+				aria-label={`View details for ${zombie.name}`}
+				aria-disabled={zombie.isComingSoon}
+				className="group outline-none"
+				tabIndex={zombie.isComingSoon ? -1 : 0}
+			>
 				<Card
 					className={cn(
 						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
@@ -32,7 +46,11 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 						{(draftMode || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null}
 						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
-						{ zombie.games[0] ? <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{zombie.games[0].title}</Badge> : null }
+						{zombie.games[0] ? (
+							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+								{zombie.games[0].title}
+							</Badge>
+						) : null}
 					</div>
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage

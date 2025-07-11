@@ -95,7 +95,8 @@ export default async function MapPage({ params }: MapPageProps) {
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
-				<div className="flex w-full flex-col-reverse xl:flex-row">
+				<div className="flex w-full flex-col xl:flex-row-reverse">
+					<TableOfContents headings={map.isComingSoon ? [] : headings} />
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
@@ -176,7 +177,6 @@ export default async function MapPage({ params }: MapPageProps) {
 							{nextMap && <PrevOrNextMapCard map={nextMap} isEnabled={isEnabled} />}
 						</div>
 					</article>
-					<TableOfContents headings={map.isComingSoon ? [] : headings} />
 				</div>
 			</div>
 			<HashLinkHandler />
