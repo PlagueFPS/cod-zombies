@@ -76,15 +76,25 @@ export default function GridPagination({ data }: IGridPagination) {
 		<Pagination>
 			<PaginationContent>
 				<PaginationPrevious
-					onClick={() => updatePage(prevPage)}
+					href={`?page=${prevPage}`}
 					aria-disabled={previousDisabled}
 					className={cn({ "pointer-events-none opacity-25": previousDisabled })}
+					tabIndex={previousDisabled ? -1 : 0}
+					onNavigate={(e) => {
+						e.preventDefault()
+						updatePage(prevPage)
+					}}
 				/>
 				{renderPaginationItems()}
 				<PaginationNext
-					onClick={() => updatePage(nextPage)}
+					href={`?page=${nextPage}`}
 					aria-disabled={nextDisabled}
 					className={cn({ "pointer-events-none opacity-25": nextDisabled })}
+					tabIndex={nextDisabled ? -1 : 0}
+					onNavigate={(e) => {
+						e.preventDefault()
+						updatePage(nextPage)
+					}}
 				/>
 			</PaginationContent>
 		</Pagination>

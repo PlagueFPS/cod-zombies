@@ -1,5 +1,6 @@
 import type * as React from "react"
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
+import Link from "next/link"
 import { type Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -15,7 +16,13 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
 }
 
 function PaginationContent({ className, ...props }: React.ComponentProps<"ul">) {
-	return <ul data-slot="pagination-content" className={cn("flex flex-row items-center gap-1", className)} {...props} />
+	return (
+		<ul
+			data-slot="pagination-content"
+			className={cn("flex flex-row items-center gap-1", className)}
+			{...props}
+		/>
+	)
 }
 
 function PaginationItem({ ...props }: React.ComponentProps<"li">) {
@@ -25,11 +32,11 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 type PaginationLinkProps = {
 	isActive?: boolean
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
-	React.ComponentProps<"a">
+	React.ComponentProps<typeof Link>
 
 function PaginationLink({ className, isActive, size = "icon", ...props }: PaginationLinkProps) {
 	return (
-		<a
+		<Link
 			aria-current={isActive ? "page" : undefined}
 			data-slot="pagination-link"
 			data-active={isActive}
