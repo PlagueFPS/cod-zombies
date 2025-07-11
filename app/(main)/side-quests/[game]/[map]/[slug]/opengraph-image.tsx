@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { ImageResponse } from "next/og"
 import { getFontData } from "@/data/og-images"
 import { getQuestBySlug } from "@/data/side-quests"
@@ -20,7 +19,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const q = await getQuestBySlug(false, slug)
 	if (!q) return new Response("Quest not found", { status: 404 })
 
-	const fonts = await getFontData
+	const fonts = await getFontData()
 
 	return new ImageResponse(
 		<div
@@ -35,9 +34,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 				backgroundColor: "black",
 			}}
 		>
-			<Image
-				unoptimized
-				src={`https:${q.image.url}?w=${size.width}&h=${size.height}&q=75`}
+			<img
+				src={`https:${q.image.url}?w=${size.width}&h=${size.height}&q=75&fm=jpg`}
 				alt={q.title}
 				width={size.width}
 				height={size.height}

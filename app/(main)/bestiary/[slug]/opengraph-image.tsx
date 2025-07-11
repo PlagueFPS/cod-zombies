@@ -1,5 +1,4 @@
 import type { CSSProperties } from "react"
-import Image from "next/image"
 import { ImageResponse } from "next/og"
 import { getFontData } from "@/data/og-images"
 import { getZombieBySlug } from "@/data/zombies"
@@ -21,7 +20,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const zombie = await getZombieBySlug(false, slug)
 	if (!zombie) return new Response("Zombie not found", { status: 404 })
 
-	const fonts = await getFontData
+	const fonts = await getFontData()
 
 	const getDifficultyCSSProps = (): CSSProperties => {
 		switch (zombie.type) {
@@ -69,9 +68,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 				backgroundColor: "black",
 			}}
 		>
-			<Image
-				unoptimized
-				src={`https:${zombie.image.url}?w=${size.width}&h=${size.height}&q=75`}
+			<img
+				src={`https:${zombie.image.url}?w=${size.width}&h=${size.height}&q=75&fm=jpg`}
 				alt={zombie.name}
 				width={size.width}
 				height={size.height}
