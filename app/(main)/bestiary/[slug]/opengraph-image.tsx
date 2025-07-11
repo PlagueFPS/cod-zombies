@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react"
+import { Effect } from "effect"
 import { ImageResponse } from "next/og"
 import { getFontData } from "@/data/og-images"
 import { getZombieBySlug } from "@/data/zombies"
@@ -20,7 +21,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const zombie = await getZombieBySlug(false, slug)
 	if (!zombie) return new Response("Zombie not found", { status: 404 })
 
-	const fonts = await getFontData()
+	// const fonts = await getFontData()
+	const fonts = await Effect.runPromise(getFontData)
 
 	const getDifficultyCSSProps = (): CSSProperties => {
 		switch (zombie.type) {
@@ -171,20 +173,22 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 		</div>,
 		{
 			...size,
-			fonts: fonts ? [
-				{
-					name: "Geist",
-					data: fonts.geistSemiBold,
-					style: "normal",
-					weight: 600,
-				},
-				{
-					name: "Geist",
-					data: fonts.geistBold,
-					style: "normal",
-					weight: 700,
-				},
-			]: undefined,
+			fonts: fonts
+				? [
+						{
+							name: "Geist",
+							data: fonts.geistSemiBold,
+							style: "normal",
+							weight: 600,
+						},
+						{
+							name: "Geist",
+							data: fonts.geistBold,
+							style: "normal",
+							weight: 700,
+						},
+					]
+				: undefined,
 		},
 	)
 }

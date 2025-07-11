@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react"
+import { Effect } from "effect"
 import { ImageResponse } from "next/og"
 import { getMapBySlug } from "@/data/maps"
 import { getFontData } from "@/data/og-images"
@@ -20,7 +21,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const map = await getMapBySlug(false, slug)
 	if (!map) return new Response("map not found", { status: 404 })
 
-	const fonts = await getFontData()
+	// const fonts = await getFontData()
+	const fonts = await Effect.runPromise(getFontData)
 
 	const getDifficultyCSSProps = (): CSSProperties => {
 		switch (map.difficulty) {

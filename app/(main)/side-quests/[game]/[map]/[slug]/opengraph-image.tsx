@@ -1,3 +1,4 @@
+import { Effect } from "effect"
 import { ImageResponse } from "next/og"
 import { getFontData } from "@/data/og-images"
 import { getQuestBySlug } from "@/data/side-quests"
@@ -19,7 +20,8 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const q = await getQuestBySlug(false, slug)
 	if (!q) return new Response("Quest not found", { status: 404 })
 
-	const fonts = await getFontData()
+	// const fonts = await getFontData()
+	const fonts = await Effect.runPromise(getFontData)
 
 	return new ImageResponse(
 		<div
