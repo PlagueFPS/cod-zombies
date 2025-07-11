@@ -81,18 +81,20 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
 			<div className="flex items-center justify-center gap-4">
 				<span className="text-foreground/80 text-sm">Was this guide helpful?</span>
 				<div className="flex items-center justify-center gap-1">
-					<ThumbsUp
-						onClick={() => setVote(prev => (prev === "Liked" ? null : "Liked"))}
-						className={cn("hover:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform", {
-							"text-primary": vote === "Liked",
-						})}
-					/>
-					<ThumbsDown
-						onClick={() => setVote(prev => (prev === "Disliked" ? null : "Disliked"))}
-						className={cn("hover:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform", {
-							"text-primary": vote === "Disliked",
-						})}
-					/>
+					<button type="button" onClick={() => setVote(prev => (prev === "Liked" ? null : "Liked"))} className="group">
+						<ThumbsUp
+							className={cn("group-hover:-rotate-12 group-focus-visible:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform duration-300", {
+								"text-primary": vote === "Liked",
+							})}
+						/>
+					</button>
+					<button type="button" onClick={() => setVote(prev => (prev === "Disliked" ? null : "Disliked"))} className="group">
+						<ThumbsDown
+							className={cn("group-hover:-rotate-12 group-focus-visible:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform duration-300", {
+								"text-primary": vote === "Disliked",
+							})}
+						/>
+					</button>
 				</div>
 			</div>
 			<div
@@ -114,6 +116,7 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
 											placeholder="Your feedback"
 											className="min-h-26 resize-none focus-visible:ring-0"
 											ref={textareaRef}
+											tabIndex={vote ? 0 : -1}
 										/>
 									</FormControl>
 								</FormItem>

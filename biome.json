@@ -43,6 +43,7 @@
 					"level": "on",
 					"fix": "safe",
 					"options": {
+						"attributes": ["className"],
 						"functions": ["cn", "clsx", "twmerge"]
 					}
 				},

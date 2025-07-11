@@ -82,8 +82,8 @@ export const generateMetadata = async ({ params }: MapPageProps): Promise<Metada
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/${game}/${slug}`
-		}
+			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/${game}/${slug}`,
+		},
 	}
 }
 
@@ -134,14 +134,18 @@ export default async function MapPage({ params }: MapPageProps) {
 									{(isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null}
 									{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 									{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
-									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{map.game.title}</Badge>
+									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+										{map.game.title}
+									</Badge>
 								</div>
 							</div>
 							<div className="flex items-center justify-between text-muted-foreground text-sm">
 								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 xl:flex-row xl:pb-0">
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
-										<span>Updated: {new Date(map.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}</span>
+										<span>
+											Updated: {new Date(map.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
+										</span>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
 									<div className="flex items-center gap-1">
@@ -159,11 +163,12 @@ export default async function MapPage({ params }: MapPageProps) {
 						{map.isComingSoon ? (
 							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 								<p className="font-bold text-xl">
-									This article is currently being written and will take some time before being ready.
+									This article is currently being written and will take some time before being
+									ready.
 								</p>
 								<p className="text-foreground/90">
-									Check back soon or subscribe to our newsletter at the bottom of this page to be notified when this
-									guide is ready!
+									Check back soon or subscribe to our newsletter at the bottom of this page to be
+									notified when this guide is ready!
 								</p>
 							</div>
 						) : (
@@ -192,23 +197,31 @@ const PrevOrNextMapCard = ({ map, isEnabled, prev }: PrevOrNextMap) => {
 		<CustomLink
 			href={href}
 			className={cn(
-				"group hover:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border shadow-sm transition-all hover:border-primary lg:max-w-xl dark:shadow-none",
+				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
 					"pointer-events-none opacity-50": map.isComingSoon,
 				},
 			)}
+			tabIndex={map.isComingSoon ? -1 : 0}
 		>
 			<article
-				className={cn("relative flex h-full flex-col items-center overflow-hidden px-2 py-4 xl:h-48 xl:flex-row", {
-					"xl:flex-row-reverse": prev,
-				})}
+				className={cn(
+					"relative flex h-full flex-col items-center overflow-hidden px-2 py-4 xl:h-48 xl:flex-row",
+					{
+						"xl:flex-row-reverse": prev,
+					},
+				)}
 			>
-				<div className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}>
+				<div
+					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
+				>
 					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null}
 					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{map.game.title}</Badge>
+					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+						{map.game.title}
+					</Badge>
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
 					<FeaturedImage
@@ -228,18 +241,24 @@ const PrevOrNextMapCard = ({ map, isEnabled, prev }: PrevOrNextMap) => {
 				</div>
 				<div className="relative z-20 flex h-full w-full flex-col justify-center gap-2 px-4 pt-4 xl:pt-6">
 					<h3
-						className={cn("font-semibold text-xl group-hover:text-primary-gradient", {
-							truncate: map.title.length > 20,
-						})}
+						className={cn(
+							"font-semibold text-xl transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
+							{
+								truncate: map.title.length > 20,
+							},
+						)}
 					>
 						{map.title}
 					</h3>
 					<p className="line-clamp-3 text-ellipsis text-sm">{map.description}</p>
 					<div
-						className={cn("mt-auto flex items-center pb-2 transition-all group-hover:text-primary", {
-							"xl:-ml-2": prev,
-							"xl:-mr-2": !prev,
-						})}
+						className={cn(
+							"mt-auto flex items-center pb-2 transition-colors group-hover:text-primary group-focus-visible:text-primary",
+							{
+								"xl:-ml-2": prev,
+								"xl:-mr-2": !prev,
+							},
+						)}
 					>
 						{prev ? (
 							<>

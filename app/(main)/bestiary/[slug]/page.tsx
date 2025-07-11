@@ -17,7 +17,12 @@ import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { ChangedBadge, DraftBadge, NewBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
+import {
+	ChangedBadge,
+	DraftBadge,
+	NewBadge,
+	TypeBadge,
+} from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import ItemTooltip from "@/components/rich-text/rich-embeds/item-tooltip"
@@ -26,7 +31,12 @@ import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { getZombieBySlug, getZombieSearchData, getZombies, type MinifiedZombie } from "@/data/zombies"
+import {
+	getZombieBySlug,
+	getZombieSearchData,
+	getZombies,
+	type MinifiedZombie,
+} from "@/data/zombies"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
@@ -83,8 +93,8 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
-		}
+			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`,
+		},
 	}
 }
 
@@ -122,7 +132,10 @@ export default async function ZombiePage({ params }: IZombiePage) {
 						{zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 					</div>
-					<ShareButton title={zombie.name} url={`${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`} />
+					<ShareButton
+						title={zombie.name}
+						url={`${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`}
+					/>
 				</div>
 				<CardHeader>
 					<CardTitle className="dark:dark-text-gradient font-extrabold text-3xl text-gradient md:text-4xl">
@@ -154,9 +167,15 @@ export default async function ZombiePage({ params }: IZombiePage) {
 									<div className="flex items-center justify-between">
 										<div className="flex items-center gap-2">
 											<Eye className="size-5 text-orange-500" />
-											<span className="text-foreground dark:text-foreground/80">First Appeared In</span>
+											<span className="text-foreground dark:text-foreground/80">
+												First Appeared In
+											</span>
 										</div>
-										{ zombie.maps[0] ? <span className="text-foreground dark:text-foreground/80">{ zombie.maps[0].title }</span> : null }
+										{zombie.maps[0] ? (
+											<span className="text-foreground dark:text-foreground/80">
+												{zombie.maps[0].title}
+											</span>
+										) : null}
 									</div>
 								</div>
 								<div>
@@ -188,7 +207,10 @@ export default async function ZombiePage({ params }: IZombiePage) {
 								<div className="flex flex-wrap items-center gap-2">
 									{zombie.slug !== "zombie" ? (
 										zombie.maps.map(map => (
-											<Badge key={map.slug} className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1">
+											<Badge
+												key={map.slug}
+												className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
+											>
 												{map.title}
 											</Badge>
 										))
@@ -206,7 +228,10 @@ export default async function ZombiePage({ params }: IZombiePage) {
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
 									{zombie.games.map(game => (
-										<Badge key={game.slug} className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1">
+										<Badge
+											key={game.slug}
+											className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
+										>
 											{game.title}
 										</Badge>
 									))}
@@ -234,8 +259,12 @@ export default async function ZombiePage({ params }: IZombiePage) {
 									Elemental Weaknesses
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.elementalWeakness?.map(weakness => <ItemTooltip key={weakness.id} item={weakness} />) ?? (
-										<span className="text-foreground dark:text-foreground/80">No elemental weaknesses</span>
+									{zombie.elementalWeakness?.map(weakness => (
+										<ItemTooltip key={weakness.id} item={weakness} />
+									)) ?? (
+										<span className="text-foreground dark:text-foreground/80">
+											No elemental weaknesses
+										</span>
 									)}
 								</div>
 							</div>
@@ -314,19 +343,31 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: PrevOrNextZombie) => {
 	return (
 		<CustomLink
 			href={href}
-			className="group hover:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border shadow-sm transition-all hover:border-primary xl:max-w-full dark:shadow-none"
+			className={cn(
+				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary xl:max-w-full dark:shadow-none",
+				{
+					"pointer-events-none opacity-50": zombie.isComingSoon,
+				},
+			)}
+			tabIndex={zombie.isComingSoon ? -1 : 0}
 		>
 			<article
 				className={cn("relative flex h-full flex-col items-center px-2 py-4 xl:h-48 xl:flex-row", {
 					"xl:flex-row-reverse": prev,
 				})}
 			>
-				<div className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}>
+				<div
+					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
+				>
 					{zombie.isNew ? <NewBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null}
 					{(isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null}
 					<TypeBadge type={zombie.type} />
-					{ zombie.games[0] ? <Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">{ zombie.games[0].title }</Badge> : null }
+					{zombie.games[0] ? (
+						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+							{zombie.games[0].title}
+						</Badge>
+					) : null}
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
 					<FeaturedImage
@@ -345,18 +386,24 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: PrevOrNextZombie) => {
 				</div>
 				<div className="relative z-20 flex h-full w-full flex-col justify-center gap-2 px-4 pt-4 xl:pt-6">
 					<h3
-						className={cn("font-semibold text-xl group-hover:text-primary-gradient", {
-							truncate: zombie.name.length > 20,
-						})}
+						className={cn(
+							"font-semibold text-xl transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
+							{
+								truncate: zombie.name.length > 20,
+							},
+						)}
 					>
 						{zombie.name}
 					</h3>
 					<p className="line-clamp-3 text-ellipsis text-sm">{zombie.description}</p>
 					<div
-						className={cn("mt-auto flex items-center pb-2 transition-all group-hover:text-primary", {
-							"xl:-ml-2": prev,
-							"xl:-mr-2": !prev,
-						})}
+						className={cn(
+							"mt-auto flex items-center pb-2 transition-colors group-hover:text-primary group-focus-visible:text-primary",
+							{
+								"xl:-ml-2": prev,
+								"xl:-mr-2": !prev,
+							},
+						)}
 					>
 						{prev ? (
 							<>
