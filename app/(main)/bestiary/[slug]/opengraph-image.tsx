@@ -1,8 +1,7 @@
 import type { CSSProperties } from "react"
-import { readFile } from "node:fs/promises"
-import { join } from "node:path"
+import Image from "next/image"
 import { ImageResponse } from "next/og"
-// import { getFontData } from "@/data/og-images"
+import { getFontData } from "@/data/og-images"
 import { getZombieBySlug } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
 
@@ -22,13 +21,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const zombie = await getZombieBySlug(false, slug)
 	if (!zombie) return new Response("Zombie not found", { status: 404 })
 
-	const [geistSemiBold, geistBold] = await Promise.all([
-		readFile(join(process.cwd(), "assets/Geist-SemiBold.otf")),
-		readFile(join(process.cwd(), "assets/Geist-Bold.otf")),
-	])
-
-	// const fonts = await getFontData
-	// if (!fonts) return new Response("Failed to load font data", { status: 500 })
+	const fonts = await getFontData
 
 	const getDifficultyCSSProps = (): CSSProperties => {
 		switch (zombie.type) {
@@ -76,8 +69,9 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 				backgroundColor: "black",
 			}}
 		>
-			<img
-				src={`https:${zombie.image.url}?w=${size.width}&h=${size.height}&q=75&fm=jpg`}
+			<Image
+				unoptimized
+				src={`https:${zombie.image.url}?w=${size.width}&h=${size.height}&q=75`}
 				alt={zombie.name}
 				width={size.width}
 				height={size.height}
@@ -179,20 +173,20 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 		</div>,
 		{
 			...size,
-			fonts: [
+			fonts: fonts ? [
 				{
 					name: "Geist",
-					data: geistSemiBold,
-					style: "normal",
-					weight: 700,
-				},
-				{
-					name: "Geist",
-					data: geistBold,
+					data: fonts.geistSemiBold,
 					style: "normal",
 					weight: 600,
 				},
-			],
+				{
+					name: "Geist",
+					data: fonts.geistBold,
+					style: "normal",
+					weight: 700,
+				},
+			]: undefined,
 		},
 	)
 }

@@ -1,46 +1,29 @@
 import "server-only"
-import { FetchHttpClient, HttpClient } from "@effect/platform"
-import { Effect, Redacted, Schedule } from "effect"
-import { env } from "@/env"
-import { IN_DEVELOPMENT } from "@/utils/constants"
+import { readFile } from "node:fs/promises"
+import { join } from "node:path"
+import { Effect } from "effect"
+import { LoadFontDataError } from "@/types/errors"
 
 export const getFontData = Effect.gen(function* () {
-	const httpClient = (yield* HttpClient.HttpClient).pipe(
-		HttpClient.retryTransient({
-			times: 5,
-			schedule: Schedule.exponential("200 millis"),
-		}),
-		HttpClient.filterStatusOk,
-	)
+	const geistSemiBoldEffect = Effect.tryPromise({
+		try: () => readFile(join(process.cwd(), "assets/Geist-SemiBold.otf")),
+		catch: error =>
+			new LoadFontDataError({ message: "Failed to load `Geist-SemiBold` font data", cause: error }),
+	})
+	const geistBoldEffect = Effect.tryPromise({
+		try: () => readFile(join(process.cwd(), "assets/Geist-Bold.otf")),
+		catch: error =>
+			new LoadFontDataError({ message: "Failed to load `Geist-Bold` font data", cause: error }),
+	})
 
-	const automationBypassSecret = Redacted.make(env.VERCEL_AUTOMATION_BYPASS_SECRET)
-	const baseURL = IN_DEVELOPMENT ? env.NEXT_PUBLIC_WEBSITE_URL : `https://${env.VERCEL_URL}`
+	const [geistSemiBold, geistBold] = yield* Effect.all([geistSemiBoldEffect, geistBoldEffect], {
+		concurrency: "unbounded",
+	})
 
-	const [boldFont, semiBoldFont] = yield* Effect.all(
-		[
-			httpClient
-				.get(`${baseURL}/fonts/Geist-Bold.otf`, {
-					headers: {
-						"x-vercel-protection-bypass": Redacted.value(automationBypassSecret),
-					},
-				})
-				.pipe(Effect.flatMap(response => response.arrayBuffer)),
-			httpClient
-				.get(`${baseURL}/fonts/Geist-SemiBold.otf`, {
-					headers: {
-						"x-vercel-protection-bypass": Redacted.value(automationBypassSecret),
-					},
-				})
-				.pipe(Effect.flatMap(response => response.arrayBuffer)),
-		],
-		{ concurrency: "unbounded" },
-	)
-
-	return { boldFont, semiBoldFont }
+	return { geistSemiBold, geistBold }
 }).pipe(
 	Effect.withLogSpan("get_font_data"),
 	Effect.tapError(Effect.logError),
 	Effect.catchAll(() => Effect.succeed(null)),
-	Effect.provide(FetchHttpClient.layer),
 	Effect.runPromise,
 )

@@ -61,3 +61,4 @@ export class QuestMapNotFoundError extends Data.TaggedError(
 export class MapCategoryNotFoundError extends Data.TaggedError(
 	"MapCategoryNotFoundError",
 )<CommonErrorProps> {}
+export class LoadFontDataError extends Data.TaggedError("LoadFontDataError")<CommonErrorProps> {}

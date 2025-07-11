@@ -1,9 +1,8 @@
 import type { CSSProperties } from "react"
-import { readFile } from "node:fs/promises"
-import { join } from "node:path"
+import Image from "next/image"
 import { ImageResponse } from "next/og"
 import { getMapBySlug } from "@/data/maps"
-// import { getFontData } from "@/data/og-images"
+import { getFontData } from "@/data/og-images"
 import { DATE_OPTIONS } from "@/utils/constants"
 
 export const alt = "Main Quest Preview Image"
@@ -22,13 +21,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const map = await getMapBySlug(false, slug)
 	if (!map) return new Response("map not found", { status: 404 })
 
-	const [geistSemiBold, geistBold] = await Promise.all([
-		readFile(join(process.cwd(), "assets/Geist-SemiBold.otf")),
-		readFile(join(process.cwd(), "assets/Geist-Bold.otf")),
-	])
-
-	// const font = await getFontData
-	// if (!font) return new Response("failed to load font data", { status: 500 })
+	const fonts = await getFontData
 
 	const getDifficultyCSSProps = (): CSSProperties => {
 		switch (map.difficulty) {
@@ -69,8 +62,9 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 				backgroundColor: "black",
 			}}
 		>
-			<img
-				src={`https:${map.image.url}?w=${size.width}&h=${size.height}&q=75&fm=jpg`}
+			<Image
+				unoptimized
+				src={`https:${map.image.url}?w=${size.width}&h=${size.height}&q=75`}
 				alt={map.title}
 				width={size.width}
 				height={size.height}
@@ -173,20 +167,22 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 		</div>,
 		{
 			...size,
-			fonts: [
-				{
-					name: "Geist-SemiBold",
-					data: geistSemiBold,
-					style: "normal",
-					weight: 600,
-				},
-				{
-					name: "Geist-Bold",
-					data: geistBold,
-					style: "normal",
-					weight: 700,
-				},
-			],
+			fonts: fonts
+				? [
+						{
+							name: "Geist-SemiBold",
+							data: fonts.geistSemiBold,
+							style: "normal",
+							weight: 600,
+						},
+						{
+							name: "Geist-Bold",
+							data: fonts.geistBold,
+							style: "normal",
+							weight: 700,
+						},
+					]
+				: undefined,
 		},
 	)
 }
