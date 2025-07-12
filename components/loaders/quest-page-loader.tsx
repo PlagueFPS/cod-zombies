@@ -36,7 +36,7 @@ export default function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
 									</div>
 								</div>
 								<div className="flex items-center justify-between">
-									<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 xl:flex-row xl:pb-0">
+									<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
 										<Skeleton className="h-5 w-52" />
 										<span className="hidden md:inline">&bull;</span>
 										<div className="flex items-center gap-1 text-muted-foreground">

@@ -24,7 +24,7 @@ interface TableOfContentsProps {
 export default function TableOfContents({ headings }: TableOfContentsProps) {
 	const { activeHeading, currentHeading, progress } = useTableOfContents(headings, "body")
 	const [isExpanded, setIsExpanded] = useLocalStorage("toc-expanded", true)
-	const isMobile = useIsMobile(640)
+	const isMobile = useIsMobile(1280)
 
 	return (
 		<>

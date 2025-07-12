@@ -15,7 +15,7 @@ import { Separator } from "../ui/separator"
 export default function Header() {
 	return (
 		<header className="sticky top-0 z-500 w-full">
-			<div className="mx-auto flex h-16 w-full max-w-screen items-center border-b bg-background/90 px-2 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs lg:px-8">
+			<div className="flex h-16 w-full max-w-screen items-center border-b bg-background/90 px-4 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs">
 				<CustomLink
 					href="/"
 					aria-label="Go to Home Page"
@@ -47,12 +47,12 @@ export default function Header() {
 						</NavLink>
 					))}
 				</nav>
-				<div className="flex h-full w-fit items-center justify-center gap-2">
+				<div className="flex h-full w-fit items-center justify-center gap-2 self-end">
 					<FeedbackForm className="hidden lg:flex" />
 					<Suspense fallback={<SearchBarLoader />}>
 						<SearchBar />
 					</Suspense>
-					<div className="hidden items-center gap-2 md:inline-flex">
+					<div className="hidden items-center gap-2 lg:inline-flex">
 						<Separator orientation="vertical" className="min-h-6" />
 						<ThemeToggleWrapper />
 					</div>

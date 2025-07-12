@@ -139,7 +139,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 								</div>
 							</div>
 							<div className="flex items-center justify-between text-muted-foreground text-sm">
-								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 xl:flex-row xl:pb-0">
+								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
 										<span>
