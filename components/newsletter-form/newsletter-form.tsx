@@ -45,7 +45,7 @@ export default function NewsletterForm() {
 					/>
 					<Button
 						type="submit"
-						variant={"secondary"}
+						variant={"default"}
 						className="-translate-y-1/2 absolute top-1/2 right-1 h-[calc(100%-0.5rem)] transform rounded-sm px-3 text-sm"
 						disabled={isPending}
 					>

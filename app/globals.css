@@ -307,7 +307,7 @@
 @utility text-gradient {
   color: transparent;
   background-clip: text;
-  background-image: linear-gradient(to bottom, oklch(0.54 0 0), oklch(0 0 0));
+  background-image: linear-gradient(to bottom, oklch(0.45 0 0), oklch(0 0 0));
 }
 
 @utility dark-text-gradient {
