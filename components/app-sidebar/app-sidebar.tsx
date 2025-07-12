@@ -15,6 +15,7 @@ import {
 	Sheet,
 	SheetClose,
 	SheetContent,
+	SheetDescription,
 	SheetFooter,
 	SheetHeader,
 	SheetTitle,
@@ -35,6 +36,9 @@ export default function AppSidebar() {
 			</SheetTrigger>
 			<SheetContent className="z-900 flex flex-col">
 				<SheetTitle className="sr-only">Sidebar</SheetTitle>
+				<SheetDescription className="sr-only">
+					App sidebar for mobile navigation
+				</SheetDescription>
 				<SheetHeader className="w-full border-b pb-4">
 					<SheetClose asChild>
 						<CustomLink

@@ -14,7 +14,6 @@ export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTM
 	const handleNavigation = (
 		e:
 			| React.MouseEvent<HTMLAnchorElement>
-			| React.TouchEvent<HTMLAnchorElement>
 			| React.KeyboardEvent<HTMLAnchorElement>,
 	) => {
 		const url = new URL(String(href), window.location.href)

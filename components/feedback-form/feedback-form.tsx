@@ -5,7 +5,7 @@ import { useEffect, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { submitFeedbackForm } from "@/data/actions"
@@ -103,6 +103,9 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 					<DialogHeader>
 						<DialogTitle>Feedback Submission</DialogTitle>
 					</DialogHeader>
+					<DialogDescription className="sr-only">
+						Submit feedback to help us improve the site.
+					</DialogDescription>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col">
 							<div className="space-y-6 pb-4">
