@@ -5,7 +5,7 @@ import { useLocalStorage } from "@/hooks/use-local-storage"
 const defaultSettings = {
 	markers: {
 		iconSize: 32,
-		opacity: 1,
+		opacity: 100, // 100% opacity
 	},
 	popups: {
 		disableGradients: false,

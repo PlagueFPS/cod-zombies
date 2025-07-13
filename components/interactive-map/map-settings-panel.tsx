@@ -1,12 +1,13 @@
-import { SettingsIcon } from "lucide-react"
+import { MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useMapSettings } from "@/contexts/interactive-map-settings"
+import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import { Separator } from "../ui/separator"
 import { Slider } from "../ui/slider"
+import { Switch } from "../ui/switch"
 
-// TODO: Finish implementing the settings panel
 export default function MapSettingsPanel() {
 	const { settings, updateSettings } = useMapSettings()
 
@@ -25,52 +26,154 @@ export default function MapSettingsPanel() {
 			<DialogContent>
 				<DialogTitle>Interactive Map Settings</DialogTitle>
 				<DialogDescription>
-					Adjust the settings for all interactive maps. We&apos;ll remember your preferences for
-					future visits.
+					Customize your interactive map appearance and behavior. We&apos;ll remember your
+					preferences for future visits.
 				</DialogDescription>
-				<div className="flex flex-col justify-center gap-2">
-					<h3 className="font-semibold text-lg">Marker Settings</h3>
-					<ul className="flex flex-col items-center justify-center gap-2">
-						<li className="flex h-full w-full flex-col justify-center gap-1">
-							<Label className="text-sm" htmlFor="icon-size">
-								Icon Size
-							</Label>
-							<span className="text-muted-foreground text-xs">
-								Adjusts the size of the marker icons on the map.
-							</span>
-							<div className="flex w-full items-center justify-between gap-2">
-								<Slider
-									value={[settings.markers.iconSize]}
-									min={16}
-									max={128}
-									step={4}
-									onValueChange={value =>
-										updateSettings({
-											markers: {
-												...settings.markers,
-												iconSize: value[0] ?? settings.markers.iconSize,
-											},
-										})
-									}
-									className="w-full grow"
-								/>
-								<Input
-									type="number"
-									name="icon-size"
-									className="w-16 shrink-0 rounded-lg border p-2 text-xs"
-									value={settings.markers.iconSize}
-									onChange={e =>
-										updateSettings({
-											markers: {
-												...settings.markers,
-												iconSize: Number(e.target.value) || settings.markers.iconSize,
-											},
-										})
-									}
-								/>
+				{/* Marker Settings */}
+				<div className="space-y-4">
+					<div className="flex items-center gap-2">
+						<MapPin className="size-4 text-primary" />
+						<h3 className="font-medium text-base">Marker Settings</h3>
+					</div>
+					<div className="space-y-4 pl-4">
+						<div className="space-y-2">
+							<div className="flex items-center justify-between">
+								<Label htmlFor="icon-size" className="text-sm">
+									Icon Size
+								</Label>
+								<span className="text-muted-foreground text-sm">{settings.markers.iconSize}px</span>
 							</div>
-						</li>
-					</ul>
+							<Slider
+								id="icon-size"
+								min={16}
+								max={64}
+								step={4}
+								value={[settings.markers.iconSize]}
+								onValueChange={value =>
+									updateSettings({
+										markers: {
+											...settings.markers,
+											iconSize: value[0] ?? settings.markers.iconSize,
+										},
+									})
+								}
+								className="w-full"
+							/>
+						</div>
+						<div className="space-y-2">
+							<div className="flex items-center justify-between">
+								<Label htmlFor="icon-opacity" className="text-sm">
+									Opacity
+								</Label>
+								<span className="text-muted-foreground text-sm">{settings.markers.opacity}%</span>
+							</div>
+							<Slider
+								id="icon-opacity"
+								min={0}
+								max={100}
+								step={5}
+								value={[settings.markers.opacity]}
+								onValueChange={value =>
+									updateSettings({
+										markers: {
+											...settings.markers,
+											opacity: value[0] ?? settings.markers.opacity,
+										},
+									})
+								}
+								className="w-full"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<Separator />
+
+				{/* Popup Settings */}
+				<div className="space-y-4">
+					<div className="flex items-center gap-2">
+						<MessageSquare className="size-4 text-primary" />
+						<h3 className="font-medium text-base">Popup Settings</h3>
+					</div>
+					<div className="space-y-4 pl-4">
+						<div className="flex items-center justify-between">
+							<div className="5 space-y-0">
+								<Label htmlFor="disable-gradients" className="text-sm">
+									Disable Gradients
+								</Label>
+								<p className="text-muted-foreground text-xs">
+									Use solid colors instead of gradient backgrounds.
+								</p>
+							</div>
+							<Switch
+								id="disable-gradients"
+								checked={settings.popups.disableGradients}
+								onCheckedChange={value =>
+									updateSettings({
+										popups: {
+											...settings.popups,
+											disableGradients: value,
+										},
+									})
+								}
+								className="cursor-pointer"
+							/>
+						</div>
+						<div className="flex items-center justify-between">
+							<div className="space-y-0.5">
+								<Label htmlFor="disable-animations" className="text-sm">
+									Disable Animations
+								</Label>
+								<p className="text-muted-foreground text-xs">
+									Turn off popup entrance and exit animations.
+								</p>
+							</div>
+							<Switch
+								id="disable-animations"
+								checked={settings.popups.disableAnimations}
+								onCheckedChange={value =>
+									updateSettings({
+										popups: {
+											...settings.popups,
+											disableAnimations: value,
+										},
+									})
+								}
+								className="cursor-pointer"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<Separator />
+
+				{/* Preview Section */}
+				<div className="space-y-2">
+					<h3 className="font-medium text-sm">Preview</h3>
+					<div className="rounded-lg border-2 border-muted-foreground/25 border-dashed bg-muted/50 p-4">
+						<div className="flex items-center gap-3">
+							<div
+								className="flex items-center justify-center rounded-full bg-primary text-primary-foreground"
+								style={{
+									width: `${settings.markers.iconSize}px`,
+									height: `${settings.markers.iconSize}px`,
+									opacity: settings.markers.opacity / 100,
+								}}
+							>
+								<MapPin style={{
+									width: `${settings.markers.iconSize * 0.6}px`,
+									height: `${settings.markers.iconSize * 0.6}px`,
+								}} />
+							</div>
+							<div
+								className={cn("rounded-md border bg-objectives p-2 text-xs", {
+									"bg-background": settings.popups.disableGradients,
+								})}
+							>
+								Sample popup content
+							</div>
+						</div>
+					</div>
 				</div>
 			</DialogContent>
 		</Dialog>
