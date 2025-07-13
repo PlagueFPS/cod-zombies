@@ -7,7 +7,7 @@ import { BotIdClient } from "botid/client"
 import { Geist } from "next/font/google"
 import Header from "@/components/header/header"
 import { Toaster } from "@/components/ui/sonner"
-import { ThemeProvider } from "@/contexts/ThemeProvider"
+import { ThemeProvider } from "@/contexts/theme-provider"
 import { env } from "@/env"
 import { GLOBAL_OG_PROPS, PROTECTED_ROUTES, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
 

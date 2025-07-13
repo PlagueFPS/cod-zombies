@@ -126,7 +126,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 	}
 
 	return (
-		<Sidebar side="left" collapsible="offcanvas" className="z-900 mt-16">
+		<Sidebar side="left" collapsible="offcanvas" className="z-500 mt-16">
 			<SidebarHeader className="border-b bg-background">
 				<SidebarMenu>
 					<SidebarMenuItem className="flex items-center gap-2">

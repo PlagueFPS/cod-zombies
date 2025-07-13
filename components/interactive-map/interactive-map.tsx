@@ -16,6 +16,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { useMapSettings } from "@/contexts/interactive-map-settings"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { generateMarkerKey } from "@/map-configs/markers"
@@ -24,6 +25,7 @@ import { capitalize } from "@/utils/functions.client"
 import { MarkerBadge } from "../custom-badges/custom-badges"
 import { Separator } from "../ui/separator"
 import CustomMarker from "./custom-marker"
+import MapSettingsPanel from "./map-settings-panel"
 
 export interface ImageDimensions {
 	width: number
@@ -118,6 +120,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			className="relative bg-accent! dark:bg-secondary-alternative!"
 		>
 			<MapController imageDimensions={imageDimensions} />
+			<MapSettingsPanel />
 			{imageDimensions && (
 				<ImageOverlay key={mapConfig.id} url={mapConfig.image} bounds={getImageBounds()} />
 			)}
@@ -206,7 +209,14 @@ function MapController({ imageDimensions }: MapController) {
 }
 
 function CustomPopup({ marker, location }: { marker: MapMarker; location: Location }) {
+	const { settings } = useMapSettings()
+
 	const getClassName = () => {
+		// Do not assign gradient classes if disabled
+		if (settings.popups.disableGradients) {
+			return "custom-popup"
+		}
+
 		switch (marker.category) {
 			case "general":
 				return "custom-popup general-popup"
