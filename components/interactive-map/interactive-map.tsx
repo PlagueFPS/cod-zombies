@@ -141,9 +141,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 							marker={marker}
 							position={convertToLeafletCoords(location)}
 						>
-							{marker.type !== "label" ? (
-								<CustomPopup marker={ marker } location={ location } />
-							) : null}
+							{marker.type !== "label" ? <CustomPopup marker={marker} location={location} /> : null}
 						</CustomMarker>
 					))
 				})}
@@ -186,7 +184,6 @@ function MapController({ imageDimensions }: MapController) {
 		}
 	}
 
-
 	return (
 		<div className="fixed top-20 right-8 z-500 flex gap-2">
 			<Badge variant={"outline"} className="rounded-md bg-background/80">
@@ -209,10 +206,25 @@ function MapController({ imageDimensions }: MapController) {
 }
 
 function CustomPopup({ marker, location }: { marker: MapMarker; location: Location }) {
+	const getClassName = () => {
+		switch (marker.category) {
+			case "general":
+				return "custom-popup general-popup"
+			case "equipment":
+				return "custom-popup equipment-popup"
+			case "upgrades":
+				return "custom-popup upgrades-popup"
+			case "objectives":
+				return "custom-popup objectives-popup"
+			case "transportation":
+				return "custom-popup transportation-popup"
+			case "intel":
+				return "custom-popup intel-popup"
+		}
+	}
+
 	return (
-		<Popup
-			className="custom-popup"
-		>
+		<Popup className={getClassName()}>
 			<div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
 				<MarkerBadge category={marker.category}>{capitalize(marker.category)}</MarkerBadge>
 			</div>
@@ -232,10 +244,27 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 					/>
 				</div>
 			)}
-			<h3 className="dark:dark-text-gradient text-center font-extrabold text-gradient text-lg">
+			<h3
+				className={cn("text-center font-extrabold text-lg", {
+					"text-orange-700 dark:text-orange-200": marker.category === "objectives",
+					"text-blue-600 dark:text-blue-200": marker.category === "general",
+					"text-green-600 dark:text-green-200": marker.category === "transportation",
+					"text-yellow-700 dark:text-yellow-200": marker.category === "upgrades",
+					"dark:dark-text-gradient text-gradient": marker.category === "equipment",
+					"text-purple-600 dark:text-purple-200": marker.category === "intel",
+				})}
+			>
 				{location.title || marker.title}
 			</h3>
-			<p className="px-2 text-center text-foreground/90 text-sm">
+			<p
+				className={cn("px-2 text-center text-foreground/90 text-sm", {
+					"text-orange-800 dark:text-orange-200": marker.category === "objectives",
+					"text-blue-600 dark:text-blue-200": marker.category === "general",
+					"text-green-600 dark:text-green-200": marker.category === "transportation",
+					"text-yellow-700 dark:text-yellow-200": marker.category === "upgrades",
+					"text-purple-600 dark:text-purple-200": marker.category === "intel",
+				})}
+			>
 				{location.description || marker.description}
 			</p>
 		</Popup>
