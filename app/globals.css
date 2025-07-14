@@ -146,6 +146,7 @@
   }
 
   .custom-popup .leaflet-popup-content-wrapper {
+    background-color: var(--color-background) !important;
     border-radius: var(--radius-md);
     border: 2px solid var(--color-border);
     width: 24rem !important;

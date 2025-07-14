@@ -1,11 +1,19 @@
 "use client"
 import { Book, BookText, Brain, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/functions.client"
 import { Button } from "../ui/button"
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
+import {
+	CommandDialog,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from "../ui/command"
 import { DialogDescription, DialogTitle } from "../ui/dialog"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 
@@ -46,7 +54,14 @@ const filters = [
 	{ name: "Maps", icon: MapIcon },
 ]
 
-export default function SearchInput({ showFull, maps, games, quests, zombies, availableMaps }: SearchInputProps) {
+export default function SearchInput({
+	showFull,
+	maps,
+	games,
+	quests,
+	zombies,
+	availableMaps,
+}: SearchInputProps) {
 	const router = useRouter()
 	const [open, setOpen] = useState(false)
 	const [filter, setFilter] = useState("All")
@@ -56,17 +71,10 @@ export default function SearchInput({ showFull, maps, games, quests, zombies, av
 		return maps.filter(m => mapSlugs.has(m.slug))
 	}, [maps, quests])
 
-	useEffect(() => {
-		const down = (e: globalThis.KeyboardEvent) => {
-			if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault()
-				setOpen(open => !open)
-			}
-		}
-
-		document.addEventListener("keydown", down)
-		return () => document.removeEventListener("keydown", down)
-	}, [])
+	useKeyboardShortcut({
+		shortcut: ["ctrl+k", "cmd+k"],
+		callback: () => setOpen(prev => !prev),
+	})
 
 	const onSelectHandler = (url: string) => {
 		setOpen(false)
@@ -79,9 +87,12 @@ export default function SearchInput({ showFull, maps, games, quests, zombies, av
 				type="button"
 				size="sm"
 				variant="outline"
-				className={cn("relative hidden w-64 gap-x-2 rounded-sm text-muted-foreground text-xs lg:flex", {
-					flex: showFull,
-				})}
+				className={cn(
+					"relative hidden w-64 gap-x-2 rounded-sm text-muted-foreground text-xs lg:flex",
+					{
+						flex: showFull,
+					},
+				)}
 				onClick={() => setOpen(!open)}
 			>
 				<Search className="size-5" />
@@ -132,32 +143,34 @@ export default function SearchInput({ showFull, maps, games, quests, zombies, av
 				<div className="relative">
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
-						{filter === "All" || filter === "Main Quests" ? (
-              games.map(game => (
-                <CommandGroup heading={`${game.title} Main Quests`} key={game.id}>
-                  {maps.map(m =>
-                    m.game.slug !== game.slug ? null : (
-                      <CommandItem
-                        key={`${game.id}_${m.id}`}
-                        onSelect={() => onSelectHandler(`/${m.game.slug}/${m.slug}`)}
-                        className="cursor-pointer gap-2"
-                      >
-                        <BookText className="size-4" />
-                        <span className="blur-none">{m.title}</span>
-                      </CommandItem>
-                    ),
-                  )}
-                </CommandGroup>
-              ))
-						) : null}
-						{filter === "All" || filter === "Side Quests" ? (
-							questMaps.map(m => (
-								<CommandGroup heading={`${m.title} Side Quests`} key={m.id}>
-									{quests.map(q =>
-										q.map.slug !== m.slug ? null : (
-											<CommandItem
+						{filter === "All" || filter === "Main Quests"
+							? games.map(game => (
+									<CommandGroup heading={`${game.title} Main Quests`} key={game.id}>
+										{maps.map(m =>
+											m.game.slug !== game.slug ? null : (
+												<CommandItem
+													key={`${game.id}_${m.id}`}
+													onSelect={() => onSelectHandler(`/${m.game.slug}/${m.slug}`)}
+													className="cursor-pointer gap-2"
+												>
+													<BookText className="size-4" />
+													<span className="blur-none">{m.title}</span>
+												</CommandItem>
+											),
+										)}
+									</CommandGroup>
+								))
+							: null}
+						{filter === "All" || filter === "Side Quests"
+							? questMaps.map(m => (
+									<CommandGroup heading={`${m.title} Side Quests`} key={m.id}>
+										{quests.map(q =>
+											q.map.slug !== m.slug ? null : (
+												<CommandItem
 													key={`${q.id}_${m.id}`}
-													onSelect={() => onSelectHandler(`/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`)}
+													onSelect={() =>
+														onSelectHandler(`/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`)
+													}
 													className="cursor-pointer gap-2"
 												>
 													<Book className="size-4" />
@@ -167,7 +180,7 @@ export default function SearchInput({ showFull, maps, games, quests, zombies, av
 										)}
 									</CommandGroup>
 								))
-						) : null}
+							: null}
 						{filter === "All" || filter === "Zombies" ? (
 							<CommandGroup heading="Zombies">
 								{zombies.map(zombie => (

@@ -1,5 +1,7 @@
 import { MapPin, MessageSquare, SettingsIcon } from "lucide-react"
+import { useState } from "react"
 import { useMapSettings } from "@/contexts/interactive-map-settings"
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog"
@@ -9,10 +11,16 @@ import { Slider } from "../ui/slider"
 import { Switch } from "../ui/switch"
 
 export default function MapSettingsPanel() {
+	const [open, setOpen] = useState(false)
 	const { settings, updateSettings } = useMapSettings()
 
+	useKeyboardShortcut({
+		shortcut: "s",
+		callback: () => setOpen(true),
+	})
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button
 					variant="secondary"
@@ -29,16 +37,18 @@ export default function MapSettingsPanel() {
 					Customize your interactive map appearance and behavior. We&apos;ll remember your
 					preferences for future visits.
 				</DialogDescription>
+
+				<Separator />
 				{/* Marker Settings */}
 				<div className="space-y-4">
-					<div className="flex items-center gap-2">
-						<MapPin className="size-4 text-primary" />
-						<h3 className="font-medium text-base">Marker Settings</h3>
+					<div className="flex items-center gap-1.5">
+						<MapPin className="size-5 text-primary" />
+						<h3 className="font-medium text-lg">Marker Settings</h3>
 					</div>
 					<div className="space-y-4 pl-4">
 						<div className="space-y-2">
 							<div className="flex items-center justify-between">
-								<Label htmlFor="icon-size" className="text-sm">
+								<Label htmlFor="icon-size" className="text-base">
 									Icon Size
 								</Label>
 								<span className="text-muted-foreground text-sm">{settings.markers.iconSize}px</span>
@@ -62,7 +72,7 @@ export default function MapSettingsPanel() {
 						</div>
 						<div className="space-y-2">
 							<div className="flex items-center justify-between">
-								<Label htmlFor="icon-opacity" className="text-sm">
+								<Label htmlFor="icon-opacity" className="text-base">
 									Opacity
 								</Label>
 								<span className="text-muted-foreground text-sm">{settings.markers.opacity}%</span>
@@ -87,21 +97,21 @@ export default function MapSettingsPanel() {
 					</div>
 				</div>
 
-				<Separator />
+				<Separator className="my-2" />
 
 				{/* Popup Settings */}
 				<div className="space-y-4">
-					<div className="flex items-center gap-2">
-						<MessageSquare className="size-4 text-primary" />
-						<h3 className="font-medium text-base">Popup Settings</h3>
+					<div className="flex items-center gap-1.5">
+						<MessageSquare className="size-5 text-primary" />
+						<h3 className="font-medium text-lg">Popup Settings</h3>
 					</div>
 					<div className="space-y-4 pl-4">
 						<div className="flex items-center justify-between">
 							<div className="5 space-y-0">
-								<Label htmlFor="disable-gradients" className="text-sm">
+								<Label htmlFor="disable-gradients" className="text-base">
 									Disable Gradients
 								</Label>
-								<p className="text-muted-foreground text-xs">
+								<p className="text-muted-foreground text-sm">
 									Use solid colors instead of gradient backgrounds.
 								</p>
 							</div>
@@ -121,10 +131,10 @@ export default function MapSettingsPanel() {
 						</div>
 						<div className="flex items-center justify-between">
 							<div className="space-y-0.5">
-								<Label htmlFor="disable-animations" className="text-sm">
+								<Label htmlFor="disable-animations" className="text-base">
 									Disable Animations
 								</Label>
-								<p className="text-muted-foreground text-xs">
+								<p className="text-muted-foreground text-sm">
 									Turn off popup entrance and exit animations.
 								</p>
 							</div>
@@ -160,17 +170,19 @@ export default function MapSettingsPanel() {
 									opacity: settings.markers.opacity / 100,
 								}}
 							>
-								<MapPin style={{
-									width: `${settings.markers.iconSize * 0.6}px`,
-									height: `${settings.markers.iconSize * 0.6}px`,
-								}} />
+								<MapPin
+									style={{
+										width: `${settings.markers.iconSize * 0.6}px`,
+										height: `${settings.markers.iconSize * 0.6}px`,
+									}}
+								/>
 							</div>
 							<div
-								className={cn("rounded-md border bg-objectives p-2 text-xs", {
+								className={cn("rounded-md border bg-objectives px-4 py-2 text-center", {
 									"bg-background": settings.popups.disableGradients,
 								})}
 							>
-								Sample popup content
+								<span className="text-xs">Popup Preview</span>
 							</div>
 						</div>
 					</div>

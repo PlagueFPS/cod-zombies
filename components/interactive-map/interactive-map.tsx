@@ -7,12 +7,11 @@ import {
 	LatLng,
 	LatLngBounds,
 	type LatLngTuple,
-	type Map as LeafletMap,
 	type LeafletMouseEvent,
 } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import NextImage from "next/image"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -43,7 +42,6 @@ interface IInteractiveMap {
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-	const mapRef = useRef<LeafletMap>(null)
 	const filteredMarkers = useMemo(() => {
 		if (includeParams.length === 0 && excludeParams.length === 0) return mapConfig.markers
 
@@ -106,7 +104,6 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	return (
 		<MapContainer
 			key={mapConfig.id}
-			ref={mapRef}
 			center={
 				imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] : [1024, 1024]
 			}
@@ -164,7 +161,7 @@ function MapController({ imageDimensions }: MapController) {
 	const map = useMap()
 
 	useMapEvents({
-		click: logClickCoordinates(imageDimensions),
+		click: logClickCoordinates(imageDimensions)
 	})
 
 	if (imageDimensions) {

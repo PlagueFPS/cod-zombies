@@ -1,14 +1,29 @@
 "use client"
 import { effectTsResolver } from "@hookform/resolvers/effect-ts"
 import { Loader2, MessageCircleHeart, Send } from "lucide-react"
-import { useEffect, useState, useTransition } from "react"
+import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormMessage,
+} from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { submitFeedbackForm } from "@/data/actions"
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 import { cn } from "@/lib/utils"
 import { FeedbackFormSchema, type TFeedbackForm } from "@/utils/validation-schemas"
 
@@ -27,39 +42,17 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 		},
 	})
 
-	useEffect(() => {
-		const controller = new AbortController()
-		const handleKeyPress = (event: KeyboardEvent) => {
-			const isInputElement =
-				event.target instanceof HTMLInputElement ||
-				event.target instanceof HTMLTextAreaElement ||
-				event.target instanceof HTMLSelectElement
-
-			if (
-				(event.key === "f" || event.key === "F") &&
-				!event.shiftKey &&
-				!event.ctrlKey &&
-				!event.altKey &&
-				!event.metaKey &&
-				!isInputElement
-			) {
-				event.preventDefault()
-				setOpen(true)
-			}
-		}
-
-		window.addEventListener("keydown", handleKeyPress, {
-			signal: controller.signal,
-		})
-
-		return () => {
-			controller.abort()
-		}
-	}, [])
+	useKeyboardShortcut({
+		shortcut: "f",
+		callback: () => setOpen(true),
+	})
 
 	const onSubmit = (data: TFeedbackForm) => {
 		startTransition(async () => {
-			const result = await submitFeedbackForm(undefined, { ...data, title: "Feedback Form Submission" })
+			const result = await submitFeedbackForm(undefined, {
+				...data,
+				title: "Feedback Form Submission",
+			})
 			if (result.success) {
 				startTransition(() => {
 					toast.success("Feedback submitted successfully!", {
@@ -121,7 +114,11 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 													placeholder="What can we improve?"
 													className="min-h-24"
 													onKeyDown={e => {
-														if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.formState.isValid) {
+														if (
+															(e.ctrlKey || e.metaKey) &&
+															e.key === "Enter" &&
+															form.formState.isValid
+														) {
 															e.preventDefault()
 															form.handleSubmit(onSubmit)()
 														}
