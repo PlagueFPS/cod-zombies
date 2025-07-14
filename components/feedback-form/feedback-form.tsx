@@ -75,6 +75,13 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 		})
 	}
 
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter" && form.formState.isValid) {
+			e.preventDefault()
+			form.handleSubmit(onSubmit)()
+		}
+	}
+
 	return (
 		<div className="flex items-center justify-center">
 			<Dialog open={open} onOpenChange={setOpen}>
@@ -113,16 +120,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 													required
 													placeholder="What can we improve?"
 													className="min-h-24"
-													onKeyDown={e => {
-														if (
-															(e.ctrlKey || e.metaKey) &&
-															e.key === "Enter" &&
-															form.formState.isValid
-														) {
-															e.preventDefault()
-															form.handleSubmit(onSubmit)()
-														}
-													}}
+													onKeyDown={ handleKeyDown }
 												/>
 											</FormControl>
 											<FormDescription>

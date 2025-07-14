@@ -41,6 +41,7 @@ interface IInteractiveMap {
 
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
+	const { settings } = useMapSettings()
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
 	const filteredMarkers = useMemo(() => {
 		if (includeParams.length === 0 && excludeParams.length === 0) return mapConfig.markers
@@ -133,10 +134,9 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 						return null
 
 					return marker.locations.map(location => (
-						// These keys are being generated during render based on immutable data
-						// Therefore these are stable keys and do not change during or between renders
+						// force re-render when popups settings change to apply them
 						<CustomMarker
-							key={generateMarkerKey(marker.id, location)}
+							key={`${generateMarkerKey(marker.id, location)}-gradients:${settings.popups.disableGradients}`}
 							id={generateMarkerKey(marker.id, location)}
 							marker={marker}
 							position={convertToLeafletCoords(location)}

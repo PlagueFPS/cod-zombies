@@ -13,16 +13,18 @@ const defaultSettings = {
 	},
 }
 
-type TMapSettings = typeof defaultSettings
+export type TMapSettings = typeof defaultSettings
 
 interface IInteractiveMapSettings {
 	settings: TMapSettings
 	updateSettings: (newSettings: Partial<TMapSettings>) => void
+	resetSettings: () => void
 }
 
 const MapSettingsContext = createContext<IInteractiveMapSettings>({
 	settings: defaultSettings,
 	updateSettings: () => {},
+	resetSettings: () => {},
 })
 
 export function MapSettingsProvider({ children }: { children: React.ReactNode }) {
@@ -35,7 +37,15 @@ export function MapSettingsProvider({ children }: { children: React.ReactNode })
 		}))
 	}
 
-	return <MapSettingsContext value={{ settings, updateSettings }}>{children}</MapSettingsContext>
+	const resetSettings = () => {
+		setSettings(defaultSettings)
+	}
+
+	return (
+		<MapSettingsContext value={{ settings, updateSettings, resetSettings }}>
+			{children}
+		</MapSettingsContext>
+	)
 }
 
 export const useMapSettings = () => {

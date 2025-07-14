@@ -2,9 +2,17 @@ import { MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { useMapSettings } from "@/contexts/interactive-map-settings"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog"
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogTitle,
+	DialogTrigger,
+} from "../ui/dialog"
 import { Label } from "../ui/label"
 import { Separator } from "../ui/separator"
 import { Slider } from "../ui/slider"
@@ -12,7 +20,8 @@ import { Switch } from "../ui/switch"
 
 export default function MapSettingsPanel() {
 	const [open, setOpen] = useState(false)
-	const { settings, updateSettings } = useMapSettings()
+	const { settings, updateSettings, resetSettings } = useMapSettings()
+	const isMobile = useIsMobile(1280)
 
 	useKeyboardShortcut({
 		shortcut: "s",
@@ -23,12 +32,16 @@ export default function MapSettingsPanel() {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button
-					variant="secondary"
-					size={"icon"}
+					variant="outline"
 					aria-label="Map Settings"
-					className="fixed right-4 bottom-4 z-500 size-12"
+					className="fixed right-8 bottom-8 z-500 bg-background/80 dark:bg-background/80"
 				>
-					<SettingsIcon className="size-6" />
+					<SettingsIcon className="size-5" />
+					{!isMobile ? (
+						<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground opacity-100">
+							<span className="text-xs">S</span>
+						</kbd>
+					) : null}
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
@@ -118,14 +131,14 @@ export default function MapSettingsPanel() {
 							<Switch
 								id="disable-gradients"
 								checked={settings.popups.disableGradients}
-								onCheckedChange={value =>
+								onCheckedChange={value => {
 									updateSettings({
 										popups: {
 											...settings.popups,
 											disableGradients: value,
 										},
 									})
-								}
+								}}
 								className="cursor-pointer"
 							/>
 						</div>
@@ -187,6 +200,14 @@ export default function MapSettingsPanel() {
 						</div>
 					</div>
 				</div>
+				<DialogFooter className="">
+					<Button variant={"destructive"} className="mr-auto" onClick={() => setOpen(false)}>
+						Cancel
+					</Button>
+					<Button variant={"secondary"} onClick={resetSettings}>
+						Reset Settings
+					</Button>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	)
