@@ -2,13 +2,7 @@
 import "leaflet/dist/leaflet.css"
 import type { MapConfig } from "@/map-configs"
 import type { Location, MapMarker } from "@/map-configs/markers"
-import {
-	CRS,
-	LatLng,
-	LatLngBounds,
-	type LatLngTuple,
-	type LeafletMouseEvent,
-} from "leaflet"
+import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import NextImage from "next/image"
 import { useCallback, useEffect, useMemo, useState } from "react"
@@ -118,7 +112,6 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			className="relative bg-accent! dark:bg-secondary-alternative!"
 		>
 			<MapController imageDimensions={imageDimensions} />
-			<MapSettingsPanel />
 			{imageDimensions && (
 				<ImageOverlay key={mapConfig.id} url={mapConfig.image} bounds={getImageBounds()} />
 			)}
@@ -161,7 +154,7 @@ function MapController({ imageDimensions }: MapController) {
 	const map = useMap()
 
 	useMapEvents({
-		click: logClickCoordinates(imageDimensions)
+		click: logClickCoordinates(imageDimensions),
 	})
 
 	if (imageDimensions) {
@@ -199,6 +192,8 @@ function MapController({ imageDimensions }: MapController) {
 					<Button variant={"ghost"} size={"icon"} onClick={handleReset} title="Reset Zoom">
 						<RotateCcw className="size-4" />
 					</Button>
+					<Separator orientation="horizontal" />
+					<MapSettingsPanel />
 				</div>
 			</Badge>
 		</div>
@@ -231,7 +226,11 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 	}
 
 	return (
-		<Popup className={getClassName()}>
+		<Popup
+			className={cn(getClassName(), {
+				"opacity-100! transition-none!": settings.popups.disableAnimations,
+			})}
+		>
 			<div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
 				<MarkerBadge category={marker.category}>{capitalize(marker.category)}</MarkerBadge>
 			</div>

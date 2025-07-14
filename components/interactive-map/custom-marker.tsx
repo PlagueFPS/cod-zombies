@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { Marker as LeafletMarker, useMap } from "react-leaflet"
+import { useMapSettings } from "@/contexts/interactive-map-settings"
 import { cn } from "@/lib/utils"
 
 interface CustomMarkerProps {
@@ -14,8 +15,9 @@ interface CustomMarkerProps {
 }
 
 export default function CustomMarker({ id, marker, position, children }: CustomMarkerProps) {
-	const map = useMap()
+	const { settings } = useMapSettings()
 	const [icon, setIcon] = useState<DivIcon | null>(null)
+	const map = useMap()
 
 	useEffect(() => {
 		const iconElement = document.createElement("div")
@@ -40,7 +42,9 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 	}, [marker, id])
 
 	const handleClick = () => {
-		map.flyTo(position, map.getZoom())
+		map.flyTo(position, map.getZoom(), {
+			animate: !settings.popups.disableAnimations,
+		})
 	}
 
 	return (

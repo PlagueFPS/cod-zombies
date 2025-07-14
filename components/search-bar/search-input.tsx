@@ -74,6 +74,7 @@ export default function SearchInput({
 	useKeyboardShortcut({
 		shortcut: ["ctrl+k", "cmd+k"],
 		callback: () => setOpen(prev => !prev),
+		options: { ignoreInputs: false }
 	})
 
 	const onSelectHandler = (url: string) => {

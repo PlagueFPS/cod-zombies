@@ -10,6 +10,7 @@ import {
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
+	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "../ui/dialog"
@@ -25,31 +26,24 @@ export default function MapSettingsPanel() {
 
 	useKeyboardShortcut({
 		shortcut: "s",
-		callback: () => setOpen(true),
+		callback: () => setOpen(prev => !prev),
 	})
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button
-					variant="outline"
-					aria-label="Map Settings"
-					className="fixed right-8 bottom-8 z-500 bg-background/80 dark:bg-background/80"
-				>
+				<Button variant="ghost" size={"icon"} aria-label="Map Settings" title="Map Settings">
 					<SettingsIcon className="size-5" />
-					{!isMobile ? (
-						<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground opacity-100">
-							<span className="text-xs">S</span>
-						</kbd>
-					) : null}
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
-				<DialogTitle>Interactive Map Settings</DialogTitle>
-				<DialogDescription>
-					Customize your interactive map appearance and behavior. We&apos;ll remember your
-					preferences for future visits.
-				</DialogDescription>
+				<DialogHeader>
+					<DialogTitle>Interactive Map Settings</DialogTitle>
+					<DialogDescription>
+						Customize your interactive map appearance and behavior. We&apos;ll remember your
+						preferences for future visits.
+					</DialogDescription>
+				</DialogHeader>
 
 				<Separator />
 				{/* Marker Settings */}
@@ -200,8 +194,16 @@ export default function MapSettingsPanel() {
 						</div>
 					</div>
 				</div>
-				<DialogFooter className="">
-					<Button variant={"destructive"} className="mr-auto" onClick={() => setOpen(false)}>
+				<DialogFooter>
+					{!isMobile ? (
+						<div className="mr-auto flex items-center justify-center gap-1 text-muted-foreground text-sm">
+							<span>Keyboard Shortcut:</span>
+							<kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-input px-1.5 font-medium text-muted-foreground opacity-100 dark:bg-input/30">
+								<span className="text-xs">S</span>
+							</kbd>
+						</div>
+					) : null}
+					<Button variant={"destructive"} onClick={() => setOpen(false)}>
 						Cancel
 					</Button>
 					<Button variant={"secondary"} onClick={resetSettings}>
