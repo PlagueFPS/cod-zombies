@@ -1,4 +1,3 @@
-import { Match } from 'effect'
 import { useEffect } from 'react'
 
 interface UseKeyboardShortcutOptions {
@@ -26,18 +25,19 @@ const parseShortcuts = (shortcuts: string | string[]) => {
   return Array.isArray(shortcuts) ? shortcuts.map(parseShortcut) : [parseShortcut(shortcuts)]
 }
 
-const matchesShortcut = (event: KeyboardEvent, parsedShortcut: ReturnType<typeof parseShortcut>) => 
-  Match.value(event).pipe(
-    Match.whenAnd(
-      { key: (k) => k.toLowerCase() === parsedShortcut.key.toLowerCase() },
-      { ctrlKey: (c) => parsedShortcut.ctrl ? c : !c },
-      { shiftKey: (s) => parsedShortcut.shift ? s : !s },
-      { altKey: (a) => parsedShortcut.alt ? a : !a },
-      { metaKey: (m) => parsedShortcut.meta ? m : !m },
-      () => true
-    ),
-    Match.orElse(() => false)
+const matchesShortcut = (
+  event: KeyboardEvent,
+  parsedShortcut: ReturnType<typeof parseShortcut>
+) => {
+  return (
+    event.key.toLowerCase() === parsedShortcut.key.toLowerCase() &&
+    event.ctrlKey === parsedShortcut.ctrl &&
+    event.shiftKey === parsedShortcut.shift &&
+    event.altKey === parsedShortcut.alt &&
+    event.metaKey === parsedShortcut.meta
   )
+}
+
 /**
  * React hook to register one or more keyboard shortcuts that execute a callback when triggered.
  *

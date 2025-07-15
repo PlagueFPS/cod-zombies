@@ -12,12 +12,12 @@ export const createAction = <S extends Schema.Schema.AnyNoContext, T>(schema: S,
 			return {
 				success: false,
 				message:
-					"Bots are not allowed to perform this action. If you are not a bot, please contact support if the issue persist.",
+					"Bots are not allowed to perform this action. If you are not a bot, please contact support if the issue persists.",
 			}
 		}
 
-		const decodeFormData = Schema.decodeUnknownEither(schema)
 		if (formData instanceof FormData) {
+      const decodeFormData = Schema.decodeUnknownEither(schema)
 			const decoded = decodeFormData(Object.fromEntries(formData))
 			if (decoded._tag === "Left") {
 				console.error(decoded.left)
