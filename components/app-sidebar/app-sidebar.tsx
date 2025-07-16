@@ -29,7 +29,7 @@ export default function AppSidebar() {
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
-			<SheetTrigger className="lg:hidden" title="Toggle Nav" asChild>
+			<SheetTrigger className="xl:hidden" title="Toggle Nav" asChild>
 				<Button size={"icon"} variant={"ghost"}>
 					<Menu className="size-6 text-muted-foreground" />
 				</Button>

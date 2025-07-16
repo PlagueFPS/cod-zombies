@@ -32,7 +32,7 @@ export default function Header() {
 						<span className="text-primary-gradient"> Zombies Guides</span>
 					</div>
 				</CustomLink>
-				<nav className="mr-8 hidden h-full w-fit items-center justify-center gap-8 lg:flex">
+				<nav className="mr-8 hidden h-full w-fit items-center justify-center gap-8 xl:flex">
 					{/* Custom draft mode toggle for development */}
 					{IN_DEVELOPMENT && <LocalCacheButton />}
 					{ROUTES.map(route => (
@@ -54,7 +54,7 @@ export default function Header() {
 					</Suspense>
 					<div className="hidden items-center gap-2 lg:inline-flex">
 						<Separator orientation="vertical" className="min-h-6" />
-						<ThemeToggleWrapper />
+						<ThemeToggleWrapper className="mr-1 xl:mr-0" />
 					</div>
 				</div>
 				<AppSidebar />
