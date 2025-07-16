@@ -1,6 +1,8 @@
 import type { Document } from "@contentful/rich-text-types"
 import type { Asset, Entry } from "contentful"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
+import type { FeaturedMap, MinifiedFeaturedMap } from "@/data/maps"
+import type { MinifiedSideQuest, SideQuest } from "@/data/side-quests"
 import type {
 	TypeFeaturedMapsSkeleton,
 	TypeGameCategorySkeleton,
@@ -95,6 +97,18 @@ export const calculateSkip = (page: number, limit: number) => {
 
 export const isFirstTimePublish = (createdAt: Date, updatedAt: Date) => {
 	return createdAt.getTime() === updatedAt.getTime()
+}
+
+export const isFeaturedMap = (
+	quest: FeaturedMap | MinifiedFeaturedMap | SideQuest | MinifiedSideQuest,
+) => {
+	return Predicate.hasProperty(quest, "difficulty")
+}
+
+export const isSideQuest = (
+	quest: FeaturedMap | MinifiedFeaturedMap | SideQuest | MinifiedSideQuest,
+) => {
+	return Predicate.hasProperty(quest, "map")
 }
 
 export const createItemTooltipDto = (item: ZombieItem) => {

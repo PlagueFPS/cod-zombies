@@ -1,4 +1,5 @@
 import type { MinifiedZombie } from "@/data/zombies"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import {
@@ -20,14 +21,13 @@ interface IBestiaryCard {
 }
 
 export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestiaryCard) {
-	const priority = zombieIndex === 0
+	const isMobile = useIsMobile()
+	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
 	const alt = `${zombie.name} Image`
 	const href = zombie.isComingSoon ? `#` : `/bestiary/${zombie.slug}`
 
 	return (
-		<article
-			className={cn("h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}
-		>
+		<article className={cn("h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}>
 			<CustomLink
 				href={href}
 				aria-label={`View details for ${zombie.name}`}

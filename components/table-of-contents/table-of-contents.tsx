@@ -39,7 +39,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 					<BackToTopButton mobile variant={"default"} className="right-4 bottom-8" />
 				</>
 			) : (
-				<aside className="sticky top-20 z-40 ml-4 h-fit w-85 shrink-0 rounded-lg border px-6 shadow-md dark:shadow-none">
+				<aside className="sticky top-20 z-40 ml-4 h-fit w-85 shrink-0 rounded-lg border bg-background px-6 shadow-md dark:shadow-none">
 					<div className="relative flex flex-col gap-4 pt-0">
 						<div className="mt-4 flex flex-col items-center justify-center">
 							<div className="mb-2 flex w-full items-center justify-between">
@@ -48,7 +48,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 							</div>
 							<Progress value={progress} className="h-1" />
 						</div>
-						<div className="flex items-center justify-between">
+						<div className="flex items-center justify-between border-t pt-2">
 							<h3 className="font-medium text-muted-foreground text-sm">CURRENT SECTION</h3>
 							<Button
 								variant={"ghost"}
@@ -70,9 +70,9 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 						</div>
 						<ScrollArea
 							className={cn(
-								"grid max-h-[60vh] grid-rows-[0fr] gap-1 overflow-hidden transition-all duration-300",
+								"grid max-h-[50vh] grid-rows-[0fr] gap-1 overflow-hidden transition-all duration-300",
 								{
-									"animate-toc-expand grid-rows-[1fr] pb-12": isExpanded,
+									"animate-toc-expand grid-rows-[1fr] pb-0": isExpanded,
 								},
 							)}
 						>
@@ -99,7 +99,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 							</ul>
 						</ScrollArea>
 						<div className="sticky bottom-0 flex w-full items-center justify-center border-t bg-background py-4">
-							<BackToTopButton className="mt-4" variant={"outline"} />
+							<BackToTopButton variant={"outline"} />
 						</div>
 					</div>
 				</aside>

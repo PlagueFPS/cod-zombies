@@ -1,8 +1,9 @@
 import type { MinifiedFeaturedMap } from "@/data/maps"
 import type { MinifiedSideQuest } from "@/data/side-quests"
-import { Predicate } from "effect"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { IN_DEVELOPMENT } from "@/utils/constants"
+import { isFeaturedMap, isSideQuest } from "@/utils/contentful-utils"
 import {
 	ChangedBadge,
 	ComingSoonBadge,
@@ -22,14 +23,14 @@ interface IQuestPreviewCard {
 }
 
 export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQuestPreviewCard) {
-	const priority = questIndex === 0
+	const isMobile = useIsMobile()
+	const priority = isMobile ? questIndex === 0 : questIndex <= 3
 	const alt = `${quest.title} map image`
-	const isComingSoon = quest.isComingSoon
 
 	const resolveHref = () => {
 		if (quest.isComingSoon) return "#"
 
-		if (Predicate.hasProperty(quest, "map")) {
+		if (isSideQuest(quest)) {
 			return `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 		}
 
@@ -37,11 +38,11 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 	}
 
 	const renderSpecificBadge = () => {
-		if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
+		if (isFeaturedMap(quest) && quest.difficulty) {
 			return <DifficultyBadge difficulty={quest.difficulty} />
 		}
 
-		if (Predicate.hasProperty(quest, "map") && quest.map) {
+		if (isSideQuest(quest) && quest.map) {
 			return (
 				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 					{quest.map.title}
@@ -55,26 +56,26 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 	return (
 		<article
 			className={cn("h-full max-h-110", {
-				"pointer-events-none": isComingSoon,
+				"pointer-events-none": quest.isComingSoon,
 			})}
 		>
 			<CustomLink
 				href={resolveHref()}
 				aria-label={`View Guide for ${quest.title}`}
-				aria-disabled={isComingSoon}
+				aria-disabled={quest.isComingSoon}
 				className="group outline-none"
-				tabIndex={isComingSoon ? -1 : 0}
+				tabIndex={quest.isComingSoon ? -1 : 0}
 			>
 				<Card
 					className={cn(
 						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
-						{ "opacity-75 dark:opacity-50": isComingSoon },
+						{ "opacity-75 dark:opacity-50": quest.isComingSoon },
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
 						{(draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null}
 						{(draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null}
-						{isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
+						{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.game.title}
@@ -97,9 +98,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 								className="h-44 rounded-md object-cover"
 							/>
 						</div>
-						<CardTitle className="text-xl will-change-transform">
-							{quest.title}
-						</CardTitle>
+						<CardTitle className="text-xl will-change-transform">{quest.title}</CardTitle>
 						<CardDescription className="text-foreground/85">{quest.description}</CardDescription>
 					</CardHeader>
 				</Card>
