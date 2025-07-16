@@ -16,11 +16,11 @@ const nextConfig: NextConfig = {
 		reactCompiler: true,
 		browserDebugInfoInTerminal: true,
 		turbopackPersistentCaching: true,
-		devtoolSegmentExplorer: true
 	},
 	images: {
 		formats: ["image/avif", "image/webp"],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+		qualities: [75, 85, 100],
 		remotePatterns: [
 			{
 				protocol: "https",
