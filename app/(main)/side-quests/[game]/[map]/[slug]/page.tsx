@@ -247,8 +247,7 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: PrevOrNextQuest) => {
 				>
 					<FeaturedImage
 						featuredImage={quest.image}
-						sizes="32px"
-						quality={1}
+						sizes="(max-width: 1280px) 320px, 384px"
 						className="scale-110"
 					/>
 				</div>
