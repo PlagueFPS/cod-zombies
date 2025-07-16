@@ -93,7 +93,7 @@ export function useKeyboardShortcut({ shortcut, callback, options = { preventDef
       }
     }
 
-    document.addEventListener('keydown', handleKeyPress, {
+    window.addEventListener('keydown', handleKeyPress, {
       signal: controller.signal,
     })
 
