@@ -9,7 +9,14 @@ export default function TableOfContentsLoader() {
 		<>
 			<aside className="sticky top-24 z-40 ml-4 hidden h-fit w-85 shrink-0 rounded-lg border px-6 shadow-md xl:block dark:shadow-none">
 				<div className="flex flex-col gap-4 pt-4">
-					<div className="flex items-center justify-between">
+					<div className="mt-4 flex flex-col items-center justify-center">
+						<div className="mb-2 flex w-full items-center justify-between">
+							<span className="text-muted-foreground text-sm">Guide progress</span>
+							<span className="font-medium text-xs">0%</span>
+						</div>
+						<Progress value={0} className="h-1" />
+						</div>
+					<div className="flex items-center justify-between border-t pt-2">
 						<h3 className="font-medium text-muted-foreground text-sm">CURRENT SECTION</h3>
 						<Button variant={"ghost"} size={"sm"} disabled aria-disabled>
 							<ChevronDown className="size-4" />
@@ -29,12 +36,7 @@ export default function TableOfContentsLoader() {
 						<ul className="flex flex-col gap-3 overflow-hidden border-t py-4 pl-1 font-semibold text-foreground/90 text-sm" />
 					</ScrollArea>
 				</div>
-				<div className="mt-4 flex flex-col items-center justify-center border-t py-4">
-					<div className="mb-2 flex w-full items-center justify-between">
-						<span className="text-muted-foreground text-sm">Guide progress</span>
-						<span className="font-medium text-xs">0%</span>
-					</div>
-					<Progress value={0} className="h-1" />
+				<div className="sticky bottom-0 flex w-full items-center justify-center border-t py-4">
 					<BackToTopButton disabled aria-disabled className="mt-4" variant={"outline"} />
 				</div>
 			</aside>

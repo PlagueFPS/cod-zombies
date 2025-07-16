@@ -98,7 +98,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 								))}
 							</ul>
 						</ScrollArea>
-						<div className="sticky bottom-0 flex w-full items-center justify-center border-t bg-background py-4">
+						<div className="sticky bottom-0 flex w-full items-center justify-center border-t py-4">
 							<BackToTopButton variant={"outline"} />
 						</div>
 					</div>
