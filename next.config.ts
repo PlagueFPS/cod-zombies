@@ -14,9 +14,9 @@ const nextConfig: NextConfig = {
 		ppr: true,
 		serverComponentsHmrCache: true,
 		reactCompiler: true,
-		browserDebugInfoInTerminal: {
-			showSourceLocation: true,
-		},
+		browserDebugInfoInTerminal: true,
+		turbopackPersistentCaching: true,
+		devtoolSegmentExplorer: true
 	},
 	images: {
 		formats: ["image/avif", "image/webp"],
