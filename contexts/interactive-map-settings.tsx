@@ -5,7 +5,7 @@ import { useLocalStorage } from "@/hooks/use-local-storage"
 const defaultSettings = {
 	markers: {
 		iconSize: 32,
-		opacity: 100, // 100% opacity
+		opacity: 1, // 100% opacity
 	},
 	popups: {
 		disableGradients: false,
@@ -29,7 +29,7 @@ const MapSettingsContext = createContext<IInteractiveMapSettings>({
 
 export function MapSettingsProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useLocalStorage("map-settings", defaultSettings)
-
+	console.log(settings)
 	const updateSettings = (newSettings: Partial<typeof defaultSettings>) => {
 		setSettings(current => ({
 			...current,

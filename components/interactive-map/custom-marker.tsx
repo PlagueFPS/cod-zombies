@@ -4,14 +4,17 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { Marker as LeafletMarker, useMap } from "react-leaflet"
-import { useMapSettings } from "@/contexts/interactive-map-settings"
-import { cn } from "@/lib/utils"
+import { type TMapSettings, useMapSettings } from "@/contexts/interactive-map-settings"
 
 interface CustomMarkerProps {
 	id: string
 	marker: MapMarker
 	position: LatLng
 	children?: React.ReactNode
+}
+
+interface IMarkerIcon extends Pick<CustomMarkerProps, "id" | "marker"> {
+	settings: Pick<TMapSettings, "markers">["markers"]
 }
 
 export default function CustomMarker({ id, marker, position, children }: CustomMarkerProps) {
@@ -24,14 +27,14 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 		iconElement.className = "custom-marker"
 
 		const root = createRoot(iconElement)
-		root.render(<MarkerIcon id={id} marker={marker} />)
+		root.render(<MarkerIcon id={id} marker={marker} settings={settings.markers} />)
 
 		const customIcon = divIcon({
 			html: iconElement,
 			className: "custom-marker-container",
-			iconSize: [32, 32],
-			iconAnchor: [16, 16],
-			popupAnchor: [0, -16],
+			iconSize: [settings.markers.iconSize, settings.markers.iconSize],
+			iconAnchor: [settings.markers.iconSize / 2, settings.markers.iconSize / 2],
+			popupAnchor: [0, -settings.markers.iconSize / 2],
 		})
 
 		setIcon(customIcon)
@@ -39,7 +42,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 		return () => {
 			setTimeout(() => root.unmount(), 0)
 		}
-	}, [marker, id])
+	}, [marker, id, settings.markers])
 
 	const handleClick = () => {
 		map.flyTo(position, map.getZoom(), {
@@ -65,7 +68,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 	)
 }
 
-function MarkerIcon({ marker, id }: { marker: MapMarker; id: string }) {
+function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 	const [error, setError] = useState(false)
 
 	if (marker.type === "label") {
@@ -77,20 +80,28 @@ function MarkerIcon({ marker, id }: { marker: MapMarker; id: string }) {
 	}
 
 	return (
-		<div id={id} className="flex items-center justify-center">
+		<div
+			id={id}
+			className="flex items-center justify-center"
+		>
 			{!error && marker.icon ? (
 				<Image
 					unoptimized
 					src={marker.icon}
 					alt={marker.title}
-					width={128}
-					height={128}
-					className={cn(
-						"size-8",
-						{ "size-6": marker.type === "perk" && marker.id !== "der-wunderfizz" },
-						{ "size-10": marker.id === "dark-aether-lantern" || marker.id === "aether-crystal" },
-						{ "size-11": marker.id === "shovel" },
-					)}
+					width={settings.iconSize}
+					height={settings.iconSize}
+					style={{
+						width: settings.iconSize,
+						height: settings.iconSize,
+						opacity: settings.opacity,
+					}}
+					// className={cn(
+					// 	"size-8",
+					// 	{ "size-6": marker.type === "perk" && marker.id !== "der-wunderfizz" },
+					// 	{ "size-10": marker.id === "dark-aether-lantern" || marker.id === "aether-crystal" },
+					// 	{ "size-11": marker.id === "shovel" },
+					// )}
 					onError={() => setError(true)}
 				/>
 			) : (

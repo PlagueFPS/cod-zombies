@@ -15,6 +15,7 @@ import {
 	DialogTrigger,
 } from "../ui/dialog"
 import { Label } from "../ui/label"
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Separator } from "../ui/separator"
 import { Slider } from "../ui/slider"
 import { Switch } from "../ui/switch"
@@ -40,130 +41,133 @@ export default function MapSettingsPanel() {
 				<DialogHeader>
 					<DialogTitle>Interactive Map Settings</DialogTitle>
 					<DialogDescription>
-						Customize your interactive map appearance and behavior. We&apos;ll remember your
-						preferences for future visits.
+						Customize your interactive map appearance and behavior.
 					</DialogDescription>
 				</DialogHeader>
-
 				<Separator />
-				{/* Marker Settings */}
-				<div className="space-y-4">
-					<div className="flex items-center gap-1.5">
-						<MapPin className="size-5 text-primary" />
-						<h3 className="font-medium text-lg">Marker Settings</h3>
+				<ScrollArea className="max-h-[35vh] pr-4">
+					{/* Marker Settings */}
+					<div className="space-y-4">
+						<div className="flex items-center gap-1.5">
+							<MapPin className="size-5 text-primary" />
+							<h3 className="font-medium text-lg">Marker Settings</h3>
+						</div>
+						<div className="space-y-4 pl-4">
+							<div className="space-y-2">
+								<div className="flex items-center justify-between">
+									<Label htmlFor="icon-size" className="text-base">
+										Icon Size
+									</Label>
+									<span className="text-muted-foreground text-sm">
+										{settings.markers.iconSize}px
+									</span>
+								</div>
+								<Slider
+									id="icon-size"
+									min={16}
+									max={64}
+									step={4}
+									value={[settings.markers.iconSize]}
+									onValueChange={value =>
+										updateSettings({
+											markers: {
+												...settings.markers,
+												iconSize: value[0] ?? settings.markers.iconSize,
+											},
+										})
+									}
+									className="w-full"
+								/>
+							</div>
+							<div className="space-y-2">
+								<div className="flex items-center justify-between">
+									<Label htmlFor="icon-opacity" className="text-base">
+										Opacity
+									</Label>
+									<span className="text-muted-foreground text-sm">
+										{Math.floor(settings.markers.opacity * 100)}%
+									</span>
+								</div>
+								<Slider
+									id="icon-opacity"
+									min={0}
+									max={1}
+									step={0.05}
+									value={[settings.markers.opacity]}
+									onValueChange={value =>
+										updateSettings({
+											markers: {
+												...settings.markers,
+												opacity: value[0] ?? settings.markers.opacity,
+											},
+										})
+									}
+									className="w-full"
+								/>
+							</div>
+						</div>
 					</div>
-					<div className="space-y-4 pl-4">
-						<div className="space-y-2">
+
+					<Separator className="my-4" />
+
+					{/* Popup Settings */}
+					<div className="space-y-4">
+						<div className="flex items-center gap-1.5">
+							<MessageSquare className="size-5 text-primary" />
+							<h3 className="font-medium text-lg">Popup Settings</h3>
+						</div>
+						<div className="space-y-4 pl-4">
 							<div className="flex items-center justify-between">
-								<Label htmlFor="icon-size" className="text-base">
-									Icon Size
-								</Label>
-								<span className="text-muted-foreground text-sm">{settings.markers.iconSize}px</span>
+								<div className="5 space-y-0">
+									<Label htmlFor="disable-gradients" className="text-base">
+										Disable Gradients
+									</Label>
+									<p className="text-muted-foreground text-sm">
+										Use solid colors instead of gradient backgrounds.
+									</p>
+								</div>
+								<Switch
+									id="disable-gradients"
+									checked={settings.popups.disableGradients}
+									onCheckedChange={value => {
+										updateSettings({
+											popups: {
+												...settings.popups,
+												disableGradients: value,
+											},
+										})
+									}}
+									className="cursor-pointer"
+								/>
 							</div>
-							<Slider
-								id="icon-size"
-								min={16}
-								max={64}
-								step={4}
-								value={[settings.markers.iconSize]}
-								onValueChange={value =>
-									updateSettings({
-										markers: {
-											...settings.markers,
-											iconSize: value[0] ?? settings.markers.iconSize,
-										},
-									})
-								}
-								className="w-full"
-							/>
-						</div>
-						<div className="space-y-2">
 							<div className="flex items-center justify-between">
-								<Label htmlFor="icon-opacity" className="text-base">
-									Opacity
-								</Label>
-								<span className="text-muted-foreground text-sm">{settings.markers.opacity}%</span>
+								<div className="space-y-0.5">
+									<Label htmlFor="disable-animations" className="text-base">
+										Disable Animations
+									</Label>
+									<p className="text-muted-foreground text-sm">
+										Turn off popup entrance and exit animations.
+									</p>
+								</div>
+								<Switch
+									id="disable-animations"
+									checked={settings.popups.disableAnimations}
+									onCheckedChange={value =>
+										updateSettings({
+											popups: {
+												...settings.popups,
+												disableAnimations: value,
+											},
+										})
+									}
+									className="cursor-pointer"
+								/>
 							</div>
-							<Slider
-								id="icon-opacity"
-								min={0}
-								max={100}
-								step={5}
-								value={[settings.markers.opacity]}
-								onValueChange={value =>
-									updateSettings({
-										markers: {
-											...settings.markers,
-											opacity: value[0] ?? settings.markers.opacity,
-										},
-									})
-								}
-								className="w-full"
-							/>
 						</div>
 					</div>
-				</div>
-
-				<Separator className="my-2" />
-
-				{/* Popup Settings */}
-				<div className="space-y-4">
-					<div className="flex items-center gap-1.5">
-						<MessageSquare className="size-5 text-primary" />
-						<h3 className="font-medium text-lg">Popup Settings</h3>
-					</div>
-					<div className="space-y-4 pl-4">
-						<div className="flex items-center justify-between">
-							<div className="5 space-y-0">
-								<Label htmlFor="disable-gradients" className="text-base">
-									Disable Gradients
-								</Label>
-								<p className="text-muted-foreground text-sm">
-									Use solid colors instead of gradient backgrounds.
-								</p>
-							</div>
-							<Switch
-								id="disable-gradients"
-								checked={settings.popups.disableGradients}
-								onCheckedChange={value => {
-									updateSettings({
-										popups: {
-											...settings.popups,
-											disableGradients: value,
-										},
-									})
-								}}
-								className="cursor-pointer"
-							/>
-						</div>
-						<div className="flex items-center justify-between">
-							<div className="space-y-0.5">
-								<Label htmlFor="disable-animations" className="text-base">
-									Disable Animations
-								</Label>
-								<p className="text-muted-foreground text-sm">
-									Turn off popup entrance and exit animations.
-								</p>
-							</div>
-							<Switch
-								id="disable-animations"
-								checked={settings.popups.disableAnimations}
-								onCheckedChange={value =>
-									updateSettings({
-										popups: {
-											...settings.popups,
-											disableAnimations: value,
-										},
-									})
-								}
-								className="cursor-pointer"
-							/>
-						</div>
-					</div>
-				</div>
-
+					<ScrollBar orientation="vertical" />
+				</ScrollArea>
 				<Separator />
-
 				{/* Preview Section */}
 				<div className="space-y-2">
 					<h3 className="font-medium text-sm">Preview</h3>
@@ -174,7 +178,7 @@ export default function MapSettingsPanel() {
 								style={{
 									width: `${settings.markers.iconSize}px`,
 									height: `${settings.markers.iconSize}px`,
-									opacity: settings.markers.opacity / 100,
+									opacity: settings.markers.opacity,
 								}}
 							>
 								<MapPin
@@ -194,7 +198,7 @@ export default function MapSettingsPanel() {
 						</div>
 					</div>
 				</div>
-				<DialogFooter>
+				<DialogFooter className="flex-row justify-between">
 					{!isMobile ? (
 						<div className="mr-auto flex items-center justify-center gap-1 text-muted-foreground text-sm">
 							<span>Keyboard Shortcut:</span>
