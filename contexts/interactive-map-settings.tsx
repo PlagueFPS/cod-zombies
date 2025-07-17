@@ -83,7 +83,7 @@ export function MapSettingsProvider({ children }: { children: React.ReactNode })
 	const [settings, setSettings] = useLocalStorage<TMapSettings>(STORAGE_KEY, DEFAULT_SETTINGS)
 	const migratedSettings = settings._version !== CURRENT_VERSION ? migrateSettings(settings) : settings
 
-	if (settings !== migratedSettings) {
+	if (settings._version !== migratedSettings._version) {
 		setSettings(prev => ({
 			...prev,
 			...migratedSettings,
