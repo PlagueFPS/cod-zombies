@@ -22,7 +22,7 @@ import { Switch } from "../ui/switch"
 
 export default function MapSettingsPanel() {
 	const [open, setOpen] = useState(false)
-	const { settings, updateSettings, resetSettings } = useMapSettings()
+	const { defaultSettings, settings, updateSettings } = useMapSettings()
 	const [newSettings, setNewSettings] = useState(settings)
 	const isMobile = useIsMobile(1280)
 	
@@ -221,7 +221,7 @@ export default function MapSettingsPanel() {
 					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
 						Cancel
 					</Button>
-					<Button variant={"secondary"} onClick={resetSettings}>
+					<Button variant={"secondary"} onClick={() => setNewSettings(defaultSettings)}>
 						Reset Settings
 					</Button>
 				</DialogFooter>
