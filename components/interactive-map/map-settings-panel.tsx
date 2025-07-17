@@ -26,9 +26,12 @@ export default function MapSettingsPanel() {
 	const [newSettings, setNewSettings] = useState(settings)
 	const isMobile = useIsMobile(1280)
 	
-	const handleOpenChange = (open: boolean) => {
+	const handleOpenChange = (open: boolean, cancel = false) => {
+		if (cancel) {
+			setNewSettings(settings)
+		} else updateSettings(newSettings)
+
 		setOpen(open)
-		updateSettings(newSettings)
 	}
 
 	useKeyboardShortcut({
@@ -218,7 +221,7 @@ export default function MapSettingsPanel() {
 							</kbd>
 						</div>
 					) : null}
-					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
+					<Button variant={"destructive"} onClick={() => handleOpenChange(false, true)}>
 						Cancel
 					</Button>
 					<Button variant={"secondary"} onClick={() => setNewSettings(defaultSettings)}>
