@@ -1,4 +1,4 @@
-import { ChevronDown, Menu } from "lucide-react"
+import { ChevronDown, ChevronsRightIcon } from "lucide-react"
 import BackToTopButton from "../back-to-top-button/back-to-top-button"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
@@ -49,8 +49,8 @@ const MobileTableOfContentsLoader = () => {
 	return (
 		<div className="sticky top-16 z-30 w-full border-b bg-background/90 p-3 backdrop-blur-sm supports-backdrop-filter:bg-background/60 xl:hidden">
 			<div className="flex items-center gap-2">
-				<Menu className="h-5 w-5 animate-pulse" />
-				<h3 className="font-bold">Introduction</h3>
+				<ChevronsRightIcon className="size-5 text-muted-foreground" />
+				<h3 className="font-bold text-muted-foreground">Introduction</h3>
 			</div>
 		</div>
 	)
