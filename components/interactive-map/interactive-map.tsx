@@ -98,7 +98,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 
 	return (
 		<MapContainer
-			key={mapConfig.id}
+			key={`${mapConfig.id}-${settings.popups.disableAnimations}`}
 			center={
 				imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] : [1024, 1024]
 			}
@@ -110,6 +110,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			zoomControl={false}
 			attributionControl={false}
 			className="relative bg-accent! dark:bg-secondary-alternative!"
+			fadeAnimation={ !settings.popups.disableAnimations }
 		>
 			<MapController imageDimensions={imageDimensions} />
 			{imageDimensions && (
@@ -178,7 +179,7 @@ function MapController({ imageDimensions }: MapController) {
 	}
 
 	return (
-		<div className="fixed top-20 right-8 z-500 flex gap-2">
+		<div className="fixed top-20 right-4 z-500 flex gap-2 lg:right-8">
 			<Badge variant={"outline"} className="rounded-md bg-background/80">
 				<div className="flex flex-col gap-1">
 					<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} title="Zoom In">
@@ -227,9 +228,7 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 
 	return (
 		<Popup
-			className={cn(getClassName(), {
-				"opacity-100! transition-none!": settings.popups.disableAnimations,
-			})}
+			className={ getClassName() }
 		>
 			<div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
 				<MarkerBadge category={marker.category}>{capitalize(marker.category)}</MarkerBadge>
