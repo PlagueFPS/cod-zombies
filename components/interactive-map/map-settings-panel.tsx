@@ -1,4 +1,4 @@
-import { MapPin, MessageSquare, SettingsIcon } from "lucide-react"
+import { MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { useMapSettings } from "@/contexts/interactive-map-settings"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
@@ -25,7 +25,7 @@ export default function MapSettingsPanel() {
 	const { defaultSettings, settings, updateSettings } = useMapSettings()
 	const [newSettings, setNewSettings] = useState(settings)
 	const isMobile = useIsMobile(1280)
-	
+
 	const handleOpenChange = (open: boolean, cancel = false) => {
 		if (cancel) {
 			setNewSettings(settings)
@@ -39,11 +39,10 @@ export default function MapSettingsPanel() {
 		callback: () => handleOpenChange(!open),
 	})
 
-
 	return (
-		<Dialog open={ open } onOpenChange={ handleOpenChange }>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>
-				<Button variant="ghost" size={"icon"} aria-label="Map Settings" title="Map Settings">
+				<Button variant="ghost" size={"icon"} aria-label="Map Settings. Keyboard Shortcut: S">
 					<SettingsIcon className="size-5" />
 				</Button>
 			</DialogTrigger>
@@ -119,9 +118,7 @@ export default function MapSettingsPanel() {
 							</div>
 						</div>
 					</div>
-
 					<Separator className="my-4" />
-
 					{/* Popup Settings */}
 					<div className="space-y-4">
 						<div className="flex items-center gap-1.5">
@@ -130,7 +127,7 @@ export default function MapSettingsPanel() {
 						</div>
 						<div className="space-y-4 pl-4">
 							<div className="flex items-center justify-between">
-								<div className="5 space-y-0">
+								<div className="flex flex-col justify-center">
 									<Label htmlFor="disable-gradients" className="text-base">
 										Disable Gradients
 									</Label>
@@ -154,7 +151,7 @@ export default function MapSettingsPanel() {
 								/>
 							</div>
 							<div className="flex items-center justify-between">
-								<div className="space-y-0.5">
+								<div className="flex flex-col justify-center">
 									<Label htmlFor="disable-animations" className="text-base">
 										Disable Animations
 									</Label>
@@ -171,6 +168,64 @@ export default function MapSettingsPanel() {
 											popups: {
 												...prev.popups,
 												disableAnimations: value,
+											},
+										}))
+									}
+									className="cursor-pointer"
+								/>
+							</div>
+						</div>
+					</div>
+					<Separator className="my-4" />
+					{/* General Settings */}
+					<div className="space-y-2">
+						<div className="flex items-center gap-1.5">
+							<MapIcon className="size-5 text-primary" />
+							<h3 className="font-medium text-lg">General Map Settings</h3>
+						</div>
+						<div className="space-y-4 pl-4">
+							<div className="flex items-center justify-between space-y-2">
+								<div className="flex flex-col justify-center">
+									<Label htmlFor="disable-zoom-animation" className="text-base text-foreground">
+										Disable Zoom Animation
+									</Label>
+									<p className="text-muted-foreground text-sm">
+										Turn off zoom animation when zooming in or out on the map.
+									</p>
+								</div>
+								<Switch
+									id="disable-zoom-animation"
+									checked={newSettings.general.disableZoomAnimation}
+									onCheckedChange={value =>
+										setNewSettings(prev => ({
+											...prev,
+											general: {
+												...prev.general,
+												disableZoomAnimation: value,
+											},
+										}))
+									}
+									className="ml-1 cursor-pointer"
+								/>
+							</div>
+							<div className="flex items-center justify-between space-y-2">
+								<div className="flex flex-col justify-center">
+									<Label htmlFor="disable-fly-to-animation" className="text-base">
+										Disable Flying Animation
+									</Label>
+									<p className="text-muted-foreground text-sm">
+										Turn off flying animation when clicking on a marker on the map.
+									</p>
+								</div>
+								<Switch
+									id="disable-fly-to-animation"
+									checked={newSettings.general.disableFlyToAnimation}
+									onCheckedChange={value =>
+										setNewSettings(prev => ({
+											...prev,
+											general: {
+												...prev.general,
+												disableFlyToAnimation: value,
 											},
 										}))
 									}
@@ -225,7 +280,7 @@ export default function MapSettingsPanel() {
 						Cancel
 					</Button>
 					<Button variant={"secondary"} onClick={() => setNewSettings(defaultSettings)}>
-						Reset Settings
+						Reset to Default
 					</Button>
 				</DialogFooter>
 			</DialogContent>

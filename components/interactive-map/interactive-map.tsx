@@ -98,7 +98,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 
 	return (
 		<MapContainer
-			key={`${mapConfig.id}-${settings.popups.disableAnimations}`}
+			key={`${mapConfig.id}-${settings.popups.disableAnimations}-${settings.general.disableZoomAnimation}`}
 			center={
 				imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] : [1024, 1024]
 			}
