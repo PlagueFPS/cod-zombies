@@ -1,0 +1,14 @@
+---
+description: React Guidelines
+alwaysApply: false
+---
+
+- Treat UIs as a thin layer over your data. Skip local state (like `useState`) unless it's absolutely needed
+and clearly seperate from business logic. Choose variabes and `useRef` if it doesn't need to be reactive.
+- When you find yourself with nested if/else or complex conditional rendering, create a new component.
+Reserve inline ternaries for tiny, readable sections.
+- Choose to derive data rather than use `useEffect`. Only use `useEffect` when you need to sync with an external system (e.g. DOM).
+It causes misdirection of what the logic is doing. Choose to explicitly define logic rather than depend on implicit reactive behavior.
+- Treat `setTimeout` as a last resort (and always comment why you use it)
+- IMPORTANT: do no add useless comments. avoid adding comments unless you're clarfifying a race condition (setTimeout), a long-term TODO,
+or a confusing piece of code even a senior engineer wouldn't initially understand.
