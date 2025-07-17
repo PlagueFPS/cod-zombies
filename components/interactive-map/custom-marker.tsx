@@ -46,7 +46,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 
 	const handleClick = () => {
 		map.flyTo(position, map.getZoom(), {
-			animate: !settings.popups.disableAnimations,
+			animate: !settings.general.disableFlyToAnimation,
 		})
 	}
 
@@ -79,6 +79,24 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 		)
 	}
 
+	const getWidth = () => {
+		switch(marker.id) {
+			case "shovel":
+				return Math.floor(settings.iconSize * 1.5)
+			default:
+				return settings.iconSize
+		}
+	}
+
+	const getHeight = () => {
+		switch(marker.id) {
+			case "shovel":
+				return Math.floor(settings.iconSize * 1.5)
+			default:
+				return settings.iconSize
+		}
+	}	
+
 	return (
 		<div
 			id={id}
@@ -89,23 +107,23 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 					unoptimized
 					src={marker.icon}
 					alt={marker.title}
-					width={settings.iconSize}
-					height={settings.iconSize}
+					width={getWidth()}
+					height={getHeight()}
 					style={{
-						width: settings.iconSize,
-						height: settings.iconSize,
+						width: getWidth(),
+						height: getHeight(),
 						opacity: settings.opacity,
 					}}
-					// className={cn(
-					// 	"size-8",
-					// 	{ "size-6": marker.type === "perk" && marker.id !== "der-wunderfizz" },
-					// 	{ "size-10": marker.id === "dark-aether-lantern" || marker.id === "aether-crystal" },
-					// 	{ "size-11": marker.id === "shovel" },
-					// )}
 					onError={() => setError(true)}
 				/>
 			) : (
-				<div className="size-8 rounded-full bg-primary" />
+				<div style={{
+					width: settings.iconSize,
+					height: settings.iconSize,
+					opacity: settings.opacity,
+				}} 
+				className="rounded-full bg-primary" 
+				/>
 			)}
 		</div>
 	)
