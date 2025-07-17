@@ -111,6 +111,8 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			attributionControl={false}
 			className="relative bg-accent! dark:bg-secondary-alternative!"
 			fadeAnimation={ !settings.popups.disableAnimations }
+			zoomAnimation={ !settings.general.disableZoomAnimation }
+			markerZoomAnimation={ !settings.general.disableZoomAnimation }
 		>
 			<MapController imageDimensions={imageDimensions} />
 			{imageDimensions && (

@@ -2,7 +2,11 @@
 import { createContext, use } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
-const defaultSettings = {
+const STORAGE_KEY = "map-settings"
+const CURRENT_VERSION = 1
+
+const DEFAULT_SETTINGS = {
+	_version: CURRENT_VERSION,
 	markers: {
 		iconSize: 32,
 		opacity: 1, // 100% opacity
@@ -11,9 +15,13 @@ const defaultSettings = {
 		disableGradients: false,
 		disableAnimations: false,
 	},
+	general: {
+		disableZoomAnimation: false,
+		disableFlyToAnimation: false
+	}
 }
 
-export type TMapSettings = typeof defaultSettings
+export type TMapSettings = typeof DEFAULT_SETTINGS
 
 interface IInteractiveMapSettings {
 	settings: TMapSettings
@@ -22,15 +30,37 @@ interface IInteractiveMapSettings {
 }
 
 const MapSettingsContext = createContext<IInteractiveMapSettings>({
-	settings: defaultSettings,
+	settings: DEFAULT_SETTINGS,
 	updateSettings: () => {},
 	resetSettings: () => {},
 })
 
+const migrateSettings = (savedSettings: Partial<TMapSettings>) => {
+	if (!savedSettings._version || savedSettings._version >= CURRENT_VERSION) {
+		return savedSettings
+	}
+
+	const migrated = {
+		...DEFAULT_SETTINGS,
+		...savedSettings,
+		_version: CURRENT_VERSION,
+	}
+
+	return migrated
+}
+
 export function MapSettingsProvider({ children }: { children: React.ReactNode }) {
-	const [settings, setSettings] = useLocalStorage("map-settings", defaultSettings)
+	const [settings, setSettings] = useLocalStorage<TMapSettings>(STORAGE_KEY, DEFAULT_SETTINGS)
+	const migratedSettings = settings._version !== CURRENT_VERSION ? migrateSettings(settings) : settings
+
+	if (settings !== migratedSettings) {
+		setSettings(prev => ({
+			...prev,
+			...migratedSettings,
+		}))
+	}
 	
-	const updateSettings = (newSettings: Partial<typeof defaultSettings>) => {
+	const updateSettings = (newSettings: Partial<TMapSettings>) => {
 		setSettings(current => ({
 			...current,
 			...newSettings,
@@ -38,7 +68,7 @@ export function MapSettingsProvider({ children }: { children: React.ReactNode })
 	}
 
 	const resetSettings = () => {
-		setSettings(defaultSettings)
+		setSettings(DEFAULT_SETTINGS)
 	}
 
 	return (
