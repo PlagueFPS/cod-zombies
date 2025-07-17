@@ -23,15 +23,22 @@ import { Switch } from "../ui/switch"
 export default function MapSettingsPanel() {
 	const [open, setOpen] = useState(false)
 	const { settings, updateSettings, resetSettings } = useMapSettings()
+	const [newSettings, setNewSettings] = useState(settings)
 	const isMobile = useIsMobile(1280)
+	
+	const handleOpenChange = (open: boolean) => {
+		setOpen(open)
+		updateSettings(newSettings)
+	}
 
 	useKeyboardShortcut({
 		shortcut: "s",
-		callback: () => setOpen(prev => !prev),
+		callback: () => handleOpenChange(!open),
 	})
 
+
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
+		<Dialog open={ open } onOpenChange={ handleOpenChange }>
 			<DialogTrigger asChild>
 				<Button variant="ghost" size={"icon"} aria-label="Map Settings" title="Map Settings">
 					<SettingsIcon className="size-5" />
@@ -59,7 +66,7 @@ export default function MapSettingsPanel() {
 										Icon Size
 									</Label>
 									<span className="text-muted-foreground text-sm">
-										{settings.markers.iconSize}px
+										{newSettings.markers.iconSize}px
 									</span>
 								</div>
 								<Slider
@@ -67,14 +74,15 @@ export default function MapSettingsPanel() {
 									min={16}
 									max={64}
 									step={4}
-									value={[settings.markers.iconSize]}
+									value={[newSettings.markers.iconSize]}
 									onValueChange={value =>
-										updateSettings({
+										setNewSettings(prev => ({
+											...prev,
 											markers: {
-												...settings.markers,
-												iconSize: value[0] ?? settings.markers.iconSize,
+												...prev.markers,
+												iconSize: value[0] ?? prev.markers.iconSize,
 											},
-										})
+										}))
 									}
 									className="w-full"
 								/>
@@ -85,7 +93,7 @@ export default function MapSettingsPanel() {
 										Opacity
 									</Label>
 									<span className="text-muted-foreground text-sm">
-										{Math.floor(settings.markers.opacity * 100)}%
+										{Math.floor(newSettings.markers.opacity * 100)}%
 									</span>
 								</div>
 								<Slider
@@ -93,14 +101,15 @@ export default function MapSettingsPanel() {
 									min={0}
 									max={1}
 									step={0.05}
-									value={[settings.markers.opacity]}
+									value={[newSettings.markers.opacity]}
 									onValueChange={value =>
-										updateSettings({
+										setNewSettings(prev => ({
+											...prev,
 											markers: {
-												...settings.markers,
-												opacity: value[0] ?? settings.markers.opacity,
+												...prev.markers,
+												opacity: value[0] ?? prev.markers.opacity,
 											},
-										})
+										}))
 									}
 									className="w-full"
 								/>
@@ -128,15 +137,16 @@ export default function MapSettingsPanel() {
 								</div>
 								<Switch
 									id="disable-gradients"
-									checked={settings.popups.disableGradients}
-									onCheckedChange={value => {
-										updateSettings({
+									checked={newSettings.popups.disableGradients}
+									onCheckedChange={value =>
+										setNewSettings(prev => ({
+											...prev,
 											popups: {
-												...settings.popups,
+												...prev.popups,
 												disableGradients: value,
 											},
-										})
-									}}
+										}))
+									}
 									className="cursor-pointer"
 								/>
 							</div>
@@ -151,14 +161,15 @@ export default function MapSettingsPanel() {
 								</div>
 								<Switch
 									id="disable-animations"
-									checked={settings.popups.disableAnimations}
+									checked={newSettings.popups.disableAnimations}
 									onCheckedChange={value =>
-										updateSettings({
+										setNewSettings(prev => ({
+											...prev,
 											popups: {
-												...settings.popups,
+												...prev.popups,
 												disableAnimations: value,
 											},
-										})
+										}))
 									}
 									className="cursor-pointer"
 								/>
@@ -176,21 +187,21 @@ export default function MapSettingsPanel() {
 							<div
 								className="flex items-center justify-center rounded-full bg-primary text-primary-foreground"
 								style={{
-									width: `${settings.markers.iconSize}px`,
-									height: `${settings.markers.iconSize}px`,
-									opacity: settings.markers.opacity,
+									width: `${newSettings.markers.iconSize}px`,
+									height: `${newSettings.markers.iconSize}px`,
+									opacity: newSettings.markers.opacity,
 								}}
 							>
 								<MapPin
 									style={{
-										width: `${settings.markers.iconSize * 0.6}px`,
-										height: `${settings.markers.iconSize * 0.6}px`,
+										width: `${newSettings.markers.iconSize * 0.6}px`,
+										height: `${newSettings.markers.iconSize * 0.6}px`,
 									}}
 								/>
 							</div>
 							<div
 								className={cn("rounded-md border bg-objectives px-4 py-2 text-center", {
-									"bg-background": settings.popups.disableGradients,
+									"bg-background": newSettings.popups.disableGradients,
 								})}
 							>
 								<span className="text-xs">Popup Preview</span>
@@ -207,7 +218,7 @@ export default function MapSettingsPanel() {
 							</kbd>
 						</div>
 					) : null}
-					<Button variant={"destructive"} onClick={() => setOpen(false)}>
+					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
 						Cancel
 					</Button>
 					<Button variant={"secondary"} onClick={resetSettings}>

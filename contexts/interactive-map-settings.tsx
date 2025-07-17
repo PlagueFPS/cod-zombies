@@ -29,7 +29,7 @@ const MapSettingsContext = createContext<IInteractiveMapSettings>({
 
 export function MapSettingsProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useLocalStorage("map-settings", defaultSettings)
-	console.log(settings)
+	
 	const updateSettings = (newSettings: Partial<typeof defaultSettings>) => {
 		setSettings(current => ({
 			...current,
