@@ -6,8 +6,10 @@ export type TContactForm = typeof ContactFormSchema.Type
 export type TNewsletterForm = typeof NewsletterFormSchema.Type
 
 const EmailSchema = Schema.NonEmptyString.pipe(
-	Schema.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/),
-).annotations({ message: () => "Invalid Email" })
+	Schema.compose(Schema.Trim),
+	Schema.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, { message: () => "Invalid Email"}),
+	Schema.maxLength(256, { message: () => "Email should not be longer than 256 characters" }),
+).annotations({ message: () => "Email is required" })
 
 export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
 
@@ -24,15 +26,17 @@ export const NewsletterFormSchema = Schema.Struct({
 })
 
 export const ContactFormSchema = Schema.Struct({
-	name: Schema.NonEmptyString.annotations({ message: () => "Name is required" }),
+	name: Schema.NonEmptyString.pipe(
+		Schema.compose(Schema.Trim)
+	).annotations({ message: () => "Name is required" }),
 	email: EmailSchema,
 	message: Schema.NonEmptyString.annotations({ message: () => "Message is required" }),
 })
 
 const TerminusCodeSchema = Schema.Struct({
-	x: Schema.NumberFromString.pipe(Schema.greaterThanOrEqualTo(0), Schema.lessThanOrEqualTo(99)),
-	y: Schema.NumberFromString.pipe(Schema.greaterThanOrEqualTo(0), Schema.lessThanOrEqualTo(99)),
-	z: Schema.NumberFromString.pipe(Schema.greaterThanOrEqualTo(0), Schema.lessThanOrEqualTo(99)),
+	x: Schema.NumberFromString.pipe(Schema.between(0, 99)),
+	y: Schema.NumberFromString.pipe(Schema.between(0, 99)),
+	z: Schema.NumberFromString.pipe(Schema.between(0, 99)),
 })
 
 export const decodeTerminusCode = Schema.decodeEither(TerminusCodeSchema)
