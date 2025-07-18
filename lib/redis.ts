@@ -1,13 +1,18 @@
 import "server-only"
 import type { EntryStatus, EntryType } from "@/types/entry-enforcement"
+import { createHash } from "node:crypto"
+import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import { Effect, Schema } from "effect"
+import { Duration, Effect, Schema } from "effect"
+import { headers } from "next/headers"
+import { after } from "next/server"
 import { env } from "@/env"
 import {
 	DeleteEntryError,
 	EntryNotFoundError,
 	GetCacheValueError,
 	GetEntriesError,
+	RatelimitExceededError,
 	SetEntryError,
 	UpdateEntryStatusError,
 } from "@/types/errors"
@@ -16,6 +21,13 @@ import { Cache } from "./services/Cache"
 export const redis = new Redis({
 	url: env.REDIS_URL,
 	token: env.REDIS_TOKEN,
+})
+
+export const ratelimit = new Ratelimit({
+	redis,
+	limiter: Ratelimit.tokenBucket(5, "1m", 10),
+	analytics: true,
+	enableProtection: true,
 })
 
 const EntryResponseSchema = Schema.Struct({
@@ -181,3 +193,32 @@ export const updateEntryStatus = (entryId: string, updatedAt: Date, type: EntryS
 				}),
 		),
 	)
+
+export const checkRatelimit = async () => {
+	const headerList = await headers()
+	const ip = headerList.get("x-forwarded-for") || "127.0.0.1"
+	const userAgent = headerList.get("user-agent")
+	const identifier = createHash("sha256").update(`${ip}:${userAgent}`).digest("hex")
+	const { success, pending, reason, reset } = await ratelimit.limit(identifier, { ip })
+
+	after(async () => await pending)
+
+	if (!success) {
+		const resetTime = new Date(reset).getTime()
+		const remainingTime = Duration.subtract(resetTime, Date.now()).pipe(Duration.toMillis)
+
+		const error = new RatelimitExceededError({
+			message: `Too many requests. Please try again in ${remainingTime}ms`,
+			cause: reason,
+		})
+
+		console.error(error)
+
+		return {
+			success: false,
+			message: error.message,
+		}
+	}
+
+	return { success }
+}

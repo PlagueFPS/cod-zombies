@@ -73,7 +73,7 @@ export const PROTECTED_ROUTES = [
 		method: "POST",
 	},
 	{
-		path: "/**",
+		path: "/*",
 		method: "POST",
 	},
 ]

@@ -62,3 +62,10 @@ export class MapCategoryNotFoundError extends Data.TaggedError(
 	"MapCategoryNotFoundError",
 )<CommonErrorProps> {}
 export class LoadFontDataError extends Data.TaggedError("LoadFontDataError")<CommonErrorProps> {}
+export class RatelimitExceededError extends Data.TaggedError(
+	"RatelimitExceededError",
+)<CommonErrorProps> {}
+export class LinearGetTeamError extends Data.TaggedError("LinearGetTeamError")<CommonErrorProps> {}
+export class LinearCreateIssueError extends Data.TaggedError(
+	"LinearCreateIssueError",
+)<CommonErrorProps> {}
