@@ -56,23 +56,33 @@ export const verifyToken = (token: string) =>
 			catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
 		})
 		const [value, salt, expiresInStr, originalHash] = buffer.split(":")
-		const expiresIn = expiresInStr ? parseInt(expiresInStr, 10) : 0
+
+		if (!value || !salt || !expiresInStr || !originalHash) {
+			return yield* new TokenVerificationError({ 
+				message: "Invalid Token Format", 
+				cause: new Error("Token is malformed") 
+			})
+		}
+
+		const expiresIn = parseInt(expiresInStr, 10)
 		const now = Date.now()
 
-		if (Duration.greaterThan(now, expiresIn))
+		if (Number.isNaN(expiresIn) || Duration.greaterThan(now, expiresIn)) {
 			return yield* new TokenExpirationError({
 				message: "Token has expired",
 				cause: new Error(`Token expired at ${new Date(expiresIn).toISOString()}`),
 			})
-
+		}
+		
 		const payload = `${value}:${salt}:${expiresIn}`
 		const hash = createHash("sha256").update(payload).digest("hex")
+		const hashBuffer = Buffer.from(hash, "hex")
+		const originalHashBuffer = Buffer.from(originalHash, "hex")
 
-		if (hash !== originalHash || !value)
-			return yield* new TokenVerificationError({
-				message: "Invalid Token",
-				cause: new Error("Original hash does not match the calculated hash"),
-			})
+		yield* Effect.try({
+			try: () => timingSafeEqual(hashBuffer, originalHashBuffer),
+			catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
+		})
 
 		return value
 	}).pipe(Effect.withLogSpan("verify_token"))
