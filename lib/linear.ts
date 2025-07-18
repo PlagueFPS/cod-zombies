@@ -1,9 +1,13 @@
 import "server-only"
 import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { LinearClient } from "@linear/sdk"
-import { Effect, Match } from "effect"
+import { Effect } from "effect"
 import { env } from "@/env"
-import { LinearCreateIssueError, LinearGetTeamError } from "@/types/errors"
+import {
+	LinearCreateIssueError,
+	LinearGetIssueLabelsError,
+	LinearGetTeamError,
+} from "@/types/errors"
 
 const linear = new LinearClient({ apiKey: env.LINEAR_API_KEY })
 
@@ -12,19 +16,14 @@ export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label
 		try: () => linear.team("CODZG"),
 		catch: error => new LinearGetTeamError({ message: "Failed to get team", cause: error }),
 	})
-	let priority = 0
+	const labels = yield* Effect.tryPromise({
+		try: () => linear.issueLabels(),
+		catch: error =>
+			new LinearGetIssueLabelsError({ message: "Failed to get issue labels", cause: error }),
+	})
 
-	Match.value(label).pipe(
-		Match.when("issue", () => {
-			priority = 3
-		}),
-		Match.when("complaint", () => {
-			priority = 4
-		}),
-		Match.orElse(() => {
-			priority = 0
-		}),
-	)
+	const issueLabel = labels.nodes.find(node => node.name === label)
+	const priority = 0
 
 	const { success, issueId } = yield* Effect.tryPromise({
 		try: () =>
@@ -33,6 +32,7 @@ export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label
 				title: title ?? "Website Feedback",
 				description: feedback,
 				priority,
+				labelIds: issueLabel ? [issueLabel.id] : undefined,
 			}),
 		catch: error => new LinearCreateIssueError({ message: "Failed to create issue", cause: error }),
 	})
@@ -40,6 +40,6 @@ export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label
 	if (!success || !issueId)
 		return yield* new LinearCreateIssueError({ message: "Failed to create issue" })
 
-	yield* Effect.log(`Created issue: ${issueId}`)
+	yield* Effect.log(`Issue created: ${issueId}`)
 	return success
 }, Effect.withLogSpan("create_issue"))

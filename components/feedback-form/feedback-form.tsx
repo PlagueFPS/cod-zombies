@@ -19,6 +19,7 @@ import {
 	FormDescription,
 	FormField,
 	FormItem,
+	FormLabel,
 	FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
@@ -26,6 +27,7 @@ import { submitFeedbackForm } from "@/data/actions"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 import { cn } from "@/lib/utils"
 import { FeedbackFormSchema, type TFeedbackForm } from "@/utils/validation-schemas"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
 interface FeedbackFormProps extends React.ComponentProps<"button"> {
 	className?: string
@@ -82,6 +84,11 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 		}
 	}
 
+	const handleCancel = () => {
+		form.reset()
+		setOpen(false)
+	}
+
 	return (
 		<div className="flex items-center justify-center">
 			<Dialog open={open} onOpenChange={setOpen}>
@@ -111,6 +118,32 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 							<div className="space-y-6 pb-4">
 								<FormField
 									control={form.control}
+									name="label"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Feedback Label</FormLabel>
+											<FormControl>
+												<Select onValueChange={field.onChange} defaultValue={field.value}>
+													<SelectTrigger className="w-full">
+														<SelectValue placeholder="Select a label" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="issue">Issue</SelectItem>
+														<SelectItem value="complaint">Complaint</SelectItem>
+														<SelectItem value="featureRequest">Feature Request</SelectItem>
+														<SelectItem value="other">Other</SelectItem>
+													</SelectContent>
+												</Select>
+											</FormControl>
+											<FormDescription>
+												Select a label that best describes your feedback.
+											</FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
 									name="feedback"
 									render={({ field }) => (
 										<FormItem>
@@ -120,7 +153,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 													required
 													placeholder="What can we improve?"
 													className="min-h-24"
-													onKeyDown={ handleKeyDown }
+													onKeyDown={handleKeyDown}
 												/>
 											</FormControl>
 											<FormDescription>
@@ -132,7 +165,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 								/>
 							</div>
 							<div className="mt-4 flex items-center justify-between">
-								<Button variant={"destructive"} onClick={() => setOpen(false)}>
+								<Button variant={"destructive"} onClick={handleCancel}>
 									Cancel
 								</Button>
 								<Button type="submit" disabled={isPending || !form.formState.isValid}>

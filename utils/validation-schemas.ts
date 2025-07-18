@@ -7,7 +7,9 @@ export type TNewsletterForm = typeof NewsletterFormSchema.Type
 
 const EmailSchema = Schema.NonEmptyString.pipe(
 	Schema.compose(Schema.Trim),
-	Schema.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, { message: () => "Invalid Email"}),
+	Schema.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
+		message: () => "Invalid Email",
+	}),
 	Schema.maxLength(256, { message: () => "Email should not be longer than 256 characters" }),
 ).annotations({ message: () => "Email is required" })
 
@@ -15,9 +17,7 @@ export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests",
 
 export const FeedbackFormSchema = Schema.Struct({
 	title: Schema.optional(Schema.NonEmptyString),
-	label: Schema.optional(
-		Schema.Literal("idea", "issue", "question", "complaint", "featureRequest", "other"),
-	),
+	label: Schema.Literal("issue", "complaint", "featureRequest", "other"),
 	feedback: Schema.NonEmptyString.annotations({ message: () => "Feedback is required" }),
 })
 
@@ -26,9 +26,9 @@ export const NewsletterFormSchema = Schema.Struct({
 })
 
 export const ContactFormSchema = Schema.Struct({
-	name: Schema.NonEmptyString.pipe(
-		Schema.compose(Schema.Trim)
-	).annotations({ message: () => "Name is required" }),
+	name: Schema.NonEmptyString.pipe(Schema.compose(Schema.Trim)).annotations({
+		message: () => "Name is required",
+	}),
 	email: EmailSchema,
 	message: Schema.NonEmptyString.annotations({ message: () => "Message is required" }),
 })

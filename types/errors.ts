@@ -69,3 +69,6 @@ export class LinearGetTeamError extends Data.TaggedError("LinearGetTeamError")<C
 export class LinearCreateIssueError extends Data.TaggedError(
 	"LinearCreateIssueError",
 )<CommonErrorProps> {}
+export class LinearGetIssueLabelsError extends Data.TaggedError(
+	"LinearGetIssueLabelsError",
+)<CommonErrorProps> {}
