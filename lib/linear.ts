@@ -22,8 +22,27 @@ export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label
 			new LinearGetIssueLabelsError({ message: "Failed to get issue labels", cause: error }),
 	})
 
-	const issueLabel = labels.nodes.find(node => node.name === label)
-	const priority = 0
+	const issueLabels = labels.nodes
+		.map(node => {
+			// return the match issue id and always assign the User Feedback label
+			if (node.name === label) return node.id
+			if (label !== "User Feedback" && node.name === "User Feedback") return node.id
+			return null
+		})
+		.filter(id => id !== null)
+	let priority = 0
+
+	switch (label) {
+		case "Bug":
+			priority = 2
+			break
+		case "Improvement":
+			priority = 3
+			break
+		default:
+			priority = 4
+			break
+	}
 
 	const { success, issueId } = yield* Effect.tryPromise({
 		try: () =>
@@ -32,7 +51,8 @@ export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label
 				title: title ?? "Website Feedback",
 				description: feedback,
 				priority,
-				labelIds: issueLabel ? [issueLabel.id] : undefined,
+				labelIds: issueLabels,
+				assigneeId: env.LINEAR_DEFAULT_ASSIGNEE_ID,
 			}),
 		catch: error => new LinearCreateIssueError({ message: "Failed to create issue", cause: error }),
 	})

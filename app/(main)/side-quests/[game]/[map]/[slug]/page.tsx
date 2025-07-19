@@ -10,7 +10,7 @@ import {
 	DraftBadge,
 	NewBadge,
 } from "@/components/custom-badges/custom-badges"
-import { CustomLink } from "@/components/custom-link/custom-link"
+import { CustomLink, HashLinkHandler } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
 import PreviousOrNextMapLoader from "@/components/loaders/previous-or-next-map-loader"
@@ -83,12 +83,13 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const q = await getQuestBySlug(isEnabled, slug)
 	if (!q) notFound()
-	const headings = extractHeadings(q.content)
+	const headings = q.isComingSoon ? [] : extractHeadings(q.content)
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
-				<div className="flex w-full flex-col-reverse xl:flex-row">
+				<div className="flex w-full flex-col xl:flex-row-reverse">
+					<TableOfContents headings={headings} />
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
@@ -174,7 +175,7 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 							<RichTextRenderer body={q.content} slug={slug} />
 						)}
 						<div className="flex w-full items-center justify-center">
-							<GuideFeedback guideTitle={q.title} />
+							<GuideFeedback guideTitle={q.title} type="Side Quest" map={q.map.title} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 							<Suspense fallback={<PreviousOrNextMapLoader />}>
@@ -182,9 +183,9 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 							</Suspense>
 						</div>
 					</article>
-					<TableOfContents headings={q.isComingSoon ? [] : headings} />
 				</div>
 			</div>
+			<HashLinkHandler />
 		</section>
 	)
 }

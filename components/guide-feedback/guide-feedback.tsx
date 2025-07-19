@@ -12,11 +12,18 @@ import { Button } from "../ui/button"
 import { Form, FormControl, FormField, FormItem } from "../ui/form"
 import { Textarea } from "../ui/textarea"
 
-interface IGuideFeedback {
-	guideTitle: string
-}
+type IGuideFeedback =
+	| {
+			type: "Main Quest"
+			guideTitle: string
+	  }
+	| {
+			type: "Side Quest"
+			map: string
+			guideTitle: string
+	  }
 
-export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
+export default function GuideFeedback(props: IGuideFeedback) {
 	const [vote, setVote] = useState<"Liked" | "Disliked" | null>(null)
 	const [isPending, startTransition] = useTransition()
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null)
@@ -24,8 +31,8 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
 		resolver: effectTsResolver(FeedbackFormSchema),
 		mode: "onChange",
 		defaultValues: {
-			title: guideTitle,
-			label: "other",
+			title: `${props.guideTitle} ${props.type} Guide ${props.type === "Side Quest" ? `for ${props.map}` : ""}`,
+			label: "User Feedback",
 			feedback: "",
 		},
 	})
@@ -44,8 +51,7 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
 		startTransition(async () => {
 			const result = await submitFeedbackForm(undefined, {
 				...data,
-				title: guideTitle,
-				label: vote === "Disliked" ? "complaint" : "other",
+				label: vote === "Disliked" ? "Improvement" : "User Feedback",
 			})
 			if (result.success) {
 				startTransition(() => {
@@ -81,29 +87,49 @@ export default function GuideFeedback({ guideTitle }: IGuideFeedback) {
 			<div className="flex items-center justify-center gap-4">
 				<span className="text-foreground/80 text-sm">Was this guide helpful?</span>
 				<div className="flex items-center justify-center gap-1">
-					<button type="button" onClick={() => setVote(prev => (prev === "Liked" ? null : "Liked"))} className="group">
+					<button
+						type="button"
+						onClick={() => setVote(prev => (prev === "Liked" ? null : "Liked"))}
+						className="group"
+					>
 						<ThumbsUp
-							className={cn("group-hover:-rotate-12 group-focus-visible:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform duration-300", {
-								"text-primary": vote === "Liked",
-							})}
+							className={cn(
+								"group-hover:-rotate-12 group-focus-visible:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform duration-300",
+								{
+									"text-primary": vote === "Liked",
+								},
+							)}
 						/>
 					</button>
-					<button type="button" onClick={() => setVote(prev => (prev === "Disliked" ? null : "Disliked"))} className="group">
+					<button
+						type="button"
+						onClick={() => setVote(prev => (prev === "Disliked" ? null : "Disliked"))}
+						className="group"
+					>
 						<ThumbsDown
-							className={cn("group-hover:-rotate-12 group-focus-visible:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform duration-300", {
-								"text-primary": vote === "Disliked",
-							})}
+							className={cn(
+								"group-hover:-rotate-12 group-focus-visible:-rotate-12 size-4 cursor-pointer text-muted-foreground transition-transform duration-300",
+								{
+									"text-primary": vote === "Disliked",
+								},
+							)}
 						/>
 					</button>
 				</div>
 			</div>
 			<div
-				className={cn("max-h-0 transform-gpu overflow-hidden opacity-0 transition-all duration-300 will-change-auto", {
-					"max-h-50 opacity-100": vote,
-				})}
+				className={cn(
+					"max-h-0 transform-gpu overflow-hidden opacity-0 transition-all duration-300 will-change-auto",
+					{
+						"max-h-50 opacity-100": vote,
+					},
+				)}
 			>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="flex h-full w-full flex-col gap-4 pb-2">
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className="flex h-full w-full flex-col gap-4 pb-2"
+					>
 						<FormField
 							control={form.control}
 							name="feedback"

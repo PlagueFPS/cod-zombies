@@ -16,8 +16,8 @@ const EmailSchema = Schema.NonEmptyString.pipe(
 export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
 
 export const FeedbackFormSchema = Schema.Struct({
-	title: Schema.optional(Schema.NonEmptyString),
-	label: Schema.Literal("issue", "complaint", "featureRequest", "other"),
+	title: Schema.NonEmptyString,
+	label: Schema.Literal("Bug", "Improvement", "Feature", "User Feedback"),
 	feedback: Schema.NonEmptyString.annotations({ message: () => "Feedback is required" }),
 })
 

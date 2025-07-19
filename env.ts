@@ -18,6 +18,7 @@ export const env = createEnv({
 		HASH_SALT: Schema.standardSchemaV1(Schema.NonEmptyString),
 		VERCEL_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
 		LINEAR_API_KEY: Schema.standardSchemaV1(Schema.NonEmptyString),
+		LINEAR_DEFAULT_ASSIGNEE_ID: Schema.standardSchemaV1(Schema.NonEmptyString),
 	},
 	client: {
 		NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),

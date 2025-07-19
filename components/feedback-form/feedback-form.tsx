@@ -40,6 +40,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 		resolver: effectTsResolver(FeedbackFormSchema),
 		mode: "onChange",
 		defaultValues: {
+			title: "Feedback Form Submission",
 			feedback: "",
 		},
 	})
@@ -51,10 +52,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 
 	const onSubmit = (data: TFeedbackForm) => {
 		startTransition(async () => {
-			const result = await submitFeedbackForm(undefined, {
-				...data,
-				title: "Feedback Form Submission",
-			})
+			const result = await submitFeedbackForm(undefined, data)
 			if (result.success) {
 				startTransition(() => {
 					toast.success("Feedback submitted successfully!", {
@@ -128,10 +126,10 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 														<SelectValue placeholder="Select a label" />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem value="issue">Issue</SelectItem>
-														<SelectItem value="complaint">Complaint</SelectItem>
-														<SelectItem value="featureRequest">Feature Request</SelectItem>
-														<SelectItem value="other">Other</SelectItem>
+														<SelectItem value="Bug">Issue</SelectItem>
+														<SelectItem value="Improvement">Complaint</SelectItem>
+														<SelectItem value="Feature">Feature Request</SelectItem>
+														<SelectItem value="User Feedback">Other</SelectItem>
 													</SelectContent>
 												</Select>
 											</FormControl>

@@ -90,13 +90,13 @@ export const generateMetadata = async ({ params }: MapPageProps): Promise<Metada
 export default async function MapPage({ params }: MapPageProps) {
 	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const { map, nextMap, prevMap } = await getPageData(isEnabled, slug)
-	const headings = extractHeadings(map.body)
+	const headings = map.isComingSoon ? [] : extractHeadings(map.body)
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
 				<div className="flex w-full flex-col xl:flex-row-reverse">
-					<TableOfContents headings={map.isComingSoon ? [] : headings} />
+					<TableOfContents headings={headings} />
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
@@ -175,7 +175,7 @@ export default async function MapPage({ params }: MapPageProps) {
 							<RichTextRenderer body={map.body} slug={slug} />
 						)}
 						<div className="flex w-full items-center justify-center">
-							<GuideFeedback guideTitle={map.title} />
+							<GuideFeedback guideTitle={map.title} type="Main Quest" />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 							{prevMap && <PrevOrNextMapCard map={prevMap} isEnabled={isEnabled} prev />}
