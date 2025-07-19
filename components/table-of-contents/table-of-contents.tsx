@@ -27,7 +27,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 	return (
 		<>
 			<aside className="sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 rounded-lg border bg-background px-6 shadow-md xl:block dark:shadow-none">
-				<div className="relative flex flex-col gap-4">
+				<div className="relative flex flex-col">
 					<div className="mt-4 flex flex-col items-center justify-center">
 						<div className="mb-2 flex w-full items-center justify-between">
 							<span className="text-muted-foreground text-sm">Guide progress</span>
@@ -46,7 +46,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 							{isExpanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
 						</Button>
 					</div>
-					<div>
+					<div className="border-b pb-4">
 						<Button
 							variant={"ghost"}
 							className="w-full justify-start rounded-sm bg-accent font-medium dark:bg-accent/50"
@@ -65,7 +65,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 					>
 						<ul
 							className={cn(
-								"flex flex-col gap-3 overflow-hidden border-t py-4 pl-1 font-semibold text-foreground/90 text-sm",
+								"flex flex-col gap-3 overflow-hidden py-4 pl-1 font-semibold text-foreground/90 text-sm",
 								{ "border-none": !isExpanded },
 							)}
 						>

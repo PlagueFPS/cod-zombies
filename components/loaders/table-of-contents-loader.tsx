@@ -3,12 +3,13 @@ import BackToTopButton from "../back-to-top-button/back-to-top-button"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
 import { ScrollArea } from "../ui/scroll-area"
+import { Skeleton } from "../ui/skeleton"
 
 export default function TableOfContentsLoader() {
 	return (
 		<>
 			<aside className="sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 rounded-lg border px-6 shadow-md xl:block dark:shadow-none">
-				<div className="flex flex-col gap-4">
+				<div className="flex flex-col">
 					<div className="mt-4 flex flex-col items-center justify-center">
 						<div className="mb-2 flex w-full items-center justify-between">
 							<span className="text-muted-foreground text-sm">Guide progress</span>
@@ -22,7 +23,7 @@ export default function TableOfContentsLoader() {
 							<ChevronDown className="size-4" />
 						</Button>
 					</div>
-					<div>
+					<div className="border-b pb-4">
 						<Button
 							variant={"ghost"}
 							className="w-full justify-start rounded-sm bg-accent font-medium dark:bg-accent/50"
@@ -32,8 +33,14 @@ export default function TableOfContentsLoader() {
 							{"Introduction"}
 						</Button>
 					</div>
-					<ScrollArea className="grid max-h-[60vh] grid-rows-[0fr] gap-1 overflow-hidden transition-all duration-300">
-						<ul className="flex flex-col gap-3 overflow-hidden border-t py-4 pl-1 font-semibold text-foreground/90 text-sm" />
+					<ScrollArea className="grid max-h-[50vh] grid-rows-[1fr] gap-1 overflow-hidden transition-all duration-300">
+						<ul className="flex flex-col gap-3 overflow-hidden py-4 pl-1 font-semibold text-foreground/90 text-sm">
+							{Array.from({ length: 15 }, (_, i) => (
+								<li key={`toc-loader-${i + 1}`}>
+									<Skeleton className="h-6 w-full" />
+								</li>
+							))}
+						</ul>
 					</ScrollArea>
 				</div>
 				<div className="sticky bottom-0 flex w-full items-center justify-center border-t py-4">
