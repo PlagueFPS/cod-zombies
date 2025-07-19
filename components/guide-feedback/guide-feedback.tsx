@@ -75,6 +75,17 @@ export default function GuideFeedback(props: IGuideFeedback) {
 		})
 	}
 
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === "Escape") {
+			setVote(null)
+		}
+
+		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter" && form.formState.isValid) {
+			e.preventDefault()
+			form.handleSubmit(onSubmit)()
+		}
+	}
+
 	return (
 		<div
 			className={cn(
@@ -143,6 +154,7 @@ export default function GuideFeedback(props: IGuideFeedback) {
 											className="min-h-26 resize-none focus-visible:ring-0"
 											ref={textareaRef}
 											tabIndex={vote ? 0 : -1}
+											onKeyDown={handleKeyDown}
 										/>
 									</FormControl>
 								</FormItem>
@@ -161,7 +173,6 @@ export default function GuideFeedback(props: IGuideFeedback) {
 							<Button
 								type="submit"
 								size={"sm"}
-								variant={"outline"}
 								className="mr-1 ml-auto w-fit gap-2 self-end"
 								disabled={isPending || !form.formState.isValid}
 							>
@@ -173,7 +184,15 @@ export default function GuideFeedback(props: IGuideFeedback) {
 								) : (
 									<>
 										<Send className="size-4" />
-										Send
+										<span>Send</span>
+										<div className="flex items-center gap-1">
+											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+												<span className="text-xs">Ctrl</span>
+											</kbd>
+											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+												<span className="text-xs">↩</span>
+											</kbd>
+										</div>
 									</>
 								)}
 							</Button>
