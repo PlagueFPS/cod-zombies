@@ -1,5 +1,5 @@
 "use client"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 
 type SetValue<T> = (value: T | ((value: T) => T)) => void
 /**
@@ -51,22 +51,6 @@ export const useLocalStorage = <T>(key: string, initialValue: T): [T, SetValue<T
 		},
 		[key, storedValue],
 	)
-
-	// Sync changes across components using the same key
-	useEffect(() => {
-		const handleStorageChange = (event: StorageEvent) => {
-			if (event.key === key && event.newValue !== null) {
-				try {
-					setStoredValue(JSON.parse(event.newValue))
-				} catch (error) {
-					console.warn(`Error parsing localStorage value for key "${key}":`, error)
-				}
-			}
-		}
-
-		window.addEventListener("storage", handleStorageChange)
-		return () => window.removeEventListener("storage", handleStorageChange)
-	}, [key])
 
 	return [storedValue, setValue]
 }

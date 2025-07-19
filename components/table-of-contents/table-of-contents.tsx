@@ -1,7 +1,7 @@
 "use client"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
-import { useLocalStorage } from "@/hooks/use-local-storage"
+import { useState } from "react"
 import { useTableOfContents } from "@/hooks/use-table-of-contents"
 import { cn } from "@/lib/utils"
 import BackToTopButton from "../back-to-top-button/back-to-top-button"
@@ -22,12 +22,12 @@ interface TableOfContentsProps {
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
 	const { activeHeading, currentHeading, progress } = useTableOfContents(headings, "body")
-	const [isExpanded, setIsExpanded] = useLocalStorage("toc-expanded", true)
+	const [isExpanded, setIsExpanded] = useState(true)
 
 	return (
 		<>
 			<aside className="sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 rounded-lg border bg-background px-6 shadow-md xl:block dark:shadow-none">
-				<div className="relative flex flex-col gap-4 pt-0">
+				<div className="relative flex flex-col gap-4">
 					<div className="mt-4 flex flex-col items-center justify-center">
 						<div className="mb-2 flex w-full items-center justify-between">
 							<span className="text-muted-foreground text-sm">Guide progress</span>
@@ -78,9 +78,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 										"text-primary": activeHeading === heading.id,
 									})}
 								>
-									<Link href={`#${heading.id}`} onNavigate={() => setIsExpanded(false)}>
-										{heading.text}
-									</Link>
+									<Link href={`#${heading.id}`}>{heading.text}</Link>
 								</li>
 							))}
 						</ul>
