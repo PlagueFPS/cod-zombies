@@ -72,7 +72,7 @@ export const HashLinkHandler = () => {
 				// Add a small delay to ensure the page is fully rendered
 				setTimeout(() => {
 					element.scrollIntoView({
-						behavior: "smooth",
+						behavior: "instant",
 						block: "start",
 					})
 				}, 100)
@@ -87,7 +87,7 @@ export const HashLinkHandler = () => {
 
 					if (retryElement) {
 						retryElement.scrollIntoView({
-							behavior: "smooth",
+							behavior: "instant",
 							block: "start",
 						})
 						clearInterval(retryScroll)
