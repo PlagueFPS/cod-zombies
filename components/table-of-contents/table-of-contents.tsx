@@ -35,7 +35,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 						</div>
 						<Progress value={progress} className="h-1" />
 					</div>
-					<div className="flex items-center justify-between border-t pt-2">
+					<div className="flex items-center justify-between border-t py-2">
 						<h3 className="font-medium text-muted-foreground text-sm">CURRENT SECTION</h3>
 						<Button
 							variant={"ghost"}

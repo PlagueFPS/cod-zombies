@@ -10,7 +10,7 @@ import {
 	DraftBadge,
 	NewBadge,
 } from "@/components/custom-badges/custom-badges"
-import { CustomLink, HashLinkHandler } from "@/components/custom-link/custom-link"
+import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
 import PreviousOrNextMapLoader from "@/components/loaders/previous-or-next-map-loader"
@@ -185,7 +185,6 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 					</article>
 				</div>
 			</div>
-			<HashLinkHandler />
 		</section>
 	)
 }

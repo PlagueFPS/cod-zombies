@@ -11,7 +11,7 @@ import {
 	DraftBadge,
 	NewBadge,
 } from "@/components/custom-badges/custom-badges"
-import { CustomLink, HashLinkHandler } from "@/components/custom-link/custom-link"
+import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
@@ -184,7 +184,6 @@ export default async function MapPage({ params }: MapPageProps) {
 					</article>
 				</div>
 			</div>
-			<HashLinkHandler />
 		</section>
 	)
 }

@@ -8,13 +8,15 @@ interface ICustomLink extends LinkProps {
 	className?: string
 }
 
-export function CustomLink({ children, href, ...props }: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
+export function CustomLink({
+	children,
+	href,
+	...props
+}: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
 	const router = useRouter()
 
 	const handleNavigation = (
-		e:
-			| React.MouseEvent<HTMLAnchorElement>
-			| React.KeyboardEvent<HTMLAnchorElement>,
+		e: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>,
 	) => {
 		const url = new URL(String(href), window.location.href)
 		if (
@@ -55,18 +57,24 @@ export const HashLinkHandler = () => {
 	const [attemptCount, setAttemptCount] = useState(0)
 
 	useEffect(() => {
-		if (!window.location.hash || attemptCount >= 5) return
-		const id = window.location.hash.substring(1)
-		const element = document.getElementById(id)
+		const handleHashChange = () => {
+			if (!window.location.hash || attemptCount >= 5) return
+			const id = window.location.hash.substring(1)
+			const element = document.getElementById(id)
 
-		if (element) {
-			element.scrollIntoView({ behavior: "instant" })
-		} else if (attemptCount < 5) {
-			const timer = setTimeout(() => {
-				setAttemptCount(prev => prev + 1)
-			}, 100)
-			return () => clearTimeout(timer)
+			if (element) {
+				element.scrollIntoView({ behavior: "instant" })
+			} else if (attemptCount < 5) {
+				const timer = setTimeout(() => {
+					// this is fine because we only set this state a max of 5 times every 100ms
+					setAttemptCount(prev => prev + 1)
+				}, 100)
+				return () => clearTimeout(timer)
+			}
 		}
+
+		window.addEventListener("hashchange", handleHashChange)
+		return () => window.removeEventListener("hashchange", handleHashChange)
 	}, [attemptCount])
 
 	return null
