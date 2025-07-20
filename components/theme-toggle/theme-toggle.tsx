@@ -2,7 +2,7 @@
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
-import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
@@ -18,10 +18,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
 		else setTheme("light")
 	}
 
-	useKeyboardShortcut({
-		shortcut: "T",
-		callback: () => handleThemeToggle(),
-	})
+	useShortcut("t", () => handleThemeToggle())
 
 	return (
 		<div className="flex w-fit p-0.5">

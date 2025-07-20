@@ -1,7 +1,7 @@
 import { MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { useMapSettings } from "@/contexts/interactive-map-settings"
-import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
@@ -34,10 +34,7 @@ export default function MapSettingsPanel() {
 		setOpen(open)
 	}
 
-	useKeyboardShortcut({
-		shortcut: "s",
-		callback: () => handleOpenChange(!open),
-	})
+	useShortcut("s", () => handleOpenChange(!open))
 
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange}>

@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { submitFeedbackForm } from "@/data/actions"
-import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { FeedbackFormSchema, type TFeedbackForm } from "@/utils/validation-schemas"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
@@ -45,10 +45,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 		},
 	})
 
-	useKeyboardShortcut({
-		shortcut: "f",
-		callback: () => setOpen(true),
-	})
+	useShortcut("f", () => setOpen(true))
 
 	const onSubmit = (data: TFeedbackForm) => {
 		startTransition(async () => {

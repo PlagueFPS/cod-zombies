@@ -2,7 +2,7 @@
 import { Book, BookText, Brain, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
-import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/functions.client"
 import { Button } from "../ui/button"
@@ -71,10 +71,15 @@ export default function SearchInput({
 		return maps.filter(m => mapSlugs.has(m.slug))
 	}, [maps, quests])
 
-	useKeyboardShortcut({
-		shortcut: ["ctrl+k", "cmd+k"],
-		callback: () => setOpen(prev => !prev),
-		options: { ignoreInputs: false }
+	useShortcut("ctrl+k", () => setOpen(prev => !prev), {
+		preventDefault: true,
+		ignoreInputs: false,
+		stopPropagation: false,
+	})
+	useShortcut("cmd+k", () => setOpen(prev => !prev), {
+		preventDefault: true,
+		ignoreInputs: false,
+		stopPropagation: false,
 	})
 
 	const onSelectHandler = (url: string) => {
