@@ -10,7 +10,6 @@ import { env } from "@/env"
 import {
 	DeleteEntryError,
 	EntryNotFoundError,
-	GetCacheValueError,
 	GetEntriesError,
 	RatelimitExceededError,
 	SetEntryError,
@@ -70,11 +69,10 @@ export const NEW_ENTRY_KV = {
 		return Effect.gen(this, function* () {
 			const cache = yield* Cache
 			const response = yield* cache.hgetall(this.key)
-			if (!response)
-				return yield* new GetCacheValueError({
-					message: `No data found for key: ${this.key}`,
-					cause: null,
-				})
+			if (!response) {
+				yield* Effect.logWarning(`No entries stored in ${this.key}`)
+				return []
+			}
 
 			return yield* Effect.all(
 				Object.entries(response).map(([entryId, entryData]) =>
