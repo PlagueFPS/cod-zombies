@@ -1,7 +1,7 @@
 "use client"
 import Link, { type LinkProps } from "next/link"
-import { useRouter } from "next/navigation"
-import { type AnchorHTMLAttributes, useEffect, useState } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { type AnchorHTMLAttributes, useEffect } from "react"
 
 interface ICustomLink extends LinkProps {
 	children: React.ReactNode
@@ -50,32 +50,68 @@ export function CustomLink({
 	)
 }
 
-// This component is neccessary for proper handling of hash links
-// In the context of pre-renders, the hash link is not handled by the browser
-// since it does not exist yet, so we need to handle it manually
+// This component is neccessary for proper handling of hash links for hard navigations
+// In the context of pre-renders, the hash may not be handled by the browser
+// since it may not exist yet, so we need to handle it manually
 export const HashLinkHandler = () => {
-	const [attemptCount, setAttemptCount] = useState(0)
+	const pathname = usePathname()
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies(pathname): we want to re-run this effect when the pathname changes
 	useEffect(() => {
-		const handleHashChange = () => {
-			if (!window.location.hash || attemptCount >= 5) return
-			const id = window.location.hash.substring(1)
-			const element = document.getElementById(id)
+		const handleHashScroll = () => {
+			const hash = window.location.hash
+			if (!hash) return
+
+			// Remove the # from the hash
+			const elementId = hash.substring(1)
+
+			// Try to find the element
+			const element = document.getElementById(elementId)
 
 			if (element) {
-				element.scrollIntoView({ behavior: "instant" })
-			} else if (attemptCount < 5) {
-				const timer = setTimeout(() => {
-					// this is fine because we only set this state a max of 5 times every 100ms
-					setAttemptCount(prev => prev + 1)
+				// Add a small delay to ensure the page is fully rendered
+				setTimeout(() => {
+					element.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+					})
 				}, 100)
-				return () => clearTimeout(timer)
+			} else {
+				// If element doesn't exist yet, keep trying for a few seconds
+				let attempts = 0
+				const maxAttempts = 100 // Try for 10 seconds (100 * 100ms)
+
+				const retryScroll = setInterval(() => {
+					const retryElement = document.getElementById(elementId)
+					attempts++
+
+					if (retryElement) {
+						retryElement.scrollIntoView({
+							behavior: "smooth",
+							block: "start",
+						})
+						clearInterval(retryScroll)
+					} else if (attempts >= maxAttempts) {
+						clearInterval(retryScroll)
+					}
+				}, 100)
 			}
 		}
 
-		window.addEventListener("hashchange", handleHashChange)
-		return () => window.removeEventListener("hashchange", handleHashChange)
-	}, [attemptCount])
+		// Handle initial page load
+		if (typeof window !== "undefined") {
+			// Wait for the page to be fully loaded
+			if (document.readyState === "complete") {
+				handleHashScroll()
+			} else {
+				window.addEventListener("load", handleHashScroll)
+			}
+		}
+
+		return () => {
+			window.removeEventListener("load", handleHashScroll)
+		}
+	}, [pathname])
 
 	return null
 }
