@@ -1,5 +1,4 @@
 import "server-only"
-import type { EntryStatus, EntryType } from "@/types/entry-enforcement"
 import { createHash } from "node:crypto"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
@@ -34,6 +33,9 @@ const EntryResponseSchema = Schema.Struct({
 	status: Schema.Literal("Coming Soon", "Published"),
 	type: Schema.Literal("mainQuest", "sideQuest", "game", "zombie", "legal"),
 })
+
+export type EntryStatus = Schema.Schema.Type<typeof EntryResponseSchema>["status"]
+export type EntryType = Schema.Schema.Type<typeof EntryResponseSchema>["type"]
 
 export const decodeEntryResponse = Schema.decodeUnknown(EntryResponseSchema)
 export const encodeEntryResponse = Schema.encodeUnknown(EntryResponseSchema)
