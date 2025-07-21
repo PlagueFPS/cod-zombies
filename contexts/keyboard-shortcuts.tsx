@@ -15,7 +15,6 @@ export interface ShortcutConfig {
 interface IKeyboardShortcutsContext {
 	registerShortcut: (id: string, config: ShortcutConfig) => void
 	unregisterShortcut: (id: string) => void
-	updateShortcut: (id: string, config: Partial<ShortcutConfig>) => void
 }
 
 const KeyboardShortcutsContext = createContext<IKeyboardShortcutsContext | null>(null)
@@ -100,15 +99,8 @@ export function KeyboardShortcutsProvider({ children }: { children: React.ReactN
 		if (shortcutsRef.current.size === 0) detachListener()
 	}
 
-	const updateShortcut = (id: string, config: Partial<ShortcutConfig>) => {
-		const existingConfig = shortcutsRef.current.get(id)
-		if (!existingConfig) return
-
-		shortcutsRef.current.set(id, { ...existingConfig, ...config })
-	}
-
 	return (
-		<KeyboardShortcutsContext value={{ registerShortcut, unregisterShortcut, updateShortcut }}>
+		<KeyboardShortcutsContext value={{ registerShortcut, unregisterShortcut }}>
 			{children}
 		</KeyboardShortcutsContext>
 	)

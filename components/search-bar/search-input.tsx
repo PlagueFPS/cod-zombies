@@ -71,16 +71,8 @@ export default function SearchInput({
 		return maps.filter(m => mapSlugs.has(m.slug))
 	}, [maps, quests])
 
-	useShortcut("ctrl+k", () => setOpen(prev => !prev), {
-		preventDefault: true,
-		ignoreInputs: false,
-		stopPropagation: false,
-	})
-	useShortcut("cmd+k", () => setOpen(prev => !prev), {
-		preventDefault: true,
-		ignoreInputs: false,
-		stopPropagation: false,
-	})
+	useShortcut("ctrl+k", () => setOpen(prev => !prev), { ignoreInputs: false })
+	useShortcut("meta+k", () => setOpen(prev => !prev), { ignoreInputs: false })
 
 	const onSelectHandler = (url: string) => {
 		setOpen(false)
