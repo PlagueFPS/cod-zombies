@@ -94,6 +94,7 @@ export const submitContactForm = createRatelimitAction(ContactFormSchema, async 
 	)
 })
 
+// biome-ignore lint/suspicious/useAwait: server actions must always be marked as async
 export const purgeLocalCache = createAction(DraftModeSchema, async ({ pathname }) => {
 	if (!IN_DEVELOPMENT) return
 

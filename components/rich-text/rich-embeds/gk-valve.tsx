@@ -1,11 +1,25 @@
 "use client"
 import { useMemo, useState } from "react"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
 import ValveRoutes from "@/data/gk-valves.json"
 import { cn } from "@/lib/utils"
 import { slugify } from "@/utils/functions.client"
 
-const locations = ["Armory", "Infirmary", "Department Store", "Supply Depot", "Dragon Command", "Tank Factory"]
+const LOCATIONS = [
+	"Armory",
+	"Infirmary",
+	"Department Store",
+	"Supply Depot",
+	"Dragon Command",
+	"Tank Factory",
+] as const
 
 type valveRoutes = typeof ValveRoutes
 interface Location {
@@ -26,10 +40,7 @@ export default function GKValve() {
 			for (const key in ValveRoutes) {
 				if (searchString === key) {
 					const route = ValveRoutes[key as keyof valveRoutes]
-					const entries = Object.entries(route)
-
-					entries.forEach(entry => {
-						const [location, value] = entry
+					Object.entries(route).forEach(([location, value]) => {
 						locations.push({
 							name: location,
 							value: value,
@@ -47,13 +58,15 @@ export default function GKValve() {
 	return (
 		<section className="flex flex-col items-center justify-center gap-8">
 			<div className="flex w-full items-center justify-center gap-8 md:gap-16">
-				<Select onValueChange={value => setValues(prevState => ({ ...prevState, firstValue: value }))}>
+				<Select
+					onValueChange={value => setValues(prevState => ({ ...prevState, firstValue: value }))}
+				>
 					<SelectTrigger className="w-full text-green-700 dark:text-green-500">
 						<SelectValue placeholder="Select Green Light Location" />
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
-							{locations.map(location => {
+							{LOCATIONS.map(location => {
 								if (location === values.secondValue) return null
 								return (
 									<SelectItem key={`green-valve-${slugify(location)}`} value={location}>
@@ -64,13 +77,15 @@ export default function GKValve() {
 						</SelectGroup>
 					</SelectContent>
 				</Select>
-				<Select onValueChange={value => setValues(prevState => ({ ...prevState, secondValue: value }))}>
+				<Select
+					onValueChange={value => setValues(prevState => ({ ...prevState, secondValue: value }))}
+				>
 					<SelectTrigger className="w-full text-pink-700 dark:text-pink-500">
 						<SelectValue placeholder="Select Pink Cylinder Location" />
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
-							{locations.map(location => {
+							{LOCATIONS.map(location => {
 								if (location === values.firstValue) return null
 								return (
 									<SelectItem key={`pink-valve-${slugify(location)}`} value={location}>
@@ -103,8 +118,8 @@ export default function GKValve() {
 							</>
 						) : (
 							<>
-								<strong className="text-pink-700 dark:text-pink-400">{location.name}</strong> valve has your pink code
-								cylinder
+								<strong className="text-pink-700 dark:text-pink-400">{location.name}</strong> valve
+								has your pink code cylinder
 							</>
 						)}
 					</li>

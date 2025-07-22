@@ -2,7 +2,7 @@ import "server-only"
 import { createHash } from "node:crypto"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import { Duration, Effect, Schema } from "effect"
+import { Duration, Effect, Schema, Struct } from "effect"
 import { headers } from "next/headers"
 import { after } from "next/server"
 import { env } from "@/env"
@@ -77,7 +77,7 @@ export const NEW_ENTRY_KV = {
 			}
 
 			return yield* Effect.all(
-				Object.entries(response).map(([entryId, entryData]) =>
+				Struct.entries(response).map(([entryId, entryData]) =>
 					Effect.gen(function* () {
 						const decodedResponse = yield* decodeEntryResponse(entryData)
 						return {

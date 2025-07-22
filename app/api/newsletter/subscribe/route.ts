@@ -9,7 +9,10 @@ export async function GET(req: NextRequest) {
 		const token = req.nextUrl.searchParams.get("token")
 		if (!token)
 			return NextResponse.redirect(
-				new URL(`/newsletter/subscribe/error?message=${encodeURIComponent("Missing Token")}`, req.url),
+				new URL(
+					`/newsletter/subscribe/error?message=${encodeURIComponent("Missing Token")}`,
+					req.url,
+				),
 			)
 
 		const decodedToken = decodeURIComponent(token)
@@ -24,23 +27,30 @@ export async function GET(req: NextRequest) {
 			TokenExpirationError: () => {
 				const message = "The subscribe token used has expired. Please request a new one."
 				return Effect.succeed(
-					NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)),
+					NextResponse.redirect(
+						new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url),
+					),
 				)
 			},
 			TokenVerificationError: () => {
 				const message = "The subscribe token used is invalid. Please request a new one."
 				return Effect.succeed(
-					NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)),
+					NextResponse.redirect(
+						new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url),
+					),
+				)
+			},
+			CreateContactError: () => {
+				const message =
+					"We were unable to subscribe your email to our newsletter due to a technical issue on our end. Please try again or request a new subscribe token. We're sorry for the inconvenience!"
+				return Effect.succeed(
+					NextResponse.redirect(
+						new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url),
+					),
 				)
 			},
 		}),
-		Effect.catchAll(() => {
-			const message =
-				"An error occured during the subscribe process. Please try again or request a new subscribe token."
-			return Effect.succeed(
-				NextResponse.redirect(new URL(`/newsletter/subscribe/error?message=${encodeURIComponent(message)}`, req.url)),
-			)
-		}),
+		Effect.ensureErrorType<never>(),
 		Effect.provide(Email.Default),
 		Effect.runPromise,
 	)

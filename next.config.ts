@@ -30,6 +30,7 @@ const nextConfig: NextConfig = {
 		],
 		minimumCacheTTL: 31536000, // 1 year in seconds
 	},
+	// biome-ignore lint/suspicious/useAwait: redirects must be async
 	async redirects() {
 		return [
 			{

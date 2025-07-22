@@ -9,7 +9,10 @@ export async function GET(req: NextRequest) {
 		const token = req.nextUrl.searchParams.get("token")
 		if (!token)
 			return NextResponse.redirect(
-				new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent("Missing Token")}`, req.url),
+				new URL(
+					`/newsletter/unsubscribe/error?message=${encodeURIComponent("Missing Token")}`,
+					req.url,
+				),
 			)
 
 		const decodedToken = decodeURIComponent(token)
@@ -25,7 +28,10 @@ export async function GET(req: NextRequest) {
 				const message = "The unsubscribe token used has expired. Please request a new one."
 				return Effect.succeed(
 					NextResponse.redirect(
-						new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url),
+						new URL(
+							`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`,
+							req.url,
+						),
 					),
 				)
 			},
@@ -33,18 +39,27 @@ export async function GET(req: NextRequest) {
 				const message = "The unsubscribe token used is invalid. Please request a new one."
 				return Effect.succeed(
 					NextResponse.redirect(
-						new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url),
+						new URL(
+							`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`,
+							req.url,
+						),
+					),
+				)
+			},
+			RemoveContactError: () => {
+				const message =
+					"We were unable to unsubscribe your email from our newsletter due to a technical issue on our end. Please try again or request a new unsubscribe token. We're sorry for the inconvenience!"
+				return Effect.succeed(
+					NextResponse.redirect(
+						new URL(
+							`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`,
+							req.url,
+						),
 					),
 				)
 			},
 		}),
-		Effect.catchAll(() => {
-			const message =
-				"An error occured during the unsubscribe process. Please try again or request a new unsubscribe token."
-			return Effect.succeed(
-				NextResponse.redirect(new URL(`/newsletter/unsubscribe/error?message=${encodeURIComponent(message)}`, req.url)),
-			)
-		}),
+		Effect.ensureErrorType<never>(),
 		Effect.provide(Email.Default),
 		Effect.runPromise,
 	)
