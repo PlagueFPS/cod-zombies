@@ -57,9 +57,9 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 					</div>
 					<ScrollArea
 						className={cn(
-							"grid max-h-[50vh] grid-rows-[0fr] gap-1 overflow-hidden transition-all duration-300",
+							"grid max-h-[50vh] grid-rows-[1fr] gap-1 overflow-hidden transition-all duration-300",
 							{
-								"animate-toc-expand grid-rows-[1fr] pb-0": isExpanded,
+								"animate-toc-expand grid-rows-[0fr] pb-0": !isExpanded,
 							},
 						)}
 					>

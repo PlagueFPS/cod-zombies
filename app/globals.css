@@ -319,10 +319,10 @@
   }
   @keyframes toc-expand {
     from {
-      grid-template-rows: 0fr;
+      grid-template-rows: 1fr;
     }
     to {
-      grid-template-rows: 1fr;
+      grid-template-rows: 0fr;
     }
   }
 }
