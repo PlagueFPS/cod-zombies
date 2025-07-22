@@ -36,6 +36,7 @@ export const getGames = cache(
 			}).pipe(
 				Effect.withLogSpan("get_games"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(Cache.Default),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
@@ -65,6 +66,7 @@ export const getGameSearchData = cache(
 			}).pipe(
 				Effect.withLogSpan("get_game_search_data"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -93,6 +95,7 @@ export const getGameById = cache(
 			}).pipe(
 				Effect.withLogSpan("get_game_by_id"),
 				Effect.annotateLogs({ id, draftMode }),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)

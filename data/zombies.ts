@@ -52,6 +52,7 @@ export const getZombies = cache(
 			}).pipe(
 				Effect.withLogSpan("get_zombies"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -92,6 +93,7 @@ export const getZombieSearchData = cache(
 			}).pipe(
 				Effect.withLogSpan("get_zombie_search_data"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -133,6 +135,7 @@ export const getZombieBySlug = cache(
 			}).pipe(
 				Effect.withLogSpan("get_zombie_by_slug"),
 				Effect.annotateLogs({ slug, draftMode }),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -166,6 +169,7 @@ export const getZombieById = cache(
 			}).pipe(
 				Effect.withLogSpan("get_zombie_by_id"),
 				Effect.annotateLogs({ id, draftMode }),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -198,6 +202,7 @@ export const getReferencedMaps = cache(
 			}).pipe(
 				Effect.withLogSpan("get_referenced_maps"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)

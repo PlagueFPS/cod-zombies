@@ -43,6 +43,7 @@ export const getMaps = cache(
 			}).pipe(
 				Effect.withLogSpan("get_maps"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -78,6 +79,7 @@ export const getMapSearchData = cache(
 			}).pipe(
 				Effect.withLogSpan("get_map_search_data"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -119,6 +121,7 @@ export const getMapBySlug = cache(
 			}).pipe(
 				Effect.withLogSpan("get_map_by_slug"),
 				Effect.annotateLogs({ slug, draftMode }),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,
@@ -157,6 +160,7 @@ export const getMapById = cache(
 			}).pipe(
 				Effect.withLogSpan("get_map_by_id"),
 				Effect.annotateLogs({ id, draftMode }),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)

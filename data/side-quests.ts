@@ -42,6 +42,7 @@ export const getQuests = cache(
 			}).pipe(
 				Effect.withLogSpan("get_quests"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(Cache.Default),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
@@ -83,6 +84,7 @@ export const getQuestSearchData = cache(
 			}).pipe(
 				Effect.withLogSpan("get_quest_search_data"),
 				Effect.annotateLogs("draftMode", draftMode),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(Cache.Default),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
@@ -127,6 +129,7 @@ export const getQuestById = cache(
 			}).pipe(
 				Effect.withLogSpan("get_quest_by_id"),
 				Effect.annotateLogs({ id, draftMode }),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -168,6 +171,7 @@ export const getQuestBySlug = cache(
 			}).pipe(
 				Effect.withLogSpan("get_quest_by_slug"),
 				Effect.annotateLogs({ slug, draftMode }),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.provide(Cache.Default),
 				Effect.runPromise,

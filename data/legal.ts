@@ -18,6 +18,7 @@ export const getLegalDocuments = cache(
 				}))
 			}).pipe(
 				Effect.withLogSpan("get_legal_documents"),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -47,6 +48,7 @@ export const getLegalDocBySlug = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_legal_doc_by_slug"),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
@@ -73,6 +75,7 @@ export const getLegalDocById = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_legal_doc_by_id"),
+				Effect.ensureErrorType<never>(),
 				Effect.provide(CMS.Default(draftMode)),
 				Effect.runPromise,
 			)
