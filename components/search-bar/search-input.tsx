@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
+import { IS_MAC_OS } from "@/utils/constants"
 import { capitalize } from "@/utils/functions.client"
 import { Button } from "../ui/button"
 import {
@@ -101,7 +102,7 @@ export default function SearchInput({
 						{ hidden: showFull },
 					)}
 				>
-					<span className="text-xs">Ctrl+K</span>
+					<span className="text-xs">{IS_MAC_OS ? "⌘+K" : "Ctrl+K"}</span>
 				</kbd>
 			</Button>
 			<Button
