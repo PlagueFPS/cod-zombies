@@ -30,12 +30,11 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 		if (!secret) return yield* new InvalidRequestError({ message: "Missing secret" })
 		if (!entryId) return yield* new InvalidRequestError({ message: "Missing entryId" })
 
-		const revalidateSecret = Redacted.make(env.REVALIDATE_SECRET)
 		const providedSecret = Redacted.make(secret)
 
 		const authed = yield* authorizedRequest(
 			Redacted.value(providedSecret),
-			Redacted.value(revalidateSecret),
+			Redacted.value(env.REVALIDATE_SECRET),
 		)
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 

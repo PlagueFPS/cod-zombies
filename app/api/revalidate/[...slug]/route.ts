@@ -35,10 +35,9 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
 		const secretHeader = headerList.get("X-Contentful-Revalidate-Secret") || ""
 		const contentfulSecret = Redacted.make(secretHeader)
-		const revalidateSecret = Redacted.make(env.REVALIDATE_SECRET)
 		const authed = yield* authorizedRequest(
 			Redacted.value(contentfulSecret),
-			Redacted.value(revalidateSecret),
+			Redacted.value(env.REVALIDATE_SECRET),
 		)
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
