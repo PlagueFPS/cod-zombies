@@ -12,7 +12,8 @@
     "vercel": "vercel login",
     "link": "vercel link",
     "pull": "vercel env pull",
-    "email": "email dev"
+    "email": "email dev",
+    "scan": "next dev --turbopack & pnpx react-scan@latest localhost:3000"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "16.0.1",
@@ -56,6 +57,7 @@
     "react-dom": "19.1.0",
     "react-hook-form": "^7.60.0",
     "react-leaflet": "^5.0.0",
+    "react-scan": "^0.4.3",
     "react-share": "5.1.1",
     "resend": "^4.6.0",
     "server-only": "0.0.1",
