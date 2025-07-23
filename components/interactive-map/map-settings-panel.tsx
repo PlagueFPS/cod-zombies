@@ -12,13 +12,13 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "../ui/dialog"
 import { Label } from "../ui/label"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Separator } from "../ui/separator"
 import { Slider } from "../ui/slider"
 import { Switch } from "../ui/switch"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 export default function MapSettingsPanel() {
 	const [open, setOpen] = useState(false)
@@ -34,15 +34,32 @@ export default function MapSettingsPanel() {
 		setOpen(open)
 	}
 
-	useShortcut("s", () => handleOpenChange(!open))
+	useShortcut("shift+?", () => handleOpenChange(!open))
 
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange}>
-			<DialogTrigger asChild>
-				<Button variant="ghost" size={"icon"} aria-label="Map Settings. Keyboard Shortcut: S">
-					<SettingsIcon className="size-5" />
-				</Button>
-			</DialogTrigger>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="ghost"
+						size={"icon"}
+						onClick={() => setOpen(true)}
+						aria-label="Map Settings. Keyboard Shortcut: ?"
+					>
+						<SettingsIcon className="size-5" />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent
+					side="left"
+					sideOffset={5}
+					className="z-999 flex items-center justify-center gap-1"
+				>
+					<span>Map Settings</span>
+					<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
+						<span className="text-xs">?</span>
+					</kbd>
+				</TooltipContent>
+			</Tooltip>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Interactive Map Settings</DialogTitle>
@@ -269,7 +286,7 @@ export default function MapSettingsPanel() {
 						<div className="mr-auto flex items-center justify-center gap-1 text-muted-foreground text-sm">
 							<span>Keyboard Shortcut:</span>
 							<kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-input px-1.5 font-medium text-muted-foreground opacity-100 dark:bg-input/30">
-								<span className="text-xs">S</span>
+								<span className="text-xs">?</span>
 							</kbd>
 						</div>
 					) : null}

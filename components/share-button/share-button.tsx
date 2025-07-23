@@ -16,11 +16,12 @@ import {
 	XIcon,
 } from "react-share"
 import { toast } from "sonner"
+import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 interface ShareButtonProps extends React.ComponentProps<"button"> {
 	title: string
@@ -36,23 +37,36 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
 		setOpen(false)
 	}
 
+	useShortcut("s", () => setOpen(prev => !prev))
+
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<TooltipProvider delayDuration={200}>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button variant="ghost" size="icon" {...props} onClick={() => setOpen(true)}>
-							<span className="sr-only">Share</span>
-							<Share2 className="size-4" />
-						</Button>
-					</TooltipTrigger>
-					<TooltipContent>Share</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="ghost"
+						size="icon"
+						{...props}
+						onClick={() => setOpen(true)}
+						aria-label="open share modal. Keyboard shortcut: S"
+					>
+						<span className="sr-only">Share</span>
+						<Share2 className="size-4" />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent className="flex items-center justify-center gap-1">
+					<span>Share</span>
+					<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
+						S
+					</kbd>
+				</TooltipContent>
+			</Tooltip>
 			<DialogContent className="gap-6 rounded-lg">
 				<DialogHeader>
 					<DialogTitle>Share on Social Media</DialogTitle>
-					<DialogDescription>Share a link of the current page to a social platform</DialogDescription>
+					<DialogDescription>
+						Share a link of the current page to a social platform
+					</DialogDescription>
 				</DialogHeader>
 				<div className="grid w-full grid-cols-3 items-center gap-y-4">
 					<div className="flex flex-col items-center justify-center gap-2 text-xs">
@@ -99,7 +113,13 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
 						</Label>
 						<Input id="link" defaultValue={url} readOnly className="text-sm" />
 					</div>
-					<Button type="button" variant="outline" size="sm" className="px-3 text-primary" onClick={handleCopy}>
+					<Button
+						type="button"
+						variant="outline"
+						size="sm"
+						className="px-3 text-primary"
+						onClick={handleCopy}
+					>
 						<span className="sr-only">Copy</span>
 						<Copy className="h-4 w-4" />
 					</Button>

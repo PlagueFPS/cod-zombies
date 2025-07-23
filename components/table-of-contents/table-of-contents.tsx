@@ -2,12 +2,14 @@
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
+import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { useTableOfContents } from "@/hooks/use-table-of-contents"
 import { cn } from "@/lib/utils"
 import BackToTopButton from "../back-to-top-button/back-to-top-button"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
 import { ScrollArea } from "../ui/scroll-area"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import MobileTableOfContents from "./mobile-table-of-contents"
 
 export interface Heading {
@@ -24,6 +26,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 	const { activeHeading, currentHeading, progress } = useTableOfContents(headings, "body")
 	const [isExpanded, setIsExpanded] = useState(true)
 
+	useShortcut("alt+c", () => setIsExpanded(!isExpanded))
+
 	return (
 		<>
 			<aside className="sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 rounded-lg border bg-background px-6 shadow-md xl:block dark:shadow-none">
@@ -37,14 +41,33 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 					</div>
 					<div className="flex items-center justify-between border-t py-2">
 						<h3 className="font-medium text-muted-foreground text-sm">CURRENT SECTION</h3>
-						<Button
-							variant={"ghost"}
-							size={"sm"}
-							onClick={() => setIsExpanded(!isExpanded)}
-							aria-label={isExpanded ? "Collapse table of contents" : "Expand table of contents"}
-						>
-							{isExpanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
-						</Button>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button
+									variant={"ghost"}
+									size={"sm"}
+									onClick={() => setIsExpanded(!isExpanded)}
+									aria-label={
+										isExpanded ? "Collapse table of contents" : "Expand table of contents"
+									}
+								>
+									{isExpanded ? (
+										<ChevronUp className="size-4" />
+									) : (
+										<ChevronDown className="size-4" />
+									)}
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent
+								sideOffset={5}
+								className="z-999 flex items-center justify-center gap-2"
+							>
+								<span>Toggle Expanded</span>
+								<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
+									Alt+C
+								</kbd>
+							</TooltipContent>
+						</Tooltip>
 					</div>
 					<div className="border-b pb-4">
 						<Button

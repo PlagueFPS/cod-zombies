@@ -33,7 +33,11 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 			) =>
 				Effect.tryPromise({
 					try: () => client.withoutUnresolvableLinks.getEntries<T>(searchParams),
-					catch: error => new GetEntriesError({ message: "Failed to get entries", cause: error }),
+					catch: error =>
+						new GetEntriesError({
+							message: `Failed to get entries with params: ${JSON.stringify(searchParams)}`,
+							cause: error,
+						}),
 				})
 
 			const getManagementEntries = (
@@ -42,7 +46,10 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 				Effect.tryPromise({
 					try: () => managementClient.entry.getMany({ query: { content_type: contentType } }),
 					catch: error =>
-						new GetEntriesError({ message: "Failed to get management entries", cause: error }),
+						new GetEntriesError({
+							message: `Failed to get management entries for ${contentType}`,
+							cause: error,
+						}),
 				})
 
 			return { getEntries, getManagementEntries } as const

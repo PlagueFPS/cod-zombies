@@ -49,23 +49,21 @@ export function CustomLink({
 		</Link>
 	)
 }
-
-// This component is neccessary for proper handling of hash links for hard navigations
-// In the context of pre-renders, the hash may not be handled by the browser
-// since it may not exist yet, so we need to handle it manually
+/**
+ * This component properly handles the scrolling of hash links for hard navigations
+ * since it may not exist yet, so we need to handle it manually
+ * @see https://nextjs.org/docs/app/api-reference/components/link#scrolling-to-an-id
+ */
 export const HashLinkHandler = () => {
 	const pathname = usePathname()
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies(pathname): we want to re-run this effect when the pathname changes
+	// biome-ignore lint/correctness/useExhaustiveDependencies(pathname): we want to run this effect when the pathname changes
 	useEffect(() => {
 		const handleHashScroll = () => {
 			const hash = window.location.hash
 			if (!hash) return
 
-			// Remove the # from the hash
 			const elementId = hash.substring(1)
-
-			// Try to find the element
 			const element = document.getElementById(elementId)
 
 			if (element) {
@@ -79,7 +77,7 @@ export const HashLinkHandler = () => {
 			} else {
 				// If element doesn't exist yet, keep trying for a few seconds
 				let attempts = 0
-				const maxAttempts = 100 // Try for 10 seconds (100 * 100ms)
+				const maxAttempts = 100 // 10 seconds (100 * 100ms)
 
 				const retryScroll = setInterval(() => {
 					const retryElement = document.getElementById(elementId)
