@@ -22,12 +22,11 @@ export async function GET() {
 		const secret = headerList.get("Authorization")
 		if (!secret) return yield* new AuthorizationError({ message: "Missing Auth Header" })
 
-		const cronSecret = Redacted.make(env.CRON_SECRET)
 		const providedSecret = Redacted.make(secret)
 
 		const authed = yield* authorizedRequest(
 			Redacted.value(providedSecret),
-			`Bearer ${Redacted.value(cronSecret)}`,
+			`Bearer ${Redacted.value(env.CRON_SECRET)}`,
 		)
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 

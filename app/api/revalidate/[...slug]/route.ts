@@ -33,13 +33,23 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 			},
 		)
 
-		const secretHeader = headerList.get("X-Contentful-Revalidate-Secret") || ""
+		const secretHeader = headerList.get("X-Contentful-Revalidate-Secret")
+		if (!secretHeader)
+			return yield* new AuthorizationError({
+				message: "Unauthorized Request",
+				cause: new Error("Missing Auth Header"),
+			})
+
 		const contentfulSecret = Redacted.make(secretHeader)
 		const authed = yield* authorizedRequest(
 			Redacted.value(contentfulSecret),
 			Redacted.value(env.REVALIDATE_SECRET),
 		)
-		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
+		if (!authed)
+			return yield* new AuthorizationError({
+				message: "Unauthorized Request",
+				cause: new Error("Client secret did not match expected value"),
+			})
 
 		const payload = yield* Effect.tryPromise({
 			try: () => req.json(),

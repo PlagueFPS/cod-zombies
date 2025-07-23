@@ -1,7 +1,7 @@
 import "server-only"
 import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { LinearClient } from "@linear/sdk"
-import { Effect } from "effect"
+import { Effect, Redacted } from "effect"
 import { env } from "@/env"
 import {
 	LinearCreateIssueError,
@@ -9,7 +9,7 @@ import {
 	LinearGetTeamError,
 } from "@/types/errors"
 
-const linear = new LinearClient({ apiKey: env.LINEAR_API_KEY })
+const linear = new LinearClient({ apiKey: Redacted.value(env.LINEAR_API_KEY) })
 
 export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label }: TFeedbackForm) {
 	const team = yield* Effect.tryPromise({
@@ -52,7 +52,7 @@ export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label
 				description: feedback,
 				priority,
 				labelIds: issueLabels,
-				assigneeId: env.LINEAR_DEFAULT_ASSIGNEE_ID,
+				assigneeId: Redacted.value(env.LINEAR_DEFAULT_ASSIGNEE_ID),
 			}),
 		catch: error => new LinearCreateIssueError({ message: "Failed to create issue", cause: error }),
 	})

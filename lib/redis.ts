@@ -2,7 +2,7 @@ import "server-only"
 import { createHash } from "node:crypto"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
-import { Duration, Effect, Schema, Struct } from "effect"
+import { Duration, Effect, Redacted, Schema, Struct } from "effect"
 import { headers } from "next/headers"
 import { after } from "next/server"
 import { env } from "@/env"
@@ -17,8 +17,8 @@ import {
 import { Cache } from "./services/Cache"
 
 export const redis = new Redis({
-	url: env.REDIS_URL,
-	token: env.REDIS_TOKEN,
+	url: Redacted.value(env.REDIS_URL),
+	token: Redacted.value(env.REDIS_TOKEN),
 })
 
 export const ratelimit = new Ratelimit({

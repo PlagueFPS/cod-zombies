@@ -1,4 +1,4 @@
-import { Effect } from "effect"
+import { Effect, Redacted } from "effect"
 import {
 	type CreateBroadcastOptions,
 	type CreateBroadcastRequestOptions,
@@ -17,14 +17,14 @@ import {
 	SendEmailError,
 } from "@/types/errors"
 
-const resend = new Resend(env.RESEND_API_KEY)
+const resend = new Resend(Redacted.value(env.RESEND_API_KEY))
 
 export class Email extends Effect.Service<Email>()("Email", {
 	effect: Effect.gen(function* () {
 		const getContact = (email: string) =>
 			Effect.gen(function* () {
 				const { data, error } = yield* Effect.promise(() =>
-					resend.contacts.get({ audienceId: env.RESEND_AUDIENCE_ID, email }),
+					resend.contacts.get({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
 				)
 
 				if (error && error.name !== "not_found") return yield* new GetContactError({ cause: error })
@@ -35,7 +35,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 		const createContact = (email: string) =>
 			Effect.gen(function* () {
 				const { data, error } = yield* Effect.promise(() =>
-					resend.contacts.create({ audienceId: env.RESEND_AUDIENCE_ID, email }),
+					resend.contacts.create({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
 				)
 
 				if (error) return yield* new CreateContactError({ cause: error })
@@ -46,7 +46,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 		const removeContact = (email: string) =>
 			Effect.gen(function* () {
 				const { data, error } = yield* Effect.promise(() =>
-					resend.contacts.remove({ audienceId: env.RESEND_AUDIENCE_ID, email }),
+					resend.contacts.remove({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
 				)
 
 				if (error) return yield* new RemoveContactError({ cause: error })
@@ -63,9 +63,14 @@ export class Email extends Effect.Service<Email>()("Email", {
 				return data
 			})
 
-		const createBroadcast = (params: CreateBroadcastOptions, options?: CreateBroadcastRequestOptions) =>
+		const createBroadcast = (
+			params: CreateBroadcastOptions,
+			options?: CreateBroadcastRequestOptions,
+		) =>
 			Effect.gen(function* () {
-				const { data, error } = yield* Effect.promise(() => resend.broadcasts.create(params, options))
+				const { data, error } = yield* Effect.promise(() =>
+					resend.broadcasts.create(params, options),
+				)
 
 				if (error) return yield* new CreateBroadcastError({ cause: error })
 
@@ -81,6 +86,13 @@ export class Email extends Effect.Service<Email>()("Email", {
 				return data
 			})
 
-		return { getContact, createContact, removeContact, sendEmail, createBroadcast, sendBroadcast } as const
+		return {
+			getContact,
+			createContact,
+			removeContact,
+			sendEmail,
+			createBroadcast,
+			sendBroadcast,
+		} as const
 	}).pipe(Effect.withLogSpan("email_default")),
 }) {}

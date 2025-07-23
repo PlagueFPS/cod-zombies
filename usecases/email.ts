@@ -1,5 +1,5 @@
 import type { CreateBroadcastOptions } from "resend"
-import { Effect } from "effect"
+import { Effect, Redacted } from "effect"
 import PrivacyPolicyUpdateEmail from "@/components/emails/PolicyUpdateEmail"
 import QuestReleaseEmail, { type IQuestRelease } from "@/components/emails/QuestReleaseEmail"
 import SubscribeEmail from "@/components/emails/SubscribeEmail"
@@ -110,7 +110,7 @@ const createAndSendBroadcast = (title: string, payload: CreateBroadcastOptions) 
 
 export const sendQuestReleaseBroadcast = (props: IQuestRelease) =>
 	createAndSendBroadcast(props.title, {
-		audienceId: env.RESEND_AUDIENCE_ID,
+		audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
 		from: "COD Zombies Guides <updates@codzombiesguides.com>",
 		subject: `New ${props.type} Quest Guide: ${props.title}`,
 		react: QuestReleaseEmail(props),
@@ -125,7 +125,7 @@ export const sendQuestReleaseBroadcast = (props: IQuestRelease) =>
 
 export const sendZombieReleaseBroadcast = (props: IZombieRelease) =>
 	createAndSendBroadcast(props.title, {
-		audienceId: env.RESEND_AUDIENCE_ID,
+		audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
 		from: "COD Zombies Guides <updates@codzombiesguides.com>",
 		subject: `New ${props.type} Zombie Release: ${props.title}`,
 		react: ZombieReleaseEmail(props),
@@ -139,7 +139,7 @@ export const sendZombieReleaseBroadcast = (props: IZombieRelease) =>
 	)
 
 export const sendLegalUpdateBroadcast = createAndSendBroadcast("Privacy Policy", {
-	audienceId: env.RESEND_AUDIENCE_ID,
+	audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
 	from: "COD Zombies Guides <legal@codzombiesguides.com>",
 	subject: `Privacy Policy Update Notice`,
 	react: PrivacyPolicyUpdateEmail(),
