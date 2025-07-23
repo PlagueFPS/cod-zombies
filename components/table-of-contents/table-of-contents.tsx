@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { useTableOfContents } from "@/hooks/use-table-of-contents"
 import { cn } from "@/lib/utils"
+import { IS_MAC_OS } from "@/utils/constants"
 import BackToTopButton from "../back-to-top-button/back-to-top-button"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
@@ -64,7 +65,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 							>
 								<span>Toggle Expanded</span>
 								<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
-									Alt+C
+									{IS_MAC_OS ? "Option+C" : "Alt+C"}
 								</kbd>
 							</TooltipContent>
 						</Tooltip>

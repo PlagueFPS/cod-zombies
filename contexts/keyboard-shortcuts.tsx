@@ -18,8 +18,12 @@ interface IKeyboardShortcutsContext {
 }
 
 const KeyboardShortcutsContext = createContext<IKeyboardShortcutsContext | null>(null)
+let lastShortcut: string | null = null
 
 const matchesShortcut = (event: KeyboardEvent, shortcut: string) => {
+	const shortcutKey = `${event.key}+${event.altKey}+${event.ctrlKey}+${event.metaKey}+${event.shiftKey}`
+	if (shortcutKey === lastShortcut) return false
+
 	const parts = shortcut.toLowerCase().split("+")
 	const key = parts[parts.length - 1]
 	const modifiers = parts.slice(0, -1)
@@ -38,13 +42,23 @@ const matchesShortcut = (event: KeyboardEvent, shortcut: string) => {
 	const hasMeta = modifiers.includes("meta") || modifiers.includes("cmd")
 	const hasAlt = modifiers.includes("alt") || modifiers.includes("option")
 	const hasShift = modifiers.includes("shift")
-
-	return (
+	const matches =
 		hasCtrl === event.ctrlKey &&
 		hasMeta === event.metaKey &&
 		hasAlt === event.altKey &&
 		hasShift === event.shiftKey
-	)
+
+	if (matches) {
+		lastShortcut = shortcutKey
+		// Clear the last shortcut when key is released
+		const onKeyUp = () => {
+			lastShortcut = null
+			window.removeEventListener("keyup", onKeyUp)
+		}
+		window.addEventListener("keyup", onKeyUp, { once: true })
+	}
+
+	return matches
 }
 
 export function KeyboardShortcutsProvider({ children }: { children: React.ReactNode }) {

@@ -2,6 +2,7 @@
 import { ArrowUp } from "lucide-react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
+import { IS_MAC_OS } from "@/utils/constants"
 import { Button, type ButtonProps } from "../ui/button"
 
 interface BackToTopButtonProps extends React.ComponentProps<"button"> {
@@ -52,7 +53,7 @@ export default function BackToTopButton({
 				<Button onClick={scrollToTop} className={className} {...props}>
 					<span>Back to Top</span>
 					<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
-						Alt+T
+						{IS_MAC_OS ? "Option+T" : "Alt+T"}
 					</kbd>
 				</Button>
 			)}
