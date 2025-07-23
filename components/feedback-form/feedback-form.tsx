@@ -72,6 +72,13 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 		})
 	}
 
+	const handleOpenChange = (open: boolean) => {
+		if (!open) {
+			form.reset()
+		}
+		setOpen(open)
+	}
+
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter" && form.formState.isValid) {
 			e.preventDefault()
@@ -79,14 +86,9 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 		}
 	}
 
-	const handleCancel = () => {
-		form.reset()
-		setOpen(false)
-	}
-
 	return (
 		<div className="flex items-center justify-center">
-			<Dialog open={open} onOpenChange={setOpen}>
+			<Dialog open={open} onOpenChange={handleOpenChange}>
 				<DialogTrigger asChild>
 					<Button
 						variant="outline"
@@ -160,7 +162,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 								/>
 							</div>
 							<div className="mt-4 flex items-center justify-between">
-								<Button variant={"destructive"} onClick={handleCancel}>
+								<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
 									Cancel
 								</Button>
 								<Button type="submit" disabled={isPending || !form.formState.isValid}>
