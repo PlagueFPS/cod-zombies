@@ -20,9 +20,7 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 		const type = slug[0]
 		const entrySlug = slug[1]
 		const newParams = new Promise<{ slug: string }>(resolve => resolve({ slug: entrySlug }))
-		let response: Response | null = null
-
-		response = yield* Match.value(type).pipe(
+		const response = yield* Match.value(type).pipe(
 			Match.when("maps", () =>
 				Effect.tryPromise({
 					try: () => MapOpenGraphImage({ params: newParams }),
@@ -56,8 +54,7 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 			),
 		)
 
-		if (response && !response.ok)
-			return new Response(response.statusText, { status: response.status })
+		if (!response.ok) return new Response(response.statusText, { status: response.status })
 		return response
 	}).pipe(
 		Effect.withLogSpan("open_graph_image_handler"),
