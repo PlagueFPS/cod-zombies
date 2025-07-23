@@ -12,7 +12,13 @@ import { Toaster } from "@/components/ui/sonner"
 import { KeyboardShortcutsProvider } from "@/contexts/keyboard-shortcuts"
 import { ThemeProvider } from "@/contexts/theme-provider"
 import { env } from "@/env"
-import { GLOBAL_OG_PROPS, PROTECTED_ROUTES, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
+import {
+	GLOBAL_OG_PROPS,
+	IN_DEVELOPMENT,
+	PROTECTED_ROUTES,
+	SITE_DESCRIPTION,
+	SITE_TITLE,
+} from "@/utils/constants"
 
 interface LayoutProps {
 	children: React.ReactNode
@@ -68,7 +74,7 @@ export default function RootLayout({ children }: LayoutProps) {
 			<head>
 				<BotIdClient protect={PROTECTED_ROUTES} />
 			</head>
-			<ReactScan />
+			{IN_DEVELOPMENT && <ReactScan />}
 			<body
 				className={`${geist.className} ${geist.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2 `}
 			>
