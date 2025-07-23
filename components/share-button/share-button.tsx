@@ -54,7 +54,7 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
 						<Share2 className="size-4" />
 					</Button>
 				</TooltipTrigger>
-				<TooltipContent className="flex items-center justify-center gap-1">
+				<TooltipContent sideOffset={5} className="z-999 flex items-center justify-center gap-1">
 					<span>Share</span>
 					<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
 						S

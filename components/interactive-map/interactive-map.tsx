@@ -17,6 +17,7 @@ import { IN_DEVELOPMENT } from "@/utils/constants"
 import { capitalize } from "@/utils/functions.client"
 import { MarkerBadge } from "../custom-badges/custom-badges"
 import { Separator } from "../ui/separator"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import CustomMarker from "./custom-marker"
 import MapSettingsPanel from "./map-settings-panel"
 
@@ -110,9 +111,9 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			zoomControl={false}
 			attributionControl={false}
 			className="relative bg-accent! dark:bg-secondary-alternative!"
-			fadeAnimation={ !settings.popups.disableAnimations }
-			zoomAnimation={ !settings.general.disableZoomAnimation }
-			markerZoomAnimation={ !settings.general.disableZoomAnimation }
+			fadeAnimation={!settings.popups.disableAnimations}
+			zoomAnimation={!settings.general.disableZoomAnimation}
+			markerZoomAnimation={!settings.general.disableZoomAnimation}
 		>
 			<MapController imageDimensions={imageDimensions} />
 			{imageDimensions && (
@@ -184,17 +185,38 @@ function MapController({ imageDimensions }: MapController) {
 		<div className="fixed top-20 right-4 z-500 flex gap-2 lg:right-8">
 			<Badge variant={"outline"} className="rounded-md bg-background/80">
 				<div className="flex flex-col gap-1">
-					<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} title="Zoom In">
-						<ZoomIn className="size-4" />
-					</Button>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} aria-label="Zoom In">
+								<ZoomIn className="size-4" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent side="left" sideOffset={5} className="z-999">
+							Zoom In
+						</TooltipContent>
+					</Tooltip>
 					<Separator orientation="horizontal" />
-					<Button variant={"ghost"} size={"icon"} onClick={handleZoomOut} title="Zoom Out">
-						<ZoomOut className="size-4" />
-					</Button>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button variant={"ghost"} size={"icon"} onClick={handleZoomOut} aria-label="Zoom Out">
+								<ZoomOut className="size-4" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent side="left" sideOffset={5} className="z-999">
+							Zoom Out
+						</TooltipContent>
+					</Tooltip>
 					<Separator orientation="horizontal" />
-					<Button variant={"ghost"} size={"icon"} onClick={handleReset} title="Reset Zoom">
-						<RotateCcw className="size-4" />
-					</Button>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button variant={"ghost"} size={"icon"} onClick={handleReset} aria-label="Reset Zoom">
+								<RotateCcw className="size-4" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent side="left" sideOffset={5} className="z-999">
+							Reset Zoom
+						</TooltipContent>
+					</Tooltip>
 					<Separator orientation="horizontal" />
 					<MapSettingsPanel />
 				</div>
@@ -229,9 +251,7 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 	}
 
 	return (
-		<Popup
-			className={ getClassName() }
-		>
+		<Popup className={getClassName()}>
 			<div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
 				<MarkerBadge category={marker.category}>{capitalize(marker.category)}</MarkerBadge>
 			</div>
