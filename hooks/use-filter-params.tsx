@@ -1,6 +1,5 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import { useCallback } from "react"
 import { MAP_LIMIT } from "@/utils/constants"
 
 interface FilterParamsResult {
@@ -82,75 +81,65 @@ export function useFilterParams(): FilterParamsResult {
 	const pageParam = searchParams.get("page")
 	const page = pageParam ? parseInt(pageParam, 10) : 1
 
-	const updateURLParams = useCallback((params: URLSearchParams) => {
+	const updateURLParams = (params: URLSearchParams) => {
 		window.history.pushState(null, "", `?${params.toString()}`)
-	}, [])
+	}
 
-	const createParams = useCallback(() => {
+	const createParams = () => {
 		return new URLSearchParams(searchParams.toString())
-	}, [searchParams])
+	}
 
-	const updatePage = useCallback(
-		(newPage: number) => {
-			const params = createParams()
-			params.set("page", newPage.toString())
-			updateURLParams(params)
-		},
-		[createParams, updateURLParams],
-	)
+	const updatePage = (newPage: number) => {
+		const params = createParams()
+		params.set("page", newPage.toString())
+		updateURLParams(params)
+	}
 
-	const validatePageParam = useCallback(
-		(totalItems: number) => {
-			const totalPages = Math.ceil(totalItems / MAP_LIMIT)
+	const validatePageParam = (totalItems: number) => {
+		const totalPages = Math.ceil(totalItems / MAP_LIMIT)
 
-			if ((page > totalPages && totalPages > 0) || page < 1) {
-				const validPage = page < 1 ? 1 : totalPages > 0 ? totalPages : 1
+		if ((page > totalPages && totalPages > 0) || page < 1) {
+			const validPage = page < 1 ? 1 : totalPages > 0 ? totalPages : 1
 
-				if (validPage !== page) {
-					updatePage(validPage)
-				}
-				return validPage
+			if (validPage !== page) {
+				updatePage(validPage)
 			}
+			return validPage
+		}
 
-			return page
-		},
-		[page, updatePage],
-	)
+		return page
+	}
 
-	const clearAllFilters = useCallback(() => {
+	const clearAllFilters = () => {
 		const params = createParams()
 		params.delete("game")
 		params.delete("map")
 		params.delete("difficulty")
 		params.delete("type")
 		updateURLParams(params)
-	}, [createParams, updateURLParams])
+	}
 
-	const toggleParam = useCallback(
-		(paramName: Param, value: string, currentValues: string[]) => {
-			const params = createParams()
-			params.delete(paramName)
+	const toggleParam = (paramName: Param, value: string, currentValues: string[]) => {
+		const params = createParams()
+		params.delete(paramName)
 
-			const newValues = currentValues.includes(value)
-				? currentValues.filter(v => v !== value)
-				: [...currentValues, value]
+		const newValues = currentValues.includes(value)
+			? currentValues.filter(v => v !== value)
+			: [...currentValues, value]
 
-			newValues.forEach(v => { params.append(paramName, v) })
-			updateURLParams(params)
+		newValues.forEach(v => {
+			params.append(paramName, v)
+		})
+		updateURLParams(params)
 
-			return newValues
-		},
-		[createParams, updateURLParams],
-	)
+		return newValues
+	}
 
-	const clearParam = useCallback(
-		(paramName: Param) => {
-			const params = createParams()
-			params.delete(paramName)
-			updateURLParams(params)
-		},
-		[createParams, updateURLParams],
-	)
+	const clearParam = (paramName: Param) => {
+		const params = createParams()
+		params.delete(paramName)
+		updateURLParams(params)
+	}
 
 	return {
 		// Parameters

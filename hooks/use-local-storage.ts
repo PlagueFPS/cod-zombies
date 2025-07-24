@@ -1,5 +1,5 @@
 "use client"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 
 type SetValue<T> = (value: T | ((value: T) => T)) => void
 type LocalStorageResult<T> = [T, SetValue<T>, () => void]
@@ -15,7 +15,7 @@ type LocalStorageResult<T> = [T, SetValue<T>, () => void]
 
 export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageResult<T> => {
 	// Get from local storage then parse stored json or return initialValue
-	const readValue = useCallback((): T => {
+	const readValue = (): T => {
 		// Prevent build error "window is undefined" but keep working
 		if (typeof window === "undefined") {
 			return initialValue
@@ -28,33 +28,30 @@ export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageRe
 			console.warn(`Error reading localStorage key "${key}":`, error)
 			return initialValue
 		}
-	}, [initialValue, key])
+	}
 
 	// State to store our value
 	// Pass initial state function to useState so logic is only executed once
 	const [storedValue, setStoredValue] = useState<T>(readValue)
 
 	// Return a wrapped version of useState's setter function that persists the new value to localStorage
-	const setValue: SetValue<T> = useCallback(
-		value => {
-			try {
-				// Allow value to be a function so we have same API as useState
-				const valueToStore = value instanceof Function ? value(storedValue) : value
+	const setValue: SetValue<T> = value => {
+		try {
+			// Allow value to be a function so we have same API as useState
+			const valueToStore = value instanceof Function ? value(storedValue) : value
 
-				// Save to state and local storage
-				setStoredValue(valueToStore)
+			// Save to state and local storage
+			setStoredValue(valueToStore)
 
-				if (typeof window !== "undefined") {
-					window.localStorage.setItem(key, JSON.stringify(valueToStore))
-				}
-			} catch (error) {
-				console.warn(`Error setting localStorage key "${key}":`, error)
+			if (typeof window !== "undefined") {
+				window.localStorage.setItem(key, JSON.stringify(valueToStore))
 			}
-		},
-		[key, storedValue],
-	)
+		} catch (error) {
+			console.warn(`Error setting localStorage key "${key}":`, error)
+		}
+	}
 
-	const deleteValue = useCallback(() => {
+	const deleteValue = () => {
 		try {
 			if (typeof window !== "undefined") {
 				window.localStorage.removeItem(key)
@@ -63,7 +60,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageRe
 		} catch (error) {
 			console.warn(`Error deleting localStorage key "${key}":`, error)
 		}
-	}, [key, initialValue])
+	}
 
 	return [storedValue, setValue, deleteValue]
 }

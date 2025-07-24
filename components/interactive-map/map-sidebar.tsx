@@ -4,7 +4,7 @@ import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import Discord from "@/components/SVGs/DiscordSVG"
 import Reddit from "@/components/SVGs/Reddit"
 import X from "@/components/SVGs/XSVG"
@@ -51,23 +51,18 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 	const [toggle, setToggle] = useState<"All" | "None">("None")
 	const router = useRouter()
 	const currentMap = capitalize(String(id))
+	const filteredGroups = Object.keys(groups).reduce(
+		(acc, category) => {
+			const filtered = new Set(
+				[...groups[category as MarkerCategory]].filter(value =>
+					value.includes(slugify(searchTerm)),
+				),
+			)
 
-	const filteredGroups = useMemo(
-		() =>
-			Object.keys(groups).reduce(
-				(acc, category) => {
-					const filtered = new Set(
-						[...groups[category as MarkerCategory]].filter(value =>
-							value.includes(slugify(searchTerm)),
-						),
-					)
-
-					acc[category as MarkerCategory] = filtered
-					return acc
-				},
-				{} as Record<MarkerCategory, Set<string>>,
-			),
-		[groups, searchTerm],
+			acc[category as MarkerCategory] = filtered
+			return acc
+		},
+		{} as Record<MarkerCategory, Set<string>>,
 	)
 
 	const handleCheckedChange = (type: string) => {

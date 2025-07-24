@@ -1,5 +1,5 @@
 "use client"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import {
 	Select,
 	SelectContent,
@@ -27,33 +27,35 @@ interface Location {
 	value: number | null
 }
 
+const getCurrentLocations = (firstValue: string, secondValue: string) => {
+	if (firstValue && secondValue) {
+		const searchString = `${firstValue} to ${secondValue}`
+		const locations: Location[] = []
+
+		for (const key in ValveRoutes) {
+			if (searchString === key) {
+				const route = ValveRoutes[key as keyof valveRoutes]
+				Object.entries(route).forEach(([location, value]) => {
+					locations.push({
+						name: location,
+						value: value,
+					})
+				})
+			}
+		}
+
+		return locations
+	}
+
+	return []
+}
+
 export default function GKValve() {
 	const [values, setValues] = useState({
 		firstValue: "",
 		secondValue: "",
 	})
-	const currentLocations = useMemo(() => {
-		if (values.firstValue && values.secondValue) {
-			const searchString = `${values.firstValue} to ${values.secondValue}`
-			const locations: Location[] = []
-
-			for (const key in ValveRoutes) {
-				if (searchString === key) {
-					const route = ValveRoutes[key as keyof valveRoutes]
-					Object.entries(route).forEach(([location, value]) => {
-						locations.push({
-							name: location,
-							value: value,
-						})
-					})
-				}
-			}
-
-			return locations
-		}
-
-		return []
-	}, [values])
+	const currentLocations = getCurrentLocations(values.firstValue, values.secondValue)
 
 	return (
 		<section className="flex flex-col items-center justify-center gap-8">

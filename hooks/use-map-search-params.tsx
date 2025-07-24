@@ -1,5 +1,4 @@
 import { useSearchParams } from "next/navigation"
-import { useCallback } from "react"
 
 export const useMapSearchParams = () => {
 	const searchParams = useSearchParams()
@@ -7,69 +6,54 @@ export const useMapSearchParams = () => {
 	const excludeParams = searchParams.getAll("exclude")
 	const searchTerm = searchParams.get("search") || ""
 
-	const updateURLParams = useCallback((params: URLSearchParams) => {
+	const updateURLParams = (params: URLSearchParams) => {
 		window.history.pushState(null, "", `?${params.toString()}`)
-	}, [])
+	}
 
-	const createParams = useCallback(() => {
+	const createParams = () => {
 		return new URLSearchParams(searchParams.toString())
-	}, [searchParams])
+	}
 
-	const toggleParam = useCallback(
-		(paramName: string, value: string | string[], currentValues: string[]) => {
-			const params = createParams()
-			params.delete(paramName)
+	const toggleParam = (paramName: string, value: string | string[], currentValues: string[]) => {
+		const params = createParams()
+		params.delete(paramName)
 
-			const valuesToToggle = Array.isArray(value) ? value : [value]
-			const newValues = valuesToToggle.some(v => currentValues.includes(v))
-				? currentValues.filter(v => !value.includes(v))
-				: [...currentValues, ...valuesToToggle]
+		const valuesToToggle = Array.isArray(value) ? value : [value]
+		const newValues = valuesToToggle.some(v => currentValues.includes(v))
+			? currentValues.filter(v => !value.includes(v))
+			: [...currentValues, ...valuesToToggle]
 
-			newValues.forEach(v => {
-        params.append(paramName, v)
-      })
-			updateURLParams(params)
+		newValues.forEach(v => {
+			params.append(paramName, v)
+		})
+		updateURLParams(params)
 
-			return newValues
-		},
-		[createParams, updateURLParams],
-	)
+		return newValues
+	}
 
-	const clearParam = useCallback(
-		(paramName: string) => {
-			const params = createParams()
-			params.delete(paramName)
-			updateURLParams(params)
-		},
-		[createParams, updateURLParams],
-	)
+	const clearParam = (paramName: string) => {
+		const params = createParams()
+		params.delete(paramName)
+		updateURLParams(params)
+	}
 
-	const toggleIncludeParam = useCallback(
-		(value: string | string[]) => {
-			return toggleParam("include", value, includeParams)
-		},
-		[toggleParam, includeParams],
-	)
+	const toggleIncludeParam = (value: string | string[]) => {
+		return toggleParam("include", value, includeParams)
+	}
 
-	const toggleExcludeParam = useCallback(
-		(value: string | string[]) => {
-			return toggleParam("exclude", value, excludeParams)
-		},
-		[toggleParam, excludeParams],
-	)
+	const toggleExcludeParam = (value: string | string[]) => {
+		return toggleParam("exclude", value, excludeParams)
+	}
 
-	const isIncluded = useCallback(
-		(type: string) => {
-			const isIncluded = includeParams.length === 0 || includeParams.includes(type)
-			const isExcluded = excludeParams.includes(type)
+	const isIncluded = (type: string) => {
+		const isIncluded = includeParams.length === 0 || includeParams.includes(type)
+		const isExcluded = excludeParams.includes(type)
 
-			// Include if:
-			// 1. No include params and not excluded
-			// 2. Included and not excluded
-			return (includeParams.length === 0 && !isExcluded) || (isIncluded && !isExcluded)
-		},
-		[includeParams, excludeParams],
-	)
+		// Include if:
+		// 1. No include params and not excluded
+		// 2. Included and not excluded
+		return (includeParams.length === 0 && !isExcluded) || (isIncluded && !isExcluded)
+	}
 
 	return {
 		searchParams,

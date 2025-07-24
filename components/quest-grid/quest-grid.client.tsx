@@ -2,7 +2,7 @@
 import type { MinifiedFeaturedMap } from "@/data/maps"
 import type { MinifiedSideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
-import { Suspense, useEffect, useMemo } from "react"
+import { Suspense, useEffect } from "react"
 import GridPagination from "@/components/grid-pagination/grid-pagination"
 import GridPaginationLoader from "@/components/loaders/grid-pagination-loader"
 import QuestPreviewCard from "@/components/quest-preview-card/quest-preview-card"
@@ -17,40 +17,36 @@ interface IQuestGridClient {
 
 export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
 	const { gameParams, mapParams, difficultyParams, page, validatePageParam } = useFilterParams()
-	const filteredQuests = useMemo(() => {
-		let filtered = quests
+	let filteredQuests = quests
 
-		if (gameParams.length > 0) {
-			filtered = filtered.filter(quest => gameParams.includes(quest.game.slug))
-		}
+	if (gameParams.length > 0) {
+		filteredQuests = filteredQuests.filter(quest => gameParams.includes(quest.game.slug))
+	}
 
-		if (difficultyParams.length > 0) {
-			filtered = filtered.filter(quest => {
-				if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
-					return difficultyParams.includes(quest.difficulty.toLowerCase())
-				}
-				return false
-			})
-		}
+	if (difficultyParams.length > 0) {
+		filteredQuests = filteredQuests.filter(quest => {
+			if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
+				return difficultyParams.includes(quest.difficulty.toLowerCase())
+			}
+			return false
+		})
+	}
 
-		if (mapParams.length > 0) {
-			filtered = filtered.filter(quest => {
-				if (Predicate.hasProperty(quest, "map")) {
-					return mapParams.includes(quest.map.slug)
-				}
-				return false
-			})
-		}
-
-		return filtered
-	}, [difficultyParams, gameParams, mapParams, quests])
+	if (mapParams.length > 0) {
+		filteredQuests = filteredQuests.filter(quest => {
+			if (Predicate.hasProperty(quest, "map")) {
+				return mapParams.includes(quest.map.slug)
+			}
+			return false
+		})
+	}
 
 	const skip = calculateSkip(page, MAP_LIMIT)
 	const paginatedQuests = filteredQuests.slice(skip, MAP_LIMIT * page)
 
 	useEffect(() => {
 		validatePageParam(filteredQuests.length)
-	}, [filteredQuests, validatePageParam])
+	}, [filteredQuests.length, validatePageParam])
 
 	return (
 		<>

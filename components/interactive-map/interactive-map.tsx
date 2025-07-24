@@ -5,7 +5,7 @@ import type { Location, MapMarker } from "@/map-configs/markers"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import NextImage from "next/image"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -38,14 +38,10 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
 	const { settings } = useMapSettings()
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-	const filteredMarkers = useMemo(() => {
-		if (includeParams.length === 0 && excludeParams.length === 0) return mapConfig.markers
-
-		return mapConfig.markers.filter(marker => {
-			const markerId = marker.type || marker.id
-			return isIncluded(markerId)
-		})
-	}, [includeParams, excludeParams, mapConfig.markers, isIncluded])
+	const filteredMarkers =
+		includeParams.length === 0 && excludeParams.length === 0
+			? mapConfig.markers
+			: mapConfig.markers.filter(marker => isIncluded(marker.type || marker.id))
 
 	useEffect(() => {
 		const loadImageDimensions = async () => {
@@ -72,18 +68,15 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 		loadImageDimensions()
 	}, [mapConfig.image])
 
-	const convertToLeafletCoords = useCallback(
-		({ x, y }: Location): LatLng => {
-			if (!imageDimensions) return new LatLng(0, 0)
-			return new LatLng(
-				imageDimensions.height - y * imageDimensions.height,
-				x * imageDimensions.width,
-			)
-		},
-		[imageDimensions],
-	)
+	const convertToLeafletCoords = ({ x, y }: Location): LatLng => {
+		if (!imageDimensions) return new LatLng(0, 0)
+		return new LatLng(
+			imageDimensions.height - y * imageDimensions.height,
+			x * imageDimensions.width,
+		)
+	}
 
-	const getImageBounds = useCallback((): LatLngBounds => {
+	const getImageBounds = (): LatLngBounds => {
 		if (!imageDimensions) {
 			return new LatLngBounds([
 				[0, 0],
@@ -95,7 +88,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			[0, 0], // Soutwest Corner
 			[imageDimensions.height, imageDimensions.width], // Northeast Corner
 		])
-	}, [imageDimensions])
+	}
 
 	return (
 		<MapContainer

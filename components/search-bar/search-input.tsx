@@ -1,7 +1,7 @@
 "use client"
 import { Book, BookText, Brain, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
@@ -67,10 +67,8 @@ export default function SearchInput({
 	const [open, setOpen] = useState(false)
 	const [filter, setFilter] = useState("All")
 
-	const questMaps = useMemo(() => {
-		const mapSlugs = new Set(quests.map(q => q.map.slug))
-		return maps.filter(m => mapSlugs.has(m.slug))
-	}, [maps, quests])
+	const mapSlugs = new Set(quests.map(q => q.map.slug))
+	const questMaps = maps.filter(m => mapSlugs.has(m.slug))
 
 	useShortcut("ctrl+k", () => setOpen(prev => !prev), { ignoreInputs: false })
 	useShortcut("meta+k", () => setOpen(prev => !prev), { ignoreInputs: false })
