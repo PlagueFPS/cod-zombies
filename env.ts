@@ -15,7 +15,6 @@ export const env = createEnv({
 		),
 		RESEND_API_KEY: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		RESEND_AUDIENCE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		PROJECT_PLANNER_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		CRON_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		REDIS_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		REDIS_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),

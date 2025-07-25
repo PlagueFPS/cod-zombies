@@ -24,14 +24,16 @@ export const extractHeadings = (body: Document) => {
 	const headings: Heading[] = []
 
 	body.content.forEach(node => {
-		if (node.nodeType.includes("heading-")) {
-			if (node.content[0] && node.content[0].nodeType === "text") {
-				headings.push({
-					type: node.nodeType,
-					text: node.content[0].value,
-					id: slugify(node.content[0].value),
-				})
-			}
+		if (
+			node.nodeType.includes("heading-") &&
+			node.content[0] &&
+			node.content[0].nodeType === "text"
+		) {
+			headings.push({
+				type: node.nodeType,
+				text: node.content[0].value,
+				id: slugify(node.content[0].value),
+			})
 		} else if (node.content.some(node => node.nodeType === "hyperlink")) {
 			// Extract video guides link text into Table of Contents as h3s
 			node.content.forEach(node => {
