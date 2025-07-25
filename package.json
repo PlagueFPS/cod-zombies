@@ -61,7 +61,6 @@
     "react-share": "5.1.1",
     "resend": "^4.6.0",
     "server-only": "0.0.1",
-    "sharp": "0.33.5",
     "sonner": "1.7.1"
   },
   "devDependencies": {
@@ -77,6 +76,7 @@
     "@types/react-dom": "19.1.2",
     "postcss": "^8.5.6",
     "react-email": "4.2.4",
+    "sharp": "0.34.3",
     "tailwind-merge": "3.2.0",
     "tailwindcss": "4.1.4",
     "tsx": "4.19.2",
