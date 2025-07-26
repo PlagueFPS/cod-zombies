@@ -19,14 +19,14 @@ export const MAP_LIMIT = 12
 export const MAX_NEW_TIME = Duration.toMillis("2 weeks")
 /** 1 week in milliseconds */
 export const MAX_QUEST_NEW_TIME = Duration.toMillis("1 week")
-export const GLOBAL_OG_PROPS = {
+export const GLOBAL_OG_PROPS: Partial<Metadata> = {
 	openGraph: {
 		siteName: SITE_TITLE,
 		locale: "en_US",
 		type: "website",
 		emails: ["codzombiesguidesteam@gmail.com"],
 	},
-} satisfies Metadata
+}
 export const CACHE_KEYS = {
 	/** Cache key for all game data */
 	gameCategories: {
