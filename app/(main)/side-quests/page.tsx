@@ -40,7 +40,7 @@ export default function SideQuests() {
 					<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
 						Discover the hidden secrets and rewards beyond the main story.
 					</p>
-					<Suspense fallback={<QuestFilterLoader />}>
+					<Suspense fallback={<QuestFilterLoader filters={["Map", "Game"]} />}>
 						<SideQuestFilters />
 					</Suspense>
 					<Suspense fallback={<GridLoader />}>

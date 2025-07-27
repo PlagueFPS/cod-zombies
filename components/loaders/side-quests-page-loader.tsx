@@ -15,7 +15,7 @@ export default function SideQuestsPageLoader() {
 					<p className="-mt-7 mb-2 text-lg text-muted-foreground">
 						Discover the hidden secrets and rewards beyond the main story.
 					</p>
-					<QuestFilterLoader />
+					<QuestFilterLoader filters={["Map", "Game"]} />
 					<GridLoader />
 					<GridPaginationLoader pages={5} />
 				</GridSection>
