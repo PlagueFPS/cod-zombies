@@ -45,9 +45,13 @@ export default function FeaturedImage({
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}
 					quality={quality}
-					className={cn("flex aspect-video h-auto w-full items-center justify-center opacity-0", className, {
-						"animate-fade-in opacity-100": imageLoaded,
-					})}
+					className={cn(
+						"flex aspect-video h-auto w-full items-center justify-center opacity-0",
+						className,
+						{
+							"animate-fade-in opacity-100": imageLoaded,
+						},
+					)}
 					priority={priority}
 					placeholder={!featuredImage ? "blur" : undefined}
 				/>
@@ -64,9 +68,13 @@ export default function FeaturedImage({
 					onLoad={() => setFallbackLoaded(true)}
 					onError={() => setFallbackErrored(true)}
 					quality={quality}
-					className={cn("flex aspect-video h-auto w-full items-center justify-center opacity-0", className, {
-						"animate-fade-in opacity-100": fallbackLoaded,
-					})}
+					className={cn(
+						"flex aspect-video h-auto w-full items-center justify-center opacity-0",
+						className,
+						{
+							"animate-fade-in opacity-100": fallbackLoaded,
+						},
+					)}
 					priority={priority}
 					placeholder={!featuredImage ? "blur" : undefined}
 				/>
