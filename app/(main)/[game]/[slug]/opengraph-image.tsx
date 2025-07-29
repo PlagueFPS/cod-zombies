@@ -1,19 +1,28 @@
 import type { CSSProperties } from "react"
 import { Effect } from "effect"
 import { ImageResponse } from "next/og"
+import sharp from "sharp"
 import { getMapBySlug } from "@/data/maps"
 import { getFontData } from "@/data/og-images"
 import { DATE_OPTIONS } from "@/utils/constants"
 
-export const alt = "Main Quest Preview Image"
-export const size = {
-	width: 1200,
-	height: 630,
-}
-export const contentType = "image/png"
-
 interface IOpenGraphImage {
 	params: Promise<{ slug: string }>
+}
+
+export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
+	const { slug } = await params
+	const map = await getMapBySlug(false, slug)
+	if (!map) return null
+
+	return [
+		{
+			id: map.id,
+			contentType: "image/jpeg",
+			size: { width: 1200, height: 630 },
+			alt: `${map.title} Preview Image`,
+		},
+	]
 }
 
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
@@ -21,7 +30,6 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const map = await getMapBySlug(false, slug)
 	if (!map) return new Response("map not found", { status: 404 })
 
-	// const fonts = await getFontData()
 	const fonts = await Effect.runPromise(getFontData)
 
 	const getDifficultyCSSProps = (): CSSProperties => {
@@ -50,7 +58,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 		}
 	}
 
-	return new ImageResponse(
+	const image = await new ImageResponse(
 		<div
 			style={{
 				position: "relative",
@@ -63,11 +71,12 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 				backgroundColor: "black",
 			}}
 		>
+			{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
 			<img
-				src={`https:${map.image.url}?w=${size.width}&h=${size.height}&q=75&fm=jpg`}
+				src={`https:${map.image.url}?w=1200&h=630&q=75&fm=jpg`}
 				alt={map.title}
-				width={size.width}
-				height={size.height}
+				width={1200}
+				height={630}
 				style={{
 					width: "100%",
 					height: "100%",
@@ -166,7 +175,6 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 			</div>
 		</div>,
 		{
-			...size,
 			fonts: fonts
 				? [
 						{
@@ -184,5 +192,14 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 					]
 				: undefined,
 		},
-	)
+	).arrayBuffer()
+
+	const optimizedImage = await sharp(image).jpeg({ quality: 75 }).toBuffer()
+	return new Response(optimizedImage.buffer, {
+		status: 200,
+		headers: {
+			"Content-Type": "image/jpeg",
+			"Cache-Control": "public, max-age=31536000, immutable",
+		},
+	})
 }

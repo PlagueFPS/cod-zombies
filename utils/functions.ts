@@ -58,9 +58,9 @@ export const verifyToken = (token: string) =>
 		const [value, salt, expiresInStr, originalHash] = buffer.split(":")
 
 		if (!value || !salt || !expiresInStr || !originalHash) {
-			return yield* new TokenVerificationError({ 
-				message: "Invalid Token Format", 
-				cause: new Error("Token is malformed") 
+			return yield* new TokenVerificationError({
+				message: "Invalid Token Format",
+				cause: new Error("Token is malformed"),
 			})
 		}
 
@@ -73,7 +73,7 @@ export const verifyToken = (token: string) =>
 				cause: new Error(`Token expired at ${new Date(expiresIn).toISOString()}`),
 			})
 		}
-		
+
 		const payload = `${value}:${salt}:${expiresIn}`
 		const hash = createHash("sha256").update(payload).digest("hex")
 		const hashBuffer = Buffer.from(hash, "hex")
@@ -86,3 +86,8 @@ export const verifyToken = (token: string) =>
 
 		return value
 	}).pipe(Effect.withLogSpan("verify_token"))
+
+export const createImageHash = (buffer: Buffer | ArrayBufferLike) => {
+	const hash = createHash("sha1").update(Buffer.from(buffer)).digest("hex").substring(0, 16)
+	return hash
+}

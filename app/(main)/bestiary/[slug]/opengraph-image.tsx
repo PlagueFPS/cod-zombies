@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react"
 import { Effect } from "effect"
 import { ImageResponse } from "next/og"
+import sharp from "sharp"
 import { getFontData } from "@/data/og-images"
 import { getZombieBySlug } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
@@ -21,7 +22,6 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const zombie = await getZombieBySlug(false, slug)
 	if (!zombie) return new Response("Zombie not found", { status: 404 })
 
-	// const fonts = await getFontData()
 	const fonts = await Effect.runPromise(getFontData)
 
 	const getDifficultyCSSProps = (): CSSProperties => {
@@ -57,7 +57,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 		}
 	}
 
-	return new ImageResponse(
+	const image = await new ImageResponse(
 		<div
 			style={{
 				position: "relative",
@@ -70,6 +70,7 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 				backgroundColor: "black",
 			}}
 		>
+			{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
 			<img
 				src={`https:${zombie.image.url}?w=${size.width}&h=${size.height}&q=75&fm=jpg`}
 				alt={zombie.name}
@@ -190,5 +191,15 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 					]
 				: undefined,
 		},
-	)
+	).arrayBuffer()
+
+	const optimizedImage = await sharp(image).jpeg({ quality: 75 }).toBuffer()
+
+	return new Response(optimizedImage.buffer, {
+		status: 200,
+		headers: {
+			"Content-Type": "image/jpeg",
+			"Cache-Control": "public, max-age=31536000, immutable",
+		},
+	})
 }

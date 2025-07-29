@@ -141,6 +141,28 @@ export const NEW_ENTRY_KV = {
 	},
 }
 
+export const IMAGE_CACHE = {
+	generateKey(slug: string) {
+		return `og-image-${slug}`
+	},
+	get(slug: string) {
+		return Effect.gen(this, function* () {
+			const cache = yield* Cache
+			const response = yield* cache.get(this.generateKey(slug))
+			if (!response) return null
+
+			const decodedResponse = yield* Schema.decodeUnknown(Schema.String)(response)
+			return decodedResponse
+		}).pipe(Effect.withLogSpan("get_image_cache"), Effect.annotateLogs("slug", slug))
+	},
+	set(slug: string, value: string) {
+		return Effect.gen(this, function* () {
+			const cache = yield* Cache
+			return yield* cache.set(this.generateKey(slug), value)
+		}).pipe(Effect.withLogSpan("set_image_cache"), Effect.annotateLogs("slug", slug))
+	},
+}
+
 export const getNewEntries = NEW_ENTRY_KV.getAll().pipe(
 	Effect.withLogSpan("get_new_entries"),
 	Effect.tapError(Effect.logError),

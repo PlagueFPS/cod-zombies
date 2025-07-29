@@ -1,13 +1,14 @@
 /**
- * Capitalizes the first letter of each word in a string, replacing hyphens with spaces.
+ * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
  * @param text - The input string to be capitalized.
  * @returns The capitalized string.
  * @example
  * capitalize("hello-world") // "Hello World"
+ * capitalize("hello_world") // "Hello World"
  */
 export const capitalize = (text: string) => {
 	return text
-		.replace(/-/g, " ")
+		.replace(/[-_]/g, " ")
 		.split(" ")
 		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ")

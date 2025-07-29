@@ -72,3 +72,6 @@ export class LinearCreateIssueError extends Data.TaggedError(
 export class LinearGetIssueLabelsError extends Data.TaggedError(
 	"LinearGetIssueLabelsError",
 )<CommonErrorProps> {}
+export class UploadFileError extends Data.TaggedError("UploadFileError")<CommonErrorProps> {}
+export class GetFileError extends Data.TaggedError("GetFileError")<CommonErrorProps> {}
+export class DeleteFileError extends Data.TaggedError("DeleteFileError")<CommonErrorProps> {}

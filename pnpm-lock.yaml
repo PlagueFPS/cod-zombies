@@ -11,6 +11,9 @@ importers:
       '@contentful/rich-text-react-renderer':
         specifier: 16.0.1
         version: 16.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@effect/platform':
+        specifier: ^0.90.0
+        version: 0.90.0(effect@3.17.0)
       '@hookform/resolvers':
         specifier: 5.0.1
         version: 5.0.1(react-hook-form@7.60.0(react@19.1.0))
@@ -19,7 +22,7 @@ importers:
         version: 52.0.0
       '@next/third-parties':
         specifier: 15.3.2
-        version: 15.3.2(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+        version: 15.3.2(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-checkbox':
         specifier: ^1.3.2
         version: 1.3.2(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -79,16 +82,19 @@ importers:
         version: 1.35.1
       '@vercel/analytics':
         specifier: 1.5.0
-        version: 1.5.0(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+        version: 1.5.0(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@vercel/blob':
+        specifier: ^1.1.1
+        version: 1.1.1
       '@vercel/speed-insights':
         specifier: 1.2.0
-        version: 1.2.0(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+        version: 1.2.0(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
       babel-plugin-react-compiler:
         specifier: 19.1.0-rc.2
         version: 19.1.0-rc.2
       botid:
         specifier: ^1.4.2
-        version: 1.4.2(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+        version: 1.4.2(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
@@ -114,8 +120,8 @@ importers:
         specifier: 0.468.0
         version: 0.468.0(react@19.1.0)
       next:
-        specifier: 15.4.2-canary.16
-        version: 15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 15.4.2-canary.0
+        version: 15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-themes:
         specifier: 0.4.4
         version: 0.4.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -133,7 +139,7 @@ importers:
         version: 5.0.0(leaflet@1.9.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-scan:
         specifier: ^0.4.3
-        version: 0.4.3(@types/react@19.1.2)(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 0.4.3(@types/react@19.1.2)(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-share:
         specifier: 5.1.1
         version: 5.1.1(react@19.1.0)
@@ -143,6 +149,9 @@ importers:
       server-only:
         specifier: 0.0.1
         version: 0.0.1
+      sharp:
+        specifier: ^0.34.3
+        version: 0.34.3
       sonner:
         specifier: 1.7.1
         version: 1.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -156,12 +165,9 @@ importers:
       '@effect/language-service':
         specifier: ^0.21.8
         version: 0.21.8
-      '@effect/platform':
-        specifier: ^0.89.0
-        version: 0.89.0(effect@3.17.0)
       '@effect/platform-node':
         specifier: ^0.92.0
-        version: 0.92.0(@effect/cluster@0.41.17(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
+        version: 0.92.0(@effect/cluster@0.41.17(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
       '@tailwindcss/postcss':
         specifier: ^4.1.11
         version: 4.1.11
@@ -183,9 +189,6 @@ importers:
       react-email:
         specifier: 4.2.4
         version: 4.2.4
-      sharp:
-        specifier: 0.34.3
-        version: 0.34.3
       tailwind-merge:
         specifier: 3.2.0
         version: 3.2.0
@@ -399,8 +402,8 @@ packages:
       '@effect/sql': ^0.43.0
       effect: ^3.17.0
 
-  '@effect/platform@0.89.0':
-    resolution: {integrity: sha512-9nTaD1h/X4M4qdl/4E1atwoe+p4VoH0SJiYd2mJrDJC18alwqlI/xaKNGRnJVPbIrhbKC62YJ9h2mqfkE4t2YA==}
+  '@effect/platform@0.90.0':
+    resolution: {integrity: sha512-F26RZO8qVyCLH43EF9BvJwrhtFsZL2Xv66Jxxjj/sBIes8TOVpyebaysQ7Tz33xALobwU1eNgm8vh18VkJiWnQ==}
     peerDependencies:
       effect: ^3.17.0
 
@@ -727,6 +730,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@fastify/busboy@2.1.1':
+    resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
+    engines: {node: '>=14'}
+
   '@floating-ui/core@1.7.2':
     resolution: {integrity: sha512-wNB5ooIKHQc+Kui96jE/n69rHFWAVoxn5CAzL1Xdd8FG03cgY3MLO+GF9U3W737fYDSgPWA6MReKhBQBop6Pcw==}
 
@@ -937,53 +944,53 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@next/env@15.4.2-canary.16':
-    resolution: {integrity: sha512-rSLh+IMkAPKjIUYQrH3UCl3D/Xcq/X5w+rppo7rv8D+aw/19ODieNFC8e2NtUZ1uBP6SxlTrmn9E5rwX+YRdXg==}
+  '@next/env@15.4.2-canary.0':
+    resolution: {integrity: sha512-tNJvrI0f3ho+vsrietbJ5T8MIPT+QoqXZxueNFe5E68kBxaQwAk5CutmuoJ3jSy5GCitRqk+G2Rwjimz+qlGTQ==}
 
-  '@next/swc-darwin-arm64@15.4.2-canary.16':
-    resolution: {integrity: sha512-XL0KWYWcc5C3BYefpmkdwOoMe4qMwYyyC70dSqY2F6evq/tJksFZFazul6seD5xx/p0nta7PgJRiQOiKCQdpwQ==}
+  '@next/swc-darwin-arm64@15.4.2-canary.0':
+    resolution: {integrity: sha512-mgD+M4XAsC8HF6UEupZvv6YL+SqhTWDRP3PWfdOVmlrjwuWZXXF+QQ3s2fk/wT/adjZBx0rr5s1xk8TEcmGCTw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@15.4.2-canary.16':
-    resolution: {integrity: sha512-iF16S+JGjrGv9OSWxywmfLgq/M/pLRDBrlUxAqjk6U15uK8gq0IVzuGyL0qNDTtrDiadsscGmigCJGOEwdm1eQ==}
+  '@next/swc-darwin-x64@15.4.2-canary.0':
+    resolution: {integrity: sha512-jhcdVsQqtrDmtt7d9pF2FW9OlALDryqLMj8aK6ary7yPx0vcfjb5C21LJc1jdSdpG5bRWS/i/ZixzYH8Ihjutw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@15.4.2-canary.16':
-    resolution: {integrity: sha512-Idc5TemlKFOuafEKXA6qFmpv/t9S9yfi17KEK3YoNpfALUtX9fgpZ99X+ADuQixYK6sItB7gTKChfNctiVPlsQ==}
+  '@next/swc-linux-arm64-gnu@15.4.2-canary.0':
+    resolution: {integrity: sha512-7pBI6eDd8Yzr7H7OFN3CUs3oSBOiFDYZ9/TD6PHOZyxWAqXrcjo+YRutktFY8zVGhbKP0+tIK0xj02z7iEykMg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-arm64-musl@15.4.2-canary.16':
-    resolution: {integrity: sha512-yNYoDIJWsygiLtnQ4zewadY5TyqnIu8+jcTVHmhHeDWJFaviBmrvt/U7IcuWBtQwpMYBCshVMKRlqWHTNDWhpw==}
+  '@next/swc-linux-arm64-musl@15.4.2-canary.0':
+    resolution: {integrity: sha512-gm1b8ClKOf1IqFV9vIjyt/NRiHz0I0NBdvzCiNfqJNh5JbJd81roC9Uh6iKURFGOQ/Ctd2DRURyHYriF3fdPxQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-x64-gnu@15.4.2-canary.16':
-    resolution: {integrity: sha512-T85erPFUJpmHTRlAy4V1BBbRe8WFk0uC7DTFkPafTXSshk5ww2an+FrpoTtKUTlXESq+CNzXpb80ZAlpYagRCQ==}
+  '@next/swc-linux-x64-gnu@15.4.2-canary.0':
+    resolution: {integrity: sha512-VfG3adHE9cvqCNThm+Bn3qWuKx44gI0bN3mYghZb/QK3oxZ5cy6ho+MBKqEyTOokSjm1QLBZUpjBwVMxPPPuOA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-linux-x64-musl@15.4.2-canary.16':
-    resolution: {integrity: sha512-dZdmfyavwZy7b0o8hCCGrOAZHBj+RWdVtI/vGijGxte910WQtUquVccu7W14htL2FNe5yFcsSWFW74Dy5Nli3Q==}
+  '@next/swc-linux-x64-musl@15.4.2-canary.0':
+    resolution: {integrity: sha512-PoEaoiDkhuoPLGalVXx8ssXvuPHI8IcgO3oKiqIVdN95C1An8BvpF7IzQwp4yDaEOjRyaQOKqiuu/L7u8wd3kA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-win32-arm64-msvc@15.4.2-canary.16':
-    resolution: {integrity: sha512-xvRQXTqSZ8JljsLwlVf1fcwTZjTXpHj4YbcE8aG2Lze3kt/xFo8QGEX9BT1kTCETM/hx14paIBlPY8zLey/rLQ==}
+  '@next/swc-win32-arm64-msvc@15.4.2-canary.0':
+    resolution: {integrity: sha512-4Jh/Szqd5akWaxapn+pmQ8Z6gAxiC7S2b32fksPg563orhkvmoREXmjNasODqh4/5SBHMFf9LMN96qtbfc4rgg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@15.4.2-canary.16':
-    resolution: {integrity: sha512-ESWrS/3Xc96B8NYqCWjIJRfe0BQMxxWUXl5j7YoIdsriFWQdBjo0zyxX+m7SvSuyV5v5+kVWOMpU5R07KfllKQ==}
+  '@next/swc-win32-x64-msvc@15.4.2-canary.0':
+    resolution: {integrity: sha512-TBSa8GJZQ54RElEz90JECp8Sb4pGJzI1ujmrv4xPXyYHng02K1YVe7IL2YOs+daOS+fF/X8508zfsZVx/FwLxw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -2244,6 +2251,10 @@ packages:
       vue-router:
         optional: true
 
+  '@vercel/blob@1.1.1':
+    resolution: {integrity: sha512-heiJGj2qt5qTv6yiShH9f6KRAoZGj+lz61GQ+lBRL4lhvUmKI9A51KYlQTnsUd9ymdFlKHBlvmPeG+yGz2Qsbg==}
+    engines: {node: '>=16.14'}
+
   '@vercel/speed-insights@1.2.0':
     resolution: {integrity: sha512-y9GVzrUJ2xmgtQlzFP2KhVRoCglwfRQgjyfY607aU0hh0Un6d0OUyrJkjuAlsV18qR4zfoFPs/BiIj9YDS6Wzw==}
     peerDependencies:
@@ -2299,6 +2310,9 @@ packages:
     resolution: {integrity: sha512-ik3ZgC9dY/lYVVM++OISsaYDeg1tb0VtP5uL3ouh1koGOaUMDPpbFIei4JkFimWUFPn90sbMNMXQAIVOlnYKJA==}
     engines: {node: '>=10'}
 
+  async-retry@1.3.3:
+    resolution: {integrity: sha512-wfr/jstw9xNi/0teMHrRW7dsz3Lt5ARhYNZ2ewpadnhaIp5mbALhOAP+EAdsC7t4Z6wqsDVv9+W6gm1Dk9mEyw==}
+
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
@@ -2345,6 +2359,9 @@ packages:
 
   caniuse-lite@1.0.30001727:
     resolution: {integrity: sha512-pB68nIHmbN6L/4C6MH1DokyR3bYqFwjaSs/sWDHGj4CTcFtQUQMuJftVwWkXq7mNWOybD3KhUv3oWHoGxgP14Q==}
+
+  caniuse-lite@1.0.30001731:
+    resolution: {integrity: sha512-lDdp2/wrOmTRWuoB5DpfNkC0rJDU8DqRa6nYL6HK6sytw70QMopt/NIc/9SM7ylItlBWfACXk0tEn37UWM/+mg==}
 
   chalk@5.4.1:
     resolution: {integrity: sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w==}
@@ -2709,6 +2726,10 @@ packages:
   is-arrayish@0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
 
+  is-buffer@2.0.5:
+    resolution: {integrity: sha512-i2R6zNFDwgEHJyQUtJEk0XFi1i0dPFn/oqjK3/vPCcDeJvW5NQ83V8QbicfF1SupOaB0h8ntgBC2YiE7dfyctQ==}
+    engines: {node: '>=4'}
+
   is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
     engines: {node: '>=0.10.0'}
@@ -2724,6 +2745,9 @@ packages:
   is-interactive@2.0.0:
     resolution: {integrity: sha512-qP1vozQRI+BMOPcjFzrjXuQvdak2pHNUMZoeG2eRbiSqyvbEf/wQtEOTOX1guk6E3t36RkaqiSt8A/6YElNxLQ==}
     engines: {node: '>=12'}
+
+  is-node-process@1.2.0:
+    resolution: {integrity: sha512-Vg4o6/fqPxIjtxgUH5QLJhwZ7gW5diGCVlXpuUfELC62CuxM1iHcRe51f2W1FDy04Ai4KJkagKjx3XaqyfRKXw==}
 
   is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
@@ -2979,12 +3003,11 @@ packages:
       react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
       react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
 
-  next@15.4.2-canary.16:
-    resolution: {integrity: sha512-woAb2J7LNgYQ1nJ7eWfTrC8UHSwU6PRUrfRNx5KtoCHUX4B4W7zwC6Pbza3vaKgexG2/eWUzGF+Fi7qnb5yGNA==}
+  next@15.4.2-canary.0:
+    resolution: {integrity: sha512-ALuZZWLbKM+cgEnZ3iu8TwMcAoPCNR3hwYo96zFoleNa8ovsP83tsjW1wWxNHWeGGMk9JL9ym34orHx8uLoQyQ==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
     peerDependencies:
-      '@modelcontextprotocol/sdk': ^1.15.1
       '@opentelemetry/api': ^1.1.0
       '@playwright/test': ^1.51.1
       babel-plugin-react-compiler: '*'
@@ -2992,8 +3015,6 @@ packages:
       react-dom: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
       sass: ^1.3.0
     peerDependenciesMeta:
-      '@modelcontextprotocol/sdk':
-        optional: true
       '@opentelemetry/api':
         optional: true
       '@playwright/test':
@@ -3243,6 +3264,10 @@ packages:
     resolution: {integrity: sha512-oMA2dcrw6u0YfxJQXm342bFKX/E4sG9rbTzO9ptUcR/e8A33cHuvStiYOwH7fszkZlZ1z/ta9AAoPk2F4qIOHA==}
     engines: {node: '>=18'}
 
+  retry@0.13.1:
+    resolution: {integrity: sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg==}
+    engines: {node: '>= 4'}
+
   scheduler@0.26.0:
     resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
 
@@ -3381,6 +3406,10 @@ packages:
   third-party-capital@1.0.20:
     resolution: {integrity: sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==}
 
+  throttleit@2.1.0:
+    resolution: {integrity: sha512-nt6AMGKW1p/70DF/hGBdJB57B8Tspmbp5gfJ8ilhLnt7kkr2ye7hzD6NVG8GGErk2HWF34igrL2CXmNIkzKqKw==}
+    engines: {node: '>=18'}
+
   tinyexec@0.3.2:
     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
 
@@ -3425,6 +3454,10 @@ packages:
 
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
+  undici@5.29.0:
+    resolution: {integrity: sha512-raqeBD6NQK4SkWhQzeYKd1KmIG6dllBOTt55Rmkt4HtI9mwdWtJljnrXjAFUBLTSN67HWrOIZ3EPF4kjUw80Bg==}
+    engines: {node: '>=14.0'}
 
   undici@7.12.0:
     resolution: {integrity: sha512-GrKEsc3ughskmGA9jevVlIOPMiiAHJ4OFUtaAH+NhfTUSiZ1wMPIQqQvAJUrJspFXJt3EBWgpAeoHEDVT1IBug==}
@@ -3703,28 +3736,28 @@ snapshots:
     dependencies:
       is-plain-obj: 3.0.0
 
-  '@effect/cluster@0.41.17(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
+  '@effect/cluster@0.41.17(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
     dependencies:
-      '@effect/platform': 0.89.0(effect@3.17.0)
-      '@effect/rpc': 0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
-      '@effect/sql': 0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
-      '@effect/workflow': 0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
+      '@effect/platform': 0.90.0(effect@3.17.0)
+      '@effect/rpc': 0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/sql': 0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/workflow': 0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
       effect: 3.17.0
 
-  '@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)':
+  '@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)':
     dependencies:
-      '@effect/platform': 0.89.0(effect@3.17.0)
+      '@effect/platform': 0.90.0(effect@3.17.0)
       effect: 3.17.0
       uuid: 11.1.0
 
   '@effect/language-service@0.21.8': {}
 
-  '@effect/platform-node-shared@0.45.0(@effect/cluster@0.41.17(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
+  '@effect/platform-node-shared@0.45.0(@effect/cluster@0.41.17(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
     dependencies:
-      '@effect/cluster': 0.41.17(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
-      '@effect/platform': 0.89.0(effect@3.17.0)
-      '@effect/rpc': 0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
-      '@effect/sql': 0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/cluster': 0.41.17(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
+      '@effect/platform': 0.90.0(effect@3.17.0)
+      '@effect/rpc': 0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/sql': 0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
       '@parcel/watcher': 2.5.1
       effect: 3.17.0
       multipasta: 0.2.7
@@ -3733,13 +3766,13 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@effect/platform-node@0.92.0(@effect/cluster@0.41.17(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
+  '@effect/platform-node@0.92.0(@effect/cluster@0.41.17(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
     dependencies:
-      '@effect/cluster': 0.41.17(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
-      '@effect/platform': 0.89.0(effect@3.17.0)
-      '@effect/platform-node-shared': 0.45.0(@effect/cluster@0.41.17(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
-      '@effect/rpc': 0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
-      '@effect/sql': 0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/cluster': 0.41.17(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
+      '@effect/platform': 0.90.0(effect@3.17.0)
+      '@effect/platform-node-shared': 0.45.0(@effect/cluster@0.41.17(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)
+      '@effect/rpc': 0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/sql': 0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
       effect: 3.17.0
       mime: 3.0.0
       undici: 7.12.0
@@ -3748,7 +3781,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@effect/platform@0.89.0(effect@3.17.0)':
+  '@effect/platform@0.90.0(effect@3.17.0)':
     dependencies:
       '@opentelemetry/semantic-conventions': 1.36.0
       effect: 3.17.0
@@ -3756,23 +3789,23 @@ snapshots:
       msgpackr: 1.11.5
       multipasta: 0.2.7
 
-  '@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)':
+  '@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)':
     dependencies:
-      '@effect/platform': 0.89.0(effect@3.17.0)
+      '@effect/platform': 0.90.0(effect@3.17.0)
       effect: 3.17.0
 
-  '@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)':
+  '@effect/sql@0.40.13(@effect/experimental@0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)':
     dependencies:
-      '@effect/experimental': 0.51.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
-      '@effect/platform': 0.89.0(effect@3.17.0)
+      '@effect/experimental': 0.51.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/platform': 0.90.0(effect@3.17.0)
       '@opentelemetry/semantic-conventions': 1.36.0
       effect: 3.17.0
       uuid: 11.1.0
 
-  '@effect/workflow@0.4.13(@effect/platform@0.89.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
+  '@effect/workflow@0.4.13(@effect/platform@0.90.0(effect@3.17.0))(@effect/rpc@0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0))(effect@3.17.0)':
     dependencies:
-      '@effect/platform': 0.89.0(effect@3.17.0)
-      '@effect/rpc': 0.64.13(@effect/platform@0.89.0(effect@3.17.0))(effect@3.17.0)
+      '@effect/platform': 0.90.0(effect@3.17.0)
+      '@effect/rpc': 0.64.13(@effect/platform@0.90.0(effect@3.17.0))(effect@3.17.0)
       effect: 3.17.0
 
   '@emnapi/runtime@1.4.5':
@@ -3929,6 +3962,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.8':
     optional: true
+
+  '@fastify/busboy@2.1.1': {}
 
   '@floating-ui/core@1.7.2':
     dependencies:
@@ -4101,35 +4136,35 @@ snapshots:
   '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.3':
     optional: true
 
-  '@next/env@15.4.2-canary.16': {}
+  '@next/env@15.4.2-canary.0': {}
 
-  '@next/swc-darwin-arm64@15.4.2-canary.16':
+  '@next/swc-darwin-arm64@15.4.2-canary.0':
     optional: true
 
-  '@next/swc-darwin-x64@15.4.2-canary.16':
+  '@next/swc-darwin-x64@15.4.2-canary.0':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@15.4.2-canary.16':
+  '@next/swc-linux-arm64-gnu@15.4.2-canary.0':
     optional: true
 
-  '@next/swc-linux-arm64-musl@15.4.2-canary.16':
+  '@next/swc-linux-arm64-musl@15.4.2-canary.0':
     optional: true
 
-  '@next/swc-linux-x64-gnu@15.4.2-canary.16':
+  '@next/swc-linux-x64-gnu@15.4.2-canary.0':
     optional: true
 
-  '@next/swc-linux-x64-musl@15.4.2-canary.16':
+  '@next/swc-linux-x64-musl@15.4.2-canary.0':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@15.4.2-canary.16':
+  '@next/swc-win32-arm64-msvc@15.4.2-canary.0':
     optional: true
 
-  '@next/swc-win32-x64-msvc@15.4.2-canary.16':
+  '@next/swc-win32-x64-msvc@15.4.2-canary.0':
     optional: true
 
-  '@next/third-parties@15.3.2(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+  '@next/third-parties@15.3.2(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
     dependencies:
-      next: 15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       third-party-capital: 1.0.20
 
@@ -5245,14 +5280,22 @@ snapshots:
     dependencies:
       uncrypto: 0.1.3
 
-  '@vercel/analytics@1.5.0(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+  '@vercel/analytics@1.5.0(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
     optionalDependencies:
-      next: 15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
 
-  '@vercel/speed-insights@1.2.0(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+  '@vercel/blob@1.1.1':
+    dependencies:
+      async-retry: 1.3.3
+      is-buffer: 2.0.5
+      is-node-process: 1.2.0
+      throttleit: 2.1.0
+      undici: 5.29.0
+
+  '@vercel/speed-insights@1.2.0(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
     optionalDependencies:
-      next: 15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
 
   '@vercel/stega@0.1.2': {}
@@ -5279,6 +5322,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  async-retry@1.3.3:
+    dependencies:
+      retry: 0.13.1
+
   asynckit@0.4.0: {}
 
   axios@1.11.0:
@@ -5302,11 +5349,11 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  botid@1.4.2(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0):
+  botid@1.4.2(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
     optionalDependencies:
-      next: 15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   braces@3.0.3:
     dependencies:
@@ -5330,6 +5377,8 @@ snapshots:
       get-intrinsic: 1.3.0
 
   caniuse-lite@1.0.30001727: {}
+
+  caniuse-lite@1.0.30001731: {}
 
   chalk@5.4.1: {}
 
@@ -5732,6 +5781,8 @@ snapshots:
 
   is-arrayish@0.3.2: {}
 
+  is-buffer@2.0.5: {}
+
   is-extglob@2.1.1: {}
 
   is-fullwidth-code-point@3.0.0: {}
@@ -5741,6 +5792,8 @@ snapshots:
       is-extglob: 2.1.1
 
   is-interactive@2.0.0: {}
+
+  is-node-process@1.2.0: {}
 
   is-number@7.0.0: {}
 
@@ -5939,24 +5992,24 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
-      '@next/env': 15.4.2-canary.16
+      '@next/env': 15.4.2-canary.0
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001727
+      caniuse-lite: 1.0.30001731
       postcss: 8.4.31
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       styled-jsx: 5.1.6(@babel/core@7.28.0)(react@19.1.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 15.4.2-canary.16
-      '@next/swc-darwin-x64': 15.4.2-canary.16
-      '@next/swc-linux-arm64-gnu': 15.4.2-canary.16
-      '@next/swc-linux-arm64-musl': 15.4.2-canary.16
-      '@next/swc-linux-x64-gnu': 15.4.2-canary.16
-      '@next/swc-linux-x64-musl': 15.4.2-canary.16
-      '@next/swc-win32-arm64-msvc': 15.4.2-canary.16
-      '@next/swc-win32-x64-msvc': 15.4.2-canary.16
+      '@next/swc-darwin-arm64': 15.4.2-canary.0
+      '@next/swc-darwin-x64': 15.4.2-canary.0
+      '@next/swc-linux-arm64-gnu': 15.4.2-canary.0
+      '@next/swc-linux-arm64-musl': 15.4.2-canary.0
+      '@next/swc-linux-x64-gnu': 15.4.2-canary.0
+      '@next/swc-linux-x64-musl': 15.4.2-canary.0
+      '@next/swc-win32-arm64-msvc': 15.4.2-canary.0
+      '@next/swc-win32-x64-msvc': 15.4.2-canary.0
       babel-plugin-react-compiler: 19.1.0-rc.2
       sharp: 0.34.3
     transitivePeerDependencies:
@@ -6153,7 +6206,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.1.2
 
-  react-scan@0.4.3(@types/react@19.1.2)(next@15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-scan@0.4.3(@types/react@19.1.2)(next@15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@babel/core': 7.28.0
       '@babel/generator': 7.28.0
@@ -6175,7 +6228,7 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
       tsx: 4.20.3
     optionalDependencies:
-      next: 15.4.2-canary.16(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.4.2-canary.0(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       unplugin: 2.1.0
     transitivePeerDependencies:
       - '@types/react'
@@ -6215,6 +6268,8 @@ snapshots:
     dependencies:
       onetime: 7.0.0
       signal-exit: 4.1.0
+
+  retry@0.13.1: {}
 
   scheduler@0.26.0: {}
 
@@ -6392,6 +6447,8 @@ snapshots:
 
   third-party-capital@1.0.20: {}
 
+  throttleit@2.1.0: {}
+
   tinyexec@0.3.2: {}
 
   to-regex-range@5.0.1:
@@ -6431,6 +6488,10 @@ snapshots:
   uncrypto@0.1.3: {}
 
   undici-types@6.21.0: {}
+
+  undici@5.29.0:
+    dependencies:
+      '@fastify/busboy': 2.1.1
 
   undici@7.12.0: {}
 
