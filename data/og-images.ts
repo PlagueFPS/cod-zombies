@@ -32,22 +32,22 @@ export const getFontData = Effect.gen(function* () {
 	Effect.catchAll(() => Effect.succeed(null)),
 )
 
-export const getImageUrlForType = async (type: TAllowedSlugs, slug: string) => {
+export const getImageDataForType = async (type: TAllowedSlugs, slug: string) => {
 	switch (type) {
 		case "maps": {
 			const map = await getMapBySlug(IN_DEVELOPMENT, slug)
 			if (!map) return null
-			return map.image.url
+			return { url: map.image.url, id: map.id }
 		}
 		case "zombies": {
 			const zombie = await getZombieBySlug(IN_DEVELOPMENT, slug)
 			if (!zombie) return null
-			return zombie.image.url
+			return { url: zombie.image.url, id: zombie.id }
 		}
 		case "side-quests": {
 			const sideQuest = await getQuestBySlug(IN_DEVELOPMENT, slug)
 			if (!sideQuest) return null
-			return sideQuest.image.url
+			return { url: sideQuest.image.url, id: sideQuest.id }
 		}
 		default:
 			return null

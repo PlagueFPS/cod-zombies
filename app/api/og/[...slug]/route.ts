@@ -5,7 +5,7 @@ import { Effect, Layer, Match, Schema } from "effect"
 import MapOpenGraphImage from "@/app/(main)/[game]/[slug]/opengraph-image"
 import ZombieOpenGraphImage from "@/app/(main)/bestiary/[slug]/opengraph-image"
 import SideQuestOpenGraphImage from "@/app/(main)/side-quests/[game]/[map]/[slug]/opengraph-image"
-import { getImageUrlForType } from "@/data/og-images"
+import { getImageDataForType } from "@/data/og-images"
 import { IMAGE_CACHE } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
 import { FileStorage } from "@/lib/services/FileStorage"
@@ -30,14 +30,16 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 		const { slug } = yield* Schema.decodeUnknown(ParamsSchema)(paramsResult)
 		const type = slug[0]
 		const entrySlug = slug[1]
-		const imageUrl = yield* Effect.promise(() => getImageUrlForType(type, entrySlug))
-		if (!imageUrl)
+		const imageData = yield* Effect.promise(() => getImageDataForType(type, entrySlug))
+		if (!imageData || !imageData.url)
 			return yield* new OgImageGenerationError({
 				message: `No image url found for type: ${type} and slug: ${entrySlug}`,
 			})
 
-		const contentHash = createHash("sha1").update(imageUrl).digest("hex").substring(0, 16)
-		const cachedHash = yield* IMAGE_CACHE.get(entrySlug)
+		const { url, id } = imageData
+		const payload = `${url}-${entrySlug}`
+		const contentHash = createHash("sha1").update(payload).digest("hex").substring(0, 16)
+		const cachedHash = yield* IMAGE_CACHE.get(id)
 
 		if (cachedHash === contentHash) {
 			const existingImage = yield* getImage(`og-image-${entrySlug}-${contentHash}.jpg`)
@@ -108,7 +110,7 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 				new OgImageGenerationError({ message: "Failed to grab image buffer", cause: error }),
 		})
 
-		yield* IMAGE_CACHE.set(entrySlug, contentHash)
+		yield* IMAGE_CACHE.set(id, contentHash)
 		yield* storeImage(`og-image-${entrySlug}-${contentHash}.jpg`, Buffer.from(buffer))
 
 		return response
