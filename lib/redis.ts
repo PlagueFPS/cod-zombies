@@ -40,6 +40,9 @@ export type EntryType = Schema.Schema.Type<typeof EntryResponseSchema>["type"]
 export const decodeEntryResponse = Schema.decodeUnknown(EntryResponseSchema)
 export const encodeEntryResponse = Schema.encodeUnknown(EntryResponseSchema)
 
+/**
+ * An object that provides methods to interact with the new entries cache.
+ */
 export const NEW_ENTRY_KV = {
 	key: "contentful:new-entries" as const,
 	/**
@@ -139,12 +142,25 @@ export const NEW_ENTRY_KV = {
 			),
 		)
 	},
-}
+} as const
 
+/**
+ * An object that provides methods to interact with the image cache.
+ */
 export const IMAGE_CACHE = {
+	/**
+	 * Generates the cache key for the given slug.
+	 * @param slug - The slug to generate the key for.
+	 * @returns The cache key.
+	 */
 	generateKey(slug: string) {
 		return `og-image-${slug}`
 	},
+	/**
+	 * Retrieves the cached image reference for the given slug.
+	 * @param slug - The slug to retrieve the image reference for.
+	 * @returns An Effect that succeeds with the cached image reference if found, null otherwise.
+	 */
 	get(slug: string) {
 		return Effect.gen(this, function* () {
 			const cache = yield* Cache
@@ -155,13 +171,19 @@ export const IMAGE_CACHE = {
 			return decodedResponse
 		}).pipe(Effect.withLogSpan("get_image_cache"), Effect.annotateLogs("slug", slug))
 	},
+	/**
+	 * Sets the cached image reference for the given slug.
+	 * @param slug - The slug to set the image for.
+	 * @param value - The image reference to cache.
+	 * @returns An Effect that succeeds when the image reference is cached.
+	 */
 	set(slug: string, value: string) {
 		return Effect.gen(this, function* () {
 			const cache = yield* Cache
 			return yield* cache.set(this.generateKey(slug), value)
 		}).pipe(Effect.withLogSpan("set_image_cache"), Effect.annotateLogs("slug", slug))
 	},
-}
+} as const
 
 export const getNewEntries = NEW_ENTRY_KV.getAll().pipe(
 	Effect.withLogSpan("get_new_entries"),

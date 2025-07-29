@@ -1,5 +1,6 @@
 import "server-only"
-import { Effect } from "effect"
+import { HttpClient } from "@effect/platform"
+import { Effect, Schedule } from "effect"
 import { revalidateTag } from "next/cache"
 import { getGameById } from "@/data/games"
 import { getLegalDocById } from "@/data/legal"
@@ -48,11 +49,19 @@ const sendQuestBroadcast = <T extends BroadcastEntry>(
 	url: string,
 ) =>
 	Effect.gen(function* () {
-		const imageUrl =
+		const httpClient = (yield* HttpClient.HttpClient).pipe(
+			HttpClient.retryTransient({
+				times: 3,
+				schedule: Schedule.exponential("50 millis", 2),
+			}),
+			HttpClient.filterStatusOk,
+		)
+		const fetchUrl =
 			type === "Main"
 				? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}`
 				: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
 
+		const imageUrl = yield* httpClient.get(fetchUrl).pipe(Effect.flatMap(res => res.text))
 		return yield* sendQuestReleaseBroadcast({ type, redirectUrl: url, imageUrl, ...entry })
 	}).pipe(Effect.withLogSpan("send_quest_broadcast"))
 

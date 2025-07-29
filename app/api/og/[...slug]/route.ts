@@ -1,6 +1,5 @@
 import type { NextRequest } from "next/server"
 import { createHash } from "node:crypto"
-import { FetchHttpClient, HttpClient } from "@effect/platform"
 import { Effect, Layer, Match, Schema } from "effect"
 import MapOpenGraphImage from "@/app/(main)/[game]/[slug]/opengraph-image"
 import ZombieOpenGraphImage from "@/app/(main)/bestiary/[slug]/opengraph-image"
@@ -20,11 +19,23 @@ const ParamsSchema = Schema.Struct({
 	slug: Schema.Tuple(AllowedSlugsSchema, Schema.String),
 })
 
-const ImageGenLayer = Layer.mergeAll(Cache.Default, FileStorage.Default, FetchHttpClient.layer)
+const ImageGenLayer = Layer.mergeAll(Cache.Default, FileStorage.Default)
 
+/**
+ * Handles generation and caching of Open Graph images.
+ *
+ * 1. Fetches image data using the provided type and slug
+ * 2. Generates a content hash from the URL and slug
+ * 3. Checks for cached image using the hash
+ * 4. Returns cached image URL if hashes match
+ * 5. Otherwise, deletes old cached image, generates a new one, and updates the cache
+ *
+ * @param _ - Next.js request object
+ * @param params - Object containing URL parameters
+ * @returns Response with the image URL (cached or newly generated)
+ */
 export async function GET(_: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
-		const httpClient = yield* HttpClient.HttpClient
 		const { storeImage, getImage, deleteImage } = yield* FileStorage
 		const paramsResult = yield* Effect.promise(() => params)
 		const { slug } = yield* Schema.decodeUnknown(ParamsSchema)(paramsResult)
@@ -44,15 +55,7 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 		if (cachedHash === contentHash) {
 			const existingImage = yield* getImage(`og-image-${entrySlug}-${contentHash}.jpg`)
 			if (existingImage) {
-				const res = yield* httpClient.get(existingImage.downloadUrl)
-				const buffer = yield* res.arrayBuffer
-				return new Response(buffer, {
-					status: 200,
-					headers: {
-						"Content-Type": "image/jpeg",
-						"Cache-Control": "public, max-age=31536000, immutable",
-					},
-				})
+				return new Response(existingImage.url, { status: 200 })
 			}
 		} else {
 			// Delete old image and handle its failure seperately to avoid short-circuiting
@@ -102,18 +105,19 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 		)
 
 		if (!response.ok) return new Response(response.statusText, { status: response.status })
-		// Clone response to read/store the buffer while still returning the original response to the client
-		const clonedResponse = response.clone()
 		const buffer = yield* Effect.tryPromise({
-			try: () => clonedResponse.arrayBuffer(),
+			try: () => response.arrayBuffer(),
 			catch: error =>
 				new OgImageGenerationError({ message: "Failed to grab image buffer", cause: error }),
 		})
 
 		yield* IMAGE_CACHE.set(id, contentHash)
-		yield* storeImage(`og-image-${entrySlug}-${contentHash}.jpg`, Buffer.from(buffer))
+		const result = yield* storeImage(
+			`og-image-${entrySlug}-${contentHash}.jpg`,
+			Buffer.from(buffer),
+		)
 
-		return response
+		return new Response(result.url, { status: 201 })
 	}).pipe(
 		Effect.withLogSpan("open_graph_image_handler"),
 		Effect.tapError(Effect.logError),

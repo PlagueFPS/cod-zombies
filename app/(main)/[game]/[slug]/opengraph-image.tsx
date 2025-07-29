@@ -194,6 +194,9 @@ export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 		},
 	).arrayBuffer()
 
+	// We optimize the image ourselves to reduce the file size
+	// since the ImageResponse img is near or over 1MB for some god-forsaken reason
+	// Even with quality: 100 this img will never be over 300KB
 	const optimizedImage = await sharp(image).jpeg({ quality: 75 }).toBuffer()
 	return new Response(optimizedImage.buffer, {
 		status: 200,
