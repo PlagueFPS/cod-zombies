@@ -1,14 +1,15 @@
 import type { NextRequest } from "next/server"
+import { createHash } from "node:crypto"
 import { FetchHttpClient, HttpClient } from "@effect/platform"
 import { Effect, Layer, Match, Schema } from "effect"
 import MapOpenGraphImage from "@/app/(main)/[game]/[slug]/opengraph-image"
 import ZombieOpenGraphImage from "@/app/(main)/bestiary/[slug]/opengraph-image"
 import SideQuestOpenGraphImage from "@/app/(main)/side-quests/[game]/[map]/[slug]/opengraph-image"
+import { getImageUrlForType } from "@/data/og-images"
 import { IMAGE_CACHE } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
 import { FileStorage } from "@/lib/services/FileStorage"
 import { OgImageGenerationError } from "@/types/errors"
-import { createImageHash } from "@/utils/functions"
 import { AllowedSlugsSchema } from "@/utils/validation-schemas"
 
 interface RouteParams {
@@ -24,17 +25,22 @@ const ImageGenLayer = Layer.mergeAll(Cache.Default, FileStorage.Default, FetchHt
 export async function GET(_: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
 		const httpClient = yield* HttpClient.HttpClient
-		const { storeImage, getImage } = yield* FileStorage
+		const { storeImage, getImage, deleteImage } = yield* FileStorage
 		const paramsResult = yield* Effect.promise(() => params)
 		const { slug } = yield* Schema.decodeUnknown(ParamsSchema)(paramsResult)
 		const type = slug[0]
 		const entrySlug = slug[1]
-		const newParams = new Promise<{ slug: string }>(resolve => resolve({ slug: entrySlug }))
+		const imageUrl = yield* Effect.promise(() => getImageUrlForType(type, entrySlug))
+		if (!imageUrl)
+			return yield* new OgImageGenerationError({
+				message: `No image url found for type: ${type} and slug: ${entrySlug}`,
+			})
 
-		const imageId = yield* IMAGE_CACHE.get(entrySlug)
+		const contentHash = createHash("sha1").update(imageUrl).digest("hex").substring(0, 16)
+		const cachedHash = yield* IMAGE_CACHE.get(entrySlug)
 
-		if (imageId) {
-			const existingImage = yield* getImage(`og-image-${entrySlug}-${imageId}.jpg`)
+		if (cachedHash === contentHash) {
+			const existingImage = yield* getImage(`og-image-${entrySlug}-${contentHash}.jpg`)
 			if (existingImage) {
 				const res = yield* httpClient.get(existingImage.downloadUrl)
 				const buffer = yield* res.arrayBuffer
@@ -46,8 +52,19 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 					},
 				})
 			}
+		} else {
+			// Delete old image and handle its failure seperately to avoid short-circuiting
+			yield* deleteImage(`og-image-${entrySlug}-${cachedHash}.jpg`).pipe(
+				Effect.withLogSpan("delete_old_og_image"),
+				Effect.annotateLogs("entrySlug", entrySlug),
+				Effect.annotateLogs("cachedHash", cachedHash),
+				Effect.tapError(Effect.logError),
+				Effect.catchAll(() => Effect.void),
+			)
 		}
 
+		// Wrap slug in a promise as it is the expected type for the open graph image handlers: Promise<{ slug: string }>
+		const newParams = new Promise<{ slug: string }>(resolve => resolve({ slug: entrySlug }))
 		const response = yield* Match.value(type).pipe(
 			Match.when("maps", () =>
 				Effect.tryPromise({
@@ -83,6 +100,7 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 		)
 
 		if (!response.ok) return new Response(response.statusText, { status: response.status })
+		// Clone response to read/store the buffer while still returning the original response to the client
 		const clonedResponse = response.clone()
 		const buffer = yield* Effect.tryPromise({
 			try: () => clonedResponse.arrayBuffer(),
@@ -90,9 +108,9 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 				new OgImageGenerationError({ message: "Failed to grab image buffer", cause: error }),
 		})
 
-		const imageHash = createImageHash(buffer)
-		yield* IMAGE_CACHE.set(entrySlug, imageHash)
-		yield* storeImage(`og-image-${entrySlug}-${imageHash}.jpg`, Buffer.from(buffer))
+		yield* IMAGE_CACHE.set(entrySlug, contentHash)
+		yield* storeImage(`og-image-${entrySlug}-${contentHash}.jpg`, Buffer.from(buffer))
+
 		return response
 	}).pipe(
 		Effect.withLogSpan("open_graph_image_handler"),

@@ -86,8 +86,3 @@ export const verifyToken = (token: string) =>
 
 		return value
 	}).pipe(Effect.withLogSpan("verify_token"))
-
-export const createImageHash = (buffer: Buffer | ArrayBufferLike) => {
-	const hash = createHash("sha1").update(Buffer.from(buffer)).digest("hex").substring(0, 16)
-	return hash
-}
