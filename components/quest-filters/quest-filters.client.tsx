@@ -62,6 +62,8 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 							data={props.maps}
 							currentSelection={mapParams}
 							title="Map"
+							enableInput
+							inputPlaceholder="Search Map"
 							toggleParam={toggleMap}
 							clearParam={() => clearParam("map")}
 						/>

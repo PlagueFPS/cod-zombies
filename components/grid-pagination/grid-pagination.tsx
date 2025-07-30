@@ -45,7 +45,7 @@ export default function GridPagination({ data }: IGridPagination) {
 			</PaginationItem>
 		)
 
-		// Always add first 5 pages
+		// Always add first page
 		items.push(addPageButton(1))
 
 		// If total pages is less than or equal to threshold, show all pages
