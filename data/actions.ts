@@ -1,15 +1,11 @@
 "use server"
 import { Effect } from "effect"
-import { revalidateTag } from "next/cache"
-import { redirect } from "next/navigation"
-import { createAction, createRatelimitAction } from "@/lib/action-helpers"
+import { createRatelimitAction } from "@/lib/action-helpers"
 import { Email } from "@/lib/services/Email"
 import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/usecases/email"
 import { submitFeedback } from "@/usecases/feedback"
-import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import {
 	ContactFormSchema,
-	DraftModeSchema,
 	FeedbackFormSchema,
 	NewsletterFormSchema,
 } from "@/utils/validation-schemas"
@@ -92,15 +88,4 @@ export const submitContactForm = createRatelimitAction(ContactFormSchema, async 
 		Effect.provide(Email.Default),
 		Effect.runPromise,
 	)
-})
-
-// biome-ignore lint/suspicious/useAwait: server actions must always be marked as async
-export const purgeLocalCache = createAction(DraftModeSchema, async ({ pathname }) => {
-	if (!IN_DEVELOPMENT) return
-
-	Object.entries(CACHE_KEYS).forEach(([key, value]) => {
-		revalidateTag(value.all)
-		console.log(`Revalidated: ${key}`)
-	})
-	redirect(pathname)
 })
