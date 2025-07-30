@@ -8,8 +8,7 @@ import NavLink from "@/components/nav-link/nav-link"
 import SearchBar from "@/components/search-bar/search-bar"
 import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper"
 import Logo from "@/public/logo.webp"
-import { IN_DEVELOPMENT, ROUTES } from "@/utils/constants"
-import LocalCacheButton from "../ui/local-cache-button"
+import { ROUTES } from "@/utils/constants"
 import { Separator } from "../ui/separator"
 
 export default function Header() {
@@ -33,8 +32,6 @@ export default function Header() {
 					</div>
 				</CustomLink>
 				<nav className="mr-8 hidden h-full w-fit items-center justify-center gap-8 xl:flex">
-					{/* Custom draft mode toggle for development */}
-					{IN_DEVELOPMENT && <LocalCacheButton />}
 					{ROUTES.map(route => (
 						<NavLink
 							key={route.id}
