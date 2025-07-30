@@ -12,7 +12,7 @@ import Heading2 from "../rich-headings/heading2/heading2"
 import Heading3 from "../rich-headings/heading3/heading3"
 import Heading4 from "../rich-headings/heading4/heading4"
 import RichImage from "../rich-image/rich-image"
-import RichLink, { youtube_url } from "../rich-link/rich-link"
+import RichLink, { youtube_shorts_url, youtube_url } from "../rich-link/rich-link"
 import RichTable from "../rich-table/rich-table"
 import { OrderedList, UnorderedList } from "../rich-text-lists/rich-text-lists"
 
@@ -56,18 +56,21 @@ export default function RichTextRenderer({
 				return <Heading4 id={slugify(node.content[0].value)}>{children}</Heading4>
 			},
 			[BLOCKS.PARAGRAPH]: (node: any, children: any) => {
-				let renderDiv = false
+				let isYoutubeLink = false
 				node.content.forEach((node: any) => {
-					if (node.nodeType === INLINES.HYPERLINK && node.data.uri.startsWith(youtube_url)) {
-						renderDiv = true
+					if (
+						node.nodeType === INLINES.HYPERLINK &&
+						(node.data.uri.startsWith(youtube_url) || node.data.uri.startsWith(youtube_shorts_url))
+					) {
+						isYoutubeLink = true
 						return
 					}
 					return
 				})
 
-				if (renderDiv) return <div>{children}</div>
+				if (isYoutubeLink) return <div>{children}</div>
 
-				return <div>{children}</div>
+				return <p>{children}</p>
 			},
 			[BLOCKS.EMBEDDED_ENTRY]: () => {
 				switch (slug) {
