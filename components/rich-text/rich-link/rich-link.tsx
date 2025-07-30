@@ -12,6 +12,7 @@ interface RichLinkProps {
 }
 
 export const youtube_url = "https://youtu.be/"
+export const youtube_shorts_url = "https://youtube.com/shorts/"
 const dev_url = "http://localhost:3000"
 const alt_dev_url = "https://localhost:3000"
 
@@ -25,7 +26,7 @@ export default function RichLink({ node }: RichLinkProps) {
 	const { data, content } = validNode.right
 	if (!content[0]) return null
 
-	if (data.uri.startsWith(youtube_url)) {
+	if (data.uri.startsWith(youtube_url) || data.uri.startsWith(youtube_shorts_url)) {
 		return (
 			<>
 				<Heading3 id={slugify(content[0].value)} className="pb-4">
