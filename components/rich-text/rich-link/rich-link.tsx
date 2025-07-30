@@ -66,7 +66,7 @@ export default function RichLink({ node }: RichLinkProps) {
 		)
 	}
 	return (
-		<ExternalLink href={data.uri} className="flex w-fit items-center">
+		<ExternalLink href={data.uri} className="inline-flex w-fit items-center">
 			{content[0].value}
 			<ExternalLinkIcon className="ml-1 h-4 w-4" />
 		</ExternalLink>

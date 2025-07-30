@@ -27,9 +27,9 @@ export default function GridPagination({ data }: IGridPagination) {
 	const nextDisabled = nextPage === currentPage || currentPage === totalPages
 
 	const renderPaginationItems = () => {
-		const items = []
+		const items: React.JSX.Element[] = []
 		const THRESHOLD = !isMobile ? 7 : 5
-		const SIBLINGS = !isMobile ? 2 : 1
+		const ALLOWED_SIBLINGS = !isMobile ? 2 : 1
 
 		// Helper function to add page button
 		const addPageButton = (pageNum: number) => (
@@ -55,8 +55,8 @@ export default function GridPagination({ data }: IGridPagination) {
 			}
 		} else {
 			// Show pages with ellipsis
-			const leftSibling = Math.max(currentPage - SIBLINGS, 2)
-			const rightSibling = Math.min(currentPage + SIBLINGS, totalPages - 1)
+			const leftSibling = Math.max(currentPage - ALLOWED_SIBLINGS, 2)
+			const rightSibling = Math.min(currentPage + ALLOWED_SIBLINGS, totalPages - 1)
 
 			// Add pages between left and right siblings
 			for (let i = leftSibling; i <= rightSibling; i++) {

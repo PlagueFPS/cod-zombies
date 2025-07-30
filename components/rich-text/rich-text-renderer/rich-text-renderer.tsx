@@ -67,7 +67,7 @@ export default function RichTextRenderer({
 
 				if (renderDiv) return <div>{children}</div>
 
-				return <span>{children}</span>
+				return <div>{children}</div>
 			},
 			[BLOCKS.EMBEDDED_ENTRY]: () => {
 				switch (slug) {
