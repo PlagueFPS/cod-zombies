@@ -24,7 +24,8 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 
 			const totalHeight = articleRef.current.scrollHeight - window.innerHeight
 			const scrollPosition = window.scrollY
-			const progress = Math.min(Math.round((scrollPosition / totalHeight) * 100), 100)
+			const currentProgress = Math.max(Math.round((scrollPosition / totalHeight) * 100), 0)
+			const progress = Math.min(currentProgress, 100)
 
 			setProgress(progress)
 		}
