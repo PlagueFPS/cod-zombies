@@ -7,7 +7,7 @@ import { BotIdClient } from "botid/client"
 import { Geist } from "next/font/google"
 import { HashLinkHandler } from "@/components/custom-link/custom-link"
 import Header from "@/components/header/header"
-import ReactScan from "@/components/react-scan/react-scan"
+import ReactScanWrapper from "@/components/react-scan/react-scan-wrapper"
 import { Toaster } from "@/components/ui/sonner"
 import { KeyboardShortcutsProvider } from "@/contexts/keyboard-shortcuts"
 import { ThemeProvider } from "@/contexts/theme-provider"
@@ -74,7 +74,7 @@ export default function RootLayout({ children }: LayoutProps) {
 			<head>
 				<BotIdClient protect={PROTECTED_ROUTES} />
 			</head>
-			{IN_DEVELOPMENT && <ReactScan />}
+			{IN_DEVELOPMENT && <ReactScanWrapper />}
 			<body
 				className={`${geist.className} ${geist.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2 `}
 			>
