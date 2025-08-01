@@ -34,7 +34,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
 		const authed = yield* authorizedRequest(
 			Redacted.value(providedSecret),
-			Redacted.value(env.REVALIDATE_SECRET),
+			Redacted.value(env.DRAFT_SECRET),
 		)
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
