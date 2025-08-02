@@ -24,21 +24,16 @@ const createSuccessResponse = (path: string) =>
 export async function GET(req: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
 		const { slug } = yield* Effect.promise(() => params)
-		const secret = req.nextUrl.searchParams.get("secret")
-		const entryId = req.nextUrl.searchParams.get("entryId")
+		const type = slug[0]
+		const entryId = slug[1]
+		const secret = req.nextUrl.searchParams.get("secret") ?? ""
 
-		if (!secret) return yield* new InvalidRequestError({ message: "Missing secret" })
 		if (!entryId) return yield* new InvalidRequestError({ message: "Missing entryId" })
 
-		const providedSecret = Redacted.make(secret)
-
-		const authed = yield* authorizedRequest(
-			Redacted.value(providedSecret),
-			Redacted.value(env.DRAFT_SECRET),
-		)
+		const authed = yield* authorizedRequest(secret, Redacted.value(env.DRAFT_SECRET))
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
-		const validSlug = yield* Schema.decodeUnknown(AllowedSlugsSchema)(slug[0])
+		const validSlug = yield* Schema.decodeUnknown(AllowedSlugsSchema)(type)
 
 		return yield* Match.value(validSlug).pipe(
 			Match.when("maps", () =>

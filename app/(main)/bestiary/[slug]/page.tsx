@@ -151,6 +151,7 @@ export default async function ZombiePage({ params }: IZombiePage) {
 									featuredImage={zombie.image}
 									quality={100}
 									sizes="422px"
+									priority
 									className="mb-4 aspect-square w-full rounded-lg object-cover object-top"
 								/>
 							</div>
