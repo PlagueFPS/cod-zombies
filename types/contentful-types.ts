@@ -34,7 +34,6 @@ export interface TypeFeaturedMapsFields {
 	releaseDate: EntryFieldTypes.Date
 	isComingSoon?: EntryFieldTypes.Boolean
 	difficulty?: EntryFieldTypes.Symbol<"Easy" | "Hard" | "Medium">
-	timeToRead: EntryFieldTypes.Integer
 	gameCategory: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>
 	image: EntryFieldTypes.AssetLink
 	description: EntryFieldTypes.Text
@@ -146,7 +145,6 @@ export interface TypeSideQuestsFields {
 	title: EntryFieldTypes.Symbol
 	slug: EntryFieldTypes.Symbol
 	isComingSoon?: EntryFieldTypes.Boolean
-	timeToRead: EntryFieldTypes.Integer
 	game: EntryFieldTypes.EntryLink<TypeGameCategorySkeleton>
 	map: EntryFieldTypes.EntryLink<TypeFeaturedMapsSkeleton>
 	image: EntryFieldTypes.AssetLink

@@ -8,7 +8,12 @@ import { getNewEntries } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
-import { createImageDto, createMapCategoryDto, createQuestMapDto } from "@/utils/contentful-utils"
+import {
+	calculateTimeToRead,
+	createImageDto,
+	createMapCategoryDto,
+	createQuestMapDto,
+} from "@/utils/contentful-utils"
 
 export type SideQuest = NonNullable<Awaited<ReturnType<typeof getQuestBySlug>>>
 export type MinifiedSideQuest = Awaited<ReturnType<typeof getQuests>>[number]
@@ -25,7 +30,11 @@ export const getQuests = cache(
 					quests,
 					quest =>
 						Effect.gen(function* () {
-							const { category: game, ...rest } = yield* resolveQuestData(quest, questIds)
+							const {
+								category: game,
+								timeToRead,
+								...rest
+							} = yield* resolveQuestData(quest, questIds)
 							return {
 								...rest,
 								game,
@@ -166,7 +175,6 @@ export const getQuestBySlug = cache(
 					slug: quest.fields.slug,
 					description: quest.fields.description,
 					content: quest.fields.content,
-					timeToRead: quest.fields.timeToRead,
 				}
 			}).pipe(
 				Effect.withLogSpan("get_quest_by_slug"),
@@ -200,6 +208,7 @@ const resolveQuestData = (
 		const isDraft = draftIds.has(quest.sys.id)
 		const isChanged = changedIds.has(quest.sys.id)
 		const isNew = newIds.has(quest.sys.id)
+		const timeToRead = calculateTimeToRead(quest.fields.content)
 
 		return {
 			image,
@@ -208,6 +217,7 @@ const resolveQuestData = (
 			isDraft,
 			isChanged,
 			isNew,
+			timeToRead,
 		}
 	})
 

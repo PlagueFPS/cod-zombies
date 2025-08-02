@@ -10,6 +10,7 @@ import type {
 	TypeZombieAttacksSkeleton,
 	ZombieItem,
 } from "@/types/contentful-types"
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer"
 import { Effect, Predicate } from "effect"
 import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
 import {
@@ -20,6 +21,11 @@ import {
 import { slugify } from "./functions.client"
 import { decodeRichLinkNode } from "./validation-schemas"
 
+/**
+ * Extract headings from a Contentful document.
+ * @param body The Contentful document
+ * @returns An array of headings extracted from the document.
+ */
 export const extractHeadings = (body: Document) => {
 	const headings: Heading[] = []
 
@@ -55,10 +61,26 @@ export const extractHeadings = (body: Document) => {
 	return headings
 }
 
+/**
+ * Calculate the time it takes to read a Contentful document.
+ * @param body The Contentful document
+ * @returns The time it takes to read the document in minutes.
+ */
+export const calculateTimeToRead = (body: Document) => {
+	const plainText = documentToPlainTextString(body)
+	const avgReadingSpeed = 200 // words per minute
+	const wordCount = plainText.split(/\s+/).filter(word => word.length > 0).length
+	return Math.ceil(wordCount / avgReadingSpeed) // always use the worst case
+}
+
+/**
+ * Format the data in a table cell.
+ * @param cellContent The content of the table cell
+ * @returns An object containing the values, embedded items, and badge items.
+ */
 export const formatTableCellData = (cellContent: unknown[]) => {
 	const values: string[] = []
 	const embeddedItems: ZombieItem[] = []
-	let badgeItems: string[] = []
 
 	cellContent.forEach(content => {
 		if (!Predicate.hasProperty(content, "nodeType")) return
@@ -75,12 +97,7 @@ export const formatTableCellData = (cellContent: unknown[]) => {
 				break
 			default: // default in this case is "text"
 				if (Predicate.hasProperty(content, "value") && Predicate.isString(content.value)) {
-					if (content.value.includes(",")) {
-						const items = content.value.split(",").map(item => item.trim())
-						badgeItems = [...badgeItems, ...items]
-					} else {
-						values.push(content.value)
-					}
+					values.push(content.value)
 				}
 				break
 		}
@@ -88,31 +105,57 @@ export const formatTableCellData = (cellContent: unknown[]) => {
 
 	return {
 		values,
-		badgeItems,
 		embeddedItems: embeddedItems.map(item => createItemTooltipDto(item)),
 	}
 }
 
+/**
+ * Calculate the number of items to skip based on the page number and limit.
+ * @param page The page number
+ * @param limit The number of items per page
+ * @returns The number of items to skip
+ */
 export const calculateSkip = (page: number, limit: number) => {
 	return page <= 1 ? 0 : limit * page - limit
 }
 
+/**
+ * Check if an entry was first published.
+ * @param createdAt The creation date of the entry
+ * @param updatedAt The last update date of the entry
+ * @returns True if the entry was first published, false otherwise
+ */
 export const isFirstTimePublish = (createdAt: Date, updatedAt: Date) => {
 	return createdAt.getTime() === updatedAt.getTime()
 }
 
+/**
+ * Check if an entry is a featured map.
+ * @param quest The entry to check
+ * @returns True if the entry is a featured map, false otherwise
+ */
 export const isFeaturedMap = (
 	quest: FeaturedMap | MinifiedFeaturedMap | SideQuest | MinifiedSideQuest,
 ) => {
 	return Predicate.hasProperty(quest, "difficulty")
 }
 
+/**
+ * Check if an entry is a side quest.
+ * @param quest The entry to check
+ * @returns True if the entry is a side quest, false otherwise
+ */
 export const isSideQuest = (
 	quest: FeaturedMap | MinifiedFeaturedMap | SideQuest | MinifiedSideQuest,
 ) => {
 	return Predicate.hasProperty(quest, "map")
 }
 
+/**
+ * Create a Data Transfer Object for a zombie item.
+ * @param item The zombie item to create a DTO for
+ * @returns The DTO for the zombie item
+ */
 export const createItemTooltipDto = (item: ZombieItem) => {
 	const itemImage = item.fields.image
 
@@ -135,6 +178,11 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 	}
 }
 
+/**
+ * Create a Data Transfer Object for an image.
+ * @param image The image to create a DTO for
+ * @returns The DTO for the image
+ */
 export const createImageDto = (image: Asset<undefined, string> | undefined) => {
 	return {
 		url: image?.fields.file?.url,
@@ -142,6 +190,12 @@ export const createImageDto = (image: Asset<undefined, string> | undefined) => {
 		height: image?.fields.file?.details?.image?.height,
 	}
 }
+
+/**
+ * Create a Data Transfer Object for a map category.
+ * @param category The map category to create a DTO for
+ * @returns The DTO for the map category
+ */
 export const createMapCategoryDto = (
 	category: Entry<TypeGameCategorySkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
 ) =>
@@ -161,6 +215,11 @@ export const createMapCategoryDto = (
 		Effect.catchAll(error => Effect.dieMessage(error.message)),
 	)
 
+/**
+ * Create a Data Transfer Object for a quest map.
+ * @param map The quest map to create a DTO for
+ * @returns The DTO for the quest map
+ */
 export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(
 	map: Entry<T, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
 ) =>
@@ -180,6 +239,11 @@ export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFea
 		Effect.catchAll(error => Effect.dieMessage(error.message)),
 	)
 
+/**
+ * Create a Data Transfer Object for a zombie attack.
+ * @param attack The zombie attack to create a DTO for
+ * @returns The DTO for the zombie attack
+ */
 export const createZombieAttackDto = (
 	attack: Entry<TypeZombieAttacksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
 ) =>

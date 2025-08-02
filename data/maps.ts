@@ -8,7 +8,7 @@ import { getNewEntries } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
-import { createImageDto, createMapCategoryDto } from "@/utils/contentful-utils"
+import { calculateTimeToRead, createImageDto, createMapCategoryDto } from "@/utils/contentful-utils"
 
 export type FeaturedMap = NonNullable<Awaited<ReturnType<typeof getMapBySlug>>>
 export type MinifiedFeaturedMap = Awaited<ReturnType<typeof getMaps>>[number]
@@ -26,7 +26,7 @@ export const getMaps = cache(
 					maps,
 					map =>
 						Effect.gen(function* () {
-							const mapData = yield* resolveMapData(map, mapIds)
+							const { timeToRead, ...mapData } = yield* resolveMapData(map, mapIds)
 							return {
 								...mapData,
 								id: map.sys.id,
@@ -116,7 +116,6 @@ export const getMapBySlug = cache(
 					body: map.fields.body,
 					isComingSoon: map.fields.isComingSoon ?? false,
 					difficulty: map.fields.difficulty,
-					timeToRead: map.fields.timeToRead,
 				}
 			}).pipe(
 				Effect.withLogSpan("get_map_by_slug"),
@@ -208,6 +207,7 @@ const resolveMapData = (
 		const isDraft = draftIds.has(map.sys.id)
 		const isChanged = changedIds.has(map.sys.id)
 		const isNew = newIds.has(map.sys.id)
+		const timeToRead = calculateTimeToRead(map.fields.body)
 
 		return {
 			image,
@@ -215,6 +215,7 @@ const resolveMapData = (
 			isDraft,
 			isChanged,
 			isNew,
+			timeToRead,
 		}
 	}).pipe(Effect.withLogSpan("resolve_map_data"))
 

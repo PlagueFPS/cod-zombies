@@ -1,5 +1,5 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
-import { BLOCKS, type Document, INLINES, MARKS } from "@contentful/rich-text-types"
+import { BLOCKS, type Document, INLINES } from "@contentful/rich-text-types"
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { cn } from "@/lib/utils"
 import { createItemTooltipDto } from "@/utils/contentful-utils"
