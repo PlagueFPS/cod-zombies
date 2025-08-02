@@ -2,8 +2,8 @@
 import type { createItemTooltipDto } from "@/utils/contentful-utils"
 import { RarityBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
@@ -19,14 +19,15 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
 	return (
 		<>
 			{!isMobile ? (
-				<TooltipProvider delayDuration={200}>
-					<Tooltip>
-						<TooltipTrigger
-							className={cn(
-								"group relative inline-flex items-center justify-center gap-2",
-								className,
-							)}
-						>
+				<HoverCard openDelay={200}>
+					<HoverCardTrigger
+						className={cn(
+							"group relative inline-flex cursor-default items-center justify-center gap-2",
+							className,
+						)}
+						asChild
+					>
+						<span>
 							<IconImage
 								featuredImage={image}
 								alt={`${title} Image`}
@@ -60,36 +61,37 @@ export default function ItemTooltip({ item, className }: ItemTooltipProps) {
 							>
 								{title}
 							</span>
-						</TooltipTrigger>
-						<TooltipContent
-							className={cn(
-								`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200 `,
-								{
-									"border-red-600/25 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
-										rarity === "Ultra",
-									"border-orange-600/25 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
-										rarity === "Legendary",
-									"border-purple-600/25 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
-										rarity === "Epic",
-									"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
-										rarity === "Rare",
-								},
-								{
-									"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
-										type === "Time-Based",
-									"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
-										type === "Round-Based",
-									"border-orange-600/30 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
-										type === "Immediate",
-									"border-purple-600/30 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
-										type === "Player-Activated",
-								},
-							)}
-						>
-							{<ItemTooltipContent item={item} />}
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
+						</span>
+					</HoverCardTrigger>
+					<HoverCardContent
+						side="top"
+						className={cn(
+							`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200 `,
+							{
+								"border-red-600/25 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+									rarity === "Ultra",
+								"border-orange-600/25 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
+									rarity === "Legendary",
+								"border-purple-600/25 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
+									rarity === "Epic",
+								"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
+									rarity === "Rare",
+							},
+							{
+								"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
+									type === "Time-Based",
+								"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
+									type === "Round-Based",
+								"border-orange-600/30 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
+									type === "Immediate",
+								"border-purple-600/30 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
+									type === "Player-Activated",
+							},
+						)}
+					>
+						{<ItemTooltipContent item={item} />}
+					</HoverCardContent>
+				</HoverCard>
 			) : (
 				<ItemPopover item={item} className={className} />
 			)}
@@ -200,11 +202,11 @@ const ItemTooltipContent = ({ item }: ItemTooltipProps) => {
 					{rarity}
 				</RarityBadge>
 			) : null}
-				{type && rarity ? (
-					<RarityBadge rarity={rarity} type={type} className="absolute top-4 right-4">
-						{type}
-					</RarityBadge>
-				) : null}
+			{type && rarity ? (
+				<RarityBadge rarity={rarity} type={type} className="absolute top-4 right-4">
+					{type}
+				</RarityBadge>
+			) : null}
 			<div className="relative flex items-center justify-center">
 				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
 				<IconImage
