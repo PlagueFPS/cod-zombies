@@ -100,12 +100,6 @@ export default function RichTextRenderer({
 				return <OrderedList>{children}</OrderedList>
 			},
 		},
-		renderMark: {
-			[MARKS.ITALIC]: (text: any) => {
-				if (text?.props?.children === "Important Note: ") return null
-				return <i>{text}</i>
-			},
-		},
 	}
 
 	return (
