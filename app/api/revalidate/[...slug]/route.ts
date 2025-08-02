@@ -1,8 +1,9 @@
 import type { NextRequest } from "next/server"
 import { FetchHttpClient } from "@effect/platform"
-import { Effect, Layer, Redacted, Schema } from "effect"
+import { Duration, Effect, Layer, Redacted, Schema } from "effect"
 import { headers } from "next/headers"
 import { env } from "@/env"
+import { revalidateRateLimit } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
 import { Email } from "@/lib/services/Email"
 import { AuthorizationError, JSONParseError } from "@/types/errors"
@@ -27,6 +28,23 @@ const RevalidateLayer = Layer.mergeAll(Email.Default, Cache.Default, FetchHttpCl
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
+		const { success, limit, reset, remaining } = yield* Effect.promise(() =>
+			revalidateRateLimit.limit("global_revalidation_key"),
+		)
+		if (!success) {
+			const resetTime = new Date(reset).getTime()
+			const remainingTime = Duration.subtract(resetTime, Date.now()).pipe(Duration.toMillis)
+			return new Response(`Rate limit exceeded. Please try again in ${remainingTime}ms`, {
+				status: 429,
+				headers: {
+					"Retry-After": remainingTime.toString(),
+					"X-RateLimit-Reset": resetTime.toString(),
+					"X-RateLimit-Limit": limit.toString(),
+					"X-RateLimit-Remaining": remaining.toString(),
+				},
+			})
+		}
+
 		const [{ slug }, headerList] = yield* Effect.all(
 			[Effect.promise(() => params), Effect.promise(() => headers())],
 			{

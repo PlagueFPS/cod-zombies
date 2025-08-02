@@ -28,6 +28,11 @@ export const ratelimit = new Ratelimit({
 	enableProtection: true,
 })
 
+export const revalidateRateLimit = new Ratelimit({
+	redis,
+	limiter: Ratelimit.tokenBucket(5, "1s", 5),
+})
+
 const EntryResponseSchema = Schema.Struct({
 	createdAt: Schema.Date,
 	status: Schema.Literal("Coming Soon", "Published"),
