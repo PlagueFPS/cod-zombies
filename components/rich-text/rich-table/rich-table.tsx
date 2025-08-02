@@ -1,5 +1,11 @@
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { formatTableCellData } from "@/utils/contentful-utils"
 import { slugify } from "@/utils/functions.client"
@@ -17,7 +23,10 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
 				<TableHeader className="rounded-t-xl dark:border-orange-700">
 					<TableRow>
 						{headings.map(heading => (
-							<TableHead key={`table-heading-${slugify(heading)}`} className="text-orange-900 dark:text-orange-400">
+							<TableHead
+								key={`table-heading-${slugify(heading)}`}
+								className="text-orange-900 dark:text-orange-400"
+							>
 								{heading}
 							</TableHead>
 						))}
@@ -33,31 +42,17 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
 						>
 							{Array.isArray(row) &&
 								row.map((cell: any, cellIndex: number) => {
-									const { values, badgeItems, embeddedItems } = formatTableCellData(cell.content[0].content)
+									const { values, embeddedItems } = formatTableCellData(cell.content[0].content)
 
 									return (
-										<TableCell key={`table-cell-${cellIndex + 1}`} className="text-orange-800 dark:text-orange-200">
+										<TableCell
+											key={`table-cell-${cellIndex + 1}`}
+											className="text-orange-800 dark:text-orange-200"
+										>
 											{values.map(value => {
 												if (value) return value
-                        return null
+												return null
 											})}
-											{badgeItems.length > 0 && (
-												<span className="inline-flex flex-col items-start gap-2">
-													{badgeItems.map((item, index) => {
-														if (item)
-															return (
-																<Badge
-																	key={`table-cell-badge-${index + 1}`}
-																	className="badge-primary-gradient dark:dark-badge-primary-gradient"
-																	variant={"outline"}
-																>
-																	{item}
-																</Badge>
-															)
-															return null
-														})}
-												</span>
-											)}
 											{embeddedItems.length > 0 && (
 												<span className="inline-flex flex-col items-start gap-2">
 													{embeddedItems.map((item, index) => (
