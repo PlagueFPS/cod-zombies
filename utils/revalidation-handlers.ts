@@ -25,6 +25,7 @@ interface RevalidateData {
 }
 
 interface BroadcastEntry {
+	id: string
 	title: string
 	slug: string
 	description: string
@@ -58,8 +59,8 @@ const sendQuestBroadcast = <T extends BroadcastEntry>(
 		)
 		const fetchUrl =
 			type === "Main"
-				? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.slug}`
-				: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.slug}`
+				? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.id}`
+				: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.id}`
 
 		const imageUrl = yield* httpClient.get(fetchUrl).pipe(Effect.flatMap(res => res.text))
 		return yield* sendQuestReleaseBroadcast({ type, redirectUrl: url, imageUrl, ...entry })

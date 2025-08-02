@@ -4,9 +4,9 @@ import { join } from "node:path"
 import { Effect } from "effect"
 import { LoadFontDataError } from "@/types/errors"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import { getMapBySlug } from "./maps"
-import { getQuestBySlug } from "./side-quests"
-import { getZombieBySlug } from "./zombies"
+import { getMapById } from "./maps"
+import { getQuestById } from "./side-quests"
+import { getZombieById } from "./zombies"
 
 export const getFontData = Effect.gen(function* () {
 	const [geistSemiBold, geistBold] = yield* Effect.all(
@@ -32,24 +32,24 @@ export const getFontData = Effect.gen(function* () {
 	Effect.catchAll(() => Effect.succeed(null)),
 )
 
-export const getImageDataForType = async (type: TAllowedSlugs, slug: string) => {
+export const getImageDataForType = Effect.fnUntraced(function* (type: TAllowedSlugs, id: string) {
 	switch (type) {
 		case "maps": {
-			const map = await getMapBySlug(IN_DEVELOPMENT, slug)
+			const map = yield* Effect.promise(() => getMapById(IN_DEVELOPMENT, id))
 			if (!map) return null
-			return { url: map.image.url, id: map.id }
+			return { url: map.image.url, id: map.id, slug: map.slug }
 		}
 		case "zombies": {
-			const zombie = await getZombieBySlug(IN_DEVELOPMENT, slug)
+			const zombie = yield* Effect.promise(() => getZombieById(IN_DEVELOPMENT, id))
 			if (!zombie) return null
-			return { url: zombie.image.url, id: zombie.id }
+			return { url: zombie.image.url, id: zombie.id, slug: zombie.slug }
 		}
 		case "side-quests": {
-			const sideQuest = await getQuestBySlug(IN_DEVELOPMENT, slug)
+			const sideQuest = yield* Effect.promise(() => getQuestById(IN_DEVELOPMENT, id))
 			if (!sideQuest) return null
-			return { url: sideQuest.image.url, id: sideQuest.id }
+			return { url: sideQuest.image.url, id: sideQuest.id, slug: sideQuest.slug }
 		}
 		default:
 			return null
 	}
-}
+}, Effect.withLogSpan("get_image_data_for_type"))

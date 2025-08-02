@@ -40,14 +40,14 @@ export async function GET(_: NextRequest, { params }: RouteParams) {
 		const paramsResult = yield* Effect.promise(() => params)
 		const { slug } = yield* Schema.decodeUnknown(ParamsSchema)(paramsResult)
 		const type = slug[0]
-		const entrySlug = slug[1]
-		const imageData = yield* Effect.promise(() => getImageDataForType(type, entrySlug))
+		const entryId = slug[1]
+		const imageData = yield* getImageDataForType(type, entryId)
 		if (!imageData || !imageData.url)
 			return yield* new OgImageGenerationError({
-				message: `No image url found for type: ${type} and slug: ${entrySlug}`,
+				message: `No image url found for type: ${type} and slug: ${entryId}`,
 			})
 
-		const { url, id } = imageData
+		const { url, id, slug: entrySlug } = imageData
 		const payload = `${url}-${entrySlug}`
 		const contentHash = createHash("sha1").update(payload).digest("hex").substring(0, 16)
 		const cachedHash = yield* IMAGE_CACHE.get(id)
