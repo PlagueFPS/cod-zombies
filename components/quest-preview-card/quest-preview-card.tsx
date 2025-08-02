@@ -98,7 +98,13 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 								className="h-44 rounded-md object-cover"
 							/>
 						</div>
-						<CardTitle className="text-xl will-change-transform">{quest.title}</CardTitle>
+						<CardTitle
+							className={cn("text-xl will-change-transform", {
+								"text-lg": quest.title.length > 25,
+							})}
+						>
+							{quest.title}
+						</CardTitle>
 						<CardDescription className="text-foreground/85">{quest.description}</CardDescription>
 					</CardHeader>
 				</Card>
