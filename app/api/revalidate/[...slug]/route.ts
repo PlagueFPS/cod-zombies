@@ -28,22 +28,14 @@ const RevalidateLayer = Layer.mergeAll(Email.Default, Cache.Default, FetchHttpCl
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
-		const { success, limit, reset, remaining } = yield* Effect.promise(() =>
-			revalidateRateLimit.limit("global_revalidation_key"),
+		const { success } = yield* Effect.promise(() =>
+			revalidateRateLimit.blockUntilReady(
+				"global_revalidation_key",
+				Duration.toMillis("30 seconds"),
+			),
 		)
-		if (!success) {
-			const resetTime = new Date(reset).getTime()
-			const remainingTime = Duration.subtract(resetTime, Date.now()).pipe(Duration.toMillis)
-			return new Response(`Rate limit exceeded. Please try again in ${remainingTime}ms`, {
-				status: 429,
-				headers: {
-					"Retry-After": remainingTime.toString(),
-					"X-RateLimit-Reset": resetTime.toString(),
-					"X-RateLimit-Limit": limit.toString(),
-					"X-RateLimit-Remaining": remaining.toString(),
-				},
-			})
-		}
+		if (!success)
+			return new Response("Unable to process request within the timeout window.", { status: 500 })
 
 		const [{ slug }, headerList] = yield* Effect.all(
 			[Effect.promise(() => params), Effect.promise(() => headers())],
