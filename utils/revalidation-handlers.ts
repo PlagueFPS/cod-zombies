@@ -1,10 +1,12 @@
 import "server-only"
-import { HttpClient } from "@effect/platform"
-import { Effect, Schedule } from "effect"
+import type { IZombieRelease } from "@/emails/ZombieReleaseEmail"
+import type { TAllowedSlugs } from "./validation-schemas"
+import { Effect } from "effect"
 import { revalidateTag } from "next/cache"
 import { getGameById } from "@/data/games"
 import { getLegalDocById } from "@/data/legal"
 import { getMapById } from "@/data/maps"
+import { getImageUrl } from "@/data/og-images"
 import { getQuestById } from "@/data/side-quests"
 import { getZombieById } from "@/data/zombies"
 import { env } from "@/env"
@@ -24,7 +26,7 @@ interface RevalidateData {
 	updatedAt: Date
 }
 
-interface BroadcastEntry {
+export interface BroadcastEntry {
 	id: string
 	title: string
 	slug: string
@@ -46,25 +48,39 @@ const createSuccessResponse = (message: string, broadcast: BroadcastResponse | n
 
 const sendQuestBroadcast = <T extends BroadcastEntry>(
 	type: "Main" | "Side",
+	entryType: TAllowedSlugs,
 	entry: T,
-	url: string,
+	redirectUrl: string,
 ) =>
 	Effect.gen(function* () {
-		const httpClient = (yield* HttpClient.HttpClient).pipe(
-			HttpClient.retryTransient({
-				times: 3,
-				schedule: Schedule.exponential("50 millis", 2),
-			}),
-			HttpClient.filterStatusOk,
-		)
-		const fetchUrl =
-			type === "Main"
-				? `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/maps/${entry.id}`
-				: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/side-quests/${entry.id}`
+		const imageUrl = yield* getImageUrl(entryType, entry)
+		return yield* sendQuestReleaseBroadcast({ type, redirectUrl, imageUrl, ...entry })
+	}).pipe(
+		Effect.withLogSpan("send_quest_broadcast"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(error => Effect.succeed({ success: false, message: error.message })),
+	)
 
-		const imageUrl = yield* httpClient.get(fetchUrl).pipe(Effect.flatMap(res => res.text))
-		return yield* sendQuestReleaseBroadcast({ type, redirectUrl: url, imageUrl, ...entry })
-	}).pipe(Effect.withLogSpan("send_quest_broadcast"))
+const sendZombieBroadcast = (
+	entry: NonNullable<Awaited<ReturnType<typeof getZombieById>>>,
+	redirectUrl: string,
+) =>
+	Effect.gen(function* () {
+		const imageUrl = yield* getImageUrl("zombies", entry)
+		const broadcastData: IZombieRelease = {
+			type: entry.type,
+			title: entry.title,
+			imageUrl,
+			description: entry.description,
+			redirectUrl,
+		}
+
+		return yield* sendZombieReleaseBroadcast(broadcastData)
+	}).pipe(
+		Effect.withLogSpan("send_zombie_broadcast"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(error => Effect.succeed({ success: false, message: error.message })),
+	)
 
 /**
  * Collection of revalidation handlers for different content types.
@@ -92,30 +108,28 @@ export const RevalidateHandlers = {
 				})
 
 			const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game}/${map.slug}`
-			let broadcast: BroadcastResponse | null = null
+			let shouldBroadcast = false
 
 			if (isFirstTimePublish(createdAt, updatedAt)) {
 				const status = map.isComingSoon ? "Coming Soon" : "Published"
 				yield* storeNewEntryId(entryId, createdAt, status, "mainQuest")
 
-				if (!map.isComingSoon) broadcast = yield* sendQuestBroadcast("Main", map, url)
+				if (!map.isComingSoon) shouldBroadcast = true
 			} else {
 				const status = yield* getEntryStatus(entryId)
 				if (status === "Coming Soon" && !map.isComingSoon) {
-					const [_, broadcastResult] = yield* Effect.all(
-						[
-							updateEntryStatus(entryId, updatedAt, "Published"),
-							sendQuestBroadcast("Main", map, url),
-						],
-						{ concurrency: "unbounded" },
-					)
-
-					broadcast = broadcastResult
+					yield* updateEntryStatus(entryId, updatedAt, "Published")
+					shouldBroadcast = true
 				}
 			}
 
 			revalidateTag(CACHE_KEYS.featuredMaps.all)
-			return createSuccessResponse("Map revalidated", broadcast)
+			if (shouldBroadcast) {
+				const broadcast = yield* sendQuestBroadcast("Main", "maps", map, url)
+				return createSuccessResponse("Map revalidated", broadcast)
+			}
+
+			return createSuccessResponse("Map revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("maps_revalidate_handler"),
 			Effect.tap(() => Effect.log(`Successfully revalidated map data`)),
@@ -180,30 +194,29 @@ export const RevalidateHandlers = {
 				})
 
 			const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${quest.game}/${quest.map}/${quest.slug}`
-			let broadcast: BroadcastResponse | null = null
+			let shouldBroadcast = false
 
 			if (isFirstTimePublish(createdAt, updatedAt)) {
 				const status = quest.isComingSoon ? "Coming Soon" : "Published"
 				yield* storeNewEntryId(entryId, createdAt, status, "sideQuest")
 
-				if (!quest.isComingSoon) broadcast = yield* sendQuestBroadcast("Side", quest, url)
+				if (!quest.isComingSoon) shouldBroadcast = true
 			} else {
 				const status = yield* getEntryStatus(entryId)
 				if (status === "Coming Soon" && !quest.isComingSoon) {
-					const [_, broadcastResult] = yield* Effect.all(
-						[
-							updateEntryStatus(entryId, updatedAt, "Published"),
-							sendQuestBroadcast("Side", quest, url),
-						],
-						{ concurrency: "unbounded" },
-					)
+					yield* updateEntryStatus(entryId, updatedAt, "Published")
 
-					broadcast = broadcastResult
+					shouldBroadcast = true
 				}
 			}
 
 			revalidateTag(CACHE_KEYS.sideQuests.all)
-			return createSuccessResponse("Side Quest revalidated", broadcast)
+			if (shouldBroadcast) {
+				const broadcast = yield* sendQuestBroadcast("Side", "side-quests", quest, url)
+				return createSuccessResponse("Side Quest revalidated", broadcast)
+			}
+
+			return createSuccessResponse("Side Quest revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("side_quests_revalidate_handler"),
 			Effect.tap(() => Effect.log("Successfully revalidated side quest data")),
@@ -231,38 +244,28 @@ export const RevalidateHandlers = {
 				})
 
 			const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
-			const broadcastData = {
-				type: zombie.type,
-				title: zombie.title,
-				imageUrl: `${env.NEXT_PUBLIC_WEBSITE_URL}/api/og/zombies/${zombie.slug}`,
-				description: zombie.description,
-				redirectUrl: url,
-			}
-
-			let broadcast: BroadcastResponse | null = null
+			let shouldBroadcast = false
 
 			if (isFirstTimePublish(createdAt, updatedAt)) {
 				const status = zombie.isComingSoon ? "Coming Soon" : "Published"
 				yield* storeNewEntryId(entryId, createdAt, status, "zombie")
 
-				if (!zombie.isComingSoon) broadcast = yield* sendZombieReleaseBroadcast(broadcastData)
+				if (!zombie.isComingSoon) shouldBroadcast = true
 			} else {
 				const status = yield* getEntryStatus(entryId)
 				if (status === "Coming Soon" && !zombie.isComingSoon) {
-					const [_, broadcastResult] = yield* Effect.all(
-						[
-							updateEntryStatus(entryId, updatedAt, "Published"),
-							sendZombieReleaseBroadcast(broadcastData),
-						],
-						{ concurrency: "unbounded" },
-					)
-
-					broadcast = broadcastResult
+					yield* updateEntryStatus(entryId, updatedAt, "Published")
+					shouldBroadcast = true
 				}
 			}
 
 			revalidateTag(CACHE_KEYS.zombies.all)
-			return createSuccessResponse("Zombie revalidated", broadcast)
+			if (shouldBroadcast) {
+				const broadcast = yield* sendZombieBroadcast(zombie, url)
+				return createSuccessResponse("Zombie revalidated", broadcast)
+			}
+
+			return createSuccessResponse("Zombie revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("zombies_revalidate_handler"),
 			Effect.tap(() => Effect.log("Successfully revalidated zombies data")),
@@ -288,14 +291,20 @@ export const RevalidateHandlers = {
 					cause: null,
 				})
 
-			let broadcast: BroadcastResponse | null = null
+			let shouldBroadcast = false
 
+			// We broadcast on updates instead of first-time publish to notify users of policy changes
 			if (!isFirstTimePublish(createdAt, updatedAt)) {
-				broadcast = yield* sendLegalUpdateBroadcast
+				shouldBroadcast = true
 			}
 
 			revalidateTag(CACHE_KEYS.legal.all)
-			return createSuccessResponse("Legal document revalidated", broadcast)
+			if (shouldBroadcast) {
+				const broadcast = yield* sendLegalUpdateBroadcast
+				return createSuccessResponse("Legal document revalidated", broadcast)
+			}
+
+			return createSuccessResponse("Legal document revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("legal_revalidate_handler"),
 			Effect.tap(() => Effect.log("Successfully revalidated legal docs data")),

@@ -19,7 +19,7 @@ export class FileStorage extends Effect.Service<FileStorage>()("FileStorage", {
 
 		const getImage = (imagePath: string) =>
 			Effect.tryPromise({
-				try: () => head(imagePath),
+				try: signal => head(imagePath, { abortSignal: signal }),
 				catch: error =>
 					new GetFileError({ message: `Failed to get file: ${imagePath}`, cause: error }),
 			})
