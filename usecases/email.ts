@@ -1,7 +1,8 @@
 import type { CreateBroadcastOptions } from "resend"
+import type { IQuestRelease } from "@/emails/QuestReleaseEmail"
 import { Effect, Redacted } from "effect"
 import PrivacyPolicyUpdateEmail from "@/emails/PolicyUpdateEmail"
-import QuestReleaseEmail, { type IQuestRelease } from "@/emails/QuestReleaseEmail"
+import QuestReleaseEmail from "@/emails/QuestReleaseEmail"
 import SubscribeEmail from "@/emails/SubscribeEmail"
 import UnsubscribeEmail from "@/emails/UnsubscribeEmail"
 import ZombieReleaseEmail, { type IZombieRelease } from "@/emails/ZombieReleaseEmail"
@@ -108,8 +109,8 @@ const createAndSendBroadcast = (title: string, payload: CreateBroadcastOptions) 
 		return { success: true, message: `${title} Broadcast sent successfully!` }
 	}).pipe(Effect.withLogSpan("create_and_send_broadcast"), Effect.annotateLogs("title", title))
 
-export const sendQuestReleaseBroadcast = Effect.fnUntraced(
-	function* (props: IQuestRelease) {
+export const sendQuestReleaseBroadcast = (props: Omit<IQuestRelease, "unsubscribeUrl">) =>
+	Effect.gen(function* () {
 		const unsubscribeUrl = yield* getUnsubscribeUrl
 
 		return yield* createAndSendBroadcast(props.title, {
@@ -119,17 +120,16 @@ export const sendQuestReleaseBroadcast = Effect.fnUntraced(
 			react: QuestReleaseEmail({ ...props, unsubscribeUrl }),
 			name: `${props.title} Release`,
 		})
-	},
-	Effect.withLogSpan("send_quest_release_broadcast"),
-	(_, props) =>
+	}).pipe(
+		Effect.withLogSpan("send_quest_release_broadcast"),
 		Effect.annotateLogs({
 			title: props.title,
 			type: props.type,
 		}),
-)
+	)
 
-export const sendZombieReleaseBroadcast = Effect.fnUntraced(
-	function* (props: IZombieRelease) {
+export const sendZombieReleaseBroadcast = (props: Omit<IZombieRelease, "unsubscribeUrl">) =>
+	Effect.gen(function* () {
 		const unsubscribeUrl = yield* getUnsubscribeUrl
 
 		return yield* createAndSendBroadcast(props.title, {
@@ -139,14 +139,13 @@ export const sendZombieReleaseBroadcast = Effect.fnUntraced(
 			react: ZombieReleaseEmail({ ...props, unsubscribeUrl }),
 			name: `${props.title} Release`,
 		})
-	},
-	Effect.withLogSpan("send_zombie_release_broadcast"),
-	(_, props) =>
+	}).pipe(
+		Effect.withLogSpan("send_zombie_release_broadcast"),
 		Effect.annotateLogs({
 			title: props.title,
 			type: props.type,
 		}),
-)
+	)
 
 export const sendLegalUpdateBroadcast = Effect.gen(function* () {
 	const unsubscribeUrl = yield* getUnsubscribeUrl

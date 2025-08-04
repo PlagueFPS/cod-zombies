@@ -67,7 +67,7 @@ const sendZombieBroadcast = (
 ) =>
 	Effect.gen(function* () {
 		const imageUrl = yield* getImageUrl("zombies", entry)
-		const broadcastData: IZombieRelease = {
+		const broadcastData: Omit<IZombieRelease, "unsubscribeUrl"> = {
 			type: entry.type,
 			title: entry.title,
 			imageUrl,
