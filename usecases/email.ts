@@ -108,40 +108,64 @@ const createAndSendBroadcast = (title: string, payload: CreateBroadcastOptions) 
 		return { success: true, message: `${title} Broadcast sent successfully!` }
 	}).pipe(Effect.withLogSpan("create_and_send_broadcast"), Effect.annotateLogs("title", title))
 
-export const sendQuestReleaseBroadcast = (props: IQuestRelease) =>
-	createAndSendBroadcast(props.title, {
-		audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
-		from: "COD Zombies Guides <updates@codzombiesguides.com>",
-		subject: `New ${props.type} Quest Guide: ${props.title}`,
-		react: QuestReleaseEmail(props),
-		name: `${props.title} Release`,
-	}).pipe(
-		Effect.withLogSpan("send_quest_release_broadcast"),
+export const sendQuestReleaseBroadcast = Effect.fnUntraced(
+	function* (props: IQuestRelease) {
+		const unsubscribeUrl = yield* getUnsubscribeUrl
+
+		return yield* createAndSendBroadcast(props.title, {
+			audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
+			from: "COD Zombies Guides <updates@codzombiesguides.com>",
+			subject: `New ${props.type} Quest Guide: ${props.title}`,
+			react: QuestReleaseEmail({ ...props, unsubscribeUrl }),
+			name: `${props.title} Release`,
+		})
+	},
+	Effect.withLogSpan("send_quest_release_broadcast"),
+	(_, props) =>
 		Effect.annotateLogs({
 			title: props.title,
 			type: props.type,
 		}),
-	)
+)
 
-export const sendZombieReleaseBroadcast = (props: IZombieRelease) =>
-	createAndSendBroadcast(props.title, {
-		audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
-		from: "COD Zombies Guides <updates@codzombiesguides.com>",
-		subject: `New ${props.type} Zombie Release: ${props.title}`,
-		react: ZombieReleaseEmail(props),
-		name: `${props.title} Release`,
-	}).pipe(
-		Effect.withLogSpan("send_zombie_release_broadcast"),
+export const sendZombieReleaseBroadcast = Effect.fnUntraced(
+	function* (props: IZombieRelease) {
+		const unsubscribeUrl = yield* getUnsubscribeUrl
+
+		return yield* createAndSendBroadcast(props.title, {
+			audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
+			from: "COD Zombies Guides <updates@codzombiesguides.com>",
+			subject: `New ${props.type} Zombie Release: ${props.title}`,
+			react: ZombieReleaseEmail({ ...props, unsubscribeUrl }),
+			name: `${props.title} Release`,
+		})
+	},
+	Effect.withLogSpan("send_zombie_release_broadcast"),
+	(_, props) =>
 		Effect.annotateLogs({
 			title: props.title,
 			type: props.type,
 		}),
-	)
+)
 
-export const sendLegalUpdateBroadcast = createAndSendBroadcast("Privacy Policy", {
-	audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
-	from: "COD Zombies Guides <legal@codzombiesguides.com>",
-	subject: `Privacy Policy Update Notice`,
-	react: PrivacyPolicyUpdateEmail(),
-	name: "Privacy Policy Update",
+export const sendLegalUpdateBroadcast = Effect.gen(function* () {
+	const unsubscribeUrl = yield* getUnsubscribeUrl
+
+	return yield* createAndSendBroadcast("Privacy Policy", {
+		audienceId: Redacted.value(env.RESEND_AUDIENCE_ID),
+		from: "COD Zombies Guides <legal@codzombiesguides.com>",
+		subject: `Privacy Policy Update Notice`,
+		react: PrivacyPolicyUpdateEmail({ unsubscribeUrl }),
+		name: "Privacy Policy Update",
+	})
 }).pipe(Effect.withLogSpan("send_legal_update_broadcast"))
+
+const getUnsubscribeUrl = Effect.gen(function* () {
+	// These tokens will expire in 30 days since they weren't user requested
+	const token = yield* generateToken(crypto.randomUUID(), "30 days")
+	return `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
+}).pipe(
+	Effect.withLogSpan("get_unsubscribe_url"),
+	Effect.tapError(Effect.logError),
+	Effect.catchAll(() => Effect.succeed(`${env.NEXT_PUBLIC_WEBSITE_URL}/newsletter/unsubscribe`)),
+)

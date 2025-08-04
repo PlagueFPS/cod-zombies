@@ -16,7 +16,7 @@ import {
 import { env } from "@/env"
 import { DATE_OPTIONS } from "@/utils/constants"
 
-export default function PrivacyPolicyUpdateEmail() {
+export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscribeUrl: string }) {
 	const today = new Date()
 	const currentYear = new Date(today).getFullYear()
 	const oneMonthFromNow = new Date(today)
@@ -103,10 +103,7 @@ export default function PrivacyPolicyUpdateEmail() {
 							<Text className="m-0 text-[14px] text-gray-500 italic">
 								© {currentYear} Call of Duty: Zombies Guides. All rights reserved. You&apos;re
 								receiving this email because you opted-in via our website. You may{" "}
-								<Link href={`${env.NEXT_PUBLIC_WEBSITE_URL}/newsletter/unsubscribe`}>
-									unsubscribe
-								</Link>{" "}
-								at any point you choose.
+								<Link href={unsubscribeUrl}>unsubscribe</Link> at any point you choose.
 							</Text>
 
 							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
