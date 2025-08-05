@@ -73,10 +73,10 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 					<div className="border-b pb-4">
 						<Button
 							variant={"ghost"}
-							className="w-full justify-start rounded-sm bg-accent font-medium dark:bg-accent/50"
+							className="w-full justify-start truncate rounded-sm bg-accent font-medium dark:bg-accent/50"
 							onClick={() => setIsExpanded(!isExpanded)}
 						>
-							{currentHeading?.text || "Introduction"}
+							<span className="truncate">{currentHeading?.text || "Introduction"}</span>
 						</Button>
 					</div>
 					<ScrollArea

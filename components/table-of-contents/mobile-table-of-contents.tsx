@@ -6,7 +6,15 @@ import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
 import { ScrollArea } from "../ui/scroll-area"
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
+import {
+	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "../ui/sheet"
 
 interface MobileTableOfContentsProps {
 	headings: Heading[]
@@ -22,14 +30,19 @@ export default function MobileTableOfContents({
 	progress,
 }: MobileTableOfContentsProps) {
 	return (
-		<div className="sticky top-16 z-40 block w-full bg-background/90 p-3 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs xl:hidden">
+		<div className="sticky top-16 z-40 block w-full bg-background/90 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs xl:hidden">
 			<Sheet>
-				<SheetTrigger className="flex flex-col items-center">
-					<div className="flex items-center gap-1">
-						<ChevronsRight className="size-5" />
-						<h3 className="font-bold">{currentHeading?.text || "Introduction"}</h3>
+				<SheetTrigger asChild>
+					<div className="relative flex w-full flex-col items-center p-3">
+						<div className="flex w-full items-center gap-1 overflow-hidden">
+							<ChevronsRight className="size-5 shrink-0" />
+							<h3 className="truncate font-bold">{currentHeading?.text || "Introduction"}</h3>
+						</div>
+						<Progress
+							value={progress}
+							className="absolute right-0 bottom-0 z-50 h-1 w-full rounded-none"
+						/>
 					</div>
-					<Progress value={progress} className="absolute right-0 bottom-0 z-50 h-1 w-full" />
 				</SheetTrigger>
 				<SheetContent side="left" className="z-500 flex flex-col items-center gap-4">
 					<SheetHeader className="relative h-fit w-full items-center justify-center p-0">
