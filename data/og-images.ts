@@ -10,10 +10,6 @@ import SideQuestOpenGraphImage from "@/app/(main)/side-quests/[game]/[map]/[slug
 import { IMAGE_CACHE } from "@/lib/redis"
 import { FileStorage } from "@/lib/services/FileStorage"
 import { LoadFontDataError, OgImageGenerationError } from "@/types/errors"
-import { IN_DEVELOPMENT } from "@/utils/constants"
-import { getMapById } from "./maps"
-import { getQuestById } from "./side-quests"
-import { getZombieById } from "./zombies"
 
 export const getFontData = Effect.gen(function* () {
 	const [geistSemiBold, geistBold] = yield* Effect.all(
@@ -39,30 +35,8 @@ export const getFontData = Effect.gen(function* () {
 	Effect.catchAll(() => Effect.succeed(null)),
 )
 
-export const getImageDataForType = Effect.fnUntraced(function* (type: TAllowedSlugs, id: string) {
-	switch (type) {
-		case "maps": {
-			const map = yield* Effect.promise(() => getMapById(IN_DEVELOPMENT, id))
-			if (!map) return null
-			return { url: map.image.url, id: map.id, slug: map.slug }
-		}
-		case "zombies": {
-			const zombie = yield* Effect.promise(() => getZombieById(IN_DEVELOPMENT, id))
-			if (!zombie) return null
-			return { url: zombie.image.url, id: zombie.id, slug: zombie.slug }
-		}
-		case "side-quests": {
-			const sideQuest = yield* Effect.promise(() => getQuestById(IN_DEVELOPMENT, id))
-			if (!sideQuest) return null
-			return { url: sideQuest.image.url, id: sideQuest.id, slug: sideQuest.slug }
-		}
-		default:
-			return null
-	}
-}, Effect.withLogSpan("get_image_data_for_type"))
-
 /**
- * Retrives the Open Graph image URL for a given entry from cache if available.
+ * Retrieves the Open Graph image URL for a given entry from cache if available.
  * If not, it generates a new image, caches it, and returns the URL.
  *
  * @param type - The type of the entry (map, zombie, side-quest)
