@@ -28,6 +28,7 @@ import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { FeedbackFormSchema, type TFeedbackForm } from "@/utils/validation-schemas"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 interface FeedbackFormProps extends React.ComponentProps<"button"> {
 	className?: string
@@ -165,27 +166,34 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 								<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
 									Cancel
 								</Button>
-								<Button type="submit" disabled={isPending || !form.formState.isValid}>
-									{isPending ? (
-										<div className="flex items-center gap-2">
-											<Loader2 className="h-4 w-4 animate-spin" />
-											Submitting...
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button type="submit" disabled={isPending || !form.formState.isValid}>
+											{isPending ? (
+												<div className="flex items-center gap-2">
+													<Loader2 className="h-4 w-4 animate-spin" />
+													Submitting...
+												</div>
+											) : (
+												<div className="flex items-center justify-center gap-2 font-medium">
+													<Send className="size-4" />
+													<span>Submit Feedback</span>
+												</div>
+											)}
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent side="bottom" sideOffset={6} className="z-999">
+										<div className="flex items-center gap-1">
+											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+												<span className="text-xs">Ctrl</span>
+											</kbd>
+											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+												<span className="text-xs">↩</span>
+											</kbd>
+											<span>to submit feedback</span>
 										</div>
-									) : (
-										<div className="flex items-center justify-center gap-2 font-medium">
-											<Send className="size-4" />
-											<span>Submit Feedback</span>
-											<div className="flex items-center gap-1">
-												<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-													<span className="text-xs">Ctrl</span>
-												</kbd>
-												<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-													<span className="text-xs">↩</span>
-												</kbd>
-											</div>
-										</div>
-									)}
-								</Button>
+									</TooltipContent>
+								</Tooltip>
 							</div>
 						</form>
 					</Form>

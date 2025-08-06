@@ -10,15 +10,24 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog"
 import { submitContactForm } from "@/data/actions"
+import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { ContactFormSchema, type TContactForm } from "@/utils/validation-schemas"
 import { Button } from "../ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "../ui/form"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 interface ContactFormProps {
 	className?: string
@@ -36,6 +45,8 @@ export default function ContactForm({ className }: ContactFormProps) {
 			message: "",
 		},
 	})
+
+	useShortcut("c", () => handleOpenChange(!open))
 
 	const onSubmit = (data: TContactForm) => {
 		startTransition(async () => {
@@ -62,6 +73,13 @@ export default function ContactForm({ className }: ContactFormProps) {
 		})
 	}
 
+	const handleOpenChange = (open: boolean) => {
+		if (!open) {
+			form.reset()
+		}
+		setOpen(open)
+	}
+
 	const handleKeyDown = (e: KeyboardEvent) => {
 		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.formState.isValid) {
 			e.preventDefault()
@@ -70,17 +88,34 @@ export default function ContactForm({ className }: ContactFormProps) {
 	}
 
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<Button variant="outline" size="sm" className={cn("flex gap-2 rounded-sm text-muted-foreground", className)}>
-					<Mail className="size-5" />
-					Contact Us
-				</Button>
-			</DialogTrigger>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => handleOpenChange(true)}
+						className={cn("flex gap-2 rounded-sm text-muted-foreground", className)}
+					>
+						<Mail className="size-5" />
+						Contact Us
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side="top" sideOffset={6} className="z-999">
+					<div className="flex items-center gap-1">
+						<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+							<span className="text-xs">C</span>
+						</kbd>
+						<span>to open contact form</span>
+					</div>
+				</TooltipContent>
+			</Tooltip>
 			<DialogContent className="rounded-lg">
 				<DialogHeader>
 					<DialogTitle>Contact Us</DialogTitle>
-					<DialogDescription>Get in touch with the people behind Call of Duty: Zombies Guides.</DialogDescription>
+					<DialogDescription>
+						Get in touch with the people behind Call of Duty: Zombies Guides.
+					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col">
@@ -92,7 +127,12 @@ export default function ContactForm({ className }: ContactFormProps) {
 									<FormItem>
 										<FormLabel>Name</FormLabel>
 										<FormControl>
-											<Input {...field} placeholder="Enter your name" required onKeyDown={handleKeyDown} />
+											<Input
+												{...field}
+												placeholder="Enter your name"
+												required
+												onKeyDown={handleKeyDown}
+											/>
 										</FormControl>
 										<FormDescription>Name you want to be addressed by.</FormDescription>
 										<FormMessage />
@@ -106,7 +146,13 @@ export default function ContactForm({ className }: ContactFormProps) {
 									<FormItem>
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input {...field} type="email" placeholder="you@example.com" required onKeyDown={handleKeyDown} />
+											<Input
+												{...field}
+												type="email"
+												placeholder="you@example.com"
+												required
+												onKeyDown={handleKeyDown}
+											/>
 										</FormControl>
 										<FormDescription>Email you want to be contacted at.</FormDescription>
 										<FormMessage />
@@ -120,7 +166,12 @@ export default function ContactForm({ className }: ContactFormProps) {
 									<FormItem>
 										<FormLabel>Message</FormLabel>
 										<FormControl>
-											<Textarea {...field} placeholder="Enter your message" required onKeyDown={handleKeyDown} />
+											<Textarea
+												{...field}
+												placeholder="Enter your message"
+												required
+												onKeyDown={handleKeyDown}
+											/>
 										</FormControl>
 										<FormDescription>Message you want to send to the team.</FormDescription>
 										<FormMessage />
@@ -129,30 +180,37 @@ export default function ContactForm({ className }: ContactFormProps) {
 							/>
 						</div>
 						<div className="mt-4 flex items-center justify-between">
-							<Button variant={"destructive"} onClick={() => setOpen(false)}>
+							<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
 								Cancel
 							</Button>
-							<Button type="submit" disabled={isPending || !form.formState.isValid}>
-								{isPending ? (
-									<div className="flex items-center gap-2">
-										<Loader2 className="size-4 animate-spin" />
-										Sending...
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button type="submit" disabled={isPending || !form.formState.isValid}>
+										{isPending ? (
+											<div className="flex items-center gap-2">
+												<Loader2 className="size-4 animate-spin" />
+												Sending...
+											</div>
+										) : (
+											<div className="flex items-center gap-2">
+												<Send className="size-4" />
+												<span>Submit Contact Form</span>
+											</div>
+										)}
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent side="bottom" sideOffset={6} className="z-999">
+									<div className="flex items-center gap-1">
+										<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+											<span className="text-xs">Ctrl</span>
+										</kbd>
+										<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
+											<span className="text-xs">↩</span>
+										</kbd>
+										<span>to submit contact form</span>
 									</div>
-								) : (
-									<div className="flex items-center gap-2">
-										<Send className="size-4" />
-										<span>Submit Contact Form</span>
-										<div className="flex items-center gap-1">
-											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-												<span className="text-xs">Ctrl</span>
-											</kbd>
-											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-												<span className="text-xs">↩</span>
-											</kbd>
-										</div>
-									</div>
-								)}
-							</Button>
+								</TooltipContent>
+							</Tooltip>
 						</div>
 					</form>
 				</Form>

@@ -4,6 +4,7 @@ import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
 import { Button, type ButtonProps } from "../ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 interface BackToTopButtonProps extends React.ComponentProps<"button"> {
 	mobile?: boolean
@@ -50,12 +51,21 @@ export default function BackToTopButton({
 					<ArrowUp className="size-6" />
 				</Button>
 			) : (
-				<Button onClick={scrollToTop} className={className} {...props}>
-					<span>Back to Top</span>
-					<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
-						{IS_MAC_OS ? "Option+T" : "Alt+T"}
-					</kbd>
-				</Button>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button onClick={scrollToTop} className={className} {...props}>
+							<span>Back to Top</span>
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent side="bottom" sideOffset={6}>
+						<div className="flex items-center gap-1">
+							<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
+								{IS_MAC_OS ? "Option+T" : "Alt+T"}
+							</kbd>
+							<span className="text-sm">to scroll to top</span>
+						</div>
+					</TooltipContent>
+				</Tooltip>
 			)}
 		</>
 	)
