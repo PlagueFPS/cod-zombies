@@ -27,6 +27,7 @@ import { submitFeedbackForm } from "@/data/actions"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { FeedbackFormSchema, type TFeedbackForm } from "@/utils/validation-schemas"
+import Shortcut from "../shortcut/shortcut"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
@@ -99,9 +100,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 					>
 						<MessageCircleHeart className="size-5" />
 						Feedback
-						<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground opacity-100">
-							<span className="text-xs">F</span>
-						</kbd>
+						<Shortcut shortcuts="F" size="sm" />
 					</Button>
 				</DialogTrigger>
 				<DialogContent className="rounded-lg">

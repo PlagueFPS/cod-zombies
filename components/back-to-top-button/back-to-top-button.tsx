@@ -3,6 +3,7 @@ import { ArrowUp } from "lucide-react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
+import Shortcut from "../shortcut/shortcut"
 import { Button, type ButtonProps } from "../ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
@@ -59,10 +60,12 @@ export default function BackToTopButton({
 					</TooltipTrigger>
 					<TooltipContent side="bottom" sideOffset={6}>
 						<div className="flex items-center gap-1">
-							<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
-								{IS_MAC_OS ? "Option+T" : "Alt+T"}
-							</kbd>
-							<span className="text-sm">to scroll to top</span>
+							<Shortcut
+								shortcuts={IS_MAC_OS ? ["Option", "T"] : ["Alt", "T"]}
+								size="sm"
+								variant="ghost"
+							/>
+							<span>to scroll to top</span>
 						</div>
 					</TooltipContent>
 				</Tooltip>

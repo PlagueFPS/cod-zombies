@@ -6,6 +6,7 @@ import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
 import { capitalize } from "@/utils/functions.client"
+import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
 import {
 	CommandDialog,
@@ -69,9 +70,9 @@ export default function SearchInput({
 
 	const mapSlugs = new Set(quests.map(q => q.map.slug))
 	const questMaps = maps.filter(m => mapSlugs.has(m.slug))
+	const shortcut = IS_MAC_OS ? "meta+k" : "ctrl+k"
 
-	useShortcut("ctrl+k", () => setOpen(prev => !prev), { ignoreInputs: false })
-	useShortcut("meta+k", () => setOpen(prev => !prev), { ignoreInputs: false })
+	useShortcut(shortcut, () => setOpen(prev => !prev), { ignoreInputs: false })
 
 	const onSelectHandler = (url: string) => {
 		setOpen(false)
@@ -93,15 +94,8 @@ export default function SearchInput({
 				onClick={() => setOpen(!open)}
 			>
 				<Search className="size-5" />
-				<span className="text-sm">Search Guides...</span>
-				<kbd
-					className={cn(
-						"pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground opacity-100",
-						{ hidden: showFull },
-					)}
-				>
-					<span className="text-xs">{IS_MAC_OS ? "⌘+K" : "Ctrl+K"}</span>
-				</kbd>
+				<span className="mr-auto text-sm">Search Guides...</span>
+				<Shortcut shortcuts={IS_MAC_OS ? ["⌘", "K"] : ["Ctrl", "K"]} size="sm" />
 			</Button>
 			<Button
 				type="button"

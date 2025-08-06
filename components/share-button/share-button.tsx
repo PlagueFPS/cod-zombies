@@ -17,6 +17,7 @@ import {
 } from "react-share"
 import { toast } from "sonner"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
+import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Input } from "../ui/input"
@@ -55,10 +56,8 @@ export default function ShareButton({ title, url, ...props }: ShareButtonProps) 
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent sideOffset={5} className="z-999 flex items-center justify-center gap-1">
+					<Shortcut shortcuts="S" size="sm" variant="ghost" />
 					<span>Share</span>
-					<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
-						S
-					</kbd>
 				</TooltipContent>
 			</Tooltip>
 			<DialogContent className="gap-6 rounded-lg">

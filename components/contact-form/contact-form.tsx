@@ -15,6 +15,7 @@ import { submitContactForm } from "@/data/actions"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { ContactFormSchema, type TContactForm } from "@/utils/validation-schemas"
+import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
 import {
 	Form,
@@ -103,9 +104,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 				</TooltipTrigger>
 				<TooltipContent side="top" sideOffset={6} className="z-999">
 					<div className="flex items-center gap-1">
-						<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-							<span className="text-xs">C</span>
-						</kbd>
+						<Shortcut shortcuts="C" size="sm" variant="ghost" />
 						<span>to open contact form</span>
 					</div>
 				</TooltipContent>

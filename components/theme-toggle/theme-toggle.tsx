@@ -4,6 +4,7 @@ import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
+import Shortcut from "../shortcut/shortcut"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 interface ThemeToggleProps {
@@ -50,10 +51,8 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent sideOffset={5} className="z-999 flex items-center justify-center gap-2">
+					<Shortcut shortcuts="T" size="sm" variant="ghost" />
 					<span>Toggle Theme</span>
-					<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
-						T
-					</kbd>
 				</TooltipContent>
 			</Tooltip>
 		</div>

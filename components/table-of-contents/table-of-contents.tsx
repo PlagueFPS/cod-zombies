@@ -7,6 +7,7 @@ import { useTableOfContents } from "@/hooks/use-table-of-contents"
 import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
 import BackToTopButton from "../back-to-top-button/back-to-top-button"
+import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
 import { ScrollArea } from "../ui/scroll-area"
@@ -63,10 +64,12 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 								sideOffset={5}
 								className="z-999 flex items-center justify-center gap-2"
 							>
+								<Shortcut
+									shortcuts={IS_MAC_OS ? ["Option", "C"] : ["Alt", "C"]}
+									size="sm"
+									variant="ghost"
+								/>
 								<span>Toggle Expanded</span>
-								<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-medium text-muted-foreground text-xs opacity-100">
-									{IS_MAC_OS ? "Option+C" : "Alt+C"}
-								</kbd>
 							</TooltipContent>
 						</Tooltip>
 					</div>
