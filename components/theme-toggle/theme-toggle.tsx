@@ -14,8 +14,16 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
 	const { theme, setTheme } = useTheme()
 
 	const handleThemeToggle = () => {
-		if (theme === "light") setTheme("dark")
-		else setTheme("light")
+		if (!document.startViewTransition) {
+			if (theme === "light") setTheme("dark")
+			else setTheme("light")
+			return
+		}
+
+		document.startViewTransition(() => {
+			if (theme === "light") setTheme("dark")
+			else setTheme("light")
+		})
 	}
 
 	useShortcut("t", () => handleThemeToggle())
