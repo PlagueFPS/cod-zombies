@@ -17,7 +17,9 @@ export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests",
 
 export const FeedbackFormSchema = Schema.Struct({
 	title: Schema.NonEmptyString,
-	label: Schema.Literal("Bug", "Improvement", "Feature", "User Feedback"),
+	label: Schema.Literal("Bug", "Improvement", "Feature", "User Feedback").annotations({
+		message: () => "Label is required.",
+	}),
 	feedback: Schema.NonEmptyString.annotations({ message: () => "Feedback is required" }),
 })
 
@@ -26,9 +28,9 @@ export const NewsletterFormSchema = Schema.Struct({
 })
 
 export const ContactFormSchema = Schema.Struct({
-	name: Schema.NonEmptyString.pipe(Schema.compose(Schema.Trim)).annotations({
+	name: Schema.NonEmptyString.annotations({
 		message: () => "Name is required",
-	}),
+	}).pipe(Schema.compose(Schema.Trim)),
 	email: EmailSchema,
 	message: Schema.NonEmptyString.annotations({ message: () => "Message is required" }),
 })

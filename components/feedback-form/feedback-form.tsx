@@ -100,7 +100,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 					>
 						<MessageCircleHeart className="size-5" />
 						Feedback
-						<Shortcut shortcuts="F" size="sm" />
+						<Shortcut shortcuts="F" size="sm" className="hidden lg:inline-flex" />
 					</Button>
 				</DialogTrigger>
 				<DialogContent className="rounded-lg">

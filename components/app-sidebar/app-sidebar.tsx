@@ -8,7 +8,6 @@ import NavLink from "@/components/nav-link/nav-link"
 import Discord from "@/components/SVGs/DiscordSVG"
 import Reddit from "@/components/SVGs/Reddit"
 import X from "@/components/SVGs/XSVG"
-import ThemeToggleWrapper from "@/components/theme-toggle/theme-toggle-wrapper"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/sheet"
 import Logo from "@/public/logo.webp"
 import { ROUTES } from "@/utils/constants"
+import FeedbackForm from "../feedback-form/feedback-form"
 
 export default function AppSidebar() {
 	const [open, setOpen] = useState(false)
@@ -36,9 +36,7 @@ export default function AppSidebar() {
 			</SheetTrigger>
 			<SheetContent className="z-900 flex flex-col">
 				<SheetTitle className="sr-only">Sidebar</SheetTitle>
-				<SheetDescription className="sr-only">
-					App sidebar for mobile navigation
-				</SheetDescription>
+				<SheetDescription className="sr-only">App sidebar for mobile navigation</SheetDescription>
 				<SheetHeader className="w-full border-b pb-4">
 					<SheetClose asChild>
 						<CustomLink
@@ -74,7 +72,7 @@ export default function AppSidebar() {
 					))}
 				</nav>
 				<SheetFooter className="mt-auto mb-4 flex w-full flex-col items-center justify-center gap-4 border-t text-muted-foreground">
-					<ThemeToggleWrapper />
+					<FeedbackForm />
 					<div className="flex w-full items-center justify-evenly gap-3">
 						<ExternalLink
 							href="https://x.com/CodZombiesGuide"
