@@ -3,6 +3,7 @@ import type { MapId } from "@/map-configs"
 import Image from "next/image"
 import { useImageState } from "@/hooks/use-image-state"
 import { cn } from "@/lib/utils"
+import placeholderImage from "@/public/article-img-placeholder.jpg"
 import ImageLoader from "../loaders/image-loader"
 
 interface IPreviewCardImage {
@@ -31,6 +32,16 @@ export default function PreviewCardImage({ mapId, title, priority, className }: 
 					className={cn("h-full w-full object-cover opacity-0 group-hover:scale-105", className, {
 						"animate-fade-in opacity-100": imageLoaded,
 					})}
+				/>
+			) : null}
+			{imageErrored ? (
+				<Image
+					unoptimized
+					src={placeholderImage}
+					alt=""
+					placeholder="blur"
+					priority={priority}
+					className={cn("flex aspect-video h-auto w-full items-center justify-center", className)}
 				/>
 			) : null}
 		</figure>

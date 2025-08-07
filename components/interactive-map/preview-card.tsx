@@ -1,5 +1,7 @@
 import type { MapId } from "@/map-configs"
 import { getMapConfig } from "@/data/interactive-map"
+import { cn } from "@/lib/utils"
+import { ComingSoonBadge, NewBadge } from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import { Badge } from "../ui/badge"
 import PreviewCardImage from "./preview-card-image"
@@ -17,7 +19,11 @@ export default async function PreviewCard({ mapId, index }: IPreviewCard) {
 		<CustomLink
 			href={`/maps/${config.id}`}
 			aria-label={`View ${config.title} interactive map`}
-			className="group outline-none"
+			className={cn("group outline-none", {
+				"pointer-events-none opacity-75 dark:opacity-50": config.isComingSoon,
+			})}
+			aria-disabled={config.isComingSoon}
+			tabIndex={config.isComingSoon ? -1 : 0}
 		>
 			<div className="flex flex-col items-start justify-center gap-4">
 				<div className="flex w-full items-center justify-center overflow-hidden rounded-md shadow-xl group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none">
@@ -29,9 +35,12 @@ export default async function PreviewCard({ mapId, index }: IPreviewCard) {
 					/>
 				</div>
 				<div className="flex flex-col items-start justify-center">
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{config.game}
-					</Badge>
+					<div className="flex items-center gap-2">
+						{config.isComingSoon ? <ComingSoonBadge /> : config.isNew ? <NewBadge /> : null}
+						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+							{config.game}
+						</Badge>
+					</div>
 					<h3 className="font-bold text-xl transition-colors group-hover:text-primary group-focus-visible:text-primary">
 						{config.title}
 					</h3>

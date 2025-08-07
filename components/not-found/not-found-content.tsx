@@ -54,6 +54,9 @@ const NotFoundButtons = ({ items }: Omit<INotFoundContent, "param" | "resource">
 					<Button variant={"outline"} asChild>
 						<CustomLink href="/side-quests">View all Side Quests</CustomLink>
 					</Button>
+					<Button variant={"outline"} asChild>
+						<CustomLink href="/maps">View all Interactive Maps</CustomLink>
+					</Button>
 				</>
 			)}
 		</div>

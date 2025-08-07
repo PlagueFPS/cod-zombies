@@ -27,7 +27,7 @@ export const generateStaticParams = () => {
 export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise<Metadata> => {
 	const { id } = await params
 	const config = await getMapConfig(id)
-	if (!config) notFound()
+	if (!config || config.isComingSoon) notFound()
 	const title = `${config.title} Interactive Map`
 
 	return {
@@ -50,8 +50,8 @@ export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${config.id}`
-		}
+			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${config.id}`,
+		},
 	}
 }
 
