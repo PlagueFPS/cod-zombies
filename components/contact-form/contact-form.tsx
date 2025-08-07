@@ -1,6 +1,6 @@
 "use client"
 import { effectTsResolver } from "@hookform/resolvers/effect-ts"
-import { Loader2, Mail, Send } from "lucide-react"
+import { CircleAlert, Loader2, Mail, Send } from "lucide-react"
 import { type KeyboardEvent, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -134,7 +134,12 @@ export default function ContactForm({ className }: ContactFormProps) {
 											/>
 										</FormControl>
 										<FormDescription>Name you want to be addressed by.</FormDescription>
-										<FormMessage />
+										<div className="flex items-center gap-2">
+											{form.formState.errors.name ? (
+												<CircleAlert className="size-4 text-red-500" />
+											) : null}
+											<FormMessage />
+										</div>
 									</FormItem>
 								)}
 							/>
@@ -154,7 +159,12 @@ export default function ContactForm({ className }: ContactFormProps) {
 											/>
 										</FormControl>
 										<FormDescription>Email you want to be contacted at.</FormDescription>
-										<FormMessage />
+										<div className="flex items-center gap-2">
+											{form.formState.errors.email ? (
+												<CircleAlert className="size-4 text-red-500" />
+											) : null}
+											<FormMessage />
+										</div>
 									</FormItem>
 								)}
 							/>
@@ -173,7 +183,12 @@ export default function ContactForm({ className }: ContactFormProps) {
 											/>
 										</FormControl>
 										<FormDescription>Message you want to send to the team.</FormDescription>
-										<FormMessage />
+										<div className="flex items-center gap-2">
+											{form.formState.errors.message ? (
+												<CircleAlert className="size-4 text-red-500" />
+											) : null}
+											<FormMessage />
+										</div>
 									</FormItem>
 								)}
 							/>

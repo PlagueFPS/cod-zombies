@@ -1,6 +1,6 @@
 "use client"
 import { effectTsResolver } from "@hookform/resolvers/effect-ts"
-import { Loader2, MessageCircleHeart, Send } from "lucide-react"
+import { CircleAlert, Loader2, MessageCircleHeart, Send } from "lucide-react"
 import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -135,7 +135,12 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 											<FormDescription>
 												Select a label that best describes your feedback.
 											</FormDescription>
-											<FormMessage />
+											<div className="flex items-center gap-2">
+												{form.formState.errors.label ? (
+													<CircleAlert className="size-4 text-red-500" />
+												) : null}
+												<FormMessage />
+											</div>
 										</FormItem>
 									)}
 								/>
@@ -144,6 +149,7 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 									name="feedback"
 									render={({ field }) => (
 										<FormItem>
+											<FormLabel>Feedback Message</FormLabel>
 											<FormControl>
 												<Textarea
 													{...field}
@@ -153,10 +159,12 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 													onKeyDown={handleKeyDown}
 												/>
 											</FormControl>
-											<FormDescription>
-												Please provide constructive and actionable feedback to help us improve.
-											</FormDescription>
-											<FormMessage />
+											<div className="flex items-center gap-2">
+												{form.formState.errors.feedback ? (
+													<CircleAlert className="size-4 text-red-500" />
+												) : null}
+												<FormMessage />
+											</div>
 										</FormItem>
 									)}
 								/>

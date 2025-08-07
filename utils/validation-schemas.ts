@@ -5,22 +5,26 @@ export type TAllowedSlugs = typeof AllowedSlugsSchema.Type
 export type TContactForm = typeof ContactFormSchema.Type
 export type TNewsletterForm = typeof NewsletterFormSchema.Type
 
-const EmailSchema = Schema.NonEmptyString.pipe(
-	Schema.compose(Schema.Trim),
-	Schema.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
-		message: () => "Invalid Email",
-	}),
-	Schema.maxLength(256, { message: () => "Email should not be longer than 256 characters" }),
-).annotations({ message: () => "Email is required" })
+const EmailSchema = Schema.NonEmptyString.annotations({
+	message: () => "Please enter an email address",
+})
+	.pipe(
+		Schema.compose(Schema.Trim),
+		Schema.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
+			message: () => "Please enter a valid email address",
+		}),
+		Schema.maxLength(256, { message: () => "Email cannot be more than 256 characters" }),
+	)
+	.annotations({ message: () => "Please enter a valid email address" })
 
 export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
 
 export const FeedbackFormSchema = Schema.Struct({
 	title: Schema.NonEmptyString,
 	label: Schema.Literal("Bug", "Improvement", "Feature", "User Feedback").annotations({
-		message: () => "Label is required.",
+		message: () => "Please select a label.",
 	}),
-	feedback: Schema.NonEmptyString.annotations({ message: () => "Feedback is required" }),
+	feedback: Schema.NonEmptyString.annotations({ message: () => "Please enter some feedback." }),
 })
 
 export const NewsletterFormSchema = Schema.Struct({
@@ -29,10 +33,10 @@ export const NewsletterFormSchema = Schema.Struct({
 
 export const ContactFormSchema = Schema.Struct({
 	name: Schema.NonEmptyString.annotations({
-		message: () => "Name is required",
+		message: () => "Please enter your name.",
 	}).pipe(Schema.compose(Schema.Trim)),
 	email: EmailSchema,
-	message: Schema.NonEmptyString.annotations({ message: () => "Message is required" }),
+	message: Schema.NonEmptyString.annotations({ message: () => "Please enter a message." }),
 })
 
 const TerminusCodeSchema = Schema.Struct({
