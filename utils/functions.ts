@@ -1,7 +1,7 @@
 // import "server-only"
 import type { DurationInput } from "effect/Duration"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import { Duration, Effect } from "effect"
+import { Duration, Effect, Number as Num, Option } from "effect"
 import {
 	AuthorizationError,
 	TokenExpirationError,
@@ -64,13 +64,19 @@ export const verifyToken = (token: string) =>
 			})
 		}
 
-		const expiresIn = parseInt(expiresInStr, 10)
+		const expiresIn = Num.parse(expiresInStr)
 		const now = Date.now()
 
-		if (Number.isNaN(expiresIn) || Duration.greaterThan(now, expiresIn)) {
+		if (Option.isNone(expiresIn))
+			return yield* new TokenVerificationError({
+				message: "Invalid Token Format",
+				cause: new Error("Token is malformed"),
+			})
+
+		if (Duration.greaterThan(now, expiresIn.value)) {
 			return yield* new TokenExpirationError({
 				message: "Token has expired",
-				cause: new Error(`Token expired at ${new Date(expiresIn).toISOString()}`),
+				cause: new Error(`Token expired at ${new Date(expiresIn.value).toISOString()}`),
 			})
 		}
 

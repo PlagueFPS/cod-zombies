@@ -1,4 +1,5 @@
 import { cva } from "class-variance-authority"
+import { Array as Arr } from "effect"
 import { cn } from "@/lib/utils"
 
 interface ShortcutProps {
@@ -38,7 +39,7 @@ export default function Shortcut({
 	variant = "default",
 	size = "md",
 }: ShortcutProps) {
-	const shortcutArray = Array.isArray(shortcuts) ? shortcuts : [shortcuts]
+	const shortcutArray = Arr.ensure(shortcuts)
 
 	return (
 		<span className="inline-flex items-center gap-1">

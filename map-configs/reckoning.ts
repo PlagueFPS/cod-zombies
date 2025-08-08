@@ -6,7 +6,7 @@ const reckoning: MapConfig = {
 	isComingSoon: true,
 	game: "Black Ops 6",
 	description:
-		"Explore Reckoning in BO6 Zombies. Find all Janus Crates, Aether Plants, Aether Crystals, Intel, and more with our interactive map.",
+		"Explore Reckoning in BO6 Zombies. Find all C.A.S.T.E.R. Turrets, Intel, and more with our interactive map.",
 	image: "/layers/reckoning.webp",
 	markers: [
 		{

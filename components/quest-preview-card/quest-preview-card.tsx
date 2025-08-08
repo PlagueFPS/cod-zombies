@@ -72,7 +72,7 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 						{ "opacity-75 dark:opacity-50": quest.isComingSoon },
 					)}
 				>
-					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
+					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end gap-1">
 						{(draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null}
 						{(draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null}
 						{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
