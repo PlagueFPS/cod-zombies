@@ -158,7 +158,7 @@ interface IFilterLogo extends Omit<ImageProps, "src" | "alt"> {
 const FilterLogo = ({ slug, ...props }: IFilterLogo) => {
 	const { imageLoaded, setImageLoaded, imageErrored, setImageErrored } = useImageState()
 
-	if (imageErrored || slug === "world-at-war") return null
+	if (imageErrored) return null
 
 	return (
 		<Image
