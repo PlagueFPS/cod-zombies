@@ -160,7 +160,7 @@ export default async function MapPage({ params }: MapPageProps) {
 								/>
 							</div>
 						</div>
-						{map.isComingSoon ? (
+						{map.isComingSoon && !IN_DEVELOPMENT ? (
 							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 								<p className="font-bold text-xl">
 									This article is currently being written and will take some time before being
