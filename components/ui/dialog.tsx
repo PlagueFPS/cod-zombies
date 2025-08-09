@@ -20,7 +20,10 @@ function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.C
 	return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
 
-function DialogOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+function DialogOverlay({
+	className,
+	...props
+}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
 	return (
 		<DialogPrimitive.Overlay
 			data-slot="dialog-overlay"
@@ -33,7 +36,11 @@ function DialogOverlay({ className, ...props }: React.ComponentProps<typeof Dial
 	)
 }
 
-function DialogContent({ className, children, ...props }: React.ComponentProps<typeof DialogPrimitive.Content>) {
+interface DialogContentProps extends React.ComponentProps<typeof DialogPrimitive.Content> {
+	closeButton?: boolean
+}
+
+function DialogContent({ className, children, closeButton = true, ...props }: DialogContentProps) {
 	return (
 		<DialogPortal data-slot="dialog-portal">
 			<DialogOverlay />
@@ -46,10 +53,12 @@ function DialogContent({ className, children, ...props }: React.ComponentProps<t
 				{...props}
 			>
 				{children}
-				<DialogPrimitive.Close className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0">
-					<span className="size-5 rounded border bg-muted px-1 text-sm">Esc</span>
-					<span className="sr-only">Close</span>
-				</DialogPrimitive.Close>
+				{closeButton && (
+					<DialogPrimitive.Close className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0">
+						<span className="size-5 rounded border bg-muted px-1 text-sm">Esc</span>
+						<span className="sr-only">Close</span>
+					</DialogPrimitive.Close>
+				)}
 			</DialogPrimitive.Content>
 		</DialogPortal>
 	)
@@ -85,7 +94,10 @@ function DialogTitle({ className, ...props }: React.ComponentProps<typeof Dialog
 	)
 }
 
-function DialogDescription({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
+function DialogDescription({
+	className,
+	...props
+}: React.ComponentProps<typeof DialogPrimitive.Description>) {
 	return (
 		<DialogPrimitive.Description
 			data-slot="dialog-description"
