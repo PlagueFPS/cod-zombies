@@ -46,16 +46,16 @@ export default function RichTextRenderer({
 				const asset = node.data.target
 				return <RichImage asset={asset} />
 			},
-			[BLOCKS.HEADING_2]: (node: any, children: any) => {
+			[BLOCKS.HEADING_2]: (node: any, children: React.ReactNode) => {
 				return <Heading2 id={slugify(node.content[0].value)}>{children}</Heading2>
 			},
-			[BLOCKS.HEADING_3]: (node: any, children: any) => {
+			[BLOCKS.HEADING_3]: (node: any, children: React.ReactNode) => {
 				return <Heading3 id={slugify(node.content[0].value)}>{children}</Heading3>
 			},
-			[BLOCKS.HEADING_4]: (node: any, children: any) => {
+			[BLOCKS.HEADING_4]: (node: any, children: React.ReactNode) => {
 				return <Heading4 id={slugify(node.content[0].value)}>{children}</Heading4>
 			},
-			[BLOCKS.PARAGRAPH]: (node: any, children: any) => {
+			[BLOCKS.PARAGRAPH]: (node: any, children: React.ReactNode) => {
 				let isYoutubeLink = false
 				node.content.forEach((node: any) => {
 					if (
@@ -80,7 +80,7 @@ export default function RichTextRenderer({
 						return <TerminusCode />
 				}
 			},
-			[BLOCKS.QUOTE]: (_: any, children: any) => {
+			[BLOCKS.QUOTE]: (_node: unknown, children: React.ReactNode) => {
 				return <RichBlockquote>{children}</RichBlockquote>
 			},
 			[BLOCKS.TABLE]: (node: any) => {
@@ -93,10 +93,10 @@ export default function RichTextRenderer({
 			[BLOCKS.HR]: () => {
 				return <hr className="my-2" />
 			},
-			[BLOCKS.UL_LIST]: (_: any, children: any) => {
+			[BLOCKS.UL_LIST]: (_node: unknown, children: React.ReactNode) => {
 				return <UnorderedList>{children}</UnorderedList>
 			},
-			[BLOCKS.OL_LIST]: (_: any, children: any) => {
+			[BLOCKS.OL_LIST]: (_node: unknown, children: React.ReactNode) => {
 				return <OrderedList>{children}</OrderedList>
 			},
 		},
