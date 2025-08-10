@@ -99,7 +99,7 @@ export const RevalidateHandlers = {
 	 */
 	maps: ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const map = yield* Effect.promise(() => getMapById(true, entryId))
+			const map = yield* Effect.promise(() => getMapById(entryId))
 			if (!map)
 				return yield* new EntryNotFoundError({
 					message: `No map found for entry ID: ${entryId}`,
@@ -147,7 +147,7 @@ export const RevalidateHandlers = {
 	 */
 	games: ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const game = yield* Effect.promise(() => getGameById(true, entryId))
+			const game = yield* Effect.promise(() => getGameById(entryId))
 			if (!game)
 				return yield* new EntryNotFoundError({
 					message: `No game found for entry ID: ${entryId}`,
@@ -185,7 +185,7 @@ export const RevalidateHandlers = {
 	 */
 	"side-quests": ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const quest = yield* Effect.promise(() => getQuestById(true, entryId))
+			const quest = yield* Effect.promise(() => getQuestById(entryId))
 			if (!quest)
 				return yield* new EntryNotFoundError({
 					message: `No quest found for entry ID: ${entryId}`,
@@ -235,7 +235,7 @@ export const RevalidateHandlers = {
 	 */
 	zombies: ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const zombie = yield* Effect.promise(() => getZombieById(true, entryId))
+			const zombie = yield* Effect.promise(() => getZombieById(entryId))
 			if (!zombie)
 				return yield* new EntryNotFoundError({
 					message: `No zombie found for entry ID: ${entryId}`,
@@ -283,7 +283,7 @@ export const RevalidateHandlers = {
 	 */
 	legal: ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const legalDoc = yield* Effect.promise(() => getLegalDocById(true, entryId))
+			const legalDoc = yield* Effect.promise(() => getLegalDocById(entryId))
 			if (!legalDoc)
 				return yield* new EntryNotFoundError({
 					message: `No legal document found for entry ID: ${entryId}`,

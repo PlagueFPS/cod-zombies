@@ -95,7 +95,15 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 		)
 	}).pipe(
 		Effect.withLogSpan("get_draft_handler"),
-		Effect.tapError(Effect.logError),
+		Effect.tapError(error =>
+			Effect.gen(function* () {
+				// ensure draft mode is disabled on any failure
+				const draft = yield* Effect.promise(() => draftMode())
+				if (draft.isEnabled) draft.disable()
+
+				yield* Effect.logError(error)
+			}),
+		),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(Response.json(error.message, { status: 401 })),
 			EntryNotFoundError: error => Effect.succeed(Response.json(error.message, { status: 404 })),

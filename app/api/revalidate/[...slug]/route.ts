@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server"
 import { Duration, Effect, Layer, Redacted, Schema } from "effect"
-import { headers } from "next/headers"
+import { draftMode, headers } from "next/headers"
 import { env } from "@/env"
 import { revalidateRateLimit } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
@@ -69,13 +69,24 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 
 		const validSlug = yield* decodeSlug(slug[0])
 		const body = yield* decodeWebhookBody(payload)
-		const handler = RevalidateHandlers[validSlug]
+		const draft = yield* Effect.promise(() => draftMode())
+		draft.enable()
+		yield* Effect.log("Draft Mode Enabled.")
 
+		const handler = RevalidateHandlers[validSlug]
 		return yield* handler(body)
 	}).pipe(
 		Effect.withLogSpan("put_revalidation_handler"),
 		Effect.tap(() => Effect.log("Data Revalidation Completed.")),
-		Effect.tapError(Effect.logError),
+		Effect.tapError(error =>
+			Effect.gen(function* () {
+				// ensure draft mode is disabled on any failure
+				const draft = yield* Effect.promise(() => draftMode())
+				if (draft.isEnabled) draft.disable()
+
+				yield* Effect.logError(error)
+			}),
+		),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(Response.json(error.message, { status: 401 })),
 			EntryNotFoundError: error => Effect.succeed(Response.json(error.message, { status: 404 })),
