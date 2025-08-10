@@ -1,4 +1,3 @@
-import { draftMode } from "next/headers"
 import { Suspense } from "react"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { getGameSearchData } from "@/data/games"
@@ -25,9 +24,8 @@ const difficulties = [
 ]
 
 export async function MainQuestFilters() {
-	const { isEnabled } = await draftMode()
-	const gamesPromise = getGameSearchData(isEnabled)
-	const mapsPromise = getMapSearchData(isEnabled)
+	const gamesPromise = getGameSearchData()
+	const mapsPromise = getMapSearchData()
 	const [games, maps] = await Promise.all([gamesPromise, mapsPromise])
 	const mapGames = new Set(maps.map(m => m.game.slug))
 	const gameFilters = games.filter(g => mapGames.has(g.slug))
@@ -40,10 +38,9 @@ export async function MainQuestFilters() {
 }
 
 export async function SideQuestFilters() {
-	const { isEnabled } = await draftMode()
-	const mapsPromise = getMapSearchData(isEnabled)
-	const questsPromise = getQuestSearchData(isEnabled)
-	const gamesPromise = getGameSearchData(isEnabled)
+	const mapsPromise = getMapSearchData()
+	const questsPromise = getQuestSearchData()
+	const gamesPromise = getGameSearchData()
 	const [maps, quests, games] = await Promise.all([mapsPromise, questsPromise, gamesPromise])
 	const questMaps = new Set(quests.map(q => q.map.slug))
 	const questGames = new Set(quests.map(q => q.game.slug))

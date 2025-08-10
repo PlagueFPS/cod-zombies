@@ -5,10 +5,10 @@ import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { getNewEntries } from "@/lib/redis"
-import { Cache } from "@/lib/services/Cache"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
 import { calculateTimeToRead, createImageDto, createMapCategoryDto } from "@/utils/contentful-utils"
+import { DataLayer } from "./utils"
 
 export type FeaturedMap = NonNullable<Awaited<ReturnType<typeof getMapBySlug>>>
 export type MinifiedFeaturedMap = Awaited<ReturnType<typeof getMaps>>[number]
@@ -16,7 +16,7 @@ export type Difficulty = "Easy" | "Medium" | "Hard"
 
 export const getMaps = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const [maps, mapIds] = yield* Effect.all([INTERNAL_getMapData(), getMapIds], {
 					concurrency: "unbounded",
@@ -42,10 +42,8 @@ export const getMaps = cache(
 				)
 			}).pipe(
 				Effect.withLogSpan("get_maps"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(Cache.Default),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -58,7 +56,7 @@ export const getMaps = cache(
 
 export const getMapSearchData = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const maps = yield* INTERNAL_getMapData()
 				const filteredMaps = maps.filter(map => !map.fields.isComingSoon)
@@ -78,9 +76,8 @@ export const getMapSearchData = cache(
 				)
 			}).pipe(
 				Effect.withLogSpan("get_map_search_data"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},
@@ -93,7 +90,7 @@ export const getMapSearchData = cache(
 
 export const getMapBySlug = cache(
 	unstable_cache(
-		async (draftMode: boolean, slug: string) => {
+		async (slug: string) => {
 			return await Effect.gen(function* () {
 				const maps = yield* INTERNAL_getMapData()
 
@@ -119,10 +116,9 @@ export const getMapBySlug = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_map_by_slug"),
-				Effect.annotateLogs({ slug, draftMode }),
+				Effect.annotateLogs({ slug }),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(Cache.Default),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -135,7 +131,7 @@ export const getMapBySlug = cache(
 
 export const getMapById = cache(
 	unstable_cache(
-		async (draftMode: boolean, id: string) => {
+		async (id: string) => {
 			return await Effect.gen(function* () {
 				const maps = yield* INTERNAL_getMapData()
 
@@ -158,9 +154,9 @@ export const getMapById = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_map_by_id"),
-				Effect.annotateLogs({ id, draftMode }),
+				Effect.annotateLogs({ id }),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},

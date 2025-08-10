@@ -12,7 +12,7 @@ interface IOpenGraphImage {
 
 export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
 	const { slug } = await params
-	const map = await getMapBySlug(false, slug)
+	const map = await getMapBySlug(slug)
 	if (!map) return null
 
 	return [
@@ -27,7 +27,7 @@ export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
 
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const { slug } = await params
-	const map = await getMapBySlug(false, slug)
+	const map = await getMapBySlug(slug)
 	if (!map) return new Response("map not found", { status: 404 })
 
 	const fonts = await Effect.runPromise(getFontData)

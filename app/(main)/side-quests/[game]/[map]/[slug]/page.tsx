@@ -1,32 +1,21 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
-import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { Suspense } from "react"
+import { cache, Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import {
-	ChangedBadge,
-	ComingSoonBadge,
-	DraftBadge,
-	NewBadge,
-} from "@/components/custom-badges/custom-badges"
+import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
-import PreviousOrNextMapLoader from "@/components/loaders/previous-or-next-map-loader"
+import { ManagementBadges } from "@/components/management-badges/management-badges"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
-import {
-	getQuestBySlug,
-	getQuests,
-	type MinifiedSideQuest,
-	type SideQuest,
-} from "@/data/side-quests"
+import { getQuestBySlug, getQuests, type MinifiedSideQuest } from "@/data/side-quests"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_PROPS } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 
 interface ISideQuestSlugPage {
@@ -37,14 +26,22 @@ interface ISideQuestSlugPage {
 	}>
 }
 
-interface PrevOrNextQuest {
-	quest: MinifiedSideQuest
-	isEnabled: boolean
-	prev?: boolean
-}
+const getPageData = cache(async (slug: string) => {
+	const q = await getQuestBySlug(slug)
+	if (!q) notFound()
+	const quests = await getQuests()
+	const questIndex = quests.findIndex(q => q.slug === slug)
+	const prevQuest = quests[questIndex + 1]
+	const nextQuest = quests[questIndex - 1]
+	return {
+		q,
+		prevQuest,
+		nextQuest,
+	}
+})
 
 export const generateStaticParams = async () => {
-	const quests = await getQuests(false)
+	const quests = await getQuests()
 	return quests.map(q => ({
 		game: q.game.slug,
 		map: q.map.slug,
@@ -53,8 +50,8 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<Metadata> => {
-	const [{ slug, game, map }, { isEnabled }] = await Promise.all([params, draftMode()])
-	const q = await getQuestBySlug(isEnabled, slug)
+	const { slug, game, map } = await params
+	const { q } = await getPageData(slug)
 	if (!q) notFound()
 	const title = `${q.title} Side Quest`
 	const description = `Learn how to complete the ${q.title} side quest/easter egg for ${q.map.title} with our detailed step-by-step walkthrough!`
@@ -80,8 +77,8 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
 }
 
 export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
-	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
-	const q = await getQuestBySlug(isEnabled, slug)
+	const { slug } = await params
+	const { q, prevQuest, nextQuest } = await getPageData(slug)
 	if (!q) notFound()
 	const headings = q.isComingSoon ? [] : extractHeadings(q.content)
 
@@ -128,8 +125,9 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 									{q.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									{(isEnabled || IN_DEVELOPMENT) && q.isDraft ? <DraftBadge /> : null}
-									{(isEnabled || IN_DEVELOPMENT) && q.isChanged ? <ChangedBadge /> : null}
+									<Suspense>
+										<ManagementBadges entry={q} />
+									</Suspense>
 									{q.isComingSoon ? <ComingSoonBadge /> : q.isNew ? <NewBadge /> : null}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{q.game.title}
@@ -178,9 +176,8 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 							<GuideFeedback guideTitle={q.title} type="Side Quest" map={q.map.title} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							<Suspense fallback={<PreviousOrNextMapLoader />}>
-								<PrevOrNextQuest quest={q} />
-							</Suspense>
+							{prevQuest && <PrevOrNextQuestCard quest={prevQuest} prev />}
+							{nextQuest && <PrevOrNextQuestCard quest={nextQuest} />}
 						</div>
 					</article>
 				</div>
@@ -189,21 +186,12 @@ export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
 	)
 }
 
-const PrevOrNextQuest = async ({ quest }: { quest: SideQuest }) => {
-	const { isEnabled } = await draftMode()
-	const quests = await getQuests(isEnabled)
-	const questIndex = quests.findIndex(q => q.slug === quest.slug)
-	const prevQuest = quests[questIndex + 1]
-	const nextQuest = quests[questIndex - 1]
-	return (
-		<>
-			{prevQuest && <PrevOrNextQuestCard quest={prevQuest} isEnabled={isEnabled} prev />}
-			{nextQuest && <PrevOrNextQuestCard quest={nextQuest} isEnabled={isEnabled} />}
-		</>
-	)
+interface PrevOrNextQuest {
+	quest: MinifiedSideQuest
+	prev?: boolean
 }
 
-const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: PrevOrNextQuest) => {
+const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextQuest) => {
 	const alt = `${quest.map.title} map image`
 	const href = quest.isComingSoon
 		? "#"
@@ -230,9 +218,10 @@ const PrevOrNextQuestCard = ({ quest, isEnabled, prev }: PrevOrNextQuest) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
+					<Suspense>
+						<ManagementBadges entry={quest} />
+					</Suspense>
 					{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
-					{(isEnabled || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null}
-					{(isEnabled || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{quest.map.title}
 					</Badge>

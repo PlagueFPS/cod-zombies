@@ -4,13 +4,13 @@ import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { getNewEntries } from "@/lib/redis"
-import { Cache } from "@/lib/services/Cache"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
+import { DataLayer } from "./utils"
 
 export const getGames = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const [games, { changedIds, draftIds, newIds }] = yield* Effect.all(
 					[INTERNAL_getGameData(), getGameIds],
@@ -35,10 +35,8 @@ export const getGames = cache(
 				})
 			}).pipe(
 				Effect.withLogSpan("get_games"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(Cache.Default),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -51,7 +49,7 @@ export const getGames = cache(
 
 export const getGameSearchData = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const games = yield* INTERNAL_getGameData()
 				if (!games) return []
@@ -65,9 +63,8 @@ export const getGameSearchData = cache(
 					}))
 			}).pipe(
 				Effect.withLogSpan("get_game_search_data"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -80,7 +77,7 @@ export const getGameSearchData = cache(
 
 export const getGameById = cache(
 	unstable_cache(
-		async (draftMode: boolean, id: string) => {
+		async (id: string) => {
 			return await Effect.gen(function* () {
 				const games = yield* INTERNAL_getGameData()
 
@@ -94,9 +91,9 @@ export const getGameById = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_game_by_id"),
-				Effect.annotateLogs({ id, draftMode }),
+				Effect.annotateLogs({ id }),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},

@@ -1,5 +1,4 @@
 import type { Filter } from "../filters-combobox/filters-combobox"
-import { draftMode } from "next/headers"
 import { Suspense } from "react"
 import { getGameSearchData } from "@/data/games"
 import { getMapSearchData } from "@/data/maps"
@@ -31,11 +30,10 @@ const types: Filter[] = [
 ]
 
 export default async function BestiaryFilters() {
-	const { isEnabled } = await draftMode()
-	const zombiesPromise = getZombieSearchData(isEnabled)
-	const gamesPromise = getGameSearchData(isEnabled)
-	const mapsPromise = getMapSearchData(isEnabled)
-	const referencedMapsPromise = getReferencedMaps(isEnabled)
+	const zombiesPromise = getZombieSearchData()
+	const gamesPromise = getGameSearchData()
+	const mapsPromise = getMapSearchData()
+	const referencedMapsPromise = getReferencedMaps()
 	const [zombies, games, maps, referencedMaps] = await Promise.all([
 		zombiesPromise,
 		gamesPromise,

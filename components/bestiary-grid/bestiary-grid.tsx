@@ -6,7 +6,7 @@ import BestiaryGridClient from "./bestiary-grid.client"
 
 export default async function BestiaryGrid() {
 	const { isEnabled } = await draftMode()
-	const zombies = await getZombies(isEnabled)
+	const zombies = await getZombies()
 
 	return (
 		<Suspense fallback={<GridLoader />}>

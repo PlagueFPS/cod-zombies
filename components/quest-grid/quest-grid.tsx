@@ -7,7 +7,7 @@ import QuestGridClient from "./quest-grid.client"
 
 export async function MainQuestGrid() {
 	const { isEnabled } = await draftMode()
-	const maps = await getMaps(isEnabled)
+	const maps = await getMaps()
 
 	return (
 		<Suspense fallback={<GridLoader />}>
@@ -18,7 +18,7 @@ export async function MainQuestGrid() {
 
 export async function SideQuestGrid() {
 	const { isEnabled } = await draftMode()
-	const quests = await getQuests(isEnabled)
+	const quests = await getQuests()
 
 	return (
 		<Suspense fallback={<GridLoader />}>

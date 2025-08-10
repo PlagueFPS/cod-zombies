@@ -7,10 +7,10 @@ import { getZombies } from "@/data/zombies"
 import { env } from "@/env"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const mapsPromise = getMaps(false)
-	const questsProimse = getQuests(false)
-	const zombiesPromise = getZombies(false)
-	const legalPromise = getLegalDocuments(false)
+	const mapsPromise = getMaps()
+	const questsProimse = getQuests()
+	const zombiesPromise = getZombies()
+	const legalPromise = getLegalDocuments()
 	const interactiveMaps = getAvailableMaps()
 	const [maps, quests, zombies, legalDocs] = await Promise.all([
 		mapsPromise,

@@ -7,7 +7,7 @@ import { CACHE_KEYS } from "@/utils/constants"
 
 export const getLegalDocuments = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const legalDocs = yield* INTERNAL_getLegalDocuments()
 
@@ -19,7 +19,7 @@ export const getLegalDocuments = cache(
 			}).pipe(
 				Effect.withLogSpan("get_legal_documents"),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},
@@ -32,7 +32,7 @@ export const getLegalDocuments = cache(
 
 export const getLegalDocBySlug = cache(
 	unstable_cache(
-		async (draftMode: boolean, slug: string) => {
+		async (slug: string) => {
 			return await Effect.gen(function* () {
 				const docs = yield* INTERNAL_getLegalDocuments()
 
@@ -49,7 +49,7 @@ export const getLegalDocBySlug = cache(
 			}).pipe(
 				Effect.withLogSpan("get_legal_doc_by_slug"),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},
@@ -62,7 +62,7 @@ export const getLegalDocBySlug = cache(
 
 export const getLegalDocById = cache(
 	unstable_cache(
-		async (draftMode: boolean, id: string) => {
+		async (id: string) => {
 			return await Effect.gen(function* () {
 				const docs = yield* INTERNAL_getLegalDocuments()
 
@@ -76,7 +76,7 @@ export const getLegalDocById = cache(
 			}).pipe(
 				Effect.withLogSpan("get_legal_doc_by_id"),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},

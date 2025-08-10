@@ -5,7 +5,6 @@ import { Array as Arr, Effect, Order } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { getNewEntries } from "@/lib/redis"
-import { Cache } from "@/lib/services/Cache"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
 import {
@@ -14,13 +13,14 @@ import {
 	createMapCategoryDto,
 	createQuestMapDto,
 } from "@/utils/contentful-utils"
+import { DataLayer } from "./utils"
 
 export type SideQuest = NonNullable<Awaited<ReturnType<typeof getQuestBySlug>>>
 export type MinifiedSideQuest = Awaited<ReturnType<typeof getQuests>>[number]
 
 export const getQuests = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const [quests, questIds] = yield* Effect.all([INTERNAL_getSideQuestData(), getQuestIds], {
 					concurrency: "unbounded",
@@ -33,10 +33,10 @@ export const getQuests = cache(
 							const {
 								category: game,
 								timeToRead,
-								...rest
+								...questData
 							} = yield* resolveQuestData(quest, questIds)
 							return {
-								...rest,
+								...questData,
 								game,
 								id: quest.sys.id,
 								updatedAt: quest.sys.updatedAt,
@@ -50,10 +50,8 @@ export const getQuests = cache(
 				)
 			}).pipe(
 				Effect.withLogSpan("get_quests"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(Cache.Default),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -66,36 +64,29 @@ export const getQuests = cache(
 
 export const getQuestSearchData = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
-				const [quests, questIds] = yield* Effect.all([INTERNAL_getSideQuestData(), getQuestIds], {
-					concurrency: "unbounded",
-				})
-
+				const quests = yield* INTERNAL_getSideQuestData()
 				const currentQuests = quests.filter(q => !q.fields.isComingSoon)
 
 				return yield* Effect.forEach(
 					currentQuests,
 					quest =>
 						Effect.gen(function* () {
-							const { category: game, map } = yield* resolveQuestData(quest, questIds)
-
 							return {
 								id: quest.sys.id,
 								title: quest.fields.title,
 								slug: quest.fields.slug,
-								game,
-								map,
+								game: yield* createMapCategoryDto(quest.fields.game),
+								map: yield* createQuestMapDto(quest.fields.map),
 							}
 						}),
 					{ concurrency: "unbounded" },
 				)
 			}).pipe(
 				Effect.withLogSpan("get_quest_search_data"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(Cache.Default),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},
@@ -108,7 +99,7 @@ export const getQuestSearchData = cache(
 
 export const getQuestById = cache(
 	unstable_cache(
-		async (draftMode: boolean, id: string) => {
+		async (id: string) => {
 			return await Effect.gen(function* () {
 				const quests = yield* INTERNAL_getSideQuestData()
 
@@ -137,9 +128,9 @@ export const getQuestById = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_quest_by_id"),
-				Effect.annotateLogs({ id, draftMode }),
+				Effect.annotateLogs({ id }),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},
@@ -152,7 +143,7 @@ export const getQuestById = cache(
 
 export const getQuestBySlug = cache(
 	unstable_cache(
-		async (draftMode: boolean, slug: string) => {
+		async (slug: string) => {
 			return await Effect.gen(function* () {
 				const quests = yield* INTERNAL_getSideQuestData()
 
@@ -178,10 +169,9 @@ export const getQuestBySlug = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_quest_by_slug"),
-				Effect.annotateLogs({ slug, draftMode }),
+				Effect.annotateLogs({ slug }),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(Cache.Default),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},

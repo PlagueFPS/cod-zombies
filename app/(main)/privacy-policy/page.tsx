@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
@@ -7,8 +6,7 @@ import { getLegalDocBySlug } from "@/data/legal"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS } from "@/utils/constants"
 
 export const generateMetadata = async (): Promise<Metadata> => {
-	const { isEnabled } = await draftMode()
-	const policy = await getLegalDocBySlug(isEnabled, "privacy-policy")
+	const policy = await getLegalDocBySlug("privacy-policy")
 	if (!policy) notFound()
 	const title = policy.title
 	const description =
@@ -32,8 +30,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 }
 
 export default async function PrivacyPolicy() {
-	const { isEnabled } = await draftMode()
-	const policy = await getLegalDocBySlug(isEnabled, "privacy-policy")
+	const policy = await getLegalDocBySlug("privacy-policy")
 	if (!policy) notFound()
 
 	return (
@@ -51,7 +48,8 @@ export default async function PrivacyPolicy() {
 								{policy.title}
 							</h2>
 							<span className="text-muted-foreground text-sm">
-								Last Updated: {new Date(policy.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
+								Last Updated:{" "}
+								{new Date(policy.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
 							</span>
 						</div>
 						<RichTextRenderer slug={policy.slug} body={policy.content} />

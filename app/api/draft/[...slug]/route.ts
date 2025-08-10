@@ -14,15 +14,9 @@ interface RouteParams {
 	params: Promise<{ slug: string[] }>
 }
 
-const createSuccessResponse = (path: string) =>
-	Effect.gen(function* () {
-		const draft = yield* Effect.promise(() => draftMode())
-		draft.enable()
-		return Response.redirect(`${env.NEXT_PUBLIC_WEBSITE_URL}${path}`)
-	})
-
 export async function GET(req: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
+		const draft = yield* Effect.promise(() => draftMode())
 		const { slug } = yield* Effect.promise(() => params)
 		const type = slug[0]
 		const entryId = slug[1]
@@ -34,56 +28,69 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const validSlug = yield* Schema.decodeUnknown(AllowedSlugsSchema)(type)
+		draft.enable()
+		yield* Effect.log("Request authorized. Draft Mode has been enabled.")
 
 		return yield* Match.value(validSlug).pipe(
 			Match.when("maps", () =>
 				Effect.gen(function* () {
-					const map = yield* Effect.promise(() => getMapById(true, entryId))
-					if (!map)
+					const map = yield* Effect.promise(() => getMapById(entryId))
+					if (!map) {
+						draft.disable()
 						return yield* new EntryNotFoundError({
 							message: `No map found for entryId: ${entryId}`,
 						})
+					}
 
-					return yield* createSuccessResponse(`/${map.game}/${map.slug}`)
+					return Response.redirect(`/${map.game}/${map.slug}`)
 				}),
 			),
 			Match.when("side-quests", () =>
 				Effect.gen(function* () {
-					const quest = yield* Effect.promise(() => getQuestById(true, entryId))
-					if (!quest)
+					const quest = yield* Effect.promise(() => getQuestById(entryId))
+					if (!quest) {
+						draft.disable()
 						return yield* new EntryNotFoundError({
 							message: `No quest found for entryId: ${entryId}`,
 						})
+					}
 
-					return yield* createSuccessResponse(
-						`/side-quests/${quest.game}/${quest.map}/${quest.slug}`,
-					)
+					return Response.redirect(`/side-quests/${quest.game}/${quest.map}/${quest.slug}`)
 				}),
 			),
 			Match.when("zombies", () =>
 				Effect.gen(function* () {
-					const zombie = yield* Effect.promise(() => getZombieById(true, entryId))
-					if (!zombie)
+					const zombie = yield* Effect.promise(() => getZombieById(entryId))
+					if (!zombie) {
+						draft.disable()
 						return yield* new EntryNotFoundError({
 							message: `No zombie found for entryId: ${entryId}`,
 						})
+					}
 
-					return yield* createSuccessResponse(`/bestiary/${zombie.slug}`)
+					return Response.redirect(`/bestiary/${zombie.slug}`)
 				}),
 			),
 			Match.when("legal", () =>
 				Effect.gen(function* () {
-					const doc = yield* Effect.promise(() => getLegalDocById(true, entryId))
-					if (!doc)
+					const doc = yield* Effect.promise(() => getLegalDocById(entryId))
+					if (!doc) {
+						draft.disable()
 						return yield* new EntryNotFoundError({
 							message: `No legal document found for entryId: ${entryId}`,
 						})
+					}
 
-					return yield* createSuccessResponse(`/${doc.slug}`)
+					return Response.redirect(`/${doc.slug}`)
 				}),
 			),
-			Match.orElse(
-				slug => new InvalidRequestError({ message: `No preview available for this slug: ${slug}` }),
+			Match.orElse(slug =>
+				Effect.gen(function* () {
+					draft.disable()
+					return yield* new InvalidRequestError({
+						message: `No preview available for this slug: ${slug}`,
+					})
+				}),
 			),
 		)
 	}).pipe(

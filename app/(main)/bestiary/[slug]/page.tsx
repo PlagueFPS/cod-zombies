@@ -13,18 +13,13 @@ import {
 	Target,
 	Zap,
 } from "lucide-react"
-import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { cache } from "react"
+import { cache, Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import {
-	ChangedBadge,
-	DraftBadge,
-	NewBadge,
-	TypeBadge,
-} from "@/components/custom-badges/custom-badges"
+import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
+import { ManagementBadges } from "@/components/management-badges/management-badges"
 import ItemTooltip from "@/components/rich-text/rich-embeds/item-tooltip"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
@@ -39,24 +34,18 @@ import {
 } from "@/data/zombies"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { GLOBAL_OG_PROPS } from "@/utils/constants"
 
 interface IZombiePage {
 	params: Promise<{ slug: string }>
 }
 
-interface PrevOrNextZombie {
-	zombie: MinifiedZombie
-	isEnabled: boolean
-	prev?: boolean
-}
-
-const getPageData = cache(async (draftMode: boolean, slug: string) => {
-	const zombie = await getZombieBySlug(draftMode, slug)
+const getPageData = cache(async (slug: string) => {
+	const zombie = await getZombieBySlug(slug)
 	if (!zombie || zombie.isComingSoon) {
 		notFound()
 	}
-	const zombies = await getZombies(draftMode)
+	const zombies = await getZombies()
 	const zombieIndex = zombies.findIndex(z => z.slug === zombie.slug)
 
 	return {
@@ -67,15 +56,15 @@ const getPageData = cache(async (draftMode: boolean, slug: string) => {
 })
 
 export const generateStaticParams = async () => {
-	const zombies = await getZombieSearchData(false)
+	const zombies = await getZombieSearchData()
 	return zombies.map(zombie => ({
 		slug: zombie.slug,
 	}))
 }
 
 export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadata> => {
-	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
-	const { zombie } = await getPageData(isEnabled, slug)
+	const { slug } = await params
+	const { zombie } = await getPageData(slug)
 	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.name}" ${zombie.type} Zombie.`
 
 	return {
@@ -99,8 +88,8 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
 }
 
 export default async function ZombiePage({ params }: IZombiePage) {
-	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
-	const { zombie, prevZombie, nextZombie } = await getPageData(isEnabled, slug)
+	const { slug } = await params
+	const { zombie, prevZombie, nextZombie } = await getPageData(slug)
 	const speedProgress = () => {
 		switch (zombie.speed) {
 			case "Slow":
@@ -127,8 +116,10 @@ export default async function ZombiePage({ params }: IZombiePage) {
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-4">
-						{(isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null}
-						{(isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null}
+						<Suspense>
+							<ManagementBadges entry={zombie} />
+						</Suspense>
+						{zombie.isComingSoon ? <ComingSoonBadge /> : null}
 						{zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 					</div>
@@ -329,15 +320,20 @@ export default async function ZombiePage({ params }: IZombiePage) {
 			</section>
 			<section className="mt-8 flex w-full flex-row items-center justify-center">
 				<div className="mx-auto flex flex-col items-center justify-center gap-8 px-3 lg:flex-row xl:mr-0 xl:ml-auto xl:px-0">
-					{prevZombie && <PrevOrNextZombie zombie={prevZombie} isEnabled={isEnabled} prev />}
-					{nextZombie && <PrevOrNextZombie zombie={nextZombie} isEnabled={isEnabled} />}
+					{prevZombie && <PrevOrNextZombie zombie={prevZombie} prev />}
+					{nextZombie && <PrevOrNextZombie zombie={nextZombie} />}
 				</div>
 			</section>
 		</article>
 	)
 }
 
-const PrevOrNextZombie = ({ zombie, isEnabled, prev }: PrevOrNextZombie) => {
+interface PrevOrNextZombie {
+	zombie: MinifiedZombie
+	prev?: boolean
+}
+
+const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
 	const alt = `${zombie.name} image`
 	const href = `/bestiary/${zombie.slug}`
 
@@ -360,9 +356,11 @@ const PrevOrNextZombie = ({ zombie, isEnabled, prev }: PrevOrNextZombie) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
+					<Suspense>
+						<ManagementBadges entry={zombie} />
+					</Suspense>
+					{zombie.isComingSoon ? <ComingSoonBadge /> : null}
 					{zombie.isNew ? <NewBadge /> : null}
-					{(isEnabled || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null}
-					{(isEnabled || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null}
 					<TypeBadge type={zombie.type} />
 					{zombie.games[0] ? (
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

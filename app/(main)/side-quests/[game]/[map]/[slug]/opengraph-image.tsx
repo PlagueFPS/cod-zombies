@@ -11,7 +11,7 @@ interface IOpenGraphImage {
 
 export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
 	const { slug } = await params
-	const q = await getQuestBySlug(false, slug)
+	const q = await getQuestBySlug(slug)
 	if (!q) return null
 
 	return [
@@ -26,7 +26,7 @@ export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
 
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const { slug } = await params
-	const q = await getQuestBySlug(false, slug)
+	const q = await getQuestBySlug(slug)
 	if (!q) return new Response("Quest not found", { status: 404 })
 
 	const fonts = await Effect.runPromise(getFontData)

@@ -112,9 +112,7 @@ export const getImageUrl = Effect.fnUntraced(function* <T extends BroadcastEntry
 	// Delete old image and handle its failure seperately to avoid short-circuiting
 	yield* deleteImage(`og-image-${slug}-${cachedHash}.jpg`).pipe(
 		Effect.withLogSpan("delete_old_og_image"),
-		Effect.annotateLogs("id", id),
-		Effect.annotateLogs("slug", slug),
-		Effect.annotateLogs("cachedHash", cachedHash),
+		Effect.annotateLogs({ id, slug, cachedHash }),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(() => Effect.void),
 	)

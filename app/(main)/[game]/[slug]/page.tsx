@@ -1,19 +1,17 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
-import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { cache } from "react"
+import { cache, Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import {
-	ChangedBadge,
 	ComingSoonBadge,
 	DifficultyBadge,
-	DraftBadge,
 	NewBadge,
 } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
+import { ManagementBadges } from "@/components/management-badges/management-badges"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
@@ -31,18 +29,12 @@ interface MapPageProps {
 	}>
 }
 
-interface PrevOrNextMap {
-	map: MinifiedFeaturedMap
-	isEnabled: boolean
-	prev?: boolean
-}
-
-const getPageData = cache(async (draftMode: boolean, slug: string) => {
-	const map = await getMapBySlug(draftMode, slug)
+const getPageData = cache(async (slug: string) => {
+	const map = await getMapBySlug(slug)
 	if (!map) {
 		notFound()
 	}
-	const maps = await getMaps(draftMode)
+	const maps = await getMaps()
 	const mapIndex = maps.findIndex(m => m.slug === map.slug)
 
 	return {
@@ -53,7 +45,7 @@ const getPageData = cache(async (draftMode: boolean, slug: string) => {
 })
 
 export const generateStaticParams = async () => {
-	const featuredMaps = await getMapSearchData(false)
+	const featuredMaps = await getMapSearchData()
 
 	return featuredMaps.map(map => ({
 		game: map.game.slug,
@@ -62,8 +54,8 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: MapPageProps): Promise<Metadata> => {
-	const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
-	const { map } = await getPageData(isEnabled, slug)
+	const [{ slug, game }] = await Promise.all([params])
+	const { map } = await getPageData(slug)
 	const { title: mapTitle, game: mapGame } = map
 	const title = `${mapTitle} Main Quest`
 	const description = `Learn how to complete the main quest/easter egg for the ${mapGame.title} zombies map ${mapTitle} with our detailed step-by-step walkthrough!`
@@ -88,8 +80,8 @@ export const generateMetadata = async ({ params }: MapPageProps): Promise<Metada
 }
 
 export default async function MapPage({ params }: MapPageProps) {
-	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
-	const { map, nextMap, prevMap } = await getPageData(isEnabled, slug)
+	const { slug } = await params
+	const { map, nextMap, prevMap } = await getPageData(slug)
 	const headings = map.isComingSoon ? [] : extractHeadings(map.body)
 
 	return (
@@ -130,8 +122,9 @@ export default async function MapPage({ params }: MapPageProps) {
 									{map.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									{(isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null}
-									{(isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null}
+									<Suspense>
+										<ManagementBadges entry={map} />
+									</Suspense>
 									{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 									{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
@@ -178,8 +171,8 @@ export default async function MapPage({ params }: MapPageProps) {
 							<GuideFeedback guideTitle={map.title} type="Main Quest" />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{prevMap && <PrevOrNextMapCard map={prevMap} isEnabled={isEnabled} prev />}
-							{nextMap && <PrevOrNextMapCard map={nextMap} isEnabled={isEnabled} />}
+							{prevMap && <PrevOrNextMapCard map={prevMap} prev />}
+							{nextMap && <PrevOrNextMapCard map={nextMap} />}
 						</div>
 					</article>
 				</div>
@@ -188,7 +181,12 @@ export default async function MapPage({ params }: MapPageProps) {
 	)
 }
 
-const PrevOrNextMapCard = ({ map, isEnabled, prev }: PrevOrNextMap) => {
+interface PrevOrNextMap {
+	map: MinifiedFeaturedMap
+	prev?: boolean
+}
+
+const PrevOrNextMapCard = ({ map, prev }: PrevOrNextMap) => {
 	const alt = `${map.title} map image`
 	const href = map.isComingSoon ? "#" : `/${map.game.slug}/${map.slug}`
 
@@ -214,9 +212,10 @@ const PrevOrNextMapCard = ({ map, isEnabled, prev }: PrevOrNextMap) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
+					<Suspense>
+						<ManagementBadges entry={map} />
+					</Suspense>
 					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
-					{(isEnabled || IN_DEVELOPMENT) && map.isDraft ? <DraftBadge /> : null}
-					{(isEnabled || IN_DEVELOPMENT) && map.isChanged ? <ChangedBadge /> : null}
 					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{map.game.title}

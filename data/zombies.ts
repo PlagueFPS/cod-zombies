@@ -5,7 +5,6 @@ import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { getNewEntries } from "@/lib/redis"
-import { Cache } from "@/lib/services/Cache"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
 import {
@@ -15,6 +14,7 @@ import {
 	createQuestMapDto,
 	createZombieAttackDto,
 } from "@/utils/contentful-utils"
+import { DataLayer } from "./utils"
 
 export type Zombie = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
@@ -22,7 +22,7 @@ export type ZombieType = "Boss" | "Special" | "Elite" | "Normal"
 
 export const getZombies = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const [zombies, zombieIds] = yield* Effect.all([INTERNAL_getZombies(), getZombieIds], {
 					concurrency: "unbounded",
@@ -32,12 +32,12 @@ export const getZombies = cache(
 					zombies,
 					zombie =>
 						Effect.gen(function* () {
-							const { elementalWeakness, attacks, ...rest } = yield* resolveZombieData(
+							const { elementalWeakness, attacks, ...zombieData } = yield* resolveZombieData(
 								zombie,
 								zombieIds,
 							)
 							return {
-								...rest,
+								...zombieData,
 								id: zombie.sys.id,
 								name: zombie.fields.name,
 								slug: zombie.fields.slug,
@@ -51,10 +51,8 @@ export const getZombies = cache(
 				)
 			}).pipe(
 				Effect.withLogSpan("get_zombies"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(Cache.Default),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -67,7 +65,7 @@ export const getZombies = cache(
 
 export const getZombieSearchData = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const [zombies, zombieIds] = yield* Effect.all([INTERNAL_getZombies(), getZombieIds], {
 					concurrency: "unbounded",
@@ -92,10 +90,8 @@ export const getZombieSearchData = cache(
 				)
 			}).pipe(
 				Effect.withLogSpan("get_zombie_search_data"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(Cache.Default),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -108,7 +104,7 @@ export const getZombieSearchData = cache(
 
 export const getZombieBySlug = cache(
 	unstable_cache(
-		async (draftMode: boolean, slug: string) => {
+		async (slug: string) => {
 			return await Effect.gen(function* () {
 				const zombies = yield* INTERNAL_getZombies()
 
@@ -134,10 +130,9 @@ export const getZombieBySlug = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_zombie_by_slug"),
-				Effect.annotateLogs({ slug, draftMode }),
+				Effect.annotateLogs({ slug }),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
-				Effect.provide(Cache.Default),
+				Effect.provide(DataLayer),
 				Effect.runPromise,
 			)
 		},
@@ -150,7 +145,7 @@ export const getZombieBySlug = cache(
 
 export const getZombieById = cache(
 	unstable_cache(
-		async (draftMode: boolean, id: string) => {
+		async (id: string) => {
 			return await Effect.gen(function* () {
 				const zombies = yield* INTERNAL_getZombies()
 
@@ -168,9 +163,9 @@ export const getZombieById = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_zombie_by_id"),
-				Effect.annotateLogs({ id, draftMode }),
+				Effect.annotateLogs({ id }),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},
@@ -183,7 +178,7 @@ export const getZombieById = cache(
 
 export const getReferencedMaps = cache(
 	unstable_cache(
-		async (draftMode: boolean) => {
+		async () => {
 			return await Effect.gen(function* () {
 				const maps = yield* INTERNAL_getReferencedMaps()
 
@@ -201,9 +196,8 @@ export const getReferencedMaps = cache(
 				)
 			}).pipe(
 				Effect.withLogSpan("get_referenced_maps"),
-				Effect.annotateLogs("draftMode", draftMode),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default(draftMode)),
+				Effect.provide(CMS.Default),
 				Effect.runPromise,
 			)
 		},

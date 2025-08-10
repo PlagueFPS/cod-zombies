@@ -37,7 +37,6 @@ export interface BroadcastEntry {
 		height: number | undefined
 	}
 }
-
 interface BroadcastResponse {
 	success: boolean
 	message: string

@@ -1,4 +1,3 @@
-import { draftMode } from "next/headers"
 import { getGames } from "@/data/games"
 import { getAvailableMaps } from "@/data/interactive-map"
 import { getMapSearchData } from "@/data/maps"
@@ -11,13 +10,17 @@ interface ISearchBar {
 }
 
 export default async function SearchBar({ showFull }: ISearchBar) {
-	const { isEnabled } = await draftMode()
-	const mapsPromise = getMapSearchData(isEnabled)
-	const gamesPromise = getGames(isEnabled)
-	const questsPromise = getQuestSearchData(isEnabled)
-	const zombiesPromise = getZombieSearchData(isEnabled)
+	const mapsPromise = getMapSearchData()
+	const gamesPromise = getGames()
+	const questsPromise = getQuestSearchData()
+	const zombiesPromise = getZombieSearchData()
 	const availableMaps = getAvailableMaps()
-	const [maps, games, quests, zombies] = await Promise.all([mapsPromise, gamesPromise, questsPromise, zombiesPromise])
+	const [maps, games, quests, zombies] = await Promise.all([
+		mapsPromise,
+		gamesPromise,
+		questsPromise,
+		zombiesPromise,
+	])
 	const modifiedGames = games
 		.filter(g => !g.isComingSoon)
 		.map(game => ({
