@@ -29,7 +29,8 @@ const RevalidateLayer = Layer.mergeAll(Email.Default, Cache.Default, FileStorage
 const cleanupDraftMode = Effect.fnUntraced(function* () {
 	const draft = yield* Effect.promise(() => draftMode())
 	if (draft.isEnabled) draft.disable()
-})
+	yield* Effect.log("Draft Mode Disabled.")
+}, Effect.withLogSpan("cleanup_draft_mode"))
 
 export async function PUT(req: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
