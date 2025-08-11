@@ -31,7 +31,7 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 
 		const getEntries = <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) =>
 			Effect.tryPromise({
-				try: () => client.withoutUnresolvableLinks.getEntries<T>(searchParams),
+				try: () => client.withoutUnresolvableLinks.getEntries<T>({ ...searchParams, limit: 200 }),
 				catch: error =>
 					new GetEntriesError({
 						message: `Failed to get entries with params: ${JSON.stringify(searchParams)}`,
@@ -43,7 +43,8 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 			contentType: "featuredMaps" | "gameCategory" | "sideQuests" | "zombies",
 		) =>
 			Effect.tryPromise({
-				try: () => managementClient.entry.getMany({ query: { content_type: contentType } }),
+				try: () =>
+					managementClient.entry.getMany({ query: { content_type: contentType, limit: 200 } }),
 				catch: error =>
 					new GetEntriesError({
 						message: `Failed to get management entries for ${contentType}`,
