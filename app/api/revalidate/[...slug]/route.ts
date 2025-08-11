@@ -26,6 +26,11 @@ const decodeSlug = Schema.decodeUnknown(AllowedSlugsSchema)
 
 const RevalidateLayer = Layer.mergeAll(Email.Default, Cache.Default, FileStorage.Default)
 
+const cleanupDraftMode = Effect.fnUntraced(function* () {
+	const draft = yield* Effect.promise(() => draftMode())
+	if (draft.isEnabled) draft.disable()
+})
+
 export async function PUT(req: NextRequest, { params }: RouteParams) {
 	return await Effect.gen(function* () {
 		const { success } = yield* Effect.promise(() =>
@@ -77,16 +82,14 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 		return yield* handler(body)
 	}).pipe(
 		Effect.withLogSpan("put_revalidation_handler"),
-		Effect.tap(() => Effect.log("Data Revalidation Completed.")),
-		Effect.tapError(error =>
-			Effect.gen(function* () {
-				// ensure draft mode is disabled on any failure
-				const draft = yield* Effect.promise(() => draftMode())
-				if (draft.isEnabled) draft.disable()
-
-				yield* Effect.logError(error)
-			}),
-		),
+		Effect.tapBoth({
+			onSuccess: () => cleanupDraftMode(),
+			onFailure: error =>
+				Effect.gen(function* () {
+					yield* cleanupDraftMode()
+					yield* Effect.logError(error)
+				}),
+		}),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(Response.json(error.message, { status: 401 })),
 			EntryNotFoundError: error => Effect.succeed(Response.json(error.message, { status: 404 })),

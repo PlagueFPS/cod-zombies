@@ -1,7 +1,7 @@
 import "server-only"
 import type { IZombieRelease } from "@/emails/ZombieReleaseEmail"
 import type { TAllowedSlugs } from "./validation-schemas"
-import { Effect } from "effect"
+import { Effect, Schedule } from "effect"
 import { revalidateTag } from "next/cache"
 import { getGameById } from "@/data/games"
 import { getLegalDocById } from "@/data/legal"
@@ -131,8 +131,13 @@ export const RevalidateHandlers = {
 			return createSuccessResponse("Map revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("maps_revalidate_handler"),
-			Effect.tap(() => Effect.log(`Successfully revalidated map data`)),
 			Effect.annotateLogs("entryId", entryId),
+			Effect.tap(() => Effect.log(`Successfully revalidated map data`)),
+			Effect.retry({
+				times: 3,
+				schedule: Schedule.exponential(200, 2),
+				while: error => error._tag === "EntryNotFoundError",
+			}),
 		),
 
 	/**
@@ -168,8 +173,13 @@ export const RevalidateHandlers = {
 			return createSuccessResponse("Game revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("games_revalidate_handler"),
-			Effect.tap(() => Effect.log(`Successfully revalidated game data`)),
 			Effect.annotateLogs("entryId", entryId),
+			Effect.tap(() => Effect.log(`Successfully revalidated game data`)),
+			Effect.retry({
+				times: 3,
+				schedule: Schedule.exponential(200, 2),
+				while: error => error._tag === "EntryNotFoundError",
+			}),
 		),
 
 	/**
@@ -218,8 +228,13 @@ export const RevalidateHandlers = {
 			return createSuccessResponse("Side Quest revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("side_quests_revalidate_handler"),
-			Effect.tap(() => Effect.log("Successfully revalidated side quest data")),
 			Effect.annotateLogs("entryId", entryId),
+			Effect.tap(() => Effect.log("Successfully revalidated side quest data")),
+			Effect.retry({
+				times: 3,
+				schedule: Schedule.exponential(200, 2),
+				while: error => error._tag === "EntryNotFoundError",
+			}),
 		),
 
 	/**
@@ -267,8 +282,13 @@ export const RevalidateHandlers = {
 			return createSuccessResponse("Zombie revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("zombies_revalidate_handler"),
-			Effect.tap(() => Effect.log("Successfully revalidated zombies data")),
 			Effect.annotateLogs("entryId", entryId),
+			Effect.tap(() => Effect.log("Successfully revalidated zombies data")),
+			Effect.retry({
+				times: 3,
+				schedule: Schedule.exponential(200, 2),
+				while: error => error._tag === "EntryNotFoundError",
+			}),
 		),
 
 	/**
@@ -306,7 +326,12 @@ export const RevalidateHandlers = {
 			return createSuccessResponse("Legal document revalidated", null)
 		}).pipe(
 			Effect.withLogSpan("legal_revalidate_handler"),
-			Effect.tap(() => Effect.log("Successfully revalidated legal docs data")),
 			Effect.annotateLogs("entryId", entryId),
+			Effect.tap(() => Effect.log("Successfully revalidated legal docs data")),
+			Effect.retry({
+				times: 3,
+				schedule: Schedule.exponential(200, 2),
+				while: error => error._tag === "EntryNotFoundError",
+			}),
 		),
 }

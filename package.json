@@ -14,8 +14,8 @@
     "pull": "vercel env pull",
     "email": "email dev",
     "scan": "next dev --turbopack & pnpx react-scan@latest localhost:3000",
-    "upload:images": "node --env-file=./.env.local upload-assets.local.ts",
-    "optimize:images": "node optimize-assets.local.ts"
+    "upload:images": "tsx --env-file=./.env.local upload-assets.local",
+    "optimize:images": "tsx optimize-assets.local"
   },
   "dependencies": {
     "@contentful/rich-text-plain-text-renderer": "^17.1.0",
