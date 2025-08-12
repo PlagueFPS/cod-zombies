@@ -3,6 +3,7 @@ import type { ImageProps } from "@/types/images"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogTitle,
@@ -50,13 +51,15 @@ export default function RichImage({ asset }: RichImageProps) {
 					<DialogDescription className="sr-only">
 						{asset.fields.description || "Preview Image"}
 					</DialogDescription>
-					<FeaturedImage
-						{...imageProps}
-						quality={100}
-						alt={asset.fields.description}
-						sizes="(max-width: 1920px) calc(100vw - 16px), 1920px"
-						className="rounded-lg"
-					/>
+					<DialogClose>
+						<FeaturedImage
+							{...imageProps}
+							quality={100}
+							alt={asset.fields.description}
+							sizes="(max-width: 1920px) calc(100vw - 16px), 1920px"
+							className="cursor-zoom-out rounded-lg"
+						/>
+					</DialogClose>
 				</DialogContent>
 			</Dialog>
 		</div>
