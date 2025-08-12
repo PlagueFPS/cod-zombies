@@ -59,3 +59,20 @@ const RichLinkNodeSchema = Schema.Struct({
 })
 
 export const decodeRichLinkNode = Schema.decodeUnknownEither(RichLinkNodeSchema)
+
+const ReckoningCodeSchema = Schema.Struct({
+	letter1: Schema.Union(
+		Schema.String.pipe(
+			Schema.pattern(/^[A-Za-z]$/, { message: () => "Only letters A-Z are allowed." }),
+		),
+		Schema.String.pipe(Schema.maxLength(0)),
+	),
+	letter2: Schema.Union(
+		Schema.String.pipe(
+			Schema.pattern(/^[A-Za-z]$/, { message: () => "Only letters A-Z are allowed." }),
+		),
+		Schema.String.pipe(Schema.maxLength(0)),
+	),
+})
+
+export const decodeReckoningCode = Schema.decodeUnknownEither(ReckoningCodeSchema)

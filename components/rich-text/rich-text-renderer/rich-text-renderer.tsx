@@ -7,6 +7,7 @@ import { slugify } from "@/utils/functions.client"
 import RichBlockquote from "../rich-blockquote/rich-blockquote"
 import GKValve from "../rich-embeds/gk-valve"
 import ItemTooltip from "../rich-embeds/item-tooltip"
+import ReckoningCode from "../rich-embeds/reckoning-code"
 import TerminusCode from "../rich-embeds/terminus-code"
 import Heading2 from "../rich-headings/heading2/heading2"
 import Heading3 from "../rich-headings/heading3/heading3"
@@ -78,6 +79,8 @@ export default function RichTextRenderer({
 						return <GKValve />
 					case "terminus":
 						return <TerminusCode />
+					case "reckoning":
+						return <ReckoningCode />
 				}
 			},
 			[BLOCKS.QUOTE]: (_node: unknown, children: React.ReactNode) => {
