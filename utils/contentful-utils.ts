@@ -6,7 +6,10 @@ import type { MinifiedSideQuest, SideQuest } from "@/data/side-quests"
 import type {
 	TypeFeaturedMapsSkeleton,
 	TypeGameCategorySkeleton,
+	TypeGobblegumsSkeleton,
 	TypeReferencedMapsSkeleton,
+	TypeWeaponBuildsSkeleton,
+	TypeWeaponSkeleton,
 	TypeZombieAttacksSkeleton,
 	ZombieItem,
 } from "@/types/contentful-types"
@@ -136,7 +139,7 @@ export const isFirstTimePublish = (createdAt: Date, updatedAt: Date) => {
  */
 export const isFeaturedMap = (
 	quest: FeaturedMap | MinifiedFeaturedMap | SideQuest | MinifiedSideQuest,
-) => {
+): quest is FeaturedMap | MinifiedFeaturedMap => {
 	return Predicate.hasProperty(quest, "difficulty")
 }
 
@@ -147,8 +150,39 @@ export const isFeaturedMap = (
  */
 export const isSideQuest = (
 	quest: FeaturedMap | MinifiedFeaturedMap | SideQuest | MinifiedSideQuest,
-) => {
+): quest is SideQuest | MinifiedSideQuest => {
 	return Predicate.hasProperty(quest, "map")
+}
+
+/**
+ * Check if an entry is a weapon build.
+ * @param item The entry to check
+ * @returns True if the entry is a weapon build, false otherwise
+ */
+export const isWeaponBuild = (
+	item: ZombieItem,
+): item is Entry<TypeWeaponBuildsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
+	return Predicate.hasProperty(item.fields, "weapon")
+}
+
+/**
+ * Check if an entry is a gobble gum.
+ * @param item The entry to check
+ * @returns True if the entry is a gobble gum, false otherwise
+ */
+export const isGobbleGum = (
+	item: ZombieItem,
+): item is Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
+	return Predicate.hasProperty(item.fields, "gobbleGum")
+}
+
+/**
+ * Check if a DTO is a weapon build.
+ * @param item The DTO to check
+ * @returns True if the DTO is a weapon build, false otherwise
+ */
+export const isWeaponBuildDto = (item: ReturnType<typeof createItemTooltipDto>) => {
+	return Predicate.hasProperty(item, "attachments")
 }
 
 /**
@@ -157,9 +191,9 @@ export const isSideQuest = (
  * @returns The DTO for the zombie item
  */
 export const createItemTooltipDto = (item: ZombieItem) => {
-	const itemImage = item.fields.image
+	const itemImage = Predicate.hasProperty(item.fields, "image") ? item.fields.image : undefined
 
-	if (Predicate.hasProperty(item.fields, "rarity")) {
+	if (isGobbleGum(item)) {
 		return {
 			id: item.sys.id,
 			title: item.fields.title,
@@ -167,6 +201,16 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 			description: item.fields.description,
 			rarity: item.fields.rarity,
 			type: item.fields.type,
+		}
+	}
+
+	if (isWeaponBuild(item)) {
+		const weapon = createWeaponDto(item.fields.weapon)
+		return {
+			id: item.sys.id,
+			title: weapon.title,
+			image: createImageDto(itemImage),
+			attachments: item.fields.attachments,
 		}
 	}
 
@@ -188,6 +232,26 @@ export const createImageDto = (image: Asset<undefined, string> | undefined) => {
 		url: image?.fields.file?.url,
 		width: image?.fields.file?.details?.image?.width,
 		height: image?.fields.file?.details?.image?.height,
+	}
+}
+
+/**
+ * Create a Data Transfer Object for a weapon.
+ * @param weapon The weapon to create a DTO for
+ * @returns The DTO for the weapon
+ */
+export const createWeaponDto = (
+	weapon: Entry<TypeWeaponSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
+) => {
+	if (!weapon)
+		throw new Error(
+			"Expected weapon. It is either missing or depth is not high enough to populate.",
+		)
+
+	return {
+		id: weapon.sys.id,
+		title: weapon.fields.title,
+		slug: weapon.fields.slug,
 	}
 }
 

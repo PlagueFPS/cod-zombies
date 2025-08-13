@@ -12,7 +12,7 @@ export type ZombieItem =
 	| Entry<TypeFieldUpgradesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 	| Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 	| Entry<TypePerksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-
+	| Entry<TypeWeaponBuildsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 export interface TypeAmmoModsFields {
 	title: EntryFieldTypes.Symbol
 	slug: EntryFieldTypes.Symbol
@@ -195,6 +195,32 @@ export interface TypeZombiesFields {
 export type TypeZombiesSkeleton = EntrySkeletonType<TypeZombiesFields, "zombies">
 export type TypeZombies<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<
 	TypeZombiesSkeleton,
+	Modifiers,
+	Locales
+>
+
+export interface TypeWeaponFields {
+	title: EntryFieldTypes.Symbol
+	slug: EntryFieldTypes.Symbol
+}
+
+export type TypeWeaponSkeleton = EntrySkeletonType<TypeWeaponFields, "weapon">
+export type TypeWeapon<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<
+	TypeWeaponSkeleton,
+	Modifiers,
+	Locales
+>
+
+export interface TypeWeaponBuildsFields {
+	title: EntryFieldTypes.Symbol
+	slug: EntryFieldTypes.Symbol
+	weapon: EntryFieldTypes.EntryLink<TypeWeaponSkeleton>
+	attachments: EntryFieldTypes.Array<EntryFieldTypes.Symbol>
+}
+
+export type TypeWeaponBuildsSkeleton = EntrySkeletonType<TypeWeaponBuildsFields, "weaponBuilds">
+export type TypeWeaponBuilds<Modifiers extends ChainModifiers, Locales extends LocaleCode> = Entry<
+	TypeWeaponBuildsSkeleton,
 	Modifiers,
 	Locales
 >

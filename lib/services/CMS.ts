@@ -31,7 +31,12 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 
 		const getEntries = <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) =>
 			Effect.tryPromise({
-				try: () => client.withoutUnresolvableLinks.getEntries<T>({ ...searchParams, limit: 200 }),
+				try: () =>
+					client.withoutUnresolvableLinks.getEntries<T>({
+						...searchParams,
+						limit: 200,
+						include: 2,
+					}),
 				catch: error =>
 					new GetEntriesError({
 						message: `Failed to get entries with params: ${JSON.stringify(searchParams)}`,
