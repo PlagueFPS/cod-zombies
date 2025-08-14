@@ -5,7 +5,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
-import { ScrollArea } from "../ui/scroll-area"
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import {
 	Sheet,
 	SheetClose,
@@ -73,6 +73,7 @@ export default function MobileTableOfContents({
 								))}
 							</ul>
 						</nav>
+						<ScrollBar orientation="vertical" />
 					</ScrollArea>
 				</SheetContent>
 			</Sheet>

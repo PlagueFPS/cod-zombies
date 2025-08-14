@@ -173,7 +173,7 @@ export const isWeaponBuild = (
 export const isGobbleGum = (
 	item: ZombieItem,
 ): item is Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
-	return Predicate.hasProperty(item.fields, "gobbleGum")
+	return Predicate.hasProperty(item.fields, "rarity")
 }
 
 /**

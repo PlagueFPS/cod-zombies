@@ -10,7 +10,7 @@ import BackToTopButton from "../back-to-top-button/back-to-top-button"
 import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
 import { Progress } from "../ui/progress"
-import { ScrollArea } from "../ui/scroll-area"
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import MobileTableOfContents from "./mobile-table-of-contents"
 
@@ -109,6 +109,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 								</li>
 							))}
 						</ul>
+						<ScrollBar orientation="vertical" />
 					</ScrollArea>
 					<div className="sticky bottom-0 flex w-full items-center justify-center border-t py-4">
 						<BackToTopButton variant={"outline"} />
