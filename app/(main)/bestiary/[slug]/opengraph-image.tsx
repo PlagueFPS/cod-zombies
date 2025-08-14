@@ -11,25 +11,10 @@ export const size = {
 	width: 1200,
 	height: 630,
 }
-export const contentType = "image/png"
+export const contentType = "image/jpeg"
 
 interface IOpenGraphImage {
 	params: Promise<{ slug: string }>
-}
-
-export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
-	const { slug } = await params
-	const zombie = await getZombieBySlug(slug)
-	if (!zombie) return null
-
-	return [
-		{
-			id: zombie.id,
-			contentType: "image/jpeg",
-			size: { width: 1200, height: 630 },
-			alt: `${zombie.name} Preview Image`,
-		},
-	]
 }
 
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {

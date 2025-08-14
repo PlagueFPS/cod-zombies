@@ -9,20 +9,12 @@ interface IOpenGraphImage {
 	params: Promise<{ slug: string }>
 }
 
-export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
-	const { slug } = await params
-	const q = await getQuestBySlug(slug)
-	if (!q) return null
-
-	return [
-		{
-			id: q.id,
-			contentType: "image/jpeg",
-			size: { width: 1200, height: 630 },
-			alt: `${q.title} Preview Image`,
-		},
-	]
+export const alt = "Side Quest Preview Image"
+export const size = {
+	width: 1200,
+	height: 630,
 }
+export const contentType = "image/jpeg"
 
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const { slug } = await params

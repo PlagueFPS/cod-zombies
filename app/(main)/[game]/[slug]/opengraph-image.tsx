@@ -10,20 +10,12 @@ interface IOpenGraphImage {
 	params: Promise<{ slug: string }>
 }
 
-export const generateImageMetadata = async ({ params }: IOpenGraphImage) => {
-	const { slug } = await params
-	const map = await getMapBySlug(slug)
-	if (!map) return null
-
-	return [
-		{
-			id: map.id,
-			contentType: "image/jpeg",
-			size: { width: 1200, height: 630 },
-			alt: `${map.title} Preview Image`,
-		},
-	]
+export const alt = "Map Preview Image"
+export const size = {
+	width: 1200,
+	height: 630,
 }
+export const contentType = "image/jpeg"
 
 export default async function OpenGraphImage({ params }: IOpenGraphImage) {
 	const { slug } = await params
