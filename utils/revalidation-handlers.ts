@@ -5,10 +5,10 @@ import { Effect, Schedule } from "effect"
 import { revalidateTag } from "next/cache"
 import { getGameById } from "@/data/games"
 import { getLegalDocById } from "@/data/legal"
-import { getMapById } from "@/data/maps"
+import { type FeaturedMapById, getMapById } from "@/data/maps"
 import { getImageUrl } from "@/data/og-images"
-import { getQuestById } from "@/data/side-quests"
-import { getZombieById } from "@/data/zombies"
+import { getQuestById, type SideQuestById } from "@/data/side-quests"
+import { getZombieById, type ZombieById } from "@/data/zombies"
 import { env } from "@/env"
 import { getEntryStatus, storeNewEntryId, updateEntryStatus } from "@/lib/redis"
 import { EntryNotFoundError } from "@/types/errors"
@@ -26,29 +26,32 @@ interface RevalidateData {
 	updatedAt: Date
 }
 
-export interface BroadcastEntry {
-	id: string
-	title: string
-	slug: string
-	description: string
-	image: {
-		url: string | undefined
-		width: number | undefined
-		height: number | undefined
-	}
-}
 interface BroadcastResponse {
 	success: boolean
 	message: string
 }
 
+interface MapBroadcastEntry extends FeaturedMapById {
+	updatedAt: Date
+}
+
+interface SideQuestBroadcastEntry extends SideQuestById {
+	updatedAt: Date
+}
+
+interface ZombieBroadcastEntry extends ZombieById {
+	updatedAt: Date
+}
+
+export type BroadcastEntry = MapBroadcastEntry | SideQuestBroadcastEntry | ZombieBroadcastEntry
+
 const createSuccessResponse = (message: string, broadcast: BroadcastResponse | null) =>
 	Response.json({ revalidated: true, message, broadcast }, { status: 201 })
 
-const sendQuestBroadcast = <T extends BroadcastEntry>(
+const sendQuestBroadcast = (
 	type: "Main" | "Side",
 	entryType: TAllowedSlugs,
-	entry: T,
+	entry: MapBroadcastEntry | SideQuestBroadcastEntry,
 	redirectUrl: string,
 ) =>
 	Effect.gen(function* () {
@@ -57,13 +60,13 @@ const sendQuestBroadcast = <T extends BroadcastEntry>(
 	}).pipe(
 		Effect.withLogSpan("send_quest_broadcast"),
 		Effect.tapError(Effect.logError),
+		Effect.catchTags({
+			HttpBodyError: error => Effect.succeed({ success: false, message: `${error.reason}` }),
+		}),
 		Effect.catchAll(error => Effect.succeed({ success: false, message: error.message })),
 	)
 
-const sendZombieBroadcast = (
-	entry: NonNullable<Awaited<ReturnType<typeof getZombieById>>>,
-	redirectUrl: string,
-) =>
+const sendZombieBroadcast = (entry: ZombieBroadcastEntry, redirectUrl: string) =>
 	Effect.gen(function* () {
 		const imageUrl = yield* getImageUrl("zombies", entry)
 		const broadcastData: Omit<IZombieRelease, "unsubscribeUrl"> = {
@@ -78,6 +81,9 @@ const sendZombieBroadcast = (
 	}).pipe(
 		Effect.withLogSpan("send_zombie_broadcast"),
 		Effect.tapError(Effect.logError),
+		Effect.catchTags({
+			HttpBodyError: error => Effect.succeed({ success: false, message: `${error.reason}` }),
+		}),
 		Effect.catchAll(error => Effect.succeed({ success: false, message: error.message })),
 	)
 
@@ -124,7 +130,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.featuredMaps.all)
 			if (shouldBroadcast) {
-				const broadcast = yield* sendQuestBroadcast("Main", "maps", map, url)
+				const broadcast = yield* sendQuestBroadcast("Main", "maps", { ...map, updatedAt }, url)
 				return createSuccessResponse("Map revalidated", broadcast)
 			}
 
@@ -221,7 +227,12 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.sideQuests.all)
 			if (shouldBroadcast) {
-				const broadcast = yield* sendQuestBroadcast("Side", "side-quests", quest, url)
+				const broadcast = yield* sendQuestBroadcast(
+					"Side",
+					"side-quests",
+					{ ...quest, updatedAt },
+					url,
+				)
 				return createSuccessResponse("Side Quest revalidated", broadcast)
 			}
 
@@ -275,7 +286,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.zombies.all)
 			if (shouldBroadcast) {
-				const broadcast = yield* sendZombieBroadcast(zombie, url)
+				const broadcast = yield* sendZombieBroadcast({ ...zombie, updatedAt }, url)
 				return createSuccessResponse("Zombie revalidated", broadcast)
 			}
 

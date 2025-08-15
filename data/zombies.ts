@@ -18,6 +18,7 @@ import { DataLayer } from "./utils"
 
 export type Zombie = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
+export type ZombieById = NonNullable<Awaited<ReturnType<typeof getZombieById>>>
 export type ZombieType = "Boss" | "Special" | "Elite" | "Normal"
 
 export const getZombies = cache(
@@ -160,6 +161,10 @@ export const getZombieById = cache(
 					description: zombie.fields.description,
 					image: createImageDto(zombie.fields.image),
 					isComingSoon: zombie.fields.isComingSoon ?? false,
+					game: yield* createMapCategoryDto(zombie.fields.games[0]).pipe(
+						Effect.map(game => game.title),
+					),
+					map: yield* createQuestMapDto(zombie.fields.maps[0]).pipe(Effect.map(map => map.title)),
 				}
 			}).pipe(
 				Effect.withLogSpan("get_zombie_by_id"),

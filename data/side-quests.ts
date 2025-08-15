@@ -17,6 +17,7 @@ import { DataLayer } from "./utils"
 
 export type SideQuest = NonNullable<Awaited<ReturnType<typeof getQuestBySlug>>>
 export type MinifiedSideQuest = Awaited<ReturnType<typeof getQuests>>[number]
+export type SideQuestById = NonNullable<Awaited<ReturnType<typeof getQuestById>>>
 
 export const getQuests = cache(
 	unstable_cache(
@@ -115,6 +116,7 @@ export const getQuestById = cache(
 						concurrency: "unbounded",
 					},
 				)
+				const timeToRead = calculateTimeToRead(quest.fields.content)
 
 				return {
 					id: quest.sys.id,
@@ -125,6 +127,7 @@ export const getQuestById = cache(
 					isComingSoon: quest.fields.isComingSoon ?? false,
 					map: map.slug,
 					game: game.slug,
+					timeToRead,
 				}
 			}).pipe(
 				Effect.withLogSpan("get_quest_by_id"),

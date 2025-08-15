@@ -20,6 +20,7 @@
   "dependencies": {
     "@contentful/rich-text-plain-text-renderer": "^17.1.0",
     "@contentful/rich-text-react-renderer": "16.0.1",
+    "@effect/platform": "^0.90.3",
     "@hookform/resolvers": "5.0.1",
     "@linear/sdk": "^52.0.0",
     "@next/third-parties": "15.3.2",
@@ -75,7 +76,6 @@
     "@biomejs/biome": "2.0.6",
     "@contentful/rich-text-types": "^17.0.1",
     "@effect/language-service": "^0.21.8",
-    "@effect/platform": "^0.90.1",
     "@effect/platform-node": "^0.92.0",
     "@react-email/preview-server": "^4.2.5",
     "@tailwindcss/postcss": "^4.1.11",

@@ -12,6 +12,7 @@ import { DataLayer } from "./utils"
 
 export type FeaturedMap = NonNullable<Awaited<ReturnType<typeof getMapBySlug>>>
 export type MinifiedFeaturedMap = Awaited<ReturnType<typeof getMaps>>[number]
+export type FeaturedMapById = NonNullable<Awaited<ReturnType<typeof getMapById>>>
 export type Difficulty = "Easy" | "Medium" | "Hard"
 
 export const getMaps = cache(
@@ -142,6 +143,7 @@ export const getMapById = cache(
 				}
 
 				const game = yield* createMapCategoryDto(map.fields.gameCategory)
+				const timeToRead = calculateTimeToRead(map.fields.body)
 
 				return {
 					id: map.sys.id,
@@ -151,6 +153,8 @@ export const getMapById = cache(
 					isComingSoon: map.fields.isComingSoon ?? false,
 					image: createImageDto(map.fields.image),
 					game: game.slug,
+					difficulty: map.fields.difficulty,
+					timeToRead,
 				}
 			}).pipe(
 				Effect.withLogSpan("get_map_by_id"),

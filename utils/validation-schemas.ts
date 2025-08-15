@@ -76,3 +76,20 @@ const ReckoningCodeSchema = Schema.Struct({
 })
 
 export const decodeReckoningCode = Schema.decodeUnknownEither(ReckoningCodeSchema)
+
+export const ImageBodySchema = Schema.Struct({
+	id: Schema.NonEmptyString,
+	slug: Schema.NonEmptyString,
+	title: Schema.NonEmptyString,
+	updatedAt: Schema.NonEmptyString,
+	game: Schema.NonEmptyString,
+	image: Schema.Struct({
+		url: Schema.NonEmptyString,
+		width: Schema.Number,
+		height: Schema.Number,
+	}),
+	timeToRead: Schema.optional(Schema.Number),
+	map: Schema.optional(Schema.String),
+	type: Schema.optional(Schema.Literal("Normal", "Special", "Elite", "Boss")),
+	difficulty: Schema.optional(Schema.Literal("Easy", "Medium", "Hard")),
+})
