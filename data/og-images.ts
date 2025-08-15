@@ -7,6 +7,7 @@ import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { env } from "@/env"
 import { LoadFontDataError } from "@/types/errors"
+import { capitalize } from "@/utils/functions.client"
 import { ImageBodySchema, type TAllowedSlugs } from "@/utils/validation-schemas"
 
 export const getFontData = Effect.gen(function* () {
@@ -93,14 +94,14 @@ export const getImageUrl = Effect.fnUntraced(function* (
 				slug: entry.slug,
 				title: entry.title,
 				updatedAt: entry.updatedAt.toISOString(),
-				game: entry.game,
+				game: capitalize(entry.game),
 				image: {
 					url: entry.image.url ?? "",
 					width: entry.image.width ?? 1200,
 					height: entry.image.height ?? 630,
 				},
 				timeToRead: Predicate.hasProperty(entry, "timeToRead") ? entry.timeToRead : undefined,
-				map: Predicate.hasProperty(entry, "map") ? entry.map : undefined,
+				map: Predicate.hasProperty(entry, "map") ? capitalize(entry.map) : undefined,
 				type: Predicate.hasProperty(entry, "type") ? entry.type : undefined,
 				difficulty: Predicate.hasProperty(entry, "difficulty") ? entry.difficulty : undefined,
 			}),
