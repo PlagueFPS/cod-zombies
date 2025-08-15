@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server"
+import { FetchHttpClient } from "@effect/platform"
 import { Duration, Effect, Layer, Redacted, Schema } from "effect"
 import { draftMode, headers } from "next/headers"
 import { env } from "@/env"
@@ -24,7 +25,12 @@ const RevalidateWebhookSchema = Schema.Struct({
 const decodeWebhookBody = Schema.decodeUnknown(RevalidateWebhookSchema)
 const decodeSlug = Schema.decodeUnknown(AllowedSlugsSchema)
 
-const RevalidateLayer = Layer.mergeAll(Email.Default, Cache.Default, FileStorage.Default)
+const RevalidateLayer = Layer.mergeAll(
+	Email.Default,
+	Cache.Default,
+	FileStorage.Default,
+	FetchHttpClient.layer,
+)
 
 const cleanupDraftMode = Effect.fnUntraced(function* () {
 	const draft = yield* Effect.promise(() => draftMode())
