@@ -13,6 +13,7 @@ import {
 	Target,
 	Zap,
 } from "lucide-react"
+import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { cache, Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
@@ -26,6 +27,7 @@ import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { getCachedImageUrl } from "@/data/og-images"
 import {
 	getZombieBySlug,
 	getZombieSearchData,
@@ -34,7 +36,7 @@ import {
 } from "@/data/zombies"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 
 interface IZombiePage {
 	params: Promise<{ slug: string }>
@@ -63,8 +65,20 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadata> => {
-	const { slug } = await params
+	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const { zombie } = await getPageData(slug)
+	let imageUrl = null
+
+	if (!isEnabled && !IN_DEVELOPMENT) {
+		// Avoid potential og generations based on draft content
+		imageUrl = await getCachedImageUrl("zombies", {
+			...zombie,
+			title: zombie.name,
+			updatedAt: new Date(zombie.updatedAt),
+			game: zombie.games[0]?.title ?? "",
+			map: zombie.maps[0]?.title ?? "",
+		})
+	}
 	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.name}" ${zombie.type} Zombie.`
 
 	return {
@@ -75,6 +89,14 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
 			title: zombie.name,
 			description,
 			url: `/${zombie.slug}`,
+			images: [
+				{
+					url: imageUrl || "",
+					alt: `${zombie.name} Main Quest`,
+					width: 1200,
+					height: 630,
+				},
+			],
 		},
 		twitter: {
 			title: zombie.name,

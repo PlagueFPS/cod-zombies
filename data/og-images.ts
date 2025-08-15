@@ -1,8 +1,10 @@
 import type { BroadcastEntry } from "@/utils/revalidation-handlers"
 import { readFile } from "node:fs/promises"
 import { join } from "node:path"
-import { HttpBody, HttpClient } from "@effect/platform"
+import { FetchHttpClient, HttpBody, HttpClient } from "@effect/platform"
 import { Effect, Predicate, Redacted } from "effect"
+import { unstable_cache } from "next/cache"
+import { cache } from "react"
 import { env } from "@/env"
 import { LoadFontDataError } from "@/types/errors"
 import { ImageBodySchema, type TAllowedSlugs } from "@/utils/validation-schemas"
@@ -30,10 +32,40 @@ export const getFontData = Effect.gen(function* () {
 	Effect.tapError(Effect.logError),
 	Effect.catchAll(() => Effect.succeed(null)),
 )
-
 /**
  * Retrieves the Open Graph image URL for a given entry from cache if available.
- * If not, it generates a new image, caches it, and returns the URL.
+ * Otherwise, retrieves it from File Storage or generates a new image.
+ *
+ * @param type - The type of the entry (map, zombie, side-quest)
+ * @param entry - The entry object containing at least the id, slug, and image URL
+ * @returns The image URL (cached or newly generated)
+ *
+ * @example
+ * const imageUrl = await getCachedImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
+ *
+ */
+export const getCachedImageUrl = cache(
+	unstable_cache(
+		async (type: TAllowedSlugs, entry: BroadcastEntry) => {
+			return await getImageUrl(type, entry).pipe(
+				Effect.withLogSpan("get_cached_image_url"),
+				Effect.tapError(Effect.logError),
+				Effect.provide(FetchHttpClient.layer),
+				Effect.catchAll(() => Effect.succeed(null)),
+				Effect.ensureErrorType<never>(),
+				Effect.runPromise,
+			)
+		},
+		[],
+		{
+			revalidate: 86400, // 24 hours
+		},
+	),
+)
+
+/**
+ * Retrieves the Open Graph image URL for a given entry from File Storage if available.
+ * If not, it generates a new image, stores it, and returns the URL.
  *
  * @param type - The type of the entry (map, zombie, side-quest)
  * @param entry - The entry object containing at least the id, slug, and image URL

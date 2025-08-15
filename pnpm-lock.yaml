@@ -161,9 +161,6 @@ importers:
       server-only:
         specifier: 0.0.1
         version: 0.0.1
-      sharp:
-        specifier: ^0.34.3
-        version: 0.34.3
       sonner:
         specifier: 1.7.1
         version: 1.7.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -204,6 +201,9 @@ importers:
       react-email:
         specifier: 4.2.5
         version: 4.2.5
+      sharp:
+        specifier: ^0.34.3
+        version: 0.34.3
       tailwind-merge:
         specifier: 3.2.0
         version: 3.2.0

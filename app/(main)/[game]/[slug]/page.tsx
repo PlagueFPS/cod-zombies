@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
+import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { cache, Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
@@ -17,6 +18,7 @@ import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getMapBySlug, getMapSearchData, getMaps, type MinifiedFeaturedMap } from "@/data/maps"
+import { getCachedImageUrl } from "@/data/og-images"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
@@ -54,11 +56,22 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: MapPageProps): Promise<Metadata> => {
-	const [{ slug, game }] = await Promise.all([params])
+	const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const { map } = await getPageData(slug)
 	const { title: mapTitle, game: mapGame } = map
 	const title = `${mapTitle} Main Quest`
 	const description = `Learn how to complete the main quest/easter egg for the ${mapGame.title} zombies map ${mapTitle} with our detailed step-by-step walkthrough!`
+	let imageUrl = null
+
+	if (!isEnabled && !IN_DEVELOPMENT) {
+		// Avoid potential og generations based on draft content
+		imageUrl = await getCachedImageUrl("maps", {
+			...map,
+			updatedAt: new Date(map.updatedAt),
+			game: map.game.title,
+		})
+	}
+
 	return {
 		title,
 		description,
@@ -67,6 +80,14 @@ export const generateMetadata = async ({ params }: MapPageProps): Promise<Metada
 			title,
 			description,
 			url: `/${game}/${slug}`,
+			images: [
+				{
+					url: imageUrl || "",
+					alt: `${mapTitle} Main Quest`,
+					width: 1200,
+					height: 630,
+				},
+			],
 		},
 		twitter: {
 			title,

@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
+import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import { cache, Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
@@ -12,10 +13,11 @@ import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-tex
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
+import { getCachedImageUrl } from "@/data/og-images"
 import { getQuestBySlug, getQuests, type MinifiedSideQuest } from "@/data/side-quests"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { DATE_OPTIONS, GLOBAL_OG_PROPS } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 
 interface ISideQuestSlugPage {
@@ -50,11 +52,21 @@ export const generateStaticParams = async () => {
 }
 
 export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<Metadata> => {
-	const { slug, game, map } = await params
+	const [{ slug, game, map }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const { q } = await getPageData(slug)
-	if (!q) notFound()
 	const title = `${q.title} Side Quest`
 	const description = `Learn how to complete the ${q.title} side quest/easter egg for ${q.map.title} with our detailed step-by-step walkthrough!`
+	let imageUrl = null
+
+	if (!isEnabled && !IN_DEVELOPMENT) {
+		// Avoid potential og generations based on draft content
+		imageUrl = await getCachedImageUrl("side-quests", {
+			...q,
+			updatedAt: new Date(q.updatedAt),
+			game: q.game.title,
+			map: q.map.title,
+		})
+	}
 
 	return {
 		title,
@@ -64,6 +76,14 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
 			title,
 			description,
 			url: `/side-quests/${game}/${map}/${slug}`,
+			images: [
+				{
+					url: imageUrl || "",
+					alt: `${q.title} Side Quest`,
+					width: 1200,
+					height: 630,
+				},
+			],
 		},
 		twitter: {
 			title,
