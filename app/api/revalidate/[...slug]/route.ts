@@ -6,7 +6,6 @@ import { env } from "@/env"
 import { revalidateRateLimit } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
 import { Email } from "@/lib/services/Email"
-import { FileStorage } from "@/lib/services/FileStorage"
 import { AuthorizationError, JSONParseError } from "@/types/errors"
 import { authorizedRequest } from "@/utils/functions"
 import { RevalidateHandlers } from "@/utils/revalidation-handlers"
@@ -21,12 +20,7 @@ const RevalidateWebhookSchema = Schema.Struct({
 const decodeWebhookBody = Schema.decodeUnknown(RevalidateWebhookSchema)
 const decodeSlug = Schema.decodeUnknown(AllowedSlugsSchema)
 
-const RevalidateLayer = Layer.mergeAll(
-	Email.Default,
-	Cache.Default,
-	FileStorage.Default,
-	FetchHttpClient.layer,
-)
+const RevalidateLayer = Layer.mergeAll(Email.Default, Cache.Default, FetchHttpClient.layer)
 
 const cleanupDraftMode = Effect.fnUntraced(function* () {
 	const draft = yield* Effect.promise(() => draftMode())
