@@ -137,6 +137,15 @@ const reckoning: MapConfig = {
 			locations: [],
 		},
 		{
+			id: "vaccum-seal-device",
+			category: "objectives",
+			title: "Vacuum-Seal Device",
+			description:
+				"Opened and used during the Main Quest to capture the purple-glowing floating items, during the 'Power the Portal' step.",
+			icon: "/icons/objectives/vaccum-seal-device.webp",
+			locations: [],
+		},
+		{
 			id: "loot-bin",
 			category: "objectives",
 			title: "Loot Bin",
