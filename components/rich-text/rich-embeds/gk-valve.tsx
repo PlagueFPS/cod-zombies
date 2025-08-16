@@ -8,43 +8,35 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
-import ValveRoutes from "@/data/gk-valves.json"
+import { type Location, locations, valveRoutes } from "@/data/gk-values"
 import { cn } from "@/lib/utils"
 import { slugify } from "@/utils/functions.client"
 
-const LOCATIONS = [
-	"Armory",
-	"Infirmary",
-	"Department Store",
-	"Supply Depot",
-	"Dragon Command",
-	"Tank Factory",
-] as const
-
-type valveRoutes = typeof ValveRoutes
-interface Location {
-	name: string
+interface ValveLocation {
+	name: Location
 	value: number | null
 }
 
 const getCurrentLocations = (firstValue: string, secondValue: string) => {
 	if (firstValue && secondValue) {
 		const searchString = `${firstValue} to ${secondValue}`
-		const locations: Location[] = []
+		const currentLocations: ValveLocation[] = []
 
-		for (const key in ValveRoutes) {
+		for (const key in valveRoutes) {
 			if (searchString === key) {
-				const route = ValveRoutes[key as keyof valveRoutes]
+				const route = valveRoutes[key]
+				if (!route) continue
+
 				Object.entries(route).forEach(([location, value]) => {
-					locations.push({
-						name: location,
+					currentLocations.push({
+						name: location as Location,
 						value: value,
 					})
 				})
 			}
 		}
 
-		return locations
+		return currentLocations
 	}
 
 	return []
@@ -68,7 +60,7 @@ export default function GKValve() {
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
-							{LOCATIONS.map(location => {
+							{locations.map(location => {
 								if (location === values.secondValue) return null
 								return (
 									<SelectItem key={`green-valve-${slugify(location)}`} value={location}>
@@ -87,7 +79,7 @@ export default function GKValve() {
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
-							{LOCATIONS.map(location => {
+							{locations.map(location => {
 								if (location === values.firstValue) return null
 								return (
 									<SelectItem key={`pink-valve-${slugify(location)}`} value={location}>
