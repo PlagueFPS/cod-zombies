@@ -1,16 +1,10 @@
 import Footer from "@/components/footer/footer"
 
-interface IMainLayout {
-  children: React.ReactNode
-}
-
-export default function MainLayout({ children }: IMainLayout) {
-  return (
-    <>
-      <main className="mt-10 mb-4 grow">
-        { children }
-      </main>
-      <Footer />
-    </>
-  )
+export default function MainLayout({ children }: LayoutProps<"/">) {
+	return (
+		<>
+			<main className="mt-10 mb-4 grow">{children}</main>
+			<Footer />
+		</>
+	)
 }

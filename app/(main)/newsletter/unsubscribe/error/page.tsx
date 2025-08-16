@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import type { SearchParams } from "next/dist/server/request/search-params"
 import { AlertCircle } from "lucide-react"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import { Button } from "@/components/ui/button"
@@ -8,9 +7,12 @@ export const metadata: Metadata = {
 	title: "Unsubscribe Failed",
 }
 
-export default async function UnsubscribeErrorPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+export default async function UnsubscribeErrorPage({
+	searchParams,
+}: PageProps<"/newsletter/unsubscribe/error">) {
 	const { message } = await searchParams
-	const errorMessage = decodeURIComponent(String(message)) || "An error occurred during the unsubscribe process."
+	const errorMessage =
+		decodeURIComponent(String(message)) || "An error occurred during the unsubscribe process."
 
 	return (
 		<div className="mx-auto max-w-md px-4 py-12 text-center">

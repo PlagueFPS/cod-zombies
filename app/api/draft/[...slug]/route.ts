@@ -10,11 +10,7 @@ import { AuthorizationError, EntryNotFoundError, InvalidRequestError } from "@/t
 import { authorizedRequest } from "@/utils/functions"
 import { AllowedSlugsSchema } from "@/utils/validation-schemas"
 
-interface RouteParams {
-	params: Promise<{ slug: string[] }>
-}
-
-export async function GET(req: NextRequest, { params }: RouteParams) {
+export async function GET(req: NextRequest, { params }: RouteContext<"/api/draft/[...slug]">) {
 	return await Effect.gen(function* () {
 		const draft = yield* Effect.promise(() => draftMode())
 		const { slug } = yield* Effect.promise(() => params)

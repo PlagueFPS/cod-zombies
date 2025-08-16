@@ -20,14 +20,6 @@ import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 
-interface ISideQuestSlugPage {
-	params: Promise<{
-		slug: string
-		map: string
-		game: string
-	}>
-}
-
 const getPageData = cache(async (slug: string) => {
 	const q = await getQuestBySlug(slug)
 	if (!q) notFound()
@@ -51,7 +43,9 @@ export const generateStaticParams = async () => {
 	}))
 }
 
-export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<Metadata> => {
+export const generateMetadata = async ({
+	params,
+}: PageProps<"/side-quests/[game]/[map]/[slug]">): Promise<Metadata> => {
 	const [{ slug, game, map }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const { q } = await getPageData(slug)
 	const title = `${q.title} Side Quest`
@@ -96,7 +90,9 @@ export const generateMetadata = async ({ params }: ISideQuestSlugPage): Promise<
 	}
 }
 
-export default async function SideQuestPage({ params }: ISideQuestSlugPage) {
+export default async function SideQuestPage({
+	params,
+}: PageProps<"/side-quests/[game]/[map]/[slug]">) {
 	const { slug } = await params
 	const { q, prevQuest, nextQuest } = await getPageData(slug)
 	if (!q) notFound()

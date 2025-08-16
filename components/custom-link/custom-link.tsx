@@ -3,10 +3,7 @@ import Link, { type LinkProps } from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { type AnchorHTMLAttributes, useEffect } from "react"
 
-interface ICustomLink extends LinkProps {
-	children: React.ReactNode
-	className?: string
-}
+interface ICustomLink extends LinkProps {}
 
 export function CustomLink({
 	children,

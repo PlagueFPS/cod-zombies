@@ -38,10 +38,6 @@ import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 
-interface IZombiePage {
-	params: Promise<{ slug: string }>
-}
-
 const getPageData = cache(async (slug: string) => {
 	const zombie = await getZombieBySlug(slug)
 	if (!zombie || zombie.isComingSoon) {
@@ -64,7 +60,9 @@ export const generateStaticParams = async () => {
 	}))
 }
 
-export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadata> => {
+export const generateMetadata = async ({
+	params,
+}: PageProps<"/bestiary/[slug]">): Promise<Metadata> => {
 	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const { zombie } = await getPageData(slug)
 	let imageUrl = null
@@ -109,7 +107,7 @@ export const generateMetadata = async ({ params }: IZombiePage): Promise<Metadat
 	}
 }
 
-export default async function ZombiePage({ params }: IZombiePage) {
+export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]">) {
 	const { slug } = await params
 	const { zombie, prevZombie, nextZombie } = await getPageData(slug)
 	const speedProgress = () => {

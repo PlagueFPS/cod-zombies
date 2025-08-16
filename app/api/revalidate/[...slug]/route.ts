@@ -12,10 +12,6 @@ import { authorizedRequest } from "@/utils/functions"
 import { RevalidateHandlers } from "@/utils/revalidation-handlers"
 import { AllowedSlugsSchema } from "@/utils/validation-schemas"
 
-interface RouteParams {
-	params: Promise<{ slug: string[] }>
-}
-
 const RevalidateWebhookSchema = Schema.Struct({
 	entryId: Schema.String,
 	createdAt: Schema.Date,
@@ -38,7 +34,7 @@ const cleanupDraftMode = Effect.fnUntraced(function* () {
 	yield* Effect.log("Draft Mode Disabled.")
 }, Effect.withLogSpan("cleanup_draft_mode"))
 
-export async function PUT(req: NextRequest, { params }: RouteParams) {
+export async function PUT(req: NextRequest, { params }: RouteContext<"/api/revalidate/[...slug]">) {
 	return await Effect.gen(function* () {
 		const { success } = yield* Effect.promise(() =>
 			revalidateRateLimit.blockUntilReady(

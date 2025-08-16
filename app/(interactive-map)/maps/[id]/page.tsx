@@ -13,10 +13,6 @@ import { getAvailableMaps, getMapConfig } from "@/data/interactive-map"
 import { env } from "@/env"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 
-interface IInteractiveMapPage {
-	params: Promise<{ id: MapId }>
-}
-
 export const generateStaticParams = () => {
 	const maps = getAvailableMaps()
 	return maps.map(map => ({
@@ -24,9 +20,9 @@ export const generateStaticParams = () => {
 	}))
 }
 
-export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Promise<Metadata> => {
 	const { id } = await params
-	const config = await getMapConfig(id)
+	const config = await getMapConfig(id as MapId)
 	if (!config || config.isComingSoon) notFound()
 	const title = `${config.title} Interactive Map`
 
@@ -55,10 +51,10 @@ export const generateMetadata = async ({ params }: IInteractiveMapPage): Promise
 	}
 }
 
-export default async function InteractiveMapPage({ params }: IInteractiveMapPage) {
+export default async function InteractiveMapPage({ params }: PageProps<"/maps/[id]">) {
 	const cookiePromise = cookies()
 	const { id } = await params
-	const config = await getMapConfig(id)
+	const config = await getMapConfig(id as MapId)
 	if (!config) notFound()
 
 	const cookieStore = await cookiePromise

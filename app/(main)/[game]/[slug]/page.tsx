@@ -24,13 +24,6 @@ import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 
-interface MapPageProps {
-	params: Promise<{
-		game: string | undefined
-		slug: string
-	}>
-}
-
 const getPageData = cache(async (slug: string) => {
 	const map = await getMapBySlug(slug)
 	if (!map) {
@@ -55,7 +48,9 @@ export const generateStaticParams = async () => {
 	}))
 }
 
-export const generateMetadata = async ({ params }: MapPageProps): Promise<Metadata> => {
+export const generateMetadata = async ({
+	params,
+}: PageProps<"/[game]/[slug]">): Promise<Metadata> => {
 	const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
 	const { map } = await getPageData(slug)
 	const { title: mapTitle, game: mapGame } = map
@@ -100,7 +95,7 @@ export const generateMetadata = async ({ params }: MapPageProps): Promise<Metada
 	}
 }
 
-export default async function MapPage({ params }: MapPageProps) {
+export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 	const { slug } = await params
 	const { map, nextMap, prevMap } = await getPageData(slug)
 	const headings = map.isComingSoon ? [] : extractHeadings(map.body)
