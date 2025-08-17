@@ -23,13 +23,7 @@ export async function GET(
 				const map = yield* Effect.promise(() => getMapById(id))
 				if (!map) return yield* new PreviewImageError({ message: "Map not found" })
 
-				const imageUrl = yield* Effect.promise(() =>
-					getCachedImageUrl("maps", {
-						...map,
-						updatedAt: new Date(map.updatedAt),
-						game: map.game,
-					}),
-				)
+				const imageUrl = yield* Effect.promise(() => getCachedImageUrl("maps", map))
 				if (!imageUrl) return yield* new PreviewImageError({ message: "Image URL not found" })
 
 				return Response.redirect(imageUrl)
@@ -38,13 +32,7 @@ export async function GET(
 				const sideQuest = yield* Effect.promise(() => getQuestById(id))
 				if (!sideQuest) return yield* new PreviewImageError({ message: "Side Quest not found" })
 
-				const imageUrl = yield* Effect.promise(() =>
-					getCachedImageUrl("side-quests", {
-						...sideQuest,
-						updatedAt: new Date(sideQuest.updatedAt),
-						game: sideQuest.game,
-					}),
-				)
+				const imageUrl = yield* Effect.promise(() => getCachedImageUrl("side-quests", sideQuest))
 				if (!imageUrl) return yield* new PreviewImageError({ message: "Image URL not found" })
 
 				return Response.redirect(imageUrl)
@@ -53,13 +41,7 @@ export async function GET(
 				const zombie = yield* Effect.promise(() => getZombieById(id))
 				if (!zombie) return yield* new PreviewImageError({ message: "Zombie not found" })
 
-				const imageUrl = yield* Effect.promise(() =>
-					getCachedImageUrl("zombies", {
-						...zombie,
-						updatedAt: new Date(zombie.updatedAt),
-						game: zombie.game,
-					}),
-				)
+				const imageUrl = yield* Effect.promise(() => getCachedImageUrl("zombies", zombie))
 				if (!imageUrl) return yield* new PreviewImageError({ message: "Image URL not found" })
 
 				return Response.redirect(imageUrl)

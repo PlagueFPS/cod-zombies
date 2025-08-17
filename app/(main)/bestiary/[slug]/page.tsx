@@ -72,7 +72,6 @@ export const generateMetadata = async ({
 		imageUrl = await getCachedImageUrl("zombies", {
 			...zombie,
 			title: zombie.name,
-			updatedAt: new Date(zombie.updatedAt),
 			game: zombie.games[0]?.title ?? "",
 			map: zombie.maps[0]?.title ?? "",
 		})

@@ -56,7 +56,6 @@ export const generateMetadata = async ({
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("side-quests", {
 			...q,
-			updatedAt: new Date(q.updatedAt),
 			game: q.game.title,
 			map: q.map.title,
 		})
