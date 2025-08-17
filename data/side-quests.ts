@@ -120,6 +120,7 @@ export const getQuestById = cache(
 
 				return {
 					id: quest.sys.id,
+					updatedAt: quest.sys.updatedAt,
 					slug: quest.fields.slug,
 					title: quest.fields.title,
 					description: quest.fields.description,

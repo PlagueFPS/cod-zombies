@@ -147,6 +147,7 @@ export const getMapById = cache(
 
 				return {
 					id: map.sys.id,
+					updatedAt: map.sys.updatedAt,
 					slug: map.fields.slug,
 					title: map.fields.title,
 					description: map.fields.description,

@@ -6,7 +6,6 @@ import { revalidateTag } from "next/cache"
 import { getGameById } from "@/data/games"
 import { getLegalDocById } from "@/data/legal"
 import { type FeaturedMapById, getMapById } from "@/data/maps"
-import { getImageUrl } from "@/data/og-images"
 import { getQuestById, type SideQuestById } from "@/data/side-quests"
 import { getZombieById, type ZombieById } from "@/data/zombies"
 import { env } from "@/env"
@@ -31,44 +30,29 @@ interface BroadcastResponse {
 	message: string
 }
 
-interface MapBroadcastEntry extends FeaturedMapById {
-	updatedAt: Date
-}
-
-interface SideQuestBroadcastEntry extends SideQuestById {
-	updatedAt: Date
-}
-
-interface ZombieBroadcastEntry extends ZombieById {
-	updatedAt: Date
-}
-
-export type BroadcastEntry = MapBroadcastEntry | SideQuestBroadcastEntry | ZombieBroadcastEntry
+export type BroadcastEntry = FeaturedMapById | SideQuestById | ZombieById
 
 const createSuccessResponse = (message: string, broadcast: BroadcastResponse | null) =>
 	Response.json({ revalidated: true, message, broadcast }, { status: 201 })
 
 const sendQuestBroadcast = (
 	type: "Main" | "Side",
-	entryType: TAllowedSlugs,
-	entry: MapBroadcastEntry | SideQuestBroadcastEntry,
+	entryType: Extract<TAllowedSlugs, "maps" | "side-quests">,
+	entry: FeaturedMapById | SideQuestById,
 	redirectUrl: string,
 ) =>
 	Effect.gen(function* () {
-		const imageUrl = yield* getImageUrl(entryType, entry)
+		const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/${entryType}/${entry.id}`
 		return yield* sendQuestReleaseBroadcast({ type, redirectUrl, imageUrl, ...entry })
 	}).pipe(
 		Effect.withLogSpan("send_quest_broadcast"),
 		Effect.tapError(Effect.logError),
-		Effect.catchTags({
-			HttpBodyError: error => Effect.succeed({ success: false, message: `${error.reason}` }),
-		}),
 		Effect.catchAll(error => Effect.succeed({ success: false, message: error.message })),
 	)
 
-const sendZombieBroadcast = (entry: ZombieBroadcastEntry, redirectUrl: string) =>
+const sendZombieBroadcast = (entry: ZombieById, redirectUrl: string) =>
 	Effect.gen(function* () {
-		const imageUrl = yield* getImageUrl("zombies", entry)
+		const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/zombies/${entry.id}`
 		const broadcastData: Omit<IZombieRelease, "unsubscribeUrl"> = {
 			type: entry.type,
 			title: entry.title,
@@ -81,9 +65,6 @@ const sendZombieBroadcast = (entry: ZombieBroadcastEntry, redirectUrl: string) =
 	}).pipe(
 		Effect.withLogSpan("send_zombie_broadcast"),
 		Effect.tapError(Effect.logError),
-		Effect.catchTags({
-			HttpBodyError: error => Effect.succeed({ success: false, message: `${error.reason}` }),
-		}),
 		Effect.catchAll(error => Effect.succeed({ success: false, message: error.message })),
 	)
 
@@ -130,7 +111,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.featuredMaps.all)
 			if (shouldBroadcast) {
-				const broadcast = yield* sendQuestBroadcast("Main", "maps", { ...map, updatedAt }, url)
+				const broadcast = yield* sendQuestBroadcast("Main", "maps", map, url)
 				return createSuccessResponse("Map revalidated", broadcast)
 			}
 
@@ -227,12 +208,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.sideQuests.all)
 			if (shouldBroadcast) {
-				const broadcast = yield* sendQuestBroadcast(
-					"Side",
-					"side-quests",
-					{ ...quest, updatedAt },
-					url,
-				)
+				const broadcast = yield* sendQuestBroadcast("Side", "side-quests", quest, url)
 				return createSuccessResponse("Side Quest revalidated", broadcast)
 			}
 
@@ -286,7 +262,7 @@ export const RevalidateHandlers = {
 
 			revalidateTag(CACHE_KEYS.zombies.all)
 			if (shouldBroadcast) {
-				const broadcast = yield* sendZombieBroadcast({ ...zombie, updatedAt }, url)
+				const broadcast = yield* sendZombieBroadcast(zombie, url)
 				return createSuccessResponse("Zombie revalidated", broadcast)
 			}
 

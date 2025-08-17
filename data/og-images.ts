@@ -75,10 +75,7 @@ export const getCachedImageUrl = cache(
  * @example
  * const imageUrl = yield* getImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  */
-export const getImageUrl = Effect.fnUntraced(function* (
-	type: TAllowedSlugs,
-	entry: BroadcastEntry,
-) {
+const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: BroadcastEntry) {
 	const httpClient = yield* HttpClient.HttpClient
 	const response = yield* httpClient.post(
 		"https://api-codzombiesguides.netlify.app/get-image-url",
@@ -93,7 +90,7 @@ export const getImageUrl = Effect.fnUntraced(function* (
 				id: entry.id,
 				slug: entry.slug,
 				title: entry.title,
-				updatedAt: entry.updatedAt.toISOString(),
+				updatedAt: entry.updatedAt,
 				game: capitalize(entry.game),
 				image: {
 					url: entry.image.url ?? "",

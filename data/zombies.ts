@@ -155,6 +155,7 @@ export const getZombieById = cache(
 
 				return {
 					id: zombie.sys.id,
+					updatedAt: zombie.sys.updatedAt,
 					title: zombie.fields.name,
 					slug: zombie.fields.slug,
 					type: zombie.fields.type,
