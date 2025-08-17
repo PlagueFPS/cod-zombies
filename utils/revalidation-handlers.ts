@@ -1,5 +1,5 @@
 import "server-only"
-import type { IZombieRelease } from "@/emails/ZombieReleaseEmail"
+import type { IZombieRelease } from "@/emails/zombie-release-email"
 import type { TAllowedSlugs } from "./validation-schemas"
 import { Effect, Schedule } from "effect"
 import { revalidateTag } from "next/cache"

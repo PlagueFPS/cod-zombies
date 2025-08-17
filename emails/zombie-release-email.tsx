@@ -1,5 +1,5 @@
 import type { ZombieType } from "@/data/zombies"
-import type { IQuestRelease } from "./QuestReleaseEmail"
+import type { IQuestRelease } from "./quest-release-email"
 import {
 	Body,
 	Button,
