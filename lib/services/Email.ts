@@ -27,7 +27,8 @@ export class Email extends Effect.Service<Email>()("Email", {
 					resend.contacts.get({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
 				)
 
-				if (error && error.name !== "not_found") return yield* new GetContactError({ cause: error })
+				if (error && error.name !== "not_found")
+					return yield* new GetContactError({ message: error.message, cause: error })
 
 				return data
 			})
@@ -38,7 +39,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 					resend.contacts.create({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
 				)
 
-				if (error) return yield* new CreateContactError({ cause: error })
+				if (error) return yield* new CreateContactError({ message: error.message, cause: error })
 
 				return data
 			})
@@ -49,7 +50,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 					resend.contacts.remove({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
 				)
 
-				if (error) return yield* new RemoveContactError({ cause: error })
+				if (error) return yield* new RemoveContactError({ message: error.message, cause: error })
 
 				return data
 			})
@@ -58,7 +59,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 			Effect.gen(function* () {
 				const { data, error } = yield* Effect.promise(() => resend.emails.send(params, options))
 
-				if (error) return yield* new SendEmailError({ cause: error })
+				if (error) return yield* new SendEmailError({ message: error.message, cause: error })
 
 				return data
 			})
@@ -72,7 +73,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 					resend.broadcasts.create(params, options),
 				)
 
-				if (error) return yield* new CreateBroadcastError({ cause: error })
+				if (error) return yield* new CreateBroadcastError({ message: error.message, cause: error })
 
 				return data
 			})
@@ -81,7 +82,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 			Effect.gen(function* () {
 				const { data, error } = yield* Effect.promise(() => resend.broadcasts.send(id, payload))
 
-				if (error) return yield* new SendBroadcastError({ cause: error })
+				if (error) return yield* new SendBroadcastError({ message: error.message, cause: error })
 
 				return data
 			})
