@@ -2,6 +2,12 @@ import type { MapMarker } from "./markers"
 
 export type MapId = keyof typeof mapRegistry
 
+export interface MapLayer {
+	id: string
+	title: string
+	image: string
+}
+
 export interface MapConfig {
 	id: string
 	title: string
@@ -9,7 +15,7 @@ export interface MapConfig {
 	isNew?: boolean
 	description: string
 	game: string
-	image: string
+	layers: MapLayer[]
 	markers: MapMarker[]
 }
 

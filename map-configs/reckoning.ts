@@ -8,7 +8,23 @@ const reckoning: MapConfig = {
 	game: "Black Ops 6",
 	description:
 		"Explore Reckoning in BO6 Zombies. Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our interactive map.",
-	image: "/layers/reckoning.webp",
+	layers: [
+		{
+			id: "tower-1",
+			title: "Tower 1",
+			image: "/layers/reckoning/tower-1-layer.webp",
+		},
+		{
+			id: "tower-2",
+			title: "Tower 2",
+			image: "/layers/reckoning/tower-2-layer.webp",
+		},
+		{
+			id: "tower-3",
+			title: "Tower 3",
+			image: "/layers/reckoning/tower-3-layer.webp",
+		},
+	],
 	markers: [
 		{
 			id: "t1-mutant-research-lab",

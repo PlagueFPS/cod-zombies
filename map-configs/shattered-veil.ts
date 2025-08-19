@@ -7,7 +7,13 @@ const shatteredVeil: MapConfig = {
 	game: "Black Ops 6",
 	description:
 		"Explore Shattered Veil in BO6 Zombies. Find all Janus Crates, Aether Plants, Aether Crystals, Intel, and more with our interactive map.",
-	image: "/layers/shattered-veil.webp",
+	layers: [
+		{
+			id: "shattered-veil",
+			title: "Shattered Veil",
+			image: "/layers/shattered-veil/shattered-veil-layer.webp",
+		},
+	],
 	markers: [
 		{
 			id: "garden-pond",

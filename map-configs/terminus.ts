@@ -7,7 +7,13 @@ const terminus: MapConfig = {
 	game: "Black Ops 6",
 	description:
 		"Explore Terminus in BO6 Zombies. Find all Boat Spawns, Fishing Spots, Underwater Chests, Dig Spots, intel, and more with our interactive map.",
-	image: "/layers/terminus.webp",
+	layers: [
+		{
+			id: "terminus",
+			title: "Terminus",
+			image: "/layers/terminus/terminus-layer.webp",
+		},
+	],
 	markers: [
 		{
 			id: "elevator",
