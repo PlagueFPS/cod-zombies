@@ -70,7 +70,7 @@ export default async function InteractiveMapPage({ params }: PageProps<"/maps/[i
 		intel: new Set(),
 	}
 
-	config.markers.forEach(marker => {
+	config.layers[0]?.markers.forEach(marker => {
 		switch (marker.category) {
 			case "general":
 				if (marker.type && marker.type === "label") {
@@ -102,7 +102,11 @@ export default async function InteractiveMapPage({ params }: PageProps<"/maps/[i
 	return (
 		<SidebarProvider defaultOpen={defaultOpen}>
 			<Suspense fallback={<SidebarLoader />}>
-				<MapSidebar groups={groups} availableMaps={availableMaps} mapMarkers={config.markers} />
+				<MapSidebar
+					groups={groups}
+					availableMaps={availableMaps}
+					mapMarkers={config.layers[0]?.markers ?? []}
+				/>
 			</Suspense>
 			<div className="h-svh w-svw">
 				<CustomSideBarTrigger />

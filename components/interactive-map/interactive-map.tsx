@@ -1,6 +1,6 @@
 "use client"
 import "leaflet/dist/leaflet.css"
-import type { MapConfig } from "@/map-configs"
+import type { MapConfig, MapLayer } from "@/map-configs"
 import type { Location, MapMarker } from "@/map-configs/markers"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
@@ -28,6 +28,9 @@ export interface ImageDimensions {
 
 export interface MapController {
 	imageDimensions: ImageDimensions | null
+	mapLayers: MapLayer[]
+	currentLayer: MapLayer | null
+	setCurrentLayer: React.Dispatch<React.SetStateAction<MapLayer | null>>
 }
 
 interface IInteractiveMap {
@@ -38,13 +41,15 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
 	const { settings } = useMapSettings()
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
+	const [currentLayer, setCurrentLayer] = useState<MapLayer | null>(mapConfig.layers[0] ?? null)
 	const filteredMarkers =
 		includeParams.length === 0 && excludeParams.length === 0
-			? mapConfig.markers
-			: mapConfig.markers.filter(marker => isIncluded(marker.type || marker.id))
+			? currentLayer?.markers
+			: currentLayer?.markers.filter(marker => isIncluded(marker.type || marker.id))
 
 	useEffect(() => {
 		const loadImageDimensions = async () => {
+			if (!currentLayer) return
 			try {
 				const img = new Image()
 				img.crossOrigin = "anonymous"
@@ -58,7 +63,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 						resolve(img)
 					}
 					img.onerror = reject
-					img.src = mapConfig.image
+					img.src = currentLayer.image
 				})
 			} catch (error) {
 				console.error(`Failed to load map:`, error)
@@ -66,7 +71,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 		}
 
 		loadImageDimensions()
-	}, [mapConfig.image])
+	}, [currentLayer])
 
 	const convertToLeafletCoords = ({ x, y }: Location): LatLng => {
 		if (!imageDimensions) return new LatLng(0, 0)
@@ -108,15 +113,24 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			zoomAnimation={!settings.general.disableZoomAnimation}
 			markerZoomAnimation={!settings.general.disableZoomAnimation}
 		>
-			<MapController imageDimensions={imageDimensions} />
+			<MapController
+				imageDimensions={imageDimensions}
+				mapLayers={mapConfig.layers}
+				currentLayer={currentLayer}
+				setCurrentLayer={setCurrentLayer}
+			/>
 			{imageDimensions && (
-				<ImageOverlay key={mapConfig.id} url={mapConfig.image} bounds={getImageBounds()} />
+				<ImageOverlay
+					key={mapConfig.id}
+					url={currentLayer?.image ?? ""}
+					bounds={getImageBounds()}
+				/>
 			)}
 			{/* We do not map through filteredMarkers for rendering to avoid icon flickering */}
 			{imageDimensions &&
-				mapConfig.markers.map(marker => {
+				currentLayer?.markers.map(marker => {
 					if (
-						!filteredMarkers.some(m => {
+						!filteredMarkers?.some(m => {
 							if (marker.type) return marker.type === m.type
 							return marker.id === m.id
 						})
@@ -147,7 +161,12 @@ const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: Lea
 	console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
 }
 
-function MapController({ imageDimensions }: MapController) {
+function MapController({
+	imageDimensions,
+	mapLayers,
+	currentLayer,
+	setCurrentLayer,
+}: MapController) {
 	const map = useMap()
 
 	useMapEvents({

@@ -6,6 +6,7 @@ export interface MapLayer {
 	id: string
 	title: string
 	image: string
+	markers: MapMarker[]
 }
 
 export interface MapConfig {
@@ -16,7 +17,6 @@ export interface MapConfig {
 	description: string
 	game: string
 	layers: MapLayer[]
-	markers: MapMarker[]
 }
 
 export const mapRegistry = {

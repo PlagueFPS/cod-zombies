@@ -91,11 +91,20 @@ export const MARKER_TYPES = [
 	"audio-log",
 	"document",
 	"janus-crate",
+	"vaccum-seal-device",
 ] as const
 
 // All default or static markers that every map is guaranteed to have
 // or that do not require different fields besides location
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+	"vaccum-seal-device": {
+		id: "vaccum-seal-device",
+		category: "objectives",
+		title: "Vacuum-Seal Device",
+		description:
+			"Opened and used during the Main Quest to capture the purple-glowing floating items, during the 'Power the Portal' step.",
+		icon: "/icons/objectives/vaccum-seal-device.webp",
+	},
 	"janus-crate": {
 		id: "janus-crate",
 		category: "objectives",
