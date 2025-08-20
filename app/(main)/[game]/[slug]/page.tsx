@@ -200,11 +200,10 @@ interface PrevOrNextMap {
 
 const PrevOrNextMapCard = ({ map, prev }: PrevOrNextMap) => {
 	const alt = `${map.title} map image`
-	const href = map.isComingSoon ? "#" : `/${map.game.slug}/${map.slug}`
 
 	return (
 		<CustomLink
-			href={href}
+			href={map.isComingSoon ? "#" : `/${map.game.slug}/${map.slug}`}
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{

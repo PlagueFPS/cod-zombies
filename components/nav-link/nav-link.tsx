@@ -1,17 +1,24 @@
 "use client"
+import type { Route } from "next"
 import type { LinkProps } from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { CustomLink } from "../custom-link/custom-link"
 
-interface Props extends LinkProps {
-	href: string
+interface Props<T extends string> extends LinkProps<T> {
+	href: Route<T>
 	children: string | React.ReactNode
 	className?: string
 	ariaLabel?: string
 }
 
-export default function NavLink({ href, children, className, ariaLabel, ...props }: Props) {
+export default function NavLink<T extends string>({
+	href,
+	children,
+	className,
+	ariaLabel,
+	...props
+}: Props<T>) {
 	const pathname = usePathname()
 	const isActive = pathname === href
 

@@ -3,19 +3,20 @@ import type { NextConfig } from "next"
 import { withBotId } from "botid/next/config"
 
 const nextConfig: NextConfig = {
-	allowedDevOrigins: ["10.0.0.*"],
-	logging: {
-		fetches: {
-			hmrRefreshes: true,
-			fullUrl: true,
-		},
-	},
 	experimental: {
 		ppr: true,
 		serverComponentsHmrCache: true,
 		reactCompiler: true,
 		browserDebugInfoInTerminal: true,
 		turbopackPersistentCaching: true,
+	},
+	typedRoutes: true,
+	allowedDevOrigins: ["10.0.0.*"],
+	logging: {
+		fetches: {
+			hmrRefreshes: true,
+			fullUrl: true,
+		},
 	},
 	images: {
 		formats: ["image/avif", "image/webp"],

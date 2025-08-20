@@ -351,11 +351,10 @@ interface PrevOrNextZombie {
 
 const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
 	const alt = `${zombie.name} image`
-	const href = `/bestiary/${zombie.slug}`
 
 	return (
 		<CustomLink
-			href={href}
+			href={`/bestiary/${zombie.slug}`}
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary xl:max-w-full dark:shadow-none",
 				{

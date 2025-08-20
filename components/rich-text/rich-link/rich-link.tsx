@@ -1,3 +1,4 @@
+import type { Route } from "next"
 import { YouTubeEmbed } from "@next/third-parties/google"
 import { ExternalLinkIcon } from "lucide-react"
 import { CustomLink } from "@/components/custom-link/custom-link"
@@ -42,7 +43,7 @@ export default function RichLink({ node }: RichLinkProps) {
 	if (data.uri.startsWith(env.NEXT_PUBLIC_WEBSITE_URL)) {
 		return (
 			<CustomLink
-				href={data.uri}
+				href={data.uri as Route}
 				className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
 			>
 				{content[0].value}
@@ -56,9 +57,11 @@ export default function RichLink({ node }: RichLinkProps) {
 	) {
 		return (
 			<CustomLink
-				href={data.uri
-					.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL)
-					.replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL)}
+				href={
+					data.uri
+						.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL)
+						.replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) as Route
+				}
 				className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
 			>
 				{content[0].value}

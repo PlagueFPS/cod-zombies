@@ -1,19 +1,25 @@
+import type { Route } from "next"
 import NotFoundBreadcrumbs from "@/components/not-found/not-found-breadcrumbs"
 import { capitalize } from "@/utils/functions.client"
 import { CustomLink } from "../custom-link/custom-link"
 import { Button } from "../ui/button"
 
-interface INotFoundContent {
+interface INotFoundContent<T extends string> {
 	param?: string
 	pathname?: string
 	resource: string
 	items?: {
-		href: string
+		href: Route<T>
 		title: string
 	}[]
 }
 
-export default function NotFoundContent({ resource, items, pathname, param }: INotFoundContent) {
+export default function NotFoundContent<T extends string>({
+	resource,
+	items,
+	pathname,
+	param,
+}: INotFoundContent<T>) {
 	return (
 		<div className="container flex h-full flex-col">
 			{items && <NotFoundBreadcrumbs items={items} />}
@@ -36,7 +42,9 @@ export default function NotFoundContent({ resource, items, pathname, param }: IN
 	)
 }
 
-const NotFoundButtons = ({ items }: Omit<INotFoundContent, "param" | "resource">) => {
+const NotFoundButtons = <T extends string>({
+	items,
+}: Omit<INotFoundContent<T>, "param" | "resource">) => {
 	const newItems = items ? items.slice(0, -1) : []
 	return (
 		<div className="flex w-fit flex-col items-center justify-between gap-8 sm:flex-row">

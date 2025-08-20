@@ -23,12 +23,11 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
 	const alt = `${zombie.name} Image`
-	const href = zombie.isComingSoon ? `#` : `/bestiary/${zombie.slug}`
 
 	return (
 		<article className={cn("h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}>
 			<CustomLink
-				href={href}
+				href={zombie.isComingSoon ? `#` : `/bestiary/${zombie.slug}`}
 				aria-label={`View details for ${zombie.name}`}
 				aria-disabled={zombie.isComingSoon}
 				className="group outline-none"

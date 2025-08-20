@@ -1,4 +1,5 @@
 "use client"
+import type { Route } from "next"
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -12,19 +13,24 @@ import {
 	BreadcrumbList,
 	BreadcrumbSeparator,
 } from "../ui/breadcrumb"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu"
 
-interface Link {
-	href: string
+interface Link<T extends string> {
+	href: Route<T>
 	title: string
 }
 
-interface BreadcrumbsProps {
-	links: Link[]
+interface BreadcrumbsProps<T extends string> {
+	links: Link<T>[]
 	className?: string
 }
 
-export default function Breadcrumbs({ links, className }: BreadcrumbsProps) {
+export default function Breadcrumbs<T extends string>({ links, className }: BreadcrumbsProps<T>) {
 	const isMobile = useIsMobile(640)
 	const showEllipsis = links.length >= 4 && isMobile
 	const menuLinks = showEllipsis ? links.slice(0, -1) : []
@@ -90,7 +96,7 @@ export default function Breadcrumbs({ links, className }: BreadcrumbsProps) {
 	)
 }
 
-const CustomEllipsis = ({ menuLinks }: { menuLinks: Link[] }) => {
+const CustomEllipsis = <T extends string>({ menuLinks }: { menuLinks: Link<T>[] }) => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="flex items-center gap-1">

@@ -59,7 +59,7 @@ export default function Footer() {
 			<div className="flex w-full items-center justify-center text-muted-foreground text-xs md:mt-2 md:justify-start">
 				<CustomLink
 					prefetch={false}
-					href={"/privacy-policy"}
+					href="/privacy-policy"
 					className="underline underline-offset-2 hover:text-foreground hover:no-underline dark:hover:text-foreground/80"
 				>
 					Privacy Policy

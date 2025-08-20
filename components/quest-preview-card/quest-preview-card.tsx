@@ -26,16 +26,6 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 	const priority = isMobile ? questIndex === 0 : questIndex <= 3
 	const alt = `${quest.title} map image`
 
-	const resolveHref = () => {
-		if (quest.isComingSoon) return "#"
-
-		if (isSideQuest(quest)) {
-			return `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
-		}
-
-		return `/${quest.game.slug}/${quest.slug}`
-	}
-
 	const renderSpecificBadge = () => {
 		if (isFeaturedMap(quest) && quest.difficulty) {
 			return <DifficultyBadge difficulty={quest.difficulty} />
@@ -59,7 +49,13 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 			})}
 		>
 			<CustomLink
-				href={resolveHref()}
+				href={
+					quest.isComingSoon
+						? "#"
+						: isSideQuest(quest)
+							? `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
+							: `/${quest.game.slug}/${quest.slug}`
+				}
 				aria-label={`View Guide for ${quest.title}`}
 				aria-disabled={quest.isComingSoon}
 				className="group outline-none"

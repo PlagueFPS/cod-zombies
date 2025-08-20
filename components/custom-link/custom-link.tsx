@@ -1,21 +1,21 @@
 "use client"
+import type { Route } from "next"
 import Link, { type LinkProps } from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { type AnchorHTMLAttributes, useEffect } from "react"
+import { useEffect } from "react"
 
-interface ICustomLink extends LinkProps {}
+interface ICustomLink<T extends string> extends LinkProps<T> {
+	href: Route<T>
+}
 
-export function CustomLink({
-	children,
-	href,
-	...props
-}: ICustomLink & AnchorHTMLAttributes<HTMLAnchorElement>) {
+export function CustomLink<T extends string>({ children, href, ...props }: ICustomLink<T>) {
 	const router = useRouter()
 
 	const handleNavigation = (
 		e: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>,
 	) => {
-		const url = new URL(String(href), window.location.href)
+		if (!href) return
+		const url = new URL(href, window.location.href)
 		if (
 			url.origin === window.location.origin &&
 			!e.altKey &&
@@ -25,7 +25,7 @@ export function CustomLink({
 			(("button" in e && e.button === 0) || ("key" in e && e.key === "Enter"))
 		) {
 			e.preventDefault()
-			router.push(String(href))
+			router.push(href)
 		}
 	}
 

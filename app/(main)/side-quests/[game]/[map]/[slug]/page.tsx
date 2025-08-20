@@ -205,13 +205,12 @@ interface PrevOrNextQuest {
 
 const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextQuest) => {
 	const alt = `${quest.map.title} map image`
-	const href = quest.isComingSoon
-		? "#"
-		: `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 
 	return (
 		<CustomLink
-			href={href}
+			href={
+				quest.isComingSoon ? "#" : `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
+			}
 			className={cn(
 				"group w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform hover:scale-105 hover:border-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
