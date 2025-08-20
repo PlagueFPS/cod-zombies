@@ -23,6 +23,7 @@ import {
 import Logo from "@/public/logo.webp"
 import { ROUTES } from "@/utils/constants"
 import FeedbackForm from "../feedback-form/feedback-form"
+import DonateButton from "../ui/donate-button"
 
 export default function AppSidebar() {
 	const [open, setOpen] = useState(false)
@@ -71,13 +72,17 @@ export default function AppSidebar() {
 						</NavLink>
 					))}
 				</nav>
-				<SheetFooter className="mt-auto mb-4 flex w-full flex-col items-center justify-center gap-4 border-t text-muted-foreground">
-					<FeedbackForm />
+				<SheetFooter className="mt-auto mb-4 flex w-full flex-col items-center justify-center gap-4 border-t">
+					<div className="flex w-full items-center justify-evenly gap-3">
+						<FeedbackForm />
+						<DonateButton />
+					</div>
 					<div className="flex w-full items-center justify-evenly gap-3">
 						<ExternalLink
 							href="https://x.com/CodZombiesGuide"
 							title="Twitter"
 							aria-label="Check out our Twitter profile"
+							className="text-muted-foreground hover:text-primary"
 						>
 							<X className="size-5" />
 						</ExternalLink>
@@ -86,6 +91,7 @@ export default function AppSidebar() {
 							href="https://discord.gg/callofduty"
 							title="Discord"
 							aria-label="Join the Official Call of Duty Discord"
+							className="text-muted-foreground hover:text-primary"
 						>
 							<Discord className="size-5" />
 						</ExternalLink>
@@ -94,6 +100,7 @@ export default function AppSidebar() {
 							href="https://www.reddit.com/r/CODZombies/"
 							title="Reddit"
 							aria-label="Join the Official Call of Duty: Zombies Subreddit"
+							className="text-muted-foreground hover:text-primary"
 						>
 							<Reddit className="size-5" />
 						</ExternalLink>

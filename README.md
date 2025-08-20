@@ -24,3 +24,6 @@ This website is for anyone who plays Call of Duty: Zombies, whether you're a cas
 
 This website was created because while there are plenty of video guides that can help guide you, they can quickly fall out of date, with usually no follow-up videos.
 Therefore, this website exists as a consistent and reliable resource for players to access the most up-to-date information on their favorite quests, maps, and zombies.
+
+## Supporting This Project
+If you find this website helpful, please consider supporting it by [donating](https://ko-fi.com/codzombiesguides). Any amount is appreciated and will help keep the website running and updated.
