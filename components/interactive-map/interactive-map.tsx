@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useMapSettings } from "@/contexts/interactive-map-settings"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { generateMarkerKey } from "@/map-configs/markers"
 import { IN_DEVELOPMENT } from "@/utils/constants"
@@ -163,6 +164,7 @@ function MapController({
 	setCurrentLayer,
 }: MapController) {
 	const map = useMap()
+	const isMobile = useIsMobile()
 
 	useMapEvents({
 		click: logClickCoordinates(imageDimensions),
@@ -189,64 +191,102 @@ function MapController({
 	}
 
 	return (
-		<div className="fixed top-20 right-4 z-500 flex gap-2 lg:right-8">
-			<Badge variant={"outline"} className="rounded-md bg-background">
-				<div className="flex gap-1">
-					{mapLayers.length > 1 ? (
-						<>
-							<Tabs defaultValue={currentLayer.id}>
-								<TabsList className="bg-transparent">
-									{mapLayers.map(layer => (
-										<TabsTrigger
-											key={layer.id}
-											value={layer.id}
-											onClick={() => setCurrentLayer(layer)}
-										>
-											{layer.title}
-										</TabsTrigger>
-									))}
-								</TabsList>
-							</Tabs>
-							<Separator orientation="vertical" className="my-auto min-h-5" />
-						</>
-					) : null}
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} aria-label="Zoom In">
-								<ZoomIn className="size-4" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="bottom" sideOffset={5} className="z-999">
-							Zoom In
-						</TooltipContent>
-					</Tooltip>
-					<Separator orientation="vertical" className="my-auto min-h-5" />
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button variant={"ghost"} size={"icon"} onClick={handleZoomOut} aria-label="Zoom Out">
-								<ZoomOut className="size-4" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="bottom" sideOffset={5} className="z-999">
-							Zoom Out
-						</TooltipContent>
-					</Tooltip>
-					<Separator orientation="vertical" className="my-auto min-h-5" />
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button variant={"ghost"} size={"icon"} onClick={handleReset} aria-label="Reset Zoom">
-								<RotateCcw className="size-4" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="bottom" sideOffset={5} className="z-999">
-							Reset Zoom
-						</TooltipContent>
-					</Tooltip>
-					<Separator orientation="vertical" className="my-auto min-h-5" />
-					<MapSettingsPanel />
+		<>
+			{mapLayers.length > 1 && (
+				<div className="fixed top-16 z-500 w-full md:hidden">
+					<Tabs defaultValue={currentLayer.id}>
+						<TabsList className="w-full rounded-none bg-background">
+							{mapLayers.map(layer => (
+								<TabsTrigger key={layer.id} value={layer.id} onClick={() => setCurrentLayer(layer)}>
+									{layer.title}
+								</TabsTrigger>
+							))}
+						</TabsList>
+					</Tabs>
 				</div>
-			</Badge>
-		</div>
+			)}
+			<div
+				className={cn("fixed top-28 right-4 z-500 flex gap-2 md:top-18 lg:right-8", {
+					"top-18": mapLayers.length === 1,
+				})}
+			>
+				<Badge variant={"outline"} className="rounded-md bg-background">
+					<div className="flex flex-col gap-1 md:flex-row">
+						{mapLayers.length > 1 && !isMobile ? (
+							<>
+								<Tabs defaultValue={currentLayer.id}>
+									<TabsList className="bg-transparent">
+										{mapLayers.map(layer => (
+											<TabsTrigger
+												key={layer.id}
+												value={layer.id}
+												onClick={() => setCurrentLayer(layer)}
+											>
+												{layer.title}
+											</TabsTrigger>
+										))}
+									</TabsList>
+								</Tabs>
+								<Separator orientation="vertical" className="md:my-auto md:min-h-5" />
+							</>
+						) : null}
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} aria-label="Zoom In">
+									<ZoomIn className="size-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent side="bottom" sideOffset={5} className="z-999">
+								Zoom In
+							</TooltipContent>
+						</Tooltip>
+						<Separator
+							orientation={!isMobile ? "vertical" : "horizontal"}
+							className="md:my-auto md:min-h-5"
+						/>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button
+									variant={"ghost"}
+									size={"icon"}
+									onClick={handleZoomOut}
+									aria-label="Zoom Out"
+								>
+									<ZoomOut className="size-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent side="bottom" sideOffset={5} className="z-999">
+								Zoom Out
+							</TooltipContent>
+						</Tooltip>
+						<Separator
+							orientation={!isMobile ? "vertical" : "horizontal"}
+							className="md:my-auto md:min-h-5"
+						/>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button
+									variant={"ghost"}
+									size={"icon"}
+									onClick={handleReset}
+									aria-label="Reset Zoom"
+								>
+									<RotateCcw className="size-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent side="bottom" sideOffset={5} className="z-999">
+								Reset Zoom
+							</TooltipContent>
+						</Tooltip>
+						<Separator
+							orientation={!isMobile ? "vertical" : "horizontal"}
+							className="md:my-auto md:min-h-5"
+						/>
+						<MapSettingsPanel />
+					</div>
+				</Badge>
+			</div>
+		</>
 	)
 }
 

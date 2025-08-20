@@ -5,7 +5,11 @@ import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
 import { useSidebar } from "../ui/sidebar"
 
-export function CustomSideBarTrigger() {
+interface ICustomSidebarTrigger {
+	className?: string
+}
+
+export function CustomSideBarTrigger({ className }: ICustomSidebarTrigger) {
 	const { toggleSidebar, isMobile, openMobile, open } = useSidebar()
 
 	const closedState = () => {
@@ -19,10 +23,11 @@ export function CustomSideBarTrigger() {
 			onClick={() => toggleSidebar()}
 			aria-label="Toggle Sidebar"
 			className={cn(
-				"fixed top-18 left-4 z-500 hidden bg-background/90 p-4 opacity-0 dark:bg-background/90",
+				"fixed top-28 left-4 z-500 hidden bg-background p-4 opacity-0 md:top-18 dark:bg-background",
 				{
 					"inline-flex animate-fade-in opacity-100": closedState(),
 				},
+				className,
 			)}
 		>
 			<PanelLeftOpenIcon className="size-5" />

@@ -11,6 +11,7 @@ import SidebarLoader from "@/components/loaders/sidebar-loader"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { getAvailableMaps, getMapConfig } from "@/data/interactive-map"
 import { env } from "@/env"
+import { cn } from "@/lib/utils"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 
 export const generateStaticParams = () => {
@@ -109,7 +110,7 @@ export default async function InteractiveMapPage({ params }: PageProps<"/maps/[i
 				/>
 			</Suspense>
 			<div className="h-svh w-svw">
-				<CustomSideBarTrigger />
+				<CustomSideBarTrigger className={cn({ "top-18": config.layers.length === 1 })} />
 				<InteractiveMapWrapper mapConfig={config} />
 			</div>
 		</SidebarProvider>
