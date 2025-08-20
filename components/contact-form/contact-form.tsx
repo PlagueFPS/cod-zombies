@@ -215,12 +215,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 								</TooltipTrigger>
 								<TooltipContent side="bottom" sideOffset={6} className="z-999">
 									<div className="flex items-center gap-1">
-										<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-											<span className="text-xs">Ctrl</span>
-										</kbd>
-										<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-											<span className="text-xs">↩</span>
-										</kbd>
+										<Shortcut shortcuts={["Ctrl", "↩"]} size="sm" />
 										<span>to submit contact form</span>
 									</div>
 								</TooltipContent>

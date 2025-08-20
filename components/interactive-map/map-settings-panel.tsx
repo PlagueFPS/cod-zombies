@@ -53,7 +53,7 @@ export default function MapSettingsPanel() {
 				<TooltipContent
 					side="bottom"
 					sideOffset={5}
-					className="z-999 flex items-center justify-center gap-2???"
+					className="z-999 flex items-center justify-center gap-2"
 				>
 					<Shortcut shortcuts="?" size="sm" variant="ghost" />
 					<span>Map Settings</span>
@@ -284,9 +284,7 @@ export default function MapSettingsPanel() {
 					{!isMobile ? (
 						<div className="mr-auto flex items-center justify-center gap-1 text-muted-foreground text-sm">
 							<span>Keyboard Shortcut:</span>
-							<kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-input px-1.5 font-medium text-muted-foreground opacity-100 dark:bg-input/30">
-								<span className="text-xs">?</span>
-							</kbd>
+							<Shortcut shortcuts="?" size="sm" />
 						</div>
 					) : null}
 					<Button variant={"destructive"} onClick={() => handleOpenChange(false, true)}>

@@ -7,10 +7,12 @@ import { toast } from "sonner"
 import { submitFeedbackForm } from "@/data/actions"
 import { cn } from "@/lib/utils"
 import { FeedbackFormSchema, type TFeedbackForm } from "@/utils/validation-schemas"
+import Shortcut from "../shortcut/shortcut"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Form, FormControl, FormField, FormItem } from "../ui/form"
 import { Textarea } from "../ui/textarea"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 type IGuideFeedback =
 	| {
@@ -169,32 +171,34 @@ export default function GuideFeedback(props: IGuideFeedback) {
 							>
 								{vote === "Liked" ? "Helpful" : vote === "Disliked" ? "Not Helpful" : "Undecided"}
 							</Badge>
-							<Button
-								type="submit"
-								size={"sm"}
-								className="mr-1 ml-auto w-fit gap-2 self-end"
-								disabled={isPending || !form.formState.isValid}
-							>
-								{isPending ? (
-									<>
-										<Loader2 className="size-4 animate-spin" />
-										Sending...
-									</>
-								) : (
-									<>
-										<Send className="size-4" />
-										<span>Send</span>
-										<div className="flex items-center gap-1">
-											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-												<span className="text-xs">Ctrl</span>
-											</kbd>
-											<kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 text-muted-foreground opacity-100">
-												<span className="text-xs">↩</span>
-											</kbd>
-										</div>
-									</>
-								)}
-							</Button>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										type="submit"
+										disabled={isPending || !form.formState.isValid}
+										className="mr-1 ml-auto w-fit gap-2 self-end"
+										size={"sm"}
+									>
+										{isPending ? (
+											<div className="flex items-center gap-2">
+												<Loader2 className="h-4 w-4 animate-spin" />
+												Submitting...
+											</div>
+										) : (
+											<div className="flex items-center justify-center gap-2 font-medium">
+												<Send className="size-4" />
+												<span>Send</span>
+											</div>
+										)}
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent side="bottom" sideOffset={6} className="z-999">
+									<div className="flex items-center gap-1">
+										<Shortcut shortcuts={["Ctrl", "↩"]} size="sm" />
+										<span>to send feedback</span>
+									</div>
+								</TooltipContent>
+							</Tooltip>
 						</div>
 					</form>
 				</Form>
