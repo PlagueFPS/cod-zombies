@@ -17,6 +17,7 @@ import { IN_DEVELOPMENT } from "@/utils/constants"
 import { capitalize } from "@/utils/functions.client"
 import { MarkerBadge } from "../custom-badges/custom-badges"
 import { Separator } from "../ui/separator"
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import CustomMarker from "./custom-marker"
 import MapSettingsPanel from "./map-settings-panel"
@@ -121,7 +122,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			/>
 			{imageDimensions && (
 				<ImageOverlay
-					key={mapConfig.id}
+					key={currentLayer?.id || mapConfig.id}
 					url={currentLayer?.image ?? ""}
 					bounds={getImageBounds()}
 				/>
@@ -196,40 +197,58 @@ function MapController({
 	return (
 		<div className="fixed top-20 right-4 z-500 flex gap-2 lg:right-8">
 			<Badge variant={"outline"} className="rounded-md bg-background/80">
-				<div className="flex flex-col gap-1">
+				<div className="flex gap-1">
+					{mapLayers.length > 1 ? (
+						<>
+							<Tabs defaultValue={currentLayer?.id ?? ""}>
+								<TabsList className="bg-transparent">
+									{mapLayers.map(layer => (
+										<TabsTrigger
+											key={layer.id}
+											value={layer.id}
+											onClick={() => setCurrentLayer(layer)}
+										>
+											{layer.title}
+										</TabsTrigger>
+									))}
+								</TabsList>
+							</Tabs>
+							<Separator orientation="vertical" className="my-auto min-h-5" />
+						</>
+					) : null}
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} aria-label="Zoom In">
 								<ZoomIn className="size-4" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent side="left" sideOffset={5} className="z-999">
+						<TooltipContent side="bottom" sideOffset={5} className="z-999">
 							Zoom In
 						</TooltipContent>
 					</Tooltip>
-					<Separator orientation="horizontal" />
+					<Separator orientation="vertical" className="my-auto min-h-5" />
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button variant={"ghost"} size={"icon"} onClick={handleZoomOut} aria-label="Zoom Out">
 								<ZoomOut className="size-4" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent side="left" sideOffset={5} className="z-999">
+						<TooltipContent side="bottom" sideOffset={5} className="z-999">
 							Zoom Out
 						</TooltipContent>
 					</Tooltip>
-					<Separator orientation="horizontal" />
+					<Separator orientation="vertical" className="my-auto min-h-5" />
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button variant={"ghost"} size={"icon"} onClick={handleReset} aria-label="Reset Zoom">
 								<RotateCcw className="size-4" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent side="left" sideOffset={5} className="z-999">
+						<TooltipContent side="bottom" sideOffset={5} className="z-999">
 							Reset Zoom
 						</TooltipContent>
 					</Tooltip>
-					<Separator orientation="horizontal" />
+					<Separator orientation="vertical" className="my-auto min-h-5" />
 					<MapSettingsPanel />
 				</div>
 			</Badge>

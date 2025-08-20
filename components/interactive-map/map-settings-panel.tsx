@@ -47,11 +47,11 @@ export default function MapSettingsPanel() {
 						onClick={() => setOpen(true)}
 						aria-label="Map Settings. Keyboard Shortcut: ?"
 					>
-						<SettingsIcon className="size-5" />
+						<SettingsIcon className="size-4" />
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent
-					side="left"
+					side="bottom"
 					sideOffset={5}
 					className="z-999 flex items-center justify-center gap-2???"
 				>

@@ -94,8 +94,7 @@ export const MARKER_TYPES = [
 	"vaccum-seal-device",
 ] as const
 
-// All default or static markers that every map is guaranteed to have
-// or that do not require different fields besides location
+// All static markers that appear on multiple maps/layers
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 	"vaccum-seal-device": {
 		id: "vaccum-seal-device",
@@ -103,7 +102,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 		title: "Vacuum-Seal Device",
 		description:
 			"Opened and used during the Main Quest to capture the purple-glowing floating items, during the 'Power the Portal' step.",
-		icon: "/icons/objectives/vaccum-seal-device.webp",
+		icon: "/icons/objectives/vacuum-seal-device.webp",
 	},
 	"janus-crate": {
 		id: "janus-crate",
@@ -248,8 +247,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 	},
 }
 
-// Not every map is guaranteed to have all of these perks
-// but they all share the same DRY configuration regardless
+// All perks appearing on any of the maps
 export const perks: Record<Perks, Marker> = {
 	"der-wunderfizz": {
 		id: "der-wunderfizz",
