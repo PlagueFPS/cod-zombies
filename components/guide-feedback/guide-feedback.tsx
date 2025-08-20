@@ -53,25 +53,24 @@ export default function GuideFeedback(props: IGuideFeedback) {
 				...data,
 				label: vote === "Disliked" ? "Improvement" : "User Feedback",
 			})
-			if (result.success) {
-				startTransition(() => {
-					toast.success("Guide feedback submitted!", {
+
+			startTransition(() => {
+				if (result.success) {
+					toast.success("Guide feedback submitted successfully!", {
 						description: result.message,
 						duration: 5000,
 						position: "bottom-right",
 					})
 					form.reset()
 					setVote(null)
-				})
-			} else {
-				startTransition(() => {
-					toast.error("Guide feedback failed!", {
+				} else {
+					toast.error("Failed to submit guide feedback!", {
 						description: result.message,
 						duration: 5000,
 						position: "bottom-right",
 					})
-				})
-			}
+				}
+			})
 		})
 	}
 
