@@ -53,12 +53,9 @@ export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Pro
 }
 
 export default async function InteractiveMapPage({ params }: PageProps<"/maps/[id]">) {
-	const cookiePromise = cookies()
-	const { id } = await params
+	const [{ id }, cookieStore] = await Promise.all([params, cookies()])
 	const config = await getMapConfig(id as MapId)
 	if (!config) notFound()
-
-	const cookieStore = await cookiePromise
 	const availableMaps = getAvailableMaps()
 	const sidebarState = cookieStore.get("sidebar_state")?.value
 	const defaultOpen = sidebarState ? sidebarState === "true" : true
