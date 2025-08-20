@@ -14,6 +14,8 @@ export const subscribeToNewsletter = createRatelimitAction(
 	NewsletterFormSchema,
 	async ({ email }) => {
 		return await requestSubscribe(email).pipe(
+			Effect.withLogSpan("subscribe_to_newsletter_action"),
+			Effect.timeout("10 seconds"),
 			Effect.tapError(Effect.logError),
 			Effect.catchTags({
 				ContactExistsError: error =>
@@ -39,6 +41,8 @@ export const unsubscribeFromNewsletter = createRatelimitAction(
 	NewsletterFormSchema,
 	async ({ email }) => {
 		return await requestUnsubscribe(email).pipe(
+			Effect.withLogSpan("unsubscribe_from_newsletter_action"),
+			Effect.timeout("10 seconds"),
 			Effect.tapError(Effect.logError),
 			Effect.catchTags({
 				ContactNotFoundError: error =>
@@ -63,6 +67,7 @@ export const unsubscribeFromNewsletter = createRatelimitAction(
 export const submitFeedbackForm = createRatelimitAction(FeedbackFormSchema, async parsedInput => {
 	return await submitFeedback(parsedInput).pipe(
 		Effect.withLogSpan("submit_feedback_form_action"),
+		Effect.timeout("10 seconds"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error =>
 			Effect.succeed({
@@ -77,6 +82,8 @@ export const submitFeedbackForm = createRatelimitAction(FeedbackFormSchema, asyn
 
 export const submitContactForm = createRatelimitAction(ContactFormSchema, async parsedInput => {
 	return await sendContactEmail(parsedInput).pipe(
+		Effect.withLogSpan("submit_contact_form_action"),
+		Effect.timeout("10 seconds"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error =>
 			Effect.succeed({
