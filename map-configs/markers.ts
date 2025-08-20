@@ -527,5 +527,5 @@ export const weapons: Record<Weapons, Marker> = {
 	},
 }
 
-export const generateMarkerKey = (markerId: string, location: Location) =>
-	`${markerId}-${location.x}-${location.y}`
+export const generateMarkerKey = (layerId: string, markerId: string, location: Location) =>
+	`${layerId}-${markerId}-${location.x}-${location.y}`

@@ -4,10 +4,10 @@ import { perks, sharedMarkers, weapons } from "./markers"
 const reckoning: MapConfig = {
 	id: "reckoning",
 	title: "Reckoning",
-	isComingSoon: false,
+	isNew: true,
 	game: "Black Ops 6",
 	description:
-		"Explore Reckoning in BO6 Zombies. Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our interactive map.",
+		"Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our Reckoning interactive map in Black Ops 6 Zombies.",
 	layers: [
 		{
 			id: "tower-1",
@@ -170,6 +170,7 @@ const reckoning: MapConfig = {
 						{ x: 0.406, y: 0.886 },
 						{ x: 0.592, y: 0.557 },
 						{ x: 0.238, y: 0.52 },
+						{ x: 0.44, y: 0.052 },
 					],
 				},
 				{
@@ -183,7 +184,7 @@ const reckoning: MapConfig = {
 				},
 				{
 					...sharedMarkers["armor-wall-buy"],
-					locations: [{ x: 0.584, y: 0.821 }],
+					locations: [{ x: 0.584, y: 0.821, title: "Tier II Armor Wall Buy" }],
 				},
 				{
 					...sharedMarkers["gobblegum-machine"],
@@ -263,11 +264,65 @@ const reckoning: MapConfig = {
 				},
 				{
 					...sharedMarkers.document,
-					locations: [],
+					locations: [
+						{
+							x: 0.657,
+							y: 0.166,
+							title: "Brainiac",
+							description:
+								"You must complete the 'Aether Blade' side quest to obtain this document.",
+						},
+						{
+							x: 0.634,
+							y: 0.813,
+							title: "I'm a Real Girl",
+							description:
+								"You must complete the 'Golden Loot Bin' side quest to obtain this document.",
+						},
+						{
+							x: 0.5,
+							y: 0.076,
+							title: "Employee of the Month",
+							description: "Interact with the projector on the ceiling to obtain this document.",
+						},
+						{
+							x: 0.266,
+							y: 0.432,
+							title: "Department Head",
+							description: "Parachute down from T1 Mutant Research Lab to obtain this document.",
+						},
+						{
+							x: 0.82,
+							y: 0.474,
+							title: "Mangler Matrix",
+							description: "Shoot the pile of papers to obtain this document.",
+						},
+					],
 				},
 				{
 					...sharedMarkers["audio-log"],
-					locations: [{ x: 0.472, y: 0.757 }],
+					locations: [
+						{ x: 0.472, y: 0.757, title: "Miracle Worker" },
+						{ x: 0.658, y: 0.585, title: "Momgenes" },
+						{ x: 0.128, y: 0.543, title: "Play to Win" },
+						{ x: 0.689, y: 0.684, title: "The Things I've Seen Pt. 1" },
+						{ x: 0.59, y: 0.125, title: "The Things I've Seen Pt. 2" },
+						{ x: 0.366, y: 0.296, title: "Reactive Pt. 1" },
+						{
+							x: 0.591,
+							y: 0.524,
+							title: "Whistleblower",
+							description:
+								"You must be playing as Weaver, and reach round 13 without entering the T1 Mutant Research Lab, and then enter the lab to claim this audio log.",
+						},
+						{
+							x: 0.656,
+							y: 0.16,
+							title: "Misdirection Pt. 1",
+							description:
+								"You must complete the 'Aether Blade' side quest to obtain this audio log.",
+						},
+					],
 				},
 				{
 					...weapons.gs45,
@@ -293,6 +348,10 @@ const reckoning: MapConfig = {
 					...weapons.svd,
 					locations: [{ x: 0.557, y: 0.124 }],
 				},
+				{
+					...weapons["tsarkov-7.62"],
+					locations: [{ x: 0.354, y: 0.291 }],
+				},
 			],
 		},
 		{
@@ -307,7 +366,7 @@ const reckoning: MapConfig = {
 					title: "T2 Android Assembly",
 					description: "",
 					icon: null,
-					locations: [],
+					locations: [{ x: 0.248, y: 0.45 }],
 				},
 				{
 					id: "t2-dark-entity-containment",
@@ -316,7 +375,7 @@ const reckoning: MapConfig = {
 					title: "T2 Dark Entity Containment",
 					description: "",
 					icon: null,
-					locations: [],
+					locations: [{ x: 0.75, y: 0.486 }],
 				},
 				{
 					id: "t2-teleportation-lab",
@@ -325,7 +384,7 @@ const reckoning: MapConfig = {
 					title: "T2 Teleportation Lab",
 					description: "",
 					icon: null,
-					locations: [],
+					locations: [{ x: 0.506, y: 0.143 }],
 				},
 				{
 					id: "t2-sublevel-10",
@@ -334,83 +393,160 @@ const reckoning: MapConfig = {
 					title: "T2 Sublevel 10",
 					description: "",
 					icon: null,
-					locations: [],
+					locations: [{ x: 0.483, y: 0.848 }],
 				},
 				{
 					...sharedMarkers["vaccum-seal-device"],
-					locations: [],
+					locations: [
+						{ x: 0.615, y: 0.553 },
+						{ x: 0.188, y: 0.648 },
+						{ x: 0.452, y: 0.099 },
+					],
 				},
 				{
 					...perks["double-tap"],
-					locations: [],
+					locations: [{ x: 0.226, y: 0.481 }],
 				},
 				{
 					...perks["stamin-up"],
-					locations: [],
+					locations: [{ x: 0.803, y: 0.325 }],
 				},
 				{
 					...perks["vulture-aid"],
-					locations: [],
+					locations: [{ x: 0.602, y: 0.936 }],
 				},
 				{
 					...perks["der-wunderfizz"],
-					locations: [],
+					locations: [{ x: 0.217, y: 0.613 }],
 				},
 				{
 					...sharedMarkers["janus-crate"],
-					locations: [],
+					locations: [{ x: 0.168, y: 0.449 }],
 				},
 				{
 					...sharedMarkers["ammo-cache"],
-					locations: [],
+					locations: [
+						{ x: 0.683, y: 0.501 },
+						{ x: 0.182, y: 0.428 },
+						{ x: 0.469, y: 0.231 },
+						{ x: 0.268, y: 0.583 },
+						{ x: 0.601, y: 0.775 },
+						{ x: 0.806, y: 0.425 },
+					],
 				},
 				{
 					...sharedMarkers["mystery-box"],
-					locations: [],
+					locations: [
+						{ x: 0.364, y: 0.726 },
+						{ x: 0.097, y: 0.451 },
+						{ x: 0.815, y: 0.558 },
+					],
 				},
 				{
 					...sharedMarkers["armor-wall-buy"],
-					locations: [],
+					locations: [
+						{ x: 0.638, y: 0.767, title: "Tier III Armor Wall Buy" },
+						{ x: 0.286, y: 0.299, title: "Tier II Armor Wall Buy" },
+					],
 				},
 				{
 					...sharedMarkers["gobblegum-machine"],
-					locations: [],
+					locations: [
+						{ x: 0.33, y: 0.772 },
+						{ x: 0.327, y: 0.368 },
+						{ x: 0.656, y: 0.447 },
+					],
 				},
 				{
 					...sharedMarkers.arsenal,
-					locations: [],
+					locations: [
+						{ x: 0.344, y: 0.446 },
+						{ x: 0.8, y: 0.605 },
+					],
 				},
 				{
 					...sharedMarkers["crafting-table"],
-					locations: [],
+					locations: [
+						{ x: 0.644, y: 0.86 },
+						{ x: 0.845, y: 0.628 },
+					],
 				},
 				{
 					...sharedMarkers.trap,
-					locations: [],
+					locations: [
+						{ x: 0.911, y: 0.416, title: "C.A.S.T.E.R. Turret" },
+						{ x: 0.831, y: 0.329, title: "C.A.S.T.E.R. Turret" },
+					],
 				},
 				{
 					...sharedMarkers["door-buy"],
-					locations: [],
+					locations: [{ x: 0.092, y: 0.483 }],
 				},
 				{
 					...sharedMarkers.portal,
-					locations: [],
+					locations: [
+						{ x: 0.877, y: 0.621, title: "Portal to T2 Teleportation Lab" },
+						{ x: 0.318, y: 0.144, title: "Portal to T2 Dark Entity Containment" },
+						{ x: 0.756, y: 0.842, title: "Portal to T1 Project Janus Reception" },
+						{ x: 0.26, y: 0.84, title: "Portal to T1 Director's Office" },
+						{ x: 0.597, y: 0.14, title: "Portal to Tower 3" },
+					],
 				},
 				{
 					...sharedMarkers["fast-travel"],
-					locations: [],
+					locations: [
+						{ x: 0.078, y: 0.482, title: "Aether Elevator to T2 Dark Entity Containment" },
+						{
+							x: 0.401,
+							y: 0.327,
+							title:
+								"Top Launcher to T1 Mutant Research Lab and Bottom Launcher to T1 Quantum Computing Core",
+						},
+						{ x: 0.553, y: 0.493, title: "Aether Elevator to T2 Android Assembly" },
+						{ x: 0.905, y: 0.334, title: "Launcher to T1 Executive Suite" },
+					],
 				},
 				{
 					...sharedMarkers["pack-a-punch"],
-					locations: [],
+					locations: [
+						{ x: 0.534, y: 0.904 },
+						{ x: 0.421, y: 0.783 },
+						{ x: 0.533, y: 0.784 },
+						{ x: 0.426, y: 0.901 },
+					],
 				},
 				{
 					...sharedMarkers.document,
-					locations: [],
+					locations: [
+						{
+							x: 0.337,
+							y: 0.289,
+							title: "Saftey Measures",
+							description:
+								"Shoot the briefcase one of the Klauses is holding to obtain this document.",
+						},
+					],
 				},
 				{
 					...sharedMarkers["audio-log"],
-					locations: [],
+					locations: [
+						{ x: 0.352, y: 0.715, title: "Reactive Pt. 2" },
+						{ x: 0.375, y: 0.603, title: "Reactive Pt. 3" },
+						{ x: 0.684, y: 0.401, title: "The Forespoken" },
+						{ x: 0.563, y: 0.195, title: "Dysphoria" },
+					],
+				},
+				{
+					...weapons["ak-74"],
+					locations: [{ x: 0.145, y: 0.543 }],
+				},
+				{
+					...weapons.xm4,
+					locations: [{ x: 0.895, y: 0.539 }],
+				},
+				{
+					...weapons.xmg,
+					locations: [{ x: 0.357, y: 0.95 }],
 				},
 			],
 		},
@@ -426,7 +562,16 @@ const reckoning: MapConfig = {
 					title: "T3 Rooftop",
 					description: "",
 					icon: null,
-					locations: [],
+					locations: [{ x: 0.484, y: 0.273 }],
+				},
+				{
+					id: "t3-dark-aether-elements-vault-1",
+					type: "label",
+					category: "general",
+					title: "T3 Dark Aether Elements Vault 1",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.745, y: 0.569 }],
 				},
 				{
 					id: "t3-dark-aether-elements-vault-2",
@@ -435,23 +580,41 @@ const reckoning: MapConfig = {
 					title: "T3 Dark Aether Elements Vault 2",
 					description: "",
 					icon: null,
-					locations: [],
+					locations: [{ x: 0.22, y: 0.638 }],
 				},
 				{
 					...sharedMarkers["ammo-cache"],
-					locations: [],
+					locations: [
+						{ x: 0.214, y: 0.749 },
+						{ x: 0.718, y: 0.72 },
+						{ x: 0.483, y: 0.225 },
+						{ x: 0.605, y: 0.114 },
+						{ x: 0.607, y: 0.361 },
+						{ x: 0.342, y: 0.131 },
+						{ x: 0.371, y: 0.439 },
+						{ x: 0.386, y: 0.854 },
+						{ x: 0.515, y: 0.778 },
+					],
 				},
 				{
 					...perks["der-wunderfizz"],
-					locations: [],
+					locations: [{ x: 0.07, y: 0.765 }],
 				},
 				{
 					...sharedMarkers["crafting-table"],
-					locations: [],
+					locations: [{ x: 0.089, y: 0.663 }],
 				},
 				{
 					...sharedMarkers.arsenal,
-					locations: [],
+					locations: [{ x: 0.851, y: 0.671 }],
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [{ x: 0.31, y: 0.215, title: "The Great Voice From Beyond" }],
+				},
+				{
+					...sharedMarkers.document,
+					locations: [{ x: 0.183, y: 0.593, title: "Misdirection Pt. 2" }],
 				},
 			],
 		},

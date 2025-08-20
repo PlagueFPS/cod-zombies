@@ -80,7 +80,7 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 	}
 
 	const getWidth = () => {
-		switch(marker.id) {
+		switch (marker.id) {
 			case "shovel":
 				return Math.floor(settings.iconSize * 1.5)
 			default:
@@ -89,19 +89,16 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 	}
 
 	const getHeight = () => {
-		switch(marker.id) {
+		switch (marker.id) {
 			case "shovel":
 				return Math.floor(settings.iconSize * 1.5)
 			default:
 				return settings.iconSize
 		}
-	}	
+	}
 
 	return (
-		<div
-			id={id}
-			className="flex items-center justify-center"
-		>
+		<div id={id} className="flex items-center justify-center">
 			{!error && marker.icon ? (
 				<Image
 					unoptimized
@@ -117,12 +114,13 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 					onError={() => setError(true)}
 				/>
 			) : (
-				<div style={{
-					width: settings.iconSize,
-					height: settings.iconSize,
-					opacity: settings.opacity,
-				}} 
-				className="rounded-full bg-primary" 
+				<div
+					style={{
+						width: settings.iconSize,
+						height: settings.iconSize,
+						opacity: settings.opacity,
+					}}
+					className="rounded-full bg-primary"
 				/>
 			)}
 		</div>

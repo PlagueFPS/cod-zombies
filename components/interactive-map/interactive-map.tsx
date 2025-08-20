@@ -30,7 +30,7 @@ export interface ImageDimensions {
 export interface MapController {
 	imageDimensions: ImageDimensions | null
 	mapLayers: MapLayer[]
-	currentLayer: MapLayer | null
+	currentLayer: MapLayer
 	setCurrentLayer: React.Dispatch<React.SetStateAction<MapLayer | null>>
 }
 
@@ -43,36 +43,40 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { settings } = useMapSettings()
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
 	const [currentLayer, setCurrentLayer] = useState<MapLayer | null>(mapConfig.layers[0] ?? null)
-	const filteredMarkers =
-		includeParams.length === 0 && excludeParams.length === 0
-			? currentLayer?.markers
-			: currentLayer?.markers.filter(marker => isIncluded(marker.type || marker.id))
 
 	useEffect(() => {
-		const loadImageDimensions = async () => {
-			if (!currentLayer) return
-			try {
-				const img = new Image()
-				img.crossOrigin = "anonymous"
+		const loadImageDimensions = () => {
+			mapConfig.layers.forEach(async layer => {
+				try {
+					const img = new Image()
+					img.crossOrigin = "anonymous"
 
-				await new Promise((resolve, reject) => {
-					img.onload = () => {
-						setImageDimensions({
-							width: img.naturalWidth,
-							height: img.naturalHeight,
-						})
-						resolve(img)
-					}
-					img.onerror = reject
-					img.src = currentLayer.image
-				})
-			} catch (error) {
-				console.error(`Failed to load map:`, error)
-			}
+					await new Promise((resolve, reject) => {
+						img.onload = () => {
+							setImageDimensions({
+								width: img.naturalWidth,
+								height: img.naturalHeight,
+							})
+							resolve(img)
+						}
+						img.onerror = reject
+						img.src = layer.image
+					})
+				} catch (error) {
+					console.error(`Failed to load map:`, error)
+				}
+			})
 		}
 
 		loadImageDimensions()
-	}, [currentLayer])
+	}, [mapConfig.layers])
+
+	if (!currentLayer) return null
+
+	const shouldRenderMarker = (marker: MapMarker) => {
+		if (includeParams.length === 0 && excludeParams.length === 0) return true
+		return isIncluded(marker.type || marker.id)
+	}
 
 	const convertToLeafletCoords = ({ x, y }: Location): LatLng => {
 		if (!imageDimensions) return new LatLng(0, 0)
@@ -121,28 +125,18 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 				setCurrentLayer={setCurrentLayer}
 			/>
 			{imageDimensions && (
-				<ImageOverlay
-					key={currentLayer?.id || mapConfig.id}
-					url={currentLayer?.image ?? ""}
-					bounds={getImageBounds()}
-				/>
+				<ImageOverlay key={currentLayer.id} url={currentLayer.image} bounds={getImageBounds()} />
 			)}
 			{/* We do not map through filteredMarkers for rendering to avoid icon flickering */}
 			{imageDimensions &&
-				currentLayer?.markers.map(marker => {
-					if (
-						!filteredMarkers?.some(m => {
-							if (marker.type) return marker.type === m.type
-							return marker.id === m.id
-						})
-					)
-						return null
+				currentLayer.markers.map(marker => {
+					if (!shouldRenderMarker(marker)) return null
 
 					return marker.locations.map(location => (
 						// force re-render when popups settings change to apply them
 						<CustomMarker
-							key={`${generateMarkerKey(marker.id, location)}-gradients:${settings.popups.disableGradients}`}
-							id={generateMarkerKey(marker.id, location)}
+							key={`${generateMarkerKey(currentLayer.id, marker.id, location)}-gradients:${settings.popups.disableGradients}`}
+							id={generateMarkerKey(currentLayer.id, marker.id, location)}
 							marker={marker}
 							position={convertToLeafletCoords(location)}
 						>
@@ -196,11 +190,11 @@ function MapController({
 
 	return (
 		<div className="fixed top-20 right-4 z-500 flex gap-2 lg:right-8">
-			<Badge variant={"outline"} className="rounded-md bg-background/80">
+			<Badge variant={"outline"} className="rounded-md bg-background">
 				<div className="flex gap-1">
 					{mapLayers.length > 1 ? (
 						<>
-							<Tabs defaultValue={currentLayer?.id ?? ""}>
+							<Tabs defaultValue={currentLayer.id}>
 								<TabsList className="bg-transparent">
 									{mapLayers.map(layer => (
 										<TabsTrigger
