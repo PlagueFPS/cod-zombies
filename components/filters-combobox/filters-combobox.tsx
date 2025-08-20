@@ -133,7 +133,7 @@ const FiltersCombobox = ({
 							</div>
 						</CommandGroup>
 						{currentSelection.length > 0 && (
-							<div className="sticky bottom-0 flex w-full items-center justify-center border-t py-1">
+							<div className="sticky bottom-0 flex w-full items-center justify-center border-t bg-popover py-1">
 								<CommandItem onSelect={clearParam} asChild>
 									<Button variant={"ghost"} size={"sm"} className="items-center justify-center">
 										<Trash className="size-4 text-red-800 dark:text-red-400" />
