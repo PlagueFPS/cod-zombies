@@ -10,10 +10,9 @@ import GridPaginationLoader from "../loaders/grid-pagination-loader"
 
 interface IBestiaryGridClient {
 	zombies: MinifiedZombie[]
-	draftMode: boolean
 }
 
-export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGridClient) {
+export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {
 	const { gameParams, mapParams, typeParams, page, validatePageParam } = useFilterParams()
 	let filteredZombies = zombies
 
@@ -45,12 +44,7 @@ export default function BestiaryGridClient({ zombies, draftMode }: IBestiaryGrid
 			<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 				{paginatedZombies.length > 0 ? (
 					paginatedZombies.map((zombie, index) => (
-						<BestiaryCard
-							key={zombie.id}
-							zombie={zombie}
-							zombieIndex={index}
-							draftMode={draftMode}
-						/>
+						<BestiaryCard key={zombie.id} zombie={zombie} zombieIndex={index} />
 					))
 				) : (
 					<p className="col-span-4 text-center text-muted-foreground">

@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
-import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { cache, Suspense } from "react"
+import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import {
 	ComingSoonBadge,
@@ -51,14 +50,14 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/[game]/[slug]">): Promise<Metadata> => {
-	const [{ slug, game }, { isEnabled }] = await Promise.all([params, draftMode()])
+	const { slug, game } = await params
 	const { map } = await getPageData(slug)
 	const { title: mapTitle, game: mapGame } = map
 	const title = `${mapTitle} Main Quest`
 	const description = `Learn how to complete the main quest/easter egg for the ${mapGame.title} zombies map ${mapTitle} with our detailed step-by-step walkthrough!`
 	let imageUrl = null
 
-	if (!isEnabled && !IN_DEVELOPMENT) {
+	if (!IN_DEVELOPMENT) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("maps", {
 			...map,
@@ -137,9 +136,7 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 									{map.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									<Suspense>
-										<ManagementBadges entry={map} />
-									</Suspense>
+									<ManagementBadges entry={map} />
 									{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 									{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
@@ -227,9 +224,7 @@ const PrevOrNextMapCard = ({ map, prev }: PrevOrNextMap) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					<Suspense>
-						<ManagementBadges entry={map} />
-					</Suspense>
+					<ManagementBadges entry={map} />
 					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

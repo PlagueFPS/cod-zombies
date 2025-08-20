@@ -1,19 +1,16 @@
 import { createClient, type EntriesQueries, type EntrySkeletonType } from "contentful"
 import { createClient as managementCreateClient } from "contentful-management"
 import { Effect, Redacted } from "effect"
-import { draftMode } from "next/headers"
 import { env } from "@/env"
-import { GetEntriesError } from "@/types/errors"
+import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 
 export class CMS extends Effect.Service<CMS>()("CMS", {
 	effect: Effect.gen(function* () {
-		const { isEnabled } = yield* Effect.promise(() => draftMode())
-		const host = isEnabled || IN_DEVELOPMENT ? "preview.contentful.com" : "cdn.contentful.com"
-		const accessToken =
-			isEnabled || IN_DEVELOPMENT
-				? env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
-				: env.CONTENTFUL_ACCESS_TOKEN
+		const host = IN_DEVELOPMENT ? "preview.contentful.com" : "cdn.contentful.com"
+		const accessToken = IN_DEVELOPMENT
+			? env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
+			: env.CONTENTFUL_ACCESS_TOKEN
 
 		const client = createClient({
 			accessToken: Redacted.value(accessToken),
@@ -28,6 +25,16 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 				defaults: { spaceId: Redacted.value(env.CONTENTFUL_SPACE_ID), environmentId: "master" },
 			},
 		)
+
+		const getEntry = <T extends EntrySkeletonType>(id: string) =>
+			Effect.tryPromise({
+				try: () => client.withoutUnresolvableLinks.getEntry<T>(id),
+				catch: error =>
+					new EntryNotFoundError({
+						message: `Failed to get entry with id: ${id}`,
+						cause: error,
+					}),
+			})
 
 		const getEntries = <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) =>
 			Effect.tryPromise({
@@ -57,6 +64,6 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 					}),
 			})
 
-		return { getEntries, getManagementEntries } as const
+		return { getEntries, getManagementEntries, getEntry } as const
 	}).pipe(Effect.withLogSpan("cms_default")),
 }) {}

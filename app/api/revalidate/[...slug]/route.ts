@@ -1,9 +1,10 @@
 import type { NextRequest } from "next/server"
 import { Duration, Effect, Layer, Redacted, Schema } from "effect"
-import { draftMode, headers } from "next/headers"
+import { headers } from "next/headers"
 import { env } from "@/env"
 import { revalidateRateLimit } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
+import { CMS } from "@/lib/services/CMS"
 import { Email } from "@/lib/services/Email"
 import { AuthorizationError, JSONParseError } from "@/types/errors"
 import { authorizedRequest } from "@/utils/functions"
@@ -19,13 +20,7 @@ const RevalidateWebhookSchema = Schema.Struct({
 const decodeWebhookBody = Schema.decodeUnknown(RevalidateWebhookSchema)
 const decodeSlug = Schema.decodeUnknown(AllowedSlugsSchema)
 
-const RevalidateLayer = Layer.merge(Email.Default, Cache.Default)
-
-const cleanupDraftMode = Effect.fnUntraced(function* () {
-	const draft = yield* Effect.promise(() => draftMode())
-	if (draft.isEnabled) draft.disable()
-	yield* Effect.log("Draft Mode Disabled.")
-}, Effect.withLogSpan("cleanup_draft_mode"))
+const RevalidateLayer = Layer.mergeAll(Email.Default, Cache.Default, CMS.Default)
 
 export async function PUT(req: NextRequest, { params }: RouteContext<"/api/revalidate/[...slug]">) {
 	return await Effect.gen(function* () {
@@ -70,22 +65,12 @@ export async function PUT(req: NextRequest, { params }: RouteContext<"/api/reval
 
 		const validSlug = yield* decodeSlug(slug[0])
 		const body = yield* decodeWebhookBody(payload)
-		const draft = yield* Effect.promise(() => draftMode())
-		draft.enable()
-		yield* Effect.log("Draft Mode Enabled.")
 
 		const handler = RevalidateHandlers[validSlug]
 		return yield* handler(body)
 	}).pipe(
 		Effect.withLogSpan("put_revalidation_handler"),
-		Effect.tapBoth({
-			onSuccess: () => cleanupDraftMode(),
-			onFailure: error =>
-				Effect.gen(function* () {
-					yield* cleanupDraftMode()
-					yield* Effect.logError(error)
-				}),
-		}),
+		Effect.tapError(Effect.logError),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(Response.json(error.message, { status: 401 })),
 			EntryNotFoundError: error => Effect.succeed(Response.json(error.message, { status: 404 })),

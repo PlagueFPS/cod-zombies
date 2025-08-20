@@ -19,10 +19,9 @@ import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 interface IQuestPreviewCard {
 	quest: MinifiedFeaturedMap | MinifiedSideQuest
 	questIndex: number
-	draftMode: boolean
 }
 
-export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQuestPreviewCard) {
+export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? questIndex === 0 : questIndex <= 3
 	const alt = `${quest.title} map image`
@@ -73,8 +72,8 @@ export default function QuestPreviewCard({ quest, questIndex, draftMode }: IQues
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end gap-1">
-						{(draftMode || IN_DEVELOPMENT) && quest.isDraft ? <DraftBadge /> : null}
-						{(draftMode || IN_DEVELOPMENT) && quest.isChanged ? <ChangedBadge /> : null}
+						{IN_DEVELOPMENT && quest.isDraft ? <DraftBadge /> : null}
+						{IN_DEVELOPMENT && quest.isChanged ? <ChangedBadge /> : null}
 						{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

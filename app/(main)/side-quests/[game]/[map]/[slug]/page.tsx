@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
-import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { cache, Suspense } from "react"
+import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
@@ -46,13 +45,13 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/side-quests/[game]/[map]/[slug]">): Promise<Metadata> => {
-	const [{ slug, game, map }, { isEnabled }] = await Promise.all([params, draftMode()])
+	const { slug, game, map } = await params
 	const { q } = await getPageData(slug)
 	const title = `${q.title} Side Quest`
 	const description = `Learn how to complete the ${q.title} side quest/easter egg for ${q.map.title} with our detailed step-by-step walkthrough!`
 	let imageUrl = null
 
-	if (!isEnabled && !IN_DEVELOPMENT) {
+	if (!IN_DEVELOPMENT) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("side-quests", {
 			...q,
@@ -140,9 +139,7 @@ export default async function SideQuestPage({
 									{q.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									<Suspense>
-										<ManagementBadges entry={q} />
-									</Suspense>
+									<ManagementBadges entry={q} />
 									{q.isComingSoon ? <ComingSoonBadge /> : q.isNew ? <NewBadge /> : null}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{q.game.title}
@@ -233,9 +230,7 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextQuest) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					<Suspense>
-						<ManagementBadges entry={quest} />
-					</Suspense>
+					<ManagementBadges entry={quest} />
 					{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{quest.map.title}

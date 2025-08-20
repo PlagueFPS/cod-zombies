@@ -13,9 +13,8 @@ import {
 	Target,
 	Zap,
 } from "lucide-react"
-import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { cache, Suspense } from "react"
+import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
@@ -63,11 +62,11 @@ export const generateStaticParams = async () => {
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/bestiary/[slug]">): Promise<Metadata> => {
-	const [{ slug }, { isEnabled }] = await Promise.all([params, draftMode()])
+	const { slug } = await params
 	const { zombie } = await getPageData(slug)
 	let imageUrl = null
 
-	if (!isEnabled && !IN_DEVELOPMENT) {
+	if (!IN_DEVELOPMENT) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("zombies", {
 			...zombie,
@@ -135,9 +134,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-4">
-						<Suspense>
-							<ManagementBadges entry={zombie} />
-						</Suspense>
+						<ManagementBadges entry={zombie} />
 						{zombie.isComingSoon ? <ComingSoonBadge /> : null}
 						{zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
@@ -375,9 +372,7 @@ const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					<Suspense>
-						<ManagementBadges entry={zombie} />
-					</Suspense>
+					<ManagementBadges entry={zombie} />
 					{zombie.isComingSoon ? <ComingSoonBadge /> : null}
 					{zombie.isNew ? <NewBadge /> : null}
 					<TypeBadge type={zombie.type} />

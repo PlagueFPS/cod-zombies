@@ -17,10 +17,9 @@ import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 interface IBestiaryCard {
 	zombie: MinifiedZombie
 	zombieIndex: number
-	draftMode: boolean
 }
 
-export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestiaryCard) {
+export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
 	const alt = `${zombie.name} Image`
@@ -42,8 +41,8 @@ export default function BestiaryCard({ zombie, zombieIndex, draftMode }: IBestia
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
-						{(draftMode || IN_DEVELOPMENT) && zombie.isDraft ? <DraftBadge /> : null}
-						{(draftMode || IN_DEVELOPMENT) && zombie.isChanged ? <ChangedBadge /> : null}
+						{IN_DEVELOPMENT && zombie.isDraft ? <DraftBadge /> : null}
+						{IN_DEVELOPMENT && zombie.isChanged ? <ChangedBadge /> : null}
 						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 						{zombie.games[0] ? (

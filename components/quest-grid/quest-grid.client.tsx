@@ -12,10 +12,9 @@ import { calculateSkip } from "@/utils/contentful-utils"
 
 interface IQuestGridClient {
 	quests: (MinifiedSideQuest | MinifiedFeaturedMap)[]
-	draftMode: boolean
 }
 
-export default function QuestGridClient({ quests, draftMode }: IQuestGridClient) {
+export default function QuestGridClient({ quests }: IQuestGridClient) {
 	const { gameParams, mapParams, difficultyParams, page, validatePageParam } = useFilterParams()
 	let filteredQuests = quests
 
@@ -53,12 +52,7 @@ export default function QuestGridClient({ quests, draftMode }: IQuestGridClient)
 			<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 				{paginatedQuests.length > 0 ? (
 					paginatedQuests.map((quest, index) => (
-						<QuestPreviewCard
-							key={quest.id}
-							quest={quest}
-							questIndex={index}
-							draftMode={draftMode}
-						/>
+						<QuestPreviewCard key={quest.id} quest={quest} questIndex={index} />
 					))
 				) : (
 					<p className="col-span-4 text-center text-muted-foreground">
