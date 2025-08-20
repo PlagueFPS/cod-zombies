@@ -13,7 +13,7 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { env } from "@/env"
+import * as React from "react"
 
 export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: string }) {
 	const currentYear = new Date().getFullYear()
@@ -22,15 +22,15 @@ export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: st
 		<Html>
 			<Tailwind>
 				<Head>
-					<title>New Feature: Interactive Maps</title>
-					<Preview>Interactive Maps are here! A new way to view zombie maps.</Preview>
+					<title>New Interactive Map: Reckoning</title>
+					<Preview>The Reckoning interactive map is now available!</Preview>
 				</Head>
 				<Body className="bg-gray-100 py-[40px] font-sans">
 					<Container className="mx-auto max-w-[600px] rounded-[8px] bg-white p-[20px]">
 						{/* Logo and Site Name */}
 						<Section className="mb-[24px] text-center">
 							<Img
-								src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
+								src={`https://www.codzombiesguides.com/logo.webp`}
 								alt="Site Logo"
 								width="120"
 								height="50"
@@ -44,33 +44,38 @@ export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: st
 						<Hr className="my-[24px] border-orange-200 border-solid" />
 
 						<Heading className="my-[24px] text-center font-bold text-[24px] text-gray-800">
-							Interactive Maps Feature Now Live!
+							The Reckoning Interactive Map is Now Available!
 						</Heading>
 
 						<Section className="mb-[32px]">
 							<Text className="mb-[16px] text-[16px] text-gray-600 leading-[24px]">
-								We&apos;re thrilled to announce our brand new{" "}
-								<strong className="text-orange-500">Interactive Maps</strong> feature for Call of
-								Duty: Zombies! No more getting lost in the chaos, our interactive maps will help
-								guide you through every layer of every map so you never question where something is
-								located.
+								We&apos;re thrilled to announce the release of our{" "}
+								<strong className="text-orange-500">Reckoning Interactive Map</strong> for Call of
+								Duty: Zombies!
+							</Text>
+						</Section>
+
+						<Section className="mb-[24px]">
+							<Img
+								src="https://www.codzombiesguides.com/previews/reckoning-preview.webp"
+								alt="Reckoning Preview"
+								className="h-auto w-full rounded-[8px] object-cover"
+							/>
+							<Text className="m-0 mt-[8px] text-center text-[14px] text-gray-500 italic">
+								A visual preview of the Reckoning interactive map
 							</Text>
 						</Section>
 
 						<Section className="mb-[24px] rounded-[8px] bg-gray-100 p-[24px]">
 							<Heading className="text-[16px] text-gray-600">Key Features:</Heading>
-
 							<ul className="list-disc pl-[24px]">
 								<li className="mb-[8px] text-[16px] text-gray-600">
-									<strong>Maps</strong> - All Black Ops 6 maps available
-								</li>
-								<li className="mb-[8px] text-[16px] text-gray-600">
-									<strong>Locations</strong> - View locations for all perks, mystery boxes, wall
-									buys, and more!
+									<strong>Locations</strong> - View locations for all Perks, Mystery Boxes, Wall
+									Buys, Intel, and more!
 								</li>
 								<li className="mb-[8px] text-[16px] text-gray-600">
 									<strong>Objective Items</strong> - Know the locations of important objective items
-									like Shattered Veil&apos;s Janus Crates and more.
+									like Aetheric Flora, Vacuum-Seal Devices, and more.
 								</li>
 								<li className="mb-[8px] text-[16px] text-gray-600">
 									<strong>Filters</strong> - Narrow down what you are looking for in our maps with
@@ -89,9 +94,9 @@ export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: st
 						<Section className="mb-[32px] text-center">
 							<Button
 								className="box-border rounded-[4px] bg-orange-500 px-[24px] py-[12px] text-center font-bold text-white no-underline"
-								href={`${env.NEXT_PUBLIC_WEBSITE_URL}/maps`}
+								href={`https://codzombiesguides.com/maps/reckoning`}
 							>
-								Explore Interactive Maps
+								View the Interactive Map
 							</Button>
 						</Section>
 
@@ -106,7 +111,7 @@ export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: st
 
 							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
 								<Link
-									href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`}
+									href={`https://codzombiesguides.com/privacy-policy`}
 									className="text-[#8898aa] underline"
 								>
 									Privacy Policy

@@ -1,4 +1,3 @@
-import "server-only"
 import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { Effect } from "effect"
 import { createIssue } from "@/lib/linear"

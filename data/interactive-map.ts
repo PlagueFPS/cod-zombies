@@ -1,4 +1,3 @@
-import "server-only"
 import { Effect } from "effect"
 import { cache } from "react"
 import { type MapId, mapRegistry } from "@/map-configs"
