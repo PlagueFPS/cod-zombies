@@ -1,4 +1,5 @@
 "use client"
+import type { Route } from "next"
 import { Book, BookText, Brain, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -74,7 +75,7 @@ export default function SearchInput({
 
 	useShortcut(shortcut, () => setOpen(prev => !prev), { ignoreInputs: false })
 
-	const onSelectHandler = (url: string) => {
+	const onSelectHandler = <T extends string>(url: Route<T>) => {
 		setOpen(false)
 		router.push(url)
 	}
