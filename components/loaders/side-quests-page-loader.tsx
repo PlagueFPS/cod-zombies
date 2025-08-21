@@ -1,11 +1,11 @@
-import Breadcrumbs from "../breadcrumbs/breadcrumbs"
+import Breadcrumbs, { type Link } from "../breadcrumbs/breadcrumbs"
 import GridSection from "../grid-section/grid-section"
 import GridLoader from "./grid-loader"
 import GridPaginationLoader from "./grid-pagination-loader"
 import QuestFilterLoader from "./quest-filter-loader"
 
 export default function SideQuestsPageLoader() {
-	const links: { title: string; href: string }[] = [{ title: "Side Quests", href: `/side-quests` }]
+	const links: Link<string>[] = [{ title: "Side Quests", href: `/side-quests` }]
 
 	return (
 		<div className="flex w-full flex-col items-center justify-center">

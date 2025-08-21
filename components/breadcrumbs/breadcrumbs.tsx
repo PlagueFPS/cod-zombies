@@ -20,7 +20,7 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 
-interface Link<T extends string> {
+export interface Link<T extends string> {
 	href: Route<T>
 	title: string
 }

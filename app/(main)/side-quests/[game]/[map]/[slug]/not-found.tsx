@@ -1,12 +1,13 @@
 "use client"
 import type { Route } from "next"
+import type { Link } from "@/components/breadcrumbs/breadcrumbs"
 import { useParams } from "next/navigation"
 import NotFoundContent from "@/components/not-found/not-found-content"
 import { capitalize } from "@/utils/functions.client"
 
 export default function QuestNotFound() {
 	const { game, map, slug } = useParams()
-	const items: { href: Route; title: string }[] = [
+	const items: Link<string>[] = [
 		{ href: `/side-quests`, title: "Side Quests" },
 		{ href: `/side-quests?game=${game}`, title: capitalize(String(game)) },
 		{ href: `/side-quests?game=${game}&map=${map}`, title: capitalize(String(map)) },
