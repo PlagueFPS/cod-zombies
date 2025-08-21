@@ -40,7 +40,7 @@ export default async function PrivacyPolicy() {
 					<section className="flex w-full max-w-7xl flex-col items-center justify-center">
 						<div className="relative mt-4 w-full xl:my-6">
 							<div className="-top-10 absolute left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
-								<Breadcrumbs links={[{ title: policy.title, href: `/${policy.slug}` }]} />
+								<Breadcrumbs links={[{ title: policy.title, href: `/privacy-policy` }]} />
 							</div>
 						</div>
 						<div className="mb-4 flex w-full flex-col items-start justify-center border-b-2 px-4 pb-6 md:gap-4 md:px-8">
