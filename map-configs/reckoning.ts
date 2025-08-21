@@ -469,7 +469,10 @@ const reckoning: MapConfig = {
 				},
 				{
 					...sharedMarkers["janus-crate"],
-					locations: [{ x: 0.168, y: 0.449 }],
+					locations: [
+						{ x: 0.168, y: 0.449 },
+						{ x: 0.816, y: 0.322 },
+					],
 				},
 				{
 					...sharedMarkers["ammo-cache"],
