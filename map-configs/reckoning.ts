@@ -242,20 +242,68 @@ const reckoning: MapConfig = {
 				{
 					...sharedMarkers.portal,
 					locations: [
-						{ x: 0.657, y: 0.846, title: "Portal to T2 Sublevel 10" },
-						{ x: 0.338, y: 0.781, title: "Portal to T1 Director's Office" },
-						{ x: 0.419, y: 0.051, title: "Portal to T1 Project Janus Reception" },
-						{ x: 0.682, y: 0.152, title: "Portal to T2 Sublevel 10" },
+						{
+							x: 0.657,
+							y: 0.846,
+							description: "Teleport to T2 Sublevel 10.",
+						},
+						{
+							x: 0.338,
+							y: 0.781,
+							description: "Teleport to T1 Director's Office.",
+						},
+						{
+							x: 0.419,
+							y: 0.051,
+							description: "Teleport to T1 Project Janus Reception.",
+						},
+						{
+							x: 0.682,
+							y: 0.152,
+							description: "Teleport to T2 Sublevel 10.",
+						},
 					],
 				},
 				{
 					...sharedMarkers["fast-travel"],
 					locations: [
-						{ x: 0.377, y: 0.362, title: "Launcher to T2 Dark Entity Containment" },
-						{ x: 0.751, y: 0.384, title: "Aether Elevator to T1 Project Janus Reception" },
-						{ x: 0.61, y: 0.683, title: "Launcher to T2 Android Assembly" },
-						{ x: 0.22, y: 0.65, title: "Aether Elevator to T1 Project Janus Reception" },
-						{ x: 0.096, y: 0.624, title: "Launcher to T2 Android Assembly" },
+						{
+							x: 0.461,
+							y: 0.586,
+							title: "Aether Elevator",
+							description: "Travel to T1 Mutant Research Lab.",
+						},
+						{
+							x: 0.461,
+							y: 0.978,
+							title: "Aether Elevator",
+							description: "Travel to T1 Quantum Computing Core.",
+						},
+						{
+							x: 0.377,
+							y: 0.362,
+							title: "Launcher",
+							description: "Travel to T2 Dark Entity Containment.",
+						},
+						{
+							x: 0.751,
+							y: 0.384,
+							title: "Aether Elevator",
+							description: "Travel to T1 Project Janus Reception.",
+						},
+						{ x: 0.61, y: 0.683, title: "Launcher", description: "Travel to T2 Android Assembly." },
+						{
+							x: 0.22,
+							y: 0.65,
+							title: "Aether Elevator",
+							description: "Travel to T1 Project Janus Reception.",
+						},
+						{
+							x: 0.096,
+							y: 0.624,
+							title: "Launcher",
+							description: "Travel to T2 Android Assembly.",
+						},
 					],
 				},
 				{
@@ -485,25 +533,41 @@ const reckoning: MapConfig = {
 				{
 					...sharedMarkers.portal,
 					locations: [
-						{ x: 0.877, y: 0.621, title: "Portal to T2 Teleportation Lab" },
-						{ x: 0.318, y: 0.144, title: "Portal to T2 Dark Entity Containment" },
-						{ x: 0.756, y: 0.842, title: "Portal to T1 Project Janus Reception" },
-						{ x: 0.26, y: 0.84, title: "Portal to T1 Director's Office" },
-						{ x: 0.597, y: 0.14, title: "Portal to Tower 3" },
+						{ x: 0.877, y: 0.621, description: "Travel to T2 Teleportation Lab" },
+						{ x: 0.318, y: 0.144, description: "Travel to T2 Dark Entity Containment" },
+						{ x: 0.756, y: 0.842, description: "Travel to T1 Project Janus Reception" },
+						{ x: 0.26, y: 0.84, description: "Travel to T1 Director's Office" },
+						{ x: 0.597, y: 0.14, description: "Travel to Tower 3" },
 					],
 				},
 				{
 					...sharedMarkers["fast-travel"],
 					locations: [
-						{ x: 0.078, y: 0.482, title: "Aether Elevator to T2 Dark Entity Containment" },
+						{
+							x: 0.078,
+							y: 0.482,
+							title: "Aether Elevator",
+							description: "Travel to T2 Dark Entity Containment.",
+						},
 						{
 							x: 0.401,
 							y: 0.327,
-							title:
+							title: "Launcher",
+							description:
 								"Top Launcher to T1 Mutant Research Lab and Bottom Launcher to T1 Quantum Computing Core",
 						},
-						{ x: 0.553, y: 0.493, title: "Aether Elevator to T2 Android Assembly" },
-						{ x: 0.905, y: 0.334, title: "Launcher to T1 Executive Suite" },
+						{
+							x: 0.553,
+							y: 0.493,
+							title: "Aether Elevator",
+							description: "Travel to T2 Android Assembly.",
+						},
+						{
+							x: 0.905,
+							y: 0.334,
+							title: "Launcher",
+							description: "Travel to T1 Executive Suite.",
+						},
 					],
 				},
 				{
