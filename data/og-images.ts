@@ -2,7 +2,7 @@ import type { BroadcastEntry } from "@/utils/revalidation-handlers"
 import { readFile } from "node:fs/promises"
 import { join } from "node:path"
 import { FetchHttpClient, HttpBody, HttpClient } from "@effect/platform"
-import { Effect, Predicate, Redacted } from "effect"
+import { Effect, Predicate, Redacted, Schedule } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { env } from "@/env"
@@ -76,7 +76,13 @@ export const getCachedImageUrl = cache(
  * const imageUrl = yield* getImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  */
 const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: BroadcastEntry) {
-	const httpClient = yield* HttpClient.HttpClient
+	const httpClient = (yield* HttpClient.HttpClient).pipe(
+		HttpClient.retryTransient({
+			times: 3,
+			schedule: Schedule.exponential("50 millis", 2),
+		}),
+		HttpClient.filterStatusOk,
+	)
 	const response = yield* httpClient.post(
 		"https://api-codzombiesguides.netlify.app/get-image-url",
 		{
