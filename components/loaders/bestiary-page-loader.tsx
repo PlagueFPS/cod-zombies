@@ -1,3 +1,4 @@
+import type { Route } from "next"
 import Breadcrumbs from "../breadcrumbs/breadcrumbs"
 import GridSection from "../grid-section/grid-section"
 import BestiaryFiltersLoader from "./bestiary-filters-loader"
@@ -5,7 +6,7 @@ import GridLoader from "./grid-loader"
 import GridPaginationLoader from "./grid-pagination-loader"
 
 export default function BestiaryPageLoader() {
-	const links: { title: string; href: string }[] = [{ title: "Bestiary", href: `/bestiary` }]
+	const links: { title: string; href: Route }[] = [{ title: "Bestiary", href: `/bestiary` }]
 
 	return (
 		<div className="flex w-full flex-col items-center justify-center">
