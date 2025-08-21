@@ -1,4 +1,4 @@
-import type { Route } from "next"
+import type { Link } from "../breadcrumbs/breadcrumbs"
 import NotFoundBreadcrumbs from "@/components/not-found/not-found-breadcrumbs"
 import { capitalize } from "@/utils/functions.client"
 import { CustomLink } from "../custom-link/custom-link"
@@ -8,10 +8,7 @@ interface INotFoundContent<T extends string> {
 	param?: string
 	pathname?: string
 	resource: string
-	items?: {
-		href: Route<T>
-		title: string
-	}[]
+	items?: Link<T>[]
 }
 
 export default function NotFoundContent<T extends string>({
