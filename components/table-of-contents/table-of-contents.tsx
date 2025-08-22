@@ -26,7 +26,7 @@ interface TableOfContentsProps {
 
 export default function TableOfContents({ headings }: TableOfContentsProps) {
 	const { activeHeading, currentHeading, progress } = useTableOfContents(headings, "body")
-	const [isExpanded, setIsExpanded] = useState(true)
+	const [isExpanded, setIsExpanded] = useState(headings.length > 4)
 
 	useShortcut("alt+c", () => setIsExpanded(!isExpanded))
 
