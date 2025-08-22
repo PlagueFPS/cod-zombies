@@ -35,6 +35,11 @@ const nextConfig: NextConfig = {
 	async redirects() {
 		return [
 			{
+				source: "/side-quests/black-ops-6/reckoning/free-1500-points",
+				destination: "/side-quests/black-ops-6/reckoning/paintings",
+				permanent: true,
+			},
+			{
 				source: "/black-ops-1",
 				destination: "/?game=black-ops-1",
 				permanent: true,
