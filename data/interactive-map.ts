@@ -4,13 +4,10 @@ import { type MapId, mapRegistry } from "@/map-configs"
 import { MapConfigError } from "@/types/errors"
 
 export const getMapConfig = cache((mapId: MapId) =>
-	Effect.gen(function* () {
-		const config = mapRegistry[mapId]
-		return yield* Effect.tryPromise({
-			try: () => config,
-			catch: error =>
-				new MapConfigError({ message: `Failed to get map config for ${mapId}`, cause: error }),
-		})
+	Effect.tryPromise({
+		try: () => mapRegistry[mapId],
+		catch: error =>
+			new MapConfigError({ message: `Failed to get map config for ${mapId}`, cause: error }),
 	}).pipe(
 		Effect.withLogSpan("get_map_config"),
 		Effect.tapError(Effect.logError),

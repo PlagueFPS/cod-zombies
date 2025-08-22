@@ -16,7 +16,7 @@ import { getCachedImageUrl } from "@/data/og-images"
 import { getQuestBySlug, getQuests, type MinifiedSideQuest } from "@/data/side-quests"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 
 const getPageData = cache(async (slug: string) => {
@@ -35,11 +35,13 @@ const getPageData = cache(async (slug: string) => {
 
 export const generateStaticParams = async () => {
 	const quests = await getQuests()
-	return quests.map(q => ({
-		game: q.game.slug,
-		map: q.map.slug,
-		slug: q.slug,
-	}))
+	return quests
+		.map(q => ({
+			game: q.game.slug,
+			map: q.map.slug,
+			slug: q.slug,
+		}))
+		.slice(0, MAP_LIMIT * 3) // Limit to first three pages
 }
 
 export const generateMetadata = async ({

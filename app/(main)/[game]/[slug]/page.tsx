@@ -20,12 +20,8 @@ import { getMapBySlug, getMapSearchData, getMaps, type MinifiedFeaturedMap } fro
 import { getCachedImageUrl } from "@/data/og-images"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
-
-// Opt-out of PPR since it contains no dynamic server-streamed content
-// Will use SSG instead since it uses generateStaticParams
-export const experimental_ppr = false
 
 const getPageData = cache(async (slug: string) => {
 	const map = await getMapBySlug(slug)
@@ -45,10 +41,12 @@ const getPageData = cache(async (slug: string) => {
 export const generateStaticParams = async () => {
 	const featuredMaps = await getMapSearchData()
 
-	return featuredMaps.map(map => ({
-		game: map.game.slug,
-		slug: map.slug,
-	}))
+	return featuredMaps
+		.map(map => ({
+			game: map.game.slug,
+			slug: map.slug,
+		}))
+		.slice(0, MAP_LIMIT * 3) // Limit to first three pages
 }
 
 export const generateMetadata = async ({

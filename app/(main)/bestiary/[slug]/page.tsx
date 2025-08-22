@@ -35,7 +35,7 @@ import {
 } from "@/data/zombies"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 
 const getPageData = cache(async (slug: string) => {
 	const zombie = await getZombieBySlug(slug)
@@ -54,9 +54,11 @@ const getPageData = cache(async (slug: string) => {
 
 export const generateStaticParams = async () => {
 	const zombies = await getZombieSearchData()
-	return zombies.map(zombie => ({
-		slug: zombie.slug,
-	}))
+	return zombies
+		.map(zombie => ({
+			slug: zombie.slug,
+		}))
+		.slice(0, MAP_LIMIT * 3) // Limit to first three pages
 }
 
 export const generateMetadata = async ({
