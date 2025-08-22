@@ -4,7 +4,7 @@ import { withBotId } from "botid/next/config"
 
 const nextConfig: NextConfig = {
 	experimental: {
-		ppr: true,
+		ppr: "incremental",
 		serverComponentsHmrCache: true,
 		reactCompiler: true,
 		browserDebugInfoInTerminal: true,
