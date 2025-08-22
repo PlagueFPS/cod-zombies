@@ -23,10 +23,6 @@ import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
 import { extractHeadings } from "@/utils/contentful-utils"
 
-// Opt-out of PPR since it contains no dynamic server-streamed content
-// Will use SSG instead since it uses generateStaticParams
-export const experimental_ppr = false
-
 const getPageData = cache(async (slug: string) => {
 	const map = await getMapBySlug(slug)
 	if (!map) {
