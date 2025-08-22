@@ -5,5 +5,8 @@
       "path": "/api/cron/checkstatus",
       "schedule": "0 0 * * *"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": false
+  }
 }
