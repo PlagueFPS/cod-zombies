@@ -19,7 +19,6 @@ export const env = createEnv({
 		REDIS_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		REDIS_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		HASH_SALT: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		VERCEL_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		LINEAR_API_KEY: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		LINEAR_DEFAULT_ASSIGNEE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		IMAGE_API_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
