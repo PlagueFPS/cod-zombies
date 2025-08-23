@@ -81,7 +81,6 @@ const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: Bro
 			times: 3,
 			schedule: Schedule.exponential("50 millis", 2),
 		}),
-		HttpClient.filterStatusOk,
 	)
 	const response = yield* httpClient.post(
 		"https://api-codzombiesguides.netlify.app/get-image-url",
