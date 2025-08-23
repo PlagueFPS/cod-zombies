@@ -191,6 +191,24 @@ export const getReferencedMaps = cache(
 	),
 )
 
+export const getZombie = Effect.fnUntraced(function* (id: string) {
+	const { getEntry } = yield* CMS
+	return yield* getEntry<TypeZombiesSkeleton>(id).pipe(
+		Effect.map(zombie => ({
+			id: zombie.sys.id,
+			updatedAt: zombie.sys.updatedAt,
+			title: zombie.fields.name,
+			slug: zombie.fields.slug,
+			type: zombie.fields.type,
+			description: zombie.fields.description,
+			image: createImageDto(zombie.fields.image),
+			isComingSoon: zombie.fields.isComingSoon ?? false,
+			game: createMapCategoryDto(zombie.fields.games[0]).title,
+			map: createQuestMapDto(zombie.fields.maps[0]).title,
+		})),
+	)
+})
+
 const resolveZombieData = (
 	zombie: Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	zombieIds: Effect.Effect.Success<typeof getZombieIds>,

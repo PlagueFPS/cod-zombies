@@ -160,6 +160,24 @@ export const getMapById = cache(
 	),
 )
 
+export const getMap = Effect.fnUntraced(function* (id: string) {
+	const { getEntry } = yield* CMS
+	return yield* getEntry<TypeFeaturedMapsSkeleton>(id).pipe(
+		Effect.map(map => ({
+			id: map.sys.id,
+			updatedAt: map.sys.updatedAt,
+			slug: map.fields.slug,
+			title: map.fields.title,
+			description: map.fields.description,
+			isComingSoon: map.fields.isComingSoon ?? false,
+			image: createImageDto(map.fields.image),
+			game: createMapCategoryDto(map.fields.gameCategory).slug,
+			difficulty: map.fields.difficulty,
+			timeToRead: calculateTimeToRead(map.fields.body),
+		})),
+	)
+}, Effect.withLogSpan("get_map"))
+
 const getMapIds = Effect.gen(function* () {
 	const [maps, newEntries] = yield* Effect.all([INTERNAL_getManagementMapData(), getNewEntries], {
 		concurrency: "unbounded",

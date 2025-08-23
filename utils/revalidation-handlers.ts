@@ -1,17 +1,13 @@
 import "server-only"
-import type { FeaturedMapById } from "@/data/maps"
-import type { SideQuestById } from "@/data/side-quests"
-import type { ZombieById } from "@/data/zombies"
 import type { IZombieRelease } from "@/emails/zombie-release-email"
-import type {
-	TypeFeaturedMapsSkeleton,
-	TypeSideQuestsSkeleton,
-	TypeZombiesSkeleton,
-} from "@/types/contentful-types"
+import type { TypeFeaturedMapsSkeleton } from "@/types/contentful-types"
 import type { TAllowedSlugs } from "./validation-schemas"
 import { Effect, Schedule } from "effect"
 import { revalidateTag } from "next/cache"
 import { getLegalDocById } from "@/data/legal"
+import { type FeaturedMapById, getMap } from "@/data/maps"
+import { getSideQuest, type SideQuestById } from "@/data/side-quests"
+import { getZombie, type ZombieById } from "@/data/zombies"
 import { env } from "@/env"
 import { getEntryStatus, storeNewEntryId, updateEntryStatus } from "@/lib/redis"
 import { CMS } from "@/lib/services/CMS"
@@ -22,13 +18,7 @@ import {
 	sendZombieReleaseBroadcast,
 } from "@/usecases/email"
 import { CACHE_KEYS } from "./constants"
-import {
-	calculateTimeToRead,
-	createImageDto,
-	createMapCategoryDto,
-	createQuestMapDto,
-	isFirstTimePublish,
-} from "./contentful-utils"
+import { isFirstTimePublish } from "./contentful-utils"
 
 interface RevalidateData {
 	entryId: string
@@ -97,26 +87,7 @@ export const RevalidateHandlers = {
 	 */
 	maps: ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const { getEntry } = yield* CMS
-			const map = yield* getEntry<TypeFeaturedMapsSkeleton>(entryId).pipe(
-				Effect.flatMap(map =>
-					Effect.gen(function* () {
-						const game = yield* createMapCategoryDto(map.fields.gameCategory)
-						return {
-							id: map.sys.id,
-							updatedAt: map.sys.updatedAt,
-							slug: map.fields.slug,
-							title: map.fields.title,
-							description: map.fields.description,
-							isComingSoon: map.fields.isComingSoon ?? false,
-							image: createImageDto(map.fields.image),
-							game: game.slug,
-							difficulty: map.fields.difficulty,
-							timeToRead: calculateTimeToRead(map.fields.body),
-						}
-					}),
-				),
-			)
+			const map = yield* getMap(entryId)
 
 			const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game}/${map.slug}`
 			let shouldBroadcast = false
@@ -214,28 +185,7 @@ export const RevalidateHandlers = {
 	 */
 	"side-quests": ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const { getEntry } = yield* CMS
-			const quest = yield* getEntry<TypeSideQuestsSkeleton>(entryId).pipe(
-				Effect.flatMap(quest =>
-					Effect.gen(function* () {
-						const map = yield* createQuestMapDto(quest.fields.map)
-						const game = yield* createMapCategoryDto(quest.fields.game)
-						return {
-							id: quest.sys.id,
-							updatedAt: quest.sys.updatedAt,
-							slug: quest.fields.slug,
-							title: quest.fields.title,
-							description: quest.fields.description,
-							image: createImageDto(quest.fields.image),
-							isComingSoon: quest.fields.isComingSoon ?? false,
-							map: map.slug,
-							game: game.slug,
-							timeToRead: calculateTimeToRead(quest.fields.content),
-						}
-					}),
-				),
-			)
-
+			const quest = yield* getSideQuest(entryId)
 			const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${quest.game}/${quest.map}/${quest.slug}`
 			let shouldBroadcast = false
 
@@ -284,33 +234,7 @@ export const RevalidateHandlers = {
 	 */
 	zombies: ({ entryId, createdAt, updatedAt }: RevalidateData) =>
 		Effect.gen(function* () {
-			const { getEntry } = yield* CMS
-			const zombie = yield* getEntry<TypeZombiesSkeleton>(entryId).pipe(
-				Effect.flatMap(zombie =>
-					Effect.gen(function* () {
-						const map = yield* createQuestMapDto(zombie.fields.maps[0])
-						const game = yield* createMapCategoryDto(zombie.fields.games[0])
-						return {
-							id: zombie.sys.id,
-							updatedAt: zombie.sys.updatedAt,
-							slug: zombie.fields.slug,
-							title: zombie.fields.name,
-							type: zombie.fields.type,
-							description: zombie.fields.description,
-							image: createImageDto(zombie.fields.image),
-							isComingSoon: zombie.fields.isComingSoon ?? false,
-							game: game.title,
-							map: map.title,
-						}
-					}),
-				),
-			)
-			if (!zombie)
-				return yield* new EntryNotFoundError({
-					message: `No zombie found for entry ID: ${entryId}`,
-					cause: null,
-				})
-
+			const zombie = yield* getZombie(entryId)
 			const url = `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
 			let shouldBroadcast = false
 

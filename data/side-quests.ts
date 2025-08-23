@@ -166,6 +166,24 @@ export const getQuestBySlug = cache(
 	),
 )
 
+export const getSideQuest = Effect.fnUntraced(function* (id: string) {
+	const { getEntry } = yield* CMS
+	return yield* getEntry<TypeSideQuestsSkeleton>(id).pipe(
+		Effect.map(quest => ({
+			id: quest.sys.id,
+			updatedAt: quest.sys.updatedAt,
+			slug: quest.fields.slug,
+			title: quest.fields.title,
+			description: quest.fields.description,
+			image: createImageDto(quest.fields.image),
+			isComingSoon: quest.fields.isComingSoon ?? false,
+			map: createQuestMapDto(quest.fields.map).slug,
+			game: createMapCategoryDto(quest.fields.game).slug,
+			timeToRead: calculateTimeToRead(quest.fields.content),
+		})),
+	)
+}, Effect.withLogSpan("get_side_quest"))
+
 const resolveQuestData = (
 	quest: Entry<TypeSideQuestsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	questIds: Effect.Effect.Success<typeof getQuestIds>,
