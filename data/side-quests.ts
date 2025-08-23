@@ -27,28 +27,19 @@ export const getQuests = cache(
 					concurrency: "unbounded",
 				})
 
-				return yield* Effect.forEach(
-					quests,
-					quest =>
-						Effect.gen(function* () {
-							const {
-								category: game,
-								timeToRead,
-								...questData
-							} = yield* resolveQuestData(quest, questIds)
-							return {
-								...questData,
-								game,
-								id: quest.sys.id,
-								updatedAt: quest.sys.updatedAt,
-								isComingSoon: quest.fields.isComingSoon ?? false,
-								title: quest.fields.title,
-								slug: quest.fields.slug,
-								description: quest.fields.description,
-							}
-						}),
-					{ concurrency: "unbounded" },
-				)
+				return quests.map(quest => {
+					const { category: game, timeToRead, ...questData } = resolveQuestData(quest, questIds)
+					return {
+						...questData,
+						game,
+						id: quest.sys.id,
+						updatedAt: quest.sys.updatedAt,
+						isComingSoon: quest.fields.isComingSoon ?? false,
+						title: quest.fields.title,
+						slug: quest.fields.slug,
+						description: quest.fields.description,
+					}
+				})
 			}).pipe(
 				Effect.withLogSpan("get_quests"),
 				Effect.ensureErrorType<never>(),
@@ -70,20 +61,13 @@ export const getQuestSearchData = cache(
 				const quests = yield* INTERNAL_getSideQuestData()
 				const currentQuests = quests.filter(q => !q.fields.isComingSoon)
 
-				return yield* Effect.forEach(
-					currentQuests,
-					quest =>
-						Effect.gen(function* () {
-							return {
-								id: quest.sys.id,
-								title: quest.fields.title,
-								slug: quest.fields.slug,
-								game: yield* createMapCategoryDto(quest.fields.game),
-								map: yield* createQuestMapDto(quest.fields.map),
-							}
-						}),
-					{ concurrency: "unbounded" },
-				)
+				return currentQuests.map(quest => ({
+					id: quest.sys.id,
+					title: quest.fields.title,
+					slug: quest.fields.slug,
+					game: createMapCategoryDto(quest.fields.game),
+					map: createQuestMapDto(quest.fields.map),
+				}))
 			}).pipe(
 				Effect.withLogSpan("get_quest_search_data"),
 				Effect.ensureErrorType<never>(),
@@ -110,12 +94,8 @@ export const getQuestById = cache(
 					return null
 				}
 
-				const [map, game] = yield* Effect.all(
-					[createQuestMapDto(quest.fields.map), createMapCategoryDto(quest.fields.game)],
-					{
-						concurrency: "unbounded",
-					},
-				)
+				const map = createQuestMapDto(quest.fields.map)
+				const game = createMapCategoryDto(quest.fields.game)
 				const timeToRead = calculateTimeToRead(quest.fields.content)
 
 				return {
@@ -158,7 +138,7 @@ export const getQuestBySlug = cache(
 				}
 
 				const questIds = yield* getQuestIds
-				const { category: game, ...rest } = yield* resolveQuestData(quest, questIds)
+				const { category: game, ...rest } = resolveQuestData(quest, questIds)
 
 				return {
 					...rest,
@@ -189,31 +169,26 @@ export const getQuestBySlug = cache(
 const resolveQuestData = (
 	quest: Entry<TypeSideQuestsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
 	questIds: Effect.Effect.Success<typeof getQuestIds>,
-) =>
-	Effect.gen(function* () {
-		const [map, category] = yield* Effect.all(
-			[createQuestMapDto(quest.fields.map), createMapCategoryDto(quest.fields.game)],
-			{
-				concurrency: "unbounded",
-			},
-		)
-		const { changedIds, draftIds, newIds } = questIds
-		const image = createImageDto(quest.fields.image)
-		const isDraft = draftIds.has(quest.sys.id)
-		const isChanged = changedIds.has(quest.sys.id)
-		const isNew = newIds.has(quest.sys.id)
-		const timeToRead = calculateTimeToRead(quest.fields.content)
+) => {
+	const { changedIds, draftIds, newIds } = questIds
+	const map = createQuestMapDto(quest.fields.map)
+	const category = createMapCategoryDto(quest.fields.game)
+	const image = createImageDto(quest.fields.image)
+	const isDraft = draftIds.has(quest.sys.id)
+	const isChanged = changedIds.has(quest.sys.id)
+	const isNew = newIds.has(quest.sys.id)
+	const timeToRead = calculateTimeToRead(quest.fields.content)
 
-		return {
-			image,
-			map,
-			category,
-			isDraft,
-			isChanged,
-			isNew,
-			timeToRead,
-		}
-	})
+	return {
+		image,
+		map,
+		category,
+		isDraft,
+		isChanged,
+		isNew,
+		timeToRead,
+	}
+}
 
 const getQuestIds = Effect.gen(function* () {
 	const [quests, newEntries] = yield* Effect.all(

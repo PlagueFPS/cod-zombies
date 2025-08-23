@@ -11,10 +11,11 @@ import type {
 	TypeWeaponBuildsSkeleton,
 	TypeWeaponSkeleton,
 	TypeZombieAttacksSkeleton,
+	TypeZombiesSkeleton,
 	ZombieItem,
 } from "@/types/contentful-types"
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer"
-import { Effect, Predicate } from "effect"
+import { Predicate } from "effect"
 import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
 import {
 	MapCategoryNotFoundError,
@@ -162,7 +163,7 @@ export const isSideQuest = (
 export const isWeaponBuild = (
 	item: ZombieItem,
 ): item is Entry<TypeWeaponBuildsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
-	return Predicate.hasProperty(item.fields, "weapon")
+	return item.sys.contentType.sys.id === "weaponBuilds"
 }
 
 /**
@@ -173,16 +174,18 @@ export const isWeaponBuild = (
 export const isGobbleGum = (
 	item: ZombieItem,
 ): item is Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
-	return Predicate.hasProperty(item.fields, "rarity")
+	return item.sys.contentType.sys.id === "gobblegums"
 }
 
 /**
- * Check if a DTO is a weapon build.
- * @param item The DTO to check
- * @returns True if the DTO is a weapon build, false otherwise
+ * Check if an entry is a zombie.
+ * @param item The entry to check
+ * @returns True if the entry is a zombie, false otherwise
  */
-export const isWeaponBuildDto = (item: ReturnType<typeof createItemTooltipDto>) => {
-	return Predicate.hasProperty(item, "attachments")
+export const isZombie = (
+	item: ZombieItem,
+): item is Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
+	return item.sys.contentType.sys.id === "zombies"
 }
 
 /**
@@ -195,6 +198,7 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 
 	if (isGobbleGum(item)) {
 		return {
+			_tag: "GOBBLEGUM" as const,
 			id: item.sys.id,
 			title: item.fields.title,
 			image: createImageDto(itemImage),
@@ -207,6 +211,7 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 	if (isWeaponBuild(item)) {
 		const weapon = createWeaponDto(item.fields.weapon)
 		return {
+			_tag: "WEAPON_BUILD" as const,
 			id: item.sys.id,
 			title: weapon.title,
 			image: createImageDto(itemImage),
@@ -214,7 +219,21 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 		}
 	}
 
+	if (isZombie(item)) {
+		return {
+			_tag: "ZOMBIE" as const,
+			id: item.sys.id,
+			title: item.fields.name,
+			image: createImageDto(itemImage),
+			type: item.fields.type,
+			game: createMapCategoryDto(item.fields.games[0]),
+			map: createQuestMapDto(item.fields.maps[0]),
+			elementalWeaknesses: item.fields.elementalWeakness,
+		}
+	}
+
 	return {
+		_tag: "OTHER" as const,
 		id: item.sys.id,
 		title: item.fields.title,
 		image: createImageDto(itemImage),
@@ -262,22 +281,17 @@ export const createWeaponDto = (
  */
 export const createMapCategoryDto = (
 	category: Entry<TypeGameCategorySkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) =>
-	Effect.gen(function* () {
-		if (!category)
-			return yield* new MapCategoryNotFoundError({
-				message: "Expected map to have a category",
-			})
+) => {
+	if (!category)
+		throw new MapCategoryNotFoundError({
+			message: "Expected map to have a category",
+		})
 
-		return {
-			title: category.fields.title,
-			slug: category.fields.slug,
-		}
-	}).pipe(
-		Effect.withLogSpan("create_map_category_dto"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(error => Effect.dieMessage(error.message)),
-	)
+	return {
+		title: category.fields.title,
+		slug: category.fields.slug,
+	}
+}
 
 /**
  * Create a Data Transfer Object for a quest map.
@@ -286,22 +300,17 @@ export const createMapCategoryDto = (
  */
 export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(
 	map: Entry<T, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) =>
-	Effect.gen(function* () {
-		if (!map)
-			return yield* new QuestMapNotFoundError({
-				message: "Expected quest to have a map",
-			})
+) => {
+	if (!map)
+		throw new QuestMapNotFoundError({
+			message: "Expected quest to have a map",
+		})
 
-		return {
-			title: map.fields.title,
-			slug: map.fields.slug,
-		}
-	}).pipe(
-		Effect.withLogSpan("create_quest_map_dto"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(error => Effect.dieMessage(error.message)),
-	)
+	return {
+		title: map.fields.title,
+		slug: map.fields.slug,
+	}
+}
 
 /**
  * Create a Data Transfer Object for a zombie attack.
@@ -310,21 +319,16 @@ export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFea
  */
 export const createZombieAttackDto = (
 	attack: Entry<TypeZombieAttacksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
-) =>
-	Effect.gen(function* () {
-		if (!attack)
-			return yield* new ZombieAttackNotFoundError({
-				message: "Expected zombie to have an attack",
-			})
+) => {
+	if (!attack)
+		throw new ZombieAttackNotFoundError({
+			message: "Expected zombie to have an attack",
+		})
 
-		return {
-			id: attack.sys.id,
-			name: attack.fields.name,
-			range: attack.fields.range,
-			description: attack.fields.description,
-		}
-	}).pipe(
-		Effect.withLogSpan("create_zombie_attack_dto"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(error => Effect.dieMessage(error.message)),
-	)
+	return {
+		id: attack.sys.id,
+		name: attack.fields.name,
+		range: attack.fields.range,
+		description: attack.fields.description,
+	}
+}

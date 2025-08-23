@@ -13,6 +13,7 @@ export type ZombieItem =
 	| Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 	| Entry<TypePerksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 	| Entry<TypeWeaponBuildsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
+	| Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 export interface TypeAmmoModsFields {
 	title: EntryFieldTypes.Symbol
 	slug: EntryFieldTypes.Symbol
