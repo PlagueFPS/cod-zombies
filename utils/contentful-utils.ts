@@ -200,6 +200,7 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 		return {
 			_tag: "GOBBLEGUM" as const,
 			id: item.sys.id,
+			slug: item.fields.slug,
 			title: item.fields.title,
 			image: createImageDto(itemImage),
 			description: item.fields.description,
@@ -213,6 +214,7 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 		return {
 			_tag: "WEAPON_BUILD" as const,
 			id: item.sys.id,
+			slug: item.fields.slug,
 			title: weapon.title,
 			image: createImageDto(itemImage),
 			attachments: item.fields.attachments,
@@ -220,21 +222,39 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 	}
 
 	if (isZombie(item)) {
+		const weaknesses =
+			item.fields.elementalWeakness
+				?.map(weakness => {
+					if (!weakness) return null
+					return {
+						_tag: "OTHER" as const,
+						id: weakness.sys.id,
+						slug: weakness.fields.slug,
+						title: weakness.fields.title,
+						image: createImageDto(weakness.fields.image),
+						description: weakness.fields.description,
+					}
+				})
+				.filter(weakness => weakness !== null) ?? []
+
 		return {
 			_tag: "ZOMBIE" as const,
 			id: item.sys.id,
+			slug: item.fields.slug,
 			title: item.fields.name,
 			image: createImageDto(itemImage),
 			type: item.fields.type,
 			game: createMapCategoryDto(item.fields.games[0]),
 			map: createQuestMapDto(item.fields.maps[0]),
-			elementalWeaknesses: item.fields.elementalWeakness,
+			elementalWeaknesses: weaknesses,
+			weakPoints: item.fields.weakPoints,
 		}
 	}
 
 	return {
 		_tag: "OTHER" as const,
 		id: item.sys.id,
+		slug: item.fields.slug,
 		title: item.fields.title,
 		image: createImageDto(itemImage),
 		description: item.fields.description,
