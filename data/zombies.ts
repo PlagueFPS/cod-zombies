@@ -109,7 +109,7 @@ export const getZombieBySlug = cache(
 				if (!zombie) return null
 
 				const zombieIds = yield* getZombieIds
-				const zombieData = resolveZombieData(zombie, zombieIds)
+				const zombieData = yield* resolveZombieData(zombie, zombieIds)
 
 				return {
 					...zombieData,
