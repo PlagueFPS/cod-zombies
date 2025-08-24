@@ -13,6 +13,7 @@ import {
 	createMapCategoryDto,
 	resolveAsset,
 	resolveEntry,
+	safeStringifyRichText,
 } from "@/utils/contentful-utils"
 import { DataLayer } from "./utils"
 
@@ -105,7 +106,7 @@ export const getMapBySlug = cache(
 					updatedAt: map.sys.updatedAt,
 					title: map.fields.title,
 					description: map.fields.description,
-					body: map.fields.body,
+					body: safeStringifyRichText(map.fields.body),
 					isComingSoon: map.fields.isComingSoon ?? false,
 					difficulty: map.fields.difficulty,
 				}

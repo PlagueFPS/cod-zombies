@@ -37,6 +37,26 @@ export const resolveEntry = <T extends EntrySkeletonType>(
 }
 
 /**
+ * Safely handles circular referneces within contentful rich text.
+ * @param value The value to stringify
+ * @returns The modified value with circular references removed
+ */
+export const safeStringifyRichText = <T>(value: T): T => {
+	const seen = new WeakSet()
+	return JSON.parse(
+		JSON.stringify(value, (_key, value) => {
+			if (typeof value === "object" && value !== null) {
+				if (seen.has(value) && value.nodeType === "document") {
+					return "[Circular]"
+				}
+				seen.add(value)
+			}
+			return value
+		}),
+	)
+}
+
+/**
  * Extract headings from a Contentful document.
  * @param body The Contentful document
  * @returns An array of headings extracted from the document.
