@@ -12,6 +12,8 @@ import {
 	createImageDto,
 	createMapCategoryDto,
 	createQuestMapDto,
+	resolveAsset,
+	resolveEntry,
 } from "@/utils/contentful-utils"
 import { DataLayer } from "./utils"
 
@@ -65,8 +67,8 @@ export const getQuestSearchData = cache(
 					id: quest.sys.id,
 					title: quest.fields.title,
 					slug: quest.fields.slug,
-					game: createMapCategoryDto(quest.fields.game),
-					map: createQuestMapDto(quest.fields.map),
+					game: createMapCategoryDto(resolveEntry(quest.fields.game)),
+					map: createQuestMapDto(resolveEntry(quest.fields.map)),
 				}))
 			}).pipe(
 				Effect.withLogSpan("get_quest_search_data"),
@@ -94,8 +96,8 @@ export const getQuestById = cache(
 					return null
 				}
 
-				const map = createQuestMapDto(quest.fields.map)
-				const game = createMapCategoryDto(quest.fields.game)
+				const map = createQuestMapDto(resolveEntry(quest.fields.map))
+				const game = createMapCategoryDto(resolveEntry(quest.fields.game))
 				const timeToRead = calculateTimeToRead(quest.fields.content)
 
 				return {
@@ -104,7 +106,7 @@ export const getQuestById = cache(
 					slug: quest.fields.slug,
 					title: quest.fields.title,
 					description: quest.fields.description,
-					image: createImageDto(quest.fields.image),
+					image: createImageDto(resolveAsset(quest.fields.image)),
 					isComingSoon: quest.fields.isComingSoon ?? false,
 					map: map.slug,
 					game: game.slug,
@@ -175,23 +177,23 @@ export const getSideQuest = Effect.fnUntraced(function* (id: string) {
 			slug: quest.fields.slug,
 			title: quest.fields.title,
 			description: quest.fields.description,
-			image: createImageDto(quest.fields.image),
+			image: createImageDto(resolveAsset(quest.fields.image)),
 			isComingSoon: quest.fields.isComingSoon ?? false,
-			map: createQuestMapDto(quest.fields.map).slug,
-			game: createMapCategoryDto(quest.fields.game).slug,
+			map: createQuestMapDto(resolveEntry(quest.fields.map)).slug,
+			game: createMapCategoryDto(resolveEntry(quest.fields.game)).slug,
 			timeToRead: calculateTimeToRead(quest.fields.content),
 		})),
 	)
 }, Effect.withLogSpan("get_side_quest"))
 
 const resolveQuestData = (
-	quest: Entry<TypeSideQuestsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
+	quest: Entry<TypeSideQuestsSkeleton, undefined, string>,
 	questIds: Effect.Effect.Success<typeof getQuestIds>,
 ) => {
 	const { changedIds, draftIds, newIds } = questIds
-	const map = createQuestMapDto(quest.fields.map)
-	const category = createMapCategoryDto(quest.fields.game)
-	const image = createImageDto(quest.fields.image)
+	const map = createQuestMapDto(resolveEntry(quest.fields.map))
+	const category = createMapCategoryDto(resolveEntry(quest.fields.game))
+	const image = createImageDto(resolveAsset(quest.fields.image))
 	const isDraft = draftIds.has(quest.sys.id)
 	const isChanged = changedIds.has(quest.sys.id)
 	const isNew = newIds.has(quest.sys.id)
@@ -261,7 +263,7 @@ const INTERNAL_getSideQuestData = cache(() =>
 		})
 
 		const byMapDate = Order.mapInput(Order.Date, (quest: (typeof quests.items)[number]) => {
-			const map = quest.fields.map
+			const map = resolveEntry(quest.fields.map)
 
 			return new Date(map?.fields.releaseDate ?? quest.sys.createdAt)
 		})

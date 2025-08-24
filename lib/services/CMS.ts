@@ -28,7 +28,7 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 
 		const getEntry = <T extends EntrySkeletonType>(id: string) =>
 			Effect.tryPromise({
-				try: () => client.withoutUnresolvableLinks.getEntry<T>(id, { include: 2 }),
+				try: () => client.getEntry<T>(id, { include: 1 }),
 				catch: error =>
 					new EntryNotFoundError({
 						message: `Failed to get entry with id: ${id}`,
@@ -39,10 +39,10 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 		const getEntries = <T extends EntrySkeletonType>(searchParams: EntriesQueries<T, undefined>) =>
 			Effect.tryPromise({
 				try: () =>
-					client.withoutUnresolvableLinks.getEntries<T>({
+					client.getEntries<T>({
 						...searchParams,
 						limit: 200,
-						include: 3,
+						include: 1,
 					}),
 				catch: error =>
 					new GetEntriesError({

@@ -1,5 +1,5 @@
 import type { Document } from "@contentful/rich-text-types"
-import type { Asset, Entry } from "contentful"
+import type { Asset, Entry, EntrySkeletonType, UnresolvedLink } from "contentful"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
 import type { FeaturedMap, MinifiedFeaturedMap } from "@/data/maps"
 import type { MinifiedSideQuest, SideQuest } from "@/data/side-quests"
@@ -17,6 +17,7 @@ import type {
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer"
 import { Predicate } from "effect"
 import { youtube_url } from "@/components/rich-text/rich-link/rich-link"
+import { getWeapon } from "@/data/weapons"
 import {
 	MapCategoryNotFoundError,
 	QuestMapNotFoundError,
@@ -24,6 +25,16 @@ import {
 } from "@/types/errors"
 import { slugify } from "./functions.client"
 import { decodeRichLinkNode } from "./validation-schemas"
+
+export const resolveAsset = (asset: UnresolvedLink<"Asset"> | Asset<undefined, string>) => {
+	if ("fields" in asset && asset.fields) return asset
+}
+
+export const resolveEntry = <T extends EntrySkeletonType>(
+	entry: UnresolvedLink<"Entry"> | Entry<T, undefined, string>,
+) => {
+	if ("fields" in entry && entry.fields) return entry
+}
 
 /**
  * Extract headings from a Contentful document.
@@ -162,7 +173,7 @@ export const isSideQuest = (
  */
 export const isWeaponBuild = (
 	item: ZombieItem,
-): item is Entry<TypeWeaponBuildsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
+): item is Entry<TypeWeaponBuildsSkeleton, undefined, string> => {
 	return item.sys.contentType.sys.id === "weaponBuilds"
 }
 
@@ -173,7 +184,7 @@ export const isWeaponBuild = (
  */
 export const isGobbleGum = (
 	item: ZombieItem,
-): item is Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
+): item is Entry<TypeGobblegumsSkeleton, undefined, string> => {
 	return item.sys.contentType.sys.id === "gobblegums"
 }
 
@@ -184,7 +195,7 @@ export const isGobbleGum = (
  */
 export const isZombie = (
 	item: ZombieItem,
-): item is Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> => {
+): item is Entry<TypeZombiesSkeleton, undefined, string> => {
 	return item.sys.contentType.sys.id === "zombies"
 }
 
@@ -193,8 +204,10 @@ export const isZombie = (
  * @param item The zombie item to create a DTO for
  * @returns The DTO for the zombie item
  */
-export const createItemTooltipDto = (item: ZombieItem) => {
-	const itemImage = Predicate.hasProperty(item.fields, "image") ? item.fields.image : undefined
+export const createItemTooltipDto = async (item: ZombieItem) => {
+	const itemImage = Predicate.hasProperty(item.fields, "image")
+		? resolveAsset(item.fields.image)
+		: undefined
 
 	if (isGobbleGum(item)) {
 		return {
@@ -210,7 +223,7 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 	}
 
 	if (isWeaponBuild(item)) {
-		const weapon = createWeaponDto(item.fields.weapon)
+		const weapon = await createWeaponDto(resolveEntry(item.fields.weapon))
 		return {
 			_tag: "WEAPON_BUILD" as const,
 			id: item.sys.id,
@@ -225,14 +238,15 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 		const weaknesses =
 			item.fields.elementalWeakness
 				?.map(weakness => {
-					if (!weakness) return null
+					const resolvedWeakness = resolveEntry(weakness)
+					if (!resolvedWeakness) return null
 					return {
 						_tag: "OTHER" as const,
-						id: weakness.sys.id,
-						slug: weakness.fields.slug,
-						title: weakness.fields.title,
-						image: createImageDto(weakness.fields.image),
-						description: weakness.fields.description,
+						id: resolvedWeakness.sys.id,
+						slug: resolvedWeakness.fields.slug,
+						title: resolvedWeakness.fields.title,
+						image: createImageDto(resolveAsset(resolvedWeakness.fields.image)),
+						description: resolvedWeakness.fields.description,
 					}
 				})
 				.filter(weakness => weakness !== null) ?? []
@@ -244,8 +258,6 @@ export const createItemTooltipDto = (item: ZombieItem) => {
 			title: item.fields.name,
 			image: createImageDto(itemImage),
 			type: item.fields.type,
-			game: createMapCategoryDto(item.fields.games[0]),
-			map: createQuestMapDto(item.fields.maps[0]),
 			elementalWeaknesses: weaknesses,
 			weakPoints: item.fields.weakPoints,
 		}
@@ -279,13 +291,17 @@ export const createImageDto = (image: Asset<undefined, string> | undefined) => {
  * @param weapon The weapon to create a DTO for
  * @returns The DTO for the weapon
  */
-export const createWeaponDto = (
-	weapon: Entry<TypeWeaponSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
+export const createWeaponDto = async (
+	weapon: Entry<TypeWeaponSkeleton, undefined, string> | undefined,
 ) => {
 	if (!weapon)
 		throw new Error(
 			"Expected weapon. It is either missing or depth is not high enough to populate.",
 		)
+
+	if (!weapon.fields) {
+		return await getWeapon(weapon.sys.id)
+	}
 
 	return {
 		id: weapon.sys.id,
@@ -300,7 +316,7 @@ export const createWeaponDto = (
  * @returns The DTO for the map category
  */
 export const createMapCategoryDto = (
-	category: Entry<TypeGameCategorySkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
+	category: Entry<TypeGameCategorySkeleton, undefined, string> | undefined,
 ) => {
 	if (!category)
 		throw new MapCategoryNotFoundError({
@@ -319,7 +335,7 @@ export const createMapCategoryDto = (
  * @returns The DTO for the quest map
  */
 export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFeaturedMapsSkeleton>(
-	map: Entry<T, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
+	map: Entry<T, undefined, string> | undefined,
 ) => {
 	if (!map)
 		throw new QuestMapNotFoundError({
@@ -338,7 +354,7 @@ export const createQuestMapDto = <T extends TypeReferencedMapsSkeleton | TypeFea
  * @returns The DTO for the zombie attack
  */
 export const createZombieAttackDto = (
-	attack: Entry<TypeZombieAttacksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string> | undefined,
+	attack: Entry<TypeZombieAttacksSkeleton, undefined, string> | undefined,
 ) => {
 	if (!attack)
 		throw new ZombieAttackNotFoundError({

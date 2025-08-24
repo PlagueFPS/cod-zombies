@@ -8,12 +8,12 @@ import type {
 
 export type Date = `${number}-${number}-${number}T${number}:${number}:${number}Z`
 export type ZombieItem =
-	| Entry<TypeAmmoModsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-	| Entry<TypeFieldUpgradesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-	| Entry<TypeGobblegumsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-	| Entry<TypePerksSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-	| Entry<TypeWeaponBuildsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-	| Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
+	| Entry<TypeAmmoModsSkeleton, undefined, string>
+	| Entry<TypeFieldUpgradesSkeleton, undefined, string>
+	| Entry<TypeGobblegumsSkeleton, undefined, string>
+	| Entry<TypePerksSkeleton, undefined, string>
+	| Entry<TypeWeaponBuildsSkeleton, undefined, string>
+	| Entry<TypeZombiesSkeleton, undefined, string>
 export interface TypeAmmoModsFields {
 	title: EntryFieldTypes.Symbol
 	slug: EntryFieldTypes.Symbol

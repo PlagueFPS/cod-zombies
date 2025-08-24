@@ -49,6 +49,10 @@ export const CACHE_KEYS = {
 		/** Cache key for all legal data */
 		all: "legal",
 	},
+	weapons: {
+		/** Cache key for all weapon data */
+		all: "weapons",
+	},
 } as const
 export const ROUTES = [
 	{

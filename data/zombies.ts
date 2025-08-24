@@ -13,6 +13,8 @@ import {
 	createMapCategoryDto,
 	createQuestMapDto,
 	createZombieAttackDto,
+	resolveAsset,
+	resolveEntry,
 } from "@/utils/contentful-utils"
 import { DataLayer } from "./utils"
 
@@ -29,19 +31,24 @@ export const getZombies = cache(
 					concurrency: "unbounded",
 				})
 
-				return zombies.map(zombie => {
-					const { elementalWeakness, attacks, ...zombieData } = resolveZombieData(zombie, zombieIds)
-					return {
-						...zombieData,
-						id: zombie.sys.id,
-						name: zombie.fields.name,
-						slug: zombie.fields.slug,
-						description: zombie.fields.description,
-						type: zombie.fields.type,
-						updatedAt: zombie.sys.updatedAt,
-						isComingSoon: zombie.fields.isComingSoon ?? false,
-					}
-				})
+				return yield* Effect.forEach(zombies, zombie =>
+					Effect.gen(function* () {
+						const { elementalWeakness, attacks, ...zombieData } = yield* resolveZombieData(
+							zombie,
+							zombieIds,
+						)
+						return {
+							...zombieData,
+							id: zombie.sys.id,
+							name: zombie.fields.name,
+							slug: zombie.fields.slug,
+							description: zombie.fields.description,
+							type: zombie.fields.type,
+							updatedAt: zombie.sys.updatedAt,
+							isComingSoon: zombie.fields.isComingSoon ?? false,
+						}
+					}),
+				)
 			}).pipe(
 				Effect.withLogSpan("get_zombies"),
 				Effect.ensureErrorType<never>(),
@@ -65,17 +72,19 @@ export const getZombieSearchData = cache(
 				})
 				const currentZombies = zombies.filter(z => !z.fields.isComingSoon)
 
-				return currentZombies.map(zombie => {
-					const { games, maps } = resolveZombieData(zombie, zombieIds)
-					return {
-						id: zombie.sys.id,
-						name: zombie.fields.name,
-						slug: zombie.fields.slug,
-						type: zombie.fields.type,
-						games,
-						maps,
-					}
-				})
+				return yield* Effect.forEach(currentZombies, zombie =>
+					Effect.gen(function* () {
+						const { games, maps } = yield* resolveZombieData(zombie, zombieIds)
+						return {
+							id: zombie.sys.id,
+							name: zombie.fields.name,
+							slug: zombie.fields.slug,
+							type: zombie.fields.type,
+							games,
+							maps,
+						}
+					}),
+				)
 			}).pipe(
 				Effect.withLogSpan("get_zombie_search_data"),
 				Effect.ensureErrorType<never>(),
@@ -136,9 +145,11 @@ export const getZombieById = cache(
 		async (id: string) => {
 			return await Effect.gen(function* () {
 				const zombies = yield* INTERNAL_getZombies()
-
 				const zombie = zombies.find(z => z.sys.id === id)
 				if (!zombie) return null
+
+				const game = zombie.fields.games.map(game => resolveEntry(game))[0]
+				const map = zombie.fields.maps.map(map => resolveEntry(map))[0]
 
 				return {
 					id: zombie.sys.id,
@@ -147,10 +158,10 @@ export const getZombieById = cache(
 					slug: zombie.fields.slug,
 					type: zombie.fields.type,
 					description: zombie.fields.description,
-					image: createImageDto(zombie.fields.image),
+					image: createImageDto(resolveAsset(zombie.fields.image)),
 					isComingSoon: zombie.fields.isComingSoon ?? false,
-					game: createMapCategoryDto(zombie.fields.games[0]).title,
-					map: createQuestMapDto(zombie.fields.maps[0]).title,
+					game: createMapCategoryDto(game).title,
+					map: createQuestMapDto(map).title,
 				}
 			}).pipe(
 				Effect.withLogSpan("get_zombie_by_id"),
@@ -194,53 +205,61 @@ export const getReferencedMaps = cache(
 export const getZombie = Effect.fnUntraced(function* (id: string) {
 	const { getEntry } = yield* CMS
 	return yield* getEntry<TypeZombiesSkeleton>(id).pipe(
-		Effect.map(zombie => ({
-			id: zombie.sys.id,
-			updatedAt: zombie.sys.updatedAt,
-			title: zombie.fields.name,
-			slug: zombie.fields.slug,
-			type: zombie.fields.type,
-			description: zombie.fields.description,
-			image: createImageDto(zombie.fields.image),
-			isComingSoon: zombie.fields.isComingSoon ?? false,
-			game: createMapCategoryDto(zombie.fields.games[0]).title,
-			map: createQuestMapDto(zombie.fields.maps[0]).title,
-		})),
+		Effect.map(zombie => {
+			const game = zombie.fields.games.map(game => resolveEntry(game))[0]
+			const map = zombie.fields.maps.map(map => resolveEntry(map))[0]
+
+			return {
+				id: zombie.sys.id,
+				updatedAt: zombie.sys.updatedAt,
+				title: zombie.fields.name,
+				slug: zombie.fields.slug,
+				type: zombie.fields.type,
+				description: zombie.fields.description,
+				image: createImageDto(resolveAsset(zombie.fields.image)),
+				isComingSoon: zombie.fields.isComingSoon ?? false,
+				game: createMapCategoryDto(game).title,
+				map: createQuestMapDto(map).title,
+			}
+		}),
 	)
 })
 
 const resolveZombieData = (
-	zombie: Entry<TypeZombiesSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
+	zombie: Entry<TypeZombiesSkeleton, undefined, string>,
 	zombieIds: Effect.Effect.Success<typeof getZombieIds>,
-) => {
-	const { changedIds, draftIds, newIds } = zombieIds
-	const games = zombie.fields.games.map(game => createMapCategoryDto(game))
-	const maps = zombie.fields.maps.map(map => createQuestMapDto(map))
-	const attacks = zombie.fields.attacks.map(attack => createZombieAttackDto(attack))
-	const image = createImageDto(zombie.fields.image)
-	const elementalWeakness =
-		zombie.fields.elementalWeakness
-			?.map(weakness => {
-				if (!weakness) return null
-				return createItemTooltipDto(weakness)
-			})
-			.filter(weakness => weakness !== null) ?? []
+) =>
+	Effect.gen(function* () {
+		const { changedIds, draftIds, newIds } = zombieIds
+		const games = zombie.fields.games.map(game => createMapCategoryDto(resolveEntry(game)))
+		const maps = zombie.fields.maps.map(map => createQuestMapDto(resolveEntry(map)))
+		const attacks = zombie.fields.attacks.map(attack => createZombieAttackDto(resolveEntry(attack)))
+		const image = createImageDto(resolveAsset(zombie.fields.image))
+		const elementalWeakness = zombie.fields.elementalWeakness
+			? yield* Effect.forEach(zombie.fields.elementalWeakness, weakness =>
+					Effect.gen(function* () {
+						const resolvedWeakness = resolveEntry(weakness)
+						if (!resolvedWeakness) return null
+						return yield* Effect.promise(() => createItemTooltipDto(resolvedWeakness))
+					}),
+				)
+			: []
 
-	const isDraft = draftIds.has(zombie.sys.id)
-	const isChanged = changedIds.has(zombie.sys.id)
-	const isNew = newIds.has(zombie.sys.id)
+		const isDraft = draftIds.has(zombie.sys.id)
+		const isChanged = changedIds.has(zombie.sys.id)
+		const isNew = newIds.has(zombie.sys.id)
 
-	return {
-		image,
-		games,
-		maps,
-		attacks,
-		elementalWeakness,
-		isDraft,
-		isChanged,
-		isNew,
-	}
-}
+		return {
+			image,
+			games,
+			maps,
+			attacks,
+			elementalWeakness: elementalWeakness.filter(weakness => weakness !== null),
+			isDraft,
+			isChanged,
+			isNew,
+		}
+	})
 
 const getZombieIds = Effect.gen(function* () {
 	const [zombies, newEntries] = yield* Effect.all(

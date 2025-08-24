@@ -7,7 +7,13 @@ import { cache } from "react"
 import { getNewEntries } from "@/lib/redis"
 import { CMS } from "@/lib/services/CMS"
 import { CACHE_KEYS } from "@/utils/constants"
-import { calculateTimeToRead, createImageDto, createMapCategoryDto } from "@/utils/contentful-utils"
+import {
+	calculateTimeToRead,
+	createImageDto,
+	createMapCategoryDto,
+	resolveAsset,
+	resolveEntry,
+} from "@/utils/contentful-utils"
 import { DataLayer } from "./utils"
 
 export type FeaturedMap = NonNullable<Awaited<ReturnType<typeof getMapBySlug>>>
@@ -61,7 +67,7 @@ export const getMapSearchData = cache(
 					id: map.sys.id,
 					title: map.fields.title,
 					slug: map.fields.slug,
-					game: createMapCategoryDto(map.fields.gameCategory),
+					game: createMapCategoryDto(resolveEntry(map.fields.gameCategory)),
 				}))
 			}).pipe(
 				Effect.withLogSpan("get_map_search_data"),
@@ -130,7 +136,7 @@ export const getMapById = cache(
 					return null
 				}
 
-				const game = createMapCategoryDto(map.fields.gameCategory)
+				const game = createMapCategoryDto(resolveEntry(map.fields.gameCategory))
 				const timeToRead = calculateTimeToRead(map.fields.body)
 
 				return {
@@ -140,7 +146,7 @@ export const getMapById = cache(
 					title: map.fields.title,
 					description: map.fields.description,
 					isComingSoon: map.fields.isComingSoon ?? false,
-					image: createImageDto(map.fields.image),
+					image: createImageDto(resolveAsset(map.fields.image)),
 					game: game.slug,
 					difficulty: map.fields.difficulty,
 					timeToRead,
@@ -170,8 +176,8 @@ export const getMap = Effect.fnUntraced(function* (id: string) {
 			title: map.fields.title,
 			description: map.fields.description,
 			isComingSoon: map.fields.isComingSoon ?? false,
-			image: createImageDto(map.fields.image),
-			game: createMapCategoryDto(map.fields.gameCategory).slug,
+			image: createImageDto(resolveAsset(map.fields.image)),
+			game: createMapCategoryDto(resolveEntry(map.fields.gameCategory)).slug,
 			difficulty: map.fields.difficulty,
 			timeToRead: calculateTimeToRead(map.fields.body),
 		})),
@@ -204,12 +210,12 @@ const getMapIds = Effect.gen(function* () {
 }).pipe(Effect.withLogSpan("get_map_ids"))
 
 const resolveMapData = (
-	map: Entry<TypeFeaturedMapsSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>,
+	map: Entry<TypeFeaturedMapsSkeleton, undefined, string>,
 	mapIds: Effect.Effect.Success<typeof getMapIds>,
 ) => {
 	const { draftIds, changedIds, newIds } = mapIds
-	const image = createImageDto(map.fields.image)
-	const game = createMapCategoryDto(map.fields.gameCategory)
+	const image = createImageDto(resolveAsset(map.fields.image))
+	const game = createMapCategoryDto(resolveEntry(map.fields.gameCategory))
 	const isDraft = draftIds.has(map.sys.id)
 	const isChanged = changedIds.has(map.sys.id)
 	const isNew = newIds.has(map.sys.id)

@@ -11,7 +11,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
 interface ItemTooltipProps {
-	item: ReturnType<typeof createItemTooltipDto>
+	item: Awaited<ReturnType<typeof createItemTooltipDto>>
 	className?: string
 }
 
