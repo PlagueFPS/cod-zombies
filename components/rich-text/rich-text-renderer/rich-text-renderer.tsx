@@ -1,5 +1,7 @@
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { BLOCKS, type Document, INLINES } from "@contentful/rich-text-types"
+import { Suspense } from "react"
+import ItemTooltipLoader from "@/components/loaders/item-tooltip-loader"
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { cn } from "@/lib/utils"
 import { createItemTooltipDto } from "@/utils/contentful-utils"
@@ -37,10 +39,9 @@ export default function RichTextRenderer({
 			},
 			[INLINES.EMBEDDED_ENTRY]: (node: any) => {
 				return (
-					<ItemTooltip
-						item={createItemTooltipDto(node.data.target)}
-						className="items-baseline gap-1.5 align-baseline font-bold"
-					/>
+					<Suspense fallback={<ItemTooltipLoader />}>
+						<ItemTooltipWrapper node={node} />
+					</Suspense>
 				)
 			},
 			[BLOCKS.EMBEDDED_ASSET]: (node: any) => {
@@ -117,4 +118,9 @@ export default function RichTextRenderer({
 			{documentToReactComponents(body, renderOptions)}
 		</div>
 	)
+}
+
+async function ItemTooltipWrapper({ node }: { node: any }) {
+	const item = await createItemTooltipDto(node.data.target)
+	return <ItemTooltip item={item} className="items-baseline gap-1.5 align-baseline font-bold" />
 }

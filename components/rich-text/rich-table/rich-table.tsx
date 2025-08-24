@@ -1,3 +1,5 @@
+import { Suspense } from "react"
+import RichTableCellLoader from "@/components/loaders/rich-table-cell-loader"
 import {
 	Table,
 	TableBody,
@@ -40,33 +42,42 @@ export default function RichTable({ headings, bodyRows }: RichTableProps) {
 								"bg-orange-50 dark:bg-background": index % 2 === 0,
 							})}
 						>
-							{Array.isArray(row) &&
-								row.map((cell: any, cellIndex: number) => {
-									const { values, embeddedItems } = formatTableCellData(cell.content[0].content)
-
-									return (
-										<TableCell
-											key={`table-cell-${cellIndex + 1}`}
-											className="text-orange-800 dark:text-orange-200"
-										>
-											{values.map(value => {
-												if (value) return value
-												return null
-											})}
-											{embeddedItems.length > 0 && (
-												<span className="inline-flex flex-col items-start gap-2">
-													{embeddedItems.map((item, index) => (
-														<ItemTooltip key={`${item.title}-${index}`} item={item} />
-													))}
-												</span>
-											)}
-										</TableCell>
-									)
-								})}
+							{Array.isArray(row) && (
+								<Suspense fallback={<RichTableCellLoader rowAmount={row.length} />}>
+									<RichTableCells row={row} />
+								</Suspense>
+							)}
 						</TableRow>
 					))}
 				</TableBody>
 			</Table>
 		</div>
+	)
+}
+
+async function RichTableCells({ row }: { row: any[] }) {
+	return await Promise.all(
+		row.map(async (cell: any, cellIndex: number) => {
+			const { values, embeddedItems } = await formatTableCellData(cell.content[0].content)
+
+			return (
+				<TableCell
+					key={`table-cell-${cellIndex + 1}`}
+					className="text-orange-800 dark:text-orange-200"
+				>
+					{values.map(value => {
+						if (value) return value
+						return null
+					})}
+					{embeddedItems.length > 0 && (
+						<span className="inline-flex flex-col items-start gap-2">
+							{embeddedItems.map((item, index) => (
+								<ItemTooltip key={`${item.title}-${index}`} item={item} />
+							))}
+						</span>
+					)}
+				</TableCell>
+			)
+		}),
 	)
 }

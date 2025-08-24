@@ -28,7 +28,7 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 
 		const getEntry = <T extends EntrySkeletonType>(id: string) =>
 			Effect.tryPromise({
-				try: () => client.getEntry<T>(id, { include: 1 }),
+				try: () => client.getEntry<T>(id),
 				catch: error =>
 					new EntryNotFoundError({
 						message: `Failed to get entry with id: ${id}`,
@@ -42,7 +42,6 @@ export class CMS extends Effect.Service<CMS>()("CMS", {
 					client.getEntries<T>({
 						...searchParams,
 						limit: 200,
-						include: 1,
 					}),
 				catch: error =>
 					new GetEntriesError({

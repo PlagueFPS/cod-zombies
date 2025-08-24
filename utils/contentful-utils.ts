@@ -93,7 +93,7 @@ export const calculateTimeToRead = (body: Document) => {
  * @param cellContent The content of the table cell
  * @returns An object containing the values, embedded items, and badge items.
  */
-export const formatTableCellData = (cellContent: unknown[]) => {
+export const formatTableCellData = async (cellContent: unknown[]) => {
 	const values: string[] = []
 	const embeddedItems: ZombieItem[] = []
 
@@ -120,7 +120,9 @@ export const formatTableCellData = (cellContent: unknown[]) => {
 
 	return {
 		values,
-		embeddedItems: embeddedItems.map(item => createItemTooltipDto(item)),
+		embeddedItems: await Promise.all(
+			embeddedItems.map(async item => await createItemTooltipDto(item)),
+		),
 	}
 }
 
@@ -223,7 +225,7 @@ export const createItemTooltipDto = async (item: ZombieItem) => {
 	}
 
 	if (isWeaponBuild(item)) {
-		const weapon = await createWeaponDto(resolveEntry(item.fields.weapon))
+		const weapon = await createWeaponDto(item.fields.weapon)
 		return {
 			_tag: "WEAPON_BUILD" as const,
 			id: item.sys.id,
@@ -292,14 +294,14 @@ export const createImageDto = (image: Asset<undefined, string> | undefined) => {
  * @returns The DTO for the weapon
  */
 export const createWeaponDto = async (
-	weapon: Entry<TypeWeaponSkeleton, undefined, string> | undefined,
+	weapon: UnresolvedLink<"Entry"> | Entry<TypeWeaponSkeleton, undefined, string>,
 ) => {
 	if (!weapon)
 		throw new Error(
 			"Expected weapon. It is either missing or depth is not high enough to populate.",
 		)
 
-	if (!weapon.fields) {
+	if ("fields" in weapon === false) {
 		return await getWeapon(weapon.sys.id)
 	}
 

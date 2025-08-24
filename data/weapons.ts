@@ -16,7 +16,12 @@ export const getWeapon = cache(
 					title: weapon.fields.title,
 					slug: weapon.fields.slug,
 				}
-			}).pipe(Effect.withLogSpan("get_weapon"), Effect.provide(CMS.Default), Effect.runPromise)
+			}).pipe(
+				Effect.withLogSpan("get_weapon"),
+				Effect.annotateLogs({ id }),
+				Effect.provide(CMS.Default),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{
