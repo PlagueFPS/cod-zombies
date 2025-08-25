@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload"
 
-export const media: CollectionConfig = {
+export const Media: CollectionConfig = {
 	slug: "media",
 	defaultPopulate: {
 		title: true,

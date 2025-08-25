@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload"
 
-export const gobblegum: CollectionConfig = {
+export const Gobblegum: CollectionConfig = {
 	slug: "gobblegum",
 	admin: {
 		useAsTitle: "title",

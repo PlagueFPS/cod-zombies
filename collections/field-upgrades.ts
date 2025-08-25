@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload"
 
-export const fieldUpgrades: CollectionConfig = {
-	slug: "field-upgrades",
+export const FieldUpgrades: CollectionConfig = {
+	slug: "fieldUpgrades",
 	admin: {
 		useAsTitle: "title",
 	},

@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload"
 
-export const perks: CollectionConfig = {
+export const Perks: CollectionConfig = {
 	slug: "perks",
 	admin: {
 		useAsTitle: "title",

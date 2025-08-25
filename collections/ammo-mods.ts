@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload"
 
-export const ammoMods: CollectionConfig = {
-	slug: "ammo-mods",
+export const AmmoMods: CollectionConfig = {
+	slug: "ammoMods",
 	admin: {
 		useAsTitle: "title",
 	},

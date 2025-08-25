@@ -15,11 +15,12 @@
     "scan": "next dev --turbopack & pnpx react-scan@latest localhost:3000",
     "upload:images": "tsx --env-file=./.env.local upload-assets.local",
     "optimize:images": "tsx optimize-assets.local",
-    "payload": "cross-env PAYLOAD_CONFIG_PATH=payload.config.ts payload"
+    "payload:types": "payload generate:types"
   },
   "dependencies": {
     "@effect/platform": "^0.90.3",
     "@hookform/resolvers": "5.0.1",
+    "@libsql/client": "^0.14.0",
     "@linear/sdk": "^52.0.0",
     "@next/third-parties": "15.5.0",
     "@payloadcms/db-sqlite": "^3.53.0",
@@ -68,6 +69,7 @@
     "react-share": "5.1.1",
     "resend": "^4.6.0",
     "server-only": "0.0.1",
+    "sharp": "^0.34.3",
     "sonner": "1.7.1"
   },
   "devDependencies": {
@@ -83,7 +85,6 @@
     "@types/react-dom": "19.1.2",
     "postcss": "^8.5.6",
     "react-email": "4.2.5",
-    "sharp": "^0.34.3",
     "tailwind-merge": "3.2.0",
     "tailwindcss": "4.1.4",
     "tsx": "4.19.2",

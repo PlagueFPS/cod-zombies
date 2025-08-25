@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload"
 
-export const zombieAttacks: CollectionConfig = {
-	slug: "zombie-attacks",
+export const ZombieAttacks: CollectionConfig = {
+	slug: "zombieAttacks",
 	admin: {
 		useAsTitle: "title",
 	},

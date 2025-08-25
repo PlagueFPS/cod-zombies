@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload"
 
-export const zombies: CollectionConfig = {
+export const Zombies: CollectionConfig = {
 	slug: "zombies",
 	admin: {
 		useAsTitle: "title",
@@ -105,7 +105,7 @@ export const zombies: CollectionConfig = {
 			name: "elementalWeakness",
 			label: "Elemental Weakness",
 			type: "relationship",
-			relationTo: "ammo-mods",
+			relationTo: "ammoMods",
 			hasMany: true,
 		},
 		{
