@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "ci": "payload migrate && pnpm build",
     "start": "next start",
     "typegen": "next typegen",
     "lint": "biome lint .",
@@ -13,7 +14,8 @@
     "email": "email dev",
     "scan": "next dev --turbopack & pnpx react-scan@latest localhost:3000",
     "upload:images": "tsx --env-file=./.env.local upload-assets.local",
-    "optimize:images": "tsx optimize-assets.local"
+    "optimize:images": "tsx optimize-assets.local",
+    "payload": "cross-env PAYLOAD_CONFIG_PATH=payload.config.ts payload"
   },
   "dependencies": {
     "@effect/platform": "^0.90.3",
