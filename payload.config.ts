@@ -43,6 +43,7 @@ export default buildConfig({
 		},
 		migrationDir: "./data/db/migrations",
 		generateSchemaOutputFile: "./data/db/payload-generated.schema.ts",
+		idType: "uuid",
 	}),
 	collections: [
 		Users,

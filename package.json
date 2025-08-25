@@ -15,6 +15,7 @@
     "scan": "next dev --turbopack & pnpx react-scan@latest localhost:3000",
     "upload:images": "tsx --env-file=./.env.local upload-assets.local",
     "optimize:images": "tsx optimize-assets.local",
+    "payload": "payload",
     "payload:types": "payload generate:types"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "@payloadcms/db-sqlite": "^3.53.0",
     "@payloadcms/next": "^3.53.0",
     "@payloadcms/richtext-lexical": "^3.53.0",
+    "@payloadcms/ui": "^3.53.0",
     "@radix-ui/react-checkbox": "^1.3.2",
     "@radix-ui/react-collapsible": "^1.1.11",
     "@radix-ui/react-dialog": "1.1.3",

@@ -114,7 +114,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   globals: {};
   globalsSelect: {};
@@ -150,7 +150,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -174,10 +174,10 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  folder?: (number | null) | FolderInterface;
+  folder?: (string | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -195,18 +195,18 @@ export interface Media {
  * via the `definition` "payload-folders".
  */
 export interface FolderInterface {
-  id: number;
+  id: string;
   name: string;
-  folder?: (number | null) | FolderInterface;
+  folder?: (string | null) | FolderInterface;
   documentsAndFolders?: {
     docs?: (
       | {
           relationTo?: 'payload-folders';
-          value: number | FolderInterface;
+          value: string | FolderInterface;
         }
       | {
           relationTo?: 'media';
-          value: number | Media;
+          value: string | Media;
         }
     )[];
     hasNextPage?: boolean;
@@ -221,11 +221,11 @@ export interface FolderInterface {
  * via the `definition` "maps".
  */
 export interface Map {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   releaseDate: string;
-  image: number | Media;
+  image: string | Media;
   description: string;
   updatedAt: string;
   createdAt: string;
@@ -235,11 +235,11 @@ export interface Map {
  * via the `definition` "games".
  */
 export interface Game {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   releaseDate: string;
-  image?: (number | null) | Media;
+  image?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -248,12 +248,12 @@ export interface Game {
  * via the `definition` "mainQuests".
  */
 export interface MainQuest {
-  id: number;
+  id: string;
   title: string;
   isComingSoon: boolean;
   difficulty?: ('Easy' | 'Medium' | 'Hard') | null;
-  map: number | Map;
-  game: number | Game;
+  map: string | Map;
+  game: string | Game;
   content: {
     root: {
       type: string;
@@ -278,12 +278,12 @@ export interface MainQuest {
  * via the `definition` "sideQuests".
  */
 export interface SideQuest {
-  id: number;
+  id: string;
   title: string;
   slug: string;
-  game: number | Game;
-  map: number | Map;
-  image?: (number | null) | Media;
+  game: string | Game;
+  map: string | Map;
+  image?: (string | null) | Media;
   description: string;
   content: {
     root: {
@@ -309,20 +309,20 @@ export interface SideQuest {
  * via the `definition` "zombies".
  */
 export interface Zombie {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   releaseDate: string;
   isComingSoon: boolean;
-  image?: (number | null) | Media;
+  image?: (string | null) | Media;
   description: string;
-  games: (number | Game)[];
-  maps: (number | Map)[];
+  games: (string | Game)[];
+  maps: (string | Map)[];
   type?: ('Normal' | 'Special' | 'Elite' | 'Boss') | null;
   speed: 'Slow' | 'Medium' | 'Fast';
   weakPoints: string[];
-  elementalWeakness?: (number | AmmoMod)[] | null;
-  attacks: (number | ZombieAttack)[];
+  elementalWeakness?: (string | AmmoMod)[] | null;
+  attacks: (string | ZombieAttack)[];
   spawnBehavior: string;
   combatStrategy: {
     root: {
@@ -348,11 +348,11 @@ export interface Zombie {
  * via the `definition` "ammoMods".
  */
 export interface AmmoMod {
-  id: number;
+  id: string;
   title: string;
   slug: string;
-  game: number | Game;
-  image?: (number | null) | Media;
+  game: string | Game;
+  image?: (string | null) | Media;
   description: string;
   updatedAt: string;
   createdAt: string;
@@ -362,7 +362,7 @@ export interface AmmoMod {
  * via the `definition` "zombieAttacks".
  */
 export interface ZombieAttack {
-  id: number;
+  id: string;
   title: string;
   range: 'Short' | 'Medium' | 'Long';
   description: string;
@@ -374,13 +374,13 @@ export interface ZombieAttack {
  * via the `definition` "gobblegum".
  */
 export interface Gobblegum {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   rarity: 'Classic' | 'Mega' | 'Rare-Mega' | 'Ultra-Rare Mega' | 'Rare' | 'Epic' | 'Legendary' | 'Ultra';
   type: 'Round-Based' | 'Time-Based' | 'Immediate' | 'Player-Activated';
-  game: number | Game;
-  image: number | Media;
+  game: string | Game;
+  image: string | Media;
   description: string;
   updatedAt: string;
   createdAt: string;
@@ -390,11 +390,11 @@ export interface Gobblegum {
  * via the `definition` "perks".
  */
 export interface Perk {
-  id: number;
+  id: string;
   title: string;
   slug: string;
-  game: number | Game;
-  image: number | Media;
+  game: string | Game;
+  image: string | Media;
   description: string;
   updatedAt: string;
   createdAt: string;
@@ -404,11 +404,11 @@ export interface Perk {
  * via the `definition` "fieldUpgrades".
  */
 export interface FieldUpgrade {
-  id: number;
+  id: string;
   title: string;
   slug: string;
-  game: number | Game;
-  image?: (number | null) | Media;
+  game: string | Game;
+  image?: (string | null) | Media;
   description: string;
   updatedAt: string;
   createdAt: string;
@@ -418,10 +418,10 @@ export interface FieldUpgrade {
  * via the `definition` "weapons".
  */
 export interface Weapon {
-  id: number;
+  id: string;
   title: string;
   slug: string;
-  image?: (number | null) | Media;
+  image?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -430,10 +430,10 @@ export interface Weapon {
  * via the `definition` "weapon-builds".
  */
 export interface WeaponBuild {
-  id: number;
+  id: string;
   title: string;
   slug: string;
-  weapon: number | Weapon;
+  weapon: string | Weapon;
   attachments?: string[] | null;
   buildCode?: string | null;
   updatedAt: string;
@@ -444,7 +444,7 @@ export interface WeaponBuild {
  * via the `definition` "legal".
  */
 export interface Legal {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   content: {
@@ -471,76 +471,76 @@ export interface Legal {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'maps';
-        value: number | Map;
+        value: string | Map;
       } | null)
     | ({
         relationTo: 'games';
-        value: number | Game;
+        value: string | Game;
       } | null)
     | ({
         relationTo: 'mainQuests';
-        value: number | MainQuest;
+        value: string | MainQuest;
       } | null)
     | ({
         relationTo: 'sideQuests';
-        value: number | SideQuest;
+        value: string | SideQuest;
       } | null)
     | ({
         relationTo: 'zombies';
-        value: number | Zombie;
+        value: string | Zombie;
       } | null)
     | ({
         relationTo: 'gobblegum';
-        value: number | Gobblegum;
+        value: string | Gobblegum;
       } | null)
     | ({
         relationTo: 'perks';
-        value: number | Perk;
+        value: string | Perk;
       } | null)
     | ({
         relationTo: 'ammoMods';
-        value: number | AmmoMod;
+        value: string | AmmoMod;
       } | null)
     | ({
         relationTo: 'fieldUpgrades';
-        value: number | FieldUpgrade;
+        value: string | FieldUpgrade;
       } | null)
     | ({
         relationTo: 'zombieAttacks';
-        value: number | ZombieAttack;
+        value: string | ZombieAttack;
       } | null)
     | ({
         relationTo: 'weapons';
-        value: number | Weapon;
+        value: string | Weapon;
       } | null)
     | ({
         relationTo: 'weapon-builds';
-        value: number | WeaponBuild;
+        value: string | WeaponBuild;
       } | null)
     | ({
         relationTo: 'legal';
-        value: number | Legal;
+        value: string | Legal;
       } | null)
     | ({
         relationTo: 'payload-folders';
-        value: number | FolderInterface;
+        value: string | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -550,10 +550,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -573,7 +573,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;

@@ -6,6 +6,8 @@ export const Media: CollectionConfig = {
 		title: true,
 		description: true,
 		fileName: true,
+		mimeType: true,
+		fileSize: true,
 		url: true,
 	},
 	folders: true,
@@ -18,7 +20,6 @@ export const Media: CollectionConfig = {
 		{
 			name: "description",
 			type: "text",
-			required: true,
 		},
 	],
 	upload: true,
