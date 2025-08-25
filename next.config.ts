@@ -1,5 +1,6 @@
 import "./env"
 import type { NextConfig } from "next"
+import { withPayload } from "@payloadcms/next/withPayload"
 import { withBotId } from "botid/next/config"
 
 const nextConfig: NextConfig = {
@@ -98,4 +99,4 @@ const nextConfig: NextConfig = {
 	},
 }
 
-export default withBotId(nextConfig)
+export default withBotId(withPayload(nextConfig))

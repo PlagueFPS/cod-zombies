@@ -22,6 +22,9 @@ export const env = createEnv({
 		LINEAR_API_KEY: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		LINEAR_DEFAULT_ASSIGNEE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		IMAGE_API_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		PAYLOAD_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 	},
 	client: {
 		NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
