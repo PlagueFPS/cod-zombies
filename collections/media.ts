@@ -2,8 +2,11 @@ import type { CollectionConfig } from "payload"
 
 export const media: CollectionConfig = {
 	slug: "media",
-	access: {
-		read: () => true,
+	defaultPopulate: {
+		title: true,
+		description: true,
+		fileName: true,
+		url: true,
 	},
 	folders: true,
 	fields: [

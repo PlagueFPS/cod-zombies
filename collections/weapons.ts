@@ -5,5 +5,29 @@ export const weapons: CollectionConfig = {
 	admin: {
 		useAsTitle: "title",
 	},
-	fields: [],
+	defaultPopulate: {
+		title: true,
+		slug: true,
+	},
+	fields: [
+		{
+			name: "title",
+			label: "Title",
+			type: "text",
+			required: true,
+		},
+		{
+			name: "slug",
+			label: "Slug",
+			type: "text",
+			required: true,
+			unique: true,
+		},
+		{
+			name: "image",
+			label: "Image",
+			type: "upload",
+			relationTo: "media",
+		},
+	],
 }

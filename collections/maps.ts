@@ -1,13 +1,14 @@
 import type { CollectionConfig } from "payload"
 
-export const fieldUpgrades: CollectionConfig = {
-	slug: "field-upgrades",
+export const maps: CollectionConfig = {
+	slug: "maps",
 	admin: {
 		useAsTitle: "title",
 	},
 	defaultPopulate: {
 		title: true,
 		slug: true,
+		releaseDate: true,
 	},
 	fields: [
 		{
@@ -21,17 +22,16 @@ export const fieldUpgrades: CollectionConfig = {
 			label: "Slug",
 			type: "text",
 			required: true,
-			index: true,
 			unique: true,
+			index: true,
 			admin: {
 				position: "sidebar",
 			},
 		},
 		{
-			name: "game",
-			label: "Game",
-			type: "relationship",
-			relationTo: "games",
+			name: "releaseDate",
+			label: "Release Date",
+			type: "date",
 			required: true,
 		},
 		{
@@ -39,11 +39,12 @@ export const fieldUpgrades: CollectionConfig = {
 			label: "Image",
 			type: "upload",
 			relationTo: "media",
+			required: true,
 		},
 		{
 			name: "description",
 			label: "Description",
-			type: "textarea",
+			type: "text",
 			required: true,
 		},
 	],

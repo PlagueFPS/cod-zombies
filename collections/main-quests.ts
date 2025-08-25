@@ -5,28 +5,22 @@ export const mainQuests: CollectionConfig = {
 	admin: {
 		useAsTitle: "title",
 	},
+	defaultPopulate: {
+		title: true,
+	},
+	versions: {
+		drafts: {
+			autosave: true,
+		},
+		maxPerDoc: 3,
+	},
 	fields: [
 		{
 			name: "title",
 			label: "Title",
 			type: "text",
 			required: true,
-		},
-		{
-			name: "slug",
-			label: "Slug",
-			type: "text",
-			required: true,
-			index: true,
-			admin: {
-				position: "sidebar",
-			},
-		},
-		{
-			name: "releaseDate",
-			label: "Release Date",
-			type: "date",
-			required: true,
+			unique: true,
 		},
 		{
 			name: "isComingSoon",
@@ -44,22 +38,18 @@ export const mainQuests: CollectionConfig = {
 			],
 		},
 		{
+			name: "map",
+			label: "Map",
+			type: "relationship",
+			relationTo: "maps",
+			required: true,
+			unique: true,
+		},
+		{
 			name: "game",
 			label: "Game",
 			type: "relationship",
 			relationTo: "games",
-			required: true,
-		},
-		{
-			name: "image",
-			label: "Image",
-			type: "upload",
-			relationTo: "media",
-		},
-		{
-			name: "description",
-			label: "Description",
-			type: "text",
 			required: true,
 		},
 		{
