@@ -30,9 +30,8 @@ export default buildConfig({
 	},
 	upload: {
 		debug: true,
-		safeFileNames: true,
 		limits: {
-			fileSize: 1_000_000, // 1MB
+			fileSize: 500_000, // 500KB
 		},
 	},
 	editor: lexicalEditor(),

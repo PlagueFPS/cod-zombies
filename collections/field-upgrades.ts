@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { formatSlug } from "./hooks/format-slug"
 
 export const FieldUpgrades: CollectionConfig = {
 	slug: "fieldUpgrades",
@@ -25,6 +26,9 @@ export const FieldUpgrades: CollectionConfig = {
 			unique: true,
 			admin: {
 				position: "sidebar",
+			},
+			hooks: {
+				beforeValidate: [formatSlug("title")],
 			},
 		},
 		{

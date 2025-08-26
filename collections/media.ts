@@ -2,15 +2,14 @@ import type { CollectionConfig } from "payload"
 
 export const Media: CollectionConfig = {
 	slug: "media",
+	folders: true,
 	defaultPopulate: {
 		title: true,
-		description: true,
+		url: true,
 		fileName: true,
 		mimeType: true,
 		fileSize: true,
-		url: true,
 	},
-	folders: true,
 	fields: [
 		{
 			name: "title",
@@ -22,5 +21,7 @@ export const Media: CollectionConfig = {
 			type: "text",
 		},
 	],
-	upload: true,
+	upload: {
+		mimeTypes: ["image/webp", "image/avif"],
+	},
 }

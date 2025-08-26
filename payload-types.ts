@@ -176,7 +176,7 @@ export interface User {
 export interface Media {
   id: string;
   title: string;
-  description: string;
+  description?: string | null;
   folder?: (string | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
@@ -225,6 +225,7 @@ export interface Map {
   title: string;
   slug: string;
   releaseDate: string;
+  game: string | Game;
   image: string | Media;
   description: string;
   updatedAt: string;
@@ -239,7 +240,7 @@ export interface Game {
   title: string;
   slug: string;
   releaseDate: string;
-  image?: (string | null) | Media;
+  image: string | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -253,7 +254,6 @@ export interface MainQuest {
   isComingSoon: boolean;
   difficulty?: ('Easy' | 'Medium' | 'Hard') | null;
   map: string | Map;
-  game: string | Game;
   content: {
     root: {
       type: string;
@@ -281,7 +281,6 @@ export interface SideQuest {
   id: string;
   title: string;
   slug: string;
-  game: string | Game;
   map: string | Map;
   image?: (string | null) | Media;
   description: string;
@@ -629,6 +628,7 @@ export interface MapsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   releaseDate?: T;
+  game?: T;
   image?: T;
   description?: T;
   updatedAt?: T;
@@ -655,7 +655,6 @@ export interface MainQuestsSelect<T extends boolean = true> {
   isComingSoon?: T;
   difficulty?: T;
   map?: T;
-  game?: T;
   content?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -668,7 +667,6 @@ export interface MainQuestsSelect<T extends boolean = true> {
 export interface SideQuestsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  game?: T;
   map?: T;
   image?: T;
   description?: T;

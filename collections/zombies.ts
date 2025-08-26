@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { formatSlug } from "./hooks/format-slug"
 
 export const Zombies: CollectionConfig = {
 	slug: "zombies",
@@ -31,6 +32,9 @@ export const Zombies: CollectionConfig = {
 			unique: true,
 			admin: {
 				position: "sidebar",
+			},
+			hooks: {
+				beforeValidate: [formatSlug("title")],
 			},
 		},
 		{

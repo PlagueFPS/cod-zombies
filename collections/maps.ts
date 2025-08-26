@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { formatSlug } from "./hooks/format-slug"
 
 export const Maps: CollectionConfig = {
 	slug: "maps",
@@ -10,6 +11,7 @@ export const Maps: CollectionConfig = {
 		slug: true,
 		releaseDate: true,
 	},
+	defaultSort: "-releaseDate",
 	fields: [
 		{
 			name: "title",
@@ -27,11 +29,27 @@ export const Maps: CollectionConfig = {
 			admin: {
 				position: "sidebar",
 			},
+			hooks: {
+				beforeValidate: [formatSlug("title")],
+			},
 		},
 		{
 			name: "releaseDate",
 			label: "Release Date",
 			type: "date",
+			admin: {
+				date: {
+					displayFormat: "MMMM dd, yyyy hh:mm a",
+					pickerAppearance: "dayAndTime",
+				},
+			},
+			required: true,
+		},
+		{
+			name: "game",
+			label: "Game",
+			type: "relationship",
+			relationTo: "games",
 			required: true,
 		},
 		{
@@ -44,7 +62,8 @@ export const Maps: CollectionConfig = {
 		{
 			name: "description",
 			label: "Description",
-			type: "text",
+			type: "textarea",
+			maxLength: 255,
 			required: true,
 		},
 	],

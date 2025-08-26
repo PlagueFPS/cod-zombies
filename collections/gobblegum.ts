@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { formatSlug } from "./hooks/format-slug"
 
 export const Gobblegum: CollectionConfig = {
 	slug: "gobblegum",
@@ -25,6 +26,9 @@ export const Gobblegum: CollectionConfig = {
 			index: true,
 			admin: {
 				position: "sidebar",
+			},
+			hooks: {
+				beforeValidate: [formatSlug("title")],
 			},
 		},
 		{

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { formatSlug } from "./hooks/format-slug"
 
 export const SideQuests: CollectionConfig = {
 	slug: "sideQuests",
@@ -31,13 +32,9 @@ export const SideQuests: CollectionConfig = {
 			admin: {
 				position: "sidebar",
 			},
-		},
-		{
-			name: "game",
-			label: "Game",
-			type: "relationship",
-			relationTo: "games",
-			required: true,
+			hooks: {
+				beforeValidate: [formatSlug("title")],
+			},
 		},
 		{
 			name: "map",

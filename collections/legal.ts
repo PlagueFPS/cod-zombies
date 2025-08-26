@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { formatSlug } from "./hooks/format-slug"
 
 export const Legal: CollectionConfig = {
 	slug: "legal",
@@ -31,6 +32,9 @@ export const Legal: CollectionConfig = {
 			required: true,
 			admin: {
 				position: "sidebar",
+			},
+			hooks: {
+				beforeValidate: [formatSlug("title")],
 			},
 		},
 		{

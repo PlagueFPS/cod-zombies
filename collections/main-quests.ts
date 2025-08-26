@@ -46,13 +46,6 @@ export const MainQuests: CollectionConfig = {
 			unique: true,
 		},
 		{
-			name: "game",
-			label: "Game",
-			type: "relationship",
-			relationTo: "games",
-			required: true,
-		},
-		{
 			name: "content",
 			label: "Content",
 			type: "richText",
