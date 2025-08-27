@@ -4,6 +4,7 @@ export const AmmoMods: CollectionConfig = {
 	slug: "ammoMods",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "game", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

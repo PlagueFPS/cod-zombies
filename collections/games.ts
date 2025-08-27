@@ -5,6 +5,7 @@ export const Games: CollectionConfig = {
 	slug: "games",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "releaseDate", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,
@@ -67,7 +68,7 @@ export const Games: CollectionConfig = {
 			on: "game",
 			hasMany: true,
 			admin: {
-				description: "Maps that belong to this game.",
+				description: "Maps that are featured in this game.",
 			},
 		},
 		{
@@ -78,7 +79,7 @@ export const Games: CollectionConfig = {
 			on: "game",
 			hasMany: true,
 			admin: {
-				description: "Perks that belong to this game.",
+				description: "Perks that are featured in this game.",
 			},
 		},
 		{
@@ -89,7 +90,7 @@ export const Games: CollectionConfig = {
 			on: "game",
 			hasMany: true,
 			admin: {
-				description: "Field upgrades that belong to this game.",
+				description: "Field upgrades that are featured in this game.",
 			},
 		},
 		{
@@ -100,7 +101,18 @@ export const Games: CollectionConfig = {
 			on: "game",
 			hasMany: true,
 			admin: {
-				description: "Gobblegum that belong to this game.",
+				description: "Gobblegum that are featured in this game.",
+			},
+		},
+		{
+			name: "weapons",
+			label: "Weapons",
+			type: "join",
+			collection: "weapons",
+			on: "games",
+			hasMany: true,
+			admin: {
+				description: "Weapons that are featured in this game.",
 			},
 		},
 	],

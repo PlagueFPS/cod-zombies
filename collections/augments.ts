@@ -4,6 +4,7 @@ export const Augments: CollectionConfig = {
 	slug: "augments",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "type", "updatedAt"],
 	},
 	fields: [
 		{

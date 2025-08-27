@@ -1,14 +1,13 @@
 import type { CollectionConfig } from "payload"
-import { formatSlug } from "./hooks/format-slug"
 
 export const Weapons: CollectionConfig = {
 	slug: "weapons",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,
-		slug: true,
 	},
 	fields: [
 		{
@@ -16,18 +15,19 @@ export const Weapons: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Name of the weapon.",
+			},
 		},
 		{
-			name: "slug",
-			label: "Slug",
-			type: "text",
+			name: "games",
+			label: "Games",
+			type: "relationship",
+			relationTo: "games",
+			hasMany: true,
 			required: true,
-			unique: true,
 			admin: {
-				position: "sidebar",
-			},
-			hooks: {
-				beforeValidate: [formatSlug("title")],
+				description: "Games this weapon is featured in.",
 			},
 		},
 		{
@@ -35,6 +35,10 @@ export const Weapons: CollectionConfig = {
 			label: "Image",
 			type: "upload",
 			relationTo: "media",
+			required: true,
+			admin: {
+				description: "Featured image of this weapon.",
+			},
 		},
 		{
 			name: "weaponBuilds",

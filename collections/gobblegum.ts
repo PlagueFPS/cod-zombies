@@ -4,6 +4,7 @@ export const Gobblegum: CollectionConfig = {
 	slug: "gobblegum",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "rarity", "game", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

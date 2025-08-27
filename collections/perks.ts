@@ -4,6 +4,7 @@ export const Perks: CollectionConfig = {
 	slug: "perks",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "game", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

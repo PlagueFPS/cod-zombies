@@ -98,6 +98,7 @@ export interface Config {
       perks: 'perks';
       fieldUpgrades: 'fieldUpgrades';
       gobblegum: 'gobblegum';
+      weapons: 'weapons';
     };
     perks: {
       augments: 'augments';
@@ -108,6 +109,9 @@ export interface Config {
     };
     fieldUpgrades: {
       augments: 'augments';
+    };
+    zombieAttacks: {
+      zombies: 'zombies';
     };
     weapons: {
       weaponBuilds: 'weaponBuilds';
@@ -296,7 +300,7 @@ export interface Game {
    */
   image: string | Media;
   /**
-   * Maps that belong to this game.
+   * Maps that are featured in this game.
    */
   maps?: {
     docs?: (string | Map)[];
@@ -304,7 +308,7 @@ export interface Game {
     totalDocs?: number;
   };
   /**
-   * Perks that belong to this game.
+   * Perks that are featured in this game.
    */
   perks?: {
     docs?: (string | Perk)[];
@@ -312,7 +316,7 @@ export interface Game {
     totalDocs?: number;
   };
   /**
-   * Field upgrades that belong to this game.
+   * Field upgrades that are featured in this game.
    */
   fieldUpgrades?: {
     docs?: (string | FieldUpgrade)[];
@@ -320,10 +324,18 @@ export interface Game {
     totalDocs?: number;
   };
   /**
-   * Gobblegum that belong to this game.
+   * Gobblegum that are featured in this game.
    */
   gobblegum?: {
     docs?: (string | Gobblegum)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Weapons that are featured in this game.
+   */
+  weapons?: {
+    docs?: (string | Weapon)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -451,20 +463,61 @@ export interface AmmoMod {
  */
 export interface Zombie {
   id: string;
+  /**
+   * Name of the zombie.
+   */
   title: string;
+  /**
+   * Unique slug for the zombie. Used to form the canonical URL.
+   */
   slug: string;
-  releaseDate: string;
+  /**
+   * Determines if this zombie should show a 'Coming Soon' badge and have the main page not be accessible.
+   */
   isComingSoon: boolean;
-  image?: (string | null) | Media;
+  /**
+   * Featured image of this zombie.
+   */
+  image: string | Media;
+  /**
+   * SEO description used in meta tags, tooltips, hover cards, and in preview cards.
+   */
   description: string;
+  /**
+   * Games this zombie is featured in.
+   */
   games: (string | Game)[];
+  /**
+   * Maps this zombie is featured in.
+   */
   maps: (string | Map)[];
-  type?: ('Normal' | 'Special' | 'Elite' | 'Boss') | null;
+  /**
+   * Type of the zombie.
+   */
+  type: 'Normal' | 'Special' | 'Elite' | 'Boss';
+  /**
+   * Speed of the zombie.
+   */
   speed: 'Slow' | 'Medium' | 'Fast';
+  /**
+   * Weak points of the zombie.
+   */
   weakPoints: string[];
+  /**
+   * Elemental weaknesses of the zombie.
+   */
   elementalWeakness?: (string | AmmoMod)[] | null;
+  /**
+   * Attacks of the zombie.
+   */
   attacks: (string | ZombieAttack)[];
+  /**
+   * Spawn behavior of the zombie.
+   */
   spawnBehavior: string;
+  /**
+   * Combat strategy of the zombie.
+   */
   combatStrategy: {
     root: {
       type: string;
@@ -490,9 +543,26 @@ export interface Zombie {
  */
 export interface ZombieAttack {
   id: string;
+  /**
+   * Name of the zombie attack.
+   */
   title: string;
+  /**
+   * Range of the zombie attack.
+   */
   range: 'Short' | 'Medium' | 'Long';
+  /**
+   * Description of the zombie attack.
+   */
   description: string;
+  /**
+   * Zombies that use this attack.
+   */
+  zombies?: {
+    docs?: (string | Zombie)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -559,6 +629,60 @@ export interface Gobblegum {
    * Description used in tooltips and hover cards.
    */
   description: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weapons".
+ */
+export interface Weapon {
+  id: string;
+  /**
+   * Name of the weapon.
+   */
+  title: string;
+  /**
+   * Games this weapon is featured in.
+   */
+  games: (string | Game)[];
+  /**
+   * Featured image of this weapon.
+   */
+  image: string | Media;
+  /**
+   * Weapon builds that belong to this weapon.
+   */
+  weaponBuilds?: {
+    docs?: (string | WeaponBuild)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weaponBuilds".
+ */
+export interface WeaponBuild {
+  id: string;
+  /**
+   * Name of the weapon build.
+   */
+  title: string;
+  /**
+   * Weapon this build belongs to.
+   */
+  weapon: string | Weapon;
+  /**
+   * Attachments that belong to this weapon build.
+   */
+  attachments?: string[] | null;
+  /**
+   * Build code of the weapon build.
+   */
+  buildCode?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -653,51 +777,6 @@ export interface SideQuest {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weapons".
- */
-export interface Weapon {
-  id: string;
-  title: string;
-  slug: string;
-  image?: (string | null) | Media;
-  /**
-   * Weapon builds that belong to this weapon.
-   */
-  weaponBuilds?: {
-    docs?: (string | WeaponBuild)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weaponBuilds".
- */
-export interface WeaponBuild {
-  id: string;
-  /**
-   * Name of the weapon build.
-   */
-  title: string;
-  /**
-   * Weapon this build belongs to.
-   */
-  weapon: string | Weapon;
-  /**
-   * Attachments that belong to this weapon build.
-   */
-  attachments?: string[] | null;
-  /**
-   * Build code of the weapon build.
-   */
-  buildCode?: string | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -919,6 +998,7 @@ export interface GamesSelect<T extends boolean = true> {
   perks?: T;
   fieldUpgrades?: T;
   gobblegum?: T;
+  weapons?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -958,7 +1038,6 @@ export interface SideQuestsSelect<T extends boolean = true> {
 export interface ZombiesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  releaseDate?: T;
   isComingSoon?: T;
   image?: T;
   description?: T;
@@ -1038,6 +1117,7 @@ export interface ZombieAttacksSelect<T extends boolean = true> {
   title?: T;
   range?: T;
   description?: T;
+  zombies?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1047,7 +1127,7 @@ export interface ZombieAttacksSelect<T extends boolean = true> {
  */
 export interface WeaponsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
+  games?: T;
   image?: T;
   weaponBuilds?: T;
   updatedAt?: T;

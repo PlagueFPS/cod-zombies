@@ -5,6 +5,7 @@ export const Maps: CollectionConfig = {
 	slug: "maps",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "releaseDate", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

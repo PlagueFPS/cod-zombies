@@ -5,6 +5,7 @@ export const Legal: CollectionConfig = {
 	slug: "legal",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

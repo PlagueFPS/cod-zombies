@@ -4,6 +4,7 @@ export const WeaponBuilds: CollectionConfig = {
 	slug: "weaponBuilds",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "weapon", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

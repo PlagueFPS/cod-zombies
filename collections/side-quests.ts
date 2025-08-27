@@ -5,6 +5,7 @@ export const SideQuests: CollectionConfig = {
 	slug: "sideQuests",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "map", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

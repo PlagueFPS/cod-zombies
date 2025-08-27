@@ -4,6 +4,7 @@ export const FieldUpgrades: CollectionConfig = {
 	slug: "fieldUpgrades",
 	admin: {
 		useAsTitle: "title",
+		defaultColumns: ["title", "game", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,
