@@ -474,7 +474,7 @@ export interface Zombie {
   /**
    * Determines if this zombie should show a 'Coming Soon' badge and have the main page not be accessible.
    */
-  isComingSoon: boolean;
+  isComingSoon?: boolean | null;
   /**
    * Featured image of this zombie.
    */

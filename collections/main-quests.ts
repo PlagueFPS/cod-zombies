@@ -4,7 +4,7 @@ export const MainQuests: CollectionConfig = {
 	slug: "mainQuests",
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "isComingSoon", "difficulty", "updatedAt"],
+		defaultColumns: ["title", "isComingSoon", "difficulty", "status", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,

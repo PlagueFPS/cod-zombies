@@ -5,7 +5,7 @@ export const Zombies: CollectionConfig = {
 	slug: "zombies",
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "isComingSoon", "type", "updatedAt"],
+		defaultColumns: ["title", "isComingSoon", "type", "status", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,
@@ -44,9 +44,9 @@ export const Zombies: CollectionConfig = {
 		},
 		{
 			name: "isComingSoon",
+			label: "Coming Soon",
 			type: "checkbox",
 			defaultValue: false,
-			required: true,
 			admin: {
 				description:
 					"Determines if this zombie should show a 'Coming Soon' badge and have the main page not be accessible.",
