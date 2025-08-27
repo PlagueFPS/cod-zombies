@@ -74,13 +74,3 @@ export const ROUTES = [
 		icon: MapIcon,
 	},
 ] as const
-export const PROTECTED_ROUTES = [
-	{
-		path: "/",
-		method: "POST",
-	},
-	{
-		path: "/*",
-		method: "POST",
-	},
-]

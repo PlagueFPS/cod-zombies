@@ -25,9 +25,6 @@ export default buildConfig({
 	routes: {
 		api: "/api/payload",
 	},
-	folders: {
-		debug: true,
-	},
 	upload: {
 		debug: true,
 		limits: {
