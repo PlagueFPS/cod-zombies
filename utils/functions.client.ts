@@ -25,7 +25,7 @@ export const slugify = (text: string) => {
 	return text
 		.toLowerCase()
 		.trim() // Remove leading/trailing whitespace
-		.replace(/^["']+|["']+$/g, "") // Remove leading/trailing quotes
+		.replace(/^["'!]+|["'!]+$/g, "") // Remove leading/trailing quotes and exclamation points
 		.replace(/[ /,.'"]+/g, "-") // Replace spaces, commas, periods, and quotes with hyphens
 		.replace(/&/g, "and") // Replace ampersands with "and"
 }

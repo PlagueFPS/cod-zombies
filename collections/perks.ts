@@ -1,5 +1,4 @@
 import type { CollectionConfig } from "payload"
-import { formatSlug } from "./hooks/format-slug"
 
 export const Perks: CollectionConfig = {
 	slug: "perks",
@@ -8,7 +7,7 @@ export const Perks: CollectionConfig = {
 	},
 	defaultPopulate: {
 		title: true,
-		slug: true,
+		game: true,
 	},
 	fields: [
 		{
@@ -16,20 +15,6 @@ export const Perks: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
-		},
-		{
-			name: "slug",
-			label: "Slug",
-			type: "text",
-			required: true,
-			unique: true,
-			index: true,
-			admin: {
-				position: "sidebar",
-			},
-			hooks: {
-				beforeValidate: [formatSlug("title")],
-			},
 		},
 		{
 			name: "game",

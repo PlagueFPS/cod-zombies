@@ -1,5 +1,4 @@
 import type { CollectionConfig } from "payload"
-import { formatSlug } from "./hooks/format-slug"
 
 export const WeaponBuilds: CollectionConfig = {
 	slug: "weapon-builds",
@@ -8,7 +7,6 @@ export const WeaponBuilds: CollectionConfig = {
 	},
 	defaultPopulate: {
 		title: true,
-		slug: true,
 	},
 	fields: [
 		{
@@ -16,19 +14,6 @@ export const WeaponBuilds: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
-		},
-		{
-			name: "slug",
-			label: "Slug",
-			type: "text",
-			required: true,
-			unique: true,
-			admin: {
-				position: "sidebar",
-			},
-			hooks: {
-				beforeValidate: [formatSlug("title")],
-			},
 		},
 		{
 			name: "weapon",

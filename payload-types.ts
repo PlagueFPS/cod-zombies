@@ -349,7 +349,6 @@ export interface Zombie {
 export interface AmmoMod {
   id: string;
   title: string;
-  slug: string;
   game: string | Game;
   image?: (string | null) | Media;
   description: string;
@@ -375,7 +374,6 @@ export interface ZombieAttack {
 export interface Gobblegum {
   id: string;
   title: string;
-  slug: string;
   rarity: 'Classic' | 'Mega' | 'Rare-Mega' | 'Ultra-Rare Mega' | 'Rare' | 'Epic' | 'Legendary' | 'Ultra';
   type: 'Round-Based' | 'Time-Based' | 'Immediate' | 'Player-Activated';
   game: string | Game;
@@ -391,7 +389,6 @@ export interface Gobblegum {
 export interface Perk {
   id: string;
   title: string;
-  slug: string;
   game: string | Game;
   image: string | Media;
   description: string;
@@ -405,7 +402,6 @@ export interface Perk {
 export interface FieldUpgrade {
   id: string;
   title: string;
-  slug: string;
   game: string | Game;
   image?: (string | null) | Media;
   description: string;
@@ -431,7 +427,6 @@ export interface Weapon {
 export interface WeaponBuild {
   id: string;
   title: string;
-  slug: string;
   weapon: string | Weapon;
   attachments?: string[] | null;
   buildCode?: string | null;
@@ -705,7 +700,6 @@ export interface ZombiesSelect<T extends boolean = true> {
  */
 export interface GobblegumSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   rarity?: T;
   type?: T;
   game?: T;
@@ -720,7 +714,6 @@ export interface GobblegumSelect<T extends boolean = true> {
  */
 export interface PerksSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   game?: T;
   image?: T;
   description?: T;
@@ -733,7 +726,6 @@ export interface PerksSelect<T extends boolean = true> {
  */
 export interface AmmoModsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   game?: T;
   image?: T;
   description?: T;
@@ -746,7 +738,6 @@ export interface AmmoModsSelect<T extends boolean = true> {
  */
 export interface FieldUpgradesSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   game?: T;
   image?: T;
   description?: T;
@@ -781,7 +772,6 @@ export interface WeaponsSelect<T extends boolean = true> {
  */
 export interface WeaponBuildsSelect<T extends boolean = true> {
   title?: T;
-  slug?: T;
   weapon?: T;
   attachments?: T;
   buildCode?: T;
