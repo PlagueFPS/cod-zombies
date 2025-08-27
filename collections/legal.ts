@@ -22,6 +22,9 @@ export const Legal: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Title of the legal document.",
+			},
 		},
 		{
 			name: "slug",
@@ -32,6 +35,7 @@ export const Legal: CollectionConfig = {
 			required: true,
 			admin: {
 				position: "sidebar",
+				description: "Unique slug for the legal document. Used to form the canonical URL.",
 			},
 			hooks: {
 				beforeValidate: [formatSlug("title")],
@@ -42,6 +46,9 @@ export const Legal: CollectionConfig = {
 			label: "Content",
 			type: "richText",
 			required: true,
+			admin: {
+				description: "Contents of the legal document.",
+			},
 		},
 	],
 }

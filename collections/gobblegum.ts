@@ -15,6 +15,9 @@ export const Gobblegum: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Name of the gobblegum.",
+			},
 		},
 		{
 			name: "rarity",
@@ -31,6 +34,9 @@ export const Gobblegum: CollectionConfig = {
 				{ label: "Ultra", value: "Ultra" },
 			],
 			required: true,
+			admin: {
+				description: "Rarity of the gobblegum.",
+			},
 		},
 		{
 			name: "type",
@@ -43,6 +49,9 @@ export const Gobblegum: CollectionConfig = {
 				{ label: "Player-Activated", value: "Player-Activated" },
 			],
 			required: true,
+			admin: {
+				description: "Type of the gobblegum.",
+			},
 		},
 		{
 			name: "game",
@@ -50,6 +59,9 @@ export const Gobblegum: CollectionConfig = {
 			type: "relationship",
 			relationTo: "games",
 			required: true,
+			admin: {
+				description: "Game this gobblegum belongs to.",
+			},
 		},
 		{
 			name: "image",
@@ -57,12 +69,18 @@ export const Gobblegum: CollectionConfig = {
 			type: "relationship",
 			relationTo: "media",
 			required: true,
+			admin: {
+				description: "Featured image of this gobblegum.",
+			},
 		},
 		{
 			name: "description",
 			label: "Description",
 			type: "textarea",
 			required: true,
+			admin: {
+				description: "Description used in tooltips and hover cards.",
+			},
 		},
 	],
 }

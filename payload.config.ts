@@ -3,6 +3,7 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical"
 import { Redacted } from "effect"
 import { buildConfig } from "payload"
 import { AmmoMods } from "./collections/ammo-mods"
+import { Augments } from "./collections/augments"
 import { FieldUpgrades } from "./collections/field-upgrades"
 import { Games } from "./collections/games"
 import { Gobblegum } from "./collections/gobblegum"
@@ -57,5 +58,6 @@ export default buildConfig({
 		Weapons,
 		WeaponBuilds,
 		Legal,
+		Augments,
 	],
 })

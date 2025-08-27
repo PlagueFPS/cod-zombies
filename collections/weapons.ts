@@ -36,5 +36,16 @@ export const Weapons: CollectionConfig = {
 			type: "upload",
 			relationTo: "media",
 		},
+		{
+			name: "weaponBuilds",
+			label: "Weapon Builds",
+			type: "join",
+			collection: "weaponBuilds",
+			on: "weapon",
+			hasMany: true,
+			admin: {
+				description: "Weapon builds that belong to this weapon.",
+			},
+		},
 	],
 }

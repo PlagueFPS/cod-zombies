@@ -22,6 +22,9 @@ export const SideQuests: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Name of the side quest.",
+			},
 		},
 		{
 			name: "slug",
@@ -31,6 +34,7 @@ export const SideQuests: CollectionConfig = {
 			index: true,
 			admin: {
 				position: "sidebar",
+				description: "Unique slug for the side quest. Used to form the canonical URL.",
 			},
 			hooks: {
 				beforeValidate: [formatSlug("title")],
@@ -42,24 +46,36 @@ export const SideQuests: CollectionConfig = {
 			type: "relationship",
 			relationTo: "maps",
 			required: true,
+			admin: {
+				description: "Map this side quest belongs to.",
+			},
 		},
 		{
 			name: "image",
 			label: "Image",
 			type: "upload",
 			relationTo: "media",
+			admin: {
+				description: "Featured image of this side quest.",
+			},
 		},
 		{
 			name: "description",
 			label: "Description",
 			type: "text",
 			required: true,
+			admin: {
+				description: "SEO description used in meta tags and in preview cards.",
+			},
 		},
 		{
 			name: "content",
 			label: "Content",
 			type: "richText",
 			required: true,
+			admin: {
+				description: "Contents of the side quest.",
+			},
 		},
 	],
 }

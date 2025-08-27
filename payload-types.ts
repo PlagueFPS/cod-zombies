@@ -80,13 +80,39 @@ export interface Config {
     fieldUpgrades: FieldUpgrade;
     zombieAttacks: ZombieAttack;
     weapons: Weapon;
-    'weapon-builds': WeaponBuild;
+    weaponBuilds: WeaponBuild;
     legal: Legal;
+    augments: Augment;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    maps: {
+      mainQuest: 'mainQuests';
+      sideQuests: 'sideQuests';
+      zombies: 'zombies';
+    };
+    games: {
+      maps: 'maps';
+      perks: 'perks';
+      fieldUpgrades: 'fieldUpgrades';
+      gobblegum: 'gobblegum';
+    };
+    perks: {
+      augments: 'augments';
+    };
+    ammoMods: {
+      augments: 'augments';
+      zombies: 'zombies';
+    };
+    fieldUpgrades: {
+      augments: 'augments';
+    };
+    weapons: {
+      weaponBuilds: 'weaponBuilds';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -101,8 +127,9 @@ export interface Config {
     fieldUpgrades: FieldUpgradesSelect<false> | FieldUpgradesSelect<true>;
     zombieAttacks: ZombieAttacksSelect<false> | ZombieAttacksSelect<true>;
     weapons: WeaponsSelect<false> | WeaponsSelect<true>;
-    'weapon-builds': WeaponBuildsSelect<false> | WeaponBuildsSelect<true>;
+    weaponBuilds: WeaponBuildsSelect<false> | WeaponBuildsSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
+    augments: AugmentsSelect<false> | AugmentsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -169,7 +196,13 @@ export interface User {
  */
 export interface Media {
   id: string;
+  /**
+   * Title of the media.
+   */
   title: string;
+  /**
+   * Used as the caption and alt text for the media.
+   */
   description?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -189,12 +222,54 @@ export interface Media {
  */
 export interface Map {
   id: string;
+  /**
+   * Name of the map.
+   */
   title: string;
+  /**
+   * Unique slug for the map. Used to form the canonical URL.
+   */
   slug: string;
+  /**
+   * Release date of the map.
+   */
   releaseDate: string;
+  /**
+   * Game this map belongs to.
+   */
   game: string | Game;
+  /**
+   * Featured image of this map.
+   */
   image: string | Media;
+  /**
+   * SEO description used in meta tags and in preview cards.
+   */
   description: string;
+  /**
+   * Main quest that belongs to this map.
+   */
+  mainQuest?: {
+    docs?: (string | MainQuest)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Side quests that belong to this map.
+   */
+  sideQuests?: {
+    docs?: (string | SideQuest)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Zombies that belong to this map.
+   */
+  zombies?: {
+    docs?: (string | Zombie)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -204,71 +279,171 @@ export interface Map {
  */
 export interface Game {
   id: string;
+  /**
+   * Name of the game.
+   */
   title: string;
+  /**
+   * Unique slug for the game. Used to form the canonical URL.
+   */
   slug: string;
+  /**
+   * Release date of the game.
+   */
   releaseDate: string;
+  /**
+   * Cover image of the game.
+   */
   image: string | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "mainQuests".
- */
-export interface MainQuest {
-  id: string;
-  title: string;
-  isComingSoon: boolean;
-  difficulty?: ('Easy' | 'Medium' | 'Hard') | null;
-  map: string | Map;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
+  /**
+   * Maps that belong to this game.
+   */
+  maps?: {
+    docs?: (string | Map)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Perks that belong to this game.
+   */
+  perks?: {
+    docs?: (string | Perk)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Field upgrades that belong to this game.
+   */
+  fieldUpgrades?: {
+    docs?: (string | FieldUpgrade)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Gobblegum that belong to this game.
+   */
+  gobblegum?: {
+    docs?: (string | Gobblegum)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
   };
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sideQuests".
+ * via the `definition` "perks".
  */
-export interface SideQuest {
+export interface Perk {
   id: string;
+  /**
+   * Name of the perk.
+   */
   title: string;
-  slug: string;
-  map: string | Map;
-  image?: (string | null) | Media;
+  /**
+   * Game this perk belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this perk.
+   */
+  image: string | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
   description: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
+  /**
+   * Modifier used in tooltips and hover cards.
+   */
+  modifier?: string | null;
+  /**
+   * Augments that belong to this perk.
+   */
+  augments?: {
+    docs?: (string | Augment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
   };
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "augments".
+ */
+export interface Augment {
+  id: string;
+  /**
+   * Name of the augment.
+   */
+  title: string;
+  /**
+   * Type of the augment.
+   */
+  type: 'Major' | 'Minor';
+  /**
+   * Featured image of this augment.
+   */
+  image: string | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Perk this augment belongs to.
+   */
+  perk?: (string | null) | Perk;
+  /**
+   * Ammo mod this augment belongs to.
+   */
+  ammoMod?: (string | null) | AmmoMod;
+  /**
+   * Field upgrade this augment belongs to.
+   */
+  fieldUpgrade?: (string | null) | FieldUpgrade;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ammoMods".
+ */
+export interface AmmoMod {
+  id: string;
+  /**
+   * Name of the ammo mod.
+   */
+  title: string;
+  /**
+   * Game this ammo mod belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this ammo mod.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Augments that belong to this ammo mod.
+   */
+  augments?: {
+    docs?: (string | Augment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Zombies that are weak to this ammo mod.
+   */
+  zombies?: {
+    docs?: (string | Zombie)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -311,19 +486,6 @@ export interface Zombie {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ammoMods".
- */
-export interface AmmoMod {
-  id: string;
-  title: string;
-  game: string | Game;
-  image?: (string | null) | Media;
-  description: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "zombieAttacks".
  */
 export interface ZombieAttack {
@@ -336,44 +498,161 @@ export interface ZombieAttack {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "gobblegum".
- */
-export interface Gobblegum {
-  id: string;
-  title: string;
-  rarity: 'Classic' | 'Mega' | 'Rare-Mega' | 'Ultra-Rare Mega' | 'Rare' | 'Epic' | 'Legendary' | 'Ultra';
-  type: 'Round-Based' | 'Time-Based' | 'Immediate' | 'Player-Activated';
-  game: string | Game;
-  image: string | Media;
-  description: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "perks".
- */
-export interface Perk {
-  id: string;
-  title: string;
-  game: string | Game;
-  image: string | Media;
-  description: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "fieldUpgrades".
  */
 export interface FieldUpgrade {
   id: string;
+  /**
+   * Name of the field upgrade.
+   */
   title: string;
+  /**
+   * Game this field upgrade belongs to.
+   */
   game: string | Game;
+  /**
+   * Featured image of this field upgrade.
+   */
   image?: (string | null) | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Augments that belong to this field upgrade.
+   */
+  augments?: {
+    docs?: (string | Augment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gobblegum".
+ */
+export interface Gobblegum {
+  id: string;
+  /**
+   * Name of the gobblegum.
+   */
+  title: string;
+  /**
+   * Rarity of the gobblegum.
+   */
+  rarity: 'Classic' | 'Mega' | 'Rare-Mega' | 'Ultra-Rare Mega' | 'Rare' | 'Epic' | 'Legendary' | 'Ultra';
+  /**
+   * Type of the gobblegum.
+   */
+  type: 'Round-Based' | 'Time-Based' | 'Immediate' | 'Player-Activated';
+  /**
+   * Game this gobblegum belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this gobblegum.
+   */
+  image: string | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
   description: string;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mainQuests".
+ */
+export interface MainQuest {
+  id: string;
+  /**
+   * Title of the main quest.
+   */
+  title: string;
+  /**
+   * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
+   */
+  isComingSoon: boolean;
+  /**
+   * Difficulty of the main quest.
+   */
+  difficulty?: ('Easy' | 'Medium' | 'Hard') | null;
+  /**
+   * Map this main quest belongs to.
+   */
+  map: string | Map;
+  /**
+   * Contents of the main quest.
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sideQuests".
+ */
+export interface SideQuest {
+  id: string;
+  /**
+   * Name of the side quest.
+   */
+  title: string;
+  /**
+   * Unique slug for the side quest. Used to form the canonical URL.
+   */
+  slug: string;
+  /**
+   * Map this side quest belongs to.
+   */
+  map: string | Map;
+  /**
+   * Featured image of this side quest.
+   */
+  image?: (string | null) | Media;
+  /**
+   * SEO description used in meta tags and in preview cards.
+   */
+  description: string;
+  /**
+   * Contents of the side quest.
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -384,18 +663,38 @@ export interface Weapon {
   title: string;
   slug: string;
   image?: (string | null) | Media;
+  /**
+   * Weapon builds that belong to this weapon.
+   */
+  weaponBuilds?: {
+    docs?: (string | WeaponBuild)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weapon-builds".
+ * via the `definition` "weaponBuilds".
  */
 export interface WeaponBuild {
   id: string;
+  /**
+   * Name of the weapon build.
+   */
   title: string;
+  /**
+   * Weapon this build belongs to.
+   */
   weapon: string | Weapon;
+  /**
+   * Attachments that belong to this weapon build.
+   */
   attachments?: string[] | null;
+  /**
+   * Build code of the weapon build.
+   */
   buildCode?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -406,8 +705,17 @@ export interface WeaponBuild {
  */
 export interface Legal {
   id: string;
+  /**
+   * Title of the legal document.
+   */
   title: string;
+  /**
+   * Unique slug for the legal document. Used to form the canonical URL.
+   */
   slug: string;
+  /**
+   * Contents of the legal document.
+   */
   content: {
     root: {
       type: string;
@@ -487,12 +795,16 @@ export interface PayloadLockedDocument {
         value: string | Weapon;
       } | null)
     | ({
-        relationTo: 'weapon-builds';
+        relationTo: 'weaponBuilds';
         value: string | WeaponBuild;
       } | null)
     | ({
         relationTo: 'legal';
         value: string | Legal;
+      } | null)
+    | ({
+        relationTo: 'augments';
+        value: string | Augment;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -588,6 +900,9 @@ export interface MapsSelect<T extends boolean = true> {
   game?: T;
   image?: T;
   description?: T;
+  mainQuest?: T;
+  sideQuests?: T;
+  zombies?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -600,6 +915,10 @@ export interface GamesSelect<T extends boolean = true> {
   slug?: T;
   releaseDate?: T;
   image?: T;
+  maps?: T;
+  perks?: T;
+  fieldUpgrades?: T;
+  gobblegum?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -679,6 +998,8 @@ export interface PerksSelect<T extends boolean = true> {
   game?: T;
   image?: T;
   description?: T;
+  modifier?: T;
+  augments?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -691,6 +1012,8 @@ export interface AmmoModsSelect<T extends boolean = true> {
   game?: T;
   image?: T;
   description?: T;
+  augments?: T;
+  zombies?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -703,6 +1026,7 @@ export interface FieldUpgradesSelect<T extends boolean = true> {
   game?: T;
   image?: T;
   description?: T;
+  augments?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -725,12 +1049,13 @@ export interface WeaponsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   image?: T;
+  weaponBuilds?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weapon-builds_select".
+ * via the `definition` "weaponBuilds_select".
  */
 export interface WeaponBuildsSelect<T extends boolean = true> {
   title?: T;
@@ -751,6 +1076,21 @@ export interface LegalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "augments_select".
+ */
+export interface AugmentsSelect<T extends boolean = true> {
+  title?: T;
+  type?: T;
+  image?: T;
+  description?: T;
+  perk?: T;
+  ammoMod?: T;
+  fieldUpgrade?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

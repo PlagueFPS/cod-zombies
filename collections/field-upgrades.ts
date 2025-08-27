@@ -15,6 +15,9 @@ export const FieldUpgrades: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Name of the field upgrade.",
+			},
 		},
 		{
 			name: "game",
@@ -22,18 +25,38 @@ export const FieldUpgrades: CollectionConfig = {
 			type: "relationship",
 			relationTo: "games",
 			required: true,
+			admin: {
+				description: "Game this field upgrade belongs to.",
+			},
 		},
 		{
 			name: "image",
 			label: "Image",
 			type: "upload",
 			relationTo: "media",
+			admin: {
+				description: "Featured image of this field upgrade.",
+			},
 		},
 		{
 			name: "description",
 			label: "Description",
 			type: "textarea",
 			required: true,
+			admin: {
+				description: "Description used in tooltips and hover cards.",
+			},
+		},
+		{
+			name: "augments",
+			label: "Augments",
+			type: "join",
+			collection: "augments",
+			on: "fieldUpgrade",
+			hasMany: true,
+			admin: {
+				description: "Augments that belong to this field upgrade.",
+			},
 		},
 	],
 }

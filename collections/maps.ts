@@ -18,6 +18,9 @@ export const Maps: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Name of the map.",
+			},
 		},
 		{
 			name: "slug",
@@ -28,6 +31,7 @@ export const Maps: CollectionConfig = {
 			index: true,
 			admin: {
 				position: "sidebar",
+				description: "Unique slug for the map. Used to form the canonical URL.",
 			},
 			hooks: {
 				beforeValidate: [formatSlug("title")],
@@ -42,6 +46,7 @@ export const Maps: CollectionConfig = {
 					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
+				description: "Release date of the map.",
 			},
 			required: true,
 		},
@@ -51,6 +56,9 @@ export const Maps: CollectionConfig = {
 			type: "relationship",
 			relationTo: "games",
 			required: true,
+			admin: {
+				description: "Game this map belongs to.",
+			},
 		},
 		{
 			name: "image",
@@ -58,6 +66,9 @@ export const Maps: CollectionConfig = {
 			type: "upload",
 			relationTo: "media",
 			required: true,
+			admin: {
+				description: "Featured image of this map.",
+			},
 		},
 		{
 			name: "description",
@@ -65,6 +76,41 @@ export const Maps: CollectionConfig = {
 			type: "textarea",
 			maxLength: 255,
 			required: true,
+			admin: {
+				description: "SEO description used in meta tags and in preview cards.",
+			},
+		},
+		{
+			name: "mainQuest",
+			label: "Main Quest",
+			type: "join",
+			collection: "mainQuests",
+			on: "map",
+			admin: {
+				description: "Main quest that belongs to this map.",
+			},
+		},
+		{
+			name: "sideQuests",
+			label: "Side Quests",
+			type: "join",
+			collection: "sideQuests",
+			on: "map",
+			hasMany: true,
+			admin: {
+				description: "Side quests that belong to this map.",
+			},
+		},
+		{
+			name: "zombies",
+			label: "Zombies",
+			type: "join",
+			collection: "zombies",
+			on: "maps",
+			hasMany: true,
+			admin: {
+				description: "Zombies that belong to this map.",
+			},
 		},
 	],
 }

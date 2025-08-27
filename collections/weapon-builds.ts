@@ -1,7 +1,7 @@
 import type { CollectionConfig } from "payload"
 
 export const WeaponBuilds: CollectionConfig = {
-	slug: "weapon-builds",
+	slug: "weaponBuilds",
 	admin: {
 		useAsTitle: "title",
 	},
@@ -14,6 +14,9 @@ export const WeaponBuilds: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Name of the weapon build.",
+			},
 		},
 		{
 			name: "weapon",
@@ -21,6 +24,9 @@ export const WeaponBuilds: CollectionConfig = {
 			type: "relationship",
 			relationTo: "weapons",
 			required: true,
+			admin: {
+				description: "Weapon this build belongs to.",
+			},
 		},
 		{
 			name: "attachments",
@@ -29,9 +35,9 @@ export const WeaponBuilds: CollectionConfig = {
 			hasMany: true,
 			admin: {
 				condition: data => {
-					if (data?.buildCode) return false
-					return true
+					return Boolean(data?.buildCode) === false
 				},
+				description: "Attachments that belong to this weapon build.",
 			},
 		},
 		{
@@ -40,9 +46,9 @@ export const WeaponBuilds: CollectionConfig = {
 			type: "text",
 			admin: {
 				condition: data => {
-					if (data?.attachments?.length > 0) return false
-					return true
+					return Boolean(data?.attachments?.length) === false
 				},
+				description: "Build code of the weapon build.",
 			},
 		},
 	],

@@ -14,10 +14,16 @@ export const Media: CollectionConfig = {
 			name: "title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Title of the media.",
+			},
 		},
 		{
 			name: "description",
 			type: "text",
+			admin: {
+				description: "Used as the caption and alt text for the media.",
+			},
 		},
 	],
 	upload: {

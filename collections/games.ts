@@ -17,6 +17,9 @@ export const Games: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			admin: {
+				description: "Name of the game.",
+			},
 		},
 		{
 			name: "slug",
@@ -27,6 +30,7 @@ export const Games: CollectionConfig = {
 			unique: true,
 			admin: {
 				position: "sidebar",
+				description: "Unique slug for the game. Used to form the canonical URL.",
 			},
 			hooks: {
 				beforeValidate: [formatSlug("title")],
@@ -42,6 +46,7 @@ export const Games: CollectionConfig = {
 					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
+				description: "Release date of the game.",
 			},
 		},
 		{
@@ -50,6 +55,53 @@ export const Games: CollectionConfig = {
 			type: "upload",
 			relationTo: "media",
 			required: true,
+			admin: {
+				description: "Cover image of the game.",
+			},
+		},
+		{
+			name: "maps",
+			label: "Maps",
+			type: "join",
+			collection: "maps",
+			on: "game",
+			hasMany: true,
+			admin: {
+				description: "Maps that belong to this game.",
+			},
+		},
+		{
+			name: "perks",
+			label: "Perks",
+			type: "join",
+			collection: "perks",
+			on: "game",
+			hasMany: true,
+			admin: {
+				description: "Perks that belong to this game.",
+			},
+		},
+		{
+			name: "fieldUpgrades",
+			label: "Field Upgrades",
+			type: "join",
+			collection: "fieldUpgrades",
+			on: "game",
+			hasMany: true,
+			admin: {
+				description: "Field upgrades that belong to this game.",
+			},
+		},
+		{
+			name: "gobblegum",
+			label: "Gobblegum",
+			type: "join",
+			collection: "gobblegum",
+			on: "game",
+			hasMany: true,
+			admin: {
+				description: "Gobblegum that belong to this game.",
+			},
 		},
 	],
 }
