@@ -1,5 +1,6 @@
 import { sqliteAdapter } from "@payloadcms/db-sqlite"
 import {
+	BlocksFeature,
 	EXPERIMENTAL_TableFeature,
 	FixedToolbarFeature,
 	lexicalEditor,
@@ -9,6 +10,7 @@ import { Redacted } from "effect"
 import { buildConfig } from "payload"
 import { AmmoMods } from "./collections/ammo-mods"
 import { Augments } from "./collections/augments"
+import { InlineRelationshipBlock } from "./collections/blocks/inline-relationship"
 import { FieldUpgrades } from "./collections/field-upgrades"
 import { Games } from "./collections/games"
 import { Gobblegum } from "./collections/gobblegum"
@@ -37,6 +39,7 @@ export default buildConfig({
 			fileSize: 500_000, // 500KB
 		},
 	},
+	blocks: [InlineRelationshipBlock],
 	editor: lexicalEditor({
 		features: ({ defaultFeatures }) => [
 			...defaultFeatures,
@@ -45,6 +48,9 @@ export default buildConfig({
 			}),
 			FixedToolbarFeature(),
 			EXPERIMENTAL_TableFeature(),
+			BlocksFeature({
+				inlineBlocks: ["inline-relationship"],
+			}),
 		],
 	}),
 	db: sqliteAdapter({

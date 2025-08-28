@@ -73,3 +73,6 @@ export class LinearGetIssueLabelsError extends Data.TaggedError(
 	"LinearGetIssueLabelsError",
 )<CommonErrorProps> {}
 export class PreviewImageError extends Data.TaggedError("PreviewImageError")<CommonErrorProps> {}
+export class PayloadFindByIDError extends Data.TaggedError(
+	"PayloadFindByIDError",
+)<CommonErrorProps> {}

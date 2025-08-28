@@ -65,7 +65,9 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    'inline-relationship': InlineRelationship;
+  };
   collections: {
     users: User;
     media: Media;
@@ -172,27 +174,147 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "inline-relationship".
  */
-export interface User {
+export interface InlineRelationship {
+  relationship:
+    | {
+        relationTo: 'ammoMods';
+        value: string | AmmoMod;
+      }
+    | {
+        relationTo: 'fieldUpgrades';
+        value: string | FieldUpgrade;
+      }
+    | {
+        relationTo: 'augments';
+        value: string | Augment;
+      }
+    | {
+        relationTo: 'perks';
+        value: string | Perk;
+      }
+    | {
+        relationTo: 'zombies';
+        value: string | Zombie;
+      }
+    | {
+        relationTo: 'weaponBuilds';
+        value: string | WeaponBuild;
+      }
+    | {
+        relationTo: 'gobblegum';
+        value: string | Gobblegum;
+      };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'inline-relationship';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ammoMods".
+ */
+export interface AmmoMod {
   id: string;
+  /**
+   * Name of the ammo mod.
+   */
+  title: string;
+  /**
+   * Game this ammo mod belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this ammo mod.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Augments that belong to this ammo mod.
+   */
+  augments?: {
+    docs?: (string | Augment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Zombies that are weak to this ammo mod.
+   */
+  zombies?: {
+    docs?: (string | Zombie)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "games".
+ */
+export interface Game {
+  id: string;
+  /**
+   * Name of the game.
+   */
+  title: string;
+  /**
+   * Unique slug for the game. Used to form the canonical URL.
+   */
+  slug: string;
+  /**
+   * Release date of the game.
+   */
+  releaseDate: string;
+  /**
+   * Cover image of the game.
+   */
+  image: string | Media;
+  /**
+   * Maps that are featured in this game.
+   */
+  maps?: {
+    docs?: (string | Map)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Perks that are featured in this game.
+   */
+  perks?: {
+    docs?: (string | Perk)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Field upgrades that are featured in this game.
+   */
+  fieldUpgrades?: {
+    docs?: (string | FieldUpgrade)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Gobblegum that are featured in this game.
+   */
+  gobblegum?: {
+    docs?: (string | Gobblegum)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Weapons that are featured in this game.
+   */
+  weapons?: {
+    docs?: (string | Weapon)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -279,183 +401,95 @@ export interface Map {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "games".
+ * via the `definition` "mainQuests".
  */
-export interface Game {
+export interface MainQuest {
   id: string;
   /**
-   * Name of the game.
+   * Title of the main quest.
    */
   title: string;
   /**
-   * Unique slug for the game. Used to form the canonical URL.
+   * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
+   */
+  isComingSoon: boolean;
+  /**
+   * Difficulty of the main quest.
+   */
+  difficulty?: ('Easy' | 'Medium' | 'Hard') | null;
+  /**
+   * Map this main quest belongs to.
+   */
+  map: string | Map;
+  /**
+   * Contents of the main quest.
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sideQuests".
+ */
+export interface SideQuest {
+  id: string;
+  /**
+   * Name of the side quest.
+   */
+  title: string;
+  /**
+   * Unique slug for the side quest. Used to form the canonical URL.
    */
   slug: string;
   /**
-   * Release date of the game.
+   * Map this side quest belongs to.
    */
-  releaseDate: string;
+  map: string | Map;
   /**
-   * Cover image of the game.
-   */
-  image: string | Media;
-  /**
-   * Maps that are featured in this game.
-   */
-  maps?: {
-    docs?: (string | Map)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Perks that are featured in this game.
-   */
-  perks?: {
-    docs?: (string | Perk)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Field upgrades that are featured in this game.
-   */
-  fieldUpgrades?: {
-    docs?: (string | FieldUpgrade)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Gobblegum that are featured in this game.
-   */
-  gobblegum?: {
-    docs?: (string | Gobblegum)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Weapons that are featured in this game.
-   */
-  weapons?: {
-    docs?: (string | Weapon)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "perks".
- */
-export interface Perk {
-  id: string;
-  /**
-   * Name of the perk.
-   */
-  title: string;
-  /**
-   * Game this perk belongs to.
-   */
-  game: string | Game;
-  /**
-   * Featured image of this perk.
-   */
-  image: string | Media;
-  /**
-   * Description used in tooltips and hover cards.
-   */
-  description: string;
-  /**
-   * Modifier used in tooltips and hover cards.
-   */
-  modifier?: string | null;
-  /**
-   * Augments that belong to this perk.
-   */
-  augments?: {
-    docs?: (string | Augment)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "augments".
- */
-export interface Augment {
-  id: string;
-  /**
-   * Name of the augment.
-   */
-  title: string;
-  /**
-   * Type of the augment.
-   */
-  type: 'Major' | 'Minor';
-  /**
-   * Featured image of this augment.
-   */
-  image: string | Media;
-  /**
-   * Description used in tooltips and hover cards.
-   */
-  description: string;
-  /**
-   * Perk this augment belongs to.
-   */
-  perk?: (string | null) | Perk;
-  /**
-   * Ammo mod this augment belongs to.
-   */
-  ammoMod?: (string | null) | AmmoMod;
-  /**
-   * Field upgrade this augment belongs to.
-   */
-  fieldUpgrade?: (string | null) | FieldUpgrade;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ammoMods".
- */
-export interface AmmoMod {
-  id: string;
-  /**
-   * Name of the ammo mod.
-   */
-  title: string;
-  /**
-   * Game this ammo mod belongs to.
-   */
-  game: string | Game;
-  /**
-   * Featured image of this ammo mod.
+   * Featured image of this side quest.
    */
   image?: (string | null) | Media;
   /**
-   * Description used in tooltips and hover cards.
+   * SEO description used in meta tags and in preview cards.
    */
   description: string;
   /**
-   * Augments that belong to this ammo mod.
+   * Contents of the side quest.
    */
-  augments?: {
-    docs?: (string | Augment)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Zombies that are weak to this ammo mod.
-   */
-  zombies?: {
-    docs?: (string | Zombie)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -563,6 +597,80 @@ export interface ZombieAttack {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "perks".
+ */
+export interface Perk {
+  id: string;
+  /**
+   * Name of the perk.
+   */
+  title: string;
+  /**
+   * Game this perk belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this perk.
+   */
+  image: string | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Modifier used in tooltips and hover cards.
+   */
+  modifier?: string | null;
+  /**
+   * Augments that belong to this perk.
+   */
+  augments?: {
+    docs?: (string | Augment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "augments".
+ */
+export interface Augment {
+  id: string;
+  /**
+   * Name of the augment.
+   */
+  title: string;
+  /**
+   * Type of the augment.
+   */
+  type: 'Major' | 'Minor';
+  /**
+   * Featured image of this augment.
+   */
+  image: string | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Perk this augment belongs to.
+   */
+  perk?: (string | null) | Perk;
+  /**
+   * Ammo mod this augment belongs to.
+   */
+  ammoMod?: (string | null) | AmmoMod;
+  /**
+   * Field upgrade this augment belongs to.
+   */
+  fieldUpgrade?: (string | null) | FieldUpgrade;
   updatedAt: string;
   createdAt: string;
 }
@@ -688,95 +796,27 @@ export interface WeaponBuild {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "mainQuests".
+ * via the `definition` "users".
  */
-export interface MainQuest {
+export interface User {
   id: string;
-  /**
-   * Title of the main quest.
-   */
-  title: string;
-  /**
-   * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
-   */
-  isComingSoon: boolean;
-  /**
-   * Difficulty of the main quest.
-   */
-  difficulty?: ('Easy' | 'Medium' | 'Hard') | null;
-  /**
-   * Map this main quest belongs to.
-   */
-  map: string | Map;
-  /**
-   * Contents of the main quest.
-   */
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sideQuests".
- */
-export interface SideQuest {
-  id: string;
-  /**
-   * Name of the side quest.
-   */
-  title: string;
-  /**
-   * Unique slug for the side quest. Used to form the canonical URL.
-   */
-  slug: string;
-  /**
-   * Map this side quest belongs to.
-   */
-  map: string | Map;
-  /**
-   * Featured image of this side quest.
-   */
-  image?: (string | null) | Media;
-  /**
-   * SEO description used in meta tags and in preview cards.
-   */
-  description: string;
-  /**
-   * Contents of the side quest.
-   */
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
