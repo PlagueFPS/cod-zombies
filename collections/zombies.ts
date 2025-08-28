@@ -81,6 +81,7 @@ export const Zombies: CollectionConfig = {
 			required: true,
 			admin: {
 				description: "Games this zombie is featured in.",
+				appearance: "drawer",
 			},
 		},
 		{
@@ -92,6 +93,7 @@ export const Zombies: CollectionConfig = {
 			required: true,
 			admin: {
 				description: "Maps this zombie is featured in.",
+				appearance: "drawer",
 			},
 		},
 		{
@@ -141,6 +143,7 @@ export const Zombies: CollectionConfig = {
 			hasMany: true,
 			admin: {
 				description: "Elemental weaknesses of the zombie.",
+				appearance: "drawer",
 			},
 		},
 		{
@@ -152,6 +155,7 @@ export const Zombies: CollectionConfig = {
 			required: true,
 			admin: {
 				description: "Attacks of the zombie.",
+				appearance: "drawer",
 			},
 		},
 		{

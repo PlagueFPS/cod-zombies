@@ -1,5 +1,10 @@
 import { sqliteAdapter } from "@payloadcms/db-sqlite"
-import { lexicalEditor } from "@payloadcms/richtext-lexical"
+import {
+	EXPERIMENTAL_TableFeature,
+	FixedToolbarFeature,
+	lexicalEditor,
+	RelationshipFeature,
+} from "@payloadcms/richtext-lexical"
 import { Redacted } from "effect"
 import { buildConfig } from "payload"
 import { AmmoMods } from "./collections/ammo-mods"
@@ -32,7 +37,16 @@ export default buildConfig({
 			fileSize: 500_000, // 500KB
 		},
 	},
-	editor: lexicalEditor(),
+	editor: lexicalEditor({
+		features: ({ defaultFeatures }) => [
+			...defaultFeatures,
+			RelationshipFeature({
+				disabledCollections: ["users"],
+			}),
+			FixedToolbarFeature(),
+			EXPERIMENTAL_TableFeature(),
+		],
+	}),
 	db: sqliteAdapter({
 		client: {
 			url: Redacted.value(env.DATABASE_URL),
