@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
 	async redirects() {
 		return [
 			{
+				source: "/bestiary/the-corruputed-keeper",
+				destination: "/bestiary/the-corrupted-keeper",
+				permanent: true,
+			},
+			{
 				source: "/side-quests/black-ops-6/reckoning/free-1500-points",
 				destination: "/side-quests/black-ops-6/reckoning/paintings",
 				permanent: true,

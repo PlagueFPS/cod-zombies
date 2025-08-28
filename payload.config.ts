@@ -3,6 +3,7 @@ import {
 	BlocksFeature,
 	EXPERIMENTAL_TableFeature,
 	FixedToolbarFeature,
+	LinkFeature,
 	lexicalEditor,
 	RelationshipFeature,
 } from "@payloadcms/richtext-lexical"
@@ -21,6 +22,7 @@ import { Media } from "./collections/media"
 import { Perks } from "./collections/perks"
 import { SideQuests } from "./collections/side-quests"
 import { Users } from "./collections/users"
+import { WeakPoints } from "./collections/weak-points"
 import { WeaponBuilds } from "./collections/weapon-builds"
 import { Weapons } from "./collections/weapons"
 import { ZombieAttacks } from "./collections/zombie-attacks"
@@ -44,7 +46,10 @@ export default buildConfig({
 		features: ({ defaultFeatures }) => [
 			...defaultFeatures,
 			RelationshipFeature({
-				disabledCollections: ["users"],
+				disabledCollections: ["users", "media"],
+			}),
+			LinkFeature({
+				enabledCollections: ["maps", "zombies", "sideQuests"],
 			}),
 			FixedToolbarFeature(),
 			EXPERIMENTAL_TableFeature(),
@@ -79,5 +84,6 @@ export default buildConfig({
 		WeaponBuilds,
 		Legal,
 		Augments,
+		WeakPoints,
 	],
 })

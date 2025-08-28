@@ -127,9 +127,9 @@ export const Zombies: CollectionConfig = {
 		{
 			name: "weakPoints",
 			label: "Weak Points",
-			type: "text",
+			type: "relationship",
+			relationTo: "weakPoints",
 			hasMany: true,
-			required: true,
 			admin: {
 				description: "Weak points of the zombie.",
 			},

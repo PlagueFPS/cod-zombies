@@ -85,6 +85,7 @@ export interface Config {
     weaponBuilds: WeaponBuild;
     legal: Legal;
     augments: Augment;
+    weakPoints: WeakPoint;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -118,6 +119,9 @@ export interface Config {
     weapons: {
       weaponBuilds: 'weaponBuilds';
     };
+    weakPoints: {
+      zombies: 'zombies';
+    };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
@@ -136,6 +140,7 @@ export interface Config {
     weaponBuilds: WeaponBuildsSelect<false> | WeaponBuildsSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
     augments: AugmentsSelect<false> | AugmentsSelect<true>;
+    weakPoints: WeakPointsSelect<false> | WeakPointsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -536,7 +541,7 @@ export interface Zombie {
   /**
    * Weak points of the zombie.
    */
-  weakPoints: string[];
+  weakPoints?: (string | WeakPoint)[] | null;
   /**
    * Elemental weaknesses of the zombie.
    */
@@ -570,6 +575,27 @@ export interface Zombie {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weakPoints".
+ */
+export interface WeakPoint {
+  id: string;
+  /**
+   * Name of the weak point.
+   */
+  title: string;
+  /**
+   * Zombies that have this weak point.
+   */
+  zombies?: {
+    docs?: (string | Zombie)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -924,6 +950,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'augments';
         value: string | Augment;
+      } | null)
+    | ({
+        relationTo: 'weakPoints';
+        value: string | WeakPoint;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1209,6 +1239,16 @@ export interface AugmentsSelect<T extends boolean = true> {
   perk?: T;
   ammoMod?: T;
   fieldUpgrade?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weakPoints_select".
+ */
+export interface WeakPointsSelect<T extends boolean = true> {
+  title?: T;
+  zombies?: T;
   updatedAt?: T;
   createdAt?: T;
 }

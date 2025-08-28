@@ -20,14 +20,13 @@ const InlineRelationshipLabel: BlocksFieldLabelServerComponent = props => {
 export default InlineRelationshipLabel
 
 const InlineRelationshipLabelData: BlocksFieldLabelServerComponent = async ({
-	clientField,
 	path,
 	required,
 	formState,
 	payload,
 }) => {
 	return await Effect.gen(function* () {
-		let label = clientField.label || clientField.name
+		let label = "inline-relationship"
 		if (!formState?.relationship?.value)
 			return <FieldLabel label={label} path={path} required={required} />
 
@@ -55,13 +54,7 @@ const InlineRelationshipLabelData: BlocksFieldLabelServerComponent = async ({
 		Effect.withLogSpan("inline_relationship_label"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(() =>
-			Effect.succeed(
-				<FieldLabel
-					label={clientField.label || clientField.name}
-					path={path}
-					required={required}
-				/>,
-			),
+			Effect.succeed(<FieldLabel label={"inline-relationship"} path={path} required={required} />),
 		),
 		Effect.runPromise,
 	)
