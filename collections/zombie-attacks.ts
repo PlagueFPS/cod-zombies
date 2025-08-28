@@ -14,6 +14,7 @@ export const ZombieAttacks: CollectionConfig = {
 			name: "title",
 			label: "Title",
 			type: "text",
+			index: true,
 			required: true,
 			admin: {
 				description: "Name of the zombie attack.",

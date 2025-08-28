@@ -1,6 +1,7 @@
 import type { BlocksFieldLabelServerComponent, CollectionSlug } from "payload"
 import { FieldLabel } from "@payloadcms/ui"
 import { Effect, Predicate } from "effect"
+import { Suspense } from "react"
 import { PayloadFindByIDError } from "@/types/errors"
 
 interface InlineRelationshipValue {
@@ -8,7 +9,17 @@ interface InlineRelationshipValue {
 	value: string
 }
 
-const InlineRelationshipLabel: BlocksFieldLabelServerComponent = async ({
+const InlineRelationshipLabel: BlocksFieldLabelServerComponent = props => {
+	return (
+		<Suspense>
+			<InlineRelationshipLabelData {...props} />
+		</Suspense>
+	)
+}
+
+export default InlineRelationshipLabel
+
+const InlineRelationshipLabelData: BlocksFieldLabelServerComponent = async ({
 	clientField,
 	path,
 	required,
@@ -16,7 +27,11 @@ const InlineRelationshipLabel: BlocksFieldLabelServerComponent = async ({
 	payload,
 }) => {
 	return await Effect.gen(function* () {
-		const { relationTo, value } = formState?.relationship?.value as InlineRelationshipValue
+		let label = clientField.label || clientField.name
+		if (!formState?.relationship?.value)
+			return <FieldLabel label={label} path={path} required={required} />
+
+		const { relationTo, value } = formState.relationship.value as InlineRelationshipValue
 		const doc = yield* Effect.tryPromise({
 			try: () =>
 				payload.findByID({
@@ -33,7 +48,6 @@ const InlineRelationshipLabel: BlocksFieldLabelServerComponent = async ({
 				}),
 		})
 
-		let label = clientField.label || clientField.name
 		if (Predicate.hasProperty(doc, "title")) label = doc.title
 
 		return <FieldLabel label={label} path={path} required={required} />
@@ -52,5 +66,3 @@ const InlineRelationshipLabel: BlocksFieldLabelServerComponent = async ({
 		Effect.runPromise,
 	)
 }
-
-export default InlineRelationshipLabel

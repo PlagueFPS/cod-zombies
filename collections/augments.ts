@@ -11,6 +11,7 @@ export const Augments: CollectionConfig = {
 			name: "title",
 			label: "Title",
 			type: "text",
+			index: true,
 			required: true,
 			admin: {
 				description: "Name of the augment.",
@@ -58,6 +59,7 @@ export const Augments: CollectionConfig = {
 					return Boolean(data?.ammoMod) === false && Boolean(data?.fieldUpgrade) === false
 				},
 				description: "Perk this augment belongs to.",
+				appearance: "drawer",
 			},
 		},
 		{
@@ -70,6 +72,7 @@ export const Augments: CollectionConfig = {
 					return Boolean(data?.perk) === false && Boolean(data?.fieldUpgrade) === false
 				},
 				description: "Ammo mod this augment belongs to.",
+				appearance: "drawer",
 			},
 		},
 		{
@@ -82,6 +85,7 @@ export const Augments: CollectionConfig = {
 					return Boolean(data?.perk) === false && Boolean(data?.ammoMod) === false
 				},
 				description: "Field upgrade this augment belongs to.",
+				appearance: "drawer",
 			},
 		},
 	],

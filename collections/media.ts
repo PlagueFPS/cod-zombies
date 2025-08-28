@@ -3,6 +3,7 @@ import type { CollectionConfig } from "payload"
 export const Media: CollectionConfig = {
 	slug: "media",
 	admin: {
+		useAsTitle: "title",
 		defaultColumns: ["fileName", "mimeType", "fileSize", "updatedAt"],
 	},
 	defaultPopulate: {
@@ -16,6 +17,7 @@ export const Media: CollectionConfig = {
 		{
 			name: "title",
 			type: "text",
+			index: true,
 			required: true,
 			admin: {
 				description: "Title of the media.",

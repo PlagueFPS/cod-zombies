@@ -22,6 +22,7 @@ export const Legal: CollectionConfig = {
 			name: "title",
 			label: "Title",
 			type: "text",
+			index: true,
 			required: true,
 			admin: {
 				description: "Title of the legal document.",

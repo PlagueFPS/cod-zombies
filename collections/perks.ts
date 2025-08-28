@@ -16,6 +16,7 @@ export const Perks: CollectionConfig = {
 			name: "title",
 			label: "Title",
 			type: "text",
+			index: true,
 			required: true,
 			admin: {
 				description: "Name of the perk.",

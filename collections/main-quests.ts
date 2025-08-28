@@ -21,6 +21,7 @@ export const MainQuests: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			index: true,
 			unique: true,
 			admin: {
 				description: "Title of the main quest.",

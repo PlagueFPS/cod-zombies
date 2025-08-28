@@ -16,6 +16,7 @@ export const AmmoMods: CollectionConfig = {
 			label: "Title",
 			type: "text",
 			required: true,
+			index: true,
 			admin: {
 				description: "Name of the ammo mod.",
 			},

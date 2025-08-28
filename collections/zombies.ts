@@ -22,6 +22,7 @@ export const Zombies: CollectionConfig = {
 			name: "title",
 			label: "Title",
 			type: "text",
+			index: true,
 			required: true,
 			admin: {
 				description: "Name of the zombie.",
@@ -81,7 +82,6 @@ export const Zombies: CollectionConfig = {
 			required: true,
 			admin: {
 				description: "Games this zombie is featured in.",
-				appearance: "drawer",
 			},
 		},
 		{
@@ -93,7 +93,6 @@ export const Zombies: CollectionConfig = {
 			required: true,
 			admin: {
 				description: "Maps this zombie is featured in.",
-				appearance: "drawer",
 			},
 		},
 		{
@@ -155,7 +154,6 @@ export const Zombies: CollectionConfig = {
 			required: true,
 			admin: {
 				description: "Attacks of the zombie.",
-				appearance: "drawer",
 			},
 		},
 		{
