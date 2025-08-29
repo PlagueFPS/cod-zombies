@@ -11,7 +11,13 @@ import { Redacted } from "effect"
 import { buildConfig } from "payload"
 import { AmmoMods } from "./collections/ammo-mods"
 import { Augments } from "./collections/augments"
-import { InlineRelationshipBlock } from "./collections/blocks/inline-relationship"
+import { InlineAmmoModBlock } from "./collections/blocks/inline-ammo-mod"
+import { InlineAugmentBlock } from "./collections/blocks/inline-augment"
+import { InlineFieldUpgradeBlock } from "./collections/blocks/inline-field-upgrade"
+import { InlineGobblegumBlock } from "./collections/blocks/inline-gobblegum"
+import { InlinePerkBlock } from "./collections/blocks/inline-perk"
+import { InlineWeaponBuildBlock } from "./collections/blocks/inline-weapon-build"
+import { InlineZombiesBlock } from "./collections/blocks/inline-zombies"
 import { FieldUpgrades } from "./collections/field-upgrades"
 import { Games } from "./collections/games"
 import { Gobblegum } from "./collections/gobblegum"
@@ -56,7 +62,15 @@ export default buildConfig({
 			FixedToolbarFeature(),
 			EXPERIMENTAL_TableFeature(),
 			BlocksFeature({
-				inlineBlocks: ["inline-relationship"],
+				inlineBlocks: [
+					"ammo-mod",
+					"augment",
+					"field-upgrade",
+					"perk",
+					"weapon-build",
+					"zombie",
+					"gobblegum",
+				],
 			}),
 		],
 	}),
@@ -69,7 +83,15 @@ export default buildConfig({
 		generateSchemaOutputFile: "./data/db/payload-generated.schema.ts",
 		idType: "uuid",
 	}),
-	blocks: [InlineRelationshipBlock],
+	blocks: [
+		InlineAugmentBlock,
+		InlineFieldUpgradeBlock,
+		InlinePerkBlock,
+		InlineWeaponBuildBlock,
+		InlineZombiesBlock,
+		InlineGobblegumBlock,
+		InlineAmmoModBlock,
+	],
 	collections: [
 		Users,
 		Media,

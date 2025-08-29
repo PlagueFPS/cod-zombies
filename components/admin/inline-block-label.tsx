@@ -4,45 +4,43 @@ import { Effect, Predicate } from "effect"
 import { Suspense } from "react"
 import { PayloadFindByIDError } from "@/types/errors"
 
-interface InlineRelationshipValue {
-	relationTo: CollectionSlug
-	value: string
-}
-
-const InlineRelationshipLabel: BlocksFieldLabelServerComponent = props => {
+const InlineBlockLabel: BlocksFieldLabelServerComponent = props => {
 	return (
 		<Suspense>
-			<InlineRelationshipLabelData {...props} />
+			<InlineBlockLabelData {...props} />
 		</Suspense>
 	)
 }
 
-export default InlineRelationshipLabel
+export default InlineBlockLabel
 
-const InlineRelationshipLabelData: BlocksFieldLabelServerComponent = async ({
+const InlineBlockLabelData: BlocksFieldLabelServerComponent = async ({
 	path,
 	required,
 	formState,
 	payload,
 }) => {
 	return await Effect.gen(function* () {
-		let label = "inline-relationship"
-		if (!formState?.relationship?.value)
+		let label = "inline-block"
+		const relationTo = Object.keys(formState)[1]
+		if (!relationTo) return <FieldLabel label={label} path={path} required={required} />
+
+		const relationId = formState[relationTo]?.value
+		if (!relationId || typeof relationId !== "string")
 			return <FieldLabel label={label} path={path} required={required} />
 
-		const { relationTo, value } = formState.relationship.value as InlineRelationshipValue
 		const doc = yield* Effect.tryPromise({
 			try: () =>
 				payload.findByID({
-					collection: relationTo,
-					id: value,
+					collection: relationTo as CollectionSlug,
+					id: relationId,
 					select: {
 						title: true,
 					},
 				}),
 			catch: error =>
 				new PayloadFindByIDError({
-					message: `Failed to find document for relation: ${relationTo} with ID: ${value}`,
+					message: `Failed to find document for relation: ${relationTo} with ID: ${relationId}`,
 					cause: error,
 				}),
 		})
@@ -51,10 +49,10 @@ const InlineRelationshipLabelData: BlocksFieldLabelServerComponent = async ({
 
 		return <FieldLabel label={label} path={path} required={required} />
 	}).pipe(
-		Effect.withLogSpan("inline_relationship_label"),
+		Effect.withLogSpan("inline_block_label"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(() =>
-			Effect.succeed(<FieldLabel label={"inline-relationship"} path={path} required={required} />),
+			Effect.succeed(<FieldLabel label={"inline-block"} path={path} required={required} />),
 		),
 		Effect.runPromise,
 	)

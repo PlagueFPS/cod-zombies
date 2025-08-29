@@ -830,7 +830,7 @@ export const zombie_attacks = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    zombie_attacks_title_idx: index("zombie_attacks_title_idx").on(
+    zombie_attacks_title_idx: uniqueIndex("zombie_attacks_title_idx").on(
       columns.title,
     ),
     zombie_attacks_updated_at_idx: index("zombie_attacks_updated_at_idx").on(

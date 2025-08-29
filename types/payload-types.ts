@@ -66,7 +66,13 @@ export interface Config {
     users: UserAuthOperations;
   };
   blocks: {
-    'inline-relationship': InlineRelationship;
+    augment: Augment;
+    'field-upgrade': FieldUpgrade1;
+    perk: Perk1;
+    'weapon-build': WeaponBuild1;
+    zombie: Zombie1;
+    gobblegum: Gobblegum;
+    'ammo-mod': AmmoMod1;
   };
   collections: {
     users: User;
@@ -84,7 +90,7 @@ export interface Config {
     weapons: Weapon;
     weaponBuilds: WeaponBuild;
     legal: Legal;
-    augments: Augment;
+    augments: Augment1;
     weakPoints: WeakPoint;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -179,77 +185,111 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "inline-relationship".
+ * via the `definition` "augment".
  */
-export interface InlineRelationship {
-  relationship:
-    | {
-        relationTo: 'ammoMods';
-        value: string | AmmoMod;
-      }
-    | {
-        relationTo: 'fieldUpgrades';
-        value: string | FieldUpgrade;
-      }
-    | {
-        relationTo: 'augments';
-        value: string | Augment;
-      }
-    | {
-        relationTo: 'perks';
-        value: string | Perk;
-      }
-    | {
-        relationTo: 'zombies';
-        value: string | Zombie;
-      }
-    | {
-        relationTo: 'weaponBuilds';
-        value: string | WeaponBuild;
-      }
-    | {
-        relationTo: 'gobblegum';
-        value: string | Gobblegum;
-      };
+export interface Augment {
+  /**
+   * Augment you want to embed inline.
+   */
+  augments: string | Augment1;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'inline-relationship';
+  blockType: 'augment';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ammoMods".
+ * via the `definition` "augments".
  */
-export interface AmmoMod {
+export interface Augment1 {
   id: string;
   /**
-   * Name of the ammo mod.
+   * Name of the augment.
    */
   title: string;
   /**
-   * Game this ammo mod belongs to.
+   * Type of the augment.
    */
-  game: string | Game;
+  type: 'Major' | 'Minor';
   /**
-   * Featured image of this ammo mod.
+   * Featured image of this augment.
    */
-  image?: (string | null) | Media;
+  image: string | Media;
   /**
    * Description used in tooltips and hover cards.
    */
   description: string;
   /**
-   * Augments that belong to this ammo mod.
+   * Perk this augment belongs to.
+   */
+  perk?: (string | null) | Perk;
+  /**
+   * Ammo mod this augment belongs to.
+   */
+  ammoMod?: (string | null) | AmmoMod;
+  /**
+   * Field upgrade this augment belongs to.
+   */
+  fieldUpgrade?: (string | null) | FieldUpgrade;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  /**
+   * Title of the media.
+   */
+  title: string;
+  /**
+   * Used as the caption and alt text for the media.
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "perks".
+ */
+export interface Perk {
+  id: string;
+  /**
+   * Name of the perk.
+   */
+  title: string;
+  /**
+   * Game this perk belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this perk.
+   */
+  image: string | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Modifier used in tooltips and hover cards.
+   */
+  modifier?: string | null;
+  /**
+   * Augments that belong to this perk.
    */
   augments?: {
-    docs?: (string | Augment)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Zombies that are weak to this ammo mod.
-   */
-  zombies?: {
-    docs?: (string | Zombie)[];
+    docs?: (string | Augment1)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -320,32 +360,6 @@ export interface Game {
   };
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  /**
-   * Title of the media.
-   */
-  title: string;
-  /**
-   * Used as the caption and alt text for the media.
-   */
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -599,6 +613,47 @@ export interface WeakPoint {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ammoMods".
+ */
+export interface AmmoMod {
+  id: string;
+  /**
+   * Name of the ammo mod.
+   */
+  title: string;
+  /**
+   * Game this ammo mod belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this ammo mod.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  /**
+   * Augments that belong to this ammo mod.
+   */
+  augments?: {
+    docs?: (string | Augment1)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Zombies that are weak to this ammo mod.
+   */
+  zombies?: {
+    docs?: (string | Zombie)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "zombieAttacks".
  */
 export interface ZombieAttack {
@@ -628,80 +683,6 @@ export interface ZombieAttack {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "perks".
- */
-export interface Perk {
-  id: string;
-  /**
-   * Name of the perk.
-   */
-  title: string;
-  /**
-   * Game this perk belongs to.
-   */
-  game: string | Game;
-  /**
-   * Featured image of this perk.
-   */
-  image: string | Media;
-  /**
-   * Description used in tooltips and hover cards.
-   */
-  description: string;
-  /**
-   * Modifier used in tooltips and hover cards.
-   */
-  modifier?: string | null;
-  /**
-   * Augments that belong to this perk.
-   */
-  augments?: {
-    docs?: (string | Augment)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "augments".
- */
-export interface Augment {
-  id: string;
-  /**
-   * Name of the augment.
-   */
-  title: string;
-  /**
-   * Type of the augment.
-   */
-  type: 'Major' | 'Minor';
-  /**
-   * Featured image of this augment.
-   */
-  image: string | Media;
-  /**
-   * Description used in tooltips and hover cards.
-   */
-  description: string;
-  /**
-   * Perk this augment belongs to.
-   */
-  perk?: (string | null) | Perk;
-  /**
-   * Ammo mod this augment belongs to.
-   */
-  ammoMod?: (string | null) | AmmoMod;
-  /**
-   * Field upgrade this augment belongs to.
-   */
-  fieldUpgrade?: (string | null) | FieldUpgrade;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "fieldUpgrades".
  */
 export interface FieldUpgrade {
@@ -726,7 +707,7 @@ export interface FieldUpgrade {
    * Augments that belong to this field upgrade.
    */
   augments?: {
-    docs?: (string | Augment)[];
+    docs?: (string | Augment1)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -738,33 +719,13 @@ export interface FieldUpgrade {
  * via the `definition` "gobblegum".
  */
 export interface Gobblegum {
-  id: string;
   /**
-   * Name of the gobblegum.
+   * GobbleGum you want to embed inline.
    */
-  title: string;
-  /**
-   * Rarity of the gobblegum.
-   */
-  rarity: 'Classic' | 'Mega' | 'Rare-Mega' | 'Ultra-Rare Mega' | 'Rare' | 'Epic' | 'Legendary' | 'Ultra';
-  /**
-   * Type of the gobblegum.
-   */
-  type: 'Round-Based' | 'Time-Based' | 'Immediate' | 'Player-Activated';
-  /**
-   * Game this gobblegum belongs to.
-   */
-  game: string | Game;
-  /**
-   * Featured image of this gobblegum.
-   */
-  image: string | Media;
-  /**
-   * Description used in tooltips and hover cards.
-   */
-  description: string;
-  updatedAt: string;
-  createdAt: string;
+  gobblegum: string | Gobblegum;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gobblegum';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -819,6 +780,71 @@ export interface WeaponBuild {
   buildCode?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "field-upgrade".
+ */
+export interface FieldUpgrade1 {
+  /**
+   * Field upgrade you want to embed inline.
+   */
+  fieldUpgrades: string | FieldUpgrade;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'field-upgrade';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "perk".
+ */
+export interface Perk1 {
+  /**
+   * Perk you want to embed inline.
+   */
+  perks: string | Perk;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'perk';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weapon-build".
+ */
+export interface WeaponBuild1 {
+  /**
+   * Weapon build you want to embed inline.
+   */
+  weaponBuilds: string | WeaponBuild;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'weapon-build';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "zombie".
+ */
+export interface Zombie1 {
+  /**
+   * Zombie you want to embed inline.
+   */
+  zombies: string | Zombie;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'zombie';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ammo-mod".
+ */
+export interface AmmoMod1 {
+  /**
+   * Ammo mod you want to embed inline.
+   */
+  ammoMods: string | AmmoMod;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ammo-mod';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -949,7 +975,7 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'augments';
-        value: string | Augment;
+        value: string | Augment1;
       } | null)
     | ({
         relationTo: 'weakPoints';

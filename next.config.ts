@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
 	async redirects() {
 		return [
 			{
+				source: "/bestiary/s-a-m",
+				destination: "/bestiary/sam",
+				permanent: true,
+			},
+			{
 				source: "/bestiary/kransy-soldat",
 				destination: "/bestiary/krasny-soldat",
 				permanent: true,
