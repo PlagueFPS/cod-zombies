@@ -76,3 +76,4 @@ export class PreviewImageError extends Data.TaggedError("PreviewImageError")<Com
 export class PayloadFindByIDError extends Data.TaggedError(
 	"PayloadFindByIDError",
 )<CommonErrorProps> {}
+export class RelationshipError extends Data.TaggedError("RelationshipError")<CommonErrorProps> {}

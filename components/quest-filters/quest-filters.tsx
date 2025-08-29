@@ -1,8 +1,6 @@
 import { Suspense } from "react"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
-import { getGameSearchData } from "@/data/games"
-import { getMapSearchData } from "@/data/maps"
-import { getQuestSearchData } from "@/data/side-quests"
+import { getMainQuestMetadata } from "@/data/main-quests"
 import QuestFiltersClient from "./quest-filters.client"
 
 const difficulties = [
@@ -24,15 +22,11 @@ const difficulties = [
 ]
 
 export async function MainQuestFilters() {
-	const gamesPromise = getGameSearchData()
-	const mapsPromise = getMapSearchData()
-	const [games, maps] = await Promise.all([gamesPromise, mapsPromise])
-	const mapGames = new Set(maps.map(m => m.game.slug))
-	const gameFilters = games.filter(g => mapGames.has(g.slug))
-
+	const mainQuests = await getMainQuestMetadata()
+	const mapGames = new Set(mainQuests.map(q => q.game.slug))
 	return (
 		<Suspense fallback={<QuestFilterLoader filters={["Game", "Difficulty"]} />}>
-			<QuestFiltersClient type="main" games={gameFilters} difficulties={difficulties} />
+			<QuestFiltersClient type="main" games={mapGames} difficulties={difficulties} />
 		</Suspense>
 	)
 }

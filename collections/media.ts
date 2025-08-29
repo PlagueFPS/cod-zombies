@@ -7,11 +7,10 @@ export const Media: CollectionConfig = {
 		defaultColumns: ["fileName", "mimeType", "fileSize", "updatedAt"],
 	},
 	defaultPopulate: {
-		title: true,
 		url: true,
-		fileName: true,
-		mimeType: true,
-		fileSize: true,
+		filename: true,
+		width: true,
+		height: true,
 	},
 	fields: [
 		{

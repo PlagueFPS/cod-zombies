@@ -10,7 +10,6 @@ export const Maps: CollectionConfig = {
 	defaultPopulate: {
 		title: true,
 		slug: true,
-		releaseDate: true,
 	},
 	defaultSort: "-releaseDate",
 	fields: [
