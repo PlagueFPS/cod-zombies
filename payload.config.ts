@@ -29,6 +29,7 @@ import { Perks } from "./collections/perks"
 import { SideQuests } from "./collections/side-quests"
 import { Users } from "./collections/users"
 import { WeakPoints } from "./collections/weak-points"
+import { WeaponAttachments } from "./collections/weapon-attachments"
 import { WeaponBuilds } from "./collections/weapon-builds"
 import { Weapons } from "./collections/weapons"
 import { ZombieAttacks } from "./collections/zombie-attacks"
@@ -100,15 +101,16 @@ export default buildConfig({
 		MainQuests,
 		SideQuests,
 		Zombies,
+		ZombieAttacks,
+		WeakPoints,
 		Gobblegum,
 		Perks,
 		AmmoMods,
 		FieldUpgrades,
-		ZombieAttacks,
+		Augments,
 		Weapons,
 		WeaponBuilds,
+		WeaponAttachments,
 		Legal,
-		Augments,
-		WeakPoints,
 	],
 })

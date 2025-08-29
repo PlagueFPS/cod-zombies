@@ -33,7 +33,8 @@ export const WeaponBuilds: CollectionConfig = {
 		{
 			name: "attachments",
 			label: "Attachments",
-			type: "text",
+			type: "relationship",
+			relationTo: "weaponAttachments",
 			hasMany: true,
 			admin: {
 				condition: data => {
@@ -46,6 +47,7 @@ export const WeaponBuilds: CollectionConfig = {
 			name: "buildCode",
 			label: "Build Code",
 			type: "text",
+			unique: true,
 			admin: {
 				condition: data => {
 					return Boolean(data?.attachments?.length) === false

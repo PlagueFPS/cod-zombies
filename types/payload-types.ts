@@ -92,6 +92,7 @@ export interface Config {
     legal: Legal;
     augments: Augment1;
     weakPoints: WeakPoint;
+    weaponAttachments: WeaponAttachment;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -128,6 +129,9 @@ export interface Config {
     weakPoints: {
       zombies: 'zombies';
     };
+    weaponAttachments: {
+      builds: 'weaponBuilds';
+    };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
@@ -147,6 +151,7 @@ export interface Config {
     legal: LegalSelect<false> | LegalSelect<true>;
     augments: AugmentsSelect<false> | AugmentsSelect<true>;
     weakPoints: WeakPointsSelect<false> | WeakPointsSelect<true>;
+    weaponAttachments: WeaponAttachmentsSelect<false> | WeaponAttachmentsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -773,11 +778,36 @@ export interface WeaponBuild {
   /**
    * Attachments that belong to this weapon build.
    */
-  attachments?: string[] | null;
+  attachments?: (string | WeaponAttachment)[] | null;
   /**
    * Build code of the weapon build.
    */
   buildCode?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weaponAttachments".
+ */
+export interface WeaponAttachment {
+  id: string;
+  /**
+   * Name of the weapon attachment.
+   */
+  title: string;
+  /**
+   * Type of the weapon attachment.
+   */
+  type: 'Optic' | 'Muzzle' | 'Barrel' | 'Underbarrel' | 'Magazine' | 'Grip' | 'Comb' | 'Stock' | 'Laser' | 'Fire Mod';
+  /**
+   * Weapon builds that use this attachment.
+   */
+  builds?: {
+    docs?: (string | WeaponBuild)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -980,6 +1010,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'weakPoints';
         value: string | WeakPoint;
+      } | null)
+    | ({
+        relationTo: 'weaponAttachments';
+        value: string | WeaponAttachment;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1275,6 +1309,17 @@ export interface AugmentsSelect<T extends boolean = true> {
 export interface WeakPointsSelect<T extends boolean = true> {
   title?: T;
   zombies?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weaponAttachments_select".
+ */
+export interface WeaponAttachmentsSelect<T extends boolean = true> {
+  title?: T;
+  type?: T;
+  builds?: T;
   updatedAt?: T;
   createdAt?: T;
 }

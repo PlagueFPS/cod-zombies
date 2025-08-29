@@ -927,6 +927,9 @@ export const weapon_builds = sqliteTable(
     weapon_builds_weapon_idx: index("weapon_builds_weapon_idx").on(
       columns.weapon,
     ),
+    weapon_builds_build_code_idx: uniqueIndex(
+      "weapon_builds_build_code_idx",
+    ).on(columns.buildCode),
     weapon_builds_updated_at_idx: index("weapon_builds_updated_at_idx").on(
       columns.updatedAt,
     ),
@@ -936,24 +939,31 @@ export const weapon_builds = sqliteTable(
   }),
 );
 
-export const weapon_builds_texts = sqliteTable(
-  "weapon_builds_texts",
+export const weapon_builds_rels = sqliteTable(
+  "weapon_builds_rels",
   {
     id: integer("id").primaryKey(),
-    order: integer("order").notNull(),
+    order: integer("order"),
     parent: text("parent_id").notNull(),
     path: text("path").notNull(),
-    text: text("text"),
+    weaponAttachmentsID: text("weapon_attachments_id"),
   },
   (columns) => ({
-    orderParentIdx: index("weapon_builds_texts_order_parent_idx").on(
-      columns.order,
-      columns.parent,
-    ),
+    order: index("weapon_builds_rels_order_idx").on(columns.order),
+    parentIdx: index("weapon_builds_rels_parent_idx").on(columns.parent),
+    pathIdx: index("weapon_builds_rels_path_idx").on(columns.path),
+    weapon_builds_rels_weapon_attachments_id_idx: index(
+      "weapon_builds_rels_weapon_attachments_id_idx",
+    ).on(columns.weaponAttachmentsID),
     parentFk: foreignKey({
       columns: [columns["parent"]],
       foreignColumns: [weapon_builds.id],
-      name: "weapon_builds_texts_parent_fk",
+      name: "weapon_builds_rels_parent_fk",
+    }).onDelete("cascade"),
+    weaponAttachmentsIdFk: foreignKey({
+      columns: [columns["weaponAttachmentsID"]],
+      foreignColumns: [weapon_attachments.id],
+      name: "weapon_builds_rels_weapon_attachments_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -1116,6 +1126,47 @@ export const weak_points = sqliteTable(
   }),
 );
 
+export const weapon_attachments = sqliteTable(
+  "weapon_attachments",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => randomUUID()),
+    title: text("title").notNull(),
+    type: text("type", {
+      enum: [
+        "Optic",
+        "Muzzle",
+        "Barrel",
+        "Underbarrel",
+        "Magazine",
+        "Grip",
+        "Comb",
+        "Stock",
+        "Laser",
+        "Fire Mod",
+      ],
+    }).notNull(),
+    updatedAt: text("updated_at")
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+  },
+  (columns) => ({
+    weapon_attachments_title_idx: uniqueIndex(
+      "weapon_attachments_title_idx",
+    ).on(columns.title),
+    weapon_attachments_updated_at_idx: index(
+      "weapon_attachments_updated_at_idx",
+    ).on(columns.updatedAt),
+    weapon_attachments_created_at_idx: index(
+      "weapon_attachments_created_at_idx",
+    ).on(columns.createdAt),
+  }),
+);
+
 export const payload_locked_documents = sqliteTable(
   "payload_locked_documents",
   {
@@ -1167,6 +1218,7 @@ export const payload_locked_documents_rels = sqliteTable(
     legalID: text("legal_id"),
     augmentsID: text("augments_id"),
     weakPointsID: text("weak_points_id"),
+    weaponAttachmentsID: text("weapon_attachments_id"),
   },
   (columns) => ({
     order: index("payload_locked_documents_rels_order_idx").on(columns.order),
@@ -1225,6 +1277,9 @@ export const payload_locked_documents_rels = sqliteTable(
     payload_locked_documents_rels_weak_points_id_idx: index(
       "payload_locked_documents_rels_weak_points_id_idx",
     ).on(columns.weakPointsID),
+    payload_locked_documents_rels_weapon_attachments_id_idx: index(
+      "payload_locked_documents_rels_weapon_attachments_id_idx",
+    ).on(columns.weaponAttachmentsID),
     parentFk: foreignKey({
       columns: [columns["parent"]],
       foreignColumns: [payload_locked_documents.id],
@@ -1314,6 +1369,11 @@ export const payload_locked_documents_rels = sqliteTable(
       columns: [columns["weakPointsID"]],
       foreignColumns: [weak_points.id],
       name: "payload_locked_documents_rels_weak_points_fk",
+    }).onDelete("cascade"),
+    weaponAttachmentsIdFk: foreignKey({
+      columns: [columns["weaponAttachmentsID"]],
+      foreignColumns: [weapon_attachments.id],
+      name: "payload_locked_documents_rels_weapon_attachments_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -1655,13 +1715,18 @@ export const relations_weapons = relations(weapons, ({ one, many }) => ({
     relationName: "_rels",
   }),
 }));
-export const relations_weapon_builds_texts = relations(
-  weapon_builds_texts,
+export const relations_weapon_builds_rels = relations(
+  weapon_builds_rels,
   ({ one }) => ({
     parent: one(weapon_builds, {
-      fields: [weapon_builds_texts.parent],
+      fields: [weapon_builds_rels.parent],
       references: [weapon_builds.id],
-      relationName: "_texts",
+      relationName: "_rels",
+    }),
+    weaponAttachmentsID: one(weapon_attachments, {
+      fields: [weapon_builds_rels.weaponAttachmentsID],
+      references: [weapon_attachments.id],
+      relationName: "weaponAttachments",
     }),
   }),
 );
@@ -1673,8 +1738,8 @@ export const relations_weapon_builds = relations(
       references: [weapons.id],
       relationName: "weapon",
     }),
-    _texts: many(weapon_builds_texts, {
-      relationName: "_texts",
+    _rels: many(weapon_builds_rels, {
+      relationName: "_rels",
     }),
   }),
 );
@@ -1709,6 +1774,10 @@ export const relations_augments = relations(augments, ({ one }) => ({
   }),
 }));
 export const relations_weak_points = relations(weak_points, () => ({}));
+export const relations_weapon_attachments = relations(
+  weapon_attachments,
+  () => ({}),
+);
 export const relations_payload_locked_documents_rels = relations(
   payload_locked_documents_rels,
   ({ one }) => ({
@@ -1802,6 +1871,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [weak_points.id],
       relationName: "weakPoints",
     }),
+    weaponAttachmentsID: one(weapon_attachments, {
+      fields: [payload_locked_documents_rels.weaponAttachmentsID],
+      references: [weapon_attachments.id],
+      relationName: "weaponAttachments",
+    }),
   }),
 );
 export const relations_payload_locked_documents = relations(
@@ -1862,11 +1936,12 @@ type DatabaseSchema = {
   weapons: typeof weapons;
   weapons_rels: typeof weapons_rels;
   weapon_builds: typeof weapon_builds;
-  weapon_builds_texts: typeof weapon_builds_texts;
+  weapon_builds_rels: typeof weapon_builds_rels;
   legal: typeof legal;
   _legal_v: typeof _legal_v;
   augments: typeof augments;
   weak_points: typeof weak_points;
+  weapon_attachments: typeof weapon_attachments;
   payload_locked_documents: typeof payload_locked_documents;
   payload_locked_documents_rels: typeof payload_locked_documents_rels;
   payload_preferences: typeof payload_preferences;
@@ -1892,12 +1967,13 @@ type DatabaseSchema = {
   relations_zombie_attacks: typeof relations_zombie_attacks;
   relations_weapons_rels: typeof relations_weapons_rels;
   relations_weapons: typeof relations_weapons;
-  relations_weapon_builds_texts: typeof relations_weapon_builds_texts;
+  relations_weapon_builds_rels: typeof relations_weapon_builds_rels;
   relations_weapon_builds: typeof relations_weapon_builds;
   relations_legal: typeof relations_legal;
   relations__legal_v: typeof relations__legal_v;
   relations_augments: typeof relations_augments;
   relations_weak_points: typeof relations_weak_points;
+  relations_weapon_attachments: typeof relations_weapon_attachments;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
   relations_payload_locked_documents: typeof relations_payload_locked_documents;
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels;
