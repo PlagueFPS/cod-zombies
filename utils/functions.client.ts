@@ -24,10 +24,13 @@ export const capitalize = (text: string) => {
 export const slugify = (text: string) => {
 	return text
 		.toLowerCase()
-		.trim() // Remove leading/trailing whitespace
+		.trim()
 		.replace(/^["'!]+|["'!]+$/g, "") // Remove leading/trailing quotes and exclamation points
-		.replace(/[ /,.'"]+/g, "-") // Replace spaces, commas, periods, and quotes with hyphens
+		.replace(/[ ,'"]+/g, "-") // Removed period from this replacement
 		.replace(/&/g, "and") // Replace ampersands with "and"
+		.replace(/\./g, "") // Remove all periods
+		.replace(/-+/g, "-") // Replace multiple consecutive hyphens with a single one
+		.replace(/^-+|-+$/g, "") // Remove leading/trailing hyphens
 }
 
 /**

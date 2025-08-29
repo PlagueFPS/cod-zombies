@@ -32,6 +32,9 @@ import { env } from "./env"
 export default buildConfig({
 	secret: Redacted.value(env.PAYLOAD_SECRET),
 	serverURL: env.NEXT_PUBLIC_WEBSITE_URL,
+	typescript: {
+		outputFile: "./types/payload-types.ts",
+	},
 	routes: {
 		api: "/api/payload",
 	},
@@ -41,7 +44,6 @@ export default buildConfig({
 			fileSize: 500_000, // 500KB
 		},
 	},
-	blocks: [InlineRelationshipBlock],
 	editor: lexicalEditor({
 		features: ({ defaultFeatures }) => [
 			...defaultFeatures,
@@ -67,6 +69,7 @@ export default buildConfig({
 		generateSchemaOutputFile: "./data/db/payload-generated.schema.ts",
 		idType: "uuid",
 	}),
+	blocks: [InlineRelationshipBlock],
 	collections: [
 		Users,
 		Media,

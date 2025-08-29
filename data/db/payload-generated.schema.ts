@@ -15,7 +15,6 @@ import {
   integer,
   text,
   numeric,
-  type AnySQLiteColumn,
 } from "@payloadcms/db-sqlite/drizzle/sqlite-core";
 import { sql, relations } from "@payloadcms/db-sqlite/drizzle";
 import { randomUUID } from "crypto";
@@ -83,9 +82,6 @@ export const media = sqliteTable(
       .$defaultFn(() => randomUUID()),
     title: text("title").notNull(),
     description: text("description"),
-    folder: text("folder_id").references(() => payload_folders.id, {
-      onDelete: "set null",
-    }),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
@@ -103,7 +99,7 @@ export const media = sqliteTable(
     focalY: numeric("focal_y"),
   },
   (columns) => ({
-    media_folder_idx: index("media_folder_idx").on(columns.folder),
+    media_title_idx: index("media_title_idx").on(columns.title),
     media_updated_at_idx: index("media_updated_at_idx").on(columns.updatedAt),
     media_created_at_idx: index("media_created_at_idx").on(columns.createdAt),
     media_filename_idx: uniqueIndex("media_filename_idx").on(columns.filename),
@@ -140,6 +136,7 @@ export const maps = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
+    maps_title_idx: index("maps_title_idx").on(columns.title),
     maps_slug_idx: uniqueIndex("maps_slug_idx").on(columns.slug),
     maps_game_idx: index("maps_game_idx").on(columns.game),
     maps_image_idx: index("maps_image_idx").on(columns.image),
@@ -159,9 +156,11 @@ export const games = sqliteTable(
     releaseDate: text("release_date")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-    image: text("image_id").references(() => media.id, {
-      onDelete: "set null",
-    }),
+    image: text("image_id")
+      .notNull()
+      .references(() => media.id, {
+        onDelete: "set null",
+      }),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
@@ -170,6 +169,7 @@ export const games = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
+    games_title_idx: index("games_title_idx").on(columns.title),
     games_slug_idx: uniqueIndex("games_slug_idx").on(columns.slug),
     games_image_idx: index("games_image_idx").on(columns.image),
     games_updated_at_idx: index("games_updated_at_idx").on(columns.updatedAt),
@@ -312,6 +312,7 @@ export const side_quests = sqliteTable(
     _status: text("_status", { enum: ["draft", "published"] }).default("draft"),
   },
   (columns) => ({
+    side_quests_title_idx: index("side_quests_title_idx").on(columns.title),
     side_quests_slug_idx: index("side_quests_slug_idx").on(columns.slug),
     side_quests_map_idx: index("side_quests_map_idx").on(columns.map),
     side_quests_image_idx: index("side_quests_image_idx").on(columns.image),
@@ -368,6 +369,9 @@ export const _side_quests_v = sqliteTable(
     _side_quests_v_parent_idx: index("_side_quests_v_parent_idx").on(
       columns.parent,
     ),
+    _side_quests_v_version_version_title_idx: index(
+      "_side_quests_v_version_version_title_idx",
+    ).on(columns.version_title),
     _side_quests_v_version_version_slug_idx: index(
       "_side_quests_v_version_version_slug_idx",
     ).on(columns.version_slug),
@@ -409,9 +413,6 @@ export const zombies = sqliteTable(
       .$defaultFn(() => randomUUID()),
     title: text("title"),
     slug: text("slug"),
-    releaseDate: text("release_date").default(
-      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
-    ),
     isComingSoon: integer("is_coming_soon", { mode: "boolean" }).default(false),
     image: text("image_id").references(() => media.id, {
       onDelete: "set null",
@@ -430,6 +431,7 @@ export const zombies = sqliteTable(
     _status: text("_status", { enum: ["draft", "published"] }).default("draft"),
   },
   (columns) => ({
+    zombies_title_idx: index("zombies_title_idx").on(columns.title),
     zombies_slug_idx: uniqueIndex("zombies_slug_idx").on(columns.slug),
     zombies_image_idx: index("zombies_image_idx").on(columns.image),
     zombies_updated_at_idx: index("zombies_updated_at_idx").on(
@@ -442,28 +444,6 @@ export const zombies = sqliteTable(
   }),
 );
 
-export const zombies_texts = sqliteTable(
-  "zombies_texts",
-  {
-    id: integer("id").primaryKey(),
-    order: integer("order").notNull(),
-    parent: text("parent_id").notNull(),
-    path: text("path").notNull(),
-    text: text("text"),
-  },
-  (columns) => ({
-    orderParentIdx: index("zombies_texts_order_parent_idx").on(
-      columns.order,
-      columns.parent,
-    ),
-    parentFk: foreignKey({
-      columns: [columns["parent"]],
-      foreignColumns: [zombies.id],
-      name: "zombies_texts_parent_fk",
-    }).onDelete("cascade"),
-  }),
-);
-
 export const zombies_rels = sqliteTable(
   "zombies_rels",
   {
@@ -473,6 +453,7 @@ export const zombies_rels = sqliteTable(
     path: text("path").notNull(),
     gamesID: text("games_id"),
     mapsID: text("maps_id"),
+    weakPointsID: text("weak_points_id"),
     ammoModsID: text("ammo_mods_id"),
     zombieAttacksID: text("zombie_attacks_id"),
   },
@@ -486,6 +467,9 @@ export const zombies_rels = sqliteTable(
     zombies_rels_maps_id_idx: index("zombies_rels_maps_id_idx").on(
       columns.mapsID,
     ),
+    zombies_rels_weak_points_id_idx: index(
+      "zombies_rels_weak_points_id_idx",
+    ).on(columns.weakPointsID),
     zombies_rels_ammo_mods_id_idx: index("zombies_rels_ammo_mods_id_idx").on(
       columns.ammoModsID,
     ),
@@ -506,6 +490,11 @@ export const zombies_rels = sqliteTable(
       columns: [columns["mapsID"]],
       foreignColumns: [maps.id],
       name: "zombies_rels_maps_fk",
+    }).onDelete("cascade"),
+    weakPointsIdFk: foreignKey({
+      columns: [columns["weakPointsID"]],
+      foreignColumns: [weak_points.id],
+      name: "zombies_rels_weak_points_fk",
     }).onDelete("cascade"),
     ammoModsIdFk: foreignKey({
       columns: [columns["ammoModsID"]],
@@ -531,9 +520,6 @@ export const _zombies_v = sqliteTable(
     }),
     version_title: text("version_title"),
     version_slug: text("version_slug"),
-    version_releaseDate: text("version_release_date").default(
-      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
-    ),
     version_isComingSoon: integer("version_is_coming_soon", {
       mode: "boolean",
     }).default(false),
@@ -567,6 +553,9 @@ export const _zombies_v = sqliteTable(
   },
   (columns) => ({
     _zombies_v_parent_idx: index("_zombies_v_parent_idx").on(columns.parent),
+    _zombies_v_version_version_title_idx: index(
+      "_zombies_v_version_version_title_idx",
+    ).on(columns.version_title),
     _zombies_v_version_version_slug_idx: index(
       "_zombies_v_version_version_slug_idx",
     ).on(columns.version_slug),
@@ -595,28 +584,6 @@ export const _zombies_v = sqliteTable(
   }),
 );
 
-export const _zombies_v_texts = sqliteTable(
-  "_zombies_v_texts",
-  {
-    id: integer("id").primaryKey(),
-    order: integer("order").notNull(),
-    parent: text("parent_id").notNull(),
-    path: text("path").notNull(),
-    text: text("text"),
-  },
-  (columns) => ({
-    orderParentIdx: index("_zombies_v_texts_order_parent_idx").on(
-      columns.order,
-      columns.parent,
-    ),
-    parentFk: foreignKey({
-      columns: [columns["parent"]],
-      foreignColumns: [_zombies_v.id],
-      name: "_zombies_v_texts_parent_fk",
-    }).onDelete("cascade"),
-  }),
-);
-
 export const _zombies_v_rels = sqliteTable(
   "_zombies_v_rels",
   {
@@ -626,6 +593,7 @@ export const _zombies_v_rels = sqliteTable(
     path: text("path").notNull(),
     gamesID: text("games_id"),
     mapsID: text("maps_id"),
+    weakPointsID: text("weak_points_id"),
     ammoModsID: text("ammo_mods_id"),
     zombieAttacksID: text("zombie_attacks_id"),
   },
@@ -639,6 +607,9 @@ export const _zombies_v_rels = sqliteTable(
     _zombies_v_rels_maps_id_idx: index("_zombies_v_rels_maps_id_idx").on(
       columns.mapsID,
     ),
+    _zombies_v_rels_weak_points_id_idx: index(
+      "_zombies_v_rels_weak_points_id_idx",
+    ).on(columns.weakPointsID),
     _zombies_v_rels_ammo_mods_id_idx: index(
       "_zombies_v_rels_ammo_mods_id_idx",
     ).on(columns.ammoModsID),
@@ -660,6 +631,11 @@ export const _zombies_v_rels = sqliteTable(
       foreignColumns: [maps.id],
       name: "_zombies_v_rels_maps_fk",
     }).onDelete("cascade"),
+    weakPointsIdFk: foreignKey({
+      columns: [columns["weakPointsID"]],
+      foreignColumns: [weak_points.id],
+      name: "_zombies_v_rels_weak_points_fk",
+    }).onDelete("cascade"),
     ammoModsIdFk: foreignKey({
       columns: [columns["ammoModsID"]],
       foreignColumns: [ammo_mods.id],
@@ -680,7 +656,6 @@ export const gobblegum = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title").notNull(),
-    slug: text("slug").notNull(),
     rarity: text("rarity", {
       enum: [
         "Classic",
@@ -715,7 +690,7 @@ export const gobblegum = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    gobblegum_slug_idx: uniqueIndex("gobblegum_slug_idx").on(columns.slug),
+    gobblegum_title_idx: index("gobblegum_title_idx").on(columns.title),
     gobblegum_game_idx: index("gobblegum_game_idx").on(columns.game),
     gobblegum_image_idx: index("gobblegum_image_idx").on(columns.image),
     gobblegum_updated_at_idx: index("gobblegum_updated_at_idx").on(
@@ -734,7 +709,6 @@ export const perks = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title").notNull(),
-    slug: text("slug").notNull(),
     game: text("game_id")
       .notNull()
       .references(() => games.id, {
@@ -746,6 +720,7 @@ export const perks = sqliteTable(
         onDelete: "set null",
       }),
     description: text("description").notNull(),
+    modifier: text("modifier"),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
@@ -754,7 +729,7 @@ export const perks = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    perks_slug_idx: uniqueIndex("perks_slug_idx").on(columns.slug),
+    perks_title_idx: index("perks_title_idx").on(columns.title),
     perks_game_idx: index("perks_game_idx").on(columns.game),
     perks_image_idx: index("perks_image_idx").on(columns.image),
     perks_updated_at_idx: index("perks_updated_at_idx").on(columns.updatedAt),
@@ -769,7 +744,6 @@ export const ammo_mods = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title").notNull(),
-    slug: text("slug").notNull(),
     game: text("game_id")
       .notNull()
       .references(() => games.id, {
@@ -787,7 +761,7 @@ export const ammo_mods = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    ammo_mods_slug_idx: uniqueIndex("ammo_mods_slug_idx").on(columns.slug),
+    ammo_mods_title_idx: index("ammo_mods_title_idx").on(columns.title),
     ammo_mods_game_idx: index("ammo_mods_game_idx").on(columns.game),
     ammo_mods_image_idx: index("ammo_mods_image_idx").on(columns.image),
     ammo_mods_updated_at_idx: index("ammo_mods_updated_at_idx").on(
@@ -806,7 +780,6 @@ export const field_upgrades = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title").notNull(),
-    slug: text("slug").notNull(),
     game: text("game_id")
       .notNull()
       .references(() => games.id, {
@@ -824,8 +797,8 @@ export const field_upgrades = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    field_upgrades_slug_idx: uniqueIndex("field_upgrades_slug_idx").on(
-      columns.slug,
+    field_upgrades_title_idx: index("field_upgrades_title_idx").on(
+      columns.title,
     ),
     field_upgrades_game_idx: index("field_upgrades_game_idx").on(columns.game),
     field_upgrades_image_idx: index("field_upgrades_image_idx").on(
@@ -857,6 +830,9 @@ export const zombie_attacks = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
+    zombie_attacks_title_idx: index("zombie_attacks_title_idx").on(
+      columns.title,
+    ),
     zombie_attacks_updated_at_idx: index("zombie_attacks_updated_at_idx").on(
       columns.updatedAt,
     ),
@@ -873,10 +849,11 @@ export const weapons = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title").notNull(),
-    slug: text("slug").notNull(),
-    image: text("image_id").references(() => media.id, {
-      onDelete: "set null",
-    }),
+    image: text("image_id")
+      .notNull()
+      .references(() => media.id, {
+        onDelete: "set null",
+      }),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
@@ -885,7 +862,7 @@ export const weapons = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    weapons_slug_idx: uniqueIndex("weapons_slug_idx").on(columns.slug),
+    weapons_title_idx: index("weapons_title_idx").on(columns.title),
     weapons_image_idx: index("weapons_image_idx").on(columns.image),
     weapons_updated_at_idx: index("weapons_updated_at_idx").on(
       columns.updatedAt,
@@ -896,6 +873,35 @@ export const weapons = sqliteTable(
   }),
 );
 
+export const weapons_rels = sqliteTable(
+  "weapons_rels",
+  {
+    id: integer("id").primaryKey(),
+    order: integer("order"),
+    parent: text("parent_id").notNull(),
+    path: text("path").notNull(),
+    gamesID: text("games_id"),
+  },
+  (columns) => ({
+    order: index("weapons_rels_order_idx").on(columns.order),
+    parentIdx: index("weapons_rels_parent_idx").on(columns.parent),
+    pathIdx: index("weapons_rels_path_idx").on(columns.path),
+    weapons_rels_games_id_idx: index("weapons_rels_games_id_idx").on(
+      columns.gamesID,
+    ),
+    parentFk: foreignKey({
+      columns: [columns["parent"]],
+      foreignColumns: [weapons.id],
+      name: "weapons_rels_parent_fk",
+    }).onDelete("cascade"),
+    gamesIdFk: foreignKey({
+      columns: [columns["gamesID"]],
+      foreignColumns: [games.id],
+      name: "weapons_rels_games_fk",
+    }).onDelete("cascade"),
+  }),
+);
+
 export const weapon_builds = sqliteTable(
   "weapon_builds",
   {
@@ -903,7 +909,6 @@ export const weapon_builds = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title").notNull(),
-    slug: text("slug").notNull(),
     weapon: text("weapon_id")
       .notNull()
       .references(() => weapons.id, {
@@ -918,9 +923,7 @@ export const weapon_builds = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    weapon_builds_slug_idx: uniqueIndex("weapon_builds_slug_idx").on(
-      columns.slug,
-    ),
+    weapon_builds_title_idx: index("weapon_builds_title_idx").on(columns.title),
     weapon_builds_weapon_idx: index("weapon_builds_weapon_idx").on(
       columns.weapon,
     ),
@@ -973,6 +976,7 @@ export const legal = sqliteTable(
     _status: text("_status", { enum: ["draft", "published"] }).default("draft"),
   },
   (columns) => ({
+    legal_title_idx: index("legal_title_idx").on(columns.title),
     legal_slug_idx: uniqueIndex("legal_slug_idx").on(columns.slug),
     legal_updated_at_idx: index("legal_updated_at_idx").on(columns.updatedAt),
     legal_created_at_idx: index("legal_created_at_idx").on(columns.createdAt),
@@ -1012,6 +1016,9 @@ export const _legal_v = sqliteTable(
   },
   (columns) => ({
     _legal_v_parent_idx: index("_legal_v_parent_idx").on(columns.parent),
+    _legal_v_version_version_title_idx: index(
+      "_legal_v_version_version_title_idx",
+    ).on(columns.version_title),
     _legal_v_version_version_slug_idx: index(
       "_legal_v_version_version_slug_idx",
     ).on(columns.version_slug),
@@ -1035,42 +1042,29 @@ export const _legal_v = sqliteTable(
   }),
 );
 
-export const payload_folders_folder_type = sqliteTable(
-  "payload_folders_folder_type",
-  {
-    order: integer("order").notNull(),
-    parent: text("parent_id").notNull(),
-    value: text("value", { enum: ["media"] }),
-    id: text("id")
-      .primaryKey()
-      .$defaultFn(() => randomUUID()),
-  },
-  (columns) => ({
-    orderIdx: index("payload_folders_folder_type_order_idx").on(columns.order),
-    parentIdx: index("payload_folders_folder_type_parent_idx").on(
-      columns.parent,
-    ),
-    parentFk: foreignKey({
-      columns: [columns["parent"]],
-      foreignColumns: [payload_folders.id],
-      name: "payload_folders_folder_type_parent_fk",
-    }).onDelete("cascade"),
-  }),
-);
-
-export const payload_folders = sqliteTable(
-  "payload_folders",
+export const augments = sqliteTable(
+  "augments",
   {
     id: text("id")
       .primaryKey()
       .$defaultFn(() => randomUUID()),
-    name: text("name").notNull(),
-    folder: text("folder_id").references(
-      (): AnySQLiteColumn => payload_folders.id,
-      {
+    title: text("title").notNull(),
+    type: text("type", { enum: ["Major", "Minor"] }).notNull(),
+    image: text("image_id")
+      .notNull()
+      .references(() => media.id, {
         onDelete: "set null",
-      },
-    ),
+      }),
+    description: text("description").notNull(),
+    perk: text("perk_id").references(() => perks.id, {
+      onDelete: "set null",
+    }),
+    ammoMod: text("ammo_mod_id").references(() => ammo_mods.id, {
+      onDelete: "set null",
+    }),
+    fieldUpgrade: text("field_upgrade_id").references(() => field_upgrades.id, {
+      onDelete: "set null",
+    }),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
@@ -1079,16 +1073,44 @@ export const payload_folders = sqliteTable(
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   },
   (columns) => ({
-    payload_folders_name_idx: index("payload_folders_name_idx").on(
-      columns.name,
+    augments_title_idx: index("augments_title_idx").on(columns.title),
+    augments_image_idx: index("augments_image_idx").on(columns.image),
+    augments_perk_idx: index("augments_perk_idx").on(columns.perk),
+    augments_ammo_mod_idx: index("augments_ammo_mod_idx").on(columns.ammoMod),
+    augments_field_upgrade_idx: index("augments_field_upgrade_idx").on(
+      columns.fieldUpgrade,
     ),
-    payload_folders_folder_idx: index("payload_folders_folder_idx").on(
-      columns.folder,
-    ),
-    payload_folders_updated_at_idx: index("payload_folders_updated_at_idx").on(
+    augments_updated_at_idx: index("augments_updated_at_idx").on(
       columns.updatedAt,
     ),
-    payload_folders_created_at_idx: index("payload_folders_created_at_idx").on(
+    augments_created_at_idx: index("augments_created_at_idx").on(
+      columns.createdAt,
+    ),
+  }),
+);
+
+export const weak_points = sqliteTable(
+  "weak_points",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => randomUUID()),
+    title: text("title").notNull(),
+    updatedAt: text("updated_at")
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+  },
+  (columns) => ({
+    weak_points_title_idx: uniqueIndex("weak_points_title_idx").on(
+      columns.title,
+    ),
+    weak_points_updated_at_idx: index("weak_points_updated_at_idx").on(
+      columns.updatedAt,
+    ),
+    weak_points_created_at_idx: index("weak_points_created_at_idx").on(
       columns.createdAt,
     ),
   }),
@@ -1141,9 +1163,10 @@ export const payload_locked_documents_rels = sqliteTable(
     fieldUpgradesID: text("field_upgrades_id"),
     zombieAttacksID: text("zombie_attacks_id"),
     weaponsID: text("weapons_id"),
-    "weapon-buildsID": text("weapon_builds_id"),
+    weaponBuildsID: text("weapon_builds_id"),
     legalID: text("legal_id"),
-    "payload-foldersID": text("payload_folders_id"),
+    augmentsID: text("augments_id"),
+    weakPointsID: text("weak_points_id"),
   },
   (columns) => ({
     order: index("payload_locked_documents_rels_order_idx").on(columns.order),
@@ -1192,13 +1215,16 @@ export const payload_locked_documents_rels = sqliteTable(
     ).on(columns.weaponsID),
     payload_locked_documents_rels_weapon_builds_id_idx: index(
       "payload_locked_documents_rels_weapon_builds_id_idx",
-    ).on(columns["weapon-buildsID"]),
+    ).on(columns.weaponBuildsID),
     payload_locked_documents_rels_legal_id_idx: index(
       "payload_locked_documents_rels_legal_id_idx",
     ).on(columns.legalID),
-    payload_locked_documents_rels_payload_folders_id_idx: index(
-      "payload_locked_documents_rels_payload_folders_id_idx",
-    ).on(columns["payload-foldersID"]),
+    payload_locked_documents_rels_augments_id_idx: index(
+      "payload_locked_documents_rels_augments_id_idx",
+    ).on(columns.augmentsID),
+    payload_locked_documents_rels_weak_points_id_idx: index(
+      "payload_locked_documents_rels_weak_points_id_idx",
+    ).on(columns.weakPointsID),
     parentFk: foreignKey({
       columns: [columns["parent"]],
       foreignColumns: [payload_locked_documents.id],
@@ -1269,8 +1295,8 @@ export const payload_locked_documents_rels = sqliteTable(
       foreignColumns: [weapons.id],
       name: "payload_locked_documents_rels_weapons_fk",
     }).onDelete("cascade"),
-    "weapon-buildsIdFk": foreignKey({
-      columns: [columns["weapon-buildsID"]],
+    weaponBuildsIdFk: foreignKey({
+      columns: [columns["weaponBuildsID"]],
       foreignColumns: [weapon_builds.id],
       name: "payload_locked_documents_rels_weapon_builds_fk",
     }).onDelete("cascade"),
@@ -1279,10 +1305,15 @@ export const payload_locked_documents_rels = sqliteTable(
       foreignColumns: [legal.id],
       name: "payload_locked_documents_rels_legal_fk",
     }).onDelete("cascade"),
-    "payload-foldersIdFk": foreignKey({
-      columns: [columns["payload-foldersID"]],
-      foreignColumns: [payload_folders.id],
-      name: "payload_locked_documents_rels_payload_folders_fk",
+    augmentsIdFk: foreignKey({
+      columns: [columns["augmentsID"]],
+      foreignColumns: [augments.id],
+      name: "payload_locked_documents_rels_augments_fk",
+    }).onDelete("cascade"),
+    weakPointsIdFk: foreignKey({
+      columns: [columns["weakPointsID"]],
+      foreignColumns: [weak_points.id],
+      name: "payload_locked_documents_rels_weak_points_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -1384,13 +1415,7 @@ export const relations_users = relations(users, ({ many }) => ({
     relationName: "sessions",
   }),
 }));
-export const relations_media = relations(media, ({ one }) => ({
-  folder: one(payload_folders, {
-    fields: [media.folder],
-    references: [payload_folders.id],
-    relationName: "folder",
-  }),
-}));
+export const relations_media = relations(media, () => ({}));
 export const relations_maps = relations(maps, ({ one }) => ({
   game: one(games, {
     fields: [maps.game],
@@ -1464,13 +1489,6 @@ export const relations__side_quests_v = relations(
     }),
   }),
 );
-export const relations_zombies_texts = relations(zombies_texts, ({ one }) => ({
-  parent: one(zombies, {
-    fields: [zombies_texts.parent],
-    references: [zombies.id],
-    relationName: "_texts",
-  }),
-}));
 export const relations_zombies_rels = relations(zombies_rels, ({ one }) => ({
   parent: one(zombies, {
     fields: [zombies_rels.parent],
@@ -1486,6 +1504,11 @@ export const relations_zombies_rels = relations(zombies_rels, ({ one }) => ({
     fields: [zombies_rels.mapsID],
     references: [maps.id],
     relationName: "maps",
+  }),
+  weakPointsID: one(weak_points, {
+    fields: [zombies_rels.weakPointsID],
+    references: [weak_points.id],
+    relationName: "weakPoints",
   }),
   ammoModsID: one(ammo_mods, {
     fields: [zombies_rels.ammoModsID],
@@ -1504,23 +1527,10 @@ export const relations_zombies = relations(zombies, ({ one, many }) => ({
     references: [media.id],
     relationName: "image",
   }),
-  _texts: many(zombies_texts, {
-    relationName: "_texts",
-  }),
   _rels: many(zombies_rels, {
     relationName: "_rels",
   }),
 }));
-export const relations__zombies_v_texts = relations(
-  _zombies_v_texts,
-  ({ one }) => ({
-    parent: one(_zombies_v, {
-      fields: [_zombies_v_texts.parent],
-      references: [_zombies_v.id],
-      relationName: "_texts",
-    }),
-  }),
-);
 export const relations__zombies_v_rels = relations(
   _zombies_v_rels,
   ({ one }) => ({
@@ -1538,6 +1548,11 @@ export const relations__zombies_v_rels = relations(
       fields: [_zombies_v_rels.mapsID],
       references: [maps.id],
       relationName: "maps",
+    }),
+    weakPointsID: one(weak_points, {
+      fields: [_zombies_v_rels.weakPointsID],
+      references: [weak_points.id],
+      relationName: "weakPoints",
     }),
     ammoModsID: one(ammo_mods, {
       fields: [_zombies_v_rels.ammoModsID],
@@ -1561,9 +1576,6 @@ export const relations__zombies_v = relations(_zombies_v, ({ one, many }) => ({
     fields: [_zombies_v.version_image],
     references: [media.id],
     relationName: "version_image",
-  }),
-  _texts: many(_zombies_v_texts, {
-    relationName: "_texts",
   }),
   _rels: many(_zombies_v_rels, {
     relationName: "_rels",
@@ -1621,11 +1633,26 @@ export const relations_field_upgrades = relations(
   }),
 );
 export const relations_zombie_attacks = relations(zombie_attacks, () => ({}));
-export const relations_weapons = relations(weapons, ({ one }) => ({
+export const relations_weapons_rels = relations(weapons_rels, ({ one }) => ({
+  parent: one(weapons, {
+    fields: [weapons_rels.parent],
+    references: [weapons.id],
+    relationName: "_rels",
+  }),
+  gamesID: one(games, {
+    fields: [weapons_rels.gamesID],
+    references: [games.id],
+    relationName: "games",
+  }),
+}));
+export const relations_weapons = relations(weapons, ({ one, many }) => ({
   image: one(media, {
     fields: [weapons.image],
     references: [media.id],
     relationName: "image",
+  }),
+  _rels: many(weapons_rels, {
+    relationName: "_rels",
   }),
 }));
 export const relations_weapon_builds_texts = relations(
@@ -1659,29 +1686,29 @@ export const relations__legal_v = relations(_legal_v, ({ one }) => ({
     relationName: "parent",
   }),
 }));
-export const relations_payload_folders_folder_type = relations(
-  payload_folders_folder_type,
-  ({ one }) => ({
-    parent: one(payload_folders, {
-      fields: [payload_folders_folder_type.parent],
-      references: [payload_folders.id],
-      relationName: "folderType",
-    }),
+export const relations_augments = relations(augments, ({ one }) => ({
+  image: one(media, {
+    fields: [augments.image],
+    references: [media.id],
+    relationName: "image",
   }),
-);
-export const relations_payload_folders = relations(
-  payload_folders,
-  ({ one, many }) => ({
-    folder: one(payload_folders, {
-      fields: [payload_folders.folder],
-      references: [payload_folders.id],
-      relationName: "folder",
-    }),
-    folderType: many(payload_folders_folder_type, {
-      relationName: "folderType",
-    }),
+  perk: one(perks, {
+    fields: [augments.perk],
+    references: [perks.id],
+    relationName: "perk",
   }),
-);
+  ammoMod: one(ammo_mods, {
+    fields: [augments.ammoMod],
+    references: [ammo_mods.id],
+    relationName: "ammoMod",
+  }),
+  fieldUpgrade: one(field_upgrades, {
+    fields: [augments.fieldUpgrade],
+    references: [field_upgrades.id],
+    relationName: "fieldUpgrade",
+  }),
+}));
+export const relations_weak_points = relations(weak_points, () => ({}));
 export const relations_payload_locked_documents_rels = relations(
   payload_locked_documents_rels,
   ({ one }) => ({
@@ -1755,20 +1782,25 @@ export const relations_payload_locked_documents_rels = relations(
       references: [weapons.id],
       relationName: "weapons",
     }),
-    "weapon-buildsID": one(weapon_builds, {
-      fields: [payload_locked_documents_rels["weapon-buildsID"]],
+    weaponBuildsID: one(weapon_builds, {
+      fields: [payload_locked_documents_rels.weaponBuildsID],
       references: [weapon_builds.id],
-      relationName: "weapon-builds",
+      relationName: "weaponBuilds",
     }),
     legalID: one(legal, {
       fields: [payload_locked_documents_rels.legalID],
       references: [legal.id],
       relationName: "legal",
     }),
-    "payload-foldersID": one(payload_folders, {
-      fields: [payload_locked_documents_rels["payload-foldersID"]],
-      references: [payload_folders.id],
-      relationName: "payload-folders",
+    augmentsID: one(augments, {
+      fields: [payload_locked_documents_rels.augmentsID],
+      references: [augments.id],
+      relationName: "augments",
+    }),
+    weakPointsID: one(weak_points, {
+      fields: [payload_locked_documents_rels.weakPointsID],
+      references: [weak_points.id],
+      relationName: "weakPoints",
     }),
   }),
 );
@@ -1819,10 +1851,8 @@ type DatabaseSchema = {
   side_quests: typeof side_quests;
   _side_quests_v: typeof _side_quests_v;
   zombies: typeof zombies;
-  zombies_texts: typeof zombies_texts;
   zombies_rels: typeof zombies_rels;
   _zombies_v: typeof _zombies_v;
-  _zombies_v_texts: typeof _zombies_v_texts;
   _zombies_v_rels: typeof _zombies_v_rels;
   gobblegum: typeof gobblegum;
   perks: typeof perks;
@@ -1830,12 +1860,13 @@ type DatabaseSchema = {
   field_upgrades: typeof field_upgrades;
   zombie_attacks: typeof zombie_attacks;
   weapons: typeof weapons;
+  weapons_rels: typeof weapons_rels;
   weapon_builds: typeof weapon_builds;
   weapon_builds_texts: typeof weapon_builds_texts;
   legal: typeof legal;
   _legal_v: typeof _legal_v;
-  payload_folders_folder_type: typeof payload_folders_folder_type;
-  payload_folders: typeof payload_folders;
+  augments: typeof augments;
+  weak_points: typeof weak_points;
   payload_locked_documents: typeof payload_locked_documents;
   payload_locked_documents_rels: typeof payload_locked_documents_rels;
   payload_preferences: typeof payload_preferences;
@@ -1850,10 +1881,8 @@ type DatabaseSchema = {
   relations__main_quests_v: typeof relations__main_quests_v;
   relations_side_quests: typeof relations_side_quests;
   relations__side_quests_v: typeof relations__side_quests_v;
-  relations_zombies_texts: typeof relations_zombies_texts;
   relations_zombies_rels: typeof relations_zombies_rels;
   relations_zombies: typeof relations_zombies;
-  relations__zombies_v_texts: typeof relations__zombies_v_texts;
   relations__zombies_v_rels: typeof relations__zombies_v_rels;
   relations__zombies_v: typeof relations__zombies_v;
   relations_gobblegum: typeof relations_gobblegum;
@@ -1861,13 +1890,14 @@ type DatabaseSchema = {
   relations_ammo_mods: typeof relations_ammo_mods;
   relations_field_upgrades: typeof relations_field_upgrades;
   relations_zombie_attacks: typeof relations_zombie_attacks;
+  relations_weapons_rels: typeof relations_weapons_rels;
   relations_weapons: typeof relations_weapons;
   relations_weapon_builds_texts: typeof relations_weapon_builds_texts;
   relations_weapon_builds: typeof relations_weapon_builds;
   relations_legal: typeof relations_legal;
   relations__legal_v: typeof relations__legal_v;
-  relations_payload_folders_folder_type: typeof relations_payload_folders_folder_type;
-  relations_payload_folders: typeof relations_payload_folders;
+  relations_augments: typeof relations_augments;
+  relations_weak_points: typeof relations_weak_points;
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels;
   relations_payload_locked_documents: typeof relations_payload_locked_documents;
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels;
