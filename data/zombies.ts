@@ -3,7 +3,7 @@ import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
-import { IN_DEVELOPMENT } from "@/utils/constants"
+import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
@@ -32,16 +32,6 @@ export const getZombies = cache(
 								isComingSoon: true,
 								image: true,
 								_status: true,
-							},
-							populate: {
-								maps: {
-									title: true,
-									slug: true,
-								},
-								games: {
-									title: true,
-									slug: true,
-								},
 							},
 						}),
 					catch: error =>
@@ -80,7 +70,7 @@ export const getZombies = cache(
 		},
 		[],
 		{
-			tags: [],
+			tags: [CACHE_KEYS.zombies.all],
 		},
 	),
 )
@@ -127,7 +117,7 @@ export const getZombiesMetadata = cache(
 		},
 		[],
 		{
-			tags: [],
+			tags: [CACHE_KEYS.zombies.all],
 		},
 	),
 )
@@ -150,14 +140,6 @@ export const getZombieBySlug = cache(
 								},
 							},
 							populate: {
-								maps: {
-									title: true,
-									slug: true,
-								},
-								games: {
-									title: true,
-									slug: true,
-								},
 								zombieAttacks: {
 									title: true,
 									description: true,
@@ -230,7 +212,7 @@ export const getZombieBySlug = cache(
 		},
 		[],
 		{
-			tags: [],
+			tags: [CACHE_KEYS.zombies.all],
 		},
 	),
 )
@@ -262,16 +244,6 @@ export const getAdjacentZombies = cache(
 								isComingSoon: true,
 								image: true,
 								_status: true,
-							},
-							populate: {
-								maps: {
-									title: true,
-									slug: true,
-								},
-								games: {
-									title: true,
-									slug: true,
-								},
 							},
 						}),
 					catch: error =>
@@ -305,7 +277,7 @@ export const getAdjacentZombies = cache(
 						payload.find({
 							collection: "zombies",
 							draft: IN_DEVELOPMENT,
-							sort: "-createdAt",
+							sort: "createdAt",
 							limit: 1,
 							where: {
 								createdAt: {
@@ -322,16 +294,6 @@ export const getAdjacentZombies = cache(
 								isComingSoon: true,
 								image: true,
 								_status: true,
-							},
-							populate: {
-								maps: {
-									title: true,
-									slug: true,
-								},
-								games: {
-									title: true,
-									slug: true,
-								},
 							},
 						}),
 					catch: error =>
@@ -388,82 +350,88 @@ export const getAdjacentZombies = cache(
 		},
 		[],
 		{
-			tags: [],
+			tags: [CACHE_KEYS.zombies.all],
 		},
 	),
 )
 
 export const getZombieById = cache(
-	unstable_cache(async (id: string) => {
-		return await Effect.gen(function* () {
-			const payload = yield* Payload
-			const zombie = yield* Effect.tryPromise({
-				try: () =>
-					payload.findByID({
-						collection: "zombies",
-						id,
-						select: {
-							title: true,
-							slug: true,
-							image: true,
-							type: true,
-							weakPoints: true,
-							elementalWeakness: true,
-						},
-						populate: {
-							ammoMods: {
+	unstable_cache(
+		async (id: string) => {
+			return await Effect.gen(function* () {
+				const payload = yield* Payload
+				const zombie = yield* Effect.tryPromise({
+					try: () =>
+						payload.findByID({
+							collection: "zombies",
+							id,
+							select: {
 								title: true,
+								slug: true,
 								image: true,
-								description: true,
+								type: true,
+								weakPoints: true,
+								elementalWeakness: true,
 							},
-						},
-					}),
-				catch: error =>
-					new EntryNotFoundError({
-						message: `Failed to get zombie by id: ${id}`,
-						cause: error,
-					}),
+							populate: {
+								ammoMods: {
+									title: true,
+									image: true,
+									description: true,
+								},
+							},
+						}),
+					catch: error =>
+						new EntryNotFoundError({
+							message: `Failed to get zombie by id: ${id}`,
+							cause: error,
+						}),
+				}).pipe(
+					Effect.flatMap(zombie =>
+						Effect.gen(function* () {
+							const image = yield* assertRelation(zombie.image)
+							const weakPoints = zombie.weakPoints
+								? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
+								: []
+							const elementalWeakness = zombie.elementalWeakness
+								? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
+										Effect.gen(function* () {
+											const ammoMod = yield* assertRelation(elementalWeakness)
+											const image = yield* assertRelation(ammoMod.image)
+											return {
+												id: ammoMod.id,
+												title: ammoMod.title,
+												description: ammoMod.description,
+												image: createMediaDto(image),
+											}
+										}),
+									)
+								: []
+
+							return {
+								...zombie,
+								image: createMediaDto(image),
+								weakPoints,
+								elementalWeakness,
+							}
+						}),
+					),
+				)
+
+				return zombie
 			}).pipe(
-				Effect.flatMap(zombie =>
-					Effect.gen(function* () {
-						const image = yield* assertRelation(zombie.image)
-						const weakPoints = zombie.weakPoints
-							? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
-							: []
-						const elementalWeakness = zombie.elementalWeakness
-							? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
-									Effect.gen(function* () {
-										const ammoMod = yield* assertRelation(elementalWeakness)
-										const image = yield* assertRelation(ammoMod.image)
-										return {
-											id: ammoMod.id,
-											title: ammoMod.title,
-											description: ammoMod.description,
-											image: createMediaDto(image),
-										}
-									}),
-								)
-							: []
-
-						return {
-							...zombie,
-							image: createMediaDto(image),
-							weakPoints,
-							elementalWeakness,
-						}
-					}),
-				),
+				Effect.withLogSpan("get_zombie_by_id"),
+				Effect.annotateLogs({ id }),
+				Effect.tapError(Effect.logError),
+				Effect.catchAll(_error => Effect.succeed(null)),
+				Effect.ensureErrorType<never>(),
+				Effect.provide(Payload.Default),
+				Effect.runPromise,
 			)
-
-			return zombie
-		}).pipe(
-			Effect.withLogSpan("get_zombie_by_id"),
-			Effect.annotateLogs({ id }),
-			Effect.tapError(Effect.logError),
-			Effect.catchAll(_error => Effect.succeed(null)),
-			Effect.ensureErrorType<never>(),
-			Effect.provide(Payload.Default),
-			Effect.runPromise,
-		)
-	}),
+		},
+		[],
+		{
+			tags: [CACHE_KEYS.zombies.all],
+		},
+	),
 )

@@ -19,10 +19,8 @@ import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import { ComingSoonBadge, DraftBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
-import ItemTooltip from "@/components/rich-text/rich-embeds/item-tooltip"
 import AmmoModTooltipClient from "@/components/rich-text/rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip-client"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
-// import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -335,7 +333,6 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 						</div>
 						<RichTextRenderer
 							body={zombie.combatStrategy}
-							slug={zombie.slug}
 							overrideStyles
 							className="text-foreground text-sm dark:text-foreground/80"
 						/>

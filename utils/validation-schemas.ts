@@ -48,14 +48,7 @@ const TerminusCodeSchema = Schema.Struct({
 export const decodeTerminusCode = Schema.decodeEither(TerminusCodeSchema)
 
 const RichLinkNodeSchema = Schema.Struct({
-	data: Schema.Struct({
-		uri: Schema.String,
-	}),
-	content: Schema.Array(
-		Schema.Struct({
-			value: Schema.String,
-		}),
-	),
+	text: Schema.NonEmptyString,
 })
 
 export const decodeRichLinkNode = Schema.decodeUnknownEither(RichLinkNodeSchema)

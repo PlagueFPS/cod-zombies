@@ -9,11 +9,7 @@ import type {
 	InlineWeaponBuildBlock,
 	InlineZombieBlock,
 } from "@/types/payload-types"
-import {
-	type JSXConvertersFunction,
-	LinkJSXConverter,
-	RichText,
-} from "@payloadcms/richtext-lexical/react"
+import { type JSXConvertersFunction, RichText } from "@payloadcms/richtext-lexical/react"
 import { Suspense } from "react"
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { cn } from "@/lib/utils"
@@ -24,11 +20,10 @@ import Heading4 from "../rich-headings/heading4/heading4"
 import RichImage from "../rich-image/rich-image"
 import AmmoModTooltip from "../rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip"
 import ZombieTooltip from "../rich-inline-blocks/tooltips/zombies/zombie-tooltip"
-import RichLink, { internalDocToHref } from "../rich-link/rich-link"
+import RichLink from "../rich-link/rich-link"
 
 interface RichTextRendererProps {
 	body: SerializedEditorState
-	slug: string
 	overrideStyles?: boolean
 	className?: string
 }
@@ -47,7 +42,6 @@ type NodeTypes =
 
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
 	...defaultConverters,
-	...LinkJSXConverter({ internalDocToHref }),
 	heading: ({ node }) => {
 		console.log(node)
 		switch (node.tag) {
@@ -59,7 +53,13 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 				return <Heading4 id={slugify(node.tag)}>{node.tag}</Heading4>
 		}
 	},
-	link: ({ node }) => <RichLink node={node} />,
+	link: ({ node }) => {
+		return (
+			<Suspense fallback={<span>Loading...</span>}>
+				<RichLink node={node} />
+			</Suspense>
+		)
+	},
 	upload: ({ node }) => <RichImage node={node} />,
 	horizontalrule: () => <hr className="my-2" />,
 	inlineBlocks: {
@@ -79,7 +79,6 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 
 export default function RichTextRenderer({
 	body,
-	slug,
 	overrideStyles,
 	className,
 }: RichTextRendererProps) {
@@ -95,8 +94,3 @@ export default function RichTextRenderer({
 		/>
 	)
 }
-
-// async function ItemTooltipWrapper({ node }: { node: any }) {
-// 	const item = await createItemTooltipDto(node.data.target)
-// 	return <ItemTooltip item={item} className="items-baseline gap-1.5 align-baseline font-bold" />
-// }
