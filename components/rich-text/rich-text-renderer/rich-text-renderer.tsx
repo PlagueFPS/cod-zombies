@@ -1,30 +1,75 @@
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
-import { BLOCKS, type Document, INLINES } from "@contentful/rich-text-types"
-import { Suspense } from "react"
-import ItemTooltipLoader from "@/components/loaders/item-tooltip-loader"
+import type { DefaultNodeTypes, SerializedInlineBlockNode } from "@payloadcms/richtext-lexical"
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
+import type {
+	InlineAmmoModBlock,
+	InlineAugmentBlock,
+	InlineFieldUpgradeBlock,
+	InlineGobblegumBlock,
+	InlinePerkBlock,
+	InlineWeaponBuildBlock,
+	InlineZombieBlock,
+} from "@/types/payload-types"
+import {
+	type JSXConvertersFunction,
+	LinkJSXConverter,
+	RichText,
+} from "@payloadcms/richtext-lexical/react"
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { cn } from "@/lib/utils"
-import { createItemTooltipDto } from "@/utils/contentful-utils"
 import { slugify } from "@/utils/functions.client"
-import RichBlockquote from "../rich-blockquote/rich-blockquote"
-import GKValve from "../rich-embeds/gk-valve"
-import ItemTooltip from "../rich-embeds/item-tooltip"
-import ReckoningCode from "../rich-embeds/reckoning-code"
-import TerminusCode from "../rich-embeds/terminus-code"
 import Heading2 from "../rich-headings/heading2/heading2"
 import Heading3 from "../rich-headings/heading3/heading3"
 import Heading4 from "../rich-headings/heading4/heading4"
 import RichImage from "../rich-image/rich-image"
-import RichLink, { youtube_shorts_url, youtube_url } from "../rich-link/rich-link"
-import RichTable from "../rich-table/rich-table"
-import { OrderedList, UnorderedList } from "../rich-text-lists/rich-text-lists"
+import ZombieTooltip from "../rich-inline-blocks/tooltips/zombies/zombie-tooltip"
+import RichLink, { internalDocToHref } from "../rich-link/rich-link"
 
 interface RichTextRendererProps {
-	body: Document
+	body: SerializedEditorState
 	slug: string
 	overrideStyles?: boolean
 	className?: string
 }
+
+type NodeTypes =
+	| DefaultNodeTypes
+	| SerializedInlineBlockNode<
+			| InlineAmmoModBlock
+			| InlineZombieBlock
+			| InlineAugmentBlock
+			| InlineFieldUpgradeBlock
+			| InlineGobblegumBlock
+			| InlinePerkBlock
+			| InlineWeaponBuildBlock
+	  >
+
+const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
+	...defaultConverters,
+	...LinkJSXConverter({ internalDocToHref }),
+	heading: ({ node }) => {
+		console.log(node)
+		switch (node.tag) {
+			case "h2":
+				return <Heading2 id={slugify(node.tag)}>{node.tag}</Heading2>
+			case "h3":
+				return <Heading3 id={slugify(node.tag)}>{node.tag}</Heading3>
+			case "h4":
+				return <Heading4 id={slugify(node.tag)}>{node.tag}</Heading4>
+		}
+	},
+	link: ({ node }) => <RichLink node={node} />,
+	upload: ({ node }) => <RichImage node={node} />,
+	horizontalrule: () => <hr className="my-2" />,
+	inlineBlocks: {
+		zombie: ({ node }) => <ZombieTooltip node={node} />,
+		augment: ({ node }) => <span>{node.fields.blockType}</span>,
+		"ammo-mod": ({ node }) => <span>{node.fields.blockType}</span>,
+		"field-upgrade": ({ node }) => <span>{node.fields.blockType}</span>,
+		gobblegum: ({ node }) => <span>{node.fields.blockType}</span>,
+		perk: ({ node }) => <span>{node.fields.blockType}</span>,
+		"weapon-build": ({ node }) => <span>{node.fields.blockType}</span>,
+	},
+})
 
 export default function RichTextRenderer({
 	body,
@@ -32,95 +77,20 @@ export default function RichTextRenderer({
 	overrideStyles,
 	className,
 }: RichTextRendererProps) {
-	const renderOptions = {
-		renderNode: {
-			[INLINES.HYPERLINK]: (node: unknown) => {
-				return <RichLink node={node} />
-			},
-			[INLINES.EMBEDDED_ENTRY]: (node: any) => {
-				return (
-					<Suspense fallback={<ItemTooltipLoader />}>
-						<ItemTooltipWrapper node={node} />
-					</Suspense>
-				)
-			},
-			[BLOCKS.EMBEDDED_ASSET]: (node: any) => {
-				const asset = node.data.target
-				return <RichImage asset={asset} />
-			},
-			[BLOCKS.HEADING_2]: (node: any, children: React.ReactNode) => {
-				return <Heading2 id={slugify(node.content[0].value)}>{children}</Heading2>
-			},
-			[BLOCKS.HEADING_3]: (node: any, children: React.ReactNode) => {
-				return <Heading3 id={slugify(node.content[0].value)}>{children}</Heading3>
-			},
-			[BLOCKS.HEADING_4]: (node: any, children: React.ReactNode) => {
-				return <Heading4 id={slugify(node.content[0].value)}>{children}</Heading4>
-			},
-			[BLOCKS.PARAGRAPH]: (node: any, children: React.ReactNode) => {
-				let isYoutubeLink = false
-				node.content.forEach((node: any) => {
-					if (
-						node.nodeType === INLINES.HYPERLINK &&
-						(node.data.uri.startsWith(youtube_url) || node.data.uri.startsWith(youtube_shorts_url))
-					) {
-						isYoutubeLink = true
-						return
-					}
-					return
-				})
-
-				if (isYoutubeLink) return <div>{children}</div>
-
-				return <p>{children}</p>
-			},
-			[BLOCKS.EMBEDDED_ENTRY]: () => {
-				switch (slug) {
-					case "gorod-krovi":
-						return <GKValve />
-					case "terminus":
-						return <TerminusCode />
-					case "reckoning":
-						return <ReckoningCode />
-				}
-			},
-			[BLOCKS.QUOTE]: (_node: unknown, children: React.ReactNode) => {
-				return <RichBlockquote>{children}</RichBlockquote>
-			},
-			[BLOCKS.TABLE]: (node: any) => {
-				const headings: string[] = node.content[0].content.map(
-					(node: any) => node.content[0].content[0].value,
-				)
-				const bodyRows: any[] = node.content.slice(1).map((row: any) => row.content)
-				return <RichTable headings={headings} bodyRows={bodyRows} />
-			},
-			[BLOCKS.HR]: () => {
-				return <hr className="my-2" />
-			},
-			[BLOCKS.UL_LIST]: (_node: unknown, children: React.ReactNode) => {
-				return <UnorderedList>{children}</UnorderedList>
-			},
-			[BLOCKS.OL_LIST]: (_node: unknown, children: React.ReactNode) => {
-				return <OrderedList>{children}</OrderedList>
-			},
-		},
-	}
-
 	return (
-		<div
-			id="body"
+		<RichText
+			data={body}
+			converters={jsxConverters}
 			className={
 				overrideStyles
 					? className
 					: cn("relative mx-auto max-w-[80ch] px-4", richStyles.body, className)
 			}
-		>
-			{documentToReactComponents(body, renderOptions)}
-		</div>
+		/>
 	)
 }
 
-async function ItemTooltipWrapper({ node }: { node: any }) {
-	const item = await createItemTooltipDto(node.data.target)
-	return <ItemTooltip item={item} className="items-baseline gap-1.5 align-baseline font-bold" />
-}
+// async function ItemTooltipWrapper({ node }: { node: any }) {
+// 	const item = await createItemTooltipDto(node.data.target)
+// 	return <ItemTooltip item={item} className="items-baseline gap-1.5 align-baseline font-bold" />
+// }

@@ -16,20 +16,20 @@ import {
 import { notFound } from "next/navigation"
 import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
+import { ComingSoonBadge, DraftBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
-import { ManagementBadges } from "@/components/management-badges/management-badges"
 import ItemTooltip from "@/components/rich-text/rich-embeds/item-tooltip"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
+// import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { getCachedImageUrl } from "@/data/og-images"
 import {
+	getAdjacentZombies,
 	getZombieBySlug,
-	getZombies,
 	getZombiesMetadata,
 	type MinifiedZombie,
 } from "@/data/zombies"
@@ -42,23 +42,20 @@ const getPageData = cache(async (slug: string) => {
 	if (!zombie || zombie.isComingSoon) {
 		notFound()
 	}
-	const zombies = await getZombies()
-	const zombieIndex = zombies.findIndex(z => z.slug === zombie.slug)
+	const { prevZombie, nextZombie } = await getAdjacentZombies(zombie.createdAt)
 
 	return {
 		zombie,
-		prevZombie: zombies[zombieIndex + 1],
-		nextZombie: zombies[zombieIndex - 1],
+		prevZombie,
+		nextZombie,
 	}
 })
 
 export const generateStaticParams = async () => {
-	const zombies = await getZombiesMetadata()
-	return zombies
-		.map(zombie => ({
-			slug: zombie.slug,
-		}))
-		.slice(0, MAP_LIMIT * 3) // Limit to first three pages
+	const zombies = await getZombiesMetadata(MAP_LIMIT * 3) // Limit to first three pages
+	return zombies.map(zombie => ({
+		slug: zombie.slug,
+	}))
 }
 
 export const generateMetadata = async ({
@@ -72,32 +69,32 @@ export const generateMetadata = async ({
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("zombies", {
 			...zombie,
-			title: zombie.name,
+			title: zombie.title,
 			game: zombie.games[0]?.title ?? "",
 			map: zombie.maps[0]?.title ?? "",
 		})
 	}
-	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.name}" ${zombie.type} Zombie.`
+	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.title}" ${zombie.type} Zombie.`
 
 	return {
-		title: zombie.name,
+		title: zombie.title,
 		description,
 		openGraph: {
 			...GLOBAL_OG_PROPS.openGraph,
-			title: zombie.name,
+			title: zombie.title,
 			description,
-			url: `/${zombie.slug}`,
+			url: `/bestiary/${zombie.slug}`,
 			images: [
 				{
 					url: imageUrl || "",
-					alt: `${zombie.name} Main Quest`,
+					alt: `${zombie.title} Main Quest`,
 					width: 1200,
 					height: 630,
 				},
 			],
 		},
 		twitter: {
-			title: zombie.name,
+			title: zombie.title,
 			description,
 			card: "summary_large_image",
 		},
@@ -129,26 +126,26 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 				<Breadcrumbs
 					links={[
 						{ title: "Bestiary", href: "/bestiary" },
-						{ title: zombie.name, href: `/bestiary/${zombie.slug}` },
+						{ title: zombie.title, href: `/bestiary/${zombie.slug}` },
 					]}
 				/>
 			</div>
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-4">
-						<ManagementBadges entry={zombie} />
+						{zombie._status === "draft" ? <DraftBadge /> : null}
 						{zombie.isComingSoon ? <ComingSoonBadge /> : null}
-						{zombie.isNew ? <NewBadge /> : null}
+						{/* {zombie.isNew ? <NewBadge /> : null} */}
 						<TypeBadge type={zombie.type} />
 					</div>
 					<ShareButton
-						title={zombie.name}
+						title={zombie.title}
 						url={`${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`}
 					/>
 				</div>
 				<CardHeader>
 					<CardTitle className="dark:dark-text-gradient font-extrabold text-3xl text-gradient md:text-4xl">
-						{zombie.name}
+						{zombie.title}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
@@ -166,7 +163,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 							</div>
 							<FeaturedImage
 								featuredImage={zombie.image}
-								alt={`${zombie.name} image`}
+								alt={`${zombie.title} image`}
 								quality={100}
 								sizes="422px"
 								priority
@@ -253,14 +250,20 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 									Weak Points
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.weakPoints.map((weakPoint, index) => (
-										<Badge
-											key={`${weakPoint}-${index + 1}`}
-											className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
-										>
-											{weakPoint}
+									{zombie.weakPoints.length > 0 ? (
+										zombie.weakPoints.map(weakPoint => (
+											<Badge
+												key={weakPoint.id}
+												className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
+											>
+												{weakPoint.title}
+											</Badge>
+										))
+									) : (
+										<Badge className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">
+											None
 										</Badge>
-									))}
+									)}
 								</div>
 							</div>
 							<div>
@@ -269,9 +272,11 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 									Elemental Weaknesses
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.elementalWeakness?.map(weakness => (
-										<ItemTooltip key={weakness.id} item={weakness} />
-									)) ?? (
+									{zombie.elementalWeakness.length > 0 ? (
+										zombie.elementalWeakness.map(weakness => (
+											<ItemTooltip key={weakness.id} item={weakness} />
+										))
+									) : (
 										<span className="text-foreground dark:text-foreground/80">
 											No elemental weaknesses
 										</span>
@@ -295,7 +300,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 							{zombie.attacks.map(attack => (
 								<div key={attack.id} className="rounded-lg border p-3">
 									<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
-										<h4 className="font-semibold">{attack.name}</h4>
+										<h4 className="font-semibold">{attack.title}</h4>
 										<div className="flex flex-wrap gap-1">
 											<Badge variant={"outline"}>Range: {attack.range}</Badge>
 										</div>
@@ -352,7 +357,7 @@ interface PrevOrNextZombie {
 }
 
 const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
-	const alt = `${zombie.name} image`
+	const alt = `${zombie.title} image`
 
 	return (
 		<CustomLink
@@ -373,9 +378,9 @@ const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					<ManagementBadges entry={zombie} />
+					{zombie._status === "draft" ? <DraftBadge /> : null}
 					{zombie.isComingSoon ? <ComingSoonBadge /> : null}
-					{zombie.isNew ? <NewBadge /> : null}
+					{/* {zombie.isNew ? <NewBadge /> : null} */}
 					<TypeBadge type={zombie.type} />
 					{zombie.games[0] ? (
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
@@ -403,11 +408,11 @@ const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
 						className={cn(
 							"font-semibold text-xl transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
 							{
-								truncate: zombie.name.length > 20,
+								truncate: zombie.title.length > 20,
 							},
 						)}
 					>
-						{zombie.name}
+						{zombie.title}
 					</h3>
 					<p className="line-clamp-3 text-ellipsis text-sm">{zombie.description}</p>
 					<div

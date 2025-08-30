@@ -66,13 +66,13 @@ export interface Config {
     users: UserAuthOperations;
   };
   blocks: {
-    augment: Augment;
-    'field-upgrade': FieldUpgrade1;
-    perk: Perk1;
-    'weapon-build': WeaponBuild1;
-    zombie: Zombie1;
-    gobblegum: Gobblegum;
-    'ammo-mod': AmmoMod1;
+    augment: InlineAugmentBlock;
+    'field-upgrade': InlineFieldUpgradeBlock;
+    perk: InlinePerkBlock;
+    'weapon-build': InlineWeaponBuildBlock;
+    zombie: InlineZombieBlock;
+    gobblegum: InlineGobblegumBlock;
+    'ammo-mod': InlineAmmoModBlock;
   };
   collections: {
     users: User;
@@ -88,7 +88,7 @@ export interface Config {
     perks: Perk;
     ammoMods: AmmoMod;
     fieldUpgrades: FieldUpgrade;
-    augments: Augment1;
+    augments: Augment;
     weapons: Weapon;
     weaponBuilds: WeaponBuild;
     weaponAttachments: WeaponAttachment;
@@ -190,13 +190,13 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "augment".
+ * via the `definition` "InlineAugmentBlock".
  */
-export interface Augment {
+export interface InlineAugmentBlock {
   /**
    * Augment you want to embed inline.
    */
-  augments: string | Augment1;
+  augments: string | Augment;
   id?: string | null;
   blockName?: string | null;
   blockType: 'augment';
@@ -205,7 +205,7 @@ export interface Augment {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "augments".
  */
-export interface Augment1 {
+export interface Augment {
   id: string;
   /**
    * Name of the augment.
@@ -294,7 +294,7 @@ export interface Perk {
    * Augments that belong to this perk.
    */
   augments?: {
-    docs?: (string | Augment1)[];
+    docs?: (string | Augment)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -641,8 +641,8 @@ export interface AmmoMod {
   /**
    * Augments that belong to this ammo mod.
    */
-  augments?: {
-    docs?: (string | Augment1)[];
+  augments: {
+    docs?: (string | Augment)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -712,7 +712,7 @@ export interface FieldUpgrade {
    * Augments that belong to this field upgrade.
    */
   augments?: {
-    docs?: (string | Augment1)[];
+    docs?: (string | Augment)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -724,13 +724,33 @@ export interface FieldUpgrade {
  * via the `definition` "gobblegum".
  */
 export interface Gobblegum {
+  id: string;
   /**
-   * GobbleGum you want to embed inline.
+   * Name of the gobblegum.
    */
-  gobblegum: string | Gobblegum;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'gobblegum';
+  title: string;
+  /**
+   * Rarity of the gobblegum.
+   */
+  rarity: 'Classic' | 'Mega' | 'Rare-Mega' | 'Ultra-Rare Mega' | 'Rare' | 'Epic' | 'Legendary' | 'Ultra';
+  /**
+   * Type of the gobblegum.
+   */
+  type: 'Round-Based' | 'Time-Based' | 'Immediate' | 'Player-Activated';
+  /**
+   * Game this gobblegum belongs to.
+   */
+  game: string | Game;
+  /**
+   * Featured image of this gobblegum.
+   */
+  image: string | Media;
+  /**
+   * Description used in tooltips and hover cards.
+   */
+  description: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -813,9 +833,9 @@ export interface WeaponAttachment {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "field-upgrade".
+ * via the `definition` "InlineFieldUpgradeBlock".
  */
-export interface FieldUpgrade1 {
+export interface InlineFieldUpgradeBlock {
   /**
    * Field upgrade you want to embed inline.
    */
@@ -826,9 +846,9 @@ export interface FieldUpgrade1 {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "perk".
+ * via the `definition` "InlinePerkBlock".
  */
-export interface Perk1 {
+export interface InlinePerkBlock {
   /**
    * Perk you want to embed inline.
    */
@@ -839,9 +859,9 @@ export interface Perk1 {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weapon-build".
+ * via the `definition` "InlineWeaponBuildBlock".
  */
-export interface WeaponBuild1 {
+export interface InlineWeaponBuildBlock {
   /**
    * Weapon build you want to embed inline.
    */
@@ -852,9 +872,9 @@ export interface WeaponBuild1 {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "zombie".
+ * via the `definition` "InlineZombieBlock".
  */
-export interface Zombie1 {
+export interface InlineZombieBlock {
   /**
    * Zombie you want to embed inline.
    */
@@ -865,9 +885,22 @@ export interface Zombie1 {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ammo-mod".
+ * via the `definition` "InlineGobblegumBlock".
  */
-export interface AmmoMod1 {
+export interface InlineGobblegumBlock {
+  /**
+   * GobbleGum you want to embed inline.
+   */
+  gobblegum: string | Gobblegum;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gobblegum';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InlineAmmoModBlock".
+ */
+export interface InlineAmmoModBlock {
   /**
    * Ammo mod you want to embed inline.
    */
@@ -997,7 +1030,7 @@ export interface PayloadLockedDocument {
       } | null)
     | ({
         relationTo: 'augments';
-        value: string | Augment1;
+        value: string | Augment;
       } | null)
     | ({
         relationTo: 'weapons';

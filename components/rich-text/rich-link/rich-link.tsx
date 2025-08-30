@@ -1,77 +1,59 @@
+import type { SerializedLinkNode } from "@payloadcms/richtext-lexical"
 import type { Route } from "next"
-import { YouTubeEmbed } from "@next/third-parties/google"
 import { ExternalLinkIcon } from "lucide-react"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import ExternalLink from "@/components/external-link/external-link"
-import { env } from "@/env"
-import { getYouTubeVideoId, slugify } from "@/utils/functions.client"
-import { decodeRichLinkNode } from "@/utils/validation-schemas"
-import Heading3 from "../rich-headings/heading3/heading3"
 
 interface RichLinkProps {
-	node: unknown
+	node: SerializedLinkNode
 }
 
 export const youtube_url = "https://youtu.be/"
 export const youtube_shorts_url = "https://youtube.com/shorts/"
-const dev_url = "http://localhost:3000"
-const alt_dev_url = "https://localhost:3000"
+// const _dev_url = "http://localhost:3000"
+// const _alt_dev_url = "https://localhost:3000"
 
 export default function RichLink({ node }: RichLinkProps) {
-	const validNode = decodeRichLinkNode(node)
-	if (validNode._tag === "Left") {
-		console.error(validNode.left.message)
-		return null
-	}
-
-	const { data, content } = validNode.right
-	if (!content[0]) return null
-
-	if (data.uri.startsWith(youtube_url) || data.uri.startsWith(youtube_shorts_url)) {
-		return (
-			<>
-				<Heading3 id={slugify(content[0].value)} className="pb-4">
-					{content[0].value}
-				</Heading3>
-				<YouTubeEmbed
-					videoid={getYouTubeVideoId(data.uri) ?? ""}
-					style="border-radius: var(--radius);"
-				/>
-			</>
-		)
-	}
-	if (data.uri.startsWith(env.NEXT_PUBLIC_WEBSITE_URL)) {
+	if (node.fields.linkType === "internal")
 		return (
 			<CustomLink
-				href={data.uri as Route}
-				className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
+				href={(node.fields.url as Route) ?? "#"}
+				className="inline-flex font-medium text-primary underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
 			>
-				{content[0].value}
+				{node.children[0]
+					? "text" in node.children[0]
+						? (node.children[0].text as string)
+						: ""
+					: ""}
 			</CustomLink>
 		)
-	}
-	if (
-		data.uri.startsWith(dev_url) ||
-		data.uri.startsWith(alt_dev_url) ||
-		data.uri.startsWith("/")
-	) {
-		return (
-			<CustomLink
-				href={
-					data.uri
-						.replace(dev_url, env.NEXT_PUBLIC_WEBSITE_URL)
-						.replace(alt_dev_url, env.NEXT_PUBLIC_WEBSITE_URL) as Route
-				}
-				className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
-			>
-				{content[0].value}
-			</CustomLink>
-		)
-	}
+
 	return (
-		<ExternalLink href={data.uri} className="inline-flex w-fit items-center">
-			{content[0].value}
+		<ExternalLink href={node.fields.url ?? "#"} className="inline-flex w-fit items-center">
+			{node.children[0]
+				? "text" in node.children[0]
+					? (node.children[0].text as string)
+					: ""
+				: ""}
 			<ExternalLinkIcon className="ml-1 h-4 w-4" />
 		</ExternalLink>
 	)
+}
+
+export const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
+	const doc = linkNode.fields.doc
+	if (!doc) return "#"
+	const { relationTo, value } = doc
+	if (typeof value !== "object") return "#"
+
+	switch (relationTo) {
+		case "zombies":
+			return `/bestiary/${value.slug}`
+		case "maps":
+			return `/${value.game}/${value.slug}`
+		case "sideQuests":
+			return `/side-quests/${value.game}/${value.map}/${value.slug}`
+		default:
+			return "#"
+	}
 }

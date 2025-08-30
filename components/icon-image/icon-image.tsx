@@ -5,7 +5,14 @@ import { useImageState } from "@/hooks/use-image-state"
 import { cn } from "@/lib/utils"
 import { customImageLoader } from "@/utils/image-loader"
 
-export default function IconImage({ featuredImage, alt = "", quality = 75, className, priority, sizes }: ImageProps) {
+export default function IconImage({
+	featuredImage,
+	alt = "",
+	quality = 75,
+	className,
+	priority,
+	sizes,
+}: ImageProps) {
 	const {
 		imageLoaded,
 		imageErrored,
@@ -16,7 +23,7 @@ export default function IconImage({ featuredImage, alt = "", quality = 75, class
 		setFallbackLoaded,
 		setFallbackErrored,
 	} = useImageState()
-	const featuredImageURL = featuredImage ? `https:${featuredImage.url}` : null
+	const featuredImageURL = featuredImage?.url ? featuredImage.url : null
 
 	if (!featuredImageURL) return null
 
@@ -26,8 +33,8 @@ export default function IconImage({ featuredImage, alt = "", quality = 75, class
 				<Image
 					src={featuredImageURL}
 					alt={alt}
-					width={featuredImage?.width}
-					height={featuredImage?.height}
+					width={featuredImage?.width ?? undefined}
+					height={featuredImage?.height ?? undefined}
 					sizes={sizes}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}
@@ -43,8 +50,8 @@ export default function IconImage({ featuredImage, alt = "", quality = 75, class
 					src={featuredImageURL}
 					loader={({ src, width, quality }) => customImageLoader({ src, width, quality })}
 					alt={alt}
-					width={featuredImage?.width}
-					height={featuredImage?.height}
+					width={featuredImage?.width ?? undefined}
+					height={featuredImage?.height ?? undefined}
 					sizes={sizes}
 					onLoad={() => setFallbackLoaded(true)}
 					onError={() => setFallbackErrored(true)}

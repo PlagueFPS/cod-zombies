@@ -2,6 +2,7 @@ import type { Block } from "payload"
 
 export const InlinePerkBlock: Block = {
 	slug: "perk",
+	interfaceName: "InlinePerkBlock",
 	admin: {
 		components: {
 			Label: "@/components/admin/inline-block-label",

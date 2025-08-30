@@ -2,6 +2,7 @@ import type { Block } from "payload"
 
 export const InlineFieldUpgradeBlock: Block = {
 	slug: "field-upgrade",
+	interfaceName: "InlineFieldUpgradeBlock",
 	admin: {
 		components: {
 			Label: "@/components/admin/inline-block-label",

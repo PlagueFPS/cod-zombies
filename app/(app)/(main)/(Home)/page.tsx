@@ -4,8 +4,8 @@ import GridSection from "@/components/grid-section/grid-section"
 import HeroSection from "@/components/hero-section/hero-section"
 import GridLoader from "@/components/loaders/grid-loader"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
-import { MainQuestFilters } from "@/components/quest-filters/quest-filters"
-import { MainQuestGrid } from "@/components/quest-grid/quest-grid"
+import { MainQuestFilters } from "@/components/quest-filters/main-quest-filters"
+import { MainQuestGrid } from "@/components/quest-grid/main-quest-grid"
 import { env } from "@/env"
 
 export const metadata: Metadata = {

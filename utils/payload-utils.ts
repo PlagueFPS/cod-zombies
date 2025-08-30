@@ -1,3 +1,4 @@
+import "server-only"
 import type { Media } from "@/types/payload-types"
 import { Effect, Predicate } from "effect"
 import { RelationshipError } from "@/types/errors"

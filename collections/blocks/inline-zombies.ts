@@ -7,6 +7,7 @@ export const InlineZombiesBlock: Block = {
 			Label: "@/components/admin/inline-block-label",
 		},
 	},
+	interfaceName: "InlineZombieBlock",
 	fields: [
 		{
 			name: "zombies", // name must always match the relationTo value

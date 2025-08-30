@@ -2,6 +2,7 @@ import type { Block } from "payload"
 
 export const InlineAmmoModBlock: Block = {
 	slug: "ammo-mod",
+	interfaceName: "InlineAmmoModBlock",
 	admin: {
 		components: {
 			Label: "@/components/admin/inline-block-label",

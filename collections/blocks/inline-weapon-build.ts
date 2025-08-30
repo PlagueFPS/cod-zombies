@@ -2,6 +2,7 @@ import type { Block } from "payload"
 
 export const InlineWeaponBuildBlock: Block = {
 	slug: "weapon-build",
+	interfaceName: "InlineWeaponBuildBlock",
 	admin: {
 		components: {
 			Label: "@/components/admin/inline-block-label",
