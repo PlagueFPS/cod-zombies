@@ -20,6 +20,7 @@ import { ComingSoonBadge, DraftBadge, TypeBadge } from "@/components/custom-badg
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import ItemTooltip from "@/components/rich-text/rich-embeds/item-tooltip"
+import AmmoModTooltipClient from "@/components/rich-text/rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip-client"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 // import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
@@ -274,7 +275,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 								<div className="flex flex-wrap items-center gap-2">
 									{zombie.elementalWeakness.length > 0 ? (
 										zombie.elementalWeakness.map(weakness => (
-											<ItemTooltip key={weakness.id} item={weakness} />
+											<AmmoModTooltipClient key={weakness.id} ammoMod={weakness} />
 										))
 									) : (
 										<span className="text-foreground dark:text-foreground/80">

@@ -7,7 +7,8 @@ import { IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
-export type ZombieBySlug = Awaited<ReturnType<typeof getZombieBySlug>>
+export type ZombieBySlug = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
+export type ZombieById = NonNullable<Awaited<ReturnType<typeof getZombieById>>>
 
 export const getZombies = cache(
 	unstable_cache(
@@ -149,28 +150,21 @@ export const getZombieBySlug = cache(
 								},
 							},
 							populate: {
+								maps: {
+									title: true,
+									slug: true,
+								},
+								games: {
+									title: true,
+									slug: true,
+								},
 								zombieAttacks: {
 									title: true,
 									description: true,
 									range: true,
 								},
-								zombies: {
-									title: true,
-									slug: true,
-									type: true,
-									image: true,
-									weakPoints: true,
-									elementalWeakness: true,
-								},
 								ammoMods: {
 									title: true,
-									description: true,
-									image: true,
-									augments: true,
-								},
-								augments: {
-									title: true,
-									type: true,
 									description: true,
 									image: true,
 								},
@@ -194,29 +188,13 @@ export const getZombieBySlug = cache(
 								const elementalWeakness = zombie.elementalWeakness
 									? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
 											Effect.gen(function* () {
-												const weakness = yield* assertRelation(elementalWeakness)
-												const media = yield* assertRelation(weakness.image)
-												const augments = weakness.augments.docs
-													? yield* Effect.forEach(weakness.augments.docs, augment =>
-															Effect.gen(function* () {
-																const { title, description, type, image } =
-																	yield* assertRelation(augment)
-																const media = yield* assertRelation(image)
-																return {
-																	title,
-																	description,
-																	type,
-																	image: createMediaDto(media),
-																}
-															}),
-														)
-													: []
-
+												const ammoMod = yield* assertRelation(elementalWeakness)
+												const image = yield* assertRelation(ammoMod.image)
 												return {
-													title: weakness.title,
-													description: weakness.description,
-													image: createMediaDto(media),
-													augments,
+													id: ammoMod.id,
+													title: ammoMod.title,
+													description: ammoMod.description,
+													image: createMediaDto(image),
 												}
 											}),
 										)
@@ -413,4 +391,79 @@ export const getAdjacentZombies = cache(
 			tags: [],
 		},
 	),
+)
+
+export const getZombieById = cache(
+	unstable_cache(async (id: string) => {
+		return await Effect.gen(function* () {
+			const payload = yield* Payload
+			const zombie = yield* Effect.tryPromise({
+				try: () =>
+					payload.findByID({
+						collection: "zombies",
+						id,
+						select: {
+							title: true,
+							slug: true,
+							image: true,
+							type: true,
+							weakPoints: true,
+							elementalWeakness: true,
+						},
+						populate: {
+							ammoMods: {
+								title: true,
+								image: true,
+								description: true,
+							},
+						},
+					}),
+				catch: error =>
+					new EntryNotFoundError({
+						message: `Failed to get zombie by id: ${id}`,
+						cause: error,
+					}),
+			}).pipe(
+				Effect.flatMap(zombie =>
+					Effect.gen(function* () {
+						const image = yield* assertRelation(zombie.image)
+						const weakPoints = zombie.weakPoints
+							? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
+							: []
+						const elementalWeakness = zombie.elementalWeakness
+							? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
+									Effect.gen(function* () {
+										const ammoMod = yield* assertRelation(elementalWeakness)
+										const image = yield* assertRelation(ammoMod.image)
+										return {
+											id: ammoMod.id,
+											title: ammoMod.title,
+											description: ammoMod.description,
+											image: createMediaDto(image),
+										}
+									}),
+								)
+							: []
+
+						return {
+							...zombie,
+							image: createMediaDto(image),
+							weakPoints,
+							elementalWeakness,
+						}
+					}),
+				),
+			)
+
+			return zombie
+		}).pipe(
+			Effect.withLogSpan("get_zombie_by_id"),
+			Effect.annotateLogs({ id }),
+			Effect.tapError(Effect.logError),
+			Effect.catchAll(_error => Effect.succeed(null)),
+			Effect.ensureErrorType<never>(),
+			Effect.provide(Payload.Default),
+			Effect.runPromise,
+		)
+	}),
 )

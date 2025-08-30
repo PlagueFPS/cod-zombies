@@ -14,6 +14,7 @@ import {
 	LinkJSXConverter,
 	RichText,
 } from "@payloadcms/richtext-lexical/react"
+import { Suspense } from "react"
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { cn } from "@/lib/utils"
 import { slugify } from "@/utils/functions.client"
@@ -21,6 +22,7 @@ import Heading2 from "../rich-headings/heading2/heading2"
 import Heading3 from "../rich-headings/heading3/heading3"
 import Heading4 from "../rich-headings/heading4/heading4"
 import RichImage from "../rich-image/rich-image"
+import AmmoModTooltip from "../rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip"
 import ZombieTooltip from "../rich-inline-blocks/tooltips/zombies/zombie-tooltip"
 import RichLink, { internalDocToHref } from "../rich-link/rich-link"
 
@@ -61,9 +63,13 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 	upload: ({ node }) => <RichImage node={node} />,
 	horizontalrule: () => <hr className="my-2" />,
 	inlineBlocks: {
-		zombie: ({ node }) => <ZombieTooltip node={node} />,
+		zombie: ({ node }) => (
+			<Suspense fallback={<span>Loading...</span>}>
+				<ZombieTooltip node={node} />
+			</Suspense>
+		),
 		augment: ({ node }) => <span>{node.fields.blockType}</span>,
-		"ammo-mod": ({ node }) => <span>{node.fields.blockType}</span>,
+		"ammo-mod": ({ node }) => <AmmoModTooltip node={node} />,
 		"field-upgrade": ({ node }) => <span>{node.fields.blockType}</span>,
 		gobblegum: ({ node }) => <span>{node.fields.blockType}</span>,
 		perk: ({ node }) => <span>{node.fields.blockType}</span>,

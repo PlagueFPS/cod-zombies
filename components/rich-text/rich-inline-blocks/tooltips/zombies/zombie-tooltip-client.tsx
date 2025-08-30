@@ -1,7 +1,5 @@
 "use client"
-
-import type { AmmoMod, WeakPoint, Zombie } from "@/types/payload-types"
-import type { createMediaDto } from "@/utils/payload-utils"
+import type { ZombieById } from "@/data/zombies"
 import { AlertTriangle, ExternalLinkIcon, Target } from "lucide-react"
 import { TypeBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
@@ -10,29 +8,21 @@ import { Badge } from "@/components/ui/badge"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import AmmoModTooltipClient from "../ammo-mods/ammo-mod-tooltip-client"
 
-interface ZombieTooltipProps {
-	title: string
-	slug: string
-	image: ReturnType<typeof createMediaDto>
-	type: Zombie["type"]
-	weakPoints: WeakPoint[]
-	elementalWeakness: AmmoMod[]
-}
-
-export default function ZombieTooltipClient({ zombie }: { zombie: ZombieTooltipProps }) {
+export default function ZombieTooltipClient({ zombie }: { zombie: ZombieById }) {
 	const isMobile = useIsMobile(640)
 
 	if (!isMobile)
 		return (
 			<HoverCard openDelay={200}>
 				<HoverCardTrigger
-					className="relative inline-flex cursor-default items-baseline justify-center gap-1.5 align-baseline font-bold"
+					className="relative inline-flex cursor-default items-baseline justify-center align-baseline font-bold"
 					asChild
 				>
 					<span
 						className={cn(
-							"mr-1.5 text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
+							"mr-1 text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
 							{
 								"text-teal-600 decoration-teal-600 dark:text-teal-300 dark:decoration-teal-300":
 									zombie.type === "Normal",
@@ -70,7 +60,7 @@ export default function ZombieTooltipClient({ zombie }: { zombie: ZombieTooltipP
 		)
 }
 
-const ZombieTooltipContent = ({ zombie }: { zombie: ZombieTooltipProps }) => {
+const ZombieTooltipContent = ({ zombie }: { zombie: ZombieById }) => {
 	return (
 		<div className="relative flex w-full max-w-sm flex-col rounded-md">
 			<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
@@ -144,8 +134,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: ZombieTooltipProps }) => {
 						<div className="flex flex-wrap items-center gap-2 text-sm">
 							{zombie.elementalWeakness.length > 0 ? (
 								zombie.elementalWeakness.map(weakness => (
-									// <AmmoModTooltip key={weakness.id} item={weakness} />
-									<span key={weakness.id}>{weakness.title}</span>
+									<AmmoModTooltipClient key={weakness.id} ammoMod={weakness} />
 								))
 							) : (
 								<span className="text-foreground dark:text-foreground/80">

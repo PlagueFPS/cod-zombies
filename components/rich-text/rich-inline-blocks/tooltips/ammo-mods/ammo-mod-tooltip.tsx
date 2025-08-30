@@ -2,6 +2,7 @@ import type { SerializedInlineBlockNode } from "@payloadcms/richtext-lexical"
 import type { InlineAmmoModBlock } from "@/types/payload-types"
 import { Effect } from "effect"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
+import AmmoModTooltipClient from "./ammo-mod-tooltip-client"
 
 export default function AmmoModTooltip({
 	node,
@@ -13,32 +14,19 @@ export default function AmmoModTooltip({
 			Effect.flatMap(ammoMod =>
 				Effect.gen(function* () {
 					const image = yield* assertRelation(ammoMod.image)
-					const augments = ammoMod.augments.docs
-						? yield* Effect.forEach(ammoMod.augments.docs, augment =>
-								Effect.gen(function* () {
-									const { title, description, type, image } = yield* assertRelation(augment)
-									const media = yield* assertRelation(image)
-
-									return {
-										title,
-										description,
-										type,
-										image: createMediaDto(media),
-									}
-								}),
-							)
-						: []
-
 					return {
 						title: ammoMod.title,
 						description: ammoMod.description,
 						image: createMediaDto(image),
-						augments,
 					}
 				}),
 			),
 		)
-
-		return ammoMod
-	})
+		return <AmmoModTooltipClient ammoMod={ammoMod} />
+	}).pipe(
+		Effect.withLogSpan("richtext_ammo_mod_block"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(_error => Effect.succeed(<span>{node.fields.blockType}</span>)),
+		Effect.runSync,
+	)
 }
