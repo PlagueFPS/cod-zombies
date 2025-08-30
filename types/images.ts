@@ -1,8 +1,8 @@
 export interface ImageProps {
 	featuredImage: {
-		url: string | undefined
-		width: number | undefined
-		height: number | undefined
+		url: string | undefined | null
+		width: number | undefined | null
+		height: number | undefined | null
 	} | null
 	alt?: string
 	quality?: number

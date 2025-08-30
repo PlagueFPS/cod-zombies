@@ -1,23 +1,16 @@
-import type { MinifiedFeaturedMap } from "@/data/maps"
-import type { MinifiedSideQuest } from "@/data/side-quests"
+import type { MinifiedMainQuest } from "@/data/main-quests"
+import { Predicate } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import { isFeaturedMap, isSideQuest } from "@/utils/contentful-utils"
-import {
-	ChangedBadge,
-	ComingSoonBadge,
-	DifficultyBadge,
-	DraftBadge,
-	NewBadge,
-} from "../custom-badges/custom-badges"
+import { DifficultyBadge, DraftBadge } from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IQuestPreviewCard {
-	quest: MinifiedFeaturedMap | MinifiedSideQuest
+	quest: MinifiedMainQuest
 	questIndex: number
 }
 
@@ -27,17 +20,17 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 	const alt = `${quest.title} map image`
 
 	const renderSpecificBadge = () => {
-		if (isFeaturedMap(quest) && quest.difficulty) {
+		if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
 			return <DifficultyBadge difficulty={quest.difficulty} />
 		}
 
-		if (isSideQuest(quest) && quest.map) {
-			return (
-				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-					{quest.map.title}
-				</Badge>
-			)
-		}
+		// if (Predicate.hasProperty(quest, "map") && quest.map) {
+		// 	return (
+		// 		<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+		// 			{quest.map.title}
+		// 		</Badge>
+		// 	)
+		// }
 
 		return null
 	}
@@ -52,8 +45,8 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 				href={
 					quest.isComingSoon
 						? "#"
-						: isSideQuest(quest)
-							? `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
+						: Predicate.hasProperty(quest, "map")
+							? `/side-quests/${quest.game.slug}/${"quest.map.slug"}/${quest.slug}`
 							: `/${quest.game.slug}/${quest.slug}`
 				}
 				aria-label={`View Guide for ${quest.title}`}
@@ -68,9 +61,8 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end gap-1">
-						{IN_DEVELOPMENT && quest.isDraft ? <DraftBadge /> : null}
-						{IN_DEVELOPMENT && quest.isChanged ? <ChangedBadge /> : null}
-						{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
+						{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
+						{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.game.title}

@@ -27,6 +27,12 @@ const nextConfig: NextConfig = {
 				hostname: `images.ctfassets.net`,
 				pathname: `/${process.env.CONTENTFUL_SPACE_ID}/**`,
 			},
+			{
+				protocol: "http",
+				hostname: "localhost",
+				port: "3000",
+				pathname: "/api/payload/media/file/**",
+			},
 		],
 		minimumCacheTTL: 31536000, // 1 year in seconds
 	},

@@ -6,6 +6,9 @@ export const Media: CollectionConfig = {
 		useAsTitle: "title",
 		defaultColumns: ["fileName", "mimeType", "fileSize", "updatedAt"],
 	},
+	access: {
+		read: () => true,
+	},
 	defaultPopulate: {
 		url: true,
 		filename: true,

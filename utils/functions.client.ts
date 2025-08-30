@@ -47,3 +47,7 @@ export const getYouTubeVideoId = (url: string) => {
 	const match = url.match(regex)
 	return match ? match[1] : null
 }
+
+export const calculateSkip = (page: number, limit: number) => {
+	return page <= 1 ? 0 : limit * page - limit
+}

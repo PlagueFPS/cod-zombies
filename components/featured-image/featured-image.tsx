@@ -30,7 +30,7 @@ export default function FeaturedImage({
 		setFallbackLoaded,
 		setFallbackErrored,
 	} = useImageState()
-	const featuredImageURL = featuredImage ? `https:${featuredImage.url}` : placeholderImage
+	const featuredImageURL = featuredImage?.url ? featuredImage.url : placeholderImage
 
 	return (
 		<figure className="relative m-0 flex h-auto w-full flex-col items-center justify-center">
@@ -39,8 +39,8 @@ export default function FeaturedImage({
 				<Image
 					src={featuredImageURL}
 					alt={alt}
-					width={featuredImage?.width}
-					height={featuredImage?.height}
+					width={featuredImage?.width ?? undefined}
+					height={featuredImage?.height ?? undefined}
 					sizes={sizes}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}
@@ -57,13 +57,13 @@ export default function FeaturedImage({
 				/>
 			) : null}
 			{/* If the image optimization fails, we fall back to contentful's image optimization */}
-			{imageErrored && !fallbackErrored ? (
+			{/* {imageErrored && !fallbackErrored ? (
 				<Image
 					src={featuredImageURL}
 					loader={({ src, width, quality }) => customImageLoader({ src, width, quality })}
 					alt={alt}
-					width={featuredImage?.width}
-					height={featuredImage?.height}
+					width={featuredImage?.width ?? undefined}
+					height={featuredImage?.height ?? undefined}
 					sizes={sizes}
 					onLoad={() => setFallbackLoaded(true)}
 					onError={() => setFallbackErrored(true)}
@@ -78,7 +78,7 @@ export default function FeaturedImage({
 					priority={priority}
 					placeholder={!featuredImage ? "blur" : undefined}
 				/>
-			) : null}
+			) : null} */}
 			{/* If both image optimization fails, serve static non-optimized fallback */}
 			{fallbackErrored ? (
 				<Image

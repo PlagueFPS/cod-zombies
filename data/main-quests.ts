@@ -5,6 +5,8 @@ import { Payload } from "@/lib/services/Payload"
 import { GetEntriesError } from "@/types/errors"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 
+export type MinifiedMainQuest = Awaited<ReturnType<typeof getMainQuests>>[number]
+
 export const getMainQuests = cache(
 	unstable_cache(
 		async () => {
@@ -20,6 +22,7 @@ export const getMainQuests = cache(
 								isComingSoon: true,
 								difficulty: true,
 								map: true,
+								_status: true,
 							},
 							populate: {
 								maps: {
@@ -45,6 +48,7 @@ export const getMainQuests = cache(
 						const image = yield* assertRelation(map.image)
 
 						return {
+							_status: quest._status,
 							id: quest.id,
 							isComingSoon: quest.isComingSoon,
 							title: map.title,
@@ -91,6 +95,7 @@ export const getMainQuestMetadata = cache(
 								},
 							},
 							select: {
+								difficulty: true,
 								map: true,
 							},
 							populate: {
@@ -120,6 +125,7 @@ export const getMainQuestMetadata = cache(
 							title: map.title,
 							slug: map.slug,
 							game: game,
+							difficulty: quest.difficulty,
 						}
 					}),
 				)

@@ -29,8 +29,8 @@ import { Progress } from "@/components/ui/progress"
 import { getCachedImageUrl } from "@/data/og-images"
 import {
 	getZombieBySlug,
-	getZombieSearchData,
 	getZombies,
+	getZombiesMetadata,
 	type MinifiedZombie,
 } from "@/data/zombies"
 import { env } from "@/env"
@@ -53,7 +53,7 @@ const getPageData = cache(async (slug: string) => {
 })
 
 export const generateStaticParams = async () => {
-	const zombies = await getZombieSearchData()
+	const zombies = await getZombiesMetadata()
 	return zombies
 		.map(zombie => ({
 			slug: zombie.slug,

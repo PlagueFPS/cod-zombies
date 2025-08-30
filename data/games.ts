@@ -17,7 +17,6 @@ export const getGames = cache(
 							select: {
 								title: true,
 								slug: true,
-								maps: true,
 							},
 						}),
 					catch: error =>
@@ -26,7 +25,16 @@ export const getGames = cache(
 							cause: error,
 						}),
 				})
-			})
+
+				return docs
+			}).pipe(
+				Effect.withLogSpan("get_games"),
+				Effect.tapError(Effect.logError),
+				Effect.catchAll(_error => Effect.succeed([])),
+				Effect.ensureErrorType<never>(),
+				Effect.provide(Payload.Default),
+				Effect.runPromise,
+			)
 		},
 		[],
 		{

@@ -82,17 +82,17 @@ export interface Config {
     mainQuests: MainQuest;
     sideQuests: SideQuest;
     zombies: Zombie;
+    zombieAttacks: ZombieAttack;
+    weakPoints: WeakPoint;
     gobblegum: Gobblegum;
     perks: Perk;
     ammoMods: AmmoMod;
     fieldUpgrades: FieldUpgrade;
-    zombieAttacks: ZombieAttack;
+    augments: Augment1;
     weapons: Weapon;
     weaponBuilds: WeaponBuild;
-    legal: Legal;
-    augments: Augment1;
-    weakPoints: WeakPoint;
     weaponAttachments: WeaponAttachment;
+    legal: Legal;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -110,6 +110,12 @@ export interface Config {
       gobblegum: 'gobblegum';
       weapons: 'weapons';
     };
+    zombieAttacks: {
+      zombies: 'zombies';
+    };
+    weakPoints: {
+      zombies: 'zombies';
+    };
     perks: {
       augments: 'augments';
     };
@@ -120,14 +126,8 @@ export interface Config {
     fieldUpgrades: {
       augments: 'augments';
     };
-    zombieAttacks: {
-      zombies: 'zombies';
-    };
     weapons: {
       weaponBuilds: 'weaponBuilds';
-    };
-    weakPoints: {
-      zombies: 'zombies';
     };
     weaponAttachments: {
       builds: 'weaponBuilds';
@@ -141,17 +141,17 @@ export interface Config {
     mainQuests: MainQuestsSelect<false> | MainQuestsSelect<true>;
     sideQuests: SideQuestsSelect<false> | SideQuestsSelect<true>;
     zombies: ZombiesSelect<false> | ZombiesSelect<true>;
+    zombieAttacks: ZombieAttacksSelect<false> | ZombieAttacksSelect<true>;
+    weakPoints: WeakPointsSelect<false> | WeakPointsSelect<true>;
     gobblegum: GobblegumSelect<false> | GobblegumSelect<true>;
     perks: PerksSelect<false> | PerksSelect<true>;
     ammoMods: AmmoModsSelect<false> | AmmoModsSelect<true>;
     fieldUpgrades: FieldUpgradesSelect<false> | FieldUpgradesSelect<true>;
-    zombieAttacks: ZombieAttacksSelect<false> | ZombieAttacksSelect<true>;
+    augments: AugmentsSelect<false> | AugmentsSelect<true>;
     weapons: WeaponsSelect<false> | WeaponsSelect<true>;
     weaponBuilds: WeaponBuildsSelect<false> | WeaponBuildsSelect<true>;
-    legal: LegalSelect<false> | LegalSelect<true>;
-    augments: AugmentsSelect<false> | AugmentsSelect<true>;
-    weakPoints: WeakPointsSelect<false> | WeakPointsSelect<true>;
     weaponAttachments: WeaponAttachmentsSelect<false> | WeaponAttachmentsSelect<true>;
+    legal: LegalSelect<false> | LegalSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -972,6 +972,14 @@ export interface PayloadLockedDocument {
         value: string | Zombie;
       } | null)
     | ({
+        relationTo: 'zombieAttacks';
+        value: string | ZombieAttack;
+      } | null)
+    | ({
+        relationTo: 'weakPoints';
+        value: string | WeakPoint;
+      } | null)
+    | ({
         relationTo: 'gobblegum';
         value: string | Gobblegum;
       } | null)
@@ -988,8 +996,8 @@ export interface PayloadLockedDocument {
         value: string | FieldUpgrade;
       } | null)
     | ({
-        relationTo: 'zombieAttacks';
-        value: string | ZombieAttack;
+        relationTo: 'augments';
+        value: string | Augment1;
       } | null)
     | ({
         relationTo: 'weapons';
@@ -1000,20 +1008,12 @@ export interface PayloadLockedDocument {
         value: string | WeaponBuild;
       } | null)
     | ({
-        relationTo: 'legal';
-        value: string | Legal;
-      } | null)
-    | ({
-        relationTo: 'augments';
-        value: string | Augment1;
-      } | null)
-    | ({
-        relationTo: 'weakPoints';
-        value: string | WeakPoint;
-      } | null)
-    | ({
         relationTo: 'weaponAttachments';
         value: string | WeaponAttachment;
+      } | null)
+    | ({
+        relationTo: 'legal';
+        value: string | Legal;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1186,6 +1186,28 @@ export interface ZombiesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "zombieAttacks_select".
+ */
+export interface ZombieAttacksSelect<T extends boolean = true> {
+  title?: T;
+  range?: T;
+  description?: T;
+  zombies?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weakPoints_select".
+ */
+export interface WeakPointsSelect<T extends boolean = true> {
+  title?: T;
+  zombies?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gobblegum_select".
  */
 export interface GobblegumSelect<T extends boolean = true> {
@@ -1241,13 +1263,16 @@ export interface FieldUpgradesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "zombieAttacks_select".
+ * via the `definition` "augments_select".
  */
-export interface ZombieAttacksSelect<T extends boolean = true> {
+export interface AugmentsSelect<T extends boolean = true> {
   title?: T;
-  range?: T;
+  type?: T;
+  image?: T;
   description?: T;
-  zombies?: T;
+  perk?: T;
+  ammoMod?: T;
+  fieldUpgrade?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1277,6 +1302,17 @@ export interface WeaponBuildsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weaponAttachments_select".
+ */
+export interface WeaponAttachmentsSelect<T extends boolean = true> {
+  title?: T;
+  type?: T;
+  builds?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "legal_select".
  */
 export interface LegalSelect<T extends boolean = true> {
@@ -1286,42 +1322,6 @@ export interface LegalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "augments_select".
- */
-export interface AugmentsSelect<T extends boolean = true> {
-  title?: T;
-  type?: T;
-  image?: T;
-  description?: T;
-  perk?: T;
-  ammoMod?: T;
-  fieldUpgrade?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weakPoints_select".
- */
-export interface WeakPointsSelect<T extends boolean = true> {
-  title?: T;
-  zombies?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weaponAttachments_select".
- */
-export interface WeaponAttachmentsSelect<T extends boolean = true> {
-  title?: T;
-  type?: T;
-  builds?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,25 +1,25 @@
 import { Suspense } from "react"
 import GridLoader from "@/components/loaders/grid-loader"
-import { getMaps } from "@/data/maps"
-import { getQuests } from "@/data/side-quests"
+import { getMainQuests } from "@/data/main-quests"
+// import { getQuests } from "@/data/side-quests"
 import QuestGridClient from "./quest-grid.client"
 
 export async function MainQuestGrid() {
-	const maps = await getMaps()
+	const mainQuests = await getMainQuests()
 
 	return (
 		<Suspense fallback={<GridLoader />}>
-			<QuestGridClient quests={maps} />
+			<QuestGridClient quests={mainQuests} />
 		</Suspense>
 	)
 }
 
-export async function SideQuestGrid() {
-	const quests = await getQuests()
+// export async function SideQuestGrid() {
+// 	const quests = await getQuests()
 
-	return (
-		<Suspense fallback={<GridLoader />}>
-			<QuestGridClient quests={quests} />
-		</Suspense>
-	)
-}
+// 	return (
+// 		<Suspense fallback={<GridLoader />}>
+// 			<QuestGridClient quests={quests} />
+// 		</Suspense>
+// 	)
+// }

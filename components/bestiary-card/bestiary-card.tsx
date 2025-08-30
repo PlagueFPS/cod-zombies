@@ -2,13 +2,7 @@ import type { MinifiedZombie } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import {
-	ChangedBadge,
-	ComingSoonBadge,
-	DraftBadge,
-	NewBadge,
-	TypeBadge,
-} from "../custom-badges/custom-badges"
+import { DraftBadge, TypeBadge } from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
@@ -22,14 +16,14 @@ interface IBestiaryCard {
 export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
-	const alt = `${zombie.name} Image`
+	const alt = `${zombie.title} Image`
 
 	return (
 		<article className={cn("h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}>
 			<CustomLink
 				href={zombie.isComingSoon ? `#` : `/bestiary/${zombie.slug}`}
-				aria-label={`View details for ${zombie.name}`}
-				aria-disabled={zombie.isComingSoon}
+				aria-label={`View details for ${zombie.title}`}
+				aria-disabled={zombie.isComingSoon ?? undefined}
 				className="group outline-none"
 				tabIndex={zombie.isComingSoon ? -1 : 0}
 			>
@@ -40,9 +34,8 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
-						{IN_DEVELOPMENT && zombie.isDraft ? <DraftBadge /> : null}
-						{IN_DEVELOPMENT && zombie.isChanged ? <ChangedBadge /> : null}
-						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
+						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
+						{/* {zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null} */}
 						<TypeBadge type={zombie.type} />
 						{zombie.games[0] ? (
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
@@ -68,7 +61,7 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 							/>
 						</div>
 						<CardTitle className="text-xl group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">
-							{zombie.name}
+							{zombie.title}
 						</CardTitle>
 						<CardDescription className="text-foreground/85">{zombie.description}</CardDescription>
 					</CardHeader>
