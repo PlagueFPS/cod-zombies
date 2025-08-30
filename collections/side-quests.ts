@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload"
 import { formatSlug } from "./hooks/format-slug"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const SideQuests: CollectionConfig = {
 	slug: "sideQuests",
@@ -80,4 +81,7 @@ export const SideQuests: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterChange: [revalidateCollection],
+	},
 }

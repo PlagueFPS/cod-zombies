@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload"
 import { formatSlug } from "./hooks/format-slug"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const Zombies: CollectionConfig = {
 	slug: "zombies",
@@ -175,4 +176,7 @@ export const Zombies: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterChange: [revalidateCollection],
+	},
 }

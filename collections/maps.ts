@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload"
 import { formatSlug } from "./hooks/format-slug"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const Maps: CollectionConfig = {
 	slug: "maps",
@@ -114,4 +115,7 @@ export const Maps: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterChange: [revalidateCollection],
+	},
 }

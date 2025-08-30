@@ -29,13 +29,17 @@ export const GLOBAL_OG_PROPS: Partial<Metadata> = {
 }
 export const CACHE_KEYS = {
 	/** Cache key for all game data */
-	gameCategories: {
+	games: {
 		/** Cache key for all category data */
-		all: "game-categories",
+		all: "games",
 	},
-	featuredMaps: {
+	maps: {
 		/** Cache key for all map data */
-		all: "featured-maps",
+		all: "maps",
+	},
+	mainQuests: {
+		/** Cache key for all main quest data */
+		all: "main-quests",
 	},
 	sideQuests: {
 		/** Cache key for all side quests data */

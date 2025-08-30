@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const MainQuests: CollectionConfig = {
 	slug: "mainQuests",
@@ -70,4 +71,7 @@ export const MainQuests: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterChange: [revalidateCollection],
+	},
 }
