@@ -46,7 +46,7 @@ const getPageData = cache(async (slug: string) => {
 	if (!zombie || zombie.isComingSoon) {
 		notFound()
 	}
-	const { prevZombie, nextZombie } = await getAdjacentZombies(zombie.createdAt)
+	const { prevZombie, nextZombie } = await getAdjacentZombies(zombie.releaseDate)
 
 	return {
 		zombie,

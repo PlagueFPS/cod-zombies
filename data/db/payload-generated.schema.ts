@@ -244,6 +244,7 @@ export const zombies = sqliteTable('zombies', {
   id: text('id').primaryKey().$defaultFn(() => randomUUID()),
   title: text('title'),
   slug: text('slug'),
+  releaseDate: text('release_date').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   isComingSoon: integer('is_coming_soon', {mode: 'boolean'}).default(false),
   image: text('image_id').references(() => media.id, {
       onDelete: 'set null'
@@ -259,6 +260,7 @@ export const zombies = sqliteTable('zombies', {
 }, (columns) => ({
     zombies_title_idx: index('zombies_title_idx').on(columns.title),
     zombies_slug_idx: uniqueIndex('zombies_slug_idx').on(columns.slug),
+    zombies_release_date_idx: index('zombies_release_date_idx').on(columns.releaseDate),
     zombies_image_idx: index('zombies_image_idx').on(columns.image),
     zombies_updated_at_idx: index('zombies_updated_at_idx').on(columns.updatedAt),
     zombies_created_at_idx: index('zombies_created_at_idx').on(columns.createdAt),
@@ -327,6 +329,7 @@ export const _zombies_v = sqliteTable('_zombies_v', {
   }),
   version_title: text('version_title'),
   version_slug: text('version_slug'),
+  version_releaseDate: text('version_release_date').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
   version_isComingSoon: integer('version_is_coming_soon', {mode: 'boolean'}).default(false),
   version_image: text('version_image_id').references(() => media.id, {
       onDelete: 'set null'
@@ -347,6 +350,7 @@ export const _zombies_v = sqliteTable('_zombies_v', {
     _zombies_v_parent_idx: index('_zombies_v_parent_idx').on(columns.parent),
     _zombies_v_version_version_title_idx: index('_zombies_v_version_version_title_idx').on(columns.version_title),
     _zombies_v_version_version_slug_idx: index('_zombies_v_version_version_slug_idx').on(columns.version_slug),
+    _zombies_v_version_version_release_date_idx: index('_zombies_v_version_version_release_date_idx').on(columns.version_releaseDate),
     _zombies_v_version_version_image_idx: index('_zombies_v_version_version_image_idx').on(columns.version_image),
     _zombies_v_version_version_updated_at_idx: index('_zombies_v_version_version_updated_at_idx').on(columns.version_updatedAt),
     _zombies_v_version_version_created_at_idx: index('_zombies_v_version_version_created_at_idx').on(columns.version_createdAt),

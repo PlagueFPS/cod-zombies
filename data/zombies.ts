@@ -21,7 +21,7 @@ export const getZombies = cache(
 							collection: "zombies",
 							pagination: false,
 							draft: IN_DEVELOPMENT,
-							sort: "-createdAt",
+							sort: "-releaseDate",
 							select: {
 								title: true,
 								slug: true,
@@ -87,6 +87,7 @@ export const getZombiesMetadata = cache(
 							pagination: false,
 							draft: IN_DEVELOPMENT,
 							limit,
+							sort: "-releaseDate",
 							where: {
 								isComingSoon: {
 									equals: false,
@@ -134,6 +135,10 @@ export const getZombieBySlug = cache(
 							pagination: false,
 							draft: IN_DEVELOPMENT,
 							limit: 1,
+							sort: "-releaseDate",
+							select: {
+								createdAt: false,
+							},
 							where: {
 								slug: {
 									equals: slug,
@@ -219,7 +224,7 @@ export const getZombieBySlug = cache(
 
 export const getAdjacentZombies = cache(
 	unstable_cache(
-		async (currentCreatedAt: string) => {
+		async (currentReleaseDate: string) => {
 			return await Effect.gen(function* () {
 				const payload = yield* Payload
 				const prevZombieEffect = Effect.tryPromise({
@@ -227,11 +232,11 @@ export const getAdjacentZombies = cache(
 						payload.find({
 							collection: "zombies",
 							draft: IN_DEVELOPMENT,
-							sort: "-createdAt",
+							sort: "-releaseDate",
 							limit: 1,
 							where: {
-								createdAt: {
-									less_than: currentCreatedAt,
+								releaseDate: {
+									less_than: currentReleaseDate,
 								},
 							},
 							select: {
@@ -277,11 +282,11 @@ export const getAdjacentZombies = cache(
 						payload.find({
 							collection: "zombies",
 							draft: IN_DEVELOPMENT,
-							sort: "createdAt",
+							sort: "releaseDate",
 							limit: 1,
 							where: {
-								createdAt: {
-									greater_than: currentCreatedAt,
+								releaseDate: {
+									greater_than: currentReleaseDate,
 								},
 							},
 							select: {
@@ -341,7 +346,7 @@ export const getAdjacentZombies = cache(
 				}
 			}).pipe(
 				Effect.withLogSpan("get_adjacent_zombies"),
-				Effect.annotateLogs({ currentCreatedAt }),
+				Effect.annotateLogs({ currentReleaseDate }),
 				Effect.tapError(Effect.logError),
 				Effect.ensureErrorType<never>(),
 				Effect.provide(Payload.Default),

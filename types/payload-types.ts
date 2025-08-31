@@ -530,6 +530,10 @@ export interface Zombie {
    */
   slug: string;
   /**
+   * Release date of the zombie.
+   */
+  releaseDate: string;
+  /**
    * Determines if this zombie should show a 'Coming Soon' badge and have the main page not be accessible.
    */
   isComingSoon?: boolean | null;
@@ -1201,6 +1205,7 @@ export interface SideQuestsSelect<T extends boolean = true> {
 export interface ZombiesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  releaseDate?: T;
   isComingSoon?: T;
   image?: T;
   description?: T;

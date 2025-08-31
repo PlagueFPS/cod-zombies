@@ -8,6 +8,7 @@ export const Zombies: CollectionConfig = {
 		useAsTitle: "title",
 		defaultColumns: ["title", "isComingSoon", "type", "status", "updatedAt"],
 	},
+	defaultSort: "-releaseDate",
 	defaultPopulate: {
 		title: true,
 		slug: true,
@@ -42,6 +43,20 @@ export const Zombies: CollectionConfig = {
 			},
 			hooks: {
 				beforeValidate: [formatSlug("title")],
+			},
+		},
+		{
+			name: "releaseDate",
+			label: "Release Date",
+			type: "date",
+			index: true,
+			required: true,
+			admin: {
+				description: "Release date of the zombie.",
+				date: {
+					displayFormat: "MMMM dd, yyyy hh:mm a",
+					pickerAppearance: "dayAndTime",
+				},
 			},
 		},
 		{
