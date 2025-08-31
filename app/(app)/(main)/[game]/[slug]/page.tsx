@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import {
 	ComingSoonBadge,
@@ -11,59 +10,47 @@ import {
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
-import { ManagementBadges } from "@/components/management-badges/management-badges"
+import { RefreshRouteOnSave } from "@/components/live-preview/refresh-route-on-save"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
-import { getMapBySlug, getMapSearchData, getMaps, type MinifiedFeaturedMap } from "@/data/maps"
+import {
+	getMainQuestBySlug,
+	getMainQuestMetadata,
+	type MinifiedMainQuest,
+} from "@/data/main-quests"
 import { getCachedImageUrl } from "@/data/og-images"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
-import { extractHeadings } from "@/utils/contentful-utils"
-
-const getPageData = cache(async (slug: string) => {
-	const map = await getMapBySlug(slug)
-	if (!map) {
-		notFound()
-	}
-	const maps = await getMaps()
-	const mapIndex = maps.findIndex(m => m.slug === map.slug)
-
-	return {
-		map,
-		prevMap: maps[mapIndex + 1],
-		nextMap: maps[mapIndex - 1],
-	}
-})
+import { calculateTimeToRead, extractHeadings } from "@/utils/payload-utils"
 
 export const generateStaticParams = async () => {
-	const featuredMaps = await getMapSearchData()
+	const mainQuests = await getMainQuestMetadata(MAP_LIMIT * 3)
 
-	return featuredMaps
-		.map(map => ({
-			game: map.game.slug,
-			slug: map.slug,
-		}))
-		.slice(0, MAP_LIMIT * 3) // Limit to first three pages
+	return mainQuests.map(map => ({
+		game: map.game.slug,
+		slug: map.slug,
+	}))
 }
 
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/[game]/[slug]">): Promise<Metadata> => {
-	const { slug, game } = await params
-	const { map } = await getPageData(slug)
-	const { title: mapTitle, game: mapGame } = map
-	const title = `${mapTitle} Main Quest`
-	const description = `Learn how to complete the main quest/easter egg for the ${mapGame.title} zombies map ${mapTitle} with our detailed step-by-step walkthrough!`
+	const { slug } = await params
+	const quest = await getMainQuestBySlug(slug)
+	if (!quest) notFound()
+
+	const title = `${quest.title} Main Quest`
+	const description = `Learn how to complete the main quest/easter egg for the ${quest.game.title} zombies map ${quest.title} with our detailed step-by-step walkthrough!`
 	let imageUrl = null
 
 	if (!IN_DEVELOPMENT) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("maps", {
-			...map,
-			game: map.game.title,
+			...quest,
+			game: quest.game.title,
 		})
 	}
 
@@ -74,11 +61,11 @@ export const generateMetadata = async ({
 			...GLOBAL_OG_PROPS.openGraph,
 			title,
 			description,
-			url: `/${game}/${slug}`,
+			url: `/${quest.game.slug}/${slug}`,
 			images: [
 				{
 					url: imageUrl || "",
-					alt: `${mapTitle} Main Quest`,
+					alt: `${quest.title} Main Quest`,
 					width: 1200,
 					height: 630,
 				},
@@ -90,18 +77,21 @@ export const generateMetadata = async ({
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/${game}/${slug}`,
+			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/${quest.game.slug}/${slug}`,
 		},
 	}
 }
 
 export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 	const { slug } = await params
-	const { map, nextMap, prevMap } = await getPageData(slug)
-	const headings = map.isComingSoon ? [] : extractHeadings(map.body)
+	const quest = await getMainQuestBySlug(slug)
+	if (!quest) notFound()
+	const headings = quest.isComingSoon ? [] : extractHeadings(quest.content)
+	const timeToRead = calculateTimeToRead(quest.content)
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
+			<RefreshRouteOnSave />
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
 				<div className="flex w-full flex-col xl:flex-row-reverse">
 					<TableOfContents headings={headings} />
@@ -109,14 +99,14 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
 								<FeaturedImage
-									featuredImage={map.image}
+									featuredImage={quest.image}
 									sizes="(max-width: 1280px) 100vw, 1280px"
 									quality={100}
 								/>
 							</div>
 							<div className="relative z-20 mx-auto max-w-7xl">
 								<FeaturedImage
-									featuredImage={map.image}
+									featuredImage={quest.image}
 									sizes="(max-width: 1280px) 100vw, 1280px"
 									quality={100}
 									priority
@@ -125,8 +115,8 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 								<div className="-top-10 absolute left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
 									<Breadcrumbs
 										links={[
-											{ title: map.game.title, href: `/?game=${map.game.slug}` },
-											{ title: map.title, href: `/${map.game.slug}/${slug}` },
+											{ title: quest.game.title, href: `/?game=${quest.game.slug}` },
+											{ title: quest.title, href: `/${quest.game.slug}/${slug}` },
 										]}
 									/>
 								</div>
@@ -135,14 +125,13 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 						<div className="relative z-20 mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
 							<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
 								<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-3xl text-gradient md:text-4xl lg:text-5xl">
-									{map.title}
+									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									<ManagementBadges entry={map} />
-									{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
-									{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
+									{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
+									{quest.difficulty && <DifficultyBadge difficulty={quest.difficulty} />}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-										{map.game.title}
+										{quest.game.title}
 									</Badge>
 								</div>
 							</div>
@@ -151,23 +140,24 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
 										<span>
-											Updated: {new Date(map.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
+											Updated:{" "}
+											{new Date(quest.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
 										</span>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
 									<div className="flex items-center gap-1">
 										<Clock className="size-4" />
-										<span>{map.timeToRead} min read</span>
+										<span>{timeToRead} min read</span>
 									</div>
 								</div>
 								<ShareButton
-									title={map.title}
-									url={`${env.NEXT_PUBLIC_WEBSITE_URL}/${map.game.slug}/${slug}`}
+									title={quest.title}
+									url={`${env.NEXT_PUBLIC_WEBSITE_URL}/${quest.game.slug}/${slug}`}
 									className="mb-2 ml-auto text-muted-foreground md:mb-0"
 								/>
 							</div>
 						</div>
-						{map.isComingSoon && !IN_DEVELOPMENT ? (
+						{quest.isComingSoon && !IN_DEVELOPMENT ? (
 							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 								<p className="font-bold text-xl">
 									This article is currently being written and will take some time before being
@@ -179,14 +169,14 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 								</p>
 							</div>
 						) : (
-							<RichTextRenderer body={map.body} slug={slug} />
+							<RichTextRenderer body={quest.content} />
 						)}
 						<div className="flex w-full items-center justify-center">
-							<GuideFeedback guideTitle={map.title} type="Main Quest" />
+							<GuideFeedback guideTitle={quest.title} type="Main Quest" />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{prevMap && <PrevOrNextMapCard map={prevMap} prev />}
-							{nextMap && <PrevOrNextMapCard map={nextMap} />}
+							{/* {prevMap && <PrevOrNextMapCard map={prevMap} prev />}
+							{nextMap && <PrevOrNextMapCard map={nextMap} />} */}
 						</div>
 					</article>
 				</div>
@@ -196,11 +186,11 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 }
 
 interface PrevOrNextMap {
-	map: MinifiedFeaturedMap
+	map: MinifiedMainQuest
 	prev?: boolean
 }
 
-const PrevOrNextMapCard = ({ map, prev }: PrevOrNextMap) => {
+const _PrevOrNextMapCard = ({ map, prev }: PrevOrNextMap) => {
 	const alt = `${map.title} map image`
 
 	return (
@@ -225,8 +215,7 @@ const PrevOrNextMapCard = ({ map, prev }: PrevOrNextMap) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					<ManagementBadges entry={map} />
-					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
+					{/* {map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null} */}
 					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{map.game.title}

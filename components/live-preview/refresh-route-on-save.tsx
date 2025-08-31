@@ -6,7 +6,7 @@ import { env } from "@/env"
 export const RefreshRouteOnSave = () => {
 	const router = useRouter()
 
-	return (
-		<PayloadLivePreview refresh={() => router.refresh()} serverURL={env.NEXT_PUBLIC_WEBSITE_URL} />
-	)
+	const shouldRefresh = () => router.refresh()
+
+	return <PayloadLivePreview refresh={shouldRefresh} serverURL={env.NEXT_PUBLIC_WEBSITE_URL} />
 }

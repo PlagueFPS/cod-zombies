@@ -100,8 +100,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 								<li
 									key={`desktop-toc-${heading.id}`}
 									className={cn("w-fit transition-colors hover:text-primary", {
-										"pl-3 font-medium text-foreground/80": heading.type === "heading-3",
-										"pl-6 font-normal text-foreground/60": heading.type === "heading-4",
+										"pl-3 font-medium text-foreground/80": heading.type === "h3",
+										"pl-6 font-normal text-foreground/60": heading.type === "h4",
 										"text-primary": activeHeading === heading.id,
 									})}
 								>

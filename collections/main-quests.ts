@@ -1,11 +1,18 @@
 import type { CollectionConfig } from "payload"
+import { getMapById } from "@/data/maps"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const MainQuests: CollectionConfig = {
 	slug: "mainQuests",
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "isComingSoon", "difficulty", "status", "updatedAt"],
+		defaultColumns: ["title", "isComingSoon", "difficulty", "map", "_status", "updatedAt"],
+		livePreview: {
+			url: async ({ data }) => {
+				const map = await getMapById(data.map)
+				return `/${map?.game.slug}/${map?.slug}`
+			},
+		},
 	},
 	defaultPopulate: {
 		title: true,
@@ -31,7 +38,7 @@ export const MainQuests: CollectionConfig = {
 		{
 			name: "isComingSoon",
 			type: "checkbox",
-			required: true,
+			defaultValue: false,
 			admin: {
 				description:
 					"Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.",

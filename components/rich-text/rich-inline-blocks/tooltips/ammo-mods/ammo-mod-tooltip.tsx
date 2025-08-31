@@ -15,6 +15,7 @@ export default function AmmoModTooltip({
 				Effect.gen(function* () {
 					const image = yield* assertRelation(ammoMod.image)
 					return {
+						id: ammoMod.id,
 						title: ammoMod.title,
 						description: ammoMod.description,
 						image: createMediaDto(image),

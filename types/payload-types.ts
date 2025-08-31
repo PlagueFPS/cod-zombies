@@ -436,7 +436,7 @@ export interface MainQuest {
   /**
    * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
    */
-  isComingSoon: boolean;
+  isComingSoon?: boolean | null;
   /**
    * Difficulty of the main quest.
    */
