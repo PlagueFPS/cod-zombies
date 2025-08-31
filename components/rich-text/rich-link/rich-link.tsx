@@ -24,7 +24,7 @@ export default async function RichLink({ node }: RichLinkProps) {
 			return (
 				<CustomLink
 					href={href as Route}
-					className="inline-flex font-medium text-primary underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
+					className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
 				>
 					{text}
 				</CustomLink>

@@ -16,7 +16,12 @@ import {
 import { notFound } from "next/navigation"
 import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { ComingSoonBadge, DraftBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
+import {
+	ComingSoonBadge,
+	DraftBadge,
+	RangeBadge,
+	TypeBadge,
+} from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import AmmoModTooltipClient from "@/components/rich-text/rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip-client"
@@ -86,7 +91,7 @@ export const generateMetadata = async ({
 			images: [
 				{
 					url: imageUrl || "",
-					alt: `${zombie.title} Main Quest`,
+					alt: `${zombie.title} Preview Image`,
 					width: 1200,
 					height: 630,
 				},
@@ -233,14 +238,20 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 									Game Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.games.map(game => (
-										<Badge
-											key={game.slug}
-											className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
-										>
-											{game.title}
+									{zombie.slug !== "zombie" ? (
+										zombie.games.map(game => (
+											<Badge
+												key={game.slug}
+												className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
+											>
+												{game.title}
+											</Badge>
+										))
+									) : (
+										<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1">
+											Appears in all games
 										</Badge>
-									))}
+									)}
 								</div>
 							</div>
 							<div>
@@ -267,7 +278,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 							</div>
 							<div>
 								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
-									<AlertTriangle className="size-5 text-orange-800 dark:text-orange-300" />
+									<AlertTriangle className="size-5 text-orange-800 dark:text-orange-200" />
 									Elemental Weaknesses
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
@@ -276,7 +287,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 											<AmmoModTooltipClient key={weakness.id} ammoMod={weakness} />
 										))
 									) : (
-										<span className="text-foreground dark:text-foreground/80">
+										<span className="text-orange-800 dark:text-orange-200">
 											No elemental weaknesses
 										</span>
 									)}
@@ -297,11 +308,29 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 						</div>
 						<div className="space-y-4">
 							{zombie.attacks.map(attack => (
-								<div key={attack.id} className="rounded-lg border p-3">
+								<div
+									key={attack.id}
+									className={cn("rounded-lg border-2 p-3", {
+										"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
+											attack.range === "Short",
+										"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
+											attack.range === "Medium",
+										"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+											attack.range === "Long",
+									})}
+								>
 									<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
-										<h4 className="font-semibold">{attack.title}</h4>
+										<h4
+											className={cn("font-semibold", {
+												"text-teal-600 dark:text-teal-300": attack.range === "Short",
+												"text-yellow-700 dark:text-yellow-200": attack.range === "Medium",
+												"text-red-600 dark:text-red-300": attack.range === "Long",
+											})}
+										>
+											{attack.title}
+										</h4>
 										<div className="flex flex-wrap gap-1">
-											<Badge variant={"outline"}>Range: {attack.range}</Badge>
+											<RangeBadge range={attack.range} />
 										</div>
 									</div>
 									<CardDescription className="text-foreground dark:text-foreground/80">
@@ -313,7 +342,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 					</CardContent>
 				</Card>
 				{/* Spawn Behavior Section */}
-				<Card className="bg-background pt-0">
+				<Card className="bg-background pt-0 lg:order-first lg:col-span-3">
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Footprints className="size-6 text-purple-600 dark:text-purple-300" />
@@ -325,7 +354,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 					</CardContent>
 				</Card>
 				{/* Combat Strategy Section */}
-				<Card className="bg-background pt-0">
+				<Card className="bg-background pt-0 lg:col-span-2">
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Info className="size-6 text-green-600 dark:text-green-300" />

@@ -1,7 +1,6 @@
-import type { Difficulty } from "@/data/maps"
-import type { ZombieType } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
 import type { TypeGobblegumRarity, TypeGobblegumType } from "@/types/contentful-types"
+import type { MainQuest, Zombie, ZombieAttack } from "@/types/payload-types"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
@@ -31,7 +30,7 @@ export const ComingSoonBadge = ({ className }: CustomBadgeProps) => (
 export const DifficultyBadge = ({
 	className,
 	difficulty,
-}: CustomBadgeProps & { difficulty: Difficulty }) => (
+}: CustomBadgeProps & { difficulty: MainQuest["difficulty"] }) => (
 	<Badge
 		className={cn(
 			{
@@ -45,7 +44,7 @@ export const DifficultyBadge = ({
 		{difficulty}
 	</Badge>
 )
-export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: ZombieType }) => (
+export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: Zombie["type"] }) => (
 	<Badge
 		className={cn(
 			{
@@ -85,23 +84,42 @@ export const RarityBadge = ({
 	className,
 	rarity,
 	type,
-	children
-}: CustomBadgeProps & { rarity: TypeGobblegumRarity, type: TypeGobblegumType }) => (
-	<Badge className={cn(
-		{
-			"badge-hard-gradient dark:dark-badge-hard-gradient": rarity === "Ultra",
-			"badge-primary-gradient dark:dark-badge-primary-gradient": rarity === "Legendary",
-			"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Epic",
-			"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
-		},
-		{
-			"badge-new-gradient dark:dark-badge-new-gradient": type === "Time-Based",
-			"badge-changed-gradient dark:dark-badge-changed-gradient": type === "Round-Based",
-			"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Immediate",
-			"badge-draft-gradient dark:dark-badge-draft-gradient": type === "Player-Activated",
-		}, 
-		className
-	)}>
-		{ children }
+	children,
+}: CustomBadgeProps & { rarity: TypeGobblegumRarity; type: TypeGobblegumType }) => (
+	<Badge
+		className={cn(
+			{
+				"badge-hard-gradient dark:dark-badge-hard-gradient": rarity === "Ultra",
+				"badge-primary-gradient dark:dark-badge-primary-gradient": rarity === "Legendary",
+				"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Epic",
+				"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
+			},
+			{
+				"badge-new-gradient dark:dark-badge-new-gradient": type === "Time-Based",
+				"badge-changed-gradient dark:dark-badge-changed-gradient": type === "Round-Based",
+				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Immediate",
+				"badge-draft-gradient dark:dark-badge-draft-gradient": type === "Player-Activated",
+			},
+			className,
+		)}
+	>
+		{children}
+	</Badge>
+)
+export const RangeBadge = ({
+	className,
+	range,
+}: CustomBadgeProps & { range: ZombieAttack["range"] }) => (
+	<Badge
+		className={cn(
+			{
+				"badge-easy-gradient dark:dark-badge-easy-gradient": range === "Short",
+				"badge-medium-gradient dark:dark-badge-medium-gradient": range === "Medium",
+				"badge-hard-gradient dark:dark-badge-hard-gradient": range === "Long",
+			},
+			className,
+		)}
+	>
+		Range: {range}
 	</Badge>
 )

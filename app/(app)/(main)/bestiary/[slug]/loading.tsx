@@ -148,7 +148,7 @@ export default function ZombiePageLoader() {
 					</CardContent>
 				</Card>
 				{/* Spawn Behavior Section */}
-				<Card className="bg-background">
+				<Card className="bg-background lg:order-first lg:col-span-3">
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Footprints className="size-6 text-purple-600 dark:text-purple-300" />
@@ -162,7 +162,7 @@ export default function ZombiePageLoader() {
 					</CardContent>
 				</Card>
 				{/* Combat Strategy Section */}
-				<Card className="bg-background">
+				<Card className="bg-background lg:col-span-2">
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Info className="size-6 text-green-600 dark:text-green-300" />

@@ -76,6 +76,7 @@ export const getCachedImageUrl = cache(
  * const imageUrl = yield* getImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  */
 const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: BroadcastEntry) {
+	return null
 	const httpClient = (yield* HttpClient.HttpClient).pipe(
 		HttpClient.retryTransient({
 			times: 3,
