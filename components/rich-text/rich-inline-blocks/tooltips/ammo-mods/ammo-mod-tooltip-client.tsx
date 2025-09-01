@@ -68,7 +68,7 @@ export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmm
 	)
 }
 
-const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: Omit<MinifiedAmmoMod, "id"> }) => {
+const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: MinifiedAmmoMod }) => {
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
 			{ammoMod.image.url ? (
