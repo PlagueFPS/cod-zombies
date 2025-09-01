@@ -10,6 +10,8 @@ export const Media: CollectionConfig = {
 		read: () => true,
 	},
 	defaultPopulate: {
+		title: true,
+		description: true,
 		url: true,
 		filename: true,
 		width: true,

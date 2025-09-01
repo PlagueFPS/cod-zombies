@@ -24,7 +24,7 @@ export default function FieldUpgradeTooltipClient({
 							<IconImage
 								featuredImage={fieldUpgrade.image}
 								alt={`${fieldUpgrade.title} Image`}
-								sizes="24px"
+								sizes="64px"
 								className="my-auto h-6 w-auto"
 							/>
 						) : null}
@@ -53,7 +53,7 @@ export default function FieldUpgradeTooltipClient({
 						<IconImage
 							featuredImage={fieldUpgrade.image}
 							alt={`${fieldUpgrade.title} Image`}
-							sizes="24px"
+							sizes="64px"
 							className="my-auto h-6 w-auto"
 						/>
 					) : null}
@@ -81,7 +81,7 @@ const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: MinifiedFi
 					<IconImage
 						featuredImage={fieldUpgrade.image}
 						alt={`${fieldUpgrade.title} Image`}
-						sizes="80px"
+						sizes="64px"
 						className="relative z-10 h-20 w-auto p-2"
 					/>
 				</div>

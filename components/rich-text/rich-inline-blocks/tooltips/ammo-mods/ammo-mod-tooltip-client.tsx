@@ -20,7 +20,7 @@ export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmm
 							<IconImage
 								featuredImage={ammoMod.image}
 								alt={`${ammoMod.title} Image`}
-								sizes="24px"
+								sizes="64px"
 								className="my-auto h-6 w-auto"
 							/>
 						) : null}
@@ -49,7 +49,7 @@ export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmm
 						<IconImage
 							featuredImage={ammoMod.image}
 							alt={`${ammoMod.title} Image`}
-							sizes="24px"
+							sizes="64px"
 							className="my-auto h-6 w-auto"
 						/>
 					) : null}
@@ -77,7 +77,7 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: MinifiedAmmoMod }) => {
 					<IconImage
 						featuredImage={ammoMod.image}
 						alt={`${ammoMod.title} Image`}
-						sizes="80px"
+						sizes="64px"
 						className="relative z-10 h-20 w-auto p-2"
 					/>
 				</div>

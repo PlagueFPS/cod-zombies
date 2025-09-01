@@ -1,7 +1,8 @@
 import type { SerializedInlineBlockNode } from "@payloadcms/richtext-lexical"
 import type { InlinePerkBlock } from "@/types/payload-types"
 import { Effect } from "effect"
-import { assertRelation, createMediaDto } from "@/utils/payload-utils"
+import { getPerkById } from "@/data/perks"
+import { EntryNotFoundError } from "@/types/errors"
 import PerkTooltipClient from "./perk-tooltip-client"
 
 export default function PerkTooltip({
@@ -10,20 +11,16 @@ export default function PerkTooltip({
 	node: SerializedInlineBlockNode<InlinePerkBlock>
 }) {
 	return Effect.gen(function* () {
-		const perk = yield* assertRelation(node.fields.perks).pipe(
-			Effect.flatMap(perk =>
-				Effect.gen(function* () {
-					const image = yield* assertRelation(perk.image)
-					return {
-						id: perk.id,
-						title: perk.title,
-						modifier: perk.modifier,
-						description: perk.description,
-						image: createMediaDto(image),
-					}
-				}),
-			),
+		const perk = yield* Effect.promise(() =>
+			typeof node.fields.perks === "string"
+				? getPerkById(node.fields.perks)
+				: getPerkById(node.fields.perks.id),
 		)
+		if (!perk)
+			return yield* new EntryNotFoundError({
+				message: "Failed to get perk",
+			})
+
 		return <PerkTooltipClient perk={perk} />
 	}).pipe(
 		Effect.withLogSpan("richtext_perk_block"),

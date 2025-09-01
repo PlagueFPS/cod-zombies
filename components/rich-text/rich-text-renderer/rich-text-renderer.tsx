@@ -66,11 +66,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 
 		switch (node.tag) {
 			case "h2":
-				return <Heading2 id={slugify(node.tag)}>{heading.text}</Heading2>
+				return <Heading2 id={slugify(heading.text)}>{heading.text}</Heading2>
 			case "h3":
-				return <Heading3 id={slugify(node.tag)}>{heading.text}</Heading3>
+				return <Heading3 id={slugify(heading.text)}>{heading.text}</Heading3>
 			case "h4":
-				return <Heading4 id={slugify(node.tag)}>{heading.text}</Heading4>
+				return <Heading4 id={slugify(heading.text)}>{heading.text}</Heading4>
 		}
 	},
 	link: ({ node }) => {
