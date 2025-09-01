@@ -69,6 +69,10 @@ export const CACHE_KEYS = {
 		/** Cache key for all weapon build data */
 		all: "weapons-builds",
 	},
+	fieldUpgrades: {
+		/** Cache key for all field upgrade data */
+		all: "field-upgrades",
+	},
 } as const
 export const ROUTES = [
 	{
