@@ -1,4 +1,3 @@
-import "server-only"
 import type { SerializedHeadingNode } from "@payloadcms/richtext-lexical"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"

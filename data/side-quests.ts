@@ -1,277 +1,307 @@
-import "server-only"
-import type { Entry } from "contentful"
-import type { TypeSideQuestsSkeleton } from "@/types/contentful-types"
-import { Array as Arr, Effect, Order } from "effect"
+import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
-import { getNewEntries } from "@/lib/redis"
-import { CMS } from "@/lib/services/CMS"
-import { CACHE_KEYS } from "@/utils/constants"
-import {
-	calculateTimeToRead,
-	createImageDto,
-	createMapCategoryDto,
-	createQuestMapDto,
-	resolveAsset,
-	resolveEntry,
-} from "@/utils/contentful-utils"
-import { DataLayer } from "./utils"
+import { Payload } from "@/lib/services/Payload"
+import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
+import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
+import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 
-export type SideQuest = NonNullable<Awaited<ReturnType<typeof getQuestBySlug>>>
-export type MinifiedSideQuest = Awaited<ReturnType<typeof getQuests>>[number]
-export type SideQuestById = NonNullable<Awaited<ReturnType<typeof getQuestById>>>
+export type SideQuestBySlug = NonNullable<Awaited<ReturnType<typeof getSideQuestBySlug>>>
+export type MinifiedSideQuest = Awaited<ReturnType<typeof getSideQuests>>[number]
 
-export const getQuests = cache(
+export const getSideQuests = cache(
 	unstable_cache(
 		async () => {
 			return await Effect.gen(function* () {
-				const [quests, questIds] = yield* Effect.all([INTERNAL_getSideQuestData(), getQuestIds], {
-					concurrency: "unbounded",
-				})
+				const payload = yield* Payload
+				const sideQuests = yield* Effect.tryPromise({
+					try: () =>
+						payload.find({
+							collection: "sideQuests",
+							pagination: false,
+							draft: IN_DEVELOPMENT,
+							sort: "-createdAt",
+							select: {
+								title: true,
+								slug: true,
+								description: true,
+								map: true,
+								isComingSoon: true,
+								_status: true,
+							},
+							populate: {
+								maps: {
+									title: true,
+									slug: true,
+									image: true,
+									game: true,
+									releaseDate: true,
+								},
+							},
+						}),
+					catch: error =>
+						new GetEntriesError({
+							message: "Failed to get side quests",
+							cause: error,
+						}),
+				}).pipe(
+					Effect.flatMap(sideQuests =>
+						Effect.forEach(sideQuests.docs, sideQuest =>
+							Effect.gen(function* () {
+								const map = yield* assertRelation(sideQuest.map)
+								const game = yield* assertRelation(map.game)
+								const image = yield* assertRelation(map.image)
 
-				return quests.map(quest => {
-					const { category: game, timeToRead, ...questData } = resolveQuestData(quest, questIds)
-					return {
-						...questData,
-						game,
-						id: quest.sys.id,
-						updatedAt: quest.sys.updatedAt,
-						isComingSoon: quest.fields.isComingSoon ?? false,
-						title: quest.fields.title,
-						slug: quest.fields.slug,
-						description: quest.fields.description,
-					}
-				})
+								return {
+									id: sideQuest.id,
+									title: sideQuest.title,
+									slug: sideQuest.slug,
+									description: sideQuest.description,
+									game: {
+										slug: game.slug,
+										title: game.title,
+									},
+									map: {
+										slug: map.slug,
+										title: map.title,
+									},
+									image: createMediaDto(image),
+									_status: sideQuest._status,
+									isComingSoon: sideQuest.isComingSoon,
+								}
+							}),
+						),
+					),
+				)
+
+				return sideQuests
 			}).pipe(
-				Effect.withLogSpan("get_quests"),
+				Effect.withLogSpan("get_side_quests"),
+				Effect.tapError(Effect.logError),
+				Effect.catchAll(_error => Effect.succeed([])),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(DataLayer),
+				Effect.provide(Payload.Default),
 				Effect.runPromise,
 			)
 		},
 		[],
 		{
-			tags: [CACHE_KEYS.sideQuests.all],
+			tags: [CACHE_KEYS.sideQuests.all, CACHE_KEYS.maps.all],
 		},
 	),
 )
 
-export const getQuestSearchData = cache(
+export const getSideQuestsMetadata = cache(
 	unstable_cache(
-		async () => {
+		async (limit?: number) => {
 			return await Effect.gen(function* () {
-				const quests = yield* INTERNAL_getSideQuestData()
-				const currentQuests = quests.filter(q => !q.fields.isComingSoon)
+				const payload = yield* Payload
+				const sideQuests = yield* Effect.tryPromise({
+					try: () =>
+						payload.find({
+							collection: "sideQuests",
+							pagination: false,
+							draft: IN_DEVELOPMENT,
+							sort: "-createdAt",
+							limit,
+							where: {
+								isComingSoon: {
+									not_equals: true,
+								},
+							},
+							select: {
+								slug: true,
+								description: true,
+								map: true,
+								updatedAt: true,
+							},
+							populate: {
+								maps: {
+									slug: true,
+									game: true,
+								},
+							},
+						}),
+					catch: error =>
+						new GetEntriesError({
+							message: "Failed to get side quests metadata",
+							cause: error,
+						}),
+				}).pipe(
+					Effect.flatMap(sideQuests =>
+						Effect.forEach(sideQuests.docs, sideQuest =>
+							Effect.gen(function* () {
+								const map = yield* assertRelation(sideQuest.map)
+								const game = yield* assertRelation(map.game)
 
-				return currentQuests.map(quest => ({
-					id: quest.sys.id,
-					title: quest.fields.title,
-					slug: quest.fields.slug,
-					game: createMapCategoryDto(resolveEntry(quest.fields.game)),
-					map: createQuestMapDto(resolveEntry(quest.fields.map)),
-				}))
+								return {
+									id: sideQuest.id,
+									updatedAt: sideQuest.updatedAt,
+									slug: sideQuest.slug,
+									game: {
+										slug: game.slug,
+									},
+									map: {
+										slug: map.slug,
+									},
+								}
+							}),
+						),
+					),
+				)
+
+				return sideQuests
 			}).pipe(
-				Effect.withLogSpan("get_quest_search_data"),
+				Effect.withLogSpan("get_side_quests_metadata"),
+				Effect.tapError(Effect.logError),
+				Effect.catchAll(_error => Effect.succeed([])),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default),
+				Effect.provide(Payload.Default),
 				Effect.runPromise,
 			)
 		},
 		[],
 		{
-			tags: [CACHE_KEYS.sideQuests.all],
+			tags: [CACHE_KEYS.sideQuests.all, CACHE_KEYS.maps.all],
 		},
 	),
 )
 
-export const getQuestById = cache(
-	unstable_cache(
-		async (id: string) => {
-			return await Effect.gen(function* () {
-				const quests = yield* INTERNAL_getSideQuestData()
-
-				const quest = quests.find(q => q.sys.id === id)
-				if (!quest) {
-					yield* Effect.logWarning(`Quest with id ${id} not found`)
-					return null
-				}
-
-				const map = createQuestMapDto(resolveEntry(quest.fields.map))
-				const game = createMapCategoryDto(resolveEntry(quest.fields.game))
-				const timeToRead = calculateTimeToRead(quest.fields.content)
-
-				return {
-					id: quest.sys.id,
-					updatedAt: quest.sys.updatedAt,
-					slug: quest.fields.slug,
-					title: quest.fields.title,
-					description: quest.fields.description,
-					image: createImageDto(resolveAsset(quest.fields.image)),
-					isComingSoon: quest.fields.isComingSoon ?? false,
-					map: map.slug,
-					game: game.slug,
-					timeToRead,
-				}
-			}).pipe(
-				Effect.withLogSpan("get_quest_by_id"),
-				Effect.annotateLogs({ id }),
-				Effect.ensureErrorType<never>(),
-				Effect.provide(CMS.Default),
-				Effect.runPromise,
-			)
-		},
-		[],
-		{
-			tags: [CACHE_KEYS.sideQuests.all],
-		},
-	),
-)
-
-export const getQuestBySlug = cache(
+export const getSideQuestBySlug = cache(
 	unstable_cache(
 		async (slug: string) => {
 			return await Effect.gen(function* () {
-				const quests = yield* INTERNAL_getSideQuestData()
+				const payload = yield* Payload
+				const sideQuest = yield* Effect.tryPromise({
+					try: () =>
+						payload.find({
+							collection: "sideQuests",
+							pagination: false,
+							draft: IN_DEVELOPMENT,
+							where: {
+								slug: {
+									equals: slug,
+								},
+							},
+							select: {
+								createdAt: false,
+							},
+							populate: {
+								maps: {
+									title: true,
+									slug: true,
+									game: true,
+									image: true,
+								},
+							},
+						}),
+					catch: error =>
+						new EntryNotFoundError({
+							message: `Failed to get side quest by slug: ${slug}`,
+							cause: error,
+						}),
+				}).pipe(
+					Effect.flatMap(sideQuest =>
+						Effect.forEach(sideQuest.docs, sideQuest =>
+							Effect.gen(function* () {
+								const map = yield* assertRelation(sideQuest.map)
+								const game = yield* assertRelation(map.game)
+								const image = yield* assertRelation(map.image)
 
-				const quest = quests.find(q => q.fields.slug === slug)
-				if (!quest) {
-					yield* Effect.logWarning(`Quest with slug ${slug} not found`)
-					return null
-				}
+								return {
+									...sideQuest,
+									image: createMediaDto(image),
+									map: {
+										slug: map.slug,
+										title: map.title,
+									},
+									game: {
+										slug: game.slug,
+										title: game.title,
+									},
+								}
+							}),
+						),
+					),
+				)
 
-				const questIds = yield* getQuestIds
-				const { category: game, ...rest } = resolveQuestData(quest, questIds)
-
-				return {
-					...rest,
-					game,
-					id: quest.sys.id,
-					updatedAt: quest.sys.updatedAt,
-					isComingSoon: quest.fields.isComingSoon ?? false,
-					title: quest.fields.title,
-					slug: quest.fields.slug,
-					description: quest.fields.description,
-					content: quest.fields.content,
-				}
+				return sideQuest[0] ?? null
 			}).pipe(
-				Effect.withLogSpan("get_quest_by_slug"),
-				Effect.annotateLogs({ slug }),
+				Effect.withLogSpan("get_side_quest_by_slug"),
+				Effect.tapError(Effect.logError),
+				Effect.catchAll(_error => Effect.succeed(null)),
 				Effect.ensureErrorType<never>(),
-				Effect.provide(DataLayer),
+				Effect.provide(Payload.Default),
 				Effect.runPromise,
 			)
 		},
 		[],
 		{
-			tags: [CACHE_KEYS.sideQuests.all],
+			tags: [CACHE_KEYS.sideQuests.all, CACHE_KEYS.maps.all],
 		},
 	),
 )
 
-export const getSideQuest = Effect.fnUntraced(function* (id: string) {
-	const { getEntry } = yield* CMS
-	return yield* getEntry<TypeSideQuestsSkeleton>(id).pipe(
-		Effect.map(quest => ({
-			id: quest.sys.id,
-			updatedAt: quest.sys.updatedAt,
-			slug: quest.fields.slug,
-			title: quest.fields.title,
-			description: quest.fields.description,
-			image: createImageDto(resolveAsset(quest.fields.image)),
-			isComingSoon: quest.fields.isComingSoon ?? false,
-			map: createQuestMapDto(resolveEntry(quest.fields.map)).slug,
-			game: createMapCategoryDto(resolveEntry(quest.fields.game)).slug,
-			timeToRead: calculateTimeToRead(quest.fields.content),
-		})),
-	)
-}, Effect.withLogSpan("get_side_quest"))
+export const getSideQuestById = cache(
+	unstable_cache(async (id: string) => {
+		return await Effect.gen(function* () {
+			const payload = yield* Payload
+			const quest = yield* Effect.tryPromise({
+				try: () =>
+					payload.findByID({
+						collection: "sideQuests",
+						id,
+						draft: IN_DEVELOPMENT,
+						select: {
+							title: true,
+							slug: true,
+							map: true,
+						},
+						populate: {
+							maps: {
+								title: true,
+								slug: true,
+								game: true,
+								image: true,
+							},
+						},
+					}),
+				catch: error =>
+					new EntryNotFoundError({
+						message: `Failed to get side quest by id: ${id}`,
+						cause: error,
+					}),
+			}).pipe(
+				Effect.flatMap(quest =>
+					Effect.gen(function* () {
+						const map = yield* assertRelation(quest.map)
+						const game = yield* assertRelation(map.game)
+						const image = yield* assertRelation(map.image)
 
-const resolveQuestData = (
-	quest: Entry<TypeSideQuestsSkeleton, undefined, string>,
-	questIds: Effect.Effect.Success<typeof getQuestIds>,
-) => {
-	const { changedIds, draftIds, newIds } = questIds
-	const map = createQuestMapDto(resolveEntry(quest.fields.map))
-	const category = createMapCategoryDto(resolveEntry(quest.fields.game))
-	const image = createImageDto(resolveAsset(quest.fields.image))
-	const isDraft = draftIds.has(quest.sys.id)
-	const isChanged = changedIds.has(quest.sys.id)
-	const isNew = newIds.has(quest.sys.id)
-	const timeToRead = calculateTimeToRead(quest.fields.content)
+						return {
+							...quest,
+							image: createMediaDto(image),
+							map: {
+								slug: map.slug,
+								title: map.title,
+							},
+							game: {
+								slug: game.slug,
+								title: game.title,
+							},
+						}
+					}),
+				),
+			)
 
-	return {
-		image,
-		map,
-		category,
-		isDraft,
-		isChanged,
-		isNew,
-		timeToRead,
-	}
-}
-
-const getQuestIds = Effect.gen(function* () {
-	const [quests, newEntries] = yield* Effect.all(
-		[INTERNAL_getManagementSideQuestData(), getNewEntries],
-		{
-			concurrency: "unbounded",
-		},
-	)
-
-	const draftIds = new Set<string>()
-	const changedIds = new Set<string>()
-	const newIds = new Set<string>()
-
-	quests.forEach(quest => {
-		if (!quest.sys.publishedVersion) {
-			draftIds.add(quest.sys.id)
-		} else if (
-			!!quest.sys.publishedVersion &&
-			quest.sys.version >= quest.sys.publishedVersion + 2
-		) {
-			changedIds.add(quest.sys.id)
-		}
-	})
-
-	newEntries.forEach(entry => {
-		if (entry.type !== "sideQuest") return
-		newIds.add(entry.entryId)
-	})
-
-	return { newIds, draftIds, changedIds }
-}).pipe(Effect.withLogSpan("get_quest_ids"))
-
-const INTERNAL_getManagementSideQuestData = cache(() =>
-	Effect.gen(function* () {
-		const { getManagementEntries } = yield* CMS
-		const quests = yield* getManagementEntries("sideQuests")
-		return quests.items
-	}).pipe(
-		Effect.withLogSpan("internal_get_management_side_quest_data"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(() => Effect.succeed([])),
-	),
-)
-
-const INTERNAL_getSideQuestData = cache(() =>
-	Effect.gen(function* () {
-		const { getEntries } = yield* CMS
-		const quests = yield* getEntries<TypeSideQuestsSkeleton>({
-			content_type: "sideQuests",
-			select: ["sys.id", "sys.updatedAt", "fields"],
-			order: ["-sys.createdAt"],
-		})
-
-		const byMapDate = Order.mapInput(Order.Date, (quest: (typeof quests.items)[number]) => {
-			const map = resolveEntry(quest.fields.map)
-
-			return new Date(map?.fields.releaseDate ?? quest.sys.createdAt)
-		})
-
-		return Arr.sort(quests.items, Order.reverse(byMapDate))
-	}).pipe(
-		Effect.withLogSpan("internal_get_side_quest_data"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(() => Effect.succeed([])),
-	),
+			return quest
+		}).pipe(
+			Effect.withLogSpan("get_side_quest_by_id"),
+			Effect.tapError(Effect.logError),
+			Effect.catchAll(_error => Effect.succeed(null)),
+			Effect.ensureErrorType<never>(),
+			Effect.provide(Payload.Default),
+			Effect.runPromise,
+		)
+	}),
 )

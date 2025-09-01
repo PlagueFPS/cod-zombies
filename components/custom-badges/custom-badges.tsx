@@ -1,6 +1,5 @@
 import type { MarkerCategory } from "@/map-configs/markers"
-import type { TypeGobblegumRarity, TypeGobblegumType } from "@/types/contentful-types"
-import type { MainQuest, Zombie, ZombieAttack } from "@/types/payload-types"
+import type { Gobblegum, MainQuest, Zombie, ZombieAttack } from "@/types/payload-types"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
@@ -85,7 +84,7 @@ export const RarityBadge = ({
 	rarity,
 	type,
 	children,
-}: CustomBadgeProps & { rarity: TypeGobblegumRarity; type: TypeGobblegumType }) => (
+}: CustomBadgeProps & { rarity: Gobblegum["rarity"]; type: Gobblegum["type"] }) => (
 	<Badge
 		className={cn(
 			{

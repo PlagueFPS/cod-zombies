@@ -1,64 +1,51 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-import { cache } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
-import { ManagementBadges } from "@/components/management-badges/management-badges"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getCachedImageUrl } from "@/data/og-images"
-import { getQuestBySlug, getQuests, type MinifiedSideQuest } from "@/data/side-quests"
+import {
+	getSideQuestBySlug,
+	getSideQuestsMetadata,
+	type MinifiedSideQuest,
+} from "@/data/side-quests"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
-import { extractHeadings } from "@/utils/contentful-utils"
-
-const getPageData = cache(async (slug: string) => {
-	const q = await getQuestBySlug(slug)
-	if (!q) notFound()
-	const quests = await getQuests()
-	const questIndex = quests.findIndex(q => q.slug === slug)
-	const prevQuest = quests[questIndex + 1]
-	const nextQuest = quests[questIndex - 1]
-	return {
-		q,
-		prevQuest,
-		nextQuest,
-	}
-})
+import { calculateTimeToRead, extractHeadings } from "@/utils/payload-utils"
 
 export const generateStaticParams = async () => {
-	const quests = await getQuests()
-	return quests
-		.map(q => ({
-			game: q.game.slug,
-			map: q.map.slug,
-			slug: q.slug,
-		}))
-		.slice(0, MAP_LIMIT * 3) // Limit to first three pages
+	const quests = await getSideQuestsMetadata(MAP_LIMIT * 3)
+	return quests.map(q => ({
+		game: q.game.slug,
+		map: q.map.slug,
+		slug: q.slug,
+	}))
 }
 
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/side-quests/[game]/[map]/[slug]">): Promise<Metadata> => {
 	const { slug, game, map } = await params
-	const { q } = await getPageData(slug)
-	const title = `${q.title} Side Quest`
-	const description = `Learn how to complete the ${q.title} side quest/easter egg for ${q.map.title} with our detailed step-by-step walkthrough!`
+	const quest = await getSideQuestBySlug(slug)
+	if (!quest) notFound()
+
+	const title = `${quest.title} Side Quest`
+	const description = `Learn how to complete the ${quest.title} side quest/easter egg for ${quest.map.title} with our detailed step-by-step walkthrough!`
 	let imageUrl = null
 
 	if (!IN_DEVELOPMENT) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("side-quests", {
-			...q,
-			game: q.game.title,
-			map: q.map.title,
+			...quest,
+			game: quest.game.title,
+			map: quest.map.title,
 		})
 	}
 
@@ -73,7 +60,7 @@ export const generateMetadata = async ({
 			images: [
 				{
 					url: imageUrl || "",
-					alt: `${q.title} Side Quest`,
+					alt: `${quest.title} Side Quest`,
 					width: 1200,
 					height: 630,
 				},
@@ -94,9 +81,10 @@ export default async function SideQuestPage({
 	params,
 }: PageProps<"/side-quests/[game]/[map]/[slug]">) {
 	const { slug } = await params
-	const { q, prevQuest, nextQuest } = await getPageData(slug)
-	if (!q) notFound()
-	const headings = q.isComingSoon ? [] : extractHeadings(q.content)
+	const quest = await getSideQuestBySlug(slug)
+	if (!quest) notFound()
+	const headings = quest.isComingSoon ? [] : extractHeadings(quest.content)
+	const timeToRead = calculateTimeToRead(quest.content)
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -107,14 +95,14 @@ export default async function SideQuestPage({
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
 								<FeaturedImage
-									featuredImage={q.image}
+									featuredImage={quest.image}
 									sizes="(max-width: 1280px) 100vw, 1280px"
 									quality={100}
 								/>
 							</div>
 							<div className="relative z-20 mx-auto max-w-7xl">
 								<FeaturedImage
-									featuredImage={q.image}
+									featuredImage={quest.image}
 									sizes="(max-width: 1280px) 100vw, 1280px"
 									quality={100}
 									priority
@@ -124,11 +112,11 @@ export default async function SideQuestPage({
 									<Breadcrumbs
 										links={[
 											{ title: "Side Quests", href: `/side-quests` },
-											{ title: q.game.title, href: `/side-quests?game=${q.game.slug}` },
-											{ title: q.map.title, href: `/side-quests?map=${q.map.slug}` },
+											{ title: quest.game.title, href: `/side-quests?game=${quest.game.slug}` },
+											{ title: quest.map.title, href: `/side-quests?map=${quest.map.slug}` },
 											{
-												title: q.title,
-												href: `/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`,
+												title: quest.title,
+												href: `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`,
 											},
 										]}
 									/>
@@ -138,16 +126,15 @@ export default async function SideQuestPage({
 						<div className="relative z-20 mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
 							<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
 								<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-3xl text-gradient md:text-4xl lg:text-5xl">
-									{q.title}
+									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									<ManagementBadges entry={q} />
-									{q.isComingSoon ? <ComingSoonBadge /> : q.isNew ? <NewBadge /> : null}
+									{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-										{q.game.title}
+										{quest.game.title}
 									</Badge>
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-										{q.map.title}
+										{quest.map.title}
 									</Badge>
 								</div>
 							</div>
@@ -156,23 +143,24 @@ export default async function SideQuestPage({
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
 										<span>
-											Updated: {new Date(q.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
+											Updated:{" "}
+											{new Date(quest.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
 										</span>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
 									<div className="flex items-center gap-1">
 										<Clock className="size-4" />
-										<span>{q.timeToRead} min read</span>
+										<span>{timeToRead} min read</span>
 									</div>
 								</div>
 								<ShareButton
-									title={q.title}
-									url={`${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${slug}`}
+									title={quest.title}
+									url={`${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${quest.game.slug}/${quest.map.slug}/${slug}`}
 									className="mb-2 ml-auto text-muted-foreground md:mb-0"
 								/>
 							</div>
 						</div>
-						{q.isComingSoon ? (
+						{quest.isComingSoon ? (
 							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 								<p className="font-bold text-xl">
 									This article is currently being written and will take some time before being
@@ -184,14 +172,14 @@ export default async function SideQuestPage({
 								</p>
 							</div>
 						) : (
-							<RichTextRenderer body={q.content} slug={slug} />
+							<RichTextRenderer body={quest.content} />
 						)}
 						<div className="flex w-full items-center justify-center">
-							<GuideFeedback guideTitle={q.title} type="Side Quest" map={q.map.title} />
+							<GuideFeedback guideTitle={quest.title} type="Side Quest" map={quest.map.title} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{prevQuest && <PrevOrNextQuestCard quest={prevQuest} prev />}
-							{nextQuest && <PrevOrNextQuestCard quest={nextQuest} />}
+							{/* {prevQuest && <PrevOrNextQuestCard quest={prevQuest} prev />}
+							{nextQuest && <PrevOrNextQuestCard quest={nextQuest} />} */}
 						</div>
 					</article>
 				</div>
@@ -205,7 +193,7 @@ interface PrevOrNextQuest {
 	prev?: boolean
 }
 
-const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextQuest) => {
+const _PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextQuest) => {
 	const alt = `${quest.map.title} map image`
 
 	return (
@@ -231,8 +219,7 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextQuest) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					<ManagementBadges entry={quest} />
-					{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
+					{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{quest.map.title}
 					</Badge>

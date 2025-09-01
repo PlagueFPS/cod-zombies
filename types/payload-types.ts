@@ -482,13 +482,13 @@ export interface SideQuest {
    */
   slug: string;
   /**
+   * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
+   */
+  isComingSoon?: boolean | null;
+  /**
    * Map this side quest belongs to.
    */
   map: string | Map;
-  /**
-   * Featured image of this side quest.
-   */
-  image?: (string | null) | Media;
   /**
    * SEO description used in meta tags and in preview cards.
    */
@@ -1190,8 +1190,8 @@ export interface MainQuestsSelect<T extends boolean = true> {
 export interface SideQuestsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  isComingSoon?: T;
   map?: T;
-  image?: T;
   description?: T;
   content?: T;
   updatedAt?: T;

@@ -52,7 +52,7 @@ export default async function PrivacyPolicy() {
 								{new Date(policy.updatedAt).toLocaleDateString(undefined, DATE_OPTIONS)}
 							</span>
 						</div>
-						<RichTextRenderer slug={policy.slug} body={policy.content} />
+						<RichTextRenderer body={policy.content} />
 					</section>
 				</div>
 			</div>

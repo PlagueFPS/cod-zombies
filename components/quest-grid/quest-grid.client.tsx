@@ -1,5 +1,6 @@
 "use client"
 import type { MinifiedMainQuest } from "@/data/main-quests"
+import type { MinifiedSideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { Suspense, useEffect } from "react"
 import GridPagination from "@/components/grid-pagination/grid-pagination"
@@ -10,7 +11,7 @@ import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/functions.client"
 
 interface IQuestGridClient {
-	quests: MinifiedMainQuest[]
+	quests: (MinifiedMainQuest | MinifiedSideQuest)[]
 }
 
 export default function QuestGridClient({ quests }: IQuestGridClient) {
@@ -30,14 +31,14 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 		})
 	}
 
-	// if (mapParams.length > 0) {
-	// 	filteredQuests = filteredQuests.filter(quest => {
-	// 		if (Predicate.hasProperty(quest, "map")) {
-	// 			return mapParams.includes(quest.map.slug)
-	// 		}
-	// 		return false
-	// 	})
-	// }
+	if (mapParams.length > 0) {
+		filteredQuests = filteredQuests.filter(quest => {
+			if (Predicate.hasProperty(quest, "map")) {
+				return mapParams.includes(quest.map.slug)
+			}
+			return false
+		})
+	}
 
 	const skip = calculateSkip(page, MAP_LIMIT)
 	const paginatedQuests = filteredQuests.slice(skip, MAP_LIMIT * page)

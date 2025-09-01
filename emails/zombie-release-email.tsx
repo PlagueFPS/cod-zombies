@@ -1,4 +1,4 @@
-import type { ZombieType } from "@/data/zombies"
+import type { Zombie } from "@/types/payload-types"
 import type { IQuestRelease } from "./quest-release-email"
 import {
 	Body,
@@ -18,7 +18,7 @@ import {
 import { env } from "@/env"
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
-	type: ZombieType
+	type: Zombie["type"]
 }
 
 export default function ZombieReleaseEmail({

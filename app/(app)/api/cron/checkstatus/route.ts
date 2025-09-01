@@ -9,8 +9,8 @@ import { CACHE_KEYS, MAX_NEW_TIME, MAX_QUEST_NEW_TIME } from "@/utils/constants"
 import { authorizedRequest } from "@/utils/functions"
 
 const REVALIDATION_MAP: Record<EntryType, string> = {
-	mainQuest: CACHE_KEYS.featuredMaps.all,
-	game: CACHE_KEYS.gameCategories.all,
+	mainQuest: CACHE_KEYS.mainQuests.all,
+	game: CACHE_KEYS.games.all,
 	sideQuest: CACHE_KEYS.sideQuests.all,
 	zombie: CACHE_KEYS.zombies.all,
 	legal: CACHE_KEYS.legal.all,

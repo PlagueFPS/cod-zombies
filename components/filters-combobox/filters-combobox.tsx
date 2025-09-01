@@ -1,5 +1,4 @@
-import type { Difficulty } from "@/data/maps"
-import type { ZombieType } from "@/data/zombies"
+import type { MainQuest, Zombie } from "@/types/payload-types"
 import { CirclePlus, Trash } from "lucide-react"
 import Image, { type ImageProps } from "next/image"
 import { useState } from "react"
@@ -62,9 +61,13 @@ const FiltersCombobox = ({
 
 		switch (title) {
 			case "Difficulty":
-				return <DifficultyBadge difficulty={capitalize(currentSelection[0]) as Difficulty} />
+				return (
+					<DifficultyBadge
+						difficulty={capitalize(currentSelection[0]) as MainQuest["difficulty"]}
+					/>
+				)
 			case "Type":
-				return <TypeBadge type={capitalize(currentSelection[0]) as ZombieType} />
+				return <TypeBadge type={capitalize(currentSelection[0]) as Zombie["type"]} />
 			default:
 				return (
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
@@ -121,9 +124,9 @@ const FiltersCombobox = ({
 											tabIndex={-1}
 										>
 											{title === "Difficulty" ? (
-												<DifficultyBadge difficulty={item.title as Difficulty} />
+												<DifficultyBadge difficulty={item.title as MainQuest["difficulty"]} />
 											) : title === "Type" ? (
-												<TypeBadge type={item.title as ZombieType} />
+												<TypeBadge type={item.title as Zombie["type"]} />
 											) : (
 												item.title
 											)}

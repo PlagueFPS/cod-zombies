@@ -44,6 +44,15 @@ export const SideQuests: CollectionConfig = {
 			},
 		},
 		{
+			name: "isComingSoon",
+			type: "checkbox",
+			defaultValue: false,
+			admin: {
+				description:
+					"Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.",
+			},
+		},
+		{
 			name: "map",
 			label: "Map",
 			type: "relationship",
@@ -51,15 +60,6 @@ export const SideQuests: CollectionConfig = {
 			required: true,
 			admin: {
 				description: "Map this side quest belongs to.",
-			},
-		},
-		{
-			name: "image",
-			label: "Image",
-			type: "upload",
-			relationTo: "media",
-			admin: {
-				description: "Featured image of this side quest.",
 			},
 		},
 		{

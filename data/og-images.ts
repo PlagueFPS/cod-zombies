@@ -1,4 +1,3 @@
-import type { BroadcastEntry } from "@/utils/revalidation-handlers"
 import { readFile } from "node:fs/promises"
 import { join } from "node:path"
 import { FetchHttpClient, HttpBody, HttpClient } from "@effect/platform"
@@ -47,15 +46,16 @@ export const getFontData = Effect.gen(function* () {
  */
 export const getCachedImageUrl = cache(
 	unstable_cache(
-		async (type: TAllowedSlugs, entry: BroadcastEntry) => {
-			return await getImageUrl(type, entry).pipe(
-				Effect.withLogSpan("get_cached_image_url"),
-				Effect.tapError(Effect.logError),
-				Effect.provide(FetchHttpClient.layer),
-				Effect.catchAll(() => Effect.succeed(null)),
-				Effect.ensureErrorType<never>(),
-				Effect.runPromise,
-			)
+		async (type: TAllowedSlugs, entry: unknown) => {
+			return null
+			// return await getImageUrl(type, entry).pipe(
+			// 	Effect.withLogSpan("get_cached_image_url"),
+			// 	Effect.tapError(Effect.logError),
+			// 	Effect.provide(FetchHttpClient.layer),
+			// 	Effect.catchAll(() => Effect.succeed(null)),
+			// 	Effect.ensureErrorType<never>(),
+			// 	Effect.runPromise,
+			// )
 		},
 		[],
 		{
@@ -75,41 +75,41 @@ export const getCachedImageUrl = cache(
  * @example
  * const imageUrl = yield* getImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  */
-const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: BroadcastEntry) {
-	return null
-	const httpClient = (yield* HttpClient.HttpClient).pipe(
-		HttpClient.retryTransient({
-			times: 3,
-			schedule: Schedule.exponential("50 millis", 2),
-		}),
-	)
-	const response = yield* httpClient.post(
-		"https://api-codzombiesguides.netlify.app/get-image-url",
-		{
-			urlParams: {
-				type,
-			},
-			headers: {
-				Authorization: Redacted.value(env.IMAGE_API_TOKEN),
-			},
-			body: yield* HttpBody.jsonSchema(ImageBodySchema)({
-				id: entry.id,
-				slug: entry.slug,
-				title: entry.title,
-				updatedAt: entry.updatedAt,
-				game: capitalize(entry.game),
-				image: {
-					url: entry.image.url ?? "",
-					width: entry.image.width ?? 1200,
-					height: entry.image.height ?? 630,
-				},
-				timeToRead: Predicate.hasProperty(entry, "timeToRead") ? entry.timeToRead : undefined,
-				map: Predicate.hasProperty(entry, "map") ? capitalize(entry.map) : undefined,
-				type: Predicate.hasProperty(entry, "type") ? entry.type : undefined,
-				difficulty: Predicate.hasProperty(entry, "difficulty") ? entry.difficulty : undefined,
-			}),
-		},
-	)
+// const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: BroadcastEntry) {
+// 	return null
+// 	const httpClient = (yield* HttpClient.HttpClient).pipe(
+// 		HttpClient.retryTransient({
+// 			times: 3,
+// 			schedule: Schedule.exponential("50 millis", 2),
+// 		}),
+// 	)
+// 	const response = yield* httpClient.post(
+// 		"https://api-codzombiesguides.netlify.app/get-image-url",
+// 		{
+// 			urlParams: {
+// 				type,
+// 			},
+// 			headers: {
+// 				Authorization: Redacted.value(env.IMAGE_API_TOKEN),
+// 			},
+// 			body: yield* HttpBody.jsonSchema(ImageBodySchema)({
+// 				id: entry.id,
+// 				slug: entry.slug,
+// 				title: entry.title,
+// 				updatedAt: entry.updatedAt,
+// 				game: capitalize(entry.game),
+// 				image: {
+// 					url: entry.image.url ?? "",
+// 					width: entry.image.width ?? 1200,
+// 					height: entry.image.height ?? 630,
+// 				},
+// 				timeToRead: Predicate.hasProperty(entry, "timeToRead") ? entry.timeToRead : undefined,
+// 				map: Predicate.hasProperty(entry, "map") ? capitalize(entry.map) : undefined,
+// 				type: Predicate.hasProperty(entry, "type") ? entry.type : undefined,
+// 				difficulty: Predicate.hasProperty(entry, "difficulty") ? entry.difficulty : undefined,
+// 			}),
+// 		},
+// 	)
 
-	return yield* response.text
-}, Effect.withLogSpan("get_image_url"))
+// 	return yield* response.text
+// }, Effect.withLogSpan("get_image_url"))

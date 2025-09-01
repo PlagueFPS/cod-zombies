@@ -111,7 +111,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 		augment: ({ node }) => <span>{node.fields.blockType}</span>,
 		"ammo-mod": ({ node }) => <AmmoModTooltip node={node} />,
 		"field-upgrade": ({ node }) => <FieldUpgradeTooltip node={node} />,
-		gobblegum: ({ node }) => <GobbleGumTooltip node={node} />,
+		gobblegum: ({ node }) => (
+			<Suspense fallback={<span>Loading...</span>}>
+				<GobbleGumTooltip node={node} />
+			</Suspense>
+		),
 		perk: ({ node }) => <PerkTooltip node={node} />,
 		"weapon-build": ({ node }) => <span>{node.fields.blockType}</span>,
 	},

@@ -1,4 +1,5 @@
 import type { MinifiedMainQuest } from "@/data/main-quests"
+import type { MinifiedSideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -10,7 +11,7 @@ import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IQuestPreviewCard {
-	quest: MinifiedMainQuest
+	quest: MinifiedMainQuest | MinifiedSideQuest
 	questIndex: number
 }
 
@@ -24,13 +25,13 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 			return <DifficultyBadge difficulty={quest.difficulty} />
 		}
 
-		// if (Predicate.hasProperty(quest, "map") && quest.map) {
-		// 	return (
-		// 		<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-		// 			{quest.map.title}
-		// 		</Badge>
-		// 	)
-		// }
+		if (Predicate.hasProperty(quest, "map") && quest.map) {
+			return (
+				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+					{quest.map.title}
+				</Badge>
+			)
+		}
 
 		return null
 	}
@@ -46,11 +47,11 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 					quest.isComingSoon
 						? "#"
 						: Predicate.hasProperty(quest, "map")
-							? `/side-quests/${quest.game.slug}/${"quest.map.slug"}/${quest.slug}`
+							? `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 							: `/${quest.game.slug}/${quest.slug}`
 				}
 				aria-label={`View Guide for ${quest.title}`}
-				aria-disabled={quest.isComingSoon}
+				aria-disabled={quest.isComingSoon ?? undefined}
 				className="group outline-none"
 				tabIndex={quest.isComingSoon ? -1 : 0}
 			>
