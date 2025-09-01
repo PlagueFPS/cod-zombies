@@ -18,8 +18,8 @@ importers:
         specifier: ^0.14.0
         version: 0.14.0
       '@linear/sdk':
-        specifier: ^52.0.0
-        version: 52.0.0
+        specifier: ^58.1.0
+        version: 58.1.0
       '@next/third-parties':
         specifier: 15.5.0
         version: 15.5.0(next@15.5.2(@babel/core@7.28.0)(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.77.4))(react@19.1.0)
@@ -1573,8 +1573,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@linear/sdk@52.0.0':
-    resolution: {integrity: sha512-Dd8fPBcMa0E3Az8v2mICyAjCMF5169dx1TDhF6LrWZbQCeg3xXkL7uZUuvljC79XmK1cG/IRj+iHE0ekepMkUw==}
+  '@linear/sdk@58.1.0':
+    resolution: {integrity: sha512-sqzo1j+uZsxeJlMTV2mrBH3yukB/liev7IySmkZil0ka7ic6b4RE9Jk3x+ohw8YgYB52IRR3SPWzhWu96E6W9g==}
     engines: {node: '>=12.x', yarn: 1.x}
 
   '@lottiefiles/dotlottie-react@0.13.3':
@@ -6981,7 +6981,7 @@ snapshots:
   '@libsql/win32-x64-msvc@0.4.7':
     optional: true
 
-  '@linear/sdk@52.0.0':
+  '@linear/sdk@58.1.0':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@15.10.1)
       graphql: 15.10.1

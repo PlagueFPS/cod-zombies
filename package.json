@@ -24,7 +24,7 @@
     "@effect/platform": "^0.90.3",
     "@hookform/resolvers": "5.0.1",
     "@libsql/client": "^0.14.0",
-    "@linear/sdk": "^52.0.0",
+    "@linear/sdk": "^58.1.0",
     "@next/third-parties": "15.5.0",
     "@payloadcms/db-sqlite": "^3.54.0",
     "@payloadcms/live-preview-react": "^3.54.0",
