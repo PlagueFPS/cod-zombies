@@ -28,6 +28,7 @@ import Heading3 from "../rich-headings/heading3/heading3"
 import Heading4 from "../rich-headings/heading4/heading4"
 import RichImage from "../rich-image/rich-image"
 import AmmoModTooltip from "../rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip"
+import GobbleGumTooltip from "../rich-inline-blocks/tooltips/gobblegums/gobblegum-tooltip"
 import ZombieTooltip from "../rich-inline-blocks/tooltips/zombies/zombie-tooltip"
 import RichLink from "../rich-link/rich-link"
 import { OrderedList, UnorderedList } from "../rich-text-lists/rich-text-lists"
@@ -108,7 +109,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 		augment: ({ node }) => <span>{node.fields.blockType}</span>,
 		"ammo-mod": ({ node }) => <AmmoModTooltip node={node} />,
 		"field-upgrade": ({ node }) => <span>{node.fields.blockType}</span>,
-		gobblegum: ({ node }) => <span>{node.fields.blockType}</span>,
+		gobblegum: ({ node }) => <GobbleGumTooltip node={node} />,
 		perk: ({ node }) => <span>{node.fields.blockType}</span>,
 		"weapon-build": ({ node }) => <span>{node.fields.blockType}</span>,
 	},

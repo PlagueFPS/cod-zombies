@@ -57,6 +57,14 @@ export const CACHE_KEYS = {
 		/** Cache key for all weapon data */
 		all: "weapons",
 	},
+	ammoMods: {
+		/** Cache key for all ammo mod data */
+		all: "ammo-mods",
+	},
+	gobblegum: {
+		/** Cache key for all gobblegum data */
+		all: "gobblegum",
+	},
 } as const
 export const ROUTES = [
 	{

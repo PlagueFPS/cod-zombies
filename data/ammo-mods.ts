@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache"
 import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError } from "@/types/errors"
+import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 
 export type MinifiedAmmoMod = NonNullable<Awaited<ReturnType<typeof getAmmoModById>>>
@@ -17,6 +18,7 @@ export const getAmmoModById = cache(
 						payload.findByID({
 							collection: "ammoMods",
 							id,
+							draft: IN_DEVELOPMENT,
 							select: {
 								title: true,
 								description: true,
@@ -52,7 +54,7 @@ export const getAmmoModById = cache(
 		},
 		[],
 		{
-			tags: [],
+			tags: [CACHE_KEYS.ammoMods.all],
 		},
 	),
 )

@@ -2,6 +2,7 @@
 import type { MinifiedAmmoMod } from "@/data/ammo-mods"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmmoMod }) {
@@ -23,7 +24,7 @@ export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmm
 								className="my-auto h-6 w-auto"
 							/>
 						) : null}
-						<span className="mr-1 text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
+						<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
 							{ammoMod.title}
 						</span>
 					</span>
@@ -36,6 +37,35 @@ export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmm
 				</HoverCardContent>
 			</HoverCard>
 		)
+
+	return (
+		<Popover>
+			<PopoverTrigger
+				className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
+				asChild
+			>
+				<span>
+					{ammoMod.image.url ? (
+						<IconImage
+							featuredImage={ammoMod.image}
+							alt={`${ammoMod.title} Image`}
+							sizes="24px"
+							className="my-auto h-6 w-auto"
+						/>
+					) : null}
+					<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
+						{ammoMod.title}
+					</span>
+				</span>
+			</PopoverTrigger>
+			<PopoverContent
+				side="top"
+				className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+			>
+				{<AmmoModTooltipContent ammoMod={ammoMod} />}
+			</PopoverContent>
+		</Popover>
+	)
 }
 
 const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: Omit<MinifiedAmmoMod, "id"> }) => {
