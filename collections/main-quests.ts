@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload"
+import { Redacted } from "effect"
 import { getMapById } from "@/data/maps"
+import { env } from "@/env"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const MainQuests: CollectionConfig = {
@@ -8,9 +10,10 @@ export const MainQuests: CollectionConfig = {
 		useAsTitle: "title",
 		defaultColumns: ["title", "isComingSoon", "difficulty", "map", "_status", "updatedAt"],
 		livePreview: {
-			url: async ({ data }) => {
+			url: async ({ data, req }) => {
 				const map = await getMapById(data.map)
-				return `/${map?.game.slug}/${map?.slug}`
+				const path = `/${map?.game.slug}/${map?.slug}`
+				return `${req.protocol}//${req.host}/api/draft/live-preview?path=${encodeURIComponent(path)}&secret=${encodeURIComponent(Redacted.value(env.DRAFT_SECRET))}`
 			},
 		},
 	},

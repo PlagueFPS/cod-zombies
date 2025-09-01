@@ -1,13 +1,18 @@
 import type { CollectionAfterChangeHook } from "payload"
 import { revalidateTag } from "next/cache"
-import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
+import { CACHE_KEYS } from "@/utils/constants"
 
 export const revalidateCollection: CollectionAfterChangeHook = ({
 	collection,
+	previousDoc,
 	doc,
+	operation,
 	req: { payload },
 }) => {
-	if (!IN_DEVELOPMENT && doc._status !== "published") return
+	if (operation === "create") return
+
+	// Skip if the document's status hasn't changed
+	if (previousDoc._status === doc._status) return
 
 	switch (collection.slug) {
 		case "zombies": {
