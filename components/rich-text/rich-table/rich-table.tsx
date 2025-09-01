@@ -1,83 +1,53 @@
-// import { Suspense } from "react"
-// import RichTableCellLoader from "@/components/loaders/rich-table-cell-loader"
-// import {
-// 	Table,
-// 	TableBody,
-// 	TableCell,
-// 	TableHead,
-// 	TableHeader,
-// 	TableRow,
-// } from "@/components/ui/table"
-// import { cn } from "@/lib/utils"
-// import { formatTableCellData } from "@/utils/contentful-utils"
-// import { slugify } from "@/utils/functions.client"
-// import ItemTooltip from "../rich-embeds/item-tooltip"
+import type { SerializedTableCellNode, SerializedTableRowNode } from "@payloadcms/richtext-lexical"
+import type { SerializedLexicalNode } from "@payloadcms/richtext-lexical/lexical"
+import type {
+	JSXConverters,
+	SerializedLexicalNodeWithParent,
+} from "@payloadcms/richtext-lexical/react"
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-// interface RichTableProps {
-// 	headings: string[]
-// 	bodyRows: unknown[]
-// }
+interface RichTableProps {
+	headerRow: SerializedTableRowNode
+	bodyRows: SerializedTableRowNode[]
+	nodesToJSX: (args: {
+		converters?: JSXConverters
+		disableIndent?: boolean | string[]
+		disableTextAlign?: boolean | string[]
+		nodes: SerializedLexicalNode[]
+		parent?: SerializedLexicalNodeWithParent
+	}) => React.ReactNode[]
+}
 
-// export default function RichTable({ headings, bodyRows }: RichTableProps) {
-// 	return (
-// 		<div className="my-8 overflow-x-auto rounded-lg border shadow-xl dark:shadow-none">
-// 			<Table>
-// 				<TableHeader className="rounded-t-xl dark:border-orange-700">
-// 					<TableRow>
-// 						{headings.map(heading => (
-// 							<TableHead
-// 								key={`table-heading-${slugify(heading)}`}
-// 								className="text-orange-900 dark:text-orange-400"
-// 							>
-// 								{heading}
-// 							</TableHead>
-// 						))}
-// 					</TableRow>
-// 				</TableHeader>
-// 				<TableBody>
-// 					{bodyRows.map((row, index) => (
-// 						<TableRow
-// 							key={`table-row-${index + 1}`}
-// 							className={cn("hover:bg-orange-100 dark:hover:bg-muted/50", {
-// 								"bg-orange-50 dark:bg-background": index % 2 === 0,
-// 							})}
-// 						>
-// 							{Array.isArray(row) && (
-// 								<Suspense fallback={<RichTableCellLoader rowAmount={row.length} />}>
-// 									<RichTableCells row={row} />
-// 								</Suspense>
-// 							)}
-// 						</TableRow>
-// 					))}
-// 				</TableBody>
-// 			</Table>
-// 		</div>
-// 	)
-// }
-
-// async function RichTableCells({ row }: { row: any[] }) {
-// 	return await Promise.all(
-// 		row.map(async (cell: any, cellIndex: number) => {
-// 			const { values, embeddedItems } = await formatTableCellData(cell.content[0].content)
-
-// 			return (
-// 				<TableCell
-// 					key={`table-cell-${cellIndex + 1}`}
-// 					className="text-orange-800 dark:text-orange-200"
-// 				>
-// 					{values.map(value => {
-// 						if (value) return value
-// 						return null
-// 					})}
-// 					{embeddedItems.length > 0 && (
-// 						<span className="inline-flex flex-col items-start gap-2">
-// 							{embeddedItems.map((item, index) => (
-// 								<ItemTooltip key={`${item.title}-${index}`} item={item} />
-// 							))}
-// 						</span>
-// 					)}
-// 				</TableCell>
-// 			)
-// 		}),
-// 	)
-// }
+export default function RichTable({ headerRow, bodyRows, nodesToJSX }: RichTableProps) {
+	return (
+		<div className="my-8 overflow-x-auto rounded-lg border shadow-xl dark:shadow-none">
+			<Table>
+				<TableHeader className="rounded-t-xl dark:border-orange-700">
+					<TableRow>
+						{headerRow.children.map((cell, index) => {
+							if (cell.type === "tablecell") {
+								const node = cell as SerializedTableCellNode
+								return (
+									<TableHead
+										key={`table-header-${index + 1}`}
+										className="text-orange-900 dark:text-orange-400"
+									>
+										{nodesToJSX({ nodes: node.children })}
+									</TableHead>
+								)
+							}
+							return null
+						})}
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{bodyRows.map((row, index) => (
+						<TableRow key={`table-row-${index + 1}`}>
+							{nodesToJSX({ nodes: row.children })}
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</div>
+	)
+}

@@ -19,7 +19,7 @@ import { type JSXConvertersFunction, RichText } from "@payloadcms/richtext-lexic
 import { Predicate } from "effect"
 import { Suspense } from "react"
 import richStyles from "@/components/rich-text/rich-text.module.css"
-import { Table, TableCell, TableRow } from "@/components/ui/table"
+import { TableCell } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { slugify } from "@/utils/functions.client"
 import RichBlockquote from "../rich-blockquote/rich-blockquote"
@@ -33,6 +33,7 @@ import GobbleGumTooltip from "../rich-inline-blocks/tooltips/gobblegums/gobblegu
 import PerkTooltip from "../rich-inline-blocks/tooltips/perks/perk-tooltip"
 import ZombieTooltip from "../rich-inline-blocks/tooltips/zombies/zombie-tooltip"
 import RichLink from "../rich-link/rich-link"
+import RichTable from "../rich-table/rich-table"
 import { OrderedList, UnorderedList } from "../rich-text-lists/rich-text-lists"
 
 interface RichTextRendererProps {
@@ -91,12 +92,10 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 		return <RichBlockquote>{nodes}</RichBlockquote>
 	},
 	table: ({ node, nodesToJSX }) => {
-		const nodes = nodesToJSX({ nodes: node.children })
-		return <Table>{nodes}</Table>
-	},
-	tablerow: ({ node, nodesToJSX }) => {
-		const nodes = nodesToJSX({ nodes: node.children })
-		return <TableRow>{nodes}</TableRow>
+		const headerRow = node.children[0] as SerializedTableRowNode
+		const bodyRows = node.children.slice(1) as SerializedTableRowNode[]
+
+		return <RichTable headerRow={headerRow} bodyRows={bodyRows} nodesToJSX={nodesToJSX} />
 	},
 	tablecell: ({ node, nodesToJSX }) => {
 		const nodes = nodesToJSX({ nodes: node.children })
