@@ -51,3 +51,44 @@ export const getYouTubeVideoId = (url: string) => {
 export const calculateSkip = (page: number, limit: number) => {
 	return page <= 1 ? 0 : limit * page - limit
 }
+
+/**
+ * Normalizes a filename to always use the same format regardless of the original format.
+ * @param filename - The input filename to be normalized.
+ * @returns The normalized filename, with the extension lowercased.
+ * @example
+ * normalizeFilename("A.D.A.M.-unit.jpg") // "adam-unit.jpg"
+ * normalizeFilename("A.D.-x.jpg") // "ad-x.jpg"
+ * normalizeFilename("123.456.789.txt") // "123456789.txt"
+ */
+export const normalizeFilename = (filename: string) => {
+	// take last path segment
+	const parts = filename.split(/[\\/]/)
+	const nameWithExt = parts[parts.length - 1]
+
+	// split basename and extension (keep dot on ext)
+	const lastDot = nameWithExt?.lastIndexOf(".")
+	const basename = lastDot === -1 ? nameWithExt : nameWithExt?.slice(0, lastDot)
+	const ext = lastDot === -1 ? "" : nameWithExt?.slice(lastDot).toLowerCase()
+
+	// 1) Collapse dot-separated single-letter runs into a single token.
+	//    Examples:
+	//      "A.D.A.M.-unit" -> "ADAM-unit"
+	//      "A.D.-x"        -> "AD-x"
+	// This targets sequences of the form letter(.letter)+
+	const preprocessed = basename?.replace(/([A-Za-z](?:\.[A-Za-z]){1,})/g, m => m.replace(/\./g, ""))
+
+	// 2) Extract word/number tokens using Unicode-aware regex, then join with hyphen.
+	const tokens = preprocessed?.normalize("NFC").match(/\p{L}+\p{N}*|\p{N}+/gu)
+
+	const slug = tokens?.length
+		? tokens.join("-").toLowerCase()
+		: // fallback: remove unsafe chars, collapse hyphens
+			preprocessed
+				?.replace(/[^\p{L}\p{N}]+/gu, "-")
+				.replace(/-+/g, "-")
+				.replace(/^-|-$/g, "")
+				.toLowerCase()
+
+	return `${slug}${ext}`
+}
