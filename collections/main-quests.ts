@@ -11,6 +11,8 @@ export const MainQuests: CollectionConfig = {
 		defaultColumns: ["title", "isComingSoon", "difficulty", "map", "_status", "updatedAt"],
 		livePreview: {
 			url: async ({ data, req }) => {
+				if (!data.map) return "#"
+
 				const map = await getMapById(data.map)
 				const path = `/${map?.game.slug}/${map?.slug}`
 				return `${req.protocol}//${req.host}/api/draft/live-preview?path=${encodeURIComponent(path)}&secret=${encodeURIComponent(Redacted.value(env.DRAFT_SECRET))}`
