@@ -1,5 +1,6 @@
 import type {
 	DefaultNodeTypes,
+	SerializedBlockNode,
 	SerializedInlineBlockNode,
 	SerializedTableCellNode,
 	SerializedTableNode,
@@ -14,14 +15,16 @@ import type {
 	InlinePerkBlock,
 	InlineWeaponBuildBlock,
 	InlineZombieBlock,
+	YoutubeEmbedBlock,
 } from "@/types/payload-types"
+import { YouTubeEmbed } from "@next/third-parties/google"
 import { type JSXConvertersFunction, RichText } from "@payloadcms/richtext-lexical/react"
 import { Predicate } from "effect"
 import { Suspense } from "react"
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { TableCell } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
-import { slugify } from "@/utils/functions.client"
+import { getYouTubeVideoId, slugify } from "@/utils/functions.client"
 import RichBlockquote from "../rich-blockquote/rich-blockquote"
 import Heading2 from "../rich-headings/heading2/heading2"
 import Heading3 from "../rich-headings/heading3/heading3"
@@ -47,6 +50,7 @@ type TableNodes = SerializedTableNode | SerializedTableRowNode | SerializedTable
 type NodeTypes =
 	| DefaultNodeTypes
 	| TableNodes
+	| SerializedBlockNode<YoutubeEmbedBlock>
 	| SerializedInlineBlockNode<
 			| InlineAmmoModBlock
 			| InlineZombieBlock
@@ -100,6 +104,21 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 	tablecell: ({ node, nodesToJSX }) => {
 		const nodes = nodesToJSX({ nodes: node.children })
 		return <TableCell>{nodes}</TableCell>
+	},
+	blocks: {
+		"youtube-embed": ({ node }) => {
+			return (
+				<>
+					<Heading3 id={slugify(node.fields.title)} className="pb-4">
+						{node.fields.title}
+					</Heading3>
+					<YouTubeEmbed
+						videoid={getYouTubeVideoId(node.fields.youtubeLink) ?? ""}
+						style="border-radius: var(--radius)"
+					/>
+				</>
+			)
+		},
 	},
 	inlineBlocks: {
 		zombie: ({ node }) => (

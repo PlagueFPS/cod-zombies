@@ -39,3 +39,4 @@ next-env.d.ts
 newassets
 media
 drizzle.config.ts
+contentful.json

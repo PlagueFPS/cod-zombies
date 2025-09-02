@@ -73,6 +73,7 @@ export interface Config {
     zombie: InlineZombieBlock;
     gobblegum: InlineGobblegumBlock;
     'ammo-mod': InlineAmmoModBlock;
+    'youtube-embed': YoutubeEmbedBlock;
   };
   collections: {
     users: User;
@@ -912,6 +913,17 @@ export interface InlineAmmoModBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'ammo-mod';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YoutubeEmbedBlock".
+ */
+export interface YoutubeEmbedBlock {
+  title: string;
+  youtubeLink: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'youtube-embed';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

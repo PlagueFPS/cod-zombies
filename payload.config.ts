@@ -35,10 +35,35 @@ import { Weapons } from "@/collections/weapons"
 import { ZombieAttacks } from "@/collections/zombie-attacks"
 import { Zombies } from "@/collections/zombies"
 import { env } from "@/env"
+import { YoutubeEmbedBlock } from "./collections/blocks/youtube-embed"
 
 export default buildConfig({
 	secret: Redacted.value(env.PAYLOAD_SECRET),
 	serverURL: env.NEXT_PUBLIC_WEBSITE_URL,
+	admin: {
+		livePreview: {
+			breakpoints: [
+				{
+					name: "mobile",
+					label: "Mobile",
+					width: 375,
+					height: 1080,
+				},
+				{
+					name: "tablet",
+					label: "Tablet",
+					width: 768,
+					height: 1080,
+				},
+				{
+					name: "desktop",
+					label: "Desktop",
+					width: 1280,
+					height: 1080,
+				},
+			],
+		},
+	},
 	typescript: {
 		outputFile: "./types/payload-types.ts",
 	},
@@ -62,6 +87,7 @@ export default buildConfig({
 			FixedToolbarFeature(),
 			EXPERIMENTAL_TableFeature(),
 			BlocksFeature({
+				blocks: ["youtube-embed"],
 				inlineBlocks: [
 					"ammo-mod",
 					"augment",
@@ -91,6 +117,7 @@ export default buildConfig({
 		InlineZombiesBlock,
 		InlineGobblegumBlock,
 		InlineAmmoModBlock,
+		YoutubeEmbedBlock,
 	],
 	collections: [
 		Users,
