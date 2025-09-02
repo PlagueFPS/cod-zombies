@@ -22,7 +22,7 @@ export default function ZombieTooltipClient({ zombie }: { zombie: ZombieById }) 
 				>
 					<span
 						className={cn(
-							"mr-1 text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
+							"text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
 							{
 								"text-teal-600 decoration-teal-600 dark:text-teal-300 dark:decoration-teal-300":
 									zombie.type === "Normal",
