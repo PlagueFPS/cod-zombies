@@ -30,8 +30,20 @@ export default async function RichLink({ node }: RichLinkProps) {
 				</CustomLink>
 			)
 		}
+
+		if (node.fields.url?.trim().startsWith("#")) {
+			return (
+				<CustomLink
+					href={node.fields.url as Route}
+					className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
+				>
+					{text}
+				</CustomLink>
+			)
+		}
+
 		return (
-			<ExternalLink href={node.fields.url} className="inline-flex w-fit items-center">
+			<ExternalLink href={node.fields.url?.trim()} className="inline-flex w-fit items-center">
 				{text}
 				<ExternalLinkIcon className="ml-1 h-4 w-4" />
 			</ExternalLink>

@@ -18,6 +18,7 @@
     "payload": "payload",
     "payload:types": "payload generate:types",
     "payload:schema": "payload generate:db-schema",
+    "migration:create": "payload migration:create",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
