@@ -255,6 +255,8 @@ export const getAdjancentMapsWithQuest = cache(
 						payload.find({
 							collection: "maps",
 							draft: IN_DEVELOPMENT,
+							sort: "releaseDate",
+							limit: 1,
 							where: {
 								and: [
 									{
