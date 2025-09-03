@@ -1,3 +1,4 @@
+import { getGames } from "@/data/games"
 import { getAvailableMaps } from "@/data/interactive-map"
 import { getMapsWithQuest } from "@/data/maps"
 import { getSideQuests } from "@/data/side-quests"
@@ -10,11 +11,13 @@ interface ISearchBar {
 
 export default async function SearchBar({ showFull }: ISearchBar) {
 	const mainQuestsPromise = getMapsWithQuest()
+	const gamesPromise = getGames()
 	const sideQuestsPromise = getSideQuests()
 	const zombiesPromise = getZombiesMetadata()
 	const availableMaps = getAvailableMaps()
-	const [mainQuests, sideQuests, zombies] = await Promise.all([
+	const [mainQuests, games, sideQuests, zombies] = await Promise.all([
 		mainQuestsPromise,
+		gamesPromise,
 		sideQuestsPromise,
 		zombiesPromise,
 	])
@@ -45,7 +48,7 @@ export default async function SearchBar({ showFull }: ISearchBar) {
 		<div className="flex w-fit animate-fade-in items-center justify-center">
 			<SearchInput
 				maps={mainQuestsDtos}
-				games={[]}
+				games={games}
 				quests={sideQuestsDtos}
 				zombies={zombies}
 				showFull={showFull}

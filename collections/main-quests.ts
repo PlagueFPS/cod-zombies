@@ -8,7 +8,7 @@ export const MainQuests: CollectionConfig = {
 	slug: "mainQuests",
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "isComingSoon", "difficulty", "map", "_status", "updatedAt"],
+		defaultColumns: ["title", "isComingSoon", "map", "_status", "updatedAt"],
 		livePreview: {
 			url: async ({ data, req }) => {
 				if (!data.map) return "#"

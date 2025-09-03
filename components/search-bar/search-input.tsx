@@ -136,22 +136,24 @@ export default function SearchInput({
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
 						{filter === "All" || filter === "Main Quests"
-							? games.map(game => (
-									<CommandGroup heading={`${game.title} Main Quests`} key={game.id}>
-										{maps.map(m =>
-											m.game.slug !== game.slug ? null : (
-												<CommandItem
-													key={`${game.id}_${m.id}`}
-													onSelect={() => onSelectHandler(`/${m.game.slug}/${m.slug}`)}
-													className="cursor-pointer gap-2"
-												>
-													<BookText className="size-4" />
-													<span className="blur-none">{m.title}</span>
-												</CommandItem>
-											),
-										)}
-									</CommandGroup>
-								))
+							? games
+									.filter(game => maps.some(m => m.game.slug === game.slug))
+									.map(game => (
+										<CommandGroup heading={`${game.title} Main Quests`} key={game.id}>
+											{maps.map(m =>
+												m.game.slug !== game.slug ? null : (
+													<CommandItem
+														key={`${game.id}_${m.id}`}
+														onSelect={() => onSelectHandler(`/${m.game.slug}/${m.slug}`)}
+														className="cursor-pointer gap-2"
+													>
+														<BookText className="size-4" />
+														<span className="blur-none">{m.title}</span>
+													</CommandItem>
+												),
+											)}
+										</CommandGroup>
+									))
 							: null}
 						{filter === "All" || filter === "Side Quests"
 							? questMaps.map(m => (
