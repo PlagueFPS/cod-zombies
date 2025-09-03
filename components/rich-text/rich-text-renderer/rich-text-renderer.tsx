@@ -15,6 +15,7 @@ import type {
 	InlinePerkBlock,
 	InlineWeaponBuildBlock,
 	InlineZombieBlock,
+	ToolBlock,
 	YoutubeEmbedBlock,
 } from "@/types/payload-types"
 import { YouTubeEmbed } from "@next/third-parties/google"
@@ -26,6 +27,9 @@ import { TableCell } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { getYouTubeVideoId, slugify } from "@/utils/functions.client"
 import RichBlockquote from "../rich-blockquote/rich-blockquote"
+import GKValve from "../rich-embeds/gk-valve"
+import ReckoningCode from "../rich-embeds/reckoning-code"
+import TerminusCode from "../rich-embeds/terminus-code"
 import Heading2 from "../rich-headings/heading2/heading2"
 import Heading3 from "../rich-headings/heading3/heading3"
 import Heading4 from "../rich-headings/heading4/heading4"
@@ -50,7 +54,7 @@ type TableNodes = SerializedTableNode | SerializedTableRowNode | SerializedTable
 type NodeTypes =
 	| DefaultNodeTypes
 	| TableNodes
-	| SerializedBlockNode<YoutubeEmbedBlock>
+	| SerializedBlockNode<YoutubeEmbedBlock | ToolBlock>
 	| SerializedInlineBlockNode<
 			| InlineAmmoModBlock
 			| InlineZombieBlock
@@ -118,6 +122,18 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 					/>
 				</>
 			)
+		},
+		tool: ({ node }) => {
+			switch (node.fields.tool) {
+				case "gorod-krovi-valve":
+					return <GKValve />
+				case "terminus-code-solver":
+					return <TerminusCode />
+				case "reckoning-code-solver":
+					return <ReckoningCode />
+				default:
+					return null
+			}
 		},
 	},
 	inlineBlocks: {

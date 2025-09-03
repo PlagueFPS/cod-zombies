@@ -35,6 +35,7 @@ import { Weapons } from "@/collections/weapons"
 import { ZombieAttacks } from "@/collections/zombie-attacks"
 import { Zombies } from "@/collections/zombies"
 import { env } from "@/env"
+import { ToolBlock } from "./collections/blocks/tool"
 import { YoutubeEmbedBlock } from "./collections/blocks/youtube-embed"
 
 export default buildConfig({
@@ -87,7 +88,7 @@ export default buildConfig({
 			FixedToolbarFeature(),
 			EXPERIMENTAL_TableFeature(),
 			BlocksFeature({
-				blocks: ["youtube-embed"],
+				blocks: ["youtube-embed", "tool"],
 				inlineBlocks: [
 					"ammo-mod",
 					"augment",
@@ -118,6 +119,7 @@ export default buildConfig({
 		InlineGobblegumBlock,
 		InlineAmmoModBlock,
 		YoutubeEmbedBlock,
+		ToolBlock,
 	],
 	collections: [
 		Users,

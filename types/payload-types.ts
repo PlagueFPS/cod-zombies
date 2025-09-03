@@ -74,6 +74,7 @@ export interface Config {
     gobblegum: InlineGobblegumBlock;
     'ammo-mod': InlineAmmoModBlock;
     'youtube-embed': YoutubeEmbedBlock;
+    tool: ToolBlock;
   };
   collections: {
     users: User;
@@ -924,6 +925,19 @@ export interface YoutubeEmbedBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'youtube-embed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ToolBlock".
+ */
+export interface ToolBlock {
+  /**
+   * Tool you want to embed
+   */
+  tool: 'gorod-krovi-valve' | 'terminus-code-solver' | 'reckoning-code-solver';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tool';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
