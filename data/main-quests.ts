@@ -181,6 +181,7 @@ export const getMainQuestBySlug = cache(
 									game: true,
 									image: true,
 									description: true,
+									releaseDate: true,
 								},
 							},
 						}),
@@ -199,6 +200,7 @@ export const getMainQuestBySlug = cache(
 
 								return {
 									id: quest.id,
+									releaseDate: map.releaseDate,
 									updatedAt: quest.updatedAt,
 									title: map.title,
 									slug: map.slug,

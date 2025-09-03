@@ -14,7 +14,7 @@ import {
 	Zap,
 } from "lucide-react"
 import { notFound } from "next/navigation"
-import { cache } from "react"
+import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import {
 	ComingSoonBadge,
@@ -24,6 +24,7 @@ import {
 } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
+import PrevOrNextLoader from "@/components/loaders/prev-or-next-card-loader"
 import AmmoModTooltipClient from "@/components/rich-text/rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip-client"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
@@ -35,25 +36,12 @@ import {
 	getAdjacentZombies,
 	getZombieBySlug,
 	getZombiesMetadata,
-	type MinifiedZombie,
+	type PreviewZombie,
+	type ZombieBySlug,
 } from "@/data/zombies"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
-
-const getPageData = cache(async (slug: string) => {
-	const zombie = await getZombieBySlug(slug)
-	if (!zombie || zombie.isComingSoon) {
-		notFound()
-	}
-	const { prevZombie, nextZombie } = await getAdjacentZombies(zombie.releaseDate)
-
-	return {
-		zombie,
-		prevZombie,
-		nextZombie,
-	}
-})
 
 export const generateStaticParams = async () => {
 	const zombies = await getZombiesMetadata(MAP_LIMIT * 3) // Limit to first three pages
@@ -66,9 +54,12 @@ export const generateMetadata = async ({
 	params,
 }: PageProps<"/bestiary/[slug]">): Promise<Metadata> => {
 	const { slug } = await params
-	const { zombie } = await getPageData(slug)
-	let imageUrl = null
+	const zombie = await getZombieBySlug(slug)
+	if (!zombie || zombie.isComingSoon) {
+		notFound()
+	}
 
+	let imageUrl = null
 	if (!IN_DEVELOPMENT) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("zombies", {
@@ -110,7 +101,11 @@ export const generateMetadata = async ({
 
 export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]">) {
 	const { slug } = await params
-	const { zombie, prevZombie, nextZombie } = await getPageData(slug)
+	const zombie = await getZombieBySlug(slug)
+	if (!zombie || zombie.isComingSoon) {
+		notFound()
+	}
+
 	const speedProgress = () => {
 		switch (zombie.speed) {
 			case "Slow":
@@ -370,8 +365,9 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 			</section>
 			<section className="mt-8 flex w-full flex-row items-center justify-center">
 				<div className="mx-auto flex flex-col items-center justify-center gap-8 px-3 lg:flex-row xl:mr-0 xl:ml-auto xl:px-0">
-					{prevZombie && <PrevOrNextZombie zombie={prevZombie} prev />}
-					{nextZombie && <PrevOrNextZombie zombie={nextZombie} />}
+					<Suspense fallback={<PrevOrNextLoader type="Zombie" />}>
+						<PrevOrNextZombie zombie={zombie} />
+					</Suspense>
 				</div>
 			</section>
 		</article>
@@ -379,11 +375,26 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 }
 
 interface PrevOrNextZombie {
-	zombie: MinifiedZombie
+	zombie: ZombieBySlug
+}
+
+const PrevOrNextZombie = async ({ zombie }: PrevOrNextZombie) => {
+	const { prevZombie, nextZombie } = await getAdjacentZombies(zombie.releaseDate)
+
+	return (
+		<>
+			{prevZombie && <PrevOrNextZombieCard zombie={prevZombie} prev />}
+			{nextZombie && <PrevOrNextZombieCard zombie={nextZombie} />}
+		</>
+	)
+}
+
+interface PrevOrNextZombieCard {
+	zombie: PreviewZombie
 	prev?: boolean
 }
 
-const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
+const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 	const alt = `${zombie.title} image`
 
 	return (
@@ -409,11 +420,9 @@ const PrevOrNextZombie = ({ zombie, prev }: PrevOrNextZombie) => {
 					{zombie.isComingSoon ? <ComingSoonBadge /> : null}
 					{/* {zombie.isNew ? <NewBadge /> : null} */}
 					<TypeBadge type={zombie.type} />
-					{zombie.games[0] ? (
-						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-							{zombie.games[0].title}
-						</Badge>
-					) : null}
+					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+						{zombie.map.title}
+					</Badge>
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
 					<FeaturedImage

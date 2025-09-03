@@ -37,9 +37,9 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
 						{/* {zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null} */}
 						<TypeBadge type={zombie.type} />
-						{zombie.games[0] ? (
+						{zombie.maps[0] ? (
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-								{zombie.games[0].title}
+								{zombie.maps[0].title}
 							</Badge>
 						) : null}
 					</div>

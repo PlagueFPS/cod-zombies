@@ -3,12 +3,25 @@ import { cn } from "@/lib/utils"
 import { Skeleton } from "../ui/skeleton"
 import ImageLoader from "./image-loader"
 
-interface IPrevOrNextCardLoader {
-	prev?: boolean
-	type: string
+interface IPrevOrNextLoader {
+	type: "Quest" | "Zombie"
 }
 
-export default function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoader) {
+export default function PrevOrNextLoader({ type }: IPrevOrNextLoader) {
+	return (
+		<>
+			<PrevOrNextCardLoader type={type} prev />
+			<PrevOrNextCardLoader type={type} />
+		</>
+	)
+}
+
+interface IPrevOrNextCardLoader {
+	prev?: boolean
+	type: "Quest" | "Zombie"
+}
+
+function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoader) {
 	return (
 		<div className="group hover:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border transition-all hover:border-primary xl:max-w-full">
 			<article
@@ -17,7 +30,9 @@ export default function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoad
 					{ "xl:flex-row-reverse": prev },
 				)}
 			>
-				<div className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}>
+				<div
+					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
+				>
 					<Skeleton className="badge-medium-gradient dark:dark-badge-medium-gradient h-6 w-24" />
 					<Skeleton className="badge-primary-gradient dark:dark-badge-primary-gradient h-6 w-24" />
 				</div>
@@ -30,10 +45,13 @@ export default function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoad
 					<Skeleton className="h-4 w-full" />
 					<Skeleton className="h-4 w-full" />
 					<div
-						className={cn("mt-auto flex items-center pb-4 transition-all group-hover:text-primary", {
-							"xl:-ml-2": prev,
-							"xl:-mr-2": !prev,
-						})}
+						className={cn(
+							"mt-auto flex items-center pb-4 transition-all group-hover:text-primary",
+							{
+								"xl:-ml-2": prev,
+								"xl:-mr-2": !prev,
+							},
+						)}
 					>
 						{prev ? (
 							<>

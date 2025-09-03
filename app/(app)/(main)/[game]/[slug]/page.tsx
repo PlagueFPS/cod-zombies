@@ -1,25 +1,20 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
+import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import {
-	ComingSoonBadge,
-	DifficultyBadge,
-	NewBadge,
-} from "@/components/custom-badges/custom-badges"
+import { DifficultyBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
 import { RefreshRouteOnSave } from "@/components/live-preview/refresh-route-on-save"
+import PrevOrNextLoader from "@/components/loaders/prev-or-next-card-loader"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
-import {
-	getMainQuestBySlug,
-	getMainQuestMetadata,
-	type MinifiedMainQuest,
-} from "@/data/main-quests"
+import { getMainQuestBySlug, getMainQuestMetadata, type MainQuestBySlug } from "@/data/main-quests"
+import { getAdjancentMapsWithQuest, type MapWithQuest } from "@/data/maps"
 import { getCachedImageUrl } from "@/data/og-images"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
@@ -175,8 +170,9 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 							<GuideFeedback guideTitle={quest.title} type="Main Quest" />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{/* {prevMap && <PrevOrNextMapCard map={prevMap} prev />}
-							{nextMap && <PrevOrNextMapCard map={nextMap} />} */}
+							<Suspense fallback={<PrevOrNextLoader type="Quest" />}>
+								<PrevOrNextMap map={quest} />
+							</Suspense>
 						</div>
 					</article>
 				</div>
@@ -186,11 +182,25 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 }
 
 interface PrevOrNextMap {
-	map: MinifiedMainQuest
+	map: MainQuestBySlug
+}
+
+const PrevOrNextMap = async ({ map }: PrevOrNextMap) => {
+	const { prevMap, nextMap } = await getAdjancentMapsWithQuest(map.releaseDate)
+	return (
+		<>
+			{prevMap && <PrevOrNextMapCard map={prevMap} prev />}
+			{nextMap && <PrevOrNextMapCard map={nextMap} />}
+		</>
+	)
+}
+
+interface PrevOrNextCard {
+	map: MapWithQuest
 	prev?: boolean
 }
 
-const _PrevOrNextMapCard = ({ map, prev }: PrevOrNextMap) => {
+const PrevOrNextMapCard = ({ map, prev }: PrevOrNextCard) => {
 	const alt = `${map.title} map image`
 
 	return (

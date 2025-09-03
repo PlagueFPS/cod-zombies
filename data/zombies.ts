@@ -9,6 +9,9 @@ import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
 export type ZombieBySlug = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
 export type ZombieById = NonNullable<Awaited<ReturnType<typeof getZombieById>>>
+export type PreviewZombie = NonNullable<
+	Awaited<ReturnType<typeof getAdjacentZombies>>["prevZombie"]
+>
 
 export const getZombies = cache(
 	unstable_cache(
@@ -43,14 +46,14 @@ export const getZombies = cache(
 					Effect.flatMap(zombies =>
 						Effect.forEach(zombies.docs, doc =>
 							Effect.gen(function* () {
-								const map = yield* Effect.forEach(doc.maps, map => assertRelation(map))
-								const game = yield* Effect.forEach(doc.games, game => assertRelation(game))
+								const maps = yield* Effect.forEach(doc.maps, map => assertRelation(map))
+								const games = yield* Effect.forEach(doc.games, game => assertRelation(game))
 								const image = yield* assertRelation(doc.image)
 
 								return {
 									...doc,
-									maps: map,
-									games: game,
+									maps,
+									games,
 									image: createMediaDto(image),
 								}
 							}),
@@ -245,7 +248,6 @@ export const getAdjacentZombies = cache(
 								description: true,
 								type: true,
 								maps: true,
-								games: true,
 								isComingSoon: true,
 								image: true,
 								_status: true,
@@ -262,14 +264,14 @@ export const getAdjacentZombies = cache(
 					Effect.flatMap(zombie =>
 						Effect.forEach(zombie.docs, zombie =>
 							Effect.gen(function* () {
-								const map = yield* Effect.forEach(zombie.maps, map => assertRelation(map))
-								const game = yield* Effect.forEach(zombie.games, game => assertRelation(game))
+								// we only care about the first map for prev/next cards
+								const map = yield* assertRelation(zombie.maps[0])
 								const image = yield* assertRelation(zombie.image)
 
+								const { maps, ...zombieData } = zombie
 								return {
-									...zombie,
-									maps: map,
-									games: game,
+									...zombieData,
+									map: map,
 									image: createMediaDto(image),
 								}
 							}),
@@ -295,7 +297,6 @@ export const getAdjacentZombies = cache(
 								description: true,
 								type: true,
 								maps: true,
-								games: true,
 								isComingSoon: true,
 								image: true,
 								_status: true,
@@ -312,14 +313,14 @@ export const getAdjacentZombies = cache(
 					Effect.flatMap(zombie =>
 						Effect.forEach(zombie.docs, zombie =>
 							Effect.gen(function* () {
-								const map = yield* Effect.forEach(zombie.maps, map => assertRelation(map))
-								const game = yield* Effect.forEach(zombie.games, game => assertRelation(game))
+								// we only care about the first map for prev/next cards
+								const map = yield* assertRelation(zombie.maps[0])
 								const image = yield* assertRelation(zombie.image)
 
+								const { maps, ...zombieData } = zombie
 								return {
-									...zombie,
-									maps: map,
-									games: game,
+									...zombieData,
+									map: map,
 									image: createMediaDto(image),
 								}
 							}),
@@ -429,6 +430,45 @@ export const getZombieById = cache(
 				Effect.annotateLogs({ id }),
 				Effect.tapError(Effect.logError),
 				Effect.catchAll(_error => Effect.succeed(null)),
+				Effect.ensureErrorType<never>(),
+				Effect.provide(Payload.Default),
+				Effect.runPromise,
+			)
+		},
+		[],
+		{
+			tags: [CACHE_KEYS.zombies.all],
+		},
+	),
+)
+
+export const getZombieTypes = cache(
+	unstable_cache(
+		async () => {
+			return await Effect.gen(function* () {
+				const payload = yield* Payload
+				const types = yield* Effect.tryPromise({
+					try: () =>
+						payload.find({
+							collection: "zombies",
+							pagination: false,
+							draft: IN_DEVELOPMENT,
+							select: {
+								type: true,
+							},
+						}),
+					catch: error =>
+						new GetEntriesError({
+							message: "Failed to get zombie types",
+							cause: error,
+						}),
+				}).pipe(Effect.map(types => Array.from(new Set(types.docs.map(type => type.type)))))
+
+				return types
+			}).pipe(
+				Effect.withLogSpan("get_zombie_types"),
+				Effect.tapError(Effect.logError),
+				Effect.catchAll(_error => Effect.succeed([])),
 				Effect.ensureErrorType<never>(),
 				Effect.provide(Payload.Default),
 				Effect.runPromise,
