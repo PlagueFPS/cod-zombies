@@ -92,3 +92,18 @@ export const normalizeFilename = (filename: string) => {
 
 	return `${slug}${ext}`
 }
+
+export const fullyDecodeURIComponent = (encoded: string): string => {
+	let decoded = encoded
+	let lastDecoded: string
+	do {
+		lastDecoded = decoded
+		try {
+			decoded = decodeURIComponent(decoded)
+		} catch (_e) {
+			// If decoding fails, return the last successful decode
+			return lastDecoded
+		}
+	} while (decoded !== lastDecoded)
+	return decoded
+}
