@@ -161,14 +161,16 @@ export default function RichTextRenderer({
 	className,
 }: RichTextRendererProps) {
 	return (
-		<RichText
-			data={body}
-			converters={jsxConverters}
-			className={
-				overrideStyles
-					? className
-					: cn("relative mx-auto max-w-[80ch] px-4", richStyles.body, className)
-			}
-		/>
+		<div id="body" className={
+			overrideStyles
+				? className
+				: cn("relative mx-auto max-w-[80ch] px-4", richStyles.body, className)
+		}>
+			<RichText
+				disableContainer
+				data={body}
+				converters={jsxConverters}
+			/>
+		</div>
 	)
 }

@@ -21,7 +21,6 @@ export const assertRelation = <T>(value: string | T) =>
 	}).pipe(
 		Effect.withLogSpan("assert_relation"),
 		Effect.annotateLogs({ value }),
-		Effect.tapError(Effect.logError),
 	)
 
 export const createMediaDto = (media: Media) => ({
