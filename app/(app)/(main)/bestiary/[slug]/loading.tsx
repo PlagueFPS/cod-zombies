@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 import BestiaryBreadcrumbsLoader from "@/components/loaders/bestiary-breadcrumb-loader"
 import ImageLoader from "@/components/loaders/image-loader"
-import PrevOrNextCardLoader from "@/components/loaders/prev-or-next-card-loader"
+import PrevOrNextLoader from "@/components/loaders/prev-or-next-card-loader"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -180,8 +180,7 @@ export default function ZombiePageLoader() {
 			</section>
 			<section className="mt-8 flex w-full flex-row items-center justify-center">
 				<div className="mx-auto flex w-full flex-col items-center justify-center gap-8 px-3 lg:flex-row xl:mr-0 xl:ml-auto xl:px-0">
-					<PrevOrNextCardLoader prev type="zombie" />
-					<PrevOrNextCardLoader type="zombie" />
+					<PrevOrNextLoader type="Zombie" />
 				</div>
 			</section>
 		</article>
