@@ -35,6 +35,7 @@ import Heading3 from "../rich-headings/heading3/heading3"
 import Heading4 from "../rich-headings/heading4/heading4"
 import RichImage from "../rich-image/rich-image"
 import AmmoModTooltip from "../rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip"
+import AugmentTooltip from "../rich-inline-blocks/tooltips/augments/augment-tooltip"
 import FieldUpgradeTooltip from "../rich-inline-blocks/tooltips/field-upgrades/field-upgrade-tooltip"
 import GobbleGumTooltip from "../rich-inline-blocks/tooltips/gobblegums/gobblegum-tooltip"
 import PerkTooltip from "../rich-inline-blocks/tooltips/perks/perk-tooltip"
@@ -143,7 +144,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 				<ZombieTooltip node={node} />
 			</Suspense>
 		),
-		augment: ({ node }) => <span>{node.fields.blockType}</span>,
+		augment: ({ node }) => (
+			<Suspense fallback={<span>Loading...</span>}>
+				<AugmentTooltip node={node} />
+			</Suspense>
+		),
 		"ammo-mod": ({ node }) => (
 			<Suspense fallback={<span>Loading...</span>}>
 				<AmmoModTooltip node={node} />

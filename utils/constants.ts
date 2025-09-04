@@ -73,6 +73,10 @@ export const CACHE_KEYS = {
 		/** Cache key for all field upgrade data */
 		all: "field-upgrades",
 	},
+	augments: {
+		/** Cache key for all augment data */
+		all: "augments",
+	},
 } as const
 export const ROUTES = [
 	{

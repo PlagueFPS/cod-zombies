@@ -1,0 +1,130 @@
+"use client"
+import type { MinifiedAugment } from "@/data/augments"
+import { TypeBadge } from "@/components/custom-badges/custom-badges"
+import IconImage from "@/components/icon-image/icon-image"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+
+export default function AugmentTooltipClient({ augment }: { augment: MinifiedAugment }) {
+	const isMobile = useIsMobile(640)
+
+	if (!isMobile)
+		return (
+			<HoverCard openDelay={200}>
+				<HoverCardTrigger
+					className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
+					asChild
+				>
+					<span>
+						{augment.image.url ? (
+							<IconImage
+								featuredImage={augment.image}
+								alt={`${augment.title} Image`}
+								sizes="64px"
+								className="my-auto h-6 w-auto"
+							/>
+						) : null}
+						<span
+							className={cn(
+								"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
+								{
+									"text-blue-700 decoration-blue-700 dark:text-blue-300 dark:decoration-blue-300":
+										augment.type === "Major",
+									"text-orange-700 decoration-orange-700 dark:text-orange-300 dark:decoration-orange-300":
+										augment.type === "Minor",
+								},
+							)}
+						>
+							{augment.title}
+						</span>
+					</span>
+				</HoverCardTrigger>
+				<HoverCardContent
+					side="top"
+					className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+				>
+					{<AugmentTooltipContent augment={augment} />}
+				</HoverCardContent>
+			</HoverCard>
+		)
+
+	return (
+		<Popover>
+			<PopoverTrigger
+				className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
+				asChild
+			>
+				<span>
+					{augment.image.url ? (
+						<IconImage
+							featuredImage={augment.image}
+							alt={`${augment.title} Image`}
+							sizes="64px"
+							className="my-auto h-6 w-auto"
+						/>
+					) : null}
+					<span
+						className={cn(
+							"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
+							{
+								"text-blue-700 decoration-blue-700 dark:text-blue-300 dark:decoration-blue-300":
+									augment.type === "Major",
+								"text-orange-700 decoration-orange-700 dark:text-orange-300 dark:decoration-orange-300":
+									augment.type === "Minor",
+							},
+						)}
+					>
+						{augment.title}
+					</span>
+				</span>
+			</PopoverTrigger>
+			<PopoverContent
+				side="top"
+				className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+			>
+				{<AugmentTooltipContent augment={augment} />}
+			</PopoverContent>
+		</Popover>
+	)
+}
+
+const AugmentTooltipContent = ({ augment }: { augment: MinifiedAugment }) => {
+	return (
+		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
+			{augment.image.url ? (
+				<div className="relative flex items-center justify-center">
+					<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+					<IconImage
+						featuredImage={augment.image}
+						alt={`${augment.title} Image`}
+						sizes="64px"
+						className="relative z-10 h-20 w-auto p-2"
+					/>
+				</div>
+			) : null}
+			<TypeBadge type={augment.type} className="absolute top-4 left-4" />
+			<div className="-mt-3 relative z-10">
+				<div
+					className={cn("px-4 text-center font-bold text-lg", {
+						"text-blue-700 dark:text-blue-300": augment.type === "Major",
+						"text-orange-700 dark:text-orange-300": augment.type === "Minor",
+					})}
+				>
+					{augment.title}
+				</div>
+				<div className="mt-6 pb-8">
+					<div
+						className={cn("text-center text-sm", {
+							"text-blue-800 dark:text-blue-200": augment.type === "Major",
+							"text-orange-800 dark:text-orange-200": augment.type === "Minor",
+						})}
+					>
+						{augment.description}
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}

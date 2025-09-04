@@ -1,5 +1,5 @@
 import type { MarkerCategory } from "@/map-configs/markers"
-import type { Gobblegum, MainQuest, Zombie, ZombieAttack } from "@/types/payload-types"
+import type { Augment, Gobblegum, MainQuest, Zombie, ZombieAttack } from "@/types/payload-types"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
@@ -43,7 +43,10 @@ export const DifficultyBadge = ({
 		{difficulty}
 	</Badge>
 )
-export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: Zombie["type"] }) => (
+export const TypeBadge = ({
+	className,
+	type,
+}: CustomBadgeProps & { type: Zombie["type"] | Augment["type"] }) => (
 	<Badge
 		className={cn(
 			{
@@ -51,6 +54,8 @@ export const TypeBadge = ({ className, type }: CustomBadgeProps & { type: Zombie
 				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Special",
 				"badge-elite-gradient dark:dark-badge-elite-gradient": type === "Elite",
 				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Boss",
+				"badge-changed-gradient dark:dark-badge-changed-gradient": type === "Major",
+				"badge-primary-gradient dark:dark-badge-primary-gradient": type === "Minor",
 			},
 			className,
 		)}
