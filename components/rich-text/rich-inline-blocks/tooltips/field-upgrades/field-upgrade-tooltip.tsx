@@ -1,28 +1,26 @@
 import type { SerializedInlineBlockNode } from "@payloadcms/richtext-lexical"
 import type { InlineFieldUpgradeBlock } from "@/types/payload-types"
 import { Effect } from "effect"
-import { assertRelation, createMediaDto } from "@/utils/payload-utils"
+import { getFieldUpgradeById } from "@/data/field-upgrades"
+import { EntryNotFoundError } from "@/types/errors"
 import FieldUpgradeTooltipClient from "./field-upgrade-tooltip-client"
 
-export default function FieldUpgradeTooltip({
+export default async function FieldUpgradeTooltip({
 	node,
 }: {
 	node: SerializedInlineBlockNode<InlineFieldUpgradeBlock>
 }) {
-	return Effect.gen(function* () {
-		const fieldUpgrade = yield* assertRelation(node.fields.fieldUpgrades).pipe(
-			Effect.flatMap(fieldUpgrade =>
-				Effect.gen(function* () {
-					const image = yield* assertRelation(fieldUpgrade.image)
-					return {
-						id: fieldUpgrade.id,
-						title: fieldUpgrade.title,
-						description: fieldUpgrade.description,
-						image: createMediaDto(image),
-					}
-				}),
-			),
+	return await Effect.gen(function* () {
+		const fieldUpgrade = yield* Effect.promise(() =>
+			typeof node.fields.fieldUpgrades === "string"
+				? getFieldUpgradeById(node.fields.fieldUpgrades)
+				: getFieldUpgradeById(node.fields.fieldUpgrades.id),
 		)
+		if (!fieldUpgrade)
+			return yield* new EntryNotFoundError({
+				message: "Failed to get field upgrade",
+			})
+
 		return <FieldUpgradeTooltipClient fieldUpgrade={fieldUpgrade} />
 	}).pipe(
 		Effect.withLogSpan("richtext_field_upgrade_block"),

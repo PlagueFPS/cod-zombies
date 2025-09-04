@@ -5,12 +5,12 @@ import { getPerkById } from "@/data/perks"
 import { EntryNotFoundError } from "@/types/errors"
 import PerkTooltipClient from "./perk-tooltip-client"
 
-export default function PerkTooltip({
+export default async function PerkTooltip({
 	node,
 }: {
 	node: SerializedInlineBlockNode<InlinePerkBlock>
 }) {
-	return Effect.gen(function* () {
+	return await Effect.gen(function* () {
 		const perk = yield* Effect.promise(() =>
 			typeof node.fields.perks === "string"
 				? getPerkById(node.fields.perks)

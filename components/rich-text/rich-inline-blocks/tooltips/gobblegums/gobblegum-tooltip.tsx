@@ -5,12 +5,12 @@ import { getGobbleGumById } from "@/data/gobblegum"
 import { EntryNotFoundError } from "@/types/errors"
 import GobbleGumTooltipClient from "./gobblegum-tooltip-client"
 
-export default function GobbleGumTooltip({
+export default async function GobbleGumTooltip({
 	node,
 }: {
 	node: SerializedInlineBlockNode<InlineGobblegumBlock>
 }) {
-	return Effect.gen(function* () {
+	return await Effect.gen(function* () {
 		const gobblegum = yield* Effect.promise(() =>
 			typeof node.fields.gobblegum === "string"
 				? getGobbleGumById(node.fields.gobblegum)

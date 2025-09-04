@@ -10,18 +10,17 @@ import { slugify } from "./functions.client"
 /**Asserts that the given relationship exists */
 export const assertRelation = <T>(value: string | T) =>
 	Effect.gen(function* () {
-		if (Predicate.isString(value) || !value)
+		if (Predicate.isString(value) || !value) {
+			yield* Effect.logDebug(value)
 			return yield* new RelationshipError({
 				message: "Expected relationship to be populated.",
 				cause:
 					'Query depth is not high enough to populate relationship or you forgot to provide a "populate" option.',
 			})
+		}
 
 		return value
-	}).pipe(
-		Effect.withLogSpan("assert_relation"),
-		Effect.annotateLogs({ value }),
-	)
+	}).pipe(Effect.withLogSpan("assert_relation"))
 
 export const createMediaDto = (media: Media) => ({
 	url: media.url,

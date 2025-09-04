@@ -38,6 +38,7 @@ import AmmoModTooltip from "../rich-inline-blocks/tooltips/ammo-mods/ammo-mod-to
 import FieldUpgradeTooltip from "../rich-inline-blocks/tooltips/field-upgrades/field-upgrade-tooltip"
 import GobbleGumTooltip from "../rich-inline-blocks/tooltips/gobblegums/gobblegum-tooltip"
 import PerkTooltip from "../rich-inline-blocks/tooltips/perks/perk-tooltip"
+import WeaponBuildTooltip from "../rich-inline-blocks/tooltips/weapon-builds/weapon-build-tooltip"
 import ZombieTooltip from "../rich-inline-blocks/tooltips/zombies/zombie-tooltip"
 import RichLink from "../rich-link/rich-link"
 import RichTable from "../rich-table/rich-table"
@@ -143,15 +144,31 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 			</Suspense>
 		),
 		augment: ({ node }) => <span>{node.fields.blockType}</span>,
-		"ammo-mod": ({ node }) => <AmmoModTooltip node={node} />,
-		"field-upgrade": ({ node }) => <FieldUpgradeTooltip node={node} />,
+		"ammo-mod": ({ node }) => (
+			<Suspense fallback={<span>Loading...</span>}>
+				<AmmoModTooltip node={node} />
+			</Suspense>
+		),
+		"field-upgrade": ({ node }) => (
+			<Suspense fallback={<span>Loading...</span>}>
+				<FieldUpgradeTooltip node={node} />
+			</Suspense>
+		),
 		gobblegum: ({ node }) => (
 			<Suspense fallback={<span>Loading...</span>}>
 				<GobbleGumTooltip node={node} />
 			</Suspense>
 		),
-		perk: ({ node }) => <PerkTooltip node={node} />,
-		"weapon-build": ({ node }) => <span>{node.fields.blockType}</span>,
+		perk: ({ node }) => (
+			<Suspense fallback={<span>Loading...</span>}>
+				<PerkTooltip node={node} />
+			</Suspense>
+		),
+		"weapon-build": ({ node }) => (
+			<Suspense fallback={<span>Loading...</span>}>
+				<WeaponBuildTooltip node={node} />
+			</Suspense>
+		),
 	},
 })
 
@@ -161,16 +178,15 @@ export default function RichTextRenderer({
 	className,
 }: RichTextRendererProps) {
 	return (
-		<div id="body" className={
-			overrideStyles
-				? className
-				: cn("relative mx-auto max-w-[80ch] px-4", richStyles.body, className)
-		}>
-			<RichText
-				disableContainer
-				data={body}
-				converters={jsxConverters}
-			/>
+		<div
+			id="body"
+			className={
+				overrideStyles
+					? className
+					: cn("relative mx-auto max-w-[80ch] px-4", richStyles.body, className)
+			}
+		>
+			<RichText disableContainer data={body} converters={jsxConverters} />
 		</div>
 	)
 }
