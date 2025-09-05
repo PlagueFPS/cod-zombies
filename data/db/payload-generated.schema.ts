@@ -847,9 +847,11 @@ export const field_upgrades = sqliteTable(
       .references(() => games.id, {
         onDelete: "set null",
       }),
-    image: text("image_id").references(() => media.id, {
-      onDelete: "set null",
-    }),
+    image: text("image_id")
+      .notNull()
+      .references(() => media.id, {
+        onDelete: "set null",
+      }),
     description: text("description").notNull(),
     updatedAt: text("updated_at")
       .notNull()

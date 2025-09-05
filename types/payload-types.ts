@@ -647,7 +647,7 @@ export interface AmmoMod {
   /**
    * Augments that belong to this ammo mod.
    */
-  augments: {
+  augments?: {
     docs?: (string | Augment)[];
     hasNextPage?: boolean;
     totalDocs?: number;
@@ -709,7 +709,7 @@ export interface FieldUpgrade {
   /**
    * Featured image of this field upgrade.
    */
-  image?: (string | null) | Media;
+  image: string | Media;
   /**
    * Description used in tooltips and hover cards.
    */

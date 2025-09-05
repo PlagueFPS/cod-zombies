@@ -36,6 +36,7 @@ export const FieldUpgrades: CollectionConfig = {
 			label: "Image",
 			type: "upload",
 			relationTo: "media",
+			required: true,
 			admin: {
 				description: "Featured image of this field upgrade.",
 			},

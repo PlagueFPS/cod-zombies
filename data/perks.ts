@@ -5,6 +5,7 @@ import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
+import { createAugmentDto } from "./augments"
 
 export type MinifiedPerk = NonNullable<Awaited<ReturnType<typeof getPerkById>>>
 
@@ -24,6 +25,7 @@ export const getPerkById = cache(
 								image: true,
 								modifier: true,
 								description: true,
+								augments: true,
 							},
 						}),
 					catch: error =>
@@ -35,9 +37,16 @@ export const getPerkById = cache(
 					Effect.flatMap(perk =>
 						Effect.gen(function* () {
 							const image = yield* assertRelation(perk.image)
+							const augments = perk.augments?.docs
+								? yield* Effect.forEach(perk.augments.docs, augment => createAugmentDto(augment), {
+										concurrency: "unbounded",
+									})
+								: []
+
 							return {
 								...perk,
 								image: createMediaDto(image),
+								augments,
 							}
 						}),
 					),

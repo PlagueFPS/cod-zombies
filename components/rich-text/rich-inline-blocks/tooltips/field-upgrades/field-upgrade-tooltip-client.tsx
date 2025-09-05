@@ -87,13 +87,13 @@ const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: MinifiedFi
 				</div>
 			) : null}
 			<div className="-mt-3 relative z-10">
-				<div className="px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200">
+				<h3 className="px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200">
 					{fieldUpgrade.title}
-				</div>
+				</h3>
 				<div className="mt-6 pb-8">
-					<div className="text-center text-orange-800 text-sm dark:text-orange-200">
+					<p className="text-center text-orange-800 text-sm dark:text-orange-200">
 						{fieldUpgrade.description}
-					</div>
+					</p>
 				</div>
 			</div>
 		</div>

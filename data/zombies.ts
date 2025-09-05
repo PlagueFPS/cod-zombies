@@ -5,6 +5,7 @@ import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
+import { createAmmoModDto } from "./ammo-mods"
 
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
 export type ZombieBySlug = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
@@ -384,6 +385,7 @@ export const getZombieById = cache(
 									title: true,
 									image: true,
 									description: true,
+									augments: true,
 								},
 							},
 						}),
@@ -400,17 +402,10 @@ export const getZombieById = cache(
 								? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
 								: []
 							const elementalWeakness = zombie.elementalWeakness
-								? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
-										Effect.gen(function* () {
-											const ammoMod = yield* assertRelation(elementalWeakness)
-											const image = yield* assertRelation(ammoMod.image)
-											return {
-												id: ammoMod.id,
-												title: ammoMod.title,
-												description: ammoMod.description,
-												image: createMediaDto(image),
-											}
-										}),
+								? yield* Effect.forEach(
+										zombie.elementalWeakness,
+										elementalWeakness => createAmmoModDto(elementalWeakness),
+										{ concurrency: "unbounded" },
 									)
 								: []
 

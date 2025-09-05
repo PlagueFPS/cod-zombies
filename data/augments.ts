@@ -1,3 +1,4 @@
+import type { Augment } from "@/types/payload-types"
 import { Effect, Predicate } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
@@ -5,7 +6,6 @@ import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
-import type { Augment } from "@/types/payload-types"
 import { getMediaById } from "./media"
 
 export type MinifiedAugment = NonNullable<Awaited<ReturnType<typeof getAugmentById>>>
@@ -66,21 +66,22 @@ export const getAugmentById = cache(
 	),
 )
 
-export const resolveAugment = (augmentOrId: string | Augment) => Effect.gen(function*(){
-	const augment = yield* assertRelation(augmentOrId)
-	const image = Predicate.isString(augment.image)
-		? yield* getMediaById(augment.image)
-		: yield* assertRelation(augment.image).pipe(Effect.map(createMediaDto))
+export const createAugmentDto = (augmentOrId: string | Augment) =>
+	Effect.gen(function* () {
+		const augment = yield* assertRelation(augmentOrId)
+		const image = Predicate.isString(augment.image)
+			? yield* getMediaById(augment.image)
+			: yield* assertRelation(augment.image).pipe(Effect.map(createMediaDto))
 
-	return {
-		id: augment.id,
-		title: augment.title,
-		type: augment.type,
-		description: augment.description,
-		image: {
-			url: image?.url,
-			width: image?.width,
-			height: image?.height,
-		},
-	}
-})
+		return {
+			id: augment.id,
+			title: augment.title,
+			type: augment.type,
+			description: augment.description,
+			image: {
+				url: image?.url,
+				width: image?.width,
+				height: image?.height,
+			},
+		}
+	})

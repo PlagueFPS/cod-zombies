@@ -1,3 +1,4 @@
+import type { AmmoMod } from "@/types/payload-types"
 import { Effect } from "effect"
 import { unstable_cache } from "next/cache"
 import { cache } from "react"
@@ -5,7 +6,7 @@ import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
-import { resolveAugment } from "./augments"
+import { createAugmentDto } from "./augments"
 
 export type MinifiedAmmoMod = NonNullable<Awaited<ReturnType<typeof getAmmoModById>>>
 
@@ -33,24 +34,8 @@ export const getAmmoModById = cache(
 							message: `Failed to get ammo mod with id ${id}`,
 							cause: error,
 						}),
-				}).pipe(
-					Effect.flatMap(ammoMod =>
-						Effect.gen(function* () {
-							const image = yield* assertRelation(ammoMod.image)
-							const augments = ammoMod.augments.docs 
-								? yield* Effect.forEach(ammoMod.augments.docs, augment => resolveAugment(augment), { concurrency: "unbounded" }) 
-								: []
+				}).pipe(Effect.flatMap(ammoMod => createAmmoModDto(ammoMod)))
 
-							return {
-								id: ammoMod.id,
-								title: ammoMod.title,
-								description: ammoMod.description,
-								image: createMediaDto(image),
-								augments,
-							}
-						}),
-					),
-				)
 				return ammoMod
 			}).pipe(
 				Effect.withLogSpan("get_ammo_mod_by_id"),
@@ -68,3 +53,24 @@ export const getAmmoModById = cache(
 		},
 	),
 )
+
+export const createAmmoModDto = (ammoModOrId: string | Partial<AmmoMod>) =>
+	Effect.gen(function* () {
+		const ammoMod = yield* assertRelation(ammoModOrId)
+		const image = ammoMod.image
+			? yield* assertRelation(ammoMod.image).pipe(Effect.map(createMediaDto))
+			: null
+		const augments = ammoMod.augments?.docs
+			? yield* Effect.forEach(ammoMod.augments.docs, augment => createAugmentDto(augment), {
+					concurrency: "unbounded",
+				})
+			: []
+
+		return {
+			id: ammoMod.id,
+			title: ammoMod.title,
+			description: ammoMod.description,
+			image: image ?? { url: null, width: null, height: null },
+			augments,
+		}
+	}).pipe(Effect.withLogSpan("create_ammo_mod_dto"))

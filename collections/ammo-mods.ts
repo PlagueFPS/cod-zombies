@@ -55,7 +55,6 @@ export const AmmoMods: CollectionConfig = {
 			collection: "augments",
 			on: "ammoMod",
 			hasMany: true,
-			required: true,
 			admin: {
 				description: "Augments that belong to this ammo mod.",
 			},
