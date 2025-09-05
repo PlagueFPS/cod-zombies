@@ -6,6 +6,10 @@ export const Augments: CollectionConfig = {
 		useAsTitle: "title",
 		defaultColumns: ["title", "type", "updatedAt"],
 	},
+	defaultPopulate: {
+		title: true,
+		type: true,
+	},
 	fields: [
 		{
 			name: "title",

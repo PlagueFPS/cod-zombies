@@ -5,6 +5,7 @@ import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
+import { resolveAugment } from "./augments"
 
 export type MinifiedAmmoMod = NonNullable<Awaited<ReturnType<typeof getAmmoModById>>>
 
@@ -19,10 +20,12 @@ export const getAmmoModById = cache(
 							collection: "ammoMods",
 							id,
 							draft: IN_DEVELOPMENT,
+							depth: 3,
 							select: {
 								title: true,
 								description: true,
 								image: true,
+								augments: true,
 							},
 						}),
 					catch: error =>
@@ -34,9 +37,16 @@ export const getAmmoModById = cache(
 					Effect.flatMap(ammoMod =>
 						Effect.gen(function* () {
 							const image = yield* assertRelation(ammoMod.image)
+							const augments = ammoMod.augments.docs 
+								? yield* Effect.forEach(ammoMod.augments.docs, augment => resolveAugment(augment), { concurrency: "unbounded" }) 
+								: []
+
 							return {
-								...ammoMod,
+								id: ammoMod.id,
+								title: ammoMod.title,
+								description: ammoMod.description,
 								image: createMediaDto(image),
+								augments,
 							}
 						}),
 					),

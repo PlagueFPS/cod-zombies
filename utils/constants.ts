@@ -77,6 +77,10 @@ export const CACHE_KEYS = {
 		/** Cache key for all augment data */
 		all: "augments",
 	},
+	media: {
+		/** Cache key for all media data */
+		all: "media",
+	},
 } as const
 export const ROUTES = [
 	{

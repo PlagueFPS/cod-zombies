@@ -11,7 +11,7 @@ import { slugify } from "./functions.client"
 export const assertRelation = <T>(value: string | T) =>
 	Effect.gen(function* () {
 		if (Predicate.isString(value) || !value) {
-			yield* Effect.logDebug(value)
+			yield* Effect.logWarning("Relationship is not populated", value)
 			return yield* new RelationshipError({
 				message: "Expected relationship to be populated.",
 				cause:

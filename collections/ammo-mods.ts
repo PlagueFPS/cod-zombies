@@ -8,7 +8,6 @@ export const AmmoMods: CollectionConfig = {
 	},
 	defaultPopulate: {
 		title: true,
-		game: true,
 	},
 	fields: [
 		{
