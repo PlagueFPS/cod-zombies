@@ -15,7 +15,6 @@ export const InlineWeaponBuildBlock: Block = {
 			type: "relationship",
 			relationTo: "weaponBuilds",
 			admin: {
-				appearance: "drawer",
 				description: "Weapon build you want to embed inline.",
 			},
 			required: true,

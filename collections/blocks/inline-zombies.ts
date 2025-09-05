@@ -15,7 +15,6 @@ export const InlineZombiesBlock: Block = {
 			type: "relationship",
 			relationTo: "zombies",
 			admin: {
-				appearance: "drawer",
 				description: "Zombie you want to embed inline.",
 			},
 			required: true,
