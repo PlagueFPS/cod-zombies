@@ -140,13 +140,14 @@ export const getZombieBySlug = cache(
 							draft: IN_DEVELOPMENT,
 							limit: 1,
 							sort: "-releaseDate",
-							select: {
-								createdAt: false,
-							},
+							depth: 3,
 							where: {
 								slug: {
 									equals: slug,
 								},
+							},
+							select: {
+								createdAt: false,
 							},
 							populate: {
 								zombieAttacks: {
@@ -158,6 +159,13 @@ export const getZombieBySlug = cache(
 									title: true,
 									description: true,
 									image: true,
+									augments: true,
+								},
+								augments: {
+									title: true,
+									description: true,
+									image: true,
+									type: true,
 								},
 							},
 						}),
@@ -178,16 +186,7 @@ export const getZombieBySlug = cache(
 								)
 								const elementalWeakness = zombie.elementalWeakness
 									? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
-											Effect.gen(function* () {
-												const ammoMod = yield* assertRelation(elementalWeakness)
-												const image = yield* assertRelation(ammoMod.image)
-												return {
-													id: ammoMod.id,
-													title: ammoMod.title,
-													description: ammoMod.description,
-													image: createMediaDto(image),
-												}
-											}),
+											createAmmoModDto(elementalWeakness),
 										)
 									: []
 								const weakPoints = zombie.weakPoints
@@ -372,6 +371,8 @@ export const getZombieById = cache(
 						payload.findByID({
 							collection: "zombies",
 							id,
+							draft: IN_DEVELOPMENT,
+							depth: 3,
 							select: {
 								title: true,
 								slug: true,
@@ -386,6 +387,12 @@ export const getZombieById = cache(
 									image: true,
 									description: true,
 									augments: true,
+								},
+								augments: {
+									title: true,
+									type: true,
+									description: true,
+									image: true,
 								},
 							},
 						}),

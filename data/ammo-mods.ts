@@ -34,7 +34,7 @@ export const getAmmoModById = cache(
 							message: `Failed to get ammo mod with id ${id}`,
 							cause: error,
 						}),
-				}).pipe(Effect.flatMap(ammoMod => createAmmoModDto(ammoMod)))
+				}).pipe(Effect.flatMap(ammoMod => createAmmoModDto(ammoMod as AmmoMod)))
 
 				return ammoMod
 			}).pipe(
@@ -54,7 +54,7 @@ export const getAmmoModById = cache(
 	),
 )
 
-export const createAmmoModDto = (ammoModOrId: string | Partial<AmmoMod>) =>
+export const createAmmoModDto = (ammoModOrId: string | AmmoMod) =>
 	Effect.gen(function* () {
 		const ammoMod = yield* assertRelation(ammoModOrId)
 		const image = ammoMod.image
