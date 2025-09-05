@@ -26,6 +26,14 @@ export const getFieldUpgradeById = cache(
 								description: true,
 								augments: true,
 							},
+							populate: {
+								augments: {
+									title: true,
+									description: true,
+									image: true,
+									type: true,
+								},
+							},
 						}),
 					catch: error =>
 						new EntryNotFoundError({
