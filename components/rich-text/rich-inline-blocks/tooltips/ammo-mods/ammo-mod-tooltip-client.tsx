@@ -3,9 +3,9 @@ import type { MinifiedAmmoMod } from "@/data/ammo-mods"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Separator } from "@/components/ui/separator"
 import { useIsMobile } from "@/hooks/use-mobile"
 import AugmentTooltipClient from "../augments/augment-tooltip-client"
-import { Separator } from "@/components/ui/separator"
 
 export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmmoMod }) {
 	const isMobile = useIsMobile(640)
@@ -94,10 +94,12 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: MinifiedAmmoMod }) => {
 					</p>
 				</div>
 				<Separator />
-				<div className="flex flex-col gap-6 justify-center items-center my-4">
+				<div className="my-4 flex flex-col items-center justify-center gap-6">
 					<div className="flex flex-col gap-3">
-						<h4 className="text-sm font-semibold text-blue-700 dark:text-blue-300 text-center tracking-wide">MAJOR AUGMENTS</h4>
-						<div className="flex justify-evenly items-center gap-6">
+						<h4 className="text-center font-semibold text-blue-700 text-sm tracking-wide dark:text-blue-300">
+							MAJOR AUGMENTS
+						</h4>
+						<div className="flex items-center justify-evenly gap-6">
 							{ammoMod.augments
 								.filter(augment => augment.type === "Major")
 								.map(augment => (
@@ -106,8 +108,10 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: MinifiedAmmoMod }) => {
 						</div>
 					</div>
 					<div className="flex flex-col gap-3">
-						<h4 className="text-sm font-semibold text-orange-700 dark:text-orange-300 text-center tracking-wide">MINOR AUGMENTS</h4>
-						<div className="flex justify-evenly items-center gap-6">
+						<h4 className="text-center font-semibold text-orange-700 text-sm tracking-wide dark:text-orange-300">
+							MINOR AUGMENTS
+						</h4>
+						<div className="flex items-center justify-evenly gap-6">
 							{ammoMod.augments
 								.filter(augment => augment.type === "Minor")
 								.map(augment => (

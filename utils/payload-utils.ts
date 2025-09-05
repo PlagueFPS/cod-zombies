@@ -22,7 +22,7 @@ export const assertRelation = <T>(value: string | T) =>
 		return value
 	}).pipe(Effect.withLogSpan("assert_relation"))
 
-export const createMediaDto = (media: Media) => ({
+export const createMediaDto = (media: Partial<Media>) => ({
 	url: media.url,
 	width: media.width,
 	height: media.height,
