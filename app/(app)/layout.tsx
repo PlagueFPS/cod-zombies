@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Geist } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import { HashLinkHandler } from "@/components/custom-link/custom-link"
 import Header from "@/components/header/header"
 import ReactScanWrapper from "@/components/react-scan/react-scan-wrapper"
@@ -61,12 +61,18 @@ const geist = Geist({
 	variable: "--font-geist",
 })
 
+const geistMono = Geist_Mono({
+	subsets: ["latin"],
+	display: "swap",
+	variable: "--font-geist-mono",
+})
+
 export default function RootLayout({ children }: LayoutProps) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			{IN_DEVELOPMENT && <ReactScanWrapper />}
 			<body
-				className={`${geist.className} ${geist.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2 `}
+				className={`${geist.className} ${geist.variable} ${geistMono.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2 `}
 			>
 				<KeyboardShortcutsProvider>
 					<ThemeProvider

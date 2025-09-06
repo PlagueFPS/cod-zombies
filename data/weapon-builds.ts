@@ -60,7 +60,7 @@ export const getWeaponBuildById = cache(
 							const image = yield* assertRelation(weapon.image)
 							return {
 								id: weaponBuild.id,
-								title: weaponBuild.title,
+								title: weapon.title,
 								attachments,
 								buildCode: weaponBuild.buildCode,
 								image: createMediaDto(image),
