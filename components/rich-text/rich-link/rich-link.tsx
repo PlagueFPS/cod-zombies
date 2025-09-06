@@ -6,6 +6,7 @@ import { CustomLink } from "@/components/custom-link/custom-link"
 import ExternalLink from "@/components/external-link/external-link"
 import { getMapById } from "@/data/maps"
 import { getZombieById } from "@/data/zombies"
+import { env } from "@/env"
 import { EntryNotFoundError, RelationshipError } from "@/types/errors"
 import { fullyDecodeURIComponent } from "@/utils/functions.client"
 import { decodeRichLinkNode } from "@/utils/validation-schemas"
@@ -35,7 +36,7 @@ export default async function RichLink({ node }: RichLinkProps) {
 		if (!node.fields.url) return null
 		const decodedUrl = fullyDecodeURIComponent(node.fields.url)
 
-		if (decodedUrl.startsWith("#")) {
+		if (decodedUrl.startsWith("#") && node.fields.newTab === false) {
 			return (
 				<CustomLink
 					href={decodedUrl as Route}

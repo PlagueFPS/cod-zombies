@@ -27,6 +27,14 @@ export const getPerkById = cache(
 								description: true,
 								augments: true,
 							},
+							populate: {
+								augments: {
+									title: true,
+									type: true,
+									image: true,
+									description: true,
+								},
+							},
 						}),
 					catch: error =>
 						new EntryNotFoundError({
