@@ -34,6 +34,7 @@ export const SideQuests: CollectionConfig = {
 			label: "Slug",
 			type: "text",
 			required: true,
+			unique: true,
 			index: true,
 			admin: {
 				position: "sidebar",

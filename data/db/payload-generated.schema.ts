@@ -311,7 +311,7 @@ export const side_quests = sqliteTable(
   },
   (columns) => ({
     side_quests_title_idx: index("side_quests_title_idx").on(columns.title),
-    side_quests_slug_idx: index("side_quests_slug_idx").on(columns.slug),
+    side_quests_slug_idx: uniqueIndex("side_quests_slug_idx").on(columns.slug),
     side_quests_map_idx: index("side_quests_map_idx").on(columns.map),
     side_quests_updated_at_idx: index("side_quests_updated_at_idx").on(
       columns.updatedAt,
