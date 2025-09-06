@@ -89,27 +89,37 @@ export const RarityBadge = ({
 	rarity,
 	type,
 	children,
-}: CustomBadgeProps & { rarity: Gobblegum["rarity"]; type: Gobblegum["type"] }) => (
-	<Badge
-		className={cn(
-			{
-				"badge-hard-gradient dark:dark-badge-hard-gradient": rarity === "Ultra",
-				"badge-primary-gradient dark:dark-badge-primary-gradient": rarity === "Legendary",
-				"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Epic",
-				"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
-			},
-			{
-				"badge-new-gradient dark:dark-badge-new-gradient": type === "Time-Based",
-				"badge-changed-gradient dark:dark-badge-changed-gradient": type === "Round-Based",
-				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Immediate",
-				"badge-draft-gradient dark:dark-badge-draft-gradient": type === "Player-Activated",
-			},
-			className,
-		)}
-	>
-		{children}
-	</Badge>
-)
+}: CustomBadgeProps & { rarity: Gobblegum["rarity"]; type: Gobblegum["type"] }) => {
+	const shouldUseType = () => {
+		return rarity.includes("Mega") || rarity === "Classic"
+	}
+
+	return (
+		<Badge
+			className={cn(
+				{
+					"badge-new-gradient dark:dark-badge-new-gradient":
+						shouldUseType() && type === "Time-Based",
+					"badge-changed-gradient dark:dark-badge-changed-gradient":
+						shouldUseType() && type === "Round-Based",
+					"badge-medium-gradient dark:dark-badge-medium-gradient":
+						shouldUseType() && type === "Immediate",
+					"badge-draft-gradient dark:dark-badge-draft-gradient":
+						shouldUseType() && type === "Player-Activated",
+				},
+				{
+					"badge-hard-gradient dark:dark-badge-hard-gradient": rarity === "Ultra",
+					"badge-primary-gradient dark:dark-badge-primary-gradient": rarity === "Legendary",
+					"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Epic",
+					"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
+				},
+				className,
+			)}
+		>
+			{children}
+		</Badge>
+	)
+}
 export const RangeBadge = ({
 	className,
 	range,
