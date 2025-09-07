@@ -1,6 +1,6 @@
 import type { Augment } from "@/types/payload-types"
 import { Effect, Predicate } from "effect"
-import { unstable_cache } from "next/cache"
+import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError } from "@/types/errors"
@@ -10,25 +10,20 @@ import { getMediaById } from "./media"
 
 export type MinifiedAugment = NonNullable<Awaited<ReturnType<typeof getAugmentById>>>
 
-export const getAugmentById = cache(
-	unstable_cache(
-		async (id: string) => {
-			return await getAugmentByIdEffect(id).pipe(
-				Effect.withLogSpan("get_augment_by_id"),
-				Effect.annotateLogs({ id }),
-				Effect.tapError(Effect.logError),
-				Effect.catchAll(_error => Effect.succeed(null)),
-				Effect.ensureErrorType<never>(),
-				Effect.provide(Payload.Default),
-				Effect.runPromise,
-			)
-		},
-		[],
-		{
-			tags: [CACHE_KEYS.augments.all],
-		},
-	),
-)
+export const getAugmentById = cache(async (id: string) => {
+	"use cache"
+	cacheTag(CACHE_KEYS.augments.all, CACHE_KEYS.augments.byId(id))
+
+	return await getAugmentByIdEffect(id).pipe(
+		Effect.withLogSpan("get_augment_by_id"),
+		Effect.annotateLogs({ id }),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(_error => Effect.succeed(null)),
+		Effect.ensureErrorType<never>(),
+		Effect.provide(Payload.Default),
+		Effect.runPromise,
+	)
+})
 
 export const getAugmentByIdEffect = (id: string) =>
 	Effect.gen(function* () {
@@ -90,4 +85,4 @@ export const createAugmentDto = (augmentOrId: string | Augment) =>
 				height: image?.height,
 			},
 		}
-	})
+	}).pipe(Effect.withLogSpan("create_augment_dto"))

@@ -1,37 +1,15 @@
-import { readFile } from "node:fs/promises"
-import { join } from "node:path"
+import type { MainQuestBySlug } from "./main-quests"
+import type { SideQuestBySlug } from "./side-quests"
+import type { ZombieById } from "./zombies"
 import { FetchHttpClient, HttpBody, HttpClient } from "@effect/platform"
 import { Effect, Predicate, Redacted, Schedule } from "effect"
-import { unstable_cache } from "next/cache"
+import { unstable_cacheLife as cacheLife } from "next/cache"
 import { cache } from "react"
 import { env } from "@/env"
-import { LoadFontDataError } from "@/types/errors"
-import { capitalize } from "@/utils/functions.client"
 import { ImageBodySchema, type TAllowedSlugs } from "@/utils/validation-schemas"
 
-export const getFontData = Effect.gen(function* () {
-	const [geistSemiBold, geistBold] = yield* Effect.all(
-		[
-			Effect.tryPromise({
-				try: () => readFile(join(process.cwd(), "assets/Geist-SemiBold.otf")),
-				catch: error =>
-					new LoadFontDataError({ message: "Failed to load `Geist-SemiBold` font", cause: error }),
-			}),
-			Effect.tryPromise({
-				try: () => readFile(join(process.cwd(), "assets/Geist-Bold.otf")),
-				catch: error =>
-					new LoadFontDataError({ message: "Failed to load `Geist-Bold` font", cause: error }),
-			}),
-		],
-		{ concurrency: "unbounded" },
-	)
+type ValidEntry = Omit<MainQuestBySlug, "content"> | Omit<SideQuestBySlug, "content"> | ZombieById
 
-	return { geistSemiBold, geistBold }
-}).pipe(
-	Effect.withLogSpan("get_font_data"),
-	Effect.tapError(Effect.logError),
-	Effect.catchAll(() => Effect.succeed(null)),
-)
 /**
  * Retrieves the Open Graph image URL for a given entry from cache if available.
  * Otherwise, retrieves it from File Storage or generates a new image.
@@ -44,25 +22,19 @@ export const getFontData = Effect.gen(function* () {
  * const imageUrl = await getCachedImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  *
  */
-export const getCachedImageUrl = cache(
-	unstable_cache(
-		async (type: TAllowedSlugs, entry: unknown) => {
-			return null
-			// return await getImageUrl(type, entry).pipe(
-			// 	Effect.withLogSpan("get_cached_image_url"),
-			// 	Effect.tapError(Effect.logError),
-			// 	Effect.provide(FetchHttpClient.layer),
-			// 	Effect.catchAll(() => Effect.succeed(null)),
-			// 	Effect.ensureErrorType<never>(),
-			// 	Effect.runPromise,
-			// )
-		},
-		[],
-		{
-			revalidate: 86400, // 24 hours
-		},
-	),
-)
+export const getCachedImageUrl = cache(async (type: TAllowedSlugs, entry: ValidEntry) => {
+	"use cache"
+	cacheLife("days")
+
+	return await getImageUrl(type, entry).pipe(
+		Effect.withLogSpan("get_cached_image_url"),
+		Effect.tapError(Effect.logError),
+		Effect.provide(FetchHttpClient.layer),
+		Effect.catchAll(() => Effect.succeed(null)),
+		Effect.ensureErrorType<never>(),
+		Effect.runPromise,
+	)
+})
 
 /**
  * Retrieves the Open Graph image URL for a given entry from File Storage if available.
@@ -75,41 +47,42 @@ export const getCachedImageUrl = cache(
  * @example
  * const imageUrl = yield* getImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  */
-// const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: BroadcastEntry) {
-// 	return null
-// 	const httpClient = (yield* HttpClient.HttpClient).pipe(
-// 		HttpClient.retryTransient({
-// 			times: 3,
-// 			schedule: Schedule.exponential("50 millis", 2),
-// 		}),
-// 	)
-// 	const response = yield* httpClient.post(
-// 		"https://api-codzombiesguides.netlify.app/get-image-url",
-// 		{
-// 			urlParams: {
-// 				type,
-// 			},
-// 			headers: {
-// 				Authorization: Redacted.value(env.IMAGE_API_TOKEN),
-// 			},
-// 			body: yield* HttpBody.jsonSchema(ImageBodySchema)({
-// 				id: entry.id,
-// 				slug: entry.slug,
-// 				title: entry.title,
-// 				updatedAt: entry.updatedAt,
-// 				game: capitalize(entry.game),
-// 				image: {
-// 					url: entry.image.url ?? "",
-// 					width: entry.image.width ?? 1200,
-// 					height: entry.image.height ?? 630,
-// 				},
-// 				timeToRead: Predicate.hasProperty(entry, "timeToRead") ? entry.timeToRead : undefined,
-// 				map: Predicate.hasProperty(entry, "map") ? capitalize(entry.map) : undefined,
-// 				type: Predicate.hasProperty(entry, "type") ? entry.type : undefined,
-// 				difficulty: Predicate.hasProperty(entry, "difficulty") ? entry.difficulty : undefined,
-// 			}),
-// 		},
-// 	)
+const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: ValidEntry) {
+	const httpClient = (yield* HttpClient.HttpClient).pipe(
+		HttpClient.retryTransient({
+			times: 3,
+			schedule: Schedule.exponential("500 millis", 2),
+		}),
+	)
+	const response = yield* httpClient.post(
+		"https://api-codzombiesguides.netlify.app/get-image-url",
+		{
+			urlParams: {
+				type,
+			},
+			headers: {
+				Authorization: Redacted.value(env.IMAGE_API_TOKEN),
+			},
+			body: yield* HttpBody.jsonSchema(ImageBodySchema)({
+				id: entry.id,
+				slug: entry.slug,
+				title: entry.title,
+				updatedAt: entry.updatedAt,
+				game: entry.game.title,
+				image: {
+					url: entry.image.url ?? "",
+					width: entry.image.width ?? 1200,
+					height: entry.image.height ?? 630,
+				},
+				timeToRead: Predicate.hasProperty(entry, "timeToRead") ? entry.timeToRead : undefined,
+				map: Predicate.hasProperty(entry, "map") ? entry.map.title : undefined,
+				type: Predicate.hasProperty(entry, "type") ? entry.type : undefined,
+				difficulty: Predicate.hasProperty(entry, "difficulty")
+					? (entry.difficulty ?? undefined)
+					: undefined,
+			}),
+		},
+	)
 
-// 	return yield* response.text
-// }, Effect.withLogSpan("get_image_url"))
+	return yield* response.text
+}, Effect.withLogSpan("get_image_url"))
