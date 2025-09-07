@@ -21,12 +21,19 @@ export const getAmmoModById = cache(
 							collection: "ammoMods",
 							id,
 							draft: IN_DEVELOPMENT,
-							depth: 3,
 							select: {
 								title: true,
 								description: true,
 								image: true,
 								augments: true,
+							},
+							populate: {
+								augments: {
+									title: true,
+									description: true,
+									image: true,
+									type: true,
+								},
 							},
 						}),
 					catch: error =>

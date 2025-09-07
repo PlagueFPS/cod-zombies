@@ -127,103 +127,93 @@ export const getZombiesMetadata = cache(
 	),
 )
 
-export const getZombieBySlug = cache(
-	unstable_cache(
-		async (slug: string) => {
-			return await Effect.gen(function* () {
-				const payload = yield* Payload
-				const zombie = yield* Effect.tryPromise({
-					try: () =>
-						payload.find({
-							collection: "zombies",
-							pagination: false,
-							draft: IN_DEVELOPMENT,
-							limit: 1,
-							sort: "-releaseDate",
-							depth: 3,
-							where: {
-								slug: {
-									equals: slug,
-								},
-							},
-							select: {
-								createdAt: false,
-							},
-							populate: {
-								zombieAttacks: {
-									title: true,
-									description: true,
-									range: true,
-								},
-								ammoMods: {
-									title: true,
-									description: true,
-									image: true,
-									augments: true,
-								},
-								augments: {
-									title: true,
-									description: true,
-									image: true,
-									type: true,
-								},
-							},
-						}),
-					catch: error =>
-						new EntryNotFoundError({
-							message: `Failed to get zombie by slug: ${slug}`,
-							cause: error,
-						}),
-				}).pipe(
-					Effect.flatMap(zombie =>
-						Effect.forEach(zombie.docs, zombie =>
-							Effect.gen(function* () {
-								const map = yield* Effect.forEach(zombie.maps, map => assertRelation(map))
-								const game = yield* Effect.forEach(zombie.games, game => assertRelation(game))
-								const image = yield* assertRelation(zombie.image)
-								const attacks = yield* Effect.forEach(zombie.attacks, attack =>
-									assertRelation(attack),
+export const getZombieBySlug = cache(async (slug: string) => {
+	return await Effect.gen(function* () {
+		const payload = yield* Payload
+		const zombie = yield* Effect.tryPromise({
+			try: () =>
+				payload.find({
+					collection: "zombies",
+					pagination: false,
+					draft: IN_DEVELOPMENT,
+					limit: 1,
+					sort: "-releaseDate",
+					depth: 3,
+					where: {
+						slug: {
+							equals: slug,
+						},
+					},
+					select: {
+						createdAt: false,
+					},
+					populate: {
+						zombieAttacks: {
+							title: true,
+							description: true,
+							range: true,
+						},
+						ammoMods: {
+							title: true,
+							description: true,
+							image: true,
+							augments: true,
+						},
+						augments: {
+							title: true,
+							description: true,
+							image: true,
+							type: true,
+						},
+					},
+				}),
+			catch: error =>
+				new EntryNotFoundError({
+					message: `Failed to get zombie by slug: ${slug}`,
+					cause: error,
+				}),
+		}).pipe(
+			Effect.flatMap(zombie =>
+				Effect.forEach(zombie.docs, zombie =>
+					Effect.gen(function* () {
+						const map = yield* Effect.forEach(zombie.maps, map => assertRelation(map))
+						const game = yield* Effect.forEach(zombie.games, game => assertRelation(game))
+						const image = yield* assertRelation(zombie.image)
+						const attacks = yield* Effect.forEach(zombie.attacks, attack => assertRelation(attack))
+						const elementalWeakness = zombie.elementalWeakness
+							? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
+									createAmmoModDto(elementalWeakness),
 								)
-								const elementalWeakness = zombie.elementalWeakness
-									? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
-											createAmmoModDto(elementalWeakness),
-										)
-									: []
-								const weakPoints = zombie.weakPoints
-									? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
-									: []
+							: []
+						const weakPoints = zombie.weakPoints
+							? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
+							: []
 
-								return {
-									...zombie,
-									maps: map,
-									games: game,
-									image: createMediaDto(image),
-									attacks,
-									elementalWeakness,
-									weakPoints,
-								}
-							}),
-						),
-					),
-				)
+						return {
+							...zombie,
+							maps: map,
+							games: game,
+							image: createMediaDto(image),
+							attacks,
+							elementalWeakness,
+							weakPoints,
+						}
+					}),
+				),
+			),
+		)
 
-				return zombie[0] ?? null
-			}).pipe(
-				Effect.withLogSpan("get_zombie_by_slug"),
-				Effect.annotateLogs({ slug }),
-				Effect.tapError(Effect.logError),
-				Effect.catchAll(_error => Effect.succeed(null)),
-				Effect.ensureErrorType<never>(),
-				Effect.provide(Payload.Default),
-				Effect.runPromise,
-			)
-		},
-		[],
-		{
-			tags: [CACHE_KEYS.zombies.all],
-		},
-	),
-)
+		return zombie[0] ?? null
+	}).pipe(
+		Effect.withLogSpan("get_zombie_by_slug"),
+		Effect.annotateLogs({ slug }),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(_error => Effect.succeed(null)),
+		Effect.ensureErrorType<never>(),
+		Effect.provide(Payload.Default),
+		Effect.runPromise,
+	)
+})
 
 export const getAdjacentZombies = cache(
 	unstable_cache(
