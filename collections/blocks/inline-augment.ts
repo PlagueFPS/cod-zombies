@@ -15,6 +15,7 @@ export const InlineAugmentBlock: Block = {
 			type: "relationship",
 			relationTo: "augments",
 			admin: {
+				appearance: "drawer",
 				description: "Augment you want to embed inline.",
 			},
 			required: true,
