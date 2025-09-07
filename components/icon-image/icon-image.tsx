@@ -5,6 +5,10 @@ import { useImageState } from "@/hooks/use-image-state"
 import { cn } from "@/lib/utils"
 import { customImageLoader } from "@/utils/image-loader"
 
+interface IconImageProps extends ImageProps {
+	withLoader?: boolean
+}
+
 export default function IconImage({
 	featuredImage,
 	alt = "",
@@ -12,7 +16,8 @@ export default function IconImage({
 	className,
 	priority,
 	sizes,
-}: ImageProps) {
+	withLoader = false,
+}: IconImageProps) {
 	const {
 		imageLoaded,
 		imageErrored,
@@ -29,6 +34,11 @@ export default function IconImage({
 
 	return (
 		<>
+			{withLoader && !imageLoaded ? (
+				<div className="absolute inset-0 flex items-center justify-center">
+					<div className="size-8 animate-spin rounded-full border-[3px] border-border border-r-transparent" />
+				</div>
+			) : null}
 			{!imageErrored ? (
 				<Image
 					src={featuredImageURL}

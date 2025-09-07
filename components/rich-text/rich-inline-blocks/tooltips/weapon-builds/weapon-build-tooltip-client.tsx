@@ -23,13 +23,13 @@ export default function WeaponBuildTooltipClient({
 					className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
 					asChild
 				>
-					<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
+					<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 hover:no-underline group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
 						{weaponBuild.title}
 					</span>
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
-					className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
 					{<WeaponBuildTooltipContent weaponBuild={weaponBuild} />}
 				</HoverCardContent>
@@ -48,7 +48,7 @@ export default function WeaponBuildTooltipClient({
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
-				className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
 				{<WeaponBuildTooltipContent weaponBuild={weaponBuild} />}
 			</PopoverContent>
@@ -67,19 +67,21 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: MinifiedWeapo
 	}
 
 	return (
-		<div className="w-full max-w-96 border-border/50 bg-card/80 shadow-lg backdrop-blur-md">
+		<div className="w-full rounded-md bg-card/80">
 			<div className="p-5">
 				{/* Weapon Header with Larger Image */}
-				<div className="mb-5 flex items-start gap-4">
-					<div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 ring-1 ring-border/20">
+				<div className="mb-4 flex items-start gap-4">
+					<div className="relative w-40 flex-shrink-0 overflow-hidden rounded-xl">
 						<IconImage
 							featuredImage={weaponBuild.image}
 							alt={weaponBuild.title}
-							className="h-full w-full object-cover"
+							sizes="140px"
+							withLoader
+							className="h-auto w-full object-cover"
 						/>
 					</div>
 					<div className="flex-1 pt-1">
-						<h3 className="text-balance font-bold text-foreground text-lg leading-tight">
+						<h3 className="text-balance font-bold text-lg text-orange-800 leading-tight dark:text-orange-200">
 							{weaponBuild.title}
 						</h3>
 					</div>
@@ -107,9 +109,9 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: MinifiedWeapo
 				{/* Attachments with Subtle Dividers */}
 				{weaponBuild.attachments.length > 0 && (
 					<div>
-						<div className="mb-3 flex items-center gap-2">
+						<div className="my-3 flex items-center gap-2">
 							<div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
-							<span className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-semibold text-primary text-xs">
+							<span className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-semibold text-orange-800 text-xs dark:text-primary">
 								ATTACHMENTS
 							</span>
 							<div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
