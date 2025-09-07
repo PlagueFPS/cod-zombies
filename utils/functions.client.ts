@@ -25,11 +25,10 @@ export const slugify = (text: string) => {
 	return text
 		.toLowerCase()
 		.trim()
-		.replace(/^["'!]+|["'!]+$/g, "") // Remove leading/trailing quotes and exclamation points
-		.replace(/[ ,'"]+/g, "-") // Removed period from this replacement
-		.replace(/&/g, "and") // Replace ampersands with "and"
-		.replace(/\./g, "") // Remove all periods
-		.replace(/-+/g, "-") // Replace multiple consecutive hyphens with a single one
+		.replace(/&/g, "and") // Replace ampersands with "and" first
+		.replace(/[^\w\s-]/g, "") // Remove all non-word characters except spaces and hyphens
+		.replace(/[\s_]+/g, "-") // Replace spaces and underscores with a single hyphen
+		.replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
 		.replace(/^-+|-+$/g, "") // Remove leading/trailing hyphens
 }
 
