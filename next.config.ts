@@ -41,6 +41,16 @@ const nextConfig: NextConfig = {
 	async redirects() {
 		return [
 			{
+				source: "/side-quests/black-ops-6/reckoning/c-a-s-t-e-r-turret-upgrade",
+				destination: "/side-quests/black-ops-6/reckoning/caster-turret-upgrade",
+				permanent: true,
+			},
+			{
+				source: "/side-quests/black-ops-6/shattered-veil/s-a-m-trap-unlock",
+				destination: "/side-quests/black-ops-6/shattered-veil/sam-trap-unlock",
+				permanent: true,
+			},
+			{
 				source: "/bestiary/s-a-m",
 				destination: "/bestiary/sam",
 				permanent: true,
