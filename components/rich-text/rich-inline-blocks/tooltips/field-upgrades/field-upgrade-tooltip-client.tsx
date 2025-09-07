@@ -3,7 +3,9 @@ import type { MinifiedFieldUpgrade } from "@/data/field-upgrades"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Separator } from "@/components/ui/separator"
 import { useIsMobile } from "@/hooks/use-mobile"
+import AugmentTooltipClient from "../augments/augment-tooltip-client"
 
 export default function FieldUpgradeTooltipClient({
 	fieldUpgrade,
@@ -16,7 +18,7 @@ export default function FieldUpgradeTooltipClient({
 		return (
 			<HoverCard openDelay={200}>
 				<HoverCardTrigger
-					className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
+					className="group relative inline-flex cursor-default items-baseline justify-center gap-1 align-baseline"
 					asChild
 				>
 					<span>
@@ -45,7 +47,7 @@ export default function FieldUpgradeTooltipClient({
 	return (
 		<Popover>
 			<PopoverTrigger
-				className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
+				className="group relative inline-flex cursor-default items-baseline justify-center gap-1 align-baseline"
 				asChild
 			>
 				<span>
@@ -90,10 +92,40 @@ const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: MinifiedFi
 				<h3 className="px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200">
 					{fieldUpgrade.title}
 				</h3>
-				<div className="mt-6 pb-8">
+				<div className="mt-2 pb-4">
 					<p className="text-center text-orange-800 text-sm dark:text-orange-200">
 						{fieldUpgrade.description}
 					</p>
+				</div>
+				<Separator />
+				<div className="my-4 flex flex-col items-center justify-center">
+					<div className="flex flex-col gap-3">
+						<h4 className="text-start font-semibold text-major-augment text-sm">MAJOR AUGMENTS</h4>
+						<div className="flex flex-wrap gap-3">
+							{fieldUpgrade.augments
+								.filter(augment => augment.type === "Major")
+								.map(augment => (
+									<div key={augment.id} className="shrink-0">
+										<AugmentTooltipClient augment={augment} />
+									</div>
+								))}
+						</div>
+					</div>
+					<Separator className="my-4" />
+					<div className="flex w-full flex-col gap-3">
+						<h4 className="text-start font-semibold text-orange-700 text-sm tracking-wide dark:text-orange-300">
+							MINOR AUGMENTS
+						</h4>
+						<div className="flex flex-wrap gap-3">
+							{fieldUpgrade.augments
+								.filter(augment => augment.type === "Minor")
+								.map(augment => (
+									<div key={augment.id} className="shrink-0">
+										<AugmentTooltipClient augment={augment} />
+									</div>
+								))}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -14,7 +14,7 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 		return (
 			<HoverCard openDelay={200}>
 				<HoverCardTrigger
-					className="group relative inline-flex cursor-default items-baseline justify-center gap-1 align-baseline"
+					className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
 					asChild
 				>
 					<span>
@@ -23,7 +23,7 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 								featuredImage={augment.image}
 								alt={`${augment.title} Image`}
 								sizes="64px"
-								className="my-auto h-8 w-auto"
+								className="my-auto h-6 w-auto"
 							/>
 						) : null}
 						<span

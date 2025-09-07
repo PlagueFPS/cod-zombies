@@ -6,6 +6,7 @@ import { CustomLink } from "@/components/custom-link/custom-link"
 import IconImage from "@/components/icon-image/icon-image"
 import { Badge } from "@/components/ui/badge"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import AmmoModTooltipClient from "../ammo-mods/ammo-mod-tooltip-client"
@@ -13,7 +14,7 @@ import AmmoModTooltipClient from "../ammo-mods/ammo-mod-tooltip-client"
 export default function ZombieTooltipClient({ zombie }: { zombie: ZombieById }) {
 	const isMobile = useIsMobile(640)
 
-	if (!isMobile)
+	if (!isMobile) {
 		return (
 			<HoverCard openDelay={200}>
 				<HoverCardTrigger
@@ -43,14 +44,10 @@ export default function ZombieTooltipClient({ zombie }: { zombie: ZombieById }) 
 					className={cn(
 						"w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200",
 						{
-							"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
-								zombie.type === "Normal",
-							"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
-								zombie.type === "Special",
-							"border-rose-600/30 shadow-rose-600 dark:border-rose-300/30 dark:shadow-rose-300":
-								zombie.type === "Elite",
-							"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
-								zombie.type === "Boss",
+							"border-teal-600/50 dark:border-teal-300/50": zombie.type === "Normal",
+							"border-yellow-600/50 dark:border-yellow-300/50": zombie.type === "Special",
+							"border-rose-600/50 dark:border-rose-300/50": zombie.type === "Elite",
+							"border-red-600/50 dark:border-red-300/50": zombie.type === "Boss",
 						},
 					)}
 				>
@@ -58,12 +55,54 @@ export default function ZombieTooltipClient({ zombie }: { zombie: ZombieById }) 
 				</HoverCardContent>
 			</HoverCard>
 		)
+	}
+
+	return (
+		<Popover>
+			<PopoverTrigger
+				className="relative inline-flex cursor-default items-baseline justify-center align-baseline font-bold"
+				asChild
+			>
+				<span
+					className={cn(
+						"text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
+						{
+							"text-teal-600 decoration-teal-600 dark:text-teal-300 dark:decoration-teal-300":
+								zombie.type === "Normal",
+							"text-yellow-700 decoration-yellow-700 dark:text-yellow-200 dark:decoration-yellow-200":
+								zombie.type === "Special",
+							"text-rose-600 decoration-rose-600 dark:text-rose-300 dark:decoration-rose-300":
+								zombie.type === "Elite",
+							"text-red-600 decoration-red-600 dark:text-red-400 dark:decoration-red-400":
+								zombie.type === "Boss",
+						},
+					)}
+				>
+					{zombie.title}
+				</span>
+			</PopoverTrigger>
+			<PopoverContent
+				side="top"
+				className={cn(
+					"w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200",
+					{
+						"border-teal-600/50 dark:border-teal-300/50": zombie.type === "Normal",
+						"border-yellow-600/50 dark:border-yellow-300/50": zombie.type === "Special",
+						"border-rose-600/50 dark:border-rose-300/50": zombie.type === "Elite",
+						"border-red-600/50 dark:border-red-300/50": zombie.type === "Boss",
+					},
+				)}
+			>
+				{<ZombieTooltipContent zombie={zombie} />}
+			</PopoverContent>
+		</Popover>
+	)
 }
 
 const ZombieTooltipContent = ({ zombie }: { zombie: ZombieById }) => {
 	return (
 		<div className="relative flex w-full max-w-sm flex-col rounded-md">
-			<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
+			<div className="flex items-center justify-between rounded-t-md bg-accent px-4 py-2 dark:bg-accent/50">
 				<div className="flex w-fit items-center justify-center gap-4">
 					<TypeBadge type={zombie.type} />
 				</div>
