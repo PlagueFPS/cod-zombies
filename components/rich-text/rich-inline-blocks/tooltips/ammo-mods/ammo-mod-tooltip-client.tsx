@@ -33,7 +33,7 @@ export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmm
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
-					className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
 					{<AmmoModTooltipContent ammoMod={ammoMod} />}
 				</HoverCardContent>
@@ -62,7 +62,7 @@ export default function AmmoModTooltipClient({ ammoMod }: { ammoMod: MinifiedAmm
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
-				className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
 				{<AmmoModTooltipContent ammoMod={ammoMod} />}
 			</PopoverContent>
@@ -94,28 +94,31 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: MinifiedAmmoMod }) => {
 					</p>
 				</div>
 				<Separator />
-				<div className="my-4 flex flex-col items-center justify-center gap-6">
+				<div className="my-4 flex flex-col items-center justify-center">
 					<div className="flex flex-col gap-3">
-						<h4 className="text-center font-semibold text-blue-700 text-sm tracking-wide dark:text-blue-300">
-							MAJOR AUGMENTS
-						</h4>
-						<div className="flex items-center justify-evenly gap-6">
+						<h4 className="text-start font-semibold text-major-augment text-sm">MAJOR AUGMENTS</h4>
+						<div className="flex flex-wrap gap-3">
 							{ammoMod.augments
 								.filter(augment => augment.type === "Major")
 								.map(augment => (
-									<AugmentTooltipClient key={augment.id} augment={augment} />
+									<div key={augment.id} className="shrink-0">
+										<AugmentTooltipClient augment={augment} />
+									</div>
 								))}
 						</div>
 					</div>
-					<div className="flex flex-col gap-3">
-						<h4 className="text-center font-semibold text-orange-700 text-sm tracking-wide dark:text-orange-300">
+					<Separator className="my-4" />
+					<div className="flex w-full flex-col gap-3">
+						<h4 className="text-start font-semibold text-orange-700 text-sm tracking-wide dark:text-orange-300">
 							MINOR AUGMENTS
 						</h4>
-						<div className="flex items-center justify-evenly gap-6">
+						<div className="flex flex-wrap gap-3">
 							{ammoMod.augments
 								.filter(augment => augment.type === "Minor")
 								.map(augment => (
-									<AugmentTooltipClient key={augment.id} augment={augment} />
+									<div key={augment.id} className="shrink-0">
+										<AugmentTooltipClient augment={augment} />
+									</div>
 								))}
 						</div>
 					</div>

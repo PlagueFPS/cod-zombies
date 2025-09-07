@@ -35,7 +35,7 @@ export default function FieldUpgradeTooltipClient({
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
-					className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
 					{<FieldUpgradeTooltipContent fieldUpgrade={fieldUpgrade} />}
 				</HoverCardContent>
@@ -64,7 +64,7 @@ export default function FieldUpgradeTooltipClient({
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
-				className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
 				{<FieldUpgradeTooltipContent fieldUpgrade={fieldUpgrade} />}
 			</PopoverContent>

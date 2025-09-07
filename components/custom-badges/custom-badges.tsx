@@ -54,7 +54,7 @@ export const TypeBadge = ({
 				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Special",
 				"badge-elite-gradient dark:dark-badge-elite-gradient": type === "Elite",
 				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Boss",
-				"badge-changed-gradient dark:dark-badge-changed-gradient": type === "Major",
+				"badge-major-augment-gradient dark:dark-badge-major-augment-gradient": type === "Major",
 				"badge-primary-gradient dark:dark-badge-primary-gradient": type === "Minor",
 			},
 			className,

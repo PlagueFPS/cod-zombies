@@ -14,7 +14,7 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 		return (
 			<HoverCard openDelay={200}>
 				<HoverCardTrigger
-					className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
+					className="group relative inline-flex cursor-default items-baseline justify-center gap-1 align-baseline"
 					asChild
 				>
 					<span>
@@ -23,14 +23,14 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 								featuredImage={augment.image}
 								alt={`${augment.title} Image`}
 								sizes="64px"
-								className="my-auto h-6 w-auto"
+								className="my-auto h-8 w-auto"
 							/>
 						) : null}
 						<span
 							className={cn(
 								"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
 								{
-									"text-blue-700 decoration-blue-700 dark:text-blue-300 dark:decoration-blue-300":
+									"text-major-augment decoration-major-augment dark:text-major-augment dark:decoration-major-autext-major-augment":
 										augment.type === "Major",
 									"text-orange-700 decoration-orange-700 dark:text-orange-300 dark:decoration-orange-300":
 										augment.type === "Minor",
@@ -43,7 +43,13 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
-					className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+					className={cn(
+						"w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200",
+						{
+							"border-major-augment/50 dark:border-major-augment/50": augment.type === "Major",
+							"border-primary/50 dark:border-primary/50": augment.type === "Minor",
+						},
+					)}
 				>
 					{<AugmentTooltipContent augment={augment} />}
 				</HoverCardContent>
@@ -69,7 +75,7 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 						className={cn(
 							"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
 							{
-								"text-blue-700 decoration-blue-700 dark:text-blue-300 dark:decoration-blue-300":
+								"text-major-augment decoration-major-augment dark:text-major-augment dark:decoration-major-augment":
 									augment.type === "Major",
 								"text-orange-700 decoration-orange-700 dark:text-orange-300 dark:decoration-orange-300":
 									augment.type === "Minor",
@@ -82,7 +88,7 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
-				className="w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200"
+				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
 				{<AugmentTooltipContent augment={augment} />}
 			</PopoverContent>
@@ -108,7 +114,7 @@ const AugmentTooltipContent = ({ augment }: { augment: MinifiedAugment }) => {
 			<div className="-mt-3 relative z-10">
 				<div
 					className={cn("px-4 text-center font-bold text-lg", {
-						"text-blue-700 dark:text-blue-300": augment.type === "Major",
+						"text-major-augment": augment.type === "Major",
 						"text-orange-700 dark:text-orange-300": augment.type === "Minor",
 					})}
 				>
@@ -117,7 +123,7 @@ const AugmentTooltipContent = ({ augment }: { augment: MinifiedAugment }) => {
 				<div className="mt-6 pb-8">
 					<div
 						className={cn("text-center text-sm", {
-							"text-blue-800 dark:text-blue-200": augment.type === "Major",
+							"text-sky-800 dark:text-sky-200": augment.type === "Major",
 							"text-orange-800 dark:text-orange-200": augment.type === "Minor",
 						})}
 					>
