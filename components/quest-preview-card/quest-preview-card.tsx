@@ -1,17 +1,22 @@
-import type { MinifiedMainQuest } from "@/data/main-quests"
+import type { MapWithQuest } from "@/data/maps"
 import type { MinifiedSideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import { DifficultyBadge, DraftBadge } from "../custom-badges/custom-badges"
+import {
+	ComingSoonBadge,
+	DifficultyBadge,
+	DraftBadge,
+	NewBadge,
+} from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IQuestPreviewCard {
-	quest: MinifiedMainQuest | MinifiedSideQuest
+	quest: MapWithQuest | MinifiedSideQuest
 	questIndex: number
 }
 
@@ -63,7 +68,7 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end gap-1">
 						{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
-						{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
+						{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.game.title}

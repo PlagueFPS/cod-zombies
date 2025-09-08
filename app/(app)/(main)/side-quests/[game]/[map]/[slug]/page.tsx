@@ -2,19 +2,24 @@
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
+import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
+import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
+import PrevOrNextLoader from "@/components/loaders/prev-or-next-card-loader"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getCachedImageUrl } from "@/data/og-images"
 import {
+	getAdjacentSideQuests,
 	getSideQuestBySlug,
 	getSideQuestsMetadata,
 	type MinifiedSideQuest,
+	type SideQuestBySlug,
 } from "@/data/side-quests"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
@@ -128,7 +133,7 @@ export default async function SideQuestPage({
 									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
+									{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{quest.game.title}
 									</Badge>
@@ -177,8 +182,9 @@ export default async function SideQuestPage({
 							<GuideFeedback guideTitle={quest.title} type="Side Quest" map={quest.map.title} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{/* {prevQuest && <PrevOrNextQuestCard quest={prevQuest} prev />}
-							{nextQuest && <PrevOrNextQuestCard quest={nextQuest} />} */}
+							<Suspense fallback={<PrevOrNextLoader type="Quest" />}>
+								<PrevOrNextQuest quest={quest} />
+							</Suspense>
 						</div>
 					</article>
 				</div>
@@ -188,11 +194,25 @@ export default async function SideQuestPage({
 }
 
 interface PrevOrNextQuest {
+	quest: SideQuestBySlug
+}
+
+const PrevOrNextQuest = async ({ quest }: PrevOrNextQuest) => {
+	const { prevQuest, nextQuest } = await getAdjacentSideQuests(quest.createdAt)
+	return (
+		<>
+			{prevQuest && <PrevOrNextQuestCard quest={prevQuest} prev />}
+			{nextQuest && <PrevOrNextQuestCard quest={nextQuest} />}
+		</>
+	)
+}
+
+interface PrevOrNextCard {
 	quest: MinifiedSideQuest
 	prev?: boolean
 }
 
-const _PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextQuest) => {
+const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 	const alt = `${quest.map.title} map image`
 
 	return (

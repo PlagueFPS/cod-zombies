@@ -1,5 +1,5 @@
 "use client"
-import type { MinifiedMainQuest } from "@/data/main-quests"
+import type { MapWithQuest } from "@/data/maps"
 import type { MinifiedSideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { Suspense, useEffect } from "react"
@@ -11,7 +11,7 @@ import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/functions.client"
 
 interface IQuestGridClient {
-	quests: (MinifiedMainQuest | MinifiedSideQuest)[]
+	quests: (MapWithQuest | MinifiedSideQuest)[]
 }
 
 export default function QuestGridClient({ quests }: IQuestGridClient) {

@@ -4,24 +4,14 @@ import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { assertRelation, calculateTimeToRead, createMediaDto } from "@/utils/payload-utils"
+import {
+	assertRelation,
+	calculateTimeToRead,
+	createMediaDto,
+	isDocumentNew,
+} from "@/utils/payload-utils"
 
-export type MinifiedMainQuest = Awaited<ReturnType<typeof getMainQuests>>[number]
 export type MainQuestBySlug = NonNullable<Awaited<ReturnType<typeof getMainQuestBySlug>>>
-
-export const getMainQuests = cache(async () => {
-	"use cache"
-	cacheTag(CACHE_KEYS.mainQuests.all)
-
-	return await getMainQuestsEffect.pipe(
-		Effect.withLogSpan("get_main_quests_cached"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed([])),
-		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
-		Effect.runPromise,
-	)
-})
 
 export const getMainQuestMetadata = cache(async () => {
 	"use cache"
@@ -51,61 +41,6 @@ export const getMainQuestBySlug = cache(async (slug: string) => {
 	cacheTag(CACHE_KEYS.mainQuests.all, CACHE_KEYS.mainQuests.byId(mainQuest?.id ?? ""))
 	return mainQuest
 })
-
-const getMainQuestsEffect = Effect.gen(function* () {
-	const payload = yield* Payload
-	const { docs } = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "mainQuests",
-				pagination: false,
-				sort: "-createdAt",
-				select: {
-					isComingSoon: true,
-					difficulty: true,
-					map: true,
-					_status: true,
-				},
-				populate: {
-					maps: {
-						title: true,
-						slug: true,
-						description: true,
-						game: true,
-						image: true,
-					},
-				},
-			}),
-		catch: error =>
-			new GetEntriesError({
-				message: "Failed to get main quests",
-				cause: error,
-			}),
-	})
-
-	return yield* Effect.forEach(docs, quest =>
-		Effect.gen(function* () {
-			const map = yield* assertRelation(quest.map)
-			const game = yield* assertRelation(map.game)
-			const image = yield* assertRelation(map.image)
-
-			return {
-				_status: quest._status,
-				id: quest.id,
-				isComingSoon: quest.isComingSoon,
-				title: map.title,
-				slug: map.slug,
-				description: map.description,
-				game: {
-					slug: game.slug,
-					title: game.title,
-				},
-				image: createMediaDto(image),
-				difficulty: quest.difficulty,
-			}
-		}),
-	)
-}).pipe(Effect.withLogSpan("get_main_quests"))
 
 const getMainQuestMetadataEffect = Effect.gen(function* () {
 	const payload = yield* Payload
@@ -204,6 +139,7 @@ const getMainQuestBySlugEffect = (slug: string) =>
 						const game = yield* assertRelation(map.game)
 						const image = yield* assertRelation(map.image)
 						const timeToRead = calculateTimeToRead(quest.content)
+						const isNew = isDocumentNew(quest.firstPublishedAt)
 
 						return {
 							id: quest.id,
@@ -222,6 +158,7 @@ const getMainQuestBySlugEffect = (slug: string) =>
 							isComingSoon: quest.isComingSoon,
 							difficulty: quest.difficulty,
 							_status: quest._status,
+							isNew,
 						}
 					}),
 				),

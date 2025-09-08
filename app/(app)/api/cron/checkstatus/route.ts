@@ -5,7 +5,7 @@ import { env } from "@/env"
 import { type EntryType, NEW_ENTRY_KV } from "@/lib/redis"
 import { Cache } from "@/lib/services/Cache"
 import { AuthorizationError } from "@/types/errors"
-import { CACHE_KEYS, MAX_NEW_TIME, MAX_QUEST_NEW_TIME } from "@/utils/constants"
+import { CACHE_KEYS, MAX_NEW_TIME } from "@/utils/constants"
 import { authorizedRequest } from "@/utils/functions"
 
 const REVALIDATION_MAP: Record<EntryType, string> = {
@@ -38,9 +38,8 @@ export async function GET() {
 			const currentTime = Date.now()
 			const publishedTime = entry.createdAt.getTime()
 			const passedTime = Duration.subtract(currentTime, publishedTime).pipe(Duration.toMillis)
-			const ttl = entry.type === "sideQuest" ? MAX_QUEST_NEW_TIME : MAX_NEW_TIME
 
-			if (Duration.greaterThan(passedTime, ttl)) {
+			if (Duration.greaterThan(passedTime, MAX_NEW_TIME)) {
 				idsToDelete.add(entry.entryId)
 				typesToRevalidate.add(entry.type)
 			}

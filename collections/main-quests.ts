@@ -3,6 +3,7 @@ import { Redacted } from "effect"
 import { getMapById } from "@/data/maps"
 import { env } from "@/env"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
+import { CheckPublishDate } from "./hooks/check-publish-date"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const MainQuests: CollectionConfig = {
@@ -45,6 +46,22 @@ export const MainQuests: CollectionConfig = {
 			unique: true,
 			admin: {
 				description: "Title of the main quest.",
+			},
+		},
+		{
+			name: "firstPublishedAt",
+			type: "date",
+			admin: {
+				description: "Timestamp of when this main quest was first published.",
+				readOnly: true,
+				position: "sidebar",
+				date: {
+					displayFormat: "MM dd yyyy hh:mm a",
+					pickerAppearance: "dayAndTime",
+				},
+			},
+			hooks: {
+				beforeChange: [CheckPublishDate],
 			},
 		},
 		{

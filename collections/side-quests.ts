@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
+import { CheckPublishDate } from "./hooks/check-publish-date"
 import { formatSlug } from "./hooks/format-slug"
 import { revalidateCollection } from "./hooks/revalidation"
 
@@ -49,6 +50,22 @@ export const SideQuests: CollectionConfig = {
 			},
 			hooks: {
 				beforeValidate: [formatSlug("title")],
+			},
+		},
+		{
+			name: "firstPublishedAt",
+			type: "date",
+			admin: {
+				description: "Timestamp of when this side quest was first published.",
+				readOnly: true,
+				position: "sidebar",
+				date: {
+					displayFormat: "MM dd yyyy hh:mm a",
+					pickerAppearance: "dayAndTime",
+				},
+			},
+			hooks: {
+				beforeChange: [CheckPublishDate],
 			},
 		},
 		{

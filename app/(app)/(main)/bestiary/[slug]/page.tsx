@@ -20,6 +20,7 @@ import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import {
 	ComingSoonBadge,
 	DraftBadge,
+	NewBadge,
 	RangeBadge,
 	TypeBadge,
 } from "@/components/custom-badges/custom-badges"
@@ -136,8 +137,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-4">
 						{zombie._status === "draft" ? <DraftBadge /> : null}
-						{zombie.isComingSoon ? <ComingSoonBadge /> : null}
-						{/* {zombie.isNew ? <NewBadge /> : null} */}
+						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 					</div>
 					<ShareButton
@@ -420,8 +420,7 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
 					{zombie._status === "draft" ? <DraftBadge /> : null}
-					{zombie.isComingSoon ? <ComingSoonBadge /> : null}
-					{/* {zombie.isNew ? <NewBadge /> : null} */}
+					{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 					<TypeBadge type={zombie.type} />
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{zombie.map.title}

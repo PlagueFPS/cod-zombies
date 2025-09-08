@@ -2,7 +2,7 @@ import type { MinifiedZombie } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { IN_DEVELOPMENT } from "@/utils/constants"
-import { DraftBadge, TypeBadge } from "../custom-badges/custom-badges"
+import { ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
@@ -35,7 +35,7 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
 						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
-						{/* {zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null} */}
+						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 						{zombie.maps[0] ? (
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

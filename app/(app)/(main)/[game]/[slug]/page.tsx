@@ -4,7 +4,11 @@ import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { DifficultyBadge } from "@/components/custom-badges/custom-badges"
+import {
+	ComingSoonBadge,
+	DifficultyBadge,
+	NewBadge,
+} from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
@@ -15,7 +19,7 @@ import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getMainQuestBySlug, getMainQuestMetadata, type MainQuestBySlug } from "@/data/main-quests"
-import { getAdjancentMapsWithQuest, type MapWithQuest } from "@/data/maps"
+import { getAdjacentMapsWithQuest, type MapWithQuest } from "@/data/maps"
 import { getCachedImageUrl } from "@/data/og-images"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
@@ -123,7 +127,7 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
+									{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 									{quest.difficulty && <DifficultyBadge difficulty={quest.difficulty} />}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{quest.game.title}
@@ -186,7 +190,7 @@ interface PrevOrNextMap {
 }
 
 const PrevOrNextMap = async ({ map }: PrevOrNextMap) => {
-	const { prevMap, nextMap } = await getAdjancentMapsWithQuest(map.releaseDate)
+	const { prevMap, nextMap } = await getAdjacentMapsWithQuest(map.releaseDate)
 	return (
 		<>
 			{prevMap && <PrevOrNextMapCard map={prevMap} prev />}
@@ -225,7 +229,7 @@ const PrevOrNextMapCard = ({ map, prev }: PrevOrNextCard) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					{/* {map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null} */}
+					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
 					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{map.game.title}

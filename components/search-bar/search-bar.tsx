@@ -21,28 +21,32 @@ export default async function SearchBar({ showFull }: ISearchBar) {
 		sideQuestsPromise,
 		zombiesPromise,
 	])
-	const mainQuestsDtos = mainQuests.map(q => ({
-		id: q.id,
-		slug: q.slug,
-		title: q.title,
-		game: {
-			title: q.game.title,
-			slug: q.game.slug,
-		},
-	}))
-	const sideQuestsDtos = sideQuests.map(q => ({
-		id: q.id,
-		slug: q.slug,
-		title: q.title,
-		game: {
-			title: q.game.title,
-			slug: q.game.slug,
-		},
-		map: {
-			title: q.map.title,
-			slug: q.map.slug,
-		},
-	}))
+	const mainQuestsDtos = mainQuests
+		.filter(q => !q.isComingSoon)
+		.map(q => ({
+			id: q.id,
+			slug: q.slug,
+			title: q.title,
+			game: {
+				title: q.game.title,
+				slug: q.game.slug,
+			},
+		}))
+	const sideQuestsDtos = sideQuests
+		.filter(q => !q.isComingSoon)
+		.map(q => ({
+			id: q.id,
+			slug: q.slug,
+			title: q.title,
+			game: {
+				title: q.game.title,
+				slug: q.game.slug,
+			},
+			map: {
+				title: q.map.title,
+				slug: q.map.slug,
+			},
+		}))
 
 	return (
 		<div className="flex w-fit animate-fade-in items-center justify-center">

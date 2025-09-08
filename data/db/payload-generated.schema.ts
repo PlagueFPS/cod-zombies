@@ -190,6 +190,9 @@ export const main_quests = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title"),
+    firstPublishedAt: text("first_published_at").default(
+      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+    ),
     isComingSoon: integer("is_coming_soon", { mode: "boolean" }).default(false),
     difficulty: text("difficulty", { enum: ["Easy", "Medium", "Hard"] }),
     map: text("map_id").references(() => maps.id, {
@@ -231,6 +234,9 @@ export const _main_quests_v = sqliteTable(
       onDelete: "set null",
     }),
     version_title: text("version_title"),
+    version_firstPublishedAt: text("version_first_published_at").default(
+      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+    ),
     version_isComingSoon: integer("version_is_coming_soon", {
       mode: "boolean",
     }).default(false),
@@ -301,6 +307,9 @@ export const side_quests = sqliteTable(
       .$defaultFn(() => randomUUID()),
     title: text("title"),
     slug: text("slug"),
+    firstPublishedAt: text("first_published_at").default(
+      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+    ),
     isComingSoon: integer("is_coming_soon", { mode: "boolean" }).default(false),
     map: text("map_id").references(() => maps.id, {
       onDelete: "set null",
@@ -342,6 +351,9 @@ export const _side_quests_v = sqliteTable(
     }),
     version_title: text("version_title"),
     version_slug: text("version_slug"),
+    version_firstPublishedAt: text("version_first_published_at").default(
+      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+    ),
     version_isComingSoon: integer("version_is_coming_soon", {
       mode: "boolean",
     }).default(false),
@@ -413,6 +425,9 @@ export const zombies = sqliteTable(
       .$defaultFn(() => randomUUID()),
     title: text("title"),
     slug: text("slug"),
+    firstPublishedAt: text("first_published_at").default(
+      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+    ),
     releaseDate: text("release_date").default(
       sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     ),
@@ -526,6 +541,9 @@ export const _zombies_v = sqliteTable(
     }),
     version_title: text("version_title"),
     version_slug: text("version_slug"),
+    version_firstPublishedAt: text("version_first_published_at").default(
+      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
+    ),
     version_releaseDate: text("version_release_date").default(
       sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     ),

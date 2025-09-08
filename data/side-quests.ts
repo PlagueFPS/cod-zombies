@@ -4,7 +4,12 @@ import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { assertRelation, calculateTimeToRead, createMediaDto } from "@/utils/payload-utils"
+import {
+	assertRelation,
+	calculateTimeToRead,
+	createMediaDto,
+	isDocumentNew,
+} from "@/utils/payload-utils"
 
 export type SideQuestBySlug = NonNullable<Awaited<ReturnType<typeof getSideQuestBySlug>>>
 export type MinifiedSideQuest = Awaited<ReturnType<typeof getSideQuests>>[number]
@@ -109,6 +114,7 @@ const getSideQuestsEffect = Effect.gen(function* () {
 					map: true,
 					isComingSoon: true,
 					_status: true,
+					firstPublishedAt: true,
 				},
 				populate: {
 					maps: {
@@ -132,6 +138,7 @@ const getSideQuestsEffect = Effect.gen(function* () {
 					const map = yield* assertRelation(sideQuest.map)
 					const game = yield* assertRelation(map.game)
 					const image = yield* assertRelation(map.image)
+					const isNew = isDocumentNew(sideQuest.firstPublishedAt)
 
 					return {
 						id: sideQuest.id,
@@ -149,6 +156,7 @@ const getSideQuestsEffect = Effect.gen(function* () {
 						image: createMediaDto(image),
 						_status: sideQuest._status,
 						isComingSoon: sideQuest.isComingSoon,
+						isNew,
 					}
 				}),
 			),
@@ -230,9 +238,6 @@ const getSideQuestBySlugEffect = (slug: string) =>
 							equals: slug,
 						},
 					},
-					select: {
-						createdAt: false,
-					},
 					populate: {
 						maps: {
 							title: true,
@@ -255,6 +260,7 @@ const getSideQuestBySlugEffect = (slug: string) =>
 						const game = yield* assertRelation(map.game)
 						const image = yield* assertRelation(map.image)
 						const timeToRead = calculateTimeToRead(sideQuest.content)
+						const isNew = isDocumentNew(sideQuest.firstPublishedAt)
 
 						return {
 							...sideQuest,
@@ -270,6 +276,7 @@ const getSideQuestBySlugEffect = (slug: string) =>
 								slug: game.slug,
 								title: game.title,
 							},
+							isNew,
 						}
 					}),
 				),
@@ -355,6 +362,7 @@ const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 						map: true,
 						isComingSoon: true,
 						_status: true,
+						firstPublishedAt: true,
 					},
 					populate: {
 						maps: {
@@ -377,6 +385,7 @@ const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 						const map = yield* assertRelation(sideQuest.map)
 						const game = yield* assertRelation(map.game)
 						const image = yield* assertRelation(map.image)
+						const isNew = isDocumentNew(sideQuest.firstPublishedAt)
 
 						return {
 							id: sideQuest.id,
@@ -394,6 +403,7 @@ const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 							image: createMediaDto(image),
 							_status: sideQuest._status,
 							isComingSoon: sideQuest.isComingSoon,
+							isNew,
 						}
 					}),
 				),
@@ -419,6 +429,7 @@ const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 						map: true,
 						isComingSoon: true,
 						_status: true,
+						firstPublishedAt: true,
 					},
 					populate: {
 						maps: {
@@ -441,6 +452,7 @@ const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 						const map = yield* assertRelation(sideQuest.map)
 						const game = yield* assertRelation(map.game)
 						const image = yield* assertRelation(map.image)
+						const isNew = isDocumentNew(sideQuest.firstPublishedAt)
 
 						return {
 							id: sideQuest.id,
@@ -458,6 +470,7 @@ const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 							image: createMediaDto(image),
 							_status: sideQuest._status,
 							isComingSoon: sideQuest.isComingSoon,
+							isNew,
 						}
 					}),
 				),

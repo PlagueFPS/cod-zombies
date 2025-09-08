@@ -4,7 +4,7 @@ import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { assertRelation, createMediaDto } from "@/utils/payload-utils"
+import { assertRelation, createMediaDto, isDocumentNew } from "@/utils/payload-utils"
 import { createAmmoModDto } from "./ammo-mods"
 
 export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
@@ -111,6 +111,7 @@ const getZombiesEffect = Effect.gen(function* () {
 					isComingSoon: true,
 					image: true,
 					_status: true,
+					firstPublishedAt: true,
 				},
 			}),
 		catch: error =>
@@ -125,12 +126,14 @@ const getZombiesEffect = Effect.gen(function* () {
 					const maps = yield* Effect.forEach(doc.maps, map => assertRelation(map))
 					const games = yield* Effect.forEach(doc.games, game => assertRelation(game))
 					const image = yield* assertRelation(doc.image)
+					const isNew = isDocumentNew(doc.firstPublishedAt)
 
 					return {
 						...doc,
 						maps,
 						games,
 						image: createMediaDto(image),
+						isNew,
 					}
 				}),
 			),
@@ -223,6 +226,7 @@ const getZombieBySlugEffect = (slug: string) =>
 						const game = yield* Effect.forEach(zombie.games, game => assertRelation(game))
 						const image = yield* assertRelation(zombie.image)
 						const attacks = yield* Effect.forEach(zombie.attacks, attack => assertRelation(attack))
+						const isNew = isDocumentNew(zombie.firstPublishedAt)
 						const elementalWeakness = zombie.elementalWeakness
 							? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
 									createAmmoModDto(elementalWeakness),
@@ -240,6 +244,7 @@ const getZombieBySlugEffect = (slug: string) =>
 							attacks,
 							elementalWeakness,
 							weakPoints,
+							isNew,
 						}
 					}),
 				),
@@ -273,6 +278,7 @@ const getAdjacentZombiesEffect = (currentReleaseDate: string) =>
 						isComingSoon: true,
 						image: true,
 						_status: true,
+						firstPublishedAt: true,
 					},
 				}),
 			catch: error =>
@@ -289,12 +295,14 @@ const getAdjacentZombiesEffect = (currentReleaseDate: string) =>
 						// we only care about the first map for prev/next cards
 						const map = yield* assertRelation(zombie.maps[0])
 						const image = yield* assertRelation(zombie.image)
+						const isNew = isDocumentNew(zombie.firstPublishedAt)
 
 						const { maps, ...zombieData } = zombie
 						return {
 							...zombieData,
 							map: map,
 							image: createMediaDto(image),
+							isNew,
 						}
 					}),
 				),
@@ -322,6 +330,7 @@ const getAdjacentZombiesEffect = (currentReleaseDate: string) =>
 						isComingSoon: true,
 						image: true,
 						_status: true,
+						firstPublishedAt: true,
 					},
 				}),
 			catch: error =>
@@ -338,12 +347,14 @@ const getAdjacentZombiesEffect = (currentReleaseDate: string) =>
 						// we only care about the first map for prev/next cards
 						const map = yield* assertRelation(zombie.maps[0])
 						const image = yield* assertRelation(zombie.image)
+						const isNew = isDocumentNew(zombie.firstPublishedAt)
 
 						const { maps, ...zombieData } = zombie
 						return {
 							...zombieData,
 							map: map,
 							image: createMediaDto(image),
+							isNew,
 						}
 					}),
 				),

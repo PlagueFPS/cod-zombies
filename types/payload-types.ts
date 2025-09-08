@@ -436,6 +436,10 @@ export interface MainQuest {
    */
   title: string;
   /**
+   * Timestamp of when this main quest was first published.
+   */
+  firstPublishedAt?: string | null;
+  /**
    * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
    */
   isComingSoon?: boolean | null;
@@ -484,6 +488,10 @@ export interface SideQuest {
    */
   slug: string;
   /**
+   * Timestamp of when this side quest was first published.
+   */
+  firstPublishedAt?: string | null;
+  /**
    * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
    */
   isComingSoon?: boolean | null;
@@ -531,6 +539,10 @@ export interface Zombie {
    * Unique slug for the zombie. Used to form the canonical URL.
    */
   slug: string;
+  /**
+   * Timestamp of when this zombie was first published.
+   */
+  firstPublishedAt?: string | null;
   /**
    * Release date of the zombie.
    */
@@ -1203,6 +1215,7 @@ export interface GamesSelect<T extends boolean = true> {
  */
 export interface MainQuestsSelect<T extends boolean = true> {
   title?: T;
+  firstPublishedAt?: T;
   isComingSoon?: T;
   difficulty?: T;
   map?: T;
@@ -1218,6 +1231,7 @@ export interface MainQuestsSelect<T extends boolean = true> {
 export interface SideQuestsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  firstPublishedAt?: T;
   isComingSoon?: T;
   map?: T;
   description?: T;
@@ -1233,6 +1247,7 @@ export interface SideQuestsSelect<T extends boolean = true> {
 export interface ZombiesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  firstPublishedAt?: T;
   releaseDate?: T;
   isComingSoon?: T;
   image?: T;

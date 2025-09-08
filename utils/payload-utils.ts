@@ -3,8 +3,9 @@ import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
 import type { Media } from "@/types/payload-types"
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext"
-import { Effect, Predicate } from "effect"
+import { Duration, Effect, Predicate } from "effect"
 import { RelationshipError } from "@/types/errors"
+import { MAX_NEW_TIME } from "./constants"
 import { slugify } from "./functions.client"
 
 /**Asserts that the given relationship exists */
@@ -57,4 +58,13 @@ export const extractHeadings = (content: SerializedEditorState) => {
 	})
 
 	return headings
+}
+
+export const isDocumentNew = (firstPublishedAt: string | null | undefined) => {
+	if (!firstPublishedAt) return false
+
+	const currentTime = Date.now()
+	const publishedTime = new Date(firstPublishedAt).getTime()
+	const passedTime = Duration.subtract(currentTime, publishedTime).pipe(Duration.toMillis)
+	return Duration.lessThan(passedTime, MAX_NEW_TIME)
 }
