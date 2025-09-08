@@ -28,6 +28,7 @@ export const getCachedImageUrl = cache(async (type: TAllowedSlugs, entry: ValidE
 
 	return await getImageUrl(type, entry).pipe(
 		Effect.withLogSpan("get_cached_image_url"),
+		Effect.annotateLogs({ type, entryId: entry.id }),
 		Effect.tapError(Effect.logError),
 		Effect.provide(FetchHttpClient.layer),
 		Effect.catchAll(() => Effect.succeed(null)),
@@ -48,6 +49,11 @@ export const getCachedImageUrl = cache(async (type: TAllowedSlugs, entry: ValidE
  * const imageUrl = yield* getImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  */
 const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: ValidEntry) {
+	if (!env.OG_GENERATION_ENABLED) {
+		yield* Effect.log("Skipping image generation")
+		return null
+	}
+
 	const httpClient = (yield* HttpClient.HttpClient).pipe(
 		HttpClient.retryTransient({
 			times: 3,

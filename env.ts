@@ -5,14 +5,6 @@ export const env = createEnv({
 	server: {
 		REVALIDATE_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DRAFT_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		CONTENTFUL_SPACE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		CONTENTFUL_MANAGEMENT_ACCESS_TOKEN: Schema.standardSchemaV1(
-			Schema.Redacted(Schema.NonEmptyString),
-		),
-		CONTENTFUL_ACCESS_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		CONTENTFUL_PREVIEW_ACCESS_TOKEN: Schema.standardSchemaV1(
-			Schema.Redacted(Schema.NonEmptyString),
-		),
 		RESEND_API_KEY: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		RESEND_AUDIENCE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		CRON_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
@@ -25,6 +17,7 @@ export const env = createEnv({
 		PAYLOAD_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		OG_GENERATION_ENABLED: Schema.standardSchemaV1(Schema.BooleanFromString),
 	},
 	client: {
 		NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
