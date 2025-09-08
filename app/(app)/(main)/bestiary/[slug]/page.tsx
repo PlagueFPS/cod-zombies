@@ -1,3 +1,4 @@
+"use cache"
 import type { Metadata } from "next"
 import {
 	AlertTriangle,
@@ -44,10 +45,12 @@ import { cn } from "@/lib/utils"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 
 export const generateStaticParams = async () => {
-	const zombies = await getZombiesMetadata(MAP_LIMIT * 3) // Limit to first three pages
-	return zombies.map(zombie => ({
-		slug: zombie.slug,
-	}))
+	const zombies = await getZombiesMetadata()
+	return zombies
+		.map(zombie => ({
+			slug: zombie.slug,
+		}))
+		.slice(0, MAP_LIMIT * 3)
 }
 
 export const generateMetadata = async ({
@@ -60,13 +63,13 @@ export const generateMetadata = async ({
 	}
 
 	let imageUrl = null
-	if (!IN_DEVELOPMENT) {
+	if (!IN_DEVELOPMENT && env.OG_GENERATION_ENABLED && zombie.games[0] && zombie.maps[0]) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("zombies", {
 			...zombie,
 			title: zombie.title,
-			game: zombie.games[0]?.title ?? "",
-			map: zombie.maps[0]?.title ?? "",
+			game: zombie.games[0],
+			map: zombie.maps[0],
 		})
 	}
 	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.title}" ${zombie.type} Zombie.`

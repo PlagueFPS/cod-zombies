@@ -14,7 +14,9 @@ export default function SubscribeSuccessPage() {
 				<CheckCircle2 className="h-16 w-16 text-green-500" />
 			</div>
 			<h1 className="mb-4 font-bold text-2xl">Successfully Subscribed</h1>
-			<p className="mb-6 text-muted-foreground">You have been successfully subscribed to our newsletter.</p>
+			<p className="mb-6 text-muted-foreground">
+				You have been successfully subscribed to our newsletter.
+			</p>
 			<Button variant={"outline"} asChild>
 				<CustomLink href="/">Return to Homepage</CustomLink>
 			</Button>

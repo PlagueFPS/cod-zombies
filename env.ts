@@ -17,7 +17,7 @@ export const env = createEnv({
 		PAYLOAD_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		OG_GENERATION_ENABLED: Schema.standardSchemaV1(Schema.BooleanFromString),
+		OG_GENERATION_ENABLED: Schema.standardSchemaV1(Schema.BooleanFromString.annotations({ message: (issue) => `Received ${issue.actual}. NOTE: Never set this to true unless on any context that isn't the current live production context.`})),
 	},
 	client: {
 		NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),

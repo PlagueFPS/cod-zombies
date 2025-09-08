@@ -1,3 +1,4 @@
+"use cache"
 import type { Metadata } from "next"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
@@ -21,12 +22,14 @@ import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/util
 import { calculateTimeToRead, extractHeadings } from "@/utils/payload-utils"
 
 export const generateStaticParams = async () => {
-	const quests = await getSideQuestsMetadata(MAP_LIMIT * 3)
-	return quests.map(q => ({
-		game: q.game.slug,
-		map: q.map.slug,
-		slug: q.slug,
-	}))
+	const quests = await getSideQuestsMetadata()
+	return quests
+		.map(q => ({
+			game: q.game.slug,
+			map: q.map.slug,
+			slug: q.slug,
+		}))
+		.slice(0, MAP_LIMIT * 3)
 }
 
 export const generateMetadata = async ({
@@ -40,13 +43,9 @@ export const generateMetadata = async ({
 	const description = `Learn how to complete the ${quest.title} side quest/easter egg for ${quest.map.title} with our detailed step-by-step walkthrough!`
 	let imageUrl = null
 
-	if (!IN_DEVELOPMENT) {
+	if (!IN_DEVELOPMENT && env.OG_GENERATION_ENABLED) {
 		// Avoid potential og generations based on draft content
-		imageUrl = await getCachedImageUrl("side-quests", {
-			...quest,
-			game: quest.game.title,
-			map: quest.map.title,
-		})
+		imageUrl = await getCachedImageUrl("side-quests", quest)
 	}
 
 	return {

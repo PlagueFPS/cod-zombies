@@ -51,7 +51,7 @@ export const getCachedImageUrl = cache(async (type: TAllowedSlugs, entry: ValidE
 const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: ValidEntry) {
 	if (!env.OG_GENERATION_ENABLED) {
 		yield* Effect.log("Skipping image generation")
-		return null
+		return entry.image.url
 	}
 
 	const httpClient = (yield* HttpClient.HttpClient).pipe(

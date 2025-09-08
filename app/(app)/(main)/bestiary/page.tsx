@@ -38,7 +38,8 @@ export default function BestiaryPage() {
 				<Breadcrumbs links={[{ title: "Bestiary", href: "/bestiary" }]} />
 				<GridSection title="Bestiary">
 					<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
-						Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies.
+						Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call
+						of Duty: Zombies.
 					</p>
 					<Suspense fallback={<BestiaryFiltersLoader />}>
 						<BestiaryFilters />
