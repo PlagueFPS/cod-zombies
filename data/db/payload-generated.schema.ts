@@ -49,6 +49,9 @@ export const users = sqliteTable(
     id: text("id")
       .primaryKey()
       .$defaultFn(() => randomUUID()),
+    role: text("role", { enum: ["admin", "member"] })
+      .notNull()
+      .default("member"),
     updatedAt: text("updated_at")
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),

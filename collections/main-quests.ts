@@ -2,10 +2,17 @@ import type { CollectionConfig } from "payload"
 import { Redacted } from "effect"
 import { getMapById } from "@/data/maps"
 import { env } from "@/env"
+import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const MainQuests: CollectionConfig = {
 	slug: "mainQuests",
+	access: {
+		read: isAuthenticatedOrPublished,
+		create: isAuthenticated,
+		update: isAuthenticated,
+		delete: isAuthenticated,
+	},
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "isComingSoon", "map", "_status", "updatedAt"],

@@ -1,7 +1,14 @@
 import type { CollectionConfig } from "payload"
+import { anyone, isAuthenticated } from "./access/access-control"
 
 export const WeaponBuilds: CollectionConfig = {
 	slug: "weaponBuilds",
+	access: {
+		read: anyone,
+		create: isAuthenticated,
+		update: isAuthenticated,
+		delete: isAuthenticated,
+	},
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "weapon", "updatedAt"],

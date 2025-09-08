@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload"
+import { anyone, isAuthenticated } from "./access/access-control"
 
 export const Media: CollectionConfig = {
 	slug: "media",
@@ -8,7 +9,10 @@ export const Media: CollectionConfig = {
 		listSearchableFields: ["filename", "title"],
 	},
 	access: {
-		read: () => true,
+		read: anyone,
+		create: isAuthenticated,
+		update: isAuthenticated,
+		delete: isAuthenticated,
 	},
 	defaultPopulate: {
 		title: true,

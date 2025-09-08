@@ -1,4 +1,5 @@
 import { sqliteAdapter } from "@payloadcms/db-sqlite"
+import { resendAdapter } from "@payloadcms/email-resend"
 import {
 	BlocksFeature,
 	EXPERIMENTAL_TableFeature,
@@ -51,9 +52,9 @@ export default buildConfig({
 					rel: "icon",
 					type: "image/png",
 					url: "/logo.png",
-				}
+				},
 			],
-			robots: "noindex, nofollow"
+			robots: "noindex, nofollow",
 		},
 		livePreview: {
 			breakpoints: [
@@ -122,6 +123,11 @@ export default buildConfig({
 		migrationDir: "./data/db/migrations",
 		generateSchemaOutputFile: "./data/db/payload-generated.schema.ts",
 		idType: "uuid",
+	}),
+	email: resendAdapter({
+		defaultFromAddress: "support@codzombiesguides.com",
+		defaultFromName: "COD: Zombies Guides",
+		apiKey: Redacted.value(env.RESEND_API_KEY),
 	}),
 	blocks: [
 		InlineAugmentBlock,

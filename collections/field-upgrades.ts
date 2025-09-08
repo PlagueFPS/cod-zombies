@@ -1,7 +1,14 @@
 import type { CollectionConfig } from "payload"
+import { anyone, isAuthenticated } from "./access/access-control"
 
 export const FieldUpgrades: CollectionConfig = {
 	slug: "fieldUpgrades",
+	access: {
+		read: anyone,
+		create: isAuthenticated,
+		update: isAuthenticated,
+		delete: isAuthenticated,
+	},
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "game", "updatedAt"],

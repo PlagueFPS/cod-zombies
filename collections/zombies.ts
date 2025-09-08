@@ -1,9 +1,16 @@
 import type { CollectionConfig } from "payload"
+import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { formatSlug } from "./hooks/format-slug"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const Zombies: CollectionConfig = {
 	slug: "zombies",
+	access: {
+		read: isAuthenticatedOrPublished,
+		create: isAuthenticated,
+		update: isAuthenticated,
+		delete: isAuthenticated,
+	},
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "isComingSoon", "type", "status", "updatedAt"],

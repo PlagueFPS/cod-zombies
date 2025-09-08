@@ -1,7 +1,14 @@
 import type { CollectionConfig } from "payload"
+import { anyone, isAuthenticated } from "./access/access-control"
 
 export const Gobblegum: CollectionConfig = {
 	slug: "gobblegum",
+	access: {
+		read: anyone,
+		create: isAuthenticated,
+		update: isAuthenticated,
+		delete: isAuthenticated,
+	},
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "rarity", "game", "updatedAt"],

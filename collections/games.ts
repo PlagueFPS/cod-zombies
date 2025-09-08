@@ -1,9 +1,16 @@
 import type { CollectionConfig } from "payload"
+import { anyone, isAuthenticated } from "./access/access-control"
 import { formatSlug } from "./hooks/format-slug"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const Games: CollectionConfig = {
 	slug: "games",
+	access: {
+		read: anyone,
+		create: isAuthenticated,
+		update: isAuthenticated,
+		delete: isAuthenticated,
+	},
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "releaseDate", "updatedAt"],
