@@ -154,7 +154,7 @@ const getZombieMetadataEffect = Effect.gen(function* () {
 				sort: "-releaseDate",
 				where: {
 					isComingSoon: {
-						equals: false,
+						not_equals: true,
 					},
 				},
 				select: {
