@@ -138,6 +138,9 @@ export const maps = sqliteTable(
   (columns) => ({
     maps_title_idx: index("maps_title_idx").on(columns.title),
     maps_slug_idx: uniqueIndex("maps_slug_idx").on(columns.slug),
+    maps_release_date_idx: index("maps_release_date_idx").on(
+      columns.releaseDate,
+    ),
     maps_game_idx: index("maps_game_idx").on(columns.game),
     maps_image_idx: index("maps_image_idx").on(columns.image),
     maps_updated_at_idx: index("maps_updated_at_idx").on(columns.updatedAt),
@@ -811,9 +814,11 @@ export const ammo_mods = sqliteTable(
       .references(() => games.id, {
         onDelete: "set null",
       }),
-    image: text("image_id").references(() => media.id, {
-      onDelete: "set null",
-    }),
+    image: text("image_id")
+      .notNull()
+      .references(() => media.id, {
+        onDelete: "set null",
+      }),
     description: text("description").notNull(),
     updatedAt: text("updated_at")
       .notNull()

@@ -3,8 +3,9 @@ import type { CollectionConfig } from "payload"
 export const Media: CollectionConfig = {
 	slug: "media",
 	admin: {
-		useAsTitle: "title",
-		defaultColumns: ["fileName", "mimeType", "fileSize", "updatedAt"],
+		useAsTitle: "filename",
+		defaultColumns: ["filename", "mimeType", "fileSize", "updatedAt"],
+		listSearchableFields: ["filename", "title"],
 	},
 	access: {
 		read: () => true,

@@ -43,6 +43,8 @@ export const Maps: CollectionConfig = {
 			name: "releaseDate",
 			label: "Release Date",
 			type: "date",
+			index: true,
+			required: true,
 			admin: {
 				date: {
 					displayFormat: "MMMM dd, yyyy hh:mm a",
@@ -50,7 +52,6 @@ export const Maps: CollectionConfig = {
 				},
 				description: "Release date of the map.",
 			},
-			required: true,
 		},
 		{
 			name: "game",

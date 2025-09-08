@@ -35,6 +35,7 @@ export const AmmoMods: CollectionConfig = {
 			label: "Image",
 			type: "upload",
 			relationTo: "media",
+			required: true,
 			admin: {
 				description: "Featured image of this ammo mod.",
 			},

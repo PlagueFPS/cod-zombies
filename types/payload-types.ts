@@ -639,7 +639,7 @@ export interface AmmoMod {
   /**
    * Featured image of this ammo mod.
    */
-  image?: (string | null) | Media;
+  image: string | Media;
   /**
    * Description used in tooltips and hover cards.
    */

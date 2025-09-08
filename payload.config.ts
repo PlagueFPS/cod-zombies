@@ -37,11 +37,24 @@ import { Zombies } from "@/collections/zombies"
 import { env } from "@/env"
 import { ToolBlock } from "./collections/blocks/tool"
 import { YoutubeEmbedBlock } from "./collections/blocks/youtube-embed"
+import { SITE_TITLE } from "./utils/constants"
 
 export default buildConfig({
 	secret: Redacted.value(env.PAYLOAD_SECRET),
 	serverURL: env.NEXT_PUBLIC_WEBSITE_URL,
 	admin: {
+		meta: {
+			titleSuffix: `- ${SITE_TITLE}`,
+			defaultOGImageType: "off",
+			icons: [
+				{
+					rel: "icon",
+					type: "image/png",
+					url: "/logo.png",
+				}
+			],
+			robots: "noindex, nofollow"
+		},
 		livePreview: {
 			breakpoints: [
 				{
