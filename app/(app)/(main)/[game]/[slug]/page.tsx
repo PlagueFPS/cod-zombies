@@ -12,7 +12,6 @@ import {
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
-import { RefreshRouteOnSave } from "@/components/live-preview/refresh-route-on-save"
 import PrevOrNextLoader from "@/components/loaders/prev-or-next-card-loader"
 import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
 import ShareButton from "@/components/share-button/share-button"
@@ -85,7 +84,6 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
-			<RefreshRouteOnSave />
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
 				<div className="flex w-full flex-col xl:flex-row-reverse">
 					<TableOfContents headings={headings} />
