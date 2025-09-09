@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload"
 import { anyone, isAuthenticated } from "./access/access-control"
+import { handleDelete } from "./hooks/handle-delete"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const Gobblegum: CollectionConfig = {
 	slug: "gobblegum",
@@ -92,4 +94,8 @@ export const Gobblegum: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterDelete: [handleDelete],
+		afterChange: [revalidateCollection],
+	},
 }

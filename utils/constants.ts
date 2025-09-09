@@ -99,12 +99,6 @@ export const CACHE_KEYS = {
 		/** Cache key for a specific augment by ID */
 		byId: (id: string) => `augments:${String(id).trim()}` as const,
 	},
-	media: {
-		/** Cache key for all media data */
-		all: "media:all",
-		/** Cache key for a specific media by ID */
-		byId: (id: string) => `media:${String(id).trim()}` as const,
-	},
 } as const
 export const ROUTES = [
 	{

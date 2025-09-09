@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload"
 import { anyone, isAuthenticated } from "./access/access-control"
+import { handleDelete } from "./hooks/handle-delete"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const Augments: CollectionConfig = {
 	slug: "augments",
@@ -100,4 +102,8 @@ export const Augments: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterDelete: [handleDelete],
+		afterChange: [revalidateCollection],
+	},
 }

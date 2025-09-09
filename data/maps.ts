@@ -38,9 +38,7 @@ export const getMapsWithQuest = cache(async () => {
 
 export const getMapById = cache(async (id: string) => {
 	"use cache"
-	cacheTag(CACHE_KEYS.maps.all, CACHE_KEYS.maps.byId(id))
-
-	return await getMapByIdEffect(id).pipe(
+	const map = await getMapByIdEffect(id).pipe(
 		Effect.withLogSpan("get_map_by_id_cached"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
@@ -48,6 +46,10 @@ export const getMapById = cache(async (id: string) => {
 		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
+	if (!map) return null
+
+	cacheTag(CACHE_KEYS.maps.all, CACHE_KEYS.maps.byId(id), CACHE_KEYS.games.byId(map.game.id))
+	return map
 })
 
 export const getAdjacentMapsWithQuest = cache(async (currentReleaseDate: string) => {
@@ -63,6 +65,9 @@ export const getAdjacentMapsWithQuest = cache(async (currentReleaseDate: string)
 		CACHE_KEYS.maps.all,
 		CACHE_KEYS.maps.byId(prevMap?.id ?? ""),
 		CACHE_KEYS.maps.byId(nextMap?.id ?? ""),
+		CACHE_KEYS.mainQuests.all,
+		CACHE_KEYS.games.byId(prevMap?.game.id ?? ""),
+		CACHE_KEYS.games.byId(nextMap?.game.id ?? ""),
 	)
 
 	return {
@@ -189,7 +194,11 @@ const getMapByIdEffect = (id: string) =>
 					const game = yield* assertRelation(map.game)
 					return {
 						...map,
-						game,
+						game: {
+							id: game.id,
+							title: game.title,
+							slug: game.slug,
+						},
 					}
 				}),
 			),
@@ -259,7 +268,11 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 							slug: map.slug,
 							description: map.description,
 							image: createMediaDto(image),
-							game,
+							game: {
+								id: game.id,
+								title: game.title,
+								slug: game.slug,
+							},
 							difficulty: quest?.difficulty,
 							isComingSoon: quest?.isComingSoon ?? false,
 							_status: quest?._status,
@@ -328,7 +341,11 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 							slug: map.slug,
 							description: map.description,
 							image: createMediaDto(image),
-							game,
+							game: {
+								id: game.id,
+								title: game.title,
+								slug: game.slug,
+							},
 							difficulty: quest?.difficulty,
 							isComingSoon: quest?.isComingSoon ?? false,
 							_status: quest?._status,

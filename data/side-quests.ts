@@ -16,7 +16,7 @@ export type MinifiedSideQuest = Awaited<ReturnType<typeof getSideQuests>>[number
 
 export const getSideQuests = cache(async () => {
 	"use cache"
-	cacheTag(CACHE_KEYS.sideQuests.all)
+	cacheTag(CACHE_KEYS.sideQuests.all, CACHE_KEYS.maps.all, CACHE_KEYS.games.all)
 
 	return await getSideQuestsEffect.pipe(
 		Effect.withLogSpan("get_side_quests_cached"),
@@ -30,7 +30,7 @@ export const getSideQuests = cache(async () => {
 
 export const getSideQuestsMetadata = cache(async () => {
 	"use cache"
-	cacheTag(CACHE_KEYS.sideQuests.all)
+	cacheTag(CACHE_KEYS.sideQuests.all, CACHE_KEYS.maps.all, CACHE_KEYS.games.all)
 
 	return await getSideQuestsMetadataEffect.pipe(
 		Effect.withLogSpan("get_side_quests_metadata_cached"),
@@ -60,14 +60,24 @@ export const getSideQuestBySlug = cache(async (slug: string) => {
 		CACHE_KEYS.games.byId(sideQuest?.game.id ?? ""),
 	)
 
-	return sideQuest
+	if (!sideQuest) return null
+	return {
+		...sideQuest,
+		game: {
+			slug: sideQuest.game.slug,
+			title: sideQuest.game.title,
+		},
+		map: {
+			slug: sideQuest.map.slug,
+			title: sideQuest.map.title,
+		},
+	}
 })
 
 export const getSideQuestById = cache(async (id: string) => {
 	"use cache"
-	cacheTag(CACHE_KEYS.sideQuests.all, CACHE_KEYS.sideQuests.byId(id))
 
-	return await getSideQuestByIdEffect(id).pipe(
+	const quest = await getSideQuestByIdEffect(id).pipe(
 		Effect.withLogSpan("get_side_quest_by_id_cached"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
@@ -75,6 +85,26 @@ export const getSideQuestById = cache(async (id: string) => {
 		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
+
+	cacheTag(
+		CACHE_KEYS.sideQuests.all,
+		CACHE_KEYS.sideQuests.byId(id),
+		CACHE_KEYS.maps.byId(quest?.map.id ?? ""),
+		CACHE_KEYS.games.byId(quest?.game.id ?? ""),
+	)
+
+	if (!quest) return null
+	return {
+		...quest,
+		game: {
+			slug: quest.game.slug,
+			title: quest.game.title,
+		},
+		map: {
+			slug: quest.map.slug,
+			title: quest.map.title,
+		},
+	}
 })
 
 export const getAdjacentSideQuests = cache(async (currentCreatedAt: string) => {
@@ -325,10 +355,12 @@ const getSideQuestByIdEffect = (id: string) =>
 						...quest,
 						image: createMediaDto(image),
 						map: {
+							id: map.id,
 							slug: map.slug,
 							title: map.title,
 						},
 						game: {
+							id: game.id,
 							slug: game.slug,
 							title: game.title,
 						},

@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload"
 import { anyone, isAuthenticated } from "./access/access-control"
 import { formatSlug } from "./hooks/format-slug"
+import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const Maps: CollectionConfig = {
@@ -125,5 +126,6 @@ export const Maps: CollectionConfig = {
 	],
 	hooks: {
 		afterChange: [revalidateCollection],
+		afterDelete: [handleDelete],
 	},
 }

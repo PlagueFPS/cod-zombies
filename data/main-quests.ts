@@ -15,7 +15,7 @@ export type MainQuestBySlug = NonNullable<Awaited<ReturnType<typeof getMainQuest
 
 export const getMainQuestMetadata = cache(async () => {
 	"use cache"
-	cacheTag(CACHE_KEYS.mainQuests.all)
+	cacheTag(CACHE_KEYS.mainQuests.all, CACHE_KEYS.maps.all, CACHE_KEYS.games.all)
 
 	return await getMainQuestMetadataEffect.pipe(
 		Effect.withLogSpan("get_main_quest_metadata_cached"),
@@ -38,8 +38,17 @@ export const getMainQuestBySlug = cache(async (slug: string) => {
 		Effect.runPromise,
 	)
 
-	cacheTag(CACHE_KEYS.mainQuests.all, CACHE_KEYS.mainQuests.byId(mainQuest?.id ?? ""))
-	return mainQuest
+	cacheTag(
+		CACHE_KEYS.mainQuests.all,
+		CACHE_KEYS.mainQuests.byId(mainQuest?.id ?? ""),
+		CACHE_KEYS.maps.byId(mainQuest?.mapId ?? ""),
+		CACHE_KEYS.games.byId(mainQuest?.gameId ?? ""),
+	)
+
+	if (!mainQuest) return null
+	const { mapId, gameId, ...quest } = mainQuest
+
+	return quest
 })
 
 const getMainQuestMetadataEffect = Effect.gen(function* () {
@@ -143,6 +152,8 @@ const getMainQuestBySlugEffect = (slug: string) =>
 
 						return {
 							id: quest.id,
+							mapId: map.id,
+							gameId: game.id,
 							releaseDate: map.releaseDate,
 							updatedAt: quest.updatedAt,
 							title: map.title,

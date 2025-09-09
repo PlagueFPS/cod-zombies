@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { CheckPublishDate } from "./hooks/check-publish-date"
 import { formatSlug } from "./hooks/format-slug"
+import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
 
 export const SideQuests: CollectionConfig = {
@@ -108,5 +109,6 @@ export const SideQuests: CollectionConfig = {
 	],
 	hooks: {
 		afterChange: [revalidateCollection],
+		afterDelete: [handleDelete],
 	},
 }

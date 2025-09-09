@@ -16,7 +16,7 @@ export type PreviewZombie = NonNullable<
 
 export const getZombies = cache(async () => {
 	"use cache"
-	cacheTag(CACHE_KEYS.zombies.all)
+	cacheTag(CACHE_KEYS.zombies.all, CACHE_KEYS.games.all, CACHE_KEYS.maps.all)
 
 	return await getZombiesEffect.pipe(
 		Effect.withLogSpan("get_zombies_cached"),
@@ -30,7 +30,7 @@ export const getZombies = cache(async () => {
 
 export const getZombiesMetadata = cache(async () => {
 	"use cache"
-	cacheTag(CACHE_KEYS.zombies.all)
+	cacheTag(CACHE_KEYS.zombies.all, CACHE_KEYS.games.all, CACHE_KEYS.maps.all)
 
 	return await getZombieMetadataEffect.pipe(
 		Effect.withLogSpan("get_zombies_metadata_cached"),
@@ -53,7 +53,13 @@ export const getZombieBySlug = cache(async (slug: string) => {
 		Effect.runPromise,
 	)
 
-	cacheTag(CACHE_KEYS.zombies.all, CACHE_KEYS.zombies.byId(zombie?.id ?? ""))
+	cacheTag(
+		CACHE_KEYS.zombies.all,
+		CACHE_KEYS.zombies.byId(zombie?.id ?? ""),
+		CACHE_KEYS.games.all,
+		CACHE_KEYS.maps.all,
+	)
+
 	return zombie
 })
 
@@ -68,6 +74,8 @@ export const getAdjacentZombies = cache(async (currentReleaseDate: string) => {
 
 	cacheTag(
 		CACHE_KEYS.zombies.all,
+		CACHE_KEYS.games.all,
+		CACHE_KEYS.maps.all,
 		CACHE_KEYS.zombies.byId(prevZombie?.id ?? ""),
 		CACHE_KEYS.zombies.byId(nextZombie?.id ?? ""),
 	)
@@ -80,7 +88,12 @@ export const getAdjacentZombies = cache(async (currentReleaseDate: string) => {
 
 export const getZombieById = cache(async (id: string) => {
 	"use cache"
-	cacheTag(CACHE_KEYS.zombies.all, CACHE_KEYS.zombies.byId(id))
+	cacheTag(
+		CACHE_KEYS.zombies.all,
+		CACHE_KEYS.zombies.byId(id),
+		CACHE_KEYS.games.all,
+		CACHE_KEYS.maps.all,
+	)
 
 	return await getZombieByIdEffect(id).pipe(
 		Effect.withLogSpan("get_zombie_by_id_cached"),

@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload"
 import { anyone, isAuthenticated } from "./access/access-control"
+import { handleDelete } from "./hooks/handle-delete"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const AmmoMods: CollectionConfig = {
 	slug: "ammoMods",
@@ -79,4 +81,8 @@ export const AmmoMods: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterDelete: [handleDelete],
+		afterChange: [revalidateCollection],
+	},
 }

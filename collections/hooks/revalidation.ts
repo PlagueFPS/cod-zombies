@@ -10,9 +10,11 @@ export const revalidateCollection: CollectionAfterChangeHook = ({
 	req: { payload },
 }) => {
 	if (operation === "create") return
+	const isPublishing = previousDoc?._status !== "published" && doc._status === "published"
+	const isUnpublishing = previousDoc?._status === "published" && doc._status !== "published"
 
-	// Skip if the document's status hasn't changed
-	if (previousDoc._status === doc._status) return
+	// Skip if the document isn't being published or unpublished
+	if (!isPublishing && !isUnpublishing) return
 
 	switch (collection.slug) {
 		case "zombies": {

@@ -1,6 +1,8 @@
 import type { CollectionConfig } from "payload"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { formatSlug } from "./hooks/format-slug"
+import { handleDelete } from "./hooks/handle-delete"
+import { revalidateCollection } from "./hooks/revalidation"
 
 export const Legal: CollectionConfig = {
 	slug: "legal",
@@ -60,4 +62,8 @@ export const Legal: CollectionConfig = {
 			},
 		},
 	],
+	hooks: {
+		afterDelete: [handleDelete],
+		afterChange: [revalidateCollection],
+	},
 }
