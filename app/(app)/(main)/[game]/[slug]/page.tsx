@@ -46,12 +46,7 @@ export const generateMetadata = async ({
 
 	const title = `${quest.title} Main Quest`
 	const description = `Learn how to complete the main quest/easter egg for the ${quest.game.title} zombies map ${quest.title} with our detailed step-by-step walkthrough!`
-	let imageUrl = null
-
-	if (!IN_DEVELOPMENT && env.OG_GENERATION_ENABLED) {
-		// Avoid potential og generations based on draft content
-		imageUrl = await getCachedImageUrl("maps", quest)
-	}
+	const imageUrl = await getCachedImageUrl("maps", quest)
 
 	return {
 		title,

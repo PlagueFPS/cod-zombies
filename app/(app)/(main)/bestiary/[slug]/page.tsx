@@ -63,8 +63,8 @@ export const generateMetadata = async ({
 		notFound()
 	}
 
-	let imageUrl = null
-	if (!IN_DEVELOPMENT && env.OG_GENERATION_ENABLED && zombie.games[0] && zombie.maps[0]) {
+	let imageUrl = zombie.image.url
+	if (env.VERCEL_ENV === "production" && zombie.games[0] && zombie.maps[0]) {
 		// Avoid potential og generations based on draft content
 		imageUrl = await getCachedImageUrl("zombies", {
 			...zombie,
@@ -136,7 +136,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-4">
-						{zombie._status === "draft" ? <DraftBadge /> : null}
+						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
 						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 					</div>
@@ -419,7 +419,7 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					{zombie._status === "draft" ? <DraftBadge /> : null}
+					{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
 					{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
 					<TypeBadge type={zombie.type} />
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

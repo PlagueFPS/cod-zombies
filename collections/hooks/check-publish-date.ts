@@ -1,4 +1,5 @@
 import type { FieldHook } from "payload"
+import { isFirstTimePublish } from "@/utils/payload-utils"
 
 export const CheckPublishDate: FieldHook = ({ originalDoc, value, data }) => {
 	// If the field already has a value, preserve it
@@ -7,7 +8,7 @@ export const CheckPublishDate: FieldHook = ({ originalDoc, value, data }) => {
 	}
 
 	// Only set firstPublishedAt if the document is being published for the first time
-	if (data?._status === "published" && originalDoc?._status !== "published") {
+	if (isFirstTimePublish(originalDoc?._status, data?._status)) {
 		return new Date()
 	}
 

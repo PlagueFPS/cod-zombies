@@ -1,7 +1,7 @@
 import type { SerializedHeadingNode } from "@payloadcms/richtext-lexical"
 import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
-import type { Media } from "@/types/payload-types"
+import type { MainQuest, Media } from "@/types/payload-types"
 import { convertLexicalToPlaintext } from "@payloadcms/richtext-lexical/plaintext"
 import { Duration, Effect, Predicate } from "effect"
 import { RelationshipError } from "@/types/errors"
@@ -67,4 +67,11 @@ export const isDocumentNew = (firstPublishedAt: string | null | undefined) => {
 	const publishedTime = new Date(firstPublishedAt).getTime()
 	const passedTime = Duration.subtract(currentTime, publishedTime).pipe(Duration.toMillis)
 	return Duration.lessThan(passedTime, MAX_NEW_TIME)
+}
+
+export const isFirstTimePublish = (
+	previousStatus: MainQuest["_status"],
+	currentStatus: MainQuest["_status"],
+) => {
+	return previousStatus !== "published" && currentStatus === "published"
 }

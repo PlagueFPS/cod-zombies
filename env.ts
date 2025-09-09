@@ -16,8 +16,8 @@ export const env = createEnv({
 		IMAGE_API_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		PAYLOAD_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		VERCEL_ENV: Schema.standardSchemaV1(Schema.NonEmptyString),
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		OG_GENERATION_ENABLED: Schema.standardSchemaV1(Schema.BooleanFromString.annotations({ message: (issue) => `Received ${issue.actual}. NOTE: Never set this to true unless on any context that isn't the current live production context.`})),
 	},
 	client: {
 		NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),

@@ -48,47 +48,48 @@ export const getCachedImageUrl = cache(async (type: TAllowedSlugs, entry: ValidE
  * @example
  * const imageUrl = yield* getImageUrl("maps", entryObject) // https://example.com/og-image-url.jpg
  */
-const getImageUrl = Effect.fnUntraced(function* (type: TAllowedSlugs, entry: ValidEntry) {
-	if (!env.OG_GENERATION_ENABLED) {
-		yield* Effect.log("Skipping image generation")
-		return entry.image.url
-	}
+const getImageUrl = (type: TAllowedSlugs, entry: ValidEntry) =>
+	Effect.gen(function* () {
+		if (env.VERCEL_ENV !== "production") {
+			yield* Effect.log("Skipping image generation")
+			return entry.image.url
+		}
 
-	const httpClient = (yield* HttpClient.HttpClient).pipe(
-		HttpClient.retryTransient({
-			times: 3,
-			schedule: Schedule.exponential("500 millis", 2),
-		}),
-	)
-	const response = yield* httpClient.post(
-		"https://api-codzombiesguides.netlify.app/get-image-url",
-		{
-			urlParams: {
-				type,
-			},
-			headers: {
-				Authorization: Redacted.value(env.IMAGE_API_TOKEN),
-			},
-			body: yield* HttpBody.jsonSchema(ImageBodySchema)({
-				id: entry.id,
-				slug: entry.slug,
-				title: entry.title,
-				updatedAt: entry.updatedAt,
-				game: entry.game.title,
-				image: {
-					url: entry.image.url ?? "",
-					width: entry.image.width ?? 1200,
-					height: entry.image.height ?? 630,
-				},
-				timeToRead: Predicate.hasProperty(entry, "timeToRead") ? entry.timeToRead : undefined,
-				map: Predicate.hasProperty(entry, "map") ? entry.map.title : undefined,
-				type: Predicate.hasProperty(entry, "type") ? entry.type : undefined,
-				difficulty: Predicate.hasProperty(entry, "difficulty")
-					? (entry.difficulty ?? undefined)
-					: undefined,
+		const httpClient = (yield* HttpClient.HttpClient).pipe(
+			HttpClient.retryTransient({
+				times: 3,
+				schedule: Schedule.exponential("500 millis", 2),
 			}),
-		},
-	)
+		)
+		const response = yield* httpClient.post(
+			"https://api-codzombiesguides.netlify.app/get-image-url",
+			{
+				urlParams: {
+					type,
+				},
+				headers: {
+					Authorization: Redacted.value(env.IMAGE_API_TOKEN),
+				},
+				body: yield* HttpBody.jsonSchema(ImageBodySchema)({
+					id: entry.id,
+					slug: entry.slug,
+					title: entry.title,
+					updatedAt: entry.updatedAt,
+					game: entry.game.title,
+					image: {
+						url: entry.image.url ?? "",
+						width: entry.image.width ?? 1200,
+						height: entry.image.height ?? 630,
+					},
+					timeToRead: Predicate.hasProperty(entry, "timeToRead") ? entry.timeToRead : undefined,
+					map: Predicate.hasProperty(entry, "map") ? entry.map.title : undefined,
+					type: Predicate.hasProperty(entry, "type") ? entry.type : undefined,
+					difficulty: Predicate.hasProperty(entry, "difficulty")
+						? (entry.difficulty ?? undefined)
+						: undefined,
+				}),
+			},
+		)
 
-	return yield* response.text
-}, Effect.withLogSpan("get_image_url"))
+		return yield* response.text
+	}).pipe(Effect.withLogSpan("get_image_url"))

@@ -4,7 +4,7 @@ import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-badges"
+import { ComingSoonBadge, DraftBadge, NewBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import GuideFeedback from "@/components/guide-feedback/guide-feedback"
@@ -46,12 +46,7 @@ export const generateMetadata = async ({
 
 	const title = `${quest.title} Side Quest`
 	const description = `Learn how to complete the ${quest.title} side quest/easter egg for ${quest.map.title} with our detailed step-by-step walkthrough!`
-	let imageUrl = null
-
-	if (!IN_DEVELOPMENT && env.OG_GENERATION_ENABLED) {
-		// Avoid potential og generations based on draft content
-		imageUrl = await getCachedImageUrl("side-quests", quest)
-	}
+	const imageUrl = await getCachedImageUrl("side-quests", quest)
 
 	return {
 		title,
@@ -133,6 +128,7 @@ export default async function SideQuestPage({
 									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
+									{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
 									{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{quest.game.title}
@@ -238,7 +234,8 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					{/* {quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null} */}
+					{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
+					{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{quest.map.title}
 					</Badge>

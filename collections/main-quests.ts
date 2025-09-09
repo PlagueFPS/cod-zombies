@@ -6,6 +6,7 @@ import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-con
 import { CheckPublishDate } from "./hooks/check-publish-date"
 import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
+import { sendBroadcast } from "./hooks/send-broadcast"
 
 export const MainQuests: CollectionConfig = {
 	slug: "mainQuests",
@@ -62,7 +63,7 @@ export const MainQuests: CollectionConfig = {
 				},
 			},
 			hooks: {
-				beforeChange: [CheckPublishDate],
+				beforeValidate: [CheckPublishDate],
 			},
 		},
 		{
@@ -109,7 +110,7 @@ export const MainQuests: CollectionConfig = {
 		},
 	],
 	hooks: {
-		afterChange: [revalidateCollection],
+		afterChange: [revalidateCollection, sendBroadcast],
 		afterDelete: [handleDelete],
 	},
 }
