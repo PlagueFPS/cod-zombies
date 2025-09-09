@@ -71,8 +71,20 @@ export const getAdjacentMapsWithQuest = cache(async (currentReleaseDate: string)
 	)
 
 	return {
-		prevMap,
-		nextMap,
+		prevMap: prevMap ? {
+			...prevMap,
+			game: {
+				title: prevMap.game.title,
+				slug: prevMap.game.slug,
+			}
+		} : null,
+		nextMap: nextMap ? {
+			...nextMap,
+			game: {
+				title: nextMap.game.title,
+				slug: nextMap.game.slug
+			}
+		} : null
 	}
 })
 
@@ -150,7 +162,10 @@ const getMapsWithQuestEffect = Effect.gen(function* () {
 						slug: map.slug,
 						description: map.description,
 						image: createMediaDto(image),
-						game,
+						game: {
+							title: game.title,
+							slug: game.slug,
+						},
 						difficulty: quest?.difficulty,
 						isComingSoon: quest?.isComingSoon ?? false,
 						_status: quest?._status,

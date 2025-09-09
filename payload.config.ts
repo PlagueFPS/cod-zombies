@@ -123,6 +123,9 @@ export default buildConfig({
 		migrationDir: "./data/db/migrations",
 		generateSchemaOutputFile: "./data/db/payload-generated.schema.ts",
 		idType: "uuid",
+		transactionOptions: {
+			behavior: "deferred",
+		},
 	}),
 	email: resendAdapter({
 		defaultFromAddress: "support@codzombiesguides.com",
