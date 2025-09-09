@@ -1,7 +1,4 @@
 import type { CollectionConfig } from "payload"
-import { Redacted } from "effect"
-import { getMapById } from "@/data/maps"
-import { env } from "@/env"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { CheckPublishDate } from "./hooks/check-publish-date"
 import { handleDelete } from "./hooks/handle-delete"
@@ -19,15 +16,6 @@ export const MainQuests: CollectionConfig = {
 	admin: {
 		useAsTitle: "title",
 		defaultColumns: ["title", "isComingSoon", "map", "_status", "updatedAt"],
-		livePreview: {
-			url: async ({ data, req }) => {
-				if (!data.map) return "#"
-
-				const map = await getMapById(data.map)
-				const path = `/${map?.game.slug}/${map?.slug}`
-				return `${req.protocol}//${req.host}/api/draft/live-preview?path=${encodeURIComponent(path)}&secret=${encodeURIComponent(Redacted.value(env.DRAFT_SECRET))}`
-			},
-		},
 	},
 	defaultPopulate: {
 		title: true,
@@ -58,7 +46,7 @@ export const MainQuests: CollectionConfig = {
 				readOnly: true,
 				position: "sidebar",
 				date: {
-					displayFormat: "MM dd yyyy hh:mm a",
+					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
 			},

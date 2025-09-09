@@ -62,7 +62,7 @@ export const Zombies: CollectionConfig = {
 				readOnly: true,
 				position: "sidebar",
 				date: {
-					displayFormat: "MM dd yyyy hh:mm a",
+					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
 			},
