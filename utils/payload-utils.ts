@@ -60,11 +60,11 @@ export const extractHeadings = (content: SerializedEditorState) => {
 	return headings
 }
 
-export const isDocumentNew = (firstPublishedAt: string | null | undefined) => {
-	if (!firstPublishedAt) return false
+export const isDocumentNew = (newAt: string | null | undefined) => {
+	if (!newAt) return false
 
 	const currentTime = Date.now()
-	const publishedTime = new Date(firstPublishedAt).getTime()
+	const publishedTime = new Date(newAt).getTime()
 	const passedTime = Duration.subtract(currentTime, publishedTime).pipe(Duration.toMillis)
 	return Duration.lessThan(passedTime, MAX_NEW_TIME)
 }

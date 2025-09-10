@@ -19,23 +19,29 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const alt = `${zombie.title} Image`
 
 	return (
-		<article className={cn("h-full max-h-113", { "pointer-events-none": zombie.isComingSoon })}>
+		<article
+			className={cn("h-full max-h-113", { "pointer-events-none": zombie.state === "Coming Soon" })}
+		>
 			<CustomLink
-				href={zombie.isComingSoon ? `#` : `/bestiary/${zombie.slug}`}
+				href={zombie.state === "Coming Soon" ? `#` : `/bestiary/${zombie.slug}`}
 				aria-label={`View details for ${zombie.title}`}
-				aria-disabled={zombie.isComingSoon ?? undefined}
+				aria-disabled={zombie.state === "Coming Soon"}
 				className="group outline-none"
-				tabIndex={zombie.isComingSoon ? -1 : 0}
+				tabIndex={zombie.state === "Coming Soon" ? -1 : 0}
 			>
 				<Card
 					className={cn(
 						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
-						{ "opacity-75 dark:opacity-50": zombie.isComingSoon },
+						{ "opacity-75 dark:opacity-50": zombie.state === "Coming Soon" },
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
 						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
-						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
+						{zombie.state === "Coming Soon" ? (
+							<ComingSoonBadge />
+						) : zombie.state === "New" ? (
+							<NewBadge />
+						) : null}
 						<TypeBadge type={zombie.type} />
 						{zombie.maps[0] ? (
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

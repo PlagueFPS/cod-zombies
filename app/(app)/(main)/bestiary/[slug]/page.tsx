@@ -59,7 +59,7 @@ export const generateMetadata = async ({
 }: PageProps<"/bestiary/[slug]">): Promise<Metadata> => {
 	const { slug } = await params
 	const zombie = await getZombieBySlug(slug)
-	if (!zombie || zombie.isComingSoon) {
+	if (!zombie || zombie.state === "Coming Soon") {
 		notFound()
 	}
 
@@ -106,7 +106,7 @@ export const generateMetadata = async ({
 export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]">) {
 	const { slug } = await params
 	const zombie = await getZombieBySlug(slug)
-	if (!zombie || zombie.isComingSoon) {
+	if (!zombie || zombie.state === "Coming Soon") {
 		notFound()
 	}
 
@@ -137,7 +137,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-4">
 						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
-						{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
+						{zombie.state === "New" ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 					</div>
 					<ShareButton
@@ -406,10 +406,10 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary xl:max-w-full dark:shadow-none",
 				{
-					"pointer-events-none opacity-50": zombie.isComingSoon,
+					"pointer-events-none opacity-50": zombie.state === "Coming Soon",
 				},
 			)}
-			tabIndex={zombie.isComingSoon ? -1 : 0}
+			tabIndex={zombie.state === "Coming Soon" ? -1 : 0}
 		>
 			<article
 				className={cn("relative flex h-full flex-col items-center px-2 py-4 xl:h-48 xl:flex-row", {
@@ -420,7 +420,11 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
 					{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
-					{zombie.isComingSoon ? <ComingSoonBadge /> : zombie.isNew ? <NewBadge /> : null}
+					{zombie.state === "Coming Soon" ? (
+						<ComingSoonBadge />
+					) : zombie.state === "New" ? (
+						<NewBadge />
+					) : null}
 					<TypeBadge type={zombie.type} />
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{zombie.map.title}

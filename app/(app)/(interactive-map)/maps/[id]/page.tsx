@@ -24,7 +24,7 @@ export const generateStaticParams = () => {
 export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Promise<Metadata> => {
 	const { id } = await params
 	const config = await getMapConfig(id as MapId)
-	if (!config || config.isComingSoon) notFound()
+	if (!config || config.state === "Coming Soon") notFound()
 	const title = `${config.title} Interactive Map`
 
 	return {
@@ -55,7 +55,7 @@ export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Pro
 export default async function InteractiveMapPage({ params }: PageProps<"/maps/[id]">) {
 	const [{ id }, cookieStore] = await Promise.all([params, cookies()])
 	const config = await getMapConfig(id as MapId)
-	if (!config) notFound()
+	if (!config || config.state === "Coming Soon") notFound()
 	const availableMaps = getAvailableMaps()
 	const sidebarState = cookieStore.get("sidebar_state")?.value
 	const defaultOpen = sidebarState ? sidebarState === "true" : true

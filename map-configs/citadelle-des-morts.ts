@@ -5,6 +5,7 @@ const citadelleDesMorts: MapConfig = {
 	id: "citadelle-des-morts",
 	title: "Citadelle Des Morts",
 	game: "Black Ops 6",
+	state: null,
 	description:
 		"Explore Citadelle Des Morts in BO6 Zombies. Find all Points of Power & Oil Traps, Fast Travels, intel, and more with our interactive map.",
 	layers: [

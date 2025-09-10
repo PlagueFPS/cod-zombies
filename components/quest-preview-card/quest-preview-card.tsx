@@ -44,31 +44,35 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 	return (
 		<article
 			className={cn("h-full max-h-110", {
-				"pointer-events-none": quest.isComingSoon,
+				"pointer-events-none": quest.state === "Coming Soon",
 			})}
 		>
 			<CustomLink
 				href={
-					quest.isComingSoon
+					quest.state === "Coming Soon"
 						? "#"
 						: Predicate.hasProperty(quest, "map")
 							? `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 							: `/${quest.game.slug}/${quest.slug}`
 				}
 				aria-label={`View Guide for ${quest.title}`}
-				aria-disabled={quest.isComingSoon ?? undefined}
+				aria-disabled={quest.state === "Coming Soon"}
 				className="group outline-none"
-				tabIndex={quest.isComingSoon ? -1 : 0}
+				tabIndex={quest.state === "Coming Soon" ? -1 : 0}
 			>
 				<Card
 					className={cn(
 						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
-						{ "opacity-75 dark:opacity-50": quest.isComingSoon },
+						{ "opacity-75 dark:opacity-50": quest.state === "Coming Soon" },
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end gap-1">
 						{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
-						{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
+						{quest.state === "Coming Soon" ? (
+							<ComingSoonBadge />
+						) : quest.state === "New" ? (
+							<NewBadge />
+						) : null}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.game.title}

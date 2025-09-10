@@ -4,12 +4,7 @@ import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import {
-	assertRelation,
-	calculateTimeToRead,
-	createMediaDto,
-	isDocumentNew,
-} from "@/utils/payload-utils"
+import { assertRelation, calculateTimeToRead, createMediaDto } from "@/utils/payload-utils"
 
 export type MainQuestBySlug = NonNullable<Awaited<ReturnType<typeof getMainQuestBySlug>>>
 
@@ -114,8 +109,8 @@ const getMainQuestMetadataEffect = Effect.gen(function* () {
 				pagination: false,
 				draft: IN_DEVELOPMENT,
 				where: {
-					isComingSoon: {
-						not_equals: true,
+					state: {
+						not_equals: "Coming Soon",
 					},
 				},
 				select: {
@@ -202,12 +197,12 @@ const getMainQuestBySlugEffect = (slug: string) =>
 						const game = yield* assertRelation(map.game)
 						const image = yield* assertRelation(map.image)
 						const timeToRead = calculateTimeToRead(quest.content)
-						const isNew = isDocumentNew(quest.firstPublishedAt)
 
 						return {
 							id: quest.id,
 							mapId: map.id,
 							gameId: game.id,
+							state: quest.state,
 							releaseDate: map.releaseDate,
 							updatedAt: quest.updatedAt,
 							title: map.title,
@@ -220,10 +215,8 @@ const getMainQuestBySlugEffect = (slug: string) =>
 							},
 							image: createMediaDto(image),
 							content: quest.content,
-							isComingSoon: quest.isComingSoon,
 							difficulty: quest.difficulty,
 							_status: quest._status,
-							isNew,
 						}
 					}),
 				),

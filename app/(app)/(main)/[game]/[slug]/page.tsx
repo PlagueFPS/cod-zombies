@@ -45,7 +45,7 @@ export const generateMetadata = async ({
 
 	const title = `${quest.title} Main Quest`
 	const description = `Learn how to complete the main quest/easter egg for the ${quest.game.title} zombies map ${quest.title} with our detailed step-by-step walkthrough!`
-	const imageUrl = await getCachedImageUrl("maps", quest)
+	const imageUrl = await getCachedImageUrl("mainQuests", quest)
 
 	return {
 		title,
@@ -79,7 +79,7 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 	const { slug } = await params
 	const quest = await getMainQuestBySlug(slug)
 	if (!quest) notFound()
-	const headings = quest.isComingSoon ? [] : extractHeadings(quest.content)
+	const headings = quest.state === "Coming Soon" ? [] : extractHeadings(quest.content)
 	const timeToRead = calculateTimeToRead(quest.content)
 
 	return (
@@ -120,7 +120,11 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
-									{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
+									{quest.state === "Coming Soon" ? (
+										<ComingSoonBadge />
+									) : quest.state === "New" ? (
+										<NewBadge />
+									) : null}
 									{quest.difficulty && <DifficultyBadge difficulty={quest.difficulty} />}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{quest.game.title}
@@ -149,7 +153,7 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 								/>
 							</div>
 						</div>
-						{quest.isComingSoon && !IN_DEVELOPMENT ? (
+						{quest.state === "Coming Soon" && !IN_DEVELOPMENT ? (
 							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 								<p className="font-bold text-xl">
 									This article is currently being written and will take some time before being
@@ -202,14 +206,14 @@ const PrevOrNextMapCard = ({ map, prev }: PrevOrNextCard) => {
 
 	return (
 		<CustomLink
-			href={map.isComingSoon ? "#" : `/${map.game.slug}/${map.slug}`}
+			href={map.state === "Coming Soon" ? "#" : `/${map.game.slug}/${map.slug}`}
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
-					"pointer-events-none opacity-50": map.isComingSoon,
+					"pointer-events-none opacity-50": map.state === "Coming Soon",
 				},
 			)}
-			tabIndex={map.isComingSoon ? -1 : 0}
+			tabIndex={map.state === "Coming Soon" ? -1 : 0}
 		>
 			<article
 				className={cn(
@@ -222,7 +226,11 @@ const PrevOrNextMapCard = ({ map, prev }: PrevOrNextCard) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					{map.isComingSoon ? <ComingSoonBadge /> : map.isNew ? <NewBadge /> : null}
+					{map.state === "Coming Soon" ? (
+						<ComingSoonBadge />
+					) : map.state === "New" ? (
+						<NewBadge />
+					) : null}
 					{map.difficulty && <DifficultyBadge difficulty={map.difficulty} />}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{map.game.title}

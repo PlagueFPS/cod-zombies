@@ -46,7 +46,7 @@ export const generateMetadata = async ({
 
 	const title = `${quest.title} Side Quest`
 	const description = `Learn how to complete the ${quest.title} side quest/easter egg for ${quest.map.title} with our detailed step-by-step walkthrough!`
-	const imageUrl = await getCachedImageUrl("side-quests", quest)
+	const imageUrl = await getCachedImageUrl("sideQuests", quest)
 
 	return {
 		title,
@@ -82,7 +82,7 @@ export default async function SideQuestPage({
 	const { slug } = await params
 	const quest = await getSideQuestBySlug(slug)
 	if (!quest) notFound()
-	const headings = quest.isComingSoon ? [] : extractHeadings(quest.content)
+	const headings = quest.state === "Coming Soon" ? [] : extractHeadings(quest.content)
 	const timeToRead = calculateTimeToRead(quest.content)
 
 	return (
@@ -129,7 +129,11 @@ export default async function SideQuestPage({
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
 									{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
-									{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
+									{quest.state === "Coming Soon" ? (
+										<ComingSoonBadge />
+									) : quest.state === "New" ? (
+										<NewBadge />
+									) : null}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{quest.game.title}
 									</Badge>
@@ -160,7 +164,7 @@ export default async function SideQuestPage({
 								/>
 							</div>
 						</div>
-						{quest.isComingSoon ? (
+						{quest.state === "Coming Soon" ? (
 							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 								<p className="font-bold text-xl">
 									This article is currently being written and will take some time before being
@@ -214,12 +218,14 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 	return (
 		<CustomLink
 			href={
-				quest.isComingSoon ? "#" : `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
+				quest.state === "Coming Soon"
+					? "#"
+					: `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
 			}
 			className={cn(
 				"group w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform hover:scale-105 hover:border-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
-					"pointer-events-none opacity-50": quest.isComingSoon,
+					"pointer-events-none opacity-50": quest.state === "Coming Soon",
 				},
 			)}
 		>
@@ -235,7 +241,11 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
 					{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
-					{quest.isComingSoon ? <ComingSoonBadge /> : quest.isNew ? <NewBadge /> : null}
+					{quest.state === "Coming Soon" ? (
+						<ComingSoonBadge />
+					) : quest.state === "New" ? (
+						<NewBadge />
+					) : null}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{quest.map.title}
 					</Badge>

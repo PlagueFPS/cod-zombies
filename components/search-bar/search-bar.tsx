@@ -22,7 +22,7 @@ export default async function SearchBar({ showFull }: ISearchBar) {
 		zombiesPromise,
 	])
 	const mainQuestsDtos = mainQuests
-		.filter(q => !q.isComingSoon)
+		.filter(q => q.state !== "Coming Soon")
 		.map(q => ({
 			id: q.id,
 			slug: q.slug,
@@ -33,7 +33,7 @@ export default async function SearchBar({ showFull }: ISearchBar) {
 			},
 		}))
 	const sideQuestsDtos = sideQuests
-		.filter(q => !q.isComingSoon)
+		.filter(q => q.state !== "Coming Soon")
 		.map(q => ({
 			id: q.id,
 			slug: q.slug,

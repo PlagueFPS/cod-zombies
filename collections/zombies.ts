@@ -1,9 +1,10 @@
 import type { CollectionConfig } from "payload"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
-import { CheckPublishDate } from "./hooks/check-publish-date"
+import { CheckNewDate } from "./hooks/check-new-date"
 import { formatSlug } from "./hooks/format-slug"
 import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
+import { triggerBroadcast } from "./hooks/trigger-broadcast"
 
 export const Zombies: CollectionConfig = {
 	slug: "zombies",
@@ -15,7 +16,7 @@ export const Zombies: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "isComingSoon", "type", "status", "updatedAt"],
+		defaultColumns: ["title", "state", "type", "status", "updatedAt"],
 	},
 	defaultSort: "-releaseDate",
 	defaultPopulate: {
@@ -55,10 +56,11 @@ export const Zombies: CollectionConfig = {
 			},
 		},
 		{
-			name: "firstPublishedAt",
+			name: "newAt",
+			label: "Marked 'New' date",
 			type: "date",
 			admin: {
-				description: "Timestamp of when this zombie was first published.",
+				description: "Timestamp of when this main quest was marked as 'New'.",
 				readOnly: true,
 				position: "sidebar",
 				date: {
@@ -67,7 +69,20 @@ export const Zombies: CollectionConfig = {
 				},
 			},
 			hooks: {
-				beforeChange: [CheckPublishDate],
+				beforeValidate: [CheckNewDate],
+			},
+		},
+		{
+			name: "state",
+			label: "State",
+			type: "select",
+			options: [
+				{ label: "Coming Soon", value: "Coming Soon" },
+				{ label: "New", value: "New" },
+			],
+			admin: {
+				description:
+					"State this main quest should release in. Note: The 'New' state will automatically be removed two weeks after it is marked as 'New'.",
 			},
 		},
 		{
@@ -82,16 +97,6 @@ export const Zombies: CollectionConfig = {
 					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
-			},
-		},
-		{
-			name: "isComingSoon",
-			label: "Coming Soon",
-			type: "checkbox",
-			defaultValue: false,
-			admin: {
-				description:
-					"Determines if this zombie should show a 'Coming Soon' badge and have the main page not be accessible.",
 			},
 		},
 		{
@@ -217,7 +222,7 @@ export const Zombies: CollectionConfig = {
 		},
 	],
 	hooks: {
-		afterChange: [revalidateCollection],
+		afterChange: [revalidateCollection, triggerBroadcast],
 		afterDelete: [handleDelete],
 	},
 }

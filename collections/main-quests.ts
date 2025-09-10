@@ -1,9 +1,9 @@
 import type { CollectionConfig } from "payload"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
-import { CheckPublishDate } from "./hooks/check-publish-date"
+import { CheckNewDate } from "./hooks/check-new-date"
 import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
-import { sendBroadcast } from "./hooks/send-broadcast"
+import { triggerBroadcast } from "./hooks/trigger-broadcast"
 
 export const MainQuests: CollectionConfig = {
 	slug: "mainQuests",
@@ -15,15 +15,13 @@ export const MainQuests: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "isComingSoon", "map", "_status", "updatedAt"],
+		defaultColumns: ["title", "state", "map", "_status", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,
 	},
 	versions: {
-		drafts: {
-			autosave: true,
-		},
+		drafts: true,
 		maxPerDoc: 3,
 	},
 	fields: [
@@ -39,10 +37,11 @@ export const MainQuests: CollectionConfig = {
 			},
 		},
 		{
-			name: "firstPublishedAt",
+			name: "newAt",
+			label: "Marked 'New' date",
 			type: "date",
 			admin: {
-				description: "Timestamp of when this main quest was first published.",
+				description: "Timestamp of when this main quest was marked as 'New'.",
 				readOnly: true,
 				position: "sidebar",
 				date: {
@@ -51,16 +50,20 @@ export const MainQuests: CollectionConfig = {
 				},
 			},
 			hooks: {
-				beforeValidate: [CheckPublishDate],
+				beforeValidate: [CheckNewDate],
 			},
 		},
 		{
-			name: "isComingSoon",
-			type: "checkbox",
-			defaultValue: false,
+			name: "state",
+			label: "State",
+			type: "select",
+			options: [
+				{ label: "Coming Soon", value: "Coming Soon" },
+				{ label: "New", value: "New" },
+			],
 			admin: {
 				description:
-					"Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.",
+					"State this main quest should release in. Note: The 'New' state will automatically be removed two weeks after it is marked as 'New'.",
 			},
 		},
 		{
@@ -98,7 +101,7 @@ export const MainQuests: CollectionConfig = {
 		},
 	],
 	hooks: {
-		afterChange: [revalidateCollection, sendBroadcast],
+		afterChange: [revalidateCollection, triggerBroadcast],
 		afterDelete: [handleDelete],
 	},
 }

@@ -190,10 +190,8 @@ export const main_quests = sqliteTable(
       .primaryKey()
       .$defaultFn(() => randomUUID()),
     title: text("title"),
-    firstPublishedAt: text("first_published_at").default(
-      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
-    ),
-    isComingSoon: integer("is_coming_soon", { mode: "boolean" }).default(false),
+    newAt: text("new_at").default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    state: text("state", { enum: ["Coming Soon", "New"] }),
     difficulty: text("difficulty", { enum: ["Easy", "Medium", "Hard"] }),
     map: text("map_id").references(() => maps.id, {
       onDelete: "set null",
@@ -234,12 +232,10 @@ export const _main_quests_v = sqliteTable(
       onDelete: "set null",
     }),
     version_title: text("version_title"),
-    version_firstPublishedAt: text("version_first_published_at").default(
+    version_newAt: text("version_new_at").default(
       sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     ),
-    version_isComingSoon: integer("version_is_coming_soon", {
-      mode: "boolean",
-    }).default(false),
+    version_state: text("version_state", { enum: ["Coming Soon", "New"] }),
     version_difficulty: text("version_difficulty", {
       enum: ["Easy", "Medium", "Hard"],
     }),
@@ -263,7 +259,6 @@ export const _main_quests_v = sqliteTable(
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
     latest: integer("latest", { mode: "boolean" }),
-    autosave: integer("autosave", { mode: "boolean" }),
   },
   (columns) => ({
     _main_quests_v_parent_idx: index("_main_quests_v_parent_idx").on(
@@ -293,9 +288,6 @@ export const _main_quests_v = sqliteTable(
     _main_quests_v_latest_idx: index("_main_quests_v_latest_idx").on(
       columns.latest,
     ),
-    _main_quests_v_autosave_idx: index("_main_quests_v_autosave_idx").on(
-      columns.autosave,
-    ),
   }),
 );
 
@@ -307,10 +299,8 @@ export const side_quests = sqliteTable(
       .$defaultFn(() => randomUUID()),
     title: text("title"),
     slug: text("slug"),
-    firstPublishedAt: text("first_published_at").default(
-      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
-    ),
-    isComingSoon: integer("is_coming_soon", { mode: "boolean" }).default(false),
+    newAt: text("new_at").default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    state: text("state", { enum: ["Coming Soon", "New"] }),
     map: text("map_id").references(() => maps.id, {
       onDelete: "set null",
     }),
@@ -351,12 +341,10 @@ export const _side_quests_v = sqliteTable(
     }),
     version_title: text("version_title"),
     version_slug: text("version_slug"),
-    version_firstPublishedAt: text("version_first_published_at").default(
+    version_newAt: text("version_new_at").default(
       sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     ),
-    version_isComingSoon: integer("version_is_coming_soon", {
-      mode: "boolean",
-    }).default(false),
+    version_state: text("version_state", { enum: ["Coming Soon", "New"] }),
     version_map: text("version_map_id").references(() => maps.id, {
       onDelete: "set null",
     }),
@@ -425,13 +413,11 @@ export const zombies = sqliteTable(
       .$defaultFn(() => randomUUID()),
     title: text("title"),
     slug: text("slug"),
-    firstPublishedAt: text("first_published_at").default(
-      sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
-    ),
+    newAt: text("new_at").default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+    state: text("state", { enum: ["Coming Soon", "New"] }),
     releaseDate: text("release_date").default(
       sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     ),
-    isComingSoon: integer("is_coming_soon", { mode: "boolean" }).default(false),
     image: text("image_id").references(() => media.id, {
       onDelete: "set null",
     }),
@@ -541,15 +527,13 @@ export const _zombies_v = sqliteTable(
     }),
     version_title: text("version_title"),
     version_slug: text("version_slug"),
-    version_firstPublishedAt: text("version_first_published_at").default(
+    version_newAt: text("version_new_at").default(
       sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     ),
+    version_state: text("version_state", { enum: ["Coming Soon", "New"] }),
     version_releaseDate: text("version_release_date").default(
       sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
     ),
-    version_isComingSoon: integer("version_is_coming_soon", {
-      mode: "boolean",
-    }).default(false),
     version_image: text("version_image_id").references(() => media.id, {
       onDelete: "set null",
     }),

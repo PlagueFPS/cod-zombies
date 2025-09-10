@@ -5,6 +5,7 @@ const theTomb: MapConfig = {
 	id: "the-tomb",
 	title: "The Tomb",
 	game: "Black Ops 6",
+	state: null,
 	description:
 		"Explore The Tomb in BO6 Zombies. Find all Dark Aether Lanterns, Dig Spots, intel, and more with our interactive map.",
 	layers: [

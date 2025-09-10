@@ -20,10 +20,10 @@ export default async function PreviewCard({ mapId, index }: IPreviewCard) {
 			href={`/maps/${config.id}`}
 			aria-label={`View ${config.title} interactive map`}
 			className={cn("group outline-none", {
-				"pointer-events-none opacity-75 dark:opacity-50": config.isComingSoon,
+				"pointer-events-none opacity-75 dark:opacity-50": config.state === "Coming Soon",
 			})}
-			aria-disabled={config.isComingSoon}
-			tabIndex={config.isComingSoon ? -1 : 0}
+			aria-disabled={config.state === "Coming Soon"}
+			tabIndex={config.state === "Coming Soon" ? -1 : 0}
 		>
 			<div className="flex flex-col items-start justify-center gap-4">
 				<div className="flex w-full items-center justify-center overflow-hidden rounded-md shadow-xl group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none">
@@ -36,7 +36,11 @@ export default async function PreviewCard({ mapId, index }: IPreviewCard) {
 				</div>
 				<div className="flex flex-col items-start justify-center">
 					<div className="flex items-center gap-2">
-						{config.isComingSoon ? <ComingSoonBadge /> : config.isNew ? <NewBadge /> : null}
+						{config.state === "Coming Soon" ? (
+							<ComingSoonBadge />
+						) : config.state === "New" ? (
+							<NewBadge />
+						) : null}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{config.game}
 						</Badge>

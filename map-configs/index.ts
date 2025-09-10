@@ -12,8 +12,7 @@ export interface MapLayer {
 export interface MapConfig {
 	id: string
 	title: string
-	isComingSoon?: boolean
-	isNew?: boolean
+	state: "Coming Soon" | "New" | null
 	description: string
 	game: string
 	layers: MapLayer[]

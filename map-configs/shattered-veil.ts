@@ -5,6 +5,7 @@ const shatteredVeil: MapConfig = {
 	id: "shattered-veil",
 	title: "Shattered Veil",
 	game: "Black Ops 6",
+	state: null,
 	description:
 		"Explore Shattered Veil in BO6 Zombies. Find all Janus Crates, Aether Plants, Aether Crystals, Intel, and more with our interactive map.",
 	layers: [

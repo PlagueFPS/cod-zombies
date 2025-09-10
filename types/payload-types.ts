@@ -436,13 +436,13 @@ export interface MainQuest {
    */
   title: string;
   /**
-   * Timestamp of when this main quest was first published.
+   * Timestamp of when this main quest was marked as 'New'.
    */
-  firstPublishedAt?: string | null;
+  newAt?: string | null;
   /**
-   * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
+   * State this main quest should release in. Note: The 'New' state will automatically be removed two weeks after it is marked as 'New'.
    */
-  isComingSoon?: boolean | null;
+  state?: ('Coming Soon' | 'New') | null;
   /**
    * Difficulty of the main quest.
    */
@@ -488,13 +488,13 @@ export interface SideQuest {
    */
   slug: string;
   /**
-   * Timestamp of when this side quest was first published.
+   * Timestamp of when this main quest was marked as 'New'.
    */
-  firstPublishedAt?: string | null;
+  newAt?: string | null;
   /**
-   * Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.
+   * State this main quest should release in. Note: The 'New' state will automatically be removed two weeks after it is marked as 'New'.
    */
-  isComingSoon?: boolean | null;
+  state?: ('Coming Soon' | 'New') | null;
   /**
    * Map this side quest belongs to.
    */
@@ -540,17 +540,17 @@ export interface Zombie {
    */
   slug: string;
   /**
-   * Timestamp of when this zombie was first published.
+   * Timestamp of when this main quest was marked as 'New'.
    */
-  firstPublishedAt?: string | null;
+  newAt?: string | null;
+  /**
+   * State this main quest should release in. Note: The 'New' state will automatically be removed two weeks after it is marked as 'New'.
+   */
+  state?: ('Coming Soon' | 'New') | null;
   /**
    * Release date of the zombie.
    */
   releaseDate: string;
-  /**
-   * Determines if this zombie should show a 'Coming Soon' badge and have the main page not be accessible.
-   */
-  isComingSoon?: boolean | null;
   /**
    * Featured image of this zombie.
    */
@@ -1215,8 +1215,8 @@ export interface GamesSelect<T extends boolean = true> {
  */
 export interface MainQuestsSelect<T extends boolean = true> {
   title?: T;
-  firstPublishedAt?: T;
-  isComingSoon?: T;
+  newAt?: T;
+  state?: T;
   difficulty?: T;
   map?: T;
   content?: T;
@@ -1231,8 +1231,8 @@ export interface MainQuestsSelect<T extends boolean = true> {
 export interface SideQuestsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  firstPublishedAt?: T;
-  isComingSoon?: T;
+  newAt?: T;
+  state?: T;
   map?: T;
   description?: T;
   content?: T;
@@ -1247,9 +1247,9 @@ export interface SideQuestsSelect<T extends boolean = true> {
 export interface ZombiesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  firstPublishedAt?: T;
+  newAt?: T;
+  state?: T;
   releaseDate?: T;
-  isComingSoon?: T;
   image?: T;
   description?: T;
   games?: T;

@@ -6,22 +6,22 @@ import { getZombieBroadcastInfo } from "@/data/zombies"
 import { env } from "@/env"
 import { Email } from "@/lib/services/Email"
 import { Payload } from "@/lib/services/Payload"
-import { AuthorizationError } from "@/types/errors"
+import { AuthorizationError, JSONParseError } from "@/types/errors"
 import { sendQuestReleaseBroadcast, sendZombieReleaseBroadcast } from "@/usecases/email"
 import { authorizedRequest } from "@/utils/functions"
-import { decodeAllowedSlugs } from "@/utils/validation-schemas"
+import { decodeAllowedSlugs, decodeBroadcastParams } from "@/utils/validation-schemas"
 
 const broadcastLayer = Layer.merge(Email.Default, Payload.Default)
 
-export async function GET(
-	request: NextRequest,
-	{ params }: RouteContext<"/api/newsletter/send-broadcast/[collection]/[id]">,
-) {
-	const { collection, id } = await params
+export async function POST(request: NextRequest) {
 	return await Effect.gen(function* () {
+		const { collection, id } = yield* Effect.tryPromise({
+			try: () => request.json(),
+			catch: error => new JSONParseError({ message: "Invalid JSON", cause: error }),
+		}).pipe(decodeBroadcastParams)
+
 		const secret = request.headers.get("Authorization") || ""
 		const authed = yield* authorizedRequest(secret, Redacted.value(env.PAYLOAD_SECRET))
-
 		if (!authed)
 			return yield* new AuthorizationError({
 				message: "Unauthorized",
@@ -77,7 +77,7 @@ export async function GET(
 		Effect.retry({
 			while: error => error._tag === "EntryNotFoundError",
 			times: 3,
-			schedule: Schedule.exponential("300 millis", 2),
+			schedule: Schedule.exponential("500 millis", 2),
 		}),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(new Response(error.message, { status: 401 })),

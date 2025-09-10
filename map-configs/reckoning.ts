@@ -4,7 +4,7 @@ import { perks, sharedMarkers, weapons } from "./markers"
 const reckoning: MapConfig = {
 	id: "reckoning",
 	title: "Reckoning",
-	isNew: true,
+	state: null,
 	game: "Black Ops 6",
 	description:
 		"Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our Reckoning interactive map in Black Ops 6 Zombies.",

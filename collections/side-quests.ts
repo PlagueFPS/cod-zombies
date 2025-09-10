@@ -1,9 +1,10 @@
 import type { CollectionConfig } from "payload"
 import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
-import { CheckPublishDate } from "./hooks/check-publish-date"
+import { CheckNewDate } from "./hooks/check-new-date"
 import { formatSlug } from "./hooks/format-slug"
 import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
+import { triggerBroadcast } from "./hooks/trigger-broadcast"
 
 export const SideQuests: CollectionConfig = {
 	slug: "sideQuests",
@@ -15,7 +16,7 @@ export const SideQuests: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
-		defaultColumns: ["title", "map", "status", "updatedAt"],
+		defaultColumns: ["title", "state", "map", "status", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,
@@ -54,10 +55,11 @@ export const SideQuests: CollectionConfig = {
 			},
 		},
 		{
-			name: "firstPublishedAt",
+			name: "newAt",
+			label: "Marked 'New' date",
 			type: "date",
 			admin: {
-				description: "Timestamp of when this side quest was first published.",
+				description: "Timestamp of when this main quest was marked as 'New'.",
 				readOnly: true,
 				position: "sidebar",
 				date: {
@@ -66,16 +68,20 @@ export const SideQuests: CollectionConfig = {
 				},
 			},
 			hooks: {
-				beforeChange: [CheckPublishDate],
+				beforeValidate: [CheckNewDate],
 			},
 		},
 		{
-			name: "isComingSoon",
-			type: "checkbox",
-			defaultValue: false,
+			name: "state",
+			label: "State",
+			type: "select",
+			options: [
+				{ label: "Coming Soon", value: "Coming Soon" },
+				{ label: "New", value: "New" },
+			],
 			admin: {
 				description:
-					"Determines if this quest should show a 'Coming Soon' badge and have the main page not be accessible.",
+					"State this main quest should release in. Note: The 'New' state will automatically be removed two weeks after it is marked as 'New'.",
 			},
 		},
 		{
@@ -108,7 +114,7 @@ export const SideQuests: CollectionConfig = {
 		},
 	],
 	hooks: {
-		afterChange: [revalidateCollection],
+		afterChange: [revalidateCollection, triggerBroadcast],
 		afterDelete: [handleDelete],
 	},
 }

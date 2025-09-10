@@ -4,7 +4,7 @@ import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { assertRelation, createMediaDto, isDocumentNew } from "@/utils/payload-utils"
+import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 
 export type MapWithQuest = Awaited<ReturnType<typeof getMapsWithQuest>>[number]
 
@@ -71,20 +71,24 @@ export const getAdjacentMapsWithQuest = cache(async (currentReleaseDate: string)
 	)
 
 	return {
-		prevMap: prevMap ? {
-			...prevMap,
-			game: {
-				title: prevMap.game.title,
-				slug: prevMap.game.slug,
-			}
-		} : null,
-		nextMap: nextMap ? {
-			...nextMap,
-			game: {
-				title: nextMap.game.title,
-				slug: nextMap.game.slug
-			}
-		} : null
+		prevMap: prevMap
+			? {
+					...prevMap,
+					game: {
+						title: prevMap.game.title,
+						slug: prevMap.game.slug,
+					},
+				}
+			: null,
+		nextMap: nextMap
+			? {
+					...nextMap,
+					game: {
+						title: nextMap.game.title,
+						slug: nextMap.game.slug,
+					},
+				}
+			: null,
 	}
 })
 
@@ -135,8 +139,7 @@ const getMapsWithQuestEffect = Effect.gen(function* () {
 				},
 				populate: {
 					mainQuests: {
-						firstPublishedAt: true,
-						isComingSoon: true,
+						state: true,
 						difficulty: true,
 						_status: true,
 					},
@@ -154,7 +157,6 @@ const getMapsWithQuestEffect = Effect.gen(function* () {
 					const image = yield* assertRelation(map.image)
 					const game = yield* assertRelation(map.game)
 					const quest = map.mainQuest?.docs ? yield* assertRelation(map.mainQuest?.docs[0]) : null
-					const isNew = isDocumentNew(quest?.firstPublishedAt)
 
 					return {
 						id: map.id,
@@ -167,9 +169,8 @@ const getMapsWithQuestEffect = Effect.gen(function* () {
 							slug: game.slug,
 						},
 						difficulty: quest?.difficulty,
-						isComingSoon: quest?.isComingSoon ?? false,
+						state: quest?.state,
 						_status: quest?._status,
-						isNew,
 					}
 				}),
 			),
@@ -256,8 +257,7 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 					},
 					populate: {
 						mainQuests: {
-							firstPublishedAt: true,
-							isComingSoon: true,
+							state: true,
 							difficulty: true,
 							_status: true,
 						},
@@ -275,7 +275,6 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 						const image = yield* assertRelation(map.image)
 						const game = yield* assertRelation(map.game)
 						const quest = map.mainQuest?.docs ? yield* assertRelation(map.mainQuest?.docs[0]) : null
-						const isNew = isDocumentNew(quest?.firstPublishedAt)
 
 						return {
 							id: map.id,
@@ -289,9 +288,8 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 								slug: game.slug,
 							},
 							difficulty: quest?.difficulty,
-							isComingSoon: quest?.isComingSoon ?? false,
+							state: quest?.state,
 							_status: quest?._status,
-							isNew,
 						}
 					}),
 				),
@@ -329,8 +327,7 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 					},
 					populate: {
 						mainQuests: {
-							firstPublishedAt: true,
-							isComingSoon: true,
+							state: true,
 							difficulty: true,
 							_status: true,
 						},
@@ -348,7 +345,6 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 						const image = yield* assertRelation(map.image)
 						const game = yield* assertRelation(map.game)
 						const quest = map.mainQuest?.docs ? yield* assertRelation(map.mainQuest?.docs[0]) : null
-						const isNew = isDocumentNew(quest?.firstPublishedAt)
 
 						return {
 							id: map.id,
@@ -362,9 +358,8 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 								slug: game.slug,
 							},
 							difficulty: quest?.difficulty,
-							isComingSoon: quest?.isComingSoon ?? false,
+							state: quest?.state,
 							_status: quest?._status,
-							isNew,
 						}
 					}),
 				),
