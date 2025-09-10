@@ -13,6 +13,7 @@ export const Augments: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "type", "updatedAt"],
 	},
 	defaultPopulate: {

@@ -12,6 +12,8 @@ export const Users: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "email",
+		enableListViewSelectAPI: true,
+		defaultColumns: ["email", "role", "id"],
 	},
 	auth: true,
 	fields: [

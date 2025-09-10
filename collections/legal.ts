@@ -14,6 +14,7 @@ export const Legal: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "status", "updatedAt"],
 	},
 	defaultPopulate: {
@@ -21,9 +22,7 @@ export const Legal: CollectionConfig = {
 		slug: true,
 	},
 	versions: {
-		drafts: {
-			autosave: true,
-		},
+		drafts: true,
 		maxPerDoc: 3,
 	},
 	fields: [

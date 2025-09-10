@@ -16,6 +16,7 @@ export const SideQuests: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "state", "map", "status", "updatedAt"],
 	},
 	defaultPopulate: {

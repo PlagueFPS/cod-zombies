@@ -366,7 +366,6 @@ export const _side_quests_v = sqliteTable(
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
     latest: integer("latest", { mode: "boolean" }),
-    autosave: integer("autosave", { mode: "boolean" }),
   },
   (columns) => ({
     _side_quests_v_parent_idx: index("_side_quests_v_parent_idx").on(
@@ -398,9 +397,6 @@ export const _side_quests_v = sqliteTable(
     ),
     _side_quests_v_latest_idx: index("_side_quests_v_latest_idx").on(
       columns.latest,
-    ),
-    _side_quests_v_autosave_idx: index("_side_quests_v_autosave_idx").on(
-      columns.autosave,
     ),
   }),
 );
@@ -560,7 +556,6 @@ export const _zombies_v = sqliteTable(
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
     latest: integer("latest", { mode: "boolean" }),
-    autosave: integer("autosave", { mode: "boolean" }),
   },
   (columns) => ({
     _zombies_v_parent_idx: index("_zombies_v_parent_idx").on(columns.parent),
@@ -592,9 +587,6 @@ export const _zombies_v = sqliteTable(
       columns.updatedAt,
     ),
     _zombies_v_latest_idx: index("_zombies_v_latest_idx").on(columns.latest),
-    _zombies_v_autosave_idx: index("_zombies_v_autosave_idx").on(
-      columns.autosave,
-    ),
   }),
 );
 
@@ -1155,7 +1147,6 @@ export const _legal_v = sqliteTable(
       .notNull()
       .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
     latest: integer("latest", { mode: "boolean" }),
-    autosave: integer("autosave", { mode: "boolean" }),
   },
   (columns) => ({
     _legal_v_parent_idx: index("_legal_v_parent_idx").on(columns.parent),
@@ -1181,7 +1172,6 @@ export const _legal_v = sqliteTable(
       columns.updatedAt,
     ),
     _legal_v_latest_idx: index("_legal_v_latest_idx").on(columns.latest),
-    _legal_v_autosave_idx: index("_legal_v_autosave_idx").on(columns.autosave),
   }),
 );
 

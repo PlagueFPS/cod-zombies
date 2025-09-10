@@ -13,6 +13,7 @@ export const Gobblegum: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "rarity", "game", "updatedAt"],
 	},
 	defaultPopulate: {

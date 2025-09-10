@@ -6,7 +6,7 @@ import { getZombieBroadcastInfo } from "@/data/zombies"
 import { env } from "@/env"
 import { Email } from "@/lib/services/Email"
 import { Payload } from "@/lib/services/Payload"
-import { AuthorizationError, JSONParseError } from "@/types/errors"
+import { AuthorizationError, InvalidRequestError, JSONParseError } from "@/types/errors"
 import { sendQuestReleaseBroadcast, sendZombieReleaseBroadcast } from "@/usecases/email"
 import { authorizedRequest } from "@/utils/functions"
 import { decodeAllowedSlugs, decodeBroadcastParams } from "@/utils/validation-schemas"
@@ -34,42 +34,48 @@ export async function POST(request: NextRequest) {
 				const mainQuest = yield* getMainQuestBroadcastInfo(id)
 				const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/mainQuests/${mainQuest.id}`
 				const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/${mainQuest.game.slug}/${mainQuest.map.slug}`
-				return yield* sendQuestReleaseBroadcast({
+				const result = yield* sendQuestReleaseBroadcast({
 					type: "Main",
 					redirectUrl,
 					imageUrl,
 					title: mainQuest.map.title,
 					description: mainQuest.description,
 				})
+
+				return new Response(result.message, { status: result.success ? 201 : 400 })
 			}
 			case "sideQuests": {
 				const sideQuest = yield* getSideQuestBroadcastInfo(id)
 				const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/sideQuests/${sideQuest.id}`
 				const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/${sideQuest.game.slug}/${sideQuest.map.slug}/${sideQuest.slug}`
-				return yield* sendQuestReleaseBroadcast({
+				const result = yield* sendQuestReleaseBroadcast({
 					type: "Side",
 					redirectUrl,
 					imageUrl,
 					title: sideQuest.title,
 					description: sideQuest.description,
 				})
+
+				return new Response(result.message, { status: result.success ? 201 : 400 })
 			}
 			case "zombies": {
 				const zombie = yield* getZombieBroadcastInfo(id)
 				const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/zombies/${zombie.id}`
 				const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
 
-				return yield* sendZombieReleaseBroadcast({
+				const result = yield* sendZombieReleaseBroadcast({
 					redirectUrl,
 					imageUrl,
 					title: zombie.title,
 					description: zombie.description,
 					type: zombie.type,
 				})
+
+				return new Response(result.message, { status: result.success ? 201 : 400 })
 			}
 			default:
 				yield* Effect.log(`No broadcast for collection: ${collectionSlug}`)
-				return
+				return yield* new InvalidRequestError({ message: `No broadcast for collection: ${collectionSlug}` })
 		}
 	}).pipe(
 		Effect.withLogSpan("send_broadcast_api"),
@@ -83,6 +89,7 @@ export async function POST(request: NextRequest) {
 			AuthorizationError: error => Effect.succeed(new Response(error.message, { status: 401 })),
 			ParseError: error => Effect.succeed(new Response(error.message, { status: 400 })),
 			EntryNotFoundError: error => Effect.succeed(new Response(error.message, { status: 404 })),
+			InvalidRequestError: error => Effect.succeed(new Response(error.message, { status: 400 })),
 		}),
 		Effect.catchAll(error => Effect.succeed(new Response(error.message, { status: 500 }))),
 		Effect.ensureErrorType<never>(),

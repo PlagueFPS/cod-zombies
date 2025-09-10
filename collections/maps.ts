@@ -14,6 +14,7 @@ export const Maps: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "releaseDate", "updatedAt"],
 	},
 	defaultPopulate: {

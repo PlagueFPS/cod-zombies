@@ -13,6 +13,7 @@ export const AmmoMods: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "game", "updatedAt"],
 	},
 	defaultPopulate: {

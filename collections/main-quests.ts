@@ -15,6 +15,7 @@ export const MainQuests: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "state", "map", "_status", "updatedAt"],
 	},
 	defaultPopulate: {
@@ -48,6 +49,7 @@ export const MainQuests: CollectionConfig = {
 					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
+				condition: (data) => data?.state === "New",
 			},
 			hooks: {
 				beforeValidate: [CheckNewDate],

@@ -16,6 +16,7 @@ export const Zombies: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "state", "type", "status", "updatedAt"],
 	},
 	defaultSort: "-releaseDate",

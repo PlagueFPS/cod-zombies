@@ -11,6 +11,7 @@ export const ZombieAttacks: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "range", "updatedAt"],
 	},
 	defaultPopulate: {

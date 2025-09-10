@@ -5,8 +5,13 @@ export const Media: CollectionConfig = {
 	slug: "media",
 	admin: {
 		useAsTitle: "filename",
-		defaultColumns: ["filename", "mimeType", "fileSize", "updatedAt"],
+		enableListViewSelectAPI: true,
+		defaultColumns: ["filename", "mimeType", "filesize", "updatedAt"],
 		listSearchableFields: ["filename", "title"],
+	},
+	forceSelect: {
+		url: true,
+		filename: true,
 	},
 	access: {
 		read: anyone,

@@ -11,6 +11,7 @@ export const WeakPoints: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "updatedAt"],
 	},
 	defaultPopulate: {

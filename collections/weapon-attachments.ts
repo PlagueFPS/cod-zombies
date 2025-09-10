@@ -11,6 +11,7 @@ export const WeaponAttachments: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "type", "updatedAt"],
 	},
 	defaultPopulate: {

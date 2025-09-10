@@ -13,6 +13,7 @@ export const WeaponBuilds: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "weapon", "updatedAt"],
 	},
 	defaultPopulate: {

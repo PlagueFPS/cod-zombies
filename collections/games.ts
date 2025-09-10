@@ -14,6 +14,7 @@ export const Games: CollectionConfig = {
 	},
 	admin: {
 		useAsTitle: "title",
+		enableListViewSelectAPI: true,
 		defaultColumns: ["title", "releaseDate", "updatedAt"],
 	},
 	defaultPopulate: {
