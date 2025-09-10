@@ -7,8 +7,8 @@ export const CheckPublishDate: FieldHook = ({ originalDoc, value, data }) => {
 		return originalDoc.firstPublishedAt
 	}
 
-	// Only set firstPublishedAt if the document is being published for the first time
-	if (isFirstTimePublish(originalDoc?._status, data?._status)) {
+	// Only set firstPublishedAt if the document is being published for the first time and is not coming soon
+	if (isFirstTimePublish(originalDoc?._status, data?._status) && !originalDoc.isComingSoon) {
 		return new Date()
 	}
 

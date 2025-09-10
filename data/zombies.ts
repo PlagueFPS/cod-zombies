@@ -465,3 +465,28 @@ const getZombieByIdEffect = (id: string) =>
 
 		return zombie
 	}).pipe(Effect.withLogSpan("get_zombie_by_id"), Effect.annotateLogs({ id }))
+
+export const getZombieBroadcastInfo = (id: string) =>
+	Effect.gen(function* () {
+		const payload = yield* Payload
+		const zombie = yield* Effect.tryPromise({
+			try: () =>
+				payload.findByID({
+					collection: "zombies",
+					id,
+					select: {
+						title: true,
+						slug: true,
+						type: true,
+						description: true,
+					},
+				}),
+			catch: error =>
+				new EntryNotFoundError({
+					message: `Failed to get zombie by id: ${id}`,
+					cause: error,
+				}),
+		})
+
+		return zombie
+	}).pipe(Effect.withLogSpan("get_zombie_broadcast_info"), Effect.annotateLogs({ id }))

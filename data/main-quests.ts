@@ -2,7 +2,7 @@ import { Effect } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
 import { Payload } from "@/lib/services/Payload"
-import { GetEntriesError } from "@/types/errors"
+import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import {
 	assertRelation,
@@ -50,6 +50,60 @@ export const getMainQuestBySlug = cache(async (slug: string) => {
 
 	return quest
 })
+
+export const getMainQuestBroadcastInfo = (id: string) =>
+	Effect.gen(function* () {
+		const payload = yield* Payload
+		const quest = yield* Effect.tryPromise({
+			try: () =>
+				payload.findByID({
+					collection: "mainQuests",
+					id,
+					select: {
+						title: true,
+						map: true,
+					},
+					populate: {
+						maps: {
+							title: true,
+							slug: true,
+							game: true,
+							description: true,
+							image: true,
+						},
+					},
+				}),
+			catch: error =>
+				new EntryNotFoundError({
+					message: `Failed to get main quest by id: ${id}`,
+					cause: error,
+				}),
+		}).pipe(
+			Effect.flatMap(quest =>
+				Effect.gen(function* () {
+					const map = yield* assertRelation(quest.map)
+					const game = yield* assertRelation(map.game)
+					const image = yield* assertRelation(map.image)
+
+					return {
+						...quest,
+						map: {
+							title: map.title,
+							slug: map.slug,
+						},
+						game: {
+							slug: game.slug,
+							title: game.title,
+						},
+						image: createMediaDto(image),
+						description: map.description,
+					}
+				}),
+			),
+		)
+
+		return quest
+	}).pipe(Effect.withLogSpan("get_main_quest_by_id"), Effect.annotateLogs({ id }))
 
 const getMainQuestMetadataEffect = Effect.gen(function* () {
 	const payload = yield* Payload

@@ -17,7 +17,8 @@ const EmailSchema = Schema.NonEmptyString.annotations({
 	)
 	.annotations({ message: () => "Please enter a valid email address" })
 
-export const AllowedSlugsSchema = Schema.Literal("maps", "games", "side-quests", "zombies", "legal")
+export const AllowedSlugsSchema = Schema.Literal("mainQuests", "sideQuests", "zombies", "legal")
+export const decodeAllowedSlugs = Schema.decodeUnknownEither(AllowedSlugsSchema)
 
 export const FeedbackFormSchema = Schema.Struct({
 	title: Schema.NonEmptyString,

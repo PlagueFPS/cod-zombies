@@ -128,6 +128,62 @@ export const getAdjacentSideQuests = cache(async (currentCreatedAt: string) => {
 	}
 })
 
+const getSideQuestByIdEffect = (id: string) =>
+	Effect.gen(function* () {
+		const payload = yield* Payload
+		const quest = yield* Effect.tryPromise({
+			try: () =>
+				payload.findByID({
+					collection: "sideQuests",
+					id,
+					draft: IN_DEVELOPMENT,
+					select: {
+						title: true,
+						slug: true,
+						map: true,
+					},
+					populate: {
+						maps: {
+							title: true,
+							slug: true,
+							game: true,
+							image: true,
+						},
+					},
+				}),
+			catch: error =>
+				new EntryNotFoundError({
+					message: `Failed to get side quest by id: ${id}`,
+					cause: error,
+				}),
+		}).pipe(
+			Effect.flatMap(quest =>
+				Effect.gen(function* () {
+					const map = yield* assertRelation(quest.map)
+					const game = yield* assertRelation(map.game)
+					const image = yield* assertRelation(map.image)
+
+					return {
+						...quest,
+						image: createMediaDto(image),
+						map: {
+							id: map.id,
+							slug: map.slug,
+							title: map.title,
+						},
+						game: {
+							id: game.id,
+							slug: game.slug,
+							title: game.title,
+						},
+					}
+				}),
+			),
+		)
+
+		return quest
+	}).pipe(Effect.withLogSpan("get_side_quest_by_id"))
+
 const getSideQuestsEffect = Effect.gen(function* () {
 	const payload = yield* Payload
 	const sideQuests = yield* Effect.tryPromise({
@@ -316,62 +372,6 @@ const getSideQuestBySlugEffect = (slug: string) =>
 		return sideQuest[0] ?? null
 	}).pipe(Effect.withLogSpan("get_side_quest_by_slug"))
 
-const getSideQuestByIdEffect = (id: string) =>
-	Effect.gen(function* () {
-		const payload = yield* Payload
-		const quest = yield* Effect.tryPromise({
-			try: () =>
-				payload.findByID({
-					collection: "sideQuests",
-					id,
-					draft: IN_DEVELOPMENT,
-					select: {
-						title: true,
-						slug: true,
-						map: true,
-					},
-					populate: {
-						maps: {
-							title: true,
-							slug: true,
-							game: true,
-							image: true,
-						},
-					},
-				}),
-			catch: error =>
-				new EntryNotFoundError({
-					message: `Failed to get side quest by id: ${id}`,
-					cause: error,
-				}),
-		}).pipe(
-			Effect.flatMap(quest =>
-				Effect.gen(function* () {
-					const map = yield* assertRelation(quest.map)
-					const game = yield* assertRelation(map.game)
-					const image = yield* assertRelation(map.image)
-
-					return {
-						...quest,
-						image: createMediaDto(image),
-						map: {
-							id: map.id,
-							slug: map.slug,
-							title: map.title,
-						},
-						game: {
-							id: game.id,
-							slug: game.slug,
-							title: game.title,
-						},
-					}
-				}),
-			),
-		)
-
-		return quest
-	}).pipe(Effect.withLogSpan("get_side_quest_by_id"))
-
 const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 	Effect.gen(function* () {
 		const payload = yield* Payload
@@ -530,3 +530,51 @@ const getAdjacentSideQuestsEffect = (currentCreatedAt: string) =>
 		Effect.withLogSpan("get_adjancent_side_quests"),
 		Effect.annotateLogs({ currentCreatedAt }),
 	)
+
+export const getSideQuestBroadcastInfo = (id: string) =>
+	Effect.gen(function* () {
+		const payload = yield* Payload
+		const quest = yield* Effect.tryPromise({
+			try: () =>
+				payload.findByID({
+					collection: "sideQuests",
+					id,
+					select: {
+						title: true,
+						slug: true,
+						map: true,
+						description: true,
+					},
+					populate: {
+						maps: {
+							slug: true,
+							game: true,
+						},
+					},
+				}),
+			catch: error =>
+				new EntryNotFoundError({
+					message: `Failed to get side quest by id: ${id}`,
+					cause: error,
+				}),
+		}).pipe(
+			Effect.flatMap(quest =>
+				Effect.gen(function* () {
+					const map = yield* assertRelation(quest.map)
+					const game = yield* assertRelation(map.game)
+
+					return {
+						...quest,
+						map: {
+							slug: map.slug,
+						},
+						game: {
+							slug: game.slug,
+						},
+					}
+				}),
+			),
+		)
+
+		return quest
+	}).pipe(Effect.withLogSpan("get_side_quest_broadcast_info"), Effect.annotateLogs({ id }))
