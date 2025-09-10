@@ -24,9 +24,7 @@ export const Zombies: CollectionConfig = {
 		slug: true,
 	},
 	versions: {
-		drafts: {
-			autosave: true,
-		},
+		drafts: true,
 		maxPerDoc: 3,
 	},
 	fields: [
