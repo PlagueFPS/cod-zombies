@@ -7,7 +7,7 @@ import { DATE_OPTIONS } from "@/utils/constants"
 
 export const alt = "Main Quest Guide Preview"
 export const size = {
-  width: 1200,
+	width: 1200,
 	height: 630,
 }
 export const contentType = "image/png"
@@ -19,29 +19,31 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 		readFile(join(process.cwd(), "/assets/Geist-Bold.otf")),
 		readFile(join(process.cwd(), "/assets/Geist-SemiBold.otf")),
 	])
-  
-  if (!quest?.image.url) {
-    console.log("No image URL found for quest", quest?.slug)
-    return null
-  }
 
-  const imageRes = await fetch(quest.image.url)
-  if (!imageRes.ok) {
-    console.log("Failed to fetch image for quest", quest?.slug)
-    return null
-  }
-  // We need to do this optimization because our preview images are stored in optimized formats (.webp/.avif)
-  // which is not supported by Satori. We convert them to PNGs to ensure compatibility.
-  const rawImageBuffer = await imageRes.arrayBuffer()
-  const supportedImageArray = await sharp(rawImageBuffer).png({ quality: 85 }).resize(1200).toBuffer()
+	if (!quest?.image.url) {
+		console.log("No image URL found for quest", quest?.slug)
+		return null
+	}
+
+	const imageRes = await fetch(quest.image.url)
+	if (!imageRes.ok) {
+		console.log("Failed to fetch image for quest", quest?.slug)
+		return null
+	}
+	// We need to do this optimization because our preview images are stored in optimized formats (.webp/.avif)
+	// which is not supported by Satori. We convert them to PNGs to ensure compatibility.
+	const rawImageBuffer = await imageRes.arrayBuffer()
+	const supportedImageArray = await sharp(rawImageBuffer)
+		.png({ quality: 85 })
+		.resize(1200)
+		.toBuffer()
 
 	const getDifficultyCSSProps = (): React.CSSProperties => {
 		switch (quest?.difficulty) {
 			case "Easy":
 				return {
 					color: "hsl(169 85% 78%)",
-					backgroundImage:
-						"radial-gradient(circle at top, hsl(177 100% 19%), hsl(176 76% 18%))",
+					backgroundImage: "radial-gradient(circle at top, hsl(177 100% 19%), hsl(176 76% 18%))",
 					border: "1px solid hsl(175 100% 29%)",
 				}
 			case "Medium":
@@ -118,8 +120,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 						color: "hsl(32 100% 83%)",
 						fontWeight: "600",
 						fontSize: "1rem",
-						backgroundImage:
-							"radial-gradient(circle at top, hsl(17 100% 31%), hsl(16 83% 27%))",
+						backgroundImage: "radial-gradient(circle at top, hsl(17 100% 31%), hsl(16 83% 27%))",
 					}}
 				>
 					{quest.game.title}

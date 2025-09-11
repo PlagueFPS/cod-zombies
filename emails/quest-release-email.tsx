@@ -17,7 +17,6 @@ import { env } from "@/env"
 export interface IQuestRelease {
 	type: "Main" | "Side"
 	title: string
-	imageUrl: string
 	description: string
 	redirectUrl: string
 	unsubscribeUrl: string
@@ -26,7 +25,6 @@ export interface IQuestRelease {
 export default function QuestReleaseEmail({
 	type,
 	title,
-	imageUrl,
 	description,
 	redirectUrl,
 	unsubscribeUrl,
@@ -57,7 +55,7 @@ export default function QuestReleaseEmail({
 			<Tailwind>
 				<Head>
 					<title>
-						New {type} Quest Guide: {title}
+						New {type} Quest Guide: &quot;{title}&quot;
 					</title>
 				</Head>
 				<Body className="bg-gray-100 py-[40px] font-sans">
@@ -83,18 +81,6 @@ export default function QuestReleaseEmail({
 								{title}
 							</Heading>
 							<Text className="m-0 text-[16px] text-gray-600">{description}</Text>
-						</Section>
-
-						{/* Article Preview Image */}
-						<Section className="mb-[24px]">
-							<Img
-								src={imageUrl}
-								alt={`${title} Preview Image`}
-								className="h-auto w-full rounded-[8px] object-cover"
-							/>
-							<Text className="m-0 mt-[8px] text-center text-[14px] text-gray-500 italic">
-								A visual preview of the {title} article
-							</Text>
 						</Section>
 
 						<Section className="my-[24px] rounded-[8px] bg-gray-100 p-[16px]">

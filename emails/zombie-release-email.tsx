@@ -25,7 +25,6 @@ export default function ZombieReleaseEmail({
 	type,
 	title,
 	description,
-	imageUrl,
 	redirectUrl,
 	unsubscribeUrl,
 }: IZombieRelease) {
@@ -36,7 +35,7 @@ export default function ZombieReleaseEmail({
 			<Tailwind>
 				<Head>
 					<title>
-						New {type} Zombie Release: {title}
+						New {type} Zombie Release: &quot;{title}&quot;
 					</title>
 					<Preview>
 						We&apos;ve just published a new zombie breakdown you might be interested in
@@ -65,18 +64,6 @@ export default function ZombieReleaseEmail({
 								{title}
 							</Heading>
 							<Text className="m-0 text-[16px] text-gray-600">{description}</Text>
-						</Section>
-
-						{/* Zombie Preview Image */}
-						<Section className="mb-[24px]">
-							<Img
-								src={imageUrl}
-								alt={`${title} Preview Image`}
-								className="h-auto w-full rounded-[8px] object-cover"
-							/>
-							<Text className="m-0 mt-[8px] text-center text-[14px] text-gray-500 italic">
-								A visual preview of the {`"${title}"`} {type} Zombie
-							</Text>
 						</Section>
 
 						<Section className="mb-[24px] rounded-[8px] bg-gray-100 p-[16px]">
