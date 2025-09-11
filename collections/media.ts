@@ -9,7 +9,7 @@ export const Media: CollectionConfig = {
 		defaultColumns: ["filename", "mimeType", "filesize", "updatedAt"],
 		listSearchableFields: ["filename", "title"],
 	},
-	forceSelect: {
+	forceSelect: { // These two fields are required for the image to be displayed and should always be selected
 		url: true,
 		filename: true,
 	},

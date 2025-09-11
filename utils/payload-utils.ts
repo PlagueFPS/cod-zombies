@@ -73,5 +73,8 @@ export const isFirstTimePublish = (
 	previousStatus: MainQuest["_status"],
 	currentStatus: MainQuest["_status"],
 ) => {
-	return previousStatus !== "published" && currentStatus === "published"
+	if (currentStatus !== "published") return false
+	if (!previousStatus) return true
+
+	return previousStatus !== "published"
 }

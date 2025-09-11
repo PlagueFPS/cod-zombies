@@ -8,8 +8,12 @@ import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import ZombieReleaseEmail, { type IZombieRelease } from "@/emails/zombie-release-email"
 import { env } from "@/env"
 import { Email } from "@/lib/services/Email"
-import { ContactExistsError, ContactNotFoundError, CreateBroadcastError } from "@/types/errors"
+import { ContactExistsError, ContactNotFoundError, CreateBroadcastError, InvalidRequestError } from "@/types/errors"
 import { generateToken } from "@/utils/functions"
+import type { CollectionSlug } from "payload"
+import { getMainQuestBroadcastInfo } from "@/data/main-quests"
+import { getSideQuestBroadcastInfo } from "@/data/side-quests"
+import { getZombieBroadcastInfo } from "@/data/zombies"
 
 interface EmailProps {
 	name: string
@@ -94,6 +98,49 @@ export const sendContactEmail = (props: EmailProps) =>
 		}
 	}).pipe(Effect.withLogSpan("send_contact_email"))
 
+export const handleEntryBroadcast = (collection: CollectionSlug, id: string) => Effect.gen(function*(){
+	switch(collection) {
+		case "mainQuests": {
+			const mainQuest = yield* getMainQuestBroadcastInfo(id)
+			const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/mainQuests/${mainQuest.id}`
+			const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/${mainQuest.game.slug}/${mainQuest.map.slug}`
+			return yield* sendQuestReleaseBroadcast({
+				type: "Main",
+				redirectUrl,
+				imageUrl,
+				title: mainQuest.map.title,
+				description: mainQuest.description,
+			})
+		}
+		case "sideQuests": {
+			const sideQuest = yield* getSideQuestBroadcastInfo(id)
+			const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/sideQuests/${sideQuest.id}`
+			const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/${sideQuest.game.slug}/${sideQuest.map.slug}/${sideQuest.slug}`
+			return yield* sendQuestReleaseBroadcast({
+				type: "Side",
+				redirectUrl,
+				imageUrl,
+				title: sideQuest.title,
+				description: sideQuest.description,
+			})
+		}
+		case "zombies": {
+			const zombie = yield* getZombieBroadcastInfo(id)
+			const imageUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/preview-image/zombies/${zombie.id}`
+			const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
+			return yield* sendZombieReleaseBroadcast({
+				redirectUrl,
+				imageUrl,
+				title: zombie.title,
+				description: zombie.description,
+				type: zombie.type,
+			})
+		}
+		default:
+			return yield* new InvalidRequestError({ message: "Invalid collection slug" })
+	}
+}).pipe(Effect.withLogSpan("handle_entry_broadcast"), Effect.annotateLogs({ collection, id }))
+
 const createAndSendBroadcast = (title: string, payload: CreateBroadcastOptions) =>
 	Effect.gen(function* () {
 		const { createBroadcast, sendBroadcast } = yield* Email
@@ -109,7 +156,7 @@ const createAndSendBroadcast = (title: string, payload: CreateBroadcastOptions) 
 		return { success: true, message: `${title} Broadcast sent successfully!` }
 	}).pipe(Effect.withLogSpan("create_and_send_broadcast"), Effect.annotateLogs("title", title))
 
-export const sendQuestReleaseBroadcast = (props: Omit<IQuestRelease, "unsubscribeUrl">) =>
+const sendQuestReleaseBroadcast = (props: Omit<IQuestRelease, "unsubscribeUrl">) =>
 	Effect.gen(function* () {
 		const unsubscribeUrl = yield* getUnsubscribeUrl
 
@@ -128,7 +175,7 @@ export const sendQuestReleaseBroadcast = (props: Omit<IQuestRelease, "unsubscrib
 		}),
 	)
 
-export const sendZombieReleaseBroadcast = (props: Omit<IZombieRelease, "unsubscribeUrl">) =>
+const sendZombieReleaseBroadcast = (props: Omit<IZombieRelease, "unsubscribeUrl">) =>
 	Effect.gen(function* () {
 		const unsubscribeUrl = yield* getUnsubscribeUrl
 
