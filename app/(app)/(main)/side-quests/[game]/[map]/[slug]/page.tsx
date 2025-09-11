@@ -13,7 +13,6 @@ import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-tex
 import ShareButton from "@/components/share-button/share-button"
 import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
-import { getCachedImageUrl } from "@/data/og-images"
 import {
 	getAdjacentSideQuests,
 	getSideQuestBySlug,
@@ -46,7 +45,6 @@ export const generateMetadata = async ({
 
 	const title = `${quest.title} Side Quest`
 	const description = `Learn how to complete the ${quest.title} side quest/easter egg for ${quest.map.title} with our detailed step-by-step walkthrough!`
-	const imageUrl = await getCachedImageUrl("sideQuests", quest)
 
 	return {
 		title,
@@ -56,14 +54,6 @@ export const generateMetadata = async ({
 			title,
 			description,
 			url: `/side-quests/${game}/${map}/${slug}`,
-			images: [
-				{
-					url: imageUrl || "",
-					alt: `${quest.title} Side Quest`,
-					width: 1200,
-					height: 630,
-				},
-			],
 		},
 		twitter: {
 			title,

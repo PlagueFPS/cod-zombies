@@ -1,13 +1,11 @@
 import type { CollectionAfterChangeHook } from "payload"
 import { Effect, Layer, Schedule } from "effect"
-import { env } from "@/env"
-import { isFirstTimePublish } from "@/utils/payload-utils"
 import { after } from "next/server"
-import { handleEntryBroadcast } from "@/usecases/email"
-import { Payload } from "@/lib/services/Payload"
+import { env } from "@/env"
 import { Email } from "@/lib/services/Email"
-
-const broadcastLayer = Layer.merge(Email.Default, Payload.Default)
+import { Payload } from "@/lib/services/Payload"
+import { handleEntryBroadcast } from "@/usecases/email"
+import { isFirstTimePublish } from "@/utils/payload-utils"
 
 export const triggerBroadcast: CollectionAfterChangeHook = ({
 	collection,
@@ -36,7 +34,8 @@ export const triggerBroadcast: CollectionAfterChangeHook = ({
 			Effect.withLogSpan("trigger_broadcast"),
 			Effect.tapBoth({
 				onFailure: Effect.logError,
-        onSuccess: () => Effect.log(`[BROADCAST] ${collection.slug} broadcast for ${doc.id} sent successfully!`)
+				onSuccess: () =>
+					Effect.log(`[BROADCAST] ${collection.slug} broadcast for ${doc.id} sent successfully!`),
 			}),
 			Effect.retry({
 				while: error => error._tag === "EntryNotFoundError",
@@ -45,8 +44,8 @@ export const triggerBroadcast: CollectionAfterChangeHook = ({
 			}),
 			Effect.catchAll(_error => Effect.void),
 			Effect.ensureErrorType<never>(),
-			Effect.provide(broadcastLayer),
-			Effect.runPromise
+			Effect.provide(Layer.merge(Email.Default, Payload.Default)),
+			Effect.runPromise,
 		)
 	})
 

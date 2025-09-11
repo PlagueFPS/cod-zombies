@@ -33,7 +33,6 @@ import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { getCachedImageUrl } from "@/data/og-images"
 import {
 	getAdjacentZombies,
 	getZombieBySlug,
@@ -62,17 +61,6 @@ export const generateMetadata = async ({
 	if (!zombie || zombie.state === "Coming Soon") {
 		notFound()
 	}
-
-	let imageUrl = zombie.image.url
-	if (env.VERCEL_ENV === "production" && zombie.games[0] && zombie.maps[0]) {
-		// Avoid potential og generations based on draft content
-		imageUrl = await getCachedImageUrl("zombies", {
-			...zombie,
-			title: zombie.title,
-			game: zombie.games[0],
-			map: zombie.maps[0],
-		})
-	}
 	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.title}" ${zombie.type} Zombie.`
 
 	return {
@@ -83,14 +71,6 @@ export const generateMetadata = async ({
 			title: zombie.title,
 			description,
 			url: `/bestiary/${zombie.slug}`,
-			images: [
-				{
-					url: imageUrl || "",
-					alt: `${zombie.title} Preview Image`,
-					width: 1200,
-					height: 630,
-				},
-			],
 		},
 		twitter: {
 			title: zombie.title,

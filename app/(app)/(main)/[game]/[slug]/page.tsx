@@ -19,7 +19,6 @@ import TableOfContents from "@/components/table-of-contents/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getMainQuestBySlug, getMainQuestMetadata, type MainQuestBySlug } from "@/data/main-quests"
 import { getAdjacentMapsWithQuest, type MapWithQuest } from "@/data/maps"
-import { getCachedImageUrl } from "@/data/og-images"
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
@@ -45,7 +44,6 @@ export const generateMetadata = async ({
 
 	const title = `${quest.title} Main Quest`
 	const description = `Learn how to complete the main quest/easter egg for the ${quest.game.title} zombies map ${quest.title} with our detailed step-by-step walkthrough!`
-	const imageUrl = await getCachedImageUrl("mainQuests", quest)
 
 	return {
 		title,
@@ -55,14 +53,6 @@ export const generateMetadata = async ({
 			title,
 			description,
 			url: `/${quest.game.slug}/${slug}`,
-			images: [
-				{
-					url: imageUrl || "",
-					alt: `${quest.title} Main Quest`,
-					width: 1200,
-					height: 630,
-				},
-			],
 		},
 		twitter: {
 			title,
