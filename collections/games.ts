@@ -53,9 +53,10 @@ export const Games: CollectionConfig = {
 			label: "Release Date",
 			type: "date",
 			required: true,
+			index: true,
 			admin: {
 				date: {
-					displayFormat: "MM dd, yyyy hh:mm a",
+					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
 				description: "Release date of the game.",

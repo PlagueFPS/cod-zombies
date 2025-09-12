@@ -45,7 +45,7 @@ export const Perks: CollectionConfig = {
 		{
 			name: "image",
 			label: "Image",
-			type: "relationship",
+			type: "upload",
 			relationTo: "media",
 			required: true,
 			admin: {

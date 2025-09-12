@@ -177,6 +177,9 @@ export const games = sqliteTable(
   (columns) => ({
     games_title_idx: index("games_title_idx").on(columns.title),
     games_slug_idx: uniqueIndex("games_slug_idx").on(columns.slug),
+    games_release_date_idx: index("games_release_date_idx").on(
+      columns.releaseDate,
+    ),
     games_image_idx: index("games_image_idx").on(columns.image),
     games_updated_at_idx: index("games_updated_at_idx").on(columns.updatedAt),
     games_created_at_idx: index("games_created_at_idx").on(columns.createdAt),
