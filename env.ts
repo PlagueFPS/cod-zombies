@@ -15,7 +15,7 @@ export const env = createEnv({
 		LINEAR_DEFAULT_ASSIGNEE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		IMAGE_API_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		PAYLOAD_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		VERCEL_ENV: Schema.standardSchemaV1(Schema.NonEmptyString),
+		VERCEL_ENV: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		S3_BUCKET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),

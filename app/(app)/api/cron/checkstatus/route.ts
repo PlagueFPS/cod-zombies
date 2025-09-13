@@ -5,68 +5,9 @@ import { Payload } from "@/lib/services/Payload"
 import { AuthorizationError, GetEntriesError, UpdateEntryStatusError } from "@/types/errors"
 import { MAX_NEW_TIME } from "@/utils/constants"
 import { authorizedRequest } from "@/utils/functions"
-
-const getNewEntries = Effect.gen(function* () {
-	const payload = yield* Payload
-	const newZombies = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "zombies",
-				pagination: false,
-				where: {
-					newAt: {
-						exists: true,
-					},
-				},
-				select: { newAt: true },
-			}),
-		catch: error => new GetEntriesError({ message: "Failed to fetch new zombies", cause: error }),
-	}).pipe(
-		Effect.map(zombies =>
-			zombies.docs.map(zombie => ({ ...zombie, collection: "zombies" as const })),
-		),
-	)
-	const newSideQuests = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "sideQuests",
-				pagination: false,
-				where: {
-					newAt: {
-						exists: true,
-					},
-				},
-				select: { newAt: true },
-			}),
-		catch: error =>
-			new GetEntriesError({ message: "Failed to fetch new sideQuests", cause: error }),
-	}).pipe(
-		Effect.map(sideQuests =>
-			sideQuests.docs.map(sideQuest => ({ ...sideQuest, collection: "sideQuests" as const })),
-		),
-	)
-	const newMainQuests = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "mainQuests",
-				pagination: false,
-				where: {
-					newAt: {
-						exists: true,
-					},
-				},
-				select: { newAt: true },
-			}),
-		catch: error =>
-			new GetEntriesError({ message: "Failed to fetch new mainQuests", cause: error }),
-	}).pipe(
-		Effect.map(mainQuests =>
-			mainQuests.docs.map(mainQuest => ({ ...mainQuest, collection: "mainQuests" as const })),
-		),
-	)
-
-	return [...newZombies, ...newSideQuests, ...newMainQuests]
-})
+import { getNewMainQuests } from "@/data/main-quests"
+import { getNewSideQuests } from "@/data/side-quests"
+import { getNewZombies } from "@/data/zombies"
 
 export async function GET() {
 	return await Effect.gen(function* () {
@@ -79,7 +20,12 @@ export async function GET() {
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const numRef = yield* Ref.make(0)
-		const newEntries = yield* getNewEntries
+		const newEntries = yield* Effect.all([
+			getNewMainQuests,
+			getNewSideQuests,
+			getNewZombies,
+		], { concurrency: 3 }).pipe(Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]))
+		
 		yield* Effect.forEach(newEntries, entry =>
 			Effect.gen(function* () {
 				if (!entry.newAt) {

@@ -100,6 +100,30 @@ export const getMainQuestBroadcastInfo = (id: string) =>
 		return quest
 	}).pipe(Effect.withLogSpan("get_main_quest_by_id"), Effect.annotateLogs({ id }))
 
+export const getNewMainQuests = Effect.gen(function*(){
+	const payload = yield* Payload
+	const newMainQuests = yield* Effect.tryPromise({
+		try: () =>
+			payload.find({
+				collection: "mainQuests",
+				pagination: false,
+				where: {
+					newAt: {
+						exists: true,
+					},
+				},
+				select: { newAt: true },
+			}),
+		catch: error =>
+			new GetEntriesError({ message: "Failed to fetch new mainQuests", cause: error }),
+	}).pipe(
+		Effect.map(mainQuests =>
+			mainQuests.docs.map(mainQuest => ({ ...mainQuest, collection: "mainQuests" as const })),
+		),
+	)
+	return newMainQuests
+}).pipe(Effect.withLogSpan("get_new_mainQuests"))
+
 const getMainQuestMetadataEffect = Effect.gen(function* () {
 	const payload = yield* Payload
 	const quests = yield* Effect.tryPromise({

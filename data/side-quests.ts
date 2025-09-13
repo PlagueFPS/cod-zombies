@@ -123,6 +123,30 @@ export const getAdjacentSideQuests = cache(async (currentCreatedAt: string) => {
 	}
 })
 
+export const getNewSideQuests = Effect.gen(function*() {
+	const payload = yield* Payload
+	const newSideQuests = yield* Effect.tryPromise({
+		try: () =>
+			payload.find({
+				collection: "sideQuests",
+				pagination: false,
+				where: {
+					newAt: {
+						exists: true,
+					},
+				},
+				select: { newAt: true },
+			}),
+		catch: error =>
+			new GetEntriesError({ message: "Failed to fetch new sideQuests", cause: error }),
+	}).pipe(
+		Effect.map(sideQuests =>
+			sideQuests.docs.map(sideQuest => ({ ...sideQuest, collection: "sideQuests" as const })),
+		),
+	)
+	return newSideQuests
+}).pipe(Effect.withLogSpan("get_new_sideQuests"))
+
 const getSideQuestByIdEffect = (id: string) =>
 	Effect.gen(function* () {
 		const payload = yield* Payload
