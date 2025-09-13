@@ -8,6 +8,7 @@ import {
 	lexicalEditor,
 	RelationshipFeature,
 } from "@payloadcms/richtext-lexical"
+import { s3Storage } from "@payloadcms/storage-s3"
 import { Redacted } from "effect"
 import { buildConfig } from "payload"
 import { AmmoMods } from "@/collections/ammo-mods"
@@ -162,5 +163,23 @@ export default buildConfig({
 		WeaponBuilds,
 		WeaponAttachments,
 		Legal,
+	],
+	plugins: [
+		s3Storage({
+			enabled: env.VERCEL_ENV !== "development",
+			clientUploads: true,
+			collections: {
+				media: true,
+			},
+			bucket: Redacted.value(env.S3_BUCKET),
+			config: {
+				credentials: {
+					accessKeyId: Redacted.value(env.S3_ACCESS_KEY_ID),
+					secretAccessKey: Redacted.value(env.S3_SECRET_ACCESS_KEY),
+				},
+				region: "auto",
+				endpoint: Redacted.value(env.S3_ENDPOINT),
+			},
+		}),
 	],
 })

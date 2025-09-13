@@ -1,5 +1,5 @@
 import type { CollectionConfig } from "payload"
-import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
+import { isAdmin, isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { CheckNewDate } from "./hooks/check-new-date"
 import { formatSlug } from "./hooks/format-slug"
 import { handleDelete } from "./hooks/handle-delete"
@@ -13,11 +13,12 @@ export const Zombies: CollectionConfig = {
 		create: isAuthenticated,
 		update: isAuthenticated,
 		delete: isAuthenticated,
+		readVersions: isAdmin,
 	},
 	admin: {
 		useAsTitle: "title",
 		enableListViewSelectAPI: true,
-		defaultColumns: ["title", "state", "type", "status", "updatedAt"],
+		defaultColumns: ["title", "type", "status", "updatedAt"],
 	},
 	defaultSort: "-releaseDate",
 	defaultPopulate: {

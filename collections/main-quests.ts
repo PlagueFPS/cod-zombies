@@ -1,5 +1,5 @@
 import type { CollectionConfig } from "payload"
-import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
+import { isAdmin, isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { CheckNewDate } from "./hooks/check-new-date"
 import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
@@ -12,6 +12,7 @@ export const MainQuests: CollectionConfig = {
 		create: isAuthenticated,
 		update: isAuthenticated,
 		delete: isAuthenticated,
+		readVersions: isAdmin,
 	},
 	admin: {
 		useAsTitle: "title",
@@ -49,7 +50,7 @@ export const MainQuests: CollectionConfig = {
 					displayFormat: "MMMM dd, yyyy hh:mm a",
 					pickerAppearance: "dayAndTime",
 				},
-				condition: (data) => data?.state === "New",
+				condition: data => data?.state === "New",
 			},
 			hooks: {
 				beforeValidate: [CheckNewDate],

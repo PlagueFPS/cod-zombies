@@ -1,5 +1,5 @@
 import type { CollectionConfig } from "payload"
-import { isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
+import { isAdmin, isAuthenticated, isAuthenticatedOrPublished } from "./access/access-control"
 import { formatSlug } from "./hooks/format-slug"
 import { handleDelete } from "./hooks/handle-delete"
 import { revalidateCollection } from "./hooks/revalidation"
@@ -11,11 +11,12 @@ export const Legal: CollectionConfig = {
 		create: isAuthenticated,
 		update: isAuthenticated,
 		delete: isAuthenticated,
+		readVersions: isAdmin,
 	},
 	admin: {
 		useAsTitle: "title",
 		enableListViewSelectAPI: true,
-		defaultColumns: ["title", "status", "updatedAt"],
+		defaultColumns: ["title", "_status", "updatedAt"],
 	},
 	defaultPopulate: {
 		title: true,
