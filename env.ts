@@ -18,10 +18,7 @@ export const env = createEnv({
 		VERCEL_ENV: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		S3_BUCKET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		S3_ACCESS_KEY_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		S3_SECRET_ACCESS_KEY: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		S3_ENDPOINT: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		STORAGE_READ_WRITE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 	},
 	client: {
 		NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),

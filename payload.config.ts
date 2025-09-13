@@ -8,7 +8,7 @@ import {
 	lexicalEditor,
 	RelationshipFeature,
 } from "@payloadcms/richtext-lexical"
-import { s3Storage } from "@payloadcms/storage-s3"
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob"
 import { Redacted } from "effect"
 import { buildConfig } from "payload"
 import { AmmoMods } from "@/collections/ammo-mods"
@@ -164,24 +164,15 @@ export default buildConfig({
 		Legal,
 	],
 	plugins: [
-		s3Storage({
+		vercelBlobStorage({
 			enabled:
 				Redacted.value(env.VERCEL_ENV) === "production" ||
 				Redacted.value(env.VERCEL_ENV) === "preview",
 			clientUploads: true,
-			signedDownloads: true,
 			collections: {
 				media: true,
 			},
-			bucket: Redacted.value(env.S3_BUCKET),
-			config: {
-				credentials: {
-					accessKeyId: Redacted.value(env.S3_ACCESS_KEY_ID),
-					secretAccessKey: Redacted.value(env.S3_SECRET_ACCESS_KEY),
-				},
-				region: "auto",
-				endpoint: Redacted.value(env.S3_ENDPOINT),
-			},
+			token: Redacted.value(env.STORAGE_READ_WRITE_TOKEN),
 		}),
 	],
 })

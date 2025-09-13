@@ -1,13 +1,13 @@
 import { Duration, Effect, Redacted, Ref } from "effect"
 import { headers } from "next/headers"
-import { env } from "@/env"
-import { Payload } from "@/lib/services/Payload"
-import { AuthorizationError, GetEntriesError, UpdateEntryStatusError } from "@/types/errors"
-import { MAX_NEW_TIME } from "@/utils/constants"
-import { authorizedRequest } from "@/utils/functions"
 import { getNewMainQuests } from "@/data/main-quests"
 import { getNewSideQuests } from "@/data/side-quests"
 import { getNewZombies } from "@/data/zombies"
+import { env } from "@/env"
+import { Payload } from "@/lib/services/Payload"
+import { AuthorizationError, UpdateEntryStatusError } from "@/types/errors"
+import { MAX_NEW_TIME } from "@/utils/constants"
+import { authorizedRequest } from "@/utils/functions"
 
 export async function GET() {
 	return await Effect.gen(function* () {
@@ -20,12 +20,10 @@ export async function GET() {
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const numRef = yield* Ref.make(0)
-		const newEntries = yield* Effect.all([
-			getNewMainQuests,
-			getNewSideQuests,
-			getNewZombies,
-		], { concurrency: 3 }).pipe(Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]))
-		
+		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies], {
+			concurrency: 3,
+		}).pipe(Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]))
+
 		yield* Effect.forEach(newEntries, entry =>
 			Effect.gen(function* () {
 				if (!entry.newAt) {
