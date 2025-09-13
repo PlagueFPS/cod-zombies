@@ -212,6 +212,7 @@ export const main_quests = sqliteTable(
     main_quests_title_idx: uniqueIndex("main_quests_title_idx").on(
       columns.title,
     ),
+    main_quests_new_at_idx: index("main_quests_new_at_idx").on(columns.newAt),
     main_quests_map_idx: uniqueIndex("main_quests_map_idx").on(columns.map),
     main_quests_updated_at_idx: index("main_quests_updated_at_idx").on(
       columns.updatedAt,
@@ -270,6 +271,9 @@ export const _main_quests_v = sqliteTable(
     _main_quests_v_version_version_title_idx: index(
       "_main_quests_v_version_version_title_idx",
     ).on(columns.version_title),
+    _main_quests_v_version_version_new_at_idx: index(
+      "_main_quests_v_version_version_new_at_idx",
+    ).on(columns.version_newAt),
     _main_quests_v_version_version_map_idx: index(
       "_main_quests_v_version_version_map_idx",
     ).on(columns.version_map),
@@ -320,6 +324,7 @@ export const side_quests = sqliteTable(
   (columns) => ({
     side_quests_title_idx: index("side_quests_title_idx").on(columns.title),
     side_quests_slug_idx: uniqueIndex("side_quests_slug_idx").on(columns.slug),
+    side_quests_new_at_idx: index("side_quests_new_at_idx").on(columns.newAt),
     side_quests_map_idx: index("side_quests_map_idx").on(columns.map),
     side_quests_updated_at_idx: index("side_quests_updated_at_idx").on(
       columns.updatedAt,
@@ -380,6 +385,9 @@ export const _side_quests_v = sqliteTable(
     _side_quests_v_version_version_slug_idx: index(
       "_side_quests_v_version_version_slug_idx",
     ).on(columns.version_slug),
+    _side_quests_v_version_version_new_at_idx: index(
+      "_side_quests_v_version_version_new_at_idx",
+    ).on(columns.version_newAt),
     _side_quests_v_version_version_map_idx: index(
       "_side_quests_v_version_version_map_idx",
     ).on(columns.version_map),
@@ -436,6 +444,7 @@ export const zombies = sqliteTable(
   (columns) => ({
     zombies_title_idx: index("zombies_title_idx").on(columns.title),
     zombies_slug_idx: uniqueIndex("zombies_slug_idx").on(columns.slug),
+    zombies_new_at_idx: index("zombies_new_at_idx").on(columns.newAt),
     zombies_release_date_idx: index("zombies_release_date_idx").on(
       columns.releaseDate,
     ),
@@ -568,6 +577,9 @@ export const _zombies_v = sqliteTable(
     _zombies_v_version_version_slug_idx: index(
       "_zombies_v_version_version_slug_idx",
     ).on(columns.version_slug),
+    _zombies_v_version_version_new_at_idx: index(
+      "_zombies_v_version_version_new_at_idx",
+    ).on(columns.version_newAt),
     _zombies_v_version_version_release_date_idx: index(
       "_zombies_v_version_version_release_date_idx",
     ).on(columns.version_releaseDate),
