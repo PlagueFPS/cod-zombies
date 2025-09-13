@@ -43,7 +43,6 @@ import { SITE_TITLE } from "./utils/constants"
 
 export default buildConfig({
 	secret: Redacted.value(env.PAYLOAD_SECRET),
-	serverURL: env.NEXT_PUBLIC_WEBSITE_URL,
 	admin: {
 		meta: {
 			titleSuffix: `- ${SITE_TITLE}`,

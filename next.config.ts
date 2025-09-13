@@ -22,18 +22,10 @@ const nextConfig: NextConfig = {
 		formats: ["image/webp"],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920],
 		qualities: [75, 100],
-		remotePatterns: [
+		localPatterns: [
 			{
-				protocol: "https",
-				hostname: `images.ctfassets.net`,
-				pathname: `/${process.env.CONTENTFUL_SPACE_ID}/**`,
-			},
-			{
-				protocol: "http",
-				hostname: "localhost",
-				port: "3000",
 				pathname: "/api/payload/media/file/**",
-			},
+			}
 		],
 		minimumCacheTTL: 31536000, // 1 year in seconds
 	},
