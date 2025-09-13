@@ -1,5 +1,5 @@
 import type { CollectionAfterChangeHook } from "payload"
-import { Effect, Layer, Schedule } from "effect"
+import { Effect, Layer, Redacted, Schedule } from "effect"
 import { after } from "next/server"
 import { env } from "@/env"
 import { Email } from "@/lib/services/Email"
@@ -13,7 +13,7 @@ export const triggerBroadcast: CollectionAfterChangeHook = ({
 	doc,
 	req: { payload },
 }) => {
-	if (env.VERCEL_ENV !== "production") {
+	if (Redacted.value(env.VERCEL_ENV) !== "production") {
 		payload.logger.info(`[BROADCAST] Skipping broadcast - not in a live production environment`)
 		return
 	}
