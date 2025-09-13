@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "pnpm test && next build --turbopack",
-    "ci": "payload migrate && pnpm build",
+    "ci": "payload migrate --force-accept-warning && pnpm build",
     "start": "next start",
     "typegen": "next typegen",
     "lint": "biome lint .",
