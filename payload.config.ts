@@ -166,7 +166,7 @@ export default buildConfig({
 	],
 	plugins: [
 		s3Storage({
-			enabled: env.VERCEL_ENV !== "development",
+			enabled: env.VERCEL_ENV === "production" || env.VERCEL_ENV === "preview",
 			clientUploads: true,
 			collections: {
 				media: true,

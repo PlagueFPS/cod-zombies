@@ -199,7 +199,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 	const buffer = await res.arrayBuffer()
 	const optimizedBuffer = await sharp(buffer).png({ quality: 75 }).toBuffer()
 
-	return new Response(optimizedBuffer.buffer, {
+	return new Response(optimizedBuffer, {
 		headers: res.headers,
 		status: res.status,
 		statusText: res.statusText,
