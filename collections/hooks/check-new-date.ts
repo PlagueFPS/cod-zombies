@@ -3,7 +3,7 @@ import { isFirstTimePublish } from "@/utils/payload-utils"
 
 export const CheckNewDate: FieldHook = ({ originalDoc, value, data }) => {
 	// If state is being changed from "New" to something else, remove newAt
-	if (originalDoc?.state === "New" && data?.state && data?.state !== "New") {
+	if (originalDoc?.state === "New" && data?.state !== "New") {
 		return null
 	}
 

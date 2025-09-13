@@ -1,60 +1,124 @@
-import { Duration, Effect, Redacted } from "effect"
-import { revalidateTag } from "next/cache"
+import { Duration, Effect, Redacted, Ref } from "effect"
 import { headers } from "next/headers"
 import { env } from "@/env"
-import { type EntryType, NEW_ENTRY_KV } from "@/lib/redis"
-import { Cache } from "@/lib/services/Cache"
-import { AuthorizationError } from "@/types/errors"
-import { CACHE_KEYS, MAX_NEW_TIME } from "@/utils/constants"
+import { Payload } from "@/lib/services/Payload"
+import { AuthorizationError, GetEntriesError, UpdateEntryStatusError } from "@/types/errors"
+import { MAX_NEW_TIME } from "@/utils/constants"
 import { authorizedRequest } from "@/utils/functions"
 
-const REVALIDATION_MAP: Record<EntryType, string> = {
-	mainQuest: CACHE_KEYS.mainQuests.all,
-	game: CACHE_KEYS.games.all,
-	sideQuest: CACHE_KEYS.sideQuests.all,
-	zombie: CACHE_KEYS.zombies.all,
-	legal: CACHE_KEYS.legal.all,
-} as const
+const getNewEntries = Effect.gen(function* () {
+	const payload = yield* Payload
+	const newZombies = yield* Effect.tryPromise({
+		try: () =>
+			payload.find({
+				collection: "zombies",
+				pagination: false,
+				where: {
+					newAt: {
+						exists: true,
+					},
+				},
+				select: { newAt: true },
+			}),
+		catch: error => new GetEntriesError({ message: "Failed to fetch new zombies", cause: error }),
+	}).pipe(
+		Effect.map(zombies =>
+			zombies.docs.map(zombie => ({ ...zombie, collection: "zombies" as const })),
+		),
+	)
+	const newSideQuests = yield* Effect.tryPromise({
+		try: () =>
+			payload.find({
+				collection: "sideQuests",
+				pagination: false,
+				where: {
+					newAt: {
+						exists: true,
+					},
+				},
+				select: { newAt: true },
+			}),
+		catch: error =>
+			new GetEntriesError({ message: "Failed to fetch new sideQuests", cause: error }),
+	}).pipe(
+		Effect.map(sideQuests =>
+			sideQuests.docs.map(sideQuest => ({ ...sideQuest, collection: "sideQuests" as const })),
+		),
+	)
+	const newMainQuests = yield* Effect.tryPromise({
+		try: () =>
+			payload.find({
+				collection: "mainQuests",
+				pagination: false,
+				where: {
+					newAt: {
+						exists: true,
+					},
+				},
+				select: { newAt: true },
+			}),
+		catch: error =>
+			new GetEntriesError({ message: "Failed to fetch new mainQuests", cause: error }),
+	}).pipe(
+		Effect.map(mainQuests =>
+			mainQuests.docs.map(mainQuest => ({ ...mainQuest, collection: "mainQuests" as const })),
+		),
+	)
+
+	return [...newZombies, ...newSideQuests, ...newMainQuests]
+})
 
 export async function GET() {
 	return await Effect.gen(function* () {
+		const payload = yield* Payload
 		const headerList = yield* Effect.promise(() => headers())
 		const secret = headerList.get("Authorization")
 		if (!secret) return yield* new AuthorizationError({ message: "Missing Auth Header" })
 
-		const providedSecret = Redacted.make(secret)
-
-		const authed = yield* authorizedRequest(
-			Redacted.value(providedSecret),
-			`Bearer ${Redacted.value(env.CRON_SECRET)}`,
-		)
+		const authed = yield* authorizedRequest(secret, `Bearer ${Redacted.value(env.CRON_SECRET)}`)
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
-		const newEntries = yield* NEW_ENTRY_KV.getAll()
-		const idsToDelete: Set<string> = new Set()
-		const typesToRevalidate: Set<EntryType> = new Set()
+		const numRef = yield* Ref.make(0)
+		const newEntries = yield* getNewEntries
+		yield* Effect.forEach(newEntries, entry =>
+			Effect.gen(function* () {
+				if (!entry.newAt) {
+					yield* Effect.log(`[STATUS ENFORCEMENT] Entry ${entry.id} has no newAt.`)
+					return
+				}
+				const currentTime = Date.now()
+				const newTime = new Date(entry.newAt).getTime()
+				const passedTime = Duration.subtract(currentTime, newTime).pipe(Duration.toMillis)
 
-		newEntries.forEach(entry => {
-			const currentTime = Date.now()
-			const publishedTime = entry.createdAt.getTime()
-			const passedTime = Duration.subtract(currentTime, publishedTime).pipe(Duration.toMillis)
+				if (Duration.greaterThan(passedTime, MAX_NEW_TIME)) {
+					const updatedEntry = yield* Effect.tryPromise({
+						try: () =>
+							payload.update({
+								collection: entry.collection,
+								id: entry.id,
+								data: {
+									state: null,
+								},
+								select: {
+									title: true,
+								},
+							}),
+						catch: error =>
+							new UpdateEntryStatusError({ message: "Failed to update entry", cause: error }),
+					})
 
-			if (Duration.greaterThan(passedTime, MAX_NEW_TIME)) {
-				idsToDelete.add(entry.entryId)
-				typesToRevalidate.add(entry.type)
-			}
-		})
+					yield* Ref.update(numRef, num => num + 1)
+					const currentTotal = yield* numRef.get
+					yield* Effect.log(
+						`[STATUS ENFORCEMENT] Entry ${updatedEntry.title} new state has been updated (${currentTotal}/${newEntries.length})`,
+					)
+					return
+				}
+			}),
+		)
 
-		if (idsToDelete.size > 0) yield* NEW_ENTRY_KV.del([...idsToDelete])
-
-		typesToRevalidate.forEach(type => {
-			const cacheKey = REVALIDATION_MAP[type]
-			if (cacheKey) {
-				revalidateTag(cacheKey)
-				console.log(`[STATUS ENFORCEMENT] Revalidated ${type} data.`)
-			}
-		})
-
+		const total = yield* numRef.get
+		yield* Effect.log(`[STATUS ENFORCEMENT] Total updated entries: ${total}`)
 		return new Response("ok", { status: 200 })
 	}).pipe(
 		Effect.withLogSpan("status_enforcement_cron"),
@@ -63,7 +127,7 @@ export async function GET() {
 			AuthorizationError: error => Effect.succeed(new Response(error.message, { status: 401 })),
 		}),
 		Effect.catchAll(error => Effect.succeed(new Response(error.message, { status: 500 }))),
-		Effect.provide(Cache.Default),
+		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 }

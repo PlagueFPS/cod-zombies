@@ -58,6 +58,7 @@ export const SideQuests: CollectionConfig = {
 			name: "newAt",
 			label: "Marked 'New' date",
 			type: "date",
+			index: true,
 			admin: {
 				description: "Timestamp of when this main quest was marked as 'New'.",
 				readOnly: true,
