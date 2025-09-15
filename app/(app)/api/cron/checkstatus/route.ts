@@ -20,9 +20,7 @@ export async function GET() {
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const numRef = yield* Ref.make(0)
-		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies], {
-			concurrency: 3,
-		}).pipe(Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]))
+		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies]).pipe(Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]))
 
 		yield* Effect.forEach(newEntries, entry =>
 			Effect.gen(function* () {
