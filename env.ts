@@ -16,6 +16,8 @@ export const env = createEnv({
 		IMAGE_API_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		PAYLOAD_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		VERCEL_ENV: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		VERCEL_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+		VERCEL_PROJECT_PRODUCTION_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		STORAGE_READ_WRITE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),

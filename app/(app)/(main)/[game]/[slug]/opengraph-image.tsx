@@ -4,6 +4,7 @@ import { ImageResponse } from "next/og"
 import sharp from "sharp"
 import { getMainQuestBySlug } from "@/data/main-quests"
 import { DATE_OPTIONS } from "@/utils/constants"
+import { getServerUrl } from "@/utils/functions"
 
 export const alt = "Main Quest Guide Preview"
 export const size = {
@@ -21,13 +22,14 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 	])
 
 	if (!quest?.image.url) {
-		console.log("No image URL found for quest", quest?.slug)
+		console.error("No image URL found for quest", quest?.slug)
 		return null
 	}
 
-	const imageRes = await fetch(quest.image.url)
+	const serverUrl = getServerUrl()
+	const imageRes = await fetch(`${serverUrl}${quest.image.url}`)
 	if (!imageRes.ok) {
-		console.log("Failed to fetch image for quest", quest?.slug)
+		console.error("Failed to fetch image for quest", quest?.slug)
 		return null
 	}
 	// We need to do this optimization because our preview images are stored in optimized formats (.webp/.avif)

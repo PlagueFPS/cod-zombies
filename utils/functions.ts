@@ -1,12 +1,26 @@
 import type { DurationInput } from "effect/Duration"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import { Duration, Effect, Number as Num, Option } from "effect"
+import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
+import { env } from "@/env"
 import {
 	AuthorizationError,
 	TokenExpirationError,
 	TokenGenerationError,
 	TokenVerificationError,
 } from "@/types/errors"
+
+export const getServerUrl = () => {
+	const currentEnv = Redacted.value(env.VERCEL_ENV)
+	switch(currentEnv) {
+		case "preview":
+			return `https://${Redacted.value(env.VERCEL_URL)}`
+		case "production":
+			return `https://${Redacted.value(env.VERCEL_PROJECT_PRODUCTION_URL)}`
+		default:
+			return `http://localhost:3000`
+	}
+}
+
 /**
  * Performs a timing-safe comparison of two secrets.
  * @param secret - The secret to be validated.

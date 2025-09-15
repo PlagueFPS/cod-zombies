@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Duration } from "effect"
+import { toMillis } from "effect/Duration"
 import { Book, Brain, MapIcon } from "lucide-react"
 
 // navigator.platform is deprecated and should be replaced with navigator.userAgentData.platform once stable
@@ -16,7 +16,7 @@ export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
 }
 export const MAP_LIMIT = 12
 /** 2 weeks in milliseconds */
-export const MAX_NEW_TIME = Duration.toMillis("2 weeks")
+export const MAX_NEW_TIME = toMillis("2 weeks")
 export const GLOBAL_OG_PROPS: Partial<Metadata> = {
 	openGraph: {
 		siteName: SITE_TITLE,
