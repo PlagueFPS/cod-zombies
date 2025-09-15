@@ -1,7 +1,7 @@
 import { Effect, Either } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/Payload"
+import { Payload } from "@/lib/services/cms"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, calculateTimeToRead, createMediaDto } from "@/utils/payload-utils"
@@ -123,7 +123,7 @@ export const getAdjacentSideQuests = cache(async (currentCreatedAt: string) => {
 	}
 })
 
-export const getNewSideQuests = Effect.gen(function*() {
+export const getNewSideQuests = Effect.gen(function* () {
 	const payload = yield* Payload
 	const newSideQuests = yield* Effect.tryPromise({
 		try: () =>

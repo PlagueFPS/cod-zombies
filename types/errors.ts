@@ -5,7 +5,7 @@ export interface ErrorProps {
 	reset: () => void
 }
 
-interface CommonErrorProps {
+export interface CommonErrorProps {
 	message: string
 	cause?: unknown
 }

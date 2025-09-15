@@ -11,7 +11,7 @@ import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import ZombieReleaseEmail, { type IZombieRelease } from "@/emails/zombie-release-email"
 import { env } from "@/env"
-import { Email } from "@/lib/services/Email"
+import { Email } from "@/lib/services/emails"
 import {
 	ContactExistsError,
 	ContactNotFoundError,

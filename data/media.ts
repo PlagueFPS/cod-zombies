@@ -1,5 +1,5 @@
 import { Effect } from "effect"
-import { Payload } from "@/lib/services/Payload"
+import { Payload } from "@/lib/services/cms"
 import { EntryNotFoundError } from "@/types/errors"
 
 export const getMediaById = (id: string) =>

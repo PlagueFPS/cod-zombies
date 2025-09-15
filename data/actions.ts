@@ -1,7 +1,7 @@
 "use server"
 import { Effect } from "effect"
 import { createRatelimitAction } from "@/lib/action-helpers"
-import { Email } from "@/lib/services/Email"
+import { Email } from "@/lib/services/emails"
 import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/usecases/email"
 import { submitFeedback } from "@/usecases/feedback"
 import {

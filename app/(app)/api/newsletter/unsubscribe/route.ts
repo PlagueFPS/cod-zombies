@@ -1,6 +1,6 @@
 import { Effect } from "effect"
 import { type NextRequest, NextResponse } from "next/server"
-import { Email } from "@/lib/services/Email"
+import { Email } from "@/lib/services/emails"
 import { unsubscribeEmail } from "@/usecases/email"
 import { verifyToken } from "@/utils/functions"
 

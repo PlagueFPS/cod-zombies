@@ -1,7 +1,7 @@
 import { Effect } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/Payload"
+import { Payload } from "@/lib/services/cms"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, calculateTimeToRead, createMediaDto } from "@/utils/payload-utils"
@@ -100,7 +100,7 @@ export const getMainQuestBroadcastInfo = (id: string) =>
 		return quest
 	}).pipe(Effect.withLogSpan("get_main_quest_by_id"), Effect.annotateLogs({ id }))
 
-export const getNewMainQuests = Effect.gen(function*(){
+export const getNewMainQuests = Effect.gen(function* () {
 	const payload = yield* Payload
 	const newMainQuests = yield* Effect.tryPromise({
 		try: () =>
