@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next"
 import { getAvailableMaps } from "@/data/interactive-map"
+import { getLegalDocsMetadata } from "@/data/legal"
 import { getMainQuestMetadata } from "@/data/main-quests"
 import { getSideQuestsMetadata } from "@/data/side-quests"
 import { getZombiesMetadata } from "@/data/zombies"
 import { env } from "@/env"
-import { getLegalDocsMetadata } from "@/data/legal"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const mainQuestsPromise = getMainQuestMetadata()
