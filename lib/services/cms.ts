@@ -5,7 +5,7 @@ import { getPayload } from "payload"
 // This still gives us helpful DI if we end up needing a mock implementation of Payload
 export class Payload extends Effect.Service<Payload>()("Payload", {
 	effect: Effect.gen(function* () {
-		const payload = yield* Effect.promise(() => getPayload({ config }))
+		const payload = yield* Effect.tryPromise(() => getPayload({ config }))
 		return payload
 	}).pipe(Effect.withLogSpan("payload_default")),
 }) {}
