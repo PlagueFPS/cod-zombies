@@ -2,7 +2,7 @@
   "installCommand": "pnpm install",
   "crons": [
     {
-      "path": "/api/cron/checkstatus",
+      "path": "/api/cron/check-state",
       "schedule": "0 0 * * *"
     }
   ]

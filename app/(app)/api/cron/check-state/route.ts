@@ -20,50 +20,52 @@ export async function GET() {
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const numRef = yield* Ref.make(0)
-		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies]).pipe(Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]))
+		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies]).pipe(
+			Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]),
+		)
 
 		yield* Effect.forEach(newEntries, entry =>
 			Effect.gen(function* () {
 				if (!entry.newAt) {
-					yield* Effect.log(`[STATUS ENFORCEMENT] Entry ${entry.id} has no newAt.`)
-					return
+					return yield* Effect.log(`[STATE ENFORCEMENT] Entry ${entry.id} has no newAt.`)
 				}
 				const currentTime = Date.now()
 				const newTime = new Date(entry.newAt).getTime()
 				const passedTime = Duration.subtract(currentTime, newTime).pipe(Duration.toMillis)
-
-				if (Duration.greaterThan(passedTime, MAX_NEW_TIME)) {
-					const updatedEntry = yield* Effect.tryPromise({
-						try: () =>
-							payload.update({
-								collection: entry.collection,
-								id: entry.id,
-								data: {
-									state: null,
-								},
-								select: {
-									title: true,
-								},
-							}),
-						catch: error =>
-							new UpdateEntryStatusError({ message: "Failed to update entry", cause: error }),
-					})
-
-					yield* Ref.update(numRef, num => num + 1)
-					const currentTotal = yield* numRef.get
-					yield* Effect.log(
-						`[STATUS ENFORCEMENT] Entry ${updatedEntry.title} new state has been updated (${currentTotal}/${newEntries.length})`,
+				if (Duration.lessThanOrEqualTo(passedTime, MAX_NEW_TIME))
+					return yield* Effect.log(
+						`[STATE ENFORCEMENT] Entry ${entry.id} has not passed the new time.`,
 					)
-					return
-				}
+
+				const updatedEntry = yield* Effect.tryPromise({
+					try: () =>
+						payload.update({
+							collection: entry.collection,
+							id: entry.id,
+							data: {
+								state: null,
+							},
+							select: {
+								title: true,
+							},
+						}),
+					catch: error =>
+						new UpdateEntryStatusError({ message: "Failed to update entry", cause: error }),
+				})
+
+				yield* Ref.update(numRef, num => num + 1)
+				const currentTotal = yield* numRef.get
+				return yield* Effect.log(
+					`[STATE ENFORCEMENT] Entry ${updatedEntry.title} new state has been updated (${currentTotal}/${newEntries.length})`,
+				)
 			}),
 		)
 
 		const total = yield* numRef.get
-		yield* Effect.log(`[STATUS ENFORCEMENT] Total updated entries: ${total}`)
+		yield* Effect.log(`[STATE ENFORCEMENT] Total updated entries: ${total}`)
 		return new Response("ok", { status: 200 })
 	}).pipe(
-		Effect.withLogSpan("status_enforcement_cron"),
+		Effect.withLogSpan("state_enforcement_cron"),
 		Effect.tapError(Effect.logError),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(new Response(error.message, { status: 401 })),
