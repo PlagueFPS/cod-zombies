@@ -1,5 +1,4 @@
 import { Duration, Effect, Redacted, Ref } from "effect"
-import { headers } from "next/headers"
 import { getNewMainQuests } from "@/data/main-quests"
 import { getNewSideQuests } from "@/data/side-quests"
 import { getNewZombies } from "@/data/zombies"
@@ -9,11 +8,10 @@ import { AuthorizationError, UpdateEntryStatusError } from "@/types/errors"
 import { MAX_NEW_TIME } from "@/utils/constants"
 import { authorizedRequest } from "@/utils/functions"
 
-export async function GET() {
+export async function GET(request: Request) {
 	return await Effect.gen(function* () {
 		const payload = yield* Payload
-		const headerList = yield* Effect.promise(() => headers())
-		const secret = headerList.get("Authorization")
+		const secret = request.headers.get("Authorization")
 		if (!secret) return yield* new AuthorizationError({ message: "Missing Auth Header" })
 
 		const authed = yield* authorizedRequest(secret, `Bearer ${Redacted.value(env.CRON_SECRET)}`)
@@ -21,8 +19,6 @@ export async function GET() {
 
 		const numRef = yield* Ref.make(0)
 		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies]).pipe(
-			Effect.withLogSpan("state_enforcement_get_new_entries"),
-			Effect.timeout("15 seconds"),
 			Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]),
 		)
 
@@ -61,13 +57,14 @@ export async function GET() {
 					`[STATE ENFORCEMENT] Entry ${updatedEntry.title} new state has been updated (${currentTotal}/${newEntries.length})`,
 				)
 			}),
-		).pipe(Effect.withLogSpan("state_enforcement_loop"), Effect.timeout("15 seconds"))
+		)
 
 		const total = yield* numRef.get
 		yield* Effect.log(`[STATE ENFORCEMENT] Total updated entries: ${total}`)
 		return new Response("ok", { status: 200 })
 	}).pipe(
 		Effect.withLogSpan("state_enforcement_cron"),
+		Effect.timeout("30 seconds"),
 		Effect.tapError(Effect.logError),
 		Effect.catchTags({
 			AuthorizationError: error => Effect.succeed(new Response(error.message, { status: 401 })),
