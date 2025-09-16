@@ -21,6 +21,8 @@ export async function GET() {
 
 		const numRef = yield* Ref.make(0)
 		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies]).pipe(
+			Effect.withLogSpan("state_enforcement_get_new_entries"),
+			Effect.timeout("15 seconds"),
 			Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]),
 		)
 
@@ -59,7 +61,7 @@ export async function GET() {
 					`[STATE ENFORCEMENT] Entry ${updatedEntry.title} new state has been updated (${currentTotal}/${newEntries.length})`,
 				)
 			}),
-		)
+		).pipe(Effect.withLogSpan("state_enforcement_loop"), Effect.timeout("15 seconds"))
 
 		const total = yield* numRef.get
 		yield* Effect.log(`[STATE ENFORCEMENT] Total updated entries: ${total}`)
