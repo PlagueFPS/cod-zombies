@@ -1,7 +1,7 @@
 import { Effect, Either } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/cms"
+import { Payload } from "@/lib/payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, calculateTimeToRead, createMediaDto } from "@/utils/payload-utils"
@@ -18,7 +18,6 @@ export const getSideQuests = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
@@ -32,7 +31,6 @@ export const getSideQuestsMetadata = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
@@ -44,7 +42,6 @@ export const getSideQuestBySlug = cache(async (slug: string) => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 
@@ -77,7 +74,6 @@ export const getSideQuestById = cache(async (id: string) => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 
@@ -106,8 +102,8 @@ export const getAdjacentSideQuests = cache(async (currentCreatedAt: string) => {
 	"use cache"
 	const { prevQuest, nextQuest } = await getAdjacentSideQuestsEffect(currentCreatedAt).pipe(
 		Effect.withLogSpan("get_adjancent_side_quests_cached"),
+		Effect.catchAll(_error => Effect.succeed({ prevQuest: null, nextQuest: null })),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 

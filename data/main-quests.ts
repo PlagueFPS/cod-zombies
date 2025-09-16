@@ -1,7 +1,7 @@
 import { Effect } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/cms"
+import { Payload } from "@/lib/payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, calculateTimeToRead, createMediaDto } from "@/utils/payload-utils"
@@ -17,7 +17,6 @@ export const getMainQuestMetadata = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
@@ -29,7 +28,6 @@ export const getMainQuestBySlug = cache(async (slug: string) => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 

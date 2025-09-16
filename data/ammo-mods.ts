@@ -2,7 +2,7 @@ import type { AmmoMod } from "@/types/payload-types"
 import { Effect } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/cms"
+import { Payload } from "@/lib/payload"
 import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
@@ -19,7 +19,6 @@ export const getAmmoModById = cache(async (id: string) => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })

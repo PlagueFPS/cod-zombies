@@ -1,7 +1,7 @@
 import { Effect } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/cms"
+import { Payload } from "@/lib/payload"
 import { GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS } from "@/utils/constants"
 
@@ -14,7 +14,6 @@ export const getGames = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })

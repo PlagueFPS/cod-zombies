@@ -1,7 +1,7 @@
 import { Effect, Either } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/cms"
+import { Payload } from "@/lib/payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
@@ -17,7 +17,6 @@ export const getMaps = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
@@ -31,7 +30,6 @@ export const getMapsWithQuest = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
@@ -43,7 +41,6 @@ export const getMapById = cache(async (id: string) => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 	if (!map) return null
@@ -56,8 +53,8 @@ export const getAdjacentMapsWithQuest = cache(async (currentReleaseDate: string)
 	"use cache"
 	const { prevMap, nextMap } = await getAdjacentMapsWithQuestEffect(currentReleaseDate).pipe(
 		Effect.withLogSpan("get_adjancent_maps_with_quest"),
+		Effect.catchAll(_error => Effect.succeed({ prevMap: null, nextMap: null })),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 

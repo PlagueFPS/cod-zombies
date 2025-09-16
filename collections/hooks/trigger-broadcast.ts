@@ -1,8 +1,7 @@
 import type { CollectionAfterChangeHook } from "payload"
-import { Effect, Layer, Redacted, Schedule } from "effect"
+import { Effect, Redacted, Schedule } from "effect"
 import { after } from "next/server"
 import { env } from "@/env"
-import { Payload } from "@/lib/services/cms"
 import { Email } from "@/lib/services/emails"
 import { handleEntryBroadcast } from "@/usecases/email"
 import { isFirstTimePublish } from "@/utils/payload-utils"
@@ -44,7 +43,7 @@ export const triggerBroadcast: CollectionAfterChangeHook = ({
 			}),
 			Effect.catchAll(_error => Effect.void),
 			Effect.ensureErrorType<never>(),
-			Effect.provide(Layer.merge(Email.Default, Payload.Default)),
+			Effect.provide(Email.Default),
 			Effect.runPromise,
 		)
 	})

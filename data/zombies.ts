@@ -1,7 +1,7 @@
 import { Effect, Either } from "effect"
 import { unstable_cacheTag as cacheTag } from "next/cache"
 import { cache } from "react"
-import { Payload } from "@/lib/services/cms"
+import { Payload } from "@/lib/payload"
 import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
@@ -23,7 +23,6 @@ export const getZombies = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
@@ -37,7 +36,6 @@ export const getZombiesMetadata = cache(async () => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed([])),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
@@ -49,7 +47,6 @@ export const getZombieBySlug = cache(async (slug: string) => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 
@@ -67,8 +64,8 @@ export const getAdjacentZombies = cache(async (currentReleaseDate: string) => {
 	"use cache"
 	const { prevZombie, nextZombie } = await getAdjacentZombiesEffect(currentReleaseDate).pipe(
 		Effect.withLogSpan("get_adjacent_zombies_cached"),
+		Effect.catchAll(_error => Effect.succeed({ prevZombie: null, nextZombie: null })),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 
@@ -100,7 +97,6 @@ export const getZombieById = cache(async (id: string) => {
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Payload.Default),
 		Effect.runPromise,
 	)
 })
