@@ -105,29 +105,6 @@ export const getZombieById = cache(async (id: string) => {
 	)
 })
 
-export const getNewZombies = Effect.gen(function* () {
-	const payload = yield* Payload
-	const newZombies = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "zombies",
-				pagination: false,
-				where: {
-					newAt: {
-						exists: true,
-					},
-				},
-				select: { newAt: true },
-			}),
-		catch: error => new GetEntriesError({ message: "Failed to fetch new zombies", cause: error }),
-	}).pipe(
-		Effect.map(zombies =>
-			zombies.docs.map(zombie => ({ ...zombie, collection: "zombies" as const })),
-		),
-	)
-	return newZombies
-}).pipe(Effect.withLogSpan("get_new_zombies"))
-
 const getZombiesEffect = Effect.gen(function* () {
 	const payload = yield* Payload
 	const zombies = yield* Effect.tryPromise({

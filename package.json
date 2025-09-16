@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "pnpm test && next build",
+    "build": "pnpm test && next build --turbopack",
     "ci": "payload migrate && pnpm build",
     "start": "next start",
     "typegen": "next typegen",

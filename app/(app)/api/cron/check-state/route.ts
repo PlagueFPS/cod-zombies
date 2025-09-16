@@ -1,10 +1,7 @@
 import { Duration, Effect, Redacted, Ref } from "effect"
-import { getNewMainQuests } from "@/data/main-quests"
-import { getNewSideQuests } from "@/data/side-quests"
-import { getNewZombies } from "@/data/zombies"
 import { env } from "@/env"
 import { Payload } from "@/lib/services/cms"
-import { AuthorizationError, UpdateEntryStatusError } from "@/types/errors"
+import { AuthorizationError, GetEntriesError, UpdateEntryStatusError } from "@/types/errors"
 import { MAX_NEW_TIME } from "@/utils/constants"
 import { authorizedRequest } from "@/utils/functions"
 
@@ -18,10 +15,55 @@ export async function GET(request: Request) {
 		if (!authed) return yield* new AuthorizationError({ message: "Unauthorized Request" })
 
 		const numRef = yield* Ref.make(0)
-		const newEntries = yield* Effect.all([getNewMainQuests, getNewSideQuests, getNewZombies]).pipe(
-			Effect.map(entries => [...entries[0], ...entries[1], ...entries[2]]),
+		const newMainQuests = yield* Effect.tryPromise({
+			try: () =>
+				payload.db.drizzle.query.main_quests.findMany({
+					columns: {
+						id: true,
+						newAt: true,
+					},
+					where: (main_quests, { isNotNull }) => isNotNull(main_quests.newAt),
+				}),
+			catch: error =>
+				new GetEntriesError({ message: "Failed to fetch new main quests", cause: error }),
+		}).pipe(
+			Effect.map(mainQuests =>
+				mainQuests.map(mainQuest => ({ ...mainQuest, collection: "mainQuests" as const })),
+			),
 		)
 
+		const newSideQuests = yield* Effect.tryPromise({
+			try: () =>
+				payload.db.drizzle.query.side_quests.findMany({
+					columns: {
+						id: true,
+						newAt: true,
+					},
+					where: (side_quests, { isNotNull }) => isNotNull(side_quests.newAt),
+				}),
+			catch: error =>
+				new GetEntriesError({ message: "Failed to fetch new side quests", cause: error }),
+		}).pipe(
+			Effect.map(sideQuests =>
+				sideQuests.map(sideQuest => ({ ...sideQuest, collection: "sideQuests" as const })),
+			),
+		)
+
+		const newZombies = yield* Effect.tryPromise({
+			try: () =>
+				payload.db.drizzle.query.zombies.findMany({
+					columns: {
+						id: true,
+						newAt: true,
+					},
+					where: (zombies, { isNotNull }) => isNotNull(zombies.newAt),
+				}),
+			catch: error => new GetEntriesError({ message: "Failed to fetch new zombies", cause: error }),
+		}).pipe(
+			Effect.map(zombies => zombies.map(zombie => ({ ...zombie, collection: "zombies" as const }))),
+		)
+
+		const newEntries = [...newMainQuests, ...newSideQuests, ...newZombies]
 		for (const entry of newEntries) {
 			if (!entry.newAt) {
 				yield* Effect.log(`[STATE ENFORCEMENT] Entry ${entry.id} has no newAt.`)
