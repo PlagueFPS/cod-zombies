@@ -97,7 +97,9 @@ const PerkTooltipContent = ({ perk }: { perk: MinifiedPerk }) => {
 					<blockquote className="mt-6 rounded-lg border border-orange-200 bg-orange-100/20 p-4 shadow-lg dark:border-orange-800 dark:bg-orange-900/20">
 						<div className="flex items-start text-orange-700 dark:text-orange-300">
 							<p className="text-orange-800 text-sm dark:text-orange-200">
-								<span className="mr-1 font-bold text-orange-800 dark:text-primary">Modifier:</span>
+								<span className="mr-1 font-bold text-orange-800 dark:text-orange-400">
+									MODIFIER:
+								</span>
 								{perk.modifier}
 							</p>
 						</div>

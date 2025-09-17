@@ -5,6 +5,7 @@ import type {
 	SerializedLexicalNodeWithParent,
 } from "@payloadcms/richtext-lexical/react"
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { cn } from "@/lib/utils"
 
 interface RichTableProps {
 	headerRow: SerializedTableRowNode
@@ -42,7 +43,15 @@ export default function RichTable({ headerRow, bodyRows, nodesToJSX }: RichTable
 				</TableHeader>
 				<TableBody>
 					{bodyRows.map((row, index) => (
-						<TableRow key={`table-row-${index + 1}`}>
+						<TableRow
+							key={`table-row-${index + 1}`}
+							className={cn(
+								"text-orange-800 hover:bg-orange-100 dark:text-orange-200 dark:hover:bg-muted/50",
+								{
+									"bg-orange-50 dark:bg-muted/10": index % 2 === 0,
+								},
+							)}
+						>
 							{nodesToJSX({ nodes: row.children })}
 						</TableRow>
 					))}
