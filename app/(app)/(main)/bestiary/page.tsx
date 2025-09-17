@@ -6,7 +6,7 @@ import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import GridSection from "@/components/grid-section/grid-section"
 import BestiaryFiltersLoader from "@/components/loaders/bestiary-filters-loader"
 import GridLoader from "@/components/loaders/grid-loader"
-import { env } from "@/env"
+import { getServerUrl } from "@/utils/functions"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 	},
 	alternates: {
-		canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary`,
+		canonical: `${getServerUrl()}/bestiary`,
 	},
 }
 

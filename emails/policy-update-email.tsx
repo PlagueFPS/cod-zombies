@@ -13,8 +13,8 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { env } from "@/env"
 import { DATE_OPTIONS } from "@/utils/constants"
+import { getServerUrl } from "@/utils/functions"
 
 export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscribeUrl: string }) {
 	const today = new Date()
@@ -25,6 +25,7 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 	oneMonthFromNow.setMonth(currentMonth + 1)
 
 	const formattedDate = oneMonthFromNow.toLocaleDateString("en-US", DATE_OPTIONS)
+	const serverUrl = getServerUrl()
 
 	return (
 		<Html>
@@ -35,7 +36,7 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 					<Container className="mx-auto max-w-[600px] rounded-[8px] bg-white p-[20px]">
 						<Section className="mb-[32px] text-center">
 							<Img
-								src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
+								src={`${serverUrl}/logo.webp`}
 								alt={`Site Logo`}
 								width="120"
 								height="50"
@@ -78,7 +79,7 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 							<Section className="mb-[32px] text-center">
 								<Button
 									className="box-border rounded-[4px] bg-orange-600 px-[20px] py-[12px] text-center font-medium text-white no-underline"
-									href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`}
+									href={`${serverUrl}/privacy-policy`}
 								>
 									Review Privacy Policy
 								</Button>
@@ -108,7 +109,7 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 
 							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
 								<Link
-									href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`}
+									href={`${serverUrl}/privacy-policy`}
 									className="text-[#8898aa] underline"
 								>
 									Privacy Policy

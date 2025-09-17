@@ -15,7 +15,7 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { env } from "@/env"
+import { getServerUrl } from "@/utils/functions"
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
 	type: Zombie["type"]
@@ -29,6 +29,7 @@ export default function ZombieReleaseEmail({
 	unsubscribeUrl,
 }: IZombieRelease) {
 	const currentYear = new Date().getFullYear()
+	const serverUrl = getServerUrl()
 
 	return (
 		<Html>
@@ -46,7 +47,7 @@ export default function ZombieReleaseEmail({
 						{/* Logo and Site Name */}
 						<Section className="mb-[24px] text-center">
 							<Img
-								src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
+								src={`${serverUrl}/logo.webp`}
 								alt="Site Logo"
 								width="120"
 								height="50"
@@ -108,7 +109,7 @@ export default function ZombieReleaseEmail({
 
 							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
 								<Link
-									href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`}
+									href={`${serverUrl}/privacy-policy`}
 									className="text-[#8898aa] underline"
 								>
 									Privacy Policy

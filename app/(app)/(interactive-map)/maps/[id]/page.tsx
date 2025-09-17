@@ -10,9 +10,9 @@ import MapSidebar from "@/components/interactive-map/map-sidebar"
 import SidebarLoader from "@/components/loaders/sidebar-loader"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { getAvailableMaps, getMapConfig } from "@/data/interactive-map"
-import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { getServerUrl } from "@/utils/functions"
 
 export const generateStaticParams = () => {
 	const maps = getAvailableMaps()
@@ -26,6 +26,7 @@ export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Pro
 	const config = await getMapConfig(id as MapId)
 	if (!config || config.state === "Coming Soon") notFound()
 	const title = `${config.title} Interactive Map`
+	const serverUrl = getServerUrl()
 
 	return {
 		title,
@@ -36,7 +37,7 @@ export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Pro
 			description: config.description,
 			url: `/maps/${config.id}`,
 			images: {
-				url: `${env.NEXT_PUBLIC_WEBSITE_URL}/previews/${config.id}-preview.webp`,
+				url: `${serverUrl}/previews/${config.id}-preview.webp`,
 				width: 640,
 				height: 360,
 			},
@@ -47,7 +48,7 @@ export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Pro
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${config.id}`,
+			canonical: `${serverUrl}/maps/${config.id}`,
 		},
 	}
 }

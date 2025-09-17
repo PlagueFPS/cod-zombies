@@ -6,11 +6,11 @@ import GridLoader from "@/components/loaders/grid-loader"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { MainQuestFilters } from "@/components/quest-filters/main-quest-filters"
 import { MainQuestGrid } from "@/components/quest-grid/main-quest-grid"
-import { env } from "@/env"
+import { getServerUrl } from "@/utils/functions"
 
 export const metadata: Metadata = {
 	alternates: {
-		canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}`,
+		canonical: `${getServerUrl()}`,
 	},
 }
 

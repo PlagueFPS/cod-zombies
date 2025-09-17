@@ -12,13 +12,15 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { env } from "@/env"
+import { getServerUrl } from "@/utils/functions"
 
 interface IUnsubscribeEmail {
 	unsubscribeUrl: string
 }
 
 export default function UnsubscribeEmail({ unsubscribeUrl }: IUnsubscribeEmail) {
+	const serverUrl = getServerUrl()
+
 	return (
 		<Html>
 			<Tailwind>
@@ -30,7 +32,7 @@ export default function UnsubscribeEmail({ unsubscribeUrl }: IUnsubscribeEmail) 
 					<Container className="mx-auto max-w-[600px] rounded-[8px] bg-white p-[20px]">
 						<Section className="pt-[16px] pb-[32px] text-center">
 							<Img
-								src={`${env.NEXT_PUBLIC_WEBSITE_URL}/logo.webp`}
+								src={`${serverUrl}/logo.webp`}
 								alt={`Site Logo`}
 								width="120"
 								height="50"
@@ -78,7 +80,7 @@ export default function UnsubscribeEmail({ unsubscribeUrl }: IUnsubscribeEmail) 
 							</Text>
 							<Text className="mt-[16px] text-[#8898aa] text-[14px]">
 								<Link
-									href={`${env.NEXT_PUBLIC_WEBSITE_URL}/privacy-policy`}
+									href={`${serverUrl}/privacy-policy`}
 									className="text-[#6b7280] underline"
 								>
 									Privacy Policy

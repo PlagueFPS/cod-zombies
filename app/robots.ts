@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next"
-import { env } from "@/env"
+import { getServerUrl } from "@/utils/functions"
 
 export default function robots(): MetadataRoute.Robots {
 	return {
@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
 			allow: "/",
 			disallow: ["/newsletter/**", "/admin", "/admin/**"],
 		},
-		sitemap: `${env.NEXT_PUBLIC_WEBSITE_URL}/sitemap.xml`,
+		sitemap: `${getServerUrl()}/sitemap.xml`,
 	}
 }

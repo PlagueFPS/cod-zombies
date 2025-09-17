@@ -8,7 +8,6 @@ import { useState } from "react"
 import Discord from "@/components/SVGs/DiscordSVG"
 import Reddit from "@/components/SVGs/Reddit"
 import X from "@/components/SVGs/XSVG"
-import { env } from "@/env"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { capitalize, slugify } from "@/utils/functions.client"
@@ -86,13 +85,13 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 					params.append("include", marker.type || marker.id)
 				})
 
-				return `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}?${params.toString()}`
+				return `${window.location.origin}/maps/${id}?${params.toString()}`
 			}
 
-			return `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}?${params.toString()}`
+			return `${window.location.origin}/maps/${id}?${params.toString()}`
 		}
 
-		return `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${id}`
+		return `${window.location.origin}/maps/${id}`
 	}
 
 	const toggleFilters = () => {

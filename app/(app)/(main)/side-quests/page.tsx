@@ -6,7 +6,7 @@ import GridLoader from "@/components/loaders/grid-loader"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { SideQuestFilters } from "@/components/quest-filters/side-quest-filters"
 import { SideQuestGrid } from "@/components/quest-grid/side-quest-grid"
-import { env } from "@/env"
+import { getServerUrl } from "@/utils/functions"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 	},
 	alternates: {
-		canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests`,
+		canonical: `${getServerUrl()}/side-quests`,
 	},
 }
 

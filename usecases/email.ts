@@ -18,7 +18,7 @@ import {
 	CreateBroadcastError,
 	InvalidRequestError,
 } from "@/types/errors"
-import { generateToken } from "@/utils/functions"
+import { generateToken, getServerUrl } from "@/utils/functions"
 
 interface EmailProps {
 	name: string
@@ -39,7 +39,7 @@ export const requestSubscribe = (email: string) =>
 			})
 
 		const token = yield* generateToken(email, "1 day")
-		const subscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
+		const subscribeUrl = `${getServerUrl()}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
 		yield* sendEmail({
 			from: "COD Zombies Guides <support@codzombiesguides.com>",
@@ -63,7 +63,7 @@ export const requestUnsubscribe = (email: string) =>
 			})
 
 		const token = yield* generateToken(email, "1 day")
-		const unsubscribeUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
+		const unsubscribeUrl = `${getServerUrl()}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
 
 		yield* sendEmail({
 			from: "COD Zombies Guides <support@codzombiesguides.com>",
@@ -108,7 +108,7 @@ export const handleEntryBroadcast = (collection: CollectionSlug, id: string) =>
 		switch (collection) {
 			case "mainQuests": {
 				const mainQuest = yield* getMainQuestBroadcastInfo(id)
-				const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/${mainQuest.game.slug}/${mainQuest.map.slug}`
+				const redirectUrl = `${getServerUrl()}/${mainQuest.game.slug}/${mainQuest.map.slug}`
 				return yield* sendQuestReleaseBroadcast({
 					type: "Main",
 					redirectUrl,
@@ -118,7 +118,7 @@ export const handleEntryBroadcast = (collection: CollectionSlug, id: string) =>
 			}
 			case "sideQuests": {
 				const sideQuest = yield* getSideQuestBroadcastInfo(id)
-				const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/${sideQuest.game.slug}/${sideQuest.map.slug}/${sideQuest.slug}`
+				const redirectUrl = `${getServerUrl()}/${sideQuest.game.slug}/${sideQuest.map.slug}/${sideQuest.slug}`
 				return yield* sendQuestReleaseBroadcast({
 					type: "Side",
 					redirectUrl,
@@ -128,7 +128,7 @@ export const handleEntryBroadcast = (collection: CollectionSlug, id: string) =>
 			}
 			case "zombies": {
 				const zombie = yield* getZombieBroadcastInfo(id)
-				const redirectUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`
+				const redirectUrl = `${getServerUrl()}/bestiary/${zombie.slug}`
 				return yield* sendZombieReleaseBroadcast({
 					redirectUrl,
 					title: zombie.title,
@@ -209,9 +209,9 @@ export const sendLegalUpdateBroadcast = Effect.gen(function* () {
 const getUnsubscribeUrl = Effect.gen(function* () {
 	// These tokens will expire in 30 days since they weren't user requested
 	const token = yield* generateToken(crypto.randomUUID(), "30 days")
-	return `${env.NEXT_PUBLIC_WEBSITE_URL}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
+	return `${getServerUrl()}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
 }).pipe(
 	Effect.withLogSpan("get_unsubscribe_url"),
 	Effect.tapError(Effect.logError),
-	Effect.catchAll(() => Effect.succeed(`${env.NEXT_PUBLIC_WEBSITE_URL}/newsletter/unsubscribe`)),
+	Effect.catchAll(() => Effect.succeed(`${getServerUrl()}/newsletter/unsubscribe`)),
 )

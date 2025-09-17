@@ -24,6 +24,7 @@ import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 import { calculateTimeToRead, extractHeadings } from "@/utils/payload-utils"
+import { getServerUrl } from "@/utils/functions"
 
 export const generateStaticParams = async () => {
 	const quests = await getSideQuestsMetadata()
@@ -61,7 +62,7 @@ export const generateMetadata = async ({
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${game}/${map}/${slug}`,
+			canonical: `${getServerUrl()}/side-quests/${game}/${map}/${slug}`,
 		},
 	}
 }
@@ -149,7 +150,7 @@ export default async function SideQuestPage({
 								</div>
 								<ShareButton
 									title={quest.title}
-									url={`${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${quest.game.slug}/${quest.map.slug}/${slug}`}
+									url={`${getServerUrl()}/side-quests/${quest.game.slug}/${quest.map.slug}/${slug}`}
 									className="mb-2 ml-auto text-muted-foreground md:mb-0"
 								/>
 							</div>

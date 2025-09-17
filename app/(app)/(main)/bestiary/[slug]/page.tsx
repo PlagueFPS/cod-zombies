@@ -43,6 +43,7 @@ import {
 import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
+import { getServerUrl } from "@/utils/functions"
 
 export const generateStaticParams = async () => {
 	const zombies = await getZombiesMetadata()
@@ -78,7 +79,7 @@ export const generateMetadata = async ({
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`,
+			canonical: `${getServerUrl()}/bestiary/${zombie.slug}`,
 		},
 	}
 }
@@ -122,7 +123,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 					</div>
 					<ShareButton
 						title={zombie.title}
-						url={`${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${zombie.slug}`}
+						url={`${getServerUrl()}/bestiary/${zombie.slug}`}
 					/>
 				</div>
 				<CardHeader>

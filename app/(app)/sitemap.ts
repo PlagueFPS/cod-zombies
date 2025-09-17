@@ -4,7 +4,7 @@ import { getLegalDocsMetadata } from "@/data/legal"
 import { getMainQuestMetadata } from "@/data/main-quests"
 import { getSideQuestsMetadata } from "@/data/side-quests"
 import { getZombiesMetadata } from "@/data/zombies"
-import { env } from "@/env"
+import { getServerUrl } from "@/utils/functions"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const mainQuestsPromise = getMainQuestMetadata()
@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const sideQuestsPromise = getSideQuestsMetadata()
 	const legalDocsPromise = getLegalDocsMetadata()
 	const interactiveMaps = getAvailableMaps()
+	const serverUrl = getServerUrl()
 
 	const [mainQuests, zombies, sideQuests, legalDocs] = await Promise.all([
 		mainQuestsPromise,
@@ -22,37 +23,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	return [
 		{
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}`,
+			url: `${serverUrl}`,
 			lastModified: mainQuests[0] ? new Date(mainQuests[0].updatedAt) : undefined,
 		},
 		...mainQuests.map((quest): MetadataRoute.Sitemap[number] => ({
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${quest.game.slug}/${quest.slug}`,
+			url: `${serverUrl}/${quest.game.slug}/${quest.slug}`,
 			lastModified: new Date(quest.updatedAt),
 		})),
 		{
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests`,
+			url: `${serverUrl}/side-quests`,
 			lastModified: sideQuests[0] ? new Date(sideQuests[0].updatedAt) : undefined,
 		},
 		...sideQuests.map((q): MetadataRoute.Sitemap[number] => ({
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`,
+			url: `${serverUrl}/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`,
 			lastModified: new Date(q.updatedAt),
 		})),
 		{
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary`,
+			url: `${serverUrl}/bestiary`,
 			lastModified: zombies[0] ? new Date(zombies[0].updatedAt) : undefined,
 		},
 		...zombies.map((z): MetadataRoute.Sitemap[number] => ({
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/bestiary/${z.slug}`,
+			url: `${serverUrl}/bestiary/${z.slug}`,
 			lastModified: new Date(z.updatedAt),
 		})),
 		{
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/maps`,
+			url: `${serverUrl}/maps`,
 		},
 		...interactiveMaps.map((map): MetadataRoute.Sitemap[number] => ({
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/maps/${map}`,
+			url: `${serverUrl}/maps/${map}`,
 		})),
 		...legalDocs.map((doc): MetadataRoute.Sitemap[number] => ({
-			url: `${env.NEXT_PUBLIC_WEBSITE_URL}/${doc.slug}`,
+			url: `${serverUrl}/${doc.slug}`,
 			lastModified: new Date(doc.updatedAt),
 		})),
 	]

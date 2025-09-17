@@ -9,15 +9,15 @@ import ReactScanWrapper from "@/components/react-scan/react-scan-wrapper"
 import { Toaster } from "@/components/ui/sonner"
 import { KeyboardShortcutsProvider } from "@/contexts/keyboard-shortcuts"
 import { ThemeProvider } from "@/contexts/theme-provider"
-import { env } from "@/env"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
+import { getServerUrl } from "@/utils/functions"
 
 interface LayoutProps {
 	children: React.ReactNode
 }
 
 export const metadata: Metadata = {
-	metadataBase: new URL(`${env.NEXT_PUBLIC_WEBSITE_URL}`),
+	metadataBase: new URL(getServerUrl()),
 	title: {
 		template: `%s - ${SITE_TITLE}`,
 		default: SITE_TITLE,

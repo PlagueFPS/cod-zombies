@@ -23,6 +23,7 @@ import { env } from "@/env"
 import { cn } from "@/lib/utils"
 import { DATE_OPTIONS, GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
 import { calculateTimeToRead, extractHeadings } from "@/utils/payload-utils"
+import { getServerUrl } from "@/utils/functions"
 
 export const generateStaticParams = async () => {
 	const mainQuests = await getMainQuestMetadata()
@@ -60,7 +61,7 @@ export const generateMetadata = async ({
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${env.NEXT_PUBLIC_WEBSITE_URL}/${quest.game.slug}/${slug}`,
+			canonical: `${getServerUrl()}/${quest.game.slug}/${slug}`,
 		},
 	}
 }
@@ -138,7 +139,7 @@ export default async function MapPage({ params }: PageProps<"/[game]/[slug]">) {
 								</div>
 								<ShareButton
 									title={quest.title}
-									url={`${env.NEXT_PUBLIC_WEBSITE_URL}/${quest.game.slug}/${slug}`}
+									url={`${getServerUrl()}/${quest.game.slug}/${slug}`}
 									className="mb-2 ml-auto text-muted-foreground md:mb-0"
 								/>
 							</div>

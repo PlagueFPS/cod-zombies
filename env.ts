@@ -22,10 +22,5 @@ export const env = createEnv({
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		STORAGE_READ_WRITE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 	},
-	client: {
-		NEXT_PUBLIC_WEBSITE_URL: Schema.standardSchemaV1(Schema.NonEmptyString),
-	},
-	experimental__runtimeEnv: {
-		NEXT_PUBLIC_WEBSITE_URL: process.env.NEXT_PUBLIC_WEBSITE_URL,
-	},
+	experimental__runtimeEnv: {}
 })
