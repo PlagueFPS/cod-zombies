@@ -195,7 +195,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 			try: () => sharp(imageBuffer).png({ quality: 75 }).toBuffer(),
 			catch: error =>
 				new OgImageGenerationError({ message: "Failed to optimize image", cause: error }),
-		})
+		}).pipe(Effect.map(buffer => new Uint8Array(buffer)))
 
 		return new Response(optimizedBuffer, {
 			headers: res.headers,

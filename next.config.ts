@@ -1,5 +1,6 @@
 import "./env"
 import type { NextConfig } from "next"
+import createMDX from "@next/mdx"
 import { withPayload } from "@payloadcms/next/withPayload"
 import { withBotId } from "botid/next/config"
 
@@ -25,7 +26,7 @@ const nextConfig: NextConfig = {
 		localPatterns: [
 			{
 				pathname: "/api/payload/media/file/**",
-			}
+			},
 		],
 		minimumCacheTTL: 31536000, // 1 year in seconds
 	},
@@ -121,4 +122,11 @@ const nextConfig: NextConfig = {
 	},
 }
 
-export default withBotId(withPayload(nextConfig))
+const withMDX = createMDX({
+	extension: /\.(md|mdx)$/,
+	options: {
+		remarkPlugins: ["remark-formatter", "remark-mdx-formatter"],
+	},
+})
+
+export default withMDX(withBotId(withPayload(nextConfig)))
