@@ -38,6 +38,5 @@ next-env.d.ts
 
 newassets
 media
-media-backup
 drizzle.config.ts
 contentful.json
