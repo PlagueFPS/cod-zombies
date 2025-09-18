@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
 		serverComponentsHmrCache: true,
 		reactCompiler: true,
 		browserDebugInfoInTerminal: true,
+		mdxRs: true,
 	},
+	pageExtensions: ["md", "mdx", "ts", "tsx", "js", "jsx"],
 	typedRoutes: true,
 	allowedDevOrigins: ["10.0.0.*"],
 	logging: {
@@ -124,9 +126,6 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
 	extension: /\.(md|mdx)$/,
-	options: {
-		remarkPlugins: ["remark-formatter", "remark-mdx-formatter"],
-	},
 })
 
 export default withMDX(withBotId(withPayload(nextConfig)))

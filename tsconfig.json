@@ -43,7 +43,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "app/(app)/(main)/black-ops-1/[slug]/page.mdx"  ],
   "exclude": [
     "node_modules"
   ]
