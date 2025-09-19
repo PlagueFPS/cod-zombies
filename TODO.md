@@ -11,3 +11,10 @@ to and the type (main-quest, side-quest, or zombie), in order to dynamic import 
 - (Relations) Weapons, Perks, Augments, Field Upgrades, Weak Points, Zombie Attacks, Weapon Builds, Ammo Mods and Zombies will have their own registery, but instead of linking to a module, they will directly create an object with the metadata. For example, a weapons module will have a key for each type of weapon and the value of that key will be that weapons metadata. This will allow for easy linking within the MDX page of any weapon, via a component to display that metadata in a nice UI. The same will be done for perks, augments, field upgrades, and zombies. The spawn behavior and combat strategy of zombies will be written in MDX however, and dynamically imported into the zombie's page.
 
 - Table of Contents for MDX pages will be generated via a plugin for MDX like `@mdx-js/remark-toc`
+
+- [] create all registeries
+- [] create components to display metadata within MDX pages
+- [] create all MDX pages
+- [] refactor existing components to use new metadata for previewing
+- [] refactor existing `page.tsx` files to use new MDX content
+- [] remove all old pages, components, dependencies and code.
