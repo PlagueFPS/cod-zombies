@@ -1,7 +1,9 @@
+import { head, type WeakPoint } from "@/data/weak-points"
+import { meleeSwing, type ZombieAttack } from "@/data/zombie-attacks"
+
 export interface Zombie {
 	id: string
 	title: string
-	slug: string
 	description: string
 	state: "Coming Soon" | "New" | null
 	releaseDate: Date
@@ -10,18 +12,19 @@ export interface Zombie {
 	maps: string[]
 	type: "Normal" | "Special" | "Elite" | "Boss"
 	speed: "Slow" | "Medium" | "Fast"
-	weakPoints: string[]
+	weakPoints: WeakPoint[]
 	elementalWeakness: string[]
-	attacks: string[]
+	attacks: ZombieAttack[]
 	spawnBehavior: string
 	combatStrategy: () => Promise<typeof import("*.mdx")>
 }
 
-export const zombiesRegistry: Record<string, Zombie> = {
+export type ZombieKey = keyof typeof zombiesRegistry
+
+const zombiesRegistry = {
 	zombie: {
-		id: crypto.randomUUID(),
+		id: "zombie",
 		title: "Zombie",
-		slug: "zombie",
 		state: null,
 		description:
 			"The first and most common enemy type. Varying in speeds, zombies provide the most basic threat on their own but will quickly become a challenge in hordes.",
@@ -33,9 +36,11 @@ export const zombiesRegistry: Record<string, Zombie> = {
 			"Zombies spawn at the start of and throughout each round. Special situations like boss fights or main quest interactions may alter the spawns of zombies, changing them or completely removing them temporarily.",
 		games: [],
 		maps: [],
-		weakPoints: [],
 		elementalWeakness: [],
-		attacks: [],
+		weakPoints: [head],
+		attacks: [meleeSwing],
 		combatStrategy: () => import("@/content/zombies/base-zombie.mdx"),
 	},
-}
+} satisfies Record<string, Zombie>
+
+export const { zombie } = zombiesRegistry
