@@ -5,8 +5,6 @@ export interface ZombieAttack {
 	description: string
 }
 
-export type ZombieAttackKey = keyof typeof zombieAttacksRegistry
-
 const zombieAttacksRegistry = {
 	meleeSwing: {
 		id: "melee-swing",
@@ -581,6 +579,7 @@ const zombieAttacksRegistry = {
 	},
 } satisfies Record<string, ZombieAttack>
 
+export type ZombieAttackKey = keyof typeof zombieAttacksRegistry
 export const {
 	meleeSwing,
 	acidExplosion,

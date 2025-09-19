@@ -58,10 +58,6 @@ const getGobbleGumByIdEffect = (id: string) =>
 
 		return gobblegum
 	}).pipe(Effect.withLogSpan("get_gobblegum_by_id"), Effect.annotateLogs({ id }))
-
-export type GobblegumKey = keyof typeof gobblegumRegistry
-export type GobblegumType = Gobblegum["type"]
-export type GobblegumRarity = Gobblegum["rarity"]
 export interface Gobblegum {
 	id: string
 	title: string
@@ -410,6 +406,9 @@ const gobblegumRegistry = {
 	},
 } satisfies Record<string, Gobblegum>
 
+export type GobblegumKey = keyof typeof gobblegumRegistry
+export type GobblegumType = Gobblegum["type"]
+export type GobblegumRarity = Gobblegum["rarity"]
 export const {
 	alchemcialAntithesis,
 	anywhereButHere,

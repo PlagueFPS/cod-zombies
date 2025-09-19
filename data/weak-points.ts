@@ -3,8 +3,6 @@ export interface WeakPoint {
 	title: string
 }
 
-export type WeakPointKey = keyof typeof weakPointsRegistry
-
 const weakPointsRegistry = {
 	head: {
 		id: "head",
@@ -120,6 +118,7 @@ const weakPointsRegistry = {
 	},
 } satisfies Record<string, WeakPoint>
 
+export type WeakPointKey = keyof typeof weakPointsRegistry
 export const {
 	head,
 	powerCore,

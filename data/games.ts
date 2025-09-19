@@ -40,7 +40,6 @@ const getGamesEffect = Effect.gen(function* () {
 	return docs
 }).pipe(Effect.withLogSpan("get_games"))
 
-export type GameKey = keyof typeof games
 export interface Game {
 	id: string
 	title: string
@@ -99,6 +98,7 @@ const games = {
 	// }
 } satisfies Record<string, Game>
 
+export type GameKey = keyof typeof games
 export const {
 	worldAtWar,
 	blackOps1,
