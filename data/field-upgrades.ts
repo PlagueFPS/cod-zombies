@@ -6,7 +6,7 @@ import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
 import {
-	type Augment,
+	type AugmentTuple,
 	apexHunter,
 	arcaneFury,
 	broadBeam,
@@ -119,7 +119,7 @@ export interface FieldUpgrade {
 	title: string
 	description: string
 	image: string
-	augments?: Augment[]
+	augments?: AugmentTuple
 }
 
 const fieldUpgradeRegistry = {
@@ -129,7 +129,6 @@ const fieldUpgradeRegistry = {
 		description:
 			"Create a ring of ethereal fire that boosts damage for you and allies. Normal enemies who enter gain a burning effect that deals fire damage. Last 15 seconds.",
 		image: "/field-upgrades/ring-of-fire.avif",
-		augments: [],
 	},
 	aetherShroud: {
 		id: "aether-shroud",

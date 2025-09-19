@@ -86,6 +86,7 @@ export const createAugmentDto = (augmentOrId: string | PayloadAugment) =>
 		}
 	}).pipe(Effect.withLogSpan("create_augment_dto"))
 
+/** Defined shape of an Augment */
 export interface Augment {
 	id: string
 	title: string
@@ -1067,8 +1068,12 @@ const augmentRegistry = {
 	},
 } satisfies Record<string, Augment>
 
+/**Union of all keys in the Augment Registry */
 export type AugmentKey = keyof typeof augmentRegistry
+/**Tuple to enforce min/max allowed augments */
 export type AugmentTuple = [Augment, Augment, Augment, Augment, Augment, Augment]
+/**Union of all Augment types */
+export type AugmentType = Augment["type"]
 export const {
 	doubleJeopardy,
 	doubleStandard,

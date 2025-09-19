@@ -6,7 +6,46 @@ import { Payload } from "@/lib/payload"
 import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
-import { antibiotic, bigGameBrainRot, bigGameCryoFreeze, bigGameDeadWire, bigGameLightMend, bigGameNapalmBurst, bigGameShadowRift, chainLightning, contactBurn, createAugmentDto, dualAction, explosive, explosiveRain, expressRemedy, extensionBrainRot, extensionCryoFreeze, extensionDeadWire, extensionNapalmBurst, extraStrength, firebomb, freezerBurn, frozenStiff, hasteBrainRot, hasteDeadWire, hasteShadowRift, highVoltage, iceCloud, lightningStrike, liquidNitrogen, longerLife, pheromone, plague, supermassive, targeted, thermite, toppleDanger, type Augment } from "./augments"
+import {
+	type AugmentTuple,
+	antibiotic,
+	bigGameBrainRot,
+	bigGameCryoFreeze,
+	bigGameDeadWire,
+	bigGameLightMend,
+	bigGameNapalmBurst,
+	bigGameShadowRift,
+	chainLightning,
+	contactBurn,
+	createAugmentDto,
+	dualAction,
+	explosive,
+	explosiveRain,
+	expressRemedy,
+	extensionBrainRot,
+	extensionCryoFreeze,
+	extensionDeadWire,
+	extensionNapalmBurst,
+	extraStrength,
+	firebomb,
+	freezerBurn,
+	frozenStiff,
+	hasteBrainRot,
+	hasteDeadWire,
+	hasteShadowRift,
+	highVoltage,
+	iceCloud,
+	incendiary,
+	lightningStrike,
+	liquidNitrogen,
+	longerLife,
+	pheromone,
+	plague,
+	supermassive,
+	targeted,
+	thermite,
+	toppleDanger,
+} from "./augments"
 import { blackOps4, blackOps6, type Game } from "./games"
 
 export type MinifiedAmmoMod = NonNullable<Awaited<ReturnType<typeof getAmmoModById>>>
@@ -85,7 +124,7 @@ interface AmmoMod {
 	game: Game
 	description: string
 	image: string
-	augments?: Augment[]
+	augments?: AugmentTuple
 }
 
 const ammoModRegistry = {
@@ -120,7 +159,7 @@ const ammoModRegistry = {
 			"Bullets deal light damage. Each bullet has a change to transform a normal or special enemy's health into a healing glyph that moves to nearby injured allies.",
 		game: blackOps6,
 		image: "/ammo-mods/light-mend.avif",
-		augments: [antibiotic, bigGameLightMend, dualAction, longerLife, extraStrength, expressRemedy]
+		augments: [antibiotic, bigGameLightMend, dualAction, longerLife, extraStrength, expressRemedy],
 	},
 	deadWire: {
 		id: "dead-wire",
@@ -129,7 +168,14 @@ const ammoModRegistry = {
 			"Bullets deal electrical damage. Each bullet has a chance to stun any Normal and Special enemy, generating a field that deals electric damage to nearby enemies.",
 		game: blackOps6,
 		image: "/ammo-mods/dead-wire-bo6.avif",
-		augments: [chainLightning, bigGameDeadWire, lightningStrike, highVoltage, hasteDeadWire, extensionDeadWire]
+		augments: [
+			chainLightning,
+			bigGameDeadWire,
+			lightningStrike,
+			highVoltage,
+			hasteDeadWire,
+			extensionDeadWire,
+		],
 	},
 	brainRotBO6: {
 		id: "brain-rot-bo6",
@@ -138,7 +184,7 @@ const ammoModRegistry = {
 			"Bullets deal toxic damage. Each bullet has the chance to turn a Normal or Special enemy into an ally for short duration.",
 		game: blackOps6,
 		image: "/ammo-mods/brain-rot-bo6.avif",
-		augments: [plague, pheromone, bigGameBrainRot, extensionBrainRot, hasteBrainRot, explosive]
+		augments: [plague, pheromone, bigGameBrainRot, extensionBrainRot, hasteBrainRot, explosive],
 	},
 	cryoFreeze: {
 		id: "cryo-freeze",
@@ -147,7 +193,14 @@ const ammoModRegistry = {
 			"Bullets deal frost damage. Each bullet has a chance to slow Normal or Special enemies.",
 		game: blackOps6,
 		image: "/ammo-mods/cryo-freeze.avif",
-		augments: [bigGameCryoFreeze, iceCloud, frozenStiff, extensionCryoFreeze, freezerBurn, liquidNitrogen]
+		augments: [
+			bigGameCryoFreeze,
+			iceCloud,
+			frozenStiff,
+			extensionCryoFreeze,
+			freezerBurn,
+			liquidNitrogen,
+		],
 	},
 	napalmBurst: {
 		id: "napalm-burst",
@@ -156,7 +209,14 @@ const ammoModRegistry = {
 			"Bullets deal fire damage. Each bullet has a chance to ignite Normal and Special enemies.",
 		game: blackOps6,
 		image: "/ammo-mods/napalm-burst.avif",
-		augments: [bigGameNapalmBurst, thermite, firebomb, extensionNapalmBurst, contactBurn]
+		augments: [
+			bigGameNapalmBurst,
+			thermite,
+			firebomb,
+			extensionNapalmBurst,
+			incendiary,
+			contactBurn,
+		],
 	},
 	shadowRift: {
 		id: "shadow-rift",
@@ -165,7 +225,14 @@ const ammoModRegistry = {
 			"Bullets deal shadow damage. Each bullet has a chance to spawn a black hole if striking Normal or Special enemies, warping nearby zombies away and dropping some from the air at high speed.",
 		game: blackOps6,
 		image: "/ammo-mods/shadow-rift.avif",
-		augments: [bigGameShadowRift, toppleDanger, explosiveRain, hasteShadowRift, targeted, supermassive]
+		augments: [
+			bigGameShadowRift,
+			toppleDanger,
+			explosiveRain,
+			hasteShadowRift,
+			targeted,
+			supermassive,
+		],
 	},
 } satisfies Record<string, AmmoMod>
 
