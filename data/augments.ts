@@ -1068,6 +1068,7 @@ const augmentRegistry = {
 } satisfies Record<string, Augment>
 
 export type AugmentKey = keyof typeof augmentRegistry
+export type AugmentTuple = [Augment, Augment, Augment, Augment, Augment, Augment]
 export const {
 	doubleJeopardy,
 	doubleStandard,

@@ -5,7 +5,76 @@ import { Payload } from "@/lib/payload"
 import { EntryNotFoundError } from "@/types/errors"
 import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
 import { assertRelation, createMediaDto } from "@/utils/payload-utils"
-import { createAugmentDto } from "./augments"
+import {
+	type AugmentTuple,
+	birdsEyeView,
+	carrionLuggage,
+	chillBerry,
+	citrusFocus,
+	classicFormula,
+	condorsReach,
+	createAugmentDto,
+	criticalEye,
+	dasher,
+	deadAgain,
+	deadBreak,
+	deadDraw,
+	deadFirst,
+	deadHead,
+	deadSet,
+	deathStare,
+	doubleImpact,
+	doubleJeopardy,
+	doubleOrNothing,
+	doublePlay,
+	doubleStandard,
+	doubleTime,
+	drRam,
+	durablePlates,
+	dyingWish as dyingWishAugment,
+	electricCherry,
+	emt,
+	environmentalist,
+	eodTechnician,
+	equivalentExchange,
+	expresso,
+	extraChange,
+	fastPitcher,
+	fetidUpgraid,
+	freeFaller,
+	furtherInsight,
+	gravityMD,
+	hardenedPlates,
+	hardTarget,
+	hiddenImpact,
+	hotFoot,
+	imperialPeach,
+	karmicReturn,
+	partingGift,
+	phantomReload,
+	phdSlider as phdSliderAugment,
+	pickyEater,
+	pineappleBlast,
+	probiotic,
+	quarterback,
+	quickSwap,
+	reactiveArmor,
+	retaliation,
+	slowDeath,
+	smellOfDeath,
+	speedyRoulette,
+	stalker,
+	stickNMove,
+	strengthTraining,
+	supercharged,
+	swiftRecovery,
+	treasureHunter,
+	tribologist,
+	tripleShot,
+	turtleShell,
+	vampiricExtraction,
+	vulneraBean,
+} from "./augments"
 
 export type MinifiedPerk = NonNullable<Awaited<ReturnType<typeof getPerkById>>>
 
@@ -72,3 +141,285 @@ const getPerkByIdEffect = (id: string) =>
 		)
 		return perk
 	}).pipe(Effect.withLogSpan("get_perk_by_id"), Effect.annotateLogs({ id }))
+
+export interface Perk {
+	id: string
+	title: string
+	description: string
+	image: string
+	modifier?: string
+	augments?: AugmentTuple
+}
+
+const perkRegistry = {
+	juggernog: {
+		id: "juggernog",
+		title: "Juggernog",
+		description: "Increases max health.",
+		image: "/perks/juggernog.webp",
+	},
+	deadshotDaiquiri: {
+		id: "deadshot-daiquiri",
+		title: "Deadshot Daiquiri",
+		description:
+			"Reduces weapon spread by 35%, removes weapon sway, and auto-locks aim-assist to a zombies head.",
+		image: "/perks/deadshot-daiquiri.webp",
+	},
+	widowsWine: {
+		id: "widows-wine",
+		title: "Widow's Wine",
+		description:
+			"Replaces lethal equipment with four special grenades that explode automatically when hit, consuming a grenade, and slowing and damaging all normal/special zombies in the blast radius.",
+		image: "/perks/widows-wine.webp",
+	},
+	doubleTap: {
+		id: "double-tap",
+		title: "Double Tap",
+		description: "Increases weapon fire rate.",
+		image: "/perks/double-tap.avif",
+		augments: [
+			doubleJeopardy,
+			doubleStandard,
+			doubleImpact,
+			doubleTime,
+			doubleOrNothing,
+			doublePlay,
+		],
+	},
+	timeslip: {
+		id: "timeslip",
+		title: "Timeslip",
+		description:
+			"Equipment cooldown rate increased. Mystery Box and Pack-a-Punch weapons appear faster. Greatly reduce Trap and Fast Travel cooldowns.",
+		modifier: "Special Weapon charge rate and Elixir cooldown rate are slightly increased.",
+		image: "/perks/timeslip.avif",
+	},
+	stoneColdStronghold: {
+		id: "stone-cold-stronghold",
+		title: "Stone Cold Stronghold",
+		description:
+			"Standing your ground creates a defensive circle which boosts damage and armor over time while inside.",
+		modifier: "Enemies killed inside the defensive circle also boost damage and armor.",
+		image: "/perks/stone-cold-stronghold.avif",
+	},
+	phdSlider: {
+		id: "phd-slider",
+		title: "PHD Slider",
+		description:
+			"Slide to build up charge. Once full charged, slide into an enemy to trigger an explosion. Gain full resistance to self-inflicted explosive damage and partial resistance to enemy explosive damage.",
+		modifier:
+			"Improved slide distance. Trap immunity while sliding. Increased explosion damage when entering a slide from greater heights.",
+		image: "/perks/phd-slider.avif",
+	},
+	quickRevive: {
+		id: "quick-revive",
+		title: "Quick Revive",
+		description:
+			"Shorter delay before regenerating health and increased regeneration rate. Revive Players faster.",
+		modifier:
+			"Gain a sprint speed after health regeneration starts. Reviving grants both players full health and a sprint speed boost.",
+		image: "/perks/quick-revive.avif",
+	},
+	staminUp: {
+		id: "stamin-up",
+		title: "Stamin-Up",
+		description: "Increased sprint speed and duration. Stamina regenerates faster.",
+		modifier: "Unlimited full sprint. Player can fire weapons while sprinting.",
+		image: "/perks/stamin-up.avif",
+	},
+	wintersWail: {
+		id: "winters-wail",
+		title: "Winter's Wail",
+		description:
+			"Getting hit by a melee attack while not at full health will cause a frost explosion that will freeze or slow enemies nearby. You can store three charges. In Realistic Difficulty, the frost explosion will trigger regardless of health.",
+		modifier:
+			"Frost explosion triggers a slowing field around the Player for a limited time. Store an additional charge.",
+		image: "/perks/winters-wail.avif",
+	},
+	deathPerception: {
+		id: "death-perception",
+		title: "Death Perception",
+		description:
+			"See nearby enemies through walls. Receive screen indicators when enemies approach the Player from off-screen.",
+		modifier: "Deal increased damage to special enemy weak points.",
+		image: "/perks/death-perception.avif",
+	},
+	victoriousTortoise: {
+		id: "victorious-tortoise",
+		title: "Victorious Tortoise",
+		description:
+			"Shields block damage from all directions when held. When a Shield breaks it will trigger a defensive explosion.",
+		modifier: "Shield bash attacks can knock down heavy and Mini-Boss enemies.",
+		image: "/perks/victorious-tortoise.avif",
+	},
+	dyingWish: {
+		id: "dying-wish",
+		title: "Dying Wish",
+		description:
+			"Instead of entering Last Stand the Player goes Berserk for 9 seconds. While Berserk, they are invulnerable and melee damage is greatly increased. Afterwards, the Player is left with 1 health. Cooldown increases with every use.",
+		modifier: "Player will receive full health when no longer Berserk.",
+		image: "/perks/dying-wish.avif",
+	},
+	deathPerceptionBO6: {
+		id: "death-perception-bo6",
+		title: "Death Perception",
+		description: "Obscured enemies are keylined.",
+		image: "/perks/death-perception-bo6.avif",
+		augments: [treasureHunter, deathStare, criticalEye, birdsEyeView, extraChange, furtherInsight],
+	},
+	phdFlopper: {
+		id: "phd-flopper",
+		title: "PHD Flopper",
+		description: "Explosive dive to prone and immunity to self-inflicted explosive damage.",
+		image: "/perks/phd-flopper.avif",
+		augments: [gravityMD, drRam, phdSliderAugment, environmentalist, eodTechnician, tribologist],
+	},
+	vultureAid: {
+		id: "vulture-aid",
+		title: "Vulture Aid",
+		description: "Increase the variety of loot dropped by enemies.",
+		image: "/perks/vulture-aid.avif",
+		augments: [fetidUpgraid, smellOfDeath, partingGift, condorsReach, carrionLuggage, pickyEater],
+	},
+	meleeMacchiato: {
+		id: "melee-macchiato",
+		title: "Melee Macchiato",
+		description: "Replace weapon gun butt with a deadly punch.",
+		image: "/perks/melee-macchiato.avif",
+		augments: [
+			expresso,
+			vampiricExtraction,
+			tripleShot,
+			stickNMove,
+			strengthTraining,
+			hiddenImpact,
+		],
+	},
+	quickReviveBO3: {
+		id: "quick-revive-bo3",
+		title: "Quick Revive",
+		description: "Revive teammates 100% faster. Self-revive on solo, up to 3 times.",
+		image: "/perks/quick-revive.avif",
+	},
+	staminUpBO3: {
+		id: "stamin-up-bo3",
+		title: "Stamin-Up",
+		description: "Sprint duration is increased by 100%. Sprint speed increased.",
+		image: "/perks/stamin-up.avif",
+	},
+	muleKick: {
+		id: "mule-kick",
+		title: "Mule Kick",
+		description: "Carry an additional weapon.",
+		image: "/perks/mule-kick.avif",
+	},
+	deadshotDaiquiriColdWar: {
+		id: "deadshot-daiquiri-cold-war",
+		title: "Deadshot Daiquiri",
+		description: "Aiming down sights moves to enemy critical location. Remove scope sway.",
+		image: "/perks/deadshot-daiquiri-cold-war.avif",
+	},
+	speedCola: {
+		id: "speed-cola",
+		title: "Speed Cola",
+		description: "Increase reload speed bonus to 15%.",
+		image: "/perks/speed-cola.avif",
+		augments: [supercharged, classicFormula, phantomReload, speedyRoulette, quickSwap, fastPitcher],
+	},
+	staminUpBO6: {
+		id: "stamin-up-bo6",
+		title: "Stamin-Up",
+		description: "Increase run and sprint speed.",
+		image: "/perks/stamin-up-bo6.avif",
+		augments: [freeFaller, dasher, stalker, hardTarget, quarterback, hotFoot],
+	},
+	juggernogBO6: {
+		id: "juggernog-bo6",
+		title: "Juggernog",
+		description: "Increase Max Health by 100.",
+		image: "/perks/juggernog-bo6.avif",
+		augments: [probiotic, turtleShell, reactiveArmor, retaliation, hardenedPlates, durablePlates],
+	},
+	quickReviveBO6: {
+		id: "quick-revive-bo6",
+		title: "Quick Revive",
+		description: "Recover health and revive allies faster.",
+		image: "/perks/quick-revive-cold-war.avif",
+		augments: [emt, equivalentExchange, dyingWishAugment, swiftRecovery, karmicReturn, slowDeath],
+	},
+	deadshotDaiquiriBO6: {
+		id: "deadshot-daiquiri-bo6",
+		title: "Deadshot Daiquiri",
+		description: "Improve ADS precision and increase critical damage.",
+		image: "/perks/deadshot-daiquiri-cold-war.avif",
+		augments: [deadHead, deadFirst, deadAgain, deadBreak, deadDraw, deadSet],
+	},
+	speedColaBO3: {
+		id: "speed-cola-bo3",
+		title: "Speed Cola",
+		description: "Increases Reload Speed.",
+		image: "/perks/speed-cola-bo3.webp",
+	},
+	vultureAidBO2: {
+		id: "vulture-aid-bo2",
+		title: "Vulture Aid",
+		description:
+			"See items through walls, zombies drop ammo packs, and the occasional gas cloud that, if stood in, allows the player to be ignored by zombies.",
+		image: "/perks/vulture-aid-bo2.webp",
+	},
+	doubleTapBO3: {
+		id: "double-tap-bo3",
+		title: "Double Tap",
+		description:
+			"Increases the rate of fire and doubles the damage of every round fired from a projectile weapon.",
+		image: "/perks/double-tap-bo3.webp",
+	},
+	muleKickColdWar: {
+		id: "mule-kick-cold-war",
+		title: "Mule Kick",
+		description: "Carry an additional weapon.",
+		image: "/perks/mule-kick-cold-war.webp",
+	},
+	elementalPop: {
+		id: "elemental-pop",
+		title: "Elemental Pop",
+		description: "Grants a small chance to apply a random Ammo Mod effect to your next attack.",
+		image: "/perks/elemental-pop.webp",
+		augments: [citrusFocus, imperialPeach, electricCherry, vulneraBean, pineappleBlast, chillBerry],
+	},
+} satisfies Record<string, Perk>
+
+export type PerkKey = keyof typeof perkRegistry
+export const {
+	deadshotDaiquiri,
+	deadshotDaiquiriBO6,
+	speedCola,
+	speedColaBO3,
+	vultureAidBO2,
+	doubleTapBO3,
+	muleKickColdWar,
+	elementalPop,
+	quickReviveBO6,
+	juggernogBO6,
+	staminUpBO6,
+	quickRevive,
+	staminUp,
+	juggernog,
+	quickReviveBO3,
+	staminUpBO3,
+	muleKick,
+	deadshotDaiquiriColdWar,
+	vultureAid,
+	doubleTap,
+	deathPerception,
+	deathPerceptionBO6,
+	meleeMacchiato,
+	dyingWish,
+	phdFlopper,
+	phdSlider,
+	stoneColdStronghold,
+	timeslip,
+	victoriousTortoise,
+	widowsWine,
+	wintersWail,
+} = perkRegistry
