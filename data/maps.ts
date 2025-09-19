@@ -373,3 +373,85 @@ const getAdjacentMapsWithQuestEffect = (currentReleaseDate: string) =>
 			nextMap: Either.isLeft(nextMap) ? null : nextMap.right.length > 0 ? nextMap.right[0] : null,
 		}
 	}).pipe(Effect.withLogSpan("get_adjancent_maps_with_quest"))
+
+export interface Map {
+	id: string
+	title: string
+	releaseDate: Date
+	description: string
+	image: string
+}
+
+const mapRegistry = {
+	nachtDerUntoten: {
+		id: "nacht-der-untoten",
+		title: "Nacht der Untoten",
+		releaseDate: new Date("November 11, 2008 07:00 AM"),
+		description: "You drove them deep into the heart of the Reich. You thought they were dead. You were wrong.",
+		image: "/maps/nacht-der-untoten.webp",
+	},
+	verruckt: {
+		id: "verruckt",
+		title: "Verrückt",
+		releaseDate: new Date("March 19, 2009 08:00 AM"),
+		description: "Welcome to Wittenau Sanitorium, a German asylum with dark corridors, terrifying undead enemies, and even darker secrets.",
+		image: "/maps/verruckt.webp",
+	},
+	shiNoNuma: {
+		id: "shi-no-numa",
+		title: "Shi No Numa",
+		releaseDate: new Date("June 10, 2009 08:00 AM"),
+		description: 'A "swamp of death" located in Japanese territory, surrounded by a sweltering jungle, hellhounds, and endless armies of the undead.',
+		image: "/maps/shi-no-numa.webp",
+	},
+	derRiese: {
+		id: "der-riese",
+		title: "Der Riese",
+		releaseDate: new Date("August 05, 2009 08:00 AM"),
+		description: 'The Giant is rising. Face the might of the Nazi Zombies in their heartland. This is where it all began. This is where the master plan took shape. Is this where it all ends?',
+		image: "/maps/der-riese.webp",
+	},
+	kinoDerToten: {
+		id: "kino-der-toten",
+		title: "Kino der Toten",
+		releaseDate: new Date("November 09, 2010 07:00 AM"),
+		description: "Battle the undead in this theatrical installment of 'Zombies'. New twists and clues could uncover the final plan. It's show time!",
+		image: "/maps/kino-der-toten.webp",
+	},
+	five: {
+		id: "five",
+		title: '"Five"',
+		releaseDate: new Date("November 09, 2010 08:00 AM"),
+		description: 'The Pentagon is under attack! Washington is going to DEFCON 1 in this installment of "Zombies".',
+		image: "/maps/five.webp",
+	},
+	ascension: {
+		id: "ascension",
+		title: "Ascension",
+		releaseDate: new Date("February 01, 2011 07:00 AM"),
+		description: 'The risen dead have overtaken a Soviet cosmodrome and all Hell has broken loose. The countdown to the zombie apocalypse has begun.',
+		image: "/maps/ascension.webp",
+	},
+	callOfTheDead: {
+		id: "call-of-the-dead",
+		title: "Call of the Dead",
+		releaseDate: new Date("March 17, 2011 08:00 AM"),
+		description: 'A shipwrecked crew of fearless explorers is hopelessly stranded in an abandoned Siberian outpost. Their dream of discovering the true origins of the mysterious Element 115 unravels into a Hellish nightmare.',
+		image: "/maps/call-of-the-dead.webp",
+	},
+	shangriLa: {
+		id: "shangri-la",
+		title: "Shangri-La",
+		releaseDate: new Date("June 28, 2011 08:00 AM"),
+		description: 'A legendary shrine lost in an exotic jungle, where the undead lurk within a treacherous labyrinth of underground caverns, deadly traps, and dark secrets.',
+		image: "/maps/shangri-la.webp",
+	},
+	moon: {
+		id: "moon",
+		title: "Moon",
+		releaseDate: new Date("August 23, 2011 08:00 AM"),
+		description: '"I believe that this nation should commit itself to achieving the goal, before this decade is out, of landing a man on the moon and returning him safely to the Earth." (JKF, 1961)',
+		image: "/maps/moon.webp",
+	},
+	// page 3 of maps
+} satisfies Record<string, Map>
