@@ -1,477 +1,196 @@
-import { Effect, Either } from "effect"
-import { unstable_cacheTag as cacheTag } from "next/cache"
-import { cache } from "react"
-import { Payload } from "@/lib/payload"
-import { EntryNotFoundError, GetEntriesError } from "@/types/errors"
-import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { assertRelation, createMediaDto } from "@/utils/payload-utils"
-import { createAmmoModDto } from "./ammo-mods"
+import { deadWire, type AmmoMod } from "@/data/ammo-mods"
+import { blackOps1, blackOps2, blackOps3, blackOps4, blackOpsColdWar, getGames, worldAtWar, type Game } from "@/data/games"
+import { ascension, bloodOfTheDead, callOfTheDead, classified, derEisendrache, derRiese, firebaseZ, five, getMaps, kinoDerToten, mobOfTheDead, moon, shangriLa, shiNoNuma, tagDerToten, theGiant, tranzit, type Maps } from "@/data/maps"
+import { head, type WeakPoint } from "@/data/weak-points"
+import { bite, explosion, fieryExplosion, flamingAura, grab, knockbackExplosion, lunge, meleeSwing, novaGas, perkSteal, powerUpSteal, rallyCry, sonicScreech, weaponSteal, type ZombieAttack } from "@/data/zombie-attacks"
 
-export type MinifiedZombie = Awaited<ReturnType<typeof getZombies>>[number]
-export type ZombieBySlug = NonNullable<Awaited<ReturnType<typeof getZombieBySlug>>>
-export type ZombieById = NonNullable<Awaited<ReturnType<typeof getZombieById>>>
-export type PreviewZombie = NonNullable<
-	Awaited<ReturnType<typeof getAdjacentZombies>>["prevZombie"]
->
+export const getZombies = () => Object.values(zombiesRegistry)
+export const getZombieByKey = (key: ZombieKey) => zombiesRegistry[key]
 
-export const getZombies = cache(async () => {
-	"use cache"
-	cacheTag(CACHE_KEYS.zombies.all, CACHE_KEYS.games.all, CACHE_KEYS.maps.all)
+export interface Zombie {
+	id: string
+	title: string
+	description: string
+	state?: "Coming Soon" | "New" | null
+	releaseDate: Date
+	image: string
+	games: Game[]
+	maps: Maps[]
+	type: "Normal" | "Special" | "Elite" | "Boss"
+	speed: "Slow" | "Medium" | "Fast"
+	weakPoints: WeakPoint[]
+	elementalWeakness: AmmoMod[]
+	attacks: ZombieAttack[]
+	spawnBehavior: string
+	combatStrategy: () => Promise<typeof import("*.mdx")>
+}
 
-	return await getZombiesEffect.pipe(
-		Effect.withLogSpan("get_zombies_cached"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed([])),
-		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
-	)
-})
+export type ZombieKey = keyof typeof zombiesRegistry
 
-export const getZombiesMetadata = cache(async () => {
-	"use cache"
-	cacheTag(CACHE_KEYS.zombies.all, CACHE_KEYS.games.all, CACHE_KEYS.maps.all)
+const zombiesRegistry = {
+	zombie: {
+		id: "zombie",
+		title: "Zombie",
+		description:
+			"The first and most common enemy type. Varying in speeds, zombies provide the most basic threat on their own but will quickly become a challenge in hordes.",
+		releaseDate: new Date("November 11, 2008 12:00 AM"),
+		image: "/zombies/base-zombie.avif",
+		type: "Normal",
+		speed: "Medium",
+		spawnBehavior:
+			"Zombies spawn at the start of and throughout each round. Special situations like boss fights or main quest interactions may alter the spawns of zombies, changing them or completely removing them temporarily.",
+		games: getGames(), // base zombie is in all games
+		maps: getMaps(), // base zombie is in all maps
+		elementalWeakness: [],
+		weakPoints: [head],
+		attacks: [meleeSwing],
+		combatStrategy: () => import("@/content/zombies/base-zombie.mdx"),
+	},
+	hellhound: {
+		id: "hellhound",
+		title: "Hellhound",
+		releaseDate: new Date("June 10, 2010 12:00 AM"),
+		description: "Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
+		image: "/zombies/hellhound.webp",
+		type: "Special",
+		speed: "Fast",
+		spawnBehavior: 'Hellhounds typically spawn within the first 6-8 rounds, and then every 5 rounds after that in packs. During a special round, the map will appear to be shrouded in heavy fog, the announcer can be heard saying "Fetch me their souls!", and the ground will shake when the player is spawned. During certain main quest steps or objectives, hellhounds may spawn infinitely or periodically, in which only the ground will shake when spawned.',
+		games: [worldAtWar, blackOps1, blackOps2, blackOps3, blackOps4, blackOpsColdWar],
+		maps: [shiNoNuma, derRiese, kinoDerToten, moon, tranzit, mobOfTheDead, theGiant, derEisendrache, bloodOfTheDead, classified, tagDerToten, firebaseZ],
+		elementalWeakness: [],
+		weakPoints: [head],
+		attacks: [bite, lunge, explosion],
+		combatStrategy: () => import("@/content/zombies/hellhound.mdx"),
+	},
+	nova6Crawler: {
+		id: "nova-6-crawler",
+		title: "Nova-6 Crawler",
+		releaseDate: new Date("November 09, 2010 12:00 AM"),
+		description: "These creepy crawlers are slow-moving zombies that emit green nova gas from their bodies as they crawl on all fours towards their target, releasing the gas when killed.",
+		image: "/zombies/nova-6-crawler.avif",
+		games: [blackOps1, blackOps3, blackOps4],
+		maps: [kinoDerToten, five, moon, classified],
+		type: "Special",
+		speed: "Slow",
+		weakPoints: [head],
+		elementalWeakness: [],
+		attacks: [meleeSwing, novaGas],
+		spawnBehavior: "Nova-6 Crawlers typically start spawning once a certain area in a map has been accessed and will continue to spawn within the normal rounds in smaller numbers than zombies from that point on.",
+		combatStrategy: () => import("@/content/zombies/nova-6-crawler.mdx"),
+	},
+	pentagonThief: {
+		id: "pentagon-thief",
+		title: "Pentagon Thief",
+		releaseDate: new Date("November 09, 2010 12:30 AM"),
+		image: "/zombies/pentagon-thief.avif",
+		description: "The Pentagon Thief is a special enemy appearing in the map 'Five', periodically trying to steal the player's weapons forcing them to reacquire the weapon if successful.",
+		games: [blackOps1],
+		maps: [five],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: [head],
+		elementalWeakness: [],
+		attacks: [weaponSteal],
+		spawnBehavior: "The Pentagon Thief will teleport onto the map at certain rounds once the power has been turned off appearing as red floating numbers, with the spawn rate being more frequent at higher rounds.",
+		combatStrategy: () => import("@/content/zombies/pentagon-thief.mdx"),
+	},
+	spaceMonkey: {
+		id: "space-monkey",
+		title: "Space Monkey",
+		releaseDate: new Date("February 01, 2011 12:00 AM"),
+		image: "/zombies/space-monkey.avif",
+		description: "Space Monkeys are a special enemy appearing on the map Ascension, attempting to steal the player's perks by attacking the perk machines.",
+		games: [blackOps1, blackOps3],
+		maps: [ascension],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: [head],
+		elementalWeakness: [],
+		attacks: [meleeSwing, perkSteal],
+		spawnBehavior: "Space Monkeys will first appear after four to five rounds, after the first perk has been purchased. Arriving on lunar landers crashing into the ground with the map having a yellow-orange tint, and the announcer saying, 'Warning. Re-entry detected. All security personnel on high alert.'",
+		combatStrategy: () => import("@/content/zombies/space-monkey.mdx"),
+	},
+	georgeARomero: {
+		id: "george-a-romero",
+		title: "George A. Romero",
+		releaseDate: new Date("May 03, 2011 12:00 AM"),
+		image: "/zombies/george-a-romero.avif",
+		description: "George A. Romero is a special zombie, and the main antagonist featured in the map Call of the Dead. Roaming the map and constantly following the player.",
+		games: [blackOps1],
+		maps: [callOfTheDead],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: [head],
+		elementalWeakness: [],
+		attacks: [meleeSwing, rallyCry],
+		spawnBehavior: "Romero spawns in via a lightning strike in the spawn area at the very start of the game, holding a stage light as his main weapon of choice and begin to follow the closest player to him from that point on.",
+		combatStrategy: () => import("@/content/zombies/george-a-romero.mdx"),
+	},
+	jungleMonkey: {
+		id: "jungle-monkey",
+		title: "Jungle Monkey",
+		releaseDate: new Date("June 12, 2011 12:00 AM"),
+		image: "/zombies/jungle-monkey.avif",
+		description: "The Jungle Monkey is a special enemy appearing on the map Shangri-La, unlike the Space Monkey, the Jungle Monkey prefers to go after Power-Up drops.",
+		games: [blackOps1, blackOps3],
+		maps: [shangriLa],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: [head],
+		elementalWeakness: [],
+		attacks: [meleeSwing, powerUpSteal],
+		spawnBehavior: "These monkeys spawn perched on top of the sides of the stairs leading up to the Pack-a-Punch machine, and if one is killed, another will replace it. They are constant throughout the entire match and will always go after Power-Up drops.",
+		combatStrategy: () => import("@/content/zombies/jungle-monkey.mdx"),
+	},
+	shriekerZombie: {
+		id: "shrieker-zombie",
+		title: "Shrieker Zombie",
+		releaseDate: new Date("June 12, 2011 01:00 AM"),
+		image: "/zombies/shrieker-zombie.avif",
+		description: "Shrieker Zombies are a special enemy appearing on the map Shangri-La. These zombies appear with pale white skin, glowing white eyes, and can move very quickly.",
+		games: [blackOps1, blackOps3],
+		maps: [shangriLa],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: [head],
+		elementalWeakness: [],
+		attacks: [sonicScreech],
+		spawnBehavior: "These zombies spawn throughout the normal rounds by blasting out of the ground with a Sonic Screech, making it likely you will hear them before you see them spawn. These zombies also do not count towards the normal round, so you can flip the round without killing them.",
+		combatStrategy: () => import("@/content/zombies/shreker-zombie.mdx"),
+	},
+	napalmZombie: {
+		id: "napalm-zombie",
+		title: "Napalm Zombie",
+		releaseDate: new Date("June 12, 2011 02:00 AM"),
+		image: "/zombies/napalm-zombie.avif",
+		description: "Napalm Zombies are a special enemy appearing on the map Shangri-La. These zombies look like a burnt zombie with a flaming aura surrounding them.",
+		games: [blackOps1, blackOps3],
+		maps: [shangriLa],
+		type: "Special",
+		speed: "Slow",
+		weakPoints: [head],
+		elementalWeakness: [],
+		attacks: [flamingAura, fieryExplosion],
+		spawnBehavior: "Napalm Zombies spawn from a patch of flames on the ground and do not count towards the normal round. Only one Napalm Zombie can appear at a time.",
+		combatStrategy: () => import("@/content/zombies/napalm-zombie.mdx"),
+	},
+	astronautZombie: {
+		id: "astronaut-zombie",
+		title: "Astronaut Zombie",
+		releaseDate: new Date("August 23, 2011 12:00 AM"),
+		image: "/zombies/astronaut-zombie.avif",
+		description: "The Astronaut is a special enemy appearing on the map Moon, often taking the name of someone on your friends list or if solo a predetermined name instead.",
+		games: [blackOps1, blackOps3],
+		maps: [moon],
+		type: "Special",
+		speed: "Slow",
+		weakPoints: [head],
+		elementalWeakness: [deadWire],
+		attacks: [grab, knockbackExplosion],
+		spawnBehavior: "The Astronaut spawns in shortly after you have teleported to the Moon from Earth, and will always spawn in the Receiving Bay and make their way to the player. After every death, it will return with a different name above its head.",
+		combatStrategy: () => import("@/content/zombies/astronaut-zombie.mdx"),
+	},
+	// page 7 of zombies
+} satisfies Record<string, Zombie>
 
-	return await getZombieMetadataEffect.pipe(
-		Effect.withLogSpan("get_zombies_metadata_cached"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed([])),
-		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
-	)
-})
-
-export const getZombieBySlug = cache(async (slug: string) => {
-	"use cache"
-	const zombie = await getZombieBySlugEffect(slug).pipe(
-		Effect.withLogSpan("get_zombie_by_slug_cached"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed(null)),
-		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
-	)
-
-	cacheTag(
-		CACHE_KEYS.zombies.all,
-		CACHE_KEYS.zombies.byId(zombie?.id ?? ""),
-		CACHE_KEYS.games.all,
-		CACHE_KEYS.maps.all,
-	)
-
-	return zombie
-})
-
-export const getAdjacentZombies = cache(async (currentReleaseDate: string) => {
-	"use cache"
-	const { prevZombie, nextZombie } = await getAdjacentZombiesEffect(currentReleaseDate).pipe(
-		Effect.withLogSpan("get_adjacent_zombies_cached"),
-		Effect.catchAll(_error => Effect.succeed({ prevZombie: null, nextZombie: null })),
-		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
-	)
-
-	cacheTag(
-		CACHE_KEYS.zombies.all,
-		CACHE_KEYS.games.all,
-		CACHE_KEYS.maps.all,
-		CACHE_KEYS.zombies.byId(prevZombie?.id ?? ""),
-		CACHE_KEYS.zombies.byId(nextZombie?.id ?? ""),
-	)
-
-	return {
-		prevZombie,
-		nextZombie,
-	}
-})
-
-export const getZombieById = cache(async (id: string) => {
-	"use cache"
-	cacheTag(
-		CACHE_KEYS.zombies.all,
-		CACHE_KEYS.zombies.byId(id),
-		CACHE_KEYS.games.all,
-		CACHE_KEYS.maps.all,
-	)
-
-	return await getZombieByIdEffect(id).pipe(
-		Effect.withLogSpan("get_zombie_by_id_cached"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed(null)),
-		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
-	)
-})
-
-const getZombiesEffect = Effect.gen(function* () {
-	const payload = yield* Payload
-	const zombies = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "zombies",
-				pagination: false,
-				draft: IN_DEVELOPMENT,
-				sort: "-releaseDate",
-				select: {
-					title: true,
-					slug: true,
-					description: true,
-					type: true,
-					maps: true,
-					games: true,
-					image: true,
-					state: true,
-					_status: true,
-				},
-			}),
-		catch: error =>
-			new GetEntriesError({
-				message: "Failed to get zombies",
-				cause: error,
-			}),
-	}).pipe(
-		Effect.flatMap(zombies =>
-			Effect.forEach(zombies.docs, doc =>
-				Effect.gen(function* () {
-					const maps = yield* Effect.forEach(doc.maps, map => assertRelation(map))
-					const games = yield* Effect.forEach(doc.games, game => assertRelation(game))
-					const image = yield* assertRelation(doc.image)
-
-					return {
-						...doc,
-						maps,
-						games,
-						image: createMediaDto(image),
-					}
-				}),
-			),
-		),
-	)
-
-	return zombies
-}).pipe(Effect.withLogSpan("get_zombies"))
-
-const getZombieMetadataEffect = Effect.gen(function* () {
-	const payload = yield* Payload
-	const { docs } = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "zombies",
-				pagination: false,
-				draft: IN_DEVELOPMENT,
-				sort: "-releaseDate",
-				where: {
-					state: {
-						not_equals: "Coming Soon",
-					},
-				},
-				select: {
-					updatedAt: true,
-					title: true,
-					slug: true,
-				},
-			}),
-		catch: error =>
-			new GetEntriesError({
-				message: "Failed to get zombies metadata",
-				cause: error,
-			}),
-	})
-
-	return docs
-}).pipe(Effect.withLogSpan("get_zombies_metadata"))
-
-const getZombieBySlugEffect = (slug: string) =>
-	Effect.gen(function* () {
-		const payload = yield* Payload
-		const zombie = yield* Effect.tryPromise({
-			try: () =>
-				payload.find({
-					collection: "zombies",
-					pagination: false,
-					draft: IN_DEVELOPMENT,
-					limit: 1,
-					sort: "-releaseDate",
-					depth: 3,
-					where: {
-						slug: {
-							equals: slug,
-						},
-					},
-					select: {
-						createdAt: false,
-					},
-					populate: {
-						zombieAttacks: {
-							title: true,
-							description: true,
-							range: true,
-						},
-						ammoMods: {
-							title: true,
-							description: true,
-							image: true,
-							augments: true,
-						},
-						augments: {
-							title: true,
-							description: true,
-							image: true,
-							type: true,
-						},
-					},
-				}),
-			catch: error =>
-				new EntryNotFoundError({
-					message: `Failed to get zombie by slug: ${slug}`,
-					cause: error,
-				}),
-		}).pipe(
-			Effect.flatMap(zombie =>
-				Effect.forEach(zombie.docs, zombie =>
-					Effect.gen(function* () {
-						const map = yield* Effect.forEach(zombie.maps, map => assertRelation(map))
-						const game = yield* Effect.forEach(zombie.games, game => assertRelation(game))
-						const image = yield* assertRelation(zombie.image)
-						const attacks = yield* Effect.forEach(zombie.attacks, attack => assertRelation(attack))
-						const elementalWeakness = zombie.elementalWeakness
-							? yield* Effect.forEach(zombie.elementalWeakness, elementalWeakness =>
-									createAmmoModDto(elementalWeakness),
-								)
-							: []
-						const weakPoints = zombie.weakPoints
-							? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
-							: []
-
-						return {
-							...zombie,
-							maps: map,
-							games: game,
-							image: createMediaDto(image),
-							attacks,
-							elementalWeakness,
-							weakPoints,
-						}
-					}),
-				),
-			),
-		)
-
-		return zombie[0] ?? null
-	}).pipe(Effect.withLogSpan("get_zombie_by_slug"), Effect.annotateLogs({ slug }))
-
-const getAdjacentZombiesEffect = (currentReleaseDate: string) =>
-	Effect.gen(function* () {
-		const payload = yield* Payload
-		const prevZombieEffect = Effect.tryPromise({
-			try: () =>
-				payload.find({
-					collection: "zombies",
-					draft: IN_DEVELOPMENT,
-					sort: "-releaseDate",
-					limit: 1,
-					where: {
-						releaseDate: {
-							less_than: currentReleaseDate,
-						},
-					},
-					select: {
-						title: true,
-						slug: true,
-						description: true,
-						type: true,
-						maps: true,
-						image: true,
-						state: true,
-						_status: true,
-					},
-				}),
-			catch: error =>
-				new GetEntriesError({
-					message: "Failed to get previous zombie",
-					cause: error,
-				}),
-		}).pipe(
-			Effect.withLogSpan("get_previous_zombie"),
-			Effect.tapError(Effect.logError),
-			Effect.flatMap(zombie =>
-				Effect.forEach(zombie.docs, zombie =>
-					Effect.gen(function* () {
-						// we only care about the first map for prev/next cards
-						const map = yield* assertRelation(zombie.maps[0])
-						const image = yield* assertRelation(zombie.image)
-
-						const { maps, ...zombieData } = zombie
-						return {
-							...zombieData,
-							map: map,
-							image: createMediaDto(image),
-						}
-					}),
-				),
-			),
-		)
-
-		const nextZombieEffect = Effect.tryPromise({
-			try: () =>
-				payload.find({
-					collection: "zombies",
-					draft: IN_DEVELOPMENT,
-					sort: "releaseDate",
-					limit: 1,
-					where: {
-						releaseDate: {
-							greater_than: currentReleaseDate,
-						},
-					},
-					select: {
-						title: true,
-						slug: true,
-						description: true,
-						type: true,
-						maps: true,
-						image: true,
-						state: true,
-						_status: true,
-					},
-				}),
-			catch: error =>
-				new GetEntriesError({
-					message: "Failed to get next zombie",
-					cause: error,
-				}),
-		}).pipe(
-			Effect.withLogSpan("get_next_zombie"),
-			Effect.tapError(Effect.logError),
-			Effect.flatMap(zombie =>
-				Effect.forEach(zombie.docs, zombie =>
-					Effect.gen(function* () {
-						// we only care about the first map for prev/next cards
-						const map = yield* assertRelation(zombie.maps[0])
-						const image = yield* assertRelation(zombie.image)
-
-						const { maps, ...zombieData } = zombie
-						return {
-							...zombieData,
-							map: map,
-							image: createMediaDto(image),
-						}
-					}),
-				),
-			),
-		)
-
-		const [prevZombie, nextZombie] = yield* Effect.all([prevZombieEffect, nextZombieEffect], {
-			concurrency: "unbounded",
-			mode: "either",
-		})
-
-		return {
-			prevZombie: Either.isLeft(prevZombie)
-				? null
-				: prevZombie.right.length > 0
-					? prevZombie.right[0]
-					: null,
-			nextZombie: Either.isLeft(nextZombie)
-				? null
-				: nextZombie.right.length > 0
-					? nextZombie.right[0]
-					: null,
-		}
-	}).pipe(Effect.withLogSpan("get_adjacent_zombies"), Effect.annotateLogs({ currentReleaseDate }))
-
-const getZombieByIdEffect = (id: string) =>
-	Effect.gen(function* () {
-		const payload = yield* Payload
-		const zombie = yield* Effect.tryPromise({
-			try: () =>
-				payload.findByID({
-					collection: "zombies",
-					id,
-					draft: IN_DEVELOPMENT,
-					depth: 3,
-					select: {
-						updatedAt: true,
-						title: true,
-						slug: true,
-						games: true,
-						maps: true,
-						image: true,
-						type: true,
-						weakPoints: true,
-						elementalWeakness: true,
-					},
-					populate: {
-						ammoMods: {
-							title: true,
-							image: true,
-							description: true,
-							augments: true,
-						},
-						augments: {
-							title: true,
-							type: true,
-							description: true,
-							image: true,
-						},
-					},
-				}),
-			catch: error =>
-				new EntryNotFoundError({
-					message: `Failed to get zombie by id: ${id}`,
-					cause: error,
-				}),
-		}).pipe(
-			Effect.flatMap(zombie =>
-				Effect.gen(function* () {
-					const image = yield* assertRelation(zombie.image)
-					const game = yield* assertRelation(zombie.games[0])
-					const map = yield* assertRelation(zombie.maps[0])
-					const weakPoints = zombie.weakPoints
-						? yield* Effect.forEach(zombie.weakPoints, weakPoint => assertRelation(weakPoint))
-						: []
-					const elementalWeakness = zombie.elementalWeakness
-						? yield* Effect.forEach(
-								zombie.elementalWeakness,
-								elementalWeakness => createAmmoModDto(elementalWeakness),
-								{ concurrency: "unbounded" },
-							)
-						: []
-
-					return {
-						...zombie,
-						image: createMediaDto(image),
-						game,
-						map,
-						weakPoints,
-						elementalWeakness,
-					}
-				}),
-			),
-		)
-
-		return zombie
-	}).pipe(Effect.withLogSpan("get_zombie_by_id"), Effect.annotateLogs({ id }))
-
-export const getZombieBroadcastInfo = (id: string) =>
-	Effect.gen(function* () {
-		const payload = yield* Payload
-		const zombie = yield* Effect.tryPromise({
-			try: () =>
-				payload.findByID({
-					collection: "zombies",
-					id,
-					select: {
-						title: true,
-						slug: true,
-						type: true,
-						description: true,
-					},
-				}),
-			catch: error =>
-				new EntryNotFoundError({
-					message: `Failed to get zombie by id: ${id}`,
-					cause: error,
-				}),
-		})
-
-		return zombie
-	}).pipe(Effect.withLogSpan("get_zombie_broadcast_info"), Effect.annotateLogs({ id }))
+export const { zombie } = zombiesRegistry

@@ -1,44 +1,5 @@
-import { Effect } from "effect"
-import { unstable_cacheTag as cacheTag } from "next/cache"
-import { cache } from "react"
-import { Payload } from "@/lib/payload"
-import { GetEntriesError } from "@/types/errors"
-import { CACHE_KEYS } from "@/utils/constants"
-
-export const getGames = cache(async () => {
-	"use cache"
-	cacheTag(CACHE_KEYS.games.all)
-
-	return await getGamesEffect.pipe(
-		Effect.withLogSpan("get_games_cached"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed([])),
-		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
-	)
-})
-
-const getGamesEffect = Effect.gen(function* () {
-	const payload = yield* Payload
-	const { docs } = yield* Effect.tryPromise({
-		try: () =>
-			payload.find({
-				collection: "games",
-				pagination: false,
-				select: {
-					title: true,
-					slug: true,
-				},
-			}),
-		catch: error =>
-			new GetEntriesError({
-				message: "Failed to get games",
-				cause: error,
-			}),
-	})
-
-	return docs
-}).pipe(Effect.withLogSpan("get_games"))
+export const getGames = () => Object.values(gameRegistry)
+export const getGameByKey = (key: GameKey) => gameRegistry[key]
 
 export interface Game {
 	id: string
@@ -47,7 +8,7 @@ export interface Game {
 	image: string
 }
 
-const games = {
+const gameRegistry = {
 	worldAtWar: {
 		id: "world-at-war",
 		title: "World at War",
@@ -90,15 +51,9 @@ const games = {
 		releaseDate: new Date("October 25, 2024 7:00 AM"),
 		image: "/games/black-ops-6-cover.avif",
 	},
-	// blackOps7: {
-	// 	id: "black-ops-7",
-	// 	title: "Black Ops 7",
-	// 	releaseDate: new Date("November 14, 2025 7:00 AM"),
-	// 	image: "/games/black-ops-7-cover.avif",
-	// }
 } satisfies Record<string, Game>
 
-export type GameKey = keyof typeof games
+export type GameKey = keyof typeof gameRegistry
 export const {
 	worldAtWar,
 	blackOps1,
@@ -107,4 +62,4 @@ export const {
 	blackOps4,
 	blackOpsColdWar,
 	blackOps6,
-} = games
+} = gameRegistry

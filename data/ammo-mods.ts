@@ -118,7 +118,7 @@ export const createAmmoModDto = (ammoModOrId: string | PayloadAmmoMod) =>
 		}
 	}).pipe(Effect.withLogSpan("create_ammo_mod_dto"))
 
-interface AmmoMod {
+export interface AmmoMod {
 	id: string
 	title: string
 	game: Game

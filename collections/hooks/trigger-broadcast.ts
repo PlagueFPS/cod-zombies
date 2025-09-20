@@ -27,27 +27,6 @@ export const triggerBroadcast: CollectionAfterChangeHook = ({
 		return
 	}
 
-	// Use `after` to prevent blocking the operation response
-	after(async () => {
-		await handleEntryBroadcast(collection.slug, doc.id).pipe(
-			Effect.withLogSpan("trigger_broadcast"),
-			Effect.tapBoth({
-				onFailure: Effect.logError,
-				onSuccess: () =>
-					Effect.log(`[BROADCAST] ${collection.slug} broadcast for ${doc.id} sent successfully!`),
-			}),
-			Effect.retry({
-				while: error => error._tag === "EntryNotFoundError",
-				times: 3,
-				schedule: Schedule.fixed("500 millis"),
-			}),
-			Effect.catchAll(_error => Effect.void),
-			Effect.ensureErrorType<never>(),
-			Effect.provide(Email.Default),
-			Effect.runPromise,
-		)
-	})
-
 	payload.logger.info(`[BROADCAST] running broadcast for ${collection.slug}: ${doc.id}`)
 	return
 }
