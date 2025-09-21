@@ -1,5 +1,5 @@
 "use client"
-import type { ZombieById } from "@/data/zombies"
+import type { Zombie, ZombieKey } from "@/data/zombies"
 import { AlertTriangle, ExternalLinkIcon, Target } from "lucide-react"
 import { TypeBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
@@ -7,12 +7,14 @@ import IconImage from "@/components/icon-image/icon-image"
 import { Badge } from "@/components/ui/badge"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { getZombieByKey } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
-import AmmoModTooltipClient from "../ammo-mods/ammo-mod-tooltip-client"
+import AmmoModTooltip from "./ammo-mod-tooltip"
 
-export default function ZombieTooltipClient({ zombie }: { zombie: ZombieById }) {
+export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 	const isMobile = useIsMobile(640)
+	const zombie = getZombieByKey(zombieKey)
 
 	if (!isMobile) {
 		return (
@@ -99,7 +101,7 @@ export default function ZombieTooltipClient({ zombie }: { zombie: ZombieById }) 
 	)
 }
 
-const ZombieTooltipContent = ({ zombie }: { zombie: ZombieById }) => {
+const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 	return (
 		<div className="relative flex w-full max-w-sm flex-col rounded-md">
 			<div className="flex items-center justify-between rounded-t-md bg-accent px-4 py-2 dark:bg-accent/50">
@@ -107,7 +109,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: ZombieById }) => {
 					<TypeBadge type={zombie.type} />
 				</div>
 				<CustomLink
-					href={`/bestiary/${zombie.slug}`}
+					href={`/bestiary/${zombie.id}`}
 					className="flex items-center justify-center gap-1 text-xs"
 					aria-label="View Zombie Details"
 				>
@@ -133,14 +135,12 @@ const ZombieTooltipContent = ({ zombie }: { zombie: ZombieById }) => {
 					>
 						{zombie.title}
 					</div>
-					{zombie.image.url ? (
-						<IconImage
-							featuredImage={zombie.image}
-							alt={`${zombie.title} Image`}
-							sizes="272px"
-							className="relative z-10 aspect-square w-full rounded-lg object-cover object-top p-2"
-						/>
-					) : null}
+					<IconImage
+						featuredImage={zombie.image}
+						alt={`${zombie.title} Image`}
+						sizes="272px"
+						className="relative z-10 aspect-square w-full rounded-lg object-cover object-top p-2"
+					/>
 				</div>
 				<div className="mt-2 flex flex-col gap-4">
 					<div>
@@ -173,7 +173,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: ZombieById }) => {
 						<div className="flex flex-wrap items-center gap-2 text-sm">
 							{zombie.elementalWeakness.length > 0 ? (
 								zombie.elementalWeakness.map(weakness => (
-									<AmmoModTooltipClient key={weakness.id} ammoMod={weakness} />
+									<AmmoModTooltip key={weakness.id} ammoMod={weakness} />
 								))
 							) : (
 								<span className="text-foreground dark:text-foreground/80">

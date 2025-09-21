@@ -18,9 +18,16 @@ export default function IconImage({
 	withLoader = false,
 }: IconImageProps) {
 	const { imageLoaded, imageErrored, setImageLoaded, setImageErrored } = useImageState()
-	const featuredImageURL = featuredImage?.url ? featuredImage.url : null
+	const formedFeaturedImage =
+		typeof featuredImage === "string"
+			? { url: featuredImage }
+			: {
+					url: featuredImage?.url,
+					width: featuredImage?.width,
+					height: featuredImage?.height,
+				}
 
-	if (!featuredImageURL) return null
+	if (!formedFeaturedImage || !formedFeaturedImage.url) return null
 
 	return (
 		<>
@@ -31,10 +38,10 @@ export default function IconImage({
 			) : null}
 			{!imageErrored ? (
 				<Image
-					src={featuredImageURL}
+					src={formedFeaturedImage.url}
 					alt={alt}
-					width={featuredImage?.width ?? undefined}
-					height={featuredImage?.height ?? undefined}
+					width={formedFeaturedImage.width ?? undefined}
+					height={formedFeaturedImage.height ?? undefined}
 					sizes={sizes}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}

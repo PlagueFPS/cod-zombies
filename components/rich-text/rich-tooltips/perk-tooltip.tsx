@@ -1,14 +1,15 @@
 "use client"
-import type { MinifiedPerk } from "@/data/perks"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
+import { getPerkByKey, type Perk, type PerkKey } from "@/data/perks"
 import { useIsMobile } from "@/hooks/use-mobile"
-import AugmentTooltipClient from "../augments/augment-tooltip-client"
+import AugmentTooltip from "./augment-tooltip"
 
-export default function PerkTooltipClient({ perk }: { perk: MinifiedPerk }) {
+export default function PerkTooltip({ perkKey }: { perkKey: PerkKey }) {
 	const isMobile = useIsMobile(640)
+	const perk = getPerkByKey(perkKey)
 
 	if (!isMobile)
 		return (
@@ -18,14 +19,12 @@ export default function PerkTooltipClient({ perk }: { perk: MinifiedPerk }) {
 					asChild
 				>
 					<span>
-						{perk.image.url ? (
-							<IconImage
-								featuredImage={perk.image}
-								alt={`${perk.title} Image`}
-								sizes="64px"
-								className="my-auto h-6 w-auto"
-							/>
-						) : null}
+						<IconImage
+							featuredImage={perk.image}
+							alt={`${perk.title} Image`}
+							sizes="64px"
+							className="my-auto h-6 w-auto"
+						/>
 						<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
 							{perk.title}
 						</span>
@@ -47,14 +46,12 @@ export default function PerkTooltipClient({ perk }: { perk: MinifiedPerk }) {
 				asChild
 			>
 				<span>
-					{perk.image.url ? (
-						<IconImage
-							featuredImage={perk.image}
-							alt={`${perk.title} Image`}
-							sizes="64px"
-							className="my-auto h-6 w-auto"
-						/>
-					) : null}
+					<IconImage
+						featuredImage={perk.image}
+						alt={`${perk.title} Image`}
+						sizes="64px"
+						className="my-auto h-6 w-auto"
+					/>
 					<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
 						{perk.title}
 					</span>
@@ -70,20 +67,18 @@ export default function PerkTooltipClient({ perk }: { perk: MinifiedPerk }) {
 	)
 }
 
-const PerkTooltipContent = ({ perk }: { perk: MinifiedPerk }) => {
+const PerkTooltipContent = ({ perk }: { perk: Perk }) => {
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
-			{perk.image.url ? (
-				<div className="relative flex items-center justify-center">
-					<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
-					<IconImage
-						featuredImage={perk.image}
-						alt={`${perk.title} Image`}
-						sizes="64px"
-						className="relative z-10 h-20 w-auto p-2"
-					/>
-				</div>
-			) : null}
+			<div className="relative flex items-center justify-center">
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<IconImage
+					featuredImage={perk.image}
+					alt={`${perk.title} Image`}
+					sizes="64px"
+					className="relative z-10 h-20 w-auto p-2"
+				/>
+			</div>
 			<div className="-mt-3 relative z-10">
 				<div className="px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200">
 					{perk.title}
@@ -104,7 +99,7 @@ const PerkTooltipContent = ({ perk }: { perk: MinifiedPerk }) => {
 							</p>
 						</div>
 					</blockquote>
-				) : perk.augments.length > 0 ? (
+				) : perk.augments ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
@@ -117,7 +112,7 @@ const PerkTooltipContent = ({ perk }: { perk: MinifiedPerk }) => {
 										.filter(augment => augment.type === "Major")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">
-												<AugmentTooltipClient augment={augment} />
+												<AugmentTooltip augment={augment} />
 											</div>
 										))}
 								</div>
@@ -132,7 +127,7 @@ const PerkTooltipContent = ({ perk }: { perk: MinifiedPerk }) => {
 										.filter(augment => augment.type === "Minor")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">
-												<AugmentTooltipClient augment={augment} />
+												<AugmentTooltip augment={augment} />
 											</div>
 										))}
 								</div>

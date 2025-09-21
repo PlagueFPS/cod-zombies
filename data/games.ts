@@ -1,5 +1,5 @@
-export const getGames = () => Object.values(gameRegistry)
-export const getGameByKey = (key: GameKey) => gameRegistry[key]
+export const getGames = (): Game[] => Object.values(gameRegistry)
+export const getGameByKey = (key: GameKey): Game => gameRegistry[key]
 
 export interface Game {
 	id: string

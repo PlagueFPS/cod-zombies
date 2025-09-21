@@ -1,11 +1,186 @@
-import { brainRot, cryoFreeze, deadWire, lightMend, napalmBurst, shadowRift, type AmmoMod } from "@/data/ammo-mods"
-import { blackOps1, blackOps2, blackOps3, blackOps4, blackOps6, blackOpsColdWar, getGames, worldAtWar, type Game } from "@/data/games"
-import { alphaOmega, ancientEvil, ascension, bloodOfTheDead, buried, callOfTheDead, citadelleDesMorts, classified, deadOfTheNight, derEisendrache, derRiese, dieMaschine, dieRise, firebaseZ, five, forsaken, getMaps, gorodKrovi, ix, kinoDerToten, libertyFalls, mauerDerToten, mobOfTheDead, moon, origins, reckoning, revelations, shadowsOfEvil, shangriLa, shatteredVeil, shiNoNuma, tagDerToten, terminus, theGiant, theTomb, tranzit, voyageOfDespair, zetsubouNoShima, type Maps } from "@/data/maps"
-import { armCannon, attachedZombies, backSacs, body, calves, chest, elbowSacs, encrustedLava, eyePupil, eyes, forearms, foreheadCrystal, glowingHeads, glowingLights, glowingMouths, glowingSymbol, glowingTentacles, head, jetpack, mouth, powerCore, powerCores, redCamera, redCysts, redGlowingSpots, shoulders, spores, stomach, type WeakPoint } from "@/data/weak-points"
-import { acidExplosion, aerialBomber, aetherBarrage, aetherRelease, aoeSlam, axeThrow, bite, cannonBlast, charge, clawGrab, crystalBarrage, dinoLeap, dragonFire, electricalBolts, electricBurst, empLauncher, energyOrbs, explosion, eyeBeam, fieryExplosion, fireball, fireballs, flamethrower, flamingAura, flamingSpears, fleshThrow, generatorSiphon, grab, groundSlam, groundStomp, hammerSlam, harpoonBarrage, healSummon, heavyLeap, homingVomit, jumpSwing, knockbackExplosion, laser, lavaBalls, leap, leapingHammer, legStab, lifeDrain, lightningBeam, lightningBolt, lightningBolts, lightningStrike, lunge, megaBite, meleeSwing, molotovCannon, needleBarrage, novaGas, perkSteal, pointSteal, poisonAura, pounce, powerfulMelee, powerUpSteal, projectileVomit, radioactiveBlast, radioactiveFlurry, rallyCry, rapidSlashes, selfDestruct, shieldBlind, shockBurst, skullSummon, slowField, sonicScreech, spearThrow, sweepingSlam, swordSwing, tailSlam, tentacleGrab, tongueGrab, toxicGas, vampiricMelee, vineSlam, volcanoSummon, weaponSteal, webProjectile, wunderwaffeShot, zombieBuff, zombieEvolution, type ZombieAttack } from "@/data/zombie-attacks"
+import {
+	type AmmoMod,
+	brainRot,
+	cryoFreeze,
+	deadWire,
+	lightMend,
+	napalmBurst,
+	shadowRift,
+} from "@/data/ammo-mods"
+import {
+	blackOps1,
+	blackOps2,
+	blackOps3,
+	blackOps4,
+	blackOps6,
+	blackOpsColdWar,
+	type Game,
+	getGames,
+	worldAtWar,
+} from "@/data/games"
+import {
+	alphaOmega,
+	ancientEvil,
+	ascension,
+	bloodOfTheDead,
+	buried,
+	callOfTheDead,
+	citadelleDesMorts,
+	classified,
+	deadOfTheNight,
+	derEisendrache,
+	derRiese,
+	dieMaschine,
+	dieRise,
+	firebaseZ,
+	five,
+	forsaken,
+	getMaps,
+	gorodKrovi,
+	ix,
+	kinoDerToten,
+	libertyFalls,
+	type Maps,
+	mauerDerToten,
+	mobOfTheDead,
+	moon,
+	origins,
+	reckoning,
+	revelations,
+	shadowsOfEvil,
+	shangriLa,
+	shatteredVeil,
+	shiNoNuma,
+	tagDerToten,
+	terminus,
+	theGiant,
+	theTomb,
+	tranzit,
+	voyageOfDespair,
+	zetsubouNoShima,
+} from "@/data/maps"
+import {
+	armCannon,
+	attachedZombies,
+	backSacs,
+	body,
+	calves,
+	chest,
+	elbowSacs,
+	encrustedLava,
+	eyePupil,
+	eyes,
+	forearms,
+	foreheadCrystal,
+	glowingHeads,
+	glowingLights,
+	glowingMouths,
+	glowingSymbol,
+	glowingTentacles,
+	head,
+	jetpack,
+	mouth,
+	powerCore,
+	powerCores,
+	redCamera,
+	redCysts,
+	redGlowingSpots,
+	shoulders,
+	spores,
+	stomach,
+	type WeakPoint,
+} from "@/data/weak-points"
+import {
+	acidExplosion,
+	aerialBomber,
+	aetherBarrage,
+	aetherRelease,
+	aoeSlam,
+	axeThrow,
+	bite,
+	cannonBlast,
+	charge,
+	clawGrab,
+	crystalBarrage,
+	dinoLeap,
+	dragonFire,
+	electricalBolts,
+	electricBurst,
+	empLauncher,
+	energyOrbs,
+	explosion,
+	eyeBeam,
+	fieryExplosion,
+	fireball,
+	fireballs,
+	flamethrower,
+	flamingAura,
+	flamingSpears,
+	fleshThrow,
+	generatorSiphon,
+	grab,
+	groundSlam,
+	groundStomp,
+	hammerSlam,
+	harpoonBarrage,
+	healSummon,
+	heavyLeap,
+	homingVomit,
+	jumpSwing,
+	knockbackExplosion,
+	laser,
+	lavaBalls,
+	leap,
+	leapingHammer,
+	legStab,
+	lifeDrain,
+	lightningBeam,
+	lightningBolt,
+	lightningBolts,
+	lightningStrike,
+	lunge,
+	megaBite,
+	meleeSwing,
+	molotovCannon,
+	needleBarrage,
+	novaGas,
+	perkSteal,
+	pointSteal,
+	poisonAura,
+	pounce,
+	powerfulMelee,
+	powerUpSteal,
+	projectileVomit,
+	radioactiveBlast,
+	radioactiveFlurry,
+	rallyCry,
+	rapidSlashes,
+	selfDestruct,
+	shieldBlind,
+	shockBurst,
+	skullSummon,
+	slowField,
+	sonicScreech,
+	spearThrow,
+	sweepingSlam,
+	swordSwing,
+	tailSlam,
+	tentacleGrab,
+	tongueGrab,
+	toxicGas,
+	vampiricMelee,
+	vineSlam,
+	volcanoSummon,
+	weaponSteal,
+	webProjectile,
+	wunderwaffeShot,
+	type ZombieAttack,
+	zombieBuff,
+	zombieEvolution,
+} from "@/data/zombie-attacks"
 
-export const getZombies = () => Object.values(zombiesRegistry)
-export const getZombieByKey = (key: ZombieKey) => zombiesRegistry[key]
+export const getZombies = (): Zombie[] => Object.values(zombiesRegistry)
+export const getZombieByKey = (key: ZombieKey): Zombie => zombiesRegistry[key]
 
 export interface Zombie {
 	id: string
@@ -50,13 +225,28 @@ const zombiesRegistry = {
 		id: "hellhound",
 		title: "Hellhound",
 		releaseDate: new Date("June 10, 2010 12:00 AM"),
-		description: "Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
+		description:
+			"Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
 		image: "/zombies/hellhound.webp",
 		type: "Special",
 		speed: "Fast",
-		spawnBehavior: 'Hellhounds typically spawn within the first 6-8 rounds, and then every 5 rounds after that in packs. During a special round, the map will appear to be shrouded in heavy fog, the announcer can be heard saying "Fetch me their souls!", and the ground will shake when the player is spawned. During certain main quest steps or objectives, hellhounds may spawn infinitely or periodically, in which only the ground will shake when spawned.',
+		spawnBehavior:
+			'Hellhounds typically spawn within the first 6-8 rounds, and then every 5 rounds after that in packs. During a special round, the map will appear to be shrouded in heavy fog, the announcer can be heard saying "Fetch me their souls!", and the ground will shake when the player is spawned. During certain main quest steps or objectives, hellhounds may spawn infinitely or periodically, in which only the ground will shake when spawned.',
 		games: [worldAtWar, blackOps1, blackOps2, blackOps3, blackOps4, blackOpsColdWar],
-		maps: [shiNoNuma, derRiese, kinoDerToten, moon, tranzit, mobOfTheDead, theGiant, derEisendrache, bloodOfTheDead, classified, tagDerToten, firebaseZ],
+		maps: [
+			shiNoNuma,
+			derRiese,
+			kinoDerToten,
+			moon,
+			tranzit,
+			mobOfTheDead,
+			theGiant,
+			derEisendrache,
+			bloodOfTheDead,
+			classified,
+			tagDerToten,
+			firebaseZ,
+		],
 		elementalWeakness: [],
 		weakPoints: [head],
 		attacks: [bite, lunge, explosion],
@@ -66,7 +256,8 @@ const zombiesRegistry = {
 		id: "nova-6-crawler",
 		title: "Nova-6 Crawler",
 		releaseDate: new Date("November 09, 2010 12:00 AM"),
-		description: "These creepy crawlers are slow-moving zombies that emit green nova gas from their bodies as they crawl on all fours towards their target, releasing the gas when killed.",
+		description:
+			"These creepy crawlers are slow-moving zombies that emit green nova gas from their bodies as they crawl on all fours towards their target, releasing the gas when killed.",
 		image: "/zombies/nova-6-crawler.avif",
 		games: [blackOps1, blackOps3, blackOps4],
 		maps: [kinoDerToten, five, moon, classified],
@@ -75,7 +266,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, novaGas],
-		spawnBehavior: "Nova-6 Crawlers typically start spawning once a certain area in a map has been accessed and will continue to spawn within the normal rounds in smaller numbers than zombies from that point on.",
+		spawnBehavior:
+			"Nova-6 Crawlers typically start spawning once a certain area in a map has been accessed and will continue to spawn within the normal rounds in smaller numbers than zombies from that point on.",
 		combatStrategy: () => import("@/content/zombies/nova-6-crawler.mdx"),
 	},
 	pentagonThief: {
@@ -83,7 +275,8 @@ const zombiesRegistry = {
 		title: "Pentagon Thief",
 		releaseDate: new Date("November 09, 2010 12:30 AM"),
 		image: "/zombies/pentagon-thief.avif",
-		description: "The Pentagon Thief is a special enemy appearing in the map 'Five', periodically trying to steal the player's weapons forcing them to reacquire the weapon if successful.",
+		description:
+			"The Pentagon Thief is a special enemy appearing in the map 'Five', periodically trying to steal the player's weapons forcing them to reacquire the weapon if successful.",
 		games: [blackOps1],
 		maps: [five],
 		type: "Special",
@@ -91,7 +284,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [weaponSteal],
-		spawnBehavior: "The Pentagon Thief will teleport onto the map at certain rounds once the power has been turned off appearing as red floating numbers, with the spawn rate being more frequent at higher rounds.",
+		spawnBehavior:
+			"The Pentagon Thief will teleport onto the map at certain rounds once the power has been turned off appearing as red floating numbers, with the spawn rate being more frequent at higher rounds.",
 		combatStrategy: () => import("@/content/zombies/pentagon-thief.mdx"),
 	},
 	spaceMonkey: {
@@ -99,7 +293,8 @@ const zombiesRegistry = {
 		title: "Space Monkey",
 		releaseDate: new Date("February 01, 2011 12:00 AM"),
 		image: "/zombies/space-monkey.avif",
-		description: "Space Monkeys are a special enemy appearing on the map Ascension, attempting to steal the player's perks by attacking the perk machines.",
+		description:
+			"Space Monkeys are a special enemy appearing on the map Ascension, attempting to steal the player's perks by attacking the perk machines.",
 		games: [blackOps1, blackOps3],
 		maps: [ascension],
 		type: "Special",
@@ -107,7 +302,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, perkSteal],
-		spawnBehavior: "Space Monkeys will first appear after four to five rounds, after the first perk has been purchased. Arriving on lunar landers crashing into the ground with the map having a yellow-orange tint, and the announcer saying, 'Warning. Re-entry detected. All security personnel on high alert.'",
+		spawnBehavior:
+			"Space Monkeys will first appear after four to five rounds, after the first perk has been purchased. Arriving on lunar landers crashing into the ground with the map having a yellow-orange tint, and the announcer saying, 'Warning. Re-entry detected. All security personnel on high alert.'",
 		combatStrategy: () => import("@/content/zombies/space-monkey.mdx"),
 	},
 	georgeARomero: {
@@ -115,7 +311,8 @@ const zombiesRegistry = {
 		title: "George A. Romero",
 		releaseDate: new Date("May 03, 2011 12:00 AM"),
 		image: "/zombies/george-a-romero.avif",
-		description: "George A. Romero is a special zombie, and the main antagonist featured in the map Call of the Dead. Roaming the map and constantly following the player.",
+		description:
+			"George A. Romero is a special zombie, and the main antagonist featured in the map Call of the Dead. Roaming the map and constantly following the player.",
 		games: [blackOps1],
 		maps: [callOfTheDead],
 		type: "Special",
@@ -123,7 +320,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, rallyCry],
-		spawnBehavior: "Romero spawns in via a lightning strike in the spawn area at the very start of the game, holding a stage light as his main weapon of choice and begin to follow the closest player to him from that point on.",
+		spawnBehavior:
+			"Romero spawns in via a lightning strike in the spawn area at the very start of the game, holding a stage light as his main weapon of choice and begin to follow the closest player to him from that point on.",
 		combatStrategy: () => import("@/content/zombies/george-a-romero.mdx"),
 	},
 	jungleMonkey: {
@@ -131,7 +329,8 @@ const zombiesRegistry = {
 		title: "Jungle Monkey",
 		releaseDate: new Date("June 12, 2011 12:00 AM"),
 		image: "/zombies/jungle-monkey.avif",
-		description: "The Jungle Monkey is a special enemy appearing on the map Shangri-La, unlike the Space Monkey, the Jungle Monkey prefers to go after Power-Up drops.",
+		description:
+			"The Jungle Monkey is a special enemy appearing on the map Shangri-La, unlike the Space Monkey, the Jungle Monkey prefers to go after Power-Up drops.",
 		games: [blackOps1, blackOps3],
 		maps: [shangriLa],
 		type: "Special",
@@ -139,7 +338,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, powerUpSteal],
-		spawnBehavior: "These monkeys spawn perched on top of the sides of the stairs leading up to the Pack-a-Punch machine, and if one is killed, another will replace it. They are constant throughout the entire match and will always go after Power-Up drops.",
+		spawnBehavior:
+			"These monkeys spawn perched on top of the sides of the stairs leading up to the Pack-a-Punch machine, and if one is killed, another will replace it. They are constant throughout the entire match and will always go after Power-Up drops.",
 		combatStrategy: () => import("@/content/zombies/jungle-monkey.mdx"),
 	},
 	shriekerZombie: {
@@ -147,7 +347,8 @@ const zombiesRegistry = {
 		title: "Shrieker Zombie",
 		releaseDate: new Date("June 12, 2011 01:00 AM"),
 		image: "/zombies/shrieker-zombie.avif",
-		description: "Shrieker Zombies are a special enemy appearing on the map Shangri-La. These zombies appear with pale white skin, glowing white eyes, and can move very quickly.",
+		description:
+			"Shrieker Zombies are a special enemy appearing on the map Shangri-La. These zombies appear with pale white skin, glowing white eyes, and can move very quickly.",
 		games: [blackOps1, blackOps3],
 		maps: [shangriLa],
 		type: "Special",
@@ -155,7 +356,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [sonicScreech],
-		spawnBehavior: "These zombies spawn throughout the normal rounds by blasting out of the ground with a Sonic Screech, making it likely you will hear them before you see them spawn. These zombies also do not count towards the normal round, so you can flip the round without killing them.",
+		spawnBehavior:
+			"These zombies spawn throughout the normal rounds by blasting out of the ground with a Sonic Screech, making it likely you will hear them before you see them spawn. These zombies also do not count towards the normal round, so you can flip the round without killing them.",
 		combatStrategy: () => import("@/content/zombies/shreker-zombie.mdx"),
 	},
 	napalmZombie: {
@@ -163,7 +365,8 @@ const zombiesRegistry = {
 		title: "Napalm Zombie",
 		releaseDate: new Date("June 12, 2011 02:00 AM"),
 		image: "/zombies/napalm-zombie.avif",
-		description: "Napalm Zombies are a special enemy appearing on the map Shangri-La. These zombies look like a burnt zombie with a flaming aura surrounding them.",
+		description:
+			"Napalm Zombies are a special enemy appearing on the map Shangri-La. These zombies look like a burnt zombie with a flaming aura surrounding them.",
 		games: [blackOps1, blackOps3],
 		maps: [shangriLa],
 		type: "Special",
@@ -171,7 +374,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [flamingAura, fieryExplosion],
-		spawnBehavior: "Napalm Zombies spawn from a patch of flames on the ground and do not count towards the normal round. Only one Napalm Zombie can appear at a time.",
+		spawnBehavior:
+			"Napalm Zombies spawn from a patch of flames on the ground and do not count towards the normal round. Only one Napalm Zombie can appear at a time.",
 		combatStrategy: () => import("@/content/zombies/napalm-zombie.mdx"),
 	},
 	astronautZombie: {
@@ -179,7 +383,8 @@ const zombiesRegistry = {
 		title: "Astronaut Zombie",
 		releaseDate: new Date("August 23, 2011 12:00 AM"),
 		image: "/zombies/astronaut-zombie.avif",
-		description: "The Astronaut is a special enemy appearing on the map Moon, often taking the name of someone on your friends list or if solo a predetermined name instead.",
+		description:
+			"The Astronaut is a special enemy appearing on the map Moon, often taking the name of someone on your friends list or if solo a predetermined name instead.",
 		games: [blackOps1, blackOps3],
 		maps: [moon],
 		type: "Special",
@@ -187,7 +392,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [deadWire],
 		attacks: [grab, knockbackExplosion],
-		spawnBehavior: "The Astronaut spawns in shortly after you have teleported to the Moon from Earth, and will always spawn in the Receiving Bay and make their way to the player. After every death, it will return with a different name above its head.",
+		spawnBehavior:
+			"The Astronaut spawns in shortly after you have teleported to the Moon from Earth, and will always spawn in the Receiving Bay and make their way to the player. After every death, it will return with a different name above its head.",
 		combatStrategy: () => import("@/content/zombies/astronaut-zombie.mdx"),
 	},
 	denizen: {
@@ -195,7 +401,8 @@ const zombiesRegistry = {
 		title: "Denizen",
 		releaseDate: new Date("November 12, 2012 12:00 AM"),
 		image: "/zombies/denizen.avif",
-		description: "The Denizen is a special enemy appearing on the map Tranzit, lurking within the fog of the map waiting for unsuspecting players to jump onto.",
+		description:
+			"The Denizen is a special enemy appearing on the map Tranzit, lurking within the fog of the map waiting for unsuspecting players to jump onto.",
 		games: [blackOps2],
 		maps: [tranzit],
 		type: "Special",
@@ -203,7 +410,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [leap],
-		spawnBehavior: "Denizens spawn within the fog of the map, in-between each Point of Interest and will always exist within those areas no matter the round.",
+		spawnBehavior:
+			"Denizens spawn within the fog of the map, in-between each Point of Interest and will always exist within those areas no matter the round.",
 		combatStrategy: () => import("@/content/zombies/denizen.mdx"),
 	},
 	avogadro: {
@@ -211,7 +419,8 @@ const zombiesRegistry = {
 		title: "Avogadro",
 		releaseDate: new Date("November 12, 2012 01:00 AM"),
 		image: "/zombies/avogadro.avif",
-		description: "The Avogadro is a boss zombie appearing on the maps Tranzit & Alpha Omega, also known as Cornelius Pernell the leader of Broken Arrow.",
+		description:
+			"The Avogadro is a boss zombie appearing on the maps Tranzit & Alpha Omega, also known as Cornelius Pernell the leader of Broken Arrow.",
 		games: [blackOps2, blackOps4],
 		maps: [tranzit, alphaOmega],
 		type: "Boss",
@@ -219,7 +428,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [aoeSlam, lightningBolt, charge],
-		spawnBehavior: "In TranZit, the Avogadro spawns in after turning on the power. In Alpha Omega, the Avogadro is the final boss of the Main Quest.",
+		spawnBehavior:
+			"In TranZit, the Avogadro spawns in after turning on the power. In Alpha Omega, the Avogadro is the final boss of the Main Quest.",
 		combatStrategy: () => import("@/content/zombies/avogadro.mdx"),
 	},
 	jumpingJack: {
@@ -227,7 +437,8 @@ const zombiesRegistry = {
 		title: "Jumping Jack",
 		releaseDate: new Date("January 29, 2013 12:00 AM"),
 		image: "/zombies/jumping-jack.avif",
-		description: "Jumping Jacks are special enemies appearing on the map Die Rise. Similar in appearance to the Nova-6 Crawler, however, these zombies behave much differently.",
+		description:
+			"Jumping Jacks are special enemies appearing on the map Die Rise. Similar in appearance to the Nova-6 Crawler, however, these zombies behave much differently.",
 		games: [blackOps2],
 		maps: [dieRise],
 		type: "Special",
@@ -235,7 +446,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, jumpSwing],
-		spawnBehavior: "Jumping Jacks are round-specific, and when they spawn, these will be the only enemies on the map for that round. They first spawn on rounds 5-7, and then every 5 rounds after their first appearance. They will spawn in groups of two per player alive, with a new group spawning after a group has been killed.",
+		spawnBehavior:
+			"Jumping Jacks are round-specific, and when they spawn, these will be the only enemies on the map for that round. They first spawn on rounds 5-7, and then every 5 rounds after their first appearance. They will spawn in groups of two per player alive, with a new group spawning after a group has been killed.",
 		combatStrategy: () => import("@/content/zombies/jumping-jack.mdx"),
 	},
 	brutus: {
@@ -243,7 +455,8 @@ const zombiesRegistry = {
 		title: "Brutus",
 		releaseDate: new Date("April 16, 2013 12:00 AM"),
 		image: "/zombies/brutus.avif",
-		description: "Brutus is the boss zombie appearing on the maps Mob of the Dead and Blood of the Dead. Also known as the Warden of Alcatraz, tormenting the souls of the damned.",
+		description:
+			"Brutus is the boss zombie appearing on the maps Mob of the Dead and Blood of the Dead. Also known as the Warden of Alcatraz, tormenting the souls of the damned.",
 		games: [blackOps2],
 		maps: [mobOfTheDead, bloodOfTheDead],
 		type: "Boss",
@@ -251,7 +464,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing],
-		spawnBehavior: "In Mob of the Dead, Brutus first spawns after rounds 5 and 7 with normal zombies, and then randomly after that. He will appear again if players use the Mystery Box too much, spawning in and destroying the Mystery Box, then running after players; As well as if players are on the Golden Gate Bridge. In Blood of the Dead, Brutus first appears after entering the Prison for the first time via the Catwalk, randomly after that, and finally as the final boss in the Main Quest.",
+		spawnBehavior:
+			"In Mob of the Dead, Brutus first spawns after rounds 5 and 7 with normal zombies, and then randomly after that. He will appear again if players use the Mystery Box too much, spawning in and destroying the Mystery Box, then running after players; As well as if players are on the Golden Gate Bridge. In Blood of the Dead, Brutus first appears after entering the Prison for the first time via the Catwalk, randomly after that, and finally as the final boss in the Main Quest.",
 		combatStrategy: () => import("@/content/zombies/brutus.mdx"),
 	},
 	ghost: {
@@ -259,7 +473,8 @@ const zombiesRegistry = {
 		title: "Ghost",
 		releaseDate: new Date("July 13, 2013 12:00 AM"),
 		image: "/zombies/ghost.avif",
-		description: "The Ghost also known as The Witch is a special enemy appearing in the map Buried. These enemies can only be found within the Mansion of the map.",
+		description:
+			"The Ghost also known as The Witch is a special enemy appearing in the map Buried. These enemies can only be found within the Mansion of the map.",
 		games: [blackOps2],
 		maps: [buried],
 		type: "Special",
@@ -267,7 +482,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [pointSteal],
-		spawnBehavior: "The Ghosts only spawn within the Mansion on the map and spawn infinitely until players leave the mansion.",
+		spawnBehavior:
+			"The Ghosts only spawn within the Mansion on the map and spawn infinitely until players leave the mansion.",
 		combatStrategy: () => import("@/content/zombies/ghost.mdx"),
 	},
 	crusaderZombie: {
@@ -275,7 +491,8 @@ const zombiesRegistry = {
 		title: "Crusader Zombie",
 		releaseDate: new Date("August 27, 2013 12:00 AM"),
 		image: "/zombies/crusader-zombie.webp",
-		description: "Crusader Zombies are a special enemy type on Origins, originating from the various Crusader Knights that fought in The Great War against the Apothicons alongside the Keepers.",
+		description:
+			"Crusader Zombies are a special enemy type on Origins, originating from the various Crusader Knights that fought in The Great War against the Apothicons alongside the Keepers.",
 		games: [blackOps2],
 		maps: [origins],
 		type: "Special",
@@ -283,7 +500,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, generatorSiphon],
-		spawnBehavior: "Crusader Zombies will spawn out of blue portals in the ground during any 115 generator activation to try to stop you from powering the generator. They will also spawn every few rounds after at least one generator has been powered on, attempting to disable it by siphoning the element 115 energy from it. In The Crazy Place, these enemies will spawn naturally in place of regular zombies.",
+		spawnBehavior:
+			"Crusader Zombies will spawn out of blue portals in the ground during any 115 generator activation to try to stop you from powering the generator. They will also spawn every few rounds after at least one generator has been powered on, attempting to disable it by siphoning the element 115 energy from it. In The Crazy Place, these enemies will spawn naturally in place of regular zombies.",
 		combatStrategy: () => import("@/content/zombies/crusader-zombie.mdx"),
 	},
 	panzersoldat: {
@@ -291,7 +509,8 @@ const zombiesRegistry = {
 		title: "Panzersoldat",
 		releaseDate: new Date("August 27, 2013 01:00 AM"),
 		image: "/zombies/panzersoldat.avif",
-		description: "The Panzersoldat is an elite enemy appearing on the maps Origins, Der Eisendrache, and Revelations, wearing an armored suit equipped with a flamethrower.",
+		description:
+			"The Panzersoldat is an elite enemy appearing on the maps Origins, Der Eisendrache, and Revelations, wearing an armored suit equipped with a flamethrower.",
 		games: [blackOps2],
 		maps: [origins, derEisendrache, revelations],
 		type: "Elite",
@@ -299,7 +518,8 @@ const zombiesRegistry = {
 		weakPoints: [head, powerCore],
 		elementalWeakness: [],
 		attacks: [flamethrower, clawGrab, empLauncher],
-		spawnBehavior: "In Origins, the Panzersoldat will always spawn in on Round 8 as long as the door to No Man's Land has been opened. Otherwise, it will spawn on the next round after that door has been opened, and then every 3-5 rounds after that. In Der Eisendrache, the Panzersoldat will spawn on Round 12 and every 5-6 rounds after that. During the Main Quest, a Panzersoldat will always spawn in after returning to the present time, and multiple will spawn during the final boss fight. In Revelations, the Panzersoldat will be between rounds 18-21, and is also present during the final boss fight.",
+		spawnBehavior:
+			"In Origins, the Panzersoldat will always spawn in on Round 8 as long as the door to No Man's Land has been opened. Otherwise, it will spawn on the next round after that door has been opened, and then every 3-5 rounds after that. In Der Eisendrache, the Panzersoldat will spawn on Round 12 and every 5-6 rounds after that. During the Main Quest, a Panzersoldat will always spawn in after returning to the present time, and multiple will spawn during the final boss fight. In Revelations, the Panzersoldat will be between rounds 18-21, and is also present during the final boss fight.",
 		combatStrategy: () => import("@/content/zombies/panzersoldat.mdx"),
 	},
 	keepers: {
@@ -307,7 +527,8 @@ const zombiesRegistry = {
 		title: "Keepers",
 		releaseDate: new Date("November 06, 2015 12:00 AM"),
 		image: "/zombies/keepers.avif",
-		description: "Keepers are a special enemy appearing on almost all maps in Black Ops 3 and play a crucial part in the events that happen within the Aether Storyline.",
+		description:
+			"Keepers are a special enemy appearing on almost all maps in Black Ops 3 and play a crucial part in the events that happen within the Aether Storyline.",
 		games: [blackOps3],
 		maps: [shadowsOfEvil, revelations],
 		type: "Special",
@@ -315,7 +536,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing],
-		spawnBehavior: "In Shadows of Evil, keepers spawn in during all rituals and during certain Main Quest steps. In Der Eisendrache, one keeper appears during the Main Quest to aid Primis in the return of the M.P.D. In Zetsubou No Shima, keepers spawn during the Skull of Nan Sapwe ritual. Finally, in Revelations, keepers spawn during rituals, certain Main Quest steps, and naturally throughout the rounds.",
+		spawnBehavior:
+			"In Shadows of Evil, keepers spawn in during all rituals and during certain Main Quest steps. In Der Eisendrache, one keeper appears during the Main Quest to aid Primis in the return of the M.P.D. In Zetsubou No Shima, keepers spawn during the Skull of Nan Sapwe ritual. Finally, in Revelations, keepers spawn during rituals, certain Main Quest steps, and naturally throughout the rounds.",
 		combatStrategy: () => import("@/content/zombies/keepers.mdx"),
 	},
 	insanityElementals: {
@@ -323,7 +545,8 @@ const zombiesRegistry = {
 		title: "Insanity Elementals",
 		releaseDate: new Date("November 06, 2015 01:00 AM"),
 		image: "/zombies/insanity-elementals.avif",
-		description: "Insanity Elementals, commonly referred to as Meatballs are special enemies appearing on the map Shadows of Evil, dropping from the sky and rolling into the fight.",
+		description:
+			"Insanity Elementals, commonly referred to as Meatballs are special enemies appearing on the map Shadows of Evil, dropping from the sky and rolling into the fight.",
 		games: [blackOps3],
 		maps: [shadowsOfEvil],
 		type: "Special",
@@ -331,7 +554,8 @@ const zombiesRegistry = {
 		weakPoints: [],
 		elementalWeakness: [],
 		attacks: [explosion],
-		spawnBehavior: 'Insanity Elementals spawn during a special round after the 2nd parasite round. During the "Capture the Flag" main quest step, they infinitely spawn until the flag has been charged and returned to the ritual site.',
+		spawnBehavior:
+			'Insanity Elementals spawn during a special round after the 2nd parasite round. During the "Capture the Flag" main quest step, they infinitely spawn until the flag has been charged and returned to the ritual site.',
 		combatStrategy: () => import("@/content/zombies/insanity-elementals.mdx"),
 	},
 	parasite: {
@@ -339,7 +563,8 @@ const zombiesRegistry = {
 		title: "Parasite",
 		releaseDate: new Date("November 06, 2015 02:00 AM"),
 		image: "/zombies/parasite.avif",
-		description: "Parasites are a special enemy appearing on multiple maps throughout zombies. These zombies are the first flying enemy to appear in the franchise.",
+		description:
+			"Parasites are a special enemy appearing on multiple maps throughout zombies. These zombies are the first flying enemy to appear in the franchise.",
 		games: [blackOps3, blackOps6],
 		maps: [shadowsOfEvil, revelations, terminus, citadelleDesMorts, theTomb, shatteredVeil],
 		type: "Special",
@@ -347,7 +572,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [cryoFreeze],
 		attacks: [projectileVomit],
-		spawnBehavior: "In Shadows of Evil, Parasites spawn during their own special round, out of destroyed heads of Margwas, harvest pods, and during certain Main Quest steps. In Revelations, they behave the same way, but appear red instead of yellow. In Black Ops 6, they spawn during the special round alongside Vermin and can evolve from Vermin that are left alive for too long.",
+		spawnBehavior:
+			"In Shadows of Evil, Parasites spawn during their own special round, out of destroyed heads of Margwas, harvest pods, and during certain Main Quest steps. In Revelations, they behave the same way, but appear red instead of yellow. In Black Ops 6, they spawn during the special round alongside Vermin and can evolve from Vermin that are left alive for too long.",
 		combatStrategy: () => import("@/content/zombies/parasite.mdx"),
 	},
 	margwa: {
@@ -355,7 +581,8 @@ const zombiesRegistry = {
 		title: "Margwa",
 		releaseDate: new Date("November 06, 2015 03:00 AM"),
 		image: "/zombies/margwa.avif",
-		description: "Margwas are an elite enemy appearing on the maps Shadows of Evil and Revelations. These three-headed beasts are intimidating threats that can be hard to deal with.",
+		description:
+			"Margwas are an elite enemy appearing on the maps Shadows of Evil and Revelations. These three-headed beasts are intimidating threats that can be hard to deal with.",
 		games: [blackOps3],
 		maps: [shadowsOfEvil, revelations],
 		type: "Elite",
@@ -363,7 +590,8 @@ const zombiesRegistry = {
 		weakPoints: [glowingMouths],
 		elementalWeakness: [],
 		attacks: [meleeSwing, groundSlam],
-		spawnBehavior: "In Shadows of Evil, Margwas first spawns on Round 8. They will continue to spawn throughout the rounds after that and will appear in greater numbers during certain Main Quest steps, spawning infinitely during the final step of the Main Quest.",
+		spawnBehavior:
+			"In Shadows of Evil, Margwas first spawns on Round 8. They will continue to spawn throughout the rounds after that and will appear in greater numbers during certain Main Quest steps, spawning infinitely during the final step of the Main Quest.",
 		combatStrategy: () => import("@/content/zombies/margwa.mdx"),
 	},
 	skeleton: {
@@ -371,7 +599,8 @@ const zombiesRegistry = {
 		title: "Skeleton",
 		releaseDate: new Date("February 02, 2016 12:00 AM"),
 		image: "/zombies/skeleton.avif",
-		description: "Skeletons are a variant of the normal zombie also known as Spartoi in Ancient Evil. These enemies bring a cool new look to the normal zombie.",
+		description:
+			"Skeletons are a variant of the normal zombie also known as Spartoi in Ancient Evil. These enemies bring a cool new look to the normal zombie.",
 		games: [blackOps3, blackOps4],
 		maps: [derEisendrache, ancientEvil],
 		type: "Normal",
@@ -379,7 +608,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing],
-		spawnBehavior: "In Der Eisendrache, Skeletons spawn as the dominant enemy in the My Brother's Keeper main quest boss fight. In Ancient Evil, these skeletons are known as Spartoi and spawn once you activate the Sentinel Artifact. These Spartoi will not be killed if the final blow is not a headshot; they will instead crumble to the ground and reconstruct up to two times before actually dying.",
+		spawnBehavior:
+			"In Der Eisendrache, Skeletons spawn as the dominant enemy in the My Brother's Keeper main quest boss fight. In Ancient Evil, these skeletons are known as Spartoi and spawn once you activate the Sentinel Artifact. These Spartoi will not be killed if the final blow is not a headshot; they will instead crumble to the ground and reconstruct up to two times before actually dying.",
 		combatStrategy: () => import("@/content/zombies/skeleton.mdx"),
 	},
 	theCorruptedKeeper: {
@@ -387,7 +617,8 @@ const zombiesRegistry = {
 		title: "The Corrupted Keeper",
 		releaseDate: new Date("February 02, 2016 01:00 AM"),
 		image: "/zombies/the-corrupted-keeper.avif",
-		description: "The Corruputed Keeper is the final boss of the My Brother's Keeper main quest in Der Eisendrache, the first boss fight in the zombies franchise.",
+		description:
+			"The Corruputed Keeper is the final boss of the My Brother's Keeper main quest in Der Eisendrache, the first boss fight in the zombies franchise.",
 		games: [blackOps3],
 		maps: [derEisendrache],
 		type: "Boss",
@@ -395,7 +626,8 @@ const zombiesRegistry = {
 		weakPoints: [glowingSymbol],
 		elementalWeakness: [],
 		attacks: [skullSummon, volcanoSummon, electricBurst],
-		spawnBehavior: "The Corrupted Keeper spawns once you enter the boss arena for the My Brother's Keeper Main Quest.",
+		spawnBehavior:
+			"The Corrupted Keeper spawns once you enter the boss arena for the My Brother's Keeper Main Quest.",
 		combatStrategy: () => import("@/content/zombies/the-corrupted-keeper.mdx"),
 	},
 	spider: {
@@ -403,7 +635,8 @@ const zombiesRegistry = {
 		title: "Spider",
 		releaseDate: new Date("April 19, 2016 12:00 AM"),
 		image: "/zombies/spider.avif",
-		description: "Spiders are a special enemy originating from Zetsubou No Shima. These enemies have the appearance of a Black Widow, but with some interesting enhancements.",
+		description:
+			"Spiders are a special enemy originating from Zetsubou No Shima. These enemies have the appearance of a Black Widow, but with some interesting enhancements.",
 		games: [blackOps3],
 		maps: [zetsubouNoShima],
 		type: "Special",
@@ -411,14 +644,16 @@ const zombiesRegistry = {
 		weakPoints: [],
 		elementalWeakness: [],
 		attacks: [bite, webProjectile],
-		spawnBehavior: 'In Zetsubou No Shima, spiders have their own dedicated special round, which can be on Round 5-7, then every 5 rounds after that. They will then start spawning within the normal rounds after Round 20. In Revelations, spiders exclusively spawn within the Apothicon and only every 2-3 rounds. Once they appear, they will spawn pretty frequently during that round, but not again until the next "Spider round" within the apothicon.',
+		spawnBehavior:
+			'In Zetsubou No Shima, spiders have their own dedicated special round, which can be on Round 5-7, then every 5 rounds after that. They will then start spawning within the normal rounds after Round 20. In Revelations, spiders exclusively spawn within the Apothicon and only every 2-3 rounds. Once they appear, they will spawn pretty frequently during that round, but not again until the next "Spider round" within the apothicon.',
 		combatStrategy: () => import("@/content/zombies/spider.mdx"),
 	},
 	thrasher: {
 		id: "thrasher",
 		title: "Thrasher",
 		releaseDate: new Date("April 19, 2016 01:00 AM"),
-		description: "Thrashers are an elite enemy originating from the map Zetsubou No Shima. These brutes are mutated zombies from spores completely transforming their appearance.",
+		description:
+			"Thrashers are an elite enemy originating from the map Zetsubou No Shima. These brutes are mutated zombies from spores completely transforming their appearance.",
 		image: "/zombies/thrasher.avif",
 		games: [blackOps3],
 		maps: [zetsubouNoShima],
@@ -427,7 +662,8 @@ const zombiesRegistry = {
 		weakPoints: [head, spores],
 		elementalWeakness: [],
 		attacks: [powerfulMelee, toxicGas],
-		spawnBehavior: "Thrashers spawn from normal zombies affected by a fully-grown toxic spore's gas. They can also spawn naturally throughout rounds.",
+		spawnBehavior:
+			"Thrashers spawn from normal zombies affected by a fully-grown toxic spore's gas. They can also spawn naturally throughout rounds.",
 		combatStrategy: () => import("@/content/zombies/thrasher.mdx"),
 	},
 	giantSpider: {
@@ -435,7 +671,8 @@ const zombiesRegistry = {
 		title: "Giant Spider",
 		releaseDate: new Date("April 19, 2016 02:00 AM"),
 		image: "/zombies/giant-spider.avif",
-		description: "The Giant Spider is the first boss you face in Zetsubou No Shima to obtain the Spider's tooth to build the Masamune wonder weapon.",
+		description:
+			"The Giant Spider is the first boss you face in Zetsubou No Shima to obtain the Spider's tooth to build the Masamune wonder weapon.",
 		games: [blackOps3],
 		maps: [zetsubouNoShima],
 		type: "Boss",
@@ -443,7 +680,8 @@ const zombiesRegistry = {
 		weakPoints: [mouth],
 		elementalWeakness: [],
 		attacks: [webProjectile, legStab],
-		spawnBehavior: "The Giant Spider spawns once you shoot the blue webbing with the KT-4, blocking the cave entrance by Speed Cola behind Lab A.",
+		spawnBehavior:
+			"The Giant Spider spawns once you shoot the blue webbing with the KT-4, blocking the cave entrance by Speed Cola behind Lab A.",
 		combatStrategy: () => import("@/content/zombies/giant-spider.mdx"),
 	},
 	giantThrasher: {
@@ -451,7 +689,8 @@ const zombiesRegistry = {
 		title: "Giant Thrasher",
 		releaseDate: new Date("April 19, 2016 03:00 AM"),
 		image: "/zombies/giant-thrasher.avif",
-		description: "The Giant Thrasher is the final boss for the Seeds of Doubt main quest in Zetsubou No Shima, appearing more unique than other Thrashers on the map.",
+		description:
+			"The Giant Thrasher is the final boss for the Seeds of Doubt main quest in Zetsubou No Shima, appearing more unique than other Thrashers on the map.",
 		games: [blackOps3],
 		maps: [zetsubouNoShima],
 		type: "Boss",
@@ -459,7 +698,8 @@ const zombiesRegistry = {
 		weakPoints: [spores],
 		elementalWeakness: [],
 		attacks: [vineSlam],
-		spawnBehavior: "The Giant Thrasher spawns once the elevator has been repaired and taken the players underground.",
+		spawnBehavior:
+			"The Giant Thrasher spawns once the elevator has been repaired and taken the players underground.",
 		combatStrategy: () => import("@/content/zombies/giant-thrasher.mdx"),
 	},
 	valkyrieDrone: {
@@ -467,7 +707,8 @@ const zombiesRegistry = {
 		title: "Valkyrie Drone",
 		releaseDate: new Date("July 12, 2016 12:00 AM"),
 		image: "/zombies/valkyrie-drone.avif",
-		description: "Valkyrie Drones are a special enemy type originating from the map Gorod Krovi. These enemies appear as flying drones with three tentacle-like arms and a red eye.",
+		description:
+			"Valkyrie Drones are a special enemy type originating from the map Gorod Krovi. These enemies appear as flying drones with three tentacle-like arms and a red eye.",
 		games: [blackOps3],
 		maps: [gorodKrovi],
 		type: "Special",
@@ -475,7 +716,8 @@ const zombiesRegistry = {
 		weakPoints: [redCamera],
 		elementalWeakness: [],
 		attacks: [lightningBeam, selfDestruct],
-		spawnBehavior: "Valkyrie Drones spawn between rounds 9-12, then every 8-10 rounds after that acting as the maps special round. When the special round starts, the map will have a slight blue hue to it, and brief electricity will encircle the screen.",
+		spawnBehavior:
+			"Valkyrie Drones spawn between rounds 9-12, then every 8-10 rounds after that acting as the maps special round. When the special round starts, the map will have a slight blue hue to it, and brief electricity will encircle the screen.",
 		combatStrategy: () => import("@/content/zombies/valkyrie-drone.mdx"),
 	},
 	mangler: {
@@ -483,15 +725,26 @@ const zombiesRegistry = {
 		title: "Mangler",
 		releaseDate: new Date("July 12, 2016 01:00 AM"),
 		image: "/zombies/mangler.avif",
-		description: "Manglers are a special type of enemy originating from the map Gorod Krovi. These enemies appear as armored russian super-soldiers armed with an arm cannon.",
+		description:
+			"Manglers are a special type of enemy originating from the map Gorod Krovi. These enemies appear as armored russian super-soldiers armed with an arm cannon.",
 		games: [blackOps3, blackOpsColdWar, blackOps6],
-		maps: [gorodKrovi, firebaseZ, mauerDerToten, forsaken, libertyFalls, terminus, shatteredVeil, reckoning],
+		maps: [
+			gorodKrovi,
+			firebaseZ,
+			mauerDerToten,
+			forsaken,
+			libertyFalls,
+			terminus,
+			shatteredVeil,
+			reckoning,
+		],
 		type: "Special",
 		speed: "Slow",
 		weakPoints: [head, armCannon],
 		elementalWeakness: [napalmBurst],
 		attacks: [meleeSwing, cannonBlast],
-		spawnBehavior: "Manglers spawn out of window barriers just like normal zombies and will spawn through the rounds with normal zombies as well. Up to four manglers can spawn at a time.",
+		spawnBehavior:
+			"Manglers spawn out of window barriers just like normal zombies and will spawn through the rounds with normal zombies as well. Up to four manglers can spawn at a time.",
 		combatStrategy: () => import("@/content/zombies/mangler.mdx"),
 	},
 	dragon: {
@@ -499,7 +752,8 @@ const zombiesRegistry = {
 		title: "Dragon",
 		releaseDate: new Date("July 12, 2016 02:00 AM"),
 		image: "/zombies/dragon.avif",
-		description: "The Dragon is the first boss appearing on the map Gorod Krovi. This enemy appears as main dragon seen throughout the map breathing fire down on the battlefield.",
+		description:
+			"The Dragon is the first boss appearing on the map Gorod Krovi. This enemy appears as main dragon seen throughout the map breathing fire down on the battlefield.",
 		games: [blackOps3],
 		maps: [gorodKrovi],
 		type: "Boss",
@@ -507,7 +761,8 @@ const zombiesRegistry = {
 		weakPoints: [redGlowingSpots],
 		elementalWeakness: [],
 		attacks: [dragonFire],
-		spawnBehavior: "The Dragon spawns in the moment you enter the map and can be seen flying around and periodically landing on certain areas to breathe fire.",
+		spawnBehavior:
+			"The Dragon spawns in the moment you enter the map and can be seen flying around and periodically landing on certain areas to breathe fire.",
 		combatStrategy: () => import("@/content/zombies/dragon.mdx"),
 	},
 	nikolaiMech: {
@@ -515,7 +770,8 @@ const zombiesRegistry = {
 		title: "Nikolai Mech",
 		releaseDate: new Date("July 12, 2016 03:00 AM"),
 		image: "/zombies/nikolai-mech.avif",
-		description: "The Nikolai Mech is the final boss enemy in the map Gorod Krovi. The mech hosts Ultimis Nikolai inside who is the controller of the mech while being drunk.",
+		description:
+			"The Nikolai Mech is the final boss enemy in the map Gorod Krovi. The mech hosts Ultimis Nikolai inside who is the controller of the mech while being drunk.",
 		games: [blackOps3],
 		maps: [gorodKrovi],
 		type: "Boss",
@@ -523,7 +779,8 @@ const zombiesRegistry = {
 		weakPoints: [powerCores],
 		elementalWeakness: [],
 		attacks: [harpoonBarrage],
-		spawnBehavior: "The Nikolai Mech spawns in after starting the final encounter of the Gorod Krovi main quest.",
+		spawnBehavior:
+			"The Nikolai Mech spawns in after starting the final encounter of the Gorod Krovi main quest.",
 		combatStrategy: () => import("@/content/zombies/nikolai-mech.mdx"),
 	},
 	fury: {
@@ -531,7 +788,8 @@ const zombiesRegistry = {
 		title: "Fury",
 		releaseDate: new Date("October 06, 2016 12:00 AM"),
 		image: "/zombies/fury.avif",
-		description: "Furies are a special enemy originating from the map Revelations in Black Ops 3. These enemies are unique in appearance while having similar behavior to the Insanity Elementals.",
+		description:
+			"Furies are a special enemy originating from the map Revelations in Black Ops 3. These enemies are unique in appearance while having similar behavior to the Insanity Elementals.",
 		games: [blackOps3],
 		maps: [revelations],
 		type: "Special",
@@ -539,7 +797,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing],
-		spawnBehavior: "Furies spawn on the second special round, then every special round after that. They will also spawn during the first, second, and final Corruption Engine overrides that the player activates.",
+		spawnBehavior:
+			"Furies spawn on the second special round, then every special round after that. They will also spawn during the first, second, and final Corruption Engine overrides that the player activates.",
 		combatStrategy: () => import("@/content/zombies/fury.mdx"),
 	},
 	fireCatalyst: {
@@ -547,7 +806,8 @@ const zombiesRegistry = {
 		title: "Fire Catalyst",
 		releaseDate: new Date("October 12, 2018 12:00 AM"),
 		image: "/zombies/fire-catalyst.avif",
-		description: "Fire Catalysts are one of the four variants of catalyst zombies, originating from the map Voyage of Despair, and appearing similar to the Napalm Zombie from Shangri-La.",
+		description:
+			"Fire Catalysts are one of the four variants of catalyst zombies, originating from the map Voyage of Despair, and appearing similar to the Napalm Zombie from Shangri-La.",
 		games: [blackOps4],
 		maps: [voyageOfDespair, ix, deadOfTheNight, ancientEvil],
 		type: "Special",
@@ -555,7 +815,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [fieryExplosion],
-		spawnBehavior: "Fire Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
+		spawnBehavior:
+			"Fire Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
 		combatStrategy: () => import("@/content/zombies/fire-catalyst.mdx"),
 	},
 	poisonCatalyst: {
@@ -563,7 +824,8 @@ const zombiesRegistry = {
 		title: "Poison Catalyst",
 		releaseDate: new Date("October 12, 2018 01:00 AM"),
 		image: "/zombies/poison-catalyst.avif",
-		description: "Poison Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on toxic area denial.",
+		description:
+			"Poison Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on toxic area denial.",
 		games: [blackOps4],
 		maps: [voyageOfDespair, ix, deadOfTheNight, ancientEvil],
 		type: "Special",
@@ -571,7 +833,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, poisonAura],
-		spawnBehavior: "Poison Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
+		spawnBehavior:
+			"Poison Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
 		combatStrategy: () => import("@/content/zombies/poison-catalyst.mdx"),
 	},
 	waterCatalyst: {
@@ -579,7 +842,8 @@ const zombiesRegistry = {
 		title: "Water Catalyst",
 		releaseDate: new Date("October 12, 2018 02:00 AM"),
 		image: "/zombies/water-catalyst.avif",
-		description: "Water Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on buffing other zombies.",
+		description:
+			"Water Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on buffing other zombies.",
 		games: [blackOps4],
 		maps: [voyageOfDespair, ix, deadOfTheNight, ancientEvil],
 		type: "Special",
@@ -587,7 +851,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, zombieBuff],
-		spawnBehavior: "Water Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
+		spawnBehavior:
+			"Water Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
 		combatStrategy: () => import("@/content/zombies/water-catalyst.mdx"),
 	},
 	lightningCatalyst: {
@@ -595,7 +860,8 @@ const zombiesRegistry = {
 		title: "Lightning Catalyst",
 		releaseDate: new Date("October 12, 2018 03:00 AM"),
 		image: "/zombies/lightning-catalyst.avif",
-		description: "Lightning Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with similarities to the Shrieker Zombie.",
+		description:
+			"Lightning Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with similarities to the Shrieker Zombie.",
 		games: [blackOps4],
 		maps: [voyageOfDespair, ix, deadOfTheNight, ancientEvil],
 		type: "Special",
@@ -603,7 +869,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [sonicScreech],
-		spawnBehavior: "Lightning Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
+		spawnBehavior:
+			"Lightning Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
 		combatStrategy: () => import("@/content/zombies/lightning-catalyst.mdx"),
 	},
 	stoker: {
@@ -611,7 +878,8 @@ const zombiesRegistry = {
 		title: "Stoker",
 		releaseDate: new Date("October 12, 2018 04:00 AM"),
 		image: "/zombies/stoker.avif",
-		description: "The Stoker is an elite enemy originating on the map Voyage of Despair in Black Ops 4, wielding a shovel and appearing as a fiery zombie spawned from hell.",
+		description:
+			"The Stoker is an elite enemy originating on the map Voyage of Despair in Black Ops 4, wielding a shovel and appearing as a fiery zombie spawned from hell.",
 		games: [blackOps4],
 		maps: [voyageOfDespair],
 		type: "Elite",
@@ -627,7 +895,8 @@ const zombiesRegistry = {
 		title: "Blightfather",
 		releaseDate: new Date("October 12, 2018 05:00 AM"),
 		image: "/zombies/blightfather.avif",
-		description: "The Blightfather is an elite enemy originating from the map Voyage of Despair, appearing as a tall and mutated arachnid similar with long legs.",
+		description:
+			"The Blightfather is an elite enemy originating from the map Voyage of Despair, appearing as a tall and mutated arachnid similar with long legs.",
 		games: [blackOps4],
 		maps: [voyageOfDespair, ix, ancientEvil],
 		type: "Elite",
@@ -635,7 +904,8 @@ const zombiesRegistry = {
 		weakPoints: [backSacs, elbowSacs],
 		elementalWeakness: [],
 		attacks: [meleeSwing, homingVomit, tongueGrab],
-		spawnBehavior: "The Blightfather will not spawn until Round 15 on any map and spawns from a normal zombie by ripping apart the zombie like a parasite and crawling out of the zombie's mouth, quickly growing to full size.",
+		spawnBehavior:
+			"The Blightfather will not spawn until Round 15 on any map and spawns from a normal zombie by ripping apart the zombie like a parasite and crawling out of the zombie's mouth, quickly growing to full size.",
 		combatStrategy: () => import("@/content/zombies/blightfather.mdx"),
 	},
 	eyeOfMalice: {
@@ -643,7 +913,8 @@ const zombiesRegistry = {
 		title: "Eye of Malice",
 		releaseDate: new Date("October 12, 2018 06:00 AM"),
 		image: "/zombies/eye-of-malice.avif",
-		description: "The Eye of Malice and Despair is the final boss of the map Voyage of Despair's Abandon Ship main quest, also known as the Sky-Eye.",
+		description:
+			"The Eye of Malice and Despair is the final boss of the map Voyage of Despair's Abandon Ship main quest, also known as the Sky-Eye.",
 		games: [blackOps4],
 		maps: [voyageOfDespair],
 		type: "Boss",
@@ -651,7 +922,8 @@ const zombiesRegistry = {
 		weakPoints: [eyePupil],
 		elementalWeakness: [],
 		attacks: [eyeBeam],
-		spawnBehavior: "The Eye of Malice spawns once you enter the final encounter and place the Sentinel Artifact inside of the Iceberg.",
+		spawnBehavior:
+			"The Eye of Malice spawns once you enter the final encounter and place the Sentinel Artifact inside of the Iceberg.",
 		combatStrategy: () => import("@/content/zombies/eye-of-malice.mdx"),
 	},
 	tiger: {
@@ -659,7 +931,8 @@ const zombiesRegistry = {
 		title: "Tiger",
 		releaseDate: new Date("October 12, 2018 07:00 AM"),
 		image: "/zombies/tiger.avif",
-		description: "The Tiger is a special enemy originating from the map IX in Black Ops 4, similar to Hellhounds however having slightly higher health.",
+		description:
+			"The Tiger is a special enemy originating from the map IX in Black Ops 4, similar to Hellhounds however having slightly higher health.",
 		games: [blackOps4],
 		maps: [ix],
 		type: "Special",
@@ -667,7 +940,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [bite, lunge],
-		spawnBehavior: "Tigers spawn during the special round of the map IX, as champions of one of the gods, and during specific steps in the main quest. They will also spawn in with normal zombies starting on Round 8.",
+		spawnBehavior:
+			"Tigers spawn during the special round of the map IX, as champions of one of the gods, and during specific steps in the main quest. They will also spawn in with normal zombies starting on Round 8.",
 		combatStrategy: () => import("@/content/zombies/tiger.mdx"),
 	},
 	destroyer: {
@@ -675,7 +949,8 @@ const zombiesRegistry = {
 		title: "Destroyer",
 		releaseDate: new Date("October 12, 2018 08:00 AM"),
 		image: "/zombies/destroyer.avif",
-		description: "The Destroyer is a special enemy originating from the map IX in Black Ops 4, wielding dual-axes while wearing heavy armor that must be destroyed.",
+		description:
+			"The Destroyer is a special enemy originating from the map IX in Black Ops 4, wielding dual-axes while wearing heavy armor that must be destroyed.",
 		games: [blackOps4],
 		maps: [ix],
 		type: "Special",
@@ -683,7 +958,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, axeThrow],
-		spawnBehavior: "Destroyers spawn during the special round on the map IX, as champions of one of the gods, and during specific parts of the main quest. They will also spawn with normal zombies starting on Round 8.",
+		spawnBehavior:
+			"Destroyers spawn during the special round on the map IX, as champions of one of the gods, and during specific parts of the main quest. They will also spawn with normal zombies starting on Round 8.",
 		combatStrategy: () => import("@/content/zombies/destroyer.mdx"),
 	},
 	marauder: {
@@ -691,7 +967,8 @@ const zombiesRegistry = {
 		title: "Marauder",
 		releaseDate: new Date("October 12, 2018 09:00 AM"),
 		image: "/zombies/marauder.avif",
-		description: "The Marauder is a special enemy originating from the map IX in Black Ops 4 wielding metallic claws with little to no armor.",
+		description:
+			"The Marauder is a special enemy originating from the map IX in Black Ops 4 wielding metallic claws with little to no armor.",
 		games: [blackOps4],
 		maps: [ix],
 		type: "Special",
@@ -699,7 +976,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [rapidSlashes, heavyLeap],
-		spawnBehavior: "Marauders spawn in during the special round of the map IX, as champions of one of the gods, and during specific steps of the main quest. They also begin spawning with normal zombies on Round 8.",
+		spawnBehavior:
+			"Marauders spawn in during the special round of the map IX, as champions of one of the gods, and during specific steps of the main quest. They also begin spawning with normal zombies on Round 8.",
 		combatStrategy: () => import("@/content/zombies/marauder.mdx"),
 	},
 	furyAndWrath: {
@@ -707,7 +985,8 @@ const zombiesRegistry = {
 		title: "Fury & Wrath",
 		releaseDate: new Date("October 12, 2018 10:00 AM"),
 		image: "/zombies/fury-and-wrath.avif",
-		description: "Fury and Wrath are the final bosses in the map IX's main quest Venerated Warrior, appearing as two war elephants with heavy armor.",
+		description:
+			"Fury and Wrath are the final bosses in the map IX's main quest Venerated Warrior, appearing as two war elephants with heavy armor.",
 		games: [blackOps4],
 		maps: [ix],
 		type: "Boss",
@@ -715,7 +994,8 @@ const zombiesRegistry = {
 		weakPoints: [foreheadCrystal, redGlowingSpots],
 		elementalWeakness: [],
 		attacks: [charge],
-		spawnBehavior: "Fury will spawn in after Phase 1 of the boss fight is complete defeating all the Gladiators and Tigers. Wrath will spawn in once Fury is defeated and his essence is transfered to Wrath.",
+		spawnBehavior:
+			"Fury will spawn in after Phase 1 of the boss fight is complete defeating all the Gladiators and Tigers. Wrath will spawn in once Fury is defeated and his essence is transfered to Wrath.",
 		combatStrategy: () => import("@/content/zombies/fury-and-wrath.mdx"),
 	},
 	nosferatu: {
@@ -723,7 +1003,8 @@ const zombiesRegistry = {
 		title: "Nosferatu",
 		releaseDate: new Date("December 11, 2018 12:00 AM"),
 		image: "/zombies/nosferatu.avif",
-		description: "The Nosferatu is a special enemy orignating from the map Dead of the Night in Black Ops 4, appearing as a vampire like zombie.",
+		description:
+			"The Nosferatu is a special enemy orignating from the map Dead of the Night in Black Ops 4, appearing as a vampire like zombie.",
 		games: [blackOps4],
 		maps: [deadOfTheNight],
 		type: "Special",
@@ -731,7 +1012,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [vampiricMelee, megaBite],
-		spawnBehavior: "The Nosferatu will begin spawning naturally in the later rounds and will be spawned during specific points of the main quest. The Crimson Nosferatu will begin spawning naturally in the 30s and can also be spawned from one of the Allistair Annihilators upgrade quest steps.",
+		spawnBehavior:
+			"The Nosferatu will begin spawning naturally in the later rounds and will be spawned during specific points of the main quest. The Crimson Nosferatu will begin spawning naturally in the 30s and can also be spawned from one of the Allistair Annihilators upgrade quest steps.",
 		combatStrategy: () => import("@/content/zombies/nosferatu.mdx"),
 	},
 	werewolf: {
@@ -739,7 +1021,8 @@ const zombiesRegistry = {
 		title: "Werewolf",
 		releaseDate: new Date("December 11, 2018 01:00 AM"),
 		image: "/zombies/werewolf.avif",
-		description: "The Werewolf is an elite enemy originating from the map Dead of the Night in Black Ops 4, these enemies are fierce, agile, and strong posing a true threat.",
+		description:
+			"The Werewolf is an elite enemy originating from the map Dead of the Night in Black Ops 4, these enemies are fierce, agile, and strong posing a true threat.",
 		games: [blackOps4],
 		maps: [deadOfTheNight],
 		type: "Elite",
@@ -747,7 +1030,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, pounce],
-		spawnBehavior: "The Werewolf will not spawn until Round 15, however one Werewolf is always present in The Forest until it is defeated.",
+		spawnBehavior:
+			"The Werewolf will not spawn until Round 15, however one Werewolf is always present in The Forest until it is defeated.",
 		combatStrategy: () => import("@/content/zombies/werewolf.mdx"),
 	},
 	shadowWerewolf: {
@@ -755,7 +1039,8 @@ const zombiesRegistry = {
 		title: "Shadow Werewolf",
 		releaseDate: new Date("December 11, 2018 02:00 AM"),
 		image: "/zombies/shadow-werewolf.avif",
-		description: "The Shadow Werewolf is the final boss of the map Dead of the Nights main quest Trial by Ordeal, appearing as a bigger, stronger, and faster Werewolf.",
+		description:
+			"The Shadow Werewolf is the final boss of the map Dead of the Nights main quest Trial by Ordeal, appearing as a bigger, stronger, and faster Werewolf.",
 		games: [blackOps4],
 		maps: [deadOfTheNight],
 		type: "Boss",
@@ -763,7 +1048,8 @@ const zombiesRegistry = {
 		weakPoints: [chest],
 		elementalWeakness: [],
 		attacks: [meleeSwing, charge],
-		spawnBehavior: "The Shadow Werewolf will spawn in once you have started the final encounter and entered the boss arena.",
+		spawnBehavior:
+			"The Shadow Werewolf will spawn in once you have started the final encounter and entered the boss arena.",
 		combatStrategy: () => import("@/content/zombies/shadow-werewolf.mdx"),
 	},
 	gegenees: {
@@ -771,7 +1057,8 @@ const zombiesRegistry = {
 		title: "Gegenees",
 		releaseDate: new Date("March 26, 2019 12:00 AM"),
 		image: "/zombies/gegenees.avif",
-		description: "The Gegenees is an elite enemy originating on the map Ancient Evil in Black Ops 4, appearing a six-armed giant wielding a spear, sword, and shield.",
+		description:
+			"The Gegenees is an elite enemy originating on the map Ancient Evil in Black Ops 4, appearing a six-armed giant wielding a spear, sword, and shield.",
 		games: [blackOps4],
 		maps: [ancientEvil],
 		type: "Elite",
@@ -779,7 +1066,8 @@ const zombiesRegistry = {
 		weakPoints: [redGlowingSpots],
 		elementalWeakness: [],
 		attacks: [swordSwing, spearThrow, shieldBlind],
-		spawnBehavior: "The Gegenees will begin spawning on Round 15, however one will spawn when picking up the Golden Bridle and when shooting down the bird cage within the Omphalos.",
+		spawnBehavior:
+			"The Gegenees will begin spawning on Round 15, however one will spawn when picking up the Golden Bridle and when shooting down the bird cage within the Omphalos.",
 		combatStrategy: () => import("@/content/zombies/gegenees.mdx"),
 	},
 	pegasus: {
@@ -787,7 +1075,8 @@ const zombiesRegistry = {
 		title: "Pegasus",
 		releaseDate: new Date("March 26, 2019 01:00 AM"),
 		image: "/zombies/pegasus.avif",
-		description: "Pegasus is the first boss faced in the map Ancient Evil's main quest Greek Tragedy, appearing as the mythical steed of Perseus in all its glory.",
+		description:
+			"Pegasus is the first boss faced in the map Ancient Evil's main quest Greek Tragedy, appearing as the mythical steed of Perseus in all its glory.",
 		games: [blackOps4],
 		maps: [ancientEvil],
 		type: "Boss",
@@ -795,7 +1084,8 @@ const zombiesRegistry = {
 		weakPoints: [body],
 		elementalWeakness: [],
 		attacks: [lightningStrike],
-		spawnBehavior: "Pegasus spawns once you obtain the Sentinel Artifact, but does not become a threat until the final encounter.",
+		spawnBehavior:
+			"Pegasus spawns once you obtain the Sentinel Artifact, but does not become a threat until the final encounter.",
 		combatStrategy: () => import("@/content/zombies/pegasus.mdx"),
 	},
 	perseus: {
@@ -803,7 +1093,8 @@ const zombiesRegistry = {
 		title: "Perseus",
 		releaseDate: new Date("March 26, 2019 02:00 AM"),
 		image: "/zombies/perseus.avif",
-		description: "Perseus is the final boss in the map Ancient Evil's main quest Greek Tragedy, also known as the Zombie Warlord and the son of Zeus.",
+		description:
+			"Perseus is the final boss in the map Ancient Evil's main quest Greek Tragedy, also known as the Zombie Warlord and the son of Zeus.",
 		games: [blackOps4],
 		maps: [ancientEvil],
 		type: "Boss",
@@ -819,7 +1110,8 @@ const zombiesRegistry = {
 		title: "A.D.A.M. Unit",
 		releaseDate: new Date("July 09, 2019 12:00 AM"),
 		image: "/zombies/adam-unit.avif",
-		description: "The A.D.A.M. Unit is a unique variant of the standard zombie originating on the map Alpha Omega in Black Ops 4, being tankier, faster, and robotic.",
+		description:
+			"The A.D.A.M. Unit is a unique variant of the standard zombie originating on the map Alpha Omega in Black Ops 4, being tankier, faster, and robotic.",
 		games: [blackOps4],
 		maps: [alphaOmega],
 		type: "Normal",
@@ -827,7 +1119,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing],
-		spawnBehavior: "A.D.A.M. Units begin spawning after the power is turned on and during specific steps of the main quest.",
+		spawnBehavior:
+			"A.D.A.M. Units begin spawning after the power is turned on and during specific steps of the main quest.",
 		combatStrategy: () => import("@/content/zombies/adam-unit.mdx"),
 	},
 	nova6Bomber: {
@@ -835,7 +1128,8 @@ const zombiesRegistry = {
 		title: "Nova-6 Bomber",
 		releaseDate: new Date("July 09, 2019 01:00 AM"),
 		image: "/zombies/nova-6-bomber.avif",
-		description: "The Nova-6 Bomber is a special unique variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, glowing yellow with spikes on its back.",
+		description:
+			"The Nova-6 Bomber is a special unique variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, glowing yellow with spikes on its back.",
 		games: [blackOps4],
 		maps: [alphaOmega],
 		type: "Special",
@@ -843,7 +1137,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, zombieBuff, novaGas],
-		spawnBehavior: "Nova-6 Bombers begin spawning with normal zombies once the player has activated the Pack-a-Punch machine.",
+		spawnBehavior:
+			"Nova-6 Bombers begin spawning with normal zombies once the player has activated the Pack-a-Punch machine.",
 		combatStrategy: () => import("@/content/zombies/nova-6-bomber.mdx"),
 	},
 	joltingJack: {
@@ -851,7 +1146,8 @@ const zombiesRegistry = {
 		title: "Jolting Jack",
 		releaseDate: new Date("July 09, 2019 02:00 AM"),
 		image: "/zombies/jolting-jack.avif",
-		description: "The Jolting Jack is a special variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, having a blue aura of electricity around them.",
+		description:
+			"The Jolting Jack is a special variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, having a blue aura of electricity around them.",
 		games: [blackOps4],
 		maps: [alphaOmega],
 		type: "Special",
@@ -859,7 +1155,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, lightningBolts],
-		spawnBehavior: "Jolting Jacks will begin spawning in with normal zombies once the Pack-a-Punch machine has been activated.",
+		spawnBehavior:
+			"Jolting Jacks will begin spawning in with normal zombies once the Pack-a-Punch machine has been activated.",
 		combatStrategy: () => import("@/content/zombies/jolting-jack.mdx"),
 	},
 	armoredZombie: {
@@ -867,15 +1164,28 @@ const zombiesRegistry = {
 		title: "Armored Zombie",
 		releaseDate: new Date("November 13, 2020 12:00 AM"),
 		image: "/zombies/armored-zombie.avif",
-		description: "The Armored Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, having light armor on compared to standard zombies.",
+		description:
+			"The Armored Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, having light armor on compared to standard zombies.",
 		games: [blackOpsColdWar, blackOps6],
-		maps: [dieMaschine, firebaseZ, mauerDerToten, forsaken, libertyFalls, terminus, citadelleDesMorts, theTomb, shatteredVeil, reckoning],
+		maps: [
+			dieMaschine,
+			firebaseZ,
+			mauerDerToten,
+			forsaken,
+			libertyFalls,
+			terminus,
+			citadelleDesMorts,
+			theTomb,
+			shatteredVeil,
+			reckoning,
+		],
 		type: "Normal",
 		speed: "Medium",
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, fleshThrow],
-		spawnBehavior: "Armored Zombies will begin spawning on Round 10 with normal zombies and will spawn more frequently as the round increases.",
+		spawnBehavior:
+			"Armored Zombies will begin spawning on Round 10 with normal zombies and will spawn more frequently as the round increases.",
 		combatStrategy: () => import("@/content/zombies/armored-zombie.mdx"),
 	},
 	heavyZombie: {
@@ -883,15 +1193,28 @@ const zombiesRegistry = {
 		title: "Heavy Zombie",
 		releaseDate: new Date("November 13, 2020 01:00 AM"),
 		image: "/zombies/heavy-zombie.avif",
-		description: "The Heavy Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, wearing heavy armor compared to other zombies.",
+		description:
+			"The Heavy Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, wearing heavy armor compared to other zombies.",
 		games: [blackOpsColdWar, blackOps6],
-		maps: [dieMaschine, firebaseZ, mauerDerToten, forsaken, libertyFalls, terminus, citadelleDesMorts, theTomb, shatteredVeil, reckoning],
+		maps: [
+			dieMaschine,
+			firebaseZ,
+			mauerDerToten,
+			forsaken,
+			libertyFalls,
+			terminus,
+			citadelleDesMorts,
+			theTomb,
+			shatteredVeil,
+			reckoning,
+		],
 		type: "Normal",
 		speed: "Medium",
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, fleshThrow],
-		spawnBehavior: "Heavy Zombies begin spawning with normal zombies at and after Round 20 and will spawn more frequently as the rounds increase.",
+		spawnBehavior:
+			"Heavy Zombies begin spawning with normal zombies at and after Round 20 and will spawn more frequently as the rounds increase.",
 		combatStrategy: () => import("@/content/zombies/heavy-zombie.mdx"),
 	},
 	plaguehound: {
@@ -899,7 +1222,8 @@ const zombiesRegistry = {
 		title: "Plaguehound",
 		releaseDate: new Date("November 13, 2020 02:00 AM"),
 		image: "/zombies/plaguehound.avif",
-		description: "The Plaguehound is a variant of the Hellhound originating on the map Die Maschine in Black Ops: Cold War, being heavily mutated with Nova 6 Gas compared to hellhounds.",
+		description:
+			"The Plaguehound is a variant of the Hellhound originating on the map Die Maschine in Black Ops: Cold War, being heavily mutated with Nova 6 Gas compared to hellhounds.",
 		games: [blackOpsColdWar],
 		maps: [dieMaschine, forsaken],
 		type: "Special",
@@ -907,7 +1231,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [napalmBurst],
 		attacks: [bite, lunge, novaGas],
-		spawnBehavior: "Plaguehounds spawn during the special round on Die Maschine and Forsaken, while also spawning in with normal zombies in the later rounds.",
+		spawnBehavior:
+			"Plaguehounds spawn during the special round on Die Maschine and Forsaken, while also spawning in with normal zombies in the later rounds.",
 		combatStrategy: () => import("@/content/zombies/plaguehound.mdx"),
 	},
 	megaton: {
@@ -915,7 +1240,8 @@ const zombiesRegistry = {
 		title: "Megaton",
 		releaseDate: new Date("November 13, 2020 03:00 AM"),
 		image: "/zombies/megaton.webp",
-		description: "The Megaton is the first elite enemy appearing in Black Ops: Cold War originating from the map Die Maschine, appearing as a radioactive mutated juggernaut of a zombie.",
+		description:
+			"The Megaton is the first elite enemy appearing in Black Ops: Cold War originating from the map Die Maschine, appearing as a radioactive mutated juggernaut of a zombie.",
 		games: [blackOpsColdWar],
 		maps: [dieMaschine, mauerDerToten, forsaken],
 		type: "Elite",
@@ -923,7 +1249,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [deadWire],
 		attacks: [powerfulMelee, radioactiveBlast, radioactiveFlurry],
-		spawnBehavior: "Megatons spawn two rounds after the Pack-a-Punch has been activated on Die Maschine or on Wave 15 if the power has not been restored. In Mauer Der Toten, Megatons spawn during one of the steps of the main quest. In Forsaken, Megatons spawn during the lockdown step when obtaining Samantha's Ballad easter egg song.",
+		spawnBehavior:
+			"Megatons spawn two rounds after the Pack-a-Punch has been activated on Die Maschine or on Wave 15 if the power has not been restored. In Mauer Der Toten, Megatons spawn during one of the steps of the main quest. In Forsaken, Megatons spawn during the lockdown step when obtaining Samantha's Ballad easter egg song.",
 		combatStrategy: () => import("@/content/zombies/megaton.mdx"),
 	},
 	mimic: {
@@ -931,7 +1258,8 @@ const zombiesRegistry = {
 		title: "Mimic",
 		releaseDate: new Date("February 04, 2021 12:00 AM"),
 		image: "/zombies/shock-mimic.avif",
-		description: "The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attack them. The Shock Mimic is a variant appearing in Black Ops 6 Zombies.",
+		description:
+			"The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attack them. The Shock Mimic is a variant appearing in Black Ops 6 Zombies.",
 		games: [blackOpsColdWar, blackOps6],
 		maps: [firebaseZ, mauerDerToten, forsaken, theTomb],
 		type: "Special",
@@ -939,7 +1267,8 @@ const zombiesRegistry = {
 		weakPoints: [mouth],
 		elementalWeakness: [brainRot, cryoFreeze],
 		attacks: [meleeSwing, tentacleGrab, shockBurst],
-		spawnBehavior: "In Black Ops: Cold War, Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic. On The Tomb, Mimics return as a variant called Shock Mimics, with the first one spawning in on Round 8, and periodically after that as ground loot or with zombies. They will also spawn during the Golden Armor side quest on The Tomb as HVTs.",
+		spawnBehavior:
+			"In Black Ops: Cold War, Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic. On The Tomb, Mimics return as a variant called Shock Mimics, with the first one spawning in on Round 8, and periodically after that as ground loot or with zombies. They will also spawn during the Golden Armor side quest on The Tomb as HVTs.",
 		combatStrategy: () => import("@/content/zombies/mimic.mdx"),
 	},
 	orda: {
@@ -947,7 +1276,8 @@ const zombiesRegistry = {
 		title: "Orda",
 		releaseDate: new Date("February 04, 2021 01:00 AM"),
 		image: "/zombies/orda.avif",
-		description: "Orda is a boss type zombie originating on Firebase Z in Black Ops: Cold War, appearing as an elder god from the Dark Aether.",
+		description:
+			"Orda is a boss type zombie originating on Firebase Z in Black Ops: Cold War, appearing as an elder god from the Dark Aether.",
 		games: [blackOpsColdWar],
 		maps: [firebaseZ],
 		type: "Boss",
@@ -955,7 +1285,8 @@ const zombiesRegistry = {
 		weakPoints: [mouth],
 		elementalWeakness: [],
 		attacks: [powerfulMelee, fireballs],
-		spawnBehavior: "Ordas can spawn during the third Dimensional Tear Assault waves in Firebase Z, and an Orda is also the final boss of the main quest.",
+		spawnBehavior:
+			"Ordas can spawn during the third Dimensional Tear Assault waves in Firebase Z, and an Orda is also the final boss of the main quest.",
 		combatStrategy: () => import("@/content/zombies/orda.mdx"),
 	},
 	tormentors: {
@@ -963,7 +1294,8 @@ const zombiesRegistry = {
 		title: "Tormentors",
 		releaseDate: new Date("July 15, 2021 12:00 AM"),
 		image: "/zombies/tormentor.avif",
-		description: "Tormentors are a special enemy type originating on the map Mauer Der Toten in Black Ops: Cold War, appearing a red crystalized zombie.",
+		description:
+			"Tormentors are a special enemy type originating on the map Mauer Der Toten in Black Ops: Cold War, appearing a red crystalized zombie.",
 		games: [blackOpsColdWar],
 		maps: [mauerDerToten, forsaken],
 		type: "Special",
@@ -971,7 +1303,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [selfDestruct],
-		spawnBehavior: "In Mauer Der Toten, Tormentors spawn during the special round and will begin spawning with normal zombies at Round 15 and onward. In Forsaken, Tormentors only spawn with normal zombies on Round 15 and onward.",
+		spawnBehavior:
+			"In Mauer Der Toten, Tormentors spawn during the special round and will begin spawning with normal zombies at Round 15 and onward. In Forsaken, Tormentors only spawn with normal zombies on Round 15 and onward.",
 		combatStrategy: () => import("@/content/zombies/tormentors.mdx"),
 	},
 	disciple: {
@@ -979,7 +1312,8 @@ const zombiesRegistry = {
 		title: "Disciple",
 		releaseDate: new Date("July 15, 2021 01:00 AM"),
 		image: "/zombies/disciple.avif",
-		description: "Disciples are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing as summoners from the Dark Aether. ",
+		description:
+			"Disciples are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing as summoners from the Dark Aether. ",
 		games: [blackOpsColdWar],
 		maps: [mauerDerToten, forsaken],
 		type: "Special",
@@ -987,7 +1321,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [deadWire],
 		attacks: [zombieBuff, lifeDrain],
-		spawnBehavior: "In Mauer Der Toten, the first Disciple is encountered during the Pack-a-Punch ritual to activate it; afterwards, they will appear periodically. In Forsaken, Disciples will begin spawning in the later rounds periodically.",
+		spawnBehavior:
+			"In Mauer Der Toten, the first Disciple is encountered during the Pack-a-Punch ritual to activate it; afterwards, they will appear periodically. In Forsaken, Disciples will begin spawning in the later rounds periodically.",
 		combatStrategy: () => import("@/content/zombies/disciple.mdx"),
 	},
 	tempest: {
@@ -995,7 +1330,8 @@ const zombiesRegistry = {
 		title: "Tempest",
 		releaseDate: new Date("July 15, 2021 02:00 AM"),
 		image: "/zombies/tempest.avif",
-		description: "Tempest are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing a smaller purple variant of the Avogadro.",
+		description:
+			"Tempest are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing a smaller purple variant of the Avogadro.",
 		games: [blackOpsColdWar],
 		maps: [mauerDerToten],
 		type: "Special",
@@ -1003,7 +1339,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [brainRot],
 		attacks: [meleeSwing, lightningBolts],
-		spawnBehavior: "In Mauer Der Toten, the first Tempests you will encounter during the quest to turn on the power, they will also with normal zombies in the later rounds.",
+		spawnBehavior:
+			"In Mauer Der Toten, the first Tempests you will encounter during the quest to turn on the power, they will also with normal zombies in the later rounds.",
 		combatStrategy: () => import("@/content/zombies/tempest.mdx"),
 	},
 	krasnySoldat: {
@@ -1011,7 +1348,8 @@ const zombiesRegistry = {
 		title: "Krasny Soldat",
 		releaseDate: new Date("July 15, 2021 03:00 AM"),
 		image: "/zombies/krasny-soldat.avif",
-		description: "The Krasny Soldat is an elite variant of the Panzersoldat originating on the map Mauer Der Toten in Black Ops Cold War, adopting a red color scheme for the Omega Group.",
+		description:
+			"The Krasny Soldat is an elite variant of the Panzersoldat originating on the map Mauer Der Toten in Black Ops Cold War, adopting a red color scheme for the Omega Group.",
 		games: [blackOpsColdWar],
 		maps: [mauerDerToten],
 		type: "Elite",
@@ -1019,7 +1357,8 @@ const zombiesRegistry = {
 		weakPoints: [head, powerCore],
 		elementalWeakness: [cryoFreeze],
 		attacks: [meleeSwing, flamethrower, molotovCannon],
-		spawnBehavior: "In Mauer Der Toten, the first Krasny Soldat spawns on Round 10, then will spawn periodically after that point. In Forsaken, the Krasny Soldat only appears in the final boss fight of the main quest.",
+		spawnBehavior:
+			"In Mauer Der Toten, the first Krasny Soldat spawns on Round 10, then will spawn periodically after that point. In Forsaken, the Krasny Soldat only appears in the final boss fight of the main quest.",
 		combatStrategy: () => import("@/content/zombies/krasny-soldat.mdx"),
 	},
 	valentina: {
@@ -1027,7 +1366,8 @@ const zombiesRegistry = {
 		title: "Valentina",
 		releaseDate: new Date("July 15, 2021 04:00 AM"),
 		image: "/zombies/valentina.avif",
-		description: "Valentina is the final boss in the map Mauer Der Toten in Black Ops Cold War, appearing similar to the Tormentors in appearance however without being turned.",
+		description:
+			"Valentina is the final boss in the map Mauer Der Toten in Black Ops Cold War, appearing similar to the Tormentors in appearance however without being turned.",
 		games: [blackOpsColdWar],
 		maps: [mauerDerToten],
 		type: "Boss",
@@ -1035,7 +1375,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [crystalBarrage, healSummon, aetherRelease],
-		spawnBehavior: "Valentina spawns in during the final encounter of the main quest Tin Man Heart.",
+		spawnBehavior:
+			"Valentina spawns in during the final encounter of the main quest Tin Man Heart.",
 		combatStrategy: () => import("@/content/zombies/valentina.mdx"),
 	},
 	abomination: {
@@ -1043,7 +1384,8 @@ const zombiesRegistry = {
 		title: "Abomination",
 		releaseDate: new Date("October 07, 2021 12:00 AM"),
 		image: "/zombies/abomination.avif",
-		description: "The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold war, appearing a three-headed mutated zombie similar to the Margwa.",
+		description:
+			"The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold war, appearing a three-headed mutated zombie similar to the Margwa.",
 		games: [blackOpsColdWar, blackOps6],
 		maps: [forsaken, libertyFalls, shatteredVeil],
 		type: "Elite",
@@ -1051,7 +1393,8 @@ const zombiesRegistry = {
 		weakPoints: [glowingMouths],
 		elementalWeakness: [napalmBurst, brainRot],
 		attacks: [bite, charge, lightningBeam],
-		spawnBehavior: "In Forsaken, the abomination first spawns when entering The Amplifier and then periodically after that. In Liberty Falls, the abomination first spawns on Round 15, during specific main quest steps, and periodically after the first spawn. In Shattered Veil, the abomination only spawns during the Ray Gun MKII-W upgrade quest.",
+		spawnBehavior:
+			"In Forsaken, the abomination first spawns when entering The Amplifier and then periodically after that. In Liberty Falls, the abomination first spawns on Round 15, during specific main quest steps, and periodically after the first spawn. In Shattered Veil, the abomination only spawns during the Ray Gun MKII-W upgrade quest.",
 		combatStrategy: () => import("@/content/zombies/abomination.mdx"),
 	},
 	theForsaken: {
@@ -1059,7 +1402,8 @@ const zombiesRegistry = {
 		title: "The Forsaken",
 		releaseDate: new Date("October 07, 2021 01:00 AM"),
 		image: "/zombies/the-forsaken.avif",
-		description: "The Forsaken is the final boss of the map Forsaken in Black Ops Cold War, appearing as one of the elder gods of the Dark Aether.",
+		description:
+			"The Forsaken is the final boss of the map Forsaken in Black Ops Cold War, appearing as one of the elder gods of the Dark Aether.",
 		games: [blackOpsColdWar, blackOps6],
 		maps: [forsaken, reckoning],
 		type: "Boss",
@@ -1067,7 +1411,8 @@ const zombiesRegistry = {
 		weakPoints: [head, shoulders, stomach, powerCore],
 		elementalWeakness: [napalmBurst, cryoFreeze],
 		attacks: [groundSlam, eyeBeam, slowField, energyOrbs, electricalBolts, powerfulMelee],
-		spawnBehavior: "The Forsaken spawns once you have entered the final encounter arena. In Reckoning, the forsaken is the dark entity you must defeat in order to obtain the Gorgofex wonder weapon, in the form of an Uber Klaus.",
+		spawnBehavior:
+			"The Forsaken spawns once you have entered the final encounter arena. In Reckoning, the forsaken is the dark entity you must defeat in order to obtain the Gorgofex wonder weapon, in the form of an Uber Klaus.",
 		combatStrategy: () => import("@/content/zombies/the-forsaken.mdx"),
 	},
 	vermin: {
@@ -1075,7 +1420,8 @@ const zombiesRegistry = {
 		title: "Vermin",
 		releaseDate: new Date("October 25, 2024 12:00 AM"),
 		image: "/zombies/vermin.avif",
-		description: "Vermin are large, spider-like ravenous scuttlers with a central thorax that seems to take the form of a screaming human head. Originating on the map Liberty Falls and Terminus in Black Ops 6.",
+		description:
+			"Vermin are large, spider-like ravenous scuttlers with a central thorax that seems to take the form of a screaming human head. Originating on the map Liberty Falls and Terminus in Black Ops 6.",
 		games: [blackOps6],
 		maps: [libertyFalls, terminus, citadelleDesMorts, theTomb, shatteredVeil, reckoning],
 		type: "Special",
@@ -1083,7 +1429,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [cryoFreeze],
 		attacks: [bite, lunge],
-		spawnBehavior: "Vermin serve as the special round on Liberty Falls, and spawn infrequently on non-special rounds. In all other maps, Vermin appear periodically or during specific quest steps.",
+		spawnBehavior:
+			"Vermin serve as the special round on Liberty Falls, and spawn infrequently on non-special rounds. In all other maps, Vermin appear periodically or during specific quest steps.",
 		combatStrategy: () => import("@/content/zombies/vermin.mdx"),
 	},
 	amalgam: {
@@ -1091,7 +1438,8 @@ const zombiesRegistry = {
 		title: "Amalgam",
 		releaseDate: new Date("October 25, 2024 01:00 AM"),
 		image: "/zombies/amalgam.avif",
-		description: "The Amalgam is an elite enemy originating from the map Terminus in Black Ops 6, appearing as a multi-armed and multi-legged mutation of the original zombie.",
+		description:
+			"The Amalgam is an elite enemy originating from the map Terminus in Black Ops 6, appearing as a multi-armed and multi-legged mutation of the original zombie.",
 		games: [blackOps6],
 		maps: [terminus, citadelleDesMorts, theTomb, shatteredVeil, reckoning],
 		type: "Elite",
@@ -1099,7 +1447,8 @@ const zombiesRegistry = {
 		weakPoints: [glowingHeads],
 		elementalWeakness: [deadWire, shadowRift],
 		attacks: [meleeSwing, tongueGrab],
-		spawnBehavior: "On Terminus, Citadelle Des Morts, and The Tomb, the Amalgam will first spawn on Round 16. On Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning, Amalgams can spawn from Doppelghast, which may evolve into Amalgams if left alive for too long. They will also spawn in specific main quest steps in all of these maps.",
+		spawnBehavior:
+			"On Terminus, Citadelle Des Morts, and The Tomb, the Amalgam will first spawn on Round 16. On Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning, Amalgams can spawn from Doppelghast, which may evolve into Amalgams if left alive for too long. They will also spawn in specific main quest steps in all of these maps.",
 		combatStrategy: () => import("@/content/zombies/amalgam.mdx"),
 	},
 	nathan: {
@@ -1107,7 +1456,8 @@ const zombiesRegistry = {
 		title: "Nathan",
 		releaseDate: new Date("October 25, 2024 02:00 AM"),
 		image: "/zombies/nathan.avif",
-		description: "Nathan Aguinaldo is a mini-boss originating on the map Terminus in Black Ops 6, serving as Maya's younger brother who was experimented on by Dr. Modi for Project Janus.",
+		description:
+			"Nathan Aguinaldo is a mini-boss originating on the map Terminus in Black Ops 6, serving as Maya's younger brother who was experimented on by Dr. Modi for Project Janus.",
 		games: [blackOps6],
 		maps: [terminus],
 		type: "Boss",
@@ -1115,7 +1465,8 @@ const zombiesRegistry = {
 		weakPoints: [glowingHeads],
 		elementalWeakness: [deadWire, shadowRift],
 		attacks: [meleeSwing, tongueGrab],
-		spawnBehavior: "Nathan spawns in as a mini-boss once you enter the code into the keypad in the Bio-Lab, freeing him.",
+		spawnBehavior:
+			"Nathan spawns in as a mini-boss once you enter the code into the keypad in the Bio-Lab, freeing him.",
 		combatStrategy: () => import("@/content/zombies/nathan.mdx"),
 	},
 	patient13: {
@@ -1123,7 +1474,8 @@ const zombiesRegistry = {
 		title: "Patient 13",
 		releaseDate: new Date("October 25, 2024 03:00 AM"),
 		image: "/zombies/patient-13.avif",
-		description: "Patient 13 is the final boss on the map Terminus in Black Ops 6, appearing as a giant mutated kraken like creature who was another experiment of Dr. Modi known as Owen Guthrie.",
+		description:
+			"Patient 13 is the final boss on the map Terminus in Black Ops 6, appearing as a giant mutated kraken like creature who was another experiment of Dr. Modi known as Owen Guthrie.",
 		games: [blackOps6],
 		maps: [terminus],
 		type: "Boss",
@@ -1131,7 +1483,8 @@ const zombiesRegistry = {
 		weakPoints: [redCysts, glowingTentacles, mouth, eyes],
 		elementalWeakness: [deadWire, shadowRift, brainRot, napalmBurst, cryoFreeze, lightMend],
 		attacks: [groundSlam, sweepingSlam, tongueGrab, aetherRelease],
-		spawnBehavior: "Patient 13 spawns once you have entered the final encounter arena, after completing majority of the main quest.",
+		spawnBehavior:
+			"Patient 13 spawns once you have entered the final encounter arena, after completing majority of the main quest.",
 		combatStrategy: () => import("@/content/zombies/patient-13.mdx"),
 	},
 	doppelghast: {
@@ -1139,7 +1492,8 @@ const zombiesRegistry = {
 		title: "Doppelghast",
 		releaseDate: new Date("December 05, 2024 12:00 AM"),
 		image: "/zombies/doppelghast.avif",
-		description: "Doppelghasts are violent and display erratic and unsettling movement, as if each head is independently fighting for control of its body. Originating from the map Citadelle Des Morts in Black Ops 6.",
+		description:
+			"Doppelghasts are violent and display erratic and unsettling movement, as if each head is independently fighting for control of its body. Originating from the map Citadelle Des Morts in Black Ops 6.",
 		games: [blackOps6],
 		maps: [citadelleDesMorts, theTomb, shatteredVeil, reckoning],
 		type: "Special",
@@ -1147,7 +1501,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [lightMend],
 		attacks: [meleeSwing, needleBarrage],
-		spawnBehavior: "Doppelghasts will first spawn on Round 13 on Citadelle Des Morts and Round 14 on The Tomb. Doppelghasts on Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning can spawn as an evolution of parasites if they are left alive too long and consume a zombie.",
+		spawnBehavior:
+			"Doppelghasts will first spawn on Round 13 on Citadelle Des Morts and Round 14 on The Tomb. Doppelghasts on Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning can spawn as an evolution of parasites if they are left alive too long and consume a zombie.",
 		combatStrategy: () => import("@/content/zombies/doppelghast.mdx"),
 	},
 	theGuardian: {
@@ -1155,7 +1510,8 @@ const zombiesRegistry = {
 		title: "The Guardian",
 		releaseDate: new Date("December 05, 2024 01:00 AM"),
 		image: "/zombies/the-guardian.avif",
-		description: "The Guardian is a colossal stone golem that served as the guardian of the Obscurus Altilium also known as the Amulet. Originating from the map Citadelle Des Morts in Black Ops 6.",
+		description:
+			"The Guardian is a colossal stone golem that served as the guardian of the Obscurus Altilium also known as the Amulet. Originating from the map Citadelle Des Morts in Black Ops 6.",
 		games: [blackOps6],
 		maps: [citadelleDesMorts],
 		type: "Boss",
@@ -1163,7 +1519,8 @@ const zombiesRegistry = {
 		weakPoints: [chest, shoulders, forearms, calves],
 		elementalWeakness: [],
 		attacks: [lavaBalls, groundStomp, hammerSlam, leapingHammer],
-		spawnBehavior: "The Guardian spawns once you use the Guardian Key on the statue in the Town Square.",
+		spawnBehavior:
+			"The Guardian spawns once you use the Guardian Key on the statue in the Town Square.",
 		combatStrategy: () => import("@/content/zombies/the-guardian.mdx"),
 	},
 	sentinelArtifact: {
@@ -1171,7 +1528,8 @@ const zombiesRegistry = {
 		title: "Sentinel Artifact",
 		releaseDate: new Date("January 28, 2025 12:00 AM"),
 		image: "/zombies/sentinel-artifact.avif",
-		description: "The Sentinel Artifact is a powerful relic with a history spanning eons, originating from the Chaos Story in Voyage of Despair, and appearing as a boss in Black Ops 6 Zombies.",
+		description:
+			"The Sentinel Artifact is a powerful relic with a history spanning eons, originating from the Chaos Story in Voyage of Despair, and appearing as a boss in Black Ops 6 Zombies.",
 		games: [blackOps6],
 		maps: [theTomb],
 		type: "Boss",
@@ -1179,7 +1537,8 @@ const zombiesRegistry = {
 		weakPoints: [],
 		elementalWeakness: [],
 		attacks: [laser],
-		spawnBehavior: "The Sentinel Artifact spawns in once you activate it by trying to take it in the final encounter.",
+		spawnBehavior:
+			"The Sentinel Artifact spawns in once you activate it by trying to take it in the final encounter.",
 		combatStrategy: () => import("@/content/zombies/sentinel-artifact.mdx"),
 	},
 	toxicZombies: {
@@ -1187,7 +1546,8 @@ const zombiesRegistry = {
 		title: "Toxic Zombies",
 		releaseDate: new Date("April 02, 2025 12:00 AM"),
 		image: "/zombies/toxic-zombies.avif",
-		description: "Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
+		description:
+			"Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
 		games: [blackOps6],
 		maps: [shatteredVeil, reckoning],
 		type: "Special",
@@ -1195,7 +1555,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [],
 		attacks: [meleeSwing, acidExplosion],
-		spawnBehavior: "Toxic Zombies spawn during the special round on Shattered Veil, while also periodically spawning outside of these rounds and during specific main quest steps. On Reckoning, Toxic Zombies will only spawn out of the test tubes during one of the main quest steps.",
+		spawnBehavior:
+			"Toxic Zombies spawn during the special round on Shattered Veil, while also periodically spawning outside of these rounds and during specific main quest steps. On Reckoning, Toxic Zombies will only spawn out of the test tubes during one of the main quest steps.",
 		combatStrategy: () => import("@/content/zombies/toxic-zombies.mdx"),
 	},
 	elderDisciple: {
@@ -1203,7 +1564,8 @@ const zombiesRegistry = {
 		title: "Elder Disciple",
 		releaseDate: new Date("April 02, 2025 01:00 AM"),
 		image: "/zombies/elder-disciple.avif",
-		description: "Elder Disciples are strange, floating apparitions gaining strength as they empower the zombies around them while summoning more undead to join the battle.",
+		description:
+			"Elder Disciples are strange, floating apparitions gaining strength as they empower the zombies around them while summoning more undead to join the battle.",
 		games: [blackOps6],
 		maps: [shatteredVeil, reckoning],
 		type: "Special",
@@ -1211,7 +1573,8 @@ const zombiesRegistry = {
 		weakPoints: [head],
 		elementalWeakness: [deadWire, lightMend],
 		attacks: [zombieBuff, zombieEvolution],
-		spawnBehavior: "Elder Disciples spawn on Round 16, then around every 3 Rounds after that. On Reckoning, Elder Disciple will only spawn out of one of the test tubes during one of the main quest steps.",
+		spawnBehavior:
+			"Elder Disciples spawn on Round 16, then around every 3 Rounds after that. On Reckoning, Elder Disciple will only spawn out of one of the test tubes during one of the main quest steps.",
 		combatStrategy: () => import("@/content/zombies/elder-disciple.mdx"),
 	},
 	zRex: {
@@ -1219,7 +1582,8 @@ const zombiesRegistry = {
 		title: "Z-Rex",
 		releaseDate: new Date("April 02, 2025 02:00 AM"),
 		image: "/zombies/z-rex.avif",
-		description: "The Z-Rex is a massive reanimated dinosaur revived by residual temporal energy, originating on Shattered Veil in Black Ops 6.",
+		description:
+			"The Z-Rex is a massive reanimated dinosaur revived by residual temporal energy, originating on Shattered Veil in Black Ops 6.",
 		games: [blackOps6],
 		maps: [shatteredVeil],
 		type: "Boss",
@@ -1227,7 +1591,8 @@ const zombiesRegistry = {
 		weakPoints: [eyes, mouth, attachedZombies],
 		elementalWeakness: [],
 		attacks: [bite, tailSlam, dinoLeap],
-		spawnBehavior: "The Dinosaur spawns after activating the final encounter by giving the Sentinel Artifact to S.A.M.",
+		spawnBehavior:
+			"The Dinosaur spawns after activating the final encounter by giving the Sentinel Artifact to S.A.M.",
 		combatStrategy: () => import("@/content/zombies/z-rex.mdx"),
 	},
 	kommandoKlaus: {
@@ -1235,7 +1600,8 @@ const zombiesRegistry = {
 		title: "Kommando Klaus",
 		releaseDate: new Date("August 07, 2025 12:00 AM"),
 		image: "/zombies/kommando-klaus.avif",
-		description: "These periodic robot battalions known as Kommando Klaus, equipped with rocket boots, home in on perceived intruders with deadly self-destruct sequences engaged.",
+		description:
+			"These periodic robot battalions known as Kommando Klaus, equipped with rocket boots, home in on perceived intruders with deadly self-destruct sequences engaged.",
 		games: [blackOps6],
 		maps: [reckoning],
 		type: "Special",
@@ -1243,7 +1609,8 @@ const zombiesRegistry = {
 		weakPoints: [head, powerCore],
 		elementalWeakness: [cryoFreeze],
 		attacks: [selfDestruct],
-		spawnBehavior: "Kommando Klaus will first spawn on Reckoning on round 5, 6, or 7 as the special round and then every 5 rounds afterwards. They will also spawn alongside regular zombies in the later rounds.",
+		spawnBehavior:
+			"Kommando Klaus will first spawn on Reckoning on round 5, 6, or 7 as the special round and then every 5 rounds afterwards. They will also spawn alongside regular zombies in the later rounds.",
 		combatStrategy: () => import("@/content/zombies/kommando-klaus.mdx"),
 	},
 	uberKlaus: {
@@ -1251,7 +1618,8 @@ const zombiesRegistry = {
 		title: "Uber Klaus",
 		releaseDate: new Date("August 07, 2025 01:00 AM"),
 		image: "/zombies/uber-klaus.avif",
-		description: "A murderous automaton encased in a toughened, bulky exoskeleton that maintains a cocky attitude, lethal efficiency, and super strength, all directed at newly programmed threats.",
+		description:
+			"A murderous automaton encased in a toughened, bulky exoskeleton that maintains a cocky attitude, lethal efficiency, and super strength, all directed at newly programmed threats.",
 		games: [blackOps6],
 		maps: [reckoning],
 		type: "Elite",
@@ -1259,7 +1627,8 @@ const zombiesRegistry = {
 		weakPoints: [head, powerCore, shoulders],
 		elementalWeakness: [cryoFreeze, napalmBurst],
 		attacks: [powerfulMelee, electricalBolts],
-		spawnBehavior: "Uber Klaus will first spawn on Reckoning on Round 16, then every 3-5 rounds afterwards. They will also spawn in during specific main quest steps.",
+		spawnBehavior:
+			"Uber Klaus will first spawn on Reckoning on Round 16, then every 3-5 rounds afterwards. They will also spawn in during specific main quest steps.",
 		combatStrategy: () => import("@/content/zombies/uber-klaus.mdx"),
 	},
 	sam: {
@@ -1267,7 +1636,8 @@ const zombiesRegistry = {
 		title: "S.A.M.",
 		releaseDate: new Date("August 07, 2025 01:00 AM"),
 		image: "/zombies/sam.avif",
-		description: "An Artificial Intelligence based on a snapshot of Samantha Maxis, obsessed with the idea of using Maxis' body to become Human.",
+		description:
+			"An Artificial Intelligence based on a snapshot of Samantha Maxis, obsessed with the idea of using Maxis' body to become Human.",
 		games: [blackOps6],
 		maps: [reckoning],
 		type: "Boss",
@@ -1283,7 +1653,8 @@ const zombiesRegistry = {
 		title: "Uber Richtofen",
 		releaseDate: new Date("August 07, 2025 02:00 AM"),
 		image: "/zombies/uber-richtofen.avif",
-		description: 'Appearing initially encased in a toughened, bulky exoskeleton, "The Director" will stop at nothing to save his family.',
+		description:
+			'Appearing initially encased in a toughened, bulky exoskeleton, "The Director" will stop at nothing to save his family.',
 		games: [blackOps6],
 		maps: [reckoning],
 		type: "Boss",

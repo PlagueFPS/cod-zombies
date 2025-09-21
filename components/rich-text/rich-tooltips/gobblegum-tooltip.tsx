@@ -1,14 +1,15 @@
 "use client"
-import type { MinifiedGobbleGum } from "@/data/gobblegum"
 import { RarityBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { type Gobblegum, type GobblegumKey, getGobblegumByKey } from "@/data/gobblegum"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
-export default function GobbleGumTooltipClient({ gobblegum }: { gobblegum: MinifiedGobbleGum }) {
+export default function GobbleGumTooltip({ gobblegumKey }: { gobblegumKey: GobblegumKey }) {
 	const isMobile = useIsMobile(640)
+	const gobblegum = getGobblegumByKey(gobblegumKey)
 
 	if (!isMobile)
 		return (
@@ -18,14 +19,12 @@ export default function GobbleGumTooltipClient({ gobblegum }: { gobblegum: Minif
 					asChild
 				>
 					<span>
-						{gobblegum.image.url ? (
-							<IconImage
-								featuredImage={gobblegum.image}
-								alt={`${gobblegum.title} Image`}
-								sizes="64px"
-								className="my-auto h-6 w-auto"
-							/>
-						) : null}
+						<IconImage
+							featuredImage={gobblegum.image}
+							alt={`${gobblegum.title} Image`}
+							sizes="64px"
+							className="my-auto h-6 w-auto"
+						/>
 						<span
 							className={cn(
 								"text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
@@ -93,14 +92,12 @@ export default function GobbleGumTooltipClient({ gobblegum }: { gobblegum: Minif
 				asChild
 			>
 				<span>
-					{gobblegum.image.url ? (
-						<IconImage
-							featuredImage={gobblegum.image}
-							alt={`${gobblegum.title} Image`}
-							sizes="64px"
-							className="my-auto h-6 w-auto"
-						/>
-					) : null}
+					<IconImage
+						featuredImage={gobblegum.image}
+						alt={`${gobblegum.title} Image`}
+						sizes="64px"
+						className="my-auto h-6 w-auto"
+					/>
 					<span
 						className={cn(
 							"text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
@@ -162,7 +159,7 @@ export default function GobbleGumTooltipClient({ gobblegum }: { gobblegum: Minif
 	)
 }
 
-const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: MinifiedGobbleGum }) => {
+const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 	return (
 		<div
 			className={cn("relative flex w-full flex-col rounded-md px-4 py-2", {
@@ -190,17 +187,15 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: MinifiedGobbleGum }
 			>
 				{gobblegum.type}
 			</RarityBadge>
-			{gobblegum.image.url ? (
-				<div className="relative flex items-center justify-center">
-					<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
-					<IconImage
-						featuredImage={gobblegum.image}
-						alt={`${gobblegum.title} Image`}
-						sizes="64px"
-						className="relative z-10 h-20 w-auto p-2"
-					/>
-				</div>
-			) : null}
+			<div className="relative flex items-center justify-center">
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<IconImage
+					featuredImage={gobblegum.image}
+					alt={`${gobblegum.title} Image`}
+					sizes="64px"
+					className="relative z-10 h-20 w-auto p-2"
+				/>
+			</div>
 			<div className="-mt-3 relative z-10">
 				<div
 					className={cn(

@@ -1,5 +1,4 @@
 "use client"
-import type { MinifiedWeaponBuild } from "@/data/weapon-builds"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 import IconImage from "@/components/icon-image/icon-image"
@@ -7,14 +6,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { getWeaponBuildByKey, type WeaponBuild, type WeaponBuildKey } from "@/data/weapon-builds"
 import { useIsMobile } from "@/hooks/use-mobile"
 
-export default function WeaponBuildTooltipClient({
-	weaponBuild,
-}: {
-	weaponBuild: MinifiedWeaponBuild
-}) {
+export default function WeaponBuildTooltip({ weaponBuildKey }: { weaponBuildKey: WeaponBuildKey }) {
 	const isMobile = useIsMobile(640)
+	const weaponBuild = getWeaponBuildByKey(weaponBuildKey)
 
 	if (!isMobile)
 		return (
@@ -56,7 +53,7 @@ export default function WeaponBuildTooltipClient({
 	)
 }
 
-const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: MinifiedWeaponBuild }) => {
+const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }) => {
 	const [copied, setCopied] = useState(false)
 
 	const handleCopy = async () => {
@@ -107,7 +104,7 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: MinifiedWeapo
 				)}
 
 				{/* Attachments with Subtle Dividers */}
-				{weaponBuild.attachments.length > 0 && (
+				{weaponBuild.attachments && (
 					<div>
 						<div className="my-3 flex items-center gap-2">
 							<div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
@@ -133,7 +130,7 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: MinifiedWeapo
 				)}
 
 				{/* Empty State */}
-				{weaponBuild.attachments.length === 0 && !weaponBuild.buildCode && (
+				{!weaponBuild.attachments && !weaponBuild.buildCode && (
 					<div className="py-6 text-center">
 						<div className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-muted/50">
 							<div className="h-2 w-2 rounded-full bg-muted-foreground/50" />
@@ -144,39 +141,4 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: MinifiedWeapo
 			</div>
 		</div>
 	)
-	// return (
-	// 	<div className="relative flex w-full flex-col rounded-md px-4 py-2">
-	// 		{weaponBuild.image.url ? (
-	// 			<div className="relative flex items-center justify-center">
-	// 				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
-	// 				<IconImage
-	// 					featuredImage={weaponBuild.image}
-	// 					alt={`${weaponBuild.title} Image`}
-	// 					sizes="80px"
-	// 					className="relative z-10 h-20 w-auto p-2"
-	// 				/>
-	// 			</div>
-	// 		) : null}
-	// 		<div className="relative z-10">
-	// 			<div className="px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200">
-	// 				{`${weaponBuild.title} Weapon Build`}
-	// 			</div>
-	// 			<div className="mx-auto mt-2 grid grid-cols-1 place-content-center gap-2 text-orange-800 text-sm dark:text-orange-200">
-	// 				{weaponBuild.buildCode ? (
-	// 					<span>{weaponBuild.buildCode}</span>
-	// 				) : (
-	// 					weaponBuild.attachments.map(attachment => (
-	// 						<div
-	// 							key={attachment.id}
-	// 							className="mx-auto flex w-full items-center justify-start gap-1"
-	// 						>
-	// 							<span>{attachment.type}:</span>
-	// 							<span>{attachment.title}</span>
-	// 						</div>
-	// 					))
-	// 				)}
-	// 			</div>
-	// 		</div>
-	// 	</div>
-	// )
 }

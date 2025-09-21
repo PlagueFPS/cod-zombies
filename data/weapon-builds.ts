@@ -1,92 +1,19 @@
-import { Effect } from "effect"
-import { unstable_cacheTag as cacheTag } from "next/cache"
-import { cache } from "react"
-import { Payload } from "@/lib/payload"
-import { EntryNotFoundError } from "@/types/errors"
-import { CACHE_KEYS, IN_DEVELOPMENT } from "@/utils/constants"
-import { assertRelation, createMediaDto } from "@/utils/payload-utils"
-
-export type MinifiedWeaponBuild = NonNullable<Awaited<ReturnType<typeof getWeaponBuildById>>>
-
-export const getWeaponBuildById = cache(async (id: string) => {
-	"use cache"
-	cacheTag(CACHE_KEYS.weaponBuilds.all, CACHE_KEYS.weaponBuilds.byId(id))
-
-	return await getWeaponBuildByIdEffect(id).pipe(
-		Effect.withLogSpan("get_weapon_build_by_id_cached"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed(null)),
-		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
-	)
-})
-
-const getWeaponBuildByIdEffect = (id: string) =>
-	Effect.gen(function* () {
-		const payload = yield* Payload
-		const weaponBuild = yield* Effect.tryPromise({
-			try: () =>
-				payload.findByID({
-					collection: "weaponBuilds",
-					id,
-					draft: IN_DEVELOPMENT,
-					select: {
-						title: true,
-						weapon: true,
-						attachments: true,
-						buildCode: true,
-					},
-					populate: {
-						weapons: {
-							title: true,
-							image: true,
-						},
-						weaponAttachments: {
-							title: true,
-							type: true,
-						},
-					},
-				}),
-			catch: error =>
-				new EntryNotFoundError({
-					message: `Failed to get weapon build by id: ${id}`,
-					cause: error,
-				}),
-		}).pipe(
-			Effect.flatMap(weaponBuild =>
-				Effect.gen(function* () {
-					const weapon = yield* assertRelation(weaponBuild.weapon)
-					const attachments = weaponBuild.attachments
-						? yield* Effect.forEach(weaponBuild.attachments, attachment =>
-								Effect.gen(function* () {
-									const weaponAttachment = yield* assertRelation(attachment)
-									return {
-										id: weaponAttachment.id,
-										title: weaponAttachment.title,
-										type: weaponAttachment.type,
-									}
-								}),
-							)
-						: []
-					const image = yield* assertRelation(weapon.image)
-					return {
-						id: weaponBuild.id,
-						title: weapon.title,
-						attachments,
-						buildCode: weaponBuild.buildCode,
-						image: createMediaDto(image),
-					}
-				}),
-			),
-		)
-
-		return weaponBuild
-	}).pipe(Effect.withLogSpan("get_weapon_build_by_id"), Effect.annotateLogs({ id }))
+export const getWeaponBuildByKey = (key: WeaponBuildKey): WeaponBuild => weaponBuildRegistry[key]
 
 interface Attachment {
 	id: string
 	title: string
-	type: "Optic" | "Muzzle" | "Barrel" | "Underbarrel" | "Magazine" | "Grip" | "Comb" | "Stock" | "Laser" | "Fire Mod"
+	type:
+		| "Optic"
+		| "Muzzle"
+		| "Barrel"
+		| "Underbarrel"
+		| "Magazine"
+		| "Grip"
+		| "Comb"
+		| "Stock"
+		| "Laser"
+		| "Fire Mod"
 }
 
 const attachmentsRegistry = {
@@ -192,7 +119,28 @@ const attachmentsRegistry = {
 	},
 } satisfies Record<string, Attachment>
 
-const { keplerMicroflex, monolithicSuppressor, chfBarrel, rangerForegrip, extendedMagII, balancedStock, strelokLaser, recoilSprings, reinforcedBarrel, ergonomicRiser, balancedPad, fastMotionLaser, rapidFire, fullChoke, cqbGrip, lightStock, steadyAimLaser, twelveGaugeDragonsBreath, extendedMagIII, akimbo } = attachmentsRegistry
+const {
+	keplerMicroflex,
+	monolithicSuppressor,
+	chfBarrel,
+	rangerForegrip,
+	extendedMagII,
+	balancedStock,
+	strelokLaser,
+	recoilSprings,
+	reinforcedBarrel,
+	ergonomicRiser,
+	balancedPad,
+	fastMotionLaser,
+	rapidFire,
+	fullChoke,
+	cqbGrip,
+	lightStock,
+	steadyAimLaser,
+	twelveGaugeDragonsBreath,
+	extendedMagIII,
+	akimbo,
+} = attachmentsRegistry
 
 export interface WeaponBuild {
 	id: string
@@ -207,32 +155,54 @@ const weaponBuildRegistry = {
 		id: "maelstrom-reckoning",
 		title: "Maelstrom",
 		image: "/weapons/maelstrom.webp",
-		attachments: [fullChoke, rangerForegrip, extendedMagII, cqbGrip, lightStock, steadyAimLaser, twelveGaugeDragonsBreath]
+		attachments: [
+			fullChoke,
+			rangerForegrip,
+			extendedMagII,
+			cqbGrip,
+			lightStock,
+			steadyAimLaser,
+			twelveGaugeDragonsBreath,
+		],
 	},
 	abrA1Reckoning: {
 		id: "abr-a1-reckoning",
 		title: "ABR A1",
 		image: "/weapons/abr-a1.webp",
-		attachments: [monolithicSuppressor, reinforcedBarrel, rangerForegrip, extendedMagII, ergonomicRiser, balancedPad, fastMotionLaser, rapidFire]
+		attachments: [
+			monolithicSuppressor,
+			reinforcedBarrel,
+			rangerForegrip,
+			extendedMagII,
+			ergonomicRiser,
+			balancedPad,
+			fastMotionLaser,
+			rapidFire,
+		],
 	},
 	gpr91Reckoning: {
 		id: "gpr-91-reckoning",
 		title: "GPR 91",
 		image: "/weapons/gpr-91.webp",
-		attachments: [keplerMicroflex, monolithicSuppressor, chfBarrel, rangerForegrip, extendedMagII, balancedStock, strelokLaser, recoilSprings]
+		attachments: [
+			keplerMicroflex,
+			monolithicSuppressor,
+			chfBarrel,
+			rangerForegrip,
+			extendedMagII,
+			balancedStock,
+			strelokLaser,
+			recoilSprings,
+		],
 	},
 	grekhovaAkimbo: {
 		id: "grekhova-akimbo",
 		title: "Grehkova",
 		image: "/weapons/grehkova.webp",
-		attachments: [monolithicSuppressor, extendedMagIII, akimbo, steadyAimLaser, rapidFire]
+		attachments: [monolithicSuppressor, extendedMagIII, akimbo, steadyAimLaser, rapidFire],
 	},
 } satisfies Record<string, WeaponBuild>
 
 export type WeaponBuildKey = keyof typeof weaponBuildRegistry
-export const {
-	maelstromReckoning,
-	abrA1Reckoning,
-	gpr91Reckoning,
-	grekhovaAkimbo,
-} = weaponBuildRegistry
+export const { maelstromReckoning, abrA1Reckoning, gpr91Reckoning, grekhovaAkimbo } =
+	weaponBuildRegistry

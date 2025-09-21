@@ -1,14 +1,28 @@
 "use client"
-import type { MinifiedAugment } from "@/data/augments"
+import type { Augment, AugmentKey } from "@/data/augments"
 import { TypeBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { getAugmentByKey } from "@/data/augments"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
-export default function AugmentTooltipClient({ augment }: { augment: MinifiedAugment }) {
+interface AugmentTooltipPropsWithKey {
+	augmentKey: AugmentKey
+	augment?: never
+}
+
+interface AugmentTooltipPropsWithAugment {
+	augmentKey?: never
+	augment: Augment
+}
+
+type AugmentTooltipProps = AugmentTooltipPropsWithKey | AugmentTooltipPropsWithAugment
+
+export default function AugmentTooltip(props: AugmentTooltipProps) {
 	const isMobile = useIsMobile(640)
+	const augment = props.augmentKey ? getAugmentByKey(props.augmentKey) : props.augment
 
 	if (!isMobile)
 		return (
@@ -18,14 +32,12 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 					asChild
 				>
 					<span>
-						{augment.image.url ? (
-							<IconImage
-								featuredImage={augment.image}
-								alt={`${augment.title} Image`}
-								sizes="64px"
-								className="my-auto h-6 w-auto"
-							/>
-						) : null}
+						<IconImage
+							featuredImage={augment.image}
+							alt={`${augment.title} Image`}
+							sizes="64px"
+							className="my-auto h-6 w-auto"
+						/>
 						<span
 							className={cn(
 								"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
@@ -63,14 +75,12 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 				asChild
 			>
 				<span>
-					{augment.image.url ? (
-						<IconImage
-							featuredImage={augment.image}
-							alt={`${augment.title} Image`}
-							sizes="64px"
-							className="my-auto h-6 w-auto"
-						/>
-					) : null}
+					<IconImage
+						featuredImage={augment.image}
+						alt={`${augment.title} Image`}
+						sizes="64px"
+						className="my-auto h-6 w-auto"
+					/>
 					<span
 						className={cn(
 							"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
@@ -96,20 +106,18 @@ export default function AugmentTooltipClient({ augment }: { augment: MinifiedAug
 	)
 }
 
-const AugmentTooltipContent = ({ augment }: { augment: MinifiedAugment }) => {
+const AugmentTooltipContent = ({ augment }: { augment: Augment }) => {
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
-			{augment.image.url ? (
-				<div className="relative flex items-center justify-center">
-					<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
-					<IconImage
-						featuredImage={augment.image}
-						alt={`${augment.title} Image`}
-						sizes="64px"
-						className="relative z-10 h-20 w-auto p-2"
-					/>
-				</div>
-			) : null}
+			<div className="relative flex items-center justify-center">
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<IconImage
+					featuredImage={augment.image}
+					alt={`${augment.title} Image`}
+					sizes="64px"
+					className="relative z-10 h-20 w-auto p-2"
+				/>
+			</div>
 			<TypeBadge type={augment.type} className="absolute top-4 left-4" />
 			<div className="-mt-3 relative z-10">
 				<div
