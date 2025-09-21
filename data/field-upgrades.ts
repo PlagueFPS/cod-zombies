@@ -36,14 +36,23 @@ import {
 	voidSheath,
 } from "./augments"
 
+/** Gets a field upgrade by its key.
+ * @param key The key of the field upgrade.
+ * @returns The field upgrade.
+ */
 export const getFieldUpgradeByKey = (key: FieldUpgradeKey): FieldUpgrade =>
 	fieldUpgradeRegistry[key]
 
 export interface FieldUpgrade {
+	/** The unique identifier of the field upgrade */
 	id: string
+	/** The title of the field upgrade */
 	title: string
+	/** The description of the field upgrade */
 	description: string
+	/** The image of the field upgrade */
 	image: string
+	/** The augments of the field upgrade */
 	augments?: AugmentTuple
 }
 
@@ -107,7 +116,7 @@ const fieldUpgradeRegistry = {
 		image: "/field-upgrades/mister-peeks.avif",
 		augments: [danceParty, arcaneFury, apexHunter, socialButterfly, peeksFavor, partyAnimal],
 	},
-} satisfies Record<string, FieldUpgrade>
+} as const satisfies Record<string, FieldUpgrade>
 
 export type FieldUpgradeKey = keyof typeof fieldUpgradeRegistry
 export const {

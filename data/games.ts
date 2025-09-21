@@ -1,10 +1,22 @@
+/** Gets all games.
+ * @returns An array of all games.
+ */
 export const getGames = (): Game[] => Object.values(gameRegistry)
+
+/** Gets a game by its key.
+ * @param key The key of the game.
+ * @returns The game.
+ */
 export const getGameByKey = (key: GameKey): Game => gameRegistry[key]
 
 export interface Game {
+	/** The unique identifier of the game */
 	id: string
+	/** The title of the game */
 	title: string
+	/** The release date of the game */
 	releaseDate: Date
+	/** The image of the game */
 	image: string
 }
 
@@ -51,7 +63,7 @@ const gameRegistry = {
 		releaseDate: new Date("October 25, 2024 7:00 AM"),
 		image: "/games/black-ops-6-cover.avif",
 	},
-} satisfies Record<string, Game>
+} as const satisfies Record<string, Game>
 
 export type GameKey = keyof typeof gameRegistry
 export const {

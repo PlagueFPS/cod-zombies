@@ -179,28 +179,48 @@ import {
 	zombieEvolution,
 } from "@/data/zombie-attacks"
 
+/** Gets all zombies
+ * @returns An array of all zombies
+ */
 export const getZombies = (): Zombie[] => Object.values(zombiesRegistry)
+/** Gets a zombie by its key
+ * @param key The key of the zombie
+ * @returns The zombie
+ */
 export const getZombieByKey = (key: ZombieKey): Zombie => zombiesRegistry[key]
 
 export interface Zombie {
+	/** Unique identifier for the zombie */
 	id: string
+	/** Name of the zombie */
 	title: string
+	/** Description of the zombie */
 	description: string
+	/** State of the zombie */
 	state?: "Coming Soon" | "New" | null
+	/** Release date of the zombie */
 	releaseDate: Date
+	/** Image of the zombie */
 	image: string
+	/** Games the zombie is available in */
 	games: Game[]
+	/** Maps the zombie is available in */
 	maps: Maps[]
+	/** Type of the zombie */
 	type: "Normal" | "Special" | "Elite" | "Boss"
+	/** Speed of the zombie */
 	speed: "Slow" | "Medium" | "Fast"
+	/** Weak points of the zombie */
 	weakPoints: WeakPoint[]
+	/** Elemental weaknesses of the zombie */
 	elementalWeakness: AmmoMod[]
+	/** Attacks of the zombie */
 	attacks: ZombieAttack[]
+	/** Spawn behavior of the zombie */
 	spawnBehavior: string
+	/** Combat strategy of the zombie */
 	combatStrategy: () => Promise<typeof import("*.mdx")>
 }
-
-export type ZombieKey = keyof typeof zombiesRegistry
 
 const zombiesRegistry = {
 	zombie: {
@@ -1665,6 +1685,88 @@ const zombiesRegistry = {
 		spawnBehavior: "Uber Richtofen spawns when you choose to help S.A.M. in the final boss fight.",
 		combatStrategy: () => import("@/content/zombies/uber-richtofen.mdx"),
 	},
-} satisfies Record<string, Zombie>
+} as const satisfies Record<string, Zombie>
 
-export const { zombie } = zombiesRegistry
+/** Union type of all zombies */
+export type ZombieKey = keyof typeof zombiesRegistry
+export const {
+	zombie,
+	kommandoKlaus,
+	uberKlaus,
+	sam,
+	uberRichtofen,
+	abomination,
+	adamUnit,
+	amalgam,
+	armoredZombie,
+	astronautZombie,
+	avogadro,
+	blightfather,
+	brutus,
+	crusaderZombie,
+	denizen,
+	destroyer,
+	disciple,
+	doppelghast,
+	dragon,
+	elderDisciple,
+	eyeOfMalice,
+	fireCatalyst,
+	fury,
+	furyAndWrath,
+	gegenees,
+	ghost,
+	georgeARomero,
+	giantSpider,
+	giantThrasher,
+	heavyZombie,
+	hellhound,
+	insanityElementals,
+	joltingJack,
+	jumpingJack,
+	jungleMonkey,
+	keepers,
+	krasnySoldat,
+	lightningCatalyst,
+	mangler,
+	marauder,
+	margwa,
+	megaton,
+	mimic,
+	napalmZombie,
+	nathan,
+	nikolaiMech,
+	nosferatu,
+	nova6Bomber,
+	nova6Crawler,
+	orda,
+	panzersoldat,
+	parasite,
+	patient13,
+	pegasus,
+	pentagonThief,
+	perseus,
+	plaguehound,
+	poisonCatalyst,
+	sentinelArtifact,
+	shadowWerewolf,
+	shriekerZombie,
+	skeleton,
+	spaceMonkey,
+	spider,
+	stoker,
+	tempest,
+	theCorruptedKeeper,
+	theForsaken,
+	theGuardian,
+	thrasher,
+	tiger,
+	tormentors,
+	toxicZombies,
+	valentina,
+	valkyrieDrone,
+	vermin,
+	waterCatalyst,
+	werewolf,
+	zRex,
+} = zombiesRegistry

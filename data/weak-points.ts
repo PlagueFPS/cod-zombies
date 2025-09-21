@@ -1,5 +1,7 @@
 export interface WeakPoint {
+	/** Unique identifier for the weak point */
 	id: string
+	/** Name of the weak point */
 	title: string
 }
 
@@ -116,8 +118,9 @@ const weakPointsRegistry = {
 		id: "jetpack",
 		title: "Jetpack",
 	},
-} satisfies Record<string, WeakPoint>
+} as const satisfies Record<string, WeakPoint>
 
+/** Union type of all weak points */
 export type WeakPointKey = keyof typeof weakPointsRegistry
 export const {
 	head,

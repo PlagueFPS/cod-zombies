@@ -1,6 +1,6 @@
 ## MDX Rewrite
 
-- Preview Grids will use a registery for main-quests, side-quests, and zombies to dynamically import only the metadata from
+- Preview Grids will use a registry for main-quests, side-quests, and zombies to dynamically import only the metadata from
 their respective modules. This metadata will then be used to display the preview cards and link to the actual MDX page.
 
 - Pagination will still be implemented on the client-side, we don't need to worry about server-side, since the metadata is small and it allows for instant feeling naviation, in the future we can always use server-side pagination if needed, and with file system I/O it'll also be fast.
@@ -12,7 +12,7 @@ to and the type (main-quest, side-quest, or zombie), in order to dynamic import 
 
 - Table of Contents for MDX pages will be generated via a plugin for MDX like `@mdx-js/remark-toc`
 
-- [x] create all registeries
+- [x] create all registries
 - [x] create components to display metadata within MDX pages
 - [] refactor existing components to use new metadata for previewing
 - [] create all MDX pages

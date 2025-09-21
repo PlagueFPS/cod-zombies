@@ -1,11 +1,19 @@
+/** Gets an augment by its key.
+ * @param key The key of the augment.
+ * @returns The augment.
+ */
 export const getAugmentByKey = (key: AugmentKey): Augment => augmentRegistry[key]
 
-/** Defined shape of an Augment */
 export interface Augment {
+	/** The unique identifier of the augment */
 	id: string
+	/** The title of the augment */
 	title: string
+	/** The type of the augment */
 	type: "Major" | "Minor"
+	/** The description of the augment */
 	description: string
+	/** The image of the augment */
 	image: string
 }
 
@@ -980,7 +988,7 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/fast-pitcher-minor-augment.webp",
 	},
-} satisfies Record<string, Augment>
+} as const satisfies Record<string, Augment>
 
 /**Union of all keys in the Augment Registry */
 export type AugmentKey = keyof typeof augmentRegistry

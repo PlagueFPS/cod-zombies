@@ -39,14 +39,25 @@ import {
 } from "./augments"
 import { blackOps4, blackOps6, type Game } from "./games"
 
+/**
+ * Gets an ammo mod by its key.
+ * @param key The key of the ammo mod.
+ * @returns The ammo mod.
+ */
 export const getAmmoModByKey = (key: AmmoModKey): AmmoMod => ammoModRegistry[key]
 
 export interface AmmoMod {
+	/** The unique identifier of the ammo mod */
 	id: string
+	/** The title of the ammo mod */
 	title: string
+	/** The game of the ammo mod */
 	game: Game
+	/** The description of the ammo mod */
 	description: string
+	/** The image of the ammo mod */
 	image: string
+	/** The augments of the ammo mod */
 	augments?: AugmentTuple
 }
 
@@ -157,7 +168,7 @@ const ammoModRegistry = {
 			supermassive,
 		],
 	},
-} satisfies Record<string, AmmoMod>
+} as const satisfies Record<string, AmmoMod>
 
 export type AmmoModKey = keyof typeof ammoModRegistry
 export const {

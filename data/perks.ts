@@ -67,15 +67,25 @@ import {
 	vampiricExtraction,
 	vulneraBean,
 } from "./augments"
-
+/**
+ * Gets a perk by its key.
+ * @param key The key of the perk.
+ * @returns The perk.
+ */
 export const getPerkByKey = (key: PerkKey): Perk => perkRegistry[key]
 
 export interface Perk {
+	/** The unique identifier of the perk */
 	id: string
+	/** The title of the perk */
 	title: string
+	/** The description of the perk */
 	description: string
+	/** The image of the perk */
 	image: string
+	/** The modifier of the perk */
 	modifier?: string
+	/** The augments of the perk */
 	augments?: AugmentTuple
 }
 
@@ -315,7 +325,7 @@ const perkRegistry = {
 		image: "/perks/elemental-pop.webp",
 		augments: [citrusFocus, imperialPeach, electricCherry, vulneraBean, pineappleBlast, chillBerry],
 	},
-} satisfies Record<string, Perk>
+} as const satisfies Record<string, Perk>
 
 export type PerkKey = keyof typeof perkRegistry
 export const {

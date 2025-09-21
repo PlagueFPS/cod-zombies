@@ -1,7 +1,11 @@
 export interface ZombieAttack {
+	/** Unique identifier for the zombie attack */
 	id: string
+	/** Name of the zombie attack */
 	title: string
+	/** Range of the zombie attack */
 	range: "Short" | "Medium" | "Long"
+	/** Description of the zombie attack */
 	description: string
 }
 
@@ -577,8 +581,9 @@ const zombieAttacksRegistry = {
 		description:
 			"Siphons element 115 from the Conversion Generators, disabling them if fully drained.",
 	},
-} satisfies Record<string, ZombieAttack>
+} as const satisfies Record<string, ZombieAttack>
 
+/** Union type of all zombie attacks */
 export type ZombieAttackKey = keyof typeof zombieAttacksRegistry
 export const {
 	meleeSwing,

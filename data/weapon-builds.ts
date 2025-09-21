@@ -1,8 +1,16 @@
+/**
+ * Gets a weapon build by its key.
+ * @param key The key of the weapon build.
+ * @returns The weapon build.
+ */
 export const getWeaponBuildByKey = (key: WeaponBuildKey): WeaponBuild => weaponBuildRegistry[key]
 
 interface Attachment {
+	/** Unique identifier for the attachment */
 	id: string
+	/** Name of the attachment */
 	title: string
+	/** Type of the attachment */
 	type:
 		| "Optic"
 		| "Muzzle"
@@ -117,7 +125,7 @@ const attachmentsRegistry = {
 		title: "Akimbo",
 		type: "Stock",
 	},
-} satisfies Record<string, Attachment>
+} as const satisfies Record<string, Attachment>
 
 const {
 	keplerMicroflex,
@@ -143,10 +151,15 @@ const {
 } = attachmentsRegistry
 
 export interface WeaponBuild {
+	/** Unique identifier for the weapon build */
 	id: string
+	/** Name of the weapon build */
 	title: string
+	/** Image of the weapon build */
 	image: string
+	/** Attachments used in the weapon build */
 	attachments?: Attachment[]
+	/** Build code for the weapon build */
 	buildCode?: string
 }
 
@@ -201,8 +214,9 @@ const weaponBuildRegistry = {
 		image: "/weapons/grehkova.webp",
 		attachments: [monolithicSuppressor, extendedMagIII, akimbo, steadyAimLaser, rapidFire],
 	},
-} satisfies Record<string, WeaponBuild>
+} as const satisfies Record<string, WeaponBuild>
 
+/** Union type of all weapon builds */
 export type WeaponBuildKey = keyof typeof weaponBuildRegistry
 export const { maelstromReckoning, abrA1Reckoning, gpr91Reckoning, grekhovaAkimbo } =
 	weaponBuildRegistry

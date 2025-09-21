@@ -1,7 +1,10 @@
 export interface Element {
-	id: string // name lowercased
-	initials: string // chemical symbol
-	number: number // atomic number
+	/** element name lowercased */
+	id: string
+	/** chemical symbol */
+	initials: string
+	/** atomic number */
+	number: number
 }
 
 export const periodicTable: Element[] = [

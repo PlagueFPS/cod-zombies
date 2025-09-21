@@ -1,5 +1,8 @@
 import type { DurationInput } from "effect/Duration"
+import { execSync } from "node:child_process"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
+import fs from "node:fs/promises"
+import path from "node:path"
 import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
 import { env } from "@/env"
 import {
@@ -8,16 +11,49 @@ import {
 	TokenGenerationError,
 	TokenVerificationError,
 } from "@/types/errors"
+import { DATE_OPTIONS } from "./constants"
 
+/**
+ * Gets the server URL.
+ * @returns The server URL.
+ */
 export const getServerUrl = () => {
 	const currentEnv = Redacted.value(env.VERCEL_ENV)
-	switch(currentEnv) {
+	switch (currentEnv) {
 		case "preview":
 			return `https://${Redacted.value(env.VERCEL_URL)}`
 		case "production":
 			return `https://${Redacted.value(env.VERCEL_PROJECT_PRODUCTION_URL)}`
 		default:
 			return `http://localhost:3000`
+	}
+}
+
+/**
+ * Gets the last updated date of a file.
+ * @param filePath The path of the file.
+ * @returns The last updated date of the file.
+ */
+export const getLastUpdated = async (filePath: string) => {
+	const abs = path.resolve(process.cwd(), filePath)
+
+	try {
+		const out = execSync(`git log -1 --format=%cI -- ${abs}`, {
+			encoding: "utf-8",
+			stdio: ["ignore", "pipe", "ignore"],
+		})
+
+		return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
+	} catch (error) {
+		console.error(error)
+	}
+
+	try {
+		const stats = await fs.stat(abs)
+		return stats.mtime.toLocaleDateString("en-US", DATE_OPTIONS)
+	} catch (error) {
+		console.error(error)
+		return new Date().toLocaleDateString("en-US", DATE_OPTIONS)
 	}
 }
 

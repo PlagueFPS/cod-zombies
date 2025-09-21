@@ -1,11 +1,20 @@
 import { blackOps3, blackOps6, type Game } from "./games"
-
+/**
+ * Gets a gobblegum by its key.
+ * @param key The key of the gobblegum.
+ * @returns The gobblegum.
+ */
 export const getGobblegumByKey = (key: GobblegumKey): Gobblegum => gobblegumRegistry[key]
 export interface Gobblegum {
+	/** The unique identifier of the gobblegum */
 	id: string
+	/** The title of the gobblegum */
 	title: string
+	/** The description of the gobblegum */
 	description: string
+	/** The type of the gobblegum */
 	type: "Player-Activated" | "Immediate" | "Time-Based" | "Round-Based"
+	/** The rarity of the gobblegum */
 	rarity:
 		| "Classic"
 		| "Mega"
@@ -15,7 +24,9 @@ export interface Gobblegum {
 		| "Epic"
 		| "Legendary"
 		| "Ultra"
+	/** The game the gobblegum is from */
 	game: Game
+	/** The image of the gobblegum */
 	image: string
 }
 
@@ -347,10 +358,13 @@ const gobblegumRegistry = {
 		game: blackOps6,
 		image: "/gobblegum/free-fire.avif",
 	},
-} satisfies Record<string, Gobblegum>
+} as const satisfies Record<string, Gobblegum>
 
+/** Union of all Gobblegum keys */
 export type GobblegumKey = keyof typeof gobblegumRegistry
+/** Union of all Gobblegum types */
 export type GobblegumType = Gobblegum["type"]
+/** Union of all Gobblegum rarities */
 export type GobblegumRarity = Gobblegum["rarity"]
 export const {
 	alchemcialAntithesis,
