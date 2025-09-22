@@ -6,11 +6,18 @@ import { slugify } from "@/utils/functions.client"
 import BestiaryFiltersLoader from "../loaders/bestiary-filters-loader"
 import BestiaryFiltersClient from "./bestiary-filters.client"
 
-export default async function BestiaryFilters() {
-	const zombiesPromise = getZombies()
-	const gamesPromise = getGames()
-	const mapsPromise = getMaps()
-	const [zombies, games, maps] = await Promise.all([zombiesPromise, gamesPromise, mapsPromise])
+export default function BestiaryFilters() {
+	const zombies = getZombies()
+	const games = getGames().map(game => ({
+		id: game.id,
+		slug: game.id,
+		title: game.title,
+	}))
+	const maps = getMaps().map(map => ({
+		id: map.id,
+		slug: map.id,
+		title: map.title,
+	}))
 	const types = Array.from(new Set(zombies.map(zombie => zombie.type)))
 	const typeFilters = types.map(type => ({
 		id: slugify(type),

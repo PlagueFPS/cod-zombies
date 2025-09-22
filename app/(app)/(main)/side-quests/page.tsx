@@ -5,9 +5,10 @@ import GridSection from "@/components/grid-section/grid-section"
 import GridLoader from "@/components/loaders/grid-loader"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { SideQuestFilters } from "@/components/quest-filters/side-quest-filters"
-import { SideQuestGrid } from "@/components/quest-grid/side-quest-grid"
-import { getServerUrl } from "@/utils/functions"
+import QuestGridClient from "@/components/quest-grid/quest-grid"
+import { getSideQuests } from "@/data/side-quests"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { getServerUrl } from "@/utils/functions"
 
 export const metadata: Metadata = {
 	title: "Side Quests",
@@ -32,6 +33,8 @@ export const metadata: Metadata = {
 }
 
 export default function SideQuests() {
+	const quests = getSideQuests()
+
 	return (
 		<div className="flex w-full flex-col items-center justify-center">
 			<div className="container flex flex-col items-center justify-center gap-6">
@@ -44,7 +47,7 @@ export default function SideQuests() {
 						<SideQuestFilters />
 					</Suspense>
 					<Suspense fallback={<GridLoader />}>
-						<SideQuestGrid />
+						<QuestGridClient quests={quests} />
 					</Suspense>
 				</GridSection>
 			</div>

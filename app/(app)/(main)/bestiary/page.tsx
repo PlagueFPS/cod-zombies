@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
 import BestiaryFilters from "@/components/bestiary-filters/bestiary-filters"
-import BestiaryGrid from "@/components/bestiary-grid/bestiary-grid"
+import BestiaryGridClient from "@/components/bestiary-grid/bestiary-grid"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import GridSection from "@/components/grid-section/grid-section"
-import BestiaryFiltersLoader from "@/components/loaders/bestiary-filters-loader"
 import GridLoader from "@/components/loaders/grid-loader"
-import { getServerUrl } from "@/utils/functions"
+import { getZombies } from "@/data/zombies"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { getServerUrl } from "@/utils/functions"
 
 export const metadata: Metadata = {
 	title: "Bestiary",
@@ -32,6 +32,7 @@ export const metadata: Metadata = {
 }
 
 export default function BestiaryPage() {
+	const zombies = getZombies()
 	return (
 		<div className="flex w-full flex-col items-center justify-center">
 			<div className="container flex flex-col items-center justify-center gap-6">
@@ -41,11 +42,9 @@ export default function BestiaryPage() {
 						Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call
 						of Duty: Zombies.
 					</p>
-					<Suspense fallback={<BestiaryFiltersLoader />}>
-						<BestiaryFilters />
-					</Suspense>
+					<BestiaryFilters />
 					<Suspense fallback={<GridLoader />}>
-						<BestiaryGrid />
+						<BestiaryGridClient zombies={zombies} />
 					</Suspense>
 				</GridSection>
 			</div>

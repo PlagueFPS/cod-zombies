@@ -1,25 +1,30 @@
 import { Suspense } from "react"
 import { getGames } from "@/data/games"
 import { getMaps } from "@/data/maps"
-import { getSideQuestsMetadata } from "@/data/side-quests"
+import { getSideQuests } from "@/data/side-quests"
 import QuestFilterLoader from "../loaders/quest-filter-loader"
 import QuestFiltersClient from "./quest-filters.client"
 
-export async function SideQuestFilters() {
-	const mapsPromise = getMaps()
-	const questsPromise = getSideQuestsMetadata()
-	const gamesPromise = getGames()
-	const [maps, quests, games] = await Promise.all([mapsPromise, questsPromise, gamesPromise])
-	const questMaps = new Set(quests.map(q => q.map.slug))
-	const questGames = new Set(quests.map(q => q.game.slug))
+export function SideQuestFilters() {
+	const maps = getMaps()
+	const quests = getSideQuests()
+	const games = getGames()
+	const questMaps = new Set(quests.map(q => q.map.id))
+	const questGames = new Set(quests.map(q => q.map.game.id))
 	const mapFilters = maps
-		.filter(m => questMaps.has(m.slug))
+		.filter(m => questMaps.has(m.id))
 		.map(map => ({
 			id: map.id,
+			slug: map.id,
 			title: map.title,
-			slug: map.slug,
 		}))
-	const gameFilters = games.filter(g => questGames.has(g.slug))
+	const gameFilters = games
+		.filter(g => questGames.has(g.id))
+		.map(g => ({
+			id: g.id,
+			slug: g.id,
+			title: g.title,
+		}))
 
 	return (
 		<Suspense fallback={<QuestFilterLoader filters={["Map", "Game"]} />}>

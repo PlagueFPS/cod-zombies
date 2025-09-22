@@ -1,8 +1,8 @@
 import { getGames } from "@/data/games"
 import { getAvailableMaps } from "@/data/interactive-map"
-import { getMapsWithQuest } from "@/data/maps"
+import { getMainQuests } from "@/data/main-quests"
 import { getSideQuests } from "@/data/side-quests"
-import { getZombiesMetadata } from "@/data/zombies"
+import { getZombies } from "@/data/zombies"
 import SearchInput from "./search-input"
 
 interface ISearchBar {
@@ -10,41 +10,44 @@ interface ISearchBar {
 }
 
 export default async function SearchBar({ showFull }: ISearchBar) {
-	const mainQuestsPromise = getMapsWithQuest()
-	const gamesPromise = getGames()
-	const sideQuestsPromise = getSideQuests()
-	const zombiesPromise = getZombiesMetadata()
+	const mainQuests = getMainQuests()
+	const games = getGames().map(g => ({
+		id: g.id,
+		slug: g.id,
+		title: g.title,
+	}))
+	const sideQuests = getSideQuests()
+	const zombies = getZombies().map(z => ({
+		id: z.id,
+		slug: z.id,
+		title: z.title,
+	}))
 	const availableMaps = getAvailableMaps()
-	const [mainQuests, games, sideQuests, zombies] = await Promise.all([
-		mainQuestsPromise,
-		gamesPromise,
-		sideQuestsPromise,
-		zombiesPromise,
-	])
+
 	const mainQuestsDtos = mainQuests
 		.filter(q => q.state !== "Coming Soon")
 		.map(q => ({
 			id: q.id,
-			slug: q.slug,
-			title: q.title,
+			slug: q.map.id,
+			title: q.map.title,
 			game: {
-				title: q.game.title,
-				slug: q.game.slug,
+				title: q.map.game.title,
+				slug: q.map.game.id,
 			},
 		}))
 	const sideQuestsDtos = sideQuests
 		.filter(q => q.state !== "Coming Soon")
 		.map(q => ({
 			id: q.id,
-			slug: q.slug,
-			title: q.title,
+			slug: q.map.id,
+			title: q.map.title,
 			game: {
-				title: q.game.title,
-				slug: q.game.slug,
+				title: q.map.game.title,
+				slug: q.map.game.id,
 			},
 			map: {
 				title: q.map.title,
-				slug: q.map.slug,
+				slug: q.map.id,
 			},
 		}))
 

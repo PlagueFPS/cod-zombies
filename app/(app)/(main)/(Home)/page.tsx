@@ -3,9 +3,9 @@ import { Suspense } from "react"
 import GridSection from "@/components/grid-section/grid-section"
 import HeroSection from "@/components/hero-section/hero-section"
 import GridLoader from "@/components/loaders/grid-loader"
-import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
-import { MainQuestFilters } from "@/components/quest-filters/main-quest-filters"
-import { MainQuestGrid } from "@/components/quest-grid/main-quest-grid"
+import MainQuestFilters from "@/components/quest-filters/main-quest-filters"
+import QuestGridClient from "@/components/quest-grid/quest-grid"
+import { getMainQuests } from "@/data/main-quests"
 import { getServerUrl } from "@/utils/functions"
 
 export const metadata: Metadata = {
@@ -15,15 +15,15 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
+	const mainQuests = getMainQuests()
+
 	return (
 		<div className="container flex flex-col items-center justify-center gap-12">
 			<HeroSection />
 			<GridSection title="Main Quests">
-				<Suspense fallback={<QuestFilterLoader filters={["Game", "Difficulty"]} />}>
-					<MainQuestFilters />
-				</Suspense>
+				<MainQuestFilters />
 				<Suspense fallback={<GridLoader />}>
-					<MainQuestGrid />
+					<QuestGridClient quests={mainQuests} />
 				</Suspense>
 			</GridSection>
 		</div>

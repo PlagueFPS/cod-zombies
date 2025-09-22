@@ -1,10 +1,6 @@
-import type { CollectionSlug } from "payload"
 import type { CreateBroadcastOptions } from "resend"
 import type { IQuestRelease } from "@/emails/quest-release-email"
 import { Effect, Redacted } from "effect"
-import { getMainQuestBroadcastInfo } from "@/data/main-quests"
-import { getSideQuestBroadcastInfo } from "@/data/side-quests"
-import { getZombieBroadcastInfo } from "@/data/zombies"
 import PrivacyPolicyUpdateEmail from "@/emails/policy-update-email"
 import QuestReleaseEmail from "@/emails/quest-release-email"
 import SubscribeEmail from "@/emails/subscribe-email"
@@ -16,7 +12,6 @@ import {
 	ContactExistsError,
 	ContactNotFoundError,
 	CreateBroadcastError,
-	InvalidRequestError,
 } from "@/types/errors"
 import { generateToken, getServerUrl } from "@/utils/functions"
 
@@ -102,44 +97,6 @@ export const sendContactEmail = (props: EmailProps) =>
 			message: "Thank you for contacting us! We will get back to you as soon as possible.",
 		}
 	}).pipe(Effect.withLogSpan("send_contact_email"))
-
-export const handleEntryBroadcast = (collection: CollectionSlug, id: string) =>
-	Effect.gen(function* () {
-		switch (collection) {
-			case "mainQuests": {
-				const mainQuest = yield* getMainQuestBroadcastInfo(id)
-				const redirectUrl = `${getServerUrl()}/${mainQuest.game.slug}/${mainQuest.map.slug}`
-				return yield* sendQuestReleaseBroadcast({
-					type: "Main",
-					redirectUrl,
-					title: mainQuest.map.title,
-					description: mainQuest.description,
-				})
-			}
-			case "sideQuests": {
-				const sideQuest = yield* getSideQuestBroadcastInfo(id)
-				const redirectUrl = `${getServerUrl()}/${sideQuest.game.slug}/${sideQuest.map.slug}/${sideQuest.slug}`
-				return yield* sendQuestReleaseBroadcast({
-					type: "Side",
-					redirectUrl,
-					title: sideQuest.title,
-					description: sideQuest.description,
-				})
-			}
-			case "zombies": {
-				const zombie = yield* getZombieBroadcastInfo(id)
-				const redirectUrl = `${getServerUrl()}/bestiary/${zombie.slug}`
-				return yield* sendZombieReleaseBroadcast({
-					redirectUrl,
-					title: zombie.title,
-					description: zombie.description,
-					type: zombie.type,
-				})
-			}
-			default:
-				return yield* new InvalidRequestError({ message: "Invalid collection slug" })
-		}
-	}).pipe(Effect.withLogSpan("handle_entry_broadcast"), Effect.annotateLogs({ collection, id }))
 
 const createAndSendBroadcast = (title: string, payload: CreateBroadcastOptions) =>
 	Effect.gen(function* () {

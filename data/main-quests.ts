@@ -66,7 +66,7 @@ interface MainQuestReleased {
 	content: () => Promise<typeof import("*.mdx")>
 }
 
-type MainQuest = MainQuestComingSoon | MainQuestReleased
+export type MainQuest = MainQuestComingSoon | MainQuestReleased
 
 /**
  * Gets a main quest by its key.

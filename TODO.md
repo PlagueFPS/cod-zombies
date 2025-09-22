@@ -14,7 +14,7 @@ to and the type (main-quest, side-quest, or zombie), in order to dynamic import 
 
 - [x] create all registries
 - [x] create components to display metadata within MDX pages
-- [] refactor existing components to use new metadata for previewing
 - [] create all MDX pages
+- [] refactor existing components to use new metadata for previewing
 - [] refactor existing `page.tsx` files to use new MDX content
 - [] remove all old pages, components, dependencies and code.

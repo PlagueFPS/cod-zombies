@@ -1,60 +1,47 @@
 import type { MetadataRoute } from "next"
 import { getAvailableMaps } from "@/data/interactive-map"
-import { getLegalDocsMetadata } from "@/data/legal"
-import { getMainQuestMetadata } from "@/data/main-quests"
-import { getSideQuestsMetadata } from "@/data/side-quests"
-import { getZombiesMetadata } from "@/data/zombies"
+import { getMainQuests } from "@/data/main-quests"
+import { getSideQuests } from "@/data/side-quests"
+import { getZombies } from "@/data/zombies"
 import { getServerUrl } from "@/utils/functions"
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const mainQuestsPromise = getMainQuestMetadata()
-	const zombiesPromise = getZombiesMetadata()
-	const sideQuestsPromise = getSideQuestsMetadata()
-	const legalDocsPromise = getLegalDocsMetadata()
+export default function sitemap(): MetadataRoute.Sitemap {
+	const mainQuests = getMainQuests()
+	const zombies = getZombies()
+	const sideQuests = getSideQuests()
 	const interactiveMaps = getAvailableMaps()
 	const serverUrl = getServerUrl()
-
-	const [mainQuests, zombies, sideQuests, legalDocs] = await Promise.all([
-		mainQuestsPromise,
-		zombiesPromise,
-		sideQuestsPromise,
-		legalDocsPromise,
-	])
 
 	return [
 		{
 			url: `${serverUrl}`,
-			lastModified: mainQuests[0] ? new Date(mainQuests[0].updatedAt) : undefined,
+			lastModified: mainQuests[0] ? new Date(mainQuests[0].lastUpdated) : undefined,
 		},
 		...mainQuests.map((quest): MetadataRoute.Sitemap[number] => ({
-			url: `${serverUrl}/${quest.game.slug}/${quest.slug}`,
-			lastModified: new Date(quest.updatedAt),
+			url: `${serverUrl}/${quest.map.game.id}/${quest.id}`,
+			lastModified: new Date(quest.lastUpdated),
 		})),
 		{
 			url: `${serverUrl}/side-quests`,
-			lastModified: sideQuests[0] ? new Date(sideQuests[0].updatedAt) : undefined,
+			lastModified: sideQuests[0] ? new Date(sideQuests[0].lastUpdated) : undefined,
 		},
 		...sideQuests.map((q): MetadataRoute.Sitemap[number] => ({
-			url: `${serverUrl}/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`,
-			lastModified: new Date(q.updatedAt),
+			url: `${serverUrl}/${q.map.game.id}/${q.map.id}/${q.id}`,
+			lastModified: new Date(q.lastUpdated),
 		})),
 		{
 			url: `${serverUrl}/bestiary`,
-			lastModified: zombies[0] ? new Date(zombies[0].updatedAt) : undefined,
+			lastModified: zombies[0] ? new Date(zombies[0].lastUpdated) : undefined,
 		},
 		...zombies.map((z): MetadataRoute.Sitemap[number] => ({
-			url: `${serverUrl}/bestiary/${z.slug}`,
-			lastModified: new Date(z.updatedAt),
+			url: `${serverUrl}/bestiary/${z.id}`,
+			lastModified: new Date(z.lastUpdated),
 		})),
 		{
 			url: `${serverUrl}/maps`,
 		},
 		...interactiveMaps.map((map): MetadataRoute.Sitemap[number] => ({
 			url: `${serverUrl}/maps/${map}`,
-		})),
-		...legalDocs.map((doc): MetadataRoute.Sitemap[number] => ({
-			url: `${serverUrl}/${doc.slug}`,
-			lastModified: new Date(doc.updatedAt),
 		})),
 	]
 }
