@@ -12,9 +12,10 @@ to and the type (main-quest, side-quest, or zombie), in order to dynamic import 
 
 - Table of Contents for MDX pages will be generated via a plugin for MDX like `@mdx-js/remark-toc`
 
-- [x] create all registries (missing side quests)
+- [x] create all registries
 - [x] create components to display metadata within MDX pages
-- [] create all MDX pages
+- [x] create all MDX pages
 - [] refactor existing components to use new metadata for previewing
+- [] populate all MDX pages with content
 - [] refactor existing `page.tsx` files to use new MDX content
 - [] remove all old pages, components, dependencies and code.

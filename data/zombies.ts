@@ -243,7 +243,7 @@ const zombiesRegistry = {
 		elementalWeakness: [],
 		weakPoints: [head],
 		attacks: [meleeSwing],
-		combatStrategy: () => import("@/content/zombies/base-zombie.mdx"),
+		combatStrategy: () => import("@/content/zombies/zombie.mdx"),
 	},
 	hellhound: {
 		id: "hellhound",
@@ -389,7 +389,7 @@ const zombiesRegistry = {
 		attacks: [sonicScreech],
 		spawnBehavior:
 			"These zombies spawn throughout the normal rounds by blasting out of the ground with a Sonic Screech, making it likely you will hear them before you see them spawn. These zombies also do not count towards the normal round, so you can flip the round without killing them.",
-		combatStrategy: () => import("@/content/zombies/shreker-zombie.mdx"),
+		combatStrategy: () => import("@/content/zombies/shrieker-zombie.mdx"),
 	},
 	napalmZombie: {
 		id: "napalm-zombie",
