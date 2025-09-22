@@ -1,21 +1,38 @@
 import type { Maps } from "./maps"
 
-export interface SideQuest {
+interface SideQuestComingSoon {
 	/** The unique identifier for the side quest */
 	id: string
 	/** The title of the side quest */
 	title: string
 	/** The state of the side quest */
-	state?: "Coming Soon" | "New"
+	state: "Coming Soon"
 	/** The last updated date of the side quest */
 	lastUpdated: string
 	/** The map of the side quest */
 	map: Maps
 	/** The description of the side quest */
 	description: string
-	/** The content of the side quest */
-	content: () => Promise<typeof import("*.mdx")>
 }
+
+interface SideQuestReleased {
+		/** The unique identifier for the side quest */
+		id: string
+		/** The title of the side quest */
+		title: string
+		/** The state of the side quest */
+		state?: "New"
+		/** The last updated date of the side quest */
+		lastUpdated: string
+		/** The map of the side quest */
+		map: Maps
+		/** The description of the side quest */
+		description: string
+		/** The content of the side quest */
+		content: () => Promise<typeof import("*.mdx")>
+}
+
+export type SideQuest = SideQuestComingSoon | SideQuestReleased
 /**
  * Get a SideQuest by key
  * @param key The key of the side quest

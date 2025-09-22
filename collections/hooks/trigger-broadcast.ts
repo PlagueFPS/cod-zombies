@@ -3,7 +3,6 @@ import { Effect, Redacted, Schedule } from "effect"
 import { after } from "next/server"
 import { env } from "@/env"
 import { Email } from "@/lib/services/emails"
-import { handleEntryBroadcast } from "@/usecases/email"
 import { isFirstTimePublish } from "@/utils/payload-utils"
 
 export const triggerBroadcast: CollectionAfterChangeHook = ({
