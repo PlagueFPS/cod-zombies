@@ -1,3 +1,6 @@
+import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { ZombieType } from "@/data/zombies"
+
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
  * @param text - The input string to be capitalized.
@@ -105,4 +108,20 @@ export const fullyDecodeURIComponent = (encoded: string): string => {
 		}
 	} while (decoded !== lastDecoded)
 	return decoded
+}
+
+export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) => {
+	const difficultyOrder: MainQuestDifficulty[] = ["Easy", "Medium", "Hard"]
+	return difficultyOrder.indexOf(a) - difficultyOrder.indexOf(b)
+}
+
+export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
+	const dateA = new Date(a)
+	const dateB = new Date(b)
+	return dateB.getTime() - dateA.getTime()
+}
+
+export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
+	const typeOrder: ZombieType[] = ["Normal", "Special", "Elite", "Boss"]
+	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
 }

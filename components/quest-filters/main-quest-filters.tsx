@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { getGames } from "@/data/games"
 import { getMainQuests } from "@/data/main-quests"
-import { slugify } from "@/utils/functions.client"
+import { slugify, sortDifficulties } from "@/utils/functions.client"
 import QuestFiltersClient from "./quest-filters.client"
 
 export default function MainQuestFilters() {
@@ -10,7 +10,7 @@ export default function MainQuestFilters() {
 	const games = getGames()
 	const questGames = new Set(mainQuests.map(q => q.map.game.id))
 	const questDifficulties = new Set(
-		mainQuests.map(q => q.difficulty).filter(difficulty => difficulty !== undefined),
+		mainQuests.map(q => q.difficulty).filter(difficulty => difficulty !== undefined).sort(sortDifficulties),
 	)
 	const gameFilters = games
 		.filter(g => questGames.has(g.id))

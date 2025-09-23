@@ -18,24 +18,30 @@ export default function FeaturedImage({
 	className,
 	priority,
 	sizes,
+	width,
+	height,
 }: FeaturedImageProps) {
-	const {
-		imageLoaded,
-		imageErrored,
-		setImageLoaded,
-		setImageErrored,
-	} = useImageState()
-	const featuredImageURL = featuredImage?.url ? featuredImage.url : placeholderImage
+	const { imageLoaded, imageErrored, setImageLoaded, setImageErrored } = useImageState()
+	const formedFeaturedImage =
+		typeof featuredImage === "string"
+			? { url: featuredImage }
+			: {
+					url: featuredImage?.url,
+					width: featuredImage?.width,
+					height: featuredImage?.height,
+				}
+
+	if (!formedFeaturedImage || !formedFeaturedImage.url) return null
 
 	return (
 		<figure className="relative m-0 flex h-auto w-full flex-col items-center justify-center">
 			{!imageLoaded ? <ImageLoader className="border" /> : null}
 			{!imageErrored ? (
 				<Image
-					src={featuredImageURL}
+					src={formedFeaturedImage.url}
 					alt={alt}
-					width={featuredImage?.width ?? undefined}
-					height={featuredImage?.height ?? undefined}
+					width={formedFeaturedImage.width ?? width}
+					height={formedFeaturedImage.height ?? height}
 					sizes={sizes}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}

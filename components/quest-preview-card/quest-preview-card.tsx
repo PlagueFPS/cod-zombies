@@ -1,29 +1,25 @@
-import type { MapWithQuest } from "@/data/maps"
-import type { MinifiedSideQuest } from "@/data/side-quests"
+import type { ClientMainQuest } from "@/data/main-quests"
+import type { ClientSideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
-import { IN_DEVELOPMENT } from "@/utils/constants"
-import {
-	ComingSoonBadge,
-	DifficultyBadge,
-	DraftBadge,
-	NewBadge,
-} from "../custom-badges/custom-badges"
+import { ComingSoonBadge, DifficultyBadge, NewBadge } from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IQuestPreviewCard {
-	quest: MapWithQuest | MinifiedSideQuest
+	quest: ClientMainQuest | ClientSideQuest
 	questIndex: number
 }
 
 export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? questIndex === 0 : questIndex <= 3
-	const alt = `${quest.title} map image`
+	const title = "title" in quest ? quest.title : quest.map.title
+	const description = "description" in quest ? quest.description : quest.map.description
+	const alt = `${title} map image`
 
 	const renderSpecificBadge = () => {
 		if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
@@ -51,11 +47,11 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 				href={
 					quest.state === "Coming Soon"
 						? "#"
-						: Predicate.hasProperty(quest, "map")
-							? `/side-quests/${quest.game.slug}/${quest.map.slug}/${quest.slug}`
-							: `/${quest.game.slug}/${quest.slug}`
+						: Predicate.hasProperty(quest, "difficulty")
+							? `/${quest.map.game.id}/${quest.map.id}`
+							: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`
 				}
-				aria-label={`View Guide for ${quest.title}`}
+				aria-label={`View Guide for ${title}`}
 				aria-disabled={quest.state === "Coming Soon"}
 				className="group outline-none"
 				tabIndex={quest.state === "Coming Soon" ? -1 : 0}
@@ -67,7 +63,6 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end gap-1">
-						{IN_DEVELOPMENT && quest._status === "draft" ? <DraftBadge /> : null}
 						{quest.state === "Coming Soon" ? (
 							<ComingSoonBadge />
 						) : quest.state === "New" ? (
@@ -75,12 +70,14 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 						) : null}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-							{quest.game.title}
+							{quest.map.game.title}
 						</Badge>
 					</div>
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage
-							featuredImage={quest.image}
+							featuredImage={quest.map.image}
+							width={272}
+							height={176}
 							sizes="272px"
 							className="aspect-square scale-150"
 						/>
@@ -88,21 +85,23 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 					<CardHeader className="flex flex-col gap-2">
 						<div className="relative h-full w-full overflow-hidden">
 							<FeaturedImage
-								featuredImage={quest.image}
+								featuredImage={quest.map.image}
 								alt={alt}
 								priority={priority}
+								width={272}
+								height={176}
 								sizes="272px"
 								className="h-44 rounded-md object-cover"
 							/>
 						</div>
 						<CardTitle
 							className={cn("text-xl will-change-transform", {
-								"text-lg": quest.title.length > 25,
+								"text-lg": title.length > 25,
 							})}
 						>
-							{quest.title}
+							{title}
 						</CardTitle>
-						<CardDescription className="text-foreground/85">{quest.description}</CardDescription>
+						<CardDescription className="text-foreground/85">{description}</CardDescription>
 					</CardHeader>
 				</Card>
 			</CustomLink>

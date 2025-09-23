@@ -179,11 +179,20 @@ import {
 	zombieEvolution,
 } from "@/data/zombie-attacks"
 import { getLastUpdated } from "@/utils/functions"
+import { sortReleaseDateDesc } from "@/utils/functions.client"
+
+export type ClientZombie = ReturnType<typeof getClientZombies>[number]
+export type ZombieType = ClientZombie["type"]
 
 /** Gets all zombies
  * @returns An array of all zombies
  */
-export const getZombies = (): Zombie[] => Object.values(zombiesRegistry)
+export const getZombies = (): Zombie[] => Object.values(zombiesRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
+export const getClientZombies = () =>
+	getZombies().map(zombie => {
+		const { combatStrategy, ...rest } = zombie
+		return rest
+	})
 /** Gets a zombie by its key
  * @param key The key of the zombie
  * @returns The zombie
@@ -229,7 +238,7 @@ const zombiesRegistry = {
 	zombie: {
 		id: "zombie",
 		title: "Zombie",
-		lastUpdated: await getLastUpdated("../content/zombies/base-zombie.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/base-zombie.mdx"),
 		description:
 			"The first and most common enemy type. Varying in speeds, zombies provide the most basic threat on their own but will quickly become a challenge in hordes.",
 		releaseDate: new Date("November 11, 2008 12:00 AM"),
@@ -248,7 +257,7 @@ const zombiesRegistry = {
 	hellhound: {
 		id: "hellhound",
 		title: "Hellhound",
-		lastUpdated: await getLastUpdated("../content/zombies/hellhound.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/hellhound.mdx"),
 		releaseDate: new Date("June 10, 2010 12:00 AM"),
 		description:
 			"Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
@@ -280,7 +289,7 @@ const zombiesRegistry = {
 	nova6Crawler: {
 		id: "nova-6-crawler",
 		title: "Nova-6 Crawler",
-		lastUpdated: await getLastUpdated("../content/zombies/nova-6-crawler.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/nova-6-crawler.mdx"),
 		releaseDate: new Date("November 09, 2010 12:00 AM"),
 		description:
 			"These creepy crawlers are slow-moving zombies that emit green nova gas from their bodies as they crawl on all fours towards their target, releasing the gas when killed.",
@@ -299,7 +308,7 @@ const zombiesRegistry = {
 	pentagonThief: {
 		id: "pentagon-thief",
 		title: "Pentagon Thief",
-		lastUpdated: await getLastUpdated("../content/zombies/pentagon-thief.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/pentagon-thief.mdx"),
 		releaseDate: new Date("November 09, 2010 12:30 AM"),
 		image: "/zombies/pentagon-thief.avif",
 		description:
@@ -318,7 +327,7 @@ const zombiesRegistry = {
 	spaceMonkey: {
 		id: "space-monkey",
 		title: "Space Monkey",
-		lastUpdated: await getLastUpdated("../content/zombies/space-monkey.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/space-monkey.mdx"),
 		releaseDate: new Date("February 01, 2011 12:00 AM"),
 		image: "/zombies/space-monkey.avif",
 		description:
@@ -337,7 +346,7 @@ const zombiesRegistry = {
 	georgeARomero: {
 		id: "george-a-romero",
 		title: "George A. Romero",
-		lastUpdated: await getLastUpdated("../content/zombies/george-a-romero.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/george-a-romero.mdx"),
 		releaseDate: new Date("May 03, 2011 12:00 AM"),
 		image: "/zombies/george-a-romero.avif",
 		description:
@@ -356,7 +365,7 @@ const zombiesRegistry = {
 	jungleMonkey: {
 		id: "jungle-monkey",
 		title: "Jungle Monkey",
-		lastUpdated: await getLastUpdated("../content/zombies/jungle-monkey.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/jungle-monkey.mdx"),
 		releaseDate: new Date("June 12, 2011 12:00 AM"),
 		image: "/zombies/jungle-monkey.avif",
 		description:
@@ -375,7 +384,7 @@ const zombiesRegistry = {
 	shriekerZombie: {
 		id: "shrieker-zombie",
 		title: "Shrieker Zombie",
-		lastUpdated: await getLastUpdated("../content/zombies/shrieker-zombie.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/shrieker-zombie.mdx"),
 		releaseDate: new Date("June 12, 2011 01:00 AM"),
 		image: "/zombies/shrieker-zombie.avif",
 		description:
@@ -394,7 +403,7 @@ const zombiesRegistry = {
 	napalmZombie: {
 		id: "napalm-zombie",
 		title: "Napalm Zombie",
-		lastUpdated: await getLastUpdated("../content/zombies/napalm-zombie.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/napalm-zombie.mdx"),
 		releaseDate: new Date("June 12, 2011 02:00 AM"),
 		image: "/zombies/napalm-zombie.avif",
 		description:
@@ -413,7 +422,7 @@ const zombiesRegistry = {
 	astronautZombie: {
 		id: "astronaut-zombie",
 		title: "Astronaut Zombie",
-		lastUpdated: await getLastUpdated("../content/zombies/astronaut-zombie.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/astronaut-zombie.mdx"),
 		releaseDate: new Date("August 23, 2011 12:00 AM"),
 		image: "/zombies/astronaut-zombie.avif",
 		description:
@@ -432,7 +441,7 @@ const zombiesRegistry = {
 	denizen: {
 		id: "denizen",
 		title: "Denizen",
-		lastUpdated: await getLastUpdated("../content/zombies/denizen.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/denizen.mdx"),
 		releaseDate: new Date("November 12, 2012 12:00 AM"),
 		image: "/zombies/denizen.avif",
 		description:
@@ -451,7 +460,7 @@ const zombiesRegistry = {
 	avogadro: {
 		id: "avogadro",
 		title: "Avogadro",
-		lastUpdated: await getLastUpdated("../content/zombies/avogadro.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/avogadro.mdx"),
 		releaseDate: new Date("November 12, 2012 01:00 AM"),
 		image: "/zombies/avogadro.avif",
 		description:
@@ -470,7 +479,7 @@ const zombiesRegistry = {
 	jumpingJack: {
 		id: "jumping-jack",
 		title: "Jumping Jack",
-		lastUpdated: await getLastUpdated("../content/zombies/jumping-jack.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/jumping-jack.mdx"),
 		releaseDate: new Date("January 29, 2013 12:00 AM"),
 		image: "/zombies/jumping-jack.avif",
 		description:
@@ -489,7 +498,7 @@ const zombiesRegistry = {
 	brutus: {
 		id: "brutus",
 		title: "Brutus",
-		lastUpdated: await getLastUpdated("../content/zombies/brutus.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/brutus.mdx"),
 		releaseDate: new Date("April 16, 2013 12:00 AM"),
 		image: "/zombies/brutus.avif",
 		description:
@@ -508,7 +517,7 @@ const zombiesRegistry = {
 	ghost: {
 		id: "ghost",
 		title: "Ghost",
-		lastUpdated: await getLastUpdated("../content/zombies/ghost.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/ghost.mdx"),
 		releaseDate: new Date("July 13, 2013 12:00 AM"),
 		image: "/zombies/ghost.avif",
 		description:
@@ -527,7 +536,7 @@ const zombiesRegistry = {
 	crusaderZombie: {
 		id: "crusader-zombie",
 		title: "Crusader Zombie",
-		lastUpdated: await getLastUpdated("../content/zombies/crusader-zombie.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/crusader-zombie.mdx"),
 		releaseDate: new Date("August 27, 2013 12:00 AM"),
 		image: "/zombies/crusader-zombie.webp",
 		description:
@@ -546,7 +555,7 @@ const zombiesRegistry = {
 	panzersoldat: {
 		id: "panzersoldat",
 		title: "Panzersoldat",
-		lastUpdated: await getLastUpdated("../content/zombies/panzersoldat.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/panzersoldat.mdx"),
 		releaseDate: new Date("August 27, 2013 01:00 AM"),
 		image: "/zombies/panzersoldat.avif",
 		description:
@@ -565,9 +574,9 @@ const zombiesRegistry = {
 	keepers: {
 		id: "keepers",
 		title: "Keepers",
-		lastUpdated: await getLastUpdated("../content/zombies/keepers.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/keepers.mdx"),
 		releaseDate: new Date("November 06, 2015 12:00 AM"),
-		image: "/zombies/keepers.avif",
+		image: "/zombies/keeper.avif",
 		description:
 			"Keepers are a special enemy appearing on almost all maps in Black Ops 3 and play a crucial part in the events that happen within the Aether Storyline.",
 		games: [blackOps3],
@@ -584,7 +593,7 @@ const zombiesRegistry = {
 	insanityElementals: {
 		id: "insanity-elementals",
 		title: "Insanity Elementals",
-		lastUpdated: await getLastUpdated("../content/zombies/insanity-elementals.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/insanity-elementals.mdx"),
 		releaseDate: new Date("November 06, 2015 01:00 AM"),
 		image: "/zombies/insanity-elementals.avif",
 		description:
@@ -603,7 +612,7 @@ const zombiesRegistry = {
 	parasite: {
 		id: "parasite",
 		title: "Parasite",
-		lastUpdated: await getLastUpdated("../content/zombies/parasite.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/parasite.mdx"),
 		releaseDate: new Date("November 06, 2015 02:00 AM"),
 		image: "/zombies/parasite.avif",
 		description:
@@ -622,7 +631,7 @@ const zombiesRegistry = {
 	margwa: {
 		id: "margwa",
 		title: "Margwa",
-		lastUpdated: await getLastUpdated("../content/zombies/margwa.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/margwa.mdx"),
 		releaseDate: new Date("November 06, 2015 03:00 AM"),
 		image: "/zombies/margwa.avif",
 		description:
@@ -641,7 +650,7 @@ const zombiesRegistry = {
 	skeleton: {
 		id: "skeleton",
 		title: "Skeleton",
-		lastUpdated: await getLastUpdated("../content/zombies/skeleton.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/skeleton.mdx"),
 		releaseDate: new Date("February 02, 2016 12:00 AM"),
 		image: "/zombies/skeleton.avif",
 		description:
@@ -660,7 +669,7 @@ const zombiesRegistry = {
 	theCorruptedKeeper: {
 		id: "the-corrupted-keeper",
 		title: "The Corrupted Keeper",
-		lastUpdated: await getLastUpdated("../content/zombies/the-corrupted-keeper.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/the-corrupted-keeper.mdx"),
 		releaseDate: new Date("February 02, 2016 01:00 AM"),
 		image: "/zombies/the-corrupted-keeper.avif",
 		description:
@@ -679,7 +688,7 @@ const zombiesRegistry = {
 	spider: {
 		id: "spider",
 		title: "Spider",
-		lastUpdated: await getLastUpdated("../content/zombies/spider.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/spider.mdx"),
 		releaseDate: new Date("April 19, 2016 12:00 AM"),
 		image: "/zombies/spider.avif",
 		description:
@@ -698,7 +707,7 @@ const zombiesRegistry = {
 	thrasher: {
 		id: "thrasher",
 		title: "Thrasher",
-		lastUpdated: await getLastUpdated("../content/zombies/thrasher.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/thrasher.mdx"),
 		releaseDate: new Date("April 19, 2016 01:00 AM"),
 		description:
 			"Thrashers are an elite enemy originating from the map Zetsubou No Shima. These brutes are mutated zombies from spores completely transforming their appearance.",
@@ -717,7 +726,7 @@ const zombiesRegistry = {
 	giantSpider: {
 		id: "giant-spider",
 		title: "Giant Spider",
-		lastUpdated: await getLastUpdated("../content/zombies/giant-spider.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/giant-spider.mdx"),
 		releaseDate: new Date("April 19, 2016 02:00 AM"),
 		image: "/zombies/giant-spider.avif",
 		description:
@@ -736,7 +745,7 @@ const zombiesRegistry = {
 	giantThrasher: {
 		id: "giant-thrasher",
 		title: "Giant Thrasher",
-		lastUpdated: await getLastUpdated("../content/zombies/giant-thrasher.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/giant-thrasher.mdx"),
 		releaseDate: new Date("April 19, 2016 03:00 AM"),
 		image: "/zombies/giant-thrasher.avif",
 		description:
@@ -755,7 +764,7 @@ const zombiesRegistry = {
 	valkyrieDrone: {
 		id: "valkyrie-drone",
 		title: "Valkyrie Drone",
-		lastUpdated: await getLastUpdated("../content/zombies/valkyrie-drone.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/valkyrie-drone.mdx"),
 		releaseDate: new Date("July 12, 2016 12:00 AM"),
 		image: "/zombies/valkyrie-drone.avif",
 		description:
@@ -774,7 +783,7 @@ const zombiesRegistry = {
 	mangler: {
 		id: "mangler",
 		title: "Mangler",
-		lastUpdated: await getLastUpdated("../content/zombies/mangler.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/mangler.mdx"),
 		releaseDate: new Date("July 12, 2016 01:00 AM"),
 		image: "/zombies/mangler.avif",
 		description:
@@ -802,7 +811,7 @@ const zombiesRegistry = {
 	dragon: {
 		id: "dragon",
 		title: "Dragon",
-		lastUpdated: await getLastUpdated("../content/zombies/dragon.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/dragon.mdx"),
 		releaseDate: new Date("July 12, 2016 02:00 AM"),
 		image: "/zombies/dragon.avif",
 		description:
@@ -821,7 +830,7 @@ const zombiesRegistry = {
 	nikolaiMech: {
 		id: "nikolai-mech",
 		title: "Nikolai Mech",
-		lastUpdated: await getLastUpdated("../content/zombies/nikolai-mech.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/nikolai-mech.mdx"),
 		releaseDate: new Date("July 12, 2016 03:00 AM"),
 		image: "/zombies/nikolai-mech.avif",
 		description:
@@ -840,7 +849,7 @@ const zombiesRegistry = {
 	fury: {
 		id: "fury",
 		title: "Fury",
-		lastUpdated: await getLastUpdated("../content/zombies/fury.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/fury.mdx"),
 		releaseDate: new Date("October 06, 2016 12:00 AM"),
 		image: "/zombies/fury.avif",
 		description:
@@ -859,7 +868,7 @@ const zombiesRegistry = {
 	fireCatalyst: {
 		id: "fire-catalyst",
 		title: "Fire Catalyst",
-		lastUpdated: await getLastUpdated("../content/zombies/fire-catalyst.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/fire-catalyst.mdx"),
 		releaseDate: new Date("October 12, 2018 12:00 AM"),
 		image: "/zombies/fire-catalyst.avif",
 		description:
@@ -878,7 +887,7 @@ const zombiesRegistry = {
 	poisonCatalyst: {
 		id: "poison-catalyst",
 		title: "Poison Catalyst",
-		lastUpdated: await getLastUpdated("../content/zombies/poison-catalyst.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/poison-catalyst.mdx"),
 		releaseDate: new Date("October 12, 2018 01:00 AM"),
 		image: "/zombies/poison-catalyst.avif",
 		description:
@@ -897,7 +906,7 @@ const zombiesRegistry = {
 	waterCatalyst: {
 		id: "water-catalyst",
 		title: "Water Catalyst",
-		lastUpdated: await getLastUpdated("../content/zombies/water-catalyst.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/water-catalyst.mdx"),
 		releaseDate: new Date("October 12, 2018 02:00 AM"),
 		image: "/zombies/water-catalyst.avif",
 		description:
@@ -916,7 +925,7 @@ const zombiesRegistry = {
 	lightningCatalyst: {
 		id: "lightning-catalyst",
 		title: "Lightning Catalyst",
-		lastUpdated: await getLastUpdated("../content/zombies/lightning-catalyst.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/lightning-catalyst.mdx"),
 		releaseDate: new Date("October 12, 2018 03:00 AM"),
 		image: "/zombies/lightning-catalyst.avif",
 		description:
@@ -935,7 +944,7 @@ const zombiesRegistry = {
 	stoker: {
 		id: "stoker",
 		title: "Stoker",
-		lastUpdated: await getLastUpdated("../content/zombies/stoker.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/stoker.mdx"),
 		releaseDate: new Date("October 12, 2018 04:00 AM"),
 		image: "/zombies/stoker.avif",
 		description:
@@ -953,7 +962,7 @@ const zombiesRegistry = {
 	blightfather: {
 		id: "blightfather",
 		title: "Blightfather",
-		lastUpdated: await getLastUpdated("../content/zombies/blightfather.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/blightfather.mdx"),
 		releaseDate: new Date("October 12, 2018 05:00 AM"),
 		image: "/zombies/blightfather.avif",
 		description:
@@ -972,7 +981,7 @@ const zombiesRegistry = {
 	eyeOfMalice: {
 		id: "eye-of-malice",
 		title: "Eye of Malice",
-		lastUpdated: await getLastUpdated("../content/zombies/eye-of-malice.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/eye-of-malice.mdx"),
 		releaseDate: new Date("October 12, 2018 06:00 AM"),
 		image: "/zombies/eye-of-malice.avif",
 		description:
@@ -991,7 +1000,7 @@ const zombiesRegistry = {
 	tiger: {
 		id: "tiger",
 		title: "Tiger",
-		lastUpdated: await getLastUpdated("../content/zombies/tiger.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/tiger.mdx"),
 		releaseDate: new Date("October 12, 2018 07:00 AM"),
 		image: "/zombies/tiger.avif",
 		description:
@@ -1010,7 +1019,7 @@ const zombiesRegistry = {
 	destroyer: {
 		id: "destroyer",
 		title: "Destroyer",
-		lastUpdated: await getLastUpdated("../content/zombies/destroyer.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/destroyer.mdx"),
 		releaseDate: new Date("October 12, 2018 08:00 AM"),
 		image: "/zombies/destroyer.avif",
 		description:
@@ -1029,7 +1038,7 @@ const zombiesRegistry = {
 	marauder: {
 		id: "marauder",
 		title: "Marauder",
-		lastUpdated: await getLastUpdated("../content/zombies/marauder.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/marauder.mdx"),
 		releaseDate: new Date("October 12, 2018 09:00 AM"),
 		image: "/zombies/marauder.avif",
 		description:
@@ -1048,7 +1057,7 @@ const zombiesRegistry = {
 	furyAndWrath: {
 		id: "fury-and-wrath",
 		title: "Fury & Wrath",
-		lastUpdated: await getLastUpdated("../content/zombies/fury-and-wrath.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/fury-and-wrath.mdx"),
 		releaseDate: new Date("October 12, 2018 10:00 AM"),
 		image: "/zombies/fury-and-wrath.avif",
 		description:
@@ -1067,7 +1076,7 @@ const zombiesRegistry = {
 	nosferatu: {
 		id: "nosferatu",
 		title: "Nosferatu",
-		lastUpdated: await getLastUpdated("../content/zombies/nosferatu.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/nosferatu.mdx"),
 		releaseDate: new Date("December 11, 2018 12:00 AM"),
 		image: "/zombies/nosferatu.avif",
 		description:
@@ -1086,7 +1095,7 @@ const zombiesRegistry = {
 	werewolf: {
 		id: "werewolf",
 		title: "Werewolf",
-		lastUpdated: await getLastUpdated("../content/zombies/werewolf.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/werewolf.mdx"),
 		releaseDate: new Date("December 11, 2018 01:00 AM"),
 		image: "/zombies/werewolf.avif",
 		description:
@@ -1105,7 +1114,7 @@ const zombiesRegistry = {
 	shadowWerewolf: {
 		id: "shadow-werewolf",
 		title: "Shadow Werewolf",
-		lastUpdated: await getLastUpdated("../content/zombies/shadow-werewolf.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/shadow-werewolf.mdx"),
 		releaseDate: new Date("December 11, 2018 02:00 AM"),
 		image: "/zombies/shadow-werewolf.avif",
 		description:
@@ -1124,7 +1133,7 @@ const zombiesRegistry = {
 	gegenees: {
 		id: "gegenees",
 		title: "Gegenees",
-		lastUpdated: await getLastUpdated("../content/zombies/gegenees.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/gegenees.mdx"),
 		releaseDate: new Date("March 26, 2019 12:00 AM"),
 		image: "/zombies/gegenees.avif",
 		description:
@@ -1143,7 +1152,7 @@ const zombiesRegistry = {
 	pegasus: {
 		id: "pegasus",
 		title: "Pegasus",
-		lastUpdated: await getLastUpdated("../content/zombies/pegasus.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/pegasus.mdx"),
 		releaseDate: new Date("March 26, 2019 01:00 AM"),
 		image: "/zombies/pegasus.avif",
 		description:
@@ -1162,7 +1171,7 @@ const zombiesRegistry = {
 	perseus: {
 		id: "perseus",
 		title: "Perseus",
-		lastUpdated: await getLastUpdated("../content/zombies/perseus.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/perseus.mdx"),
 		releaseDate: new Date("March 26, 2019 02:00 AM"),
 		image: "/zombies/perseus.avif",
 		description:
@@ -1180,9 +1189,9 @@ const zombiesRegistry = {
 	adamUnit: {
 		id: "adam-unit",
 		title: "A.D.A.M. Unit",
-		lastUpdated: await getLastUpdated("../content/zombies/adam-unit.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/adam-unit.mdx"),
 		releaseDate: new Date("July 09, 2019 12:00 AM"),
-		image: "/zombies/adam-unit.avif",
+		image: "/zombies/adam-unit.webp",
 		description:
 			"The A.D.A.M. Unit is a unique variant of the standard zombie originating on the map Alpha Omega in Black Ops 4, being tankier, faster, and robotic.",
 		games: [blackOps4],
@@ -1199,7 +1208,7 @@ const zombiesRegistry = {
 	nova6Bomber: {
 		id: "nova-6-bomber",
 		title: "Nova-6 Bomber",
-		lastUpdated: await getLastUpdated("../content/zombies/nova-6-bomber.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/nova-6-bomber.mdx"),
 		releaseDate: new Date("July 09, 2019 01:00 AM"),
 		image: "/zombies/nova-6-bomber.avif",
 		description:
@@ -1218,7 +1227,7 @@ const zombiesRegistry = {
 	joltingJack: {
 		id: "jolting-jack",
 		title: "Jolting Jack",
-		lastUpdated: await getLastUpdated("../content/zombies/jolting-jack.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/jolting-jack.mdx"),
 		releaseDate: new Date("July 09, 2019 02:00 AM"),
 		image: "/zombies/jolting-jack.avif",
 		description:
@@ -1237,7 +1246,7 @@ const zombiesRegistry = {
 	armoredZombie: {
 		id: "armored-zombie",
 		title: "Armored Zombie",
-		lastUpdated: await getLastUpdated("../content/zombies/armored-zombie.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/armored-zombie.mdx"),
 		releaseDate: new Date("November 13, 2020 12:00 AM"),
 		image: "/zombies/armored-zombie.avif",
 		description:
@@ -1267,7 +1276,7 @@ const zombiesRegistry = {
 	heavyZombie: {
 		id: "heavy-zombie",
 		title: "Heavy Zombie",
-		lastUpdated: await getLastUpdated("../content/zombies/heavy-zombie.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/heavy-zombie.mdx"),
 		releaseDate: new Date("November 13, 2020 01:00 AM"),
 		image: "/zombies/heavy-zombie.avif",
 		description:
@@ -1297,7 +1306,7 @@ const zombiesRegistry = {
 	plaguehound: {
 		id: "plaguehound",
 		title: "Plaguehound",
-		lastUpdated: await getLastUpdated("../content/zombies/plaguehound.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/plaguehound.mdx"),
 		releaseDate: new Date("November 13, 2020 02:00 AM"),
 		image: "/zombies/plaguehound.avif",
 		description:
@@ -1316,7 +1325,7 @@ const zombiesRegistry = {
 	megaton: {
 		id: "megaton",
 		title: "Megaton",
-		lastUpdated: await getLastUpdated("../content/zombies/megaton.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/megaton.mdx"),
 		releaseDate: new Date("November 13, 2020 03:00 AM"),
 		image: "/zombies/megaton.webp",
 		description:
@@ -1335,7 +1344,7 @@ const zombiesRegistry = {
 	mimic: {
 		id: "mimic",
 		title: "Mimic",
-		lastUpdated: await getLastUpdated("../content/zombies/mimic.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/mimic.mdx"),
 		releaseDate: new Date("February 04, 2021 12:00 AM"),
 		image: "/zombies/shock-mimic.avif",
 		description:
@@ -1354,7 +1363,7 @@ const zombiesRegistry = {
 	orda: {
 		id: "orda",
 		title: "Orda",
-		lastUpdated: await getLastUpdated("../content/zombies/orda.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/orda.mdx"),
 		releaseDate: new Date("February 04, 2021 01:00 AM"),
 		image: "/zombies/orda.avif",
 		description:
@@ -1373,7 +1382,7 @@ const zombiesRegistry = {
 	tormentors: {
 		id: "tormentors",
 		title: "Tormentors",
-		lastUpdated: await getLastUpdated("../content/zombies/tormentors.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/tormentors.mdx"),
 		releaseDate: new Date("July 15, 2021 12:00 AM"),
 		image: "/zombies/tormentor.avif",
 		description:
@@ -1392,7 +1401,7 @@ const zombiesRegistry = {
 	disciple: {
 		id: "disciple",
 		title: "Disciple",
-		lastUpdated: await getLastUpdated("../content/zombies/disciple.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/disciple.mdx"),
 		releaseDate: new Date("July 15, 2021 01:00 AM"),
 		image: "/zombies/disciple.avif",
 		description:
@@ -1411,7 +1420,7 @@ const zombiesRegistry = {
 	tempest: {
 		id: "tempest",
 		title: "Tempest",
-		lastUpdated: await getLastUpdated("../content/zombies/tempest.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/tempest.mdx"),
 		releaseDate: new Date("July 15, 2021 02:00 AM"),
 		image: "/zombies/tempest.avif",
 		description:
@@ -1430,7 +1439,7 @@ const zombiesRegistry = {
 	krasnySoldat: {
 		id: "krasny-soldat",
 		title: "Krasny Soldat",
-		lastUpdated: await getLastUpdated("../content/zombies/krasny-soldat.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/krasny-soldat.mdx"),
 		releaseDate: new Date("July 15, 2021 03:00 AM"),
 		image: "/zombies/krasny-soldat.avif",
 		description:
@@ -1449,7 +1458,7 @@ const zombiesRegistry = {
 	valentina: {
 		id: "valentina",
 		title: "Valentina",
-		lastUpdated: await getLastUpdated("../content/zombies/valentina.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/valentina.mdx"),
 		releaseDate: new Date("July 15, 2021 04:00 AM"),
 		image: "/zombies/valentina.avif",
 		description:
@@ -1468,7 +1477,7 @@ const zombiesRegistry = {
 	abomination: {
 		id: "abomination",
 		title: "Abomination",
-		lastUpdated: await getLastUpdated("../content/zombies/abomination.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/abomination.mdx"),
 		releaseDate: new Date("October 07, 2021 12:00 AM"),
 		image: "/zombies/abomination.avif",
 		description:
@@ -1487,7 +1496,7 @@ const zombiesRegistry = {
 	theForsaken: {
 		id: "the-forsaken",
 		title: "The Forsaken",
-		lastUpdated: await getLastUpdated("../content/zombies/the-forsaken.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/the-forsaken.mdx"),
 		releaseDate: new Date("October 07, 2021 01:00 AM"),
 		image: "/zombies/the-forsaken.avif",
 		description:
@@ -1506,7 +1515,7 @@ const zombiesRegistry = {
 	vermin: {
 		id: "vermin",
 		title: "Vermin",
-		lastUpdated: await getLastUpdated("../content/zombies/vermin.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/vermin.mdx"),
 		releaseDate: new Date("October 25, 2024 12:00 AM"),
 		image: "/zombies/vermin.avif",
 		description:
@@ -1525,7 +1534,7 @@ const zombiesRegistry = {
 	amalgam: {
 		id: "amalgam",
 		title: "Amalgam",
-		lastUpdated: await getLastUpdated("../content/zombies/amalgam.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/amalgam.mdx"),
 		releaseDate: new Date("October 25, 2024 01:00 AM"),
 		image: "/zombies/amalgam.avif",
 		description:
@@ -1544,7 +1553,7 @@ const zombiesRegistry = {
 	nathan: {
 		id: "nathan",
 		title: "Nathan",
-		lastUpdated: await getLastUpdated("../content/zombies/nathan.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/nathan.mdx"),
 		releaseDate: new Date("October 25, 2024 02:00 AM"),
 		image: "/zombies/nathan.avif",
 		description:
@@ -1563,7 +1572,7 @@ const zombiesRegistry = {
 	patient13: {
 		id: "patient-13",
 		title: "Patient 13",
-		lastUpdated: await getLastUpdated("../content/zombies/patient-13.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/patient-13.mdx"),
 		releaseDate: new Date("October 25, 2024 03:00 AM"),
 		image: "/zombies/patient-13.avif",
 		description:
@@ -1582,7 +1591,7 @@ const zombiesRegistry = {
 	doppelghast: {
 		id: "doppelghast",
 		title: "Doppelghast",
-		lastUpdated: await getLastUpdated("../content/zombies/doppelghast.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/doppelghast.mdx"),
 		releaseDate: new Date("December 05, 2024 12:00 AM"),
 		image: "/zombies/doppelghast.avif",
 		description:
@@ -1601,7 +1610,7 @@ const zombiesRegistry = {
 	theGuardian: {
 		id: "the-guardian",
 		title: "The Guardian",
-		lastUpdated: await getLastUpdated("../content/zombies/the-guardian.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/the-guardian.mdx"),
 		releaseDate: new Date("December 05, 2024 01:00 AM"),
 		image: "/zombies/the-guardian.avif",
 		description:
@@ -1620,7 +1629,7 @@ const zombiesRegistry = {
 	sentinelArtifact: {
 		id: "sentinel-artifact",
 		title: "Sentinel Artifact",
-		lastUpdated: await getLastUpdated("../content/zombies/sentinel-artifact.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/sentinel-artifact.mdx"),
 		releaseDate: new Date("January 28, 2025 12:00 AM"),
 		image: "/zombies/sentinel-artifact.avif",
 		description:
@@ -1639,9 +1648,9 @@ const zombiesRegistry = {
 	toxicZombies: {
 		id: "toxic-zombies",
 		title: "Toxic Zombies",
-		lastUpdated: await getLastUpdated("../content/zombies/toxic-zombies.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/toxic-zombies.mdx"),
 		releaseDate: new Date("April 02, 2025 12:00 AM"),
-		image: "/zombies/toxic-zombies.avif",
+		image: "/zombies/toxic-zombie.avif",
 		description:
 			"Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
 		games: [blackOps6],
@@ -1658,7 +1667,7 @@ const zombiesRegistry = {
 	elderDisciple: {
 		id: "elder-disciple",
 		title: "Elder Disciple",
-		lastUpdated: await getLastUpdated("../content/zombies/elder-disciple.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/elder-disciple.mdx"),
 		releaseDate: new Date("April 02, 2025 01:00 AM"),
 		image: "/zombies/elder-disciple.avif",
 		description:
@@ -1677,7 +1686,7 @@ const zombiesRegistry = {
 	zRex: {
 		id: "z-rex",
 		title: "Z-Rex",
-		lastUpdated: await getLastUpdated("../content/zombies/z-rex.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/z-rex.mdx"),
 		releaseDate: new Date("April 02, 2025 02:00 AM"),
 		image: "/zombies/z-rex.avif",
 		description:
@@ -1696,7 +1705,7 @@ const zombiesRegistry = {
 	kommandoKlaus: {
 		id: "kommando-klaus",
 		title: "Kommando Klaus",
-		lastUpdated: await getLastUpdated("../content/zombies/kommando-klaus.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/kommando-klaus.mdx"),
 		releaseDate: new Date("August 07, 2025 12:00 AM"),
 		image: "/zombies/kommando-klaus.avif",
 		description:
@@ -1715,7 +1724,7 @@ const zombiesRegistry = {
 	uberKlaus: {
 		id: "uber-klaus",
 		title: "Uber Klaus",
-		lastUpdated: await getLastUpdated("../content/zombies/uber-klaus.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/uber-klaus.mdx"),
 		releaseDate: new Date("August 07, 2025 01:00 AM"),
 		image: "/zombies/uber-klaus.avif",
 		description:
@@ -1734,7 +1743,7 @@ const zombiesRegistry = {
 	sam: {
 		id: "sam",
 		title: "S.A.M.",
-		lastUpdated: await getLastUpdated("../content/zombies/sam.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/sam.mdx"),
 		releaseDate: new Date("August 07, 2025 01:00 AM"),
 		image: "/zombies/sam.avif",
 		description:
@@ -1752,7 +1761,7 @@ const zombiesRegistry = {
 	uberRichtofen: {
 		id: "uber-richtofen",
 		title: "Uber Richtofen",
-		lastUpdated: await getLastUpdated("../content/zombies/uber-richtofen.mdx"),
+		lastUpdated: await getLastUpdated("./content/zombies/uber-richtofen.mdx"),
 		releaseDate: new Date("August 07, 2025 02:00 AM"),
 		image: "/zombies/uber-richtofen.avif",
 		description:

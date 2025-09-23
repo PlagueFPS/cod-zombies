@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import { getLastUpdated } from "@/utils/functions"
 import {
 	alphaOmega,
@@ -35,7 +36,7 @@ import {
 	voyageOfDespair,
 	zetsubouNoShima,
 } from "./maps"
-import { Predicate } from "effect"
+import { sortReleaseDateDesc } from "@/utils/functions.client"
 
 interface MainQuestComingSoon {
 	/** The unique identifier of the main quest */
@@ -69,6 +70,7 @@ interface MainQuestReleased {
 
 export type MainQuest = MainQuestComingSoon | MainQuestReleased
 export type ClientMainQuest = ReturnType<typeof getClientMainQuests>[number]
+export type MainQuestDifficulty = MainQuestReleased["difficulty"]
 
 /**
  * Gets a main quest by its key.
@@ -80,22 +82,24 @@ export const getMainQuestByKey = (key: MainQuestKey): MainQuest => mainQuestRegi
  * Gets all main quests.
  * @returns An array of main quests.
  */
-export const getMainQuests = (): MainQuest[] => Object.values(mainQuestRegistry)
+export const getMainQuests = (): MainQuest[] =>
+	Object.values(mainQuestRegistry).sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
 
 /**
  * Gets all main quests for the client.
  * @returns An array of main quests without the content property.
  */
-export const getClientMainQuests = () => getMainQuests().map(quest => {
-	if (Predicate.hasProperty(quest, "content")) {
-		const { content, ...rest } = quest
-		return {
-			...rest,
+export const getClientMainQuests = () =>
+	getMainQuests().map(quest => {
+		if (Predicate.hasProperty(quest, "content")) {
+			const { content, ...rest } = quest
+			return {
+				...rest,
+			}
 		}
-	}
 
-	return quest
-})
+		return quest
+	})
 
 const mainQuestRegistry = {
 	casimirMechanism: {

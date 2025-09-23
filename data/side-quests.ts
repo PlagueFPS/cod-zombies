@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import { getLastUpdated } from "@/utils/functions"
 import {
 	citadelleDesMorts,
@@ -14,6 +15,7 @@ import {
 	theTomb,
 	zetsubouNoShima,
 } from "./maps"
+import { sortReleaseDateDesc } from "@/utils/functions.client"
 
 interface SideQuestComingSoon {
 	/** The unique identifier for the side quest */
@@ -48,6 +50,7 @@ interface SideQuestReleased {
 }
 
 export type SideQuest = SideQuestComingSoon | SideQuestReleased
+export type ClientSideQuest = ReturnType<typeof getClientSideQuests>[number]
 /**
  * Get a SideQuest by key
  * @param key The key of the side quest
@@ -58,7 +61,23 @@ export const getSideQuestByKey = (key: SideQuestKey): SideQuest => sideQuestRegi
  * Get all SideQuests
  * @returns An array of all side quests
  */
-export const getSideQuests = (): SideQuest[] => Object.values(sideQuestRegistry)
+export const getSideQuests = (): SideQuest[] =>
+	Object.values(sideQuestRegistry).sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
+/**
+ * Get all SideQuests for the client
+ * @returns An array of all side quests without the content property
+ */
+export const getClientSideQuests = () =>
+	getSideQuests().map(quest => {
+		if (Predicate.hasProperty(quest, "content")) {
+			const { content, ...rest } = quest
+			return {
+				...rest,
+			}
+		}
+
+		return quest
+	})
 
 const sideQuestRegistry = {
 	free500Points: {

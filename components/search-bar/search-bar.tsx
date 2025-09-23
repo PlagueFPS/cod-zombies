@@ -40,7 +40,7 @@ export default function SearchBar({ showFull }: ISearchBar) {
 		.map(q => ({
 			id: q.id,
 			slug: q.map.id,
-			title: q.map.title,
+			title: q.title,
 			game: {
 				title: q.map.game.title,
 				slug: q.map.game.id,

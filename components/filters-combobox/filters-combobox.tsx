@@ -116,7 +116,9 @@ const FiltersCombobox = ({
 											className="cursor-pointer group-data-[selected=true]:bg-background group-data-[selected=true]:dark:bg-background/50"
 											tabIndex={-1}
 										/>
-										{title === "Game" ? <FilterLogo slug={item.slug} className="size-4" /> : null}
+										{title === "Game" ? (
+											<FilterLogo title={item.title} slug={item.id} className="size-4" />
+										) : null}
 										<Label
 											htmlFor={item.id}
 											className="w-full cursor-pointer font-normal"
@@ -156,9 +158,10 @@ export default FiltersCombobox
 
 interface IFilterLogo extends Omit<ImageProps, "src" | "alt"> {
 	slug: string
+	title: string
 }
 
-const FilterLogo = ({ slug, ...props }: IFilterLogo) => {
+const FilterLogo = ({ slug, title, ...props }: IFilterLogo) => {
 	const { imageLoaded, setImageLoaded, imageErrored, setImageErrored } = useImageState()
 
 	if (imageErrored) return null
@@ -167,8 +170,8 @@ const FilterLogo = ({ slug, ...props }: IFilterLogo) => {
 		<Image
 			{...props}
 			unoptimized
-			src={`/${slug}_logo.webp`}
-			alt={`${slug} Logo`}
+			src={`/games/${slug}_logo.webp`}
+			alt={`${title} Logo`}
 			height={32}
 			width={32}
 			onError={() => setImageErrored(true)}

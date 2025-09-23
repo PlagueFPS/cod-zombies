@@ -6,7 +6,7 @@ import GridLoader from "@/components/loaders/grid-loader"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { SideQuestFilters } from "@/components/quest-filters/side-quest-filters"
 import QuestGridClient from "@/components/quest-grid/quest-grid"
-import { getSideQuests } from "@/data/side-quests"
+import { getClientSideQuests } from "@/data/side-quests"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getServerUrl } from "@/utils/functions"
 
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 }
 
 export default function SideQuests() {
-	const quests = getSideQuests()
+	const quests = getClientSideQuests()
 
 	return (
 		<div className="flex w-full flex-col items-center justify-center">

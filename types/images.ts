@@ -12,4 +12,6 @@ export interface ImageProps {
 	className?: string
 	priority?: boolean
 	sizes?: string
+	width?: number
+	height?: number
 }

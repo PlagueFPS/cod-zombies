@@ -24,11 +24,6 @@ const nextConfig: NextConfig = {
 		formats: ["image/webp"],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920],
 		qualities: [75, 100],
-		localPatterns: [
-			{
-				pathname: "/api/payload/media/file/**",
-			},
-		],
 		minimumCacheTTL: 31536000, // 1 year in seconds
 	},
 	// biome-ignore lint/suspicious/useAwait: redirects must be async
