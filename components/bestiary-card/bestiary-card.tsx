@@ -1,4 +1,4 @@
-import type { ClientZombie } from "@/data/zombies"
+import type { Zombie } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "../custom-badges/custom-badges"
@@ -8,7 +8,7 @@ import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IBestiaryCard {
-	zombie: ClientZombie
+	zombie: Omit<Zombie, "combatStrategy">
 	zombieIndex: number
 }
 

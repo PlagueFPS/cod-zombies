@@ -181,25 +181,10 @@ import {
 import { getLastUpdated } from "@/utils/functions"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 
-export type ClientZombie = ReturnType<typeof getClientZombies>[number]
-export type ZombieType = ClientZombie["type"]
-
-/** Gets all zombies
- * @returns An array of all zombies
- */
-export const getZombies = (): Zombie[] =>
-	Object.values(zombiesRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
-export const getClientZombies = () =>
-	getZombies().map(zombie => {
-		const { combatStrategy, ...rest } = zombie
-		return rest
-	})
-/** Gets a zombie by its key
- * @param key The key of the zombie
- * @returns The zombie
- */
-export const getZombieByKey = (key: ZombieKey): Zombie => zombiesRegistry[key]
-
+/** Union type of all zombie types */
+export type ZombieType = Zombie["type"]
+/** Union type of all zombies */
+export type ZombieKey = keyof typeof zombiesRegistry
 export interface Zombie {
 	/** Unique identifier for the zombie */
 	id: string
@@ -1779,8 +1764,43 @@ const zombiesRegistry = {
 	},
 } as const satisfies Record<string, Zombie>
 
-/** Union type of all zombies */
-export type ZombieKey = keyof typeof zombiesRegistry
+const zombieMap = new Map<string, Zombie>()
+const zombies: Zombie[] = Object.values(zombiesRegistry).sort((a, b) =>
+	sortReleaseDateDesc(a.releaseDate, b.releaseDate),
+)
+for (const zombie of zombies) {
+	zombieMap.set(zombie.id, zombie)
+}
+
+/** Gets all zombies
+ * @returns An array of all zombies
+ */
+export const getZombies = (): Zombie[] => zombies
+
+/** Gets a zombie by its key
+ * @param key The key of the zombie
+ * @returns The zombie
+ */
+export const getZombieByKey = (key: ZombieKey): Zombie => zombiesRegistry[key]
+
+/** Gets a zombie by its id
+ * @param id The id of the zombie
+ * @returns The zombie
+ */
+export const getZombieById = (id: string) => zombieMap.get(id)
+
+/** Gets the previous and next zombies
+ * @param currentId The id of the current zombie
+ * @returns The previous and next zombies
+ */
+export const getAdjacentZombies = (currentId: string) => {
+	const index = zombies.findIndex(zombie => zombie.id === currentId)
+	return {
+		prev: index < zombies.length - 1 ? zombies[index + 1] : null,
+		next: index > 0 ? zombies[index - 1] : null,
+	}
+}
+
 export const {
 	zombie,
 	kommandoKlaus,

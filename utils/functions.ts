@@ -34,17 +34,19 @@ export const getServerUrl = () => {
  * @returns The last updated date of the file.
  */
 export const getLastUpdated = (filePath: string) => {
-	try {
-		const abs = path.join(process.cwd(), filePath)
-		const out = execSync(`git log -1 --format=%cI -- ${abs}`, {
-			encoding: "utf-8",
-			stdio: ["ignore", "pipe", "ignore"],
-		})
-		return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
-	} catch (error) {
-		console.error(error)
-		return new Date().toLocaleDateString("en-US", DATE_OPTIONS)
-	}
+	return new Date().toLocaleDateString("en-US", DATE_OPTIONS)
+	// TODO: test the implementation once all MDX content has been populated
+	// try {
+	// 	const abs = path.join(process.cwd(), filePath)
+	// 	const out = execSync(`git log -1 --format=%cI -- ${abs}`, {
+	// 		encoding: "utf-8",
+	// 		stdio: ["ignore", "pipe", "ignore"],
+	// 	})
+	// 	return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
+	// } catch (error) {
+	// 	console.error(error)
+	// 	return new Date().toLocaleDateString("en-US", DATE_OPTIONS)
+	// }
 }
 
 /**

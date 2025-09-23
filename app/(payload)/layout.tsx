@@ -7,7 +7,6 @@ import type React from "react"
 import { handleServerFunctions, RootLayout } from "@payloadcms/next/layouts"
 import { importMap } from "./admin/importMap"
 import "./custom.scss"
-import { Suspense } from "react"
 
 type Args = {
 	children: React.ReactNode
@@ -22,12 +21,6 @@ const serverFunction: ServerFunctionClient = async args => {
 	})
 }
 
-const Layout = ({ children }: Args) => (
-	<Suspense fallback={<div>Admin Panel Loading...</div>}>
-		<RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-			{children}
-		</RootLayout>
-	</Suspense>
-)
+const Layout = ({ children }: Args) => <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>{children}</RootLayout>
 
 export default Layout

@@ -57,6 +57,7 @@ const components: MDXComponents = {
 	thead: ({ children, ...props }: ComponentPropsWithoutRef<"thead">) => (
 		<thead {...props}>{children}</thead>
 	),
+	hr: ({ children, ...props }: ComponentPropsWithoutRef<"hr">) => <hr {...props} className="my-2" />,
 }
 
 export function useMDXComponents(): MDXComponents {

@@ -1,4 +1,3 @@
-"use cache"
 import type { Metadata } from "next"
 import {
 	AlertTriangle,
@@ -15,50 +14,38 @@ import {
 	Zap,
 } from "lucide-react"
 import { notFound } from "next/navigation"
-import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import {
 	ComingSoonBadge,
-	DraftBadge,
 	NewBadge,
 	RangeBadge,
 	TypeBadge,
 } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
-import PrevOrNextLoader from "@/components/loaders/prev-or-next-card-loader"
-import AmmoModTooltipClient from "@/components/rich-text/rich-inline-blocks/tooltips/ammo-mods/ammo-mod-tooltip-client"
-import RichTextRenderer from "@/components/rich-text/rich-text-renderer/rich-text-renderer"
+import AmmoModTooltip from "@/components/rich-text/rich-tooltips/ammo-mod-tooltip"
 import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import {
-	getAdjacentZombies,
-	getZombieBySlug,
-	getZombiesMetadata,
-	type PreviewZombie,
-	type ZombieBySlug,
-} from "@/data/zombies"
-import { env } from "@/env"
+import { getAdjacentZombies, getZombieById, getZombies, type Zombie } from "@/data/zombies"
 import { cn } from "@/lib/utils"
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants"
+import { useMDXComponents } from "@/mdx-components"
+import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getServerUrl } from "@/utils/functions"
 
-export const generateStaticParams = async () => {
-	const zombies = await getZombiesMetadata()
-	return zombies
-		.map(zombie => ({
-			slug: zombie.slug,
-		}))
-		.slice(0, MAP_LIMIT * 3)
+export const generateStaticParams = () => {
+	const zombies = getZombies()
+	return zombies.map(zombie => ({
+		id: zombie.id,
+	}))
 }
 
 export const generateMetadata = async ({
 	params,
-}: PageProps<"/bestiary/[slug]">): Promise<Metadata> => {
-	const { slug } = await params
-	const zombie = await getZombieBySlug(slug)
+}: PageProps<"/bestiary/[id]">): Promise<Metadata> => {
+	const { id } = await params
+	const zombie = getZombieById(id)
 	if (!zombie || zombie.state === "Coming Soon") {
 		notFound()
 	}
@@ -71,7 +58,7 @@ export const generateMetadata = async ({
 			...GLOBAL_OG_PROPS.openGraph,
 			title: zombie.title,
 			description,
-			url: `/bestiary/${zombie.slug}`,
+			url: `/bestiary/${zombie.id}`,
 		},
 		twitter: {
 			title: zombie.title,
@@ -79,17 +66,20 @@ export const generateMetadata = async ({
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${getServerUrl()}/bestiary/${zombie.slug}`,
+			canonical: `${getServerUrl()}/bestiary/${zombie.id}`,
 		},
 	}
 }
 
-export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]">) {
-	const { slug } = await params
-	const zombie = await getZombieBySlug(slug)
+export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">) {
+	const { id } = await params
+	const zombie = getZombieById(id)
 	if (!zombie || zombie.state === "Coming Soon") {
 		notFound()
 	}
+
+	const { prev, next } = getAdjacentZombies(id)
+	const { default: content } = await zombie.combatStrategy()
 
 	const speedProgress = () => {
 		switch (zombie.speed) {
@@ -110,18 +100,17 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 				<Breadcrumbs
 					links={[
 						{ title: "Bestiary", href: "/bestiary" },
-						{ title: zombie.title, href: `/bestiary/${zombie.slug}` },
+						{ title: zombie.title, href: `/bestiary/${zombie.id}` },
 					]}
 				/>
 			</div>
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-4">
-						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
 						{zombie.state === "New" ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 					</div>
-					<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.slug}`} />
+					<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
 				</div>
 				<CardHeader>
 					<CardTitle className="dark:dark-text-gradient font-extrabold text-3xl text-gradient md:text-4xl">
@@ -136,6 +125,8 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 								<FeaturedImage
 									featuredImage={zombie.image}
 									quality={100}
+									width={422}
+									height={422}
 									sizes="422px"
 									priority
 									className="mb-4 aspect-square w-full rounded-lg object-cover object-top"
@@ -145,6 +136,8 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 								featuredImage={zombie.image}
 								alt={`${zombie.title} image`}
 								quality={100}
+								width={422}
+								height={422}
 								sizes="422px"
 								priority
 								className="mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none"
@@ -158,9 +151,9 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 												First Appeared In
 											</span>
 										</div>
-										{zombie.maps[0] ? (
+										{zombie.maps.at(-1) ? (
 											<span className="text-foreground dark:text-foreground/80">
-												{zombie.maps[0].title}
+												{zombie.maps.at(-1)?.title}
 											</span>
 										) : null}
 									</div>
@@ -192,18 +185,17 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 									Map Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.slug !== "zombie" ? (
-										zombie.maps.map(map => (
-											<Badge
-												key={map.slug}
-												className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
-											>
-												{map.title}
-											</Badge>
-										))
-									) : (
-										<Badge className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1">
-											Appears in all maps
+									{zombie.maps.reverse().slice(0, 16).map(map => (
+										<Badge
+											key={map.id}
+											className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
+										>
+											{map.title}
+										</Badge>
+									))}
+									{zombie.maps.length > 16 && (
+										<Badge className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient">
+											{`+${zombie.maps.length - 16} more`}
 										</Badge>
 									)}
 								</div>
@@ -214,20 +206,14 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 									Game Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.slug !== "zombie" ? (
-										zombie.games.map(game => (
-											<Badge
-												key={game.slug}
-												className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
-											>
-												{game.title}
-											</Badge>
-										))
-									) : (
-										<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1">
-											Appears in all games
+									{zombie.games.map(game => (
+										<Badge
+											key={game.id}
+											className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
+										>
+											{game.title}
 										</Badge>
-									)}
+									)).reverse()}
 								</div>
 							</div>
 							<div>
@@ -260,7 +246,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 								<div className="flex flex-wrap items-center gap-2">
 									{zombie.elementalWeakness.length > 0 ? (
 										zombie.elementalWeakness.map(weakness => (
-											<AmmoModTooltipClient key={weakness.id} ammoMod={weakness} />
+											<AmmoModTooltip key={weakness.id} ammoMod={weakness} />
 										))
 									) : (
 										<span className="text-orange-800 dark:text-orange-200">
@@ -336,42 +322,22 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 							<Info className="size-6 text-green-600 dark:text-green-300" />
 							<h3 className="font-bold text-xl">Combat Strategy</h3>
 						</div>
-						<RichTextRenderer
-							body={zombie.combatStrategy}
-							overrideStyles
-							className="text-foreground text-sm dark:text-foreground/80"
-						/>
+						<div className="text-foreground dark:text-foreground/80 text-sm">{content({ components: useMDXComponents() })}</div>
 					</CardContent>
 				</Card>
 			</section>
 			<section className="mt-8 flex w-full flex-row items-center justify-center">
 				<div className="mx-auto flex flex-col items-center justify-center gap-8 px-3 lg:flex-row xl:mr-0 xl:ml-auto xl:px-0">
-					<Suspense fallback={<PrevOrNextLoader type="Zombie" />}>
-						<PrevOrNextZombie zombie={zombie} />
-					</Suspense>
+					{prev && <PrevOrNextZombieCard zombie={prev} prev />}
+					{next && <PrevOrNextZombieCard zombie={next} />}
 				</div>
 			</section>
 		</article>
 	)
 }
 
-interface PrevOrNextZombie {
-	zombie: ZombieBySlug
-}
-
-const PrevOrNextZombie = async ({ zombie }: PrevOrNextZombie) => {
-	const { prevZombie, nextZombie } = await getAdjacentZombies(zombie.releaseDate)
-
-	return (
-		<>
-			{prevZombie && <PrevOrNextZombieCard zombie={prevZombie} prev />}
-			{nextZombie && <PrevOrNextZombieCard zombie={nextZombie} />}
-		</>
-	)
-}
-
 interface PrevOrNextZombieCard {
-	zombie: PreviewZombie
+	zombie: Zombie
 	prev?: boolean
 }
 
@@ -380,7 +346,7 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 
 	return (
 		<CustomLink
-			href={`/bestiary/${zombie.slug}`}
+			href={`/bestiary/${zombie.id}`}
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary xl:max-w-full dark:shadow-none",
 				{
@@ -397,7 +363,6 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
 					{zombie.state === "Coming Soon" ? (
 						<ComingSoonBadge />
 					) : zombie.state === "New" ? (
@@ -405,12 +370,14 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 					) : null}
 					<TypeBadge type={zombie.type} />
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{zombie.map.title}
+						{zombie.maps[0]?.title}
 					</Badge>
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
 					<FeaturedImage
 						featuredImage={zombie.image}
+						width={384}
+						height={176}
 						sizes="(max-width: 1280px) 320px, 384px"
 						className="scale-110"
 					/>
@@ -419,6 +386,8 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 					<FeaturedImage
 						featuredImage={zombie.image}
 						alt={alt}
+						width={384}
+						height={176}
 						sizes="(max-width: 1280px) 320px, 384px"
 						className="h-full rounded-lg object-cover object-top"
 					/>

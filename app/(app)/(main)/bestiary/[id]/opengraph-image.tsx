@@ -1,12 +1,9 @@
-import { FetchHttpClient } from "@effect/platform"
-import { Effect, Layer } from "effect"
+import { Effect } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
 import { getFonts, optimizeImageForOG } from "@/data/og-images"
-import { getZombieBySlug } from "@/data/zombies"
-import { FileStorage } from "@/lib/services/file-storage"
+import { getZombieById } from "@/data/zombies"
 import { OgImageGenerationError } from "@/types/errors"
-import { DATE_OPTIONS } from "@/utils/constants"
 
 export const alt = "Zombie Info Card Preview"
 export const size = {
@@ -15,18 +12,14 @@ export const size = {
 }
 export const contentType = "image/png"
 
-export default async function ZombieImage({ params }: PageProps<"/bestiary/[slug]">) {
+export default async function ZombieImage({ params }: PageProps<"/bestiary/[id]">) {
 	return await Effect.gen(function* () {
-		const { slug } = yield* Effect.promise(() => params)
-		const zombie = yield* Effect.promise(() => getZombieBySlug(slug))
-		if (!zombie?.image.url)
-			return yield* new OgImageGenerationError({
-				message: "No image URL found for zombie",
-				cause: `Could not find image URL for zombie: ${slug}`,
-			})
+		const { id } = yield* Effect.promise(() => params)
+		const zombie = getZombieById(id)
+		if (!zombie) return new Response("Not Found", { status: 404 })
 
 		const { boldFont, semiBoldFont } = yield* getFonts
-		const supportedImage = yield* optimizeImageForOG(zombie.image.url)
+		const supportedImage = yield* optimizeImageForOG(zombie.image)
 
 		const getTypeCSSProps = (): React.CSSProperties => {
 			switch (zombie.type) {
@@ -74,8 +67,7 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[slug
 			>
 				{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
 				<img
-					// @ts-expect-error Satori accepts ArrayBuffer/typed arrays for <img> at runtime.
-					src={supportedImage.buffer}
+					src={supportedImage}
 					alt={zombie.title}
 					width={1200}
 					height={630}
@@ -170,7 +162,7 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[slug
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{new Date(zombie.updatedAt).toLocaleDateString("en-US", DATE_OPTIONS)}</span>
+					<span>{zombie.lastUpdated}</span>
 				</div>
 			</div>,
 			{
@@ -211,13 +203,10 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[slug
 		Effect.withLogSpan("zombie_og_image_generation"),
 		Effect.tapError(Effect.logError),
 		Effect.catchTags({
-			GetFileError: error => Effect.succeed(new Response(error.message, { status: 404 })),
 			ReadFileError: error => Effect.succeed(new Response(error.message, { status: 404 })),
-			RequestError: error => Effect.succeed(new Response(error.message, { status: 400 })),
 		}),
 		Effect.catchAll(error => Effect.succeed(new Response(error.message, { status: 500 }))),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Layer.merge(FileStorage.Default, FetchHttpClient.layer)),
 		Effect.runPromise,
 	)
 }

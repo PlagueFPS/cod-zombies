@@ -5,7 +5,7 @@ import BestiaryGridClient from "@/components/bestiary-grid/bestiary-grid"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import GridSection from "@/components/grid-section/grid-section"
 import GridLoader from "@/components/loaders/grid-loader"
-import { getClientZombies } from "@/data/zombies"
+import { getZombies } from "@/data/zombies"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getServerUrl } from "@/utils/functions"
 
@@ -32,7 +32,10 @@ export const metadata: Metadata = {
 }
 
 export default function BestiaryPage() {
-	const zombies = getClientZombies()
+	const zombies = getZombies().map(zombie => {
+		const { combatStrategy, ...rest } = zombie
+		return rest
+	})
 	return (
 		<div className="flex w-full flex-col items-center justify-center">
 			<div className="container flex flex-col items-center justify-center gap-6">
