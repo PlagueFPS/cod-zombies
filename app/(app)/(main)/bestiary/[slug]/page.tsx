@@ -121,10 +121,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[slug]
 						{zombie.state === "New" ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 					</div>
-					<ShareButton
-						title={zombie.title}
-						url={`${getServerUrl()}/bestiary/${zombie.slug}`}
-					/>
+					<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.slug}`} />
 				</div>
 				<CardHeader>
 					<CardTitle className="dark:dark-text-gradient font-extrabold text-3xl text-gradient md:text-4xl">

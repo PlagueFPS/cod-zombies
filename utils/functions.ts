@@ -40,7 +40,7 @@ export const getLastUpdated = (filePath: string) => {
 			encoding: "utf-8",
 			stdio: ["ignore", "pipe", "ignore"],
 		})
-	return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
+		return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
 	} catch (error) {
 		console.error(error)
 		return new Date().toLocaleDateString("en-US", DATE_OPTIONS)

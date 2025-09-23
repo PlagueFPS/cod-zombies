@@ -13,7 +13,9 @@ export default function TerminusCode() {
 		const validValues = decodeTerminusCode(values)
 		if (validValues._tag === "Left") {
 			console.error(validValues.left)
-			toast.error(`Invalid Values. Only positive, single digit, or double digit numbers are allowed.`)
+			toast.error(
+				`Invalid Values. Only positive, single digit, or double digit numbers are allowed.`,
+			)
 			return
 		}
 

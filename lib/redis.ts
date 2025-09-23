@@ -6,9 +6,7 @@ import { Duration, Redacted } from "effect"
 import { headers } from "next/headers"
 import { after } from "next/server"
 import { env } from "@/env"
-import {
-	RatelimitExceededError,
-} from "@/types/errors"
+import { RatelimitExceededError } from "@/types/errors"
 
 export const redis = new Redis({
 	url: Redacted.value(env.REDIS_URL),

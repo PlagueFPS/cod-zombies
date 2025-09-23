@@ -14,7 +14,8 @@ export default function MapsPageLoading() {
 					<Breadcrumbs links={[{ title: "Maps", href: "/maps" }]} />
 					<GridSection title="Interactive Maps">
 						<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
-							Browse our collection of interactive maps showcasing key spawn points, locations, and more.
+							Browse our collection of interactive maps showcasing key spawn points, locations, and
+							more.
 						</p>
 						<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
 							{maps.map((map, index) => (

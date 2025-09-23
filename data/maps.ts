@@ -1,3 +1,4 @@
+import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
 	blackOps1,
 	blackOps2,
@@ -8,13 +9,13 @@ import {
 	type Game,
 	worldAtWar,
 } from "./games"
-import { sortReleaseDateDesc } from "@/utils/functions.client"
 
 /**
  * Gets all maps.
  * @returns An array of maps.
  */
-export const getMaps = (): Maps[] => Object.values(mapRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
+export const getMaps = (): Maps[] =>
+	Object.values(mapRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
 /**
  * Gets a map by its key.
  * @param key The key of the map.

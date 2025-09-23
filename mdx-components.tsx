@@ -48,15 +48,9 @@ const components: MDXComponents = {
 	table: ({ children, ...props }: ComponentPropsWithoutRef<"table">) => (
 		<table {...props}>{children}</table>
 	),
-	tr: ({ children, ...props }: ComponentPropsWithoutRef<"tr">) => (
-		<tr {...props}>{children}</tr>
-	),
-	td: ({ children, ...props }: ComponentPropsWithoutRef<"td">) => (
-		<td {...props}>{children}</td>
-	),
-	th: ({ children, ...props }: ComponentPropsWithoutRef<"th">) => (
-		<th {...props}>{children}</th>
-	),
+	tr: ({ children, ...props }: ComponentPropsWithoutRef<"tr">) => <tr {...props}>{children}</tr>,
+	td: ({ children, ...props }: ComponentPropsWithoutRef<"td">) => <td {...props}>{children}</td>,
+	th: ({ children, ...props }: ComponentPropsWithoutRef<"th">) => <th {...props}>{children}</th>,
 	tbody: ({ children, ...props }: ComponentPropsWithoutRef<"tbody">) => (
 		<tbody {...props}>{children}</tbody>
 	),

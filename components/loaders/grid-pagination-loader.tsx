@@ -17,7 +17,11 @@ export default function GridPaginationLoader({ pages = 3 }: IGridPaginationLoade
 		<Pagination>
 			<PaginationContent>
 				<PaginationItem>
-					<PaginationPrevious href={`#`} aria-disabled className={"pointer-events-none opacity-25"} />
+					<PaginationPrevious
+						href={`#`}
+						aria-disabled
+						className={"pointer-events-none opacity-25"}
+					/>
 				</PaginationItem>
 				{Array.from({ length: pages }, (_, page) => (
 					<PaginationItem key={`pagination-loader-item-${page + 1}`}>

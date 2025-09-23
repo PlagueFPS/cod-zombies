@@ -8,11 +8,7 @@ import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import ZombieReleaseEmail, { type IZombieRelease } from "@/emails/zombie-release-email"
 import { env } from "@/env"
 import { Email } from "@/lib/services/emails"
-import {
-	ContactExistsError,
-	ContactNotFoundError,
-	CreateBroadcastError,
-} from "@/types/errors"
+import { ContactExistsError, ContactNotFoundError, CreateBroadcastError } from "@/types/errors"
 import { generateToken, getServerUrl } from "@/utils/functions"
 
 interface EmailProps {

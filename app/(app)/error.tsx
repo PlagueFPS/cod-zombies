@@ -13,8 +13,8 @@ export default function RootError({ error, reset }: ErrorProps) {
 			<div className="mx-auto flex flex-col items-center justify-center gap-4">
 				<ErrorTitle>Oh no! Something went wrong!</ErrorTitle>
 				<ErrorDescription className="text-center">
-					An error occured while viewing {pathname === "/" ? "the home page" : pathname}, if you continue to experience
-					this error please use our feedback form to report the issue
+					An error occured while viewing {pathname === "/" ? "the home page" : pathname}, if you
+					continue to experience this error please use our feedback form to report the issue
 				</ErrorDescription>
 			</div>
 			<div className="flex items-center justify-center gap-4">

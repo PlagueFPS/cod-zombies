@@ -2,7 +2,8 @@ import type { DetailedHTMLProps, HTMLAttributes } from "react"
 import { connection } from "next/server"
 import { cn } from "@/lib/utils"
 
-interface CopyrightProps extends DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement> {
+interface CopyrightProps
+	extends DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement> {
 	className?: string
 }
 
@@ -17,9 +18,10 @@ export default async function Copyright({ className }: CopyrightProps) {
 		>
 			<p>&copy; {new Date().getFullYear()} Call of Duty: Zombies Guides</p>
 			<p className="md:pr-12">
-				This website is an independent, unofficial Call of Duty: Zombies fan site. It is not affiliated with or endorsed
-				by Activision Blizzard. All trademarks, service marks, trade names, trade dress, product names, and logos
-				appearing on this site are the property of their respective owners.
+				This website is an independent, unofficial Call of Duty: Zombies fan site. It is not
+				affiliated with or endorsed by Activision Blizzard. All trademarks, service marks, trade
+				names, trade dress, product names, and logos appearing on this site are the property of
+				their respective owners.
 			</p>
 		</div>
 	)

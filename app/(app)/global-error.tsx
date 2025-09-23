@@ -10,14 +10,19 @@ export default function GlobalError({ error, reset }: ErrorProps) {
 	return (
 		<html lang="en" className="bg-background">
 			<body className="flex min-h-dvh flex-col">
-				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
 					<main className="mt-10 mb-4 grow">
 						<div className="flex h-[75vh] flex-col items-center justify-center gap-16">
 							<div className="mx-auto flex flex-col items-center justify-center gap-4">
 								<ErrorTitle>Oh no! Something went wrong!</ErrorTitle>
 								<ErrorDescription className="text-center">
-									An error occured while loading, if you continue to experience this error please use our feedback form
-									to report the issue
+									An error occured while loading, if you continue to experience this error please
+									use our feedback form to report the issue
 								</ErrorDescription>
 							</div>
 							<div className="flex items-center justify-center gap-4">

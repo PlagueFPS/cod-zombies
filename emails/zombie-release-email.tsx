@@ -108,10 +108,7 @@ export default function ZombieReleaseEmail({
 							</Text>
 
 							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
-								<Link
-									href={`${serverUrl}/privacy-policy`}
-									className="text-[#8898aa] underline"
-								>
+								<Link href={`${serverUrl}/privacy-policy`} className="text-[#8898aa] underline">
 									Privacy Policy
 								</Link>
 							</Text>

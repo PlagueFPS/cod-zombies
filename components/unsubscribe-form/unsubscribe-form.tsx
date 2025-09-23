@@ -8,7 +8,10 @@ import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 
 export default function UnsubscribeForm() {
-	const [state, action, isPending] = useActionState(unsubscribeFromNewsletter, { success: false, message: "" })
+	const [state, action, isPending] = useActionState(unsubscribeFromNewsletter, {
+		success: false,
+		message: "",
+	})
 
 	useEffect(() => {
 		if (state.message) {
@@ -32,7 +35,13 @@ export default function UnsubscribeForm() {
 		<form action={action} className="w-full space-y-4">
 			<div className="space-y-2">
 				<Label htmlFor="email">Email address</Label>
-				<Input id="email" name="email" placeholder="you@example.com" required disabled={isPending} />
+				<Input
+					id="email"
+					name="email"
+					placeholder="you@example.com"
+					required
+					disabled={isPending}
+				/>
 			</div>
 			<Button type="submit" variant={"default"} disabled={isPending} className="w-fit gap-2">
 				{isPending ? (

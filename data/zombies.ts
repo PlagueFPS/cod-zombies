@@ -187,7 +187,8 @@ export type ZombieType = ClientZombie["type"]
 /** Gets all zombies
  * @returns An array of all zombies
  */
-export const getZombies = (): Zombie[] => Object.values(zombiesRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
+export const getZombies = (): Zombie[] =>
+	Object.values(zombiesRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
 export const getClientZombies = () =>
 	getZombies().map(zombie => {
 		const { combatStrategy, ...rest } = zombie

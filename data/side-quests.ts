@@ -62,7 +62,9 @@ export const getSideQuestByKey = (key: SideQuestKey): SideQuest => sideQuestRegi
  * @returns An array of all side quests
  */
 export const getSideQuests = (): SideQuest[] =>
-	Object.values(sideQuestRegistry).sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
+	Object.values(sideQuestRegistry).sort((a, b) =>
+		sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
+	)
 /**
  * Get all SideQuests for the client
  * @returns An array of all side quests without the content property
@@ -228,9 +230,7 @@ const sideQuestRegistry = {
 	},
 	freeMegaGobblegumDerEisendrache: {
 		id: "free-mega-gobblegum-der-eisendrache",
-		lastUpdated: getLastUpdated(
-			"./content/side-quests/free-mega-gobblegum-der-eisendrache.mdx",
-		),
+		lastUpdated: getLastUpdated("./content/side-quests/free-mega-gobblegum-der-eisendrache.mdx"),
 		title: "Free Mega Gobblegum",
 		description: `Learn how to obtain a Free Mega GobbleGum that can help enhance your game while you progress the Main Quest.`,
 		map: derEisendrache,
@@ -744,9 +744,7 @@ const sideQuestRegistry = {
 	},
 	hiddenPowerUpsCitadelleDesMorts: {
 		id: "hidden-power-ups-citadelle-des-morts",
-		lastUpdated: getLastUpdated(
-			"./content/side-quests/hidden-power-ups-citadelle-des-morts.mdx",
-		),
+		lastUpdated: getLastUpdated("./content/side-quests/hidden-power-ups-citadelle-des-morts.mdx"),
 		title: "Hidden Power Ups",
 		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
 		map: citadelleDesMorts,

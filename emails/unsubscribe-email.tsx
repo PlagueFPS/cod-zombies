@@ -79,10 +79,7 @@ export default function UnsubscribeEmail({ unsubscribeUrl }: IUnsubscribeEmail) 
 								© {new Date().getFullYear()} Call of Duty: Zombies Guides. All rights reserved.
 							</Text>
 							<Text className="mt-[16px] text-[#8898aa] text-[14px]">
-								<Link
-									href={`${serverUrl}/privacy-policy`}
-									className="text-[#6b7280] underline"
-								>
+								<Link href={`${serverUrl}/privacy-policy`} className="text-[#6b7280] underline">
 									Privacy Policy
 								</Link>
 							</Text>

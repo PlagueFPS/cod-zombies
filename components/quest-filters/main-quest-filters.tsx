@@ -10,7 +10,10 @@ export default function MainQuestFilters() {
 	const games = getGames()
 	const questGames = new Set(mainQuests.map(q => q.map.game.id))
 	const questDifficulties = new Set(
-		mainQuests.map(q => q.difficulty).filter(difficulty => difficulty !== undefined).sort(sortDifficulties),
+		mainQuests
+			.map(q => q.difficulty)
+			.filter(difficulty => difficulty !== undefined)
+			.sort(sortDifficulties),
 	)
 	const gameFilters = games
 		.filter(g => questGames.has(g.id))

@@ -13,8 +13,8 @@ export default function XSVG({ ...props }: XSVGProps) {
 			height="30"
 			width="30"
 			xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="X"
+			role="img"
+			aria-label="X"
 		>
 			<path
 				fillRule="evenodd"

@@ -22,5 +22,5 @@ export const env = createEnv({
 		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 		STORAGE_READ_WRITE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
 	},
-	experimental__runtimeEnv: {}
+	experimental__runtimeEnv: {},
 })

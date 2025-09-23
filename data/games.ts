@@ -1,7 +1,8 @@
 /** Gets all games.
  * @returns An array of all games.
  */
-export const getGames = (): Game[] => Object.values(gameRegistry).sort((a, b) => b.releaseDate.getTime() - a.releaseDate.getTime())
+export const getGames = (): Game[] =>
+	Object.values(gameRegistry).sort((a, b) => b.releaseDate.getTime() - a.releaseDate.getTime())
 
 /** Gets a game by its key.
  * @param key The key of the game.
