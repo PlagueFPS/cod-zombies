@@ -74,6 +74,8 @@ import {
  */
 export const getPerkByKey = (key: PerkKey): Perk => perkRegistry[key]
 
+export const getPerks = (): Perk[] => Object.values(perkRegistry)
+
 export interface Perk {
 	/** The unique identifier of the perk */
 	id: string
@@ -268,7 +270,7 @@ const perkRegistry = {
 		id: "stamin-up-bo6",
 		title: "Stamin-Up",
 		description: "Increase run and sprint speed.",
-		image: "/perks/stamin-up-bo6.avif",
+		image: "/perks/stamin-up-cold-war.avif",
 		augments: [freeFaller, dasher, stalker, hardTarget, quarterback, hotFoot],
 	},
 	juggernogBO6: {

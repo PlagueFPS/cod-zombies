@@ -45,6 +45,7 @@ import { blackOps4, blackOps6, type Game } from "./games"
  * @returns The ammo mod.
  */
 export const getAmmoModByKey = (key: AmmoModKey): AmmoMod => ammoModRegistry[key]
+export const getAmmoMods = (): AmmoMod[] => Object.values(ammoModRegistry)
 
 export interface AmmoMod {
 	/** The unique identifier of the ammo mod */

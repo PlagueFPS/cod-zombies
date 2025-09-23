@@ -3,6 +3,7 @@
  * @returns The augment.
  */
 export const getAugmentByKey = (key: AugmentKey): Augment => augmentRegistry[key]
+export const getAugments = (): Augment[] => Object.values(augmentRegistry)
 
 export interface Augment {
 	/** The unique identifier of the augment */
@@ -146,7 +147,7 @@ const augmentRegistry = {
 		title: "Tribologist",
 		description: "Sliding distance and speed are increased.",
 		type: "Minor",
-		image: "/augments/tribologist-minor-augment.webp",
+		image: "/augments/hot-foot-minor-augment.webp",
 	},
 	fetidUpgraid: {
 		id: "fetid-upgraid",
@@ -646,8 +647,8 @@ const augmentRegistry = {
 		id: "repair-boost",
 		title: "Repair Boost",
 		description: "Repair more armor per kill.",
-		type: "Major",
-		image: "/augments/repair-boost-major-augment.webp",
+		type: "Minor",
+		image: "/augments/repair-boost-minor-augment.webp",
 	},
 	extensionFrenziedGuard: {
 		id: "extension-frenzied-guard",
@@ -690,7 +691,7 @@ const augmentRegistry = {
 		title: "Broad Beam",
 		description: "Significantly increases the size of the beam.",
 		type: "Minor",
-		image: "/augments/broad-beam-minor-augment.webp",
+		image: "/augments/supermassive-minor-augment.webp",
 	},
 	heavyShadow: {
 		id: "heavy-shadow",
@@ -846,7 +847,7 @@ const augmentRegistry = {
 		title: "Vulnera Bean",
 		description: "Slightly increase enemy elemental weakness damage.",
 		type: "Minor",
-		image: "/augments/vulnera-bean-minor-augment.webp",
+		image: "/augments/retaliation-minor-augment.webp",
 	},
 	pineappleBlast: {
 		id: "pineapple-blast",

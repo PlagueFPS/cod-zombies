@@ -42,6 +42,7 @@ import {
  */
 export const getFieldUpgradeByKey = (key: FieldUpgradeKey): FieldUpgrade =>
 	fieldUpgradeRegistry[key]
+export const getFieldUpgrades = (): FieldUpgrade[] => Object.values(fieldUpgradeRegistry)
 
 export interface FieldUpgrade {
 	/** The unique identifier of the field upgrade */

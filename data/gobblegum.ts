@@ -1,10 +1,10 @@
 import { blackOps3, blackOps6, type Game } from "./games"
-/**
- * Gets a gobblegum by its key.
- * @param key The key of the gobblegum.
- * @returns The gobblegum.
- */
-export const getGobblegumByKey = (key: GobblegumKey): Gobblegum => gobblegumRegistry[key]
+/** Union of all Gobblegum keys */
+export type GobblegumKey = keyof typeof gobblegumRegistry
+/** Union of all Gobblegum types */
+export type GobblegumType = Gobblegum["type"]
+/** Union of all Gobblegum rarities */
+export type GobblegumRarity = Gobblegum["rarity"]
 export interface Gobblegum {
 	/** The unique identifier of the gobblegum */
 	id: string
@@ -30,6 +30,14 @@ export interface Gobblegum {
 	image: string
 }
 
+/**
+ * Gets a gobblegum by its key.
+ * @param key The key of the gobblegum.
+ * @returns The gobblegum.
+ */
+export const getGobblegumByKey = (key: GobblegumKey): Gobblegum => gobblegumRegistry[key]
+export const getGobblegums = (): Gobblegum[] => Object.values(gobblegumRegistry)
+
 const gobblegumRegistry = {
 	alchemcialAntithesis: {
 		id: "alchemcial-antithesis",
@@ -39,7 +47,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/alchemcial-antithesis.avif",
+		image: "/gobblegums/alchemical-antithesis.avif",
 	},
 	anywhereButHere: {
 		id: "anywhere-but-here",
@@ -49,7 +57,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/anywhere-but-here.avif",
+		image: "/gobblegums/anywhere-but-here.avif",
 	},
 	inPlainSight: {
 		id: "in-plain-sight",
@@ -58,7 +66,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/in-plain-sight.avif",
+		image: "/gobblegums/in-plain-sight.avif",
 	},
 	stockOption: {
 		id: "stock-option",
@@ -68,7 +76,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/stock-option.avif",
+		image: "/gobblegums/stock-option.avif",
 	},
 	dangerClosest: {
 		id: "danger-closest",
@@ -77,7 +85,7 @@ const gobblegumRegistry = {
 		type: "Round-Based",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/danger-closest.avif",
+		image: "/gobblegums/danger-closest.avif",
 	},
 	perkaholic: {
 		id: "perkaholic",
@@ -86,7 +94,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Ultra-Rare Mega",
 		game: blackOps3,
-		image: "/gobblegum/perkaholic.avif",
+		image: "/gobblegums/perkaholic.avif",
 	},
 	shoppingFree: {
 		id: "shopping-free",
@@ -95,7 +103,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Ultra-Rare Mega",
 		game: blackOps3,
-		image: "/gobblegum/shopping-free.avif",
+		image: "/gobblegums/shopping-free.avif",
 	},
 	reignDrops: {
 		id: "reign-drops",
@@ -104,7 +112,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Ultra-Rare Mega",
 		game: blackOps3,
-		image: "/gobblegum/reign-drops.avif",
+		image: "/gobblegums/reign-drops.avif",
 	},
 	immolationLiquidation: {
 		id: "immolation-liquidation",
@@ -113,7 +121,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Mega",
 		game: blackOps3,
-		image: "/gobblegum/immolation-liquidation.avif",
+		image: "/gobblegums/immolation-liquidation.avif",
 	},
 	nearDeathExperience: {
 		id: "near-death-experience",
@@ -123,7 +131,7 @@ const gobblegumRegistry = {
 		type: "Round-Based",
 		rarity: "Ultra-Rare Mega",
 		game: blackOps3,
-		image: "/gobblegum/near-death-experience.avif",
+		image: "/gobblegums/near-death-experience.avif",
 	},
 	wallPower: {
 		id: "wall-power",
@@ -132,7 +140,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Rare-Mega",
 		game: blackOps3,
-		image: "/gobblegum/wall-power.avif",
+		image: "/gobblegums/wall-power.avif",
 	},
 	roundRobbin: {
 		id: "round-robbin",
@@ -141,7 +149,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Ultra-Rare Mega",
 		game: blackOps3,
-		image: "/gobblegum/round-robbin.avif",
+		image: "/gobblegums/round-robbin.avif",
 	},
 	swordFlay: {
 		id: "sword-flay",
@@ -151,7 +159,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/sword-flay.avif",
+		image: "/gobblegums/sword-flay.avif",
 	},
 	powerVacuum: {
 		id: "power-vacuum",
@@ -161,7 +169,7 @@ const gobblegumRegistry = {
 		type: "Round-Based",
 		rarity: "Ultra-Rare Mega",
 		game: blackOps3,
-		image: "/gobblegum/power-vacuum.avif",
+		image: "/gobblegums/power-vacuum.avif",
 	},
 	idleEyes: {
 		id: "idle-eyes",
@@ -170,7 +178,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Mega",
 		game: blackOps3,
-		image: "/gobblegum/idle-eyes.avif",
+		image: "/gobblegums/idle-eyes.avif",
 	},
 	fearInHeadlights: {
 		id: "fear-in-headlights",
@@ -179,7 +187,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Rare-Mega",
 		game: blackOps3,
-		image: "/gobblegum/fear-in-headlights.avif",
+		image: "/gobblegums/fear-in-headlights.avif",
 	},
 	ephemeralEnhancement: {
 		id: "ephemeral-enhancement",
@@ -189,7 +197,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Mega",
 		game: blackOps3,
-		image: "/gobblegum/ephemeral-enhancement.avif",
+		image: "/gobblegums/ephemeral-enhancement.avif",
 	},
 	cratePower: {
 		id: "crate-power",
@@ -198,7 +206,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Rare-Mega",
 		game: blackOps3,
-		image: "/gobblegum/crate-power.avif",
+		image: "/gobblegums/crate-power.avif",
 	},
 	arsenalAccelerator: {
 		id: "arsenal-accelerator",
@@ -207,7 +215,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/arsenal-accelerator.avif",
+		image: "/gobblegums/arsenal-accelerator.avif",
 	},
 	selfMedication: {
 		id: "self-medication",
@@ -216,7 +224,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Ultra-Rare Mega",
 		game: blackOps3,
-		image: "/gobblegum/self-medication.avif",
+		image: "/gobblegums/self-medication.avif",
 	},
 	undeadManWalking: {
 		id: "undead-man-walking",
@@ -225,7 +233,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Classic",
 		game: blackOps3,
-		image: "/gobblegum/undead-man-walking.avif",
+		image: "/gobblegums/undead-man-walking.avif",
 	},
 	wonderbar: {
 		id: "wonderbar",
@@ -235,7 +243,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Ultra",
 		game: blackOps6,
-		image: "/gobblegum/wonderbar.avif",
+		image: "/gobblegums/wonderbar.avif",
 	},
 	shieldsUp: {
 		id: "shields-up",
@@ -244,7 +252,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Rare",
 		game: blackOps6,
-		image: "/gobblegum/shields-up.avif",
+		image: "/gobblegums/shields-up.avif",
 	},
 	nearDeathExperienceBO6: {
 		id: "near-death-experience-bo6",
@@ -254,7 +262,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Ultra",
 		game: blackOps6,
-		image: "/gobblegum/near-death-experience-bo6.avif",
+		image: "/gobblegums/near-death-experience-bo6.avif",
 	},
 	idleEyesBO6: {
 		id: "idle-eyes-bo6",
@@ -263,7 +271,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Legendary",
 		game: blackOps6,
-		image: "/gobblegum/idle-eyes-bo6.avif",
+		image: "/gobblegums/idle-eyes-bo6.avif",
 	},
 	killJoy: {
 		id: "kill-joy",
@@ -272,7 +280,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Rare",
 		game: blackOps6,
-		image: "/gobblegum/kill-joy.avif",
+		image: "/gobblegums/kill-joy.avif",
 	},
 	profitSharing: {
 		id: "profit-sharing",
@@ -282,7 +290,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Epic",
 		game: blackOps6,
-		image: "/gobblegum/profit-sharing.avif",
+		image: "/gobblegums/profit-sharing.avif",
 	},
 	arsenalAcceleratorBO6: {
 		id: "arsenal-accelerator-bo6",
@@ -291,7 +299,7 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Rare",
 		game: blackOps6,
-		image: "/gobblegum/arsenal-accelerator-bo6.avif",
+		image: "/gobblegums/arsenal-accelerator-bo6.avif",
 	},
 	anywhereButHereBO6: {
 		id: "anywhere-but-here-bo6",
@@ -301,7 +309,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Rare",
 		game: blackOps6,
-		image: "/gobblegum/anywhere-but-here-bo6.avif",
+		image: "/gobblegums/anywhere-but-here-bo6.avif",
 	},
 	extraCredit: {
 		id: "extra-credit",
@@ -310,7 +318,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Rare-Mega",
 		game: blackOps3,
-		image: "/gobblegum/extra-credit.avif",
+		image: "/gobblegums/extra-credit.avif",
 	},
 	perkaholicBO6: {
 		id: "perkaholic-bo6",
@@ -319,7 +327,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Ultra",
 		game: blackOps6,
-		image: "/gobblegum/perkaholic-bo6.avif",
+		image: "/gobblegums/perkaholic-bo6.avif",
 	},
 	hiddenPower: {
 		id: "hidden-power",
@@ -328,7 +336,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Ultra",
 		game: blackOps6,
-		image: "/gobblegum/hidden-power.avif",
+		image: "/gobblegums/hidden-power.avif",
 	},
 	wallPowerBO6: {
 		id: "wall-power-bo6",
@@ -337,7 +345,7 @@ const gobblegumRegistry = {
 		type: "Immediate",
 		rarity: "Legendary",
 		game: blackOps6,
-		image: "/gobblegum/wall-power-bo6.avif",
+		image: "/gobblegums/wall-power-bo6.avif",
 	},
 	powerKeg: {
 		id: "power-keg",
@@ -346,7 +354,7 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Rare",
 		game: blackOps6,
-		image: "/gobblegum/power-keg.avif",
+		image: "/gobblegums/power-keg.avif",
 	},
 	freeFire: {
 		id: "free-fire",
@@ -356,16 +364,10 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Epic",
 		game: blackOps6,
-		image: "/gobblegum/free-fire.avif",
+		image: "/gobblegums/free-fire.avif",
 	},
 } as const satisfies Record<string, Gobblegum>
 
-/** Union of all Gobblegum keys */
-export type GobblegumKey = keyof typeof gobblegumRegistry
-/** Union of all Gobblegum types */
-export type GobblegumType = Gobblegum["type"]
-/** Union of all Gobblegum rarities */
-export type GobblegumRarity = Gobblegum["rarity"]
 export const {
 	alchemcialAntithesis,
 	anywhereButHere,
