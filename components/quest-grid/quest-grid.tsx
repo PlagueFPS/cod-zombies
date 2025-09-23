@@ -1,5 +1,5 @@
 "use client"
-import type { MainQuest } from "@/data/main-quests"
+import type { ClientMainQuest } from "@/data/main-quests"
 import type { SideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { Suspense, useEffect } from "react"
@@ -11,7 +11,7 @@ import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/functions.client"
 
 interface IQuestGridClient {
-	quests: (MainQuest | SideQuest)[]
+	quests: (ClientMainQuest | SideQuest)[]
 }
 
 export default function QuestGridClient({ quests }: IQuestGridClient) {

@@ -9,7 +9,7 @@ interface ISearchBar {
 	showFull?: boolean
 }
 
-export default async function SearchBar({ showFull }: ISearchBar) {
+export default function SearchBar({ showFull }: ISearchBar) {
 	const mainQuests = getMainQuests()
 	const games = getGames().map(g => ({
 		id: g.id,

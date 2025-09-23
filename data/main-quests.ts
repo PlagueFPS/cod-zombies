@@ -35,6 +35,7 @@ import {
 	voyageOfDespair,
 	zetsubouNoShima,
 } from "./maps"
+import { Predicate } from "effect"
 
 interface MainQuestComingSoon {
 	/** The unique identifier of the main quest */
@@ -67,6 +68,7 @@ interface MainQuestReleased {
 }
 
 export type MainQuest = MainQuestComingSoon | MainQuestReleased
+export type ClientMainQuest = ReturnType<typeof getClientMainQuests>[number]
 
 /**
  * Gets a main quest by its key.
@@ -79,6 +81,21 @@ export const getMainQuestByKey = (key: MainQuestKey): MainQuest => mainQuestRegi
  * @returns An array of main quests.
  */
 export const getMainQuests = (): MainQuest[] => Object.values(mainQuestRegistry)
+
+/**
+ * Gets all main quests for the client.
+ * @returns An array of main quests without the content property.
+ */
+export const getClientMainQuests = () => getMainQuests().map(quest => {
+	if (Predicate.hasProperty(quest, "content")) {
+		const { content, ...rest } = quest
+		return {
+			...rest,
+		}
+	}
+
+	return quest
+})
 
 const mainQuestRegistry = {
 	casimirMechanism: {
