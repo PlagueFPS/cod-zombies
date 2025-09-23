@@ -22,6 +22,8 @@ export default function PerkTooltip({ perkKey }: { perkKey: PerkKey }) {
 						<IconImage
 							featuredImage={perk.image}
 							alt={`${perk.title} Image`}
+							width={64}
+							height={24}
 							sizes="64px"
 							className="my-auto h-6 w-auto"
 						/>
@@ -49,6 +51,8 @@ export default function PerkTooltip({ perkKey }: { perkKey: PerkKey }) {
 					<IconImage
 						featuredImage={perk.image}
 						alt={`${perk.title} Image`}
+						width={64}
+						height={24}
 						sizes="64px"
 						className="my-auto h-6 w-auto"
 					/>
@@ -75,6 +79,8 @@ const PerkTooltipContent = ({ perk }: { perk: Perk }) => {
 				<IconImage
 					featuredImage={perk.image}
 					alt={`${perk.title} Image`}
+					width={64}
+					height={80}
 					sizes="64px"
 					className="relative z-10 h-20 w-auto p-2"
 				/>

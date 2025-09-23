@@ -22,6 +22,8 @@ export default function GobbleGumTooltip({ gobblegumKey }: { gobblegumKey: Gobbl
 						<IconImage
 							featuredImage={gobblegum.image}
 							alt={`${gobblegum.title} Image`}
+							width={64}
+							height={24}
 							sizes="64px"
 							className="my-auto h-6 w-auto"
 						/>
@@ -95,6 +97,8 @@ export default function GobbleGumTooltip({ gobblegumKey }: { gobblegumKey: Gobbl
 					<IconImage
 						featuredImage={gobblegum.image}
 						alt={`${gobblegum.title} Image`}
+						width={64}
+						height={24}
 						sizes="64px"
 						className="my-auto h-6 w-auto"
 					/>
@@ -192,6 +196,8 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 				<IconImage
 					featuredImage={gobblegum.image}
 					alt={`${gobblegum.title} Image`}
+					width={64}
+					height={80}
 					sizes="64px"
 					className="relative z-10 h-20 w-auto p-2"
 				/>

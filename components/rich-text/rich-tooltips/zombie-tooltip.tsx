@@ -138,6 +138,8 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 					<IconImage
 						featuredImage={zombie.image}
 						alt={`${zombie.title} Image`}
+						width={272}
+						height={272}
 						sizes="272px"
 						className="relative z-10 aspect-square w-full rounded-lg object-cover object-top p-2"
 					/>

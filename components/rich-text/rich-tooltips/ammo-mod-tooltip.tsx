@@ -34,6 +34,8 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 						<IconImage
 							featuredImage={ammoMod.image}
 							alt={`${ammoMod.title} Image`}
+							width={64}
+							height={24}
 							sizes="64px"
 							className="my-auto h-6 w-auto"
 						/>
@@ -61,6 +63,8 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 					<IconImage
 						featuredImage={ammoMod.image}
 						alt={`${ammoMod.title} Image`}
+						width={64}
+						height={24}
 						sizes="64px"
 						className="my-auto h-6 w-auto"
 					/>
@@ -87,6 +91,8 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: AmmoMod }) => {
 				<IconImage
 					featuredImage={ammoMod.image}
 					alt={`${ammoMod.title} Image`}
+					width={64}
+					height={80}
 					sizes="64px"
 					className="relative z-10 h-20 w-auto p-2"
 				/>
@@ -104,7 +110,7 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: AmmoMod }) => {
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
-							<div className="flex flex-col gap-3">
+							<div className="flex w-full flex-col gap-3">
 								<h4 className="text-start font-semibold text-major-augment text-sm">
 									MAJOR AUGMENTS
 								</h4>

@@ -233,8 +233,8 @@ const zombiesRegistry = {
 		speed: "Medium",
 		spawnBehavior:
 			"Zombies spawn at the start of and throughout each round. Special situations like boss fights or main quest interactions may alter the spawns of zombies, changing them or completely removing them temporarily.",
-		games: getGames(), // base zombie is in all games
-		maps: getMaps(), // base zombie is in all maps
+		games: getGames().reverse(), // base zombie is in all games, reversed since its desc order by default
+		maps: getMaps().reverse(), // base zombie is in all maps, reversed since its desc order by default
 		elementalWeakness: [],
 		weakPoints: [head],
 		attacks: [meleeSwing],

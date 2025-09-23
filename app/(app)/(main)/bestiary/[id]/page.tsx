@@ -185,7 +185,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 									Map Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.maps.reverse().slice(0, 16).map(map => (
+									{zombie.maps.slice(0, 16).map(map => (
 										<Badge
 											key={map.id}
 											className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
@@ -213,7 +213,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 										>
 											{game.title}
 										</Badge>
-									)).reverse()}
+									))}
 								</div>
 							</div>
 							<div>

@@ -22,15 +22,21 @@ const components: MDXComponents = {
 		<Heading4 {...props}>{children}</Heading4>
 	),
 	a: ({ href, children, ...props }: ComponentPropsWithoutRef<"a">) => {
-		if (href?.startsWith("#")) return <a {...props}>{children}</a>
+		if (href?.startsWith("#")) return (
+			<a {...props} className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary">
+				{children}
+			</a>
+		)
 		if (href?.startsWith("/"))
 			return (
-				<CustomLink href={href as Route} {...props}>
+				<CustomLink href={href as Route} {...props}
+				className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
+				>
 					{children}
 				</CustomLink>
 			)
 		return (
-			<ExternalLink href={href} {...props}>
+			<ExternalLink href={href} {...props} className="inline-flex w-fit items-center">
 				{children}
 				<ExternalLinkIcon className="ml-1 h-4 w-4" />
 			</ExternalLink>
