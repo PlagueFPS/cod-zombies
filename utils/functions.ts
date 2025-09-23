@@ -1,7 +1,6 @@
 import type { DurationInput } from "effect/Duration"
 import { execSync } from "node:child_process"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import fs from "node:fs/promises"
 import path from "node:path"
 import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
 import { env } from "@/env"
@@ -34,23 +33,14 @@ export const getServerUrl = () => {
  * @param filePath The path of the file.
  * @returns The last updated date of the file.
  */
-export const getLastUpdated = async (filePath: string) => {
-	const abs = path.resolve(process.cwd(), filePath)
-
+export const getLastUpdated = (filePath: string) => {
 	try {
+		const abs = path.join(process.cwd(), filePath)
 		const out = execSync(`git log -1 --format=%cI -- ${abs}`, {
 			encoding: "utf-8",
 			stdio: ["ignore", "pipe", "ignore"],
 		})
-
-		return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
-	} catch (error) {
-		console.error(error)
-	}
-
-	try {
-		const stats = await fs.stat(abs)
-		return stats.mtime.toLocaleDateString("en-US", DATE_OPTIONS)
+	return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
 	} catch (error) {
 		console.error(error)
 		return new Date().toLocaleDateString("en-US", DATE_OPTIONS)
