@@ -30,6 +30,8 @@ export default function FieldUpgradeTooltip({
 						<IconImage
 							featuredImage={fieldUpgrade.image}
 							alt={`${fieldUpgrade.title} Image`}
+							width={64}
+							height={24}
 							sizes="64px"
 							className="my-auto h-6 w-auto"
 						/>
@@ -57,6 +59,8 @@ export default function FieldUpgradeTooltip({
 					<IconImage
 						featuredImage={fieldUpgrade.image}
 						alt={`${fieldUpgrade.title} Image`}
+						width={64}
+						height={24}
 						sizes="64px"
 						className="my-auto h-6 w-auto"
 					/>
@@ -83,6 +87,8 @@ const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: FieldUpgra
 				<IconImage
 					featuredImage={fieldUpgrade.image}
 					alt={`${fieldUpgrade.title} Image`}
+					width={64}
+					height={80}
 					sizes="64px"
 					className="relative z-10 h-20 w-auto p-2"
 				/>

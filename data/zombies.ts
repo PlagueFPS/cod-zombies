@@ -1,6 +1,6 @@
 import {
 	type AmmoMod,
-	brainRot,
+	brainRotBO6,
 	cryoFreeze,
 	deadWire,
 	lightMend,
@@ -1340,7 +1340,7 @@ const zombiesRegistry = {
 		type: "Special",
 		speed: "Medium",
 		weakPoints: [mouth],
-		elementalWeakness: [brainRot, cryoFreeze],
+		elementalWeakness: [brainRotBO6, cryoFreeze],
 		attacks: [meleeSwing, tentacleGrab, shockBurst],
 		spawnBehavior:
 			"In Black Ops: Cold War, Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic. On The Tomb, Mimics return as a variant called Shock Mimics, with the first one spawning in on Round 8, and periodically after that as ground loot or with zombies. They will also spawn during the Golden Armor side quest on The Tomb as HVTs.",
@@ -1416,7 +1416,7 @@ const zombiesRegistry = {
 		type: "Special",
 		speed: "Medium",
 		weakPoints: [head],
-		elementalWeakness: [brainRot],
+		elementalWeakness: [brainRotBO6],
 		attacks: [meleeSwing, lightningBolts],
 		spawnBehavior:
 			"In Mauer Der Toten, the first Tempests you will encounter during the quest to turn on the power, they will also with normal zombies in the later rounds.",
@@ -1473,7 +1473,7 @@ const zombiesRegistry = {
 		type: "Elite",
 		speed: "Slow",
 		weakPoints: [glowingMouths],
-		elementalWeakness: [napalmBurst, brainRot],
+		elementalWeakness: [napalmBurst, brainRotBO6],
 		attacks: [bite, charge, lightningBeam],
 		spawnBehavior:
 			"In Forsaken, the abomination first spawns when entering The Amplifier and then periodically after that. In Liberty Falls, the abomination first spawns on Round 15, during specific main quest steps, and periodically after the first spawn. In Shattered Veil, the abomination only spawns during the Ray Gun MKII-W upgrade quest.",
@@ -1568,7 +1568,7 @@ const zombiesRegistry = {
 		type: "Boss",
 		speed: "Medium",
 		weakPoints: [redCysts, glowingTentacles, mouth, eyes],
-		elementalWeakness: [deadWire, shadowRift, brainRot, napalmBurst, cryoFreeze, lightMend],
+		elementalWeakness: [deadWire, shadowRift, brainRotBO6, napalmBurst, cryoFreeze, lightMend],
 		attacks: [groundSlam, sweepingSlam, tongueGrab, aetherRelease],
 		spawnBehavior:
 			"Patient 13 spawns once you have entered the final encounter arena, after completing majority of the main quest.",
@@ -1730,7 +1730,7 @@ const zombiesRegistry = {
 		id: "sam",
 		title: "S.A.M.",
 		lastUpdated: getLastUpdated("./content/zombies/sam.mdx"),
-		releaseDate: new Date("August 07, 2025 01:00 AM"),
+		releaseDate: new Date("August 07, 2025 02:00 AM"),
 		image: "/zombies/sam.avif",
 		description:
 			"An Artificial Intelligence based on a snapshot of Samantha Maxis, obsessed with the idea of using Maxis' body to become Human.",
@@ -1748,7 +1748,7 @@ const zombiesRegistry = {
 		id: "uber-richtofen",
 		title: "Uber Richtofen",
 		lastUpdated: getLastUpdated("./content/zombies/uber-richtofen.mdx"),
-		releaseDate: new Date("August 07, 2025 02:00 AM"),
+		releaseDate: new Date("August 07, 2025 03:00 AM"),
 		image: "/zombies/uber-richtofen.avif",
 		description:
 			'Appearing initially encased in a toughened, bulky exoskeleton, "The Director" will stop at nothing to save his family.',
