@@ -1,8 +1,10 @@
+import richStyles from "@/components/rich-text/rich-text.module.css"
 import type { Metadata } from "next"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getLastUpdated } from "@/utils/functions"
+import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
 	title: "Privacy Policy",
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
 
 export default async function PrivacyPolicy() {
 	const { default: content } = await import("@/content/legal/privacy-policy.mdx")
-	const lastUpdated = await getLastUpdated("./content/legal/privacy-policy.mdx")
+	const lastUpdated = getLastUpdated("./content/legal/privacy-policy.mdx")
 
 	return (
 		<article className="flex w-full justify-center">
@@ -43,7 +45,9 @@ export default async function PrivacyPolicy() {
 							</h2>
 							<span className="text-muted-foreground text-sm">Last Updated: {lastUpdated}</span>
 						</div>
-						{content({ components: useMDXComponents() })}
+						<div className={cn("relative mx-auto max-w-[80ch] px-4", richStyles.body)}>
+							{content({ components: useMDXComponents() })}
+						</div>
 					</section>
 				</div>
 			</div>
