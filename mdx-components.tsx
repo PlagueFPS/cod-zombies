@@ -9,6 +9,14 @@ import Heading2 from "./components/rich-text/rich-headings/heading2/heading2"
 import Heading3 from "./components/rich-text/rich-headings/heading3/heading3"
 import Heading4 from "./components/rich-text/rich-headings/heading4/heading4"
 import { OrderedList, UnorderedList } from "./components/rich-text/rich-text-lists/rich-text-lists"
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "./components/ui/table"
 
 const components: MDXComponents = {
 	h1: ({ children, ...props }: ComponentPropsWithoutRef<"h1">) => <h1 {...props}>{children}</h1>,
@@ -22,15 +30,21 @@ const components: MDXComponents = {
 		<Heading4 {...props}>{children}</Heading4>
 	),
 	a: ({ href, children, ...props }: ComponentPropsWithoutRef<"a">) => {
-		if (href?.startsWith("#")) return (
-			<a {...props} className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary">
-				{children}
-			</a>
-		)
+		if (href?.startsWith("#"))
+			return (
+				<a
+					{...props}
+					className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
+				>
+					{children}
+				</a>
+			)
 		if (href?.startsWith("/"))
 			return (
-				<CustomLink href={href as Route} {...props}
-				className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
+				<CustomLink
+					href={href as Route}
+					{...props}
+					className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
 				>
 					{children}
 				</CustomLink>
@@ -51,19 +65,40 @@ const components: MDXComponents = {
 	blockquote: ({ children, ...props }: ComponentPropsWithoutRef<"blockquote">) => (
 		<RichBlockquote {...props}>{children}</RichBlockquote>
 	),
-	table: ({ children, ...props }: ComponentPropsWithoutRef<"table">) => (
-		<table {...props}>{children}</table>
+	hr: ({ children, ...props }: ComponentPropsWithoutRef<"hr">) => (
+		<hr {...props} className="my-2" />
 	),
-	tr: ({ children, ...props }: ComponentPropsWithoutRef<"tr">) => <tr {...props}>{children}</tr>,
-	td: ({ children, ...props }: ComponentPropsWithoutRef<"td">) => <td {...props}>{children}</td>,
-	th: ({ children, ...props }: ComponentPropsWithoutRef<"th">) => <th {...props}>{children}</th>,
-	tbody: ({ children, ...props }: ComponentPropsWithoutRef<"tbody">) => (
-		<tbody {...props}>{children}</tbody>
+
+	// MDX table mappings -> styled UI table
+	table: ({ children, ...props }: ComponentPropsWithoutRef<"table">) => (
+		<div className="my-8 overflow-x-auto rounded-lg border shadow-xl dark:shadow-none">
+			<Table {...props}>{children}</Table>
+		</div>
 	),
 	thead: ({ children, ...props }: ComponentPropsWithoutRef<"thead">) => (
-		<thead {...props}>{children}</thead>
+		<TableHeader className="rounded-t-xl dark:border-orange-700" {...props}>
+			{children}
+		</TableHeader>
 	),
-	hr: ({ children, ...props }: ComponentPropsWithoutRef<"hr">) => <hr {...props} className="my-2" />,
+	tbody: ({ children, ...props }: ComponentPropsWithoutRef<"tbody">) => (
+		<TableBody {...props}>{children}</TableBody>
+	),
+	tr: ({ children, ...props }: ComponentPropsWithoutRef<"tr">) => (
+		<TableRow
+			className="text-orange-800 odd:bg-orange-50 hover:bg-orange-100 dark:text-orange-200 dark:hover:bg-muted/50 dark:odd:bg-muted/10"
+			{...props}
+		>
+			{children}
+		</TableRow>
+	),
+	th: ({ children, ...props }: ComponentPropsWithoutRef<"th">) => (
+		<TableHead className="text-orange-900 dark:text-orange-400" {...props}>
+			{children}
+		</TableHead>
+	),
+	td: ({ children, ...props }: ComponentPropsWithoutRef<"td">) => (
+		<TableCell {...props}>{children}</TableCell>
+	),
 }
 
 export function useMDXComponents(): MDXComponents {

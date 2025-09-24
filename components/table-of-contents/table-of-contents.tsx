@@ -15,7 +15,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import MobileTableOfContents from "./mobile-table-of-contents"
 
 export interface Heading {
-	type: string
+	type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
 	text: string
 	id: string
 }

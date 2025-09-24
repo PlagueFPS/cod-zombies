@@ -1,16 +1,23 @@
 import type { DurationInput } from "effect/Duration"
+import type { Heading } from "@/components/table-of-contents/table-of-contents"
 import { execSync } from "node:child_process"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
+import { readFile } from "node:fs/promises"
 import path from "node:path"
-import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
+import { Data, Duration, Effect, Number as Num, Option, Redacted } from "effect"
+import { ReadFileError } from "@/data/og-images"
 import { env } from "@/env"
 import {
 	AuthorizationError,
+	type CommonErrorProps,
 	TokenExpirationError,
 	TokenGenerationError,
 	TokenVerificationError,
 } from "@/types/errors"
 import { DATE_OPTIONS } from "./constants"
+import { slugify } from "./functions.client"
+
+class GetLastUpdatedError extends Data.TaggedError("GetLastUpdatedError")<CommonErrorProps> {}
 
 /**
  * Gets the server URL.
@@ -33,21 +40,88 @@ export const getServerUrl = () => {
  * @param filePath The path of the file.
  * @returns The last updated date of the file.
  */
-export const getLastUpdated = (filePath: string) => {
-	return new Date().toLocaleDateString("en-US", DATE_OPTIONS)
-	// TODO: test the implementation once all MDX content has been populated
-	// try {
-	// 	const abs = path.join(process.cwd(), filePath)
-	// 	const out = execSync(`git log -1 --format=%cI -- ${abs}`, {
-	// 		encoding: "utf-8",
-	// 		stdio: ["ignore", "pipe", "ignore"],
-	// 	})
-	// 	return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
-	// } catch (error) {
-	// 	console.error(error)
-	// 	return new Date().toLocaleDateString("en-US", DATE_OPTIONS)
-	// }
-}
+export const getLastUpdated = (filePath: string) =>
+	Effect.gen(function* () {
+		const abs = path.join(process.cwd(), filePath)
+		const out = yield* Effect.try({
+			try: () =>
+				execSync(`git log -1 --format=%cI -- ${abs}`, {
+					encoding: "utf-8",
+					stdio: ["ignore", "pipe", "ignore"],
+				}),
+			catch: error =>
+				new GetLastUpdatedError({ message: "Failed to get last updated", cause: error }),
+		})
+		return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
+	}).pipe(
+		Effect.withLogSpan("get_last_updated"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(_error => Effect.succeed(new Date().toLocaleDateString("en-US", DATE_OPTIONS))),
+	)
+
+export const calculateTimeToRead = (contentPath: string) =>
+	Effect.gen(function* () {
+		const wordCount = yield* Effect.tryPromise({
+			try: () => readFile(path.join(process.cwd(), contentPath), { encoding: "utf-8" }),
+			catch: error => new ReadFileError({ message: "Failed to read file", cause: error }),
+		}).pipe(
+			Effect.map(
+				content =>
+					content
+						.trim()
+						.split(/\s+/)
+						.filter(word => word.length > 0).length,
+			),
+		)
+
+		const wordPerMinute = 200 // avg reading speed
+		const minutes = Math.ceil(wordCount / wordPerMinute) // always use the worst case
+		return minutes
+	}).pipe(
+		Effect.withLogSpan("calculate_time_to_read"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(_error => Effect.succeed(0)),
+	)
+
+export const extractHeadingsFromMDX = (contentPath: string) =>
+	Effect.gen(function* () {
+		const content = yield* Effect.tryPromise({
+			try: () => readFile(path.join(process.cwd(), contentPath), { encoding: "utf-8" }),
+			catch: error => new ReadFileError({ message: "Failed to read file", cause: error }),
+		})
+
+		const lines = content.split(/\r?\n/)
+		const headings: Heading[] = []
+
+		const stripInline = (s: string) =>
+			s
+				.replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
+				.replace(/\*([^*]+)\*/g, "$1") // italic *text* -> text
+				.replace(/_([^_]+)_/g, "$1") // underline _text_ -> text
+				.replace(/`([^`]+)`/g, "$1") // code `text` -> text
+				.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // link [text](https://example.com) -> text
+				.replace(/<[^>]+>/g, "") // remove html tags
+				.trim()
+
+		for (const line of lines) {
+			const match = /^(#{2,4})\s+(.+?)\s*$/.exec(line)
+			if (!match) continue
+
+			const level = match[1]?.length
+			const type = level === 2 ? "h2" : level === 3 ? "h3" : "h4"
+			const text = stripInline(match[2] || "")
+			if (!text) continue
+
+			const id = slugify(text)
+			headings.push({ type, text, id })
+		}
+
+		return headings
+	}).pipe(
+		Effect.withLogSpan("extract_headings_from_mdx"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(_error => Effect.succeed([])),
+	)
 
 /**
  * Performs a timing-safe comparison of two secrets.

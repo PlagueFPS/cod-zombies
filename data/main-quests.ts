@@ -1,5 +1,3 @@
-import { Predicate } from "effect"
-import { getLastUpdated } from "@/utils/functions"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
 	alphaOmega,
@@ -43,21 +41,19 @@ interface MainQuestComingSoon {
 	id: string
 	/** The title of the main quest */
 	title: string
-	/** The last updated date of the main quest */
-	lastUpdated: string
 	/** The state of the main quest */
 	state: "Coming Soon"
 	/** The difficulty of the main quest */
 	difficulty?: never
 	/** The map of the main quest */
 	map: Maps
+	/** The content of the main quest */
+	content: () => Promise<typeof import("*.mdx")>
 }
 
 interface MainQuestReleased {
 	/** The unique identifier of the main quest */
 	id: string
-	/** The last updated date of the main quest */
-	lastUpdated: string
 	/** The state of the main quest */
 	state?: "New"
 	/** The difficulty of the main quest */
@@ -69,8 +65,217 @@ interface MainQuestReleased {
 }
 
 export type MainQuest = MainQuestComingSoon | MainQuestReleased
-export type ClientMainQuest = ReturnType<typeof getClientMainQuests>[number]
 export type MainQuestDifficulty = MainQuestReleased["difficulty"]
+export type MainQuestKey = keyof typeof mainQuestRegistry
+
+const mainQuestRegistry = {
+	casimirMechanism: {
+		id: "casimir-mechanism",
+		difficulty: "Easy",
+		map: ascension,
+		content: () => import("@/content/main-quests/casimir-mechanism.mdx"),
+	},
+	ensembleCast: {
+		id: "ensemble-cast",
+		difficulty: "Easy",
+		map: callOfTheDead,
+		content: () => import("@/content/main-quests/ensemble-cast.mdx"),
+	},
+	timeTravelWillTell: {
+		id: "time-travel-will-tell",
+		difficulty: "Medium",
+		map: shangriLa,
+		content: () => import("@/content/main-quests/time-travel-will-tell.mdx"),
+	},
+	richtofensGrandScheme: {
+		id: "richtofens-grand-scheme",
+		difficulty: "Easy",
+		map: moon,
+		content: () => import("@/content/main-quests/richtofens-grand-scheme.mdx"),
+	},
+	towerOfBabble: {
+		id: "tower-of-babble",
+		difficulty: "Easy",
+		map: tranzit,
+		content: () => import("@/content/main-quests/tower-of-babble.mdx"),
+	},
+	highMaintenance: {
+		id: "high-maintenance",
+		difficulty: "Medium",
+		map: dieRise,
+		content: () => import("@/content/main-quests/high-maintenance.mdx"),
+	},
+	popGoesTheWeasel: {
+		id: "pop-goes-the-weasel",
+		difficulty: "Easy",
+		map: mobOfTheDead,
+		content: () => import("@/content/main-quests/pop-goes-the-weasel.mdx"),
+	},
+	minedGames: {
+		id: "mined-games",
+		difficulty: "Hard",
+		map: buried,
+		content: () => import("@/content/main-quests/mined-games.mdx"),
+	},
+	littleLostGirl: {
+		id: "little-lost-girl",
+		difficulty: "Hard",
+		map: origins,
+		content: () => import("@/content/main-quests/little-lost-girl.mdx"),
+	},
+	apocalypseAverted: {
+		id: "apocalypse-averted",
+		difficulty: "Medium",
+		map: shadowsOfEvil,
+		content: () => import("@/content/main-quests/apocalypse-averted.mdx"),
+	},
+	paradoxicalProlouge: {
+		id: "paradoxical-prolouge",
+		difficulty: "Easy",
+		map: theGiant,
+		content: () => import("@/content/main-quests/paradoxical-prolouge.mdx"),
+	},
+	myBrothersKeeper: {
+		id: "my-brothers-keeper",
+		difficulty: "Medium",
+		map: derEisendrache,
+		content: () => import("@/content/main-quests/my-brothers-keeper.mdx"),
+	},
+	seedsOfDoubt: {
+		id: "seeds-of-doubt",
+		difficulty: "Medium",
+		map: zetsubouNoShima,
+		content: () => import("@/content/main-quests/seeds-of-doubt.mdx"),
+	},
+	loveAndWar: {
+		id: "love-and-war",
+		difficulty: "Hard",
+		map: gorodKrovi,
+		content: () => import("@/content/main-quests/love-and-war.mdx"),
+	},
+	forTheGoodOfAll: {
+		id: "for-the-good-of-all",
+		difficulty: "Medium",
+		map: revelations,
+		content: () => import("@/content/main-quests/for-the-good-of-all.mdx"),
+	},
+	abandonShip: {
+		id: "abandon-ship",
+		difficulty: "Hard",
+		map: voyageOfDespair,
+		content: () => import("@/content/main-quests/abandon-ship.mdx"),
+	},
+	veneratedWarrior: {
+		id: "venerated-warrior",
+		difficulty: "Medium",
+		map: ix,
+		content: () => import("@/content/main-quests/venerated-warrior.mdx"),
+	},
+	mostEscapeAlive: {
+		id: "most-escape-alive",
+		difficulty: "Hard",
+		map: bloodOfTheDead,
+		content: () => import("@/content/main-quests/most-escape-alive.mdx"),
+	},
+	classifiedMainQuest: {
+		id: "classified-main-quest",
+		difficulty: "Medium",
+		map: classified,
+		content: () => import("@/content/main-quests/classified.mdx"),
+	},
+	trialByOrdeal: {
+		id: "trial-by-ordeal",
+		difficulty: "Hard",
+		map: deadOfTheNight,
+		content: () => import("@/content/main-quests/trial-by-ordeal.mdx"),
+	},
+	greekTragedy: {
+		id: "greek-tragedy",
+		difficulty: "Medium",
+		map: ancientEvil,
+		content: () => import("@/content/main-quests/greek-tragedy.mdx"),
+	},
+	electromagneticAwakeningParty: {
+		id: "electromagnetic-awakening-party",
+		difficulty: "Medium",
+		map: alphaOmega,
+		content: () => import("@/content/main-quests/electromagnetic-awakening-party.mdx"),
+	},
+	salvationLiesAbove: {
+		id: "salvation-lies-above",
+		difficulty: "Medium",
+		map: tagDerToten,
+		content: () => import("@/content/main-quests/salvation-lies-above.mdx"),
+	},
+	sealTheDeal: {
+		id: "seal-the-deal",
+		difficulty: "Easy",
+		map: dieMaschine,
+		content: () => import("@/content/main-quests/seal-the-deal.mdx"),
+	},
+	maxisPotential: {
+		id: "maxis-potential",
+		difficulty: "Easy",
+		map: firebaseZ,
+		content: () => import("@/content/main-quests/maxis-potential.mdx"),
+	},
+	tinManHeart: {
+		id: "tin-man-heart",
+		difficulty: "Medium",
+		map: mauerDerToten,
+		content: () => import("@/content/main-quests/tin-man-heart.mdx"),
+	},
+	pyrrhicVictory: {
+		id: "pyrrhic-victory",
+		difficulty: "Easy",
+		map: forsaken,
+		content: () => import("@/content/main-quests/pyrrhic-victory.mdx"),
+	},
+	byeByeDarkAether: {
+		id: "bye-bye-dark-aether",
+		difficulty: "Easy",
+		map: libertyFalls,
+		content: () => import("@/content/main-quests/bye-bye-dark-aether.mdx"),
+	},
+	noMoModi: {
+		id: "no-mo-modi",
+		difficulty: "Medium",
+		map: terminus,
+		content: () => import("@/content/main-quests/no-mo-modi.mdx"),
+	},
+	citadellesDesMortsMainQuest: {
+		id: "citadelles-des-morts-main-quest",
+		difficulty: "Medium",
+		map: citadelleDesMorts,
+		content: () => import("@/content/main-quests/citadelles-des-morts.mdx"),
+	},
+	theTombMainQuest: {
+		id: "the-tomb-main-quest",
+		difficulty: "Medium",
+		map: theTomb,
+		content: () => import("@/content/main-quests/the-tomb.mdx"),
+	},
+	shatteredVeilMainQuest: {
+		id: "shattered-veil-main-quest",
+		difficulty: "Medium",
+		map: shatteredVeil,
+		content: () => import("@/content/main-quests/shattered-veil.mdx"),
+	},
+	reckoningMainQuest: {
+		id: "reckoning-main-quest",
+		difficulty: "Medium",
+		map: reckoning,
+		content: () => import("@/content/main-quests/reckoning.mdx"),
+	},
+} as const satisfies Record<string, MainQuest>
+
+const mainQuestMap = new Map<string, MainQuest>()
+const mainQuests: MainQuest[] = Object.values(mainQuestRegistry).sort((a, b) =>
+	sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
+)
+for (const mainQuest of mainQuests) {
+	mainQuestMap.set(mainQuest.map.id, mainQuest)
+}
 
 /**
  * Gets a main quest by its key.
@@ -78,266 +283,32 @@ export type MainQuestDifficulty = MainQuestReleased["difficulty"]
  * @returns The main quest.
  */
 export const getMainQuestByKey = (key: MainQuestKey): MainQuest => mainQuestRegistry[key]
+
 /**
  * Gets all main quests.
  * @returns An array of main quests.
  */
-export const getMainQuests = (): MainQuest[] =>
-	Object.values(mainQuestRegistry).sort((a, b) =>
-		sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
-	)
+export const getMainQuests = (): MainQuest[] => mainQuests
 
 /**
- * Gets all main quests for the client.
- * @returns An array of main quests without the content property.
+ * Gets a main quest by its map id.
+ * @param mapId The id of the map.
+ * @returns The main quest.
  */
-export const getClientMainQuests = () =>
-	getMainQuests().map(quest => {
-		if (Predicate.hasProperty(quest, "content")) {
-			const { content, ...rest } = quest
-			return {
-				...rest,
-			}
-		}
+export const getMainQuestByMap = (mapId: string) => mainQuestMap.get(mapId)
 
-		return quest
-	})
-
-const mainQuestRegistry = {
-	casimirMechanism: {
-		id: "casimir-mechanism",
-		lastUpdated: getLastUpdated("../content/main-quests/casimir-mechanism.mdx"),
-		difficulty: "Easy",
-		map: ascension,
-		content: () => import("@/content/main-quests/casimir-mechanism.mdx"),
-	},
-	ensembleCast: {
-		id: "ensemble-cast",
-		lastUpdated: getLastUpdated("../content/main-quests/ensemble-cast.mdx"),
-		difficulty: "Easy",
-		map: callOfTheDead,
-		content: () => import("@/content/main-quests/ensemble-cast.mdx"),
-	},
-	timeTravelWillTell: {
-		id: "time-travel-will-tell",
-		lastUpdated: getLastUpdated("../content/main-quests/time-travel-will-tell.mdx"),
-		difficulty: "Medium",
-		map: shangriLa,
-		content: () => import("@/content/main-quests/time-travel-will-tell.mdx"),
-	},
-	richtofensGrandScheme: {
-		id: "richtofens-grand-scheme",
-		lastUpdated: getLastUpdated("../content/main-quests/richtofens-grand-scheme.mdx"),
-		difficulty: "Easy",
-		map: moon,
-		content: () => import("@/content/main-quests/richtofens-grand-scheme.mdx"),
-	},
-	towerOfBabble: {
-		id: "tower-of-babble",
-		lastUpdated: getLastUpdated("../content/main-quests/tower-of-babble.mdx"),
-		difficulty: "Easy",
-		map: tranzit,
-		content: () => import("@/content/main-quests/tower-of-babble.mdx"),
-	},
-	highMaintenance: {
-		id: "high-maintenance",
-		lastUpdated: getLastUpdated("../content/main-quests/high-maintenance.mdx"),
-		difficulty: "Medium",
-		map: dieRise,
-		content: () => import("@/content/main-quests/high-maintenance.mdx"),
-	},
-	popGoesTheWeasel: {
-		id: "pop-goes-the-weasel",
-		lastUpdated: getLastUpdated("../content/main-quests/pop-goes-the-weasel.mdx"),
-		difficulty: "Easy",
-		map: mobOfTheDead,
-		content: () => import("@/content/main-quests/pop-goes-the-weasel.mdx"),
-	},
-	minedGames: {
-		id: "mined-games",
-		lastUpdated: getLastUpdated("../content/main-quests/mined-games.mdx"),
-		difficulty: "Hard",
-		map: buried,
-		content: () => import("@/content/main-quests/mined-games.mdx"),
-	},
-	littleLostGirl: {
-		id: "little-lost-girl",
-		lastUpdated: getLastUpdated("../content/main-quests/little-lost-girl.mdx"),
-		difficulty: "Hard",
-		map: origins,
-		content: () => import("@/content/main-quests/little-lost-girl.mdx"),
-	},
-	apocalypseAverted: {
-		id: "apocalypse-averted",
-		lastUpdated: getLastUpdated("../content/main-quests/apocalypse-averted.mdx"),
-		difficulty: "Medium",
-		map: shadowsOfEvil,
-		content: () => import("@/content/main-quests/apocalypse-averted.mdx"),
-	},
-	paradoxicalProlouge: {
-		id: "paradoxical-prolouge",
-		lastUpdated: getLastUpdated("../content/main-quests/paradoxical-prolouge.mdx"),
-		difficulty: "Easy",
-		map: theGiant,
-		content: () => import("@/content/main-quests/paradoxical-prolouge.mdx"),
-	},
-	myBrothersKeeper: {
-		id: "my-brothers-keeper",
-		lastUpdated: getLastUpdated("../content/main-quests/my-brothers-keeper.mdx"),
-		difficulty: "Medium",
-		map: derEisendrache,
-		content: () => import("@/content/main-quests/my-brothers-keeper.mdx"),
-	},
-	seedsOfDoubt: {
-		id: "seeds-of-doubt",
-		lastUpdated: getLastUpdated("../content/main-quests/seeds-of-doubt.mdx"),
-		difficulty: "Medium",
-		map: zetsubouNoShima,
-		content: () => import("@/content/main-quests/seeds-of-doubt.mdx"),
-	},
-	loveAndWar: {
-		id: "love-and-war",
-		lastUpdated: getLastUpdated("../content/main-quests/love-and-war.mdx"),
-		difficulty: "Hard",
-		map: gorodKrovi,
-		content: () => import("@/content/main-quests/love-and-war.mdx"),
-	},
-	forTheGoodOfAll: {
-		id: "for-the-good-of-all",
-		lastUpdated: getLastUpdated("../content/main-quests/for-the-good-of-all.mdx"),
-		difficulty: "Medium",
-		map: revelations,
-		content: () => import("@/content/main-quests/for-the-good-of-all.mdx"),
-	},
-	abandonShip: {
-		id: "abandon-ship",
-		lastUpdated: getLastUpdated("../content/main-quests/abandon-ship.mdx"),
-		difficulty: "Hard",
-		map: voyageOfDespair,
-		content: () => import("@/content/main-quests/abandon-ship.mdx"),
-	},
-	veneratedWarrior: {
-		id: "venerated-warrior",
-		lastUpdated: getLastUpdated("../content/main-quests/venerated-warrior.mdx"),
-		difficulty: "Medium",
-		map: ix,
-		content: () => import("@/content/main-quests/venerated-warrior.mdx"),
-	},
-	mostEscapeAlive: {
-		id: "most-escape-alive",
-		lastUpdated: getLastUpdated("../content/main-quests/most-escape-alive.mdx"),
-		difficulty: "Hard",
-		map: bloodOfTheDead,
-		content: () => import("@/content/main-quests/most-escape-alive.mdx"),
-	},
-	classifiedMainQuest: {
-		id: "classified-main-quest",
-		lastUpdated: getLastUpdated("../content/main-quests/classified.mdx"),
-		difficulty: "Medium",
-		map: classified,
-		content: () => import("@/content/main-quests/classified.mdx"),
-	},
-	trialByOrdeal: {
-		id: "trial-by-ordeal",
-		lastUpdated: getLastUpdated("../content/main-quests/trial-by-ordeal.mdx"),
-		difficulty: "Hard",
-		map: deadOfTheNight,
-		content: () => import("@/content/main-quests/trial-by-ordeal.mdx"),
-	},
-	greekTragedy: {
-		id: "greek-tragedy",
-		lastUpdated: getLastUpdated("../content/main-quests/greek-tragedy.mdx"),
-		difficulty: "Medium",
-		map: ancientEvil,
-		content: () => import("@/content/main-quests/greek-tragedy.mdx"),
-	},
-	electromagneticAwakeningParty: {
-		id: "electromagnetic-awakening-party",
-		lastUpdated: getLastUpdated("../content/main-quests/electromagnetic-awakening-party.mdx"),
-		difficulty: "Medium",
-		map: alphaOmega,
-		content: () => import("@/content/main-quests/electromagnetic-awakening-party.mdx"),
-	},
-	salvationLiesAbove: {
-		id: "salvation-lies-above",
-		lastUpdated: getLastUpdated("../content/main-quests/salvation-lies-above.mdx"),
-		difficulty: "Medium",
-		map: tagDerToten,
-		content: () => import("@/content/main-quests/salvation-lies-above.mdx"),
-	},
-	sealTheDeal: {
-		id: "seal-the-deal",
-		lastUpdated: getLastUpdated("../content/main-quests/seal-the-deal.mdx"),
-		difficulty: "Easy",
-		map: dieMaschine,
-		content: () => import("@/content/main-quests/seal-the-deal.mdx"),
-	},
-	maxisPotential: {
-		id: "maxis-potential",
-		lastUpdated: getLastUpdated("../content/main-quests/maxis-potential.mdx"),
-		difficulty: "Easy",
-		map: firebaseZ,
-		content: () => import("@/content/main-quests/maxis-potential.mdx"),
-	},
-	tinManHeart: {
-		id: "tin-man-heart",
-		lastUpdated: getLastUpdated("../content/main-quests/tin-man-heart.mdx"),
-		difficulty: "Medium",
-		map: mauerDerToten,
-		content: () => import("@/content/main-quests/tin-man-heart.mdx"),
-	},
-	pyrrhicVictory: {
-		id: "pyrrhic-victory",
-		lastUpdated: getLastUpdated("../content/main-quests/pyrrhic-victory.mdx"),
-		difficulty: "Easy",
-		map: forsaken,
-		content: () => import("@/content/main-quests/pyrrhic-victory.mdx"),
-	},
-	byeByeDarkAether: {
-		id: "bye-bye-dark-aether",
-		lastUpdated: getLastUpdated("../content/main-quests/bye-bye-dark-aether.mdx"),
-		difficulty: "Easy",
-		map: libertyFalls,
-		content: () => import("@/content/main-quests/bye-bye-dark-aether.mdx"),
-	},
-	noMoModi: {
-		id: "no-mo-modi",
-		lastUpdated: getLastUpdated("../content/main-quests/no-mo-modi.mdx"),
-		difficulty: "Medium",
-		map: terminus,
-		content: () => import("@/content/main-quests/no-mo-modi.mdx"),
-	},
-	citadellesDesMortsMainQuest: {
-		id: "citadelles-des-morts-main-quest",
-		lastUpdated: getLastUpdated("../content/main-quests/citadelles-des-morts.mdx"),
-		difficulty: "Medium",
-		map: citadelleDesMorts,
-		content: () => import("@/content/main-quests/citadelles-des-morts.mdx"),
-	},
-	theTombMainQuest: {
-		id: "the-tomb-main-quest",
-		lastUpdated: getLastUpdated("../content/main-quests/the-tomb.mdx"),
-		difficulty: "Medium",
-		map: theTomb,
-		content: () => import("@/content/main-quests/the-tomb.mdx"),
-	},
-	shatteredVeilMainQuest: {
-		id: "shattered-veil-main-quest",
-		lastUpdated: getLastUpdated("../content/main-quests/shattered-veil.mdx"),
-		difficulty: "Medium",
-		map: shatteredVeil,
-		content: () => import("@/content/main-quests/shattered-veil.mdx"),
-	},
-	reckoningMainQuest: {
-		id: "reckoning-main-quest",
-		lastUpdated: getLastUpdated("../content/main-quests/reckoning.mdx"),
-		difficulty: "Medium",
-		map: reckoning,
-		content: () => import("@/content/main-quests/reckoning.mdx"),
-	},
-} as const satisfies Record<string, MainQuest>
-
-export type MainQuestKey = keyof typeof mainQuestRegistry
+/**
+ * Gets the previous and next main quests by their map id.
+ * @param mapId The id of the map.
+ * @returns The previous and next main quests.
+ */
+export const getAdjacentMainQuests = (mapId: string) => {
+	const index = mainQuests.findIndex(quest => quest.map.id === mapId)
+	return {
+		prev: index < mainQuests.length - 1 ? mainQuests[index + 1] : null,
+		next: index > 0 ? mainQuests[index - 1] : null,
+	}
+}
 
 export const {
 	casimirMechanism,

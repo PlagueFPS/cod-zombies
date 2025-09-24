@@ -1,5 +1,5 @@
-import type { ClientMainQuest } from "@/data/main-quests"
-import type { ClientSideQuest } from "@/data/side-quests"
+import type { MainQuest } from "@/data/main-quests"
+import type { SideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -10,7 +10,7 @@ import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IQuestPreviewCard {
-	quest: ClientMainQuest | ClientSideQuest
+	quest: MainQuest | SideQuest
 	questIndex: number
 }
 

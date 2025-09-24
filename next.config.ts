@@ -1,7 +1,6 @@
 import "./env"
 import type { NextConfig } from "next"
 import createMDX from "@next/mdx"
-import { withPayload } from "@payloadcms/next/withPayload"
 import { withBotId } from "botid/next/config"
 
 const nextConfig: NextConfig = {
@@ -122,4 +121,4 @@ const withMDX = createMDX({
 	extension: /\.(md|mdx)$/,
 })
 
-export default withMDX(withBotId(withPayload(nextConfig)))
+export default withBotId(withMDX(nextConfig))

@@ -2,11 +2,11 @@ import { FetchHttpClient } from "@effect/platform"
 import { Effect, Layer } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
-import { getMainQuestBySlug } from "@/data/main-quests"
+import { getMainQuestByMap } from "@/data/main-quests"
 import { getFonts, optimizeImageForOG } from "@/data/og-images"
 import { FileStorage } from "@/lib/services/file-storage"
 import { OgImageGenerationError } from "@/types/errors"
-import { DATE_OPTIONS } from "@/utils/constants"
+import { calculateTimeToRead, getLastUpdated } from "@/utils/functions"
 
 export const alt = "Main Quest Guide Preview"
 export const size = {
@@ -15,20 +15,19 @@ export const size = {
 }
 export const contentType = "image/png"
 
-export default async function MainQuestImage({ params }: PageProps<"/[game]/[slug]">) {
+export default async function MainQuestImage({ params }: PageProps<"/[game]/[map]">) {
 	return await Effect.gen(function* () {
-		const { slug } = yield* Effect.promise(() => params)
-		const quest = yield* Effect.promise(() => getMainQuestBySlug(slug))
-		if (!quest?.image.url)
-			return yield* new OgImageGenerationError({
-				message: `No image URL found for quest ${quest?.slug}`,
-			})
+		const { map } = yield* Effect.promise(() => params)
+		const quest = getMainQuestByMap(map)
+		if (!quest) return new Response("Not Found", { status: 404 })
 
 		const { boldFont, semiBoldFont } = yield* getFonts
-		const supportedImage = yield* optimizeImageForOG(quest.image.url)
+		const supportedImage = yield* optimizeImageForOG(quest.map.image)
+		const timeToRead = yield* calculateTimeToRead(`./content/main-quests/${quest.id}.mdx`)
+		const lastUpdated = yield* getLastUpdated(`./content/main-quests/${quest.id}.mdx`)
 
 		const getDifficultyCSSProps = (): React.CSSProperties => {
-			switch (quest?.difficulty) {
+			switch (quest.difficulty) {
 				case "Easy":
 					return {
 						color: "hsl(169 85% 78%)",
@@ -67,9 +66,8 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 			>
 				{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
 				<img
-					// @ts-expect-error Satori accepts ArrayBuffer/typed arrays for <img> at runtime.
-					src={supportedImage.buffer}
-					alt={quest.title}
+					src={supportedImage}
+					alt={quest.map.title}
 					width={1200}
 					height={630}
 					style={{
@@ -112,7 +110,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 							backgroundImage: "radial-gradient(circle at top, hsl(17 100% 31%), hsl(16 83% 27%))",
 						}}
 					>
-						{quest.game.title}
+						{quest.map.game.title}
 					</span>
 					<span
 						style={{
@@ -146,7 +144,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 							backgroundImage: "linear-gradient(to bottom, hsl(0 0% 100%), hsl(0, 0%, 40%))",
 						}}
 					>
-						{quest?.title}
+						{quest.map.title}
 					</span>
 				</h1>
 				<div
@@ -163,9 +161,9 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{new Date(quest.updatedAt).toLocaleDateString("en-US", DATE_OPTIONS)}</span>
+					<span>{lastUpdated}</span>
 					<span>&bull;</span>
-					<span>{quest.timeToRead} min read</span>
+					<span>{timeToRead} min read</span>
 				</div>
 			</div>,
 			{
@@ -206,9 +204,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[slu
 		Effect.withLogSpan("main_quest_og_image_generation"),
 		Effect.tapError(Effect.logError),
 		Effect.catchTags({
-			GetFileError: error => Effect.succeed(new Response(error.message, { status: 404 })),
 			ReadFileError: error => Effect.succeed(new Response(error.message, { status: 404 })),
-			RequestError: error => Effect.succeed(new Response(error.message, { status: 400 })),
 		}),
 		Effect.catchAll(error => Effect.succeed(new Response(error.message, { status: 500 }))),
 		Effect.ensureErrorType<never>(),

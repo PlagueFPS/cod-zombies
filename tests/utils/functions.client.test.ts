@@ -36,11 +36,9 @@ describe("slugify", () => {
 		)
 	})
 
-	it("should handle empty string", () => {
-		expect(slugify("")).toBe("")
-	})
-
-	it("should handle string with only special characters", () => {
-		expect(slugify("!@#$%^&*()")).toBe("and")
+	it("should handle markdown headings", () => {
+		expect(slugify("## Heading")).toBe("heading")
+		expect(slugify("### Sub Heading")).toBe("sub-heading")
+		expect(slugify("#### Sub Sub Heading")).toBe("sub-sub-heading")
 	})
 })

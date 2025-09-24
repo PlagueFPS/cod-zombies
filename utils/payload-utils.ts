@@ -29,10 +29,12 @@ export const createMediaDto = (media: Partial<Media>) => ({
 	height: media.height,
 })
 
-export const calculateTimeToRead = (content: SerializedEditorState) => {
-	const text = convertLexicalToPlaintext({ data: content })
+export const calculateTimeToRead = (content: string) => {
 	const wordPerMinute = 200 // avg reading speed
-	const wordCount = text.split(/\s+/).filter(word => word.length > 0).length
+	const wordCount = content
+		.trim()
+		.split(/\s+/)
+		.filter(word => word.length > 0).length
 	const minutes = Math.ceil(wordCount / wordPerMinute) // always use the worst case
 	return minutes
 }

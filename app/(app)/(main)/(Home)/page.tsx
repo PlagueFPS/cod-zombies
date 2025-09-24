@@ -5,7 +5,7 @@ import HeroSection from "@/components/hero-section/hero-section"
 import GridLoader from "@/components/loaders/grid-loader"
 import MainQuestFilters from "@/components/quest-filters/main-quest-filters"
 import QuestGridClient from "@/components/quest-grid/quest-grid"
-import { getClientMainQuests } from "@/data/main-quests"
+import { getMainQuests } from "@/data/main-quests"
 import { getServerUrl } from "@/utils/functions"
 
 export const metadata: Metadata = {
@@ -15,7 +15,12 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
-	const mainQuests = getClientMainQuests()
+	const mainQuests = getMainQuests().map(quest => {
+		const { content, ...rest } = quest
+		return {
+			...rest,
+		}
+	})
 
 	return (
 		<div className="container flex flex-col items-center justify-center gap-12">
