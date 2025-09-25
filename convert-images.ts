@@ -8,25 +8,29 @@ const program = Effect.gen(function* () {
 	const path = yield* Path.Path
 	const media = yield* fs.readDirectory("./media")
 	const numRef = yield* Ref.make(0)
+	let shouldOptimize = true
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("shangri-la-")) return
+			if (!file.startsWith("moon-")) return
 
-			const image = yield* fs.readFile(path.join("./media", file))
+			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
-			if (extension === ".webp") return
+			if (extension === ".webp") shouldOptimize = false
 
-			const optimizedImage = yield* Effect.tryPromise({
-				try: () => sharp(image).webp({ effort: 6 }).toBuffer(),
-				catch: error => new Error(`Failed to transform image: ${file}`, { cause: error }),
-			})
+			if (shouldOptimize) {
+				image = yield* Effect.tryPromise({
+					try: () => sharp(image).webp({ effort: 6 }).toBuffer(),
+					catch: error => new Error(`Failed to transform image: ${file}`, { cause: error }),
+				})
+				yield* Effect.log(`Converted ${file} to webp`)
+			}
 
 			yield* fs.writeFile(
-				path.join(process.cwd(), "./content/images/shangri-la", file.replace(extension, ".webp")),
-				optimizedImage,
+				path.join(process.cwd(), "./content/images/moon", file.replace(extension, ".webp")),
+				image,
 			)
-			yield* Effect.log(`Converted ${file} to webp`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to moon`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)
