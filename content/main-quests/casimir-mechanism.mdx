@@ -2,8 +2,22 @@ import GobblegumTooltip from "@/components/rich-text/rich-tooltips/gobblegum-too
 import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
 import { TableCell } from "@/components/ui/table"
 import PerkTooltip from "@/components/rich-text/rich-tooltips/perk-tooltip"
-import PowerGenImage from "@/media/ascension-power-gen-step.avif"
+import ZombieTooltip from "@/components/rich-text/rich-tooltips/zombie-tooltip"
 import RichImage from "@/components/rich-text/rich-image/rich-image"
+import PowerGenImage from "./images/ascension/ascension-power-gen-step.webp"
+import ComputerImage from "./images/ascension/ascension-computer-image.webp"
+import JuggernogSwitchImage from "./images/ascension/ascension-juggernog-switch.webp"
+import SpeedColaSwitchImage from "./images/ascension/ascension-speed-cola-switch.webp"
+import StaminUpSwitchImage from "./images/ascension/ascension-stamin-up-switch.webp"
+import WidowsWineSwitchImage from "./images/ascension/ascension-widows-wine-switch.webp"
+import ClockImage from "./images/ascension/ascension-clock-step.webp"
+import LetterLImage from "./images/ascension/ascension-letter-l.webp"
+import LetterUImage from "./images/ascension/ascension-letter-u.webp"
+import LetterNImage from "./images/ascension/ascension-letter-n.webp"
+import LetterAImage from "./images/ascension/ascension-letter-a.webp"
+import GlowingOrbImage from "./images/ascension/ascension-glowing-orb.webp"
+import GlowingOrbFloatingImage from "./images/ascension/ascension-glowing-orb-floating.webp"
+import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
 
 ## Casimir Mechanism
 The main quest for **Ascension** is Casimir Mechanism. During this quest, the goal for the Ultimis crew is to repair the Casimir Mechanism and free Anton Gersh.
@@ -23,7 +37,7 @@ This quest can only be done with four players, and you'll also need to acquire f
 <RichTable 
   headerCells={["Classic Gobblegums", "Mega Gobblegums"]} 
   bodyRows={[
-    <RichBodyRow>
+    <RichBodyRow alternate>
       <TableCell>
         <GobblegumTooltip gobblegumKey="inPlainSight" />
       </TableCell>
@@ -39,7 +53,7 @@ This quest can only be done with four players, and you'll also need to acquire f
         <GobblegumTooltip gobblegumKey="shoppingFree" />
       </TableCell>
     </RichBodyRow>,
-    <RichBodyRow>
+    <RichBodyRow alternate>
       <TableCell>
         <GobblegumTooltip gobblegumKey="stockOption" />
       </TableCell>
@@ -55,7 +69,7 @@ This quest can only be done with four players, and you'll also need to acquire f
         <GobblegumTooltip gobblegumKey="reignDrops" />
       </TableCell>
     </RichBodyRow>,
-    <RichBodyRow>
+    <RichBodyRow alternate>
       <TableCell>
         <GobblegumTooltip gobblegumKey="swordFlay" />
       </TableCell>
@@ -73,3 +87,80 @@ generator that you must suck into the **Gersh Device** by throwing one close to 
 and the **Gersh Device** will disappear, try again until the generator gets sucked up.
 
 <RichImage image={PowerGenImage} caption="Power Generator" alt="Power Generator" />
+
+Once completed, you'll hear **Gersh** urge you to hurry and continue, make your way to the **Lunar Lander** by <PerkTooltip perkKey="staminUpBO3" />, and in the corner of the lunar pad room, 
+there is a computer with a bright screen emitting a high-pitched sound that you must interact with. After interacting with the computer, you should see an 
+Illuminati-like symbol on the screen signifying the completion of step 1.
+
+<RichImage image={ComputerImage} caption="Computer with a bright screen" alt="Lunar Lander" />
+
+## Buttons Step
+This step can only be completed during a <ZombieTooltip zombieKey="spaceMonkey" /> round and requires four players. These monkey rounds occur every four to seven 
+rounds only when the power is turned on and at least one player has purchased a perk. Once the monkey round begins, four buttons will appear out of the walls near a 
+select few perk machines:
+
+<RichImage image={JuggernogSwitchImage} caption="Juggernog - opposite of the perk machine" alt="Juggernog Switch" />
+<RichImage image={SpeedColaSwitchImage} caption="Speed Cola - wall directly ahead of the staircase" alt="Speed Cola Switch" />
+<RichImage image={StaminUpSwitchImage} caption="Stamin-Up - left of the perk machine" alt="Stamin-Up Switch" />
+<RichImage image={WidowsWineSwitchImage} caption="Widow's Wine/PhD Flopper - left of the perk machine" alt="Widow's Wine Switch" />
+
+Each of the four players must be at one of these buttons and press them simultaneously. If done incorrectly, all players will hear a buzzing sound. If done correctly, 
+all players should hear a beeping sound, as well as a message, and the pod should now have two lights active, signifying the completion of Step 2.
+
+## Clock Step
+To complete this step, you must have launched the rocket to open the Pack-a-Punch Machine room. All players must gather outside the Pack-a-Punch room, 
+standing on the large pressure plate in front of the clock on the wall, and remain there for two minutes.
+
+<RichImage image={ClockImage} caption="Clock on the wall and pressure plate in front" alt="Clock" />
+
+If a player steps off the pressure plate, the timer will reset, and you will have to start over. If done successfully a nuke will go off ending the round, 
+and the pod should have 3 lights active signifying the completion of Step 3.
+
+## Letter Step
+This step has the player collect floating letters in the sky in a certain order to spell out the word "LUNA". To complete this step, you must have the lunar lander at the spawn room, 
+have one player stand on the lunar lander in the spawn room while another player calls the lander from the <PerkTooltip perkKey="staminUpBO3" /> location, which will collect the letter 'L'.
+
+<RichImage image={LetterLImage} caption="Letter L from Spawn to Stamin-Up" alt="Letter L" />
+
+Now with the lander at <PerkTooltip perkKey="staminUpBO3" />, have a player on the lander while another player calls the lander back to spawn, this will collect the letter 'U'.
+
+<RichImage image={LetterUImage} caption="Letter U from Stamin-Up to Spawn" alt="Letter U" />
+
+Repeat, this time having a player inside the lander while another player calls the lander to the Sickle wall buy/near <PerkTooltip perkKey="speedColaBO3" />, this will collect the letter 'N'.
+
+<RichImage image={LetterNImage} caption="Letter N from Spawn to Speed Cola/Sickle Wall Buy" alt="Letter N" />
+
+Finally, have a player in the lander while another player calls the lander back to <PerkTooltip perkKey="staminUpBO3" />, this will collect the final letter 'A', spelling out the word "LUNA". 
+All four lights on the pod should be active, signifying the completion of this step.
+
+<RichImage image={LetterAImage} caption="Letter A from Speed Cola to Stamin-Up" alt="Letter A" />
+
+## Final Step
+For the final step, head back to the pod near the <PerkTooltip perkKey="staminUpBO3" /> machine. Players should hear a howling-like sound and see a glowing white orb on the ground. 
+To complete this step, players need to pump as much damage as possible into this orb during the duration of a **Gersh Device** to free Gersh.
+
+<RichImage image={GlowingOrbImage} caption="Glowing Orb near pod" alt="Glowing Orb" />
+
+> The best way to achieve this is to throw a **Gersh Device** onto the orb, then for the duration of the **Gersh Device** shoot the orb with **Pack-a-Punched Ray Gun** and 
+**Thundergun** shots as well as some **Matryoshka Dolls**.
+
+
+Once completed, **Gersh** will thank Ultimis for freeing him, and you'll see the white orb floating into the sky. Each player will then be given a Death Machine that lasts 90 seconds 
+(along with all perks for the Black Ops 3 Version).
+
+<RichImage image={GlowingOrbFloatingImage} caption="Glowing Orb Floating" alt="Glowing Orb Floating" />
+
+Congratulations! You've completed the **Ascension** Main Quest: **Casimir Mechanism**.
+
+## Video Guides
+
+### Black Ops 1 Guide by GregFPS
+<YoutubeEmbed videoLink="https://youtu.be/aLL3jmoiKhE?si=VisgVddyjjMhc0kO&t=20" />
+
+### Black Ops 3 Guide by MrRoflWaffles
+<YoutubeEmbed videoLink="https://youtu.be/RMKLm02BevE?si=_hAnLmJhHKa5qZsR" />
+
+## Credits
+Some images were sourced from the following community members:
+  - [MrRoflWaffles](https://www.youtube.com/@MrRoflWaffles)
+  - [FreeMetal](https://steamcommunity.com/id/FreeMetal)
