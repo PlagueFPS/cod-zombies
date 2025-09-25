@@ -172,7 +172,10 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 									</p>
 								</div>
 							) : (
-								<div className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}>
+								<div
+									id="body"
+									className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
+								>
 									<MDXContent components={mdxComponents} />
 								</div>
 							)}

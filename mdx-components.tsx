@@ -17,17 +17,24 @@ import {
 	TableHeader,
 	TableRow,
 } from "./components/ui/table"
+import { slugify } from "./utils/functions.client"
 
 const components: MDXComponents = {
 	h1: ({ children, ...props }: ComponentPropsWithoutRef<"h1">) => <h1 {...props}>{children}</h1>,
 	h2: ({ children, ...props }: ComponentPropsWithoutRef<"h2">) => (
-		<Heading2 {...props}>{children}</Heading2>
+		<Heading2 id={slugify(children as string)} {...props}>
+			{children}
+		</Heading2>
 	),
 	h3: ({ children, ...props }: ComponentPropsWithoutRef<"h3">) => (
-		<Heading3 {...props}>{children}</Heading3>
+		<Heading3 id={slugify(children as string)} {...props}>
+			{children}
+		</Heading3>
 	),
 	h4: ({ children, ...props }: ComponentPropsWithoutRef<"h4">) => (
-		<Heading4 {...props}>{children}</Heading4>
+		<Heading4 id={slugify(children as string)} {...props}>
+			{children}
+		</Heading4>
 	),
 	a: ({ href, children, ...props }: ComponentPropsWithoutRef<"a">) => {
 		if (href?.startsWith("#"))
