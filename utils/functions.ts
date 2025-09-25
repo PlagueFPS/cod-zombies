@@ -52,11 +52,17 @@ export const getLastUpdated = (filePath: string) =>
 			catch: error =>
 				new GetLastUpdatedError({ message: "Failed to get last updated", cause: error }),
 		})
-		return new Date(out).toLocaleDateString("en-US", DATE_OPTIONS)
+		const date = new Date(out).toLocaleDateString(undefined, DATE_OPTIONS)
+		if (date === "Invalid Date")
+			return yield* new GetLastUpdatedError({ message: "Invalid date", cause: out })
+
+		return date
 	}).pipe(
 		Effect.withLogSpan("get_last_updated"),
 		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed(new Date().toLocaleDateString("en-US", DATE_OPTIONS))),
+		Effect.catchAll(_error =>
+			Effect.succeed(new Date().toLocaleDateString(undefined, DATE_OPTIONS)),
+		),
 	)
 
 export const calculateTimeToRead = (contentPath: string) =>
@@ -65,13 +71,8 @@ export const calculateTimeToRead = (contentPath: string) =>
 			try: () => readFile(path.join(process.cwd(), contentPath), { encoding: "utf-8" }),
 			catch: error => new ReadFileError({ message: "Failed to read file", cause: error }),
 		}).pipe(
-			Effect.map(
-				content =>
-					content
-						.trim()
-						.split(/\s+/)
-						.filter(word => word.length > 0).length,
-			),
+			Effect.map(stripMarkdown),
+			Effect.map(content => content.split(/\s+/).filter(word => word.length > 0).length),
 		)
 
 		const wordPerMinute = 200 // avg reading speed
@@ -83,6 +84,16 @@ export const calculateTimeToRead = (contentPath: string) =>
 		Effect.catchAll(_error => Effect.succeed(0)),
 	)
 
+export const stripMarkdown = (text: string) =>
+	text
+		.replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
+		.replace(/\*([^*]+)\*/g, "$1") // italic *text* -> text
+		.replace(/_([^_]+)_/g, "$1") // underline _text_ -> text
+		.replace(/`([^`]+)`/g, "$1") // code `text` -> text
+		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // link [text](https://example.com) -> text
+		.replace(/<[^>]+>/g, "") // remove html tags
+		.trim()
+
 export const extractHeadingsFromMDX = (contentPath: string) =>
 	Effect.gen(function* () {
 		const content = yield* Effect.tryPromise({
@@ -93,23 +104,13 @@ export const extractHeadingsFromMDX = (contentPath: string) =>
 		const lines = content.split(/\r?\n/)
 		const headings: Heading[] = []
 
-		const stripInline = (s: string) =>
-			s
-				.replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
-				.replace(/\*([^*]+)\*/g, "$1") // italic *text* -> text
-				.replace(/_([^_]+)_/g, "$1") // underline _text_ -> text
-				.replace(/`([^`]+)`/g, "$1") // code `text` -> text
-				.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // link [text](https://example.com) -> text
-				.replace(/<[^>]+>/g, "") // remove html tags
-				.trim()
-
 		for (const line of lines) {
 			const match = /^(#{2,4})\s+(.+?)\s*$/.exec(line)
 			if (!match) continue
 
 			const level = match[1]?.length
 			const type = level === 2 ? "h2" : level === 3 ? "h3" : "h4"
-			const text = stripInline(match[2] || "")
+			const text = stripMarkdown(match[2] || "")
 			if (!text) continue
 
 			const id = slugify(text)

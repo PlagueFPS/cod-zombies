@@ -11,7 +11,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("ascension-")) return
+			if (!file.startsWith("cotd-")) return
 
 			const image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -25,7 +25,7 @@ const program = Effect.gen(function* () {
 			yield* fs.writeFile(
 				path.join(
 					process.cwd(),
-					"./content/main-quests/images/ascension",
+					"./content/images/call-of-the-dead",
 					file.replace(extension, ".webp"),
 				),
 				optimizedImage,
