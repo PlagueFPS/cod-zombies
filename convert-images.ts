@@ -11,7 +11,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("cotd-")) return
+			if (!file.startsWith("shangri-la-")) return
 
 			const image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -23,11 +23,7 @@ const program = Effect.gen(function* () {
 			})
 
 			yield* fs.writeFile(
-				path.join(
-					process.cwd(),
-					"./content/images/call-of-the-dead",
-					file.replace(extension, ".webp"),
-				),
+				path.join(process.cwd(), "./content/images/shangri-la", file.replace(extension, ".webp")),
 				optimizedImage,
 			)
 			yield* Effect.log(`Converted ${file} to webp`)
