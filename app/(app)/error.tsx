@@ -1,12 +1,16 @@
 "use client"
 import type { ErrorProps } from "@/types/errors"
 import { usePathname } from "next/navigation"
+import { useEffect } from "react"
 import FeedbackForm from "@/components/feedback-form/feedback-form"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 
 export default function RootError({ error, reset }: ErrorProps) {
 	const pathname = usePathname()
-	console.error(error.message)
+
+	useEffect(() => {
+		console.error(error.message)
+	}, [error])
 
 	return (
 		<div className="flex h-[75vh] flex-col items-center justify-center gap-16">

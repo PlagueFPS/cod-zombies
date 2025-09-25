@@ -1,6 +1,5 @@
-import type { SerializedUploadNode } from "@payloadcms/richtext-lexical"
+import type { StaticImageData } from "next/image"
 import type { ImageProps } from "@/types/images"
-import type { Media } from "@/types/payload-types"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import {
 	Dialog,
@@ -10,16 +9,16 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog"
-import { createMediaDto } from "@/utils/payload-utils"
 
 interface RichImageProps {
-	node: SerializedUploadNode
+	image: StaticImageData
+	caption: string
+	alt?: string
 }
 
-export default function RichImage({ node }: RichImageProps) {
-	const image = node.value as Media
+export default function RichImage({ image, caption, alt }: RichImageProps) {
 	const imageProps: ImageProps = {
-		featuredImage: createMediaDto(image),
+		featuredImage: image,
 		sizes: "(max-width: 828px) calc(100vw - 16px), 776px",
 	}
 
@@ -29,7 +28,7 @@ export default function RichImage({ node }: RichImageProps) {
 				<FeaturedImage
 					{...imageProps}
 					quality={100}
-					description={image?.description ?? undefined}
+					description={caption ?? undefined}
 					className="rounded-lg"
 				/>
 			</div>
@@ -38,8 +37,8 @@ export default function RichImage({ node }: RichImageProps) {
 					<FeaturedImage
 						{...imageProps}
 						quality={100}
-						description={image?.description ?? undefined}
-						alt={image.title}
+						description={caption ?? undefined}
+						alt={alt ?? ""}
 						className="cursor-default rounded-lg sm:cursor-zoom-in"
 					/>
 				</DialogTrigger>
@@ -47,15 +46,13 @@ export default function RichImage({ node }: RichImageProps) {
 					className="border-none bg-transparent sm:max-w-[calc(80%)]"
 					closeButton={false}
 				>
-					<DialogTitle className="sr-only">{image.title}</DialogTitle>
-					<DialogDescription className="sr-only">
-						{image?.description ?? "Preview Image"}
-					</DialogDescription>
+					<DialogTitle className="sr-only">{caption ?? "Preview Image"}</DialogTitle>
+					<DialogDescription className="sr-only">{caption ?? "Preview Image"}</DialogDescription>
 					<DialogClose>
 						<FeaturedImage
 							{...imageProps}
 							quality={100}
-							alt={image.title}
+							alt={alt ?? ""}
 							sizes="(max-width: 1920px) calc(100vw - 16px), 1920px"
 							className="cursor-zoom-out rounded-lg"
 						/>

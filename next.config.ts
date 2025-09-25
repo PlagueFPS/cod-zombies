@@ -1,4 +1,3 @@
-import "./env"
 import type { NextConfig } from "next"
 import createMDX from "@next/mdx"
 import { withBotId } from "botid/next/config"
@@ -10,7 +9,6 @@ const nextConfig: NextConfig = {
 		browserDebugInfoInTerminal: true,
 		mdxRs: true,
 	},
-	pageExtensions: ["md", "mdx", "ts", "tsx", "js", "jsx"],
 	typedRoutes: true,
 	allowedDevOrigins: ["10.0.0.*"],
 	logging: {
@@ -119,6 +117,9 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
 	extension: /\.(md|mdx)$/,
+	options: {
+		remarkPlugins: ["remark-gfm"],
+	},
 })
 
 export default withBotId(withMDX(nextConfig))

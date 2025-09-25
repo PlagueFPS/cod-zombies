@@ -1,12 +1,7 @@
+import type { StaticImageData } from "next/image"
+
 export interface ImageProps {
-	featuredImage:
-		| {
-				url: string | undefined | null
-				width: number | undefined | null
-				height: number | undefined | null
-		  }
-		| string
-		| null
+	featuredImage: string | StaticImageData | null
 	alt?: string
 	quality?: number
 	className?: string

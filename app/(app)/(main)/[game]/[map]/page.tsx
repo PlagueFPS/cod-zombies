@@ -31,6 +31,8 @@ import {
 	getServerUrl,
 } from "@/utils/functions"
 
+export const dynamicParams = false
+
 export const generateStaticParams = () => {
 	const mainQuests = getMainQuests()
 
@@ -81,7 +83,7 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 
 		const contentPath = `./content/main-quests/${quest.id}.mdx`
 		const { prev, next } = getAdjacentMainQuests(quest.map.id)
-		const { default: content } = yield* Effect.tryPromise(() => quest.content())
+		const { default: MDXContent } = yield* Effect.tryPromise(() => quest.content())
 		const headings = quest.state === "Coming Soon" ? [] : yield* extractHeadingsFromMDX(contentPath)
 		const timeToRead = yield* calculateTimeToRead(contentPath)
 		const lastUpdated = yield* getLastUpdated(contentPath)
@@ -170,8 +172,8 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 									</p>
 								</div>
 							) : (
-								<div className={cn("relative mx-auto w-full max-w-[80ch] px-8", richStyles.body)}>
-									{content({ components: mdxComponents })}
+								<div className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}>
+									<MDXContent components={mdxComponents} />
 								</div>
 							)}
 							<div className="flex w-full items-center justify-center">

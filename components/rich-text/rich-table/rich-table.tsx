@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 
@@ -22,7 +23,11 @@ export function RichTable({ headerCells, bodyRows }: RichTableProps) {
 						))}
 					</TableRow>
 				</TableHeader>
-				<TableBody>{bodyRows}</TableBody>
+				<TableBody>
+					{bodyRows.map((row, index) => (
+						<Fragment key={`table-body-row-${index + 1}`}>{row}</Fragment>
+					))}
+				</TableBody>
 			</Table>
 		</div>
 	)
