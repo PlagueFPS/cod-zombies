@@ -327,6 +327,19 @@ const perkRegistry = {
 		image: "/perks/elemental-pop.webp",
 		augments: [citrusFocus, imperialPeach, electricCherry, vulneraBean, pineappleBlast, chillBerry],
 	},
+	phdFlopperBO1: {
+		id: "phd-flopper-bo1",
+		title: "PHD Flopper",
+		description: "Explosive dive to prone and immunity to self-inflicted explosive damage.",
+		image: "/perks/phd-flopper-bo1.webp",
+	},
+	tombstone: {
+		id: "tombstone",
+		title: "Tombstone",
+		description:
+			"Allows you to drop a tombstone that you can pick up after death to reclaim your weapons and perks you had before dying. (Excluding Tombstone itself).",
+		image: "/perks/tombstone.webp",
+	},
 } as const satisfies Record<string, Perk>
 
 export type PerkKey = keyof typeof perkRegistry
@@ -362,4 +375,6 @@ export const {
 	victoriousTortoise,
 	widowsWine,
 	wintersWail,
+	phdFlopperBO1,
+	tombstone,
 } = perkRegistry

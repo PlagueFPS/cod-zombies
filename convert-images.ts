@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("moon-")) return
+			if (!file.startsWith("die-rise-")) return
 
 			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -23,14 +23,13 @@ const program = Effect.gen(function* () {
 					try: () => sharp(image).webp({ effort: 6 }).toBuffer(),
 					catch: error => new Error(`Failed to transform image: ${file}`, { cause: error }),
 				})
-				yield* Effect.log(`Converted ${file} to webp`)
 			}
 
 			yield* fs.writeFile(
-				path.join(process.cwd(), "./content/images/moon", file.replace(extension, ".webp")),
+				path.join(process.cwd(), "./content/images/die-rise", file.replace(extension, ".webp")),
 				image,
 			)
-			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to moon`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to die-rise`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)
