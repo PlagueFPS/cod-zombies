@@ -40,8 +40,9 @@ const components: MDXComponents = {
 		if (href?.startsWith("#"))
 			return (
 				<a
-					{...props}
+					href={href}
 					className="inline-flex font-medium text-orange-600 underline underline-offset-4 transition-all hover:no-underline dark:text-primary"
+					{...props}
 				>
 					{children}
 				</a>
