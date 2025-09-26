@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("origins-")) return
+			if (!file.startsWith("soe-")) return
 
 			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -26,10 +26,14 @@ const program = Effect.gen(function* () {
 			}
 
 			yield* fs.writeFile(
-				path.join(process.cwd(), "./content/images/origins", file.replace(extension, ".webp")),
+				path.join(
+					process.cwd(),
+					"./content/images/shadows-of-evil",
+					file.replace(extension, ".webp"),
+				),
 				image,
 			)
-			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to origins`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to shadows-of-evil`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)
