@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("de-")) return
+			if (!file.startsWith("zns-")) return
 
 			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -28,12 +28,12 @@ const program = Effect.gen(function* () {
 			yield* fs.writeFile(
 				path.join(
 					process.cwd(),
-					"./content/images/der-eisendrache",
+					"./content/images/zetsubou-no-shima",
 					file.replace(extension, ".webp"),
 				),
 				image,
 			)
-			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to der-eisendrache`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to zetsubou-no-shima`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)
