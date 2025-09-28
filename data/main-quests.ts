@@ -178,7 +178,7 @@ const mainQuestRegistry = {
 		content: () => import("@/content/main-quests/most-escape-alive.mdx"),
 	},
 	classifiedMainQuest: {
-		id: "classified-main-quest",
+		id: "classified",
 		difficulty: "Medium",
 		map: classified,
 		content: () => import("@/content/main-quests/classified.mdx"),
