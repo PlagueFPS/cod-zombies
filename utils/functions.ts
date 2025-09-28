@@ -86,6 +86,7 @@ export const calculateTimeToRead = (contentPath: string) =>
 
 export const stripMarkdown = (text: string) =>
 	text
+		.replace(/^import\s+.*?from\s+['"][^'"]+['"];?\s*$/gm, "") // remove import statements
 		.replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
 		.replace(/\*([^*]+)\*/g, "$1") // italic *text* -> text
 		.replace(/_([^_]+)_/g, "$1") // underline _text_ -> text
