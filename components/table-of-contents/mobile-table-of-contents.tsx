@@ -61,8 +61,8 @@ export default function MobileTableOfContents({
 									<li
 										key={`mobile-toc-${heading.id}`}
 										className={cn("w-fit transition-colors hover:text-primary", {
-											"pl-3 font-medium text-foreground/70": heading.type === "heading-3",
-											"pl-6 font-normal text-foreground/50": heading.type === "heading-4",
+											"pl-3 font-medium text-foreground/70": heading.type === "h3",
+											"pl-6 font-normal text-foreground/50": heading.type === "h4",
 											"text-primary": activeHeading === heading.id,
 										})}
 									>
