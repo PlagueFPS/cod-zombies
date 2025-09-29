@@ -1,5 +1,5 @@
 import { FileSystem, Path } from "@effect/platform"
-import { NodeFileSystem, NodeRuntime } from "@effect/platform-node"
+import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
 import { Effect, Layer, Ref } from "effect"
 import sharp from "sharp"
 
@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("classified-")) return
+			if (!file.startsWith("dotn-")) return
 
 			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -26,10 +26,14 @@ const program = Effect.gen(function* () {
 			}
 
 			yield* fs.writeFile(
-				path.join(process.cwd(), "./content/images/classified", file.replace(extension, ".webp")),
+				path.join(
+					process.cwd(),
+					"./content/images/dead-of-the-night",
+					file.replace(extension, ".webp"),
+				),
 				image,
 			)
-			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to classified`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to dead-of-the-night`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)
@@ -37,7 +41,7 @@ const program = Effect.gen(function* () {
 	yield* Effect.log(`Converted ${current} images`)
 }).pipe(
 	Effect.withLogSpan("convert_images"),
-	Effect.provide(Layer.merge(NodeFileSystem.layer, Path.layer)),
+	Effect.provide(Layer.merge(BunFileSystem.layer, Path.layer)),
 )
 
-NodeRuntime.runMain(program)
+BunRuntime.runMain(program)
