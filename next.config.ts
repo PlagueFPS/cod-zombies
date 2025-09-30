@@ -5,10 +5,10 @@ import { withBotId } from "botid/next/config"
 const nextConfig: NextConfig = {
 	experimental: {
 		serverComponentsHmrCache: true,
-		reactCompiler: true,
 		browserDebugInfoInTerminal: true,
 		mdxRs: true,
 	},
+	reactCompiler: true,
 	typedRoutes: true,
 	allowedDevOrigins: ["10.0.0.*"],
 	logging: {
