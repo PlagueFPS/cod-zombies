@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("dotn-")) return
+			if (!file.startsWith("ancient-evil-")) return
 
 			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -26,14 +26,10 @@ const program = Effect.gen(function* () {
 			}
 
 			yield* fs.writeFile(
-				path.join(
-					process.cwd(),
-					"./content/images/dead-of-the-night",
-					file.replace(extension, ".webp"),
-				),
+				path.join(process.cwd(), "./content/images/ancient-evil", file.replace(extension, ".webp")),
 				image,
 			)
-			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to dead-of-the-night`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to ancient-evil`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)

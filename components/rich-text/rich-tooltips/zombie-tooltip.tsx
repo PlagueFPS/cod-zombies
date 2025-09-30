@@ -20,7 +20,7 @@ export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 		return (
 			<HoverCard openDelay={200}>
 				<HoverCardTrigger
-					className="relative inline-flex cursor-default items-baseline justify-center align-baseline font-bold"
+					className="relative inline-flex cursor-default items-baseline justify-center align-baseline"
 					asChild
 				>
 					<span
