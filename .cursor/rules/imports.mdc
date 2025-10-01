@@ -1,8 +1,11 @@
 ---
 alwaysApply: true
 ---
-Always use `PascalCase` for default import names like:
-```typescript
-import SomeImage from "some-path"
-import SomeComponent from "some-path"
-```
+
+## Convention
+- Always use the import alias `@/*` for any interal imports
+- Always use `PascalCase` for default import names like:
+  ```typescript
+  import SomeImage from "@/some-path"
+  import SomeComponent from "@/some-path"
+  ```

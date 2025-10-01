@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("liberty-falls-")) return
+			if (!file.startsWith("terminus-")) return
 
 			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -26,14 +26,10 @@ const program = Effect.gen(function* () {
 			}
 
 			yield* fs.writeFile(
-				path.join(
-					process.cwd(),
-					"./content/images/liberty-falls",
-					file.replace(extension, ".webp"),
-				),
+				path.join(process.cwd(), "./content/images/terminus", file.replace(extension, ".webp")),
 				image,
 			)
-			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to liberty-falls`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to terminus`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)

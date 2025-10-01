@@ -73,6 +73,8 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }
 							featuredImage={weaponBuild.image}
 							alt={weaponBuild.title}
 							sizes="140px"
+							width={140}
+							height={80}
 							withLoader
 							className="h-auto w-full object-cover"
 						/>
