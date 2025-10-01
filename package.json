@@ -23,7 +23,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@effect/platform": "^0.92.0",
+    "@effect/platform": "0.90.0",
     "@hookform/resolvers": "5.0.1",
     "@libsql/client": "^0.14.0",
     "@linear/sdk": "^58.1.0",
