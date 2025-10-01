@@ -1,0 +1,230 @@
+import AetheriumNeutralizer from "../images/forsaken/forsaken-aetherium-neutralizer.webp"
+import BuoyWall from "../images/forsaken/forsaken-buoy-wall.webp"
+import CatalyzedCrystalShard from "../images/forsaken/forsaken-catalyzed-crystal-shard.webp"
+import CatalyzedCrystal from "../images/forsaken/forsaken-catalyzed-crystal.webp"
+import Chrysalax from "../images/forsaken/forsaken-chrysalax.webp"
+import CrystalShard from "../images/forsaken/forsaken-crystal-shard.webp"
+import Ending from "../images/forsaken/forsaken-ending.webp"
+import EnergeticGeode from "../images/forsaken/forsaken-energetic-geode.webp"
+import FuelTank from "../images/forsaken/forsaken-fuel-tank.webp"
+import GrandPrix from "../images/forsaken/forsaken-grand-prix.webp"
+import HousingUnit from "../images/forsaken/forsaken-housing-unit.webp"
+import MainQuestButton from "../images/forsaken/forsaken-main-quest-button.webp"
+import MonitoringDevice from "../images/forsaken/forsaken-monitoring-device.webp"
+import Phase1 from "../images/forsaken/forsaken-phase-1.webp"
+import Phase2 from "../images/forsaken/forsaken-phase-2.webp"
+import PolymorphicCrystalCore from "../images/forsaken/forsaken-polymorphic-crystal-core.webp"
+import TemperedCrystalHeart from "../images/forsaken/forsaken-tempered-crystal-heart.webp"
+import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
+import { TableCell } from "@/components/ui/table"
+import ZombieTooltip from "@/components/rich-text/rich-tooltips/zombie-tooltip"
+import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgrade-tooltip"
+import PerkTooltip from "@/components/rich-text/rich-tooltips/perk-tooltip"
+import AmmoModTooltip from "@/components/rich-text/rich-tooltips/ammo-mod-tooltip"
+
+## Pyrrhic Victory
+
+The main quest for **Forsaken** is **Pyrrhic Victory**. Our **Requiem Strike Force's** goal in this quest is to prevent the **Omega Group** from rescuing **Kazimir Zykov** 
+and to capture <ZombieTooltip zombieKey='theForsaken' />.
+
+## Requirements
+
+This quest can be completed with any number of players. The only requirement is to obtain the [Chrysalax](#obtaining-the-chrysalax), which will be required as early as 
+[Step 2](#step-2-gather-the-parts).
+
+> While there is an easy side quest to obtain the [Chrysalax](#obtaining-the-chrysalax) it is not the quickest way to obtain the weapon, **Legendary Trials** and the 
+**Mystery Box** especially are usually quicker for obtaining the weapon. The choice is yours, you can work on the side quest while also spinning the box or completing trials.
+
+## Recommended Loadouts
+
+<RichTable 
+  headerCells={["Start Weapon", "Field Upgrade"]} 
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        Hauer
+      </TableCell>
+      <TableCell>
+        <FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' />
+      </TableCell>
+    </RichBodyRow>,
+        <RichBodyRow>
+      <TableCell>
+        M16
+      </TableCell>
+      <TableCell>
+        <FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' />
+      </TableCell>
+    </RichBodyRow>,
+  ]} 
+/>
+
+## Step 1: Reveal the Monster
+
+Head to the **Observation Tower** and interact with the button on the wall opposite the **Bunker** teleporter to trigger a cutscene, revealing **Omega Group's** plans and the truth 
+about **Kazimir Zykov**.
+
+<RichImage image={MainQuestButton} caption='Button Triggering the Main Quest' />
+
+## Step 2: Gather the Parts
+
+You must obtain the four parts needed to assemble the **Aetherium Neutralizer**. These parts can be obtained in any order: the **Housing Unit**, **Monitoring Device**, **Fuel Tank**, and 
+**Catalyzed Crystal Shards**.
+
+> While working on obtaining these parts you should be working on obtaining the [Chrysalax](#obtaining-the-chrysalax) from any of these previously mentioned sources as it is required to obtain the 
+**Catalyzed Crystal Shards**.
+
+### Housing Unit
+
+Head to the **Board Room** inside the Bunker and wait for an <ZombieTooltip zombieKey='abomination' /> to spawn. Once spawned, bait the <ZombieTooltip zombieKey='abomination' /> 
+to charge into the wall in the corner of the room with a **Buoy** hanging from it, knocking it down, and revealing the **Housing Unit**.
+
+<RichImage image={BuoyWall} caption='Buoy hanging from the wall' />
+<RichImage image={HousingUnit} caption='Housing Unit' />
+
+### Fuel Tank
+
+Head to the **Fuel Processing** area of the map, all players in the game must interact with a control panel on each of the fuel tanks per player at the same time to begin a lockdown. 
+During this lockdown, you must kill zombies until all four tanks have been filled ending the lockdown and dropping the **Fuel Tank** in the center of the area.
+
+<RichImage image={FuelTank} caption='Fuel Tank' />
+
+> There are four tanks, but since it is per player if you are solo you can interact with any control panel at any time to being the lockdown, two players requires two seperate 
+control panels to be interacted with at the same time, and so on.
+
+### Monitoring Device
+
+Head to the **Observation Tower** and apply the <AmmoModTooltip ammoModKey='deadWire' /> Ammo Mod on your weapon, then head to the **Arcade** and you must trigger the 
+<AmmoModTooltip ammoModKey='deadWire' /> effect on a zombie near the **Grand Prix** arcade machine to activate it.
+
+<RichImage image={GrandPrix} caption='Grand Prix Arcade Machine' />
+
+
+Once activated, interact with the machine for **2000** points, spawning in an **ARC-XD** with an **AOE** pulse effect. You must drive this **ARC-XD** behind the counter of the 
+**TV Store** and have the pulse break open a vent, which you can drive into and then self-destruct, blowing a hole through the wall and revealing the **Monitoring Device**.
+
+<RichImage image={MonitoringDevice} caption='Monitoring Device' />
+
+> If the **ARC-XD** happens to get destroyed before you can blow open the wall, you can buy another for the same cost at the machine.
+
+### Catalyzed Crystal Shards
+
+> Obtaining these shards requires the [Chrysalax](#obtaining-the-chrysalax).
+
+After completing [Step 1](#step-1-reveal-the-monster), three giant **Aetherium Crystals** will have spawned in the **Staging Area**, **Storage Zone 5**, and **The Amplifier** that 
+you must destroy using the [Chrysalax](#obtaining-the-chrysalax) by using the alternate variant (the gun) to shoot the three glowing orbs around each crystal and then using the 
+primary variant (the axe) to break the giant crystal.
+
+<RichImage image={CrystalShard} caption='Crystal Shard' />
+
+> The three glowing orbs can be destoryed via any damage, the alternate variant of the [Chrysalax](#obtaining-the-chrysalax) is just our recommendation for destorying these orbs.
+
+Once broken, a smaller **Crystal Shard** can be picked up from the center of the broken crystal. You must throw this **Crystal Shard** into the mouth of an 
+<ZombieTooltip zombieKey='abomination' /> causing it to eat and swallow the shard, which, once killed, will drop a **Catalyzed Crystal Shard**. You must repeat this for all 
+three **Aetherium Crystals** to obtain the three shards.
+
+<RichImage image={CatalyzedCrystalShard} caption='Catalyzed Crystal Shard' />
+
+### Obtaining the Chrysalax
+
+> Along with this side quest, the [Chrysalax](#obtaining-the-chrysalax) can be obtained from **Legendary Trials** and from the **Mystery Box**.
+
+The **Chrysalax** requires three parts to obtain: the **Polymorphic Crystal Core**, **Energetic Geode**, and **Tempered Crystal Heart**.
+
+#### Polymorphic Crystal Core
+
+Once two rounds have passed after completing [Step 1](#step-1-reveal-the-monster), the **Polymorphic Crystal Core** will fall from the sky, landing in Jim's Donuts shop on 
+**Main Street**. Upon approaching the core, it will be shielded and three waves of special enemies will begin to spawn. Once all three waves have been defeated the shield 
+will be lowered and you can collect the core.
+
+<RichImage image={PolymorphicCrystalCore} caption='Polymorphic Crystal Core' />
+
+#### Energetic Geode
+
+Wait for an <ZombieTooltip zombieKey='abomination' /> to spawn and bait it to shoot its ranged energy beam attack at a **Dark Aether Crystal**, breaking it and revealing the 
+**Energetic Geode**.
+
+<RichImage image={EnergeticGeode} caption='Energetic Geode' />
+
+#### Tempered Crystal Heart
+
+You must kill any <ZombieTooltip zombieKey='tormentors' /> with fire damage, ideally using the **Flamethrower** scorestreak or the <FieldUpgradeTooltip fieldUpgradeKey='ringOfFire' /> 
+field upgrade, dropping a **Tempered Crystal Heart**.
+
+<RichImage image={TemperedCrystalHeart} caption='Tempered Crystal Heart' />
+
+> A **Flamethrower** can be purchased from any crafting table for salavage.
+
+Once all three parts have been obtained, head to the **Particle Accelerator** in the **Bunker**, place the items inside the tank filled with liquid behind the **Krig 6** wall buy, 
+and get around 10 melee kills to complete the weapon and obtain the [Chrysalax](#obtaining-the-chrysalax).
+
+## Step 3: Assemble the Aetherium Neutralizer
+
+Once all four parts have been obtained, head to the workbench on **Main Street** to assemble the **Aetherium Neutralizer**.
+
+<RichImage image={AetheriumNeutralizer} caption='Aetherium Neutralizer' />
+
+> Once assembled, be sure to fully prepare for the boss fight, you won't be going into the boss fight just yet and will get one last chance at the end of this step to **Pack-a-Punch**, 
+get perks, armor, craft items, and ammo; However you won't be able to obtain any new weapons from the** Mystery Box** if you still needed to do so.
+
+When ready, interact with the **Aetherium Neutralizer** to begin moving through the **Phase**. While moving, you must constantly provide the **Aetherium Neutralizer** with fuel to 
+keep going by destroying **Catalyzed Crystals**, picking up their shards, and placing them into the **Aetherium Neutralizer**.
+
+<RichImage image={CatalyzedCrystal} caption='Catalyzed Crystal' />
+
+> You will need to step out of the safety bubble to pick up most of the shards as some of them require you to climb ladders to reach them, the Phase does not do a lot of damage 
+so you should be fine, but move quickly just in case.
+
+Once you have reached the checkpoint the **Aetherium Neutralizer** will shut down, and you will be given one final chance to restock, upgrade, or craft anything you need 
+before entering the boss fight.
+
+## Step 4: Defeat the Forsaken
+
+> This is a three-phase boss fight with no time limit so you can go as slow or fast as you want.
+
+### Boss Fight Mechanics
+
+When ready, interact with the door to enter the boss arena. **Samantha Maxis** will float around the arena and create a ring of fire underneath her that you must kill zombies within to 
+charge her essence. Once charged, she will deposit that essence into one of the two **Aetherium Guns** in the arena, afterward you must mount that charged gun and shoot it at 
+<ZombieTooltip zombieKey='theForsaken' /> weak point after exposing it by shooting the crystals off with your weapon.
+
+> The gun variant [Chrysalax](#obtaining-the-chrysalax) is strong against the crystals but only at short range, if you started with the **M16** and have it **Pack-a-Punched** 
+it should be much more effective at longer distances.
+
+### Phase 1
+
+During **Phase 1**, <ZombieTooltip zombieKey='theForsaken' /> weak points will be his shoulders, with his main attack being a shockwave and his secondary attacks only coming into play 
+when one of his shoulders has been destroyed. His two secondary attacks are a slow field when his right shoulder is destroyed, and tracking energy orbs when his left shoulder is destroyed. 
+This phase ends once both of his shoulders have been destroyed.
+
+<RichImage image={Phase1} caption='Phase 1' />
+
+> You don't need to wait until both crystals are broken before you can start using the **Aetherium Gun**, once one is broken you can focus that shoulder until it is destroyed and 
+move onto the next.
+
+### Phase 2
+
+During **Phase 2**, you will be teleported to a "Vision of the Future" If you are to succeed, <ZombieTooltip zombieKey='krasnySoldat' /> zombies will begin to spawn, and 
+<ZombieTooltip zombieKey='theForsaken' /> will gain a new ranged attack where he shoots lasers from his eyes dealing continuous damage to anyone in the affected area. The crystal on 
+<ZombieTooltip zombieKey='theForsaken' /> stomach is now his weak point.
+
+<RichImage image={Phase2} caption='Phase 2' />
+
+### Phase 3
+
+During **Phase 3**, <ZombieTooltip zombieKey='theForsaken' /> weak point will shift to the top of his head. Upon destroying this weak point, <ZombieTooltip zombieKey='theForsaken' /> 
+releases a desperate attack allowing the Phase to enter the boss arena damaging all players and potentially downing you if you are low enough. Before you think you are finished, 
+**Samantha Maxis** makes the ultimate sacrifice, triggering the ending cutscene after some dialogue.
+
+<RichImage image={Ending} caption='Ending Cutscene' />
+
+Congratulations! You have beaten the **Forsaken** main quest: **Pyrrhic Victory**.
+## Video Guides
+
+### Solo Guide by MrRoflWaffles
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=RtYND6JaLe0" />
+
+### Co-op Guide by MrDalekJD
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=Dlqnm7k8-b4" />
