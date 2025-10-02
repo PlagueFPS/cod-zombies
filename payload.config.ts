@@ -44,6 +44,7 @@ import { SITE_TITLE } from "./utils/constants"
 export default buildConfig({
 	secret: Redacted.value(env.PAYLOAD_SECRET),
 	admin: {
+		autoRefresh: true,
 		meta: {
 			titleSuffix: `- ${SITE_TITLE}`,
 			defaultOGImageType: "off",
