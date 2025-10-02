@@ -62,7 +62,7 @@ export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 	return (
 		<Popover>
 			<PopoverTrigger
-				className="relative inline-flex cursor-default items-baseline justify-center align-baseline font-bold"
+				className="relative inline-flex cursor-default items-baseline justify-center align-baseline"
 				asChild
 			>
 				<span

@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 
 	yield* Effect.forEach(media, file =>
 		Effect.gen(function* () {
-			if (!file.startsWith("the-tomb-")) return
+			if (!file.startsWith("shattered-veil-")) return
 
 			let image = yield* fs.readFile(path.join("./media", file))
 			const extension = path.extname(file)
@@ -26,10 +26,14 @@ const program = Effect.gen(function* () {
 			}
 
 			yield* fs.writeFile(
-				path.join(process.cwd(), "./content/images/the-tomb", file.replace(extension, ".webp")),
+				path.join(
+					process.cwd(),
+					"./content/images/shattered-veil",
+					file.replace(extension, ".webp"),
+				),
 				image,
 			)
-			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to the-tomb`)
+			yield* Effect.log(`Optimized: ${shouldOptimize}; moved ${file} to shattered-veil`)
 			yield* Ref.update(numRef, n => n + 1)
 		}),
 	)
