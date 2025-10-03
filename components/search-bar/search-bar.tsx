@@ -39,7 +39,7 @@ export default function SearchBar({ showFull }: ISearchBar) {
 		.filter(q => q.state !== "Coming Soon")
 		.map(q => ({
 			id: q.id,
-			slug: q.map.id,
+			slug: q.id,
 			title: q.title,
 			game: {
 				title: q.map.game.title,

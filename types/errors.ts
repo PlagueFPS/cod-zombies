@@ -77,3 +77,4 @@ export class PayloadFindByIDError extends Data.TaggedError(
 	"PayloadFindByIDError",
 )<CommonErrorProps> {}
 export class RelationshipError extends Data.TaggedError("RelationshipError")<CommonErrorProps> {}
+export class PageNotFoundError extends Data.TaggedError("PageNotFoundError")<CommonErrorProps> {}

@@ -1,4 +1,3 @@
-import { getLastUpdated } from "@/utils/functions"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
 	citadelleDesMorts,
@@ -47,20 +46,8 @@ interface SideQuestReleased {
 }
 
 export type SideQuest = SideQuestComingSoon | SideQuestReleased
-/**
- * Get a SideQuest by key
- * @param key The key of the side quest
- * @returns The side quest with the given key
- */
-export const getSideQuestByKey = (key: SideQuestKey): SideQuest => sideQuestRegistry[key]
-/**
- * Get all SideQuests
- * @returns An array of all side quests
- */
-export const getSideQuests = (): SideQuest[] =>
-	Object.values(sideQuestRegistry).sort((a, b) =>
-		sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
-	)
+/** Union type of all side quests */
+export type SideQuestKey = keyof typeof sideQuestRegistry
 
 const sideQuestRegistry = {
 	free500Points: {
@@ -936,8 +923,49 @@ const sideQuestRegistry = {
 		content: () => import("@/content/side-quests/aether-blade.mdx"),
 	},
 } as const satisfies Record<string, SideQuest>
-/** Union type of all side quests */
-export type SideQuestKey = keyof typeof sideQuestRegistry
+
+const sideQuestMap = new Map<string, SideQuest>()
+const sideQuests: SideQuest[] = Object.values(sideQuestRegistry).sort((a, b) =>
+	sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
+)
+
+for (const sideQuest of sideQuests) {
+	sideQuestMap.set(sideQuest.id, sideQuest)
+}
+
+/**
+ * Get a SideQuest by key
+ * @param key The key of the side quest
+ * @returns The side quest with the given key
+ */
+export const getSideQuestByKey = (key: SideQuestKey): SideQuest => sideQuestRegistry[key]
+
+/**
+ * Get all SideQuests
+ * @returns An array of all side quests
+ */
+export const getSideQuests = (): SideQuest[] => sideQuests
+
+/**
+ * Get a SideQuest by its id
+ * @param id The id of the side quest
+ * @returns The side quest with the given id
+ */
+export const getSideQuestById = (id: string) => sideQuestMap.get(id)
+
+/**
+ * Get the previous and next side quests by their id
+ * @param questId The id of the side quest
+ * @returns The previous and next side quests
+ */
+export const getAdjacentSideQuests = (questId: string) => {
+	const index = sideQuests.findIndex(quest => quest.id === questId)
+	return {
+		prev: index < sideQuests.length - 1 ? sideQuests[index + 1] : null,
+		next: index > 0 ? sideQuests[index - 1] : null,
+	}
+}
+
 export const {
 	_115FreePerk,
 	aceOfSpades,

@@ -3,10 +3,10 @@ import { Effect, Layer } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
 import { getFonts, optimizeImageForOG } from "@/data/og-images"
-import { getSideQuestBySlug } from "@/data/side-quests"
+import { getSideQuestById } from "@/data/side-quests"
 import { FileStorage } from "@/lib/services/file-storage"
 import { OgImageGenerationError } from "@/types/errors"
-import { DATE_OPTIONS } from "@/utils/constants"
+import { calculateTimeToRead, getLastUpdated } from "@/utils/functions"
 
 export const alt = "Side Quest Guide Preview"
 export const size = {
@@ -17,18 +17,16 @@ export const contentType = "image/png"
 
 export default async function SideQuestImage({
 	params,
-}: PageProps<"/side-quests/[game]/[map]/[slug]">) {
+}: PageProps<"/side-quests/[game]/[map]/[id]">) {
 	return await Effect.gen(function* () {
-		const { slug } = yield* Effect.promise(() => params)
-		const quest = yield* Effect.promise(() => getSideQuestBySlug(slug))
-		if (!quest?.image.url)
-			return yield* new OgImageGenerationError({
-				message: "No image URL found for quest",
-				cause: `Could not find image URL for quest: ${slug}`,
-			})
+		const { id } = yield* Effect.promise(() => params)
+		const quest = getSideQuestById(id)
+		if (!quest) return new Response("Not Found", { status: 404 })
 
 		const { boldFont, semiBoldFont } = yield* getFonts
-		const supportedImage = yield* optimizeImageForOG(quest.image.url)
+		const supportedImage = yield* optimizeImageForOG(quest.map.image)
+		const timeToRead = yield* calculateTimeToRead(`./content/side-quests/${quest.id}.mdx`)
+		const lastUpdated = yield* getLastUpdated(`./content/side-quests/${quest.id}.mdx`)
 
 		const res = new ImageResponse(
 			<div
@@ -90,7 +88,7 @@ export default async function SideQuestImage({
 							backgroundImage: "radial-gradient(circle at top, hsl(17 100% 31%), hsl(16 83% 27%))",
 						}}
 					>
-						{quest.game.title}
+						{quest.map.game.title}
 					</span>
 					<span
 						style={{
@@ -143,9 +141,9 @@ export default async function SideQuestImage({
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{new Date(quest.updatedAt).toLocaleDateString("en-US", DATE_OPTIONS)}</span>
+					<span>{lastUpdated}</span>
 					<span>&bull;</span>
-					<span>{quest.timeToRead} min read</span>
+					<span>{timeToRead} min read</span>
 				</div>
 			</div>,
 			{
@@ -186,9 +184,7 @@ export default async function SideQuestImage({
 		Effect.withLogSpan("side_quest_og_image_generation"),
 		Effect.tapError(Effect.logError),
 		Effect.catchTags({
-			GetFileError: error => Effect.succeed(new Response(error.message, { status: 404 })),
 			ReadFileError: error => Effect.succeed(new Response(error.message, { status: 404 })),
-			RequestError: error => Effect.succeed(new Response(error.message, { status: 400 })),
 		}),
 		Effect.catchAll(error => Effect.succeed(new Response(error.message, { status: 500 }))),
 		Effect.ensureErrorType<never>(),
