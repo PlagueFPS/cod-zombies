@@ -1,0 +1,78 @@
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+import ZombieTooltip from "@/components/rich-text/rich-tooltips/zombie-tooltip"
+import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
+import GoldenBucket from "@/content/images/zetsubou-no-shima/zns-golden-bucket.webp"
+import GrowingSpot from "@/content/images/zetsubou-no-shima/zns-golden-bucket-growing-spot.webp"
+import ZombieKillerPlant from "@/content/images/zetsubou-no-shima/zns-golden-bucket-zombie-killer-plant.webp"
+import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
+import { TableCell } from "@/components/ui/table"
+
+## Golden Bucket
+This side quest has players grow every type of plant possible on the map, then use the **Skull of Nan Sapwe** to mesmerize 
+some vines under **Lab B**, revealing a growing spot that you can place your bucket onto, revealing three nearby growing 
+spots that you must plant seeds into to grow carnivorous plants, that you must feed zombies too, to obtain the **Golden Bucket**.
+
+## Requirements
+
+- Grown all five standard plants
+- **Skull of Nan Sapwe**
+
+## Step 1: Growing All Four Standard Plants
+
+<RichTable 
+  headerCells={["Plant", "Water", "Reward"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>Bad Pod</TableCell>
+      <TableCell>No Water</TableCell>
+      <TableCell>Low Tier</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>Reward Pod</TableCell>
+      <TableCell>Blue</TableCell>
+      <TableCell>Medium Tier</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>Zombie Holder</TableCell>
+      <TableCell>Green</TableCell>
+      <TableCell>Holds Zombies & Spiders for 5 minutes</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>Zombie Killer</TableCell>
+      <TableCell>Purple</TableCell>
+      <TableCell>Lures zombies and kills them</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>Fruit Plant</TableCell>
+      <TableCell>Blue + Green + Purple/Rainbow</TableCell>
+      <TableCell>50% chance of a Random Perk</TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+>It doesn't matter what order you water the **Fruit Plant** as long as you use three different types of water each round.
+## Step 2: Mesmerize the Roots
+Once all five plants have been grown in your game, head directly under **Lab B** and use the **Skull of Nan Sapwe** on the 
+roots blocking a growing spot. Interact with the growing spot to place your bucket on it.
+
+<RichImage image={GrowingSpot} caption="Growing Spot" />
+
+## Step 3: Plant and Feed the Plants
+Plant three seeds, one in each of the newly spawned growing spots under the lab, and they will transform into 
+**Zombie Killer Plants** by themselves.
+
+<RichImage image={ZombieKillerPlant} caption="Zombie Killer Plant" />
+
+You must continuously feed these plants zombies until a plant grows where you placed your bucket, and interact with the plant 
+to reveal the **Golden Bucket** that everyone in your game can collect, granting you infinite amounts of every type of water 
+on the map.
+
+<RichImage image={GoldenBucket} caption="Golden Bucket" />
+
+> You can cycle through each type of water by pressing the **Sprint+Melee** buttons/keys are the same time on whatever 
+platform you are on.
+
+## Video Guides
+
+### Guide by MrDalekJD
+<YoutubeEmbed videoLink="https://youtu.be/QFPvSqxbkPc?si=mZmOBquRerc1hcXe" />
