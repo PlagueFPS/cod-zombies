@@ -135,7 +135,7 @@ const mapRegistry = {
 		releaseDate: new Date("November 12, 2012 07:00 AM"),
 		description:
 			"Continue the fight against the undead and search for clues to the truth of what lies ahead...",
-		image: "/maps/tranzit.avif",
+		image: "/maps/tranzit.webp",
 		game: blackOps2,
 	},
 	dieRise: {
@@ -144,7 +144,7 @@ const mapRegistry = {
 		releaseDate: new Date("January 29, 2013 07:00 AM"),
 		description:
 			"Watch your step! Fight for survival atop the towers of doom, where dizzying heights and relentless undead make a deadly combination.",
-		image: "/maps/die-rise.avif",
+		image: "/maps/die-rise.webp",
 		game: blackOps2,
 	},
 	mobOfTheDead: {
@@ -153,7 +153,7 @@ const mapRegistry = {
 		releaseDate: new Date("April 16, 2013 08:00 AM"),
 		description:
 			"Battle the undead as you attempt to break free from the physical and metaphorical incarceration of Alcatraz Prison.",
-		image: "/maps/mob-of-the-dead.avif",
+		image: "/maps/mob-of-the-dead.webp",
 		game: blackOps2,
 	},
 	buried: {
@@ -162,7 +162,7 @@ const mapRegistry = {
 		releaseDate: new Date("July 02, 2013 08:00 AM"),
 		description:
 			"Are you afraid of dark, tight spaces? Confront your deepest fears as you battle the undead in an underground obstacle course of mental challenges. You are now... 'Buried'.",
-		image: "/maps/buried.avif",
+		image: "/maps/buried.webp",
 		game: blackOps2,
 	},
 	origins: {
@@ -171,7 +171,7 @@ const mapRegistry = {
 		releaseDate: new Date("August 27, 2013 08:00 AM"),
 		description:
 			"Witness the origins of Group 935, as an ancient evil is unleashed upon the battlefields of World War I.",
-		image: "/maps/origins.avif",
+		image: "/maps/origins.webp",
 		game: blackOps2,
 	},
 	shadowsOfEvil: {
@@ -189,7 +189,7 @@ const mapRegistry = {
 		releaseDate: new Date("November 06, 2015 08:00 AM"),
 		description:
 			"Re-awaken The Giant. Return to the secret facility where it all began, and strike at the heart of the zombie scourge.",
-		image: "/maps/the-giant.avif",
+		image: "/maps/the-giant.webp",
 		game: blackOps3,
 	},
 	derEisendrache: {
@@ -198,7 +198,7 @@ const mapRegistry = {
 		releaseDate: new Date("February 02, 2016 07:00 AM"),
 		description:
 			"Bound together by a fragile alliance, our heroes pursue the scattered remnants of Group 935 to their mountain top fortress in the Austrian Alps...",
-		image: "/maps/der-eisendrache.avif",
+		image: "/maps/der-eisendrache.webp",
 		game: blackOps3,
 	},
 	zetsubouNoShima: {
@@ -234,7 +234,7 @@ const mapRegistry = {
 		releaseDate: new Date("October 11, 2018 12:00 AM"),
 		description:
 			"Four intrepid adventurers board the RMS Titanic to pull off a daring heist involving a mysterious artifact. Little do Scarlett Rhodes, Diego Necalli, Bruno Delacroix, and Stanton Shaw suspect that a giant iceberg will be the least of their problems…",
-		image: "/maps/voyage-of-despair.avif",
+		image: "/maps/voyage-of-despair.webp",
 		game: blackOps4,
 	},
 	ix: {
@@ -243,7 +243,7 @@ const mapRegistry = {
 		releaseDate: new Date("October 11, 2018 01:00 AM"),
 		description:
 			"Transported across the Millennia, Scarlett, Diego, Bruno and Shaw find themselves caught up in a sinister ritual, where they are thrust into brutal gladiatorial combat against waves of unnatural enemies that stand between them and the High Priest of Chaos.",
-		image: "/maps/ix.avif",
+		image: "/maps/ix.webp",
 		game: blackOps4,
 	},
 	bloodOfTheDead: {
@@ -252,7 +252,7 @@ const mapRegistry = {
 		releaseDate: new Date("October 11, 2018 02:00 AM"),
 		description:
 			"In their mission to “secure a better tomorrow”, Richtofen, Dempsey, Takeo and Nikolai journey to a secret laboratory beneath the iconic Alcatraz, where they realize that the future they sought to secure is now in serious jeopardy.",
-		image: "/maps/blood-of-the-dead.avif",
+		image: "/maps/blood-of-the-dead.webp",
 		game: blackOps4,
 	},
 	classified: {
@@ -260,7 +260,7 @@ const mapRegistry = {
 		title: " Classified",
 		releaseDate: new Date("October 11, 2018 03:00 AM"),
 		description: "Mankind must put an end to war – or war will put an end to mankind. (JFK, 1961)",
-		image: "/maps/classified.avif",
+		image: "/maps/classified.webp",
 		game: blackOps4,
 	},
 	deadOfTheNight: {
@@ -269,7 +269,7 @@ const mapRegistry = {
 		releaseDate: new Date("December 11, 2018 12:00 AM"),
 		description:
 			"When a party at an English mansion turns into an undead bloodbath, a phony psychic, stage-show cowboy, retired general, and bedeviled butler must fight for their lives.",
-		image: "/maps/dead-of-the-night.avif",
+		image: "/maps/dead-of-the-night.webp",
 		game: blackOps4,
 	},
 	ancientEvil: {
@@ -278,7 +278,7 @@ const mapRegistry = {
 		releaseDate: new Date("March 26, 2019 12:00 AM"),
 		description:
 			"In the hidden heart of ancient Delphi, Scarlett, Diego, Bruno, and Shaw must rescue the fabled Oracle. But who is the Undead Warlord standing in their way?",
-		image: "/maps/ancient-evil.avif",
+		image: "/maps/ancient-evil.webp",
 		game: blackOps4,
 	},
 	alphaOmega: {
@@ -287,7 +287,7 @@ const mapRegistry = {
 		releaseDate: new Date("July 09, 2019 12:00 AM"),
 		description:
 			"Here at Broken Arrow, it is our Mission to Prepare for Humanity’s Future and Open New Worlds.",
-		image: "/maps/alpha-omega.avif",
+		image: "/maps/alpha-omega.webp",
 		game: blackOps4,
 	},
 	tagDerToten: {
@@ -295,7 +295,7 @@ const mapRegistry = {
 		title: "Tag der Toten",
 		releaseDate: new Date("September 23, 2019 12:00 AM"),
 		description: "The Paradox Must Be Resolved.",
-		image: "/maps/tag-der-toten.avif",
+		image: "/maps/tag-der-toten.webp",
 		game: blackOps4,
 	},
 	dieMaschine: {
@@ -304,7 +304,7 @@ const mapRegistry = {
 		releaseDate: new Date("November 13, 2020 12:00 AM"),
 		description:
 			"Dimensional gateways opening around the globe. An undead horde threatening all of humanity. A new Cold War threat emerging from the shadows. Investigate the abandoned Nazi facility at the heart of it all.",
-		image: "/maps/die-maschine.avif",
+		image: "/maps/die-maschine.webp",
 		game: blackOpsColdWar,
 	},
 	firebaseZ: {
@@ -313,7 +313,7 @@ const mapRegistry = {
 		releaseDate: new Date("February 04, 2021 12:00 AM"),
 		description:
 			"A captured agent in the heart of the darkness. A treacherous scientist on the brink of a breakthrough. An unlikely ally out for revenge. Infiltrate Omega’s Vietnam base and expose the secrets within.",
-		image: "/maps/firebase-z.avif",
+		image: "/maps/firebase-z.webp",
 		game: blackOpsColdWar,
 	},
 	mauerDerToten: {
@@ -322,7 +322,7 @@ const mapRegistry = {
 		releaseDate: new Date("July 15, 2021 12:00 AM"),
 		description:
 			"A city divided between East and West. A fragile alliance with a familiar adversary. An old enemy rising from the shadows. Who will prevail when worlds collide?",
-		image: "/maps/mauer-der-toten.avif",
+		image: "/maps/mauer-der-toten.webp",
 		game: blackOpsColdWar,
 	},
 	forsaken: {
@@ -331,7 +331,7 @@ const mapRegistry = {
 		releaseDate: new Date("October 07, 2021 12:00 AM"),
 		description:
 			"A secluded facility harboring a secretive operation. A colonel determined to achieve his mission no matter the cost. Infiltrate the Soviet complex and extract the lost soul who could lead to Requiem’s salvation – or Omega’s supremacy. This is the only way.",
-		image: "/maps/forsaken.avif",
+		image: "/maps/forsaken.webp",
 		game: blackOpsColdWar,
 	},
 	libertyFalls: {
@@ -340,7 +340,7 @@ const mapRegistry = {
 		releaseDate: new Date("October 25, 2024 12:00 AM"),
 		description:
 			"A small town in West Virginia is caught up in the grip of a mysterious outbreak. Assess the situation, contain the threat, and find the lost scientist who may hold the key to salvation.",
-		image: "/maps/liberty-falls.avif",
+		image: "/maps/liberty-falls.webp",
 		game: blackOps6,
 	},
 	terminus: {
@@ -349,7 +349,7 @@ const mapRegistry = {
 		releaseDate: new Date("October 25, 2024 01:00 AM"),
 		description:
 			"A jailbreak on a secluded island pits unlikely partners against the undead. Unlock the laboratory's secrets, recruit a strangely familiar ally, and avenge the gruesome crimes against nature.",
-		image: "/maps/terminus.avif",
+		image: "/maps/terminus.webp",
 		game: blackOps6,
 	},
 	citadelleDesMorts: {
@@ -358,7 +358,7 @@ const mapRegistry = {
 		releaseDate: new Date("December 05, 2024 12:00 AM"),
 		description:
 			"A criminal hideout in an ancient castle is overrun by the undead. Find the captive demonologist, seek the Amulet, and defeat its Immortal Guardian.",
-		image: "/maps/citadelle-des-morts.avif",
+		image: "/maps/citadelle-des-morts.webp",
 		game: blackOps6,
 	},
 	theTomb: {
@@ -367,7 +367,7 @@ const mapRegistry = {
 		releaseDate: new Date("January 28, 2025 12:00 AM"),
 		description:
 			"Cursed catacombs guard a gate to a world of darkness. Follow in the footsteps of a doomed explorer. Pass the Trials of the Damned. Claim the fabled Sentinel Artifact.",
-		image: "/maps/the-tomb.avif",
+		image: "/maps/the-tomb.webp",
 		game: blackOps6,
 	},
 	shatteredVeil: {
@@ -376,7 +376,7 @@ const mapRegistry = {
 		releaseDate: new Date("April 02, 2025 12:00 AM"),
 		description:
 			"A mansion with a diabolical past, caught in an Appalachian apocalypse. Free its captive souls. Come face to face with a synthetic mind. Confront a tyrant.",
-		image: "/maps/shattered-veil.avif",
+		image: "/maps/shattered-veil.webp",
 		game: blackOps6,
 	},
 	reckoning: {
@@ -385,7 +385,7 @@ const mapRegistry = {
 		releaseDate: new Date("August 07, 2025 12:00 AM"),
 		description:
 			"Project Janus HQ teeters on the verge of collapse. Stabilize the Aether Reactors. Unleash the Sentinel Artifact. Complete the mission that began on Terminus.",
-		image: "/maps/reckoning.avif",
+		image: "/maps/reckoning.webp",
 		game: blackOps6,
 	},
 } as const satisfies Record<string, Maps>

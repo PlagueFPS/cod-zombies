@@ -69,7 +69,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal fire damage. Each bullet has a chance to ignite many zombies at once.",
 		game: blackOps4,
-		image: "/ammo-mods/fire-bomb.avif",
+		image: "/ammo-mods/fire-bomb.webp",
 	},
 	brainRot: {
 		id: "brain-rot",
@@ -77,7 +77,7 @@ const ammoModRegistry = {
 		description:
 			"Bullet deal toxic damage. Each bullet has a chance to infect a zombie, becoming an ally for short duration.",
 		game: blackOps4,
-		image: "/ammo-mods/brain-rot.avif",
+		image: "/ammo-mods/brain-rot.webp",
 	},
 	killOWatt: {
 		id: "kill-o-watt",
@@ -85,7 +85,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal electric damage. Each bullet has a chance to create an area-of-effect stun, immobilizing zombies and eventually killing them.",
 		game: blackOps4,
-		image: "/ammo-mods/dead-wire.avif",
+		image: "/ammo-mods/dead-wire.webp",
 	},
 	lightMend: {
 		id: "light-mend",
@@ -93,7 +93,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal light damage. Each bullet has a change to transform a normal or special enemy's health into a healing glyph that moves to nearby injured allies.",
 		game: blackOps6,
-		image: "/ammo-mods/light-mend.avif",
+		image: "/ammo-mods/light-mend.webp",
 		augments: [antibiotic, bigGameLightMend, dualAction, longerLife, extraStrength, expressRemedy],
 	},
 	deadWire: {
@@ -102,7 +102,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal electrical damage. Each bullet has a chance to stun any Normal and Special enemy, generating a field that deals electric damage to nearby enemies.",
 		game: blackOps6,
-		image: "/ammo-mods/dead-wire-bo6.avif",
+		image: "/ammo-mods/dead-wire-bo6.webp",
 		augments: [
 			chainLightning,
 			bigGameDeadWire,
@@ -118,7 +118,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal toxic damage. Each bullet has the chance to turn a Normal or Special enemy into an ally for short duration.",
 		game: blackOps6,
-		image: "/ammo-mods/brain-rot-bo6.avif",
+		image: "/ammo-mods/brain-rot-bo6.webp",
 		augments: [plague, pheromone, bigGameBrainRot, extensionBrainRot, hasteBrainRot, explosive],
 	},
 	cryoFreeze: {
@@ -127,7 +127,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal frost damage. Each bullet has a chance to slow Normal or Special enemies.",
 		game: blackOps6,
-		image: "/ammo-mods/cryo-freeze.avif",
+		image: "/ammo-mods/cryo-freeze.webp",
 		augments: [
 			bigGameCryoFreeze,
 			iceCloud,
@@ -143,7 +143,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal fire damage. Each bullet has a chance to ignite Normal and Special enemies.",
 		game: blackOps6,
-		image: "/ammo-mods/napalm-burst.avif",
+		image: "/ammo-mods/napalm-burst.webp",
 		augments: [
 			bigGameNapalmBurst,
 			thermite,
@@ -159,7 +159,7 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal shadow damage. Each bullet has a chance to spawn a black hole if striking Normal or Special enemies, warping nearby zombies away and dropping some from the air at high speed.",
 		game: blackOps6,
-		image: "/ammo-mods/shadow-rift.avif",
+		image: "/ammo-mods/shadow-rift.webp",
 		augments: [
 			bigGameShadowRift,
 			toppleDanger,

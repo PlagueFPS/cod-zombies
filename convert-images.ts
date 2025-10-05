@@ -3,7 +3,7 @@ import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
 import { Effect, Layer, Ref } from "effect"
 import sharp from "sharp"
 
-const IMAGE_DIR = "./public/perks"
+const IMAGE_DIR = "./public/maps"
 
 const convertImages = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem

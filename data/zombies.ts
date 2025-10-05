@@ -224,7 +224,7 @@ const zombiesRegistry = {
 		description:
 			"The first and most common enemy type. Varying in speeds, zombies provide the most basic threat on their own but will quickly become a challenge in hordes.",
 		releaseDate: new Date("November 11, 2008 12:00 AM"),
-		image: "/zombies/base-zombie.avif",
+		image: "/zombies/base-zombie.webp",
 		type: "Normal",
 		speed: "Medium",
 		spawnBehavior:
@@ -273,7 +273,7 @@ const zombiesRegistry = {
 		releaseDate: new Date("November 09, 2010 12:00 AM"),
 		description:
 			"These creepy crawlers are slow-moving zombies that emit green nova gas from their bodies as they crawl on all fours towards their target, releasing the gas when killed.",
-		image: "/zombies/nova-6-crawler.avif",
+		image: "/zombies/nova-6-crawler.webp",
 		games: [blackOps1, blackOps3, blackOps4],
 		maps: [kinoDerToten, five, moon, classified],
 		type: "Special",
@@ -289,7 +289,7 @@ const zombiesRegistry = {
 		id: "pentagon-thief",
 		title: "Pentagon Thief",
 		releaseDate: new Date("November 09, 2010 12:30 AM"),
-		image: "/zombies/pentagon-thief.avif",
+		image: "/zombies/pentagon-thief.webp",
 		description:
 			"The Pentagon Thief is a special enemy appearing in the map 'Five', periodically trying to steal the player's weapons forcing them to reacquire the weapon if successful.",
 		games: [blackOps1],
@@ -307,7 +307,7 @@ const zombiesRegistry = {
 		id: "space-monkey",
 		title: "Space Monkey",
 		releaseDate: new Date("February 01, 2011 12:00 AM"),
-		image: "/zombies/space-monkey.avif",
+		image: "/zombies/space-monkey.webp",
 		description:
 			"Space Monkeys are a special enemy appearing on the map Ascension, attempting to steal the player's perks by attacking the perk machines.",
 		games: [blackOps1, blackOps3],
@@ -325,7 +325,7 @@ const zombiesRegistry = {
 		id: "george-a-romero",
 		title: "George A. Romero",
 		releaseDate: new Date("May 03, 2011 12:00 AM"),
-		image: "/zombies/george-a-romero.avif",
+		image: "/zombies/george-a-romero.webp",
 		description:
 			"George A. Romero is a special zombie, and the main antagonist featured in the map Call of the Dead. Roaming the map and constantly following the player.",
 		games: [blackOps1],
@@ -343,7 +343,7 @@ const zombiesRegistry = {
 		id: "jungle-monkey",
 		title: "Jungle Monkey",
 		releaseDate: new Date("June 12, 2011 12:00 AM"),
-		image: "/zombies/jungle-monkey.avif",
+		image: "/zombies/jungle-monkey.webp",
 		description:
 			"The Jungle Monkey is a special enemy appearing on the map Shangri-La, unlike the Space Monkey, the Jungle Monkey prefers to go after Power-Up drops.",
 		games: [blackOps1, blackOps3],
@@ -361,7 +361,7 @@ const zombiesRegistry = {
 		id: "shrieker-zombie",
 		title: "Shrieker Zombie",
 		releaseDate: new Date("June 12, 2011 01:00 AM"),
-		image: "/zombies/shrieker-zombie.avif",
+		image: "/zombies/shrieker-zombie.webp",
 		description:
 			"Shrieker Zombies are a special enemy appearing on the map Shangri-La. These zombies appear with pale white skin, glowing white eyes, and can move very quickly.",
 		games: [blackOps1, blackOps3],
@@ -379,7 +379,7 @@ const zombiesRegistry = {
 		id: "napalm-zombie",
 		title: "Napalm Zombie",
 		releaseDate: new Date("June 12, 2011 02:00 AM"),
-		image: "/zombies/napalm-zombie.avif",
+		image: "/zombies/napalm-zombie.webp",
 		description:
 			"Napalm Zombies are a special enemy appearing on the map Shangri-La. These zombies look like a burnt zombie with a flaming aura surrounding them.",
 		games: [blackOps1, blackOps3],
@@ -397,7 +397,7 @@ const zombiesRegistry = {
 		id: "astronaut-zombie",
 		title: "Astronaut Zombie",
 		releaseDate: new Date("August 23, 2011 12:00 AM"),
-		image: "/zombies/astronaut-zombie.avif",
+		image: "/zombies/astronaut-zombie.webp",
 		description:
 			"The Astronaut is a special enemy appearing on the map Moon, often taking the name of someone on your friends list or if solo a predetermined name instead.",
 		games: [blackOps1, blackOps3],
@@ -415,7 +415,7 @@ const zombiesRegistry = {
 		id: "denizen",
 		title: "Denizen",
 		releaseDate: new Date("November 12, 2012 12:00 AM"),
-		image: "/zombies/denizen.avif",
+		image: "/zombies/denizen.webp",
 		description:
 			"The Denizen is a special enemy appearing on the map Tranzit, lurking within the fog of the map waiting for unsuspecting players to jump onto.",
 		games: [blackOps2],
@@ -433,7 +433,7 @@ const zombiesRegistry = {
 		id: "avogadro",
 		title: "Avogadro",
 		releaseDate: new Date("November 12, 2012 01:00 AM"),
-		image: "/zombies/avogadro.avif",
+		image: "/zombies/avogadro.webp",
 		description:
 			"The Avogadro is a boss zombie appearing on the maps Tranzit & Alpha Omega, also known as Cornelius Pernell the leader of Broken Arrow.",
 		games: [blackOps2, blackOps4],
@@ -451,7 +451,7 @@ const zombiesRegistry = {
 		id: "jumping-jack",
 		title: "Jumping Jack",
 		releaseDate: new Date("January 29, 2013 12:00 AM"),
-		image: "/zombies/jumping-jack.avif",
+		image: "/zombies/jumping-jack.webp",
 		description:
 			"Jumping Jacks are special enemies appearing on the map Die Rise. Similar in appearance to the Nova-6 Crawler, however, these zombies behave much differently.",
 		games: [blackOps2],
@@ -469,7 +469,7 @@ const zombiesRegistry = {
 		id: "brutus",
 		title: "Brutus",
 		releaseDate: new Date("April 16, 2013 12:00 AM"),
-		image: "/zombies/brutus.avif",
+		image: "/zombies/brutus.webp",
 		description:
 			"Brutus is the boss zombie appearing on the maps Mob of the Dead and Blood of the Dead. Also known as the Warden of Alcatraz, tormenting the souls of the damned.",
 		games: [blackOps2],
@@ -487,7 +487,7 @@ const zombiesRegistry = {
 		id: "ghost",
 		title: "Ghost",
 		releaseDate: new Date("July 13, 2013 12:00 AM"),
-		image: "/zombies/ghost.avif",
+		image: "/zombies/ghost.webp",
 		description:
 			"The Ghost also known as The Witch is a special enemy appearing in the map Buried. These enemies can only be found within the Mansion of the map.",
 		games: [blackOps2],
@@ -523,7 +523,7 @@ const zombiesRegistry = {
 		id: "panzersoldat",
 		title: "Panzersoldat",
 		releaseDate: new Date("August 27, 2013 01:00 AM"),
-		image: "/zombies/panzersoldat.avif",
+		image: "/zombies/panzersoldat.webp",
 		description:
 			"The Panzersoldat is an elite enemy appearing on the maps Origins, Der Eisendrache, and Revelations, wearing an armored suit equipped with a flamethrower.",
 		games: [blackOps2],
@@ -541,7 +541,7 @@ const zombiesRegistry = {
 		id: "keepers",
 		title: "Keepers",
 		releaseDate: new Date("November 06, 2015 12:00 AM"),
-		image: "/zombies/keeper.avif",
+		image: "/zombies/keeper.webp",
 		description:
 			"Keepers are a special enemy appearing on almost all maps in Black Ops 3 and play a crucial part in the events that happen within the Aether Storyline.",
 		games: [blackOps3],
@@ -559,7 +559,7 @@ const zombiesRegistry = {
 		id: "insanity-elementals",
 		title: "Insanity Elementals",
 		releaseDate: new Date("November 06, 2015 01:00 AM"),
-		image: "/zombies/insanity-elementals.avif",
+		image: "/zombies/insanity-elementals.webp",
 		description:
 			"Insanity Elementals, commonly referred to as Meatballs are special enemies appearing on the map Shadows of Evil, dropping from the sky and rolling into the fight.",
 		games: [blackOps3],
@@ -577,7 +577,7 @@ const zombiesRegistry = {
 		id: "parasite",
 		title: "Parasite",
 		releaseDate: new Date("November 06, 2015 02:00 AM"),
-		image: "/zombies/parasite.avif",
+		image: "/zombies/parasite.webp",
 		description:
 			"Parasites are a special enemy appearing on multiple maps throughout zombies. These zombies are the first flying enemy to appear in the franchise.",
 		games: [blackOps3, blackOps6],
@@ -595,7 +595,7 @@ const zombiesRegistry = {
 		id: "margwa",
 		title: "Margwa",
 		releaseDate: new Date("November 06, 2015 03:00 AM"),
-		image: "/zombies/margwa.avif",
+		image: "/zombies/margwa.webp",
 		description:
 			"Margwas are an elite enemy appearing on the maps Shadows of Evil and Revelations. These three-headed beasts are intimidating threats that can be hard to deal with.",
 		games: [blackOps3],
@@ -613,7 +613,7 @@ const zombiesRegistry = {
 		id: "skeleton",
 		title: "Skeleton",
 		releaseDate: new Date("February 02, 2016 12:00 AM"),
-		image: "/zombies/skeleton.avif",
+		image: "/zombies/skeleton.webp",
 		description:
 			"Skeletons are a variant of the normal zombie also known as Spartoi in Ancient Evil. These enemies bring a cool new look to the normal zombie.",
 		games: [blackOps3, blackOps4],
@@ -631,7 +631,7 @@ const zombiesRegistry = {
 		id: "the-corrupted-keeper",
 		title: "The Corrupted Keeper",
 		releaseDate: new Date("February 02, 2016 01:00 AM"),
-		image: "/zombies/the-corrupted-keeper.avif",
+		image: "/zombies/the-corrupted-keeper.webp",
 		description:
 			"The Corruputed Keeper is the final boss of the My Brother's Keeper main quest in Der Eisendrache, the first boss fight in the zombies franchise.",
 		games: [blackOps3],
@@ -649,7 +649,7 @@ const zombiesRegistry = {
 		id: "spider",
 		title: "Spider",
 		releaseDate: new Date("April 19, 2016 12:00 AM"),
-		image: "/zombies/spider.avif",
+		image: "/zombies/spider.webp",
 		description:
 			"Spiders are a special enemy originating from Zetsubou No Shima. These enemies have the appearance of a Black Widow, but with some interesting enhancements.",
 		games: [blackOps3],
@@ -669,7 +669,7 @@ const zombiesRegistry = {
 		releaseDate: new Date("April 19, 2016 01:00 AM"),
 		description:
 			"Thrashers are an elite enemy originating from the map Zetsubou No Shima. These brutes are mutated zombies from spores completely transforming their appearance.",
-		image: "/zombies/thrasher.avif",
+		image: "/zombies/thrasher.webp",
 		games: [blackOps3],
 		maps: [zetsubouNoShima],
 		type: "Elite",
@@ -685,7 +685,7 @@ const zombiesRegistry = {
 		id: "giant-spider",
 		title: "Giant Spider",
 		releaseDate: new Date("April 19, 2016 02:00 AM"),
-		image: "/zombies/giant-spider.avif",
+		image: "/zombies/giant-spider.webp",
 		description:
 			"The Giant Spider is the first boss you face in Zetsubou No Shima to obtain the Spider's tooth to build the Masamune wonder weapon.",
 		games: [blackOps3],
@@ -703,7 +703,7 @@ const zombiesRegistry = {
 		id: "giant-thrasher",
 		title: "Giant Thrasher",
 		releaseDate: new Date("April 19, 2016 03:00 AM"),
-		image: "/zombies/giant-thrasher.avif",
+		image: "/zombies/giant-thrasher.webp",
 		description:
 			"The Giant Thrasher is the final boss for the Seeds of Doubt main quest in Zetsubou No Shima, appearing more unique than other Thrashers on the map.",
 		games: [blackOps3],
@@ -721,7 +721,7 @@ const zombiesRegistry = {
 		id: "valkyrie-drone",
 		title: "Valkyrie Drone",
 		releaseDate: new Date("July 12, 2016 12:00 AM"),
-		image: "/zombies/valkyrie-drone.avif",
+		image: "/zombies/valkyrie-drone.webp",
 		description:
 			"Valkyrie Drones are a special enemy type originating from the map Gorod Krovi. These enemies appear as flying drones with three tentacle-like arms and a red eye.",
 		games: [blackOps3],
@@ -739,7 +739,7 @@ const zombiesRegistry = {
 		id: "mangler",
 		title: "Mangler",
 		releaseDate: new Date("July 12, 2016 01:00 AM"),
-		image: "/zombies/mangler.avif",
+		image: "/zombies/mangler.webp",
 		description:
 			"Manglers are a special type of enemy originating from the map Gorod Krovi. These enemies appear as armored russian super-soldiers armed with an arm cannon.",
 		games: [blackOps3, blackOpsColdWar, blackOps6],
@@ -766,7 +766,7 @@ const zombiesRegistry = {
 		id: "dragon",
 		title: "Dragon",
 		releaseDate: new Date("July 12, 2016 02:00 AM"),
-		image: "/zombies/dragon.avif",
+		image: "/zombies/dragon.webp",
 		description:
 			"The Dragon is the first boss appearing on the map Gorod Krovi. This enemy appears as main dragon seen throughout the map breathing fire down on the battlefield.",
 		games: [blackOps3],
@@ -784,7 +784,7 @@ const zombiesRegistry = {
 		id: "nikolai-mech",
 		title: "Nikolai Mech",
 		releaseDate: new Date("July 12, 2016 03:00 AM"),
-		image: "/zombies/nikolai-mech.avif",
+		image: "/zombies/nikolai-mech.webp",
 		description:
 			"The Nikolai Mech is the final boss enemy in the map Gorod Krovi. The mech hosts Ultimis Nikolai inside who is the controller of the mech while being drunk.",
 		games: [blackOps3],
@@ -802,7 +802,7 @@ const zombiesRegistry = {
 		id: "fury",
 		title: "Fury",
 		releaseDate: new Date("October 06, 2016 12:00 AM"),
-		image: "/zombies/fury.avif",
+		image: "/zombies/fury.webp",
 		description:
 			"Furies are a special enemy originating from the map Revelations in Black Ops 3. These enemies are unique in appearance while having similar behavior to the Insanity Elementals.",
 		games: [blackOps3],
@@ -820,7 +820,7 @@ const zombiesRegistry = {
 		id: "fire-catalyst",
 		title: "Fire Catalyst",
 		releaseDate: new Date("October 12, 2018 12:00 AM"),
-		image: "/zombies/fire-catalyst.avif",
+		image: "/zombies/fire-catalyst.webp",
 		description:
 			"Fire Catalysts are one of the four variants of catalyst zombies, originating from the map Voyage of Despair, and appearing similar to the Napalm Zombie from Shangri-La.",
 		games: [blackOps4],
@@ -838,7 +838,7 @@ const zombiesRegistry = {
 		id: "poison-catalyst",
 		title: "Poison Catalyst",
 		releaseDate: new Date("October 12, 2018 01:00 AM"),
-		image: "/zombies/poison-catalyst.avif",
+		image: "/zombies/poison-catalyst.webp",
 		description:
 			"Poison Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on toxic area denial.",
 		games: [blackOps4],
@@ -856,7 +856,7 @@ const zombiesRegistry = {
 		id: "water-catalyst",
 		title: "Water Catalyst",
 		releaseDate: new Date("October 12, 2018 02:00 AM"),
-		image: "/zombies/water-catalyst.avif",
+		image: "/zombies/water-catalyst.webp",
 		description:
 			"Water Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on buffing other zombies.",
 		games: [blackOps4],
@@ -874,7 +874,7 @@ const zombiesRegistry = {
 		id: "lightning-catalyst",
 		title: "Lightning Catalyst",
 		releaseDate: new Date("October 12, 2018 03:00 AM"),
-		image: "/zombies/lightning-catalyst.avif",
+		image: "/zombies/lightning-catalyst.webp",
 		description:
 			"Lightning Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with similarities to the Shrieker Zombie.",
 		games: [blackOps4],
@@ -892,7 +892,7 @@ const zombiesRegistry = {
 		id: "stoker",
 		title: "Stoker",
 		releaseDate: new Date("October 12, 2018 04:00 AM"),
-		image: "/zombies/stoker.avif",
+		image: "/zombies/stoker.webp",
 		description:
 			"The Stoker is an elite enemy originating on the map Voyage of Despair in Black Ops 4, wielding a shovel and appearing as a fiery zombie spawned from hell.",
 		games: [blackOps4],
@@ -909,7 +909,7 @@ const zombiesRegistry = {
 		id: "blightfather",
 		title: "Blightfather",
 		releaseDate: new Date("October 12, 2018 05:00 AM"),
-		image: "/zombies/blightfather.avif",
+		image: "/zombies/blightfather.webp",
 		description:
 			"The Blightfather is an elite enemy originating from the map Voyage of Despair, appearing as a tall and mutated arachnid similar with long legs.",
 		games: [blackOps4],
@@ -927,7 +927,7 @@ const zombiesRegistry = {
 		id: "eye-of-malice",
 		title: "Eye of Malice",
 		releaseDate: new Date("October 12, 2018 06:00 AM"),
-		image: "/zombies/eye-of-malice.avif",
+		image: "/zombies/eye-of-malice.webp",
 		description:
 			"The Eye of Malice and Despair is the final boss of the map Voyage of Despair's Abandon Ship main quest, also known as the Sky-Eye.",
 		games: [blackOps4],
@@ -945,7 +945,7 @@ const zombiesRegistry = {
 		id: "tiger",
 		title: "Tiger",
 		releaseDate: new Date("October 12, 2018 07:00 AM"),
-		image: "/zombies/tiger.avif",
+		image: "/zombies/tiger.webp",
 		description:
 			"The Tiger is a special enemy originating from the map IX in Black Ops 4, similar to Hellhounds however having slightly higher health.",
 		games: [blackOps4],
@@ -963,7 +963,7 @@ const zombiesRegistry = {
 		id: "destroyer",
 		title: "Destroyer",
 		releaseDate: new Date("October 12, 2018 08:00 AM"),
-		image: "/zombies/destroyer.avif",
+		image: "/zombies/destroyer.webp",
 		description:
 			"The Destroyer is a special enemy originating from the map IX in Black Ops 4, wielding dual-axes while wearing heavy armor that must be destroyed.",
 		games: [blackOps4],
@@ -981,7 +981,7 @@ const zombiesRegistry = {
 		id: "marauder",
 		title: "Marauder",
 		releaseDate: new Date("October 12, 2018 09:00 AM"),
-		image: "/zombies/marauder.avif",
+		image: "/zombies/marauder.webp",
 		description:
 			"The Marauder is a special enemy originating from the map IX in Black Ops 4 wielding metallic claws with little to no armor.",
 		games: [blackOps4],
@@ -999,7 +999,7 @@ const zombiesRegistry = {
 		id: "fury-and-wrath",
 		title: "Fury & Wrath",
 		releaseDate: new Date("October 12, 2018 10:00 AM"),
-		image: "/zombies/fury-and-wrath.avif",
+		image: "/zombies/fury-and-wrath.webp",
 		description:
 			"Fury and Wrath are the final bosses in the map IX's main quest Venerated Warrior, appearing as two war elephants with heavy armor.",
 		games: [blackOps4],
@@ -1017,7 +1017,7 @@ const zombiesRegistry = {
 		id: "nosferatu",
 		title: "Nosferatu",
 		releaseDate: new Date("December 11, 2018 12:00 AM"),
-		image: "/zombies/nosferatu.avif",
+		image: "/zombies/nosferatu.webp",
 		description:
 			"The Nosferatu is a special enemy orignating from the map Dead of the Night in Black Ops 4, appearing as a vampire like zombie.",
 		games: [blackOps4],
@@ -1035,7 +1035,7 @@ const zombiesRegistry = {
 		id: "werewolf",
 		title: "Werewolf",
 		releaseDate: new Date("December 11, 2018 01:00 AM"),
-		image: "/zombies/werewolf.avif",
+		image: "/zombies/werewolf.webp",
 		description:
 			"The Werewolf is an elite enemy originating from the map Dead of the Night in Black Ops 4, these enemies are fierce, agile, and strong posing a true threat.",
 		games: [blackOps4],
@@ -1053,7 +1053,7 @@ const zombiesRegistry = {
 		id: "shadow-werewolf",
 		title: "Shadow Werewolf",
 		releaseDate: new Date("December 11, 2018 02:00 AM"),
-		image: "/zombies/shadow-werewolf.avif",
+		image: "/zombies/shadow-werewolf.webp",
 		description:
 			"The Shadow Werewolf is the final boss of the map Dead of the Nights main quest Trial by Ordeal, appearing as a bigger, stronger, and faster Werewolf.",
 		games: [blackOps4],
@@ -1071,7 +1071,7 @@ const zombiesRegistry = {
 		id: "gegenees",
 		title: "Gegenees",
 		releaseDate: new Date("March 26, 2019 12:00 AM"),
-		image: "/zombies/gegenees.avif",
+		image: "/zombies/gegenees.webp",
 		description:
 			"The Gegenees is an elite enemy originating on the map Ancient Evil in Black Ops 4, appearing a six-armed giant wielding a spear, sword, and shield.",
 		games: [blackOps4],
@@ -1089,7 +1089,7 @@ const zombiesRegistry = {
 		id: "pegasus",
 		title: "Pegasus",
 		releaseDate: new Date("March 26, 2019 01:00 AM"),
-		image: "/zombies/pegasus.avif",
+		image: "/zombies/pegasus.webp",
 		description:
 			"Pegasus is the first boss faced in the map Ancient Evil's main quest Greek Tragedy, appearing as the mythical steed of Perseus in all its glory.",
 		games: [blackOps4],
@@ -1107,7 +1107,7 @@ const zombiesRegistry = {
 		id: "perseus",
 		title: "Perseus",
 		releaseDate: new Date("March 26, 2019 02:00 AM"),
-		image: "/zombies/perseus.avif",
+		image: "/zombies/perseus.webp",
 		description:
 			"Perseus is the final boss in the map Ancient Evil's main quest Greek Tragedy, also known as the Zombie Warlord and the son of Zeus.",
 		games: [blackOps4],
@@ -1142,7 +1142,7 @@ const zombiesRegistry = {
 		id: "nova-6-bomber",
 		title: "Nova-6 Bomber",
 		releaseDate: new Date("July 09, 2019 01:00 AM"),
-		image: "/zombies/nova-6-bomber.avif",
+		image: "/zombies/nova-6-bomber.webp",
 		description:
 			"The Nova-6 Bomber is a special unique variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, glowing yellow with spikes on its back.",
 		games: [blackOps4],
@@ -1160,7 +1160,7 @@ const zombiesRegistry = {
 		id: "jolting-jack",
 		title: "Jolting Jack",
 		releaseDate: new Date("July 09, 2019 02:00 AM"),
-		image: "/zombies/jolting-jack.avif",
+		image: "/zombies/jolting-jack.webp",
 		description:
 			"The Jolting Jack is a special variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, having a blue aura of electricity around them.",
 		games: [blackOps4],
@@ -1178,7 +1178,7 @@ const zombiesRegistry = {
 		id: "armored-zombie",
 		title: "Armored Zombie",
 		releaseDate: new Date("November 13, 2020 12:00 AM"),
-		image: "/zombies/armored-zombie.avif",
+		image: "/zombies/armored-zombie.webp",
 		description:
 			"The Armored Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, having light armor on compared to standard zombies.",
 		games: [blackOpsColdWar, blackOps6],
@@ -1207,7 +1207,7 @@ const zombiesRegistry = {
 		id: "heavy-zombie",
 		title: "Heavy Zombie",
 		releaseDate: new Date("November 13, 2020 01:00 AM"),
-		image: "/zombies/heavy-zombie.avif",
+		image: "/zombies/heavy-zombie.webp",
 		description:
 			"The Heavy Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, wearing heavy armor compared to other zombies.",
 		games: [blackOpsColdWar, blackOps6],
@@ -1236,7 +1236,7 @@ const zombiesRegistry = {
 		id: "plaguehound",
 		title: "Plaguehound",
 		releaseDate: new Date("November 13, 2020 02:00 AM"),
-		image: "/zombies/plaguehound.avif",
+		image: "/zombies/plaguehound.webp",
 		description:
 			"The Plaguehound is a variant of the Hellhound originating on the map Die Maschine in Black Ops: Cold War, being heavily mutated with Nova 6 Gas compared to hellhounds.",
 		games: [blackOpsColdWar],
@@ -1272,7 +1272,7 @@ const zombiesRegistry = {
 		id: "mimic",
 		title: "Mimic",
 		releaseDate: new Date("February 04, 2021 12:00 AM"),
-		image: "/zombies/shock-mimic.avif",
+		image: "/zombies/shock-mimic.webp",
 		description:
 			"The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attack them. The Shock Mimic is a variant appearing in Black Ops 6 Zombies.",
 		games: [blackOpsColdWar, blackOps6],
@@ -1290,7 +1290,7 @@ const zombiesRegistry = {
 		id: "orda",
 		title: "Orda",
 		releaseDate: new Date("February 04, 2021 01:00 AM"),
-		image: "/zombies/orda.avif",
+		image: "/zombies/orda.webp",
 		description:
 			"Orda is a boss type zombie originating on Firebase Z in Black Ops: Cold War, appearing as an elder god from the Dark Aether.",
 		games: [blackOpsColdWar],
@@ -1308,7 +1308,7 @@ const zombiesRegistry = {
 		id: "tormentors",
 		title: "Tormentors",
 		releaseDate: new Date("July 15, 2021 12:00 AM"),
-		image: "/zombies/tormentor.avif",
+		image: "/zombies/tormentor.webp",
 		description:
 			"Tormentors are a special enemy type originating on the map Mauer Der Toten in Black Ops: Cold War, appearing a red crystalized zombie.",
 		games: [blackOpsColdWar],
@@ -1326,7 +1326,7 @@ const zombiesRegistry = {
 		id: "disciple",
 		title: "Disciple",
 		releaseDate: new Date("July 15, 2021 01:00 AM"),
-		image: "/zombies/disciple.avif",
+		image: "/zombies/disciple.webp",
 		description:
 			"Disciples are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing as summoners from the Dark Aether. ",
 		games: [blackOpsColdWar],
@@ -1344,7 +1344,7 @@ const zombiesRegistry = {
 		id: "tempest",
 		title: "Tempest",
 		releaseDate: new Date("July 15, 2021 02:00 AM"),
-		image: "/zombies/tempest.avif",
+		image: "/zombies/tempest.webp",
 		description:
 			"Tempest are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing a smaller purple variant of the Avogadro.",
 		games: [blackOpsColdWar],
@@ -1362,7 +1362,7 @@ const zombiesRegistry = {
 		id: "krasny-soldat",
 		title: "Krasny Soldat",
 		releaseDate: new Date("July 15, 2021 03:00 AM"),
-		image: "/zombies/krasny-soldat.avif",
+		image: "/zombies/krasny-soldat.webp",
 		description:
 			"The Krasny Soldat is an elite variant of the Panzersoldat originating on the map Mauer Der Toten in Black Ops Cold War, adopting a red color scheme for the Omega Group.",
 		games: [blackOpsColdWar],
@@ -1380,7 +1380,7 @@ const zombiesRegistry = {
 		id: "valentina",
 		title: "Valentina",
 		releaseDate: new Date("July 15, 2021 04:00 AM"),
-		image: "/zombies/valentina.avif",
+		image: "/zombies/valentina.webp",
 		description:
 			"Valentina is the final boss in the map Mauer Der Toten in Black Ops Cold War, appearing similar to the Tormentors in appearance however without being turned.",
 		games: [blackOpsColdWar],
@@ -1398,7 +1398,7 @@ const zombiesRegistry = {
 		id: "abomination",
 		title: "Abomination",
 		releaseDate: new Date("October 07, 2021 12:00 AM"),
-		image: "/zombies/abomination.avif",
+		image: "/zombies/abomination.webp",
 		description:
 			"The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold war, appearing a three-headed mutated zombie similar to the Margwa.",
 		games: [blackOpsColdWar, blackOps6],
@@ -1416,7 +1416,7 @@ const zombiesRegistry = {
 		id: "the-forsaken",
 		title: "The Forsaken",
 		releaseDate: new Date("October 07, 2021 01:00 AM"),
-		image: "/zombies/the-forsaken.avif",
+		image: "/zombies/the-forsaken.webp",
 		description:
 			"The Forsaken is the final boss of the map Forsaken in Black Ops Cold War, appearing as one of the elder gods of the Dark Aether.",
 		games: [blackOpsColdWar, blackOps6],
@@ -1434,7 +1434,7 @@ const zombiesRegistry = {
 		id: "vermin",
 		title: "Vermin",
 		releaseDate: new Date("October 25, 2024 12:00 AM"),
-		image: "/zombies/vermin.avif",
+		image: "/zombies/vermin.webp",
 		description:
 			"Vermin are large, spider-like ravenous scuttlers with a central thorax that seems to take the form of a screaming human head. Originating on the map Liberty Falls and Terminus in Black Ops 6.",
 		games: [blackOps6],
@@ -1452,7 +1452,7 @@ const zombiesRegistry = {
 		id: "amalgam",
 		title: "Amalgam",
 		releaseDate: new Date("October 25, 2024 01:00 AM"),
-		image: "/zombies/amalgam.avif",
+		image: "/zombies/amalgam.webp",
 		description:
 			"The Amalgam is an elite enemy originating from the map Terminus in Black Ops 6, appearing as a multi-armed and multi-legged mutation of the original zombie.",
 		games: [blackOps6],
@@ -1470,7 +1470,7 @@ const zombiesRegistry = {
 		id: "nathan",
 		title: "Nathan",
 		releaseDate: new Date("October 25, 2024 02:00 AM"),
-		image: "/zombies/nathan.avif",
+		image: "/zombies/nathan.webp",
 		description:
 			"Nathan Aguinaldo is a mini-boss originating on the map Terminus in Black Ops 6, serving as Maya's younger brother who was experimented on by Dr. Modi for Project Janus.",
 		games: [blackOps6],
@@ -1488,7 +1488,7 @@ const zombiesRegistry = {
 		id: "patient-13",
 		title: "Patient 13",
 		releaseDate: new Date("October 25, 2024 03:00 AM"),
-		image: "/zombies/patient-13.avif",
+		image: "/zombies/patient-13.webp",
 		description:
 			"Patient 13 is the final boss on the map Terminus in Black Ops 6, appearing as a giant mutated kraken like creature who was another experiment of Dr. Modi known as Owen Guthrie.",
 		games: [blackOps6],
@@ -1506,7 +1506,7 @@ const zombiesRegistry = {
 		id: "doppelghast",
 		title: "Doppelghast",
 		releaseDate: new Date("December 05, 2024 12:00 AM"),
-		image: "/zombies/doppelghast.avif",
+		image: "/zombies/doppelghast.webp",
 		description:
 			"Doppelghasts are violent and display erratic and unsettling movement, as if each head is independently fighting for control of its body. Originating from the map Citadelle Des Morts in Black Ops 6.",
 		games: [blackOps6],
@@ -1524,7 +1524,7 @@ const zombiesRegistry = {
 		id: "the-guardian",
 		title: "The Guardian",
 		releaseDate: new Date("December 05, 2024 01:00 AM"),
-		image: "/zombies/the-guardian.avif",
+		image: "/zombies/the-guardian.webp",
 		description:
 			"The Guardian is a colossal stone golem that served as the guardian of the Obscurus Altilium also known as the Amulet. Originating from the map Citadelle Des Morts in Black Ops 6.",
 		games: [blackOps6],
@@ -1542,7 +1542,7 @@ const zombiesRegistry = {
 		id: "sentinel-artifact",
 		title: "Sentinel Artifact",
 		releaseDate: new Date("January 28, 2025 12:00 AM"),
-		image: "/zombies/sentinel-artifact.avif",
+		image: "/zombies/sentinel-artifact.webp",
 		description:
 			"The Sentinel Artifact is a powerful relic with a history spanning eons, originating from the Chaos Story in Voyage of Despair, and appearing as a boss in Black Ops 6 Zombies.",
 		games: [blackOps6],
@@ -1560,7 +1560,7 @@ const zombiesRegistry = {
 		id: "toxic-zombies",
 		title: "Toxic Zombies",
 		releaseDate: new Date("April 02, 2025 12:00 AM"),
-		image: "/zombies/toxic-zombie.avif",
+		image: "/zombies/toxic-zombie.webp",
 		description:
 			"Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
 		games: [blackOps6],
@@ -1578,7 +1578,7 @@ const zombiesRegistry = {
 		id: "elder-disciple",
 		title: "Elder Disciple",
 		releaseDate: new Date("April 02, 2025 01:00 AM"),
-		image: "/zombies/elder-disciple.avif",
+		image: "/zombies/elder-disciple.webp",
 		description:
 			"Elder Disciples are strange, floating apparitions gaining strength as they empower the zombies around them while summoning more undead to join the battle.",
 		games: [blackOps6],
@@ -1596,7 +1596,7 @@ const zombiesRegistry = {
 		id: "z-rex",
 		title: "Z-Rex",
 		releaseDate: new Date("April 02, 2025 02:00 AM"),
-		image: "/zombies/z-rex.avif",
+		image: "/zombies/z-rex.webp",
 		description:
 			"The Z-Rex is a massive reanimated dinosaur revived by residual temporal energy, originating on Shattered Veil in Black Ops 6.",
 		games: [blackOps6],
@@ -1614,7 +1614,7 @@ const zombiesRegistry = {
 		id: "kommando-klaus",
 		title: "Kommando Klaus",
 		releaseDate: new Date("August 07, 2025 12:00 AM"),
-		image: "/zombies/kommando-klaus.avif",
+		image: "/zombies/kommando-klaus.webp",
 		description:
 			"These periodic robot battalions known as Kommando Klaus, equipped with rocket boots, home in on perceived intruders with deadly self-destruct sequences engaged.",
 		games: [blackOps6],
@@ -1632,7 +1632,7 @@ const zombiesRegistry = {
 		id: "uber-klaus",
 		title: "Uber Klaus",
 		releaseDate: new Date("August 07, 2025 01:00 AM"),
-		image: "/zombies/uber-klaus.avif",
+		image: "/zombies/uber-klaus.webp",
 		description:
 			"A murderous automaton encased in a toughened, bulky exoskeleton that maintains a cocky attitude, lethal efficiency, and super strength, all directed at newly programmed threats.",
 		games: [blackOps6],
@@ -1650,7 +1650,7 @@ const zombiesRegistry = {
 		id: "sam",
 		title: "S.A.M.",
 		releaseDate: new Date("August 07, 2025 02:00 AM"),
-		image: "/zombies/sam.avif",
+		image: "/zombies/sam.webp",
 		description:
 			"An Artificial Intelligence based on a snapshot of Samantha Maxis, obsessed with the idea of using Maxis' body to become Human.",
 		games: [blackOps6],
@@ -1667,7 +1667,7 @@ const zombiesRegistry = {
 		id: "uber-richtofen",
 		title: "Uber Richtofen",
 		releaseDate: new Date("August 07, 2025 03:00 AM"),
-		image: "/zombies/uber-richtofen.avif",
+		image: "/zombies/uber-richtofen.webp",
 		description:
 			'Appearing initially encased in a toughened, bulky exoskeleton, "The Director" will stop at nothing to save his family.',
 		games: [blackOps6],

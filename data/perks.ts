@@ -116,7 +116,7 @@ const perkRegistry = {
 		id: "double-tap",
 		title: "Double Tap",
 		description: "Increases weapon fire rate.",
-		image: "/perks/double-tap.avif",
+		image: "/perks/double-tap.webp",
 		augments: [
 			doubleJeopardy,
 			doubleStandard,
@@ -132,7 +132,7 @@ const perkRegistry = {
 		description:
 			"Equipment cooldown rate increased. Mystery Box and Pack-a-Punch weapons appear faster. Greatly reduce Trap and Fast Travel cooldowns.",
 		modifier: "Special Weapon charge rate and Elixir cooldown rate are slightly increased.",
-		image: "/perks/timeslip.avif",
+		image: "/perks/timeslip.webp",
 	},
 	stoneColdStronghold: {
 		id: "stone-cold-stronghold",
@@ -140,7 +140,7 @@ const perkRegistry = {
 		description:
 			"Standing your ground creates a defensive circle which boosts damage and armor over time while inside.",
 		modifier: "Enemies killed inside the defensive circle also boost damage and armor.",
-		image: "/perks/stone-cold-stronghold.avif",
+		image: "/perks/stone-cold-stronghold.webp",
 	},
 	phdSlider: {
 		id: "phd-slider",
@@ -149,7 +149,7 @@ const perkRegistry = {
 			"Slide to build up charge. Once full charged, slide into an enemy to trigger an explosion. Gain full resistance to self-inflicted explosive damage and partial resistance to enemy explosive damage.",
 		modifier:
 			"Improved slide distance. Trap immunity while sliding. Increased explosion damage when entering a slide from greater heights.",
-		image: "/perks/phd-slider.avif",
+		image: "/perks/phd-slider.webp",
 	},
 	quickRevive: {
 		id: "quick-revive",
@@ -158,14 +158,14 @@ const perkRegistry = {
 			"Shorter delay before regenerating health and increased regeneration rate. Revive Players faster.",
 		modifier:
 			"Gain a sprint speed after health regeneration starts. Reviving grants both players full health and a sprint speed boost.",
-		image: "/perks/quick-revive.avif",
+		image: "/perks/quick-revive.webp",
 	},
 	staminUp: {
 		id: "stamin-up",
 		title: "Stamin-Up",
 		description: "Increased sprint speed and duration. Stamina regenerates faster.",
 		modifier: "Unlimited full sprint. Player can fire weapons while sprinting.",
-		image: "/perks/stamin-up.avif",
+		image: "/perks/stamin-up.webp",
 	},
 	wintersWail: {
 		id: "winters-wail",
@@ -174,7 +174,7 @@ const perkRegistry = {
 			"Getting hit by a melee attack while not at full health will cause a frost explosion that will freeze or slow enemies nearby. You can store three charges. In Realistic Difficulty, the frost explosion will trigger regardless of health.",
 		modifier:
 			"Frost explosion triggers a slowing field around the Player for a limited time. Store an additional charge.",
-		image: "/perks/winters-wail.avif",
+		image: "/perks/winters-wail.webp",
 	},
 	deathPerception: {
 		id: "death-perception",
@@ -182,7 +182,7 @@ const perkRegistry = {
 		description:
 			"See nearby enemies through walls. Receive screen indicators when enemies approach the Player from off-screen.",
 		modifier: "Deal increased damage to special enemy weak points.",
-		image: "/perks/death-perception.avif",
+		image: "/perks/death-perception.webp",
 	},
 	victoriousTortoise: {
 		id: "victorious-tortoise",
@@ -190,7 +190,7 @@ const perkRegistry = {
 		description:
 			"Shields block damage from all directions when held. When a Shield breaks it will trigger a defensive explosion.",
 		modifier: "Shield bash attacks can knock down heavy and Mini-Boss enemies.",
-		image: "/perks/victorious-tortoise.avif",
+		image: "/perks/victorious-tortoise.webp",
 	},
 	dyingWish: {
 		id: "dying-wish",
@@ -198,34 +198,34 @@ const perkRegistry = {
 		description:
 			"Instead of entering Last Stand the Player goes Berserk for 9 seconds. While Berserk, they are invulnerable and melee damage is greatly increased. Afterwards, the Player is left with 1 health. Cooldown increases with every use.",
 		modifier: "Player will receive full health when no longer Berserk.",
-		image: "/perks/dying-wish.avif",
+		image: "/perks/dying-wish.webp",
 	},
 	deathPerceptionBO6: {
 		id: "death-perception-bo6",
 		title: "Death Perception",
 		description: "Obscured enemies are keylined.",
-		image: "/perks/death-perception-bo6.avif",
+		image: "/perks/death-perception-bo6.webp",
 		augments: [treasureHunter, deathStare, criticalEye, birdsEyeView, extraChange, furtherInsight],
 	},
 	phdFlopper: {
 		id: "phd-flopper",
 		title: "PHD Flopper",
 		description: "Explosive dive to prone and immunity to self-inflicted explosive damage.",
-		image: "/perks/phd-flopper.avif",
+		image: "/perks/phd-flopper.webp",
 		augments: [gravityMD, drRam, phdSliderAugment, environmentalist, eodTechnician, tribologist],
 	},
 	vultureAid: {
 		id: "vulture-aid",
 		title: "Vulture Aid",
 		description: "Increase the variety of loot dropped by enemies.",
-		image: "/perks/vulture-aid.avif",
+		image: "/perks/vulture-aid.webp",
 		augments: [fetidUpgraid, smellOfDeath, partingGift, condorsReach, carrionLuggage, pickyEater],
 	},
 	meleeMacchiato: {
 		id: "melee-macchiato",
 		title: "Melee Macchiato",
 		description: "Replace weapon gun butt with a deadly punch.",
-		image: "/perks/melee-macchiato.avif",
+		image: "/perks/melee-macchiato.webp",
 		augments: [
 			expresso,
 			vampiricExtraction,
@@ -239,59 +239,59 @@ const perkRegistry = {
 		id: "quick-revive-bo3",
 		title: "Quick Revive",
 		description: "Revive teammates 100% faster. Self-revive on solo, up to 3 times.",
-		image: "/perks/quick-revive.avif",
+		image: "/perks/quick-revive.webp",
 	},
 	staminUpBO3: {
 		id: "stamin-up-bo3",
 		title: "Stamin-Up",
 		description: "Sprint duration is increased by 100%. Sprint speed increased.",
-		image: "/perks/stamin-up.avif",
+		image: "/perks/stamin-up.webp",
 	},
 	muleKick: {
 		id: "mule-kick",
 		title: "Mule Kick",
 		description: "Carry an additional weapon.",
-		image: "/perks/mule-kick.avif",
+		image: "/perks/mule-kick.webp",
 	},
 	deadshotDaiquiriColdWar: {
 		id: "deadshot-daiquiri-cold-war",
 		title: "Deadshot Daiquiri",
 		description: "Aiming down sights moves to enemy critical location. Remove scope sway.",
-		image: "/perks/deadshot-daiquiri-cold-war.avif",
+		image: "/perks/deadshot-daiquiri-cold-war.webp",
 	},
 	speedCola: {
 		id: "speed-cola",
 		title: "Speed Cola",
 		description: "Increase reload speed bonus to 15%.",
-		image: "/perks/speed-cola.avif",
+		image: "/perks/speed-cola.webp",
 		augments: [supercharged, classicFormula, phantomReload, speedyRoulette, quickSwap, fastPitcher],
 	},
 	staminUpBO6: {
 		id: "stamin-up-bo6",
 		title: "Stamin-Up",
 		description: "Increase run and sprint speed.",
-		image: "/perks/stamin-up-cold-war.avif",
+		image: "/perks/stamin-up-cold-war.webp",
 		augments: [freeFaller, dasher, stalker, hardTarget, quarterback, hotFoot],
 	},
 	juggernogBO6: {
 		id: "juggernog-bo6",
 		title: "Juggernog",
 		description: "Increase Max Health by 100.",
-		image: "/perks/juggernog-bo6.avif",
+		image: "/perks/juggernog-bo6.webp",
 		augments: [probiotic, turtleShell, reactiveArmor, retaliation, hardenedPlates, durablePlates],
 	},
 	quickReviveBO6: {
 		id: "quick-revive-bo6",
 		title: "Quick Revive",
 		description: "Recover health and revive allies faster.",
-		image: "/perks/quick-revive-cold-war.avif",
+		image: "/perks/quick-revive-cold-war.webp",
 		augments: [emt, equivalentExchange, dyingWishAugment, swiftRecovery, karmicReturn, slowDeath],
 	},
 	deadshotDaiquiriBO6: {
 		id: "deadshot-daiquiri-bo6",
 		title: "Deadshot Daiquiri",
 		description: "Improve ADS precision and increase critical damage.",
-		image: "/perks/deadshot-daiquiri-cold-war.avif",
+		image: "/perks/deadshot-daiquiri-cold-war.webp",
 		augments: [deadHead, deadFirst, deadAgain, deadBreak, deadDraw, deadSet],
 	},
 	speedColaBO3: {
