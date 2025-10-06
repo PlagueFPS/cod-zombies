@@ -565,12 +565,12 @@ const sideQuestRegistry = {
 		map: citadelleDesMorts,
 		content: () => import("@/content/side-quests/rat-king.mdx"),
 	},
-	fireplaceExplosion: {
-		id: "fireplace-explosion",
-		title: "Fireplace Explosion",
+	fireplaceProtector: {
+		id: "fireplace-protector",
+		title: "Fireplace Protector",
 		description: `Race against time to ignite four fireplaces, succeed to gain a fiery ally, fail and you will need to try again the next round.`,
 		map: citadelleDesMorts,
-		content: () => import("@/content/side-quests/fireplace-explosion.mdx"),
+		content: () => import("@/content/side-quests/fireplace-protector.mdx"),
 	},
 	mayasRevenge: {
 		id: "mayas-revenge",
@@ -1014,7 +1014,7 @@ export const {
 	dragonSwordSong,
 	elevatorJumpscare,
 	fallingToPieces,
-	fireplaceExplosion,
+	fireplaceProtector,
 	fogRollingIn,
 	free1000Points,
 	free500Points,
