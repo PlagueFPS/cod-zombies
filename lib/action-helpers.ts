@@ -1,7 +1,6 @@
 import "server-only"
 import { checkBotId } from "botid/server"
 import { Schema } from "effect"
-import { checkRatelimit } from "./redis"
 
 type ActionFunction<S extends Schema.Schema.AnyNoContext, T> = (
 	data: Schema.Schema.Type<S>,
@@ -54,13 +53,6 @@ export const createRatelimitAction = <S extends Schema.Schema.AnyNoContext, T>(
 					"Bots are not allowed to perform this action. If you are not a bot, please contact support if the issue persists.",
 			}
 		}
-
-		const { success, message } = await checkRatelimit()
-		if (!success)
-			return {
-				success,
-				message,
-			}
 
 		if (formData instanceof FormData) {
 			const decodeFormData = Schema.decodeUnknownEither(schema)
