@@ -1,0 +1,218 @@
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
+import PerkTooltip from "@/components/rich-text/rich-tooltips/perk-tooltip"
+import AugmentTooltip from "@/components/rich-text/rich-tooltips/augment-tooltip"
+import ZombieTooltip from "@/components/rich-text/rich-tooltips/zombie-tooltip"
+import AmmoModTooltip from "@/components/rich-text/rich-tooltips/ammo-mod-tooltip"
+import WeaponBuildTooltip from "@/components/rich-text/rich-tooltips/weapon-build-tooltip"
+import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgrade-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
+import { TableCell } from "@/components/ui/table"
+import CampingLocation from "@/content/images/reckoning/reckoning-round-100-bossfight-camping-location.webp"
+import SpecialRounds from "@/content/images/reckoning/reckoning-round-100-bossfight-special-rounds.webp"
+import UberKlausRounds from "@/content/images/reckoning/reckoning-round-100-bossfight-uber-klaus-rounds.webp"
+import SamWeakpoints from "@/content/images/reckoning/reckoning-round-100-bossfight-sam-weakpoints.webp"
+import SamSpinningAttack from "@/content/images/reckoning/reckoning-round-100-bossfight-sam-spinning-attack.webp"
+import SamBossfight from "@/content/images/reckoning/reckoning-round-100-bossfight-sam-bossfight.webp"
+import RichtofenLiftStages from "@/content/images/reckoning/reckoning-round-100-bossfight-richtofen-lift-stages.webp"
+import RichtofenPhase1 from "@/content/images/reckoning/reckoning-round-100-bossfight-richtofen-phase-1.webp"
+import RichtofenPhase2 from "@/content/images/reckoning/reckoning-round-100-bossfight-richtofen-phase-2.webp"
+
+## Hardcore Bossfight
+
+This side quest has players reach **Round 100** to then enter the final encounter of the [Main Quest](/black-ops-6/reckoning) 
+to fight the final boss of your choice for an increased challenge.
+
+## Requirements
+
+- All [Main Quest](/black-ops-6/reckoning) Steps Completed
+- **Gorgofex Necrodystonia**
+- <AugmentTooltip augmentKey="doubleStandard" /> major augment for <PerkTooltip perkKey="doubleTap" / >
+- <AugmentTooltip augmentKey="tribologist" /> minor augment for <PerkTooltip perkKey="phdFlopper" />
+- <AugmentTooltip augmentKey="pickyEater" /> minor augment for <PerkTooltip perkKey="vultureAid" />
+- <AugmentTooltip augmentKey="burstDash" /> major & <AugmentTooltip augmentKey="extensionAetherShroud" /> minor augments for <FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> perkKey="deadshotDaiquiriBO6" />
+- <AugmentTooltip augmentKey="freeFaller" /> major & <AugmentTooltip augmentKey="hardTarget" /> minor augments for <PerkTooltip perkKey="staminUpBO6" />
+- <AugmentTooltip augmentKey="supercharged" /> major augment for <PerkTooltip perkKey='speedCola' />
+
+> Remember that you can **Save & Quit** so you don't have to get **Round 100** all in one run and can take your time. This is a 
+longer **Round 100** than any other map, likely going to take over two hours.
+
+## Recommended Loadouts
+
+<RichTable 
+  headerCells={["Main Weapon", "Field Upgrade", "Lethal", "Tactical"]} 
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <WeaponBuildTooltip weaponBuildKey='abrA1Reckoning' />
+      </TableCell>
+      <TableCell>
+        <FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' />
+      </TableCell>
+      <TableCell>
+        Semtex
+      </TableCell>
+      <TableCell>
+        Combat Stim/Smokes
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <WeaponBuildTooltip weaponBuildKey='gpr91Reckoning' />
+      </TableCell>
+      <TableCell>
+        <FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' />
+      </TableCell>
+      <TableCell>
+        Semtex
+      </TableCell>
+      <TableCell>
+        Combat Stim/Smokes
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <WeaponBuildTooltip weaponBuildKey='maelstromReckoning' />
+      </TableCell>
+      <TableCell>
+        <FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' />
+      </TableCell>
+      <TableCell>
+        Semtex
+      </TableCell>
+      <TableCell>
+        Combat Stim/Smokes
+      </TableCell>
+    </RichBodyRow>,
+  ]} 
+/>
+
+> Only run the **Maelstrom** if you are doing the <ZombieTooltip zombieKey="sam" /> boss fight. You can choose to run 
+**Combat Stims** or **Smokes**, smokes can allow you to get a full 10-seconds of damage in on 
+<ZombieTooltip zombieKey="sam" /> or <ZombieTooltip zombieKey="uberRichtofen" /> without being targeted, but, you can only 
+carry two and there are some edge cases where the smoke may not work.
+
+## High-Round Strategy
+
+> You can choose to turn on the **Rampage Inducer** to help speed up the rounds until **Round 55**.
+
+Head to the **T1 Mutant Research Lab** mystery box location, where you'll camp on the outside section, spamming the charged 
+shot of the **Gorgofex Necrodystonia** at the door to kill zombies. Once you reach around rounds 40-50+, you'll need to utilize 
+**Shock Charges** to stun the horde of zombies and primarily the <ZombieTooltip zombieKey="doppelghast" /> coming through.
+
+<RichImage image={CampingLocation} caption="T1 Mutant Research Lab Camping Spot" />
+
+> In those higher rounds, you will also need to move around a bit to avoid some zombies as the **Gorgofex Necrodystonia** and 
+**Shock Charges** will not be enough to stop a few zombies from leaking through. If you ever do get pushed out of the camping 
+spot, make a loop around the area back towards the camping spot to reset.
+
+### Special Rounds
+
+During the special round, head to the absolute right of the **T1 Mutant Research Lab**, next to the launcher to the 
+**T2 Android Assembly**, and all the <ZombieTooltip zombieKey="kommandoKlaus" /> robots will spawn out of the one zombie spawn 
+directly in front of the launcher, which you can easily take out with your main weapon equipped with <AmmoModTooltip ammoModKey="cryoFreeze" />.
+
+<RichImage image={SpecialRounds} caption="T1 Mutant Research Lab Special Round" />
+
+### Uber Klaus Rounds
+
+During rounds where an <ZombieTooltip zombieKey="uberKlaus" /> spawns, you'll want to make sure you have a **Death Machine**, then 
+<FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> into him to stun him, and quickly kill him with the **Death Machine**. 
+If more than one spawns and you do not have a second charge, throw a **Shock Charge** down to stun him, and then kill him with 
+the **Death Machine**.
+
+<RichImage image={UberKlausRounds} caption="Uber Klaus Round Strategy" />
+
+## S.A.M. Bossfight
+
+> Before heading into this boss fight, ensure that you have a **Death Machine**, **Combat Stims** or **Smokes**, and full 
+<FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> charge. The lift stages before the actual boss fight are no different 
+from the original boss fight.
+
+The main difference in this fight is the fact that she will immediately have her slightly advanced movement during her 
+**Spinning Volley** attack from her final phase from the start of this fight. Besides that, the fight is identical to the 
+original fight with no real strategy differences. Wait for her **Laser Attack** to finish, activate <FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" />, 
+and pump as much damage as you can into her weak points.
+
+<RichImage image={SamBossfight} caption="S.A.M. Round 100 Weak Points" />
+
+The second time around, you likely will not have an <FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> charge and will just 
+have to try and damage her as much as possible while avoiding the zombies, and then farm zombies to gain your charge back. 
+Remember that she is also vulnerable during her **Spinning Volley** attack, but you should mainly focus on surviving that attack.
+
+<RichImage image={SamSpinningAttack} caption="S.A.M. Spinning Volley Attack" />
+
+During the **S.A.M. Trials** between phases, ignore the objective and focus on charging your field upgrade. You'll get a 
+temporary grief that you'll have to wait for to go away before you can continue the fight. If you get **Ammo Drain** as your 
+grief, make sure you buy more ammo before it his zero; otherwise, it'll start to consume your field upgrade charge.
+
+Finally, when her health is under 20%, during her next **Laser Attack**, activate your **Death Machine** and destroy her 
+weak points and lay into her core to do a ton of damage, likely killing her on the spot. If she doesn't die, you'll just have 
+to wait for another opening.
+
+<RichImage image={SamBossfight} caption="S.A.M. Final Phase" />
+
+## Richtofen Bossfight
+
+> Before heading into this boss fight, ensure that you have a **Death Machine**, **Combat Stims** or **Smokes**, and full 
+<FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> charge.
+
+During the lift stages of this boss fight, there will be **Uber Klaus Cores** disguised as **Maintenance Klaus** that you should 
+immediately focus on using the **Death Machine**, and then continue doing the normal objective. These will also spawn on the 
+second stage of the lift, so always have the **Death Machine** out when on the lift.
+
+<RichImage image={RichtofenLiftStages} caption="Maintenance Klaus Army" />
+
+> Make sure to buy a new **Death Machine** at the crafting table on the second stage before heading up to the final boss arena.
+
+### Phase 1
+
+During this phase, you'll want to constantly run around the outer edge of the arena, shooting at 
+<ZombieTooltip zombieKey="uberRichtofen" /> weak points, ignoring the **Uber Klaus Core** robots that spawn in, and constantly 
+sliding to avoid their ranged electrical attack.
+
+<RichImage image={RichtofenPhase1} caption="Richtofen Phase 1" />
+
+> The reason you want to ignore the **Uber Klaus Cores** is due to the fact they will constantly respawn throughout the fight, 
+and are extremely tanky, so it is best to just ignore them for the majority of the fight.
+
+
+You'll want to do this the entire fight until his health gets below 20% and then take out your **Death Machine** and now kill 
+all the <ZombieTooltip zombieKey="uberKlaus" /> and **Uber Klaus Cores** as they won't respawn, and then finish off 
+<ZombieTooltip zombieKey="uberRichtofen" />.
+
+> Try your absolute best to not use your <FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> during this phase, as if you do 
+it is likely you will not be able to get another charge for the second phase, decreasing your chances of survival significantly.
+
+### Phase 2
+
+Immediately entering this phase, **Richtofen** when start doing his drive-by nuke attack and then fly back up into the air 
+before dropping down again with his **Wunderwaffe DG-2**. Immediately after he touches down for the second time, activate your 
+<FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> and spray into his Jetpack for maximum damage.
+
+<RichImage image={RichtofenPhase2} caption="Richtofen Phase 2" />
+
+If you land every shot, you'll be able to phase him with one mag and can begin farming a new 
+<FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> by killing zombies. If you weren't able to phase him, you'll need to 
+constantly be on the move to avoid his **Wunderwaffe DG-2** shots and only shoot at him while behind cover, 
+being sure you are never standing still.
+
+Rinse and repeat when he drops down, activate your now charged <FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> lay into 
+his **Jetpack**, where you should again be able to phase him in one mag, and then begin farming a new charge until you 
+eventually beat him.
+
+> It is very likely that you'll defeat this phase, in three short loops of laying into him in 
+<FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" />, farming it back up again, and then repeating. If you ever do not have a 
+<FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" /> while he is on the ground with his **Wunderwaffe DG-2**, be constantly 
+moving and only damaging him while behind cover.
+
+
+## Video Guides
+
+### Round 100 Bossfight Guide by MZC
+<YoutubeEmbed videoLink="https://youtu.be/g80zOyGEJBI?si=5zmCPZqOLJuPov2B" />
+
+## Credits
+
+Some images were sourced from the following community members:
+- [MZC](https://www.youtube.com/@MZC3)

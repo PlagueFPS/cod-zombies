@@ -1,0 +1,78 @@
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
+import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgrade-tooltip"
+import ZombieTooltip from "@/components/rich-text/rich-tooltips/zombie-tooltip"
+import T1DirectorsOfficeWall from "@/content/images/reckoning/reckoning-free-1500-points-t1-directors-office-wall.webp"
+import T1ProjectJanusReceptionPainting from "@/content/images/reckoning/reckoning-free-1500-points-t1-project-janus-reception-painting.webp"
+import T2Sublevel10Painting from "@/content/images/reckoning/reckoning-free-1500-points-t2-sublevel-10-painting.webp"
+import T2AndroidAssemblyPainting from "@/content/images/reckoning/reckoning-free-1500-points-t2-android-assembly-painting.webp"
+import HoleInTheFence from "@/content/images/reckoning/reckoning-aether-blade-hole-in-the-fence.webp"
+import AetherCrystal from "@/content/images/reckoning/reckoning-aether-blade-aether-crystal.webp"
+import AetherCrystalCluster from "@/content/images/reckoning/reckoning-aether-blade-aether-crystal-cluster.webp"
+import SafeKey from "@/content/images/reckoning/reckoning-aether-blade-safe-key.webp"
+import Safe from "@/content/images/reckoning/reckoning-aether-blade-safe.webp"
+import AetherBlade from "@/content/images/reckoning/reckoning-aether-blade.webp"
+
+## Aether Blade
+
+This side quest has players first collect three paintings found around the map and hang them up in the **T1 Director's Office**, 
+then use the <FieldUpgradeTooltip fieldUpgradeKey="misterPeeks" /> field upgrade to knock down a painting, revealing a safe 
+that you must open using a **Safe Key**.
+
+## Requirements
+
+- <FieldUpgradeTooltip fieldUpgradeKey="misterPeeks" />
+- **ARC-XD**
+
+## Collect the Paintings
+
+You must collect three paintings found within the map and hang each one up on the **T1 Director's Office** wall. You can only 
+hold one painting at a time, so you'll need to make three trips to the **T1 Director's Office**. Each time you place a painting, 
+you will be given **500 points**.
+
+<RichImage image={T1DirectorsOfficeWall} caption="Painting Wall in T1 Director's Office" />
+
+## Painting Locations
+
+<RichImage image={T1ProjectJanusReceptionPainting} caption="T1 Project Janus Reception - behind the door in the security room" />
+<RichImage image={T2Sublevel10Painting} caption="T2 Sublevel 10 - in the corner of the wall, left of the GobbleGum machine" />
+<RichImage image={T2AndroidAssemblyPainting} caption="T2 Android Assembly - against the pillar near some wet floor signs" />
+
+## Obtain the Safe Key
+
+Head to **T2 Dark Entity Containment**, and in the lower area where the Ammo Cache is located, there is a small hole in the 
+fence near one of the staircases that you'll need to drive your **ARC-XD** through until you find a purple aether crystal that 
+you must detonate on top of.
+
+<RichImage image={HoleInTheFence} caption="Hole in the fence" />
+<RichImage image={AetherCrystal} caption="Aether Crystal" />
+
+Upon detonation, an **LT53 Kazimir-like** portal will spawn and start moving up the **Dark Entity Containment**, spawning in a 
+bunch of **Aether Crystals** that you must destroy, dropping the **Safe Key** that you can interact with to pick.
+
+<RichImage image={AetherCrystalCluster} caption="Aether Crystal Cluster" />
+<RichImage image={SafeKey} caption="Safe Key" />
+
+## Open the Safe
+
+> Ensure you are slightly geared for this next step as there is a lockdown you will have to complete that will spawn special 
+and elite enemies.
+
+With the **Safe Key**, head to the **T1 Director's Office** and activate the 
+<FieldUpgradeTooltip fieldUpgradeKey="misterPeeks" /> in front of the painting behind the main desk, knocking down the painting 
+and revealing the safe, which you can interact with to open, starting a lockdown.
+
+<RichImage image={Safe} caption="Safe Lockdown" />
+
+This lockdown will spawn a bunch of zombies, some <ZombieTooltip zombieKey='doppelghast' /> zombies, and an HVT 
+<ZombieTooltip zombieKey='elderDisciple' /> zombie that, once defeated, will complete the lockdown, opening the safe, and 
+allowing you to collect the **Aether Blade** along with some intel.
+
+<RichImage image={AetherBlade} caption="Aether Blade" />
+
+> Only one person in the game will be able to obtain the **Aether Blade**.
+
+## Video Guides
+
+### Guide by ZoneX
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=p_NE2HX-26E" />
