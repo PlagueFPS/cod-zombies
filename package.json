@@ -6,21 +6,13 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "bun run test && next build --turbopack",
-    "ci": "payload migrate && bun run build",
     "start": "next start",
     "typegen": "next typegen",
     "lint": "biome lint .",
     "check": "biome check .",
     "format": "biome format . --write",
     "email": "email dev",
-    "scan": "next dev --turbopack & pnpx react-scan@latest localhost:3000",
-    "optimize:images": "tsx optimize-assets.local",
-    "payload": "payload",
-    "payload:types": "payload generate:types",
-    "payload:schema": "payload generate:db-schema",
-    "migrate:create": "payload migrate:create",
-    "migrate": "payload migrate",
-    "db:studio": "drizzle-kit studio"
+    "scan": "next dev --turbopack & bunx react-scan@latest localhost:3000"
   },
   "dependencies": {
     "@effect/platform": "0.90.0",
@@ -59,7 +51,7 @@
     "effect": "^3.18.0",
     "leaflet": "^1.9.4",
     "lucide-react": "0.468.0",
-    "next": "15.6.0-canary.36",
+    "next": "^15.6.0-canary.51",
     "next-themes": "0.4.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
