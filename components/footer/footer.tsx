@@ -1,11 +1,9 @@
-import { Suspense } from "react"
 import Discord from "@/components/SVGs/DiscordSVG"
 import Reddit from "@/components/SVGs/Reddit"
 import X from "@/components/SVGs/XSVG"
 import ContactForm from "../contact-form/contact-form"
 import { CustomLink } from "../custom-link/custom-link"
 import ExternalLink from "../external-link/external-link"
-import CopyrightLoader from "../loaders/copyright-loader"
 import Newsletter from "../newsletter/newsletter"
 import DonateButton from "../ui/donate-button"
 import { Separator } from "../ui/separator"
@@ -16,9 +14,7 @@ export default function Footer() {
 		<footer className="container relative m-auto flex flex-col items-center border-t px-4 py-8 text-sm">
 			<div className="grid grid-cols-1 items-center gap-8 md:grid-cols-3">
 				<div className="order-last flex flex-col-reverse items-center justify-center gap-4 text-center md:order-first md:items-start md:gap-6 md:text-left">
-					<Suspense fallback={<CopyrightLoader />}>
-						<Copyright />
-					</Suspense>
+					<Copyright />
 					<div className="flex items-center gap-3 text-muted-foreground">
 						<ExternalLink
 							href="https://x.com/CodZombiesGuide"

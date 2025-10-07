@@ -1,4 +1,4 @@
-import type { MainQuest } from "@/data/main-quests"
+import type { MainQuest, MainQuestDifficulty } from "@/data/main-quests"
 import type { SideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -10,7 +10,7 @@ import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IQuestPreviewCard {
-	quest: MainQuest | SideQuest
+	quest: Omit<MainQuest, "content"> | Omit<SideQuest, "content">
 	questIndex: number
 }
 
@@ -22,8 +22,8 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 	const alt = `${title} map image`
 
 	const renderSpecificBadge = () => {
-		if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
-			return <DifficultyBadge difficulty={quest.difficulty} />
+		if (Predicate.hasProperty(quest, "difficulty") && Predicate.isString(quest.difficulty)) {
+			return <DifficultyBadge difficulty={quest.difficulty as MainQuestDifficulty} />
 		}
 
 		if (Predicate.hasProperty(quest, "map") && quest.map) {

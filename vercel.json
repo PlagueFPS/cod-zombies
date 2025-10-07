@@ -1,11 +1,5 @@
 {
   "installCommand": "pnpm install",
-  "crons": [
-    {
-      "path": "/api/cron/check-state",
-      "schedule": "0 0 * * *"
-    }
-  ],
   "git": {
     "deploymentEnabled": {
       "experimental-mdx-rewrite": false

@@ -1,4 +1,4 @@
-import type { Zombie } from "@/types/payload-types"
+import type { Zombie } from "@/data/zombies"
 import type { IQuestRelease } from "./quest-release-email"
 import {
 	Body,

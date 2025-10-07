@@ -1,10 +1,8 @@
-import { FetchHttpClient } from "@effect/platform"
-import { Effect, Layer } from "effect"
+import { Effect } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
 import { getMainQuestByMap } from "@/data/main-quests"
 import { getFonts, optimizeImageForOG } from "@/data/og-images"
-import { FileStorage } from "@/lib/services/file-storage"
 import { OgImageGenerationError } from "@/types/errors"
 import { calculateTimeToRead, getLastUpdated } from "@/utils/functions"
 
@@ -208,7 +206,6 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[map
 		}),
 		Effect.catchAll(error => Effect.succeed(new Response(error.message, { status: 500 }))),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Layer.merge(FileStorage.Default, FetchHttpClient.layer)),
 		Effect.runPromise,
 	)
 }

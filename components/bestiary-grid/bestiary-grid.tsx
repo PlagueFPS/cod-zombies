@@ -1,5 +1,5 @@
 "use client"
-import type { ClientZombie } from "@/data/zombies"
+import type { Zombie } from "@/data/zombies"
 import { Suspense, useEffect } from "react"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
@@ -9,7 +9,7 @@ import GridPagination from "../grid-pagination/grid-pagination"
 import GridPaginationLoader from "../loaders/grid-pagination-loader"
 
 interface IBestiaryGridClient {
-	zombies: ClientZombie[]
+	zombies: Omit<Zombie, "combatStrategy">[]
 }
 
 export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {

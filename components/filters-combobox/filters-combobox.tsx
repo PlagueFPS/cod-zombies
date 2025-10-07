@@ -1,4 +1,5 @@
-import type { MainQuest, Zombie } from "@/types/payload-types"
+import type { MainQuest } from "@/data/main-quests"
+import type { Zombie } from "@/data/zombies"
 import { CirclePlus, Trash } from "lucide-react"
 import Image, { type ImageProps } from "next/image"
 import { useState } from "react"

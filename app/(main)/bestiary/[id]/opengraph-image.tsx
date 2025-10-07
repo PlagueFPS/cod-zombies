@@ -4,6 +4,7 @@ import sharp from "sharp"
 import { getFonts, optimizeImageForOG } from "@/data/og-images"
 import { getZombieById } from "@/data/zombies"
 import { OgImageGenerationError } from "@/types/errors"
+import { getLastUpdated } from "@/utils/functions"
 
 export const alt = "Zombie Info Card Preview"
 export const size = {
@@ -20,6 +21,7 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[id]"
 
 		const { boldFont, semiBoldFont } = yield* getFonts
 		const supportedImage = yield* optimizeImageForOG(zombie.image)
+		const lastUpdated = yield* getLastUpdated(`./content/zombies/${zombie.id}.mdx`)
 
 		const getTypeCSSProps = (): React.CSSProperties => {
 			switch (zombie.type) {
@@ -162,7 +164,7 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[id]"
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{zombie.lastUpdated}</span>
+					<span>{lastUpdated}</span>
 				</div>
 			</div>,
 			{

@@ -1,6 +1,6 @@
 "use client"
-import type { ClientMainQuest } from "@/data/main-quests"
-import type { ClientSideQuest } from "@/data/side-quests"
+import type { MainQuest } from "@/data/main-quests"
+import type { SideQuest } from "@/data/side-quests"
 import { Predicate } from "effect"
 import { Suspense, useEffect } from "react"
 import GridPagination from "@/components/grid-pagination/grid-pagination"
@@ -11,7 +11,7 @@ import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/functions.client"
 
 interface IQuestGridClient {
-	quests: (ClientMainQuest | ClientSideQuest)[]
+	quests: (Omit<MainQuest, "content"> | Omit<SideQuest, "content">)[]
 }
 
 export default function QuestGridClient({ quests }: IQuestGridClient) {
@@ -24,7 +24,7 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 
 	if (difficultyParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
-			if (Predicate.hasProperty(quest, "difficulty") && quest.difficulty) {
+			if (Predicate.hasProperty(quest, "difficulty") && Predicate.isString(quest.difficulty)) {
 				return difficultyParams.includes(quest.difficulty.toLowerCase())
 			}
 			return false
