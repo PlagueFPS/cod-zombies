@@ -1,0 +1,34 @@
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+import PerkTooltip from "@/components/rich-text/rich-tooltips/perk-tooltip"
+import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgrade-tooltip"
+import ShotgunShelf from "@/content/images/shattered-veil/shattered-veil-shotgun-shelf.webp"
+
+## Marine-SP Upgrade
+This side quest has players place a **Marine-SP** of at least **Rare** rarity on a shelf under some deer heads to then charge 
+it with kills while using a certain field upgrade to upgrade the weapon.
+
+## Requirements
+You must have a **Marine-SP** with at least Rare rarity, either obtained from the **Mystery Box**, **Wall Buy**, or by upgrading 
+one that you spawned in with at the **Arsenal**. You must also have the <PerkTooltip perkKey="deathPerceptionBO6" /> perk, which 
+can be bought on the map at the **West Hallways**.
+
+## Upgrading the Marine-SP
+
+Head to the **Banquet Hall** and place the shotgun down on the shelf underneath the deer heads. Then shoot the deer heads, and 
+their eyes will begin glowing, indicating which field upgrade you must have activated to kill zombies and upgrade the shotgun.
+
+<RichImage image={ShotgunShelf} caption="Shotgun Shelf in Banquet Hall" />
+
+Here is a comprehensive list of what eye color corresponds to what field upgrade:
+
+- Purple = <FieldUpgradeTooltip fieldUpgradeKey="darkFlare" />
+- Orange = <FieldUpgradeTooltip fieldUpgradeKey="energyMine" />
+- Red = <FieldUpgradeTooltip fieldUpgradeKey="frenziedGuard" />
+- Light Blue = <FieldUpgradeTooltip fieldUpgradeKey="teslaStorm" />
+
+> Remember you can always switch between field upgrades mid-game in the pause menu. If the field upgrade is a damaging one like 
+<FieldUpgradeTooltip fieldUpgradeKey="teslaStorm" /> you must get kills with the field upgrade itself, otherwise you just need 
+kills while it is active.
+
+Once completed, you can grab your newly upgraded shotgun off the wall. If you are solo, you can save and quit and repeat this 
+multiple times to obtain a fully packed shotgun; however, this may be patched in the future.

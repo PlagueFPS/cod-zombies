@@ -761,12 +761,12 @@ const sideQuestRegistry = {
 		map: shatteredVeil,
 		content: () => import("@/content/side-quests/jumpscare-free-perk.mdx"),
 	},
-	marineSPUnlock: {
-		id: "marine-sp-unlock",
-		title: "Marine SP Unlock",
+	marineSPUpgrade: {
+		id: "marine-sp-upgrade",
+		title: "Marine SP Upgrade",
 		description: `Learn how to get a free rarity and pack-a-punch upgrade to your Marine-SP shotgun in every game of the Shattered Veil.`,
 		map: shatteredVeil,
-		content: () => import("@/content/side-quests/marine-sp-unlock.mdx"),
+		content: () => import("@/content/side-quests/marine-sp-upgrade.mdx"),
 	},
 	sleepwalkingFreePerk: {
 		id: "sleepwalking-free-perk",
@@ -1047,7 +1047,7 @@ export const {
 	lionCannon,
 	lockdownFreePerk,
 	margwaMask,
-	marineSPUnlock,
+	marineSPUpgrade,
 	mayasRevenge,
 	meleeWeapons,
 	meleeWeaponsRevelations,
