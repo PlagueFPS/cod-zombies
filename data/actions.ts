@@ -1,9 +1,9 @@
 "use server"
 import { Effect } from "effect"
+import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/data/email"
+import { submitFeedback } from "@/data/feedback"
 import { createRatelimitAction } from "@/lib/action-helpers"
 import { Email } from "@/lib/services/emails"
-import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/usecases/email"
-import { submitFeedback } from "@/usecases/feedback"
 import {
 	ContactFormSchema,
 	FeedbackFormSchema,
