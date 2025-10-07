@@ -663,12 +663,12 @@ const sideQuestRegistry = {
 		map: theTomb,
 		content: () => import("@/content/side-quests/free-ray-gun.mdx"),
 	},
-	freeAetheriumCrystal: {
-		id: "free-aetherium-crystal",
-		title: "Free Aetherium Crystal",
+	freePerk: {
+		id: "free-perk",
+		title: "Free Perk",
 		description: `Discover this ritual which once completed will grant a Random Perk Power-Up to give everyone in your game a free perk!`,
 		map: theTomb,
-		content: () => import("@/content/side-quests/free-aetherium-crystal.mdx"),
+		content: () => import("@/content/side-quests/free-perk.mdx"),
 	},
 	freeSelfRevive: {
 		id: "free-self-revive",
@@ -1019,7 +1019,7 @@ export const {
 	free1000Points,
 	free500Points,
 	freeAetherTool,
-	freeAetheriumCrystal,
+	freePerk,
 	freeBrainRot,
 	freeDeadshotPerk,
 	freeMegaGobblegum,
