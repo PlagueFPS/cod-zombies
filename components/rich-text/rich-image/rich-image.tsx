@@ -29,6 +29,8 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 				<FeaturedImage
 					{...imageProps}
 					quality={100}
+					width={776}
+					height={436}
 					description={caption ?? undefined}
 					className="rounded-lg"
 				/>
@@ -37,6 +39,8 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 				<DialogTrigger className="pointer-events-none relative z-20 w-full sm:pointer-events-auto">
 					<FeaturedImage
 						{...imageProps}
+						width={776}
+						height={436}
 						quality={100}
 						description={caption ?? undefined}
 						alt={alt ?? ""}

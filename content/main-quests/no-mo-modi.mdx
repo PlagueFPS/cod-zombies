@@ -1,47 +1,3 @@
-import AmpMunition from "@/content/images/terminus/terminus-amp-munition.webp"
-import BeamsmasherDiagrams from "@/content/images/terminus/terminus-beamsmasher-diagrams.webp"
-import Beamsmasher from "@/content/images/terminus/terminus-beamsmasher.webp"
-import BlueOrb from "@/content/images/terminus/terminus-blue-orb.webp"
-import Bomb from "@/content/images/terminus/terminus-bomb.webp"
-import BossEntrance from "@/content/images/terminus/terminus-boss-entrance.webp"
-import Buoy from "@/content/images/terminus/terminus-buoy.webp"
-import Code from "@/content/images/terminus/terminus-code.webp"
-import EmfFob from "@/content/images/terminus/terminus-emf-fob.webp"
-import Ending from "@/content/images/terminus/terminus-ending.webp"
-import FinalConnectionLine from "@/content/images/terminus/terminus-final-connection-line.webp"
-import FinalDigit from "@/content/images/terminus/terminus-final-digit.webp"
-import FinalLaptop from "@/content/images/terminus/terminus-final-laptop.webp"
-import FinalPowerBox from "@/content/images/terminus/terminus-final-power-box.webp"
-import FinalTrap from "@/content/images/terminus/terminus-final-trap.webp"
-import FirstConnectionLine from "@/content/images/terminus/terminus-first-connection-line.webp"
-import FirstDigit from "@/content/images/terminus/terminus-first-digit.webp"
-import FirstLaptop from "@/content/images/terminus/terminus-first-laptop.webp"
-import FirstPowerBox from "@/content/images/terminus/terminus-first-power-box.webp"
-import FirstTrap from "@/content/images/terminus/terminus-first-trap.webp"
-import GreenOrb from "@/content/images/terminus/terminus-green-orb.webp"
-import HackingDevice from "@/content/images/terminus/terminus-hacking-device.webp"
-import HardDrive from "@/content/images/terminus/terminus-hard-drive.webp"
-import JanusKeycard from "@/content/images/terminus/terminus-janus-keycard.webp"
-import Keypad from "@/content/images/terminus/terminus-keypad.webp"
-import LivingQuartersPowerBox from "@/content/images/terminus/terminus-living-quarters-power-box.webp"
-import MultiphasicResonator from "@/content/images/terminus/terminus-multiphasic-resonator.webp"
-import Nathan from "@/content/images/terminus/terminus-nathan.webp"
-import NetworkConnectionError from "@/content/images/terminus/terminus-network-connection-error.webp"
-import NodeConnectors from "@/content/images/terminus/terminus-node-connectors.webp"
-import Phase1 from "@/content/images/terminus/terminus-phase-1.webp"
-import Phase2 from "@/content/images/terminus/terminus-phase-2.webp"
-import Phase3 from "@/content/images/terminus/terminus-phase-3.webp"
-import ReliefValve from "@/content/images/terminus/terminus-relief-valve.webp"
-import ResearchOfficePowerBox from "@/content/images/terminus/terminus-research-office-power-box.webp"
-import ResearchOfficeTerminal from "@/content/images/terminus/terminus-research-office-terminal.webp"
-import SecondConnectionLine from "@/content/images/terminus/terminus-second-connection-line.webp"
-import SecondDigit from "@/content/images/terminus/terminus-second-digit.webp"
-import SecondLaptop from "@/content/images/terminus/terminus-second-laptop.webp"
-import SecondPowerBox from "@/content/images/terminus/terminus-second-power-box.webp"
-import SecondTrap from "@/content/images/terminus/terminus-second-trap.webp"
-import ThirdTrap from "@/content/images/terminus/terminus-third-trap.webp"
-import TongueAttack from "@/content/images/terminus/terminus-tongue-attack.webp"
-import WipeMechanic from "@/content/images/terminus/terminus-wipe-mechanic.webp"
 import RichImage from "@/components/rich-text/rich-image/rich-image"
 import GobbleGumTooltip from "@/components/rich-text/rich-tooltips/gobblegum-tooltip"
 import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
@@ -160,49 +116,48 @@ Using a <AmmoModTooltip ammoModKey='deadWire' /> weapon, head to the **Pack-a-Pu
 to shoot three power boxes in a specific order with your <AmmoModTooltip ammoModKey='deadWire' /> weapon to move an electrical current. The locations of the three power boxes in order are 
 as follows:
 
-<RichImage image={FirstPowerBox} caption='Halfway up the lift, past a broken window when facing away from the Pack-a-Punch' />
-<RichImage image={SecondPowerBox} caption='Halfway up the lift, on the wall left of the Pack-a-Punch' />
-<RichImage image={FinalPowerBox} caption='Top Level, on the wall behind the Pack-a-Punch' />
+<RichImage image="/content/terminus/terminus-first-power-box.webp" caption='Halfway up the lift, past a broken window when facing away from the Pack-a-Punch' />
+<RichImage image="/content/terminus/terminus-second-power-box.webp" caption='Halfway up the lift, on the wall left of the Pack-a-Punch' />
+<RichImage image="/content/terminus/terminus-final-power-box.webp" caption='Top Level, on the wall behind the Pack-a-Punch' />
 
 > The first and second power boxes need to be shot in quick succession if you want to do it within a single trip, otherwise if you aren't quick enough, you can shoot the second one 
 from the platform in the Bio Lab. This step is not timed.
 
 Once that is done, head to the **Living Quarters** and shoot the power box in that room with your <AmmoModTooltip ammoModKey='deadWire' /> weapon.
 
-<RichImage image={LivingQuartersPowerBox} caption='Living Quarters Power Box' />
+<RichImage image="/content/terminus/terminus-living-quarters-power-box.webp" caption='Living Quarters Power Box' />
 
 Finally, shoot the power box just outside the **Living Quarters** in the **Rec Yard** to transfer the electrical current into the locked **Research Office** and open it. Once open, 
 shoot the zombie pinned on the floor which will drop the **EMF Fob** for you to pick up.
 
-<RichImage image={ResearchOfficePowerBox} caption='Rec Yard Power Box' />
-<RichImage image={EmfFob} caption='EMF Fob' />
+<RichImage image="/content/terminus/terminus-research-office-power-box.webp" caption='Rec Yard Power Box' />
+<RichImage image="/content/terminus/terminus-emf-fob.webp" caption='EMF Fob' />
 
 #### Multiphasic Resonator
 Head to the **Sea Tower** and interact with the briefcase on the table to the right of the <PerkTooltip perkKey='elementalPop' /> perk machine, opening it and revealing the 
 **Multiphasic Resonator** for you to pick up.
 
-<RichImage image={MultiphasicResonator} caption='Multiphasic Resonator' />
+<RichImage image="/content/terminus/terminus-multiphasic-resonator.webp" caption='Multiphasic Resonator' />
 
 > When you pick this item up, it will spawn a ton of <ZombieTooltip zombieKey='vermin' />.
-
 
 #### AMP Munition
 Head back to the **Research Office** and place the **Multiphasic Resonator** on top of the terminal on the right side of the office.
 
-<RichImage image={ResearchOfficeTerminal} caption='Research Office Terminal' />
+<RichImage image="/content/terminus/terminus-research-office-terminal.webp" caption='Research Office Terminal' />
 
 Afterward, you must activate three laptops around the map which will display a diagram and have a letter next to them. You can completely ignore this for now as this will be shown to you 
 in the **Research Office** for easier reference. The locations of these three laptops that you must interact with are as follows:
 
-<RichImage image={FirstLaptop} caption='Communications - outside on the right side against the railing' />
-<RichImage image={SecondLaptop} caption='Storage Area - outside on the right side against the railing' />
-<RichImage image={FinalLaptop} caption='Docks - left of the stairs leading down below the Sea Tower' />
+<RichImage image="/content/terminus/terminus-first-laptop.webp" caption='Communications - outside on the right side against the railing' />
+<RichImage image="/content/terminus/terminus-second-laptop.webp" caption='Storage Area - outside on the right side against the railing' />
+<RichImage image="/content/terminus/terminus-final-laptop.webp" caption='Docks - left of the stairs leading down below the Sea Tower' />
 
 Once all three laptops have been turned on, head back to the **Research Office**, and interact with the terminal. Below the terminal will be three sticky notes with a diagram and the 
 corresponding letter, you must find out what number each diagram represents and assign it to the letter on the note. You can use the image below to find what diagram 
 translates into what number:
 
-<RichImage image={BeamsmasherDiagrams} caption='Beamsmasher Diagrams' />
+<RichImage image="/content/terminus/terminus-beamsmasher-diagrams.webp" caption='Beamsmasher Diagrams' />
 
 Once you have the numbers for each diagram and therefore the letter, input those values in the tool below to solve the three algebraic equations on the whiteboard on the 
 back wall which will grant you the three numbers you must input into the terminal:
@@ -212,17 +167,17 @@ back wall which will grant you the three numbers you must input into the termina
 Once you have the code, input it into the terminal to start a locating sequence that will be completed once you flip round as long as you are on **Round 9** or later, otherwise, 
 you will need to keep flipping rounds until you reach **Round 9**.
 
-<RichImage image={Code} caption='Inputting the Code' />
+<RichImage image="/content/terminus/terminus-code.webp" caption='Inputting the Code' />
 
 Once completed, pick up the **Multiphasic Resonator** and head to the island shown on the terminal which is always **Castle Rock Island** on the right side of the map. 
 Here there will be a blue orb that you must interact with to begin spawning zombies, the orb will eventually shock one of these zombies making it glow blue.
 
-<RichImage image={BlueOrb} caption='Blue Orb' />
+<RichImage image="/content/terminus/terminus-blue-orb.webp" caption='Blue Orb' />
 
 Kill the blue glowing zombie to drop a small ball of energy that you must pick up and deposit into the blue orb. You must repeat this until the blue orb turns green and 
 flies away to **Crab Island**, south on the map. Head to that island and repeat the same thing this time with green balls of energy.
 
-<RichImage image={GreenOrb} caption='Green Orb' />
+<RichImage image="/content/terminus/terminus-green-orb.webp" caption='Green Orb' />
 
 > You must pick up the **Multiphasic Resonator** from the ground just below where the orb was idle everytime it flies off. If you forget to pick it up you won't be able to interact 
 with the next orb to begin the next phases.
@@ -230,21 +185,21 @@ with the next orb to begin the next phases.
 Finally, the green orb will turn purple and fly to **Temple Island**, north on the map above the **Shipwreck**, where you must repeat the same thing for one last time. This time, 
 the orb will drop the **AMP Munition** underneath where it was idle when done for you to pick up.
 
-<RichImage image={AmpMunition} caption='AMP Munition' />
+<RichImage image="/content/terminus/terminus-amp-munition.webp" caption='AMP Munition' />
 
 Once you have all three parts, head back to the **Research Office** and build the **DRI-11 Beamsmasher** on the workbench in the far right corner of the office.
 
-<RichImage image={Beamsmasher} caption='DRI-11 Beamsmasher' />
+<RichImage image="/content/terminus/terminus-beamsmasher.webp" caption='DRI-11 Beamsmasher' />
 
 ### Obtaining the Hard Drive
 Using the **DRI-11 Beamsmasher**, you must shoot one of the four **Tentacle Traps** around the map while it is active to retrieve a **Hard Drive**. The correct 
 **Tentacle Trap** can be found by looking for the one with a broken vent and some glowing particles; the rest will be intact. The locations for each **Tentacle Trap** are as follows:
 
-<RichImage image={FirstTrap} caption='Living Quarters' />
-<RichImage image={SecondTrap} caption='Holding Cells' />
-<RichImage image={ThirdTrap} caption='Bio Lab - left of the Pack-a-Punch (Correct Vent in this case)' />
-<RichImage image={FinalTrap} caption='Bio Lab - right of the Pack-a-Punch' />
-<RichImage image={HardDrive} caption='Hard Drive' />
+<RichImage image="/content/terminus/terminus-first-trap.webp" caption='Living Quarters' />
+<RichImage image="/content/terminus/terminus-second-trap.webp" caption='Holding Cells' />
+<RichImage image="/content/terminus/terminus-third-trap.webp" caption='Bio Lab - left of the Pack-a-Punch (Correct Vent in this case)' />
+<RichImage image="/content/terminus/terminus-final-trap.webp" caption='Bio Lab - right of the Pack-a-Punch' />
+<RichImage image="/content/terminus/terminus-hard-drive.webp" caption='Hard Drive' />
 
 > The correct trap will also have a **Project Janus Keycard** on the floor directly under it if you want to look for that instead of the broken vent. You can avoid getting 
 downed by the trap by crouching/sliding underneath it.
@@ -253,30 +208,30 @@ downed by the trap by crouching/sliding underneath it.
 Once you have the **Hard Drive**, return it to **Peck** in the **Guard Station**, head down to the center of the **Bio Lab**, and interact with the keypad on the machine in the middle 
 to open the window revealing <ZombieTooltip zombieKey='nathan' /> trapped inside.
 
-<RichImage image={Nathan} caption='Trapped Nathan' />
+<RichImage image="/content/terminus/terminus-nathan.webp" caption='Trapped Nathan' />
 
 You must find three digits around the map to form a code you can enter into the keypad to free <ZombieTooltip zombieKey='nathan' />. The first digit is located inside the 
 **Interrogation Rooms** cells and is the number represented by the **Hour Hand** of the **Clock** within one of the cells.
 
-<RichImage image={FirstDigit} caption='First Digit' />
+<RichImage image="/content/terminus/terminus-first-digit.webp" caption='First Digit' />
 
 > If you do not know how to read a clock, the **Hour Hand** is the shortest black hand of the clock and if it is pointing directly at a number that is the **Hour**, 
 otherwise the number right before the **Hour Hand** will be the **Hour**.
 
 The second digit is located inside the **Mess Hall** on the bulletin board and is the number shown on the playing card at the bottom of the board.
 
-<RichImage image={SecondDigit} caption='Second Digit' />
+<RichImage image="/content/terminus/terminus-second-digit.webp" caption='Second Digit' />
 
 The final digit is located inside the **Engineering** room and is the number shown on the "Days Since Last Injury" safety sign to the right of the **Crafting Table**.
 
-<RichImage image={FinalDigit} caption='Final Digit' />
+<RichImage image="/content/terminus/terminus-final-digit.webp" caption='Final Digit' />
 
 ### Free Nathan
 Once you have the three digits, head back to the **Bio Lab** and enter the three digits into the keypad on the machine. You should now take some time to prepare for a mini-boss fight, 
 mainly just upgrading your weapons to at least blue rarity and **Pack-a-Punched** at least once, along with <PerkTooltip perkKey='juggernogBO6' />, <PerkTooltip perkKey='quickReviveBO6' />, 
 and <PerkTooltip perkKey='deadshotDaiquiriBO6' /> as your essential perks for survival and damage output.
 
-<RichImage image={Keypad} caption='Keypad' />
+<RichImage image="/content/terminus/terminus-keypad.webp" caption='Keypad' />
 
 > Depending on the round you are entering this mini-boss fight, you may need to get more prepared since enemies will have more health, and hit harder. If you are entering this on 
 **Round 15** or lower, the above recommendations should be more than enough, otherwise you may want to get purple rarity and **Tier II Pack-a-Punch** along with extra perks.
@@ -285,33 +240,33 @@ When ready, all players in the game must interact with one of the relief valves 
 beginning the mini-boss fight where you must defeat him, who is now an HVT <ZombieTooltip zombieKey='amalgam' />. Once defeated, you will receive a short cutscene involving 
 <ZombieTooltip zombieKey='nathan' />.
 
-<RichImage image={ReliefValve} caption='Relief Valve' />
+<RichImage image="/content/terminus/terminus-relief-valve.webp" caption='Relief Valve' />
 
 ## Step 2: Repair the Network Connection
 Head to the **Communications** area and interact with the computer displaying green text to try to communicate with the **Janus A.I.** where you will get a network connection error.
 
-<RichImage image={NetworkConnectionError} caption='Network Connection Error Computer' />
+<RichImage image="/content/terminus/terminus-network-connection-error.webp" caption='Network Connection Error Computer' />
 
 Head to the **Bio Lab** and dive into the water to find a **Project Janus Keycard** you must collect. This keycard will give you access to a secret area underneath the shipwreck 
 that you must climb up to using the ladder.
 
-<RichImage image={JanusKeycard} caption='Project Janus Keycard' />
+<RichImage image="/content/terminus/terminus-janus-keycard.webp" caption='Project Janus Keycard' />
 
 Once inside, you will find two **Node Connectors** on top of the table which once picked up will begin a lockdown inside the room where zombies and 
 <ZombieTooltip zombieKey='vermin' /> will begin spawning in, you must survive inside this room for the duration of the lockdown, which is around one minute.
 
-<RichImage image={NodeConnectors} caption='Node Connectors' />
+<RichImage image="/content/terminus/terminus-node-connectors.webp" caption='Node Connectors' />
 
 Once the lockdown is completed, you must use the **Node Connectors** to repair two out of three connection lines around the map, which lines need to be repaired can change every 
 game so make sure to check all three locations. The locations of the three connection lines are as follows:
 
-<RichImage image={FirstConnectionLine} caption='Docks - below the Sea Tower' />
-<RichImage image={SecondConnectionLine} caption='Sea Caves - the farthest wall opposite Speed Cola' />
-<RichImage image={FinalConnectionLine} caption='Crab Island - on the side closest to the shipwreck' />
+<RichImage image="/content/terminus/terminus-first-connection-line.webp" caption='Docks - below the Sea Tower' />
+<RichImage image="/content/terminus/terminus-second-connection-line.webp" caption='Sea Caves - the farthest wall opposite Speed Cola' />
+<RichImage image="/content/terminus/terminus-final-connection-line.webp" caption='Crab Island - on the side closest to the shipwreck' />
 
 Once the two connection lines have been repaired, head to the **Guard Station** to retrieve the **Hacking Device** from **Peck** to move on to the next step.
 
-<RichImage image={HackingDevice} caption='Hacking Device' />
+<RichImage image="/content/terminus/terminus-hacking-device.webp" caption='Hacking Device' />
 
 ## Step 3: Defuse the Bombs
 > Before continuing with this step, if you are solo it is recommended to craft two **Monkey Bombs** or **Decoy Grenades** as they will be used later in this step to protect 
@@ -320,14 +275,14 @@ yourself while defusing the bombs. If you have <FieldUpgradeTooltip fieldUpgrade
 Using the **Hacking Device**, you must hack three **Buoys** in the sea, one at the top, the **SouthEast Corner**, and the **SouthWest Corner** of the map. After hacking the first 
 **Buoy** you will have two minutes to hack the other two before failing this step.
 
-<RichImage image={Buoy} caption='Buoy' />
+<RichImage image="/content/terminus/terminus-buoy.webp" caption='Buoy' />
 
 > Beware of the **Tentacle** when traversing the Sea. It isn't too dangerous but if you take too much poison damage of course you will go down.
 
 Once all three **Buoys** have been successfully hacked, a five-minute timer will begin after some dialogue where you must defuse three bombs located in the **Bio Lab** on the 
 <PerkTooltip perkKey='meleeMacchiato' /> side, two on the bottom floor, and one on the top floor, before that timer is up, otherwise, the map will implode and the game will end.
 
-<RichImage image={Bomb} caption='Bomb' />
+<RichImage image="/content/terminus/terminus-bomb.webp" caption='Bomb' />
 
 > In co-op, have one person defusing the bombs while the others protect the defuser. In solo, make use of **Decoy Grenades**, **Monkey Bombs**, and 
 <FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' /> if you have it to protect yourself while defusing. Importantly, on solo if you stop defusing in the middle of a defuse 
@@ -345,7 +300,7 @@ against the boss. During different phases of the boss fight, the boss will be we
 
 Head to the bottom of the **Bio Lab**, where a giant white door will now be cracked open. All players in the game will need to vote yes to enter the boss arena, from which there is no return.
 
-<RichImage image={BossEntrance} caption='Boss Entrance' />
+<RichImage image="/content/terminus/terminus-boss-entrance.webp" caption='Boss Entrance' />
 
 ### Boss Attacks
 The boss has four main attacks, two of which will only happen in the final phase. The first attack is a two-armed slam directly in front of the boss that will do around 200 damage. 
@@ -354,12 +309,12 @@ The second attack is a two-armed slam to the side of the boss, where he will the
 The third attack is a trap mechanic only appearing in **Phase 3**, where the boss will shoot out its tongue directly in front of itself, and anyone touched by that tongue will 
 be pulled into its mouth and will be downed. The only way to break out of this attack is by inflicting massive damage on the boss's mouth while you are being pulled in.
 
-<RichImage image={TongueAttack} caption='Tongue Attack' />
+<RichImage image="/content/terminus/terminus-tongue-attack.webp" caption='Tongue Attack' />
 
 The final attack is a wipe mechanic only appearing in **Phase 3**, where your screen will have a blue wispy-like effect, indicating the attack while the boss has its arms in the air, 
 sparking electricity. You must break the **Line of Sight** with the boss, do enough damage to the boss's eyes, or jump into the water to avoid being downed by this attack.
 
-<RichImage image={WipeMechanic} caption='Wipe Mechanic' />
+<RichImage image="/content/terminus/terminus-wipe-mechanic.webp" caption='Wipe Mechanic' />
 
 > It's worth noting that the water during this boss fight is extremely advantageous for healing and taking a break from the fight since no boss attacks can hit you.
 
@@ -370,7 +325,7 @@ that spawn into the boss arena, <ZombieTooltip zombieKey='mangler' /> or <Zombie
 Avoid the boss's attacks while shooting the red boils on either side of the boss to do massive damage to him. These boils are the weak points and the only way to damage the boss 
 significantly during this phase. Once the boss has lost a third or **33%** of its HP, you will have completed **Phase 1**.
 
-<RichImage image={Phase1} caption='Phase 1' />
+<RichImage image="/content/terminus/terminus-phase-1.webp" caption='Phase 1' />
 
 > During any downtime where the boss is underwater, you should be clearing any special enemies if any are on the map, and shooting the Tentacles shooting ranged projectiles to 
 have less clutter in the arena.
@@ -382,7 +337,7 @@ while the boss's mouth critical point will be weak to the <AmmoModTooltip ammoMo
 Avoid the boss's attacks while shooting the weak points on the main arms of the boss to do significant damage. These are the main weak points of the boss for this phase, 
 but he will eventually start glowing red, and the only weak point will be his mouth for you to do even more damage to the boss.
 
-<RichImage image={Phase2} caption='Phase 2' />
+<RichImage image="/content/terminus/terminus-phase-2.webp" caption='Phase 2' />
 
 ### Phase 3
 >During this phase, the boss's eyes critical point will be weak to the <AmmoModTooltip ammoModKey='shadowRift' /> and <AmmoModTooltip ammoModKey='brainRotBO6' /> Ammo Mods, 
@@ -391,7 +346,7 @@ the boss will also have his tentacles blocking the two sides of the arena, essen
 The two new attacks mentioned previously (tongue and wipe attack) are now present and should be watched for at all times while damaging the boss. The boss will have all the 
 previously mentioned main weak points in this phase, and his eyes, when he glows blue, each weak point will periodically show up, depending on the state of the boss.
 
-<RichImage image={Phase3} caption='Phase 3' />
+<RichImage image="/content/terminus/terminus-phase-3.webp" caption='Phase 3' />
 
 > Remember to use your **Chopper Gunner**/**Mutant Injection** if you get into trouble to both keep you alive and inflict massive damage on the boss. Be sure to use your 
 **Chopper Gunner** in one of the corners near the ammo crate so you are not knocked out of the Chopper Gunner by the boss during one of his attacks. When using the 
@@ -399,7 +354,7 @@ previously mentioned main weak points in this phase, and his eyes, when he glows
 
 Keep avoiding his attacks while clearing out special enemies that spawn into the boss and apply damage in between until the boss has been defeated, and the ending cutscene has been triggered.
 
-<RichImage image={Ending} caption='Ending Cutscene' />
+<RichImage image="/content/terminus/terminus-ending.webp" caption='Ending Cutscene' />
 
 Congratulations! You have beaten the **Terminus** main quest: **No Mo' Modi**.
 

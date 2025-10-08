@@ -130,8 +130,12 @@ async function main(): Promise<void> {
 	console.log("🚀 Starting RichImage conversion script...\n")
 
 	// Find all MDX files
-	const pattern = join(CONTENT_DIR, "*.mdx")
+	console.log(`🔍 Current working directory: ${process.cwd()}`)
+	console.log(`🔍 Content directory: ${CONTENT_DIR}`)
+	const pattern = `${CONTENT_DIR}/**/*.mdx`
+	console.log(`🔍 Searching for files with pattern: ${pattern}`)
 	const files = await glob(pattern)
+	console.log(`📁 Found ${files.length} files:`, files.slice(0, 5), files.length > 5 ? "..." : "")
 
 	if (files.length === 0) {
 		console.log("❌ No MDX files found in", CONTENT_DIR)
