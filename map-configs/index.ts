@@ -1,3 +1,4 @@
+import type { LayersImagePath } from "@/types/image-paths"
 import type { MapMarker } from "./markers"
 
 export type MapId = keyof typeof mapRegistry
@@ -5,7 +6,7 @@ export type MapId = keyof typeof mapRegistry
 export interface MapLayer {
 	id: string
 	title: string
-	image: string
+	image: LayersImagePath
 	markers: MapMarker[]
 }
 
