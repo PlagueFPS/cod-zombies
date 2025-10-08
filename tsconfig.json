@@ -33,9 +33,6 @@
       "@/*": [
         "./*"
       ],
-      "@payload-config": [
-        "./payload.config.ts"
-      ]
     }
   },
   "include": [
