@@ -1,4 +1,5 @@
 import type { StaticImageData } from "next/image"
+import type { ContentImagePath } from "@/types/image-paths"
 import type { ImageProps } from "@/types/images"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import {
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/dialog"
 
 interface RichImageProps {
-	image: StaticImageData
+	image: StaticImageData | ContentImagePath
 	caption: string
 	alt?: string
 }
