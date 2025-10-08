@@ -1,3 +1,5 @@
+import type { AugmentsImagePath } from "@/types/image-paths"
+
 /** Gets an augment by its key.
  * @param key The key of the augment.
  * @returns The augment.
@@ -15,7 +17,7 @@ export interface Augment {
 	/** The description of the augment */
 	description: string
 	/** The image of the augment */
-	image: string
+	image: AugmentsImagePath
 }
 
 const augmentRegistry = {

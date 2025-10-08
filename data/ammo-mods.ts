@@ -1,3 +1,4 @@
+import type { AmmomodsImagePath } from "@/types/image-paths"
 import {
 	type AugmentTuple,
 	antibiotic,
@@ -57,7 +58,7 @@ export interface AmmoMod {
 	/** The description of the ammo mod */
 	description: string
 	/** The image of the ammo mod */
-	image: string
+	image: AmmomodsImagePath
 	/** The augments of the ammo mod */
 	augments?: AugmentTuple
 }
