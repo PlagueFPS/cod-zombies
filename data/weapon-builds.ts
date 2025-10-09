@@ -1,3 +1,5 @@
+import type { WeaponsImagePath } from "@/types/image-paths"
+
 /**
  * Gets a weapon build by its key.
  * @param key The key of the weapon build.
@@ -156,7 +158,7 @@ export interface WeaponBuild {
 	/** Name of the weapon build */
 	title: string
 	/** Image of the weapon build */
-	image: string
+	image: WeaponsImagePath
 	/** Attachments used in the weapon build */
 	attachments?: Attachment[]
 	/** Build code for the weapon build */
@@ -211,7 +213,7 @@ const weaponBuildRegistry = {
 	grekhovaAkimbo: {
 		id: "grekhova-akimbo",
 		title: "Grehkova",
-		image: "/weapons/grehkova.webp",
+		image: "/weapons/grekhova.webp",
 		attachments: [monolithicSuppressor, extendedMagIII, akimbo, steadyAimLaser, rapidFire],
 	},
 } as const satisfies Record<string, WeaponBuild>
