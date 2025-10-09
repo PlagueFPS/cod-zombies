@@ -1,6 +1,5 @@
-#!/usr/bin/env bun
-import { readdir, stat } from "fs/promises"
-import { join, relative } from "path"
+import { readdir, stat } from "node:fs/promises"
+import { join } from "node:path"
 
 interface ImageCategory {
 	name: string
@@ -53,16 +52,18 @@ function categorizePaths(paths: string[]): ImageCategory[] {
 		const parts = pathWithoutSlash.split("/")
 		if (parts.length > 1) {
 			const category = parts[0]
+			if (!category) continue
+
 			if (!categories.has(category)) {
 				categories.set(category, [])
 			}
-			categories.get(category)!.push(path)
+			categories.get(category)?.push(path)
 		} else {
 			// Root level images
 			if (!categories.has("root")) {
 				categories.set("root", [])
 			}
-			categories.get("root")!.push(path)
+			categories.get("root")?.push(path)
 		}
 	}
 
@@ -100,47 +101,6 @@ export type ImagePath = ${allPaths.map(path => `"${path}"`).join(" | ")}
 				: `${category.name.charAt(0).toUpperCase() + category.name.slice(1).replace(/-/g, "")}ImagePath`
 		output += `export type ${typeName} = ${category.paths.map(path => `"${path}"`).join(" | ")}\n\n`
 	}
-
-	// Generate utility types
-	output += `/**
- * Utility types for image path validation
- */
-export type ImageCategory = ${categories.map(cat => `"${cat.name}"`).join(" | ")}
-
-export type GetImagesByCategory<T extends ImageCategory> = 
-${categories
-	.map(cat => {
-		const typeName =
-			cat.name === "root"
-				? "RootImagePath"
-				: `${cat.name.charAt(0).toUpperCase() + cat.name.slice(1).replace(/-/g, "")}ImagePath`
-		return `  T extends "${cat.name}" ? ${typeName} : 'never'`
-	})
-	.join(" |\n")}
-
-/**
- * Helper function to check if a path is a valid image path
- */
-export function isValidImagePath(path: string): path is ImagePath {
-  return ${allPaths.map(p => `path === "${p}"`).join(" || ")}
-}
-
-/**
- * Get all image paths for a specific category
- */
-export function getImagesByCategory(category: ImageCategory): string[] {
-  switch (category) {
-${categories
-	.map(
-		cat => `    case "${cat.name}":
-      return [${cat.paths.map(p => `"${p}"`).join(", ")}]`,
-	)
-	.join("\n")}
-    default:
-      return []
-  }
-}
-`
 
 	return output
 }
