@@ -32,7 +32,9 @@ import { getAdjacentZombies, getZombieById, getZombies, type Zombie } from "@/da
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getServerUrl } from "@/utils/functions"
+import { getLastUpdated, getServerUrl } from "@/utils/functions"
+import { Effect } from "effect"
+import ZombieNotFound from "./not-found"
 
 export const generateStaticParams = () => {
 	const zombies = getZombies()
@@ -72,267 +74,280 @@ export const generateMetadata = async ({
 }
 
 export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">) {
-	const { id } = await params
-	const zombie = getZombieById(id)
-	if (!zombie || zombie.state === "Coming Soon") {
-		notFound()
-	}
+	const mdxComponents = useMDXComponents()
+	return await Effect.gen(function*(){
+		const { id } = yield* Effect.promise(() => params)
+		const zombie = getZombieById(id)
+		if (!zombie || zombie.state === "Coming Soon") return <ZombieNotFound />
 
-	const { prev, next } = getAdjacentZombies(id)
-	const { default: content } = await zombie.combatStrategy()
+		const { prev, next } = getAdjacentZombies(id)
+		const { default: MDXContent } = yield* Effect.tryPromise(() => zombie.combatStrategy())
+		const lastUpdated = yield* getLastUpdated(`./content/zombies/${zombie.id}.mdx`)
 
-	const speedProgress = () => {
-		switch (zombie.speed) {
-			case "Slow":
-				return 33
-			case "Medium":
-				return 66
-			case "Fast":
-				return 100
-			default:
-				return 0
+		const speedProgress = () => {
+			switch (zombie.speed) {
+				case "Slow":
+					return 33
+				case "Medium":
+					return 66
+				case "Fast":
+					return 100
+				default:
+					return 0
+			}
 		}
-	}
-
-	return (
-		<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
-			<div className="-top-5 absolute left-5 z-30 flex w-full justify-center pl-4 xl:pl-0">
-				<Breadcrumbs
-					links={[
-						{ title: "Bestiary", href: "/bestiary" },
-						{ title: zombie.title, href: `/bestiary/${zombie.id}` },
-					]}
-				/>
-			</div>
-			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
-				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
-					<div className="flex w-fit items-center justify-center gap-4">
-						{zombie.state === "New" ? <NewBadge /> : null}
-						<TypeBadge type={zombie.type} />
-					</div>
-					<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
+	
+		return (
+			<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
+				<div className="-top-5 absolute left-5 z-30 flex w-full justify-center pl-4 xl:pl-0">
+					<Breadcrumbs
+						links={[
+							{ title: "Bestiary", href: "/bestiary" },
+							{ title: zombie.title, href: `/bestiary/${zombie.id}` },
+						]}
+					/>
 				</div>
-				<CardHeader>
-					<CardTitle className="dark:dark-text-gradient font-extrabold text-3xl text-gradient md:text-4xl">
-						{zombie.title}
-					</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<section className="grid grid-cols-1 gap-6 md:grid-cols-3">
-						{/* Image and Stats */}
-						<div className="relative flex flex-col items-center">
-							<div className="absolute inset-0 mx-auto hidden w-full opacity-35 blur-3xl dark:block">
+				<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
+					<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
+						<div className="flex w-fit items-center justify-center gap-4">
+							{zombie.state === "New" ? <NewBadge /> : null}
+							<TypeBadge type={zombie.type} />
+						</div>
+						<div className="flex items-center justify-center gap-2">
+							<span className="text-foreground/60 text-sm">Updated: {lastUpdated}</span>
+							<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
+						</div>
+					</div>
+					<CardHeader>
+						<CardTitle className="dark:dark-text-gradient font-extrabold text-3xl text-gradient md:text-4xl">
+							{zombie.title}
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<section className="grid grid-cols-1 gap-6 md:grid-cols-3">
+							{/* Image and Stats */}
+							<div className="relative flex flex-col items-center">
+								<div className="absolute inset-0 mx-auto hidden w-full opacity-35 blur-3xl dark:block">
+									<FeaturedImage
+										featuredImage={zombie.image}
+										quality={100}
+										width={422}
+										height={422}
+										sizes="422px"
+										priority
+										className="mb-4 aspect-square w-full rounded-lg object-cover object-top"
+									/>
+								</div>
 								<FeaturedImage
 									featuredImage={zombie.image}
+									alt={`${zombie.title} image`}
 									quality={100}
 									width={422}
 									height={422}
 									sizes="422px"
 									priority
-									className="mb-4 aspect-square w-full rounded-lg object-cover object-top"
+									className="mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none"
 								/>
-							</div>
-							<FeaturedImage
-								featuredImage={zombie.image}
-								alt={`${zombie.title} image`}
-								quality={100}
-								width={422}
-								height={422}
-								sizes="422px"
-								priority
-								className="mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none"
-							/>
-							<div className="w-full space-y-3">
-								<div>
-									<div className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<Eye className="size-5 text-orange-500" />
-											<span className="text-foreground dark:text-foreground/80">
-												First Appeared In
-											</span>
+								<div className="w-full space-y-3">
+									<div>
+										<div className="flex items-center justify-between">
+											<div className="flex items-center gap-2">
+												<Eye className="size-5 text-orange-500" />
+												<span className="text-foreground dark:text-foreground/80">
+													First Appeared In
+												</span>
+											</div>
+											{zombie.maps.at(-1) ? (
+												<span className="text-foreground dark:text-foreground/80">
+													{zombie.maps.at(-1)?.title}
+												</span>
+											) : null}
 										</div>
-										{zombie.maps.at(-1) ? (
-											<span className="text-foreground dark:text-foreground/80">
-												{zombie.maps.at(-1)?.title}
-											</span>
-										) : null}
+									</div>
+									<div>
+										<div className="flex items-center justify-between">
+											<div className="flex items-center gap-2">
+												<Zap className="size-5 text-yellow-500" />
+												<span className="text-foreground dark:text-foreground/80">Speed</span>
+											</div>
+											<span className="text-foreground dark:text-foreground/80">{zombie.speed}</span>
+										</div>
+										<Progress value={speedProgress()} className="mt-1 h-2" />
 									</div>
 								</div>
+							</div>
+							{/* Description and Weaknesses */}
+							<div className="space-y-6 md:col-span-2">
 								<div>
-									<div className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<Zap className="size-5 text-yellow-500" />
-											<span className="text-foreground dark:text-foreground/80">Speed</span>
-										</div>
-										<span className="text-foreground dark:text-foreground/80">{zombie.speed}</span>
-									</div>
-									<Progress value={speedProgress()} className="mt-1 h-2" />
+									<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+										<BookOpen className="size-5 text-foreground" />
+										Description
+									</h3>
+									<p className="text-foreground dark:text-foreground/80">{zombie.description}</p>
 								</div>
-							</div>
-						</div>
-						{/* Description and Weaknesses */}
-						<div className="space-y-6 md:col-span-2">
-							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
-									<BookOpen className="size-5 text-foreground" />
-									Description
-								</h3>
-								<p className="text-foreground dark:text-foreground/80">{zombie.description}</p>
-							</div>
-							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
-									<MapIcon className="size-5 text-blue-500" />
-									Map Appearances
-								</h3>
-								<div className="flex flex-wrap items-center gap-2">
-									{zombie.maps.slice(0, 16).map(map => (
-										<Badge
-											key={map.id}
-											className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
-										>
-											{map.title}
-										</Badge>
-									))}
-									{zombie.maps.length > 16 && (
-										<Badge className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient">
-											{`+${zombie.maps.length - 16} more`}
-										</Badge>
-									)}
-								</div>
-							</div>
-							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
-									<Gamepad2 className="size-5 text-orange-500" />
-									Game Appearances
-								</h3>
-								<div className="flex flex-wrap items-center gap-2">
-									{zombie.games.map(game => (
-										<Badge
-											key={game.id}
-											className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
-										>
-											{game.title}
-										</Badge>
-									))}
-								</div>
-							</div>
-							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
-									<Target className="size-5 text-red-500" />
-									Weak Points
-								</h3>
-								<div className="flex flex-wrap items-center gap-2">
-									{zombie.weakPoints.length > 0 ? (
-										zombie.weakPoints.map(weakPoint => (
+								<div>
+									<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+										<MapIcon className="size-5 text-blue-500" />
+										Map Appearances
+									</h3>
+									<div className="flex flex-wrap items-center gap-2">
+										{zombie.maps.slice(0, 16).map(map => (
 											<Badge
-												key={weakPoint.id}
-												className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
+												key={map.id}
+												className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
 											>
-												{weakPoint.title}
+												{map.title}
 											</Badge>
-										))
-									) : (
-										<Badge className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">
-											None
-										</Badge>
-									)}
-								</div>
-							</div>
-							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
-									<AlertTriangle className="size-5 text-orange-800 dark:text-orange-200" />
-									Elemental Weaknesses
-								</h3>
-								<div className="flex flex-wrap items-center gap-2">
-									{zombie.elementalWeakness.length > 0 ? (
-										zombie.elementalWeakness.map(weakness => (
-											<AmmoModTooltip key={weakness.id} ammoMod={weakness} />
-										))
-									) : (
-										<span className="text-orange-800 dark:text-orange-200">
-											No elemental weaknesses
-										</span>
-									)}
-								</div>
-							</div>
-						</div>
-					</section>
-				</CardContent>
-			</Card>
-			{/* Main Content Grid */}
-			<section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-				{/* Attacks Section */}
-				<Card className="bg-background pt-0">
-					<CardContent className="pt-6">
-						<div className="mb-3 flex items-center gap-2 border-b pb-2">
-							<Swords className="size-6 text-primary" />
-							<h3 className="font-bold text-xl">Attacks</h3>
-						</div>
-						<div className="space-y-4">
-							{zombie.attacks.map(attack => (
-								<div
-									key={attack.id}
-									className={cn("rounded-lg border-2 p-3", {
-										"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
-											attack.range === "Short",
-										"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
-											attack.range === "Medium",
-										"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
-											attack.range === "Long",
-									})}
-								>
-									<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
-										<h4
-											className={cn("font-semibold", {
-												"text-teal-600 dark:text-teal-300": attack.range === "Short",
-												"text-yellow-700 dark:text-yellow-200": attack.range === "Medium",
-												"text-red-600 dark:text-red-300": attack.range === "Long",
-											})}
-										>
-											{attack.title}
-										</h4>
-										<div className="flex flex-wrap gap-1">
-											<RangeBadge range={attack.range} />
-										</div>
+										))}
+										{zombie.maps.length > 16 && (
+											<Badge className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient">
+												{`+${zombie.maps.length - 16} more`}
+											</Badge>
+										)}
 									</div>
-									<CardDescription className="text-foreground dark:text-foreground/80">
-										{attack.description}
-									</CardDescription>
 								</div>
-							))}
-						</div>
+								<div>
+									<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+										<Gamepad2 className="size-5 text-orange-500" />
+										Game Appearances
+									</h3>
+									<div className="flex flex-wrap items-center gap-2">
+										{zombie.games.map(game => (
+											<Badge
+												key={game.id}
+												className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
+											>
+												{game.title}
+											</Badge>
+										))}
+									</div>
+								</div>
+								<div>
+									<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+										<Target className="size-5 text-red-500" />
+										Weak Points
+									</h3>
+									<div className="flex flex-wrap items-center gap-2">
+										{zombie.weakPoints.length > 0 ? (
+											zombie.weakPoints.map(weakPoint => (
+												<Badge
+													key={weakPoint.id}
+													className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
+												>
+													{weakPoint.title}
+												</Badge>
+											))
+										) : (
+											<Badge className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">
+												None
+											</Badge>
+										)}
+									</div>
+								</div>
+								<div>
+									<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+										<AlertTriangle className="size-5 text-orange-800 dark:text-orange-200" />
+										Elemental Weaknesses
+									</h3>
+									<div className="flex flex-wrap items-center gap-2">
+										{zombie.elementalWeakness.length > 0 ? (
+											zombie.elementalWeakness.map(weakness => (
+												<AmmoModTooltip key={weakness.id} ammoMod={weakness} />
+											))
+										) : (
+											<span className="text-orange-800 dark:text-orange-200">
+												No elemental weaknesses
+											</span>
+										)}
+									</div>
+								</div>
+							</div>
+						</section>
 					</CardContent>
 				</Card>
-				{/* Spawn Behavior Section */}
-				<Card className="bg-background pt-0 lg:order-first lg:col-span-3">
-					<CardContent className="pt-6">
-						<div className="mb-3 flex items-center gap-2 border-b pb-2">
-							<Footprints className="size-6 text-purple-600 dark:text-purple-300" />
-							<h3 className="font-bold text-xl">Spawn Behavior</h3>
-						</div>
-						<CardDescription className="text-foreground dark:text-foreground/80">
-							{zombie.spawnBehavior}
-						</CardDescription>
-					</CardContent>
-				</Card>
-				{/* Combat Strategy Section */}
-				<Card className="bg-background pt-0 lg:col-span-2">
-					<CardContent className="pt-6">
-						<div className="mb-3 flex items-center gap-2 border-b pb-2">
-							<Info className="size-6 text-green-600 dark:text-green-300" />
-							<h3 className="font-bold text-xl">Combat Strategy</h3>
-						</div>
-						<div className="text-foreground dark:text-foreground/80 text-sm">{content({ components: useMDXComponents() })}</div>
-					</CardContent>
-				</Card>
-			</section>
-			<section className="mt-8 flex w-full flex-row items-center justify-center">
-				<div className="mx-auto flex flex-col items-center justify-center gap-8 px-3 lg:flex-row xl:mr-0 xl:ml-auto xl:px-0">
-					{prev && <PrevOrNextZombieCard zombie={prev} prev />}
-					{next && <PrevOrNextZombieCard zombie={next} />}
-				</div>
-			</section>
-		</article>
+				{/* Main Content Grid */}
+				<section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+					{/* Attacks Section */}
+					<Card className="bg-background pt-0">
+						<CardContent className="pt-6">
+							<div className="mb-3 flex items-center gap-2 border-b pb-2">
+								<Swords className="size-6 text-primary" />
+								<h3 className="font-bold text-xl">Attacks</h3>
+							</div>
+							<div className="space-y-4">
+								{zombie.attacks.map(attack => (
+									<div
+										key={attack.id}
+										className={cn("rounded-lg border-2 p-3", {
+											"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
+												attack.range === "Short",
+											"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
+												attack.range === "Medium",
+											"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+												attack.range === "Long",
+										})}
+									>
+										<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+											<h4
+												className={cn("font-semibold", {
+													"text-teal-600 dark:text-teal-300": attack.range === "Short",
+													"text-yellow-700 dark:text-yellow-200": attack.range === "Medium",
+													"text-red-600 dark:text-red-300": attack.range === "Long",
+												})}
+											>
+												{attack.title}
+											</h4>
+											<div className="flex flex-wrap gap-1">
+												<RangeBadge range={attack.range} />
+											</div>
+										</div>
+										<CardDescription className="text-foreground dark:text-foreground/80">
+											{attack.description}
+										</CardDescription>
+									</div>
+								))}
+							</div>
+						</CardContent>
+					</Card>
+					{/* Spawn Behavior Section */}
+					<Card className="bg-background pt-0 lg:order-first lg:col-span-3">
+						<CardContent className="pt-6">
+							<div className="mb-3 flex items-center gap-2 border-b pb-2">
+								<Footprints className="size-6 text-purple-600 dark:text-purple-300" />
+								<h3 className="font-bold text-xl">Spawn Behavior</h3>
+							</div>
+							<CardDescription className="text-foreground dark:text-foreground/80">
+								{zombie.spawnBehavior}
+							</CardDescription>
+						</CardContent>
+					</Card>
+					{/* Combat Strategy Section */}
+					<Card className="bg-background pt-0 lg:col-span-2">
+						<CardContent className="pt-6">
+							<div className="mb-3 flex items-center gap-2 border-b pb-2">
+								<Info className="size-6 text-green-600 dark:text-green-300" />
+								<h3 className="font-bold text-xl">Combat Strategy</h3>
+							</div>
+							<div className="text-foreground dark:text-foreground/80 text-sm">
+								<MDXContent components={mdxComponents} />
+							</div>
+						</CardContent>
+					</Card>
+				</section>
+				<section className="mt-8 flex w-full flex-row items-center justify-center">
+					<div className="mx-auto flex flex-col items-center justify-center gap-8 px-3 lg:flex-row xl:mr-0 xl:ml-auto xl:px-0">
+						{prev && <PrevOrNextZombieCard zombie={prev} prev />}
+						{next && <PrevOrNextZombieCard zombie={next} />}
+					</div>
+				</section>
+			</article>
+		)
+	}).pipe(
+		Effect.withLogSpan("bestiary_page"),
+		Effect.tapError(Effect.logError),
+		Effect.catchAll(_error => Effect.dieMessage("Failed to load MDX content")),
+		Effect.ensureErrorType<never>(),
+		Effect.runPromise,
 	)
 }
 

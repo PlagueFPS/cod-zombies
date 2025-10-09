@@ -5,7 +5,7 @@ import { useParams } from "next/navigation"
 import NotFoundContent from "@/components/not-found/not-found-content"
 import { capitalize } from "@/utils/functions.client"
 
-export default function QuestNotFound() {
+export default function ZombieNotFound() {
 	const { slug } = useParams()
 	const items: Link<string>[] = [
 		{ href: `/bestiary`, title: "Bestiary" },
