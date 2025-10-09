@@ -51,12 +51,20 @@ export const getLastUpdated = (filePath: string) =>
 				}),
 			catch: error =>
 				new GetLastUpdatedError({ message: "Failed to get last updated", cause: error }),
-		})
-		const date = new Date(out).toLocaleDateString(undefined, DATE_OPTIONS)
-		if (date === "Invalid Date")
+		}).pipe(
+			Effect.map(out =>
+				out
+					// strip stray wrapping quotes if any
+					.replace(/^"|"$/g, "")
+					.trim(),
+			),
+		)
+
+		const ms = Date.parse(out)
+		if (Number.isNaN(ms))
 			return yield* new GetLastUpdatedError({ message: "Invalid date", cause: out })
 
-		return date
+		return new Date(out).toLocaleDateString(undefined, DATE_OPTIONS)
 	}).pipe(
 		Effect.withLogSpan("get_last_updated"),
 		Effect.tapError(Effect.logError),
