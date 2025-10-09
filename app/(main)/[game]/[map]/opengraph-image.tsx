@@ -2,7 +2,7 @@ import { Effect } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
 import { getMainQuestByMap } from "@/data/main-quests"
-import { getFonts, optimizeImageForOG } from "@/data/og-images"
+import { getFonts, getImageData } from "@/data/og-images"
 import { OgImageGenerationError } from "@/types/errors"
 import { calculateTimeToRead, getLastUpdated } from "@/utils/functions"
 
@@ -11,7 +11,7 @@ export const size = {
 	width: 1200,
 	height: 630,
 }
-export const contentType = "image/png"
+export const contentType = "image/jpg"
 
 export default async function MainQuestImage({ params }: PageProps<"/[game]/[map]">) {
 	return await Effect.gen(function* () {
@@ -20,7 +20,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[map
 		if (!quest) return new Response("Not Found", { status: 404 })
 
 		const { boldFont, semiBoldFont } = yield* getFonts
-		const supportedImage = yield* optimizeImageForOG(quest.map.image)
+		const imageData = yield* getImageData(quest.map.id)
 		const timeToRead = yield* calculateTimeToRead(`./content/main-quests/${quest.id}.mdx`)
 		const lastUpdated = yield* getLastUpdated(`./content/main-quests/${quest.id}.mdx`)
 
@@ -64,7 +64,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[map
 			>
 				{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
 				<img
-					src={supportedImage}
+					src={imageData}
 					alt={quest.map.title}
 					width={1200}
 					height={630}
@@ -188,7 +188,7 @@ export default async function MainQuestImage({ params }: PageProps<"/[game]/[map
 		})
 
 		const optimizedBuffer = yield* Effect.tryPromise({
-			try: () => sharp(imageBuffer).png({ quality: 75 }).toBuffer(),
+			try: () => sharp(imageBuffer).jpeg({ quality: 75, mozjpeg: true }).toBuffer(),
 			catch: error =>
 				new OgImageGenerationError({ message: "Failed to optimize image", cause: error }),
 		}).pipe(Effect.map(buffer => new Uint8Array(buffer)))

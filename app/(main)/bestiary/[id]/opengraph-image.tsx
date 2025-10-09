@@ -1,7 +1,7 @@
 import { Effect } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
-import { getFonts, optimizeImageForOG } from "@/data/og-images"
+import { getFonts, getImageData } from "@/data/og-images"
 import { getZombieById } from "@/data/zombies"
 import { OgImageGenerationError } from "@/types/errors"
 import { getLastUpdated } from "@/utils/functions"
@@ -11,7 +11,7 @@ export const size = {
 	width: 1200,
 	height: 630,
 }
-export const contentType = "image/png"
+export const contentType = "image/jpg"
 
 export default async function ZombieImage({ params }: PageProps<"/bestiary/[id]">) {
 	return await Effect.gen(function* () {
@@ -20,7 +20,7 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[id]"
 		if (!zombie) return new Response("Not Found", { status: 404 })
 
 		const { boldFont, semiBoldFont } = yield* getFonts
-		const supportedImage = yield* optimizeImageForOG(zombie.image)
+		const imageData = yield* getImageData(zombie.id)
 		const lastUpdated = yield* getLastUpdated(`./content/zombies/${zombie.id}.mdx`)
 
 		const getTypeCSSProps = (): React.CSSProperties => {
@@ -69,7 +69,7 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[id]"
 			>
 				{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
 				<img
-					src={supportedImage}
+					src={imageData}
 					alt={zombie.title}
 					width={1200}
 					height={630}
@@ -191,7 +191,7 @@ export default async function ZombieImage({ params }: PageProps<"/bestiary/[id]"
 		})
 
 		const optimizedBuffer = yield* Effect.tryPromise({
-			try: () => sharp(imageBuffer).png({ quality: 75 }).toBuffer(),
+			try: () => sharp(imageBuffer).jpeg({ quality: 75, mozjpeg: true }).toBuffer(),
 			catch: error =>
 				new OgImageGenerationError({ message: "Failed to optimize image", cause: error }),
 		}).pipe(Effect.map(buffer => new Uint8Array(buffer)))
