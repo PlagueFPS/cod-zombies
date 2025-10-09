@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Effect } from "effect"
 import {
 	AlertTriangle,
 	BookOpen,
@@ -33,7 +34,6 @@ import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getLastUpdated, getServerUrl } from "@/utils/functions"
-import { Effect } from "effect"
 import ZombieNotFound from "./not-found"
 
 export const generateStaticParams = () => {
@@ -61,6 +61,11 @@ export const generateMetadata = async ({
 			title: zombie.title,
 			description,
 			url: `/bestiary/${zombie.id}`,
+			images: {
+				url: `${getServerUrl()}/opengraph-images/zombies/og-${zombie.id}.jpg`,
+				width: 1200,
+				height: 630,
+			},
 		},
 		twitter: {
 			title: zombie.title,
@@ -75,7 +80,7 @@ export const generateMetadata = async ({
 
 export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">) {
 	const mdxComponents = useMDXComponents()
-	return await Effect.gen(function*(){
+	return await Effect.gen(function* () {
 		const { id } = yield* Effect.promise(() => params)
 		const zombie = getZombieById(id)
 		if (!zombie || zombie.state === "Coming Soon") return <ZombieNotFound />
@@ -96,7 +101,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 					return 0
 			}
 		}
-	
+
 		return (
 			<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
 				<div className="-top-5 absolute left-5 z-30 flex w-full justify-center pl-4 xl:pl-0">
@@ -170,7 +175,9 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 												<Zap className="size-5 text-yellow-500" />
 												<span className="text-foreground dark:text-foreground/80">Speed</span>
 											</div>
-											<span className="text-foreground dark:text-foreground/80">{zombie.speed}</span>
+											<span className="text-foreground dark:text-foreground/80">
+												{zombie.speed}
+											</span>
 										</div>
 										<Progress value={speedProgress()} className="mt-1 h-2" />
 									</div>
@@ -200,7 +207,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 											</Badge>
 										))}
 										{zombie.maps.length > 16 && (
-											<Badge className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient">
+											<Badge className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1">
 												{`+${zombie.maps.length - 16} more`}
 											</Badge>
 										)}
@@ -328,7 +335,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 								<Info className="size-6 text-green-600 dark:text-green-300" />
 								<h3 className="font-bold text-xl">Combat Strategy</h3>
 							</div>
-							<div className="text-foreground dark:text-foreground/80 text-sm">
+							<div className="text-foreground text-sm dark:text-foreground/80">
 								<MDXContent components={mdxComponents} />
 							</div>
 						</CardContent>

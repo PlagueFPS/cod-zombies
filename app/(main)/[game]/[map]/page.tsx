@@ -60,6 +60,11 @@ export const generateMetadata = async ({
 			title,
 			description,
 			url: `/${quest.map.game.id}/${quest.map.id}`,
+			images: {
+				url: `${getServerUrl()}/opengraph-images/main-quests/og-${quest.map.id}.jpg`,
+				width: 1200,
+				height: 630,
+			},
 		},
 		twitter: {
 			title,

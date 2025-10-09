@@ -32,7 +32,7 @@ async function scanDirectory(dirPath: string, basePath: string = ""): Promise<st
 			// Check if it's an image file
 			const ext = item.split(".").pop()?.toLowerCase()
 			if (ext && ["webp", "png", "jpg", "jpeg", "gif", "svg"].includes(ext)) {
-				imagePaths.push("/" + relativePath.replace(/\\/g, "/")) // Add leading slash and normalize path separators
+				imagePaths.push(`/${relativePath.replace(/\\/g, "/")}`) // Add leading slash and normalize path separators
 			}
 		}
 	}
