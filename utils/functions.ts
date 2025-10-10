@@ -5,11 +5,11 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
 import { readFile } from "node:fs/promises"
 import path from "node:path"
 import { Data, Duration, Effect, Number as Num, Option, Redacted } from "effect"
-import { ReadFileError } from "@/data/og-images"
 import { env } from "@/env"
 import {
 	AuthorizationError,
 	type CommonErrorProps,
+	ReadFileError,
 	TokenExpirationError,
 	TokenGenerationError,
 	TokenVerificationError,
