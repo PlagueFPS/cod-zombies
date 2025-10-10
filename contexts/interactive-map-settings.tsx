@@ -42,8 +42,8 @@ const DEFAULT_SETTINGS = {
 		 * Disable the flyTo animation when the user clicks on a new marker.
 		 * @default false
 		 */
-		disableFlyToAnimation: false
-	}
+		disableFlyToAnimation: false,
+	},
 }
 
 export type TMapSettings = typeof DEFAULT_SETTINGS
@@ -81,7 +81,8 @@ const migrateSettings = (savedSettings: Partial<TMapSettings>) => {
 
 export function MapSettingsProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useLocalStorage<TMapSettings>(STORAGE_KEY, DEFAULT_SETTINGS)
-	const migratedSettings = settings._version !== CURRENT_VERSION ? migrateSettings(settings) : settings
+	const migratedSettings =
+		settings._version !== CURRENT_VERSION ? migrateSettings(settings) : settings
 
 	if (settings._version !== migratedSettings._version) {
 		setSettings(prev => ({
@@ -89,7 +90,7 @@ export function MapSettingsProvider({ children }: { children: React.ReactNode })
 			...migratedSettings,
 		}))
 	}
-	
+
 	const updateSettings = (newSettings: Partial<TMapSettings>) => {
 		setSettings(current => ({
 			...current,
@@ -102,7 +103,9 @@ export function MapSettingsProvider({ children }: { children: React.ReactNode })
 	}
 
 	return (
-		<MapSettingsContext value={{ defaultSettings: DEFAULT_SETTINGS, settings, updateSettings, resetSettings }}>
+		<MapSettingsContext
+			value={{ defaultSettings: DEFAULT_SETTINGS, settings, updateSettings, resetSettings }}
+		>
 			{children}
 		</MapSettingsContext>
 	)

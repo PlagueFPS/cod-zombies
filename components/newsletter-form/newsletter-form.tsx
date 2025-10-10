@@ -8,7 +8,10 @@ import { Label } from "@/components/ui/label"
 import { subscribeToNewsletter } from "@/data/actions"
 
 export default function NewsletterForm() {
-	const [state, action, isPending] = useActionState(subscribeToNewsletter, { success: false, message: "" })
+	const [state, action, isPending] = useActionState(subscribeToNewsletter, {
+		success: false,
+		message: "",
+	})
 
 	useEffect(() => {
 		if (state.message) {

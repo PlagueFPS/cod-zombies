@@ -1,15 +1,14 @@
-import type { MinifiedZombie } from "@/data/zombies"
+import type { Zombie } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
-import { IN_DEVELOPMENT } from "@/utils/constants"
-import { ComingSoonBadge, DraftBadge, NewBadge, TypeBadge } from "../custom-badges/custom-badges"
+import { ComingSoonBadge, NewBadge, TypeBadge } from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface IBestiaryCard {
-	zombie: MinifiedZombie
+	zombie: Omit<Zombie, "combatStrategy">
 	zombieIndex: number
 }
 
@@ -23,7 +22,7 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 			className={cn("h-full max-h-113", { "pointer-events-none": zombie.state === "Coming Soon" })}
 		>
 			<CustomLink
-				href={zombie.state === "Coming Soon" ? `#` : `/bestiary/${zombie.slug}`}
+				href={zombie.state === "Coming Soon" ? `#` : `/bestiary/${zombie.id}`}
 				aria-label={`View details for ${zombie.title}`}
 				aria-disabled={zombie.state === "Coming Soon"}
 				className="group outline-none"
@@ -36,7 +35,6 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
-						{IN_DEVELOPMENT && zombie._status === "draft" ? <DraftBadge /> : null}
 						{zombie.state === "Coming Soon" ? (
 							<ComingSoonBadge />
 						) : zombie.state === "New" ? (
@@ -52,6 +50,8 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage
 							featuredImage={zombie.image}
+							width={272}
+							height={176}
 							sizes="272px"
 							className="aspect-square scale-150"
 						/>
@@ -61,6 +61,8 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 							<FeaturedImage
 								featuredImage={zombie.image}
 								alt={alt}
+								width={272}
+								height={176}
 								priority={priority}
 								sizes="272px"
 								className="h-44 rounded-md object-cover object-top"

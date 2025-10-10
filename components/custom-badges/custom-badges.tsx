@@ -1,7 +1,11 @@
 import type { MarkerCategory } from "@/map-configs/markers"
-import type { Augment, Gobblegum, MainQuest, Zombie, ZombieAttack } from "@/types/payload-types"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import type { MainQuest } from "@/data/main-quests"
+import type { Zombie } from "@/data/zombies"
+import type { Augment } from "@/data/augments"
+import type { Gobblegum } from "@/data/gobblegum"
+import type { ZombieAttack } from "@/data/zombie-attacks"
 
 interface CustomBadgeProps {
 	className?: string

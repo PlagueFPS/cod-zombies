@@ -28,6 +28,8 @@ yarn-error.log*
 # local files
 .env*
 *.local.*
+/scripts
+newassets
 
 # vercel
 .vercel
@@ -35,8 +37,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-newassets
-media
-drizzle.config.ts
-contentful.json

@@ -54,7 +54,7 @@
 }
 
 .body ul ul, .body ol ol {
-  margin-top: -1rem;
+  margin-top: 0.5rem;
   list-style-type: circle;
 }
 

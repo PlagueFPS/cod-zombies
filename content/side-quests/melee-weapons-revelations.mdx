@@ -1,0 +1,44 @@
+import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+
+## Melee Weapons
+This side quest requires players to complete specific rounds within a certain time frame to gain the ability to purchase certain 
+melee weapons from the wall in the connector of **Shangri-La/Der Eisendrache**. You can view the current time in your game by 
+opening the scoreboard.
+
+<RichTable 
+  headerCells={["Weapon", "Round", "Time", "Points Cost"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>Nunchucks</TableCell>
+      <TableCell>5</TableCell>
+      <TableCell>5 minutes</TableCell>
+      <TableCell>100</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>Skulls Splitter</TableCell>
+      <TableCell>10</TableCell>
+      <TableCell>13 minutes</TableCell>
+      <TableCell>200</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>Buzz Saw</TableCell>
+      <TableCell>15</TableCell>
+      <TableCell>24 minutes</TableCell>
+      <TableCell>300</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>Nightbreaker</TableCell>
+      <TableCell>20</TableCell>
+      <TableCell>32 minutes</TableCell>
+      <TableCell>500</TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+<RichImage image="/content/revelations/revelations-melee-weapons.webp" caption="Melee Weapon wall buy between Der Eisendrache and Shangri-La"  />
+
+> Going down in a co-op game will automatically fail this challenge. If you complete the 
+[Permanent Pack-a-Punch](/side-quests/black-ops-3/revelations/permanent-pack-a-punch) side quest, **Takeo's Katana** will 
+replace whatever weapon is currently on the board for **500 points**.

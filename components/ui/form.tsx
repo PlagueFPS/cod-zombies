@@ -128,10 +128,24 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 	}
 
 	return (
-		<p data-slot="form-message" id={formMessageId} className={cn("text-destructive text-sm", className)} {...props}>
+		<p
+			data-slot="form-message"
+			id={formMessageId}
+			className={cn("text-destructive text-sm", className)}
+			{...props}
+		>
 			{body}
 		</p>
 	)
 }
 
-export { useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField }
+export {
+	useFormField,
+	Form,
+	FormItem,
+	FormLabel,
+	FormControl,
+	FormDescription,
+	FormMessage,
+	FormField,
+}

@@ -12,7 +12,8 @@ interface BestiaryFiltersClientProps {
 }
 
 export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFiltersClientProps) {
-	const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } = useFilterParams()
+	const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } =
+		useFilterParams()
 
 	const toggleGame = (game: string) => {
 		toggleParam("game", game, gameParams)

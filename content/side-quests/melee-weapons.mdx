@@ -1,0 +1,47 @@
+import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+
+## Melee Weapons
+This side quest requires players to complete specific rounds within a certain time frame to gain the ability to purchase 
+certain melee weapons from the wall in the **Operations Bunker**, located at the entrance from **Dept. Store**. You can view the 
+current time in your game by opening the scoreboard.
+
+<RichTable 
+  headerCells={["Weapon", "Round", "Time", "Points Cost"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>Wrench</TableCell>
+      <TableCell>5</TableCell>
+      <TableCell>5 minutes</TableCell>
+      <TableCell>100</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>Malice</TableCell>
+      <TableCell>10</TableCell>
+      <TableCell>13 minutes</TableCell>
+      <TableCell>200</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>Slash N' Burn</TableCell>
+      <TableCell>15</TableCell>
+      <TableCell>24 minutes</TableCell>
+      <TableCell>300</TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>Fury's Song</TableCell>
+      <TableCell>20</TableCell>
+      <TableCell>32 minutes</TableCell>
+      <TableCell>500</TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> Going down in a co-op game will automatically fail this challenge.
+
+<RichImage image="/content/gorod-krovi/gk-melee-weapons.webp" caption="Poster in the Operations Bunker entrance from Dept. Store"  />
+
+## Credits
+
+Some images were sourced from the following community members:
+- [MrDalekJD](https://www.youtube.com/@MrDalekJD)

@@ -1,21 +1,27 @@
 import { Suspense } from "react"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { getGames } from "@/data/games"
-import { getMainQuestMetadata } from "@/data/main-quests"
-import { slugify } from "@/utils/functions.client"
+import { getMainQuests } from "@/data/main-quests"
+import { slugify, sortDifficulties } from "@/utils/functions.client"
 import QuestFiltersClient from "./quest-filters.client"
 
-export async function MainQuestFilters() {
-	const mainQuestsPromise = getMainQuestMetadata()
-	const gamesPromise = getGames()
-	const [mainQuests, games] = await Promise.all([mainQuestsPromise, gamesPromise])
-	const questGames = new Set(mainQuests.map(q => q.game.slug))
+export default function MainQuestFilters() {
+	const mainQuests = getMainQuests()
+	const games = getGames()
+	const questGames = new Set(mainQuests.map(q => q.map.game.id))
 	const questDifficulties = new Set(
 		mainQuests
 			.map(q => q.difficulty)
-			.filter(difficulty => difficulty !== null && difficulty !== undefined),
+			.filter(difficulty => difficulty !== undefined)
+			.sort(sortDifficulties),
 	)
-	const gameFilters = games.filter(g => questGames.has(g.slug))
+	const gameFilters = games
+		.filter(g => questGames.has(g.id))
+		.map(g => ({
+			id: g.id,
+			slug: g.id,
+			title: g.title,
+		}))
 	const difficultyFilters = Array.from(questDifficulties).map(difficulty => ({
 		id: slugify(difficulty),
 		slug: slugify(difficulty),

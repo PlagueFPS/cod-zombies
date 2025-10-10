@@ -20,7 +20,11 @@ export default function SidebarLoader() {
 			</div>
 			<div className="sticky bottom-0 border-t px-2 py-4">
 				<div className="flex items-center justify-evenly gap-3 text-muted-foreground">
-					<ExternalLink href="https://x.com/CodZombiesGuide" title="Twitter" aria-label="Check out our Twitter profile">
+					<ExternalLink
+						href="https://x.com/CodZombiesGuide"
+						title="Twitter"
+						aria-label="Check out our Twitter profile"
+					>
 						<XSVG className="size-5" />
 					</ExternalLink>
 					<Separator orientation="vertical" className="min-h-5" />

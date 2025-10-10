@@ -4,7 +4,6 @@ import { type MapId, mapRegistry } from "@/map-configs"
 import { MapConfigError } from "@/types/errors"
 
 export const getMapConfig = cache(async (mapId: MapId) => {
-	"use cache"
 	return await getMapConfigEffect(mapId).pipe(
 		Effect.withLogSpan("get_map_config_cached"),
 		Effect.tapError(Effect.logError),
