@@ -3,18 +3,10 @@ import type { Heading } from "@/components/table-of-contents/table-of-contents";
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import {
-  Data,
-  Duration,
-  Effect,
-  Number as Num,
-  Option,
-  Redacted,
-} from "effect";
+import { Duration, Effect, Number as Num, Option, Redacted } from "effect";
 import { env } from "@/env";
 import {
   AuthorizationError,
-  type CommonErrorProps,
   ReadFileError,
   TokenExpirationError,
   TokenGenerationError,
@@ -52,6 +44,11 @@ export const getLastUpdated = (filename: string) => {
   );
 };
 
+/**
+ * Calculates the time to read a file.
+ * @param contentPath The path of the file.
+ * @returns The time to read the file.
+ */
 export const calculateTimeToRead = (contentPath: string) =>
   Effect.gen(function* () {
     const wordCount = yield* Effect.tryPromise({
@@ -76,17 +73,11 @@ export const calculateTimeToRead = (contentPath: string) =>
     Effect.catchAll((_error) => Effect.succeed(0)),
   );
 
-export const stripMarkdown = (text: string) =>
-  text
-    .replace(/^import\s+.*?from\s+['"][^'"]+['"];?\s*$/gm, "") // remove import statements
-    .replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
-    .replace(/\*([^*]+)\*/g, "$1") // italic *text* -> text
-    .replace(/_([^_]+)_/g, "$1") // underline _text_ -> text
-    .replace(/`([^`]+)`/g, "$1") // code `text` -> text
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // link [text](https://example.com) -> text
-    .replace(/<[^>]+>/g, "") // remove html tags
-    .trim();
-
+/**
+ * Extract headings from MDX content.
+ * @param contentPath The path to the MDX file.
+ * @returns An array of headings extracted from the MDX content.
+ */
 export const extractHeadingsFromMDX = (contentPath: string) =>
   Effect.gen(function* () {
     const content = yield* Effect.tryPromise({
@@ -214,3 +205,14 @@ export const verifyToken = (token: string) =>
 
     return value;
   }).pipe(Effect.withLogSpan("verify_token"));
+
+const stripMarkdown = (text: string) =>
+  text
+    .replace(/^import\s+.*?from\s+['"][^'"]+['"];?\s*$/gm, "") // remove import statements
+    .replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
+    .replace(/\*([^*]+)\*/g, "$1") // italic *text* -> text
+    .replace(/_([^_]+)_/g, "$1") // underline _text_ -> text
+    .replace(/`([^`]+)`/g, "$1") // code `text` -> text
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // link [text](https://example.com) -> text
+    .replace(/<[^>]+>/g, "") // remove html tags
+    .trim();
