@@ -97,7 +97,7 @@ export default async function MainQuestPage({
         ? []
         : yield* extractHeadingsFromMDX(contentPath);
     const timeToRead = yield* calculateTimeToRead(contentPath);
-    const lastUpdated = yield* getLastUpdated(contentPath);
+    const lastUpdated = getLastUpdated(`${quest.id}.mdx`);
 
     return (
       <section className="-mt-10 flex w-full justify-center xl:mt-0">
