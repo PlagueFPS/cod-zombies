@@ -26,8 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const sideQuestsMap = yield* Effect.forEach(sideQuests, (quest) =>
       Effect.gen(function* () {
-        const contentPath = `./content/side-quests/${quest.id}.mdx`;
-        const lastUpdated = yield* getLastUpdated(contentPath);
+        const lastUpdated = getLastUpdated(`${quest.id}.mdx`);
         return {
           url: `${serverUrl}/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
           lastModified: new Date(lastUpdated),
@@ -37,8 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const zombiesMap = yield* Effect.forEach(zombies, (zombie) =>
       Effect.gen(function* () {
-        const contentPath = `./content/zombies/${zombie.id}.mdx`;
-        const lastUpdated = yield* getLastUpdated(contentPath);
+        const lastUpdated = getLastUpdated(`${zombie.id}.mdx`);
         return {
           url: `${serverUrl}/bestiary/${zombie.id}`,
           lastModified: lastUpdated,
@@ -50,25 +48,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       {
         url: `${serverUrl}`,
         lastModified: mainQuests[0]
-          ? yield* getLastUpdated(
-              `./content/main-quests/${mainQuests[0].id}.mdx`,
-            )
+          ? getLastUpdated(`${mainQuests[0].id}.mdx`)
           : undefined,
       },
       ...mainQuestsMap,
       {
         url: `${serverUrl}/side-quests`,
         lastModified: sideQuests[0]
-          ? yield* getLastUpdated(
-              `./content/side-quests/${sideQuests[0].id}.mdx`,
-            )
+          ? getLastUpdated(`${sideQuests[0].id}.mdx`)
           : undefined,
       },
       ...sideQuestsMap,
       {
         url: `${serverUrl}/bestiary`,
         lastModified: zombies[0]
-          ? yield* getLastUpdated(`./content/zombies/${zombies[0].id}.mdx`)
+          ? getLastUpdated(`${zombies[0].id}.mdx`)
           : undefined,
       },
       ...zombiesMap,
