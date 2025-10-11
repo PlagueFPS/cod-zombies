@@ -23,7 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useMDXComponents } from "@/mdx-components";
 import { PageNotFoundError } from "@/types/errors";
-import { GLOBAL_OG_PROPS, MAP_LIMIT } from "@/utils/constants";
+import { GLOBAL_OG_PROPS } from "@/utils/constants";
 import {
   calculateTimeToRead,
   extractHeadingsFromMDX,
@@ -34,13 +34,11 @@ import QuestNotFoundPage from "./not-found";
 
 export const generateStaticParams = () => {
   const quests = getSideQuests();
-  return quests
-    .map((q) => ({
-      game: q.map.game.id,
-      map: q.map.id,
-      slug: q.id,
-    }))
-    .slice(0, MAP_LIMIT * 3);
+  return quests.map((q) => ({
+    game: q.map.game.id,
+    map: q.map.id,
+    slug: q.id,
+  }));
 };
 
 export const generateMetadata = async ({

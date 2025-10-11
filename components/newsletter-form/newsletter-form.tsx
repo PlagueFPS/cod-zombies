@@ -1,68 +1,134 @@
-"use client"
-import { Loader2 } from "lucide-react"
-import { useActionState, useEffect } from "react"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { subscribeToNewsletter } from "@/data/actions"
+"use client";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { useForm } from "@tanstack/react-form";
+import { subscribeToNewsletter } from "@/data/actions";
+import { StandardNewsletterFormSchema } from "@/utils/validation-schemas";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "../ui/input-group";
+import { Spinner } from "../ui/spinner";
 
 export default function NewsletterForm() {
-	const [state, action, isPending] = useActionState(subscribeToNewsletter, {
-		success: false,
-		message: "",
-	})
+  const [isPending, startTransition] = useTransition();
+  const form = useForm({
+    defaultValues: {
+      email: "",
+    },
+    validators: {
+      onChangeAsync: StandardNewsletterFormSchema,
+      onChangeAsyncDebounceMs: 200,
+    },
+    onSubmit: ({ value }) => {
+      startTransition(async () => {
+        const result = await subscribeToNewsletter("", value);
 
-	useEffect(() => {
-		if (state.message) {
-			if (!state.success) {
-				toast.error("Failed to send confirmation email!", {
-					description: state.message,
-					duration: 5000,
-					position: "bottom-right",
-				})
-			} else {
-				toast.success("Confirmation email sent!", {
-					description: state.message,
-					duration: 5000,
-					position: "bottom-right",
-				})
-			}
-		}
-	}, [state])
+        if (result.success) {
+          return startTransition(() => {
+            toast.success("Confirmation email sent!", {
+              description: result.message,
+              duration: 5000,
+              position: "bottom-center",
+            });
 
-	return (
-		<form action={action} className="w-full space-y-4">
-			<div className="space-y-2">
-				<Label htmlFor="email" className="sr-only">
-					Email address
-				</Label>
-				<div className="relative">
-					<Input
-						id="email"
-						name="email"
-						type="email"
-						placeholder="you@example.com"
-						required
-						className="rounded-sm pr-28"
-					/>
-					<Button
-						type="submit"
-						variant={"default"}
-						className="-translate-y-1/2 absolute top-1/2 right-1 h-[calc(100%-0.5rem)] transform rounded-sm px-3 text-sm"
-						disabled={isPending}
-					>
-						{isPending ? (
-							<div className="flex items-center gap-2">
-								<Loader2 className="h-4 w-4 animate-spin" />
-								Subscribing...
-							</div>
-						) : (
-							"Subscribe"
-						)}
-					</Button>
-				</div>
-			</div>
-		</form>
-	)
+            form.reset();
+          });
+        }
+
+        startTransition(() => {
+          toast.error("Failed to subscribe to newsletter", {
+            description: result.message,
+            duration: 5000,
+            position: "bottom-center",
+          });
+        });
+      });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    form.handleSubmit();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+      e.preventDefault();
+      form.handleSubmit();
+    }
+  };
+
+  return (
+    <form
+      id="newsletter-form"
+      onSubmit={handleSubmit}
+      className="w-full space-y-4"
+    >
+      <div className="space-y-2">
+        <div className="relative">
+          <FieldGroup>
+            <form.Field
+              name="email"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name} className="sr-only">
+                      Email Address
+                    </FieldLabel>
+                    <InputGroup>
+                      <InputGroupInput
+                        required
+                        type="email"
+                        placeholder="you@example.com"
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={isInvalid}
+                        onKeyDown={handleKeyDown}
+                        className="rounded-sm pr-28"
+                      />
+                      <InputGroupAddon align="inline-end">
+                        <InputGroupButton
+                          type="submit"
+                          form="newsletter-form"
+                          variant="default"
+                          disabled={isPending || isInvalid}
+                          aria-disabled={isPending || isInvalid}
+                        >
+                          {isPending ? (
+                            <>
+                              <Spinner />
+                              Subscribing
+                            </>
+                          ) : (
+                            "Subscribe"
+                          )}
+                        </InputGroupButton>
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            />
+          </FieldGroup>
+        </div>
+      </div>
+    </form>
+  );
 }

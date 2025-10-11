@@ -36,9 +36,19 @@ export const FeedbackFormSchema = Schema.Struct({
   }),
 });
 
+export const StandardFeedbackFormSchema =
+  Schema.standardSchemaV1(FeedbackFormSchema);
+
+export const validateFeedbackForm = Schema.validateEither(
+  StandardFeedbackFormSchema,
+);
+
 export const NewsletterFormSchema = Schema.Struct({
   email: EmailSchema,
 });
+
+export const StandardNewsletterFormSchema =
+  Schema.standardSchemaV1(NewsletterFormSchema);
 
 export const ContactFormSchema = Schema.Struct({
   name: Schema.NonEmptyString.annotations({
@@ -49,6 +59,9 @@ export const ContactFormSchema = Schema.Struct({
     message: () => "Please enter a message.",
   }),
 });
+
+export const StandardContactFormSchema =
+  Schema.standardSchemaV1(ContactFormSchema);
 
 const TerminusCodeSchema = Schema.Struct({
   x: Schema.NumberFromString.pipe(Schema.between(0, 99)),

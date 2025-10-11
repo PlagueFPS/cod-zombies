@@ -23,7 +23,7 @@ import {
 } from "@/data/main-quests";
 import { cn } from "@/lib/utils";
 import { useMDXComponents } from "@/mdx-components";
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, MAP_LIMIT } from "@/utils/constants";
+import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants";
 import {
   calculateTimeToRead,
   extractHeadingsFromMDX,
@@ -35,12 +35,10 @@ import MapNotFound from "./not-found";
 export const generateStaticParams = () => {
   const mainQuests = getMainQuests();
 
-  return mainQuests
-    .map((quest) => ({
-      game: quest.map.game.id,
-      slug: quest.map.id,
-    }))
-    .slice(0, MAP_LIMIT * 3);
+  return mainQuests.map((quest) => ({
+    game: quest.map.game.id,
+    slug: quest.map.id,
+  }));
 };
 
 export const generateMetadata = async ({
