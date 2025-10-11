@@ -42,8 +42,11 @@ export default function MapSettingsPanel() {
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button
-						variant="ghost"
-						size={"icon"}
+						variant="outline"
+						size="icon-lg"
+						className={cn({
+							"w-full": isMobile,
+						})}
 						onClick={() => setOpen(true)}
 						aria-label="Map Settings. Keyboard Shortcut: ?"
 					>
@@ -51,7 +54,7 @@ export default function MapSettingsPanel() {
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent
-					side="bottom"
+					side={isMobile ? "left" : "bottom"}
 					sideOffset={5}
 					className="z-999 flex items-center justify-center gap-2"
 				>

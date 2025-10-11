@@ -22,6 +22,7 @@ import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import CustomMarker from "./custom-marker"
 import MapSettingsPanel from "./map-settings-panel"
+import { ButtonGroup } from "../ui/button-group"
 
 export interface ImageDimensions {
 	width: number
@@ -191,102 +192,82 @@ function MapController({
 	}
 
 	return (
-		<>
-			{mapLayers.length > 1 && (
-				<div className="fixed top-16 z-500 w-full md:hidden">
-					<Tabs defaultValue={currentLayer.id}>
-						<TabsList className="w-full rounded-none bg-background">
-							{mapLayers.map(layer => (
-								<TabsTrigger key={layer.id} value={layer.id} onClick={() => setCurrentLayer(layer)}>
-									{layer.title}
-								</TabsTrigger>
-							))}
-						</TabsList>
-					</Tabs>
-				</div>
-			)}
-			<div
-				className={cn("fixed top-28 right-4 z-500 flex gap-2 md:top-18 lg:right-8", {
-					"top-18": mapLayers.length === 1,
-				})}
-			>
-				<Badge variant={"outline"} className="rounded-md bg-background">
-					<div className="flex flex-col gap-1 md:flex-row">
-						{mapLayers.length > 1 && !isMobile ? (
-							<>
-								<Tabs defaultValue={currentLayer.id}>
-									<TabsList className="bg-transparent">
-										{mapLayers.map(layer => (
-											<TabsTrigger
-												key={layer.id}
-												value={layer.id}
-												onClick={() => setCurrentLayer(layer)}
-											>
-												{layer.title}
-											</TabsTrigger>
-										))}
-									</TabsList>
-								</Tabs>
-								<Separator orientation="vertical" className="md:my-auto md:min-h-5" />
-							</>
-						) : null}
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} aria-label="Zoom In">
-									<ZoomIn className="size-4" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent side="bottom" sideOffset={5} className="z-999">
-								Zoom In
-							</TooltipContent>
-						</Tooltip>
-						<Separator
-							orientation={!isMobile ? "vertical" : "horizontal"}
-							className="md:my-auto md:min-h-5"
-						/>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button
-									variant={"ghost"}
-									size={"icon"}
-									onClick={handleZoomOut}
-									aria-label="Zoom Out"
-								>
-									<ZoomOut className="size-4" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent side="bottom" sideOffset={5} className="z-999">
-								Zoom Out
-							</TooltipContent>
-						</Tooltip>
-						<Separator
-							orientation={!isMobile ? "vertical" : "horizontal"}
-							className="md:my-auto md:min-h-5"
-						/>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button
-									variant={"ghost"}
-									size={"icon"}
-									onClick={handleReset}
-									aria-label="Reset Zoom"
-								>
-									<RotateCcw className="size-4" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent side="bottom" sideOffset={5} className="z-999">
-								Reset Zoom
-							</TooltipContent>
-						</Tooltip>
-						<Separator
-							orientation={!isMobile ? "vertical" : "horizontal"}
-							className="md:my-auto md:min-h-5"
-						/>
-						<MapSettingsPanel />
-					</div>
-				</Badge>
-			</div>
-		</>
+		<ButtonGroup
+			orientation={isMobile ? "vertical" : "horizontal"}
+			className={cn("fixed top-28 right-4 z-500 md:top-18 lg:right-8 bg-background rounded-md", {
+				"top-20": mapLayers.length === 1 || isMobile,
+			})}
+		>
+			{mapLayers.length > 1 &&
+				mapLayers.map(layer => (
+					<Button
+						key={layer.id}
+						variant="outline"
+						size="lg"
+						onClick={() => setCurrentLayer(layer)}
+						className={cn({
+							"dark:bg-input/60": currentLayer.id === layer.id,
+						})}
+					>
+						{layer.title}
+					</Button>
+				))}
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="icon-lg"
+						onClick={handleZoomIn}
+						aria-label="Zoom In"
+						className={cn({
+							"w-full": isMobile,
+						})}
+					>
+						<ZoomIn className="size-4" />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side={isMobile ? "left" : "bottom"} sideOffset={5} className="z-999">
+					Zoom In
+				</TooltipContent>
+			</Tooltip>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="icon-lg"
+						onClick={handleZoomOut}
+						className={cn({
+							"w-full": isMobile,
+						})}
+						aria-label="Zoom Out"
+					>
+						<ZoomOut className="size-4" />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side={isMobile ? "left" : "bottom"} sideOffset={5} className="z-999">
+					Zoom Out
+				</TooltipContent>
+			</Tooltip>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="icon-lg"
+						onClick={handleReset}
+						className={cn({
+							"w-full": isMobile,
+						})}
+						aria-label="Reset Zoom"
+					>
+						<RotateCcw className="size-4" />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side={isMobile ? "left" : "bottom"} sideOffset={5} className="z-999">
+					Reset Zoom
+				</TooltipContent>
+			</Tooltip>
+			<MapSettingsPanel />
+		</ButtonGroup>
 	)
 }
 
@@ -330,7 +311,9 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 						height={128}
 						className={cn(
 							"size-16",
-							{ "size-12": marker.type === "perk" && marker.id !== "der-wunderfizz" },
+							{
+								"size-12": marker.type === "perk" && marker.id !== "der-wunderfizz",
+							},
 							{ "size-12": marker.id === "dark-aether-lantern" },
 						)}
 					/>

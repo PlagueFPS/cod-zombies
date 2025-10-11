@@ -73,6 +73,9 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 	}
 
 	const createShareableURL = () => {
+		// Without this line, function errors during SSR
+		if (typeof window === "undefined") return ""
+
 		const params = createParams()
 		if (params.size > 0) {
 			if (params.has("exclude")) {

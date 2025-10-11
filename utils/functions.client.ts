@@ -1,5 +1,5 @@
-import type { MainQuestDifficulty } from "@/data/main-quests";
-import type { ZombieType } from "@/data/zombies";
+import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { ZombieType } from "@/data/zombies"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
@@ -10,12 +10,12 @@ import type { ZombieType } from "@/data/zombies";
  * capitalize("hello_world") // "Hello World"
  */
 export const capitalize = (text: string) => {
-  return text
-    .replace(/[-_]/g, " ")
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
+	return text
+		.replace(/[-_]/g, " ")
+		.split(" ")
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(" ")
+}
 
 /**
  * Converts a string to a URL-friendly slug, replacing spaces, slashes, and commas with hyphens, and '&' with 'and'.
@@ -25,15 +25,15 @@ export const capitalize = (text: string) => {
  * slugify("Hello World") // "hello-world"
  */
 export const slugify = (text: string) => {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/&/g, "and") // Replace ampersands with "and" first
-    .replace(/[^\w\s-]/g, "") // Remove all non-word characters except spaces and hyphens
-    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with a single hyphen
-    .replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
-    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
-};
+	return text
+		.toLowerCase()
+		.trim()
+		.replace(/&/g, "and") // Replace ampersands with "and" first
+		.replace(/[^\w\s-]/g, "") // Remove all non-word characters except spaces and hyphens
+		.replace(/[\s_]+/g, "-") // Replace spaces and underscores with a single hyphen
+		.replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
+		.replace(/^-+|-+$/g, "") // Remove leading/trailing hyphens
+}
 
 /**
  * Extracts the YouTube video ID from a given URL.
@@ -44,11 +44,11 @@ export const slugify = (text: string) => {
  * getYouTubeVideoId("https://youtube.com/shorts/dQw4w9WgXcQ") // "dQw4w9WgXcQ"
  */
 export const getYouTubeVideoId = (url: string) => {
-  const regex =
-    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-  const match = url.match(regex);
-  return match ? match[1] : null;
-};
+	const regex =
+		/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+	const match = url.match(regex)
+	return match ? match[1] : null
+}
 
 /**
  * Calculates the number of items to skip based on the current page and limit.
@@ -57,8 +57,8 @@ export const getYouTubeVideoId = (url: string) => {
  * @returns The number of items to skip.
  */
 export const calculateSkip = (page: number, limit: number) => {
-  return page <= 1 ? 0 : limit * page - limit;
-};
+	return page <= 1 ? 0 : limit * page - limit
+}
 
 /**
  * Sorts difficulties in ascending order.
@@ -66,13 +66,10 @@ export const calculateSkip = (page: number, limit: number) => {
  * @param b - The second difficulty.
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
-export const sortDifficulties = (
-  a: MainQuestDifficulty,
-  b: MainQuestDifficulty,
-) => {
-  const difficultyOrder: MainQuestDifficulty[] = ["Easy", "Medium", "Hard"];
-  return difficultyOrder.indexOf(a) - difficultyOrder.indexOf(b);
-};
+export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) => {
+	const difficultyOrder: MainQuestDifficulty[] = ["Easy", "Medium", "Hard"]
+	return difficultyOrder.indexOf(a) - difficultyOrder.indexOf(b)
+}
 
 /**
  * Sorts release dates in descending order.
@@ -81,10 +78,10 @@ export const sortDifficulties = (
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
 export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
-  const dateA = new Date(a);
-  const dateB = new Date(b);
-  return dateB.getTime() - dateA.getTime();
-};
+	const dateA = new Date(a)
+	const dateB = new Date(b)
+	return dateB.getTime() - dateA.getTime()
+}
 
 /**
  * Sorts zombie types in ascending order.
@@ -93,6 +90,6 @@ export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
 export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
-  const typeOrder: ZombieType[] = ["Normal", "Special", "Elite", "Boss"];
-  return typeOrder.indexOf(a) - typeOrder.indexOf(b);
-};
+	const typeOrder: ZombieType[] = ["Normal", "Special", "Elite", "Boss"]
+	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
+}
