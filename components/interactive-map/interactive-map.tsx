@@ -1,364 +1,408 @@
-"use client"
-import "leaflet/dist/leaflet.css"
-import type { MapConfig, MapLayer } from "@/map-configs"
-import type { Location, MapMarker } from "@/map-configs/markers"
-import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
-import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
-import NextImage from "next/image"
-import { useEffect, useState } from "react"
-import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { useMapSettings } from "@/contexts/interactive-map-settings"
-import { useMapSearchParams } from "@/hooks/use-map-search-params"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
-import { generateMarkerKey } from "@/map-configs/markers"
-import { IN_DEVELOPMENT } from "@/utils/constants"
-import { capitalize } from "@/utils/functions.client"
-import { MarkerBadge } from "../custom-badges/custom-badges"
-import { Separator } from "../ui/separator"
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
-import CustomMarker from "./custom-marker"
-import MapSettingsPanel from "./map-settings-panel"
+"use client";
+import "leaflet/dist/leaflet.css";
+import type { MapConfig, MapLayer } from "@/map-configs";
+import type { Location, MapMarker } from "@/map-configs/markers";
+import {
+  CRS,
+  LatLng,
+  LatLngBounds,
+  type LatLngTuple,
+  type LeafletMouseEvent,
+} from "leaflet";
+import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
+import NextImage from "next/image";
+import { useEffect, useState } from "react";
+import {
+  ImageOverlay,
+  MapContainer,
+  Popup,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useMapSettings } from "@/contexts/interactive-map-settings";
+import { useMapSearchParams } from "@/hooks/use-map-search-params";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
+import { generateMarkerKey } from "@/map-configs/markers";
+import { IN_DEVELOPMENT } from "@/utils/constants";
+import { capitalize } from "@/utils/functions.client";
+import { MarkerBadge } from "../custom-badges/custom-badges";
+import { Separator } from "../ui/separator";
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import CustomMarker from "./custom-marker";
+import MapSettingsPanel from "./map-settings-panel";
+import { ButtonGroup } from "../ui/button-group";
 
 export interface ImageDimensions {
-	width: number
-	height: number
+  width: number;
+  height: number;
 }
 
 export interface MapController {
-	imageDimensions: ImageDimensions | null
-	mapLayers: MapLayer[]
-	currentLayer: MapLayer
-	setCurrentLayer: React.Dispatch<React.SetStateAction<MapLayer | null>>
+  imageDimensions: ImageDimensions | null;
+  mapLayers: MapLayer[];
+  currentLayer: MapLayer;
+  setCurrentLayer: React.Dispatch<React.SetStateAction<MapLayer | null>>;
 }
 
 interface IInteractiveMap {
-	mapConfig: MapConfig
+  mapConfig: MapConfig;
 }
 
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
-	const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
-	const { settings } = useMapSettings()
-	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-	const [currentLayer, setCurrentLayer] = useState<MapLayer | null>(mapConfig.layers[0] ?? null)
+  const { includeParams, excludeParams, isIncluded } = useMapSearchParams();
+  const { settings } = useMapSettings();
+  const [imageDimensions, setImageDimensions] =
+    useState<ImageDimensions | null>(null);
+  const [currentLayer, setCurrentLayer] = useState<MapLayer | null>(
+    mapConfig.layers[0] ?? null,
+  );
 
-	useEffect(() => {
-		const loadImageDimensions = () => {
-			mapConfig.layers.forEach(async layer => {
-				try {
-					const img = new Image()
-					img.crossOrigin = "anonymous"
+  useEffect(() => {
+    const loadImageDimensions = () => {
+      mapConfig.layers.forEach(async (layer) => {
+        try {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
 
-					await new Promise((resolve, reject) => {
-						img.onload = () => {
-							setImageDimensions({
-								width: img.naturalWidth,
-								height: img.naturalHeight,
-							})
-							resolve(img)
-						}
-						img.onerror = reject
-						img.src = layer.image
-					})
-				} catch (error) {
-					console.error(`Failed to load map:`, error)
-				}
-			})
-		}
+          await new Promise((resolve, reject) => {
+            img.onload = () => {
+              setImageDimensions({
+                width: img.naturalWidth,
+                height: img.naturalHeight,
+              });
+              resolve(img);
+            };
+            img.onerror = reject;
+            img.src = layer.image;
+          });
+        } catch (error) {
+          console.error(`Failed to load map:`, error);
+        }
+      });
+    };
 
-		loadImageDimensions()
-	}, [mapConfig.layers])
+    loadImageDimensions();
+  }, [mapConfig.layers]);
 
-	if (!currentLayer) return null
+  if (!currentLayer) return null;
 
-	const shouldRenderMarker = (marker: MapMarker) => {
-		if (includeParams.length === 0 && excludeParams.length === 0) return true
-		return isIncluded(marker.type || marker.id)
-	}
+  const shouldRenderMarker = (marker: MapMarker) => {
+    if (includeParams.length === 0 && excludeParams.length === 0) return true;
+    return isIncluded(marker.type || marker.id);
+  };
 
-	const convertToLeafletCoords = ({ x, y }: Location): LatLng => {
-		if (!imageDimensions) return new LatLng(0, 0)
-		return new LatLng(
-			imageDimensions.height - y * imageDimensions.height,
-			x * imageDimensions.width,
-		)
-	}
+  const convertToLeafletCoords = ({ x, y }: Location): LatLng => {
+    if (!imageDimensions) return new LatLng(0, 0);
+    return new LatLng(
+      imageDimensions.height - y * imageDimensions.height,
+      x * imageDimensions.width,
+    );
+  };
 
-	const getImageBounds = (): LatLngBounds => {
-		if (!imageDimensions) {
-			return new LatLngBounds([
-				[0, 0],
-				[1024, 1024],
-			])
-		}
+  const getImageBounds = (): LatLngBounds => {
+    if (!imageDimensions) {
+      return new LatLngBounds([
+        [0, 0],
+        [1024, 1024],
+      ]);
+    }
 
-		return new LatLngBounds([
-			[0, 0], // Soutwest Corner
-			[imageDimensions.height, imageDimensions.width], // Northeast Corner
-		])
-	}
+    return new LatLngBounds([
+      [0, 0], // Soutwest Corner
+      [imageDimensions.height, imageDimensions.width], // Northeast Corner
+    ]);
+  };
 
-	return (
-		<MapContainer
-			key={`${mapConfig.id}-${settings.popups.disableAnimations}-${settings.general.disableZoomAnimation}`}
-			center={
-				imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] : [1024, 1024]
-			}
-			zoom={0}
-			minZoom={-2}
-			maxZoom={3}
-			crs={CRS.Simple}
-			style={{ height: "100%", width: "100%" }}
-			zoomControl={false}
-			attributionControl={false}
-			className="relative bg-accent! dark:bg-secondary-alternative!"
-			fadeAnimation={!settings.popups.disableAnimations}
-			zoomAnimation={!settings.general.disableZoomAnimation}
-			markerZoomAnimation={!settings.general.disableZoomAnimation}
-		>
-			<MapController
-				imageDimensions={imageDimensions}
-				mapLayers={mapConfig.layers}
-				currentLayer={currentLayer}
-				setCurrentLayer={setCurrentLayer}
-			/>
-			{imageDimensions && (
-				<ImageOverlay key={currentLayer.id} url={currentLayer.image} bounds={getImageBounds()} />
-			)}
-			{/* We do not map through filteredMarkers for rendering to avoid icon flickering */}
-			{imageDimensions &&
-				currentLayer.markers.map(marker => {
-					if (!shouldRenderMarker(marker)) return null
+  return (
+    <MapContainer
+      key={`${mapConfig.id}-${settings.popups.disableAnimations}-${settings.general.disableZoomAnimation}`}
+      center={
+        imageDimensions
+          ? [imageDimensions.height / 2, imageDimensions.width / 2]
+          : [1024, 1024]
+      }
+      zoom={0}
+      minZoom={-2}
+      maxZoom={3}
+      crs={CRS.Simple}
+      style={{ height: "100%", width: "100%" }}
+      zoomControl={false}
+      attributionControl={false}
+      className="relative bg-accent! dark:bg-secondary-alternative!"
+      fadeAnimation={!settings.popups.disableAnimations}
+      zoomAnimation={!settings.general.disableZoomAnimation}
+      markerZoomAnimation={!settings.general.disableZoomAnimation}
+    >
+      <MapController
+        imageDimensions={imageDimensions}
+        mapLayers={mapConfig.layers}
+        currentLayer={currentLayer}
+        setCurrentLayer={setCurrentLayer}
+      />
+      {imageDimensions && (
+        <ImageOverlay
+          key={currentLayer.id}
+          url={currentLayer.image}
+          bounds={getImageBounds()}
+        />
+      )}
+      {/* We do not map through filteredMarkers for rendering to avoid icon flickering */}
+      {imageDimensions &&
+        currentLayer.markers.map((marker) => {
+          if (!shouldRenderMarker(marker)) return null;
 
-					return marker.locations.map(location => (
-						// force re-render when popups settings change to apply them
-						<CustomMarker
-							key={`${generateMarkerKey(currentLayer.id, marker.id, location)}-gradients:${settings.popups.disableGradients}`}
-							id={generateMarkerKey(currentLayer.id, marker.id, location)}
-							marker={marker}
-							position={convertToLeafletCoords(location)}
-						>
-							{marker.type !== "label" ? <CustomPopup marker={marker} location={location} /> : null}
-						</CustomMarker>
-					))
-				})}
-		</MapContainer>
-	)
+          return marker.locations.map((location) => (
+            // force re-render when popups settings change to apply them
+            <CustomMarker
+              key={`${generateMarkerKey(currentLayer.id, marker.id, location)}-gradients:${settings.popups.disableGradients}`}
+              id={generateMarkerKey(currentLayer.id, marker.id, location)}
+              marker={marker}
+              position={convertToLeafletCoords(location)}
+            >
+              {marker.type !== "label" ? (
+                <CustomPopup marker={marker} location={location} />
+              ) : null}
+            </CustomMarker>
+          ));
+        })}
+    </MapContainer>
+  );
 }
 
-const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
-	if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
+const logClickCoordinates =
+  (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
+    if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return;
 
-	const x = e.latlng.lng / imageDimensions.width
-	const y = 1 - e.latlng.lat / imageDimensions.height // Flip y back to normal
-	console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
-}
+    const x = e.latlng.lng / imageDimensions.width;
+    const y = 1 - e.latlng.lat / imageDimensions.height; // Flip y back to normal
+    console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`);
+  };
 
 function MapController({
-	imageDimensions,
-	mapLayers,
-	currentLayer,
-	setCurrentLayer,
+  imageDimensions,
+  mapLayers,
+  currentLayer,
+  setCurrentLayer,
 }: MapController) {
-	const map = useMap()
-	const isMobile = useIsMobile()
+  const map = useMap();
+  const isMobile = useIsMobile();
 
-	useMapEvents({
-		click: logClickCoordinates(imageDimensions),
-	})
+  useMapEvents({
+    click: logClickCoordinates(imageDimensions),
+  });
 
-	if (imageDimensions) {
-		const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
-		map.setView(center, 0, { animate: false })
-	}
+  if (imageDimensions) {
+    const center: LatLngTuple = [
+      imageDimensions.height / 2,
+      imageDimensions.width / 2,
+    ];
+    map.setView(center, 0, { animate: false });
+  }
 
-	const handleZoomIn = () => {
-		map.zoomIn()
-	}
+  const handleZoomIn = () => {
+    map.zoomIn();
+  };
 
-	const handleZoomOut = () => {
-		map.zoomOut()
-	}
+  const handleZoomOut = () => {
+    map.zoomOut();
+  };
 
-	const handleReset = () => {
-		if (imageDimensions) {
-			const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
-			map.setView(center, 0)
-		}
-	}
+  const handleReset = () => {
+    if (imageDimensions) {
+      const center: LatLngTuple = [
+        imageDimensions.height / 2,
+        imageDimensions.width / 2,
+      ];
+      map.setView(center, 0);
+    }
+  };
 
-	return (
-		<>
-			{mapLayers.length > 1 && (
-				<div className="fixed top-16 z-500 w-full md:hidden">
-					<Tabs defaultValue={currentLayer.id}>
-						<TabsList className="w-full rounded-none bg-background">
-							{mapLayers.map(layer => (
-								<TabsTrigger key={layer.id} value={layer.id} onClick={() => setCurrentLayer(layer)}>
-									{layer.title}
-								</TabsTrigger>
-							))}
-						</TabsList>
-					</Tabs>
-				</div>
-			)}
-			<div
-				className={cn("fixed top-28 right-4 z-500 flex gap-2 md:top-18 lg:right-8", {
-					"top-18": mapLayers.length === 1,
-				})}
-			>
-				<Badge variant={"outline"} className="rounded-md bg-background">
-					<div className="flex flex-col gap-1 md:flex-row">
-						{mapLayers.length > 1 && !isMobile ? (
-							<>
-								<Tabs defaultValue={currentLayer.id}>
-									<TabsList className="bg-transparent">
-										{mapLayers.map(layer => (
-											<TabsTrigger
-												key={layer.id}
-												value={layer.id}
-												onClick={() => setCurrentLayer(layer)}
-											>
-												{layer.title}
-											</TabsTrigger>
-										))}
-									</TabsList>
-								</Tabs>
-								<Separator orientation="vertical" className="md:my-auto md:min-h-5" />
-							</>
-						) : null}
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button variant={"ghost"} size={"icon"} onClick={handleZoomIn} aria-label="Zoom In">
-									<ZoomIn className="size-4" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent side="bottom" sideOffset={5} className="z-999">
-								Zoom In
-							</TooltipContent>
-						</Tooltip>
-						<Separator
-							orientation={!isMobile ? "vertical" : "horizontal"}
-							className="md:my-auto md:min-h-5"
-						/>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button
-									variant={"ghost"}
-									size={"icon"}
-									onClick={handleZoomOut}
-									aria-label="Zoom Out"
-								>
-									<ZoomOut className="size-4" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent side="bottom" sideOffset={5} className="z-999">
-								Zoom Out
-							</TooltipContent>
-						</Tooltip>
-						<Separator
-							orientation={!isMobile ? "vertical" : "horizontal"}
-							className="md:my-auto md:min-h-5"
-						/>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button
-									variant={"ghost"}
-									size={"icon"}
-									onClick={handleReset}
-									aria-label="Reset Zoom"
-								>
-									<RotateCcw className="size-4" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent side="bottom" sideOffset={5} className="z-999">
-								Reset Zoom
-							</TooltipContent>
-						</Tooltip>
-						<Separator
-							orientation={!isMobile ? "vertical" : "horizontal"}
-							className="md:my-auto md:min-h-5"
-						/>
-						<MapSettingsPanel />
-					</div>
-				</Badge>
-			</div>
-		</>
-	)
+  return (
+    <ButtonGroup
+      orientation={isMobile ? "vertical" : "horizontal"}
+      className={cn(
+        "fixed top-28 right-4 z-500 md:top-18 lg:right-8 bg-background rounded-md",
+        {
+          "top-20": mapLayers.length === 1 || isMobile,
+        },
+      )}
+    >
+      {mapLayers.length > 1 &&
+        mapLayers.map((layer) => (
+          <Button
+            key={layer.id}
+            variant="outline"
+            size="lg"
+            onClick={() => setCurrentLayer(layer)}
+            className={cn({
+              "dark:bg-input/60": currentLayer.id === layer.id,
+            })}
+          >
+            {layer.title}
+          </Button>
+        ))}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon-lg"
+            onClick={handleZoomIn}
+            aria-label="Zoom In"
+            className={cn({
+              "w-full": isMobile,
+            })}
+          >
+            <ZoomIn className="size-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent
+          side={isMobile ? "left" : "bottom"}
+          sideOffset={5}
+          className="z-999"
+        >
+          Zoom In
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon-lg"
+            onClick={handleZoomOut}
+            className={cn({
+              "w-full": isMobile,
+            })}
+            aria-label="Zoom Out"
+          >
+            <ZoomOut className="size-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent
+          side={isMobile ? "left" : "bottom"}
+          sideOffset={5}
+          className="z-999"
+        >
+          Zoom Out
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon-lg"
+            onClick={handleReset}
+            className={cn({
+              "w-full": isMobile,
+            })}
+            aria-label="Reset Zoom"
+          >
+            <RotateCcw className="size-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent
+          side={isMobile ? "left" : "bottom"}
+          sideOffset={5}
+          className="z-999"
+        >
+          Reset Zoom
+        </TooltipContent>
+      </Tooltip>
+      <MapSettingsPanel />
+    </ButtonGroup>
+  );
 }
 
-function CustomPopup({ marker, location }: { marker: MapMarker; location: Location }) {
-	const { settings } = useMapSettings()
+function CustomPopup({
+  marker,
+  location,
+}: {
+  marker: MapMarker;
+  location: Location;
+}) {
+  const { settings } = useMapSettings();
 
-	const getClassName = () => {
-		// Do not assign gradient classes if disabled
-		if (settings.popups.disableGradients) {
-			return "custom-popup"
-		}
+  const getClassName = () => {
+    // Do not assign gradient classes if disabled
+    if (settings.popups.disableGradients) {
+      return "custom-popup";
+    }
 
-		switch (marker.category) {
-			case "general":
-				return "custom-popup general-popup"
-			case "equipment":
-				return "custom-popup equipment-popup"
-			case "upgrades":
-				return "custom-popup upgrades-popup"
-			case "objectives":
-				return "custom-popup objectives-popup"
-			case "transportation":
-				return "custom-popup transportation-popup"
-			case "intel":
-				return "custom-popup intel-popup"
-		}
-	}
+    switch (marker.category) {
+      case "general":
+        return "custom-popup general-popup";
+      case "equipment":
+        return "custom-popup equipment-popup";
+      case "upgrades":
+        return "custom-popup upgrades-popup";
+      case "objectives":
+        return "custom-popup objectives-popup";
+      case "transportation":
+        return "custom-popup transportation-popup";
+      case "intel":
+        return "custom-popup intel-popup";
+    }
+  };
 
-	return (
-		<Popup className={getClassName()}>
-			<div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
-				<MarkerBadge category={marker.category}>{capitalize(marker.category)}</MarkerBadge>
-			</div>
-			{marker.icon && (
-				<div className="flex w-full items-center justify-center">
-					<NextImage
-						unoptimized
-						src={marker.icon}
-						alt={marker.title}
-						width={128}
-						height={128}
-						className={cn(
-							"size-16",
-							{ "size-12": marker.type === "perk" && marker.id !== "der-wunderfizz" },
-							{ "size-12": marker.id === "dark-aether-lantern" },
-						)}
-					/>
-				</div>
-			)}
-			<h3
-				className={cn("text-center font-extrabold text-lg", {
-					"text-orange-700 dark:text-orange-200": marker.category === "objectives",
-					"text-blue-600 dark:text-blue-200": marker.category === "general",
-					"text-green-600 dark:text-green-200": marker.category === "transportation",
-					"text-yellow-700 dark:text-yellow-200": marker.category === "upgrades",
-					"dark:dark-text-gradient text-gradient": marker.category === "equipment",
-					"text-purple-600 dark:text-purple-200": marker.category === "intel",
-				})}
-			>
-				{location.title || marker.title}
-			</h3>
-			<p
-				className={cn("px-2 text-center text-foreground/90 text-sm", {
-					"text-orange-800 dark:text-orange-200": marker.category === "objectives",
-					"text-blue-600 dark:text-blue-200": marker.category === "general",
-					"text-green-600 dark:text-green-200": marker.category === "transportation",
-					"text-yellow-700 dark:text-yellow-200": marker.category === "upgrades",
-					"text-purple-600 dark:text-purple-200": marker.category === "intel",
-				})}
-			>
-				{location.description || marker.description}
-			</p>
-		</Popup>
-	)
+  return (
+    <Popup className={getClassName()}>
+      <div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
+        <MarkerBadge category={marker.category}>
+          {capitalize(marker.category)}
+        </MarkerBadge>
+      </div>
+      {marker.icon && (
+        <div className="flex w-full items-center justify-center">
+          <NextImage
+            unoptimized
+            src={marker.icon}
+            alt={marker.title}
+            width={128}
+            height={128}
+            className={cn(
+              "size-16",
+              {
+                "size-12":
+                  marker.type === "perk" && marker.id !== "der-wunderfizz",
+              },
+              { "size-12": marker.id === "dark-aether-lantern" },
+            )}
+          />
+        </div>
+      )}
+      <h3
+        className={cn("text-center font-extrabold text-lg", {
+          "text-orange-700 dark:text-orange-200":
+            marker.category === "objectives",
+          "text-blue-600 dark:text-blue-200": marker.category === "general",
+          "text-green-600 dark:text-green-200":
+            marker.category === "transportation",
+          "text-yellow-700 dark:text-yellow-200":
+            marker.category === "upgrades",
+          "dark:dark-text-gradient text-gradient":
+            marker.category === "equipment",
+          "text-purple-600 dark:text-purple-200": marker.category === "intel",
+        })}
+      >
+        {location.title || marker.title}
+      </h3>
+      <p
+        className={cn("px-2 text-center text-foreground/90 text-sm", {
+          "text-orange-800 dark:text-orange-200":
+            marker.category === "objectives",
+          "text-blue-600 dark:text-blue-200": marker.category === "general",
+          "text-green-600 dark:text-green-200":
+            marker.category === "transportation",
+          "text-yellow-700 dark:text-yellow-200":
+            marker.category === "upgrades",
+          "text-purple-600 dark:text-purple-200": marker.category === "intel",
+        })}
+      >
+        {location.description || marker.description}
+      </p>
+    </Popup>
+  );
 }
