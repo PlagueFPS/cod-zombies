@@ -37,7 +37,7 @@ export const generateStaticParams = () => {
 
 	return mainQuests.map(quest => ({
 		game: quest.map.game.id,
-		slug: quest.map.id,
+		map: quest.map.id,
 	}))
 }
 
