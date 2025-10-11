@@ -1,61 +1,118 @@
-"use client"
-import { Loader2Icon, Send } from "lucide-react"
-import { useActionState, useEffect } from "react"
-import { toast } from "sonner"
-import { unsubscribeFromNewsletter } from "@/data/actions"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { Label } from "../ui/label"
+"use client";
+import { Send } from "lucide-react";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { unsubscribeFromNewsletter } from "@/data/actions";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { useForm } from "@tanstack/react-form";
+import { StandardNewsletterFormSchema } from "@/utils/validation-schemas";
+import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
+import { Spinner } from "../ui/spinner";
 
 export default function UnsubscribeForm() {
-	const [state, action, isPending] = useActionState(unsubscribeFromNewsletter, {
-		success: false,
-		message: "",
-	})
+  const [isPending, startTransition] = useTransition();
+  const form = useForm({
+    defaultValues: {
+      email: "",
+    },
+    validators: {
+      onChangeAsync: StandardNewsletterFormSchema,
+      onChangeAsyncDebounceMs: 200,
+    },
+    onSubmit: ({ value }) => {
+      startTransition(async () => {
+        const result = await unsubscribeFromNewsletter("", value);
+        if (result.success) {
+          return startTransition(() => {
+            toast.success("Confirmation email sent!", {
+              description: result.message,
+              duration: 5000,
+              position: "bottom-right",
+            });
+            form.reset();
+          });
+        }
 
-	useEffect(() => {
-		if (state.message) {
-			if (!state.success) {
-				toast.error("Failed to send confirmation email!", {
-					description: state.message,
-					duration: 5000,
-					position: "bottom-right",
-				})
-			} else {
-				toast.success("Confirmation email sent!", {
-					description: state.message,
-					duration: 5000,
-					position: "bottom-right",
-				})
-			}
-		}
-	}, [state])
+        startTransition(() => {
+          toast.error("Failed to send confirmation email!", {
+            description: result.message,
+            duration: 5000,
+            position: "bottom-right",
+          });
+          form.reset();
+        });
+      });
+    },
+  });
 
-	return (
-		<form action={action} className="w-full space-y-4">
-			<div className="space-y-2">
-				<Label htmlFor="email">Email address</Label>
-				<Input
-					id="email"
-					name="email"
-					placeholder="you@example.com"
-					required
-					disabled={isPending}
-				/>
-			</div>
-			<Button type="submit" variant={"default"} disabled={isPending} className="w-fit gap-2">
-				{isPending ? (
-					<>
-						<Loader2Icon className="size-4 animate-spin" />
-						<span>Sending...</span>
-					</>
-				) : (
-					<>
-						<Send className="size-4" />
-						<span>Send Unsubscribe Link</span>
-					</>
-				)}
-			</Button>
-		</form>
-	)
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    form.handleSubmit();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+      e.preventDefault();
+      form.handleSubmit();
+    }
+  };
+
+  return (
+    <form
+      id="unsubscribe-form"
+      onSubmit={handleSubmit}
+      className="w-full space-y-4"
+    >
+      <div className="space-y-2">
+        <FieldGroup>
+          <form.Field
+            name="email"
+            children={(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name} className="sr-only">
+                    Email address
+                  </FieldLabel>
+                  <Input
+                    required
+                    type="email"
+                    placeholder="you@example.com"
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    aria-invalid={isInvalid}
+                    onKeyDown={handleKeyDown}
+                  />
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          />
+        </FieldGroup>
+      </div>
+      <Button
+        type="submit"
+        variant={"default"}
+        disabled={isPending}
+        className="w-fit gap-2"
+      >
+        {isPending ? (
+          <>
+            <Spinner />
+            Sending...
+          </>
+        ) : (
+          <>
+            <Send className="size-4" />
+            <span>Send Unsubscribe Link</span>
+          </>
+        )}
+      </Button>
+    </form>
+  );
 }

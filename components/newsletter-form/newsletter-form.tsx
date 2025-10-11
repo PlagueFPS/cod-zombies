@@ -1,9 +1,6 @@
 "use client";
-import { Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useForm } from "@tanstack/react-form";
 import { subscribeToNewsletter } from "@/data/actions";
 import { StandardNewsletterFormSchema } from "@/utils/validation-schemas";
@@ -63,6 +60,13 @@ export default function NewsletterForm() {
     form.handleSubmit();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+      e.preventDefault();
+      form.handleSubmit();
+    }
+  };
+
   return (
     <form
       id="newsletter-form"
@@ -93,6 +97,7 @@ export default function NewsletterForm() {
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
                         aria-invalid={isInvalid}
+                        onKeyDown={handleKeyDown}
                         className="rounded-sm pr-28"
                       />
                       <InputGroupAddon align="inline-end">

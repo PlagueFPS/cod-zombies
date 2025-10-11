@@ -1,6 +1,6 @@
 "use client";
 import { CircleAlert, Loader2, Mail, Send } from "lucide-react";
-import { type KeyboardEvent, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import {
@@ -83,7 +83,7 @@ export default function ContactForm({ className }: ContactFormProps) {
     setOpen(open);
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
       e.preventDefault();
       form.handleSubmit();

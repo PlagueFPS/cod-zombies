@@ -1,26 +1,26 @@
-import { createEnv } from "@t3-oss/env-nextjs"
-import { Schema } from "effect"
+import { createEnv } from "@t3-oss/env-nextjs";
+import { Schema } from "effect";
 
 export const env = createEnv({
-	server: {
-		REVALIDATE_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		DRAFT_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		RESEND_API_KEY: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		RESEND_AUDIENCE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		CRON_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		REDIS_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		REDIS_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		HASH_SALT: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		LINEAR_API_KEY: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		LINEAR_DEFAULT_ASSIGNEE_ID: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		IMAGE_API_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		PAYLOAD_SECRET: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		VERCEL_ENV: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		VERCEL_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		VERCEL_PROJECT_PRODUCTION_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		DATABASE_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		DATABASE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-		STORAGE_READ_WRITE_TOKEN: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
-	},
-	experimental__runtimeEnv: {},
-})
+  server: {
+    RESEND_API_KEY: Schema.standardSchemaV1(
+      Schema.Redacted(Schema.NonEmptyString),
+    ),
+    RESEND_AUDIENCE_ID: Schema.standardSchemaV1(
+      Schema.Redacted(Schema.NonEmptyString),
+    ),
+    HASH_SALT: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+    LINEAR_API_KEY: Schema.standardSchemaV1(
+      Schema.Redacted(Schema.NonEmptyString),
+    ),
+    LINEAR_DEFAULT_ASSIGNEE_ID: Schema.standardSchemaV1(
+      Schema.Redacted(Schema.NonEmptyString),
+    ),
+    VERCEL_ENV: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+    VERCEL_URL: Schema.standardSchemaV1(Schema.Redacted(Schema.NonEmptyString)),
+    VERCEL_PROJECT_PRODUCTION_URL: Schema.standardSchemaV1(
+      Schema.Redacted(Schema.NonEmptyString),
+    ),
+  },
+  experimental__runtimeEnv: {},
+});
