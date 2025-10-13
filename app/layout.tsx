@@ -90,8 +90,8 @@ export default function RootLayout({ children }: LayoutProps) {
             {children}
             <Toaster richColors position="top-center" closeButton />
           </ThemeProvider>
-          <Analytics />
-          <SpeedInsights />
+          <Analytics debug={false} />
+          <SpeedInsights debug={false} />
           <HashLinkHandler />
           <GoogleAnalytics gaId="G-2M6PMT6Z3R" />
         </KeyboardShortcutsProvider>
