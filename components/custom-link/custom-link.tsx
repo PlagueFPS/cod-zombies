@@ -37,9 +37,9 @@ export function CustomLink<T extends string>({
 
   return (
     <Link
-      // Disable prefetching by default, but allow it to be overidden on a per-link basis
-      prefetch={false}
       {...props}
+      // Disable prefetching by default, but allow it to be overidden on a per-link basis
+      prefetch={props.prefetch ?? false}
       href={href}
       onMouseDown={handleNavigation}
       onKeyDown={handleNavigation}
