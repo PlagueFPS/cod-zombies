@@ -223,7 +223,7 @@ const sideQuestRegistry = {
   spiderBait: {
     id: "spider-bait",
     title: "Spider Bait",
-    description: `Learn how to transform your character into a spider, shooting webs, and crawling around just like a real spider.`,
+    description: `Learn how to transform your character into a spider, shooting webs, and gaining invincibility while active.`,
     map: zetsubouNoShima,
     content: () => import("@/content/side-quests/spider-bait.mdx"),
   },
