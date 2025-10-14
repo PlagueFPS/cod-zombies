@@ -9,6 +9,7 @@ import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgr
 import AmmoModTooltip from "@/components/rich-text/rich-tooltips/ammo-mod-tooltip"
 import WeaponBuildTooltip from "@/components/rich-text/rich-tooltips/weapon-build-tooltip"
 import AugmentTooltip from "@/components/rich-text/rich-tooltips/augment-tooltip"
+import ShatteredVeilCode from "@/components/rich-text/rich-embeds/shattered-veil-chalkboard-code"
 
 ## Main Quest
 This main quest has our crew of **Weaver**, **Grey**, **Carver**, and **Maya** traveling back to **Liberty Falls** with the **Sentinel Artifact**, hoping to save **Agent Maxis**.
@@ -135,8 +136,10 @@ letters in that group to get a digit of the four-digit code needed.
 <RichImage image='/content/shattered-veil/shattered-veil-sheet.webp' caption='Fax Machine Sheet' />
 <RichImage image='/content/shattered-veil/shattered-veil-chalkboard.webp' caption='Nursery Chalkboard' />
 
-> To explain this further, if your protocol is **CRAB**, you will first look for which group of letters contains the letter **C**, then you will count how many letters are in that group. 
-That number will be the first digit of your four-digit code, and you must repeat that for the other three letters of your protocol. In the image above the code would be: **9729**
+> You can use the tool below to get your code since there are only 20 possible combinations. In the images above, our word was **CRAB** and the first letter group on our
+chalkboard was **E**, so selecting those two will get us our **Keypad Code: 9729**. The first letter group is always the **Top-Left** group on the chalkboard.
+
+<ShatteredVeilCode />
 
 Once you have the four-digit code, head down to the **Service Tunnel**, interact with the keypad on the door containing the HVT <ZombieTooltip zombieKey='doppelghast' />, 
 and enter the four-digit code into the keypad to free it. Once freed, you must kill the HVT <ZombieTooltip zombieKey='doppelghast' /> to obtain the **Severed Arm**.

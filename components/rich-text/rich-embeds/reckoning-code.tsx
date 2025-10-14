@@ -105,10 +105,6 @@ export default function ReckoningCode() {
 		}
 	}
 
-	const isLetterActive = (letter: string) => {
-		return selectedLetters.includes(letter)
-	}
-
 	const isLetterDisabled = (letter: string) => {
 		if (selectedLetters.length === 0) return false
 		if (selectedLetters.includes(letter)) return false // Allow clicking selected letters to unselect them
@@ -128,7 +124,7 @@ export default function ReckoningCode() {
 							disabled={isLetterDisabled(letter)}
 							onClick={() => handleLetterClick(letter)}
 							aria-label={`Select ${letter}`}
-							className={`text-lg uppercase ${isLetterActive(letter) ? "bg-primary text-primary-foreground" : ""} ${isLetterDisabled(letter) ? "cursor-not-allowed opacity-25" : ""}`}
+							className={`text-lg uppercase`}
 						>
 							{letter}
 						</Toggle>
