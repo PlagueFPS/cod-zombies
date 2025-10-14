@@ -12,7 +12,9 @@
     "check": "biome check .",
     "format": "biome format . --write",
     "email": "email dev",
-    "scan": "next dev & bunx react-scan@latest localhost:3000"
+    "scan": "next dev & bunx react-scan@latest localhost:3000",
+    "optimize:images": "bun run scripts/optimize-assets.ts",
+    "generate:paths": "bun run scripts/generate-image-paths.ts"
   },
   "dependencies": {
     "@effect/platform": "0.90.0",
