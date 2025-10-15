@@ -3,6 +3,7 @@ import {
   citadelleDesMorts,
   derEisendrache,
   gorodKrovi,
+  ix,
   libertyFalls,
   type Maps,
   reckoning,
@@ -338,6 +339,13 @@ const sideQuestRegistry = {
     description: `Learn how to obtain all hats and masks that grant some strong gameplay advantages to help you survive.`,
     map: revelations,
     content: () => import("@/content/side-quests/hats-and-masks.mdx"),
+  },
+  vikingFuneral: {
+    id: "viking-funeral",
+    title: "Viking Funeral",
+    description: "Discover how to obtain a free Random Perk Power-Up by giving a fallen viking a proper sendoff.",
+    map: ix,
+    content: () => import("@/content/side-quests/viking-funeral.mdx"),
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
