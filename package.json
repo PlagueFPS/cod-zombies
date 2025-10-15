@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "bun test && next build",
+    "dev": "bun generate:paths && next dev",
+    "build": "bun generate:paths && bun test && next build",
     "start": "next start",
     "typegen": "next typegen",
     "lint": "biome lint .",
