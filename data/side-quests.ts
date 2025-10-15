@@ -347,6 +347,34 @@ const sideQuestRegistry = {
     map: ix,
     content: () => import("@/content/side-quests/viking-funeral.mdx"),
   },
+  madHatter: {
+    id: "mad-hatter",
+    title: "Mad Hatter",
+    description: "Discover how to activate the song 'Mad Hatter' by Avenged Sevenfold in your game.",
+    map: ix,
+    content: () => import("@/content/side-quests/mad-hatter.mdx")
+  },
+  nosFideles: {
+    id: "nos-fideles",
+    title: "Nos Fideles",
+    description: "Discover how to activate the song 'Nos Fideles' by Jack Wall in your game.",
+    map: ix,
+    content: () => import("@/content/side-quests/nos-fideles.mdx")
+  },
+  brazenBullUpgrade: {
+    id: "brazen-bull-upgrade",
+    title: "Brazen Bull Upgrade",
+    description: "Learn how to upgrade the Brazen Bull shield into the Iron Bull.",
+    map: ix,
+    content: () => import("@/content/side-quests/brazen-bull-upgrade.mdx")
+  },
+  fireAndTrapImmunity: {
+    id: "fire-and-trap-immunity",
+    title: "Fire & Trap Immunity",
+    description: "Learn how to obtain fire immunity and significant damage reduction from the Acid Trap.",
+    map: ix,
+    content: () => import("@/content/side-quests/fire-and-trap-immunity.mdx")
+  },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
     id: "destroy-something-beautiful",
