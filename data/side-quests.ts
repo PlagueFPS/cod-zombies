@@ -376,13 +376,6 @@ const sideQuestRegistry = {
     map: ix,
     content: () => import("@/content/side-quests/fire-and-trap-immunity.mdx")
   },
-  floaterZombies: {
-    id: "floater-zombies",
-    title: "Floater Zombies",
-    description: "Learn how to slow down all zombie movement as if they are floating in water.",
-    map: voyageOfDespair,
-    content: () => import("@/content/side-quests/floater-zombies.mdx")
-  },
   drowning: {
     id: "drowning",
     title: "Drowning",
