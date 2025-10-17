@@ -1,6 +1,6 @@
 // Auto-generated image path types
-// Generated on: 2025-10-16T12:06:15.002Z
-// Total images: 2424
+// Generated on: 2025-10-17T14:17:03.651Z
+// Total images: 2463
 
 /**
 * Image paths by category

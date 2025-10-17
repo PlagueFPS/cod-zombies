@@ -393,7 +393,7 @@ const sideQuestRegistry = {
   bowieKnifeUpgrade: {
     id: "bowie-knife-upgrade",
     title: "Bowie Knife Upgrade",
-    description: "Learn how to upgrade your Bowie Knife for an infinite one hit kil with a cooldown.",
+    description: "Learn how to upgrade your Bowie Knife for a one hit kill past Round 30 with a cooldown.",
     map: voyageOfDespair,
     content: () => import("@/content/side-quests/bowie-knife-upgrade.mdx")
   },
@@ -407,7 +407,7 @@ const sideQuestRegistry = {
   elementalShieldUpgrade: {
     id: "elemental-shield-upgrade",
     title: "Elemental Shield Upgrade",
-    description: "Learn how to upgrade your Ballistic Shield into an Elemental Shield.",
+    description: "Learn how to upgrade your Ballistic Shield into the Svalinn Guard elemental shield.",
     map: voyageOfDespair,
     content: () => import("@/content/side-quests/elemental-shield-upgrade.mdx")
   },
