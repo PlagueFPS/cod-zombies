@@ -1,5 +1,6 @@
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
+  bloodOfTheDead,
   citadelleDesMorts,
   derEisendrache,
   gorodKrovi,
@@ -410,6 +411,69 @@ const sideQuestRegistry = {
     description: "Learn how to upgrade your Ballistic Shield into the Svalinn Guard elemental shield.",
     map: voyageOfDespair,
     content: () => import("@/content/side-quests/elemental-shield-upgrade.mdx")
+  },
+  whereAreWeGoingRemix: {
+    id: "where-are-we-going-remix",
+    title: "Where Are We Going Remix",
+    description: "Learn how to activate the remix of the original 'Where Are We Going' music easter egg song by Kevin Sherwood.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/where-are-we-going-remix.mdx")
+  },
+  hellsRetriever: {
+    id: "hells-retriever",
+    title: "Hells Retriever",
+    description: "Learn how to obtain the Hell's Retriever lethal equipment.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/hells-retriever.mdx")
+  },
+  freeMonkeyBombs: {
+    id: "free-monkey-bombs",
+    title: "Free Monkey Bombs",
+    description: "Learn how to obtain Free Monkey Bombs by killing enemies with your Special Weapon.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/free-monkey-bombs.mdx")
+  },
+  upgradedSpectralShield: {
+    id: "upgraded-spectral-shield",
+    title: "Upgraded Spectral Shield",
+    description: "Learn how to upgrade your Spectral Shield for increased shield charge capacity.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/upgraded-spectral-shield.mdx")
+  },
+  freeBlundergat: {
+    id: "free-blundergat",
+    title: "Free Blundergat",
+    description: "Learn how to obtain a Free Blundergat by completing collecting five skulls around the map.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/free-blundergat.mdx")
+  },
+  magmagatUpgrade: {
+    id: "magmagat-upgrade",
+    title: "Magmagat Upgrade",
+    description: "Learn how to upgrade your Blundergat to the Magmagat variant, greatly enhancing its functionality.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/magmagat-upgrade.mdx")
+  },
+  acidGatUpgrade: {
+    id: "acid-gat-upgrade",
+    title: "Acid Gat Upgrade",
+    description: "Learn how to upgrade your Blundergat to the Acid Gat variant, changing the weapon's functionality.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/acid-gat-upgrade.mdx")
+  },
+  goldenSpork: {
+    id: "golden-spork",
+    title: "Golden Spork",
+    description: "Learn how to obtain a Golden Spork for an advanced melee weapon.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/golden-spork.mdx")
+  },
+  goldenScalpel: {
+    id: "golden-scalpel",
+    title: "Golden Scalpel",
+    description: "Learn how to obtain a Golden Scalpel for an advanced melee weapon.",
+    map: bloodOfTheDead,
+    content: () => import("@/content/side-quests/golden-scalpel.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
