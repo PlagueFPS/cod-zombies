@@ -421,7 +421,7 @@ const sideQuestRegistry = {
   },
   hellsRetriever: {
     id: "hells-retriever",
-    title: "Hells Retriever",
+    title: "Hell's Retriever",
     description: "Learn how to obtain the Hell's Retriever lethal equipment.",
     map: bloodOfTheDead,
     content: () => import("@/content/side-quests/hells-retriever.mdx")
@@ -454,26 +454,12 @@ const sideQuestRegistry = {
     map: bloodOfTheDead,
     content: () => import("@/content/side-quests/magmagat-upgrade.mdx")
   },
-  acidGatUpgrade: {
-    id: "acid-gat-upgrade",
-    title: "Acid Gat Upgrade",
-    description: "Learn how to upgrade your Blundergat to the Acid Gat variant, changing the weapon's functionality.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/acid-gat-upgrade.mdx")
-  },
   goldenSpork: {
     id: "golden-spork",
     title: "Golden Spork",
     description: "Learn how to obtain a Golden Spork for an advanced melee weapon.",
     map: bloodOfTheDead,
     content: () => import("@/content/side-quests/golden-spork.mdx")
-  },
-  goldenScalpel: {
-    id: "golden-scalpel",
-    title: "Golden Scalpel",
-    description: "Learn how to obtain a Golden Scalpel for an advanced melee weapon.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/golden-scalpel.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
