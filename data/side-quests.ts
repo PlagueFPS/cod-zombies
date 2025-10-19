@@ -478,7 +478,7 @@ const sideQuestRegistry = {
   },
   freeWintersHowl: {
     id: "free-winters-howl",
-    title: "Free Winters Howl",
+    title: "Free Winter's Howl",
     description: "Learn how to obtain a Free Winters Howl for an advanced melee weapon.",
     map: classified,
     content: () => import("@/content/side-quests/free-winters-howl.mdx")
