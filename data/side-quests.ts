@@ -3,6 +3,7 @@ import {
   bloodOfTheDead,
   citadelleDesMorts,
   classified,
+  deadOfTheNight,
   derEisendrache,
   gorodKrovi,
   ix,
@@ -482,6 +483,34 @@ const sideQuestRegistry = {
     description: "Learn how to obtain a Free Winters Howl for an advanced melee weapon.",
     map: classified,
     content: () => import("@/content/side-quests/free-winters-howl.mdx")
+  },
+  mystery: {
+    id: "mystery",
+    title: "Mystery",
+    description: "Discover how to activate the hidden Music Easter Egg song 'Mystery' by Kevin Sherwood.",
+    map: deadOfTheNight,
+    content: () => import("@/content/side-quests/mystery.mdx")
+  },
+  secretDoors: {
+    id: "secret-doors",
+    title: "Secret Doors",
+    description: "Discover how to unlock three secret doors each granting you a nice reward.",
+    map: deadOfTheNight,
+    content: () => import("@/content/side-quests/secret-doors.mdx")
+  },
+  stakeKnife: {
+    id: "stake-knife",
+    title: "Stake Knife",
+    description: "Learn how to obtain a Stake Knife, increasing your damage against all enemies.",
+    map: deadOfTheNight,
+    content: () => import("@/content/side-quests/stake-knife.mdx")
+  },
+  savageImpaler: {
+    id: "savage-impaler",
+    title: "Savage Impaler",
+    description: "Learn how to obtain the Savage Impaler weapon, which is like a second Wonder Weapon.",
+    map: deadOfTheNight,
+    content: () => import("@/content/side-quests/savage-impaler.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
