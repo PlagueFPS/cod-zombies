@@ -5,7 +5,9 @@ import { withBotId } from "botid/next/config";
 const nextConfig: NextConfig = {
   experimental: {
     serverComponentsHmrCache: true,
-    browserDebugInfoInTerminal: true,
+    browserDebugInfoInTerminal: {
+      showSourceLocation: true,
+    },
     mdxRs: true,
     turbopackFileSystemCacheForDev: true,
   },
