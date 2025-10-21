@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun generate:last-modified && next dev",
-    "build": "bun generate:last-modified && bun test && next build",
+    "build": "bun test && next build",
     "start": "next start",
     "typegen": "next typegen",
     "lint": "biome lint .",
