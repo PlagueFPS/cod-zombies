@@ -1,5 +1,3 @@
-import type { GamesImagePath } from "@/types/image-paths"
-
 /** Gets all games.
  * @returns An array of all games.
  */
@@ -20,7 +18,7 @@ export interface Game {
 	/** The release date of the game */
 	releaseDate: Date
 	/** The image of the game */
-	image: GamesImagePath
+	image: string
 }
 
 const gameRegistry = {

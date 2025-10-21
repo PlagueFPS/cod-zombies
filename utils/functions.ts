@@ -4,6 +4,7 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
 import { readFile } from "node:fs/promises"
 import path from "node:path"
 import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
+import lastModified from "@/data/last-modified.json"
 import { env } from "@/env"
 import {
 	AuthorizationError,
@@ -12,9 +13,7 @@ import {
 	TokenGenerationError,
 	TokenVerificationError,
 } from "@/types/errors"
-import { DATE_OPTIONS } from "./constants"
 import { slugify } from "./functions.client"
-import lastModified from "@/data/last-modified.json"
 
 /**
  * Gets the server URL.
@@ -37,11 +36,8 @@ export const getServerUrl = () => {
  * @param filePath The path of the file.
  * @returns The last updated date of the file.
  */
-export const getLastUpdated = (filename: string) => {
-	return (
-		lastModified[filename as keyof typeof lastModified] ||
-		new Date().toLocaleDateString(undefined, DATE_OPTIONS)
-	)
+export const getLastUpdated = (filePath: string) => {
+	return lastModified.files[filePath as keyof typeof lastModified.files].lastModifiedFormatted
 }
 
 /**

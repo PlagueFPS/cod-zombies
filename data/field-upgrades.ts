@@ -1,4 +1,3 @@
-import type { FieldupgradesImagePath } from "@/types/image-paths"
 import {
 	type AugmentTuple,
 	apexHunter,
@@ -53,7 +52,7 @@ export interface FieldUpgrade {
 	/** The description of the field upgrade */
 	description: string
 	/** The image of the field upgrade */
-	image: FieldupgradesImagePath
+	image: string
 	/** The augments of the field upgrade */
 	augments?: AugmentTuple
 }

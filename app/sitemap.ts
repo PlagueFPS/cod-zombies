@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	const serverUrl = getServerUrl()
 
 	const mainQuestsMap = mainQuests.map(quest => {
-		const lastUpdated = getLastUpdated(`${quest.id}.mdx`)
+		const lastUpdated = getLastUpdated(`main-quests/${quest.id}.mdx`)
 		return {
 			url: `${serverUrl}/${quest.map.game.id}/${quest.id}`,
 			lastModified: new Date(lastUpdated),
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	)
 
 	const sideQuestsMap = sideQuests.map(quest => {
-		const lastUpdated = getLastUpdated(`${quest.id}.mdx`)
+		const lastUpdated = getLastUpdated(`side-quests/${quest.id}.mdx`)
 		return {
 			url: `${serverUrl}/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
 			lastModified: new Date(lastUpdated),
@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	)
 
 	const zombiesMap = zombies.map(zombie => {
-		const lastUpdated = getLastUpdated(`${zombie.id}.mdx`)
+		const lastUpdated = getLastUpdated(`zombies/${zombie.id}.mdx`)
 		return {
 			url: `${serverUrl}/bestiary/${zombie.id}`,
 			lastModified: lastUpdated,
@@ -42,17 +42,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	return [
 		{
 			url: `${serverUrl}`,
-			lastModified: mainQuests[0] ? getLastUpdated(`${mainQuests[0].id}.mdx`) : undefined,
+			lastModified: mainQuests[0] ? getLastUpdated(`main-quests/${mainQuests[0].id}.mdx`) : undefined,
 		},
 		...mainQuestsMap,
 		{
 			url: `${serverUrl}/side-quests`,
-			lastModified: sideQuests[0] ? getLastUpdated(`${sideQuests[0].id}.mdx`) : undefined,
+			lastModified: sideQuests[0] ? getLastUpdated(`side-quests/${sideQuests[0].id}.mdx`) : undefined,
 		},
 		...sideQuestsMap,
 		{
 			url: `${serverUrl}/bestiary`,
-			lastModified: zombies[0] ? getLastUpdated(`${zombies[0].id}.mdx`) : undefined,
+			lastModified: zombies[0] ? getLastUpdated(`zombies/${zombies[0].id}.mdx`) : undefined,
 		},
 		...zombiesMap,
 		{

@@ -88,7 +88,7 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 		const { default: MDXContent } = yield* Effect.tryPromise(() => quest.content())
 		const headings = quest.state === "Coming Soon" ? [] : yield* extractHeadingsFromMDX(contentPath)
 		const timeToRead = yield* calculateTimeToRead(contentPath)
-		const lastUpdated = getLastUpdated(`${quest.id}.mdx`)
+		const lastUpdated = getLastUpdated(`main-quests/${quest.id}.mdx`)
 
 		return (
 			<section className="-mt-10 flex w-full justify-center xl:mt-0">

@@ -1,4 +1,3 @@
-import type { ZombiesImagePath } from "@/types/image-paths"
 import {
 	type AmmoMod,
 	brainRotBO6,
@@ -197,7 +196,7 @@ export interface Zombie {
 	/** Release date of the zombie */
 	releaseDate: Date
 	/** Image of the zombie */
-	image: ZombiesImagePath
+	image: string
 	/** Games the zombie is available in */
 	games: Game[]
 	/** Maps the zombie is available in */

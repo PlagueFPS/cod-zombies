@@ -1,4 +1,3 @@
-import type { GobblegumsImagePath } from "@/types/image-paths"
 import { blackOps3, blackOps6, type Game } from "./games"
 /** Union of all Gobblegum keys */
 export type GobblegumKey = keyof typeof gobblegumRegistry
@@ -28,7 +27,7 @@ export interface Gobblegum {
 	/** The game the gobblegum is from */
 	game: Game
 	/** The image of the gobblegum */
-	image: GobblegumsImagePath
+	image: string
 }
 
 /**
