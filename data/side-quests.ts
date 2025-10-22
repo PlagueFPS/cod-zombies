@@ -1,5 +1,6 @@
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
+  ancientEvil,
   bloodOfTheDead,
   citadelleDesMorts,
   classified,
@@ -511,6 +512,13 @@ const sideQuestRegistry = {
     description: "Learn how to obtain the Savage Impaler weapon, which is like a second Wonder Weapon.",
     map: deadOfTheNight,
     content: () => import("@/content/side-quests/savage-impaler.mdx")
+  },
+  stormbound: {
+    id: "stormbound",
+    title: "Stormbound",
+    description: "Discover how to activate the music Easter Egg song 'Stormbound' by Kevin Sherwood.",
+    map: ancientEvil,
+    content: () => import("@/content/side-quests/stormbound.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
