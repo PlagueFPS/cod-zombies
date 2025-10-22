@@ -1,4 +1,3 @@
-import type { MapsImagePath } from "@/types/image-paths"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
 	blackOps1,
@@ -34,7 +33,7 @@ export interface Maps {
 	/** The description of the map */
 	description: string
 	/** The image of the map */
-	image: MapsImagePath
+	image: string
 	/** The game the map is from */
 	game: Game
 }

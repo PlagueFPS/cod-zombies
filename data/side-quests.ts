@@ -15,6 +15,7 @@ import {
   revelations,
   shadowsOfEvil,
   shatteredVeil,
+  tagDerToten,
   terminus,
   theGiant,
   theTomb,
@@ -534,6 +535,69 @@ const sideQuestRegistry = {
     description: "Learn how to obtain a free Random Perk Power-Up by shooting the heads of all A.D.A.M. units.",
     map: alphaOmega,
     content: () => import("@/content/side-quests/adam-unit-free-perk.mdx")
+  },
+  aLightFromTheShore: {
+    id: "a-light-from-the-shore",
+    title: "A Light From The Shore",
+    description: "Discover how to activate the hidden Music Easter Egg song 'A Light From The Shore' by Kevin Sherwood.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/a-light-from-the-shore.mdx")
+  },
+  georgeRomeroGlasses: {
+    id: "george-romero-glasses",
+    title: "George Romero Glasses",
+    description: "Learn how to obtain a Free 500 Points by interacting with George Romero's glasses.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/george-romero-glasses.mdx")
+  },
+  paperJumpscare: {
+    id: "paper-jumpscare",
+    title: "Paper Jumpscare",
+    description: "Discover this hidden jumpscare by aiming at a piece of paper on the Forecastle.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/paper-jumpscare.mdx")
+  },
+  statueFreePerk: {
+    id: "statue-free-perk",
+    title: "Statue Free Perk",
+    description: "Learn how to obtain a free Random Perk Power-Up by collecting four statues.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/statue-free-perk.mdx")
+  },
+  heatPack: {
+    id: "heat-pack",
+    title: "Heat Pack",
+    description: "Learn how to obtain a Heat Pack allowing you to move and swim faster in water without freezing.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/heat-pack.mdx")
+  },
+  lighthouseJumpscare: {
+    id: "lighthouse-jumpscare",
+    title: "Lighthouse Jumpscare",
+    description: "Discover this hidden jumpscare by aiming at the top of the lighthouse.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/lighthouse-jumpscare.mdx")
+  },
+  freeTundragun: {
+    id: "free-tundragun",
+    title: "Free Tundragun",
+    description: "Learn how to obtain a Free Tundragun by doing a little target practice.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/free-tundragun.mdx")
+  },
+  freeThundergun: {
+    id: "free-thundergun",
+    title: "Free Thundergun",
+    description: "Learn how to obtain a Free Thundergun by completing all five challenge totems.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/free-thundergun.mdx")
+  },
+  upgradedSnowballs: {
+    id: "upgraded-snowballs",
+    title: "Upgraded Snowballs",
+    description: "Learn how to upgrade your Snowballs for a one-hit kill until Round 35.",
+    map: tagDerToten,
+    content: () => import("@/content/side-quests/upgraded-snowballs.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {

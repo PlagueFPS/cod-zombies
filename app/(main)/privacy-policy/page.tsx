@@ -32,7 +32,7 @@ export default async function PrivacyPolicy() {
 		const { default: MDXContent } = yield* Effect.tryPromise(
 			() => import("@/content/legal/privacy-policy.mdx"),
 		)
-		const lastUpdated = getLastUpdated("privacy-policy.mdx")
+		const lastUpdated = getLastUpdated("legal/privacy-policy.mdx")
 
 		return (
 			<article className="flex w-full justify-center">

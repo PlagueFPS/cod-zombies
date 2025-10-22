@@ -1,5 +1,3 @@
-import type { WeaponsImagePath } from "@/types/image-paths"
-
 /**
  * Gets a weapon build by its key.
  * @param key The key of the weapon build.
@@ -158,7 +156,7 @@ export interface WeaponBuild {
 	/** Name of the weapon build */
 	title: string
 	/** Image of the weapon build */
-	image: WeaponsImagePath
+	image: string
 	/** Attachments used in the weapon build */
 	attachments?: Attachment[]
 	/** Build code for the weapon build */

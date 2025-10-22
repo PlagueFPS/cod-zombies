@@ -1,4 +1,3 @@
-import type { PerksImagePath } from "@/types/image-paths"
 import {
 	type AugmentTuple,
 	birdsEyeView,
@@ -85,7 +84,7 @@ export interface Perk {
 	/** The description of the perk */
 	description: string
 	/** The image of the perk */
-	image: PerksImagePath
+	image: string
 	/** The modifier of the perk */
 	modifier?: string
 	/** The augments of the perk */

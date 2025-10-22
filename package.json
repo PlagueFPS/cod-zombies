@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun generate:paths && next dev",
-    "build": "bun generate:paths && bun test && next build",
+    "dev": "bun generate:last-modified && next dev",
+    "build": "bun test && next build",
     "start": "next start",
     "typegen": "next typegen",
     "lint": "biome lint .",
@@ -14,7 +14,7 @@
     "email": "email dev",
     "scan": "next dev & bunx react-scan@latest localhost:3000",
     "optimize:images": "bun scripts/optimize-assets.ts",
-    "generate:paths": "bun scripts/generate-image-paths.ts"
+    "generate:last-modified": "bun scripts/generate-last-modified.ts"
   },
   "dependencies": {
     "@effect/platform": "0.90.0",

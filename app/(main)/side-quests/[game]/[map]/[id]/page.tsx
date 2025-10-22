@@ -91,7 +91,7 @@ export default async function SideQuestPage({
 		const { default: MDXContent } = yield* Effect.tryPromise(() => quest.content())
 		const headings = quest.state === "Coming Soon" ? [] : yield* extractHeadingsFromMDX(contentPath)
 		const timeToRead = yield* calculateTimeToRead(contentPath)
-		const lastUpdated = getLastUpdated(`${quest.id}.mdx`)
+		const lastUpdated = getLastUpdated(`side-quests/${quest.id}.mdx`)
 
 		return (
 			<section className="-mt-10 flex w-full justify-center xl:mt-0">
