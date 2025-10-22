@@ -2,6 +2,7 @@ import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
   bloodOfTheDead,
   citadelleDesMorts,
+  classified,
   derEisendrache,
   gorodKrovi,
   ix,
@@ -460,6 +461,27 @@ const sideQuestRegistry = {
     description: "Learn how to obtain a Golden Spork for an advanced melee weapon.",
     map: bloodOfTheDead,
     content: () => import("@/content/side-quests/golden-spork.mdx")
+  },
+  shockwave: {
+    id: "shockwave",
+    title: "Shockwave",
+    description: "Learn how to activate the Music Easter Egg song 'Shockwave' by Kevin Sherwood.",
+    map: classified,
+    content: () => import("@/content/side-quests/shockwave.mdx")
+  },
+  thisJazzIsClassified: {
+    id: "this-jazz-is-classified",
+    title: "This Jazz Is Classified",
+    description: "Learn how to activate the Music Easter Egg song 'This Jazz Is Classified' by Jack Wall.",
+    map: classified,
+    content: () => import("@/content/side-quests/this-jazz-is-classified.mdx")
+  },
+  freeWintersHowl: {
+    id: "free-winters-howl",
+    title: "Free Winter's Howl",
+    description: "Learn how to obtain a Free Winters Howl for an advanced melee weapon.",
+    map: classified,
+    content: () => import("@/content/side-quests/free-winters-howl.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
