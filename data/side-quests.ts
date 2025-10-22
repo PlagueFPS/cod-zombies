@@ -13,6 +13,7 @@ import {
   terminus,
   theGiant,
   theTomb,
+  voyageOfDespair,
   zetsubouNoShima,
 } from "./maps"
 
@@ -374,6 +375,41 @@ const sideQuestRegistry = {
     description: "Learn how to obtain fire immunity and significant damage reduction from the Acid Trap.",
     map: ix,
     content: () => import("@/content/side-quests/fire-and-trap-immunity.mdx")
+  },
+  drowning: {
+    id: "drowning",
+    title: "Drowning",
+    description: "Learn how to activate the Music Easter Egg Song 'Drowning' by Kevin Sherwood.",
+    map: voyageOfDespair,
+    content: () => import("@/content/side-quests/drowning.mdx")
+  },
+  specialWeaponFireSale: {
+    id: "special-weapon-fire-sale",
+    title: "Special Weapon Fire Sale",
+    description: "Discover this way to activate a special fire sale allowing you to change your special weapon in game.",
+    map: voyageOfDespair,
+    content: () => import("@/content/side-quests/special-weapon-fire-sale.mdx")
+  },
+  bowieKnifeUpgrade: {
+    id: "bowie-knife-upgrade",
+    title: "Bowie Knife Upgrade",
+    description: "Learn how to upgrade your Bowie Knife for a one hit kill past Round 30 with a cooldown.",
+    map: voyageOfDespair,
+    content: () => import("@/content/side-quests/bowie-knife-upgrade.mdx")
+  },
+  fishFreePerk: {
+    id: "fish-free-perk",
+    title: "Fish Free Perk",
+    description: "Learn how to obtain a free Random Perk Power-Up by collecting six fish around the map.",
+    map: voyageOfDespair,
+    content: () => import("@/content/side-quests/fish-free-perk.mdx")
+  },
+  elementalShieldUpgrade: {
+    id: "elemental-shield-upgrade",
+    title: "Elemental Shield Upgrade",
+    description: "Learn how to upgrade your Ballistic Shield into the Svalinn Guard elemental shield.",
+    map: voyageOfDespair,
+    content: () => import("@/content/side-quests/elemental-shield-upgrade.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
