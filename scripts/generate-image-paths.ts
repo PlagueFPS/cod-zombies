@@ -100,7 +100,7 @@ function warnDuplicates(label: string, values: string[]) {
  * Generate TypeScript type definitions for image paths
  */
 function generateTypeDefinitions(data: GeneratedTypes): string {
-	const { categories, totalCount } = data
+	const { categories, totalCount, allPaths } = data
 
 	let output = `// Auto-generated image path types
 // Generated on: ${new Date().toISOString()}
@@ -113,23 +113,54 @@ function generateTypeDefinitions(data: GeneratedTypes): string {
 
 	const typeNames: string[] = []
 
-	// Generate category-specific types (deduped) and collect type names
+	// Build ContentMap from first-level subfolders under /content
+	const contentFirstLevel = new Set<string>()
+	for (const p of allPaths) {
+		if (p.startsWith("/content/")) {
+			const seg = p.split("/")[2] // '', 'content', '<map>', ...
+			if (seg) contentFirstLevel.add(seg)
+		}
+	}
+	const contentMapValues = Array.from(contentFirstLevel).sort()
+	if (contentMapValues.length > 0) {
+		output += `type ContentMap = ${contentMapValues.map(v => `"${v}"`).join(" | ")}\n\n`
+	} else {
+		output += `type ContentMap = never\n\n`
+	}
+
+	// Emit per-category types:
+	// - root: keep exact literals (usually tiny)
+	// - content: use tighter `/content/${ContentMap}/${string}`
+	// - others: `/category/${string}`
 	for (const category of categories) {
 		warnDuplicates(`category "${category.name}"`, category.paths)
 
-		const typeName =
+		const isRoot = category.name === "root"
+		const capName =
 			category.name === "root"
-				? "RootImagePath"
-				: `${category.name.charAt(0).toUpperCase() + category.name.slice(1).replace(/-/g, "")}ImagePath`
+				? "Root"
+				: category.name.charAt(0).toUpperCase() + category.name.slice(1).replace(/-/g, "")
+		const typeName = `${capName}ImagePath`
 
-		const uniquePaths = Array.from(new Set(category.paths)).sort()
-		if (uniquePaths.length === 0) continue
+		if (isRoot) {
+			const uniquePaths = Array.from(new Set(category.paths)).sort()
+			if (uniquePaths.length === 0) continue
+			typeNames.push(typeName)
+			output += `export type ${typeName} = ${uniquePaths.map(path => `"${path}"`).join(" | ")}\n\n`
+			continue
+		}
+
+		if (category.name === "content") {
+			typeNames.push("ContentImagePath")
+			output += `export type ContentImagePath = \`/content/\${ContentMap}/\${string}\`\n\n`
+			continue
+		}
 
 		typeNames.push(typeName)
-		output += `export type ${typeName} = ${uniquePaths.map(path => `"${path}"`).join(" | ")}\n\n`
+		output += `export type ${typeName} = \`/${category.name}/\${string}\`\n\n`
 	}
 
-	// Compose master type from category type names to prevent duplicate string literals
+	// Master type
 	if (typeNames.length > 0) {
 		output += `export type ImagePath = ${typeNames.join(" | ")}\n`
 	} else {
