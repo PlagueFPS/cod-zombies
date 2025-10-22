@@ -1,5 +1,6 @@
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import {
+  alphaOmega,
   ancientEvil,
   bloodOfTheDead,
   citadelleDesMorts,
@@ -519,6 +520,20 @@ const sideQuestRegistry = {
     description: "Discover how to activate the music Easter Egg song 'Stormbound' by Kevin Sherwood.",
     map: ancientEvil,
     content: () => import("@/content/side-quests/stormbound.mdx")
+  },
+  iAmTheWell: {
+    id: "i-am-the-well",
+    title: "I Am The Well",
+    description: "Discover how to activate the music Easter Egg song 'I Am The Well' by Kevin Sherwood.",
+    map: alphaOmega,
+    content: () => import("@/content/side-quests/i-am-the-well.mdx")
+  },
+  adamUnitFreePerk: {
+    id: "adam-unit-free-perk",
+    title: "A.D.A.M. Unit Free Perk",
+    description: "Learn how to obtain a free Random Perk Power-Up by shooting the heads of all A.D.A.M. units.",
+    map: alphaOmega,
+    content: () => import("@/content/side-quests/adam-unit-free-perk.mdx")
   },
   // TODO: Add Black Ops Cold War & Black Ops 4 side quests
   destroySomethingBeautiful: {
