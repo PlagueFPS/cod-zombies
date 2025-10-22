@@ -1,36 +1,36 @@
 {
   "version": "1.0",
-  "generated": "2025-10-22T10:27:50.358Z",
+  "generated": "2025-10-22T10:34:40.584Z",
   "files": {
-    "side-quests/upgraded-snowballs.mdx": {
-      "lastModified": "2025-10-21T09:49:34.000Z",
-      "lastModifiedFormatted": "October 21, 2025",
-      "commitHash": "27fb65a"
-    },
     "side-quests/free-thundergun.mdx": {
-      "lastModified": "2025-10-21T09:49:33.000Z",
-      "lastModifiedFormatted": "October 21, 2025",
-      "commitHash": "6288956"
+      "lastModified": "2025-10-22T10:33:50.000Z",
+      "lastModifiedFormatted": "October 22, 2025",
+      "commitHash": "e6beead"
     },
     "side-quests/free-tundragun.mdx": {
-      "lastModified": "2025-10-21T09:49:33.000Z",
-      "lastModifiedFormatted": "October 21, 2025",
-      "commitHash": "2fa86e2"
+      "lastModified": "2025-10-22T10:33:50.000Z",
+      "lastModifiedFormatted": "October 22, 2025",
+      "commitHash": "e6beead"
+    },
+    "side-quests/heat-pack.mdx": {
+      "lastModified": "2025-10-22T10:33:50.000Z",
+      "lastModifiedFormatted": "October 22, 2025",
+      "commitHash": "e6beead"
+    },
+    "side-quests/statue-free-perk.mdx": {
+      "lastModified": "2025-10-22T10:33:50.000Z",
+      "lastModifiedFormatted": "October 22, 2025",
+      "commitHash": "e6beead"
+    },
+    "side-quests/upgraded-snowballs.mdx": {
+      "lastModified": "2025-10-22T10:33:50.000Z",
+      "lastModifiedFormatted": "October 22, 2025",
+      "commitHash": "e6beead"
     },
     "side-quests/lighthouse-jumpscare.mdx": {
       "lastModified": "2025-10-21T09:49:33.000Z",
       "lastModifiedFormatted": "October 21, 2025",
       "commitHash": "ab2cdab"
-    },
-    "side-quests/heat-pack.mdx": {
-      "lastModified": "2025-10-21T09:49:33.000Z",
-      "lastModifiedFormatted": "October 21, 2025",
-      "commitHash": "8e5e4a3"
-    },
-    "side-quests/statue-free-perk.mdx": {
-      "lastModified": "2025-10-21T09:49:33.000Z",
-      "lastModifiedFormatted": "October 21, 2025",
-      "commitHash": "ff2b821"
     },
     "side-quests/paper-jumpscare.mdx": {
       "lastModified": "2025-10-21T09:49:32.000Z",
