@@ -1,7 +1,32 @@
 {
   "version": "1.0",
-  "generated": "2025-10-23T12:20:36.141Z",
+  "generated": "2025-10-23T17:45:19.071Z",
   "files": {
+    "side-quests/lost.mdx": {
+      "lastModified": "2025-10-23T17:41:56.000Z",
+      "lastModifiedFormatted": "October 23, 2025",
+      "commitHash": "e2b3a9c"
+    },
+    "side-quests/upgraded-monkey-bombs.mdx": {
+      "lastModified": "2025-10-23T14:04:50.000Z",
+      "lastModifiedFormatted": "October 23, 2025",
+      "commitHash": "1f4ae7d"
+    },
+    "side-quests/dark-aether-bunny.mdx": {
+      "lastModified": "2025-10-23T14:02:22.000Z",
+      "lastModifiedFormatted": "October 23, 2025",
+      "commitHash": "5067949"
+    },
+    "side-quests/sergei-head-free-perk.mdx": {
+      "lastModified": "2025-10-23T14:02:22.000Z",
+      "lastModifiedFormatted": "October 23, 2025",
+      "commitHash": "5067949"
+    },
+    "side-quests/alone.mdx": {
+      "lastModified": "2025-10-23T13:42:04.000Z",
+      "lastModifiedFormatted": "October 23, 2025",
+      "commitHash": "8ccf0b4"
+    },
     "side-quests/floating-bodies.mdx": {
       "lastModified": "2025-10-23T12:17:13.000Z",
       "lastModifiedFormatted": "October 23, 2025",
@@ -21,11 +46,6 @@
       "lastModified": "2025-10-23T09:31:24.000Z",
       "lastModifiedFormatted": "October 23, 2025",
       "commitHash": "6c9d29a"
-    },
-    "side-quests/alone.mdx": {
-      "lastModified": "2025-10-23T09:14:10.000Z",
-      "lastModifiedFormatted": "October 23, 2025",
-      "commitHash": "40079e9"
     },
     "side-quests/free-thundergun.mdx": {
       "lastModified": "2025-10-22T11:38:20.000Z",

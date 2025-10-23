@@ -8,6 +8,7 @@ import {
   deadOfTheNight,
   derEisendrache,
   dieMaschine,
+  firebaseZ,
   gorodKrovi,
   ix,
   libertyFalls,
@@ -634,6 +635,34 @@ const sideQuestRegistry = {
     description: "Learn how to obtain either a free Scorestreak or trigger a jumpscare within the Dark Aether.",
     map: dieMaschine,
     content: () => import("@/content/side-quests/floating-bodies.mdx")
+  },
+  lost: {
+    id: "lost",
+    title: "Lost",
+    description: "Discover the hidden music easter egg song 'Lost' by Kevin Sherwood.",
+    map: firebaseZ,
+    content: () => import("@/content/side-quests/lost.mdx")
+  },
+  darkAetherBunny: {
+    id: "dark-aether-bunny",
+    title: "Dark Aether Bunny",
+    description: "Learn how to obtain a free Juggernog perk along with other rewards by following a Dark Aether Bunny.",
+    map: firebaseZ,
+    content: () => import("@/content/side-quests/dark-aether-bunny.mdx")
+  },
+  sergeiHeadFreePerk: {
+    id: "sergei-head-free-perk",
+    title: "Sergei Head Free Perk",
+    description: "Learn how to obtain a free perk along by extracting some information out of the head of Sergei.",
+    map: firebaseZ,
+    content: () => import("@/content/side-quests/sergei-head-free-perk.mdx")
+  },
+  upgradedMonkeyBombs: {
+    id: "upgraded-monkey-bombs",
+    title: "Upgraded Monkey Bombs",
+    description: "Learn how to upgrade your Monkey Bombs for more damage, a new tune, and have zombies dance to the beat.",
+    map: firebaseZ,
+    content: () => import("@/content/side-quests/upgraded-monkey-bombs.mdx")
   },
   // TODO: Add Black Ops Cold War
   destroySomethingBeautiful: {
