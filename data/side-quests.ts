@@ -7,6 +7,7 @@ import {
   classified,
   deadOfTheNight,
   derEisendrache,
+  dieMaschine,
   gorodKrovi,
   ix,
   libertyFalls,
@@ -599,7 +600,42 @@ const sideQuestRegistry = {
     map: tagDerToten,
     content: () => import("@/content/side-quests/upgraded-snowballs.mdx")
   },
-  // TODO: Add Black Ops Cold War & Black Ops 4 side quests
+  alone: {
+    id: "alone",
+    title: "Alone",
+    description: "Discover how to activate the hidden Music Easter Egg song 'Alone' by Kevin Sherwood.",
+    map: dieMaschine,
+    content: () => import("@/content/side-quests/alone.mdx")
+  },
+  coffinDance: {
+    id: "coffin-dance",
+    title: "Coffin Dance",
+    description: "Learn how to activate this meme reference and receive a free Juggernog perk.",
+    map: dieMaschine,
+    content: () => import("@/content/side-quests/coffin-dance.mdx")
+  },
+  satellitePoints: {
+    id: "satellite-points",
+    title: "Satellite Points",
+    description: "Learn how to obtain a free 1500 points by messing with some satellites.",
+    map: dieMaschine,
+    content: () => import("@/content/side-quests/satellite-points.mdx")
+  },
+  monsterHand: {
+    id: "monster-hand",
+    title: "Monster Hand",
+    description: "Learn how to obtain a free Legendary Rarity upgrade by feeding a monster.",
+    map: dieMaschine,
+    content: () => import("@/content/side-quests/monster-hand.mdx")
+  },
+  floatingBodies: {
+    id: "floating-bodies",
+    title: "Floating Bodies",
+    description: "Learn how to obtain either a free Scorestreak or trigger a jumpscare within the Dark Aether.",
+    map: dieMaschine,
+    content: () => import("@/content/side-quests/floating-bodies.mdx")
+  },
+  // TODO: Add Black Ops Cold War
   destroySomethingBeautiful: {
     id: "destroy-something-beautiful",
     title: "Destroy Something Beautiful",
