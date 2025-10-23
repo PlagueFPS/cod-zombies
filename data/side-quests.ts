@@ -640,7 +640,7 @@ const sideQuestRegistry = {
     id: "lost",
     title: "Lost",
     description: "Discover the hidden music easter egg song 'Lost' by Kevin Sherwood.",
-    map: dieMaschine,
+    map: firebaseZ,
     content: () => import("@/content/side-quests/lost.mdx")
   },
   darkAetherBunny: {
