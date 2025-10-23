@@ -1,16 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2025-10-23T12:13:48.831Z",
+  "generated": "2025-10-23T12:20:36.141Z",
   "files": {
     "side-quests/floating-bodies.mdx": {
-      "lastModified": "2025-10-23T09:57:15.000Z",
+      "lastModified": "2025-10-23T12:17:13.000Z",
       "lastModifiedFormatted": "October 23, 2025",
-      "commitHash": "5b14c1b"
+      "commitHash": "42ab8ed"
     },
     "side-quests/monster-hand.mdx": {
-      "lastModified": "2025-10-23T09:47:20.000Z",
+      "lastModified": "2025-10-23T12:17:13.000Z",
       "lastModifiedFormatted": "October 23, 2025",
-      "commitHash": "b764503"
+      "commitHash": "42ab8ed"
     },
     "side-quests/satellite-points.mdx": {
       "lastModified": "2025-10-23T09:39:39.000Z",
@@ -999,137 +999,137 @@
     },
     "legal/privacy-policy.mdx": {
       "lastModified": "2025-09-24T03:16:07.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "cd254ad"
     },
     "zombies/abomination.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/amalgam.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/armored-zombie.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/disciple.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/doppelghast.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/elder-disciple.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/heavy-zombie.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/kommando-klaus.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/krasny-soldat.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/megaton.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/mimic.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/nathan.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/orda.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/patient-13.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/plaguehound.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/sam.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/sentinel-artifact.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/tempest.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/the-forsaken.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/the-guardian.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/tormentors.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/toxic-zombies.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/uber-klaus.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/uber-richtofen.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/vermin.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/z-rex.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/adam-unit.mdx": {
@@ -1369,32 +1369,32 @@
     },
     "zombies/keepers.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/valentina.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/valkyrie-drone.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/water-catalyst.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/werewolf.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/zombie.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     }
   }
