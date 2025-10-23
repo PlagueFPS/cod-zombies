@@ -6,7 +6,7 @@ import sharp from "sharp"
 // Change this to the path where the new images you want to add are located
 const NEW_ASSETS_DIR = "./newassets"
 // Change this to the target path where the optimized images should end up
-const TARGET_DIR = "./public/content/tag-der-toten"
+const TARGET_DIR = "./public/content/die-maschine"
 
 const program = Effect.gen(function* () {
   const startTime = performance.now()
@@ -50,7 +50,7 @@ const program = Effect.gen(function* () {
   const uploadedAmount = yield* Ref.get(numRef)
   const endTime = Duration.toSeconds(performance.now() - startTime)
   const totalTime =
-    endTime > 60 ? `${Duration.toMinutes(endTime).toFixed(3)}m` : `${endTime.toFixed(3)}s`
+    endTime > 60 ? `${Duration.toMinutes(endTime).toFixed(2)}m` : `${endTime.toFixed(2)}s`
   yield* Effect.log(
     `Successfully optimized ${uploadedAmount}/${newAssets.length} images in ${totalTime}!`,
   )
