@@ -13,6 +13,7 @@ import {
   ix,
   libertyFalls,
   type Maps,
+  mauerDerToten,
   reckoning,
   revelations,
   shadowsOfEvil,
@@ -663,6 +664,27 @@ const sideQuestRegistry = {
     description: "Learn how to upgrade your Monkey Bombs for more damage, a new tune, and have zombies dance to the beat.",
     map: firebaseZ,
     content: () => import("@/content/side-quests/upgraded-monkey-bombs.mdx")
+  },
+  amoeba: {
+    id: "amoeba",
+    title: "Amoeba",
+    description: "Discover how to activate the hidden music easter egg song 'Amoeba' by Adolescents.",
+    map: mauerDerToten,
+    content: () => import("@/content/side-quests/amoeba.mdx")
+  },
+  sharpshooter: {
+    id: "sharpshooter",
+    title: "Sharpshooter",
+    description: "Learn how to obtain a free Aether Tool by completing a sharpshooter challenge.",
+    map: mauerDerToten,
+    content: () => import("@/content/side-quests/sharpshooter.mdx")
+  },
+  bunnyDisco: {
+    id: "bunny-disco",
+    title: "Bunny Disco",
+    description: "Learn how to enter the bunny disco nightclub for a chance at earning the Wonder Weapon.",
+    map: mauerDerToten,
+    content: () => import("@/content/side-quests/bunny-disco.mdx")
   },
   // TODO: Add Black Ops Cold War
   destroySomethingBeautiful: {
