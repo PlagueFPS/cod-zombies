@@ -9,6 +9,7 @@ import {
   derEisendrache,
   dieMaschine,
   firebaseZ,
+  forsaken,
   gorodKrovi,
   ix,
   libertyFalls,
@@ -686,7 +687,41 @@ const sideQuestRegistry = {
     map: mauerDerToten,
     content: () => import("@/content/side-quests/bunny-disco.mdx")
   },
-  // TODO: Add Black Ops Cold War
+  bubby: {
+    id: "bubby",
+    title: "Bubby",
+    description: "Learn how to obtain at least one free perk, activate the music easter egg, and potentially earn the Wonder Weapon.",
+    map: forsaken,
+    content: () => import("@/content/side-quests/bubby.mdx")
+  },
+  freeRarityUpgrade: {
+    id: "free-rarity-upgrade",
+    title: "Free Rarity Upgrade",
+    description: "Learn how to obtain a free rarity upgrade for a Pistol, SMG, or Sniper Rifle weapon.",
+    map: forsaken,
+    content: () => import("@/content/side-quests/free-rarity-upgrade.mdx")
+  },
+  ronaldRaygun: {
+    id: "ronald-raygun",
+    title: "Ronald Raygun",
+    description: "Learn how to potentially obtain a free Raygun by delivering some pizza.",
+    map: forsaken,
+    content: () => import("@/content/side-quests/ronald-raygun.mdx")
+  },
+  arcXDRace: {
+    id: "arc-xd-race",
+    title: "ARC-XD Race",
+    description: "Learn how to play this hidden ARC-XD map race for a chance to earn the Wonder Weapon.",
+    map: forsaken,
+    content: () => import("@/content/side-quests/arc-xd-race.mdx")
+  },
+  tombstonePerkaholic: {
+    id: "tombstone-perkaholic",
+    title: "Tombstone Perkaholic",
+    description: "Learn how to earn all perks in the game by manipulating death.",
+    map: forsaken,
+    content: () => import("@/content/side-quests/tombstone-perkaholic.mdx")
+  },
   destroySomethingBeautiful: {
     id: "destroy-something-beautiful",
     title: "Destroy Something Beautiful",
