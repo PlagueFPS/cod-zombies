@@ -677,7 +677,7 @@ const sideQuestRegistry = {
     title: "Sharpshooter",
     description: "Learn how to obtain a free Aether Tool by completing a sharpshooter challenge.",
     map: mauerDerToten,
-    content: () => import("@/content/side-quests/target-practice.mdx")
+    content: () => import("@/content/side-quests/sharpshooter.mdx")
   },
   bunnyDisco: {
     id: "bunny-disco",

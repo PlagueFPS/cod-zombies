@@ -1,21 +1,21 @@
 {
   "version": "1.0",
-  "generated": "2025-10-24T12:19:03.096Z",
+  "generated": "2025-10-24T12:29:20.977Z",
   "files": {
-    "side-quests/bunny-disco.mdx": {
-      "lastModified": "2025-10-24T10:03:53.000Z",
+    "side-quests/amoeba.mdx": {
+      "lastModified": "2025-10-24T12:20:36.000Z",
       "lastModifiedFormatted": "October 24, 2025",
-      "commitHash": "6799cfb"
+      "commitHash": "c7d72fe"
+    },
+    "side-quests/bunny-disco.mdx": {
+      "lastModified": "2025-10-24T12:20:36.000Z",
+      "lastModifiedFormatted": "October 24, 2025",
+      "commitHash": "c7d72fe"
     },
     "side-quests/sharpshooter.mdx": {
       "lastModified": "2025-10-24T09:50:04.000Z",
       "lastModifiedFormatted": "October 24, 2025",
       "commitHash": "ce2f32f"
-    },
-    "side-quests/amoeba.mdx": {
-      "lastModified": "2025-10-24T09:38:42.000Z",
-      "lastModifiedFormatted": "October 24, 2025",
-      "commitHash": "184daba"
     },
     "side-quests/lost.mdx": {
       "lastModified": "2025-10-23T17:41:56.000Z",
