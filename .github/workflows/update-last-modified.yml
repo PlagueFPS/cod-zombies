@@ -3,13 +3,13 @@ name: Update Last Modified Dates
 on:
   pull_request:
     paths:
-      - 'content/**/*.mdx'
+      - "content/**/*.mdx"
     types: [opened, synchronize]
 
 jobs:
   update-last-modified:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'PlagueFPS'
+    if: github.repository_owner == 'PlagueFPS' && github.event.pull_request.draft == false
     permissions:
       contents: write
 
@@ -19,7 +19,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-          fetch-depth: 0  # Fetch full history for git log analysis
+          fetch-depth: 0 # Fetch full history for git log analysis
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Bun
