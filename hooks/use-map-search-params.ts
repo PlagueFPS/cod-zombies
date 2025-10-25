@@ -8,7 +8,7 @@ export const useMapSearchParams = () => {
 	const searchTerm = searchParams.get("search") || ""
 
 	const updateURLParams = (params: URLSearchParams) => {
-		window.history.pushState(null, "", `?${params.toString()}`)
+		window.history.replaceState(null, "", `?${params.toString()}`)
 	}
 
 	const createParams = () => {
