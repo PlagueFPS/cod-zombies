@@ -1,31 +1,31 @@
 {
   "version": "1.0",
-  "generated": "2025-10-25T10:15:27.796Z",
+  "generated": "2025-10-25T18:43:19.502Z",
   "files": {
-    "side-quests/tombstone-perkaholic.mdx": {
-      "lastModified": "2025-10-25T09:15:58.000Z",
-      "lastModifiedFormatted": "October 25, 2025",
-      "commitHash": "531c9ed"
-    },
     "side-quests/arc-xd-race.mdx": {
-      "lastModified": "2025-10-25T08:48:26.000Z",
+      "lastModified": "2025-10-25T10:31:10.000Z",
       "lastModifiedFormatted": "October 25, 2025",
-      "commitHash": "446ccd0"
-    },
-    "side-quests/ronald-raygun.mdx": {
-      "lastModified": "2025-10-25T08:43:40.000Z",
-      "lastModifiedFormatted": "October 25, 2025",
-      "commitHash": "7e43380"
-    },
-    "side-quests/free-rarity-upgrade.mdx": {
-      "lastModified": "2025-10-24T16:57:05.000Z",
-      "lastModifiedFormatted": "October 24, 2025",
-      "commitHash": "adf7d69"
+      "commitHash": "d599191"
     },
     "side-quests/bubby.mdx": {
-      "lastModified": "2025-10-24T16:44:57.000Z",
-      "lastModifiedFormatted": "October 24, 2025",
-      "commitHash": "113391e"
+      "lastModified": "2025-10-25T10:31:10.000Z",
+      "lastModifiedFormatted": "October 25, 2025",
+      "commitHash": "d599191"
+    },
+    "side-quests/free-rarity-upgrade.mdx": {
+      "lastModified": "2025-10-25T10:31:10.000Z",
+      "lastModifiedFormatted": "October 25, 2025",
+      "commitHash": "d599191"
+    },
+    "side-quests/ronald-raygun.mdx": {
+      "lastModified": "2025-10-25T10:31:10.000Z",
+      "lastModifiedFormatted": "October 25, 2025",
+      "commitHash": "d599191"
+    },
+    "side-quests/tombstone-perkaholic.mdx": {
+      "lastModified": "2025-10-25T10:31:10.000Z",
+      "lastModifiedFormatted": "October 25, 2025",
+      "commitHash": "d599191"
     },
     "side-quests/amoeba.mdx": {
       "lastModified": "2025-10-24T12:31:46.000Z",

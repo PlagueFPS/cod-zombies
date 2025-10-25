@@ -87,7 +87,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 
 		const { prev, next } = getAdjacentZombies(id)
 		const { default: MDXContent } = yield* Effect.tryPromise(() => zombie.combatStrategy())
-		const lastUpdated = getLastUpdated(`zombies/${zombie.id}.mdx`)
+		const lastUpdated = getLastUpdated(`zombies/${zombie.id}.mdx`, true)
 
 		const speedProgress = () => {
 			switch (zombie.speed) {
