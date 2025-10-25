@@ -1,7 +1,6 @@
 import "./globals.css"
 import type { Metadata, Viewport } from "next"
 import { GoogleAnalytics } from "@next/third-parties/google"
-import { Analytics } from "@vercel/analytics/react"
 import { Geist, Geist_Mono } from "next/font/google"
 import { HashLinkHandler } from "@/components/custom-link/custom-link"
 import Header from "@/components/header/header"
@@ -84,7 +83,6 @@ export default function RootLayout({ children }: LayoutProps) {
 						{children}
 						<Toaster richColors position="top-center" closeButton />
 					</ThemeProvider>
-					<Analytics debug={false} />
 					<HashLinkHandler />
 					<GoogleAnalytics gaId="G-2M6PMT6Z3R" />
 				</KeyboardShortcutsProvider>
