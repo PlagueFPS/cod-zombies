@@ -340,6 +340,13 @@ const perkRegistry = {
 			"Allows you to drop a tombstone that you can pick up after death to reclaim your weapons and perks you had before dying. (Excluding Tombstone itself).",
 		image: "/perks/tombstone.webp",
 	},
+	tombstoneColdWar: {
+		id: "tombstone-cold-war",
+		title: "Tombstone",
+		description:
+			"Have a chance to revive yourself when downed.",
+		image: "/perks/tombstone-cold-war.webp",
+	},
 } as const satisfies Record<string, Perk>
 
 export type PerkKey = keyof typeof perkRegistry
