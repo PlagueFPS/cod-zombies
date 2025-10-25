@@ -32,7 +32,7 @@ export default async function PrivacyPolicy() {
 		const { default: MDXContent } = yield* Effect.tryPromise(
 			() => import("@/content/legal/privacy-policy.mdx"),
 		)
-		const lastUpdated = getLastUpdated("legal/privacy-policy.mdx", true)
+		const { lastModifiedFormatted } = getLastUpdated("legal/privacy-policy.mdx")
 
 		return (
 			<article className="flex w-full justify-center">
@@ -48,7 +48,7 @@ export default async function PrivacyPolicy() {
 								<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-4xl text-gradient md:text-5xl lg:text-6xl">
 									Privacy Policy
 								</h2>
-								<span className="text-muted-foreground text-sm">Last Updated: {lastUpdated}</span>
+								<span className="text-muted-foreground text-sm">Last Updated: {lastModifiedFormatted}</span>
 							</div>
 							<div className={cn("relative mx-auto max-w-[80ch] px-4", richStyles.body)}>
 								<MDXContent components={mdxComponents} />

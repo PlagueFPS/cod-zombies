@@ -2,7 +2,7 @@ import type { DurationInput } from "effect/Duration"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
 import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
-import lastModified from "@/data/last-modified.json"
+import lastModifiedData from "@/data/last-modified.json"
 import { env } from "@/env"
 import {
 	AuthorizationError,
@@ -34,9 +34,9 @@ export const getServerUrl = () => {
  * @param filePath The path of the file.
  * @returns The last updated date of the file.
  */
-export const getLastUpdated = (filePath: string, formatted = false) => {
-	if (!formatted) return lastModified.files[filePath as keyof typeof lastModified.files].lastModified
-	return lastModified.files[filePath as keyof typeof lastModified.files].lastModifiedFormatted
+export const getLastUpdated = (filePath: string) => {
+	const { lastModified, lastModifiedFormatted } = lastModifiedData.files[filePath as keyof typeof lastModifiedData.files]
+	return { lastModified, lastModifiedFormatted }
 }
 
 /**

@@ -92,7 +92,7 @@ export default async function SideQuestPage({
 		const { default: MDXContent } = yield* Effect.tryPromise(() => quest.content())
 		const headings = quest.state === "Coming Soon" ? [] : yield* extractHeadingsFromMDX(contentPath)
 		const timeToRead = yield* calculateTimeToRead(contentPath)
-		const lastUpdated = getLastUpdated(`side-quests/${quest.id}.mdx`, true)
+		const { lastModifiedFormatted } = getLastUpdated(`side-quests/${quest.id}.mdx`)
 
 		return (
 			<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -164,7 +164,7 @@ export default async function SideQuestPage({
 									<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
 										<div className="flex items-center gap-1">
 											<Calendar className="size-4" />
-											<span>Updated: {lastUpdated}</span>
+											<span>Updated: {lastModifiedFormatted}</span>
 										</div>
 										<span className="hidden md:inline">&bull;</span>
 										<div className="flex items-center gap-1">
