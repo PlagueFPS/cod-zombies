@@ -13,28 +13,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	const serverUrl = getServerUrl()
 
 	const mainQuestsMap = mainQuests.map(quest => {
-		const lastUpdated = getLastUpdated(`main-quests/${quest.id}.mdx`)
+		const { lastModified } = getLastUpdated(`main-quests/${quest.id}.mdx`)
 		return {
 			url: `${serverUrl}/${quest.map.game.id}/${quest.id}`,
-			lastModified: new Date(lastUpdated),
+			lastModified: new Date(lastModified),
 		}
 	},
 	)
 
 	const sideQuestsMap = sideQuests.map(quest => {
-		const lastUpdated = getLastUpdated(`side-quests/${quest.id}.mdx`)
+		const { lastModified } = getLastUpdated(`side-quests/${quest.id}.mdx`)
 		return {
 			url: `${serverUrl}/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
-			lastModified: new Date(lastUpdated),
+			lastModified: new Date(lastModified),
 		}
 	},
 	)
 
 	const zombiesMap = zombies.map(zombie => {
-		const lastUpdated = getLastUpdated(`zombies/${zombie.id}.mdx`)
+		const { lastModified } = getLastUpdated(`zombies/${zombie.id}.mdx`)
 		return {
 			url: `${serverUrl}/bestiary/${zombie.id}`,
-			lastModified: lastUpdated,
+			lastModified: new Date(lastModified),
 		}
 	},
 	)
@@ -42,17 +42,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	return [
 		{
 			url: `${serverUrl}`,
-			lastModified: mainQuests[0] ? getLastUpdated(`main-quests/${mainQuests[0].id}.mdx`) : undefined,
+			lastModified: mainQuests[0] ? new Date(getLastUpdated(`main-quests/${mainQuests[0].id}.mdx`).lastModified) : undefined,
 		},
 		...mainQuestsMap,
 		{
 			url: `${serverUrl}/side-quests`,
-			lastModified: sideQuests[0] ? getLastUpdated(`side-quests/${sideQuests[0].id}.mdx`) : undefined,
+			lastModified: sideQuests[0] ? new Date(getLastUpdated(`side-quests/${sideQuests[0].id}.mdx`).lastModified) : undefined,
 		},
 		...sideQuestsMap,
 		{
 			url: `${serverUrl}/bestiary`,
-			lastModified: zombies[0] ? getLastUpdated(`zombies/${zombies[0].id}.mdx`) : undefined,
+			lastModified: zombies[0] ? new Date(getLastUpdated(`zombies/${zombies[0].id}.mdx`).lastModified) : undefined,
 		},
 		...zombiesMap,
 		{

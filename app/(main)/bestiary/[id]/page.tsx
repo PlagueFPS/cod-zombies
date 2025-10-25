@@ -87,7 +87,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 
 		const { prev, next } = getAdjacentZombies(id)
 		const { default: MDXContent } = yield* Effect.tryPromise(() => zombie.combatStrategy())
-		const lastUpdated = getLastUpdated(`zombies/${zombie.id}.mdx`)
+		const { lastModifiedFormatted } = getLastUpdated(`zombies/${zombie.id}.mdx`)
 
 		const speedProgress = () => {
 			switch (zombie.speed) {
@@ -119,7 +119,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 							<TypeBadge type={zombie.type} />
 						</div>
 						<div className="flex items-center justify-center gap-2">
-							<span className="text-foreground/60 text-sm">Updated: {lastUpdated}</span>
+							<span className="text-foreground/60 text-sm">Updated: {lastModifiedFormatted}</span>
 							<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
 						</div>
 					</div>
