@@ -4,7 +4,7 @@ import type { MetadataRoute } from 'next'
 export default function manifest(): MetadataRoute.Manifest {
 	return {
 		name: SITE_TITLE,
-		short_name: 'CodZombiesGuides',
+		short_name: 'Zombies Guides',
 		description: SITE_DESCRIPTION,
 		start_url: '/',
 		display: 'standalone',
