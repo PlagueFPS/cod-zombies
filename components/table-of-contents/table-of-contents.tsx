@@ -130,7 +130,6 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 				currentHeading={currentHeading}
 				progress={progress}
 			/>
-			<BackToTopButton mobile variant={"default"} className="right-4 bottom-8 xl:hidden" />
 		</>
 	)
 }
