@@ -47,6 +47,7 @@ export default function BackToTopButton({
 					size="icon"
 					className={cn("fixed right-4 bottom-16 z-20 rounded-full", className)}
 					title="Back to Top"
+					aria-label="Scroll to Top"
 					{...props}
 				>
 					<ArrowUp className="size-6" />
@@ -55,7 +56,7 @@ export default function BackToTopButton({
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<Button onClick={scrollToTop} className={className} {...props}>
-							<span>Back to Top</span>
+							<span>Scroll to Top</span>
 						</Button>
 					</TooltipTrigger>
 					<TooltipContent side="bottom" sideOffset={6}>
