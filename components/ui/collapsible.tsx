@@ -22,7 +22,7 @@ function CollapsibleContent({
 	animate = true,
 	...props
 }: CollapsibleContentProps) {
-	return <CollapsiblePrimitive.CollapsibleContent data-slot="collapsible-content" {...props} className={cn({
+	return <CollapsiblePrimitive.CollapsibleContent data-slot="collapsible-content" {...props} className={cn(props.className, {
 		"overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down": animate
 	})} />
 }
