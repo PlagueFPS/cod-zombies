@@ -581,11 +581,35 @@ const zombieAttacksRegistry = {
 		description:
 			"Siphons element 115 from the Conversion Generators, disabling them if fully drained.",
 	},
+	ravage: {
+		id: "ravage",
+		title: "Ravage",
+		range: "Short",
+		description:
+			"Eats left over ground loot, sprinting and teleporting underground when full.",
+	},
+	maul: {
+		id: "maul",
+		title: "Maul",
+		range: "Short",
+		description:
+			"Bites or claw swipes nearby enemies, dealing significant damage and leaving a Damage Over Time effect on the player.",
+	},
+	beeSwarm: {
+		id: "bee-swarm",
+		title: "Bee Swarm",
+		range: "Long",
+		description:
+			"Launches a swarm of bees that follow the player until destroyed, dealing damage and slowing the affected player.",
+	},
 } as const satisfies Record<string, ZombieAttack>
 
 /** Union type of all zombie attacks */
 export type ZombieAttackKey = keyof typeof zombieAttacksRegistry
 export const {
+	maul,
+	beeSwarm,
+	ravage,
 	meleeSwing,
 	acidExplosion,
 	aerialBomber,

@@ -3,6 +3,7 @@ import {
   alphaOmega,
   ancientEvil,
   ascension,
+  ashesOfTheDamned,
   bloodOfTheDead,
   buried,
   callOfTheDead,
@@ -39,8 +40,6 @@ import {
 interface MainQuestComingSoon {
   /** The unique identifier of the main quest */
   id: string
-  /** The title of the main quest */
-  title: string
   /** The state of the main quest */
   state: "Coming Soon"
   /** The difficulty of the main quest */
@@ -267,6 +266,12 @@ const mainQuestRegistry = {
     map: reckoning,
     content: () => import("@/content/main-quests/reckoning.mdx"),
   },
+  ashesOfTheDamnedMainQuest: {
+    id: "ashes-of-the-damned",
+    state: "Coming Soon",
+    map: ashesOfTheDamned,
+    content: () => import("@/content/main-quests/ashes-of-the-damned.mdx"),
+  }
 } as const satisfies Record<string, MainQuest>
 
 const mainQuestMap = new Map<string, MainQuest>()

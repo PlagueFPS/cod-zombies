@@ -118,6 +118,10 @@ const weakPointsRegistry = {
 		id: "jetpack",
 		title: "Jetpack",
 	},
+	beeNests: {
+		id: "bee-nests",
+		title: "Bee Nests",
+	},
 } as const satisfies Record<string, WeakPoint>
 
 /** Union type of all weak points */
@@ -151,4 +155,5 @@ export const {
 	attachedZombies,
 	glowingLights,
 	jetpack,
+	beeNests,
 } = weakPointsRegistry

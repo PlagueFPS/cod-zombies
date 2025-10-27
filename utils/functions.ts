@@ -11,6 +11,7 @@ import {
 	TokenGenerationError,
 	TokenVerificationError,
 } from "@/types/errors"
+import { DATE_OPTIONS } from "./constants"
 import { slugify } from "./functions.client"
 
 /**
@@ -35,8 +36,19 @@ export const getServerUrl = () => {
  * @returns The last updated date of the file.
  */
 export const getLastUpdated = (filePath: string) => {
-	const { lastModified, lastModifiedFormatted } = files[filePath as keyof typeof files]
-	return { lastModified, lastModifiedFormatted }
+	const fileData = files[filePath as keyof typeof files]
+	if (!fileData) {
+		console.warn(`Missing last-modified data for file ${filePath}`)
+		return {
+			lastModified: new Date().toISOString(),
+			lastModifiedFormatted: new Date().toLocaleDateString(undefined, DATE_OPTIONS),
+		}
+	}
+
+	return {
+		lastModified: fileData.lastModified,
+		lastModifiedFormatted: fileData.lastModifiedFormatted,
+	}
 }
 
 /**

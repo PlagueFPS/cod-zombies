@@ -5,6 +5,7 @@ import {
 	blackOps3,
 	blackOps4,
 	blackOps6,
+	blackOps7,
 	blackOpsColdWar,
 	type Game,
 	worldAtWar,
@@ -388,10 +389,20 @@ const mapRegistry = {
 		image: "/maps/reckoning.webp",
 		game: blackOps6,
 	},
+	ashesOfTheDamned: {
+		id: "ashes-of-the-damned",
+		title: "Ashes of the Damned",
+		releaseDate: new Date("November 14, 2025 7:00 AM"),
+		description:
+			"A new world, a new enemy and some strangely familiar allies. Uncover the secrets of the Dark Aether's most dangerous corner and face the primordial power of its ancient guardian.",
+		image: "/maps/ashes-of-the-damned.webp",
+		game: blackOps7,
+	}
 } as const satisfies Record<string, Maps>
 
 export type MapKey = keyof typeof mapRegistry
 export const {
+	ashesOfTheDamned,
 	nachtDerUntoten,
 	verruckt,
 	derEisendrache,
