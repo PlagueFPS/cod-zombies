@@ -147,14 +147,6 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	)
 }
 
-const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
-	if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
-
-	const x = e.latlng.lng / imageDimensions.width
-	const y = 1 - e.latlng.lat / imageDimensions.height // Flip y back to normal
-	console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
-}
-
 function MapController({
 	imageDimensions,
 	mapLayers,
@@ -163,6 +155,14 @@ function MapController({
 }: MapController) {
 	const map = useMap()
 	const isMobile = useIsMobile()
+
+	const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
+		if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
+
+		const x = e.latlng.lng / imageDimensions.width
+		const y = 1 - e.latlng.lat / imageDimensions.height // Flip y back to normal
+		console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
+	}
 
 	useMapEvents({
 		click: logClickCoordinates(imageDimensions),

@@ -92,10 +92,18 @@ export const MARKER_TYPES = [
 	"document",
 	"janus-crate",
 	"vaccum-seal-device",
+	"loot-bin"
 ] as const
 
 // All static markers that appear on multiple maps/layers
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+	"loot-bin": {
+		id: "loot-bin",
+		title: "Loot Bin",
+		category: "objectives",
+		description: "Interacting with a loot bin has a chance to grant you any item, e.g. Perks, Aether Tools, Ray Guns, and Aetherium Crystals.",
+		icon: "/icons/objectives/loot-bin.webp",
+	},
 	"vaccum-seal-device": {
 		id: "vaccum-seal-device",
 		category: "objectives",
@@ -528,4 +536,4 @@ export const weapons: Record<Weapons, Marker> = {
 }
 
 export const generateMarkerKey = (layerId: string, markerId: string, location: Location) =>
-	`${layerId}-${markerId}-${location.x}-${location.y}`
+	`${layerId}-${markerId}-${location.x}-${location.y}-${location.title}-${location.description}`
