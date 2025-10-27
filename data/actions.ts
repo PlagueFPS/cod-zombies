@@ -2,7 +2,7 @@
 import { Effect } from "effect"
 import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/data/email"
 import { submitFeedback } from "@/data/feedback"
-import { createRatelimitAction } from "@/lib/action-helpers"
+import { createAction } from "@/lib/action-helpers"
 import { Email } from "@/lib/services/emails"
 import {
 	ContactFormSchema,
@@ -10,7 +10,7 @@ import {
 	NewsletterFormSchema,
 } from "@/utils/validation-schemas"
 
-export const subscribeToNewsletter = createRatelimitAction(
+export const subscribeToNewsletter = createAction(
 	NewsletterFormSchema,
 	async ({ email }) => {
 		return await requestSubscribe(email).pipe(
@@ -37,7 +37,7 @@ export const subscribeToNewsletter = createRatelimitAction(
 	},
 )
 
-export const unsubscribeFromNewsletter = createRatelimitAction(
+export const unsubscribeFromNewsletter = createAction(
 	NewsletterFormSchema,
 	async ({ email }) => {
 		return await requestUnsubscribe(email).pipe(
@@ -64,7 +64,7 @@ export const unsubscribeFromNewsletter = createRatelimitAction(
 	},
 )
 
-export const submitFeedbackForm = createRatelimitAction(FeedbackFormSchema, async parsedInput => {
+export const submitFeedbackForm = createAction(FeedbackFormSchema, async parsedInput => {
 	return await submitFeedback(parsedInput).pipe(
 		Effect.withLogSpan("submit_feedback_form_action"),
 		Effect.timeout("10 seconds"),
@@ -80,7 +80,7 @@ export const submitFeedbackForm = createRatelimitAction(FeedbackFormSchema, asyn
 	)
 })
 
-export const submitContactForm = createRatelimitAction(ContactFormSchema, async parsedInput => {
+export const submitContactForm = createAction(ContactFormSchema, async parsedInput => {
 	return await sendContactEmail(parsedInput).pipe(
 		Effect.withLogSpan("submit_contact_form_action"),
 		Effect.timeout("10 seconds"),

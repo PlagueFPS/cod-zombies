@@ -1,7 +1,5 @@
 "use client"
-import { ArrowUp } from "lucide-react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
-import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
 import Shortcut from "../shortcut/shortcut"
 import { Button, type ButtonProps } from "../ui/button"
@@ -40,36 +38,22 @@ export default function BackToTopButton({
 	useShortcut("alt+t", scrollToTop)
 
 	return (
-		<>
-			{mobile ? (
-				<Button
-					onClick={scrollToTop}
-					size="icon"
-					className={cn("fixed right-4 bottom-16 z-20 rounded-full", className)}
-					title="Back to Top"
-					{...props}
-				>
-					<ArrowUp className="size-6" />
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<Button onClick={scrollToTop} className={className} {...props}>
+					<span>Scroll to Top</span>
 				</Button>
-			) : (
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button onClick={scrollToTop} className={className} {...props}>
-							<span>Back to Top</span>
-						</Button>
-					</TooltipTrigger>
-					<TooltipContent side="bottom" sideOffset={6}>
-						<div className="flex items-center gap-1">
-							<Shortcut
-								shortcuts={IS_MAC_OS ? ["Option", "T"] : ["Alt", "T"]}
-								size="sm"
-								variant="ghost"
-							/>
-							<span>to scroll to top</span>
-						</div>
-					</TooltipContent>
-				</Tooltip>
-			)}
-		</>
+			</TooltipTrigger>
+			<TooltipContent side="bottom" sideOffset={6}>
+				<div className="flex items-center gap-1">
+					<Shortcut
+						shortcuts={IS_MAC_OS ? ["Option", "T"] : ["Alt", "T"]}
+						size="sm"
+						variant="ghost"
+					/>
+					<span>to scroll to top</span>
+				</div>
+			</TooltipContent>
+		</Tooltip>
 	)
 }
