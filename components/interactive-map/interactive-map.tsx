@@ -180,9 +180,7 @@ function MapController({
 	return (
 		<ButtonGroup
 			orientation={isMobile ? "vertical" : "horizontal"}
-			className={cn("fixed top-28 right-4 z-500 md:top-18 lg:right-8 bg-background rounded-md", {
-				"top-20": isMobile,
-			})}
+			className={cn("absolute top-4 right-4 z-500 lg:right-8 bg-background rounded-md w-10 md:w-fit")}
 		>
 			<Tooltip>
 				<TooltipTrigger asChild>
