@@ -664,6 +664,88 @@ const reckoning: MapConfig = {
 					locations: [{ x: 0.319, y: 0.640 }]
 				}
 			]
+		},
+		{
+			id: "t3-dark-aether-elements-vault-1-layer",
+			title: "T3 Dark Aether Elements Vault 1",
+			image: "/layers/reckoning/t3-dark-aether-elements-vault-1.webp",
+			markers: [
+				{
+					id: "t3-dark-aether-elements-vault-1",
+					title: "T3 Dark Aether Elements Vault 1",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.509, y: 0.253 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [{ x: 0.501, y: 0.477 }, { x: 0.230, y: 0.510 }]
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [{ x: 0.656, y: 0.406 }]
+				}
+			]
+		},
+		{
+			id: "t3-dark-aether-elements-vault-2-layer",
+			title: "T3 Dark Aether Elements Vault 2",
+			image: "/layers/reckoning/t3-dark-aether-elements-vault-2.webp",
+			markers: [
+				{
+					id: "t3-dark-aether-elements-vault-2",
+					title: "T3 Dark Aether Elements Vault 2",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.498, y: 0.325 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [{ x: 0.501, y: 0.477 }, { x: 0.762, y: 0.631 }]
+				},
+				{
+					...sharedMarkers.document,
+					locations: [{ x: 0.448, y: 0.254, title: "Misdirection Pt. 2" }]
+				},
+				{
+					...perks["der-wunderfizz"],
+					locations: [{ x: 0.291, y: 0.506 }]
+				}
+			]
+		},
+		{
+			id: "t3-rooftop-layer",
+			title: "T3 Rooftop",
+			image: "/layers/reckoning/t3-rooftop.webp",
+			markers: [
+				{
+					id: "t3-rooftop",
+					title: "T3 Rooftop",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.519, y: 0.451 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [
+						{ x: 0.518, y: 0.365 },
+						{ x: 0.367, y: 0.714 },
+						{ x: 0.710, y: 0.567 },
+						{ x: 0.709, y: 0.183 },
+						{ x: 0.306, y: 0.214 },
+					]
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [{ x: 0.243, y: 0.340, title: "The Great Voice From Beyond" }]
+				}
+			]
 		}
 	],
 }
