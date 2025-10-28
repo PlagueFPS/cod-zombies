@@ -26,11 +26,8 @@ export interface ImageDimensions {
 	height: number
 }
 
-export interface MapController {
+interface MapController {
 	imageDimensions: ImageDimensions | null
-	mapLayers: MapLayer[]
-	currentLayer: MapLayer
-	setCurrentLayer: React.Dispatch<React.SetStateAction<MapLayer | null>>
 }
 
 interface IInteractiveMap {
@@ -38,10 +35,10 @@ interface IInteractiveMap {
 }
 
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
-	const { includeParams, excludeParams, isIncluded } = useMapSearchParams()
+	const { layerParam, includeParams, excludeParams, isIncluded } = useMapSearchParams()
 	const { settings } = useMapSettings()
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-	const [currentLayer, setCurrentLayer] = useState<MapLayer | null>(mapConfig.layers[0] ?? null)
+	const currentLayer = mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0)
 
 	useEffect(() => {
 		const loadImageDimensions = () => {
@@ -117,12 +114,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			zoomAnimation={!settings.general.disableZoomAnimation}
 			markerZoomAnimation={!settings.general.disableZoomAnimation}
 		>
-			{/*<MapController
-				imageDimensions={imageDimensions}
-				mapLayers={mapConfig.layers}
-				currentLayer={currentLayer}
-				setCurrentLayer={setCurrentLayer}
-			/>*/}
+			<MapController imageDimensions={imageDimensions} />
 			{imageDimensions && (
 				<ImageOverlay key={currentLayer.id} url={currentLayer.image} bounds={getImageBounds()} />
 			)}
@@ -148,10 +140,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 }
 
 function MapController({
-	imageDimensions,
-	mapLayers,
-	currentLayer,
-	setCurrentLayer,
+	imageDimensions
 }: MapController) {
 	const map = useMap()
 	const isMobile = useIsMobile()
@@ -192,23 +181,9 @@ function MapController({
 		<ButtonGroup
 			orientation={isMobile ? "vertical" : "horizontal"}
 			className={cn("fixed top-28 right-4 z-500 md:top-18 lg:right-8 bg-background rounded-md", {
-				"top-20": mapLayers.length === 1 || isMobile,
+				"top-20": isMobile,
 			})}
 		>
-			{mapLayers.length > 1 &&
-				mapLayers.map(layer => (
-					<Button
-						key={layer.id}
-						variant="outline"
-						size="lg"
-						onClick={() => setCurrentLayer(layer)}
-						className={cn({
-							"dark:bg-input/60": currentLayer.id === layer.id,
-						})}
-					>
-						{layer.title}
-					</Button>
-				))}
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button

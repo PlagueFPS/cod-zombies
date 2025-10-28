@@ -59,7 +59,7 @@ export default async function InteractiveMapPage({ params }: PageProps<"/maps/[i
   if (!config || config.state === "Coming Soon") notFound()
   const availableMaps = getAvailableMaps()
   const state = cookieStore.get("sidebar_state")?.value
-  const defaultOpen = !state ? true : state === "true"
+  const defaultOpen = state === undefined ? true : state === "true"
   const groups: Record<MarkerCategory, Set<string>> = {
     general: new Set(),
     equipment: new Set(),
@@ -104,7 +104,7 @@ export default async function InteractiveMapPage({ params }: PageProps<"/maps/[i
         <MapSidebar
           groups={groups}
           availableMaps={availableMaps}
-          mapMarkers={config.layers[0]?.markers ?? []}
+          mapLayers={config.layers}
         />
       </Suspense>
       <div className="h-svh w-svw">

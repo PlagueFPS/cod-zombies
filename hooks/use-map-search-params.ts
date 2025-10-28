@@ -5,7 +5,7 @@ export const useMapSearchParams = () => {
 	const searchParams = useSearchParams()
 	const includeParams = searchParams.getAll("include")
 	const excludeParams = searchParams.getAll("exclude")
-	const searchTerm = searchParams.get("search") || ""
+	const layerParam = searchParams.get("layer") || ""
 
 	const updateURLParams = (params: URLSearchParams) => {
 		window.history.replaceState(null, "", `?${params.toString()}`)
@@ -60,7 +60,7 @@ export const useMapSearchParams = () => {
 		searchParams,
 		includeParams,
 		excludeParams,
-		searchTerm,
+		layerParam,
 		createParams,
 		updateURLParams,
 		toggleIncludeParam,

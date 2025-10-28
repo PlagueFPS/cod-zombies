@@ -10,7 +10,7 @@ const reckoning: MapConfig = {
 		"Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our Reckoning interactive map in Black Ops 6 Zombies.",
 	layers: [
 		{
-			id: "t1-project-janus-reception-layer",
+			id: "t1-project-janus-reception",
 			title: "T1 Project Janus Reception",
 			image: "/layers/reckoning/t1-project-janus-reception.webp",
 			markers: [
@@ -106,7 +106,7 @@ const reckoning: MapConfig = {
 			],
 		},
 		{
-			id: "t1-mutant-research-lab-layer",
+			id: "t1-mutant-research-lab",
 			title: "T1 Mutant Research Lab",
 			image: "/layers/reckoning/t1-mutant-research-lab.webp",
 			markers: [
@@ -203,7 +203,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t1-quantum-computing-core-layer",
+			id: "t1-quantum-computing-core",
 			title: "T1 Quantum Computing Core",
 			image: "/layers/reckoning/t1-quantum-computing-core.webp",
 			markers: [
@@ -305,7 +305,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t1-executive-suite-layer",
+			id: "t1-executive-suite",
 			title: "T1 Executive Suite",
 			image: "/layers/reckoning/t1-executive-suites.webp",
 			markers: [
@@ -416,7 +416,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t2-android-assembly-layer",
+			id: "t2-android-assembly",
 			title: "T2 Android Assembly",
 			image: "/layers/reckoning/t2-android-assembly.webp",
 			markers: [
@@ -494,7 +494,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t2-dark-entity-containment-layer",
+			id: "t2-dark-entity-containment",
 			title: "T2 Dark Entity Containment",
 			image: "/layers/reckoning/t2-dark-entity-containment.webp",
 			markers: [
@@ -571,7 +571,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t2-teleportation-lab-layer",
+			id: "t2-teleportation-lab",
 			title: "T2 Teleportation Lab",
 			image: "/layers/reckoning/t2-teleportation-lab.webp",
 			markers: [
@@ -606,7 +606,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t2-sublevel-10-layer",
+			id: "t2-sublevel-10",
 			title: "T2 Sublevel 10",
 			image: "/layers/reckoning/t2-sublevel-10.webp",
 			markers: [
@@ -666,7 +666,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t3-dark-aether-elements-vault-1-layer",
+			id: "t3-dark-aether-elements-vault-1",
 			title: "T3 Dark Aether Elements Vault 1",
 			image: "/layers/reckoning/t3-dark-aether-elements-vault-1.webp",
 			markers: [
@@ -690,7 +690,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t3-dark-aether-elements-vault-2-layer",
+			id: "t3-dark-aether-elements-vault-2",
 			title: "T3 Dark Aether Elements Vault 2",
 			image: "/layers/reckoning/t3-dark-aether-elements-vault-2.webp",
 			markers: [
@@ -718,7 +718,7 @@ const reckoning: MapConfig = {
 			]
 		},
 		{
-			id: "t3-rooftop-layer",
+			id: "t3-rooftop",
 			title: "T3 Rooftop",
 			image: "/layers/reckoning/t3-rooftop.webp",
 			markers: [
