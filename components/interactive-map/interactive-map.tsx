@@ -117,12 +117,12 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			zoomAnimation={!settings.general.disableZoomAnimation}
 			markerZoomAnimation={!settings.general.disableZoomAnimation}
 		>
-			<MapController
+			{/*<MapController
 				imageDimensions={imageDimensions}
 				mapLayers={mapConfig.layers}
 				currentLayer={currentLayer}
 				setCurrentLayer={setCurrentLayer}
-			/>
+			/>*/}
 			{imageDimensions && (
 				<ImageOverlay key={currentLayer.id} url={currentLayer.image} bounds={getImageBounds()} />
 			)}

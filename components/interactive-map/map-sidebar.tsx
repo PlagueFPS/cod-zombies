@@ -20,6 +20,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
+import { Select, SelectTrigger, SelectContent, SelectGroup, SelectLabel, SelectValue, SelectItem } from "../ui/select"
 import { Input } from "../ui/input"
 import { Separator } from "../ui/separator"
 import {
@@ -127,27 +128,27 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 			<SidebarHeader className="border-b bg-background">
 				<SidebarMenu>
 					<SidebarMenuItem className="flex items-center gap-2">
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<SidebarMenuButton className="cursor-pointer border border-input bg-input/30 hover:bg-input/50">
-									<span className="font-semibold tracking-tight">{currentMap}</span>
-									<ChevronDown className="ml-auto" />
-								</SidebarMenuButton>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent className="z-900">
-								{availableMaps.map(map => (
-									<DropdownMenuItem
-										key={map}
-										className={cn({ "pointer-events-none": map === id })}
-										onClick={() => handleClick(map)}
-									>
-										<span className={cn({ "text-muted-foreground": map === id })}>
-											{capitalize(map)}
-										</span>
-									</DropdownMenuItem>
-								))}
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<Select value={currentMap} onValueChange={handleClick}>
+							<SelectTrigger className="w-full border border-input bg-input/30 hover:bg-input/50">
+								<SelectValue>{currentMap}</SelectValue>
+							</SelectTrigger>
+							<SelectContent className="z-900">
+								<SelectGroup>
+									<SelectLabel>Available Maps</SelectLabel>
+									{availableMaps.map(map => (
+										<SelectItem
+											key={map}
+											className={cn({ "pointer-events-none": map === id })}
+											value={map}
+										>
+											<span className={cn({ "text-muted-foreground": map === id })}>
+												{capitalize(map)}
+											</span>
+										</SelectItem>
+									))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 						<SidebarTrigger className="ml-auto" />
 					</SidebarMenuItem>
 				</SidebarMenu>
