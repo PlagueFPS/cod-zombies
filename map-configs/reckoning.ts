@@ -414,6 +414,256 @@ const reckoning: MapConfig = {
 					locations: [{ x: 0.555, y: 0.333 }]
 				}
 			]
+		},
+		{
+			id: "t2-android-assembly-layer",
+			title: "T2 Android Assembly",
+			image: "/layers/reckoning/t2-android-assembly.webp",
+			markers: [
+				{
+					id: "t2-android-assembly",
+					title: "T2 Android Assembly",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.493, y: 0.411 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [
+						{ x: 0.375, y: 0.407 },
+						{ x: 0.531, y: 0.676 }
+					]
+				},
+				{
+					...sharedMarkers["armor-wall-buy"],
+					locations: [{ x: 0.572, y: 0.161, title: "Tier II Armor Wall Buy" }]
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [{ x: 0.671, y: 0.428 }]
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [{ x: 0.735, y: 0.718, title: "Reactive Pt. 3"}]
+				},
+				{
+					...sharedMarkers.document,
+					locations: [{ x: 0.655, y: 0.138, title: "Saftey Measures", description: "Shoot the briefcase one of the Klauses is holding to obtain the document." }]
+				},
+				{
+					...sharedMarkers["door-buy"],
+					locations: [{ x: 0.216, y: 0.495 }]
+				},
+				{
+					...sharedMarkers["fast-travel"],
+					locations: [
+						{ x: 0.192, y: 0.493, title: "Aether Elevator", description: "Travel to T2 Dark Entity Containment" },
+						{ x: 0.767, y: 0.218, title: "Aether Launcher", description: "Top Launcher to T1 Mutant Research Lab; Bottom Launcher to T1 Quantum Computing Core" },
+					]
+				},
+				{
+					...sharedMarkers["gobblegum-machine"],
+					locations: [{ x: 0.631, y: 0.308 }]
+				},
+				{
+					...sharedMarkers["janus-crate"],
+					locations: [{ x: 0.356, y: 0.437 }]
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [{ x: 0.221, y: 0.430 }]
+				},
+				{
+					...sharedMarkers["vaccum-seal-device"],
+					locations: [{ x: 0.382, y: 0.796 }]
+				},
+				{
+					...perks["double-tap"],
+					locations: [{ x: 0.458, y: 0.491 }]
+				},
+				{
+					...perks["der-wunderfizz"],
+					locations: [{ x: 0.439, y: 0.731 }]
+				},
+				{
+					...weapons["ak-74"],
+					locations: [{ x: 0.307, y: 0.593 }]
+				}
+			]
+		},
+		{
+			id: "t2-dark-entity-containment-layer",
+			title: "T2 Dark Entity Containment",
+			image: "/layers/reckoning/t2-dark-entity-containment.webp",
+			markers: [
+				{
+					id: "t2-dark-entity-containment",
+					title: "T2 Dark Entity Containment",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.492, y: 0.492 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [
+						{ x: 0.391, y: 0.515 },
+						{ x: 0.588, y: 0.397 }
+					]
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [{ x: 0.575, y: 0.676 }]
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [{ x: 0.395, y: 0.356, title: "The Forespoken" }]
+				},
+				{
+					...sharedMarkers["crafting-table"],
+					locations: [{ x: 0.648, y: 0.714 }]
+				},
+				{
+					...sharedMarkers["fast-travel"],
+					locations: [
+						{ x: 0.216, y: 0.501, title: "Aether Elevator", description: "Travel to T2 Android Assembly" },
+						{ x: 0.740, y: 0.252, title: "Aether Launcher", description: "Travel to T1 Executive Suite" },
+					]
+				},
+				{
+					...sharedMarkers["gobblegum-machine"],
+					locations: [{ x: 0.354, y: 0.427 }]
+				},
+				{
+					...sharedMarkers["janus-crate"],
+					locations: [{ x: 0.602, y: 0.230 }]
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [{ x: 0.593, y: 0.604 }]
+				},
+				{
+					...sharedMarkers.portal,
+					locations: [{ x: 0.691, y: 0.693, description: "Travel to T2 Teleportation Lab" }]
+				},
+				{
+					...sharedMarkers.trap,
+					locations: [
+						{ x: 0.748, y: 0.370, title: "C.A.S.T.E.R. Turret" },
+						{ x: 0.620, y: 0.244, title: "C.A.S.T.E.R. Turret" },
+					]
+				},
+				{
+					...sharedMarkers["vaccum-seal-device"],
+					locations: [{ x: 0.285, y: 0.595 }]
+				},
+				{
+					...perks["stamin-up"],
+					locations: [{ x: 0.586, y: 0.230 }]
+				},
+				{
+					...weapons.xm4,
+					locations: [{ x: 0.723, y: 0.579 }]
+				},
+			]
+		},
+		{
+			id: "t2-teleportation-lab-layer",
+			title: "T2 Teleportation Lab",
+			image: "/layers/reckoning/t2-teleportation-lab.webp",
+			markers: [
+				{
+					id: "t2-teleportation-lab",
+					title: "T2 Teleportation Lab",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.560, y: 0.493 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [{ x: 0.497, y: 0.589 }]
+				},
+				{
+					...sharedMarkers.portal,
+					locations: [
+						{ x: 0.346, y: 0.490, description: "Travel to T2 Dark Entity Containment" },
+						{ x: 0.659, y: 0.493, description: "Travel to Tower 3" }
+					]
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [{ x: 0.618, y: 0.551, title: "Dysphoria" }]
+				},
+				{
+					...sharedMarkers["vaccum-seal-device"],
+					locations: [{ x: 0.496, y: 0.440 }]
+				}
+			]
+		},
+		{
+			id: "t2-sublevel-10-layer",
+			title: "T2 Sublevel 10",
+			image: "/layers/reckoning/t2-sublevel-10.webp",
+			markers: [
+				{
+					id: "t2-sublevel-10",
+					title: "T2 Sublevel 10",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.480, y: 0.502 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [{ x: 0.633, y: 0.417 }]
+				},
+				{
+					...sharedMarkers.portal,
+					locations: [
+						{ x: 0.195, y: 0.492, description: "Travel to T1 Director's Office" },
+						{ x: 0.829, y: 0.500, description: "Travel to T1 Project Janus Reception" }
+					]
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [{ x: 0.321, y: 0.337, title: "Reactive Pt. 2" }]
+				},
+				{
+					...sharedMarkers["armor-wall-buy"],
+					locations: [{ x: 0.684, y: 0.393, title: "Tier III Armor Wall Buy" }]
+				},
+				{
+					...sharedMarkers["crafting-table"],
+					locations: [{ x: 0.690, y: 0.525 }]
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [{ x: 0.345, y: 0.350 }]
+				},
+				{
+					...sharedMarkers["pack-a-punch"],
+					locations: [
+						{ x: 0.422, y: 0.419 },
+						{ x: 0.551, y: 0.424 },
+						{ x: 0.419, y: 0.585 },
+						{ x: 0.552, y: 0.585 }
+					]
+				},
+				{
+					...perks["vulture-aid"],
+					locations: [{ x: 0.646, y: 0.623 }]
+				},
+				{
+					...weapons.xmg,
+					locations: [{ x: 0.319, y: 0.640 }]
+				}
+			]
 		}
 	],
 }
