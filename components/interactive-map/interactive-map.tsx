@@ -41,8 +41,8 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const currentLayer = mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0)
 
 	useEffect(() => {
-		const loadImageDimensions = () => {
-			mapConfig.layers.forEach(async layer => {
+		if (!currentLayer) return
+		const loadImageDimensions = async () => {
 				try {
 					const img = new Image()
 					img.crossOrigin = "anonymous"
@@ -56,16 +56,15 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 							resolve(img)
 						}
 						img.onerror = reject
-						img.src = layer.image
+						img.src = currentLayer.image
 					})
 				} catch (error) {
 					console.error(`Failed to load map:`, error)
 				}
-			})
 		}
 
 		loadImageDimensions()
-	}, [mapConfig.layers])
+	}, [currentLayer])
 
 	if (!currentLayer) return null
 
