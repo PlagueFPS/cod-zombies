@@ -104,6 +104,316 @@ const reckoning: MapConfig = {
 					locations: [{ x: 0.497, y: 0.469 }]
 				}
 			],
+		},
+		{
+			id: "t1-mutant-research-lab-layer",
+			title: "T1 Mutant Research Lab",
+			image: "/layers/reckoning/t1-mutant-research-lab.webp",
+			markers: [
+				{
+					id: "t1-mutant-research-lab",
+					title: "T1 Mutant Research Lab",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.503, y: 0.480 }]
+				},
+				{
+					id: "t1-bioweapons-lab",
+					title: "T1 Bioweapons Lab",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.234, y: 0.501 }]
+				},
+				{
+					id: "t1-mutant-research-test-area",
+					title: "T1 Mutant Research Test Area",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: null,
+					locations: [{ x: 0.296, y: 0.316 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [{ x: 0.178, y: 0.549 }]
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [{ x: 0.326, y: 0.217 }],
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [
+						{ x: 0.176, y: 0.474, title: "Whistleblower", description: "You must be playing as Weaver, and reach Round 13 without entering the T1 Mutant Research Lab, then enter the lab to claim this audio log." },
+						{ x: 0.318, y: 0.598, title: "Momgenes" },
+						{ x: 0.381, y: 0.797, title: "The Things I've Seen Pt. 1" },
+					]
+				},
+				{
+					...sharedMarkers["crafting-table"],
+					locations: [{ x: 0.663, y: 0.373 }],
+				},
+				{
+					...sharedMarkers.document,
+					locations: [{ x: 0.647, y: 0.357, title: "Mangler Matrix" }]
+				},
+				{
+					...sharedMarkers["door-buy"],
+					locations: [
+						{ x: 0.368, y: 0.646 },
+						{ x: 0.331, y: 0.499 },
+						{ x: 0.396, y: 0.240 },
+					]
+				},
+				{
+					...sharedMarkers["fast-travel"],
+					locations: [
+						{ x: 0.508, y: 0.213, title: "Aether Elevator", description: "Travel to T1 Project Janus Reception" },
+						{ x: 0.217, y: 0.793, title: "Aether Launcher", description: "Travel to T2 Android Assembly" },
+					]
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [{ x: 0.112, y: 0.518 }]
+				},
+				{
+					...sharedMarkers["vaccum-seal-device"],
+					locations: [{ x: 0.316, y: 0.298 }]
+				},
+				{
+					...perks["deadshot-daiquiri"],
+					locations: [{ x: 0.683, y: 0.600 }]
+				},
+				{
+					...perks["phd-flopper"],
+					locations: [{ x: 0.300, y: 0.388 }]
+				},
+				{
+					...weapons["pp-919"],
+					locations: [{ x: 0.553, y: 0.304 }]
+				},
+				{
+					...weapons["marine-sp"],
+					locations: [{ x: 0.300, y: 0.412 }]
+				}
+			]
+		},
+		{
+			id: "t1-quantum-computing-core-layer",
+			title: "T1 Quantum Computing Core",
+			image: "/layers/reckoning/t1-quantum-computing-core.webp",
+			markers: [
+				{
+					id: "t1-quantum-computing-core",
+					title: "T1 Quantum Computing Core",
+					description: "",
+					icon: null,
+					category: "general",
+					type: "label",
+					locations: [{ x: 0.504, y: 0.500 }]
+				},
+				{
+					id: "t1-quantum-computing-lab",
+					title: "T1 Quantum Computing Lab",
+					description: "",
+					icon: null,
+					category: "general",
+					type: "label",
+					locations: [{ x: 0.270, y: 0.482 }]
+				},
+				{
+					id: "aetheric-flora",
+					title: "Aetheric Flora",
+					description: "Aetheric Flora used to charge the Cyst for the Gorgofex.",
+					icon: "/icons/objectives/aetheric-flora.webp",
+					category: "objectives",
+					locations: [
+						{ x: 0.402, y: 0.722 },
+						{ x: 0.335, y: 0.828 },
+						{ x: 0.235, y: 0.505 },
+					]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [{ x: 0.542, y: 0.549 }]
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [{ x: 0.633, y: 0.357 }]
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [{ x: 0.312, y: 0.597, title: "Play to Win"}]
+				},
+				{
+					...sharedMarkers["crafting-table"],
+					locations: [{ x: 0.173, y: 0.457 }]
+				},
+				{
+					...sharedMarkers.document,
+					locations: [{ x: 0.604, y: 0.356, title: "Department Head", description: "Parachute down from T1 Mutant Research Lab to obtain this document." }]
+				},
+				{
+					...sharedMarkers["door-buy"],
+					locations: [{ x: 0.363, y: 0.359 }, { x: 0.397, y: 0.746 }]
+				},
+				{
+					...sharedMarkers.exfil,
+					locations: [{ x: 0.483, y: 0.555 }]
+				},
+				{
+					...sharedMarkers["fast-travel"],
+					locations: [{ x: 0.504, y: 0.817, title: "Aether Elevator", description: "Travel to T1 Project Janus Reception" }, {
+						x: 0.237, y: 0.764, title: "Aether Launcher", description: "Travel to T2 Android Assembly"
+					}]
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [{ x: 0.320, y: 0.281 }]
+				},
+				{
+					...sharedMarkers.trap,
+					locations: [
+						{ x: 0.468, y: 0.678, title: "C.A.S.T.E.R Turret" },
+						{ x: 0.379, y: 0.354, title: "C.A.S.T.E.R Turret" },
+					]
+				},
+				{
+					...sharedMarkers["vaccum-seal-device"],
+					locations: [{ x: 0.259, y: 0.370 }]
+				},
+				{
+					...perks["melee-macchiato"],
+					locations: [{ x: 0.371, y: 0.548 }]
+				},
+				{
+					...perks["speed-cola"],
+					locations: [{ x: 0.063, y: 0.453 }]
+				},
+				{
+					...weapons["tanto.22"],
+					locations: [{ x: 0.466, y: 0.542 }]
+				},
+				{
+					...weapons["asg-89"],
+					locations: [{ x: 0.275, y: 0.453 }]
+				},
+			]
+		},
+		{
+			id: "t1-executive-suite-layer",
+			title: "T1 Executive Suite",
+			image: "/layers/reckoning/t1-executive-suites.webp",
+			markers: [
+				{
+					id: "t1-executive-suite",
+					title: "T1 Executive Suite",
+					description: "",
+					icon: null,
+					category: "general",
+					type: "label",
+					locations: [{ x: 0.503, y: 0.507 }]
+				},
+				{
+					id: "t1-directors-office",
+					title: "T1 Director's Office",
+					description: "",
+					icon: null,
+					category: "general",
+					type: "label",
+					locations: [{ x: 0.708, y: 0.324 }]
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					locations: [
+						{ x: 0.638, y: 0.650 },
+						{ x: 0.365, y: 0.197 }
+					]
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [{ x: 0.395, y: 0.265 }]
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [
+						{ x: 0.204, y: 0.657, title: "Reactive Pt. 1" },
+						{ x: 0.630, y: 0.337, title: "The Things I've Seen Pt. 2" },
+						{ x: 0.751, y: 0.405, title: "Misdirection Pt.1", description: "You must complete the 'Aether Blade' side quest to obtain this audio log." },
+					]
+				},
+				{
+					...sharedMarkers["crafting-table"],
+					locations: [{ x: 0.677, y: 0.529 }]
+				},
+				{
+					...sharedMarkers.document,
+					locations: [{ x: 0.757, y: 0.416, title: "Brainiac", description: "You must complete the 'Aether Blade' side quest to obtain this document." }]
+				},
+				{
+					...sharedMarkers["door-buy"],
+					locations: [
+						{ x: 0.270, y: 0.429 },
+						{ x: 0.659, y: 0.370 }
+					]
+				},
+				{
+					...sharedMarkers["fast-travel"],
+					locations: [
+						{ x: 0.236, y: 0.776, title: "Aether Launcher", description: "Travel to T2 Dark Entity Containment" }
+					]
+				},
+				{
+					...sharedMarkers["janus-crate"],
+					locations: [{ x: 0.677, y: 0.495 }]
+				},
+				{
+					...sharedMarkers["loot-bin"],
+					locations: [
+						{ x: 0.454, y: 0.672 },
+						{ x: 0.291, y: 0.618 },
+						{ x: 0.329, y: 0.493 },
+						{ x: 0.677, y: 0.609 },
+						{ x: 0.400, y: 0.334 },
+						{ x: 0.199, y: 0.426 },
+					]
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [{ x: 0.411, y: 0.672 }]
+				},
+				{
+					...sharedMarkers.portal,
+					locations: [
+						{ x: 0.795, y: 0.382, description: "Teleport to T2 Sublevel 10" },
+						{ x: 0.312, y: 0.197, description: "Teleport to T1 Project Janus Reception" }
+					]
+				},
+				{
+					...sharedMarkers["vaccum-seal-device"],
+					locations: [{ x: 0.394, y: 0.320 }]
+				},
+				{
+					...perks.juggernog,
+					locations: [{ x: 0.473, y: 0.636 }]
+				},
+				{
+					...perks["elemental-pop"],
+					locations: [{ x: 0.472, y: 0.175 }]
+				},
+				{
+					...weapons["tsarkov-7.62"],
+					locations: [{ x: 0.185, y: 0.654 }]
+				},
+				{
+					...weapons.svd,
+					locations: [{ x: 0.555, y: 0.333 }]
+				}
+			]
 		}
 	],
 }
