@@ -1,5 +1,5 @@
 "use client"
-import type { MapId } from "@/map-configs"
+import type { MapId, MapLayer } from "@/map-configs"
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
@@ -10,17 +10,11 @@ import Reddit from "@/components/SVGs/Reddit"
 import X from "@/components/SVGs/XSVG"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
-import { capitalize, slugify } from "@/utils/functions.client"
+import { capitalize } from "@/utils/functions.client"
 import ExternalLink from "../external-link/external-link"
 import ShareButton from "../share-button/share-button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
-import { Input } from "../ui/input"
+import { Select, SelectTrigger, SelectContent, SelectGroup, SelectLabel, SelectValue, SelectItem } from "../ui/select"
 import { Separator } from "../ui/separator"
 import {
 	Sidebar,
@@ -36,33 +30,22 @@ import {
 	SidebarTrigger,
 } from "../ui/sidebar"
 import { Switch } from "../ui/switch"
+import LayerSwitcher from "./layer-switcher"
 
 interface IMapSidebar {
 	availableMaps: MapId[]
 	groups: Record<MarkerCategory, Set<string>>
-	mapMarkers: MapMarker[]
+	mapLayers: MapLayer[]
 }
 
-export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSidebar) {
-	const { clearParam, toggleExcludeParam, createParams, searchTerm, updateURLParams, isIncluded } =
+export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSidebar) {
+	const { clearParam, toggleExcludeParam, createParams, layerParam, isIncluded } =
 		useMapSearchParams()
 	const { id } = useParams()
 	const [toggle, setToggle] = useState<"All" | "None">("None")
 	const router = useRouter()
 	const currentMap = capitalize(String(id))
-	const filteredGroups = Object.keys(groups).reduce(
-		(acc, category) => {
-			const filtered = new Set(
-				[...groups[category as MarkerCategory]].filter(value =>
-					value.includes(slugify(searchTerm)),
-				),
-			)
-
-			acc[category as MarkerCategory] = filtered
-			return acc
-		},
-		{} as Record<MarkerCategory, Set<string>>,
-	)
+	const mapMarkers = mapLayers.find(layer => layer.id === layerParam)?.markers ?? mapLayers.at(0)?.markers ?? []
 
 	const handleCheckedChange = (type: string) => {
 		toggleExcludeParam(type)
@@ -115,69 +98,52 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 		setToggle("All")
 	}
 
-	const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const params = createParams()
-		if (e.target.value) params.set("search", e.target.value)
-		else params.delete("search")
-		updateURLParams(params)
-	}
-
 	return (
 		<Sidebar side="left" collapsible="offcanvas" className="z-500 mt-16">
 			<SidebarHeader className="border-b bg-background">
 				<SidebarMenu>
 					<SidebarMenuItem className="flex items-center gap-2">
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<SidebarMenuButton className="cursor-pointer border border-input bg-input/30 hover:bg-input/50">
-									<span className="font-semibold tracking-tight">{currentMap}</span>
-									<ChevronDown className="ml-auto" />
-								</SidebarMenuButton>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent className="z-900">
-								{availableMaps.map(map => (
-									<DropdownMenuItem
-										key={map}
-										className={cn({ "pointer-events-none": map === id })}
-										onClick={() => handleClick(map)}
-									>
-										<span className={cn({ "text-muted-foreground": map === id })}>
-											{capitalize(map)}
-										</span>
-									</DropdownMenuItem>
-								))}
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<Select value={currentMap} onValueChange={handleClick}>
+							<SelectTrigger className="w-full border border-input bg-input/30 hover:bg-input/50">
+								<SelectValue>{currentMap}</SelectValue>
+							</SelectTrigger>
+							<SelectContent className="z-900">
+								<SelectGroup>
+									<SelectLabel>Available Maps</SelectLabel>
+									{availableMaps.map(map => (
+										<SelectItem
+											key={map}
+											className={cn({ "pointer-events-none": map === id })}
+											value={map}
+										>
+											<span className={cn({ "text-muted-foreground": map === id })}>
+												{capitalize(map)}
+											</span>
+										</SelectItem>
+									))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 						<SidebarTrigger className="ml-auto" />
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent className="bg-background [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-track]:bg-background [&::-webkit-scrollbar]:w-1.5">
-				<SidebarMenu className="px-4 pt-2">
-					<SidebarMenuItem>
-						<Input
-							type="search"
-							placeholder="Filter Search..."
-							aria-label="Filter Search"
-							value={searchTerm}
-							onChange={handleOnChange}
-						/>
-					</SidebarMenuItem>
-				</SidebarMenu>
+				{ mapLayers.length > 1 && (
+					<SidebarMenu className="px-4 pt-2">
+						<SidebarMenuItem>
+							<LayerSwitcher mapLayers={mapLayers} />
+						</SidebarMenuItem>
+					</SidebarMenu>
+				)}
 				<SidebarMenu>
-					<SidebarMenuItem className="mt-2 px-8">
-						<SidebarMenuButton
-							onClick={toggleFilters}
-							className="cursor-pointer justify-center border bg-accent/30"
-						>
-							<span className="tracking-wide">
-								{toggle === "None" ? "Disable Filters" : "Enable Filters"}
-							</span>
-						</SidebarMenuButton>
+					<SidebarMenuItem className="mt-4 mx-2 flex items-center justify-between rounded-md bg-accent p-2 dark:bg-accent/25">
+						<span className="text-sm">Disable Filters</span>
+						<Switch checked={toggle === "All"} onCheckedChange={toggleFilters} className="ml-auto cursor-pointer data-[state=checked]:bg-primary" />
 					</SidebarMenuItem>
 				</SidebarMenu>
 
-				{filteredGroups.general.size > 0 && (
+				{groups.general.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel asChild>
@@ -189,7 +155,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...filteredGroups.general].map(marker => (
+										{[...groups.general].map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -217,7 +183,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 					</Collapsible>
 				)}
 
-				{filteredGroups.equipment.size > 0 && (
+				{groups.equipment.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel asChild>
@@ -229,7 +195,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...filteredGroups.equipment].map(marker => (
+										{[...groups.equipment].map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -257,7 +223,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 					</Collapsible>
 				)}
 
-				{filteredGroups.upgrades.size > 0 && (
+				{groups.upgrades.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel asChild>
@@ -269,7 +235,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...filteredGroups.upgrades].map(marker => (
+										{[...groups.upgrades].map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -297,7 +263,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 					</Collapsible>
 				)}
 
-				{filteredGroups.objectives.size > 0 && (
+				{groups.objectives.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel asChild>
@@ -309,7 +275,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...filteredGroups.objectives].map(marker => (
+										{[...groups.objectives].map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -337,7 +303,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 					</Collapsible>
 				)}
 
-				{filteredGroups.transportation.size > 0 && (
+				{groups.transportation.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel asChild>
@@ -349,7 +315,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...filteredGroups.transportation].map(marker => (
+										{[...groups.transportation].map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -377,7 +343,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 					</Collapsible>
 				)}
 
-				{filteredGroups.intel.size > 0 && (
+				{groups.intel.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel asChild>
@@ -389,7 +355,7 @@ export default function MapSidebar({ groups, availableMaps, mapMarkers }: IMapSi
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...filteredGroups.intel].map(marker => (
+										{[...groups.intel].map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
