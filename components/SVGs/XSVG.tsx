@@ -1,8 +1,6 @@
-import type { SVGProps } from "react"
+import type { CommonSVGProps } from "@/types/svgs"
 
-interface XSVGProps extends SVGProps<SVGSVGElement> {}
-
-export default function XSVG({ ...props }: XSVGProps) {
+export default function XSVG({ ...props }: CommonSVGProps) {
 	return (
 		<svg
 			{...props}

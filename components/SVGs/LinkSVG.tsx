@@ -1,8 +1,6 @@
-import type { SVGProps } from "react"
+import type { CommonSVGProps } from "@/types/svgs";
 
-interface LinkSVGProps extends SVGProps<SVGSVGElement> {}
-
-export default function LinkSVG({ ...props }: LinkSVGProps) {
+export default function LinkSVG({ ...props }: CommonSVGProps) {
 	return (
 		<svg viewBox="0 0 16 16" height="1rem" width="1rem" {...props} role="img" aria-label="Link">
 			<g strokeWidth="1.2" fill="none" stroke="currentColor">
