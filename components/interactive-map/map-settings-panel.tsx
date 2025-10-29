@@ -27,10 +27,10 @@ export default function MapSettingsPanel() {
 	const [newSettings, setNewSettings] = useState(settings)
 	const isMobile = useIsMobile(1280)
 
-	const handleOpenChange = (open: boolean, cancel = false) => {
-		if (cancel) {
-			setNewSettings(settings)
-		} else updateSettings(newSettings)
+	const handleOpenChange = (open: boolean, save = false) => {
+		if (save) {
+			updateSettings(newSettings)
+		} else setNewSettings(settings)
 
 		setOpen(open)
 	}
@@ -385,10 +385,10 @@ export default function MapSettingsPanel() {
 							<Shortcut shortcuts="?" size="sm" />
 						</div>
 					) : null}
-					<Button variant={"destructive"} onClick={() => handleOpenChange(false, true)}>
+					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
 						Cancel
 					</Button>
-					<Button onClick={() => handleOpenChange(false)} className="bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600">
+					<Button onClick={() => handleOpenChange(false, true)} className="bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600">
 						Save
 					</Button>
 				</DialogFooter>
