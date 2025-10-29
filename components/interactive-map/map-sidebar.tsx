@@ -391,6 +391,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 								href="https://x.com/CodZombiesGuide"
 								title="Twitter"
 								aria-label="Check out our Twitter profile"
+								className="text-muted-foreground"
 							>
 								<X className="size-5" />
 							</ExternalLink>
@@ -399,6 +400,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 								href="https://discord.gg/callofduty"
 								title="Discord"
 								aria-label="Join the Official Call of Duty Discord"
+								className="text-muted-foreground"
 							>
 								<Discord className="size-5" />
 							</ExternalLink>
@@ -407,6 +409,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 								href="https://www.reddit.com/r/CODZombies/"
 								title="Reddit"
 								aria-label="Join the Official Call of Duty: Zombies Subreddit"
+								className="text-muted-foreground"
 							>
 								<Reddit className="size-5" />
 							</ExternalLink>
