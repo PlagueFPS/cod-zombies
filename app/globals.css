@@ -141,6 +141,10 @@
     transition-duration: 150ms;
   }
 
+  .no-scroll {
+    overflow: hidden;
+  }
+
   .leaflet-container, .leaflet-container * {
     font-family: var(--font-geist) !important;
   }

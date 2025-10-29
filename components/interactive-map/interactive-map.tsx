@@ -1,6 +1,6 @@
 "use client"
 import "leaflet/dist/leaflet.css"
-import type { MapConfig, MapLayer } from "@/map-configs"
+import type { MapConfig } from "@/map-configs"
 import type { Location, MapMarker } from "@/map-configs/markers"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
@@ -40,6 +40,15 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
 	const currentLayer = mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0)
 
+	// disable main page scrolling on canvas
+	useEffect(() => {
+		document.body.classList.add("no-scroll")
+		return () => {
+			document.body.classList.remove("no-scroll")
+		}
+	}, [])
+
+	// dynamically load map image to extract its dimensions for map bounds
 	useEffect(() => {
 		if (!currentLayer) return
 		const loadImageDimensions = async () => {
