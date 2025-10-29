@@ -24,6 +24,7 @@ import Logo from "@/public/logo.webp"
 import { ROUTES } from "@/utils/constants"
 import FeedbackForm from "../feedback-form/feedback-form"
 import DonateButton from "../ui/donate-button"
+import Socials from "../socials/socials"
 
 export default function AppSidebar() {
 	const [open, setOpen] = useState(false)
@@ -77,34 +78,7 @@ export default function AppSidebar() {
 						<FeedbackForm />
 						<DonateButton />
 					</div>
-					<div className="flex w-full items-center justify-evenly gap-3">
-						<ExternalLink
-							href="https://x.com/CodZombiesGuide"
-							title="Twitter"
-							aria-label="Check out our Twitter profile"
-							className="text-muted-foreground hover:text-primary"
-						>
-							<X className="size-5" />
-						</ExternalLink>
-						<Separator orientation="vertical" className="min-h-5" />
-						<ExternalLink
-							href="https://discord.gg/callofduty"
-							title="Discord"
-							aria-label="Join the Official Call of Duty Discord"
-							className="text-muted-foreground hover:text-primary"
-						>
-							<Discord className="size-5" />
-						</ExternalLink>
-						<Separator orientation="vertical" className="min-h-5" />
-						<ExternalLink
-							href="https://www.reddit.com/r/CODZombies/"
-							title="Reddit"
-							aria-label="Join the Official Call of Duty: Zombies Subreddit"
-							className="text-muted-foreground hover:text-primary"
-						>
-							<Reddit className="size-5" />
-						</ExternalLink>
-					</div>
+					<Socials className="justify-evenly w-full" />
 				</SheetFooter>
 			</SheetContent>
 		</Sheet>
