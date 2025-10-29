@@ -1,6 +1,6 @@
-import { MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
+import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
-import { useMapSettings } from "@/contexts/interactive-map-settings"
+import { useMapSettings, type TSettingPath } from "@/contexts/interactive-map-settings"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -37,6 +37,38 @@ export default function MapSettingsPanel() {
 
 	useShortcut("shift+?", () => handleOpenChange(!open))
 
+	const hasSettingChanged = (settingPath: TSettingPath) => {
+		const [parentKey, subKey] = settingPath.split(".")
+		if (!parentKey || !subKey) return false
+
+		const currentParent = newSettings[parentKey as keyof typeof newSettings]
+		const defaultParent = defaultSettings[parentKey as keyof typeof defaultSettings]
+		const currentSetting = currentParent[subKey as keyof typeof currentParent]
+		const defaultSetting = defaultParent[subKey as keyof typeof defaultParent]
+
+		return currentSetting !== defaultSetting
+	}
+
+	const resetSetting = (settingPath: TSettingPath) => {
+		const [parentKey, subKey] = settingPath.split(".")
+		if (!parentKey || !subKey) return
+
+		const newParent = newSettings[parentKey as keyof typeof newSettings]
+		const defaultParent = defaultSettings[parentKey as keyof typeof defaultSettings]
+		if (typeof newParent === "number" || typeof defaultParent === "number") return
+
+		const newSetting = newParent[subKey as keyof typeof newParent]
+		const defaultSetting = defaultParent[subKey as keyof typeof defaultParent]
+		if (newSetting === defaultSetting) return
+
+		setNewSettings(currentSettings => ({
+			...currentSettings,
+			[parentKey]: {
+				...newParent,
+				[subKey]: defaultSetting
+			}
+		}))
+	}
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<Tooltip>
@@ -80,8 +112,16 @@ export default function MapSettingsPanel() {
 						<div className="space-y-4 pl-4">
 							<div className="space-y-2">
 								<div className="flex items-center justify-between">
-									<Label htmlFor="icon-size" className="text-base">
+									<Label htmlFor="icon-size" className="text-base flex items-center gap-2">
 										Icon Size
+										{hasSettingChanged("markers.iconSize") && (
+											<Tooltip>
+												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={() => resetSetting("markers.iconSize")}>
+													<CornerUpLeft className="size-4" />
+												</TooltipTrigger>
+												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
+											</Tooltip>
+										)}
 									</Label>
 									<span className="text-muted-foreground text-sm">
 										{newSettings.markers.iconSize}px
@@ -107,8 +147,19 @@ export default function MapSettingsPanel() {
 							</div>
 							<div className="space-y-2">
 								<div className="flex items-center justify-between">
-									<Label htmlFor="icon-opacity" className="text-base">
+									<Label htmlFor="icon-opacity" className="text-base flex items-center gap-2">
 										Opacity
+										{hasSettingChanged("markers.opacity") && (
+											<Tooltip>
+												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+													e.preventDefault()
+													resetSetting("markers.opacity")
+												}}>
+													<CornerUpLeft className="size-4" />
+												</TooltipTrigger>
+												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
+											</Tooltip>
+										)}
 									</Label>
 									<span className="text-muted-foreground text-sm">
 										{Math.floor(newSettings.markers.opacity * 100)}%
@@ -144,8 +195,19 @@ export default function MapSettingsPanel() {
 						<div className="space-y-4 pl-4">
 							<div className="flex items-center justify-between">
 								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-gradients" className="text-base">
+									<Label htmlFor="disable-gradients" className="text-base flex items-center gap-2">
 										Disable Gradients
+										{hasSettingChanged("popups.disableGradients") && (
+											<Tooltip>
+												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+													e.preventDefault();
+													resetSetting("popups.disableGradients");
+												}}>
+													<CornerUpLeft className="size-4" />
+												</TooltipTrigger>
+												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
+											</Tooltip>
+										)}
 									</Label>
 									<p className="text-muted-foreground text-sm">
 										Use solid colors instead of gradient backgrounds.
@@ -168,8 +230,19 @@ export default function MapSettingsPanel() {
 							</div>
 							<div className="flex items-center justify-between">
 								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-animations" className="text-base">
+									<Label htmlFor="disable-animations" className="text-base flex items-center gap-2">
 										Disable Animations
+										{hasSettingChanged("popups.disableAnimations") && (
+											<Tooltip>
+												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+													e.preventDefault()
+													resetSetting("popups.disableAnimations")
+												}}>
+													<CornerUpLeft className="size-4" />
+												</TooltipTrigger>
+												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
+											</Tooltip>
+										)}
 									</Label>
 									<p className="text-muted-foreground text-sm">
 										Turn off popup entrance and exit animations.
@@ -202,8 +275,19 @@ export default function MapSettingsPanel() {
 						<div className="space-y-4 pl-4">
 							<div className="flex items-center justify-between space-y-2">
 								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-zoom-animation" className="text-base text-foreground">
+									<Label htmlFor="disable-zoom-animation" className="text-base text-foreground flex items-center gap-2">
 										Disable Zoom Animation
+										{hasSettingChanged("general.disableZoomAnimation") && (
+											<Tooltip>
+												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+													e.preventDefault()
+													resetSetting("general.disableZoomAnimation")
+												}}>
+													<CornerUpLeft className="size-4" />
+												</TooltipTrigger>
+												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
+											</Tooltip>
+										)}
 									</Label>
 									<p className="text-muted-foreground text-sm">
 										Turn off zoom animation when zooming in or out on the map.
@@ -226,8 +310,19 @@ export default function MapSettingsPanel() {
 							</div>
 							<div className="flex items-center justify-between space-y-2">
 								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-fly-to-animation" className="text-base">
+									<Label htmlFor="disable-fly-to-animation" className="text-base flex items-center gap-2">
 										Disable Flying Animation
+										{hasSettingChanged("general.disableFlyToAnimation") && (
+											<Tooltip>
+												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+													e.preventDefault()
+													resetSetting("general.disableFlyToAnimation")
+												}}>
+													<CornerUpLeft className="size-4" />
+												</TooltipTrigger>
+												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
+											</Tooltip>
+										)}
 									</Label>
 									<p className="text-muted-foreground text-sm">
 										Turn off flying animation when clicking on a marker on the map.
@@ -293,8 +388,8 @@ export default function MapSettingsPanel() {
 					<Button variant={"destructive"} onClick={() => handleOpenChange(false, true)}>
 						Cancel
 					</Button>
-					<Button variant={"secondary"} onClick={() => setNewSettings(defaultSettings)}>
-						Reset to Default
+					<Button onClick={() => handleOpenChange(false)} className="bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600">
+						Save
 					</Button>
 				</DialogFooter>
 			</DialogContent>

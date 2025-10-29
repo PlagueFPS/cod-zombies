@@ -46,12 +46,23 @@ const DEFAULT_SETTINGS = {
 	},
 }
 
+/** Type representing the default settings structure */
 export type TMapSettings = typeof DEFAULT_SETTINGS
+/** Union type representing all nested setting paths */
+export type TSettingPath = {
+	[K in keyof TMapSettings]: TMapSettings[K] extends object ? {
+		[P in keyof TMapSettings[K]]: `${K & string}.${P & string}`
+		}[keyof TMapSettings[K]] : never
+	}[keyof TMapSettings]
 
 interface IMapSettingsContext {
+	/** Default settings */
 	defaultSettings: TMapSettings
+	/** Current map settings */
 	settings: TMapSettings
+	/** Updates the current map settings */
 	updateSettings: (newSettings: Partial<TMapSettings>) => void
+	/** Resets the current map settings to default */
 	resetSettings: () => void
 }
 
