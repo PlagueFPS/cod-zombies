@@ -116,7 +116,10 @@ export default function MapSettingsPanel() {
 										Icon Size
 										{hasSettingChanged("markers.iconSize") && (
 											<Tooltip>
-												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={() => resetSetting("markers.iconSize")}>
+												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+													e.preventDefault()
+													resetSetting("markers.iconSize")
+												}}>
 													<CornerUpLeft className="size-4" />
 												</TooltipTrigger>
 												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
