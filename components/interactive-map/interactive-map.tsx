@@ -34,6 +34,16 @@ interface IInteractiveMap {
 	mapConfig: MapConfig
 }
 
+/**
+ * Render an interactive single-image map with markers, popups, and custom controls.
+ *
+ * Uses the provided map configuration to determine the active layer (via URL params), load the map image
+ * to derive bounds and coordinate conversions, and render a react-leaflet MapContainer with an image overlay,
+ * markers filtered by include/exclude search params, and the map control UI.
+ *
+ * @param mapConfig - Map configuration containing an `id` and an ordered list of layers (each layer includes an `id`, `image` URL, and `markers`)
+ * @returns A React element for the interactive map, or `null` when no layer is available.
+ */
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { layerParam, includeParams, excludeParams, isIncluded } = useMapSearchParams()
 	const { settings } = useMapSettings()

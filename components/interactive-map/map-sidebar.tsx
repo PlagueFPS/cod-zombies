@@ -38,6 +38,18 @@ interface IMapSidebar {
 	mapLayers: MapLayer[]
 }
 
+/**
+ * Render the map sidebar containing map selection, layer switching, marker filter controls, and social/share actions.
+ *
+ * Renders collapsible groups for marker categories with switches to include/exclude markers, a dropdown to change maps,
+ * an optional layer switcher when multiple layers exist, a global "Disable Filters" toggle that toggles all markers, and
+ * footer links including social profiles and a share button that builds a shareable URL reflecting current include/exclude params.
+ *
+ * @param groups - Mapping of marker categories to sets of marker ids shown in the sidebar
+ * @param availableMaps - List of available map ids used to populate the map selector
+ * @param mapLayers - Array of map layers (each with id and markers) used to determine marker icons and to build shareable URLs
+ * @returns The sidebar JSX element for use in the map page
+ */
 export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSidebar) {
 	const { clearParam, toggleExcludeParam, createParams, layerParam, isIncluded } =
 		useMapSearchParams()
