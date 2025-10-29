@@ -1,8 +1,6 @@
-import type { SVGProps } from "react"
+import type { CommonSVGProps } from "@/types/svgs"
 
-interface DiscordSVGProps extends SVGProps<SVGSVGElement> {}
-
-export default function Discord({ ...props }: DiscordSVGProps) {
+export default function Discord({ ...props }: CommonSVGProps) {
 	return (
 		<svg
 			{...props}

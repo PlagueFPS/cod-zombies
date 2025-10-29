@@ -5,13 +5,9 @@ import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
-import Discord from "@/components/SVGs/DiscordSVG"
-import Reddit from "@/components/SVGs/Reddit"
-import X from "@/components/SVGs/XSVG"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/functions.client"
-import ExternalLink from "../external-link/external-link"
 import ShareButton from "../share-button/share-button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Select, SelectTrigger, SelectContent, SelectGroup, SelectLabel, SelectValue, SelectItem } from "../ui/select"
@@ -25,12 +21,12 @@ import {
 	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
-	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarTrigger,
 } from "../ui/sidebar"
 import { Switch } from "../ui/switch"
 import LayerSwitcher from "./layer-switcher"
+import Socials from "../socials/socials"
 
 interface IMapSidebar {
 	availableMaps: MapId[]
@@ -386,36 +382,10 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 			<SidebarFooter className="mb-16 border-t bg-background">
 				<SidebarMenu className="py-4">
 					<SidebarMenuItem>
-						<div className="flex items-center justify-evenly gap-3 text-muted-foreground">
-							<ExternalLink
-								href="https://x.com/CodZombiesGuide"
-								title="Twitter"
-								aria-label="Check out our Twitter profile"
-								className="text-muted-foreground"
-							>
-								<X className="size-5" />
-							</ExternalLink>
-							<Separator orientation="vertical" className="min-h-5" />
-							<ExternalLink
-								href="https://discord.gg/callofduty"
-								title="Discord"
-								aria-label="Join the Official Call of Duty Discord"
-								className="text-muted-foreground"
-							>
-								<Discord className="size-5" />
-							</ExternalLink>
-							<Separator orientation="vertical" className="min-h-5" />
-							<ExternalLink
-								href="https://www.reddit.com/r/CODZombies/"
-								title="Reddit"
-								aria-label="Join the Official Call of Duty: Zombies Subreddit"
-								className="text-muted-foreground"
-							>
-								<Reddit className="size-5" />
-							</ExternalLink>
+						<Socials className="justify-evenly">
 							<Separator orientation="vertical" className="min-h-5" />
 							<ShareButton title={`${currentMap} interactive map`} url={createShareableURL()} />
-						</div>
+						</Socials>
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarFooter>

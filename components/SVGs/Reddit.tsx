@@ -1,8 +1,6 @@
-import type { SVGProps } from "react"
+import type { CommonSVGProps } from "@/types/svgs";
 
-interface RedditSVGProps extends SVGProps<SVGSVGElement> {}
-
-export default function Reddit({ ...props }: RedditSVGProps) {
+export default function Reddit({ ...props }: CommonSVGProps) {
 	return (
 		<svg
 			{...props}
