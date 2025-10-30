@@ -1,7 +1,7 @@
 import type { GameKey } from "./games"
 
-type SupportedGames = Extract<GameKey, "blackOps7" | "blackOps6">
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
+export type SupportedGames = Extract<GameKey, "blackOps7" | "blackOps6">
 
 export interface Augment {
 	/** The unique identifier of the augment */
@@ -27,6 +27,7 @@ export type AugmentType = Augment["type"]
 
 /** Gets an augment by its key.
  * @param key The key of the augment.
+ * @param game The game to get the augment variant for.
  * @throws If the augment does not exist
  */
 export const getAugmentByKey = (key: AugmentKey, game?: SupportedGames): Augment => {
@@ -41,7 +42,21 @@ export const getAugmentByKey = (key: AugmentKey, game?: SupportedGames): Augment
 		...variant,
 	}
 }
-export const getAugments = (): Augment[] => Object.values(augmentRegistry)
+
+/** Gets all augments.
+ * @param game The game to get the augment variants for.
+ */
+export const getAugments = (game?: SupportedGames): Augment[] => {
+	return Object.values(augmentRegistry).map((augment: Augment) => {
+		if (!game || !augment.variants?.[game]) return augment
+
+		const variant = augment.variants[game]
+		return {
+			...augment,
+			...variant,
+		}
+	})
+}
 
 const augmentRegistry = {
 	doubleJeopardy: {
