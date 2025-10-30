@@ -989,12 +989,68 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/fast-pitcher-minor-augment.webp",
 	},
+	maskOfWrath: {
+		id: "maskOfWrath",
+		title: "Mask of Wrath",
+		description: "The Demon does more damage.",
+		type: "Major",
+		image: "/augments/mask-of-wrath-major-augment.webp",
+	},
+	maskOfSalvation: {
+		id: "maskOfSalvation",
+		title: "Mask of Salvation",
+		description: "The Fox can revive you while it’s active. This can be done up to three times per match.",
+		type: "Major",
+		image: "/augments/mask-of-salvation-major-augment.webp",
+	},
+	maskOfDistraction: {
+		id: "maskOfDistraction",
+		title: "Mask of Distraction",
+		description: "The Monkey attracts enemies and does damage in an area.",
+		type: "Major",
+		image: "/augments/mask-of-distraction-major-augment.webp",
+	},
+	maskOfBenevolence: {
+		id: "maskOfBenevolence",
+		title: "Mask of Benevolence",
+		description: "The Maiden does not attack but will periodically heal you.",
+		type: "Major",
+		image: "/augments/mask-of-benevolence-major-augment.webp",
+	},
+	extensionWisp: {
+		id: "extensionWisp",
+		title: "Extension",
+		description: "Increase the Wisp’s lifetime.",
+		type: "Minor",
+		image: "/augments/extension-wisp-minor-augment.webp",
+	},
+	hasteWisp: {
+		id: "hasteWisp",
+		title: "Haste",
+		description: "Decrease the cooldown before a Wisp can be summoned.",
+		type: "Minor",
+		image: "/augments/haste-wisp-minor-augment.webp",
+	},
+	zombieSitter: {
+		id: "zombieSitter",
+		title: "Zombie Sitter",
+		description: "The Wisp will attract and avoid damaging the last zombie in the round until the round times out.",
+		type: "Minor",
+		image: "/augments/zombie-sitter-minor-augment.webp",
+	},
+	fetcher: {
+		id: "fetcher",
+		title: "Fetcher",
+		description: "The Wisp will pick up items and Powerups for you (aside from the Nuke).",
+		type: "Minor",
+		image: "/augments/fetcher-minor-augment.webp",
+	},
 } as const satisfies Record<string, Augment>
 
 /**Union of all keys in the Augment Registry */
 export type AugmentKey = keyof typeof augmentRegistry
 /**Tuple to enforce min/max allowed augments */
-export type AugmentTuple = [Augment, Augment, Augment, Augment, Augment, Augment]
+export type AugmentTuple = [Augment, Augment, Augment, Augment, Augment, Augment, Augment?, Augment?]
 /**Union of all Augment types */
 export type AugmentType = Augment["type"]
 export const {
@@ -1057,6 +1113,14 @@ export const {
 	tripleShot,
 	vampiricExtraction,
 	fastPitcher,
+	maskOfWrath,
+	maskOfSalvation,
+	maskOfDistraction,
+	maskOfBenevolence,
+	extensionWisp,
+	hasteWisp,
+	zombieSitter,
+	fetcher,
 	quickSwap,
 	speedyRoulette,
 	phantomReload,

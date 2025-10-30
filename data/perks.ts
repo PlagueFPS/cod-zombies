@@ -30,18 +30,25 @@ import {
 	eodTechnician,
 	equivalentExchange,
 	expresso,
+	extensionWisp,
 	extraChange,
 	fastPitcher,
+	fetcher,
 	fetidUpgraid,
 	freeFaller,
 	furtherInsight,
 	gravityMD,
 	hardenedPlates,
 	hardTarget,
+	hasteWisp,
 	hiddenImpact,
 	hotFoot,
 	imperialPeach,
 	karmicReturn,
+	maskOfBenevolence,
+	maskOfDistraction,
+	maskOfSalvation,
+	maskOfWrath,
 	partingGift,
 	phantomReload,
 	phdSlider as phdSliderAugment,
@@ -66,6 +73,7 @@ import {
 	turtleShell,
 	vampiricExtraction,
 	vulneraBean,
+    zombieSitter,
 } from "./augments"
 /**
  * Gets a perk by its key.
@@ -92,6 +100,22 @@ export interface Perk {
 }
 
 const perkRegistry = {
+	wispTea: {
+		id: "wisp-tea",
+		title: "Wisp Tea",
+		description: "Summon a companion wisp after killing zombies.",
+		image: "/perks/wisp-tea.webp",
+		augments: [
+			maskOfWrath,
+			maskOfSalvation,
+			maskOfDistraction,
+			maskOfBenevolence,
+			extensionWisp,
+			hasteWisp,
+			zombieSitter,
+			fetcher
+		]
+	},
 	juggernog: {
 		id: "juggernog",
 		title: "Juggernog",
@@ -351,6 +375,7 @@ const perkRegistry = {
 
 export type PerkKey = keyof typeof perkRegistry
 export const {
+	wispTea,
 	deadshotDaiquiri,
 	deadshotDaiquiriBO6,
 	speedCola,
