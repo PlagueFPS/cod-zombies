@@ -37,7 +37,7 @@ import {
 	thermite,
 	toppleDanger,
 } from "./augments"
-import { blackOps4, blackOps6, type Game } from "./games"
+import { blackOps4, blackOps6, blackOps7, type Game } from "./games"
 
 /**
  * Gets an ammo mod by its key.
@@ -63,6 +63,14 @@ export interface AmmoMod {
 }
 
 const ammoModRegistry = {
+	fireWorks: {
+		id: "fire-works",
+		title: "Fire Works",
+		description:
+			"Each bullet that hits a Normal or Special Enemy has a chance to launch fireworks that target enemies.",
+		game: blackOps7,
+		image: "/ammo-mods/fireworks.webp",
+	},
 	fireBomb: {
 		id: "fire-bomb",
 		title: "Fire Bomb",
