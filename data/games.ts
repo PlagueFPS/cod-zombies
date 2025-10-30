@@ -1,3 +1,14 @@
+export interface Game {
+	/** The unique identifier of the game */
+	id: string
+	/** The title of the game */
+	title: string
+	/** The release date of the game */
+	releaseDate: Date
+	/** The image of the game */
+	image: string
+}
+
 /** Gets all games.
  * @returns An array of all games.
  */
@@ -9,17 +20,6 @@ export const getGames = (): Game[] =>
  * @returns The game.
  */
 export const getGameByKey = (key: GameKey): Game => gameRegistry[key]
-
-export interface Game {
-	/** The unique identifier of the game */
-	id: string
-	/** The title of the game */
-	title: string
-	/** The release date of the game */
-	releaseDate: Date
-	/** The image of the game */
-	image: string
-}
 
 const gameRegistry = {
 	worldAtWar: {
