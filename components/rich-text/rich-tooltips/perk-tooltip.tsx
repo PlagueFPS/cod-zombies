@@ -43,7 +43,7 @@ export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
 					side="top"
 					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
-					{<PerkTooltipContent perk={perk} />}
+					{<PerkTooltipContent perk={perk} game={game} />}
 				</HoverCardContent>
 			</HoverCard>
 		)

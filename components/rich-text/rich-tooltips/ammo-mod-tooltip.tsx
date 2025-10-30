@@ -52,7 +52,7 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 					side="top"
 					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
-					{<AmmoModTooltipContent ammoMod={ammoMod} />}
+					{<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />}
 				</HoverCardContent>
 			</HoverCard>
 		)

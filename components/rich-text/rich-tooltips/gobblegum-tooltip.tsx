@@ -3,13 +3,19 @@ import { RarityBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import type { GameKey } from "@/data/games"
 import { type Gobblegum, type GobblegumKey, getGobblegumByKey } from "@/data/gobblegum"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
-export default function GobbleGumTooltip({ gobblegumKey }: { gobblegumKey: GobblegumKey }) {
+interface GobbleGumTooltipProps {
+	gobblegumKey: GobblegumKey
+	game?: GameKey
+}
+
+export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumTooltipProps) {
 	const isMobile = useIsMobile(640)
-	const gobblegum = getGobblegumByKey(gobblegumKey)
+	const gobblegum = getGobblegumByKey(gobblegumKey, game)
 
 	if (!isMobile)
 		return (

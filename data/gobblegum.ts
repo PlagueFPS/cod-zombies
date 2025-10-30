@@ -1,10 +1,13 @@
-import { blackOps3, blackOps6, type Game } from "./games"
+import type { GameKey } from "./games"
 /** Union of all Gobblegum keys */
 export type GobblegumKey = keyof typeof gobblegumRegistry
 /** Union of all Gobblegum types */
 export type GobblegumType = Gobblegum["type"]
 /** Union of all Gobblegum rarities */
 export type GobblegumRarity = Gobblegum["rarity"]
+
+type GobblegumVariant = Omit<Partial<Gobblegum>, "id" | "title" | "variants">
+
 export interface Gobblegum {
 	/** The unique identifier of the gobblegum */
 	id: string
@@ -24,19 +27,45 @@ export interface Gobblegum {
 		| "Epic"
 		| "Legendary"
 		| "Ultra"
-	/** The game the gobblegum is from */
-	game: Game
 	/** The image of the gobblegum */
 	image: string
+	/** The variants of the gobblegum */
+	variants?: Partial<Record<GameKey, GobblegumVariant>>
 }
 
 /**
  * Gets a gobblegum by its key.
  * @param key The key of the gobblegum.
- * @returns The gobblegum.
+ * @param game The game to get the gobblegum variant for.
  */
-export const getGobblegumByKey = (key: GobblegumKey): Gobblegum => gobblegumRegistry[key]
-export const getGobblegums = (): Gobblegum[] => Object.values(gobblegumRegistry)
+export const getGobblegumByKey = (key: GobblegumKey, game?: GameKey): Gobblegum => {
+	const gobblegum: Gobblegum | undefined = gobblegumRegistry[key]
+
+	if (!gobblegum) throw new Error(`Gobblegum ${key} not found`)
+	if (!game || !gobblegum.variants?.[game]) return gobblegum
+
+	const variant = gobblegum.variants?.[game]
+	return {
+		...gobblegum,
+		...variant
+	}
+};
+
+/**
+ * Gets all gobblegums.
+ * @param game The game to get the gobblegum variants for.
+ */
+export const getGobblegums = (game?: GameKey): Gobblegum[] => {
+	return Object.values(gobblegumRegistry).map((gobblegum: Gobblegum) => {
+		if (!game || !gobblegum.variants?.[game]) return gobblegum
+
+		const variant = gobblegum.variants?.[game]
+		return {
+			...gobblegum,
+			...variant
+		}
+	})
+}
 
 const gobblegumRegistry = {
 	alchemcialAntithesis: {
@@ -46,7 +75,6 @@ const gobblegumRegistry = {
 			"Every 10 points earned is instead awarded 1 ammo in the stock of the current weapon. Affects all weapons.",
 		type: "Player-Activated",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/alchemical-antithesis.webp",
 	},
 	anywhereButHere: {
@@ -56,8 +84,16 @@ const gobblegumRegistry = {
 			"Instantly teleport to a random location. A concussive blast knocks away any nearby zombies, keeping the player safe.",
 		type: "Player-Activated",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/anywhere-but-here.webp",
+		variants: {
+			blackOps6: {
+				description:
+					"Instantly teleport to a random location. A concussive blast knocks away nearby zombies.",
+				type: "Player-Activated",
+				rarity: "Rare",
+				image: "/gobblegums/anywhere-but-here-bo6.webp",
+			}
+		}
 	},
 	inPlainSight: {
 		id: "in-plain-sight",
@@ -65,7 +101,6 @@ const gobblegumRegistry = {
 		description: "All Zombies ignore the player. Lasts 10 seconds.",
 		type: "Player-Activated",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/in-plain-sight.webp",
 	},
 	stockOption: {
@@ -75,7 +110,6 @@ const gobblegumRegistry = {
 			"Ammo is taken from the player's stockpile instead of their weapon's magazine. Lasts 2:30 minutes.",
 		type: "Time-Based",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/stock-option.webp",
 	},
 	dangerClosest: {
@@ -84,7 +118,6 @@ const gobblegumRegistry = {
 		description: "Zero explosive damage. Lasts 3 full rounds.",
 		type: "Round-Based",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/danger-closest.webp",
 	},
 	perkaholic: {
@@ -93,8 +126,15 @@ const gobblegumRegistry = {
 		description: "Gives the player all Perk-a-Colas available on the map.",
 		type: "Immediate",
 		rarity: "Ultra-Rare Mega",
-		game: blackOps3,
 		image: "/gobblegums/perkaholic.webp",
+		variants: {
+			blackOps6: {
+				description: "Gives the player all available perks.",
+				type: "Immediate",
+				rarity: "Ultra",
+				image: "/gobblegums/perkaholic-bo6.webp",
+			}
+		}
 	},
 	shoppingFree: {
 		id: "shopping-free",
@@ -102,7 +142,6 @@ const gobblegumRegistry = {
 		description: "All purchases are free. Lasts 1 minute.",
 		type: "Time-Based",
 		rarity: "Ultra-Rare Mega",
-		game: blackOps3,
 		image: "/gobblegums/shopping-free.webp",
 	},
 	reignDrops: {
@@ -111,7 +150,6 @@ const gobblegumRegistry = {
 		description: "Spawns all nine core Power-Ups at once. 2x Activations.",
 		type: "Player-Activated",
 		rarity: "Ultra-Rare Mega",
-		game: blackOps3,
 		image: "/gobblegums/reign-drops.webp",
 	},
 	immolationLiquidation: {
@@ -120,7 +158,6 @@ const gobblegumRegistry = {
 		description: "Spawns a Fire Sale Power-Up. 3x Activations.",
 		type: "Player-Activated",
 		rarity: "Mega",
-		game: blackOps3,
 		image: "/gobblegums/immolation-liquidation.webp",
 	},
 	nearDeathExperience: {
@@ -130,8 +167,16 @@ const gobblegumRegistry = {
 			"Revive, or be revived simply by being near other players. Revived players keep all their perks. Lasts 3 Rounds.",
 		type: "Round-Based",
 		rarity: "Ultra-Rare Mega",
-		game: blackOps3,
 		image: "/gobblegums/near-death-experience.webp",
+		variants: {
+			blackOps6: {
+				description:
+					"Revive, or be revived simply by being near other players. Revived players keep all their perks. Lasts 3 Minutes or 5 Revives.",
+				type: "Time-Based",
+				rarity: "Ultra",
+				image: "/gobblegums/near-death-experience-bo6.webp",
+			}
+		}
 	},
 	wallPower: {
 		id: "wall-power",
@@ -139,8 +184,15 @@ const gobblegumRegistry = {
 		description: "The next wall weapon purchased becomes Pack-a-Punched.",
 		type: "Immediate",
 		rarity: "Rare-Mega",
-		game: blackOps3,
 		image: "/gobblegums/wall-power.webp",
+		variants: {
+			blackOps6: {
+				description: "The next wall weapon purchased becomes Pack-a-Punched.",
+				type: "Immediate",
+				rarity: "Legendary",
+				image: "/gobblegums/wall-power-bo6.webp",
+			}
+		}
 	},
 	roundRobbin: {
 		id: "round-robbin",
@@ -148,7 +200,6 @@ const gobblegumRegistry = {
 		description: "Ends the current round. All players gain 1600 points.",
 		type: "Player-Activated",
 		rarity: "Ultra-Rare Mega",
-		game: blackOps3,
 		image: "/gobblegums/round-robbin.webp",
 	},
 	swordFlay: {
@@ -158,7 +209,6 @@ const gobblegumRegistry = {
 			"Melee attacks and any melee weapon will inflict 5x more damage on Zombies. Lasts 2:30 minutes.",
 		type: "Time-Based",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/sword-flay.webp",
 	},
 	powerVacuum: {
@@ -168,7 +218,6 @@ const gobblegumRegistry = {
 			"Power-Ups spawn more often. The drop chance is greatly increased, the normal cap of only 4 drops per round is ignored. Lasts 4 rounds.",
 		type: "Round-Based",
 		rarity: "Ultra-Rare Mega",
-		game: blackOps3,
 		image: "/gobblegums/power-vacuum.webp",
 	},
 	idleEyes: {
@@ -177,8 +226,15 @@ const gobblegumRegistry = {
 		description: "All zombies ignore all players and stand idle. Lasts 30 seconds. 3x Activations.",
 		type: "Player-Activated",
 		rarity: "Mega",
-		game: blackOps3,
 		image: "/gobblegums/idle-eyes.webp",
+		variants: {
+			blackOps6: {
+				description: "All zombies ignore all players and stand idle. Lasts 30 seconds",
+				type: "Time-Based",
+				rarity: "Legendary",
+				image: "/gobblegums/idle-eyes-bo6.webp",
+			}
+		}
 	},
 	fearInHeadlights: {
 		id: "fear-in-headlights",
@@ -186,7 +242,6 @@ const gobblegumRegistry = {
 		description: "Zombies seen by the player will not move. Lasts 2 minutes.",
 		type: "Time-Based",
 		rarity: "Rare-Mega",
-		game: blackOps3,
 		image: "/gobblegums/fear-in-headlights.webp",
 	},
 	ephemeralEnhancement: {
@@ -196,7 +251,6 @@ const gobblegumRegistry = {
 			"Turns the weapon in the player's hands into the Pack-A-Punched version. Lasts 60 seconds. 2x Activations.",
 		type: "Player-Activated",
 		rarity: "Mega",
-		game: blackOps3,
 		image: "/gobblegums/ephemeral-enhancement.webp",
 	},
 	cratePower: {
@@ -205,8 +259,12 @@ const gobblegumRegistry = {
 		description: "The next gun taken from the Mystery Box comes Pack-a-Punched.",
 		type: "Immediate",
 		rarity: "Rare-Mega",
-		game: blackOps3,
 		image: "/gobblegums/crate-power.webp",
+		variants: {
+			blackOps6: {
+
+			}
+		}
 	},
 	arsenalAccelerator: {
 		id: "arsenal-accelerator",
@@ -214,8 +272,15 @@ const gobblegumRegistry = {
 		description: "Charge the player's special weapon faster. Lasts 10 minutes.",
 		type: "Time-Based",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/arsenal-accelerator.webp",
+		variants: {
+			blackOps6: {
+				description: "Charge the player's Field Upgrade faster. Lasts 5 minutes.",
+				type: "Time-Based",
+				rarity: "Rare",
+				image: "/gobblegums/arsenal-accelerator-bo6.webp",
+			}
+		}
 	},
 	selfMedication: {
 		id: "self-medication",
@@ -223,7 +288,6 @@ const gobblegumRegistry = {
 		description: "Self-revive by killing a zombie while downed. Keep all perks. 3x Activations.",
 		type: "Immediate",
 		rarity: "Ultra-Rare Mega",
-		game: blackOps3,
 		image: "/gobblegums/self-medication.webp",
 	},
 	undeadManWalking: {
@@ -232,7 +296,6 @@ const gobblegumRegistry = {
 		description: "Slow down all zombies to shambling speed. Lasts 4 minutes.",
 		type: "Time-Based",
 		rarity: "Classic",
-		game: blackOps3,
 		image: "/gobblegums/undead-man-walking.webp",
 	},
 	wonderbar: {
@@ -242,7 +305,6 @@ const gobblegumRegistry = {
 			"The next weapon from the Mystery Box will be a Wonder Weapon. Activates on Mystery Box Spin.",
 		type: "Immediate",
 		rarity: "Ultra",
-		game: blackOps6,
 		image: "/gobblegums/wonderbar.webp",
 	},
 	shieldsUp: {
@@ -251,27 +313,7 @@ const gobblegumRegistry = {
 		description: "Refill armor on use. Armor is twice as strong. Lasts 3 Minutes.",
 		type: "Time-Based",
 		rarity: "Rare",
-		game: blackOps6,
 		image: "/gobblegums/shields-up.webp",
-	},
-	nearDeathExperienceBO6: {
-		id: "near-death-experience-bo6",
-		title: "Near Death Experience",
-		description:
-			"Revive, or be revived simply by being near other players. Revived players keep all their perks. Lasts 3 Minutes or 5 Revives.",
-		type: "Time-Based",
-		rarity: "Ultra",
-		game: blackOps6,
-		image: "/gobblegums/near-death-experience-bo6.webp",
-	},
-	idleEyesBO6: {
-		id: "idle-eyes-bo6",
-		title: "Idle Eyes",
-		description: "All zombies ignore all players and stand idle. Lasts 30 seconds",
-		type: "Time-Based",
-		rarity: "Legendary",
-		game: blackOps6,
-		image: "/gobblegums/idle-eyes-bo6.webp",
 	},
 	killJoy: {
 		id: "kill-joy",
@@ -279,7 +321,6 @@ const gobblegumRegistry = {
 		description: "Spawns an Insta-Kill Power-Up.",
 		type: "Player-Activated",
 		rarity: "Rare",
-		game: blackOps6,
 		image: "/gobblegums/kill-joy.webp",
 	},
 	profitSharing: {
@@ -289,27 +330,7 @@ const gobblegumRegistry = {
 			"A portion of the essence you earn is also received by nearby players and vice versa. Lasts 2 minutes.",
 		type: "Time-Based",
 		rarity: "Epic",
-		game: blackOps6,
 		image: "/gobblegums/profit-sharing.webp",
-	},
-	arsenalAcceleratorBO6: {
-		id: "arsenal-accelerator-bo6",
-		title: "Arsenal Accelerator",
-		description: "Charge the player's Field Upgrade faster. Lasts 5 minutes.",
-		type: "Time-Based",
-		rarity: "Rare",
-		game: blackOps6,
-		image: "/gobblegums/arsenal-accelerator-bo6.webp",
-	},
-	anywhereButHereBO6: {
-		id: "anywhere-but-here-bo6",
-		title: "Anywhere But Here",
-		description:
-			"Instantly teleport to a random location. A concussive blast knocks away nearby zombies.",
-		type: "Player-Activated",
-		rarity: "Rare",
-		game: blackOps6,
-		image: "/gobblegums/anywhere-but-here-bo6.webp",
 	},
 	extraCredit: {
 		id: "extra-credit",
@@ -317,17 +338,7 @@ const gobblegumRegistry = {
 		description: "Spawns a Bonus Points Power-Up worth 1,250 Points. 4x Activations.",
 		type: "Player-Activated",
 		rarity: "Rare-Mega",
-		game: blackOps3,
 		image: "/gobblegums/extra-credit.webp",
-	},
-	perkaholicBO6: {
-		id: "perkaholic-bo6",
-		title: "Perkaholic",
-		description: "Gives the player all available perks.",
-		type: "Immediate",
-		rarity: "Ultra",
-		game: blackOps6,
-		image: "/gobblegums/perkaholic-bo6.webp",
 	},
 	hiddenPower: {
 		id: "hidden-power",
@@ -335,17 +346,7 @@ const gobblegumRegistry = {
 		description: "Upgrade your currently held weapon to Legendary rarity.",
 		type: "Immediate",
 		rarity: "Ultra",
-		game: blackOps6,
 		image: "/gobblegums/hidden-power.webp",
-	},
-	wallPowerBO6: {
-		id: "wall-power-bo6",
-		title: "Wall Power",
-		description: "The next wall weapon purchased becomes Pack-a-Punched.",
-		type: "Immediate",
-		rarity: "Legendary",
-		game: blackOps6,
-		image: "/gobblegums/wall-power-bo6.webp",
 	},
 	powerKeg: {
 		id: "power-keg",
@@ -353,7 +354,6 @@ const gobblegumRegistry = {
 		description: "Spawns a Full Power power-up.",
 		type: "Player-Activated",
 		rarity: "Rare",
-		game: blackOps6,
 		image: "/gobblegums/power-keg.webp",
 	},
 	freeFire: {
@@ -363,38 +363,6 @@ const gobblegumRegistry = {
 			"Firing weapons consumes no ammo. Does not work on wonder weapons. Lasts 60 Seconds.",
 		type: "Time-Based",
 		rarity: "Epic",
-		game: blackOps6,
 		image: "/gobblegums/free-fire.webp",
 	},
 } as const satisfies Record<string, Gobblegum>
-
-export const {
-	alchemcialAntithesis,
-	anywhereButHere,
-	inPlainSight,
-	stockOption,
-	dangerClosest,
-	perkaholic,
-	shoppingFree,
-	reignDrops,
-	immolationLiquidation,
-	nearDeathExperience,
-	nearDeathExperienceBO6,
-	wonderbar,
-	shieldsUp,
-	undeadManWalking,
-	selfMedication,
-	arsenalAccelerator,
-	cratePower,
-	idleEyesBO6,
-	killJoy,
-	profitSharing,
-	arsenalAcceleratorBO6,
-	anywhereButHereBO6,
-	extraCredit,
-	perkaholicBO6,
-	hiddenPower,
-	wallPowerBO6,
-	powerKeg,
-	freeFire,
-} = gobblegumRegistry
