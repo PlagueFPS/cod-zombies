@@ -1045,6 +1045,20 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/fetcher-minor-augment.webp",
 	},
+	iconCore: {
+		id: "iconCore",
+		title: "Icon Core",
+		description: "Your health is increased when all of your Armor Plates are broken.",
+		type: "Major",
+		image: "/augments/icon-core-major-augment.webp",
+	},
+	shakeItOff: {
+		id: "shakeItOff",
+		title: "Shake It Off",
+		description: "Incoming damage will occasionally be significantly reduced.",
+		type: "Minor",
+		image: "/augments/shake-it-off-minor-augment.webp",
+	},
 } as const satisfies Record<string, Augment>
 
 /**Union of all keys in the Augment Registry */
