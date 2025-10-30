@@ -1,9 +1,7 @@
-/** Gets an augment by its key.
- * @param key The key of the augment.
- * @returns The augment.
- */
-export const getAugmentByKey = (key: AugmentKey): Augment => augmentRegistry[key]
-export const getAugments = (): Augment[] => Object.values(augmentRegistry)
+import type { GameKey } from "./games"
+
+type SupportedGames = Extract<GameKey, "blackOps7" | "blackOps6">
+type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
 
 export interface Augment {
 	/** The unique identifier of the augment */
@@ -16,6 +14,8 @@ export interface Augment {
 	description: string
 	/** The image of the augment */
 	image: string
+	/** The game variants of the augment */
+	variants?: Partial<Record<SupportedGames, AugmentVariant>>,
 }
 
 /**Union of all keys in the Augment Registry */
@@ -24,6 +24,24 @@ export type AugmentKey = keyof typeof augmentRegistry
 export type AugmentTuple = [Augment, Augment, Augment, Augment, Augment, Augment, Augment?, Augment?]
 /**Union of all Augment types */
 export type AugmentType = Augment["type"]
+
+/** Gets an augment by its key.
+ * @param key The key of the augment.
+ * @throws If the augment does not exist
+ */
+export const getAugmentByKey = (key: AugmentKey, game?: SupportedGames): Augment => {
+	const augment: Augment | undefined = augmentRegistry[key]
+
+	if (!augment) throw new Error(`Augment ${key} not found`)
+	if (!game || !augment.variants?.[game]) return augment
+
+	const variant = augment.variants?.[game]
+	return {
+		...augment,
+		...variant,
+	}
+}
+export const getAugments = (): Augment[] => Object.values(augmentRegistry)
 
 const augmentRegistry = {
 	doubleJeopardy: {
