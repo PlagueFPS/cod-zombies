@@ -5,6 +5,12 @@ export interface WeakPoint {
 	title: string
 }
 
+/** Union type of all weak points */
+export type WeakPointKey = keyof typeof weakPointsRegistry
+
+export const getWeakPointByKey = (key: WeakPointKey): WeakPoint => weakPointsRegistry[key]
+export const getWeakPoints = (): WeakPoint[] => Object.values(weakPointsRegistry)
+
 const weakPointsRegistry = {
 	head: {
 		id: "head",
@@ -123,37 +129,3 @@ const weakPointsRegistry = {
 		title: "Bee Nests",
 	},
 } as const satisfies Record<string, WeakPoint>
-
-/** Union type of all weak points */
-export type WeakPointKey = keyof typeof weakPointsRegistry
-export const {
-	head,
-	powerCore,
-	glowingMouths,
-	glowingSymbol,
-	spores,
-	redCamera,
-	armCannon,
-	redGlowingSpots,
-	powerCores,
-	backSacs,
-	elbowSacs,
-	encrustedLava,
-	eyePupil,
-	foreheadCrystal,
-	chest,
-	body,
-	mouth,
-	shoulders,
-	stomach,
-	glowingHeads,
-	redCysts,
-	glowingTentacles,
-	eyes,
-	forearms,
-	calves,
-	attachedZombies,
-	glowingLights,
-	jetpack,
-	beeNests,
-} = weakPointsRegistry
