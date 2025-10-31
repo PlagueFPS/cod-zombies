@@ -68,7 +68,7 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }
 			<div className="p-5">
 				{/* Weapon Header with Larger Image */}
 				<div className="mb-4 flex items-start gap-4">
-					<div className="relative w-40 flex-shrink-0 overflow-hidden rounded-xl">
+					<div className="relative w-40 shrink-0 overflow-hidden rounded-xl">
 						<IconImage
 							featuredImage={weaponBuild.image}
 							alt={weaponBuild.title}
@@ -109,11 +109,11 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }
 				{weaponBuild.attachments && (
 					<div>
 						<div className="my-3 flex items-center gap-2">
-							<div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+							<div className="h-px flex-1 bg-linear-to-r from-transparent via-primary/60 to-transparent" />
 							<span className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-semibold text-orange-800 text-xs dark:text-primary">
 								ATTACHMENTS
 							</span>
-							<div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+							<div className="h-px flex-1 bg-linear-to-r from-transparent via-primary/60 to-transparent" />
 						</div>
 						<div className="space-y-2.5">
 							{weaponBuild.attachments.map(attachment => (
