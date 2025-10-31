@@ -74,6 +74,11 @@ const ammoModRegistry = {
 			"Bullet deal toxic damage. Each bullet has a chance to infect a zombie, becoming an ally for short duration.",
 		image: "/ammo-mods/brain-rot.webp",
 		variants: {
+			blackOpsColdWar: {
+				description:
+					"Bullets deal toxic damage. Each bullet has a chance to turn a normal enemy into an ally for 15 seconds before dying (40 second cooldown).",
+				image: "/ammo-mods/brain-rot-bo6.webp",
+			},
 			blackOps6: {
 				description:
 					"Bullets deal toxic damage. Each bullet has the chance to turn a Normal or Special enemy into an ally for short duration.",

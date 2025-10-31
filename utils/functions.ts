@@ -33,7 +33,6 @@ export const getServerUrl = () => {
 /**
  * Gets the last updated date of a file.
  * @param filePath The path of the file.
- * @returns The last updated date of the file.
  */
 export const getLastUpdated = (filePath: string) => {
 	const fileData = files[filePath as keyof typeof files]

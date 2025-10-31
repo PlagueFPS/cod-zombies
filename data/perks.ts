@@ -75,6 +75,10 @@ const perkRegistry = {
 		description: "Increases max health.",
 		image: "/perks/juggernog.webp",
 		variants: {
+			blackOpsColdWar: {
+				description: "Increase Max Health by 100.",
+				image: "/perks/juggernog-bo6.webp",
+			},
 			blackOps6: {
 				description: "Increase Max Health by 100.",
 				image: "/perks/juggernog-bo6.webp",
@@ -210,6 +214,10 @@ const perkRegistry = {
 			blackOps4: {
 				description: "Increased sprint speed and duration. Stamina regenerates faster.",
 				modifier: "Unlimited full sprint. Player can fire weapons while sprinting.",
+			},
+			blackOpsColdWar: {
+				description: "Increase run and sprint speed.",
+				image: "/perks/stamin-up-cold-war.webp",
 			},
 			blackOps6: {
 				description: "Increase run and sprint speed.",

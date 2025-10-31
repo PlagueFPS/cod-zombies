@@ -1,4 +1,5 @@
 "use client"
+import type { GameKey } from "@/data/games"
 import IconImage from "@/components/icon-image/icon-image"
 import AugmentTooltip from "@/components/rich-text/rich-tooltips/augment-tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -6,7 +7,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Separator } from "@/components/ui/separator"
 import { type AmmoMod, type AmmoModKey, getAmmoModByKey } from "@/data/ammo-mods"
 import { getAugmentByKey } from "@/data/augments"
-import type { GameKey } from "@/data/games"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AmmoModTooltipPropsWithKey {
@@ -87,9 +87,10 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 	)
 }
 
-const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod, game?: GameKey }) => {
-	const ammoModAugments = ammoMod.augments?.map(augment => augment ? getAugmentByKey(augment, game) : null)
-		.filter(augment => augment !== null)
+const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: GameKey }) => {
+	const ammoModAugments = ammoMod.augments
+		?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+		?.filter(augment => augment !== null)
 
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">

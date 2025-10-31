@@ -1,13 +1,13 @@
 "use client"
+import type { GameKey } from "@/data/games"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
+import { getAugmentByKey } from "@/data/augments"
 import { getPerkByKey, type Perk, type PerkKey } from "@/data/perks"
 import { useIsMobile } from "@/hooks/use-mobile"
 import AugmentTooltip from "./augment-tooltip"
-import type { GameKey } from "@/data/games"
-import { getAugmentByKey } from "@/data/augments"
 
 interface PerkTooltipProps {
 	perkKey: PerkKey
@@ -78,9 +78,10 @@ export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
 	)
 }
 
-const PerkTooltipContent = ({ perk, game }: { perk: Perk, game?: GameKey }) => {
-	const perkAugments = perk.augments?.map(augment => augment ? getAugmentByKey(augment, game) : null)
-		.filter(augment => augment !== null)
+const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
+	const perkAugments = perk.augments
+		?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+		?.filter(augment => augment !== null)
 
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
