@@ -1,4 +1,7 @@
 import type { AugmentTuple } from "./augments"
+import type { GameKey } from "./games"
+
+type FieldUpgradeVariant = Omit<Partial<FieldUpgrade>, "id" | "title" | "variants">
 
 export interface FieldUpgrade {
 	/** The unique identifier of the field upgrade */
@@ -11,6 +14,8 @@ export interface FieldUpgrade {
 	image: string
 	/** The augments of the field upgrade */
 	augments?: AugmentTuple
+	/** The game variants of the field upgrade */
+	variants?: Partial<Record<GameKey, FieldUpgradeVariant>>
 }
 
 /** Union type of all field upgrade keys */
@@ -18,12 +23,32 @@ export type FieldUpgradeKey = keyof typeof fieldUpgradeRegistry
 
 /** Gets a field upgrade by its key.
  * @param key The key of the field upgrade.
+ * @param game The game to get the field upgrade variant for.
  */
-export const getFieldUpgradeByKey = (key: FieldUpgradeKey): FieldUpgrade =>
-	fieldUpgradeRegistry[key]
+export const getFieldUpgradeByKey = (key: FieldUpgradeKey, game?: GameKey): FieldUpgrade => {
+	const fieldUpgrade: FieldUpgrade = fieldUpgradeRegistry[key]
 
-/** Gets all field upgrades */
-export const getFieldUpgrades = (): FieldUpgrade[] => Object.values(fieldUpgradeRegistry)
+	if (!game || !fieldUpgrade.variants?.[game]) return fieldUpgrade
+
+	const variant = fieldUpgrade.variants?.[game]
+	return { ...fieldUpgrade, ...variant }
+}
+
+/**
+ * Gets all field upgrades.
+ * @param game The game to get the field upgrade variants for.
+ */
+export const getFieldUpgrades = (game?: GameKey): FieldUpgrade[] => {
+	return Object.values(fieldUpgradeRegistry).map((fieldUpgrade: FieldUpgrade) => {
+		if (!game || !fieldUpgrade.variants?.[game]) return fieldUpgrade
+
+		const variant = fieldUpgrade.variants[game]
+		return {
+			...fieldUpgrade,
+			...variant,
+		}
+	})
+}
 
 const fieldUpgradeRegistry = {
 	ringOfFire: {
@@ -38,14 +63,18 @@ const fieldUpgradeRegistry = {
 		title: "Aether Shroud",
 		description: "Phase into the Dark Aether and become temporarily hidden from enemy detection.",
 		image: "/field-upgrades/aether-shroud.webp",
-		augments: [
-			"groupShroud",
-			"burstDash",
-			"voidSheath",
-			"instantReload",
-			"extraCharge",
-			"extensionAetherShroud",
-		],
+		variants: {
+			blackOps6: {
+				augments: [
+					"groupShroud",
+					"burstDash",
+					"voidSheath",
+					"instantReload",
+					"extraCharge",
+					"extensionAetherShroud",
+				],
+			},
+		},
 	},
 	frenziedGuard: {
 		id: "frenzied-guard",
@@ -53,14 +82,18 @@ const fieldUpgradeRegistry = {
 		description:
 			"Repair armor to full and force all enemies in the area to temporarily target you. Armor takes all damage during this time, and is repaired on every kill.",
 		image: "/field-upgrades/frenzied-guard.webp",
-		augments: [
-			"phalanx",
-			"retribution",
-			"frenzyFire",
-			"repairBoost",
-			"extensionFrenziedGuard",
-			"rally",
-		],
+		variants: {
+			blackOps6: {
+				augments: [
+					"phalanx",
+					"retribution",
+					"frenzyFire",
+					"repairBoost",
+					"extensionFrenziedGuard",
+					"rally",
+				],
+			},
+		},
 	},
 	darkFlare: {
 		id: "dark-flare",
@@ -76,13 +109,31 @@ const fieldUpgradeRegistry = {
 			"heavyShadow",
 			"extraCharge",
 		],
+		variants: {
+			blackOps7: {
+				augments: [
+					"extensionDarkFlare",
+					"supernova",
+					"darkPact",
+					"muzzleBlast",
+					"broadBeam",
+					"heavyShadow",
+					"extraCharge",
+					"duskFlame",
+				],
+			},
+		},
 	},
 	energyMine: {
 		id: "energy-mine",
 		title: "Energy Mine",
 		description: "Create a mine of pure energy that detonates 3 times, dealing lethal damage.",
 		image: "/field-upgrades/energy-mine.webp",
-		augments: ["scatter", "turret", "carousel", "frequencyBoost", "extraCharge", "siren"],
+		variants: {
+			blackOps6: {
+				augments: ["scatter", "turret", "carousel", "frequencyBoost", "extraCharge", "siren"],
+			},
+		},
 	},
 	teslaStorm: {
 		id: "tesla-storm",
@@ -90,14 +141,18 @@ const fieldUpgradeRegistry = {
 		description:
 			"For 10 seconds lightning connects to other players, stunning and damaging normal enemies.",
 		image: "/field-upgrades/tesla-storm.webp",
-		augments: [
-			"transformer",
-			"shockwave",
-			"staticDischarge",
-			"powerGrid",
-			"overclocked",
-			"lithiumCharged",
-		],
+		variants: {
+			blackOps6: {
+				augments: [
+					"transformer",
+					"shockwave",
+					"staticDischarge",
+					"powerGrid",
+					"overclocked",
+					"lithiumCharged",
+				],
+			},
+		},
 	},
 	misterPeeks: {
 		id: "mister-peeks",
