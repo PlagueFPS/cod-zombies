@@ -338,6 +338,12 @@ const augmentRegistry = {
 			"If you have Quick Revive while downed, killing an enemy will revive you and remove Quick Revive. This can be done up to 3 times.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				description:
+					"If you have Quick Revive while downed, killing an enemy will revive you. This can be done up to 3 times.",
+			},
+		},
 	},
 	dyingWish: {
 		id: "dying-wish",
