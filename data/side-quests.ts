@@ -1,1325 +1,40 @@
 import { sortReleaseDateDesc } from "@/utils/functions.client"
-import {
-  alphaOmega,
-  ancientEvil,
-  bloodOfTheDead,
-  citadelleDesMorts,
-  classified,
-  deadOfTheNight,
-  derEisendrache,
-  dieMaschine,
-  firebaseZ,
-  forsaken,
-  gorodKrovi,
-  ix,
-  libertyFalls,
-  type Maps,
-  mauerDerToten,
-  reckoning,
-  revelations,
-  shadowsOfEvil,
-  shatteredVeil,
-  tagDerToten,
-  terminus,
-  theGiant,
-  theTomb,
-  voyageOfDespair,
-  zetsubouNoShima,
-} from "./maps"
+import { getMapByKey, type Maps } from "./maps"
 
 interface SideQuestComingSoon {
-  /** The unique identifier for the side quest */
-  id: string
-  /** The title of the side quest */
-  title: string
-  /** The state of the side quest */
-  state: "Coming Soon"
-  /** The map of the side quest */
-  map: Maps
-  /** The description of the side quest */
-  description: string
-  /** The content of the side quest */
-  content: () => Promise<typeof import("*.mdx")>
+	/** The unique identifier for the side quest */
+	id: string
+	/** The title of the side quest */
+	title: string
+	/** The state of the side quest */
+	state: "Coming Soon"
+	/** The map of the side quest */
+	map: Maps
+	/** The description of the side quest */
+	description: string
+	/** The content of the side quest */
+	content: () => Promise<typeof import("*.mdx")>
 }
 
 interface SideQuestReleased {
-  /** The unique identifier for the side quest */
-  id: string
-  /** The title of the side quest */
-  title: string
-  /** The state of the side quest */
-  state?: "New"
-  /** The map of the side quest */
-  map: Maps
-  /** The description of the side quest */
-  description: string
-  /** The content of the side quest */
-  content: () => Promise<typeof import("*.mdx")>
+	/** The unique identifier for the side quest */
+	id: string
+	/** The title of the side quest */
+	title: string
+	/** The state of the side quest */
+	state?: "New"
+	/** The map of the side quest */
+	map: Maps
+	/** The description of the side quest */
+	description: string
+	/** The content of the side quest */
+	content: () => Promise<typeof import("*.mdx")>
 }
 
+/** Union type of all side quest types */
 export type SideQuest = SideQuestComingSoon | SideQuestReleased
 /** Union type of all side quests */
 export type SideQuestKey = keyof typeof sideQuestRegistry
-
-const sideQuestRegistry = {
-  free500Points: {
-    id: "free-500-points",
-    title: "Free 500 Points",
-    description:
-      "Discover this easy way to get a quick 500 points immediately after opening the first door of the map, refunding your purchase.",
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/free-500-points.mdx"),
-  },
-  freeMegaGobblegum: {
-    id: "free-mega-gobblegum",
-    title: "Free Mega Gobblegum",
-    description:
-      "Learn how to acquire a free Mega Gobblegum, enhancing your game. Follow precise steps involving Widow's Wine, and specific statue interactions to claim your reward.",
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/free-mega-gobblegum.mdx"),
-  },
-  upgradedTripMines: {
-    id: "upgraded-trip-mines",
-    title: "Upgraded Trip Mines",
-    description: `Discover the explosive secret of the Trip Mines! Blast zombies at "Holly's Cream Cakes" carts for a doughnut-fueled upgrade.`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/upgraded-trip-mines.mdx"),
-  },
-  noireModeFilter: {
-    id: "noire-mode-filter",
-    title: "Noire Mode Filter",
-    description: `Discover a way to activate a permanent "Noire Mode" for the rest of the game for a new look to the game.`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/noire-mode-filter.mdx"),
-  },
-  snakeskinBootsSong: {
-    id: "snakeskin-boots-song",
-    title: "Snakeskin Boots Song",
-    description: `Discover this Music Easter Egg Song "Snakeskin Boots" for Shadows of Evil by Jack Wall feat. Rick Riso with lyrics by Cindy Shapiro`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/snakeskin-boots-song.mdx"),
-  },
-  coldHardCash: {
-    id: "cold-hard-cash",
-    title: "Cold Hard Cash",
-    description: `Discover this Music Easter Egg Song "Cold Hard Cash" for Shadows of Evil by Jack Wall feat. Antonia Bennet with lyrics by Cindy Shapiro`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/cold-hard-cash.mdx"),
-  },
-  margwaMask: {
-    id: "margwa-mask",
-    title: "Margwa Mask",
-    description: `Learn how to unlock the Margwa Mask for a wild look and slam protection by shooting 6 Margwa hearts from a moving train.`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/margwa-mask.mdx"),
-  },
-  jumpScare: {
-    id: "jump-scare",
-    title: "Jump Scare",
-    description: `Discover this spooky jumpscare using a Sniper Rifle for a quick scare and laugh.`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/jump-scare.mdx"),
-  },
-  upgradedLilArnies: {
-    id: "upgraded-lil-arnies",
-    title: "Upgraded Lil' Arnies",
-    description: `Learn how to upgrade your Lil' Arnies for a stronger, longer lasting, and cooler looking tactical equipment.`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/upgraded-lil-arnies.mdx"),
-  },
-  shadowmanRoundSkip: {
-    id: "shadowman-round-skip",
-    title: "Shadowman Round Skip",
-    description: `Discover this way to skip through the early rounds and jump ahead to Round 5, 10, or 15 with extra points to speed up your game.`,
-    map: shadowsOfEvil,
-    content: () => import("@/content/side-quests/shadowman-round-skip.mdx"),
-  },
-  beautyOfAnnihilationRemix: {
-    id: "beauty-of-annihilation-remix",
-    title: "Beauty of Annihilation Remix",
-    description: `Discover the Remixed version of the original Beauty of Annihilation Music Easter Egg Song by Kevin Sherwood, sang by Elena Siegman`,
-    map: theGiant,
-    content: () => import("@/content/side-quests/beauty-of-annihilation-remix.mdx"),
-  },
-  hiddenPerkMachine: {
-    id: "hidden-perk-machine",
-    title: "Hidden Perk Machine",
-    description: `Learn how to uncover this hidden sixth perk machine on The Giant that can either by Stamin-Up or Deadshot Daiquiri.`,
-    map: theGiant,
-    content: () => import("@/content/side-quests/hidden-perk-machine.mdx"),
-  },
-  deadAgain: {
-    id: "dead-again",
-    title: "Dead Again",
-    description: `Discover the "Dead Again" Music Easter Egg song for Der Eisendrache written by Kevin Sherwood and vocals by Elena Siegman.`,
-    map: derEisendrache,
-    content: () => import("@/content/side-quests/dead-again.mdx"),
-  },
-  brmWallBuy: {
-    id: "brm-wall-buy",
-    title: "BRM Wall Buy",
-    description: `Learn how to unlock this hidden wall buy for the BRM Light Machine Gun by utilizing Anti-Gravity and wall running.`,
-    map: derEisendrache,
-    content: () => import("@/content/side-quests/brm-wall-buy.mdx"),
-  },
-  skeletonsEverywhere: {
-    id: "skeletons-everywhere",
-    title: "Skeletons Everywhere",
-    description: `Learn how to enable this cool effect that turns all zombies into skeletons, which you can disable at any time if you choose.`,
-    map: derEisendrache,
-    content: () => import("@/content/side-quests/skeletons-everywhere.mdx"),
-  },
-  panzerClawHelmet: {
-    id: "panzer-claw-helmet",
-    title: "Panzer Claw Helmet",
-    description: `Learn how to obtain a Panzer Claw Helmet that will grant you full immunity from the Panzer's melee attacks.`,
-    map: derEisendrache,
-    content: () => import("@/content/side-quests/panzer-claw-helmet.mdx"),
-  },
-  plungerMeleeWeapon: {
-    id: "plunger-melee-weapon",
-    title: "Plunger Melee Weapon",
-    description: `Learn how to obtain the Plunger Melee Weapon which has a hidden effect allowing you to instantly kill Panzersoldats.`,
-    map: derEisendrache,
-    content: () => import("@/content/side-quests/plunger-melee-weapon.mdx"),
-  },
-  secondGondola: {
-    id: "second-gondola",
-    title: "Second Gondola",
-    description: `Learn how to enable the second Gondola at the start of the game to get a valuable reward like Monkey Bombs, Packed Man-O-War, or Packed Haymaker 12.`,
-    map: derEisendrache,
-    content: () => import("@/content/side-quests/second-gondola.mdx"),
-  },
-  freeMegaGobblegumDerEisendrache: {
-    id: "free-mega-gobblegum-der-eisendrache",
-    title: "Free Mega Gobblegum",
-    description: `Learn how to obtain a Free Mega GobbleGum that can help enhance your game while you progress the Main Quest.`,
-    map: derEisendrache,
-    content: () => import("@/content/side-quests/free-mega-gobblegum-der-eisendrache.mdx"),
-  },
-  deadFlowers: {
-    id: "dead-flowers",
-    title: "Dead Flowers",
-    description: `Discover the hidden Music Easter Egg Song "Dead Flowers" written by Kevin Sherwood with vocals by Malukah.`,
-    map: zetsubouNoShima,
-    content: () => import("@/content/side-quests/dead-flowers.mdx"),
-  },
-  doppelgangerJumpScare: {
-    id: "doppelganger-jump-scare",
-    title: "Doppelganger Jump Scare",
-    description: `Discover this eerie figure that looks like a Doppleganger of one of the four main crew characters, Dempsey, Nikolai, Takeo, or Richtofen.`,
-    map: zetsubouNoShima,
-    content: () => import("@/content/side-quests/doppelganger-jump-scare.mdx"),
-  },
-  freeWidowsWine: {
-    id: "free-widows-wine",
-    title: "Free Widow's Wine",
-    description: `Learn how to obtain the Widow's Wine perk as a nice reward for defeating a formidable foe.`,
-    map: zetsubouNoShima,
-    content: () => import("@/content/side-quests/free-widows-wine.mdx"),
-  },
-  friendyThrasher: {
-    id: "friendy-thrasher",
-    title: "Friendy Thrasher",
-    description: `Learn how to turn a threatening enemy into a friendly asset to help you survive for up to three full rounds.`,
-    map: zetsubouNoShima,
-    content: () => import("@/content/side-quests/friendy-thrasher.mdx"),
-  },
-  goldenBucket: {
-    id: "golden-bucket",
-    title: "Golden Bucket",
-    description: `Learn how to obtain the Golden Bucket for your entire team, granting you an infinite amount of every type of water.`,
-    map: zetsubouNoShima,
-    content: () => import("@/content/side-quests/golden-bucket.mdx"),
-  },
-  spiderBait: {
-    id: "spider-bait",
-    title: "Spider Bait",
-    description: `Learn how to transform your character into a spider, shooting webs, and gaining invincibility while active.`,
-    map: zetsubouNoShima,
-    content: () => import("@/content/side-quests/spider-bait.mdx"),
-  },
-  dragonShieldUpgrade: {
-    id: "dragon-shield-upgrade",
-    title: "Dragon Shield Upgrade",
-    description: `Learn how to upgrade the Guard of Fafnir shield into Timat's Maw, increasing its health, damage, range and eye color of the shield to red.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/dragon-shield-upgrade.mdx"),
-  },
-  dragonStrikeUpgrade: {
-    id: "dragon-strike-upgrade",
-    title: "Dragon Strike Upgrade",
-    description: `Learn how to upgrade the Dragon Strike into the Draconite for increased damage, usage, and new visual effects.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/dragon-strike-upgrade.mdx"),
-  },
-  meleeWeapons: {
-    id: "melee-weapons",
-    title: "Melee Weapons",
-    description: `Discover this interesting arsenal reward for completing certain rounds in under a specific amount of time.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/melee-weapons.mdx"),
-  },
-  monkeyBombsUpgrade: {
-    id: "monkey-bombs-upgrade",
-    title: "Monkey Bombs Upgrade",
-    description: `Learn how to upgrade the Monkey Bombs for increased effectiveness and a dubstep-remixed sound effect.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/monkey-bombs-upgrade.mdx"),
-  },
-  deadEnded: {
-    id: "dead-ended",
-    title: "Dead Ended",
-    description: `Discover this hidden Music Easter Egg song "Dead Ended" by Kevin Sherwood with vocals by Clark S Nova.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/dead-ended.mdx"),
-  },
-  aceOfSpades: {
-    id: "ace-of-spades",
-    title: "Ace of Spades",
-    description: `Discover this hidden Music Easter Egg song for the popular song Ace of Spades by Motorhead.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/ace-of-spades.mdx"),
-  },
-  samanthasSorrow: {
-    id: "samanthas-sorrow",
-    title: "Samantha's Sorrow",
-    description: `Learn how to activate the hidden Music Easter Egg song "Samantha's Sorrow" by Brian Tuey.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/samanthas-sorrow.mdx"),
-  },
-  helmetsAndWings: {
-    id: "helmets-and-wings",
-    title: "Helmets & Wings",
-    description: `Learn how to obtain the Dragon Wings, Mangler Helmet, and Valkrie Helmet for a worthy upgrade and quality-of-life improvement.`,
-    map: gorodKrovi,
-    content: () => import("@/content/side-quests/helmets-and-wings.mdx"),
-  },
-  meleeWeaponsRevelations: {
-    id: "melee-weapons-revelations",
-    title: "Melee Weapons Revelations",
-    description: `Discover this interesting wall buy reward for completing certain rounds in under a specific amount of time.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/melee-weapons-revelations.mdx"),
-  },
-  lilArniesUpgrade: {
-    id: "lil-arnies-upgrade",
-    title: "Lil' Arnies Upgrade",
-    description: `Learn how to obtain the upgraded version of the Lil' Arnie's equipment for increased damage and a new visual look.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/lil-arnies-upgrade.mdx"),
-  },
-  theGift: {
-    id: "the-gift",
-    title: "The Gift",
-    description: `Discover this hidden Music Easter Egg song "The Gift" by Kevin Sherwood with vocals by Elena Siegman.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/the-gift.mdx"),
-  },
-  allZombieSongs: {
-    id: "all-zombie-songs",
-    title: "All Zombie Songs",
-    description: `Discover this hidden Music Easter Egg that plays multiple songs from past maps.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/all-zombie-songs.mdx"),
-  },
-  permanentPackAPack: {
-    id: "permanent-pack-a-pack",
-    title: "Permanent Pack-a-Pack",
-    description: `Discover this game-changing upgrade that makes all wall and box weapons instantly Pack-a-Punched for the rest of the game, and unlocks Takeo's Katana.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/permanent-pack-a-pack.mdx"),
-  },
-  freePerkWallRun: {
-    id: "free-perk-wall-run",
-    title: "Free Perk Wall Run",
-    description: `Learn how to obtain a Free Perk Power-Up, granting everyone in your game with a random perk.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/free-perk-wall-run.mdx"),
-  },
-  chalkQuotes: {
-    id: "chalk-quotes",
-    title: "Chalk Quotes",
-    description: `Learn how to unlock the M1927 wall buy and a way for you to trade weapons with your teammates.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/chalk-quotes.mdx"),
-  },
-  hatsAndMasks: {
-    id: "hats-and-masks",
-    title: "Hats & Masks",
-    description: `Learn how to obtain all hats and masks that grant some strong gameplay advantages to help you survive.`,
-    map: revelations,
-    content: () => import("@/content/side-quests/hats-and-masks.mdx"),
-  },
-  vikingFuneral: {
-    id: "viking-funeral",
-    title: "Viking Funeral",
-    description: "Discover how to obtain a free Random Perk Power-Up by giving a fallen viking a proper sendoff.",
-    map: ix,
-    content: () => import("@/content/side-quests/viking-funeral.mdx"),
-  },
-  madHatter: {
-    id: "mad-hatter",
-    title: "Mad Hatter",
-    description: "Discover how to activate the song 'Mad Hatter' by Avenged Sevenfold in your game.",
-    map: ix,
-    content: () => import("@/content/side-quests/mad-hatter.mdx")
-  },
-  nosFideles: {
-    id: "nos-fideles",
-    title: "Nos Fideles",
-    description: "Discover how to activate the song 'Nos Fideles' by Jack Wall in your game.",
-    map: ix,
-    content: () => import("@/content/side-quests/nos-fideles.mdx")
-  },
-  brazenBullUpgrade: {
-    id: "brazen-bull-upgrade",
-    title: "Brazen Bull Upgrade",
-    description: "Learn how to upgrade the Brazen Bull shield into the Iron Bull.",
-    map: ix,
-    content: () => import("@/content/side-quests/brazen-bull-upgrade.mdx")
-  },
-  fireAndTrapImmunity: {
-    id: "fire-and-trap-immunity",
-    title: "Fire & Trap Immunity",
-    description: "Learn how to obtain fire immunity and significant damage reduction from the Acid Trap.",
-    map: ix,
-    content: () => import("@/content/side-quests/fire-and-trap-immunity.mdx")
-  },
-  drowning: {
-    id: "drowning",
-    title: "Drowning",
-    description: "Learn how to activate the Music Easter Egg Song 'Drowning' by Kevin Sherwood.",
-    map: voyageOfDespair,
-    content: () => import("@/content/side-quests/drowning.mdx")
-  },
-  specialWeaponFireSale: {
-    id: "special-weapon-fire-sale",
-    title: "Special Weapon Fire Sale",
-    description: "Discover this way to activate a special fire sale allowing you to change your special weapon in game.",
-    map: voyageOfDespair,
-    content: () => import("@/content/side-quests/special-weapon-fire-sale.mdx")
-  },
-  bowieKnifeUpgrade: {
-    id: "bowie-knife-upgrade",
-    title: "Bowie Knife Upgrade",
-    description: "Learn how to upgrade your Bowie Knife for a one hit kill past Round 30 with a cooldown.",
-    map: voyageOfDespair,
-    content: () => import("@/content/side-quests/bowie-knife-upgrade.mdx")
-  },
-  fishFreePerk: {
-    id: "fish-free-perk",
-    title: "Fish Free Perk",
-    description: "Learn how to obtain a free Random Perk Power-Up by collecting six fish around the map.",
-    map: voyageOfDespair,
-    content: () => import("@/content/side-quests/fish-free-perk.mdx")
-  },
-  elementalShieldUpgrade: {
-    id: "elemental-shield-upgrade",
-    title: "Elemental Shield Upgrade",
-    description: "Learn how to upgrade your Ballistic Shield into the Svalinn Guard elemental shield.",
-    map: voyageOfDespair,
-    content: () => import("@/content/side-quests/elemental-shield-upgrade.mdx")
-  },
-  whereAreWeGoingRemix: {
-    id: "where-are-we-going-remix",
-    title: "Where Are We Going Remix",
-    description: "Learn how to activate the remix of the original 'Where Are We Going' music easter egg song by Kevin Sherwood.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/where-are-we-going-remix.mdx")
-  },
-  hellsRetriever: {
-    id: "hells-retriever",
-    title: "Hell's Retriever",
-    description: "Learn how to obtain the Hell's Retriever lethal equipment.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/hells-retriever.mdx")
-  },
-  freeMonkeyBombs: {
-    id: "free-monkey-bombs",
-    title: "Free Monkey Bombs",
-    description: "Learn how to obtain Free Monkey Bombs by killing enemies with your Special Weapon.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/free-monkey-bombs.mdx")
-  },
-  upgradedSpectralShield: {
-    id: "upgraded-spectral-shield",
-    title: "Upgraded Spectral Shield",
-    description: "Learn how to upgrade your Spectral Shield for increased shield charge capacity.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/upgraded-spectral-shield.mdx")
-  },
-  freeBlundergat: {
-    id: "free-blundergat",
-    title: "Free Blundergat",
-    description: "Learn how to obtain a Free Blundergat by completing collecting five skulls around the map.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/free-blundergat.mdx")
-  },
-  magmagatUpgrade: {
-    id: "magmagat-upgrade",
-    title: "Magmagat Upgrade",
-    description: "Learn how to upgrade your Blundergat to the Magmagat variant, greatly enhancing its functionality.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/magmagat-upgrade.mdx")
-  },
-  goldenSpork: {
-    id: "golden-spork",
-    title: "Golden Spork",
-    description: "Learn how to obtain a Golden Spork for an advanced melee weapon.",
-    map: bloodOfTheDead,
-    content: () => import("@/content/side-quests/golden-spork.mdx")
-  },
-  shockwave: {
-    id: "shockwave",
-    title: "Shockwave",
-    description: "Learn how to activate the Music Easter Egg song 'Shockwave' by Kevin Sherwood.",
-    map: classified,
-    content: () => import("@/content/side-quests/shockwave.mdx")
-  },
-  thisJazzIsClassified: {
-    id: "this-jazz-is-classified",
-    title: "This Jazz Is Classified",
-    description: "Learn how to activate the Music Easter Egg song 'This Jazz Is Classified' by Jack Wall.",
-    map: classified,
-    content: () => import("@/content/side-quests/this-jazz-is-classified.mdx")
-  },
-  freeWintersHowl: {
-    id: "free-winters-howl",
-    title: "Free Winter's Howl",
-    description: "Learn how to obtain a Free Winters Howl for an advanced melee weapon.",
-    map: classified,
-    content: () => import("@/content/side-quests/free-winters-howl.mdx")
-  },
-  mystery: {
-    id: "mystery",
-    title: "Mystery",
-    description: "Discover how to activate the hidden Music Easter Egg song 'Mystery' by Kevin Sherwood.",
-    map: deadOfTheNight,
-    content: () => import("@/content/side-quests/mystery.mdx")
-  },
-  secretDoors: {
-    id: "secret-doors",
-    title: "Secret Doors",
-    description: "Discover how to unlock three secret doors each granting you a nice reward.",
-    map: deadOfTheNight,
-    content: () => import("@/content/side-quests/secret-doors.mdx")
-  },
-  stakeKnife: {
-    id: "stake-knife",
-    title: "Stake Knife",
-    description: "Learn how to obtain a Stake Knife, increasing your damage against all enemies.",
-    map: deadOfTheNight,
-    content: () => import("@/content/side-quests/stake-knife.mdx")
-  },
-  savageImpaler: {
-    id: "savage-impaler",
-    title: "Savage Impaler",
-    description: "Learn how to obtain the Savage Impaler weapon, which is like a second Wonder Weapon.",
-    map: deadOfTheNight,
-    content: () => import("@/content/side-quests/savage-impaler.mdx")
-  },
-  stormbound: {
-    id: "stormbound",
-    title: "Stormbound",
-    description: "Discover how to activate the music Easter Egg song 'Stormbound' by Kevin Sherwood.",
-    map: ancientEvil,
-    content: () => import("@/content/side-quests/stormbound.mdx")
-  },
-  iAmTheWell: {
-    id: "i-am-the-well",
-    title: "I Am The Well",
-    description: "Discover how to activate the music Easter Egg song 'I Am The Well' by Kevin Sherwood.",
-    map: alphaOmega,
-    content: () => import("@/content/side-quests/i-am-the-well.mdx")
-  },
-  adamUnitFreePerk: {
-    id: "adam-unit-free-perk",
-    title: "A.D.A.M. Unit Free Perk",
-    description: "Learn how to obtain a free Random Perk Power-Up by shooting the heads of all A.D.A.M. units.",
-    map: alphaOmega,
-    content: () => import("@/content/side-quests/adam-unit-free-perk.mdx")
-  },
-  aLightFromTheShore: {
-    id: "a-light-from-the-shore",
-    title: "A Light From The Shore",
-    description: "Discover how to activate the hidden Music Easter Egg song 'A Light From The Shore' by Kevin Sherwood.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/a-light-from-the-shore.mdx")
-  },
-  georgeRomeroGlasses: {
-    id: "george-romero-glasses",
-    title: "George Romero Glasses",
-    description: "Learn how to obtain a Free 500 Points by interacting with George Romero's glasses.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/george-romero-glasses.mdx")
-  },
-  paperJumpscare: {
-    id: "paper-jumpscare",
-    title: "Paper Jumpscare",
-    description: "Discover this hidden jumpscare by aiming at a piece of paper on the Forecastle.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/paper-jumpscare.mdx")
-  },
-  statueFreePerk: {
-    id: "statue-free-perk",
-    title: "Statue Free Perk",
-    description: "Learn how to obtain a free Random Perk Power-Up by collecting four statues.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/statue-free-perk.mdx")
-  },
-  heatPack: {
-    id: "heat-pack",
-    title: "Heat Pack",
-    description: "Learn how to obtain a Heat Pack allowing you to move and swim faster in water without freezing.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/heat-pack.mdx")
-  },
-  lighthouseJumpscare: {
-    id: "lighthouse-jumpscare",
-    title: "Lighthouse Jumpscare",
-    description: "Discover this hidden jumpscare by aiming at the top of the lighthouse.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/lighthouse-jumpscare.mdx")
-  },
-  freeTundragun: {
-    id: "free-tundragun",
-    title: "Free Tundragun",
-    description: "Learn how to obtain a Free Tundragun by doing a little target practice.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/free-tundragun.mdx")
-  },
-  freeThundergun: {
-    id: "free-thundergun",
-    title: "Free Thundergun",
-    description: "Learn how to obtain a Free Thundergun by completing all five challenge totems.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/free-thundergun.mdx")
-  },
-  upgradedSnowballs: {
-    id: "upgraded-snowballs",
-    title: "Upgraded Snowballs",
-    description: "Learn how to upgrade your Snowballs for a one-hit kill until Round 35.",
-    map: tagDerToten,
-    content: () => import("@/content/side-quests/upgraded-snowballs.mdx")
-  },
-  alone: {
-    id: "alone",
-    title: "Alone",
-    description: "Discover how to activate the hidden Music Easter Egg song 'Alone' by Kevin Sherwood.",
-    map: dieMaschine,
-    content: () => import("@/content/side-quests/alone.mdx")
-  },
-  coffinDance: {
-    id: "coffin-dance",
-    title: "Coffin Dance",
-    description: "Learn how to activate this meme reference and receive a free Juggernog perk.",
-    map: dieMaschine,
-    content: () => import("@/content/side-quests/coffin-dance.mdx")
-  },
-  satellitePoints: {
-    id: "satellite-points",
-    title: "Satellite Points",
-    description: "Learn how to obtain a free 1500 points by messing with some satellites.",
-    map: dieMaschine,
-    content: () => import("@/content/side-quests/satellite-points.mdx")
-  },
-  monsterHand: {
-    id: "monster-hand",
-    title: "Monster Hand",
-    description: "Learn how to obtain a free Legendary Rarity upgrade by feeding a monster.",
-    map: dieMaschine,
-    content: () => import("@/content/side-quests/monster-hand.mdx")
-  },
-  floatingBodies: {
-    id: "floating-bodies",
-    title: "Floating Bodies",
-    description: "Learn how to obtain either a free Scorestreak or trigger a jumpscare within the Dark Aether.",
-    map: dieMaschine,
-    content: () => import("@/content/side-quests/floating-bodies.mdx")
-  },
-  lost: {
-    id: "lost",
-    title: "Lost",
-    description: "Discover the hidden music easter egg song 'Lost' by Kevin Sherwood.",
-    map: firebaseZ,
-    content: () => import("@/content/side-quests/lost.mdx")
-  },
-  darkAetherBunny: {
-    id: "dark-aether-bunny",
-    title: "Dark Aether Bunny",
-    description: "Learn how to obtain a free Juggernog perk along with other rewards by following a Dark Aether Bunny.",
-    map: firebaseZ,
-    content: () => import("@/content/side-quests/dark-aether-bunny.mdx")
-  },
-  sergeiHeadFreePerk: {
-    id: "sergei-head-free-perk",
-    title: "Sergei Head Free Perk",
-    description: "Learn how to obtain a free perk along by extracting some information out of the head of Sergei.",
-    map: firebaseZ,
-    content: () => import("@/content/side-quests/sergei-head-free-perk.mdx")
-  },
-  upgradedMonkeyBombs: {
-    id: "upgraded-monkey-bombs",
-    title: "Upgraded Monkey Bombs",
-    description: "Learn how to upgrade your Monkey Bombs for more damage, a new tune, and have zombies dance to the beat.",
-    map: firebaseZ,
-    content: () => import("@/content/side-quests/upgraded-monkey-bombs.mdx")
-  },
-  amoeba: {
-    id: "amoeba",
-    title: "Amoeba",
-    description: "Discover how to activate the hidden music easter egg song 'Amoeba' by Adolescents.",
-    map: mauerDerToten,
-    content: () => import("@/content/side-quests/amoeba.mdx")
-  },
-  sharpshooter: {
-    id: "sharpshooter",
-    title: "Sharpshooter",
-    description: "Learn how to obtain a free Aether Tool by completing a sharpshooter challenge.",
-    map: mauerDerToten,
-    content: () => import("@/content/side-quests/sharpshooter.mdx")
-  },
-  bunnyDisco: {
-    id: "bunny-disco",
-    title: "Bunny Disco",
-    description: "Learn how to enter the bunny disco nightclub for a chance at earning the Wonder Weapon.",
-    map: mauerDerToten,
-    content: () => import("@/content/side-quests/bunny-disco.mdx")
-  },
-  bubby: {
-    id: "bubby",
-    title: "Bubby",
-    description: "Learn how to obtain at least one free perk, activate the music easter egg, and potentially earn the Wonder Weapon.",
-    map: forsaken,
-    content: () => import("@/content/side-quests/bubby.mdx")
-  },
-  freeRarityUpgrade: {
-    id: "free-rarity-upgrade",
-    title: "Free Rarity Upgrade",
-    description: "Learn how to obtain a free rarity upgrade for a Pistol, SMG, or Sniper Rifle weapon.",
-    map: forsaken,
-    content: () => import("@/content/side-quests/free-rarity-upgrade.mdx")
-  },
-  ronaldRaygun: {
-    id: "ronald-raygun",
-    title: "Ronald Raygun",
-    description: "Learn how to potentially obtain a free Raygun by delivering some pizza.",
-    map: forsaken,
-    content: () => import("@/content/side-quests/ronald-raygun.mdx")
-  },
-  arcXDRace: {
-    id: "arc-xd-race",
-    title: "ARC-XD Race",
-    description: "Learn how to play this hidden ARC-XD map race for a chance to earn the Wonder Weapon.",
-    map: forsaken,
-    content: () => import("@/content/side-quests/arc-xd-race.mdx")
-  },
-  tombstonePerkaholic: {
-    id: "tombstone-perkaholic",
-    title: "Tombstone Perkaholic",
-    description: "Learn how to earn all perks in the game by manipulating death.",
-    map: forsaken,
-    content: () => import("@/content/side-quests/tombstone-perkaholic.mdx")
-  },
-  destroySomethingBeautiful: {
-    id: "destroy-something-beautiful",
-    title: "Destroy Something Beautiful",
-    description: `Discover and listen to the hidden Music Easter Egg song for Liberty Falls "Destroy Something Beautiful" by Kevin Sherwood.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/destroy-something-beautiful.mdx"),
-  },
-  vendingMachine: {
-    id: "vending-machine",
-    title: "Vending Machine",
-    description: `Discover the hidden goodies inside this Vending Machine to test your luck for a chance of getting a Free Perk, Raygun, Pack-a-Punch Upgrade, Scorestreak or Aether Tool.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/vending-machine.mdx"),
-  },
-  rainingZombies: {
-    id: "raining-zombies",
-    title: "Raining Zombies",
-    description: `Discover this hidden secret that has zombies raining from the skies dropping loot including, an Aether Tool, Scorestreaks, Points, Salavge, and more!`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/raining-zombies.mdx"),
-  },
-  freeDeadshotPerk: {
-    id: "free-deadshot-perk",
-    title: "Free Deadshot Perk",
-    description: `Discover this hidden easter egg that tests your aim and quickness with an old wild west challenge rewarding you with a free Deadshot Daiquiri perk as your reward.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/free-deadshot-perk.mdx"),
-  },
-  misterPeeksBowling: {
-    id: "mister-peeks-bowling",
-    title: "Mister Peeks Bowling",
-    description: `It's time to go bowling within Fuller's Liberty Lanes! If you score high enough you can earn yourself a free Raygun, Legendary Weapon, Aether Tool or Pack-a-Punch upgrade.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/mister-peeks-bowling.mdx"),
-  },
-  aetherellaSuperhero: {
-    id: "aetherella-superhero",
-    title: "Aetherella Superhero",
-    description: `Transform into a full-sized Aetherella superhero and wreck havoc on zombies of all shapes and sizes with this hidden side quest.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/aetherella-superhero.mdx"),
-  },
-  misterPeeksCar: {
-    id: "mister-peeks-car",
-    title: "Mister Peeks Car",
-    description: `Mister Peeks is potentially hiding some valuable items within his car, find the correct car, blow it up with the right equipment, and see if luck is on your side for a chance to get the Ray Gun, Jet Gun, and other weapons.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/mister-peeks-car.mdx"),
-  },
-  theVault: {
-    id: "the-vault",
-    title: "The Vault",
-    description: `The bank vault is holding more than just money, find the three codes and gain access to the vault to see what loot has been hiding inside.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/the-vault.mdx"),
-  },
-  bloodPool: {
-    id: "blood-pool",
-    title: "Blood Pool",
-    description: `Behind the motel lies a hellish secret, a pool filled with blood. Toss in some explosives, and you might just awaken its hidden treasures. Repeat the ritual three times for a guaranteed Fire Sale. Dare to dive in?`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/blood-pool.mdx"),
-  },
-  gravedigging: {
-    id: "gravedigging",
-    title: "Gravedigging",
-    description: `Unearth the past of Liberty Falls to find their graves filled with loot; dig them all up for a chance to get a Free Perk, RayGun, JetGun and more! Curious about where to find a shovel to uncover these hidden treasures?`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/gravedigging.mdx"),
-  },
-  poolTable: {
-    id: "pool-table",
-    title: "Pool Table",
-    description: `Discover this quick and easy way to get 100 points to help jumpstart every game you play.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/pool-table.mdx"),
-  },
-  hiddenPowerUps: {
-    id: "hidden-power-ups",
-    title: "Hidden Power Ups",
-    description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/hidden-power-ups.mdx"),
-  },
-  candlesFireTrap: {
-    id: "candles-fire-trap",
-    title: "Candles Fire Trap",
-    description: `Discover this hidden fire trap that can help you during the Liberty Falls Main Quest final encounter.`,
-    map: libertyFalls,
-    content: () => import("@/content/side-quests/candles-fire-trap.mdx"),
-  },
-  canYouHearMeComeIn: {
-    id: "can-you-hear-me-come-in",
-    title: "Can You Hear Me? (Come In)",
-    description: `Discover and listen to the hidden Terminus Music Easter Egg song "Can you hear me? (Come in)" by Kevin Sherwood`,
-    map: terminus,
-    content: () => import("@/content/side-quests/can-you-hear-me-come-in.mdx"),
-  },
-  basketballFreePoints: {
-    id: "basketball-free-points",
-    title: "Basketball Free Points",
-    description: `Uncover the hidden basketball and try to sink a shot to unlock a rewarding Easter egg that rewards players with thousands of points.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/basketball-free-points.mdx"),
-  },
-  megaStuffyPet: {
-    id: "mega-stuffy-pet",
-    title: "Mega Stuffy Pet",
-    description: `Uncover the secret quest unlocking this stuffy ally that will aid you in combat, reviving you when you go down, knocking down zombies, and providing some companionship.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/mega-stuffy-pet.mdx"),
-  },
-  meteorCrash: {
-    id: "meteor-crash",
-    title: "Meteor Crash",
-    description: `Take aim at the sky, forcing a meteor containing loot and potentially the RayGun or Beamsmasher to come crashing down at Castle Rock Island.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/meteor-crash.mdx"),
-  },
-  zombiePrisoners: {
-    id: "zombie-prisoners",
-    title: "Zombie Prisoners",
-    description: `All zombies must die, even those imprisoned within the facility. Luckily, these zombies would rather be dead then caged and will reward you with a Free Perk for "freeing" them.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/zombie-prisoners.mdx"),
-  },
-  boatRace: {
-    id: "boat-race",
-    title: "Boat Race",
-    description: `Set sail for loot with a boat race mini-game hidden within the map! Compete against friends or the clock as you navigate treacherous waters and sharp turns. Master the course to earn unique rewards and bragging rights.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/boat-race.mdx"),
-  },
-  islandSpores: {
-    id: "island-spores",
-    title: "Island Spores",
-    description: `The smaller islands of the map seems to have some growths on them that need to be cleaned up. Complete the job the earn a Free Perk, along with other rewards.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/island-spores.mdx"),
-  },
-  underwaterCrates: {
-    id: "underwater-crates",
-    title: "Underwater Crates",
-    description: `Beneath the waters are hidden loot crates for you to discover containing some nice rewards. Find them all and you will be given a Free Perk for your efforts.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/underwater-crates.mdx"),
-  },
-  cookingFish: {
-    id: "cooking-fish",
-    title: "Cooking Fish",
-    description: `Being stranded on an island means you need to cook your own food. However, this food can be "enhanced" to provide some extraordinary benefits.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/cooking-fish.mdx"),
-  },
-  whackACrab: {
-    id: "whack-a-crab",
-    title: "Whack A Crab",
-    description: `Like Whack-a-Mole but with a crab instead. Try your best in this mini-game to win a Free Perk along with other rewards.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/whack-a-crab.mdx"),
-  },
-  cursedTalisman: {
-    id: "cursed-talisman",
-    title: "Cursed Talisman",
-    description: `Help an old ship captain reclaim what was once his from his former crewmates who betrayed him, rewarding you with legendary weapons. Be patient and you can also claim a Cursed Talisman granting a permanent Double Points for its owner.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/cursed-talisman.mdx"),
-  },
-  perkaholic: {
-    id: "perkaholic",
-    title: "Perkaholic",
-    description: `Who needs a Perkaholic GobbleGum when you can earn one for free simply by blowing up fish? Hopefully you don't like fish.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/perkaholic.mdx"),
-  },
-  poolTableTerminus: {
-    id: "pool-table-terminus",
-    title: "Pool Table",
-    description: `Discover this quick and easy way to get 100 points to help jumpstart every game you play on Terminus.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/pool-table-terminus.mdx"),
-  },
-  sentinelArtifactRune: {
-    id: "sentinel-artifact-rune",
-    title: "Sentinel Artifact Rune",
-    description: `Discover this neat side easter egg to fast travel back to spawn from Temple Island.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/sentinel-artifact-rune.mdx"),
-  },
-  elevatorJumpscare: {
-    id: "elevator-jumpscare",
-    title: "Elevator Jumpscare",
-    description: `Learn how to trigger a jumpscare that you can use to scare your friends or teammates.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/elevator-jumpscare.mdx"),
-  },
-  hiddenPowerUpsTerminus: {
-    id: "hidden-power-ups-terminus",
-    title: "Hidden Power Ups",
-    description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
-    map: terminus,
-    content: () => import("@/content/side-quests/hidden-power-ups-terminus.mdx"),
-  },
-  slave: {
-    id: "slave",
-    title: "Slave",
-    description: `Discover and listen to the Citadelle Des Morts Music Easter Egg song "Slave" by Kevin Sherwood.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/slave.mdx"),
-  },
-  bartender: {
-    id: "bartender",
-    title: "Bartender",
-    description: `Even the undead have the urge to stop for a drink. Become a bartender and quench the thirsty undead for a worthy reward of free points and PHD Flopper.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/bartender.mdx"),
-  },
-  misterPeeksFreePerk: {
-    id: "mister-peeks-free-perk",
-    title: "Mister Peeks Free Perk",
-    description: `Take aim at the mysterious Mister Peeks figure to be granted a free random perk for finding all of his hiding places.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/mister-peeks-free-perk.mdx"),
-  },
-  ratKing: {
-    id: "rat-king",
-    title: "Rat King",
-    description: `Take the crown of Rat King for yourself by bringing a treat to the rats of the castle, but first you must gather them. Complete the quest for plenty of loot that may include a free perk or pack-a-punch upgrade.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/rat-king.mdx"),
-  },
-  fireplaceProtector: {
-    id: "fireplace-protector",
-    title: "Fireplace Protector",
-    description: `Race against time to ignite four fireplaces, succeed to gain a fiery ally, fail and you will need to try again the next round.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/fireplace-protector.mdx"),
-  },
-  mayasRevenge: {
-    id: "mayas-revenge",
-    title: "Maya's Revenge",
-    description: `Time for Maya to get her revenge on Franco for the crimes against her brother Nathan that happened on Terminus. Complete the quest for a free legendary GS45 Pistol.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/mayas-revenge.mdx"),
-  },
-  dragonSwordSong: {
-    id: "dragon-sword-song",
-    title: "Dragon Sword Song",
-    description: `Ever wanted to listen to the full song that plays when getting the Dragon Sword? Luckily, there is a secret way to activate the song after getting the Dragon Sword to allow everyone in your game to listen to it in full`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/dragon-sword-song.mdx"),
-  },
-  wishingWell: {
-    id: "wishing-well",
-    title: "Wishing Well",
-    description: `This wishing well has something hiding inside, clear it out to be able to "wish" for things like free points, doubling your points, and sharing your points with your friends.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/wishing-well.mdx"),
-  },
-  lockdownFreePerk: {
-    id: "lockdown-free-perk",
-    title: "Lockdown Free Perk",
-    description: `The power of the incantations spreads farther than we realized, use their power on the Symbol Board to start a lockdown, rewarding players with a free perk and plenty of loot if successful.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/lockdown-free-perk.mdx"),
-  },
-  knightGuardian: {
-    id: "knight-guardian",
-    title: "Knight Guardian",
-    description: `Find the hidden chess piece, and activate a cursed chessboard summoning a Knight Guardian to aid you in your battles against the undead.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/knight-guardian.mdx"),
-  },
-  lionCannon: {
-    id: "lion-cannon",
-    title: "Lion Cannon",
-    description: `Restore the cannon back to its original functionality to gain a new way to traverse the map, and even gain access to a now accessible free power-up every 10 rounds.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/lion-cannon.mdx"),
-  },
-  ravenFreePerk: {
-    id: "raven-free-perk",
-    title: "Raven Free Perk",
-    description: `The Raven's Talon isn't the only item this raven is withholding, learn how to get a free perk out of this mysterious bird.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/raven-free-perk.mdx"),
-  },
-  poolTableCitadelleDesMorts: {
-    id: "pool-table-citadelle-des-morts",
-    title: "Pool Table",
-    description: `Discover this small easter egg granting you 100 points that you can repeat to start every game of Citadelle Des Morts.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/pool-table-citadelle-des-morts.mdx"),
-  },
-  hiddenPowerUpsCitadelleDesMorts: {
-    id: "hidden-power-ups-citadelle-des-morts",
-    title: "Hidden Power Ups",
-    description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
-    map: citadelleDesMorts,
-    content: () => import("@/content/side-quests/hidden-power-ups-citadelle-des-morts.mdx"),
-  },
-  dig: {
-    id: "dig",
-    title: "Dig",
-    description: `Discover and listen to The Tomb's Music Easter Egg song "Dig" by Kevin Sherwood.`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/dig.mdx"),
-  },
-  freePackAPunch: {
-    id: "free-pack-a-punch",
-    title: "Free Pack-a-Punch",
-    description: `Discover a way to earn a free Aetherium Crystal offerring a level 1 Pack-a-Punch upgrade to any weapon you are currently holding.`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/free-pack-a-punch.mdx"),
-  },
-  freeAetherTool: {
-    id: "free-aether-tool",
-    title: "Free Aether Tool",
-    description: `Discover this way to earn a free Epic or Legendary Aether Tool to upgrade the rarity of your weapon without spending any salvage!`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/free-aether-tool.mdx"),
-  },
-  freeRayGun: {
-    id: "free-ray-gun",
-    title: "Free Ray Gun",
-    description: `Discover this quest to earn a Free Ray Gun wonder weapon very early in your game to give you a huge boost during your game!`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/free-ray-gun.mdx"),
-  },
-  freePerk: {
-    id: "free-perk",
-    title: "Free Perk",
-    description: `Discover this ritual which once completed will grant a Random Perk Power-Up to give everyone in your game a free perk!`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/free-perk.mdx"),
-  },
-  freeSelfRevive: {
-    id: "free-self-revive",
-    title: "Free Self Revive",
-    description: `Discover this quest to earn yourself a free Self-Revive Kit and Light Mend ammo mod, strengthen your weapons against Doppleghasts and giving you an extra life!`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/free-self-revive.mdx"),
-  },
-  freeBrainRot: {
-    id: "free-brain-rot",
-    title: "Free Brain Rot",
-    description: `Discover this quest to earn yourself a free Brain Rot ammo mod, increasing your damage delt to Shock Mimics!`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/free-brain-rot.mdx"),
-  },
-  goldenArmor: {
-    id: "golden-armor",
-    title: "Golden Armor",
-    description: `Discover this quest to earn Golden Armor Plates for your entire team to purchase for free, allowing you regenerate armor over time!`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/golden-armor.mdx"),
-  },
-  zombieSoldiers: {
-    id: "zombie-soldiers",
-    title: "Zombie Soldiers",
-    description: `Learn how to quickly summon a small army of zombie soldiers to fight for you for a short time.`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/zombie-soldiers.mdx"),
-  },
-  free1000Points: {
-    id: "free-1000-points",
-    title: "Free 1000 Points",
-    description: `Discover this small easter egg to obtain a free 1000 points, and a Full Power Power-Up.`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/free-1000-points.mdx"),
-  },
-  hiddenPowerUpsTheTomb: {
-    id: "hidden-power-ups-the-tomb",
-    title: "Hidden Power Ups",
-    description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/hidden-power-ups-the-tomb.mdx"),
-  },
-  mummyJumpscare: {
-    id: "mummy-jumpscare",
-    title: "Mummy Jumpscare",
-    description: `Discover this hidden easter egg that allows you to jumpscare your teammates or yourself if you are solo.`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/mummy-jumpscare.mdx"),
-  },
-  aether: {
-    id: "aether",
-    title: "Aether",
-    description: `Learn how to trigger the hidden Music Easter Egg song "Aether" by Brian Tuey.`,
-    map: theTomb,
-    content: () => import("@/content/side-quests/aether.mdx"),
-  },
-  freeWunderwaffeDG2: {
-    id: "free-wunderwaffe-dg2",
-    title: "Free Wunderwaffe DG-2",
-    description: `Learn how to obtain a free Wunderwaffe DG-2 Wonder Weapon in the Shattered Veil, seemingly restoring the one dropped by Edward Richtofen himself.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/free-wunderwaffe-dg2.mdx"),
-  },
-  samTrapUnlock: {
-    id: "sam-trap-unlock",
-    title: "S.A.M. Trap Unlock",
-    description: `Learn how to unlock a new trap for the S.A.M. AI in the Mainframe Chamber to use throughout your game for a cost of 2000 points per activation.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/sam-trap-unlock.mdx"),
-  },
-  misterPeeksBodyguard: {
-    id: "mister-peeks-bodyguard",
-    title: "Mister Peeks Bodyguard",
-    description: `Learn how to get a friendly zombie companion for a few rounds to help you in your battle against the undead horde.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/mister-peeks-bodyguard.mdx"),
-  },
-  fallingToPieces: {
-    id: "falling-to-pieces",
-    title: "Falling To Pieces",
-    description: `Discover the Music Easter Egg Song "Falling to Pieces" for Shattered Veil, written by Kevin Sherwood with vocals by Malukah!`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/falling-to-pieces.mdx"),
-  },
-  jumpscareFreePerk: {
-    id: "jumpscare-free-perk",
-    title: "Jumpscare Free Perk",
-    description: `Discover this creepy jumpscare in the Shattered Veil that will reward you with a free perk and scorestreak for finding it.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/jumpscare-free-perk.mdx"),
-  },
-  marineSPUpgrade: {
-    id: "marine-sp-upgrade",
-    title: "Marine SP Upgrade",
-    description: `Learn how to get a free rarity and pack-a-punch upgrade to your Marine-SP shotgun in every game of the Shattered Veil.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/marine-sp-upgrade.mdx"),
-  },
-  sleepwalkingFreePerk: {
-    id: "sleepwalking-free-perk",
-    title: "Sleepwalking Free Perk",
-    description: `Learn how to get a guaranteed free perk in the Shattered Veil by entering your characters dreams.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/sleepwalking-free-perk.mdx"),
-  },
-  _115FreePerk: {
-    id: "115-free-perk",
-    title: "115 Free Perk",
-    description: `Learn how to obtain a free random perk Power-Up with a nice reference to one of the most important elements in our zombies universe.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/115-free-perk.mdx"),
-  },
-  fogRollingIn: {
-    id: "fog-rolling-in",
-    title: "Fog Rolling In",
-    description: `Discover this hidden reference to one of the most iconic memes in the zombies community from the Black Ops II days, yeilding great potential rewards.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/fog-rolling-in.mdx"),
-  },
-  hiddenPowerUpsShatteredVeil: {
-    id: "hidden-power-ups-shattered-veil",
-    title: "Hidden Power Ups",
-    description: `Discover every hidden Power-Up location within Shattered Veil for you to spawn in at any time if you need them.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/hidden-power-ups-shattered-veil.mdx"),
-  },
-  round100BossFight: {
-    id: "round-100-boss-fight",
-    title: "Round 100 Boss Fight",
-    description: `Discover this secret hardcore version of the Z-Rex boss fight that you can attempt after getting to Round 100 and completing the main quest.`,
-    map: shatteredVeil,
-    content: () => import("@/content/side-quests/round-100-boss-fight.mdx"),
-  },
-  rememberUs: {
-    id: "remember-us",
-    title: "Remember Us",
-    description: `Discover the hidden Music Easter Egg Song "Remember Us" by Kevin Sherwood with vocals by Elena Siegman.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/remember-us.mdx"),
-  },
-  samanthasPeace: {
-    id: "samanthas-peace",
-    title: "Samantha's Peace",
-    description: `Discover this hidden Music Easter Egg Song "Samantha's Peace" by Brian Tuey.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/samanthas-peace.mdx"),
-  },
-  chickenBucketHat: {
-    id: "chicken-bucket-hat",
-    title: "Chicken Bucket Hat",
-    description: `Learn how to obtain this greasy cosmetic Chicken Bucket Hat that you can wear through out your game.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/chicken-bucket-hat.mdx"),
-  },
-  vendingMachineReckoning: {
-    id: "vending-machine-reckoning",
-    title: "Vending Machine",
-    description: `Discover the hidden loot inside this Vending Machine to test your luck for a chance of getting a Free Perk, Raygun, Pack-a-Punch Upgrade, Scorestreak or Aether Tool.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/vending-machine-reckoning.mdx"),
-  },
-  freeSelfReviveReckoning: {
-    id: "free-self-revive-reckoning",
-    title: "Free Self Revive",
-    description: `Learn how to earn a free Self-Revive with a reference to the Element 115.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/free-self-revive-reckoning.mdx"),
-  },
-  paintings: {
-    id: "paintings",
-    title: "Paintings",
-    description: `Learn how to obtain a total of 1500 points by completing some interior design inside of the Director's Office.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/paintings.mdx"),
-  },
-  parachutingChallenge: {
-    id: "parachuting-challenge",
-    title: "Parachuting Challenge",
-    description: `Learn how to complete this Mister Peeks parachuting challenge to obtain a Free Perk Power-Up in your game.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/parachuting-challenge.mdx"),
-  },
-  hardcoreBossfight: {
-    id: "hardcore-bossfight",
-    title: "Hardcore Bossfight",
-    description: `Discover this secret hardcore version of the Reckoning boss fight that you can attempt after getting to Round 100 and completing the main quest.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/hardcore-bossfight.mdx"),
-  },
-  aetherellaCompanion: {
-    id: "aetherella-companion",
-    title: "Aetherella Companion",
-    description: `Learn how to enable this dormant Aetherella figurine to become a strong companion helping you kill zombies for a few rounds.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/aetherella-companion.mdx"),
-  },
-  pointsChallenge: {
-    id: "points-challenge",
-    title: "Points Challenge",
-    description: `Learn how to obtain a Free Random Perk Power-Up inside of your game while completing one of the Main Quest steps.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/points-challenge.mdx"),
-  },
-  targetPractice: {
-    id: "target-practice",
-    title: "Target Practice",
-    description: `Learn how to obtain a free random Ammo Mod, Aether Tool, and Aetherium Crystal by playing a mini-game within the spawn.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/target-practice.mdx"),
-  },
-  goldenTrashBin: {
-    id: "golden-trash-bin",
-    title: "Golden Trash Bin",
-    description: `Learn how to unlock the Golden Trash Bin that rewards you with valuable loot upon interaction.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/golden-trash-bin.mdx"),
-  },
-  casterTurretUpgrade: {
-    id: "caster-turret-upgrade",
-    title: "C.A.S.T.E.R. Turret Upgrade",
-    description: `Learn how to unlock all upgrades to the C.A.S.T.E.R. Turret traps for increased effectiveness and gained effects.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/caster-turret-upgrade.mdx"),
-  },
-  hiddenPowerUpsReckoning: {
-    id: "hidden-power-ups-reckoning",
-    title: "Hidden Power Ups",
-    description: `Discover every hidden Power-Up location within Reckoning for you to spawn in at any time if you need them.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/hidden-power-ups-reckoning.mdx"),
-  },
-  jumpScareReckoning: {
-    id: "jump-scare-reckoning",
-    title: "Jump Scare",
-    description: `Discover this hidden jumpscare within Reckoning that will remind you of the loss Richtofen has faced.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/jump-scare-reckoning.mdx"),
-  },
-  freeDeadshotDaiquiri: {
-    id: "free-deadshot-daiquiri",
-    title: "Free Deadshot Daiquiri",
-    description: `Learn how to obtain a free Deadshot Daiquiri perk in a similar way as seen in Liberty Falls.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/free-deadshot-daiquiri.mdx"),
-  },
-  aetherBlade: {
-    id: "aether-blade",
-    title: "Aether Blade",
-    description: `Learn how to obtain one of the most powerful lethal equipment in Call of Duty: Zombies in your game.`,
-    map: reckoning,
-    content: () => import("@/content/side-quests/aether-blade.mdx"),
-  },
-} as const satisfies Record<string, SideQuest>
-
-const sideQuestMap = new Map<string, SideQuest>()
-const sideQuests: SideQuest[] = Object.values(sideQuestRegistry).sort((a, b) =>
-  sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
-)
-
-for (const sideQuest of sideQuests) {
-  sideQuestMap.set(sideQuest.id, sideQuest)
-}
 
 /**
  * Get a SideQuest by key
@@ -1347,9 +62,1299 @@ export const getSideQuestById = (id: string) => sideQuestMap.get(id)
  * @returns The previous and next side quests
  */
 export const getAdjacentSideQuests = (questId: string) => {
-  const index = sideQuests.findIndex(quest => quest.id === questId)
-  return {
-    prev: index < sideQuests.length - 1 ? sideQuests[index + 1] : null,
-    next: index > 0 ? sideQuests[index - 1] : null,
-  }
+	const index = sideQuests.findIndex(quest => quest.id === questId)
+	return {
+		prev: index < sideQuests.length - 1 ? sideQuests[index + 1] : null,
+		next: index > 0 ? sideQuests[index - 1] : null,
+	}
+}
+
+const sideQuestRegistry = {
+	free500Points: {
+		id: "free-500-points",
+		title: "Free 500 Points",
+		description:
+			"Discover this easy way to get a quick 500 points immediately after opening the first door of the map, refunding your purchase.",
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/free-500-points.mdx"),
+	},
+	freeMegaGobblegum: {
+		id: "free-mega-gobblegum",
+		title: "Free Mega Gobblegum",
+		description:
+			"Learn how to acquire a free Mega Gobblegum, enhancing your game. Follow precise steps involving Widow's Wine, and specific statue interactions to claim your reward.",
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/free-mega-gobblegum.mdx"),
+	},
+	upgradedTripMines: {
+		id: "upgraded-trip-mines",
+		title: "Upgraded Trip Mines",
+		description: `Discover the explosive secret of the Trip Mines! Blast zombies at "Holly's Cream Cakes" carts for a doughnut-fueled upgrade.`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/upgraded-trip-mines.mdx"),
+	},
+	noireModeFilter: {
+		id: "noire-mode-filter",
+		title: "Noire Mode Filter",
+		description: `Discover a way to activate a permanent "Noire Mode" for the rest of the game for a new look to the game.`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/noire-mode-filter.mdx"),
+	},
+	snakeskinBootsSong: {
+		id: "snakeskin-boots-song",
+		title: "Snakeskin Boots Song",
+		description: `Discover this Music Easter Egg Song "Snakeskin Boots" for Shadows of Evil by Jack Wall feat. Rick Riso with lyrics by Cindy Shapiro`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/snakeskin-boots-song.mdx"),
+	},
+	coldHardCash: {
+		id: "cold-hard-cash",
+		title: "Cold Hard Cash",
+		description: `Discover this Music Easter Egg Song "Cold Hard Cash" for Shadows of Evil by Jack Wall feat. Antonia Bennet with lyrics by Cindy Shapiro`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/cold-hard-cash.mdx"),
+	},
+	margwaMask: {
+		id: "margwa-mask",
+		title: "Margwa Mask",
+		description: `Learn how to unlock the Margwa Mask for a wild look and slam protection by shooting 6 Margwa hearts from a moving train.`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/margwa-mask.mdx"),
+	},
+	jumpScare: {
+		id: "jump-scare",
+		title: "Jump Scare",
+		description: `Discover this spooky jumpscare using a Sniper Rifle for a quick scare and laugh.`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/jump-scare.mdx"),
+	},
+	upgradedLilArnies: {
+		id: "upgraded-lil-arnies",
+		title: "Upgraded Lil' Arnies",
+		description: `Learn how to upgrade your Lil' Arnies for a stronger, longer lasting, and cooler looking tactical equipment.`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/upgraded-lil-arnies.mdx"),
+	},
+	shadowmanRoundSkip: {
+		id: "shadowman-round-skip",
+		title: "Shadowman Round Skip",
+		description: `Discover this way to skip through the early rounds and jump ahead to Round 5, 10, or 15 with extra points to speed up your game.`,
+		map: getMapByKey("shadowsOfEvil"),
+		content: () => import("@/content/side-quests/shadowman-round-skip.mdx"),
+	},
+	beautyOfAnnihilationRemix: {
+		id: "beauty-of-annihilation-remix",
+		title: "Beauty of Annihilation Remix",
+		description: `Discover the Remixed version of the original Beauty of Annihilation Music Easter Egg Song by Kevin Sherwood, sang by Elena Siegman`,
+		map: getMapByKey("theGiant"),
+		content: () => import("@/content/side-quests/beauty-of-annihilation-remix.mdx"),
+	},
+	hiddenPerkMachine: {
+		id: "hidden-perk-machine",
+		title: "Hidden Perk Machine",
+		description: `Learn how to uncover this hidden sixth perk machine on The Giant that can either by Stamin-Up or Deadshot Daiquiri.`,
+		map: getMapByKey("theGiant"),
+		content: () => import("@/content/side-quests/hidden-perk-machine.mdx"),
+	},
+	deadAgain: {
+		id: "dead-again",
+		title: "Dead Again",
+		description: `Discover the "Dead Again" Music Easter Egg song for Der Eisendrache written by Kevin Sherwood and vocals by Elena Siegman.`,
+		map: getMapByKey("derEisendrache"),
+		content: () => import("@/content/side-quests/dead-again.mdx"),
+	},
+	brmWallBuy: {
+		id: "brm-wall-buy",
+		title: "BRM Wall Buy",
+		description: `Learn how to unlock this hidden wall buy for the BRM Light Machine Gun by utilizing Anti-Gravity and wall running.`,
+		map: getMapByKey("derEisendrache"),
+		content: () => import("@/content/side-quests/brm-wall-buy.mdx"),
+	},
+	skeletonsEverywhere: {
+		id: "skeletons-everywhere",
+		title: "Skeletons Everywhere",
+		description: `Learn how to enable this cool effect that turns all zombies into skeletons, which you can disable at any time if you choose.`,
+		map: getMapByKey("derEisendrache"),
+		content: () => import("@/content/side-quests/skeletons-everywhere.mdx"),
+	},
+	panzerClawHelmet: {
+		id: "panzer-claw-helmet",
+		title: "Panzer Claw Helmet",
+		description: `Learn how to obtain a Panzer Claw Helmet that will grant you full immunity from the Panzer's melee attacks.`,
+		map: getMapByKey("derEisendrache"),
+		content: () => import("@/content/side-quests/panzer-claw-helmet.mdx"),
+	},
+	plungerMeleeWeapon: {
+		id: "plunger-melee-weapon",
+		title: "Plunger Melee Weapon",
+		description: `Learn how to obtain the Plunger Melee Weapon which has a hidden effect allowing you to instantly kill Panzersoldats.`,
+		map: getMapByKey("derEisendrache"),
+		content: () => import("@/content/side-quests/plunger-melee-weapon.mdx"),
+	},
+	secondGondola: {
+		id: "second-gondola",
+		title: "Second Gondola",
+		description: `Learn how to enable the second Gondola at the start of the game to get a valuable reward like Monkey Bombs, Packed Man-O-War, or Packed Haymaker 12.`,
+		map: getMapByKey("derEisendrache"),
+		content: () => import("@/content/side-quests/second-gondola.mdx"),
+	},
+	freeMegaGobblegumDerEisendrache: {
+		id: "free-mega-gobblegum-der-eisendrache",
+		title: "Free Mega Gobblegum",
+		description: `Learn how to obtain a Free Mega GobbleGum that can help enhance your game while you progress the Main Quest.`,
+		map: getMapByKey("derEisendrache"),
+		content: () => import("@/content/side-quests/free-mega-gobblegum-der-eisendrache.mdx"),
+	},
+	deadFlowers: {
+		id: "dead-flowers",
+		title: "Dead Flowers",
+		description: `Discover the hidden Music Easter Egg Song "Dead Flowers" written by Kevin Sherwood with vocals by Malukah.`,
+		map: getMapByKey("zetsubouNoShima"),
+		content: () => import("@/content/side-quests/dead-flowers.mdx"),
+	},
+	doppelgangerJumpScare: {
+		id: "doppelganger-jump-scare",
+		title: "Doppelganger Jump Scare",
+		description: `Discover this eerie figure that looks like a Doppleganger of one of the four main crew characters, Dempsey, Nikolai, Takeo, or Richtofen.`,
+		map: getMapByKey("zetsubouNoShima"),
+		content: () => import("@/content/side-quests/doppelganger-jump-scare.mdx"),
+	},
+	freeWidowsWine: {
+		id: "free-widows-wine",
+		title: "Free Widow's Wine",
+		description: `Learn how to obtain the Widow's Wine perk as a nice reward for defeating a formidable foe.`,
+		map: getMapByKey("zetsubouNoShima"),
+		content: () => import("@/content/side-quests/free-widows-wine.mdx"),
+	},
+	friendyThrasher: {
+		id: "friendy-thrasher",
+		title: "Friendy Thrasher",
+		description: `Learn how to turn a threatening enemy into a friendly asset to help you survive for up to three full rounds.`,
+		map: getMapByKey("zetsubouNoShima"),
+		content: () => import("@/content/side-quests/friendy-thrasher.mdx"),
+	},
+	goldenBucket: {
+		id: "golden-bucket",
+		title: "Golden Bucket",
+		description: `Learn how to obtain the Golden Bucket for your entire team, granting you an infinite amount of every type of water.`,
+		map: getMapByKey("zetsubouNoShima"),
+		content: () => import("@/content/side-quests/golden-bucket.mdx"),
+	},
+	spiderBait: {
+		id: "spider-bait",
+		title: "Spider Bait",
+		description: `Learn how to transform your character into a spider, shooting webs, and gaining invincibility while active.`,
+		map: getMapByKey("zetsubouNoShima"),
+		content: () => import("@/content/side-quests/spider-bait.mdx"),
+	},
+	dragonShieldUpgrade: {
+		id: "dragon-shield-upgrade",
+		title: "Dragon Shield Upgrade",
+		description: `Learn how to upgrade the Guard of Fafnir shield into Timat's Maw, increasing its health, damage, range and eye color of the shield to red.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/dragon-shield-upgrade.mdx"),
+	},
+	dragonStrikeUpgrade: {
+		id: "dragon-strike-upgrade",
+		title: "Dragon Strike Upgrade",
+		description: `Learn how to upgrade the Dragon Strike into the Draconite for increased damage, usage, and new visual effects.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/dragon-strike-upgrade.mdx"),
+	},
+	meleeWeapons: {
+		id: "melee-weapons",
+		title: "Melee Weapons",
+		description: `Discover this interesting arsenal reward for completing certain rounds in under a specific amount of time.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/melee-weapons.mdx"),
+	},
+	monkeyBombsUpgrade: {
+		id: "monkey-bombs-upgrade",
+		title: "Monkey Bombs Upgrade",
+		description: `Learn how to upgrade the Monkey Bombs for increased effectiveness and a dubstep-remixed sound effect.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/monkey-bombs-upgrade.mdx"),
+	},
+	deadEnded: {
+		id: "dead-ended",
+		title: "Dead Ended",
+		description: `Discover this hidden Music Easter Egg song "Dead Ended" by Kevin Sherwood with vocals by Clark S Nova.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/dead-ended.mdx"),
+	},
+	aceOfSpades: {
+		id: "ace-of-spades",
+		title: "Ace of Spades",
+		description: `Discover this hidden Music Easter Egg song for the popular song Ace of Spades by Motorhead.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/ace-of-spades.mdx"),
+	},
+	samanthasSorrow: {
+		id: "samanthas-sorrow",
+		title: "Samantha's Sorrow",
+		description: `Learn how to activate the hidden Music Easter Egg song "Samantha's Sorrow" by Brian Tuey.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/samanthas-sorrow.mdx"),
+	},
+	helmetsAndWings: {
+		id: "helmets-and-wings",
+		title: "Helmets & Wings",
+		description: `Learn how to obtain the Dragon Wings, Mangler Helmet, and Valkrie Helmet for a worthy upgrade and quality-of-life improvement.`,
+		map: getMapByKey("gorodKrovi"),
+		content: () => import("@/content/side-quests/helmets-and-wings.mdx"),
+	},
+	meleeWeaponsRevelations: {
+		id: "melee-weapons-revelations",
+		title: "Melee Weapons Revelations",
+		description: `Discover this interesting wall buy reward for completing certain rounds in under a specific amount of time.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/melee-weapons-revelations.mdx"),
+	},
+	lilArniesUpgrade: {
+		id: "lil-arnies-upgrade",
+		title: "Lil' Arnies Upgrade",
+		description: `Learn how to obtain the upgraded version of the Lil' Arnie's equipment for increased damage and a new visual look.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/lil-arnies-upgrade.mdx"),
+	},
+	theGift: {
+		id: "the-gift",
+		title: "The Gift",
+		description: `Discover this hidden Music Easter Egg song "The Gift" by Kevin Sherwood with vocals by Elena Siegman.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/the-gift.mdx"),
+	},
+	allZombieSongs: {
+		id: "all-zombie-songs",
+		title: "All Zombie Songs",
+		description: `Discover this hidden Music Easter Egg that plays multiple songs from past maps.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/all-zombie-songs.mdx"),
+	},
+	permanentPackAPack: {
+		id: "permanent-pack-a-pack",
+		title: "Permanent Pack-a-Pack",
+		description: `Discover this game-changing upgrade that makes all wall and box weapons instantly Pack-a-Punched for the rest of the game, and unlocks Takeo's Katana.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/permanent-pack-a-pack.mdx"),
+	},
+	freePerkWallRun: {
+		id: "free-perk-wall-run",
+		title: "Free Perk Wall Run",
+		description: `Learn how to obtain a Free Perk Power-Up, granting everyone in your game with a random perk.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/free-perk-wall-run.mdx"),
+	},
+	chalkQuotes: {
+		id: "chalk-quotes",
+		title: "Chalk Quotes",
+		description: `Learn how to unlock the M1927 wall buy and a way for you to trade weapons with your teammates.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/chalk-quotes.mdx"),
+	},
+	hatsAndMasks: {
+		id: "hats-and-masks",
+		title: "Hats & Masks",
+		description: `Learn how to obtain all hats and masks that grant some strong gameplay advantages to help you survive.`,
+		map: getMapByKey("revelations"),
+		content: () => import("@/content/side-quests/hats-and-masks.mdx"),
+	},
+	vikingFuneral: {
+		id: "viking-funeral",
+		title: "Viking Funeral",
+		description:
+			"Discover how to obtain a free Random Perk Power-Up by giving a fallen viking a proper sendoff.",
+		map: getMapByKey("ix"),
+		content: () => import("@/content/side-quests/viking-funeral.mdx"),
+	},
+	madHatter: {
+		id: "mad-hatter",
+		title: "Mad Hatter",
+		description:
+			"Discover how to activate the song 'Mad Hatter' by Avenged Sevenfold in your game.",
+		map: getMapByKey("ix"),
+		content: () => import("@/content/side-quests/mad-hatter.mdx"),
+	},
+	nosFideles: {
+		id: "nos-fideles",
+		title: "Nos Fideles",
+		description: "Discover how to activate the song 'Nos Fideles' by Jack Wall in your game.",
+		map: getMapByKey("ix"),
+		content: () => import("@/content/side-quests/nos-fideles.mdx"),
+	},
+	brazenBullUpgrade: {
+		id: "brazen-bull-upgrade",
+		title: "Brazen Bull Upgrade",
+		description: "Learn how to upgrade the Brazen Bull shield into the Iron Bull.",
+		map: getMapByKey("ix"),
+		content: () => import("@/content/side-quests/brazen-bull-upgrade.mdx"),
+	},
+	fireAndTrapImmunity: {
+		id: "fire-and-trap-immunity",
+		title: "Fire & Trap Immunity",
+		description:
+			"Learn how to obtain fire immunity and significant damage reduction from the Acid Trap.",
+		map: getMapByKey("ix"),
+		content: () => import("@/content/side-quests/fire-and-trap-immunity.mdx"),
+	},
+	drowning: {
+		id: "drowning",
+		title: "Drowning",
+		description: "Learn how to activate the Music Easter Egg Song 'Drowning' by Kevin Sherwood.",
+		map: getMapByKey("voyageOfDespair"),
+		content: () => import("@/content/side-quests/drowning.mdx"),
+	},
+	specialWeaponFireSale: {
+		id: "special-weapon-fire-sale",
+		title: "Special Weapon Fire Sale",
+		description:
+			"Discover this way to activate a special fire sale allowing you to change your special weapon in game.",
+		map: getMapByKey("voyageOfDespair"),
+		content: () => import("@/content/side-quests/special-weapon-fire-sale.mdx"),
+	},
+	bowieKnifeUpgrade: {
+		id: "bowie-knife-upgrade",
+		title: "Bowie Knife Upgrade",
+		description:
+			"Learn how to upgrade your Bowie Knife for a one hit kill past Round 30 with a cooldown.",
+		map: getMapByKey("voyageOfDespair"),
+		content: () => import("@/content/side-quests/bowie-knife-upgrade.mdx"),
+	},
+	fishFreePerk: {
+		id: "fish-free-perk",
+		title: "Fish Free Perk",
+		description:
+			"Learn how to obtain a free Random Perk Power-Up by collecting six fish around the map.",
+		map: getMapByKey("voyageOfDespair"),
+		content: () => import("@/content/side-quests/fish-free-perk.mdx"),
+	},
+	elementalShieldUpgrade: {
+		id: "elemental-shield-upgrade",
+		title: "Elemental Shield Upgrade",
+		description:
+			"Learn how to upgrade your Ballistic Shield into the Svalinn Guard elemental shield.",
+		map: getMapByKey("voyageOfDespair"),
+		content: () => import("@/content/side-quests/elemental-shield-upgrade.mdx"),
+	},
+	whereAreWeGoingRemix: {
+		id: "where-are-we-going-remix",
+		title: "Where Are We Going Remix",
+		description:
+			"Learn how to activate the remix of the original 'Where Are We Going' music easter egg song by Kevin Sherwood.",
+		map: getMapByKey("bloodOfTheDead"),
+		content: () => import("@/content/side-quests/where-are-we-going-remix.mdx"),
+	},
+	hellsRetriever: {
+		id: "hells-retriever",
+		title: "Hell's Retriever",
+		description: "Learn how to obtain the Hell's Retriever lethal equipment.",
+		map: getMapByKey("bloodOfTheDead"),
+		content: () => import("@/content/side-quests/hells-retriever.mdx"),
+	},
+	freeMonkeyBombs: {
+		id: "free-monkey-bombs",
+		title: "Free Monkey Bombs",
+		description:
+			"Learn how to obtain Free Monkey Bombs by killing enemies with your Special Weapon.",
+		map: getMapByKey("bloodOfTheDead"),
+		content: () => import("@/content/side-quests/free-monkey-bombs.mdx"),
+	},
+	upgradedSpectralShield: {
+		id: "upgraded-spectral-shield",
+		title: "Upgraded Spectral Shield",
+		description: "Learn how to upgrade your Spectral Shield for increased shield charge capacity.",
+		map: getMapByKey("bloodOfTheDead"),
+		content: () => import("@/content/side-quests/upgraded-spectral-shield.mdx"),
+	},
+	freeBlundergat: {
+		id: "free-blundergat",
+		title: "Free Blundergat",
+		description:
+			"Learn how to obtain a Free Blundergat by completing collecting five skulls around the map.",
+		map: getMapByKey("bloodOfTheDead"),
+		content: () => import("@/content/side-quests/free-blundergat.mdx"),
+	},
+	magmagatUpgrade: {
+		id: "magmagat-upgrade",
+		title: "Magmagat Upgrade",
+		description:
+			"Learn how to upgrade your Blundergat to the Magmagat variant, greatly enhancing its functionality.",
+		map: getMapByKey("bloodOfTheDead"),
+		content: () => import("@/content/side-quests/magmagat-upgrade.mdx"),
+	},
+	goldenSpork: {
+		id: "golden-spork",
+		title: "Golden Spork",
+		description: "Learn how to obtain a Golden Spork for an advanced melee weapon.",
+		map: getMapByKey("bloodOfTheDead"),
+		content: () => import("@/content/side-quests/golden-spork.mdx"),
+	},
+	shockwave: {
+		id: "shockwave",
+		title: "Shockwave",
+		description: "Learn how to activate the Music Easter Egg song 'Shockwave' by Kevin Sherwood.",
+		map: getMapByKey("classified"),
+		content: () => import("@/content/side-quests/shockwave.mdx"),
+	},
+	thisJazzIsClassified: {
+		id: "this-jazz-is-classified",
+		title: "This Jazz Is Classified",
+		description:
+			"Learn how to activate the Music Easter Egg song 'This Jazz Is Classified' by Jack Wall.",
+		map: getMapByKey("classified"),
+		content: () => import("@/content/side-quests/this-jazz-is-classified.mdx"),
+	},
+	freeWintersHowl: {
+		id: "free-winters-howl",
+		title: "Free Winter's Howl",
+		description: "Learn how to obtain a Free Winters Howl for an advanced melee weapon.",
+		map: getMapByKey("classified"),
+		content: () => import("@/content/side-quests/free-winters-howl.mdx"),
+	},
+	mystery: {
+		id: "mystery",
+		title: "Mystery",
+		description:
+			"Discover how to activate the hidden Music Easter Egg song 'Mystery' by Kevin Sherwood.",
+		map: getMapByKey("deadOfTheNight"),
+		content: () => import("@/content/side-quests/mystery.mdx"),
+	},
+	secretDoors: {
+		id: "secret-doors",
+		title: "Secret Doors",
+		description: "Discover how to unlock three secret doors each granting you a nice reward.",
+		map: getMapByKey("deadOfTheNight"),
+		content: () => import("@/content/side-quests/secret-doors.mdx"),
+	},
+	stakeKnife: {
+		id: "stake-knife",
+		title: "Stake Knife",
+		description: "Learn how to obtain a Stake Knife, increasing your damage against all enemies.",
+		map: getMapByKey("deadOfTheNight"),
+		content: () => import("@/content/side-quests/stake-knife.mdx"),
+	},
+	savageImpaler: {
+		id: "savage-impaler",
+		title: "Savage Impaler",
+		description:
+			"Learn how to obtain the Savage Impaler weapon, which is like a second Wonder Weapon.",
+		map: getMapByKey("deadOfTheNight"),
+		content: () => import("@/content/side-quests/savage-impaler.mdx"),
+	},
+	stormbound: {
+		id: "stormbound",
+		title: "Stormbound",
+		description:
+			"Discover how to activate the music Easter Egg song 'Stormbound' by Kevin Sherwood.",
+		map: getMapByKey("ancientEvil"),
+		content: () => import("@/content/side-quests/stormbound.mdx"),
+	},
+	iAmTheWell: {
+		id: "i-am-the-well",
+		title: "I Am The Well",
+		description:
+			"Discover how to activate the music Easter Egg song 'I Am The Well' by Kevin Sherwood.",
+		map: getMapByKey("alphaOmega"),
+		content: () => import("@/content/side-quests/i-am-the-well.mdx"),
+	},
+	adamUnitFreePerk: {
+		id: "adam-unit-free-perk",
+		title: "A.D.A.M. Unit Free Perk",
+		description:
+			"Learn how to obtain a free Random Perk Power-Up by shooting the heads of all A.D.A.M. units.",
+		map: getMapByKey("alphaOmega"),
+		content: () => import("@/content/side-quests/adam-unit-free-perk.mdx"),
+	},
+	aLightFromTheShore: {
+		id: "a-light-from-the-shore",
+		title: "A Light From The Shore",
+		description:
+			"Discover how to activate the hidden Music Easter Egg song 'A Light From The Shore' by Kevin Sherwood.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/a-light-from-the-shore.mdx"),
+	},
+	georgeRomeroGlasses: {
+		id: "george-romero-glasses",
+		title: "George Romero Glasses",
+		description:
+			"Learn how to obtain a Free 500 Points by interacting with George Romero's glasses.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/george-romero-glasses.mdx"),
+	},
+	paperJumpscare: {
+		id: "paper-jumpscare",
+		title: "Paper Jumpscare",
+		description: "Discover this hidden jumpscare by aiming at a piece of paper on the Forecastle.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/paper-jumpscare.mdx"),
+	},
+	statueFreePerk: {
+		id: "statue-free-perk",
+		title: "Statue Free Perk",
+		description: "Learn how to obtain a free Random Perk Power-Up by collecting four statues.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/statue-free-perk.mdx"),
+	},
+	heatPack: {
+		id: "heat-pack",
+		title: "Heat Pack",
+		description:
+			"Learn how to obtain a Heat Pack allowing you to move and swim faster in water without freezing.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/heat-pack.mdx"),
+	},
+	lighthouseJumpscare: {
+		id: "lighthouse-jumpscare",
+		title: "Lighthouse Jumpscare",
+		description: "Discover this hidden jumpscare by aiming at the top of the lighthouse.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/lighthouse-jumpscare.mdx"),
+	},
+	freeTundragun: {
+		id: "free-tundragun",
+		title: "Free Tundragun",
+		description: "Learn how to obtain a Free Tundragun by doing a little target practice.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/free-tundragun.mdx"),
+	},
+	freeThundergun: {
+		id: "free-thundergun",
+		title: "Free Thundergun",
+		description: "Learn how to obtain a Free Thundergun by completing all five challenge totems.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/free-thundergun.mdx"),
+	},
+	upgradedSnowballs: {
+		id: "upgraded-snowballs",
+		title: "Upgraded Snowballs",
+		description: "Learn how to upgrade your Snowballs for a one-hit kill until Round 35.",
+		map: getMapByKey("tagDerToten"),
+		content: () => import("@/content/side-quests/upgraded-snowballs.mdx"),
+	},
+	alone: {
+		id: "alone",
+		title: "Alone",
+		description:
+			"Discover how to activate the hidden Music Easter Egg song 'Alone' by Kevin Sherwood.",
+		map: getMapByKey("dieMaschine"),
+		content: () => import("@/content/side-quests/alone.mdx"),
+	},
+	coffinDance: {
+		id: "coffin-dance",
+		title: "Coffin Dance",
+		description: "Learn how to activate this meme reference and receive a free Juggernog perk.",
+		map: getMapByKey("dieMaschine"),
+		content: () => import("@/content/side-quests/coffin-dance.mdx"),
+	},
+	satellitePoints: {
+		id: "satellite-points",
+		title: "Satellite Points",
+		description: "Learn how to obtain a free 1500 points by messing with some satellites.",
+		map: getMapByKey("dieMaschine"),
+		content: () => import("@/content/side-quests/satellite-points.mdx"),
+	},
+	monsterHand: {
+		id: "monster-hand",
+		title: "Monster Hand",
+		description: "Learn how to obtain a free Legendary Rarity upgrade by feeding a monster.",
+		map: getMapByKey("dieMaschine"),
+		content: () => import("@/content/side-quests/monster-hand.mdx"),
+	},
+	floatingBodies: {
+		id: "floating-bodies",
+		title: "Floating Bodies",
+		description:
+			"Learn how to obtain either a free Scorestreak or trigger a jumpscare within the Dark Aether.",
+		map: getMapByKey("dieMaschine"),
+		content: () => import("@/content/side-quests/floating-bodies.mdx"),
+	},
+	lost: {
+		id: "lost",
+		title: "Lost",
+		description: "Discover the hidden music easter egg song 'Lost' by Kevin Sherwood.",
+		map: getMapByKey("firebaseZ"),
+		content: () => import("@/content/side-quests/lost.mdx"),
+	},
+	darkAetherBunny: {
+		id: "dark-aether-bunny",
+		title: "Dark Aether Bunny",
+		description:
+			"Learn how to obtain a free Juggernog perk along with other rewards by following a Dark Aether Bunny.",
+		map: getMapByKey("firebaseZ"),
+		content: () => import("@/content/side-quests/dark-aether-bunny.mdx"),
+	},
+	sergeiHeadFreePerk: {
+		id: "sergei-head-free-perk",
+		title: "Sergei Head Free Perk",
+		description:
+			"Learn how to obtain a free perk along by extracting some information out of the head of Sergei.",
+		map: getMapByKey("firebaseZ"),
+		content: () => import("@/content/side-quests/sergei-head-free-perk.mdx"),
+	},
+	upgradedMonkeyBombs: {
+		id: "upgraded-monkey-bombs",
+		title: "Upgraded Monkey Bombs",
+		description:
+			"Learn how to upgrade your Monkey Bombs for more damage, a new tune, and have zombies dance to the beat.",
+		map: getMapByKey("firebaseZ"),
+		content: () => import("@/content/side-quests/upgraded-monkey-bombs.mdx"),
+	},
+	amoeba: {
+		id: "amoeba",
+		title: "Amoeba",
+		description:
+			"Discover how to activate the hidden music easter egg song 'Amoeba' by Adolescents.",
+		map: getMapByKey("mauerDerToten"),
+		content: () => import("@/content/side-quests/amoeba.mdx"),
+	},
+	sharpshooter: {
+		id: "sharpshooter",
+		title: "Sharpshooter",
+		description: "Learn how to obtain a free Aether Tool by completing a sharpshooter challenge.",
+		map: getMapByKey("mauerDerToten"),
+		content: () => import("@/content/side-quests/sharpshooter.mdx"),
+	},
+	bunnyDisco: {
+		id: "bunny-disco",
+		title: "Bunny Disco",
+		description:
+			"Learn how to enter the bunny disco nightclub for a chance at earning the Wonder Weapon.",
+		map: getMapByKey("mauerDerToten"),
+		content: () => import("@/content/side-quests/bunny-disco.mdx"),
+	},
+	bubby: {
+		id: "bubby",
+		title: "Bubby",
+		description:
+			"Learn how to obtain at least one free perk, activate the music easter egg, and potentially earn the Wonder Weapon.",
+		map: getMapByKey("forsaken"),
+		content: () => import("@/content/side-quests/bubby.mdx"),
+	},
+	freeRarityUpgrade: {
+		id: "free-rarity-upgrade",
+		title: "Free Rarity Upgrade",
+		description:
+			"Learn how to obtain a free rarity upgrade for a Pistol, SMG, or Sniper Rifle weapon.",
+		map: getMapByKey("forsaken"),
+		content: () => import("@/content/side-quests/free-rarity-upgrade.mdx"),
+	},
+	ronaldRaygun: {
+		id: "ronald-raygun",
+		title: "Ronald Raygun",
+		description: "Learn how to potentially obtain a free Raygun by delivering some pizza.",
+		map: getMapByKey("forsaken"),
+		content: () => import("@/content/side-quests/ronald-raygun.mdx"),
+	},
+	arcXDRace: {
+		id: "arc-xd-race",
+		title: "ARC-XD Race",
+		description:
+			"Learn how to play this hidden ARC-XD map race for a chance to earn the Wonder Weapon.",
+		map: getMapByKey("forsaken"),
+		content: () => import("@/content/side-quests/arc-xd-race.mdx"),
+	},
+	tombstonePerkaholic: {
+		id: "tombstone-perkaholic",
+		title: "Tombstone Perkaholic",
+		description: "Learn how to earn all perks in the game by manipulating death.",
+		map: getMapByKey("forsaken"),
+		content: () => import("@/content/side-quests/tombstone-perkaholic.mdx"),
+	},
+	destroySomethingBeautiful: {
+		id: "destroy-something-beautiful",
+		title: "Destroy Something Beautiful",
+		description: `Discover and listen to the hidden Music Easter Egg song for Liberty Falls "Destroy Something Beautiful" by Kevin Sherwood.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/destroy-something-beautiful.mdx"),
+	},
+	vendingMachine: {
+		id: "vending-machine",
+		title: "Vending Machine",
+		description: `Discover the hidden goodies inside this Vending Machine to test your luck for a chance of getting a Free Perk, Raygun, Pack-a-Punch Upgrade, Scorestreak or Aether Tool.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/vending-machine.mdx"),
+	},
+	rainingZombies: {
+		id: "raining-zombies",
+		title: "Raining Zombies",
+		description: `Discover this hidden secret that has zombies raining from the skies dropping loot including, an Aether Tool, Scorestreaks, Points, Salavge, and more!`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/raining-zombies.mdx"),
+	},
+	freeDeadshotPerk: {
+		id: "free-deadshot-perk",
+		title: "Free Deadshot Perk",
+		description: `Discover this hidden easter egg that tests your aim and quickness with an old wild west challenge rewarding you with a free Deadshot Daiquiri perk as your reward.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/free-deadshot-perk.mdx"),
+	},
+	misterPeeksBowling: {
+		id: "mister-peeks-bowling",
+		title: "Mister Peeks Bowling",
+		description: `It's time to go bowling within Fuller's Liberty Lanes! If you score high enough you can earn yourself a free Raygun, Legendary Weapon, Aether Tool or Pack-a-Punch upgrade.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/mister-peeks-bowling.mdx"),
+	},
+	aetherellaSuperhero: {
+		id: "aetherella-superhero",
+		title: "Aetherella Superhero",
+		description: `Transform into a full-sized Aetherella superhero and wreck havoc on zombies of all shapes and sizes with this hidden side quest.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/aetherella-superhero.mdx"),
+	},
+	misterPeeksCar: {
+		id: "mister-peeks-car",
+		title: "Mister Peeks Car",
+		description: `Mister Peeks is potentially hiding some valuable items within his car, find the correct car, blow it up with the right equipment, and see if luck is on your side for a chance to get the Ray Gun, Jet Gun, and other weapons.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/mister-peeks-car.mdx"),
+	},
+	theVault: {
+		id: "the-vault",
+		title: "The Vault",
+		description: `The bank vault is holding more than just money, find the three codes and gain access to the vault to see what loot has been hiding inside.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/the-vault.mdx"),
+	},
+	bloodPool: {
+		id: "blood-pool",
+		title: "Blood Pool",
+		description: `Behind the motel lies a hellish secret, a pool filled with blood. Toss in some explosives, and you might just awaken its hidden treasures. Repeat the ritual three times for a guaranteed Fire Sale. Dare to dive in?`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/blood-pool.mdx"),
+	},
+	gravedigging: {
+		id: "gravedigging",
+		title: "Gravedigging",
+		description: `Unearth the past of Liberty Falls to find their graves filled with loot; dig them all up for a chance to get a Free Perk, RayGun, JetGun and more! Curious about where to find a shovel to uncover these hidden treasures?`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/gravedigging.mdx"),
+	},
+	poolTable: {
+		id: "pool-table",
+		title: "Pool Table",
+		description: `Discover this quick and easy way to get 100 points to help jumpstart every game you play.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/pool-table.mdx"),
+	},
+	hiddenPowerUps: {
+		id: "hidden-power-ups",
+		title: "Hidden Power Ups",
+		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/hidden-power-ups.mdx"),
+	},
+	candlesFireTrap: {
+		id: "candles-fire-trap",
+		title: "Candles Fire Trap",
+		description: `Discover this hidden fire trap that can help you during the Liberty Falls Main Quest final encounter.`,
+		map: getMapByKey("libertyFalls"),
+		content: () => import("@/content/side-quests/candles-fire-trap.mdx"),
+	},
+	canYouHearMeComeIn: {
+		id: "can-you-hear-me-come-in",
+		title: "Can You Hear Me? (Come In)",
+		description: `Discover and listen to the hidden Terminus Music Easter Egg song "Can you hear me? (Come in)" by Kevin Sherwood`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/can-you-hear-me-come-in.mdx"),
+	},
+	basketballFreePoints: {
+		id: "basketball-free-points",
+		title: "Basketball Free Points",
+		description: `Uncover the hidden basketball and try to sink a shot to unlock a rewarding Easter egg that rewards players with thousands of points.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/basketball-free-points.mdx"),
+	},
+	megaStuffyPet: {
+		id: "mega-stuffy-pet",
+		title: "Mega Stuffy Pet",
+		description: `Uncover the secret quest unlocking this stuffy ally that will aid you in combat, reviving you when you go down, knocking down zombies, and providing some companionship.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/mega-stuffy-pet.mdx"),
+	},
+	meteorCrash: {
+		id: "meteor-crash",
+		title: "Meteor Crash",
+		description: `Take aim at the sky, forcing a meteor containing loot and potentially the RayGun or Beamsmasher to come crashing down at Castle Rock Island.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/meteor-crash.mdx"),
+	},
+	zombiePrisoners: {
+		id: "zombie-prisoners",
+		title: "Zombie Prisoners",
+		description: `All zombies must die, even those imprisoned within the facility. Luckily, these zombies would rather be dead then caged and will reward you with a Free Perk for "freeing" them.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/zombie-prisoners.mdx"),
+	},
+	boatRace: {
+		id: "boat-race",
+		title: "Boat Race",
+		description: `Set sail for loot with a boat race mini-game hidden within the map! Compete against friends or the clock as you navigate treacherous waters and sharp turns. Master the course to earn unique rewards and bragging rights.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/boat-race.mdx"),
+	},
+	islandSpores: {
+		id: "island-spores",
+		title: "Island Spores",
+		description: `The smaller islands of the map seems to have some growths on them that need to be cleaned up. Complete the job the earn a Free Perk, along with other rewards.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/island-spores.mdx"),
+	},
+	underwaterCrates: {
+		id: "underwater-crates",
+		title: "Underwater Crates",
+		description: `Beneath the waters are hidden loot crates for you to discover containing some nice rewards. Find them all and you will be given a Free Perk for your efforts.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/underwater-crates.mdx"),
+	},
+	cookingFish: {
+		id: "cooking-fish",
+		title: "Cooking Fish",
+		description: `Being stranded on an island means you need to cook your own food. However, this food can be "enhanced" to provide some extraordinary benefits.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/cooking-fish.mdx"),
+	},
+	whackACrab: {
+		id: "whack-a-crab",
+		title: "Whack A Crab",
+		description: `Like Whack-a-Mole but with a crab instead. Try your best in this mini-game to win a Free Perk along with other rewards.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/whack-a-crab.mdx"),
+	},
+	cursedTalisman: {
+		id: "cursed-talisman",
+		title: "Cursed Talisman",
+		description: `Help an old ship captain reclaim what was once his from his former crewmates who betrayed him, rewarding you with legendary weapons. Be patient and you can also claim a Cursed Talisman granting a permanent Double Points for its owner.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/cursed-talisman.mdx"),
+	},
+	perkaholic: {
+		id: "perkaholic",
+		title: "Perkaholic",
+		description: `Who needs a Perkaholic GobbleGum when you can earn one for free simply by blowing up fish? Hopefully you don't like fish.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/perkaholic.mdx"),
+	},
+	poolTableTerminus: {
+		id: "pool-table-terminus",
+		title: "Pool Table",
+		description: `Discover this quick and easy way to get 100 points to help jumpstart every game you play on Terminus.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/pool-table-terminus.mdx"),
+	},
+	sentinelArtifactRune: {
+		id: "sentinel-artifact-rune",
+		title: "Sentinel Artifact Rune",
+		description: `Discover this neat side easter egg to fast travel back to spawn from Temple Island.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/sentinel-artifact-rune.mdx"),
+	},
+	elevatorJumpscare: {
+		id: "elevator-jumpscare",
+		title: "Elevator Jumpscare",
+		description: `Learn how to trigger a jumpscare that you can use to scare your friends or teammates.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/elevator-jumpscare.mdx"),
+	},
+	hiddenPowerUpsTerminus: {
+		id: "hidden-power-ups-terminus",
+		title: "Hidden Power Ups",
+		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
+		map: getMapByKey("terminus"),
+		content: () => import("@/content/side-quests/hidden-power-ups-terminus.mdx"),
+	},
+	slave: {
+		id: "slave",
+		title: "Slave",
+		description: `Discover and listen to the Citadelle Des Morts Music Easter Egg song "Slave" by Kevin Sherwood.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/slave.mdx"),
+	},
+	bartender: {
+		id: "bartender",
+		title: "Bartender",
+		description: `Even the undead have the urge to stop for a drink. Become a bartender and quench the thirsty undead for a worthy reward of free points and PHD Flopper.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/bartender.mdx"),
+	},
+	misterPeeksFreePerk: {
+		id: "mister-peeks-free-perk",
+		title: "Mister Peeks Free Perk",
+		description: `Take aim at the mysterious Mister Peeks figure to be granted a free random perk for finding all of his hiding places.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/mister-peeks-free-perk.mdx"),
+	},
+	ratKing: {
+		id: "rat-king",
+		title: "Rat King",
+		description: `Take the crown of Rat King for yourself by bringing a treat to the rats of the castle, but first you must gather them. Complete the quest for plenty of loot that may include a free perk or pack-a-punch upgrade.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/rat-king.mdx"),
+	},
+	fireplaceProtector: {
+		id: "fireplace-protector",
+		title: "Fireplace Protector",
+		description: `Race against time to ignite four fireplaces, succeed to gain a fiery ally, fail and you will need to try again the next round.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/fireplace-protector.mdx"),
+	},
+	mayasRevenge: {
+		id: "mayas-revenge",
+		title: "Maya's Revenge",
+		description: `Time for Maya to get her revenge on Franco for the crimes against her brother Nathan that happened on Terminus. Complete the quest for a free legendary GS45 Pistol.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/mayas-revenge.mdx"),
+	},
+	dragonSwordSong: {
+		id: "dragon-sword-song",
+		title: "Dragon Sword Song",
+		description: `Ever wanted to listen to the full song that plays when getting the Dragon Sword? Luckily, there is a secret way to activate the song after getting the Dragon Sword to allow everyone in your game to listen to it in full`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/dragon-sword-song.mdx"),
+	},
+	wishingWell: {
+		id: "wishing-well",
+		title: "Wishing Well",
+		description: `This wishing well has something hiding inside, clear it out to be able to "wish" for things like free points, doubling your points, and sharing your points with your friends.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/wishing-well.mdx"),
+	},
+	lockdownFreePerk: {
+		id: "lockdown-free-perk",
+		title: "Lockdown Free Perk",
+		description: `The power of the incantations spreads farther than we realized, use their power on the Symbol Board to start a lockdown, rewarding players with a free perk and plenty of loot if successful.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/lockdown-free-perk.mdx"),
+	},
+	knightGuardian: {
+		id: "knight-guardian",
+		title: "Knight Guardian",
+		description: `Find the hidden chess piece, and activate a cursed chessboard summoning a Knight Guardian to aid you in your battles against the undead.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/knight-guardian.mdx"),
+	},
+	lionCannon: {
+		id: "lion-cannon",
+		title: "Lion Cannon",
+		description: `Restore the cannon back to its original functionality to gain a new way to traverse the map, and even gain access to a now accessible free power-up every 10 rounds.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/lion-cannon.mdx"),
+	},
+	ravenFreePerk: {
+		id: "raven-free-perk",
+		title: "Raven Free Perk",
+		description: `The Raven's Talon isn't the only item this raven is withholding, learn how to get a free perk out of this mysterious bird.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/raven-free-perk.mdx"),
+	},
+	poolTablecitadelleDesMorts: {
+		id: "pool-table-citadelle-des-morts",
+		title: "Pool Table",
+		description: `Discover this small easter egg granting you 100 points that you can repeat to start every game of Citadelle Des Morts.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/pool-table-citadelle-des-morts.mdx"),
+	},
+	hiddenPowerUpsCitadelleDesMorts: {
+		id: "hidden-power-ups-citadelle-des-morts",
+		title: "Hidden Power Ups",
+		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
+		map: getMapByKey("citadelleDesMorts"),
+		content: () => import("@/content/side-quests/hidden-power-ups-citadelle-des-morts.mdx"),
+	},
+	dig: {
+		id: "dig",
+		title: "Dig",
+		description: `Discover and listen to The Tomb's Music Easter Egg song "Dig" by Kevin Sherwood.`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/dig.mdx"),
+	},
+	freePackAPunch: {
+		id: "free-pack-a-punch",
+		title: "Free Pack-a-Punch",
+		description: `Discover a way to earn a free Aetherium Crystal offerring a level 1 Pack-a-Punch upgrade to any weapon you are currently holding.`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/free-pack-a-punch.mdx"),
+	},
+	freeAetherTool: {
+		id: "free-aether-tool",
+		title: "Free Aether Tool",
+		description: `Discover this way to earn a free Epic or Legendary Aether Tool to upgrade the rarity of your weapon without spending any salvage!`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/free-aether-tool.mdx"),
+	},
+	freeRayGun: {
+		id: "free-ray-gun",
+		title: "Free Ray Gun",
+		description: `Discover this quest to earn a Free Ray Gun wonder weapon very early in your game to give you a huge boost during your game!`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/free-ray-gun.mdx"),
+	},
+	freePerk: {
+		id: "free-perk",
+		title: "Free Perk",
+		description: `Discover this ritual which once completed will grant a Random Perk Power-Up to give everyone in your game a free perk!`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/free-perk.mdx"),
+	},
+	freeSelfRevive: {
+		id: "free-self-revive",
+		title: "Free Self Revive",
+		description: `Discover this quest to earn yourself a free Self-Revive Kit and Light Mend ammo mod, strengthen your weapons against Doppleghasts and giving you an extra life!`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/free-self-revive.mdx"),
+	},
+	freeBrainRot: {
+		id: "free-brain-rot",
+		title: "Free Brain Rot",
+		description: `Discover this quest to earn yourself a free Brain Rot ammo mod, increasing your damage delt to Shock Mimics!`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/free-brain-rot.mdx"),
+	},
+	goldenArmor: {
+		id: "golden-armor",
+		title: "Golden Armor",
+		description: `Discover this quest to earn Golden Armor Plates for your entire team to purchase for free, allowing you regenerate armor over time!`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/golden-armor.mdx"),
+	},
+	zombieSoldiers: {
+		id: "zombie-soldiers",
+		title: "Zombie Soldiers",
+		description: `Learn how to quickly summon a small army of zombie soldiers to fight for you for a short time.`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/zombie-soldiers.mdx"),
+	},
+	free1000Points: {
+		id: "free-1000-points",
+		title: "Free 1000 Points",
+		description: `Discover this small easter egg to obtain a free 1000 points, and a Full Power Power-Up.`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/free-1000-points.mdx"),
+	},
+	hiddenPowerUpsTheTomb: {
+		id: "hidden-power-ups-the-tomb",
+		title: "Hidden Power Ups",
+		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/hidden-power-ups-the-tomb.mdx"),
+	},
+	mummyJumpscare: {
+		id: "mummy-jumpscare",
+		title: "Mummy Jumpscare",
+		description: `Discover this hidden easter egg that allows you to jumpscare your teammates or yourself if you are solo.`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/mummy-jumpscare.mdx"),
+	},
+	aether: {
+		id: "aether",
+		title: "Aether",
+		description: `Learn how to trigger the hidden Music Easter Egg song "Aether" by Brian Tuey.`,
+		map: getMapByKey("theTomb"),
+		content: () => import("@/content/side-quests/aether.mdx"),
+	},
+	freeWunderwaffeDG2: {
+		id: "free-wunderwaffe-dg2",
+		title: "Free Wunderwaffe DG-2",
+		description: `Learn how to obtain a free Wunderwaffe DG-2 Wonder Weapon in the Shattered Veil, seemingly restoring the one dropped by Edward Richtofen himself.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/free-wunderwaffe-dg2.mdx"),
+	},
+	samTrapUnlock: {
+		id: "sam-trap-unlock",
+		title: "S.A.M. Trap Unlock",
+		description: `Learn how to unlock a new trap for the S.A.M. AI in the Mainframe Chamber to use throughout your game for a cost of 2000 points per activation.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/sam-trap-unlock.mdx"),
+	},
+	misterPeeksBodyguard: {
+		id: "mister-peeks-bodyguard",
+		title: "Mister Peeks Bodyguard",
+		description: `Learn how to get a friendly zombie companion for a few rounds to help you in your battle against the undead horde.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/mister-peeks-bodyguard.mdx"),
+	},
+	fallingToPieces: {
+		id: "falling-to-pieces",
+		title: "Falling To Pieces",
+		description: `Discover the Music Easter Egg Song "Falling to Pieces" for Shattered Veil, written by Kevin Sherwood with vocals by Malukah!`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/falling-to-pieces.mdx"),
+	},
+	jumpscareFreePerk: {
+		id: "jumpscare-free-perk",
+		title: "Jumpscare Free Perk",
+		description: `Discover this creepy jumpscare in the Shattered Veil that will reward you with a free perk and scorestreak for finding it.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/jumpscare-free-perk.mdx"),
+	},
+	marineSPUpgrade: {
+		id: "marine-sp-upgrade",
+		title: "Marine SP Upgrade",
+		description: `Learn how to get a free rarity and pack-a-punch upgrade to your Marine-SP shotgun in every game of the Shattered Veil.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/marine-sp-upgrade.mdx"),
+	},
+	sleepwalkingFreePerk: {
+		id: "sleepwalking-free-perk",
+		title: "Sleepwalking Free Perk",
+		description: `Learn how to get a guaranteed free perk in the Shattered Veil by entering your characters dreams.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/sleepwalking-free-perk.mdx"),
+	},
+	_115FreePerk: {
+		id: "115-free-perk",
+		title: "115 Free Perk",
+		description: `Learn how to obtain a free random perk Power-Up with a nice reference to one of the most important elements in our zombies universe.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/115-free-perk.mdx"),
+	},
+	fogRollingIn: {
+		id: "fog-rolling-in",
+		title: "Fog Rolling In",
+		description: `Discover this hidden reference to one of the most iconic memes in the zombies community from the Black Ops II days, yeilding great potential rewards.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/fog-rolling-in.mdx"),
+	},
+	hiddenPowerUpsShatteredVeil: {
+		id: "hidden-power-ups-shattered-veil",
+		title: "Hidden Power Ups",
+		description: `Discover every hidden Power-Up location within Shattered Veil for you to spawn in at any time if you need them.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/hidden-power-ups-shattered-veil.mdx"),
+	},
+	round100BossFight: {
+		id: "round-100-boss-fight",
+		title: "Round 100 Boss Fight",
+		description: `Discover this secret hardcore version of the Z-Rex boss fight that you can attempt after getting to Round 100 and completing the main quest.`,
+		map: getMapByKey("shatteredVeil"),
+		content: () => import("@/content/side-quests/round-100-boss-fight.mdx"),
+	},
+	rememberUs: {
+		id: "remember-us",
+		title: "Remember Us",
+		description: `Discover the hidden Music Easter Egg Song "Remember Us" by Kevin Sherwood with vocals by Elena Siegman.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/remember-us.mdx"),
+	},
+	samanthasPeace: {
+		id: "samanthas-peace",
+		title: "Samantha's Peace",
+		description: `Discover this hidden Music Easter Egg Song "Samantha's Peace" by Brian Tuey.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/samanthas-peace.mdx"),
+	},
+	chickenBucketHat: {
+		id: "chicken-bucket-hat",
+		title: "Chicken Bucket Hat",
+		description: `Learn how to obtain this greasy cosmetic Chicken Bucket Hat that you can wear through out your game.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/chicken-bucket-hat.mdx"),
+	},
+	vendingMachineReckoning: {
+		id: "vending-machine-reckoning",
+		title: "Vending Machine",
+		description: `Discover the hidden loot inside this Vending Machine to test your luck for a chance of getting a Free Perk, Raygun, Pack-a-Punch Upgrade, Scorestreak or Aether Tool.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/vending-machine-reckoning.mdx"),
+	},
+	freeSelfReviveReckoning: {
+		id: "free-self-revive-reckoning",
+		title: "Free Self Revive",
+		description: `Learn how to earn a free Self-Revive with a reference to the Element 115.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/free-self-revive-reckoning.mdx"),
+	},
+	paintings: {
+		id: "paintings",
+		title: "Paintings",
+		description: `Learn how to obtain a total of 1500 points by completing some interior design inside of the Director's Office.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/paintings.mdx"),
+	},
+	parachutingChallenge: {
+		id: "parachuting-challenge",
+		title: "Parachuting Challenge",
+		description: `Learn how to complete this Mister Peeks parachuting challenge to obtain a Free Perk Power-Up in your game.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/parachuting-challenge.mdx"),
+	},
+	hardcoreBossfight: {
+		id: "hardcore-bossfight",
+		title: "Hardcore Bossfight",
+		description: `Discover this secret hardcore version of the Reckoning boss fight that you can attempt after getting to Round 100 and completing the main quest.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/hardcore-bossfight.mdx"),
+	},
+	aetherellaCompanion: {
+		id: "aetherella-companion",
+		title: "Aetherella Companion",
+		description: `Learn how to enable this dormant Aetherella figurine to become a strong companion helping you kill zombies for a few rounds.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/aetherella-companion.mdx"),
+	},
+	pointsChallenge: {
+		id: "points-challenge",
+		title: "Points Challenge",
+		description: `Learn how to obtain a Free Random Perk Power-Up inside of your game while completing one of the Main Quest steps.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/points-challenge.mdx"),
+	},
+	targetPractice: {
+		id: "target-practice",
+		title: "Target Practice",
+		description: `Learn how to obtain a free random Ammo Mod, Aether Tool, and Aetherium Crystal by playing a mini-game within the spawn.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/target-practice.mdx"),
+	},
+	goldenTrashBin: {
+		id: "golden-trash-bin",
+		title: "Golden Trash Bin",
+		description: `Learn how to unlock the Golden Trash Bin that rewards you with valuable loot upon interaction.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/golden-trash-bin.mdx"),
+	},
+	casterTurretUpgrade: {
+		id: "caster-turret-upgrade",
+		title: "C.A.S.T.E.R. Turret Upgrade",
+		description: `Learn how to unlock all upgrades to the C.A.S.T.E.R. Turret traps for increased effectiveness and gained effects.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/caster-turret-upgrade.mdx"),
+	},
+	hiddenPowerUpsReckoning: {
+		id: "hidden-power-ups-reckoning",
+		title: "Hidden Power Ups",
+		description: `Discover every hidden Power-Up location within Reckoning for you to spawn in at any time if you need them.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/hidden-power-ups-reckoning.mdx"),
+	},
+	jumpScareReckoning: {
+		id: "jump-scare-reckoning",
+		title: "Jump Scare",
+		description: `Discover this hidden jumpscare within Reckoning that will remind you of the loss Richtofen has faced.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/jump-scare-reckoning.mdx"),
+	},
+	freeDeadshotDaiquiri: {
+		id: "free-deadshot-daiquiri",
+		title: "Free Deadshot Daiquiri",
+		description: `Learn how to obtain a free Deadshot Daiquiri perk in a similar way as seen in Liberty Falls.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/free-deadshot-daiquiri.mdx"),
+	},
+	aetherBlade: {
+		id: "aether-blade",
+		title: "Aether Blade",
+		description: `Learn how to obtain one of the most powerful lethal equipment in Call of Duty: Zombies in your game.`,
+		map: getMapByKey("reckoning"),
+		content: () => import("@/content/side-quests/aether-blade.mdx"),
+	},
+} as const satisfies Record<string, SideQuest>
+
+const sideQuestMap = new Map<string, SideQuest>()
+const sideQuests: SideQuest[] = Object.values(sideQuestRegistry).sort((a, b) =>
+	sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
+)
+
+for (const sideQuest of sideQuests) {
+	sideQuestMap.set(sideQuest.id, sideQuest)
 }

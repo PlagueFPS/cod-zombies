@@ -1,48 +1,4 @@
-import {
-	type AugmentTuple,
-	apexHunter,
-	arcaneFury,
-	broadBeam,
-	burstDash,
-	carousel,
-	danceParty,
-	darkPact,
-	extensionAetherShroud,
-	extensionDarkFlare,
-	extensionFrenziedGuard,
-	extraCharge,
-	frenzyFire,
-	frequencyBoost,
-	groupShroud,
-	heavyShadow,
-	instantReload,
-	lithiumCharged,
-	overclocked,
-	partyAnimal,
-	peeksFavor,
-	phalanx,
-	powerGrid,
-	rally,
-	repairBoost,
-	retribution,
-	scatter,
-	shockwave,
-	siren,
-	socialButterfly,
-	staticDischarge,
-	supernova,
-	transformer,
-	turret,
-	voidSheath,
-} from "./augments"
-
-/** Gets a field upgrade by its key.
- * @param key The key of the field upgrade.
- * @returns The field upgrade.
- */
-export const getFieldUpgradeByKey = (key: FieldUpgradeKey): FieldUpgrade =>
-	fieldUpgradeRegistry[key]
-export const getFieldUpgrades = (): FieldUpgrade[] => Object.values(fieldUpgradeRegistry)
+import type { AugmentTuple } from "./augments"
 
 export interface FieldUpgrade {
 	/** The unique identifier of the field upgrade */
@@ -56,6 +12,18 @@ export interface FieldUpgrade {
 	/** The augments of the field upgrade */
 	augments?: AugmentTuple
 }
+
+/** Union type of all field upgrade keys */
+export type FieldUpgradeKey = keyof typeof fieldUpgradeRegistry
+
+/** Gets a field upgrade by its key.
+ * @param key The key of the field upgrade.
+ */
+export const getFieldUpgradeByKey = (key: FieldUpgradeKey): FieldUpgrade =>
+	fieldUpgradeRegistry[key]
+
+/** Gets all field upgrades */
+export const getFieldUpgrades = (): FieldUpgrade[] => Object.values(fieldUpgradeRegistry)
 
 const fieldUpgradeRegistry = {
 	ringOfFire: {
@@ -71,12 +39,12 @@ const fieldUpgradeRegistry = {
 		description: "Phase into the Dark Aether and become temporarily hidden from enemy detection.",
 		image: "/field-upgrades/aether-shroud.webp",
 		augments: [
-			groupShroud,
-			burstDash,
-			voidSheath,
-			instantReload,
-			extraCharge,
-			extensionAetherShroud,
+			"groupShroud",
+			"burstDash",
+			"voidSheath",
+			"instantReload",
+			"extraCharge",
+			"extensionAetherShroud",
 		],
 	},
 	frenziedGuard: {
@@ -85,7 +53,14 @@ const fieldUpgradeRegistry = {
 		description:
 			"Repair armor to full and force all enemies in the area to temporarily target you. Armor takes all damage during this time, and is repaired on every kill.",
 		image: "/field-upgrades/frenzied-guard.webp",
-		augments: [phalanx, retribution, frenzyFire, repairBoost, extensionFrenziedGuard, rally],
+		augments: [
+			"phalanx",
+			"retribution",
+			"frenzyFire",
+			"repairBoost",
+			"extensionFrenziedGuard",
+			"rally",
+		],
 	},
 	darkFlare: {
 		id: "dark-flare",
@@ -93,14 +68,21 @@ const fieldUpgradeRegistry = {
 		description:
 			"Generate an energy beam that deals lethal shadow damage and penetrates everything in its path.",
 		image: "/field-upgrades/dark-flare.webp",
-		augments: [extensionDarkFlare, supernova, darkPact, broadBeam, heavyShadow, extraCharge],
+		augments: [
+			"extensionDarkFlare",
+			"supernova",
+			"darkPact",
+			"broadBeam",
+			"heavyShadow",
+			"extraCharge",
+		],
 	},
 	energyMine: {
 		id: "energy-mine",
 		title: "Energy Mine",
 		description: "Create a mine of pure energy that detonates 3 times, dealing lethal damage.",
 		image: "/field-upgrades/energy-mine.webp",
-		augments: [scatter, turret, carousel, frequencyBoost, extraCharge, siren],
+		augments: ["scatter", "turret", "carousel", "frequencyBoost", "extraCharge", "siren"],
 	},
 	teslaStorm: {
 		id: "tesla-storm",
@@ -108,24 +90,27 @@ const fieldUpgradeRegistry = {
 		description:
 			"For 10 seconds lightning connects to other players, stunning and damaging normal enemies.",
 		image: "/field-upgrades/tesla-storm.webp",
-		augments: [transformer, shockwave, staticDischarge, powerGrid, overclocked, lithiumCharged],
+		augments: [
+			"transformer",
+			"shockwave",
+			"staticDischarge",
+			"powerGrid",
+			"overclocked",
+			"lithiumCharged",
+		],
 	},
 	misterPeeks: {
 		id: "mister-peeks",
 		title: "Mister Peeks",
 		description: "Summon Mister Peeks to our reality to create chaos.",
 		image: "/field-upgrades/mister-peeks.webp",
-		augments: [danceParty, arcaneFury, apexHunter, socialButterfly, peeksFavor, partyAnimal],
+		augments: [
+			"danceParty",
+			"arcaneFury",
+			"apexHunter",
+			"socialButterfly",
+			"peeksFavor",
+			"partyAnimal",
+		],
 	},
 } as const satisfies Record<string, FieldUpgrade>
-
-export type FieldUpgradeKey = keyof typeof fieldUpgradeRegistry
-export const {
-	ringOfFire,
-	aetherShroud,
-	frenziedGuard,
-	darkFlare,
-	energyMine,
-	teslaStorm,
-	misterPeeks,
-} = fieldUpgradeRegistry

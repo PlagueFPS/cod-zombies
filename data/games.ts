@@ -9,6 +9,9 @@ export interface Game {
 	image: string
 }
 
+/** Union type of all game keys */
+export type GameKey = keyof typeof gameRegistry
+
 /** Gets all games.
  * @returns An array of all games.
  */
@@ -69,17 +72,5 @@ const gameRegistry = {
 		title: "Black Ops 7",
 		releaseDate: new Date("November 14, 2025"),
 		image: "/games/black-ops-7_logo.webp",
-	}
+	},
 } as const satisfies Record<string, Game>
-
-export type GameKey = keyof typeof gameRegistry
-export const {
-	worldAtWar,
-	blackOps1,
-	blackOps2,
-	blackOps3,
-	blackOps4,
-	blackOpsColdWar,
-	blackOps6,
-	blackOps7
-} = gameRegistry

@@ -12,7 +12,16 @@ export interface ZombieAttack {
 /** Union type of all zombie attacks */
 export type ZombieAttackKey = keyof typeof zombieAttacksRegistry
 
-export const getZombieAttackByKey = (key: ZombieAttackKey): ZombieAttack => zombieAttacksRegistry[key]
+/**
+ * Gets a zombie attack by its key.
+ * @param key The key of the zombie attack.
+ */
+export const getZombieAttackByKey = (key: ZombieAttackKey): ZombieAttack =>
+	zombieAttacksRegistry[key]
+
+/**
+ * Gets all zombie attacks.
+ */
 export const getZombieAttacks = (): ZombieAttack[] => Object.values(zombieAttacksRegistry)
 
 const zombieAttacksRegistry = {
@@ -591,8 +600,7 @@ const zombieAttacksRegistry = {
 		id: "ravage",
 		title: "Ravage",
 		range: "Short",
-		description:
-			"Eats left over ground loot, sprinting and teleporting underground when full.",
+		description: "Eats left over ground loot, sprinting and teleporting underground when full.",
 	},
 	maul: {
 		id: "maul",

@@ -1,10 +1,3 @@
-/**
- * Gets a weapon build by its key.
- * @param key The key of the weapon build.
- * @returns The weapon build.
- */
-export const getWeaponBuildByKey = (key: WeaponBuildKey): WeaponBuild => weaponBuildRegistry[key]
-
 interface Attachment {
 	/** Unique identifier for the attachment */
 	id: string
@@ -23,6 +16,29 @@ interface Attachment {
 		| "Laser"
 		| "Fire Mod"
 }
+
+export interface WeaponBuild {
+	/** Unique identifier for the weapon build */
+	id: string
+	/** Name of the weapon build */
+	title: string
+	/** Image of the weapon build */
+	image: string
+	/** Attachments used in the weapon build */
+	attachments?: Attachment[]
+	/** Build code for the weapon build */
+	buildCode?: string
+}
+
+/** Union type of all weapon builds */
+export type WeaponBuildKey = keyof typeof weaponBuildRegistry
+
+/**
+ * Gets a weapon build by its key.
+ * @param key The key of the weapon build.
+ * @returns The weapon build.
+ */
+export const getWeaponBuildByKey = (key: WeaponBuildKey): WeaponBuild => weaponBuildRegistry[key]
 
 const attachmentsRegistry = {
 	keplerMicroflex: {
@@ -127,55 +143,19 @@ const attachmentsRegistry = {
 	},
 } as const satisfies Record<string, Attachment>
 
-const {
-	keplerMicroflex,
-	monolithicSuppressor,
-	chfBarrel,
-	rangerForegrip,
-	extendedMagII,
-	balancedStock,
-	strelokLaser,
-	recoilSprings,
-	reinforcedBarrel,
-	ergonomicRiser,
-	balancedPad,
-	fastMotionLaser,
-	rapidFire,
-	fullChoke,
-	cqbGrip,
-	lightStock,
-	steadyAimLaser,
-	twelveGaugeDragonsBreath,
-	extendedMagIII,
-	akimbo,
-} = attachmentsRegistry
-
-export interface WeaponBuild {
-	/** Unique identifier for the weapon build */
-	id: string
-	/** Name of the weapon build */
-	title: string
-	/** Image of the weapon build */
-	image: string
-	/** Attachments used in the weapon build */
-	attachments?: Attachment[]
-	/** Build code for the weapon build */
-	buildCode?: string
-}
-
 const weaponBuildRegistry = {
 	maelstromReckoning: {
 		id: "maelstrom-reckoning",
 		title: "Maelstrom",
 		image: "/weapons/maelstrom.webp",
 		attachments: [
-			fullChoke,
-			rangerForegrip,
-			extendedMagII,
-			cqbGrip,
-			lightStock,
-			steadyAimLaser,
-			twelveGaugeDragonsBreath,
+			attachmentsRegistry.fullChoke,
+			attachmentsRegistry.rangerForegrip,
+			attachmentsRegistry.extendedMagII,
+			attachmentsRegistry.cqbGrip,
+			attachmentsRegistry.lightStock,
+			attachmentsRegistry.steadyAimLaser,
+			attachmentsRegistry.twelveGaugeDragonsBreath,
 		],
 	},
 	abrA1Reckoning: {
@@ -183,14 +163,14 @@ const weaponBuildRegistry = {
 		title: "ABR A1",
 		image: "/weapons/abr-a1.webp",
 		attachments: [
-			monolithicSuppressor,
-			reinforcedBarrel,
-			rangerForegrip,
-			extendedMagII,
-			ergonomicRiser,
-			balancedPad,
-			fastMotionLaser,
-			rapidFire,
+			attachmentsRegistry.monolithicSuppressor,
+			attachmentsRegistry.reinforcedBarrel,
+			attachmentsRegistry.rangerForegrip,
+			attachmentsRegistry.extendedMagII,
+			attachmentsRegistry.ergonomicRiser,
+			attachmentsRegistry.balancedPad,
+			attachmentsRegistry.fastMotionLaser,
+			attachmentsRegistry.rapidFire,
 		],
 	},
 	gpr91Reckoning: {
@@ -198,25 +178,26 @@ const weaponBuildRegistry = {
 		title: "GPR 91",
 		image: "/weapons/gpr-91.webp",
 		attachments: [
-			keplerMicroflex,
-			monolithicSuppressor,
-			chfBarrel,
-			rangerForegrip,
-			extendedMagII,
-			balancedStock,
-			strelokLaser,
-			recoilSprings,
+			attachmentsRegistry.keplerMicroflex,
+			attachmentsRegistry.monolithicSuppressor,
+			attachmentsRegistry.chfBarrel,
+			attachmentsRegistry.rangerForegrip,
+			attachmentsRegistry.extendedMagII,
+			attachmentsRegistry.balancedStock,
+			attachmentsRegistry.strelokLaser,
+			attachmentsRegistry.recoilSprings,
 		],
 	},
 	grekhovaAkimbo: {
 		id: "grekhova-akimbo",
 		title: "Grehkova",
 		image: "/weapons/grekhova.webp",
-		attachments: [monolithicSuppressor, extendedMagIII, akimbo, steadyAimLaser, rapidFire],
+		attachments: [
+			attachmentsRegistry.monolithicSuppressor,
+			attachmentsRegistry.extendedMagIII,
+			attachmentsRegistry.akimbo,
+			attachmentsRegistry.steadyAimLaser,
+			attachmentsRegistry.rapidFire,
+		],
 	},
 } as const satisfies Record<string, WeaponBuild>
-
-/** Union type of all weapon builds */
-export type WeaponBuildKey = keyof typeof weaponBuildRegistry
-export const { maelstromReckoning, abrA1Reckoning, gpr91Reckoning, grekhovaAkimbo } =
-	weaponBuildRegistry

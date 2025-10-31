@@ -8,7 +8,15 @@ export interface WeakPoint {
 /** Union type of all weak points */
 export type WeakPointKey = keyof typeof weakPointsRegistry
 
+/**
+ * Gets a weak point by its key.
+ * @param key The key of the weak point.
+ */
 export const getWeakPointByKey = (key: WeakPointKey): WeakPoint => weakPointsRegistry[key]
+
+/**
+ * Gets all weak points.
+ */
 export const getWeakPoints = (): WeakPoint[] => Object.values(weakPointsRegistry)
 
 const weakPointsRegistry = {

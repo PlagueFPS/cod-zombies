@@ -1,8 +1,8 @@
 import type { AmmoModKey } from "@/data/ammo-mods"
-import { type Game, getGames, getGameByKey } from "@/data/games"
-import { type Maps, getMaps, getMapByKey } from "@/data/maps"
-import { type WeakPoint, getWeakPointByKey } from "@/data/weak-points"
-import { type ZombieAttack, getZombieAttackByKey } from "@/data/zombie-attacks"
+import { type Game, getGameByKey, getGames } from "@/data/games"
+import { getMapByKey, getMaps, type Maps } from "@/data/maps"
+import { getWeakPointByKey, type WeakPoint } from "@/data/weak-points"
+import { getZombieAttackByKey, type ZombieAttack } from "@/data/zombie-attacks"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 
 /** Union type of all zombie types */

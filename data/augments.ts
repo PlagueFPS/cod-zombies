@@ -14,25 +14,32 @@ export interface Augment {
 	/** The image of the augment */
 	image: string
 	/** The game variants of the augment */
-	variants?: Partial<Record<GameKey, AugmentVariant>>,
+	variants?: Partial<Record<GameKey, AugmentVariant>>
 }
 
 /**Union of all keys in the Augment Registry */
 export type AugmentKey = keyof typeof augmentRegistry
 /**Tuple to enforce min/max allowed augments */
-export type AugmentTuple = [AugmentKey, AugmentKey, AugmentKey, AugmentKey, AugmentKey, AugmentKey, AugmentKey?, AugmentKey?]
+export type AugmentTuple = [
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey?,
+	AugmentKey?,
+]
 /**Union of all Augment types */
 export type AugmentType = Augment["type"]
 
 /** Gets an augment by its key.
  * @param key The key of the augment.
  * @param game The game to get the augment variant for.
- * @throws If the augment does not exist
  */
 export const getAugmentByKey = (key: AugmentKey, game?: GameKey): Augment => {
-	const augment: Augment | undefined = augmentRegistry[key]
+	const augment: Augment = augmentRegistry[key]
 
-	if (!augment) throw new Error(`Augment ${key} not found`)
 	if (!game || !augment.variants?.[game]) return augment
 
 	const variant = augment.variants?.[game]
@@ -1038,7 +1045,8 @@ const augmentRegistry = {
 	maskOfSalvation: {
 		id: "mask-of-salvation",
 		title: "Mask of Salvation",
-		description: "The Fox can revive you while it’s active. This can be done up to three times per match.",
+		description:
+			"The Fox can revive you while it’s active. This can be done up to three times per match.",
 		type: "Major",
 		image: "/augments/mask-of-salvation-major-augment.webp",
 	},
@@ -1073,7 +1081,8 @@ const augmentRegistry = {
 	zombieSitter: {
 		id: "zombie-sitter",
 		title: "Zombie Sitter",
-		description: "The Wisp will attract and avoid damaging the last zombie in the round until the round times out.",
+		description:
+			"The Wisp will attract and avoid damaging the last zombie in the round until the round times out.",
 		type: "Minor",
 		image: "/augments/zombie-sitter-minor-augment.webp",
 	},
@@ -1115,14 +1124,16 @@ const augmentRegistry = {
 	starburst: {
 		id: "starburst",
 		title: "Starburst",
-		description: "Fire Works explodes immediately, sending flares through enemies in all directions.",
+		description:
+			"Fire Works explodes immediately, sending flares through enemies in all directions.",
 		type: "Major",
 		image: "/augments/starburst-major-augment.webp",
 	},
 	weepingWillow: {
 		id: "weeping-willow",
 		title: "Weeping Willow",
-		description: "Instead of targeting enemies the flares will land on the ground and explode for a while.",
+		description:
+			"Instead of targeting enemies the flares will land on the ground and explode for a while.",
 		type: "Major",
 		image: "/augments/weeping-willow-major-augment.webp",
 	},
@@ -1150,14 +1161,16 @@ const augmentRegistry = {
 	gravityWell: {
 		id: "gravity-well",
 		title: "Gravity Well",
-		description: "Shadow Rift becomes a black hole that pulls in enemies, before teleporting away nearby enemy survivors.",
+		description:
+			"Shadow Rift becomes a black hole that pulls in enemies, before teleporting away nearby enemy survivors.",
 		type: "Major",
 		image: "/augments/gravity-well-major-augment.webp",
 	},
 	ballLightning: {
 		id: "ball-lightning",
 		title: "Ball Lightning",
-		description: "Activating Dead Wire launches an orb that deals electric damage to nearby enemies as it moves.",
+		description:
+			"Activating Dead Wire launches an orb that deals electric damage to nearby enemies as it moves.",
 		type: "Major",
 		image: "/augments/ball-lightning-major-augment.webp",
 	},
@@ -1171,28 +1184,32 @@ const augmentRegistry = {
 	urticant: {
 		id: "urticant",
 		title: "Urticant",
-		description: "Toxic Growth takes up a wider area and enemies that enter the growth continue to be slowed after leaving it.",
+		description:
+			"Toxic Growth takes up a wider area and enemies that enter the growth continue to be slowed after leaving it.",
 		type: "Major",
 		image: "/augments/urticant-major-augment.webp",
 	},
 	cordyception: {
 		id: "cordyception",
 		title: "Cordyception",
-		description: "The first Normal or Special Enemy to walk into the growth is entangled and charmed, attacking other enemies that enter.",
+		description:
+			"The first Normal or Special Enemy to walk into the growth is entangled and charmed, attacking other enemies that enter.",
 		type: "Major",
 		image: "/augments/cordyception-major-augment.webp",
 	},
 	pollination: {
 		id: "pollination",
 		title: "Pollination",
-		description: "Enemies killed by the growth explode, dealing Toxic damage to nearby enemies and slowing them.",
+		description:
+			"Enemies killed by the growth explode, dealing Toxic damage to nearby enemies and slowing them.",
 		type: "Major",
 		image: "/augments/pollination-major-augment.webp",
 	},
 	zoochory: {
 		id: "zoochory",
 		title: "Zoochory",
-		description: "The first Normal or Special Enemy to walk into the growth becomes the Toxic Growth itself.",
+		description:
+			"The first Normal or Special Enemy to walk into the growth becomes the Toxic Growth itself.",
 		type: "Major",
 		image: "/augments/zoochory-major-augment.webp",
 	},
@@ -1220,7 +1237,8 @@ const augmentRegistry = {
 	smartMine: {
 		id: "smart-mine",
 		title: "Smart Mine",
-		description: "Energy Mine has more detonations and waits for multiple enemies to be in range for each detonation.",
+		description:
+			"Energy Mine has more detonations and waits for multiple enemies to be in range for each detonation.",
 		type: "Major",
 		image: "/augments/smart-mine-major-augment.webp",
 	},
@@ -1374,7 +1392,8 @@ const augmentRegistry = {
 	impulse: {
 		id: "impulse",
 		title: "Impulse",
-		description: "Deal Shadow damage to enemies on activation and increase your movement speed during Aether Shroud.",
+		description:
+			"Deal Shadow damage to enemies on activation and increase your movement speed during Aether Shroud.",
 		type: "Minor",
 		image: "/augments/impulse-minor-augment.webp",
 	},
@@ -1406,17 +1425,19 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/stuntman-minor-augment.webp",
 	},
-	rainbowPop : {
+	rainbowPop: {
 		id: "rainbow-pop",
 		title: "Rainbow Pop",
-		description: "Weapons with an Ammo Mod equipped have a chance to deal the elemental damage that an enemy is weak to.",
+		description:
+			"Weapons with an Ammo Mod equipped have a chance to deal the elemental damage that an enemy is weak to.",
 		type: "Major",
 		image: "/augments/rainbow-pop-major-augment.webp",
 	},
 	refreshMint: {
 		id: "refresh-mint",
 		title: "Refresh Mint",
-		description: "Killing a Special or Elite Enemy with its elemental weakness resets your Elemental Pop cooldown.",
+		description:
+			"Killing a Special or Elite Enemy with its elemental weakness resets your Elemental Pop cooldown.",
 		type: "Minor",
 		image: "/augments/refresh-mint-minor-augment.webp",
 	},

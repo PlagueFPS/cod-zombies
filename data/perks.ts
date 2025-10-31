@@ -29,9 +29,8 @@ export type PerkKey = keyof typeof perkRegistry
  * @returns The perk.
  */
 export const getPerkByKey = (key: PerkKey, game?: GameKey): Perk => {
-	const perk: Perk | undefined = perkRegistry[key]
+	const perk: Perk = perkRegistry[key]
 
-	if (!perk) throw new Error(`Perk ${key} not found`)
 	if (!game || !perk.variants?.[game]) return perk
 
 	const variant = perk.variants?.[game]
@@ -67,8 +66,8 @@ const perkRegistry = {
 			"extensionWisp",
 			"hasteWisp",
 			"zombieSitter",
-			"fetcher"
-		]
+			"fetcher",
+		],
 	},
 	juggernog: {
 		id: "juggernog",
@@ -79,14 +78,30 @@ const perkRegistry = {
 			blackOps6: {
 				description: "Increase Max Health by 100.",
 				image: "/perks/juggernog-bo6.webp",
-				augments: ["probiotic", "turtleShell", "reactiveArmor", "retaliation", "hardenedPlates", "durablePlates"],
+				augments: [
+					"probiotic",
+					"turtleShell",
+					"reactiveArmor",
+					"retaliation",
+					"hardenedPlates",
+					"durablePlates",
+				],
 			},
 			blackOps7: {
 				description: "Increase Max Health by 100.",
 				image: "/perks/juggernog-bo6.webp",
-				augments: ["probiotic", "turtleShell", "reactiveArmor", "ironCore", "retaliation", "hardenedPlates", "durablePlates", "shakeItOff"],
-			}
-		}
+				augments: [
+					"probiotic",
+					"turtleShell",
+					"reactiveArmor",
+					"ironCore",
+					"retaliation",
+					"hardenedPlates",
+					"durablePlates",
+					"shakeItOff",
+				],
+			},
+		},
 	},
 	deadshotDaiquiri: {
 		id: "deadshot-daiquiri",
@@ -103,8 +118,8 @@ const perkRegistry = {
 				description: "Improve ADS precision and increase critical damage.",
 				image: "/perks/deadshot-daiquiri-cold-war.webp",
 				augments: ["deadHead", "deadFirst", "deadAgain", "deadBreak", "deadDraw", "deadSet"],
-			}
-		}
+			},
+		},
 	},
 	widowsWine: {
 		id: "widows-wine",
@@ -131,8 +146,8 @@ const perkRegistry = {
 					"doubleOrNothing",
 					"doublePlay",
 				],
-			}
-		}
+			},
+		},
 	},
 	timeslip: {
 		id: "timeslip",
@@ -175,9 +190,16 @@ const perkRegistry = {
 			blackOps6: {
 				description: "Recover health and revive allies faster.",
 				image: "/perks/quick-revive-cold-war.webp",
-				augments: ["emt", "equivalentExchange", "dyingWish", "swiftRecovery", "karmicReturn", "slowDeath"],
-			}
-		}
+				augments: [
+					"emt",
+					"equivalentExchange",
+					"dyingWish",
+					"swiftRecovery",
+					"karmicReturn",
+					"slowDeath",
+				],
+			},
+		},
 	},
 	staminUp: {
 		id: "stamin-up",
@@ -193,8 +215,8 @@ const perkRegistry = {
 				description: "Increase run and sprint speed.",
 				image: "/perks/stamin-up-cold-war.webp",
 				augments: ["freeFaller", "dasher", "stalker", "hardTarget", "quarterback", "hotFoot"],
-			}
-		}
+			},
+		},
 	},
 	wintersWail: {
 		id: "winters-wail",
@@ -216,9 +238,16 @@ const perkRegistry = {
 			blackOps6: {
 				description: "Obscured enemies are keylined.",
 				image: "/perks/death-perception-bo6.webp",
-				augments: ["treasureHunter", "deathStare", "criticalEye", "birdsEyeView", "extraChange", "furtherInsight"],
-			}
-		}
+				augments: [
+					"treasureHunter",
+					"deathStare",
+					"criticalEye",
+					"birdsEyeView",
+					"extraChange",
+					"furtherInsight",
+				],
+			},
+		},
 	},
 	victoriousTortoise: {
 		id: "victorious-tortoise",
@@ -245,9 +274,16 @@ const perkRegistry = {
 			blackOps6: {
 				description: "Explosive dive to prone and immunity to self-inflicted explosive damage.",
 				image: "/perks/phd-flopper.webp",
-				augments: ["gravityMD", "drRam", "phdSlider", "environmentalist", "eodTechnician", "tribologist"],
-			}
-		}
+				augments: [
+					"gravityMD",
+					"drRam",
+					"phdSlider",
+					"environmentalist",
+					"eodTechnician",
+					"tribologist",
+				],
+			},
+		},
 	},
 	vultureAid: {
 		id: "vulture-aid",
@@ -259,9 +295,16 @@ const perkRegistry = {
 			blackOps6: {
 				description: "Increase the variety of loot dropped by enemies.",
 				image: "/perks/vulture-aid.webp",
-				augments: ["fetidUpgraid", "smellOfDeath", "partingGift", "condorsReach", "carrionLuggage", "pickyEater"],
-			}
-		}
+				augments: [
+					"fetidUpgraid",
+					"smellOfDeath",
+					"partingGift",
+					"condorsReach",
+					"carrionLuggage",
+					"pickyEater",
+				],
+			},
+		},
 	},
 	meleeMacchiato: {
 		id: "melee-macchiato",
@@ -285,8 +328,8 @@ const perkRegistry = {
 		variants: {
 			blackOpsColdWar: {
 				image: "/perks/mule-kick-cold-war.webp",
-			}
-		}
+			},
+		},
 	},
 	speedCola: {
 		id: "speed-cola",
@@ -297,16 +340,30 @@ const perkRegistry = {
 			blackOps6: {
 				description: "Increase reload speed bonus to 15%.",
 				image: "/perks/speed-cola.webp",
-				augments: ["supercharged", "classicFormula", "phantomReload", "speedyRoulette", "quickSwap", "fastPitcher"],
-			}
-		}
+				augments: [
+					"supercharged",
+					"classicFormula",
+					"phantomReload",
+					"speedyRoulette",
+					"quickSwap",
+					"fastPitcher",
+				],
+			},
+		},
 	},
 	elementalPop: {
 		id: "elemental-pop",
 		title: "Elemental Pop",
 		description: "Grants a small chance to apply a random Ammo Mod effect to your next attack.",
 		image: "/perks/elemental-pop.webp",
-		augments: ["citrusFocus", "imperialPeach", "electricCherry", "vulneraBean", "pineappleBlast", "chillBerry"],
+		augments: [
+			"citrusFocus",
+			"imperialPeach",
+			"electricCherry",
+			"vulneraBean",
+			"pineappleBlast",
+			"chillBerry",
+		],
 	},
 	tombstone: {
 		id: "tombstone",
@@ -316,10 +373,9 @@ const perkRegistry = {
 		image: "/perks/tombstone.webp",
 		variants: {
 			blackOpsColdWar: {
-				description:
-					"Have a chance to revive yourself when downed.",
+				description: "Have a chance to revive yourself when downed.",
 				image: "/perks/tombstone-cold-war.webp",
-			}
-		}
+			},
+		},
 	},
 } as const satisfies Record<string, Perk>

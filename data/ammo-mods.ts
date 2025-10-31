@@ -19,16 +19,17 @@ export interface AmmoMod {
 	variants?: Partial<Record<GameKey, AmmoModVariant>>
 }
 
+/** Union type of all ammo mod keys */
+export type AmmoModKey = keyof typeof ammoModRegistry
+
 /**
  * Gets an ammo mod by its key.
  * @param key The key of the ammo mod.
  * @param game The game to get the ammo mod variant for.
- * @returns The ammo mod.
  */
 export const getAmmoModByKey = (key: AmmoModKey, game?: GameKey): AmmoMod => {
-	const ammoMod: AmmoMod | undefined = ammoModRegistry[key]
+	const ammoMod: AmmoMod = ammoModRegistry[key]
 
-	if (!ammoMod) throw new Error(`Ammo mod ${key} not found`)
 	if (!game || !ammoMod.variants?.[game]) return ammoMod
 
 	const variant = ammoMod.variants?.[game]
@@ -77,9 +78,16 @@ const ammoModRegistry = {
 				description:
 					"Bullets deal toxic damage. Each bullet has the chance to turn a Normal or Special enemy into an ally for short duration.",
 				image: "/ammo-mods/brain-rot-bo6.webp",
-				augments: ["plague", "pheromone", "bigGameBrainRot", "extensionBrainRot", "hasteBrainRot", "explosive"],
-			}
-		}
+				augments: [
+					"plague",
+					"pheromone",
+					"bigGameBrainRot",
+					"extensionBrainRot",
+					"hasteBrainRot",
+					"explosive",
+				],
+			},
+		},
 	},
 	killOWatt: {
 		id: "kill-o-watt",
@@ -94,7 +102,14 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal light damage. Each bullet has a change to transform a normal or special enemy's health into a healing glyph that moves to nearby injured allies.",
 		image: "/ammo-mods/light-mend.webp",
-		augments: ["antibiotic", "bigGameLightMend", "dualAction", "longerLife", "extraStrength", "expressRemedy"],
+		augments: [
+			"antibiotic",
+			"bigGameLightMend",
+			"dualAction",
+			"longerLife",
+			"extraStrength",
+			"expressRemedy",
+		],
 	},
 	deadWire: {
 		id: "dead-wire",
@@ -157,5 +172,3 @@ const ammoModRegistry = {
 		],
 	},
 } as const satisfies Record<string, AmmoMod>
-
-export type AmmoModKey = keyof typeof ammoModRegistry

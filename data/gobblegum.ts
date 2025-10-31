@@ -39,17 +39,16 @@ export interface Gobblegum {
  * @param game The game to get the gobblegum variant for.
  */
 export const getGobblegumByKey = (key: GobblegumKey, game?: GameKey): Gobblegum => {
-	const gobblegum: Gobblegum | undefined = gobblegumRegistry[key]
+	const gobblegum: Gobblegum = gobblegumRegistry[key]
 
-	if (!gobblegum) throw new Error(`Gobblegum ${key} not found`)
 	if (!game || !gobblegum.variants?.[game]) return gobblegum
 
 	const variant = gobblegum.variants?.[game]
 	return {
 		...gobblegum,
-		...variant
+		...variant,
 	}
-};
+}
 
 /**
  * Gets all gobblegums.
@@ -62,7 +61,7 @@ export const getGobblegums = (game?: GameKey): Gobblegum[] => {
 		const variant = gobblegum.variants?.[game]
 		return {
 			...gobblegum,
-			...variant
+			...variant,
 		}
 	})
 }
@@ -92,8 +91,8 @@ const gobblegumRegistry = {
 				type: "Player-Activated",
 				rarity: "Rare",
 				image: "/gobblegums/anywhere-but-here-bo6.webp",
-			}
-		}
+			},
+		},
 	},
 	inPlainSight: {
 		id: "in-plain-sight",
@@ -133,8 +132,8 @@ const gobblegumRegistry = {
 				type: "Immediate",
 				rarity: "Ultra",
 				image: "/gobblegums/perkaholic-bo6.webp",
-			}
-		}
+			},
+		},
 	},
 	shoppingFree: {
 		id: "shopping-free",
@@ -175,8 +174,8 @@ const gobblegumRegistry = {
 				type: "Time-Based",
 				rarity: "Ultra",
 				image: "/gobblegums/near-death-experience-bo6.webp",
-			}
-		}
+			},
+		},
 	},
 	wallPower: {
 		id: "wall-power",
@@ -191,8 +190,8 @@ const gobblegumRegistry = {
 				type: "Immediate",
 				rarity: "Legendary",
 				image: "/gobblegums/wall-power-bo6.webp",
-			}
-		}
+			},
+		},
 	},
 	roundRobbin: {
 		id: "round-robbin",
@@ -233,8 +232,8 @@ const gobblegumRegistry = {
 				type: "Time-Based",
 				rarity: "Legendary",
 				image: "/gobblegums/idle-eyes-bo6.webp",
-			}
-		}
+			},
+		},
 	},
 	fearInHeadlights: {
 		id: "fear-in-headlights",
@@ -261,10 +260,8 @@ const gobblegumRegistry = {
 		rarity: "Rare-Mega",
 		image: "/gobblegums/crate-power.webp",
 		variants: {
-			blackOps6: {
-
-			}
-		}
+			blackOps6: {},
+		},
 	},
 	arsenalAccelerator: {
 		id: "arsenal-accelerator",
@@ -279,8 +276,8 @@ const gobblegumRegistry = {
 				type: "Time-Based",
 				rarity: "Rare",
 				image: "/gobblegums/arsenal-accelerator-bo6.webp",
-			}
-		}
+			},
+		},
 	},
 	selfMedication: {
 		id: "self-medication",
