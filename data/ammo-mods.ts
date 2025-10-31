@@ -92,6 +92,21 @@ const ammoModRegistry = {
 					"explosive",
 				],
 			},
+			blackOps7: {
+				description:
+					"Bullets deal toxic damage. Each bullet has the chance to turn a Normal or Special enemy into an ally for short duration.",
+				image: "/ammo-mods/brain-rot-bo6.webp",
+				augments: [
+					"plague",
+					"pheromone",
+					"bigGameBrainRot",
+					"causticFumes",
+					"extensionBrainRot",
+					"hasteBrainRot",
+					"explosive",
+					"superSerum",
+				],
+			},
 		},
 	},
 	killOWatt: {
@@ -119,17 +134,37 @@ const ammoModRegistry = {
 	deadWire: {
 		id: "dead-wire",
 		title: "Dead Wire",
-		description:
-			"Bullets deal electrical damage. Each bullet has a chance to stun any Normal and Special enemy, generating a field that deals electric damage to nearby enemies.",
-		image: "/ammo-mods/dead-wire-bo6.webp",
-		augments: [
-			"chainLightning",
-			"bigGameDeadWire",
-			"lightningStrike",
-			"highVoltage",
-			"hasteDeadWire",
-			"extensionDeadWire",
-		],
+		description: "Each bullet has a chance to stun any Normal and Special enemy.",
+		image: "/ammo-mods/dead-wire.webp",
+		variants: {
+			blackOpsColdWar: {
+				description:
+					"Bullets deal electrical damage. Each bullet has a chance to stun any Normal and Special enemy, generating a field that deals electric damage to nearby enemies.",
+				image: "/ammo-mods/dead-wire-bo6.webp",
+			},
+			blackOps6: {
+				augments: [
+					"chainLightning",
+					"bigGameDeadWire",
+					"lightningStrike",
+					"highVoltage",
+					"hasteDeadWire",
+					"extensionDeadWire",
+				],
+			},
+			blackOps7: {
+				augments: [
+					"chainLightning",
+					"bigGameDeadWire",
+					"lightningStrike",
+					"ballLightning",
+					"highVoltage",
+					"hasteDeadWire",
+					"extensionDeadWire",
+					"aftershock",
+				],
+			},
+		},
 	},
 	cryoFreeze: {
 		id: "cryo-freeze",
@@ -137,14 +172,36 @@ const ammoModRegistry = {
 		description:
 			"Bullets deal frost damage. Each bullet has a chance to slow Normal or Special enemies.",
 		image: "/ammo-mods/cryo-freeze.webp",
-		augments: [
-			"bigGameCryoFreeze",
-			"iceCloud",
-			"frozenStiff",
-			"extensionCryoFreeze",
-			"freezerBurn",
-			"liquidNitrogen",
-		],
+		variants: {
+			blackOps6: {
+				description:
+					"Bullets deal frost damage. Each bullet has a chance to slow Normal or Special enemies.",
+				image: "/ammo-mods/cryo-freeze.webp",
+				augments: [
+					"bigGameCryoFreeze",
+					"iceCloud",
+					"frozenStiff",
+					"extensionCryoFreeze",
+					"freezerBurn",
+					"liquidNitrogen",
+				],
+			},
+			blackOps7: {
+				description:
+					"Bullets deal frost damage. Each bullet has a chance to slow Normal or Special enemies.",
+				image: "/ammo-mods/cryo-freeze.webp",
+				augments: [
+					"bigGameCryoFreeze",
+					"iceCloud",
+					"frozenStiff",
+					"coldCompany",
+					"extensionCryoFreeze",
+					"freezerBurn",
+					"liquidNitrogen",
+					"thermalShock",
+				],
+			},
+		},
 	},
 	napalmBurst: {
 		id: "napalm-burst",
@@ -160,6 +217,23 @@ const ammoModRegistry = {
 			"incendiary",
 			"contactBurn",
 		],
+		variants: {
+			blackOps7: {
+				description:
+					"Bullets deal fire damage. Each bullet has a chance to ignite Normal and Special enemies, dealing damage over time.",
+				image: "/ammo-mods/napalm-burst.webp",
+				augments: [
+					"bigGameNapalmBurst",
+					"thermite",
+					"firebomb",
+					"petroleum",
+					"extensionNapalmBurst",
+					"incendiary",
+					"contactBurn",
+					"backdraft",
+				],
+			},
+		},
 	},
 	shadowRift: {
 		id: "shadow-rift",
