@@ -88,9 +88,10 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 }
 
 const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: GameKey }) => {
-	const ammoModAugments = ammoMod.augments
-		?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
-		?.filter(augment => augment !== null)
+	const ammoModAugments =
+		ammoMod.augments
+			?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+			?.filter(augment => augment !== null) || []
 
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
@@ -114,7 +115,7 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 						{ammoMod.description}
 					</p>
 				</div>
-				{ammoModAugments ? (
+				{ammoModAugments.length > 0 ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">

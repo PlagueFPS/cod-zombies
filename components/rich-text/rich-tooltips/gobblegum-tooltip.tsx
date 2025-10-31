@@ -1,9 +1,9 @@
 "use client"
+import type { GameKey } from "@/data/games"
 import { RarityBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import type { GameKey } from "@/data/games"
 import { type Gobblegum, type GobblegumKey, getGobblegumByKey } from "@/data/gobblegum"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -65,7 +65,7 @@ export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumToolti
 				<HoverCardContent
 					side="top"
 					className={cn(
-						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200 `,
+						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
 						{
 							"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
 								gobblegum.type === "Time-Based",
@@ -140,7 +140,7 @@ export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumToolti
 			<PopoverContent
 				side="top"
 				className={cn(
-					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200 `,
+					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
 					{
 						"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
 							gobblegum.type === "Time-Based",

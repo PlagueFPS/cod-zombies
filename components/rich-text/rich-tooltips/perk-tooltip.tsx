@@ -79,9 +79,10 @@ export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
 }
 
 const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
-	const perkAugments = perk.augments
-		?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
-		?.filter(augment => augment !== null)
+	const perkAugments =
+		perk.augments
+			?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+			?.filter(augment => augment !== null) || []
 
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
@@ -116,7 +117,7 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
 							</p>
 						</div>
 					</blockquote>
-				) : perkAugments ? (
+				) : perkAugments.length > 0 ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">

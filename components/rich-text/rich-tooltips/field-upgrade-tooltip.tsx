@@ -89,9 +89,10 @@ const FieldUpgradeTooltipContent = ({
 	fieldUpgrade: FieldUpgrade
 	game: GameKey | undefined
 }) => {
-	const fieldUpgradeAugments = fieldUpgrade.augments
-		?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
-		?.filter(augment => augment !== null)
+	const fieldUpgradeAugments =
+		fieldUpgrade.augments
+			?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+			?.filter(augment => augment !== null) || []
 
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
@@ -115,7 +116,7 @@ const FieldUpgradeTooltipContent = ({
 						{fieldUpgrade.description}
 					</p>
 				</div>
-				{fieldUpgradeAugments ? (
+				{fieldUpgradeAugments.length > 0 ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
