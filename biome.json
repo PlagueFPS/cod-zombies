@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.3.1/schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
@@ -46,7 +46,6 @@
 			},
 			"nursery": {
 				"recommended": true,
-				"noUnassignedVariables": "on",
 				"useSortedClasses": {
 					"level": "on",
 					"fix": "safe",
@@ -65,7 +64,8 @@
 			"suspicious": {
 				"recommended": true,
 				"useAwait": "on",
-				"useErrorMessage": "on"
+				"useErrorMessage": "on",
+				"noUnassignedVariables": "on"
 			}
 		}
 	},
