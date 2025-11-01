@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test"
+import { describe, expect, test } from "vitest"
 import {
 	capitalize,
 	getYouTubeVideoId,
@@ -74,10 +74,10 @@ describe("getYoutubeVideoId", () => {
 
 describe("sortReleaseDateDesc", () => {
 	test("should return a positive number if first date is older than second", () => {
-		expect(sortReleaseDateDesc("2020-01-01", "2020-01-02")).toBePositive()
+		expect(sortReleaseDateDesc("2020-01-01", "2020-01-02")).toBeGreaterThan(0)
 	})
 	test("should return a negative number if first date is newer than second", () => {
-		expect(sortReleaseDateDesc("2020-01-02", "2020-01-01")).toBeNegative()
+		expect(sortReleaseDateDesc("2020-01-02", "2020-01-01")).toBeLessThan(0)
 	})
 	test("should return 0 if dates are equal", () => {
 		expect(sortReleaseDateDesc("2020-01-01", "2020-01-01")).toBe(0)

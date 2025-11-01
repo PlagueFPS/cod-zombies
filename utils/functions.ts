@@ -189,11 +189,12 @@ export const verifyToken = (token: string) =>
 
 export const stripMarkdown = (text: string) =>
 	text
+		.trim()
 		.replace(/^import\s+.*?from\s+['"][^'"]+['"];?\s*$/gm, "") // remove import statements
+		.replace(/^#{1,6}\s+(.*?)(\s*#*\s*)?$/gm, "$1") // remove markdown headings (e.g., # Heading -> Heading)
 		.replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
 		.replace(/\*([^*]+)\*/g, "$1") // italic *text* -> text
 		.replace(/_([^_]+)_/g, "$1") // underline _text_ -> text
 		.replace(/`([^`]+)`/g, "$1") // code `text` -> text
 		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1") // link [text](https://example.com) -> text
 		.replace(/<[^>]+>/g, "") // remove html tags
-		.trim()
