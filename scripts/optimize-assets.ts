@@ -84,20 +84,3 @@ Effect.gen(function* () {
 	Effect.provide(Layer.merge(Path.layer, BunFileSystem.layer)),
 	BunRuntime.runMain,
 )
-
-Effect.gen(function* () {
-	const fs = yield* FileSystem.FileSystem
-	const image = yield* fs.readFile("./public/maps/ashes-of-the-damned.webp").pipe(
-		Effect.flatMap(buffer =>
-			Effect.gen(function* () {
-				return yield* Effect.tryPromise({
-					try: () => sharp(buffer).resize(640).toBuffer(),
-					catch: error =>
-						new Error(`Failed to read image metadata: ashes-of-the-damned.webp`, { cause: error }),
-				})
-			}),
-		),
-	)
-
-	yield* fs.writeFile("./public/previews/ashes-of-the-damned-preview.webp", image)
-}).pipe(Effect.withLogSpan("create_preview"), Effect.provide(BunFileSystem.layer))
