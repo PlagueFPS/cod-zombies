@@ -1,8 +1,9 @@
 import type { DurationInput } from "effect/Duration"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
+import { FileSystem, Path } from "@effect/platform"
 import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
-import lastModifiedData from "@/data/last-modified.json"
+import { files } from "@/data/last-modified.json"
 import { env } from "@/env"
 import {
 	AuthorizationError,
@@ -11,7 +12,6 @@ import {
 	TokenVerificationError,
 } from "@/types/errors"
 import { slugify } from "./functions.client"
-import { FileSystem, Path } from "@effect/platform"
 
 /**
  * Gets the server URL.
@@ -35,7 +35,7 @@ export const getServerUrl = () => {
  * @returns The last updated date of the file.
  */
 export const getLastUpdated = (filePath: string) => {
-	const { lastModified, lastModifiedFormatted } = lastModifiedData.files[filePath as keyof typeof lastModifiedData.files]
+	const { lastModified, lastModifiedFormatted } = files[filePath as keyof typeof files]
 	return { lastModified, lastModifiedFormatted }
 }
 
@@ -187,7 +187,7 @@ export const verifyToken = (token: string) =>
 		return value
 	}).pipe(Effect.withLogSpan("verify_token"))
 
-const stripMarkdown = (text: string) =>
+export const stripMarkdown = (text: string) =>
 	text
 		.replace(/^import\s+.*?from\s+['"][^'"]+['"];?\s*$/gm, "") // remove import statements
 		.replace(/\*\*([^*]+)\*\*/g, "$1") // bold **text** -> text
