@@ -22,7 +22,7 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 	const alt = `${title} map image`
 
 	const renderSpecificBadge = () => {
-		if (!Predicate.hasProperty(quest, "title")) {
+		if (!Predicate.hasProperty(quest, "title") && quest.difficulty) {
 			return <DifficultyBadge difficulty={quest.difficulty} />
 		}
 

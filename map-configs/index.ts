@@ -19,6 +19,7 @@ export interface MapConfig {
 }
 
 export const mapRegistry = {
+	"ashes-of-the-damned": import("./ashes-of-the-damned").then(module => module.default),
 	reckoning: import("./reckoning").then(module => module.default),
 	"shattered-veil": import("./shattered-veil").then(module => module.default),
 	"the-tomb": import("./the-tomb").then(module => module.default),

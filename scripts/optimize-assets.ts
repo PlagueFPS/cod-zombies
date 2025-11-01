@@ -9,7 +9,7 @@ const NEW_ASSETS_DIR = "./newassets"
 // Change this to the target path where the optimized images should end up
 const TARGET_DIR = "./public/elixirs"
 
-const program = Effect.gen(function* () {
+Effect.gen(function* () {
 	const startTime = performance.now()
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
@@ -82,6 +82,22 @@ const program = Effect.gen(function* () {
 }).pipe(
 	Effect.withLogSpan("optimize_assets"),
 	Effect.provide(Layer.merge(Path.layer, BunFileSystem.layer)),
+	BunRuntime.runMain,
 )
 
-BunRuntime.runMain(program)
+Effect.gen(function* () {
+	const fs = yield* FileSystem.FileSystem
+	const image = yield* fs.readFile("./public/maps/ashes-of-the-damned.webp").pipe(
+		Effect.flatMap(buffer =>
+			Effect.gen(function* () {
+				return yield* Effect.tryPromise({
+					try: () => sharp(buffer).resize(640).toBuffer(),
+					catch: error =>
+						new Error(`Failed to read image metadata: ashes-of-the-damned.webp`, { cause: error }),
+				})
+			}),
+		),
+	)
+
+	yield* fs.writeFile("./public/previews/ashes-of-the-damned-preview.webp", image)
+}).pipe(Effect.withLogSpan("create_preview"), Effect.provide(BunFileSystem.layer))
