@@ -74,6 +74,18 @@ const fieldUpgradeRegistry = {
 					"extensionAetherShroud",
 				],
 			},
+			blackOps7: {
+				augments: [
+					"groupShroud",
+					"burstDash",
+					"voidSheath",
+					"afterimage",
+					"instantReload",
+					"extraCharge",
+					"extensionAetherShroud",
+					"impulse",
+				],
+			},
 		},
 	},
 	frenziedGuard: {
@@ -91,6 +103,18 @@ const fieldUpgradeRegistry = {
 					"repairBoost",
 					"extensionFrenziedGuard",
 					"rally",
+				],
+			},
+			blackOps7: {
+				augments: [
+					"phalanx",
+					"retribution",
+					"frenzyFire",
+					"fistsOfFrenzy",
+					"repairBoost",
+					"extensionFrenziedGuard",
+					"rally",
+					"dualLayer",
 				],
 			},
 		},
@@ -132,6 +156,18 @@ const fieldUpgradeRegistry = {
 		variants: {
 			blackOps6: {
 				augments: ["scatter", "turret", "carousel", "frequencyBoost", "extraCharge", "siren"],
+			},
+			blackOps7: {
+				augments: [
+					"scatter",
+					"turret",
+					"carousel",
+					"smartMine",
+					"frequencyBoost",
+					"extraCharge",
+					"siren",
+					"recycle",
+				],
 			},
 		},
 	},
