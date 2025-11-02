@@ -75,7 +75,6 @@
 		"@types/node": "^24.9.2",
 		"@types/react": "19.2.2",
 		"@types/react-dom": "19.2.2",
-		"jsdom": "^27.1.0",
 		"postcss": "^8.5.6",
 		"react-email": "4.3.1",
 		"sharp": "^0.34.4",
