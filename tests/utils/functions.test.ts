@@ -1,7 +1,7 @@
 import { FileSystem, Path } from "@effect/platform"
 import { expect, it } from "@effect/vitest"
 import { Effect, Exit, Layer, Redacted } from "effect"
-import { beforeAll, beforeEach, describe, test, vi } from "vitest"
+import { afterEach, beforeAll, beforeEach, describe, test, vi } from "vitest"
 
 // We'll import the functions dynamically in each test
 
@@ -26,8 +26,18 @@ beforeAll(() => {
 })
 
 describe("getServerUrl", () => {
+	let originalEnv: NodeJS.ProcessEnv
+
 	beforeEach(() => {
+		// Store original process.env
+		originalEnv = { ...process.env }
+		// Clear the module cache to ensure fresh imports
 		vi.resetModules()
+	})
+
+	afterEach(() => {
+		// Restore original process.env
+		process.env = { ...originalEnv }
 	})
 
 	const testCases = [
@@ -62,6 +72,12 @@ describe("getServerUrl", () => {
 
 	for (const { env, expected, desc } of testCases) {
 		test(`should return correct URL for ${desc}`, async () => {
+			// Set environment variables directly
+			process.env.VERCEL_ENV = env.VERCEL_ENV
+			process.env.VERCEL_URL = env.VERCEL_URL
+			process.env.VERCEL_PROJECT_PRODUCTION_URL = env.VERCEL_PROJECT_PRODUCTION_URL
+
+			// Mock the env module to return the expected values
 			vi.doMock("@/env", () => ({
 				env: {
 					VERCEL_ENV: Redacted.make(env.VERCEL_ENV),
@@ -79,10 +95,34 @@ describe("getServerUrl", () => {
 
 describe("getLastUpdated", () => {
 	let getLastUpdated: typeof import("@/utils/functions").getLastUpdated
+	let originalFiles: Record<string, unknown>
 
 	beforeEach(async () => {
+		// Store the original files object
+		const lastModifiedModule = await import("@/data/last-modified.json")
+		originalFiles = { ...lastModifiedModule.files }
+
+		// Mock the last-modified.json module
+		vi.doMock("@/data/last-modified.json", () => ({
+			files: {
+				"test/file.mdx": {
+					lastModified: "2025-10-31T12:00:00.000Z",
+					lastModifiedFormatted: "October 31, 2025",
+				},
+			},
+		}))
+
+		// Import the module after setting up the mock
 		const functions = await import("@/utils/functions")
 		getLastUpdated = functions.getLastUpdated
+	})
+
+	afterEach(() => {
+		// Restore the original files object
+		vi.doMock("@/data/last-modified.json", () => ({
+			files: originalFiles,
+		}))
+		vi.resetModules()
 	})
 
 	test("should return last modified data for existing file", () => {
