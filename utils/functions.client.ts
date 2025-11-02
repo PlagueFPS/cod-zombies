@@ -12,7 +12,7 @@ import type { ZombieType } from "@/data/zombies"
 export const capitalize = (text: string) => {
 	return text
 		.replace(/[-_]/g, " ")
-		.replace("and", "&")
+		.replace(/\band\b/g, "&")
 		.split(" ")
 		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ")
