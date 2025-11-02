@@ -4,14 +4,15 @@ import type { ZombieType } from "@/data/zombies"
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
  * @param text - The input string to be capitalized.
- * @returns The capitalized string.
  * @example
  * capitalize("hello-world") // "Hello World"
  * capitalize("hello_world") // "Hello World"
+ * capitalize("tom-and-jerry") // "Tom & Jerry"
  */
 export const capitalize = (text: string) => {
 	return text
 		.replace(/[-_]/g, " ")
+		.replace(/\band\b/g, "&")
 		.split(" ")
 		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ")
@@ -20,9 +21,9 @@ export const capitalize = (text: string) => {
 /**
  * Converts a string to a URL-friendly slug, replacing spaces, slashes, and commas with hyphens, and '&' with 'and'.
  * @param text - The input string to be slugified.
- * @returns The slugified string.
  * @example
  * slugify("Hello World") // "hello-world"
+ * slugify("Tom & Jerry") // "tom-and-jerry"
  */
 export const slugify = (text: string) => {
 	return text
@@ -75,7 +76,7 @@ export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty)
  * Sorts release dates in descending order.
  * @param a - The first release date.
  * @param b - The second release date.
- * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
+ * @returns A positive number if `a` is older than `b`, a negative number for the inverse, or 0 if they are equal
  */
 export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
 	const dateA = new Date(a)

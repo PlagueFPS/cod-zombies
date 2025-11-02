@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   },
   // Without this, builds will fail with an OOM (out of memory) failure due to excessive memory usage.
   outputFileTracingExcludes: {
-    "/*": ["public/**", "scripts/**"],
+    "/*": ["public/**", "scripts/**", "tests/**"],
   },
   reactCompiler: true,
   typedRoutes: true,
