@@ -8,16 +8,10 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: "node",
-		// setupFiles: "./tests/setup.ts",
-		alias: [
-			{ find: "@", replacement: path.resolve(__dirname, ".") },
-			{ find: "@/*", replacement: path.resolve(__dirname, "./*") },
-		],
 	},
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "."),
-			"@/*": path.resolve(__dirname, "./*"),
 		},
 	},
 })
