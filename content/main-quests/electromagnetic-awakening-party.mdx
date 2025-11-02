@@ -5,9 +5,10 @@ import RichImage from '@/components/rich-text/rich-image/rich-image'
 import { RichTable, RichBodyRow } from '@/components/rich-text/rich-table/rich-table'
 import { TableCell } from '@/components/ui/table'
 import AmmoModTooltip from '@/components/rich-text/rich-tooltips/ammo-mod-tooltip'
+import ElixirTooltip from '@/components/rich-text/rich-tooltips/elixir-tooltip'
 
 ## Electromagnetic Awakening Party
-The main quest for **Alpha Omega** is **Electromagnetic Awakening Party**. This quest has our **Ultimis** and **Primis** crew join forces to fulfill **Primis Nikolai's Plan** to resolve the paradox 
+The main quest for **Alpha Omega** is **Electromagnetic Awakening Party**. This quest has our **Ultimis** and **Primis** crew join forces to fulfill **Primis Nikolai's Plan** to resolve the paradox
 and close the loop after reading the **Kronorium**.
 
 > You must be playing on Normal difficulty or higher to do this main quest.
@@ -20,8 +21,8 @@ This quest can be done with any number of players. You'll need to obtain the fol
 
 ## Recommended Class Setups
 
-<RichTable 
-  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]} 
+<RichTable
+  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]}
   bodyRows={[
     <RichBodyRow alternate>
       <TableCell>
@@ -57,76 +58,76 @@ This quest can be done with any number of players. You'll need to obtain the fol
         Wraith Fire
       </TableCell>
     </RichBodyRow>,
-  ]} 
+  ]}
 />
 
-> <PerkTooltip perkKey="wintersWail" /> should be put into the **Modifier** slot. If you are a less confident zombies player, we recommend running the second class setup for 
+> <PerkTooltip perkKey="wintersWail" /> should be put into the **Modifier** slot. If you are a less confident zombies player, we recommend running the second class setup for
 <PerkTooltip perkKey="victoriousTortoise" /> as an easy way to defend yourself by simply pulling out your shield.
 
 ## Recommended Elixirs
 
-<RichTable 
- headerCells={["Classic Elixirs", "Mega Elixirs"]} 
+<RichTable
+ headerCells={["Classic Elixirs", "Mega Elixirs"]}
   bodyRows={[
     <RichBodyRow alternate>
       <TableCell>
-        Anywhere But Here!
+        <ElixirTooltip elixirKey='anywhereButHere' />
       </TableCell>
       <TableCell>
-        Undead Man Walking
+        <ElixirTooltip elixirKey='undeadManWalking' />
       </TableCell>
     </RichBodyRow>,
     <RichBodyRow>
       <TableCell>
-        Equip Mint
+        <ElixirTooltip elixirKey='equipMint' />
       </TableCell>
       <TableCell>
-        Ctrl-Z
+        <ElixirTooltip elixirKey='ctrlZ' />
       </TableCell>
     </RichBodyRow>,
     <RichBodyRow alternate>
       <TableCell>
-        Temporal Gift
+        <ElixirTooltip elixirKey='temporalGift' />
       </TableCell>
       <TableCell>
-        Shopping Free
+        <ElixirTooltip elixirKey='shoppingFree' />
       </TableCell>
     </RichBodyRow>,
     <RichBodyRow>
       <TableCell>
-        Arsenal Accelerator
+        <ElixirTooltip elixirKey='arsenalAccelerator' />
       </TableCell>
       <TableCell>
-        Wall-to-Wall Clearance
+        <ElixirTooltip elixirKey='wallToWallClearance' />
       </TableCell>
     </RichBodyRow>,
-  ]} 
-/> 
+  ]}
+/>
 
 ## Step 1: Contain the Gas Leak
-Turn on the power in the **Power House** and head to the **Generators** area to activate the generator and initiate a lockdown. After the lockdown, four of the six houses around the map will 
+Turn on the power in the **Power House** and head to the **Generators** area to activate the generator and initiate a lockdown. After the lockdown, four of the six houses around the map will
 be emitting **Nova-6 Gas**, and you must repair the **Ventilation Units** in those houses by holding the interact button until the gauge is back to green.
 
 <RichImage image='/content/alpha-omega/alpha-omega-ventilation-unit.webp' caption='Ventilation Unit' />
 
-> When interacting with a **Ventilation Unit**, mutiple zombies and <ZombieTooltip zombieKey="joltingJack" /> will spawn. Try to farm as many points as possible off of these zombies as you will 
+> When interacting with a **Ventilation Unit**, multiple zombies and <ZombieTooltip zombieKey="joltingJack" /> will spawn. Try to farm as many points as possible off of these zombies as you will
 need to obtain **6750** points to purchase **Galvaknuckles** and the door leading to them. If you have **Shopping Free** or **Wall-to-Wall Clearance** this won't be an issue.
 
-Once all four **Ventilation Units** are repaired, the gas leak will have been contained and **Pack-a-Punch** will now be available in the Beds area of the **Bunker**. You will then need to 
+Once all four **Ventilation Units** are repaired, the gas leak will have been contained and **Pack-a-Punch** will now be available in the Beds area of the **Bunker**. You will then need to
 flip a round to proceed to the next step.
 
 ## Step 2: Test the Emergency Broadcast System
 > Before doing this step, it is recommended to turn on **Subtitles** in your settings as you will need remember letters and numbers that will be read out loud to you.
 
-Head to the **Operations** room, and interact with the terminal known as **Rushmore**. You must purchase the **Galvaknuckles** and head to the **Bunker** where there will be three televisions one in the 
+Head to the **Operations** room, and interact with the terminal known as **Rushmore**. You must purchase the **Galvaknuckles** and head to the **Bunker** where there will be three televisions one in the
 **Beds**, **Lounge**, and **Diner** and you must find the one that has a static screen and melee a zombie using the **Galvaknuckles** in front of that TV to activate it.
 
 <RichImage image='/content/alpha-omega/alpha-omega-activated-tv.webp' caption='Activated TV' />
 
-> If you don't have enough points to purchase the **Galvaknuckles**, you can enter the code **2265** into **Rushmore** for a free **1000** points for everyone in the game. You can also use your 
+> If you don't have enough points to purchase the **Galvaknuckles**, you can enter the code **2265** into **Rushmore** for a free **1000** points for everyone in the game. You can also use your
 **Shopping Free** or **Wall-to-Wall Clearance** to purchase them.
 
-After activating the TV it will read out five codes, each code containing a letter and four numbers, the letter corresponds to one of the houses and the four numbers are a timestamp that you need 
+After activating the TV it will read out five codes, each code containing a letter and four numbers, the letter corresponds to one of the houses and the four numbers are a timestamp that you need
 to set the clock in that letter's house to. Here is a list of the letters for each of the six houses:
 
 - A = Yellow House
@@ -136,38 +137,38 @@ to set the clock in that letter's house to. Here is a list of the letters for ea
 - E = Operations
 - F = APD Interrogation
 
-Luckily, you only need to remember the first code as there are only six possible sets of times, shoutout to [GregFPS](https://x.com/GregFPS/status/1151451536792412162) for figuring this out. 
+Luckily, you only need to remember the first code as there are only six possible sets of times, shoutout to [GregFPS](https://x.com/GregFPS/status/1151451536792412162) for figuring this out.
 Take your first code and use the image below to find which set starts with your code and now you have all five codes without having to listen and remember them from the TV.
 
 <RichImage image='/content/alpha-omega/alpha-omega-clock-sets.webp' caption='Clock Sets' />
 <RichImage image='/content/alpha-omega/alpha-omega-clock.webp' caption='Clock' />
 
-> You must input the codes in the order they are listed in the set. Interact with a clock to turn the minute hand in **15-minute** intervals, and melee the clock to turn the hour hand by one. 
+> You must input the codes in the order they are listed in the set. Interact with a clock to turn the minute hand in **15-minute** intervals, and melee the clock to turn the hour hand by one.
 These clocks are very easy to spot due to their design/shape.
 
-Once all five codes have been entered, head to the **Prisoner Holding** and **Operations** houses to claim your free Pack-a-Punched weapons as a reward for entering the codes, the 
+Once all five codes have been entered, head to the **Prisoner Holding** and **Operations** houses to claim your free Pack-a-Punched weapons as a reward for entering the codes, the
 **Operations** one being a **Porter's MKII Ray Gun**.
 
 <RichImage image='/content/alpha-omega/alpha-omega-free-raygun.webp' caption="Free Porter's MKII Ray Gun" />
 
 > In co-op, there will be a **Pack-a-Punched** weapon per player in the game in the **Prisoner Holding** room, but only one person will be able to claim the **Porter's MKII Ray Gun** from **Operations**.
 
-Additionally, there is one house out of the six you didn't get a code for. Head to that house and interact with the clock; the clock will spin around and rest on a time that you must enter into **Rushmore**. 
+Additionally, there is one house out of the six you didn't get a code for. Head to that house and interact with the clock; the clock will spin around and rest on a time that you must enter into **Rushmore**.
 If entered correctly, Rushmore will say he still does not trust you, indicating that you have completed this step.
 
 > Keep in mind that if you are given a timestamp like 7:45 the way you input that into **Rushmore** is **0745**.
 
 ## Step 3: Pursue All Avenues of Science and Invention
-Interact with **Rushmore** again, and you must find a red <ZombieTooltip zombieKey="nova6Crawler" /> located somewhere in the **Bunker**. Without damaging this crawler, you must lead it back to the 
+Interact with **Rushmore** again, and you must find a red <ZombieTooltip zombieKey="nova6Crawler" /> located somewhere in the **Bunker**. Without damaging this crawler, you must lead it back to the
 **Transfusion Facility**, where it will climb over a barrier and head up the stairs to be analyzed by **Rushmore**, completing this step.
 
 <RichImage image='/content/alpha-omega/alpha-omega-red-nova-crawler.webp' caption='Red Nova Crawler' />
 
-> If you kill the crawler you will need to flip round and try again. There is a chance the crawler can bug out and not go upstairs after climbing over the barrier, if so, you will need to kill 
+> If you kill the crawler you will need to flip round and try again. There is a chance the crawler can bug out and not go upstairs after climbing over the barrier, if so, you will need to kill
 the crawler and try again on the next round.
 
 ## Step 4: Preserve the Integrity of our Mission
-Interact with **Rushmore** again and he will tell you about another intruder who just so happens to be **Marlton Johnson** from the **Victus** crew. You need to scare him into giving up the canister of 
+Interact with **Rushmore** again and he will tell you about another intruder who just so happens to be **Marlton Johnson** from the **Victus** crew. You need to scare him into giving up the canister of
 **Element 115** by activating **Sergeant A.D.A.M.**, to do this you will need to find four codes around the map, the first code will always be **7626** you can find the other three below:
 
 ### Sawyer
@@ -185,7 +186,7 @@ Interact with the key box in the **Solitary** room and use the key to open the d
 <RichImage image='/content/alpha-omega/alpha-omega-key-box.webp' caption='Key Box' />
 <RichImage image='/content/alpha-omega/alpha-omega-pernell-code.webp' caption='Pernell Code' />
 
-Once you have all four codes, enter them into **Rushmore** in this order: 
+Once you have all four codes, enter them into **Rushmore** in this order:
 
 1. 7626
 2. Sawyer Code
@@ -196,7 +197,7 @@ After doing that, head to the **Storage** area of the **Bunker** and activate th
 
 <RichImage image='/content/alpha-omega/alpha-omega-marlton-door.webp' caption='Marlton Door' />
 
-Melee the door to coax him into giving us the **Element 115** canister. Once you have the canister, head to the **Transfusion Facility** and place it on the rack with the other **Element 115** 
+Melee the door to coax him into giving us the **Element 115** canister. Once you have the canister, head to the **Transfusion Facility** and place it on the rack with the other **Element 115**
 canisters, completing this step.
 
 <RichImage image='/content/alpha-omega/alpha-omega-element-115-canisters.webp' caption='Element 115 Canisters' />
@@ -204,26 +205,27 @@ canisters, completing this step.
 ## Step 5: Prevail over the Impossible to Open New Worlds
 > Before doing this step, it is recommended to place a [Telepad](#building-the-telepad) at the location near the brew perk machine and in the power house to make this step much easier.
 
-Interact with **Rushmore** again and head to the **Power House**, where there is a server that you must bait a <ZombieTooltip zombieKey="joltingJack" /> into shooting to open the server panel, 
+Interact with **Rushmore** again and head to the **Power House**, where there is a server that you must bait a <ZombieTooltip zombieKey="joltingJack" /> into shooting to open the server panel,
 allowing you to grab it.
 
 <RichImage image='/content/alpha-omega/alpha-omega-power-house-server.webp' caption='Power House Server' />
 
-When you grab the server, you have **10 seconds** to return it to **Operations** before it overheats and becomes useless, forcing you to get another <ZombieTooltip zombieKey="joltingJack" /> to try again. 
+When you grab the server, you have **10 seconds** to return it to **Operations** before it overheats and becomes useless, forcing you to get another <ZombieTooltip zombieKey="joltingJack" /> to try again.
 Completing this is simple if you have the **Telepads** setup, as once you pick up the server you can immediately enter the teleporter and run the short distance to the **Operations** server.
 
 <RichImage image='/content/alpha-omega/alpha-omega-operations-server.webp' caption='Operations Server' />
 
-> If you are still unable to get to the panel in time, you can pull out your **Path of Sorrows** to move much faster, and additionally dash if it is lvl 2 or higher. You can also wait to do this step 
+> If you are still unable to get to the panel in time, you can pull out your **Path of Sorrows** to move much faster, and additionally dash if it is lvl 2 or higher. You can also wait to do this step
 until you have <PerkTooltip perkKey="staminUp" />.
 
-Once you have the server installed, you must now get three authorization codes that are hidden behind three paintings around the map. These codes will always be behind the same paintings every game, but 
-to reveal the code you need to have a zombie affected by the <AmmoModTooltip ammoModKey='brainRot' /> ammo mod or the **Ctrl-Z Elixir** to know the painting down.
+Once you have the server installed, you must now get three authorization codes that are hidden behind three paintings around the map. These codes will always be behind the same paintings every game, but
+to reveal the code you need a zombie affected by the <AmmoModTooltip ammoModKey='brainRot' /> ammo mod or the
+<ElixirTooltip elixirKey='ctrlZ' /> elixir to knock the painting down.
 
->If you aren't running **Ctrl-Z**, You can enter the code **7225** into **Rushmore** to spawn a **Bonfire Sale** and use your **Temporal Gift** to extend it's duration and can Pack-a-Punch your weapon 
-until you get <AmmoModTooltip ammoModKey="brainRot" /> on it.
+> If you aren't running <ElixirTooltip elixirKey='ctrlZ' />, You can enter the code **7225** into **Rushmore** to spawn a **Bonfire Sale** and use your
+<ElixirTooltip elixirKey='temporalGift' /> to extend it's duration and can Pack-a-Punch your weapon until you get <AmmoModTooltip ammoModKey="brainRot" /> on it.
 
-Once you have <AmmoModTooltip ammoModKey="brainRot" /> or have activated **Ctrl-Z**, you can have the affected zombie knock down the paintings. The painting's locations are:
+Once you have <AmmoModTooltip ammoModKey="brainRot" /> or have activated <ElixirTooltip elixirKey='ctrlZ' />, you can have the affected zombie knock down the paintings. The painting's locations are:
 
 <RichImage image='/content/alpha-omega/alpha-omega-lounge-painting.webp' caption='Lounge - on the wall next to the exit stairs' />
 <RichImage image='/content/alpha-omega/alpha-omega-green-house-painting.webp' caption='Green House - at the top of the stairs' />
@@ -255,7 +257,7 @@ The final part can be found in the **Generators** area:
 Once you have all three parts you can build the **Telepad** in the **APD Control** or the **Green House Upstairs**, but it is recommended to build it in the **APD Control** room.
 
 ## Step 6: Protect the Values of the American Dream
-Interact with **Rushmore** and the power on the map will begin to shut down. You must restore the power by flipping six power boxes in the **Bunker** to their correct positions. 
+Interact with **Rushmore** and the power on the map will begin to shut down. You must restore the power by flipping six power boxes in the **Bunker** to their correct positions.
 The location of the six power boxes and the position they need to be in are:
 
 <RichImage image='/content/alpha-omega/alpha-omega-storage-power-box.webp' caption='Storage - Flipped Down' />
@@ -269,30 +271,30 @@ The location of the six power boxes and the position they need to be in are:
 
 If done correctly, all the lights on the power boxes should be green and you can head to the Power House to flip the main power switch once again, completing this step.
 ## Step 7: Prepare for Tomorrow and Humanity's Future
-Interact with **Rushmore**, there will now be three new <ZombieTooltip zombieKey="adamUnit" /> mannequins that can spawn in six different locations around the map with slightly detached heads, 
+Interact with **Rushmore**, there will now be three new <ZombieTooltip zombieKey="adamUnit" /> mannequins that can spawn in six different locations around the map with slightly detached heads,
 one of which will have a blue spark coming out of its head. You must interact with that mannequin to initiate a lockdown which you must survive for around **45 seconds to 1 minute**.
 
 <RichImage image='/content/alpha-omega/alpha-omega-sparking-adam-unit.webp' caption='Sparking A.D.A.M. Unit' />
 
-> Before doing this lockdown, it is recommended to fully **Pack-a-Punch** your weapons and have at least one player obtain the **Monkey Bombs** out of the box as they will be much more useful than 
+> Before doing this lockdown, it is recommended to fully **Pack-a-Punch** your weapons and have at least one player obtain the **Monkey Bombs** out of the box as they will be much more useful than
 **Wraith Fires** for this particular step.
 
-Once the lockdown is completed, it will drop a robot part that you must pick up. You must repeat this for the other two <ZombieTooltip zombieKey="adamUnit" /> and pick up the parts they drop after their lockdowns. 
+Once the lockdown is completed, it will drop a robot part that you must pick up. You must repeat this for the other two <ZombieTooltip zombieKey="adamUnit" /> and pick up the parts they drop after their lockdowns.
 The six locations of these <ZombieTooltip zombieKey="adamUnit" /> are:
 
 <RichImage image='/content/alpha-omega/alpha-omega-sparking-adam-unit.webp' caption='Yellow House - in the backyard' />
 <RichImage image='/content/alpha-omega/alpha-omega-adamn-behind-the-green-house.webp' caption='Green House - in the backyard' />
-<RichImage image='/content/alpha-omega/alpha-omega-prisoner-holding-adam-unit.webp' caption='Prisoner Holding - right od the Escargot wall buy' />
+<RichImage image='/content/alpha-omega/alpha-omega-prisoner-holding-adam-unit.webp' caption='Prisoner Holding - right of the Escargot wall buy' />
 <RichImage image='/content/alpha-omega/alpha-omega-transfusion-facility-adam-unit.webp' caption='Transfusion Facility - in the backyard near the Mystery Box location' />
 <RichImage image='/content/alpha-omega/alpha-omega-diner-adam-unit.webp' caption='Diner - near the bar' />
 <RichImage image='/content/alpha-omega/alpha-omega-lounge-adam-unit.webp' caption='Lounge - near T.E.D.D.' />
 
-> Failing a lockdown only resets that specific lockdown, and you can interact with the <ZombieTooltip zombieKey="adamUnit" /> again to retry the lockdown. If you are running low on ammo, there can be a 
+> Failing a lockdown only resets that specific lockdown, and you can interact with the <ZombieTooltip zombieKey="adamUnit" /> again to retry the lockdown. If you are running low on ammo, there can be a
 **Max Ammo** in the **Yellow House Backyard Shed**, so you can check it and open the shed to grab the power up if you need it.
 
-Once you have completed all three lockdowns and have obtained all three robot parts, head to the **APD Interrogation** room and interact with the broken <ZombieTooltip zombieKey="adamUnit" /> to repair it. 
-Afterward, if you don't have **Undead Man Walking**, head to the **Operations** room and input the code **6662** into **Rushmore**, but wait until zombies start spawning to enter the code, 
-giving you a free **Undead Man Walking** for five minutes.
+Once you have completed all three lockdowns and have obtained all three robot parts, head to the **APD Interrogation** room and interact with the broken <ZombieTooltip zombieKey="adamUnit" /> to repair it.
+Afterward, if you don't have <ElixirTooltip elixirKey='undeadManWalking' />, head to the **Operations** room and input the code **6662** into **Rushmore**, but wait until zombies start spawning to enter the code,
+giving you a free <ElixirTooltip elixirKey='undeadManWalking' /> for five minutes.
 
 <RichImage image='/content/alpha-omega/alpha-omega-repaired-adam-unit.webp' caption='Repaired A.D.A.M. Unit' />
 
@@ -302,8 +304,8 @@ You must now find and escort an **Elemental Orb** back to the **APD Interrogatio
 <RichImage image='/content/alpha-omega/alpha-omega-green-house-elemental-orb.webp' caption='Green House Downstairs' />
 <RichImage image='/content/alpha-omega/alpha-omega-beds-elemental-orb.webp' caption='Beds' />
 
-Make sure you stay relatively close to this orb when escorting it as getting too far from the orb will cause it to despawn forcing you to go another round to escort it again, without the 
-**Undead Man Walking** bonus unless you are running that mega elixir.
+Make sure you stay relatively close to this orb when escorting it as getting too far from the orb will cause it to despawn forcing you to go another round to escort it again, without the
+<ElixirTooltip elixirKey='undeadManWalking' /> bonus unless you are running that mega elixir.
 
 Once you have escorted that **Elemental Orb** back to the **APD Interrogation** room, it will go inside the <ZombieTooltip zombieKey="adamUnit" />, completing this step.
 
@@ -315,41 +317,41 @@ When ready, interact with **Rushmore** and head to the **APD Control** room in t
 <RichImage image='/content/alpha-omega/alpha-omega-apd-control-terminal.webp' caption='APD Control Terminal' />
 
 ### Phase 1
-You must kill <ZombieTooltip zombieKey="adamUnit" /> anywhere inside the room except the hallway to **Storage** to begin filling up a soul canister. Once that soul canister is filled, the 
+You must kill <ZombieTooltip zombieKey="adamUnit" /> anywhere inside the room except the hallway to **Storage** to begin filling up a soul canister. Once that soul canister is filled, the
 <ZombieTooltip zombieKey="avogadro" /> will appear out of the **A.P.D.** and a nuclear explosion will happen above ground, and you can enter the **Storage** room to begin **Phase 2**.
 
 <RichImage image='/content/alpha-omega/alpha-omega-boss-phase-1.webp' caption='Avogadro exiting A.P.D.' />
 
 ### Phase 2
-You must now fill four backup soul canisters located in the **Storage**, **Diner**, **Lounge**, and **Beds** area to contain the <ZombieTooltip zombieKey="avogadro" />. 
-Every time you activate a soul canister the <ZombieTooltip zombieKey="avogadro" /> will automatically teleport to you, and <ZombieTooltip zombieKey="adamUnit" /> will begin spawning for you 
+You must now fill four backup soul canisters located in the **Storage**, **Diner**, **Lounge**, and **Beds** area to contain the <ZombieTooltip zombieKey="avogadro" />.
+Every time you activate a soul canister the <ZombieTooltip zombieKey="avogadro" /> will automatically teleport to you, and <ZombieTooltip zombieKey="adamUnit" /> will begin spawning for you
 to kill to charge the canister, do not worry about ammo as a **Max Ammo** and **Carpenter** will spawn after each canister is filled.
 
 <RichImage image='/content/alpha-omega/alpha-omega-boss-phase-2.webp' caption='Phase 2' />
 
-> The <ZombieTooltip zombieKey="avogadro" /> has three main attacks, an AOE attack that stuns you for around **5 seconds** if you are near him, a normal ranged attack doing 100 damage, 
-and a big charged attack that does 150 damage. Make sure if you hear a charging sound that you pull out your shield to block the attack as it is pretty hard to dodge it. You can always stun the 
+> The <ZombieTooltip zombieKey="avogadro" /> has three main attacks, an AOE attack that stuns you for around **5 seconds** if you are near him, a normal ranged attack doing 100 damage,
+and a big charged attack that does 150 damage. Make sure if you hear a charging sound that you pull out your shield to block the attack as it is pretty hard to dodge it. You can always stun the
 <ZombieTooltip zombieKey="avogadro" /> by shooting him if he is not in the middle of an attack.
 
-This phase can be done easily if you take advantage of the **Monkey Bombs**, throw a monkey bomb, and kill all the <ZombieTooltip zombieKey="adamUnit" /> that are attracted to it and repeat that 
-until you have filled the canister, if you need more than two **Monkey Bombs**, activate your **Equip Mint** elixir to get some more.
+This phase can be done easily if you take advantage of the **Monkey Bombs**, throw a monkey bomb, and kill all the <ZombieTooltip zombieKey="adamUnit" /> that are attracted to it and repeat that
+until you have filled the canister, if you need more than two **Monkey Bombs**, activate your <ElixirTooltip elixirKey='equipMint' /> elixir to get some more.
 
-> You want to be killing <ZombieTooltip zombieKey="adamUnit" /> at all times, as every moment spent not killing them will deplete the charge on the soul canister and if that canister depletes to 
+> You want to be killing <ZombieTooltip zombieKey="adamUnit" /> at all times, as every moment spent not killing them will deplete the charge on the soul canister and if that canister depletes to
 empty, it will be disabled for around **20 seconds**, forcing you to move to another soul canister.
 
-Once you have filled up a canister, make sure to quickly move on to the next room as the <ZombieTooltip zombieKey="avogadro" /> will begin shocking the room with the canister that you have just 
+Once you have filled up a canister, make sure to quickly move on to the next room as the <ZombieTooltip zombieKey="avogadro" /> will begin shocking the room with the canister that you have just
 filled up. Once all four canisters have been filled up, you are now immediately onto **Phase 3**.
 
 ### Phase 3
-Head back to the **APD Control** room and wait for the <ZombieTooltip zombieKey="avogadro" /> to follow you into the room, you must damage the <ZombieTooltip zombieKey="avogadro" /> by pushing him back 
+Head back to the **APD Control** room and wait for the <ZombieTooltip zombieKey="avogadro" /> to follow you into the room, you must damage the <ZombieTooltip zombieKey="avogadro" /> by pushing him back
 until he is at the back of the **A.P.D.** for him to get sucked up into the **A.P.D.** and have the door closed on him.
 
 <RichImage image='/content/alpha-omega/alpha-omega-boss-phase-3.webp' caption='Avogardro being sucked into the A.P.D.' />
 
-> If you have the **Undead Man Walking** elixir you can activate it at this point to make this phase much easier allowing you to focus on shooting the <ZombieTooltip zombieKey="avogadro" /> back into 
+> If you have the <ElixirTooltip elixirKey='undeadManWalking' /> elixir you can activate it at this point to make this phase much easier allowing you to focus on shooting the <ZombieTooltip zombieKey="avogadro" /> back into
 the **A.P.D.**
 
-Once he is inside the **A.P.D.**, you can interact with the terminal in the **APD Control** room to send him to [TranZit](/black-ops-2/tranzit), then go back to the **A.P.D.** door, and it will open revealing the 
+Once he is inside the **A.P.D.**, you can interact with the terminal in the **APD Control** room to send him to [TranZit](/black-ops-2/tranzit), then go back to the **A.P.D.** door, and it will open revealing the
 **Elemental Shard**. Interact with it to pick it up, completing this main quest and triggering the ending cutscene.
 
 <RichImage image='/content/alpha-omega/alpha-omega-elemental-shard.webp' caption='Elemental Shard' />
