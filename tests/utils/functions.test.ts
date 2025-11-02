@@ -95,22 +95,12 @@ describe("getServerUrl", () => {
 
 describe("getLastUpdated", () => {
 	let getLastUpdated: typeof import("@/utils/functions").getLastUpdated
-	let originalFiles: Record<string, unknown>
+	let _originalFiles: Record<string, unknown>
 
 	beforeEach(async () => {
 		// Store the original files object
 		const lastModifiedModule = await import("@/data/last-modified.json")
-		originalFiles = { ...lastModifiedModule.files }
-
-		// Mock the last-modified.json module
-		vi.doMock("@/data/last-modified.json", () => ({
-			files: {
-				"test/file.mdx": {
-					lastModified: "2025-10-31T12:00:00.000Z",
-					lastModifiedFormatted: "October 31, 2025",
-				},
-			},
-		}))
+		_originalFiles = { ...lastModifiedModule.files }
 
 		// Import the module after setting up the mock
 		const functions = await import("@/utils/functions")
@@ -118,10 +108,6 @@ describe("getLastUpdated", () => {
 	})
 
 	afterEach(() => {
-		// Restore the original files object
-		vi.doMock("@/data/last-modified.json", () => ({
-			files: originalFiles,
-		}))
 		vi.resetModules()
 	})
 
