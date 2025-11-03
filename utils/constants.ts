@@ -20,7 +20,7 @@ export const GLOBAL_OG_PROPS: Partial<Metadata> = {
 		siteName: SITE_TITLE,
 		locale: "en_US",
 		type: "website",
-		emails: ["codzombiesguidesteam@gmail.com"],
+		emails: ["contact@codzombiesguides.com"],
 	},
 }
 export const ROUTES = [
