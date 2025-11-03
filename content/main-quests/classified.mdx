@@ -3,21 +3,22 @@ import PerkTooltip from '@/components/rich-text/rich-tooltips/perk-tooltip'
 import YoutubeEmbed from '@/components/rich-text/rich-embeds/youtube-embed'
 import { RichTable, RichBodyRow } from '@/components/rich-text/rich-table/rich-table'
 import { TableCell } from '@/components/ui/table'
+import ElixirTooltip from '@/components/rich-text/rich-tooltips/elixir-tooltip'
 
 ## Main Quest
-The main quest for **Classified** is to reach **Round 150**. Doing so will unlock a crucial cutscene in the lore of our **Primis** and **Ultimis** crew to prepare for the map next map in 
+The main quest for **Classified** is to reach **Round 150**. Doing so will unlock a crucial cutscene in the lore of our **Primis** and **Ultimis** crew to prepare for the map next map in
 the **Aether** story.
 
 > You must be playing on **Normal** difficulty or higher to do this main quest.
 
 ## Requirements
-This main quest can be done with any number of players, and the main requirement is to make it to survive until **Round 150** to receive the ending cutscene, the strategy we recommend 
+This main quest can be done with any number of players, and the main requirement is to make it to survive until **Round 150** to receive the ending cutscene, the strategy we recommend
 also requires the [Shield](#obtaining-the-shield).
 
 ## Recommended Class Setups
 
-<RichTable 
-  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]} 
+<RichTable
+  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]}
   bodyRows={[
     <RichBodyRow alternate>
       <TableCell>
@@ -53,50 +54,50 @@ also requires the [Shield](#obtaining-the-shield).
         Wraith Fire
       </TableCell>
     </RichBodyRow>,
-  ]} 
+  ]}
 />
 
 > <PerkTooltip perkKey="stoneColdStronghold" /> or <PerkTooltip perkKey="timeslip" /> should be put into the **Modifier** slot, depending on which setup you choose.
 
 ## Recommended Elixirs
 
-<RichTable 
- headerCells={["Classic Elixirs", "Mega Elixirs"]} 
+<RichTable
+ headerCells={["Classic Elixirs", "Mega Elixirs"]}
   bodyRows={[
     <RichBodyRow alternate>
       <TableCell>
-        Anywhere But Here!
+        <ElixirTooltip elixirKey='anywhereButHere' />
       </TableCell>
       <TableCell>
-        Licenced Contractor
+        <ElixirTooltip elixirKey='licensedContractor' />
       </TableCell>
     </RichBodyRow>,
     <RichBodyRow>
       <TableCell>
-        Equip Mint
+        <ElixirTooltip elixirKey='equipMint' />
       </TableCell>
       <TableCell>
-        Shields Up
+        <ElixirTooltip elixirKey='shieldsUp' />
       </TableCell>
     </RichBodyRow>,
     <RichBodyRow alternate>
       <TableCell>
-        Temporal Gift
+        <ElixirTooltip elixirKey='temporalGift' />
       </TableCell>
       <TableCell>
-        Dead of Nuclear Winter
+        <ElixirTooltip elixirKey='deadOfNuclearWinter' />
       </TableCell>
     </RichBodyRow>,
     <RichBodyRow>
       <TableCell>
-        Arsenal Accelerator
+        <ElixirTooltip elixirKey='arsenalAccelerator' />
       </TableCell>
       <TableCell>
-        Power Keg
+        <ElixirTooltip elixirKey='powerKeg' />
       </TableCell>
     </RichBodyRow>,
-  ]} 
-/> 
+  ]}
+/>
 
 > It is strongly recommened to also either equip the **Minor Reinforced Charm**, **Major Reinforced Charm**, or **Frugal Fetish** talismans. Although this isn't required.
 
@@ -124,16 +125,16 @@ The final shield part is located in the **Labs**:
 Once you have collected all three parts build the shield in the **Weapon Testing** room, not in the **Central Filing** room.
 
 ## Main Quest Strategy
-The strategy for getting to **Round 150** is simple, camp in the corner of the **Weapon Testing** room near the shield, with your shield out, and kill everything using your shield. 
-<PerkTooltip perkKey="victoriousTortoise" /> will keep you alive while you have your shield, and if you ever run out of ammo or your shield is close to breaking repair the shield 
+The strategy for getting to **Round 150** is simple, camp in the corner of the **Weapon Testing** room near the shield, with your shield out, and kill everything using your shield.
+<PerkTooltip perkKey="victoriousTortoise" /> will keep you alive while you have your shield, and if you ever run out of ammo or your shield is close to breaking repair the shield
 instead of letting it break to save points.
 
 > If your shield does happen to break, <PerkTooltip perkKey="victoriousTortoise" /> will knock all the zombies down giving you time to buy a new shield.
 
-You must also be throwing your **Wraith Fires** and placing your **Ragnarok DG-5s** whenever you have them available, to save ammo and collect points for repairing/buying your shield 
+You must also be throwing your **Wraith Fires** and placing your **Ragnarok DG-5s** whenever you have them available, to save ammo and collect points for repairing/buying your shield
 and to help weaken the zombies for you to kill with the shield. Repeat this process until you have reached **Round 150**.
 
-> If you get a **Double Points** or **Instakill** power-up, make sure to activate your **Temporal Gift** elixir to double the duration of the power-up for an easier time.
+> If you get a **Double Points** or **Instakill** power-up, make sure to activate your <ElixirTooltip elixirKey='temporalGift' /> elixir to double the duration of the power-up for an easier time.
 
 <RichImage image='/content/classified/classified-ending.webp' caption='Ending Cutscene' />
 

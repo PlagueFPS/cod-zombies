@@ -1,11 +1,12 @@
+import type { Augment } from "@/data/augments"
+import type { ElixirRarity } from "@/data/elixirs"
+import type { GobblegumRarity, GobblegumType } from "@/data/gobblegum"
+import type { MainQuest } from "@/data/main-quests"
+import type { ZombieAttack } from "@/data/zombie-attacks"
+import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import type { MainQuest } from "@/data/main-quests"
-import type { Zombie } from "@/data/zombies"
-import type { Augment } from "@/data/augments"
-import type { Gobblegum } from "@/data/gobblegum"
-import type { ZombieAttack } from "@/data/zombie-attacks"
 
 interface CustomBadgeProps {
 	className?: string
@@ -93,7 +94,7 @@ export const RarityBadge = ({
 	rarity,
 	type,
 	children,
-}: CustomBadgeProps & { rarity: Gobblegum["rarity"]; type: Gobblegum["type"] }) => {
+}: CustomBadgeProps & { rarity: GobblegumRarity; type: GobblegumType }) => {
 	const shouldUseType = () => {
 		return rarity.includes("Mega") || rarity === "Classic"
 	}
@@ -139,5 +140,25 @@ export const RangeBadge = ({
 		)}
 	>
 		Range: {range}
+	</Badge>
+)
+
+export const ElixirRarityBadge = ({
+	className,
+	rarity,
+}: CustomBadgeProps & { rarity: ElixirRarity }) => (
+	<Badge
+		className={cn(
+			{
+				"badge-new-gradient dark:dark-badge-new-gradient": rarity === "Classic",
+				"badge-equipment-gradient dark:dark-badge-equipment-gradient": rarity === "Common",
+				"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
+				"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Legendary",
+				"badge-primary-gradient dark:dark-badge-primary-gradient": rarity === "Epic",
+			},
+			className,
+		)}
+	>
+		{rarity}
 	</Badge>
 )

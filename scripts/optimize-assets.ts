@@ -1,13 +1,13 @@
+import { parseArgs } from "node:util"
 import { FileSystem, Path } from "@effect/platform"
 import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
 import { Duration, Effect, Layer, Ref } from "effect"
 import sharp from "sharp"
-import { parseArgs } from "util"
 
 // Change this to the path where the new images you want to add are located
 const NEW_ASSETS_DIR = "./newassets"
 // Change this to the target path where the optimized images should end up
-const TARGET_DIR = "./public/layers/reckoning"
+const TARGET_DIR = "./public/elixirs"
 
 const program = Effect.gen(function* () {
 	const startTime = performance.now()
@@ -15,12 +15,14 @@ const program = Effect.gen(function* () {
 	const path = yield* Path.Path
 	const newAssets = yield* fs.readDirectory(NEW_ASSETS_DIR)
 	const numRef = yield* Ref.make(0)
-	const { values: { noResize }} = parseArgs({
+	const {
+		values: { noResize },
+	} = parseArgs({
 		args: Bun.argv,
 		options: {
 			noResize: {
 				type: "boolean",
-			}
+			},
 		},
 		strict: true,
 		allowPositionals: true,
@@ -41,7 +43,7 @@ const program = Effect.gen(function* () {
 					const image = sharp(imageBuffer)
 					const metadata = yield* Effect.tryPromise({
 						try: () => image.metadata(),
-						catch: error => new Error(`Failed to read image metadata: ${asset}`, { cause: error })
+						catch: error => new Error(`Failed to read image metadata: ${asset}`, { cause: error }),
 					})
 
 					yield* Effect.log(`Transforming image: ${asset}`)
@@ -60,7 +62,6 @@ const program = Effect.gen(function* () {
 					fileName = asset
 					yield* Effect.log(`Skipped transformation for ${fileName}`)
 				}
-
 
 				yield* Ref.update(numRef, n => n + 1)
 				const currentAsset = yield* Ref.get(numRef)
