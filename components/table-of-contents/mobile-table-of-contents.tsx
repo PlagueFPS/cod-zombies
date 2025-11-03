@@ -39,26 +39,26 @@ export default function MobileTableOfContents({
 						/>
 					</div>
 				</CollapsibleTrigger>
-				<CollapsibleContent className="flex flex-col items-center gap-4">
+				<CollapsibleContent className="flex flex-col justify-center gap-4">
 					<RemoveScroll>
-						<ScrollArea className="max-h-[85dvh] overflow-y-scroll border-t bg-background px-4 py-4">
-							<nav className="flex flex-col gap-4">
-									<ul className="flex max-h-full flex-col gap-3 font-medium text-foreground/90 text-sm">
-										{headings.map(heading => (
-											<li
-												key={`mobile-toc-${heading.id}`}
-												className={cn("w-fit transition-colors hover:text-primary", {
-													"pl-3 font-medium text-foreground/70": heading.type === "h3",
-													"pl-6 font-normal text-foreground/50": heading.type === "h4",
-													"text-primary": activeHeading === heading.id,
-												})}
-											>
-												<Link href={`#${heading.id}`} onNavigate={() => setOpen(false)}>
-													{heading.text}
-												</Link>
-											</li>
-										))}
-									</ul>
+						<ScrollArea className="max-h-[90dvh] overflow-y-scroll border-t bg-background px-4 py-4">
+							<nav className="flex flex-col gap-4 pb-12">
+								<ul className="flex max-h-full flex-col gap-3 font-medium text-foreground/90 text-sm">
+									{headings.map(heading => (
+										<li
+											key={`mobile-toc-${heading.id}`}
+											className={cn("w-fit transition-colors hover:text-primary", {
+												"pl-3 font-medium text-foreground/70": heading.type === "h3",
+												"pl-6 font-normal text-foreground/50": heading.type === "h4",
+												"text-primary": activeHeading === heading.id,
+											})}
+										>
+											<Link href={`#${heading.id}`} onNavigate={() => setOpen(false)}>
+												{heading.text}
+											</Link>
+										</li>
+									))}
+								</ul>
 							</nav>
 							<ScrollBar orientation="vertical" />
 						</ScrollArea>
