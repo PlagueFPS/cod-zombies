@@ -78,7 +78,7 @@ export const sendContactEmail = (props: EmailProps) =>
 		yield* sendEmail({
 			from: `${props.name} <contact@codzombiesguides.com>`,
 			replyTo: props.email,
-			to: "codzombiesguidesteam@gmail.com",
+			to: "contact@codzombiesguides.com",
 			subject: "Contact Form Submission",
 			text: props.message,
 		})

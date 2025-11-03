@@ -87,7 +87,7 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 
 							<Text className="mb-[32px] text-[#333] text-[16px] leading-[24px]">
 								If you have any questions about our Privacy Policy, please contact our team at
-								codzombiesguidesteam@gmail.com. We value your trust and are committed to protecting
+								contact@codzombiesguides.com. We value your trust and are committed to protecting
 								your privacy.
 							</Text>
 
