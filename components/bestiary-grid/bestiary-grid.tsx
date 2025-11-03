@@ -5,6 +5,7 @@ import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/functions.client"
 import BestiaryCard from "../bestiary-card/bestiary-card"
+import EmptyGrid from "../empty/empty-grid"
 import GridPagination from "../grid-pagination/grid-pagination"
 import GridPaginationLoader from "../loaders/grid-pagination-loader"
 
@@ -47,9 +48,7 @@ export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {
 						<BestiaryCard key={zombie.id} zombie={zombie} zombieIndex={index} />
 					))
 				) : (
-					<p className="col-span-4 text-center text-muted-foreground">
-						No zombies found with the selected filters.
-					</p>
+					<EmptyGrid className="col-span-4" type="Zombie" />
 				)}
 			</div>
 			<Suspense fallback={<GridPaginationLoader />}>

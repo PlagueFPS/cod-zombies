@@ -9,6 +9,7 @@ import QuestPreviewCard from "@/components/quest-preview-card/quest-preview-card
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/functions.client"
+import EmptyGrid from "../empty/empty-grid"
 
 interface IQuestGridClient {
 	quests: (Omit<MainQuest, "content"> | Omit<SideQuest, "content">)[]
@@ -24,7 +25,7 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 
 	if (difficultyParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
-			if (Predicate.hasProperty(quest, "difficulty") && Predicate.isString(quest.difficulty)) {
+			if (!Predicate.hasProperty(quest, "title") && quest.difficulty) {
 				return difficultyParams.includes(quest.difficulty.toLowerCase())
 			}
 			return false
@@ -55,9 +56,7 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 						<QuestPreviewCard key={quest.id} quest={quest} questIndex={index} />
 					))
 				) : (
-					<p className="col-span-4 text-center text-muted-foreground">
-						No quests found with the selected filters.
-					</p>
+					<EmptyGrid type="Quest" className="col-span-4" />
 				)}
 			</div>
 			<Suspense fallback={<GridPaginationLoader />}>
