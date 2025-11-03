@@ -1,5 +1,6 @@
 import { cva } from "class-variance-authority"
 import { Array as Arr } from "effect"
+import { Kbd, KbdGroup } from "@/components/ui/kbd"
 import { cn } from "@/lib/utils"
 
 interface ShortcutProps {
@@ -9,7 +10,7 @@ interface ShortcutProps {
 	size?: "sm" | "md" | "lg"
 }
 
-const shortvutVariants = cva(
+const shortcutVariants = cva(
 	"inline-flex items-center justify-center font-mono font-medium rounded border transition-colors",
 	{
 		variants: {
@@ -42,12 +43,15 @@ export default function Shortcut({
 	const shortcutArray = Arr.ensure(shortcuts)
 
 	return (
-		<span className="inline-flex items-center gap-1">
+		<KbdGroup>
 			{shortcutArray.map((shortcut, index) => (
-				<span key={`${shortcut}-${index + 1}`} className="inline-flex items-center gap-1">
-					<kbd className={cn(shortvutVariants({ variant, size }), className)}>{shortcut}</kbd>
-				</span>
+				<Kbd
+					key={`${shortcut}-${index + 1}`}
+					className={cn(shortcutVariants({ variant, size }), className)}
+				>
+					{shortcut}
+				</Kbd>
 			))}
-		</span>
+		</KbdGroup>
 	)
 }
