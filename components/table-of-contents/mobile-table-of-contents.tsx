@@ -7,7 +7,7 @@ import { RemoveScroll } from "react-remove-scroll"
 import { cn } from "@/lib/utils"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Progress } from "../ui/progress"
-import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import { ScrollArea } from "../ui/scroll-area"
 
 interface MobileTableOfContentsProps {
 	headings: Heading[]
@@ -60,7 +60,6 @@ export default function MobileTableOfContents({
 									))}
 								</ul>
 							</nav>
-							<ScrollBar orientation="vertical" />
 						</ScrollArea>
 					</RemoveScroll>
 				</CollapsibleContent>
