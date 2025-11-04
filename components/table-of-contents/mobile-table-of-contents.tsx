@@ -25,7 +25,7 @@ export default function MobileTableOfContents({
 	const [open, setOpen] = useState(false)
 
 	return (
-		<div className="sticky top-16 z-500 block w-full bg-background/90 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs xl:hidden">
+		<div className="sticky top-16 z-10 block w-full bg-background/90 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs xl:hidden">
 			<Collapsible open={open} onOpenChange={setOpen} className="group/collapsible">
 				<CollapsibleTrigger asChild>
 					<div className="relative flex w-full flex-col items-center p-3">

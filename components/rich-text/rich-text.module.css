@@ -1,13 +1,12 @@
 /* This style is hacky solution to prevent container overflow on screens smaller than 80ch,
     and allow for table horizontal scrolling as intended.
 */
-.body * { 
+.body * {
   max-width: 90vw;
 }
 
 .body h2 {
   position: relative;
-  z-index: 30;
 }
 
 .body h3,
@@ -15,7 +14,6 @@
 .body h5,
 .body h6 {
   position: relative;
-  z-index: 30;
 }
 .body p {
   margin: 1rem 0;
@@ -29,7 +27,6 @@
 .body p a {
   position: relative;
   display: inline-flex;
-  z-index: 30;
   font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 4px;

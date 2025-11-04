@@ -13,7 +13,7 @@ import { Separator } from "../ui/separator"
 
 export default function Header() {
 	return (
-		<header className="sticky top-0 z-500 w-full">
+		<header className="sticky top-0 z-10 w-full">
 			<div className="flex h-16 w-full max-w-screen items-center border-b bg-background/90 px-4 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs">
 				<CustomLink
 					href="/"

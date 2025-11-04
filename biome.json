@@ -7,15 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": [
-			"**/*.ts",
-			"**/*.tsx",
-			"**/*.js",
-			"**/*.jsx",
-			"!node_modules",
-			"!.next",
-			"!next.config.ts"
-		]
+		"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "!node_modules", "!.next"]
 	},
 	"formatter": {
 		"enabled": true,
