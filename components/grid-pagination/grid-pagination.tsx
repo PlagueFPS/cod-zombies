@@ -1,14 +1,8 @@
 "use client"
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-	Pagination,
-	PaginationContent,
-	PaginationItem,
-	PaginationNext,
-	PaginationPrevious,
-} from "@/components/ui/pagination"
+import { ButtonGroup } from "@/components/ui/button-group"
 import { useFilterParams } from "@/hooks/use-filter-params"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { MAP_LIMIT } from "@/utils/constants"
 
@@ -18,7 +12,6 @@ interface IGridPagination {
 
 export default function GridPagination({ data }: IGridPagination) {
 	const { page, updatePage } = useFilterParams()
-	const isMobile = useIsMobile(640)
 	const totalPages = Math.ceil(data.length / MAP_LIMIT)
 	const currentPage = page >= 1 ? (page > totalPages ? totalPages : page) : 1
 	const prevPage = currentPage - 1 < 1 ? 1 : currentPage - 1
@@ -28,44 +21,51 @@ export default function GridPagination({ data }: IGridPagination) {
 
 	const renderPaginationItems = () => {
 		const items: React.JSX.Element[] = []
-		const THRESHOLD = !isMobile ? 7 : 5
-		const ALLOWED_SIBLINGS = !isMobile ? 2 : 1
 
 		// Helper function to add page button
 		const addPageButton = (pageNum: number) => (
-			<PaginationItem key={`quest-pagination-item-${pageNum}`}>
-				<Button
-					size={"icon"}
-					variant={currentPage === pageNum ? "outline" : "ghost"}
-					aria-current={currentPage === pageNum ? "page" : undefined}
-					onClick={() => updatePage(pageNum)}
-				>
-					{pageNum}
-				</Button>
-			</PaginationItem>
+			<Button
+				size="sm"
+				variant="outline"
+				aria-current={currentPage === pageNum ? "page" : undefined}
+				aria-label={`Page ${pageNum}`}
+				onClick={() => updatePage(pageNum)}
+				className={cn("transition-colors", {
+					"text-primary": currentPage === pageNum,
+				})}
+			>
+				{pageNum}
+			</Button>
 		)
 
-		// Always add first page
-		items.push(addPageButton(1))
-
-		// If total pages is less than or equal to threshold, show all pages
-		if (totalPages <= THRESHOLD) {
-			for (let i = 2; i < totalPages; i++) {
+		// If total pages is less than or equal to 5, show all pages
+		if (totalPages <= 5) {
+			for (let i = 1; i <= totalPages; i++) {
 				items.push(addPageButton(i))
 			}
 		} else {
-			// Show pages with ellipsis
-			const leftSibling = Math.max(currentPage - ALLOWED_SIBLINGS, 2)
-			const rightSibling = Math.min(currentPage + ALLOWED_SIBLINGS, totalPages - 1)
+			// Always show first page
+			items.push(addPageButton(1))
 
-			// Add pages between left and right siblings
-			for (let i = leftSibling; i <= rightSibling; i++) {
-				items.push(addPageButton(i))
+			// Calculate middle pages based on current page
+			let middlePages: number[] = []
+			if (currentPage <= 3) {
+				// Near start - show 2,3,4
+				middlePages = [2, 3, 4]
+			} else if (currentPage >= totalPages - 2) {
+				// Near end - show last-3,last-2,last-1
+				middlePages = [totalPages - 3, totalPages - 2, totalPages - 1]
+			} else {
+				// Middle - show currentPage-1, currentPage, currentPage+1
+				middlePages = [currentPage - 1, currentPage, currentPage + 1]
 			}
-		}
 
-		// Always add last page if it's not the first page
-		if (totalPages > 1) {
+			// Add middle pages
+			middlePages.forEach(pageNum => {
+				items.push(addPageButton(pageNum))
+			})
+
+			// Always show last page
 			items.push(addPageButton(totalPages))
 		}
 
@@ -73,30 +73,32 @@ export default function GridPagination({ data }: IGridPagination) {
 	}
 
 	return (
-		<Pagination>
-			<PaginationContent>
-				<PaginationPrevious
-					href={`?page=${prevPage}`}
+		<ButtonGroup className="mx-auto">
+			<ButtonGroup>
+				<Button
+					variant="outline"
+					size="icon-sm"
+					aria-label="Previous"
+					disabled={previousDisabled}
 					aria-disabled={previousDisabled}
-					className={cn({ "pointer-events-none opacity-25": previousDisabled })}
-					tabIndex={previousDisabled ? -1 : 0}
-					onNavigate={e => {
-						e.preventDefault()
-						updatePage(prevPage)
-					}}
-				/>
-				{renderPaginationItems()}
-				<PaginationNext
-					href={`?page=${nextPage}`}
+					onClick={() => updatePage(prevPage)}
+				>
+					<ArrowLeftIcon />
+				</Button>
+			</ButtonGroup>
+			<ButtonGroup>{renderPaginationItems()}</ButtonGroup>
+			<ButtonGroup>
+				<Button
+					variant="outline"
+					size="icon-sm"
+					aria-label="Next"
+					disabled={nextDisabled}
 					aria-disabled={nextDisabled}
-					className={cn({ "pointer-events-none opacity-25": nextDisabled })}
-					tabIndex={nextDisabled ? -1 : 0}
-					onNavigate={e => {
-						e.preventDefault()
-						updatePage(nextPage)
-					}}
-				/>
-			</PaginationContent>
-		</Pagination>
+					onClick={() => updatePage(nextPage)}
+				>
+					<ArrowRightIcon />
+				</Button>
+			</ButtonGroup>
+		</ButtonGroup>
 	)
 }
