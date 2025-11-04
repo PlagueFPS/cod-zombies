@@ -21,6 +21,7 @@ import {
 	getMainQuests,
 	type MainQuest,
 } from "@/data/main-quests"
+import { FileSystemLayer } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
@@ -31,7 +32,6 @@ import {
 	getServerUrl,
 } from "@/utils/functions"
 import MapNotFound from "./not-found"
-import { FileSystemLayer } from "@/lib/layers"
 
 export const generateStaticParams = () => {
 	const mainQuests = getMainQuests()
@@ -98,7 +98,7 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 						<TableOfContents headings={headings} />
 						<article className="flex w-full flex-col items-center justify-center">
 							<div className="relative mt-16 w-full xl:mt-8">
-								<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
+								<div className="absolute top-4 right-0 left-0 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
 									<FeaturedImage
 										featuredImage={quest.map.image}
 										width={1280}
@@ -107,7 +107,7 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 										quality={100}
 									/>
 								</div>
-								<div className="relative z-20 mx-auto max-w-7xl">
+								<div className="relative mx-auto max-w-7xl">
 									<FeaturedImage
 										featuredImage={quest.map.image}
 										width={1280}
@@ -117,7 +117,7 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 										priority
 										className="overflow-hidden xl:rounded-lg"
 									/>
-									<div className="-top-10 absolute left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
+									<div className="-top-10 absolute left-0 flex w-full justify-center pl-4 xl:pl-0">
 										<Breadcrumbs
 											links={[
 												{
@@ -133,7 +133,7 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 									</div>
 								</div>
 							</div>
-							<div className="relative z-20 mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
+							<div className="relative mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
 								<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
 									<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-3xl text-gradient md:text-4xl lg:text-5xl">
 										{quest.map.title}

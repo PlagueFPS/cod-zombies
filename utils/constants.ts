@@ -27,18 +27,21 @@ export const ROUTES = [
 	{
 		id: "side-quests",
 		title: "Side Quests",
+		description: "View our wide collection of side quest guides.",
 		href: "/side-quests",
 		icon: Book,
 	},
 	{
 		id: "bestiary",
 		title: "Bestiary",
+		description: "Learn about all the types of enemies you'll encounter.",
 		href: "/bestiary",
 		icon: Brain,
 	},
 	{
 		id: "maps",
 		title: "Maps",
+		description: "Understand the layouts and locations for any map.",
 		href: "/maps",
 		icon: MapIcon,
 	},

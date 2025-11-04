@@ -1,15 +1,13 @@
 "use client"
-import { Menu } from "lucide-react"
+import { ChevronRightIcon, Menu } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import { CustomLink } from "@/components/custom-link/custom-link"
-import ExternalLink from "@/components/external-link/external-link"
+import FeedbackForm from "@/components/feedback-form/feedback-form"
 import NavLink from "@/components/nav-link/nav-link"
-import Discord from "@/components/SVGs/DiscordSVG"
-import Reddit from "@/components/SVGs/Reddit"
-import X from "@/components/SVGs/XSVG"
+import Socials from "@/components/socials/socials"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
+import DonateButton from "@/components/ui/donate-button"
 import {
 	Sheet,
 	SheetClose,
@@ -22,9 +20,7 @@ import {
 } from "@/components/ui/sheet"
 import Logo from "@/public/logo.webp"
 import { ROUTES } from "@/utils/constants"
-import FeedbackForm from "../feedback-form/feedback-form"
-import DonateButton from "../ui/donate-button"
-import Socials from "../socials/socials"
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "../ui/item"
 
 export default function AppSidebar() {
 	const [open, setOpen] = useState(false)
@@ -59,18 +55,26 @@ export default function AppSidebar() {
 						</CustomLink>
 					</SheetClose>
 				</SheetHeader>
-				<nav className="flex w-full flex-col items-start gap-6 pb-4 pl-4 text-lg">
+				<nav className="flex w-full flex-col items-start gap-4 text-lg">
 					{ROUTES.map(route => (
-						<NavLink
-							key={route.id}
-							href={route.href}
-							aria-label={`Go to ${route.title} page`}
-							className="flex items-center justify-center gap-2 transition-all"
-							onClick={() => setOpen(false)}
-						>
-							<route.icon className="size-5 text-orange-400 dark:text-orange-200" />
-							<span className="font-medium">{route.title}</span>
-						</NavLink>
+						<Item asChild key={route.id}>
+							<NavLink
+								href={route.href}
+								aria-label={`Go to ${route.title} page`}
+								onClick={() => setOpen(false)}
+							>
+								<ItemMedia variant="icon">
+									<route.icon className="size-5 text-orange-400 dark:text-orange-200" />
+								</ItemMedia>
+								<ItemContent>
+									<ItemTitle>{route.title}</ItemTitle>
+									<ItemDescription>{route.description}</ItemDescription>
+								</ItemContent>
+								<ItemActions>
+									<ChevronRightIcon className="size-4" />
+								</ItemActions>
+							</NavLink>
+						</Item>
 					))}
 				</nav>
 				<SheetFooter className="mt-auto mb-4 flex w-full flex-col items-center justify-center gap-4 border-t">
@@ -78,7 +82,7 @@ export default function AppSidebar() {
 						<FeedbackForm />
 						<DonateButton />
 					</div>
-					<Socials className="justify-evenly w-full" />
+					<Socials className="w-full justify-evenly" />
 				</SheetFooter>
 			</SheetContent>
 		</Sheet>
