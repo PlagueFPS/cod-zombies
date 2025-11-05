@@ -25,6 +25,7 @@ export default function GridPagination({ data }: IGridPagination) {
 		// Helper function to add page button
 		const addPageButton = (pageNum: number) => (
 			<Button
+				key={pageNum}
 				size="sm"
 				variant="outline"
 				aria-current={currentPage === pageNum ? "page" : undefined}

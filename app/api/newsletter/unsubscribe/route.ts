@@ -1,7 +1,7 @@
 import { Effect } from "effect"
 import { type NextRequest, NextResponse } from "next/server"
 import { unsubscribeEmail } from "@/data/email"
-import { Email } from "@/lib/services/emails"
+import { APIRuntime } from "@/lib/layers"
 import { verifyToken } from "@/utils/functions"
 
 export async function GET(req: NextRequest) {
@@ -60,7 +60,6 @@ export async function GET(req: NextRequest) {
 			},
 		}),
 		Effect.ensureErrorType<never>(),
-		Effect.provide(Email.Default),
-		Effect.runPromise,
+		APIRuntime.runPromise,
 	)
 }

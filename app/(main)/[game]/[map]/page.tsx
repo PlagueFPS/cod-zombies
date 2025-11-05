@@ -21,7 +21,7 @@ import {
 	getMainQuests,
 	type MainQuest,
 } from "@/data/main-quests"
-import { FileSystemLayer } from "@/lib/layers"
+import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
@@ -204,9 +204,8 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 		Effect.withLogSpan("main_quest_page"),
 		Effect.tapError(Effect.logError),
 		Effect.catchAll(_error => Effect.succeed(null)),
-		Effect.provide(FileSystemLayer),
 		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
+		PageRuntime.runPromise,
 	)
 }
 

@@ -17,6 +17,7 @@ import {
 	getSideQuests,
 	type SideQuest,
 } from "@/data/side-quests"
+import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { PageNotFoundError } from "@/types/errors"
@@ -28,7 +29,6 @@ import {
 	getServerUrl,
 } from "@/utils/functions"
 import QuestNotFoundPage from "./not-found"
-import { FileSystemLayer } from "@/lib/layers"
 
 export const generateStaticParams = () => {
 	const quests = getSideQuests()
@@ -217,9 +217,8 @@ export default async function SideQuestPage({
 			PageNotFoundError: _error => Effect.succeed(<QuestNotFoundPage />),
 			UnknownException: _error => Effect.succeed(null),
 		}),
-		Effect.provide(FileSystemLayer),
 		Effect.ensureErrorType<never>(),
-		Effect.runPromise,
+		PageRuntime.runPromise,
 	)
 }
 
