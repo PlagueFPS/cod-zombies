@@ -35,7 +35,7 @@ export const getServerUrl = () => {
  * @param filePath The path of the file.
  */
 export const getLastUpdated = (filePath: string) => {
-	const fileData = files[filePath as keyof typeof files]
+	const fileData = files[filePath.replace(/^.*?\/content\//, "") as keyof typeof files]
 	if (!fileData) {
 		console.warn(`Missing last-modified data for file ${filePath}`)
 		return {
@@ -55,56 +55,39 @@ export const getLastUpdated = (filePath: string) => {
  * @param contentPath The path of the file.
  * @returns The time to read the file.
  */
-export const calculateTimeToRead = (contentPath: string) =>
-	Effect.gen(function* () {
-		const fs = yield* FileSystem.FileSystem
-		const path = yield* Path.Path
-		const wordCount = yield* fs.readFileString(path.join(process.cwd(), contentPath), "utf-8").pipe(
-			Effect.map(stripMarkdown),
-			Effect.map(content => content.split(/\s+/).filter(word => word.length > 0).length),
-		)
-
-		const wordPerMinute = 200 // avg reading speed
-		const minutes = Math.ceil(wordCount / wordPerMinute) // always use the worst case
-		return minutes
-	}).pipe(
-		Effect.withLogSpan("calculate_time_to_read"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed(0)),
-	)
+export const calculateTimeToRead = (content: string) => {
+	const wordCount = stripMarkdown(content)
+		.split(/\s+/)
+		.filter(word => word.length > 0).length
+	const wordPerMinute = 200 // avg reading speed
+	const minutes = Math.ceil(wordCount / wordPerMinute) // always use the worst case
+	return minutes
+}
 
 /**
  * Extract headings from MDX content.
  * @param contentPath The path to the MDX file.
  * @returns An array of headings extracted from the MDX content.
  */
-export const extractHeadingsFromMDX = (contentPath: string) =>
-	Effect.gen(function* () {
-		const fs = yield* FileSystem.FileSystem
-		const path = yield* Path.Path
-		const content = yield* fs.readFileString(path.join(process.cwd(), contentPath), "utf-8")
-		const lines = content.split(/\r?\n/)
-		const headings: Heading[] = []
+export const extractHeadingsFromMDX = (content: string) => {
+	const lines = content.split(/\r?\n/)
+	const headings: Heading[] = []
 
-		for (const line of lines) {
-			const match = /^(#{2,4})\s+(.+?)\s*$/.exec(line)
-			if (!match) continue
+	for (const line of lines) {
+		const match = /^(#{2,4})\s+(.+?)\s*$/.exec(line)
+		if (!match) continue
 
-			const level = match[1]?.length
-			const type = level === 2 ? "h2" : level === 3 ? "h3" : "h4"
-			const text = stripMarkdown(match[2] || "")
-			if (!text) continue
+		const level = match[1]?.length
+		const type = level === 2 ? "h2" : level === 3 ? "h3" : "h4"
+		const text = stripMarkdown(match[2] || "")
+		if (!text) continue
 
-			const id = slugify(text)
-			headings.push({ type, text, id })
-		}
+		const id = slugify(text)
+		headings.push({ type, text, id })
+	}
 
-		return headings
-	}).pipe(
-		Effect.withLogSpan("extract_headings_from_mdx"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed([])),
-	)
+	return headings
+}
 
 /**
  * Performs a timing-safe comparison of two secrets.

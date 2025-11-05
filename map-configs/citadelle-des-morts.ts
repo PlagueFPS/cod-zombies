@@ -1,13 +1,18 @@
-import type { MapConfig } from "@/map-configs"
+import type { MapConfig, MapConfigMetadata } from "@/map-configs"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "./markers"
 
-const citadelleDesMorts: MapConfig = {
+export const metadata: MapConfigMetadata = {
 	id: "citadelle-des-morts",
 	title: "Citadelle Des Morts",
 	game: "Black Ops 6",
-	state: null,
+	state: Option.none(),
 	description:
 		"Explore Citadelle Des Morts in BO6 Zombies. Find all Points of Power & Oil Traps, Fast Travels, intel, and more with our interactive map.",
+}
+
+export const config: MapConfig = {
+	id: "citadelle-des-morts",
 	layers: [
 		{
 			id: "citadelle-des-morts",
@@ -433,5 +438,3 @@ const citadelleDesMorts: MapConfig = {
 		},
 	],
 }
-
-export default citadelleDesMorts

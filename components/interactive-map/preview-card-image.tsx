@@ -1,5 +1,5 @@
 "use client"
-import type { MapId } from "@/map-configs"
+import type { MapId } from "@/data/interactive-map"
 import Image from "next/image"
 import { useImageState } from "@/hooks/use-image-state"
 import { cn } from "@/lib/utils"
@@ -26,7 +26,7 @@ export default function PreviewCardImage({ mapId, title, priority, className }: 
 					width={640}
 					height={360}
 					alt={`${title} Preview Image`}
-					priority={priority}
+					preload={priority}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}
 					className={cn("h-full w-full object-cover opacity-0 group-hover:scale-105", className, {
@@ -40,7 +40,7 @@ export default function PreviewCardImage({ mapId, title, priority, className }: 
 					src={placeholderImage}
 					alt=""
 					placeholder="blur"
-					priority={priority}
+					preload={priority}
 					className={cn("flex aspect-video h-auto w-full items-center justify-center", className)}
 				/>
 			) : null}

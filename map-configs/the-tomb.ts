@@ -1,13 +1,18 @@
-import type { MapConfig } from "@/map-configs"
+import type { MapConfig, MapConfigMetadata } from "@/map-configs"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "./markers"
 
-const theTomb: MapConfig = {
+export const metadata: MapConfigMetadata = {
 	id: "the-tomb",
 	title: "The Tomb",
 	game: "Black Ops 6",
-	state: null,
+	state: Option.none(),
 	description:
 		"Explore The Tomb in BO6 Zombies. Find all Dark Aether Lanterns, Dig Spots, intel, and more with our interactive map.",
+}
+
+export const config: MapConfig = {
+	id: "the-tomb",
 	layers: [
 		{
 			id: "the-tomb",
@@ -414,5 +419,3 @@ const theTomb: MapConfig = {
 		},
 	],
 }
-
-export default theTomb

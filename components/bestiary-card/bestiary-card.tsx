@@ -1,4 +1,5 @@
 import type { Zombie } from "@/data/zombies"
+import { Option } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "../custom-badges/custom-badges"
@@ -16,30 +17,25 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
 	const alt = `${zombie.title} Image`
+	const state = Option.getOrNull(zombie.state)
 
 	return (
-		<article
-			className={cn("h-full max-h-113", { "pointer-events-none": zombie.state === "Coming Soon" })}
-		>
+		<article className={cn("h-full max-h-113", { "pointer-events-none": state === "Coming Soon" })}>
 			<CustomLink
-				href={zombie.state === "Coming Soon" ? `#` : `/bestiary/${zombie.id}`}
+				href={state === "Coming Soon" ? `#` : `/bestiary/${zombie.id}`}
 				aria-label={`View details for ${zombie.title}`}
-				aria-disabled={zombie.state === "Coming Soon"}
+				aria-disabled={state === "Coming Soon"}
 				className="group outline-none"
-				tabIndex={zombie.state === "Coming Soon" ? -1 : 0}
+				tabIndex={state === "Coming Soon" ? -1 : 0}
 			>
 				<Card
 					className={cn(
 						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
-						{ "opacity-75 dark:opacity-50": zombie.state === "Coming Soon" },
+						{ "opacity-75 dark:opacity-50": state === "Coming Soon" },
 					)}
 				>
 					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
-						{zombie.state === "Coming Soon" ? (
-							<ComingSoonBadge />
-						) : zombie.state === "New" ? (
-							<NewBadge />
-						) : null}
+						{state === "Coming Soon" ? <ComingSoonBadge /> : state === "New" ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 						{zombie.maps[0] ? (
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

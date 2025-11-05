@@ -1,5 +1,6 @@
-import type { Metadata } from "next"
-import { Effect } from "effect"
+import type { Metadata, Route } from "next"
+import { FileSystem, Path } from "@effect/platform"
+import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
@@ -17,10 +18,9 @@ import {
 	getSideQuests,
 	type SideQuest,
 } from "@/data/side-quests"
-import { PageRuntime } from "@/lib/layers"
+import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
-import { PageNotFoundError } from "@/types/errors"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import {
 	calculateTimeToRead,
@@ -28,7 +28,6 @@ import {
 	getLastUpdated,
 	getServerUrl,
 } from "@/utils/functions"
-import QuestNotFoundPage from "./not-found"
 
 export const generateStaticParams = () => {
 	const quests = getSideQuests()
@@ -44,7 +43,7 @@ export const generateMetadata = async ({
 }: PageProps<"/side-quests/[game]/[map]/[id]">): Promise<Metadata> => {
 	const { id } = await params
 	const quest = getSideQuestById(id)
-	if (!quest) notFound()
+	if (!quest) return notFound()
 
 	const title = `${quest.title} Side Quest`
 	const description = `Learn how to complete the ${quest.title} side quest/easter egg for ${quest.map.title} with our detailed step-by-step walkthrough!`
@@ -74,25 +73,42 @@ export const generateMetadata = async ({
 	}
 }
 
-export default async function SideQuestPage({
-	params,
-}: PageProps<"/side-quests/[game]/[map]/[id]">) {
-	const mdxComponents = useMDXComponents()
-	return await Effect.gen(function* () {
+const SideQuestPage = Effect.fn("SideQuestPage")(
+	function* ({ params }: PageProps<"/side-quests/[game]/[map]/[id]">) {
+		const fs = yield* FileSystem.FileSystem
+		const path = yield* Path.Path
+		const mdxComponents = yield* Effect.sync(() => useMDXComponents())
 		const { id } = yield* Effect.promise(() => params)
 		const quest = getSideQuestById(id)
-		if (!quest)
-			return yield* new PageNotFoundError({
-				message: "Side Quest not found",
-				cause: id,
-			})
+		if (!quest) return yield* Effect.sync(() => notFound())
 
-		const contentPath = `./content/side-quests/${quest.id}.mdx`
+		const contentPath = path.join(process.cwd(), `./content/side-quests/${quest.id}.mdx`)
+		const fileContent = yield* fs.readFileString(contentPath)
 		const { prev, next } = getAdjacentSideQuests(quest.id)
-		const { default: MDXContent } = yield* Effect.tryPromise(() => quest.content())
-		const headings = quest.state === "Coming Soon" ? [] : yield* extractHeadingsFromMDX(contentPath)
-		const timeToRead = yield* calculateTimeToRead(contentPath)
-		const { lastModifiedFormatted } = getLastUpdated(`side-quests/${quest.id}.mdx`)
+		const { lastModifiedFormatted } = getLastUpdated(contentPath)
+		const { content, stateBadge, headings, timeToRead } = yield* Option.match(quest.state, {
+			onNone: () =>
+				Effect.gen(function* () {
+					return {
+						content: yield* quest.content,
+						stateBadge: null,
+						headings: extractHeadingsFromMDX(fileContent),
+						timeToRead: calculateTimeToRead(fileContent),
+					}
+				}),
+			onSome: state =>
+				Effect.gen(function* () {
+					const isComingSoon = state === "Coming Soon"
+					return {
+						content: isComingSoon ? null : yield* quest.content,
+						stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
+						headings: isComingSoon ? [] : extractHeadingsFromMDX(fileContent),
+						timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
+					}
+				}),
+		})
+
+		const MDXContent = content?.default
 
 		return (
 			<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -147,11 +163,7 @@ export default async function SideQuestPage({
 										{quest.title}
 									</h2>
 									<div className="flex w-fit items-center justify-center gap-4">
-										{quest.state === "Coming Soon" ? (
-											<ComingSoonBadge />
-										) : quest.state === "New" ? (
-											<NewBadge />
-										) : null}
+										{stateBadge}
 										<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 											{quest.map.title}
 										</Badge>
@@ -179,7 +191,7 @@ export default async function SideQuestPage({
 									/>
 								</div>
 							</div>
-							{quest.state === "Coming Soon" ? (
+							{!MDXContent ? (
 								<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 									<p className="font-bold text-xl">
 										This article is currently being written and will take some time before being
@@ -202,25 +214,28 @@ export default async function SideQuestPage({
 								<GuideFeedback guideTitle={quest.title} type="Side Quest" map={quest.map.title} />
 							</div>
 							<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-								{prev && <PrevOrNextQuestCard quest={prev} prev />}
-								{next && <PrevOrNextQuestCard quest={next} />}
+								{Option.isSome(prev) && <PrevOrNextQuestCard quest={prev.value} prev />}
+								{Option.isSome(next) && <PrevOrNextQuestCard quest={next.value} />}
 							</div>
 						</article>
 					</div>
 				</div>
 			</section>
 		)
-	}).pipe(
-		Effect.withLogSpan("side_quest_page"),
-		Effect.tapError(Effect.logError),
-		Effect.catchTags({
-			PageNotFoundError: _error => Effect.succeed(<QuestNotFoundPage />),
-			UnknownException: _error => Effect.succeed(null),
-		}),
-		Effect.ensureErrorType<never>(),
-		PageRuntime.runPromise,
-	)
-}
+	},
+	page =>
+		page.pipe(
+			Effect.withLogSpan("side_quest_page"),
+			Effect.tapError(Effect.logError),
+			Effect.catchTags({
+				BadArgument: error => Effect.dieMessage(error.message),
+				SystemError: error => Effect.dieMessage(error.message),
+			}),
+		),
+	Effect.ensureErrorType<never>(),
+)
+
+export default FileSystemPage.build(SideQuestPage)
 
 interface PrevOrNextCard {
 	quest: SideQuest
@@ -229,20 +244,35 @@ interface PrevOrNextCard {
 
 const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 	const alt = `${quest.map.title} map image`
+	const { href, badge, disabled, tabIndex } = Option.match(quest.state, {
+		onNone: () => ({
+			href: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+			disabled: false,
+			tabIndex: 0,
+			badge: null,
+		}),
+		onSome: state => {
+			const isComingSoon = state === "Coming Soon"
+			return {
+				href: isComingSoon ? "#" : `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+				disabled: isComingSoon,
+				tabIndex: isComingSoon ? -1 : 0,
+				badge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
+			}
+		},
+	})
 
 	return (
 		<CustomLink
-			href={
-				quest.state === "Coming Soon"
-					? "#"
-					: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`
-			}
+			href={href as Route}
 			className={cn(
 				"group w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform hover:scale-105 hover:border-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
-					"pointer-events-none opacity-50": quest.state === "Coming Soon",
+					"pointer-events-none opacity-50": disabled,
 				},
 			)}
+			tabIndex={tabIndex}
+			aria-disabled={disabled}
 		>
 			<article
 				className={cn(
@@ -255,11 +285,7 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					{quest.state === "Coming Soon" ? (
-						<ComingSoonBadge />
-					) : quest.state === "New" ? (
-						<NewBadge />
-					) : null}
+					{badge}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{quest.map.title}
 					</Badge>

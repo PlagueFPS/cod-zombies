@@ -1,13 +1,18 @@
-import type { MapConfig } from "@/map-configs"
+import type { MapConfig, MapConfigMetadata } from "@/map-configs"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "./markers"
 
-const terminus: MapConfig = {
+export const metadata: MapConfigMetadata = {
 	id: "terminus",
 	title: "Terminus",
 	game: "Black Ops 6",
-	state: null,
+	state: Option.none(),
 	description:
 		"Explore Terminus in BO6 Zombies. Find all Boat Spawns, Fishing Spots, Underwater Chests, Dig Spots, intel, and more with our interactive map.",
+}
+
+export const config: MapConfig = {
+	id: "terminus",
 	layers: [
 		{
 			id: "terminus",
@@ -699,11 +704,11 @@ const terminus: MapConfig = {
 					locations: [{ x: 0.419, y: 0.779 }],
 				},
 				{
-					...weapons["svd"],
+					...weapons.svd,
 					locations: [{ x: 0.241, y: 0.655 }],
 				},
 				{
-					...weapons["xmg"],
+					...weapons.xmg,
 					locations: [{ x: 0.746, y: 0.493 }],
 				},
 				{
@@ -726,5 +731,3 @@ const terminus: MapConfig = {
 		},
 	],
 }
-
-export default terminus

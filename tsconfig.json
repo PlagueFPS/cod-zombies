@@ -23,10 +23,12 @@
     "incremental": true,
     "plugins": [
       {
-        "name": "next"
+        "name": "next",
+        "enabled": false
       },
       {
-        "name": "@effect/language-service"
+        "name": "@effect/language-service",
+        "refactors": true
       }
     ],
     "paths": {

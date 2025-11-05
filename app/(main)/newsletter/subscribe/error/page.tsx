@@ -1,18 +1,26 @@
 import type { Metadata } from "next"
+import { Effect, Option } from "effect"
 import { AlertCircle } from "lucide-react"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import { Button } from "@/components/ui/button"
+import { BasePage } from "@/lib/layers"
+import { decodeErrorPageSearchParams } from "@/utils/validation-schemas"
 
 export const metadata: Metadata = {
 	title: "Subscribe Failed",
 }
 
-export default async function SubscribeErrorPage({
+const SubscribeErrorPage = Effect.fn("SubscribeErrorPage")(function* ({
 	searchParams,
 }: PageProps<"/newsletter/subscribe/error">) {
-	const { message } = await searchParams
-	const errorMessage =
-		decodeURIComponent(String(message)) || "An error occurred during the subscribe process."
+	const params = yield* Effect.promise(() => searchParams)
+	const { message } = yield* decodeErrorPageSearchParams(params).pipe(
+		Effect.catchAll(() => Effect.succeed({ message: Option.none() })),
+	)
+
+	const errorMessage = Option.isSome(message)
+		? message.value
+		: "An error occurred during the subscribe process. You can try again using the newsletter form at the bottom of the page."
 
 	return (
 		<div className="mx-auto max-w-md px-4 py-12 text-center">
@@ -22,13 +30,12 @@ export default async function SubscribeErrorPage({
 			<h1 className="mb-4 font-bold text-2xl">Subscribe Failed</h1>
 			<p className="mb-6 text-muted-foreground">{errorMessage}</p>
 			<div className="space-y-4">
-				<Button asChild variant="outline" className="w-full">
-					<CustomLink href="/newsletter/unsubscribe">Try Again</CustomLink>
-				</Button>
 				<Button asChild className="w-full">
 					<CustomLink href="/">Return to Homepage</CustomLink>
 				</Button>
 			</div>
 		</div>
 	)
-}
+})
+
+export default BasePage.build(SubscribeErrorPage)

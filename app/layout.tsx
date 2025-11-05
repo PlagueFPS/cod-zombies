@@ -70,7 +70,7 @@ export default function RootLayout({ children }: LayoutProps) {
 		<html lang="en" suppressHydrationWarning>
 			{IN_DEVELOPMENT && <ReactScanWrapper />}
 			<body
-				className={`${geist.className} ${geist.variable} ${geistMono.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2 `}
+				className={`${geist.className} ${geist.variable} ${geistMono.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2`}
 			>
 				<KeyboardShortcutsProvider>
 					<ThemeProvider

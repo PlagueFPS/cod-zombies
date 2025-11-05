@@ -1,5 +1,6 @@
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import { type Game, getGameByKey } from "./games"
+
 export interface Maps {
 	/** The unique identifier of the map */
 	id: string

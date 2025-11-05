@@ -1,6 +1,7 @@
 "use client"
-import type { MapId, MapLayer } from "@/map-configs"
+import type { MapConfigMetadata, MapLayer } from "@/map-configs"
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
+import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
@@ -8,9 +9,19 @@ import { useState } from "react"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/functions.client"
+import { ComingSoonBadge, NewBadge } from "../custom-badges/custom-badges"
 import ShareButton from "../share-button/share-button"
+import Socials from "../socials/socials"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
-import { Select, SelectTrigger, SelectContent, SelectGroup, SelectLabel, SelectValue, SelectItem } from "../ui/select"
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from "../ui/select"
 import { Separator } from "../ui/separator"
 import {
 	Sidebar,
@@ -26,22 +37,23 @@ import {
 } from "../ui/sidebar"
 import { Switch } from "../ui/switch"
 import LayerSwitcher from "./layer-switcher"
-import Socials from "../socials/socials"
 
 interface IMapSidebar {
-	availableMaps: MapId[]
+	maps: MapConfigMetadata[]
 	groups: Record<MarkerCategory, Set<string>>
 	mapLayers: MapLayer[]
 }
 
-export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSidebar) {
+export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 	const { clearParam, toggleExcludeParam, createParams, layerParam, isIncluded } =
 		useMapSearchParams()
+	const mapMarkers = Option.isSome(layerParam)
+		? (mapLayers.find(layer => layer.id === layerParam.value)?.markers ?? [])
+		: (mapLayers.at(0)?.markers ?? [])
 	const { id } = useParams()
 	const [toggle, setToggle] = useState<"All" | "None">("None")
 	const router = useRouter()
 	const currentMap = capitalize(String(id))
-	const mapMarkers = mapLayers.find(layer => layer.id === layerParam)?.markers ?? mapLayers.at(0)?.markers ?? []
 
 	const handleCheckedChange = (type: string) => {
 		toggleExcludeParam(type)
@@ -94,6 +106,10 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 		setToggle("All")
 	}
 
+	const existsInLayer = (marker: string) => {
+		return mapMarkers.some(m => m.type === marker || m.id === marker)
+	}
+
 	return (
 		<Sidebar side="left" collapsible="offcanvas" className="z-500 mt-16">
 			<SidebarHeader className="border-b bg-background">
@@ -106,15 +122,28 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 							<SelectContent className="z-900">
 								<SelectGroup>
 									<SelectLabel>Available Maps</SelectLabel>
-									{availableMaps.map(map => (
+									{maps.map(map => (
 										<SelectItem
-											key={map}
-											className={cn({ "pointer-events-none": map === id })}
-											value={map}
+											key={map.id}
+											className={cn({
+												"pointer-events-none":
+													map.id === id || Option.getOrNull(map.state) === "Coming Soon",
+											})}
+											value={map.id}
 										>
-											<span className={cn({ "text-muted-foreground": map === id })}>
-												{capitalize(map)}
+											<span
+												className={cn({
+													"text-muted-foreground":
+														map.id === id || Option.getOrNull(map.state) === "Coming Soon",
+												})}
+											>
+												{map.title}
 											</span>
+											{Option.match(map.state, {
+												onNone: () => null,
+												onSome: state =>
+													state === "Coming Soon" ? <ComingSoonBadge /> : <NewBadge />,
+											})}
 										</SelectItem>
 									))}
 								</SelectGroup>
@@ -125,7 +154,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent className="bg-background [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-track]:bg-background [&::-webkit-scrollbar]:w-1.5">
-				{ mapLayers.length > 1 && (
+				{mapLayers.length > 1 && (
 					<SidebarMenu className="px-4 pt-2">
 						<SidebarMenuItem>
 							<LayerSwitcher mapLayers={mapLayers} />
@@ -133,9 +162,13 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 					</SidebarMenu>
 				)}
 				<SidebarMenu>
-					<SidebarMenuItem className="mt-4 mx-2 flex items-center justify-between rounded-md bg-accent p-2 dark:bg-accent/25">
+					<SidebarMenuItem className="mx-2 mt-4 flex items-center justify-between rounded-md bg-accent p-2 dark:bg-accent/25">
 						<span className="text-sm">Disable Filters</span>
-						<Switch checked={toggle === "All"} onCheckedChange={toggleFilters} className="ml-auto cursor-pointer data-[state=checked]:bg-primary" />
+						<Switch
+							checked={toggle === "All"}
+							onCheckedChange={toggleFilters}
+							className="ml-auto cursor-pointer data-[state=checked]:bg-primary"
+						/>
 					</SidebarMenuItem>
 				</SidebarMenu>
 
@@ -151,7 +184,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...groups.general].map(marker => (
+										{[...groups.general].filter(existsInLayer).map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -191,7 +224,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...groups.equipment].map(marker => (
+										{[...groups.equipment].filter(existsInLayer).map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -231,7 +264,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...groups.upgrades].map(marker => (
+										{[...groups.upgrades].filter(existsInLayer).map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -271,7 +304,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...groups.objectives].map(marker => (
+										{[...groups.objectives].filter(existsInLayer).map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -311,7 +344,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...groups.transportation].map(marker => (
+										{[...groups.transportation].filter(existsInLayer).map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"
@@ -351,7 +384,7 @@ export default function MapSidebar({ groups, availableMaps, mapLayers }: IMapSid
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu>
-										{[...groups.intel].map(marker => (
+										{[...groups.intel].filter(existsInLayer).map(marker => (
 											<SidebarMenuItem
 												key={marker}
 												className="flex items-center rounded-md bg-accent p-2 dark:bg-accent/25"

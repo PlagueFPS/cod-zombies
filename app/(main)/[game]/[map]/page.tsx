@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { Effect } from "effect"
+import { FileSystem, Path } from "@effect/platform"
+import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
@@ -21,17 +22,16 @@ import {
 	getMainQuests,
 	type MainQuest,
 } from "@/data/main-quests"
-import { PageRuntime } from "@/lib/layers"
+import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
-import { GLOBAL_OG_PROPS, IN_DEVELOPMENT } from "@/utils/constants"
+import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import {
 	calculateTimeToRead,
 	extractHeadingsFromMDX,
 	getLastUpdated,
 	getServerUrl,
 } from "@/utils/functions"
-import MapNotFound from "./not-found"
 
 export const generateStaticParams = () => {
 	const mainQuests = getMainQuests()
@@ -47,10 +47,11 @@ export const generateMetadata = async ({
 }: PageProps<"/[game]/[map]">): Promise<Metadata> => {
 	const { map } = await params
 	const quest = getMainQuestByMap(map)
-	if (!quest) return notFound()
+	if (!quest) notFound()
 
 	const title = `${quest.map.title} Main Quest`
-	const description = `Learn how to complete the main quest/easter egg for the ${quest.map.game.title} zombies map ${quest.map.title} with our detailed step-by-step walkthrough!`
+	const description = `Learn how to complete the main quest/easter egg for the
+		${quest.map.game.title} zombies map ${quest.map.title} with our detailed step-by-step walkthrough!`
 
 	return {
 		title,
@@ -77,19 +78,42 @@ export const generateMetadata = async ({
 	}
 }
 
-export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]">) {
-	const mdxComponents = useMDXComponents()
-	return await Effect.gen(function* () {
+const MainQuestPage = Effect.fn("MainQuestPage")(
+	function* ({ params }: PageProps<"/[game]/[map]">) {
+		const fs = yield* FileSystem.FileSystem
+		const path = yield* Path.Path
+		const mdxComponents = yield* Effect.sync(() => useMDXComponents())
 		const { map } = yield* Effect.promise(() => params)
 		const quest = getMainQuestByMap(map)
-		if (!quest) return <MapNotFound />
+		if (!quest) return yield* Effect.sync(() => notFound())
 
-		const contentPath = `./content/main-quests/${quest.id}.mdx`
+		const contentPath = path.join(process.cwd(), `./content/main-quests/${quest.id}.mdx`)
+		const fileContent = yield* fs.readFileString(contentPath)
 		const { prev, next } = getAdjacentMainQuests(quest.map.id)
-		const { default: MDXContent } = yield* Effect.tryPromise(() => quest.content())
-		const headings = quest.state === "Coming Soon" ? [] : yield* extractHeadingsFromMDX(contentPath)
-		const timeToRead = yield* calculateTimeToRead(contentPath)
-		const { lastModifiedFormatted } = getLastUpdated(`main-quests/${quest.id}.mdx`)
+		const { lastModifiedFormatted } = getLastUpdated(contentPath)
+		const { content, stateBadge, headings, timeToRead } = yield* Option.match(quest.state, {
+			onNone: () =>
+				Effect.gen(function* () {
+					return {
+						content: yield* quest.content,
+						stateBadge: null,
+						headings: extractHeadingsFromMDX(fileContent),
+						timeToRead: calculateTimeToRead(fileContent),
+					}
+				}),
+			onSome: state =>
+				Effect.gen(function* () {
+					const isComingSoon = state === "Coming Soon"
+					return {
+						content: isComingSoon ? null : yield* quest.content,
+						stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
+						headings: isComingSoon ? [] : extractHeadingsFromMDX(fileContent),
+						timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
+					}
+				}),
+		})
+
+		const MDXContent = content?.default
 
 		return (
 			<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -139,12 +163,10 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 										{quest.map.title}
 									</h2>
 									<div className="flex w-fit items-center justify-center gap-4">
-										{quest.state === "Coming Soon" ? (
-											<ComingSoonBadge />
-										) : quest.state === "New" ? (
-											<NewBadge />
-										) : null}
-										{quest.difficulty && <DifficultyBadge difficulty={quest.difficulty} />}
+										{stateBadge}
+										{Option.isSome(quest.difficulty) && (
+											<DifficultyBadge difficulty={quest.difficulty.value} />
+										)}
 										<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 											{quest.map.game.title}
 										</Badge>
@@ -169,7 +191,7 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 									/>
 								</div>
 							</div>
-							{quest.state === "Coming Soon" && !IN_DEVELOPMENT ? (
+							{!MDXContent ? (
 								<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
 									<p className="font-bold text-xl">
 										This article is currently being written and will take some time before being
@@ -192,22 +214,28 @@ export default async function MainQuestPage({ params }: PageProps<"/[game]/[map]
 								<GuideFeedback guideTitle={quest.map.title} type="Main Quest" />
 							</div>
 							<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-								{prev && <PrevOrNextMapCard quest={prev} prev />}
-								{next && <PrevOrNextMapCard quest={next} />}
+								{Option.isSome(prev) && <PrevOrNextMapCard quest={prev.value} prev />}
+								{Option.isSome(next) && <PrevOrNextMapCard quest={next.value} />}
 							</div>
 						</article>
 					</div>
 				</div>
 			</section>
 		)
-	}).pipe(
-		Effect.withLogSpan("main_quest_page"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error => Effect.succeed(null)),
-		Effect.ensureErrorType<never>(),
-		PageRuntime.runPromise,
-	)
-}
+	},
+	page =>
+		page.pipe(
+			Effect.withLogSpan("main_quest_page"),
+			Effect.tapError(Effect.logError),
+			Effect.catchTags({
+				BadArgument: error => Effect.dieMessage(error.message),
+				SystemError: error => Effect.dieMessage(error.message),
+			}),
+			Effect.ensureErrorType<never>(),
+		),
+)
+
+export default FileSystemPage.build(MainQuestPage)
 
 interface PrevOrNextCard {
 	quest: MainQuest
@@ -216,17 +244,19 @@ interface PrevOrNextCard {
 
 const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
 	const alt = `${quest.map.title} map image`
+	const questState = Option.getOrNull(quest.state)
 
 	return (
 		<CustomLink
-			href={quest.state === "Coming Soon" ? "#" : `/${quest.map.game.id}/${quest.map.id}`}
+			href={questState === "Coming Soon" ? "#" : `/${quest.map.game.id}/${quest.map.id}`}
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
-					"pointer-events-none opacity-50": quest.state === "Coming Soon",
+					"pointer-events-none opacity-50": questState === "Coming Soon",
 				},
 			)}
-			tabIndex={quest.state === "Coming Soon" ? -1 : 0}
+			tabIndex={questState === "Coming Soon" ? -1 : 0}
+			aria-disabled={questState === "Coming Soon"}
 		>
 			<article
 				className={cn(
@@ -239,12 +269,14 @@ const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					{quest.state === "Coming Soon" ? (
+					{questState === "Coming Soon" ? (
 						<ComingSoonBadge />
-					) : quest.state === "New" ? (
+					) : questState === "New" ? (
 						<NewBadge />
 					) : null}
-					{quest.difficulty && <DifficultyBadge difficulty={quest.difficulty} />}
+					{Option.isSome(quest.difficulty) && (
+						<DifficultyBadge difficulty={quest.difficulty.value} />
+					)}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{quest.map.game.title}
 					</Badge>

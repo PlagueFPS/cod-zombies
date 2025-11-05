@@ -1,29 +1,34 @@
+import type { Option } from "effect"
+import type { MapId } from "@/data/interactive-map"
 import type { MapMarker } from "./markers"
 
-export type MapId = keyof typeof mapRegistry
-
 export interface MapLayer {
+	/**Unique identifier for the map layer */
 	id: string
+	/** Title of the map layer */
 	title: string
+	/** path of the image for the map layer */
 	image: string
+	/** Array of markers associated with the map layer */
 	markers: MapMarker[]
 }
 
-export interface MapConfig {
-	id: string
+export interface MapConfigMetadata {
+	/** Unique identifier for the map configuration */
+	id: MapId
+	/** Title of the map configuration */
 	title: string
-	state: "Coming Soon" | "New" | null
+	/** State of the map configuration */
+	state: Option.Option<"Coming Soon" | "New">
+	/** Description of the map configuration */
 	description: string
+	/** Game associated with the map configuration */
 	game: string
-	layers: MapLayer[]
 }
 
-export const mapRegistry = {
-	"ashes-of-the-damned": import("./ashes-of-the-damned").then(module => module.default),
-	reckoning: import("./reckoning").then(module => module.default),
-	"shattered-veil": import("./shattered-veil").then(module => module.default),
-	"the-tomb": import("./the-tomb").then(module => module.default),
-	"citadelle-des-morts": import("./citadelle-des-morts").then(module => module.default),
-	terminus: import("./terminus").then(module => module.default),
-	"liberty-falls": import("./liberty-falls").then(module => module.default),
-} as const
+export interface MapConfig {
+	/** Unique identifier for the map configuration */
+	id: MapId
+	/** Array of layers associated with the map configuration */
+	layers: MapLayer[]
+}

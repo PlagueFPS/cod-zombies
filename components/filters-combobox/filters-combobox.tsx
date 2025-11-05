@@ -1,5 +1,6 @@
-import type { MainQuest } from "@/data/main-quests"
-import type { Zombie } from "@/data/zombies"
+import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { ZombieType } from "@/data/zombies"
+import { Match } from "effect"
 import { CirclePlus, Trash } from "lucide-react"
 import Image, { type ImageProps } from "next/image"
 import { useState } from "react"
@@ -63,12 +64,10 @@ const FiltersCombobox = ({
 		switch (title) {
 			case "Difficulty":
 				return (
-					<DifficultyBadge
-						difficulty={capitalize(currentSelection[0]) as MainQuest["difficulty"]}
-					/>
+					<DifficultyBadge difficulty={capitalize(currentSelection[0]) as MainQuestDifficulty} />
 				)
 			case "Type":
-				return <TypeBadge type={capitalize(currentSelection[0]) as Zombie["type"]} />
+				return <TypeBadge type={capitalize(currentSelection[0]) as ZombieType} />
 			default:
 				return (
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
@@ -126,12 +125,12 @@ const FiltersCombobox = ({
 											onClick={() => toggleParam(item.slug)}
 											tabIndex={-1}
 										>
-											{title === "Difficulty" ? (
-												<DifficultyBadge difficulty={item.title as MainQuest["difficulty"]} />
-											) : title === "Type" ? (
-												<TypeBadge type={item.title as Zombie["type"]} />
-											) : (
-												item.title
+											{Match.value(title).pipe(
+												Match.when("difficulty", () => (
+													<DifficultyBadge difficulty={item.title as MainQuestDifficulty} />
+												)),
+												Match.when("type", () => <TypeBadge type={item.title as ZombieType} />),
+												Match.orElse(() => item.title),
 											)}
 										</Label>
 									</CommandItem>
