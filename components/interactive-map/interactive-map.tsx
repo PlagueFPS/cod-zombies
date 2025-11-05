@@ -16,10 +16,10 @@ import { generateMarkerKey } from "@/map-configs/markers"
 import { IN_DEVELOPMENT } from "@/utils/constants"
 import { capitalize } from "@/utils/functions.client"
 import { MarkerBadge } from "../custom-badges/custom-badges"
+import { ButtonGroup } from "../ui/button-group"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import CustomMarker from "./custom-marker"
 import MapSettingsPanel from "./map-settings-panel"
-import { ButtonGroup } from "../ui/button-group"
 
 export interface ImageDimensions {
 	width: number
@@ -38,7 +38,8 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { layerParam, includeParams, excludeParams, isIncluded } = useMapSearchParams()
 	const { settings } = useMapSettings()
 	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-	const currentLayer = mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0)
+	const currentLayer =
+		mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0)
 
 	// disable main page scrolling on canvas
 	useEffect(() => {
@@ -52,24 +53,24 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	useEffect(() => {
 		if (!currentLayer) return
 		const loadImageDimensions = async () => {
-				try {
-					const img = new Image()
-					img.crossOrigin = "anonymous"
+			try {
+				const img = new Image()
+				img.crossOrigin = "anonymous"
 
-					await new Promise((resolve, reject) => {
-						img.onload = () => {
-							setImageDimensions({
-								width: img.naturalWidth,
-								height: img.naturalHeight,
-							})
-							resolve(img)
-						}
-						img.onerror = reject
-						img.src = currentLayer.image
-					})
-				} catch (error) {
-					console.error(`Failed to load map:`, error)
-				}
+				await new Promise((resolve, reject) => {
+					img.onload = () => {
+						setImageDimensions({
+							width: img.naturalWidth,
+							height: img.naturalHeight,
+						})
+						resolve(img)
+					}
+					img.onerror = reject
+					img.src = currentLayer.image
+				})
+			} catch (error) {
+				console.error(`Failed to load map:`, error)
+			}
 		}
 
 		loadImageDimensions()
@@ -147,19 +148,18 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	)
 }
 
-function MapController({
-	imageDimensions
-}: MapController) {
+function MapController({ imageDimensions }: MapController) {
 	const map = useMap()
 	const isMobile = useIsMobile()
 
-	const logClickCoordinates = (imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
-		if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
+	const logClickCoordinates =
+		(imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
+			if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
 
-		const x = e.latlng.lng / imageDimensions.width
-		const y = 1 - e.latlng.lat / imageDimensions.height // Flip y back to normal
-		console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
-	}
+			const x = e.latlng.lng / imageDimensions.width
+			const y = 1 - e.latlng.lat / imageDimensions.height // Flip y back to normal
+			console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
+		}
 
 	useMapEvents({
 		click: logClickCoordinates(imageDimensions),
@@ -188,7 +188,9 @@ function MapController({
 	return (
 		<ButtonGroup
 			orientation={isMobile ? "vertical" : "horizontal"}
-			className={cn("absolute top-4 right-4 z-500 lg:right-8 bg-background rounded-md w-10 md:w-fit")}
+			className={cn(
+				"absolute top-4 right-4 z-500 w-10 rounded-md bg-background md:w-fit lg:right-8",
+			)}
 		>
 			<Tooltip>
 				<TooltipTrigger asChild>
