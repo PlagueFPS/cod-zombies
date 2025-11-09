@@ -551,6 +551,11 @@ const augmentRegistry = {
 		description: "Napalm Burst can burn elite enemies.",
 		type: "Major",
 		image: "/augments/big-game-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/big-game-major-augment-bo7.webp",
+			},
+		},
 	},
 	thermite: {
 		id: "thermite",
@@ -558,6 +563,11 @@ const augmentRegistry = {
 		description: "Increase burn effect damage.",
 		type: "Major",
 		image: "/augments/dead-head-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/thermite-major-augment-bo7.webp",
+			},
+		},
 	},
 	firebomb: {
 		id: "firebomb",
@@ -565,6 +575,11 @@ const augmentRegistry = {
 		description: "Burned enemies explode on death, spreading the fire to nearby enemies.",
 		type: "Major",
 		image: "/augments/firebomb-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/firebomb-major-augment-bo7.webp",
+			},
+		},
 	},
 	extensionNapalmBurst: {
 		id: "extension-napalm-burst",
@@ -572,6 +587,11 @@ const augmentRegistry = {
 		description: "Increase the burn duration.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	incendiary: {
 		id: "incendiary",
@@ -579,6 +599,11 @@ const augmentRegistry = {
 		description: "Each damage tick has a small chance to spread to a nearby enemy.",
 		type: "Minor",
 		image: "/augments/incendiary-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/incendiary-minor-augment-bo7.webp",
+			},
+		},
 	},
 	contactBurn: {
 		id: "contact-burn",
@@ -586,6 +611,11 @@ const augmentRegistry = {
 		description: "Initial burn effect deals more damage.",
 		type: "Minor",
 		image: "/augments/retaliation-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	bigGameShadowRift: {
 		id: "big-game-shadow-rift",
@@ -1162,7 +1192,7 @@ const augmentRegistry = {
 		title: "Petroleum",
 		description: "Napalm Burst leaves a pool of fire on the ground.",
 		type: "Major",
-		image: "/augments/petroleum-major-augment.webp",
+		image: "/augments/bo7/petroleum-major-augment-bo7.webp",
 	},
 	gravityWell: {
 		id: "gravity-well",
@@ -1316,7 +1346,7 @@ const augmentRegistry = {
 		title: "Backdraft",
 		description: "Increase the activation radius.",
 		type: "Minor",
-		image: "/augments/backdraft-minor-augment.webp",
+		image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
 	},
 	ammoTheorem: {
 		id: "ammo-theorem",

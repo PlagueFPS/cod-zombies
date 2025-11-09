@@ -7,7 +7,7 @@ import sharp from "sharp"
 // Change this to the path where the new images you want to add are located
 const NEW_ASSETS_DIR = "./newassets"
 // Change this to the target path where the optimized images should end up
-const TARGET_DIR = "./public/elixirs"
+const TARGET_DIR = "./public/augments/bo7"
 
 Effect.gen(function* () {
 	const startTime = performance.now()
@@ -27,6 +27,9 @@ Effect.gen(function* () {
 		strict: true,
 		allowPositionals: true,
 	})
+
+	const exists = yield* fs.exists(TARGET_DIR)
+	if (!exists) yield* fs.makeDirectory(TARGET_DIR)
 
 	yield* Effect.forEach(
 		newAssets,
