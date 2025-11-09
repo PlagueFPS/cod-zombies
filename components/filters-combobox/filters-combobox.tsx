@@ -32,7 +32,7 @@ export interface Filter {
 interface IFiltersCombobox {
 	data: Filter[]
 	currentSelection: string[]
-	title: string
+	title: "Game" | "Difficulty" | "Type" | "Map"
 	enableInput?: boolean
 	inputPlaceholder?: string
 	toggleParam: (param: string) => void
@@ -59,22 +59,20 @@ const FiltersCombobox = ({
 			)
 		}
 
-		if (!currentSelection[0]) return null
+		const selection = currentSelection.at(0)
+		if (!selection) return null
 
-		switch (title) {
-			case "Difficulty":
-				return (
-					<DifficultyBadge difficulty={capitalize(currentSelection[0]) as MainQuestDifficulty} />
-				)
-			case "Type":
-				return <TypeBadge type={capitalize(currentSelection[0]) as ZombieType} />
-			default:
-				return (
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{capitalize(currentSelection[0])}
-					</Badge>
-				)
-		}
+		return Match.value(title).pipe(
+			Match.when("Difficulty", () => (
+				<DifficultyBadge difficulty={capitalize(selection) as MainQuestDifficulty} />
+			)),
+			Match.when("Type", () => <TypeBadge type={capitalize(selection) as ZombieType} />),
+			Match.orElse(() => (
+				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+					{capitalize(selection)}
+				</Badge>
+			)),
+		)
 	}
 
 	return (
@@ -126,10 +124,10 @@ const FiltersCombobox = ({
 											tabIndex={-1}
 										>
 											{Match.value(title).pipe(
-												Match.when("difficulty", () => (
+												Match.when("Difficulty", () => (
 													<DifficultyBadge difficulty={item.title as MainQuestDifficulty} />
 												)),
-												Match.when("type", () => <TypeBadge type={item.title as ZombieType} />),
+												Match.when("Type", () => <TypeBadge type={item.title as ZombieType} />),
 												Match.orElse(() => item.title),
 											)}
 										</Label>

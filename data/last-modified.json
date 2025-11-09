@@ -1,21 +1,21 @@
 {
   "version": "1.0",
-  "generated": "2025-11-09T00:45:25.083Z",
+  "generated": "2025-11-09T01:21:10.097Z",
   "files": {
     "main-quests/seal-the-deal.mdx": {
-      "lastModified": "2025-11-08T20:54:38.000Z",
-      "lastModifiedFormatted": "November 8, 2025",
-      "commitHash": "b72ba68"
+      "lastModified": "2025-11-09T01:20:38.000Z",
+      "lastModifiedFormatted": "November 9, 2025",
+      "commitHash": "e334de1"
     },
     "side-quests/magmagat-upgrade.mdx": {
-      "lastModified": "2025-11-08T20:54:38.000Z",
-      "lastModifiedFormatted": "November 8, 2025",
-      "commitHash": "b72ba68"
+      "lastModified": "2025-11-09T01:20:38.000Z",
+      "lastModifiedFormatted": "November 9, 2025",
+      "commitHash": "e334de1"
     },
     "zombies/sam.mdx": {
-      "lastModified": "2025-11-08T20:54:38.000Z",
-      "lastModifiedFormatted": "November 8, 2025",
-      "commitHash": "b72ba68"
+      "lastModified": "2025-11-09T01:20:38.000Z",
+      "lastModifiedFormatted": "November 9, 2025",
+      "commitHash": "e334de1"
     },
     "zombies/ravager.mdx": {
       "lastModified": "2025-11-05T16:29:07.000Z",

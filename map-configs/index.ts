@@ -3,7 +3,7 @@ import type { MapId } from "@/data/interactive-map"
 import type { MapMarker } from "./markers"
 
 export interface MapLayer {
-	/**Unique identifier for the map layer */
+	/** Unique identifier for the map layer */
 	id: string
 	/** Title of the map layer */
 	title: string

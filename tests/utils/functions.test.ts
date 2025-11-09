@@ -1,4 +1,3 @@
-import path from "node:path"
 import { it } from "@effect/vitest"
 import { Redacted } from "effect"
 import { afterEach, beforeAll, beforeEach, describe, vi } from "vitest"
