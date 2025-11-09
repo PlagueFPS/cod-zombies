@@ -9,7 +9,7 @@ const NEW_ASSETS_DIR = "./newassets"
 // Change this to the target path where the optimized images should end up
 const TARGET_DIR = "./public/elixirs"
 
-const program = Effect.gen(function* () {
+Effect.gen(function* () {
 	const startTime = performance.now()
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
@@ -82,6 +82,5 @@ const program = Effect.gen(function* () {
 }).pipe(
 	Effect.withLogSpan("optimize_assets"),
 	Effect.provide(Layer.merge(Path.layer, BunFileSystem.layer)),
+	BunRuntime.runMain,
 )
-
-BunRuntime.runMain(program)

@@ -9,6 +9,21 @@ export interface ZombieAttack {
 	description: string
 }
 
+/** Union type of all zombie attacks */
+export type ZombieAttackKey = keyof typeof zombieAttacksRegistry
+
+/**
+ * Gets a zombie attack by its key.
+ * @param key The key of the zombie attack.
+ */
+export const getZombieAttackByKey = (key: ZombieAttackKey): ZombieAttack =>
+	zombieAttacksRegistry[key]
+
+/**
+ * Gets all zombie attacks.
+ */
+export const getZombieAttacks = (): ZombieAttack[] => Object.values(zombieAttacksRegistry)
+
 const zombieAttacksRegistry = {
 	meleeSwing: {
 		id: "melee-swing",
@@ -581,94 +596,24 @@ const zombieAttacksRegistry = {
 		description:
 			"Siphons element 115 from the Conversion Generators, disabling them if fully drained.",
 	},
+	ravage: {
+		id: "ravage",
+		title: "Ravage",
+		range: "Short",
+		description: "Eats left over ground loot, sprinting and teleporting underground when full.",
+	},
+	maul: {
+		id: "maul",
+		title: "Maul",
+		range: "Short",
+		description:
+			"Bites or claw swipes nearby enemies, dealing significant damage and leaving a Damage Over Time effect on the player.",
+	},
+	beeSwarm: {
+		id: "bee-swarm",
+		title: "Bee Swarm",
+		range: "Long",
+		description:
+			"Launches a swarm of bees that follow the player until destroyed, dealing damage and slowing the affected player.",
+	},
 } as const satisfies Record<string, ZombieAttack>
-
-/** Union type of all zombie attacks */
-export type ZombieAttackKey = keyof typeof zombieAttacksRegistry
-export const {
-	meleeSwing,
-	acidExplosion,
-	aerialBomber,
-	aetherBarrage,
-	aetherRelease,
-	aoeSlam,
-	axeThrow,
-	bite,
-	cannonBlast,
-	charge,
-	clawGrab,
-	crystalBarrage,
-	dinoLeap,
-	dragonFire,
-	electricBurst,
-	electricalBolts,
-	empLauncher,
-	energyOrbs,
-	explosion,
-	eyeBeam,
-	fieryExplosion,
-	fireball,
-	fireballs,
-	flamethrower,
-	flamingAura,
-	flamingSpears,
-	fleshThrow,
-	generatorSiphon,
-	grab,
-	groundSlam,
-	groundStomp,
-	hammerSlam,
-	harpoonBarrage,
-	healSummon,
-	heavyLeap,
-	homingVomit,
-	jumpSwing,
-	knockbackExplosion,
-	laser,
-	legStab,
-	lightningBeam,
-	lightningBolt,
-	lavaBalls,
-	leap,
-	leapingHammer,
-	lifeDrain,
-	lightningBolts,
-	lightningStrike,
-	lunge,
-	megaBite,
-	molotovCannon,
-	needleBarrage,
-	novaGas,
-	perkSteal,
-	pointSteal,
-	poisonAura,
-	pounce,
-	powerUpSteal,
-	radioactiveBlast,
-	radioactiveFlurry,
-	tentacleGrab,
-	shockBurst,
-	powerfulMelee,
-	projectileVomit,
-	rallyCry,
-	rapidSlashes,
-	selfDestruct,
-	shieldBlind,
-	skullSummon,
-	slowField,
-	sonicScreech,
-	spearThrow,
-	sweepingSlam,
-	swordSwing,
-	tailSlam,
-	tongueGrab,
-	toxicGas,
-	vampiricMelee,
-	vineSlam,
-	volcanoSummon,
-	weaponSteal,
-	webProjectile,
-	wunderwaffeShot,
-	zombieBuff,
-	zombieEvolution,
-} = zombieAttacksRegistry

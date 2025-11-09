@@ -1,9 +1,6 @@
-/** Gets an augment by its key.
- * @param key The key of the augment.
- * @returns The augment.
- */
-export const getAugmentByKey = (key: AugmentKey): Augment => augmentRegistry[key]
-export const getAugments = (): Augment[] => Object.values(augmentRegistry)
+import type { GameKey } from "./games"
+
+type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
 
 export interface Augment {
 	/** The unique identifier of the augment */
@@ -16,6 +13,55 @@ export interface Augment {
 	description: string
 	/** The image of the augment */
 	image: string
+	/** The game variants of the augment */
+	variants?: Partial<Record<GameKey, AugmentVariant>>
+}
+
+/**Union of all keys in the Augment Registry */
+export type AugmentKey = keyof typeof augmentRegistry
+/**Tuple to enforce min/max allowed augments */
+export type AugmentTuple = [
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey,
+	AugmentKey?,
+	AugmentKey?,
+]
+/**Union of all Augment types */
+export type AugmentType = Augment["type"]
+
+/** Gets an augment by its key.
+ * @param key The key of the augment.
+ * @param game The game to get the augment variant for.
+ */
+export const getAugmentByKey = (key: AugmentKey, game?: GameKey): Augment => {
+	const augment: Augment = augmentRegistry[key]
+
+	if (!game || !augment.variants?.[game]) return augment
+
+	const variant = augment.variants?.[game]
+	return {
+		...augment,
+		...variant,
+	}
+}
+
+/** Gets all augments.
+ * @param game The game to get the augment variants for.
+ */
+export const getAugments = (game?: GameKey): Augment[] => {
+	return Object.values(augmentRegistry).map((augment: Augment) => {
+		if (!game || !augment.variants?.[game]) return augment
+
+		const variant = augment.variants[game]
+		return {
+			...augment,
+			...variant,
+		}
+	})
 }
 
 const augmentRegistry = {
@@ -292,6 +338,12 @@ const augmentRegistry = {
 			"If you have Quick Revive while downed, killing an enemy will revive you and remove Quick Revive. This can be done up to 3 times.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				description:
+					"If you have Quick Revive while downed, killing an enemy will revive you. This can be done up to 3 times.",
+			},
+		},
 	},
 	dyingWish: {
 		id: "dying-wish",
@@ -989,149 +1041,480 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/fast-pitcher-minor-augment.webp",
 	},
+	maskOfWrath: {
+		id: "mask-of-wrath",
+		title: "Mask of Wrath",
+		description: "The Demon does more damage.",
+		type: "Major",
+		image: "/augments/mask-of-wrath-major-augment.webp",
+	},
+	maskOfSalvation: {
+		id: "mask-of-salvation",
+		title: "Mask of Salvation",
+		description:
+			"The Fox can revive you while it’s active. This can be done up to three times per match.",
+		type: "Major",
+		image: "/augments/mask-of-salvation-major-augment.webp",
+	},
+	maskOfDistraction: {
+		id: "mask-of-distraction",
+		title: "Mask of Distraction",
+		description: "The Monkey attracts enemies and does damage in an area.",
+		type: "Major",
+		image: "/augments/mask-of-distraction-major-augment.webp",
+	},
+	maskOfBenevolence: {
+		id: "mask-of-benevolence",
+		title: "Mask of Benevolence",
+		description: "The Maiden does not attack but will periodically heal you.",
+		type: "Major",
+		image: "/augments/mask-of-benevolence-major-augment.webp",
+	},
+	extensionWisp: {
+		id: "extension-wisp",
+		title: "Extension",
+		description: "Increase the Wisp’s lifetime.",
+		type: "Minor",
+		image: "/augments/extension-wisp-minor-augment.webp",
+	},
+	hasteWisp: {
+		id: "haste-wisp",
+		title: "Haste",
+		description: "Decrease the cooldown before a Wisp can be summoned.",
+		type: "Minor",
+		image: "/augments/haste-wisp-minor-augment.webp",
+	},
+	zombieSitter: {
+		id: "zombie-sitter",
+		title: "Zombie Sitter",
+		description:
+			"The Wisp will attract and avoid damaging the last zombie in the round until the round times out.",
+		type: "Minor",
+		image: "/augments/zombie-sitter-minor-augment.webp",
+	},
+	fetcher: {
+		id: "fetcher",
+		title: "Fetcher",
+		description: "The Wisp will pick up items and Powerups for you (aside from the Nuke).",
+		type: "Minor",
+		image: "/augments/fetcher-minor-augment.webp",
+	},
+	sixthSense: {
+		id: "sixth-sense",
+		title: "Sixth Sense",
+		description: "See enemies close behind you and take less damage from behind.",
+		type: "Major",
+		image: "/augments/sixth-sense-major-augment.webp",
+	},
+	gunsUp: {
+		id: "guns-up",
+		title: "Guns Up",
+		description: "Fire while sprinting.",
+		type: "Major",
+		image: "/augments/guns-up-major-augment.webp",
+	},
+	ammoSurge: {
+		id: "ammo-surge",
+		title: "Ammo Surge",
+		description: "Gain a burst of speed when initiating a reload.",
+		type: "Major",
+		image: "/augments/ammo-surge-major-augment.webp",
+	},
+	bigGameFireWorks: {
+		id: "big-game-fire-works",
+		title: "Big Game",
+		description: "Fire Works can activate on Elite Enemies, creating a bigger lightshow.",
+		type: "Major",
+		image: "/augments/big-game-major-augment.webp",
+	},
+	starburst: {
+		id: "starburst",
+		title: "Starburst",
+		description:
+			"Fire Works explodes immediately, sending flares through enemies in all directions.",
+		type: "Major",
+		image: "/augments/starburst-major-augment.webp",
+	},
+	weepingWillow: {
+		id: "weeping-willow",
+		title: "Weeping Willow",
+		description:
+			"Instead of targeting enemies the flares will land on the ground and explode for a while.",
+		type: "Major",
+		image: "/augments/weeping-willow-major-augment.webp",
+	},
+	fireWheel: {
+		id: "fire-wheel",
+		title: "Fire Wheel",
+		description: "Create two Fire Wheels that spin around and damage enemies.",
+		type: "Major",
+		image: "/augments/fire-wheel-major-augment.webp",
+	},
+	causticFumes: {
+		id: "caustic-fumes",
+		title: "Caustic Fumes",
+		description: "Charmed enemies deal Toxic damage to nearby enemies.",
+		type: "Major",
+		image: "/augments/caustic-fumes-major-augment.webp",
+	},
+	petroleum: {
+		id: "petroleum",
+		title: "Petroleum",
+		description: "Napalm Burst leaves a pool of fire on the ground.",
+		type: "Major",
+		image: "/augments/petroleum-major-augment.webp",
+	},
+	gravityWell: {
+		id: "gravity-well",
+		title: "Gravity Well",
+		description:
+			"Shadow Rift becomes a black hole that pulls in enemies, before teleporting away nearby enemy survivors.",
+		type: "Major",
+		image: "/augments/gravity-well-major-augment.webp",
+	},
+	ballLightning: {
+		id: "ball-lightning",
+		title: "Ball Lightning",
+		description:
+			"Activating Dead Wire launches an orb that deals electric damage to nearby enemies as it moves.",
+		type: "Major",
+		image: "/augments/ball-lightning-major-augment.webp",
+	},
+	coldCompany: {
+		id: "cold-company",
+		title: "Cold Company",
+		description: "Cryo Freeze has a chance to activate on more than one enemy at a time.",
+		type: "Major",
+		image: "/augments/cold-company-major-augment.webp",
+	},
+	urticant: {
+		id: "urticant",
+		title: "Urticant",
+		description:
+			"Toxic Growth takes up a wider area and enemies that enter the growth continue to be slowed after leaving it.",
+		type: "Major",
+		image: "/augments/urticant-major-augment.webp",
+	},
+	cordyception: {
+		id: "cordyception",
+		title: "Cordyception",
+		description:
+			"The first Normal or Special Enemy to walk into the growth is entangled and charmed, attacking other enemies that enter.",
+		type: "Major",
+		image: "/augments/cordyception-major-augment.webp",
+	},
+	pollination: {
+		id: "pollination",
+		title: "Pollination",
+		description:
+			"Enemies killed by the growth explode, dealing Toxic damage to nearby enemies and slowing them.",
+		type: "Major",
+		image: "/augments/pollination-major-augment.webp",
+	},
+	zoochory: {
+		id: "zoochory",
+		title: "Zoochory",
+		description:
+			"The first Normal or Special Enemy to walk into the growth becomes the Toxic Growth itself.",
+		type: "Major",
+		image: "/augments/zoochory-major-augment.webp",
+	},
+	muzzleBlast: {
+		id: "muzzle-blast",
+		title: "Muzzle Blast",
+		description: "The beam now deals additional damage in a cone in front of you.",
+		type: "Major",
+		image: "/augments/muzzle-blast-major-augment.webp",
+	},
+	necromancer: {
+		id: "necromancer",
+		title: "Necromancer",
+		description: "Healing Aura can now revive dead allies.",
+		type: "Major",
+		image: "/augments/necromancer-major-augment.webp",
+	},
+	fistsOfFrenzy: {
+		id: "fists-of-frenzy",
+		title: "Fists of Frenzy",
+		description: "While Frenzied, annihilate enemies with your fists.",
+		type: "Major",
+		image: "/augments/fists-of-frenzy-major-augment.webp",
+	},
+	smartMine: {
+		id: "smart-mine",
+		title: "Smart Mine",
+		description:
+			"Energy Mine has more detonations and waits for multiple enemies to be in range for each detonation.",
+		type: "Major",
+		image: "/augments/smart-mine-major-augment.webp",
+	},
+	afterimage: {
+		id: "afterimage",
+		title: "Afterimage",
+		description: "Distract enemies with a Dark Aether clone of yourself.",
+		type: "Major",
+		image: "/augments/afterimage-major-augment.webp",
+	},
+	hiddenGems: {
+		id: "hidden-gems",
+		title: "Hidden Gems",
+		description: "Death Perception can now see loot.",
+		type: "Minor",
+		image: "/augments/hidden-gems-minor-augment.webp",
+	},
+	footwork: {
+		id: "footwork",
+		title: "Footwork",
+		description: "Increase non-forward sprinting speed.",
+		type: "Minor",
+		image: "/augments/footwork-minor-augment.webp",
+	},
+	prestidigitation: {
+		id: "prestidigitation",
+		title: "Prestidigitation",
+		description: "Reloading has a chance to not use stock ammo.",
+		type: "Minor",
+		image: "/augments/prestidigitation-minor-augment.webp",
+	},
+	starlight: {
+		id: "starlight",
+		title: "Starlight",
+		description: "Fire Works launches more flares.",
+		type: "Minor",
+		image: "/augments/starlight-minor-augment.webp",
+	},
+	bigBang: {
+		id: "big-bang",
+		title: "Big Bang",
+		description: "Fire Works flares deal more damage to Special and Elite Enemies.",
+		type: "Minor",
+		image: "/augments/big-bang-minor-augment.webp",
+	},
+	highYield: {
+		id: "high-yield",
+		title: "High Yield",
+		description: "Increase the area of effect.",
+		type: "Minor",
+		image: "/augments/high-yield-minor-augment.webp",
+	},
+	shortFuse: {
+		id: "short-fuse",
+		title: "Short Fuse",
+		description: "Fire Works cooldown is reduced.",
+		type: "Minor",
+		image: "/augments/short-fuse-minor-augment.webp",
+	},
+	superSerum: {
+		id: "super-serum",
+		title: "Super Serum",
+		description: "Increase the damage dealt by charmed enemies.",
+		type: "Minor",
+		image: "/augments/super-serum-minor-augment.webp",
+	},
+	backdraft: {
+		id: "backdraft",
+		title: "Backdraft",
+		description: "Increase the activation radius.",
+		type: "Minor",
+		image: "/augments/backdraft-minor-augment.webp",
+	},
+	ammoTheorem: {
+		id: "ammo-theorem",
+		title: "Ammo Theorem",
+		description: "Teleporting enemies away adds ammo to your weapon magazine from stock.",
+		type: "Minor",
+		image: "/augments/ammo-theorem-minor-augment.webp",
+	},
+	aftershock: {
+		id: "aftershock",
+		title: "Aftershock",
+		description: "Enemies that are stunned by Dead Wire have a chance to spread to nearby enemies.",
+		type: "Minor",
+		image: "/augments/aftershock-minor-augment.webp",
+	},
+	thermalShock: {
+		id: "thermal-shock",
+		title: "Thermal Shock",
+		description: "Enemies are damaged once they’re unfrozen.",
+		type: "Minor",
+		image: "/augments/thermal-shock-minor-augment.webp",
+	},
+	ankleShredder: {
+		id: "ankle-shredder",
+		title: "Ankle Shredder",
+		description: "Enemies moving through the growth are even slower.",
+		type: "Minor",
+		image: "/augments/ankle-shredder-minor-augment.webp",
+	},
+	greenThumb: {
+		id: "green-thumb",
+		title: "Green Thumb",
+		description: "Significantly increases the Toxic Growth health.",
+		type: "Minor",
+		image: "/augments/green-thumb-minor-augment.webp",
+	},
+	extraChargeToxic: {
+		id: "extra-charge-toxic",
+		title: "Extra Charge",
+		description: "Increases Max Charges by one.",
+		type: "Minor",
+		image: "/augments/extra-charge-toxic-minor-augment.webp",
+	},
+	plantFood: {
+		id: "plant-food",
+		title: "Plant Food",
+		description: "Killing enemies with Toxic Growth has a chance to drop healing fruit.",
+		type: "Minor",
+		image: "/augments/plant-food-minor-augment.webp",
+	},
+	duskFlame: {
+		id: "dusk-flame",
+		title: "Dusk Flame",
+		description: "Enemies that are hit by the beam are dealt additional Shadow damage over time.",
+		type: "Minor",
+		image: "/augments/dusk-flame-minor-augment.webp",
+	},
+	cornucopia: {
+		id: "cornucopia",
+		title: "Cornucopia",
+		description: "Affected players get a health overcharge.",
+		type: "Minor",
+		image: "/augments/cornucopia-minor-augment.webp",
+	},
+	dualLayer: {
+		id: "dual-layer",
+		title: "Dual Layer",
+		description: "While Frenzied Guard is active, armor durability is increased.",
+		type: "Minor",
+		image: "/augments/dual-layer-minor-augment.webp",
+	},
+	recycle: {
+		id: "recycle",
+		title: "Recycle",
+		description: "A deployed Energy Mine can be recycled for Field Upgrade charge.",
+		type: "Minor",
+		image: "/augments/recycle-minor-augment.webp",
+	},
+	impulse: {
+		id: "impulse",
+		title: "Impulse",
+		description:
+			"Deal Shadow damage to enemies on activation and increase your movement speed during Aether Shroud.",
+		type: "Minor",
+		image: "/augments/impulse-minor-augment.webp",
+	},
+	ironCore: {
+		id: "iron-core",
+		title: "Iron Core",
+		description: "Your health is increased when all of your Armor Plates are broken.",
+		type: "Major",
+		image: "/augments/icon-core-major-augment.webp",
+	},
+	shakeItOff: {
+		id: "shake-it-off",
+		title: "Shake It Off",
+		description: "Incoming damage will occasionally be significantly reduced.",
+		type: "Minor",
+		image: "/augments/shake-it-off-minor-augment.webp",
+	},
+	doubleWhammy: {
+		id: "double-whammy",
+		title: "Double Whammy",
+		description: "Release a second explosion (shortly after the first one).",
+		type: "Major",
+		image: "/augments/double-whammy-major-augment.webp",
+	},
+	stuntman: {
+		id: "stuntman",
+		title: "Stuntman",
+		description: "Wall Jumping creates an explosion.",
+		type: "Minor",
+		image: "/augments/stuntman-minor-augment.webp",
+	},
+	rainbowPop: {
+		id: "rainbow-pop",
+		title: "Rainbow Pop",
+		description:
+			"Weapons with an Ammo Mod equipped have a chance to deal the elemental damage that an enemy is weak to.",
+		type: "Major",
+		image: "/augments/rainbow-pop-major-augment.webp",
+	},
+	refreshMint: {
+		id: "refresh-mint",
+		title: "Refresh Mint",
+		description:
+			"Killing a Special or Elite Enemy with its elemental weakness resets your Elemental Pop cooldown.",
+		type: "Minor",
+		image: "/augments/refresh-mint-minor-augment.webp",
+	},
+	mochaMaul: {
+		id: "mocha-maul",
+		title: "Mocha Maul",
+		description: "The punch is replaced with your dedicated melee weapon.",
+		type: "Major",
+		image: "/augments/mocha-maul-major-augment.webp",
+	},
+	baristaBrawl: {
+		id: "barista-brawl",
+		title: "Barista Brawl",
+		description: "Gain more Essence from Melee Kills.",
+		type: "Minor",
+		image: "/augments/barista-brawl-minor-augment.webp",
+	},
+	armorMatic: {
+		id: "armor-matic",
+		title: "Armor-matic",
+		description: "Gain more Armor from Melee Kills.",
+		type: "Minor",
+		image: "/augments/armor-matic-minor-augment.webp",
+	},
+	extraServing: {
+		id: "extra-serving",
+		title: "Extra Serving",
+		description: "Special and Elite Enemies you kill have a chance to drop a Large Essence Vial.",
+		type: "Minor",
+		image: "/augments/extra-serving-minor-augment.webp",
+	},
+	doubleDealer: {
+		id: "double-dealer",
+		title: "Double Dealer",
+		description: "Every fourth bullet in your weapon magazine deals double damage.",
+		type: "Major",
+		image: "/augments/double-dealer-major-augment.webp",
+	},
+	doubleDown: {
+		id: "double-down",
+		title: "Double Down",
+		description: "Bullet weapons have increased penetration damage through enemies.",
+		type: "Minor",
+		image: "/augments/double-down-minor-augment.webp",
+	},
+	adrenalineRush: {
+		id: "adrenaline-rush",
+		title: "Adrenaline Rush",
+		description: "Killing a Special or Elite Enemy will start your health regeneration.",
+		type: "Major",
+		image: "/augments/adrenaline-rush-major-augment.webp",
+	},
+	emergencyMedicalKit: {
+		id: "emergency-medical-kit",
+		title: "Emergency Medical Kit",
+		description: "You can now craft a Self-Revive Kit up to four times.",
+		type: "Minor",
+		image: "/augments/emergency-medical-kit-minor-augment.webp",
+	},
+	deadPoint: {
+		id: "dead-point",
+		title: "Dead Point",
+		description: "Bullets deal bonus damage to enemies within Point Blank range.",
+		type: "Major",
+		image: "/augments/dead-point-major-augment.webp",
+	},
+	deadHeat: {
+		id: "dead-heat",
+		title: "Dead Heat",
+		description: "Temporarily increase your movement speed after getting a Point-Blank kill.",
+		type: "Minor",
+		image: "/augments/dead-heat-minor-augment.webp",
+	},
 } as const satisfies Record<string, Augment>
-
-/**Union of all keys in the Augment Registry */
-export type AugmentKey = keyof typeof augmentRegistry
-/**Tuple to enforce min/max allowed augments */
-export type AugmentTuple = [Augment, Augment, Augment, Augment, Augment, Augment]
-/**Union of all Augment types */
-export type AugmentType = Augment["type"]
-export const {
-	doubleJeopardy,
-	doubleStandard,
-	doubleImpact,
-	doubleTime,
-	doubleOrNothing,
-	doublePlay,
-	treasureHunter,
-	deathStare,
-	criticalEye,
-	birdsEyeView,
-	extraChange,
-	furtherInsight,
-	gravityMD,
-	drRam,
-	phdSlider,
-	environmentalist,
-	eodTechnician,
-	tribologist,
-	bigGameBrainRot,
-	extensionBrainRot,
-	bigGameDeadWire,
-	extensionDeadWire,
-	lightningStrike,
-	highVoltage,
-	hasteDeadWire,
-	plague,
-	pheromone,
-	bigGameLightMend,
-	antibiotic,
-	carrionLuggage,
-	chainLightning,
-	condorsReach,
-	dualAction,
-	durablePlates,
-	dyingWish,
-	emt,
-	equivalentExchange,
-	expressRemedy,
-	extraStrength,
-	expresso,
-	fetidUpgraid,
-	hardenedPlates,
-	hiddenImpact,
-	karmicReturn,
-	longerLife,
-	partingGift,
-	pickyEater,
-	probiotic,
-	reactiveArmor,
-	retaliation,
-	slowDeath,
-	smellOfDeath,
-	stickNMove,
-	strengthTraining,
-	swiftRecovery,
-	turtleShell,
-	tripleShot,
-	vampiricExtraction,
-	fastPitcher,
-	quickSwap,
-	speedyRoulette,
-	phantomReload,
-	classicFormula,
-	supercharged,
-	quarterback,
-	hotFoot,
-	apexHunter,
-	arcaneFury,
-	bigGameCryoFreeze,
-	bigGameNapalmBurst,
-	bigGameShadowRift,
-	broadBeam,
-	burstDash,
-	carousel,
-	chillBerry,
-	citrusFocus,
-	deadBreak,
-	deadDraw,
-	deadHead,
-	deadAgain,
-	deadSet,
-	freeFaller,
-	dasher,
-	stalker,
-	hardTarget,
-	partyAnimal,
-	pineappleBlast,
-	peeksFavor,
-	socialButterfly,
-	vulneraBean,
-	danceParty,
-	electricCherry,
-	lithiumCharged,
-	overclocked,
-	supermassive,
-	contactBurn,
-	darkPact,
-	deadFirst,
-	explosive,
-	explosiveRain,
-	extensionAetherShroud,
-	extensionCryoFreeze,
-	extensionDarkFlare,
-	extensionFrenziedGuard,
-	extensionNapalmBurst,
-	extraCharge,
-	firebomb,
-	freezerBurn,
-	frenzyFire,
-	frequencyBoost,
-	frozenStiff,
-	groupShroud,
-	hasteBrainRot,
-	hasteShadowRift,
-	heavyShadow,
-	iceCloud,
-	imperialPeach,
-	incendiary,
-	instantReload,
-	liquidNitrogen,
-	phalanx,
-	powerGrid,
-	rally,
-	repairBoost,
-	retribution,
-	scatter,
-	shockwave,
-	siren,
-	staticDischarge,
-	supernova,
-	targeted,
-	thermite,
-	toppleDanger,
-	transformer,
-	turret,
-	voidSheath,
-} = augmentRegistry

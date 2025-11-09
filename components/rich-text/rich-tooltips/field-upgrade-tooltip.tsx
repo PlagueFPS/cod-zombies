@@ -1,8 +1,10 @@
 "use client"
+import type { GameKey } from "@/data/games"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
+import { getAugmentByKey } from "@/data/augments"
 import {
 	type FieldUpgrade,
 	type FieldUpgradeKey,
@@ -11,13 +13,14 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile"
 import AugmentTooltip from "./augment-tooltip"
 
-export default function FieldUpgradeTooltip({
-	fieldUpgradeKey,
-}: {
+interface FieldUpgradeTooltipProps {
 	fieldUpgradeKey: FieldUpgradeKey
-}) {
+	game?: GameKey
+}
+
+export default function FieldUpgradeTooltip({ fieldUpgradeKey, game }: FieldUpgradeTooltipProps) {
 	const isMobile = useIsMobile(640)
-	const fieldUpgrade = getFieldUpgradeByKey(fieldUpgradeKey)
+	const fieldUpgrade = getFieldUpgradeByKey(fieldUpgradeKey, game)
 
 	if (!isMobile)
 		return (
@@ -44,7 +47,7 @@ export default function FieldUpgradeTooltip({
 					side="top"
 					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
-					{<FieldUpgradeTooltipContent fieldUpgrade={fieldUpgrade} />}
+					{<FieldUpgradeTooltipContent fieldUpgrade={fieldUpgrade} game={game} />}
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -73,13 +76,24 @@ export default function FieldUpgradeTooltip({
 				side="top"
 				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
-				{<FieldUpgradeTooltipContent fieldUpgrade={fieldUpgrade} />}
+				{<FieldUpgradeTooltipContent fieldUpgrade={fieldUpgrade} game={game} />}
 			</PopoverContent>
 		</Popover>
 	)
 }
 
-const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: FieldUpgrade }) => {
+const FieldUpgradeTooltipContent = ({
+	fieldUpgrade,
+	game,
+}: {
+	fieldUpgrade: FieldUpgrade
+	game: GameKey | undefined
+}) => {
+	const fieldUpgradeAugments =
+		fieldUpgrade.augments
+			?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+			?.filter(augment => augment !== null) || []
+
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
 			<div className="relative flex items-center justify-center">
@@ -102,7 +116,7 @@ const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: FieldUpgra
 						{fieldUpgrade.description}
 					</p>
 				</div>
-				{fieldUpgrade.augments ? (
+				{fieldUpgradeAugments.length > 0 ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
@@ -111,7 +125,7 @@ const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: FieldUpgra
 									MAJOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{fieldUpgrade.augments
+									{fieldUpgradeAugments
 										.filter(augment => augment.type === "Major")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">
@@ -126,7 +140,7 @@ const FieldUpgradeTooltipContent = ({ fieldUpgrade }: { fieldUpgrade: FieldUpgra
 									MINOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{fieldUpgrade.augments
+									{fieldUpgradeAugments
 										.filter(augment => augment.type === "Minor")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">

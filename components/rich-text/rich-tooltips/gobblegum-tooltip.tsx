@@ -1,4 +1,5 @@
 "use client"
+import type { GameKey } from "@/data/games"
 import { RarityBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -7,9 +8,14 @@ import { type Gobblegum, type GobblegumKey, getGobblegumByKey } from "@/data/gob
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
-export default function GobbleGumTooltip({ gobblegumKey }: { gobblegumKey: GobblegumKey }) {
+interface GobbleGumTooltipProps {
+	gobblegumKey: GobblegumKey
+	game?: GameKey
+}
+
+export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumTooltipProps) {
 	const isMobile = useIsMobile(640)
-	const gobblegum = getGobblegumByKey(gobblegumKey)
+	const gobblegum = getGobblegumByKey(gobblegumKey, game)
 
 	if (!isMobile)
 		return (
@@ -59,7 +65,7 @@ export default function GobbleGumTooltip({ gobblegumKey }: { gobblegumKey: Gobbl
 				<HoverCardContent
 					side="top"
 					className={cn(
-						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200 `,
+						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
 						{
 							"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
 								gobblegum.type === "Time-Based",
@@ -134,7 +140,7 @@ export default function GobbleGumTooltip({ gobblegumKey }: { gobblegumKey: Gobbl
 			<PopoverContent
 				side="top"
 				className={cn(
-					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200 `,
+					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
 					{
 						"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
 							gobblegum.type === "Time-Based",

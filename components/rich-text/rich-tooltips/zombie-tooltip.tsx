@@ -175,7 +175,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 						<div className="flex flex-wrap items-center gap-2 text-sm">
 							{zombie.elementalWeakness.length > 0 ? (
 								zombie.elementalWeakness.map(weakness => (
-									<AmmoModTooltip key={weakness.id} ammoMod={weakness} />
+									<AmmoModTooltip key={weakness} ammoModKey={weakness} />
 								))
 							) : (
 								<span className="text-foreground dark:text-foreground/80">

@@ -1,15 +1,22 @@
 "use client"
+import type { GameKey } from "@/data/games"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
+import { getAugmentByKey } from "@/data/augments"
 import { getPerkByKey, type Perk, type PerkKey } from "@/data/perks"
 import { useIsMobile } from "@/hooks/use-mobile"
 import AugmentTooltip from "./augment-tooltip"
 
-export default function PerkTooltip({ perkKey }: { perkKey: PerkKey }) {
+interface PerkTooltipProps {
+	perkKey: PerkKey
+	game?: GameKey
+}
+
+export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
 	const isMobile = useIsMobile(640)
-	const perk = getPerkByKey(perkKey)
+	const perk = getPerkByKey(perkKey, game)
 
 	if (!isMobile)
 		return (
@@ -36,7 +43,7 @@ export default function PerkTooltip({ perkKey }: { perkKey: PerkKey }) {
 					side="top"
 					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
-					{<PerkTooltipContent perk={perk} />}
+					{<PerkTooltipContent perk={perk} game={game} />}
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -65,13 +72,18 @@ export default function PerkTooltip({ perkKey }: { perkKey: PerkKey }) {
 				side="top"
 				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
-				{<PerkTooltipContent perk={perk} />}
+				{<PerkTooltipContent perk={perk} game={game} />}
 			</PopoverContent>
 		</Popover>
 	)
 }
 
-const PerkTooltipContent = ({ perk }: { perk: Perk }) => {
+const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
+	const perkAugments =
+		perk.augments
+			?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+			?.filter(augment => augment !== null) || []
+
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
 			<div className="relative flex items-center justify-center">
@@ -105,7 +117,7 @@ const PerkTooltipContent = ({ perk }: { perk: Perk }) => {
 							</p>
 						</div>
 					</blockquote>
-				) : perk.augments ? (
+				) : perkAugments.length > 0 ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
@@ -114,7 +126,7 @@ const PerkTooltipContent = ({ perk }: { perk: Perk }) => {
 									MAJOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{perk.augments
+									{perkAugments
 										.filter(augment => augment.type === "Major")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">
@@ -129,7 +141,7 @@ const PerkTooltipContent = ({ perk }: { perk: Perk }) => {
 									MINOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{perk.augments
+									{perkAugments
 										.filter(augment => augment.type === "Minor")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">

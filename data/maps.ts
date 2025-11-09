@@ -1,28 +1,5 @@
 import { sortReleaseDateDesc } from "@/utils/functions.client"
-import {
-	blackOps1,
-	blackOps2,
-	blackOps3,
-	blackOps4,
-	blackOps6,
-	blackOpsColdWar,
-	type Game,
-	worldAtWar,
-} from "./games"
-
-/**
- * Gets all maps.
- * @returns An array of maps.
- */
-export const getMaps = (): Maps[] =>
-	Object.values(mapRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
-/**
- * Gets a map by its key.
- * @param key The key of the map.
- * @returns The map.
- */
-export const getMapByKey = (key: MapKey): Maps => mapRegistry[key]
-
+import { type Game, getGameByKey } from "./games"
 export interface Maps {
 	/** The unique identifier of the map */
 	id: string
@@ -38,6 +15,22 @@ export interface Maps {
 	game: Game
 }
 
+/** Union type of all map keys */
+export type MapKey = keyof typeof mapRegistry
+
+/**
+ * Gets all maps.
+ * @returns An array of maps.
+ */
+export const getMaps = (): Maps[] =>
+	Object.values(mapRegistry).sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
+/**
+ * Gets a map by its key.
+ * @param key The key of the map.
+ * @returns The map.
+ */
+export const getMapByKey = (key: MapKey): Maps => mapRegistry[key]
+
 const mapRegistry = {
 	nachtDerUntoten: {
 		id: "nacht-der-untoten",
@@ -46,7 +39,7 @@ const mapRegistry = {
 		description:
 			"You drove them deep into the heart of the Reich. You thought they were dead. You were wrong.",
 		image: "/maps/nacht-der-untoten.webp",
-		game: worldAtWar,
+		game: getGameByKey("worldAtWar"),
 	},
 	verruckt: {
 		id: "verruckt",
@@ -55,7 +48,7 @@ const mapRegistry = {
 		description:
 			"Welcome to Wittenau Sanitorium, a German asylum with dark corridors, terrifying undead enemies, and even darker secrets.",
 		image: "/maps/verruckt.webp",
-		game: worldAtWar,
+		game: getGameByKey("worldAtWar"),
 	},
 	shiNoNuma: {
 		id: "shi-no-numa",
@@ -64,7 +57,7 @@ const mapRegistry = {
 		description:
 			'A "swamp of death" located in Japanese territory, surrounded by a sweltering jungle, hellhounds, and endless armies of the undead.',
 		image: "/maps/shi-no-numa.webp",
-		game: worldAtWar,
+		game: getGameByKey("worldAtWar"),
 	},
 	derRiese: {
 		id: "der-riese",
@@ -73,7 +66,7 @@ const mapRegistry = {
 		description:
 			"The Giant is rising. Face the might of the Nazi Zombies in their heartland. This is where it all began. This is where the master plan took shape. Is this where it all ends?",
 		image: "/maps/der-riese.webp",
-		game: worldAtWar,
+		game: getGameByKey("worldAtWar"),
 	},
 	kinoDerToten: {
 		id: "kino-der-toten",
@@ -82,7 +75,7 @@ const mapRegistry = {
 		description:
 			"Battle the undead in this theatrical installment of 'Zombies'. New twists and clues could uncover the final plan. It's show time!",
 		image: "/maps/kino-der-toten.webp",
-		game: blackOps1,
+		game: getGameByKey("blackOps1"),
 	},
 	five: {
 		id: "five",
@@ -91,7 +84,7 @@ const mapRegistry = {
 		description:
 			'The Pentagon is under attack! Washington is going to DEFCON 1 in this installment of "Zombies".',
 		image: "/maps/five.webp",
-		game: blackOps1,
+		game: getGameByKey("blackOps1"),
 	},
 	ascension: {
 		id: "ascension",
@@ -100,7 +93,7 @@ const mapRegistry = {
 		description:
 			"The risen dead have overtaken a Soviet cosmodrome and all Hell has broken loose. The countdown to the zombie apocalypse has begun.",
 		image: "/maps/ascension.webp",
-		game: blackOps1,
+		game: getGameByKey("blackOps1"),
 	},
 	callOfTheDead: {
 		id: "call-of-the-dead",
@@ -109,7 +102,7 @@ const mapRegistry = {
 		description:
 			"A shipwrecked crew of fearless explorers is hopelessly stranded in an abandoned Siberian outpost. Their dream of discovering the true origins of the mysterious Element 115 unravels into a Hellish nightmare.",
 		image: "/maps/call-of-the-dead.webp",
-		game: blackOps1,
+		game: getGameByKey("blackOps1"),
 	},
 	shangriLa: {
 		id: "shangri-la",
@@ -118,7 +111,7 @@ const mapRegistry = {
 		description:
 			"A legendary shrine lost in an exotic jungle, where the undead lurk within a treacherous labyrinth of underground caverns, deadly traps, and dark secrets.",
 		image: "/maps/shangri-la.webp",
-		game: blackOps1,
+		game: getGameByKey("blackOps1"),
 	},
 	moon: {
 		id: "moon",
@@ -127,7 +120,7 @@ const mapRegistry = {
 		description:
 			'"I believe that this nation should commit itself to achieving the goal, before this decade is out, of landing a man on the moon and returning him safely to the Earth." (JKF, 1961)',
 		image: "/maps/moon.webp",
-		game: blackOps1,
+		game: getGameByKey("blackOps1"),
 	},
 	tranzit: {
 		id: "tranzit",
@@ -136,7 +129,7 @@ const mapRegistry = {
 		description:
 			"Continue the fight against the undead and search for clues to the truth of what lies ahead...",
 		image: "/maps/tranzit.webp",
-		game: blackOps2,
+		game: getGameByKey("blackOps2"),
 	},
 	dieRise: {
 		id: "die-rise",
@@ -145,7 +138,7 @@ const mapRegistry = {
 		description:
 			"Watch your step! Fight for survival atop the towers of doom, where dizzying heights and relentless undead make a deadly combination.",
 		image: "/maps/die-rise.webp",
-		game: blackOps2,
+		game: getGameByKey("blackOps2"),
 	},
 	mobOfTheDead: {
 		id: "mob-of-the-dead",
@@ -154,7 +147,7 @@ const mapRegistry = {
 		description:
 			"Battle the undead as you attempt to break free from the physical and metaphorical incarceration of Alcatraz Prison.",
 		image: "/maps/mob-of-the-dead.webp",
-		game: blackOps2,
+		game: getGameByKey("blackOps2"),
 	},
 	buried: {
 		id: "buried",
@@ -163,7 +156,7 @@ const mapRegistry = {
 		description:
 			"Are you afraid of dark, tight spaces? Confront your deepest fears as you battle the undead in an underground obstacle course of mental challenges. You are now... 'Buried'.",
 		image: "/maps/buried.webp",
-		game: blackOps2,
+		game: getGameByKey("blackOps2"),
 	},
 	origins: {
 		id: "origins",
@@ -172,7 +165,7 @@ const mapRegistry = {
 		description:
 			"Witness the origins of Group 935, as an ancient evil is unleashed upon the battlefields of World War I.",
 		image: "/maps/origins.webp",
-		game: blackOps2,
+		game: getGameByKey("blackOps2"),
 	},
 	shadowsOfEvil: {
 		id: "shadows-of-evil",
@@ -181,7 +174,7 @@ const mapRegistry = {
 		description:
 			"Take to the streets of Morg City to combat the undead. Embrace the curse to uncover its mysteries.",
 		image: "/maps/shadows-of-evil.webp",
-		game: blackOps3,
+		game: getGameByKey("blackOps3"),
 	},
 	theGiant: {
 		id: "the-giant",
@@ -190,7 +183,7 @@ const mapRegistry = {
 		description:
 			"Re-awaken The Giant. Return to the secret facility where it all began, and strike at the heart of the zombie scourge.",
 		image: "/maps/the-giant.webp",
-		game: blackOps3,
+		game: getGameByKey("blackOps3"),
 	},
 	derEisendrache: {
 		id: "der-eisendrache",
@@ -199,7 +192,7 @@ const mapRegistry = {
 		description:
 			"Bound together by a fragile alliance, our heroes pursue the scattered remnants of Group 935 to their mountain top fortress in the Austrian Alps...",
 		image: "/maps/der-eisendrache.webp",
-		game: blackOps3,
+		game: getGameByKey("blackOps3"),
 	},
 	zetsubouNoShima: {
 		id: "zetsubou-no-shima",
@@ -208,7 +201,7 @@ const mapRegistry = {
 		description:
 			"On a remote island in the Pacific, a mysterious facility hides the secrets behind Division 9's sinister experiments...",
 		image: "/maps/zetsubou-no-shima.webp",
-		game: blackOps3,
+		game: getGameByKey("blackOps3"),
 	},
 	gorodKrovi: {
 		id: "gorod-krovi",
@@ -217,7 +210,7 @@ const mapRegistry = {
 		description:
 			"As their journey nears its end, our heroes must battle ancient beasts in the war-torn ruins of Stalingrad...",
 		image: "/maps/gorod-krovi.webp",
-		game: blackOps3,
+		game: getGameByKey("blackOps3"),
 	},
 	revelations: {
 		id: "revelations",
@@ -226,7 +219,7 @@ const mapRegistry = {
 		description:
 			"The time has come to join Doctor Monty in The House, where an ancient evil threatens the survival of our heroes' immortal souls...",
 		image: "/maps/revelations.webp",
-		game: blackOps3,
+		game: getGameByKey("blackOps3"),
 	},
 	voyageOfDespair: {
 		id: "voyage-of-despair",
@@ -235,7 +228,7 @@ const mapRegistry = {
 		description:
 			"Four intrepid adventurers board the RMS Titanic to pull off a daring heist involving a mysterious artifact. Little do Scarlett Rhodes, Diego Necalli, Bruno Delacroix, and Stanton Shaw suspect that a giant iceberg will be the least of their problems…",
 		image: "/maps/voyage-of-despair.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	ix: {
 		id: "ix",
@@ -244,7 +237,7 @@ const mapRegistry = {
 		description:
 			"Transported across the Millennia, Scarlett, Diego, Bruno and Shaw find themselves caught up in a sinister ritual, where they are thrust into brutal gladiatorial combat against waves of unnatural enemies that stand between them and the High Priest of Chaos.",
 		image: "/maps/ix.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	bloodOfTheDead: {
 		id: "blood-of-the-dead",
@@ -253,7 +246,7 @@ const mapRegistry = {
 		description:
 			"In their mission to “secure a better tomorrow”, Richtofen, Dempsey, Takeo and Nikolai journey to a secret laboratory beneath the iconic Alcatraz, where they realize that the future they sought to secure is now in serious jeopardy.",
 		image: "/maps/blood-of-the-dead.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	classified: {
 		id: "classified",
@@ -261,7 +254,7 @@ const mapRegistry = {
 		releaseDate: new Date("October 11, 2018 03:00 AM"),
 		description: "Mankind must put an end to war – or war will put an end to mankind. (JFK, 1961)",
 		image: "/maps/classified.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	deadOfTheNight: {
 		id: "dead-of-the-night",
@@ -270,7 +263,7 @@ const mapRegistry = {
 		description:
 			"When a party at an English mansion turns into an undead bloodbath, a phony psychic, stage-show cowboy, retired general, and bedeviled butler must fight for their lives.",
 		image: "/maps/dead-of-the-night.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	ancientEvil: {
 		id: "ancient-evil",
@@ -279,7 +272,7 @@ const mapRegistry = {
 		description:
 			"In the hidden heart of ancient Delphi, Scarlett, Diego, Bruno, and Shaw must rescue the fabled Oracle. But who is the Undead Warlord standing in their way?",
 		image: "/maps/ancient-evil.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	alphaOmega: {
 		id: "alpha-omega",
@@ -288,7 +281,7 @@ const mapRegistry = {
 		description:
 			"Here at Broken Arrow, it is our Mission to Prepare for Humanity’s Future and Open New Worlds.",
 		image: "/maps/alpha-omega.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	tagDerToten: {
 		id: "tag-der-toten",
@@ -296,7 +289,7 @@ const mapRegistry = {
 		releaseDate: new Date("September 23, 2019 12:00 AM"),
 		description: "The Paradox Must Be Resolved.",
 		image: "/maps/tag-der-toten.webp",
-		game: blackOps4,
+		game: getGameByKey("blackOps4"),
 	},
 	dieMaschine: {
 		id: "die-maschine",
@@ -305,7 +298,7 @@ const mapRegistry = {
 		description:
 			"Dimensional gateways opening around the globe. An undead horde threatening all of humanity. A new Cold War threat emerging from the shadows. Investigate the abandoned Nazi facility at the heart of it all.",
 		image: "/maps/die-maschine.webp",
-		game: blackOpsColdWar,
+		game: getGameByKey("blackOpsColdWar"),
 	},
 	firebaseZ: {
 		id: "firebase-z",
@@ -314,7 +307,7 @@ const mapRegistry = {
 		description:
 			"A captured agent in the heart of the darkness. A treacherous scientist on the brink of a breakthrough. An unlikely ally out for revenge. Infiltrate Omega’s Vietnam base and expose the secrets within.",
 		image: "/maps/firebase-z.webp",
-		game: blackOpsColdWar,
+		game: getGameByKey("blackOpsColdWar"),
 	},
 	mauerDerToten: {
 		id: "mauer-der-toten",
@@ -323,7 +316,7 @@ const mapRegistry = {
 		description:
 			"A city divided between East and West. A fragile alliance with a familiar adversary. An old enemy rising from the shadows. Who will prevail when worlds collide?",
 		image: "/maps/mauer-der-toten.webp",
-		game: blackOpsColdWar,
+		game: getGameByKey("blackOpsColdWar"),
 	},
 	forsaken: {
 		id: "forsaken",
@@ -332,7 +325,7 @@ const mapRegistry = {
 		description:
 			"A secluded facility harboring a secretive operation. A colonel determined to achieve his mission no matter the cost. Infiltrate the Soviet complex and extract the lost soul who could lead to Requiem’s salvation – or Omega’s supremacy. This is the only way.",
 		image: "/maps/forsaken.webp",
-		game: blackOpsColdWar,
+		game: getGameByKey("blackOpsColdWar"),
 	},
 	libertyFalls: {
 		id: "liberty-falls",
@@ -341,7 +334,7 @@ const mapRegistry = {
 		description:
 			"A small town in West Virginia is caught up in the grip of a mysterious outbreak. Assess the situation, contain the threat, and find the lost scientist who may hold the key to salvation.",
 		image: "/maps/liberty-falls.webp",
-		game: blackOps6,
+		game: getGameByKey("blackOps6"),
 	},
 	terminus: {
 		id: "terminus",
@@ -350,7 +343,7 @@ const mapRegistry = {
 		description:
 			"A jailbreak on a secluded island pits unlikely partners against the undead. Unlock the laboratory's secrets, recruit a strangely familiar ally, and avenge the gruesome crimes against nature.",
 		image: "/maps/terminus.webp",
-		game: blackOps6,
+		game: getGameByKey("blackOps6"),
 	},
 	citadelleDesMorts: {
 		id: "citadelle-des-morts",
@@ -359,7 +352,7 @@ const mapRegistry = {
 		description:
 			"A criminal hideout in an ancient castle is overrun by the undead. Find the captive demonologist, seek the Amulet, and defeat its Immortal Guardian.",
 		image: "/maps/citadelle-des-morts.webp",
-		game: blackOps6,
+		game: getGameByKey("blackOps6"),
 	},
 	theTomb: {
 		id: "the-tomb",
@@ -368,7 +361,7 @@ const mapRegistry = {
 		description:
 			"Cursed catacombs guard a gate to a world of darkness. Follow in the footsteps of a doomed explorer. Pass the Trials of the Damned. Claim the fabled Sentinel Artifact.",
 		image: "/maps/the-tomb.webp",
-		game: blackOps6,
+		game: getGameByKey("blackOps6"),
 	},
 	shatteredVeil: {
 		id: "shattered-veil",
@@ -377,7 +370,7 @@ const mapRegistry = {
 		description:
 			"A mansion with a diabolical past, caught in an Appalachian apocalypse. Free its captive souls. Come face to face with a synthetic mind. Confront a tyrant.",
 		image: "/maps/shattered-veil.webp",
-		game: blackOps6,
+		game: getGameByKey("blackOps6"),
 	},
 	reckoning: {
 		id: "reckoning",
@@ -386,49 +379,15 @@ const mapRegistry = {
 		description:
 			"Project Janus HQ teeters on the verge of collapse. Stabilize the Aether Reactors. Unleash the Sentinel Artifact. Complete the mission that began on Terminus.",
 		image: "/maps/reckoning.webp",
-		game: blackOps6,
+		game: getGameByKey("blackOps6"),
+	},
+	ashesOfTheDamned: {
+		id: "ashes-of-the-damned",
+		title: "Ashes of the Damned",
+		releaseDate: new Date("November 14, 2025 7:00 AM"),
+		description:
+			"A new world, a new enemy and some strangely familiar allies. Uncover the secrets of the Dark Aether's most dangerous corner and face the primordial power of its ancient guardian.",
+		image: "/maps/ashes-of-the-damned.webp",
+		game: getGameByKey("blackOps7"),
 	},
 } as const satisfies Record<string, Maps>
-
-export type MapKey = keyof typeof mapRegistry
-export const {
-	nachtDerUntoten,
-	verruckt,
-	derEisendrache,
-	zetsubouNoShima,
-	gorodKrovi,
-	revelations,
-	voyageOfDespair,
-	ix,
-	bloodOfTheDead,
-	classified,
-	deadOfTheNight,
-	ancientEvil,
-	alphaOmega,
-	tagDerToten,
-	dieMaschine,
-	firebaseZ,
-	mauerDerToten,
-	forsaken,
-	libertyFalls,
-	terminus,
-	citadelleDesMorts,
-	theTomb,
-	shatteredVeil,
-	reckoning,
-	ascension,
-	buried,
-	callOfTheDead,
-	derRiese,
-	dieRise,
-	five,
-	kinoDerToten,
-	mobOfTheDead,
-	moon,
-	origins,
-	shadowsOfEvil,
-	shangriLa,
-	shiNoNuma,
-	theGiant,
-	tranzit,
-} = mapRegistry

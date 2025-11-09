@@ -1,5 +1,6 @@
 "use client"
 import type { Augment, AugmentKey } from "@/data/augments"
+import type { GameKey } from "@/data/games"
 import { TypeBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -18,11 +19,13 @@ interface AugmentTooltipPropsWithAugment {
 	augment: Augment
 }
 
-type AugmentTooltipProps = AugmentTooltipPropsWithKey | AugmentTooltipPropsWithAugment
+type AugmentTooltipProps = (AugmentTooltipPropsWithKey | AugmentTooltipPropsWithAugment) & {
+	game?: GameKey
+}
 
 export default function AugmentTooltip(props: AugmentTooltipProps) {
 	const isMobile = useIsMobile(640)
-	const augment = props.augmentKey ? getAugmentByKey(props.augmentKey) : props.augment
+	const augment = props.augmentKey ? getAugmentByKey(props.augmentKey, props.game) : props.augment
 
 	if (!isMobile)
 		return (

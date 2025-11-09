@@ -1,10 +1,12 @@
 "use client"
+import type { GameKey } from "@/data/games"
 import IconImage from "@/components/icon-image/icon-image"
 import AugmentTooltip from "@/components/rich-text/rich-tooltips/augment-tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { type AmmoMod, type AmmoModKey, getAmmoModByKey } from "@/data/ammo-mods"
+import { getAugmentByKey } from "@/data/augments"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AmmoModTooltipPropsWithKey {
@@ -17,11 +19,13 @@ interface AmmoModTooltipPropsWithAmmoMod {
 	ammoMod: AmmoMod
 }
 
-type AmmoModTooltipProps = AmmoModTooltipPropsWithKey | AmmoModTooltipPropsWithAmmoMod
+type AmmoModTooltipProps = (AmmoModTooltipPropsWithKey | AmmoModTooltipPropsWithAmmoMod) & {
+	game?: GameKey
+}
 
 export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 	const isMobile = useIsMobile(640)
-	const ammoMod = props.ammoModKey ? getAmmoModByKey(props.ammoModKey) : props.ammoMod
+	const ammoMod = props.ammoModKey ? getAmmoModByKey(props.ammoModKey, props.game) : props.ammoMod
 
 	if (!isMobile)
 		return (
@@ -48,7 +52,7 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 					side="top"
 					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
-					{<AmmoModTooltipContent ammoMod={ammoMod} />}
+					{<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />}
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -77,13 +81,18 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 				side="top"
 				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
-				{<AmmoModTooltipContent ammoMod={ammoMod} />}
+				{<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />}
 			</PopoverContent>
 		</Popover>
 	)
 }
 
-const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: AmmoMod }) => {
+const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: GameKey }) => {
+	const ammoModAugments =
+		ammoMod.augments
+			?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
+			?.filter(augment => augment !== null) || []
+
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
 			<div className="relative flex items-center justify-center">
@@ -106,7 +115,7 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: AmmoMod }) => {
 						{ammoMod.description}
 					</p>
 				</div>
-				{ammoMod.augments ? (
+				{ammoModAugments.length > 0 ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
@@ -115,7 +124,7 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: AmmoMod }) => {
 									MAJOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{ammoMod.augments
+									{ammoModAugments
 										.filter(augment => augment.type === "Major")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">
@@ -130,7 +139,7 @@ const AmmoModTooltipContent = ({ ammoMod }: { ammoMod: AmmoMod }) => {
 									MINOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{ammoMod.augments
+									{ammoModAugments
 										.filter(augment => augment.type === "Minor")
 										.map(augment => (
 											<div key={augment.id} className="shrink-0">

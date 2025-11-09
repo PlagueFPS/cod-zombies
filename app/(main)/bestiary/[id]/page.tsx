@@ -114,7 +114,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 				</div>
 				<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 					<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
-						<div className="flex w-fit items-center justify-center gap-4">
+						<div className="flex w-fit items-center justify-center gap-2">
 							{zombie.state === "New" ? <NewBadge /> : null}
 							<TypeBadge type={zombie.type} />
 						</div>
@@ -259,7 +259,7 @@ export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">
 									<div className="flex flex-wrap items-center gap-2">
 										{zombie.elementalWeakness.length > 0 ? (
 											zombie.elementalWeakness.map(weakness => (
-												<AmmoModTooltip key={weakness.id} ammoMod={weakness} />
+												<AmmoModTooltip key={weakness} ammoModKey={weakness} />
 											))
 										) : (
 											<span className="text-orange-800 dark:text-orange-200">
