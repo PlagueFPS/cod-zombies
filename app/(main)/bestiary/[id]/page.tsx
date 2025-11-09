@@ -110,7 +110,7 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 
 	return (
 		<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
-			<div className="-top-5 absolute left-5 z-30 flex w-full justify-center pl-4 xl:pl-0">
+			<div className="-top-5 absolute left-2 z-30 flex w-full justify-center pl-4 xl:left-5 xl:pl-0">
 				<Breadcrumbs
 					links={[
 						{ title: "Bestiary", href: "/bestiary" },
@@ -119,7 +119,7 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 				/>
 			</div>
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
-				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
+				<div className="flex items-center justify-between bg-accent px-2 py-2 sm:px-4 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-2">
 						{Option.match(zombie.state, {
 							onNone: () => null,
@@ -128,7 +128,9 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 						<TypeBadge type={zombie.type} />
 					</div>
 					<div className="flex items-center justify-center gap-2">
-						<span className="text-foreground/60 text-sm">Updated: {lastModifiedFormatted}</span>
+						<span className="text-foreground/60 text-xs sm:text-sm">
+							Updated: {lastModifiedFormatted}
+						</span>
 						<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
 					</div>
 				</div>
@@ -164,7 +166,7 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 							/>
 							<div className="w-full space-y-3">
 								<div>
-									<div className="flex items-center justify-between">
+									<div className="flex flex-wrap items-center justify-between">
 										<div className="flex items-center gap-2">
 											<Eye className="size-5 text-orange-500" />
 											<span className="text-foreground dark:text-foreground/80">
