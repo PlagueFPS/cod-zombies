@@ -1,18 +1,25 @@
 import type { Metadata } from "next"
+import { Effect, Option } from "effect"
 import { AlertCircle } from "lucide-react"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import { Button } from "@/components/ui/button"
+import { BasePage } from "@/lib/layers"
+import { decodeErrorPageSearchParams } from "@/utils/validation-schemas"
 
 export const metadata: Metadata = {
 	title: "Unsubscribe Failed",
 }
 
-export default async function UnsubscribeErrorPage({
+const UnsubscribeErrorPage = Effect.fn("UnsubscribeErrorPage")(function* ({
 	searchParams,
 }: PageProps<"/newsletter/unsubscribe/error">) {
-	const { message } = await searchParams
-	const errorMessage =
-		decodeURIComponent(String(message)) || "An error occurred during the unsubscribe process."
+	const params = yield* Effect.promise(() => searchParams)
+	const { message } = yield* decodeErrorPageSearchParams(params).pipe(
+		Effect.catchAll(() => Effect.succeed({ message: Option.none() })),
+	)
+	const errorMessage = Option.isSome(message)
+		? message.value
+		: "An error occurred during the unsubscribe process."
 
 	return (
 		<div className="mx-auto max-w-md px-4 py-12 text-center">
@@ -31,4 +38,6 @@ export default async function UnsubscribeErrorPage({
 			</div>
 		</div>
 	)
-}
+})
+
+export default BasePage.build(UnsubscribeErrorPage)

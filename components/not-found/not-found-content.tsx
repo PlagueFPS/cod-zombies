@@ -18,7 +18,7 @@ export default function NotFoundContent<T extends string>({
 	param,
 }: INotFoundContent<T>) {
 	return (
-		<div className="container flex h-full flex-col">
+		<div className="container flex h-full flex-col gap-8">
 			{items && <NotFoundBreadcrumbs items={items} />}
 			<div className="flex h-3/4 grow flex-col items-center justify-center gap-12">
 				<div className="flex flex-col items-center justify-center gap-4">

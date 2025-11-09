@@ -1088,7 +1088,7 @@ const augmentRegistry = {
 		id: "zombie-sitter",
 		title: "Zombie Sitter",
 		description:
-			"The Wisp will attract and avoid damaging the last zombie in the round until the round times out.",
+			"The Wisp will distract and avoid damaging the last zombie in the round until the round times out.",
 		type: "Minor",
 		image: "/augments/zombie-sitter-minor-augment.webp",
 	},

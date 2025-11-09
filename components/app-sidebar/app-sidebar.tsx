@@ -32,7 +32,7 @@ export default function AppSidebar() {
 					<Menu className="size-6 text-muted-foreground" />
 				</Button>
 			</SheetTrigger>
-			<SheetContent className="z-900 flex flex-col">
+			<SheetContent className="flex flex-col">
 				<SheetTitle className="sr-only">Sidebar</SheetTitle>
 				<SheetDescription className="sr-only">App sidebar for mobile navigation</SheetDescription>
 				<SheetHeader className="w-full border-b pb-4">

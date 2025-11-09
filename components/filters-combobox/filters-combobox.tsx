@@ -1,5 +1,6 @@
-import type { MainQuest } from "@/data/main-quests"
-import type { Zombie } from "@/data/zombies"
+import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { ZombieType } from "@/data/zombies"
+import { Match } from "effect"
 import { CirclePlus, Trash } from "lucide-react"
 import Image, { type ImageProps } from "next/image"
 import { useState } from "react"
@@ -31,7 +32,7 @@ export interface Filter {
 interface IFiltersCombobox {
 	data: Filter[]
 	currentSelection: string[]
-	title: string
+	title: "Game" | "Difficulty" | "Type" | "Map"
 	enableInput?: boolean
 	inputPlaceholder?: string
 	toggleParam: (param: string) => void
@@ -58,24 +59,20 @@ const FiltersCombobox = ({
 			)
 		}
 
-		if (!currentSelection[0]) return null
+		const selection = currentSelection.at(0)
+		if (!selection) return null
 
-		switch (title) {
-			case "Difficulty":
-				return (
-					<DifficultyBadge
-						difficulty={capitalize(currentSelection[0]) as MainQuest["difficulty"]}
-					/>
-				)
-			case "Type":
-				return <TypeBadge type={capitalize(currentSelection[0]) as Zombie["type"]} />
-			default:
-				return (
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{capitalize(currentSelection[0])}
-					</Badge>
-				)
-		}
+		return Match.value(title).pipe(
+			Match.when("Difficulty", () => (
+				<DifficultyBadge difficulty={capitalize(selection) as MainQuestDifficulty} />
+			)),
+			Match.when("Type", () => <TypeBadge type={capitalize(selection) as ZombieType} />),
+			Match.orElse(() => (
+				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+					{capitalize(selection)}
+				</Badge>
+			)),
+		)
 	}
 
 	return (
@@ -126,12 +123,12 @@ const FiltersCombobox = ({
 											onClick={() => toggleParam(item.slug)}
 											tabIndex={-1}
 										>
-											{title === "Difficulty" ? (
-												<DifficultyBadge difficulty={item.title as MainQuest["difficulty"]} />
-											) : title === "Type" ? (
-												<TypeBadge type={item.title as Zombie["type"]} />
-											) : (
-												item.title
+											{Match.value(title).pipe(
+												Match.when("Difficulty", () => (
+													<DifficultyBadge difficulty={item.title as MainQuestDifficulty} />
+												)),
+												Match.when("Type", () => <TypeBadge type={item.title as ZombieType} />),
+												Match.orElse(() => item.title),
 											)}
 										</Label>
 									</CommandItem>

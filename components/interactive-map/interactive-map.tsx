@@ -2,6 +2,7 @@
 import "leaflet/dist/leaflet.css"
 import type { MapConfig } from "@/map-configs"
 import type { Location, MapMarker } from "@/map-configs/markers"
+import { Option } from "effect"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import NextImage from "next/image"
@@ -27,7 +28,7 @@ export interface ImageDimensions {
 }
 
 interface MapController {
-	imageDimensions: ImageDimensions | null
+	imageDimensions: Option.Option<ImageDimensions>
 }
 
 interface IInteractiveMap {
@@ -37,9 +38,16 @@ interface IInteractiveMap {
 export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	const { layerParam, includeParams, excludeParams, isIncluded } = useMapSearchParams()
 	const { settings } = useMapSettings()
-	const [imageDimensions, setImageDimensions] = useState<ImageDimensions | null>(null)
-	const currentLayer =
-		mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0)
+	const [imageDimensions, setImageDimensions] = useState<Option.Option<ImageDimensions>>(
+		Option.none(),
+	)
+	const currentLayer = Option.match(layerParam, {
+		onNone: () => Option.fromNullable(mapConfig.layers.at(0)),
+		onSome: layerParam =>
+			Option.fromNullable(
+				mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0),
+			),
+	})
 
 	// disable main page scrolling on canvas
 	useEffect(() => {
@@ -51,7 +59,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 
 	// dynamically load map image to extract its dimensions for map bounds
 	useEffect(() => {
-		if (!currentLayer) return
+		if (Option.isNone(currentLayer)) return
 		const loadImageDimensions = async () => {
 			try {
 				const img = new Image()
@@ -59,14 +67,16 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 
 				await new Promise((resolve, reject) => {
 					img.onload = () => {
-						setImageDimensions({
-							width: img.naturalWidth,
-							height: img.naturalHeight,
-						})
+						setImageDimensions(
+							Option.some({
+								width: img.naturalWidth,
+								height: img.naturalHeight,
+							}),
+						)
 						resolve(img)
 					}
 					img.onerror = reject
-					img.src = currentLayer.image
+					img.src = currentLayer.value.image
 				})
 			} catch (error) {
 				console.error(`Failed to load map:`, error)
@@ -76,7 +86,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 		loadImageDimensions()
 	}, [currentLayer])
 
-	if (!currentLayer) return null
+	if (Option.isNone(currentLayer)) return null
 
 	const shouldRenderMarker = (marker: MapMarker) => {
 		if (includeParams.length === 0 && excludeParams.length === 0) return true
@@ -84,15 +94,15 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 	}
 
 	const convertToLeafletCoords = ({ x, y }: Location): LatLng => {
-		if (!imageDimensions) return new LatLng(0, 0)
+		if (Option.isNone(imageDimensions)) return new LatLng(0, 0)
 		return new LatLng(
-			imageDimensions.height - y * imageDimensions.height,
-			x * imageDimensions.width,
+			imageDimensions.value.height - y * imageDimensions.value.height,
+			x * imageDimensions.value.width,
 		)
 	}
 
 	const getImageBounds = (): LatLngBounds => {
-		if (!imageDimensions) {
+		if (Option.isNone(imageDimensions)) {
 			return new LatLngBounds([
 				[0, 0],
 				[1024, 1024],
@@ -101,7 +111,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 
 		return new LatLngBounds([
 			[0, 0], // Soutwest Corner
-			[imageDimensions.height, imageDimensions.width], // Northeast Corner
+			[imageDimensions.value.height, imageDimensions.value.width], // Northeast Corner
 		])
 	}
 
@@ -109,7 +119,9 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 		<MapContainer
 			key={`${mapConfig.id}-${settings.popups.disableAnimations}-${settings.general.disableZoomAnimation}`}
 			center={
-				imageDimensions ? [imageDimensions.height / 2, imageDimensions.width / 2] : [1024, 1024]
+				Option.isSome(imageDimensions)
+					? [imageDimensions.value.height / 2, imageDimensions.value.width / 2]
+					: [1024, 1024]
 			}
 			zoom={0}
 			minZoom={-2}
@@ -124,19 +136,23 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			markerZoomAnimation={!settings.general.disableZoomAnimation}
 		>
 			<MapController imageDimensions={imageDimensions} />
-			{imageDimensions && (
-				<ImageOverlay key={currentLayer.id} url={currentLayer.image} bounds={getImageBounds()} />
+			{Option.isSome(imageDimensions) && (
+				<ImageOverlay
+					key={currentLayer.value.id}
+					url={currentLayer.value.image}
+					bounds={getImageBounds()}
+				/>
 			)}
 			{/* We do not map through filteredMarkers for rendering to avoid icon flickering */}
-			{imageDimensions &&
-				currentLayer.markers.map(marker => {
+			{Option.isSome(imageDimensions) &&
+				currentLayer.value.markers.map(marker => {
 					if (!shouldRenderMarker(marker)) return null
 
 					return marker.locations.map(location => (
 						// force re-render when popups settings change to apply them
 						<CustomMarker
-							key={`${generateMarkerKey(currentLayer.id, marker.id, location)}-gradients:${settings.popups.disableGradients}`}
-							id={generateMarkerKey(currentLayer.id, marker.id, location)}
+							key={`${generateMarkerKey(currentLayer.value.id, marker.id, location)}-gradients:${settings.popups.disableGradients}`}
+							id={generateMarkerKey(currentLayer.value.id, marker.id, location)}
 							marker={marker}
 							position={convertToLeafletCoords(location)}
 						>
@@ -153,11 +169,11 @@ function MapController({ imageDimensions }: MapController) {
 	const isMobile = useIsMobile()
 
 	const logClickCoordinates =
-		(imageDimensions: ImageDimensions | null) => (e: LeafletMouseEvent) => {
-			if (!IN_DEVELOPMENT || !e.latlng || !imageDimensions) return
+		(imageDimensions: Option.Option<ImageDimensions>) => (e: LeafletMouseEvent) => {
+			if (!IN_DEVELOPMENT || !e.latlng || Option.isNone(imageDimensions)) return
 
-			const x = e.latlng.lng / imageDimensions.width
-			const y = 1 - e.latlng.lat / imageDimensions.height // Flip y back to normal
+			const x = e.latlng.lng / imageDimensions.value.width
+			const y = 1 - e.latlng.lat / imageDimensions.value.height // Flip y back to normal
 			console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
 		}
 
@@ -165,8 +181,8 @@ function MapController({ imageDimensions }: MapController) {
 		click: logClickCoordinates(imageDimensions),
 	})
 
-	if (imageDimensions) {
-		const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
+	if (Option.isSome(imageDimensions)) {
+		const center: LatLngTuple = [imageDimensions.value.height / 2, imageDimensions.value.width / 2]
 		map.setView(center, 0, { animate: false })
 	}
 
@@ -179,17 +195,16 @@ function MapController({ imageDimensions }: MapController) {
 	}
 
 	const handleReset = () => {
-		if (imageDimensions) {
-			const center: LatLngTuple = [imageDimensions.height / 2, imageDimensions.width / 2]
-			map.setView(center, 0)
-		}
+		if (Option.isNone(imageDimensions)) return
+		const center: LatLngTuple = [imageDimensions.value.height / 2, imageDimensions.value.width / 2]
+		map.setView(center, 0)
 	}
 
 	return (
 		<ButtonGroup
 			orientation={isMobile ? "vertical" : "horizontal"}
 			className={cn(
-				"absolute top-4 right-4 z-500 w-10 rounded-md bg-background md:w-fit lg:right-8",
+				"absolute top-8 right-4 z-500 w-10 rounded-md bg-background md:w-fit lg:right-8",
 			)}
 		>
 			<Tooltip>

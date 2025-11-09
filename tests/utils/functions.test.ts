@@ -1,16 +1,9 @@
-import { FileSystem, Path } from "@effect/platform"
-import { expect, it } from "@effect/vitest"
-import { Effect, Exit, Layer, Redacted } from "effect"
-import { afterEach, beforeAll, beforeEach, describe, test, vi } from "vitest"
+import { it } from "@effect/vitest"
+import { Redacted } from "effect"
+import { afterEach, beforeAll, beforeEach, describe, vi } from "vitest"
+import { DATE_OPTIONS } from "@/utils/constants"
 
 // We'll import the functions dynamically in each test
-
-const mockFs = (content: string) =>
-	FileSystem.layerNoop(
-		FileSystem.makeNoop({
-			readFileString: () => Effect.succeed(content),
-		}),
-	)
 
 // Set up the mocks and import the module in a beforeAll hook
 beforeAll(() => {
@@ -71,7 +64,7 @@ describe("getServerUrl", () => {
 	]
 
 	for (const { env, expected, desc } of testCases) {
-		test(`should return correct URL for ${desc}`, async () => {
+		it(`should return correct URL for ${desc}`, async ({ expect }) => {
 			// Set environment variables directly
 			process.env.VERCEL_ENV = env.VERCEL_ENV
 			process.env.VERCEL_URL = env.VERCEL_URL
@@ -109,9 +102,10 @@ describe("getLastUpdated", () => {
 
 	afterEach(() => {
 		vi.resetModules()
+		vi.useRealTimers()
 	})
 
-	test("should return last modified data for existing file", () => {
+	it("should return last modified data for existing file", ({ expect }) => {
 		const result = getLastUpdated("test/file.mdx")
 		expect(result).toStrictEqual({
 			lastModified: "2025-10-31T12:00:00.000Z",
@@ -119,46 +113,56 @@ describe("getLastUpdated", () => {
 		})
 	})
 
-	test("should throw error for non-existing file", () => {
-		expect(() => getLastUpdated("non-existing-file.mdx")).toThrow()
+	it("should return current date for non-existing file", ({ expect }) => {
+		const mockDate = new Date()
+
+		vi.setSystemTime(mockDate)
+
+		const result = getLastUpdated("non-existing-file.mdx")
+		expect(result).toStrictEqual({
+			lastModified: mockDate.toISOString(),
+			lastModifiedFormatted: mockDate.toLocaleDateString(undefined, DATE_OPTIONS),
+		})
+	})
+
+	it("should handle full relative and absolute paths", ({ expect }) => {
+		const result1 = getLastUpdated("test/file.mdx")
+		const result2 = getLastUpdated("./content/test/file.mdx")
+		const result3 = getLastUpdated("cod-zombies/content/test/file.mdx")
+		expect(result1).toStrictEqual({
+			lastModified: "2025-10-31T12:00:00.000Z",
+			lastModifiedFormatted: "October 31, 2025",
+		})
+		expect(result2).toStrictEqual({
+			lastModified: "2025-10-31T12:00:00.000Z",
+			lastModifiedFormatted: "October 31, 2025",
+		})
+		expect(result3).toStrictEqual({
+			lastModified: "2025-10-31T12:00:00.000Z",
+			lastModifiedFormatted: "October 31, 2025",
+		})
 	})
 })
 
 describe("calculateTimeToRead", () => {
-	it.effect("should return 1 for anything less than 200 words", ({ expect }) =>
-		Effect.gen(function* () {
-			const { calculateTimeToRead } = yield* Effect.promise(
-				async () => await import("@/utils/functions"),
-			)
-			const content = "word ".repeat(150) // 150 words
-			const result = yield* Effect.exit(
-				calculateTimeToRead("test/file.mdx").pipe(
-					Effect.provide(Layer.merge(mockFs(content), Path.layer)),
-				),
-			)
-			expect(result).toStrictEqual(Exit.succeed(1))
-		}),
-	)
+	it("should return 1 for anything less than 200 words", async ({ expect }) => {
+		const { calculateTimeToRead } = await import("@/utils/functions")
+		const content = "word ".repeat(150) // 150 words
+		const result = calculateTimeToRead(content)
+		expect(result).toStrictEqual(1)
+	})
 
-	it.effect("should use the worst case when rounding", ({ expect }) =>
-		Effect.gen(function* () {
-			const { calculateTimeToRead } = yield* Effect.promise(
-				async () => await import("@/utils/functions"),
-			)
-			const content = "word ".repeat(500) // 500 words
-			const result = yield* Effect.exit(
-				calculateTimeToRead("test/file.mdx").pipe(
-					Effect.provide(Layer.merge(mockFs(content), Path.layer)),
-				),
-			)
-			// 500 words / 200 words per minute = 2.5 minutes
-			expect(result).toStrictEqual(Exit.succeed(3))
-		}),
-	)
+	it("should use the worst case when rounding", async ({ expect }) => {
+		const { calculateTimeToRead } = await import("@/utils/functions")
+		const content = "word ".repeat(500) // 500 words
+		const result = calculateTimeToRead(content)
+		// 500 words / 200 words per minute = 2.5 minutes
+		expect(result).toStrictEqual(3)
+	})
 })
 
 describe("stripMarkdown", () => {
-	it("should remove markdown formatting", async () => {
+	it("should remove markdown formatting", async ({ expect }) => {
 		const { stripMarkdown } = await import("@/utils/functions")
 		const heading = "# Heading"
 		const subheading = "## Subheading"

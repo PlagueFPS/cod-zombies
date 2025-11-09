@@ -1,5 +1,6 @@
+import { Effect, Option } from "effect"
 import { getGames } from "@/data/games"
-import { getAvailableMaps } from "@/data/interactive-map"
+import { getInteractiveMaps } from "@/data/interactive-map"
 import { getMainQuests } from "@/data/main-quests"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
@@ -9,58 +10,58 @@ interface ISearchBar {
 	showFull?: boolean
 }
 
-export default function SearchBar({ showFull }: ISearchBar) {
-	const mainQuests = getMainQuests()
-	const games = getGames().map(g => ({
-		id: g.id,
-		slug: g.id,
-		title: g.title,
-	}))
-	const sideQuests = getSideQuests()
-	const zombies = getZombies().map(z => ({
-		id: z.id,
-		slug: z.id,
-		title: z.title,
-	}))
-	const availableMaps = getAvailableMaps()
-
-	const mainQuestsDtos = mainQuests
-		.filter(q => q.state !== "Coming Soon")
-		.map(q => ({
-			id: q.id,
-			slug: q.map.id,
-			title: q.map.title,
-			game: {
-				title: q.map.game.title,
-				slug: q.map.game.id,
-			},
+export default async function SearchBar({ showFull }: ISearchBar) {
+	return await Effect.gen(function* () {
+		const availableMaps = yield* getInteractiveMaps().pipe(
+			Effect.map(maps => maps.filter(map => Option.getOrNull(map.state) !== "Coming Soon")),
+		)
+		const mainQuests = getMainQuests()
+		const games = getGames().map(g => ({
+			id: g.id,
+			title: g.title,
 		}))
-	const sideQuestsDtos = sideQuests
-		.filter(q => q.state !== "Coming Soon")
-		.map(q => ({
-			id: q.id,
-			slug: q.id,
-			title: q.title,
-			game: {
-				title: q.map.game.title,
-				slug: q.map.game.id,
-			},
-			map: {
+		const sideQuests = getSideQuests()
+		const zombies = getZombies().map(z => ({
+			id: z.id,
+			title: z.title,
+		}))
+
+		const mainQuestsDtos = mainQuests
+			.filter(q => Option.getOrNull(q.state) !== "Coming Soon")
+			.map(q => ({
+				id: q.map.id,
 				title: q.map.title,
-				slug: q.map.id,
-			},
-		}))
+				game: {
+					id: q.map.game.id,
+					title: q.map.game.title,
+				},
+			}))
+		const sideQuestsDtos = sideQuests
+			.filter(q => Option.getOrNull(q.state) !== "Coming Soon")
+			.map(q => ({
+				id: q.id,
+				title: q.title,
+				game: {
+					id: q.map.game.id,
+					title: q.map.game.title,
+				},
+				map: {
+					id: q.map.id,
+					title: q.map.title,
+				},
+			}))
 
-	return (
-		<div className="flex w-fit animate-fade-in items-center justify-center">
-			<SearchInput
-				maps={mainQuestsDtos}
-				games={games}
-				quests={sideQuestsDtos}
-				zombies={zombies}
-				showFull={showFull}
-				availableMaps={availableMaps}
-			/>
-		</div>
-	)
+		return (
+			<div className="flex w-fit animate-fade-in items-center justify-center">
+				<SearchInput
+					maps={mainQuestsDtos}
+					games={games}
+					quests={sideQuestsDtos}
+					zombies={zombies}
+					showFull={showFull}
+					availableMaps={availableMaps}
+				/>
+			</div>
+		)
+	}).pipe(Effect.runPromise)
 }

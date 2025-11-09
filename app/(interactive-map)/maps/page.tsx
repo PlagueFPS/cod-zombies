@@ -1,11 +1,13 @@
 import type { Metadata } from "next"
+import { Effect } from "effect"
 import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import Footer from "@/components/footer/footer"
 import GridSection from "@/components/grid-section/grid-section"
 import PreviewCard from "@/components/interactive-map/preview-card"
 import PreviewCardLoader from "@/components/loaders/preview-card-loader"
-import { getAvailableMaps } from "@/data/interactive-map"
+import { getInteractiveMaps } from "@/data/interactive-map"
+import { BasePage } from "@/lib/layers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 
 export const metadata: Metadata = {
@@ -27,9 +29,8 @@ export const metadata: Metadata = {
 	},
 }
 
-export default function MapsPage() {
-	const maps = getAvailableMaps()
-
+const MapsPage = Effect.fn("MapsPage")(function* () {
+	const maps = yield* getInteractiveMaps()
 	return (
 		<>
 			<div className="mt-10 w-full flex-col items-center justify-center">
@@ -42,8 +43,8 @@ export default function MapsPage() {
 						</p>
 						<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
 							{maps.map((map, index) => (
-								<Suspense key={map} fallback={<PreviewCardLoader />}>
-									<PreviewCard mapId={map} index={index} />
+								<Suspense key={map.id} fallback={<PreviewCardLoader />}>
+									<PreviewCard map={map} index={index} />
 								</Suspense>
 							))}
 						</div>
@@ -53,4 +54,6 @@ export default function MapsPage() {
 			<Footer />
 		</>
 	)
-}
+})
+
+export default BasePage.build(MapsPage)

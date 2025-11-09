@@ -1,11 +1,34 @@
-import { Array as Arr } from "effect"
+import { Array as Arr, Option } from "effect"
 import { useSearchParams } from "next/navigation"
 
-export const useMapSearchParams = () => {
+interface MapSearchParamsResult {
+	/** The current URL search parameters */
+	searchParams: URLSearchParams
+	/** Array of types to include in the filter */
+	includeParams: string[]
+	/** Array of types to exclude from the filter */
+	excludeParams: string[]
+	/** The currently selected map layer */
+	layerParam: Option.Option<string>
+	/** Updates the URL's search parameters and updates browser history */
+	updateURLParams: (params: URLSearchParams) => void
+	/** Creates a new URLSearchParams object from current params */
+	createParams: () => URLSearchParams
+	/** Removes a parameter completely from the URL */
+	clearParam: (paramName: string) => void
+	/** Toggles types in the include filter */
+	toggleIncludeParam: (value: string | string[]) => string[]
+	/** Toggles types in the exclude filter */
+	toggleExcludeParam: (value: string | string[]) => string[]
+	/** Checks if a type should be included based on current filters */
+	isIncluded: (type: string) => boolean
+}
+
+export const useMapSearchParams = (): MapSearchParamsResult => {
 	const searchParams = useSearchParams()
 	const includeParams = searchParams.getAll("include")
 	const excludeParams = searchParams.getAll("exclude")
-	const layerParam = searchParams.get("layer") || ""
+	const layerParam = Option.fromNullable(searchParams.get("layer"))
 
 	const updateURLParams = (params: URLSearchParams) => {
 		window.history.replaceState(null, "", `?${params.toString()}`)

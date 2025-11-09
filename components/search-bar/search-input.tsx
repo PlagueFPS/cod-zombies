@@ -1,12 +1,12 @@
 "use client"
 import type { Route } from "next"
+import type { MapConfigMetadata } from "@/map-configs"
 import { Book, BookText, Brain, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
-import { capitalize } from "@/utils/functions.client"
 import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
 import {
@@ -22,21 +22,20 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 
 interface SearchEntry {
 	id: string
-	slug: string
 	title: string
 }
 
 interface MapSearch extends SearchEntry {
 	game: {
 		title: string
-		slug: string
+		id: string
 	}
 }
 
 interface QuestSearch extends MapSearch {
 	map: {
 		title: string
-		slug: string
+		id: string
 	}
 }
 
@@ -46,7 +45,7 @@ interface SearchInputProps {
 	games: SearchEntry[]
 	quests: QuestSearch[]
 	zombies: SearchEntry[]
-	availableMaps: string[]
+	availableMaps: MapConfigMetadata[]
 }
 
 const filters = [
@@ -69,8 +68,8 @@ export default function SearchInput({
 	const [open, setOpen] = useState(false)
 	const [filter, setFilter] = useState("All")
 
-	const mapSlugs = new Set(quests.map(q => q.map.slug))
-	const questMaps = maps.filter(m => mapSlugs.has(m.slug))
+	const mapSlugs = new Set(quests.map(q => q.map.id))
+	const questMaps = maps.filter(m => mapSlugs.has(m.id))
 	const shortcut = IS_MAC_OS ? "meta+k" : "ctrl+k"
 
 	useShortcut(shortcut, () => setOpen(prev => !prev), { ignoreInputs: false })
@@ -137,14 +136,14 @@ export default function SearchInput({
 						<CommandEmpty>No results found.</CommandEmpty>
 						{filter === "All" || filter === "Main Quests"
 							? games
-									.filter(game => maps.some(m => m.game.slug === game.slug))
+									.filter(game => maps.some(m => m.game.id === game.id))
 									.map(game => (
 										<CommandGroup heading={`${game.title} Main Quests`} key={game.id}>
 											{maps.map(m =>
-												m.game.slug !== game.slug ? null : (
+												m.game.id !== game.id ? null : (
 													<CommandItem
 														key={`${game.id}_${m.id}`}
-														onSelect={() => onSelectHandler(`/${m.game.slug}/${m.slug}`)}
+														onSelect={() => onSelectHandler(`/${m.game.id}/${m.id}`)}
 														className="cursor-pointer gap-2"
 													>
 														<BookText className="size-4" />
@@ -159,11 +158,11 @@ export default function SearchInput({
 							? questMaps.map(m => (
 									<CommandGroup heading={`${m.title} Side Quests`} key={m.id}>
 										{quests.map(q =>
-											q.map.slug !== m.slug ? null : (
+											q.map.id !== m.id ? null : (
 												<CommandItem
 													key={`${q.id}_${m.id}`}
 													onSelect={() =>
-														onSelectHandler(`/side-quests/${q.game.slug}/${q.map.slug}/${q.slug}`)
+														onSelectHandler(`/side-quests/${q.game.id}/${q.map.id}/${q.id}`)
 													}
 													className="cursor-pointer gap-2"
 												>
@@ -180,7 +179,7 @@ export default function SearchInput({
 								{zombies.map(zombie => (
 									<CommandItem
 										key={zombie.id}
-										onSelect={() => onSelectHandler(`/bestiary/${zombie.slug}`)}
+										onSelect={() => onSelectHandler(`/bestiary/${zombie.id}`)}
 										className="cursor-pointer gap-2"
 									>
 										<Brain className="size-4" />
@@ -193,12 +192,12 @@ export default function SearchInput({
 							<CommandGroup heading="Interactive Maps">
 								{availableMaps.map(map => (
 									<CommandItem
-										key={map}
-										onSelect={() => onSelectHandler(`/maps/${map}`)}
+										key={map.id}
+										onSelect={() => onSelectHandler(`/maps/${map.id}`)}
 										className="cursor-pointer gap-2"
 									>
 										<MapIcon className="size-4" />
-										<span className="blur-none">{`${capitalize(map)} Interactive Map`}</span>
+										<span className="blur-none">{`${map.title} Interactive Map`}</span>
 									</CommandItem>
 								))}
 							</CommandGroup>

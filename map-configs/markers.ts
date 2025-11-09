@@ -1,22 +1,35 @@
 export interface MapMarker {
+	/** The unique identifier for this marker */
 	id: string
+	/** The title of this marker */
 	title: string
+	/** The description of this marker */
 	description: string
+	/** The type of this marker */
 	type?: MarkerType
+	/** The category of this marker */
 	category: MarkerCategory
+	/** The icon of this marker */
 	icon: string | null
+	/** The locations of this marker */
 	locations: Location[]
 }
 
 export interface Location {
+	/** The x-coordinate of this location */
 	x: number
+	/** The y-coordinate of this location */
 	y: number
+	/** The title of this location */
 	title?: string
+	/** The description of this location */
 	description?: string
 }
 
+/** Union of every type of marker currently supported */
 export type MarkerType = (typeof MARKER_TYPES)[number]
 
+/** Union of every type of perk currently supported */
 export type Perks =
 	| "quick-revive"
 	| "speed-cola"
@@ -31,6 +44,7 @@ export type Perks =
 	| "vulture-aid"
 	| "der-wunderfizz"
 
+/** Union of every type of weapon currently supported */
 export type Weapons =
 	| "gs45"
 	| "kompakt-92"
@@ -55,6 +69,7 @@ export type Weapons =
 	| "xmg"
 	| "dm-10"
 
+/** Union of every type of marker category currently supported */
 export type MarkerCategory =
 	| "general"
 	| "equipment"
@@ -66,7 +81,9 @@ export type MarkerCategory =
 type Marker = Omit<MapMarker, "locations">
 type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label">
 
-// Every type of marker currently supported
+/**
+ * An array of every type of marker currently supported
+ */
 export const MARKER_TYPES = [
 	"perk",
 	"ammo-cache",
@@ -91,21 +108,32 @@ export const MARKER_TYPES = [
 	"audio-log",
 	"document",
 	"janus-crate",
-	"vaccum-seal-device",
-	"loot-bin"
+	"vacuum-seal-device",
+	"loot-bin",
 ] as const
 
-// All static markers that appear on multiple maps/layers
+/** Handlers for mapping markers ids or types to their category */
+export const categoryHandlers = {
+	general: (m: MapMarker) => (m.type === "label" ? m.type : m.id),
+	equipment: (m: MapMarker) => (m.type === "weapon-wall-buy" ? m.type : m.id),
+	upgrades: (m: MapMarker) => (m.type === "perk" ? m.type : m.id),
+	objectives: (m: MapMarker) => m.id,
+	transportation: (m: MapMarker) => m.id,
+	intel: (m: MapMarker) => m.id,
+} as const
+
+/** All static markers that appear on multiple maps/layers */
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 	"loot-bin": {
 		id: "loot-bin",
 		title: "Loot Bin",
 		category: "objectives",
-		description: "Interacting with a loot bin has a chance to grant you any item, e.g. Perks, Aether Tools, Ray Guns, and Aetherium Crystals.",
+		description:
+			"Interacting with a loot bin has a chance to grant you any item, e.g. Perks, Aether Tools, Ray Guns, and Aetherium Crystals.",
 		icon: "/icons/objectives/loot-bin.webp",
 	},
-	"vaccum-seal-device": {
-		id: "vaccum-seal-device",
+	"vacuum-seal-device": {
+		id: "vacuum-seal-device",
 		category: "objectives",
 		title: "Vacuum-Seal Device",
 		description:
@@ -116,7 +144,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 		id: "janus-crate",
 		category: "objectives",
 		title: "Janus Crate",
-		description: "Destory these crates to obtain salvage.",
+		description: "Destroy these crates to obtain salvage.",
 		icon: "/icons/objectives/janus-crate.webp",
 	},
 	document: {
@@ -201,7 +229,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 		category: "general",
 		title: "Rampage Inducer",
 		description:
-			"Activate to make zombies faster and more aggresive until Round 55 or until deactivated.",
+			"Activate to make zombies faster and more aggressive until Round 55 or until deactivated.",
 		icon: "/icons/general/rampage-inducer.webp",
 	},
 	trap: {
@@ -255,7 +283,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 	},
 }
 
-// All perks appearing on any of the maps
+/** All perks appearing on any of the maps */
 export const perks: Record<Perks, Marker> = {
 	"der-wunderfizz": {
 		id: "der-wunderfizz",
@@ -355,7 +383,7 @@ export const perks: Record<Perks, Marker> = {
 	},
 }
 
-// All weapons appearing as wall-buys on any of the maps
+/** All weapons appearing as wall-buys on any of the maps */
 export const weapons: Record<Weapons, Marker> = {
 	"dm-10": {
 		id: "dm-10",
@@ -535,5 +563,11 @@ export const weapons: Record<Weapons, Marker> = {
 	},
 }
 
+/**
+ * Generates a unique marker key based on the provided parameters.
+ * @param layerId - The unique identifier of the layer
+ * @param markerId - The unique identifier of the marker
+ * @param location - The location of the marker
+ */
 export const generateMarkerKey = (layerId: string, markerId: string, location: Location) =>
-	`${layerId}-${markerId}-${location.x}-${location.y}-${location.title}-${location.description}`
+	`${layerId}-${markerId}-${location.x}-${location.y}`

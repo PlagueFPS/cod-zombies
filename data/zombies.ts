@@ -1,12 +1,16 @@
 import type { AmmoModKey } from "@/data/ammo-mods"
+import { Effect, Option } from "effect"
 import { type Game, getGameByKey, getGames } from "@/data/games"
 import { getMapByKey, getMaps, type Maps } from "@/data/maps"
 import { getWeakPointByKey, type WeakPoint } from "@/data/weak-points"
 import { getZombieAttackByKey, type ZombieAttack } from "@/data/zombie-attacks"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
+import { getAdjacentItems } from "./utils"
 
 /** Union type of all zombie types */
-export type ZombieType = Zombie["type"]
+export type ZombieType = "Normal" | "Special" | "Elite" | "Boss"
+/** Union type of all zombie speeds */
+export type ZombieSpeed = "Slow" | "Medium" | "Fast"
 /** Union type of all zombies */
 export type ZombieKey = keyof typeof zombiesRegistry
 export interface Zombie {
@@ -17,7 +21,7 @@ export interface Zombie {
 	/** Description of the zombie */
 	description: string
 	/** State of the zombie */
-	state?: "Coming Soon" | "New" | null
+	state: Option.Option<"Coming Soon" | "New">
 	/** Release date of the zombie */
 	releaseDate: Date
 	/** Image of the zombie */
@@ -27,9 +31,9 @@ export interface Zombie {
 	/** Maps the zombie is available in */
 	maps: Maps[]
 	/** Type of the zombie */
-	type: "Normal" | "Special" | "Elite" | "Boss"
+	type: ZombieType
 	/** Speed of the zombie */
-	speed: "Slow" | "Medium" | "Fast"
+	speed: ZombieSpeed
 	/** Weak points of the zombie */
 	weakPoints: WeakPoint[]
 	/** Elemental weaknesses of the zombie */
@@ -39,7 +43,7 @@ export interface Zombie {
 	/** Spawn behavior of the zombie */
 	spawnBehavior: string
 	/** Combat strategy of the zombie */
-	combatStrategy: () => Promise<typeof import("*.mdx")>
+	combatStrategy: Effect.Effect<typeof import("*.mdx"), never, never>
 }
 
 /** Gets all zombies
@@ -64,17 +68,14 @@ export const getZombieById = (id: string) => zombieMap.get(id)
  * @returns The previous and next zombies
  */
 export const getAdjacentZombies = (currentId: string) => {
-	const index = zombies.findIndex(zombie => zombie.id === currentId)
-	return {
-		prev: index < zombies.length - 1 ? zombies[index + 1] : null,
-		next: index > 0 ? zombies[index - 1] : null,
-	}
+	return getAdjacentItems(zombies, currentId)
 }
 
 const zombiesRegistry = {
 	zombie: {
 		id: "zombie",
 		title: "Zombie",
+		state: Option.none(),
 		description:
 			"The first and most common enemy type. Varying in speeds, zombies provide the most basic threat on their own but will quickly become a challenge in hordes.",
 		releaseDate: new Date("November 11, 2008 12:00 AM"),
@@ -88,11 +89,12 @@ const zombiesRegistry = {
 		elementalWeakness: [],
 		weakPoints: [getWeakPointByKey("head")],
 		attacks: [getZombieAttackByKey("meleeSwing")],
-		combatStrategy: () => import("@/content/zombies/zombie.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/zombie.mdx")),
 	},
 	hellhound: {
 		id: "hellhound",
 		title: "Hellhound",
+		state: Option.none(),
 		releaseDate: new Date("June 10, 2010 12:00 AM"),
 		description:
 			"Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
@@ -130,11 +132,12 @@ const zombiesRegistry = {
 			getZombieAttackByKey("lunge"),
 			getZombieAttackByKey("explosion"),
 		],
-		combatStrategy: () => import("@/content/zombies/hellhound.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/hellhound.mdx")),
 	},
 	nova6Crawler: {
 		id: "nova-6-crawler",
 		title: "Nova-6 Crawler",
+		state: Option.none(),
 		releaseDate: new Date("November 09, 2010 12:00 AM"),
 		description:
 			"These creepy crawlers are slow-moving zombies that emit green nova gas from their bodies as they crawl on all fours towards their target, releasing the gas when killed.",
@@ -153,11 +156,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("novaGas")],
 		spawnBehavior:
 			"Nova-6 Crawlers typically start spawning once a certain area in a map has been accessed and will continue to spawn within the normal rounds in smaller numbers than zombies from that point on.",
-		combatStrategy: () => import("@/content/zombies/nova-6-crawler.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/nova-6-crawler.mdx")),
 	},
 	pentagonThief: {
 		id: "pentagon-thief",
 		title: "Pentagon Thief",
+		state: Option.none(),
 		releaseDate: new Date("November 09, 2010 12:30 AM"),
 		image: "/zombies/pentagon-thief.webp",
 		description:
@@ -171,11 +175,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("weaponSteal")],
 		spawnBehavior:
 			"The Pentagon Thief will teleport onto the map at certain rounds once the power has been turned off appearing as red floating numbers, with the spawn rate being more frequent at higher rounds.",
-		combatStrategy: () => import("@/content/zombies/pentagon-thief.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/pentagon-thief.mdx")),
 	},
 	spaceMonkey: {
 		id: "space-monkey",
 		title: "Space Monkey",
+		state: Option.none(),
 		releaseDate: new Date("February 01, 2011 12:00 AM"),
 		image: "/zombies/space-monkey.webp",
 		description:
@@ -189,11 +194,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("perkSteal")],
 		spawnBehavior:
 			"Space Monkeys will first appear after four to five rounds, after the first perk has been purchased. Arriving on lunar landers crashing into the ground with the map having a yellow-orange tint, and the announcer saying, 'Warning. Re-entry detected. All security personnel on high alert.'",
-		combatStrategy: () => import("@/content/zombies/space-monkey.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/space-monkey.mdx")),
 	},
 	georgeARomero: {
 		id: "george-a-romero",
 		title: "George A. Romero",
+		state: Option.none(),
 		releaseDate: new Date("May 03, 2011 12:00 AM"),
 		image: "/zombies/george-a-romero.webp",
 		description:
@@ -207,11 +213,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("rallyCry")],
 		spawnBehavior:
 			"Romero spawns in via a lightning strike in the spawn area at the very start of the game, holding a stage light as his main weapon of choice and begin to follow the closest player to him from that point on.",
-		combatStrategy: () => import("@/content/zombies/george-a-romero.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/george-a-romero.mdx")),
 	},
 	jungleMonkey: {
 		id: "jungle-monkey",
 		title: "Jungle Monkey",
+		state: Option.none(),
 		releaseDate: new Date("June 12, 2011 12:00 AM"),
 		image: "/zombies/jungle-monkey.webp",
 		description:
@@ -225,11 +232,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("powerUpSteal")],
 		spawnBehavior:
 			"These monkeys spawn perched on top of the sides of the stairs leading up to the Pack-a-Punch machine, and if one is killed, another will replace it. They are constant throughout the entire match and will always go after Power-Up drops.",
-		combatStrategy: () => import("@/content/zombies/jungle-monkey.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/jungle-monkey.mdx")),
 	},
 	shriekerZombie: {
 		id: "shrieker-zombie",
 		title: "Shrieker Zombie",
+		state: Option.none(),
 		releaseDate: new Date("June 12, 2011 01:00 AM"),
 		image: "/zombies/shrieker-zombie.webp",
 		description:
@@ -243,11 +251,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("sonicScreech")],
 		spawnBehavior:
 			"These zombies spawn throughout the normal rounds by blasting out of the ground with a Sonic Screech, making it likely you will hear them before you see them spawn. These zombies also do not count towards the normal round, so you can flip the round without killing them.",
-		combatStrategy: () => import("@/content/zombies/shrieker-zombie.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/shrieker-zombie.mdx")),
 	},
 	napalmZombie: {
 		id: "napalm-zombie",
 		title: "Napalm Zombie",
+		state: Option.none(),
 		releaseDate: new Date("June 12, 2011 02:00 AM"),
 		image: "/zombies/napalm-zombie.webp",
 		description:
@@ -261,11 +270,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("flamingAura"), getZombieAttackByKey("fieryExplosion")],
 		spawnBehavior:
 			"Napalm Zombies spawn from a patch of flames on the ground and do not count towards the normal round. Only one Napalm Zombie can appear at a time.",
-		combatStrategy: () => import("@/content/zombies/napalm-zombie.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/napalm-zombie.mdx")),
 	},
 	astronautZombie: {
 		id: "astronaut-zombie",
 		title: "Astronaut Zombie",
+		state: Option.none(),
 		releaseDate: new Date("August 23, 2011 12:00 AM"),
 		image: "/zombies/astronaut-zombie.webp",
 		description:
@@ -279,11 +289,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("grab"), getZombieAttackByKey("knockbackExplosion")],
 		spawnBehavior:
 			"The Astronaut spawns in shortly after you have teleported to the Moon from Earth, and will always spawn in the Receiving Bay and make their way to the player. After every death, it will return with a different name above its head.",
-		combatStrategy: () => import("@/content/zombies/astronaut-zombie.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/astronaut-zombie.mdx")),
 	},
 	denizen: {
 		id: "denizen",
 		title: "Denizen",
+		state: Option.none(),
 		releaseDate: new Date("November 12, 2012 12:00 AM"),
 		image: "/zombies/denizen.webp",
 		description:
@@ -297,11 +308,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("leap")],
 		spawnBehavior:
 			"Denizens spawn within the fog of the map, in-between each Point of Interest and will always exist within those areas no matter the round.",
-		combatStrategy: () => import("@/content/zombies/denizen.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/denizen.mdx")),
 	},
 	avogadro: {
 		id: "avogadro",
 		title: "Avogadro",
+		state: Option.none(),
 		releaseDate: new Date("November 12, 2012 01:00 AM"),
 		image: "/zombies/avogadro.webp",
 		description:
@@ -319,11 +331,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"In TranZit, the Avogadro spawns in after turning on the power. In Alpha Omega, the Avogadro is the final boss of the Main Quest.",
-		combatStrategy: () => import("@/content/zombies/avogadro.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/avogadro.mdx")),
 	},
 	jumpingJack: {
 		id: "jumping-jack",
 		title: "Jumping Jack",
+		state: Option.none(),
 		releaseDate: new Date("January 29, 2013 12:00 AM"),
 		image: "/zombies/jumping-jack.webp",
 		description:
@@ -337,11 +350,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("jumpSwing")],
 		spawnBehavior:
 			"Jumping Jacks are round-specific, and when they spawn, these will be the only enemies on the map for that round. They first spawn on rounds 5-7, and then every 5 rounds after their first appearance. They will spawn in groups of two per player alive, with a new group spawning after a group has been killed.",
-		combatStrategy: () => import("@/content/zombies/jumping-jack.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/jumping-jack.mdx")),
 	},
 	brutus: {
 		id: "brutus",
 		title: "Brutus",
+		state: Option.none(),
 		releaseDate: new Date("April 16, 2013 12:00 AM"),
 		image: "/zombies/brutus.webp",
 		description:
@@ -355,11 +369,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing")],
 		spawnBehavior:
 			"In Mob of the Dead, Brutus first spawns after rounds 5 and 7 with normal zombies, and then randomly after that. He will appear again if players use the Mystery Box too much, spawning in and destroying the Mystery Box, then running after players; As well as if players are on the Golden Gate Bridge. In Blood of the Dead, Brutus first appears after entering the Prison for the first time via the Catwalk, randomly after that, and finally as the final boss in the Main Quest.",
-		combatStrategy: () => import("@/content/zombies/brutus.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/brutus.mdx")),
 	},
 	ghost: {
 		id: "ghost",
 		title: "Ghost",
+		state: Option.none(),
 		releaseDate: new Date("July 13, 2013 12:00 AM"),
 		image: "/zombies/ghost.webp",
 		description:
@@ -373,11 +388,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("pointSteal")],
 		spawnBehavior:
 			"The Ghosts only spawn within the Mansion on the map and spawn infinitely until players leave the mansion.",
-		combatStrategy: () => import("@/content/zombies/ghost.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/ghost.mdx")),
 	},
 	crusaderZombie: {
 		id: "crusader-zombie",
 		title: "Crusader Zombie",
+		state: Option.none(),
 		releaseDate: new Date("August 27, 2013 12:00 AM"),
 		image: "/zombies/crusader-zombie.webp",
 		description:
@@ -391,11 +407,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("generatorSiphon")],
 		spawnBehavior:
 			"Crusader Zombies will spawn out of blue portals in the ground during any 115 generator activation to try to stop you from powering the generator. They will also spawn every few rounds after at least one generator has been powered on, attempting to disable it by siphoning the element 115 energy from it. In The Crazy Place, these enemies will spawn naturally in place of regular zombies.",
-		combatStrategy: () => import("@/content/zombies/crusader-zombie.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/crusader-zombie.mdx")),
 	},
 	panzersoldat: {
 		id: "panzersoldat",
 		title: "Panzersoldat",
+		state: Option.none(),
 		releaseDate: new Date("August 27, 2013 01:00 AM"),
 		image: "/zombies/panzersoldat.webp",
 		description:
@@ -413,11 +430,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"In Origins, the Panzersoldat will always spawn in on Round 8 as long as the door to No Man's Land has been opened. Otherwise, it will spawn on the next round after that door has been opened, and then every 3-5 rounds after that. In Der Eisendrache, the Panzersoldat will spawn on Round 12 and every 5-6 rounds after that. During the Main Quest, a Panzersoldat will always spawn in after returning to the present time, and multiple will spawn during the final boss fight. In Revelations, the Panzersoldat will be between rounds 18-21, and is also present during the final boss fight.",
-		combatStrategy: () => import("@/content/zombies/panzersoldat.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/panzersoldat.mdx")),
 	},
 	keepers: {
 		id: "keepers",
 		title: "Keepers",
+		state: Option.none(),
 		releaseDate: new Date("November 06, 2015 12:00 AM"),
 		image: "/zombies/keeper.webp",
 		description:
@@ -431,11 +449,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing")],
 		spawnBehavior:
 			"In Shadows of Evil, keepers spawn in during all rituals and during certain Main Quest steps. In Der Eisendrache, one keeper appears during the Main Quest to aid Primis in the return of the M.P.D. In Zetsubou No Shima, keepers spawn during the Skull of Nan Sapwe ritual. Finally, in Revelations, keepers spawn during rituals, certain Main Quest steps, and naturally throughout the rounds.",
-		combatStrategy: () => import("@/content/zombies/keepers.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/keepers.mdx")),
 	},
 	insanityElementals: {
 		id: "insanity-elementals",
 		title: "Insanity Elementals",
+		state: Option.none(),
 		releaseDate: new Date("November 06, 2015 01:00 AM"),
 		image: "/zombies/insanity-elementals.webp",
 		description:
@@ -449,11 +468,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("explosion")],
 		spawnBehavior:
 			'Insanity Elementals spawn during a special round after the 2nd parasite round. During the "Capture the Flag" main quest step, they infinitely spawn until the flag has been charged and returned to the ritual site.',
-		combatStrategy: () => import("@/content/zombies/insanity-elementals.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/insanity-elementals.mdx")),
 	},
 	parasite: {
 		id: "parasite",
 		title: "Parasite",
+		state: Option.none(),
 		releaseDate: new Date("November 06, 2015 02:00 AM"),
 		image: "/zombies/parasite.webp",
 		description:
@@ -474,11 +494,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("projectileVomit")],
 		spawnBehavior:
 			"In Shadows of Evil, Parasites spawn during their own special round, out of destroyed heads of Margwas, harvest pods, and during certain Main Quest steps. In Revelations, they behave the same way, but appear red instead of yellow. In Black Ops 6, they spawn during the special round alongside Vermin and can evolve from Vermin that are left alive for too long.",
-		combatStrategy: () => import("@/content/zombies/parasite.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/parasite.mdx")),
 	},
 	margwa: {
 		id: "margwa",
 		title: "Margwa",
+		state: Option.none(),
 		releaseDate: new Date("November 06, 2015 03:00 AM"),
 		image: "/zombies/margwa.webp",
 		description:
@@ -492,11 +513,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("groundSlam")],
 		spawnBehavior:
 			"In Shadows of Evil, Margwas first spawns on Round 8. They will continue to spawn throughout the rounds after that and will appear in greater numbers during certain Main Quest steps, spawning infinitely during the final step of the Main Quest.",
-		combatStrategy: () => import("@/content/zombies/margwa.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/margwa.mdx")),
 	},
 	skeleton: {
 		id: "skeleton",
 		title: "Skeleton",
+		state: Option.none(),
 		releaseDate: new Date("February 02, 2016 12:00 AM"),
 		image: "/zombies/skeleton.webp",
 		description:
@@ -510,11 +532,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing")],
 		spawnBehavior:
 			"In Der Eisendrache, Skeletons spawn as the dominant enemy in the My Brother's Keeper main quest boss fight. In Ancient Evil, these skeletons are known as Spartoi and spawn once you activate the Sentinel Artifact. These Spartoi will not be killed if the final blow is not a headshot; they will instead crumble to the ground and reconstruct up to two times before actually dying.",
-		combatStrategy: () => import("@/content/zombies/skeleton.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/skeleton.mdx")),
 	},
 	theCorruptedKeeper: {
 		id: "the-corrupted-keeper",
 		title: "The Corrupted Keeper",
+		state: Option.none(),
 		releaseDate: new Date("February 02, 2016 01:00 AM"),
 		image: "/zombies/the-corrupted-keeper.webp",
 		description:
@@ -532,11 +555,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"The Corrupted Keeper spawns once you enter the boss arena for the My Brother's Keeper Main Quest.",
-		combatStrategy: () => import("@/content/zombies/the-corrupted-keeper.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/the-corrupted-keeper.mdx")),
 	},
 	spider: {
 		id: "spider",
 		title: "Spider",
+		state: Option.none(),
 		releaseDate: new Date("April 19, 2016 12:00 AM"),
 		image: "/zombies/spider.webp",
 		description:
@@ -550,11 +574,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("bite"), getZombieAttackByKey("webProjectile")],
 		spawnBehavior:
 			'In Zetsubou No Shima, spiders have their own dedicated special round, which can be on Round 5-7, then every 5 rounds after that. They will then start spawning within the normal rounds after Round 20. In Revelations, spiders exclusively spawn within the Apothicon and only every 2-3 rounds. Once they appear, they will spawn pretty frequently during that round, but not again until the next "Spider round" within the apothicon.',
-		combatStrategy: () => import("@/content/zombies/spider.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/spider.mdx")),
 	},
 	thrasher: {
 		id: "thrasher",
 		title: "Thrasher",
+		state: Option.none(),
 		releaseDate: new Date("April 19, 2016 01:00 AM"),
 		description:
 			"Thrashers are an elite enemy originating from the map Zetsubou No Shima. These brutes are mutated zombies from spores completely transforming their appearance.",
@@ -568,11 +593,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("powerfulMelee"), getZombieAttackByKey("toxicGas")],
 		spawnBehavior:
 			"Thrashers spawn from normal zombies affected by a fully-grown toxic spore's gas. They can also spawn naturally throughout rounds.",
-		combatStrategy: () => import("@/content/zombies/thrasher.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/thrasher.mdx")),
 	},
 	giantSpider: {
 		id: "giant-spider",
 		title: "Giant Spider",
+		state: Option.none(),
 		releaseDate: new Date("April 19, 2016 02:00 AM"),
 		image: "/zombies/giant-spider.webp",
 		description:
@@ -586,11 +612,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("webProjectile"), getZombieAttackByKey("legStab")],
 		spawnBehavior:
 			"The Giant Spider spawns once you shoot the blue webbing with the KT-4, blocking the cave entrance by Speed Cola behind Lab A.",
-		combatStrategy: () => import("@/content/zombies/giant-spider.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/giant-spider.mdx")),
 	},
 	giantThrasher: {
 		id: "giant-thrasher",
 		title: "Giant Thrasher",
+		state: Option.none(),
 		releaseDate: new Date("April 19, 2016 03:00 AM"),
 		image: "/zombies/giant-thrasher.webp",
 		description:
@@ -604,11 +631,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("vineSlam")],
 		spawnBehavior:
 			"The Giant Thrasher spawns once the elevator has been repaired and taken the players underground.",
-		combatStrategy: () => import("@/content/zombies/giant-thrasher.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/giant-thrasher.mdx")),
 	},
 	valkyrieDrone: {
 		id: "valkyrie-drone",
 		title: "Valkyrie Drone",
+		state: Option.none(),
 		releaseDate: new Date("July 12, 2016 12:00 AM"),
 		image: "/zombies/valkyrie-drone.webp",
 		description:
@@ -622,11 +650,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("lightningBeam"), getZombieAttackByKey("selfDestruct")],
 		spawnBehavior:
 			"Valkyrie Drones spawn between rounds 9-12, then every 8-10 rounds after that acting as the maps special round. When the special round starts, the map will have a slight blue hue to it, and brief electricity will encircle the screen.",
-		combatStrategy: () => import("@/content/zombies/valkyrie-drone.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/valkyrie-drone.mdx")),
 	},
 	mangler: {
 		id: "mangler",
 		title: "Mangler",
+		state: Option.none(),
 		releaseDate: new Date("July 12, 2016 01:00 AM"),
 		image: "/zombies/mangler.webp",
 		description:
@@ -649,11 +678,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("cannonBlast")],
 		spawnBehavior:
 			"Manglers spawn out of window barriers just like normal zombies and will spawn through the rounds with normal zombies as well. Up to four manglers can spawn at a time.",
-		combatStrategy: () => import("@/content/zombies/mangler.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/mangler.mdx")),
 	},
 	dragon: {
 		id: "dragon",
 		title: "Dragon",
+		state: Option.none(),
 		releaseDate: new Date("July 12, 2016 02:00 AM"),
 		image: "/zombies/dragon.webp",
 		description:
@@ -667,11 +697,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("dragonFire")],
 		spawnBehavior:
 			"The Dragon spawns in the moment you enter the map and can be seen flying around and periodically landing on certain areas to breathe fire.",
-		combatStrategy: () => import("@/content/zombies/dragon.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/dragon.mdx")),
 	},
 	nikolaiMech: {
 		id: "nikolai-mech",
 		title: "Nikolai Mech",
+		state: Option.none(),
 		releaseDate: new Date("July 12, 2016 03:00 AM"),
 		image: "/zombies/nikolai-mech.webp",
 		description:
@@ -685,11 +716,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("harpoonBarrage")],
 		spawnBehavior:
 			"The Nikolai Mech spawns in after starting the final encounter of the Gorod Krovi main quest.",
-		combatStrategy: () => import("@/content/zombies/nikolai-mech.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/nikolai-mech.mdx")),
 	},
 	fury: {
 		id: "fury",
 		title: "Fury",
+		state: Option.none(),
 		releaseDate: new Date("October 06, 2016 12:00 AM"),
 		image: "/zombies/fury.webp",
 		description:
@@ -703,11 +735,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing")],
 		spawnBehavior:
 			"Furies spawn on the second special round, then every special round after that. They will also spawn during the first, second, and final Corruption Engine overrides that the player activates.",
-		combatStrategy: () => import("@/content/zombies/fury.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/fury.mdx")),
 	},
 	fireCatalyst: {
 		id: "fire-catalyst",
 		title: "Fire Catalyst",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 12:00 AM"),
 		image: "/zombies/fire-catalyst.webp",
 		description:
@@ -726,11 +759,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("fieryExplosion")],
 		spawnBehavior:
 			"Fire Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
-		combatStrategy: () => import("@/content/zombies/fire-catalyst.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/fire-catalyst.mdx")),
 	},
 	poisonCatalyst: {
 		id: "poison-catalyst",
 		title: "Poison Catalyst",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 01:00 AM"),
 		image: "/zombies/poison-catalyst.webp",
 		description:
@@ -749,11 +783,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("poisonAura")],
 		spawnBehavior:
 			"Poison Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
-		combatStrategy: () => import("@/content/zombies/poison-catalyst.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/poison-catalyst.mdx")),
 	},
 	waterCatalyst: {
 		id: "water-catalyst",
 		title: "Water Catalyst",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 02:00 AM"),
 		image: "/zombies/water-catalyst.webp",
 		description:
@@ -772,11 +807,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("zombieBuff")],
 		spawnBehavior:
 			"Water Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
-		combatStrategy: () => import("@/content/zombies/water-catalyst.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/water-catalyst.mdx")),
 	},
 	lightningCatalyst: {
 		id: "lightning-catalyst",
 		title: "Lightning Catalyst",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 03:00 AM"),
 		image: "/zombies/lightning-catalyst.webp",
 		description:
@@ -795,11 +831,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("sonicScreech")],
 		spawnBehavior:
 			"Lightning Catalysts can start spawning on Round 8 on Chaos-Story maps and will spawn in with normal zombies during the round.",
-		combatStrategy: () => import("@/content/zombies/lightning-catalyst.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/lightning-catalyst.mdx")),
 	},
 	stoker: {
 		id: "stoker",
 		title: "Stoker",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 04:00 AM"),
 		image: "/zombies/stoker.webp",
 		description:
@@ -816,11 +853,12 @@ const zombiesRegistry = {
 		elementalWeakness: [],
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("fireball")],
 		spawnBehavior: "Stokers spawn in groups of 2-3 and will attack the player with a shovel swing.",
-		combatStrategy: () => import("@/content/zombies/stoker.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/stoker.mdx")),
 	},
 	blightfather: {
 		id: "blightfather",
 		title: "Blightfather",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 05:00 AM"),
 		image: "/zombies/blightfather.webp",
 		description:
@@ -838,11 +876,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"The Blightfather will not spawn until Round 15 on any map and spawns from a normal zombie by ripping apart the zombie like a parasite and crawling out of the zombie's mouth, quickly growing to full size.",
-		combatStrategy: () => import("@/content/zombies/blightfather.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/blightfather.mdx")),
 	},
 	eyeOfMalice: {
 		id: "eye-of-malice",
 		title: "Eye of Malice",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 06:00 AM"),
 		image: "/zombies/eye-of-malice.webp",
 		description:
@@ -856,11 +895,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("eyeBeam")],
 		spawnBehavior:
 			"The Eye of Malice spawns once you enter the final encounter and place the Sentinel Artifact inside of the Iceberg.",
-		combatStrategy: () => import("@/content/zombies/eye-of-malice.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/eye-of-malice.mdx")),
 	},
 	tiger: {
 		id: "tiger",
 		title: "Tiger",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 07:00 AM"),
 		image: "/zombies/tiger.webp",
 		description:
@@ -874,11 +914,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("bite"), getZombieAttackByKey("lunge")],
 		spawnBehavior:
 			"Tigers spawn during the special round of the map IX, as champions of one of the gods, and during specific steps in the main quest. They will also spawn in with normal zombies starting on Round 8.",
-		combatStrategy: () => import("@/content/zombies/tiger.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/tiger.mdx")),
 	},
 	destroyer: {
 		id: "destroyer",
 		title: "Destroyer",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 08:00 AM"),
 		image: "/zombies/destroyer.webp",
 		description:
@@ -892,11 +933,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("axeThrow")],
 		spawnBehavior:
 			"Destroyers spawn during the special round on the map IX, as champions of one of the gods, and during specific parts of the main quest. They will also spawn with normal zombies starting on Round 8.",
-		combatStrategy: () => import("@/content/zombies/destroyer.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/destroyer.mdx")),
 	},
 	marauder: {
 		id: "marauder",
 		title: "Marauder",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 09:00 AM"),
 		image: "/zombies/marauder.webp",
 		description:
@@ -910,11 +952,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("rapidSlashes"), getZombieAttackByKey("heavyLeap")],
 		spawnBehavior:
 			"Marauders spawn in during the special round of the map IX, as champions of one of the gods, and during specific steps of the main quest. They also begin spawning with normal zombies on Round 8.",
-		combatStrategy: () => import("@/content/zombies/marauder.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/marauder.mdx")),
 	},
 	furyAndWrath: {
 		id: "fury-and-wrath",
 		title: "Fury & Wrath",
+		state: Option.none(),
 		releaseDate: new Date("October 12, 2018 10:00 AM"),
 		image: "/zombies/fury-and-wrath.webp",
 		description:
@@ -928,11 +971,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("charge")],
 		spawnBehavior:
 			"Fury will spawn in after Phase 1 of the boss fight is complete defeating all the Gladiators and Tigers. Wrath will spawn in once Fury is defeated and his essence is transfered to Wrath.",
-		combatStrategy: () => import("@/content/zombies/fury-and-wrath.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/fury-and-wrath.mdx")),
 	},
 	nosferatu: {
 		id: "nosferatu",
 		title: "Nosferatu",
+		state: Option.none(),
 		releaseDate: new Date("December 11, 2018 12:00 AM"),
 		image: "/zombies/nosferatu.webp",
 		description:
@@ -946,11 +990,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("vampiricMelee"), getZombieAttackByKey("megaBite")],
 		spawnBehavior:
 			"The Nosferatu will begin spawning naturally in the later rounds and will be spawned during specific points of the main quest. The Crimson Nosferatu will begin spawning naturally in the 30s and can also be spawned from one of the Allistair Annihilators upgrade quest steps.",
-		combatStrategy: () => import("@/content/zombies/nosferatu.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/nosferatu.mdx")),
 	},
 	werewolf: {
 		id: "werewolf",
 		title: "Werewolf",
+		state: Option.none(),
 		releaseDate: new Date("December 11, 2018 01:00 AM"),
 		image: "/zombies/werewolf.webp",
 		description:
@@ -964,11 +1009,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("pounce")],
 		spawnBehavior:
 			"The Werewolf will not spawn until Round 15, however one Werewolf is always present in The Forest until it is defeated.",
-		combatStrategy: () => import("@/content/zombies/werewolf.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/werewolf.mdx")),
 	},
 	shadowWerewolf: {
 		id: "shadow-werewolf",
 		title: "Shadow Werewolf",
+		state: Option.none(),
 		releaseDate: new Date("December 11, 2018 02:00 AM"),
 		image: "/zombies/shadow-werewolf.webp",
 		description:
@@ -982,11 +1028,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("charge")],
 		spawnBehavior:
 			"The Shadow Werewolf will spawn in once you have started the final encounter and entered the boss arena.",
-		combatStrategy: () => import("@/content/zombies/shadow-werewolf.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/shadow-werewolf.mdx")),
 	},
 	gegenees: {
 		id: "gegenees",
 		title: "Gegenees",
+		state: Option.none(),
 		releaseDate: new Date("March 26, 2019 12:00 AM"),
 		image: "/zombies/gegenees.webp",
 		description:
@@ -1004,11 +1051,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"The Gegenees will begin spawning on Round 15, however one will spawn when picking up the Golden Bridle and when shooting down the bird cage within the Omphalos.",
-		combatStrategy: () => import("@/content/zombies/gegenees.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/gegenees.mdx")),
 	},
 	pegasus: {
 		id: "pegasus",
 		title: "Pegasus",
+		state: Option.none(),
 		releaseDate: new Date("March 26, 2019 01:00 AM"),
 		image: "/zombies/pegasus.webp",
 		description:
@@ -1022,11 +1070,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("lightningStrike")],
 		spawnBehavior:
 			"Pegasus spawns once you obtain the Sentinel Artifact, but does not become a threat until the final encounter.",
-		combatStrategy: () => import("@/content/zombies/pegasus.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/pegasus.mdx")),
 	},
 	perseus: {
 		id: "perseus",
 		title: "Perseus",
+		state: Option.none(),
 		releaseDate: new Date("March 26, 2019 02:00 AM"),
 		image: "/zombies/perseus.webp",
 		description:
@@ -1039,11 +1088,12 @@ const zombiesRegistry = {
 		elementalWeakness: [],
 		attacks: [getZombieAttackByKey("flamingSpears")],
 		spawnBehavior: "Perseus spawns in during the final encounter of the main quest.",
-		combatStrategy: () => import("@/content/zombies/perseus.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/perseus.mdx")),
 	},
 	adamUnit: {
 		id: "adam-unit",
 		title: "A.D.A.M. Unit",
+		state: Option.none(),
 		releaseDate: new Date("July 09, 2019 12:00 AM"),
 		image: "/zombies/adam-unit.webp",
 		description:
@@ -1057,11 +1107,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing")],
 		spawnBehavior:
 			"A.D.A.M. Units begin spawning after the power is turned on and during specific steps of the main quest.",
-		combatStrategy: () => import("@/content/zombies/adam-unit.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/adam-unit.mdx")),
 	},
 	nova6Bomber: {
 		id: "nova-6-bomber",
 		title: "Nova-6 Bomber",
+		state: Option.none(),
 		releaseDate: new Date("July 09, 2019 01:00 AM"),
 		image: "/zombies/nova-6-bomber.webp",
 		description:
@@ -1079,11 +1130,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"Nova-6 Bombers begin spawning with normal zombies once the player has activated the Pack-a-Punch machine.",
-		combatStrategy: () => import("@/content/zombies/nova-6-bomber.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/nova-6-bomber.mdx")),
 	},
 	joltingJack: {
 		id: "jolting-jack",
 		title: "Jolting Jack",
+		state: Option.none(),
 		releaseDate: new Date("July 09, 2019 02:00 AM"),
 		image: "/zombies/jolting-jack.webp",
 		description:
@@ -1097,11 +1149,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("lightningBolts")],
 		spawnBehavior:
 			"Jolting Jacks will begin spawning in with normal zombies once the Pack-a-Punch machine has been activated.",
-		combatStrategy: () => import("@/content/zombies/jolting-jack.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/jolting-jack.mdx")),
 	},
 	armoredZombie: {
 		id: "armored-zombie",
 		title: "Armored Zombie",
+		state: Option.none(),
 		releaseDate: new Date("November 13, 2020 12:00 AM"),
 		image: "/zombies/armored-zombie.webp",
 		description:
@@ -1127,11 +1180,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("fleshThrow")],
 		spawnBehavior:
 			"Armored Zombies will begin spawning on Round 10 with normal zombies and will spawn more frequently as the round increases.",
-		combatStrategy: () => import("@/content/zombies/armored-zombie.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/armored-zombie.mdx")),
 	},
 	heavyZombie: {
 		id: "heavy-zombie",
 		title: "Heavy Zombie",
+		state: Option.none(),
 		releaseDate: new Date("November 13, 2020 01:00 AM"),
 		image: "/zombies/heavy-zombie.webp",
 		description:
@@ -1157,11 +1211,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("fleshThrow")],
 		spawnBehavior:
 			"Heavy Zombies begin spawning with normal zombies at and after Round 20 and will spawn more frequently as the rounds increase.",
-		combatStrategy: () => import("@/content/zombies/heavy-zombie.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/heavy-zombie.mdx")),
 	},
 	plaguehound: {
 		id: "plaguehound",
 		title: "Plaguehound",
+		state: Option.none(),
 		releaseDate: new Date("November 13, 2020 02:00 AM"),
 		image: "/zombies/plaguehound.webp",
 		description:
@@ -1179,11 +1234,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"Plaguehounds spawn during the special round on Die Maschine and Forsaken, while also spawning in with normal zombies in the later rounds.",
-		combatStrategy: () => import("@/content/zombies/plaguehound.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/plaguehound.mdx")),
 	},
 	megaton: {
 		id: "megaton",
 		title: "Megaton",
+		state: Option.none(),
 		releaseDate: new Date("November 13, 2020 03:00 AM"),
 		image: "/zombies/megaton.webp",
 		description:
@@ -1201,11 +1257,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"Megatons spawn two rounds after the Pack-a-Punch has been activated on Die Maschine or on Wave 15 if the power has not been restored. In Mauer Der Toten, Megatons spawn during one of the steps of the main quest. In Forsaken, Megatons spawn during the lockdown step when obtaining Samantha's Ballad easter egg song.",
-		combatStrategy: () => import("@/content/zombies/megaton.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/megaton.mdx")),
 	},
 	mimic: {
 		id: "mimic",
 		title: "Mimic",
+		state: Option.none(),
 		releaseDate: new Date("February 04, 2021 12:00 AM"),
 		image: "/zombies/shock-mimic.webp",
 		description:
@@ -1228,11 +1285,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"In Black Ops: Cold War, Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic. On The Tomb, Mimics return as a variant called Shock Mimics, with the first one spawning in on Round 8, and periodically after that as ground loot or with zombies. They will also spawn during the Golden Armor side quest on The Tomb as HVTs.",
-		combatStrategy: () => import("@/content/zombies/mimic.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/mimic.mdx")),
 	},
 	orda: {
 		id: "orda",
 		title: "Orda",
+		state: Option.none(),
 		releaseDate: new Date("February 04, 2021 01:00 AM"),
 		image: "/zombies/orda.webp",
 		description:
@@ -1246,11 +1304,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("powerfulMelee"), getZombieAttackByKey("fireballs")],
 		spawnBehavior:
 			"Ordas can spawn during the third Dimensional Tear Assault waves in Firebase Z, and an Orda is also the final boss of the main quest.",
-		combatStrategy: () => import("@/content/zombies/orda.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/orda.mdx")),
 	},
 	tormentors: {
 		id: "tormentors",
 		title: "Tormentors",
+		state: Option.none(),
 		releaseDate: new Date("July 15, 2021 12:00 AM"),
 		image: "/zombies/tormentor.webp",
 		description:
@@ -1264,11 +1323,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("selfDestruct")],
 		spawnBehavior:
 			"In Mauer Der Toten, Tormentors spawn during the special round and will begin spawning with normal zombies at Round 15 and onward. In Forsaken, Tormentors only spawn with normal zombies on Round 15 and onward.",
-		combatStrategy: () => import("@/content/zombies/tormentors.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/tormentors.mdx")),
 	},
 	disciple: {
 		id: "disciple",
 		title: "Disciple",
+		state: Option.none(),
 		releaseDate: new Date("July 15, 2021 01:00 AM"),
 		image: "/zombies/disciple.webp",
 		description:
@@ -1282,11 +1342,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("zombieBuff"), getZombieAttackByKey("lifeDrain")],
 		spawnBehavior:
 			"In Mauer Der Toten, the first Disciple is encountered during the Pack-a-Punch ritual to activate it; afterwards, they will appear periodically. In Forsaken, Disciples will begin spawning in the later rounds periodically.",
-		combatStrategy: () => import("@/content/zombies/disciple.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/disciple.mdx")),
 	},
 	tempest: {
 		id: "tempest",
 		title: "Tempest",
+		state: Option.none(),
 		releaseDate: new Date("July 15, 2021 02:00 AM"),
 		image: "/zombies/tempest.webp",
 		description:
@@ -1300,11 +1361,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("lightningBolts")],
 		spawnBehavior:
 			"In Mauer Der Toten, the first Tempests you will encounter during the quest to turn on the power, they will also with normal zombies in the later rounds.",
-		combatStrategy: () => import("@/content/zombies/tempest.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/tempest.mdx")),
 	},
 	krasnySoldat: {
 		id: "krasny-soldat",
 		title: "Krasny Soldat",
+		state: Option.none(),
 		releaseDate: new Date("July 15, 2021 03:00 AM"),
 		image: "/zombies/krasny-soldat.webp",
 		description:
@@ -1322,11 +1384,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"In Mauer Der Toten, the first Krasny Soldat spawns on Round 10, then will spawn periodically after that point. In Forsaken, the Krasny Soldat only appears in the final boss fight of the main quest.",
-		combatStrategy: () => import("@/content/zombies/krasny-soldat.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/krasny-soldat.mdx")),
 	},
 	valentina: {
 		id: "valentina",
 		title: "Valentina",
+		state: Option.none(),
 		releaseDate: new Date("July 15, 2021 04:00 AM"),
 		image: "/zombies/valentina.webp",
 		description:
@@ -1344,11 +1407,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"Valentina spawns in during the final encounter of the main quest Tin Man Heart.",
-		combatStrategy: () => import("@/content/zombies/valentina.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/valentina.mdx")),
 	},
 	abomination: {
 		id: "abomination",
 		title: "Abomination",
+		state: Option.none(),
 		releaseDate: new Date("October 07, 2021 12:00 AM"),
 		image: "/zombies/abomination.webp",
 		description:
@@ -1366,11 +1430,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"In Forsaken, the abomination first spawns when entering The Amplifier and then periodically after that. In Liberty Falls, the abomination first spawns on Round 15, during specific main quest steps, and periodically after the first spawn. In Shattered Veil, the abomination only spawns during the Ray Gun MKII-W upgrade quest.",
-		combatStrategy: () => import("@/content/zombies/abomination.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/abomination.mdx")),
 	},
 	theForsaken: {
 		id: "the-forsaken",
 		title: "The Forsaken",
+		state: Option.none(),
 		releaseDate: new Date("October 07, 2021 01:00 AM"),
 		image: "/zombies/the-forsaken.webp",
 		description:
@@ -1396,11 +1461,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"The Forsaken spawns once you have entered the final encounter arena. In Reckoning, the forsaken is the dark entity you must defeat in order to obtain the Gorgofex wonder weapon, in the form of an Uber Klaus.",
-		combatStrategy: () => import("@/content/zombies/the-forsaken.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/the-forsaken.mdx")),
 	},
 	vermin: {
 		id: "vermin",
 		title: "Vermin",
+		state: Option.none(),
 		releaseDate: new Date("October 25, 2024 12:00 AM"),
 		image: "/zombies/vermin.webp",
 		description:
@@ -1421,11 +1487,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("bite"), getZombieAttackByKey("lunge")],
 		spawnBehavior:
 			"Vermin serve as the special round on Liberty Falls, and spawn infrequently on non-special rounds. In all other maps, Vermin appear periodically or during specific quest steps.",
-		combatStrategy: () => import("@/content/zombies/vermin.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/vermin.mdx")),
 	},
 	amalgam: {
 		id: "amalgam",
 		title: "Amalgam",
+		state: Option.none(),
 		releaseDate: new Date("October 25, 2024 01:00 AM"),
 		image: "/zombies/amalgam.webp",
 		description:
@@ -1445,11 +1512,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("tongueGrab")],
 		spawnBehavior:
 			"On Terminus, Citadelle Des Morts, and The Tomb, the Amalgam will first spawn on Round 16. On Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning, Amalgams can spawn from Doppelghast, which may evolve into Amalgams if left alive for too long. They will also spawn in specific main quest steps in all of these maps.",
-		combatStrategy: () => import("@/content/zombies/amalgam.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/amalgam.mdx")),
 	},
 	nathan: {
 		id: "nathan",
 		title: "Nathan",
+		state: Option.none(),
 		releaseDate: new Date("October 25, 2024 02:00 AM"),
 		image: "/zombies/nathan.webp",
 		description:
@@ -1463,11 +1531,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("tongueGrab")],
 		spawnBehavior:
 			"Nathan spawns in as a mini-boss once you enter the code into the keypad in the Bio-Lab, freeing him.",
-		combatStrategy: () => import("@/content/zombies/nathan.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/nathan.mdx")),
 	},
 	patient13: {
 		id: "patient-13",
 		title: "Patient 13",
+		state: Option.none(),
 		releaseDate: new Date("October 25, 2024 03:00 AM"),
 		image: "/zombies/patient-13.webp",
 		description:
@@ -1498,11 +1567,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"Patient 13 spawns once you have entered the final encounter arena, after completing majority of the main quest.",
-		combatStrategy: () => import("@/content/zombies/patient-13.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/patient-13.mdx")),
 	},
 	doppelghast: {
 		id: "doppelghast",
 		title: "Doppelghast",
+		state: Option.none(),
 		releaseDate: new Date("December 05, 2024 12:00 AM"),
 		image: "/zombies/doppelghast.webp",
 		description:
@@ -1522,11 +1592,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("needleBarrage")],
 		spawnBehavior:
 			"Doppelghasts will first spawn on Round 13 on Citadelle Des Morts and Round 14 on The Tomb. Doppelghasts on Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning can spawn as an evolution of parasites if they are left alive too long and consume a zombie.",
-		combatStrategy: () => import("@/content/zombies/doppelghast.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/doppelghast.mdx")),
 	},
 	theGuardian: {
 		id: "the-guardian",
 		title: "The Guardian",
+		state: Option.none(),
 		releaseDate: new Date("December 05, 2024 01:00 AM"),
 		image: "/zombies/the-guardian.webp",
 		description:
@@ -1550,11 +1621,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"The Guardian spawns once you use the Guardian Key on the statue in the Town Square.",
-		combatStrategy: () => import("@/content/zombies/the-guardian.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/the-guardian.mdx")),
 	},
 	sentinelArtifact: {
 		id: "sentinel-artifact",
 		title: "Sentinel Artifact",
+		state: Option.none(),
 		releaseDate: new Date("January 28, 2025 12:00 AM"),
 		image: "/zombies/sentinel-artifact.webp",
 		description:
@@ -1568,11 +1640,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("laser")],
 		spawnBehavior:
 			"The Sentinel Artifact spawns in once you activate it by trying to take it in the final encounter.",
-		combatStrategy: () => import("@/content/zombies/sentinel-artifact.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/sentinel-artifact.mdx")),
 	},
 	toxicZombies: {
 		id: "toxic-zombies",
 		title: "Toxic Zombies",
+		state: Option.none(),
 		releaseDate: new Date("April 02, 2025 12:00 AM"),
 		image: "/zombies/toxic-zombie.webp",
 		description:
@@ -1586,11 +1659,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("acidExplosion")],
 		spawnBehavior:
 			"Toxic Zombies spawn during the special round on Shattered Veil, while also periodically spawning outside of these rounds and during specific main quest steps. On Reckoning, Toxic Zombies will only spawn out of the test tubes during one of the main quest steps.",
-		combatStrategy: () => import("@/content/zombies/toxic-zombies.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/toxic-zombies.mdx")),
 	},
 	elderDisciple: {
 		id: "elder-disciple",
 		title: "Elder Disciple",
+		state: Option.none(),
 		releaseDate: new Date("April 02, 2025 01:00 AM"),
 		image: "/zombies/elder-disciple.webp",
 		description:
@@ -1604,11 +1678,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("zombieBuff"), getZombieAttackByKey("zombieEvolution")],
 		spawnBehavior:
 			"Elder Disciples spawn on Round 16, then around every 3 Rounds after that. On Reckoning, Elder Disciple will only spawn out of one of the test tubes during one of the main quest steps.",
-		combatStrategy: () => import("@/content/zombies/elder-disciple.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/elder-disciple.mdx")),
 	},
 	zRex: {
 		id: "z-rex",
 		title: "Z-Rex",
+		state: Option.none(),
 		releaseDate: new Date("April 02, 2025 02:00 AM"),
 		image: "/zombies/z-rex.webp",
 		description:
@@ -1630,11 +1705,12 @@ const zombiesRegistry = {
 		],
 		spawnBehavior:
 			"The Dinosaur spawns after activating the final encounter by giving the Sentinel Artifact to S.A.M.",
-		combatStrategy: () => import("@/content/zombies/z-rex.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/z-rex.mdx")),
 	},
 	kommandoKlaus: {
 		id: "kommando-klaus",
 		title: "Kommando Klaus",
+		state: Option.none(),
 		releaseDate: new Date("August 07, 2025 12:00 AM"),
 		image: "/zombies/kommando-klaus.webp",
 		description:
@@ -1648,11 +1724,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("selfDestruct")],
 		spawnBehavior:
 			"Kommando Klaus will first spawn on Reckoning on round 5, 6, or 7 as the special round and then every 5 rounds afterwards. They will also spawn alongside regular zombies in the later rounds.",
-		combatStrategy: () => import("@/content/zombies/kommando-klaus.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/kommando-klaus.mdx")),
 	},
 	uberKlaus: {
 		id: "uber-klaus",
 		title: "Uber Klaus",
+		state: Option.none(),
 		releaseDate: new Date("August 07, 2025 01:00 AM"),
 		image: "/zombies/uber-klaus.webp",
 		description:
@@ -1670,11 +1747,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("powerfulMelee"), getZombieAttackByKey("electricalBolts")],
 		spawnBehavior:
 			"Uber Klaus will first spawn on Reckoning on Round 16, then every 3-5 rounds afterwards. They will also spawn in during specific main quest steps.",
-		combatStrategy: () => import("@/content/zombies/uber-klaus.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/uber-klaus.mdx")),
 	},
 	sam: {
 		id: "sam",
 		title: "S.A.M.",
+		state: Option.none(),
 		releaseDate: new Date("August 07, 2025 02:00 AM"),
 		image: "/zombies/sam.webp",
 		description:
@@ -1691,11 +1769,12 @@ const zombiesRegistry = {
 			getZombieAttackByKey("aetherBarrage"),
 		],
 		spawnBehavior: "S.A.M. spawns when you choose the Richtofen side of the final boss fight.",
-		combatStrategy: () => import("@/content/zombies/sam.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/sam.mdx")),
 	},
 	uberRichtofen: {
 		id: "uber-richtofen",
 		title: "Uber Richtofen",
+		state: Option.none(),
 		releaseDate: new Date("August 07, 2025 03:00 AM"),
 		image: "/zombies/uber-richtofen.webp",
 		description:
@@ -1718,12 +1797,12 @@ const zombiesRegistry = {
 			getZombieAttackByKey("aerialBomber"),
 		],
 		spawnBehavior: "Uber Richtofen spawns when you choose to help S.A.M. in the final boss fight.",
-		combatStrategy: () => import("@/content/zombies/uber-richtofen.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/uber-richtofen.mdx")),
 	},
 	ravager: {
 		id: "ravager",
 		title: "Ravager",
-		state: "New",
+		state: Option.some("New"),
 		releaseDate: new Date("November 14, 2025 12:00 AM"),
 		image: "/zombies/ravager.webp",
 		description:
@@ -1737,12 +1816,12 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("ravage")],
 		spawnBehavior:
 			"Ravagers spawn as the special round in Ashes of the Damned, and will spawn in among normal zombies in the later rounds.",
-		combatStrategy: () => import("@/content/zombies/ravager.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/ravager.mdx")),
 	},
 	zursa: {
 		id: "zursa",
 		title: "Zursa",
-		state: "New",
+		state: Option.some("New"),
 		releaseDate: new Date("November 14, 2025 01:00 AM"),
 		image: "/zombies/zursa.webp",
 		description:
@@ -1756,7 +1835,7 @@ const zombiesRegistry = {
 		attacks: [getZombieAttackByKey("maul"), getZombieAttackByKey("beeSwarm")],
 		spawnBehavior:
 			"Zursa will first spawn on Round 16, then every 3-5 rounds after that with the chance for multiple to spawn on those rounds.",
-		combatStrategy: () => import("@/content/zombies/zursa.mdx"),
+		combatStrategy: Effect.promise(() => import("@/content/zombies/zursa.mdx")),
 	},
 } as const satisfies Record<string, Zombie>
 

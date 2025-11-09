@@ -4,6 +4,38 @@ export type TFeedbackForm = typeof FeedbackFormSchema.Type
 export type TContactForm = typeof ContactFormSchema.Type
 export type TNewsletterForm = typeof NewsletterFormSchema.Type
 
+const QuestParamsSchema = Schema.Struct({
+	game: Schema.OptionFromUndefinedOr(Schema.String),
+})
+
+const MainQuestParamsSchema = Schema.extend(
+	QuestParamsSchema,
+	Schema.Struct({
+		map: Schema.OptionFromUndefinedOr(Schema.String),
+	}),
+)
+
+const SideQuestParamsSchema = Schema.extend(
+	QuestParamsSchema,
+	Schema.Struct({
+		map: Schema.OptionFromUndefinedOr(Schema.String),
+		id: Schema.OptionFromUndefinedOr(Schema.String),
+	}),
+)
+
+const ZombieParamsSchema = Schema.Struct({
+	id: Schema.OptionFromUndefinedOr(Schema.String),
+})
+
+const ErrorPageSearchParamsSchema = Schema.Struct({
+	message: Schema.OptionFromUndefinedOr(Schema.String),
+})
+
+export const decodeMainQuestParams = Schema.decodeUnknownSync(MainQuestParamsSchema)
+export const decodeSideQuestParams = Schema.decodeUnknownSync(SideQuestParamsSchema)
+export const decodeZombieParams = Schema.decodeUnknownSync(ZombieParamsSchema)
+export const decodeErrorPageSearchParams = Schema.decodeUnknown(ErrorPageSearchParamsSchema)
+
 const EmailSchema = Schema.NonEmptyString.annotations({
 	message: () => "Please enter an email address",
 })

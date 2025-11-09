@@ -73,5 +73,4 @@ export class LinearGetIssueLabelsError extends Data.TaggedError(
 	"LinearGetIssueLabelsError",
 )<CommonErrorProps> {}
 export class PreviewImageError extends Data.TaggedError("PreviewImageError")<CommonErrorProps> {}
-export class PageNotFoundError extends Data.TaggedError("PageNotFoundError")<CommonErrorProps> {}
 export class ReadFileError extends Data.TaggedError("ReadFileError")<CommonErrorProps> {}

@@ -1,7 +1,7 @@
 import type { Augment } from "@/data/augments"
 import type { ElixirRarity } from "@/data/elixirs"
 import type { GobblegumRarity, GobblegumType } from "@/data/gobblegum"
-import type { MainQuest } from "@/data/main-quests"
+import type { MainQuestDifficulty } from "@/data/main-quests"
 import type { ZombieAttack } from "@/data/zombie-attacks"
 import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
@@ -34,7 +34,7 @@ export const ComingSoonBadge = ({ className }: CustomBadgeProps) => (
 export const DifficultyBadge = ({
 	className,
 	difficulty,
-}: CustomBadgeProps & { difficulty: MainQuest["difficulty"] }) => (
+}: CustomBadgeProps & { difficulty: MainQuestDifficulty }) => (
 	<Badge
 		className={cn(
 			{

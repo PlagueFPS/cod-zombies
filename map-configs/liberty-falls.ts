@@ -1,13 +1,18 @@
-import type { MapConfig } from "@/map-configs"
+import type { MapConfig, MapConfigMetadata } from "@/map-configs"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "./markers"
 
-const libertyFalls: MapConfig = {
+export const metadata: MapConfigMetadata = {
 	id: "liberty-falls",
 	title: "Liberty Falls",
 	game: "Black Ops 6",
-	state: null,
+	state: Option.none(),
 	description:
 		"Explore Liberty Falls in Black Ops 6 Zombies. Find all perks, Pack-a-Punch, Mystery Box, wall buys, intel, and more with our interactive map.",
+}
+
+export const config: MapConfig = {
+	id: "liberty-falls",
 	layers: [
 		{
 			id: "liberty-falls",
@@ -501,5 +506,3 @@ const libertyFalls: MapConfig = {
 		},
 	],
 }
-
-export default libertyFalls

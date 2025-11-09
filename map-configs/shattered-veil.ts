@@ -1,13 +1,18 @@
-import type { MapConfig } from "@/map-configs"
+import type { MapConfig, MapConfigMetadata } from "@/map-configs"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "./markers"
 
-const shatteredVeil: MapConfig = {
+export const metadata: MapConfigMetadata = {
 	id: "shattered-veil",
 	title: "Shattered Veil",
 	game: "Black Ops 6",
-	state: null,
+	state: Option.none(),
 	description:
 		"Explore Shattered Veil in BO6 Zombies. Find all Janus Crates, Aether Plants, Aether Crystals, Intel, and more with our interactive map.",
+}
+
+export const config: MapConfig = {
+	id: "shattered-veil",
 	layers: [
 		{
 			id: "shattered-veil",
@@ -618,5 +623,3 @@ const shatteredVeil: MapConfig = {
 		},
 	],
 }
-
-export default shatteredVeil

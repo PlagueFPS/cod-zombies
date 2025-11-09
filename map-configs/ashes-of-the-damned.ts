@@ -1,12 +1,15 @@
-import type { MapConfig } from "."
+import type { MapConfig, MapConfigMetadata } from "."
+import { Option } from "effect"
 
-const ashesOfTheDamned: MapConfig = {
+export const metadata: MapConfigMetadata = {
 	id: "ashes-of-the-damned",
 	title: "Ashes of the Damned",
-	state: "Coming Soon",
+	state: Option.some("Coming Soon"),
 	game: "Black Ops 7",
 	description: "TBD",
-	layers: [],
 }
 
-export default ashesOfTheDamned
+export const config: MapConfig = {
+	id: "ashes-of-the-damned",
+	layers: [],
+}

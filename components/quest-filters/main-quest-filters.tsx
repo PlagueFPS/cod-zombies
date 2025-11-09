@@ -1,3 +1,4 @@
+import { Option } from "effect"
 import { Suspense } from "react"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { getGames } from "@/data/games"
@@ -12,8 +13,8 @@ export default function MainQuestFilters() {
 	const questDifficulties = new Set(
 		mainQuests
 			.map(q => q.difficulty)
-			.filter(difficulty => difficulty !== undefined)
-			.sort(sortDifficulties),
+			.filter(difficulty => Option.isSome(difficulty))
+			.sort((a, b) => sortDifficulties(a.value, b.value)),
 	)
 	const gameFilters = games
 		.filter(g => questGames.has(g.id))
@@ -23,9 +24,9 @@ export default function MainQuestFilters() {
 			title: g.title,
 		}))
 	const difficultyFilters = Array.from(questDifficulties).map(difficulty => ({
-		id: slugify(difficulty),
-		slug: slugify(difficulty),
-		title: difficulty,
+		id: slugify(difficulty.value),
+		slug: slugify(difficulty.value),
+		title: difficulty.value,
 	}))
 
 	return (

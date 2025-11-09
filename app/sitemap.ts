@@ -1,15 +1,16 @@
 import type { MetadataRoute } from "next"
-import { getAvailableMaps } from "@/data/interactive-map"
+import { getInteractiveMaps } from "@/data/interactive-map"
 import { getMainQuests } from "@/data/main-quests"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 import { getLastUpdated, getServerUrl } from "@/utils/functions"
+import { Effect } from "effect"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const mainQuests = getMainQuests()
 	const zombies = getZombies()
 	const sideQuests = getSideQuests()
-	const interactiveMaps = getAvailableMaps()
+	const interactiveMaps = await Effect.runPromise(getInteractiveMaps())
 	const serverUrl = getServerUrl()
 
 	const mainQuestsMap = mainQuests.map(quest => {
@@ -59,7 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			url: `${serverUrl}/maps`,
 		},
 		...interactiveMaps.map((map): MetadataRoute.Sitemap[number] => ({
-			url: `${serverUrl}/maps/${map}`,
+			url: `${serverUrl}/maps/${map.id}`,
 		})),
 	]
 }
