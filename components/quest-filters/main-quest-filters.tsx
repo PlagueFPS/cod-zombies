@@ -2,7 +2,7 @@ import { Option } from "effect"
 import { Suspense } from "react"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { getGames } from "@/data/games"
-import { getMainQuests } from "@/data/main-quests"
+import { getMainQuests, type MainQuestDifficulty } from "@/data/main-quests"
 import { slugify, sortDifficulties } from "@/utils/functions.client"
 import QuestFiltersClient from "./quest-filters.client"
 
@@ -10,12 +10,14 @@ export default function MainQuestFilters() {
 	const mainQuests = getMainQuests()
 	const games = getGames()
 	const questGames = new Set(mainQuests.map(q => q.map.game.id))
-	const questDifficulties = new Set(
-		mainQuests
-			.map(q => q.difficulty)
-			.filter(difficulty => Option.isSome(difficulty))
-			.sort((a, b) => sortDifficulties(a.value, b.value)),
-	)
+	const questDifficulties = new Set<MainQuestDifficulty>()
+
+	for (const quest of mainQuests) {
+		if (Option.isSome(quest.difficulty)) {
+			questDifficulties.add(quest.difficulty.value)
+		}
+	}
+
 	const gameFilters = games
 		.filter(g => questGames.has(g.id))
 		.map(g => ({
@@ -23,11 +25,13 @@ export default function MainQuestFilters() {
 			slug: g.id,
 			title: g.title,
 		}))
-	const difficultyFilters = Array.from(questDifficulties).map(difficulty => ({
-		id: slugify(difficulty.value),
-		slug: slugify(difficulty.value),
-		title: difficulty.value,
-	}))
+	const difficultyFilters = Array.from(questDifficulties)
+		.sort(sortDifficulties)
+		.map(difficulty => ({
+			id: slugify(difficulty),
+			slug: slugify(difficulty),
+			title: difficulty,
+		}))
 
 	return (
 		<Suspense fallback={<QuestFilterLoader filters={["Game", "Difficulty"]} />}>

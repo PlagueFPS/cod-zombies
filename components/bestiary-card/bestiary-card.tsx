@@ -34,7 +34,7 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 						{ "opacity-75 dark:opacity-50": state === "Coming Soon" },
 					)}
 				>
-					<div className="absolute top-2 right-2 z-20 flex w-fit items-center justify-center gap-1">
+					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
 						{state === "Coming Soon" ? <ComingSoonBadge /> : state === "New" ? <NewBadge /> : null}
 						<TypeBadge type={zombie.type} />
 						{zombie.maps[0] ? (

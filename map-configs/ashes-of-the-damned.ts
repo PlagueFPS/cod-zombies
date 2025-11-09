@@ -6,7 +6,8 @@ export const metadata: MapConfigMetadata = {
 	title: "Ashes of the Damned",
 	state: Option.some("Coming Soon"),
 	game: "Black Ops 7",
-	description: "TBD",
+	description:
+		"Explore Ashes of the Damned in Black Ops 7 Zombies. Find locations for all perks, weapons, fast travels, intel, and more with our interactive map.",
 }
 
 export const config: MapConfig = {
