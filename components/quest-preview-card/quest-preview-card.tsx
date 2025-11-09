@@ -1,3 +1,4 @@
+import type { Route } from "next"
 import type { MainQuest } from "@/data/main-quests"
 import type { SideQuest } from "@/data/side-quests"
 import { Option, Predicate } from "effect"
@@ -20,7 +21,25 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 	const title = "title" in quest ? quest.title : quest.map.title
 	const description = "description" in quest ? quest.description : quest.map.description
 	const alt = `${title} map image`
-	const questState = Option.getOrNull(quest.state)
+	const href = Predicate.hasProperty(quest, "difficulty")
+		? `/${quest.map.game.id}/${quest.map.id}`
+		: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`
+
+	const { disabled, stateBadge, tabIndex } = Option.match(quest.state, {
+		onNone: () => ({
+			disabled: false,
+			tabIndex: 0,
+			stateBadge: null,
+		}),
+		onSome: state => {
+			const isComingSoon = state === "Coming Soon"
+			return {
+				disabled: isComingSoon,
+				tabIndex: isComingSoon ? -1 : 0,
+				stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
+			}
+		},
+	})
 
 	const renderSpecificBadge = () => {
 		if (!Predicate.hasProperty(quest, "title") && Option.isSome(quest.difficulty)) {
@@ -41,34 +60,24 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 	return (
 		<article
 			className={cn("h-full max-h-110", {
-				"pointer-events-none": questState === "Coming Soon",
+				"pointer-events-none": disabled,
 			})}
 		>
 			<CustomLink
-				href={
-					questState === "Coming Soon"
-						? "#"
-						: Predicate.hasProperty(quest, "difficulty")
-							? `/${quest.map.game.id}/${quest.map.id}`
-							: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`
-				}
+				href={href as Route}
 				aria-label={`View Guide for ${title}`}
-				aria-disabled={questState === "Coming Soon"}
+				aria-disabled={disabled}
 				className="group outline-none"
-				tabIndex={questState === "Coming Soon" ? -1 : 0}
+				tabIndex={tabIndex}
 			>
 				<Card
 					className={cn(
 						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
-						{ "opacity-75 dark:opacity-50": questState === "Coming Soon" },
+						{ "opacity-75 dark:opacity-50": disabled },
 					)}
 				>
-					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end gap-1">
-						{questState === "Coming Soon" ? (
-							<ComingSoonBadge />
-						) : questState === "New" ? (
-							<NewBadge />
-						) : null}
+					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
+						{stateBadge}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.map.game.title}
