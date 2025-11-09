@@ -1,7 +1,6 @@
 import type { DurationInput } from "effect/Duration"
 import type { Heading } from "@/components/table-of-contents/table-of-contents"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import { FileSystem, Path } from "@effect/platform"
 import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
 import { files } from "@/data/last-modified.json"
 import { env } from "@/env"

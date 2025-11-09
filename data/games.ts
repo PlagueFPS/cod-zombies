@@ -24,6 +24,23 @@ export const getGames = (): Game[] =>
  */
 export const getGameByKey = (key: GameKey): Game => gameRegistry[key]
 
+/**
+ * Converts a game ID to a game key for use in areas where a game ID isn't supported.
+ * @param id - The ID of the game.
+ * @returns The game key.
+ * @example
+ * convertIdToGameKey("black-ops-1") // "blackOps1"
+ */
+export const convertIdToGameKey = (id: string): GameKey => {
+	const gameKey = id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())
+	const isValidGameKey = gameKey in gameRegistry
+	if (!isValidGameKey) {
+		throw new Error(`Invalid game key: ${gameKey}`)
+	}
+
+	return gameKey as GameKey
+}
+
 const gameRegistry = {
 	worldAtWar: {
 		id: "world-at-war",
