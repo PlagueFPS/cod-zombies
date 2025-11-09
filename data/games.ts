@@ -32,8 +32,13 @@ export const getGameByKey = (key: GameKey): Game => gameRegistry[key]
  * convertIdToGameKey("black-ops-1") // "blackOps1"
  */
 export const convertIdToGameKey = (id: string): GameKey => {
-	const camelCaseId = id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())
-	return camelCaseId as GameKey
+	const gameKey = id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())
+	const isValidGameKey = gameKey in gameRegistry
+	if (!isValidGameKey) {
+		throw new Error(`Invalid game key: ${gameKey}`)
+	}
+
+	return gameKey as GameKey
 }
 
 const gameRegistry = {

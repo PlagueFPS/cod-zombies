@@ -93,7 +93,6 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 		onNone: () => undefined,
 		onSome: game => convertIdToGameKey(game.id),
 	})
-	console.log(mostRecentGame)
 	const firstAppearIn = Arr.get(zombie.maps, 0)
 
 	const speedProgress = () => {
