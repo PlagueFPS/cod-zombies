@@ -1,5 +1,5 @@
 import type { Metadata, Route } from "next"
-import { Effect, Option } from "effect"
+import { Array as Arr, Effect, Option } from "effect"
 import {
 	AlertTriangle,
 	BookOpen,
@@ -29,6 +29,7 @@ import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { convertIdToGameKey } from "@/data/games"
 import { getAdjacentZombies, getZombieById, getZombies, type Zombie } from "@/data/zombies"
 import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
@@ -88,6 +89,12 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 	const { prev, next } = getAdjacentZombies(zombie.id)
 	const { default: MDXContent } = yield* zombie.combatStrategy
 	const { lastModifiedFormatted } = getLastUpdated(`zombies/${zombie.id}.mdx`)
+	const mostRecentGame = Option.match(Arr.last(zombie.games), {
+		onNone: () => undefined,
+		onSome: game => convertIdToGameKey(game.id),
+	})
+	console.log(mostRecentGame)
+	const firstAppearIn = Arr.get(zombie.maps, 0)
 
 	const speedProgress = () => {
 		switch (zombie.speed) {
@@ -165,11 +172,11 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 												First Appeared In
 											</span>
 										</div>
-										{zombie.maps.at(-1) ? (
+										{Option.isSome(firstAppearIn) && (
 											<span className="text-foreground dark:text-foreground/80">
-												{zombie.maps.at(-1)?.title}
+												{firstAppearIn.value.title}
 											</span>
-										) : null}
+										)}
 									</div>
 								</div>
 								<div>
@@ -260,7 +267,7 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 								<div className="flex flex-wrap items-center gap-2">
 									{zombie.elementalWeakness.length > 0 ? (
 										zombie.elementalWeakness.map(weakness => (
-											<AmmoModTooltip key={weakness} ammoModKey={weakness} />
+											<AmmoModTooltip key={weakness} ammoModKey={weakness} game={mostRecentGame} />
 										))
 									) : (
 										<span className="text-orange-800 dark:text-orange-200">
