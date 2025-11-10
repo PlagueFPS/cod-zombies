@@ -867,6 +867,11 @@ const augmentRegistry = {
 		description: "Nearby players are also cloaked.",
 		type: "Major",
 		image: "/augments/chain-lightning-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/group-shroud-major-augment-bo7.webp",
+			},
+		},
 	},
 	burstDash: {
 		id: "burst-dash",
@@ -874,6 +879,11 @@ const augmentRegistry = {
 		description: "Warp forward a short distance, killing all normal enemies in your path.",
 		type: "Major",
 		image: "/augments/burst-dash-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/burst-dash-major-augment-bo7.webp",
+			},
+		},
 	},
 	voidSheath: {
 		id: "void-sheath",
@@ -882,6 +892,11 @@ const augmentRegistry = {
 			"Swap to your dedicated melee weapon as it's imbued with Dark Aether energy. Kills allow you to stay in Aether Shroud for longer.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
+			},
+		},
 	},
 	instantReload: {
 		id: "instant-reload",
@@ -889,13 +904,23 @@ const augmentRegistry = {
 		description: "Activation instantly reloads your currently held weapon.",
 		type: "Minor",
 		image: "/augments/hidden-impact-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mugging-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extraCharge: {
 		id: "extra-charge",
 		title: "Extra Charge",
-		description: "Increase Max Charges by 1.",
+		description: "Increase Max Charges by one.",
 		type: "Minor",
 		image: "/augments/extra-charge-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extra-charge-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extensionAetherShroud: {
 		id: "extension-aether-shroud",
@@ -903,6 +928,11 @@ const augmentRegistry = {
 		description: "Aether Shroud duration is significantly increased.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	phalanx: {
 		id: "phalanx",
@@ -910,6 +940,11 @@ const augmentRegistry = {
 		description: "Teammates can also repair armor from kills while near you.",
 		type: "Major",
 		image: "/augments/chain-lightning-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/phalanx-major-augment-bo7.webp",
+			},
+		},
 	},
 	retribution: {
 		id: "retribution",
@@ -918,6 +953,11 @@ const augmentRegistry = {
 			"Trigger an explosion on activation. Normal enemies that melee you are damaged and knocked down.",
 		type: "Major",
 		image: "/augments/retribution-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/turtle-shell-major-augment-bo7.webp",
+			},
+		},
 	},
 	frenzyFire: {
 		id: "frenzy-fire",
@@ -925,6 +965,11 @@ const augmentRegistry = {
 		description: "Use ammo from stock.",
 		type: "Major",
 		image: "/augments/frenzy-fire-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/fetid-upgraid-major-augment-bo7.webp",
+			},
+		},
 	},
 	repairBoost: {
 		id: "repair-boost",
@@ -932,6 +977,11 @@ const augmentRegistry = {
 		description: "Repair more armor per kill.",
 		type: "Minor",
 		image: "/augments/repair-boost-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extensionFrenziedGuard: {
 		id: "extension-frenzied-guard",
@@ -939,6 +989,11 @@ const augmentRegistry = {
 		description: "Increase Frenzied Guard duration.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	rally: {
 		id: "rally",
@@ -946,6 +1001,11 @@ const augmentRegistry = {
 		description: "On activation, repair all nearby allies' armor to full.",
 		type: "Minor",
 		image: "/augments/rally-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rally-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extensionDarkFlare: {
 		id: "extension-dark-flare",
@@ -953,6 +1013,11 @@ const augmentRegistry = {
 		description: "Significantly increase Dark Flare duration.",
 		type: "Major",
 		image: "/augments/enduring-radiance-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-major-augment-bo7.webp",
+			},
+		},
 	},
 	supernova: {
 		id: "supernova",
@@ -961,6 +1026,11 @@ const augmentRegistry = {
 			"The beam is replaced with a sphere that damages nearby enemies as it travels. The ball detonates at the end of Dark Flare's duration.",
 		type: "Major",
 		image: "/augments/electric-cherry-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/reactive-armor-major-augment-bo7.webp",
+			},
+		},
 	},
 	darkPact: {
 		id: "dark-pact",
@@ -968,6 +1038,11 @@ const augmentRegistry = {
 		description: "Beam heals and revives other players on contact.",
 		type: "Major",
 		image: "/augments/resilience-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-benevolence-major-augment-bo7.webp",
+			},
+		},
 	},
 	broadBeam: {
 		id: "broad-beam",
@@ -975,6 +1050,11 @@ const augmentRegistry = {
 		description: "Significantly increases the size of the beam.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/broad-beam-minor-augment-bo7.webp",
+			},
+		},
 	},
 	heavyShadow: {
 		id: "heavy-shadow",
@@ -989,6 +1069,11 @@ const augmentRegistry = {
 		description: "The Energy Mine will split into 3 mines that scatter and detonate 1 time each.",
 		type: "Major",
 		image: "/augments/electric-cherry-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/firebomb-major-augment-bo7.webp",
+			},
+		},
 	},
 	turret: {
 		id: "turret",
@@ -997,6 +1082,11 @@ const augmentRegistry = {
 			"Instead of detonating, Energy Mine becomes a turret that shoots targets on at a time.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
+			},
+		},
 	},
 	carousel: {
 		id: "carousel",
@@ -1004,6 +1094,11 @@ const augmentRegistry = {
 		description: "3 Energy Mines will float around you, detonating when an enemy is nearby.",
 		type: "Major",
 		image: "/augments/classic-formula-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/expressor-major-augment-bo7.webp",
+			},
+		},
 	},
 	frequencyBoost: {
 		id: "frequency-boost",
@@ -1011,6 +1106,11 @@ const augmentRegistry = {
 		description: "Increase detonation count and duration of Energy Mine.",
 		type: "Minor",
 		image: "/augments/frequency-boost-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
+			},
+		},
 	},
 	siren: {
 		id: "siren",
@@ -1018,6 +1118,11 @@ const augmentRegistry = {
 		description: "Energy mine now attracts nearby normal enemies for a short time.",
 		type: "Minor",
 		image: "/augments/siren-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/zombie-sitter-minor-augment-bo7.webp",
+			},
+		},
 	},
 	transformer: {
 		id: "transformer",
@@ -1589,7 +1694,7 @@ const augmentRegistry = {
 		title: "Fists of Frenzy",
 		description: "While Frenzied, annihilate enemies with your fists.",
 		type: "Major",
-		image: "/augments/fists-of-frenzy-major-augment.webp",
+		image: "/augments/bo7/dr-ram-major-augment-bo7.webp",
 	},
 	smartMine: {
 		id: "smart-mine",
@@ -1597,14 +1702,14 @@ const augmentRegistry = {
 		description:
 			"Energy Mine has more detonations and waits for multiple enemies to be in range for each detonation.",
 		type: "Major",
-		image: "/augments/smart-mine-major-augment.webp",
+		image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
 	},
 	afterimage: {
 		id: "afterimage",
 		title: "Afterimage",
 		description: "Distract enemies with a Dark Aether clone of yourself.",
 		type: "Major",
-		image: "/augments/afterimage-major-augment.webp",
+		image: "/augments/bo7/afterimage-major-augment-bo7.webp",
 	},
 	hiddenGems: {
 		id: "hidden-gems",
@@ -1704,13 +1809,6 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/green-thumb-minor-augment.webp",
 	},
-	extraChargeToxic: {
-		id: "extra-charge-toxic",
-		title: "Extra Charge",
-		description: "Increases Max Charges by one.",
-		type: "Minor",
-		image: "/augments/extra-charge-toxic-minor-augment.webp",
-	},
 	plantFood: {
 		id: "plant-food",
 		title: "Plant Food",
@@ -1723,7 +1821,7 @@ const augmentRegistry = {
 		title: "Dusk Flame",
 		description: "Enemies that are hit by the beam are dealt additional Shadow damage over time.",
 		type: "Minor",
-		image: "/augments/dusk-flame-minor-augment.webp",
+		image: "/augments/bo7/eod-technician-minor-augment-bo7.webp",
 	},
 	cornucopia: {
 		id: "cornucopia",
@@ -1737,14 +1835,14 @@ const augmentRegistry = {
 		title: "Dual Layer",
 		description: "While Frenzied Guard is active, armor durability is increased.",
 		type: "Minor",
-		image: "/augments/dual-layer-minor-augment.webp",
+		image: "/augments/bo7/hardened-plates-minor-augment-bo7.webp",
 	},
 	recycle: {
 		id: "recycle",
 		title: "Recycle",
 		description: "A deployed Energy Mine can be recycled for Field Upgrade charge.",
 		type: "Minor",
-		image: "/augments/recycle-minor-augment.webp",
+		image: "/augments/bo7/mugging-minor-augment-bo7.webp",
 	},
 	impulse: {
 		id: "impulse",
@@ -1752,7 +1850,7 @@ const augmentRegistry = {
 		description:
 			"Deal Shadow damage to enemies on activation and increase your movement speed during Aether Shroud.",
 		type: "Minor",
-		image: "/augments/impulse-minor-augment.webp",
+		image: "/augments/bo7/stuntman-minor-augment-bo7.webp",
 	},
 	ironCore: {
 		id: "iron-core",
@@ -1904,5 +2002,12 @@ const augmentRegistry = {
 		description: "Melee kills reload a portion of your held weapon.",
 		type: "Minor",
 		image: "/augments/bo7/mugging-minor-augment-bo7.webp",
+	},
+	heavyGloom: {
+		id: "heavy-gloom",
+		title: "Heavy Gloom",
+		description: "The beam slows enemies on contact.",
+		type: "Minor",
+		image: "/augments/bo7/double-time-minor-augment-bo7.webp",
 	},
 } as const satisfies Record<string, Augment>
