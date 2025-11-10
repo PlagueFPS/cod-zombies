@@ -1,5 +1,6 @@
 import type { Option } from "effect"
 import type { MapId } from "@/data/interactive-map"
+import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import type { MapMarker } from "./markers"
 
 export interface MapLayer {
@@ -8,7 +9,7 @@ export interface MapLayer {
 	/** Title of the map layer */
 	title: string
 	/** path of the image for the map layer */
-	image: string
+	image: LayersImagePath
 	/** Array of markers associated with the map layer */
 	markers: MapMarker[]
 }
@@ -18,6 +19,8 @@ export interface MapConfigMetadata {
 	id: MapId
 	/** Title of the map configuration */
 	title: string
+	/** Preview image for the map configuration */
+	image: PreviewsImagePath
 	/** State of the map configuration */
 	state: Option.Option<"Coming Soon" | "New">
 	/** Description of the map configuration */

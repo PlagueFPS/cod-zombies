@@ -1,3 +1,5 @@
+import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
+
 interface Attachment {
 	/** Unique identifier for the attachment */
 	id: string
@@ -23,7 +25,7 @@ export interface WeaponBuild {
 	/** Name of the weapon build */
 	title: string
 	/** Image of the weapon build */
-	image: string
+	image: WeaponsImagePath
 	/** Attachments used in the weapon build */
 	attachments?: Attachment[]
 	/** Build code for the weapon build */

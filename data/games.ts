@@ -1,3 +1,5 @@
+import type { GamesImagePath } from "@/types/generated/image-paths.gen"
+
 export interface Game {
 	/** The unique identifier of the game */
 	id: string
@@ -6,7 +8,7 @@ export interface Game {
 	/** The release date of the game */
 	releaseDate: Date
 	/** The image of the game */
-	image: string
+	image: GamesImagePath
 }
 
 /** Union type of all game keys */

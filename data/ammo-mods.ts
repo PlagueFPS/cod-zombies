@@ -1,3 +1,4 @@
+import type { AmmoModsImagePath } from "@/types/generated/image-paths.gen"
 import type { AugmentTuple } from "./augments"
 import type { GameKey } from "./games"
 
@@ -12,7 +13,7 @@ export interface AmmoMod {
 	/** The description of the ammo mod */
 	description: string
 	/** The image of the ammo mod */
-	image: string
+	image: AmmoModsImagePath
 	/** The augments of the ammo mod */
 	augments?: AugmentTuple
 	/** The game variants of the ammo mod */
@@ -53,13 +54,6 @@ export const getAmmoMods = (game?: GameKey): AmmoMod[] => {
 }
 
 const ammoModRegistry = {
-	fireWorks: {
-		id: "fire-works",
-		title: "Fire Works",
-		description:
-			"Each bullet that hits a Normal or Special Enemy has a chance to launch fireworks that target enemies.",
-		image: "/ammo-mods/fireworks.webp",
-	},
 	fireBomb: {
 		id: "fire-bomb",
 		title: "Fire Bomb",

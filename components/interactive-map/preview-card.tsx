@@ -4,7 +4,7 @@ import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-bad
 import { CustomLink } from "@/components/custom-link/custom-link"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import PreviewCardImage from "./preview-card-image"
+import FeaturedImage from "../featured-image/featured-image"
 
 interface IPreviewCard {
 	map: MapConfigMetadata
@@ -40,10 +40,12 @@ export default function PreviewCard({ map, index }: IPreviewCard) {
 		>
 			<div className="flex flex-col items-start justify-center gap-4">
 				<div className="flex w-full items-center justify-center overflow-hidden rounded-md shadow-xl group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none">
-					<PreviewCardImage
-						mapId={map.id}
-						title={map.title}
+					<FeaturedImage
+						featuredImage={map.image}
 						priority={index === 0}
+						sizes="420px"
+						width={418}
+						height={300}
 						className="transition-transform duration-300 will-change-transform group-focus-visible:scale-105"
 					/>
 				</div>

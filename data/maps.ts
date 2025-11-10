@@ -1,3 +1,4 @@
+import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import { type Game, getGameByKey } from "./games"
 
@@ -11,7 +12,7 @@ export interface Maps {
 	/** The description of the map */
 	description: string
 	/** The image of the map */
-	image: string
+	image: MapsImagePath
 	/** The game the map is from */
 	game: Game
 }

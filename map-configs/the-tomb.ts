@@ -5,6 +5,7 @@ import { perks, sharedMarkers, weapons } from "./markers"
 export const metadata: MapConfigMetadata = {
 	id: "the-tomb",
 	title: "The Tomb",
+	image: "/previews/the-tomb-preview.webp",
 	game: "Black Ops 6",
 	state: Option.none(),
 	description:

@@ -1,21 +1,26 @@
 {
   "version": "1.0",
-  "generated": "2025-11-09T02:48:11.562Z",
+  "generated": "2025-11-11T05:17:28.846Z",
   "files": {
+    "main-quests/casimir-mechanism.mdx": {
+      "lastModified": "2025-11-11T04:49:07.000Z",
+      "lastModifiedFormatted": "November 11, 2025",
+      "commitHash": "750f20c"
+    },
     "main-quests/seal-the-deal.mdx": {
-      "lastModified": "2025-11-09T02:47:19.000Z",
+      "lastModified": "2025-11-09T03:02:08.000Z",
       "lastModifiedFormatted": "November 9, 2025",
-      "commitHash": "833217d"
+      "commitHash": "21aa5af"
     },
     "side-quests/magmagat-upgrade.mdx": {
-      "lastModified": "2025-11-09T02:47:19.000Z",
+      "lastModified": "2025-11-09T03:02:08.000Z",
       "lastModifiedFormatted": "November 9, 2025",
-      "commitHash": "833217d"
+      "commitHash": "21aa5af"
     },
     "zombies/sam.mdx": {
-      "lastModified": "2025-11-09T02:47:19.000Z",
+      "lastModified": "2025-11-09T03:02:08.000Z",
       "lastModifiedFormatted": "November 9, 2025",
-      "commitHash": "833217d"
+      "commitHash": "21aa5af"
     },
     "main-quests/ashes-of-the-damned.mdx": {
       "lastModified": "2025-11-09T02:44:46.000Z",
@@ -23,11 +28,6 @@
       "commitHash": "134297c"
     },
     "main-quests/bye-bye-dark-aether.mdx": {
-      "lastModified": "2025-11-09T02:44:46.000Z",
-      "lastModifiedFormatted": "November 9, 2025",
-      "commitHash": "134297c"
-    },
-    "main-quests/casimir-mechanism.mdx": {
       "lastModified": "2025-11-09T02:44:46.000Z",
       "lastModifiedFormatted": "November 9, 2025",
       "commitHash": "134297c"

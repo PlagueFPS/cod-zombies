@@ -5,6 +5,7 @@ import { perks, sharedMarkers, weapons } from "./markers"
 export const metadata: MapConfigMetadata = {
 	id: "shattered-veil",
 	title: "Shattered Veil",
+	image: "/previews/shattered-veil-preview.webp",
 	game: "Black Ops 6",
 	state: Option.none(),
 	description:

@@ -1,4 +1,4 @@
-import type { StaticImageData } from "next/image"
+import type { ImagePaths } from "@/types/generated/image-paths.gen"
 import type { ImageProps } from "@/types/images"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import {
@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/dialog"
 
 interface RichImageProps {
-	image: StaticImageData | string
+	/** The image to display */
+	image: ImagePaths
+	/** The caption to display */
 	caption: string
+	/** The alt text to provide */
 	alt?: string
 }
 

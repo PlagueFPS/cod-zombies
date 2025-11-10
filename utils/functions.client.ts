@@ -94,3 +94,21 @@ export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
 	const typeOrder: ZombieType[] = ["Normal", "Special", "Elite", "Boss"]
 	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
 }
+
+/**
+ * Transforms a string to PascalCase.
+ * @param s - The string to transform.
+ * @returns The transformed string.
+ * @example
+ * toPascalCase("hello world") // "HelloWorld"
+ * toPascalCase("hello_world") // "HelloWorld"
+ * toPascalCase("hello-world") // "HelloWorld"
+ * toPascalCase("HELLO_WORLD") // "HelloWorld"
+ */
+export const toPascalCase = (s: string) =>
+	s
+		.toLowerCase()
+		.split(/[^0-9a-zA-Z]+/)
+		.filter(part => part.length > 0)
+		.map(part => part[0]?.toUpperCase() + part.slice(1))
+		.join("")

@@ -1,3 +1,4 @@
+import type { AugmentsImagePath } from "@/types/generated/image-paths.gen"
 import type { GameKey } from "./games"
 
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
@@ -12,7 +13,7 @@ export interface Augment {
 	/** The description of the augment */
 	description: string
 	/** The image of the augment */
-	image: string
+	image: AugmentsImagePath
 	/** The game variants of the augment */
 	variants?: Partial<Record<GameKey, AugmentVariant>>
 }
@@ -281,7 +282,7 @@ const augmentRegistry = {
 		image: "/augments/hot-foot-minor-augment.webp",
 		variants: {
 			blackOps7: {
-				image: "/augments/bo7/hot-foot-minor-augment-bo7.webp",
+				image: "/augments/bo7/tribologist-minor-augment-bo7.webp",
 			},
 		},
 	},
@@ -1096,7 +1097,7 @@ const augmentRegistry = {
 		image: "/augments/classic-formula-major-augment.webp",
 		variants: {
 			blackOps7: {
-				image: "/augments/bo7/expressor-major-augment-bo7.webp",
+				image: "/augments/bo7/expresso-major-augment-bo7.webp",
 			},
 		},
 	},
@@ -1502,7 +1503,7 @@ const augmentRegistry = {
 		title: "Mask of Wrath",
 		description: "The Demon does more damage.",
 		type: "Major",
-		image: "/augments/bo7/mask-of-wrath-major-augment-bo7.webp",
+		image: "/augments/bo7/thermite-major-augment-bo7.webp",
 	},
 	maskOfSalvation: {
 		id: "mask-of-salvation",
@@ -1583,35 +1584,12 @@ const augmentRegistry = {
 		type: "Major",
 		image: "/augments/big-game-major-augment.webp",
 	},
-	starburst: {
-		id: "starburst",
-		title: "Starburst",
-		description:
-			"Fire Works explodes immediately, sending flares through enemies in all directions.",
-		type: "Major",
-		image: "/augments/starburst-major-augment.webp",
-	},
-	weepingWillow: {
-		id: "weeping-willow",
-		title: "Weeping Willow",
-		description:
-			"Instead of targeting enemies the flares will land on the ground and explode for a while.",
-		type: "Major",
-		image: "/augments/weeping-willow-major-augment.webp",
-	},
-	fireWheel: {
-		id: "fire-wheel",
-		title: "Fire Wheel",
-		description: "Create two Fire Wheels that spin around and damage enemies.",
-		type: "Major",
-		image: "/augments/fire-wheel-major-augment.webp",
-	},
 	causticFumes: {
 		id: "caustic-fumes",
 		title: "Caustic Fumes",
 		description: "Charmed enemies deal Toxic damage to nearby enemies.",
 		type: "Major",
-		image: "/augments/caustic-fumes-major-augment.webp",
+		image: "/augments/bo7/petroleum-major-augment-bo7.webp",
 	},
 	petroleum: {
 		id: "petroleum",
@@ -1626,7 +1604,7 @@ const augmentRegistry = {
 		description:
 			"Shadow Rift becomes a black hole that pulls in enemies, before teleporting away nearby enemy survivors.",
 		type: "Major",
-		image: "/augments/gravity-well-major-augment.webp",
+		image: "/augments/bo7/afterimage-major-augment-bo7.webp",
 	},
 	ballLightning: {
 		id: "ball-lightning",
@@ -1634,60 +1612,21 @@ const augmentRegistry = {
 		description:
 			"Activating Dead Wire launches an orb that deals electric damage to nearby enemies as it moves.",
 		type: "Major",
-		image: "/augments/ball-lightning-major-augment.webp",
+		image: "/augments/bo7/firebomb-major-augment-bo7.webp",
 	},
 	coldCompany: {
 		id: "cold-company",
 		title: "Cold Company",
 		description: "Cryo Freeze has a chance to activate on more than one enemy at a time.",
 		type: "Major",
-		image: "/augments/cold-company-major-augment.webp",
-	},
-	urticant: {
-		id: "urticant",
-		title: "Urticant",
-		description:
-			"Toxic Growth takes up a wider area and enemies that enter the growth continue to be slowed after leaving it.",
-		type: "Major",
-		image: "/augments/urticant-major-augment.webp",
-	},
-	cordyception: {
-		id: "cordyception",
-		title: "Cordyception",
-		description:
-			"The first Normal or Special Enemy to walk into the growth is entangled and charmed, attacking other enemies that enter.",
-		type: "Major",
-		image: "/augments/cordyception-major-augment.webp",
-	},
-	pollination: {
-		id: "pollination",
-		title: "Pollination",
-		description:
-			"Enemies killed by the growth explode, dealing Toxic damage to nearby enemies and slowing them.",
-		type: "Major",
-		image: "/augments/pollination-major-augment.webp",
-	},
-	zoochory: {
-		id: "zoochory",
-		title: "Zoochory",
-		description:
-			"The first Normal or Special Enemy to walk into the growth becomes the Toxic Growth itself.",
-		type: "Major",
-		image: "/augments/zoochory-major-augment.webp",
+		image: "/augments/bo7/group-shroud-major-augment-bo7.webp",
 	},
 	muzzleBlast: {
 		id: "muzzle-blast",
 		title: "Muzzle Blast",
 		description: "The beam now deals additional damage in a cone in front of you.",
 		type: "Major",
-		image: "/augments/muzzle-blast-major-augment.webp",
-	},
-	necromancer: {
-		id: "necromancer",
-		title: "Necromancer",
-		description: "Healing Aura can now revive dead allies.",
-		type: "Major",
-		image: "/augments/necromancer-major-augment.webp",
+		image: "/augments/bo7/petroleum-major-augment-bo7.webp",
 	},
 	fistsOfFrenzy: {
 		id: "fists-of-frenzy",
@@ -1732,40 +1671,12 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/bo7/mugging-minor-augment-bo7.webp",
 	},
-	starlight: {
-		id: "starlight",
-		title: "Starlight",
-		description: "Fire Works launches more flares.",
-		type: "Minor",
-		image: "/augments/starlight-minor-augment.webp",
-	},
-	bigBang: {
-		id: "big-bang",
-		title: "Big Bang",
-		description: "Fire Works flares deal more damage to Special and Elite Enemies.",
-		type: "Minor",
-		image: "/augments/big-bang-minor-augment.webp",
-	},
-	highYield: {
-		id: "high-yield",
-		title: "High Yield",
-		description: "Increase the area of effect.",
-		type: "Minor",
-		image: "/augments/high-yield-minor-augment.webp",
-	},
-	shortFuse: {
-		id: "short-fuse",
-		title: "Short Fuse",
-		description: "Fire Works cooldown is reduced.",
-		type: "Minor",
-		image: "/augments/short-fuse-minor-augment.webp",
-	},
 	superSerum: {
 		id: "super-serum",
 		title: "Super Serum",
 		description: "Increase the damage dealt by charmed enemies.",
 		type: "Minor",
-		image: "/augments/super-serum-minor-augment.webp",
+		image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
 	},
 	backdraft: {
 		id: "backdraft",
@@ -1779,42 +1690,21 @@ const augmentRegistry = {
 		title: "Ammo Theorem",
 		description: "Teleporting enemies away adds ammo to your weapon magazine from stock.",
 		type: "Minor",
-		image: "/augments/ammo-theorem-minor-augment.webp",
+		image: "/augments/bo7/mugging-minor-augment-bo7.webp",
 	},
 	aftershock: {
 		id: "aftershock",
 		title: "Aftershock",
 		description: "Enemies that are stunned by Dead Wire have a chance to spread to nearby enemies.",
 		type: "Minor",
-		image: "/augments/aftershock-minor-augment.webp",
+		image: "/augments/bo7/incendiary-minor-augment-bo7.webp",
 	},
 	thermalShock: {
 		id: "thermal-shock",
 		title: "Thermal Shock",
 		description: "Enemies are damaged once they’re unfrozen.",
 		type: "Minor",
-		image: "/augments/thermal-shock-minor-augment.webp",
-	},
-	ankleShredder: {
-		id: "ankle-shredder",
-		title: "Ankle Shredder",
-		description: "Enemies moving through the growth are even slower.",
-		type: "Minor",
-		image: "/augments/ankle-shredder-minor-augment.webp",
-	},
-	greenThumb: {
-		id: "green-thumb",
-		title: "Green Thumb",
-		description: "Significantly increases the Toxic Growth health.",
-		type: "Minor",
-		image: "/augments/green-thumb-minor-augment.webp",
-	},
-	plantFood: {
-		id: "plant-food",
-		title: "Plant Food",
-		description: "Killing enemies with Toxic Growth has a chance to drop healing fruit.",
-		type: "Minor",
-		image: "/augments/plant-food-minor-augment.webp",
+		image: "/augments/bo7/eod-technician-minor-augment-bo7.webp",
 	},
 	duskFlame: {
 		id: "dusk-flame",
@@ -1822,13 +1712,6 @@ const augmentRegistry = {
 		description: "Enemies that are hit by the beam are dealt additional Shadow damage over time.",
 		type: "Minor",
 		image: "/augments/bo7/eod-technician-minor-augment-bo7.webp",
-	},
-	cornucopia: {
-		id: "cornucopia",
-		title: "Cornucopia",
-		description: "Affected players get a health overcharge.",
-		type: "Minor",
-		image: "/augments/cornucopia-minor-augment.webp",
 	},
 	dualLayer: {
 		id: "dual-layer",
@@ -1864,7 +1747,7 @@ const augmentRegistry = {
 		title: "Shake It Off",
 		description: "Incoming damage will occasionally be significantly reduced.",
 		type: "Minor",
-		image: "/augments/shake-it-off-minor-augment.webp",
+		image: "/augments/bo7/shake-it-off-minor-augment-bo7.webp",
 	},
 	doubleWhammy: {
 		id: "double-whammy",
@@ -1878,7 +1761,7 @@ const augmentRegistry = {
 		title: "Stuntman",
 		description: "Wall Jumping creates an explosion.",
 		type: "Minor",
-		image: "/augments/stuntman-minor-augment.webp",
+		image: "/augments/bo7/stuntman-minor-augment-bo7.webp",
 	},
 	rainbowPop: {
 		id: "rainbow-pop",
@@ -1886,12 +1769,7 @@ const augmentRegistry = {
 		description:
 			"Weapons with an Ammo Mod equipped have a chance to deal the elemental damage that an enemy is weak to.",
 		type: "Major",
-		image: "/augments/rainbow-pop-major-augment.webp",
-		variants: {
-			blackOps7: {
-				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
-			},
-		},
+		image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
 	},
 	refreshMint: {
 		id: "refresh-mint",
@@ -1899,12 +1777,7 @@ const augmentRegistry = {
 		description:
 			"Killing a Special or Elite Enemy with its elemental weakness resets your Elemental Pop cooldown.",
 		type: "Minor",
-		image: "/augments/refresh-mint-minor-augment.webp",
-		variants: {
-			blackOps7: {
-				image: "/augments/bo7/refresh-mint-minor-augment-bo7.webp",
-			},
-		},
+		image: "/augments/bo7/refresh-mint-minor-augment-bo7.webp",
 	},
 	mochaMaul: {
 		id: "mocha-maul",
@@ -1939,48 +1812,28 @@ const augmentRegistry = {
 		title: "Double Dealer",
 		description: "Every fourth bullet in your weapon magazine deals double damage.",
 		type: "Major",
-		image: "/augments/double-dealer-major-augment.webp",
-		variants: {
-			blackOps7: {
-				image: "/augments/bo7/thermite-major-augment-bo7.webp",
-			},
-		},
+		image: "/augments/bo7/thermite-major-augment-bo7.webp",
 	},
 	doubleDown: {
 		id: "double-down",
 		title: "Double Down",
 		description: "Bullet weapons have increased penetration damage through enemies.",
 		type: "Minor",
-		image: "/augments/double-down-minor-augment.webp",
-		variants: {
-			blackOps7: {
-				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
-			},
-		},
+		image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
 	},
 	adrenalineRush: {
 		id: "adrenaline-rush",
 		title: "Adrenaline Rush",
 		description: "Killing a Special or Elite Enemy will start your health regeneration.",
 		type: "Major",
-		image: "/augments/adrenaline-rush-major-augment.webp",
-		variants: {
-			blackOps7: {
-				image: "/augments/bo7/mask-of-benevolence-major-augment-bo7.webp",
-			},
-		},
+		image: "/augments/bo7/mask-of-benevolence-major-augment-bo7.webp",
 	},
 	emergencyMedicalKit: {
 		id: "emergency-medical-kit",
 		title: "Emergency Medical Kit",
 		description: "You can now craft a Self-Revive Kit up to four times.",
 		type: "Minor",
-		image: "/augments/emergency-medical-kit-minor-augment.webp",
-		variants: {
-			blackOps7: {
-				image: "/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp",
-			},
-		},
+		image: "/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp",
 	},
 	deadPoint: {
 		id: "dead-point",

@@ -1,3 +1,4 @@
+import type { GobblegumsImagePath } from "@/types/generated/image-paths.gen"
 import type { GameKey } from "./games"
 /** Union of all Gobblegum keys */
 export type GobblegumKey = keyof typeof gobblegumRegistry
@@ -28,7 +29,7 @@ export interface Gobblegum {
 		| "Legendary"
 		| "Ultra"
 	/** The image of the gobblegum */
-	image: string
+	image: GobblegumsImagePath
 	/** The variants of the gobblegum */
 	variants?: Partial<Record<GameKey, GobblegumVariant>>
 }
