@@ -71,6 +71,11 @@ const augmentRegistry = {
 		description: "Normal Zombies at low health have a chance to die immediately when shot.",
 		type: "Major",
 		image: "/augments/dead-first-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/dead-first-major-augment-bo7.webp",
+			},
+		},
 	},
 	doubleStandard: {
 		id: "double-standard",
@@ -78,6 +83,11 @@ const augmentRegistry = {
 		description: "All non-critical shots do double damage. Only applies to normal bullet weapons.",
 		type: "Major",
 		image: "/augments/dead-head-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/thermite-major-augment-bo7.webp",
+			},
+		},
 	},
 	doubleImpact: {
 		id: "double-impact",
@@ -85,6 +95,11 @@ const augmentRegistry = {
 		description: "Double hits on the same target in quick succession deal more damage.",
 		type: "Major",
 		image: "/augments/double-impact-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-impact-major-augment-bo7.webp",
+			},
+		},
 	},
 	doubleTime: {
 		id: "double-time",
@@ -92,6 +107,11 @@ const augmentRegistry = {
 		description: "Increases fire rate bonus.",
 		type: "Minor",
 		image: "/augments/speedy-roulette-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-time-minor-augment-bo7.webp",
+			},
+		},
 	},
 	doubleOrNothing: {
 		id: "double-or-nothing",
@@ -100,6 +120,11 @@ const augmentRegistry = {
 			"Weapons have a chance to do double damage, but also have a chance to do 0 damage.",
 		type: "Minor",
 		image: "/augments/double-or-nothing-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-or-nothing-minor-augment-bo7.webp",
+			},
+		},
 	},
 	doublePlay: {
 		id: "double-play",
@@ -108,6 +133,11 @@ const augmentRegistry = {
 			"Killing 2 enemies in quick succession will have a chance to return 2 rounds to your magazine. Only applies to normal bullet weapons.",
 		type: "Minor",
 		image: "/augments/hidden-impact-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mugging-minor-augment-bo7.webp",
+			},
+		},
 	},
 	treasureHunter: {
 		id: "treasure-hunter",
@@ -116,6 +146,11 @@ const augmentRegistry = {
 			"Spot items others can miss from loot containers as well as special and elite kills.",
 		type: "Major",
 		image: "/augments/supercharged-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/parting-gift-major-augment-bo7.webp",
+			},
+		},
 	},
 	deathStare: {
 		id: "death-stare",
@@ -124,6 +159,11 @@ const augmentRegistry = {
 			"Your Elemental Weakness damage has a chance to kill an enemy that is low on health.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
+			},
+		},
 	},
 	criticalEye: {
 		id: "critical-eye",
@@ -131,6 +171,11 @@ const augmentRegistry = {
 		description: "Small chance that a body shot becomes a critical shot.",
 		type: "Major",
 		image: "/augments/dead-first-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-jeopardy-major-augment-bo7.webp",
+			},
+		},
 	},
 	birdsEyeView: {
 		id: "birds-eye-view",
@@ -138,6 +183,11 @@ const augmentRegistry = {
 		description: "The minimap’s scan rate is increased.",
 		type: "Minor",
 		image: "/augments/speedy-roulette-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-time-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extraChange: {
 		id: "extra-change",
@@ -145,6 +195,11 @@ const augmentRegistry = {
 		description: "Find extra essence under more locations.",
 		type: "Minor",
 		image: "/augments/incendiary-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/incendiary-minor-augment-bo7.webp",
+			},
+		},
 	},
 	furtherInsight: {
 		id: "further-insight",
@@ -152,6 +207,11 @@ const augmentRegistry = {
 		description: "Increase perception radius.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+			},
+		},
 	},
 	gravityMD: {
 		id: "gravity-md",
@@ -159,6 +219,11 @@ const augmentRegistry = {
 		description: "Just falling from heights creates explosions.",
 		type: "Major",
 		image: "/augments/gravity-md-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
+			},
+		},
 	},
 	drRam: {
 		id: "dr-ram",
@@ -166,6 +231,11 @@ const augmentRegistry = {
 		description: "Tactical Sprint knocks down and damages base zombies.",
 		type: "Major",
 		image: "/augments/dr-ram-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/dr-ram-major-augment-bo7.webp",
+			},
+		},
 	},
 	phdSlider: {
 		id: "phd-slider",
@@ -173,6 +243,11 @@ const augmentRegistry = {
 		description: "Sliding into enemies triggers explosions.",
 		type: "Major",
 		image: "/augments/phd-slider-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/phd-slider-major-augment-bo7.webp",
+			},
+		},
 	},
 	environmentalist: {
 		id: "environmentalist",
@@ -180,6 +255,11 @@ const augmentRegistry = {
 		description: "Become immune to environmental damage while sliding.",
 		type: "Minor",
 		image: "/augments/environmentalist-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/environmentalist-minor-augment-bo7.webp",
+			},
+		},
 	},
 	eodTechnician: {
 		id: "eod-technician",
@@ -187,6 +267,11 @@ const augmentRegistry = {
 		description: "Slightly reduce height and distance requirements for explosions.",
 		type: "Minor",
 		image: "/augments/eod-technician-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/eod-technician-minor-augment-bo7.webp",
+			},
+		},
 	},
 	tribologist: {
 		id: "tribologist",
@@ -194,6 +279,11 @@ const augmentRegistry = {
 		description: "Sliding distance and speed are increased.",
 		type: "Minor",
 		image: "/augments/hot-foot-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/hot-foot-minor-augment-bo7.webp",
+			},
+		},
 	},
 	fetidUpgraid: {
 		id: "fetid-upgraid",
@@ -202,6 +292,11 @@ const augmentRegistry = {
 			"On death, zombies have a chance to create a gas cloud that charges your Field Upgrade.",
 		type: "Major",
 		image: "/augments/frenzy-fire-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/fetid-upgraid-major-augment-bo7.webp",
+			},
+		},
 	},
 	smellOfDeath: {
 		id: "smell-of-death",
@@ -210,6 +305,11 @@ const augmentRegistry = {
 			"On death, zombies have a chance to create a gas cloud that conceals you while standing in it.",
 		type: "Major",
 		image: "/augments/citrus-focus-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/citrus-focus-major-augment-bo7.webp",
+			},
+		},
 	},
 	partingGift: {
 		id: "parting-gift",
@@ -217,6 +317,11 @@ const augmentRegistry = {
 		description: "Vulture Aid ammo drops give more ammo to Wonder Weapons.",
 		type: "Major",
 		image: "/augments/supercharged-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/parting-gift-major-augment-bo7.webp",
+			},
+		},
 	},
 	condorsReach: {
 		id: "condors-reach",
@@ -224,6 +329,11 @@ const augmentRegistry = {
 		description: "Auto-pickup loot from farther away.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+			},
+		},
 	},
 	carrionLuggage: {
 		id: "carrion-luggage",
@@ -231,6 +341,11 @@ const augmentRegistry = {
 		description: "Critical kills have a chance to drop extra salvage.",
 		type: "Minor",
 		image: "/augments/eod-technician-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/barista-brawl-minor-augment-bo7.webp",
+			},
+		},
 	},
 	pickyEater: {
 		id: "picky-eater",
@@ -238,6 +353,11 @@ const augmentRegistry = {
 		description: "On death, zombies have a higher chance of dropping your current equipment.",
 		type: "Minor",
 		image: "/augments/picky-eater-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
+			},
+		},
 	},
 	expresso: {
 		id: "expresso",
@@ -245,6 +365,11 @@ const augmentRegistry = {
 		description: "All melee attacks are slightly faster.",
 		type: "Major",
 		image: "/augments/classic-formula-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/expresso-major-augment-bo7.webp",
+			},
+		},
 	},
 	vampiricExtraction: {
 		id: "vampiric-extraction",
@@ -252,6 +377,11 @@ const augmentRegistry = {
 		description: "Melee attacks heal a small amount of your health.",
 		type: "Major",
 		image: "/augments/vampiric-extraction-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/vampiric-extraction-major-augment-bo7.webp",
+			},
+		},
 	},
 	tripleShot: {
 		id: "triple-shot",
@@ -259,6 +389,11 @@ const augmentRegistry = {
 		description: "Your punch can hit multiple enemies at once.",
 		type: "Major",
 		image: "/augments/triple-shot-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/petroleum-major-augment-bo7.webp",
+			},
+		},
 	},
 	stickNMove: {
 		id: "stick-n-move",
@@ -266,6 +401,11 @@ const augmentRegistry = {
 		description: "Backpedal speed is increased after a successful melee attack.",
 		type: "Minor",
 		image: "/augments/hot-foot-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/tribologist-minor-augment-bo7.webp",
+			},
+		},
 	},
 	strengthTraining: {
 		id: "strength-training",
@@ -273,6 +413,11 @@ const augmentRegistry = {
 		description: "Your punch can one hit kill normal enemies for more rounds.",
 		type: "Minor",
 		image: "/augments/retaliation-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	hiddenImpact: {
 		id: "hidden-impact",
@@ -287,6 +432,11 @@ const augmentRegistry = {
 		description: "Slightly increase maximum health with Jugger-Nog.",
 		type: "Major",
 		image: "/augments/probiotic-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/probiotic-major-augment-bo7.webp",
+			},
+		},
 	},
 	turtleShell: {
 		id: "turtle-shell",
@@ -295,6 +445,11 @@ const augmentRegistry = {
 			"Armor acts as a shield on your back, completely absorbing damage to your back. No damage mitigation when hit from the front.",
 		type: "Major",
 		image: "/augments/turtle-shell-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/turtle-shell-major-augment-bo7.webp",
+			},
+		},
 	},
 	reactiveArmor: {
 		id: "reactive-armor",
@@ -302,6 +457,11 @@ const augmentRegistry = {
 		description: "When an armor plate breaks, nearby normal enemies are stunned for a short time.",
 		type: "Major",
 		image: "/augments/reactive-armor-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/reactive-armor-major-augment-bo7.webp",
+			},
+		},
 	},
 	retaliation: {
 		id: "retaliation",
@@ -309,6 +469,11 @@ const augmentRegistry = {
 		description: "Deal bonus damage when health is low.",
 		type: "Minor",
 		image: "/augments/retaliation-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	hardenedPlates: {
 		id: "hardened-plates",
@@ -316,6 +481,11 @@ const augmentRegistry = {
 		description: "Armor plates have more damage mitigation.",
 		type: "Minor",
 		image: "/augments/hardened-plates-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/hardened-plates-minor-augment-bo7.webp",
+			},
+		},
 	},
 	durablePlates: {
 		id: "durable-plates",
@@ -323,6 +493,11 @@ const augmentRegistry = {
 		description: "Slightly increase armor durability.",
 		type: "Minor",
 		image: "/augments/durable-plates-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/durable-plates-minor-augment-bo7.webp",
+			},
+		},
 	},
 	emt: {
 		id: "emt",
@@ -330,6 +505,11 @@ const augmentRegistry = {
 		description: "Reviving an ally allows them to keep all of the Perks on their bleed-out bar.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
+			},
+		},
 	},
 	equivalentExchange: {
 		id: "equivalent-exchange",
@@ -340,6 +520,7 @@ const augmentRegistry = {
 		image: "/augments/emt-major-augment.webp",
 		variants: {
 			blackOps7: {
+				image: "/augments/bo7/equivalent-exchange-major-augment-bo7.webp",
 				description:
 					"If you have Quick Revive while downed, killing an enemy will revive you. This can be done up to 3 times.",
 			},
@@ -352,6 +533,11 @@ const augmentRegistry = {
 			"On lethal damage, become immune to all damage for 2 seconds and keep 1 health. Quick Revive is removed on use. This can be done up to 3 times.",
 		type: "Major",
 		image: "/augments/dying-wish-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-salvation-major-augment-bo7.webp",
+			},
+		},
 	},
 	swiftRecovery: {
 		id: "swift-recovery",
@@ -359,6 +545,11 @@ const augmentRegistry = {
 		description: "Reviving an ally increases both of your movement speeds for a short time.",
 		type: "Minor",
 		image: "/augments/hot-foot-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/tribologist-minor-augment-bo7.webp",
+			},
+		},
 	},
 	karmicReturn: {
 		id: "karmic-return",
@@ -366,6 +557,11 @@ const augmentRegistry = {
 		description: "Reviving an ally heals you to full health.",
 		type: "Minor",
 		image: "/augments/karmic-return-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/karmic-return-minor-augment-bo7.webp",
+			},
+		},
 	},
 	slowDeath: {
 		id: "slow-death",
@@ -373,6 +569,11 @@ const augmentRegistry = {
 		description: "Increase your time in last stand.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	antibiotic: {
 		id: "antibiotic",
@@ -666,6 +867,11 @@ const augmentRegistry = {
 		description: "Nearby players are also cloaked.",
 		type: "Major",
 		image: "/augments/chain-lightning-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/group-shroud-major-augment-bo7.webp",
+			},
+		},
 	},
 	burstDash: {
 		id: "burst-dash",
@@ -673,6 +879,11 @@ const augmentRegistry = {
 		description: "Warp forward a short distance, killing all normal enemies in your path.",
 		type: "Major",
 		image: "/augments/burst-dash-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/burst-dash-major-augment-bo7.webp",
+			},
+		},
 	},
 	voidSheath: {
 		id: "void-sheath",
@@ -681,6 +892,11 @@ const augmentRegistry = {
 			"Swap to your dedicated melee weapon as it's imbued with Dark Aether energy. Kills allow you to stay in Aether Shroud for longer.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
+			},
+		},
 	},
 	instantReload: {
 		id: "instant-reload",
@@ -688,13 +904,23 @@ const augmentRegistry = {
 		description: "Activation instantly reloads your currently held weapon.",
 		type: "Minor",
 		image: "/augments/hidden-impact-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mugging-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extraCharge: {
 		id: "extra-charge",
 		title: "Extra Charge",
-		description: "Increase Max Charges by 1.",
+		description: "Increase Max Charges by one.",
 		type: "Minor",
 		image: "/augments/extra-charge-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extra-charge-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extensionAetherShroud: {
 		id: "extension-aether-shroud",
@@ -702,6 +928,11 @@ const augmentRegistry = {
 		description: "Aether Shroud duration is significantly increased.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	phalanx: {
 		id: "phalanx",
@@ -709,6 +940,11 @@ const augmentRegistry = {
 		description: "Teammates can also repair armor from kills while near you.",
 		type: "Major",
 		image: "/augments/chain-lightning-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/phalanx-major-augment-bo7.webp",
+			},
+		},
 	},
 	retribution: {
 		id: "retribution",
@@ -717,6 +953,11 @@ const augmentRegistry = {
 			"Trigger an explosion on activation. Normal enemies that melee you are damaged and knocked down.",
 		type: "Major",
 		image: "/augments/retribution-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/turtle-shell-major-augment-bo7.webp",
+			},
+		},
 	},
 	frenzyFire: {
 		id: "frenzy-fire",
@@ -724,6 +965,11 @@ const augmentRegistry = {
 		description: "Use ammo from stock.",
 		type: "Major",
 		image: "/augments/frenzy-fire-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/fetid-upgraid-major-augment-bo7.webp",
+			},
+		},
 	},
 	repairBoost: {
 		id: "repair-boost",
@@ -731,6 +977,11 @@ const augmentRegistry = {
 		description: "Repair more armor per kill.",
 		type: "Minor",
 		image: "/augments/repair-boost-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extensionFrenziedGuard: {
 		id: "extension-frenzied-guard",
@@ -738,6 +989,11 @@ const augmentRegistry = {
 		description: "Increase Frenzied Guard duration.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	rally: {
 		id: "rally",
@@ -745,6 +1001,11 @@ const augmentRegistry = {
 		description: "On activation, repair all nearby allies' armor to full.",
 		type: "Minor",
 		image: "/augments/rally-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rally-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extensionDarkFlare: {
 		id: "extension-dark-flare",
@@ -752,6 +1013,11 @@ const augmentRegistry = {
 		description: "Significantly increase Dark Flare duration.",
 		type: "Major",
 		image: "/augments/enduring-radiance-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-major-augment-bo7.webp",
+			},
+		},
 	},
 	supernova: {
 		id: "supernova",
@@ -760,6 +1026,11 @@ const augmentRegistry = {
 			"The beam is replaced with a sphere that damages nearby enemies as it travels. The ball detonates at the end of Dark Flare's duration.",
 		type: "Major",
 		image: "/augments/electric-cherry-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/reactive-armor-major-augment-bo7.webp",
+			},
+		},
 	},
 	darkPact: {
 		id: "dark-pact",
@@ -767,6 +1038,11 @@ const augmentRegistry = {
 		description: "Beam heals and revives other players on contact.",
 		type: "Major",
 		image: "/augments/resilience-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-benevolence-major-augment-bo7.webp",
+			},
+		},
 	},
 	broadBeam: {
 		id: "broad-beam",
@@ -774,6 +1050,11 @@ const augmentRegistry = {
 		description: "Significantly increases the size of the beam.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/broad-beam-minor-augment-bo7.webp",
+			},
+		},
 	},
 	heavyShadow: {
 		id: "heavy-shadow",
@@ -788,6 +1069,11 @@ const augmentRegistry = {
 		description: "The Energy Mine will split into 3 mines that scatter and detonate 1 time each.",
 		type: "Major",
 		image: "/augments/electric-cherry-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/firebomb-major-augment-bo7.webp",
+			},
+		},
 	},
 	turret: {
 		id: "turret",
@@ -796,6 +1082,11 @@ const augmentRegistry = {
 			"Instead of detonating, Energy Mine becomes a turret that shoots targets on at a time.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
+			},
+		},
 	},
 	carousel: {
 		id: "carousel",
@@ -803,6 +1094,11 @@ const augmentRegistry = {
 		description: "3 Energy Mines will float around you, detonating when an enemy is nearby.",
 		type: "Major",
 		image: "/augments/classic-formula-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/expressor-major-augment-bo7.webp",
+			},
+		},
 	},
 	frequencyBoost: {
 		id: "frequency-boost",
@@ -810,6 +1106,11 @@ const augmentRegistry = {
 		description: "Increase detonation count and duration of Energy Mine.",
 		type: "Minor",
 		image: "/augments/frequency-boost-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
+			},
+		},
 	},
 	siren: {
 		id: "siren",
@@ -817,6 +1118,11 @@ const augmentRegistry = {
 		description: "Energy mine now attracts nearby normal enemies for a short time.",
 		type: "Minor",
 		image: "/augments/siren-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/zombie-sitter-minor-augment-bo7.webp",
+			},
+		},
 	},
 	transformer: {
 		id: "transformer",
@@ -908,6 +1214,11 @@ const augmentRegistry = {
 		description: "If a weapon has an Ammo Mod applied, Elemental Pop will only activate that one.",
 		type: "Major",
 		image: "/augments/citrus-focus-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/citrus-focus-major-augment-bo7.webp",
+			},
+		},
 	},
 	imperialPeach: {
 		id: "imperial-peach",
@@ -915,6 +1226,11 @@ const augmentRegistry = {
 		description: "Enemies that hit you have a chance to trigger a random Ammo Mod.",
 		type: "Major",
 		image: "/augments/emt-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/turtle-shell-major-augment-bo7.webp",
+			},
+		},
 	},
 	electricCherry: {
 		id: "electric-cherry",
@@ -923,6 +1239,11 @@ const augmentRegistry = {
 			"Reloading creates an electric damage discharge that damages and stuns nearby normal enemies. The more empty the magazine, the stronger the damage.",
 		type: "Major",
 		image: "/augments/electric-cherry-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/reactive-armor-major-augment-bo7.webp",
+			},
+		},
 	},
 	vulneraBean: {
 		id: "vulnera-bean",
@@ -930,6 +1251,11 @@ const augmentRegistry = {
 		description: "Slightly increase enemy elemental weakness damage.",
 		type: "Minor",
 		image: "/augments/retaliation-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	pineappleBlast: {
 		id: "pineapple-blast",
@@ -937,6 +1263,11 @@ const augmentRegistry = {
 		description: "Equipment can also trigger a random Ammo Mod.",
 		type: "Minor",
 		image: "/augments/pineapple-blast-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/pineapple-blast-minor-augment-bo7.webp",
+			},
+		},
 	},
 	chillBerry: {
 		id: "chill-berry",
@@ -944,6 +1275,11 @@ const augmentRegistry = {
 		description: "Slightly reduce all Ammo Mod cooldowns.",
 		type: "Minor",
 		image: "/augments/chill-berry-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/haste-minor-augment-bo7.webp",
+			},
+		},
 	},
 	deadHead: {
 		id: "dead-head",
@@ -951,6 +1287,11 @@ const augmentRegistry = {
 		description: "Further increase critical damage.",
 		type: "Major",
 		image: "/augments/dead-head-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/thermite-major-augment-bo7.webp",
+			},
+		},
 	},
 	deadFirst: {
 		id: "dead-first",
@@ -958,6 +1299,11 @@ const augmentRegistry = {
 		description: "Deal double critical damage if an enemy is at full health.",
 		type: "Major",
 		image: "/augments/dead-first-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/dead-first-major-augment-bo7.webp",
+			},
+		},
 	},
 	deadAgain: {
 		id: "dead-again",
@@ -965,6 +1311,11 @@ const augmentRegistry = {
 		description: "Critical hits have a chance of adding a bullet to your magazine.",
 		type: "Major",
 		image: "/augments/dead-first-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-jeopardy-major-augment-bo7.webp",
+			},
+		},
 	},
 	deadBreak: {
 		id: "dead-break",
@@ -972,6 +1323,11 @@ const augmentRegistry = {
 		description: "Increase damage to armor pieces.",
 		type: "Minor",
 		image: "/augments/retaliation-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	deadDraw: {
 		id: "dead-draw",
@@ -979,6 +1335,11 @@ const augmentRegistry = {
 		description: "Reduce hip-fire spread.",
 		type: "Minor",
 		image: "/augments/dead-draw-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/dead-draw-minor-augment-bo7.webp",
+			},
+		},
 	},
 	deadSet: {
 		id: "dead-set",
@@ -986,6 +1347,11 @@ const augmentRegistry = {
 		description: "Reduce gun movement while doing advanced movement.",
 		type: "Minor",
 		image: "/augments/dead-set-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/dead-set-minor-augment-bo7.webp",
+			},
+		},
 	},
 	freeFaller: {
 		id: "free-faller",
@@ -993,6 +1359,11 @@ const augmentRegistry = {
 		description: "Become immune to fall damage.",
 		type: "Major",
 		image: "/augments/free-faller-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/free-faller-major-augment-bo7.webp",
+			},
+		},
 	},
 	dasher: {
 		id: "dasher",
@@ -1000,6 +1371,11 @@ const augmentRegistry = {
 		description: "Increase Tactical Sprint duration.",
 		type: "Major",
 		image: "/augments/dasher-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/dasher-major-augment-bo7.webp",
+			},
+		},
 	},
 	stalker: {
 		id: "stalker",
@@ -1007,6 +1383,11 @@ const augmentRegistry = {
 		description: "Walk faster while aiming.",
 		type: "Major",
 		image: "/augments/stalker-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mocha-maul-major-augment-bo7.webp",
+			},
+		},
 	},
 	hardTarget: {
 		id: "hard-target",
@@ -1014,6 +1395,11 @@ const augmentRegistry = {
 		description: "While Tactical Sprinting, projectile damage is reduced.",
 		type: "Minor",
 		image: "/augments/hard-target-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/hard-target-minor-augment-bo7.webp",
+			},
+		},
 	},
 	quarterback: {
 		id: "quarterback",
@@ -1021,6 +1407,11 @@ const augmentRegistry = {
 		description: "Use equipment while sprinting.",
 		type: "Minor",
 		image: "/augments/quarterback-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/quarterback-minor-augment-bo7.webp",
+			},
+		},
 	},
 	hotFoot: {
 		id: "hot-foot",
@@ -1028,6 +1419,11 @@ const augmentRegistry = {
 		description: "Gain a speed boost after your equipment kills an enemy.",
 		type: "Minor",
 		image: "/augments/hot-foot-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/tribologist-minor-augment-bo7.webp",
+			},
+		},
 	},
 	supercharged: {
 		id: "supercharged",
@@ -1035,6 +1431,11 @@ const augmentRegistry = {
 		description: "Field Upgrades recharge a bit faster.",
 		type: "Major",
 		image: "/augments/supercharged-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/parting-gift-major-augment-bo7.webp",
+			},
+		},
 	},
 	classicFormula: {
 		id: "classic-formula",
@@ -1042,6 +1443,11 @@ const augmentRegistry = {
 		description: "Reload speed is even faster.",
 		type: "Major",
 		image: "/augments/classic-formula-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/expresso-major-augment-bo7.webp",
+			},
+		},
 	},
 	phantomReload: {
 		id: "phantom-reload",
@@ -1049,6 +1455,11 @@ const augmentRegistry = {
 		description: "Weapon magazines are slowly refilled over time.",
 		type: "Major",
 		image: "/augments/phantom-reload-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/phantom-reload-major-augment-bo7.webp",
+			},
+		},
 	},
 	speedyRoulette: {
 		id: "speedy-roulette",
@@ -1056,6 +1467,11 @@ const augmentRegistry = {
 		description: "The Mystery Box settles much faster.",
 		type: "Minor",
 		image: "/augments/speedy-roulette-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-time-minor-augment-bo7.webp",
+			},
+		},
 	},
 	quickSwap: {
 		id: "quick-swap",
@@ -1063,6 +1479,11 @@ const augmentRegistry = {
 		description: "Swap weapons faster.",
 		type: "Minor",
 		image: "/augments/quick-swap-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/quick-swap-minor-augment-bo7.webp",
+			},
+		},
 	},
 	fastPitcher: {
 		id: "fast-pitcher",
@@ -1070,13 +1491,18 @@ const augmentRegistry = {
 		description: "Deploy equipment faster.",
 		type: "Minor",
 		image: "/augments/fast-pitcher-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/fast-pitcher-minor-augment-bo7.webp",
+			},
+		},
 	},
 	maskOfWrath: {
 		id: "mask-of-wrath",
 		title: "Mask of Wrath",
 		description: "The Demon does more damage.",
 		type: "Major",
-		image: "/augments/mask-of-wrath-major-augment.webp",
+		image: "/augments/bo7/mask-of-wrath-major-augment-bo7.webp",
 	},
 	maskOfSalvation: {
 		id: "mask-of-salvation",
@@ -1084,35 +1510,35 @@ const augmentRegistry = {
 		description:
 			"The Fox can revive you while it’s active. This can be done up to three times per match.",
 		type: "Major",
-		image: "/augments/mask-of-salvation-major-augment.webp",
+		image: "/augments/bo7/mask-of-salvation-major-augment-bo7.webp",
 	},
 	maskOfDistraction: {
 		id: "mask-of-distraction",
 		title: "Mask of Distraction",
 		description: "The Monkey attracts enemies and does damage in an area.",
 		type: "Major",
-		image: "/augments/mask-of-distraction-major-augment.webp",
+		image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
 	},
 	maskOfBenevolence: {
 		id: "mask-of-benevolence",
 		title: "Mask of Benevolence",
 		description: "The Maiden does not attack but will periodically heal you.",
 		type: "Major",
-		image: "/augments/mask-of-benevolence-major-augment.webp",
+		image: "/augments/bo7/mask-of-benevolence-major-augment-bo7.webp",
 	},
-	extensionWisp: {
-		id: "extension-wisp",
+	extensionWispTea: {
+		id: "extension-wisp-tea",
 		title: "Extension",
 		description: "Increase the Wisp’s lifetime.",
 		type: "Minor",
-		image: "/augments/extension-wisp-minor-augment.webp",
+		image: "/augments/bo7/extension-minor-augment-bo7.webp",
 	},
-	hasteWisp: {
-		id: "haste-wisp",
+	hasteWispTea: {
+		id: "haste-wisp-tea",
 		title: "Haste",
 		description: "Decrease the cooldown before a Wisp can be summoned.",
 		type: "Minor",
-		image: "/augments/haste-wisp-minor-augment.webp",
+		image: "/augments/bo7/haste-minor-augment-bo7.webp",
 	},
 	zombieSitter: {
 		id: "zombie-sitter",
@@ -1120,35 +1546,35 @@ const augmentRegistry = {
 		description:
 			"The Wisp will distract and avoid damaging the last zombie in the round until the round times out.",
 		type: "Minor",
-		image: "/augments/zombie-sitter-minor-augment.webp",
+		image: "/augments/bo7/zombie-sitter-minor-augment-bo7.webp",
 	},
 	fetcher: {
 		id: "fetcher",
 		title: "Fetcher",
 		description: "The Wisp will pick up items and Powerups for you (aside from the Nuke).",
 		type: "Minor",
-		image: "/augments/fetcher-minor-augment.webp",
+		image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
 	},
 	sixthSense: {
 		id: "sixth-sense",
 		title: "Sixth Sense",
 		description: "See enemies close behind you and take less damage from behind.",
 		type: "Major",
-		image: "/augments/sixth-sense-major-augment.webp",
+		image: "/augments/bo7/equivalent-exchange-major-augment-bo7.webp",
 	},
 	gunsUp: {
 		id: "guns-up",
 		title: "Guns Up",
 		description: "Fire while sprinting.",
 		type: "Major",
-		image: "/augments/guns-up-major-augment.webp",
+		image: "/augments/bo7/guns-up-major-augment-bo7.webp",
 	},
 	ammoSurge: {
 		id: "ammo-surge",
 		title: "Ammo Surge",
 		description: "Gain a burst of speed when initiating a reload.",
 		type: "Major",
-		image: "/augments/ammo-surge-major-augment.webp",
+		image: "/augments/bo7/mocha-maul-major-augment-bo7.webp",
 	},
 	bigGameFireWorks: {
 		id: "big-game-fire-works",
@@ -1268,7 +1694,7 @@ const augmentRegistry = {
 		title: "Fists of Frenzy",
 		description: "While Frenzied, annihilate enemies with your fists.",
 		type: "Major",
-		image: "/augments/fists-of-frenzy-major-augment.webp",
+		image: "/augments/bo7/dr-ram-major-augment-bo7.webp",
 	},
 	smartMine: {
 		id: "smart-mine",
@@ -1276,35 +1702,35 @@ const augmentRegistry = {
 		description:
 			"Energy Mine has more detonations and waits for multiple enemies to be in range for each detonation.",
 		type: "Major",
-		image: "/augments/smart-mine-major-augment.webp",
+		image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
 	},
 	afterimage: {
 		id: "afterimage",
 		title: "Afterimage",
 		description: "Distract enemies with a Dark Aether clone of yourself.",
 		type: "Major",
-		image: "/augments/afterimage-major-augment.webp",
+		image: "/augments/bo7/afterimage-major-augment-bo7.webp",
 	},
 	hiddenGems: {
 		id: "hidden-gems",
 		title: "Hidden Gems",
 		description: "Death Perception can now see loot.",
 		type: "Minor",
-		image: "/augments/hidden-gems-minor-augment.webp",
+		image: "/augments/bo7/hidden-gems-minor-augment-bo7.webp",
 	},
 	footwork: {
 		id: "footwork",
 		title: "Footwork",
 		description: "Increase non-forward sprinting speed.",
 		type: "Minor",
-		image: "/augments/footwork-minor-augment.webp",
+		image: "/augments/bo7/footwork-minor-augment-bo7.webp",
 	},
 	prestidigitation: {
 		id: "prestidigitation",
 		title: "Prestidigitation",
 		description: "Reloading has a chance to not use stock ammo.",
 		type: "Minor",
-		image: "/augments/prestidigitation-minor-augment.webp",
+		image: "/augments/bo7/mugging-minor-augment-bo7.webp",
 	},
 	starlight: {
 		id: "starlight",
@@ -1383,13 +1809,6 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/green-thumb-minor-augment.webp",
 	},
-	extraChargeToxic: {
-		id: "extra-charge-toxic",
-		title: "Extra Charge",
-		description: "Increases Max Charges by one.",
-		type: "Minor",
-		image: "/augments/extra-charge-toxic-minor-augment.webp",
-	},
 	plantFood: {
 		id: "plant-food",
 		title: "Plant Food",
@@ -1402,7 +1821,7 @@ const augmentRegistry = {
 		title: "Dusk Flame",
 		description: "Enemies that are hit by the beam are dealt additional Shadow damage over time.",
 		type: "Minor",
-		image: "/augments/dusk-flame-minor-augment.webp",
+		image: "/augments/bo7/eod-technician-minor-augment-bo7.webp",
 	},
 	cornucopia: {
 		id: "cornucopia",
@@ -1416,14 +1835,14 @@ const augmentRegistry = {
 		title: "Dual Layer",
 		description: "While Frenzied Guard is active, armor durability is increased.",
 		type: "Minor",
-		image: "/augments/dual-layer-minor-augment.webp",
+		image: "/augments/bo7/hardened-plates-minor-augment-bo7.webp",
 	},
 	recycle: {
 		id: "recycle",
 		title: "Recycle",
 		description: "A deployed Energy Mine can be recycled for Field Upgrade charge.",
 		type: "Minor",
-		image: "/augments/recycle-minor-augment.webp",
+		image: "/augments/bo7/mugging-minor-augment-bo7.webp",
 	},
 	impulse: {
 		id: "impulse",
@@ -1431,14 +1850,14 @@ const augmentRegistry = {
 		description:
 			"Deal Shadow damage to enemies on activation and increase your movement speed during Aether Shroud.",
 		type: "Minor",
-		image: "/augments/impulse-minor-augment.webp",
+		image: "/augments/bo7/stuntman-minor-augment-bo7.webp",
 	},
 	ironCore: {
 		id: "iron-core",
 		title: "Iron Core",
 		description: "Your health is increased when all of your Armor Plates are broken.",
 		type: "Major",
-		image: "/augments/icon-core-major-augment.webp",
+		image: "/augments/bo7/mask-of-salvation-major-augment-bo7.webp",
 	},
 	shakeItOff: {
 		id: "shake-it-off",
@@ -1452,7 +1871,7 @@ const augmentRegistry = {
 		title: "Double Whammy",
 		description: "Release a second explosion (shortly after the first one).",
 		type: "Major",
-		image: "/augments/double-whammy-major-augment.webp",
+		image: "/augments/bo7/firebomb-major-augment-bo7.webp",
 	},
 	stuntman: {
 		id: "stuntman",
@@ -1468,6 +1887,11 @@ const augmentRegistry = {
 			"Weapons with an Ammo Mod equipped have a chance to deal the elemental damage that an enemy is weak to.",
 		type: "Major",
 		image: "/augments/rainbow-pop-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
+			},
+		},
 	},
 	refreshMint: {
 		id: "refresh-mint",
@@ -1476,34 +1900,39 @@ const augmentRegistry = {
 			"Killing a Special or Elite Enemy with its elemental weakness resets your Elemental Pop cooldown.",
 		type: "Minor",
 		image: "/augments/refresh-mint-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/refresh-mint-minor-augment-bo7.webp",
+			},
+		},
 	},
 	mochaMaul: {
 		id: "mocha-maul",
 		title: "Mocha Maul",
 		description: "The punch is replaced with your dedicated melee weapon.",
 		type: "Major",
-		image: "/augments/mocha-maul-major-augment.webp",
+		image: "/augments/bo7/mocha-maul-major-augment-bo7.webp",
 	},
 	baristaBrawl: {
 		id: "barista-brawl",
 		title: "Barista Brawl",
 		description: "Gain more Essence from Melee Kills.",
 		type: "Minor",
-		image: "/augments/barista-brawl-minor-augment.webp",
+		image: "/augments/bo7/barista-brawl-minor-augment-bo7.webp",
 	},
 	armorMatic: {
 		id: "armor-matic",
 		title: "Armor-matic",
-		description: "Gain more Armor from Melee Kills.",
-		type: "Minor",
-		image: "/augments/armor-matic-minor-augment.webp",
+		description: "Picking up an Armor Plate automatically applies it to your vest.",
+		type: "Major",
+		image: "/augments/bo7/mask-of-salvation-major-augment-bo7.webp",
 	},
 	extraServing: {
 		id: "extra-serving",
 		title: "Extra Serving",
 		description: "Special and Elite Enemies you kill have a chance to drop a Large Essence Vial.",
 		type: "Minor",
-		image: "/augments/extra-serving-minor-augment.webp",
+		image: "/augments/bo7/pineapple-blast-minor-augment-bo7.webp",
 	},
 	doubleDealer: {
 		id: "double-dealer",
@@ -1511,6 +1940,11 @@ const augmentRegistry = {
 		description: "Every fourth bullet in your weapon magazine deals double damage.",
 		type: "Major",
 		image: "/augments/double-dealer-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/thermite-major-augment-bo7.webp",
+			},
+		},
 	},
 	doubleDown: {
 		id: "double-down",
@@ -1518,6 +1952,11 @@ const augmentRegistry = {
 		description: "Bullet weapons have increased penetration damage through enemies.",
 		type: "Minor",
 		image: "/augments/double-down-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	adrenalineRush: {
 		id: "adrenaline-rush",
@@ -1525,6 +1964,11 @@ const augmentRegistry = {
 		description: "Killing a Special or Elite Enemy will start your health regeneration.",
 		type: "Major",
 		image: "/augments/adrenaline-rush-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-benevolence-major-augment-bo7.webp",
+			},
+		},
 	},
 	emergencyMedicalKit: {
 		id: "emergency-medical-kit",
@@ -1532,19 +1976,38 @@ const augmentRegistry = {
 		description: "You can now craft a Self-Revive Kit up to four times.",
 		type: "Minor",
 		image: "/augments/emergency-medical-kit-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp",
+			},
+		},
 	},
 	deadPoint: {
 		id: "dead-point",
 		title: "Dead Point",
 		description: "Bullets deal bonus damage to enemies within Point Blank range.",
 		type: "Major",
-		image: "/augments/dead-point-major-augment.webp",
+		image: "/augments/bo7/rainbow-pop-major-augment-bo7.webp",
 	},
 	deadHeat: {
 		id: "dead-heat",
 		title: "Dead Heat",
 		description: "Temporarily increase your movement speed after getting a Point-Blank kill.",
 		type: "Minor",
-		image: "/augments/dead-heat-minor-augment.webp",
+		image: "/augments/bo7/eod-technician-minor-augment-bo7.webp",
+	},
+	mugging: {
+		id: "mugging",
+		title: "Mugging",
+		description: "Melee kills reload a portion of your held weapon.",
+		type: "Minor",
+		image: "/augments/bo7/mugging-minor-augment-bo7.webp",
+	},
+	heavyGloom: {
+		id: "heavy-gloom",
+		title: "Heavy Gloom",
+		description: "The beam slows enemies on contact.",
+		type: "Minor",
+		image: "/augments/bo7/double-time-minor-augment-bo7.webp",
 	},
 } as const satisfies Record<string, Augment>
