@@ -1,3 +1,5 @@
+import type { ElixirsImagePath } from "@/types/generated/image-paths.gen"
+
 export interface Elixir {
 	/** The unique identifier of the elixir */
 	id: string
@@ -8,7 +10,7 @@ export interface Elixir {
 	/** The rarity of the elixir */
 	rarity: "Classic" | "Common" | "Rare" | "Legendary" | "Epic"
 	/** The image of the elixir */
-	image: string
+	image: ElixirsImagePath
 }
 
 /** Union of all Elixir rarities */

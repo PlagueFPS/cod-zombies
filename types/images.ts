@@ -1,7 +1,7 @@
-import type { StaticImageData } from "next/image"
+import type { ImagePaths } from "./generated/image-paths.gen"
 
 export interface ImageProps {
-	featuredImage: string | StaticImageData | null
+	featuredImage: ImagePaths | null
 	alt?: string
 	quality?: number
 	className?: string

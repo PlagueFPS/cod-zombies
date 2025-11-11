@@ -14,7 +14,8 @@
 		"email": "email dev",
 		"scan": "next dev & bunx react-scan@latest localhost:3000",
 		"optimize:images": "bun scripts/optimize-assets.ts",
-		"generate:last-modified": "bun scripts/generate-last-modified.ts"
+		"generate:last-modified": "bun scripts/generate-last-modified.ts",
+		"generate:image-paths": "bun scripts/generate-image-paths.ts"
 	},
 	"dependencies": {
 		"@effect/platform": "0.90.0",

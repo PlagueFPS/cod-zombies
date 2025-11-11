@@ -1,3 +1,4 @@
+import type { PerksImagePath } from "@/types/generated/image-paths.gen"
 import type { AugmentTuple } from "./augments"
 import type { GameKey } from "./games"
 
@@ -11,7 +12,7 @@ export interface Perk {
 	/** The description of the perk */
 	description: string
 	/** The image of the perk */
-	image: string
+	image: PerksImagePath
 	/** The modifier of the perk */
 	modifier?: string
 	/** The augments of the perk */

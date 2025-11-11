@@ -1,3 +1,4 @@
+import type { FieldUpgradesImagePath } from "@/types/generated/image-paths.gen"
 import type { AugmentTuple } from "./augments"
 import type { GameKey } from "./games"
 
@@ -11,7 +12,7 @@ export interface FieldUpgrade {
 	/** The description of the field upgrade */
 	description: string
 	/** The image of the field upgrade */
-	image: string
+	image: FieldUpgradesImagePath
 	/** The augments of the field upgrade */
 	augments?: AugmentTuple
 	/** The game variants of the field upgrade */

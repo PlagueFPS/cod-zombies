@@ -5,7 +5,7 @@ import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
 import { Data, Effect, Layer } from "effect"
 import { DATE_OPTIONS } from "@/utils/constants"
 
-class DuplicateFilenameError extends Data.TaggedError("DuplicateFilenameError")<CommonErrorProps> { }
+class DuplicateFilenameError extends Data.TaggedError("DuplicateFilenameError")<CommonErrorProps> {}
 
 interface FileMetadata {
 	lastModified: string
@@ -36,11 +36,11 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 
 	let currentTimestamp: string | null = null
 	let currentCommit: string | null = null
-	
+
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i]
 		if (!line) continue
-		
+
 		if (line.match(/^\d+$/)) {
 			currentTimestamp = line
 		} else if (line.match(/^[a-f0-9]{40}$/)) {
@@ -52,13 +52,13 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 				const parts = line.split("\t")
 				if (parts.length === 3 && parts[2]) {
 					const newPath = parts[2].replace(/\\/g, "/").replace("content/", "")
-					
+
 					if (filePathMap.has(newPath) && !gitHistory.has(newPath)) {
 						const timestamp = new Date(parseInt(currentTimestamp, 10) * 1000)
 						result[newPath] = {
 							lastModified: timestamp.toISOString(),
 							lastModifiedFormatted: timestamp.toLocaleDateString(undefined, DATE_OPTIONS),
-							...(currentCommit && { commitHash: currentCommit })
+							...(currentCommit && { commitHash: currentCommit }),
 						}
 						gitHistory.add(newPath)
 					}
@@ -67,13 +67,13 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 				// Added or Modified: "A\tcontent/file.mdx" or "M\tcontent/file.mdx"
 				const gitPath = line.substring(2).trim().replace(/\\/g, "/")
 				const relativePath = gitPath.replace("content/", "")
-				
+
 				if (filePathMap.has(relativePath) && !gitHistory.has(relativePath)) {
 					const timestamp = new Date(parseInt(currentTimestamp, 10) * 1000)
 					result[relativePath] = {
 						lastModified: timestamp.toISOString(),
 						lastModifiedFormatted: timestamp.toLocaleDateString(undefined, DATE_OPTIONS),
-						...(currentCommit && { commitHash: currentCommit })
+						...(currentCommit && { commitHash: currentCommit }),
 					}
 					gitHistory.add(relativePath)
 				}
@@ -86,7 +86,7 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 		if (!gitHistory.has(relativePath)) {
 			result[relativePath] = {
 				lastModified: currentDate.toISOString(),
-				lastModifiedFormatted: currentDate.toLocaleDateString(undefined, DATE_OPTIONS)
+				lastModifiedFormatted: currentDate.toLocaleDateString(undefined, DATE_OPTIONS),
 			}
 		}
 	}
@@ -106,11 +106,11 @@ const getAllContentFiles = (dir: string) =>
 			const subDirPath = path.join(dir, subDir)
 			const subFiles = yield* fs.readDirectory(subDirPath)
 			const mdxFiles = subFiles.filter(file => file.endsWith(".mdx"))
-			
+
 			for (const file of mdxFiles) {
 				const fullPath = path.join(process.cwd(), `./content/${subDir}/${file}`)
 				files.push(fullPath)
-				
+
 				// Track filenames to detect duplicates
 				const existing = filenameMap.get(file) || []
 				existing.push(`${subDir}/${file}`)
@@ -127,12 +127,9 @@ const getAllContentFiles = (dir: string) =>
 		}
 
 		if (duplicates.length > 0) {
-			yield* Effect.fail(
-				new DuplicateFilenameError({
-					message: `Duplicate filenames detected:\n${duplicates.join("\n")}`,
-					cause: undefined
-				})
-			)
+			return yield* new DuplicateFilenameError({
+				message: `Duplicate filenames detected:\n${duplicates.join("\n")}`,
+			})
 		}
 
 		return files
@@ -153,13 +150,13 @@ const generateLastModified = Effect.gen(function* () {
 				`git log --all --name-status --format="%ct%n%H" --diff-filter=AMR -- "${contentDir}"`,
 				{
 					encoding: "utf-8",
-					stdio: ['ignore', 'pipe', 'ignore'],
-					maxBuffer: 10 * 1024 * 1024
-				}
+					stdio: ["ignore", "pipe", "ignore"],
+					maxBuffer: 10 * 1024 * 1024,
+				},
 			)
 			return result || ""
 		},
-		catch: () => ""
+		catch: () => "",
 	})
 
 	const fileMetadata = parseGitBatchOutput(gitOutput, allFiles, process.cwd())
@@ -167,7 +164,7 @@ const generateLastModified = Effect.gen(function* () {
 	const lastModifiedData: LastModifiedData = {
 		version: "1.0",
 		generated: new Date().toISOString(),
-		files: fileMetadata
+		files: fileMetadata,
 	}
 
 	yield* Effect.log(`Generated last modified dates for ${Object.keys(fileMetadata).length} files`)

@@ -1,4 +1,5 @@
 import type { AmmoModKey } from "@/data/ammo-mods"
+import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { Effect, Option } from "effect"
 import { type Game, getGameByKey, getGames } from "@/data/games"
 import { getMapByKey, getMaps, type Maps } from "@/data/maps"
@@ -25,7 +26,7 @@ export interface Zombie {
 	/** Release date of the zombie */
 	releaseDate: Date
 	/** Image of the zombie */
-	image: string
+	image: ZombiesImagePath
 	/** Games the zombie is available in */
 	games: Game[]
 	/** Maps the zombie is available in */

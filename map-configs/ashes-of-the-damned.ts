@@ -4,6 +4,7 @@ import { Option } from "effect"
 export const metadata: MapConfigMetadata = {
 	id: "ashes-of-the-damned",
 	title: "Ashes of the Damned",
+	image: "/previews/ashes-of-the-damned-preview.webp",
 	state: Option.some("Coming Soon"),
 	game: "Black Ops 7",
 	description:
