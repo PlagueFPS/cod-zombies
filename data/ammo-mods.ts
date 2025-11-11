@@ -137,6 +137,7 @@ const ammoModRegistry = {
 				image: "/ammo-mods/dead-wire-bo6.webp",
 			},
 			blackOps6: {
+				image: "/ammo-mods/dead-wire-bo6.webp",
 				augments: [
 					"chainLightning",
 					"bigGameDeadWire",
@@ -147,6 +148,7 @@ const ammoModRegistry = {
 				],
 			},
 			blackOps7: {
+				image: "/ammo-mods/dead-wire-bo6.webp",
 				augments: [
 					"chainLightning",
 					"bigGameDeadWire",

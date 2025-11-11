@@ -1,7 +1,7 @@
 import type { AmmoModKey } from "@/data/ammo-mods"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { Effect, Option } from "effect"
-import { type Game, getGameByKey, getGames } from "@/data/games"
+import { Array as Arr, Effect, Option } from "effect"
+import { convertIdToGameKey, type Game, getGameByKey, getGames } from "@/data/games"
 import { getMapByKey, getMaps, type Maps } from "@/data/maps"
 import { getWeakPointByKey, type WeakPoint } from "@/data/weak-points"
 import { getZombieAttackByKey, type ZombieAttack } from "@/data/zombie-attacks"
@@ -70,6 +70,18 @@ export const getZombieById = (id: string) => zombieMap.get(id)
  */
 export const getAdjacentZombies = (currentId: string) => {
 	return getAdjacentItems(zombies, currentId)
+}
+
+/**
+ * Gets the most recent game that featured this zombie
+ * @param games - The array of games that featured this zombie
+ * @returns The most recent game key that featured this zombie
+ */
+export const getLatestZombieGameKey = (games: Game[]) => {
+	return Option.match(Arr.last(games), {
+		onNone: () => undefined,
+		onSome: game => convertIdToGameKey(game.id),
+	})
 }
 
 const zombiesRegistry = {

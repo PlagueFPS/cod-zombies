@@ -1,5 +1,6 @@
 "use client"
 import type { GameKey } from "@/data/games"
+import { Array as Arr } from "effect"
 import IconImage from "@/components/icon-image/icon-image"
 import AugmentTooltip from "@/components/rich-text/rich-tooltips/augment-tooltip"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -30,62 +31,48 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 	if (!isMobile)
 		return (
 			<HoverCard openDelay={200}>
-				<HoverCardTrigger
-					className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
-					asChild
-				>
-					<span>
-						<IconImage
-							featuredImage={ammoMod.image}
-							alt={`${ammoMod.title} Image`}
-							width={64}
-							height={24}
-							sizes="64px"
-							className="my-auto h-6 w-auto"
-						/>
-						<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
-							{ammoMod.title}
-						</span>
-					</span>
+				<HoverCardTrigger className="group relative cursor-default">
+					<AmmoModTrigger ammoMod={ammoMod} />
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
 					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
-					{<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />}
+					<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />
 				</HoverCardContent>
 			</HoverCard>
 		)
 
 	return (
 		<Popover>
-			<PopoverTrigger
-				className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
-				asChild
-			>
-				<span>
-					<IconImage
-						featuredImage={ammoMod.image}
-						alt={`${ammoMod.title} Image`}
-						width={64}
-						height={24}
-						sizes="64px"
-						className="my-auto h-6 w-auto"
-					/>
-					<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
-						{ammoMod.title}
-					</span>
-				</span>
+			<PopoverTrigger className="group relative cursor-default items-baseline justify-center align-baseline">
+				<AmmoModTrigger ammoMod={ammoMod} />
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
 				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
-				{<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />}
+				<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />
 			</PopoverContent>
 		</Popover>
 	)
 }
+
+const AmmoModTrigger = ({ ammoMod }: { ammoMod: AmmoMod }) => (
+	<span className="inline-flex items-baseline justify-center gap-0.5">
+		<IconImage
+			featuredImage={ammoMod.image}
+			alt={`${ammoMod.title} Image`}
+			width={24}
+			height={24}
+			sizes="64px"
+			className="my-auto h-6 w-auto"
+		/>
+		<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
+			{ammoMod.title}
+		</span>
+	</span>
+)
 
 const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: GameKey }) => {
 	const ammoModAugments =
@@ -100,7 +87,7 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 				<IconImage
 					featuredImage={ammoMod.image}
 					alt={`${ammoMod.title} Image`}
-					width={64}
+					width={80}
 					height={80}
 					sizes="64px"
 					className="relative z-10 h-20 w-auto p-2"
@@ -115,7 +102,7 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 						{ammoMod.description}
 					</p>
 				</div>
-				{ammoModAugments.length > 0 ? (
+				{Arr.isNonEmptyArray(ammoModAugments) ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">

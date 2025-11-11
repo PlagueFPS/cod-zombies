@@ -30,33 +30,8 @@ export default function AugmentTooltip(props: AugmentTooltipProps) {
 	if (!isMobile)
 		return (
 			<HoverCard openDelay={200}>
-				<HoverCardTrigger
-					className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
-					asChild
-				>
-					<span>
-						<IconImage
-							featuredImage={augment.image}
-							alt={`${augment.title} Image`}
-							width={64}
-							height={24}
-							sizes="64px"
-							className="my-auto h-6 w-auto"
-						/>
-						<span
-							className={cn(
-								"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
-								{
-									"text-major-augment decoration-major-augment dark:text-major-augment dark:decoration-major-autext-major-augment":
-										augment.type === "Major",
-									"text-orange-700 decoration-orange-700 dark:text-orange-300 dark:decoration-orange-300":
-										augment.type === "Minor",
-								},
-							)}
-						>
-							{augment.title}
-						</span>
-					</span>
+				<HoverCardTrigger className="group relative cursor-default">
+					<AugmentTrigger augment={augment} />
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
@@ -68,50 +43,57 @@ export default function AugmentTooltip(props: AugmentTooltipProps) {
 						},
 					)}
 				>
-					{<AugmentTooltipContent augment={augment} />}
+					<AugmentTooltipContent augment={augment} />
 				</HoverCardContent>
 			</HoverCard>
 		)
 
 	return (
 		<Popover>
-			<PopoverTrigger
-				className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
-				asChild
-			>
-				<span>
-					<IconImage
-						featuredImage={augment.image}
-						alt={`${augment.title} Image`}
-						width={64}
-						height={24}
-						sizes="64px"
-						className="my-auto h-6 w-auto"
-					/>
-					<span
-						className={cn(
-							"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
-							{
-								"text-major-augment decoration-major-augment dark:text-major-augment dark:decoration-major-augment":
-									augment.type === "Major",
-								"text-orange-700 decoration-orange-700 dark:text-orange-300 dark:decoration-orange-300":
-									augment.type === "Minor",
-							},
-						)}
-					>
-						{augment.title}
-					</span>
-				</span>
+			<PopoverTrigger className="group relative cursor-default">
+				<AugmentTrigger augment={augment} />
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
-				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
+				className={cn(
+					"w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200",
+					{
+						"border-major-augment/50 dark:border-major-augment/50": augment.type === "Major",
+						"border-primary/50 dark:border-primary/50": augment.type === "Minor",
+					},
+				)}
 			>
-				{<AugmentTooltipContent augment={augment} />}
+				<AugmentTooltipContent augment={augment} />
 			</PopoverContent>
 		</Popover>
 	)
 }
+
+const AugmentTrigger = ({ augment }: { augment: Augment }) => (
+	<span className="inline-flex items-baseline justify-center gap-0.5">
+		<IconImage
+			featuredImage={augment.image}
+			alt={`${augment.title} Image`}
+			width={24}
+			height={24}
+			sizes="64px"
+			className="my-auto h-6 w-auto"
+		/>
+		<span
+			className={cn(
+				"text-center underline decoration-dotted underline-offset-4 group-hover:no-underline",
+				{
+					"text-major-augment decoration-major-augment dark:text-major-augment dark:decoration-major-augment":
+						augment.type === "Major",
+					"text-orange-700 decoration-orange-700 dark:text-orange-300 dark:decoration-orange-300":
+						augment.type === "Minor",
+				},
+			)}
+		>
+			{augment.title}
+		</span>
+	</span>
+)
 
 const AugmentTooltipContent = ({ augment }: { augment: Augment }) => {
 	return (
@@ -121,7 +103,7 @@ const AugmentTooltipContent = ({ augment }: { augment: Augment }) => {
 				<IconImage
 					featuredImage={augment.image}
 					alt={`${augment.title} Image`}
-					width={64}
+					width={80}
 					height={80}
 					sizes="64px"
 					className="relative z-10 h-20 w-auto p-2"

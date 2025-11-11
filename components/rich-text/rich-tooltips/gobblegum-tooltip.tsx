@@ -4,7 +4,13 @@ import { RarityBadge } from "@/components/custom-badges/custom-badges"
 import IconImage from "@/components/icon-image/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { type Gobblegum, type GobblegumKey, getGobblegumByKey } from "@/data/gobblegum"
+import {
+	type Gobblegum,
+	type GobblegumKey,
+	type GobblegumRarity,
+	type GobblegumType,
+	getGobblegumByKey,
+} from "@/data/gobblegum"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
@@ -20,154 +26,59 @@ export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumToolti
 	if (!isMobile)
 		return (
 			<HoverCard openDelay={200}>
-				<HoverCardTrigger
-					className="group relative inline-flex cursor-default items-baseline justify-center gap-1 align-baseline"
-					asChild
-				>
-					<span>
-						<IconImage
-							featuredImage={gobblegum.image}
-							alt={`${gobblegum.title} Image`}
-							width={64}
-							height={24}
-							sizes="64px"
-							className="my-auto h-6 w-auto"
-						/>
-						<span
-							className={cn(
-								"text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
-								{
-									"text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300":
-										gobblegum.type === "Time-Based",
-									"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
-										gobblegum.type === "Round-Based",
-									"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
-										gobblegum.type === "Immediate",
-									"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
-										gobblegum.type === "Player-Activated",
-								},
-								{
-									"text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300":
-										gobblegum.rarity === "Ultra",
-									"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
-										gobblegum.rarity === "Legendary",
-									"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
-										gobblegum.rarity === "Epic",
-									"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
-										gobblegum.rarity === "Rare",
-								},
-							)}
-						>
-							{gobblegum.title}
-						</span>
-					</span>
+				<HoverCardTrigger className="group relative cursor-default">
+					<GobblegumTrigger gobblegum={gobblegum} />
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
 					className={cn(
 						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
-						{
-							"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
-								gobblegum.type === "Time-Based",
-							"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
-								gobblegum.type === "Round-Based",
-							"border-orange-600/30 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
-								gobblegum.type === "Immediate",
-							"border-purple-600/30 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
-								gobblegum.type === "Player-Activated",
-						},
-						{
-							"border-red-600/25 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
-								gobblegum.rarity === "Ultra",
-							"border-orange-600/25 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
-								gobblegum.rarity === "Legendary",
-							"border-purple-600/25 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
-								gobblegum.rarity === "Epic",
-							"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
-								gobblegum.rarity === "Rare",
-						},
+						getContentClasses(gobblegum.rarity, gobblegum.type),
 					)}
 				>
-					{<GobbleGumTooltipContent gobblegum={gobblegum} />}
+					<GobbleGumTooltipContent gobblegum={gobblegum} />
 				</HoverCardContent>
 			</HoverCard>
 		)
 
 	return (
 		<Popover>
-			<PopoverTrigger
-				className="group relative inline-flex cursor-default items-baseline justify-center gap-0.5 align-baseline"
-				asChild
-			>
-				<span>
-					<IconImage
-						featuredImage={gobblegum.image}
-						alt={`${gobblegum.title} Image`}
-						width={64}
-						height={24}
-						sizes="64px"
-						className="my-auto h-6 w-auto"
-					/>
-					<span
-						className={cn(
-							"text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
-							{
-								"text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300":
-									gobblegum.type === "Time-Based",
-								"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
-									gobblegum.type === "Round-Based",
-								"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
-									gobblegum.type === "Immediate",
-								"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
-									gobblegum.type === "Player-Activated",
-							},
-							{
-								"text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300":
-									gobblegum.rarity === "Ultra",
-								"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
-									gobblegum.rarity === "Legendary",
-								"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
-									gobblegum.rarity === "Epic",
-								"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
-									gobblegum.rarity === "Rare",
-							},
-						)}
-					>
-						{gobblegum.title}
-					</span>
-				</span>
+			<PopoverTrigger className="group relative cursor-default">
+				<GobblegumTrigger gobblegum={gobblegum} />
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
 				className={cn(
 					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
-					{
-						"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
-							gobblegum.type === "Time-Based",
-						"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
-							gobblegum.type === "Round-Based",
-						"border-orange-600/30 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
-							gobblegum.type === "Immediate",
-						"border-purple-600/30 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
-							gobblegum.type === "Player-Activated",
-					},
-					{
-						"border-red-600/25 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
-							gobblegum.rarity === "Ultra",
-						"border-orange-600/25 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
-							gobblegum.rarity === "Legendary",
-						"border-purple-600/25 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
-							gobblegum.rarity === "Epic",
-						"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
-							gobblegum.rarity === "Rare",
-					},
+					getContentClasses(gobblegum.rarity, gobblegum.type),
 				)}
 			>
-				{<GobbleGumTooltipContent gobblegum={gobblegum} />}
+				<GobbleGumTooltipContent gobblegum={gobblegum} />
 			</PopoverContent>
 		</Popover>
 	)
 }
+
+const GobblegumTrigger = ({ gobblegum }: { gobblegum: Gobblegum }) => (
+	<span className="inline-flex items-baseline justify-center gap-0.5">
+		<IconImage
+			featuredImage={gobblegum.image}
+			alt={`${gobblegum.title} Image`}
+			width={24}
+			height={24}
+			sizes="64px"
+			className="my-auto h-6 w-auto"
+		/>
+		<span
+			className={cn(
+				"text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200",
+				getTextClasses(gobblegum.rarity, gobblegum.type),
+			)}
+		>
+			{gobblegum.title}
+		</span>
+	</span>
+)
 
 const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 	return (
@@ -202,7 +113,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 				<IconImage
 					featuredImage={gobblegum.image}
 					alt={`${gobblegum.title} Image`}
-					width={64}
+					width={80}
 					height={80}
 					sizes="64px"
 					className="relative z-10 h-20 w-auto p-2"
@@ -212,18 +123,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 				<div
 					className={cn(
 						"px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200",
-						{
-							"text-green-600 dark:text-green-300": gobblegum.type === "Time-Based",
-							"text-blue-600 dark:text-blue-300": gobblegum.type === "Round-Based",
-							"text-orange-600 dark:text-orange-300": gobblegum.type === "Immediate",
-							"text-purple-600 dark:text-purple-300": gobblegum.type === "Player-Activated",
-						},
-						{
-							"text-red-600 dark:text-red-300": gobblegum.rarity === "Ultra",
-							"text-orange-600 dark:text-orange-300": gobblegum.rarity === "Legendary",
-							"text-purple-600 dark:text-purple-300": gobblegum.rarity === "Epic",
-							"text-blue-600 dark:text-blue-300": gobblegum.rarity === "Rare",
-						},
+						getTextClasses(gobblegum.rarity, gobblegum.type),
 					)}
 				>
 					{gobblegum.title}
@@ -232,18 +132,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 					<div
 						className={cn(
 							"text-center text-orange-800 text-sm dark:text-orange-200",
-							{
-								"text-green-600 dark:text-green-300": gobblegum.type === "Time-Based",
-								"text-blue-600 dark:text-blue-300": gobblegum.type === "Round-Based",
-								"text-orange-600 dark:text-orange-300": gobblegum.type === "Immediate",
-								"text-purple-600 dark:text-purple-300": gobblegum.type === "Player-Activated",
-							},
-							{
-								"text-red-600 dark:text-red-300": gobblegum.rarity === "Ultra",
-								"text-orange-600 dark:text-orange-300": gobblegum.rarity === "Legendary",
-								"text-purple-600 dark:text-purple-300": gobblegum.rarity === "Epic",
-								"text-blue-600 dark:text-blue-300": gobblegum.rarity === "Rare",
-							},
+							getTextClasses(gobblegum.rarity, gobblegum.type),
 						)}
 					>
 						{gobblegum.description}
@@ -253,3 +142,50 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 		</div>
 	)
 }
+
+const getTextClasses = (rarity: GobblegumRarity, type: GobblegumType) =>
+	cn(
+		{
+			"text-green-600 decoration-green-600 dark:text-green-300 dark:decoration-green-300":
+				type === "Time-Based",
+			"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
+				type === "Round-Based",
+			"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
+				type === "Immediate",
+			"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
+				type === "Player-Activated",
+		},
+		{
+			"text-red-600 decoration-red-600 dark:text-red-300 dark:decoration-red-300":
+				rarity === "Ultra",
+			"text-orange-600 decoration-orange-600 dark:text-orange-300 dark:decoration-orange-300":
+				rarity === "Legendary",
+			"text-purple-600 decoration-purple-600 dark:text-purple-300 dark:decoration-purple-300":
+				rarity === "Epic",
+			"text-blue-600 decoration-blue-600 dark:text-blue-300 dark:decoration-blue-300":
+				rarity === "Rare",
+		},
+	)
+const getContentClasses = (rarity: GobblegumRarity, type: GobblegumType) =>
+	cn(
+		{
+			"border-green-600/30 shadow-green-600 dark:border-green-300/30 dark:shadow-green-300":
+				type === "Time-Based",
+			"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
+				type === "Round-Based",
+			"border-orange-600/30 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
+				type === "Immediate",
+			"border-purple-600/30 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
+				type === "Player-Activated",
+		},
+		{
+			"border-red-600/25 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+				rarity === "Ultra",
+			"border-orange-600/25 shadow-orange-600 dark:border-orange-300/30 dark:shadow-orange-300":
+				rarity === "Legendary",
+			"border-purple-600/25 shadow-purple-600 dark:border-purple-300/30 dark:shadow-purple-300":
+				rarity === "Epic",
+			"border-blue-600/30 shadow-blue-600 dark:border-blue-300/30 dark:shadow-blue-300":
+				rarity === "Rare",
+		},
+	)

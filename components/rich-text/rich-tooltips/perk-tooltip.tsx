@@ -21,62 +21,48 @@ export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
 	if (!isMobile)
 		return (
 			<HoverCard openDelay={200}>
-				<HoverCardTrigger
-					className="group relative inline-flex cursor-default items-baseline justify-center gap-1 align-baseline"
-					asChild
-				>
-					<span>
-						<IconImage
-							featuredImage={perk.image}
-							alt={`${perk.title} Image`}
-							width={64}
-							height={24}
-							sizes="64px"
-							className="my-auto h-6 w-auto"
-						/>
-						<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
-							{perk.title}
-						</span>
-					</span>
+				<HoverCardTrigger className="group relative cursor-default">
+					<PerkTrigger perk={perk} />
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
 					className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 				>
-					{<PerkTooltipContent perk={perk} game={game} />}
+					<PerkTooltipContent perk={perk} game={game} />
 				</HoverCardContent>
 			</HoverCard>
 		)
 
 	return (
 		<Popover>
-			<PopoverTrigger
-				className="group relative inline-flex cursor-default items-baseline justify-center gap-1 align-baseline"
-				asChild
-			>
-				<span>
-					<IconImage
-						featuredImage={perk.image}
-						alt={`${perk.title} Image`}
-						width={64}
-						height={24}
-						sizes="64px"
-						className="my-auto h-6 w-auto"
-					/>
-					<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
-						{perk.title}
-					</span>
-				</span>
+			<PopoverTrigger className="group relative cursor-default">
+				<PerkTrigger perk={perk} />
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
 				className="w-sm border-2 border-orange-800/50 bg-background p-0 text-orange-600 dark:border-orange-200/30 dark:text-orange-200"
 			>
-				{<PerkTooltipContent perk={perk} game={game} />}
+				<PerkTooltipContent perk={perk} game={game} />
 			</PopoverContent>
 		</Popover>
 	)
 }
+
+const PerkTrigger = ({ perk }: { perk: Perk }) => (
+	<span className="inline-flex items-baseline justify-center gap-1">
+		<IconImage
+			featuredImage={perk.image}
+			alt={`${perk.title} Image`}
+			width={64}
+			height={24}
+			sizes="64px"
+			className="my-auto h-6 w-auto"
+		/>
+		<span className="text-center text-orange-700 underline decoration-orange-700 decoration-dotted underline-offset-4 group-hover:no-underline dark:text-orange-200 dark:decoration-orange-200">
+			{perk.title}
+		</span>
+	</span>
+)
 
 const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
 	const perkAugments =

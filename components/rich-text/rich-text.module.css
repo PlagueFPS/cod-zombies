@@ -24,22 +24,6 @@
   font-weight: 800;
 }
 
-.body p a {
-  position: relative;
-  display: inline-flex;
-  font-weight: 500;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  color: var(--color-orange-600);
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-.body p a:hover {
-  text-decoration: none;
-}
-
 .body blockquote p {
   margin-top: 0;
   margin-bottom: 0;
@@ -66,10 +50,6 @@
 
 .body ul li p, .body ol p {
   margin: 0;
-}
-
-.body hr {
-  margin: 2rem 0;
 }
 
 .body table p {
