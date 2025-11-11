@@ -29,8 +29,13 @@ import ShareButton from "@/components/share-button/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { convertIdToGameKey } from "@/data/games"
-import { getAdjacentZombies, getZombieById, getZombies, type Zombie } from "@/data/zombies"
+import {
+	getAdjacentZombies,
+	getLatestZombieGameKey,
+	getZombieById,
+	getZombies,
+	type Zombie,
+} from "@/data/zombies"
 import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
@@ -89,10 +94,7 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 	const { prev, next } = getAdjacentZombies(zombie.id)
 	const { default: MDXContent } = yield* zombie.combatStrategy
 	const { lastModifiedFormatted } = getLastUpdated(`zombies/${zombie.id}.mdx`)
-	const mostRecentGame = Option.match(Arr.last(zombie.games), {
-		onNone: () => undefined,
-		onSome: game => convertIdToGameKey(game.id),
-	})
+	const mostRecentGame = getLatestZombieGameKey(zombie.games)
 	const firstAppearIn = Arr.get(zombie.maps, 0)
 
 	const speedProgress = () => {

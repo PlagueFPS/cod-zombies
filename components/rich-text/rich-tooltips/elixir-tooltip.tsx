@@ -22,7 +22,7 @@ export default function ElixirTooltip({ elixirKey }: ElixirTooltipProps) {
 					<ElixirTrigger elixir={elixir} />
 				</HoverCardTrigger>
 				<HoverCardContent side="top" className={getRarityContentClasses(elixir.rarity)}>
-					{<ElixirTooltipContent elixir={elixir} />}
+					<ElixirTooltipContent elixir={elixir} />
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -33,7 +33,7 @@ export default function ElixirTooltip({ elixirKey }: ElixirTooltipProps) {
 				<ElixirTrigger elixir={elixir} />
 			</PopoverTrigger>
 			<PopoverContent side="top" className={getRarityContentClasses(elixir.rarity)}>
-				{<ElixirTooltipContent elixir={elixir} />}
+				<ElixirTooltipContent elixir={elixir} />
 			</PopoverContent>
 		</Popover>
 	)
@@ -56,8 +56,8 @@ const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
 				<IconImage
 					featuredImage={elixir.image}
 					alt={`${elixir.title} Image`}
-					width={64}
-					height={80}
+					width={96}
+					height={96}
 					sizes="96px"
 					className="relative z-10 h-24 w-auto p-2"
 				/>
@@ -97,8 +97,8 @@ const ElixirTrigger = ({ elixir }: { elixir: Elixir }) => (
 		<IconImage
 			featuredImage={elixir.image}
 			alt={`${elixir.title} Image`}
-			width={64}
-			height={24}
+			width={28}
+			height={28}
 			sizes="96px"
 			className="my-auto h-7 w-auto"
 		/>
