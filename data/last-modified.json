@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2025-11-11T05:17:28.846Z",
+  "generated": "2025-11-11T18:01:30.812Z",
   "files": {
     "main-quests/casimir-mechanism.mdx": {
-      "lastModified": "2025-11-11T04:49:07.000Z",
+      "lastModified": "2025-11-11T18:00:59.000Z",
       "lastModifiedFormatted": "November 11, 2025",
-      "commitHash": "750f20c"
+      "commitHash": "c070189"
     },
     "main-quests/seal-the-deal.mdx": {
       "lastModified": "2025-11-09T03:02:08.000Z",
