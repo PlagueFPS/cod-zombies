@@ -1,13 +1,13 @@
 "use client"
+import { useForm } from "@tanstack/react-form"
 import { Send } from "lucide-react"
 import { useTransition } from "react"
 import { toast } from "sonner"
 import { unsubscribeFromNewsletter } from "@/data/actions"
+import { NewsletterFormValues, StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { useForm } from "@tanstack/react-form"
-import { StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field"
+import { Input } from "../ui/input"
 import { Spinner } from "../ui/spinner"
 
 export default function UnsubscribeForm() {
@@ -22,7 +22,7 @@ export default function UnsubscribeForm() {
 		},
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
-				const result = await unsubscribeFromNewsletter("", value)
+				const result = await unsubscribeFromNewsletter("", new NewsletterFormValues(value))
 				if (result.success) {
 					return startTransition(() => {
 						toast.success("Confirmation email sent!", {

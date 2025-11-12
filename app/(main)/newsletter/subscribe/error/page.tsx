@@ -4,7 +4,7 @@ import { AlertCircle } from "lucide-react"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import { Button } from "@/components/ui/button"
 import { BasePage } from "@/lib/layers"
-import { decodeErrorPageSearchParams } from "@/utils/validation-schemas"
+import { decodeSearchParams } from "@/utils/validation-schemas"
 
 export const metadata: Metadata = {
 	title: "Subscribe Failed",
@@ -14,9 +14,7 @@ const SubscribeErrorPage = Effect.fn("SubscribeErrorPage")(function* ({
 	searchParams,
 }: PageProps<"/newsletter/subscribe/error">) {
 	const params = yield* Effect.promise(() => searchParams)
-	const { message } = yield* decodeErrorPageSearchParams(params).pipe(
-		Effect.catchAll(() => Effect.succeed({ message: Option.none() })),
-	)
+	const { message } = decodeSearchParams(params)
 
 	const errorMessage = Option.isSome(message)
 		? message.value

@@ -1,10 +1,10 @@
 "use client"
+import { useForm } from "@tanstack/react-form"
 import { useTransition } from "react"
 import { toast } from "sonner"
-import { useForm } from "@tanstack/react-form"
-import { subscribeToNewsletter } from "@/data/actions"
-import { StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { subscribeToNewsletter } from "@/data/actions"
+import { NewsletterFormValues, StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "../ui/input-group"
 import { Spinner } from "../ui/spinner"
 
@@ -20,7 +20,7 @@ export default function NewsletterForm() {
 		},
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
-				const result = await subscribeToNewsletter("", value)
+				const result = await subscribeToNewsletter(null, new NewsletterFormValues(value))
 
 				if (result.success) {
 					return startTransition(() => {

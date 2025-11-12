@@ -1,13 +1,14 @@
-import { Array as Arr, Option } from "effect"
+import { Array as Arr, type Option } from "effect"
 import { useSearchParams } from "next/navigation"
+import { decodeSearchParams } from "@/utils/validation-schemas"
 
 interface MapSearchParamsResult {
 	/** The current URL search parameters */
 	searchParams: URLSearchParams
 	/** Array of types to include in the filter */
-	includeParams: string[]
+	includeParams: readonly string[]
 	/** Array of types to exclude from the filter */
-	excludeParams: string[]
+	excludeParams: readonly string[]
 	/** The currently selected map layer */
 	layerParam: Option.Option<string>
 	/** Updates the URL's search parameters and updates browser history */
@@ -26,9 +27,7 @@ interface MapSearchParamsResult {
 
 export const useMapSearchParams = (): MapSearchParamsResult => {
 	const searchParams = useSearchParams()
-	const includeParams = searchParams.getAll("include")
-	const excludeParams = searchParams.getAll("exclude")
-	const layerParam = Option.fromNullable(searchParams.get("layer"))
+	const { include, exclude, layer } = decodeSearchParams(searchParams)
 
 	const updateURLParams = (params: URLSearchParams) => {
 		window.history.replaceState(null, "", `?${params.toString()}`)
@@ -38,7 +37,11 @@ export const useMapSearchParams = (): MapSearchParamsResult => {
 		return new URLSearchParams(searchParams.toString())
 	}
 
-	const toggleParam = (paramName: string, value: string | string[], currentValues: string[]) => {
+	const toggleParam = (
+		paramName: string,
+		value: string | string[],
+		currentValues: readonly string[],
+	) => {
 		const params = createParams()
 		params.delete(paramName)
 
@@ -62,28 +65,25 @@ export const useMapSearchParams = (): MapSearchParamsResult => {
 	}
 
 	const toggleIncludeParam = (value: string | string[]) => {
-		return toggleParam("include", value, includeParams)
+		return toggleParam("include", value, include)
 	}
 
 	const toggleExcludeParam = (value: string | string[]) => {
-		return toggleParam("exclude", value, excludeParams)
+		return toggleParam("exclude", value, exclude)
 	}
 
 	const isIncluded = (type: string) => {
-		const isIncluded = includeParams.length === 0 || includeParams.includes(type)
-		const isExcluded = excludeParams.includes(type)
+		const isIncluded = include.length === 0 || include.includes(type)
+		const isExcluded = exclude.includes(type)
 
-		// Include if:
-		// 1. No include params and not excluded
-		// 2. Included and not excluded
-		return (includeParams.length === 0 && !isExcluded) || (isIncluded && !isExcluded)
+		return !isExcluded && isIncluded
 	}
 
 	return {
 		searchParams,
-		includeParams,
-		excludeParams,
-		layerParam,
+		includeParams: include,
+		excludeParams: exclude,
+		layerParam: layer,
 		createParams,
 		updateURLParams,
 		toggleIncludeParam,

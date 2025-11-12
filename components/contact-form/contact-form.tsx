@@ -1,7 +1,7 @@
 "use client"
+import { useForm } from "@tanstack/react-form"
 import { CircleAlert, Loader2, Mail, Send } from "lucide-react"
 import { useState, useTransition } from "react"
-import { useForm } from "@tanstack/react-form"
 import { toast } from "sonner"
 import {
 	Dialog,
@@ -13,13 +13,13 @@ import {
 import { submitContactForm } from "@/data/actions"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
-import { StandardContactFormSchema } from "@/utils/validation-schemas"
+import { ContactFormValues, StandardContactFormSchema } from "@/utils/validation-schemas"
 import Shortcut from "../shortcut/shortcut"
 import { Button } from "../ui/button"
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "../ui/field"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "../ui/field"
 
 interface ContactFormProps {
 	className?: string
@@ -39,7 +39,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 		},
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
-				const result = await submitContactForm(undefined, value)
+				const result = await submitContactForm(null, new ContactFormValues(value))
 				if (result.success) {
 					return startTransition(() => {
 						toast.success("Contact form submitted!", {

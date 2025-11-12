@@ -9,8 +9,8 @@ import { decodeTerminusCode } from "@/utils/validation-schemas"
 export default function TerminusCode() {
 	const [values, setValues] = useState({ x: "", y: "", z: "" })
 
-	const solveEquations = (values: { x: string; y: string; z: string }) => {
-		const validValues = decodeTerminusCode(values)
+	const solveEquations = (currentValues: typeof values) => {
+		const validValues = decodeTerminusCode(currentValues)
 		if (validValues._tag === "Left") {
 			console.error(validValues.left)
 			toast.error(

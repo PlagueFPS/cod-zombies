@@ -1,5 +1,5 @@
 import "server-only"
-import type { TFeedbackForm } from "@/utils/validation-schemas"
+import type { FeedbackFormValues } from "@/utils/validation-schemas"
 import { LinearClient } from "@linear/sdk"
 import { Effect, Redacted } from "effect"
 import { env } from "@/env"
@@ -11,7 +11,11 @@ import {
 
 const linear = new LinearClient({ apiKey: Redacted.value(env.LINEAR_API_KEY) })
 
-export const createIssue = Effect.fnUntraced(function* ({ title, feedback, label }: TFeedbackForm) {
+export const createIssue = Effect.fnUntraced(function* ({
+	title,
+	feedback,
+	label,
+}: FeedbackFormValues) {
 	const team = yield* Effect.tryPromise({
 		try: () => linear.team("CODZG"),
 		catch: error => new LinearGetTeamError({ message: "Failed to get team", cause: error }),

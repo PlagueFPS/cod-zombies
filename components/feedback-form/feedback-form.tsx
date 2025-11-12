@@ -1,7 +1,7 @@
 "use client"
+import { useForm } from "@tanstack/react-form"
 import { CircleAlert, MessageCircleHeart, Send } from "lucide-react"
 import { useState, useTransition } from "react"
-import { useForm } from "@tanstack/react-form"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,12 +16,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { submitFeedbackForm } from "@/data/actions"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
-import { StandardFeedbackFormSchema, validateFeedbackForm } from "@/utils/validation-schemas"
+import { decodeFeedbackForm, StandardFeedbackFormSchema } from "@/utils/validation-schemas"
 import Shortcut from "../shortcut/shortcut"
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
-import { Field, FieldError, FieldGroup, FieldLabel, FieldDescription } from "../ui/field"
-import { Spinner } from "../ui/spinner"
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "../ui/field"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { Spinner } from "../ui/spinner"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 interface FeedbackFormProps extends React.ComponentProps<"button"> {
 	className?: string
@@ -40,10 +40,10 @@ export default function FeedbackForm({ className, ...props }: FeedbackFormProps)
 			onChange: StandardFeedbackFormSchema,
 		},
 		onSubmit: ({ value }) => {
-			const data = validateFeedbackForm(value)
+			const data = decodeFeedbackForm(value)
 
 			if (data._tag === "Left") {
-				return toast.error("Invalid feedback form data!", {
+				return toast.error("Invalid feedback form fields!", {
 					description: data.left.message,
 					duration: 5000,
 					position: "bottom-right",

@@ -1,16 +1,17 @@
 "use client"
 import { useSearchParams } from "next/navigation"
 import { MAP_LIMIT } from "@/utils/constants"
+import { decodeSearchParams } from "@/utils/validation-schemas"
 
 interface FilterParamsResult {
 	/** Array of selected game parameter values */
-	gameParams: string[]
+	gameParams: readonly string[]
 	/** Array of selected map parameter values */
-	mapParams: string[]
+	mapParams: readonly string[]
 	/** Array of selected difficulty parameter values */
-	difficultyParams: string[]
+	difficultyParams: readonly string[]
 	/** Array of selected type parameter values */
-	typeParams: string[]
+	typeParams: readonly string[]
 	/** Current page number */
 	page: number
 	/** Next.js searchParams object */
@@ -40,7 +41,7 @@ interface FilterParamsResult {
 	 * @param currentValues - The current values of the parameter
 	 * @returns The new values of the parameter after toggling
 	 */
-	toggleParam: (paramName: Param, value: string, currentValues: string[]) => string[]
+	toggleParam: (paramName: Param, value: string, currentValues: readonly string[]) => string[]
 	/**
 	 * Clears a specific parameter from the URL.
 	 *
@@ -72,14 +73,7 @@ type Param = "type" | "map" | "game" | "difficulty"
  */
 export function useFilterParams(): FilterParamsResult {
 	const searchParams = useSearchParams()
-
-	// Extract common parameters
-	const gameParams = searchParams.getAll("game")
-	const mapParams = searchParams.getAll("map")
-	const difficultyParams = searchParams.getAll("difficulty")
-	const typeParams = searchParams.getAll("type")
-	const pageParam = searchParams.get("page")
-	const page = pageParam ? parseInt(pageParam, 10) : 1
+	const { game, map, difficulty, type, page } = decodeSearchParams(searchParams)
 
 	const updateURLParams = (params: URLSearchParams) => {
 		window.history.pushState(null, "", `?${params.toString()}`)
@@ -119,7 +113,7 @@ export function useFilterParams(): FilterParamsResult {
 		updateURLParams(params)
 	}
 
-	const toggleParam = (paramName: Param, value: string, currentValues: string[]) => {
+	const toggleParam = (paramName: Param, value: string, currentValues: readonly string[]) => {
 		const params = createParams()
 		params.delete(paramName)
 
@@ -143,10 +137,10 @@ export function useFilterParams(): FilterParamsResult {
 
 	return {
 		// Parameters
-		gameParams,
-		mapParams,
-		difficultyParams,
-		typeParams,
+		gameParams: game,
+		mapParams: map,
+		difficultyParams: difficulty,
+		typeParams: type,
 		page,
 		searchParams,
 

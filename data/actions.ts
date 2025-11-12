@@ -5,12 +5,12 @@ import { submitFeedback } from "@/data/feedback"
 import { createAction } from "@/lib/action-helpers"
 import { APIRuntime } from "@/lib/layers"
 import {
-	ContactFormSchema,
-	FeedbackFormSchema,
-	NewsletterFormSchema,
+	ContactFormValues,
+	FeedbackFormValues,
+	NewsletterFormValues,
 } from "@/utils/validation-schemas"
 
-export const subscribeToNewsletter = createAction(NewsletterFormSchema, async ({ email }) => {
+export const subscribeToNewsletter = createAction(NewsletterFormValues, async ({ email }) => {
 	return await requestSubscribe(email).pipe(
 		Effect.withLogSpan("subscribe_to_newsletter_action"),
 		Effect.timeout("10 seconds"),
@@ -32,7 +32,7 @@ export const subscribeToNewsletter = createAction(NewsletterFormSchema, async ({
 	)
 })
 
-export const unsubscribeFromNewsletter = createAction(NewsletterFormSchema, async ({ email }) => {
+export const unsubscribeFromNewsletter = createAction(NewsletterFormValues, async ({ email }) => {
 	return await requestUnsubscribe(email).pipe(
 		Effect.withLogSpan("unsubscribe_from_newsletter_action"),
 		Effect.timeout("10 seconds"),
@@ -55,7 +55,7 @@ export const unsubscribeFromNewsletter = createAction(NewsletterFormSchema, asyn
 	)
 })
 
-export const submitFeedbackForm = createAction(FeedbackFormSchema, async parsedInput => {
+export const submitFeedbackForm = createAction(FeedbackFormValues, async parsedInput => {
 	return await submitFeedback(parsedInput).pipe(
 		Effect.withLogSpan("submit_feedback_form_action"),
 		Effect.timeout("10 seconds"),
@@ -71,7 +71,7 @@ export const submitFeedbackForm = createAction(FeedbackFormSchema, async parsedI
 	)
 })
 
-export const submitContactForm = createAction(ContactFormSchema, async parsedInput => {
+export const submitContactForm = createAction(ContactFormValues, async parsedInput => {
 	return await sendContactEmail(parsedInput).pipe(
 		Effect.withLogSpan("submit_contact_form_action"),
 		Effect.timeout("10 seconds"),

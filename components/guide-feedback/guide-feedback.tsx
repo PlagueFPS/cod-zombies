@@ -1,18 +1,19 @@
 "use client"
-import { CircleAlert, Send, ThumbsDown, ThumbsUp } from "lucide-react"
-import { useState, useTransition, useRef } from "react"
 import { useForm } from "@tanstack/react-form"
+import { Either } from "effect"
+import { CircleAlert, Send, ThumbsDown, ThumbsUp } from "lucide-react"
+import { useRef, useState, useTransition } from "react"
 import { toast } from "sonner"
 import { submitFeedbackForm } from "@/data/actions"
 import { cn } from "@/lib/utils"
-import { StandardFeedbackFormSchema } from "@/utils/validation-schemas"
+import { decodeFeedbackForm, StandardFeedbackFormSchema } from "@/utils/validation-schemas"
 import Shortcut from "../shortcut/shortcut"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
-import { Textarea } from "../ui/textarea"
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field"
 import { Spinner } from "../ui/spinner"
+import { Textarea } from "../ui/textarea"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 type IGuideFeedback =
 	| {
@@ -40,9 +41,14 @@ export default function GuideFeedback(props: IGuideFeedback) {
 		},
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
-				const result = await submitFeedbackForm(undefined, {
-					...value,
-					label: vote === "Disliked" ? "Improvement" : "User Feedback",
+				const data = decodeFeedbackForm(value)
+				const result = await Either.match(data, {
+					onLeft: error => ({ success: false, message: error.message }),
+					onRight: async success =>
+						await submitFeedbackForm(undefined, {
+							...success,
+							label: vote === "Disliked" ? "Improvement" : "User Feedback",
+						}),
 				})
 
 				if (result.success) {

@@ -31,7 +31,7 @@ export interface Filter {
 
 interface IFiltersCombobox {
 	data: Filter[]
-	currentSelection: string[]
+	currentSelection: readonly string[]
 	title: "Game" | "Difficulty" | "Type" | "Map"
 	enableInput?: boolean
 	inputPlaceholder?: string

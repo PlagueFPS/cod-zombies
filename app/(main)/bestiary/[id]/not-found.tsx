@@ -5,18 +5,22 @@ import { Option } from "effect"
 import { useParams } from "next/navigation"
 import NotFoundContent from "@/components/not-found/not-found-content"
 import { capitalize } from "@/utils/functions.client"
-import { decodeZombieParams } from "@/utils/validation-schemas"
+import { decodeParams } from "@/utils/validation-schemas"
 
 export default function ZombieNotFound() {
 	const params = useParams()
-	const { id } = decodeZombieParams(params)
-	const items: Link<string>[] = [
-		{ href: `/bestiary`, title: "Bestiary" },
-		{
-			href: Option.isSome(id) ? (`/bestiary/${id.value}` as Route) : "/bestiary",
-			title: Option.isSome(id) ? capitalize(id.value) : "Zombie Not Found",
-		},
-	]
+	const { id } = decodeParams(params)
+	const zombieItem: Link<string> = Option.match(id, {
+		onNone: () => ({
+			href: "/bestiary",
+			title: "Zombie Not Found",
+		}),
+		onSome: id => ({
+			href: `/bestiary/${id}` as Route,
+			title: capitalize(id),
+		}),
+	})
 
+	const items: Link<string>[] = [{ href: `/bestiary`, title: "Bestiary" }, zombieItem]
 	return <NotFoundContent items={items} resource="Zombie" param={Option.getOrUndefined(id)} />
 }
