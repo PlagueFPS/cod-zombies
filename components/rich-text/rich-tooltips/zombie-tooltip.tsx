@@ -1,5 +1,6 @@
 "use client"
-import type { Zombie, ZombieKey, ZombieType } from "@/data/zombies"
+import type { Zombie, ZombieKey } from "@/data/zombies"
+import type { ZombieType } from "@/utils/validation-schemas"
 import { Array as Arr } from "effect"
 import { AlertTriangle, ExternalLinkIcon, Target } from "lucide-react"
 import { TypeBadge } from "@/components/custom-badges/custom-badges"
@@ -150,18 +151,18 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 const getTypeTextClasses = (type: ZombieType) =>
 	cn({
 		"text-teal-600 decoration-teal-600 dark:text-teal-300 dark:decoration-teal-300":
-			type === "Normal",
+			type === "normal",
 		"text-yellow-700 decoration-yellow-700 dark:text-yellow-200 dark:decoration-yellow-200":
-			type === "Special",
+			type === "special",
 		"text-rose-600 decoration-rose-600 dark:text-rose-300 dark:decoration-rose-300":
-			type === "Elite",
-		"text-red-600 decoration-red-600 dark:text-red-400 dark:decoration-red-400": type === "Boss",
+			type === "elite",
+		"text-red-600 decoration-red-600 dark:text-red-400 dark:decoration-red-400": type === "boss",
 	})
 
 const getTypeContentClasses = (type: ZombieType) =>
 	cn({
-		"border-teal-600/50 dark:border-teal-300/50": type === "Normal",
-		"border-yellow-600/50 dark:border-yellow-300/50": type === "Special",
-		"border-rose-600/50 dark:border-rose-300/50": type === "Elite",
-		"border-red-600/50 dark:border-red-300/50": type === "Boss",
+		"border-teal-600/50 dark:border-teal-300/50": type === "normal",
+		"border-yellow-600/50 dark:border-yellow-300/50": type === "special",
+		"border-rose-600/50 dark:border-rose-300/50": type === "elite",
+		"border-red-600/50 dark:border-red-300/50": type === "boss",
 	})

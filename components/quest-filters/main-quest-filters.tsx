@@ -1,8 +1,9 @@
+import type { MainQuestDifficulty } from "@/utils/validation-schemas"
 import { Option } from "effect"
 import { Suspense } from "react"
 import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { getGames } from "@/data/games"
-import { getMainQuests, type MainQuestDifficulty } from "@/data/main-quests"
+import { getMainQuests } from "@/data/main-quests"
 import { slugify, sortDifficulties } from "@/utils/functions.client"
 import QuestFiltersClient from "./quest-filters.client"
 

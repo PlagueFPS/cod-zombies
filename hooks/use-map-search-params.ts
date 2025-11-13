@@ -1,6 +1,6 @@
 import { Array as Arr, type Option } from "effect"
 import { useSearchParams } from "next/navigation"
-import { decodeSearchParams } from "@/utils/validation-schemas"
+import { parseSearchParams } from "../utils/validation-schemas"
 
 interface MapSearchParamsResult {
 	/** The current URL search parameters */
@@ -27,7 +27,7 @@ interface MapSearchParamsResult {
 
 export const useMapSearchParams = (): MapSearchParamsResult => {
 	const searchParams = useSearchParams()
-	const { include, exclude, layer } = decodeSearchParams(searchParams)
+	const { include, exclude, layer } = parseSearchParams(searchParams)
 
 	const updateURLParams = (params: URLSearchParams) => {
 		window.history.replaceState(null, "", `?${params.toString()}`)

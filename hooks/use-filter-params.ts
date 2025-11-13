@@ -1,7 +1,7 @@
 "use client"
 import { useSearchParams } from "next/navigation"
 import { MAP_LIMIT } from "@/utils/constants"
-import { decodeSearchParams } from "@/utils/validation-schemas"
+import { parseSearchParams } from "@/utils/validation-schemas"
 
 interface FilterParamsResult {
 	/** Array of selected game parameter values */
@@ -73,7 +73,7 @@ type Param = "type" | "map" | "game" | "difficulty"
  */
 export function useFilterParams(): FilterParamsResult {
 	const searchParams = useSearchParams()
-	const { game, map, difficulty, type, page } = decodeSearchParams(searchParams)
+	const { game, map, difficulty, type, page } = parseSearchParams(searchParams)
 
 	const updateURLParams = (params: URLSearchParams) => {
 		window.history.pushState(null, "", `?${params.toString()}`)

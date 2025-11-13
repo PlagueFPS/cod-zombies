@@ -16,7 +16,6 @@ export default function QuestNotFound() {
 		const idParam = yield* id
 
 		const items: Link<string>[] = [
-			{ href: `/side-quests`, title: "Side Quests" },
 			{ href: `/side-quests?game=${gameParam}`, title: capitalize(gameParam) },
 			{ href: `/side-quests?game=${gameParam}&map=${mapParam}`, title: capitalize(mapParam) },
 			{
@@ -36,5 +35,5 @@ export default function QuestNotFound() {
 		}),
 	]
 
-	return <NotFoundContent items={items} resource="Side Quest" param={String(id)} />
+	return <NotFoundContent items={items} resource="Side Quest" param={Option.getOrUndefined(id)} />
 }

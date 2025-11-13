@@ -1,5 +1,4 @@
-import type { MainQuestDifficulty } from "@/data/main-quests"
-import type { ZombieType } from "@/data/zombies"
+import type { MainQuestDifficulty, ZombieType } from "@/utils/validation-schemas"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
@@ -68,7 +67,7 @@ export const calculateSkip = (page: number, limit: number) => {
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
 export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) => {
-	const difficultyOrder: MainQuestDifficulty[] = ["Easy", "Medium", "Hard"]
+	const difficultyOrder: MainQuestDifficulty[] = ["easy", "medium", "hard"]
 	return difficultyOrder.indexOf(a) - difficultyOrder.indexOf(b)
 }
 
@@ -91,7 +90,7 @@ export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
 export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
-	const typeOrder: ZombieType[] = ["Normal", "Special", "Elite", "Boss"]
+	const typeOrder: ZombieType[] = ["normal", "special", "elite", "boss"]
 	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
 }
 

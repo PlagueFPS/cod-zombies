@@ -1,12 +1,13 @@
 import type { Augment } from "@/data/augments"
 import type { ElixirRarity } from "@/data/elixirs"
 import type { GobblegumRarity, GobblegumType } from "@/data/gobblegum"
-import type { MainQuestDifficulty } from "@/data/main-quests"
 import type { ZombieAttack } from "@/data/zombie-attacks"
 import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
+import type { MainQuestDifficulty } from "@/utils/validation-schemas"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { capitalize } from "@/utils/functions.client"
 
 interface CustomBadgeProps {
 	className?: string
@@ -38,14 +39,14 @@ export const DifficultyBadge = ({
 	<Badge
 		className={cn(
 			{
-				"badge-easy-gradient dark:dark-badge-easy-gradient": difficulty === "Easy",
-				"badge-medium-gradient dark:dark-badge-medium-gradient": difficulty === "Medium",
-				"badge-hard-gradient dark:dark-badge-hard-gradient": difficulty === "Hard",
+				"badge-easy-gradient dark:dark-badge-easy-gradient": difficulty === "easy",
+				"badge-medium-gradient dark:dark-badge-medium-gradient": difficulty === "medium",
+				"badge-hard-gradient dark:dark-badge-hard-gradient": difficulty === "hard",
 			},
 			className,
 		)}
 	>
-		{difficulty}
+		{capitalize(difficulty)}
 	</Badge>
 )
 export const TypeBadge = ({
@@ -55,17 +56,17 @@ export const TypeBadge = ({
 	<Badge
 		className={cn(
 			{
-				"badge-easy-gradient dark:dark-badge-easy-gradient": type === "Normal",
-				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Special",
-				"badge-elite-gradient dark:dark-badge-elite-gradient": type === "Elite",
-				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Boss",
+				"badge-easy-gradient dark:dark-badge-easy-gradient": type === "normal",
+				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "special",
+				"badge-elite-gradient dark:dark-badge-elite-gradient": type === "elite",
+				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "boss",
 				"badge-major-augment-gradient dark:dark-badge-major-augment-gradient": type === "Major",
 				"badge-primary-gradient dark:dark-badge-primary-gradient": type === "Minor",
 			},
 			className,
 		)}
 	>
-		{type}
+		{capitalize(type)}
 	</Badge>
 )
 export const MarkerBadge = ({
