@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2025-11-11T18:01:30.812Z",
+  "generated": "2025-11-15T17:04:47.191Z",
   "files": {
+    "zombies/zursa.mdx": {
+      "lastModified": "2025-11-15T17:04:17.000Z",
+      "lastModifiedFormatted": "November 15, 2025",
+      "commitHash": "9e2ed9b"
+    },
     "main-quests/casimir-mechanism.mdx": {
-      "lastModified": "2025-11-11T18:00:59.000Z",
+      "lastModified": "2025-11-11T18:17:07.000Z",
       "lastModifiedFormatted": "November 11, 2025",
-      "commitHash": "c070189"
+      "commitHash": "3d7e79c"
     },
     "main-quests/seal-the-deal.mdx": {
       "lastModified": "2025-11-09T03:02:08.000Z",
@@ -333,11 +338,6 @@
       "commitHash": "134297c"
     },
     "zombies/vermin.mdx": {
-      "lastModified": "2025-11-09T02:44:46.000Z",
-      "lastModifiedFormatted": "November 9, 2025",
-      "commitHash": "134297c"
-    },
-    "zombies/zursa.mdx": {
       "lastModified": "2025-11-09T02:44:46.000Z",
       "lastModifiedFormatted": "November 9, 2025",
       "commitHash": "134297c"
