@@ -1844,7 +1844,7 @@ const zombiesRegistry = {
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: [getWeakPointByKey("redGlowingSpots"), getWeakPointByKey("beeNests")],
-		elementalWeakness: ["napalmBurst"],
+		elementalWeakness: ["napalmBurst", "brainRot"],
 		attacks: [getZombieAttackByKey("maul"), getZombieAttackByKey("beeSwarm")],
 		spawnBehavior:
 			"Zursa will first spawn on Round 16, then every 3-5 rounds after that with the chance for multiple to spawn on those rounds.",
