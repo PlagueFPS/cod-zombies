@@ -668,6 +668,11 @@ const augmentRegistry = {
 		description: "The charmed enemy has a chance to turn other enemies.",
 		type: "Major",
 		image: "/augments/chain-lightning-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/group-shroud-major-augment-bo7.webp",
+			},
+		},
 	},
 	pheromone: {
 		id: "pheromone",
@@ -675,6 +680,11 @@ const augmentRegistry = {
 		description: "The charmed enemy distracts nearby normal and special enemies for a short time.",
 		type: "Major",
 		image: "/augments/pheromone-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/afterimage-major-augment-bo7.webp",
+			},
+		},
 	},
 	bigGameBrainRot: {
 		id: "big-game-brain-rot",
@@ -682,6 +692,11 @@ const augmentRegistry = {
 		description: "Brain Rot can charm elite enemies.",
 		type: "Major",
 		image: "/augments/big-game-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/big-game-major-augment-bo7.webp",
+			},
+		},
 	},
 	extensionBrainRot: {
 		id: "extension-brain-rot",
@@ -689,6 +704,11 @@ const augmentRegistry = {
 		description: "Brain Rot duration is slightly increased.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	hasteBrainRot: {
 		id: "haste-brain-rot",
@@ -696,6 +716,11 @@ const augmentRegistry = {
 		description: "Brain Rot cooldown is slightly reduced.",
 		type: "Minor",
 		image: "/augments/chill-berry-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/haste-minor-augment-bo7.webp",
+			},
+		},
 	},
 	explosive: {
 		id: "explosive",
@@ -704,6 +729,11 @@ const augmentRegistry = {
 			"Charmed enemies explode at the end of Brain Rot's duration, dealing toxic damage.",
 		type: "Minor",
 		image: "/augments/explosive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/stuntman-minor-augment-bo7.webp",
+			},
+		},
 	},
 	bigGameCryoFreeze: {
 		id: "big-game-cryo-freeze",
