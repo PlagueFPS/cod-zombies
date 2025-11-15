@@ -278,12 +278,12 @@ const mainQuestRegistry = {
 		map: getMapByKey("reckoning"),
 		content: Effect.promise(() => import("@/content/main-quests/reckoning.mdx")),
 	},
-	ashesOfTheDamnedMainQuest: {
-		id: "ashes-of-the-damned",
-		state: Option.some("Coming Soon"),
-		difficulty: Option.none(),
+	dustToDust: {
+		id: "dust-to-dust",
+		state: Option.some("New"),
+		difficulty: Option.some("Hard"),
 		map: getMapByKey("ashesOfTheDamned"),
-		content: Effect.promise(() => import("@/content/main-quests/ashes-of-the-damned.mdx")),
+		content: Effect.promise(() => import("@/content/main-quests/dust-to-dust.mdx")),
 	},
 } as const satisfies Record<string, MainQuest>
 

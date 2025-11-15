@@ -1747,8 +1747,8 @@ const zombiesRegistry = {
 		image: "/zombies/uber-klaus.webp",
 		description:
 			"A murderous automaton encased in a toughened, bulky exoskeleton that maintains a cocky attitude, lethal efficiency, and super strength, all directed at newly programmed threats.",
-		games: [getGameByKey("blackOps6")],
-		maps: [getMapByKey("reckoning")],
+		games: [getGameByKey("blackOps6"), getGameByKey("blackOps7")],
+		maps: [getMapByKey("reckoning"), getMapByKey("ashesOfTheDamned")],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: [
@@ -1759,7 +1759,7 @@ const zombiesRegistry = {
 		elementalWeakness: ["cryoFreeze", "napalmBurst"],
 		attacks: [getZombieAttackByKey("powerfulMelee"), getZombieAttackByKey("electricalBolts")],
 		spawnBehavior:
-			"Uber Klaus will first spawn on Reckoning on Round 16, then every 3-5 rounds afterwards. They will also spawn in during specific main quest steps.",
+			"Uber Klaus will first spawn on Reckoning on Round 16, then every 3-5 rounds afterwards. They will also spawn in during specific main quest steps. On Ashes of the Damned, he spawns in after Round 8 when walking near the gate leading to Blackwater Lake in Janus Towers Plaza.",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/uber-klaus.mdx")),
 	},
 	sam: {

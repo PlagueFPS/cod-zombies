@@ -1,0 +1,471 @@
+import RichImage from "@/components/rich-text/rich-image/rich-image"
+import PerkTooltip from "@/components/rich-text/rich-tooltips/perk-tooltip"
+import ZombieTooltip from "@/components/rich-text/rich-tooltips/zombie-tooltip"
+import AmmoModTooltip from "@/components/rich-text/rich-tooltips/ammo-mod-tooltip"
+import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgrade-tooltip"
+import GobbleGumTooltip from "@/components/rich-text/rich-tooltips/gobblegum-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
+import { TableCell } from "@/components/ui/table"
+import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
+
+## Dust to Dust
+The main quest for **Ashes of the Damned** is called **Dust to Dust**. This quest has our crew fighting to release the tortured souls of the damned and
+the **Shadowsmiths**, while also restoring the souls of our characters.
+
+## Requirements
+
+- [Necrofluid Gauntlet](#step-3-obtain-the-necrofluid-gauntlet)
+- <PerkTooltip perkKey="wispTea" />
+- <PerkTooltip perkKey="meleeMacchiato" game="blackOps7" />
+- Stun Grenades
+
+## Recommended Loadouts
+
+<RichTable
+  headerCells={["Start Weapon", "Field Upgrade", "Lethal", "Tactical"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        DS20 Mirage
+      </TableCell>
+      <TableCell>
+      	<FieldUpgradeTooltip fieldUpgradeKey='frenziedGuard' game="blackOps7" />
+      </TableCell>
+      <TableCell>
+        Molotov
+      </TableCell>
+      <TableCell>
+        Combat Stim/Decoy
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        MXR-17
+      </TableCell>
+      <TableCell>
+      	<FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' game="blackOps7" />
+      </TableCell>
+      <TableCell>
+        Molotov
+      </TableCell>
+      <TableCell>
+        Combat Stim/Decoy
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> The weapon you bring in does not matter too much, as you will mainly be using **Ol' Tessie** to defeat the final boss.
+
+## Recommended GobbleGums
+
+<RichTable
+  headerCells={["Solo GobbleGums", "Co-op GobbleGums"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shieldsUp' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shieldsUp' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='arsenalAccelerator' game="blackOps6" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='killJoy' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='perkaholic' game="blackOps6" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='perkaholic' game="blackOps6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='killJoy' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='nearDeathExperience' game="blackOps6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='powerKeg' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='powerKeg' />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> These gobblegums are just a recommendation and are not required to complete the quest.
+
+## Step 1: Activate Klaus
+> There are four different items you can start collecting before **Step 1**, to progress towards [Step 4](#step-4-craft-the-serum) if you choose. The only two you cannot
+collect yet are the [Powder of the Forgotten](#step-4-craft-the-serum) and the [Mysterious Limb](#mysterious-limb).
+
+Wait until **Round 8** and head to the right side wall near the gate leading to **Blackwater Lake** in the **Janus Towers Plaza**, where a
+<ZombieTooltip zombieKey="uberKlaus" /> will spawn out of the car, which you must kill to obtain the **Stabilizer Chip**.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-uber-klaus-spawn.webp" caption="Uber Klaus spawn location" />
+<RichImage image="/content/ashes-of-the-damned/aotd-stabilizer-chip.webp" caption="Stabilizer Chip" />
+
+Once you have the chip, head to the **Ashwood Sheriff's Office** where you'll find **Klaus** locked in the jail cell. Install the **Stabilizer Chip** into the panel,
+on the door of the jail cell, until you are prompted with a "Update requires restart" message on the panel.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-jail-cell-panel.webp" caption="Panel on the Jail Cell door" />
+
+Once prompted, throw two **Stun Grenades** in quick succession at **Klaus** to restart and update him, and therefore activating him.
+
+> You'll know if you have done is successfully, if **Klaus** gets a stun ring effect around his head.
+
+## Step 2: Upgrade Ol' Tessie
+Head to **Exit 115** and wait for a zombie called **The Cook** to spawn in. Killing **The Cook** will drop a **Freezer Key** which you can use to open the **Freezer**
+inside the diner, revealing the **Abomination Carcass** for you to collect.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-freezer-key.webp" caption="Freezer Key from killing The Cook" />
+<RichImage image="/content/ashes-of-the-damned/aotd-abomination-carcass.webp" caption="Abomination Carcass inside the Diner Freezer" />
+
+Once you have the **Abomination Carcass**, head back to **Ashwood** and upgrade **Ol' Tessie** in the **Garage** to gain the **Beam Attack** ability.
+
+## Step 3: Obtain the Necrofluid Gauntlet
+> If you already got this weapon out of the box, you can skip this step and proceed straight to [Step 3](#step-3-craft-the-serum).
+
+Head to the **Zarya Cosmodrome** and activate **Klaus**, then head downstairs to the **Support Systems** and call **Klaus** in front of the sparking panel with a
+red light in between the two staircases to have him fix it.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-sparking-panel.webp" caption="Sparking Panel for Klaus to fix" />
+
+Once repaired, interact with the panel to start a small one-minute lockdown, where you'll have to stand inside of the red circle on the ground until the progress is complete.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-panel-lockdown.webp" caption="Scanner Lockdown" />
+
+Once completed, the **Aether Barrel** next to the panel will be interactable, and you must take it to each of the three power generators on the map and place it inside
+to refill it's energy. The order you do this in does not matter, however, there is a clear logical order of: **Ashwood**, **Blackwater Lake**, and ending with **Vandorn Farm**.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-aether-barrel.webp" caption="Aether Barrel" />
+<RichImage image="/content/ashes-of-the-damned/aotd-aether-barrel-charging.webp" caption="Aether Barrel inside one of the generators" />
+
+Once the **Aether Barrel** has been slightly filled at the first generator, you will now be on a a **1:45 minute timer** to get it to its next generator. After the final generator,
+in **Vandorn Farm**, you must take it underneath the farm, into the **Cellar** and interact with the cube on the pedestal to dispense the energy into it, activating it.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-activated-cube.webp" caption="Activated Cube" />
+
+Once activated, you'll now need to input three different symbols by interacting with the green sides of the cube to input a symbol, and then interact with the eyeball to confirm your
+selection. The three symbols you need to input can be found on the roofs of the buildings in **Vandorn Farm**, which can be seen when using the **Jump Pad** to go in and out of the farm.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-cube-symbols.webp" caption="Red symbols to input into the Cube" />
+
+Once you know your three symbols, input them into the cube, and confirm your selection by interacting with the eyeball, revealing the **Necrofluid Gauntlet** for you to claim.
+Once claimed, a small lockdown will begin, where you'll need to shoot all the green orbs with the **Necrofluid Gauntlet** and then reload to retract the spikes, pulling in the
+green orbs, once all green orbs are pulled in, the lockdown will end.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-necrofluid-gauntlet.webp" caption="Necrofluid Gauntlet" />
+<RichImage image="/content/ashes-of-the-damned/aotd-necrofluid-gauntlet-lockdown.webp" caption="Necrofluid Gauntlet lockdown event" />
+
+## Step 4: Craft the Serum
+Once you have the **Necrofluid Gauntlet**, purchase <PerkTooltip perkKey="wispTea" /> if you don't already have it and head to the mirror in the **Tailor Shop** in **Ashwood**.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-mirror.webp" caption="Mirror in the Ashwood Tailor Shop" />
+
+You need to activate <PerkTooltip perkKey="wispTea" />, which will fly into the **Mirror** revealing a prism image, then shoot the **Mirror** with the **Necrofluid Gauntlet** to
+break it, dropping the **Powder of the Forgotten**.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-powder-of-the-forgotten.webp" caption="Powder of the Forgetten dropped from the mirror" />
+
+Once you have the **Powder of the Forgotten**, head to **Yuri's Lab** in the **Zarya Cosmodrome**, and interact with the powder on the table to puff up the powder, revealing
+a **Pigpen Cipher** on the wall, which will tell you the three items you need to collect to craft the serum from top-to-bottom.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-pigpen-cipher.webp" caption="Pigpen Cipher" />
+
+You can use the following image to figure out which of the three items you need to collect to craft the serum. From top to bottom, the items in this image are:
+[Widow's Lantern](#widows-lantern), [Mysterious Limb](#mysterious-limb), [Ravager Eyes](#ravager-eyes), [Hoard Hunk Chunks](#hoard-hunk-chunks), and [Human Bones](#human-bones).
+
+<RichImage image="/content/ashes-of-the-damned/aotd-pigpen-cipher-key.webp" caption="Pigpen Cipher Key" />
+
+> If you already have your needed items, you can skip to the [crafting the serum](#crafting-the-serum) step.
+
+### Widow's Lantern
+Head to the kitchen in the **Cabin** in **Blackwater Lake** and underneath the stove will be a **Jar of Spores** you can interact with and collect. Interact with the **Horse Carcass**
+outside of the entrance to **Vandorn Farm** with red spores on it, to plant the spores on the horse.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-jar-of-spores.webp" caption="Jar of Spores in the cabin kitchen" />
+<RichImage image="/content/ashes-of-the-damned/aotd-horse-carcass.webp" caption="Horse Carcass with red spores on it" />
+
+Once placed, you need to wait two full rounds for the spore to fully grow and transform into the **Widow's Lantern** item that you can interact with to collect.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-widows-lantern.webp" />
+
+### Ravager Eyes
+Kill a **Ravager** with any **Saw Blade Trap** to drop the **Ravager Eyes** item that you can interact with to collect.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-ravager-eyes.webp" caption="Ravager Eyes from a Saw Blade Trap kill" />
+
+### Hoard Hunk Chunks
+> Before you can obtain this item you'll need to have upgraded **Ol' Tessie** with the **Abomination Carcass** to gain the **Beam Attack** ability.
+
+You need to use the **Beam Attack** from **Ol' Tessie** on one of the purple glowing **Overgrown Hoard Hunks** in the **Fog** to destroy them, dropping the
+**Hoard Hunk Chunks**.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-overgrown-hoard-husk.webp" caption="Overgrown Hoard Husk in the Fog" />
+<RichImage image="/content/ashes-of-the-damned/aotd-hoard-hunk-chunks.webp" caption="Hoard Hunk Chunks from destroying Overgrown Hoard Hunks" />
+
+### Human Bones
+Head to the **Barn** in **Vandorn Farm** and throw a **Combat Axe** at the right foot of the hanging body right of the **Ryden 45K** wall buy to cut off its foot. Afterward,
+throw a **Molotov** at the foot to burn off the skin, revealing the **Human Bones** for you to collect.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-hanging-body.webp" caption="Burned hanging body, right of the Ryden 45K wall buy" />
+<RichImage image="/content/ashes-of-the-damned/aotd-human-bones.webp" caption="Human Bones from burning off the skin of the hanging body" />
+
+### Mysterious Limb
+> Before you can obtain this item you'll need to have upgraded **Ol' Tessie** with the **Abomination Carcass** to gain the **Beam Attack** ability.
+
+Wait until **Round 16** for a <ZombieTooltip zombieKey="zursa" /> to spawn, and you need to lower it's health significantly to be able to kill it with the **Beam Attack** from
+**Ol' Tessie**, dropping the **Mysterious Limb** item for you to collect.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-mysterious-limb.webp" caption="Mysterious Limb from killing Zursa with Ol' Tessie's Beam Attack" />
+
+### Crafting the Serum
+Once you have the three items revealed by the code, interact with them in order from top-to-bottom on the wall. If done correctly, you will be prompted to "Add Blood",
+beginning a lockdown, where you will be forced down to **75HP** and the only way to heal is to use the **Necrofluid Gauntlet** to recall shots into zombies.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-serum-lockdown.webp" caption="Serum Lockdown" />
+
+## Step 5: Collect the Keys
+There are three glowing keys found in the **Fog** areas of the map, that you will need to shoot with the **Necrofluid Gauntlet** and press the alternate fire ability to cause
+an explosion launching the key to your feet. Each key has three possible spawns which you can find below:
+
+### Terrapin Key
+> This key when picked up will significantly reduce your speed, so ensure you have **Ol' Tessie** right next to you before picking it up so you can get away.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-terrapin-key-first-location.webp" caption="Grounded Ship - underneath inbetween two blue barrels" />
+<RichImage image="/content/ashes-of-the-damned/aotd-terrapin-key-second-location.webp" caption="Grounded Ship - in the window barricade left of a blue container" />
+<RichImage image="/content/ashes-of-the-damned/aotd-terrapin-key-third-location.webp" caption="Grounded Ship - in the corner of the open blue container" />
+
+Once collected, bring the key to the **Prism** in the **Rabbit Alley** in **Ashwood** and interact with it to remove one of the three locks.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-locked-prism.webp" caption="Locked Prism" />
+
+### Nightbird Key
+> This key when picked up will significantly reduce your health, so ensure you have **Ol' Tessie** right next to you before picking it up so you can get away.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-nightbird-key-first-location.webp" caption="Orda Graveyard - in the jaw of the T-Rex head just before the entrance to Ashwood" />
+<RichImage image="/content/ashes-of-the-damned/aotd-nightbird-key-second-location.webp" caption="Orda Graveyard - in the jaw of the T-Rex head on the cliff near the large fire" />
+<RichImage image="/content/ashes-of-the-damned/aotd-nightbird-key-third-location.webp" caption="Orda Graveyard - behind the Project Janus Truck just before the entrance to Exit 115" />
+
+Once collected, bring the key to the **Prism** in the **Rabbit Alley** in **Ashwood** and interact with it to remove another lock.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-locked-prism.webp" caption="Locked Prism" />
+
+### Bruin Key
+> This key when picked up will force you to have your dedicated melee weapon equipped.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-bruin-key-first-location.webp" caption="Crashed Rocket - on the cliff near the car crash just before the entrance to Ashwood" />
+<RichImage image="/content/ashes-of-the-damned/aotd-bruin-key-second-location.webp" caption="Crashed Rocket - on the pylon bridging the gap between the two cliff ledges" />
+<RichImage image="/content/ashes-of-the-damned/aotd-bruin-key-third-location.webp" caption="Crashed Rocket - on the ledge of the building with the giant rotating radar" />
+
+Once collected, bring the key to the **Prism** in the **Rabbit Alley** in **Ashwood** and interact with it to remove the final lock.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-locked-prism.webp" caption="Locked Prism" />
+
+Once all locks have been removed, you will be shown a mid-game cutscene telling you about what you need to do next, and once that is over, you can collect the **DG-2 Turret**
+which was inside the **Prism** and put it on **Ol' Tessie** in the **Garage**.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-mid-game-cutscene.webp" caption="Mid-Game Cutscene" />
+<RichImage image="/content/ashes-of-the-damned/aotd-dg2-turret.webp" caption="DG-2 Turret" />
+
+## Step 6: Complete the Three Challenges
+Using the **DG-2 Turret** on **Ol' Tessie**, you must shoot the **Aether Clock Tower** floating above **Ashwood** to charge it. Once charged, three of the four clock faces
+will stop moving, and you'll need to shoot one of the frozen clock faces with the **Necrofluid Gauntlet** and recall the shot to be infused with **Aether Energy**, turning you purple.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-floating-clock-tower.webp" caption="Floating Clock Tower Charged" />
+
+> Once charged, you can begin one of the three challenges below. If you run out of **Aether Energy**, go back to the clock and shoot another frozen clock face to get it back. If
+the clock is no longer charged, shoot it with the **DG-2 Turret** again to charge it. If it is unable to be charged, flip round to be able to charge it again.
+
+### Vandorn Farm Challenge
+While infused with **Aether Energy**, head inside the **Farmhouse** and look at the hour-hand on the clock left of the dinner table. Whatever the hour is, you must stand on that
+equivalent Roman numeral found on the floor around the dinner table. The roman numerals are placed around the table to mimic a clock, starting with **XII**(12) behind the head of the table
+and going clockwise.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-farm-clock.webp" caption="Clock on the wall" />
+<RichImage image="/content/ashes-of-the-damned/aotd-farm-roman-numerals.webp" caption="Roman Numerals on the floor around the dinner table" />
+
+Once you are standing on the correct roman numeral, look at the head of the table, and if done correctly, he will begin slowly turning his head towards you until his eyes glow red.
+Once red, shoot the head with the infused **Necrofluid Gauntlet**, snapping his neck and infusing it with **Aether Energy**.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-farm-head.webp" caption="Head of the table infused with Aether Energy" />
+
+Once completed, you must now collect four artifacts found around the farm and place them in their respective red symbols outside. The four artifacts and their locations are as
+follows:
+
+<RichImage image="/content/ashes-of-the-damned/aotd-tasty-face.webp" caption="Tasty-Face - on the bottom bunk bed upstairs in the Farmhouse" />
+<RichImage image="/content/ashes-of-the-damned/aotd-mas-chalice.webp" caption="Ma's Chalice - on the left of the bloody bathtub in the Cellar" />
+<RichImage image="/content/ashes-of-the-damned/aotd-pas-pigsticker.webp" caption="Pa's Pigsticker - in the Garage on the tools table" />
+<RichImage image="/content/ashes-of-the-damned/aotd-juniors-fun-face.webp" caption="Junior's Fun-Face - on the clothed body in the Barn upstairs" />
+
+Once you have all four artifacts, place each of them down on their red symbol outside turning the symbol gold, and once all symbols are gold, interact with one of them
+again to begin a lockdown, where you will need to protect these symbols from zombies, completing this challenge.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-gold-symbol.webp" caption="Golden Symbol" />
+
+> If you are having trouble on solo, you can activate <FieldUpgradeTooltip fieldUpgradeKey="frenziedGuard" game="blackOps7" /> to have all zombies aggro you,
+making this challenge really easy.
+
+### Zarya Cosmodrome Challenge
+While infused with **Aether Energy**, head to the **Zarya Cosmodrome** and shoot each of the giant rotating radars with an infused shot of the **Necrofluid Gauntlet**,
+to infuse them with **Aether Energy** and slow them down.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-infused-radar.webp" caption="Radar infused with Aether Energy" />
+
+Once both radars are infused with **Aether Energy**, head inside the **Control Room** and on the right-side, you'll find two monitors flashing two symbols at a time from the
+**Pigpen Cipher**. These symbols represent letters of the alphabet and are used to spell out one of four words:
+
+- Launch
+- Rocket
+- Weapon
+- Engine
+
+<RichImage image="/content/ashes-of-the-damned/aotd-symbol-monitors.webp" caption="Symbol Monitors" />
+
+Use the image below to find out which letters are being flashed at you, and use those letters to form one of the four words.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-word-cipher-key.webp" caption="Word Cipher Key" />
+
+Once you know which word you have, you must input the number code which represents that word in the six monitors with ghosts sitting in front of them. These monitors will be flashing
+numbers and you must shoot the red button on the monitor to stop them on the correct number forming part of the word, until you have the full word inputted. Below is the code for each word:
+
+- Launch = 11, 0, 20, 13, 2, 7
+- Rocket = 17, 14, 2, 10, 4, 19
+- Weapon = 22, 4, 0, 15, 14, 13
+- Engine = 22, 4, 0, 15, 14, 13
+
+If you input that code correctly in the six monitors from left-to-right, your screen will flash white and the rocket will blast off, and
+you will have completed this challenge.
+
+> Do **NOT** use the **Raygun** to input the code as its splash damage will hit multiple buttons at once, potentially failing the challenge, and forcing you to start over.
+
+### Exit 115 Challenge
+> Before doing this challenge, you must have <PerkTooltip perkKey="meleeMacchiato" game="blackOps7" /> equipped.
+
+Head to **Exit 115** and wait for colored lightning to strike, and while infused with **Aether Energy**, shoot the clock on the roof of the **Service Station** with the
+**Necrofluid Gauntlet** to freeze time for one minute.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-service-station-clock.webp" caption="Service Station Clock" />
+
+Once frozen, you must revive and lure three special zombies into their respective lightning strike. In no particular order here is how to revive each zombie:
+
+> It is highly unlikely, that you will be able to complete this challenge in a single time freeze if you are not in a group, which is fine. You'll just need to wait a couple of rounds
+for the lightning to strike again, and shoot the clock with another infused shot to continue from where you left off.
+
+#### Waitress
+Head inside the **Diner** and punch the cash register with <PerkTooltip perkKey="meleeMacchiato" game="blackOps7" /> to revive the **Waitress**. Then run up to the roof to lure
+her into the blue lightning strike.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-diner-cash-register.webp" caption="Cash Register" />
+
+#### Trucker
+Use **Ol' Tessie** to ram into the back of the 18-wheeler truck carrying the red container to open it, reviving the **Trucker** to the left of it,
+then run up to the roof of the **Gas Station** to lure him into the pink lightning strike.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-red-container-truck.webp" caption="Red Container Truck" />
+
+#### Mechanic
+Head inside the **Service Station** and call in **Klaus**, and once he arrives, call him onto the **Mechanic** laying on the ground, where he'll stomp on the ground
+reviving the **Mechanic**. Then run up to the roof of the **Service Station** to lure him into the orange lightning strike.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-service-station-mechanic.webp" caption="Mechanic laying on the ground" />
+
+Once all three zombies have been revived and lured into their respective lightning strikes, you will have completed this challenge.
+
+### Blackwater Lake Challenge
+While infused with **Aether Energy**, head to the back porch of **Blackwater Lake** and interact with the wisp on the dock to begin this challenge, then head into the
+**Projector Room** in the **Cabin** and shoot the **Projector** with the infused **Necrofluid Gauntlet** to begin flashing four images on the screen.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-dock-wisp.webp" caption="Wisp on the dock behind the Cabin" />
+<RichImage image="/content/ashes-of-the-damned/aotd-projector.webp" caption="Projector in the Cabin" />
+
+You must remember the order these images were flashed on the screen, as they will dictate the order you must shoot the projector reels in that area. The four images are as follows:
+
+<RichImage image="/content/ashes-of-the-damned/aotd-boathouse-image.webp" caption="Boathouse Image" />
+<RichImage image="/content/ashes-of-the-damned/aotd-toolshed-image.webp" caption="Toolshed Image" />
+<RichImage image="/content/ashes-of-the-damned/aotd-front-of-house-image.webp" caption="Front of House Image" />
+<RichImage image="/content/ashes-of-the-damned/aotd-side-of-house-image.webp" caption="Side of House Image" />
+
+Once you know the order of the images, you can begin shooting the projector reels in that order with the **Necrofluid Gauntlet**. The locations of the projector reels for each
+of those locations are as follows:
+
+<RichImage image="/content/ashes-of-the-damned/aotd-boathouse-reel.webp" caption="Boathouse - on a support beam near the roof" />
+<RichImage image="/content/ashes-of-the-damned/aotd-toolshed-reel.webp" caption="Toolshed - on a shelf" />
+<RichImage image="/content/ashes-of-the-damned/aotd-front-of-house-reel.webp" caption="Front of House - second floor of the Cabin on the corner of a shelf" />
+<RichImage image="/content/ashes-of-the-damned/aotd-side-of-house-reel.webp" caption="Side of House - lodge underneath the stairs behind the Ammo Cache" />
+
+If done correctly, the box at the foot of the bed upstairs in the **Cabin** will have a wisp on it, and you need to summon **Klaus** and call him to the box to
+collect the item from inside and complete this challenge.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-klaus-box.webp" caption="Glowing Box at the foot of the bed" />
+
+## Step 7: Defeat Veytharion
+> At this point, you should fully prepare for the boss fight against **Veytharion**. Tier III Armor, all perks, field upgrade charged, are the most important since you'll be doing damage
+with **Ol' Tessie**.
+
+### Entering the Boss Area
+Interact with **Klaus** near the dock to begin the final encounter. This encounter will have you race **Ol' Tessie** from **Blackwater Lake** to
+**Janus Towers Plaza** then **Vandorn Farm** then **Ashwood** then back to **Blackwater Lake** in a full circle, collecting driving over **Wisps** along the way.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-final-wisps.webp" caption="Final encounter wisps" />
+
+> After starting the encounter, get in **Ol' Tessie** and wait at the gate leaving towards **Janus Towers Plaza**, until you see the first **Wisp** appear on the right path. They
+take about 10 seconds to appear after starting the encounter.
+
+There are three **Wisps** in the **Fog** of each area that you must collect while doing this circle and once all wisps have been collected, you will be automatically teleported
+to the boss area.
+
+> When driving onto the **Grounded Ship**, you will need to make a hard-right after getting on the ship, do not drive forward through the ship like you normally would.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-boss-arena.webp" caption="Boss Arena" />
+
+### Phase 1 & 2
+During this phase, you need to be driving **Ol' Tessie**, avoiding the missiles fired by **Veytharion**, and use the boost to ram into **Veytharion** whenever he is in the
+middle of the arena. This will expose a giant weak point, which if you ram into with **Ol' Tessie** by boosting into it, will deal a massive amount of damage.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-phase-1.webp" caption="Phase 1" />
+
+Rinse and repeat this process until **Veytharion** goes immune and start spinning like a bay-blade. This is the phase transition period, where you will need to wait for
+him to launch a purple beam of light onto the arena, which you need to drive through to supercharge **Ol' Tessie**, and then ram into **Veytharion** to knock off his shield.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-immune-phase.webp" caption="Immune Phase Transition" />
+
+Once his shield is knocked off, he will be phases and have a golden weak point underneath him as he flies up, quickly position **Ol' Tessie** and switch to the **DG-2 Turret** seat
+and unload on that golden weak point until he recovers, entering the next phase.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-golden-weak-point.webp" caption="Golden Weak Point" />
+
+### Phase 3 & Beyond
+During the rest of this boss fight, **Veytharion** gains a new attack where he will charge up a massive purple laser, dealing critical damage to any player in its path, that
+you can cancel by boosting into the mouth charging the laser with **Ol' Tessie**, or avoid by hiding behind the car, or some natural cover.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-phase-3.webp" caption="Phase 3 Beam Attack" />
+
+Other than that, the fight is the same and you need to be constantly ramming into **Veytharion** to deal damage massive damage when he is in the middle of the arena, repairing the car
+immediately when it gets destroyed, even using field upgrades if you have to, and finally switching to the **DG-2 Turret** when you phase him to shoot his golden weak point, until
+**Veytharion** is eventually defeated, triggering the ending cutscene.
+
+<RichImage image="/content/ashes-of-the-damned/aotd-ending.webp" caption="Ending Cutscene" />
+
+Congratulations, you have completed the **Ashes of the Damned** main quest: **Dust to Dust**!
+
+## Video Guides
+
+## Solo Guide by MZC
+<YoutubeEmbed videoLink="https://youtu.be/DykVCACVJE4?si=ny0PdU1Xf5f003_P" />
+
+### Co-op Guide by NoahJ456
+<YoutubeEmbed videoLink="https://youtu.be/iallxXhHMgM?si=vITlEKUw07A2gBxm" />
