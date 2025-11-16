@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2025-11-15T17:04:47.191Z",
+  "generated": "2025-11-16T01:49:38.963Z",
   "files": {
+    "main-quests/dust-to-dust.mdx": {
+      "lastModified": "2025-11-16T01:49:03.000Z",
+      "lastModifiedFormatted": "November 16, 2025",
+      "commitHash": "c3e60e3"
+    },
     "zombies/zursa.mdx": {
-      "lastModified": "2025-11-15T17:04:17.000Z",
+      "lastModified": "2025-11-15T17:17:23.000Z",
       "lastModifiedFormatted": "November 15, 2025",
-      "commitHash": "9e2ed9b"
+      "commitHash": "8d5fd34"
     },
     "main-quests/casimir-mechanism.mdx": {
       "lastModified": "2025-11-11T18:17:07.000Z",
@@ -26,11 +31,6 @@
       "lastModified": "2025-11-09T03:02:08.000Z",
       "lastModifiedFormatted": "November 9, 2025",
       "commitHash": "21aa5af"
-    },
-    "main-quests/ashes-of-the-damned.mdx": {
-      "lastModified": "2025-11-09T02:44:46.000Z",
-      "lastModifiedFormatted": "November 9, 2025",
-      "commitHash": "134297c"
     },
     "main-quests/bye-bye-dark-aether.mdx": {
       "lastModified": "2025-11-09T02:44:46.000Z",

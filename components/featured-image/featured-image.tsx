@@ -27,7 +27,7 @@ export default function FeaturedImage({
 
 	return (
 		<figure className="relative m-0 flex h-auto w-full flex-col items-center justify-center">
-			{!imageLoaded ? <ImageLoader className="border" /> : null}
+			{!imageLoaded && !imageErrored ? <ImageLoader className="border" /> : null}
 			{!imageErrored ? (
 				<Image
 					src={featuredImage}
@@ -39,7 +39,7 @@ export default function FeaturedImage({
 					onError={() => setImageErrored(true)}
 					quality={quality}
 					className={cn(
-						"flex aspect-video h-auto w-full items-center justify-center opacity-0",
+						"flex aspect-auto h-auto w-auto items-center justify-center opacity-0",
 						className,
 						{
 							"animate-fade-in opacity-100": imageLoaded,
