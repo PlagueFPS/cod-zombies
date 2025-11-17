@@ -741,6 +741,11 @@ const augmentRegistry = {
 		description: "Cryo Freeze can slow elite enemies.",
 		type: "Major",
 		image: "/augments/big-game-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/big-game-major-augment-bo7.webp",
+			},
+		},
 	},
 	iceCloud: {
 		id: "ice-cloud",
@@ -748,6 +753,11 @@ const augmentRegistry = {
 		description: "Enemies that are killed while frozen may leave a cloud that slows enemies.",
 		type: "Major",
 		image: "/augments/electric-cherry-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/reactive-armor-major-augment-bo7.webp",
+			},
+		},
 	},
 	frozenStiff: {
 		id: "frozen-stiff",
@@ -755,6 +765,11 @@ const augmentRegistry = {
 		description: "Enemies are frozen in place.",
 		type: "Major",
 		image: "/augments/classic-formula-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/expresso-major-augment-bo7.webp",
+			},
+		},
 	},
 	extensionCryoFreeze: {
 		id: "extension-cryo-freeze",
@@ -762,6 +777,11 @@ const augmentRegistry = {
 		description: "Slightly increase the slow duration.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	freezerBurn: {
 		id: "freezer-burn",
@@ -769,6 +789,11 @@ const augmentRegistry = {
 		description: "Slightly increase damage to frozen enemies.",
 		type: "Minor",
 		image: "/augments/retaliation-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	liquidNitrogen: {
 		id: "liquid-nitrogen",
@@ -776,6 +801,11 @@ const augmentRegistry = {
 		description: "Significantly increase your chance for Cryo Freeze to activate.",
 		type: "Minor",
 		image: "/augments/chill-berry-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/haste-minor-augment-bo7.webp",
+			},
+		},
 	},
 	bigGameNapalmBurst: {
 		id: "big-game-napalm-burst",
