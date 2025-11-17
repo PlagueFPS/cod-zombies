@@ -1279,13 +1279,14 @@ const zombiesRegistry = {
 		releaseDate: new Date("February 04, 2021 12:00 AM"),
 		image: "/zombies/shock-mimic.webp",
 		description:
-			"The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attack them. The Shock Mimic is a variant appearing in Black Ops 6 Zombies.",
-		games: [getGameByKey("blackOpsColdWar"), getGameByKey("blackOps6")],
+			"The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attack them. The Shock Mimic is a variant appearing in Black Ops 6 and 7 Zombies.",
+		games: [getGameByKey("blackOpsColdWar"), getGameByKey("blackOps6"), getGameByKey("blackOps7")],
 		maps: [
 			getMapByKey("firebaseZ"),
 			getMapByKey("mauerDerToten"),
 			getMapByKey("forsaken"),
 			getMapByKey("theTomb"),
+			getMapByKey("ashesOfTheDamned"),
 		],
 		type: "Special",
 		speed: "Medium",
@@ -1297,7 +1298,7 @@ const zombiesRegistry = {
 			getZombieAttackByKey("shockBurst"),
 		],
 		spawnBehavior:
-			"In Black Ops: Cold War, Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic. On The Tomb, Mimics return as a variant called Shock Mimics, with the first one spawning in on Round 8, and periodically after that as ground loot or with zombies. They will also spawn during the Golden Armor side quest on The Tomb as HVTs.",
+			"In Black Ops: Cold War, Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic. On The Tomb, Mimics return as a variant called Shock Mimics, with the first one spawning in on Round 8, and periodically after that as ground loot or with zombies. They will also spawn during the Golden Armor side quest on The Tomb as HVTs. In Black Ops 7, Shock Mimics spawn in the Cursed mode as the enemy of one of the relic trials.",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/mimic.mdx")),
 	},
 	orda: {
