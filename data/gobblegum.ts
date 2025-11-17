@@ -17,7 +17,7 @@ export interface Gobblegum {
 	/** The description of the gobblegum */
 	description: string
 	/** The type of the gobblegum */
-	type: "Player-Activated" | "Immediate" | "Time-Based" | "Round-Based"
+	type: "Player-Activated" | "Immediate" | "Time-Based" | "Round-Based" | "Instant" | "Conditional"
 	/** The rarity of the gobblegum */
 	rarity:
 		| "Classic"
@@ -89,7 +89,14 @@ const gobblegumRegistry = {
 			blackOps6: {
 				description:
 					"Instantly teleport to a random location. A concussive blast knocks away nearby zombies.",
-				type: "Player-Activated",
+				type: "Instant",
+				rarity: "Rare",
+				image: "/gobblegums/anywhere-but-here-bo6.webp",
+			},
+			blackOps7: {
+				description:
+					"Instantly teleport to a random location. A concussive blast knocks away nearby zombies.",
+				type: "Instant",
 				rarity: "Rare",
 				image: "/gobblegums/anywhere-but-here-bo6.webp",
 			},
@@ -130,7 +137,13 @@ const gobblegumRegistry = {
 		variants: {
 			blackOps6: {
 				description: "Gives the player all available perks.",
-				type: "Immediate",
+				type: "Instant",
+				rarity: "Ultra",
+				image: "/gobblegums/perkaholic-bo6.webp",
+			},
+			blackOps7: {
+				description: "Gives the player all available perks.",
+				type: "Instant",
 				rarity: "Ultra",
 				image: "/gobblegums/perkaholic-bo6.webp",
 			},
@@ -151,6 +164,14 @@ const gobblegumRegistry = {
 		type: "Player-Activated",
 		rarity: "Ultra-Rare Mega",
 		image: "/gobblegums/reign-drops.webp",
+		variants: {
+			blackOps7: {
+				description: "Spawns all the core Power-Ups at once. 1x Activation.",
+				type: "Instant",
+				rarity: "Ultra",
+				image: "/gobblegums/reign-drops-bo7.webp",
+			},
+		},
 	},
 	immolationLiquidation: {
 		id: "immolation-liquidation",
@@ -176,6 +197,13 @@ const gobblegumRegistry = {
 				rarity: "Ultra",
 				image: "/gobblegums/near-death-experience-bo6.webp",
 			},
+			blackOps7: {
+				description:
+					"Revive, or be revived simply by being near other players. Revived players keep all their perks. Lasts 3 Minutes or 5 Revives.",
+				type: "Time-Based",
+				rarity: "Ultra",
+				image: "/gobblegums/near-death-experience-bo6.webp",
+			},
 		},
 	},
 	wallPower: {
@@ -188,7 +216,7 @@ const gobblegumRegistry = {
 		variants: {
 			blackOps6: {
 				description: "The next wall weapon purchased becomes Pack-a-Punched.",
-				type: "Immediate",
+				type: "Conditional",
 				rarity: "Legendary",
 				image: "/gobblegums/wall-power-bo6.webp",
 			},
@@ -301,7 +329,7 @@ const gobblegumRegistry = {
 		title: "Wonderbar!",
 		description:
 			"The next weapon from the Mystery Box will be a Wonder Weapon. Activates on Mystery Box Spin.",
-		type: "Immediate",
+		type: "Conditional",
 		rarity: "Ultra",
 		image: "/gobblegums/wonderbar.webp",
 	},
@@ -342,7 +370,7 @@ const gobblegumRegistry = {
 		id: "hidden-power",
 		title: "Hidden Power",
 		description: "Upgrade your currently held weapon to Legendary rarity.",
-		type: "Immediate",
+		type: "Instant",
 		rarity: "Ultra",
 		image: "/gobblegums/hidden-power.webp",
 	},
@@ -350,7 +378,7 @@ const gobblegumRegistry = {
 		id: "power-keg",
 		title: "Power Keg",
 		description: "Spawns a Full Power power-up.",
-		type: "Player-Activated",
+		type: "Instant",
 		rarity: "Rare",
 		image: "/gobblegums/power-keg.webp",
 	},
@@ -362,5 +390,37 @@ const gobblegumRegistry = {
 		type: "Time-Based",
 		rarity: "Epic",
 		image: "/gobblegums/free-fire.webp",
+	},
+	aftertaste: {
+		id: "aftertaste",
+		title: "Aftertaste",
+		description: "Keep all your Perks after being revived. 1x Activation; Activates on Revive.",
+		type: "Conditional",
+		rarity: "Rare",
+		image: "/gobblegums/aftertaste-bo7.webp",
+	},
+	armorGettin: {
+		id: "armor-gettin",
+		title: "Armor Gettin'",
+		description: "Receive a 3-Plate Armor Vest and Full Plates.",
+		type: "Instant",
+		rarity: "Legendary",
+		image: "/gobblegums/armor-gettin.webp",
+	},
+	phoenixUp: {
+		id: "phoenix-up",
+		title: "Phoenix Up",
+		description: "Revive all teammates. Teammates keep all their perks.",
+		type: "Instant",
+		rarity: "Legendary",
+		image: "/gobblegums/phoenix-up.webp",
+	},
+	giftCard: {
+		id: "gift-card",
+		title: "Gift Card",
+		description: "Gain 30,000 Essence. Cannot be combined with other bonuses.",
+		type: "Instant",
+		rarity: "Ultra",
+		image: "/gobblegums/gift-card.webp",
 	},
 } as const satisfies Record<string, Gobblegum>

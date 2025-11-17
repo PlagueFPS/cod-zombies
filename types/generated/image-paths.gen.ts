@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-11T17:58:34.216Z
- * generated in: 85ms
+ * generated at: 2025-11-17T18:58:34.522Z
+ * generated in: 111ms
  */
 
 
@@ -212,9 +212,11 @@ export type GamesImagePath =
 /** Union of images in `/gobblegums` */
 
 export type GobblegumsImagePath =
+  '/gobblegums/aftertaste-bo7.webp' |
   '/gobblegums/alchemical-antithesis.webp' |
   '/gobblegums/anywhere-but-here-bo6.webp' |
   '/gobblegums/anywhere-but-here.webp' |
+  '/gobblegums/armor-gettin.webp' |
   '/gobblegums/arsenal-accelerator-bo6.webp' |
   '/gobblegums/arsenal-accelerator.webp' |
   '/gobblegums/crate-power.webp' |
@@ -223,6 +225,7 @@ export type GobblegumsImagePath =
   '/gobblegums/extra-credit.webp' |
   '/gobblegums/fear-in-headlights.webp' |
   '/gobblegums/free-fire.webp' |
+  '/gobblegums/gift-card.webp' |
   '/gobblegums/hidden-power.webp' |
   '/gobblegums/idle-eyes-bo6.webp' |
   '/gobblegums/idle-eyes.webp' |
@@ -233,9 +236,11 @@ export type GobblegumsImagePath =
   '/gobblegums/near-death-experience.webp' |
   '/gobblegums/perkaholic-bo6.webp' |
   '/gobblegums/perkaholic.webp' |
+  '/gobblegums/phoenix-up.webp' |
   '/gobblegums/power-keg.webp' |
   '/gobblegums/power-vacuum.webp' |
   '/gobblegums/profit-sharing.webp' |
+  '/gobblegums/reign-drops-bo7.webp' |
   '/gobblegums/reign-drops.webp' |
   '/gobblegums/round-robbin.webp' |
   '/gobblegums/self-medication.webp' |
