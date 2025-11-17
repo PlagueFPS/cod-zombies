@@ -1,29 +1,31 @@
-import { getMainQuestByMap, type MainQuest } from "@/data/main-quests";
-import { calculateTimeToRead, getLastUpdated } from "@/utils/functions";
-import { FileSystem, Path } from "@effect/platform";
-import { BunFileSystem, BunRuntime } from "@effect/platform-bun";
-import { Effect, Layer, Match, Option } from "effect";
-import { ImageResponse } from "next/og";
-import sharp from "sharp";
+import { FileSystem, Path } from "@effect/platform"
+import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
+import { Effect, Layer, Match, Option } from "effect"
+import { ImageResponse } from "next/og"
+import sharp from "sharp"
+import { getMainQuestByMap, type MainQuest } from "@/data/main-quests"
+import { calculateTimeToRead, getLastUpdated } from "@/utils/functions"
 
 const size = { width: 1200, height: 630 }
 const FsLayer = Layer.merge(BunFileSystem.layer, Path.layer)
 
-const getFonts = Effect.fn("getFonts")(function*(){
+const getFonts = Effect.fn("getFonts")(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const [geistSemiBold, geistBold] = yield* Effect.all(
-			[
-				fs.readFile(path.join(process.cwd(), "assets/Geist-SemiBold.otf")),
-				fs.readFile(path.join(process.cwd(), "assets/Geist-Bold.otf")),
-			],
-			{ concurrency: "unbounded" },
-		)
+		[
+			fs.readFile(path.join(process.cwd(), "assets/Geist-SemiBold.otf")),
+			fs.readFile(path.join(process.cwd(), "assets/Geist-Bold.otf")),
+		],
+		{ concurrency: "unbounded" },
+	)
 
-		return { geistSemiBold, geistBold }
+	return { geistSemiBold, geistBold }
 })
 
-export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(function*(mainQuest: MainQuest){
+export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(function* (
+	mainQuest: MainQuest,
+) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const contentPath = path.join(process.cwd(), `./content/main-quests/${mainQuest.id}.mdx`)
@@ -36,30 +38,31 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 
 	const mapImage = yield* Effect.tryPromise({
 		try: () => sharp(mapBuffer).jpeg({ mozjpeg: true, quality: 100 }).toBuffer(),
-		catch: error => new Error(`Failed to generate map image`, { cause: error })
+		catch: error => new Error(`Failed to generate map image`, { cause: error }),
 	})
 
 	const difficultyCSS: React.CSSProperties = Option.match(mainQuest.difficulty, {
 		onNone: () => ({}),
-		onSome: (difficulty) => Match.value(difficulty).pipe(
-			Match.when("Easy", () => ({
-				color: "hsl(169 83.8% 78.2%)",
-				backgroundImage:
-					"radial-gradient(circle at top, hsl(176 69.4% 21.8%), hsl(176 60.8% 19%))",
-				border: "1px solid hsl(175 83.9% 31.6%)",
-			})),
-			Match.when("Medium", () => ({
-				color: "hsl(53 98.3% 76.9%)",
-				backgroundImage: "radial-gradient(circle at top, hsl(32 81% 28.8%), hsl(28 72.5% 25.7%))",
-				border: "1px solid hsl(41 96.1% 40.4%)",
-			})),
-			Match.when("Hard", () => ({
-				color: "hsl(0 96.3% 89.4%)",
-				backgroundImage: "radial-gradient(circle at top, hsl(0 70% 35.3%), hsl(0 62.8% 30.6%))",
-				border: "1px solid hsl(0 72.2% 50.6%)",
-			})),
-			Match.exhaustive
-		)
+		onSome: difficulty =>
+			Match.value(difficulty).pipe(
+				Match.when("Easy", () => ({
+					color: "hsl(169 83.8% 78.2%)",
+					backgroundImage:
+						"radial-gradient(circle at top, hsl(176 69.4% 21.8%), hsl(176 60.8% 19%))",
+					border: "1px solid hsl(175 83.9% 31.6%)",
+				})),
+				Match.when("Medium", () => ({
+					color: "hsl(53 98.3% 76.9%)",
+					backgroundImage: "radial-gradient(circle at top, hsl(32 81% 28.8%), hsl(28 72.5% 25.7%))",
+					border: "1px solid hsl(41 96.1% 40.4%)",
+				})),
+				Match.when("Hard", () => ({
+					color: "hsl(0 96.3% 89.4%)",
+					backgroundImage: "radial-gradient(circle at top, hsl(0 70% 35.3%), hsl(0 62.8% 30.6%))",
+					border: "1px solid hsl(0 72.2% 50.6%)",
+				})),
+				Match.exhaustive,
+			),
 	})
 
 	const imageResponse = new ImageResponse(
@@ -75,9 +78,11 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 				backgroundColor: "black",
 			}}
 		>
+			{/*biome-ignore lint/performance/noImgElement: next/image is not supported in this context*/}
 			<img
 				// @ts-expect-error: Satori supports ArrayBuffers as values to the src property
 				src={mapImage.buffer}
+				alt={mainQuest.map.title}
 				width={1200}
 				height={630}
 				style={{
@@ -137,7 +142,7 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 						>
 							{difficulty}
 						</span>
-					)
+					),
 				})}
 			</div>
 			<h1
@@ -181,52 +186,53 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 				<span>&bull;</span>
 				<span>{timeToRead} min read</span>
 			</div>
-		</div>
-	,
-	{
-		fonts: fonts
-		? [
-				{
-					name: "Geist-SemiBold",
-					data: Buffer.from(fonts.geistSemiBold),
-					style: "normal",
-					weight: 600,
-				},
-				{
-					name: "Geist-Bold",
-					data: Buffer.from(fonts.geistBold),
-					style: "normal",
-					weight: 700,
-				},
-			]
-		: undefined,
-	...size,
-	})
+		</div>,
+		{
+			fonts: fonts
+				? [
+						{
+							name: "Geist-SemiBold",
+							data: Buffer.from(fonts.geistSemiBold),
+							style: "normal",
+							weight: 600,
+						},
+						{
+							name: "Geist-Bold",
+							data: Buffer.from(fonts.geistBold),
+							style: "normal",
+							weight: 700,
+						},
+					]
+				: undefined,
+			...size,
+		},
+	)
 
 	const imageBuffer = yield* Effect.tryPromise({
 		try: () => imageResponse.arrayBuffer(),
-		catch: error => new Error("Failed to get array buffer", { cause: error })
+		catch: error => new Error("Failed to get array buffer", { cause: error }),
 	})
 
 	const optimizedBuffer = yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 80 }).toBuffer(),
-		catch: error => new Error("Failed to optimize image", { cause: error })
+		catch: error => new Error("Failed to optimize image", { cause: error }),
 	})
 
 	return optimizedBuffer
 })
 
-const program = Effect.gen(function*(){
+const program = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const quest = getMainQuestByMap("ashes-of-the-damned")
 	if (!quest) return yield* Effect.fail("Quest not found")
 
 	const ogImage = yield* generateMainQuestImage(quest)
-	yield* fs.writeFile(path.join(process.cwd(), "public", `opengraph-images/main-quests/og-${quest.map.id}.jpg`), new Uint8Array(ogImage))
+	yield* fs.writeFile(
+		path.join(process.cwd(), "public", `opengraph-images/main-quests/og-${quest.map.id}.jpg`),
+		new Uint8Array(ogImage),
+	)
 	yield* Effect.log(`Generated og image for ${quest.map.id}`)
-}).pipe(
-	Effect.provide(FsLayer)
-)
+}).pipe(Effect.provide(FsLayer))
 
 BunRuntime.runMain(program)
