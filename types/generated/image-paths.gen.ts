@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-17T18:58:34.522Z
- * generated in: 111ms
+ * generated at: 2025-11-17T23:26:28.820Z
+ * generated in: 99ms
  */
 
 
@@ -95,6 +95,7 @@ export type AugmentsImagePath =
   '/augments/bo7/thermite-major-augment-bo7.webp' |
   '/augments/bo7/tribologist-minor-augment-bo7.webp' |
   '/augments/bo7/turtle-shell-major-augment-bo7.webp' |
+  '/augments/bo7/urticant-major-augment-bo7.webp' |
   '/augments/bo7/vampiric-extraction-major-augment-bo7.webp' |
   '/augments/bo7/zombie-sitter-minor-augment-bo7.webp' |
   '/augments/burst-dash-major-augment.webp' |
@@ -195,7 +196,8 @@ export type FieldUpgradesImagePath =
   '/field-upgrades/frenzied-guard.webp' |
   '/field-upgrades/mister-peeks.webp' |
   '/field-upgrades/ring-of-fire.webp' |
-  '/field-upgrades/tesla-storm.webp';
+  '/field-upgrades/tesla-storm.webp' |
+  '/field-upgrades/toxic-growth.webp';
 
 /** Union of images in `/games` */
 

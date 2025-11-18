@@ -205,4 +205,20 @@ const fieldUpgradeRegistry = {
 			"partyAnimal",
 		],
 	},
+	toxicGrowth: {
+		id: "toxic-growth",
+		title: "Toxic Growth",
+		description: "Summon a deadly growth of thorns in front of you. Enemies moving through it are slowed and take toxic damage.",
+		image: "/field-upgrades/toxic-growth.webp",
+		augments: [
+			"urticant",
+			"cordyception",
+			"pollination",
+			"zoochory",
+			"ankleShredder",
+			"greenThumb",
+			"extraCharge",
+			"plantFood"
+		],
+	},
 } as const satisfies Record<string, FieldUpgrade>
