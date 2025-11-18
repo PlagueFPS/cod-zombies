@@ -435,7 +435,7 @@ const perkRegistry = {
 					"mochaMaul",
 					"stickNMove",
 					"strengthTraining",
-					"hiddenImpact",
+					"mugging",
 					"baristaBrawl",
 				],
 			},
