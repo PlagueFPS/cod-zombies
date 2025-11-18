@@ -1923,4 +1923,57 @@ const augmentRegistry = {
 		type: "Minor",
 		image: "/augments/bo7/double-time-minor-augment-bo7.webp",
 	},
+	urticant: {
+		id: "urticant",
+		title: "Urticant",
+		description:
+			"Toxic Growth takes up a wider area and enemies that enter the growth continue to be slowed after leaving it.",
+		type: "Major",
+		image: "/augments/bo7/urticant-major-augment-bo7.webp",
+	},
+	cordyception: {
+		id: "cordyception",
+		title: "Cordyception",
+		description:
+			"The first Normal or Special Enemy to walk into the growth is entangled and charmed, attacking other enemies that enter.",
+		type: "Major",
+		image: "/augments/bo7/thermite-major-augment-bo7.webp",
+	},
+	pollination: {
+		id: "pollination",
+		title: "Pollination",
+		description:
+			"Enemies killed by the growth explode, dealing Toxic damage to nearby enemies and slowing them.",
+		type: "Major",
+		image: "/augments/bo7/firebomb-major-augment-bo7.webp",
+	},
+	zoochory: {
+		id: "zoochory",
+		title: "Zoochory",
+		description: "The growth will attach itself to Normal or Special Enemies that walk into it.",
+		type: "Major",
+		image: "/augments/bo7/petroleum-major-augment-bo7.webp",
+	},
+	ankleShredder: {
+		id: "ankle-shredder",
+		title: "Ankle Shredder",
+		description: "Enemies moving through the growth are even slower.",
+		type: "Minor",
+		image: "/augments/bo7/double-time-minor-augment-bo7.webp",
+	},
+	greenThumb: {
+		id: "green-thumb",
+		title: "Green Thumb",
+		description: "Significantly increases the Toxic Growth's health.",
+		type: "Minor",
+		image: "/augments/bo7/extension-minor-augment-bo7.webp",
+	},
+	plantFood: {
+		id: "plant-food",
+		title: "Plant Food",
+		description:
+			"Killing enemies with Toxic Growth has a chance to drop fruit that overcharge health.",
+		type: "Minor",
+		image: "/augments/bo7/durable-plates-minor-augment-bo7.webp",
+	},
 } as const satisfies Record<string, Augment>

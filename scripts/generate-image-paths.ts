@@ -112,7 +112,7 @@ function headerComment(publicDir: string, duration: string | number) {
  */\n\n`
 }
 
-const main = Effect.fn("main")(function* () {
+const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const cwd = process.cwd()
@@ -185,4 +185,7 @@ const main = Effect.fn("main")(function* () {
 	yield* Effect.log(`- / (root): ${rootWebPaths.length} image(s) -> type RootImagePath`)
 })
 
-main().pipe(Effect.provide(Layer.merge(BunFileSystem.layer, Path.layer)), BunRuntime.runMain)
+generateImagePaths().pipe(
+	Effect.provide(Layer.merge(BunFileSystem.layer, Path.layer)),
+	BunRuntime.runMain,
+)
