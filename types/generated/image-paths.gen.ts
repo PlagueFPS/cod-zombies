@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-20T06:24:44.103Z
- * generated in: 96ms
+ * generated at: 2025-11-20T20:36:10.245Z
+ * generated in: 87ms
  */
 
 
