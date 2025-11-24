@@ -415,4 +415,4 @@ const _SideQuestGeneration = Effect.gen(function* () {
 	)
 }).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
 
-BunRuntime.runMain(_SideQuestGeneration)
+BunRuntime.runMain(_MainQuestGeneration)
