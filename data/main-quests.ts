@@ -281,7 +281,7 @@ const mainQuestRegistry = {
 	dustToDust: {
 		id: "dust-to-dust",
 		state: Option.some("New"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/main-quests/dust-to-dust.mdx")),
 	},
