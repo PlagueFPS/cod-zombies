@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-24T12:15:30.130Z
- * generated in: 99ms
+ * generated at: 2025-11-24T21:44:08.420Z
+ * generated in: 97ms
  */
 
 
@@ -305,6 +305,7 @@ export type IconsImagePath =
 /** Union of images in `/layers` */
 
 export type LayersImagePath =
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-layer.webp' |
   '/layers/citadelle-des-morts/citadelle-des-morts-layer.webp' |
   '/layers/liberty-falls/liberty-falls-layer.webp' |
   '/layers/reckoning/t1-executive-suites.webp' |
