@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-25T01:25:43.013Z
- * generated in: 86ms
+ * generated at: 2025-11-25T22:29:28.581Z
+ * generated in: 98ms
  */
 
 
@@ -294,7 +294,10 @@ export type IconsImagePath =
 /** Union of images in `/layers` */
 
 export type LayersImagePath =
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-farm-cellar.webp' |
   '/layers/ashes-of-the-damned/ashes-of-the-damned-layer.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-lower-zarya.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-upper-ashwood.webp' |
   '/layers/citadelle-des-morts/citadelle-des-morts-layer.webp' |
   '/layers/liberty-falls/liberty-falls-layer.webp' |
   '/layers/reckoning/t1-executive-suites.webp' |
