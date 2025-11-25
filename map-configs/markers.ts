@@ -1,3 +1,5 @@
+import type { IconsImagePath, PerksImagePath } from "@/types/generated/image-paths.gen"
+
 export interface MapMarker {
 	/** The unique identifier for this marker */
 	id: string
@@ -10,7 +12,7 @@ export interface MapMarker {
 	/** The category of this marker */
 	category: MarkerCategory
 	/** The icon of this marker */
-	icon: string | null
+	icon: PerksImagePath | IconsImagePath | null
 	/** The locations of this marker */
 	locations: Location[]
 }
@@ -30,44 +32,10 @@ export interface Location {
 export type MarkerType = (typeof MARKER_TYPES)[number]
 
 /** Union of every type of perk currently supported */
-export type Perks =
-	| "quick-revive"
-	| "speed-cola"
-	| "juggernog"
-	| "double-tap"
-	| "phd-flopper"
-	| "stamin-up"
-	| "death-perception"
-	| "elemental-pop"
-	| "deadshot-daiquiri"
-	| "melee-macchiato"
-	| "vulture-aid"
-	| "der-wunderfizz"
+export type Perks = keyof typeof perks
 
 /** Union of every type of weapon currently supported */
-export type Weapons =
-	| "gs45"
-	| "kompakt-92"
-	| "tanto.22"
-	| "marine-sp"
-	| "ames-85"
-	| "xm4"
-	| "ak-74"
-	| "aek-973"
-	| "swat-5.56"
-	| "lr-7.62"
-	| "gpmg-7"
-	| "asg-89"
-	| "pu-21"
-	| "as-val"
-	| "ksv"
-	| "c9"
-	| "goblin-mk2"
-	| "pp-919"
-	| "tsarkov-7.62"
-	| "svd"
-	| "xmg"
-	| "dm-10"
+export type Weapons = keyof typeof weapons
 
 /** Union of every type of marker category currently supported */
 export type MarkerCategory =
@@ -284,7 +252,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 }
 
 /** All perks appearing on any of the maps */
-export const perks: Record<Perks, Marker> = {
+export const perks = {
 	"der-wunderfizz": {
 		id: "der-wunderfizz",
 		category: "upgrades",
@@ -297,7 +265,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "quick-revive",
 		title: "Quick Revive",
 		description: "Recover health and revive allies faster.",
-		icon: "/icons/upgrades/quick-revive.webp",
+		icon: "/perks/quick-revive-cold-war.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -305,7 +273,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "speed-cola",
 		title: "Speed Cola",
 		description: "Increase reload speed.",
-		icon: "/icons/upgrades/speed-cola.webp",
+		icon: "/perks/speed-cola.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -313,7 +281,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "Juggernog",
 		title: "Juggernog",
 		description: "Increase base health.",
-		icon: "/icons/upgrades/juggernog.webp",
+		icon: "/perks/juggernog-bo6.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -321,7 +289,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "double-tap",
 		title: "Double Tap",
 		description: "Increase rate of fire.",
-		icon: "/icons/upgrades/double-tap.webp",
+		icon: "/perks/double-tap.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -329,7 +297,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "phd-flopper",
 		title: "PHD Flopper",
 		description: "Explosive dive to prone and immunity to self-inflicted explosive damage.",
-		icon: "/icons/upgrades/phd-flopper.webp",
+		icon: "/perks/phd-flopper.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -337,7 +305,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "stamin-up",
 		title: "Stamin-Up",
 		description: "Increase movement speed.",
-		icon: "/icons/upgrades/stamin-up.webp",
+		icon: "/perks/stamin-up-cold-war.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -345,7 +313,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "death-perception",
 		title: "Death Perception",
 		description: "Obscured enemies are keylined.",
-		icon: "/icons/upgrades/death-perception.webp",
+		icon: "/perks/death-perception-bo6.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -353,7 +321,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "elemental-pop",
 		title: "Elemental Pop",
 		description: "Attacks can trigger random Ammo Mods.",
-		icon: "/icons/upgrades/elemental-pop.webp",
+		icon: "/perks/elemental-pop.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -361,7 +329,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "deadshot-daiquiri",
 		title: "Deadshot Daiquiri",
 		description: "Improve ADS precision and increase critical damage.",
-		icon: "/icons/upgrades/deadshot-daiquiri.webp",
+		icon: "/perks/deadshot-daiquiri-cold-war.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -369,7 +337,7 @@ export const perks: Record<Perks, Marker> = {
 		id: "melee-macchiato",
 		title: "Melee Macchiato",
 		description: "Replace weapon gun butt with a deadly punch.",
-		icon: "/icons/upgrades/melee-macchiato.webp",
+		icon: "/perks/melee-macchiato.webp",
 		type: "perk",
 		category: "upgrades",
 	},
@@ -377,14 +345,14 @@ export const perks: Record<Perks, Marker> = {
 		id: "vulture-aid",
 		title: "Vulture Aid",
 		description: "Increase the variety of loot dropped by enemies.",
-		icon: "/icons/upgrades/vulture-aid.webp",
+		icon: "/perks/vulture-aid.webp",
 		type: "perk",
 		category: "upgrades",
 	},
-}
+} as const satisfies Record<string, Marker>
 
 /** All weapons appearing as wall-buys on any of the maps */
-export const weapons: Record<Weapons, Marker> = {
+export const weapons = {
 	"dm-10": {
 		id: "dm-10",
 		title: "DM-10",
@@ -561,7 +529,7 @@ export const weapons: Record<Weapons, Marker> = {
 		type: "weapon-wall-buy",
 		category: "equipment",
 	},
-}
+} as const satisfies Record<string, Marker>
 
 /**
  * Generates a unique marker key based on the provided parameters.

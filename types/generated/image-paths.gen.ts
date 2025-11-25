@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-24T21:44:08.420Z
- * generated in: 97ms
+ * generated at: 2025-11-25T01:25:43.013Z
+ * generated in: 86ms
  */
 
 
@@ -287,20 +287,9 @@ export type IconsImagePath =
   '/icons/transportation/portal.webp' |
   '/icons/upgrades/armor-wall-buy.webp' |
   '/icons/upgrades/arsenal.webp' |
-  '/icons/upgrades/deadshot-daiquiri.webp' |
-  '/icons/upgrades/death-perception.webp' |
   '/icons/upgrades/der-wunderfizz.webp' |
-  '/icons/upgrades/double-tap.webp' |
-  '/icons/upgrades/elemental-pop.webp' |
   '/icons/upgrades/gobblegum-machine.webp' |
-  '/icons/upgrades/juggernog.webp' |
-  '/icons/upgrades/melee-macchiato.webp' |
-  '/icons/upgrades/pack-a-punch.webp' |
-  '/icons/upgrades/phd-flopper.webp' |
-  '/icons/upgrades/quick-revive.webp' |
-  '/icons/upgrades/speed-cola.webp' |
-  '/icons/upgrades/stamin-up.webp' |
-  '/icons/upgrades/vulture-aid.webp';
+  '/icons/upgrades/pack-a-punch.webp';
 
 /** Union of images in `/layers` */
 
