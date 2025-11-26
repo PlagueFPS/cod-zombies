@@ -154,7 +154,7 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 		id: "pack-a-punch",
 		category: "upgrades",
 		title: "Pack-a-Punch",
-		description: "Upgrade your weapon up to three total times with points.",
+		description: "Upgrade your weapon's damage with points.",
 		icon: "/icons/upgrades/pack-a-punch.webp",
 	},
 	exfil: {
@@ -253,6 +253,14 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 
 /** All perks appearing on any of the maps */
 export const perks = {
+	"wisp-tea": {
+		id: "wisp-tea",
+		title: "Wisp Tea",
+		description: "Summon a companion wisp after killing zombies.",
+		icon: "/perks/wisp-tea.webp",
+		type: "perk",
+		category: "upgrades",
+	},
 	"der-wunderfizz": {
 		id: "der-wunderfizz",
 		category: "upgrades",

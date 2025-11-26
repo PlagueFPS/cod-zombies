@@ -1,6 +1,6 @@
 import type { MapConfig, MapConfigMetadata } from "."
 import { Option } from "effect"
-import { type MapMarker, sharedMarkers } from "./markers"
+import { type MapMarker, perks, sharedMarkers } from "./markers"
 
 export const metadata: MapConfigMetadata = {
 	id: "ashes-of-the-damned",
@@ -311,7 +311,9 @@ const layerMarkers: MapMarker[] = [
 		category: "general",
 		locations: [{ x: 0.536, y: 0.875 }],
 	},
+	// TODO: Add map specific locations like Overgrown Hoard Husk Locations, Plant Locations, and Spray Locations
 	{
+		// TODO: Change icon to the BO7 specific one
 		...sharedMarkers["ammo-cache"],
 		locations: [
 			{ x: 0.493, y: 0.107 },
@@ -341,7 +343,246 @@ const layerMarkers: MapMarker[] = [
 	},
 	{
 		...sharedMarkers.arsenal,
-		locations: [],
+		locations: [
+			{ x: 0.446, y: 0.321 },
+			{ x: 0.578, y: 0.326 },
+			{ x: 0.581, y: 0.556 },
+			{ x: 0.663, y: 0.832 },
+			{ x: 0.443, y: 0.904 },
+		],
+	},
+	{
+		...sharedMarkers["crafting-table"],
+		locations: [
+			{ x: 0.435, y: 0.337 },
+			{ x: 0.616, y: 0.324 },
+			{ x: 0.487, y: 0.542 },
+			{ x: 0.633, y: 0.81 },
+			{ x: 0.405, y: 0.925 },
+		],
+	},
+	{
+		...sharedMarkers["door-buy"],
+		locations: [
+			{ x: 0.513, y: 0.1 },
+			{ x: 0.504, y: 0.106 },
+			{ x: 0.461, y: 0.328 },
+			{ x: 0.45, y: 0.336 },
+			{ x: 0.439, y: 0.323 },
+			{ x: 0.575, y: 0.297 },
+			{ x: 0.57, y: 0.292 },
+			{ x: 0.58, y: 0.317 },
+			{ x: 0.574, y: 0.327 },
+			{ x: 0.599, y: 0.315 },
+			{ x: 0.571, y: 0.321 },
+			{ x: 0.572, y: 0.527 },
+			{ x: 0.567, y: 0.525 },
+			{ x: 0.58, y: 0.541 },
+			{ x: 0.581, y: 0.55 },
+			{ x: 0.573, y: 0.549 },
+			{ x: 0.568, y: 0.551 },
+			{ x: 0.562, y: 0.543 },
+			{ x: 0.563, y: 0.554 },
+			{ x: 0.559, y: 0.557 },
+			{ x: 0.514, y: 0.568 },
+			{ x: 0.512, y: 0.556 },
+			{ x: 0.502, y: 0.558 },
+			{ x: 0.611, y: 0.83 },
+			{ x: 0.616, y: 0.833 },
+			{ x: 0.63, y: 0.804 },
+			{ x: 0.626, y: 0.809 },
+			{ x: 0.657, y: 0.798 },
+			{ x: 0.629, y: 0.837 },
+			{ x: 0.647, y: 0.821 },
+			{ x: 0.414, y: 0.94 },
+			{ x: 0.415, y: 0.931 },
+			{ x: 0.41, y: 0.927 },
+			{ x: 0.4, y: 0.929 },
+			{ x: 0.438, y: 0.902 },
+			{ x: 0.427, y: 0.911 },
+			{ x: 0.422, y: 0.888 },
+		],
+	},
+	{
+		// TODO: change exfil icon to the BO7 specific one
+		...sharedMarkers.exfil,
+		locations: [
+			{ x: 0.473, y: 0.067 },
+			{ x: 0.486, y: 0.322 },
+			{ x: 0.566, y: 0.303 },
+			{ x: 0.49, y: 0.568 },
+			{ x: 0.62, y: 0.825 },
+			{ x: 0.444, y: 0.943 },
+		],
+	},
+	{
+		...sharedMarkers["fast-travel"],
+		locations: [
+			{
+				x: 0.483,
+				y: 0.075,
+				title: "Jump Pad",
+				description: "Travel to Vandorn Farm (left) or Blackwater Lake (right)",
+			},
+			{
+				x: 0.467,
+				y: 0.342,
+				title: "Jump Pad",
+				description: "Travel to Janus Towers Plaza (left) or Ashwood (right)",
+			},
+			{
+				x: 0.599,
+				y: 0.286,
+				title: "Jump Pad",
+				description: "Travel to Ashwood (left) or Janus Towers Plaza (right)",
+			},
+			{
+				x: 0.498,
+				y: 0.569,
+				title: "Jump Pad",
+				description: "Travel to Blackwater Lake (left) or Vandorn Farm (right)",
+			},
+			{
+				x: 0.559,
+				y: 0.583,
+				title: "Jump Pad",
+				description: "Travel to Zarya Cosmodrome (left) or Exit 115 (right)",
+			},
+			{
+				x: 0.626,
+				y: 0.788,
+				title: "Jump Pad",
+				description: "Travel to Exit 115 (left) or Ashwood (right)",
+			},
+			{
+				x: 0.4,
+				y: 0.912,
+				title: "Jump Pad",
+				description: "Travel to Ashwood (left) or Zarya Cosmodrome (right)",
+			},
+		],
+	},
+	{
+		...sharedMarkers["gobblegum-machine"],
+		locations: [
+			{ x: 0.502, y: 0.064 },
+			{ x: 0.45, y: 0.33 },
+			{ x: 0.579, y: 0.316 },
+			{ x: 0.521, y: 0.557 },
+			{ x: 0.622, y: 0.823 },
+			{ x: 0.416, y: 0.903 },
+		],
+	},
+	{
+		...sharedMarkers["mystery-box"],
+		locations: [
+			{ x: 0.508, y: 0.1 },
+			{ x: 0.424, y: 0.32 },
+			{ x: 0.568, y: 0.295 },
+			{ x: 0.534, y: 0.559 },
+			{ x: 0.623, y: 0.81 },
+			{ x: 0.427, y: 0.902 },
+		],
+	},
+	{
+		...sharedMarkers["pack-a-punch"],
+		locations: [
+			{
+				x: 0.524,
+				y: 0.541,
+				description:
+					"Upgrade your weapon's damage with points. Installed into the back of Ol' Tessie.",
+			},
+		],
+	},
+	{
+		...sharedMarkers["power-door"],
+		locations: [
+			{ x: 0.454, y: 0.37 },
+			{ x: 0.636, y: 0.321 },
+			{ x: 0.557, y: 0.597 },
+			{ x: 0.52, y: 0.596 },
+		],
+	},
+	{
+		...sharedMarkers["rampage-inducer"],
+		locations: [{ x: 0.485, y: 0.056 }],
+	},
+	{
+		...sharedMarkers.trap,
+		locations: [
+			{
+				x: 0.602,
+				y: 0.311,
+				title: "Saw Blade Trap",
+				description: "Draws in nearby zombies and slices them apart.",
+			},
+			{
+				x: 0.494,
+				y: 0.549,
+				title: "Saw Blade Trap",
+				description: "Draws in nearby zombies and slices them apart.",
+			},
+			{
+				x: 0.433,
+				y: 0.894,
+				title: "Saw Blade Trap",
+				description: "Draws in nearby zombies and slices them apart.",
+			},
+		],
+	},
+	// TODO: Add Documents, Audio Log, and new static spawn item locations (stuns, molotovs, etc.)
+	{
+		...perks["deadshot-daiquiri"],
+		locations: [{ x: 0.402, y: 0.934 }],
+	},
+	{
+		...perks["death-perception"],
+		locations: [{ x: 0.608, y: 0.336 }],
+	},
+	{
+		...perks["der-wunderfizz"],
+		locations: [{ x: 0.493, y: 0.05 }],
+	},
+	{
+		...perks["double-tap"],
+		locations: [{ x: 0.573, y: 0.571 }],
+	},
+	{
+		...perks["elemental-pop"],
+		locations: [{ x: 0.415, y: 0.893 }],
+	},
+	{
+		...perks.juggernog,
+		locations: [{ x: 0.507, y: 0.551 }],
+	},
+	{
+		...perks["vulture-aid"],
+		locations: [{ x: 0.578, y: 0.533 }],
+	},
+	{
+		...perks["melee-macchiato"],
+		locations: [{ x: 0.457, y: 0.333 }],
+	},
+	{
+		...perks["phd-flopper"],
+		locations: [{ x: 0.655, y: 0.834 }],
+	},
+	{
+		...perks["quick-revive"],
+		locations: [{ x: 0.515, y: 0.109 }],
+	},
+	{
+		...perks["speed-cola"],
+		locations: [{ x: 0.448, y: 0.315 }],
+	},
+	{
+		...perks["stamin-up"],
+		locations: [{ x: 0.583, y: 0.324 }],
+	},
+	{
+		...perks["wisp-tea"],
+		locations: [{ x: 0.637, y: 0.785 }],
 	},
 ]
 

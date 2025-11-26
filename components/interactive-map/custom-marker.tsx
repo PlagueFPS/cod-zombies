@@ -79,22 +79,15 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 		)
 	}
 
-	const getWidth = () => {
-		switch (marker.id) {
-			case "shovel":
-				return Math.floor(settings.iconSize * 1.5)
-			default:
-				return settings.iconSize
+	const getWidthAndHeight = () => {
+		if (marker.id === "shovel") {
+			return Math.floor(settings.iconSize * 1.5)
 		}
-	}
+		if (marker.type === "perk" && marker.id !== "der-wunderfizz") {
+			return Math.floor(settings.iconSize * 0.75)
+		}
 
-	const getHeight = () => {
-		switch (marker.id) {
-			case "shovel":
-				return Math.floor(settings.iconSize * 1.5)
-			default:
-				return settings.iconSize
-		}
+		return settings.iconSize
 	}
 
 	return (
@@ -104,11 +97,11 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 					unoptimized
 					src={marker.icon}
 					alt={marker.title}
-					width={getWidth()}
-					height={getHeight()}
+					width={getWidthAndHeight()}
+					height={getWidthAndHeight()}
 					style={{
-						width: getWidth(),
-						height: getHeight(),
+						width: getWidthAndHeight(),
+						height: getWidthAndHeight(),
 						opacity: settings.opacity,
 					}}
 					onError={() => setError(true)}
