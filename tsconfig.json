@@ -23,9 +23,7 @@
     "incremental": true,
     "plugins": [
       {
-        "name": "next",
-        "enabled": false
-      },
+        "name": "next"      },
       {
         "name": "@effect/language-service",
         "refactors": true
