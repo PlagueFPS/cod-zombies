@@ -311,7 +311,55 @@ const layerMarkers: MapMarker[] = [
 		category: "general",
 		locations: [{ x: 0.536, y: 0.875 }],
 	},
-	// TODO: Add map specific locations like Overgrown Hoard Husk Locations, Plant Locations, and Spray Locations
+	// TODO: Add Spray Locations
+	{
+		id: "overgrown-hoard-husk",
+		title: "Overgrown Hoard Husk",
+		category: "objectives",
+		icon: "/icons/objectives/overgrown-hoard-husk.webp",
+		description:
+			"Destroy with Ol' Tessie Beam Attack or DG-2 Turret for quest items, salvage, perks, aetherium crystals, and potentially ray guns.",
+		locations: [
+			{ x: 0.421, y: 0.226 },
+			{ x: 0.408, y: 0.18 },
+			{ x: 0.628, y: 0.127 },
+			{ x: 0.59, y: 0.236 },
+			{ x: 0.623, y: 0.213 },
+			{ x: 0.453, y: 0.379 },
+			{ x: 0.441, y: 0.46 },
+			{ x: 0.481, y: 0.48 },
+			{ x: 0.631, y: 0.331 },
+			{ x: 0.554, y: 0.445 },
+			{ x: 0.621, y: 0.473 },
+			{ x: 0.602, y: 0.658 },
+			{ x: 0.658, y: 0.683 },
+			{ x: 0.65, y: 0.739 },
+			{ x: 0.43, y: 0.709 },
+			{ x: 0.52, y: 0.901 },
+			{ x: 0.597, y: 0.841 },
+		],
+	},
+	{
+		id: "aether-plant",
+		title: "Aether Plant",
+		description:
+			"Spray these plants to start growing them for a variety of loot. Growing them with a Toxic Growth on top will increase rewards.",
+		category: "objectives",
+		icon: "/icons/objectives/aether-plant.webp",
+		locations: [
+			{ x: 0.481, y: 0.07 },
+			{ x: 0.501, y: 0.058 },
+			{ x: 0.438, y: 0.333 },
+			{ x: 0.45, y: 0.29 },
+			{ x: 0.587, y: 0.326 },
+			{ x: 0.572, y: 0.308 },
+			{ x: 0.573, y: 0.288 },
+			{ x: 0.497, y: 0.566 },
+			{ x: 0.57, y: 0.564 },
+			{ x: 0.431, y: 0.916 },
+			{ x: 0.394, y: 0.926 },
+		],
+	},
 	{
 		// TODO: Change icon to the BO7 specific one
 		...sharedMarkers["ammo-cache"],

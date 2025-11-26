@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-25T22:29:28.581Z
- * generated in: 98ms
+ * generated at: 2025-11-26T09:48:23.575Z
+ * generated in: 95ms
  */
 
 
@@ -281,6 +281,7 @@ export type IconsImagePath =
   '/icons/objectives/fish.webp' |
   '/icons/objectives/janus-crate.webp' |
   '/icons/objectives/loot-bin.webp' |
+  '/icons/objectives/overgrown-hoard-husk.webp' |
   '/icons/objectives/vacuum-seal-device.webp' |
   '/icons/transportation/boat.webp' |
   '/icons/transportation/fast-travel.webp' |
