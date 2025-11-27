@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-26T09:48:23.575Z
- * generated in: 95ms
+ * generated at: 2025-11-27T22:55:05.253Z
+ * generated in: 106ms
  */
 
 
@@ -258,8 +258,10 @@ export type GobblegumsImagePath =
 /** Union of images in `/icons` */
 
 export type IconsImagePath =
+  '/icons/equipment/ammo-cache-bo7.webp' |
   '/icons/equipment/ammo-cache.webp' |
   '/icons/equipment/crafting-table.webp' |
+  '/icons/equipment/exfil-bo7.webp' |
   '/icons/equipment/mystery-box.webp' |
   '/icons/equipment/shovel.webp' |
   '/icons/equipment/weapon-wall-buy.webp' |
@@ -282,6 +284,7 @@ export type IconsImagePath =
   '/icons/objectives/janus-crate.webp' |
   '/icons/objectives/loot-bin.webp' |
   '/icons/objectives/overgrown-hoard-husk.webp' |
+  '/icons/objectives/plant-spray.webp' |
   '/icons/objectives/vacuum-seal-device.webp' |
   '/icons/transportation/boat.webp' |
   '/icons/transportation/fast-travel.webp' |

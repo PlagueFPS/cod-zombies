@@ -311,7 +311,6 @@ const layerMarkers: MapMarker[] = [
 		category: "general",
 		locations: [{ x: 0.536, y: 0.875 }],
 	},
-	// TODO: Add Spray Locations
 	{
 		id: "overgrown-hoard-husk",
 		title: "Overgrown Hoard Husk",
@@ -361,8 +360,24 @@ const layerMarkers: MapMarker[] = [
 		],
 	},
 	{
-		// TODO: Change icon to the BO7 specific one
+		id: "aether-plant-spray",
+		title: "Aether Plant Spray",
+		description: "Pick up one of these items to be able to spray the Aether Plants around the map.",
+		category: "objectives",
+		icon: "/icons/objectives/plant-spray.webp",
+		locations: [
+			{ x: 0.479, y: 0.067 },
+			{ x: 0.43, y: 0.339 },
+			{ x: 0.574, y: 0.294 },
+			{ x: 0.577, y: 0.316 },
+			{ x: 0.595, y: 0.32 },
+			{ x: 0.592, y: 0.315 },
+			{ x: 0.56, y: 0.561 },
+		],
+	},
+	{
 		...sharedMarkers["ammo-cache"],
+		icon: "/icons/equipment/ammo-cache-bo7.webp",
 		locations: [
 			{ x: 0.493, y: 0.107 },
 			{ x: 0.459, y: 0.331 },
@@ -452,8 +467,8 @@ const layerMarkers: MapMarker[] = [
 		],
 	},
 	{
-		// TODO: change exfil icon to the BO7 specific one
 		...sharedMarkers.exfil,
+		icon: "/icons/equipment/exfil-bo7.webp",
 		locations: [
 			{ x: 0.473, y: 0.067 },
 			{ x: 0.486, y: 0.322 },
@@ -579,7 +594,7 @@ const layerMarkers: MapMarker[] = [
 			},
 		],
 	},
-	// TODO: Add Documents, Audio Log, and new static spawn item locations (stuns, molotovs, etc.)
+	// TODO: Add Documents and Audio Log locations
 	{
 		...perks["deadshot-daiquiri"],
 		locations: [{ x: 0.402, y: 0.934 }],

@@ -80,7 +80,7 @@ function MarkerIcon({ marker, id, settings }: IMarkerIcon) {
 	}
 
 	const getWidthAndHeight = () => {
-		if (marker.id === "shovel") {
+		if (marker.id === "shovel" || marker.id === "aether-plant-spray") {
 			return Math.floor(settings.iconSize * 1.5)
 		}
 		if (marker.type === "perk" && marker.id !== "der-wunderfizz") {

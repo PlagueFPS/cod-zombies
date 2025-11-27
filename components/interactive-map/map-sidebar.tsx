@@ -444,7 +444,7 @@ function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 				return (
 					<Image
 						unoptimized
-						src={`/icons/upgrades/juggernog.webp`}
+						src={`/perks/juggernog-bo6.webp`}
 						height={128}
 						width={128}
 						alt={`Juggernog Image`}
