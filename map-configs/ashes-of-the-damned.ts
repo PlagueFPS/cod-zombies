@@ -9,7 +9,7 @@ export const metadata: MapConfigMetadata = {
 	state: Option.some("New"),
 	game: "Black Ops 7",
 	description:
-		"Explore Ashes of the Damned in Black Ops 7 Zombies. Find locations for all perks, weapons, fast travels, intel, and more with our interactive map.",
+		"Explore Ashes of the Damned in Black Ops 7 Zombies. Find locations for all Overgrown Hoard Husks, Aether Plants, Plant Sprays, weapons, and more with our interactive map.",
 }
 
 /** All markers are shared between each map layer, the layer just changes the view of the map to adjust for height */
