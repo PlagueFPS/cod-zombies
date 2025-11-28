@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-24T12:15:30.130Z
- * generated in: 99ms
+ * generated at: 2025-11-27T22:55:05.253Z
+ * generated in: 106ms
  */
 
 
@@ -258,8 +258,10 @@ export type GobblegumsImagePath =
 /** Union of images in `/icons` */
 
 export type IconsImagePath =
+  '/icons/equipment/ammo-cache-bo7.webp' |
   '/icons/equipment/ammo-cache.webp' |
   '/icons/equipment/crafting-table.webp' |
+  '/icons/equipment/exfil-bo7.webp' |
   '/icons/equipment/mystery-box.webp' |
   '/icons/equipment/shovel.webp' |
   '/icons/equipment/weapon-wall-buy.webp' |
@@ -281,30 +283,25 @@ export type IconsImagePath =
   '/icons/objectives/fish.webp' |
   '/icons/objectives/janus-crate.webp' |
   '/icons/objectives/loot-bin.webp' |
+  '/icons/objectives/overgrown-hoard-husk.webp' |
+  '/icons/objectives/plant-spray.webp' |
   '/icons/objectives/vacuum-seal-device.webp' |
   '/icons/transportation/boat.webp' |
   '/icons/transportation/fast-travel.webp' |
   '/icons/transportation/portal.webp' |
   '/icons/upgrades/armor-wall-buy.webp' |
   '/icons/upgrades/arsenal.webp' |
-  '/icons/upgrades/deadshot-daiquiri.webp' |
-  '/icons/upgrades/death-perception.webp' |
   '/icons/upgrades/der-wunderfizz.webp' |
-  '/icons/upgrades/double-tap.webp' |
-  '/icons/upgrades/elemental-pop.webp' |
   '/icons/upgrades/gobblegum-machine.webp' |
-  '/icons/upgrades/juggernog.webp' |
-  '/icons/upgrades/melee-macchiato.webp' |
-  '/icons/upgrades/pack-a-punch.webp' |
-  '/icons/upgrades/phd-flopper.webp' |
-  '/icons/upgrades/quick-revive.webp' |
-  '/icons/upgrades/speed-cola.webp' |
-  '/icons/upgrades/stamin-up.webp' |
-  '/icons/upgrades/vulture-aid.webp';
+  '/icons/upgrades/pack-a-punch.webp';
 
 /** Union of images in `/layers` */
 
 export type LayersImagePath =
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-farm-cellar.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-layer.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-lower-zarya.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-upper-ashwood.webp' |
   '/layers/citadelle-des-morts/citadelle-des-morts-layer.webp' |
   '/layers/liberty-falls/liberty-falls-layer.webp' |
   '/layers/reckoning/t1-executive-suites.webp' |
