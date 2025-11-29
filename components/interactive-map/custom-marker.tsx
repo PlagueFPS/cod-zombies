@@ -1,6 +1,6 @@
 import type { MapMarker } from "@/map-configs/markers"
 import { DivIcon, type LatLng } from "leaflet"
-import { useEffect, useEffectEvent, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Marker as LeafletMarker, useMap } from "react-leaflet"
 import { useMapSettings } from "@/contexts/interactive-map-settings"
 
@@ -17,20 +17,20 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 	const map = useMap()
 	const iconRef = useRef<HTMLDivElement | null>(null)
 
-	const getWidthAndHeight = useEffectEvent(() => {
-		if (marker.id === "shovel" || marker.id === "aether-plant-spray") {
-			return Math.floor(settings.markers.iconSize * 1.5)
-		}
-		if (marker.type === "perk" && marker.id !== "der-wunderfizz") {
-			return Math.floor(settings.markers.iconSize * 0.75)
-		}
-
-		return settings.markers.iconSize
-	})
-
 	useEffect(() => {
 		if (!iconRef.current) {
 			iconRef.current = document.createElement("div")
+
+			const getWidthAndHeight = () => {
+				if (marker.id === "shovel" || marker.id === "aether-plant-spray") {
+					return Math.floor(settings.markers.iconSize * 1.5)
+				}
+				if (marker.type === "perk" && marker.id !== "der-wunderfizz") {
+					return Math.floor(settings.markers.iconSize * 0.75)
+				}
+
+				return settings.markers.iconSize
+			}
 
 			if (marker.type === "label") {
 				iconRef.current.className =
@@ -41,13 +41,14 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 			} else {
 				iconRef.current.id = id
 				iconRef.current.className = "custom-marker flex items-center justify-center"
+				const widthAndHeight = getWidthAndHeight()
 				iconRef.current.innerHTML = `
 					<img
 						src="${marker.icon}"
 						alt="${marker.title}"
-						width="${getWidthAndHeight()}"
-						height="${getWidthAndHeight()}"
-						style="width: ${getWidthAndHeight()}px; height: ${getWidthAndHeight()}px; opacity: ${settings.markers.opacity};"
+						width="${widthAndHeight}"
+						height="${widthAndHeight}"
+						style="width: ${widthAndHeight}px; height: ${widthAndHeight}px; opacity: ${settings.markers.opacity};"
 						class="w-full h-full"
 					/>
 					`
@@ -65,7 +66,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 		return () => {
 			iconRef.current = null
 		}
-	}, [marker, id, settings.markers])
+	}, [marker, id, settings.markers.iconSize, settings.markers.opacity])
 
 	const handleClick = () => {
 		map.flyTo(position, map.getZoom(), {
