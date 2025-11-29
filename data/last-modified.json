@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2025-11-24T12:45:43.717Z",
+  "generated": "2025-11-29T02:01:53.678Z",
   "files": {
+    "zombies/veytharion.mdx": {
+      "lastModified": "2025-11-29T01:43:06.000Z",
+      "lastModifiedFormatted": "November 29, 2025",
+      "commitHash": "98032c1"
+    },
     "main-quests/dust-to-dust.mdx": {
-      "lastModified": "2025-11-24T12:39:29.000Z",
+      "lastModified": "2025-11-24T13:00:54.000Z",
       "lastModifiedFormatted": "November 24, 2025",
-      "commitHash": "e243dd7"
+      "commitHash": "3bd9f0c"
     },
     "side-quests/turn-to-ashes.mdx": {
       "lastModified": "2025-11-21T03:53:07.000Z",

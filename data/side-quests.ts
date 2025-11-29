@@ -1518,7 +1518,7 @@ const sideQuestRegistry = {
 	toxicGrowthPlant: {
 		id: "toxic-growth-plant",
 		title: "Toxic Growth Plant",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain Free Perks, Aetherium Crystals, Aether Tools, and more with the use of Toxic Growth.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/toxic-growth-plant.mdx")),
@@ -1526,7 +1526,7 @@ const sideQuestRegistry = {
 	misterPeeksAxeThrow: {
 		id: "mister-peeks-axe-throw",
 		title: "Mister Peeks Axe Throw",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain some free loot by completing a short axe throwing challenge.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/mister-peeks-axe-throw.mdx")),
@@ -1534,7 +1534,7 @@ const sideQuestRegistry = {
 	vendingMachineAotd: {
 		id: "vending-machine-ashes-of-the-damned",
 		title: "Vending Machine",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain some free loot by trying your luck at a couple of vending machines.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(
@@ -1544,7 +1544,7 @@ const sideQuestRegistry = {
 	freeWispTea: {
 		id: "free-wisp-tea",
 		title: "Free Wisp Tea",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain a free Wisp Tea perk by interacting with the Farmhouse TV and finding the lost twins.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/free-wisp-tea.mdx")),
@@ -1552,7 +1552,7 @@ const sideQuestRegistry = {
 	mixologist: {
 		id: "mixologist",
 		title: "Mixologist",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain Juggernog, Quick Revive, Stamin-Up, or Speed Cola by mixing ingredients at the soda fountain.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/mixologist.mdx")),
@@ -1560,7 +1560,7 @@ const sideQuestRegistry = {
 	zursaSkulls: {
 		id: "zursa-skulls",
 		title: "Zursa Skulls",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to spawn a Zursa on-demand by shooting skulls with the Necrofluid Gauntlet.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/zursa-skulls.mdx")),
@@ -1568,7 +1568,7 @@ const sideQuestRegistry = {
 	turnToAshes: {
 		id: "turn-to-ashes",
 		title: "Turn to Ashes",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to activate the music easter egg song 'Turn To Ashes' by Kevin Sherwood.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/turn-to-ashes.mdx")),
@@ -1576,7 +1576,7 @@ const sideQuestRegistry = {
 	warHero: {
 		id: "war-hero",
 		title: "War Hero",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: "Discover this Dempsey 'War Hero' dog tag, revealing some truths about his past.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/war-hero.mdx")),
@@ -1584,7 +1584,7 @@ const sideQuestRegistry = {
 	permanentDoublePoints: {
 		id: "permanent-double-points",
 		title: "Permanent Double Points",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain a permanent double points multiplier for your melee kills only.`,
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/side-quests/permanent-double-points.mdx")),

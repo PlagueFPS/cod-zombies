@@ -616,4 +616,32 @@ const zombieAttacksRegistry = {
 		description:
 			"Launches a swarm of bees that follow the player until destroyed, dealing damage and slowing the affected player.",
 	},
+	missileBarrage: {
+		id: "missile-barrage",
+		title: "Missile Barrage",
+		range: "Long",
+		description:
+			"Shoots a barrage of three missiles in the direction the player is currently moving, dealing significant damage.",
+	},
+	carpetBomb: {
+		id: "carpet-bomb",
+		title: "Carpet Bomb",
+		range: "Long",
+		description:
+			"Launches a massive barrage of missiles, covering an entire section of the arena that move much slower, dealing significant damage.",
+	},
+	carSteal: {
+		id: "car-steal",
+		title: "Car Steal",
+		range: "Short",
+		description:
+			"Steals Ol' Tessie if no one is inside, damage the car, and throwing it back at a player, dealing decent damage.",
+	},
+	aetherLaser: {
+		id: "aether-laser",
+		title: "Aether Laser",
+		range: "Long",
+		description:
+			"Launches a powerful laser beam that perfectly tracks players, dealing critical damage.",
+	},
 } as const satisfies Record<string, ZombieAttack>

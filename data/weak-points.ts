@@ -136,4 +136,8 @@ const weakPointsRegistry = {
 		id: "bee-nests",
 		title: "Bee Nests",
 	},
+	goldenUnderbelly: {
+		id: "golden-underbelly",
+		title: "Golden Underbelly",
+	},
 } as const satisfies Record<string, WeakPoint>

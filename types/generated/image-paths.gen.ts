@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-27T22:55:05.253Z
- * generated in: 106ms
+ * generated at: 2025-11-29T01:33:59.909Z
+ * generated in: 92ms
  */
 
 
@@ -501,6 +501,7 @@ export type ZombiesImagePath =
   '/zombies/valentina.webp' |
   '/zombies/valkyrie-drone.webp' |
   '/zombies/vermin.webp' |
+  '/zombies/veytharion.webp' |
   '/zombies/water-catalyst.webp' |
   '/zombies/werewolf.webp' |
   '/zombies/z-rex.webp' |
