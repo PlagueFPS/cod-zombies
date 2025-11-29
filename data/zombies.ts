@@ -1816,7 +1816,7 @@ const zombiesRegistry = {
 	ravager: {
 		id: "ravager",
 		title: "Ravager",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: new Date("November 14, 2025 12:00 AM"),
 		image: "/zombies/ravager.webp",
 		description:
@@ -1835,7 +1835,7 @@ const zombiesRegistry = {
 	zursa: {
 		id: "zursa",
 		title: "Zursa",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: new Date("November 14, 2025 01:00 AM"),
 		image: "/zombies/zursa.webp",
 		description:
@@ -1850,6 +1850,30 @@ const zombiesRegistry = {
 		spawnBehavior:
 			"Zursa will first spawn on Round 16, then every 3-5 rounds after that with the chance for multiple to spawn on those rounds.",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/zursa.mdx")),
+	},
+	veytharion: {
+		id: "veytharion",
+		title: "Veytharion",
+		state: Option.some("New"),
+		releaseDate: new Date("November 14, 2025 02:00 AM"),
+		image: "/zombies/veytharion.webp",
+		description:
+			"An tormented shadowsmith controlled by the Warden, tasked with containing our crew and the Dark Aether in Ashes of the Damned.",
+		games: [getGameByKey("blackOps7")],
+		maps: [getMapByKey("ashesOfTheDamned")],
+		type: "Boss",
+		speed: "Slow",
+		weakPoints: [getWeakPointByKey("redGlowingSpots"), getWeakPointByKey("goldenUnderbelly")],
+		elementalWeakness: [],
+		attacks: [
+			getZombieAttackByKey("missileBarrage"),
+			getZombieAttackByKey("carpetBomb"),
+			getZombieAttackByKey("carSteal"),
+			getZombieAttackByKey("aetherLaser"),
+		],
+		spawnBehavior:
+			"Veytharion is the final boss of the Ashes of the Damned main quest Dust To Dust and will spawn during the final encounter.",
+		combatStrategy: Effect.promise(() => import("@/content/zombies/veytharion.mdx")),
 	},
 } as const satisfies Record<string, Zombie>
 
