@@ -36,7 +36,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 				iconRef.current.className =
 					"custom-marker flex items-center justify-center whitespace-nowrap text-sm text-white"
 				iconRef.current.innerHTML = `
-						<span className="rounded bg-black/25 px-2 py-1 shadow-lg">${marker.title}</span>
+						<span class="rounded bg-black/25 px-2 py-1 shadow-lg">${marker.title}</span>
 					`
 			} else {
 				iconRef.current.id = id
@@ -48,7 +48,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 						width="${getWidthAndHeight()}"
 						height="${getWidthAndHeight()}"
 						style="width: ${getWidthAndHeight()}px; height: ${getWidthAndHeight()}px; opacity: ${settings.markers.opacity};"
-						className="w-full h-full"
+						class="w-full h-full"
 					/>
 					`
 			}
