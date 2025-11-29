@@ -5,6 +5,7 @@ import AmmoModTooltip from "@/components/rich-text/rich-tooltips/ammo-mod-toolti
 import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgrade-tooltip"
 import GobbleGumTooltip from "@/components/rich-text/rich-tooltips/gobblegum-tooltip"
 import AugmentTooltip from "@/components/rich-text/rich-tooltips/augment-tooltip"
+import WeaponBuildTooltip from "@/components/rich-text/rich-tooltips/weapon-build-tooltip"
 import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
 import { TableCell } from "@/components/ui/table"
 import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
@@ -26,7 +27,7 @@ the **Shadowsmiths**, while also restoring the souls of our characters.
   bodyRows={[
     <RichBodyRow alternate>
       <TableCell>
-        DS20 Mirage
+        <WeaponBuildTooltip weaponBuildKey="ds20Mirage" />
       </TableCell>
       <TableCell>
       	<FieldUpgradeTooltip fieldUpgradeKey='frenziedGuard' game="blackOps7" />
@@ -40,7 +41,7 @@ the **Shadowsmiths**, while also restoring the souls of our characters.
     </RichBodyRow>,
     <RichBodyRow>
       <TableCell>
-      	Akita
+      	<WeaponBuildTooltip weaponBuildKey="akita" />
       </TableCell>
       <TableCell>
       	<FieldUpgradeTooltip fieldUpgradeKey='aetherShroud' game="blackOps7" />

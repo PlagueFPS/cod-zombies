@@ -7,7 +7,7 @@ import sharp from "sharp"
 // Change this to the path where the new images you want to add are located
 const NEW_ASSETS_DIR = "./newassets"
 // Change this to the target path where the optimized images should end up
-const TARGET_DIR = "./public/zombies"
+const TARGET_DIR = "./public/weapons"
 
 Effect.gen(function* () {
 	const startTime = performance.now()

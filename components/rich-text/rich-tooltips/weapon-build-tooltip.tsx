@@ -1,6 +1,7 @@
 "use client"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
+import { toast } from "sonner"
 import IconImage from "@/components/icon-image/icon-image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -59,14 +60,13 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }
 	const handleCopy = async () => {
 		if (!weaponBuild.buildCode) return
 		await navigator.clipboard.writeText(weaponBuild.buildCode)
+		toast.success("Build Code Copied to Clipboard!", { duration: 1500, position: "top-center" })
 		setCopied(true)
-		setTimeout(() => setCopied(false), 2000)
 	}
 
 	return (
 		<div className="w-full rounded-md bg-card/80">
 			<div className="p-5">
-				{/* Weapon Header with Larger Image */}
 				<div className="mb-4 flex items-start gap-4">
 					<div className="relative w-40 shrink-0 overflow-hidden rounded-xl">
 						<IconImage
@@ -86,26 +86,29 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }
 					</div>
 				</div>
 
-				{/* Build Code with Glass Effect */}
 				{weaponBuild.buildCode && (
 					<div className="mb-5">
 						<div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 p-3 backdrop-blur-sm">
-							<code className="flex-1 font-mono font-semibold text-primary/90 text-sm">
+							<span className="font-medium">Build Code:</span>
+							<code className="flex-1 rounded-sm bg-input/30 p-2 font-mono font-semibold text-primary text-sm">
 								{weaponBuild.buildCode}
 							</code>
 							<Button
 								variant="ghost"
 								size="sm"
 								onClick={handleCopy}
-								className="h-7 w-7 rounded-md p-0 text-primary/70 hover:bg-primary/10 hover:text-primary"
+								className="h-7 w-7 rounded-md p-0 text-orange-700 hover:text-primary dark:text-orange-200"
 							>
-								{copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+								{copied ? (
+									<Check className="h-3.5 w-3.5 text-green-500" />
+								) : (
+									<Copy className="h-3.5 w-3.5" />
+								)}
 							</Button>
 						</div>
 					</div>
 				)}
 
-				{/* Attachments with Subtle Dividers */}
 				{weaponBuild.attachments && (
 					<div>
 						<div className="my-3 flex items-center gap-2">

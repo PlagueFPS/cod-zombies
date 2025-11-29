@@ -202,4 +202,16 @@ const weaponBuildRegistry = {
 			attachmentsRegistry.rapidFire,
 		],
 	},
+	ds20Mirage: {
+		id: "ds20-mirage",
+		title: "DS20 Mirage",
+		image: "/weapons/ds20-mirage.webp",
+		buildCode: "A05-AV3ET-NQL93-1",
+	},
+	akita: {
+		id: "akita",
+		title: "Akita",
+		image: "/weapons/akita.webp",
+		buildCode: "C03-6AL6S-VU531",
+	},
 } as const satisfies Record<string, WeaponBuild>
