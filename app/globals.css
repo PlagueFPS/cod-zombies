@@ -198,7 +198,13 @@
     background: var(--background-image-gobblegum-player-activated) !important;
     background-color: var(--color-background) !important;
   }
+
+  .leaflet-div-icon {
+    background-color: transparent !important;
+    border: none !important;
+  }
 }
+
 @theme inline {
   --color-border: var(--border);
   --color-input: var(--input);
