@@ -48,6 +48,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 						alt="${marker.title}"
 						width="${widthAndHeight}"
 						height="${widthAndHeight}"
+						loading="lazy"
 						style="width: ${widthAndHeight}px; height: ${widthAndHeight}px; opacity: ${settings.markers.opacity};"
 						class="w-full h-full"
 					/>

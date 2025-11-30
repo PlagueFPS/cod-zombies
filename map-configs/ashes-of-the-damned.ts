@@ -1,6 +1,6 @@
 import type { MapConfig, MapConfigMetadata } from "."
 import { Option } from "effect"
-import { type MapMarker, perks, sharedMarkers } from "./markers"
+import { type MapMarker, perks, sharedMarkers, weapons } from "./markers"
 
 export const metadata: MapConfigMetadata = {
 	id: "ashes-of-the-damned",
@@ -336,6 +336,9 @@ const layerMarkers: MapMarker[] = [
 			{ x: 0.43, y: 0.709 },
 			{ x: 0.52, y: 0.901 },
 			{ x: 0.597, y: 0.841 },
+			{ x: 0.527, y: 0.856 },
+			{ x: 0.409, y: 0.745 },
+			{ x: 0.445, y: 0.172 },
 		],
 	},
 	{
@@ -532,7 +535,7 @@ const layerMarkers: MapMarker[] = [
 			{ x: 0.45, y: 0.33 },
 			{ x: 0.579, y: 0.316 },
 			{ x: 0.521, y: 0.557 },
-			{ x: 0.622, y: 0.823 },
+			{ x: 0.629, y: 0.802 },
 			{ x: 0.416, y: 0.903 },
 		],
 	},
@@ -646,6 +649,74 @@ const layerMarkers: MapMarker[] = [
 	{
 		...perks["wisp-tea"],
 		locations: [{ x: 0.637, y: 0.785 }],
+	},
+	{
+		...weapons["coda-9"],
+		locations: [{ x: 0.485, y: 0.06 }],
+	},
+	{
+		...weapons["warden-308"],
+		locations: [{ x: 0.479, y: 0.093 }],
+	},
+	{
+		...weapons["dravec-45"],
+		locations: [{ x: 0.451, y: 0.323 }],
+	},
+	{
+		...weapons["m10-breacher"],
+		locations: [{ x: 0.438, y: 0.339 }],
+	},
+	{
+		...weapons.m8a1,
+		locations: [{ x: 0.432, y: 0.3 }],
+	},
+	{
+		...weapons["echo-12"],
+		locations: [{ x: 0.579, y: 0.29 }],
+	},
+	{
+		...weapons["ryden-45k"],
+		locations: [{ x: 0.605, y: 0.321 }],
+	},
+	{
+		...weapons["peacekeeper-mk1"],
+		locations: [{ x: 0.57, y: 0.327 }],
+	},
+	{
+		...weapons["mk-78"],
+		locations: [{ x: 0.583, y: 0.315 }],
+	},
+	{
+		...weapons.akita,
+		locations: [{ x: 0.577, y: 0.525 }],
+	},
+	{
+		...weapons["m34-novaline"],
+		locations: [{ x: 0.504, y: 0.56 }],
+	},
+	{
+		...weapons["vs-recon"],
+		locations: [{ x: 0.56, y: 0.565 }],
+	},
+	{
+		...weapons["m15-mod-0"],
+		locations: [{ x: 0.612, y: 0.825 }],
+	},
+	{
+		...weapons["ds20-mirage"],
+		locations: [{ x: 0.638, y: 0.818 }],
+	},
+	{
+		...weapons.xm325,
+		locations: [{ x: 0.446, y: 0.934 }],
+	},
+	{
+		...weapons["ak-27"],
+		locations: [{ x: 0.432, y: 0.898 }],
+	},
+	{
+		...weapons["shadow-sk"],
+		locations: [{ x: 0.398, y: 0.905 }],
 	},
 ]
 
