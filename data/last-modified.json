@@ -1,21 +1,21 @@
 {
   "version": "1.0",
-  "generated": "2025-12-01T02:48:30.350Z",
+  "generated": "2025-12-01T02:55:48.578Z",
   "files": {
     "side-quests/arc-xd-race-aotd.mdx": {
-      "lastModified": "2025-12-01T02:47:37.000Z",
+      "lastModified": "2025-12-01T02:55:15.000Z",
       "lastModifiedFormatted": "December 1, 2025",
-      "commitHash": "60de8ac"
+      "commitHash": "198481a"
     },
     "side-quests/free-ray-gun-mark-2.mdx": {
-      "lastModified": "2025-12-01T02:47:37.000Z",
+      "lastModified": "2025-12-01T02:55:15.000Z",
       "lastModifiedFormatted": "December 1, 2025",
-      "commitHash": "60de8ac"
+      "commitHash": "198481a"
     },
     "side-quests/hidden-power-ups-aotd.mdx": {
-      "lastModified": "2025-12-01T02:47:37.000Z",
+      "lastModified": "2025-12-01T02:55:15.000Z",
       "lastModifiedFormatted": "December 1, 2025",
-      "commitHash": "60de8ac"
+      "commitHash": "198481a"
     },
     "main-quests/dust-to-dust.mdx": {
       "lastModified": "2025-11-29T23:35:42.000Z",
