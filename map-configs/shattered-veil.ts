@@ -6,7 +6,7 @@ export const metadata: MapConfigMetadata = {
 	id: "shattered-veil",
 	title: "Shattered Veil",
 	image: "/previews/shattered-veil-preview.webp",
-	game: "Black Ops 6",
+	game: "blackOps6",
 	state: Option.none(),
 	description:
 		"Explore Shattered Veil in BO6 Zombies. Find all Janus Crates, Aether Plants, Aether Crystals, Intel, and more with our interactive map.",

@@ -7,7 +7,7 @@ export const metadata: MapConfigMetadata = {
 	title: "Reckoning",
 	image: "/previews/reckoning-preview.webp",
 	state: Option.none(),
-	game: "Black Ops 6",
+	game: "blackOps6",
 	description:
 		"Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our Reckoning interactive map in Black Ops 6 Zombies.",
 }
@@ -658,7 +658,7 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers.portal,
-					locations: [{ x: 0.691, y: 0.693, description: "Travel to T2 Teleportation Lab" }],
+					locations: [{ x: 0.691, y: 0.69, description: "Travel to T2 Teleportation Lab" }],
 				},
 				{
 					...sharedMarkers.trap,

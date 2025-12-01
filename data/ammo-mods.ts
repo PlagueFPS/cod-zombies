@@ -124,6 +124,20 @@ const ammoModRegistry = {
 			"extraStrength",
 			"expressRemedy",
 		],
+		variants: {
+			blackOps7: {
+				augments: [
+					"antibiotic",
+					"bigGameLightMend",
+					"dualAction",
+					"boosterShot",
+					"longerLife",
+					"extraStrength",
+					"expressRemedy",
+					"mitosis",
+				],
+			},
+		},
 	},
 	deadWire: {
 		id: "dead-wire",

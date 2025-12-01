@@ -644,4 +644,32 @@ const zombieAttacksRegistry = {
 		description:
 			"Launches a powerful laser beam that perfectly tracks players, dealing critical damage.",
 	},
+	droneShield: {
+		id: "drone-shield",
+		title: "Drone Shield",
+		range: "Short",
+		description:
+			"A smaller, mobile robot tethers itself to O.S.C.A.R., keeping it immune to all incoming damage.",
+	},
+	teslaField: {
+		id: "tesla-field",
+		title: "Tesla Field",
+		range: "Medium",
+		description:
+			"An offensive electrical arc crackles out of O.S.C.A.R.’s carapace, searing damage into any nearby threats.",
+	},
+	attackDronesHologram: {
+		id: "attack-drones-hologram",
+		title: "Attack Drones Hologram",
+		range: "Medium",
+		description:
+			"A Drone Hologram is deployed from O.S.C.A.R.’s chest cavity, and travels directly towards a perceived threat. Attracting nearby enemies to the hit player.",
+	},
+	internalCircuitryProjectile: {
+		id: "internal-circuitry-projectile",
+		title: "Internal Circuitry Projectile",
+		range: "Long",
+		description:
+			"Produces non-critical internal parts from its interior and hefts them at a threat",
+	},
 } as const satisfies Record<string, ZombieAttack>

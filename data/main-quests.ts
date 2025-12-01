@@ -285,6 +285,13 @@ const mainQuestRegistry = {
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/main-quests/dust-to-dust.mdx")),
 	},
+	astraMalorumMainQuest: {
+		id: "astra-malorum",
+		state: Option.some("Coming Soon"),
+		difficulty: Option.none(),
+		map: getMapByKey("astraMalorum"),
+		content: Effect.promise(() => import("@/content/main-quests/astra-malorum.mdx")),
+	},
 } as const satisfies Record<string, MainQuest>
 
 const mainQuestMap = new Map<string, MainQuest>()

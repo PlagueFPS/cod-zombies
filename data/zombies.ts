@@ -1185,6 +1185,7 @@ const zombiesRegistry = {
 			getMapByKey("shatteredVeil"),
 			getMapByKey("reckoning"),
 			getMapByKey("ashesOfTheDamned"),
+			getMapByKey("astraMalorum"),
 		],
 		type: "Normal",
 		speed: "Medium",
@@ -1216,6 +1217,7 @@ const zombiesRegistry = {
 			getMapByKey("shatteredVeil"),
 			getMapByKey("reckoning"),
 			getMapByKey("ashesOfTheDamned"),
+			getMapByKey("astraMalorum"),
 		],
 		type: "Normal",
 		speed: "Medium",
@@ -1822,11 +1824,11 @@ const zombiesRegistry = {
 		description:
 			"A tortured minion of an unknown evil, prowling the Dark Aether on all fours, usually in packs, lurking in the shadows until the moment it can strike.",
 		games: [getGameByKey("blackOps7")],
-		maps: [getMapByKey("ashesOfTheDamned")],
+		maps: [getMapByKey("ashesOfTheDamned"), getMapByKey("astraMalorum")],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: [getWeakPointByKey("head")],
-		elementalWeakness: [],
+		elementalWeakness: ["lightMend"],
 		attacks: [getZombieAttackByKey("meleeSwing"), getZombieAttackByKey("ravage")],
 		spawnBehavior:
 			"Ravagers spawn as the special round in Ashes of the Damned, and will spawn in among normal zombies in the later rounds.",
@@ -1874,6 +1876,29 @@ const zombiesRegistry = {
 		spawnBehavior:
 			"Veytharion is the final boss of the Ashes of the Damned main quest Dust To Dust and will spawn during the final encounter.",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/veytharion.mdx")),
+	},
+	oscar: {
+		id: "oscar",
+		title: "O.S.C.A.R.",
+		state: Option.some("Coming Soon"),
+		releaseDate: new Date("December 4, 2025 02:00 AM"),
+		image: "/zombies/oscar.webp",
+		description:
+			"The Observation System and Carnifex Adjudicator Robot (O.S.C.A.R.) is a stalking menace persistent in assessing and neutralizing threats.",
+		games: [getGameByKey("blackOps7")],
+		maps: [getMapByKey("astraMalorum")],
+		type: "Elite",
+		speed: "Medium",
+		weakPoints: [],
+		elementalWeakness: [],
+		attacks: [
+			getZombieAttackByKey("droneShield"),
+			getZombieAttackByKey("teslaField"),
+			getZombieAttackByKey("attackDronesHologram"),
+			getZombieAttackByKey("internalCircuitryProjectile"),
+		],
+		spawnBehavior: "",
+		combatStrategy: Effect.promise(() => import("@/content/zombies/oscar.mdx")),
 	},
 } as const satisfies Record<string, Zombie>
 

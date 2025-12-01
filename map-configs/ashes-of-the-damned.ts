@@ -7,7 +7,7 @@ export const metadata: MapConfigMetadata = {
 	title: "Ashes of the Damned",
 	image: "/previews/ashes-of-the-damned-preview.webp",
 	state: Option.some("New"),
-	game: "Black Ops 7",
+	game: "blackOps7",
 	description:
 		"Explore Ashes of the Damned in Black Ops 7 Zombies. Find locations for all Overgrown Hoard Husks, Aether Plants, Plant Sprays, weapons, and more with our interactive map.",
 }
