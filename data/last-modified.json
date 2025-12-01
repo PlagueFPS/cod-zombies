@@ -1,16 +1,31 @@
 {
   "version": "1.0",
-  "generated": "2025-11-29T02:01:53.678Z",
+  "generated": "2025-12-01T02:48:30.350Z",
   "files": {
-    "zombies/veytharion.mdx": {
-      "lastModified": "2025-11-29T01:43:06.000Z",
-      "lastModifiedFormatted": "November 29, 2025",
-      "commitHash": "98032c1"
+    "side-quests/arc-xd-race-aotd.mdx": {
+      "lastModified": "2025-12-01T02:47:37.000Z",
+      "lastModifiedFormatted": "December 1, 2025",
+      "commitHash": "60de8ac"
+    },
+    "side-quests/free-ray-gun-mark-2.mdx": {
+      "lastModified": "2025-12-01T02:47:37.000Z",
+      "lastModifiedFormatted": "December 1, 2025",
+      "commitHash": "60de8ac"
+    },
+    "side-quests/hidden-power-ups-aotd.mdx": {
+      "lastModified": "2025-12-01T02:47:37.000Z",
+      "lastModifiedFormatted": "December 1, 2025",
+      "commitHash": "60de8ac"
     },
     "main-quests/dust-to-dust.mdx": {
-      "lastModified": "2025-11-24T13:00:54.000Z",
-      "lastModifiedFormatted": "November 24, 2025",
-      "commitHash": "3bd9f0c"
+      "lastModified": "2025-11-29T23:35:42.000Z",
+      "lastModifiedFormatted": "November 29, 2025",
+      "commitHash": "b74af44"
+    },
+    "zombies/veytharion.mdx": {
+      "lastModified": "2025-11-29T02:07:36.000Z",
+      "lastModifiedFormatted": "November 29, 2025",
+      "commitHash": "1d01344"
     },
     "side-quests/turn-to-ashes.mdx": {
       "lastModified": "2025-11-21T03:53:07.000Z",
