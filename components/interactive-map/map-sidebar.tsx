@@ -5,7 +5,7 @@ import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/functions.client"
@@ -45,8 +45,15 @@ interface IMapSidebar {
 }
 
 export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
-	const { clearParam, toggleExcludeParam, createParams, layerParam, isIncluded } =
-		useMapSearchParams()
+	const {
+		clearParam,
+		toggleExcludeParam,
+		createParams,
+		layerParam,
+		isIncluded,
+		convertIncludeToExclude,
+		updateURLParams,
+	} = useMapSearchParams()
 	const mapMarkers = Option.isSome(layerParam)
 		? (mapLayers.find(layer => layer.id === layerParam.value)?.markers ?? [])
 		: (mapLayers.at(0)?.markers ?? [])
@@ -54,6 +61,10 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 	const [toggle, setToggle] = useState<"All" | "None">("None")
 	const router = useRouter()
 	const currentMap = capitalize(String(id))
+
+	useEffect(() => {
+		convertIncludeToExclude(mapMarkers)
+	}, [convertIncludeToExclude, mapMarkers])
 
 	const handleCheckedChange = (type: string) => {
 		toggleExcludeParam(type)
@@ -69,16 +80,28 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 
 		const params = createParams()
 		if (params.size > 0) {
+
 			if (params.has("exclude")) {
-				const excludeParams = params.getAll("exclude")
-				const includeParams = mapMarkers.filter(
-					marker => !excludeParams.includes(marker.type || marker.id),
-				)
-				params.delete("exclude")
-				includeParams.forEach(marker => {
-					params.append("include", marker.type || marker.id)
+				const excludeParams = Option.match(Option.fromNullable(params.get("exclude")), {
+					onSome: value => {
+						const decoded = decodeURIComponent(value)
+						return decoded.split(",").map(v => v.trim()).filter(v => v.length > 0)
+					},
+					onNone: (): string[] => [],
 				})
 
+				const includedIds = new Set<string>()
+				const includeParams = mapMarkers.filter(marker => {
+					const id = marker.type || marker.id
+					if (!excludeParams.includes(id) && !includedIds.has(id)) {
+						includedIds.add(id)
+						return true
+					}
+					return false
+				})
+
+				params.delete("exclude")
+				params.append("include", includeParams.map(marker => marker.type || marker.id).join(","))
 				return `${window.location.origin}/maps/${id}?${params.toString()}`
 			}
 
@@ -91,18 +114,23 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 	const toggleFilters = () => {
 		if (toggle === "All") {
 			setToggle("None")
-			return clearParam("exclude")
+			clearParam("exclude")
+			return
 		}
 
-		const newValues: string[] = []
+		const allMarkerIds = Array.from(
+			new Set(mapMarkers.map(marker => marker.type || marker.id)),
+		)
 
-		for (const category in groups) {
-			groups[category as MarkerCategory].forEach(value => {
-				newValues.push(value)
-			})
+		const params = createParams()
+		params.delete("include")
+		params.delete("exclude")
+
+		if (allMarkerIds.length > 0) {
+			params.append("exclude", allMarkerIds.join(","))
 		}
 
-		toggleExcludeParam(newValues)
+		updateURLParams(params)
 		setToggle("All")
 	}
 
