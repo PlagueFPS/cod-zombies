@@ -276,6 +276,15 @@ const layerMarkers: MapMarker[] = [
 		locations: [{ x: 0.637, y: 0.781 }],
 	},
 	{
+		id: "flame-trench",
+		title: "Flame Trench",
+		type: "label",
+		description: "",
+		icon: null,
+		category: "general",
+		locations: [{ x: 0.654, y: 0.826 }],
+	},
+	{
 		id: "exit-115",
 		title: "Exit 115",
 		type: "label",
@@ -384,7 +393,7 @@ const layerMarkers: MapMarker[] = [
 		locations: [
 			{ x: 0.493, y: 0.107 },
 			{ x: 0.459, y: 0.331 },
-			{ x: 0.444, y: 0.315 },
+			{ x: 0.439, y: 0.315 },
 			{ x: 0.576, y: 0.294 },
 			{ x: 0.617, y: 0.327 },
 			{ x: 0.536, y: 0.57 },
@@ -424,7 +433,7 @@ const layerMarkers: MapMarker[] = [
 			{ x: 0.616, y: 0.324 },
 			{ x: 0.487, y: 0.542 },
 			{ x: 0.633, y: 0.81 },
-			{ x: 0.405, y: 0.925 },
+			{ x: 0.407, y: 0.925 },
 		],
 	},
 	{
@@ -597,7 +606,133 @@ const layerMarkers: MapMarker[] = [
 			},
 		],
 	},
-	// TODO: Add Documents and Audio Log locations
+	{
+		...sharedMarkers.document,
+		locations: [
+			{
+				x: 0.49,
+				y: 0.078,
+				title: "Good Game",
+				description:
+					"Use Melee Macchiato to punch one of the two Project Janus tanks until the document falls out of one of them.",
+			},
+			{
+				x: 0.608,
+				y: 0.3,
+				title: "Like A Needle/Playmates",
+				description:
+					"Interact with all of the Hay Bales until the document drops out of one of them.",
+			},
+			{
+				x: 0.428,
+				y: 0.34,
+				title: "Cut",
+				description:
+					"Stand at the back of the Toolshed and shoot the bullseye on the dart board to drop the document.",
+			},
+			{
+				x: 0.545,
+				y: 0.539,
+				title: "Single Fires",
+			},
+			{
+				x: 0.405,
+				y: 0.925,
+				title: "Evidence",
+			},
+			{
+				x: 0.643,
+				y: 0.78,
+				title: "Maintenance",
+				description: "Shoot the pile of papers on the bottom of the shelf to reveal this document.",
+			},
+		],
+	},
+	{
+		...sharedMarkers["audio-log"],
+		locations: [
+			{
+				x: 0.575,
+				y: 0.326,
+				title: "Tilling The Earth",
+				description: "Power must be turned on in the Farm to obtain this audio log",
+			},
+			{
+				x: 0.527,
+				y: 0.535,
+				title: "The Fate Of The Flock",
+			},
+			{
+				x: 0.51,
+				y: 0.552,
+				title: "Craftsmanship",
+			},
+			{
+				x: 0.573,
+				y: 0.543,
+				title: "The Price You Pay",
+			},
+			{
+				x: 0.414,
+				y: 0.938,
+				title: "He Got His",
+			},
+			{
+				x: 0.428,
+				y: 0.9,
+				title: "She Got Hers",
+			},
+			{
+				x: 0.644,
+				y: 0.784,
+				title: "Ground Control",
+				description:
+					"You must have completed the Craft The Serum step in the main quest for this audio log to be available.",
+			},
+			{
+				x: 0.653,
+				y: 0.821,
+				title: "What Came After",
+				description:
+					"You must have completed the Craft The Serum step in the main quest for this audio log to be available.",
+			},
+			{
+				x: 0.573,
+				y: 0.326,
+				title: "Meet The Vandorns",
+				description:
+					"You must have completed the Vandorn Farm Ritual Challenge in the main quest for this audio log to be available in the cellar.",
+			},
+			{
+				x: 0.454,
+				y: 0.333,
+				title: "Confrontation In The Parlor",
+				description:
+					"You must have completed the Blackwater Lake Challenge in the main quest for this audio log to be available.",
+			},
+			{
+				x: 0.431,
+				y: 0.341,
+				title: "Director's Notes: Improv Test",
+				description:
+					"You must have completed the Blackwater Lake Challenge in the main quest for this audio log to be available.",
+			},
+			{
+				x: 0.44,
+				y: 0.314,
+				title: "Scene 27 The Drowning",
+				description:
+					"You must have completed the Blackwater Lake Challenge in the main quest for this audio log to be available.",
+			},
+			{
+				x: 0.447,
+				y: 0.303,
+				title: "Study Room Monologue Rehearsal",
+				description:
+					"You must have completed the Blackwater Lake Challenge in the main quest for this audio log to be available.",
+			},
+		],
+	},
 	{
 		...perks["deadshot-daiquiri"],
 		locations: [{ x: 0.402, y: 0.934 }],
