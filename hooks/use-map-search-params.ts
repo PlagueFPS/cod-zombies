@@ -1,3 +1,4 @@
+import type { MapMarker } from "@/map-configs/markers"
 import { Array as Arr, Option } from "effect"
 import { useSearchParams } from "next/navigation"
 
@@ -22,12 +23,26 @@ interface MapSearchParamsResult {
 	toggleExcludeParam: (value: string | string[]) => string[]
 	/** Checks if a type should be included based on current filters */
 	isIncluded: (type: string) => boolean
+	/** Converts include filter to exclude filter */
+	convertIncludeToExclude: (markers: MapMarker[]) => void
 }
 
 export const useMapSearchParams = (): MapSearchParamsResult => {
 	const searchParams = useSearchParams()
-	const includeParams = searchParams.getAll("include")
-	const excludeParams = searchParams.getAll("exclude")
+	const includeParams = Option.match(Option.fromNullable(searchParams.get("include")), {
+		onSome: value => {
+			const decodeValue = decodeURIComponent(value)
+			return decodeValue.split(",")
+		},
+		onNone: (): string[] => [],
+	})
+	const excludeParams = Option.match(Option.fromNullable(searchParams.get("exclude")), {
+		onSome: value => {
+			const decodeValue = decodeURIComponent(value)
+			return decodeValue.split(",")
+		},
+		onNone: (): string[] => [],
+	})
 	const layerParam = Option.fromNullable(searchParams.get("layer"))
 
 	const updateURLParams = (params: URLSearchParams) => {
@@ -47,9 +62,7 @@ export const useMapSearchParams = (): MapSearchParamsResult => {
 			? currentValues.filter(v => !value.includes(v))
 			: [...currentValues, ...valuesToToggle]
 
-		newValues.forEach(v => {
-			params.append(paramName, v)
-		})
+		params.append(paramName, newValues.join(","))
 		updateURLParams(params)
 
 		return newValues
@@ -79,6 +92,30 @@ export const useMapSearchParams = (): MapSearchParamsResult => {
 		return (includeParams.length === 0 && !isExcluded) || (isIncluded && !isExcluded)
 	}
 
+	const convertIncludeToExclude = (markers: MapMarker[]) => {
+		const params = createParams()
+		if (params.has("include")) {
+			const includeArray = includeParams.filter(v => v.length > 0)
+			const excludedIds = new Set<string>()
+			const excludedMarkers = markers
+				.filter(marker => {
+					const id = marker.type || marker.id
+					if (!includeArray.includes(id) && !excludedIds.has(id)) {
+						excludedIds.add(id)
+						return true
+					}
+					return false
+				})
+				.map(marker => marker.type || marker.id)
+
+			params.delete("include")
+			if (excludedMarkers.length > 0) {
+				params.append("exclude", excludedMarkers.join(","))
+			}
+			updateURLParams(params)
+		}
+	}
+
 	return {
 		searchParams,
 		includeParams,
@@ -90,5 +127,6 @@ export const useMapSearchParams = (): MapSearchParamsResult => {
 		toggleExcludeParam,
 		clearParam,
 		isIncluded,
+		convertIncludeToExclude,
 	}
 }
