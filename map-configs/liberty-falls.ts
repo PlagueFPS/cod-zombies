@@ -6,7 +6,7 @@ export const metadata: MapConfigMetadata = {
 	id: "liberty-falls",
 	title: "Liberty Falls",
 	image: "/previews/liberty-falls-preview.webp",
-	game: "Black Ops 6",
+	game: "blackOps6",
 	state: Option.none(),
 	description:
 		"Explore Liberty Falls in Black Ops 6 Zombies. Find all perks, Pack-a-Punch, Mystery Box, wall buys, intel, and more with our interactive map.",

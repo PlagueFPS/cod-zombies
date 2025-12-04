@@ -6,7 +6,7 @@ export const metadata: MapConfigMetadata = {
 	id: "citadelle-des-morts",
 	title: "Citadelle Des Morts",
 	image: "/previews/citadelle-des-morts-preview.webp",
-	game: "Black Ops 6",
+	game: "blackOps6",
 	state: Option.none(),
 	description:
 		"Explore Citadelle Des Morts in BO6 Zombies. Find all Points of Power & Oil Traps, Fast Travels, intel, and more with our interactive map.",

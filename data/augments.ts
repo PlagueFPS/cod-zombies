@@ -583,6 +583,11 @@ const augmentRegistry = {
 			"The healing glyph now damages enemies that touch it, but its lifetime is reduced.",
 		type: "Major",
 		image: "/augments/dead-head-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/thermite-major-augment-bo7.webp",
+			},
+		},
 	},
 	bigGameLightMend: {
 		id: "big-game-light-mend",
@@ -590,6 +595,11 @@ const augmentRegistry = {
 		description: "Light Mend can activate on elite enemies, dropping 3 more healing glyphs.",
 		type: "Major",
 		image: "/augments/big-game-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/big-game-major-augment-bo7.webp",
+			},
+		},
 	},
 	dualAction: {
 		id: "dual-action",
@@ -597,6 +607,11 @@ const augmentRegistry = {
 		description: "Consuming a healing glyph will temporarily allow you to heal faster.",
 		type: "Major",
 		image: "/augments/resilience-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-benevolence-major-augment-bo7.webp",
+			},
+		},
 	},
 	longerLife: {
 		id: "longer-life",
@@ -604,6 +619,11 @@ const augmentRegistry = {
 		description: "The healing glyph's lifetime is increased.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	extraStrength: {
 		id: "extra-strength",
@@ -611,6 +631,11 @@ const augmentRegistry = {
 		description: "The healing glyph replenishes more health when consumed.",
 		type: "Minor",
 		image: "/augments/extra-strength-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/durable-plates-minor-augment-bo7.webp",
+			},
+		},
 	},
 	expressRemedy: {
 		id: "express-remedy",
@@ -618,6 +643,11 @@ const augmentRegistry = {
 		description: "Increase the range that the glyph will move to an ally.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+			},
+		},
 	},
 	chainLightning: {
 		id: "chain-lightning",
@@ -1975,5 +2005,19 @@ const augmentRegistry = {
 			"Killing enemies with Toxic Growth has a chance to drop fruit that overcharge health.",
 		type: "Minor",
 		image: "/augments/bo7/durable-plates-minor-augment-bo7.webp",
+	},
+	mitosis: {
+		id: "mitosis",
+		title: "Mitosis",
+		description: "Each activation has a chance to create an extra Healing Glyph.",
+		type: "Minor",
+		image: "/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp",
+	},
+	boosterShot: {
+		id: "booster-shot",
+		title: "Booster Shot",
+		description: "The Healing Glyph can now overcharge health.",
+		type: "Major",
+		image: "/augments/bo7/probiotic-major-augment-bo7.webp",
 	},
 } as const satisfies Record<string, Augment>

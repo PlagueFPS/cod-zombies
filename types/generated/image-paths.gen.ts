@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-11-29T23:04:35.484Z
- * generated in: 108ms
+ * generated at: 2025-12-01T06:39:31.640Z
+ * generated in: 99ms
  */
 
 
@@ -329,6 +329,7 @@ export type MapsImagePath =
   '/maps/ancient-evil.webp' |
   '/maps/ascension.webp' |
   '/maps/ashes-of-the-damned.webp' |
+  '/maps/astra-malorum.webp' |
   '/maps/blood-of-the-dead.webp' |
   '/maps/buried.webp' |
   '/maps/call-of-the-dead.webp' |
@@ -406,6 +407,7 @@ export type PerksImagePath =
 
 export type PreviewsImagePath =
   '/previews/ashes-of-the-damned-preview.webp' |
+  '/previews/astra-malorum-preview.webp' |
   '/previews/citadelle-des-morts-preview.webp' |
   '/previews/liberty-falls-preview.webp' |
   '/previews/reckoning-preview.webp' |
@@ -472,6 +474,7 @@ export type ZombiesImagePath =
   '/zombies/nova-6-bomber.webp' |
   '/zombies/nova-6-crawler.webp' |
   '/zombies/orda.webp' |
+  '/zombies/oscar.webp' |
   '/zombies/panzersoldat.webp' |
   '/zombies/parasite.webp' |
   '/zombies/patient-13.webp' |

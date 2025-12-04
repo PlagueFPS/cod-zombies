@@ -10,6 +10,14 @@ interface MapEntry {
 }
 
 const mapRegistry = {
+	"astra-malorum": {
+		metadata: Effect.promise(() =>
+			import("@/map-configs/astra-malorum").then(module => module.metadata),
+		),
+		config: Effect.promise(() =>
+			import("@/map-configs/astra-malorum").then(module => module.config),
+		),
+	},
 	"ashes-of-the-damned": {
 		metadata: Effect.promise(() =>
 			import("@/map-configs/ashes-of-the-damned").then(module => module.metadata),

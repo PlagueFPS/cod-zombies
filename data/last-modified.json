@@ -1,21 +1,36 @@
 {
   "version": "1.0",
-  "generated": "2025-12-01T02:55:48.578Z",
+  "generated": "2025-12-04T18:06:39.325Z",
   "files": {
+    "main-quests/astra-malorum.mdx": {
+      "lastModified": "2025-12-04T18:05:50.000Z",
+      "lastModifiedFormatted": "December 4, 2025",
+      "commitHash": "519c89d"
+    },
+    "zombies/doppelghast.mdx": {
+      "lastModified": "2025-12-04T18:05:50.000Z",
+      "lastModifiedFormatted": "December 4, 2025",
+      "commitHash": "519c89d"
+    },
+    "zombies/oscar.mdx": {
+      "lastModified": "2025-12-04T18:05:50.000Z",
+      "lastModifiedFormatted": "December 4, 2025",
+      "commitHash": "519c89d"
+    },
     "side-quests/arc-xd-race-aotd.mdx": {
-      "lastModified": "2025-12-01T02:55:15.000Z",
+      "lastModified": "2025-12-01T03:01:27.000Z",
       "lastModifiedFormatted": "December 1, 2025",
-      "commitHash": "198481a"
+      "commitHash": "bf94dfc"
     },
     "side-quests/free-ray-gun-mark-2.mdx": {
-      "lastModified": "2025-12-01T02:55:15.000Z",
+      "lastModified": "2025-12-01T03:01:27.000Z",
       "lastModifiedFormatted": "December 1, 2025",
-      "commitHash": "198481a"
+      "commitHash": "bf94dfc"
     },
     "side-quests/hidden-power-ups-aotd.mdx": {
-      "lastModified": "2025-12-01T02:55:15.000Z",
+      "lastModified": "2025-12-01T03:01:27.000Z",
       "lastModifiedFormatted": "December 1, 2025",
-      "commitHash": "198481a"
+      "commitHash": "bf94dfc"
     },
     "main-quests/dust-to-dust.mdx": {
       "lastModified": "2025-11-29T23:35:42.000Z",
@@ -1218,11 +1233,6 @@
       "commitHash": "cd254ad"
     },
     "zombies/armored-zombie.mdx": {
-      "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 24, 2025",
-      "commitHash": "98786bf"
-    },
-    "zombies/doppelghast.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
       "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"

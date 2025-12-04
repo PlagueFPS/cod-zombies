@@ -392,4 +392,12 @@ const mapRegistry = {
 		image: "/maps/ashes-of-the-damned.webp",
 		game: getGameByKey("blackOps7"),
 	},
+	astraMalorum: {
+		id: "astra-malorum",
+		title: "Astra Malorum",
+		releaseDate: new Date("December 4, 2025 12:00 AM"),
+		description: "In the cold depths of space, a century-old observatory guards a gateway to a dead world. Awaken the astronomer, defeat the mechanical guard, and liberate the celestial Shadowsmith!",
+		image: "/maps/astra-malorum.webp",
+		game: getGameByKey("blackOps7"),
+	},
 } as const satisfies Record<string, Maps>

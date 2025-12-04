@@ -6,7 +6,7 @@ export const metadata: MapConfigMetadata = {
 	id: "terminus",
 	title: "Terminus",
 	image: "/previews/terminus-preview.webp",
-	game: "Black Ops 6",
+	game: "blackOps6",
 	state: Option.none(),
 	description:
 		"Explore Terminus in BO6 Zombies. Find all Boat Spawns, Fishing Spots, Underwater Chests, Dig Spots, intel, and more with our interactive map.",

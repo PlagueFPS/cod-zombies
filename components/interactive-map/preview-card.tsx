@@ -3,6 +3,7 @@ import { Option } from "effect"
 import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-badges"
 import { CustomLink } from "@/components/custom-link/custom-link"
 import { Badge } from "@/components/ui/badge"
+import { getGameByKey } from "@/data/games"
 import { cn } from "@/lib/utils"
 import FeaturedImage from "../featured-image/featured-image"
 
@@ -12,6 +13,7 @@ interface IPreviewCard {
 }
 
 export default function PreviewCard({ map, index }: IPreviewCard) {
+	const game = getGameByKey(map.game)
 	const { disabled, tabIndex, stateBadge } = Option.match(map.state, {
 		onNone: () => ({
 			disabled: false,
@@ -53,7 +55,7 @@ export default function PreviewCard({ map, index }: IPreviewCard) {
 					<div className="flex items-center gap-2">
 						{stateBadge}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-							{map.game}
+							{game.title}
 						</Badge>
 					</div>
 					<h3 className="font-bold text-xl transition-colors group-hover:text-primary group-focus-visible:text-primary">

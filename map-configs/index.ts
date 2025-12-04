@@ -1,4 +1,5 @@
 import type { Option } from "effect"
+import type { GameKey } from "@/data/games"
 import type { MapId } from "@/data/interactive-map"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import type { MapMarker } from "./markers"
@@ -26,7 +27,7 @@ export interface MapConfigMetadata {
 	/** Description of the map configuration */
 	description: string
 	/** Game associated with the map configuration */
-	game: string
+	game: GameKey
 }
 
 export interface MapConfig {
