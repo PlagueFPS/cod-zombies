@@ -1,21 +1,21 @@
 {
   "version": "1.0",
-  "generated": "2025-12-04T18:04:56.127Z",
+  "generated": "2025-12-04T18:06:39.325Z",
   "files": {
     "main-quests/astra-malorum.mdx": {
-      "lastModified": "2025-12-04T18:04:21.000Z",
+      "lastModified": "2025-12-04T18:05:50.000Z",
       "lastModifiedFormatted": "December 4, 2025",
-      "commitHash": "37950d9"
+      "commitHash": "519c89d"
     },
     "zombies/doppelghast.mdx": {
-      "lastModified": "2025-12-03T17:38:41.000Z",
-      "lastModifiedFormatted": "December 3, 2025",
-      "commitHash": "76c7ebc"
+      "lastModified": "2025-12-04T18:05:50.000Z",
+      "lastModifiedFormatted": "December 4, 2025",
+      "commitHash": "519c89d"
     },
     "zombies/oscar.mdx": {
-      "lastModified": "2025-12-03T17:38:41.000Z",
-      "lastModifiedFormatted": "December 3, 2025",
-      "commitHash": "76c7ebc"
+      "lastModified": "2025-12-04T18:05:50.000Z",
+      "lastModifiedFormatted": "December 4, 2025",
+      "commitHash": "519c89d"
     },
     "side-quests/arc-xd-race-aotd.mdx": {
       "lastModified": "2025-12-01T03:01:27.000Z",
