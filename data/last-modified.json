@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2025-12-05T15:30:48.278Z",
+  "generated": "2025-12-05T15:36:28.736Z",
   "files": {
     "zombies/oscar.mdx": {
-      "lastModified": "2025-12-05T15:30:12.000Z",
+      "lastModified": "2025-12-05T15:34:56.000Z",
       "lastModifiedFormatted": "December 5, 2025",
-      "commitHash": "edb99c0"
+      "commitHash": "f04afe4"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2025-12-05T15:29:56.000Z",
