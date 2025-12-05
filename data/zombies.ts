@@ -1856,7 +1856,7 @@ const zombiesRegistry = {
 	veytharion: {
 		id: "veytharion",
 		title: "Veytharion",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: new Date("November 14, 2025 02:00 AM"),
 		image: "/zombies/veytharion.webp",
 		description:
@@ -1880,17 +1880,17 @@ const zombiesRegistry = {
 	oscar: {
 		id: "oscar",
 		title: "O.S.C.A.R.",
-		state: Option.some("Coming Soon"),
-		releaseDate: new Date("December 4, 2025 02:00 AM"),
+		state: Option.some("New"),
+		releaseDate: new Date("December 4, 2025 12:00 AM"),
 		image: "/zombies/oscar.webp",
 		description:
 			"The Observation System and Carnifex Adjudicator Robot (O.S.C.A.R.) is a stalking menace persistent in assessing and neutralizing threats.",
 		games: [getGameByKey("blackOps7")],
 		maps: [getMapByKey("astraMalorum")],
 		type: "Elite",
-		speed: "Medium",
+		speed: "Slow",
 		weakPoints: [],
-		elementalWeakness: ["brainRot", "cryoFreeze"],
+		elementalWeakness: ["brainRot"],
 		attacks: [
 			getZombieAttackByKey("droneShield"),
 			getZombieAttackByKey("teslaField"),
