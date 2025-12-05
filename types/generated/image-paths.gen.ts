@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-12-01T06:39:31.640Z
- * generated in: 99ms
+ * generated at: 2025-12-05T14:55:26.188Z
+ * generated in: 158ms
  */
 
 
@@ -423,6 +423,7 @@ export type WeaponsImagePath =
   '/weapons/ds20-mirage.webp' |
   '/weapons/gpr-91.webp' |
   '/weapons/grekhova.webp' |
+  '/weapons/m34-novaline.webp' |
   '/weapons/maelstrom.webp';
 
 /** Union of images in `/zombies` */

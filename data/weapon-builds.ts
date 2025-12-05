@@ -214,4 +214,10 @@ const weaponBuildRegistry = {
 		image: "/weapons/akita.webp",
 		buildCode: "C03-6AL6S-VU531",
 	},
+	m34Novaline: {
+		id: "m34-novaline",
+		title: "M34 Novaline",
+		image: "/weapons/m34-novaline.webp",
+		buildCode: "M03-21WXE-1X7JR-FH11",
+	},
 } as const satisfies Record<string, WeaponBuild>
