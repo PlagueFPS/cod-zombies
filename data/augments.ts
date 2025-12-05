@@ -1642,7 +1642,7 @@ const augmentRegistry = {
 	fetcher: {
 		id: "fetcher",
 		title: "Fetcher",
-		description: "The Wisp will pick up items and Powerups for you (aside from the Nuke).",
+		description: "The Wisp will pick up items and Powerups (aside from the Nuke) for you.",
 		type: "Minor",
 		image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
 	},
