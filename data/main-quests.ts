@@ -287,8 +287,8 @@ const mainQuestRegistry = {
 	},
 	astraMalorumMainQuest: {
 		id: "astra-malorum",
-		state: Option.some("Coming Soon"),
-		difficulty: Option.none(),
+		state: Option.some("New"),
+		difficulty: Option.some("Medium"),
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/main-quests/astra-malorum.mdx")),
 	},

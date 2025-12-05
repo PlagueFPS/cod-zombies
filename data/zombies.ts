@@ -1890,7 +1890,7 @@ const zombiesRegistry = {
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: [],
-		elementalWeakness: [],
+		elementalWeakness: ["brainRot", "cryoFreeze"],
 		attacks: [
 			getZombieAttackByKey("droneShield"),
 			getZombieAttackByKey("teslaField"),
