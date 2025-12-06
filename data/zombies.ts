@@ -1289,6 +1289,7 @@ const zombiesRegistry = {
 			getMapByKey("forsaken"),
 			getMapByKey("theTomb"),
 			getMapByKey("ashesOfTheDamned"),
+			getMapByKey("astraMalorum"),
 		],
 		type: "Special",
 		speed: "Medium",
@@ -1666,8 +1667,8 @@ const zombiesRegistry = {
 		image: "/zombies/toxic-zombie.webp",
 		description:
 			"Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
-		games: [getGameByKey("blackOps6")],
-		maps: [getMapByKey("shatteredVeil"), getMapByKey("reckoning")],
+		games: [getGameByKey("blackOps6"), getGameByKey("blackOps7")],
+		maps: [getMapByKey("shatteredVeil"), getMapByKey("reckoning"), getMapByKey("astraMalorum")],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: [getWeakPointByKey("head")],
@@ -1751,7 +1752,7 @@ const zombiesRegistry = {
 		description:
 			"A murderous automaton encased in a toughened, bulky exoskeleton that maintains a cocky attitude, lethal efficiency, and super strength, all directed at newly programmed threats.",
 		games: [getGameByKey("blackOps6"), getGameByKey("blackOps7")],
-		maps: [getMapByKey("reckoning"), getMapByKey("ashesOfTheDamned")],
+		maps: [getMapByKey("reckoning"), getMapByKey("ashesOfTheDamned"), getMapByKey("astraMalorum")],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: [
