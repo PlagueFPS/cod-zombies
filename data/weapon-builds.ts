@@ -220,4 +220,10 @@ const weaponBuildRegistry = {
 		image: "/weapons/m34-novaline.webp",
 		buildCode: "M03-21WXE-1X7JR-FH11",
 	},
+	ak27: {
+		id: "ak27",
+		title: "AK-27",
+		image: "/weapons/ak-27.webp",
+		buildCode: "A02-B1CH3-JXTF3-1",
+	},
 } as const satisfies Record<string, WeaponBuild>

@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-12-05T14:55:26.188Z
- * generated in: 158ms
+ * generated at: 2025-12-06T10:10:05.837Z
+ * generated in: 112ms
  */
 
 
@@ -419,6 +419,7 @@ export type PreviewsImagePath =
 
 export type WeaponsImagePath =
   '/weapons/abr-a1.webp' |
+  '/weapons/ak-27.webp' |
   '/weapons/akita.webp' |
   '/weapons/ds20-mirage.webp' |
   '/weapons/gpr-91.webp' |
