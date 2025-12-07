@@ -123,7 +123,6 @@ const SideQuestPage = Effect.fn("SideQuestPage")(
 										sizes="(max-width: 1280px) 100vw, 1280px"
 										width={1280}
 										height={720}
-										quality={100}
 									/>
 								</div>
 								<div className="relative z-20 mx-auto max-w-7xl">
@@ -132,7 +131,6 @@ const SideQuestPage = Effect.fn("SideQuestPage")(
 										sizes="(max-width: 1280px) 100vw, 1280px"
 										width={1280}
 										height={720}
-										quality={100}
 										priority
 										className="overflow-hidden xl:rounded-lg"
 									/>

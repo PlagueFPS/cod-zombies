@@ -30,7 +30,6 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 			<div className="absolute top-4 right-0 left-0 z-10 mx-auto w-full opacity-35 blur-2xl">
 				<FeaturedImage
 					{...imageProps}
-					quality={100}
 					width={776}
 					height={436}
 					description={caption ?? undefined}
@@ -43,7 +42,6 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 						{...imageProps}
 						width={776}
 						height={436}
-						quality={100}
 						description={caption ?? undefined}
 						alt={alt ?? ""}
 						className="cursor-default rounded-lg sm:cursor-zoom-in"
@@ -58,7 +56,6 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 					<DialogClose>
 						<FeaturedImage
 							{...imageProps}
-							quality={100}
 							width={1920}
 							height={1080}
 							alt={alt ?? ""}
