@@ -2,6 +2,7 @@ import "./globals.css"
 import type { Metadata, Viewport } from "next"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { Geist, Geist_Mono } from "next/font/google"
+import Script from "next/script"
 import { HashLinkHandler } from "@/components/custom-link/custom-link"
 import Header from "@/components/header/header"
 import ReactScanWrapper from "@/components/react-scan/react-scan-wrapper"
@@ -85,6 +86,10 @@ export default function RootLayout({ children }: LayoutProps) {
 					</ThemeProvider>
 					<HashLinkHandler />
 					<GoogleAnalytics gaId="G-2M6PMT6Z3R" />
+					<Script
+						crossOrigin="anonymous"
+						src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2572200153117332"
+					/>
 				</KeyboardShortcutsProvider>
 			</body>
 		</html>
