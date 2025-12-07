@@ -1901,6 +1901,31 @@ const zombiesRegistry = {
 		spawnBehavior: "",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/oscar.mdx")),
 	},
+	caltheris: {
+		id: "caltheris",
+		title: "Caltheris",
+		state: Option.some("New"),
+		releaseDate: new Date("December 4, 2025 1:00 AM"),
+		image: "/zombies/caltheris.webp",
+		description:
+			"An imprisoned shadowsmith by the Warden, sister of Veytharion, forced against her will to serve the Warden's will.",
+		games: [getGameByKey("blackOps7")],
+		maps: [getMapByKey("astraMalorum")],
+		type: "Boss",
+		speed: "Fast",
+		weakPoints: [getWeakPointByKey("blueGlowingSpots")],
+		elementalWeakness: [],
+		attacks: [
+			getZombieAttackByKey("orbitalLaser"),
+			getZombieAttackByKey("meteorShower"),
+			getZombieAttackByKey("toxicGasCloud"),
+			getZombieAttackByKey("groundSlam"),
+			getZombieAttackByKey("rockThrow"),
+		],
+		spawnBehavior:
+			"Caltheris is the final boss of the Astra Malorum main quest and will spawn during the final encounter.",
+		combatStrategy: Effect.promise(() => import("@/content/zombies/caltheris.mdx")),
+	},
 } as const satisfies Record<string, Zombie>
 
 const zombieMap = new Map<string, Zombie>()

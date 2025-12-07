@@ -65,7 +65,7 @@ const ammoModRegistry = {
 		id: "brain-rot",
 		title: "Brain Rot",
 		description:
-			"Bullet deal toxic damage. Each bullet has a chance to infect a zombie, becoming an ally for short duration.",
+			"Bullets deal toxic damage. Each bullet has a chance to infect a zombie, becoming an ally for short duration.",
 		image: "/ammo-mods/brain-rot.webp",
 		variants: {
 			blackOpsColdWar: {

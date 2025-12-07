@@ -52,6 +52,10 @@ const weakPointsRegistry = {
 		id: "red-glowing-spots",
 		title: "Red Glowing Spots",
 	},
+	blueGlowingSpots: {
+		id: "blue-glowing-spots",
+		title: "Blue Glowing Spots",
+	},
 	powerCores: {
 		id: "power-cores",
 		title: "Power Cores",
