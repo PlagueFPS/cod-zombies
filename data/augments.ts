@@ -448,6 +448,8 @@ const augmentRegistry = {
 		image: "/augments/turtle-shell-major-augment.webp",
 		variants: {
 			blackOps7: {
+				description:
+					"Armor acts as a shield on your back, completely absorbing damage to your back. Normal damage mitigation when hit from the front.",
 				image: "/augments/bo7/turtle-shell-major-augment-bo7.webp",
 			},
 		},

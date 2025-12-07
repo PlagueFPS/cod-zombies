@@ -218,7 +218,7 @@ const weaponBuildRegistry = {
 		id: "m34-novaline",
 		title: "M34 Novaline",
 		image: "/weapons/m34-novaline.webp",
-		buildCode: "M03-21WXE-1X7JR-FH11",
+		buildCode: "M03-5XK7Z-12JQ3-1",
 	},
 	ak27: {
 		id: "ak27",
