@@ -7,7 +7,7 @@ import sharp from "sharp"
 // Change this to the path where the new images you want to add are located
 const NEW_ASSETS_DIR = "./newassets"
 // Change this to the target path where the optimized images should end up
-const TARGET_DIR = "./public/zombies"
+const TARGET_DIR = "./public/layers/astra-malorum"
 
 Effect.gen(function* () {
 	const startTime = performance.now()
@@ -16,11 +16,14 @@ Effect.gen(function* () {
 	const newAssets = yield* fs.readDirectory(NEW_ASSETS_DIR)
 	const numRef = yield* Ref.make(0)
 	const {
-		values: { noResize },
+		values: { noResize, map },
 	} = parseArgs({
 		args: Bun.argv,
 		options: {
 			noResize: {
+				type: "boolean",
+			},
+			map: {
 				type: "boolean",
 			},
 		},
@@ -55,6 +58,11 @@ Effect.gen(function* () {
 							if (noResize || metadata.width <= 1920) {
 								return image.webp({ effort: 6 }).toBuffer()
 							}
+
+							if (map) {
+								return image.resize({ width: 2048 }).webp({ effort: 6 }).toBuffer()
+							}
+
 							return image.resize({ width: 1920 }).webp({ effort: 6 }).toBuffer()
 						},
 						catch: error => new Error(`Failed to transform image: ${asset}`, { cause: error }),
