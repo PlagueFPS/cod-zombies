@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
 	images: {
 		formats: ["image/webp"],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-		qualities: [75, 100],
+		qualities: [75],
 	},
 	// biome-ignore lint/suspicious/useAwait: redirects must be async
 	async redirects() {

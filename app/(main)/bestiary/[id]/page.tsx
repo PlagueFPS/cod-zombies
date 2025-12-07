@@ -148,7 +148,6 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 							<div className="absolute inset-0 mx-auto hidden w-full opacity-35 blur-3xl dark:block">
 								<FeaturedImage
 									featuredImage={zombie.image}
-									quality={100}
 									width={422}
 									height={422}
 									sizes="422px"
@@ -159,7 +158,6 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 							<FeaturedImage
 								featuredImage={zombie.image}
 								alt={`${zombie.title} image`}
-								quality={100}
 								width={422}
 								height={422}
 								sizes="422px"

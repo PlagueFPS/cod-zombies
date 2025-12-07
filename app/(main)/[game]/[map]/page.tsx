@@ -128,7 +128,6 @@ const MainQuestPage = Effect.fn("MainQuestPage")(
 										width={1280}
 										height={720}
 										sizes="(max-width: 1280px) 100vw, 1280px"
-										quality={100}
 									/>
 								</div>
 								<div className="relative mx-auto max-w-7xl">
@@ -137,7 +136,6 @@ const MainQuestPage = Effect.fn("MainQuestPage")(
 										width={1280}
 										height={720}
 										sizes="(max-width: 1280px) 100vw, 1280px"
-										quality={100}
 										priority
 										className="overflow-hidden xl:rounded-lg"
 									/>
