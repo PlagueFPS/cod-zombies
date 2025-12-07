@@ -672,4 +672,31 @@ const zombieAttacksRegistry = {
 		description:
 			"Produces non-critical internal parts from its interior and hefts them at a threat",
 	},
+	orbitalLaser: {
+		id: "orbital-laser",
+		title: "Orbital Laser",
+		range: "Long",
+		description:
+			"Launches a powerful laser beam that perfectly tracks players, dealing critical damage.",
+	},
+	meteorShower: {
+		id: "meteor-shower",
+		title: "Meteor Shower",
+		range: "Long",
+		description:
+			"Launches a barrage of meteors that rain down on the player, dealing critical damage.",
+	},
+	toxicGasCloud: {
+		id: "toxic-gas-cloud",
+		title: "Toxic Gas Cloud",
+		range: "Long",
+		description:
+			"Produces a toxic gas cloud that covers the lower arena, limiting health to a maximum of 175HP.",
+	},
+	rockThrow: {
+		id: "rock-throw",
+		title: "Rock Throw",
+		range: "Long",
+		description: "Throws a rock at a player, dealing critical damage.",
+	},
 } as const satisfies Record<string, ZombieAttack>

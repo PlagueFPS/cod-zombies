@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-12-06T10:10:05.837Z
- * generated in: 112ms
+ * generated at: 2025-12-06T19:43:57.689Z
+ * generated in: 113ms
  */
 
 
@@ -439,6 +439,7 @@ export type ZombiesImagePath =
   '/zombies/base-zombie.webp' |
   '/zombies/blightfather.webp' |
   '/zombies/brutus.webp' |
+  '/zombies/caltheris.webp' |
   '/zombies/crusader-zombie.webp' |
   '/zombies/denizen.webp' |
   '/zombies/destroyer.webp' |
