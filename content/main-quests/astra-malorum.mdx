@@ -5,6 +5,7 @@ import FieldUpgradeTooltip from "@/components/rich-text/rich-tooltips/field-upgr
 import WeaponBuildTooltip from "@/components/rich-text/rich-tooltips/weapon-build-tooltip"
 import GobbleGumTooltip from "@/components/rich-text/rich-tooltips/gobblegum-tooltip"
 import AugmentTooltip from "@/components/rich-text/rich-tooltips/augment-tooltip"
+import PerkTooltip from "@/components/rich-text/rich-tooltips/perk-tooltip"
 import { RichTable, RichBodyRow } from "@/components/rich-text/rich-table/rich-table"
 import { TableCell } from "@/components/ui/table"
 import YoutubeEmbed from "@/components/rich-text/rich-embeds/youtube-embed"
@@ -16,6 +17,9 @@ This main quest has our crew hunt down another **Shadowsmith** in hopes of resto
 
 - <AmmoModTooltip ammoModKey="cryoFreeze" game="blackOps7" />
 - [LGM-1](#step-1-obtain-the-lgm-1)
+
+> <PerkTooltip perkKey="juggernog" game="blackOps7" /> with the <AugmentTooltip augmentKey="turtleShell" game="blackOps7" /> augment, and <PerkTooltip perkKey="phdFlopper" game="blackOps7" />
+with the <AugmentTooltip augmentKey="environmentalist" game="blackOps7" /> minor augment are **ESSENTIAL** for surviving this boss fight, especially in the final phase.
 
 ## Recommended Loadouts
 <RichTable
@@ -93,7 +97,7 @@ This **WILL** be patched soon.
     </RichBodyRow>,
     <RichBodyRow alternate>
       <TableCell>
-        <GobbleGumTooltip gobblegumKey='idleEyes' game="blackOps6" />
+        <GobbleGumTooltip gobblegumKey='killJoy' game="blackOps6" />
       </TableCell>
       <TableCell>
         <GobbleGumTooltip gobblegumKey='nearDeathExperience' game="blackOps6" />
@@ -104,7 +108,7 @@ This **WILL** be patched soon.
         <GobbleGumTooltip gobblegumKey='aftertaste' />
       </TableCell>
       <TableCell>
-        <GobbleGumTooltip gobblegumKey='idleEyes' game="blackOps6" />
+        <GobbleGumTooltip gobblegumKey='powerKeg' game="blackOps6" />
       </TableCell>
     </RichBodyRow>,
     <RichBodyRow alternate>
@@ -120,7 +124,8 @@ This **WILL** be patched soon.
 
 
 ## Step 1: Obtain the LGM-1
-You'll need four parts to power three different contraptions around the map. Each part can be easily obtained immediately after turning the power on.
+You'll need four parts to power three different contraptions around the map. Each part can be easily obtained immediately after turning the power on and can be obtained in
+any order.
 
 ### Car Battery
 Using a **Pack-a-Punched** weapon, head to the **Crash Site** and shoot **Ol' Tessie** until the hood pops open, revealing the **Car Battery** for you to pick up.
@@ -304,30 +309,34 @@ Once you have your code, head back to **Mars** and interact with the symbols on 
 
 ## Step 8: Defeat Caltheris
 As always, ensure you are fully upgraded, field upgrade charged, and have **Monkey Bombs**, **Kazimirs**, or **Stim Shots** to help you during the fight. Then,
-interact with the **Perfusion Machine** to begin the final encounter against **Caltheris**.
+interact with the **Perfusion Machine** to begin the final encounter against <ZombieTooltip zombieKey="caltheris" />.
 
-> The only enemies you'll be fighting in this boss fight are <ZombieTooltip zombieKey="mimic" /> zombies and <ZombieTooltip zombieKey="toxicZombies" /> as they spawn during most of the phases.
+> The only enemies you'll be fighting in this boss fight are <ZombieTooltip zombieKey="mimic" /> zombies and <ZombieTooltip zombieKey="toxicZombies" /> as they spawn during
+most of the phases.
 
 ### Phase 1
-During this phase, **Caltheris** is a giant floating skull and you'll need to kill zombies in the arena to charge up a pylon, which once fully charged can be activated by interacting with
-the **Perfusion Machine** to firing a beam at **Caltheris** dealing a one-third of her health. You'll need to repeat this two more times to defeat this phase.
+During this phase, <ZombieTooltip zombieKey="caltheris" /> is a giant floating skull and you'll need to kill zombies in the arena to charge up a pylon, which once fully charged can be activated by interacting with
+the **Perfusion Machine** to fire a beam at <ZombieTooltip zombieKey="caltheris" /> dealing a one-third of her health. You'll need to repeat this two more times to defeat this phase.
 
 <RichImage image="/content/astra-malorum/astra-malorum-phase-1.webp" caption="Caltheris Phase 1" />
 
-> During this phase, **Caltheris** attacks are a giant, slow-moving laser that tracks players and some aerial bombs that should be avoided. There will also be a toxic gas cloud that spawns in
+> During this phase, <ZombieTooltip zombieKey="caltheris" /> attacks are a giant, slow-moving laser that tracks players and some aerial bombs that should be avoided. There will also be a toxic gas cloud that spawns in
 some <ZombieTooltip zombieKey="toxicZombies" />
 
 ### Phase 2
-During this phase, **Caltheris** transforms into a rock golem that you'll need to shoot a bunch to break off her armor, revealing a blue weak point that you can focus on for
-critical damage. Her attacks also change, where she'll throw rocks at you from a distance and do a ground slam if you are in melee range.
+During this phase, <ZombieTooltip zombieKey="caltheris" /> transforms into a rock golem that you should shoot with the **LGM-1** wonder weapon to break off her armor,
+revealing a blue weak point that you can focus on with your primary weapon for critical damage. Her attacks also change, where she'll throw rocks at you from a distance
+and do a ground slam if you are in melee range.
 
 <RichImage image="/content/astra-malorum/astra-malorum-phase-2.webp" caption="Caltheris Phase 2" />
 
-> Constant movement is key for this phase, using wall jumps and anti-gravity to avoid the rocks and maintaining distance to prevent her from ground slamming you.
+> Constant movement is key for this phase, using wall jumps and anti-gravity to avoid the rocks and maintaining distance to prevent her from ground slamming you. You can also turn your
+back to her during the ground slam if you have the <AugmentTooltip augmentKey="turtleShell" game="blackOps7" /> augment for <PerkTooltip perkKey="juggernog" game="blackOps7" /> to avoid
+taking health damage.
 
 ### Phase 3
-During this phase, **Caltheris** becomes **Caltheris Ascendant** a bigger, stronger version of **Phase 2**. Her attacks are the same, but they're bigger and stronger so the plan remains
-the same, but with more importance on avoiding her attacks and maintaining distance.
+During this phase, <ZombieTooltip zombieKey="caltheris" /> becomes **Caltheris Ascendant** a bigger, stronger version of **Phase 2**. Her attacks are the same, but they're bigger and stronger so the plan remains
+the same, but with more importance on avoiding her attacks and maintaining distance. Again, use the **LGM-1** wonder weapon to break off her armor, before focusing her crit spots with your main damage weapon.
 
 <RichImage image="/content/astra-malorum/astra-malorum-phase-3.webp" caption="Caltheris Phase 3" />
 
@@ -336,8 +345,8 @@ at you.
 
 ### Phase 4
 During this phase, **Caltheris Ascendant** becomes **Caltheris The Needle** and is again bigger, stronger, and even faster this time, but she also gains a new attack which leaves
-a pool of damaging aetheric energy that you **MUST** avoid, these do significant damage, easily killing you if you are in it for more than a couple of seconds. Besides that, the
-strategy is the same and once **Caltheris The Needle** is defeated, you have completed the main quest.
+a pool of damaging aetheric energy that you **MUST** avoid, these do significant damage, easily killing you if you are in it for more than a couple of seconds. With the <AugmentTooltip augmentKey="environmentalist" game="blackOps7" />
+augment for <PerkTooltip perkKey="phdFlopper" game="blackOps7" /> you can avoid all damage by sliding through these pools.
 
 > Do not hesitate to use your <FieldUpgradeTooltip fieldUpgradeKey="aetherShroud" game="blackOps7" /> during this phase to stay safe and get a bunch of damage into
 her weak points. She is extremely fast and can easily overwhelm you if you are not careful and fully aware of your environment.

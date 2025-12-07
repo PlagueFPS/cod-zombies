@@ -74,7 +74,7 @@ const AugmentTrigger = ({ augment }: { augment: Augment }) => (
 		<IconImage
 			featuredImage={augment.image}
 			alt={`${augment.title} Image`}
-			width={24}
+			width={64}
 			height={24}
 			sizes="64px"
 			className="my-auto h-6 w-auto"
