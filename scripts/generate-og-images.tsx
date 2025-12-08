@@ -402,7 +402,7 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 const _SideQuestGeneration = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const quests = getSideQuests().filter(quest => quest.map.id === "ashes-of-the-damned")
+	const quests = getSideQuests().filter(quest => quest.map.id === "astra-malorum")
 	if (!quests.length) return yield* Effect.fail("Quest not found")
 
 	yield* Effect.forEach(quests, quest =>
@@ -603,4 +603,4 @@ const _ZombieGeneration = Effect.gen(function* () {
 	yield* Effect.log(`Generated og image for ${zombie.id}`)
 }).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
 
-BunRuntime.runMain(_MainQuestGeneration)
+BunRuntime.runMain(_SideQuestGeneration)
