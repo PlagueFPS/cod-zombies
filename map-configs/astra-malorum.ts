@@ -8,7 +8,8 @@ export const metadata: MapConfigMetadata = {
 	state: Option.some("New"),
 	image: "/previews/astra-malorum-preview.webp",
 	game: "blackOps7",
-	description: "Explore Astra Malorum in Black Ops 7 Zombies.",
+	description:
+		"Explore Astra Malorum in Black Ops 7 Zombies. Find locations for all Aether Crystals, weapons, intel, and more with our interactive map.",
 }
 
 export const config: MapConfig = {
@@ -99,6 +100,27 @@ export const config: MapConfig = {
 					description: "",
 					icon: null,
 					locations: [{ x: 0.588, y: 0.574 }],
+				},
+				{
+					id: "aether-crystal",
+					title: "Aether Crystal",
+					category: "objectives",
+					description: "Dark Aether Crystal that can be destroyed for a variety of loot.",
+					icon: "/icons/objectives/aether-crystal.webp",
+					locations: [
+						{ x: 0.49, y: 0.719 },
+						{ x: 0.485, y: 0.617 },
+						{ x: 0.438, y: 0.563 },
+						{ x: 0.476, y: 0.528 },
+						{ x: 0.6, y: 0.562 },
+						{ x: 0.536, y: 0.47 },
+						{ x: 0.506, y: 0.403 },
+						{ x: 0.561, y: 0.469 },
+						{ x: 0.568, y: 0.391 },
+						{ x: 0.569, y: 0.337 },
+						{ x: 0.427, y: 0.355 },
+						{ x: 0.676, y: 0.329 },
+					],
 				},
 				{
 					...sharedMarkers["ammo-cache"],

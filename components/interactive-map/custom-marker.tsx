@@ -22,14 +22,19 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 			iconRef.current = document.createElement("div")
 
 			const getWidthAndHeight = () => {
-				if (marker.id === "shovel" || marker.id === "aether-plant-spray") {
-					return Math.floor(settings.markers.iconSize * 1.5)
-				}
 				if (marker.type === "perk" && marker.id !== "der-wunderfizz") {
 					return Math.floor(settings.markers.iconSize * 0.75)
 				}
 
-				return settings.markers.iconSize
+				switch (marker.id) {
+					case "shovel":
+					case "aether-plant-spray":
+						return Math.floor(settings.markers.iconSize * 1.5)
+					case "aether-crystal":
+						return Math.floor(settings.markers.iconSize * 1.25)
+					default:
+						return settings.markers.iconSize
+				}
 			}
 
 			if (marker.type === "label") {
