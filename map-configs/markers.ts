@@ -689,6 +689,22 @@ export const weapons = {
 		type: "weapon-wall-buy",
 		category: "equipment",
 	},
+	"jaeger-45": {
+		id: "jaeger-45",
+		title: "Jaeger .45",
+		description: "Purchase a Jaeger .45 Pistol off the wall.",
+		icon: "/icons/equipment/weapon-wall-buy.webp",
+		type: "weapon-wall-buy",
+		category: "equipment",
+	},
+	"carbon-57": {
+		id: "carbon-57",
+		title: "Carbon 57",
+		description: "Purchase a Carbon 57 SMG off the wall.",
+		icon: "/icons/equipment/weapon-wall-buy.webp",
+		type: "weapon-wall-buy",
+		category: "equipment",
+	},
 } as const satisfies Record<string, Marker>
 
 /**

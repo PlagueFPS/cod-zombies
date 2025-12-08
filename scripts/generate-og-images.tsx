@@ -603,4 +603,4 @@ const _ZombieGeneration = Effect.gen(function* () {
 	yield* Effect.log(`Generated og image for ${zombie.id}`)
 }).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
 
-BunRuntime.runMain(_ZombieGeneration)
+BunRuntime.runMain(_MainQuestGeneration)
