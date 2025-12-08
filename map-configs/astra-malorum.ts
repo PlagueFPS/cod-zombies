@@ -233,6 +233,38 @@ export const config: MapConfig = {
 					],
 				},
 				{
+					...sharedMarkers.document,
+					locations: [
+						{
+							x: 0.436,
+							y: 0.515,
+							title: "Immense Power",
+							description:
+								"Obtained by shooting the hanging planets in the correct order from the sun.",
+						},
+						{
+							x: 0.439,
+							y: 0.301,
+							title: "Their Town",
+						},
+						{
+							x: 0.679,
+							y: 0.439,
+							title: "Eventful",
+							description: "Obtained by shooting the stack of papers on the table.",
+						},
+					],
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [
+						{ x: 0.394, y: 0.551, title: "Fools" },
+						{ x: 0.546, y: 0.234, title: "Planets" },
+						{ x: 0.67, y: 0.317, title: "Dual Functions" },
+						{ x: 0.727, y: 0.501, title: "Robotics" },
+					],
+				},
+				{
 					...perks["der-wunderfizz"],
 					locations: [{ x: 0.511, y: 0.458 }],
 				},
@@ -284,7 +316,6 @@ export const config: MapConfig = {
 					...weapons["carbon-57"],
 					locations: [{ x: 0.511, y: 0.585 }],
 				},
-				// TODO: Add Intel locations & Change icons for the weapon wall buys and Arsenal to match BO7 icons
 			],
 		},
 		{

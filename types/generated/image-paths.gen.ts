@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-12-07T16:15:40.199Z
- * generated in: 96ms
+ * generated at: 2025-12-08T13:42:40.012Z
+ * generated in: 106ms
  */
 
 
@@ -289,7 +289,9 @@ export type IconsImagePath =
   '/icons/transportation/boat.webp' |
   '/icons/transportation/fast-travel.webp' |
   '/icons/transportation/portal.webp' |
+  '/icons/upgrades/armor-wall-buy-bo7.webp' |
   '/icons/upgrades/armor-wall-buy.webp' |
+  '/icons/upgrades/arsenal-bo7.webp' |
   '/icons/upgrades/arsenal.webp' |
   '/icons/upgrades/der-wunderfizz.webp' |
   '/icons/upgrades/gobblegum-machine.webp' |
