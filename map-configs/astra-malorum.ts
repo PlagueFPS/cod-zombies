@@ -1,6 +1,6 @@
 import type { MapConfig, MapConfigMetadata } from "."
 import { Option } from "effect"
-import { sharedMarkers } from "./markers"
+import { perks, sharedMarkers, weapons } from "./markers"
 
 export const metadata: MapConfigMetadata = {
 	id: "astra-malorum",
@@ -35,7 +35,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: null,
-					locations: [{ x: 0.413, y: 0.508 }],
+					locations: [{ x: 0.39, y: 0.508 }],
 				},
 				{
 					id: "museum-infinitum",
@@ -164,15 +164,164 @@ export const config: MapConfig = {
 					locations: [
 						{ x: 0.496, y: 0.424 },
 						{ x: 0.628, y: 0.297 },
+						{ x: 0.494, y: 0.632 },
 					],
 				},
+				{
+					...sharedMarkers.portal,
+					locations: [
+						{
+							x: 0.453,
+							y: 0.696,
+							title: "Observatory Dome Portal",
+							description: "Travel to Observatory Dome",
+						},
+						{
+							x: 0.636,
+							y: 0.276,
+							title: "Crash Site Portal",
+							description: "Travel to Crash Site",
+						},
+						{
+							x: 0.68,
+							y: 0.496,
+							title: "Mars Portal",
+							description: "Teleport to Mars after completing most of the main quest.",
+						},
+					],
+				},
+				{
+					...sharedMarkers["gobblegum-machine"],
+					locations: [
+						{ x: 0.445, y: 0.622 },
+						{ x: 0.583, y: 0.354 },
+					],
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [
+						{ x: 0.428, y: 0.65 },
+						{ x: 0.396, y: 0.478 },
+						{ x: 0.662, y: 0.531 },
+						{ x: 0.559, y: 0.48 },
+						{ x: 0.495, y: 0.314 },
+					],
+				},
+				{
+					...sharedMarkers["pack-a-punch"],
+					locations: [{ x: 0.582, y: 0.271 }],
+				},
+				{
+					...sharedMarkers["rampage-inducer"],
+					locations: [{ x: 0.454, y: 0.667 }],
+				},
+				{
+					...sharedMarkers.trap,
+					locations: [
+						{
+							x: 0.391,
+							y: 0.524,
+							title: "Stellar Dissector",
+							description: "Cut up zombies with fatal laser beams.",
+						},
+						{
+							x: 0.534,
+							y: 0.403,
+							title: "Apogee Annihilator",
+							description: "Bomb zombies with Astronomer Rockets.",
+						},
+					],
+				},
+				{
+					...perks["der-wunderfizz"],
+					locations: [{ x: 0.511, y: 0.458 }],
+				},
+				{
+					...perks.juggernog,
+					locations: [{ x: 0.418, y: 0.519 }],
+				},
+				{
+					...perks["quick-revive"],
+					locations: [{ x: 0.489, y: 0.65 }],
+				},
+				{
+					...perks["speed-cola"],
+					locations: [{ x: 0.528, y: 0.582 }],
+				},
+				{
+					...perks["stamin-up"],
+					locations: [{ x: 0.713, y: 0.436 }],
+				},
+				{
+					...perks["wisp-tea"],
+					locations: [{ x: 0.462, y: 0.265 }],
+				},
+				{
+					...weapons.akita,
+					locations: [{ x: 0.714, y: 0.53 }],
+				},
+				{
+					...weapons["m34-novaline"],
+					locations: [{ x: 0.433, y: 0.534 }],
+				},
+				{
+					...weapons["shadow-sk"],
+					locations: [{ x: 0.456, y: 0.363 }],
+				},
+				{
+					...weapons["x9-maverick"],
+					locations: [{ x: 0.598, y: 0.323 }],
+				},
+				{
+					...weapons.xm325,
+					locations: [{ x: 0.566, y: 0.442 }],
+				},
+				{
+					...weapons["jaeger-45"],
+					locations: [{ x: 0.473, y: 0.67 }],
+				},
+				{
+					...weapons["carbon-57"],
+					locations: [{ x: 0.511, y: 0.585 }],
+				},
+				// TODO: Add Intel locations & Change icons for the weapon wall buys and Arsenal to match BO7 icons
 			],
 		},
 		{
 			id: "mars",
 			title: "Mars",
 			image: "/layers/astra-malorum/astra-malorum-mars-layer.webp",
-			markers: [],
+			markers: [
+				{
+					id: "mars",
+					title: "Mars",
+					type: "label",
+					description: "",
+					icon: null,
+					category: "general",
+					locations: [{ x: 0.5, y: 0.5 }],
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					icon: "/icons/equipment/ammo-cache-bo7.webp",
+					locations: [{ x: 0.531, y: 0.399 }],
+				},
+				{
+					...sharedMarkers["armor-wall-buy"],
+					locations: [{ x: 0.317, y: 0.546 }],
+				},
+				{
+					...sharedMarkers.portal,
+					locations: [
+						{
+							x: 0.273,
+							y: 0.5,
+							title: "Machina Astralis Portal",
+							description: "Travel to Machina Astralis",
+						},
+					],
+				},
+			],
 		},
 	],
 }
