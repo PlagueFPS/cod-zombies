@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2025-12-08T15:26:40.253Z
- * generated in: 107ms
+ * generated at: 2025-12-09T17:50:45.559Z
+ * generated in: 106ms
  */
 
 
@@ -423,9 +423,12 @@ export type WeaponsImagePath =
   '/weapons/abr-a1.webp' |
   '/weapons/ak-27.webp' |
   '/weapons/akita.webp' |
+  '/weapons/amped-minor-augment-bo7.webp' |
   '/weapons/ds20-mirage.webp' |
   '/weapons/gpr-91.webp' |
   '/weapons/grekhova.webp' |
+  '/weapons/jager-45.webp' |
+  '/weapons/m10-breacher.webp' |
   '/weapons/m34-novaline.webp' |
   '/weapons/maelstrom.webp';
 
