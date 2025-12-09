@@ -45,7 +45,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: null,
-					locations: [{ x: 0.515, y: 0.586 }],
+					locations: [{ x: 0.515, y: 0.6 }],
 				},
 				{
 					id: "machina-astralis",
@@ -227,6 +227,7 @@ export const config: MapConfig = {
 						{ x: 0.662, y: 0.531 },
 						{ x: 0.559, y: 0.48 },
 						{ x: 0.495, y: 0.314 },
+						{ x: 0.508, y: 0.585 },
 					],
 				},
 				{
