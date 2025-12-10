@@ -1223,6 +1223,11 @@ const augmentRegistry = {
 		description: "The field's damage is increased by the number of allies that are connected.",
 		type: "Major",
 		image: "/augments/dead-head-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/thermite-major-augment-bo7.webp",
+			},
+		},
 	},
 	shockwave: {
 		id: "shockwave",
@@ -1230,6 +1235,11 @@ const augmentRegistry = {
 		description: "On activation, stun and damage all nearby enemies.",
 		type: "Major",
 		image: "/augments/gravity-md-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/petroleum-major-augment-bo7.webp",
+			},
+		},
 	},
 	staticDischarge: {
 		id: "static-discharge",
@@ -1237,6 +1247,11 @@ const augmentRegistry = {
 		description: "On activation, create a lethal surge of electricity around you.",
 		type: "Major",
 		image: "/augments/gravity-md-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
+			},
+		},
 	},
 	powerGrid: {
 		id: "power-grid",
@@ -1244,6 +1259,11 @@ const augmentRegistry = {
 		description: "Increase the range the electric tether can connect to allies.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+			},
+		},
 	},
 	overclocked: {
 		id: "overclocked",
@@ -1251,13 +1271,23 @@ const augmentRegistry = {
 		description: "Your movement speed is increased during Tesla Storm.",
 		type: "Minor",
 		image: "/augments/speedy-roulette-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/double-time-minor-augment-bo7.webp",
+			},
+		},
 	},
 	lithiumCharged: {
 		id: "lithium-charged",
 		title: "Lithium Charged",
-		description: "Your movement speed is increased during Tesla Storm.",
+		description: "Increase Tesla Storm duration.",
 		type: "Minor",
 		image: "/augments/speedy-roulette-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	danceParty: {
 		id: "dance-party",
@@ -1265,6 +1295,11 @@ const augmentRegistry = {
 		description: "Mister Peeks becomes the life of the party.",
 		type: "Major",
 		image: "/augments/chain-lightning-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/group-shroud-major-augment-bo7.webp",
+			},
+		},
 	},
 	arcaneFury: {
 		id: "arcane-fury",
@@ -1272,6 +1307,11 @@ const augmentRegistry = {
 		description: "Mister Peeks has become a master of the elements.",
 		type: "Major",
 		image: "/augments/firebomb-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/firebomb-major-augment-bo7.webp",
+			},
+		},
 	},
 	apexHunter: {
 		id: "apex-hunter",
@@ -1279,6 +1319,11 @@ const augmentRegistry = {
 		description: "Mister Peeks focuses all attacks on the strongest nearby enemy.",
 		type: "Major",
 		image: "/augments/big-game-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/big-game-major-augment-bo7.webp",
+			},
+		},
 	},
 	socialButterfly: {
 		id: "social-butterfly",
@@ -1286,6 +1331,11 @@ const augmentRegistry = {
 		description: "Increase Mister Peeks attraction radius.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+			},
+		},
 	},
 	peeksFavor: {
 		id: "peeks-favor",
@@ -1293,6 +1343,11 @@ const augmentRegistry = {
 		description: "Mister Peeks is good to have around near Mystery Box locations.",
 		type: "Minor",
 		image: "/augments/pineapple-blast-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/pineapple-blast-minor-augment-bo7.webp",
+			},
+		},
 	},
 	partyAnimal: {
 		id: "party-animal",
@@ -1300,6 +1355,11 @@ const augmentRegistry = {
 		description: "Increase Mister Peeks dance duration.",
 		type: "Minor",
 		image: "/augments/slow-death-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/extension-minor-augment-bo7.webp",
+			},
+		},
 	},
 	citrusFocus: {
 		id: "citrus-focus",
@@ -2021,5 +2081,34 @@ const augmentRegistry = {
 		description: "The Healing Glyph can now overcharge health.",
 		type: "Major",
 		image: "/augments/bo7/probiotic-major-augment-bo7.webp",
+	},
+	haywire: {
+		id: "haywire",
+		title: "Haywire",
+		description:
+			"Periodically send out electric charges that stun and damage enemies while the Tesla Storm is active.",
+		type: "Major",
+		image: "/augments/bo7/double-impact-major-augment-bo7.webp",
+	},
+	amped: {
+		id: "amped",
+		title: "Amped",
+		description: "The Tesla Storm's damage is increased.",
+		type: "Minor",
+		image: "/augments/bo7/amped-minor-augment-bo7.webp",
+	},
+	vibDiscount: {
+		id: "vib-discount",
+		title: "Vib Discount",
+		description: "Mister Peeks will offer an ammo discount to VIBs (Very Important Buddies).",
+		type: "Minor",
+		image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
+	},
+	peekHealth: {
+		id: "peek-health",
+		title: "Peek Health",
+		description: "Heal rapidly while near Mister Peeks.",
+		type: "Major",
+		image: "/augments/bo7/vampiric-extraction-major-augment-bo7.webp",
 	},
 } as const satisfies Record<string, Augment>

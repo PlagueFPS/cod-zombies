@@ -189,6 +189,18 @@ const fieldUpgradeRegistry = {
 					"lithiumCharged",
 				],
 			},
+			blackOps7: {
+				augments: [
+					"transformer",
+					"shockwave",
+					"staticDischarge",
+					"haywire",
+					"powerGrid",
+					"overclocked",
+					"lithiumCharged",
+					"amped",
+				],
+			},
 		},
 	},
 	misterPeeks: {
@@ -204,11 +216,26 @@ const fieldUpgradeRegistry = {
 			"peeksFavor",
 			"partyAnimal",
 		],
+		variants: {
+			blackOps7: {
+				augments: [
+					"danceParty",
+					"arcaneFury",
+					"apexHunter",
+					"peekHealth",
+					"socialButterfly",
+					"peeksFavor",
+					"partyAnimal",
+					"vibDiscount",
+				],
+			},
+		},
 	},
 	toxicGrowth: {
 		id: "toxic-growth",
 		title: "Toxic Growth",
-		description: "Summon a deadly growth of thorns in front of you. Enemies moving through it are slowed and take toxic damage.",
+		description:
+			"Summon a deadly growth of thorns in front of you. Enemies moving through it are slowed and take toxic damage.",
 		image: "/field-upgrades/toxic-growth.webp",
 		augments: [
 			"urticant",
@@ -218,7 +245,7 @@ const fieldUpgradeRegistry = {
 			"ankleShredder",
 			"greenThumb",
 			"extraCharge",
-			"plantFood"
+			"plantFood",
 		],
 	},
 } as const satisfies Record<string, FieldUpgrade>
