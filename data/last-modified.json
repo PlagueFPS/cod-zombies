@@ -1,61 +1,61 @@
 {
   "version": "1.0",
-  "generated": "2025-12-10T22:25:14.454Z",
+  "generated": "2025-12-11T16:54:37.144Z",
   "files": {
+    "main-quests/astra-malorum.mdx": {
+      "lastModified": "2025-12-11T16:53:43.000Z",
+      "lastModifiedFormatted": "December 11, 2025",
+      "commitHash": "0e11c6b"
+    },
     "side-quests/bongo.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/gramophone-free-perks.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/hidden-power-ups-astra-malorum.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/magic.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/nikolais-demons.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/original-pareidolia.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/pareidolia-remix.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/skull-jumpscare.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/skulls-free-perk.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
+      "commitHash": "9c6c27a"
     },
     "side-quests/twins.mdx": {
-      "lastModified": "2025-12-10T22:24:40.000Z",
+      "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "dce8a07"
-    },
-    "main-quests/astra-malorum.mdx": {
-      "lastModified": "2025-12-10T20:11:40.000Z",
-      "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "d045f1e"
+      "commitHash": "9c6c27a"
     },
     "zombies/caltheris.mdx": {
       "lastModified": "2025-12-07T13:29:29.000Z",
