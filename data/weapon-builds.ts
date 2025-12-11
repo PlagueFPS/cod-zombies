@@ -230,12 +230,18 @@ const weaponBuildRegistry = {
 		id: "jager45",
 		title: "Jäger 45",
 		image: "/weapons/jager-45.webp",
-		buildCode: "P01-AAEBZ-7IPTN-11",
+		buildCode: "P01-AAEER-QI6WQ-11",
 	},
 	m10Breacher: {
 		id: "m10-breacher",
 		title: "M10 Breacher",
 		image: "/weapons/m10-breacher.webp",
 		buildCode: "C01-N6NC4-8BLR1-1",
+	},
+	coda9: {
+		id: "coda-9",
+		title: "CODA 9",
+		image: "/weapons/coda-9.webp",
+		buildCode: "P03-68Y2H-HNL31",
 	},
 } as const satisfies Record<string, WeaponBuild>
