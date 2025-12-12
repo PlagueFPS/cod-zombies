@@ -312,6 +312,10 @@ export const config: MapConfig = {
 					locations: [{ x: 0.462, y: 0.265 }],
 				},
 				{
+					...perks["mule-kick"],
+					locations: [{ x: 0.652, y: 0.345 }],
+				},
+				{
 					...weapons.akita,
 					locations: [{ x: 0.714, y: 0.53 }],
 				},

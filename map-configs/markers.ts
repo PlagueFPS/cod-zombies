@@ -253,6 +253,14 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 
 /** All perks appearing on any of the maps */
 export const perks = {
+	"mule-kick": {
+		id: "mule-kick",
+		title: "Mule Kick",
+		description: "Carry an extra weapon.",
+		icon: "/perks/mule-kick-cold-war.webp",
+		type: "perk",
+		category: "upgrades",
+	},
 	"wisp-tea": {
 		id: "wisp-tea",
 		title: "Wisp Tea",
