@@ -99,11 +99,15 @@ const InteractiveMapPage = Effect.fn("InteractiveMapPage")(function* ({
 
 		return acc
 	}, initialGroups)
+	const transformedMaps = maps.map(map => ({
+		...map,
+		state: Option.getOrNull(map.state),
+	}))
 
 	return (
 		<SidebarProvider defaultOpen={defaultOpen}>
 			<Suspense fallback={<SidebarLoader />}>
-				<MapSidebar groups={groups} maps={maps} mapLayers={config.layers} />
+				<MapSidebar groups={groups} maps={transformedMaps} mapLayers={config.layers} />
 			</Suspense>
 			<div className="h-svh w-svw">
 				<CustomSideBarTrigger className={cn({ "top-18": config.layers.length === 1 })} />

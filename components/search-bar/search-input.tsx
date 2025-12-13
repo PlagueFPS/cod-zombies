@@ -45,7 +45,7 @@ interface SearchInputProps {
 	games: SearchEntry[]
 	quests: QuestSearch[]
 	zombies: SearchEntry[]
-	availableMaps: MapConfigMetadata[]
+	availableMaps: Pick<MapConfigMetadata, "id" | "title">[]
 }
 
 const filters = [

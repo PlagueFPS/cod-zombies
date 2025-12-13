@@ -1,5 +1,7 @@
 "use client"
 import type { Zombie } from "@/data/zombies"
+import type { ContentState } from "@/types/data"
+import { Option } from "effect"
 import { Suspense, useEffect } from "react"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
@@ -9,13 +11,18 @@ import EmptyGrid from "../empty/empty-grid"
 import GridPagination from "../grid-pagination/grid-pagination"
 import GridPaginationLoader from "../loaders/grid-pagination-loader"
 
+type TransformedZombie = Omit<Zombie, "combatStrategy" | "state"> & { state: ContentState | null }
+
 interface IBestiaryGridClient {
-	zombies: Omit<Zombie, "combatStrategy">[]
+	zombies: TransformedZombie[]
 }
 
 export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {
 	const { gameParams, mapParams, typeParams, page, validatePageParam } = useFilterParams()
-	let filteredZombies = zombies
+	let filteredZombies = zombies.map(zombie => ({
+		...zombie,
+		state: Option.fromNullable(zombie.state),
+	}))
 
 	if (gameParams.length > 0) {
 		filteredZombies = filteredZombies.filter(
