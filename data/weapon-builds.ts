@@ -244,4 +244,10 @@ const weaponBuildRegistry = {
 		image: "/weapons/coda-9.webp",
 		buildCode: "P03-68Y2H-HNL31",
 	},
+	kogot7: {
+		id: "kogot-7",
+		title: "Kogot-7",
+		image: "/weapons/kogot-7.webp",
+		buildCode: "S10-JUJZG-U6S28-31",
+	},
 } as const satisfies Record<string, WeaponBuild>
