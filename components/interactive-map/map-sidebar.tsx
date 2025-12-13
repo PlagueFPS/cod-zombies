@@ -1,6 +1,7 @@
 "use client"
 import type { MapConfigMetadata, MapLayer } from "@/map-configs"
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
+import type { ContentState } from "@/types/data"
 import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
@@ -38,8 +39,10 @@ import {
 import { Switch } from "../ui/switch"
 import LayerSwitcher from "./layer-switcher"
 
+type TransformedMaps = Omit<MapConfigMetadata, "state"> & { state: ContentState | null }
+
 interface IMapSidebar {
-	maps: MapConfigMetadata[]
+	maps: TransformedMaps[]
 	groups: Record<MarkerCategory, Set<string>>
 	mapLayers: MapLayer[]
 }
@@ -80,12 +83,14 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 
 		const params = createParams()
 		if (params.size > 0) {
-
 			if (params.has("exclude")) {
 				const excludeParams = Option.match(Option.fromNullable(params.get("exclude")), {
 					onSome: value => {
 						const decoded = decodeURIComponent(value)
-						return decoded.split(",").map(v => v.trim()).filter(v => v.length > 0)
+						return decoded
+							.split(",")
+							.map(v => v.trim())
+							.filter(v => v.length > 0)
 					},
 					onNone: (): string[] => [],
 				})
@@ -118,9 +123,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 			return
 		}
 
-		const allMarkerIds = Array.from(
-			new Set(mapMarkers.map(marker => marker.type || marker.id)),
-		)
+		const allMarkerIds = Array.from(new Set(mapMarkers.map(marker => marker.type || marker.id)))
 
 		const params = createParams()
 		params.delete("include")
@@ -154,20 +157,18 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 										<SelectItem
 											key={map.id}
 											className={cn({
-												"pointer-events-none":
-													map.id === id || Option.getOrNull(map.state) === "Coming Soon",
+												"pointer-events-none": map.id === id || map.state === "Coming Soon",
 											})}
 											value={map.id}
 										>
 											<span
 												className={cn({
-													"text-muted-foreground":
-														map.id === id || Option.getOrNull(map.state) === "Coming Soon",
+													"text-muted-foreground": map.id === id || map.state === "Coming Soon",
 												})}
 											>
 												{map.title}
 											</span>
-											{Option.match(map.state, {
+											{Option.match(Option.fromNullable(map.state), {
 												onNone: () => null,
 												onSome: state =>
 													state === "Coming Soon" ? <ComingSoonBadge /> : <NewBadge />,

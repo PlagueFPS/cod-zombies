@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Option } from "effect"
 import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import GridSection from "@/components/grid-section/grid-section"
@@ -34,9 +35,10 @@ export const metadata: Metadata = {
 
 export default function SideQuests() {
 	const quests = getSideQuests().map(quest => {
-		const { content, ...rest } = quest
+		const { content, state, ...rest } = quest
 		return {
 			...rest,
+			state: Option.getOrNull(state),
 		}
 	})
 

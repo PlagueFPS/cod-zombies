@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Option } from "effect"
 import { Suspense } from "react"
 import BestiaryFilters from "@/components/bestiary-filters/bestiary-filters"
 import BestiaryGridClient from "@/components/bestiary-grid/bestiary-grid"
@@ -33,8 +34,11 @@ export const metadata: Metadata = {
 
 export default function BestiaryPage() {
 	const zombies = getZombies().map(zombie => {
-		const { combatStrategy, ...rest } = zombie
-		return rest
+		const { combatStrategy, state, ...rest } = zombie
+		return {
+			...rest,
+			state: Option.getOrNull(state),
+		}
 	})
 	return (
 		<div className="flex w-full flex-col items-center justify-center">

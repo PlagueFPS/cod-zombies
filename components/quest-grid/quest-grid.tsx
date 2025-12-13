@@ -1,6 +1,7 @@
 "use client"
-import type { MainQuest } from "@/data/main-quests"
+import type { MainQuest, MainQuestDifficulty } from "@/data/main-quests"
 import type { SideQuest } from "@/data/side-quests"
+import type { ContentState } from "@/types/data"
 import { Option, Predicate } from "effect"
 import { Suspense, useEffect } from "react"
 import GridPagination from "@/components/grid-pagination/grid-pagination"
@@ -11,13 +12,32 @@ import { MAP_LIMIT } from "@/utils/constants"
 import { calculateSkip } from "@/utils/functions.client"
 import EmptyGrid from "../empty/empty-grid"
 
+type TransformedMainQuest = Omit<MainQuest, "content" | "state" | "difficulty"> & {
+	difficulty: MainQuestDifficulty | null
+	state: ContentState | null
+}
+type TransformedSideQuest = Omit<SideQuest, "content" | "state"> & { state: ContentState | null }
+
 interface IQuestGridClient {
-	quests: (Omit<MainQuest, "content"> | Omit<SideQuest, "content">)[]
+	quests: TransformedMainQuest[] | TransformedSideQuest[]
 }
 
 export default function QuestGridClient({ quests }: IQuestGridClient) {
 	const { gameParams, mapParams, difficultyParams, page, validatePageParam } = useFilterParams()
-	let filteredQuests = quests
+	let filteredQuests = quests.map(quest => {
+		if (!Predicate.hasProperty(quest, "title")) {
+			return {
+				...quest,
+				difficulty: Option.fromNullable(quest.difficulty),
+				state: Option.fromNullable(quest.state),
+			}
+		}
+
+		return {
+			...quest,
+			state: Option.fromNullable(quest.state),
+		}
+	})
 
 	if (gameParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => gameParams.includes(quest.map.game.id))

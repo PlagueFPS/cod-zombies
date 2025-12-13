@@ -14,6 +14,7 @@ export default async function SearchBar({ showFull }: ISearchBar) {
 	return await Effect.gen(function* () {
 		const availableMaps = yield* getInteractiveMaps().pipe(
 			Effect.map(maps => maps.filter(map => Option.getOrNull(map.state) !== "Coming Soon")),
+			Effect.map(maps => maps.map(map => ({ id: map.id, title: map.title }))),
 		)
 		const mainQuests = getMainQuests()
 		const games = getGames().map(g => ({

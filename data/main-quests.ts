@@ -1,3 +1,4 @@
+import type { ContentState } from "@/types/data"
 import { Effect, Option } from "effect"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import { getMapByKey, type Maps } from "./maps"
@@ -10,7 +11,7 @@ export interface MainQuest {
 	/** The unique identifier of the main quest */
 	id: string
 	/** The state of the main quest */
-	state: Option.Option<"New" | "Coming Soon">
+	state: Option.Option<ContentState>
 	/** The difficulty of the main quest */
 	difficulty: Option.Option<MainQuestDifficulty>
 	/** The map of the main quest */

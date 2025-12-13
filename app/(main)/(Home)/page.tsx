@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Option } from "effect"
 import { Suspense } from "react"
 import GridSection from "@/components/grid-section/grid-section"
 import HeroSection from "@/components/hero-section/hero-section"
@@ -16,9 +17,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
 	const mainQuests = getMainQuests().map(quest => {
-		const { content, ...rest } = quest
+		const { content, state, difficulty, ...rest } = quest
 		return {
 			...rest,
+			state: Option.getOrNull(state),
+			difficulty: Option.getOrNull(difficulty),
 		}
 	})
 

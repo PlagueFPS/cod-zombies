@@ -1,3 +1,4 @@
+import type { Route } from "next"
 import type { Zombie } from "@/data/zombies"
 import { Option } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -17,25 +18,41 @@ export default function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
 	const alt = `${zombie.title} Image`
-	const state = Option.getOrNull(zombie.state)
+	const { href, tabIndex, stateBadge, applyClasses } = Option.match(zombie.state, {
+		onNone: () => ({
+			href: `/bestiary/${zombie.id}`,
+			tabIndex: 0,
+			stateBadge: null,
+			applyClasses: false,
+		}),
+		onSome: state => {
+			const isComingSoon = state === "Coming Soon"
+			return {
+				href: isComingSoon ? "#" : `/bestiary/${zombie.id}`,
+				tabIndex: isComingSoon ? -1 : 0,
+				stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
+				applyClasses: isComingSoon,
+			}
+		},
+	})
 
 	return (
-		<article className={cn("h-full max-h-113", { "pointer-events-none": state === "Coming Soon" })}>
+		<article className={cn("h-full max-h-113", { "pointer-events-none": applyClasses })}>
 			<CustomLink
-				href={state === "Coming Soon" ? `#` : `/bestiary/${zombie.id}`}
+				href={href as Route}
 				aria-label={`View details for ${zombie.title}`}
-				aria-disabled={state === "Coming Soon"}
+				aria-disabled={applyClasses}
 				className="group outline-none"
-				tabIndex={state === "Coming Soon" ? -1 : 0}
+				tabIndex={tabIndex}
 			>
 				<Card
 					className={cn(
 						`relative h-full animate-fade-in cursor-pointer overflow-hidden shadow-xl transition-transform group-hover:scale-105 group-hover:outline-2 group-hover:outline-primary group-focus-visible:scale-105 group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none`,
-						{ "opacity-75 dark:opacity-50": state === "Coming Soon" },
+						{ "opacity-75 dark:opacity-50": applyClasses },
 					)}
 				>
 					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
-						{state === "Coming Soon" ? <ComingSoonBadge /> : state === "New" ? <NewBadge /> : null}
+						{stateBadge}
 						<TypeBadge type={zombie.type} />
 						{zombie.maps[0] ? (
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
