@@ -594,7 +594,7 @@ const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: 
 const _ZombieGeneration = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const zombie = getZombieByKey("caltheris")
+	const zombie = getZombieByKey("armoredZombie")
 	const ogImage = yield* generateZombieImage(zombie)
 	yield* fs.writeFile(
 		path.join(process.cwd(), "public", `opengraph-images/zombies/og-${zombie.id}.jpg`),
@@ -603,4 +603,4 @@ const _ZombieGeneration = Effect.gen(function* () {
 	yield* Effect.log(`Generated og image for ${zombie.id}`)
 }).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
 
-BunRuntime.runMain(_SideQuestGeneration)
+BunRuntime.runMain(_ZombieGeneration)
