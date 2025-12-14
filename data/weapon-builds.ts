@@ -236,7 +236,7 @@ const weaponBuildRegistry = {
 		id: "m10-breacher",
 		title: "M10 Breacher",
 		image: "/weapons/m10-breacher.webp",
-		buildCode: "C01-N6NC4-8BLR1-1",
+		buildCode: "C01-NBWA2-JZAT1-1",
 	},
 	coda9: {
 		id: "coda-9",
