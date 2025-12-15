@@ -8,6 +8,8 @@ import { getAdjacentItems } from "./utils"
 export type MainQuestDifficulty = "Easy" | "Medium" | "Hard"
 
 export interface MainQuest {
+	/** Internal tag to discriminate against for type-narrowing */
+	_tag: "MainQuest"
 	/** The unique identifier of the main quest */
 	id: string
 	/** The state of the main quest */
@@ -293,12 +295,13 @@ const mainQuestRegistry = {
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/main-quests/astra-malorum.mdx")),
 	},
-} as const satisfies Record<string, MainQuest>
+} as const satisfies Record<string, Omit<MainQuest, "_tag">>
 
 const mainQuestMap = new Map<string, MainQuest>()
-const mainQuests: MainQuest[] = Object.values(mainQuestRegistry).sort((a, b) =>
-	sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
-)
+const mainQuests: MainQuest[] = Object.values(mainQuestRegistry)
+	.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
+	.map(mainQuest => ({ ...mainQuest, _tag: "MainQuest" }))
+
 for (const mainQuest of mainQuests) {
 	mainQuestMap.set(mainQuest.map.id, mainQuest)
 }
