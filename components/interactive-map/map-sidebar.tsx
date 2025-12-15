@@ -185,12 +185,14 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				<SidebarMenu className="mt-4 flex flex-row items-center justify-center">
 					<SidebarMenuButton
 						onClick={() => clearParam("exclude")}
+						aria-label="Show All Markers"
 						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium uppercase tracking-wide transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
 					>
 						All
 					</SidebarMenuButton>
 					<SidebarMenuButton
 						onClick={hideFilters}
+						aria-label="Hide All Markers"
 						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium uppercase tracking-wide transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
 					>
 						None
