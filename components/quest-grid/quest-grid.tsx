@@ -2,7 +2,7 @@
 import type { MainQuest, MainQuestDifficulty } from "@/data/main-quests"
 import type { SideQuest } from "@/data/side-quests"
 import type { ContentState } from "@/types/data"
-import { Option, Predicate } from "effect"
+import { Option } from "effect"
 import { Suspense, useEffect } from "react"
 import GridPagination from "@/components/grid-pagination/grid-pagination"
 import GridPaginationLoader from "@/components/loaders/grid-pagination-loader"
@@ -25,7 +25,7 @@ interface IQuestGridClient {
 export default function QuestGridClient({ quests }: IQuestGridClient) {
 	const { gameParams, mapParams, difficultyParams, page, validatePageParam } = useFilterParams()
 	let filteredQuests = quests.map(quest => {
-		if (!Predicate.hasProperty(quest, "title")) {
+		if (quest._tag === "MainQuest") {
 			return {
 				...quest,
 				difficulty: Option.fromNullable(quest.difficulty),
@@ -45,7 +45,7 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 
 	if (difficultyParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
-			if (!Predicate.hasProperty(quest, "title") && Option.isSome(quest.difficulty)) {
+			if (quest._tag === "MainQuest" && Option.isSome(quest.difficulty)) {
 				return difficultyParams.includes(quest.difficulty.value.toLowerCase())
 			}
 			return false
@@ -54,7 +54,7 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 
 	if (mapParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
-			if (Predicate.hasProperty(quest, "map")) {
+			if (quest._tag === "SideQuest") {
 				return mapParams.includes(quest.map.id)
 			}
 			return false

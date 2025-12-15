@@ -4,6 +4,8 @@ import { getMapByKey, type Maps } from "./maps"
 import { getAdjacentItems } from "./utils"
 
 export interface SideQuest {
+	/** Internal tag to discriminate against for type-narrowing */
+	_tag: "SideQuest"
 	/** The unique identifier for the side quest */
 	id: string
 	/** The title of the side quest */
@@ -26,7 +28,9 @@ export type SideQuestKey = keyof typeof sideQuestRegistry
  * @param key The key of the side quest
  * @returns The side quest with the given key
  */
-export const getSideQuestByKey = (key: SideQuestKey): SideQuest => sideQuestRegistry[key]
+export const getSideQuestByKey = (key: SideQuestKey): SideQuest => {
+	return { ...sideQuestRegistry[key], _tag: "SideQuest" }
+}
 
 /**
  * Get all SideQuests
@@ -1695,12 +1699,12 @@ const sideQuestRegistry = {
 			() => import("@/content/side-quests/hidden-power-ups-astra-malorum.mdx"),
 		),
 	},
-} as const satisfies Record<string, SideQuest>
+} as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
-const sideQuests: SideQuest[] = Object.values(sideQuestRegistry).sort((a, b) =>
-	sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
-)
+const sideQuests: SideQuest[] = Object.values(sideQuestRegistry)
+	.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
+	.map(sideQuest => ({ ...sideQuest, _tag: "SideQuest" }))
 
 for (const sideQuest of sideQuests) {
 	sideQuestMap.set(sideQuest.id, sideQuest)
