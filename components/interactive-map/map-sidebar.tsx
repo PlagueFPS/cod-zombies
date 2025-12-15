@@ -6,7 +6,7 @@ import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/functions.client"
@@ -33,6 +33,7 @@ import {
 	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
+	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarTrigger,
 } from "../ui/sidebar"
@@ -61,7 +62,6 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 		? (mapLayers.find(layer => layer.id === layerParam.value)?.markers ?? [])
 		: (mapLayers.at(0)?.markers ?? [])
 	const { id } = useParams()
-	const [toggle, setToggle] = useState<"All" | "None">("None")
 	const router = useRouter()
 	const currentMap = capitalize(String(id))
 
@@ -116,17 +116,10 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 		return `${window.location.origin}/maps/${id}`
 	}
 
-	const toggleFilters = () => {
-		if (toggle === "All") {
-			setToggle("None")
-			clearParam("exclude")
-			return
-		}
-
+	const hideFilters = () => {
 		const allMarkerIds = Array.from(new Set(mapMarkers.map(marker => marker.type || marker.id)))
 
 		const params = createParams()
-		params.delete("include")
 		params.delete("exclude")
 
 		if (allMarkerIds.length > 0) {
@@ -134,7 +127,6 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 		}
 
 		updateURLParams(params)
-		setToggle("All")
 	}
 
 	const existsInLayer = (marker: string) => {
@@ -190,15 +182,21 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 						</SidebarMenuItem>
 					</SidebarMenu>
 				)}
-				<SidebarMenu>
-					<SidebarMenuItem className="mx-2 mt-4 flex items-center justify-between rounded-md bg-accent p-2 dark:bg-accent/25">
-						<span className="text-sm">Disable Filters</span>
-						<Switch
-							checked={toggle === "All"}
-							onCheckedChange={toggleFilters}
-							className="ml-auto cursor-pointer data-[state=checked]:bg-primary"
-						/>
-					</SidebarMenuItem>
+				<SidebarMenu className="mt-4 flex flex-row items-center justify-center">
+					<SidebarMenuButton
+						onClick={() => clearParam("exclude")}
+						aria-label="Show All Markers"
+						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium uppercase tracking-wide transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
+					>
+						All
+					</SidebarMenuButton>
+					<SidebarMenuButton
+						onClick={hideFilters}
+						aria-label="Hide All Markers"
+						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium uppercase tracking-wide transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
+					>
+						None
+					</SidebarMenuButton>
 				</SidebarMenu>
 
 				{groups.general.size > 0 && (
