@@ -1,10 +1,10 @@
 import type { ContentState } from "@/types/data"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { Effect, Option } from "effect"
+import { Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 
-/** The three types relics */
+/** The three types of relics */
 export type RelicType = "Grim" | "Sinister" | "Wicked"
 /** The unique identifier for each relic */
 export type RelicKey = keyof typeof relicRegistry
@@ -13,7 +13,7 @@ export interface Relic {
 	/** Unique identifier for the relic */
 	id: string
 	/** The state of the relic */
-	state: Option.Option<ContentState>
+	state: ContentState | null
 	/** The type of the relic */
 	type: RelicType
 	/** The image of the relic */
@@ -28,7 +28,7 @@ export interface Relic {
  * Gets all relics.
  * @returns An array of all relics.
  */
-export const getRelics = () => relics
+export const getRelics = (): Relic[] => relics
 
 /**
  * Gets a specific relic by its key
@@ -47,7 +47,7 @@ export const getRelicById = (id: string) => relicMap.get(id)
 const relicRegistry = {
 	lawyersPen: {
 		id: "lawyers-pen",
-		state: Option.none(),
+		state: null,
 		type: "Grim",
 		image: "/relics/lawyers-pen-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -55,7 +55,7 @@ const relicRegistry = {
 	},
 	dragonWings: {
 		id: "dragon-wings",
-		state: Option.none(),
+		state: null,
 		type: "Grim",
 		image: "/relics/dragon-wings-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -63,7 +63,7 @@ const relicRegistry = {
 	},
 	teddyBear: {
 		id: "teddy-bear",
-		state: Option.none(),
+		state: null,
 		type: "Grim",
 		image: "/relics/teddy-bear-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -71,7 +71,7 @@ const relicRegistry = {
 	},
 	vrilSphere: {
 		id: "vril-sphere",
-		state: Option.none(),
+		state: null,
 		type: "Sinister",
 		image: "/relics/vril-sphere-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -79,7 +79,7 @@ const relicRegistry = {
 	},
 	focusingStone: {
 		id: "focusing-stone",
-		state: Option.none(),
+		state: null,
 		type: "Sinister",
 		image: "/relics/focusing-stone-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -87,7 +87,7 @@ const relicRegistry = {
 	},
 	bus: {
 		id: "bus",
-		state: Option.none(),
+		state: null,
 		type: "Wicked",
 		image: "/relics/bus-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -95,7 +95,7 @@ const relicRegistry = {
 	},
 	dragon: {
 		id: "dragon",
-		state: Option.none(),
+		state: null,
 		type: "Wicked",
 		image: "/relics/dragon-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -103,7 +103,7 @@ const relicRegistry = {
 	},
 	bloodVials: {
 		id: "blood-vials",
-		state: Option.none(),
+		state: null,
 		type: "Wicked",
 		image: "/relics/blood-vials-relic.webp",
 		map: getMapByKey("ashesOfTheDamned"),
@@ -111,7 +111,7 @@ const relicRegistry = {
 	},
 	seed: {
 		id: "seed",
-		state: Option.none(),
+		state: null,
 		type: "Grim",
 		image: "/relics/seed-relic.webp",
 		map: getMapByKey("astraMalorum"),
@@ -119,7 +119,7 @@ const relicRegistry = {
 	},
 	spiderFang: {
 		id: "spider-fang",
-		state: Option.none(),
+		state: null,
 		type: "Sinister",
 		image: "/relics/spider-fang-relic.webp",
 		map: getMapByKey("astraMalorum"),
@@ -127,7 +127,7 @@ const relicRegistry = {
 	},
 	civilProtectorHead: {
 		id: "civil-protector-head",
-		state: Option.none(),
+		state: null,
 		type: "Wicked",
 		image: "/relics/civil-protector-head-relic.webp",
 		map: getMapByKey("astraMalorum"),

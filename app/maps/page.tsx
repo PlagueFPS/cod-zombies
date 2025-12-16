@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Effect } from "effect"
 import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import Footer from "@/components/footer/footer"
 import GridSection from "@/components/grid-section/grid-section"
 import PreviewCard from "@/components/interactive-map/preview-card"
 import PreviewCardLoader from "@/components/loaders/preview-card-loader"
@@ -32,27 +31,24 @@ export const metadata: Metadata = {
 const MapsPage = Effect.fn("MapsPage")(function* () {
 	const maps = yield* getInteractiveMaps()
 	return (
-		<>
-			<div className="mt-10 w-full flex-col items-center justify-center">
-				<div className="container flex flex-col items-center justify-center gap-6">
-					<Breadcrumbs links={[{ title: "Maps", href: "/maps" }]} />
-					<GridSection title="Interactive Maps" className="mb-10">
-						<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
-							Browse our collection of interactive maps showcasing key spawn points, locations, and
-							more.
-						</p>
-						<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
-							{maps.map((map, index) => (
-								<Suspense key={map.id} fallback={<PreviewCardLoader />}>
-									<PreviewCard map={map} index={index} />
-								</Suspense>
-							))}
-						</div>
-					</GridSection>
-				</div>
+		<div className="w-full flex-col items-center justify-center">
+			<div className="container flex flex-col items-center justify-center gap-6">
+				<Breadcrumbs links={[{ title: "Maps", href: "/maps" }]} />
+				<GridSection title="Interactive Maps" className="mb-10">
+					<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
+						Browse our collection of interactive maps showcasing key spawn points, locations, and
+						more.
+					</p>
+					<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
+						{maps.map((map, index) => (
+							<Suspense key={map.id} fallback={<PreviewCardLoader />}>
+								<PreviewCard map={map} index={index} />
+							</Suspense>
+						))}
+					</div>
+				</GridSection>
 			</div>
-			<Footer />
-		</>
+		</div>
 	)
 })
 
