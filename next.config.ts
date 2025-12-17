@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
 		serverComponentsHmrCache: true,
 		browserDebugInfoInTerminal: true,
 		mdxRs: true,
-		turbopackFileSystemCacheForDev: true,
 	},
 	// Without this, builds will fail with an OOM (out of memory) failure due to excessive memory usage.
 	outputFileTracingExcludes: {

@@ -26,7 +26,7 @@ export default function FeaturedImage({
 	if (!featuredImage) return null
 
 	return (
-		<figure className="relative m-0 flex w-full flex-col items-center justify-center">
+		<figure className="relative m-0 flex h-full w-full flex-col items-center justify-center">
 			{!imageLoaded && !imageErrored ? <ImageLoader className="border" /> : null}
 			{!imageErrored ? (
 				<Image

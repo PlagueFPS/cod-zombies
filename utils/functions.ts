@@ -60,7 +60,7 @@ export const calculateTimeToRead = (content: string) => {
 		.filter(word => word.length > 0).length
 	const wordPerMinute = 200 // avg reading speed
 	const minutes = Math.ceil(wordCount / wordPerMinute) // always use the worst case
-	return minutes
+	return minutes < 1 ? 1 : minutes
 }
 
 /**

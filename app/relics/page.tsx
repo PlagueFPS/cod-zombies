@@ -3,10 +3,11 @@ import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import GridSection from "@/components/grid-section/grid-section"
 import GridLoader from "@/components/loaders/grid-loader"
 import RelicFilters from "@/components/relic-filters/relic-filters"
+import RelicGrid from "@/components/relic-grid/relic-grid"
 import { getRelics } from "@/data/relics"
 
 export default function RelicsPage() {
-	const _relics = getRelics().map(relic => {
+	const relics = getRelics().map(relic => {
 		const { content, ...rest } = relic
 		return rest
 	})
@@ -20,7 +21,9 @@ export default function RelicsPage() {
 						Discover the relics hidden within the Cursed mode on each map.
 					</p>
 					<RelicFilters />
-					<Suspense fallback={<GridLoader />} />
+					<Suspense fallback={<GridLoader />}>
+						<RelicGrid relics={relics} />
+					</Suspense>
 				</GridSection>
 			</div>
 		</div>

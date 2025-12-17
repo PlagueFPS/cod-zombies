@@ -3,6 +3,7 @@ import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
+import { getAdjacentItems } from "./utils"
 
 /** The three types of relics */
 export type RelicType = "Grim" | "Sinister" | "Wicked"
@@ -20,6 +21,8 @@ export interface Relic {
 	type: RelicType
 	/** The image of the relic */
 	image: RelicsImagePath
+	/** The description of the relic */
+	description: string
 	/** The map where the relic can be obtained */
 	map: Maps
 	/** The content of the relic */
@@ -46,6 +49,15 @@ export const getRelicByKey = (key: RelicKey): Relic => relicRegistry[key]
  */
 export const getRelicById = (id: string) => relicMap.get(id)
 
+/**
+ * Gets the adjacent relics of a given relic.
+ * @param id The id of the relic.
+ * @returns previous and next relics.
+ */
+export const getAdjacentRelics = (id: string) => {
+	return getAdjacentItems(relics, id)
+}
+
 const relicRegistry = {
 	lawyersPen: {
 		id: "lawyers-pen",
@@ -53,6 +65,7 @@ const relicRegistry = {
 		state: null,
 		type: "Grim",
 		image: "/relics/lawyers-pen-relic.webp",
+		description: "Mimic props have infiltrated the map.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/lawyers-pen.mdx")),
 	},
@@ -62,6 +75,7 @@ const relicRegistry = {
 		state: null,
 		type: "Grim",
 		image: "/relics/dragon-wings-relic.webp",
+		description: "Normal Power-Up spawns are disabled.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/dragon-wings.mdx")),
 	},
@@ -71,6 +85,7 @@ const relicRegistry = {
 		state: null,
 		type: "Grim",
 		image: "/relics/teddy-bear-relic.webp",
+		description: "Round start delay is cut down by 75%.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/teddy-bear.mdx")),
 	},
@@ -80,6 +95,7 @@ const relicRegistry = {
 		state: null,
 		type: "Sinister",
 		image: "/relics/vril-sphere-relic.webp",
+		description: "Players can only carry 4 Perk-a-Colas.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/vril-sphere.mdx")),
 	},
@@ -89,6 +105,7 @@ const relicRegistry = {
 		state: null,
 		type: "Sinister",
 		image: "/relics/focusing-stone-relic.webp",
+		description: "No Self-Revive kits.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/focusing-stone.mdx")),
 	},
@@ -98,6 +115,7 @@ const relicRegistry = {
 		state: null,
 		type: "Wicked",
 		image: "/relics/bus-relic.webp",
+		description: "Enemy health regenerates.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/bus.mdx")),
 	},
@@ -107,6 +125,7 @@ const relicRegistry = {
 		state: null,
 		type: "Wicked",
 		image: "/relics/dragon-relic.webp",
+		description: "All Ammo Crates are disabled.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/dragon.mdx")),
 	},
@@ -116,6 +135,7 @@ const relicRegistry = {
 		state: null,
 		type: "Wicked",
 		image: "/relics/blood-vials-relic.webp",
+		description: "All Augments are turned off.",
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/blood-vials.mdx")),
 	},
@@ -125,6 +145,7 @@ const relicRegistry = {
 		state: null,
 		type: "Grim",
 		image: "/relics/seed-relic.webp",
+		description: "Mystery Box is disabled.",
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/relics/seed.mdx")),
 	},
@@ -134,6 +155,7 @@ const relicRegistry = {
 		state: null,
 		type: "Sinister",
 		image: "/relics/spider-fang-relic.webp",
+		description: "Perk costs at machines never decrease.",
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/relics/spider-fang.mdx")),
 	},
@@ -143,6 +165,7 @@ const relicRegistry = {
 		state: null,
 		type: "Wicked",
 		image: "/relics/civil-protector-head-relic.webp",
+		description: "Every 100 kills, you lose a perk.",
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/relics/civil-protector-head.mdx")),
 	},
