@@ -12,6 +12,8 @@ export type RelicKey = keyof typeof relicRegistry
 export interface Relic {
 	/** Unique identifier for the relic */
 	id: string
+	/** The title of the relic */
+	title: string
 	/** The state of the relic */
 	state: ContentState | null
 	/** The type of the relic */
@@ -47,6 +49,7 @@ export const getRelicById = (id: string) => relicMap.get(id)
 const relicRegistry = {
 	lawyersPen: {
 		id: "lawyers-pen",
+		title: "Lawyer's Pen",
 		state: null,
 		type: "Grim",
 		image: "/relics/lawyers-pen-relic.webp",
@@ -55,6 +58,7 @@ const relicRegistry = {
 	},
 	dragonWings: {
 		id: "dragon-wings",
+		title: "Dragon Wings",
 		state: null,
 		type: "Grim",
 		image: "/relics/dragon-wings-relic.webp",
@@ -63,6 +67,7 @@ const relicRegistry = {
 	},
 	teddyBear: {
 		id: "teddy-bear",
+		title: "Teddy Bear",
 		state: null,
 		type: "Grim",
 		image: "/relics/teddy-bear-relic.webp",
@@ -71,6 +76,7 @@ const relicRegistry = {
 	},
 	vrilSphere: {
 		id: "vril-sphere",
+		title: "Vril Sphere",
 		state: null,
 		type: "Sinister",
 		image: "/relics/vril-sphere-relic.webp",
@@ -79,6 +85,7 @@ const relicRegistry = {
 	},
 	focusingStone: {
 		id: "focusing-stone",
+		title: "Focusing Stone",
 		state: null,
 		type: "Sinister",
 		image: "/relics/focusing-stone-relic.webp",
@@ -87,6 +94,7 @@ const relicRegistry = {
 	},
 	bus: {
 		id: "bus",
+		title: "Bus",
 		state: null,
 		type: "Wicked",
 		image: "/relics/bus-relic.webp",
@@ -95,6 +103,7 @@ const relicRegistry = {
 	},
 	dragon: {
 		id: "dragon",
+		title: "Dragon",
 		state: null,
 		type: "Wicked",
 		image: "/relics/dragon-relic.webp",
@@ -103,6 +112,7 @@ const relicRegistry = {
 	},
 	bloodVials: {
 		id: "blood-vials",
+		title: "Blood Vials",
 		state: null,
 		type: "Wicked",
 		image: "/relics/blood-vials-relic.webp",
@@ -111,6 +121,7 @@ const relicRegistry = {
 	},
 	seed: {
 		id: "seed",
+		title: "Seed",
 		state: null,
 		type: "Grim",
 		image: "/relics/seed-relic.webp",
@@ -119,6 +130,7 @@ const relicRegistry = {
 	},
 	spiderFang: {
 		id: "spider-fang",
+		title: "Spider Fang",
 		state: null,
 		type: "Sinister",
 		image: "/relics/spider-fang-relic.webp",
@@ -127,6 +139,7 @@ const relicRegistry = {
 	},
 	civilProtectorHead: {
 		id: "civil-protector-head",
+		title: "Civil Protector Head",
 		state: null,
 		type: "Wicked",
 		image: "/relics/civil-protector-head-relic.webp",

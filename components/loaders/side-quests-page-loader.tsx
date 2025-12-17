@@ -1,8 +1,8 @@
 import Breadcrumbs, { type Link } from "../breadcrumbs/breadcrumbs"
 import GridSection from "../grid-section/grid-section"
+import FilterLoader from "./filter-loader"
 import GridLoader from "./grid-loader"
 import GridPaginationLoader from "./grid-pagination-loader"
-import QuestFilterLoader from "./quest-filter-loader"
 
 export default function SideQuestsPageLoader() {
 	const links: Link<string>[] = [{ title: "Side Quests", href: `/side-quests` }]
@@ -15,7 +15,7 @@ export default function SideQuestsPageLoader() {
 					<p className="-mt-7 mb-2 text-lg text-muted-foreground">
 						Discover the hidden secrets and rewards beyond the main story.
 					</p>
-					<QuestFilterLoader filters={["Map", "Game"]} />
+					<FilterLoader filters={["Map", "Game"]} />
 					<GridLoader />
 					<GridPaginationLoader pages={5} />
 				</GridSection>

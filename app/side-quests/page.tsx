@@ -4,7 +4,6 @@ import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import GridSection from "@/components/grid-section/grid-section"
 import GridLoader from "@/components/loaders/grid-loader"
-import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
 import { SideQuestFilters } from "@/components/quest-filters/side-quest-filters"
 import QuestGridClient from "@/components/quest-grid/quest-grid"
 import { getSideQuests } from "@/data/side-quests"
@@ -50,9 +49,7 @@ export default function SideQuests() {
 					<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
 						Discover the hidden secrets and rewards beyond the main story.
 					</p>
-					<Suspense fallback={<QuestFilterLoader filters={["Map", "Game"]} />}>
-						<SideQuestFilters />
-					</Suspense>
+					<SideQuestFilters />
 					<Suspense fallback={<GridLoader />}>
 						<QuestGridClient quests={quests} />
 					</Suspense>

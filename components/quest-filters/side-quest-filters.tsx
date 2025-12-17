@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import { getGames } from "@/data/games"
 import { getMaps } from "@/data/maps"
 import { getSideQuests } from "@/data/side-quests"
-import QuestFilterLoader from "../loaders/quest-filter-loader"
+import FilterLoader from "../loaders/filter-loader"
 import QuestFiltersClient from "./quest-filters.client"
 
 export function SideQuestFilters() {
@@ -27,7 +27,7 @@ export function SideQuestFilters() {
 		}))
 
 	return (
-		<Suspense fallback={<QuestFilterLoader filters={["Map", "Game"]} />}>
+		<Suspense fallback={<FilterLoader filters={["Map", "Game"]} />}>
 			<QuestFiltersClient type="side" maps={mapFilters} games={gameFilters} />
 		</Suspense>
 	)
