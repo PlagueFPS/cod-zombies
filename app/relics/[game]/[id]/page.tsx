@@ -9,6 +9,7 @@ import { CustomLink } from "@/components/custom-link/custom-link"
 import FeaturedImage from "@/components/featured-image/featured-image"
 import richStyles from "@/components/rich-text/rich-text.module.css"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { getAdjacentRelics, getRelicById, getRelics, type Relic } from "@/data/relics"
 import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
@@ -62,7 +63,7 @@ const RelicPage = Effect.fn("RelicPage")(
 		const MDXContent = content?.default
 
 		return (
-			<section className="container mx-auto max-w-4xl px-4 md:py-12">
+			<section className="-mt-10 container mx-auto max-w-4xl px-4 md:py-12">
 				<Breadcrumbs
 					links={[
 						{ title: "Relics", href: "/relics" },
@@ -72,7 +73,7 @@ const RelicPage = Effect.fn("RelicPage")(
 							href: `/relics/${relic.map.game.id}/${relic.id}`,
 						},
 					]}
-					className="mb-6"
+					className="mb-14"
 				/>
 				<article className="space-y-8">
 					<header className="space-y-6 border-b pb-8 text-center">
@@ -176,26 +177,28 @@ const PrevOrNextRelicCard = ({ relic, prev }: PrevOrNextRelicCard) => {
 	if (!shouldRender) return null
 
 	return (
-		<CustomLink
-			href={`/relics/${relic.map.game.id}/${relic.id}`}
-			tabIndex={tabIndex}
-			className="group w-fit hover:text-primary"
-		>
-			<article className="flex h-full items-center">
-				<div className="mt-auto flex items-center justify-between pb-2 transition-colors group-focus-visible:text-primary">
-					{prev ? (
-						<span className="inline-flex items-center justify-center gap-1">
-							<ChevronLeft className="group-hover:-translate-x-1 group-focus-visible:-translate-x-1 transition-all" />
-							<span>{relic.title}</span>
-						</span>
-					) : (
-						<span className="inline-flex items-center justify-center gap-1">
-							<span className="ml-auto">{relic.title}</span>
-							<ChevronRight className="transition-all group-hover:translate-x-1 group-focus-visible:translate-x-1" />
-						</span>
-					)}
-				</div>
-			</article>
-		</CustomLink>
+		<Button asChild variant="outline">
+			<CustomLink
+				href={`/relics/${relic.map.game.id}/${relic.id}`}
+				tabIndex={tabIndex}
+				className="group w-fit hover:text-primary"
+			>
+				<article className="flex h-full items-center">
+					<div className="mt-auto flex items-center justify-between pb-2 transition-colors group-focus-visible:text-primary">
+						{prev ? (
+							<span className="inline-flex items-center justify-center gap-1">
+								<ChevronLeft className="group-hover:-translate-x-1 group-focus-visible:-translate-x-1 transition-all" />
+								<span>{relic.title}</span>
+							</span>
+						) : (
+							<span className="inline-flex items-center justify-center gap-1">
+								<span className="ml-auto">{relic.title}</span>
+								<ChevronRight className="transition-all group-hover:translate-x-1 group-focus-visible:translate-x-1" />
+							</span>
+						)}
+					</div>
+				</article>
+			</CustomLink>
+		</Button>
 	)
 }
