@@ -82,7 +82,7 @@ export default function RootLayout({ children }: LayoutProps) {
 						disableTransitionOnChange
 					>
 						<Header />
-						<main className="m-10 mb-4 grow">{children}</main>
+						<main className="mt-10 mb-4 grow">{children}</main>
 						<Footer />
 						<Toaster richColors position="top-center" closeButton />
 					</ThemeProvider>
