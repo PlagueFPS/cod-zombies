@@ -4,6 +4,7 @@ import { GoogleAnalytics } from "@next/third-parties/google"
 import { Geist, Geist_Mono } from "next/font/google"
 import Script from "next/script"
 import { HashLinkHandler } from "@/components/custom-link/custom-link"
+import Footer from "@/components/footer/footer"
 import Header from "@/components/header/header"
 import ReactScanWrapper from "@/components/react-scan/react-scan-wrapper"
 import { Toaster } from "@/components/ui/sonner"
@@ -81,7 +82,8 @@ export default function RootLayout({ children }: LayoutProps) {
 						disableTransitionOnChange
 					>
 						<Header />
-						{children}
+						<main className="m-10 mb-4 grow">{children}</main>
+						<Footer />
 						<Toaster richColors position="top-center" closeButton />
 					</ThemeProvider>
 					<HashLinkHandler />

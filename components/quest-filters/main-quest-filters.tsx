@@ -1,6 +1,6 @@
 import { Option } from "effect"
 import { Suspense } from "react"
-import QuestFilterLoader from "@/components/loaders/quest-filter-loader"
+import FilterLoader from "@/components/loaders/filter-loader"
 import { getGames } from "@/data/games"
 import { getMainQuests, type MainQuestDifficulty } from "@/data/main-quests"
 import { slugify, sortDifficulties } from "@/utils/functions.client"
@@ -34,7 +34,7 @@ export default function MainQuestFilters() {
 		}))
 
 	return (
-		<Suspense fallback={<QuestFilterLoader filters={["Game", "Difficulty"]} />}>
+		<Suspense fallback={<FilterLoader filters={["Game", "Difficulty"]} />}>
 			<QuestFiltersClient type="main" games={gameFilters} difficulties={difficultyFilters} />
 		</Suspense>
 	)

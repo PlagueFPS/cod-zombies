@@ -2,6 +2,7 @@ import type { Augment } from "@/data/augments"
 import type { ElixirRarity } from "@/data/elixirs"
 import type { GobblegumRarity, GobblegumType } from "@/data/gobblegum"
 import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { RelicType } from "@/data/relics"
 import type { ZombieAttack } from "@/data/zombie-attacks"
 import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
@@ -51,14 +52,15 @@ export const DifficultyBadge = ({
 export const TypeBadge = ({
 	className,
 	type,
-}: CustomBadgeProps & { type: Zombie["type"] | Augment["type"] }) => (
+}: CustomBadgeProps & { type: Zombie["type"] | Augment["type"] | RelicType }) => (
 	<Badge
 		className={cn(
 			{
-				"badge-easy-gradient dark:dark-badge-easy-gradient": type === "Normal",
-				"badge-medium-gradient dark:dark-badge-medium-gradient": type === "Special",
+				"badge-easy-gradient dark:dark-badge-easy-gradient": type === "Normal" || type === "Grim",
+				"badge-medium-gradient dark:dark-badge-medium-gradient":
+					type === "Special" || type === "Sinister",
 				"badge-elite-gradient dark:dark-badge-elite-gradient": type === "Elite",
-				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Boss",
+				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Boss" || type === "Wicked",
 				"badge-major-augment-gradient dark:dark-badge-major-augment-gradient": type === "Major",
 				"badge-primary-gradient dark:dark-badge-primary-gradient": type === "Minor",
 			},

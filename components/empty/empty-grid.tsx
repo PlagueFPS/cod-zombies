@@ -1,8 +1,9 @@
-import { Book, Brain } from "lucide-react"
+import { Match } from "effect"
+import { Book, Brain, Stone } from "lucide-react"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "../ui/empty"
 
 interface EmptyGridProps {
-	type: "Quest" | "Zombie"
+	type: "Quest" | "Zombie" | "Relic"
 	className?: string
 	title?: string
 	description?: string
@@ -13,7 +14,12 @@ export default function EmptyGrid({ type, title, description, className }: Empty
 		<Empty className={className}>
 			<EmptyHeader>
 				<EmptyMedia variant="icon" className="text-primary">
-					{type === "Quest" ? <Book /> : <Brain />}
+					{Match.value(type).pipe(
+						Match.when("Quest", () => <Book />),
+						Match.when("Zombie", () => <Brain />),
+						Match.when("Relic", () => <Stone />),
+						Match.exhaustive,
+					)}
 				</EmptyMedia>
 				<EmptyTitle>{title || `No ${type}s Found`}</EmptyTitle>
 				<EmptyDescription>
