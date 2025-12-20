@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { FileSystem, Path } from "@effect/platform"
 import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -13,7 +14,8 @@ import { getAdjacentRelics, getRelicById, getRelics, type Relic } from "@/data/r
 import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
-import { calculateTimeToRead, getLastUpdated } from "@/utils/functions"
+import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { calculateTimeToRead, getLastUpdated, getServerUrl } from "@/utils/functions"
 
 export const generateStaticParams = () => {
 	const relics = getRelics()
@@ -21,6 +23,41 @@ export const generateStaticParams = () => {
 		game: relic.map.game.id,
 		id: relic.id,
 	}))
+}
+
+export const generateMetadata = async ({
+	params,
+}: PageProps<"/relics/[game]/[id]">): Promise<Metadata> => {
+	const { id } = await params
+	const relic = getRelicById(id)
+	if (!relic) notFound()
+
+	const title = `${relic.title} Relic Guide`
+	const description = `Learn how to unlock the ${relic.map.title} ${relic.type} ${relic.title} relic with the effect: ${relic.description}`
+
+	return {
+		title,
+		description,
+		openGraph: {
+			...GLOBAL_OG_PROPS.openGraph,
+			title,
+			description,
+			url: `/relics/${relic.map.game.id}/${relic.id}`,
+			images: {
+				url: `${getServerUrl()}/relics/${relic.id}-relic.webp`,
+				width: 256,
+				height: 256,
+			},
+		},
+		twitter: {
+			title,
+			description,
+			card: "summary",
+		},
+		alternates: {
+			canonical: `${getServerUrl()}/relics/${relic.map.game.id}/${relic.id}`,
+		}
+	}
 }
 
 const RelicPage = Effect.fn("RelicPage")(
@@ -160,7 +197,7 @@ interface PrevOrNextRelicCardProps {
 }
 
 const PrevOrNextRelicCard = ({ relic, prev }: PrevOrNextRelicCardProps) => {
-	if (!relic.state || relic.state === "Coming Soon") return null
+	if (relic.state === "Coming Soon") return null
 
 	return (
 		<Button asChild variant="outline">

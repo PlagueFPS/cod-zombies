@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Book, Brain, MapIcon, Stone } from "lucide-react"
+import { Book, Brain, ComponentIcon, MapIcon } from "lucide-react"
 
 // navigator.platform is deprecated and should be replaced with navigator.userAgentData.platform once stable
 export const IS_MAC_OS =
@@ -48,8 +48,8 @@ export const ROUTES = [
 	{
 		id: "relics",
 		title: "Relics",
-		description: "Discover the secrets of the relics.",
+		description: "Learn how to obtain the most desired relics.",
 		href: "/relics",
-		icon: Stone,
+		icon: ComponentIcon,
 	},
 ] as const

@@ -2,6 +2,7 @@ import { Effect, Option } from "effect"
 import { getGames } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
 import { getMainQuests } from "@/data/main-quests"
+import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 import SearchInput from "./search-input"
@@ -17,17 +18,6 @@ export default async function SearchBar({ showFull }: ISearchBar) {
 			Effect.map(maps => maps.map(map => ({ id: map.id, title: map.title }))),
 		)
 		const mainQuests = getMainQuests()
-		const games = getGames().map(g => ({
-			id: g.id,
-			title: g.title,
-		}))
-		const sideQuests = getSideQuests()
-		const zombies = getZombies().map(z => ({
-			id: z.id,
-			title: z.title,
-		}))
-
-		const mainQuestsDtos = mainQuests
 			.filter(q => Option.getOrNull(q.state) !== "Coming Soon")
 			.map(q => ({
 				id: q.map.id,
@@ -37,28 +27,53 @@ export default async function SearchBar({ showFull }: ISearchBar) {
 					title: q.map.game.title,
 				},
 			}))
-		const sideQuestsDtos = sideQuests
+		const games = getGames().map(g => ({
+			id: g.id,
+			title: g.title,
+		}))
+		const sideQuests = getSideQuests()
 			.filter(q => Option.getOrNull(q.state) !== "Coming Soon")
 			.map(q => ({
 				id: q.id,
 				title: q.title,
+				map: {
+					id: q.map.id,
+					title: q.map.title,
+				},
 				game: {
 					id: q.map.game.id,
 					title: q.map.game.title,
 				},
+			}))
+		const zombies = getZombies()
+			.filter(z => Option.getOrNull(z.state) !== "Coming Soon")
+			.map(z => ({
+				id: z.id,
+				title: z.title,
+			}))
+		const relics = getRelics()
+			.filter(r => r.state !== "Coming Soon")
+			.map(r => ({
+				id: r.id,
+				title: r.title,
 				map: {
-					id: q.map.id,
-					title: q.map.title,
+					id: r.map.id,
+					title: r.map.title,
+				},
+				game: {
+					id: r.map.game.id,
+					title: r.map.game.title,
 				},
 			}))
 
 		return (
 			<div className="flex w-fit animate-fade-in items-center justify-center">
 				<SearchInput
-					maps={mainQuestsDtos}
+					maps={mainQuests}
 					games={games}
-					quests={sideQuestsDtos}
+					quests={sideQuests}
 					zombies={zombies}
+					relics={relics}
 					showFull={showFull}
 					availableMaps={availableMaps}
 				/>

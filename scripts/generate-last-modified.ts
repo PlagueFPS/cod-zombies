@@ -94,12 +94,12 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 	return result
 }
 
-const getAllContentFiles = (dir: string) =>
+	const getAllContentFiles = (dir: string) =>
 	Effect.gen(function* () {
 		const path = yield* Path.Path
 		const fs = yield* FileSystem.FileSystem
 		const files: string[] = []
-		const filenameMap = new Map<string, string[]>()
+		const pathCountMap = new Map<string, number>()
 		const subDirs = yield* fs.readDirectory(dir)
 
 		for (const subDir of subDirs) {
@@ -111,24 +111,24 @@ const getAllContentFiles = (dir: string) =>
 				const fullPath = path.join(process.cwd(), `./content/${subDir}/${file}`)
 				files.push(fullPath)
 
-				// Track filenames to detect duplicates
-				const existing = filenameMap.get(file) || []
-				existing.push(`${subDir}/${file}`)
-				filenameMap.set(file, existing)
+				// Track relative paths to detect duplicates
+				const relativePath = `${subDir}/${file}`
+				const count = pathCountMap.get(relativePath) || 0
+				pathCountMap.set(relativePath, count + 1)
 			}
 		}
 
-		// Check for duplicate filenames
+		// Check for duplicate paths (same path appearing multiple times)
 		const duplicates: string[] = []
-		for (const [filename, paths] of filenameMap) {
-			if (paths.length > 1) {
-				duplicates.push(`${filename}: ${paths.join(", ")}`)
+		for (const [relativePath, count] of pathCountMap) {
+			if (count > 1) {
+				duplicates.push(`${relativePath} (appears ${count} times)`)
 			}
 		}
 
 		if (duplicates.length > 0) {
 			return yield* new DuplicateFilenameError({
-				message: `Duplicate filenames detected:\n${duplicates.join("\n")}`,
+				message: `Duplicate file paths detected:\n${duplicates.join("\n")}`,
 			})
 		}
 

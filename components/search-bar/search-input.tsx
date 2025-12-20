@@ -1,7 +1,7 @@
 "use client"
 import type { Route } from "next"
 import type { MapConfigMetadata } from "@/map-configs"
-import { Book, BookText, Brain, MapIcon, Search } from "lucide-react"
+import { Book, BookText, Brain, ComponentIcon, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
@@ -39,12 +39,15 @@ interface QuestSearch extends MapSearch {
 	}
 }
 
+type RelicSearch = QuestSearch
+
 interface SearchInputProps {
 	showFull?: boolean
 	maps: MapSearch[]
 	games: SearchEntry[]
 	quests: QuestSearch[]
 	zombies: SearchEntry[]
+	relics: RelicSearch[]
 	availableMaps: Pick<MapConfigMetadata, "id" | "title">[]
 }
 
@@ -54,6 +57,7 @@ const filters = [
 	{ name: "Side Quests", icon: Book },
 	{ name: "Zombies", icon: Brain },
 	{ name: "Maps", icon: MapIcon },
+	{ name: "Relics", icon: ComponentIcon },
 ]
 
 export default function SearchInput({
@@ -63,13 +67,16 @@ export default function SearchInput({
 	quests,
 	zombies,
 	availableMaps,
+	relics,
 }: SearchInputProps) {
 	const router = useRouter()
 	const [open, setOpen] = useState(false)
 	const [filter, setFilter] = useState("All")
 
 	const mapSlugs = new Set(quests.map(q => q.map.id))
+	const relicMapSlugs = new Set(relics.map(r => r.map.id))
 	const questMaps = maps.filter(m => mapSlugs.has(m.id))
+	const relicMaps = maps.filter(m => relicMapSlugs.has(m.id))
 	const shortcut = IS_MAC_OS ? "meta+k" : "ctrl+k"
 
 	useShortcut(shortcut, () => setOpen(prev => !prev), { ignoreInputs: false })
@@ -94,7 +101,7 @@ export default function SearchInput({
 				onClick={() => setOpen(!open)}
 			>
 				<Search className="size-5" />
-				<span className="mr-auto text-sm">Search Guides...</span>
+				<span className="mr-auto text-sm">Search Content...</span>
 				<Shortcut shortcuts={IS_MAC_OS ? ["⌘", "K"] : ["Ctrl", "K"]} size="sm" />
 			</Button>
 			<Button
@@ -104,15 +111,15 @@ export default function SearchInput({
 				className={cn("flex text-muted-foreground lg:hidden", { hidden: showFull })}
 				onClick={() => setOpen(!open)}
 				title="Search"
-				aria-label="Search Guides"
+				aria-label="Search Content"
 			>
 				<Search className="size-6" />
 			</Button>
 			<CommandDialog open={open} onOpenChange={setOpen}>
 				<DialogTitle className="sr-only">Search Bar</DialogTitle>
-				<DialogDescription className="sr-only">Search for quests</DialogDescription>
-				<CommandInput placeholder="Search quest guides, zombies, maps" className="text-base" />
-				<ScrollArea>
+				<DialogDescription className="sr-only">Search for Guides</DialogDescription>
+				<CommandInput placeholder="Search guides, zombies, maps, relics" className="text-base" />
+				<ScrollArea className="pb-2">
 					<div className="flex gap-1 p-2">
 						{filters.map(f => (
 							<Button
@@ -129,7 +136,7 @@ export default function SearchInput({
 							</Button>
 						))}
 					</div>
-					<ScrollBar orientation="horizontal" hidden />
+					<ScrollBar orientation="horizontal" />
 				</ScrollArea>
 				<div className="relative">
 					<CommandList>
@@ -202,6 +209,26 @@ export default function SearchInput({
 								))}
 							</CommandGroup>
 						) : null}
+						{filter === "All" || filter === "Relics"
+							? relicMaps.map(m => (
+									<CommandGroup heading={`${m.title} Relics`} key={m.id}>
+										{relics.map(r =>
+											r.map.id !== m.id ? null : (
+												<CommandItem
+													key={`${r.id}_${m.id}`}
+													onSelect={() =>
+														onSelectHandler(`/relics/${r.game.id}/${r.id}`)
+													}
+													className="cursor-pointer gap-2"
+												>
+													<ComponentIcon className="size-4" />
+													<span className="blur-none">{r.title}</span>
+												</CommandItem>
+											),
+										)}
+									</CommandGroup>
+								))
+							: null}
 					</CommandList>
 				</div>
 			</CommandDialog>

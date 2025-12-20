@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
-import { Card, CardContent, CardDescription, CardTitle } from "../ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Separator } from "../ui/separator"
 
 interface RelicCardProps {
 	relic: Omit<Relic, "content">
@@ -54,37 +55,44 @@ export default function RelicCard({ relic, relicIndex }: RelicCardProps) {
 						{ "opacity-75 dark:opacity-50": disabled },
 					)}
 				>
-					<CardContent>
-						<div className="relative flex aspect-square w-full items-center justify-center overflow-hidden">
+					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
+						{stateBadge}
+						<TypeBadge type={relic.type} />
+						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+							{relic.map.title}
+						</Badge>
+					</div>
+					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
+						<FeaturedImage
+							featuredImage={relic.image}
+							width={272}
+							height={272}
+							sizes="272px"
+							className="aspect-square scale-150"
+						/>
+					</div>
+					<CardHeader className="flex flex-col gap-4">
+						<div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg bg-muted/50">
 							<FeaturedImage
 								featuredImage={relic.image}
 								alt={relic.title}
-								width={128}
-								height={128}
+								width={272}
+								height={272}
 								priority={preload}
-								sizes="128px"
-								className="size-32 object-cover transition-transform group-hover:scale-105"
+								sizes="272px"
+								className="size-40 object-contain transition-transform group-hover:scale-110"
 							/>
 						</div>
-
-						<div className="space-y-3 p-4">
-							<div className="flex items-start justify-between gap-2">
-								<CardTitle className="leading-tight transition-colors group-hover:text-primary">
-									{relic.title}
-								</CardTitle>
-							</div>
+						<div className="space-y-3">
+							<CardTitle className="text-xl leading-tight transition-colors group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">
+								{relic.title}
+							</CardTitle>
+							<Separator className="opacity-50" />
+							<CardDescription className="text-foreground/85 leading-relaxed">
+								{relic.description}
+							</CardDescription>
 						</div>
-
-						<div className="flex flex-wrap gap-2">
-							{stateBadge}
-							<Badge>{relic.map.title}</Badge>
-							<TypeBadge type={relic.type} />
-						</div>
-
-						<CardDescription className="text-foreground/85 leading-relaxed">
-							{relic.description}
-						</CardDescription>
-					</CardContent>
+					</CardHeader>
 				</Card>
 			</CustomLink>
 		</article>

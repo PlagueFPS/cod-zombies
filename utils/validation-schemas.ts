@@ -27,6 +27,11 @@ const ZombieParamsSchema = Schema.Struct({
 	id: Schema.OptionFromUndefinedOr(Schema.String),
 })
 
+	const RelicParamsSchema = Schema.Struct({
+		id: Schema.OptionFromUndefinedOr(Schema.String),
+		game: Schema.OptionFromUndefinedOr(Schema.String),
+	})
+
 const ErrorPageSearchParamsSchema = Schema.Struct({
 	message: Schema.OptionFromUndefinedOr(Schema.String),
 })
@@ -34,6 +39,7 @@ const ErrorPageSearchParamsSchema = Schema.Struct({
 export const decodeMainQuestParams = Schema.decodeUnknownSync(MainQuestParamsSchema)
 export const decodeSideQuestParams = Schema.decodeUnknownSync(SideQuestParamsSchema)
 export const decodeZombieParams = Schema.decodeUnknownSync(ZombieParamsSchema)
+export const decodeRelicParams = Schema.decodeUnknownSync(RelicParamsSchema)
 export const decodeErrorPageSearchParams = Schema.decodeUnknown(ErrorPageSearchParamsSchema)
 
 const EmailSchema = Schema.NonEmptyString.annotations({
