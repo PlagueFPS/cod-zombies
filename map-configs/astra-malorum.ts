@@ -5,7 +5,7 @@ import { perks, sharedMarkers, weapons } from "./markers"
 export const metadata: MapConfigMetadata = {
 	id: "astra-malorum",
 	title: "Astra Malorum",
-	state: Option.some("New"),
+	state: Option.none(),
 	image: "/previews/astra-malorum-preview.webp",
 	game: "blackOps7",
 	description:

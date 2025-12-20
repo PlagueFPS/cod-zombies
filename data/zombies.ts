@@ -1881,7 +1881,7 @@ const zombiesRegistry = {
 	oscar: {
 		id: "oscar",
 		title: "O.S.C.A.R.",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: new Date("December 4, 2025 12:00 AM"),
 		image: "/zombies/oscar.webp",
 		description:
@@ -1904,7 +1904,7 @@ const zombiesRegistry = {
 	caltheris: {
 		id: "caltheris",
 		title: "Caltheris",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: new Date("December 4, 2025 1:00 AM"),
 		image: "/zombies/caltheris.webp",
 		description:

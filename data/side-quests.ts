@@ -1620,7 +1620,7 @@ const sideQuestRegistry = {
 	gramophoneFreePerks: {
 		id: "gramophone-free-perks",
 		title: "Gramophone Free Perks",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain three free perks by completing three quick gramophone challenges.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/gramophone-free-perks.mdx")),
@@ -1628,7 +1628,7 @@ const sideQuestRegistry = {
 	skullsFreePerk: {
 		id: "skulls-free-perk",
 		title: "Skulls Free Perk",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to obtain a free perk by collecting five skulls and completing a memory game.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/skulls-free-perk.mdx")),
@@ -1636,7 +1636,7 @@ const sideQuestRegistry = {
 	nikolaisDemons: {
 		id: "nikolais-demons",
 		title: "Nikolai's Demons",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Discover some great backstory and a free legendary weapon by facing Nikolai's demons.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/nikolais-demons.mdx")),
@@ -1644,7 +1644,7 @@ const sideQuestRegistry = {
 	magic: {
 		id: "magic",
 		title: "Magic",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Discover how to activate the Music Easter Egg song 'Magic' by Avenged Sevenfold.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/magic.mdx")),
@@ -1652,7 +1652,7 @@ const sideQuestRegistry = {
 	originalPareidolia: {
 		id: "original-pareidolia",
 		title: "Original Pareidolia",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Discover how to activate the original pareidolia Music Easter Egg song by Kevin Sherwood.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/original-pareidolia.mdx")),
@@ -1660,7 +1660,7 @@ const sideQuestRegistry = {
 	pareidoliaRemix: {
 		id: "pareidolia-remix",
 		title: "Pareidolia Remix",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Discover how to activate the pareidolia remix Music Easter Egg song by Kevin Sherwood.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/pareidolia-remix.mdx")),
@@ -1668,7 +1668,7 @@ const sideQuestRegistry = {
 	bongo: {
 		id: "bongo",
 		title: "Bongo",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to befriend a Ravager named Bongo to fight for you in Astra Malorum.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/bongo.mdx")),
@@ -1676,7 +1676,7 @@ const sideQuestRegistry = {
 	skullJumpscare: {
 		id: "skull-jumpscare",
 		title: "Skull Jumpscare",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Discover this hidden skull jumpscare within the telescope in the Observatory Dome.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/skull-jumpscare.mdx")),
@@ -1684,7 +1684,7 @@ const sideQuestRegistry = {
 	twins: {
 		id: "twins",
 		title: "Twins",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Learn how to summon the ghost twins to obtain a free Cryo Freeze ammo mod and more loot.`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/twins.mdx")),
@@ -1692,7 +1692,7 @@ const sideQuestRegistry = {
 	hiddenPowerUpsAstra: {
 		id: "hidden-power-ups-astra-malorum",
 		title: "Hidden Power Ups",
-		state: Option.some("New"),
+		state: Option.none(),
 		description: `Discover all hidden power up locations in Astra Malorum to collect when you need them`,
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(
