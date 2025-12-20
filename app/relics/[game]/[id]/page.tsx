@@ -1,4 +1,3 @@
-import type { Route } from "next"
 import { FileSystem, Path } from "@effect/platform"
 import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -155,32 +154,18 @@ const RelicPage = Effect.fn("RelicPage")(
 
 export default FileSystemPage.build(RelicPage)
 
-interface PrevOrNextRelicCard {
+interface PrevOrNextRelicCardProps {
 	relic: Relic
 	prev?: boolean
 }
 
-const PrevOrNextRelicCard = ({ relic, prev }: PrevOrNextRelicCard) => {
-	const { shouldRender, tabIndex } = Option.match(Option.fromNullable(relic.state), {
-		onNone: () => ({
-			tabIndex: 0,
-			shouldRender: true,
-		}),
-		onSome: () => {
-			return {
-				tabIndex: 0,
-				shouldRender: false,
-			}
-		},
-	})
-
-	if (!shouldRender) return null
+const PrevOrNextRelicCard = ({ relic, prev }: PrevOrNextRelicCardProps) => {
+	if (!relic.state || relic.state === "Coming Soon") return null
 
 	return (
 		<Button asChild variant="outline">
 			<CustomLink
 				href={`/relics/${relic.map.game.id}/${relic.id}`}
-				tabIndex={tabIndex}
 				className="group w-fit hover:text-primary"
 			>
 				<article className="flex h-full items-center">

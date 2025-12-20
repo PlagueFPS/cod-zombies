@@ -1,9 +1,9 @@
 import { Suspense } from "react"
+import FilterLoader from "@/components/loaders/filter-loader"
+import QuestFiltersClient from "@/components/quest-filters/quest-filters.client"
 import { getGames } from "@/data/games"
 import { getMaps } from "@/data/maps"
 import { getSideQuests } from "@/data/side-quests"
-import FilterLoader from "../loaders/filter-loader"
-import QuestFiltersClient from "./quest-filters.client"
 
 export function SideQuestFilters() {
 	const maps = getMaps()

@@ -9,11 +9,14 @@ export default function RelicFilters() {
 	const maps = getMaps()
 	const relics = getRelics()
 	const relicMaps = new Set(relics.map(r => r.map.id))
-	const relicTypes = [...new Set(relics.map(r => r.type))].map(type => ({
-		id: slugify(type),
-		slug: slugify(type),
-		title: type,
-	}))
+	const relicTypes = [...new Set(relics.map(r => r.type))].map(type => {
+		const typeId = slugify(type)
+		return {
+			id: typeId,
+			slug: typeId,
+			title: type,
+		}
+	})
 	const mapFilters = maps
 		.filter(m => relicMaps.has(m.id))
 		.map(m => ({

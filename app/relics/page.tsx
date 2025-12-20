@@ -7,10 +7,7 @@ import RelicGrid from "@/components/relic-grid/relic-grid"
 import { getRelics } from "@/data/relics"
 
 export default function RelicsPage() {
-	const relics = getRelics().map(relic => {
-		const { content, ...rest } = relic
-		return rest
-	})
+	const relics = getRelics().map(({ content, ...rest }) => rest)
 
 	return (
 		<div className="flex w-full flex-col items-center justify-center">
