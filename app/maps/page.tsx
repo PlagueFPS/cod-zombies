@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
-import { Effect } from "effect"
+import { Effect, Option } from "effect"
 import { Suspense } from "react"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import GridSection from "@/components/grid-section/grid-section"
-import PreviewCard from "@/components/interactive-map/preview-card"
-import PreviewCardLoader from "@/components/loaders/preview-card-loader"
+import InteractiveMapsFilters from "@/components/interactive-map/interactive-map-filters"
+import MapsGrid from "@/components/interactive-map/maps-grid"
+import FilterLoader from "@/components/loaders/filter-loader"
+import GridLoader from "@/components/loaders/grid-loader"
 import { getInteractiveMaps } from "@/data/interactive-map"
 import { BasePage } from "@/lib/layers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
@@ -29,7 +31,11 @@ export const metadata: Metadata = {
 }
 
 const MapsPage = Effect.fn("MapsPage")(function* () {
-	const maps = yield* getInteractiveMaps()
+	const maps = yield* getInteractiveMaps().pipe(
+		Effect.map(maps => maps.map(m => ({ ...m, state: Option.getOrNull(m.state) }))),
+	)
+	const availableGames = new Set(maps.map(map => map.game))
+
 	return (
 		<div className="w-full flex-col items-center justify-center">
 			<div className="container flex flex-col items-center justify-center gap-6">
@@ -39,13 +45,12 @@ const MapsPage = Effect.fn("MapsPage")(function* () {
 						Browse our collection of interactive maps showcasing key spawn points, locations, and
 						more.
 					</p>
-					<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
-						{maps.map((map, index) => (
-							<Suspense key={map.id} fallback={<PreviewCardLoader />}>
-								<PreviewCard map={map} index={index} />
-							</Suspense>
-						))}
-					</div>
+					<Suspense fallback={<FilterLoader filters={["Game"]} />}>
+						<InteractiveMapsFilters availableGames={availableGames} />
+					</Suspense>
+					<Suspense fallback={<GridLoader />}>
+						<MapsGrid maps={maps} />
+					</Suspense>
 				</GridSection>
 			</div>
 		</div>
