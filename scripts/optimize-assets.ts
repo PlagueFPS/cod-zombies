@@ -56,14 +56,14 @@ Effect.gen(function* () {
 					imageBuffer = yield* Effect.tryPromise({
 						try: () => {
 							if (noResize || metadata.width <= 1920) {
-								return image.webp({ effort: 6 }).toBuffer()
+								return image.webp({ effort: 6, quality: 100 }).toBuffer()
 							}
 
 							if (map) {
-								return image.resize({ width: 2048 }).webp({ effort: 6 }).toBuffer()
+								return image.resize({ width: 2048 }).webp({ effort: 6, quality: 100 }).toBuffer()
 							}
 
-							return image.resize({ width: 1920 }).webp({ effort: 6 }).toBuffer()
+							return image.resize({ width: 1920 }).webp({ effort: 6, quality: 100 }).toBuffer()
 						},
 						catch: error => new Error(`Failed to transform image: ${asset}`, { cause: error }),
 					})
