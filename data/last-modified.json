@@ -1,61 +1,71 @@
 {
   "version": "1.0",
-  "generated": "2025-12-20T18:38:36.467Z",
+  "generated": "2025-12-22T04:07:40.975Z",
   "files": {
+    "side-quests/lantern-wisp.mdx": {
+      "lastModified": "2025-12-22T04:07:09.000Z",
+      "lastModifiedFormatted": "December 22, 2025",
+      "commitHash": "fc687f7"
+    },
+    "side-quests/zarya-rocket.mdx": {
+      "lastModified": "2025-12-22T04:07:09.000Z",
+      "lastModifiedFormatted": "December 22, 2025",
+      "commitHash": "fc687f7"
+    },
     "relics/blood-vials.mdx": {
-      "lastModified": "2025-12-20T07:01:03.000Z",
+      "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "8217fd0"
-    },
-    "relics/civil-protector-head.mdx": {
-      "lastModified": "2025-12-20T07:01:03.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "8217fd0"
-    },
-    "relics/dragon.mdx": {
-      "lastModified": "2025-12-20T07:01:03.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "8217fd0"
-    },
-    "relics/seed.mdx": {
-      "lastModified": "2025-12-20T07:01:03.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "8217fd0"
-    },
-    "relics/spider-fang.mdx": {
-      "lastModified": "2025-12-20T07:01:03.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "8217fd0"
-    },
-    "relics/teddy-bear.mdx": {
-      "lastModified": "2025-12-20T07:01:03.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "8217fd0"
-    },
-    "relics/vril-sphere.mdx": {
-      "lastModified": "2025-12-20T07:01:03.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "8217fd0"
+      "commitHash": "f6c3a23"
     },
     "relics/bus.mdx": {
-      "lastModified": "2025-12-20T04:45:50.000Z",
+      "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "6f816c7"
+      "commitHash": "f6c3a23"
+    },
+    "relics/civil-protector-head.mdx": {
+      "lastModified": "2025-12-20T18:50:44.000Z",
+      "lastModifiedFormatted": "December 20, 2025",
+      "commitHash": "f6c3a23"
     },
     "relics/dragon-wings.mdx": {
-      "lastModified": "2025-12-20T04:45:50.000Z",
+      "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "6f816c7"
+      "commitHash": "f6c3a23"
+    },
+    "relics/dragon.mdx": {
+      "lastModified": "2025-12-20T18:50:44.000Z",
+      "lastModifiedFormatted": "December 20, 2025",
+      "commitHash": "f6c3a23"
     },
     "relics/focusing-stone.mdx": {
-      "lastModified": "2025-12-20T04:45:50.000Z",
+      "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "6f816c7"
+      "commitHash": "f6c3a23"
     },
     "relics/lawyers-pen.mdx": {
-      "lastModified": "2025-12-19T19:39:35.000Z",
-      "lastModifiedFormatted": "December 19, 2025",
-      "commitHash": "4a250ba"
+      "lastModified": "2025-12-20T18:50:44.000Z",
+      "lastModifiedFormatted": "December 20, 2025",
+      "commitHash": "f6c3a23"
+    },
+    "relics/seed.mdx": {
+      "lastModified": "2025-12-20T18:50:44.000Z",
+      "lastModifiedFormatted": "December 20, 2025",
+      "commitHash": "f6c3a23"
+    },
+    "relics/spider-fang.mdx": {
+      "lastModified": "2025-12-20T18:50:44.000Z",
+      "lastModifiedFormatted": "December 20, 2025",
+      "commitHash": "f6c3a23"
+    },
+    "relics/teddy-bear.mdx": {
+      "lastModified": "2025-12-20T18:50:44.000Z",
+      "lastModifiedFormatted": "December 20, 2025",
+      "commitHash": "f6c3a23"
+    },
+    "relics/vril-sphere.mdx": {
+      "lastModified": "2025-12-20T18:50:44.000Z",
+      "lastModifiedFormatted": "December 20, 2025",
+      "commitHash": "f6c3a23"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2025-12-14T17:39:39.000Z",

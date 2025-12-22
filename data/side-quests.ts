@@ -1699,10 +1699,27 @@ const sideQuestRegistry = {
 			() => import("@/content/side-quests/hidden-power-ups-astra-malorum.mdx"),
 		),
 	},
+	lanternWisp: {
+		id: "lantern-wisp",
+		title: "Lantern Wisp",
+		state: Option.some("New"),
+		description: "Learn how to obtain multiple golden wisps capable of one-shotting zombies.",
+		map: getMapByKey("astraMalorum"),
+		content: Effect.promise(() => import("@/content/side-quests/lantern-wisp.mdx"))
+	},
+	zaryaRocket: {
+		id: "zarya-rocket",
+		title: "Zarya Rocket",
+		state: Option.some("New"),
+		description: "Discover this hidden reference and music easter egg floating through space.",
+		map: getMapByKey("astraMalorum"),
+		content: Effect.promise(() => import("@/content/side-quests/zarya-rocket.mdx"))
+	}
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
 const sideQuests: SideQuest[] = Object.values(sideQuestRegistry)
+	.reverse()
 	.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
 	.map(sideQuest => ({ ...sideQuest, _tag: "SideQuest" }))
 
