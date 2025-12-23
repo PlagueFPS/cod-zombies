@@ -1898,7 +1898,8 @@ const zombiesRegistry = {
 			getZombieAttackByKey("attackDronesHologram"),
 			getZombieAttackByKey("internalCircuitryProjectile"),
 		],
-		spawnBehavior: "",
+		spawnBehavior:
+			"O.S.C.A.R. will first spawn once the power is turned on and will patrol the map until killed, and will then respawn after two full rounds. He can also spawn during specific main quest steps.",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/oscar.mdx")),
 	},
 	caltheris: {
