@@ -1,4 +1,5 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react"
+import { connection } from "next/server"
 import { cn } from "@/lib/utils"
 
 interface CopyrightProps
@@ -6,7 +7,8 @@ interface CopyrightProps
 	className?: string
 }
 
-export default function Copyright({ className }: CopyrightProps) {
+export default async function Copyright({ className }: CopyrightProps) {
+	await connection()
 	return (
 		<div
 			className={cn(

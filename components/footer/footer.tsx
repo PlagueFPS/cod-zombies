@@ -1,16 +1,19 @@
+import { Suspense } from "react"
 import ContactForm from "../contact-form/contact-form"
 import { CustomLink } from "../custom-link/custom-link"
 import Newsletter from "../newsletter/newsletter"
+import Socials from "../socials/socials"
 import DonateButton from "../ui/donate-button"
 import Copyright from "./copyright/copyright"
-import Socials from "../socials/socials"
 
 export default function Footer() {
 	return (
 		<footer className="container relative m-auto flex flex-col items-center border-t px-4 py-8 text-sm">
 			<div className="grid grid-cols-1 items-center gap-8 md:grid-cols-3">
 				<div className="order-last flex flex-col-reverse items-center justify-center gap-4 text-center md:order-first md:items-start md:gap-6 md:text-left">
-					<Copyright />
+					<Suspense>
+						<Copyright />
+					</Suspense>
 					<Socials />
 				</div>
 				<Newsletter />
