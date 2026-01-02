@@ -1,16 +1,26 @@
 {
   "version": "1.0",
-  "generated": "2025-12-22T04:07:40.975Z",
+  "generated": "2026-01-02T07:49:12.998Z",
   "files": {
-    "side-quests/lantern-wisp.mdx": {
-      "lastModified": "2025-12-22T04:07:09.000Z",
-      "lastModifiedFormatted": "December 22, 2025",
-      "commitHash": "fc687f7"
+    "side-quests/hidden-power-ups-aotd.mdx": {
+      "lastModified": "2026-01-02T07:48:40.000Z",
+      "lastModifiedFormatted": "January 2, 2026",
+      "commitHash": "9e311cc"
+    },
+    "side-quests/hidden-power-ups-astra-malorum.mdx": {
+      "lastModified": "2026-01-02T07:48:40.000Z",
+      "lastModifiedFormatted": "January 2, 2026",
+      "commitHash": "9e311cc"
     },
     "side-quests/zarya-rocket.mdx": {
-      "lastModified": "2025-12-22T04:07:09.000Z",
+      "lastModified": "2026-01-02T07:48:40.000Z",
+      "lastModifiedFormatted": "January 2, 2026",
+      "commitHash": "9e311cc"
+    },
+    "side-quests/lantern-wisp.mdx": {
+      "lastModified": "2025-12-22T04:12:41.000Z",
       "lastModifiedFormatted": "December 22, 2025",
-      "commitHash": "fc687f7"
+      "commitHash": "e991ff2"
     },
     "relics/blood-vials.mdx": {
       "lastModified": "2025-12-20T18:50:44.000Z",
@@ -92,11 +102,6 @@
       "lastModifiedFormatted": "December 10, 2025",
       "commitHash": "9c6c27a"
     },
-    "side-quests/hidden-power-ups-astra-malorum.mdx": {
-      "lastModified": "2025-12-10T22:39:31.000Z",
-      "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "9c6c27a"
-    },
     "side-quests/magic.mdx": {
       "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
@@ -153,11 +158,6 @@
       "commitHash": "bf94dfc"
     },
     "side-quests/free-ray-gun-mark-2.mdx": {
-      "lastModified": "2025-12-01T03:01:27.000Z",
-      "lastModifiedFormatted": "December 1, 2025",
-      "commitHash": "bf94dfc"
-    },
-    "side-quests/hidden-power-ups-aotd.mdx": {
       "lastModified": "2025-12-01T03:01:27.000Z",
       "lastModifiedFormatted": "December 1, 2025",
       "commitHash": "bf94dfc"
