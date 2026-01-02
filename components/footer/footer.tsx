@@ -1,4 +1,3 @@
-import { Suspense } from "react"
 import ContactForm from "../contact-form/contact-form"
 import { CustomLink } from "../custom-link/custom-link"
 import Newsletter from "../newsletter/newsletter"
@@ -11,9 +10,7 @@ export default function Footer() {
 		<footer className="container relative m-auto flex flex-col items-center border-t px-4 py-8 text-sm">
 			<div className="grid grid-cols-1 items-center gap-8 md:grid-cols-3">
 				<div className="order-last flex flex-col-reverse items-center justify-center gap-4 text-center md:order-first md:items-start md:gap-6 md:text-left">
-					<Suspense>
-						<Copyright />
-					</Suspense>
+					<Copyright />
 					<Socials />
 				</div>
 				<Newsletter />
