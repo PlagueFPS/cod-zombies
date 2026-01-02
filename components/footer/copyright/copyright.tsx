@@ -1,5 +1,5 @@
-import type { DetailedHTMLProps, HTMLAttributes } from "react"
-import { connection } from "next/server"
+"use client"
+import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
 interface CopyrightProps
@@ -7,8 +7,15 @@ interface CopyrightProps
 	className?: string
 }
 
-export default async function Copyright({ className }: CopyrightProps) {
-	await connection()
+const getDate = () => new Date().getFullYear()
+
+export default function Copyright({ className }: CopyrightProps) {
+	const [year, setYear] = useState(getDate())
+
+	useEffect(() => {
+		setYear(getDate())
+	}, [])
+
 	return (
 		<div
 			className={cn(
@@ -16,7 +23,7 @@ export default async function Copyright({ className }: CopyrightProps) {
 				className,
 			)}
 		>
-			<p>&copy; {new Date().getFullYear()} Call of Duty: Zombies Guides</p>
+			<p>&copy; {year} Call of Duty: Zombies Guides</p>
 			<p className="md:pr-12">
 				This website is an independent, unofficial Call of Duty: Zombies fan site. It is not
 				affiliated with or endorsed by Activision Blizzard. All trademarks, service marks, trade
