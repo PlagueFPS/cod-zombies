@@ -1,6 +1,6 @@
 import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
-import { useMapSettings, type TSettingPath } from "@/contexts/interactive-map-settings"
+import { type TSettingPath, useMapSettings } from "@/contexts/interactive-map-settings"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -15,10 +15,10 @@ import {
 	DialogTitle,
 } from "../ui/dialog"
 import { Label } from "../ui/label"
-import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Separator } from "../ui/separator"
 import { Slider } from "../ui/slider"
 import { Switch } from "../ui/switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 export default function MapSettingsPanel() {
@@ -26,6 +26,7 @@ export default function MapSettingsPanel() {
 	const { defaultSettings, settings, updateSettings } = useMapSettings()
 	const [newSettings, setNewSettings] = useState(settings)
 	const isMobile = useIsMobile(1280)
+	const [activeTab, setActiveTab] = useState("markers")
 
 	const handleOpenChange = (open: boolean, save = false) => {
 		if (save) {
@@ -65,8 +66,8 @@ export default function MapSettingsPanel() {
 			...currentSettings,
 			[parentKey]: {
 				...newParent,
-				[subKey]: defaultSetting
-			}
+				[subKey]: defaultSetting,
+			},
 		}))
 	}
 	return (
@@ -101,255 +102,286 @@ export default function MapSettingsPanel() {
 						Customize your interactive map appearance and behavior.
 					</DialogDescription>
 				</DialogHeader>
-				<Separator />
-				<ScrollArea className="max-h-[35vh] pr-4">
-					{/* Marker Settings */}
-					<div className="space-y-4">
-						<div className="flex items-center gap-1.5">
-							<MapPin className="size-5 text-primary" />
-							<h3 className="font-medium text-lg">Marker Settings</h3>
-						</div>
-						<div className="space-y-4 pl-4">
-							<div className="space-y-2">
-								<div className="flex items-center justify-between">
-									<Label htmlFor="icon-size" className="text-base flex items-center gap-2">
-										Icon Size
-										{hasSettingChanged("markers.iconSize") && (
-											<Tooltip>
-												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+				<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+					<TabsList className="grid w-full grid-cols-3 bg-input/30">
+						<TabsTrigger value="markers" className="group flex items-center gap-1.5">
+							<MapPin className="size-4 group-data-[state=active]:text-primary" />
+							<span>Markers</span>
+						</TabsTrigger>
+						<TabsTrigger value="popups" className="group flex items-center gap-1.5">
+							<MessageSquare className="size-4 group-data-[state=active]:text-primary" />
+							<span>Popups</span>
+						</TabsTrigger>
+						<TabsTrigger value="general" className="group flex items-center gap-1.5">
+							<MapIcon className="size-4 group-data-[state=active]:text-primary" />
+							<span>General</span>
+						</TabsTrigger>
+					</TabsList>
+
+					{/* Marker Settings Tab */}
+					<TabsContent value="markers" className="mt-4 space-y-4">
+						<div className="space-y-2">
+							<div className="flex items-center justify-between">
+								<Label htmlFor="icon-size" className="flex items-center gap-2 text-base">
+									Icon Size
+									{hasSettingChanged("markers.iconSize") && (
+										<Tooltip>
+											<TooltipTrigger
+												className="cursor-pointer text-foreground/60 transition-colors hover:text-foreground"
+												onClick={e => {
 													e.preventDefault()
 													resetSetting("markers.iconSize")
-												}}>
-													<CornerUpLeft className="size-4" />
-												</TooltipTrigger>
-												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
-											</Tooltip>
-										)}
-									</Label>
-									<span className="text-muted-foreground text-sm">
-										{newSettings.markers.iconSize}px
-									</span>
-								</div>
-								<Slider
-									id="icon-size"
-									min={16}
-									max={64}
-									step={4}
-									value={[newSettings.markers.iconSize]}
-									onValueChange={value =>
-										setNewSettings(prev => ({
-											...prev,
-											markers: {
-												...prev.markers,
-												iconSize: value[0] ?? prev.markers.iconSize,
-											},
-										}))
-									}
-									className="w-full"
-								/>
+												}}
+											>
+												<CornerUpLeft className="size-4" />
+											</TooltipTrigger>
+											<TooltipContent className="z-999" side="right" sideOffset={4}>
+												Reset to Default
+											</TooltipContent>
+										</Tooltip>
+									)}
+								</Label>
+								<span className="text-muted-foreground text-sm">
+									{newSettings.markers.iconSize}px
+								</span>
 							</div>
-							<div className="space-y-2">
-								<div className="flex items-center justify-between">
-									<Label htmlFor="icon-opacity" className="text-base flex items-center gap-2">
-										Opacity
-										{hasSettingChanged("markers.opacity") && (
-											<Tooltip>
-												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+							<Slider
+								id="icon-size"
+								min={16}
+								max={64}
+								step={4}
+								value={[newSettings.markers.iconSize]}
+								onValueChange={value =>
+									setNewSettings(prev => ({
+										...prev,
+										markers: {
+											...prev.markers,
+											iconSize: value[0] ?? prev.markers.iconSize,
+										},
+									}))
+								}
+								className="w-full"
+							/>
+						</div>
+						<div className="space-y-2">
+							<div className="flex items-center justify-between">
+								<Label htmlFor="icon-opacity" className="flex items-center gap-2 text-base">
+									Opacity
+									{hasSettingChanged("markers.opacity") && (
+										<Tooltip>
+											<TooltipTrigger
+												className="cursor-pointer text-foreground/60 transition-colors hover:text-foreground"
+												onClick={e => {
 													e.preventDefault()
 													resetSetting("markers.opacity")
-												}}>
-													<CornerUpLeft className="size-4" />
-												</TooltipTrigger>
-												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
-											</Tooltip>
-										)}
-									</Label>
-									<span className="text-muted-foreground text-sm">
-										{Math.floor(newSettings.markers.opacity * 100)}%
-									</span>
-								</div>
-								<Slider
-									id="icon-opacity"
-									min={0}
-									max={1}
-									step={0.05}
-									value={[newSettings.markers.opacity]}
-									onValueChange={value =>
-										setNewSettings(prev => ({
-											...prev,
-											markers: {
-												...prev.markers,
-												opacity: value[0] ?? prev.markers.opacity,
-											},
-										}))
-									}
-									className="w-full"
-								/>
+												}}
+											>
+												<CornerUpLeft className="size-4" />
+											</TooltipTrigger>
+											<TooltipContent className="z-999" side="right" sideOffset={4}>
+												Reset to Default
+											</TooltipContent>
+										</Tooltip>
+									)}
+								</Label>
+								<span className="text-muted-foreground text-sm">
+									{Math.floor(newSettings.markers.opacity * 100)}%
+								</span>
 							</div>
+							<Slider
+								id="icon-opacity"
+								min={0}
+								max={1}
+								step={0.05}
+								value={[newSettings.markers.opacity]}
+								onValueChange={value =>
+									setNewSettings(prev => ({
+										...prev,
+										markers: {
+											...prev.markers,
+											opacity: value[0] ?? prev.markers.opacity,
+										},
+									}))
+								}
+								className="w-full"
+							/>
 						</div>
-					</div>
-					<Separator className="my-4" />
-					{/* Popup Settings */}
-					<div className="space-y-4">
-						<div className="flex items-center gap-1.5">
-							<MessageSquare className="size-5 text-primary" />
-							<h3 className="font-medium text-lg">Popup Settings</h3>
-						</div>
-						<div className="space-y-4 pl-4">
-							<div className="flex items-center justify-between">
-								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-gradients" className="text-base flex items-center gap-2">
-										Disable Gradients
-										{hasSettingChanged("popups.disableGradients") && (
-											<Tooltip>
-												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
-													e.preventDefault();
-													resetSetting("popups.disableGradients");
-												}}>
-													<CornerUpLeft className="size-4" />
-												</TooltipTrigger>
-												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
-											</Tooltip>
-										)}
-									</Label>
-									<p className="text-muted-foreground text-sm">
-										Use solid colors instead of gradient backgrounds.
-									</p>
-								</div>
-								<Switch
-									id="disable-gradients"
-									checked={newSettings.popups.disableGradients}
-									onCheckedChange={value =>
-										setNewSettings(prev => ({
-											...prev,
-											popups: {
-												...prev.popups,
-												disableGradients: value,
-											},
-										}))
-									}
-									className="cursor-pointer"
-								/>
+					</TabsContent>
+
+					{/* Popup Settings Tab */}
+					<TabsContent value="popups" className="mt-4 space-y-4">
+						<div className="flex items-center justify-between">
+							<div className="flex flex-col justify-center">
+								<Label htmlFor="disable-gradients" className="flex items-center gap-2 text-base">
+									Disable Gradients
+									{hasSettingChanged("popups.disableGradients") && (
+										<Tooltip>
+											<TooltipTrigger
+												className="cursor-pointer text-foreground/60 transition-colors hover:text-foreground"
+												onClick={e => {
+													e.preventDefault()
+													resetSetting("popups.disableGradients")
+												}}
+											>
+												<CornerUpLeft className="size-4" />
+											</TooltipTrigger>
+											<TooltipContent className="z-999" side="right" sideOffset={4}>
+												Reset to Default
+											</TooltipContent>
+										</Tooltip>
+									)}
+								</Label>
+								<p className="text-muted-foreground text-sm">
+									Use solid colors instead of gradient backgrounds.
+								</p>
 							</div>
-							<div className="flex items-center justify-between">
-								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-animations" className="text-base flex items-center gap-2">
-										Disable Animations
-										{hasSettingChanged("popups.disableAnimations") && (
-											<Tooltip>
-												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+							<Switch
+								id="disable-gradients"
+								checked={newSettings.popups.disableGradients}
+								onCheckedChange={value =>
+									setNewSettings(prev => ({
+										...prev,
+										popups: {
+											...prev.popups,
+											disableGradients: value,
+										},
+									}))
+								}
+								className="cursor-pointer"
+							/>
+						</div>
+						<div className="flex items-center justify-between">
+							<div className="flex flex-col justify-center">
+								<Label htmlFor="disable-animations" className="flex items-center gap-2 text-base">
+									Disable Animations
+									{hasSettingChanged("popups.disableAnimations") && (
+										<Tooltip>
+											<TooltipTrigger
+												className="cursor-pointer text-foreground/60 transition-colors hover:text-foreground"
+												onClick={e => {
 													e.preventDefault()
 													resetSetting("popups.disableAnimations")
-												}}>
-													<CornerUpLeft className="size-4" />
-												</TooltipTrigger>
-												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
-											</Tooltip>
-										)}
-									</Label>
-									<p className="text-muted-foreground text-sm">
-										Turn off popup entrance and exit animations.
-									</p>
-								</div>
-								<Switch
-									id="disable-animations"
-									checked={newSettings.popups.disableAnimations}
-									onCheckedChange={value =>
-										setNewSettings(prev => ({
-											...prev,
-											popups: {
-												...prev.popups,
-												disableAnimations: value,
-											},
-										}))
-									}
-									className="cursor-pointer"
-								/>
+												}}
+											>
+												<CornerUpLeft className="size-4" />
+											</TooltipTrigger>
+											<TooltipContent className="z-999" side="right" sideOffset={4}>
+												Reset to Default
+											</TooltipContent>
+										</Tooltip>
+									)}
+								</Label>
+								<p className="text-muted-foreground text-sm">
+									Turn off popup entrance and exit animations.
+								</p>
 							</div>
+							<Switch
+								id="disable-animations"
+								checked={newSettings.popups.disableAnimations}
+								onCheckedChange={value =>
+									setNewSettings(prev => ({
+										...prev,
+										popups: {
+											...prev.popups,
+											disableAnimations: value,
+										},
+									}))
+								}
+								className="cursor-pointer"
+							/>
 						</div>
-					</div>
-					<Separator className="my-4" />
-					{/* General Settings */}
-					<div className="space-y-2">
-						<div className="flex items-center gap-1.5">
-							<MapIcon className="size-5 text-primary" />
-							<h3 className="font-medium text-lg">General Map Settings</h3>
-						</div>
-						<div className="space-y-4 pl-4">
-							<div className="flex items-center justify-between space-y-2">
-								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-zoom-animation" className="text-base text-foreground flex items-center gap-2">
-										Disable Zoom Animation
-										{hasSettingChanged("general.disableZoomAnimation") && (
-											<Tooltip>
-												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+					</TabsContent>
+
+					{/* General Settings Tab */}
+					<TabsContent value="general" className="mt-4 space-y-4">
+						<div className="flex items-center justify-between">
+							<div className="flex flex-col justify-center">
+								<Label
+									htmlFor="disable-zoom-animation"
+									className="flex items-center gap-2 text-base text-foreground"
+								>
+									Disable Zoom Animation
+									{hasSettingChanged("general.disableZoomAnimation") && (
+										<Tooltip>
+											<TooltipTrigger
+												className="cursor-pointer text-foreground/60 transition-colors hover:text-foreground"
+												onClick={e => {
 													e.preventDefault()
 													resetSetting("general.disableZoomAnimation")
-												}}>
-													<CornerUpLeft className="size-4" />
-												</TooltipTrigger>
-												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
-											</Tooltip>
-										)}
-									</Label>
-									<p className="text-muted-foreground text-sm">
-										Turn off zoom animation when zooming in or out on the map.
-									</p>
-								</div>
-								<Switch
-									id="disable-zoom-animation"
-									checked={newSettings.general.disableZoomAnimation}
-									onCheckedChange={value =>
-										setNewSettings(prev => ({
-											...prev,
-											general: {
-												...prev.general,
-												disableZoomAnimation: value,
-											},
-										}))
-									}
-									className="ml-1 cursor-pointer"
-								/>
+												}}
+											>
+												<CornerUpLeft className="size-4" />
+											</TooltipTrigger>
+											<TooltipContent className="z-999" side="right" sideOffset={4}>
+												Reset to Default
+											</TooltipContent>
+										</Tooltip>
+									)}
+								</Label>
+								<p className="text-muted-foreground text-sm">
+									Turn off zoom animation when zooming in or out on the map.
+								</p>
 							</div>
-							<div className="flex items-center justify-between space-y-2">
-								<div className="flex flex-col justify-center">
-									<Label htmlFor="disable-fly-to-animation" className="text-base flex items-center gap-2">
-										Disable Flying Animation
-										{hasSettingChanged("general.disableFlyToAnimation") && (
-											<Tooltip>
-												<TooltipTrigger className="text-foreground/60 cursor-pointer hover:text-foreground transition-colors" onClick={(e) => {
+							<Switch
+								id="disable-zoom-animation"
+								checked={newSettings.general.disableZoomAnimation}
+								onCheckedChange={value =>
+									setNewSettings(prev => ({
+										...prev,
+										general: {
+											...prev.general,
+											disableZoomAnimation: value,
+										},
+									}))
+								}
+								className="ml-1 cursor-pointer"
+							/>
+						</div>
+						<div className="flex items-center justify-between">
+							<div className="flex flex-col justify-center">
+								<Label
+									htmlFor="disable-fly-to-animation"
+									className="flex items-center gap-2 text-base"
+								>
+									Disable Flying Animation
+									{hasSettingChanged("general.disableFlyToAnimation") && (
+										<Tooltip>
+											<TooltipTrigger
+												className="cursor-pointer text-foreground/60 transition-colors hover:text-foreground"
+												onClick={e => {
 													e.preventDefault()
 													resetSetting("general.disableFlyToAnimation")
-												}}>
-													<CornerUpLeft className="size-4" />
-												</TooltipTrigger>
-												<TooltipContent className="z-999" side="right" sideOffset={4}>Reset to Default</TooltipContent>
-											</Tooltip>
-										)}
-									</Label>
-									<p className="text-muted-foreground text-sm">
-										Turn off flying animation when clicking on a marker on the map.
-									</p>
-								</div>
-								<Switch
-									id="disable-fly-to-animation"
-									checked={newSettings.general.disableFlyToAnimation}
-									onCheckedChange={value =>
-										setNewSettings(prev => ({
-											...prev,
-											general: {
-												...prev.general,
-												disableFlyToAnimation: value,
-											},
-										}))
-									}
-									className="cursor-pointer"
-								/>
+												}}
+											>
+												<CornerUpLeft className="size-4" />
+											</TooltipTrigger>
+											<TooltipContent className="z-999" side="right" sideOffset={4}>
+												Reset to Default
+											</TooltipContent>
+										</Tooltip>
+									)}
+								</Label>
+								<p className="text-muted-foreground text-sm">
+									Turn off flying animation when clicking on a marker on the map.
+								</p>
 							</div>
+							<Switch
+								id="disable-fly-to-animation"
+								checked={newSettings.general.disableFlyToAnimation}
+								onCheckedChange={value =>
+									setNewSettings(prev => ({
+										...prev,
+										general: {
+											...prev.general,
+											disableFlyToAnimation: value,
+										},
+									}))
+								}
+								className="cursor-pointer"
+							/>
 						</div>
-					</div>
-					<ScrollBar orientation="vertical" />
-				</ScrollArea>
+					</TabsContent>
+				</Tabs>
 				<Separator />
 				{/* Preview Section */}
 				<div className="space-y-2">
@@ -391,7 +423,10 @@ export default function MapSettingsPanel() {
 					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
 						Cancel
 					</Button>
-					<Button onClick={() => handleOpenChange(false, true)} className="bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600">
+					<Button
+						onClick={() => handleOpenChange(false, true)}
+						className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600"
+					>
 						Save
 					</Button>
 				</DialogFooter>
