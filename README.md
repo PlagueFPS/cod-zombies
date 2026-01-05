@@ -15,6 +15,7 @@ Call of Duty: Zombies Guides is a website dedicated to providing the most up-to-
 * [**Side Quest Guides**](https://codzombiesguides.com/side-quests): Detailed guides for every side quest in the game, including information on how to trigger each quest and the rewards for completing them.
 * [**Interactive Maps**](https://codzombiesguides.com/maps): Customizable interactive maps for every map in the game, including information on item spawns, map-specific mechanics, and more.
 * [**Bestiary**](https://codzombiesguides.com/bestiary): A comprehensive bestiary for every type of zombie in the game, including information on their strengths, weaknesses, spawn behavior, and attack patterns.
+* [**Cursed Relics**](https://codzombiesguides.com/relics): Detailed guides on all the currently found Cursed Relics, including information on how to obtain them, their effects, and tips on how to make getting them much easier.
 
 ## Who This Website Is For
 
