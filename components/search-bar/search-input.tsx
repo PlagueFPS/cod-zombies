@@ -1,6 +1,7 @@
 "use client"
 import type { Route } from "next"
 import type { MapConfigMetadata } from "@/map-configs"
+import { Match } from "effect"
 import { Book, BookText, Brain, ComponentIcon, MapIcon, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -52,7 +53,6 @@ interface SearchInputProps {
 }
 
 const filters = [
-	{ name: "All", icon: Search },
 	{ name: "Main Quests", icon: BookText },
 	{ name: "Side Quests", icon: Book },
 	{ name: "Zombies", icon: Brain },
@@ -71,7 +71,8 @@ export default function SearchInput({
 }: SearchInputProps) {
 	const router = useRouter()
 	const [open, setOpen] = useState(false)
-	const [filter, setFilter] = useState("All")
+	const [filter, setFilter] = useState("Main Quests")
+	const [searchTerm, setSearchTerm] = useState("")
 
 	const mapSlugs = new Set(quests.map(q => q.map.id))
 	const relicMapSlugs = new Set(relics.map(r => r.map.id))
@@ -83,8 +84,93 @@ export default function SearchInput({
 
 	const onSelectHandler = <T extends string>(url: Route<T>) => {
 		setOpen(false)
+		setSearchTerm("")
 		router.push(url)
 	}
+
+	const isSearching = searchTerm.trim().length > 0
+	const activeFilter = isSearching ? "All" : filter
+
+	const filteredMainQuests = games
+		.filter(game => maps.some(m => m.game.id === game.id))
+		.map(game => (
+			<CommandGroup heading={`${game.title} Main Quests`} key={game.id}>
+				{maps
+					.filter(m => m.game.id === game.id)
+					.map(m => (
+						<CommandItem
+							key={`${game.id}_${m.id}`}
+							onSelect={() => onSelectHandler(`/${m.game.id}/${m.id}`)}
+							className="cursor-pointer gap-2"
+						>
+							<BookText className="size-4" />
+							<span className="blur-none">{m.title}</span>
+						</CommandItem>
+					))}
+			</CommandGroup>
+		))
+	const filteredSideQuests = questMaps.map(m => (
+		<CommandGroup heading={`${m.title} Side Quests`} key={m.id}>
+			{quests
+				.filter(q => q.map.id === m.id)
+				.map(q => (
+					<CommandItem
+						key={`${q.id}_${m.id}`}
+						onSelect={() => onSelectHandler(`/side-quests/${q.game.id}/${q.map.id}/${q.id}`)}
+						className="cursor-pointer gap-2"
+					>
+						<Book className="size-4" />
+						<span className="blur-none">{q.title}</span>
+					</CommandItem>
+				))}
+		</CommandGroup>
+	))
+	const filteredZombies = (
+		<CommandGroup heading="Zombies">
+			{zombies.map(zombie => (
+				<CommandItem
+					key={zombie.id}
+					onSelect={() => onSelectHandler(`/bestiary/${zombie.id}`)}
+					className="cursor-pointer gap-2"
+				>
+					<Brain className="size-4" />
+					<span className="blur-none">{zombie.title}</span>
+				</CommandItem>
+			))}
+		</CommandGroup>
+	)
+
+	const filteredMaps = (
+		<CommandGroup heading="Interactive Maps">
+			{availableMaps.map(map => (
+				<CommandItem
+					key={map.id}
+					onSelect={() => onSelectHandler(`/maps/${map.id}`)}
+					className="cursor-pointer gap-2"
+				>
+					<MapIcon className="size-4" />
+					<span className="blur-none">{`${map.title} Interactive Map`}</span>
+				</CommandItem>
+			))}
+		</CommandGroup>
+	)
+
+	const filteredRelics = relicMaps.map(m => (
+		<CommandGroup heading={`${m.title} Relics`} key={m.id}>
+			{relics
+				.filter(r => r.map.id === m.id)
+				.map(r => (
+					<CommandItem
+						key={`${r.id}_${m.id}`}
+						onSelect={() => onSelectHandler(`/relics/${r.game.id}/${r.id}`)}
+						className="cursor-pointer gap-2"
+					>
+						<ComponentIcon className="size-4" />
+						<span className="blur-none">{r.title}</span>
+					</CommandItem>
+				))}
+		</CommandGroup>
+	))
 
 	return (
 		<>
@@ -118,7 +204,12 @@ export default function SearchInput({
 			<CommandDialog open={open} onOpenChange={setOpen}>
 				<DialogTitle className="sr-only">Search Bar</DialogTitle>
 				<DialogDescription className="sr-only">Search for Guides</DialogDescription>
-				<CommandInput placeholder="Search guides, zombies, maps, relics" className="text-base" />
+				<CommandInput
+					value={searchTerm}
+					onValueChange={setSearchTerm}
+					placeholder="Search guides, zombies, maps, relics"
+					className="text-base"
+				/>
 				<ScrollArea className="pb-2">
 					<div className="flex gap-1 p-2">
 						{filters.map(f => (
@@ -128,7 +219,8 @@ export default function SearchInput({
 								variant="outline"
 								onClick={() => setFilter(f.name)}
 								className={cn("flex h-5 items-center rounded-lg p-2 py-3 text-xs", {
-									"badge-primary-gradient dark:dark-badge-primary-gradient": filter === f.name,
+									"badge-primary-gradient dark:dark-badge-primary-gradient":
+										filter === f.name && !isSearching,
 								})}
 							>
 								<f.icon className="size-4" />
@@ -141,94 +233,23 @@ export default function SearchInput({
 				<div className="relative">
 					<CommandList>
 						<CommandEmpty>No results found.</CommandEmpty>
-						{filter === "All" || filter === "Main Quests"
-							? games
-									.filter(game => maps.some(m => m.game.id === game.id))
-									.map(game => (
-										<CommandGroup heading={`${game.title} Main Quests`} key={game.id}>
-											{maps.map(m =>
-												m.game.id !== game.id ? null : (
-													<CommandItem
-														key={`${game.id}_${m.id}`}
-														onSelect={() => onSelectHandler(`/${m.game.id}/${m.id}`)}
-														className="cursor-pointer gap-2"
-													>
-														<BookText className="size-4" />
-														<span className="blur-none">{m.title}</span>
-													</CommandItem>
-												),
-											)}
-										</CommandGroup>
-									))
-							: null}
-						{filter === "All" || filter === "Side Quests"
-							? questMaps.map(m => (
-									<CommandGroup heading={`${m.title} Side Quests`} key={m.id}>
-										{quests.map(q =>
-											q.map.id !== m.id ? null : (
-												<CommandItem
-													key={`${q.id}_${m.id}`}
-													onSelect={() =>
-														onSelectHandler(`/side-quests/${q.game.id}/${q.map.id}/${q.id}`)
-													}
-													className="cursor-pointer gap-2"
-												>
-													<Book className="size-4" />
-													<span className="blur-none">{q.title}</span>
-												</CommandItem>
-											),
-										)}
-									</CommandGroup>
-								))
-							: null}
-						{filter === "All" || filter === "Zombies" ? (
-							<CommandGroup heading="Zombies">
-								{zombies.map(zombie => (
-									<CommandItem
-										key={zombie.id}
-										onSelect={() => onSelectHandler(`/bestiary/${zombie.id}`)}
-										className="cursor-pointer gap-2"
-									>
-										<Brain className="size-4" />
-										<span className="blur-none">{zombie.title}</span>
-									</CommandItem>
-								))}
-							</CommandGroup>
-						) : null}
-						{filter === "All" || filter === "Maps" ? (
-							<CommandGroup heading="Interactive Maps">
-								{availableMaps.map(map => (
-									<CommandItem
-										key={map.id}
-										onSelect={() => onSelectHandler(`/maps/${map.id}`)}
-										className="cursor-pointer gap-2"
-									>
-										<MapIcon className="size-4" />
-										<span className="blur-none">{`${map.title} Interactive Map`}</span>
-									</CommandItem>
-								))}
-							</CommandGroup>
-						) : null}
-						{filter === "All" || filter === "Relics"
-							? relicMaps.map(m => (
-									<CommandGroup heading={`${m.title} Relics`} key={m.id}>
-										{relics.map(r =>
-											r.map.id !== m.id ? null : (
-												<CommandItem
-													key={`${r.id}_${m.id}`}
-													onSelect={() =>
-														onSelectHandler(`/relics/${r.game.id}/${r.id}`)
-													}
-													className="cursor-pointer gap-2"
-												>
-													<ComponentIcon className="size-4" />
-													<span className="blur-none">{r.title}</span>
-												</CommandItem>
-											),
-										)}
-									</CommandGroup>
-								))
-							: null}
+						{Match.value(activeFilter).pipe(
+							Match.when("All", () => (
+								<>
+									{filteredMainQuests}
+									{filteredSideQuests}
+									{filteredZombies}
+									{filteredMaps}
+									{filteredRelics}
+								</>
+							)),
+							Match.when("Main Quests", () => filteredMainQuests),
+							Match.when("Side Quests", () => filteredSideQuests),
+							Match.when("Zombies", () => filteredZombies),
+							Match.when("Maps", () => filteredMaps),
+							Match.when("Relics", () => filteredRelics),
+							Match.orElse(() => null),
+						)}
 					</CommandList>
 				</div>
 			</CommandDialog>
