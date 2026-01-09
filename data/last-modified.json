@@ -1,21 +1,26 @@
 {
   "version": "1.0",
-  "generated": "2026-01-02T07:49:12.998Z",
+  "generated": "2026-01-09T12:19:30.528Z",
   "files": {
+    "side-quests/magic.mdx": {
+      "lastModified": "2026-01-09T12:18:56.000Z",
+      "lastModifiedFormatted": "January 9, 2026",
+      "commitHash": "c70e62f"
+    },
     "side-quests/hidden-power-ups-aotd.mdx": {
-      "lastModified": "2026-01-02T07:48:40.000Z",
+      "lastModified": "2026-01-02T07:51:17.000Z",
       "lastModifiedFormatted": "January 2, 2026",
-      "commitHash": "9e311cc"
+      "commitHash": "2f9a141"
     },
     "side-quests/hidden-power-ups-astra-malorum.mdx": {
-      "lastModified": "2026-01-02T07:48:40.000Z",
+      "lastModified": "2026-01-02T07:51:17.000Z",
       "lastModifiedFormatted": "January 2, 2026",
-      "commitHash": "9e311cc"
+      "commitHash": "2f9a141"
     },
     "side-quests/zarya-rocket.mdx": {
-      "lastModified": "2026-01-02T07:48:40.000Z",
+      "lastModified": "2026-01-02T07:51:17.000Z",
       "lastModifiedFormatted": "January 2, 2026",
-      "commitHash": "9e311cc"
+      "commitHash": "2f9a141"
     },
     "side-quests/lantern-wisp.mdx": {
       "lastModified": "2025-12-22T04:12:41.000Z",
@@ -98,11 +103,6 @@
       "commitHash": "9c6c27a"
     },
     "side-quests/gramophone-free-perks.mdx": {
-      "lastModified": "2025-12-10T22:39:31.000Z",
-      "lastModifiedFormatted": "December 10, 2025",
-      "commitHash": "9c6c27a"
-    },
-    "side-quests/magic.mdx": {
       "lastModified": "2025-12-10T22:39:31.000Z",
       "lastModifiedFormatted": "December 10, 2025",
       "commitHash": "9c6c27a"
