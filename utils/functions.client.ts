@@ -1,4 +1,5 @@
 import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { RelicType } from "@/data/relics"
 import type { ZombieType } from "@/data/zombies"
 
 /**
@@ -85,6 +86,18 @@ export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
 }
 
 /**
+ * Sorts release dates in ascending order.
+ * `@param` a - The first release date.
+ * `@param` b - The second release date.
+ * `@returns` A negative number if `a` is older than `b`, a positive number for the inverse, or 0 if they are equal
+ */
+export const sortReleaseDateAsc = (a: string | Date, b: string | Date) => {
+	const dateA = new Date(a)
+	const dateB = new Date(b)
+	return dateA.getTime() - dateB.getTime()
+}
+
+/**
  * Sorts zombie types in ascending order.
  * @param a - The first zombie type.
  * @param b - The second zombie type.
@@ -92,6 +105,17 @@ export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
  */
 export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
 	const typeOrder: ZombieType[] = ["Normal", "Special", "Elite", "Boss"]
+	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
+}
+
+/**
+ * Sorts relic types in ascending order.
+ * @param a - The first relic type.
+ * @param b - The second relic type.
+ * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
+ */
+export const sortRelicTypes = (a: RelicType, b: RelicType) => {
+	const typeOrder: RelicType[] = ["Grim", "Sinister", "Wicked"]
 	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
 }
 
