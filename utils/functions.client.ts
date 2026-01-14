@@ -87,9 +87,9 @@ export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
 
 /**
  * Sorts release dates in ascending order.
- * @param a - The first release date.
- * @param b - The second release date.
- * @returns A positive number if `a` is older than `b`, a negative number for the inverse, or 0 if they are equal
+ * `@param` a - The first release date.
+ * `@param` b - The second release date.
+ * `@returns` A negative number if `a` is older than `b`, a positive number for the inverse, or 0 if they are equal
  */
 export const sortReleaseDateAsc = (a: string | Date, b: string | Date) => {
 	const dateA = new Date(a)
