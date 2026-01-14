@@ -2,7 +2,7 @@ import type { ContentState } from "@/types/data"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
-import { sortReleaseDateDesc } from "@/utils/functions.client"
+import { sortReleaseDateAsc, sortReleaseDateDesc, sortRelicTypes } from "@/utils/functions.client"
 import { getAdjacentItems } from "./utils"
 
 /** The three types of relics */
@@ -99,6 +99,17 @@ const relicRegistry = {
 		map: getMapByKey("ashesOfTheDamned"),
 		content: Effect.promise(() => import("@/content/relics/vril-sphere.mdx")),
 	},
+	samanthasDrawing: {
+		id: "samanthas-drawing",
+		title: "Samantha's Drawing",
+		state: "New",
+		type: "Sinister",
+		image: "/relics/samanthas-drawing-relic.webp",
+		description:
+			"Every weapon the player has will swap each round, but retain the Pack-a-Punch and rarity level.",
+		map: getMapByKey("ashesOfTheDamned"),
+		content: Effect.promise(() => import("@/content/relics/samanthas-drawing.mdx")),
+	},
 	focusingStone: {
 		id: "focusing-stone",
 		title: "Focusing Stone",
@@ -172,9 +183,11 @@ const relicRegistry = {
 } as const satisfies Record<string, Relic>
 
 const relicMap = new Map<string, Relic>()
-const relics = Object.values(relicRegistry).sort((a, b) =>
-	sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate),
-)
+const relics = Object.values(relicRegistry).sort((a, b) => {
+	const typeComparison = sortRelicTypes(a.type, b.type)
+	if (typeComparison !== 0) return typeComparison
+	return sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate)
+})
 
 for (const relic of relics) {
 	relicMap.set(relic.id, relic)

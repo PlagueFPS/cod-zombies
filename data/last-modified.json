@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2026-01-09T12:19:30.528Z",
+  "generated": "2026-01-14T16:33:28.779Z",
   "files": {
+    "relics/samanthas-drawing.mdx": {
+      "lastModified": "2026-01-14T16:32:34.000Z",
+      "lastModifiedFormatted": "January 14, 2026",
+      "commitHash": "1ebb433"
+    },
     "side-quests/magic.mdx": {
-      "lastModified": "2026-01-09T12:18:56.000Z",
+      "lastModified": "2026-01-09T12:21:45.000Z",
       "lastModifiedFormatted": "January 9, 2026",
-      "commitHash": "c70e62f"
+      "commitHash": "9920b5a"
     },
     "side-quests/hidden-power-ups-aotd.mdx": {
       "lastModified": "2026-01-02T07:51:17.000Z",
