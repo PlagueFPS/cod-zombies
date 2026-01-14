@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2026-01-14T16:33:28.779Z",
+  "generated": "2026-01-14T16:45:47.117Z",
   "files": {
     "relics/samanthas-drawing.mdx": {
-      "lastModified": "2026-01-14T16:32:34.000Z",
+      "lastModified": "2026-01-14T16:45:09.000Z",
       "lastModifiedFormatted": "January 14, 2026",
-      "commitHash": "1ebb433"
+      "commitHash": "a6e3199"
     },
     "side-quests/magic.mdx": {
       "lastModified": "2026-01-09T12:21:45.000Z",
