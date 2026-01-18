@@ -1,11 +1,21 @@
 {
   "version": "1.0",
-  "generated": "2026-01-14T16:58:44.226Z",
+  "generated": "2026-01-18T18:17:59.685Z",
   "files": {
+    "main-quests/astra-malorum.mdx": {
+      "lastModified": "2026-01-18T18:17:27.000Z",
+      "lastModifiedFormatted": "January 18, 2026",
+      "commitHash": "13e9999"
+    },
+    "main-quests/dust-to-dust.mdx": {
+      "lastModified": "2026-01-18T18:17:27.000Z",
+      "lastModifiedFormatted": "January 18, 2026",
+      "commitHash": "13e9999"
+    },
     "relics/samanthas-drawing.mdx": {
-      "lastModified": "2026-01-14T16:45:09.000Z",
+      "lastModified": "2026-01-14T17:26:06.000Z",
       "lastModifiedFormatted": "January 14, 2026",
-      "commitHash": "a6e3199"
+      "commitHash": "5c571c8"
     },
     "side-quests/magic.mdx": {
       "lastModified": "2026-01-09T12:21:45.000Z",
@@ -87,11 +97,6 @@
       "lastModifiedFormatted": "December 20, 2025",
       "commitHash": "f6c3a23"
     },
-    "main-quests/astra-malorum.mdx": {
-      "lastModified": "2025-12-14T17:39:39.000Z",
-      "lastModifiedFormatted": "December 14, 2025",
-      "commitHash": "3bdbc03"
-    },
     "zombies/armored-zombie.mdx": {
       "lastModified": "2025-12-13T00:23:59.000Z",
       "lastModifiedFormatted": "December 13, 2025",
@@ -166,11 +171,6 @@
       "lastModified": "2025-12-01T03:01:27.000Z",
       "lastModifiedFormatted": "December 1, 2025",
       "commitHash": "bf94dfc"
-    },
-    "main-quests/dust-to-dust.mdx": {
-      "lastModified": "2025-11-29T23:35:42.000Z",
-      "lastModifiedFormatted": "November 29, 2025",
-      "commitHash": "b74af44"
     },
     "zombies/veytharion.mdx": {
       "lastModified": "2025-11-29T02:07:36.000Z",
