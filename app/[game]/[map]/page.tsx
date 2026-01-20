@@ -3,7 +3,6 @@ import { FileSystem, Path } from "@effect/platform"
 import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-import ArticleAd from "@/components/ad-sense/article-ad"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
 import {
 	ComingSoonBadge,
@@ -209,7 +208,6 @@ const MainQuestPage = Effect.fn("MainQuestPage")(
 									<MDXContent components={mdxComponents} />
 								</div>
 							)}
-							<ArticleAd />
 							<div className="flex w-full items-center justify-center">
 								<GuideFeedback guideTitle={quest.map.title} type="Main Quest" />
 							</div>
