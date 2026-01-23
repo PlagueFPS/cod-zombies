@@ -2,7 +2,6 @@ import { Schema } from "effect"
 
 export type TFeedbackForm = typeof FeedbackFormSchema.Type
 export type TContactForm = typeof ContactFormSchema.Type
-export type TNewsletterForm = typeof NewsletterFormSchema.Type
 
 const QuestParamsSchema = Schema.Struct({
 	game: Schema.OptionFromUndefinedOr(Schema.String),
@@ -69,12 +68,6 @@ export const FeedbackFormSchema = Schema.Struct({
 export const StandardFeedbackFormSchema = Schema.standardSchemaV1(FeedbackFormSchema)
 
 export const validateFeedbackForm = Schema.validateEither(StandardFeedbackFormSchema)
-
-export const NewsletterFormSchema = Schema.Struct({
-	email: EmailSchema,
-})
-
-export const StandardNewsletterFormSchema = Schema.standardSchemaV1(NewsletterFormSchema)
 
 export const ContactFormSchema = Schema.Struct({
 	name: Schema.NonEmptyString.annotations({

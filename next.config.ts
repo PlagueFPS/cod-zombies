@@ -1,6 +1,7 @@
 import type { NextConfig } from "next"
 import createMDX from "@next/mdx"
 import { withBotId } from "botid/next/config"
+import { getMainQuests } from "./data/main-quests"
 
 const nextConfig: NextConfig = {
 	experimental: {
@@ -27,7 +28,15 @@ const nextConfig: NextConfig = {
 	},
 	// biome-ignore lint/suspicious/useAwait: redirects must be async
 	async redirects() {
+		const mainQuests = getMainQuests()
+		const mainQuestRedirects = mainQuests.map(quest => ({
+			source: `/${quest.map.game.id}/${quest.id}`,
+			destination: `/main-quests/${quest.map.game.id}/${quest.id}`,
+			permanent: true,
+		}))
+		
 		return [
+			...mainQuestRedirects,
 			{
 				source: "/side-quests/black-ops-6/reckoning/c-a-s-t-e-r-turret-upgrade",
 				destination: "/side-quests/black-ops-6/reckoning/caster-turret-upgrade",

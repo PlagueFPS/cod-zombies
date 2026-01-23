@@ -44,7 +44,7 @@ export const generateStaticParams = () => {
 
 export const generateMetadata = async ({
 	params,
-}: PageProps<"/[game]/[map]">): Promise<Metadata> => {
+}: PageProps<"/main-quests/[game]/[map]">): Promise<Metadata> => {
 	const { map } = await params
 	const quest = getMainQuestByMap(map)
 	if (!quest) notFound()
@@ -60,7 +60,7 @@ export const generateMetadata = async ({
 			...GLOBAL_OG_PROPS.openGraph,
 			title,
 			description,
-			url: `/${quest.map.game.id}/${quest.map.id}`,
+			url: `/main-quests/${quest.map.game.id}/${quest.map.id}`,
 			images: {
 				url: `${getServerUrl()}/opengraph-images/main-quests/og-${quest.map.id}.jpg`,
 				width: 1200,
@@ -79,7 +79,7 @@ export const generateMetadata = async ({
 }
 
 const MainQuestPage = Effect.fn("MainQuestPage")(
-	function* ({ params }: PageProps<"/[game]/[map]">) {
+	function* ({ params }: PageProps<"/main-quests/[game]/[map]">) {
 		const fs = yield* FileSystem.FileSystem
 		const path = yield* Path.Path
 		const mdxComponents = yield* Effect.sync(() => useMDXComponents())
@@ -142,13 +142,14 @@ const MainQuestPage = Effect.fn("MainQuestPage")(
 									<div className="-top-10 absolute left-0 flex w-full justify-center pl-4 xl:pl-0">
 										<Breadcrumbs
 											links={[
+												{ title: "Main Quests", href: "/main-quests" },
 												{
 													title: quest.map.game.title,
-													href: `/?game=${quest.map.game.id}`,
+													href: `/main-quests?game=${quest.map.game.id}`,
 												},
 												{
 													title: quest.map.title,
-													href: `/${quest.map.game.id}/${quest.map.id}`,
+													href: `/main-quests/${quest.map.game.id}/${quest.map.id}`,
 												},
 											]}
 										/>
@@ -246,7 +247,7 @@ const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
 
 	return (
 		<CustomLink
-			href={questState === "Coming Soon" ? "#" : `/${quest.map.game.id}/${quest.map.id}`}
+			href={questState === "Coming Soon" ? "#" : `/main-quests/${quest.map.game.id}/${quest.map.id}`}
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
