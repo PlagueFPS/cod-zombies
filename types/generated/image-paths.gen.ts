@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-01-14T15:57:21.758Z
- * generated in: 113ms
+ * generated at: 2026-01-26T01:52:44.571Z
+ * generated in: 101ms
  */
 
 
@@ -427,6 +427,7 @@ export type RelicsImagePath =
   '/relics/dragon-relic.webp' |
   '/relics/dragon-wings-relic.webp' |
   '/relics/focusing-stone-relic.webp' |
+  '/relics/gong-relic.webp' |
   '/relics/lawyers-pen-relic.webp' |
   '/relics/samanthas-drawing-relic.webp' |
   '/relics/seed-relic.webp' |
