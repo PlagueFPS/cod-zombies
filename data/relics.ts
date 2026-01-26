@@ -2,7 +2,7 @@ import type { ContentState } from "@/types/data"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
-import { sortReleaseDateAsc, sortReleaseDateDesc, sortRelicTypes } from "@/utils/functions.client"
+import { sortReleaseDateAsc, sortRelicTypes } from "@/utils/functions.client"
 import { getAdjacentItems } from "./utils"
 
 /** The three types of relics */
@@ -102,7 +102,7 @@ const relicRegistry = {
 	samanthasDrawing: {
 		id: "samanthas-drawing",
 		title: "Samantha's Drawing",
-		state: "New",
+		state: null,
 		type: "Sinister",
 		image: "/relics/samanthas-drawing-relic.webp",
 		description:
@@ -159,6 +159,16 @@ const relicRegistry = {
 		description: "Mystery Box is disabled.",
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/relics/seed.mdx")),
+	},
+	gong: {
+		id: "gong",
+		title: "Gong",
+		state: "New",
+		type: "Grim",
+		image: "/relics/gong-relic.webp",
+		description: "Field Upgrade starts charged, but can only be charged by Full Power.",
+		map: getMapByKey("astraMalorum"),
+		content: Effect.promise(() => import("@/content/relics/gong.mdx")),
 	},
 	spiderFang: {
 		id: "spider-fang",

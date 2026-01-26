@@ -1,16 +1,21 @@
 {
   "version": "1.0",
-  "generated": "2026-01-20T18:26:12.204Z",
+  "generated": "2026-01-26T02:27:38.722Z",
   "files": {
+    "relics/gong.mdx": {
+      "lastModified": "2026-01-26T02:27:10.000Z",
+      "lastModifiedFormatted": "January 26, 2026",
+      "commitHash": "78679cf"
+    },
     "main-quests/astra-malorum.mdx": {
-      "lastModified": "2026-01-20T18:24:48.000Z",
+      "lastModified": "2026-01-20T18:30:17.000Z",
       "lastModifiedFormatted": "January 20, 2026",
-      "commitHash": "bea12ae"
+      "commitHash": "101572c"
     },
     "main-quests/dust-to-dust.mdx": {
-      "lastModified": "2026-01-20T18:24:48.000Z",
+      "lastModified": "2026-01-20T18:30:17.000Z",
       "lastModifiedFormatted": "January 20, 2026",
-      "commitHash": "bea12ae"
+      "commitHash": "101572c"
     },
     "relics/samanthas-drawing.mdx": {
       "lastModified": "2026-01-14T17:26:06.000Z",
