@@ -1,11 +1,26 @@
 {
   "version": "1.0",
-  "generated": "2026-01-26T02:27:38.722Z",
+  "generated": "2026-01-30T21:58:11.484Z",
   "files": {
+    "relics/civil-protector-head.mdx": {
+      "lastModified": "2026-01-30T21:55:49.000Z",
+      "lastModifiedFormatted": "January 30, 2026",
+      "commitHash": "fd5fddb"
+    },
+    "relics/golden-spork.mdx": {
+      "lastModified": "2026-01-30T21:55:49.000Z",
+      "lastModifiedFormatted": "January 30, 2026",
+      "commitHash": "fd5fddb"
+    },
+    "relics/matroyshka-dolls.mdx": {
+      "lastModified": "2026-01-30T21:55:49.000Z",
+      "lastModifiedFormatted": "January 30, 2026",
+      "commitHash": "fd5fddb"
+    },
     "relics/gong.mdx": {
-      "lastModified": "2026-01-26T02:27:10.000Z",
+      "lastModified": "2026-01-26T02:30:33.000Z",
       "lastModifiedFormatted": "January 26, 2026",
-      "commitHash": "78679cf"
+      "commitHash": "c2fb002"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2026-01-20T18:30:17.000Z",
@@ -53,11 +68,6 @@
       "commitHash": "f6c3a23"
     },
     "relics/bus.mdx": {
-      "lastModified": "2025-12-20T18:50:44.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "f6c3a23"
-    },
-    "relics/civil-protector-head.mdx": {
       "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
       "commitHash": "f6c3a23"
