@@ -70,15 +70,16 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 	// Apply sorting
 	const isMainQuest = filteredQuests.length > 0 && filteredQuests[0]?._tag === "MainQuest"
 	const validSortParam = sortParam || "latest"
+	const sortedQuests = [...filteredQuests]
 
 	if (isMainQuest) {
 		// Main quest sorting
 		switch (validSortParam) {
 			case "oldest":
-				filteredQuests.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
+				sortedQuests.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
 				break
 			case "difficulty-asc":
-				filteredQuests.sort((a, b) => {
+				sortedQuests.sort((a, b) => {
 					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
 						const aDiff = Option.isSome(a.difficulty) ? a.difficulty.value : null
 						const bDiff = Option.isSome(b.difficulty) ? b.difficulty.value : null
@@ -93,7 +94,7 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 				})
 				break
 			case "difficulty-desc":
-				filteredQuests.sort((a, b) => {
+				sortedQuests.sort((a, b) => {
 					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
 						const aDiff = Option.isSome(a.difficulty) ? a.difficulty.value : null
 						const bDiff = Option.isSome(b.difficulty) ? b.difficulty.value : null
@@ -108,25 +109,25 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 				})
 				break
 			default:
-				filteredQuests.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
+				sortedQuests.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
 				break
 		}
 	} else {
 		// Side quest sorting
 		if (validSortParam === "oldest") {
-			filteredQuests.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
+			sortedQuests.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
 		} else {
 			// Default: latest (descending by map release date)
-			filteredQuests.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
+			sortedQuests.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
 		}
 	}
 
 	const skip = calculateSkip(page, MAP_LIMIT)
-	const paginatedQuests = filteredQuests.slice(skip, MAP_LIMIT * page)
+	const paginatedQuests = sortedQuests.slice(skip, MAP_LIMIT * page)
 
 	useEffect(() => {
-		validatePageParam(filteredQuests.length)
-	}, [filteredQuests.length, validatePageParam])
+		validatePageParam(sortedQuests.length)
+	}, [sortedQuests.length, validatePageParam])
 
 	return (
 		<>
@@ -140,7 +141,7 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 				)}
 			</div>
 			<Suspense fallback={<GridPaginationLoader />}>
-				<GridPagination data={filteredQuests} />
+				<GridPagination data={sortedQuests} />
 			</Suspense>
 		</>
 	)

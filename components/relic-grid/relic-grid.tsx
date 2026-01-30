@@ -11,7 +11,7 @@ interface RelicGridProps {
 
 export default function RelicGrid({ relics }: RelicGridProps) {
 	const { mapParams, typeParams, sortParam } = useFilterParams()
-	let filteredRelics = relics
+	let filteredRelics = [...relics]
 
 	if (mapParams.length > 0) {
 		filteredRelics = filteredRelics.filter(relic => mapParams.includes(relic.map.id))
@@ -23,27 +23,27 @@ export default function RelicGrid({ relics }: RelicGridProps) {
 
 	// Apply sorting
 	const validSortParam = sortParam || "discovered-desc"
+	const sortedRelics = [...filteredRelics]
 
 	switch (validSortParam) {
 		case "discovered-asc":
-			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateAsc(a.discoveredDate, b.discoveredDate))
+			sortedRelics.sort((a, b) => sortReleaseDateAsc(a.discoveredDate, b.discoveredDate))
 			break
 		case "type-asc":
-			filteredRelics = filteredRelics.sort((a, b) => sortRelicTypes(a.type, b.type))
+			sortedRelics.sort((a, b) => sortRelicTypes(a.type, b.type))
 			break
 		case "type-desc":
-			filteredRelics = filteredRelics.sort((a, b) => sortRelicTypes(b.type, a.type))
+			sortedRelics.sort((a, b) => sortRelicTypes(b.type, a.type))
 			break
 		default:
-			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateDesc(a.discoveredDate, b.discoveredDate))
+			sortedRelics.sort((a, b) => sortReleaseDateDesc(a.discoveredDate, b.discoveredDate))
 			break
 	}
 
-
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-			{filteredRelics.length > 0 ? (
-				filteredRelics.map((relic, index) => (
+			{sortedRelics.length > 0 ? (
+				sortedRelics.map((relic, index) => (
 					<RelicCard key={relic.id} relic={relic} relicIndex={index} />
 				))
 			) : (

@@ -49,34 +49,35 @@ export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {
 
 	// Apply sorting
 	const validSortParam = sortParam || "latest"
+	const sortedZombies = [...filteredZombies]
 
 	switch (validSortParam) {
 		case "oldest":
-			filteredZombies.sort((a, b) => sortReleaseDateAsc(a.releaseDate, b.releaseDate))
+			sortedZombies.sort((a, b) => sortReleaseDateAsc(a.releaseDate, b.releaseDate))
 			break
 		case "type-asc":
-			filteredZombies.sort((a, b) => sortZombieTypes(a.type, b.type))
+			sortedZombies.sort((a, b) => sortZombieTypes(a.type, b.type))
 			break
 		case "type-desc":
-			filteredZombies.sort((a, b) => sortZombieTypes(b.type, a.type))
+			sortedZombies.sort((a, b) => sortZombieTypes(b.type, a.type))
 			break
 		case "speed-asc":
-			filteredZombies.sort((a, b) => sortZombieSpeeds(a.speed, b.speed))
+			sortedZombies.sort((a, b) => sortZombieSpeeds(a.speed, b.speed))
 			break
 		case "speed-desc":
-			filteredZombies.sort((a, b) => sortZombieSpeeds(b.speed, a.speed))
+			sortedZombies.sort((a, b) => sortZombieSpeeds(b.speed, a.speed))
 			break
 		default:
-			filteredZombies.sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
+			sortedZombies.sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
 			break
 	}
 
 	const skip = calculateSkip(page, MAP_LIMIT)
-	const paginatedZombies = filteredZombies.slice(skip, MAP_LIMIT * page)
+	const paginatedZombies = sortedZombies.slice(skip, MAP_LIMIT * page)
 
 	useEffect(() => {
-		validatePageParam(filteredZombies.length)
-	}, [filteredZombies.length, validatePageParam])
+		validatePageParam(sortedZombies.length)
+	}, [sortedZombies.length, validatePageParam])
 
 	return (
 		<>
@@ -90,7 +91,7 @@ export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {
 				)}
 			</div>
 			<Suspense fallback={<GridPaginationLoader />}>
-				<GridPagination data={filteredZombies} />
+				<GridPagination data={sortedZombies} />
 			</Suspense>
 		</>
 	)

@@ -56,7 +56,8 @@ export const getRelicById = (id: string) => relicMap.get(id)
  * @returns previous and next relics.
  */
 export const getAdjacentRelics = (id: string) => {
-	return getAdjacentItems(relics, id)
+	const sortedRelics = [...relics].reverse()
+	return getAdjacentItems(sortedRelics, id)
 }
 
 const relicRegistry = {
