@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2026-01-30T22:28:21.449Z",
+  "generated": "2026-01-30T22:29:19.004Z",
   "files": {
     "relics/civil-protector-head.mdx": {
-      "lastModified": "2026-01-30T22:27:19.000Z",
+      "lastModified": "2026-01-30T22:28:52.000Z",
       "lastModifiedFormatted": "January 30, 2026",
-      "commitHash": "083810a"
+      "commitHash": "33ee558"
     },
     "relics/golden-spork.mdx": {
       "lastModified": "2026-01-30T22:27:19.000Z",
