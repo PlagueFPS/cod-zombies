@@ -2,7 +2,10 @@
 import type { Filter } from "@/components/filters-combobox/filters-combobox"
 import ClearFiltersButton from "@/components/filters-combobox/clear-filters-button"
 import FiltersCombobox from "@/components/filters-combobox/filters-combobox"
+import SortSelect from "@/components/sort-select/sort-select"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { getMainQuestSortOptions } from "@/data/main-quests"
+import { getSideQuestSortOptions } from "@/data/side-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
 
 interface MainQuestFilters {
@@ -21,8 +24,16 @@ type TQuestFiltersClient = MainQuestFilters | SideQuestFilters
 
 export default function QuestFiltersClient(props: TQuestFiltersClient) {
 	const { type, games } = props
-	const { mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } =
-		useFilterParams()
+	const {
+		mapParams,
+		difficultyParams,
+		gameParams,
+		sortParam,
+		toggleParam,
+		clearParam,
+		clearAllFilters,
+		updateSort,
+	} = useFilterParams()
 
 	const toggleGame = (game: string) => {
 		toggleParam("game", game, gameParams)
@@ -35,6 +46,10 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 	const toggleDifficulty = (difficulty: string) => {
 		toggleParam("difficulty", difficulty, difficultyParams)
 	}
+	
+	const sortOptions = type === "main" ? getMainQuestSortOptions() : getSideQuestSortOptions()
+	const defaultSort = sortOptions.at(0)?.value ?? "latest"
+	const validSortValue = sortParam && sortOptions.some(option => option.value === sortParam) ? sortParam : defaultSort	
 
 	return (
 		<ScrollArea className="-mt-4">
@@ -76,11 +91,17 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 						/>
 					</>
 				)}
+				<SortSelect
+					value={validSortValue}
+					options={sortOptions}
+					onValueChange={updateSort}
+					triggerClass="ml-auto"
+				/>
 				{gameParams.length > 0 || mapParams.length > 0 || difficultyParams.length > 0 ? (
 					<ClearFiltersButton onClick={clearAllFilters} />
 				) : null}
 			</div>
-			<ScrollBar orientation="horizontal" className="sr-only" />
+			<ScrollBar orientation="horizontal" />
 		</ScrollArea>
 	)
 }

@@ -1,3 +1,4 @@
+import type { SortOption } from "@/components/sort-select/sort-select"
 import type { AmmoModKey } from "@/data/ammo-mods"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Effect, Option } from "effect"
@@ -83,6 +84,19 @@ export const getLatestZombieGameKey = (games: Game[]) => {
 		onSome: game => convertIdToGameKey(game.id),
 	})
 }
+
+/**
+ * Gets the sort options for zombies.
+ * @returns An array of sort options.
+ */
+export const getZombieSortOptions = (): SortOption[] => [
+	{ value: "latest", label: "Latest" },
+	{ value: "oldest", label: "Oldest" },
+	{ value: "type-asc", label: "Type: Normal to Boss" },
+	{ value: "type-desc", label: "Type: Boss to Normal" },
+	{ value: "speed-asc", label: "Speed: Slowest to Fastest" },
+	{ value: "speed-desc", label: "Speed: Fastest to Slowest" },
+]
 
 const zombiesRegistry = {
 	zombie: {

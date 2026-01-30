@@ -1,3 +1,4 @@
+import type { SortOption } from "@/components/sort-select/sort-select"
 import type { ContentState } from "@/types/data"
 import { Effect, Option } from "effect"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
@@ -46,6 +47,17 @@ export const getMainQuestByMap = (mapId: string) => mainQuestMap.get(mapId)
 export const getAdjacentMainQuests = (mapId: string) => {
 	return getAdjacentItems(mainQuests, mapId)
 }
+
+/**
+ * Gets the sort options for main quests.
+ * @returns An array of sort options.
+ */
+export const getMainQuestSortOptions = (): SortOption[] => [
+	{ value: "latest", label: "Latest" },
+	{ value: "oldest", label: "Oldest" },
+	{ value: "difficulty-asc", label: "Difficulty: Easy to Hard" },
+	{ value: "difficulty-desc", label: "Difficulty: Hard to Easy" },
+]
 
 const mainQuestRegistry = {
 	casimirMechanism: {

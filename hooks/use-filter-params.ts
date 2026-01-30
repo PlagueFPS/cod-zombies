@@ -11,6 +11,8 @@ interface FilterParamsResult {
 	difficultyParams: string[]
 	/** Array of selected type parameter values */
 	typeParams: string[]
+	/** Current sort parameter value */
+	sortParam: string | null
 	/** Current page number */
 	page: number
 	/** Next.js searchParams object */
@@ -21,6 +23,12 @@ interface FilterParamsResult {
 	 * @param newPage - The new page number to set in the URL
 	 */
 	updatePage: (newPage: number) => void
+	/**
+	 * Updates the sort parameter in the URL and resets page to 1.
+	 *
+	 * @param value - The sort value to set in the URL
+	 */
+	updateSort: (value: string) => void
 	/**
 	 * Function to validate and adjust the page parameter.
 	 *
@@ -78,6 +86,7 @@ export function useFilterParams(): FilterParamsResult {
 	const mapParams = searchParams.getAll("map")
 	const difficultyParams = searchParams.getAll("difficulty")
 	const typeParams = searchParams.getAll("type")
+	const sortParam = searchParams.get("sort")
 	const pageParam = searchParams.get("page")
 	const page = pageParam ? parseInt(pageParam, 10) : 1
 
@@ -92,6 +101,13 @@ export function useFilterParams(): FilterParamsResult {
 	const updatePage = (newPage: number) => {
 		const params = createParams()
 		params.set("page", newPage.toString())
+		updateURLParams(params)
+	}
+
+	const updateSort = (value: string) => {
+		const params = createParams()
+		params.set("sort", value)
+		params.delete("page") // Reset page parameter when sort changes
 		updateURLParams(params)
 	}
 
@@ -116,6 +132,7 @@ export function useFilterParams(): FilterParamsResult {
 		params.delete("map")
 		params.delete("difficulty")
 		params.delete("type")
+		params.delete("sort")
 		updateURLParams(params)
 	}
 
@@ -147,11 +164,13 @@ export function useFilterParams(): FilterParamsResult {
 		mapParams,
 		difficultyParams,
 		typeParams,
+		sortParam,
 		page,
 		searchParams,
 
 		// Functions
 		updatePage,
+		updateSort,
 		validatePageParam,
 		clearAllFilters,
 		toggleParam,

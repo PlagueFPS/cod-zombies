@@ -1,0 +1,23 @@
+---
+description: Use alias imports (@/*) instead of relative imports per tsconfig.json
+globs: **/*.ts,**/*.tsx
+alwaysApply: false
+---
+
+# Alias Imports
+
+Use the `@/*` path alias (defined in `tsconfig.json`) instead of relative imports like `../` or `../../`.
+
+```typescript
+// ❌ BAD – relative imports
+import { Button } from "../../components/ui/button";
+import { cn } from "../../lib/utils";
+import type { Zombie } from "../../types/data";
+
+// ✅ GOOD – alias imports
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import type { Zombie } from "@/types/data";
+```
+
+The alias maps `@/*` to the project root (`./*`). Prefer it for all internal imports to keep paths stable and readable.

@@ -1,6 +1,6 @@
 import type { MainQuestDifficulty } from "@/data/main-quests"
 import type { RelicType } from "@/data/relics"
-import type { ZombieType } from "@/data/zombies"
+import type { ZombieType, ZombieSpeed } from "@/data/zombies"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
@@ -117,6 +117,17 @@ export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
 export const sortRelicTypes = (a: RelicType, b: RelicType) => {
 	const typeOrder: RelicType[] = ["Grim", "Sinister", "Wicked"]
 	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
+}
+
+/**
+ * Sorts zombie speeds in ascending order.
+ * @param a - The first zombie speed.
+ * @param b - The second zombie speed.
+ * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
+ */
+export const sortZombieSpeeds = (a: ZombieSpeed, b: ZombieSpeed) => {
+	const speedOrder: ZombieSpeed[] = ["Slow", "Medium", "Fast"]
+	return speedOrder.indexOf(a) - speedOrder.indexOf(b)
 }
 
 /**
