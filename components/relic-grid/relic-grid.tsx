@@ -1,6 +1,7 @@
 "use client"
 import type { Relic } from "@/data/relics"
 import { useFilterParams } from "@/hooks/use-filter-params"
+import { sortReleaseDateAsc, sortReleaseDateDesc, sortRelicTypes } from "@/utils/functions.client"
 import EmptyGrid from "../empty/empty-grid"
 import RelicCard from "../relic-card/relic-card"
 
@@ -9,7 +10,7 @@ interface RelicGridProps {
 }
 
 export default function RelicGrid({ relics }: RelicGridProps) {
-	const { mapParams, typeParams } = useFilterParams()
+	const { mapParams, typeParams, sortParam } = useFilterParams()
 	let filteredRelics = relics
 
 	if (mapParams.length > 0) {
@@ -19,6 +20,31 @@ export default function RelicGrid({ relics }: RelicGridProps) {
 	if (typeParams.length > 0) {
 		filteredRelics = filteredRelics.filter(relic => typeParams.includes(relic.type.toLowerCase()))
 	}
+
+	// Apply sorting
+	const validSortParam = sortParam || "discovered-desc"
+
+	switch (validSortParam) {
+		case "discovered-asc":
+			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateAsc(a.discoveredDate, b.discoveredDate))
+			break
+		case "latest":
+			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
+			break
+		case "oldest":
+			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
+			break
+		case "type-asc":
+			filteredRelics = filteredRelics.sort((a, b) => sortRelicTypes(a.type, b.type))
+			break
+		case "type-desc":
+			filteredRelics = filteredRelics.sort((a, b) => sortRelicTypes(b.type, a.type))
+			break
+		default:
+			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateDesc(a.discoveredDate, b.discoveredDate))
+			break
+	}
+
 
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

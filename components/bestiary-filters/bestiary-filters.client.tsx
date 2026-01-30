@@ -3,6 +3,7 @@ import type { Filter } from "../filters-combobox/filters-combobox"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import ClearFiltersButton from "../filters-combobox/clear-filters-button"
 import FiltersCombobox from "../filters-combobox/filters-combobox"
+import SortSelect, { type SortOption } from "@/components/sort-select/sort-select"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 
 interface BestiaryFiltersClientProps {
@@ -12,8 +13,25 @@ interface BestiaryFiltersClientProps {
 }
 
 export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFiltersClientProps) {
-	const { mapParams, gameParams, typeParams, toggleParam, clearAllFilters, clearParam } =
-		useFilterParams()
+	const {
+		mapParams,
+		gameParams,
+		typeParams,
+		sortParam,
+		toggleParam,
+		clearAllFilters,
+		clearParam,
+		updateSort,
+	} = useFilterParams()
+
+	const sortOptions: SortOption[] = [
+		{ value: "latest", label: "Latest" },
+		{ value: "oldest", label: "Oldest" },
+		{ value: "type-asc", label: "Type (Normal→Boss)" },
+		{ value: "type-desc", label: "Type (Boss→Normal)" },
+		{ value: "speed-asc", label: "Speed (Slowest→Fastest)" },
+		{ value: "speed-desc", label: "Speed (Fastest→Slowest)" },
+	]
 
 	const toggleGame = (game: string) => {
 		toggleParam("game", game, gameParams)
@@ -52,6 +70,11 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
 					enableInput
 					inputPlaceholder="Search Map"
 					clearParam={() => clearParam("map")}
+				/>
+				<SortSelect
+					value={sortParam || "latest"}
+					options={sortOptions}
+					onValueChange={updateSort}
 				/>
 				{gameParams.length > 0 || mapParams.length > 0 || typeParams.length > 0 ? (
 					<ClearFiltersButton onClick={clearAllFilters} />

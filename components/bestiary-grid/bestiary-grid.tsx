@@ -5,7 +5,13 @@ import { Option } from "effect"
 import { Suspense, useEffect } from "react"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
-import { calculateSkip } from "@/utils/functions.client"
+import {
+	calculateSkip,
+	sortReleaseDateAsc,
+	sortReleaseDateDesc,
+	sortZombieSpeeds,
+	sortZombieTypes,
+} from "@/utils/functions.client"
 import BestiaryCard from "../bestiary-card/bestiary-card"
 import EmptyGrid from "../empty/empty-grid"
 import GridPagination from "../grid-pagination/grid-pagination"
@@ -18,7 +24,8 @@ interface IBestiaryGridClient {
 }
 
 export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {
-	const { gameParams, mapParams, typeParams, page, validatePageParam } = useFilterParams()
+	const { gameParams, mapParams, typeParams, sortParam, page, validatePageParam } =
+		useFilterParams()
 	let filteredZombies = zombies.map(zombie => ({
 		...zombie,
 		state: Option.fromNullable(zombie.state),
@@ -38,6 +45,30 @@ export default function BestiaryGridClient({ zombies }: IBestiaryGridClient) {
 
 	if (typeParams.length > 0) {
 		filteredZombies = filteredZombies.filter(z => typeParams.includes(z.type.toLowerCase()))
+	}
+
+	// Apply sorting
+	const validSortParam = sortParam || "latest"
+
+	switch (validSortParam) {
+		case "oldest":
+			filteredZombies.sort((a, b) => sortReleaseDateAsc(a.releaseDate, b.releaseDate))
+			break
+		case "type-asc":
+			filteredZombies.sort((a, b) => sortZombieTypes(a.type, b.type))
+			break
+		case "type-desc":
+			filteredZombies.sort((a, b) => sortZombieTypes(b.type, a.type))
+			break
+		case "speed-asc":
+			filteredZombies.sort((a, b) => sortZombieSpeeds(a.speed, b.speed))
+			break
+		case "speed-desc":
+			filteredZombies.sort((a, b) => sortZombieSpeeds(b.speed, a.speed))
+			break
+		default:
+			filteredZombies.sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
+			break
 	}
 
 	const skip = calculateSkip(page, MAP_LIMIT)

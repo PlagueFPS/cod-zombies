@@ -2,6 +2,7 @@
 import type { Filter } from "@/components/filters-combobox/filters-combobox"
 import ClearFiltersButton from "@/components/filters-combobox/clear-filters-button"
 import FiltersCombobox from "@/components/filters-combobox/filters-combobox"
+import SortSelect, { type SortOption } from "@/components/sort-select/sort-select"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { useFilterParams } from "@/hooks/use-filter-params"
 
@@ -21,8 +22,16 @@ type TQuestFiltersClient = MainQuestFilters | SideQuestFilters
 
 export default function QuestFiltersClient(props: TQuestFiltersClient) {
 	const { type, games } = props
-	const { mapParams, difficultyParams, gameParams, toggleParam, clearParam, clearAllFilters } =
-		useFilterParams()
+	const {
+		mapParams,
+		difficultyParams,
+		gameParams,
+		sortParam,
+		toggleParam,
+		clearParam,
+		clearAllFilters,
+		updateSort,
+	} = useFilterParams()
 
 	const toggleGame = (game: string) => {
 		toggleParam("game", game, gameParams)
@@ -35,6 +44,19 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 	const toggleDifficulty = (difficulty: string) => {
 		toggleParam("difficulty", difficulty, difficultyParams)
 	}
+	// TODO: Think about extracting sort options into utility functions
+	const sortOptions: SortOption[] =
+		type === "main"
+			? [
+					{ value: "latest", label: "Latest" },
+					{ value: "oldest", label: "Oldest" },
+					{ value: "difficulty-asc", label: "Difficulty (Easiest→Hardest)" },
+					{ value: "difficulty-desc", label: "Difficulty (Hardest→Easiest)" },
+				]
+			: [
+					{ value: "latest", label: "Latest" },
+					{ value: "oldest", label: "Oldest" },
+				]
 
 	return (
 		<ScrollArea className="-mt-4">
@@ -76,6 +98,11 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 						/>
 					</>
 				)}
+				<SortSelect
+					value={sortParam || "latest"}
+					options={sortOptions}
+					onValueChange={updateSort}
+				/>
 				{gameParams.length > 0 || mapParams.length > 0 || difficultyParams.length > 0 ? (
 					<ClearFiltersButton onClick={clearAllFilters} />
 				) : null}

@@ -2,7 +2,6 @@ import type { ContentState } from "@/types/data"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
-import { sortReleaseDateAsc, sortRelicTypes } from "@/utils/functions.client"
 import { getAdjacentItems } from "./utils"
 
 /** The three types of relics */
@@ -25,6 +24,8 @@ export interface Relic {
 	description: string
 	/** The map where the relic can be obtained */
 	map: Maps
+	/** The date when the relic was discovered */
+	discoveredDate: Date
 	/** The content of the relic */
 	content: Effect.Effect<typeof import("*.mdx"), never, never>
 }
@@ -67,6 +68,7 @@ const relicRegistry = {
 		image: "/relics/lawyers-pen-relic.webp",
 		description: "Mimic props have infiltrated the map.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 16, 2025 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/lawyers-pen.mdx")),
 	},
 	dragonWings: {
@@ -77,6 +79,7 @@ const relicRegistry = {
 		image: "/relics/dragon-wings-relic.webp",
 		description: "Normal Power-Up spawns are disabled.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 16, 2025 1:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/dragon-wings.mdx")),
 	},
 	teddyBear: {
@@ -87,6 +90,7 @@ const relicRegistry = {
 		image: "/relics/teddy-bear-relic.webp",
 		description: "Round start delay is cut down by 75%.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 19, 2025 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/teddy-bear.mdx")),
 	},
 	vrilSphere: {
@@ -97,6 +101,7 @@ const relicRegistry = {
 		image: "/relics/vril-sphere-relic.webp",
 		description: "Players can only carry 4 Perk-a-Colas.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 19, 2025 1:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/vril-sphere.mdx")),
 	},
 	samanthasDrawing: {
@@ -108,6 +113,7 @@ const relicRegistry = {
 		description:
 			"Every weapon the player has will swap each round, but retain the Pack-a-Punch and rarity level.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("January 14, 2026 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/samanthas-drawing.mdx")),
 	},
 	focusingStone: {
@@ -118,6 +124,7 @@ const relicRegistry = {
 		image: "/relics/focusing-stone-relic.webp",
 		description: "No Self-Revive kits.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 19, 2025 2:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/focusing-stone.mdx")),
 	},
 	bus: {
@@ -128,6 +135,7 @@ const relicRegistry = {
 		image: "/relics/bus-relic.webp",
 		description: "Enemy health regenerates.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 21, 2025 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/bus.mdx")),
 	},
 	dragon: {
@@ -138,6 +146,7 @@ const relicRegistry = {
 		image: "/relics/dragon-relic.webp",
 		description: "All Ammo Crates are disabled.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 21, 2025 1:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/dragon.mdx")),
 	},
 	bloodVials: {
@@ -148,6 +157,7 @@ const relicRegistry = {
 		image: "/relics/blood-vials-relic.webp",
 		description: "All Augments are turned off.",
 		map: getMapByKey("ashesOfTheDamned"),
+		discoveredDate: new Date("November 20, 2025 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/blood-vials.mdx")),
 	},
 	seed: {
@@ -158,6 +168,7 @@ const relicRegistry = {
 		image: "/relics/seed-relic.webp",
 		description: "Mystery Box is disabled.",
 		map: getMapByKey("astraMalorum"),
+		discoveredDate: new Date("December 7, 2025 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/seed.mdx")),
 	},
 	gong: {
@@ -168,6 +179,7 @@ const relicRegistry = {
 		image: "/relics/gong-relic.webp",
 		description: "Field Upgrade starts charged, but can only be charged by Full Power.",
 		map: getMapByKey("astraMalorum"),
+		discoveredDate: new Date("January 25, 2026 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/gong.mdx")),
 	},
 	spiderFang: {
@@ -178,6 +190,7 @@ const relicRegistry = {
 		image: "/relics/spider-fang-relic.webp",
 		description: "Perk costs at machines never decrease.",
 		map: getMapByKey("astraMalorum"),
+		discoveredDate: new Date("December 11, 2025 12:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/spider-fang.mdx")),
 	},
 	civilProtectorHead: {
@@ -188,16 +201,13 @@ const relicRegistry = {
 		image: "/relics/civil-protector-head-relic.webp",
 		description: "Every 100 kills, you lose a perk.",
 		map: getMapByKey("astraMalorum"),
+		discoveredDate: new Date("December 11, 2025 1:00 AM"),
 		content: Effect.promise(() => import("@/content/relics/civil-protector-head.mdx")),
 	},
 } as const satisfies Record<string, Relic>
 
 const relicMap = new Map<string, Relic>()
-const relics = Object.values(relicRegistry).sort((a, b) => {
-	const typeComparison = sortRelicTypes(a.type, b.type)
-	if (typeComparison !== 0) return typeComparison
-	return sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate)
-})
+const relics = Object.values(relicRegistry)
 
 for (const relic of relics) {
 	relicMap.set(relic.id, relic)
