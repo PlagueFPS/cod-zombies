@@ -28,12 +28,6 @@ export default function RelicGrid({ relics }: RelicGridProps) {
 		case "discovered-asc":
 			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateAsc(a.discoveredDate, b.discoveredDate))
 			break
-		case "latest":
-			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
-			break
-		case "oldest":
-			filteredRelics = filteredRelics.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
-			break
 		case "type-asc":
 			filteredRelics = filteredRelics.sort((a, b) => sortRelicTypes(a.type, b.type))
 			break

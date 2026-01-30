@@ -50,8 +50,8 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 			? [
 					{ value: "latest", label: "Latest" },
 					{ value: "oldest", label: "Oldest" },
-					{ value: "difficulty-asc", label: "Difficulty (Easiest→Hardest)" },
-					{ value: "difficulty-desc", label: "Difficulty (Hardest→Easiest)" },
+					{ value: "difficulty-asc", label: "Difficulty: Easiest to Hardest" },
+					{ value: "difficulty-desc", label: "Difficulty: Hardest to Easiest" },
 				]
 			: [
 					{ value: "latest", label: "Latest" },

@@ -23,12 +23,10 @@ export default function RelicFiltersClient({ maps, types }: RelicFiltersClientPr
 	} = useFilterParams()
 
 	const sortOptions: SortOption[] = [
-		{ value: "discovered-desc", label: "Recently Discovered" },
+		{ value: "discovered-desc", label: "Newest Discovered" },
 		{ value: "discovered-asc", label: "Oldest Discovered" },
-		{ value: "latest", label: "Latest (By Map Release)" },
-		{ value: "oldest", label: "Oldest (By Map Release)" },
-		{ value: "type-asc", label: "Type (Grim→Wicked)" },
-		{ value: "type-desc", label: "Type (Wicked→Grim)" },
+		{ value: "type-asc", label: "Type: Grim to Wicked" },
+		{ value: "type-desc", label: "Type: Wicked to Grim" },
 	]
 
 	const toggleMap = (map: string) => {

@@ -1,9 +1,9 @@
 "use client"
 import type { Filter } from "../filters-combobox/filters-combobox"
+import SortSelect, { type SortOption } from "@/components/sort-select/sort-select"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import ClearFiltersButton from "../filters-combobox/clear-filters-button"
 import FiltersCombobox from "../filters-combobox/filters-combobox"
-import SortSelect, { type SortOption } from "@/components/sort-select/sort-select"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 
 interface BestiaryFiltersClientProps {
@@ -27,10 +27,10 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
 	const sortOptions: SortOption[] = [
 		{ value: "latest", label: "Latest" },
 		{ value: "oldest", label: "Oldest" },
-		{ value: "type-asc", label: "Type (Normal→Boss)" },
-		{ value: "type-desc", label: "Type (Boss→Normal)" },
-		{ value: "speed-asc", label: "Speed (Slowest→Fastest)" },
-		{ value: "speed-desc", label: "Speed (Fastest→Slowest)" },
+		{ value: "type-asc", label: "Type: Normal to Boss" },
+		{ value: "type-desc", label: "Type: Boss to Normal" },
+		{ value: "speed-asc", label: "Speed: Slowest to Fastest" },
+		{ value: "speed-desc", label: "Speed: Fastest to Slowest" },
 	]
 
 	const toggleGame = (game: string) => {
