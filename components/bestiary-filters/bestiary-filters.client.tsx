@@ -1,6 +1,7 @@
 "use client"
 import type { Filter } from "../filters-combobox/filters-combobox"
-import SortSelect, { type SortOption } from "@/components/sort-select/sort-select"
+import SortSelect from "@/components/sort-select/sort-select"
+import { getZombieSortOptions } from "@/data/zombies"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import ClearFiltersButton from "../filters-combobox/clear-filters-button"
 import FiltersCombobox from "../filters-combobox/filters-combobox"
@@ -24,14 +25,9 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
 		updateSort,
 	} = useFilterParams()
 
-	const sortOptions: SortOption[] = [
-		{ value: "latest", label: "Latest" },
-		{ value: "oldest", label: "Oldest" },
-		{ value: "type-asc", label: "Type: Normal to Boss" },
-		{ value: "type-desc", label: "Type: Boss to Normal" },
-		{ value: "speed-asc", label: "Speed: Slowest to Fastest" },
-		{ value: "speed-desc", label: "Speed: Fastest to Slowest" },
-	]
+	const sortOptions = getZombieSortOptions()
+	const defaultSort = sortOptions.at(0)?.value ?? "latest"
+	const validSortValue = sortParam && sortOptions.some(option => option.value === sortParam) ? sortParam : defaultSort	
 
 	const toggleGame = (game: string) => {
 		toggleParam("game", game, gameParams)
@@ -72,15 +68,16 @@ export default function BestiaryFiltersClient({ games, maps, types }: BestiaryFi
 					clearParam={() => clearParam("map")}
 				/>
 				<SortSelect
-					value={sortParam || "latest"}
+					value={validSortValue}
 					options={sortOptions}
 					onValueChange={updateSort}
+					triggerClass="ml-auto"
 				/>
 				{gameParams.length > 0 || mapParams.length > 0 || typeParams.length > 0 ? (
 					<ClearFiltersButton onClick={clearAllFilters} />
 				) : null}
 			</div>
-			<ScrollBar orientation="horizontal" className="sr-only" />
+			<ScrollBar orientation="horizontal" />
 		</ScrollArea>
 	)
 }

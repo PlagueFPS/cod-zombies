@@ -1,5 +1,4 @@
 "use client"
-
 import {
 	Select,
 	SelectContent,
@@ -7,6 +6,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
 export interface SortOption {
 	value: string
@@ -17,15 +17,24 @@ interface SortSelectProps {
 	value: string
 	options: SortOption[]
 	onValueChange: (value: string) => void
+	triggerClass?: string
+	contentClass?: string
 }
 
-export default function SortSelect({ value, options, onValueChange }: SortSelectProps) {
+export default function SortSelect({
+	value,
+	options,
+	onValueChange,
+	triggerClass,
+	contentClass,
+}: SortSelectProps) {
+
 	return (
 		<Select value={value} onValueChange={onValueChange}>
-			<SelectTrigger className="w-[180px]">
+			<SelectTrigger className={cn("w-fit", triggerClass)}>
 				<SelectValue placeholder="Sort by" />
 			</SelectTrigger>
-			<SelectContent>
+			<SelectContent className={cn(contentClass)}>
 				{options.map(option => (
 					<SelectItem key={option.value} value={option.value}>
 						{option.label}

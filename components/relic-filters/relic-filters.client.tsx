@@ -1,7 +1,8 @@
 "use client"
 import type { Filter } from "@/components/filters-combobox/filters-combobox"
 import FiltersCombobox from "@/components/filters-combobox/filters-combobox"
-import SortSelect, { type SortOption } from "@/components/sort-select/sort-select"
+import SortSelect from "@/components/sort-select/sort-select"
+import { getRelicSortOptions } from "@/data/relics"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import ClearFiltersButton from "../filters-combobox/clear-filters-button"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
@@ -12,22 +13,11 @@ interface RelicFiltersClientProps {
 }
 
 export default function RelicFiltersClient({ maps, types }: RelicFiltersClientProps) {
-	const {
-		mapParams,
-		typeParams,
-		sortParam,
-		toggleParam,
-		clearParam,
-		clearAllFilters,
-		updateSort,
-	} = useFilterParams()
-
-	const sortOptions: SortOption[] = [
-		{ value: "discovered-desc", label: "Newest Discovered" },
-		{ value: "discovered-asc", label: "Oldest Discovered" },
-		{ value: "type-asc", label: "Type: Grim to Wicked" },
-		{ value: "type-desc", label: "Type: Wicked to Grim" },
-	]
+	const { mapParams, typeParams, sortParam, toggleParam, clearParam, clearAllFilters, updateSort } =
+		useFilterParams()
+	const sortOptions = getRelicSortOptions()
+	const defaultSort = sortOptions.at(0)?.value ?? "discovered-desc"
+	const validSortValue = sortParam && sortOptions.some(option => option.value === sortParam) ? sortParam : defaultSort	
 
 	const toggleMap = (map: string) => {
 		toggleParam("map", map, mapParams)
@@ -55,15 +45,16 @@ export default function RelicFiltersClient({ maps, types }: RelicFiltersClientPr
 					clearParam={() => clearParam("type")}
 				/>
 				<SortSelect
-					value={sortParam || "discovered-desc"}
+					value={validSortValue}
 					options={sortOptions}
 					onValueChange={updateSort}
+					triggerClass="ml-auto"
 				/>
 				{mapParams.length > 0 || typeParams.length > 0 ? (
 					<ClearFiltersButton onClick={clearAllFilters} />
 				) : null}
 			</div>
-			<ScrollBar orientation="horizontal" className="sr-only" />
+			<ScrollBar orientation="horizontal" />
 		</ScrollArea>
 	)
 }

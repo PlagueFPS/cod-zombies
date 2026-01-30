@@ -1,3 +1,4 @@
+import type { SortOption } from "@/components/sort-select/sort-select"
 import { Effect, Option } from "effect"
 import { sortReleaseDateDesc } from "@/utils/functions.client"
 import { getMapByKey, type Maps } from "./maps"
@@ -53,6 +54,15 @@ export const getSideQuestById = (id: string) => sideQuestMap.get(id)
 export const getAdjacentSideQuests = (questId: string) => {
 	return getAdjacentItems(sideQuests, questId)
 }
+
+/**
+ * Gets the sort options for side quests.
+ * @returns An array of sort options.
+ */
+export const getSideQuestSortOptions = (): SortOption[] => [
+	{ value: "latest", label: "Latest" },
+	{ value: "oldest", label: "Oldest" },
+]
 
 const sideQuestRegistry = {
 	free500Points: {

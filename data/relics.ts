@@ -1,3 +1,4 @@
+import type { SortOption } from "@/components/sort-select/sort-select"
 import type { ContentState } from "@/types/data"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect } from "effect"
@@ -59,6 +60,17 @@ export const getAdjacentRelics = (id: string) => {
 	const sortedRelics = [...relics].reverse()
 	return getAdjacentItems(sortedRelics, id)
 }
+
+/**
+ * Gets the sort options for relics.
+ * @returns An array of sort options.
+ */
+export const getRelicSortOptions = (): SortOption[] => [
+	{ value: "discovered-desc", label: "Newest Discovered" },
+	{ value: "discovered-asc", label: "Oldest Discovered" },
+	{ value: "type-asc", label: "Type: Grim to Wicked" },
+	{ value: "type-desc", label: "Type: Wicked to Grim" },
+]
 
 const relicRegistry = {
 	lawyersPen: {

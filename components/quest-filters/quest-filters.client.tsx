@@ -2,8 +2,10 @@
 import type { Filter } from "@/components/filters-combobox/filters-combobox"
 import ClearFiltersButton from "@/components/filters-combobox/clear-filters-button"
 import FiltersCombobox from "@/components/filters-combobox/filters-combobox"
-import SortSelect, { type SortOption } from "@/components/sort-select/sort-select"
+import SortSelect from "@/components/sort-select/sort-select"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { getMainQuestSortOptions } from "@/data/main-quests"
+import { getSideQuestSortOptions } from "@/data/side-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
 
 interface MainQuestFilters {
@@ -44,19 +46,10 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 	const toggleDifficulty = (difficulty: string) => {
 		toggleParam("difficulty", difficulty, difficultyParams)
 	}
-	// TODO: Think about extracting sort options into utility functions
-	const sortOptions: SortOption[] =
-		type === "main"
-			? [
-					{ value: "latest", label: "Latest" },
-					{ value: "oldest", label: "Oldest" },
-					{ value: "difficulty-asc", label: "Difficulty: Easiest to Hardest" },
-					{ value: "difficulty-desc", label: "Difficulty: Hardest to Easiest" },
-				]
-			: [
-					{ value: "latest", label: "Latest" },
-					{ value: "oldest", label: "Oldest" },
-				]
+	
+	const sortOptions = type === "main" ? getMainQuestSortOptions() : getSideQuestSortOptions()
+	const defaultSort = sortOptions.at(0)?.value ?? "latest"
+	const validSortValue = sortParam && sortOptions.some(option => option.value === sortParam) ? sortParam : defaultSort	
 
 	return (
 		<ScrollArea className="-mt-4">
@@ -99,15 +92,16 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 					</>
 				)}
 				<SortSelect
-					value={sortParam || "latest"}
+					value={validSortValue}
 					options={sortOptions}
 					onValueChange={updateSort}
+					triggerClass="ml-auto"
 				/>
 				{gameParams.length > 0 || mapParams.length > 0 || difficultyParams.length > 0 ? (
 					<ClearFiltersButton onClick={clearAllFilters} />
 				) : null}
 			</div>
-			<ScrollBar orientation="horizontal" className="sr-only" />
+			<ScrollBar orientation="horizontal" />
 		</ScrollArea>
 	)
 }
