@@ -1,26 +1,51 @@
 {
   "version": "1.0",
-  "generated": "2026-01-31T00:40:17.256Z",
+  "generated": "2026-01-31T16:19:50.199Z",
   "files": {
-    "relics/civil-protector-head.mdx": {
-      "lastModified": "2026-01-31T00:38:53.000Z",
+    "relics/blood-vials.mdx": {
+      "lastModified": "2026-01-31T16:18:51.000Z",
       "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "0b69e56"
+      "commitHash": "2005dca"
+    },
+    "relics/bus.mdx": {
+      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "2005dca"
     },
     "relics/golden-spork.mdx": {
-      "lastModified": "2026-01-30T22:33:24.000Z",
-      "lastModifiedFormatted": "January 30, 2026",
-      "commitHash": "6b1c3c9"
-    },
-    "relics/matroyshka-dolls.mdx": {
-      "lastModified": "2026-01-30T22:33:24.000Z",
-      "lastModifiedFormatted": "January 30, 2026",
-      "commitHash": "6b1c3c9"
+      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "2005dca"
     },
     "relics/gong.mdx": {
-      "lastModified": "2026-01-26T02:30:33.000Z",
-      "lastModifiedFormatted": "January 26, 2026",
-      "commitHash": "c2fb002"
+      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "2005dca"
+    },
+    "relics/matroyshka-dolls.mdx": {
+      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "2005dca"
+    },
+    "relics/samanthas-drawing.mdx": {
+      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "2005dca"
+    },
+    "relics/seed.mdx": {
+      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "2005dca"
+    },
+    "relics/spider-fang.mdx": {
+      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "2005dca"
+    },
+    "relics/civil-protector-head.mdx": {
+      "lastModified": "2026-01-31T00:43:18.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "a411dd8"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2026-01-20T18:30:17.000Z",
@@ -31,11 +56,6 @@
       "lastModified": "2026-01-20T18:30:17.000Z",
       "lastModifiedFormatted": "January 20, 2026",
       "commitHash": "101572c"
-    },
-    "relics/samanthas-drawing.mdx": {
-      "lastModified": "2026-01-14T17:26:06.000Z",
-      "lastModifiedFormatted": "January 14, 2026",
-      "commitHash": "5c571c8"
     },
     "side-quests/magic.mdx": {
       "lastModified": "2026-01-09T12:21:45.000Z",
@@ -62,16 +82,6 @@
       "lastModifiedFormatted": "December 22, 2025",
       "commitHash": "e991ff2"
     },
-    "relics/blood-vials.mdx": {
-      "lastModified": "2025-12-20T18:50:44.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "f6c3a23"
-    },
-    "relics/bus.mdx": {
-      "lastModified": "2025-12-20T18:50:44.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "f6c3a23"
-    },
     "relics/dragon-wings.mdx": {
       "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
@@ -88,16 +98,6 @@
       "commitHash": "f6c3a23"
     },
     "relics/lawyers-pen.mdx": {
-      "lastModified": "2025-12-20T18:50:44.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "f6c3a23"
-    },
-    "relics/seed.mdx": {
-      "lastModified": "2025-12-20T18:50:44.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "f6c3a23"
-    },
-    "relics/spider-fang.mdx": {
       "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
       "commitHash": "f6c3a23"
