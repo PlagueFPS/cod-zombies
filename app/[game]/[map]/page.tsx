@@ -4,6 +4,7 @@ import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
+import { CompletionTimeDisplay } from "@/components/completion-time/completion-time-display"
 import {
 	ComingSoonBadge,
 	DifficultyBadge,
@@ -181,6 +182,8 @@ const MainQuestPage = Effect.fn("MainQuestPage")(
 											<Clock className="size-4" />
 											<span>{timeToRead} min read</span>
 										</div>
+										<span className="hidden md:inline">&bull;</span>
+										<CompletionTimeDisplay timeRange={quest.estimatedTimeMins} />
 									</div>
 									<ShareButton
 										title={quest.map.title}

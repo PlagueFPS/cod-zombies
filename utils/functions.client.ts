@@ -1,6 +1,6 @@
 import type { MainQuestDifficulty } from "@/data/main-quests"
 import type { RelicType } from "@/data/relics"
-import type { ZombieType, ZombieSpeed } from "@/data/zombies"
+import type { ZombieSpeed, ZombieType } from "@/data/zombies"
 
 /**
  * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
@@ -96,6 +96,62 @@ export const sortReleaseDateAsc = (a: string | Date, b: string | Date) => {
 	const dateB = new Date(b)
 	return dateA.getTime() - dateB.getTime()
 }
+
+/**
+ * Returns the midpoint of an estimated time range (min/max in minutes) for sorting.
+ * @param range - The time range with min and max in minutes.
+ * @returns The midpoint in minutes.
+ */
+export const getEstimatedTimeMidpoint = (range: { min: number; max: number }) =>
+	(range.min + range.max) / 2
+
+/**
+ * Sorts estimated time ranges in ascending order (shortest to longest) by midpoint.
+ * @param a - The first time range.
+ * @param b - The second time range.
+ * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
+ */
+export const sortEstimatedTimeAsc = (
+	a: { min: number; max: number },
+	b: { min: number; max: number },
+) => getEstimatedTimeMidpoint(a) - getEstimatedTimeMidpoint(b)
+
+/**
+ * Sorts estimated time ranges in descending order (longest to shortest) by midpoint.
+ * @param a - The first time range.
+ * @param b - The second time range.
+ * @returns A positive number if a should come before b, a negative number if a should come after b, or 0 if they are equal.
+ */
+export const sortEstimatedTimeDesc = (
+	a: { min: number; max: number },
+	b: { min: number; max: number },
+) => getEstimatedTimeMidpoint(b) - getEstimatedTimeMidpoint(a)
+
+const formatMinutesForDisplay = (m: number) => {
+	const mins = Math.round(m)
+	if (mins < 60) return `${mins}m`
+	const hours = Math.floor(mins / 60)
+	const remainder = mins % 60
+	return remainder === 0 ? `${hours}h` : `${hours}h${remainder}m`
+}
+
+/**
+ * Formats a time range (min/max in minutes) for display, e.g. "45m", "1h30m", "45m-1h30m".
+ * @param range - The time range with min and max in minutes.
+ * @returns A formatted string for the time range.
+ */
+export const formatEstimatedTimeRange = (range: { min: number; max: number }) =>
+	range.min === range.max
+		? formatMinutesForDisplay(range.min)
+		: `${formatMinutesForDisplay(range.min)}-${formatMinutesForDisplay(range.max)}`
+
+/**
+ * Formats the midpoint of a time range for display, e.g. "45m", "1h", "1h20m".
+ * @param range - The time range with min and max in minutes.
+ * @returns A formatted string for the midpoint.
+ */
+export const formatEstimatedTimeMidpoint = (range: { min: number; max: number }) =>
+	formatMinutesForDisplay(getEstimatedTimeMidpoint(range))
 
 /**
  * Sorts zombie types in ascending order.
