@@ -12,6 +12,8 @@ import { MAP_LIMIT } from "@/utils/constants"
 import {
 	calculateSkip,
 	sortDifficulties,
+	sortEstimatedTimeAsc,
+	sortEstimatedTimeDesc,
 	sortReleaseDateAsc,
 	sortReleaseDateDesc,
 } from "@/utils/functions.client"
@@ -104,6 +106,22 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 						if (aDiff) return -1
 						if (bDiff) return 1
 						return 0
+					}
+					return 0
+				})
+				break
+			case "time-asc":
+				sortedQuests.sort((a, b) => {
+					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
+						return sortEstimatedTimeAsc(a.estimatedTimeMins, b.estimatedTimeMins)
+					}
+					return 0
+				})
+				break
+			case "time-desc":
+				sortedQuests.sort((a, b) => {
+					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
+						return sortEstimatedTimeDesc(a.estimatedTimeMins, b.estimatedTimeMins)
 					}
 					return 0
 				})

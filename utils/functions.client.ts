@@ -98,6 +98,36 @@ export const sortReleaseDateAsc = (a: string | Date, b: string | Date) => {
 }
 
 /**
+ * Returns the midpoint of an estimated time range (min/max in minutes) for sorting.
+ * @param range - The time range with min and max in minutes.
+ * @returns The midpoint in minutes.
+ */
+export const getEstimatedTimeMidpoint = (range: { min: number; max: number }) =>
+	(range.min + range.max) / 2
+
+/**
+ * Sorts estimated time ranges in ascending order (shortest to longest) by midpoint.
+ * @param a - The first time range.
+ * @param b - The second time range.
+ * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
+ */
+export const sortEstimatedTimeAsc = (
+	a: { min: number; max: number },
+	b: { min: number; max: number },
+) => getEstimatedTimeMidpoint(a) - getEstimatedTimeMidpoint(b)
+
+/**
+ * Sorts estimated time ranges in descending order (longest to shortest) by midpoint.
+ * @param a - The first time range.
+ * @param b - The second time range.
+ * @returns A positive number if a should come before b, a negative number if a should come after b, or 0 if they are equal.
+ */
+export const sortEstimatedTimeDesc = (
+	a: { min: number; max: number },
+	b: { min: number; max: number },
+) => getEstimatedTimeMidpoint(b) - getEstimatedTimeMidpoint(a)
+
+/**
  * Sorts zombie types in ascending order.
  * @param a - The first zombie type.
  * @param b - The second zombie type.
