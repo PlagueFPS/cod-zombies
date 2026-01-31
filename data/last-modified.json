@@ -1,21 +1,21 @@
 {
   "version": "1.0",
-  "generated": "2026-01-30T22:29:19.004Z",
+  "generated": "2026-01-31T00:40:17.256Z",
   "files": {
     "relics/civil-protector-head.mdx": {
-      "lastModified": "2026-01-30T22:28:52.000Z",
-      "lastModifiedFormatted": "January 30, 2026",
-      "commitHash": "33ee558"
+      "lastModified": "2026-01-31T00:38:53.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "0b69e56"
     },
     "relics/golden-spork.mdx": {
-      "lastModified": "2026-01-30T22:27:19.000Z",
+      "lastModified": "2026-01-30T22:33:24.000Z",
       "lastModifiedFormatted": "January 30, 2026",
-      "commitHash": "083810a"
+      "commitHash": "6b1c3c9"
     },
     "relics/matroyshka-dolls.mdx": {
-      "lastModified": "2026-01-30T22:27:19.000Z",
+      "lastModified": "2026-01-30T22:33:24.000Z",
       "lastModifiedFormatted": "January 30, 2026",
-      "commitHash": "083810a"
+      "commitHash": "6b1c3c9"
     },
     "relics/gong.mdx": {
       "lastModified": "2026-01-26T02:30:33.000Z",
