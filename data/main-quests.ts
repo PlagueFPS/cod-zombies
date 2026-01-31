@@ -382,7 +382,7 @@ const mainQuestRegistry = {
 		map: getMapByKey("mauerDerToten"),
 		estimatedTimeMins: { 
 			min: Duration.toMinutes("1 hour"), 
-			max: Duration.toMinutes("1.5 hour"),
+			max: Duration.toMinutes("1.5 hours"),
 			reason: "Time varies mainly based on player knowledge of the steps."
 		},
 		content: Effect.promise(() => import("@/content/main-quests/tin-man-heart.mdx")),
