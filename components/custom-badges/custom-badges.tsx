@@ -1,13 +1,14 @@
 import type { Augment } from "@/data/augments"
 import type { ElixirRarity } from "@/data/elixirs"
 import type { GobblegumRarity, GobblegumType } from "@/data/gobblegum"
-import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { MainQuestDifficulty, MainQuestTimeRange } from "@/data/main-quests"
 import type { RelicType } from "@/data/relics"
 import type { ZombieAttack } from "@/data/zombie-attacks"
 import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { formatEstimatedTimeMidpoint } from "@/utils/functions.client"
 
 interface CustomBadgeProps {
 	className?: string
@@ -47,6 +48,14 @@ export const DifficultyBadge = ({
 		)}
 	>
 		{difficulty}
+	</Badge>
+)
+export const EstimatedTimeBadge = ({
+	className,
+	timeRange,
+}: CustomBadgeProps & { timeRange: MainQuestTimeRange }) => (
+	<Badge className={cn("badge-primary-gradient dark:dark-badge-primary-gradient", className)}>
+		{formatEstimatedTimeMidpoint(timeRange)}
 	</Badge>
 )
 export const TypeBadge = ({

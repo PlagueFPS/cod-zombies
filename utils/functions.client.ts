@@ -127,6 +127,32 @@ export const sortEstimatedTimeDesc = (
 	b: { min: number; max: number },
 ) => getEstimatedTimeMidpoint(b) - getEstimatedTimeMidpoint(a)
 
+const formatMinutesForDisplay = (m: number) => {
+	const mins = Math.round(m)
+	if (mins < 60) return `${mins}m`
+	const hours = Math.floor(mins / 60)
+	const remainder = mins % 60
+	return remainder === 0 ? `${hours}h` : `${hours}h ${remainder}m`
+}
+
+/**
+ * Formats a time range (min/max in minutes) for display, e.g. "45m", "1h 30m", "45m-1h 30m".
+ * @param range - The time range with min and max in minutes.
+ * @returns A formatted string for the time range.
+ */
+export const formatEstimatedTimeRange = (range: { min: number; max: number }) =>
+	range.min === range.max
+		? formatMinutesForDisplay(range.min)
+		: `${formatMinutesForDisplay(range.min)}-${formatMinutesForDisplay(range.max)}`
+
+/**
+ * Formats the midpoint of a time range for display, e.g. "45m", "1h", "1h 20m".
+ * @param range - The time range with min and max in minutes.
+ * @returns A formatted string for the midpoint.
+ */
+export const formatEstimatedTimeMidpoint = (range: { min: number; max: number }) =>
+	formatMinutesForDisplay(getEstimatedTimeMidpoint(range))
+
 /**
  * Sorts zombie types in ascending order.
  * @param a - The first zombie type.

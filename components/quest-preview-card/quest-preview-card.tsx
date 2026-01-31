@@ -4,7 +4,12 @@ import type { SideQuest } from "@/data/side-quests"
 import { Option, Predicate } from "effect"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
-import { ComingSoonBadge, DifficultyBadge, NewBadge } from "../custom-badges/custom-badges"
+import {
+	ComingSoonBadge,
+	DifficultyBadge,
+	EstimatedTimeBadge,
+	NewBadge,
+} from "../custom-badges/custom-badges"
 import { CustomLink } from "../custom-link/custom-link"
 import FeaturedImage from "../featured-image/featured-image"
 import { Badge } from "../ui/badge"
@@ -79,6 +84,9 @@ export default function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCar
 					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
 						{stateBadge}
 						{renderSpecificBadge()}
+						{Predicate.hasProperty(quest, "estimatedTimeMins") && (
+							<EstimatedTimeBadge timeRange={quest.estimatedTimeMins} />
+						)}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 							{quest.map.game.title}
 						</Badge>
