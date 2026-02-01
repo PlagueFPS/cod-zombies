@@ -12,6 +12,7 @@ interface MainQuestFilters {
 	type: "main"
 	games: Filter[]
 	difficulties: Filter[]
+	timeRanges: Filter[]
 }
 
 interface SideQuestFilters {
@@ -28,6 +29,7 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 		mapParams,
 		difficultyParams,
 		gameParams,
+		timeParams,
 		sortParam,
 		toggleParam,
 		clearParam,
@@ -46,7 +48,11 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 	const toggleDifficulty = (difficulty: string) => {
 		toggleParam("difficulty", difficulty, difficultyParams)
 	}
-	
+
+	const toggleTime = (time: string) => {
+		toggleParam("time", time, timeParams)
+	}
+
 	const sortOptions = type === "main" ? getMainQuestSortOptions() : getSideQuestSortOptions()
 	const defaultSort = sortOptions.at(0)?.value ?? "latest"
 	const validSortValue = sortParam && sortOptions.some(option => option.value === sortParam) ? sortParam : defaultSort	
@@ -69,6 +75,13 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 							title="Difficulty"
 							toggleParam={toggleDifficulty}
 							clearParam={() => clearParam("difficulty")}
+						/>
+						<FiltersCombobox
+							data={props.timeRanges}
+							currentSelection={timeParams}
+							title="Completion Time"
+							toggleParam={toggleTime}
+							clearParam={() => clearParam("time")}
 						/>
 					</>
 				) : (
@@ -97,7 +110,10 @@ export default function QuestFiltersClient(props: TQuestFiltersClient) {
 					onValueChange={updateSort}
 					triggerClass="ml-auto"
 				/>
-				{gameParams.length > 0 || mapParams.length > 0 || difficultyParams.length > 0 ? (
+				{gameParams.length > 0 ||
+				mapParams.length > 0 ||
+				difficultyParams.length > 0 ||
+				timeParams.length > 0 ? (
 					<ClearFiltersButton onClick={clearAllFilters} />
 				) : null}
 			</div>

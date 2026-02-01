@@ -11,6 +11,8 @@ interface FilterParamsResult {
 	difficultyParams: string[]
 	/** Array of selected type parameter values */
 	typeParams: string[]
+	/** Array of selected completion time range parameter values */
+	timeParams: string[]
 	/** Current sort parameter value */
 	sortParam: string | null
 	/** Current page number */
@@ -69,7 +71,7 @@ interface FilterParamsResult {
 	updateURLParams: (params: URLSearchParams) => void
 }
 
-type Param = "type" | "map" | "game" | "difficulty"
+type Param = "type" | "map" | "game" | "difficulty" | "time"
 
 /**
  * Custom hook for managing site search parameters in the URL.
@@ -86,6 +88,7 @@ export function useFilterParams(): FilterParamsResult {
 	const mapParams = searchParams.getAll("map")
 	const difficultyParams = searchParams.getAll("difficulty")
 	const typeParams = searchParams.getAll("type")
+	const timeParams = searchParams.getAll("time")
 	const sortParam = searchParams.get("sort")
 	const pageParam = searchParams.get("page")
 	const page = pageParam ? parseInt(pageParam, 10) : 1
@@ -132,6 +135,7 @@ export function useFilterParams(): FilterParamsResult {
 		params.delete("map")
 		params.delete("difficulty")
 		params.delete("type")
+		params.delete("time")
 		params.delete("sort")
 		updateURLParams(params)
 	}
@@ -164,6 +168,7 @@ export function useFilterParams(): FilterParamsResult {
 		mapParams,
 		difficultyParams,
 		typeParams,
+		timeParams,
 		sortParam,
 		page,
 		searchParams,

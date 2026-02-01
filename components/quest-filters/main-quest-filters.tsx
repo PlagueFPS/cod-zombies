@@ -2,7 +2,11 @@ import { Option } from "effect"
 import { Suspense } from "react"
 import FilterLoader from "@/components/loaders/filter-loader"
 import { getGames } from "@/data/games"
-import { getMainQuests, type MainQuestDifficulty } from "@/data/main-quests"
+import {
+	getMainQuests,
+	MAIN_QUEST_TIME_RANGE_FILTERS,
+	type MainQuestDifficulty,
+} from "@/data/main-quests"
 import { slugify, sortDifficulties } from "@/utils/functions.client"
 import QuestFiltersClient from "./quest-filters.client"
 
@@ -32,10 +36,20 @@ export default function MainQuestFilters() {
 			slug: slugify(difficulty),
 			title: difficulty,
 		}))
+	const timeFilters = MAIN_QUEST_TIME_RANGE_FILTERS.map(range => ({
+		id: range.id,
+		slug: range.slug,
+		title: range.title,
+	}))
 
 	return (
-		<Suspense fallback={<FilterLoader filters={["Game", "Difficulty"]} />}>
-			<QuestFiltersClient type="main" games={gameFilters} difficulties={difficultyFilters} />
+		<Suspense fallback={<FilterLoader filters={["Game", "Difficulty", "Completion Time"]} />}>
+			<QuestFiltersClient
+				type="main"
+				games={gameFilters}
+				difficulties={difficultyFilters}
+				timeRanges={timeFilters}
+			/>
 		</Suspense>
 	)
 }
