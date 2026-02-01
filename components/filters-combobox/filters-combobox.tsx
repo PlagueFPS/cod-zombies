@@ -32,7 +32,7 @@ export interface Filter {
 interface IFiltersCombobox {
 	data: Filter[]
 	currentSelection: string[]
-	title: "Game" | "Difficulty" | "Type" | "Map"
+	title: "Game" | "Difficulty" | "Type" | "Map" | "Completion Time"
 	enableInput?: boolean
 	inputPlaceholder?: string
 	toggleParam: (param: string) => void
@@ -67,6 +67,11 @@ const FiltersCombobox = ({
 				<DifficultyBadge difficulty={capitalize(selection) as MainQuestDifficulty} />
 			)),
 			Match.when("Type", () => <TypeBadge type={capitalize(selection) as ZombieType} />),
+			Match.when("Completion Time", () => (
+				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+					{data.find(item => item.slug === selection)?.title || capitalize(selection)}
+				</Badge>
+			)),
 			Match.orElse(() => (
 				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 					{capitalize(selection)}
@@ -140,7 +145,7 @@ const FiltersCombobox = ({
 								<CommandItem onSelect={clearParam} asChild>
 									<Button variant={"ghost"} size={"sm"} className="items-center justify-center">
 										<Trash className="size-4 text-red-800 dark:text-red-400" />
-										<span>Clear {title} Filters</span>
+										<span className="text-xs">Clear {title} Filters</span>
 									</Button>
 								</CommandItem>
 							</div>

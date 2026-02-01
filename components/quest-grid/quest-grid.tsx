@@ -1,5 +1,4 @@
 "use client"
-import type { MainQuest, MainQuestDifficulty } from "@/data/main-quests"
 import type { SideQuest } from "@/data/side-quests"
 import type { ContentState } from "@/types/data"
 import { Option } from "effect"
@@ -7,10 +6,16 @@ import { Suspense, useEffect } from "react"
 import GridPagination from "@/components/grid-pagination/grid-pagination"
 import GridPaginationLoader from "@/components/loaders/grid-pagination-loader"
 import QuestPreviewCard from "@/components/quest-preview-card/quest-preview-card"
+import {
+	MAIN_QUEST_TIME_RANGE_FILTERS,
+	type MainQuest,
+	type MainQuestDifficulty,
+} from "@/data/main-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { MAP_LIMIT } from "@/utils/constants"
 import {
 	calculateSkip,
+	getEstimatedTimeMidpoint,
 	sortDifficulties,
 	sortEstimatedTimeAsc,
 	sortEstimatedTimeDesc,
@@ -30,8 +35,15 @@ interface IQuestGridClient {
 }
 
 export default function QuestGridClient({ quests }: IQuestGridClient) {
-	const { gameParams, mapParams, difficultyParams, sortParam, page, validatePageParam } =
-		useFilterParams()
+	const {
+		gameParams,
+		mapParams,
+		difficultyParams,
+		timeParams,
+		sortParam,
+		page,
+		validatePageParam,
+	} = useFilterParams()
 	let filteredQuests = quests.map(quest => {
 		if (quest._tag === "MainQuest") {
 			return {
@@ -66,6 +78,22 @@ export default function QuestGridClient({ quests }: IQuestGridClient) {
 				return mapParams.includes(quest.map.id)
 			}
 			return false
+		})
+	}
+
+	if (timeParams.length > 0) {
+		filteredQuests = filteredQuests.filter(quest => {
+			if (quest._tag !== "MainQuest") return false
+			const midpoint = getEstimatedTimeMidpoint(quest.estimatedTimeMins)
+			return timeParams.some(slug => {
+				const range = MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === slug)
+				if (!range) return false
+				// Last range "120-plus" is inclusive on both ends; others: minMins <= midpoint < maxMins
+				if (range.slug === "120-plus") {
+					return midpoint >= range.minMins && midpoint <= range.maxMins
+				}
+				return midpoint >= range.minMins && midpoint < range.maxMins
+			})
 		})
 	}
 

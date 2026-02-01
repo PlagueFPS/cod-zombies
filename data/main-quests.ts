@@ -72,6 +72,22 @@ export const getMainQuestSortOptions = (): SortOption[] => [
 	{ value: "time-desc", label: "Completion Time: Longest to Shortest" }
 ]
 
+export interface MainQuestTimeRangeFilter {
+	id: string
+	slug: string
+	title: string
+	minMins: number
+	maxMins: number
+}
+
+/** Time range options for filtering main quests by completion time (midpoint). */
+export const MAIN_QUEST_TIME_RANGE_FILTERS: MainQuestTimeRangeFilter[] = [
+	{ id: "under-30", slug: "under-30", title: "Under 30 min", minMins: 0, maxMins: 30 },
+	{ id: "30-60", slug: "30-60", title: "30 min–1 hr", minMins: 30, maxMins: 60 },
+	{ id: "60-120", slug: "60-120", title: "1–2 hrs", minMins: 60, maxMins: 120 },
+	{ id: "120-plus", slug: "120-plus", title: "2+ hrs", minMins: 120, maxMins: Infinity },
+]
+
 const mainQuestRegistry = {
 	casimirMechanism: {
 		id: "casimir-mechanism",
