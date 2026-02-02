@@ -1,13 +1,13 @@
 {
   "version": "1.0",
-  "generated": "2026-02-02T23:00:51.569Z",
+  "generated": "2026-02-02T23:07:59.086Z",
   "files": {
-    "relics/golden-spork.mdx": {
-      "lastModified": "2026-02-02T23:00:09.000Z",
-      "lastModifiedFormatted": "February 2, 2026",
-      "commitHash": "9ff6f0b"
-    },
     "relics/gong.mdx": {
+      "lastModified": "2026-02-02T23:07:27.000Z",
+      "lastModifiedFormatted": "February 2, 2026",
+      "commitHash": "20c4ab5"
+    },
+    "relics/golden-spork.mdx": {
       "lastModified": "2026-02-02T23:00:09.000Z",
       "lastModifiedFormatted": "February 2, 2026",
       "commitHash": "9ff6f0b"
