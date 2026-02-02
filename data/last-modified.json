@@ -1,46 +1,46 @@
 {
   "version": "1.0",
-  "generated": "2026-01-31T16:19:50.199Z",
+  "generated": "2026-02-02T23:00:51.569Z",
   "files": {
-    "relics/blood-vials.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
-    },
-    "relics/bus.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
-    },
     "relics/golden-spork.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
+      "lastModified": "2026-02-02T23:00:09.000Z",
+      "lastModifiedFormatted": "February 2, 2026",
+      "commitHash": "9ff6f0b"
     },
     "relics/gong.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
+      "lastModified": "2026-02-02T23:00:09.000Z",
+      "lastModifiedFormatted": "February 2, 2026",
+      "commitHash": "9ff6f0b"
     },
     "relics/matroyshka-dolls.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
-    },
-    "relics/samanthas-drawing.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
+      "lastModified": "2026-02-02T23:00:09.000Z",
+      "lastModifiedFormatted": "February 2, 2026",
+      "commitHash": "9ff6f0b"
     },
     "relics/seed.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModified": "2026-02-02T23:00:09.000Z",
+      "lastModifiedFormatted": "February 2, 2026",
+      "commitHash": "9ff6f0b"
+    },
+    "relics/blood-vials.mdx": {
+      "lastModified": "2026-01-31T16:25:22.000Z",
       "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
+      "commitHash": "c0c95cd"
+    },
+    "relics/bus.mdx": {
+      "lastModified": "2026-01-31T16:25:22.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "c0c95cd"
+    },
+    "relics/samanthas-drawing.mdx": {
+      "lastModified": "2026-01-31T16:25:22.000Z",
+      "lastModifiedFormatted": "January 31, 2026",
+      "commitHash": "c0c95cd"
     },
     "relics/spider-fang.mdx": {
-      "lastModified": "2026-01-31T16:18:51.000Z",
+      "lastModified": "2026-01-31T16:25:22.000Z",
       "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "2005dca"
+      "commitHash": "c0c95cd"
     },
     "relics/civil-protector-head.mdx": {
       "lastModified": "2026-01-31T00:43:18.000Z",
