@@ -132,11 +132,11 @@ const formatMinutesForDisplay = (m: number) => {
 	if (mins < 60) return `${mins}m`
 	const hours = Math.floor(mins / 60)
 	const remainder = mins % 60
-	return remainder === 0 ? `${hours}h` : `${hours}h${remainder}m`
+	return remainder === 0 ? `${hours}h` : `${hours}h ${remainder}m`
 }
 
 /**
- * Formats a time range (min/max in minutes) for display, e.g. "45m", "1h30m", "45m-1h30m".
+ * Formats a time range (min/max in minutes) for display, e.g. "45m", "1h 30m", "45m-1h 30m".
  * @param range - The time range with min and max in minutes.
  * @returns A formatted string for the time range.
  */
@@ -146,7 +146,7 @@ export const formatEstimatedTimeRange = (range: { min: number; max: number }) =>
 		: `${formatMinutesForDisplay(range.min)}-${formatMinutesForDisplay(range.max)}`
 
 /**
- * Formats the midpoint of a time range for display, e.g. "45m", "1h", "1h20m".
+ * Formats the midpoint of a time range for display, e.g. "45m", "1h", "1h 20m".
  * @param range - The time range with min and max in minutes.
  * @returns A formatted string for the midpoint.
  */

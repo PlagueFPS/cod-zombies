@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { useTableOfContents } from "@/hooks/use-table-of-contents"
 import { cn } from "@/lib/utils"
 import { IS_MAC_OS } from "@/utils/constants"
@@ -13,7 +14,6 @@ import { Progress } from "../ui/progress"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import MobileTableOfContents from "./mobile-table-of-contents"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 export interface Heading {
 	type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
@@ -34,8 +34,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
 	return (
 		<>
-			{ !isMobile ? (
-				<aside className="sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 bg-background px-6 shadow-md xl:block dark:shadow-none">
+			{!isMobile ? (
+				<aside className="sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 bg-transparent px-6 xl:block">
 					<div className="relative flex flex-col">
 						<div className="mt-4 flex flex-col items-center justify-center">
 							<div className="mb-2 flex w-full items-center justify-between">
@@ -127,7 +127,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 						</div>
 					</div>
 				</aside>
-			): (
+			) : (
 				<MobileTableOfContents
 					headings={headings}
 					activeHeading={activeHeading}
