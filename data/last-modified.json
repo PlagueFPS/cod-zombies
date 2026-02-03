@@ -1,26 +1,41 @@
 {
   "version": "1.0",
-  "generated": "2026-02-02T23:07:59.086Z",
+  "generated": "2026-02-03T04:28:05.289Z",
   "files": {
-    "relics/gong.mdx": {
-      "lastModified": "2026-02-02T23:07:27.000Z",
-      "lastModifiedFormatted": "February 2, 2026",
-      "commitHash": "20c4ab5"
+    "relics/dragon-wings.mdx": {
+      "lastModified": "2026-02-03T04:25:30.000Z",
+      "lastModifiedFormatted": "February 3, 2026",
+      "commitHash": "230d721"
+    },
+    "relics/lawyers-pen.mdx": {
+      "lastModified": "2026-02-03T04:25:30.000Z",
+      "lastModifiedFormatted": "February 3, 2026",
+      "commitHash": "230d721"
+    },
+    "relics/samanthas-drawing.mdx": {
+      "lastModified": "2026-02-03T04:25:30.000Z",
+      "lastModifiedFormatted": "February 3, 2026",
+      "commitHash": "230d721"
     },
     "relics/golden-spork.mdx": {
-      "lastModified": "2026-02-02T23:00:09.000Z",
+      "lastModified": "2026-02-02T23:12:02.000Z",
       "lastModifiedFormatted": "February 2, 2026",
-      "commitHash": "9ff6f0b"
+      "commitHash": "b20a2dc"
+    },
+    "relics/gong.mdx": {
+      "lastModified": "2026-02-02T23:12:02.000Z",
+      "lastModifiedFormatted": "February 2, 2026",
+      "commitHash": "b20a2dc"
     },
     "relics/matroyshka-dolls.mdx": {
-      "lastModified": "2026-02-02T23:00:09.000Z",
+      "lastModified": "2026-02-02T23:12:02.000Z",
       "lastModifiedFormatted": "February 2, 2026",
-      "commitHash": "9ff6f0b"
+      "commitHash": "b20a2dc"
     },
     "relics/seed.mdx": {
-      "lastModified": "2026-02-02T23:00:09.000Z",
+      "lastModified": "2026-02-02T23:12:02.000Z",
       "lastModifiedFormatted": "February 2, 2026",
-      "commitHash": "9ff6f0b"
+      "commitHash": "b20a2dc"
     },
     "relics/blood-vials.mdx": {
       "lastModified": "2026-01-31T16:25:22.000Z",
@@ -28,11 +43,6 @@
       "commitHash": "c0c95cd"
     },
     "relics/bus.mdx": {
-      "lastModified": "2026-01-31T16:25:22.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "c0c95cd"
-    },
-    "relics/samanthas-drawing.mdx": {
       "lastModified": "2026-01-31T16:25:22.000Z",
       "lastModifiedFormatted": "January 31, 2026",
       "commitHash": "c0c95cd"
@@ -82,22 +92,12 @@
       "lastModifiedFormatted": "December 22, 2025",
       "commitHash": "e991ff2"
     },
-    "relics/dragon-wings.mdx": {
-      "lastModified": "2025-12-20T18:50:44.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "f6c3a23"
-    },
     "relics/dragon.mdx": {
       "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
       "commitHash": "f6c3a23"
     },
     "relics/focusing-stone.mdx": {
-      "lastModified": "2025-12-20T18:50:44.000Z",
-      "lastModifiedFormatted": "December 20, 2025",
-      "commitHash": "f6c3a23"
-    },
-    "relics/lawyers-pen.mdx": {
       "lastModified": "2025-12-20T18:50:44.000Z",
       "lastModifiedFormatted": "December 20, 2025",
       "commitHash": "f6c3a23"
