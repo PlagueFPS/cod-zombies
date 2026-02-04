@@ -3,14 +3,14 @@ import { FileSystem, Path } from "@effect/platform"
 import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { ComingSoonBadge, NewBadge } from "@/components/custom-badges/custom-badges"
-import { CustomLink } from "@/components/custom-link/custom-link"
-import FeaturedImage from "@/components/featured-image/featured-image"
-import GuideFeedback from "@/components/guide-feedback/guide-feedback"
-import richStyles from "@/components/rich-text/rich-text.module.css"
-import ShareButton from "@/components/share-button/share-button"
-import TableOfContents from "@/components/table-of-contents/table-of-contents"
+import richStyles from "@/app/rich-text.module.css"
+import { Breadcrumbs } from "@/components/client/breadcrumbs"
+import { CustomLink } from "@/components/client/custom-link"
+import { FeaturedImage } from "@/components/client/featured-image"
+import { GuideFeedback } from "@/components/client/guide-feedback"
+import { ShareButton } from "@/components/client/share-button"
+import { TableOfContents } from "@/components/client/table-of-contents"
+import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import {
 	getAdjacentSideQuests,
@@ -27,7 +27,7 @@ import {
 	extractHeadingsFromMDX,
 	getLastUpdated,
 	getServerUrl,
-} from "@/utils/functions"
+} from "@/utils/server-functions"
 
 export const generateStaticParams = () => {
 	const quests = getSideQuests()

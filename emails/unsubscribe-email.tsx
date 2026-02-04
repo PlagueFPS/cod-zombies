@@ -12,7 +12,7 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { getServerUrl } from "@/utils/functions"
+import { getServerUrl } from "@/utils/server-functions"
 
 interface IUnsubscribeEmail {
 	unsubscribeUrl: string

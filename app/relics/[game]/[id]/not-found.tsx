@@ -1,10 +1,10 @@
 "use client"
 import type { Route } from "next"
-import type { Link } from "@/components/breadcrumbs/breadcrumbs"
+import type { Link } from "@/components/client/breadcrumbs"
 import { Option } from "effect"
 import { useParams } from "next/navigation"
-import NotFoundContent from "@/components/not-found/not-found-content"
-import { capitalize } from "@/utils/functions.client"
+import NotFoundContent from "@/components/server/not-found-content"
+import { capitalize } from "@/utils/shared-functions"
 import { decodeRelicParams } from "@/utils/validation-schemas"
 
 export default function RelicNotFound() {

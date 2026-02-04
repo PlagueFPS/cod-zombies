@@ -15,7 +15,7 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { getServerUrl } from "@/utils/functions"
+import { getServerUrl } from "@/utils/server-functions"
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
 	type: Zombie["type"]

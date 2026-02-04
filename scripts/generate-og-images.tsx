@@ -7,7 +7,7 @@ import sharp from "sharp"
 import { getMainQuestByMap, type MainQuest } from "@/data/main-quests"
 import { getSideQuests, type SideQuest } from "@/data/side-quests"
 import { getZombieByKey, type Zombie } from "@/data/zombies"
-import { calculateTimeToRead, getLastUpdated } from "@/utils/functions"
+import { calculateTimeToRead, getLastUpdated } from "@/utils/server-functions"
 
 const size = { width: 1200, height: 630 }
 const FsLayer = Layer.merge(BunFileSystem.layer, Path.layer)

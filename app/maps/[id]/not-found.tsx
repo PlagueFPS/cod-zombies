@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation"
-import NotFoundContent from "@/components/not-found/not-found-content"
+import NotFoundContent from "@/components/server/not-found-content"
 
 export default function InteractiveMapNotFound() {
 	const { id } = useParams()

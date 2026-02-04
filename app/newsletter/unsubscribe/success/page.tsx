@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { CheckCircle2 } from "lucide-react"
-import { CustomLink } from "@/components/custom-link/custom-link"
+import { CustomLink } from "@/components/client/custom-link"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
@@ -17,9 +17,7 @@ export default function UnsubscribeSuccessPage() {
 			<p className="mb-6 text-muted-foreground">
 				You have been successfully unsubscribed from our newsletter. We&apos;re sorry to see you go!
 			</p>
-			<Button variant={"outline"} asChild>
-				<CustomLink href="/">Return to Homepage</CustomLink>
-			</Button>
+			<Button nativeButton={false} variant="outline" render={<CustomLink href="/">Return to Homepage</CustomLink>} className="w-full" />
 		</div>
 	)
 }

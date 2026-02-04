@@ -1,0 +1,11 @@
+---
+description: Use bun or bunx instead of npm or npx for terminal commands
+alwaysApply: true
+---
+
+# Use Bun for Package Manager Commands
+
+Always use `bun` or `bunx` instead of `npm` or `npx` when running terminal commands.
+
+`npm` -> `bun`
+`npx` -> `bunx`

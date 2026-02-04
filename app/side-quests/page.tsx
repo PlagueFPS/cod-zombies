@@ -1,14 +1,16 @@
 import type { Metadata } from "next"
 import { Option } from "effect"
 import { Suspense } from "react"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import GridSection from "@/components/grid-section/grid-section"
-import GridLoader from "@/components/loaders/grid-loader"
-import { SideQuestFilters } from "@/components/quest-filters/side-quest-filters"
-import QuestGridClient from "@/components/quest-grid/quest-grid"
-import { getSideQuests } from "@/data/side-quests"
+import { Breadcrumbs } from "@/components/client/breadcrumbs"
+import { GridSort } from "@/components/client/grid-sort"
+import { QuestGrid } from "@/components/client/quest-grid"
+import { GridLoader } from "@/components/server/grid-loader"
+import { GridSection } from "@/components/server/grid-section"
+import { GridSortLoader } from "@/components/server/grid-sort-loader"
+import { SideQuestFilters } from "@/components/server/side-quest-filters"
+import { getSideQuestSortOptions, getSideQuests } from "@/data/side-quests"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getServerUrl } from "@/utils/functions"
+import { getServerUrl } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
 	title: "Side Quests",
@@ -49,9 +51,14 @@ export default function SideQuests() {
 					<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
 						Discover the hidden secrets and rewards beyond the main story.
 					</p>
-					<SideQuestFilters />
+					<div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row">
+						<SideQuestFilters />
+						<Suspense fallback={<GridSortLoader />}>
+							<GridSort options={getSideQuestSortOptions()} />
+						</Suspense>
+					</div>
 					<Suspense fallback={<GridLoader />}>
-						<QuestGridClient quests={quests} />
+						<QuestGrid quests={quests} />
 					</Suspense>
 				</GridSection>
 			</div>

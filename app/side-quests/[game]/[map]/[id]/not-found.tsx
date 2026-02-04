@@ -1,9 +1,9 @@
 "use client"
 import type { Route } from "next"
-import type { Link } from "@/components/breadcrumbs/breadcrumbs"
+import type { Link } from "@/components/client/breadcrumbs"
 import { useParams } from "next/navigation"
-import NotFoundContent from "@/components/not-found/not-found-content"
-import { capitalize } from "@/utils/functions.client"
+import NotFoundContent from "@/components/server/not-found-content"
+import { capitalize } from "@/utils/shared-functions"
 
 export default function QuestNotFound() {
 	const { game, map, id } = useParams()

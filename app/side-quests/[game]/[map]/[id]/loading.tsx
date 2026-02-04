@@ -1,5 +1,5 @@
-import QuestPageLoader from "@/components/loaders/quest-page-loader"
+import { QuestPageLoader } from "@/components/server/quest-page-loader"
 
-export default function QuestPageLoading() {
+export default function SideQuestPageLoading() {
 	return <QuestPageLoader mainQuest={false} />
 }

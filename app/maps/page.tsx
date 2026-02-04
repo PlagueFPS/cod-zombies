@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
 import { Effect, Option } from "effect"
 import { Suspense } from "react"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import GridSection from "@/components/grid-section/grid-section"
-import InteractiveMapsFilters from "@/components/interactive-map/interactive-map-filters"
-import MapsGrid from "@/components/interactive-map/maps-grid"
-import FilterLoader from "@/components/loaders/filter-loader"
-import GridLoader from "@/components/loaders/grid-loader"
+import { Breadcrumbs } from "@/components/client/breadcrumbs"
+import { GridFilters } from "@/components/client/grid-filters"
+import { MapsGrid } from "@/components/client/maps-grid"
+import { FilterLoader } from "@/components/server/filter-loader"
+import { GridLoader } from "@/components/server/grid-loader"
+import { GridSection } from "@/components/server/grid-section"
+import { getGameByKey } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
 import { BasePage } from "@/lib/layers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
@@ -34,7 +35,13 @@ const MapsPage = Effect.fn("MapsPage")(function* () {
 	const maps = yield* getInteractiveMaps().pipe(
 		Effect.map(maps => maps.map(m => ({ ...m, state: Option.getOrNull(m.state) }))),
 	)
-	const availableGames = new Set(maps.map(map => map.game))
+	const gameFilters = [...new Set(maps.map(m => m.game))].map(gameKey => {
+		const { id, title } = getGameByKey(gameKey)
+		return {
+			value: id,
+			label: title,
+		}
+	})
 
 	return (
 		<div className="w-full flex-col items-center justify-center">
@@ -45,8 +52,8 @@ const MapsPage = Effect.fn("MapsPage")(function* () {
 						Browse our collection of interactive maps showcasing key spawn points, locations, and
 						more.
 					</p>
-					<Suspense fallback={<FilterLoader filters={["Game"]} />}>
-						<InteractiveMapsFilters availableGames={availableGames} />
+					<Suspense fallback={<FilterLoader placeholder="Game" />}>
+						<GridFilters type="map" games={gameFilters} placeholder="Game" />
 					</Suspense>
 					<Suspense fallback={<GridLoader />}>
 						<MapsGrid maps={maps} />

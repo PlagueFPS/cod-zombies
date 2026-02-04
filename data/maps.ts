@@ -1,5 +1,5 @@
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
-import { sortReleaseDateDesc } from "@/utils/functions.client"
+import { sortReleaseDateDesc } from "@/utils/shared-functions"
 import { type Game, getGameByKey } from "./games"
 
 export interface Maps {

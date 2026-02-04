@@ -11,9 +11,9 @@ import {
 	Target,
 	Zap,
 } from "lucide-react"
-import BestiaryBreadcrumbsLoader from "@/components/loaders/bestiary-breadcrumb-loader"
-import ImageLoader from "@/components/loaders/image-loader"
-import PrevOrNextLoader from "@/components/loaders/prev-or-next-card-loader"
+import { BreadcrumbsLoader } from "@/components/client/breadcrumbs-loader"
+import ImageLoader from "@/components/server/image-loader"
+import PrevOrNextLoader from "@/components/server/prev-or-next-card-loader"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -23,7 +23,7 @@ export default function ZombiePageLoader() {
 	return (
 		<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
 			<div className="-top-5 absolute left-5 z-30 flex w-full justify-center pl-4 xl:pl-0">
-				<BestiaryBreadcrumbsLoader />
+				<BreadcrumbsLoader type="zombie" />
 			</div>
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
@@ -138,7 +138,7 @@ export default function ZombiePageLoader() {
 										</div>
 									</div>
 									<CardDescription className="space-y-2">
-										<Skeleton className="h-4 w-full " />
+										<Skeleton className="h-4 w-full" />
 										<Skeleton className="h-4 w-full" />
 										<Skeleton className="h-4 w-1/2" />
 									</CardDescription>
@@ -155,7 +155,7 @@ export default function ZombiePageLoader() {
 							<h3 className="font-bold text-xl">Spawn Behavior</h3>
 						</div>
 						<CardDescription className="space-y-2">
-							<Skeleton className="h-4 w-full " />
+							<Skeleton className="h-4 w-full" />
 							<Skeleton className="h-4 w-full" />
 							<Skeleton className="h-4 w-1/2" />
 						</CardDescription>
@@ -169,7 +169,7 @@ export default function ZombiePageLoader() {
 							<h3 className="font-bold text-xl">Combat Strategy</h3>
 						</div>
 						<div className="space-y-2 text-muted-foreground text-sm">
-							<Skeleton className="h-4 w-full " />
+							<Skeleton className="h-4 w-full" />
 							<Skeleton className="h-4 w-full" />
 							<Skeleton className="h-4 w-full" />
 							<Skeleton className="h-4 w-full" />

@@ -5,20 +5,21 @@ import { getMainQuests } from "@/data/main-quests"
 import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
-import { getLastUpdated, getServerUrl } from "@/utils/functions"
+import { getLastUpdated, getServerUrl } from "@/utils/server-functions"
+import { sortReleaseDateDesc } from "@/utils/shared-functions"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const mainQuests = getMainQuests()
-	const zombies = getZombies()
-	const sideQuests = getSideQuests()
 	const interactiveMaps = await Effect.runPromise(getInteractiveMaps())
+	const mainQuests = getMainQuests()
+	const sideQuests = getSideQuests()
+	const zombies = getZombies()
 	const relics = getRelics()
 	const serverUrl = getServerUrl()
 
 	const mainQuestsMap = mainQuests.map(quest => {
 		const { lastModified } = getLastUpdated(`main-quests/${quest.id}.mdx`)
 		return {
-			url: `${serverUrl}/${quest.map.game.id}/${quest.id}`,
+			url: `${serverUrl}/main-quests/${quest.map.game.id}/${quest.id}`,
 			lastModified: new Date(lastModified),
 		}
 	})
@@ -39,16 +40,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		}
 	})
 
-	const relicsMap = relics.map(relic => {
+	const relicsMap = relics.sort((a, b) => sortReleaseDateDesc(a.discoveredDate, b.discoveredDate)).map(relic => {
 		const { lastModified } = getLastUpdated(`relics/${relic.id}.mdx`)
 		return {
 			url: `${serverUrl}/relics/${relic.map.game.id}/${relic.id}`,
 			lastModified: new Date(lastModified),
 		}
 	})
+
+	const firstEntries = [
+		mainQuestsMap[0],
+		sideQuestsMap[0],
+		zombiesMap[0],
+		relicsMap[0],
+	].filter((entry): entry is NonNullable<typeof entry> => entry != null)
+
+	const first = firstEntries[0]
+	const mostRecentLastModified =
+		first != null
+			? firstEntries.reduce((latest, entry) =>
+					entry.lastModified > latest ? entry.lastModified : latest,
+				first.lastModified,
+			)
+			: undefined
+
 	return [
 		{
 			url: `${serverUrl}`,
+			lastModified: mostRecentLastModified,
+		},
+		{
+			url: `${serverUrl}/main-quests`,
 			lastModified: mainQuests[0]
 				? new Date(getLastUpdated(`main-quests/${mainQuests[0].id}.mdx`).lastModified)
 				: undefined,

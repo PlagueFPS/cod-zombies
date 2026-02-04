@@ -14,7 +14,7 @@ import {
 	Text,
 } from "@react-email/components"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { getServerUrl } from "@/utils/functions"
+import { getServerUrl } from "@/utils/server-functions"
 
 export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscribeUrl: string }) {
 	const today = new Date()

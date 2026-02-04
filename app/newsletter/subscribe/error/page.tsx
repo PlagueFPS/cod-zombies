@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Effect, Option } from "effect"
 import { AlertCircle } from "lucide-react"
-import { CustomLink } from "@/components/custom-link/custom-link"
+import { CustomLink } from "@/components/client/custom-link"
 import { Button } from "@/components/ui/button"
 import { BasePage } from "@/lib/layers"
 import { decodeErrorPageSearchParams } from "@/utils/validation-schemas"
@@ -30,9 +30,7 @@ const SubscribeErrorPage = Effect.fn("SubscribeErrorPage")(function* ({
 			<h1 className="mb-4 font-bold text-2xl">Subscribe Failed</h1>
 			<p className="mb-6 text-muted-foreground">{errorMessage}</p>
 			<div className="space-y-4">
-				<Button asChild className="w-full">
-					<CustomLink href="/">Return to Homepage</CustomLink>
-				</Button>
+				<Button nativeButton={false} render={<CustomLink href="/">Return to Homepage</CustomLink>} className="w-full" />
 			</div>
 		</div>
 	)
