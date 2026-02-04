@@ -1,21 +1,31 @@
 {
   "version": "1.0",
-  "generated": "2026-02-03T04:28:05.289Z",
+  "generated": "2026-02-04T20:01:47.632Z",
   "files": {
+    "relics/civil-protector-head.mdx": {
+      "lastModified": "2026-02-04T20:00:28.000Z",
+      "lastModifiedFormatted": "February 4, 2026",
+      "commitHash": "5b50741"
+    },
+    "relics/spider-fang.mdx": {
+      "lastModified": "2026-02-04T20:00:28.000Z",
+      "lastModifiedFormatted": "February 4, 2026",
+      "commitHash": "5b50741"
+    },
     "relics/dragon-wings.mdx": {
-      "lastModified": "2026-02-03T04:25:30.000Z",
+      "lastModified": "2026-02-03T04:33:34.000Z",
       "lastModifiedFormatted": "February 3, 2026",
-      "commitHash": "230d721"
+      "commitHash": "4ea28f0"
     },
     "relics/lawyers-pen.mdx": {
-      "lastModified": "2026-02-03T04:25:30.000Z",
+      "lastModified": "2026-02-03T04:33:34.000Z",
       "lastModifiedFormatted": "February 3, 2026",
-      "commitHash": "230d721"
+      "commitHash": "4ea28f0"
     },
     "relics/samanthas-drawing.mdx": {
-      "lastModified": "2026-02-03T04:25:30.000Z",
+      "lastModified": "2026-02-03T04:33:34.000Z",
       "lastModifiedFormatted": "February 3, 2026",
-      "commitHash": "230d721"
+      "commitHash": "4ea28f0"
     },
     "relics/golden-spork.mdx": {
       "lastModified": "2026-02-02T23:12:02.000Z",
@@ -46,16 +56,6 @@
       "lastModified": "2026-01-31T16:25:22.000Z",
       "lastModifiedFormatted": "January 31, 2026",
       "commitHash": "c0c95cd"
-    },
-    "relics/spider-fang.mdx": {
-      "lastModified": "2026-01-31T16:25:22.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "c0c95cd"
-    },
-    "relics/civil-protector-head.mdx": {
-      "lastModified": "2026-01-31T00:43:18.000Z",
-      "lastModifiedFormatted": "January 31, 2026",
-      "commitHash": "a411dd8"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2026-01-20T18:30:17.000Z",
