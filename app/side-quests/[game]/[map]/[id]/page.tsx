@@ -7,7 +7,6 @@ import richStyles from "@/app/rich-text.module.css"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
-import { GuideFeedback } from "@/components/client/guide-feedback"
 import { ShareButton } from "@/components/client/share-button"
 import { TableOfContents } from "@/components/client/table-of-contents"
 import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"
@@ -208,9 +207,6 @@ const SideQuestPage = Effect.fn("SideQuestPage")(
 									<MDXContent components={mdxComponents} />
 								</div>
 							)}
-							<div className="flex w-full items-center justify-center">
-								<GuideFeedback guideTitle={quest.title} type="Side Quest" map={quest.map.title} />
-							</div>
 							<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 								{Option.isSome(prev) && <PrevOrNextQuestCard quest={prev.value} prev />}
 								{Option.isSome(next) && <PrevOrNextQuestCard quest={next.value} />}

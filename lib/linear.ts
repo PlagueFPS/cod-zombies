@@ -27,6 +27,7 @@ export const createIssue = Effect.fnUntraced(function* ({ title, feedback, email
 				teamId: team.id,
 				title: title ?? "Website Feedback",
 				description,
+				// "User Feedback" label id
 				labelIds: ["c5154d91-ffed-4d2d-afe8-1e4777a3a908"],
 				assigneeId: Redacted.value(env.LINEAR_DEFAULT_ASSIGNEE_ID),
 			}),
