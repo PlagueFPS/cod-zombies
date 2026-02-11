@@ -3,11 +3,12 @@ import { FileSystem, Path } from "@effect/platform"
 import { Effect, Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/custom-badges/custom-badges"
-import { CustomLink } from "@/components/custom-link/custom-link"
-import FeaturedImage from "@/components/featured-image/featured-image"
-import richStyles from "@/components/rich-text/rich-text.module.css"
+import richStyles from "@/app/rich-text.module.css"
+import { Breadcrumbs } from "@/components/client/breadcrumbs"
+import { CustomLink } from "@/components/client/custom-link"
+import { FeaturedImage } from "@/components/client/featured-image"
+import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
+import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { getAdjacentRelics, getRelicById, getRelics, type Relic } from "@/data/relics"
@@ -15,7 +16,7 @@ import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { calculateTimeToRead, getLastUpdated, getServerUrl } from "@/utils/functions"
+import { calculateTimeToRead, getLastUpdated, getServerUrl } from "@/utils/server-functions"
 
 export const generateStaticParams = () => {
 	const relics = getRelics()
@@ -56,7 +57,7 @@ export const generateMetadata = async ({
 		},
 		alternates: {
 			canonical: `${getServerUrl()}/relics/${relic.map.game.id}/${relic.id}`,
-		}
+		},
 	}
 }
 
@@ -99,11 +100,10 @@ const RelicPage = Effect.fn("RelicPage")(
 		const MDXContent = content?.default
 
 		return (
-			<section className="-mt-10 container mx-auto max-w-4xl px-4 md:py-12">
+			<section className="-mt-6 sm:-mt-10 container mx-auto max-w-4xl px-4 md:py-12">
 				<Breadcrumbs
 					links={[
 						{ title: "Relics", href: "/relics" },
-						{ title: relic.map.game.title, href: `/relics` },
 						{
 							title: relic.title,
 							href: `/relics/${relic.map.game.id}/${relic.id}`,
@@ -137,7 +137,7 @@ const RelicPage = Effect.fn("RelicPage")(
 								</Badge>
 							</div>
 
-							<div className="flex items-center justify-center gap-2 pt-2 text-muted-foreground text-sm">
+							<div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-muted-foreground text-sm">
 								<span className="flex items-center gap-1">
 									<Calendar className="size-4" />
 									<p>Updated: {lastModifiedFormatted}</p>
@@ -147,6 +147,8 @@ const RelicPage = Effect.fn("RelicPage")(
 									<Clock className="size-4" />
 									<p>{timeToRead} min read</p>
 								</span>
+								<span className="hidden md:inline">&bull;</span>
+								<CompletionTimeDisplay timeRange={relic.estimatedTimeMins} />
 							</div>
 						</div>
 					</header>
@@ -200,27 +202,25 @@ const PrevOrNextRelicCard = ({ relic, prev }: PrevOrNextRelicCardProps) => {
 	if (relic.state === "Coming Soon") return null
 
 	return (
-		<Button asChild variant="outline">
-			<CustomLink
-				href={`/relics/${relic.map.game.id}/${relic.id}`}
-				className="group w-fit hover:text-primary"
-			>
-				<article className="flex h-full items-center">
-					<div className="mt-auto flex items-center justify-between pb-2 transition-colors group-focus-visible:text-primary">
-						{prev ? (
-							<span className="inline-flex items-center justify-center gap-1">
-								<ChevronLeft className="group-hover:-translate-x-1 group-focus-visible:-translate-x-1 transition-all" />
-								<span>{relic.title}</span>
-							</span>
-						) : (
-							<span className="inline-flex items-center justify-center gap-1">
-								<span className="ml-auto">{relic.title}</span>
-								<ChevronRight className="transition-all group-hover:translate-x-1 group-focus-visible:translate-x-1" />
-							</span>
-						)}
-					</div>
-				</article>
-			</CustomLink>
+		<Button
+			nativeButton={false}
+			variant="outline"
+			render={<CustomLink href={`/relics/${relic.map.game.id}/${relic.id}`} />}
+			className="group w-fit hover:text-primary"
+		>
+			<article className="flex items-center justify-between transition-colors group-focus-visible:text-primary">
+				{prev ? (
+					<span className="inline-flex items-center justify-center gap-1">
+						<ChevronLeft className="group-hover:-translate-x-1 group-focus-visible:-translate-x-1 transition-all" />
+						<span>{relic.title}</span>
+					</span>
+				) : (
+					<span className="inline-flex items-center justify-center gap-1">
+						<span className="ml-auto">{relic.title}</span>
+						<ChevronRight className="transition-all group-hover:translate-x-1 group-focus-visible:translate-x-1" />
+					</span>
+				)}
+			</article>
 		</Button>
 	)
 }

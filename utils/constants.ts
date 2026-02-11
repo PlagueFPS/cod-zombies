@@ -1,20 +1,24 @@
 import type { Metadata } from "next"
-import { Book, Brain, ComponentIcon, MapIcon } from "lucide-react"
 
 // navigator.platform is deprecated and should be replaced with navigator.userAgentData.platform once stable
 export const IS_MAC_OS =
 	typeof window !== "undefined" && window.navigator.platform.startsWith("Mac")
+/** Whether the current environment is development */
 export const IN_DEVELOPMENT = process.env.NODE_ENV === "development"
 export const SITE_TITLE = "Call of Duty: Zombies Guides"
 export const SITE_DESCRIPTION =
-	"Detailed main and side quests step-by-step guides, fully interactive maps, a complete bestiary, and more to give you all the resources you'll need for zombies."
+	"Detailed main/side quests and Cursed Relic step-by-step guides, interactive maps, a complete bestiary, and more to give you all the resources you'll need for zombies."
+/** Default date options for the date formatting function */
 export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
 	year: "numeric",
 	month: "long",
 	day: "numeric",
 }
-export const MAP_LIMIT = 12
-/** 2 weeks in milliseconds */
+/** Limit for the amount of cards shown per page on every grid */
+export const CARD_LIMIT = 12
+/** Limit for the amount of preview cards shown per section on the home page */
+export const HOME_PREVIEW_LIMIT = 3
+/** Default Open Graph properties for the website */
 export const GLOBAL_OG_PROPS: Partial<Metadata> = {
 	openGraph: {
 		siteName: SITE_TITLE,
@@ -23,33 +27,3 @@ export const GLOBAL_OG_PROPS: Partial<Metadata> = {
 		emails: ["contact@codzombiesguides.com"],
 	},
 }
-export const ROUTES = [
-	{
-		id: "side-quests",
-		title: "Side Quests",
-		description: "View our wide collection of side quest guides.",
-		href: "/side-quests",
-		icon: Book,
-	},
-	{
-		id: "bestiary",
-		title: "Bestiary",
-		description: "Learn about all the types of enemies you'll encounter.",
-		href: "/bestiary",
-		icon: Brain,
-	},
-	{
-		id: "maps",
-		title: "Maps",
-		description: "Understand the layouts and locations for any map.",
-		href: "/maps",
-		icon: MapIcon,
-	},
-	{
-		id: "relics",
-		title: "Relics",
-		description: "Learn how to obtain the most desired relics.",
-		href: "/relics",
-		icon: ComponentIcon,
-	},
-] as const

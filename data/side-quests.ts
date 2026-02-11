@@ -1,8 +1,7 @@
-import type { SortOption } from "@/components/sort-select/sort-select"
+import type { SortOption } from "@/components/client/grid-sort"
 import { Effect, Option } from "effect"
-import { sortReleaseDateDesc } from "@/utils/functions.client"
-import { getMapByKey, type Maps } from "./maps"
-import { getAdjacentItems } from "./utils"
+import { getMapByKey, type Maps } from "@/data/maps"
+import { getAdjacentItems, sortReleaseDateDesc } from "@/utils/shared-functions"
 
 export interface SideQuest {
 	/** Internal tag to discriminate against for type-narrowing */

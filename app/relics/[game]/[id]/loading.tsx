@@ -1,20 +1,13 @@
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import ImageLoader from "@/components/loaders/image-loader"
+import { BreadcrumbsLoader } from "@/components/client/breadcrumbs-loader"
+import ImageLoader from "@/components/server/image-loader"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function RelicPageLoading() {
 	return (
 		<section className="-mt-10 container mx-auto max-w-4xl px-4 md:py-12">
-			<Breadcrumbs
-				links={[
-					{ title: "Relics", href: "/relics" },
-					{ title: "Loading...", href: "/relics" },
-					{ title: "Loading...", href: "/relics" },
-				]}
-				className="mb-14"
-			/>
+			<BreadcrumbsLoader type="relic" className="mb-14" />
 			<article className="space-y-8">
 				<header className="space-y-6 border-b pb-8 text-center">
 					<div className="relative mx-auto size-64 overflow-hidden rounded-lg bg-muted dark:bg-accent/30">
@@ -30,8 +23,9 @@ export default function RelicPageLoading() {
 						</div>
 
 						<div className="flex items-center justify-center gap-2 pt-2 text-muted-foreground text-sm">
-							<span className="flex items-center gap-1">
+							<span className="flex items-center gap-1 text-muted-foreground">
 								<Calendar className="size-4" />
+								<span>Updated:</span>
 								<Skeleton className="h-5 w-32" />
 							</span>
 							<span className="inline">&bull;</span>

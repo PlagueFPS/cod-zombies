@@ -2,13 +2,11 @@ import type { MDXComponents } from "mdx/types"
 import type { Route } from "next"
 import type { ComponentPropsWithoutRef } from "react"
 import { ExternalLinkIcon } from "lucide-react"
-import { CustomLink } from "./components/custom-link/custom-link"
-import ExternalLink from "./components/external-link/external-link"
-import RichBlockquote from "./components/rich-text/rich-blockquote/rich-blockquote"
-import Heading2 from "./components/rich-text/rich-headings/heading2/heading2"
-import Heading3 from "./components/rich-text/rich-headings/heading3/heading3"
-import Heading4 from "./components/rich-text/rich-headings/heading4/heading4"
-import { OrderedList, UnorderedList } from "./components/rich-text/rich-text-lists/rich-text-lists"
+import { CustomLink } from "@/components/client/custom-link"
+import { ExternalLink } from "@/components/server/external-link"
+import { RichBlockquote } from "@/components/server/rich-blockquote"
+import { Heading2, Heading3, Heading4 } from "@/components/server/rich-headings"
+import { OrderedList, UnorderedList } from "@/components/server/rich-text-lists"
 import {
 	Table,
 	TableBody,
@@ -16,8 +14,8 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "./components/ui/table"
-import { slugify } from "./utils/functions.client"
+} from "@/components/ui/table"
+import { slugify } from "@/utils/shared-functions"
 
 const components: MDXComponents = {
 	h1: ({ children, ...props }: ComponentPropsWithoutRef<"h1">) => <h1 {...props}>{children}</h1>,

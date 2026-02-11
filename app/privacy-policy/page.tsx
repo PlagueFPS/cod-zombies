@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import { Effect } from "effect"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import richStyles from "@/components/rich-text/rich-text.module.css"
+import richStyles from "@/app/rich-text.module.css"
+import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { BasePage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getLastUpdated } from "@/utils/functions"
+import { getLastUpdated } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
 	title: "Privacy Policy",

@@ -2,7 +2,7 @@ import type { PlatformError } from "@effect/platform/Error"
 import { FileSystem, Path } from "@effect/platform"
 import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
 import { Duration, Effect, Layer, Predicate, Ref } from "effect"
-import { toPascalCase } from "@/utils/functions.client"
+import { toPascalCase } from "@/utils/shared-functions"
 
 // Exclude these top-level directories entirely
 const EXCLUDED_DIRS = new Set(["content", "opengraph-images"])

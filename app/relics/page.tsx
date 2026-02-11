@@ -1,13 +1,15 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import GridSection from "@/components/grid-section/grid-section"
-import GridLoader from "@/components/loaders/grid-loader"
-import RelicFilters from "@/components/relic-filters/relic-filters"
-import RelicGrid from "@/components/relic-grid/relic-grid"
-import { getRelics } from "@/data/relics"
+import { Breadcrumbs } from "@/components/client/breadcrumbs"
+import { GridSort } from "@/components/client/grid-sort"
+import { RelicGrid } from "@/components/client/relic-grid"
+import { GridLoader } from "@/components/server/grid-loader"
+import { GridSection } from "@/components/server/grid-section"
+import { GridSortLoader } from "@/components/server/grid-sort-loader"
+import { RelicFilters } from "@/components/server/relic-filters"
+import { getRelicSortOptions, getRelics } from "@/data/relics"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getServerUrl } from "@/utils/functions"
+import { getServerUrl } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
 	title: "Cursed Relics",
@@ -23,9 +25,9 @@ export const metadata: Metadata = {
 		description: "Learn how to unlock the most desired relics in Black Ops 7's Cursed mode.",
 		card: "summary_large_image",
 	},
-	alternates:{
+	alternates: {
 		canonical: `${getServerUrl()}/relics`,
-	}
+	},
 }
 
 export default function RelicsPage() {
@@ -39,7 +41,12 @@ export default function RelicsPage() {
 					<p className="-mt-6 mb-2 text-muted-foreground sm:text-lg">
 						View all discovered relics hidden within the Cursed mode on each map.
 					</p>
-					<RelicFilters />
+					<div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row">
+						<RelicFilters />
+						<Suspense fallback={<GridSortLoader />}>
+							<GridSort options={getRelicSortOptions()} />
+						</Suspense>
+					</div>
 					<Suspense fallback={<GridLoader />}>
 						<RelicGrid relics={relics} />
 					</Suspense>

@@ -3,10 +3,10 @@ import { Effect, Option } from "effect"
 import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
-import { CustomSideBarTrigger } from "@/components/interactive-map/custom-sidebar-trigger"
-import InteractiveMapWrapper from "@/components/interactive-map/interactive-map-wrapper"
-import MapSidebar from "@/components/interactive-map/map-sidebar"
-import SidebarLoader from "@/components/loaders/sidebar-loader"
+import { CustomSideBarTrigger } from "@/components/client/custom-sidebar-trigger"
+import InteractiveMapWrapper from "@/components/client/interactive-map-wrapper"
+import MapSidebar from "@/components/client/map-sidebar"
+import SidebarLoader from "@/components/server/sidebar-loader"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import {
 	getInteractiveMaps,
@@ -18,7 +18,7 @@ import { BasePage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { categoryHandlers, type MarkerCategory } from "@/map-configs/markers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getServerUrl } from "@/utils/functions"
+import { getServerUrl } from "@/utils/server-functions"
 
 export const generateStaticParams = () =>
 	Effect.gen(function* () {
@@ -109,7 +109,7 @@ const InteractiveMapPage = Effect.fn("InteractiveMapPage")(function* ({
 			<Suspense fallback={<SidebarLoader />}>
 				<MapSidebar groups={groups} maps={transformedMaps} mapLayers={config.layers} />
 			</Suspense>
-			<div className="h-svh w-svw">
+			<div className="-mt-10 h-svh w-svw">
 				<CustomSideBarTrigger className={cn({ "top-18": config.layers.length === 1 })} />
 				<InteractiveMapWrapper mapConfig={config} />
 			</div>

@@ -1,7 +1,7 @@
 "use client"
 import type { ErrorProps } from "@/types/errors"
 import { useEffect } from "react"
-import FeedbackForm from "@/components/feedback-form/feedback-form"
+import { FeedbackForm } from "@/components/client/feedback-form"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 import { ThemeProvider } from "@/contexts/theme-provider"
 

@@ -15,17 +15,12 @@ import {
 	Zap,
 } from "lucide-react"
 import { notFound } from "next/navigation"
-import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs"
-import {
-	ComingSoonBadge,
-	NewBadge,
-	RangeBadge,
-	TypeBadge,
-} from "@/components/custom-badges/custom-badges"
-import { CustomLink } from "@/components/custom-link/custom-link"
-import FeaturedImage from "@/components/featured-image/featured-image"
-import AmmoModTooltip from "@/components/rich-text/rich-tooltips/ammo-mod-tooltip"
-import ShareButton from "@/components/share-button/share-button"
+import AmmoModTooltip from "@/components/client/ammo-mod-tooltip"
+import { Breadcrumbs } from "@/components/client/breadcrumbs"
+import { CustomLink } from "@/components/client/custom-link"
+import { FeaturedImage } from "@/components/client/featured-image"
+import { ShareButton } from "@/components/client/share-button"
+import { ComingSoonBadge, NewBadge, RangeBadge, TypeBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -40,7 +35,7 @@ import { FileSystemPage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getLastUpdated, getServerUrl } from "@/utils/functions"
+import { getLastUpdated, getServerUrl } from "@/utils/server-functions"
 
 export const generateStaticParams = () => {
 	const zombies = getZombies()

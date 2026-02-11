@@ -3,7 +3,7 @@ import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"
 import { ContactExistsError, ContactNotFoundError } from "@/types/errors"
-import { generateToken, getServerUrl } from "@/utils/functions"
+import { generateToken, getServerUrl } from "@/utils/server-functions"
 
 interface EmailProps {
 	name: string

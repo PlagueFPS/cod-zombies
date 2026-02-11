@@ -1,6 +1,9 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import { MAP_LIMIT } from "@/utils/constants"
+import { CARD_LIMIT } from "@/utils/constants"
+
+/** Union type of all filter parameter keys */
+export type ParamKey = "game" | "difficulty" | "time" | "map" | "type" | "weakness"
 
 interface FilterParamsResult {
 	/** Array of selected game parameter values */
@@ -13,6 +16,8 @@ interface FilterParamsResult {
 	typeParams: string[]
 	/** Array of selected completion time range parameter values */
 	timeParams: string[]
+	/** Array of selected weakness parameter values */
+	weaknessParams: string[]
 	/** Current sort parameter value */
 	sortParam: string | null
 	/** Current page number */
@@ -50,13 +55,13 @@ interface FilterParamsResult {
 	 * @param currentValues - The current values of the parameter
 	 * @returns The new values of the parameter after toggling
 	 */
-	toggleParam: (paramName: Param, value: string, currentValues: string[]) => string[]
+	toggleParam: (paramName: ParamKey, value: string, currentValues: string[]) => string[]
 	/**
 	 * Clears a specific parameter from the URL.
 	 *
 	 * @param paramName - The name of the parameter to clear
 	 */
-	clearParam: (paramName: Param) => void
+	clearParam: (paramName: ParamKey) => void
 	/**
 	 * Creates a new `URLSearchParams` object with the current search parameters.
 	 *
@@ -70,8 +75,6 @@ interface FilterParamsResult {
 	 */
 	updateURLParams: (params: URLSearchParams) => void
 }
-
-type Param = "type" | "map" | "game" | "difficulty" | "time"
 
 /**
  * Custom hook for managing site search parameters in the URL.
@@ -89,6 +92,7 @@ export function useFilterParams(): FilterParamsResult {
 	const difficultyParams = searchParams.getAll("difficulty")
 	const typeParams = searchParams.getAll("type")
 	const timeParams = searchParams.getAll("time")
+	const weaknessParams = searchParams.getAll("weakness")
 	const sortParam = searchParams.get("sort")
 	const pageParam = searchParams.get("page")
 	const page = pageParam ? parseInt(pageParam, 10) : 1
@@ -115,7 +119,7 @@ export function useFilterParams(): FilterParamsResult {
 	}
 
 	const validatePageParam = (totalItems: number) => {
-		const totalPages = Math.ceil(totalItems / MAP_LIMIT)
+		const totalPages = Math.ceil(totalItems / CARD_LIMIT)
 
 		if ((page > totalPages && totalPages > 0) || page < 1) {
 			const validPage = page < 1 ? 1 : totalPages > 0 ? totalPages : 1
@@ -136,11 +140,12 @@ export function useFilterParams(): FilterParamsResult {
 		params.delete("difficulty")
 		params.delete("type")
 		params.delete("time")
+		params.delete("weakness")
 		params.delete("sort")
 		updateURLParams(params)
 	}
 
-	const toggleParam = (paramName: Param, value: string, currentValues: string[]) => {
+	const toggleParam = (paramName: ParamKey, value: string, currentValues: string[]) => {
 		const params = createParams()
 		params.delete(paramName)
 
@@ -156,7 +161,7 @@ export function useFilterParams(): FilterParamsResult {
 		return newValues
 	}
 
-	const clearParam = (paramName: Param) => {
+	const clearParam = (paramName: ParamKey) => {
 		const params = createParams()
 		params.delete(paramName)
 		updateURLParams(params)
@@ -169,6 +174,7 @@ export function useFilterParams(): FilterParamsResult {
 		difficultyParams,
 		typeParams,
 		timeParams,
+		weaknessParams,
 		sortParam,
 		page,
 		searchParams,

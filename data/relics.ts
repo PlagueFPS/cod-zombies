@@ -1,9 +1,9 @@
-import type { SortOption } from "@/components/sort-select/sort-select"
-import type { ContentState } from "@/types/data"
+import type { SortOption } from "@/components/client/grid-sort"
+import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { Effect } from "effect"
+import { Duration, Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
-import { getAdjacentItems } from "./utils"
+import { getAdjacentItems } from "@/utils/shared-functions"
 
 /** The three types of relics */
 export type RelicType = "Grim" | "Sinister" | "Wicked"
@@ -27,6 +27,8 @@ export interface Relic {
 	map: Maps
 	/** The date when the relic was discovered */
 	discoveredDate: Date
+	/** The estimated min/max time to unlock */
+	estimatedTimeMins: TimeRange
 	/** The content of the relic */
 	content: Effect.Effect<typeof import("*.mdx"), never, never>
 }
@@ -70,6 +72,8 @@ export const getRelicSortOptions = (): SortOption[] => [
 	{ value: "discovered-asc", label: "Oldest Discovered" },
 	{ value: "type-asc", label: "Type: Grim to Wicked" },
 	{ value: "type-desc", label: "Type: Wicked to Grim" },
+	{ value: "time-asc", label: "Unlock Time: Shortest to Longest" },
+	{ value: "time-desc", label: "Unlock Time: Longest to Shortest" },
 ]
 
 const relicRegistry = {
@@ -82,6 +86,11 @@ const relicRegistry = {
 		description: "Mimic props have infiltrated the map.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 16, 2025 12:00 AM"),
+		estimatedTimeMins: {
+			min: 15,
+			max: 30,
+			reason: "Time varies slightly based on party size and gobblegum use.",
+		},
 		content: Effect.promise(() => import("@/content/relics/lawyers-pen.mdx")),
 	},
 	dragonWings: {
@@ -93,6 +102,11 @@ const relicRegistry = {
 		description: "Normal Power-Up spawns are disabled.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 16, 2025 1:00 AM"),
+		estimatedTimeMins: {
+			min: 15,
+			max: 30,
+			reason: "Time varies slightly based on party size and gobblegum use.",
+		},
 		content: Effect.promise(() => import("@/content/relics/dragon-wings.mdx")),
 	},
 	teddyBear: {
@@ -104,6 +118,11 @@ const relicRegistry = {
 		description: "Round start delay is cut down by 75%.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 19, 2025 12:00 AM"),
+		estimatedTimeMins: {
+			min: 25,
+			max: 45,
+			reason: "Time varies slightly based on party size, gobblegum use, and/or selected augments.",
+		},
 		content: Effect.promise(() => import("@/content/relics/teddy-bear.mdx")),
 	},
 	vrilSphere: {
@@ -115,6 +134,11 @@ const relicRegistry = {
 		description: "Players can only carry 4 Perk-a-Colas.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 19, 2025 1:00 AM"),
+		estimatedTimeMins: {
+			min: 45,
+			max: Duration.toMinutes("2 hours"),
+			reason: "Time varies slightly based on party size and gobblegum use.",
+		},
 		content: Effect.promise(() => import("@/content/relics/vril-sphere.mdx")),
 	},
 	samanthasDrawing: {
@@ -127,6 +151,11 @@ const relicRegistry = {
 			"Every weapon the player has will swap each round, but retain the Pack-a-Punch and rarity level.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("January 14, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 45,
+			max: Duration.toMinutes("2 hours"),
+			reason: "Time varies slightly based on party size and gobblegum use.",
+		},
 		content: Effect.promise(() => import("@/content/relics/samanthas-drawing.mdx")),
 	},
 	focusingStone: {
@@ -138,6 +167,11 @@ const relicRegistry = {
 		description: "No Self-Revive kits.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 19, 2025 2:00 AM"),
+		estimatedTimeMins: {
+			min: 45,
+			max: Duration.toMinutes("2 hours"),
+			reason: "Time varies slightly based on party size and gobblegum use.",
+		},
 		content: Effect.promise(() => import("@/content/relics/focusing-stone.mdx")),
 	},
 	bus: {
@@ -149,6 +183,11 @@ const relicRegistry = {
 		description: "Enemy health regenerates.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 21, 2025 12:00 AM"),
+		estimatedTimeMins: {
+			min: Duration.toMinutes("1.5 hours"),
+			max: Duration.toMinutes("4 hours"),
+			reason: "Time varies slightly based on party size and gobblegum use.",
+		},
 		content: Effect.promise(() => import("@/content/relics/bus.mdx")),
 	},
 	dragon: {
@@ -160,6 +199,12 @@ const relicRegistry = {
 		description: "All Ammo Crates are disabled.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 21, 2025 1:00 AM"),
+		estimatedTimeMins: {
+			min: Duration.toMinutes("1.5 hours"),
+			max: Duration.toMinutes("4 hours"),
+			reason:
+				"Time varies slightly based on party size, gobblegum use, and knowledge of the main quest steps.",
+		},
 		content: Effect.promise(() => import("@/content/relics/dragon.mdx")),
 	},
 	bloodVials: {
@@ -171,6 +216,11 @@ const relicRegistry = {
 		description: "All Augments are turned off.",
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 20, 2025 12:00 AM"),
+		estimatedTimeMins: {
+			min: Duration.toMinutes("1.5 hours"),
+			max: Duration.toMinutes("4 hours"),
+			reason: "Time varies slightly based on party size, and gobblegum use.",
+		},
 		content: Effect.promise(() => import("@/content/relics/blood-vials.mdx")),
 	},
 	gong: {
@@ -182,6 +232,11 @@ const relicRegistry = {
 		description: "Field Upgrade starts charged, but can only be charged by Full Power.",
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("January 25, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 25,
+			max: 60,
+			reason: "Time varies slightly based on party size, and knowledge of the steps.",
+		},
 		content: Effect.promise(() => import("@/content/relics/gong.mdx")),
 	},
 	seed: {
@@ -193,6 +248,11 @@ const relicRegistry = {
 		description: "Mystery Box is disabled.",
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("December 7, 2025 12:00 AM"),
+		estimatedTimeMins: {
+			min: 25,
+			max: 60,
+			reason: "Time varies slightly based on party size, and knowledge of the steps.",
+		},
 		content: Effect.promise(() => import("@/content/relics/seed.mdx")),
 	},
 	spiderFang: {
@@ -204,6 +264,11 @@ const relicRegistry = {
 		description: "Perk costs at machines never decrease.",
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("December 11, 2025 12:00 AM"),
+		estimatedTimeMins: {
+			min: 45,
+			max: Duration.toMinutes("2 hours"),
+			reason: "Time varies significantly based on wisp tea luck, augments, and party size.",
+		},
 		content: Effect.promise(() => import("@/content/relics/spider-fang.mdx")),
 	},
 	matroyshkaDolls: {
@@ -215,6 +280,11 @@ const relicRegistry = {
 		description: "Salvage drop rate halved.",
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("January 30, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 45,
+			max: Duration.toMinutes("1.5 hours"),
+			reason: "Time varies slightly based on party size and knowledge of the main quest steps.",
+		},
 		content: Effect.promise(() => import("@/content/relics/matroyshka-dolls.mdx")),
 	},
 	goldenSpork: {
@@ -226,6 +296,12 @@ const relicRegistry = {
 		description: "Enemies deal double damage.",
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("January 30, 2026 1:00 AM"),
+		estimatedTimeMins: {
+			min: Duration.toMinutes("1.5 hours"),
+			max: Duration.toMinutes("4 hours"),
+			reason:
+				"Time varies significantly based on party size, and knowledge of the main quest steps.",
+		},
 		content: Effect.promise(() => import("@/content/relics/golden-spork.mdx")),
 	},
 	civilProtectorHead: {
@@ -237,6 +313,11 @@ const relicRegistry = {
 		description: "Every 100 kills, you lose a perk.",
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("December 11, 2025 1:00 AM"),
+		estimatedTimeMins: {
+			min: Duration.toMinutes("1.5 hours"),
+			max: Duration.toMinutes("4 hours"),
+			reason: "Time varies significantly based on party size, and knowledge of the steps.",
+		},
 		content: Effect.promise(() => import("@/content/relics/civil-protector-head.mdx")),
 	},
 } as const satisfies Record<string, Relic>
