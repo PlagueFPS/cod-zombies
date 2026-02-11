@@ -7,7 +7,6 @@ import richStyles from "@/app/rich-text.module.css"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
-import { GuideFeedback } from "@/components/client/guide-feedback"
 import { ShareButton } from "@/components/client/share-button"
 import { TableOfContents } from "@/components/client/table-of-contents"
 import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
@@ -211,9 +210,6 @@ const MainQuestPage = Effect.fn("MainQuestPage")(
 									<MDXContent components={mdxComponents} />
 								</div>
 							)}
-							<div className="flex w-full items-center justify-center">
-								<GuideFeedback guideTitle={quest.map.title} type="Main Quest" />
-							</div>
 							<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 								{Option.isSome(prev) && <PrevOrNextMapCard quest={prev.value} prev />}
 								{Option.isSome(next) && <PrevOrNextMapCard quest={next.value} />}

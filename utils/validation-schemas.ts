@@ -56,13 +56,22 @@ const EmailSchema = Schema.NonEmptyString.annotations({
 	)
 	.annotations({ message: () => "Please enter a valid email address" })
 
+const OptionalEmailSchema = Schema.optional(
+	Schema.transform(
+		Schema.Union(Schema.Literal(""), Schema.Undefined, EmailSchema),
+		Schema.Union(Schema.Undefined, EmailSchema),
+		{
+			decode: (from) => (from === "" || from === undefined ? undefined : from),
+			encode: (to) => to ?? "",
+		},
+	),
+)
+
 export const FeedbackFormSchema = Schema.Struct({
 	title: Schema.NonEmptyString,
-	label: Schema.Literal("Bug", "Improvement", "Feature", "User Feedback").annotations({
-		message: () => "Please select a label.",
-	}),
+	email: OptionalEmailSchema,
 	feedback: Schema.NonEmptyString.annotations({
-		message: () => "Please enter some feedback.",
+		message: () => "Please provide some feedback.",
 	}),
 })
 
