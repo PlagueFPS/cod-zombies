@@ -14,7 +14,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog"
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -33,14 +33,16 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 	const form = useForm({
 		defaultValues: {
 			title: "Feedback Form Submission",
-			label: "",
 			feedback: "",
+			email: "",
 		},
 		validators: {
+			// @ts-expect-error - optional email in schema vs required in form defaultValues
 			onChange: StandardFeedbackFormSchema,
 		},
 		onSubmit: ({ value }) => {
-			const data = validateFeedbackForm(value)
+			const normalized = { ...value, email: value.email?.trim() || undefined }
+			const data = validateFeedbackForm(normalized)
 
 			if (data._tag === "Left") {
 				return toast.error("Invalid feedback form data!", {
@@ -89,8 +91,8 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 		setOpen(open)
 	}
 
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter" && form.state.isValid) {
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter") {
 			e.preventDefault()
 			form.handleSubmit()
 		}
@@ -118,36 +120,25 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 					<form id="feedback-form" onSubmit={handleSubmit} className="flex w-full flex-col">
 						<div className="space-y-6 pb-4">
 							<FieldGroup>
-								<form.Field name="label">
-									{(field) => {
+								<form.Field name="email">
+									{field => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
 											<Field data-invalid={isInvalid}>
-												<FieldLabel htmlFor={field.name}>Labels</FieldLabel>
-												<RadioGroup
+												<FieldLabel htmlFor={field.name}>Email (optional)</FieldLabel>
+												<Input
+													type="email"
+													placeholder="you@example.com"
+													id={field.name}
 													name={field.name}
 													value={field.state.value}
-													onValueChange={field.handleChange}
-												>
-													<div className="flex items-center space-x-2">
-														<RadioGroupItem id="bug" value="Bug" />
-														<FieldLabel htmlFor="bug">Bug</FieldLabel>
-													</div>
-													<div className="flex items-center space-x-2">
-														<RadioGroupItem id="improvement" value="Improvement" />
-														<FieldLabel htmlFor="improvement">Improvement</FieldLabel>
-													</div>
-													<div className="flex items-center space-x-2">
-														<RadioGroupItem id="feature" value="Feature" />
-														<FieldLabel htmlFor="feature">Feature Request</FieldLabel>
-													</div>
-													<div className="flex items-center space-x-2">
-														<RadioGroupItem id="other" value="User Feedback" />
-														<FieldLabel htmlFor="other">Other</FieldLabel>
-													</div>
-												</RadioGroup>
+													onChange={e => field.handleChange(e.target.value)}
+													onBlur={field.handleBlur}
+													onKeyDown={handleKeyDown}
+													aria-invalid={isInvalid}
+												/>
 												<FieldDescription>
-													Select what best describes your feedback.
+													Email you want to be contacted at in case we need to follow up.
 												</FieldDescription>
 												{isInvalid && (
 													<div className="flex items-center gap-2">
@@ -160,7 +151,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 									}}
 								</form.Field>
 								<form.Field name="feedback">
-									{(field) => {
+									{field => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 										return (
 											<Field data-invalid={isInvalid}>
@@ -169,6 +160,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 													required
 													placeholder="What can we improve?"
 													className="min-h-24"
+													value={field.state.value}
 													onKeyDown={handleKeyDown}
 													onChange={e => field.handleChange(e.target.value)}
 													onBlur={field.handleBlur}
@@ -194,13 +186,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 							</Button>
 							<Tooltip>
 								<TooltipTrigger
-									render={
-										<Button
-											form="feedback-form"
-											type="submit"
-											disabled={isPending || !form.state.isValid || !form.state.isFormValid}
-										/>
-									}
+									render={<Button form="feedback-form" type="submit" disabled={isPending} />}
 								>
 									{isPending ? (
 										<>
@@ -214,7 +200,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 										</div>
 									)}
 								</TooltipTrigger>
-								<TooltipContent side="bottom" sideOffset={6} className="z-999">
+								<TooltipContent side="bottom" sideOffset={6}>
 									<div className="flex items-center gap-1">
 										<Shortcut shortcuts={["Ctrl", "↩"]} size="sm" />
 										<span>to submit feedback</span>
