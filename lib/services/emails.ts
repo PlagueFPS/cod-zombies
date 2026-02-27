@@ -23,9 +23,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 	effect: Effect.gen(function* () {
 		const getContact = (email: string) =>
 			Effect.gen(function* () {
-				const { data, error } = yield* Effect.promise(() =>
-					resend.contacts.get({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
-				)
+				const { data, error } = yield* Effect.promise(() => resend.contacts.get({ email }))
 
 				if (error && error.name !== "not_found")
 					return yield* new GetContactError({ message: error.message, cause: error })
@@ -36,7 +34,10 @@ export class Email extends Effect.Service<Email>()("Email", {
 		const createContact = (email: string) =>
 			Effect.gen(function* () {
 				const { data, error } = yield* Effect.promise(() =>
-					resend.contacts.create({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
+					resend.contacts.create({
+						segments: [{ id: Redacted.value(env.RESEND_AUDIENCE_ID) }],
+						email,
+					}),
 				)
 
 				if (error) return yield* new CreateContactError({ message: error.message, cause: error })
@@ -46,9 +47,7 @@ export class Email extends Effect.Service<Email>()("Email", {
 
 		const removeContact = (email: string) =>
 			Effect.gen(function* () {
-				const { data, error } = yield* Effect.promise(() =>
-					resend.contacts.remove({ audienceId: Redacted.value(env.RESEND_AUDIENCE_ID), email }),
-				)
+				const { data, error } = yield* Effect.promise(() => resend.contacts.remove({ email }))
 
 				if (error) return yield* new RemoveContactError({ message: error.message, cause: error })
 
