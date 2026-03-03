@@ -520,6 +520,18 @@ const mainQuestRegistry = {
 		},
 		content: Effect.promise(() => import("@/content/main-quests/astra-malorum.mdx")),
 	},
+	paradoxJunctionMainQuest: {
+		id: "paradox-junction",
+		state: Option.some("Coming Soon"),
+		difficulty: Option.none(),
+		map: getMapByKey("paradoxJunction"),
+		estimatedTimeMins: {
+			min: 0,
+			max: 0,
+			reason: "Coming Soon",
+		},
+		content: Effect.promise(() => import("@/content/main-quests/paradox-junction.mdx")),
+	},
 } as const satisfies Record<string, Omit<MainQuest, "_tag">>
 
 const mainQuestMap = new Map<string, MainQuest>()

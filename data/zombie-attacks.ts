@@ -699,4 +699,11 @@ const zombieAttacksRegistry = {
 		range: "Long",
 		description: "Throws a rock at a player, dealing critical damage.",
 	},
+	radioactiveExplosion: {
+		id: "radioactive-explosion",
+		title: "Radioactive Explosion",
+		range: "Medium",
+		description:
+			"Releases a powerful radioactive explosion on death, damaging any players in range.",
+	},
 } as const satisfies Record<string, ZombieAttack>
