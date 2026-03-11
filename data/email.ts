@@ -13,20 +13,19 @@ interface EmailProps {
 
 export const requestSubscribe = (email: string) =>
 	Effect.gen(function* () {
-		const { getContact, sendEmail } = yield* Email
+		const emails = yield* Email
 
-		const contact = yield* getContact(email)
+		const contact = yield* emails.getContact(email)
 		if (contact)
 			return yield* new ContactExistsError({
-				message:
-					"We were unable to send a confirmation email because that email is already subscribed!",
+				message: "That email is already subscribed!",
 				cause: new Error(`Contact already subscribed: ${contact}`),
 			})
 
 		const token = yield* generateToken(email, "1 day")
 		const subscribeUrl = `${getServerUrl()}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
-		yield* sendEmail({
+		yield* emails.sendEmail({
 			from: "COD Zombies Guides <support@codzombiesguides.com>",
 			to: email,
 			subject: "Confirm Your Subscribe Request",
@@ -37,20 +36,19 @@ export const requestSubscribe = (email: string) =>
 
 export const requestUnsubscribe = (email: string) =>
 	Effect.gen(function* () {
-		const { getContact, sendEmail } = yield* Email
+		const emails = yield* Email
 
-		const contact = yield* getContact(email)
+		const contact = yield* emails.getContact(email)
 		if (!contact)
 			return yield* new ContactNotFoundError({
-				message:
-					"We were unable to send a confirmation email because that email is not currently subscribed!",
+				message: "That email is not currently subscribed!",
 				cause: new Error(`Contact not found for email: ${email}`),
 			})
 
 		const token = yield* generateToken(email, "1 day")
 		const unsubscribeUrl = `${getServerUrl()}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
 
-		yield* sendEmail({
+		yield* emails.sendEmail({
 			from: "COD Zombies Guides <support@codzombiesguides.com>",
 			to: email,
 			subject: "Confirm Your Unsubscribe Request",
@@ -61,21 +59,21 @@ export const requestUnsubscribe = (email: string) =>
 
 export const subscribeEmail = (email: string) =>
 	Effect.gen(function* () {
-		const { createContact } = yield* Email
-		return yield* createContact(email)
+		const emails = yield* Email
+		return yield* emails.createContact(email)
 	}).pipe(Effect.withLogSpan("subscribe_email"))
 
 export const unsubscribeEmail = (email: string) =>
 	Effect.gen(function* () {
-		const { removeContact } = yield* Email
-		return yield* removeContact(email)
+		const emails = yield* Email
+		return yield* emails.removeContact(email)
 	}).pipe(Effect.withLogSpan("unsubscribe_email"))
 
 export const sendContactEmail = (props: EmailProps) =>
 	Effect.gen(function* () {
-		const { sendEmail } = yield* Email
+		const emails = yield* Email
 
-		yield* sendEmail({
+		yield* emails.sendEmail({
 			from: `${props.name} <contact@codzombiesguides.com>`,
 			replyTo: props.email,
 			to: "contact@codzombiesguides.com",

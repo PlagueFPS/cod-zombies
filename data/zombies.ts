@@ -1199,6 +1199,7 @@ const zombiesRegistry = {
 			getMapByKey("reckoning"),
 			getMapByKey("ashesOfTheDamned"),
 			getMapByKey("astraMalorum"),
+			getMapByKey("paradoxJunction"),
 		],
 		type: "Normal",
 		speed: "Medium",
@@ -1231,6 +1232,7 @@ const zombiesRegistry = {
 			getMapByKey("reckoning"),
 			getMapByKey("ashesOfTheDamned"),
 			getMapByKey("astraMalorum"),
+			getMapByKey("paradoxJunction"),
 		],
 		type: "Normal",
 		speed: "Medium",
@@ -1303,6 +1305,7 @@ const zombiesRegistry = {
 			getMapByKey("theTomb"),
 			getMapByKey("ashesOfTheDamned"),
 			getMapByKey("astraMalorum"),
+			getMapByKey("paradoxJunction"),
 		],
 		type: "Special",
 		speed: "Medium",
@@ -1939,6 +1942,29 @@ const zombiesRegistry = {
 		spawnBehavior:
 			"Caltheris is the final boss of the Astra Malorum main quest and will spawn during the final encounter.",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/caltheris.mdx")),
+	},
+	radHound: {
+		id: "rad-hound",
+		title: "Rad Hound",
+		state: Option.some("New"),
+		releaseDate: new Date("March 11, 2026 1:00 AM"),
+		image: "/zombies/rad-hound.webp",
+		description:
+			"Bulging with irradiated innards, these foul minions of The Warden can be quelled with quick thinking and rapid firing, but they leave behind a dangerous radioactive explosion on death.",
+		games: [getGameByKey("blackOps7")],
+		maps: [getMapByKey("paradoxJunction")],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: [getWeakPointByKey("head")],
+		elementalWeakness: [],
+		attacks: [
+			getZombieAttackByKey("bite"),
+			getZombieAttackByKey("lunge"),
+			getZombieAttackByKey("radioactiveExplosion"),
+		],
+		spawnBehavior:
+			"Rad Hounds spawn during the special rounds on Paradox Junction, while also spawning in with normal zombies in the later rounds.",
+		combatStrategy: Effect.promise(() => import("@/content/zombies/rad-hound.mdx")),
 	},
 } as const satisfies Record<string, Zombie>
 

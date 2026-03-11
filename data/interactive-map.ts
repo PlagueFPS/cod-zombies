@@ -10,6 +10,14 @@ interface MapEntry {
 }
 
 const mapRegistry = {
+	"paradox-junction": {
+		metadata: Effect.promise(() =>
+			import("@/map-configs/paradox-junction").then(module => module.metadata),
+		),
+		config: Effect.promise(() =>
+			import("@/map-configs/paradox-junction").then(module => module.config),
+		),
+	},
 	"astra-malorum": {
 		metadata: Effect.promise(() =>
 			import("@/map-configs/astra-malorum").then(module => module.metadata),

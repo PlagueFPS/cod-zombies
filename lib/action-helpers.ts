@@ -1,6 +1,6 @@
 import "server-only"
 import { checkBotId } from "botid/server"
-import { Schema } from "effect"
+import { Either, Schema } from "effect"
 
 type ActionFunction<S extends Schema.Schema.AnyNoContext, T> = (
 	data: Schema.Schema.Type<S>,
@@ -24,7 +24,7 @@ export const createAction = <S extends Schema.Schema.AnyNoContext, T>(
 		if (formData instanceof FormData) {
 			const decodeFormData = Schema.decodeUnknownEither(schema)
 			const decoded = decodeFormData(Object.fromEntries(formData))
-			if (decoded._tag === "Left") {
+			if (Either.isLeft(decoded)) {
 				console.error(decoded.left)
 				return {
 					success: false,

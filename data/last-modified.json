@@ -1,1436 +1,1446 @@
 {
   "version": "1.0",
-  "generated": "2026-02-11T12:07:56.145Z",
+  "generated": "2026-03-11T17:32:38.394Z",
   "files": {
+    "main-quests/paradox-junction.mdx": {
+      "lastModified": "2026-03-11T17:29:53.000Z",
+      "lastModifiedFormatted": "March 11, 2026",
+      "commitHash": "bec6734"
+    },
+    "zombies/rad-hound.mdx": {
+      "lastModified": "2026-03-11T17:29:53.000Z",
+      "lastModifiedFormatted": "March 11, 2026",
+      "commitHash": "bec6734"
+    },
     "main-quests/abandon-ship.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/apocalypse-averted.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/astra-malorum.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/bye-bye-dark-aether.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/casimir-mechanism.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/citadelles-des-morts.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/classified.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/dust-to-dust.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/electromagnetic-awakening-party.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/ensemble-cast.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/for-the-good-of-all.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/greek-tragedy.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/high-maintenance.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/little-lost-girl.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/love-and-war.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/maxis-potential.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/mined-games.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/most-escape-alive.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/my-brothers-keeper.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/no-mo-modi.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/paradoxical-prolouge.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/pop-goes-the-weasel.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/pyrrhic-victory.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/reckoning.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/richtofens-grand-scheme.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/salvation-lies-above.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/seal-the-deal.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/seeds-of-doubt.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/shattered-veil.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/the-tomb.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/time-travel-will-tell.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/tin-man-heart.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/tower-of-babble.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/trial-by-ordeal.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "main-quests/venerated-warrior.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/blood-vials.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/bus.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/civil-protector-head.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/dragon-wings.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/dragon.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/focusing-stone.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/golden-spork.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/gong.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/lawyers-pen.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/matroyshka-dolls.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/samanthas-drawing.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/seed.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/spider-fang.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/teddy-bear.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "relics/vril-sphere.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/115-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/a-light-from-the-shore.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/ace-of-spades.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/adam-unit-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/aether-blade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/aether.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/aetherella-companion.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/aetherella-superhero.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/all-zombie-songs.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/alone.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/amoeba.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/arc-xd-race-aotd.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/arc-xd-race.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/bartender.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/basketball-free-points.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/beauty-of-annihilation-remix.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/blood-pool.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/boat-race.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/bongo.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/bowie-knife-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/brazen-bull-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/brm-wall-buy.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/bubby.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/bunny-disco.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/can-you-hear-me-come-in.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/candles-fire-trap.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/caster-turret-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/chalk-quotes.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/chicken-bucket-hat.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/coffin-dance.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/cold-hard-cash.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/cooking-fish.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/cursed-talisman.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dark-aether-bunny.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dead-again.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dead-ended.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dead-flowers.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/destroy-something-beautiful.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dig.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/doppelganger-jump-scare.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dragon-shield-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dragon-strike-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/dragon-sword-song.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/drowning.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/elemental-shield-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/falling-to-pieces.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/fire-and-trap-immunity.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/fireplace-protector.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/fish-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/floating-bodies.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/fog-rolling-in.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-1000-points.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-500-points.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-aether-tool.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-blundergat.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-brain-rot.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-deadshot-daiquiri.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-deadshot-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-mega-gobblegum-der-eisendrache.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-mega-gobblegum.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-monkey-bombs.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-pack-a-punch.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-perk-wall-run.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-rarity-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-ray-gun-mark-2.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-ray-gun.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-self-revive-reckoning.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-self-revive.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-thundergun.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-tundragun.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-widows-wine.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-winters-howl.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-wisp-tea.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/free-wunderwaffe-dg2.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/friendy-thrasher.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/george-romero-glasses.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/golden-armor.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/golden-bucket.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/golden-spork.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/golden-trash-bin.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/gramophone-free-perks.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/gravedigging.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hardcore-bossfight.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hats-and-masks.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/heat-pack.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hells-retriever.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/helmets-and-wings.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-perk-machine.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups-aotd.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups-astra-malorum.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups-citadelle-des-morts.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups-reckoning.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups-shattered-veil.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups-terminus.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups-the-tomb.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/hidden-power-ups.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/i-am-the-well.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/island-spores.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/jump-scare-reckoning.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/jump-scare.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/jumpscare-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/knight-guardian.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/lantern-wisp.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/lil-arnies-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/lion-cannon.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/lockdown-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/lost.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mad-hatter.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/magic.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/magmagat-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/margwa-mask.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/marine-sp-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mayas-revenge.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mega-stuffy-pet.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/melee-weapons-revelations.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/melee-weapons.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/meteor-crash.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mister-peeks-axe-throw.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mister-peeks-bodyguard.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mister-peeks-bowling.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mister-peeks-car.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mister-peeks-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mixologist.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/monkey-bombs-upgrade.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/monster-hand.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mummy-jumpscare.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/mystery.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/nikolais-demons.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/noire-mode-filter.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/nos-fideles.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/original-pareidolia.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/paintings.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/panzer-claw-helmet.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/paper-jumpscare.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/parachuting-challenge.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/pareidolia-remix.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/perkaholic.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/permanent-double-points.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/permanent-pack-a-pack.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/plunger-melee-weapon.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/points-challenge.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/pool-table-citadelle-des-morts.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/pool-table-terminus.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/pool-table.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/raining-zombies.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/rat-king.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/raven-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/remember-us.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/ronald-raygun.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/round-100-boss-fight.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/sam-trap-unlock.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/samanthas-peace.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/samanthas-sorrow.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/satellite-points.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/savage-impaler.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/second-gondola.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/secret-doors.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/sentinel-artifact-rune.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/sergei-head-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/shadowman-round-skip.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/sharpshooter.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/shockwave.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/skeletons-everywhere.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/skulls-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/slave.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/sleepwalking-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/snakeskin-boots-song.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/special-weapon-fire-sale.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/spider-bait.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/stake-knife.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/statue-free-perk.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/stormbound.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/target-practice.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/the-gift.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/the-vault.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/this-jazz-is-classified.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/tombstone-perkaholic.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/toxic-growth-plant.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/turn-to-ashes.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/twins.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/underwater-crates.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/upgraded-lil-arnies.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/upgraded-snowballs.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/upgraded-spectral-shield.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/upgraded-trip-mines.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/vending-machine-ashes-of-the-damned.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/vending-machine-reckoning.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/vending-machine.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/viking-funeral.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/war-hero.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/whack-a-crab.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/where-are-we-going-remix.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/wishing-well.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/zarya-rocket.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/zombie-prisoners.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/zombie-soldiers.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "side-quests/zursa-skulls.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/abomination.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/adam-unit.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/amalgam.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/astronaut-zombie.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/crusader-zombie.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/denizen.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/disciple.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/doppelghast.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/elder-disciple.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/fire-catalyst.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/kommando-klaus.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/krasny-soldat.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/lightning-catalyst.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/mangler.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/marauder.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/margwa.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/mimic.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/napalm-zombie.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/nathan.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/nikolai-mech.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/nova-6-bomber.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/orda.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/oscar.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/parasite.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/patient-13.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/perseus.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/plaguehound.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/sam.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/skeleton.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/tempest.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/the-guardian.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/tiger.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/tormentors.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/uber-klaus.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/uber-richtofen.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/vermin.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/z-rex.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/zursa.mdx": {
-      "lastModified": "2026-02-11T12:07:17.000Z",
+      "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "a1945f5"
+      "commitHash": "39ccefc"
     },
     "zombies/armored-zombie.mdx": {
       "lastModified": "2025-12-13T00:23:59.000Z",

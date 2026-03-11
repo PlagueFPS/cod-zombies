@@ -396,8 +396,18 @@ const mapRegistry = {
 		id: "astra-malorum",
 		title: "Astra Malorum",
 		releaseDate: new Date("December 4, 2025 12:00 AM"),
-		description: "In the cold depths of space, a century-old observatory guards a gateway to a dead world. Awaken the astronomer, defeat the mechanical guard, and liberate the celestial Shadowsmith!",
+		description:
+			"In the cold depths of space, a century-old observatory guards a gateway to a dead world. Awaken the astronomer, defeat the mechanical guard, and liberate the celestial Shadowsmith!",
 		image: "/maps/astra-malorum.webp",
+		game: getGameByKey("blackOps7"),
+	},
+	paradoxJunction: {
+		id: "paradox-junction",
+		title: "Paradox Junction",
+		releaseDate: new Date("March 11, 2026 12:00 AM"),
+		description:
+			"Killing time was never this much fun! Play gruesome games with the creepy Twins, destroy the Dark Heart and escape the warden's temporal prison.",
+		image: "/maps/paradox-junction-preview.webp",
 		game: getGameByKey("blackOps7"),
 	},
 } as const satisfies Record<string, Maps>
