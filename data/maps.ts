@@ -406,7 +406,7 @@ const mapRegistry = {
 		title: "Paradox Junction",
 		releaseDate: new Date("March 11, 2026 12:00 AM"),
 		description:
-			"Killing time was never this much fun! Play gruesome games with the creepy Twins, destroy the Dark Heart and escape the warden's temporal prison.",
+			"Killing time was never this much fun! Play gruesome games with the creepy Twins, destroy the Dark Heart and escape the warden's temporal prison!",
 		image: "/maps/paradox-junction-preview.webp",
 		game: getGameByKey("blackOps7"),
 	},
