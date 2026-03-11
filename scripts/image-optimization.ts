@@ -1,7 +1,7 @@
 import { Command, Options, Span } from "@effect/cli"
 import { FileSystem, Path } from "@effect/platform"
 import { BunContext, BunRuntime } from "@effect/platform-bun"
-import { Duration, Effect, Ref, Schema } from "effect"
+import { Clock, Duration, Effect, Ref, Schema } from "effect"
 import sharp from "sharp"
 
 class ImageOptimizationError extends Schema.TaggedError<ImageOptimizationError>(
@@ -121,7 +121,7 @@ const optimizeCommand = Command.make(
 	},
 	({ dir: targetDir, source, map, noResize, preview }) =>
 		Effect.gen(function* () {
-			const startTime = performance.now()
+			const startTime = yield* Clock.currentTimeMillis
 			const fs = yield* FileSystem.FileSystem
 			const path = yield* Path.Path
 
@@ -184,9 +184,13 @@ const optimizeCommand = Command.make(
 			)
 
 			const writtenAmount = yield* Ref.get(numRef)
-			const endTime = Duration.toSeconds(performance.now() - startTime)
+			const endTime = yield* Clock.currentTimeMillis.pipe(
+				Effect.map(endTime => endTime - startTime),
+			)
 			const totalTime =
-				endTime > 60 ? `${Duration.toMinutes(endTime).toFixed(2)}m` : `${endTime.toFixed(2)}s`
+				endTime > Duration.toMillis("1 minute")
+					? `${Duration.toMinutes(endTime).toFixed(2)}m`
+					: `${Duration.toSeconds(endTime).toFixed(2)}s`
 			yield* Effect.log(
 				`Successfully optimized ${writtenAmount}/${newAssets.length} images in ${totalTime}!`,
 			)

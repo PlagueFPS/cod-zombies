@@ -232,7 +232,7 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 const _MainQuestGeneration = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const quest = getMainQuestByMap("astra-malorum")
+	const quest = getMainQuestByMap("paradox-junction")
 	if (!quest) return yield* Effect.fail("Quest not found")
 
 	const ogImage = yield* generateMainQuestImage(quest)
@@ -603,4 +603,4 @@ const _ZombieGeneration = Effect.gen(function* () {
 	yield* Effect.log(`Generated og image for ${zombie.id}`)
 }).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
 
-BunRuntime.runMain(_ZombieGeneration)
+BunRuntime.runMain(_MainQuestGeneration)

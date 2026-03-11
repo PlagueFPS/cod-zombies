@@ -43,7 +43,7 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 						width={776}
 						height={436}
 						description={caption ?? undefined}
-						alt={alt ?? ""}
+						alt={alt ?? caption}
 						className="cursor-default rounded-lg sm:cursor-zoom-in"
 					/>
 				</DialogTrigger>

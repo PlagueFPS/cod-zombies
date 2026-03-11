@@ -245,7 +245,9 @@ const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
 
 	return (
 		<CustomLink
-			href={questState === "Coming Soon" ? "#" : `/main-quests/${quest.map.game.id}/${quest.map.id}`}
+			href={
+				questState === "Coming Soon" ? "#" : `/main-quests/${quest.map.game.id}/${quest.map.id}`
+			}
 			className={cn(
 				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
