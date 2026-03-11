@@ -1956,7 +1956,7 @@ const zombiesRegistry = {
 		type: "Special",
 		speed: "Fast",
 		weakPoints: [getWeakPointByKey("head")],
-		elementalWeakness: [],
+		elementalWeakness: ["shadowRift"],
 		attacks: [
 			getZombieAttackByKey("bite"),
 			getZombieAttackByKey("lunge"),

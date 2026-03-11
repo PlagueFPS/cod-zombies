@@ -660,8 +660,8 @@ const augmentRegistry = {
 		variants: {
 			blackOps7: {
 				image: "/augments/bo7/group-shroud-major-augment-bo7.webp",
-			}
-		}
+			},
+		},
 	},
 	bigGameDeadWire: {
 		id: "big-game-dead-wire",
@@ -672,8 +672,8 @@ const augmentRegistry = {
 		variants: {
 			blackOps7: {
 				image: "/augments/bo7/big-game-major-augment-bo7.webp",
-			}
-		}
+			},
+		},
 	},
 	lightningStrike: {
 		id: "lightning-strike",
@@ -685,8 +685,8 @@ const augmentRegistry = {
 		variants: {
 			blackOps7: {
 				image: "/augments/bo7/reactive-armor-major-augment-bo7.webp",
-			}
-		}
+			},
+		},
 	},
 	highVoltage: {
 		id: "high-voltage",
@@ -696,9 +696,9 @@ const augmentRegistry = {
 		image: "/augments/retaliation-minor-augment.webp",
 		variants: {
 			blackOps7: {
-				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp"
-			}
-		}
+				image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+			},
+		},
 	},
 	hasteDeadWire: {
 		id: "haste-dead-wire",
@@ -709,8 +709,8 @@ const augmentRegistry = {
 		variants: {
 			blackOps7: {
 				image: "/augments/bo7/haste-minor-augment-bo7.webp",
-			}
-		}
+			},
+		},
 	},
 	extensionDeadWire: {
 		id: "extension-dead-wire",
@@ -721,8 +721,8 @@ const augmentRegistry = {
 		variants: {
 			blackOps7: {
 				image: "/augments/bo7/extension-minor-augment-bo7.webp",
-			}
-		}
+			},
+		},
 	},
 	plague: {
 		id: "plague",
@@ -947,6 +947,11 @@ const augmentRegistry = {
 		description: "Shadow Rift can activate on elite enemies.",
 		type: "Major",
 		image: "/augments/big-game-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/big-game-major-augment-bo7.webp",
+			},
+		},
 	},
 	toppleDanger: {
 		id: "topple-danger",
@@ -955,6 +960,11 @@ const augmentRegistry = {
 			"Warp 1 enemy that deals shadow damage to others nearby. Normal enemies are knocked down while special enemies are stunned.",
 		type: "Major",
 		image: "/augments/triple-shot-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/petroleum-major-augment-bo7.webp",
+			},
+		},
 	},
 	explosiveRain: {
 		id: "explosive-rain",
@@ -962,6 +972,11 @@ const augmentRegistry = {
 		description: "Enemies that are dropped from portals will explode on contact with the ground.",
 		type: "Major",
 		image: "/augments/gravity-md-major-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
+			},
+		},
 	},
 	hasteShadowRift: {
 		id: "haste-shadow-rift",
@@ -969,6 +984,11 @@ const augmentRegistry = {
 		description: "Shadow Rift cooldown is reduced.",
 		type: "Minor",
 		image: "/augments/chill-berry-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/haste-minor-augment-bo7.webp",
+			},
+		},
 	},
 	targeted: {
 		id: "targeted",
@@ -976,6 +996,11 @@ const augmentRegistry = {
 		description: "Dropped enemies will fall on other enemies.",
 		type: "Minor",
 		image: "/augments/targeted-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/amped-minor-augment-bo7.webp",
+			},
+		},
 	},
 	supermassive: {
 		id: "supermassive",
@@ -983,6 +1008,11 @@ const augmentRegistry = {
 		description: "The singularity’s lethal radius is increased and can kill more enemies.",
 		type: "Minor",
 		image: "/augments/supermassive-minor-augment.webp",
+		variants: {
+			blackOps7: {
+				image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+			},
+		},
 	},
 	groupShroud: {
 		id: "group-shroud",

@@ -259,5 +259,19 @@ const ammoModRegistry = {
 			"targeted",
 			"supermassive",
 		],
+		variants: {
+			blackOps7: {
+				augments: [
+					"bigGameShadowRift",
+					"toppleDanger",
+					"explosiveRain",
+					"gravityWell",
+					"hasteShadowRift",
+					"targeted",
+					"supermassive",
+					"ammoTheorem",
+				],
+			},
+		},
 	},
 } as const satisfies Record<string, AmmoMod>
