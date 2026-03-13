@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T02:46:25.818Z",
+  "generated": "2026-03-13T02:57:57.990Z",
   "files": {
     "zombies/the-dark-heart.mdx": {
-      "lastModified": "2026-03-13T02:45:34.000Z",
+      "lastModified": "2026-03-13T02:57:22.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "a8513d0"
+      "commitHash": "a7d41d8"
     },
     "main-quests/paradox-junction.mdx": {
       "lastModified": "2026-03-13T00:17:04.000Z",
