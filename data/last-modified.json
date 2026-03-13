@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2026-03-12T23:58:23.743Z",
+  "generated": "2026-03-13T00:12:42.105Z",
   "files": {
     "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-12T23:57:39.000Z",
-      "lastModifiedFormatted": "March 12, 2026",
-      "commitHash": "3564fd2"
+      "lastModified": "2026-03-13T00:11:56.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "b553674"
     },
     "zombies/rad-hound.mdx": {
       "lastModified": "2026-03-11T22:14:45.000Z",
