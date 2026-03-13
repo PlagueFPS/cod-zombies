@@ -1,21 +1,36 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T20:09:56.217Z",
+  "generated": "2026-03-13T21:58:37.799Z",
   "files": {
-    "side-quests/golf-minigame.mdx": {
-      "lastModified": "2026-03-13T17:58:57.000Z",
+    "side-quests/come-back-down.mdx": {
+      "lastModified": "2026-03-13T21:58:02.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "8ef8437"
-    },
-    "side-quests/hidden-power-ups-paradox-junction.mdx": {
-      "lastModified": "2026-03-13T17:58:57.000Z",
-      "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "8ef8437"
+      "commitHash": "562c7fa"
     },
     "side-quests/lost-key.mdx": {
-      "lastModified": "2026-03-13T17:58:57.000Z",
+      "lastModified": "2026-03-13T21:58:02.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "8ef8437"
+      "commitHash": "562c7fa"
+    },
+    "side-quests/magic.mdx": {
+      "lastModified": "2026-03-13T21:58:02.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "562c7fa"
+    },
+    "side-quests/115-clock-tower.mdx": {
+      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ca56af1"
+    },
+    "side-quests/golf-minigame.mdx": {
+      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ca56af1"
+    },
+    "side-quests/hidden-power-ups-paradox-junction.mdx": {
+      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ca56af1"
     },
     "main-quests/paradox-junction.mdx": {
       "lastModified": "2026-03-13T17:15:27.000Z",
@@ -64,7 +79,7 @@
     },
     "zombies/the-dark-heart.mdx": {
       "lastModified": "2026-03-13T03:07:39.000Z",
-      "lastModifiedFormatted": "March 12, 2026",
+      "lastModifiedFormatted": "March 13, 2026",
       "commitHash": "ced8fe6"
     },
     "zombies/rad-hound.mdx": {
@@ -842,11 +857,6 @@
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"
     },
-    "side-quests/magic.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
     "side-quests/magmagat-upgrade.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
@@ -1469,12 +1479,12 @@
     },
     "zombies/armored-zombie.mdx": {
       "lastModified": "2025-12-13T00:23:59.000Z",
-      "lastModifiedFormatted": "December 12, 2025",
+      "lastModifiedFormatted": "December 13, 2025",
       "commitHash": "4040c0c"
     },
     "zombies/heavy-zombie.mdx": {
       "lastModified": "2025-12-13T00:23:59.000Z",
-      "lastModifiedFormatted": "December 12, 2025",
+      "lastModifiedFormatted": "December 13, 2025",
       "commitHash": "4040c0c"
     },
     "side-quests/skull-jumpscare.mdx": {
@@ -1489,12 +1499,12 @@
     },
     "zombies/veytharion.mdx": {
       "lastModified": "2025-11-29T02:07:36.000Z",
-      "lastModifiedFormatted": "November 28, 2025",
+      "lastModifiedFormatted": "November 29, 2025",
       "commitHash": "1d01344"
     },
     "zombies/ravager.mdx": {
       "lastModified": "2025-11-09T02:44:46.000Z",
-      "lastModifiedFormatted": "November 8, 2025",
+      "lastModifiedFormatted": "November 9, 2025",
       "commitHash": "134297c"
     },
     "side-quests/upgraded-monkey-bombs.mdx": {
@@ -1514,27 +1524,27 @@
     },
     "legal/privacy-policy.mdx": {
       "lastModified": "2025-09-24T03:16:07.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "cd254ad"
     },
     "zombies/megaton.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/sentinel-artifact.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/the-forsaken.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/toxic-zombies.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 23, 2025",
+      "lastModifiedFormatted": "September 24, 2025",
       "commitHash": "98786bf"
     },
     "zombies/avogadro.mdx": {
@@ -1694,41 +1704,33 @@
     },
     "zombies/keepers.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/valentina.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/valkyrie-drone.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/water-catalyst.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/werewolf.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
     },
     "zombies/zombie.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 21, 2025",
+      "lastModifiedFormatted": "September 22, 2025",
       "commitHash": "7370925"
-    },
-    "side-quests/come-back-down.mdx": {
-      "lastModified": "2026-03-13T20:09:56.196Z",
-      "lastModifiedFormatted": "March 13, 2026"
-    },
-    "side-quests/115-clock-tower.mdx": {
-      "lastModified": "2026-03-13T20:09:56.196Z",
-      "lastModifiedFormatted": "March 13, 2026"
     }
   }
 }
