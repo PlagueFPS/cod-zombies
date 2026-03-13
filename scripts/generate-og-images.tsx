@@ -7,6 +7,7 @@ import sharp from "sharp"
 import { getMainQuestByMap, type MainQuest } from "@/data/main-quests"
 import { getSideQuests, type SideQuest } from "@/data/side-quests"
 import { getZombieByKey, type Zombie } from "@/data/zombies"
+import { DATE_OPTIONS } from "@/utils/constants"
 import { calculateTimeToRead, getLastUpdated } from "@/utils/server-functions"
 
 const size = { width: 1200, height: 630 }
@@ -564,7 +565,7 @@ const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: 
 					fontSize: "1.25rem",
 				}}
 			>
-				<span>{lastModifiedFormatted}</span>
+				<span>{zombie.releaseDate.toLocaleDateString("en-US", DATE_OPTIONS)}</span>
 			</div>
 		</div>,
 		{
@@ -594,7 +595,7 @@ const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: 
 const _ZombieGeneration = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const zombie = getZombieByKey("armoredZombie")
+	const zombie = getZombieByKey("theDarkHeart")
 	const ogImage = yield* generateZombieImage(zombie)
 	yield* fs.writeFile(
 		path.join(process.cwd(), "public", `opengraph-images/zombies/og-${zombie.id}.jpg`),
@@ -603,4 +604,4 @@ const _ZombieGeneration = Effect.gen(function* () {
 	yield* Effect.log(`Generated og image for ${zombie.id}`)
 }).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
 
-BunRuntime.runMain(_MainQuestGeneration)
+BunRuntime.runMain(_ZombieGeneration)
