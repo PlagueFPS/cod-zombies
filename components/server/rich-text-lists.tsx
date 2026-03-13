@@ -1,5 +1,5 @@
 export function UnorderedList({ children }: { children: React.ReactNode }) {
-	return <ul className="list-disc rounded-sm bg-input p-2 dark:bg-input/20">{children}</ul>
+	return <ul className="mt-4 list-disc rounded-sm bg-input p-2 dark:bg-input/20">{children}</ul>
 }
 
 export function OrderedList({ children }: { children: React.ReactNode }) {

@@ -452,6 +452,19 @@ const perkRegistry = {
 			blackOpsColdWar: {
 				image: "/perks/mule-kick-cold-war.webp",
 			},
+			blackOps7: {
+				image: "/perks/mule-kick-cold-war.webp",
+				augments: [
+					"packMule",
+					"freeThrow",
+					"olReliable",
+					"multiPack",
+					"fullyEquipped",
+					"plateHunter",
+					"bogo",
+					"kickBack",
+				],
+			},
 		},
 	},
 	speedCola: {
