@@ -274,7 +274,7 @@ const relicRegistry = {
 	matroyshkaDolls: {
 		id: "matroyshka-dolls",
 		title: "Matroyshka Dolls",
-		state: "New",
+		state: null,
 		type: "Sinister",
 		image: "/relics/matroyshka-dolls-relic.webp",
 		description: "Salvage drop rate halved.",
@@ -290,7 +290,7 @@ const relicRegistry = {
 	goldenSpork: {
 		id: "golden-spork",
 		title: "Golden Spork",
-		state: "New",
+		state: null,
 		type: "Wicked",
 		image: "/relics/golden-spork-relic.webp",
 		description: "Enemies deal double damage.",
