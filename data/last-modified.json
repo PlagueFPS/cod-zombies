@@ -1,51 +1,51 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T16:11:04.892Z",
+  "generated": "2026-03-13T16:35:08.885Z",
   "files": {
-    "main-quests/the-tomb.mdx": {
-      "lastModified": "2026-03-13T16:10:34.000Z",
+    "main-quests/paradox-junction.mdx": {
+      "lastModified": "2026-03-13T16:34:39.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "f43defb"
-    },
-    "zombies/shock-mimic.mdx": {
-      "lastModified": "2026-03-13T16:10:34.000Z",
-      "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "f43defb"
+      "commitHash": "0b7ec6c"
     },
     "main-quests/astra-malorum.mdx": {
-      "lastModified": "2026-03-13T04:14:47.000Z",
+      "lastModified": "2026-03-13T16:24:12.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "d3a6b53"
+      "commitHash": "5fae873"
     },
-    "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-13T04:14:47.000Z",
+    "main-quests/the-tomb.mdx": {
+      "lastModified": "2026-03-13T16:24:12.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "d3a6b53"
+      "commitHash": "5fae873"
     },
     "relics/lawyers-pen.mdx": {
-      "lastModified": "2026-03-13T04:14:47.000Z",
+      "lastModified": "2026-03-13T16:24:12.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "d3a6b53"
+      "commitHash": "5fae873"
     },
     "side-quests/free-brain-rot.mdx": {
-      "lastModified": "2026-03-13T04:14:47.000Z",
+      "lastModified": "2026-03-13T16:24:12.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "d3a6b53"
+      "commitHash": "5fae873"
     },
     "side-quests/golden-armor.mdx": {
-      "lastModified": "2026-03-13T04:14:47.000Z",
+      "lastModified": "2026-03-13T16:24:12.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "d3a6b53"
+      "commitHash": "5fae873"
     },
     "zombies/amalgam.mdx": {
-      "lastModified": "2026-03-13T04:14:47.000Z",
+      "lastModified": "2026-03-13T16:24:12.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "d3a6b53"
+      "commitHash": "5fae873"
     },
     "zombies/mimic.mdx": {
-      "lastModified": "2026-03-13T04:14:47.000Z",
+      "lastModified": "2026-03-13T16:24:12.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "d3a6b53"
+      "commitHash": "5fae873"
+    },
+    "zombies/shock-mimic.mdx": {
+      "lastModified": "2026-03-13T16:24:12.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "5fae873"
     },
     "zombies/the-dark-heart.mdx": {
       "lastModified": "2026-03-13T03:07:39.000Z",
