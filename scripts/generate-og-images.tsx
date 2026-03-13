@@ -419,12 +419,7 @@ const _SideQuestGeneration = Effect.gen(function* () {
 }).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
 
 const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: Zombie) {
-	const fs = yield* FileSystem.FileSystem
-	const path = yield* Path.Path
-	const contentPath = path.join(process.cwd(), `./content/zombies/${zombie.id}.mdx`)
-	const _fileContent = yield* fs.readFileString(contentPath)
 	const fonts = yield* getFonts()
-	const { lastModifiedFormatted } = getLastUpdated(contentPath)
 	const firstAppearedIn = zombie.maps.at(0)
 	const zombieImage = yield* transformImage(zombie.image)
 
