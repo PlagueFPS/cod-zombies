@@ -1,16 +1,56 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T02:57:57.990Z",
+  "generated": "2026-03-13T04:10:52.010Z",
   "files": {
-    "zombies/the-dark-heart.mdx": {
-      "lastModified": "2026-03-13T02:57:22.000Z",
+    "main-quests/the-tomb.mdx": {
+      "lastModified": "2026-03-13T04:03:44.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "a7d41d8"
+      "commitHash": "857d66c"
+    },
+    "relics/lawyers-pen.mdx": {
+      "lastModified": "2026-03-13T04:03:44.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "857d66c"
+    },
+    "side-quests/free-brain-rot.mdx": {
+      "lastModified": "2026-03-13T04:03:44.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "857d66c"
+    },
+    "side-quests/golden-armor.mdx": {
+      "lastModified": "2026-03-13T04:03:44.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "857d66c"
+    },
+    "zombies/shock-mimic.mdx": {
+      "lastModified": "2026-03-13T04:03:44.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "857d66c"
+    },
+    "main-quests/astra-malorum.mdx": {
+      "lastModified": "2026-03-13T03:40:39.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ea31738"
     },
     "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-13T00:17:04.000Z",
+      "lastModified": "2026-03-13T03:40:39.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "e840fba"
+      "commitHash": "ea31738"
+    },
+    "zombies/amalgam.mdx": {
+      "lastModified": "2026-03-13T03:40:39.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ea31738"
+    },
+    "zombies/mimic.mdx": {
+      "lastModified": "2026-03-13T03:33:36.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ecc286d"
+    },
+    "zombies/the-dark-heart.mdx": {
+      "lastModified": "2026-03-13T03:07:39.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ced8fe6"
     },
     "zombies/rad-hound.mdx": {
       "lastModified": "2026-03-11T22:14:45.000Z",
@@ -23,11 +63,6 @@
       "commitHash": "39ccefc"
     },
     "main-quests/apocalypse-averted.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
-    "main-quests/astra-malorum.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"
@@ -162,11 +197,6 @@
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"
     },
-    "main-quests/the-tomb.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
     "main-quests/time-travel-will-tell.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
@@ -228,11 +258,6 @@
       "commitHash": "39ccefc"
     },
     "relics/gong.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
-    "relics/lawyers-pen.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"
@@ -542,11 +567,6 @@
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"
     },
-    "side-quests/free-brain-rot.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
     "side-quests/free-deadshot-daiquiri.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
@@ -648,11 +668,6 @@
       "commitHash": "39ccefc"
     },
     "side-quests/george-romero-glasses.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
-    "side-quests/golden-armor.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"
@@ -1267,11 +1282,6 @@
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"
     },
-    "zombies/amalgam.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
     "zombies/astronaut-zombie.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
@@ -1333,11 +1343,6 @@
       "commitHash": "39ccefc"
     },
     "zombies/margwa.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
-    "zombies/mimic.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"

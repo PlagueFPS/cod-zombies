@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-13T02:30:49.806Z
- * generated in: 96ms
+ * generated at: 2026-03-13T03:27:32.009Z
+ * generated in: 99ms
  */
 
 
@@ -349,6 +349,7 @@ export type ZombiesImagePath =
   '/zombies/marauder.webp' |
   '/zombies/margwa.webp' |
   '/zombies/megaton.webp' |
+  '/zombies/mimic.webp' |
   '/zombies/napalm-zombie.webp' |
   '/zombies/nathan.webp' |
   '/zombies/nikolai-mech.webp' |

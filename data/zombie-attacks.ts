@@ -428,7 +428,7 @@ const zombieAttacksRegistry = {
 		title: "Shock Burst",
 		range: "Long",
 		description:
-			"Releases a shock burst when destroying thrown equipment, damaging nearby players. *Shock Mimic Only",
+			"Releases a shock burst when destroying thrown equipment, damaging nearby players.",
 	},
 	fireballs: {
 		id: "fireballs",
