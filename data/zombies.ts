@@ -1617,6 +1617,7 @@ const zombiesRegistry = {
 			getMapByKey("shatteredVeil"),
 			getMapByKey("reckoning"),
 			getMapByKey("ashesOfTheDamned"),
+			getMapByKey("paradoxJunction"),
 		],
 		type: "Special",
 		speed: "Fast",
