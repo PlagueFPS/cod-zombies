@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-05T00:18:50.418Z
- * generated in: 107ms
+ * generated at: 2026-03-13T02:30:49.806Z
+ * generated in: 96ms
  */
 
 
@@ -378,6 +378,7 @@ export type ZombiesImagePath =
   '/zombies/stoker.webp' |
   '/zombies/tempest.webp' |
   '/zombies/the-corrupted-keeper.webp' |
+  '/zombies/the-dark-heart.webp' |
   '/zombies/the-forsaken.webp' |
   '/zombies/the-guardian.webp' |
   '/zombies/thrasher.webp' |

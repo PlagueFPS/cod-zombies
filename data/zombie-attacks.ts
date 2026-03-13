@@ -706,4 +706,11 @@ const zombieAttacksRegistry = {
 		description:
 			"Releases a powerful radioactive explosion on death, damaging any players in range.",
 	},
+	fireTornadoes: {
+		id: "fire-tornadoes",
+		title: "Fire Tornadoes",
+		range: "Short",
+		description:
+			"Spawns a fire tornado that moves around the area, dealing damage to players in its path.",
+	},
 } as const satisfies Record<string, ZombieAttack>
