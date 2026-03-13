@@ -1,11 +1,26 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T17:09:23.502Z",
+  "generated": "2026-03-13T20:09:56.217Z",
   "files": {
-    "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-13T17:08:52.000Z",
+    "side-quests/golf-minigame.mdx": {
+      "lastModified": "2026-03-13T17:58:57.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "16ccc77"
+      "commitHash": "8ef8437"
+    },
+    "side-quests/hidden-power-ups-paradox-junction.mdx": {
+      "lastModified": "2026-03-13T17:58:57.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "8ef8437"
+    },
+    "side-quests/lost-key.mdx": {
+      "lastModified": "2026-03-13T17:58:57.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "8ef8437"
+    },
+    "main-quests/paradox-junction.mdx": {
+      "lastModified": "2026-03-13T17:15:27.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "8f34418"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2026-03-13T16:24:12.000Z",
@@ -49,7 +64,7 @@
     },
     "zombies/the-dark-heart.mdx": {
       "lastModified": "2026-03-13T03:07:39.000Z",
-      "lastModifiedFormatted": "March 13, 2026",
+      "lastModifiedFormatted": "March 12, 2026",
       "commitHash": "ced8fe6"
     },
     "zombies/rad-hound.mdx": {
@@ -1454,12 +1469,12 @@
     },
     "zombies/armored-zombie.mdx": {
       "lastModified": "2025-12-13T00:23:59.000Z",
-      "lastModifiedFormatted": "December 13, 2025",
+      "lastModifiedFormatted": "December 12, 2025",
       "commitHash": "4040c0c"
     },
     "zombies/heavy-zombie.mdx": {
       "lastModified": "2025-12-13T00:23:59.000Z",
-      "lastModifiedFormatted": "December 13, 2025",
+      "lastModifiedFormatted": "December 12, 2025",
       "commitHash": "4040c0c"
     },
     "side-quests/skull-jumpscare.mdx": {
@@ -1474,12 +1489,12 @@
     },
     "zombies/veytharion.mdx": {
       "lastModified": "2025-11-29T02:07:36.000Z",
-      "lastModifiedFormatted": "November 29, 2025",
+      "lastModifiedFormatted": "November 28, 2025",
       "commitHash": "1d01344"
     },
     "zombies/ravager.mdx": {
       "lastModified": "2025-11-09T02:44:46.000Z",
-      "lastModifiedFormatted": "November 9, 2025",
+      "lastModifiedFormatted": "November 8, 2025",
       "commitHash": "134297c"
     },
     "side-quests/upgraded-monkey-bombs.mdx": {
@@ -1499,27 +1514,27 @@
     },
     "legal/privacy-policy.mdx": {
       "lastModified": "2025-09-24T03:16:07.000Z",
-      "lastModifiedFormatted": "September 24, 2025",
+      "lastModifiedFormatted": "September 23, 2025",
       "commitHash": "cd254ad"
     },
     "zombies/megaton.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 24, 2025",
+      "lastModifiedFormatted": "September 23, 2025",
       "commitHash": "98786bf"
     },
     "zombies/sentinel-artifact.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 24, 2025",
+      "lastModifiedFormatted": "September 23, 2025",
       "commitHash": "98786bf"
     },
     "zombies/the-forsaken.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 24, 2025",
+      "lastModifiedFormatted": "September 23, 2025",
       "commitHash": "98786bf"
     },
     "zombies/toxic-zombies.mdx": {
       "lastModified": "2025-09-24T03:07:01.000Z",
-      "lastModifiedFormatted": "September 24, 2025",
+      "lastModifiedFormatted": "September 23, 2025",
       "commitHash": "98786bf"
     },
     "zombies/avogadro.mdx": {
@@ -1679,33 +1694,41 @@
     },
     "zombies/keepers.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 22, 2025",
+      "lastModifiedFormatted": "September 21, 2025",
       "commitHash": "7370925"
     },
     "zombies/valentina.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 22, 2025",
+      "lastModifiedFormatted": "September 21, 2025",
       "commitHash": "7370925"
     },
     "zombies/valkyrie-drone.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 22, 2025",
+      "lastModifiedFormatted": "September 21, 2025",
       "commitHash": "7370925"
     },
     "zombies/water-catalyst.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 22, 2025",
+      "lastModifiedFormatted": "September 21, 2025",
       "commitHash": "7370925"
     },
     "zombies/werewolf.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 22, 2025",
+      "lastModifiedFormatted": "September 21, 2025",
       "commitHash": "7370925"
     },
     "zombies/zombie.mdx": {
       "lastModified": "2025-09-22T00:52:50.000Z",
-      "lastModifiedFormatted": "September 22, 2025",
+      "lastModifiedFormatted": "September 21, 2025",
       "commitHash": "7370925"
+    },
+    "side-quests/come-back-down.mdx": {
+      "lastModified": "2026-03-13T20:09:56.196Z",
+      "lastModifiedFormatted": "March 13, 2026"
+    },
+    "side-quests/115-clock-tower.mdx": {
+      "lastModified": "2026-03-13T20:09:56.196Z",
+      "lastModifiedFormatted": "March 13, 2026"
     }
   }
 }
