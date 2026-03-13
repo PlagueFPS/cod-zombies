@@ -186,7 +186,7 @@ const MainQuestPage = Effect.fn("MainQuestPage")(
 									</div>
 									<ShareButton
 										title={quest.map.title}
-										url={`${getServerUrl()}/${quest.map.game.id}/${quest.map.id}`}
+										url={`${getServerUrl()}/main-quests/${quest.map.game.id}/${quest.map.id}`}
 										className="mb-2 ml-auto text-muted-foreground md:mb-0"
 									/>
 								</div>
