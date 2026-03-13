@@ -1724,6 +1724,34 @@ const sideQuestRegistry = {
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/zarya-rocket.mdx")),
 	},
+	golfMinigame: {
+		id: "golfMinigame",
+		title: "Golf Minigame",
+		state: Option.some("New"),
+		description: "Learn how to obtain three free Power-Ups by completing a short golf minigame.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/golf-minigame.mdx")),
+	},
+	lostKey: {
+		id: "lostKey",
+		title: "Lost Key",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain a free Aether Tool along with some other rewards, by finding the lost key.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/lost-key.mdx")),
+	},
+	hiddenPowerUpsParadoxJunction: {
+		id: "hidden-power-ups-paradox-junction",
+		title: "Hidden Power-Ups",
+		state: Option.some("New"),
+		description:
+			"Discover all hidden power up locations in Paradox Junction to collect when you need them",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(
+			() => import("@/content/side-quests/hidden-power-ups-paradox-junction.mdx"),
+		),
+	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
