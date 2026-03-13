@@ -3,5 +3,5 @@ export function UnorderedList({ children }: { children: React.ReactNode }) {
 }
 
 export function OrderedList({ children }: { children: React.ReactNode }) {
-	return <ol className="list-decimal rounded-sm bg-input p-2 dark:bg-input/20">{children}</ol>
+	return <ol className="mt-4 list-decimal rounded-sm bg-input p-2 dark:bg-input/20">{children}</ol>
 }

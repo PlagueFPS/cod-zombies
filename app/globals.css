@@ -41,8 +41,9 @@
     --tooltip-foreground: var(--color-orange-700);
     --major-augment: var(--color-sky-600);
     --major-augment-foreground: var(--color-sky-700);
+    --blockquote-foreground: var(--color-orange-700);
   }
-  
+
   .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
@@ -79,6 +80,7 @@
     --tooltip-foreground: var(--color-orange-200);
     --major-augment: var(--color-sky-300);
     --major-augment-foreground: var(--color-sky-200);
+    --blockquote-foreground: var(--color-orange-300);
   }
 
   *,
@@ -215,6 +217,7 @@
   --color-tooltip-foreground: var(--tooltip-foreground);
   --color-major-augment: var(--major-augment);
   --color-major-augment-foreground: var(--major-augment-foreground);
+  --color-blockquote-foreground: var(--blockquote-foreground);
 
   --font-mono: var(--font-geist-mono);
   --font-sans: var(--font-geist);

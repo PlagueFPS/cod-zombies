@@ -18,6 +18,7 @@
 .body p {
   margin: 1rem 0;
   letter-spacing: 0.025em;
+  color: color-mix(in oklab, var(--color-foreground) 90%, transparent);
 }
 
 .body b, .body strong {
@@ -28,6 +29,7 @@
   margin-top: 0;
   margin-bottom: 0;
   font-style: italic;
+  color: var(--color-blockquote-foreground);
 }
 
 .body blockquote button {

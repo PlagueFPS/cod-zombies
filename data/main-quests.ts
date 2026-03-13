@@ -522,13 +522,13 @@ const mainQuestRegistry = {
 	},
 	paradoxJunctionMainQuest: {
 		id: "paradox-junction",
-		state: Option.some("Coming Soon"),
-		difficulty: Option.none(),
+		state: Option.some("New"),
+		difficulty: Option.some("Medium"),
 		map: getMapByKey("paradoxJunction"),
 		estimatedTimeMins: {
-			min: 0,
-			max: 0,
-			reason: "Coming Soon",
+			min: Duration.toMinutes("1 hour"),
+			max: Duration.toMinutes("2 hours"),
+			reason: "Time varies significantly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/paradox-junction.mdx")),
 	},

@@ -113,10 +113,11 @@ const nextConfig: NextConfig = {
 				destination: "/side-quests?map=the-tomb",
 				permanent: true,
 			},
-			{ 
-				source: "/:game(black-ops-1|black-ops-2|black-ops-3|black-ops-4|black-ops-cold-war|black-ops-6|black-ops-7)/:map", 
-				destination: "/main-quests/:game/:map", 
-				permanent: true 
+			{
+				source:
+					"/:game(black-ops-1|black-ops-2|black-ops-3|black-ops-4|black-ops-cold-war|black-ops-6|black-ops-7)/:map",
+				destination: "/main-quests/:game/:map",
+				permanent: true,
 			},
 		]
 	},
