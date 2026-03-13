@@ -303,6 +303,7 @@ const perkRegistry = {
 			blackOps6: {
 				description: "Obscured enemies are keylined.",
 				image: "/perks/death-perception-bo6.webp",
+				modifier: undefined,
 				augments: [
 					"treasureHunter",
 					"deathStare",
@@ -315,6 +316,7 @@ const perkRegistry = {
 			blackOps7: {
 				description: "Obscured enemies are outlined.",
 				image: "/perks/death-perception-bo6.webp",
+				modifier: undefined,
 				augments: [
 					"treasureHunter",
 					"deathStare",

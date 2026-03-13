@@ -1,11 +1,41 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T17:09:23.502Z",
+  "generated": "2026-03-13T21:58:37.799Z",
   "files": {
-    "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-13T17:08:52.000Z",
+    "side-quests/come-back-down.mdx": {
+      "lastModified": "2026-03-13T21:58:02.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "16ccc77"
+      "commitHash": "562c7fa"
+    },
+    "side-quests/lost-key.mdx": {
+      "lastModified": "2026-03-13T21:58:02.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "562c7fa"
+    },
+    "side-quests/magic.mdx": {
+      "lastModified": "2026-03-13T21:58:02.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "562c7fa"
+    },
+    "side-quests/115-clock-tower.mdx": {
+      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ca56af1"
+    },
+    "side-quests/golf-minigame.mdx": {
+      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ca56af1"
+    },
+    "side-quests/hidden-power-ups-paradox-junction.mdx": {
+      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "ca56af1"
+    },
+    "main-quests/paradox-junction.mdx": {
+      "lastModified": "2026-03-13T17:15:27.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "8f34418"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2026-03-13T16:24:12.000Z",
@@ -823,11 +853,6 @@
       "commitHash": "39ccefc"
     },
     "side-quests/mad-hatter.mdx": {
-      "lastModified": "2026-02-11T12:14:48.000Z",
-      "lastModifiedFormatted": "February 11, 2026",
-      "commitHash": "39ccefc"
-    },
-    "side-quests/magic.mdx": {
       "lastModified": "2026-02-11T12:14:48.000Z",
       "lastModifiedFormatted": "February 11, 2026",
       "commitHash": "39ccefc"

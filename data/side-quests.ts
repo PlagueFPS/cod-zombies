@@ -1358,7 +1358,7 @@ const sideQuestRegistry = {
 		map: getMapByKey("shatteredVeil"),
 		content: Effect.promise(() => import("@/content/side-quests/sleepwalking-free-perk.mdx")),
 	},
-	_115FreePerk: {
+	"115FreePerk": {
 		id: "115-free-perk",
 		title: "115 Free Perk",
 		state: Option.none(),
@@ -1723,6 +1723,52 @@ const sideQuestRegistry = {
 		description: "Discover this hidden reference and music easter egg floating through space.",
 		map: getMapByKey("astraMalorum"),
 		content: Effect.promise(() => import("@/content/side-quests/zarya-rocket.mdx")),
+	},
+	comeBackDown: {
+		id: "come-back-down",
+		title: "Come Back Down",
+		state: Option.some("New"),
+		description:
+			"Learn how to activate the music easter egg song 'Come Back Down' by Kevin Sherwood.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/come-back-down.mdx")),
+	},
+	hiddenPowerUpsParadoxJunction: {
+		id: "hidden-power-ups-paradox-junction",
+		title: "Hidden Power-Ups",
+		state: Option.some("New"),
+		description:
+			"Discover all hidden power up locations in Paradox Junction to collect when you need them",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(
+			() => import("@/content/side-quests/hidden-power-ups-paradox-junction.mdx"),
+		),
+	},
+	"115ClockTower": {
+		id: "115-clock-tower",
+		title: "115 Clock Tower",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain a Mystery Perk, Aetherium Crystal, Aether Tool, Scorestreak and more by completing this nostalgic callback.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/115-clock-tower.mdx")),
+	},
+	golfMinigame: {
+		id: "golf-minigame",
+		title: "Golf Minigame",
+		state: Option.some("New"),
+		description: "Learn how to obtain three free Power-Ups by completing a short golf minigame.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/golf-minigame.mdx")),
+	},
+	lostKey: {
+		id: "lost-key",
+		title: "Lost Key",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain a free Aether Tool along with some other rewards, by finding the lost key.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/lost-key.mdx")),
 	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
