@@ -1967,6 +1967,25 @@ const zombiesRegistry = {
 			"Rad Hounds spawn during the special rounds on Paradox Junction, while also spawning in with normal zombies in the later rounds.",
 		combatStrategy: Effect.promise(() => import("@/content/zombies/rad-hound.mdx")),
 	},
+	theDarkHeart: {
+		id: "the-dark-heart",
+		title: "The Dark Heart",
+		state: Option.some("New"),
+		releaseDate: new Date("March 11, 2026 2:00 AM"),
+		image: "/zombies/the-dark-heart.webp",
+		description:
+			"The Dark Heart is the core of the Warden's temporal prison, serving as the barrier between reality and purgatory.",
+		games: [getGameByKey("blackOps7")],
+		maps: [getMapByKey("paradoxJunction")],
+		type: "Boss",
+		speed: "Slow",
+		weakPoints: [getWeakPointByKey("redGlowingSpots")],
+		elementalWeakness: [],
+		attacks: [getZombieAttackByKey("meteorShower"), getZombieAttackByKey("fireTornadoes")],
+		spawnBehavior:
+			"The Dark Heart is the final boss of the Paradox Junction main quest and will spawn during the final encounter.",
+		combatStrategy: Effect.promise(() => import("@/content/zombies/the-dark-heart.mdx")),
+	},
 } as const satisfies Record<string, Zombie>
 
 const zombieMap = new Map<string, Zombie>()

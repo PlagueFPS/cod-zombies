@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T00:12:42.105Z",
+  "generated": "2026-03-13T02:46:25.818Z",
   "files": {
-    "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-13T00:11:56.000Z",
+    "zombies/the-dark-heart.mdx": {
+      "lastModified": "2026-03-13T02:45:34.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "b553674"
+      "commitHash": "a8513d0"
+    },
+    "main-quests/paradox-junction.mdx": {
+      "lastModified": "2026-03-13T00:17:04.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "e840fba"
     },
     "zombies/rad-hound.mdx": {
       "lastModified": "2026-03-11T22:14:45.000Z",
