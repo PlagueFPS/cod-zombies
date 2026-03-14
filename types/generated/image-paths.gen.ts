@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-13T03:27:32.009Z
- * generated in: 99ms
+ * generated at: 2026-03-14T18:40:40.370Z
+ * generated in: 109ms
  */
 
 
@@ -74,6 +74,7 @@ export type RelicsImagePath =
   '/relics/gong-relic.webp' |
   '/relics/lawyers-pen-relic.webp' |
   '/relics/matroyshka-dolls-relic.webp' |
+  '/relics/rocket-relic-placeholder.webp' |
   '/relics/samanthas-drawing-relic.webp' |
   '/relics/seed-relic.webp' |
   '/relics/spider-fang-relic.webp' |
@@ -211,6 +212,7 @@ export type AugmentsImagePath =
   '/augments/bo7/firebomb-major-augment-bo7.webp' |
   '/augments/bo7/footwork-minor-augment-bo7.webp' |
   '/augments/bo7/free-faller-major-augment-bo7.webp' |
+  '/augments/bo7/free-throw-major-augment.webp' |
   '/augments/bo7/group-shroud-major-augment-bo7.webp' |
   '/augments/bo7/guns-up-major-augment-bo7.webp' |
   '/augments/bo7/hard-target-minor-augment-bo7.webp' |

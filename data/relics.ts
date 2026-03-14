@@ -1,6 +1,6 @@
 import type { SortOption } from "@/components/client/grid-sort"
 import type { ContentState, TimeRange } from "@/types/data"
-import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
+import type { RelicsImagePath, RootImagePath } from "@/types/generated/image-paths.gen"
 import { Duration, Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
 import { getAdjacentItems } from "@/utils/shared-functions"
@@ -20,7 +20,7 @@ export interface Relic {
 	/** The type of the relic */
 	type: RelicType
 	/** The image of the relic */
-	image: RelicsImagePath
+	image: RelicsImagePath | RootImagePath
 	/** The description of the relic */
 	description: string
 	/** The map where the relic can be obtained */
@@ -319,6 +319,23 @@ const relicRegistry = {
 			reason: "Time varies significantly based on party size, and knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/relics/civil-protector-head.mdx")),
+	},
+	rocket: {
+		id: "rocket",
+		title: "Rocket",
+		state: "New",
+		type: "Grim",
+		// TODO: update with rocket relic image once obtained
+		image: "/relics/rocket-relic-placeholder.webp",
+		description: "No Score Streaks.",
+		map: getMapByKey("paradoxJunction"),
+		discoveredDate: new Date("March 13, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 20,
+			max: 40,
+			reason: "Time varies slightly based on knowledge of the steps.",
+		},
+		content: Effect.promise(() => import("@/content/relics/rocket.mdx")),
 	},
 } as const satisfies Record<string, Relic>
 

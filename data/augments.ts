@@ -2171,4 +2171,62 @@ const augmentRegistry = {
 		type: "Major",
 		image: "/augments/bo7/vampiric-extraction-major-augment-bo7.webp",
 	},
+	packMule: {
+		id: "pack-mule",
+		title: "Pack Mule",
+		description: "Carry more stock ammo",
+		type: "Major",
+		image: "/augments/bo7/parting-gift-major-augment-bo7.webp",
+	},
+	freeThrow: {
+		id: "free-throw",
+		title: "Free Throw",
+		description: "Chance to keep equipment when used. Does not apply to the Combat Axe.",
+		type: "Major",
+		image: "/augments/bo7/free-throw-major-augment.webp",
+	},
+	olReliable: {
+		id: "ol-reliable",
+		title: "Ol' Reliable",
+		description:
+			"Your 3rd primary weapon is recovered when you repurchase Mule Kick. Does not apply to limited-quanity weapons.",
+		type: "Major",
+		image: "/augments/bo7/phantom-reload-major-augment-bo7.webp",
+	},
+	multiPack: {
+		id: "multi-pack",
+		title: "Multi Pack",
+		description:
+			"Pack-A-Punching a weapon might cause another weapon to upgrade of the same PAP level.",
+		type: "Major",
+		image: "/augments/bo7/citrus-focus-major-augment-bo7.webp",
+	},
+	fullyEquipped: {
+		id: "fully-equipped",
+		title: "Fully Equipped",
+		description: "Carry more Equipment",
+		type: "Minor",
+		image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
+	},
+	plateHunter: {
+		id: "plate-hunter",
+		title: "Plate Hunter",
+		description: "Carry more Armor Plates",
+		type: "Minor",
+		image: "/augments/bo7/extra-charge-minor-augment-bo7.webp",
+	},
+	bogo: {
+		id: "bogo",
+		title: "BOGO",
+		description: "Crafted Equipment grants an additional Equipment up to the maximum capacity.",
+		type: "Minor",
+		image: "/augments/bo7/fetcher-minor-augment-bo7.webp",
+	},
+	kickBack: {
+		id: "kick-back",
+		title: "Kick Back",
+		description: "Get a discount on Perks.",
+		type: "Minor",
+		image: "/augments/bo7/fast-pitcher-minor-augment-bo7.webp",
+	},
 } as const satisfies Record<string, Augment>
