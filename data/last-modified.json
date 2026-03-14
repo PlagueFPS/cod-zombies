@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2026-03-14T22:45:12.856Z",
+  "generated": "2026-03-14T22:56:21.534Z",
   "files": {
     "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-14T22:44:43.000Z",
+      "lastModified": "2026-03-14T22:55:49.000Z",
       "lastModifiedFormatted": "March 14, 2026",
-      "commitHash": "794f087"
+      "commitHash": "76b4fb4"
     },
     "relics/rocket.mdx": {
       "lastModified": "2026-03-14T19:08:56.000Z",
