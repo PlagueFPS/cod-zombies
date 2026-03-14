@@ -1,41 +1,41 @@
 {
   "version": "1.0",
-  "generated": "2026-03-13T21:58:37.799Z",
+  "generated": "2026-03-13T23:38:28.030Z",
   "files": {
-    "side-quests/come-back-down.mdx": {
-      "lastModified": "2026-03-13T21:58:02.000Z",
+    "main-quests/paradox-junction.mdx": {
+      "lastModified": "2026-03-13T23:37:11.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "562c7fa"
-    },
-    "side-quests/lost-key.mdx": {
-      "lastModified": "2026-03-13T21:58:02.000Z",
-      "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "562c7fa"
-    },
-    "side-quests/magic.mdx": {
-      "lastModified": "2026-03-13T21:58:02.000Z",
-      "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "562c7fa"
+      "commitHash": "110f4c0"
     },
     "side-quests/115-clock-tower.mdx": {
-      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModified": "2026-03-13T22:16:38.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "ca56af1"
+      "commitHash": "be40a56"
+    },
+    "side-quests/come-back-down.mdx": {
+      "lastModified": "2026-03-13T22:16:38.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "be40a56"
     },
     "side-quests/golf-minigame.mdx": {
-      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModified": "2026-03-13T22:16:38.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "ca56af1"
+      "commitHash": "be40a56"
     },
     "side-quests/hidden-power-ups-paradox-junction.mdx": {
-      "lastModified": "2026-03-13T20:10:45.000Z",
+      "lastModified": "2026-03-13T22:16:38.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "ca56af1"
+      "commitHash": "be40a56"
     },
-    "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-13T17:15:27.000Z",
+    "side-quests/lost-key.mdx": {
+      "lastModified": "2026-03-13T22:16:38.000Z",
       "lastModifiedFormatted": "March 13, 2026",
-      "commitHash": "8f34418"
+      "commitHash": "be40a56"
+    },
+    "side-quests/magic.mdx": {
+      "lastModified": "2026-03-13T22:16:38.000Z",
+      "lastModifiedFormatted": "March 13, 2026",
+      "commitHash": "be40a56"
     },
     "main-quests/astra-malorum.mdx": {
       "lastModified": "2026-03-13T16:24:12.000Z",
