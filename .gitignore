@@ -29,6 +29,7 @@ yarn-error.log*
 .env*
 *.local.*
 newassets
+oldassets
 
 # vercel
 .vercel

@@ -12,17 +12,19 @@ class ImageOptimizationError extends Schema.TaggedError<ImageOptimizationError>(
 }) {}
 
 const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".webp", ".avif"]
-const isImageFile = (ext: string) => IMAGE_EXTS.includes(ext)
-
 const MAX_EFFORT = 6
 const MAX_QUALITY = 100
+const DEFAULT_SOURCE_DIR = "./newassets"
+const DEFAULT_COPY_DIR = "./oldassets"
+
+const isImageFile = (ext: string) => IMAGE_EXTS.includes(ext)
 
 const dirOption = Options.directory("dir").pipe(
 	Options.withDescription("Output directory where optimized images will be stored (required)"),
 )
 
 const sourceOption = Options.directory("source").pipe(
-	Options.withDefault("./newassets"),
+	Options.withDefault(DEFAULT_SOURCE_DIR),
 	Options.withDescription("Source directory containing images to optimize"),
 )
 
@@ -124,12 +126,14 @@ const optimizeCommand = Command.make(
 			const startTime = yield* Clock.currentTimeMillis
 			const fs = yield* FileSystem.FileSystem
 			const path = yield* Path.Path
-
 			const newAssets = yield* fs.readDirectory(source)
 			const numRef = yield* Ref.make(0)
 
-			const exists = yield* fs.exists(targetDir)
-			if (!exists) yield* fs.makeDirectory(targetDir)
+			const targetExists = yield* fs.exists(targetDir)
+			if (!targetExists) yield* fs.makeDirectory(targetDir)
+
+			const copyDirExists = yield* fs.exists(DEFAULT_COPY_DIR)
+			if (!copyDirExists) yield* fs.makeDirectory(DEFAULT_COPY_DIR)
 
 			yield* Effect.forEach(
 				newAssets,
@@ -178,6 +182,11 @@ const optimizeCommand = Command.make(
 						const currentAsset = yield* Ref.get(numRef)
 
 						yield* fs.writeFile(path.join(targetDir, fileName), imageBuffer)
+						yield* fs.copyFile(
+							path.join(DEFAULT_SOURCE_DIR, asset),
+							path.join(DEFAULT_COPY_DIR, asset),
+						)
+						yield* fs.remove(path.join(DEFAULT_SOURCE_DIR, asset))
 						yield* Effect.log(`Transformed: ${fileName}; ${currentAsset}/${newAssets.length}`)
 					}).pipe(Effect.withLogSpan("transform_asset")),
 				{ concurrency: 2 },
