@@ -1701,7 +1701,12 @@ const zombiesRegistry = {
 		description:
 			"Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
 		games: [getGameByKey("blackOps6"), getGameByKey("blackOps7")],
-		maps: [getMapByKey("shatteredVeil"), getMapByKey("reckoning"), getMapByKey("astraMalorum")],
+		maps: [
+			getMapByKey("shatteredVeil"),
+			getMapByKey("reckoning"),
+			getMapByKey("astraMalorum"),
+			getMapByKey("paradoxJunction"),
+		],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: [getWeakPointByKey("head")],
