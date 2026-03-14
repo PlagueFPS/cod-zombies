@@ -183,10 +183,10 @@ const optimizeCommand = Command.make(
 
 						yield* fs.writeFile(path.join(targetDir, fileName), imageBuffer)
 						yield* fs.copyFile(
-							path.join(DEFAULT_SOURCE_DIR, asset),
+							path.join(source, asset),
 							path.join(DEFAULT_COPY_DIR, asset),
 						)
-						yield* fs.remove(path.join(DEFAULT_SOURCE_DIR, asset))
+						yield* fs.remove(path.join(source, asset))
 						yield* Effect.log(`Transformed: ${fileName}; ${currentAsset}/${newAssets.length}`)
 					}).pipe(Effect.withLogSpan("transform_asset")),
 				{ concurrency: 2 },
