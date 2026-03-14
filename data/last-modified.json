@@ -1,16 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2026-03-14T18:56:35.199Z",
+  "generated": "2026-03-14T22:56:21.534Z",
   "files": {
-    "relics/rocket.mdx": {
-      "lastModified": "2026-03-14T18:55:58.000Z",
-      "lastModifiedFormatted": "March 14, 2026",
-      "commitHash": "851538a"
-    },
     "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-14T00:46:57.000Z",
+      "lastModified": "2026-03-14T22:55:49.000Z",
       "lastModifiedFormatted": "March 14, 2026",
-      "commitHash": "969be29"
+      "commitHash": "76b4fb4"
+    },
+    "relics/rocket.mdx": {
+      "lastModified": "2026-03-14T19:08:56.000Z",
+      "lastModifiedFormatted": "March 14, 2026",
+      "commitHash": "b3fec59"
     },
     "side-quests/115-clock-tower.mdx": {
       "lastModified": "2026-03-13T22:16:38.000Z",
