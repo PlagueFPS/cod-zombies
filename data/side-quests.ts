@@ -1770,6 +1770,15 @@ const sideQuestRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		content: Effect.promise(() => import("@/content/side-quests/lost-key.mdx")),
 	},
+	bunkerFreePerk: {
+		id: "bunker-free-perk",
+		title: "Bunker Free Perk",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain a Mystery Perk, along with some other rewards by opening the Nuketown bunker.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/bunker-free-perk.mdx")),
+	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
