@@ -9,6 +9,7 @@ import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
+import { RichBlockquote } from "@/components/server/rich-blockquote"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { getAdjacentRelics, getRelicById, getRelics, type Relic } from "@/data/relics"
@@ -168,6 +169,9 @@ const RelicPage = Effect.fn("RelicPage")(
 							id="body"
 							className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
 						>
+							<RichBlockquote>
+								<b>Effect:</b> {relic.description}
+							</RichBlockquote>
 							<MDXContent components={mdxComponents} />
 						</div>
 					)}
