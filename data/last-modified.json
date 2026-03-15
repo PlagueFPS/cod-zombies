@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2026-03-14T22:56:21.534Z",
+  "generated": "2026-03-15T18:19:38.584Z",
   "files": {
+    "side-quests/bunker-free-perk.mdx": {
+      "lastModified": "2026-03-15T18:17:19.000Z",
+      "lastModifiedFormatted": "March 15, 2026",
+      "commitHash": "f8140a8"
+    },
     "main-quests/paradox-junction.mdx": {
-      "lastModified": "2026-03-14T22:55:49.000Z",
+      "lastModified": "2026-03-14T23:00:34.000Z",
       "lastModifiedFormatted": "March 14, 2026",
-      "commitHash": "76b4fb4"
+      "commitHash": "635141a"
     },
     "relics/rocket.mdx": {
       "lastModified": "2026-03-14T19:08:56.000Z",
