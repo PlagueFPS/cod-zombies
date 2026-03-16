@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2026-03-15T18:19:38.584Z",
+  "generated": "2026-03-16T05:19:26.140Z",
   "files": {
+    "side-quests/mannequin-free-perk.mdx": {
+      "lastModified": "2026-03-16T05:18:40.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "f29d39a"
+    },
     "side-quests/bunker-free-perk.mdx": {
-      "lastModified": "2026-03-15T18:17:19.000Z",
+      "lastModified": "2026-03-15T18:27:43.000Z",
       "lastModifiedFormatted": "March 15, 2026",
-      "commitHash": "f8140a8"
+      "commitHash": "56442d8"
     },
     "main-quests/paradox-junction.mdx": {
       "lastModified": "2026-03-14T23:00:34.000Z",
