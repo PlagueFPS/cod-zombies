@@ -1806,6 +1806,14 @@ const sideQuestRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		content: Effect.promise(() => import("@/content/side-quests/masked-mannequin.mdx")),
 	},
+	tvJumpscare: {
+		id: "tv-jumpscare",
+		title: "TV Jumpscare",
+		state: Option.some("New"),
+		description: "Scare your friends with this not so obvious jumpscare.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/tv-jumpscare.mdx")),
+	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
