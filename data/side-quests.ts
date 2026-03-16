@@ -1788,6 +1788,40 @@ const sideQuestRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		content: Effect.promise(() => import("@/content/side-quests/mannequin-free-perk.mdx")),
 	},
+	hauntedMannequin: {
+		id: "haunted-mannequin",
+		title: "Haunted Mannequin",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain a Mystery Perk, Aetherium Crystal, Aether Tool, Scorestreak and more by completing this creepy quest.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/haunted-mannequin.mdx")),
+	},
+	maskedMannequin: {
+		id: "masked-mannequin",
+		title: "Masked Mannequin",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain multiple Aetherium Crystals, Aether Tools, and Perks by reforming a masked mannequin.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/masked-mannequin.mdx")),
+	},
+	tvJumpscare: {
+		id: "tv-jumpscare",
+		title: "TV Jumpscare",
+		state: Option.some("New"),
+		description: "Scare your friends with this not so obvious jumpscare.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/tv-jumpscare.mdx")),
+	},
+	purpleCyst: {
+		id: "purple-cyst",
+		title: "Purple Cyst",
+		state: Option.some("New"),
+		description: "Learn how to feed this mysterious purple cyst that yields powerful rewards.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/purple-cyst.mdx")),
+	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()

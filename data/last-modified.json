@@ -1,11 +1,31 @@
 {
   "version": "1.0",
-  "generated": "2026-03-16T05:22:21.716Z",
+  "generated": "2026-03-16T19:13:08.520Z",
   "files": {
-    "side-quests/mannequin-free-perk.mdx": {
-      "lastModified": "2026-03-16T05:18:40.000Z",
+    "side-quests/haunted-mannequin.mdx": {
+      "lastModified": "2026-03-16T19:11:20.000Z",
       "lastModifiedFormatted": "March 16, 2026",
-      "commitHash": "f29d39a"
+      "commitHash": "0766d74"
+    },
+    "side-quests/purple-cyst.mdx": {
+      "lastModified": "2026-03-16T19:11:20.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "0766d74"
+    },
+    "side-quests/tv-jumpscare.mdx": {
+      "lastModified": "2026-03-16T06:05:12.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "480b28e"
+    },
+    "side-quests/masked-mannequin.mdx": {
+      "lastModified": "2026-03-16T06:05:12.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "116c867"
+    },
+    "side-quests/mannequin-free-perk.mdx": {
+      "lastModified": "2026-03-16T06:04:50.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "ea0e0db"
     },
     "side-quests/bunker-free-perk.mdx": {
       "lastModified": "2026-03-15T18:27:43.000Z",
