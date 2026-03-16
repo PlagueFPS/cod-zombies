@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "generated": "2026-03-16T23:33:45.071Z",
+  "generated": "2026-03-16T23:38:14.283Z",
   "files": {
     "relics/summoning-key.mdx": {
-      "lastModified": "2026-03-16T23:32:55.000Z",
+      "lastModified": "2026-03-16T23:37:21.000Z",
       "lastModifiedFormatted": "March 16, 2026",
-      "commitHash": "5422a3a"
+      "commitHash": "7bd33f4"
     },
     "side-quests/haunted-mannequin.mdx": {
       "lastModified": "2026-03-16T19:25:16.000Z",
