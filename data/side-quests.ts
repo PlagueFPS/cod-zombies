@@ -1779,6 +1779,15 @@ const sideQuestRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		content: Effect.promise(() => import("@/content/side-quests/bunker-free-perk.mdx")),
 	},
+	mannequinFreePerk: {
+		id: "mannequin-free-perk",
+		title: "Mannequin Free Perk",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain a free Random Perk by melting all 12 mannequins in the Normal version of the map.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/mannequin-free-perk.mdx")),
+	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
