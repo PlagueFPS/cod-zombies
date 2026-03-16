@@ -1797,6 +1797,15 @@ const sideQuestRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		content: Effect.promise(() => import("@/content/side-quests/haunted-mannequin.mdx")),
 	},
+	maskedMannequin: {
+		id: "masked-mannequin",
+		title: "Masked Mannequin",
+		state: Option.some("New"),
+		description:
+			"Learn how to obtain multiple Aetherium Crystals, Aether Tools, and Perks by reforming a masked mannequin.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/masked-mannequin.mdx")),
+	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
