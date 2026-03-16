@@ -1814,6 +1814,14 @@ const sideQuestRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		content: Effect.promise(() => import("@/content/side-quests/tv-jumpscare.mdx")),
 	},
+	purpleCyst: {
+		id: "purple-cyst",
+		title: "Purple Cyst",
+		state: Option.some("New"),
+		description: "Learn how to feed this mysterious purple cyst that yields powerful rewards.",
+		map: getMapByKey("paradoxJunction"),
+		content: Effect.promise(() => import("@/content/side-quests/purple-cyst.mdx")),
+	},
 } as const satisfies Record<string, Omit<SideQuest, "_tag">>
 
 const sideQuestMap = new Map<string, SideQuest>()
