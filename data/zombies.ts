@@ -1967,7 +1967,7 @@ const zombiesRegistry = {
 	},
 	radHound: {
 		id: "rad-hound",
-		title: "Rad Hound",
+		title: "Rad-Hound",
 		state: Option.some("New"),
 		releaseDate: new Date("March 11, 2026 1:00 AM"),
 		image: "/zombies/rad-hound.webp",
