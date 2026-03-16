@@ -337,6 +337,22 @@ const relicRegistry = {
 		},
 		content: Effect.promise(() => import("@/content/relics/rocket.mdx")),
 	},
+	summoningKey: {
+		id: "summoning-key",
+		title: "Summoning Key",
+		state: "New",
+		type: "Sinister",
+		image: "/relics/summoning-key-relic.webp",
+		description: "Zombies explode on death, dealing damage to nearby players.",
+		map: getMapByKey("paradoxJunction"),
+		discoveredDate: new Date("March 15, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 60,
+			max: Duration.toMinutes("2 hours"),
+			reason: "Time varies slightly based on knowledge of the steps.",
+		},
+		content: Effect.promise(() => import("@/content/relics/summoning-key.mdx")),
+	},
 } as const satisfies Record<string, Relic>
 
 const relicMap = new Map<string, Relic>()

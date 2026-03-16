@@ -13,7 +13,7 @@ class ImageOptimizationError extends Schema.TaggedError<ImageOptimizationError>(
 
 const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".webp", ".avif"]
 const MAX_EFFORT = 6
-const MAX_QUALITY = 100
+const MAX_QUALITY = 80
 const DEFAULT_SOURCE_DIR = "./newassets"
 const DEFAULT_COPY_DIR = "./oldassets"
 
@@ -182,10 +182,7 @@ const optimizeCommand = Command.make(
 						const currentAsset = yield* Ref.get(numRef)
 
 						yield* fs.writeFile(path.join(targetDir, fileName), imageBuffer)
-						yield* fs.copyFile(
-							path.join(source, asset),
-							path.join(DEFAULT_COPY_DIR, asset),
-						)
+						yield* fs.copyFile(path.join(source, asset), path.join(DEFAULT_COPY_DIR, asset))
 						yield* fs.remove(path.join(source, asset))
 						yield* Effect.log(`Transformed: ${fileName}; ${currentAsset}/${newAssets.length}`)
 					}).pipe(Effect.withLogSpan("transform_asset")),

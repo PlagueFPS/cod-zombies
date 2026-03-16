@@ -1,26 +1,31 @@
 {
   "version": "1.0",
-  "generated": "2026-03-16T19:13:08.520Z",
+  "generated": "2026-03-16T23:38:14.283Z",
   "files": {
+    "relics/summoning-key.mdx": {
+      "lastModified": "2026-03-16T23:37:21.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "7bd33f4"
+    },
     "side-quests/haunted-mannequin.mdx": {
-      "lastModified": "2026-03-16T19:11:20.000Z",
+      "lastModified": "2026-03-16T19:25:16.000Z",
       "lastModifiedFormatted": "March 16, 2026",
-      "commitHash": "0766d74"
-    },
-    "side-quests/purple-cyst.mdx": {
-      "lastModified": "2026-03-16T19:11:20.000Z",
-      "lastModifiedFormatted": "March 16, 2026",
-      "commitHash": "0766d74"
-    },
-    "side-quests/tv-jumpscare.mdx": {
-      "lastModified": "2026-03-16T06:05:12.000Z",
-      "lastModifiedFormatted": "March 16, 2026",
-      "commitHash": "480b28e"
+      "commitHash": "0dcbfca"
     },
     "side-quests/masked-mannequin.mdx": {
-      "lastModified": "2026-03-16T06:05:12.000Z",
+      "lastModified": "2026-03-16T19:25:16.000Z",
       "lastModifiedFormatted": "March 16, 2026",
-      "commitHash": "116c867"
+      "commitHash": "0dcbfca"
+    },
+    "side-quests/purple-cyst.mdx": {
+      "lastModified": "2026-03-16T19:25:16.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "0dcbfca"
+    },
+    "side-quests/tv-jumpscare.mdx": {
+      "lastModified": "2026-03-16T19:25:16.000Z",
+      "lastModifiedFormatted": "March 16, 2026",
+      "commitHash": "0dcbfca"
     },
     "side-quests/mannequin-free-perk.mdx": {
       "lastModified": "2026-03-16T06:04:50.000Z",

@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-14T18:40:40.370Z
- * generated in: 109ms
+ * generated at: 2026-03-16T04:32:39.609Z
+ * generated in: 96ms
  */
 
 
@@ -78,6 +78,7 @@ export type RelicsImagePath =
   '/relics/samanthas-drawing-relic.webp' |
   '/relics/seed-relic.webp' |
   '/relics/spider-fang-relic.webp' |
+  '/relics/summoning-key-relic.webp' |
   '/relics/teddy-bear-relic.webp' |
   '/relics/vril-sphere-relic.webp';
 
