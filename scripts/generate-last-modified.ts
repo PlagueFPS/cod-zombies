@@ -1,8 +1,23 @@
 import { execSync } from "node:child_process"
 import { BunRuntime, BunServices } from "@effect/platform-bun"
-import { Effect, FileSystem, MutableHashMap, MutableHashSet, Option, Path, Schema } from "effect"
+import {
+	DateTime,
+	Effect,
+	FileSystem,
+	MutableHashMap,
+	MutableHashSet,
+	Number as Num,
+	Option,
+	Path,
+	Ref,
+	Schema,
+} from "effect"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { encodeLastModifiedData, type FileMetadata, type LastModifiedData } from "@/utils/validation-schemas"
+import {
+	encodeLastModifiedData,
+	type FileMetadata,
+	type LastModifiedData,
+} from "@/utils/validation-schemas"
 
 class DuplicateFilenameError extends Schema.TaggedErrorClass<DuplicateFilenameError>()(
 	"DuplicateFilenameError",
@@ -11,13 +26,7 @@ class DuplicateFilenameError extends Schema.TaggedErrorClass<DuplicateFilenameEr
 	},
 ) {}
 
-const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: string) => {
-	const lines = output.trim().split("\n")
-	const currentDate = new Date()
-	const result: Record<string, FileMetadata> = {}
-	const gitHistory = MutableHashSet.empty<string>()
-
-	// Create a map of normalized paths relative to content dir
+const populateFilePaths = (allFiles: MutableHashSet.MutableHashSet<string>, repoRoot: string) => {
 	const filePaths = MutableHashSet.empty<string>()
 	for (const filePath of allFiles) {
 		const normalizedPath = filePath.replace(/\\/g, "/")
@@ -25,117 +34,130 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 		const relativePath = normalizedPath.replace(`${repoRootNormalized}/content/`, "")
 		MutableHashSet.add(filePaths, relativePath)
 	}
+	return filePaths
+}
 
-	let currentTimestamp: string | null = null
-	let currentCommit: string | null = null
+const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
+	path: string,
+	currentTimestamp: Ref.Ref<string>,
+	filePaths: MutableHashSet.MutableHashSet<string>,
+	gitHistory: MutableHashSet.MutableHashSet<string>,
+	result: Record<string, FileMetadata>,
+) {
+	if (!MutableHashSet.has(filePaths, path) || MutableHashSet.has(gitHistory, path)) {
+		return
+	}
+
+	const timestampStr = yield* Ref.get(currentTimestamp)
+	if (!timestampStr) return
+
+	const timestamp = Num.parse(timestampStr).pipe(
+		Option.flatMap(t => DateTime.make(new Date(t * 1000))),
+	)
+	if (Option.isNone(timestamp)) return
+
+	MutableHashSet.add(gitHistory, path)
+	result[path] = {
+		lastModified: DateTime.formatIsoDate(timestamp.value),
+		lastModifiedFormatted: DateTime.formatLocal(timestamp.value, DATE_OPTIONS),
+	}
+})
+
+const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
+	output: string,
+	allFiles: MutableHashSet.MutableHashSet<string>,
+	repoRoot: string,
+) {
+	const lines = output.trim().split("\n")
+	const currentDate = yield* DateTime.make(new Date())
+	const currentTimestamp = yield* Ref.make("")
+	const gitHistory = MutableHashSet.empty<string>()
+	const filePaths = populateFilePaths(allFiles, repoRoot)
+	const result: Record<string, FileMetadata> = {}
+	const digitPattern = /^\d+$/
 
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i]
-		if (!line) continue
+		if (!line || !line.trim()) continue
 
-		if (line.match(/^\d+$/)) {
-			currentTimestamp = line
-		} else if (line.match(/^[a-f0-9]{40}$/)) {
-			currentCommit = line.substring(0, 7)
-		} else if (line.trim() && currentTimestamp) {
-			// Handle status lines: "A\tfile", "M\tfile", or "R100\told\tnew"
-			if (line.startsWith("R")) {
-				// Rename: "R100\tcontent/old.mdx\tcontent/new.mdx"
-				const parts = line.split("\t")
-				if (parts.length === 3 && parts[2]) {
-					const newPath = parts[2].replace(/\\/g, "/").replace("content/", "")
+		if (digitPattern.test(line)) {
+			yield* Ref.update(currentTimestamp, () => line)
+			continue
+		}
 
-					if (MutableHashSet.has(filePaths, newPath) && !MutableHashSet.has(gitHistory, newPath)) {
-						const timestamp = new Date(parseInt(currentTimestamp, 10) * 1000)
-						MutableHashSet.add(gitHistory, newPath)
-						result[newPath] = {
-							lastModified: timestamp.toISOString(),
-							lastModifiedFormatted: timestamp.toLocaleDateString(undefined, DATE_OPTIONS),
-							...(currentCommit && { commitHash: currentCommit }),
-						}
-					}
-				}
-			} else if (line.startsWith("A\t") || line.startsWith("M\t")) {
-				// Added or Modified: "A\tcontent/file.mdx" or "M\tcontent/file.mdx"
-				const gitPath = line.substring(2).trim().replace(/\\/g, "/")
-				const relativePath = gitPath.replace("content/", "")
+		if (line.startsWith("R")) {
+			const parts = line.split("\t")
+			if (parts.length < 3 || !parts[2]) continue
 
-				if (
-					MutableHashSet.has(filePaths, relativePath) &&
-					!MutableHashSet.has(gitHistory, relativePath)
-				) {
-					const timestamp = new Date(parseInt(currentTimestamp, 10) * 1000)
-					MutableHashSet.add(gitHistory, relativePath)
-					result[relativePath] = {
-						lastModified: timestamp.toISOString(),
-						lastModifiedFormatted: timestamp.toLocaleDateString(undefined, DATE_OPTIONS),
-						...(currentCommit && { commitHash: currentCommit }),
-					}
-				}
-			}
+			const newPath = parts[2].replace(/\\/g, "/").replace("content/", "")
+			yield* storeFileMetadata(newPath, currentTimestamp, filePaths, gitHistory, result)
+		}
+
+		if (line.startsWith("A\t") || line.startsWith("M\t")) {
+			const gitPath = line.substring(2).trim().replace(/\\/g, "/")
+			const relativePath = gitPath.replace("content/", "")
+			yield* storeFileMetadata(relativePath, currentTimestamp, filePaths, gitHistory, result)
 		}
 	}
 
-	// For files not found in git, use current date
-	for (const relativePath of filePaths) {
-		if (!MutableHashSet.has(gitHistory, relativePath)) {
-			result[relativePath] = {
-				lastModified: currentDate.toISOString(),
-				lastModifiedFormatted: currentDate.toLocaleDateString(undefined, DATE_OPTIONS),
+	for (const path of filePaths) {
+		if (!MutableHashSet.has(gitHistory, path)) {
+			result[path] = {
+				lastModified: DateTime.formatIsoDate(currentDate),
+				lastModifiedFormatted: DateTime.formatLocal(currentDate, DATE_OPTIONS),
 			}
 		}
 	}
 
 	return result
-}
+})
 
-const getAllContentFiles = (dir: string) =>
-	Effect.gen(function* () {
-		const path = yield* Path.Path
-		const fs = yield* FileSystem.FileSystem
-		const files: string[] = []
-		const pathCountMap = MutableHashMap.empty<string, number>()
-		const subDirs = yield* fs.readDirectory(dir)
+const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: string) {
+	const path = yield* Path.Path
+	const fs = yield* FileSystem.FileSystem
+	const files = MutableHashSet.empty<string>()
+	const pathCountMap = MutableHashMap.empty<string, number>()
+	const subDirs = yield* fs.readDirectory(dir)
 
-		yield* Effect.forEach(
-			subDirs,
-			subDir =>
-				Effect.gen(function* () {
-					const subDirPath = path.join(dir, subDir)
-					const subFiles = yield* fs.readDirectory(subDirPath)
-					const mdxFiles = subFiles.filter(file => file.endsWith(".mdx"))
+	yield* Effect.forEach(
+		subDirs,
+		subDir =>
+			Effect.gen(function* () {
+				const subDirPath = path.join(dir, subDir)
+				const subFiles = yield* fs.readDirectory(subDirPath)
+				const mdxFiles = subFiles.filter(file => file.endsWith(".mdx"))
 
-					for (const file of mdxFiles) {
-						const fullPath = path.join(process.cwd(), `./content/${subDir}/${file}`)
-						files.push(fullPath)
+				for (const file of mdxFiles) {
+					const fullPath = path.join(process.cwd(), `./content/${subDir}/${file}`)
+					MutableHashSet.add(files, fullPath)
 
-						// Track relative paths to detect duplicates
-						const relativePath = `${subDir}/${file}`
-						const count = MutableHashMap.get(pathCountMap, relativePath).pipe(
-							Option.getOrElse(() => 0),
-						)
-						MutableHashMap.set(pathCountMap, relativePath, count + 1)
-					}
-				}),
-			{ concurrency: "unbounded" },
-		)
+					// Track relative paths to detect duplicates
+					const relativePath = `${subDir}/${file}`
+					const count = MutableHashMap.get(pathCountMap, relativePath).pipe(
+						Option.getOrElse(() => 0),
+					)
+					MutableHashMap.set(pathCountMap, relativePath, count + 1)
+				}
+			}),
+		{ concurrency: "unbounded" },
+	)
 
-		// Check for duplicate paths (same path appearing multiple times)
-		const duplicates: string[] = []
-		for (const [relativePath, count] of pathCountMap) {
-			if (count > 1) {
-				duplicates.push(`${relativePath} (appears ${count} times)`)
-			}
+	// Check for duplicate paths (same path appearing multiple times)
+	const duplicates: string[] = []
+	for (const [relativePath, count] of pathCountMap) {
+		if (count > 1) {
+			duplicates.push(`${relativePath} (appears ${count} times)`)
 		}
+	}
 
-		if (duplicates.length > 0) {
-			return yield* new DuplicateFilenameError({
-				message: `Duplicate file paths detected:\n${duplicates.join("\n")}`,
-			})
-		}
+	if (duplicates.length > 0) {
+		return yield* new DuplicateFilenameError({
+			message: `Duplicate file paths detected:\n${duplicates.join("\n")}`,
+		})
+	}
 
-		return files
-	})
+	return files
+})
 
 const generateLastModified = Effect.gen(function* () {
 	const path = yield* Path.Path
@@ -149,7 +171,7 @@ const generateLastModified = Effect.gen(function* () {
 		try: () => {
 			// Use --name-status to show renames (R lines), --diff-filter=AMR for added/modified/renamed
 			const result = execSync(
-				`git log --all --name-status --format="%ct%n%H" --diff-filter=AMR -- "${contentDir}"`,
+				`git log --all --name-status --format="%ct" --diff-filter=AMR -- "${contentDir}"`,
 				{
 					encoding: "utf-8",
 					stdio: ["ignore", "pipe", "ignore"],
@@ -161,8 +183,7 @@ const generateLastModified = Effect.gen(function* () {
 		catch: () => "",
 	})
 
-	const fileMetadata = parseGitBatchOutput(gitOutput, allFiles, process.cwd())
-
+	const fileMetadata = yield* parseGitBatchOutput(gitOutput, allFiles, process.cwd())
 	const lastModifiedData: LastModifiedData = {
 		version: "1.0",
 		generated: new Date().toISOString(),
