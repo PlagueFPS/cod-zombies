@@ -1,15 +1,15 @@
-import { Command, Options, Span } from "@effect/cli"
-import { FileSystem, Path } from "@effect/platform"
-import { BunContext, BunRuntime } from "@effect/platform-bun"
-import { Clock, Duration, Effect, Ref, Schema } from "effect"
+import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { Clock, Duration, Effect, FileSystem, Path, Ref, Schema } from "effect"
+import { Command, Flag } from "effect/unstable/cli"
 import sharp from "sharp"
 
-class ImageOptimizationError extends Schema.TaggedError<ImageOptimizationError>(
+class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
 	"ImageOptimizationError",
-)("ImageOptimizationError", {
-	message: Schema.String,
-	cause: Schema.Unknown,
-}) {}
+	{
+		message: Schema.String,
+		cause: Schema.Unknown,
+	},
+) {}
 
 const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".webp", ".avif"]
 const MAX_EFFORT = 6
@@ -17,31 +17,35 @@ const MAX_QUALITY = 80
 const DEFAULT_SOURCE_DIR = "./newassets"
 const DEFAULT_COPY_DIR = "./oldassets"
 
-const isImageFile = (ext: string) => IMAGE_EXTS.includes(ext)
-
-const dirOption = Options.directory("dir").pipe(
-	Options.withDescription("Output directory where optimized images will be stored (required)"),
+const dirOption = Flag.directory("output-dir").pipe(
+	Flag.withAlias("o"),
+	Flag.withDescription("Output directory where optimized images will be stored. (required)"),
 )
 
-const sourceOption = Options.directory("source").pipe(
-	Options.withDefault(DEFAULT_SOURCE_DIR),
-	Options.withDescription("Source directory containing images to optimize"),
-)
-
-const mapOption = Options.boolean("map").pipe(
-	Options.withDescription(
-		"Resize image to 2048px width without optimization (keeps original format)",
+const sourceOption = Flag.directory("source-dir").pipe(
+	Flag.withDefault(DEFAULT_SOURCE_DIR),
+	Flag.withAlias("s"),
+	Flag.withDescription(
+		`Source directory containing images to optimize. (default: ${DEFAULT_SOURCE_DIR})`,
 	),
 )
 
-const noResizeOption = Options.boolean("noResize").pipe(
-	Options.withDescription(
-		"Only optimize, do not resize (for images ≤1920px or when resize is undesired)",
+const mapOption = Flag.boolean("map").pipe(
+	Flag.withAlias("m"),
+	Flag.withDescription(
+		"Resize image to 2048px width without optimization (keeps original format).",
 	),
 )
 
-const previewOption = Options.boolean("preview").pipe(
-	Options.withDescription("Resize to 640x360 then optimize with max effort and quality"),
+const noResizeOption = Flag.boolean("no-resize").pipe(
+	Flag.withDescription(
+		"Only optimize, do not resize (for images ≤1920px or when resize is undesired).",
+	),
+)
+
+const previewOption = Flag.boolean("preview").pipe(
+	Flag.withAlias("p"),
+	Flag.withDescription("Resize to 640x360 then optimize with max effort and quality."),
 )
 
 const transformMap = Effect.fn("transformMap")(function* (
@@ -110,7 +114,7 @@ const transformResizeAndOptimize = Effect.fn("transformResizeAndOptimize")(funct
 	return { buffer, fileName: `${baseFileName}.webp` }
 })
 
-type TransformResult = Effect.Effect.Success<ReturnType<typeof transformMap>>
+type TransformResult = Effect.Success<ReturnType<typeof transformMap>>
 
 const optimizeCommand = Command.make(
 	"optimize",
@@ -129,18 +133,24 @@ const optimizeCommand = Command.make(
 			const newAssets = yield* fs.readDirectory(source)
 			const numRef = yield* Ref.make(0)
 
-			const targetExists = yield* fs.exists(targetDir)
-			if (!targetExists) yield* fs.makeDirectory(targetDir)
+			yield* Effect.filterOrElse(
+				fs.exists(targetDir),
+				() => false,
+				() => fs.makeDirectory(targetDir),
+			)
 
-			const copyDirExists = yield* fs.exists(DEFAULT_COPY_DIR)
-			if (!copyDirExists) yield* fs.makeDirectory(DEFAULT_COPY_DIR)
+			yield* Effect.filterOrElse(
+				fs.exists(DEFAULT_COPY_DIR),
+				() => false,
+				() => fs.makeDirectory(DEFAULT_COPY_DIR),
+			)
 
 			yield* Effect.forEach(
 				newAssets,
 				asset =>
 					Effect.gen(function* () {
 						const extension = path.extname(asset)
-						if (!isImageFile(extension)) return
+						if (!IMAGE_EXTS.includes(extension)) return
 
 						const imagePath = path.join(source, asset)
 						let fileName = path.basename(asset, extension)
@@ -194,19 +204,15 @@ const optimizeCommand = Command.make(
 				Effect.map(endTime => endTime - startTime),
 			)
 			const totalTime =
-				endTime > Duration.toMillis("1 minute")
-					? `${Duration.toMinutes(endTime).toFixed(2)}m`
-					: `${Duration.toSeconds(endTime).toFixed(2)}s`
+				endTime > 1000
+					? `${Duration.millis(endTime).pipe(Duration.toMinutes).toFixed(2)}m`
+					: `${Duration.millis(endTime).pipe(Duration.toSeconds).toFixed(2)}s`
 			yield* Effect.log(
 				`Successfully optimized ${writtenAmount}/${newAssets.length} images in ${totalTime}!`,
 			)
 		}).pipe(Effect.withLogSpan("optimize_assets")),
 )
 
-const cli = Command.run(optimizeCommand, {
-	name: "Image Optimization CLI",
+Command.run(optimizeCommand, {
 	version: "1.0.0",
-	summary: Span.text("Optimize images with configurable resize and webp conversion"),
-})
-
-cli(process.argv).pipe(Effect.provide(BunContext.layer), BunRuntime.runMain)
+}).pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
