@@ -1,37 +1,29 @@
-import type { CommonErrorProps } from "@/types/errors"
 import { execSync } from "node:child_process"
-import { FileSystem, Path } from "@effect/platform"
-import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
-import { Data, Effect, Layer } from "effect"
+import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { Effect, FileSystem, MutableHashMap, MutableHashSet, Option, Path, Schema } from "effect"
 import { DATE_OPTIONS } from "@/utils/constants"
+import { encodeLastModifiedData, type FileMetadata, type LastModifiedData } from "@/utils/validation-schemas"
 
-class DuplicateFilenameError extends Data.TaggedError("DuplicateFilenameError")<CommonErrorProps> {}
-
-interface FileMetadata {
-	lastModified: string
-	lastModifiedFormatted: string
-	commitHash?: string
-}
-
-interface LastModifiedData {
-	version: string
-	generated: string
-	files: Record<string, FileMetadata>
-}
+class DuplicateFilenameError extends Schema.TaggedErrorClass<DuplicateFilenameError>()(
+	"DuplicateFilenameError",
+	{
+		message: Schema.String,
+	},
+) {}
 
 const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: string) => {
 	const lines = output.trim().split("\n")
-	const result: Record<string, FileMetadata> = {}
 	const currentDate = new Date()
-	const gitHistory = new Set<string>()
+	const result: Record<string, FileMetadata> = {}
+	const gitHistory = MutableHashSet.empty<string>()
 
 	// Create a map of normalized paths relative to content dir
-	const filePathMap = new Map<string, string>()
+	const filePaths = MutableHashSet.empty<string>()
 	for (const filePath of allFiles) {
 		const normalizedPath = filePath.replace(/\\/g, "/")
 		const repoRootNormalized = repoRoot.replace(/\\/g, "/")
 		const relativePath = normalizedPath.replace(`${repoRootNormalized}/content/`, "")
-		filePathMap.set(relativePath, relativePath)
+		MutableHashSet.add(filePaths, relativePath)
 	}
 
 	let currentTimestamp: string | null = null
@@ -53,14 +45,14 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 				if (parts.length === 3 && parts[2]) {
 					const newPath = parts[2].replace(/\\/g, "/").replace("content/", "")
 
-					if (filePathMap.has(newPath) && !gitHistory.has(newPath)) {
+					if (MutableHashSet.has(filePaths, newPath) && !MutableHashSet.has(gitHistory, newPath)) {
 						const timestamp = new Date(parseInt(currentTimestamp, 10) * 1000)
+						MutableHashSet.add(gitHistory, newPath)
 						result[newPath] = {
 							lastModified: timestamp.toISOString(),
 							lastModifiedFormatted: timestamp.toLocaleDateString(undefined, DATE_OPTIONS),
 							...(currentCommit && { commitHash: currentCommit }),
 						}
-						gitHistory.add(newPath)
 					}
 				}
 			} else if (line.startsWith("A\t") || line.startsWith("M\t")) {
@@ -68,22 +60,25 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 				const gitPath = line.substring(2).trim().replace(/\\/g, "/")
 				const relativePath = gitPath.replace("content/", "")
 
-				if (filePathMap.has(relativePath) && !gitHistory.has(relativePath)) {
+				if (
+					MutableHashSet.has(filePaths, relativePath) &&
+					!MutableHashSet.has(gitHistory, relativePath)
+				) {
 					const timestamp = new Date(parseInt(currentTimestamp, 10) * 1000)
+					MutableHashSet.add(gitHistory, relativePath)
 					result[relativePath] = {
 						lastModified: timestamp.toISOString(),
 						lastModifiedFormatted: timestamp.toLocaleDateString(undefined, DATE_OPTIONS),
 						...(currentCommit && { commitHash: currentCommit }),
 					}
-					gitHistory.add(relativePath)
 				}
 			}
 		}
 	}
 
 	// For files not found in git, use current date
-	for (const [relativePath] of filePathMap) {
-		if (!gitHistory.has(relativePath)) {
+	for (const relativePath of filePaths) {
+		if (!MutableHashSet.has(gitHistory, relativePath)) {
 			result[relativePath] = {
 				lastModified: currentDate.toISOString(),
 				lastModifiedFormatted: currentDate.toLocaleDateString(undefined, DATE_OPTIONS),
@@ -94,29 +89,36 @@ const parseGitBatchOutput = (output: string, allFiles: string[], repoRoot: strin
 	return result
 }
 
-	const getAllContentFiles = (dir: string) =>
+const getAllContentFiles = (dir: string) =>
 	Effect.gen(function* () {
 		const path = yield* Path.Path
 		const fs = yield* FileSystem.FileSystem
 		const files: string[] = []
-		const pathCountMap = new Map<string, number>()
+		const pathCountMap = MutableHashMap.empty<string, number>()
 		const subDirs = yield* fs.readDirectory(dir)
 
-		for (const subDir of subDirs) {
-			const subDirPath = path.join(dir, subDir)
-			const subFiles = yield* fs.readDirectory(subDirPath)
-			const mdxFiles = subFiles.filter(file => file.endsWith(".mdx"))
+		yield* Effect.forEach(
+			subDirs,
+			subDir =>
+				Effect.gen(function* () {
+					const subDirPath = path.join(dir, subDir)
+					const subFiles = yield* fs.readDirectory(subDirPath)
+					const mdxFiles = subFiles.filter(file => file.endsWith(".mdx"))
 
-			for (const file of mdxFiles) {
-				const fullPath = path.join(process.cwd(), `./content/${subDir}/${file}`)
-				files.push(fullPath)
+					for (const file of mdxFiles) {
+						const fullPath = path.join(process.cwd(), `./content/${subDir}/${file}`)
+						files.push(fullPath)
 
-				// Track relative paths to detect duplicates
-				const relativePath = `${subDir}/${file}`
-				const count = pathCountMap.get(relativePath) || 0
-				pathCountMap.set(relativePath, count + 1)
-			}
-		}
+						// Track relative paths to detect duplicates
+						const relativePath = `${subDir}/${file}`
+						const count = MutableHashMap.get(pathCountMap, relativePath).pipe(
+							Option.getOrElse(() => 0),
+						)
+						MutableHashMap.set(pathCountMap, relativePath, count + 1)
+					}
+				}),
+			{ concurrency: "unbounded" },
+		)
 
 		// Check for duplicate paths (same path appearing multiple times)
 		const duplicates: string[] = []
@@ -168,12 +170,9 @@ const generateLastModified = Effect.gen(function* () {
 	}
 
 	yield* Effect.log(`Generated last modified dates for ${Object.keys(fileMetadata).length} files`)
-	const buffer = Buffer.from(JSON.stringify(lastModifiedData, null, 2))
-	yield* fs.writeFile(outputPath, buffer)
+	const encodedData = yield* encodeLastModifiedData(lastModifiedData)
+	yield* fs.writeFileString(outputPath, encodedData)
 	yield* Effect.log(`Data written to: ${outputPath}`)
-}).pipe(
-	Effect.withLogSpan("generate_last_modified"),
-	Effect.provide(Layer.merge(BunFileSystem.layer, Path.layer)),
-)
+}).pipe(Effect.withLogSpan("generate_last_modified"), Effect.provide(BunServices.layer))
 
 BunRuntime.runMain(generateLastModified)

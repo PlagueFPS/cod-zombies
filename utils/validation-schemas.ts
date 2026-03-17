@@ -3,6 +3,27 @@ import { Schema } from "effect"
 export type TFeedbackForm = typeof FeedbackFormSchema.Type
 export type TContactForm = typeof ContactFormSchema.Type
 export type TNewsletterForm = typeof NewsletterFormSchema.Type
+export type FileMetadata = typeof FileMetadataSchema.Type
+export type LastModifiedData = typeof LastModifiedDataSchema.Type
+
+const FileMetadataSchema = Schema.Struct({
+	lastModified: Schema.String,
+	lastModifiedFormatted: Schema.String,
+	commitHash: Schema.optional(Schema.String),
+})
+
+const LastModifiedDataSchema = Schema.Struct({
+	version: Schema.String,
+	generated: Schema.String,
+	files: Schema.Record(Schema.String, FileMetadataSchema),
+})
+
+export const encodeLastModifiedData = Schema.encodeEffect(
+	Schema.fromJsonString(LastModifiedDataSchema),
+)
+export const decodeLastModifiedData = Schema.decodeUnknownEffect(
+	Schema.fromJsonString(LastModifiedDataSchema),
+)
 
 const QuestParamsSchema = Schema.Struct({
 	game: Schema.OptionFromUndefinedOr(Schema.String),
@@ -27,10 +48,10 @@ const ZombieParamsSchema = Schema.Struct({
 	id: Schema.OptionFromUndefinedOr(Schema.String),
 })
 
-	const RelicParamsSchema = Schema.Struct({
-		id: Schema.OptionFromUndefinedOr(Schema.String),
-		game: Schema.OptionFromUndefinedOr(Schema.String),
-	})
+const RelicParamsSchema = Schema.Struct({
+	id: Schema.OptionFromUndefinedOr(Schema.String),
+	game: Schema.OptionFromUndefinedOr(Schema.String),
+})
 
 const ErrorPageSearchParamsSchema = Schema.Struct({
 	message: Schema.OptionFromUndefinedOr(Schema.String),
@@ -61,8 +82,8 @@ const OptionalEmailSchema = Schema.optional(
 		Schema.Union(Schema.Literal(""), Schema.Undefined, EmailSchema),
 		Schema.Union(Schema.Undefined, EmailSchema),
 		{
-			decode: (from) => (from === "" || from === undefined ? undefined : from),
-			encode: (to) => to ?? "",
+			decode: from => (from === "" || from === undefined ? undefined : from),
+			encode: to => to ?? "",
 		},
 	),
 )

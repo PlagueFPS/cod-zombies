@@ -1,17 +1,11 @@
-import type { DurationInput } from "effect/Duration"
 import type { Heading } from "@/components/client/table-of-contents"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import { Duration, Effect, Number as Num, Option, Redacted } from "effect"
-import { files } from "@/data/last-modified.json"
+import { Clock, Duration, Effect, FileSystem, Number as Num, Option, Path, Redacted } from "effect"
 import { env } from "@/env"
-import {
-	AuthorizationError,
-	TokenExpirationError,
-	TokenGenerationError,
-	TokenVerificationError,
-} from "@/types/errors"
+import { TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/errors"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { slugify } from "@/utils/shared-functions"
+import { decodeLastModifiedData } from "./validation-schemas"
 
 /**
  * Gets the server URL.
@@ -31,12 +25,18 @@ export const getServerUrl = () => {
 
 /**
  * Gets the last updated date of a file.
- * @param filePath The path of the file.
  */
-export const getLastUpdated = (filePath: string) => {
+export const getLastModified = Effect.fn("getLastModifiedData")(function* (filePath: string) {
+	const fs = yield* FileSystem.FileSystem
+	const path = yield* Path.Path
+	const dataPath = path.join(process.cwd(), "data/last-modified.json")
+	const { files } = yield* fs
+		.readFileString(dataPath)
+		.pipe(Effect.flatMap(data => decodeLastModifiedData(data)))
+
 	const fileData = files[filePath.replace(/^.*?\/content\//, "") as keyof typeof files]
 	if (!fileData) {
-		console.warn(`Missing last-modified data for file ${filePath}`)
+		yield* Effect.logWarning(`Missing last-modified data for file ${filePath}`)
 		return {
 			lastModified: new Date().toISOString(),
 			lastModifiedFormatted: new Date().toLocaleDateString(undefined, DATE_OPTIONS),
@@ -47,7 +47,7 @@ export const getLastUpdated = (filePath: string) => {
 		lastModified: fileData.lastModified,
 		lastModifiedFormatted: fileData.lastModifiedFormatted,
 	}
-}
+})
 
 /**
  * Calculates the time to read a file.
@@ -89,96 +89,78 @@ export const extractHeadingsFromMDX = (content: string) => {
 }
 
 /**
- * Performs a timing-safe comparison of two secrets.
- * @param secret - The secret to be validated.
- * @param validSecret - The known valid secret.
- * @returns An Effect that succeeds with a boolean.
- */
-export const authorizedRequest = (secret: string, validSecret: string) =>
-	Effect.gen(function* () {
-		const encoder = new TextEncoder()
-		const secretBuffer = encoder.encode(secret)
-		const validSecretBuffer = encoder.encode(validSecret)
-
-		return yield* Effect.try({
-			try: () => timingSafeEqual(secretBuffer, validSecretBuffer),
-			catch: error =>
-				new AuthorizationError({
-					message: "Authorization Failed",
-					cause: error,
-				}),
-		})
-	}).pipe(Effect.withLogSpan("authorized_request"))
-/**
  * Generates a unique, secure, and time-limited token.
  * @param value - The value to secure.
  * @param expiresIn - The expiration time of the token.
  * @returns An Effect that succeeds with the generated unique secure token.
  */
-export const generateToken = (value: string, expiresIn: DurationInput) =>
-	Effect.gen(function* () {
-		const salt = randomBytes(16).toString("hex")
-		const expiresInMs = Date.now() + Duration.toMillis(expiresIn)
-		const payload = `${value}:${salt}:${expiresInMs}`
-		const hash = createHash("sha256").update(payload).digest("hex")
+export const generateToken = Effect.fn("generateToken")(function* (
+	value: string,
+	expiresIn: Duration.Duration,
+) {
+	const salt = randomBytes(16).toString("hex")
+	const expiresInMs = yield* Clock.currentTimeMillis.pipe(
+		Effect.map(now => now + Duration.toMillis(expiresIn)),
+	)
+	const payload = `${value}:${salt}:${expiresInMs}`
+	const hash = createHash("sha256").update(payload).digest("hex")
 
-		return yield* Effect.try({
-			try: () => Buffer.from(`${payload}:${hash}`).toString("base64url"),
-			catch: error =>
-				new TokenGenerationError({
-					message: "Failed to generate token.",
-					cause: error,
-				}),
-		})
-	}).pipe(Effect.withLogSpan("generate_token"))
+	return yield* Effect.try({
+		try: () => Buffer.from(`${payload}:${hash}`).toString("base64url"),
+		catch: error =>
+			new TokenGenerationError({
+				message: "Failed to generate token.",
+				cause: error,
+			}),
+	})
+})
 /**
  * Verifies a securely generated token.
  * @param token - the secure token to verify.
  * @returns An Effect that succeeds with the valid token.
  */
-export const verifyToken = (token: string) =>
-	Effect.gen(function* () {
-		const buffer = yield* Effect.try({
-			try: () => Buffer.from(token, "base64url").toString(),
-			catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
+export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
+	const buffer = yield* Effect.try({
+		try: () => Buffer.from(token, "base64url").toString(),
+		catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
+	})
+	const [value, salt, expiresInStr, originalHash] = buffer.split(":")
+
+	if (!value || !salt || !expiresInStr || !originalHash) {
+		return yield* new TokenVerificationError({
+			message: "Invalid Token Format",
+			cause: new Error("Token is malformed"),
 		})
-		const [value, salt, expiresInStr, originalHash] = buffer.split(":")
+	}
 
-		if (!value || !salt || !expiresInStr || !originalHash) {
-			return yield* new TokenVerificationError({
-				message: "Invalid Token Format",
-				cause: new Error("Token is malformed"),
-			})
-		}
+	const expiresIn = Num.parse(expiresInStr)
+	const now = yield* Clock.currentTimeMillis
 
-		const expiresIn = Num.parse(expiresInStr)
-		const now = Date.now()
-
-		if (Option.isNone(expiresIn))
-			return yield* new TokenVerificationError({
-				message: "Invalid Token Format",
-				cause: new Error("Token is malformed"),
-			})
-
-		if (Duration.greaterThan(now, expiresIn.value)) {
-			return yield* new TokenExpirationError({
-				message: "Token has expired",
-				cause: new Error(`Token expired at ${new Date(expiresIn.value).toISOString()}`),
-			})
-		}
-
-		const payload = `${value}:${salt}:${expiresIn}`
-		const hash = createHash("sha256").update(payload).digest("hex")
-		const hashBuffer = Buffer.from(hash, "hex")
-		const originalHashBuffer = Buffer.from(originalHash, "hex")
-
-		yield* Effect.try({
-			try: () => timingSafeEqual(hashBuffer, originalHashBuffer),
-			catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
+	if (Option.isNone(expiresIn))
+		return yield* new TokenVerificationError({
+			message: "Invalid Token Format",
+			cause: new Error("Token is malformed"),
 		})
 
-		return value
-	}).pipe(Effect.withLogSpan("verify_token"))
+	if (Duration.isGreaterThan(Duration.millis(now), Duration.millis(expiresIn.value))) {
+		return yield* new TokenExpirationError({
+			message: "Token has expired",
+			cause: new Error(`Token expired at ${new Date(expiresIn.value).toISOString()}`),
+		})
+	}
+
+	const payload = `${value}:${salt}:${expiresIn}`
+	const hash = createHash("sha256").update(payload).digest("hex")
+	const hashBuffer = Buffer.from(hash, "hex")
+	const originalHashBuffer = Buffer.from(originalHash, "hex")
+
+	yield* Effect.try({
+		try: () => timingSafeEqual(hashBuffer, originalHashBuffer),
+		catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
+	})
+
+	return value
+})
 
 export const stripMarkdown = (text: string) =>
 	text
