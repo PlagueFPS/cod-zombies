@@ -17,13 +17,16 @@ const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDi
 	const path = yield* Path.Path
 	const files = yield* fs.readDirectory(publicDir)
 
-	return yield* Effect.forEach(files, file =>
-		Effect.gen(function* () {
-			const filePath = path.join(publicDir, file)
-			const stat = yield* fs.stat(filePath)
-			if (stat.type === "Directory") return file
-			return null
-		}),
+	return yield* Effect.forEach(
+		files,
+		file =>
+			Effect.gen(function* () {
+				const filePath = path.join(publicDir, file)
+				const stat = yield* fs.stat(filePath)
+				if (stat.type === "Directory") return file
+				return null
+			}),
+		{ concurrency: "unbounded" },
 	).pipe(
 		Effect.map(files =>
 			files
@@ -44,22 +47,25 @@ const collectImageFiles = Effect.fn("collectImageFiles")(function* (
 	const walk = (current: string): Effect.Effect<void, PlatformError, Path.Path> =>
 		Effect.gen(function* () {
 			const files = yield* fs.readDirectory(current)
-			yield* Effect.forEach(files, file =>
-				Effect.gen(function* () {
-					if (file.startsWith(".")) return
+			yield* Effect.forEach(
+				files,
+				file =>
+					Effect.gen(function* () {
+						if (file.startsWith(".")) return
 
-					const full = path.join(current, file)
-					const stat = yield* fs.stat(full)
+						const full = path.join(current, file)
+						const stat = yield* fs.stat(full)
 
-					if (stat.type === "Directory") yield* walk(full)
-					else if (stat.type === "File") {
-						const ext = path.extname(file).toLowerCase()
-						if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
-							const relative = yield* formatPath(publicDir, full)
-							results.push(`/${relative}`)
+						if (stat.type === "Directory") yield* walk(full)
+						else if (stat.type === "File") {
+							const ext = path.extname(file).toLowerCase()
+							if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
+								const relative = yield* formatPath(publicDir, full)
+								results.push(`/${relative}`)
+							}
 						}
-					}
-				}),
+					}),
+				{ concurrency: "unbounded" },
 			)
 		})
 
@@ -73,19 +79,22 @@ const collectRootImages = Effect.fn("collectRootImages")(function* (publicDir: s
 	const files = yield* fs.readDirectory(publicDir)
 	const results: string[] = []
 
-	yield* Effect.forEach(files, file =>
-		Effect.gen(function* () {
-			const filePath = path.join(publicDir, file)
-			const stat = yield* fs.stat(filePath)
-			if (stat.type !== "File") return
-			if (file.startsWith(".")) return
+	yield* Effect.forEach(
+		files,
+		file =>
+			Effect.gen(function* () {
+				const filePath = path.join(publicDir, file)
+				const stat = yield* fs.stat(filePath)
+				if (stat.type !== "File") return
+				if (file.startsWith(".")) return
 
-			const ext = path.extname(file).toLowerCase()
-			if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
-				const relative = yield* formatPath(publicDir, filePath)
-				results.push(`/${relative}`)
-			}
-		}),
+				const ext = path.extname(file).toLowerCase()
+				if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
+					const relative = yield* formatPath(publicDir, filePath)
+					results.push(`/${relative}`)
+				}
+			}),
+		{ concurrency: "unbounded" },
 	)
 
 	return results
@@ -103,7 +112,7 @@ function headerComment(publicDir: string, duration: string | number) {
 	const now = new Date().toISOString()
 	return `/**
  * THIS FILE IS AUTO-GENERATED.
- * Run 'generate:image-paths' to regenerate.
+ * Run 'generate:image:paths' to regenerate.
  *
  * public directory scanned: ${publicDir}
  * generated at: ${now}
