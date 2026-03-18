@@ -1,6 +1,5 @@
 import type { Metadata, Route } from "next"
-import { FileSystem, Path } from "@effect/platform"
-import { Effect, Option } from "effect"
+import { Effect, FileSystem, Option, Path } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
 import richStyles from "@/app/rich-text.module.css"
@@ -17,14 +16,14 @@ import {
 	getSideQuests,
 	type SideQuest,
 } from "@/data/side-quests"
-import { FileSystemPage } from "@/lib/layers"
+import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import {
 	calculateTimeToRead,
 	extractHeadingsFromMDX,
-	getLastUpdated,
+	getLastModified,
 	getServerUrl,
 } from "@/utils/server-functions"
 
@@ -72,164 +71,162 @@ export const generateMetadata = async ({
 	}
 }
 
-const SideQuestPage = Effect.fn("SideQuestPage")(
-	function* ({ params }: PageProps<"/side-quests/[game]/[map]/[id]">) {
-		const fs = yield* FileSystem.FileSystem
-		const path = yield* Path.Path
-		const mdxComponents = yield* Effect.sync(() => useMDXComponents())
-		const { id } = yield* Effect.promise(() => params)
-		const quest = getSideQuestById(id)
-		if (!quest) return yield* Effect.sync(() => notFound())
+export default async function SideQuestPage({
+	params,
+}: PageProps<"/side-quests/[game]/[map]/[id]">) {
+	return await sideQuestPageUI(params).pipe(
+		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.orDie,
+		PageRuntime.runPromise,
+	)
+}
 
-		const contentPath = path.join(process.cwd(), `./content/side-quests/${quest.id}.mdx`)
-		const fileContent = yield* fs.readFileString(contentPath)
-		const { prev, next } = getAdjacentSideQuests(quest.id)
-		const { lastModifiedFormatted } = getLastUpdated(contentPath)
-		const { content, stateBadge, headings, timeToRead } = yield* Option.match(quest.state, {
-			onNone: () =>
-				Effect.gen(function* () {
-					return {
-						content: yield* quest.content,
-						stateBadge: null,
-						headings: extractHeadingsFromMDX(fileContent),
-						timeToRead: calculateTimeToRead(fileContent),
-					}
-				}),
-			onSome: state =>
-				Effect.gen(function* () {
-					const isComingSoon = state === "Coming Soon"
-					return {
-						content: isComingSoon ? null : yield* quest.content,
-						stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
-						headings: isComingSoon ? [] : extractHeadingsFromMDX(fileContent),
-						timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
-					}
-				}),
-		})
+const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
+	params: PageProps<"/side-quests/[game]/[map]/[id]">["params"],
+) {
+	const fs = yield* FileSystem.FileSystem
+	const path = yield* Path.Path
+	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
+	const { id } = yield* Effect.promise(() => params)
+	const quest = getSideQuestById(id)
+	if (!quest) return yield* Effect.sync(() => notFound())
 
-		const MDXContent = content?.default
-
-		return (
-			<section className="-mt-10 flex w-full justify-center xl:mt-0">
-				<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
-					<div className="flex w-full flex-col xl:flex-row-reverse">
-						<TableOfContents headings={headings} />
-						<article className="flex w-full flex-col items-center justify-center">
-							<div className="relative mt-16 w-full xl:mt-8">
-								<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
-									<FeaturedImage
-										featuredImage={quest.map.image}
-										sizes="(max-width: 1280px) 100vw, 1280px"
-										width={1280}
-										height={720}
-									/>
-								</div>
-								<div className="relative z-20 mx-auto max-w-7xl">
-									<FeaturedImage
-										featuredImage={quest.map.image}
-										sizes="(max-width: 1280px) 100vw, 1280px"
-										width={1280}
-										height={720}
-										priority
-										className="overflow-hidden xl:rounded-lg"
-									/>
-									<div className="-top-10 absolute left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
-										<Breadcrumbs
-											links={[
-												{ title: "Side Quests", href: `/side-quests` },
-												{
-													title: quest.map.game.title,
-													href: `/side-quests?game=${quest.map.game.id}`,
-												},
-												{
-													title: quest.map.title,
-													href: `/side-quests?map=${quest.map.id}`,
-												},
-												{
-													title: quest.title,
-													href: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
-												},
-											]}
-										/>
-									</div>
-								</div>
-							</div>
-							<div className="relative z-20 mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
-								<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
-									<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-3xl text-gradient md:text-4xl lg:text-5xl">
-										{quest.title}
-									</h2>
-									<div className="flex w-fit items-center justify-center gap-4">
-										{stateBadge}
-										<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-											{quest.map.title}
-										</Badge>
-										<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-											{quest.map.game.title}
-										</Badge>
-									</div>
-								</div>
-								<div className="flex items-center justify-between text-muted-foreground text-sm">
-									<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
-										<div className="flex items-center gap-1">
-											<Calendar className="size-4" />
-											<span>Updated: {lastModifiedFormatted}</span>
-										</div>
-										<span className="hidden md:inline">&bull;</span>
-										<div className="flex items-center gap-1">
-											<Clock className="size-4" />
-											<span>{timeToRead} min read</span>
-										</div>
-									</div>
-									<ShareButton
-										title={quest.title}
-										url={`${getServerUrl()}/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`}
-										className="mb-2 ml-auto text-muted-foreground md:mb-0"
-									/>
-								</div>
-							</div>
-							{!MDXContent ? (
-								<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
-									<p className="font-bold text-xl">
-										This article is currently being written and will take some time before being
-										ready.
-									</p>
-									<p className="text-foreground/90">
-										Check back soon or subscribe to our newsletter at the bottom of this page to be
-										notified when this guide is ready!
-									</p>
-								</div>
-							) : (
-								<div
-									id="body"
-									className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
-								>
-									<MDXContent components={mdxComponents} />
-								</div>
-							)}
-							<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-								{Option.isSome(prev) && <PrevOrNextQuestCard quest={prev.value} prev />}
-								{Option.isSome(next) && <PrevOrNextQuestCard quest={next.value} />}
-							</div>
-						</article>
-					</div>
-				</div>
-			</section>
-		)
-	},
-	page =>
-		page.pipe(
-			Effect.withLogSpan("side_quest_page"),
-			Effect.tapError(Effect.logError),
-			Effect.catchTags({
-				BadArgument: error => Effect.dieMessage(error.message),
-				SystemError: error => Effect.dieMessage(error.message),
+	const { prev, next } = getAdjacentSideQuests(quest.id)
+	const contentPath = path.join(process.cwd(), `./content/side-quests/${quest.id}.mdx`)
+	const fileContent = yield* fs.readFileString(contentPath)
+	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
+	const { content, stateBadge, headings, timeToRead } = yield* Option.match(quest.state, {
+		onNone: () =>
+			Effect.gen(function* () {
+				return {
+					content: yield* quest.content,
+					stateBadge: null,
+					headings: extractHeadingsFromMDX(fileContent),
+					timeToRead: calculateTimeToRead(fileContent),
+				}
 			}),
-		),
-	Effect.ensureErrorType<never>(),
-)
+		onSome: state =>
+			Effect.gen(function* () {
+				const isComingSoon = state === "Coming Soon"
+				return {
+					content: isComingSoon ? null : yield* quest.content,
+					stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
+					headings: isComingSoon ? [] : extractHeadingsFromMDX(fileContent),
+					timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
+				}
+			}),
+	})
 
-export default FileSystemPage.build(SideQuestPage)
+	const MDXContent = content?.default
+
+	return (
+		<section className="-mt-10 flex w-full justify-center xl:mt-0">
+			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
+				<div className="flex w-full flex-col xl:flex-row-reverse">
+					<TableOfContents headings={headings} />
+					<article className="flex w-full flex-col items-center justify-center">
+						<div className="relative mt-16 w-full xl:mt-8">
+							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
+								<FeaturedImage
+									featuredImage={quest.map.image}
+									sizes="(max-width: 1280px) 100vw, 1280px"
+									width={1280}
+									height={720}
+								/>
+							</div>
+							<div className="relative z-20 mx-auto max-w-7xl">
+								<FeaturedImage
+									featuredImage={quest.map.image}
+									sizes="(max-width: 1280px) 100vw, 1280px"
+									width={1280}
+									height={720}
+									priority
+									className="overflow-hidden xl:rounded-lg"
+								/>
+								<div className="absolute -top-10 left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
+									<Breadcrumbs
+										links={[
+											{ title: "Side Quests", href: `/side-quests` },
+											{
+												title: quest.map.game.title,
+												href: `/side-quests?game=${quest.map.game.id}`,
+											},
+											{
+												title: quest.map.title,
+												href: `/side-quests?map=${quest.map.id}`,
+											},
+											{
+												title: quest.title,
+												href: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+											},
+										]}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="relative z-20 mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
+							<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
+								<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-3xl text-gradient md:text-4xl lg:text-5xl">
+									{quest.title}
+								</h2>
+								<div className="flex w-fit items-center justify-center gap-4">
+									{stateBadge}
+									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+										{quest.map.title}
+									</Badge>
+									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+										{quest.map.game.title}
+									</Badge>
+								</div>
+							</div>
+							<div className="flex items-center justify-between text-muted-foreground text-sm">
+								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
+									<div className="flex items-center gap-1">
+										<Calendar className="size-4" />
+										<span>Updated: {lastModifiedFormatted}</span>
+									</div>
+									<span className="hidden md:inline">&bull;</span>
+									<div className="flex items-center gap-1">
+										<Clock className="size-4" />
+										<span>{timeToRead} min read</span>
+									</div>
+								</div>
+								<ShareButton
+									title={quest.title}
+									url={`${getServerUrl()}/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`}
+									className="mb-2 ml-auto text-muted-foreground md:mb-0"
+								/>
+							</div>
+						</div>
+						{!MDXContent ? (
+							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
+								<p className="font-bold text-xl">
+									This article is currently being written and will take some time before being
+									ready.
+								</p>
+								<p className="text-foreground/90">
+									Check back soon or subscribe to our newsletter at the bottom of this page to be
+									notified when this guide is ready!
+								</p>
+							</div>
+						) : (
+							<div
+								id="body"
+								className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
+							>
+								<MDXContent components={mdxComponents} />
+							</div>
+						)}
+						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
+							{Option.isSome(prev) && <PrevOrNextQuestCard quest={prev.value} prev />}
+							{Option.isSome(next) && <PrevOrNextQuestCard quest={next.value} />}
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+	)
+})
 
 interface PrevOrNextCard {
 	quest: SideQuest
