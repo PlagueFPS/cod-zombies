@@ -1,14 +1,11 @@
-import type { PlatformError } from "@effect/platform/Error"
-import { FileSystem, Path } from "@effect/platform"
-import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
-import { Duration, Effect, Layer, Predicate, Ref } from "effect"
+import type { PlatformError } from "effect/PlatformError"
+import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { Clock, Effect, FileSystem, HashSet, Path, Predicate, SynchronizedRef } from "effect"
+import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 import { toPascalCase } from "@/utils/shared-functions"
 
 // Exclude these top-level directories entirely
-const EXCLUDED_DIRS = new Set(["content", "opengraph-images"])
-
-// Only allow these extensions (lowercased)
-const IMAGE_EXTS = new Set([".webp", ".png", ".jpg"])
+const EXCLUDED_DIRS = HashSet.make("content", "opengraph-images")
 
 const formatPath = Effect.fn("formatPath")(function* (dir: string, file: string) {
 	const path = yield* Path.Path
@@ -29,7 +26,9 @@ const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDi
 		}),
 	).pipe(
 		Effect.map(files =>
-			files.filter(file => Predicate.isNotNull(file)).filter(file => !EXCLUDED_DIRS.has(file)),
+			files
+				.filter(file => Predicate.isNotNull(file))
+				.filter(file => !HashSet.has(EXCLUDED_DIRS, file)),
 		),
 	)
 })
@@ -55,7 +54,7 @@ const collectImageFiles = Effect.fn("collectImageFiles")(function* (
 					if (stat.type === "Directory") yield* walk(full)
 					else if (stat.type === "File") {
 						const ext = path.extname(file).toLowerCase()
-						if (IMAGE_EXTS.has(ext)) {
+						if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
 							const relative = yield* formatPath(publicDir, full)
 							results.push(`/${relative}`)
 						}
@@ -82,7 +81,7 @@ const collectRootImages = Effect.fn("collectRootImages")(function* (publicDir: s
 			if (file.startsWith(".")) return
 
 			const ext = path.extname(file).toLowerCase()
-			if (IMAGE_EXTS.has(ext)) {
+			if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
 				const relative = yield* formatPath(publicDir, filePath)
 				results.push(`/${relative}`)
 			}
@@ -121,30 +120,35 @@ const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
 	const exists = yield* fs.exists(publicDir)
 	if (!exists) return yield* Effect.fail(`Public directory does not exist: ${publicDir}`)
 
-	const startTime = performance.now()
+	const startTime = yield* Clock.currentTimeMillis
 
 	const rootImagesAbs = yield* collectRootImages(publicDir)
 	const rootWebPaths = rootImagesAbs.sort()
 
 	const topDirs = yield* listTopLevelDirs(publicDir)
 	const perDir: { dir: string; typeName: string; imagePaths: string[] }[] = []
-	const totalImages = yield* Ref.make(0)
+	const totalImages = yield* SynchronizedRef.make(0)
 
-	yield* Effect.forEach(topDirs, dir =>
-		Effect.gen(function* () {
-			const fullDir = path.join(publicDir, dir)
-			const images = yield* collectImageFiles(publicDir, fullDir)
-			const webPaths = images.sort()
-			perDir.push({
-				dir,
-				typeName: `${toPascalCase(dir)}ImagePath`,
-				imagePaths: webPaths,
-			})
-			yield* Ref.update(totalImages, n => n + webPaths.length)
-		}),
+	yield* Effect.forEach(
+		topDirs,
+		dir =>
+			Effect.gen(function* () {
+				const fullDir = path.join(publicDir, dir)
+				const images = yield* collectImageFiles(publicDir, fullDir)
+				const webPaths = images.sort()
+				perDir.push({
+					dir,
+					typeName: `${toPascalCase(dir)}ImagePath`,
+					imagePaths: webPaths,
+				})
+				yield* SynchronizedRef.update(totalImages, n => n + webPaths.length)
+			}),
+		{ concurrency: "unbounded" },
 	)
 
-	const durationMs = Duration.toMillis(performance.now() - startTime).toFixed(0)
+	const durationMs = yield* Clock.currentTimeMillis.pipe(
+		Effect.map(now => (now - startTime).toFixed(0)),
+	)
 
 	const lines: string[] = []
 	lines.push(headerComment(path.relative(cwd, publicDir), durationMs))
@@ -176,16 +180,16 @@ const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
 	yield* fs.writeFileString(outFile, generated)
 	yield* Effect.log(`Wrote generated types to: ${outFile}`)
 	yield* Effect.log(
-		`directories_scanned=${topDirs.length}, total_images=${yield* totalImages.get}, duration=${durationMs}ms`,
+		`directories_scanned=${topDirs.length}, total_images=${yield* SynchronizedRef.get(totalImages)}, duration=${durationMs}ms`,
 	)
-	for (const item of perDir) {
-		yield* Effect.log(`- /${item.dir}: ${item.imagePaths.length} image(s) -> type ${item.typeName}`)
-	}
+	yield* Effect.forEach(
+		perDir,
+		item =>
+			Effect.log(`- /${item.dir}: ${item.imagePaths.length} image(s) -> type ${item.typeName}`),
+		{ concurrency: "unbounded" },
+	)
 
 	yield* Effect.log(`- / (root): ${rootWebPaths.length} image(s) -> type RootImagePath`)
 })
 
-generateImagePaths().pipe(
-	Effect.provide(Layer.merge(BunFileSystem.layer, Path.layer)),
-	BunRuntime.runMain,
-)
+generateImagePaths().pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)

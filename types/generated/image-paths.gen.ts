@@ -3,8 +3,8 @@
  * Run 'generate:image-paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-18T03:36:18.193Z
- * generated in: 102ms
+ * generated at: 2026-03-17T05:37:20.842Z
+ * generated in: 49ms
  */
 
 
@@ -14,6 +14,230 @@ export type RootImagePath =
   '/article-img-placeholder.jpg' |
   '/logo.png' |
   '/logo.webp';
+
+/** Union of images in `/field-upgrades` */
+
+export type FieldUpgradesImagePath =
+  '/field-upgrades/aether-shroud.webp' |
+  '/field-upgrades/dark-flare.webp' |
+  '/field-upgrades/energy-mine.webp' |
+  '/field-upgrades/frenzied-guard.webp' |
+  '/field-upgrades/mister-peeks.webp' |
+  '/field-upgrades/ring-of-fire.webp' |
+  '/field-upgrades/tesla-storm.webp' |
+  '/field-upgrades/toxic-growth.webp';
+
+/** Union of images in `/games` */
+
+export type GamesImagePath =
+  '/games/black-ops-1_logo.webp' |
+  '/games/black-ops-2_logo.webp' |
+  '/games/black-ops-3_logo.webp' |
+  '/games/black-ops-4_logo.webp' |
+  '/games/black-ops-6_logo.webp' |
+  '/games/black-ops-7_logo.webp' |
+  '/games/black-ops-cold-war_logo.webp' |
+  '/games/world-at-war_logo.webp';
+
+/** Union of images in `/previews` */
+
+export type PreviewsImagePath =
+  '/previews/ashes-of-the-damned-preview.webp' |
+  '/previews/astra-malorum-preview.webp' |
+  '/previews/citadelle-des-morts-preview.webp' |
+  '/previews/liberty-falls-preview.webp' |
+  '/previews/paradox-junction-preview.webp' |
+  '/previews/reckoning-preview.webp' |
+  '/previews/shattered-veil-preview.webp' |
+  '/previews/terminus-preview.webp' |
+  '/previews/the-tomb-preview.webp';
+
+/** Union of images in `/ammo-mods` */
+
+export type AmmoModsImagePath =
+  '/ammo-mods/brain-rot-bo6.webp' |
+  '/ammo-mods/brain-rot.webp' |
+  '/ammo-mods/cryo-freeze.webp' |
+  '/ammo-mods/dead-wire-bo6.webp' |
+  '/ammo-mods/dead-wire.webp' |
+  '/ammo-mods/fire-bomb.webp' |
+  '/ammo-mods/light-mend.webp' |
+  '/ammo-mods/napalm-burst.webp' |
+  '/ammo-mods/shadow-rift.webp';
+
+/** Union of images in `/weapons` */
+
+export type WeaponsImagePath =
+  '/weapons/abr-a1.webp' |
+  '/weapons/ak-27.webp' |
+  '/weapons/akita.webp' |
+  '/weapons/coda-9.webp' |
+  '/weapons/ds20-mirage.webp' |
+  '/weapons/gpr-91.webp' |
+  '/weapons/grekhova.webp' |
+  '/weapons/jager-45.webp' |
+  '/weapons/kogot-7.webp' |
+  '/weapons/m10-breacher.webp' |
+  '/weapons/m34-novaline.webp' |
+  '/weapons/maelstrom.webp';
+
+/** Union of images in `/relics` */
+
+export type RelicsImagePath =
+  '/relics/blood-vials-relic.webp' |
+  '/relics/bus-relic.webp' |
+  '/relics/civil-protector-head-relic.webp' |
+  '/relics/dragon-relic.webp' |
+  '/relics/dragon-wings-relic.webp' |
+  '/relics/focusing-stone-relic.webp' |
+  '/relics/golden-spork-relic.webp' |
+  '/relics/gong-relic.webp' |
+  '/relics/lawyers-pen-relic.webp' |
+  '/relics/matroyshka-dolls-relic.webp' |
+  '/relics/rocket-relic-placeholder.webp' |
+  '/relics/samanthas-drawing-relic.webp' |
+  '/relics/seed-relic.webp' |
+  '/relics/spider-fang-relic.webp' |
+  '/relics/summoning-key-relic.webp' |
+  '/relics/teddy-bear-relic.webp' |
+  '/relics/vril-sphere-relic.webp';
+
+/** Union of images in `/elixirs` */
+
+export type ElixirsImagePath =
+  '/elixirs/aftertaste-elixir.webp' |
+  '/elixirs/alchemical-antithesis-elixir.webp' |
+  '/elixirs/anywhere-but-here-elixir.webp' |
+  '/elixirs/arsenal-accelerator-elixir.webp' |
+  '/elixirs/blood-debt-elixir.webp' |
+  '/elixirs/cache-back-elixir.webp' |
+  '/elixirs/ctrl-z-elixir.webp' |
+  '/elixirs/dead-of-nuclear-winter-elixir.webp' |
+  '/elixirs/equip-mint-elixir.webp' |
+  '/elixirs/free-fire-elixir.webp' |
+  '/elixirs/immolation-liquidation-elixir.webp' |
+  '/elixirs/in-plain-sight-elixir.webp' |
+  '/elixirs/licensed-contractor-elixir.webp' |
+  '/elixirs/perkaholic-elixir.webp' |
+  '/elixirs/power-keg-elixir.webp' |
+  '/elixirs/refresh-mint-elixir.webp' |
+  '/elixirs/reign-drops-elixir.webp' |
+  '/elixirs/shields-up-elixir.webp' |
+  '/elixirs/shopping-free-elixir.webp' |
+  '/elixirs/stock-option-elixir.webp' |
+  '/elixirs/talkin-bout-regeneration-elixir.webp' |
+  '/elixirs/temporal-gift-elixir.webp' |
+  '/elixirs/undead-man-walking-elixir.webp' |
+  '/elixirs/wall-to-wall-clearance-elixir.webp';
+
+/** Union of images in `/perks` */
+
+export type PerksImagePath =
+  '/perks/deadshot-daiquiri-cold-war.webp' |
+  '/perks/deadshot-daiquiri.webp' |
+  '/perks/death-perception-bo6.webp' |
+  '/perks/death-perception.webp' |
+  '/perks/double-tap-bo3.webp' |
+  '/perks/double-tap.webp' |
+  '/perks/dying-wish.webp' |
+  '/perks/elemental-pop.webp' |
+  '/perks/juggernog-bo6.webp' |
+  '/perks/juggernog.webp' |
+  '/perks/melee-macchiato.webp' |
+  '/perks/mule-kick-cold-war.webp' |
+  '/perks/mule-kick.webp' |
+  '/perks/phd-flopper-bo1.webp' |
+  '/perks/phd-flopper.webp' |
+  '/perks/phd-slider.webp' |
+  '/perks/quick-revive-cold-war.webp' |
+  '/perks/quick-revive.webp' |
+  '/perks/speed-cola-bo3.webp' |
+  '/perks/speed-cola.webp' |
+  '/perks/stamin-up-cold-war.webp' |
+  '/perks/stamin-up.webp' |
+  '/perks/stone-cold-stronghold.webp' |
+  '/perks/timeslip.webp' |
+  '/perks/tombstone-cold-war.webp' |
+  '/perks/tombstone.webp' |
+  '/perks/victorious-tortoise.webp' |
+  '/perks/vulture-aid-bo2.webp' |
+  '/perks/vulture-aid.webp' |
+  '/perks/widows-wine.webp' |
+  '/perks/winters-wail.webp' |
+  '/perks/wisp-tea.webp';
+
+/** Union of images in `/gobblegums` */
+
+export type GobblegumsImagePath =
+  '/gobblegums/aftertaste-bo7.webp' |
+  '/gobblegums/alchemical-antithesis.webp' |
+  '/gobblegums/anywhere-but-here-bo6.webp' |
+  '/gobblegums/anywhere-but-here.webp' |
+  '/gobblegums/armor-gettin.webp' |
+  '/gobblegums/arsenal-accelerator-bo6.webp' |
+  '/gobblegums/arsenal-accelerator.webp' |
+  '/gobblegums/crate-power.webp' |
+  '/gobblegums/danger-closest.webp' |
+  '/gobblegums/ephemeral-enhancement.webp' |
+  '/gobblegums/extra-credit.webp' |
+  '/gobblegums/fear-in-headlights.webp' |
+  '/gobblegums/free-fire.webp' |
+  '/gobblegums/gift-card.webp' |
+  '/gobblegums/hidden-power.webp' |
+  '/gobblegums/idle-eyes-bo6.webp' |
+  '/gobblegums/idle-eyes.webp' |
+  '/gobblegums/immolation-liquidation.webp' |
+  '/gobblegums/in-plain-sight.webp' |
+  '/gobblegums/kill-joy.webp' |
+  '/gobblegums/near-death-experience-bo6.webp' |
+  '/gobblegums/near-death-experience.webp' |
+  '/gobblegums/perkaholic-bo6.webp' |
+  '/gobblegums/perkaholic.webp' |
+  '/gobblegums/phoenix-up.webp' |
+  '/gobblegums/power-keg.webp' |
+  '/gobblegums/power-vacuum.webp' |
+  '/gobblegums/profit-sharing.webp' |
+  '/gobblegums/reign-drops-bo7.webp' |
+  '/gobblegums/reign-drops.webp' |
+  '/gobblegums/round-robbin.webp' |
+  '/gobblegums/self-medication.webp' |
+  '/gobblegums/shields-up.webp' |
+  '/gobblegums/shopping-free.webp' |
+  '/gobblegums/stock-option.webp' |
+  '/gobblegums/sword-flay.webp' |
+  '/gobblegums/undead-man-walking.webp' |
+  '/gobblegums/wall-power-bo6.webp' |
+  '/gobblegums/wall-power.webp' |
+  '/gobblegums/wonderbar.webp';
+
+/** Union of images in `/layers` */
+
+export type LayersImagePath =
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-farm-cellar.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-layer.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-lower-zarya.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-upper-ashwood.webp' |
+  '/layers/astra-malorum/astra-malorum-layer.webp' |
+  '/layers/astra-malorum/astra-malorum-mars-layer.webp' |
+  '/layers/citadelle-des-morts/citadelle-des-morts-layer.webp' |
+  '/layers/liberty-falls/liberty-falls-layer.webp' |
+  '/layers/reckoning/t1-executive-suites.webp' |
+  '/layers/reckoning/t1-mutant-research-lab.webp' |
+  '/layers/reckoning/t1-project-janus-reception.webp' |
+  '/layers/reckoning/t1-quantum-computing-core.webp' |
+  '/layers/reckoning/t2-android-assembly.webp' |
+  '/layers/reckoning/t2-dark-entity-containment.webp' |
+  '/layers/reckoning/t2-sublevel-10.webp' |
+  '/layers/reckoning/t2-teleportation-lab.webp' |
+  '/layers/reckoning/t3-dark-aether-elements-vault-1.webp' |
+  '/layers/reckoning/t3-dark-aether-elements-vault-2.webp' |
+  '/layers/reckoning/t3-rooftop.webp' |
+  '/layers/reckoning/tower-1-layer.webp' |
+  '/layers/reckoning/tower-2-layer.webp' |
+  '/layers/reckoning/tower-3-layer.webp' |
+  '/layers/shattered-veil/shattered-veil-layer.webp' |
+  '/layers/terminus/terminus-layer.webp' |
+  '/layers/the-tomb/the-tomb-layer.webp';
 
 /** Union of images in `/maps` */
 
@@ -61,53 +285,6 @@ export type MapsImagePath =
   '/maps/voyage-of-despair.webp' |
   '/maps/zetsubou-no-shima.webp';
 
-/** Union of images in `/relics` */
-
-export type RelicsImagePath =
-  '/relics/blood-vials-relic.webp' |
-  '/relics/bus-relic.webp' |
-  '/relics/civil-protector-head-relic.webp' |
-  '/relics/dragon-relic.webp' |
-  '/relics/dragon-wings-relic.webp' |
-  '/relics/focusing-stone-relic.webp' |
-  '/relics/golden-spork-relic.webp' |
-  '/relics/gong-relic.webp' |
-  '/relics/lawyers-pen-relic.webp' |
-  '/relics/mangler-helmet-relic.webp' |
-  '/relics/matroyshka-dolls-relic.webp' |
-  '/relics/rocket-relic-placeholder.webp' |
-  '/relics/samanthas-drawing-relic.webp' |
-  '/relics/seed-relic.webp' |
-  '/relics/spider-fang-relic.webp' |
-  '/relics/summoning-key-relic.webp' |
-  '/relics/teddy-bear-relic.webp' |
-  '/relics/vril-sphere-relic.webp';
-
-/** Union of images in `/field-upgrades` */
-
-export type FieldUpgradesImagePath =
-  '/field-upgrades/aether-shroud.webp' |
-  '/field-upgrades/dark-flare.webp' |
-  '/field-upgrades/energy-mine.webp' |
-  '/field-upgrades/frenzied-guard.webp' |
-  '/field-upgrades/mister-peeks.webp' |
-  '/field-upgrades/ring-of-fire.webp' |
-  '/field-upgrades/tesla-storm.webp' |
-  '/field-upgrades/toxic-growth.webp';
-
-/** Union of images in `/previews` */
-
-export type PreviewsImagePath =
-  '/previews/ashes-of-the-damned-preview.webp' |
-  '/previews/astra-malorum-preview.webp' |
-  '/previews/citadelle-des-morts-preview.webp' |
-  '/previews/liberty-falls-preview.webp' |
-  '/previews/paradox-junction-preview.webp' |
-  '/previews/reckoning-preview.webp' |
-  '/previews/shattered-veil-preview.webp' |
-  '/previews/terminus-preview.webp' |
-  '/previews/the-tomb-preview.webp';
-
 /** Union of images in `/icons` */
 
 export type IconsImagePath =
@@ -148,34 +325,96 @@ export type IconsImagePath =
   '/icons/upgrades/gobblegum-machine.webp' |
   '/icons/upgrades/pack-a-punch.webp';
 
-/** Union of images in `/layers` */
+/** Union of images in `/zombies` */
 
-export type LayersImagePath =
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-farm-cellar.webp' |
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-layer.webp' |
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-lower-zarya.webp' |
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-upper-ashwood.webp' |
-  '/layers/astra-malorum/astra-malorum-layer.webp' |
-  '/layers/astra-malorum/astra-malorum-mars-layer.webp' |
-  '/layers/citadelle-des-morts/citadelle-des-morts-layer.webp' |
-  '/layers/liberty-falls/liberty-falls-layer.webp' |
-  '/layers/reckoning/t1-executive-suites.webp' |
-  '/layers/reckoning/t1-mutant-research-lab.webp' |
-  '/layers/reckoning/t1-project-janus-reception.webp' |
-  '/layers/reckoning/t1-quantum-computing-core.webp' |
-  '/layers/reckoning/t2-android-assembly.webp' |
-  '/layers/reckoning/t2-dark-entity-containment.webp' |
-  '/layers/reckoning/t2-sublevel-10.webp' |
-  '/layers/reckoning/t2-teleportation-lab.webp' |
-  '/layers/reckoning/t3-dark-aether-elements-vault-1.webp' |
-  '/layers/reckoning/t3-dark-aether-elements-vault-2.webp' |
-  '/layers/reckoning/t3-rooftop.webp' |
-  '/layers/reckoning/tower-1-layer.webp' |
-  '/layers/reckoning/tower-2-layer.webp' |
-  '/layers/reckoning/tower-3-layer.webp' |
-  '/layers/shattered-veil/shattered-veil-layer.webp' |
-  '/layers/terminus/terminus-layer.webp' |
-  '/layers/the-tomb/the-tomb-layer.webp';
+export type ZombiesImagePath =
+  '/zombies/abomination.webp' |
+  '/zombies/adam-unit.webp' |
+  '/zombies/amalgam.webp' |
+  '/zombies/armored-zombie.webp' |
+  '/zombies/astronaut-zombie.webp' |
+  '/zombies/avogadro.webp' |
+  '/zombies/base-zombie.webp' |
+  '/zombies/blightfather.webp' |
+  '/zombies/brutus.webp' |
+  '/zombies/caltheris.webp' |
+  '/zombies/crusader-zombie.webp' |
+  '/zombies/denizen.webp' |
+  '/zombies/destroyer.webp' |
+  '/zombies/disciple.webp' |
+  '/zombies/doppelghast.webp' |
+  '/zombies/dragon.webp' |
+  '/zombies/elder-disciple.webp' |
+  '/zombies/eye-of-malice.webp' |
+  '/zombies/fire-catalyst.webp' |
+  '/zombies/fury-and-wrath.webp' |
+  '/zombies/fury.webp' |
+  '/zombies/gegenees.webp' |
+  '/zombies/george-a-romero.webp' |
+  '/zombies/ghost.webp' |
+  '/zombies/giant-spider.webp' |
+  '/zombies/giant-thrasher.webp' |
+  '/zombies/heavy-zombie.webp' |
+  '/zombies/hellhound.webp' |
+  '/zombies/insanity-elementals.webp' |
+  '/zombies/jolting-jack.webp' |
+  '/zombies/jumping-jack.webp' |
+  '/zombies/jungle-monkey.webp' |
+  '/zombies/keeper.webp' |
+  '/zombies/kommando-klaus.webp' |
+  '/zombies/krasny-soldat.webp' |
+  '/zombies/lightning-catalyst.webp' |
+  '/zombies/mangler.webp' |
+  '/zombies/marauder.webp' |
+  '/zombies/margwa.webp' |
+  '/zombies/megaton.webp' |
+  '/zombies/mimic.webp' |
+  '/zombies/napalm-zombie.webp' |
+  '/zombies/nathan.webp' |
+  '/zombies/nikolai-mech.webp' |
+  '/zombies/nosferatu.webp' |
+  '/zombies/nova-6-bomber.webp' |
+  '/zombies/nova-6-crawler.webp' |
+  '/zombies/orda.webp' |
+  '/zombies/oscar.webp' |
+  '/zombies/panzersoldat.webp' |
+  '/zombies/parasite.webp' |
+  '/zombies/patient-13.webp' |
+  '/zombies/pegasus.webp' |
+  '/zombies/pentagon-thief.webp' |
+  '/zombies/perseus.webp' |
+  '/zombies/plaguehound.webp' |
+  '/zombies/poison-catalyst.webp' |
+  '/zombies/rad-hound.webp' |
+  '/zombies/ravager.webp' |
+  '/zombies/sam.webp' |
+  '/zombies/sentinel-artifact.webp' |
+  '/zombies/shadow-werewolf.webp' |
+  '/zombies/shock-mimic.webp' |
+  '/zombies/shrieker-zombie.webp' |
+  '/zombies/skeleton.webp' |
+  '/zombies/space-monkey.webp' |
+  '/zombies/spider.webp' |
+  '/zombies/stoker.webp' |
+  '/zombies/tempest.webp' |
+  '/zombies/the-corrupted-keeper.webp' |
+  '/zombies/the-dark-heart.webp' |
+  '/zombies/the-forsaken.webp' |
+  '/zombies/the-guardian.webp' |
+  '/zombies/thrasher.webp' |
+  '/zombies/tiger.webp' |
+  '/zombies/tormentor.webp' |
+  '/zombies/toxic-zombie.webp' |
+  '/zombies/uber-klaus.webp' |
+  '/zombies/uber-richtofen.webp' |
+  '/zombies/valentina.webp' |
+  '/zombies/valkyrie-drone.webp' |
+  '/zombies/vermin.webp' |
+  '/zombies/veytharion.webp' |
+  '/zombies/water-catalyst.webp' |
+  '/zombies/werewolf.webp' |
+  '/zombies/z-rex.webp' |
+  '/zombies/zursa.webp';
 
 /** Union of images in `/augments` */
 
@@ -310,245 +549,5 @@ export type AugmentsImagePath =
   '/augments/turtle-shell-major-augment.webp' |
   '/augments/vampiric-extraction-major-augment.webp';
 
-/** Union of images in `/zombies` */
-
-export type ZombiesImagePath =
-  '/zombies/abomination.webp' |
-  '/zombies/adam-unit.webp' |
-  '/zombies/amalgam.webp' |
-  '/zombies/armored-zombie.webp' |
-  '/zombies/astronaut-zombie.webp' |
-  '/zombies/avogadro.webp' |
-  '/zombies/base-zombie.webp' |
-  '/zombies/blightfather.webp' |
-  '/zombies/brutus.webp' |
-  '/zombies/caltheris.webp' |
-  '/zombies/crusader-zombie.webp' |
-  '/zombies/denizen.webp' |
-  '/zombies/destroyer.webp' |
-  '/zombies/disciple.webp' |
-  '/zombies/doppelghast.webp' |
-  '/zombies/dragon.webp' |
-  '/zombies/elder-disciple.webp' |
-  '/zombies/eye-of-malice.webp' |
-  '/zombies/fire-catalyst.webp' |
-  '/zombies/fury-and-wrath.webp' |
-  '/zombies/fury.webp' |
-  '/zombies/gegenees.webp' |
-  '/zombies/george-a-romero.webp' |
-  '/zombies/ghost.webp' |
-  '/zombies/giant-spider.webp' |
-  '/zombies/giant-thrasher.webp' |
-  '/zombies/heavy-zombie.webp' |
-  '/zombies/hellhound.webp' |
-  '/zombies/insanity-elementals.webp' |
-  '/zombies/jolting-jack.webp' |
-  '/zombies/jumping-jack.webp' |
-  '/zombies/jungle-monkey.webp' |
-  '/zombies/keeper.webp' |
-  '/zombies/kommando-klaus.webp' |
-  '/zombies/krasny-soldat.webp' |
-  '/zombies/lightning-catalyst.webp' |
-  '/zombies/mangler.webp' |
-  '/zombies/marauder.webp' |
-  '/zombies/margwa.webp' |
-  '/zombies/megaton.webp' |
-  '/zombies/mimic.webp' |
-  '/zombies/napalm-zombie.webp' |
-  '/zombies/nathan.webp' |
-  '/zombies/nikolai-mech.webp' |
-  '/zombies/nosferatu.webp' |
-  '/zombies/nova-6-bomber.webp' |
-  '/zombies/nova-6-crawler.webp' |
-  '/zombies/orda.webp' |
-  '/zombies/oscar.webp' |
-  '/zombies/panzersoldat.webp' |
-  '/zombies/parasite.webp' |
-  '/zombies/patient-13.webp' |
-  '/zombies/pegasus.webp' |
-  '/zombies/pentagon-thief.webp' |
-  '/zombies/perseus.webp' |
-  '/zombies/plaguehound.webp' |
-  '/zombies/poison-catalyst.webp' |
-  '/zombies/rad-hound.webp' |
-  '/zombies/ravager.webp' |
-  '/zombies/sam.webp' |
-  '/zombies/sentinel-artifact.webp' |
-  '/zombies/shadow-werewolf.webp' |
-  '/zombies/shock-mimic.webp' |
-  '/zombies/shrieker-zombie.webp' |
-  '/zombies/skeleton.webp' |
-  '/zombies/space-monkey.webp' |
-  '/zombies/spider.webp' |
-  '/zombies/stoker.webp' |
-  '/zombies/tempest.webp' |
-  '/zombies/the-corrupted-keeper.webp' |
-  '/zombies/the-dark-heart.webp' |
-  '/zombies/the-forsaken.webp' |
-  '/zombies/the-guardian.webp' |
-  '/zombies/thrasher.webp' |
-  '/zombies/tiger.webp' |
-  '/zombies/tormentor.webp' |
-  '/zombies/toxic-zombie.webp' |
-  '/zombies/uber-klaus.webp' |
-  '/zombies/uber-richtofen.webp' |
-  '/zombies/valentina.webp' |
-  '/zombies/valkyrie-drone.webp' |
-  '/zombies/vermin.webp' |
-  '/zombies/veytharion.webp' |
-  '/zombies/water-catalyst.webp' |
-  '/zombies/werewolf.webp' |
-  '/zombies/z-rex.webp' |
-  '/zombies/zursa.webp';
-
-/** Union of images in `/games` */
-
-export type GamesImagePath =
-  '/games/black-ops-1_logo.webp' |
-  '/games/black-ops-2_logo.webp' |
-  '/games/black-ops-3_logo.webp' |
-  '/games/black-ops-4_logo.webp' |
-  '/games/black-ops-6_logo.webp' |
-  '/games/black-ops-7_logo.webp' |
-  '/games/black-ops-cold-war_logo.webp' |
-  '/games/world-at-war_logo.webp';
-
-/** Union of images in `/gobblegums` */
-
-export type GobblegumsImagePath =
-  '/gobblegums/aftertaste-bo7.webp' |
-  '/gobblegums/alchemical-antithesis.webp' |
-  '/gobblegums/anywhere-but-here-bo6.webp' |
-  '/gobblegums/anywhere-but-here.webp' |
-  '/gobblegums/armor-gettin.webp' |
-  '/gobblegums/arsenal-accelerator-bo6.webp' |
-  '/gobblegums/arsenal-accelerator.webp' |
-  '/gobblegums/crate-power.webp' |
-  '/gobblegums/danger-closest.webp' |
-  '/gobblegums/ephemeral-enhancement.webp' |
-  '/gobblegums/extra-credit.webp' |
-  '/gobblegums/fear-in-headlights.webp' |
-  '/gobblegums/free-fire.webp' |
-  '/gobblegums/gift-card.webp' |
-  '/gobblegums/hidden-power.webp' |
-  '/gobblegums/idle-eyes-bo6.webp' |
-  '/gobblegums/idle-eyes.webp' |
-  '/gobblegums/immolation-liquidation.webp' |
-  '/gobblegums/in-plain-sight.webp' |
-  '/gobblegums/kill-joy.webp' |
-  '/gobblegums/near-death-experience-bo6.webp' |
-  '/gobblegums/near-death-experience.webp' |
-  '/gobblegums/perkaholic-bo6.webp' |
-  '/gobblegums/perkaholic.webp' |
-  '/gobblegums/phoenix-up.webp' |
-  '/gobblegums/power-keg.webp' |
-  '/gobblegums/power-vacuum.webp' |
-  '/gobblegums/profit-sharing.webp' |
-  '/gobblegums/reign-drops-bo7.webp' |
-  '/gobblegums/reign-drops.webp' |
-  '/gobblegums/round-robbin.webp' |
-  '/gobblegums/self-medication.webp' |
-  '/gobblegums/shields-up.webp' |
-  '/gobblegums/shopping-free.webp' |
-  '/gobblegums/stock-option.webp' |
-  '/gobblegums/sword-flay.webp' |
-  '/gobblegums/undead-man-walking.webp' |
-  '/gobblegums/wall-power-bo6.webp' |
-  '/gobblegums/wall-power.webp' |
-  '/gobblegums/wonderbar.webp';
-
-/** Union of images in `/weapons` */
-
-export type WeaponsImagePath =
-  '/weapons/abr-a1.webp' |
-  '/weapons/ak-27.webp' |
-  '/weapons/akita.webp' |
-  '/weapons/coda-9.webp' |
-  '/weapons/ds20-mirage.webp' |
-  '/weapons/gpr-91.webp' |
-  '/weapons/grekhova.webp' |
-  '/weapons/jager-45.webp' |
-  '/weapons/kogot-7.webp' |
-  '/weapons/m10-breacher.webp' |
-  '/weapons/m34-novaline.webp' |
-  '/weapons/maelstrom.webp';
-
-/** Union of images in `/ammo-mods` */
-
-export type AmmoModsImagePath =
-  '/ammo-mods/brain-rot-bo6.webp' |
-  '/ammo-mods/brain-rot.webp' |
-  '/ammo-mods/cryo-freeze.webp' |
-  '/ammo-mods/dead-wire-bo6.webp' |
-  '/ammo-mods/dead-wire.webp' |
-  '/ammo-mods/fire-bomb.webp' |
-  '/ammo-mods/light-mend.webp' |
-  '/ammo-mods/napalm-burst.webp' |
-  '/ammo-mods/shadow-rift.webp';
-
-/** Union of images in `/elixirs` */
-
-export type ElixirsImagePath =
-  '/elixirs/aftertaste-elixir.webp' |
-  '/elixirs/alchemical-antithesis-elixir.webp' |
-  '/elixirs/anywhere-but-here-elixir.webp' |
-  '/elixirs/arsenal-accelerator-elixir.webp' |
-  '/elixirs/blood-debt-elixir.webp' |
-  '/elixirs/cache-back-elixir.webp' |
-  '/elixirs/ctrl-z-elixir.webp' |
-  '/elixirs/dead-of-nuclear-winter-elixir.webp' |
-  '/elixirs/equip-mint-elixir.webp' |
-  '/elixirs/free-fire-elixir.webp' |
-  '/elixirs/immolation-liquidation-elixir.webp' |
-  '/elixirs/in-plain-sight-elixir.webp' |
-  '/elixirs/licensed-contractor-elixir.webp' |
-  '/elixirs/perkaholic-elixir.webp' |
-  '/elixirs/power-keg-elixir.webp' |
-  '/elixirs/refresh-mint-elixir.webp' |
-  '/elixirs/reign-drops-elixir.webp' |
-  '/elixirs/shields-up-elixir.webp' |
-  '/elixirs/shopping-free-elixir.webp' |
-  '/elixirs/stock-option-elixir.webp' |
-  '/elixirs/talkin-bout-regeneration-elixir.webp' |
-  '/elixirs/temporal-gift-elixir.webp' |
-  '/elixirs/undead-man-walking-elixir.webp' |
-  '/elixirs/wall-to-wall-clearance-elixir.webp';
-
-/** Union of images in `/perks` */
-
-export type PerksImagePath =
-  '/perks/deadshot-daiquiri-cold-war.webp' |
-  '/perks/deadshot-daiquiri.webp' |
-  '/perks/death-perception-bo6.webp' |
-  '/perks/death-perception.webp' |
-  '/perks/double-tap-bo3.webp' |
-  '/perks/double-tap.webp' |
-  '/perks/dying-wish.webp' |
-  '/perks/elemental-pop.webp' |
-  '/perks/juggernog-bo6.webp' |
-  '/perks/juggernog.webp' |
-  '/perks/melee-macchiato.webp' |
-  '/perks/mule-kick-cold-war.webp' |
-  '/perks/mule-kick.webp' |
-  '/perks/phd-flopper-bo1.webp' |
-  '/perks/phd-flopper.webp' |
-  '/perks/phd-slider.webp' |
-  '/perks/quick-revive-cold-war.webp' |
-  '/perks/quick-revive.webp' |
-  '/perks/speed-cola-bo3.webp' |
-  '/perks/speed-cola.webp' |
-  '/perks/stamin-up-cold-war.webp' |
-  '/perks/stamin-up.webp' |
-  '/perks/stone-cold-stronghold.webp' |
-  '/perks/timeslip.webp' |
-  '/perks/tombstone-cold-war.webp' |
-  '/perks/tombstone.webp' |
-  '/perks/victorious-tortoise.webp' |
-  '/perks/vulture-aid-bo2.webp' |
-  '/perks/vulture-aid.webp' |
-  '/perks/widows-wine.webp' |
-  '/perks/winters-wail.webp' |
-  '/perks/wisp-tea.webp';
-
 /** Union of all generated image path types */
-export type ImagePaths = RootImagePath | MapsImagePath | RelicsImagePath | FieldUpgradesImagePath | PreviewsImagePath | IconsImagePath | LayersImagePath | AugmentsImagePath | ZombiesImagePath | GamesImagePath | GobblegumsImagePath | WeaponsImagePath | AmmoModsImagePath | ElixirsImagePath | PerksImagePath;
+export type ImagePaths = RootImagePath | FieldUpgradesImagePath | GamesImagePath | PreviewsImagePath | AmmoModsImagePath | WeaponsImagePath | RelicsImagePath | ElixirsImagePath | PerksImagePath | GobblegumsImagePath | LayersImagePath | MapsImagePath | IconsImagePath | ZombiesImagePath | AugmentsImagePath;

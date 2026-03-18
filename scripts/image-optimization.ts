@@ -1,7 +1,8 @@
 import { BunRuntime, BunServices } from "@effect/platform-bun"
-import { Clock, Duration, Effect, FileSystem, Path, Ref, Schema } from "effect"
+import { Clock, Duration, Effect, FileSystem, HashSet, Path, Ref, Schema } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp from "sharp"
+import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 
 class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
 	"ImageOptimizationError",
@@ -11,7 +12,6 @@ class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationEr
 	},
 ) {}
 
-const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".webp", ".avif"]
 const MAX_EFFORT = 6
 const MAX_QUALITY = 80
 const DEFAULT_SOURCE_DIR = "./newassets"
@@ -150,7 +150,7 @@ const optimizeCommand = Command.make(
 				asset =>
 					Effect.gen(function* () {
 						const extension = path.extname(asset)
-						if (!IMAGE_EXTS.includes(extension)) return
+						if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, extension)) return
 
 						const imagePath = path.join(source, asset)
 						let fileName = path.basename(asset, extension)
