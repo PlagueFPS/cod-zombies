@@ -31,11 +31,11 @@ import {
 	getZombies,
 	type Zombie,
 } from "@/data/zombies"
-import { FileSystemPage } from "@/lib/layers"
+import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getLastUpdated, getServerUrl } from "@/utils/server-functions"
+import { getLastModified, getServerUrl } from "@/utils/server-functions"
 
 export const generateStaticParams = () => {
 	const zombies = getZombies()
@@ -79,7 +79,17 @@ export const generateMetadata = async ({
 	}
 }
 
-const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/bestiary/[id]">) {
+export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">) {
+	return await buildZombiePage(params).pipe(
+		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.orDie,
+		PageRuntime.runPromise,
+	)
+}
+
+const buildZombiePage = Effect.fn("buildZombiePage")(function* (
+	params: PageProps<"/bestiary/[id]">["params"],
+) {
 	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
 	const { id } = yield* Effect.promise(() => params)
 	const zombie = getZombieById(id)
@@ -88,7 +98,7 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 
 	const { prev, next } = getAdjacentZombies(zombie.id)
 	const { default: MDXContent } = yield* zombie.combatStrategy
-	const { lastModifiedFormatted } = getLastUpdated(`zombies/${zombie.id}.mdx`)
+	const { lastModifiedFormatted } = yield* getLastModified(`zombies/${zombie.id}.mdx`)
 	const mostRecentGame = getLatestZombieGameKey(zombie.games)
 	const firstAppearIn = Arr.get(zombie.maps, 0)
 
@@ -107,7 +117,7 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 
 	return (
 		<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
-			<div className="-top-5 absolute left-2 z-30 flex w-full justify-center pl-4 xl:left-5 xl:pl-0">
+			<div className="absolute -top-5 left-2 z-30 flex w-full justify-center pl-4 xl:left-5 xl:pl-0">
 				<Breadcrumbs
 					links={[
 						{ title: "Bestiary", href: "/bestiary" },
@@ -355,8 +365,6 @@ const ZombiePage = Effect.fn("ZombiePage")(function* ({ params }: PageProps<"/be
 	)
 })
 
-export default FileSystemPage.build(ZombiePage)
-
 interface PrevOrNextZombieCard {
 	zombie: Zombie
 	prev?: boolean
@@ -386,7 +394,7 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 		<CustomLink
 			href={href as Route}
 			className={cn(
-				"group hover:-translate-y-2 focus-visible:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:outline-2 hover:outline-primary focus-visible:outline-2 focus-visible:outline-primary xl:max-w-full dark:shadow-none",
+				"group w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:-translate-y-2 hover:outline-2 hover:outline-primary focus-visible:-translate-y-2 focus-visible:outline-2 focus-visible:outline-primary xl:max-w-full dark:shadow-none",
 				{
 					"pointer-events-none opacity-50": disabled,
 				},
