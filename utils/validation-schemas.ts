@@ -1,8 +1,8 @@
 import { Schema } from "effect"
 
 const FileMetadataSchema = Schema.Struct({
-	lastModified: Schema.Int,
-	lastModifiedFormatted: Schema.String,
+	lastModified: Schema.Int.annotate({ description: "Epoch timestamp of the last modification" }),
+	lastModifiedFormatted: Schema.String.annotate({ description: "Human-readable formatted date of the last modification" }),
 })
 
 const LastModifiedDataSchema = Schema.Struct({
