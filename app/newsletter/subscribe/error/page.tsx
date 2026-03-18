@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import type { SearchParams } from "next/dist/server/request/search-params"
 import { Effect, Option } from "effect"
 import { AlertCircle } from "lucide-react"
 import { CustomLink } from "@/components/client/custom-link"
@@ -17,7 +16,7 @@ export default async function SubscribeErrorPage({
 }
 
 const subscribeErrorUI = Effect.fn("SubscribeErrorPage")(function* (
-	searchParams: Promise<SearchParams>,
+	searchParams: PageProps<"/newsletter/subscribe/error">["searchParams"],
 ) {
 	const params = yield* Effect.promise(() => searchParams)
 	const { message } = yield* decodeErrorPageSearchParams(params).pipe(
