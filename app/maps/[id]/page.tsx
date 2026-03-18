@@ -19,13 +19,12 @@ import { categoryHandlers, type MarkerCategory } from "@/map-configs/markers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getServerUrl } from "@/utils/server-functions"
 
-export const generateStaticParams = () =>
-	Effect.gen(function* () {
-		const maps = yield* getInteractiveMaps()
-		return yield* Effect.forEach(maps, map => Effect.succeed({ id: map.id }), {
-			concurrency: "unbounded",
-		})
-	}).pipe(Effect.runPromise)
+export const generateStaticParams = Effect.fnUntraced(function* () {
+	const maps = yield* getInteractiveMaps()
+	return yield* Effect.forEach(maps, map => Effect.succeed({ id: map.id }), {
+		concurrency: "unbounded",
+	})
+}, Effect.runPromise)
 
 export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Promise<Metadata> => {
 	const { id } = await params
@@ -61,10 +60,10 @@ export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Pro
 }
 
 export default async function InteractiveMapPage({ params }: PageProps<"/maps/[id]">) {
-	return await interactiveMapPageUI(params).pipe(Effect.runPromise)
+	return await buildInteractiveMapPage(params).pipe(Effect.runPromise)
 }
 
-const interactiveMapPageUI = Effect.fn("InteractiveMapPageUI")(function* (
+const buildInteractiveMapPage = Effect.fn("buildInteractiveMapPage")(function* (
 	params: PageProps<"/maps/[id]">["params"],
 ) {
 	const [{ id }, cookieStore] = yield* Effect.all(

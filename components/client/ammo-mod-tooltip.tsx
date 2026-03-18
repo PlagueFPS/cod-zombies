@@ -87,12 +87,12 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 					className="relative z-10 h-20 w-auto p-2"
 				/>
 			</div>
-			<div className="-mt-3 relative z-10">
+			<div className="relative z-10 -mt-3">
 				<div className="px-4 text-center font-bold text-foreground text-lg">{ammoMod.title}</div>
 				<div className="mt-2 pb-4">
 					<p className="text-center text-foreground text-sm">{ammoMod.description}</p>
 				</div>
-				{Arr.isNonEmptyArray(ammoModAugments) ? (
+				{Arr.isArrayNonEmpty(ammoModAugments) ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">

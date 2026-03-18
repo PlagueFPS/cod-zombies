@@ -2,7 +2,9 @@ import { Schema } from "effect"
 
 const FileMetadataSchema = Schema.Struct({
 	lastModified: Schema.Int.annotate({ description: "Epoch timestamp of the last modification" }),
-	lastModifiedFormatted: Schema.String.annotate({ description: "Human-readable formatted date of the last modification" }),
+	lastModifiedFormatted: Schema.String.annotate({
+		description: "Human-readable formatted date of the last modification",
+	}),
 })
 
 const LastModifiedDataSchema = Schema.Struct({
@@ -117,6 +119,7 @@ export type TContactForm = typeof ContactFormSchema.Type
 export type TNewsletterForm = typeof NewsletterFormSchema.Type
 export type FileMetadata = typeof FileMetadataSchema.Type
 export type LastModifiedData = typeof LastModifiedDataSchema.Type
+export type TTerminusCode = typeof TerminusCodeSchema.Encoded
 
 export const StandardFeedbackFormSchema = Schema.toStandardSchemaV1(FeedbackFormSchema)
 export const StandardContactFormSchema = Schema.toStandardSchemaV1(ContactFormSchema)

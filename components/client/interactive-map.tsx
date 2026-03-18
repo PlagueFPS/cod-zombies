@@ -41,9 +41,9 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 		Option.none(),
 	)
 	const currentLayer = Option.match(layerParam, {
-		onNone: () => Option.fromNullOr(mapConfig.layers.at(0)),
+		onNone: () => Option.fromNullishOr(mapConfig.layers.at(0)),
 		onSome: layerParam =>
-			Option.fromNullOr(
+			Option.fromNullishOr(
 				mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0),
 			),
 	})

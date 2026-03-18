@@ -31,10 +31,10 @@ export const metadata: Metadata = {
 }
 
 export default async function MapsPage() {
-	return await Effect.runPromise(mapsPageUI())
+	return await buildMapsPage().pipe(Effect.runPromise)
 }
 
-const mapsPageUI = Effect.fn("MapsPage")(function* () {
+const buildMapsPage = Effect.fn("buildMapsPage")(function* () {
 	const maps = yield* getInteractiveMaps().pipe(
 		Effect.map(maps => maps.map(m => ({ ...m, state: Option.getOrNull(m.state) }))),
 	)
