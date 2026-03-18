@@ -353,6 +353,22 @@ const relicRegistry = {
 		},
 		content: Effect.promise(() => import("@/content/relics/summoning-key.mdx")),
 	},
+	manglerHelmet: {
+		id: "mangler-helmet",
+		title: "Mangler Helmet",
+		state: "New",
+		type: "Wicked",
+		image: "/relics/mangler-helmet-relic.webp",
+		description: "No Arsenal.",
+		map: getMapByKey("paradoxJunction"),
+		discoveredDate: new Date("March 17, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: Duration.toMinutes("1.5 hours"),
+			max: Duration.toMinutes("4 hours"),
+			reason: "Time varies significantly based on party size and knowledge of the steps.",
+		},
+		content: Effect.promise(() => import("@/content/relics/mangler-helmet.mdx")),
+	},
 } as const satisfies Record<string, Relic>
 
 const relicMap = new Map<string, Relic>()
