@@ -1,11 +1,16 @@
 {
   "version": "1.0",
-  "generated": "2026-03-16T23:38:14.283Z",
+  "generated": "2026-03-18T20:55:02.026Z",
   "files": {
+    "relics/mangler-helmet.mdx": {
+      "lastModified": "2026-03-18T03:25:02.000Z",
+      "lastModifiedFormatted": "March 18, 2026",
+      "commitHash": "ea38b4a"
+    },
     "relics/summoning-key.mdx": {
-      "lastModified": "2026-03-16T23:37:21.000Z",
+      "lastModified": "2026-03-16T23:49:04.000Z",
       "lastModifiedFormatted": "March 16, 2026",
-      "commitHash": "7bd33f4"
+      "commitHash": "9631f4d"
     },
     "side-quests/haunted-mannequin.mdx": {
       "lastModified": "2026-03-16T19:25:16.000Z",
