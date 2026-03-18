@@ -1,9 +1,10 @@
 "use server"
-import { Effect } from "effect"
+import { Effect, Schedule } from "effect"
 import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/data/email"
 import { submitFeedback } from "@/data/feedback"
 import { createAction } from "@/lib/action-helpers"
 import { APIRuntime } from "@/lib/layers"
+import { IssueTracker } from "@/lib/services/issue-tracker"
 import {
 	ContactFormSchema,
 	FeedbackFormSchema,
@@ -12,9 +13,13 @@ import {
 
 export const subscribeToNewsletter = createAction(NewsletterFormSchema, async ({ email }) => {
 	return await requestSubscribe(email).pipe(
-		Effect.withLogSpan("subscribe_to_newsletter_action"),
+		Effect.retry({
+			while: error => error._tag === "ResendError",
+			times: 3,
+			schedule: Schedule.fixed("200 millis"),
+		}),
 		Effect.timeout("10 seconds"),
-		Effect.tapError(Effect.logError),
+		Effect.tapCause(cause => Effect.logError(cause)),
 		Effect.catchTags({
 			ContactExistsError: error =>
 				Effect.succeed({
@@ -22,7 +27,7 @@ export const subscribeToNewsletter = createAction(NewsletterFormSchema, async ({
 					message: error.message,
 				}),
 		}),
-		Effect.catchAll(_error =>
+		Effect.catch(_error =>
 			Effect.succeed({
 				success: false,
 				message: "Subscribe request failed due to a technical issue on our end. Please try again.",
@@ -34,9 +39,13 @@ export const subscribeToNewsletter = createAction(NewsletterFormSchema, async ({
 
 export const unsubscribeFromNewsletter = createAction(NewsletterFormSchema, async ({ email }) => {
 	return await requestUnsubscribe(email).pipe(
-		Effect.withLogSpan("unsubscribe_from_newsletter_action"),
+		Effect.retry({
+			while: error => error._tag === "ResendError",
+			times: 3,
+			schedule: Schedule.fixed("200 millis"),
+		}),
 		Effect.timeout("10 seconds"),
-		Effect.tapError(Effect.logError),
+		Effect.tapCause(cause => Effect.logError(cause)),
 		Effect.catchTags({
 			ContactNotFoundError: error =>
 				Effect.succeed({
@@ -44,7 +53,7 @@ export const unsubscribeFromNewsletter = createAction(NewsletterFormSchema, asyn
 					message: error.message,
 				}),
 		}),
-		Effect.catchAll(_error =>
+		Effect.catch(_error =>
 			Effect.succeed({
 				success: false,
 				message:
@@ -57,26 +66,48 @@ export const unsubscribeFromNewsletter = createAction(NewsletterFormSchema, asyn
 
 export const submitFeedbackForm = createAction(FeedbackFormSchema, async parsedInput => {
 	return await submitFeedback(parsedInput).pipe(
-		Effect.withLogSpan("submit_feedback_form_action"),
+		Effect.retry({
+			while: error => error._tag === "CreateIssueError",
+			times: 3,
+			schedule: Schedule.fixed("200 millis"),
+		}),
 		Effect.timeout("10 seconds"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error =>
-			Effect.succeed({
-				success: false,
-				message:
-					"Feedback submission failed due to a technical issue on our end. Please try again.",
-			}),
-		),
+		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			CreateIssueError: _error =>
+				Effect.succeed({
+					success: false,
+					message: "We were unable to collect your feedback! Please try again.",
+				}),
+			TimeoutError: _error =>
+				Effect.succeed({
+					success: false,
+					message: "Feedback submission took too long to execute. Please try again.",
+				}),
+		}),
+		Effect.satisfiesErrorType<never>(),
+		Effect.provide(IssueTracker.layer),
 		Effect.runPromise,
 	)
 })
 
 export const submitContactForm = createAction(ContactFormSchema, async parsedInput => {
 	return await sendContactEmail(parsedInput).pipe(
-		Effect.withLogSpan("submit_contact_form_action"),
+		Effect.retry({
+			while: error => error._tag === "ResendError",
+			times: 3,
+			schedule: Schedule.fixed("200 millis"),
+		}),
 		Effect.timeout("10 seconds"),
-		Effect.tapError(Effect.logError),
-		Effect.catchAll(_error =>
+		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			TimeoutError: _error =>
+				Effect.succeed({
+					success: false,
+					message: "Contact form submission took too long to execute. Please try again.",
+				}),
+		}),
+		Effect.catch(_error =>
 			Effect.succeed({
 				success: false,
 				message:

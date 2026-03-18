@@ -1,11 +1,42 @@
 import type { Heading } from "@/components/client/table-of-contents"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import { Clock, Duration, Effect, FileSystem, Number as Num, Option, Path, Redacted } from "effect"
+import {
+	Clock,
+	Duration,
+	Effect,
+	FileSystem,
+	Number as Num,
+	Option,
+	Path,
+	Redacted,
+	Schema,
+} from "effect"
 import { env } from "@/env"
-import { TokenExpirationError, TokenGenerationError, TokenVerificationError } from "@/types/errors"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { slugify } from "@/utils/shared-functions"
 import { decodeLastModifiedData } from "./validation-schemas"
+
+class TokenExpirationError extends Schema.TaggedErrorClass<TokenExpirationError>()(
+	"TokenExpirationError",
+	{
+		message: Schema.String,
+		cause: Schema.Unknown,
+	},
+) {}
+class TokenGenerationError extends Schema.TaggedErrorClass<TokenGenerationError>()(
+	"TokenGenerationError",
+	{
+		message: Schema.String,
+		cause: Schema.Unknown,
+	},
+) {}
+class TokenVerificationError extends Schema.TaggedErrorClass<TokenVerificationError>()(
+	"TokenVerificationError",
+	{
+		message: Schema.String,
+		cause: Schema.Unknown,
+	},
+) {}
 
 /**
  * Gets the server URL.

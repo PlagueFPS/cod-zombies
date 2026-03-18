@@ -1,8 +1,7 @@
-import { Effect } from "effect"
+import { Duration, Effect, Schema } from "effect"
 import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"
-import { ContactExistsError, ContactNotFoundError } from "@/types/errors"
 import { generateToken, getServerUrl } from "@/utils/server-functions"
 
 interface EmailProps {
@@ -11,77 +10,90 @@ interface EmailProps {
 	message: string
 }
 
-export const requestSubscribe = (email: string) =>
-	Effect.gen(function* () {
-		const emails = yield* Email
+class ContactExistsError extends Schema.TaggedErrorClass<ContactExistsError>()(
+	"ContactExistsError",
+	{
+		message: Schema.String,
+		cause: Schema.Unknown,
+	},
+) {}
+class ContactNotFoundError extends Schema.TaggedErrorClass<ContactNotFoundError>()(
+	"ContactNotFoundError",
+	{
+		message: Schema.String,
+		cause: Schema.Unknown,
+	},
+) {}
 
-		const contact = yield* emails.getContact(email)
-		if (contact)
-			return yield* new ContactExistsError({
-				message: "That email is already subscribed!",
-				cause: new Error(`Contact already subscribed: ${contact}`),
-			})
+export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: string) {
+	const emails = yield* Email
 
-		const token = yield* generateToken(email, "1 day")
-		const subscribeUrl = `${getServerUrl()}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
-
-		yield* emails.sendEmail({
-			from: "COD Zombies Guides <support@codzombiesguides.com>",
-			to: email,
-			subject: "Confirm Your Subscribe Request",
-			react: SubscribeEmail({ subscribeUrl }),
+	const contact = yield* emails.getContact(email)
+	if (contact)
+		return yield* new ContactExistsError({
+			message: "That email is already subscribed!",
+			cause: new Error(`Contact already subscribed: ${contact}`),
 		})
-		return { success: true, message: "Check your inbox to complete your subscribe request." }
-	}).pipe(Effect.withLogSpan("request_subscribe"))
 
-export const requestUnsubscribe = (email: string) =>
-	Effect.gen(function* () {
-		const emails = yield* Email
+	const ttl = yield* Duration.fromInput("1 day")
+	const token = yield* generateToken(email, ttl)
+	const subscribeUrl = `${getServerUrl()}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
-		const contact = yield* emails.getContact(email)
-		if (!contact)
-			return yield* new ContactNotFoundError({
-				message: "That email is not currently subscribed!",
-				cause: new Error(`Contact not found for email: ${email}`),
-			})
+	yield* emails.sendEmail({
+		from: "COD Zombies Guides <support@codzombiesguides.com>",
+		to: email,
+		subject: "Confirm Your Subscribe Request",
+		react: SubscribeEmail({ subscribeUrl }),
+	})
+	return { success: true, message: "Check your inbox to complete your subscribe request." }
+})
 
-		const token = yield* generateToken(email, "1 day")
-		const unsubscribeUrl = `${getServerUrl()}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
+export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (email: string) {
+	const emails = yield* Email
 
-		yield* emails.sendEmail({
-			from: "COD Zombies Guides <support@codzombiesguides.com>",
-			to: email,
-			subject: "Confirm Your Unsubscribe Request",
-			react: UnsubscribeEmail({ unsubscribeUrl }),
+	const contact = yield* emails.getContact(email)
+	if (!contact)
+		return yield* new ContactNotFoundError({
+			message: "That email is not currently subscribed!",
+			cause: new Error(`Contact not found for email: ${email}`),
 		})
-		return { success: true, message: "Check your inbox to complete your unsubscribe request." }
-	}).pipe(Effect.withLogSpan("request_unsubscribe"))
 
-export const subscribeEmail = (email: string) =>
-	Effect.gen(function* () {
-		const emails = yield* Email
-		return yield* emails.createContact(email)
-	}).pipe(Effect.withLogSpan("subscribe_email"))
+	const ttl = yield* Duration.fromInput("1 day")
+	const token = yield* generateToken(email, ttl)
+	const unsubscribeUrl = `${getServerUrl()}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
 
-export const unsubscribeEmail = (email: string) =>
-	Effect.gen(function* () {
-		const emails = yield* Email
-		return yield* emails.removeContact(email)
-	}).pipe(Effect.withLogSpan("unsubscribe_email"))
+	yield* emails.sendEmail({
+		from: "COD Zombies Guides <support@codzombiesguides.com>",
+		to: email,
+		subject: "Confirm Your Unsubscribe Request",
+		react: UnsubscribeEmail({ unsubscribeUrl }),
+	})
 
-export const sendContactEmail = (props: EmailProps) =>
-	Effect.gen(function* () {
-		const emails = yield* Email
+	return { success: true, message: "Check your inbox to complete your unsubscribe request." }
+})
 
-		yield* emails.sendEmail({
-			from: `${props.name} <contact@codzombiesguides.com>`,
-			replyTo: props.email,
-			to: "contact@codzombiesguides.com",
-			subject: "Contact Form Submission",
-			text: props.message,
-		})
-		return {
-			success: true,
-			message: "Thank you for contacting us! We will get back to you as soon as possible.",
-		}
-	}).pipe(Effect.withLogSpan("send_contact_email"))
+export const subscribeEmail = Effect.fn("subscribeEmail")(function* (email: string) {
+	const emails = yield* Email
+	return yield* emails.createContact(email)
+})
+
+export const unsubscribeEmail = Effect.fn("unsubscribeEmail")(function* (email: string) {
+	const emails = yield* Email
+	return yield* emails.removeContact(email)
+})
+
+export const sendContactEmail = Effect.fn("sendContactEmail")(function* (props: EmailProps) {
+	const emails = yield* Email
+
+	yield* emails.sendEmail({
+		from: `${props.name} <contact@codzombiesguides.com>`,
+		replyTo: props.email,
+		to: "contact@codzombiesguides.com",
+		subject: "Contact Form Submission",
+		text: props.message,
+	})
+	return {
+		success: true,
+		message: "Thank you for contacting us! We will get back to you as soon as possible.",
+	}
+})

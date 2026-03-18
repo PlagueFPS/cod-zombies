@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 		return NextResponse.redirect(new URL(`/newsletter/unsubscribe/success`, req.url))
 	}).pipe(
 		Effect.withLogSpan("unsubscribe_get_handler"),
-		Effect.tapError(Effect.logError),
+		Effect.tapCause(cause => Effect.logError(cause)),
 		Effect.catchTags({
 			TokenExpirationError: () => {
 				const message = "The unsubscribe token used has expired. Please request a new one."
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
 					),
 				)
 			},
-			RemoveContactError: () => {
+			ResendError: () => {
 				const message =
 					"We were unable to unsubscribe your email from our newsletter due to a technical issue on our end. Please try again or request a new unsubscribe token. We're sorry for the inconvenience!"
 				return Effect.succeed(
@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
 				)
 			},
 		}),
-		Effect.ensureErrorType<never>(),
+		Effect.satisfiesErrorType<never>(),
 		APIRuntime.runPromise,
 	)
 }
