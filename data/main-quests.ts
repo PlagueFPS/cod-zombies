@@ -1,6 +1,6 @@
 import type { SortOption } from "@/components/client/grid-sort"
 import type { ContentState, TimeRange } from "@/types/data"
-import { Duration, Effect, Option } from "effect"
+import { Effect, Option } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
 import { getAdjacentItems, sortReleaseDateDesc } from "@/utils/shared-functions"
 
@@ -85,8 +85,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("ascension"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 45,
+			max: 90,
 			reason:
 				"Time varies significantly based on the game (BO1/BO3), box luck, and player knowledge of the steps.",
 		},
@@ -98,8 +98,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("callOfTheDead"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2 hours"),
+			min: 60,
+			max: 120,
 			reason:
 				"Time assumes Co-op version which takes longer and can vary based on box luck for the Wonder Weapon, and player knowledge of the steps.",
 		},
@@ -111,8 +111,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("shangriLa"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("2 hours"),
+			min: 90,
+			max: 120,
 			reason:
 				"Time varies significantly based on the game (BO1/BO3), box luck, and player knowledge of the steps.",
 		},
@@ -124,8 +124,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("moon"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("2 hours"),
+			min: 45,
+			max: 120,
 			reason:
 				"Time varies significantly based on the game (BO1/BO3), extreme RNG, and player knowledge of the steps.",
 		},
@@ -137,8 +137,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("tranzit"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2.5 hours"),
+			min: 60,
+			max: 150,
 			reason:
 				"Time varies significantly based on the chosen path, and player knowledge of the steps.",
 		},
@@ -150,8 +150,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("dieRise"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2 hours"),
+			min: 60,
+			max: 120,
 			reason:
 				"Time varies significantly based on the chosen path, and player knowledge of the steps.",
 		},
@@ -163,8 +163,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("mobOfTheDead"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 45,
+			max: 90,
 			reason: "Time varies mainly based on the player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/pop-goes-the-weasel.mdx")),
@@ -175,8 +175,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Hard"),
 		map: getMapByKey("buried"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("2 hours"),
+			min: 45,
+			max: 120,
 			reason:
 				"Time varies significantly based on the player coordination and knowledge of the steps.",
 		},
@@ -188,8 +188,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Hard"),
 		map: getMapByKey("origins"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("2.5 hours"),
+			min: 90,
+			max: 180,
 			reason:
 				"Time varies significantly based on the game (BO2/BO3), player knowledge of steps, and slight RNG.",
 		},
@@ -201,8 +201,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("shadowsOfEvil"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 60,
+			max: 90,
 			reason: "Time varies slightly based on player coordination and knowledge of steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/apocalypse-averted.mdx")),
@@ -213,8 +213,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("theGiant"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("5 minutes"),
-			max: Duration.toMinutes("10 minutes"),
+			min: 5,
+			max: 10,
 			reason: "Time varies slightly based on use of Gobblegums.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/paradoxical-prolouge.mdx")),
@@ -225,8 +225,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("derEisendrache"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 45,
+			max: 90,
 			reason:
 				"Time varies significantly based on if Solo or Co-op and player knowledge of the steps.",
 		},
@@ -238,8 +238,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("zetsubouNoShima"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2 hours"),
+			min: 60,
+			max: 120,
 			reason: "Time varies significantly based on plant RNG and player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/seeds-of-doubt.mdx")),
@@ -250,8 +250,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Hard"),
 		map: getMapByKey("gorodKrovi"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("2.5 hours"),
+			min: 90,
+			max: 180,
 			reason:
 				"Time varies significantly based on if Solo or Co-op and player knowledge of the steps.",
 		},
@@ -263,8 +263,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("revelations"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("1.75 hours"),
+			min: 60,
+			max: 105,
 			reason:
 				"Time varies significantly based on box luck, use of Gobblegums, and player knowledge of steps.",
 		},
@@ -276,8 +276,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Hard"),
 		map: getMapByKey("voyageOfDespair"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.25 hours"),
-			max: Duration.toMinutes("2.5 hours"),
+			min: 75,
+			max: 150,
 			reason:
 				"Time varies significantly based on if Solo or Co-op, use of Elixirs, and player knowledge of steps.",
 		},
@@ -289,8 +289,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("ix"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2 hours"),
+			min: 60,
+			max: 120,
 			reason: "Time varies significantly based on use of Elixirs, and player knowledge of steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/venerated-warrior.mdx")),
@@ -301,8 +301,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Hard"),
 		map: getMapByKey("bloodOfTheDead"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.75 hours"),
-			max: Duration.toMinutes("3 hours"),
+			min: 105,
+			max: 180,
 			reason:
 				"Time varies significantly based on if Solo or Co-op, use of Elixirs, bird step RNG, and player knowledge of steps.",
 		},
@@ -314,8 +314,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("classified"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("10 hours"),
-			max: Duration.toMinutes("12 hours"),
+			min: 600,
+			max: 720,
 			reason:
 				"Time varies significantly based on use of Elixirs and how many players are in the game. Solo is faster.",
 		},
@@ -327,8 +327,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Hard"),
 		map: getMapByKey("deadOfTheNight"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2.5 hours"),
+			min: 60,
+			max: 150,
 			reason:
 				"Time varies significantly based on use of Elixirs and player knowledge of the part spawns/steps.",
 		},
@@ -340,8 +340,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("ancientEvil"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2 hours"),
+			min: 60,
+			max: 120,
 			reason:
 				"Time varies significantly based on use of Elixirs and player knowledge of the steps.",
 		},
@@ -353,8 +353,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("alphaOmega"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 45,
+			max: 90,
 			reason:
 				"Time varies significantly based on use of Elixirs and player knowledge of the steps.",
 		},
@@ -368,8 +368,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("tagDerToten"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.25 hours"),
-			max: Duration.toMinutes("1.75 hours"),
+			min: 75,
+			max: 112.5,
 			reason:
 				"Time varies significantly based on use of Elixirs and player knowledge of the steps.",
 		},
@@ -381,8 +381,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("dieMaschine"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("40 minutes"),
-			max: Duration.toMinutes("1 hour"),
+			min: 40,
+			max: 60,
 			reason: "Time varies mainly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/seal-the-deal.mdx")),
@@ -393,8 +393,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("firebaseZ"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("40 minutes"),
-			max: Duration.toMinutes("1 hour"),
+			min: 40,
+			max: 60,
 			reason: "Time varies mainly based on slight RNG and player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/maxis-potential.mdx")),
@@ -405,8 +405,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("mauerDerToten"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 60,
+			max: 90,
 			reason: "Time varies mainly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/tin-man-heart.mdx")),
@@ -417,8 +417,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("forsaken"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("40 minutes"),
-			max: Duration.toMinutes("1 hour"),
+			min: 40,
+			max: 60,
 			reason: "Time varies mainly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/pyrrhic-victory.mdx")),
@@ -429,8 +429,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Easy"),
 		map: getMapByKey("libertyFalls"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("30 minutes"),
-			max: Duration.toMinutes("45 minutes"),
+			min: 30,
+			max: 45,
 			reason: "Time varies slightly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/bye-bye-dark-aether.mdx")),
@@ -441,8 +441,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("terminus"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1.25 hours"),
+			min: 45,
+			max: 75,
 			reason: "Time varies slightly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/no-mo-modi.mdx")),
@@ -453,8 +453,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("citadelleDesMorts"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 60,
+			max: 90,
 			reason: "Time varies slightly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/citadelles-des-morts.mdx")),
@@ -465,8 +465,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("theTomb"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1 hour"),
+			min: 45,
+			max: 60,
 			reason: "Time varies slightly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/the-tomb.mdx")),
@@ -477,8 +477,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("shatteredVeil"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1.25 hours"),
+			min: 45,
+			max: 75,
 			reason: "Time varies slightly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/shattered-veil.mdx")),
@@ -489,8 +489,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("reckoning"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("45 minutes"),
-			max: Duration.toMinutes("1.25 hours"),
+			min: 45,
+			max: 75,
 			reason: "Time varies slightly based on player knowledge of the steps and boss fight path.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/reckoning.mdx")),
@@ -501,8 +501,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("ashesOfTheDamned"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.25 hours"),
-			max: Duration.toMinutes("2 hours"),
+			min: 75,
+			max: 120,
 			reason: "Time varies significantly based on player knowledge of the steps and map.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/dust-to-dust.mdx")),
@@ -513,8 +513,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("astraMalorum"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("1.5 hours"),
+			min: 60,
+			max: 90,
 			reason:
 				"Time varies slightly based on O.S.C.A.R. movement and player knowledge of the steps.",
 		},
@@ -526,8 +526,8 @@ const mainQuestRegistry = {
 		difficulty: Option.some("Medium"),
 		map: getMapByKey("paradoxJunction"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1 hour"),
-			max: Duration.toMinutes("2 hours"),
+			min: 60,
+			max: 120,
 			reason: "Time varies significantly based on player knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/main-quests/paradox-junction.mdx")),

@@ -41,9 +41,9 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 		Option.none(),
 	)
 	const currentLayer = Option.match(layerParam, {
-		onNone: () => Option.fromNullable(mapConfig.layers.at(0)),
+		onNone: () => Option.fromNullOr(mapConfig.layers.at(0)),
 		onSome: layerParam =>
-			Option.fromNullable(
+			Option.fromNullOr(
 				mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0),
 			),
 	})
@@ -124,7 +124,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			className="bg-accent! dark:bg-accent/10!"
 			fadeAnimation={!settings.popups.disableAnimations}
 			zoomAnimation={!settings.general.disableZoomAnimation}
-			markerZoomAnimation={!settings.general.disableZoomAnimation}	
+			markerZoomAnimation={!settings.general.disableZoomAnimation}
 		>
 			<MapController imageDimensions={imageDimensions} />
 			{Option.isSome(imageDimensions) && (

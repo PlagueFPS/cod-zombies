@@ -14,7 +14,6 @@ import {
 	getMapConfigMetadata,
 	type MapId,
 } from "@/data/interactive-map"
-import { BasePage } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { categoryHandlers, type MarkerCategory } from "@/map-configs/markers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
@@ -31,51 +30,61 @@ export const generateStaticParams = () =>
 export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Promise<Metadata> => {
 	const { id } = await params
 	const metadata = await Effect.runPromise(getMapConfigMetadata(id as MapId))
-	if (!metadata || Option.getOrNull(metadata.state) === "Coming Soon") return notFound()
-	const title = `${metadata.title} Interactive Map`
+	if (Option.isNone(metadata)) return notFound()
+	if (Option.getOrNull(metadata.value.state) === "Coming Soon") return notFound()
+	const title = `${metadata.value.title} Interactive Map`
 	const serverUrl = getServerUrl()
 
 	return {
 		title,
-		description: metadata.description,
+		description: metadata.value.description,
 		openGraph: {
 			...GLOBAL_OG_PROPS.openGraph,
 			title,
-			description: metadata.description,
-			url: `/maps/${metadata.id}`,
+			description: metadata.value.description,
+			url: `/maps/${metadata.value.id}`,
 			images: {
-				url: `${serverUrl}/previews/${metadata.id}-preview.webp`,
+				url: `${serverUrl}/previews/${metadata.value.id}-preview.webp`,
 				width: 640,
 				height: 360,
 			},
 		},
 		twitter: {
 			title,
-			description: metadata.description,
+			description: metadata.value.description,
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${serverUrl}/maps/${metadata.id}`,
+			canonical: `${serverUrl}/maps/${metadata.value.id}`,
 		},
 	}
 }
 
-const InteractiveMapPage = Effect.fn("InteractiveMapPage")(function* ({
-	params,
-}: PageProps<"/maps/[id]">) {
+export default async function InteractiveMapPage({ params }: PageProps<"/maps/[id]">) {
+	return await interactiveMapPageUI(params).pipe(Effect.runPromise)
+}
+
+const interactiveMapPageUI = Effect.fn("InteractiveMapPageUI")(function* (
+	params: PageProps<"/maps/[id]">["params"],
+) {
 	const [{ id }, cookieStore] = yield* Effect.all(
 		[Effect.promise(() => params), Effect.promise(() => cookies())],
 		{ concurrency: "unbounded" },
 	)
 	const metadata = yield* getMapConfigMetadata(id as MapId)
-	if (!metadata || Option.getOrNull(metadata.state) === "Coming Soon")
+	if (Option.isNone(metadata)) return yield* Effect.sync(() => notFound())
+	if (Option.getOrNull(metadata.value.state) === "Coming Soon") {
 		return yield* Effect.sync(() => notFound())
+	}
 
-	const [config, maps] = yield* Effect.all([getMapConfig(metadata.id), getInteractiveMaps()], {
-		concurrency: "unbounded",
-	})
+	const [config, maps] = yield* Effect.all(
+		[getMapConfig(metadata.value.id), getInteractiveMaps()],
+		{
+			concurrency: "unbounded",
+		},
+	)
 	// This is unreachable code but is needed for Type-Narrowing
-	if (!config) return yield* Effect.sync(() => notFound())
+	if (Option.isNone(config)) return yield* Effect.sync(() => notFound())
 
 	const state = cookieStore.get("sidebar_state")?.value
 	const defaultOpen = state === undefined ? true : state === "true"
@@ -88,7 +97,7 @@ const InteractiveMapPage = Effect.fn("InteractiveMapPage")(function* ({
 		upgrades: new Set(),
 	}
 
-	const groups = config.layers.reduce((acc, layer) => {
+	const groups = config.value.layers.reduce((acc, layer) => {
 		layer.markers.forEach(marker => {
 			const category = marker.category
 			if (!acc[category]) {
@@ -107,14 +116,12 @@ const InteractiveMapPage = Effect.fn("InteractiveMapPage")(function* ({
 	return (
 		<SidebarProvider defaultOpen={defaultOpen}>
 			<Suspense fallback={<SidebarLoader />}>
-				<MapSidebar groups={groups} maps={transformedMaps} mapLayers={config.layers} />
+				<MapSidebar groups={groups} maps={transformedMaps} mapLayers={config.value.layers} />
 			</Suspense>
 			<div className="-mt-10 h-svh w-svw">
-				<CustomSideBarTrigger className={cn({ "top-18": config.layers.length === 1 })} />
-				<InteractiveMapWrapper mapConfig={config} />
+				<CustomSideBarTrigger className={cn({ "top-18": config.value.layers.length === 1 })} />
+				<InteractiveMapWrapper mapConfig={config.value} />
 			</div>
 		</SidebarProvider>
 	)
 })
-
-export default BasePage.build(InteractiveMapPage)

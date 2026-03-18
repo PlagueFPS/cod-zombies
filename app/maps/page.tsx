@@ -9,7 +9,6 @@ import { GridLoader } from "@/components/server/grid-loader"
 import { GridSection } from "@/components/server/grid-section"
 import { getGameByKey } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
-import { BasePage } from "@/lib/layers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 
 export const metadata: Metadata = {
@@ -31,7 +30,11 @@ export const metadata: Metadata = {
 	},
 }
 
-const MapsPage = Effect.fn("MapsPage")(function* () {
+export default async function MapsPage() {
+	return await Effect.runPromise(mapsPageUI())
+}
+
+const mapsPageUI = Effect.fn("MapsPage")(function* () {
 	const maps = yield* getInteractiveMaps().pipe(
 		Effect.map(maps => maps.map(m => ({ ...m, state: Option.getOrNull(m.state) }))),
 	)
@@ -63,5 +66,3 @@ const MapsPage = Effect.fn("MapsPage")(function* () {
 		</div>
 	)
 })
-
-export default BasePage.build(MapsPage)

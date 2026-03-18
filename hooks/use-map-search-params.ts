@@ -29,21 +29,21 @@ interface MapSearchParamsResult {
 
 export const useMapSearchParams = (): MapSearchParamsResult => {
 	const searchParams = useSearchParams()
-	const includeParams = Option.match(Option.fromNullable(searchParams.get("include")), {
+	const includeParams = Option.match(Option.fromNullOr(searchParams.get("include")), {
 		onSome: value => {
 			const decodeValue = decodeURIComponent(value)
 			return decodeValue.split(",")
 		},
 		onNone: (): string[] => [],
 	})
-	const excludeParams = Option.match(Option.fromNullable(searchParams.get("exclude")), {
+	const excludeParams = Option.match(Option.fromNullOr(searchParams.get("exclude")), {
 		onSome: value => {
 			const decodeValue = decodeURIComponent(value)
 			return decodeValue.split(",")
 		},
 		onNone: (): string[] => [],
 	})
-	const layerParam = Option.fromNullable(searchParams.get("layer"))
+	const layerParam = Option.fromNullOr(searchParams.get("layer"))
 
 	const updateURLParams = (params: URLSearchParams) => {
 		window.history.replaceState(null, "", `?${params.toString()}`)

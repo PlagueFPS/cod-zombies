@@ -3,7 +3,12 @@ import type { Relic } from "@/data/relics"
 import { Option } from "effect"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
-import { ComingSoonBadge, EstimatedTimeBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
+import {
+	ComingSoonBadge,
+	EstimatedTimeBadge,
+	NewBadge,
+	TypeBadge,
+} from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -18,7 +23,7 @@ interface RelicCardProps {
 export function RelicCard({ relic, relicIndex }: RelicCardProps) {
 	const isMobile = useIsMobile()
 	const preload = isMobile ? relicIndex === 0 : relicIndex <= 3
-	const { href, disabled, stateBadge, tabIndex } = Option.match(Option.fromNullable(relic.state), {
+	const { href, disabled, stateBadge, tabIndex } = Option.match(Option.fromNullOr(relic.state), {
 		onNone: () => ({
 			href: `/relics/${relic.map.game.id}/${relic.id}`,
 			disabled: false,

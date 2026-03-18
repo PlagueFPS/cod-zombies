@@ -76,7 +76,7 @@ const RelicPage = Effect.fn("RelicPage")(
 		const { prev, next } = getAdjacentRelics(id)
 		const { lastModifiedFormatted } = getLastUpdated(contentPath)
 		const { content, stateBadge, timeToRead } = yield* Option.match(
-			Option.fromNullable(relic.state),
+			Option.fromNullOr(relic.state),
 			{
 				onNone: () =>
 					Effect.gen(function* () {

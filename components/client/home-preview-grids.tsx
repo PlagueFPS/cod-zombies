@@ -1,5 +1,4 @@
 "use client"
-
 import type { MainQuest, MainQuestDifficulty } from "@/data/main-quests"
 import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
@@ -34,13 +33,13 @@ export function HomeQuestPreviewGrid({ quests }: HomeQuestPreviewGridProps) {
 		if (isMainQuest(quest)) {
 			return {
 				...quest,
-				state: Option.fromNullable(quest.state),
-				difficulty: Option.fromNullable(quest.difficulty),
+				state: Option.fromNullOr(quest.state),
+				difficulty: Option.fromNullOr(quest.difficulty),
 			}
 		}
 		return {
 			...quest,
-			state: Option.fromNullable(quest.state),
+			state: Option.fromNullOr(quest.state),
 		}
 	})
 
@@ -76,7 +75,7 @@ interface HomeBestiaryPreviewGridProps {
 export function HomeBestiaryPreviewGrid({ zombies }: HomeBestiaryPreviewGridProps) {
 	const zombiesWithOption = zombies.map(z => ({
 		...z,
-		state: Option.fromNullable(z.state),
+		state: Option.fromNullOr(z.state),
 	}))
 
 	return (
@@ -95,7 +94,7 @@ interface HomeMapsPreviewGridProps {
 export function HomeMapsPreviewGrid({ maps }: HomeMapsPreviewGridProps) {
 	const mapsWithOption = maps.map(m => ({
 		...m,
-		state: Option.fromNullable(m.state),
+		state: Option.fromNullOr(m.state),
 	}))
 
 	return (

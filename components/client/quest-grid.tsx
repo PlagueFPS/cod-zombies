@@ -48,14 +48,14 @@ export function QuestGrid({ quests }: IQuestGrid) {
 		if (quest._tag === "MainQuest") {
 			return {
 				...quest,
-				difficulty: Option.fromNullable(quest.difficulty),
-				state: Option.fromNullable(quest.state),
+				difficulty: Option.fromNullOr(quest.difficulty),
+				state: Option.fromNullOr(quest.state),
 			}
 		}
 
 		return {
 			...quest,
-			state: Option.fromNullable(quest.state),
+			state: Option.fromNullOr(quest.state),
 		}
 	})
 
