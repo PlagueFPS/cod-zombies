@@ -58,7 +58,7 @@ const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 
 	MutableHashSet.add(gitHistory, path)
 	result[path] = {
-		lastModified: DateTime.formatIsoDate(timestamp.value),
+		lastModified: DateTime.toEpochMillis(timestamp.value),
 		lastModifiedFormatted: DateTime.formatLocal(timestamp.value, DATE_OPTIONS),
 	}
 })
@@ -100,10 +100,11 @@ const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 		}
 	}
 
+	// For files not found in git, use current date
 	for (const path of filePaths) {
 		if (!MutableHashSet.has(gitHistory, path)) {
 			result[path] = {
-				lastModified: DateTime.formatIsoDate(currentDate),
+				lastModified: DateTime.toEpochMillis(currentDate),
 				lastModifiedFormatted: DateTime.formatLocal(currentDate, DATE_OPTIONS),
 			}
 		}

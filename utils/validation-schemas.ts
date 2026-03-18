@@ -1,7 +1,7 @@
 import { Schema } from "effect"
 
 const FileMetadataSchema = Schema.Struct({
-	lastModified: Schema.String,
+	lastModified: Schema.Int,
 	lastModifiedFormatted: Schema.String,
 })
 

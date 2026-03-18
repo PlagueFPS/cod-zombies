@@ -38,7 +38,7 @@ export const getLastModified = Effect.fn("getLastModifiedData")(function* (fileP
 	if (!fileData) {
 		yield* Effect.logWarning(`Missing last-modified data for file ${filePath}`)
 		return {
-			lastModified: new Date().toISOString(),
+			lastModified: Date.now(),
 			lastModifiedFormatted: new Date().toLocaleDateString(undefined, DATE_OPTIONS),
 		}
 	}
