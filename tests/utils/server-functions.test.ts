@@ -1,22 +1,40 @@
-import { it } from "@effect/vitest"
-import { Redacted } from "effect"
-import { afterEach, beforeAll, beforeEach, describe, vi } from "vitest"
+import * as BunPath from "@effect/platform-bun/BunPath"
+import { expect, it, layer } from "@effect/vitest"
+import { Effect, FileSystem, Layer, Redacted } from "effect"
+import { afterEach, beforeEach, describe, vi } from "vitest"
 import { DATE_OPTIONS } from "@/utils/constants"
+import { getLastModified } from "@/utils/server-functions"
 
-// We'll import the functions dynamically in each test
+vi.mock("@/env", () => ({
+	env: {
+		RESEND_API_KEY: Redacted.make("test-key"),
+		RESEND_AUDIENCE_ID: Redacted.make("test-audience"),
+		HASH_SALT: Redacted.make("test-salt"),
+		LINEAR_API_KEY: Redacted.make("test-linear-key"),
+		LINEAR_DEFAULT_ASSIGNEE_ID: Redacted.make("test-assignee"),
+		VERCEL_ENV: Redacted.make("development"),
+		VERCEL_URL: Redacted.make("localhost:3000"),
+		VERCEL_PROJECT_PRODUCTION_URL: Redacted.make("example.com"),
+	},
+}))
 
-// Set up the mocks and import the module in a beforeAll hook
-beforeAll(() => {
-	// Mock the last-modified.json module
-	vi.mock("@/data/last-modified.json", () => ({
-		files: {
-			"test/file.mdx": {
-				lastModified: "2025-10-31T12:00:00.000Z",
-				lastModifiedFormatted: "October 31, 2025",
-			},
+const MOCK_LAST_MODIFIED_JSON = JSON.stringify({
+	version: "1.0",
+	generated: "2025-10-31T12:00:00.000Z",
+	files: {
+		"test/file.mdx": {
+			lastModified: 1761901200000,
+			lastModifiedFormatted: "October 31, 2025",
 		},
-	}))
+	},
 })
+
+const MockFileSystemLayer = Layer.mergeAll(
+	FileSystem.layerNoop({
+		readFileString: () => Effect.succeed(MOCK_LAST_MODIFIED_JSON),
+	}),
+	BunPath.layer,
+)
 
 describe("getServerUrl", () => {
 	let originalEnv: NodeJS.ProcessEnv
@@ -86,62 +104,47 @@ describe("getServerUrl", () => {
 	}
 })
 
-describe("getLastUpdated", () => {
-	let getLastUpdated: typeof import("@/utils/server-functions").getLastUpdated
-	let _originalFiles: Record<string, unknown>
+layer(MockFileSystemLayer)("getLastModified", it => {
+	it.effect("should return last modified data for existing file", () =>
+		Effect.gen(function* () {
+			const result = yield* getLastModified("test/file.mdx")
+			expect(result).toStrictEqual({
+				lastModified: 1761901200000,
+				lastModifiedFormatted: "October 31, 2025",
+			})
+		}),
+	)
 
-	beforeEach(async () => {
-		// Store the original files object
-		const lastModifiedModule = await import("@/data/last-modified.json")
-		_originalFiles = { ...lastModifiedModule.files }
+	it.effect("should return current date for non-existing file", () =>
+		Effect.gen(function* () {
+			const mockDate = new Date("2025-03-15T10:00:00.000Z")
+			vi.setSystemTime(mockDate)
+			try {
+				const result = yield* getLastModified("non-existing-file.mdx")
+				expect(result).toStrictEqual({
+					lastModified: mockDate.getTime(),
+					lastModifiedFormatted: mockDate.toLocaleDateString(undefined, DATE_OPTIONS),
+				})
+			} finally {
+				vi.useRealTimers()
+			}
+		}),
+	)
 
-		// Import the module after setting up the mock
-		const functions = await import("@/utils/server-functions")
-		getLastUpdated = functions.getLastUpdated
-	})
-
-	afterEach(() => {
-		vi.resetModules()
-		vi.useRealTimers()
-	})
-
-	it("should return last modified data for existing file", ({ expect }) => {
-		const result = getLastUpdated("test/file.mdx")
-		expect(result).toStrictEqual({
-			lastModified: "2025-10-31T12:00:00.000Z",
-			lastModifiedFormatted: "October 31, 2025",
-		})
-	})
-
-	it("should return current date for non-existing file", ({ expect }) => {
-		const mockDate = new Date()
-
-		vi.setSystemTime(mockDate)
-
-		const result = getLastUpdated("non-existing-file.mdx")
-		expect(result).toStrictEqual({
-			lastModified: mockDate.toISOString(),
-			lastModifiedFormatted: mockDate.toLocaleDateString(undefined, DATE_OPTIONS),
-		})
-	})
-
-	it("should handle full relative and absolute paths", ({ expect }) => {
-		const result1 = getLastUpdated("test/file.mdx")
-		const result2 = getLastUpdated("./content/test/file.mdx")
-		const result3 = getLastUpdated("cod-zombies/content/test/file.mdx")
-		expect(result1).toStrictEqual({
-			lastModified: "2025-10-31T12:00:00.000Z",
-			lastModifiedFormatted: "October 31, 2025",
-		})
-		expect(result2).toStrictEqual({
-			lastModified: "2025-10-31T12:00:00.000Z",
-			lastModifiedFormatted: "October 31, 2025",
-		})
-		expect(result3).toStrictEqual({
-			lastModified: "2025-10-31T12:00:00.000Z",
-			lastModifiedFormatted: "October 31, 2025",
-		})
-	})
+	it.effect("should handle full relative and absolute paths", () =>
+		Effect.gen(function* () {
+			const expected = {
+				lastModified: 1761901200000,
+				lastModifiedFormatted: "October 31, 2025",
+			}
+			const result1 = yield* getLastModified("test/file.mdx")
+			const result2 = yield* getLastModified("./content/test/file.mdx")
+			const result3 = yield* getLastModified("cod-zombies/content/test/file.mdx")
+			expect(result1).toStrictEqual(expected)
+			expect(result2).toStrictEqual(expected)
+			expect(result3).toStrictEqual(expected)
+		}),
+	)
 })
 
 describe("calculateTimeToRead", () => {

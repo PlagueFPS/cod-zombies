@@ -25,10 +25,7 @@ export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
-					className={cn(
-						"w-sm bg-background p-0",
-						getTypeContentClasses(zombie.type),
-					)}
+					className={cn("w-sm bg-background p-0", getTypeContentClasses(zombie.type))}
 				>
 					<ZombieTooltipContent zombie={zombie} />
 				</HoverCardContent>
@@ -105,7 +102,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 							Weak Points
 						</h3>
 						<div className="flex flex-wrap items-center gap-2">
-							{Arr.isNonEmptyArray(zombie.weakPoints) ? (
+							{Arr.isArrayNonEmpty(zombie.weakPoints) ? (
 								zombie.weakPoints.map(weakPoint => (
 									<Badge
 										key={weakPoint.id}
@@ -127,7 +124,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 							Elemental Weaknesses
 						</h3>
 						<div className="flex flex-wrap items-center gap-2 text-sm">
-							{Arr.isNonEmptyArray(zombie.elementalWeakness) ? (
+							{Arr.isArrayNonEmpty(zombie.elementalWeakness) ? (
 								zombie.elementalWeakness.map(weakness => (
 									<AmmoModTooltip key={weakness} ammoModKey={weakness} game={mostRecentGame} />
 								))

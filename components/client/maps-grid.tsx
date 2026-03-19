@@ -17,7 +17,7 @@ export function MapsGrid({ maps }: IMapsGrid) {
 	const { gameParams } = useFilterParams()
 	let filteredMaps = maps.map(map => ({
 		...map,
-		state: Option.fromNullable(map.state),
+		state: Option.fromNullOr(map.state),
 	}))
 
 	if (gameParams.length > 0) {

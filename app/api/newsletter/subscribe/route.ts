@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 		return NextResponse.redirect(new URL(`/newsletter/subscribe/success`, req.url))
 	}).pipe(
 		Effect.withLogSpan("subscribe_get_handler"),
-		Effect.tapError(Effect.logError),
+		Effect.tapCause(cause => Effect.logError(cause)),
 		Effect.catchTags({
 			TokenExpirationError: () => {
 				const message = "The subscribe token used has expired. Please request a new one."
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
 					),
 				)
 			},
-			CreateContactError: () => {
+			ResendError: () => {
 				const message =
 					"We were unable to subscribe your email to our newsletter due to a technical issue on our end. Please try again or request a new subscribe token. We're sorry for the inconvenience!"
 				return Effect.succeed(
@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
 				)
 			},
 		}),
-		Effect.ensureErrorType<never>(),
+		Effect.satisfiesErrorType<never>(),
 		APIRuntime.runPromise,
 	)
 }

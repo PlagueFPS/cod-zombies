@@ -1,7 +1,7 @@
 import type { SortOption } from "@/components/client/grid-sort"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsImagePath, RootImagePath } from "@/types/generated/image-paths.gen"
-import { Duration, Effect } from "effect"
+import { Effect } from "effect"
 import { getMapByKey, type Maps } from "@/data/maps"
 import { getAdjacentItems } from "@/utils/shared-functions"
 
@@ -136,7 +136,7 @@ const relicRegistry = {
 		discoveredDate: new Date("November 19, 2025 1:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
-			max: Duration.toMinutes("2 hours"),
+			max: 120,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
 		content: Effect.promise(() => import("@/content/relics/vril-sphere.mdx")),
@@ -153,7 +153,7 @@ const relicRegistry = {
 		discoveredDate: new Date("January 14, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
-			max: Duration.toMinutes("2 hours"),
+			max: 120,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
 		content: Effect.promise(() => import("@/content/relics/samanthas-drawing.mdx")),
@@ -169,7 +169,7 @@ const relicRegistry = {
 		discoveredDate: new Date("November 19, 2025 2:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
-			max: Duration.toMinutes("2 hours"),
+			max: 120,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
 		content: Effect.promise(() => import("@/content/relics/focusing-stone.mdx")),
@@ -184,8 +184,8 @@ const relicRegistry = {
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 21, 2025 12:00 AM"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("4 hours"),
+			min: 90,
+			max: 240,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
 		content: Effect.promise(() => import("@/content/relics/bus.mdx")),
@@ -200,8 +200,8 @@ const relicRegistry = {
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 21, 2025 1:00 AM"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("4 hours"),
+			min: 90,
+			max: 240,
 			reason:
 				"Time varies slightly based on party size, gobblegum use, and knowledge of the main quest steps.",
 		},
@@ -217,8 +217,8 @@ const relicRegistry = {
 		map: getMapByKey("ashesOfTheDamned"),
 		discoveredDate: new Date("November 20, 2025 12:00 AM"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("4 hours"),
+			min: 90,
+			max: 240,
 			reason: "Time varies slightly based on party size, and gobblegum use.",
 		},
 		content: Effect.promise(() => import("@/content/relics/blood-vials.mdx")),
@@ -266,7 +266,7 @@ const relicRegistry = {
 		discoveredDate: new Date("December 11, 2025 12:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
-			max: Duration.toMinutes("2 hours"),
+			max: 120,
 			reason: "Time varies significantly based on wisp tea luck, augments, and party size.",
 		},
 		content: Effect.promise(() => import("@/content/relics/spider-fang.mdx")),
@@ -282,7 +282,7 @@ const relicRegistry = {
 		discoveredDate: new Date("January 30, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
-			max: Duration.toMinutes("1.5 hours"),
+			max: 120,
 			reason: "Time varies slightly based on party size and knowledge of the main quest steps.",
 		},
 		content: Effect.promise(() => import("@/content/relics/matroyshka-dolls.mdx")),
@@ -297,8 +297,8 @@ const relicRegistry = {
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("January 30, 2026 1:00 AM"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("4 hours"),
+			min: 90,
+			max: 240,
 			reason:
 				"Time varies significantly based on party size, and knowledge of the main quest steps.",
 		},
@@ -314,8 +314,8 @@ const relicRegistry = {
 		map: getMapByKey("astraMalorum"),
 		discoveredDate: new Date("December 11, 2025 1:00 AM"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("4 hours"),
+			min: 90,
+			max: 240,
 			reason: "Time varies significantly based on party size, and knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/relics/civil-protector-head.mdx")),
@@ -348,7 +348,7 @@ const relicRegistry = {
 		discoveredDate: new Date("March 15, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 60,
-			max: Duration.toMinutes("2 hours"),
+			max: 120,
 			reason: "Time varies slightly based on knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/relics/summoning-key.mdx")),
@@ -363,8 +363,8 @@ const relicRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		discoveredDate: new Date("March 17, 2026 12:00 AM"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("4 hours"),
+			min: 90,
+			max: 240,
 			reason: "Time varies significantly based on party size and knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/relics/mangler-helmet.mdx")),

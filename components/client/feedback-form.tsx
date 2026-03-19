@@ -1,5 +1,6 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
+import { Cause, Exit } from "effect"
 import { CircleAlert, MessageCircleHeart, Send } from "lucide-react"
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
@@ -44,35 +45,34 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 			const normalized = { ...value, email: value.email?.trim() || undefined }
 			const data = validateFeedbackForm(normalized)
 
-			if (data._tag === "Left") {
-				return toast.error("Invalid feedback form data!", {
-					description: data.left.message,
-					duration: 5000,
-					position: "bottom-right",
-				})
-			}
-
-			startTransition(async () => {
-				const result = await submitFeedbackForm(null, data.right)
-				if (result.success) {
-					startTransition(() => {
-						toast.success("Feedback submitted successfully!", {
-							description: result.message,
-							duration: 5000,
-							position: "bottom-right",
-						})
-						form.reset()
-						setOpen(false)
+			return Exit.match(data, {
+				onFailure: cause => {
+					return toast.error("Invalid feedback form data!", {
+						description: Cause.pretty(cause),
+						duration: 5000,
+						position: "bottom-right",
 					})
-				} else {
-					startTransition(() => {
-						toast.error("Failed to submit feedback!", {
-							description: result.message,
-							duration: 5000,
-							position: "bottom-right",
-						})
+				},
+				onSuccess: value => {
+					startTransition(async () => {
+						const result = await submitFeedbackForm(null, value)
+						if (result.success) {
+							toast.success("Feedback submitted successfully!", {
+								description: result.message,
+								duration: 5000,
+								position: "bottom-right",
+							})
+							form.reset()
+							setOpen(false)
+						} else {
+							toast.error("Failed to submit feedback!", {
+								description: result.message,
+								duration: 5000,
+								position: "bottom-right",
+							})
+						}
 					})
-				}
+				},
 			})
 		},
 	})

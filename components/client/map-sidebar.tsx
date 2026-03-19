@@ -85,7 +85,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 		const params = createParams()
 		if (params.size > 0) {
 			if (params.has("exclude")) {
-				const excludeParams = Option.match(Option.fromNullable(params.get("exclude")), {
+				const excludeParams = Option.match(Option.fromNullOr(params.get("exclude")), {
 					onSome: value => {
 						const decoded = decodeURIComponent(value)
 						return decoded
@@ -161,7 +161,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 											>
 												{map.title}
 											</span>
-											{Option.match(Option.fromNullable(map.state), {
+											{Option.match(Option.fromNullOr(map.state), {
 												onNone: () => null,
 												onSome: state =>
 													state === "Coming Soon" ? <ComingSoonBadge /> : <NewBadge />,
@@ -203,7 +203,10 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				{groups.general.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
-							<SidebarGroupLabel render={<CollapsibleTrigger />} className="mb-2 cursor-pointer hover:bg-accent/50">
+							<SidebarGroupLabel
+								render={<CollapsibleTrigger />}
+								className="mb-2 cursor-pointer hover:bg-accent/50"
+							>
 								<span>General</span>
 								<ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
 							</SidebarGroupLabel>
@@ -241,7 +244,10 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				{groups.equipment.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
-							<SidebarGroupLabel render={<CollapsibleTrigger />} className="mb-2 cursor-pointer hover:bg-accent/50">
+							<SidebarGroupLabel
+								render={<CollapsibleTrigger />}
+								className="mb-2 cursor-pointer hover:bg-accent/50"
+							>
 								<span>Equipment</span>
 								<ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
 							</SidebarGroupLabel>
@@ -279,7 +285,10 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				{groups.upgrades.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
-							<SidebarGroupLabel render={<CollapsibleTrigger />} className="mb-2 cursor-pointer hover:bg-accent/50">
+							<SidebarGroupLabel
+								render={<CollapsibleTrigger />}
+								className="mb-2 cursor-pointer hover:bg-accent/50"
+							>
 								<span>Upgrades</span>
 								<ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
 							</SidebarGroupLabel>
@@ -317,7 +326,10 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				{groups.objectives.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
-							<SidebarGroupLabel render={<CollapsibleTrigger />} className="mb-2 cursor-pointer hover:bg-accent/50">
+							<SidebarGroupLabel
+								render={<CollapsibleTrigger />}
+								className="mb-2 cursor-pointer hover:bg-accent/50"
+							>
 								<span>Objectives</span>
 								<ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
 							</SidebarGroupLabel>
@@ -355,8 +367,11 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				{groups.transportation.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
-							<SidebarGroupLabel render={<CollapsibleTrigger />} className="mb-2 cursor-pointer hover:bg-accent/50">
-									<span>Transportation</span>
+							<SidebarGroupLabel
+								render={<CollapsibleTrigger />}
+								className="mb-2 cursor-pointer hover:bg-accent/50"
+							>
+								<span>Transportation</span>
 								<ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
 							</SidebarGroupLabel>
 							<CollapsibleContent>
@@ -393,7 +408,10 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				{groups.intel.size > 0 && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
-							<SidebarGroupLabel render={<CollapsibleTrigger />} className="mb-2 cursor-pointer hover:bg-accent/50">
+							<SidebarGroupLabel
+								render={<CollapsibleTrigger />}
+								className="mb-2 cursor-pointer hover:bg-accent/50"
+							>
 								<span>Intel</span>
 								<ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
 							</SidebarGroupLabel>

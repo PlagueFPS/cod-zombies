@@ -1,10 +1,10 @@
 /**
  * THIS FILE IS AUTO-GENERATED.
- * Run 'generate:image-paths' to regenerate.
+ * Run 'generate:image:paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-18T03:36:18.193Z
- * generated in: 102ms
+ * generated at: 2026-03-19T00:09:14.516Z
+ * generated in: 35ms
  */
 
 
@@ -107,208 +107,6 @@ export type PreviewsImagePath =
   '/previews/shattered-veil-preview.webp' |
   '/previews/terminus-preview.webp' |
   '/previews/the-tomb-preview.webp';
-
-/** Union of images in `/icons` */
-
-export type IconsImagePath =
-  '/icons/equipment/ammo-cache-bo7.webp' |
-  '/icons/equipment/ammo-cache.webp' |
-  '/icons/equipment/crafting-table.webp' |
-  '/icons/equipment/exfil-bo7.webp' |
-  '/icons/equipment/mystery-box.webp' |
-  '/icons/equipment/shovel.webp' |
-  '/icons/equipment/weapon-wall-buy.webp' |
-  '/icons/equipment/workbench.webp' |
-  '/icons/general/door-buy.webp' |
-  '/icons/general/exfil.webp' |
-  '/icons/general/power-door.webp' |
-  '/icons/general/rampage-inducer.webp' |
-  '/icons/general/trap.webp' |
-  '/icons/intel/audio-log.webp' |
-  '/icons/intel/document.webp' |
-  '/icons/objectives/aether-crystal.webp' |
-  '/icons/objectives/aether-lantern.webp' |
-  '/icons/objectives/aether-plant.webp' |
-  '/icons/objectives/aetheric-flora.webp' |
-  '/icons/objectives/aetherium-maturation-pod.webp' |
-  '/icons/objectives/chest.webp' |
-  '/icons/objectives/dig-site.webp' |
-  '/icons/objectives/fish.webp' |
-  '/icons/objectives/janus-crate.webp' |
-  '/icons/objectives/loot-bin.webp' |
-  '/icons/objectives/overgrown-hoard-husk.webp' |
-  '/icons/objectives/plant-spray.webp' |
-  '/icons/objectives/vacuum-seal-device.webp' |
-  '/icons/transportation/boat.webp' |
-  '/icons/transportation/fast-travel.webp' |
-  '/icons/transportation/portal.webp' |
-  '/icons/upgrades/armor-wall-buy.webp' |
-  '/icons/upgrades/arsenal.webp' |
-  '/icons/upgrades/der-wunderfizz.webp' |
-  '/icons/upgrades/gobblegum-machine.webp' |
-  '/icons/upgrades/pack-a-punch.webp';
-
-/** Union of images in `/layers` */
-
-export type LayersImagePath =
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-farm-cellar.webp' |
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-layer.webp' |
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-lower-zarya.webp' |
-  '/layers/ashes-of-the-damned/ashes-of-the-damned-upper-ashwood.webp' |
-  '/layers/astra-malorum/astra-malorum-layer.webp' |
-  '/layers/astra-malorum/astra-malorum-mars-layer.webp' |
-  '/layers/citadelle-des-morts/citadelle-des-morts-layer.webp' |
-  '/layers/liberty-falls/liberty-falls-layer.webp' |
-  '/layers/reckoning/t1-executive-suites.webp' |
-  '/layers/reckoning/t1-mutant-research-lab.webp' |
-  '/layers/reckoning/t1-project-janus-reception.webp' |
-  '/layers/reckoning/t1-quantum-computing-core.webp' |
-  '/layers/reckoning/t2-android-assembly.webp' |
-  '/layers/reckoning/t2-dark-entity-containment.webp' |
-  '/layers/reckoning/t2-sublevel-10.webp' |
-  '/layers/reckoning/t2-teleportation-lab.webp' |
-  '/layers/reckoning/t3-dark-aether-elements-vault-1.webp' |
-  '/layers/reckoning/t3-dark-aether-elements-vault-2.webp' |
-  '/layers/reckoning/t3-rooftop.webp' |
-  '/layers/reckoning/tower-1-layer.webp' |
-  '/layers/reckoning/tower-2-layer.webp' |
-  '/layers/reckoning/tower-3-layer.webp' |
-  '/layers/shattered-veil/shattered-veil-layer.webp' |
-  '/layers/terminus/terminus-layer.webp' |
-  '/layers/the-tomb/the-tomb-layer.webp';
-
-/** Union of images in `/augments` */
-
-export type AugmentsImagePath =
-  '/augments/big-game-major-augment.webp' |
-  '/augments/bo7/afterimage-major-augment-bo7.webp' |
-  '/augments/bo7/amped-minor-augment-bo7.webp' |
-  '/augments/bo7/backdraft-minor-augment-bo7.webp' |
-  '/augments/bo7/barista-brawl-minor-augment-bo7.webp' |
-  '/augments/bo7/big-game-major-augment-bo7.webp' |
-  '/augments/bo7/broad-beam-minor-augment-bo7.webp' |
-  '/augments/bo7/burst-dash-major-augment-bo7.webp' |
-  '/augments/bo7/citrus-focus-major-augment-bo7.webp' |
-  '/augments/bo7/contact-burn-minor-augment-bo7.webp' |
-  '/augments/bo7/dasher-major-augment-bo7.webp' |
-  '/augments/bo7/dead-draw-minor-augment-bo7.webp' |
-  '/augments/bo7/dead-first-major-augment-bo7.webp' |
-  '/augments/bo7/dead-set-minor-augment-bo7.webp' |
-  '/augments/bo7/double-impact-major-augment-bo7.webp' |
-  '/augments/bo7/double-jeopardy-major-augment-bo7.webp' |
-  '/augments/bo7/double-or-nothing-minor-augment-bo7.webp' |
-  '/augments/bo7/double-time-minor-augment-bo7.webp' |
-  '/augments/bo7/dr-ram-major-augment-bo7.webp' |
-  '/augments/bo7/durable-plates-minor-augment-bo7.webp' |
-  '/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp' |
-  '/augments/bo7/environmentalist-minor-augment-bo7.webp' |
-  '/augments/bo7/eod-technician-minor-augment-bo7.webp' |
-  '/augments/bo7/equivalent-exchange-major-augment-bo7.webp' |
-  '/augments/bo7/expresso-major-augment-bo7.webp' |
-  '/augments/bo7/extension-major-augment-bo7.webp' |
-  '/augments/bo7/extension-minor-augment-bo7.webp' |
-  '/augments/bo7/extra-charge-minor-augment-bo7.webp' |
-  '/augments/bo7/fast-pitcher-minor-augment-bo7.webp' |
-  '/augments/bo7/fetcher-minor-augment-bo7.webp' |
-  '/augments/bo7/fetid-upgraid-major-augment-bo7.webp' |
-  '/augments/bo7/firebomb-major-augment-bo7.webp' |
-  '/augments/bo7/footwork-minor-augment-bo7.webp' |
-  '/augments/bo7/free-faller-major-augment-bo7.webp' |
-  '/augments/bo7/free-throw-major-augment.webp' |
-  '/augments/bo7/group-shroud-major-augment-bo7.webp' |
-  '/augments/bo7/guns-up-major-augment-bo7.webp' |
-  '/augments/bo7/hard-target-minor-augment-bo7.webp' |
-  '/augments/bo7/hardened-plates-minor-augment-bo7.webp' |
-  '/augments/bo7/haste-minor-augment-bo7.webp' |
-  '/augments/bo7/hidden-gems-minor-augment-bo7.webp' |
-  '/augments/bo7/incendiary-minor-augment-bo7.webp' |
-  '/augments/bo7/karmic-return-minor-augment-bo7.webp' |
-  '/augments/bo7/mask-of-benevolence-major-augment-bo7.webp' |
-  '/augments/bo7/mask-of-distraction-major-augment-bo7.webp' |
-  '/augments/bo7/mask-of-salvation-major-augment-bo7.webp' |
-  '/augments/bo7/mocha-maul-major-augment-bo7.webp' |
-  '/augments/bo7/mugging-minor-augment-bo7.webp' |
-  '/augments/bo7/parting-gift-major-augment-bo7.webp' |
-  '/augments/bo7/petroleum-major-augment-bo7.webp' |
-  '/augments/bo7/phalanx-major-augment-bo7.webp' |
-  '/augments/bo7/phantom-reload-major-augment-bo7.webp' |
-  '/augments/bo7/phd-slider-major-augment-bo7.webp' |
-  '/augments/bo7/pineapple-blast-minor-augment-bo7.webp' |
-  '/augments/bo7/probiotic-major-augment-bo7.webp' |
-  '/augments/bo7/quarterback-minor-augment-bo7.webp' |
-  '/augments/bo7/quick-swap-minor-augment-bo7.webp' |
-  '/augments/bo7/rainbow-pop-major-augment-bo7.webp' |
-  '/augments/bo7/rally-minor-augment-bo7.webp' |
-  '/augments/bo7/reactive-armor-major-augment-bo7.webp' |
-  '/augments/bo7/refresh-mint-minor-augment-bo7.webp' |
-  '/augments/bo7/shake-it-off-minor-augment-bo7.webp' |
-  '/augments/bo7/stuntman-minor-augment-bo7.webp' |
-  '/augments/bo7/thermite-major-augment-bo7.webp' |
-  '/augments/bo7/tribologist-minor-augment-bo7.webp' |
-  '/augments/bo7/turtle-shell-major-augment-bo7.webp' |
-  '/augments/bo7/urticant-major-augment-bo7.webp' |
-  '/augments/bo7/vampiric-extraction-major-augment-bo7.webp' |
-  '/augments/bo7/zombie-sitter-minor-augment-bo7.webp' |
-  '/augments/burst-dash-major-augment.webp' |
-  '/augments/chain-lightning-major-augment.webp' |
-  '/augments/chill-berry-minor-augment.webp' |
-  '/augments/citrus-focus-major-augment.webp' |
-  '/augments/classic-formula-major-augment.webp' |
-  '/augments/dasher-major-augment.webp' |
-  '/augments/dead-draw-minor-augment.webp' |
-  '/augments/dead-first-major-augment.webp' |
-  '/augments/dead-head-major-augment.webp' |
-  '/augments/dead-set-minor-augment.webp' |
-  '/augments/double-impact-major-augment.webp' |
-  '/augments/double-or-nothing-minor-augment.webp' |
-  '/augments/dr-ram-major-augment.webp' |
-  '/augments/durable-plates-minor-augment.webp' |
-  '/augments/dying-wish-major-augment.webp' |
-  '/augments/electric-cherry-major-augment.webp' |
-  '/augments/emt-major-augment.webp' |
-  '/augments/enduring-radiance-major-augment.webp' |
-  '/augments/environmentalist-minor-augment.webp' |
-  '/augments/eod-technician-minor-augment.webp' |
-  '/augments/explosive-minor-augment.webp' |
-  '/augments/extra-charge-minor-augment.webp' |
-  '/augments/extra-strength-minor-augment.webp' |
-  '/augments/fast-pitcher-minor-augment.webp' |
-  '/augments/firebomb-major-augment.webp' |
-  '/augments/free-faller-major-augment.webp' |
-  '/augments/frenzy-fire-major-augment.webp' |
-  '/augments/frequency-boost-minor-augment.webp' |
-  '/augments/gravity-md-major-augment.webp' |
-  '/augments/hard-target-minor-augment.webp' |
-  '/augments/hardened-plates-minor-augment.webp' |
-  '/augments/heavy-shadow-minor-augment.webp' |
-  '/augments/hidden-impact-minor-augment.webp' |
-  '/augments/hot-foot-minor-augment.webp' |
-  '/augments/incendiary-minor-augment.webp' |
-  '/augments/karmic-return-minor-augment.webp' |
-  '/augments/phantom-reload-major-augment.webp' |
-  '/augments/phd-slider-major-augment.webp' |
-  '/augments/pheromone-major-augment.webp' |
-  '/augments/picky-eater-minor-augment.webp' |
-  '/augments/pineapple-blast-minor-augment.webp' |
-  '/augments/probiotic-major-augment.webp' |
-  '/augments/quarterback-minor-augment.webp' |
-  '/augments/quick-swap-minor-augment.webp' |
-  '/augments/rally-minor-augment.webp' |
-  '/augments/reactive-armor-major-augment.webp' |
-  '/augments/repair-boost-minor-augment.webp' |
-  '/augments/resilience-major-augment.webp' |
-  '/augments/retaliation-minor-augment.webp' |
-  '/augments/retribution-major-augment.webp' |
-  '/augments/siren-minor-augment.webp' |
-  '/augments/slow-death-minor-augment.webp' |
-  '/augments/speedy-roulette-minor-augment.webp' |
-  '/augments/stalker-major-augment.webp' |
-  '/augments/supercharged-major-augment.webp' |
-  '/augments/supermassive-minor-augment.webp' |
-  '/augments/targeted-minor-augment.webp' |
-  '/augments/triple-shot-major-augment.webp' |
-  '/augments/turtle-shell-major-augment.webp' |
-  '/augments/vampiric-extraction-major-augment.webp';
 
 /** Union of images in `/zombies` */
 
@@ -550,5 +348,207 @@ export type PerksImagePath =
   '/perks/winters-wail.webp' |
   '/perks/wisp-tea.webp';
 
+/** Union of images in `/icons` */
+
+export type IconsImagePath =
+  '/icons/equipment/ammo-cache-bo7.webp' |
+  '/icons/equipment/ammo-cache.webp' |
+  '/icons/equipment/crafting-table.webp' |
+  '/icons/equipment/exfil-bo7.webp' |
+  '/icons/equipment/mystery-box.webp' |
+  '/icons/equipment/shovel.webp' |
+  '/icons/equipment/weapon-wall-buy.webp' |
+  '/icons/equipment/workbench.webp' |
+  '/icons/general/door-buy.webp' |
+  '/icons/general/exfil.webp' |
+  '/icons/general/power-door.webp' |
+  '/icons/general/rampage-inducer.webp' |
+  '/icons/general/trap.webp' |
+  '/icons/intel/audio-log.webp' |
+  '/icons/intel/document.webp' |
+  '/icons/objectives/aether-crystal.webp' |
+  '/icons/objectives/aether-lantern.webp' |
+  '/icons/objectives/aether-plant.webp' |
+  '/icons/objectives/aetheric-flora.webp' |
+  '/icons/objectives/aetherium-maturation-pod.webp' |
+  '/icons/objectives/chest.webp' |
+  '/icons/objectives/dig-site.webp' |
+  '/icons/objectives/fish.webp' |
+  '/icons/objectives/janus-crate.webp' |
+  '/icons/objectives/loot-bin.webp' |
+  '/icons/objectives/overgrown-hoard-husk.webp' |
+  '/icons/objectives/plant-spray.webp' |
+  '/icons/objectives/vacuum-seal-device.webp' |
+  '/icons/transportation/boat.webp' |
+  '/icons/transportation/fast-travel.webp' |
+  '/icons/transportation/portal.webp' |
+  '/icons/upgrades/armor-wall-buy.webp' |
+  '/icons/upgrades/arsenal.webp' |
+  '/icons/upgrades/der-wunderfizz.webp' |
+  '/icons/upgrades/gobblegum-machine.webp' |
+  '/icons/upgrades/pack-a-punch.webp';
+
+/** Union of images in `/layers` */
+
+export type LayersImagePath =
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-farm-cellar.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-layer.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-lower-zarya.webp' |
+  '/layers/ashes-of-the-damned/ashes-of-the-damned-upper-ashwood.webp' |
+  '/layers/astra-malorum/astra-malorum-layer.webp' |
+  '/layers/astra-malorum/astra-malorum-mars-layer.webp' |
+  '/layers/citadelle-des-morts/citadelle-des-morts-layer.webp' |
+  '/layers/liberty-falls/liberty-falls-layer.webp' |
+  '/layers/reckoning/t1-executive-suites.webp' |
+  '/layers/reckoning/t1-mutant-research-lab.webp' |
+  '/layers/reckoning/t1-project-janus-reception.webp' |
+  '/layers/reckoning/t1-quantum-computing-core.webp' |
+  '/layers/reckoning/t2-android-assembly.webp' |
+  '/layers/reckoning/t2-dark-entity-containment.webp' |
+  '/layers/reckoning/t2-sublevel-10.webp' |
+  '/layers/reckoning/t2-teleportation-lab.webp' |
+  '/layers/reckoning/t3-dark-aether-elements-vault-1.webp' |
+  '/layers/reckoning/t3-dark-aether-elements-vault-2.webp' |
+  '/layers/reckoning/t3-rooftop.webp' |
+  '/layers/reckoning/tower-1-layer.webp' |
+  '/layers/reckoning/tower-2-layer.webp' |
+  '/layers/reckoning/tower-3-layer.webp' |
+  '/layers/shattered-veil/shattered-veil-layer.webp' |
+  '/layers/terminus/terminus-layer.webp' |
+  '/layers/the-tomb/the-tomb-layer.webp';
+
+/** Union of images in `/augments` */
+
+export type AugmentsImagePath =
+  '/augments/big-game-major-augment.webp' |
+  '/augments/bo7/afterimage-major-augment-bo7.webp' |
+  '/augments/bo7/amped-minor-augment-bo7.webp' |
+  '/augments/bo7/backdraft-minor-augment-bo7.webp' |
+  '/augments/bo7/barista-brawl-minor-augment-bo7.webp' |
+  '/augments/bo7/big-game-major-augment-bo7.webp' |
+  '/augments/bo7/broad-beam-minor-augment-bo7.webp' |
+  '/augments/bo7/burst-dash-major-augment-bo7.webp' |
+  '/augments/bo7/citrus-focus-major-augment-bo7.webp' |
+  '/augments/bo7/contact-burn-minor-augment-bo7.webp' |
+  '/augments/bo7/dasher-major-augment-bo7.webp' |
+  '/augments/bo7/dead-draw-minor-augment-bo7.webp' |
+  '/augments/bo7/dead-first-major-augment-bo7.webp' |
+  '/augments/bo7/dead-set-minor-augment-bo7.webp' |
+  '/augments/bo7/double-impact-major-augment-bo7.webp' |
+  '/augments/bo7/double-jeopardy-major-augment-bo7.webp' |
+  '/augments/bo7/double-or-nothing-minor-augment-bo7.webp' |
+  '/augments/bo7/double-time-minor-augment-bo7.webp' |
+  '/augments/bo7/dr-ram-major-augment-bo7.webp' |
+  '/augments/bo7/durable-plates-minor-augment-bo7.webp' |
+  '/augments/bo7/emergency-medical-kit-minor-augment-bo7.webp' |
+  '/augments/bo7/environmentalist-minor-augment-bo7.webp' |
+  '/augments/bo7/eod-technician-minor-augment-bo7.webp' |
+  '/augments/bo7/equivalent-exchange-major-augment-bo7.webp' |
+  '/augments/bo7/expresso-major-augment-bo7.webp' |
+  '/augments/bo7/extension-major-augment-bo7.webp' |
+  '/augments/bo7/extension-minor-augment-bo7.webp' |
+  '/augments/bo7/extra-charge-minor-augment-bo7.webp' |
+  '/augments/bo7/fast-pitcher-minor-augment-bo7.webp' |
+  '/augments/bo7/fetcher-minor-augment-bo7.webp' |
+  '/augments/bo7/fetid-upgraid-major-augment-bo7.webp' |
+  '/augments/bo7/firebomb-major-augment-bo7.webp' |
+  '/augments/bo7/footwork-minor-augment-bo7.webp' |
+  '/augments/bo7/free-faller-major-augment-bo7.webp' |
+  '/augments/bo7/free-throw-major-augment.webp' |
+  '/augments/bo7/group-shroud-major-augment-bo7.webp' |
+  '/augments/bo7/guns-up-major-augment-bo7.webp' |
+  '/augments/bo7/hard-target-minor-augment-bo7.webp' |
+  '/augments/bo7/hardened-plates-minor-augment-bo7.webp' |
+  '/augments/bo7/haste-minor-augment-bo7.webp' |
+  '/augments/bo7/hidden-gems-minor-augment-bo7.webp' |
+  '/augments/bo7/incendiary-minor-augment-bo7.webp' |
+  '/augments/bo7/karmic-return-minor-augment-bo7.webp' |
+  '/augments/bo7/mask-of-benevolence-major-augment-bo7.webp' |
+  '/augments/bo7/mask-of-distraction-major-augment-bo7.webp' |
+  '/augments/bo7/mask-of-salvation-major-augment-bo7.webp' |
+  '/augments/bo7/mocha-maul-major-augment-bo7.webp' |
+  '/augments/bo7/mugging-minor-augment-bo7.webp' |
+  '/augments/bo7/parting-gift-major-augment-bo7.webp' |
+  '/augments/bo7/petroleum-major-augment-bo7.webp' |
+  '/augments/bo7/phalanx-major-augment-bo7.webp' |
+  '/augments/bo7/phantom-reload-major-augment-bo7.webp' |
+  '/augments/bo7/phd-slider-major-augment-bo7.webp' |
+  '/augments/bo7/pineapple-blast-minor-augment-bo7.webp' |
+  '/augments/bo7/probiotic-major-augment-bo7.webp' |
+  '/augments/bo7/quarterback-minor-augment-bo7.webp' |
+  '/augments/bo7/quick-swap-minor-augment-bo7.webp' |
+  '/augments/bo7/rainbow-pop-major-augment-bo7.webp' |
+  '/augments/bo7/rally-minor-augment-bo7.webp' |
+  '/augments/bo7/reactive-armor-major-augment-bo7.webp' |
+  '/augments/bo7/refresh-mint-minor-augment-bo7.webp' |
+  '/augments/bo7/shake-it-off-minor-augment-bo7.webp' |
+  '/augments/bo7/stuntman-minor-augment-bo7.webp' |
+  '/augments/bo7/thermite-major-augment-bo7.webp' |
+  '/augments/bo7/tribologist-minor-augment-bo7.webp' |
+  '/augments/bo7/turtle-shell-major-augment-bo7.webp' |
+  '/augments/bo7/urticant-major-augment-bo7.webp' |
+  '/augments/bo7/vampiric-extraction-major-augment-bo7.webp' |
+  '/augments/bo7/zombie-sitter-minor-augment-bo7.webp' |
+  '/augments/burst-dash-major-augment.webp' |
+  '/augments/chain-lightning-major-augment.webp' |
+  '/augments/chill-berry-minor-augment.webp' |
+  '/augments/citrus-focus-major-augment.webp' |
+  '/augments/classic-formula-major-augment.webp' |
+  '/augments/dasher-major-augment.webp' |
+  '/augments/dead-draw-minor-augment.webp' |
+  '/augments/dead-first-major-augment.webp' |
+  '/augments/dead-head-major-augment.webp' |
+  '/augments/dead-set-minor-augment.webp' |
+  '/augments/double-impact-major-augment.webp' |
+  '/augments/double-or-nothing-minor-augment.webp' |
+  '/augments/dr-ram-major-augment.webp' |
+  '/augments/durable-plates-minor-augment.webp' |
+  '/augments/dying-wish-major-augment.webp' |
+  '/augments/electric-cherry-major-augment.webp' |
+  '/augments/emt-major-augment.webp' |
+  '/augments/enduring-radiance-major-augment.webp' |
+  '/augments/environmentalist-minor-augment.webp' |
+  '/augments/eod-technician-minor-augment.webp' |
+  '/augments/explosive-minor-augment.webp' |
+  '/augments/extra-charge-minor-augment.webp' |
+  '/augments/extra-strength-minor-augment.webp' |
+  '/augments/fast-pitcher-minor-augment.webp' |
+  '/augments/firebomb-major-augment.webp' |
+  '/augments/free-faller-major-augment.webp' |
+  '/augments/frenzy-fire-major-augment.webp' |
+  '/augments/frequency-boost-minor-augment.webp' |
+  '/augments/gravity-md-major-augment.webp' |
+  '/augments/hard-target-minor-augment.webp' |
+  '/augments/hardened-plates-minor-augment.webp' |
+  '/augments/heavy-shadow-minor-augment.webp' |
+  '/augments/hidden-impact-minor-augment.webp' |
+  '/augments/hot-foot-minor-augment.webp' |
+  '/augments/incendiary-minor-augment.webp' |
+  '/augments/karmic-return-minor-augment.webp' |
+  '/augments/phantom-reload-major-augment.webp' |
+  '/augments/phd-slider-major-augment.webp' |
+  '/augments/pheromone-major-augment.webp' |
+  '/augments/picky-eater-minor-augment.webp' |
+  '/augments/pineapple-blast-minor-augment.webp' |
+  '/augments/probiotic-major-augment.webp' |
+  '/augments/quarterback-minor-augment.webp' |
+  '/augments/quick-swap-minor-augment.webp' |
+  '/augments/rally-minor-augment.webp' |
+  '/augments/reactive-armor-major-augment.webp' |
+  '/augments/repair-boost-minor-augment.webp' |
+  '/augments/resilience-major-augment.webp' |
+  '/augments/retaliation-minor-augment.webp' |
+  '/augments/retribution-major-augment.webp' |
+  '/augments/siren-minor-augment.webp' |
+  '/augments/slow-death-minor-augment.webp' |
+  '/augments/speedy-roulette-minor-augment.webp' |
+  '/augments/stalker-major-augment.webp' |
+  '/augments/supercharged-major-augment.webp' |
+  '/augments/supermassive-minor-augment.webp' |
+  '/augments/targeted-minor-augment.webp' |
+  '/augments/triple-shot-major-augment.webp' |
+  '/augments/turtle-shell-major-augment.webp' |
+  '/augments/vampiric-extraction-major-augment.webp';
+
 /** Union of all generated image path types */
-export type ImagePaths = RootImagePath | MapsImagePath | RelicsImagePath | FieldUpgradesImagePath | PreviewsImagePath | IconsImagePath | LayersImagePath | AugmentsImagePath | ZombiesImagePath | GamesImagePath | GobblegumsImagePath | WeaponsImagePath | AmmoModsImagePath | ElixirsImagePath | PerksImagePath;
+export type ImagePaths = RootImagePath | MapsImagePath | RelicsImagePath | FieldUpgradesImagePath | PreviewsImagePath | ZombiesImagePath | GamesImagePath | GobblegumsImagePath | WeaponsImagePath | AmmoModsImagePath | ElixirsImagePath | PerksImagePath | IconsImagePath | LayersImagePath | AugmentsImagePath;

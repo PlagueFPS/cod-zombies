@@ -1,5 +1,5 @@
 import type { MapConfig, MapConfigMetadata } from "@/map-configs"
-import { Effect } from "effect"
+import { Effect, Option } from "effect"
 
 /** Union type of all available interactive map IDs */
 export type MapId = keyof typeof mapRegistry
@@ -81,36 +81,33 @@ const mapRegistry = {
 /**
  * Gets the interactive map configuration for a given map ID.
  * @param mapId - The ID of the map to retrieve the configuration for.
- * @returns An effect that resolves to the map configuration if it exists, or null if it does not.
  */
-export const getMapConfig = (mapId: MapId) =>
-	Effect.gen(function* () {
-		const map = mapRegistry[mapId]
-		// handle case where provided mapId does not exist
-		if (!map) {
-			yield* Effect.logWarning(`Map ID ${mapId} does not exist`)
-			return null
-		}
+export const getMapConfig = Effect.fn("getMapConfig")(function* (mapId: MapId) {
+	const map = mapRegistry[mapId]
+	// handle case where provided mapId does not exist
+	if (!map) {
+		yield* Effect.logWarning(`Map ID ${mapId} does not exist`)
+		return Option.none()
+	}
 
-		return yield* map.config
-	}).pipe(Effect.withLogSpan("get_map_config"))
+	return Option.some(yield* map.config)
+})
 
 /**
  * Gets the metadata for a given interactive map ID.
  * @param mapId - The ID of the map to retrieve the metadata for.
- * @returns An effect that resolves to the map metadata if it exists, or null if it does not.
+ * @returns An effect that resolves to the map metadata.
  */
-export const getMapConfigMetadata = (mapId: MapId) =>
-	Effect.gen(function* () {
-		const map = mapRegistry[mapId]
-		// handle case where provided mapId does not exist
-		if (!map) {
-			yield* Effect.logWarning(`Map ID ${mapId} does not exist`)
-			return null
-		}
+export const getMapConfigMetadata = Effect.fn("getMapConfigMetadata")(function* (mapId: MapId) {
+	const map = mapRegistry[mapId]
+	// handle case where provided mapId does not exist
+	if (!map) {
+		yield* Effect.logWarning(`Map ID ${mapId} does not exist`)
+		return Option.none()
+	}
 
-		return yield* map.metadata
-	}).pipe(Effect.withLogSpan("get_map_config_metadata"))
+	return Option.some(yield* map.metadata)
+})
 
 /**
  * Gets a list of all interactive maps in the registry

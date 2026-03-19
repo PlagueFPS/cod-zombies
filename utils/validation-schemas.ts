@@ -1,133 +1,135 @@
 import { Schema } from "effect"
 
-export type TFeedbackForm = typeof FeedbackFormSchema.Type
-export type TContactForm = typeof ContactFormSchema.Type
-export type TNewsletterForm = typeof NewsletterFormSchema.Type
+const FileMetadataSchema = Schema.Struct({
+	lastModified: Schema.Int.annotate({ description: "Epoch timestamp of the last modification" }),
+	lastModifiedFormatted: Schema.String.annotate({
+		description: "Human-readable formatted date of the last modification",
+	}),
+})
+
+const LastModifiedDataSchema = Schema.Struct({
+	version: Schema.String,
+	generated: Schema.String,
+	files: Schema.Record(Schema.String, FileMetadataSchema),
+})
+
+export const encodeLastModifiedData = Schema.encodeEffect(
+	Schema.fromJsonString(LastModifiedDataSchema),
+)
+export const decodeLastModifiedData = Schema.decodeUnknownEffect(
+	Schema.fromJsonString(LastModifiedDataSchema),
+)
 
 const QuestParamsSchema = Schema.Struct({
 	game: Schema.OptionFromUndefinedOr(Schema.String),
 })
 
-const MainQuestParamsSchema = Schema.extend(
-	QuestParamsSchema,
-	Schema.Struct({
-		map: Schema.OptionFromUndefinedOr(Schema.String),
-	}),
-)
+const MainQuestParamsSchema = Schema.Struct({
+	...QuestParamsSchema.fields,
+	map: Schema.OptionFromUndefinedOr(Schema.String),
+})
 
-const SideQuestParamsSchema = Schema.extend(
-	QuestParamsSchema,
-	Schema.Struct({
-		map: Schema.OptionFromUndefinedOr(Schema.String),
-		id: Schema.OptionFromUndefinedOr(Schema.String),
-	}),
-)
+const SideQuestParamsSchema = Schema.Struct({
+	...QuestParamsSchema.fields,
+	map: Schema.OptionFromUndefinedOr(Schema.String),
+	id: Schema.OptionFromUndefinedOr(Schema.String),
+})
 
 const ZombieParamsSchema = Schema.Struct({
 	id: Schema.OptionFromUndefinedOr(Schema.String),
 })
 
-	const RelicParamsSchema = Schema.Struct({
-		id: Schema.OptionFromUndefinedOr(Schema.String),
-		game: Schema.OptionFromUndefinedOr(Schema.String),
-	})
+const RelicParamsSchema = Schema.Struct({
+	id: Schema.OptionFromUndefinedOr(Schema.String),
+	game: Schema.OptionFromUndefinedOr(Schema.String),
+})
 
 const ErrorPageSearchParamsSchema = Schema.Struct({
 	message: Schema.OptionFromUndefinedOr(Schema.String),
 })
 
-export const decodeMainQuestParams = Schema.decodeUnknownSync(MainQuestParamsSchema)
-export const decodeSideQuestParams = Schema.decodeUnknownSync(SideQuestParamsSchema)
-export const decodeZombieParams = Schema.decodeUnknownSync(ZombieParamsSchema)
-export const decodeRelicParams = Schema.decodeUnknownSync(RelicParamsSchema)
-export const decodeErrorPageSearchParams = Schema.decodeUnknown(ErrorPageSearchParamsSchema)
+const emailGroup = Schema.makeFilterGroup(
+	[
+		Schema.isMaxLength(256, { message: "Email must be shorter than 256 characters." }),
+		Schema.isTrimmed({ message: "Email must not contain any leading or trailing whitespace" }),
+		Schema.isPattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
+			message: "Please enter a valid email address.",
+		}),
+	],
+	{
+		title: "email",
+		description: "represents a valid email address.",
+	},
+)
 
-const EmailSchema = Schema.NonEmptyString.annotations({
-	message: () => "Please enter an email address",
+const RequiredEmailSchema = Schema.NonEmptyString.pipe(Schema.check(emailGroup)).annotate({
+	message: "Email is required.",
 })
-	.pipe(
-		Schema.compose(Schema.Trim),
-		Schema.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
-			message: () => "Please enter a valid email address",
-		}),
-		Schema.maxLength(256, {
-			message: () => "Email cannot be more than 256 characters",
-		}),
-	)
-	.annotations({ message: () => "Please enter a valid email address" })
-
 const OptionalEmailSchema = Schema.optional(
-	Schema.transform(
-		Schema.Union(Schema.Literal(""), Schema.Undefined, EmailSchema),
-		Schema.Union(Schema.Undefined, EmailSchema),
-		{
-			decode: (from) => (from === "" || from === undefined ? undefined : from),
-			encode: (to) => to ?? "",
-		},
-	),
+	Schema.Union([Schema.Literal(""), Schema.Undefined, RequiredEmailSchema]),
 )
 
 export const FeedbackFormSchema = Schema.Struct({
 	title: Schema.NonEmptyString,
 	email: OptionalEmailSchema,
-	feedback: Schema.NonEmptyString.annotations({
-		message: () => "Please provide some feedback.",
+	feedback: Schema.NonEmptyString.annotate({
+		message: "Feedback is required.",
 	}),
 })
-
-export const StandardFeedbackFormSchema = Schema.standardSchemaV1(FeedbackFormSchema)
-
-export const validateFeedbackForm = Schema.validateEither(StandardFeedbackFormSchema)
 
 export const NewsletterFormSchema = Schema.Struct({
-	email: EmailSchema,
+	email: RequiredEmailSchema,
 })
 
-export const StandardNewsletterFormSchema = Schema.standardSchemaV1(NewsletterFormSchema)
-
 export const ContactFormSchema = Schema.Struct({
-	name: Schema.NonEmptyString.annotations({
-		message: () => "Please enter your name.",
-	}).pipe(Schema.compose(Schema.Trim)),
-	email: EmailSchema,
-	message: Schema.NonEmptyString.annotations({
-		message: () => "Please enter a message.",
+	name: Schema.NonEmptyString.annotate({
+		message: "Please enter your name.",
+	}),
+	email: RequiredEmailSchema,
+	message: Schema.NonEmptyString.annotate({
+		message: "Please enter a message.",
 	}),
 })
 
-export const StandardContactFormSchema = Schema.standardSchemaV1(ContactFormSchema)
-
+const isValidInt = Schema.isBetween({ minimum: 0, maximum: 99 })
 const TerminusCodeSchema = Schema.Struct({
-	x: Schema.NumberFromString.pipe(Schema.between(0, 99)),
-	y: Schema.NumberFromString.pipe(Schema.between(0, 99)),
-	z: Schema.NumberFromString.pipe(Schema.between(0, 99)),
+	x: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
+	y: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
+	z: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
 })
-
-export const decodeTerminusCode = Schema.decodeEither(TerminusCodeSchema)
 
 const RichLinkNodeSchema = Schema.Struct({
 	text: Schema.NonEmptyString,
 })
 
-export const decodeRichLinkNode = Schema.decodeUnknownEither(RichLinkNodeSchema)
+const isValidReckoningLetter = Schema.makeFilterGroup([
+	Schema.isPattern(/^[A-Za-z]$/).annotate({
+		message: "Only letters A-Z are allowed.",
+	}),
+	Schema.isMaxLength(1),
+])
 
 const ReckoningCodeSchema = Schema.Struct({
-	letter1: Schema.Union(
-		Schema.String.pipe(
-			Schema.pattern(/^[A-Za-z]$/, {
-				message: () => "Only letters A-Z are allowed.",
-			}),
-		),
-		Schema.String.pipe(Schema.maxLength(0)),
-	),
-	letter2: Schema.Union(
-		Schema.String.pipe(
-			Schema.pattern(/^[A-Za-z]$/, {
-				message: () => "Only letters A-Z are allowed.",
-			}),
-		),
-		Schema.String.pipe(Schema.maxLength(0)),
-	),
+	letter1: Schema.String.pipe(Schema.check(isValidReckoningLetter)),
+	letter2: Schema.String.pipe(Schema.check(isValidReckoningLetter)),
 })
 
-export const decodeReckoningCode = Schema.decodeUnknownEither(ReckoningCodeSchema)
+export type TFeedbackForm = typeof FeedbackFormSchema.Type
+export type TContactForm = typeof ContactFormSchema.Type
+export type TNewsletterForm = typeof NewsletterFormSchema.Type
+export type FileMetadata = typeof FileMetadataSchema.Type
+export type LastModifiedData = typeof LastModifiedDataSchema.Type
+export type TTerminusCode = typeof TerminusCodeSchema.Encoded
+
+export const StandardFeedbackFormSchema = Schema.toStandardSchemaV1(FeedbackFormSchema)
+export const StandardContactFormSchema = Schema.toStandardSchemaV1(ContactFormSchema)
+export const StandardNewsletterFormSchema = Schema.toStandardSchemaV1(NewsletterFormSchema)
+export const decodeReckoningCode = Schema.decodeUnknownExit(ReckoningCodeSchema)
+export const decodeMainQuestParams = Schema.decodeUnknownSync(MainQuestParamsSchema)
+export const decodeSideQuestParams = Schema.decodeUnknownSync(SideQuestParamsSchema)
+export const decodeZombieParams = Schema.decodeUnknownSync(ZombieParamsSchema)
+export const decodeRelicParams = Schema.decodeUnknownSync(RelicParamsSchema)
+export const decodeErrorPageSearchParams = Schema.decodeUnknownEffect(ErrorPageSearchParamsSchema)
+export const decodeTerminusCode = Schema.decodeUnknownExit(TerminusCodeSchema)
+export const decodeRichLinkNode = Schema.decodeUnknownExit(RichLinkNodeSchema)
+export const validateFeedbackForm = Schema.decodeExit(StandardFeedbackFormSchema)

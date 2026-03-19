@@ -2,11 +2,11 @@ import type { Metadata } from "next"
 import { Effect } from "effect"
 import richStyles from "@/app/rich-text.module.css"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
-import { BasePage } from "@/lib/layers"
+import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getLastUpdated } from "@/utils/server-functions"
+import { getLastModified } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
 	title: "Privacy Policy",
@@ -27,12 +27,16 @@ export const metadata: Metadata = {
 	},
 }
 
-const PrivacyPolicy = Effect.fn("PrivacyPolicy")(function* () {
+export default async function PrivacyPolicyPage() {
+	return await buildPrivacyPolicyPage().pipe(PageRuntime.runPromise)
+}
+
+const buildPrivacyPolicyPage = Effect.fn("buildPrivacyPolicyPage")(function* () {
 	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
 	const { default: MDXContent } = yield* Effect.promise(
 		() => import("@/content/legal/privacy-policy.mdx"),
 	)
-	const { lastModifiedFormatted } = getLastUpdated("legal/privacy-policy.mdx")
+	const { lastModifiedFormatted } = yield* getLastModified("legal/privacy-policy.mdx")
 
 	return (
 		<article className="flex w-full justify-center">
@@ -40,7 +44,7 @@ const PrivacyPolicy = Effect.fn("PrivacyPolicy")(function* () {
 				<div className="flex w-full grow flex-col-reverse justify-center xl:flex-row">
 					<section className="flex w-full max-w-7xl flex-col items-center justify-center">
 						<div className="relative mt-4 w-full xl:my-6">
-							<div className="-top-10 absolute left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
+							<div className="absolute -top-10 left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
 								<Breadcrumbs links={[{ title: "Privacy Policy", href: `/privacy-policy` }]} />
 							</div>
 						</div>
@@ -61,5 +65,3 @@ const PrivacyPolicy = Effect.fn("PrivacyPolicy")(function* () {
 		</article>
 	)
 })
-
-export default BasePage.build(PrivacyPolicy)

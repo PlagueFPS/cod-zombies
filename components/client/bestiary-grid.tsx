@@ -29,7 +29,7 @@ export function BestiaryGrid({ zombies }: IBestiaryGrid) {
 		useFilterParams()
 	let filteredZombies = zombies.map(zombie => ({
 		...zombie,
-		state: Option.fromNullable(zombie.state),
+		state: Option.fromNullOr(zombie.state),
 	}))
 
 	if (gameParams.length > 0) {

@@ -1,17 +1,22 @@
 import type { MapsImagePath, ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { FileSystem, Path } from "@effect/platform"
-import { BunFileSystem, BunRuntime } from "@effect/platform-bun"
-import { Effect, Layer, Match, Option } from "effect"
+import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { Effect, FileSystem, Match, Option, Path, Schema } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
 import { getMainQuestByMap, type MainQuest } from "@/data/main-quests"
 import { getSideQuests, type SideQuest } from "@/data/side-quests"
 import { getZombieByKey, type Zombie } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { calculateTimeToRead, getLastUpdated } from "@/utils/server-functions"
+import { calculateTimeToRead, getLastModified } from "@/utils/server-functions"
+
+class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>()(
+	"ImageGenerationError",
+	{
+		cause: Schema.Unknown,
+	},
+) {}
 
 const size = { width: 1200, height: 630 }
-const FsLayer = Layer.merge(BunFileSystem.layer, Path.layer)
 
 const getFonts = Effect.fn("getFonts")(function* () {
 	const fs = yield* FileSystem.FileSystem
@@ -33,18 +38,18 @@ const transformImage = Effect.fn(function* (imagePath: MapsImagePath | ZombiesIm
 	const imageBuffer = yield* fs.readFile(path.join(process.cwd(), "public", imagePath))
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 100 }).toBuffer(),
-		catch: error => new Error(`Failed to generate map image`, { cause: error }),
+		catch: cause => new ImageGenerationError({ cause }),
 	})
 })
 
 const optimizeImageResponse = Effect.fn(function* (imageResponse: ImageResponse) {
 	const imageBuffer = yield* Effect.tryPromise({
 		try: () => imageResponse.arrayBuffer(),
-		catch: error => new Error("Failed to get array buffer", { cause: error }),
+		catch: cause => new ImageGenerationError({ cause }),
 	})
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 80 }).toBuffer(),
-		catch: error => new Error("Failed to optimize image", { cause: error }),
+		catch: cause => new ImageGenerationError({ cause }),
 	})
 })
 
@@ -56,9 +61,9 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 	const contentPath = path.join(process.cwd(), `./content/main-quests/${mainQuest.id}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
 	const fonts = yield* getFonts()
-	const timeToRead = calculateTimeToRead(fileContent)
-	const { lastModifiedFormatted } = getLastUpdated(contentPath)
+	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
 	const mapImage = yield* transformImage(mainQuest.map.image)
+	const timeToRead = calculateTimeToRead(fileContent)
 
 	const difficultyCSS: React.CSSProperties = Option.match(mainQuest.difficulty, {
 		onNone: () => ({}),
@@ -242,7 +247,7 @@ const _MainQuestGeneration = Effect.gen(function* () {
 		new Uint8Array(ogImage),
 	)
 	yield* Effect.log(`Generated og image for ${quest.map.id}`)
-}).pipe(Effect.withLogSpan("main_quest_generation"), Effect.provide(FsLayer))
+}).pipe(Effect.withLogSpan("main_quest_generation"))
 
 const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 	sideQuest: SideQuest,
@@ -253,7 +258,7 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 	const fileContent = yield* fs.readFileString(contentPath)
 	const fonts = yield* getFonts()
 	const timeToRead = calculateTimeToRead(fileContent)
-	const { lastModifiedFormatted } = getLastUpdated(contentPath)
+	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
 	const mapImage = yield* transformImage(sideQuest.map.image)
 
 	const imageResponse = new ImageResponse(
@@ -416,7 +421,7 @@ const _SideQuestGeneration = Effect.gen(function* () {
 			yield* Effect.log(`Generated og image for ${quest.id}`)
 		}),
 	)
-}).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
+})
 
 const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: Zombie) {
 	const fonts = yield* getFonts()
@@ -597,6 +602,6 @@ const _ZombieGeneration = Effect.gen(function* () {
 		new Uint8Array(ogImage),
 	)
 	yield* Effect.log(`Generated og image for ${zombie.id}`)
-}).pipe(Effect.withLogSpan("side_quest_generation"), Effect.provide(FsLayer))
+})
 
-BunRuntime.runMain(_SideQuestGeneration)
+_SideQuestGeneration.pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
