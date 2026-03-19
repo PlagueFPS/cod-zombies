@@ -17,6 +17,7 @@ export default function TerminusCode() {
 				console.error(Cause.pretty(cause))
 				toast.error(
 					"Invalid Values. Only positive, single digit, or double digit numbers are allowed.",
+					{ position: "bottom-center" },
 				)
 				return null
 			},

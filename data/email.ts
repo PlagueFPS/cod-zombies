@@ -1,4 +1,4 @@
-import { Duration, Effect, Schema } from "effect"
+import { Duration, Effect, Option, Schema } from "effect"
 import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"
@@ -29,10 +29,10 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: 
 	const emails = yield* Email
 
 	const contact = yield* emails.getContact(email)
-	if (contact)
+	if (Option.isSome(contact))
 		return yield* new ContactExistsError({
 			message: "That email is already subscribed!",
-			cause: new Error(`Contact already subscribed: ${contact}`),
+			cause: new Error(`Contact already subscribed: ${contact.value}`),
 		})
 
 	const ttl = yield* Duration.fromInput("1 day")
@@ -52,7 +52,7 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (ema
 	const emails = yield* Email
 
 	const contact = yield* emails.getContact(email)
-	if (!contact)
+	if (Option.isNone(contact))
 		return yield* new ContactNotFoundError({
 			message: "That email is not currently subscribed!",
 			cause: new Error(`Contact not found for email: ${email}`),
