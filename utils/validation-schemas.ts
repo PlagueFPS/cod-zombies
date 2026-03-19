@@ -50,15 +50,10 @@ const ErrorPageSearchParamsSchema = Schema.Struct({
 
 const emailGroup = Schema.makeFilterGroup(
 	[
-		Schema.isPattern(
-			/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-		).annotate({
+		Schema.isMaxLength(256, { message: "Email must be shorter than 256 characters." }),
+		Schema.isTrimmed({ message: "Email must not contain any leading or trailing whitespace" }),
+		Schema.isPattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
 			message: "Please enter a valid email address.",
-			description: "a valid email address.",
-		}),
-		Schema.isMaxLength(256).annotate({ message: "Email must be shorted than 256 characters." }),
-		Schema.isTrimmed().annotate({
-			message: "Email must not contain any leading or trailing whitespace",
 		}),
 	],
 	{
@@ -67,25 +62,30 @@ const emailGroup = Schema.makeFilterGroup(
 	},
 )
 
-const EmailSchema = Schema.NonEmptyString.pipe(Schema.check(emailGroup)).annotate({
-	message: "Please enter a valid email address.",
+const RequiredEmailSchema = Schema.NonEmptyString.pipe(Schema.check(emailGroup)).annotate({
+	message: "Email is required.",
 })
+const OptionalEmailSchema = Schema.optional(
+	Schema.Union([Schema.Literal(""), Schema.Undefined, RequiredEmailSchema]),
+)
 
 export const FeedbackFormSchema = Schema.Struct({
 	title: Schema.NonEmptyString,
-	email: Schema.optional(EmailSchema),
-	feedback: Schema.NonEmptyString,
+	email: OptionalEmailSchema,
+	feedback: Schema.NonEmptyString.annotate({
+		message: "Feedback is required.",
+	}),
 })
 
 export const NewsletterFormSchema = Schema.Struct({
-	email: EmailSchema,
+	email: RequiredEmailSchema,
 })
 
 export const ContactFormSchema = Schema.Struct({
 	name: Schema.NonEmptyString.annotate({
 		message: "Please enter your name.",
 	}),
-	email: EmailSchema,
+	email: RequiredEmailSchema,
 	message: Schema.NonEmptyString.annotate({
 		message: "Please enter a message.",
 	}),

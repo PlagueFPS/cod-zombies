@@ -363,8 +363,8 @@ const relicRegistry = {
 		map: getMapByKey("paradoxJunction"),
 		discoveredDate: new Date("March 17, 2026 12:00 AM"),
 		estimatedTimeMins: {
-			min: Duration.toMinutes("1.5 hours"),
-			max: Duration.toMinutes("4 hours"),
+			min: 90,
+			max: 240,
 			reason: "Time varies significantly based on party size and knowledge of the steps.",
 		},
 		content: Effect.promise(() => import("@/content/relics/mangler-helmet.mdx")),

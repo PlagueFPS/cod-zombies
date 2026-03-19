@@ -106,7 +106,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 	const MDXContent = content?.default
 
 	return (
-		<section className="container mx-auto -mt-6 max-w-4xl px-4 sm:-mt-10 md:py-12">
+		<section className="-mt-6 sm:-mt-10 container mx-auto max-w-4xl px-4 md:py-12">
 			<Breadcrumbs
 				links={[
 					{ title: "Relics", href: "/relics" },
@@ -146,12 +146,12 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 						<div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-muted-foreground text-sm">
 							<span className="flex items-center gap-1">
 								<Calendar className="size-4" />
-								<p>Updated: {lastModifiedFormatted}</p>
+								<span>Updated: {lastModifiedFormatted}</span>
 							</span>
 							<span className="inline">&bull;</span>
 							<span className="inline-flex items-center gap-1 text-muted-foreground text-sm">
 								<Clock className="size-4" />
-								<p>{timeToRead} min read</p>
+								<span>{timeToRead} min read</span>
 							</span>
 							<span className="hidden md:inline">&bull;</span>
 							<CompletionTimeDisplay timeRange={relic.estimatedTimeMins} />
@@ -207,7 +207,7 @@ const PrevOrNextRelicCard = ({ relic, prev }: PrevOrNextRelicCardProps) => {
 			<article className="flex items-center justify-between transition-colors group-focus-visible:text-primary">
 				{prev ? (
 					<span className="inline-flex items-center justify-center gap-1">
-						<ChevronLeft className="transition-all group-hover:-translate-x-1 group-focus-visible:-translate-x-1" />
+						<ChevronLeft className="group-hover:-translate-x-1 group-focus-visible:-translate-x-1 transition-all" />
 						<span>{relic.title}</span>
 					</span>
 				) : (

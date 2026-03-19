@@ -57,22 +57,18 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 					startTransition(async () => {
 						const result = await submitFeedbackForm(null, value)
 						if (result.success) {
-							startTransition(() => {
-								toast.success("Feedback submitted successfully!", {
-									description: result.message,
-									duration: 5000,
-									position: "bottom-right",
-								})
-								form.reset()
-								setOpen(false)
+							toast.success("Feedback submitted successfully!", {
+								description: result.message,
+								duration: 5000,
+								position: "bottom-right",
 							})
+							form.reset()
+							setOpen(false)
 						} else {
-							startTransition(() => {
-								toast.error("Failed to submit feedback!", {
-									description: result.message,
-									duration: 5000,
-									position: "bottom-right",
-								})
+							toast.error("Failed to submit feedback!", {
+								description: result.message,
+								duration: 5000,
+								position: "bottom-right",
 							})
 						}
 					})

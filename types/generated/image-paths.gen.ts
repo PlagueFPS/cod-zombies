@@ -3,8 +3,8 @@
  * Run 'generate:image:paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-17T05:46:03.882Z
- * generated in: 38ms
+ * generated at: 2026-03-19T00:09:14.516Z
+ * generated in: 35ms
  */
 
 
@@ -73,6 +73,7 @@ export type RelicsImagePath =
   '/relics/golden-spork-relic.webp' |
   '/relics/gong-relic.webp' |
   '/relics/lawyers-pen-relic.webp' |
+  '/relics/mangler-helmet-relic.webp' |
   '/relics/matroyshka-dolls-relic.webp' |
   '/relics/rocket-relic-placeholder.webp' |
   '/relics/samanthas-drawing-relic.webp' |
