@@ -1,37 +1,32 @@
 "use client"
-import type { SideQuest } from "@/data/side-quests"
-import type { ContentState } from "@/types/data"
 import { Option } from "effect"
 import { Suspense, useEffect } from "react"
 import { GridPagination } from "@/components/client/grid-pagination"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { EmptyGrid } from "@/components/server/empty-grid"
 import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
-import {
-	MAIN_QUEST_TIME_RANGE_FILTERS,
-	type MainQuest,
-	type MainQuestDifficulty,
-} from "@/data/main-quests"
+import { getMapByKey, MAIN_QUEST_TIME_RANGE_FILTERS } from "@/data/maps"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { CARD_LIMIT } from "@/utils/constants"
 import {
+	decodeMap,
+	decodeSideQuest,
+	type EncodedMapEntry,
+	type EncodedSideQuest,
+	isMapQuest,
+	isSideQuest,
+} from "@/utils/rsc-wire"
+import {
 	calculateSkip,
+	compareByOptionalSome,
 	getEstimatedTimeMidpoint,
 	sortDifficulties,
-	sortEstimatedTimeAsc,
-	sortEstimatedTimeDesc,
-	sortReleaseDateAsc,
-	sortReleaseDateDesc,
+    sortEstimatedTime,
+    sortReleaseDate,
 } from "@/utils/shared-functions"
 
-type TransformedMainQuest = Omit<MainQuest, "content" | "state" | "difficulty"> & {
-	difficulty: MainQuestDifficulty | null
-	state: ContentState | null
-}
-type TransformedSideQuest = Omit<SideQuest, "content" | "state"> & { state: ContentState | null }
-
 interface IQuestGrid {
-	quests: TransformedMainQuest[] | TransformedSideQuest[]
+	quests: EncodedMapEntry[] | EncodedSideQuest[]
 }
 
 export function QuestGrid({ quests }: IQuestGrid) {
@@ -44,28 +39,24 @@ export function QuestGrid({ quests }: IQuestGrid) {
 		page,
 		validatePageParam,
 	} = useFilterParams()
-	let filteredQuests = quests.map(quest => {
-		if (quest._tag === "MainQuest") {
-			return {
-				...quest,
-				difficulty: Option.fromNullOr(quest.difficulty),
-				state: Option.fromNullOr(quest.state),
-			}
-		}
-
-		return {
-			...quest,
-			state: Option.fromNullOr(quest.state),
-		}
-	})
+	let filteredQuests = quests.map(quest =>
+		isMapQuest(quest) ? decodeMap(quest) : decodeSideQuest(quest),
+	)
 
 	if (gameParams.length > 0) {
-		filteredQuests = filteredQuests.filter(quest => gameParams.includes(quest.map.game.id))
+		filteredQuests = filteredQuests.filter(quest => {
+			if (isSideQuest(quest)) {
+				const map = getMapByKey(quest.map)
+				return Option.isSome(map) && gameParams.includes(map.value.game)
+			}
+
+			return gameParams.includes(quest.game)
+		})
 	}
 
 	if (difficultyParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
-			if (quest._tag === "MainQuest" && Option.isSome(quest.difficulty)) {
+			if (isMapQuest(quest) && Option.isSome(quest.difficulty)) {
 				return difficultyParams.includes(quest.difficulty.value.toLowerCase())
 			}
 			return false
@@ -74,8 +65,9 @@ export function QuestGrid({ quests }: IQuestGrid) {
 
 	if (mapParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
-			if (quest._tag === "SideQuest") {
-				return mapParams.includes(quest.map.id)
+			if (isSideQuest(quest)) {
+				const map = getMapByKey(quest.map)
+				return Option.isSome(map) && mapParams.includes(map.value.id)
 			}
 			return false
 		})
@@ -83,8 +75,9 @@ export function QuestGrid({ quests }: IQuestGrid) {
 
 	if (timeParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
-			if (quest._tag !== "MainQuest") return false
-			const midpoint = getEstimatedTimeMidpoint(quest.estimatedTimeMins)
+			if (isSideQuest(quest) || Option.isNone(quest.estimatedTimeMins)) return false
+
+			const midpoint = getEstimatedTimeMidpoint(quest.estimatedTimeMins.value)
 			return timeParams.some(slug => {
 				const range = MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === slug)
 				if (!range) return false
@@ -97,75 +90,84 @@ export function QuestGrid({ quests }: IQuestGrid) {
 		})
 	}
 
-	// Apply sorting
-	const isMainQuest = filteredQuests.length > 0 && filteredQuests[0]?._tag === "MainQuest"
 	const validSortParam = sortParam || "latest"
 	const sortedQuests = [...filteredQuests]
 
-	if (isMainQuest) {
-		// Main quest sorting
-		switch (validSortParam) {
-			case "oldest":
-				sortedQuests.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
-				break
-			case "difficulty-asc":
-				sortedQuests.sort((a, b) => {
-					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
-						const aDiff = Option.isSome(a.difficulty) ? a.difficulty.value : null
-						const bDiff = Option.isSome(b.difficulty) ? b.difficulty.value : null
-						if (aDiff && bDiff) {
-							return sortDifficulties(aDiff, bDiff)
-						}
-						if (aDiff) return -1
-						if (bDiff) return 1
-						return 0
-					}
-					return 0
-				})
-				break
-			case "difficulty-desc":
-				sortedQuests.sort((a, b) => {
-					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
-						const aDiff = Option.isSome(a.difficulty) ? a.difficulty.value : null
-						const bDiff = Option.isSome(b.difficulty) ? b.difficulty.value : null
-						if (aDiff && bDiff) {
-							return sortDifficulties(bDiff, aDiff)
-						}
-						if (aDiff) return -1
-						if (bDiff) return 1
-						return 0
-					}
-					return 0
-				})
-				break
-			case "time-asc":
-				sortedQuests.sort((a, b) => {
-					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
-						return sortEstimatedTimeAsc(a.estimatedTimeMins, b.estimatedTimeMins)
-					}
-					return 0
-				})
-				break
-			case "time-desc":
-				sortedQuests.sort((a, b) => {
-					if (a._tag === "MainQuest" && b._tag === "MainQuest") {
-						return sortEstimatedTimeDesc(a.estimatedTimeMins, b.estimatedTimeMins)
-					}
-					return 0
-				})
-				break
-			default:
-				sortedQuests.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
-				break
-		}
-	} else {
-		// Side quest sorting
-		if (validSortParam === "oldest") {
-			sortedQuests.sort((a, b) => sortReleaseDateAsc(a.map.releaseDate, b.map.releaseDate))
-		} else {
-			// Default: latest (descending by map release date)
-			sortedQuests.sort((a, b) => sortReleaseDateDesc(a.map.releaseDate, b.map.releaseDate))
-		}
+	switch (validSortParam) {
+		case "oldest":
+			sortedQuests.sort((a, b) => {
+				if (isMapQuest(a) && isMapQuest(b)) {
+					return sortReleaseDate(a.releaseDate, b.releaseDate)
+				}
+
+				if (isSideQuest(a) && isSideQuest(b)) {
+					const mapA = getMapByKey(a.map)
+					const mapB = getMapByKey(b.map)
+					return compareByOptionalSome(mapA, mapB, (a, b) =>
+						sortReleaseDate(a.releaseDate, b.releaseDate),
+					)
+				}
+
+				return 0
+			})
+			break
+		case "difficulty-asc":
+			sortedQuests.sort((a, b) => {
+				if (isMapQuest(a) && isMapQuest(b)) {
+					return compareByOptionalSome(a.difficulty, b.difficulty, sortDifficulties)
+				}
+				return 0
+			})
+			break
+		case "difficulty-desc":
+			sortedQuests.sort((a, b) => {
+				if (isMapQuest(a) && isMapQuest(b)) {
+					return compareByOptionalSome(b.difficulty, a.difficulty, sortDifficulties)
+				}
+				return 0
+			})
+			break
+		case "time-asc":
+			sortedQuests.sort((a, b) => {
+				if (isMapQuest(a) && isMapQuest(b)) {
+					return compareByOptionalSome(
+						a.estimatedTimeMins,
+						b.estimatedTimeMins,
+						sortEstimatedTime,
+					)
+				}
+				return 0
+			})
+			break
+		case "time-desc":
+			sortedQuests.sort((a, b) => {
+				if (isMapQuest(a) && isMapQuest(b)) {
+					return compareByOptionalSome(
+						b.estimatedTimeMins,
+						a.estimatedTimeMins,
+						sortEstimatedTime,
+					)
+				}
+				return 0
+			})
+			break
+		default: // latest
+			sortedQuests.sort((a, b) => {
+				if (isMapQuest(a) && isMapQuest(b)) {
+					return sortReleaseDate(b.releaseDate, a.releaseDate)
+				}
+
+				if (isSideQuest(a) && isSideQuest(b)) {
+					const mapA = getMapByKey(a.map)
+					const mapB = getMapByKey(b.map)
+					return compareByOptionalSome(mapA, mapB, (a, b) =>
+						sortReleaseDate(b.releaseDate, a.releaseDate),
+					)
+				}
+
+				return 0
+			})
+			break
 	}
 
 	const skip = calculateSkip(page, CARD_LIMIT)

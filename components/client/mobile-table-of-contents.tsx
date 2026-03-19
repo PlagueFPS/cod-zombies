@@ -26,12 +26,14 @@ export function MobileTableOfContents({
 
 	return (
 		<div className="sticky top-16 z-50 block w-full bg-background/90 backdrop-blur-xs supports-backdrop-filter:backdrop-blur-xs xl:hidden">
-			<Collapsible open={open} onOpenChange={setOpen} className="group/collapsible">
+			<Collapsible open={open} onOpenChange={setOpen}>
 				<CollapsibleTrigger className="w-full">
 					<div className="relative flex w-full flex-col items-center p-3">
 						<div className="flex w-full items-center gap-1 overflow-hidden">
 							<h3 className="truncate font-bold">{currentHeading?.text || "Introduction"}</h3>
-							<ChevronDown className="ml-auto size-5 shrink-0 group-data-[state=open]/collapsible:rotate-180" />
+							<ChevronDown
+								className={cn("ml-auto size-5 shrink-0 transition-all", { "rotate-180": open })}
+							/>
 						</div>
 						<Progress
 							value={progress}
@@ -41,7 +43,12 @@ export function MobileTableOfContents({
 				</CollapsibleTrigger>
 				<CollapsibleContent className="flex flex-col justify-center gap-4">
 					<RemoveScroll>
-						<ScrollArea className="max-h-[90dvh] overflow-y-scroll border-t bg-background px-4 py-4">
+						<ScrollArea
+							className={cn(
+								"h-full max-h-[90dvh] min-h-0 overflow-y-auto border-t bg-background px-4 py-4",
+								"**:data-[slot=scroll-area-thumb]:bg-neutral-400!0 **:data-[slot=scroll-area-thumb]:hover:bg-neutral-500! dark:**:data-[slot=scroll-area-thumb]:bg-neutral-700! dark:**:data-[slot=scroll-area-thumb]:hover:bg-neutral-600! [&_[data-slot=scroll-area-scrollbar][data-orientation=vertical]]:w-2!",
+							)}
+						>
 							<nav className="flex flex-col gap-4 pb-12">
 								<ul className="flex max-h-full flex-col gap-3 font-medium text-foreground/90 text-sm">
 									{headings.map(heading => (

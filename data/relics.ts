@@ -1,66 +1,60 @@
 import type { SortOption } from "@/components/client/grid-sort"
+import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
-import type { RelicsImagePath, RootImagePath } from "@/types/generated/image-paths.gen"
-import { Effect } from "effect"
-import { getMapByKey, type Maps } from "@/data/maps"
-import { getAdjacentItems } from "@/utils/shared-functions"
+import type { RelicsPaths } from "@/types/generated/content-paths.gen"
+import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
+import { HashMap, Option } from "effect"
+import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
 
 /** The three types of relics */
 export type RelicType = "Grim" | "Sinister" | "Wicked"
 /** The unique identifier for each relic */
-export type RelicKey = keyof typeof relicRegistry
+export type RelicKey = HashMap.HashMap.Key<typeof relicHashMap>
 
 export interface Relic {
+	/** Internal tag to discriminate against for type-narrowing */
+	readonly _tag: "Relic"
 	/** Unique identifier for the relic */
-	id: string
+	readonly id: string
 	/** The title of the relic */
-	title: string
+	readonly title: string
 	/** The state of the relic */
-	state: ContentState | null
+	readonly state: Option.Option<ContentState>
 	/** The type of the relic */
-	type: RelicType
+	readonly type: RelicType
 	/** The image of the relic */
-	image: RelicsImagePath | RootImagePath
+	readonly image: RelicsImagePath
 	/** The description of the relic */
-	description: string
+	readonly description: string
 	/** The map where the relic can be obtained */
-	map: Maps
+	readonly map: MapKey
 	/** The date when the relic was discovered */
-	discoveredDate: Date
+	readonly discoveredDate: Date
 	/** The estimated min/max time to unlock */
-	estimatedTimeMins: TimeRange
+	readonly estimatedTimeMins: TimeRange
 	/** The content of the relic */
-	content: Effect.Effect<typeof import("*.mdx"), never, never>
+	readonly content: RelicsPaths
 }
 
 /**
- * Gets all relics.
- * @returns An array of all relics.
+ * Gets all relics sorted by discovered date in descending order
  */
-export const getRelics = (): Relic[] => relics
+export const getRelics = () =>
+	HashMap.toValues(relicHashMap).sort((a, b) =>
+		sortReleaseDate(b.discoveredDate, a.discoveredDate),
+	)
 
 /**
  * Gets a specific relic by its key
- * @param key The key of the relic
- * @returns The relic object
  */
-export const getRelicByKey = (key: RelicKey): Relic => relicRegistry[key]
-
-/**
- * Gets a relic by its id.
- * @param id The id of the relic.
- * @returns The relic object if it exists
- */
-export const getRelicById = (id: string) => relicMap.get(id)
+export const getRelicByKey = (key: RelicKey) => HashMap.get(relicHashMap, key)
 
 /**
  * Gets the adjacent relics of a given relic.
- * @param id The id of the relic.
- * @returns previous and next relics.
+ * @param current The current relic key.
  */
-export const getAdjacentRelics = (id: string) => {
-	const sortedRelics = [...relics].reverse()
-	return getAdjacentItems(sortedRelics, id)
+export const getAdjacentRelics = (current: RelicKey) => {
+	return getAdjacentItems(getRelics(), current)
 }
 
 /**
@@ -76,128 +70,132 @@ export const getRelicSortOptions = (): SortOption[] => [
 	{ value: "time-desc", label: "Unlock Time: Longest to Shortest" },
 ]
 
-const relicRegistry = {
-	lawyersPen: {
-		id: "lawyers-pen",
+const makeRelic = <T extends string>(
+	identifier: T,
+	relic: Omit<Relic, "_tag" | "id">,
+): [T, Relic] => [
+	identifier,
+	{
+		_tag: "Relic" as const,
+		id: identifier,
+		...relic,
+	},
+]
+
+const relicHashMap = HashMap.make(
+	makeRelic("lawyers-pen", {
 		title: "Lawyer's Pen",
-		state: null,
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/lawyers-pen-relic.webp",
 		description: "Mimic props have infiltrated the map.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 16, 2025 12:00 AM"),
 		estimatedTimeMins: {
 			min: 15,
 			max: 30,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
-		content: Effect.promise(() => import("@/content/relics/lawyers-pen.mdx")),
-	},
-	dragonWings: {
-		id: "dragon-wings",
+		content: "content/relics/lawyers-pen",
+	}),
+	makeRelic("dragon-wings", {
 		title: "Dragon Wings",
-		state: null,
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/dragon-wings-relic.webp",
 		description: "Normal Power-Up spawns are disabled.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 16, 2025 1:00 AM"),
 		estimatedTimeMins: {
 			min: 15,
 			max: 30,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
-		content: Effect.promise(() => import("@/content/relics/dragon-wings.mdx")),
-	},
-	teddyBear: {
-		id: "teddy-bear",
+		content: "content/relics/dragon-wings",
+	}),
+	makeRelic("teddy-bear", {
 		title: "Teddy Bear",
-		state: null,
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/teddy-bear-relic.webp",
 		description: "Round start delay is cut down by 75%.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 19, 2025 12:00 AM"),
 		estimatedTimeMins: {
 			min: 25,
 			max: 45,
 			reason: "Time varies slightly based on party size, gobblegum use, and/or selected augments.",
 		},
-		content: Effect.promise(() => import("@/content/relics/teddy-bear.mdx")),
-	},
-	vrilSphere: {
-		id: "vril-sphere",
+		content: "content/relics/teddy-bear",
+	}),
+	makeRelic("vril-sphere", {
 		title: "Vril Sphere",
-		state: null,
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/vril-sphere-relic.webp",
 		description: "Players can only carry 4 Perk-a-Colas.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 19, 2025 1:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
-		content: Effect.promise(() => import("@/content/relics/vril-sphere.mdx")),
-	},
-	samanthasDrawing: {
-		id: "samanthas-drawing",
+		content: "content/relics/vril-sphere",
+	}),
+	makeRelic("samanthas-drawing", {
 		title: "Samantha's Drawing",
-		state: null,
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/samanthas-drawing-relic.webp",
 		description:
 			"Every weapon the player has will swap each round, but retain the Pack-a-Punch and rarity level.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("January 14, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
-		content: Effect.promise(() => import("@/content/relics/samanthas-drawing.mdx")),
-	},
-	focusingStone: {
-		id: "focusing-stone",
+		content: "content/relics/samanthas-drawing",
+	}),
+	makeRelic("focusing-stone", {
 		title: "Focusing Stone",
-		state: null,
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/focusing-stone-relic.webp",
 		description: "No Self-Revive kits.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 19, 2025 2:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
-		content: Effect.promise(() => import("@/content/relics/focusing-stone.mdx")),
-	},
-	bus: {
-		id: "bus",
+		content: "content/relics/focusing-stone",
+	}),
+	makeRelic("bus", {
 		title: "Bus",
-		state: null,
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/bus-relic.webp",
 		description: "Enemy health regenerates.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 21, 2025 12:00 AM"),
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
 			reason: "Time varies slightly based on party size and gobblegum use.",
 		},
-		content: Effect.promise(() => import("@/content/relics/bus.mdx")),
-	},
-	dragon: {
-		id: "dragon",
+		content: "content/relics/bus",
+	}),
+	makeRelic("dragon", {
 		title: "Dragon",
-		state: null,
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/dragon-relic.webp",
 		description: "All Ammo Crates are disabled.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 21, 2025 1:00 AM"),
 		estimatedTimeMins: {
 			min: 90,
@@ -205,96 +203,90 @@ const relicRegistry = {
 			reason:
 				"Time varies slightly based on party size, gobblegum use, and knowledge of the main quest steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/dragon.mdx")),
-	},
-	bloodVials: {
-		id: "blood-vials",
+		content: "content/relics/dragon",
+	}),
+	makeRelic("blood-vials", {
 		title: "Blood Vials",
-		state: null,
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/blood-vials-relic.webp",
 		description: "All Augments are turned off.",
-		map: getMapByKey("ashesOfTheDamned"),
+		map: "ashes-of-the-damned",
 		discoveredDate: new Date("November 20, 2025 12:00 AM"),
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
 			reason: "Time varies slightly based on party size, and gobblegum use.",
 		},
-		content: Effect.promise(() => import("@/content/relics/blood-vials.mdx")),
-	},
-	gong: {
-		id: "gong",
+		content: "content/relics/blood-vials",
+	}),
+	makeRelic("gong", {
 		title: "Gong",
-		state: null,
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/gong-relic.webp",
 		description: "Field Upgrade starts charged, but can only be charged by Full Power.",
-		map: getMapByKey("astraMalorum"),
+		map: "astra-malorum",
 		discoveredDate: new Date("January 25, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 25,
 			max: 60,
 			reason: "Time varies slightly based on party size, and knowledge of the steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/gong.mdx")),
-	},
-	seed: {
-		id: "seed",
+		content: "content/relics/gong",
+	}),
+	makeRelic("seed", {
 		title: "Seed",
-		state: null,
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/seed-relic.webp",
 		description: "Mystery Box is disabled.",
-		map: getMapByKey("astraMalorum"),
+		map: "astra-malorum",
 		discoveredDate: new Date("December 7, 2025 12:00 AM"),
 		estimatedTimeMins: {
 			min: 25,
 			max: 60,
 			reason: "Time varies slightly based on party size, and knowledge of the steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/seed.mdx")),
-	},
-	spiderFang: {
-		id: "spider-fang",
+		content: "content/relics/seed",
+	}),
+	makeRelic("spider-fang", {
 		title: "Spider Fang",
-		state: null,
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/spider-fang-relic.webp",
 		description: "Perk costs at machines never decrease.",
-		map: getMapByKey("astraMalorum"),
+		map: "astra-malorum",
 		discoveredDate: new Date("December 11, 2025 12:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
 			reason: "Time varies significantly based on wisp tea luck, augments, and party size.",
 		},
-		content: Effect.promise(() => import("@/content/relics/spider-fang.mdx")),
-	},
-	matroyshkaDolls: {
-		id: "matroyshka-dolls",
+		content: "content/relics/spider-fang",
+	}),
+	makeRelic("matroyshka-dolls", {
 		title: "Matroyshka Dolls",
-		state: null,
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/matroyshka-dolls-relic.webp",
 		description: "Salvage drop rate halved.",
-		map: getMapByKey("astraMalorum"),
+		map: "astra-malorum",
 		discoveredDate: new Date("January 30, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
 			reason: "Time varies slightly based on party size and knowledge of the main quest steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/matroyshka-dolls.mdx")),
-	},
-	goldenSpork: {
-		id: "golden-spork",
+		content: "content/relics/matroyshka-dolls",
+	}),
+	makeRelic("golden-spork", {
 		title: "Golden Spork",
-		state: null,
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/golden-spork-relic.webp",
 		description: "Enemies deal double damage.",
-		map: getMapByKey("astraMalorum"),
+		map: "astra-malorum",
 		discoveredDate: new Date("January 30, 2026 1:00 AM"),
 		estimatedTimeMins: {
 			min: 90,
@@ -302,78 +294,67 @@ const relicRegistry = {
 			reason:
 				"Time varies significantly based on party size, and knowledge of the main quest steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/golden-spork.mdx")),
-	},
-	civilProtectorHead: {
-		id: "civil-protector-head",
+		content: "content/relics/golden-spork",
+	}),
+	makeRelic("civil-protector-head", {
 		title: "Civil Protector Head",
-		state: null,
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/civil-protector-head-relic.webp",
 		description: "Every 100 kills, you lose a perk.",
-		map: getMapByKey("astraMalorum"),
+		map: "astra-malorum",
 		discoveredDate: new Date("December 11, 2025 1:00 AM"),
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
 			reason: "Time varies significantly based on party size, and knowledge of the steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/civil-protector-head.mdx")),
-	},
-	rocket: {
-		id: "rocket",
+		content: "content/relics/civil-protector-head",
+	}),
+	makeRelic("rocket", {
 		title: "Rocket",
-		state: "New",
+		state: Option.some("New"),
 		type: "Grim",
 		// TODO: update with rocket relic image once obtained
 		image: "/relics/rocket-relic-placeholder.webp",
 		description: "No Score Streaks.",
-		map: getMapByKey("paradoxJunction"),
+		map: "paradox-junction",
 		discoveredDate: new Date("March 13, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 20,
 			max: 40,
 			reason: "Time varies slightly based on knowledge of the steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/rocket.mdx")),
-	},
-	summoningKey: {
-		id: "summoning-key",
+		content: "content/relics/rocket",
+	}),
+	makeRelic("summoning-key", {
 		title: "Summoning Key",
-		state: "New",
+		state: Option.some("New"),
 		type: "Sinister",
 		image: "/relics/summoning-key-relic.webp",
 		description: "Zombies explode on death, dealing damage to nearby players.",
-		map: getMapByKey("paradoxJunction"),
+		map: "paradox-junction",
 		discoveredDate: new Date("March 15, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 60,
 			max: 120,
 			reason: "Time varies slightly based on knowledge of the steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/summoning-key.mdx")),
-	},
-	manglerHelmet: {
-		id: "mangler-helmet",
+		content: "content/relics/summoning-key",
+	}),
+	makeRelic("mangler-helmet", {
 		title: "Mangler Helmet",
-		state: "New",
+		state: Option.some("New"),
 		type: "Wicked",
 		image: "/relics/mangler-helmet-relic.webp",
 		description: "No Arsenal.",
-		map: getMapByKey("paradoxJunction"),
+		map: "paradox-junction",
 		discoveredDate: new Date("March 17, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
 			reason: "Time varies significantly based on party size and knowledge of the steps.",
 		},
-		content: Effect.promise(() => import("@/content/relics/mangler-helmet.mdx")),
-	},
-} as const satisfies Record<string, Relic>
-
-const relicMap = new Map<string, Relic>()
-const relics = Object.values(relicRegistry)
-
-for (const relic of relics) {
-	relicMap.set(relic.id, relic)
-}
+		content: "content/relics/mangler-helmet",
+	}),
+)

@@ -1,123 +1,171 @@
-import type { MapConfig, MapConfigMetadata } from "@/map-configs"
-import { Effect, Option } from "effect"
+import type { GameKey } from "@/data/games"
+import type { MapMarker } from "@/map-configs/markers"
+import type { ContentState } from "@/types/data"
+import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
+import { Effect, HashMap, Option, Schema } from "effect"
+import { getMapByKey, type MapKey } from "./maps"
+import { sortReleaseDate } from "@/utils/shared-functions"
+
+class ConfigNotFoundError extends Schema.TaggedErrorClass<ConfigNotFoundError>()(
+	"ConfigNotFoundError",
+	{
+		cause: Schema.Unknown,
+	},
+) {}
 
 /** Union type of all available interactive map IDs */
-export type MapId = keyof typeof mapRegistry
+export type InteractiveMapKey = HashMap.HashMap.Key<typeof interactiveMapHashMap>
 
-interface MapEntry {
-	metadata: Effect.Effect<MapConfigMetadata, never, never>
-	config: Effect.Effect<MapConfig, never, never>
+export interface InteractiveMap {
+	/** Internal tag to discriminate against for type-narrowing */
+	readonly _tag: "InteractiveMap"
+	/** The unique identifier of the interactive map */
+	readonly id: string
+	/** The title of the interactive map */
+	readonly title: string
+	/** The state of the interactive map */
+	readonly state: Option.Option<ContentState>
+	/** The image of the interactive map */
+	readonly image: PreviewsImagePath
+	/** The game the interactive map is from */
+	readonly game: GameKey
+	/** The description of the interactive map */
+	readonly description: string
 }
 
-const mapRegistry = {
-	"paradox-junction": {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/paradox-junction").then(module => module.metadata),
-		),
-		config: Effect.promise(() =>
-			import("@/map-configs/paradox-junction").then(module => module.config),
-		),
-	},
-	"astra-malorum": {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/astra-malorum").then(module => module.metadata),
-		),
-		config: Effect.promise(() =>
-			import("@/map-configs/astra-malorum").then(module => module.config),
-		),
-	},
-	"ashes-of-the-damned": {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/ashes-of-the-damned").then(module => module.metadata),
-		),
-		config: Effect.promise(() =>
-			import("@/map-configs/ashes-of-the-damned").then(module => module.config),
-		),
-	},
-	reckoning: {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/reckoning").then(module => module.metadata),
-		),
-		config: Effect.promise(() => import("@/map-configs/reckoning").then(module => module.config)),
-	},
-	"shattered-veil": {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/shattered-veil").then(module => module.metadata),
-		),
-		config: Effect.promise(() =>
-			import("@/map-configs/shattered-veil").then(module => module.config),
-		),
-	},
-	"the-tomb": {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/the-tomb").then(module => module.metadata),
-		),
-		config: Effect.promise(() => import("@/map-configs/the-tomb").then(module => module.config)),
-	},
-	"citadelle-des-morts": {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/citadelle-des-morts").then(module => module.metadata),
-		),
-		config: Effect.promise(() =>
-			import("@/map-configs/citadelle-des-morts").then(module => module.config),
-		),
-	},
-	terminus: {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/terminus").then(module => module.metadata),
-		),
-		config: Effect.promise(() => import("@/map-configs/terminus").then(module => module.config)),
-	},
-	"liberty-falls": {
-		metadata: Effect.promise(() =>
-			import("@/map-configs/liberty-falls").then(module => module.metadata),
-		),
-		config: Effect.promise(() =>
-			import("@/map-configs/liberty-falls").then(module => module.config),
-		),
-	},
-} as const satisfies Record<string, MapEntry>
+export interface MapConfigLayer {
+	/** The unique identifier of the map config layer */
+	readonly id: string
+	/** The title of the map config layer */
+	readonly title: string
+	/** The image of the map config layer */
+	readonly image: LayersImagePath
+	/** The markers of the map config layer */
+	readonly markers: MapMarker[]
+}
+
+export interface MapConfig {
+	/** The layers of the map config */
+	readonly layers: MapConfigLayer[]
+}
 
 /**
- * Gets the interactive map configuration for a given map ID.
- * @param mapId - The ID of the map to retrieve the configuration for.
+ * Gets the interactive map configuration for a given map key.
  */
-export const getMapConfig = Effect.fn("getMapConfig")(function* (mapId: MapId) {
-	const map = mapRegistry[mapId]
-	// handle case where provided mapId does not exist
-	if (!map) {
-		yield* Effect.logWarning(`Map ID ${mapId} does not exist`)
-		return Option.none()
-	}
-
-	return Option.some(yield* map.config)
+export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(function* (
+	key: InteractiveMapKey,
+) {
+	const config = yield* Effect.tryPromise({
+		try: () => import(`@/map-configs/${key}.ts`).then(module => module.config),
+		catch: cause => new ConfigNotFoundError({ cause }),
+	})
+	return config as MapConfig
 })
 
 /**
- * Gets the metadata for a given interactive map ID.
- * @param mapId - The ID of the map to retrieve the metadata for.
- * @returns An effect that resolves to the map metadata.
+ * Gets an interactive map by its key.
  */
-export const getMapConfigMetadata = Effect.fn("getMapConfigMetadata")(function* (mapId: MapId) {
-	const map = mapRegistry[mapId]
-	// handle case where provided mapId does not exist
-	if (!map) {
-		yield* Effect.logWarning(`Map ID ${mapId} does not exist`)
-		return Option.none()
-	}
-
-	return Option.some(yield* map.metadata)
-})
+export const getInteractiveMapByKey = (key: InteractiveMapKey) =>
+	HashMap.get(interactiveMapHashMap, key)
 
 /**
  * Gets a list of all interactive maps in the registry
  * @returns An array of the existing interactive map metadata
  */
-export const getInteractiveMaps = () =>
-	Effect.forEach(Object.values(mapRegistry), map => map.metadata, { concurrency: "unbounded" })
+export const getInteractiveMaps = () => HashMap.toValues(interactiveMapHashMap).sort((a, b) => {
+	const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
+	const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
+	return sortReleaseDate(mapB.releaseDate, mapA.releaseDate)
+})
 
 /**
  * Gets the total number of interactive maps in the registry. This is useful for initial loading states
- * @returns The total number of interactive maps
  */
-export const getTotalMaps = () => Object.values(mapRegistry).length
+export const getTotalMaps = () => HashMap.size(interactiveMapHashMap)
+
+const makeMapEntry = <T extends string>(
+	identifier: T,
+	map: Omit<InteractiveMap, "_tag" | "id">,
+): [T, InteractiveMap] => [
+	identifier,
+	{
+		_tag: "InteractiveMap" as const,
+		id: identifier,
+		...map,
+	},
+]
+
+const interactiveMapHashMap = HashMap.make(
+	makeMapEntry("paradox-junction", {
+		title: "Paradox Junction",
+		state: Option.some("Coming Soon"),
+		image: "/previews/paradox-junction-preview.webp",
+		game: "black-ops-7",
+		description:
+			"Explore Paradox Junction in Black Ops 7 Zombies. Find all locations for all weapons, intel, and more with our interactive map.",
+	}),
+	makeMapEntry("astra-malorum", {
+		title: "Astra Malorum",
+		state: Option.none(),
+		image: "/previews/astra-malorum-preview.webp",
+		game: "black-ops-7",
+		description:
+			"Explore Astra Malorum in Black Ops 7 Zombies. Find locations for all Aether Crystals, weapons, intel, and more with our interactive map.",
+	}),
+	makeMapEntry("ashes-of-the-damned", {
+		title: "Ashes of the Damned",
+		state: Option.none(),
+		image: "/previews/ashes-of-the-damned-preview.webp",
+		game: "black-ops-7",
+		description:
+			"Explore Ashes of the Damned in Black Ops 7 Zombies. Find locations for all Overgrown Hoard Husks, Aether Plants, Plant Sprays, weapons, and more with our interactive map.",
+	}),
+	makeMapEntry("reckoning", {
+		title: "Reckoning",
+		state: Option.none(),
+		image: "/previews/reckoning-preview.webp",
+		game: "black-ops-6",
+		description:
+			"Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our Reckoning interactive map in Black Ops 6 Zombies.",
+	}),
+	makeMapEntry("shattered-veil", {
+		title: "Shattered Veil",
+		state: Option.none(),
+		image: "/previews/shattered-veil-preview.webp",
+		game: "black-ops-6",
+		description:
+			"Explore Shattered Veil in BO6 Zombies. Find all Janus Crates, Aether Plants, Aether Crystals, Intel, and more with our interactive map.",
+	}),
+	makeMapEntry("the-tomb", {
+		title: "The Tomb",
+		state: Option.none(),
+		image: "/previews/the-tomb-preview.webp",
+		game: "black-ops-6",
+		description:
+			"Explore The Tomb in BO6 Zombies. Find all Dark Aether Lanterns, Dig Spots, intel, and more with our interactive map.",
+	}),
+	makeMapEntry("citadelle-des-morts", {
+		title: "Citadelle des Morts",
+		state: Option.none(),
+		image: "/previews/citadelle-des-morts-preview.webp",
+		game: "black-ops-6",
+		description:
+			"Explore Citadelle Des Morts in BO6 Zombies. Find all Points of Power & Oil Traps, Fast Travels, intel, and more with our interactive map.",
+	}),
+	makeMapEntry("terminus", {
+		title: "Terminus",
+		state: Option.none(),
+		image: "/previews/terminus-preview.webp",
+		game: "black-ops-6",
+		description:
+			"Explore Terminus in BO6 Zombies. Find all Boat Spawns, Fishing Spots, Underwater Chests, Dig Spots, intel, and more with our interactive map.",
+	}),
+	makeMapEntry("liberty-falls", {
+		title: "Liberty Falls",
+		state: Option.none(),
+		image: "/previews/liberty-falls-preview.webp",
+		game: "black-ops-6",
+		description:
+			"Explore Liberty Falls in Black Ops 6 Zombies. Find all perks, Pack-a-Punch, Mystery Box, wall buys, intel, and more with our interactive map.",
+	}),
+)

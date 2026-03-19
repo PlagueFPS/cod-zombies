@@ -1,4 +1,3 @@
-import { Effect, Option } from "effect"
 import {
 	HomeBestiaryPreviewGrid,
 	HomeMapsPreviewGrid,
@@ -7,24 +6,21 @@ import {
 } from "@/components/client/home-preview-grids"
 import { GridSection } from "@/components/server/grid-section"
 import { getInteractiveMaps } from "@/data/interactive-map"
-import { getMainQuests } from "@/data/main-quests"
+import { getMapsWithMainQuest } from "@/data/maps"
 import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 import { HOME_PREVIEW_LIMIT } from "@/utils/constants"
-import { sortReleaseDateDesc } from "@/utils/shared-functions"
+import {
+	encodeInteractiveMap,
+	encodeMap,
+	encodeRelic,
+	encodeSideQuest,
+	encodeZombie,
+} from "@/utils/rsc-wire"
 
 export function MainQuestsSection() {
-	const quests = getMainQuests()
-		.slice(0, HOME_PREVIEW_LIMIT)
-		.map(quest => {
-			const { content, state, difficulty, ...rest } = quest
-			return {
-				...rest,
-				state: Option.getOrNull(state),
-				difficulty: Option.getOrNull(difficulty),
-			}
-		})
+	const quests = getMapsWithMainQuest().slice(0, HOME_PREVIEW_LIMIT).map(encodeMap)
 
 	return (
 		<GridSection title="Main Quests" className="gap-6" viewAllHref="/main-quests">
@@ -39,15 +35,7 @@ export function MainQuestsSection() {
 }
 
 export function SideQuestsSection() {
-	const quests = getSideQuests()
-		.slice(0, HOME_PREVIEW_LIMIT)
-		.map(quest => {
-			const { content, state, ...rest } = quest
-			return {
-				...rest,
-				state: Option.getOrNull(state),
-			}
-		})
+	const quests = getSideQuests().slice(0, HOME_PREVIEW_LIMIT).map(encodeSideQuest)
 
 	return (
 		<GridSection title="Side Quests" className="gap-6" viewAllHref="/side-quests">
@@ -62,10 +50,7 @@ export function SideQuestsSection() {
 }
 
 export function RelicsSection() {
-	const relics = [...getRelics()]
-		.sort((a, b) => sortReleaseDateDesc(a.discoveredDate, b.discoveredDate))
-		.slice(0, HOME_PREVIEW_LIMIT)
-		.map(({ content, ...rest }) => rest)
+	const relics = getRelics().slice(0, HOME_PREVIEW_LIMIT).map(encodeRelic)
 
 	return (
 		<GridSection title="Cursed Relics" className="gap-6" viewAllHref="/relics">
@@ -80,21 +65,14 @@ export function RelicsSection() {
 }
 
 export function BestiarySection() {
-	const zombies = getZombies()
-		.slice(0, HOME_PREVIEW_LIMIT)
-		.map(zombie => {
-			const { combatStrategy, state, ...rest } = zombie
-			return {
-				...rest,
-				state: Option.getOrNull(state),
-			}
-		})
+	const zombies = getZombies().slice(0, HOME_PREVIEW_LIMIT).map(encodeZombie)
 
 	return (
 		<GridSection title="Bestiary" className="gap-6" viewAllHref="/bestiary">
 			<div className="flex flex-col gap-6">
 				<p className="-mt-4 text-muted-foreground sm:text-lg">
-					Discover the weaknesses, behavior, and strategies for defeating all enemy types within the mode.
+					Discover the weaknesses, behavior, and strategies for defeating all enemy types within the
+					mode.
 				</p>
 				<HomeBestiaryPreviewGrid zombies={zombies} />
 			</div>
@@ -102,14 +80,16 @@ export function BestiarySection() {
 	)
 }
 
-export async function MapsSection() {
-	const allMaps = await Effect.runPromise(getInteractiveMaps())
-	const maps = allMaps
-		.slice(0, HOME_PREVIEW_LIMIT)
-		.map(m => ({ ...m, state: Option.getOrNull(m.state) }))
+export function MapsSection() {
+	const maps = getInteractiveMaps().slice(0, HOME_PREVIEW_LIMIT).map(encodeInteractiveMap)
 
 	return (
-		<GridSection title="Interactive Maps" className="gap-6" viewAllHref="/maps" mobileTitleSize="md">
+		<GridSection
+			title="Interactive Maps"
+			className="gap-6"
+			viewAllHref="/maps"
+			mobileTitleSize="md"
+		>
 			<div className="flex flex-col gap-6">
 				<p className="-mt-4 text-muted-foreground sm:text-lg">
 					Browse our collection of interactive maps showcasing key spawn points, locations, and

@@ -1,19 +1,7 @@
-import type { MapConfig, MapConfigMetadata } from "@/map-configs"
-import { Option } from "effect"
-import { perks, sharedMarkers, weapons } from "./markers"
-
-export const metadata: MapConfigMetadata = {
-	id: "reckoning",
-	title: "Reckoning",
-	image: "/previews/reckoning-preview.webp",
-	state: Option.none(),
-	game: "blackOps6",
-	description:
-		"Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our Reckoning interactive map in Black Ops 6 Zombies.",
-}
+import type { MapConfig } from "@/data/interactive-map"
+import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
-	id: "reckoning",
 	layers: [
 		{
 			id: "t1-project-janus-reception",

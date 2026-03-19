@@ -9,6 +9,7 @@ import { GridSortLoader } from "@/components/server/grid-sort-loader"
 import { RelicFilters } from "@/components/server/relic-filters"
 import { getRelicSortOptions, getRelics } from "@/data/relics"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { encodeRelic } from "@/utils/rsc-wire"
 import { getServerUrl } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
 }
 
 export default function RelicsPage() {
-	const relics = getRelics().map(({ content, ...rest }) => rest)
+	const relics = getRelics().map(encodeRelic)
 
 	return (
 		<div className="flex w-full flex-col items-center justify-center">

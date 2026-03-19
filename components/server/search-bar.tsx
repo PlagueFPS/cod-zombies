@@ -1,30 +1,24 @@
 import type { Route } from "next"
 import { Effect, Option } from "effect"
 import { SearchBarInput } from "@/components/client/search-bar-input"
-import { getGames } from "@/data/games"
+import { getGameByKey, getGames } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
-import { getMainQuests } from "@/data/main-quests"
+import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
 import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 
 export async function SearchBar() {
 	return await Effect.gen(function* () {
-		const availableMaps = yield* getInteractiveMaps().pipe(
-			Effect.map(maps =>
-				maps.flatMap(map =>
-					Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [],
-				),
-			),
-		)
+		const availableMaps = getInteractiveMaps().flatMap(map => Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [])
 
-		const mainQuests = getMainQuests().flatMap(q =>
+		const mainQuests = getMapsWithMainQuest().flatMap(q =>
 			Option.getOrNull(q.state) !== "Coming Soon"
 				? [
 						{
-							id: q.map.id,
-							title: q.map.title,
-							game: { id: q.map.game.id, title: q.map.game.title },
+							id: q.id,
+							title: q.title,
+							game: { id: q.game, title: Option.getOrThrow(getGameByKey(q.game)).title },
 						},
 					]
 				: [],
@@ -35,27 +29,42 @@ export async function SearchBar() {
 		const mapSlugs = new Set<string>()
 		const sideQuests = getSideQuests().flatMap(q => {
 			if (Option.getOrNull(q.state) === "Coming Soon") return []
-			mapSlugs.add(q.map.id)
+
+			const map = getMapByKey(q.map)
+			if (Option.isNone(map)) return []
+
+			const game = getGameByKey(map.value.game)
+			if (Option.isNone(game)) return []
+
+			mapSlugs.add(map.value.id)
+
 			return [
 				{
 					id: q.id,
 					title: q.title,
-					map: { id: q.map.id, title: q.map.title },
-					game: { id: q.map.game.id, title: q.map.game.title },
+					map: { id: map.value.id, title: map.value.title },
+					game: { id: game.value.id, title: game.value.title },
 				},
 			]
 		})
 
 		const relicMapSlugs = new Set<string>()
 		const relics = getRelics().flatMap(r => {
-			if (r.state === "Coming Soon") return []
-			relicMapSlugs.add(r.map.id)
+			if (Option.getOrNull(r.state) === "Coming Soon") return []
+			
+			const map = getMapByKey(r.map)
+			if (Option.isNone(map)) return []
+
+			const game = getGameByKey(map.value.game)
+			if (Option.isNone(game)) return []
+
+			relicMapSlugs.add(map.value.id)
 			return [
 				{
 					id: r.id,
 					title: r.title,
-					map: { id: r.map.id, title: r.map.title },
-					game: { id: r.map.game.id, title: r.map.game.title },
+					map: { id: map.value.id, title: map.value.title },
+					game: { id: game.value.id, title: game.value.title },
 				},
 			]
 		})

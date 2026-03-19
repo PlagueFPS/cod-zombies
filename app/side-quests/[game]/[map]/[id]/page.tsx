@@ -1,3 +1,4 @@
+import type { MDXContent } from "mdx/types"
 import type { Metadata, Route } from "next"
 import { Effect, FileSystem, Option, Path } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -10,11 +11,14 @@ import { ShareButton } from "@/components/client/share-button"
 import { TableOfContents } from "@/components/client/table-of-contents"
 import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
+import { getGameByKey } from "@/data/games"
+import { getMapByKey } from "@/data/maps"
 import {
 	getAdjacentSideQuests,
-	getSideQuestById,
+	getSideQuestByKey,
 	getSideQuests,
 	type SideQuest,
+	type SideQuestKey,
 } from "@/data/side-quests"
 import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
@@ -26,25 +30,30 @@ import {
 	getLastModified,
 	getServerUrl,
 } from "@/utils/server-functions"
+import { capitalize } from "@/utils/shared-functions"
 
 export const generateStaticParams = () => {
 	const quests = getSideQuests()
-	return quests.map(q => ({
-		game: q.map.game.id,
-		map: q.map.id,
-		id: q.id,
-	}))
+	return quests.map(q => {
+		// This is run at build time so we can fail the build if the map doesn't exist
+		const map = getMapByKey(q.map).pipe(Option.getOrThrow)
+		return {
+			game: map.game,
+			map: q.map,
+			id: q.id,
+		}
+	})
 }
 
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/side-quests/[game]/[map]/[id]">): Promise<Metadata> => {
-	const { id } = await params
-	const quest = getSideQuestById(id)
-	if (!quest) return notFound()
+	const { game, map, id } = await params
+	const quest = getSideQuestByKey(id as SideQuestKey)
+	if (Option.isNone(quest)) return notFound()
 
-	const title = `${quest.title} Side Quest`
-	const description = `Learn how to complete the ${quest.title} side quest/easter egg for ${quest.map.title} with our detailed step-by-step walkthrough!`
+	const title = `${quest.value.title} Side Quest`
+	const description = `Learn how to complete the ${quest.value.title} side quest/easter egg on ${capitalize(map)} with our detailed step-by-step walkthrough!`
 
 	return {
 		title,
@@ -53,9 +62,9 @@ export const generateMetadata = async ({
 			...GLOBAL_OG_PROPS.openGraph,
 			title,
 			description,
-			url: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+			url: `/side-quests/${game}/${map}/${id}`,
 			images: {
-				url: `${getServerUrl()}/opengraph-images/side-quests/og-${quest.id}.jpg`,
+				url: `${getServerUrl()}/opengraph-images/side-quests/og-${id}.jpg`,
 				width: 1200,
 				height: 630,
 			},
@@ -66,7 +75,7 @@ export const generateMetadata = async ({
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${getServerUrl()}/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+			canonical: `${getServerUrl()}/side-quests/${game}/${map}/${id}`,
 		},
 	}
 }
@@ -76,6 +85,9 @@ export default async function SideQuestPage({
 }: PageProps<"/side-quests/[game]/[map]/[id]">) {
 	return await sideQuestPageUI(params).pipe(
 		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			NoSuchElementError: () => Effect.sync(() => notFound()),
+		}),
 		Effect.orDie,
 		PageRuntime.runPromise,
 	)
@@ -88,18 +100,19 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 	const path = yield* Path.Path
 	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
 	const { id } = yield* Effect.promise(() => params)
-	const quest = getSideQuestById(id)
-	if (!quest) return yield* Effect.sync(() => notFound())
+	const quest = yield* getSideQuestByKey(id as SideQuestKey)
+	const map = yield* getMapByKey(quest.map)
+	const game = yield* getGameByKey(map.game)
 
-	const { prev, next } = getAdjacentSideQuests(quest.id)
-	const contentPath = path.join(process.cwd(), `./content/side-quests/${quest.id}.mdx`)
+	const { prev, next } = getAdjacentSideQuests(quest.id as SideQuestKey)
+	const contentPath = path.join(process.cwd(), `${quest.content}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
 	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
 	const { content, stateBadge, headings, timeToRead } = yield* Option.match(quest.state, {
 		onNone: () =>
 			Effect.gen(function* () {
 				return {
-					content: yield* quest.content,
+					content: yield* Effect.promise(() => import(`@/${quest.content}.mdx`)),
 					stateBadge: null,
 					headings: extractHeadingsFromMDX(fileContent),
 					timeToRead: calculateTimeToRead(fileContent),
@@ -109,7 +122,9 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 			Effect.gen(function* () {
 				const isComingSoon = state === "Coming Soon"
 				return {
-					content: isComingSoon ? null : yield* quest.content,
+					content: isComingSoon
+						? null
+						: yield* Effect.promise(() => import(`@/${quest.content}.mdx`)),
 					stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
 					headings: isComingSoon ? [] : extractHeadingsFromMDX(fileContent),
 					timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
@@ -117,7 +132,7 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 			}),
 	})
 
-	const MDXContent = content?.default
+	const MDXContent: MDXContent | null = content?.default ?? null
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -128,7 +143,7 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 z-10 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
 								<FeaturedImage
-									featuredImage={quest.map.image}
+									featuredImage={map.image}
 									sizes="(max-width: 1280px) 100vw, 1280px"
 									width={1280}
 									height={720}
@@ -136,7 +151,7 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 							</div>
 							<div className="relative z-20 mx-auto max-w-7xl">
 								<FeaturedImage
-									featuredImage={quest.map.image}
+									featuredImage={map.image}
 									sizes="(max-width: 1280px) 100vw, 1280px"
 									width={1280}
 									height={720}
@@ -148,16 +163,16 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 										links={[
 											{ title: "Side Quests", href: `/side-quests` },
 											{
-												title: quest.map.game.title,
-												href: `/side-quests?game=${quest.map.game.id}`,
+												title: game.title,
+												href: `/side-quests?game=${game.id}`,
 											},
 											{
-												title: quest.map.title,
-												href: `/side-quests?map=${quest.map.id}`,
+												title: map.title,
+												href: `/side-quests?map=${map.id}`,
 											},
 											{
 												title: quest.title,
-												href: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+												href: `/side-quests/${game.id}/${map.id}/${quest.id}`,
 											},
 										]}
 									/>
@@ -172,10 +187,10 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 								<div className="flex w-fit items-center justify-center gap-4">
 									{stateBadge}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-										{quest.map.title}
+										{map.title}
 									</Badge>
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-										{quest.map.game.title}
+										{game.title}
 									</Badge>
 								</div>
 							</div>
@@ -193,7 +208,7 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 								</div>
 								<ShareButton
 									title={quest.title}
-									url={`${getServerUrl()}/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`}
+									url={`${getServerUrl()}/side-quests/${game.id}/${map.id}/${quest.id}`}
 									className="mb-2 ml-auto text-muted-foreground md:mb-0"
 								/>
 							</div>
@@ -234,10 +249,21 @@ interface PrevOrNextCard {
 }
 
 const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
-	const alt = `${quest.map.title} map image`
+	const map = getMapByKey(quest.map)
+	if (Option.isNone(map)) {
+		console.error(`Map not found for key ${quest.map}`)
+		return null
+	}
+	const game = getGameByKey(map.value.game)
+	if (Option.isNone(game)) {
+		console.error(`Game not found for key ${map.value.game}`)
+		return null
+	}
+
+	const alt = `${map.value.title} map image`
 	const { href, badge, disabled, tabIndex } = Option.match(quest.state, {
 		onNone: () => ({
-			href: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+			href: `/side-quests/${game.value.id}/${map.value.id}/${quest.id}`,
 			disabled: false,
 			tabIndex: 0,
 			badge: null,
@@ -245,7 +271,7 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 		onSome: state => {
 			const isComingSoon = state === "Coming Soon"
 			return {
-				href: isComingSoon ? "#" : `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+				href: isComingSoon ? "#" : `/side-quests/${game.value.id}/${map.value.id}/${quest.id}`,
 				disabled: isComingSoon,
 				tabIndex: isComingSoon ? -1 : 0,
 				badge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
@@ -278,10 +304,10 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 				>
 					{badge}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{quest.map.title}
+						{map.value.title}
 					</Badge>
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{quest.map.game.title}
+						{game.value.title}
 					</Badge>
 				</div>
 				<div
@@ -290,7 +316,7 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 					)}
 				>
 					<FeaturedImage
-						featuredImage={quest.map.image}
+						featuredImage={map.value.image}
 						sizes="(max-width: 1280px) 320px, 384px"
 						width={384}
 						height={176}
@@ -299,7 +325,7 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 				</div>
 				<div className="relative z-20 flex h-full w-full max-w-sm items-center justify-center overflow-hidden rounded-lg">
 					<FeaturedImage
-						featuredImage={quest.map.image}
+						featuredImage={map.value.image}
 						alt={alt}
 						sizes="(max-width: 1280px) 320px, 384px"
 						width={384}

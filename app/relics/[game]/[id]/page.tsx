@@ -1,3 +1,4 @@
+import type { MDXContent } from "mdx/types"
 import type { Metadata } from "next"
 import { Effect, FileSystem, Option, Path } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -11,7 +12,15 @@ import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom
 import { RichBlockquote } from "@/components/server/rich-blockquote"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { getAdjacentRelics, getRelicById, getRelics, type Relic } from "@/data/relics"
+import { getGameByKey } from "@/data/games"
+import { getMapByKey } from "@/data/maps"
+import {
+	getAdjacentRelics,
+	getRelicByKey,
+	getRelics,
+	type Relic,
+	type RelicKey,
+} from "@/data/relics"
 import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
@@ -20,21 +29,26 @@ import { calculateTimeToRead, getLastModified, getServerUrl } from "@/utils/serv
 
 export const generateStaticParams = () => {
 	const relics = getRelics()
-	return relics.map(relic => ({
-		game: relic.map.game.id,
-		id: relic.id,
-	}))
+	return relics.map(r => {
+		const map = getMapByKey(r.map).pipe(Option.getOrThrow)
+		const game = getGameByKey(map.game).pipe(Option.getOrThrow)
+
+		return {
+			game: game.id,
+			id: r.id,
+		}
+	})
 }
 
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/relics/[game]/[id]">): Promise<Metadata> => {
-	const { id } = await params
-	const relic = getRelicById(id)
-	if (!relic) notFound()
+	const { game, id } = await params
+	const relic = getRelicByKey(id as RelicKey)
+	if (Option.isNone(relic)) return notFound()
 
-	const title = `${relic.title} Relic Guide`
-	const description = `Learn how to unlock the ${relic.map.title} ${relic.type} ${relic.title} relic with the effect: ${relic.description}`
+	const title = `${relic.value.title} Relic Guide`
+	const description = `Learn how to unlock the ${relic.value.type} ${relic.value.title} relic with the effect: ${relic.value.description}`
 
 	return {
 		title,
@@ -43,9 +57,9 @@ export const generateMetadata = async ({
 			...GLOBAL_OG_PROPS.openGraph,
 			title,
 			description,
-			url: `/relics/${relic.map.game.id}/${relic.id}`,
+			url: `/relics/${game}/${id}`,
 			images: {
-				url: `${getServerUrl()}/relics/${relic.id}-relic.webp`,
+				url: `${getServerUrl()}/relics/${id}-relic.webp`,
 				width: 256,
 				height: 256,
 			},
@@ -56,7 +70,7 @@ export const generateMetadata = async ({
 			card: "summary",
 		},
 		alternates: {
-			canonical: `${getServerUrl()}/relics/${relic.map.game.id}/${relic.id}`,
+			canonical: `${getServerUrl()}/relics/${game}/${id}`,
 		},
 	}
 }
@@ -64,6 +78,9 @@ export const generateMetadata = async ({
 export default async function RelicPage({ params }: PageProps<"/relics/[game]/[id]">) {
 	return await buildRelicPage(params).pipe(
 		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			NoSuchElementError: () => Effect.sync(() => notFound()),
+		}),
 		Effect.orDie,
 		PageRuntime.runPromise,
 	)
@@ -75,19 +92,20 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
-	const { id } = yield* Effect.promise(() => params)
-	const relic = getRelicById(id)
-	if (!relic) return yield* Effect.sync(() => notFound())
+	const { game, id } = yield* Effect.promise(() => params)
+	const relic = yield* getRelicByKey(id as RelicKey)
+	const map = yield* getMapByKey(relic.map)
 
-	const contentPath = path.join(process.cwd(), `./content/relics/${relic.id}.mdx`)
+	const contentPath = path.join(process.cwd(), `${relic.content}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
-	const { prev, next } = getAdjacentRelics(id)
+	const { prev, next } = getAdjacentRelics(relic.id as RelicKey)
 	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
-	const { content, stateBadge, timeToRead } = yield* Option.match(Option.fromNullOr(relic.state), {
+
+	const { content, stateBadge, timeToRead } = yield* Option.match(relic.state, {
 		onNone: () =>
 			Effect.gen(function* () {
 				return {
-					content: yield* relic.content,
+					content: yield* Effect.promise(() => import(`@/${relic.content}.mdx`)),
 					stateBadge: null,
 					timeToRead: calculateTimeToRead(fileContent),
 				}
@@ -96,23 +114,25 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 			Effect.gen(function* () {
 				const isComingSoon = state === "Coming Soon"
 				return {
-					content: isComingSoon ? null : yield* relic.content,
+					content: isComingSoon
+						? null
+						: yield* Effect.promise(() => import(`@/${relic.content}.mdx`)),
 					stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
 					timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
 				}
 			}),
 	})
 
-	const MDXContent = content?.default
+	const MDXContent: MDXContent | null = content?.default ?? null
 
 	return (
-		<section className="-mt-6 sm:-mt-10 container mx-auto max-w-4xl px-4 md:py-12">
+		<section className="container mx-auto -mt-6 max-w-4xl px-4 sm:-mt-10 md:py-12">
 			<Breadcrumbs
 				links={[
 					{ title: "Relics", href: "/relics" },
 					{
 						title: relic.title,
-						href: `/relics/${relic.map.game.id}/${relic.id}`,
+						href: `/relics/${game}/${relic.id}`,
 					},
 				]}
 				className="mb-14"
@@ -139,7 +159,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 							{stateBadge}
 							<TypeBadge type={relic.type} />
 							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-								{relic.map.title}
+								{map.title}
 							</Badge>
 						</div>
 
@@ -195,19 +215,29 @@ interface PrevOrNextRelicCardProps {
 }
 
 const PrevOrNextRelicCard = ({ relic, prev }: PrevOrNextRelicCardProps) => {
-	if (relic.state === "Coming Soon") return null
+	const map = getMapByKey(relic.map)
+	if (Option.isNone(map)) {
+		console.error(`Map not found for key ${relic.map}`)
+		return null
+	}
+
+	const game = getGameByKey(map.value.game)
+	if (Option.isNone(game)) {
+		console.error(`Game not found for key ${map.value.game}`)
+		return null
+	}
 
 	return (
 		<Button
 			nativeButton={false}
 			variant="outline"
-			render={<CustomLink href={`/relics/${relic.map.game.id}/${relic.id}`} />}
+			render={<CustomLink href={`/relics/${game.value.id}/${relic.id}`} />}
 			className="group w-fit hover:text-primary"
 		>
 			<article className="flex items-center justify-between transition-colors group-focus-visible:text-primary">
 				{prev ? (
 					<span className="inline-flex items-center justify-center gap-1">
-						<ChevronLeft className="group-hover:-translate-x-1 group-focus-visible:-translate-x-1 transition-all" />
+						<ChevronLeft className="transition-all group-hover:-translate-x-1 group-focus-visible:-translate-x-1" />
 						<span>{relic.title}</span>
 					</span>
 				) : (

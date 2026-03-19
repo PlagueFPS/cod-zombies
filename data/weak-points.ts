@@ -1,147 +1,132 @@
+import { HashMap } from "effect"
+
 export interface WeakPoint {
+	/** Internal tag to discriminate against for type-narrowing */
+	readonly _tag: "WeakPoint"
 	/** Unique identifier for the weak point */
-	id: string
+	readonly id: string
 	/** Name of the weak point */
-	title: string
+	readonly title: string
 }
 
 /** Union type of all weak points */
-export type WeakPointKey = keyof typeof weakPointsRegistry
+export type WeakPointKey = HashMap.HashMap.Key<typeof weakPointsHashMap>
 
 /**
  * Gets a weak point by its key.
  * @param key The key of the weak point.
  */
-export const getWeakPointByKey = (key: WeakPointKey): WeakPoint => weakPointsRegistry[key]
+export const getWeakPointByKey = (key: WeakPointKey) => HashMap.get(weakPointsHashMap, key)
 
 /**
  * Gets all weak points.
  */
-export const getWeakPoints = (): WeakPoint[] => Object.values(weakPointsRegistry)
+export const getWeakPoints = () => HashMap.toValues(weakPointsHashMap)
 
-const weakPointsRegistry = {
-	head: {
-		id: "head",
+const makeWeakPoint = <T extends string>(
+	identifier: T,
+	weakPoint: Omit<WeakPoint, "_tag" | "id">,
+): [T, WeakPoint] => [
+	identifier,
+	{
+		_tag: "WeakPoint",
+		id: identifier,
+		...weakPoint,
+	},
+]
+
+const weakPointsHashMap = HashMap.make(
+	makeWeakPoint("head", {
 		title: "Head",
-	},
-	powerCore: {
-		id: "power-core",
+	}),
+	makeWeakPoint("power-core", {
 		title: "Power Core",
-	},
-	glowingMouths: {
-		id: "glowing-mouths",
+	}),
+	makeWeakPoint("glowing-mouths", {
 		title: "Glowing Mouths",
-	},
-	glowingSymbol: {
-		id: "glowing-symbol",
+	}),
+	makeWeakPoint("glowing-symbol", {
 		title: "Glowing Symbol",
-	},
-	spores: {
-		id: "spores",
+	}),
+	makeWeakPoint("spores", {
 		title: "Spores",
-	},
-	redCamera: {
-		id: "red-camera",
+	}),
+	makeWeakPoint("red-camera", {
 		title: "Red Camera",
-	},
-	armCannon: {
-		id: "arm-cannon",
+	}),
+	makeWeakPoint("arm-cannon", {
 		title: "Arm Cannon",
-	},
-	redGlowingSpots: {
-		id: "red-glowing-spots",
+	}),
+	makeWeakPoint("red-glowing-spots", {
 		title: "Red Glowing Spots",
-	},
-	blueGlowingSpots: {
-		id: "blue-glowing-spots",
+	}),
+	makeWeakPoint("blue-glowing-spots", {
 		title: "Blue Glowing Spots",
-	},
-	powerCores: {
-		id: "power-cores",
+	}),
+	makeWeakPoint("power-cores", {
 		title: "Power Cores",
-	},
-	backSacs: {
-		id: "back-sacs",
+	}),
+	makeWeakPoint("back-sacs", {
 		title: "Back Sacs",
-	},
-	elbowSacs: {
-		id: "elbow-sacs",
+	}),
+	makeWeakPoint("elbow-sacs", {
 		title: "Elbow Sacs",
-	},
-	encrustedLava: {
-		id: "encrusted-lava",
+	}),
+	makeWeakPoint("encrusted-lava", {
 		title: "Encrusted Lava",
-	},
-	eyePupil: {
-		id: "eye-pupil",
+	}),
+	makeWeakPoint("eye-pupil", {
 		title: "Eye Pupil",
-	},
-	foreheadCrystal: {
-		id: "forehead-crystal",
+	}),
+	makeWeakPoint("forehead-crystal", {
 		title: "Forehead Crystal",
-	},
-	chest: {
-		id: "chest",
+	}),
+	makeWeakPoint("chest", {
 		title: "Chest",
-	},
-	body: {
-		id: "body",
+	}),
+	makeWeakPoint("body", {
 		title: "Body",
-	},
-	mouth: {
-		id: "mouth",
+	}),
+	makeWeakPoint("mouth", {
 		title: "Mouth",
-	},
-	shoulders: {
-		id: "shoulders",
+	}),
+	makeWeakPoint("shoulders", {
 		title: "Shoulders",
-	},
-	stomach: {
-		id: "stomach",
+	}),
+	makeWeakPoint("stomach", {
 		title: "Stomach",
-	},
-	glowingHeads: {
-		id: "glowing-heads",
+	}),
+	makeWeakPoint("glowing-heads", {
 		title: "Glowing Heads",
-	},
-	redCysts: {
-		id: "red-cysts",
+	}),
+	makeWeakPoint("red-cysts", {
 		title: "Red Cysts",
-	},
-	glowingTentacles: {
-		id: "glowing-tentacles",
+	}),
+	makeWeakPoint("glowing-tentacles", {
 		title: "Glowing Tentacles",
-	},
-	eyes: {
-		id: "eyes",
+	}),
+	makeWeakPoint("eyes", {
 		title: "Eyes",
-	},
-	forearms: {
-		id: "forearms",
+	}),
+	makeWeakPoint("forearms", {
 		title: "Forearms",
-	},
-	calves: {
-		id: "calves",
+	}),
+	makeWeakPoint("calves", {
 		title: "Calves",
-	},
-	attachedZombies: {
-		id: "attached-zombies",
+	}),
+	makeWeakPoint("attached-zombies", {
 		title: "Attached Zombies",
-	},
-	glowingLights: {
-		id: "glowing-lights",
+	}),
+	makeWeakPoint("glowing-lights", {
 		title: "Glowing Lights",
-	},
-	jetpack: {
-		id: "jetpack",
+	}),
+	makeWeakPoint("jetpack", {
 		title: "Jetpack",
-	},
-	beeNests: {
-		id: "bee-nests",
+	}),
+	makeWeakPoint("bee-nests", {
 		title: "Bee Nests",
-	},
-	goldenUnderbelly: {
-		id: "golden-underbelly",
+	}),
+	makeWeakPoint("golden-underbelly", {
 		title: "Golden Underbelly",
-	},
-} as const satisfies Record<string, WeakPoint>
+	}),
+)

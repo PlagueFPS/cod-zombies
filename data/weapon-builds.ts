@@ -1,12 +1,13 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
+import { HashMap, Option } from "effect"
 
-interface Attachment {
+export interface Attachment {
 	/** Unique identifier for the attachment */
-	id: string
+	readonly id: string
 	/** Name of the attachment */
-	title: string
+	readonly title: string
 	/** Type of the attachment */
-	type:
+	readonly type:
 		| "Optic"
 		| "Muzzle"
 		| "Barrel"
@@ -20,28 +21,45 @@ interface Attachment {
 }
 
 export interface WeaponBuild {
+	/** Internal tag to discriminate against for type-narrowing */
+	readonly _tag: "WeaponBuild"
 	/** Unique identifier for the weapon build */
-	id: string
+	readonly id: string
 	/** Name of the weapon build */
-	title: string
+	readonly title: string
 	/** Image of the weapon build */
-	image: WeaponsImagePath
+	readonly image: WeaponsImagePath
 	/** Attachments used in the weapon build */
-	attachments?: Attachment[]
+	readonly attachments: Option.Option<[Attachment, ...Attachment[]]>
 	/** Build code for the weapon build */
-	buildCode?: string
+	readonly buildCode: Option.Option<string>
 }
 
 /** Union type of all weapon builds */
-export type WeaponBuildKey = keyof typeof weaponBuildRegistry
+export type WeaponBuildKey = HashMap.HashMap.Key<typeof weaponBuildHashMap>
 
 /**
  * Gets a weapon build by its key.
  * @param key The key of the weapon build.
  * @returns The weapon build.
  */
-export const getWeaponBuildByKey = (key: WeaponBuildKey): WeaponBuild => weaponBuildRegistry[key]
+export const getWeaponBuildByKey = (key: WeaponBuildKey) => HashMap.get(weaponBuildHashMap, key)
 
+const makeWeaponBuild = <T extends string>(
+	id: T,
+	weaponBuild: Omit<WeaponBuild, "_tag" | "id">,
+): [T, WeaponBuild] => [
+	id,
+	{
+		_tag: "WeaponBuild" as const,
+		id,
+		...weaponBuild,
+	},
+]
+
+/**
+ * @deprecated New weapon builds should define build codes instead of attachments.
+ */
 const attachmentsRegistry = {
 	keplerMicroflex: {
 		id: "kepler-microflex",
@@ -143,14 +161,13 @@ const attachmentsRegistry = {
 		title: "Akimbo",
 		type: "Stock",
 	},
-} as const satisfies Record<string, Attachment>
+} satisfies Record<string, Attachment>
 
-const weaponBuildRegistry = {
-	maelstromReckoning: {
-		id: "maelstrom-reckoning",
+const weaponBuildHashMap = HashMap.make(
+	makeWeaponBuild("maelstrom-reckoning", {
 		title: "Maelstrom",
 		image: "/weapons/maelstrom.webp",
-		attachments: [
+		attachments: Option.some([
 			attachmentsRegistry.fullChoke,
 			attachmentsRegistry.rangerForegrip,
 			attachmentsRegistry.extendedMagII,
@@ -158,13 +175,13 @@ const weaponBuildRegistry = {
 			attachmentsRegistry.lightStock,
 			attachmentsRegistry.steadyAimLaser,
 			attachmentsRegistry.twelveGaugeDragonsBreath,
-		],
-	},
-	abrA1Reckoning: {
-		id: "abr-a1-reckoning",
+		]),
+		buildCode: Option.none(),
+	}),
+	makeWeaponBuild("abr-a1-reckoning", {
 		title: "ABR A1",
 		image: "/weapons/abr-a1.webp",
-		attachments: [
+		attachments: Option.some([
 			attachmentsRegistry.monolithicSuppressor,
 			attachmentsRegistry.reinforcedBarrel,
 			attachmentsRegistry.rangerForegrip,
@@ -173,13 +190,13 @@ const weaponBuildRegistry = {
 			attachmentsRegistry.balancedPad,
 			attachmentsRegistry.fastMotionLaser,
 			attachmentsRegistry.rapidFire,
-		],
-	},
-	gpr91Reckoning: {
-		id: "gpr-91-reckoning",
+		]),
+		buildCode: Option.none(),
+	}),
+	makeWeaponBuild("gpr-91-reckoning", {
 		title: "GPR 91",
 		image: "/weapons/gpr-91.webp",
-		attachments: [
+		attachments: Option.some([
 			attachmentsRegistry.keplerMicroflex,
 			attachmentsRegistry.monolithicSuppressor,
 			attachmentsRegistry.chfBarrel,
@@ -188,66 +205,67 @@ const weaponBuildRegistry = {
 			attachmentsRegistry.balancedStock,
 			attachmentsRegistry.strelokLaser,
 			attachmentsRegistry.recoilSprings,
-		],
-	},
-	grekhovaAkimbo: {
-		id: "grekhova-akimbo",
+		]),
+		buildCode: Option.none(),
+	}),
+	makeWeaponBuild("grekhova-akimbo", {
 		title: "Grehkova",
 		image: "/weapons/grekhova.webp",
-		attachments: [
+		attachments: Option.some([
 			attachmentsRegistry.monolithicSuppressor,
 			attachmentsRegistry.extendedMagIII,
 			attachmentsRegistry.akimbo,
 			attachmentsRegistry.steadyAimLaser,
 			attachmentsRegistry.rapidFire,
-		],
-	},
-	ds20Mirage: {
-		id: "ds20-mirage",
+		]),
+		buildCode: Option.none(),
+	}),
+	makeWeaponBuild("ds20-mirage", {
 		title: "DS20 Mirage",
 		image: "/weapons/ds20-mirage.webp",
-		buildCode: "A05-AV3ET-NQL93-1",
-	},
-	akita: {
-		id: "akita",
+		attachments: Option.none(),
+		buildCode: Option.some("A05-AV3ET-NQL93-1"),
+	}),
+	makeWeaponBuild("akita", {
 		title: "Akita",
 		image: "/weapons/akita.webp",
-		buildCode: "C03-6AL6S-VU531",
-	},
-	m34Novaline: {
-		id: "m34-novaline",
+		attachments: Option.none(),
+		buildCode: Option.some("C03-6AL6S-VU531"),
+	}),
+	makeWeaponBuild("m34-novaline", {
 		title: "M34 Novaline",
 		image: "/weapons/m34-novaline.webp",
-		buildCode: "M03-5XK7Z-12JQ3-1",
-	},
-	ak27: {
-		id: "ak27",
+		attachments: Option.none(),
+		buildCode: Option.some("M03-5XK7Z-12JQ3-1"),
+	}),
+	makeWeaponBuild("ak27", {
 		title: "AK-27",
 		image: "/weapons/ak-27.webp",
-		buildCode: "A02-B1CH3-JXTF3-1",
-	},
-	jager45: {
-		id: "jager45",
+		attachments: Option.none(),
+		buildCode: Option.some("A02-B1CH3-JXTF3-1"),
+	}),
+	makeWeaponBuild("jager45", {
 		title: "Jäger 45",
 		image: "/weapons/jager-45.webp",
-		buildCode: "P01-AAEER-QI6WQ-11",
-	},
-	m10Breacher: {
-		id: "m10-breacher",
+		attachments: Option.none(),
+		buildCode: Option.some("P01-AAEER-QI6WQ-11"),
+	}),
+	makeWeaponBuild("m10-breacher", {
 		title: "M10 Breacher",
 		image: "/weapons/m10-breacher.webp",
-		buildCode: "C01-NBWA2-JZAT1-1",
-	},
-	coda9: {
-		id: "coda-9",
+		attachments: Option.none(),
+		buildCode: Option.some("C01-NBWA2-JZAT1-1"),
+	}),
+	makeWeaponBuild("coda-9", {
 		title: "CODA 9",
 		image: "/weapons/coda-9.webp",
-		buildCode: "P03-68Y2H-HNL31",
-	},
-	kogot7: {
-		id: "kogot-7",
+		attachments: Option.none(),
+		buildCode: Option.some("P03-68Y2H-HNL31"),
+	}),
+	makeWeaponBuild("kogot-7", {
 		title: "Kogot-7",
 		image: "/weapons/kogot-7.webp",
-		buildCode: "S10-JUJZG-U6S28-31",
-	},
-} as const satisfies Record<string, WeaponBuild>
+		attachments: Option.none(),
+		buildCode: Option.some("S10-JUJZG-U6S28-31"),
+	}),
+)

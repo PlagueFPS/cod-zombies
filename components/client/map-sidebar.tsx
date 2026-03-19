@@ -1,7 +1,7 @@
 "use client"
-import type { MapConfigMetadata, MapLayer } from "@/map-configs"
+import type { MapConfigLayer } from "@/data/interactive-map"
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
-import type { ContentState } from "@/types/data"
+import type { EncodedInteractiveMap } from "@/utils/rsc-wire"
 import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
@@ -40,12 +40,10 @@ import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/shared-functions"
 
-type TransformedMaps = Omit<MapConfigMetadata, "state"> & { state: ContentState | null }
-
 interface IMapSidebar {
-	maps: TransformedMaps[]
+	maps: EncodedInteractiveMap[]
 	groups: Record<MarkerCategory, Set<string>>
-	mapLayers: MapLayer[]
+	mapLayers: MapConfigLayer[]
 }
 
 export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {

@@ -1,7 +1,7 @@
 import type { Augment } from "@/data/augments"
 import type { ElixirRarity } from "@/data/elixirs"
 import type { GobblegumRarity, GobblegumType } from "@/data/gobblegum"
-import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { MainQuestDifficulty } from "@/data/maps"
 import type { RelicType } from "@/data/relics"
 import type { ZombieAttack } from "@/data/zombie-attacks"
 import type { Zombie } from "@/data/zombies"

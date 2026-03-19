@@ -1,5 +1,6 @@
 "use client"
 import type { GameKey } from "@/data/games"
+import { Option } from "effect"
 import IconImage from "@/components/client/icon-image"
 import { RarityBadge } from "@/components/server/custom-badges"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -22,21 +23,25 @@ interface GobbleGumTooltipProps {
 export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumTooltipProps) {
 	const isMobile = useIsMobile(640)
 	const gobblegum = getGobblegumByKey(gobblegumKey, game)
+	if (Option.isNone(gobblegum)) {
+		console.error(`Unable to render tooltip for gobblegum: ${gobblegumKey}`)
+		return "[MISSING_GOBBLEGUM]"
+	}
 
 	if (!isMobile)
 		return (
 			<HoverCard>
 				<HoverCardTrigger className="group relative cursor-default">
-					<GobblegumTrigger gobblegum={gobblegum} />
+					<GobblegumTrigger gobblegum={gobblegum.value} />
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
 					className={cn(
 						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
-						getContentClasses(gobblegum.rarity, gobblegum.type),
+						getContentClasses(gobblegum.value.rarity, gobblegum.value.type),
 					)}
 				>
-					<GobbleGumTooltipContent gobblegum={gobblegum} />
+					<GobbleGumTooltipContent gobblegum={gobblegum.value} />
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -44,16 +49,16 @@ export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumToolti
 	return (
 		<Popover>
 			<PopoverTrigger className="group relative cursor-default">
-				<GobblegumTrigger gobblegum={gobblegum} />
+				<GobblegumTrigger gobblegum={gobblegum.value} />
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
 				className={cn(
 					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
-					getContentClasses(gobblegum.rarity, gobblegum.type),
+					getContentClasses(gobblegum.value.rarity, gobblegum.value.type),
 				)}
 			>
-				<GobbleGumTooltipContent gobblegum={gobblegum} />
+				<GobbleGumTooltipContent gobblegum={gobblegum.value} />
 			</PopoverContent>
 		</Popover>
 	)
@@ -119,7 +124,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 					className="relative z-10 h-20 w-auto p-2"
 				/>
 			</div>
-			<div className="-mt-3 relative z-10">
+			<div className="relative z-10 -mt-3">
 				<div
 					className={cn(
 						"px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200",

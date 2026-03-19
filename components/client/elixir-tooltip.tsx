@@ -1,4 +1,5 @@
 "use client"
+import { Option } from "effect"
 import IconImage from "@/components/client/icon-image"
 import { ElixirRarityBadge } from "@/components/server/custom-badges"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -14,15 +15,19 @@ interface ElixirTooltipProps {
 export default function ElixirTooltip({ elixirKey }: ElixirTooltipProps) {
 	const isMobile = useIsMobile(640)
 	const elixir = getElixirByKey(elixirKey)
+	if (Option.isNone(elixir)) {
+		console.error(`Unable to render tooltip for elixir: ${elixirKey}`)
+		return "[MISSING_ELIXIR]"
+	}
 
 	if (!isMobile)
 		return (
 			<HoverCard>
 				<HoverCardTrigger className="group relative inline-flex cursor-default items-baseline justify-center align-baseline">
-					<ElixirTrigger elixir={elixir} />
+					<ElixirTrigger elixir={elixir.value} />
 				</HoverCardTrigger>
-				<HoverCardContent side="top" className={getRarityContentClasses(elixir.rarity)}>
-					<ElixirTooltipContent elixir={elixir} />
+				<HoverCardContent side="top" className={getRarityContentClasses(elixir.value.rarity)}>
+					<ElixirTooltipContent elixir={elixir.value} />
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -30,10 +35,10 @@ export default function ElixirTooltip({ elixirKey }: ElixirTooltipProps) {
 	return (
 		<Popover>
 			<PopoverTrigger className="group relative inline-flex cursor-default items-baseline justify-center align-baseline">
-				<ElixirTrigger elixir={elixir} />
+				<ElixirTrigger elixir={elixir.value} />
 			</PopoverTrigger>
-			<PopoverContent side="top" className={getRarityContentClasses(elixir.rarity)}>
-				<ElixirTooltipContent elixir={elixir} />
+			<PopoverContent side="top" className={getRarityContentClasses(elixir.value.rarity)}>
+				<ElixirTooltipContent elixir={elixir.value} />
 			</PopoverContent>
 		</Popover>
 	)
@@ -62,7 +67,7 @@ const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
 					className="relative z-10 h-24 w-auto p-2"
 				/>
 			</div>
-			<div className="-mt-3 relative z-10">
+			<div className="relative z-10 -mt-3">
 				<div
 					className={cn("px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200", {
 						"text-green-600 dark:text-green-300": elixir.rarity === "Classic",

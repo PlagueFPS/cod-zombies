@@ -1,19 +1,7 @@
-import type { MapConfig, MapConfigMetadata } from "."
-import { Option } from "effect"
-import { perks, sharedMarkers, weapons } from "./markers"
-
-export const metadata: MapConfigMetadata = {
-	id: "astra-malorum",
-	title: "Astra Malorum",
-	state: Option.none(),
-	image: "/previews/astra-malorum-preview.webp",
-	game: "blackOps7",
-	description:
-		"Explore Astra Malorum in Black Ops 7 Zombies. Find locations for all Aether Crystals, weapons, intel, and more with our interactive map.",
-}
+import type { MapConfig } from "@/data/interactive-map"
+import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
-	id: "astra-malorum",
 	layers: [
 		{
 			id: "main-map",

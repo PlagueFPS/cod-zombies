@@ -1,251 +1,254 @@
+import type { GameKey } from "@/data/games"
 import type { FieldUpgradesImagePath } from "@/types/generated/image-paths.gen"
-import type { AugmentTuple } from "./augments"
-import type { GameKey } from "./games"
+import { HashMap, Option } from "effect"
+import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
+import { resolveGameVariantOption } from "@/data/registry-helpers"
 
-type FieldUpgradeVariant = Omit<Partial<FieldUpgrade>, "id" | "title" | "variants">
+type FieldUpgradeVariant = Omit<Partial<FieldUpgrade>, "_tag" | "id" | "title" | "variants">
 
 export interface FieldUpgrade {
+	/** Internal tag to discriminate against for type-narrowing */
+	readonly _tag: "FieldUpgrade"
 	/** The unique identifier of the field upgrade */
-	id: string
+	readonly id: string
 	/** The title of the field upgrade */
-	title: string
+	readonly title: string
 	/** The description of the field upgrade */
-	description: string
+	readonly description: string
 	/** The image of the field upgrade */
-	image: FieldUpgradesImagePath
+	readonly image: FieldUpgradesImagePath
 	/** The augments of the field upgrade */
-	augments?: AugmentTuple
+	readonly augments: Option.Option<AugmentTuple>
 	/** The game variants of the field upgrade */
-	variants?: Partial<Record<GameKey, FieldUpgradeVariant>>
+	readonly variants: Option.Option<Partial<Record<GameKey, FieldUpgradeVariant>>>
 }
 
 /** Union type of all field upgrade keys */
-export type FieldUpgradeKey = keyof typeof fieldUpgradeRegistry
+export type FieldUpgradeKey = HashMap.HashMap.Key<typeof fieldUpgradeHashMap>
 
 /** Gets a field upgrade by its key.
  * @param key The key of the field upgrade.
  * @param game The game to get the field upgrade variant for.
  */
-export const getFieldUpgradeByKey = (key: FieldUpgradeKey, game?: GameKey): FieldUpgrade => {
-	const fieldUpgrade: FieldUpgrade = fieldUpgradeRegistry[key]
+export const getFieldUpgradeByKey = (
+	key: FieldUpgradeKey,
+	game?: GameKey,
+): Option.Option<FieldUpgrade> =>
+	resolveGameVariantOption(HashMap.get(fieldUpgradeHashMap, key), game)
 
-	if (!game || !fieldUpgrade.variants?.[game]) return fieldUpgrade
+const makeFieldUpgrade = <T extends string>(
+	identifier: T,
+	fieldUpgrade: Omit<FieldUpgrade, "_tag" | "id">,
+): [T, FieldUpgrade] => [
+	identifier,
+	{
+		_tag: "FieldUpgrade" as const,
+		id: identifier,
+		...fieldUpgrade,
+	},
+]
 
-	const variant = fieldUpgrade.variants?.[game]
-	return { ...fieldUpgrade, ...variant }
-}
-
-/**
- * Gets all field upgrades.
- * @param game The game to get the field upgrade variants for.
- */
-export const getFieldUpgrades = (game?: GameKey): FieldUpgrade[] => {
-	return Object.values(fieldUpgradeRegistry).map((fieldUpgrade: FieldUpgrade) => {
-		if (!game || !fieldUpgrade.variants?.[game]) return fieldUpgrade
-
-		const variant = fieldUpgrade.variants[game]
-		return {
-			...fieldUpgrade,
-			...variant,
-		}
-	})
-}
-
-const fieldUpgradeRegistry = {
-	ringOfFire: {
-		id: "ring-of-fire",
+const fieldUpgradeHashMap = HashMap.make(
+	makeFieldUpgrade("ring-of-fire", {
 		title: "Ring of Fire",
 		description:
 			"Create a ring of ethereal fire that boosts damage for you and allies. Normal enemies who enter gain a burning effect that deals fire damage. Last 15 seconds.",
 		image: "/field-upgrades/ring-of-fire.webp",
-	},
-	aetherShroud: {
-		id: "aether-shroud",
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
+	makeFieldUpgrade("aether-shroud", {
 		title: "Aether Shroud",
 		description: "Phase into the Dark Aether and become temporarily hidden from enemy detection.",
 		image: "/field-upgrades/aether-shroud.webp",
-		variants: {
-			blackOps6: {
-				augments: [
-					"groupShroud",
-					"burstDash",
-					"voidSheath",
-					"instantReload",
-					"extraCharge",
-					"extensionAetherShroud",
-				],
+		augments: Option.none(),
+		variants: Option.some({
+			"black-ops-6": {
+				augments: makeAugmentTuple([
+					"group-shroud",
+					"burst-dash",
+					"void-sheath",
+					"instant-reload",
+					"extra-charge",
+					"extension-aether-shroud",
+				]),
 			},
-			blackOps7: {
-				augments: [
-					"groupShroud",
-					"burstDash",
-					"voidSheath",
+			"black-ops-7": {
+				augments: makeAugmentTuple([
+					"group-shroud",
+					"burst-dash",
+					"void-sheath",
 					"afterimage",
-					"instantReload",
-					"extraCharge",
-					"extensionAetherShroud",
+					"instant-reload",
+					"extra-charge",
+					"extension-aether-shroud",
 					"impulse",
-				],
+				]),
 			},
-		},
-	},
-	frenziedGuard: {
-		id: "frenzied-guard",
+		}),
+	}),
+	makeFieldUpgrade("frenzied-guard", {
 		title: "Frenzied Guard",
 		description:
 			"Repair armor to full and force all enemies in the area to temporarily target you. Armor takes all damage during this time, and is repaired on every kill.",
 		image: "/field-upgrades/frenzied-guard.webp",
-		variants: {
-			blackOps6: {
-				augments: [
+		augments: Option.none(),
+		variants: Option.some({
+			"black-ops-6": {
+				augments: makeAugmentTuple([
 					"phalanx",
 					"retribution",
-					"frenzyFire",
-					"repairBoost",
-					"extensionFrenziedGuard",
+					"frenzy-fire",
+					"repair-boost",
+					"extension-frenzied-guard",
 					"rally",
-				],
+				]),
 			},
-			blackOps7: {
-				augments: [
+			"black-ops-7": {
+				augments: makeAugmentTuple([
 					"phalanx",
 					"retribution",
-					"frenzyFire",
-					"fistsOfFrenzy",
-					"repairBoost",
-					"extensionFrenziedGuard",
+					"frenzy-fire",
+					"fists-of-frenzy",
+					"repair-boost",
+					"extension-frenzied-guard",
 					"rally",
-					"dualLayer",
-				],
+					"dual-layer",
+				]),
 			},
-		},
-	},
-	darkFlare: {
-		id: "dark-flare",
+		}),
+	}),
+	makeFieldUpgrade("dark-flare", {
 		title: "Dark Flare",
 		description:
 			"Generate an energy beam that deals lethal shadow damage and penetrates everything in its path.",
 		image: "/field-upgrades/dark-flare.webp",
-		augments: [
-			"extensionDarkFlare",
+		augments: makeAugmentTuple([
+			"extension-dark-flare",
 			"supernova",
-			"darkPact",
-			"broadBeam",
-			"heavyShadow",
-			"extraCharge",
-		],
-		variants: {
-			blackOps7: {
-				augments: [
-					"extensionDarkFlare",
+			"dark-pact",
+			"broad-beam",
+			"heavy-shadow",
+			"extra-charge",
+		]),
+		variants: Option.some({
+			"black-ops-7": {
+				augments: makeAugmentTuple([
+					"extension-dark-flare",
 					"supernova",
-					"darkPact",
-					"muzzleBlast",
-					"broadBeam",
-					"heavyShadow",
-					"extraCharge",
-					"duskFlame",
-				],
+					"dark-pact",
+					"muzzle-blast",
+					"broad-beam",
+					"heavy-shadow",
+					"extra-charge",
+					"dusk-flame",
+				]),
 			},
-		},
-	},
-	energyMine: {
-		id: "energy-mine",
+		}),
+	}),
+	makeFieldUpgrade("energy-mine", {
 		title: "Energy Mine",
 		description: "Create a mine of pure energy that detonates 3 times, dealing lethal damage.",
 		image: "/field-upgrades/energy-mine.webp",
-		variants: {
-			blackOps6: {
-				augments: ["scatter", "turret", "carousel", "frequencyBoost", "extraCharge", "siren"],
-			},
-			blackOps7: {
-				augments: [
+		augments: Option.none(),
+		variants: Option.some({
+			"black-ops-6": {
+				augments: makeAugmentTuple([
 					"scatter",
 					"turret",
 					"carousel",
-					"smartMine",
-					"frequencyBoost",
-					"extraCharge",
+					"frequency-boost",
+					"extra-charge",
+					"siren",
+				]),
+			},
+			"black-ops-7": {
+				augments: makeAugmentTuple([
+					"scatter",
+					"turret",
+					"carousel",
+					"smart-mine",
+					"frequency-boost",
+					"extra-charge",
 					"siren",
 					"recycle",
-				],
+				]),
 			},
-		},
-	},
-	teslaStorm: {
-		id: "tesla-storm",
+		}),
+	}),
+	makeFieldUpgrade("tesla-storm", {
 		title: "Tesla Storm",
 		description:
 			"For 10 seconds lightning connects to other players, stunning and damaging normal enemies.",
 		image: "/field-upgrades/tesla-storm.webp",
-		variants: {
-			blackOps6: {
-				augments: [
+		augments: Option.none(),
+		variants: Option.some({
+			"black-ops-6": {
+				augments: makeAugmentTuple([
 					"transformer",
 					"shockwave",
-					"staticDischarge",
-					"powerGrid",
+					"static-discharge",
+					"power-grid",
 					"overclocked",
-					"lithiumCharged",
-				],
+					"lithium-charged",
+				]),
 			},
-			blackOps7: {
-				augments: [
+			"black-ops-7": {
+				augments: makeAugmentTuple([
 					"transformer",
 					"shockwave",
-					"staticDischarge",
+					"static-discharge",
 					"haywire",
-					"powerGrid",
+					"power-grid",
 					"overclocked",
-					"lithiumCharged",
+					"lithium-charged",
 					"amped",
-				],
+				]),
 			},
-		},
-	},
-	misterPeeks: {
-		id: "mister-peeks",
+		}),
+	}),
+	makeFieldUpgrade("mister-peeks", {
 		title: "Mister Peeks",
 		description: "Summon Mister Peeks to our reality to create chaos.",
 		image: "/field-upgrades/mister-peeks.webp",
-		augments: [
-			"danceParty",
-			"arcaneFury",
-			"apexHunter",
-			"socialButterfly",
-			"peeksFavor",
-			"partyAnimal",
-		],
-		variants: {
-			blackOps7: {
-				augments: [
-					"danceParty",
-					"arcaneFury",
-					"apexHunter",
-					"peekHealth",
-					"socialButterfly",
-					"peeksFavor",
-					"partyAnimal",
-					"vibDiscount",
-				],
+		augments: makeAugmentTuple([
+			"dance-party",
+			"arcane-fury",
+			"apex-hunter",
+			"social-butterfly",
+			"peeks-favor",
+			"party-animal",
+		]),
+		variants: Option.some({
+			"black-ops-7": {
+				augments: makeAugmentTuple([
+					"dance-party",
+					"arcane-fury",
+					"apex-hunter",
+					"peek-health",
+					"social-butterfly",
+					"peeks-favor",
+					"party-animal",
+					"vib-discount",
+				]),
 			},
-		},
-	},
-	toxicGrowth: {
-		id: "toxic-growth",
+		}),
+	}),
+	makeFieldUpgrade("toxic-growth", {
 		title: "Toxic Growth",
 		description:
 			"Summon a deadly growth of thorns in front of you. Enemies moving through it are slowed and take toxic damage.",
 		image: "/field-upgrades/toxic-growth.webp",
-		augments: [
+		augments: makeAugmentTuple([
 			"urticant",
 			"cordyception",
 			"pollination",
 			"zoochory",
-			"ankleShredder",
-			"greenThumb",
-			"extraCharge",
-			"plantFood",
-		],
-	},
-} as const satisfies Record<string, FieldUpgrade>
+			"ankle-shredder",
+			"green-thumb",
+			"extra-charge",
+			"plant-food",
+		]),
+		variants: Option.none(),
+	}),
+)

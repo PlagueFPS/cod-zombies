@@ -1,30 +1,30 @@
 import type { MetadataRoute } from "next"
 import { Array as Arr, Effect } from "effect"
 import { getInteractiveMaps } from "@/data/interactive-map"
-import { getMainQuests } from "@/data/main-quests"
+import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
 import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 import { PageRuntime } from "@/lib/layers"
 import { getLastModified, getServerUrl } from "@/utils/server-functions"
-import { sortReleaseDateDesc } from "@/utils/shared-functions"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	return await Effect.gen(function* () {
-		const interactiveMaps = yield* getInteractiveMaps()
-		const mainQuests = getMainQuests()
+		const interactiveMaps = getInteractiveMaps()
+		const maps = getMapsWithMainQuest()
 		const sideQuests = getSideQuests()
 		const zombies = getZombies()
 		const relics = getRelics()
 		const serverUrl = getServerUrl()
 
 		const mainQuestsMap = yield* Effect.forEach(
-			mainQuests,
-			quest =>
+			maps,
+			map =>
 				Effect.gen(function* () {
-					const { lastModified } = yield* getLastModified(`main-quests/${quest.id}.mdx`)
+					const mainQuestPath = yield* map.mainQuest
+					const { lastModified } = yield* getLastModified(`${mainQuestPath}.mdx`)
 					return {
-						url: `${serverUrl}/main-quests/${quest.map.game.id}/${quest.id}`,
+						url: `${serverUrl}/main-quests/${map.game}/${map.id}`,
 						lastModified: new Date(lastModified),
 					}
 				}),
@@ -35,9 +35,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			sideQuests,
 			quest =>
 				Effect.gen(function* () {
-					const { lastModified } = yield* getLastModified(`side-quests/${quest.id}.mdx`)
+					const { lastModified } = yield* getLastModified(`${quest.content}.mdx`)
+					const map = yield* getMapByKey(quest.map)
 					return {
-						url: `${serverUrl}/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`,
+						url: `${serverUrl}/side-quests/${map.game}/${map.id}/${quest.id}`,
 						lastModified: new Date(lastModified),
 					}
 				}),
@@ -48,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			zombies,
 			zombie =>
 				Effect.gen(function* () {
-					const { lastModified } = yield* getLastModified(`zombies/${zombie.id}.mdx`)
+					const { lastModified } = yield* getLastModified(`${zombie.combatStrategy}.mdx`)
 					return {
 						url: `${serverUrl}/bestiary/${zombie.id}`,
 						lastModified: new Date(lastModified),
@@ -57,16 +58,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			{ concurrency: "unbounded" },
 		)
 
-		const sortedRelics = [...relics].sort((a, b) =>
-			sortReleaseDateDesc(a.discoveredDate, b.discoveredDate),
-		)
 		const relicsMap = yield* Effect.forEach(
-			sortedRelics,
+			relics,
 			relic =>
 				Effect.gen(function* () {
-					const { lastModified } = yield* getLastModified(`relics/${relic.id}.mdx`)
+					const { lastModified } = yield* getLastModified(`${relic.content}.mdx`)
+					const map = yield* getMapByKey(relic.map)
 					return {
-						url: `${serverUrl}/relics/${relic.map.game.id}/${relic.id}`,
+						url: `${serverUrl}/relics/${map.game}/${relic.id}`,
 						lastModified: new Date(lastModified),
 					}
 				}),
@@ -86,7 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					)
 				: undefined
 
-		const mostRecentMainQuest = yield* Arr.head(mainQuests)
+		const mostRecentMainQuest = yield* Arr.head(maps)
 			.asEffect()
 			.pipe(Effect.flatMap(quest => getLastModified(`main-quests/${quest.id}.mdx`)))
 		const mostRecentSideQuest = yield* Arr.head(sideQuests)

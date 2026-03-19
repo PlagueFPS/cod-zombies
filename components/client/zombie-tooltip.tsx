@@ -1,33 +1,38 @@
 "use client"
 import type { Zombie, ZombieKey, ZombieType } from "@/data/zombies"
-import { Array as Arr } from "effect"
+import { Array as Arr, Option } from "effect"
 import { AlertTriangle, ExternalLinkIcon, Target } from "lucide-react"
+import AmmoModTooltip from "@/components/client/ammo-mod-tooltip"
 import { CustomLink } from "@/components/client/custom-link"
 import IconImage from "@/components/client/icon-image"
 import { TypeBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { getLatestZombieGameKey, getZombieByKey } from "@/data/zombies"
+import { getWeakPointByKey } from "@/data/weak-points"
+import { getZombieByKey } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
-import AmmoModTooltip from "./ammo-mod-tooltip"
 
 export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 	const isMobile = useIsMobile(640)
 	const zombie = getZombieByKey(zombieKey)
+	if (Option.isNone(zombie)) {
+		console.error(`Unable to render tooltip for zombie: ${zombieKey}`)
+		return "[MISSING_ZOMBIE]"
+	}
 
 	if (!isMobile) {
 		return (
 			<HoverCard>
 				<HoverCardTrigger className="relative inline-flex cursor-default items-baseline justify-center align-baseline">
-					<ZombieTrigger zombie={zombie} />
+					<ZombieTrigger zombie={zombie.value} />
 				</HoverCardTrigger>
 				<HoverCardContent
 					side="top"
-					className={cn("w-sm bg-background p-0", getTypeContentClasses(zombie.type))}
+					className={cn("w-sm bg-background p-0", getTypeContentClasses(zombie.value.type))}
 				>
-					<ZombieTooltipContent zombie={zombie} />
+					<ZombieTooltipContent zombie={zombie.value} />
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -36,13 +41,13 @@ export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 	return (
 		<Popover>
 			<PopoverTrigger className="relative inline-flex cursor-default items-baseline justify-center align-baseline">
-				<ZombieTrigger zombie={zombie} />
+				<ZombieTrigger zombie={zombie.value} />
 			</PopoverTrigger>
 			<PopoverContent
 				side="top"
-				className={cn("w-sm bg-background p-0", getTypeContentClasses(zombie.type))}
+				className={cn("w-sm bg-background p-0", getTypeContentClasses(zombie.value.type))}
 			>
-				<ZombieTooltipContent zombie={zombie} />
+				<ZombieTooltipContent zombie={zombie.value} />
 			</PopoverContent>
 		</Popover>
 	)
@@ -60,8 +65,6 @@ const ZombieTrigger = ({ zombie }: { zombie: Zombie }) => (
 )
 
 const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
-	const mostRecentGame = getLatestZombieGameKey(zombie.games)
-
 	return (
 		<div className="relative flex w-full max-w-sm flex-col rounded-md">
 			<div className="flex items-center justify-between rounded-t-md bg-accent px-4 py-2 dark:bg-accent/50">
@@ -102,19 +105,25 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 							Weak Points
 						</h3>
 						<div className="flex flex-wrap items-center gap-2">
-							{Arr.isArrayNonEmpty(zombie.weakPoints) ? (
-								zombie.weakPoints.map(weakPoint => (
-									<Badge
-										key={weakPoint.id}
-										className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
-									>
-										{weakPoint.title}
-									</Badge>
-								))
-							) : (
+							{Arr.isArrayEmpty(zombie.weakPoints) ? (
 								<Badge className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">
 									None
 								</Badge>
+							) : (
+								zombie.weakPoints.map(weakpointKey => {
+									const weakpoint = getWeakPointByKey(weakpointKey)
+									return Option.match(weakpoint, {
+										onNone: () => null,
+										onSome: weakpoint => (
+											<Badge
+												key={weakpoint.id}
+												className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
+											>
+												{weakpoint.title}
+											</Badge>
+										),
+									})
+								})
 							)}
 						</div>
 					</div>
@@ -126,7 +135,11 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 						<div className="flex flex-wrap items-center gap-2 text-sm">
 							{Arr.isArrayNonEmpty(zombie.elementalWeakness) ? (
 								zombie.elementalWeakness.map(weakness => (
-									<AmmoModTooltip key={weakness} ammoModKey={weakness} game={mostRecentGame} />
+									<AmmoModTooltip
+										key={weakness}
+										ammoModKey={weakness}
+										game={Arr.last(zombie.games).valueOrUndefined}
+									/>
 								))
 							) : (
 								<span className="text-foreground dark:text-foreground/80">

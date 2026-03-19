@@ -1,8 +1,8 @@
 "use client"
 import "leaflet/dist/leaflet.css"
-import type { MapConfig } from "@/map-configs"
+import type { MapConfig } from "@/data/interactive-map"
 import type { Location, MapMarker } from "@/map-configs/markers"
-import { Option } from "effect"
+import { Array as Arr, Option } from "effect"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import NextImage from "next/image"
@@ -41,10 +41,13 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 		Option.none(),
 	)
 	const currentLayer = Option.match(layerParam, {
-		onNone: () => Option.fromNullishOr(mapConfig.layers.at(0)),
+		onNone: () => Arr.head(mapConfig.layers),
 		onSome: layerParam =>
-			Option.fromNullishOr(
-				mapConfig.layers.find(layer => layer.id === layerParam) ?? mapConfig.layers.at(0),
+			Arr.findFirst(mapConfig.layers, layer => layer.id === layerParam).pipe(
+				Option.match({
+					onNone: () => Arr.head(mapConfig.layers),
+					onSome: layer => Option.some(layer),
+				}),
 			),
 	})
 
@@ -55,7 +58,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			try {
 				const img = new Image()
 				img.crossOrigin = "anonymous"
-
+				
 				await new Promise((resolve, reject) => {
 					img.onload = () => {
 						setImageDimensions(
@@ -73,10 +76,10 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 				console.error(`Failed to load map:`, error)
 			}
 		}
-
+		
 		loadImageDimensions()
 	}, [currentLayer])
-
+	
 	if (Option.isNone(currentLayer)) return null
 
 	const shouldRenderMarker = (marker: MapMarker) => {
@@ -108,7 +111,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 
 	return (
 		<MapContainer
-			key={`${mapConfig.id}-${settings.popups.disableAnimations}-${settings.general.disableZoomAnimation}`}
+			key={`${currentLayer.value.id}-${settings.popups.disableAnimations}-${settings.general.disableZoomAnimation}`}
 			center={
 				Option.isSome(imageDimensions)
 					? [imageDimensions.value.height / 2, imageDimensions.value.width / 2]

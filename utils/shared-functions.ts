@@ -1,4 +1,4 @@
-import type { MainQuestDifficulty } from "@/data/main-quests"
+import type { MainQuestDifficulty } from "@/data/maps"
 import type { RelicType } from "@/data/relics"
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
 import { Option } from "effect"
@@ -35,8 +35,8 @@ export const getAdjacentItems = <T extends { id: string }>(items: T[], itemId: s
  * @returns True if the user is on a Mac OS device, false otherwise.
  */
 export const isMacOs = () => {
-  if (typeof window === "undefined") return false
-  return window.navigator.platform.toLowerCase().includes("mac")
+	if (typeof window === "undefined") return false
+	return window.navigator.platform.toLowerCase().includes("mac")
 }
 
 /**
@@ -111,24 +111,12 @@ export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty)
 }
 
 /**
- * Sorts release dates in descending order.
+ * Sorts release dates in ascending order.
  * @param a - The first release date.
  * @param b - The second release date.
  * @returns A positive number if `a` is older than `b`, a negative number for the inverse, or 0 if they are equal
  */
-export const sortReleaseDateDesc = (a: string | Date, b: string | Date) => {
-	const dateA = new Date(a)
-	const dateB = new Date(b)
-	return dateB.getTime() - dateA.getTime()
-}
-
-/**
- * Sorts release dates in ascending order.
- * `@param` a - The first release date.
- * `@param` b - The second release date.
- * `@returns` A negative number if `a` is older than `b`, a positive number for the inverse, or 0 if they are equal
- */
-export const sortReleaseDateAsc = (a: string | Date, b: string | Date) => {
+export const sortReleaseDate = (a: string | Date, b: string | Date) => {
 	const dateA = new Date(a)
 	const dateB = new Date(b)
 	return dateA.getTime() - dateB.getTime()
@@ -146,23 +134,12 @@ export const getEstimatedTimeMidpoint = (range: { min: number; max: number }) =>
  * Sorts estimated time ranges in ascending order (shortest to longest) by midpoint.
  * @param a - The first time range.
  * @param b - The second time range.
- * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
+ * @returns A positive number if a should come before b, a negative number if a should come after b, or 0 if they are equal.
  */
-export const sortEstimatedTimeAsc = (
+export const sortEstimatedTime = (
 	a: { min: number; max: number },
 	b: { min: number; max: number },
 ) => getEstimatedTimeMidpoint(a) - getEstimatedTimeMidpoint(b)
-
-/**
- * Sorts estimated time ranges in descending order (longest to shortest) by midpoint.
- * @param a - The first time range.
- * @param b - The second time range.
- * @returns A positive number if a should come before b, a negative number if a should come after b, or 0 if they are equal.
- */
-export const sortEstimatedTimeDesc = (
-	a: { min: number; max: number },
-	b: { min: number; max: number },
-) => getEstimatedTimeMidpoint(b) - getEstimatedTimeMidpoint(a)
 
 const formatMinutesForDisplay = (m: number) => {
 	const mins = Math.round(m)
@@ -221,6 +198,26 @@ export const sortRelicTypes = (a: RelicType, b: RelicType) => {
 export const sortZombieSpeeds = (a: ZombieSpeed, b: ZombieSpeed) => {
 	const speedOrder: ZombieSpeed[] = ["Slow", "Medium", "Fast"]
 	return speedOrder.indexOf(a) - speedOrder.indexOf(b)
+}
+
+/**
+ * Compares two optional values using a comparison function.
+ * @param a - The first optional value.
+ * @param b - The second optional value.
+ * @param compareFn - The comparison function.
+ * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
+ */
+export const compareByOptionalSome = <T>(
+	a: Option.Option<T>,
+	b: Option.Option<T>,
+	compareFn: (x: T, y: T) => number,
+) => {
+	if (Option.isSome(a) && Option.isSome(b)) {
+		return compareFn(a.value, b.value)
+	}
+	if (Option.isSome(a)) return -1
+	if (Option.isSome(b)) return 1
+	return 0
 }
 
 /**

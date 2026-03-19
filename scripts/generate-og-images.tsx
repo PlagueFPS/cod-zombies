@@ -1,9 +1,10 @@
 import type { MapsImagePath, ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { BunRuntime, BunServices } from "@effect/platform-bun"
-import { Effect, FileSystem, Match, Option, Path, Schema } from "effect"
+import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
-import { getMainQuestByMap, type MainQuest } from "@/data/main-quests"
+import { getGameByKey } from "@/data/games"
+import { getMapByKey, type MapEntry } from "@/data/maps"
 import { getSideQuests, type SideQuest } from "@/data/side-quests"
 import { getZombieByKey, type Zombie } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
@@ -54,18 +55,20 @@ const optimizeImageResponse = Effect.fn(function* (imageResponse: ImageResponse)
 })
 
 export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(function* (
-	mainQuest: MainQuest,
+	map: MapEntry,
 ) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const contentPath = path.join(process.cwd(), `./content/main-quests/${mainQuest.id}.mdx`)
+	const mainQuestPath = yield* map.mainQuest
+	const contentPath = path.join(process.cwd(), `${mainQuestPath}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
 	const fonts = yield* getFonts()
 	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
-	const mapImage = yield* transformImage(mainQuest.map.image)
+	const mapImage = yield* transformImage(map.image)
 	const timeToRead = calculateTimeToRead(fileContent)
+	const game = yield* getGameByKey(map.game)
 
-	const difficultyCSS: React.CSSProperties = Option.match(mainQuest.difficulty, {
+	const difficultyCSS: React.CSSProperties = Option.match(map.difficulty, {
 		onNone: () => ({}),
 		onSome: difficulty =>
 			Match.value(difficulty).pipe(
@@ -106,7 +109,7 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 			<img
 				// @ts-expect-error: Satori supports ArrayBuffers as values to the src property
 				src={mapImage.buffer}
-				alt={mainQuest.map.title}
+				alt={map.title}
 				width={1200}
 				height={630}
 				style={{
@@ -150,9 +153,9 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 							"radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
-					{mainQuest.map.game.title}
+					{game.title}
 				</span>
-				{Option.match(mainQuest.difficulty, {
+				{Option.match(map.difficulty, {
 					onNone: () => null,
 					onSome: difficulty => (
 						<span
@@ -189,7 +192,7 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 						backgroundImage: "linear-gradient(to bottom, hsl(0 0% 100%), hsl(0, 0%, 40%))",
 					}}
 				>
-					{mainQuest.map.title}
+					{map.title}
 				</span>
 			</h1>
 			<div
@@ -238,15 +241,13 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 const _MainQuestGeneration = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const quest = getMainQuestByMap("paradox-junction")
-	if (!quest) return yield* Effect.fail("Quest not found")
-
-	const ogImage = yield* generateMainQuestImage(quest)
+	const map = yield* getMapByKey("paradox-junction")
+	const ogImage = yield* generateMainQuestImage(map)
 	yield* fs.writeFile(
-		path.join(process.cwd(), "public", `opengraph-images/main-quests/og-${quest.map.id}.jpg`),
+		path.join(process.cwd(), "public", `opengraph-images/main-quests/og-${map.id}.jpg`),
 		new Uint8Array(ogImage),
 	)
-	yield* Effect.log(`Generated og image for ${quest.map.id}`)
+	yield* Effect.log(`Generated og image for ${map.id}`)
 }).pipe(Effect.withLogSpan("main_quest_generation"))
 
 const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
@@ -254,12 +255,14 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 ) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const contentPath = path.join(process.cwd(), `./content/side-quests/${sideQuest.id}.mdx`)
+	const contentPath = path.join(process.cwd(), `${sideQuest.content}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
 	const fonts = yield* getFonts()
 	const timeToRead = calculateTimeToRead(fileContent)
 	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
-	const mapImage = yield* transformImage(sideQuest.map.image)
+	const map = yield* getMapByKey(sideQuest.map)
+	const game = yield* getGameByKey(map.game)
+	const mapImage = yield* transformImage(map.image)
 
 	const imageResponse = new ImageResponse(
 		<div
@@ -278,7 +281,7 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 			<img
 				// @ts-expect-error: Satori supports ArrayBuffers as values to the src property
 				src={mapImage.buffer}
-				alt={sideQuest.map.title}
+				alt={map.title}
 				width={1200}
 				height={630}
 				style={{
@@ -322,7 +325,7 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 							"radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
-					{sideQuest.map.game.title}
+					{game.title}
 				</span>
 				<span
 					style={{
@@ -336,7 +339,7 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 							"radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
-					{sideQuest.map.title}
+					{map.title}
 				</span>
 			</div>
 			<h1
@@ -408,8 +411,8 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 const _SideQuestGeneration = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const quests = getSideQuests().filter(quest => quest.map.id === "paradox-junction")
-	if (!quests.length) return yield* Effect.fail("Quest not found")
+	const quests = getSideQuests().filter(quest => quest.map === "paradox-junction")
+	if (!quests.length) return yield* Effect.fail("Quests not found")
 
 	yield* Effect.forEach(quests, quest =>
 		Effect.gen(function* () {
@@ -425,7 +428,7 @@ const _SideQuestGeneration = Effect.gen(function* () {
 
 const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: Zombie) {
 	const fonts = yield* getFonts()
-	const firstAppearedIn = zombie.maps.at(0)
+	const firstAppearedIn = yield* Arr.head(zombie.maps).pipe(Option.flatMap(map => getMapByKey(map)))
 	const zombieImage = yield* transformImage(zombie.image)
 
 	const typeCSS: React.CSSProperties = Match.value(zombie.type).pipe(
@@ -514,7 +517,7 @@ const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: 
 							"radial-gradient(circle at top, hsl(15 79.1% 33.7%), hsl(15 74.6% 27.8%))",
 					}}
 				>
-					{firstAppearedIn?.title}
+					{firstAppearedIn.title}
 				</span>
 				<span
 					style={{
@@ -595,7 +598,7 @@ const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: 
 const _ZombieGeneration = Effect.gen(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const zombie = getZombieByKey("theDarkHeart")
+	const zombie = yield* getZombieByKey("the-dark-heart")
 	const ogImage = yield* generateZombieImage(zombie)
 	yield* fs.writeFile(
 		path.join(process.cwd(), "public", `opengraph-images/zombies/og-${zombie.id}.jpg`),

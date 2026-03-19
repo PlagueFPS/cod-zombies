@@ -1,3 +1,4 @@
+import type { MDXContent } from "mdx/types"
 import type { Metadata, Route } from "next"
 import { Effect, FileSystem, Option, Path } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -11,12 +12,14 @@ import { TableOfContents } from "@/components/client/table-of-contents"
 import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
 import { ComingSoonBadge, DifficultyBadge, NewBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
+import { getGameByKey } from "@/data/games"
 import {
-	getAdjacentMainQuests,
-	getMainQuestByMap,
-	getMainQuests,
-	type MainQuest,
-} from "@/data/main-quests"
+	getAdjacentMaps,
+	getMapByKey,
+	getMapsWithMainQuest,
+	type MapEntry,
+	type MapKey,
+} from "@/data/maps"
 import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
@@ -28,25 +31,21 @@ import {
 	getServerUrl,
 } from "@/utils/server-functions"
 
-export const generateStaticParams = () => {
-	const mainQuests = getMainQuests()
-
-	return mainQuests.map(quest => ({
-		game: quest.map.game.id,
-		map: quest.map.id,
+export const generateStaticParams = () =>
+	getMapsWithMainQuest().map(map => ({
+		game: map.game,
+		map: map.id,
 	}))
-}
 
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/main-quests/[game]/[map]">): Promise<Metadata> => {
 	const { map } = await params
-	const quest = getMainQuestByMap(map)
-	if (!quest) notFound()
+	const quest = getMapByKey(map as MapKey)
+	if (Option.isNone(quest) || Option.isNone(quest.value.mainQuest)) return notFound()
 
-	const title = `${quest.map.title} Main Quest`
-	const description = `Learn how to complete the main quest/easter egg for the
-		${quest.map.game.title} zombies map ${quest.map.title} with our detailed step-by-step walkthrough!`
+	const title = `${quest.value.title} Main Quest`
+	const description = `Learn how to complete the main quest/easter egg for the ${quest.value.title} zombies map with our detailed step-by-step walkthrough!`
 
 	return {
 		title,
@@ -55,9 +54,9 @@ export const generateMetadata = async ({
 			...GLOBAL_OG_PROPS.openGraph,
 			title,
 			description,
-			url: `/main-quests/${quest.map.game.id}/${quest.map.id}`,
+			url: `/main-quests/${quest.value.game}/${quest.value.id}`,
 			images: {
-				url: `${getServerUrl()}/opengraph-images/main-quests/og-${quest.map.id}.jpg`,
+				url: `${getServerUrl()}/opengraph-images/main-quests/og-${quest.value.id}.jpg`,
 				width: 1200,
 				height: 630,
 			},
@@ -68,7 +67,7 @@ export const generateMetadata = async ({
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${getServerUrl()}/main-quests/${quest.map.game.id}/${quest.map.id}`,
+			canonical: `${getServerUrl()}/main-quests/${quest.value.game}/${quest.value.id}`,
 		},
 	}
 }
@@ -76,6 +75,9 @@ export const generateMetadata = async ({
 export default async function MainQuestPage({ params }: PageProps<"/main-quests/[game]/[map]">) {
 	return await mainQuestPageUI(params).pipe(
 		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			NoSuchElementError: () => Effect.sync(() => notFound()),
+		}),
 		Effect.orDie,
 		PageRuntime.runPromise,
 	)
@@ -88,18 +90,19 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 	const path = yield* Path.Path
 	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
 	const { map } = yield* Effect.promise(() => params)
-	const quest = getMainQuestByMap(map)
-	if (!quest) return yield* Effect.sync(() => notFound())
+	const quest = yield* getMapByKey(map as MapKey)
+	const mainQuestPath = yield* quest.mainQuest
+	const game = yield* getGameByKey(quest.game)
 
-	const contentPath = path.join(process.cwd(), `./content/main-quests/${quest.id}.mdx`)
+	const contentPath = path.join(process.cwd(), `${mainQuestPath}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
-	const { prev, next } = getAdjacentMainQuests(quest.map.id)
+	const { prev, next } = getAdjacentMaps(quest.id as MapKey)
 	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
 	const { content, stateBadge, headings, timeToRead } = yield* Option.match(quest.state, {
 		onNone: () =>
 			Effect.gen(function* () {
 				return {
-					content: yield* quest.content,
+					content: yield* Effect.promise(() => import(`@/${mainQuestPath}.mdx`)),
 					stateBadge: null,
 					headings: extractHeadingsFromMDX(fileContent),
 					timeToRead: calculateTimeToRead(fileContent),
@@ -109,7 +112,9 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 			Effect.gen(function* () {
 				const isComingSoon = state === "Coming Soon"
 				return {
-					content: isComingSoon ? null : yield* quest.content,
+					content: isComingSoon
+						? null
+						: yield* Effect.promise(() => import(`@/${mainQuestPath}.mdx`)),
 					stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
 					headings: isComingSoon ? [] : extractHeadingsFromMDX(fileContent),
 					timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
@@ -117,7 +122,7 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 			}),
 	})
 
-	const MDXContent = content?.default
+	const MDXContent: MDXContent | null = content?.default ?? null
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -128,7 +133,7 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
 								<FeaturedImage
-									featuredImage={quest.map.image}
+									featuredImage={quest.image}
 									width={1280}
 									height={720}
 									sizes="(max-width: 1280px) 100vw, 1280px"
@@ -136,7 +141,7 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 							</div>
 							<div className="relative mx-auto max-w-7xl">
 								<FeaturedImage
-									featuredImage={quest.map.image}
+									featuredImage={quest.image}
 									width={1280}
 									height={720}
 									sizes="(max-width: 1280px) 100vw, 1280px"
@@ -151,12 +156,12 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 												href: "/main-quests",
 											},
 											{
-												title: quest.map.game.title,
-												href: `/main-quests?game=${quest.map.game.id}`,
+												title: game.title,
+												href: `/main-quests?game=${quest.game}`,
 											},
 											{
-												title: quest.map.title,
-												href: `/main-quests/${quest.map.game.id}/${quest.map.id}` as Route,
+												title: quest.title,
+												href: `/main-quests/${quest.game}/${quest.id}` as Route,
 											},
 										]}
 									/>
@@ -166,15 +171,16 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 						<div className="relative mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
 							<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
 								<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-3xl text-gradient md:text-4xl lg:text-5xl">
-									{quest.map.title}
+									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
 									{stateBadge}
-									{Option.isSome(quest.difficulty) && (
-										<DifficultyBadge difficulty={quest.difficulty.value} />
-									)}
+									{Option.match(quest.difficulty, {
+										onNone: () => null,
+										onSome: difficulty => <DifficultyBadge difficulty={difficulty} />,
+									})}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-										{quest.map.game.title}
+										{game.title}
 									</Badge>
 								</div>
 							</div>
@@ -190,11 +196,16 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 										<span>{timeToRead} min read</span>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
-									<CompletionTimeDisplay timeRange={quest.estimatedTimeMins} />
+									{Option.match(quest.estimatedTimeMins, {
+										onNone: () => null,
+										onSome: estimatedTimeMins => (
+											<CompletionTimeDisplay timeRange={estimatedTimeMins} />
+										),
+									})}
 								</div>
 								<ShareButton
-									title={quest.map.title}
-									url={`${getServerUrl()}/main-quests/${quest.map.game.id}/${quest.map.id}`}
+									title={quest.title}
+									url={`${getServerUrl()}/main-quests/${quest.game}/${quest.id}`}
 									className="mb-2 ml-auto text-muted-foreground md:mb-0"
 								/>
 							</div>
@@ -219,8 +230,14 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 							</div>
 						)}
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{Option.isSome(prev) && <PrevOrNextMapCard quest={prev.value} prev />}
-							{Option.isSome(next) && <PrevOrNextMapCard quest={next.value} />}
+							{Option.match(prev, {
+								onNone: () => null,
+								onSome: prev => <PrevOrNextMapCard quest={prev} prev />,
+							})}
+							{Option.match(next, {
+								onNone: () => null,
+								onSome: next => <PrevOrNextMapCard quest={next} />,
+							})}
 						</div>
 					</article>
 				</div>
@@ -230,19 +247,18 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 })
 
 interface PrevOrNextCard {
-	quest: MainQuest
+	quest: MapEntry
 	prev?: boolean
 }
 
 const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
-	const alt = `${quest.map.title} map image`
+	const alt = `${quest.title} map image`
 	const questState = Option.getOrNull(quest.state)
+	const game = getGameByKey(quest.game)
 
 	return (
 		<CustomLink
-			href={
-				questState === "Coming Soon" ? "#" : `/main-quests/${quest.map.game.id}/${quest.map.id}`
-			}
+			href={questState === "Coming Soon" ? "#" : `/main-quests/${quest.game}/${quest.id}`}
 			className={cn(
 				"group w-full max-w-sm overflow-hidden rounded-lg border-2 shadow-sm transition-transform will-change-transform hover:-translate-y-2 hover:outline-2 hover:outline-primary focus-visible:-translate-y-2 focus-visible:outline-2 focus-visible:outline-primary lg:max-w-xl dark:shadow-none",
 				{
@@ -268,16 +284,22 @@ const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
 					) : questState === "New" ? (
 						<NewBadge />
 					) : null}
-					{Option.isSome(quest.difficulty) && (
-						<DifficultyBadge difficulty={quest.difficulty.value} />
-					)}
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{quest.map.game.title}
-					</Badge>
+					{Option.match(quest.difficulty, {
+						onNone: () => null,
+						onSome: difficulty => <DifficultyBadge difficulty={difficulty} />,
+					})}
+					{Option.match(game, {
+						onNone: () => null,
+						onSome: game => (
+							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+								{game.title}
+							</Badge>
+						),
+					})}
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
 					<FeaturedImage
-						featuredImage={quest.map.image}
+						featuredImage={quest.image}
 						alt={alt}
 						width={384}
 						height={176}
@@ -287,7 +309,7 @@ const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
 				</div>
 				<div className="relative z-20 flex h-full w-full max-w-sm items-center justify-center overflow-hidden rounded-lg">
 					<FeaturedImage
-						featuredImage={quest.map.image}
+						featuredImage={quest.image}
 						alt={alt}
 						width={384}
 						height={176}
@@ -300,13 +322,13 @@ const PrevOrNextMapCard = ({ quest, prev }: PrevOrNextCard) => {
 						className={cn(
 							"font-semibold text-xl transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
 							{
-								truncate: quest.map.title.length > 20,
+								truncate: quest.title.length > 20,
 							},
 						)}
 					>
-						{quest.map.title}
+						{quest.title}
 					</h3>
-					<p className="line-clamp-3 text-ellipsis text-sm">{quest.map.description}</p>
+					<p className="line-clamp-3 text-ellipsis text-sm">{quest.description}</p>
 					<div
 						className={cn(
 							"mt-auto flex items-center pb-2 transition-colors group-hover:text-primary group-focus-visible:text-primary",

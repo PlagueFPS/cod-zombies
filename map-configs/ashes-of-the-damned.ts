@@ -1,16 +1,5 @@
-import type { MapConfig, MapConfigMetadata } from "."
-import { Option } from "effect"
-import { type MapMarker, perks, sharedMarkers, weapons } from "./markers"
-
-export const metadata: MapConfigMetadata = {
-	id: "ashes-of-the-damned",
-	title: "Ashes of the Damned",
-	image: "/previews/ashes-of-the-damned-preview.webp",
-	state: Option.none(),
-	game: "blackOps7",
-	description:
-		"Explore Ashes of the Damned in Black Ops 7 Zombies. Find locations for all Overgrown Hoard Husks, Aether Plants, Plant Sprays, weapons, and more with our interactive map.",
-}
+import type { MapConfig } from "@/data/interactive-map"
+import { type MapMarker, perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 /** All markers are shared between each map layer, the layer just changes the view of the map to adjust for height */
 const layerMarkers: MapMarker[] = [
@@ -857,7 +846,6 @@ const layerMarkers: MapMarker[] = [
 ]
 
 export const config: MapConfig = {
-	id: "ashes-of-the-damned",
 	layers: [
 		{
 			id: "default-tac-map",

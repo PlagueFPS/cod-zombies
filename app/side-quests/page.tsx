@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { Option } from "effect"
 import { Suspense } from "react"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { GridSort } from "@/components/client/grid-sort"
@@ -10,6 +9,7 @@ import { GridSortLoader } from "@/components/server/grid-sort-loader"
 import { SideQuestFilters } from "@/components/server/side-quest-filters"
 import { getSideQuestSortOptions, getSideQuests } from "@/data/side-quests"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { encodeSideQuest } from "@/utils/rsc-wire"
 import { getServerUrl } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
@@ -35,13 +35,7 @@ export const metadata: Metadata = {
 }
 
 export default function SideQuests() {
-	const quests = getSideQuests().map(quest => {
-		const { content, state, ...rest } = quest
-		return {
-			...rest,
-			state: Option.getOrNull(state),
-		}
-	})
+	const quests = getSideQuests().map(encodeSideQuest)
 
 	return (
 		<div className="flex w-full flex-col items-center justify-center">
