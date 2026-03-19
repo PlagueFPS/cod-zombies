@@ -135,13 +135,13 @@ const optimizeCommand = Command.make(
 
 			yield* Effect.filterOrElse(
 				fs.exists(targetDir),
-				() => false,
+				exists => exists,
 				() => fs.makeDirectory(targetDir),
 			)
 
 			yield* Effect.filterOrElse(
 				fs.exists(DEFAULT_COPY_DIR),
-				() => false,
+				exists => exists,
 				() => fs.makeDirectory(DEFAULT_COPY_DIR),
 			)
 

@@ -14,7 +14,7 @@ import {
 import { env } from "@/env"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { slugify } from "@/utils/shared-functions"
-import { decodeLastModifiedData } from "./validation-schemas"
+import { decodeLastModifiedData } from "@/utils/validation-schemas"
 
 class TokenExpirationError extends Schema.TaggedErrorClass<TokenExpirationError>()(
 	"TokenExpirationError",
@@ -180,7 +180,7 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 		})
 	}
 
-	const payload = `${value}:${salt}:${expiresIn}`
+	const payload = `${value}:${salt}:${expiresIn.value}`
 	const hash = createHash("sha256").update(payload).digest("hex")
 	const hashBuffer = Buffer.from(hash, "hex")
 	const originalHashBuffer = Buffer.from(originalHash, "hex")

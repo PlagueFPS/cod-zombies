@@ -421,7 +421,7 @@ const _SideQuestGeneration = Effect.gen(function* () {
 			yield* Effect.log(`Generated og image for ${quest.id}`)
 		}),
 	)
-}).pipe(Effect.withLogSpan("side_quest_generation"))
+})
 
 const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: Zombie) {
 	const fonts = yield* getFonts()
@@ -602,6 +602,6 @@ const _ZombieGeneration = Effect.gen(function* () {
 		new Uint8Array(ogImage),
 	)
 	yield* Effect.log(`Generated og image for ${zombie.id}`)
-}).pipe(Effect.withLogSpan("side_quest_generation"))
+})
 
 _SideQuestGeneration.pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
