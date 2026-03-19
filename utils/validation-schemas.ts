@@ -93,9 +93,9 @@ export const ContactFormSchema = Schema.Struct({
 
 const isValidInt = Schema.isBetween({ minimum: 0, maximum: 99 })
 const TerminusCodeSchema = Schema.Struct({
-	x: Schema.NumberFromString.pipe(Schema.check(isValidInt)),
-	y: Schema.NumberFromString.pipe(Schema.check(isValidInt)),
-	z: Schema.NumberFromString.pipe(Schema.check(isValidInt)),
+	x: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
+	y: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
+	z: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
 })
 
 const RichLinkNodeSchema = Schema.Struct({
@@ -130,6 +130,6 @@ export const decodeSideQuestParams = Schema.decodeUnknownSync(SideQuestParamsSch
 export const decodeZombieParams = Schema.decodeUnknownSync(ZombieParamsSchema)
 export const decodeRelicParams = Schema.decodeUnknownSync(RelicParamsSchema)
 export const decodeErrorPageSearchParams = Schema.decodeUnknownEffect(ErrorPageSearchParamsSchema)
-export const decodeTerminusCode = Schema.decodeExit(TerminusCodeSchema)
+export const decodeTerminusCode = Schema.decodeUnknownExit(TerminusCodeSchema)
 export const decodeRichLinkNode = Schema.decodeUnknownExit(RichLinkNodeSchema)
 export const validateFeedbackForm = Schema.decodeExit(StandardFeedbackFormSchema)
