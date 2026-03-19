@@ -81,7 +81,6 @@ const mapRegistry = {
 /**
  * Gets the interactive map configuration for a given map ID.
  * @param mapId - The ID of the map to retrieve the configuration for.
- * @returns An effect that resolves to the map configuration if it exists, or null if it does not.
  */
 export const getMapConfig = Effect.fn("getMapConfig")(function* (mapId: MapId) {
 	const map = mapRegistry[mapId]

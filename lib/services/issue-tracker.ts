@@ -13,7 +13,7 @@ export class IssueTracker extends ServiceMap.Service<IssueTracker>()("lib/servic
 
 		const createIssue = Effect.fn("IssueTracker.createIssue")(function* (data: TFeedbackForm) {
 			const team = yield* Effect.tryPromise({
-				try: () => linear.team("CODZG"),
+				try: () => linear.team(Redacted.value(env.LINEAR_WORKSPACE)),
 				catch: cause => new CreateIssueError({ cause }),
 			})
 
@@ -28,8 +28,7 @@ export class IssueTracker extends ServiceMap.Service<IssueTracker>()("lib/servic
 						teamId: team.id,
 						title: data.title ?? "Website Feedback",
 						description,
-						// "User Feedback" label id
-						labelIds: ["c5154d91-ffed-4d2d-afe8-1e4777a3a908"],
+						labelIds: [Redacted.value(env.LINEAR_USER_FEEDBACK_LABEL)],
 						assigneeId: Redacted.value(env.LINEAR_DEFAULT_ASSIGNEE_ID),
 					}),
 				catch: cause => new CreateIssueError({ cause }),

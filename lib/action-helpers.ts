@@ -11,7 +11,7 @@ export const createAction = <S extends Schema.Top & { readonly DecodingServices:
 	return async (_prevState: unknown, formData: FormData | S["Type"]) => {
 		const { isBot } = await checkBotId()
 		if (isBot) {
-			console.error(`[BOT VERFICATION] bot detected, aborting action`)
+			console.error(`[BOT VERIFICATION] bot detected, aborting action`)
 			return {
 				success: false,
 				message:

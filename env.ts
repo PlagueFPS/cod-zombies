@@ -7,10 +7,16 @@ export const env = createEnv({
 		RESEND_AUDIENCE_ID: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
 		HASH_SALT: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
 		LINEAR_API_KEY: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
+		LINEAR_WORKSPACE: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
+		LINEAR_USER_FEEDBACK_LABEL: Schema.toStandardSchemaV1(
+			Schema.RedactedFromValue(Schema.NonEmptyString.pipe(Schema.check(Schema.isUUID()))),
+		),
 		LINEAR_DEFAULT_ASSIGNEE_ID: Schema.toStandardSchemaV1(
 			Schema.RedactedFromValue(Schema.NonEmptyString),
 		),
-		VERCEL_ENV: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
+		VERCEL_ENV: Schema.toStandardSchemaV1(
+			Schema.RedactedFromValue(Schema.Literals(["development", "preview", "production"])),
+		),
 		VERCEL_URL: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
 		VERCEL_PROJECT_PRODUCTION_URL: Schema.toStandardSchemaV1(
 			Schema.RedactedFromValue(Schema.NonEmptyString),
