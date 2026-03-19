@@ -140,7 +140,7 @@ const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: strin
 					MutableHashMap.set(pathCountMap, relativePath, count + 1)
 				}
 			}),
-		{ concurrency: "unbounded" },
+		{ concurrency: 1 },
 	)
 
 	// Check for duplicate paths (same path appearing multiple times)
