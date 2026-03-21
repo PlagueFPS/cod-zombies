@@ -1,8 +1,6 @@
 import type { SideQuest } from "@/data/side-quests"
 import type { Route } from "next"
-
 import { Match, Option } from "effect"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import {

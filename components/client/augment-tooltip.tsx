@@ -1,9 +1,7 @@
 "use client"
 import type { Augment, AugmentKey } from "@/data/augments"
 import type { GameKey } from "@/data/games"
-
 import { Option } from "effect"
-
 import IconImage from "@/components/client/icon-image"
 import { TypeBadge } from "@/components/server/custom-badges"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"

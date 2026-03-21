@@ -7,7 +7,6 @@ import {
 	Resend,
 	type SendBroadcastOptions,
 } from "resend"
-
 import { env } from "@/env"
 
 class ResendError extends Schema.TaggedErrorClass<ResendError>()("ResendError", {

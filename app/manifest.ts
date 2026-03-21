@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next"
-
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
 
 export default function manifest(): MetadataRoute.Manifest {

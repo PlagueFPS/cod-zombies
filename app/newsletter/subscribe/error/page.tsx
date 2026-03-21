@@ -1,8 +1,6 @@
 import type { Metadata } from "next"
-
 import { Effect, Option } from "effect"
 import { AlertCircle } from "lucide-react"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { Button } from "@/components/ui/button"
 import { decodeErrorPageSearchParams } from "@/utils/validation-schemas"

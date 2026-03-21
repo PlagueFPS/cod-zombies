@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next"
-
 import { getServerUrl } from "@/utils/server-functions"
 
 export default function robots(): MetadataRoute.Robots {

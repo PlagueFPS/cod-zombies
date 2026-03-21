@@ -2,13 +2,11 @@
 import type { MapConfigLayer } from "@/data/interactive-map"
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import type { EncodedInteractiveMap } from "@/utils/rsc-wire"
-
 import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useMemo } from "react"
-
 import { LayerSwitcher } from "@/components/client/layer-switcher"
 import { ShareButton } from "@/components/client/share-button"
 import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"

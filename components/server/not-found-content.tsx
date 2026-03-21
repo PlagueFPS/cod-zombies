@@ -1,5 +1,4 @@
 import type { Link } from "@/components/client/breadcrumbs"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { NotFoundBreadcrumbs } from "@/components/server/not-found-breadcrumbs"
 import { Button } from "@/components/ui/button"

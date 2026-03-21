@@ -1,9 +1,7 @@
 "use client"
 import type { ErrorProps } from "@/types/errors"
-
 import { usePathname } from "next/navigation"
 import { useEffect } from "react"
-
 import { FeedbackForm } from "@/components/client/feedback-form"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 

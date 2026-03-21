@@ -13,7 +13,6 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-
 import { DATE_OPTIONS } from "@/utils/constants"
 import { getServerUrl } from "@/utils/server-functions"
 

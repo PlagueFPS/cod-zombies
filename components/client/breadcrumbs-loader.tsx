@@ -1,8 +1,6 @@
 "use client"
 import type { Route } from "next"
-
 import { useParams } from "next/navigation"
-
 import { Breadcrumbs, type Link } from "@/components/client/breadcrumbs"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/shared-functions"

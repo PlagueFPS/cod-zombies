@@ -1,7 +1,5 @@
 import type { InteractiveMap } from "@/data/interactive-map"
-
 import { Option } from "effect"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"

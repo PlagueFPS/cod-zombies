@@ -1,9 +1,7 @@
 "use client"
 import type { Zombie, ZombieKey, ZombieType } from "@/data/zombies"
-
 import { Array as Arr, Option } from "effect"
 import { AlertTriangle, ExternalLinkIcon, Target } from "lucide-react"
-
 import AmmoModTooltip from "@/components/client/ammo-mod-tooltip"
 import { CustomLink } from "@/components/client/custom-link"
 import IconImage from "@/components/client/icon-image"

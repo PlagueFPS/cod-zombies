@@ -1,6 +1,5 @@
 import Image from "next/image"
 import { Suspense } from "react"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { FeedbackForm } from "@/components/client/feedback-form"
 import { NavLink } from "@/components/client/nav-link"

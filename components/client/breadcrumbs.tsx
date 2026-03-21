@@ -1,9 +1,7 @@
 "use client"
 import type { Route } from "next"
-
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
-
 import { NavLink } from "@/components/client/nav-link"
 import {
 	Breadcrumb,

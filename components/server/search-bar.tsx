@@ -1,7 +1,5 @@
 import type { Route } from "next"
-
 import { Effect, Option } from "effect"
-
 import { SearchBarInput } from "@/components/client/search-bar-input"
 import { getGameByKey, getGames } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"

@@ -12,7 +12,6 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-
 import { getServerUrl } from "@/utils/server-functions"
 
 interface ISubscribeEmail {

@@ -1,5 +1,4 @@
 import { PanelLeftClose } from "lucide-react"
-
 import { ShareButton } from "@/components/client/share-button"
 import { Socials } from "@/components/server/socials"
 import { Separator } from "@/components/ui/separator"

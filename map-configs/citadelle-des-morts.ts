@@ -1,5 +1,4 @@
 import type { MapConfig } from "@/data/interactive-map"
-
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {

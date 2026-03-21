@@ -2,7 +2,6 @@ import { BunRuntime, BunServices } from "@effect/platform-bun"
 import { Clock, Duration, Effect, FileSystem, HashSet, Path, Ref, Schema } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp from "sharp"
-
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 
 class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(

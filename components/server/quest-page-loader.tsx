@@ -1,5 +1,4 @@
 import { Calendar, Clock, Hourglass, Share2 } from "lucide-react"
-
 import { BreadcrumbsLoader } from "@/components/client/breadcrumbs-loader"
 import ImageLoader from "@/components/server/image-loader"
 import { TableOfContentsLoader } from "@/components/server/table-of-contents-loader"

@@ -1,6 +1,5 @@
 import { Effect } from "effect"
 import { type NextRequest, NextResponse } from "next/server"
-
 import { subscribeEmail } from "@/data/email"
 import { APIRuntime } from "@/lib/layers"
 import { verifyToken } from "@/utils/server-functions"

@@ -1,8 +1,6 @@
 import type { GameKey } from "./games"
 import type { AugmentsImagePath } from "@/types/generated/image-paths.gen"
-
 import { HashMap, Option } from "effect"
-
 import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
 
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">

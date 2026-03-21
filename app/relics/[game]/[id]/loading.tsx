@@ -1,5 +1,4 @@
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
-
 import { BreadcrumbsLoader } from "@/components/client/breadcrumbs-loader"
 import ImageLoader from "@/components/server/image-loader"
 import { Button } from "@/components/ui/button"

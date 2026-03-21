@@ -1,9 +1,7 @@
 import type { MDXComponents } from "mdx/types"
 import type { Route } from "next"
 import type { ComponentPropsWithoutRef } from "react"
-
 import { ExternalLinkIcon } from "lucide-react"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { ExternalLink } from "@/components/server/external-link"
 import { RichBlockquote } from "@/components/server/rich-blockquote"

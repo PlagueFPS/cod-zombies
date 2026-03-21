@@ -1,11 +1,9 @@
 "use client"
 import type { Heading } from "@/components/client/table-of-contents"
-
 import { ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { RemoveScroll } from "react-remove-scroll"
-
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"

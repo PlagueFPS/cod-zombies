@@ -1,5 +1,4 @@
 import { ChevronDown, ChevronsRightIcon } from "lucide-react"
-
 import { BackToTopButton } from "@/components/client/back-to-top-button"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"

@@ -3,9 +3,7 @@ import type { GameKey } from "@/data/games"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
-
 import { Array as Arr, HashMap, Option } from "effect"
-
 import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
 
 /** Union of all main quest difficulties */

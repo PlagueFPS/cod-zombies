@@ -1,8 +1,6 @@
 import type { PlatformError } from "effect/PlatformError"
-
 import { BunRuntime, BunServices } from "@effect/platform-bun"
 import { Clock, Effect, FileSystem, HashSet, Path, Predicate } from "effect"
-
 import { toPascalCase } from "@/utils/shared-functions"
 
 const CONTENT_EXTENSIONS = HashSet.make(".mdx")

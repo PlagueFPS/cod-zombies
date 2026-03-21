@@ -1,8 +1,6 @@
 import type { Relic } from "@/data/relics"
 import type { Route } from "next"
-
 import { Option } from "effect"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import {

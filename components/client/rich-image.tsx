@@ -1,6 +1,5 @@
 import type { ImagePaths } from "@/types/generated/image-paths.gen"
 import type { ImageProps } from "@/types/images"
-
 import { FeaturedImage } from "@/components/client/featured-image"
 import {
 	Dialog,

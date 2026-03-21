@@ -1,5 +1,4 @@
 import { AlertCircle } from "lucide-react"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"

@@ -1,5 +1,4 @@
 import type { MapConfig } from "@/data/interactive-map"
-
 import { type MapMarker, perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 /** All markers are shared between each map layer, the layer just changes the view of the map to adjust for height */

@@ -1,10 +1,8 @@
 import "./globals.css"
 import type { Metadata, Viewport } from "next"
-
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { Geist, Geist_Mono } from "next/font/google"
 import Script from "next/script"
-
 import { HashLinkHandler } from "@/components/client/custom-link"
 import ReactScanWrapper from "@/components/client/react-scan-wrapper"
 import { Footer } from "@/components/server/footer"

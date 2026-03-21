@@ -1,6 +1,5 @@
 "use client"
 import { createContext, use } from "react"
-
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
 const STORAGE_KEY = "map-settings"

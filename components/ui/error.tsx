@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils"
-
 import { Button, type ButtonProps } from "./button"
 
 interface ErrorTitleProps {

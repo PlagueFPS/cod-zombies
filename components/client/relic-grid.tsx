@@ -1,6 +1,5 @@
 "use client"
 import { Suspense, useEffect } from "react"
-
 import { GridPagination } from "@/components/client/grid-pagination"
 import { RelicCard } from "@/components/client/relic-card"
 import { EmptyGrid } from "@/components/server/empty-grid"

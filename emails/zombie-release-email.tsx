@@ -1,6 +1,5 @@
 import type { IQuestRelease } from "./quest-release-email"
 import type { Zombie } from "@/data/zombies"
-
 import {
 	Body,
 	Button,
@@ -16,7 +15,6 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-
 import { getServerUrl } from "@/utils/server-functions"
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {

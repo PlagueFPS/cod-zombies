@@ -1,12 +1,9 @@
 "use client"
 import type { ImageProps } from "@/types/images"
-
 import Image from "next/image"
-
 import { useImageState } from "@/hooks/use-image-state"
 import { cn } from "@/lib/utils"
 import placeholderImage from "@/public/article-img-placeholder.jpg"
-
 import ImageLoader from "../server/image-loader"
 
 interface FeaturedImageProps extends ImageProps {

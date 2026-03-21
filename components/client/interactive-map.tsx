@@ -2,14 +2,12 @@
 import "leaflet/dist/leaflet.css"
 import type { MapConfig } from "@/data/interactive-map"
 import type { Location, MapMarker } from "@/map-configs/markers"
-
 import { Array as Arr, Option } from "effect"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import NextImage from "next/image"
 import { useEffect, useState } from "react"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
-
 import CustomMarker from "@/components/client/custom-marker"
 import MapSettingsPanel from "@/components/client/map-settings-panel"
 import { MarkerBadge } from "@/components/server/custom-badges"

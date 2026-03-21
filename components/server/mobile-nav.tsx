@@ -1,6 +1,5 @@
 import { MenuIcon } from "lucide-react"
 import Image from "next/image"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { FeedbackForm } from "@/components/client/feedback-form"
 import { Socials } from "@/components/server/socials"

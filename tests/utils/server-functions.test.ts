@@ -2,7 +2,6 @@ import * as BunPath from "@effect/platform-bun/BunPath"
 import { expect, it, layer } from "@effect/vitest"
 import { Effect, FileSystem, Layer, Redacted } from "effect"
 import { afterEach, beforeEach, describe, vi } from "vitest"
-
 import { DATE_OPTIONS } from "@/utils/constants"
 import { getLastModified } from "@/utils/server-functions"
 

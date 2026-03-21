@@ -1,6 +1,5 @@
 import { Option } from "effect"
 import { describe, expect, test } from "vitest"
-
 import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
 
 type Sample = {

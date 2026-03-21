@@ -1,9 +1,7 @@
 "use client"
 import type { Link } from "@/components/client/breadcrumbs"
 import type { Route } from "next"
-
 import { useParams } from "next/navigation"
-
 import NotFoundContent from "@/components/server/not-found-content"
 import { capitalize } from "@/utils/shared-functions"
 

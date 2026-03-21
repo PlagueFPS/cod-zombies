@@ -1,5 +1,4 @@
 import type { GameKey } from "@/data/games"
-
 import { Option } from "effect"
 
 /** Minimal shape for entities with optional per-game partial overlays in `variants`. */

@@ -11,7 +11,6 @@ import {
 	Target,
 	Zap,
 } from "lucide-react"
-
 import { BreadcrumbsLoader } from "@/components/client/breadcrumbs-loader"
 import ImageLoader from "@/components/server/image-loader"
 import PrevOrNextLoader from "@/components/server/prev-or-next-card-loader"

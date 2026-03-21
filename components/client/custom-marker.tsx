@@ -1,9 +1,7 @@
 import type { MapMarker } from "@/map-configs/markers"
-
 import { DivIcon, type LatLng } from "leaflet"
 import { useEffect, useRef, useState } from "react"
 import { Marker as LeafletMarker, useMap } from "react-leaflet"
-
 import { useMapSettings } from "@/contexts/interactive-map-settings"
 
 interface CustomMarkerProps {

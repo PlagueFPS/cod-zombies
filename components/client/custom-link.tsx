@@ -1,6 +1,5 @@
 "use client"
 import type { Route } from "next"
-
 import Link, { type LinkProps } from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"

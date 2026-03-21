@@ -1,5 +1,4 @@
 import type { Metadata, Route } from "next"
-
 import { Array as Arr, Effect, Option } from "effect"
 import {
 	AlertTriangle,
@@ -16,7 +15,6 @@ import {
 	Zap,
 } from "lucide-react"
 import { notFound } from "next/navigation"
-
 import AmmoModTooltip from "@/components/client/ammo-mod-tooltip"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"

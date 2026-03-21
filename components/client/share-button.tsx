@@ -16,7 +16,6 @@ import {
 	XIcon,
 } from "react-share"
 import { toast } from "sonner"
-
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import {

@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
-
 import { Effect } from "effect"
-
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
 import { PageRuntime } from "@/lib/layers"
@@ -9,7 +7,6 @@ import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getLastModified } from "@/utils/server-functions"
-
 import richStyles from "@/app/rich-text.module.css"
 
 export const metadata: Metadata = {

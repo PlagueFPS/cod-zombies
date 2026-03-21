@@ -1,8 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { PerksImagePath } from "@/types/generated/image-paths.gen"
-
 import { HashMap, Option } from "effect"
-
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
 import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
 

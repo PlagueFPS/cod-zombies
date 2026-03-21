@@ -1,8 +1,6 @@
 "use client"
 import type { AmmoModKey } from "@/data/ammo-mods"
-
 import { Suspense, useEffect } from "react"
-
 import { BestiaryCard } from "@/components/client/bestiary-card"
 import { GridPagination } from "@/components/client/grid-pagination"
 import { EmptyGrid } from "@/components/server/empty-grid"

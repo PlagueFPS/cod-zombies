@@ -1,10 +1,8 @@
 import type { MapsImagePath, ZombiesImagePath } from "@/types/generated/image-paths.gen"
-
 import { BunRuntime, BunServices } from "@effect/platform-bun"
 import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
-
 import { getGameByKey } from "@/data/games"
 import { getMapByKey, type MapEntry } from "@/data/maps"
 import { getSideQuests, type SideQuest } from "@/data/side-quests"

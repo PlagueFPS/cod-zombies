@@ -1,5 +1,4 @@
 import { Search } from "lucide-react"
-
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import { IS_MAC_OS } from "@/utils/constants"

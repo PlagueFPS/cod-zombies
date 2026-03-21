@@ -1,6 +1,5 @@
 "use client"
 import { Option } from "effect"
-
 import IconImage from "@/components/client/icon-image"
 import { ElixirRarityBadge } from "@/components/server/custom-badges"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"

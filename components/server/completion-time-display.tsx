@@ -1,7 +1,5 @@
 import type { TimeRange } from "@/types/data"
-
 import { Hourglass } from "lucide-react"
-
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { formatEstimatedTimeRange } from "@/utils/shared-functions"
 

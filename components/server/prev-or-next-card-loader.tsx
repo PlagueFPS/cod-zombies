@@ -1,7 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react"
-
 import { cn } from "@/lib/utils"
-
 import { Skeleton } from "../ui/skeleton"
 import ImageLoader from "./image-loader"
 

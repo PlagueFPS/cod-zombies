@@ -2,7 +2,6 @@
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-
 import { BackToTopButton } from "@/components/client/back-to-top-button"
 import { MobileTableOfContents } from "@/components/client/mobile-table-of-contents"
 import { Shortcut } from "@/components/client/shortcut"

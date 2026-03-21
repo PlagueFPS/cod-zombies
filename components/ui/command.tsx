@@ -1,10 +1,8 @@
 "use client"
 
 import type * as React from "react"
-
 import { Dialog as CommandDialogPrimitive } from "@base-ui/react/dialog"
 import { SearchIcon } from "lucide-react"
-
 import {
 	Autocomplete,
 	AutocompleteCollection,

@@ -1,6 +1,5 @@
 "use client"
 import { PanelLeftOpenIcon } from "lucide-react"
-
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import { useSidebar } from "@/components/ui/sidebar"

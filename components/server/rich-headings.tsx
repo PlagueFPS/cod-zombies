@@ -1,7 +1,5 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react"
-
 import Link from "next/link"
-
 import LinkSVG from "@/components/server/link-svg"
 import { cn } from "@/lib/utils"
 

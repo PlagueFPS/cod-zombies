@@ -1,8 +1,6 @@
 import type { PlatformError } from "effect/PlatformError"
-
 import { BunRuntime, BunServices } from "@effect/platform-bun"
 import { Clock, Effect, FileSystem, HashSet, Path, Predicate, SynchronizedRef } from "effect"
-
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 import { toPascalCase } from "@/utils/shared-functions"
 

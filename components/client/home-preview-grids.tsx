@@ -6,7 +6,6 @@ import type {
 	EncodedSideQuest,
 	EncodedZombie,
 } from "@/utils/rsc-wire"
-
 import { BestiaryCard } from "@/components/client/bestiary-card"
 import { MapPreviewCard } from "@/components/client/map-preview-card"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"

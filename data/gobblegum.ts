@@ -1,8 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { GobblegumsImagePath } from "@/types/generated/image-paths.gen"
-
 import { HashMap, Option } from "effect"
-
 import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
 
 /** Union of all Gobblegum keys */

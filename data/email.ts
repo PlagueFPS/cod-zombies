@@ -1,5 +1,4 @@
 import { Duration, Effect, Option, Schema } from "effect"
-
 import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"

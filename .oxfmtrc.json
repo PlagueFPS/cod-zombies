@@ -12,7 +12,15 @@
 	"bracketSameLine": false,
 	"bracketSpacing": true,
 	"endOfLine": "lf",
-	"ignorePatterns": ["**/*.mdx", "**/*.md", ".zed", "node_modules", ".next"],
+	"ignorePatterns": [
+		"**/*.mdx",
+		"**/*.md",
+		".zed",
+		".repos",
+		"**/last-modified.json",
+		"node_modules",
+		".next"
+	],
 	"sortImports": {
 		"groups": [
 			"type",
@@ -23,7 +31,7 @@
 			"style",
 			"unknown"
 		],
-		"newlinesBetween": true
+		"newlinesBetween": false
 	},
 	"sortTailwindcss": {
 		"stylesheet": "./app/globals.css",

@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
-
 import { CheckCircle2 } from "lucide-react"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { Button } from "@/components/ui/button"
 

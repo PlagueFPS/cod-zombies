@@ -5,9 +5,7 @@ import type { ZombieAttackKey } from "@/data/zombie-attacks"
 import type { ContentState } from "@/types/data"
 import type { ZombiesPaths } from "@/types/generated/content-paths.gen"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
-
 import { HashMap, Option } from "effect"
-
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
 import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"

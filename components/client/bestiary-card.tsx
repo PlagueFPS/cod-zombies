@@ -1,8 +1,6 @@
 import type { Zombie } from "@/data/zombies"
 import type { Route } from "next"
-
 import { Array as Arr, Option } from "effect"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"

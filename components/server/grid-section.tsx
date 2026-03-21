@@ -1,7 +1,5 @@
 import type { Route } from "next"
-
 import { ArrowRightIcon } from "lucide-react"
-
 import { CustomLink } from "@/components/client/custom-link"
 import { cn } from "@/lib/utils"
 

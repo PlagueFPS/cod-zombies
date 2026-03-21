@@ -1,7 +1,6 @@
 "use client"
 import { Option } from "effect"
 import { Suspense, useEffect } from "react"
-
 import { GridPagination } from "@/components/client/grid-pagination"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { EmptyGrid } from "@/components/server/empty-grid"

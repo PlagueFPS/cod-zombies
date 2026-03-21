@@ -1,10 +1,8 @@
 import type { MDXContent } from "mdx/types"
 import type { Metadata, Route } from "next"
-
 import { Effect, FileSystem, Option, Path } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
@@ -32,7 +30,6 @@ import {
 	getLastModified,
 	getServerUrl,
 } from "@/utils/server-functions"
-
 import richStyles from "@/app/rich-text.module.css"
 
 export const generateStaticParams = () =>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-
 import UnsubscribeForm from "@/components/client/unsubscribe-form"
 
 export const metadata: Metadata = {

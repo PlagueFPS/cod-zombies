@@ -1,5 +1,4 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
-
 import { HashMap, Option } from "effect"
 
 export interface Attachment {
