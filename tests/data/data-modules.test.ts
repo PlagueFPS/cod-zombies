@@ -1,4 +1,6 @@
+import { Effect, Option } from "effect"
 import { describe, expect, test } from "vitest"
+
 import { getAmmoModByKey } from "@/data/ammo-mods"
 import { getAugmentByKey } from "@/data/augments"
 import { getFieldUpgradeByKey } from "@/data/field-upgrades"
@@ -11,12 +13,17 @@ import {
 	getTotalMaps,
 	type InteractiveMapKey,
 } from "@/data/interactive-map"
-import { getAdjacentMaps, getMapByKey, getMaps, getMapsWithMainQuest, type MapKey } from "@/data/maps"
+import {
+	getAdjacentMaps,
+	getMapByKey,
+	getMaps,
+	getMapsWithMainQuest,
+	type MapKey,
+} from "@/data/maps"
 import { getPerkByKey } from "@/data/perks"
 import { getAdjacentRelics, getRelics, type RelicKey } from "@/data/relics"
 import { getAdjacentSideQuests, getSideQuests, type SideQuestKey } from "@/data/side-quests"
 import { getAdjacentZombies, getZombies, type ZombieKey } from "@/data/zombies"
-import { Effect, Option } from "effect"
 
 const assertSortedDescByDate = (dates: readonly Date[]) => {
 	for (let i = 0; i < dates.length - 1; i++) {

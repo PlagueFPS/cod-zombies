@@ -8,15 +8,15 @@ export default function PrivacyPolicyLoading() {
 				<div className="flex w-full grow flex-col-reverse justify-center xl:flex-row">
 					<section className="flex w-full max-w-7xl flex-col items-center justify-center">
 						<div className="relative mt-4 w-full xl:my-6">
-							<div className="-top-10 absolute left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
+							<div className="absolute -top-10 left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
 								<Breadcrumbs links={[{ title: "Privacy Policy", href: `/privacy-policy` }]} />
 							</div>
 						</div>
 						<div className="mb-4 flex w-full flex-col items-start justify-center border-b-2 px-4 pb-6 md:gap-4 md:px-8">
-							<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-4xl text-gradient md:text-5xl lg:text-6xl">
+							<h2 className="text-gradient pb-2 text-4xl font-extrabold md:text-5xl lg:text-6xl dark:dark-text-gradient">
 								Privacy Policy
 							</h2>
-							<span className="text-muted-foreground text-sm">
+							<span className="text-sm text-muted-foreground">
 								Last Updated: {<Skeleton className="inline-block h-2.5 w-20" />}
 							</span>
 						</div>

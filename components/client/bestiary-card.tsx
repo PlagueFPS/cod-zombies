@@ -1,6 +1,8 @@
-import type { Route } from "next"
 import type { Zombie } from "@/data/zombies"
+import type { Route } from "next"
+
 import { Array as Arr, Option } from "effect"
+
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
@@ -53,7 +55,7 @@ export function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 						{ "opacity-75 dark:opacity-50": applyClasses },
 					)}
 				>
-					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
+					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end-safe gap-1">
 						{stateBadge}
 						<TypeBadge type={zombie.type} />
 						{Option.match(map, {

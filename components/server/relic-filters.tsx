@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+
 import { GridFilters } from "@/components/client/grid-filters"
 import { FilterLoader } from "@/components/server/filter-loader"
 import { getMaps } from "@/data/maps"

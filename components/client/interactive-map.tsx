@@ -2,12 +2,14 @@
 import "leaflet/dist/leaflet.css"
 import type { MapConfig } from "@/data/interactive-map"
 import type { Location, MapMarker } from "@/map-configs/markers"
+
 import { Array as Arr, Option } from "effect"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import NextImage from "next/image"
 import { useEffect, useState } from "react"
 import { ImageOverlay, MapContainer, Popup, useMap, useMapEvents } from "react-leaflet"
+
 import CustomMarker from "@/components/client/custom-marker"
 import MapSettingsPanel from "@/components/client/map-settings-panel"
 import { MarkerBadge } from "@/components/server/custom-badges"
@@ -58,7 +60,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			try {
 				const img = new Image()
 				img.crossOrigin = "anonymous"
-				
+
 				await new Promise((resolve, reject) => {
 					img.onload = () => {
 						setImageDimensions(
@@ -76,10 +78,10 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 				console.error(`Failed to load map:`, error)
 			}
 		}
-		
+
 		loadImageDimensions()
 	}, [currentLayer])
-	
+
 	if (Option.isNone(currentLayer)) return null
 
 	const shouldRenderMarker = (marker: MapMarker) => {
@@ -293,19 +295,19 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 				</div>
 			)}
 			<h3
-				className={cn("text-center font-extrabold text-lg", {
+				className={cn("text-center text-lg font-extrabold", {
 					"text-orange-700 dark:text-orange-200": marker.category === "objectives",
 					"text-blue-600 dark:text-blue-200": marker.category === "general",
 					"text-green-600 dark:text-green-200": marker.category === "transportation",
 					"text-yellow-700 dark:text-yellow-200": marker.category === "upgrades",
-					"dark:dark-text-gradient text-gradient": marker.category === "equipment",
+					"text-gradient dark:dark-text-gradient": marker.category === "equipment",
 					"text-purple-600 dark:text-purple-200": marker.category === "intel",
 				})}
 			>
 				{location.title || marker.title}
 			</h3>
 			<p
-				className={cn("px-2 text-center text-foreground/90 text-sm", {
+				className={cn("px-2 text-center text-sm text-foreground/90", {
 					"text-orange-800 dark:text-orange-200": marker.category === "objectives",
 					"text-blue-600 dark:text-blue-200": marker.category === "general",
 					"text-green-600 dark:text-green-200": marker.category === "transportation",

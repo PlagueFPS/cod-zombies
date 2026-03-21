@@ -1,5 +1,7 @@
 import type { Heading } from "@/components/client/table-of-contents"
+
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
+
 import {
 	Clock,
 	Duration,
@@ -11,6 +13,7 @@ import {
 	Redacted,
 	Schema,
 } from "effect"
+
 import { env } from "@/env"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { slugify } from "@/utils/shared-functions"

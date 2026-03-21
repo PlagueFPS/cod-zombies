@@ -3,6 +3,7 @@ import type { MapEntry } from "@/data/maps"
 import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
+
 import { Option } from "effect"
 
 export type EncodedMapEntry = Omit<

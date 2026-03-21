@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
+
 import { Option } from "effect"
 import { Suspense } from "react"
+
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { GridFilters } from "@/components/client/grid-filters"
 import { MapsGrid } from "@/components/client/maps-grid"

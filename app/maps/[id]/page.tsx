@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
+
 import { Effect, Option } from "effect"
 import { cookies } from "next/headers"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
+
 import { CustomSideBarTrigger } from "@/components/client/custom-sidebar-trigger"
 import InteractiveMapWrapper from "@/components/client/interactive-map-wrapper"
 import MapSidebar from "@/components/client/map-sidebar"

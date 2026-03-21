@@ -1,4 +1,5 @@
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
+
 import { BreadcrumbsLoader } from "@/components/client/breadcrumbs-loader"
 import ImageLoader from "@/components/server/image-loader"
 import { Button } from "@/components/ui/button"
@@ -6,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function RelicPageLoading() {
 	return (
-		<section className="-mt-10 container mx-auto max-w-4xl px-4 md:py-12">
+		<section className="container mx-auto -mt-10 max-w-4xl px-4 md:py-12">
 			<BreadcrumbsLoader type="relic" className="mb-14" />
 			<article className="space-y-8">
 				<header className="space-y-6 border-b pb-8 text-center">
@@ -19,17 +20,17 @@ export default function RelicPageLoading() {
 						<div className="flex flex-wrap items-center justify-center gap-3">
 							<Skeleton className="h-6 w-24 rounded-full" />
 							<Skeleton className="h-6 w-20 rounded-full" />
-							<Skeleton className="badge-primary-gradient dark:dark-badge-primary-gradient h-6 w-28 rounded-full" />
+							<Skeleton className="h-6 w-28 rounded-full badge-primary-gradient dark:dark-badge-primary-gradient" />
 						</div>
 
-						<div className="flex items-center justify-center gap-2 pt-2 text-muted-foreground text-sm">
+						<div className="flex items-center justify-center gap-2 pt-2 text-sm text-muted-foreground">
 							<span className="flex items-center gap-1 text-muted-foreground">
 								<Calendar className="size-4" />
 								<span>Updated:</span>
 								<Skeleton className="h-5 w-32" />
 							</span>
 							<span className="inline">&bull;</span>
-							<span className="inline-flex items-center gap-1 text-muted-foreground text-sm">
+							<span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
 								<Clock className="size-4" />
 								<Skeleton className="h-5 w-20" />
 							</span>

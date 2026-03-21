@@ -1,8 +1,10 @@
 import type { MapsImagePath, ZombiesImagePath } from "@/types/generated/image-paths.gen"
+
 import { BunRuntime, BunServices } from "@effect/platform-bun"
 import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema } from "effect"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
+
 import { getGameByKey } from "@/data/games"
 import { getMapByKey, type MapEntry } from "@/data/maps"
 import { getSideQuests, type SideQuest } from "@/data/side-quests"
@@ -105,7 +107,7 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 				backgroundColor: "black",
 			}}
 		>
-			{/*biome-ignore lint/performance/noImgElement: next/image is not supported in this context*/}
+			{/* oxlint-disable-next-line nextjs/no-img-element -- Satori context; next/image is not supported */}
 			<img
 				// @ts-expect-error: Satori supports ArrayBuffers as values to the src property
 				src={mapImage.buffer}
@@ -277,7 +279,7 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 				backgroundColor: "black",
 			}}
 		>
-			{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
+			{/* oxlint-disable-next-line nextjs/no-img-element -- next/image is not allowed here */}
 			<img
 				// @ts-expect-error: Satori supports ArrayBuffers as values to the src property
 				src={mapImage.buffer}
@@ -468,7 +470,7 @@ const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: 
 				backgroundColor: "black",
 			}}
 		>
-			{/* biome-ignore lint/performance/noImgElement: next/image is not allowed here */}
+			{/* oxlint-disable-next-line nextjs/no-img-element -- next/image is not allowed here */}
 			<img
 				// @ts-expect-error
 				src={zombieImage.buffer}

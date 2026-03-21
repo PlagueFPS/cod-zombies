@@ -1,6 +1,8 @@
 "use client"
 import type { MapConfigLayer } from "@/data/interactive-map"
+
 import { Array as Arr, Option } from "effect"
+
 import {
 	Select,
 	SelectContent,

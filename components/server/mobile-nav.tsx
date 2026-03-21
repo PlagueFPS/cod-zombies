@@ -1,5 +1,6 @@
 import { MenuIcon } from "lucide-react"
 import Image from "next/image"
+
 import { CustomLink } from "@/components/client/custom-link"
 import { FeedbackForm } from "@/components/client/feedback-form"
 import { Socials } from "@/components/server/socials"
@@ -38,8 +39,8 @@ export function MobileNav() {
 								alt="Call of Duty: Zombies Guides Logo"
 								className="size-10 rounded"
 							/>
-							<div className="text-center font-extrabold text-2xl">
-								<span className="dark:dark-text-gradient text-gradient">COD:</span>
+							<div className="text-center text-2xl font-extrabold">
+								<span className="text-gradient dark:dark-text-gradient">COD:</span>
 								<span className="text-primary-gradient"> ZG</span>
 							</div>
 						</CustomLink>

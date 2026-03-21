@@ -1,5 +1,7 @@
 import type { Route } from "next"
+
 import { Effect, Option } from "effect"
+
 import { SearchBarInput } from "@/components/client/search-bar-input"
 import { getGameByKey, getGames } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
@@ -10,7 +12,9 @@ import { getZombies } from "@/data/zombies"
 
 export async function SearchBar() {
 	return await Effect.gen(function* () {
-		const availableMaps = getInteractiveMaps().flatMap(map => Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [])
+		const availableMaps = getInteractiveMaps().flatMap(map =>
+			Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [],
+		)
 
 		const mainQuests = getMapsWithMainQuest().flatMap(q =>
 			Option.getOrNull(q.state) !== "Coming Soon"
@@ -51,7 +55,7 @@ export async function SearchBar() {
 		const relicMapSlugs = new Set<string>()
 		const relics = getRelics().flatMap(r => {
 			if (Option.getOrNull(r.state) === "Coming Soon") return []
-			
+
 			const map = getMapByKey(r.map)
 			if (Option.isNone(map)) return []
 

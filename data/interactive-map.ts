@@ -2,9 +2,12 @@ import type { GameKey } from "@/data/games"
 import type { MapMarker } from "@/map-configs/markers"
 import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
+
 import { Effect, HashMap, Option, Schema } from "effect"
-import { getMapByKey, type MapKey } from "./maps"
+
 import { sortReleaseDate } from "@/utils/shared-functions"
+
+import { getMapByKey, type MapKey } from "./maps"
 
 class ConfigNotFoundError extends Schema.TaggedErrorClass<ConfigNotFoundError>()(
 	"ConfigNotFoundError",
@@ -72,11 +75,12 @@ export const getInteractiveMapByKey = (key: InteractiveMapKey) =>
  * Gets a list of all interactive maps in the registry
  * @returns An array of the existing interactive map metadata
  */
-export const getInteractiveMaps = () => HashMap.toValues(interactiveMapHashMap).sort((a, b) => {
-	const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
-	const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
-	return sortReleaseDate(mapB.releaseDate, mapA.releaseDate)
-})
+export const getInteractiveMaps = () =>
+	HashMap.toValues(interactiveMapHashMap).sort((a, b) => {
+		const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
+		const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
+		return sortReleaseDate(mapB.releaseDate, mapA.releaseDate)
+	})
 
 /**
  * Gets the total number of interactive maps in the registry. This is useful for initial loading states

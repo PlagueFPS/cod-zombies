@@ -1,7 +1,9 @@
 "use client"
 import type { MapConfig } from "@/data/interactive-map"
+
 import dynamic from "next/dynamic"
-import { Suspense,useEffect } from "react"
+import { Suspense, useEffect } from "react"
+
 import InteractiveMapLoader from "../server/interactive-map-loader"
 
 const InteractiveMap = dynamic(() => import("@/components/client/interactive-map"), {

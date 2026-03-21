@@ -1,3 +1,3 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from "react"
 
 export interface CommonSVGProps extends SVGProps<SVGSVGElement> {}

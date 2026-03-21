@@ -11,6 +11,7 @@ import {
 	Target,
 	Zap,
 } from "lucide-react"
+
 import { BreadcrumbsLoader } from "@/components/client/breadcrumbs-loader"
 import ImageLoader from "@/components/server/image-loader"
 import PrevOrNextLoader from "@/components/server/prev-or-next-card-loader"
@@ -21,13 +22,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ZombiePageLoader() {
 	return (
-		<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
-			<div className="-top-5 absolute left-5 z-30 flex w-full justify-center pl-4 xl:pl-0">
+		<article className="relative container mx-auto px-3 py-4 sm:px-4 sm:py-6">
+			<div className="absolute -top-5 left-5 z-30 flex w-full justify-center pl-4 xl:pl-0">
 				<BreadcrumbsLoader type="zombie" />
 			</div>
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-4 py-2 dark:bg-accent/50">
-					<Skeleton className="badge-medium-gradient dark:dark-badge-medium-gradient h-5.5 w-16" />
+					<Skeleton className="h-5.5 w-16 badge-medium-gradient dark:dark-badge-medium-gradient" />
 					<Button
 						variant={"ghost"}
 						size={"icon"}
@@ -72,7 +73,7 @@ export default function ZombiePageLoader() {
 						{/* Description and Weaknesses */}
 						<div className="space-y-6 md:col-span-2">
 							<div className="space-y-2">
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<BookOpen className="size-5 text-foreground" />
 									Description
 								</h3>
@@ -80,34 +81,34 @@ export default function ZombiePageLoader() {
 								<Skeleton className="h-5 w-1/2" />
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<MapIcon className="size-5 text-blue-500" />
 									Map Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									<Skeleton className="badge-changed-gradient dark:dark-badge-changed-gradient h-6 w-24" />
+									<Skeleton className="h-6 w-24 badge-changed-gradient dark:dark-badge-changed-gradient" />
 								</div>
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<Gamepad2 className="size-5 text-orange-500" />
 									Game Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									<Skeleton className="badge-primary-gradient dark:dark-badge-primary-gradient h-6 w-24" />
+									<Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
 								</div>
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<Target className="size-5 text-red-500" />
 									Weak Points
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									<Skeleton className="badge-hard-gradient dark:dark-badge-hard-gradient h-6 w-24" />
+									<Skeleton className="h-6 w-24 badge-hard-gradient dark:dark-badge-hard-gradient" />
 								</div>
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<AlertTriangle className="size-5 text-orange-800 dark:text-orange-300" />
 									Elemental Weaknesses
 								</h3>
@@ -126,7 +127,7 @@ export default function ZombiePageLoader() {
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Swords className="size-6 text-primary" />
-							<h3 className="font-bold text-xl">Attacks</h3>
+							<h3 className="text-xl font-bold">Attacks</h3>
 						</div>
 						<div className="space-y-4">
 							{Array.from({ length: 3 }, (_, num) => (
@@ -152,7 +153,7 @@ export default function ZombiePageLoader() {
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Footprints className="size-6 text-purple-600 dark:text-purple-300" />
-							<h3 className="font-bold text-xl">Spawn Behavior</h3>
+							<h3 className="text-xl font-bold">Spawn Behavior</h3>
 						</div>
 						<CardDescription className="space-y-2">
 							<Skeleton className="h-4 w-full" />
@@ -166,9 +167,9 @@ export default function ZombiePageLoader() {
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Info className="size-6 text-green-600 dark:text-green-300" />
-							<h3 className="font-bold text-xl">Combat Strategy</h3>
+							<h3 className="text-xl font-bold">Combat Strategy</h3>
 						</div>
-						<div className="space-y-2 text-muted-foreground text-sm">
+						<div className="space-y-2 text-sm text-muted-foreground">
 							<Skeleton className="h-4 w-full" />
 							<Skeleton className="h-4 w-full" />
 							<Skeleton className="h-4 w-full" />

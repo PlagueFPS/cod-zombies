@@ -1,6 +1,7 @@
 import type { MainQuestDifficulty } from "@/data/maps"
 import type { RelicType } from "@/data/relics"
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
+
 import { Option } from "effect"
 
 /**

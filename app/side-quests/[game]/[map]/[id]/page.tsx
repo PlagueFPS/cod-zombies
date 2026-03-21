@@ -1,9 +1,10 @@
 import type { MDXContent } from "mdx/types"
 import type { Metadata, Route } from "next"
+
 import { Effect, FileSystem, Option, Path } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-import richStyles from "@/app/rich-text.module.css"
+
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
@@ -32,6 +33,8 @@ import {
 	getServerUrl,
 } from "@/utils/server-functions"
 import { capitalize } from "@/utils/shared-functions"
+
+import richStyles from "@/app/rich-text.module.css"
 
 export const generateStaticParams = () => {
 	const quests = getSideQuests()
@@ -182,7 +185,7 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 						</div>
 						<div className="relative z-20 mt-8 mb-4 flex w-full max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
 							<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
-								<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-3xl text-gradient md:text-4xl lg:text-5xl">
+								<h2 className="text-gradient pb-2 text-3xl font-extrabold md:text-4xl lg:text-5xl dark:dark-text-gradient">
 									{quest.title}
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
@@ -195,7 +198,7 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 									</Badge>
 								</div>
 							</div>
-							<div className="flex items-center justify-between text-muted-foreground text-sm">
+							<div className="flex items-center justify-between text-sm text-muted-foreground">
 								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
@@ -219,7 +222,7 @@ const sideQuestPageUI = Effect.fn("SideQuestPage")(function* (
 						</div>
 						{!MDXContent ? (
 							<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
-								<p className="font-bold text-xl">
+								<p className="text-xl font-bold">
 									This article is currently being written and will take some time before being
 									ready.
 								</p>
@@ -340,13 +343,13 @@ const PrevOrNextQuestCard = ({ quest, prev }: PrevOrNextCard) => {
 				<div className="relative z-20 flex h-full w-full flex-col justify-center gap-2 px-4 pt-4 xl:pt-6">
 					<h3
 						className={cn(
-							"font-semibold text-xl transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
+							"text-xl font-semibold transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
 							{ truncate: quest.title.length > 20 },
 						)}
 					>
 						{quest.title}
 					</h3>
-					<p className="line-clamp-3 text-ellipsis text-sm">{quest.description}</p>
+					<p className="line-clamp-3 text-sm text-ellipsis">{quest.description}</p>
 					<div
 						className={cn(
 							"mt-auto flex items-center pb-2 transition-all group-hover:text-primary",

@@ -1,5 +1,6 @@
 "use client"
 import { useSearchParams } from "next/navigation"
+
 import { CARD_LIMIT } from "@/utils/constants"
 
 /** Union type of all filter parameter keys */

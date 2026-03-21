@@ -1,6 +1,7 @@
 "use client"
 import { Option } from "effect"
 import { Suspense, useEffect } from "react"
+
 import { GridPagination } from "@/components/client/grid-pagination"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { EmptyGrid } from "@/components/server/empty-grid"
@@ -21,8 +22,8 @@ import {
 	compareByOptionalSome,
 	getEstimatedTimeMidpoint,
 	sortDifficulties,
-    sortEstimatedTime,
-    sortReleaseDate,
+	sortEstimatedTime,
+	sortReleaseDate,
 } from "@/utils/shared-functions"
 
 interface IQuestGrid {
@@ -130,11 +131,7 @@ export function QuestGrid({ quests }: IQuestGrid) {
 		case "time-asc":
 			sortedQuests.sort((a, b) => {
 				if (isMapQuest(a) && isMapQuest(b)) {
-					return compareByOptionalSome(
-						a.estimatedTimeMins,
-						b.estimatedTimeMins,
-						sortEstimatedTime,
-					)
+					return compareByOptionalSome(a.estimatedTimeMins, b.estimatedTimeMins, sortEstimatedTime)
 				}
 				return 0
 			})
@@ -142,11 +139,7 @@ export function QuestGrid({ quests }: IQuestGrid) {
 		case "time-desc":
 			sortedQuests.sort((a, b) => {
 				if (isMapQuest(a) && isMapQuest(b)) {
-					return compareByOptionalSome(
-						b.estimatedTimeMins,
-						a.estimatedTimeMins,
-						sortEstimatedTime,
-					)
+					return compareByOptionalSome(b.estimatedTimeMins, a.estimatedTimeMins, sortEstimatedTime)
 				}
 				return 0
 			})

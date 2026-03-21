@@ -1,5 +1,6 @@
 import { Match } from "effect"
 import { Book, Brain, Stone } from "lucide-react"
+
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 
 interface EmptyGridProps {

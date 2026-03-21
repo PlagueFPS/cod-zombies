@@ -1,4 +1,5 @@
 import { PanelLeftClose } from "lucide-react"
+
 import { ShareButton } from "@/components/client/share-button"
 import { Socials } from "@/components/server/socials"
 import { Separator } from "@/components/ui/separator"
@@ -6,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function SidebarLoader() {
 	return (
-		<div className="-mt-10 relative hidden h-screen w-2xs flex-col border border-t-0 bg-background lg:flex">
+		<div className="relative -mt-10 hidden h-screen w-2xs flex-col border border-t-0 bg-background lg:flex">
 			<div className="sticky top-0 flex w-full items-center gap-2 border-b p-2">
 				<Skeleton className="h-7 w-50" />
 				<PanelLeftClose className="ml-auto size-4" />

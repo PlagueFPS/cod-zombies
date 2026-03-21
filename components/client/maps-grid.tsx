@@ -14,7 +14,9 @@ export function MapsGrid({ maps }: IMapsGrid) {
 	let filteredMaps = maps.map(decodeInteractiveMap)
 
 	if (gameParams.length > 0) {
-		filteredMaps = filteredMaps.filter(m => gameParams.includes(getGameByKey(m.game).valueOrUndefined?.id ?? ""))
+		filteredMaps = filteredMaps.filter(m =>
+			gameParams.includes(getGameByKey(m.game).valueOrUndefined?.id ?? ""),
+		)
 	}
 
 	return (

@@ -1,5 +1,6 @@
 "use client"
 import type { Route } from "next"
+
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Fragment, useState } from "react"
+
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import {
@@ -73,7 +75,7 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 		<CommandDialog open={open} onOpenChange={setOpen}>
 			<CommandDialogTrigger
 				render={<Button variant="outline" size="sm" />}
-				className={cn("relative gap-x-2 rounded-sm text-muted-foreground text-xs")}
+				className={cn("relative gap-x-2 rounded-sm text-xs text-muted-foreground")}
 			>
 				<Search className="size-5" />
 				<span className="mr-auto text-sm">Search</span>

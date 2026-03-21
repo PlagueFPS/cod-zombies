@@ -1,5 +1,6 @@
 "use client"
 import { Option } from "effect"
+
 import IconImage from "@/components/client/icon-image"
 import { ElixirRarityBadge } from "@/components/server/custom-badges"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -57,7 +58,7 @@ const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
 		>
 			<ElixirRarityBadge rarity={elixir.rarity} className="absolute top-4 left-4" />
 			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<div className="bg-opacity-25 absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={elixir.image}
 					alt={`${elixir.title} Image`}
@@ -69,7 +70,7 @@ const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
 			</div>
 			<div className="relative z-10 -mt-3">
 				<div
-					className={cn("px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200", {
+					className={cn("px-4 text-center text-lg font-bold text-orange-700 dark:text-orange-200", {
 						"text-green-600 dark:text-green-300": elixir.rarity === "Classic",
 						"text-gray-600 dark:text-gray-300": elixir.rarity === "Common",
 						"text-blue-600 dark:text-blue-300": elixir.rarity === "Rare",
@@ -81,7 +82,7 @@ const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
 				</div>
 				<div className="mt-6 pb-8">
 					<div
-						className={cn("text-center text-orange-800 text-sm dark:text-orange-200", {
+						className={cn("text-center text-sm text-orange-800 dark:text-orange-200", {
 							"text-green-600 dark:text-green-300": elixir.rarity === "Classic",
 							"text-gray-600 dark:text-gray-300": elixir.rarity === "Common",
 							"text-blue-600 dark:text-blue-300": elixir.rarity === "Rare",
@@ -134,7 +135,7 @@ const getRarityTextClasses = (rarity: ElixirRarity) =>
 
 const getRarityContentClasses = (rarity: ElixirRarity) =>
 	cn(
-		"w-sm p-0 text-orange-600 shadow-orange-600 shadow-xs ring-orange-600/30 dark:text-orange-200 dark:shadow-orange-200 dark:ring-orange-200/30",
+		"w-sm p-0 text-orange-600 shadow-xs shadow-orange-600 ring-orange-600/30 dark:text-orange-200 dark:shadow-orange-200 dark:ring-orange-200/30",
 		{
 			"shadow-green-600 ring-green-600/25 dark:shadow-green-300 dark:ring-green-300/30":
 				rarity === "Classic",

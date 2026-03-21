@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronsRightIcon } from "lucide-react"
+
 import { BackToTopButton } from "@/components/client/back-to-top-button"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -12,13 +13,13 @@ export function TableOfContentsLoader() {
 				<div className="flex flex-col">
 					<div className="mt-4 flex flex-col items-center justify-center">
 						<div className="mb-2 flex w-full items-center justify-between">
-							<span className="text-muted-foreground text-sm">Guide progress</span>
-							<span className="font-medium text-xs">0%</span>
+							<span className="text-sm text-muted-foreground">Guide progress</span>
+							<span className="text-xs font-medium">0%</span>
 						</div>
 						<Progress value={0} className="h-1" />
 					</div>
 					<div className="flex items-center justify-between border-t pt-2">
-						<h3 className="font-medium text-muted-foreground text-sm">CURRENT SECTION</h3>
+						<h3 className="text-sm font-medium text-muted-foreground">CURRENT SECTION</h3>
 						<Button variant={"ghost"} size={"sm"} disabled aria-disabled>
 							<ChevronDown className="size-4" />
 						</Button>
@@ -34,7 +35,7 @@ export function TableOfContentsLoader() {
 						</Button>
 					</div>
 					<ScrollArea className="grid max-h-[50vh] grid-rows-[1fr] gap-1 overflow-hidden transition-all duration-300">
-						<ul className="flex flex-col gap-3 overflow-hidden py-4 pl-1 font-semibold text-foreground/90 text-sm">
+						<ul className="flex flex-col gap-3 overflow-hidden py-4 pl-1 text-sm font-semibold text-foreground/90">
 							{Array.from({ length: 15 }, (_, i) => (
 								<li key={`toc-loader-${i + 1}`}>
 									<Skeleton className="h-6 w-full" />

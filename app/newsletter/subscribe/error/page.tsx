@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
+
 import { Effect, Option } from "effect"
 import { AlertCircle } from "lucide-react"
+
 import { CustomLink } from "@/components/client/custom-link"
 import { Button } from "@/components/ui/button"
 import { decodeErrorPageSearchParams } from "@/utils/validation-schemas"
@@ -32,7 +34,7 @@ const subscribeErrorUI = Effect.fn("SubscribeErrorPage")(function* (
 			<div className="mb-4 flex justify-center">
 				<AlertCircle className="h-16 w-16 text-red-500" />
 			</div>
-			<h1 className="mb-4 font-bold text-2xl">Subscribe Failed</h1>
+			<h1 className="mb-4 text-2xl font-bold">Subscribe Failed</h1>
 			<p className="mb-6 text-muted-foreground">{errorMessage}</p>
 			<div className="space-y-4">
 				<Button

@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next"
+
 import { Array as Arr, Effect } from "effect"
+
 import { getInteractiveMaps } from "@/data/interactive-map"
 import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
 import { getRelics } from "@/data/relics"

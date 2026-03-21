@@ -3,7 +3,9 @@ import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
+
 import { HashMap, Option } from "effect"
+
 import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
 
 /** The three types of relics */

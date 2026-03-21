@@ -1,9 +1,11 @@
 "use client"
 import type { Heading } from "@/components/client/table-of-contents"
+
 import { ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { RemoveScroll } from "react-remove-scroll"
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -50,7 +52,7 @@ export function MobileTableOfContents({
 							)}
 						>
 							<nav className="flex flex-col gap-4 pb-12">
-								<ul className="flex max-h-full flex-col gap-3 font-medium text-foreground/90 text-sm">
+								<ul className="flex max-h-full flex-col gap-3 text-sm font-medium text-foreground/90">
 									{headings.map(heading => (
 										<li
 											key={`mobile-toc-${heading.id}`}

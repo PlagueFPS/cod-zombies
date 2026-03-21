@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
+
 import { Suspense } from "react"
+
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { GridSort } from "@/components/client/grid-sort"
 import { RelicGrid } from "@/components/client/relic-grid"

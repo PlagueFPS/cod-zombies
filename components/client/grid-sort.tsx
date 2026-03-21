@@ -21,11 +21,7 @@ interface GridSortProps {
 	contentClass?: string
 }
 
-export function GridSort({
-	options,
-	triggerClass,
-	contentClass,
-}: GridSortProps) {
+export function GridSort({ options, triggerClass, contentClass }: GridSortProps) {
 	const { sortParam, updateSort } = useFilterParams()
 	const validSortValue = options.find(option => sortParam === option.value) ?? options.at(0)
 
@@ -35,7 +31,11 @@ export function GridSort({
 	}
 
 	return (
-		<Select value={validSortValue} onValueChange={onValueChange} itemToStringLabel={(option: SortOption) => option.label}>
+		<Select
+			value={validSortValue}
+			onValueChange={onValueChange}
+			itemToStringLabel={(option: SortOption) => option.label}
+		>
 			<SelectTrigger className={cn("w-full sm:w-72", triggerClass)}>
 				<SelectValue placeholder="Sort by" />
 			</SelectTrigger>

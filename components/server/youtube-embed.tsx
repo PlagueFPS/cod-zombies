@@ -1,4 +1,5 @@
 import { YouTubeEmbed as NextYouTubeEmbed } from "@next/third-parties/google"
+
 import { getYouTubeVideoId } from "@/utils/shared-functions"
 
 interface YoutubeEmbedProps {

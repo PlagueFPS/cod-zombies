@@ -16,6 +16,7 @@ import {
 	XIcon,
 } from "react-share"
 import { toast } from "sonner"
+
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import {
@@ -49,8 +50,8 @@ export function ShareButton({ title, url, ...props }: ShareButtonProps) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<Tooltip>
-				<TooltipTrigger 
-					render={<Button variant="ghost" size="icon" {...props} />} 
+				<TooltipTrigger
+					render={<Button variant="ghost" size="icon" {...props} />}
 					onClick={() => setOpen(true)}
 					aria-label="open share modal. Keyboard shortcut: S"
 				>

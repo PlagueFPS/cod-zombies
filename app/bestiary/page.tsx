@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
+
 import { Suspense } from "react"
+
 import { BestiaryGrid } from "@/components/client/bestiary-grid"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { GridSort } from "@/components/client/grid-sort"

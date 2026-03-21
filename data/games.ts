@@ -1,5 +1,7 @@
 import type { GamesImagePath } from "@/types/generated/image-paths.gen"
+
 import { HashMap } from "effect"
+
 import { sortReleaseDate } from "@/utils/shared-functions"
 
 export interface Game {

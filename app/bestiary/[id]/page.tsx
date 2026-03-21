@@ -1,4 +1,5 @@
 import type { Metadata, Route } from "next"
+
 import { Array as Arr, Effect, Option } from "effect"
 import {
 	AlertTriangle,
@@ -15,6 +16,7 @@ import {
 	Zap,
 } from "lucide-react"
 import { notFound } from "next/navigation"
+
 import AmmoModTooltip from "@/components/client/ammo-mod-tooltip"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
@@ -106,9 +108,7 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 	const { default: MDXContent } = yield* Effect.promise(
 		() => import(`@/${zombie.combatStrategy}.mdx`),
 	)
-	const { lastModified, lastModifiedFormatted } = yield* getLastModified(
-		`zombies/${zombie.id}.mdx`,
-	)
+	const { lastModified, lastModifiedFormatted } = yield* getLastModified(`zombies/${zombie.id}.mdx`)
 	const mostRecentGame = yield* Arr.last(zombie.games).pipe(
 		Option.flatMap(game => getGameByKey(game)),
 	)
@@ -128,7 +128,7 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 	}
 
 	return (
-		<article className="container relative mx-auto px-3 py-4 sm:px-4 sm:py-6">
+		<article className="relative container mx-auto px-3 py-4 sm:px-4 sm:py-6">
 			<div className="absolute -top-5 left-2 z-30 flex w-full justify-center pl-4 xl:left-5 xl:pl-0">
 				<Breadcrumbs
 					links={[
@@ -150,13 +150,13 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 						<LastUpdatedDisplay
 							lastModified={lastModified}
 							lastModifiedFormatted={lastModifiedFormatted}
-							className="text-foreground/60 text-xs sm:text-sm"
+							className="text-xs text-foreground/60 sm:text-sm"
 						/>
 						<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
 					</div>
 				</div>
 				<CardHeader>
-					<CardTitle className="dark:dark-text-gradient font-extrabold text-3xl text-gradient md:text-4xl">
+					<CardTitle className="text-gradient text-3xl font-extrabold md:text-4xl dark:dark-text-gradient">
 						{zombie.title}
 					</CardTitle>
 				</CardHeader>
@@ -212,14 +212,14 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 						{/* Description and Weaknesses */}
 						<div className="space-y-6 md:col-span-2">
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<BookOpen className="size-5 text-foreground" />
 									Description
 								</h3>
 								<p className="text-foreground dark:text-foreground/80">{zombie.description}</p>
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<MapIcon className="size-5 text-blue-500" />
 									Map Appearances
 								</h3>
@@ -231,21 +231,21 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 										return (
 											<Badge
 												key={mapKey}
-												className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
+												className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient"
 											>
 												{map.value.title}
 											</Badge>
 										)
 									})}
 									{zombie.maps.length > 16 && (
-										<Badge className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1">
+										<Badge className="mt-1 badge-changed-gradient dark:dark-badge-changed-gradient">
 											{`+${zombie.maps.length - 16} more`}
 										</Badge>
 									)}
 								</div>
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<Gamepad2 className="size-5 text-orange-500" />
 									Game Appearances
 								</h3>
@@ -257,7 +257,7 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 										return (
 											<Badge
 												key={gameKey}
-												className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
+												className="mt-1 badge-primary-gradient dark:dark-badge-primary-gradient"
 											>
 												{game.value.title}
 											</Badge>
@@ -266,7 +266,7 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 								</div>
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<Target className="size-5 text-red-500" />
 									Weak Points
 								</h3>
@@ -279,21 +279,21 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 											return (
 												<Badge
 													key={weakPointKey}
-													className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
+													className="w-fit badge-hard-gradient dark:dark-badge-hard-gradient"
 												>
 													{weakPoint.value.title}
 												</Badge>
 											)
 										})
 									) : (
-										<Badge className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">
+										<Badge className="w-fit badge-hard-gradient dark:dark-badge-hard-gradient">
 											None
 										</Badge>
 									)}
 								</div>
 							</div>
 							<div>
-								<h3 className="mb-2 flex items-center gap-2 font-semibold text-lg">
+								<h3 className="mb-2 flex items-center gap-2 text-lg font-semibold">
 									<AlertTriangle className="size-5 text-orange-800 dark:text-orange-200" />
 									Elemental Weaknesses
 								</h3>
@@ -324,7 +324,7 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Swords className="size-6 text-primary" />
-							<h3 className="font-bold text-xl">Attacks</h3>
+							<h3 className="text-xl font-bold">Attacks</h3>
 						</div>
 						<div className="space-y-4">
 							{zombie.attacks.map(attackKey => {
@@ -371,7 +371,7 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Footprints className="size-6 text-purple-600 dark:text-purple-300" />
-							<h3 className="font-bold text-xl">Spawn Behavior</h3>
+							<h3 className="text-xl font-bold">Spawn Behavior</h3>
 						</div>
 						<CardDescription className="text-foreground dark:text-foreground/80">
 							{zombie.spawnBehavior}
@@ -383,9 +383,9 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 					<CardContent className="pt-6">
 						<div className="mb-3 flex items-center gap-2 border-b pb-2">
 							<Info className="size-6 text-green-600 dark:text-green-300" />
-							<h3 className="font-bold text-xl">Combat Strategy</h3>
+							<h3 className="text-xl font-bold">Combat Strategy</h3>
 						</div>
-						<div className="text-foreground text-sm dark:text-foreground/80">
+						<div className="text-sm text-foreground dark:text-foreground/80">
 							<MDXContent components={mdxComponents} />
 						</div>
 					</CardContent>
@@ -483,7 +483,7 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 				<div className="relative z-20 flex h-full w-full flex-col justify-center gap-2 px-4 pt-4 xl:pt-6">
 					<h3
 						className={cn(
-							"font-semibold text-xl transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
+							"text-xl font-semibold transition-colors will-change-transform group-hover:text-primary group-focus-visible:text-primary",
 							{
 								truncate: zombie.title.length > 20,
 							},
@@ -491,7 +491,7 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 					>
 						{zombie.title}
 					</h3>
-					<p className="line-clamp-3 text-ellipsis text-sm">{zombie.description}</p>
+					<p className="line-clamp-3 text-sm text-ellipsis">{zombie.description}</p>
 					<div
 						className={cn(
 							"mt-auto flex items-center pb-2 transition-colors group-hover:text-primary group-focus-visible:text-primary",

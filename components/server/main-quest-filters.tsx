@@ -1,5 +1,6 @@
 import { Option } from "effect"
 import { Suspense } from "react"
+
 import { GridFilters } from "@/components/client/grid-filters"
 import { FilterLoader } from "@/components/server/filter-loader"
 import { getGames } from "@/data/games"

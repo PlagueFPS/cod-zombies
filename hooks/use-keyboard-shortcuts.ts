@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef } from "react"
+
 import { type ShortcutCallback, useKeyboardShortcuts } from "@/contexts/keyboard-shortcuts"
 
 /**

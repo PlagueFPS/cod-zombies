@@ -2,11 +2,13 @@
 import type { MapConfigLayer } from "@/data/interactive-map"
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import type { EncodedInteractiveMap } from "@/utils/rsc-wire"
+
 import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
+
 import { LayerSwitcher } from "@/components/client/layer-switcher"
 import { ShareButton } from "@/components/client/share-button"
 import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"
@@ -58,9 +60,13 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 	} = useMapSearchParams()
 	const { id } = useParams()
 	const router = useRouter()
-	const mapMarkers = Option.isSome(layerParam)
-		? (mapLayers.find(layer => layer.id === layerParam.value)?.markers ?? [])
-		: (mapLayers.at(0)?.markers ?? [])
+	const mapMarkers = useMemo(
+		() =>
+			Option.isSome(layerParam)
+				? (mapLayers.find(layer => layer.id === layerParam.value)?.markers ?? [])
+				: (mapLayers.at(0)?.markers ?? []),
+		[layerParam, mapLayers],
+	)
 	const currentMap = capitalize(String(id))
 
 	useEffect(() => {
@@ -173,7 +179,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>
-			<SidebarContent className="bg-background [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-track]:bg-background [&::-webkit-scrollbar]:w-1.5">
+			<SidebarContent className="bg-background [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-700 [&::-webkit-scrollbar-track]:bg-background">
 				{mapLayers.length > 1 && (
 					<SidebarMenu className="px-4 pt-2">
 						<SidebarMenuItem>
@@ -185,14 +191,14 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 					<SidebarMenuButton
 						onClick={() => clearParam("exclude")}
 						aria-label="Show All Markers"
-						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium uppercase tracking-wide transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
+						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium tracking-wide uppercase transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
 					>
 						All
 					</SidebarMenuButton>
 					<SidebarMenuButton
 						onClick={hideFilters}
 						aria-label="Hide All Markers"
-						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium uppercase tracking-wide transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
+						className="mx-2 cursor-pointer items-center justify-center bg-accent font-medium tracking-wide uppercase transition-colors hover:bg-primary dark:bg-accent/50 hover:dark:bg-primary"
 					>
 						None
 					</SidebarMenuButton>
@@ -222,7 +228,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 														marker={marker}
 														category="general"
 													/>
-													<span className="font-medium text-base">{capitalize(marker)}</span>
+													<span className="text-base font-medium">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -263,7 +269,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 														marker={marker}
 														category="equipment"
 													/>
-													<span className="font-medium text-base">{capitalize(marker)}</span>
+													<span className="text-base font-medium">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -304,7 +310,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 														marker={marker}
 														category="upgrades"
 													/>
-													<span className="font-medium text-base">{capitalize(marker)}</span>
+													<span className="text-base font-medium">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -345,7 +351,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 														marker={marker}
 														category="objectives"
 													/>
-													<span className="font-medium text-base">{capitalize(marker)}</span>
+													<span className="text-base font-medium">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -386,7 +392,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 														marker={marker}
 														category="transportation"
 													/>
-													<span className="font-medium text-base">{capitalize(marker)}</span>
+													<span className="text-base font-medium">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}
@@ -427,7 +433,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 														marker={marker}
 														category="intel"
 													/>
-													<span className="font-medium text-base">{capitalize(marker)}</span>
+													<span className="text-base font-medium">{capitalize(marker)}</span>
 												</div>
 												<Switch
 													id={`${marker}-filter`}

@@ -1,7 +1,9 @@
 "use client"
 import type { Augment, AugmentKey } from "@/data/augments"
 import type { GameKey } from "@/data/games"
+
 import { Option } from "effect"
+
 import IconImage from "@/components/client/icon-image"
 import { TypeBadge } from "@/components/server/custom-badges"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -29,7 +31,7 @@ export default function AugmentTooltip(props: AugmentTooltipProps) {
 	const augment = props.augmentKey
 		? getAugmentByKey(props.augmentKey, props.game)
 		: Option.some(props.augment)
-		
+
 	if (Option.isNone(augment)) {
 		console.error(`Unable to render tooltip for augment: ${props.augmentKey ?? props.augment.id}`)
 		return "[MISSING_AUGMENT]"
@@ -92,7 +94,7 @@ const AugmentTooltipContent = ({ augment }: { augment: Augment }) => {
 			})}
 		>
 			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<div className="bg-opacity-25 absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={augment.image}
 					alt={`${augment.title} Image`}
@@ -105,7 +107,7 @@ const AugmentTooltipContent = ({ augment }: { augment: Augment }) => {
 			<TypeBadge type={augment.type} className="absolute top-4 left-4" />
 			<div className="relative z-10 -mt-3">
 				<div
-					className={cn("px-4 text-center font-bold text-lg", {
+					className={cn("px-4 text-center text-lg font-bold", {
 						"text-major-augment": augment.type === "Major",
 						"text-tooltip-foreground": augment.type === "Minor",
 					})}

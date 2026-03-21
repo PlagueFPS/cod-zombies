@@ -1,4 +1,5 @@
 import type { MapMarker } from "@/map-configs/markers"
+
 import { Array as Arr, Option } from "effect"
 import { useSearchParams } from "next/navigation"
 

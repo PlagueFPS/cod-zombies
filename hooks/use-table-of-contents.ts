@@ -1,4 +1,5 @@
 import type { Heading } from "@/components/client/table-of-contents"
+
 import { useEffect, useRef, useState } from "react"
 /**
  * @param `headings` - array of headings to observe

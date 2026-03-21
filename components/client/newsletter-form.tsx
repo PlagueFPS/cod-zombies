@@ -2,6 +2,7 @@
 import { useForm } from "@tanstack/react-form"
 import { useTransition } from "react"
 import { toast } from "sonner"
+
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import {
 	InputGroup,
@@ -68,7 +69,7 @@ export default function NewsletterForm() {
 				<div className="relative">
 					<FieldGroup>
 						<form.Field name="email">
-							{(field) => {
+							{field => {
 								const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 								return (
 									<Field data-invalid={isInvalid}>

@@ -1,7 +1,9 @@
 import type { MDXComponents } from "mdx/types"
 import type { Route } from "next"
 import type { ComponentPropsWithoutRef } from "react"
+
 import { ExternalLinkIcon } from "lucide-react"
+
 import { CustomLink } from "@/components/client/custom-link"
 import { ExternalLink } from "@/components/server/external-link"
 import { RichBlockquote } from "@/components/server/rich-blockquote"
@@ -91,7 +93,7 @@ const components: MDXComponents = {
 	),
 	tr: ({ children, ...props }: ComponentPropsWithoutRef<"tr">) => (
 		<TableRow
-			className="text-orange-800 odd:bg-orange-50 hover:bg-orange-100 dark:text-orange-200 dark:hover:bg-muted/50 dark:odd:bg-muted/10"
+			className="text-orange-800 odd:bg-orange-50 hover:bg-orange-100 dark:text-orange-200 dark:odd:bg-muted/10 dark:hover:bg-muted/50"
 			{...props}
 		>
 			{children}

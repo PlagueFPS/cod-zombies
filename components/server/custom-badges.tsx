@@ -7,7 +7,9 @@ import type { ZombieAttack } from "@/data/zombie-attacks"
 import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
 import type { TimeRange } from "@/types/data"
+
 import { ClockIcon } from "lucide-react"
+
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { formatEstimatedTimeMidpoint } from "@/utils/shared-functions"
@@ -57,7 +59,7 @@ export const EstimatedTimeBadge = ({
 	timeRange,
 }: CustomBadgeProps & { timeRange: TimeRange }) => (
 	<Badge
-		className={cn("badge-primary-gradient dark:dark-badge-primary-gradient gap-0.5", className)}
+		className={cn("gap-0.5 badge-primary-gradient dark:dark-badge-primary-gradient", className)}
 	>
 		<ClockIcon className="size-3.5" />
 		{formatEstimatedTimeMidpoint(timeRange)}

@@ -12,7 +12,7 @@
 	"bracketSameLine": false,
 	"bracketSpacing": true,
 	"endOfLine": "lf",
-	"ignorePatterns": ["**/*.mdx", "**/*.md", "node_modules", ".next"],
+	"ignorePatterns": ["**/*.mdx", "**/*.md", ".zed", "node_modules", ".next"],
 	"sortImports": {
 		"groups": [
 			"type",

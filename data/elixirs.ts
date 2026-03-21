@@ -1,4 +1,5 @@
 import type { ElixirsImagePath } from "@/types/generated/image-paths.gen"
+
 import { HashMap } from "effect"
 
 export interface Elixir {

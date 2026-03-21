@@ -1,4 +1,5 @@
 import { Search } from "lucide-react"
+
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import { IS_MAC_OS } from "@/utils/constants"
@@ -11,7 +12,7 @@ export function SearchBarLoader() {
 				size="sm"
 				variant="outline"
 				disabled
-				className="relative hidden w-64 animate-pulse gap-x-2 rounded-sm text-muted-foreground text-xs sm:flex"
+				className="relative hidden w-64 animate-pulse gap-x-2 rounded-sm text-xs text-muted-foreground sm:flex"
 			>
 				<Search className="size-5" />
 				<span className="text-sm">Search Maps</span>

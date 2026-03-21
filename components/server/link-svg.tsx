@@ -1,4 +1,4 @@
-import type { CommonSVGProps } from "@/types/svgs";
+import type { CommonSVGProps } from "@/types/svgs"
 
 export default function LinkSVG({ ...props }: CommonSVGProps) {
 	return (

@@ -3,6 +3,7 @@ import { useForm } from "@tanstack/react-form"
 import { CircleAlert, Loader2, Mail, Send } from "lucide-react"
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
+
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import {
@@ -87,11 +88,11 @@ export default function ContactForm({ className }: ContactFormProps) {
 	return (
 		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<Tooltip>
-				<TooltipTrigger 
-					render={<Button variant="outline" size="sm" />} 
-					onClick={() => handleOpenChange(true)} 
+				<TooltipTrigger
+					render={<Button variant="outline" size="sm" />}
+					onClick={() => handleOpenChange(true)}
 					className={cn("flex gap-2 rounded-sm text-muted-foreground", className)}
-					>
+				>
 					<Mail className="size-5" />
 					Contact Us
 				</TooltipTrigger>
@@ -113,7 +114,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 					<div className="space-y-6 pb-4">
 						<FieldGroup>
 							<form.Field name="name">
-								{(field) => {
+								{field => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 									return (
 										<Field data-invalid={isInvalid}>
@@ -142,7 +143,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 								}}
 							</form.Field>
 							<form.Field name="email">
-								{(field) => {
+								{field => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 									return (
 										<Field data-invalid={isInvalid}>
@@ -166,12 +167,12 @@ export default function ContactForm({ className }: ContactFormProps) {
 													<FieldError errors={field.state.meta.errors} />
 												</div>
 											)}
-											</Field>
-										)
-									}}
-								</form.Field>
+										</Field>
+									)
+								}}
+							</form.Field>
 							<form.Field name="message">
-								{(field) => {
+								{field => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 									return (
 										<Field data-invalid={isInvalid}>
@@ -205,7 +206,15 @@ export default function ContactForm({ className }: ContactFormProps) {
 							Cancel
 						</Button>
 						<Tooltip>
-							<TooltipTrigger render={<Button form="contact-form" type="submit" disabled={isPending || !form.state.isValid} />}>
+							<TooltipTrigger
+								render={
+									<Button
+										form="contact-form"
+										type="submit"
+										disabled={isPending || !form.state.isValid}
+									/>
+								}
+							>
 								{isPending ? (
 									<div className="flex items-center gap-2">
 										<Loader2 className="size-4 animate-spin" />

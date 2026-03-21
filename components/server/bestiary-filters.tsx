@@ -1,5 +1,6 @@
 import { Option, Predicate } from "effect"
 import { Suspense } from "react"
+
 import { GridFilters } from "@/components/client/grid-filters"
 import { FilterLoader } from "@/components/server/filter-loader"
 import { getAmmoModByKey } from "@/data/ammo-mods"

@@ -1,5 +1,7 @@
 import type { InteractiveMap } from "@/data/interactive-map"
+
 import { Option } from "effect"
+
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"
@@ -60,10 +62,10 @@ export function MapPreviewCard({ map, index }: IMapPreviewCard) {
 								<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 									{game.title}
 								</Badge>
-							)
+							),
 						})}
 					</div>
-					<h3 className="font-bold text-xl transition-colors group-hover:text-primary group-focus-visible:text-primary">
+					<h3 className="text-xl font-bold transition-colors group-hover:text-primary group-focus-visible:text-primary">
 						{map.title}
 					</h3>
 				</div>

@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+
 import { GridLoader } from "@/components/server/grid-loader"
 import { HeroSection } from "@/components/server/hero-section"
 import {

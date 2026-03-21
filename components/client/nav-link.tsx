@@ -1,7 +1,9 @@
 "use client"
 import type { Route } from "next"
 import type { LinkProps } from "next/link"
+
 import { usePathname } from "next/navigation"
+
 import { CustomLink } from "@/components/client/custom-link"
 import { cn } from "@/lib/utils"
 

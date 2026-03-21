@@ -36,19 +36,19 @@ export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: st
 								height="50"
 								className="mx-auto mb-[12px] h-auto w-[120px] rounded-[10px] object-cover"
 							/>
-							<Text className="m-0 font-bold text-[20px] text-gray-800">
+							<Text className="m-0 text-[20px] font-bold text-gray-800">
 								Call of Duty: <span className="text-orange-500">Zombies Guides</span>
 							</Text>
 						</Section>
 
-						<Hr className="my-[24px] border-orange-200 border-solid" />
+						<Hr className="my-[24px] border-solid border-orange-200" />
 
-						<Heading className="my-[24px] text-center font-bold text-[24px] text-gray-800">
+						<Heading className="my-[24px] text-center text-[24px] font-bold text-gray-800">
 							The Reckoning Interactive Map is Now Available!
 						</Heading>
 
 						<Section className="mb-[32px]">
-							<Text className="mb-[16px] text-[16px] text-gray-600 leading-[24px]">
+							<Text className="mb-[16px] text-[16px] leading-[24px] text-gray-600">
 								We&apos;re thrilled to announce the release of our{" "}
 								<strong className="text-orange-500">Reckoning Interactive Map</strong> for Call of
 								Duty: Zombies!
@@ -100,7 +100,7 @@ export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: st
 							</Button>
 						</Section>
 
-						<Hr className="my-[24px] border-gray-200 border-solid" />
+						<Hr className="my-[24px] border-solid border-gray-200" />
 
 						<Section className="text-center">
 							<Text className="m-0 text-[14px] text-gray-500 italic">
@@ -109,7 +109,7 @@ export default function NewFeatureEmail({ unsubscribeUrl }: { unsubscribeUrl: st
 								<Link href={unsubscribeUrl}>unsubscribe</Link> at any point you choose.
 							</Text>
 
-							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
+							<Text className="mt-[12px] text-[14px] leading-[20px] text-gray-500">
 								<Link
 									href={`https://codzombiesguides.com/privacy-policy`}
 									className="text-[#8898aa] underline"

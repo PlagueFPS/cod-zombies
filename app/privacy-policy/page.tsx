@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
+
 import { Effect } from "effect"
-import richStyles from "@/app/rich-text.module.css"
+
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
 import { PageRuntime } from "@/lib/layers"
@@ -8,6 +9,8 @@ import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { getLastModified } from "@/utils/server-functions"
+
+import richStyles from "@/app/rich-text.module.css"
 
 export const metadata: Metadata = {
 	title: "Privacy Policy",
@@ -37,9 +40,7 @@ const buildPrivacyPolicyPage = Effect.fn("buildPrivacyPolicyPage")(function* () 
 	const { default: MDXContent } = yield* Effect.promise(
 		() => import("@/content/legal/privacy-policy.mdx"),
 	)
-	const { lastModified, lastModifiedFormatted } = yield* getLastModified(
-		"legal/privacy-policy.mdx",
-	)
+	const { lastModified, lastModifiedFormatted } = yield* getLastModified("legal/privacy-policy.mdx")
 
 	return (
 		<article className="flex w-full justify-center">
@@ -52,13 +53,13 @@ const buildPrivacyPolicyPage = Effect.fn("buildPrivacyPolicyPage")(function* () 
 							</div>
 						</div>
 						<div className="mb-4 flex w-full flex-col items-start justify-center border-b-2 px-4 pb-6 md:gap-4 md:px-8">
-							<h2 className="dark:dark-text-gradient pb-2 font-extrabold text-4xl text-gradient md:text-5xl lg:text-6xl">
+							<h2 className="text-gradient pb-2 text-4xl font-extrabold md:text-5xl lg:text-6xl dark:dark-text-gradient">
 								Privacy Policy
 							</h2>
 							<LastUpdatedDisplay
 								lastModified={lastModified}
 								lastModifiedFormatted={lastModifiedFormatted}
-								className="text-muted-foreground text-sm"
+								className="text-sm text-muted-foreground"
 							/>
 						</div>
 						<div className={cn("relative mx-auto max-w-[80ch] px-4", richStyles.body)}>
