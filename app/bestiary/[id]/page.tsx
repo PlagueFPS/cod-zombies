@@ -19,6 +19,7 @@ import AmmoModTooltip from "@/components/client/ammo-mod-tooltip"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
+import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
 import { ShareButton } from "@/components/client/share-button"
 import { ComingSoonBadge, NewBadge, RangeBadge, TypeBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
@@ -105,7 +106,9 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 	const { default: MDXContent } = yield* Effect.promise(
 		() => import(`@/${zombie.combatStrategy}.mdx`),
 	)
-	const { lastModifiedFormatted } = yield* getLastModified(`zombies/${zombie.id}.mdx`)
+	const { lastModified, lastModifiedFormatted } = yield* getLastModified(
+		`zombies/${zombie.id}.mdx`,
+	)
 	const mostRecentGame = yield* Arr.last(zombie.games).pipe(
 		Option.flatMap(game => getGameByKey(game)),
 	)
@@ -144,9 +147,11 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 						<TypeBadge type={zombie.type} />
 					</div>
 					<div className="flex items-center justify-center gap-2">
-						<span className="text-foreground/60 text-xs sm:text-sm">
-							Updated: {lastModifiedFormatted}
-						</span>
+						<LastUpdatedDisplay
+							lastModified={lastModified}
+							lastModifiedFormatted={lastModifiedFormatted}
+							className="text-foreground/60 text-xs sm:text-sm"
+						/>
 						<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
 					</div>
 				</div>
