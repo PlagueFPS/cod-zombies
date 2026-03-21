@@ -1,20 +1,29 @@
 "use client"
-import type { Relic } from "@/data/relics"
+import { Suspense, useEffect } from "react"
+import { GridPagination } from "@/components/client/grid-pagination"
 import { RelicCard } from "@/components/client/relic-card"
 import { EmptyGrid } from "@/components/server/empty-grid"
+import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
 import { useFilterParams } from "@/hooks/use-filter-params"
-import { sortEstimatedTimeAsc, sortEstimatedTimeDesc, sortReleaseDateAsc, sortReleaseDateDesc, sortRelicTypes } from "@/utils/shared-functions"
+import { CARD_LIMIT } from "@/utils/constants"
+import { decodeRelic, type EncodedRelic } from "@/utils/rsc-wire"
+import {
+	calculateSkip,
+	sortEstimatedTime,
+	sortReleaseDate,
+	sortRelicTypes,
+} from "@/utils/shared-functions"
 
 interface RelicGridProps {
-	relics: Omit<Relic, "content">[]
+	relics: EncodedRelic[]
 }
 
 export function RelicGrid({ relics }: RelicGridProps) {
-	const { mapParams, typeParams, sortParam } = useFilterParams()
-	let filteredRelics = [...relics]
+	const { page, validatePageParam, mapParams, typeParams, sortParam } = useFilterParams()
+	let filteredRelics = relics.map(decodeRelic)
 
 	if (mapParams.length > 0) {
-		filteredRelics = filteredRelics.filter(relic => mapParams.includes(relic.map.id))
+		filteredRelics = filteredRelics.filter(relic => mapParams.includes(relic.map))
 	}
 
 	if (typeParams.length > 0) {
@@ -27,7 +36,7 @@ export function RelicGrid({ relics }: RelicGridProps) {
 
 	switch (validSortParam) {
 		case "discovered-asc":
-			sortedRelics.sort((a, b) => sortReleaseDateAsc(a.discoveredDate, b.discoveredDate))
+			sortedRelics.sort((a, b) => sortReleaseDate(a.discoveredDate, b.discoveredDate))
 			break
 		case "type-asc":
 			sortedRelics.sort((a, b) => sortRelicTypes(a.type, b.type))
@@ -36,25 +45,37 @@ export function RelicGrid({ relics }: RelicGridProps) {
 			sortedRelics.sort((a, b) => sortRelicTypes(b.type, a.type))
 			break
 		case "time-asc":
-			sortedRelics.sort((a, b) => sortEstimatedTimeAsc(a.estimatedTimeMins, b.estimatedTimeMins))
+			sortedRelics.sort((a, b) => sortEstimatedTime(a.estimatedTimeMins, b.estimatedTimeMins))
 			break
 		case "time-desc":
-			sortedRelics.sort((a, b) => sortEstimatedTimeDesc(a.estimatedTimeMins, b.estimatedTimeMins))
+			sortedRelics.sort((a, b) => sortEstimatedTime(b.estimatedTimeMins, a.estimatedTimeMins))
 			break
 		default:
-			sortedRelics.sort((a, b) => sortReleaseDateDesc(a.discoveredDate, b.discoveredDate))
+			sortedRelics.sort((a, b) => sortReleaseDate(b.discoveredDate, a.discoveredDate))
 			break
 	}
 
+	const skip = calculateSkip(page, CARD_LIMIT)
+	const paginatedRelics = sortedRelics.slice(skip, CARD_LIMIT * page)
+
+	useEffect(() => {
+		validatePageParam(sortedRelics.length)
+	}, [sortedRelics.length, validatePageParam])
+
 	return (
-		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-			{sortedRelics.length > 0 ? (
-				sortedRelics.map((relic, index) => (
-					<RelicCard key={relic.id} relic={relic} relicIndex={index} />
-				))
-			) : (
-				<EmptyGrid className="col-span-4" type="Relic" />
-			)}
-		</div>
+		<>
+			<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+				{paginatedRelics.length ? (
+					paginatedRelics.map((relic, index) => (
+						<RelicCard key={relic.id} relic={relic} relicIndex={index} />
+					))
+				) : (
+					<EmptyGrid className="col-span-4" type="Relic" />
+				)}
+			</div>
+			<Suspense fallback={<GridPaginationLoader />}>
+				<GridPagination data={sortedRelics} />
+			</Suspense>
+		</>
 	)
 }

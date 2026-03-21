@@ -8,7 +8,7 @@ import { slugify } from "@/utils/shared-functions"
 export function RelicFilters() {
 	const maps = getMaps()
 	const relics = getRelics()
-	const relicMaps = new Set(relics.map(r => r.map.id))
+	const relicMaps = new Set<string>(relics.map(r => r.map))
 	const relicTypes = [...new Set(relics.map(r => r.type))].map(type => {
 		const typeId = slugify(type)
 		return {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Effect, Option } from "effect"
+import { Option } from "effect"
 import { Suspense } from "react"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { GridFilters } from "@/components/client/grid-filters"
@@ -10,6 +10,7 @@ import { GridSection } from "@/components/server/grid-section"
 import { getGameByKey } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { encodeInteractiveMap } from "@/utils/rsc-wire"
 
 export const metadata: Metadata = {
 	title: "Interactive Maps",
@@ -30,16 +31,11 @@ export const metadata: Metadata = {
 	},
 }
 
-export default async function MapsPage() {
-	return await buildMapsPage().pipe(Effect.runPromise)
-}
-
-const buildMapsPage = Effect.fn("buildMapsPage")(function* () {
-	const maps = yield* getInteractiveMaps().pipe(
-		Effect.map(maps => maps.map(m => ({ ...m, state: Option.getOrNull(m.state) }))),
-	)
+export default function MapsPage() {
+	const maps = getInteractiveMaps().map(encodeInteractiveMap)
 	const gameFilters = [...new Set(maps.map(m => m.game))].map(gameKey => {
-		const { id, title } = getGameByKey(gameKey)
+		// This page is statically generated, so we should fail the build if operation fails
+		const { id, title } = getGameByKey(gameKey).pipe(Option.getOrThrow)
 		return {
 			value: id,
 			label: title,
@@ -65,4 +61,4 @@ const buildMapsPage = Effect.fn("buildMapsPage")(function* () {
 			</div>
 		</div>
 	)
-})
+}

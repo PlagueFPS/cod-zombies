@@ -1,19 +1,7 @@
-import type { MapConfig, MapConfigMetadata } from "@/map-configs"
-import { Option } from "effect"
-import { perks, sharedMarkers, weapons } from "./markers"
-
-export const metadata: MapConfigMetadata = {
-	id: "citadelle-des-morts",
-	title: "Citadelle Des Morts",
-	image: "/previews/citadelle-des-morts-preview.webp",
-	game: "blackOps6",
-	state: Option.none(),
-	description:
-		"Explore Citadelle Des Morts in BO6 Zombies. Find all Points of Power & Oil Traps, Fast Travels, intel, and more with our interactive map.",
-}
+import type { MapConfig } from "@/data/interactive-map"
+import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
-	id: "citadelle-des-morts",
 	layers: [
 		{
 			id: "citadelle-des-morts",

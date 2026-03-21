@@ -3,7 +3,7 @@ import {
 	capitalize,
 	getYouTubeVideoId,
 	slugify,
-	sortReleaseDateDesc,
+	sortReleaseDate,
 } from "@/utils/shared-functions"
 
 describe("slugify", () => {
@@ -72,14 +72,14 @@ describe("getYoutubeVideoId", () => {
 	})
 })
 
-describe("sortReleaseDateDesc", () => {
-	test("should return a positive number if first date is older than second", () => {
-		expect(sortReleaseDateDesc("2020-01-01", "2020-01-02")).toBeGreaterThan(0)
+describe("sortReleaseDate", () => {
+	test("should return a negative number if first date is older than second", () => {
+		expect(sortReleaseDate("2020-01-01", "2020-01-02")).toBeLessThan(0)
 	})
-	test("should return a negative number if first date is newer than second", () => {
-		expect(sortReleaseDateDesc("2020-01-02", "2020-01-01")).toBeLessThan(0)
+	test("should return a positive number if first date is newer than second", () => {
+		expect(sortReleaseDate("2020-01-02", "2020-01-01")).toBeGreaterThan(0)
 	})
 	test("should return 0 if dates are equal", () => {
-		expect(sortReleaseDateDesc("2020-01-01", "2020-01-01")).toBe(0)
+		expect(sortReleaseDate("2020-01-01", "2020-01-01")).toBe(0)
 	})
 })

@@ -1,11 +1,12 @@
 import type { Route } from "next"
 import type { Zombie } from "@/data/zombies"
-import { Option } from "effect"
+import { Array as Arr, Option } from "effect"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { getMapByKey } from "@/data/maps"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
@@ -18,6 +19,7 @@ export function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
 	const alt = `${zombie.title} Image`
+	const map = Arr.head(zombie.maps).pipe(Option.flatMap(map => getMapByKey(map)))
 	const { href, tabIndex, stateBadge, applyClasses } = Option.match(zombie.state, {
 		onNone: () => ({
 			href: `/bestiary/${zombie.id}`,
@@ -54,11 +56,14 @@ export function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
 						{stateBadge}
 						<TypeBadge type={zombie.type} />
-						{zombie.maps[0] ? (
-							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-								{zombie.maps[0].title}
-							</Badge>
-						) : null}
+						{Option.match(map, {
+							onNone: () => null,
+							onSome: map => (
+								<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+									{map.title}
+								</Badge>
+							),
+						})}
 					</div>
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage

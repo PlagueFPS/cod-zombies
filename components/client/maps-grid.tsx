@@ -1,27 +1,20 @@
 "use client"
 
-import type { MapConfigMetadata } from "@/map-configs"
-import type { ContentState } from "@/types/data"
-import { Option } from "effect"
 import { MapPreviewCard } from "@/components/client/map-preview-card"
 import { getGameByKey } from "@/data/games"
 import { useFilterParams } from "@/hooks/use-filter-params"
-
-type TransformedMetadata = Omit<MapConfigMetadata, "state"> & { state: ContentState | null }
+import { decodeInteractiveMap, type EncodedInteractiveMap } from "@/utils/rsc-wire"
 
 interface IMapsGrid {
-	maps: TransformedMetadata[]
+	maps: EncodedInteractiveMap[]
 }
 
 export function MapsGrid({ maps }: IMapsGrid) {
 	const { gameParams } = useFilterParams()
-	let filteredMaps = maps.map(map => ({
-		...map,
-		state: Option.fromNullOr(map.state),
-	}))
+	let filteredMaps = maps.map(decodeInteractiveMap)
 
 	if (gameParams.length > 0) {
-		filteredMaps = filteredMaps.filter(m => gameParams.includes(getGameByKey(m.game).id))
+		filteredMaps = filteredMaps.filter(m => gameParams.includes(getGameByKey(m.game).valueOrUndefined?.id ?? ""))
 	}
 
 	return (

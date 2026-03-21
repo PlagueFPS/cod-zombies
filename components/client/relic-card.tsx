@@ -12,6 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { getMapByKey } from "@/data/maps"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
@@ -23,17 +24,23 @@ interface RelicCardProps {
 export function RelicCard({ relic, relicIndex }: RelicCardProps) {
 	const isMobile = useIsMobile()
 	const preload = isMobile ? relicIndex === 0 : relicIndex <= 3
-	const { href, disabled, stateBadge, tabIndex } = Option.match(Option.fromNullOr(relic.state), {
-		onNone: () => ({
-			href: `/relics/${relic.map.game.id}/${relic.id}`,
-			disabled: false,
-			tabIndex: 0,
-			stateBadge: null,
-		}),
+	const map = getMapByKey(relic.map)
+	const { href, disabled, stateBadge, tabIndex } = Option.match(relic.state, {
+		onNone: () => {
+			return {
+				href: Option.match(map, {
+					onNone: () => null,
+					onSome: map => `/relics/${map.game}/${relic.id}`,
+				}),
+				disabled: false,
+				tabIndex: 0,
+				stateBadge: null,
+			}
+		},
 		onSome: state => {
 			const isComingSoon = state === "Coming Soon"
 			return {
-				href: isComingSoon ? "#" : `/relics/${relic.map.game.id}/${relic.id}`,
+				href: isComingSoon || Option.isNone(map) ? null : `/relics/${map.value.game}/${relic.id}`,
 				disabled: isComingSoon,
 				tabIndex: isComingSoon ? -1 : 0,
 				stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
@@ -50,7 +57,7 @@ export function RelicCard({ relic, relicIndex }: RelicCardProps) {
 			<CustomLink
 				href={href as Route}
 				aria-label={`View Guide for the ${relic.title} relic`}
-				aria-disabled={disabled}
+				aria-disabled={disabled || !href}
 				tabIndex={tabIndex}
 				className="group outline-none"
 			>
@@ -65,7 +72,10 @@ export function RelicCard({ relic, relicIndex }: RelicCardProps) {
 						<TypeBadge type={relic.type} />
 						<EstimatedTimeBadge timeRange={relic.estimatedTimeMins} />
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-							{relic.map.title}
+							{Option.match(map, {
+								onNone: () => null,
+								onSome: map => map.title,
+							})}
 						</Badge>
 					</div>
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-3xl dark:flex">

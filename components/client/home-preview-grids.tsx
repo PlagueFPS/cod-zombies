@@ -1,106 +1,78 @@
 "use client"
-import type { MainQuest, MainQuestDifficulty } from "@/data/main-quests"
-import type { Relic } from "@/data/relics"
-import type { SideQuest } from "@/data/side-quests"
-import type { Zombie } from "@/data/zombies"
-import type { MapConfigMetadata } from "@/map-configs"
-import type { ContentState } from "@/types/data"
-import { Option } from "effect"
+import type {
+	EncodedInteractiveMap,
+	EncodedMapEntry,
+	EncodedRelic,
+	EncodedSideQuest,
+	EncodedZombie,
+} from "@/utils/rsc-wire"
 import { BestiaryCard } from "@/components/client/bestiary-card"
 import { MapPreviewCard } from "@/components/client/map-preview-card"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { RelicCard } from "@/components/client/relic-card"
-
-type SerializedMainQuest = Omit<MainQuest, "content" | "state" | "difficulty"> & {
-	state: ContentState | null
-	difficulty: MainQuestDifficulty | null
-}
-type SerializedSideQuest = Omit<SideQuest, "content" | "state"> & { state: ContentState | null }
-type SerializedMapMetadata = Omit<MapConfigMetadata, "state"> & { state: ContentState | null }
+import {
+	decodeInteractiveMap,
+	decodeMap,
+	decodeRelic,
+	decodeSideQuest,
+	decodeZombie,
+	isMapQuest,
+} from "@/utils/rsc-wire"
 
 interface HomeQuestPreviewGridProps {
-	quests: SerializedMainQuest[] | SerializedSideQuest[]
-}
-
-function isMainQuest(
-	quest: SerializedMainQuest | SerializedSideQuest,
-): quest is SerializedMainQuest {
-	return quest._tag === "MainQuest"
+	quests: EncodedMapEntry[] | EncodedSideQuest[]
 }
 
 export function HomeQuestPreviewGrid({ quests }: HomeQuestPreviewGridProps) {
-	const questsWithOption = quests.map(quest => {
-		if (isMainQuest(quest)) {
-			return {
-				...quest,
-				state: Option.fromNullOr(quest.state),
-				difficulty: Option.fromNullOr(quest.difficulty),
-			}
-		}
-		return {
-			...quest,
-			state: Option.fromNullOr(quest.state),
-		}
-	})
+	const decodedQuest = (quest: (typeof quests)[number]) =>
+		isMapQuest(quest) ? decodeMap(quest) : decodeSideQuest(quest)
 
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{questsWithOption.map((quest, index) => (
-				<QuestPreviewCard key={quest.id} quest={quest} questIndex={index} />
+			{quests.map((quest, index) => (
+				<QuestPreviewCard key={quest.id} quest={decodedQuest(quest)} questIndex={index} />
 			))}
 		</div>
 	)
 }
 
 interface HomeRelicsPreviewGridProps {
-	relics: Omit<Relic, "content">[]
+	relics: EncodedRelic[]
 }
 
 export function HomeRelicsPreviewGrid({ relics }: HomeRelicsPreviewGridProps) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{relics.map((relic, index) => (
-				<RelicCard key={relic.id} relic={relic} relicIndex={index} />
+				<RelicCard key={relic.id} relic={decodeRelic(relic)} relicIndex={index} />
 			))}
 		</div>
 	)
 }
 
-type SerializedZombie = Omit<Zombie, "combatStrategy" | "state"> & { state: ContentState | null }
-
 interface HomeBestiaryPreviewGridProps {
-	zombies: SerializedZombie[]
+	zombies: EncodedZombie[]
 }
 
 export function HomeBestiaryPreviewGrid({ zombies }: HomeBestiaryPreviewGridProps) {
-	const zombiesWithOption = zombies.map(z => ({
-		...z,
-		state: Option.fromNullOr(z.state),
-	}))
-
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{zombiesWithOption.map((zombie, index) => (
-				<BestiaryCard key={zombie.id} zombie={zombie} zombieIndex={index} />
+			{zombies.map((zombie, index) => (
+				<BestiaryCard key={zombie.id} zombie={decodeZombie(zombie)} zombieIndex={index} />
 			))}
 		</div>
 	)
 }
 
 interface HomeMapsPreviewGridProps {
-	maps: SerializedMapMetadata[]
+	maps: EncodedInteractiveMap[]
 }
 
 export function HomeMapsPreviewGrid({ maps }: HomeMapsPreviewGridProps) {
-	const mapsWithOption = maps.map(m => ({
-		...m,
-		state: Option.fromNullOr(m.state),
-	}))
-
 	return (
 		<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
-			{mapsWithOption.map((map, index) => (
-				<MapPreviewCard key={map.id} map={map} index={index} />
+			{maps.map((map, index) => (
+				<MapPreviewCard key={map.id} map={decodeInteractiveMap(map)} index={index} />
 			))}
 		</div>
 	)

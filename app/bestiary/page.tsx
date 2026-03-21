@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { Option } from "effect"
 import { Suspense } from "react"
 import { BestiaryGrid } from "@/components/client/bestiary-grid"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
@@ -10,6 +9,7 @@ import { GridSection } from "@/components/server/grid-section"
 import { GridSortLoader } from "@/components/server/grid-sort-loader"
 import { getZombieSortOptions, getZombies } from "@/data/zombies"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { encodeZombie } from "@/utils/rsc-wire"
 import { getServerUrl } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
@@ -35,13 +35,7 @@ export const metadata: Metadata = {
 }
 
 export default function BestiaryPage() {
-	const zombies = getZombies().map(zombie => {
-		const { combatStrategy, state, ...rest } = zombie
-		return {
-			...rest,
-			state: Option.getOrNull(state),
-		}
-	})
+	const zombies = getZombies().map(encodeZombie)
 	return (
 		<div className="flex w-full flex-col items-center justify-center">
 			<div className="container flex flex-col items-center justify-center gap-6">

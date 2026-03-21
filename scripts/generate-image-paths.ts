@@ -135,25 +135,23 @@ const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
 	const rootWebPaths = rootImagesAbs.sort()
 
 	const topDirs = yield* listTopLevelDirs(publicDir)
-	const perDir: { dir: string; typeName: string; imagePaths: string[] }[] = []
 	const totalImages = yield* SynchronizedRef.make(0)
-
-	yield* Effect.forEach(
+	const perDir = yield* Effect.forEach(
 		topDirs,
 		dir =>
 			Effect.gen(function* () {
 				const fullDir = path.join(publicDir, dir)
 				const images = yield* collectImageFiles(publicDir, fullDir)
 				const webPaths = images.sort()
-				perDir.push({
+				yield* SynchronizedRef.update(totalImages, n => n + webPaths.length)
+				return {
 					dir,
 					typeName: `${toPascalCase(dir)}ImagePath`,
 					imagePaths: webPaths,
-				})
-				yield* SynchronizedRef.update(totalImages, n => n + webPaths.length)
+				}
 			}),
 		{ concurrency: "unbounded" },
-	)
+	).pipe(Effect.map(results => results.sort((a, b) => a.dir.localeCompare(b.dir))))
 
 	const durationMs = yield* Clock.currentTimeMillis.pipe(
 		Effect.map(now => (now - startTime).toFixed(0)),

@@ -1,7 +1,6 @@
 import type { Route } from "next"
-import type { MainQuest } from "@/data/main-quests"
 import type { SideQuest } from "@/data/side-quests"
-import { Option, Predicate } from "effect"
+import { Match, Option } from "effect"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import {
@@ -12,23 +11,60 @@ import {
 } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { getGameByKey } from "@/data/games"
+import { getMapByKey, type MapEntry } from "@/data/maps"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { isMapQuest, isSideQuest } from "@/utils/rsc-wire"
 
 interface IQuestPreviewCard {
-	quest: Omit<MainQuest, "content"> | Omit<SideQuest, "content">
+	quest: Omit<MapEntry, "mainQuest"> | Omit<SideQuest, "content">
 	questIndex: number
 }
 
 export function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 	const isMobile = useIsMobile()
 	const priority = isMobile ? questIndex === 0 : questIndex <= 3
-	const title = "title" in quest ? quest.title : quest.map.title
-	const description = "description" in quest ? quest.description : quest.map.description
-	const alt = `${title} map image`
-	const href = Predicate.hasProperty(quest, "difficulty")
-		? `/main-quests/${quest.map.game.id}/${quest.map.id}`
-		: `/side-quests/${quest.map.game.id}/${quest.map.id}/${quest.id}`
+	const { title, description, alt, href, map, game, image } = Match.value(quest).pipe(
+		Match.when(isMapQuest, quest => ({
+			title: quest.title,
+			description: quest.description,
+			alt: `${quest.title} map image`,
+			href: `/main-quests/${quest.game}/${quest.id}`,
+			image: quest.image,
+			map: Option.none(),
+			game: Option.match(getGameByKey(quest.game), {
+				onNone: () => Option.none(),
+				onSome: game => Option.some(game),
+			}),
+		})),
+		Match.orElse(quest => {
+			const map = getMapByKey(quest.map)
+
+			return {
+				title: quest.title,
+				description: quest.description,
+				alt: `${quest.title} preview image`,
+				image: Option.match(map, {
+					onNone: () => null,
+					onSome: map => map.image,
+				}),
+				href: Option.match(map, {
+					onNone: () => undefined,
+					onSome: map => `/side-quests/${map.game}/${map.id}/${quest.id}`,
+				}),
+				game: Option.match(map, {
+					onNone: () => Option.none(),
+					onSome: map =>
+						Option.match(getGameByKey(map.game), {
+							onNone: () => Option.none(),
+							onSome: game => Option.some(game),
+						}),
+				}),
+				map,
+			}
+		}),
+	)
 
 	const { disabled, stateBadge, tabIndex } = Option.match(quest.state, {
 		onNone: () => ({
@@ -47,24 +83,33 @@ export function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 	})
 
 	const renderSpecificBadge = () => {
-		if (!Predicate.hasProperty(quest, "title") && Option.isSome(quest.difficulty)) {
+		if (isSideQuest(quest)) {
+			return Option.match(map, {
+				onNone: () => null,
+				onSome: map => (
+					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+						{map.title}
+					</Badge>
+				),
+			})
+		}
+
+		if (Option.isSome(quest.difficulty) && Option.isSome(quest.estimatedTimeMins)) {
 			return (
 				<>
 					<DifficultyBadge difficulty={quest.difficulty.value} />
-					<EstimatedTimeBadge timeRange={quest.estimatedTimeMins} />
+					<EstimatedTimeBadge timeRange={quest.estimatedTimeMins.value} />
 				</>
 			)
 		}
 
-		if (Predicate.hasProperty(quest, "title")) {
-			return (
-				<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-					{quest.map.title}
-				</Badge>
-			)
+		if (Option.isSome(quest.difficulty)) {
+			return <DifficultyBadge difficulty={quest.difficulty.value} />
 		}
 
-		return null
+		if (Option.isSome(quest.estimatedTimeMins)) {
+			return <EstimatedTimeBadge timeRange={quest.estimatedTimeMins.value} />
+		}
 	}
 
 	return (
@@ -76,7 +121,7 @@ export function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 			<CustomLink
 				href={href as Route}
 				aria-label={`View Guide for ${title}`}
-				aria-disabled={disabled}
+				aria-disabled={disabled || !href}
 				className="group outline-none"
 				tabIndex={tabIndex}
 			>
@@ -90,12 +135,15 @@ export function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 						{stateBadge}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-							{quest.map.game.title}
+							{Option.match(game, {
+								onNone: () => null,
+								onSome: game => game.title,
+							})}
 						</Badge>
 					</div>
 					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
 						<FeaturedImage
-							featuredImage={quest.map.image}
+							featuredImage={image}
 							width={272}
 							height={176}
 							sizes="272px"
@@ -105,7 +153,7 @@ export function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 					<CardHeader className="flex flex-col gap-2">
 						<div className="relative h-full w-full overflow-hidden">
 							<FeaturedImage
-								featuredImage={quest.map.image}
+								featuredImage={image}
 								alt={alt}
 								priority={priority}
 								width={272}

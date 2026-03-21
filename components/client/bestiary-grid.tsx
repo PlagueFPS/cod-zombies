@@ -1,8 +1,5 @@
 "use client"
 import type { AmmoModKey } from "@/data/ammo-mods"
-import type { Zombie } from "@/data/zombies"
-import type { ContentState } from "@/types/data"
-import { Option } from "effect"
 import { Suspense, useEffect } from "react"
 import { BestiaryCard } from "@/components/client/bestiary-card"
 import { GridPagination } from "@/components/client/grid-pagination"
@@ -10,37 +7,32 @@ import { EmptyGrid } from "@/components/server/empty-grid"
 import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { CARD_LIMIT } from "@/utils/constants"
+import { decodeZombie, type EncodedZombie } from "@/utils/rsc-wire"
 import {
 	calculateSkip,
-	sortReleaseDateAsc,
-	sortReleaseDateDesc,
+	sortReleaseDate,
 	sortZombieSpeeds,
 	sortZombieTypes,
 } from "@/utils/shared-functions"
 
-type TransformedZombie = Omit<Zombie, "combatStrategy" | "state"> & { state: ContentState | null }
-
 interface IBestiaryGrid {
-	zombies: TransformedZombie[]
+	zombies: EncodedZombie[]
 }
 
 export function BestiaryGrid({ zombies }: IBestiaryGrid) {
 	const { gameParams, mapParams, typeParams, weaknessParams, sortParam, page, validatePageParam } =
 		useFilterParams()
-	let filteredZombies = zombies.map(zombie => ({
-		...zombie,
-		state: Option.fromNullOr(zombie.state),
-	}))
+	let filteredZombies = zombies.map(decodeZombie)
 
 	if (gameParams.length > 0) {
 		filteredZombies = filteredZombies.filter(
-			z => z.games.some(game => gameParams.includes(game.id)) || z.id === "zombie",
+			z => z.games.some(game => gameParams.includes(game)) || z.id === "zombie",
 		)
 	}
 
 	if (mapParams.length > 0) {
 		filteredZombies = filteredZombies.filter(
-			z => z.maps.some(map => mapParams.includes(map.id)) || z.id === "zombie",
+			z => z.maps.some(map => mapParams.includes(map)) || z.id === "zombie",
 		)
 	}
 
@@ -59,7 +51,7 @@ export function BestiaryGrid({ zombies }: IBestiaryGrid) {
 
 	switch (validSortParam) {
 		case "oldest":
-			sortedZombies.sort((a, b) => sortReleaseDateAsc(a.releaseDate, b.releaseDate))
+			sortedZombies.sort((a, b) => sortReleaseDate(a.releaseDate, b.releaseDate))
 			break
 		case "type-asc":
 			sortedZombies.sort((a, b) => sortZombieTypes(a.type, b.type))
@@ -74,7 +66,7 @@ export function BestiaryGrid({ zombies }: IBestiaryGrid) {
 			sortedZombies.sort((a, b) => sortZombieSpeeds(b.speed, a.speed))
 			break
 		default:
-			sortedZombies.sort((a, b) => sortReleaseDateDesc(a.releaseDate, b.releaseDate))
+			sortedZombies.sort((a, b) => sortReleaseDate(b.releaseDate, a.releaseDate))
 			break
 	}
 

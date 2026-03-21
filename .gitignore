@@ -30,7 +30,7 @@ yarn-error.log*
 *.local.*
 newassets
 oldassets
-.repos/
+/.repos/
 
 # vercel
 .vercel

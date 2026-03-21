@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { Option } from "effect"
 import { Suspense } from "react"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { GridSort } from "@/components/client/grid-sort"
@@ -8,8 +7,9 @@ import { GridLoader } from "@/components/server/grid-loader"
 import { GridSection } from "@/components/server/grid-section"
 import { GridSortLoader } from "@/components/server/grid-sort-loader"
 import { MainQuestFilters } from "@/components/server/main-quest-filters"
-import { getMainQuestSortOptions, getMainQuests } from "@/data/main-quests"
+import { getMainQuestSortOptions, getMapsWithMainQuest } from "@/data/maps"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
+import { encodeMap } from "@/utils/rsc-wire"
 import { getServerUrl } from "@/utils/server-functions"
 
 export const metadata: Metadata = {
@@ -35,14 +35,7 @@ export const metadata: Metadata = {
 }
 
 export default function MainQuests() {
-	const mainQuests = getMainQuests().map(quest => {
-		const { content, state, difficulty, ...rest } = quest
-		return {
-			...rest,
-			state: Option.getOrNull(state),
-			difficulty: Option.getOrNull(difficulty),
-		}
-	})
+	const mainQuests = getMapsWithMainQuest().map(encodeMap)
 
 	return (
 		<div className="flex w-full flex-col items-center justify-center">

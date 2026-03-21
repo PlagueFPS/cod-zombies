@@ -4,16 +4,16 @@ import { GridFilters } from "@/components/client/grid-filters"
 import { FilterLoader } from "@/components/server/filter-loader"
 import { getGames } from "@/data/games"
 import {
-	getMainQuests,
+	getMapsWithMainQuest,
 	MAIN_QUEST_TIME_RANGE_FILTERS,
 	type MainQuestDifficulty,
-} from "@/data/main-quests"
+} from "@/data/maps"
 import { slugify, sortDifficulties } from "@/utils/shared-functions"
 
 export function MainQuestFilters() {
-	const mainQuests = getMainQuests()
+	const mainQuests = getMapsWithMainQuest()
 	const games = getGames()
-	const questGames = new Set(mainQuests.map(q => q.map.game.id))
+	const questGames = new Set<string>(mainQuests.map(q => q.game))
 	const questDifficulties = new Set<MainQuestDifficulty>()
 
 	for (const quest of mainQuests) {
@@ -24,12 +24,14 @@ export function MainQuestFilters() {
 
 	const gameFilters = games.flatMap(game => {
 		if (!questGames.has(game.id)) return []
-		return [{
-			value: game.id,
-			label: game.title,
-		}]
+		return [
+			{
+				value: game.id,
+				label: game.title,
+			},
+		]
 	})
-	
+
 	const difficultyFilters = Array.from(questDifficulties)
 		.sort(sortDifficulties)
 		.map(difficulty => ({

@@ -57,7 +57,7 @@ export const getServerUrl = () => {
 /**
  * Gets the last updated date of a file.
  */
-export const getLastModified = Effect.fn("getLastModifiedData")(function* (filePath: string) {
+export const getLastModified = Effect.fn("getLastModified")(function* (filePath: string) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const dataPath = path.join(process.cwd(), "data/last-modified.json")
@@ -65,7 +65,8 @@ export const getLastModified = Effect.fn("getLastModifiedData")(function* (fileP
 		.readFileString(dataPath)
 		.pipe(Effect.flatMap(data => decodeLastModifiedData(data)))
 
-	const fileData = files[filePath.replace(/^.*?\/content\//, "") as keyof typeof files]
+	const lastModifiedKey = filePath.replace(/^.*?\/content\//, "").replace(/^content\//, "")
+	const fileData = files[lastModifiedKey as keyof typeof files]
 	if (!fileData) {
 		yield* Effect.logWarning(`Missing last-modified data for file ${filePath}`)
 		return {
@@ -185,10 +186,17 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 	const hashBuffer = Buffer.from(hash, "hex")
 	const originalHashBuffer = Buffer.from(originalHash, "hex")
 
-	yield* Effect.try({
+	const isTimingSafe = yield* Effect.try({
 		try: () => timingSafeEqual(hashBuffer, originalHashBuffer),
 		catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
 	})
+
+	if (!isTimingSafe) {
+		return yield* new TokenVerificationError({
+			message: "Invalid Token",
+			cause: "Timing comparison failed",
+		})
+	}
 
 	return value
 })

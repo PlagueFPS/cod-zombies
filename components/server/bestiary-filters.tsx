@@ -1,3 +1,4 @@
+import { Option, Predicate } from "effect"
 import { Suspense } from "react"
 import { GridFilters } from "@/components/client/grid-filters"
 import { FilterLoader } from "@/components/server/filter-loader"
@@ -23,16 +24,18 @@ export function BestiaryFilters() {
 		value: slugify(type),
 		label: type,
 	}))
-	const weaknessFilters = Array.from(
-		new Set(zombies.flatMap(zombie => zombie.elementalWeakness)),
-	).map(weakness => {
-		const ammoMod = getAmmoModByKey(weakness)
-		return {
-			// use key instead of id for simpler comparison
-			value: weakness,
-			label: ammoMod.title,
-		}
-	})
+
+	const weaknessFilters = Array.from(new Set(zombies.flatMap(zombie => zombie.elementalWeakness)))
+		.map(weakness => {
+			return Option.match(getAmmoModByKey(weakness), {
+				onSome: ammoMod => ({
+					value: weakness,
+					label: ammoMod.title,
+				}),
+				onNone: () => null,
+			})
+		})
+		.filter(Predicate.isNotNull)
 
 	return (
 		<Suspense fallback={<FilterLoader placeholder="Type, Game, or Map" />}>

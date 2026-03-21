@@ -1,41 +1,36 @@
 "use client"
 import type { GameKey } from "@/data/games"
-import { Array as Arr } from "effect"
+import { Array as Arr, Option, Predicate, Result } from "effect"
 import AugmentTooltip from "@/components/client/augment-tooltip"
 import IconImage from "@/components/client/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { type AmmoMod, type AmmoModKey, getAmmoModByKey } from "@/data/ammo-mods"
-import { getAugmentByKey } from "@/data/augments"
+import { type Augment, getAugmentByKey } from "@/data/augments"
 import { useIsMobile } from "@/hooks/use-mobile"
 
-interface AmmoModTooltipPropsWithKey {
+interface AmmoModTooltipProps {
 	ammoModKey: AmmoModKey
-	ammoMod?: never
-}
-
-interface AmmoModTooltipPropsWithAmmoMod {
-	ammoModKey?: never
-	ammoMod: AmmoMod
-}
-
-type AmmoModTooltipProps = (AmmoModTooltipPropsWithKey | AmmoModTooltipPropsWithAmmoMod) & {
 	game?: GameKey
 }
 
-export default function AmmoModTooltip(props: AmmoModTooltipProps) {
+export default function AmmoModTooltip({ ammoModKey, game }: AmmoModTooltipProps) {
 	const isMobile = useIsMobile(640)
-	const ammoMod = props.ammoModKey ? getAmmoModByKey(props.ammoModKey, props.game) : props.ammoMod
+	const ammoMod = getAmmoModByKey(ammoModKey, game)
+	if (Option.isNone(ammoMod)) {
+		console.error(`Unable to render tooltip for ammo mod: ${ammoModKey}`)
+		return "[MISSING_AMMO_MOD]"
+	}
 
 	if (!isMobile)
 		return (
 			<HoverCard>
 				<HoverCardTrigger className="group relative cursor-default">
-					<AmmoModTrigger ammoMod={ammoMod} />
+					<AmmoModTrigger ammoMod={ammoMod.value} />
 				</HoverCardTrigger>
 				<HoverCardContent side="top" className="w-sm">
-					<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />
+					<AmmoModTooltipContent ammoMod={ammoMod.value} game={game} />
 				</HoverCardContent>
 			</HoverCard>
 		)
@@ -43,10 +38,10 @@ export default function AmmoModTooltip(props: AmmoModTooltipProps) {
 	return (
 		<Popover>
 			<PopoverTrigger className="group relative cursor-default items-baseline justify-center align-baseline">
-				<AmmoModTrigger ammoMod={ammoMod} />
+				<AmmoModTrigger ammoMod={ammoMod.value} />
 			</PopoverTrigger>
 			<PopoverContent side="top" className="w-sm border-2">
-				<AmmoModTooltipContent ammoMod={ammoMod} game={props.game} />
+				<AmmoModTooltipContent ammoMod={ammoMod.value} game={game} />
 			</PopoverContent>
 		</Popover>
 	)
@@ -69,10 +64,15 @@ const AmmoModTrigger = ({ ammoMod }: { ammoMod: AmmoMod }) => (
 )
 
 const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: GameKey }) => {
-	const ammoModAugments =
-		ammoMod.augments
-			?.map(augment => (augment ? getAugmentByKey(augment, game) : null))
-			?.filter(augment => augment !== null) || []
+	const ammoModAugments: Augment[] = Option.match(ammoMod.augments, {
+		onNone: () => [],
+		onSome: tuple =>
+			Arr.filterMap(tuple, augmentKey =>
+				Predicate.isNotUndefined(augmentKey)
+					? Result.succeed(getAugmentByKey(augmentKey, game).valueOrUndefined)
+					: Result.failVoid,
+			).filter(Predicate.isNotUndefined),
+	})
 
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
@@ -101,13 +101,11 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 									MAJOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{ammoModAugments
-										.filter(augment => augment.type === "Major")
-										.map(augment => (
-											<div key={augment.id} className="shrink-0">
-												<AugmentTooltip augment={augment} />
-											</div>
-										))}
+									{Arr.filterMap(ammoModAugments, augment => augment.type === "Major" ? Result.succeed(
+										<div key={augment.id} className="shrink-0">
+											<AugmentTooltip augment={augment} />
+										</div>,
+										) : Result.failVoid)}
 								</div>
 							</div>
 							<Separator className="my-4" />
@@ -116,13 +114,11 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 									MINOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{ammoModAugments
-										.filter(augment => augment.type === "Minor")
-										.map(augment => (
-											<div key={augment.id} className="shrink-0">
-												<AugmentTooltip augment={augment} />
-											</div>
-										))}
+									{Arr.filterMap(ammoModAugments, augment => augment.type === "Minor" ? Result.succeed(
+										<div key={augment.id} className="shrink-0">
+											<AugmentTooltip augment={augment} />
+										</div>,
+									) : Result.failVoid)}
 								</div>
 							</div>
 						</div>

@@ -24,12 +24,16 @@ import { ComingSoonBadge, NewBadge, RangeBadge, TypeBadge } from "@/components/s
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { type GameKey, getGameByKey } from "@/data/games"
+import { getMapByKey } from "@/data/maps"
+import { getWeakPointByKey } from "@/data/weak-points"
+import { getZombieAttackByKey } from "@/data/zombie-attacks"
 import {
 	getAdjacentZombies,
-	getLatestZombieGameKey,
-	getZombieById,
+	getZombieByKey,
 	getZombies,
 	type Zombie,
+	type ZombieKey,
 } from "@/data/zombies"
 import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
@@ -48,33 +52,33 @@ export const generateMetadata = async ({
 	params,
 }: PageProps<"/bestiary/[id]">): Promise<Metadata> => {
 	const { id } = await params
-	const zombie = getZombieById(id)
-	if (!zombie || Option.getOrNull(zombie.state) === "Coming Soon") {
-		notFound()
+	const zombie = getZombieByKey(id as ZombieKey)
+	if (Option.isNone(zombie) || Option.getOrNull(zombie.value.state) === "Coming Soon") {
+		return notFound()
 	}
-	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.title}" ${zombie.type} Zombie.`
+	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.value.title}" ${zombie.value.type} Zombie.`
 
 	return {
-		title: zombie.title,
+		title: zombie.value.title,
 		description,
 		openGraph: {
 			...GLOBAL_OG_PROPS.openGraph,
-			title: zombie.title,
+			title: zombie.value.title,
 			description,
-			url: `/bestiary/${zombie.id}`,
+			url: `/bestiary/${zombie.value.id}`,
 			images: {
-				url: `${getServerUrl()}/opengraph-images/zombies/og-${zombie.id}.jpg`,
+				url: `${getServerUrl()}/opengraph-images/zombies/og-${zombie.value.id}.jpg`,
 				width: 1200,
 				height: 630,
 			},
 		},
 		twitter: {
-			title: zombie.title,
+			title: zombie.value.title,
 			description,
 			card: "summary_large_image",
 		},
 		alternates: {
-			canonical: `${getServerUrl()}/bestiary/${zombie.id}`,
+			canonical: `${getServerUrl()}/bestiary/${zombie.value.id}`,
 		},
 	}
 }
@@ -82,6 +86,9 @@ export const generateMetadata = async ({
 export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">) {
 	return await buildZombiePage(params).pipe(
 		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			NoSuchElementError: () => Effect.sync(() => notFound()),
+		}),
 		Effect.orDie,
 		PageRuntime.runPromise,
 	)
@@ -92,15 +99,17 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 ) {
 	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
 	const { id } = yield* Effect.promise(() => params)
-	const zombie = getZombieById(id)
-	if (!zombie || Option.getOrNull(zombie.state) === "Coming Soon")
-		return yield* Effect.sync(() => notFound())
-
-	const { prev, next } = getAdjacentZombies(zombie.id)
-	const { default: MDXContent } = yield* zombie.combatStrategy
+	const zombie = yield* getZombieByKey(id as ZombieKey)
+	if (Option.getOrNull(zombie.state) === "Coming Soon") return yield* Effect.sync(() => notFound())
+	const { prev, next } = getAdjacentZombies(zombie.id as ZombieKey)
+	const { default: MDXContent } = yield* Effect.promise(
+		() => import(`@/${zombie.combatStrategy}.mdx`),
+	)
 	const { lastModifiedFormatted } = yield* getLastModified(`zombies/${zombie.id}.mdx`)
-	const mostRecentGame = getLatestZombieGameKey(zombie.games)
-	const firstAppearIn = Arr.get(zombie.maps, 0)
+	const mostRecentGame = yield* Arr.last(zombie.games).pipe(
+		Option.flatMap(game => getGameByKey(game)),
+	)
+	const firstAppearIn = yield* Arr.get(zombie.maps, 0).pipe(Option.flatMap(map => getMapByKey(map)))
 
 	const speedProgress = () => {
 		switch (zombie.speed) {
@@ -178,11 +187,9 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 												First Appeared In
 											</span>
 										</div>
-										{Option.isSome(firstAppearIn) && (
-											<span className="text-foreground dark:text-foreground/80">
-												{firstAppearIn.value.title}
-											</span>
-										)}
+										<span className="text-foreground dark:text-foreground/80">
+											{firstAppearIn.title}
+										</span>
 									</div>
 								</div>
 								<div>
@@ -212,14 +219,19 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 									Map Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.maps.slice(0, 16).map(map => (
-										<Badge
-											key={map.id}
-											className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
-										>
-											{map.title}
-										</Badge>
-									))}
+									{zombie.maps.slice(0, 16).map(mapKey => {
+										const map = getMapByKey(mapKey)
+										if (Option.isNone(map)) return null
+
+										return (
+											<Badge
+												key={mapKey}
+												className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1"
+											>
+												{map.value.title}
+											</Badge>
+										)
+									})}
 									{zombie.maps.length > 16 && (
 										<Badge className="badge-changed-gradient dark:dark-badge-changed-gradient mt-1">
 											{`+${zombie.maps.length - 16} more`}
@@ -233,14 +245,19 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 									Game Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.games.map(game => (
-										<Badge
-											key={game.id}
-											className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
-										>
-											{game.title}
-										</Badge>
-									))}
+									{zombie.games.map(gameKey => {
+										const game = getGameByKey(gameKey)
+										if (Option.isNone(game)) return null
+
+										return (
+											<Badge
+												key={gameKey}
+												className="badge-primary-gradient dark:dark-badge-primary-gradient mt-1"
+											>
+												{game.value.title}
+											</Badge>
+										)
+									})}
 								</div>
 							</div>
 							<div>
@@ -249,15 +266,20 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 									Weak Points
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.weakPoints.length > 0 ? (
-										zombie.weakPoints.map(weakPoint => (
-											<Badge
-												key={weakPoint.id}
-												className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
-											>
-												{weakPoint.title}
-											</Badge>
-										))
+									{Arr.isArrayNonEmpty(zombie.weakPoints) ? (
+										zombie.weakPoints.map(weakPointKey => {
+											const weakPoint = getWeakPointByKey(weakPointKey)
+											if (Option.isNone(weakPoint)) return null
+
+											return (
+												<Badge
+													key={weakPointKey}
+													className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
+												>
+													{weakPoint.value.title}
+												</Badge>
+											)
+										})
 									) : (
 										<Badge className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">
 											None
@@ -271,9 +293,13 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 									Elemental Weaknesses
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.elementalWeakness.length > 0 ? (
+									{Arr.isArrayNonEmpty(zombie.elementalWeakness) ? (
 										zombie.elementalWeakness.map(weakness => (
-											<AmmoModTooltip key={weakness} ammoModKey={weakness} game={mostRecentGame} />
+											<AmmoModTooltip
+												key={weakness}
+												ammoModKey={weakness}
+												game={mostRecentGame.id as GameKey}
+											/>
 										))
 									) : (
 										<span className="text-orange-800 dark:text-orange-200">
@@ -296,37 +322,42 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 							<h3 className="font-bold text-xl">Attacks</h3>
 						</div>
 						<div className="space-y-4">
-							{zombie.attacks.map(attack => (
-								<div
-									key={attack.id}
-									className={cn("rounded-lg border-2 p-3", {
-										"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
-											attack.range === "Short",
-										"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
-											attack.range === "Medium",
-										"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
-											attack.range === "Long",
-									})}
-								>
-									<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
-										<h4
-											className={cn("font-semibold", {
-												"text-teal-600 dark:text-teal-300": attack.range === "Short",
-												"text-yellow-700 dark:text-yellow-200": attack.range === "Medium",
-												"text-red-600 dark:text-red-300": attack.range === "Long",
-											})}
-										>
-											{attack.title}
-										</h4>
-										<div className="flex flex-wrap gap-1">
-											<RangeBadge range={attack.range} />
+							{zombie.attacks.map(attackKey => {
+								const attack = getZombieAttackByKey(attackKey)
+								if (Option.isNone(attack)) return null
+
+								return (
+									<div
+										key={attackKey}
+										className={cn("rounded-lg border-2 p-3", {
+											"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
+												attack.value.range === "Short",
+											"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
+												attack.value.range === "Medium",
+											"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+												attack.value.range === "Long",
+										})}
+									>
+										<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+											<h4
+												className={cn("font-semibold", {
+													"text-teal-600 dark:text-teal-300": attack.value.range === "Short",
+													"text-yellow-700 dark:text-yellow-200": attack.value.range === "Medium",
+													"text-red-600 dark:text-red-300": attack.value.range === "Long",
+												})}
+											>
+												{attack.value.title}
+											</h4>
+											<div className="flex flex-wrap gap-1">
+												<RangeBadge range={attack.value.range} />
+											</div>
 										</div>
+										<CardDescription className="text-foreground dark:text-foreground/80">
+											{attack.value.description}
+										</CardDescription>
 									</div>
-									<CardDescription className="text-foreground dark:text-foreground/80">
-										{attack.description}
-									</CardDescription>
-								</div>
-							))}
+								)
+							})}
 						</div>
 					</CardContent>
 				</Card>
@@ -372,6 +403,7 @@ interface PrevOrNextZombieCard {
 
 const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 	const alt = `${zombie.title} image`
+	const firstAppearedIn = Arr.head(zombie.maps).pipe(Option.flatMap(map => getMapByKey(map)))
 	const { href, disabled, stateBadge, tabIndex } = Option.match(zombie.state, {
 		onNone: () => ({
 			href: `/bestiary/${zombie.id}`,
@@ -412,9 +444,17 @@ const PrevOrNextZombieCard = ({ zombie, prev }: PrevOrNextZombieCard) => {
 				>
 					{stateBadge}
 					<TypeBadge type={zombie.type} />
-					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-						{zombie.maps[0]?.title}
-					</Badge>
+					{Option.match(firstAppearedIn, {
+						onNone: () => {
+							console.error(`First appeared in map not found for zombie ${zombie.id}`)
+							return null
+						},
+						onSome: map => (
+							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+								{map.title}
+							</Badge>
+						),
+					})}
 				</div>
 				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
 					<FeaturedImage

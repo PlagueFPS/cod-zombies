@@ -1,4 +1,4 @@
-import type { MapConfigMetadata } from "@/map-configs"
+import type { InteractiveMap } from "@/data/interactive-map"
 import { Option } from "effect"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
@@ -8,7 +8,7 @@ import { getGameByKey } from "@/data/games"
 import { cn } from "@/lib/utils"
 
 interface IMapPreviewCard {
-	map: MapConfigMetadata
+	map: InteractiveMap
 	index: number
 }
 
@@ -54,9 +54,14 @@ export function MapPreviewCard({ map, index }: IMapPreviewCard) {
 				<div className="flex flex-col items-start justify-center">
 					<div className="flex items-center gap-2">
 						{stateBadge}
-						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-							{game.title}
-						</Badge>
+						{Option.match(game, {
+							onNone: () => null,
+							onSome: game => (
+								<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+									{game.title}
+								</Badge>
+							)
+						})}
 					</div>
 					<h3 className="font-bold text-xl transition-colors group-hover:text-primary group-focus-visible:text-primary">
 						{map.title}
