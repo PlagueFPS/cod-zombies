@@ -10,7 +10,9 @@
 		"typegen": "next typegen",
 		"test": "vitest --run",
 		"test:watch": "vitest",
-		"lint": "biome lint .",
+		"lint": "oxlint .",
+		"format": "oxfmt --write .",
+		"format:check": "oxfmt --check .",
 		"email": "email dev",
 		"scan": "next dev & bunx react-scan@latest localhost:3000",
 		"optimize:images": "bun scripts/image-optimization.ts",
@@ -50,7 +52,6 @@
 		"sonner": "^2.0.7"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.7",
 		"@effect/language-service": "^0.80.0",
 		"@effect/vitest": "^4.0.0-beta.35",
 		"@react-email/preview-server": "^5.2.10",
@@ -62,6 +63,8 @@
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"@typescript/native-preview": "^7.0.0-dev.20260316.1",
+		"oxfmt": "^0.41.0",
+		"oxlint": "^1.56.0",
 		"postcss": "^8.5.8",
 		"react-email": "^5.2.10",
 		"sharp": "^0.34.5",
