@@ -7,6 +7,7 @@ import richStyles from "@/app/rich-text.module.css"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
+import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
 import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
 import { RichBlockquote } from "@/components/server/rich-blockquote"
@@ -99,7 +100,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 	const contentPath = path.join(process.cwd(), `${relic.content}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
 	const { prev, next } = getAdjacentRelics(relic.id as RelicKey)
-	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
+	const { lastModified, lastModifiedFormatted } = yield* getLastModified(contentPath)
 
 	const { content, stateBadge, timeToRead } = yield* Option.match(relic.state, {
 		onNone: () =>
@@ -166,7 +167,10 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 						<div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-muted-foreground text-sm">
 							<span className="flex items-center gap-1">
 								<Calendar className="size-4" />
-								<span>Updated: {lastModifiedFormatted}</span>
+								<LastUpdatedDisplay
+									lastModified={lastModified}
+									lastModifiedFormatted={lastModifiedFormatted}
+								/>
 							</span>
 							<span className="inline">&bull;</span>
 							<span className="inline-flex items-center gap-1 text-muted-foreground text-sm">

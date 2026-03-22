@@ -7,6 +7,7 @@ import richStyles from "@/app/rich-text.module.css"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
+import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
 import { ShareButton } from "@/components/client/share-button"
 import { TableOfContents } from "@/components/client/table-of-contents"
 import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
@@ -97,7 +98,7 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 	const contentPath = path.join(process.cwd(), `${mainQuestPath}.mdx`)
 	const fileContent = yield* fs.readFileString(contentPath)
 	const { prev, next } = getAdjacentMaps(quest.id as MapKey)
-	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
+	const { lastModified, lastModifiedFormatted } = yield* getLastModified(contentPath)
 	const { content, stateBadge, headings, timeToRead } = yield* Option.match(quest.state, {
 		onNone: () =>
 			Effect.gen(function* () {
@@ -188,7 +189,10 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
-										<span>Updated: {lastModifiedFormatted}</span>
+										<LastUpdatedDisplay
+											lastModified={lastModified}
+											lastModifiedFormatted={lastModifiedFormatted}
+										/>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
 									<div className="flex items-center gap-1">
