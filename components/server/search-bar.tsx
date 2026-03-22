@@ -3,17 +3,20 @@ import { Option } from "effect"
 import { SearchBarInput } from "@/components/client/search-bar-input"
 import { getGameByKey, getGames } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
-import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
+import { getMapByKey, getMaps } from "@/data/maps"
 import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 
 export function SearchBar() {
+	const maps = getMaps()
 	const availableMaps = getInteractiveMaps().flatMap(map =>
 		Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [],
 	)
 
-	const mainQuests = getMapsWithMainQuest().flatMap(q => {
+	const mainQuests = maps.flatMap(q => {
+		if (Option.isNone(q.mainQuest)) return []
+
 		const game = getGameByKey(q.game)
 
 		if (Option.isNone(game)) return []
@@ -77,9 +80,9 @@ export function SearchBar() {
 		Option.getOrNull(z.state) !== "Coming Soon" ? [{ id: z.id, title: z.title }] : [],
 	)
 
-	const questMaps: typeof mainQuests = []
-	const relicMaps: typeof mainQuests = []
-	for (const m of mainQuests) {
+	const questMaps: typeof maps = []
+	const relicMaps: typeof maps = []
+	for (const m of maps) {
 		if (mapSlugs.has(m.id)) questMaps.push(m)
 		if (relicMapSlugs.has(m.id)) relicMaps.push(m)
 	}
