@@ -7,7 +7,6 @@
 		"react/jsx-key": "warn",
 		"react-hooks/exhaustive-deps": "warn",
 		"react/no-children-prop": "off",
-		"require-yield": "off",
 		"no-unused-vars": [
 			"warn",
 			{

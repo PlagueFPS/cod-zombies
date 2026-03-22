@@ -8,7 +8,7 @@ class CreateIssueError extends Schema.TaggedErrorClass<CreateIssueError>()("Crea
 }) {}
 
 export class IssueTracker extends ServiceMap.Service<IssueTracker>()("lib/services/issue-tracker", {
-	make: Effect.gen(function* () {
+	make: Effect.sync(() => {
 		const linear = new LinearClient({ apiKey: Redacted.value(env.LINEAR_API_KEY) })
 
 		const createIssue = Effect.fn("IssueTracker.createIssue")(function* (data: TFeedbackForm) {

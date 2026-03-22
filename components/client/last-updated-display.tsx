@@ -52,7 +52,7 @@ export function LastUpdatedDisplay({
 		<Tooltip>
 			<TooltipTrigger
 				className={cn(
-					"inline-flex cursor-help items-baseline gap-0 rounded-sm border-0 bg-transparent p-0 text-left font-inherit text-muted-foreground text-sm hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+					"font-inherit inline-flex cursor-help items-baseline gap-0 rounded-sm border-0 bg-transparent p-0 text-left text-sm text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
 					className,
 				)}
 				aria-label={absoluteDate}

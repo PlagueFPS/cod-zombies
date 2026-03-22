@@ -4,7 +4,7 @@ import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect, HashMap, Option, Schema } from "effect"
 import { sortReleaseDate } from "@/utils/shared-functions"
-import { getMapByKey, type MapKey } from "./maps"
+import { getMapByKey, type MapKey } from "@/data/maps"
 
 class ConfigNotFoundError extends Schema.TaggedErrorClass<ConfigNotFoundError>()(
 	"ConfigNotFoundError",

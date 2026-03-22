@@ -15,7 +15,7 @@ class ResendError extends Schema.TaggedErrorClass<ResendError>()("ResendError", 
 }) {}
 
 export class Email extends ServiceMap.Service<Email>()("lib/services/emails", {
-	make: Effect.gen(function* () {
+	make: Effect.sync(() => {
 		const resend = new Resend(Redacted.value(env.RESEND_API_KEY))
 
 		const getContact = Effect.fn("Email.getContact")(function* (email: string) {

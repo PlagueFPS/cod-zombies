@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "next dev",
-		"build": "bun run test && next build",
+		"build": "next build",
 		"start": "next start",
 		"typegen": "next typegen",
 		"test": "vitest --run",

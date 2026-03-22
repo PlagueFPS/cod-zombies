@@ -1,5 +1,11 @@
 import { describe, expect, test } from "vitest"
-import { formatRelativeTimeAgo, MS_DAY, MS_HOUR, MS_MONTH, MS_WEEK } from "@/utils/last-updated-format"
+import {
+	formatRelativeTimeAgo,
+	MS_DAY,
+	MS_HOUR,
+	MS_MONTH,
+	MS_WEEK,
+} from "@/utils/last-updated-format"
 
 describe("formatRelativeTimeAgo", () => {
 	const now = new Date(2026, 2, 15, 12, 0, 0).getTime()

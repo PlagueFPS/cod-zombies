@@ -55,6 +55,9 @@ export const HashLinkHandler = () => {
 	const pathname = usePathname()
 
 	useEffect(() => {
+		let scrollTimeoutId: NodeJS.Timeout | undefined
+		let retryIntervalId: NodeJS.Timeout | undefined
+
 		const handleHashScroll = () => {
 			const hash = window.location.hash
 			if (!hash) return
@@ -64,7 +67,7 @@ export const HashLinkHandler = () => {
 
 			if (element) {
 				// Add a small delay to ensure the page is fully rendered
-				setTimeout(() => {
+				scrollTimeoutId = setTimeout(() => {
 					element.scrollIntoView({
 						behavior: "instant",
 						block: "start",
@@ -75,7 +78,7 @@ export const HashLinkHandler = () => {
 				let attempts = 0
 				const maxAttempts = 20 // 1 second (20 * 50ms)
 
-				const retryScroll = setInterval(() => {
+				retryIntervalId = setInterval(() => {
 					const retryElement = document.getElementById(elementId)
 					attempts++
 
@@ -84,9 +87,9 @@ export const HashLinkHandler = () => {
 							behavior: "instant",
 							block: "start",
 						})
-						clearInterval(retryScroll)
+						clearInterval(retryIntervalId)
 					} else if (attempts >= maxAttempts) {
-						clearInterval(retryScroll)
+						clearInterval(retryIntervalId)
 					}
 				}, 50)
 			}
@@ -104,6 +107,8 @@ export const HashLinkHandler = () => {
 
 		return () => {
 			window.removeEventListener("load", handleHashScroll)
+			clearTimeout(scrollTimeoutId)
+			clearInterval(retryIntervalId)
 		}
 	}, [pathname])
 
