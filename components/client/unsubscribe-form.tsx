@@ -46,7 +46,7 @@ export default function UnsubscribeForm() {
 		},
 	})
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		form.handleSubmit()
 	}
@@ -62,9 +62,8 @@ export default function UnsubscribeForm() {
 		<form id="unsubscribe-form" onSubmit={handleSubmit} className="w-full space-y-4">
 			<div className="space-y-2">
 				<FieldGroup>
-					<form.Field
-						name="email"
-						children={field => {
+					<form.Field name="email">
+						{field => {
 							const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 							return (
 								<Field data-invalid={isInvalid}>
@@ -87,7 +86,7 @@ export default function UnsubscribeForm() {
 								</Field>
 							)
 						}}
-					/>
+					</form.Field>
 				</FieldGroup>
 			</div>
 			<Button type="submit" variant={"default"} disabled={isPending} className="w-fit gap-2">

@@ -5,8 +5,9 @@
 		"nextjs/no-img-element": "warn",
 		"react/self-closing-comp": ["warn", { "component": true, "html": true }],
 		"react/jsx-key": "warn",
-		"react-hooks/exhaustive-deps": "warn",
-		"react/no-children-prop": "off",
+		"react/exhaustive-deps": "warn",
+		"react/no-children-prop": "error",
+		"react/rules-of-hooks": "error",
 		"no-unused-vars": [
 			"warn",
 			{

@@ -13,23 +13,26 @@ export function SearchBar() {
 		Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [],
 	)
 
-	const mainQuests = getMapsWithMainQuest().flatMap(q =>
-		Option.getOrNull(q.state) !== "Coming Soon"
-			? [
-					{
-						id: q.id,
-						title: q.title,
-						game: { id: q.game, title: Option.getOrThrow(getGameByKey(q.game)).title },
-					},
-				]
-			: [],
-	)
+	const mainQuests = getMapsWithMainQuest().flatMap(q => {
+		const game = getGameByKey(q.game)
+
+		if (Option.isNone(game)) return []
+		if (q.state.valueOrUndefined === "Coming Soon") return []
+
+		return [
+			{
+				id: q.id,
+				title: q.title,
+				game: { id: q.game, title: Option.getOrThrow(getGameByKey(q.game)).title },
+			},
+		]
+	})
 
 	const games = getGames().map(g => ({ id: g.id, title: g.title }))
 
 	const mapSlugs = new Set<string>()
 	const sideQuests = getSideQuests().flatMap(q => {
-		if (Option.getOrNull(q.state) === "Coming Soon") return []
+		if (q.state.valueOrUndefined === "Coming Soon") return []
 
 		const map = getMapByKey(q.map)
 		if (Option.isNone(map)) return []
