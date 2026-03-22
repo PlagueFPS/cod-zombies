@@ -420,24 +420,24 @@ export type PreviewsImagePath =
 /** Union of images in `/relics` */
 
 export type RelicsImagePath =
-  '/relics/blood-vials-relic.webp' |
-  '/relics/bus-relic.webp' |
-  '/relics/civil-protector-head-relic.webp' |
-  '/relics/dragon-relic.webp' |
-  '/relics/dragon-wings-relic.webp' |
-  '/relics/focusing-stone-relic.webp' |
-  '/relics/golden-spork-relic.webp' |
-  '/relics/gong-relic.webp' |
-  '/relics/lawyers-pen-relic.webp' |
-  '/relics/mangler-helmet-relic.webp' |
-  '/relics/matroyshka-dolls-relic.webp' |
-  '/relics/rocket-relic.webp' |
-  '/relics/samanthas-drawing-relic.webp' |
-  '/relics/seed-relic.webp' |
-  '/relics/spider-fang-relic.webp' |
-  '/relics/summoning-key-relic-v1.webp' |
-  '/relics/teddy-bear-relic.webp' |
-  '/relics/vril-sphere-relic.webp';
+	| "/relics/blood-vials-relic.webp"
+	| "/relics/bus-relic.webp"
+	| "/relics/civil-protector-head-relic.webp"
+	| "/relics/dragon-relic.webp"
+	| "/relics/dragon-wings-relic.webp"
+	| "/relics/focusing-stone-relic.webp"
+	| "/relics/golden-spork-relic.webp"
+	| "/relics/gong-relic.webp"
+	| "/relics/lawyers-pen-relic.webp"
+	| "/relics/mangler-helmet-relic.webp"
+	| "/relics/matroyshka-dolls-relic.webp"
+	| "/relics/rocket-relic.webp"
+	| "/relics/samanthas-drawing-relic.webp"
+	| "/relics/seed-relic.webp"
+	| "/relics/spider-fang-relic.webp"
+	| "/relics/summoning-key-relic-v1.webp"
+	| "/relics/teddy-bear-relic.webp"
+	| "/relics/vril-sphere-relic.webp"
 
 /** Union of images in `/weapons` */
 
