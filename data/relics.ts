@@ -40,9 +40,7 @@ export interface Relic {
  * Gets all relics sorted by discovered date in descending order
  */
 export const getRelics = () =>
-	HashMap.toValues(relicHashMap).sort((a, b) =>
-		sortReleaseDate(b.discoveredDate, a.discoveredDate),
-	)
+	HashMap.toValues(relicHashMap).sort((a, b) => sortReleaseDate(b.discoveredDate, a.discoveredDate))
 
 /**
  * Gets a specific relic by its key
@@ -315,8 +313,7 @@ const relicHashMap = HashMap.make(
 		title: "Rocket",
 		state: Option.some("New"),
 		type: "Grim",
-		// TODO: update with rocket relic image once obtained
-		image: "/relics/rocket-relic-placeholder.webp",
+		image: "/relics/rocket-relic.webp",
 		description: "No Score Streaks.",
 		map: "paradox-junction",
 		discoveredDate: new Date("March 13, 2026 12:00 AM"),
@@ -331,7 +328,7 @@ const relicHashMap = HashMap.make(
 		title: "Summoning Key",
 		state: Option.some("New"),
 		type: "Sinister",
-		image: "/relics/summoning-key-relic.webp",
+		image: "/relics/summoning-key-relic-v1.webp",
 		description: "Zombies explode on death, dealing damage to nearby players.",
 		map: "paradox-junction",
 		discoveredDate: new Date("March 15, 2026 12:00 AM"),
