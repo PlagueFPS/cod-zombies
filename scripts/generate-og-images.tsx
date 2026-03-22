@@ -1,14 +1,24 @@
 import type { MapsImagePath, ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { BunRuntime, BunServices } from "@effect/platform-bun"
 import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema } from "effect"
+import { Command, Flag } from "effect/unstable/cli"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
 import { getGameByKey } from "@/data/games"
-import { getMapByKey, type MapEntry } from "@/data/maps"
-import { getSideQuests, type SideQuest } from "@/data/side-quests"
-import { getZombieByKey, type Zombie } from "@/data/zombies"
+import { getMapByKey, type MapEntry, type MapKey } from "@/data/maps"
+import {
+	getSideQuestByKey,
+	getSideQuests,
+	type SideQuest,
+	type SideQuestKey,
+} from "@/data/side-quests"
+import { getZombieByKey, getZombies, type Zombie, type ZombieKey } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { calculateTimeToRead, getLastModified } from "@/utils/server-functions"
+
+const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
+/** Use `--quest all --map <map>` / `--zombie all --map <map>` to generate every item for a map (Effect CLI does not support an empty flag value). */
+const ALL_SENTINEL = "all"
 
 class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>()(
 	"ImageGenerationError",
@@ -16,6 +26,10 @@ class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>
 		cause: Schema.Unknown,
 	},
 ) {}
+
+class OgCliError extends Schema.TaggedErrorClass<OgCliError>()("OgCliError", {
+	message: Schema.String,
+}) {}
 
 const size = { width: 1200, height: 630 }
 
@@ -238,19 +252,7 @@ export const generateMainQuestImage = Effect.fn("generateMainQuestImage")(functi
 	return yield* optimizeImageResponse(imageResponse)
 })
 
-const _MainQuestGeneration = Effect.gen(function* () {
-	const fs = yield* FileSystem.FileSystem
-	const path = yield* Path.Path
-	const map = yield* getMapByKey("paradox-junction")
-	const ogImage = yield* generateMainQuestImage(map)
-	yield* fs.writeFile(
-		path.join(process.cwd(), "public", `opengraph-images/main-quests/og-${map.id}.jpg`),
-		new Uint8Array(ogImage),
-	)
-	yield* Effect.log(`Generated og image for ${map.id}`)
-}).pipe(Effect.withLogSpan("main_quest_generation"))
-
-const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
+export const generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 	sideQuest: SideQuest,
 ) {
 	const fs = yield* FileSystem.FileSystem
@@ -260,7 +262,15 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 	const fonts = yield* getFonts()
 	const timeToRead = calculateTimeToRead(fileContent)
 	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
-	const map = yield* getMapByKey(sideQuest.map)
+	const map = yield* Option.match(getMapByKey(sideQuest.map), {
+		onNone: () =>
+			Effect.fail(
+				new ImageGenerationError({
+					cause: new Error(`Map not found for side quest map key: ${sideQuest.map}`),
+				}),
+			),
+		onSome: Effect.succeed,
+	})
 	const game = yield* getGameByKey(map.game)
 	const mapImage = yield* transformImage(map.image)
 
@@ -408,27 +418,20 @@ const _generateSideQuestImage = Effect.fn("generateSideQuestImage")(function* (
 	return yield* optimizeImageResponse(imageResponse)
 })
 
-const _SideQuestGeneration = Effect.gen(function* () {
-	const fs = yield* FileSystem.FileSystem
-	const path = yield* Path.Path
-	const quests = getSideQuests().filter(quest => quest.map === "paradox-junction")
-	if (!quests.length) return yield* Effect.fail("Quests not found")
-
-	yield* Effect.forEach(quests, quest =>
-		Effect.gen(function* () {
-			const ogImage = yield* _generateSideQuestImage(quest)
-			yield* fs.writeFile(
-				path.join(process.cwd(), "public", `opengraph-images/side-quests/og-${quest.id}.jpg`),
-				new Uint8Array(ogImage),
-			)
-			yield* Effect.log(`Generated og image for ${quest.id}`)
-		}),
-	)
-})
-
-const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: Zombie) {
+export const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: Zombie) {
 	const fonts = yield* getFonts()
-	const firstAppearedIn = yield* Arr.head(zombie.maps).pipe(Option.flatMap(map => getMapByKey(map)))
+	const firstAppearedIn = yield* Option.match(
+		Arr.head(zombie.maps).pipe(Option.flatMap(mapKey => getMapByKey(mapKey))),
+		{
+			onNone: () =>
+				Effect.fail(
+					new ImageGenerationError({
+						cause: new Error(`No map found for zombie ${zombie.id}`),
+					}),
+				),
+			onSome: Effect.succeed,
+		},
+	)
 	const zombieImage = yield* transformImage(zombie.image)
 
 	const typeCSS: React.CSSProperties = Match.value(zombie.type).pipe(
@@ -595,16 +598,192 @@ const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: 
 	return yield* optimizeImageResponse(imageResponse)
 })
 
-const _ZombieGeneration = Effect.gen(function* () {
+const writeOgFile = Effect.fn("writeOgFile")(function* (
+	outputBase: string,
+	contentDir: "main-quests" | "side-quests" | "zombies",
+	fileBaseName: string,
+	bytes: Uint8Array,
+) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const zombie = yield* getZombieByKey("the-dark-heart")
-	const ogImage = yield* generateZombieImage(zombie)
-	yield* fs.writeFile(
-		path.join(process.cwd(), "public", `opengraph-images/zombies/og-${zombie.id}.jpg`),
-		new Uint8Array(ogImage),
+	const dir = path.join(outputBase, contentDir)
+	const outPath = path.join(dir, `${fileBaseName}.jpg`)
+	yield* Effect.filterOrElse(
+		fs.exists(dir),
+		exists => exists,
+		() => fs.makeDirectory(dir, { recursive: true }),
 	)
-	yield* Effect.log(`Generated og image for ${zombie.id}`)
+	yield* fs.writeFile(outPath, bytes)
+	yield* Effect.log(`Wrote ${outPath}`)
 })
 
-_SideQuestGeneration.pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+const mapFlag = Flag.optional(Flag.string("map")).pipe(
+	Flag.withAlias("m"),
+	Flag.withDescription(
+		"Map slug: main-quest OG image, or the map to use with --quest all / --zombie all.",
+	),
+)
+
+const questFlag = Flag.optional(Flag.string("quest")).pipe(
+	Flag.withAlias("q"),
+	Flag.withDescription(
+		`Side quest slug for one image, or \`${ALL_SENTINEL}\` with --map to generate every side quest for that map.`,
+	),
+)
+
+const zombieFlag = Flag.optional(Flag.string("zombie")).pipe(
+	Flag.withAlias("z"),
+	Flag.withDescription(
+		`Zombie slug for one image, or \`${ALL_SENTINEL}\` with --map to generate every zombie for that map.`,
+	),
+)
+
+const outputDirFlag = Flag.optional(Flag.path("output-dir", { pathType: "directory" })).pipe(
+	Flag.withAlias("o"),
+	Flag.withDescription(
+		`Base output directory (default: ${DEFAULT_OUTPUT_BASE}). Images go to <dir>/<content-type>/<slug>.jpg`,
+	),
+)
+
+const generateOgCommand = Command.make(
+	"generate-og-images",
+	{
+		map: mapFlag,
+		quest: questFlag,
+		zombie: zombieFlag,
+		outputDir: outputDirFlag,
+	},
+	({ map: mapOpt, quest: questOpt, zombie: zombieOpt, outputDir: outputDirOpt }) =>
+		Effect.gen(function* () {
+			const path = yield* Path.Path
+			const outputBase = Option.match(outputDirOpt, {
+				onNone: () => path.join(process.cwd(), DEFAULT_OUTPUT_BASE),
+				onSome: dir => path.resolve(dir),
+			})
+
+			if (Option.isSome(questOpt) && Option.isSome(zombieOpt)) {
+				return yield* Effect.fail(
+					new OgCliError({
+						message: "Pass only one of --quest (-q) or --zombie (-z), not both.",
+					}),
+				)
+			}
+
+			if (Option.isSome(questOpt)) {
+				const q = questOpt.value
+				if (q === ALL_SENTINEL) {
+					if (Option.isNone(mapOpt)) {
+						return yield* Effect.fail(
+							new OgCliError({
+								message: `--quest ${ALL_SENTINEL} requires --map (-m) to select which map's side quests to render.`,
+							}),
+						)
+					}
+					const mapKey = mapOpt.value as MapKey
+					const mapEntry = getMapByKey(mapKey)
+					if (Option.isNone(mapEntry)) {
+						return yield* Effect.fail(new OgCliError({ message: `Unknown map: ${mapKey}` }))
+					}
+					const quests = getSideQuests().filter(quest => quest.map === mapKey)
+					if (!quests.length) {
+						return yield* Effect.fail(
+							new OgCliError({ message: `No side quests found for map ${mapKey}` }),
+						)
+					}
+					yield* Effect.forEach(
+						quests,
+						quest =>
+							Effect.gen(function* () {
+								const ogImage = yield* generateSideQuestImage(quest)
+								yield* writeOgFile(outputBase, "side-quests", quest.id, new Uint8Array(ogImage))
+							}),
+						{ concurrency: "unbounded" },
+					)
+					return
+				}
+
+				const questEntry = getSideQuestByKey(q as SideQuestKey)
+				if (Option.isNone(questEntry)) {
+					return yield* Effect.fail(new OgCliError({ message: `Unknown side quest: ${q}` }))
+				}
+				const ogImage = yield* generateSideQuestImage(questEntry.value)
+				yield* writeOgFile(outputBase, "side-quests", questEntry.value.id, new Uint8Array(ogImage))
+				return
+			}
+
+			if (Option.isSome(zombieOpt)) {
+				const z = zombieOpt.value
+				if (z === ALL_SENTINEL) {
+					if (Option.isNone(mapOpt)) {
+						return yield* Effect.fail(
+							new OgCliError({
+								message: `--zombie ${ALL_SENTINEL} requires --map (-m) to select which map's zombies to render.`,
+							}),
+						)
+					}
+					const mapKey = mapOpt.value as MapKey
+					const mapEntry = getMapByKey(mapKey)
+					if (Option.isNone(mapEntry)) {
+						return yield* Effect.fail(new OgCliError({ message: `Unknown map: ${mapKey}` }))
+					}
+					const zombies = getZombies().filter(zombie => zombie.maps.includes(mapKey))
+					if (!zombies.length) {
+						return yield* Effect.fail(
+							new OgCliError({ message: `No zombies found for map ${mapKey}` }),
+						)
+					}
+					yield* Effect.forEach(
+						zombies,
+						zombie =>
+							Effect.gen(function* () {
+								const ogImage = yield* generateZombieImage(zombie)
+								yield* writeOgFile(outputBase, "zombies", zombie.id, new Uint8Array(ogImage))
+							}),
+						{ concurrency: "unbounded" },
+					)
+					return
+				}
+
+				const zombieEntry = getZombieByKey(z as ZombieKey)
+				if (Option.isNone(zombieEntry)) {
+					return yield* Effect.fail(new OgCliError({ message: `Unknown zombie: ${z}` }))
+				}
+				const ogImage = yield* generateZombieImage(zombieEntry.value)
+				yield* writeOgFile(outputBase, "zombies", zombieEntry.value.id, new Uint8Array(ogImage))
+				return
+			}
+
+			if (Option.isSome(mapOpt)) {
+				const mapKey = mapOpt.value as MapKey
+				const mapEntry = getMapByKey(mapKey)
+				if (Option.isNone(mapEntry)) {
+					return yield* Effect.fail(new OgCliError({ message: `Unknown map: ${mapKey}` }))
+				}
+				const map = mapEntry.value
+				if (Option.isNone(map.mainQuest)) {
+					return yield* Effect.fail(
+						new OgCliError({ message: `Map ${mapKey} has no main quest content.` }),
+					)
+				}
+				const ogImage = yield* generateMainQuestImage(map)
+				yield* writeOgFile(outputBase, "main-quests", map.id, new Uint8Array(ogImage))
+				return
+			}
+
+			return yield* Effect.fail(
+				new OgCliError({
+					message:
+						"Specify --map (-m) for a main-quest image, --quest (-q) for a side quest, or --zombie (-z) for a zombie image.",
+				}),
+			)
+		}).pipe(
+			Effect.catchTag("OgCliError", e =>
+				Effect.logError(e.message).pipe(Effect.andThen(Effect.fail(e))),
+			),
+			Effect.withLogSpan("generate_og_images"),
+		),
+)
+
+Command.run(generateOgCommand, {
+	version: "1.0.0",
+}).pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
