@@ -2,9 +2,7 @@
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { formatRelativeTimeAgo } from "@/utils/last-updated-format"
-
-const MS_HOUR = 3_600_000
+import { formatRelativeTimeAgo, MS_HOUR } from "@/utils/last-updated-format"
 
 export interface LastUpdatedDisplayProps {
 	/** Last modified epoch ms timestamp from `getLastModified`. */

@@ -1,9 +1,10 @@
 /** Past deltas under this many seconds are shown as "1 minute ago" (no seconds). */
 const MINUTE_FLOOR_SECONDS = 120
-const MS_DAY = 86_400_000
-const MS_WEEK = 7 * MS_DAY
-const MS_MONTH = MS_DAY * 31
-const WEEKS_PER_MEAN_MONTH = MS_MONTH / MS_WEEK
+export const MS_HOUR = 3_600_000
+export const MS_DAY = MS_HOUR * 24
+export const MS_WEEK = 7 * MS_DAY
+export const MS_MONTH = MS_DAY * 31
+export const WEEKS_PER_MEAN_MONTH = MS_MONTH / MS_WEEK
 
 interface RelativeDivision {
 	/** Maximum amount of time in the given unit. */
