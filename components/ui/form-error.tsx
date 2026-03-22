@@ -8,7 +8,7 @@ export default function FormError({ children, className, ...props }: Props) {
 	return (
 		<div
 			aria-live="polite"
-			className={cn("font-medium text-red-500 text-sm", className)}
+			className={cn("text-sm font-medium text-red-500", className)}
 			{...props}
 		>
 			{children}

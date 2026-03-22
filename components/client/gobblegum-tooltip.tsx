@@ -37,7 +37,7 @@ export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumToolti
 				<HoverCardContent
 					side="top"
 					className={cn(
-						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
+						`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-xs shadow-orange-600 dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
 						getContentClasses(gobblegum.value.rarity, gobblegum.value.type),
 					)}
 				>
@@ -54,7 +54,7 @@ export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumToolti
 			<PopoverContent
 				side="top"
 				className={cn(
-					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-orange-600 shadow-xs dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
+					`w-sm border-orange-600/30 bg-background p-0 text-orange-600 shadow-xs shadow-orange-600 dark:border-orange-200/30 dark:text-orange-200 dark:shadow-orange-200`,
 					getContentClasses(gobblegum.value.rarity, gobblegum.value.type),
 				)}
 			>
@@ -114,7 +114,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 				{gobblegum.type}
 			</RarityBadge>
 			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={gobblegum.image}
 					alt={`${gobblegum.title} Image`}
@@ -127,7 +127,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 			<div className="relative z-10 -mt-3">
 				<div
 					className={cn(
-						"px-4 text-center font-bold text-lg text-orange-700 dark:text-orange-200",
+						"px-4 text-center text-lg font-bold text-orange-700 dark:text-orange-200",
 						getTextClasses(gobblegum.rarity, gobblegum.type),
 					)}
 				>
@@ -136,7 +136,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 				<div className="mt-6 pb-8">
 					<div
 						className={cn(
-							"text-center text-orange-800 text-sm dark:text-orange-200",
+							"text-center text-sm text-orange-800 dark:text-orange-200",
 							getTextClasses(gobblegum.rarity, gobblegum.type),
 						)}
 					>

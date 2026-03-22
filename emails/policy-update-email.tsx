@@ -42,33 +42,33 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 								height="50"
 								className="mx-auto h-auto w-[120px] rounded-[8px] object-cover"
 							/>
-							<Text className="m-0 font-bold text-[20px] text-gray-800">
+							<Text className="m-0 text-[20px] font-bold text-gray-800">
 								Call of Duty: <span className="text-orange-500">Zombies Guides</span>
 							</Text>
 						</Section>
 
-						<Hr className="mx-0 my-[24px] border-[#e6ebf1] border-solid" />
+						<Hr className="mx-0 my-[24px] border-solid border-[#e6ebf1]" />
 
 						<Section>
-							<Heading className="mx-0 my-[24px] text-center font-bold text-[#333] text-[24px]">
+							<Heading className="mx-0 my-[24px] text-center text-[24px] font-bold text-[#333]">
 								Privacy Policy Update
 							</Heading>
 
-							<Text className="mb-[16px] text-[#333] text-[16px] leading-[24px]">Hello,</Text>
+							<Text className="mb-[16px] text-[16px] leading-[24px] text-[#333]">Hello,</Text>
 
-							<Text className="mb-[16px] text-[#333] text-[16px] leading-[24px]">
+							<Text className="mb-[16px] text-[16px] leading-[24px] text-[#333]">
 								We&apos;re writing to inform you about important changes to our Privacy Policy.
 								These updates will take effect on <strong>{formattedDate}</strong>.
 							</Text>
 
-							<Text className="mb-[24px] text-[#333] text-[16px] leading-[24px]">
+							<Text className="mb-[24px] text-[16px] leading-[24px] text-[#333]">
 								We&apos;ve updated our Privacy Policy to provide more transparency about how we
 								collect, use, and protect your personal information. These changes reflect our
 								ongoing commitment to safeguarding your privacy and ensuring compliance with
 								evolving privacy regulations.
 							</Text>
 
-							<Text className="mb-[24px] text-[#333] text-[16px] leading-[24px]">
+							<Text className="mb-[24px] text-[16px] leading-[24px] text-[#333]">
 								We encourage you to review the complete Privacy Policy.{" "}
 								<strong>
 									By continuing to use our services after {formattedDate}, you acknowledge these
@@ -85,20 +85,20 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 								</Button>
 							</Section>
 
-							<Text className="mb-[32px] text-[#333] text-[16px] leading-[24px]">
+							<Text className="mb-[32px] text-[16px] leading-[24px] text-[#333]">
 								If you have any questions about our Privacy Policy, please contact our team at
 								contact@codzombiesguides.com. We value your trust and are committed to protecting
 								your privacy.
 							</Text>
 
-							<Text className="text-[#333] text-[16px] leading-[24px]">Best regards,</Text>
+							<Text className="text-[16px] leading-[24px] text-[#333]">Best regards,</Text>
 
-							<Text className="mb-[32px] text-[#333] text-[16px] leading-[24px]">
+							<Text className="mb-[32px] text-[16px] leading-[24px] text-[#333]">
 								The Call of Duty: Zombies Guides Team
 							</Text>
 						</Section>
 
-						<Hr className="mx-0 my-[24px] border-[#e6ebf1] border-solid" />
+						<Hr className="mx-0 my-[24px] border-solid border-[#e6ebf1]" />
 
 						<Section className="text-center">
 							<Text className="m-0 text-[14px] text-gray-500 italic">
@@ -107,7 +107,7 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 								<Link href={unsubscribeUrl}>unsubscribe</Link> at any point you choose.
 							</Text>
 
-							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
+							<Text className="mt-[12px] text-[14px] leading-[20px] text-gray-500">
 								<Link href={`${serverUrl}/privacy-policy`} className="text-[#8898aa] underline">
 									Privacy Policy
 								</Link>

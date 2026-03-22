@@ -10,7 +10,7 @@ export function Heading2({
 	return (
 		<h2
 			id={id}
-			className="mt-8 mb-4 scroll-m-36 font-extrabold text-2xl md:text-3xl lg:text-4xl xl:mt-16"
+			className="mt-8 mb-4 scroll-m-36 text-2xl font-extrabold md:text-3xl lg:text-4xl xl:mt-16"
 		>
 			<Link
 				href={`#${id}`}
@@ -33,7 +33,7 @@ export function Heading3({
 	return (
 		<h3
 			id={id}
-			className={cn("mt-8 mb-4 scroll-m-36 font-bold text-xl md:text-2xl lg:text-3xl", className)}
+			className={cn("mt-8 mb-4 scroll-m-36 text-xl font-bold md:text-2xl lg:text-3xl", className)}
 		>
 			<Link
 				href={`#${id}`}
@@ -53,7 +53,7 @@ export function Heading4({
 	children,
 }: DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>) {
 	return (
-		<h4 id={id} className="my-4 scroll-m-36 font-semibold text-lg md:text-xl lg:text-2xl">
+		<h4 id={id} className="my-4 scroll-m-36 text-lg font-semibold md:text-xl lg:text-2xl">
 			<Link
 				href={`#${id}`}
 				className="group flex w-fit items-center justify-center gap-4 transition-all hover:text-primary"

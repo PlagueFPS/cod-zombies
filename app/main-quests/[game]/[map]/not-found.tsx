@@ -1,6 +1,6 @@
 "use client"
-import type { Route } from "next"
 import type { Link } from "@/components/client/breadcrumbs"
+import type { Route } from "next"
 import { Option } from "effect"
 import { useParams } from "next/navigation"
 import NotFoundContent from "@/components/server/not-found-content"
@@ -12,11 +12,14 @@ export default function MainQuestNotFound() {
 	const { game, map } = decodeMainQuestParams(params)
 	const items: Link<string>[] = [
 		{
-			href: Option.isSome(game) ? `/?game=${game.value}` : "/",
+			href: Option.isSome(game) ? `/main-quests?game=${game.value}` : "/main-quests",
 			title: Option.getOrNull(game) ?? "Game Not Found",
 		},
 		{
-			href: Option.isSome(game) && Option.isSome(map) ? (`/${game.value}/${map.value}` as Route) : "/",
+			href:
+				Option.isSome(game) && Option.isSome(map)
+					? (`/main-quests/${game.value}/${map.value}` as Route)
+					: "/main-quests",
 			title: Option.isSome(map) ? capitalize(map.value) : "Map Not Found",
 		},
 	]

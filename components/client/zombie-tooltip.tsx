@@ -86,7 +86,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 			</div>
 			<div className="mt-2 grid grid-cols-2">
 				<div className="flex h-full flex-col">
-					<div className={cn("pl-3 font-bold text-lg", getTypeTextClasses(zombie.type))}>
+					<div className={cn("pl-3 text-lg font-bold", getTypeTextClasses(zombie.type))}>
 						{zombie.title}
 					</div>
 					<IconImage
@@ -100,13 +100,13 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 				</div>
 				<div className="mt-2 flex flex-col gap-4">
 					<div>
-						<h3 className="mb-2 flex items-center gap-1 font-semibold text-foreground text-sm">
+						<h3 className="mb-2 flex items-center gap-1 text-sm font-semibold text-foreground">
 							<Target className="size-4 text-red-500" />
 							Weak Points
 						</h3>
 						<div className="flex flex-wrap items-center gap-2">
 							{Arr.isArrayEmpty(zombie.weakPoints) ? (
-								<Badge className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit">
+								<Badge className="w-fit badge-hard-gradient dark:dark-badge-hard-gradient">
 									None
 								</Badge>
 							) : (
@@ -117,7 +117,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 										onSome: weakpoint => (
 											<Badge
 												key={weakpoint.id}
-												className="badge-hard-gradient dark:dark-badge-hard-gradient w-fit"
+												className="w-fit badge-hard-gradient dark:dark-badge-hard-gradient"
 											>
 												{weakpoint.title}
 											</Badge>
@@ -128,7 +128,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 						</div>
 					</div>
 					<div>
-						<h3 className="mb-2 flex items-center gap-1 font-semibold text-foreground text-sm">
+						<h3 className="mb-2 flex items-center gap-1 text-sm font-semibold text-foreground">
 							<AlertTriangle className="size-4 text-orange-800 dark:text-orange-300" />
 							Elemental Weaknesses
 						</h3>

@@ -62,10 +62,7 @@ export default function GKValve() {
 	return (
 		<section className="flex flex-col items-center justify-center gap-8">
 			<div className="flex w-full items-center justify-center gap-8 md:gap-16">
-				<Select
-					value={values.firstValue}
-					onValueChange={handleGreenValueChange}
-				>
+				<Select value={values.firstValue} onValueChange={handleGreenValueChange}>
 					<SelectTrigger className="w-full text-green-700 dark:text-green-500">
 						<SelectValue placeholder="Select Green Light Location" />
 					</SelectTrigger>
@@ -82,10 +79,7 @@ export default function GKValve() {
 						</SelectGroup>
 					</SelectContent>
 				</Select>
-				<Select
-					value={values.secondValue}
-					onValueChange={handlePinkValueChange}
-				>
+				<Select value={values.secondValue} onValueChange={handlePinkValueChange}>
 					<SelectTrigger className="w-full text-pink-700 dark:text-pink-500">
 						<SelectValue placeholder="Select Pink Cylinder Location" />
 					</SelectTrigger>

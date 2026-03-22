@@ -73,7 +73,7 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 		<CommandDialog open={open} onOpenChange={setOpen}>
 			<CommandDialogTrigger
 				render={<Button variant="outline" size="sm" />}
-				className={cn("relative gap-x-2 rounded-sm text-muted-foreground text-xs")}
+				className={cn("relative gap-x-2 rounded-sm text-xs text-muted-foreground")}
 			>
 				<Search className="size-5" />
 				<span className="mr-auto text-sm">Search</span>

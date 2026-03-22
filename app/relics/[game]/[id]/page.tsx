@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import { Effect, FileSystem, Option, Path } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { notFound } from "next/navigation"
-import richStyles from "@/app/rich-text.module.css"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
@@ -27,6 +26,7 @@ import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
 import { calculateTimeToRead, getLastModified, getServerUrl } from "@/utils/server-functions"
+import richStyles from "@/app/rich-text.module.css"
 
 export const generateStaticParams = () => {
 	const relics = getRelics()
@@ -153,7 +153,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 					</div>
 
 					<div className="space-y-4">
-						<h2 className="text-balance font-bold text-4xl tracking-tight md:text-5xl">
+						<h2 className="text-4xl font-bold tracking-tight text-balance md:text-5xl">
 							{relic.title}
 						</h2>
 						<div className="flex flex-wrap items-center justify-center gap-3">
@@ -164,7 +164,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 							</Badge>
 						</div>
 
-						<div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-muted-foreground text-sm">
+						<div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-sm text-muted-foreground">
 							<span className="flex items-center gap-1">
 								<Calendar className="size-4" />
 								<LastUpdatedDisplay
@@ -173,7 +173,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 								/>
 							</span>
 							<span className="inline">&bull;</span>
-							<span className="inline-flex items-center gap-1 text-muted-foreground text-sm">
+							<span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
 								<Clock className="size-4" />
 								<span>{timeToRead} min read</span>
 							</span>
@@ -185,7 +185,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 
 				{!MDXContent ? (
 					<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
-						<p className="font-bold text-xl">
+						<p className="text-xl font-bold">
 							This guide is currently being written and will take some time before being ready.
 						</p>
 						<p className="text-foreground/90">

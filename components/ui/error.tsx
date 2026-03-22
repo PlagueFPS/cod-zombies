@@ -10,7 +10,7 @@ export function ErrorTitle({ children, className }: ErrorTitleProps) {
 	return (
 		<h1
 			className={cn(
-				`bg-linear-to-b from-[#545454] to-black bg-clip-text pb-2 text-center font-extrabold text-4xl text-transparent tracking-tight md:text-5xl lg:text-6xl dark:from-white dark:to-[#adadad]`,
+				`bg-linear-to-b from-[#545454] to-black bg-clip-text pb-2 text-center text-4xl font-extrabold tracking-tight text-transparent md:text-5xl lg:text-6xl dark:from-white dark:to-[#adadad]`,
 				className,
 			)}
 		>

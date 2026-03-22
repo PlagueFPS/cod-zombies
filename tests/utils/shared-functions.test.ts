@@ -1,10 +1,5 @@
 import { describe, expect, test } from "vitest"
-import {
-	capitalize,
-	getYouTubeVideoId,
-	slugify,
-	sortReleaseDate,
-} from "@/utils/shared-functions"
+import { capitalize, getYouTubeVideoId, slugify, sortReleaseDate } from "@/utils/shared-functions"
 
 describe("slugify", () => {
 	test("should convert basic text to slug", () => {

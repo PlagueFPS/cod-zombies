@@ -69,22 +69,22 @@ export default function QuestReleaseEmail({
 								height="50"
 								className="mx-auto mb-[12px] h-auto w-[120px] rounded-[10px] object-cover"
 							/>
-							<Text className="m-0 font-bold text-[20px] text-gray-800">
+							<Text className="m-0 text-[20px] font-bold text-gray-800">
 								Call of Duty: <span className="text-orange-500">Zombies Guides</span>
 							</Text>
 						</Section>
 
-						<Hr className="my-[24px] border-orange-200 border-solid" />
+						<Hr className="my-[24px] border-solid border-orange-200" />
 
-						<Section className="mb-[24px] rounded-[8px] border-orange-500 border-l-[4px] border-solid bg-orange-50 p-[16px]">
-							<Heading className="mt-0 mb-[8px] font-bold text-[20px] text-gray-800">
+						<Section className="mb-[24px] rounded-[8px] border-l-[4px] border-solid border-orange-500 bg-orange-50 p-[16px]">
+							<Heading className="mt-0 mb-[8px] text-[20px] font-bold text-gray-800">
 								{title}
 							</Heading>
 							<Text className="m-0 text-[16px] text-gray-600">{description}</Text>
 						</Section>
 
 						<Section className="my-[24px] rounded-[8px] bg-gray-100 p-[16px]">
-							<Text className="mb-[16px] font-semibold text-[16px] text-gray-600">
+							<Text className="mb-[16px] text-[16px] font-semibold text-gray-600">
 								What you can expect from this guide:
 							</Text>
 							<ul className="mb-[24px] list-disc pl-[24px] font-medium">
@@ -105,7 +105,7 @@ export default function QuestReleaseEmail({
 							</Button>
 						</Section>
 
-						<Hr className="my-[24px] border-gray-200 border-solid" />
+						<Hr className="my-[24px] border-solid border-gray-200" />
 
 						<Section className="text-center">
 							<Text className="m-0 text-[14px] text-gray-500 italic">
@@ -114,7 +114,7 @@ export default function QuestReleaseEmail({
 								<Link href={unsubscribeUrl}>unsubscribe</Link> at any point you choose.
 							</Text>
 
-							<Text className="mt-[12px] text-[14px] text-gray-500 leading-[20px]">
+							<Text className="mt-[12px] text-[14px] leading-[20px] text-gray-500">
 								<Link href={`${serverUrl}/privacy-policy`} className="text-[#8898aa] underline">
 									Privacy Policy
 								</Link>

@@ -50,7 +50,7 @@ export function MobileTableOfContents({
 							)}
 						>
 							<nav className="flex flex-col gap-4 pb-12">
-								<ul className="flex max-h-full flex-col gap-3 font-medium text-foreground/90 text-sm">
+								<ul className="flex max-h-full flex-col gap-3 text-sm font-medium text-foreground/90">
 									{headings.map(heading => (
 										<li
 											key={`mobile-toc-${heading.id}`}

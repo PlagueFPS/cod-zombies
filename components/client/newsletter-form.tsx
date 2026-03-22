@@ -68,7 +68,7 @@ export default function NewsletterForm() {
 				<div className="relative">
 					<FieldGroup>
 						<form.Field name="email">
-							{(field) => {
+							{field => {
 								const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 								return (
 									<Field data-invalid={isInvalid}>

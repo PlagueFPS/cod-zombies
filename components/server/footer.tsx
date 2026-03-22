@@ -7,7 +7,7 @@ import DonateButton from "@/components/ui/donate-button"
 
 export function Footer() {
 	return (
-		<footer className="container relative m-auto flex flex-col items-center border-t px-4 py-8 text-sm">
+		<footer className="relative container m-auto flex flex-col items-center border-t px-4 py-8 text-sm">
 			<div className="grid grid-cols-1 items-center gap-8 md:grid-cols-3">
 				<div className="order-last flex flex-col-reverse items-center justify-center gap-4 text-center md:order-first md:items-start md:gap-6 md:text-left">
 					<Copyright />
@@ -21,7 +21,7 @@ export function Footer() {
 					</div>
 				</div>
 			</div>
-			<div className="flex w-full items-center justify-center text-muted-foreground text-xs md:mt-2 md:justify-start">
+			<div className="flex w-full items-center justify-center text-xs text-muted-foreground md:mt-2 md:justify-start">
 				<CustomLink
 					prefetch={false}
 					href="/privacy-policy"

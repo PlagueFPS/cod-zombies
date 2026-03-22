@@ -26,7 +26,6 @@ const nextConfig: NextConfig = {
 		qualities: [75],
 		maximumResponseBody: 2_000_000, // 2MB
 	},
-	// biome-ignore lint/suspicious/useAwait: redirects must be async
 	async redirects() {
 		return [
 			{

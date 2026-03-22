@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function NewsletterUnsubscribePage() {
 	return (
 		<div className="mx-auto max-w-xl px-4 py-12">
-			<h1 className="mb-6 font-extrabold text-2xl md:text-3xl lg:text-4xl">
+			<h1 className="mb-6 text-2xl font-extrabold md:text-3xl lg:text-4xl">
 				Unsubscribe from Newsletter
 			</h1>
 			<p className="mb-6 text-muted-foreground">

@@ -11,7 +11,7 @@ export function CompletionTimeDisplay({ timeRange }: EstCompletionTimeProps) {
 	if (timeRange.reason) {
 		return (
 			<Tooltip>
-				<TooltipTrigger className="flex cursor-help items-center gap-1 rounded-sm text-left text-muted-foreground text-sm hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+				<TooltipTrigger className="flex cursor-help items-center gap-1 rounded-sm text-left text-sm text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
 					<Hourglass className="size-4 shrink-0" aria-hidden />
 					<span>Est. completion: {formatEstimatedTimeRange(timeRange)}</span>
 				</TooltipTrigger>
@@ -23,7 +23,7 @@ export function CompletionTimeDisplay({ timeRange }: EstCompletionTimeProps) {
 	}
 
 	return (
-		<div className="flex items-center gap-1 text-muted-foreground text-sm">
+		<div className="flex items-center gap-1 text-sm text-muted-foreground">
 			<Hourglass className="size-4 shrink-0" aria-hidden />
 			<span>Est. completion: {formatEstimatedTimeRange(timeRange)}</span>
 		</div>

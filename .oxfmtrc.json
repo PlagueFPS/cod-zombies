@@ -1,0 +1,40 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"useTabs": true,
+	"tabWidth": 2,
+	"printWidth": 100,
+	"singleQuote": false,
+	"jsxSingleQuote": false,
+	"quoteProps": "as-needed",
+	"trailingComma": "all",
+	"semi": false,
+	"arrowParens": "avoid",
+	"bracketSameLine": false,
+	"bracketSpacing": true,
+	"endOfLine": "lf",
+	"ignorePatterns": [
+		"**/*.mdx",
+		"**/*.md",
+		".zed",
+		".repos",
+		"**/last-modified.json",
+		"node_modules",
+		".next"
+	],
+	"sortImports": {
+		"groups": [
+			"type",
+			"builtin",
+			"external",
+			["internal", "subpath"],
+			["parent", "sibling", "index"],
+			"style",
+			"unknown"
+		],
+		"newlinesBetween": false
+	},
+	"sortTailwindcss": {
+		"stylesheet": "./app/globals.css",
+		"functions": ["cn", "clsx", "twMerge"]
+	}
+}

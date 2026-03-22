@@ -1,12 +1,10 @@
 import Image from "next/image"
-import { Suspense } from "react"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeedbackForm } from "@/components/client/feedback-form"
 import { NavLink } from "@/components/client/nav-link"
 import { ThemeToggleWrapper } from "@/components/client/theme-toggle-wrapper"
 import { MobileNav } from "@/components/server/mobile-nav"
 import { SearchBar } from "@/components/server/search-bar"
-import { SearchBarLoader } from "@/components/server/search-bar-loader"
 import { Separator } from "@/components/ui/separator"
 import Logo from "@/public/logo.webp"
 import { NAV_ROUTES } from "@/utils/nav-routes"
@@ -26,8 +24,8 @@ export function Header() {
 						alt="Call of Duty: Zombies Guides Logo"
 						className="size-5 rounded"
 					/>
-					<div className="text-center font-extrabold text-xl">
-						<span className="dark:dark-text-gradient text-gradient">COD:</span>
+					<div className="text-center text-xl font-extrabold">
+						<span className="text-gradient dark:dark-text-gradient">COD:</span>
 						<span className="ml-0.5 text-primary-gradient">ZG</span>
 					</div>
 				</CustomLink>
@@ -44,9 +42,7 @@ export function Header() {
 					))}
 				</nav>
 				<div className="flex h-full w-fit items-center justify-center gap-2 self-end">
-					<Suspense fallback={<SearchBarLoader />}>
-						<SearchBar />
-					</Suspense>
+					<SearchBar />
 					<FeedbackForm className="hidden lg:flex" />
 					<div className="hidden items-center gap-2 lg:inline-flex">
 						<Separator orientation="vertical" className="min-h-6" />

@@ -74,7 +74,7 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
 			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={perk.image}
 					alt={`${perk.title} Image`}
@@ -85,14 +85,14 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
 				/>
 			</div>
 			<div className="relative z-10 -mt-3">
-				<div className="px-4 text-center font-bold text-foreground text-lg">{perk.title}</div>
+				<div className="px-4 text-center text-lg font-bold text-foreground">{perk.title}</div>
 				<div className="my-2">
-					<div className="text-center text-foreground text-sm">{perk.description}</div>
+					<div className="text-center text-sm text-foreground">{perk.description}</div>
 				</div>
 				{Option.isSome(perk.modifier) ? (
 					<blockquote className="mt-6 rounded-lg border border-orange-200 bg-orange-100/20 p-4 shadow-lg dark:border-orange-800 dark:bg-orange-900/20">
 						<div className="flex items-start text-orange-700 dark:text-orange-300">
-							<p className="text-orange-800 text-sm dark:text-orange-200">
+							<p className="text-sm text-orange-800 dark:text-orange-200">
 								<span className="mr-1 font-bold text-orange-800 dark:text-orange-400">
 									MODIFIER:
 								</span>
@@ -105,7 +105,7 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
 							<div className="flex flex-col gap-3">
-								<h4 className="text-start font-semibold text-major-augment text-sm tracking-wide">
+								<h4 className="text-start text-sm font-semibold tracking-wide text-major-augment">
 									MAJOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
@@ -122,7 +122,7 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
 							</div>
 							<Separator className="my-4" />
 							<div className="flex w-full flex-col gap-3">
-								<h4 className="text-start font-semibold text-orange-700 text-sm tracking-wide dark:text-orange-300">
+								<h4 className="text-start text-sm font-semibold tracking-wide text-orange-700 dark:text-orange-300">
 									MINOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">

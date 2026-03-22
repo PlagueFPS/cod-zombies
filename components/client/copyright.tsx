@@ -2,8 +2,10 @@
 import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
-interface CopyrightProps
-	extends DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement> {
+interface CopyrightProps extends DetailedHTMLProps<
+	HTMLAttributes<HTMLParagraphElement>,
+	HTMLParagraphElement
+> {
 	className?: string
 }
 
@@ -19,7 +21,7 @@ export default function Copyright({ className }: CopyrightProps) {
 	return (
 		<div
 			className={cn(
-				"flex flex-col gap-1.5 border-t py-4 text-muted-foreground text-xs md:border-none md:py-0",
+				"flex flex-col gap-1.5 border-t py-4 text-xs text-muted-foreground md:border-none md:py-0",
 				className,
 			)}
 		>

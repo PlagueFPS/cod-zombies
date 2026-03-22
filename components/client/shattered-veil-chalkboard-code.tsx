@@ -2,13 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChalkboardLetters, type Code, chalkboardCodes } from "@/data/shattered-veil-codes"
 
 const getAllCodes = () => {
@@ -38,7 +32,7 @@ export default function ShatteredVeilCode() {
 				<CardContent className="space-y-6">
 					{/* Code Words Group */}
 					<div className="space-y-3">
-						<h3 className="font-semibold text-foreground/90 text-sm">Code Words</h3>
+						<h3 className="text-sm font-semibold text-foreground/90">Code Words</h3>
 						<div className="grid grid-cols-2 gap-2">
 							{allCodeWords.map(word => (
 								<Button
@@ -55,7 +49,7 @@ export default function ShatteredVeilCode() {
 
 					{/* Letter Groups */}
 					<div className="space-y-3">
-						<h3 className="font-semibold text-foreground/90 text-sm">Letter Groups</h3>
+						<h3 className="text-sm font-semibold text-foreground/90">Letter Groups</h3>
 						<div className="grid grid-cols-2 gap-2">
 							{allLetterGroups.map(group => (
 								<Button
@@ -73,9 +67,9 @@ export default function ShatteredVeilCode() {
 					{/* Generated Code Display */}
 					{letterGroup && codeWord && (
 						<div className="border-t pt-4">
-							<p className="mb-2 text-foreground/90 text-sm">Your Code:</p>
+							<p className="mb-2 text-sm text-foreground/90">Your Code:</p>
 							<div className="rounded-lg bg-muted p-4 dark:bg-input/30">
-								<code className="font-mono font-semibold text-foreground text-lg">
+								<code className="font-mono text-lg font-semibold text-foreground">
 									{chalkboardCodes[letterGroup][codeWord]}
 								</code>
 							</div>

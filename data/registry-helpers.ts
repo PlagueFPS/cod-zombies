@@ -22,10 +22,7 @@ export const resolveGameVariantOption = <T extends WithGameVariantMap>(
 }
 
 /** Applies the same merge as {@link resolveGameVariantOption} to each item. */
-export const mapWithGameVariant = <T extends WithGameVariantMap>(
-	items: T[],
-	game?: GameKey,
-): T[] =>
+export const mapWithGameVariant = <T extends WithGameVariantMap>(items: T[], game?: GameKey): T[] =>
 	items.map(item => {
 		if (!game || Option.isNone(item.variants)) return item
 		const variant = item.variants.value[game]

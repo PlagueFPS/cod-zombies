@@ -20,8 +20,12 @@ export function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
 							{/* Image and breadcrumb loaders */}
 							<div className="relative z-20 mx-auto h-[calc(50vw)] w-full max-w-7xl xl:h-180">
 								<ImageLoader className="h-full w-full border" />
-								<div className="-top-10 absolute left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
-									{mainQuest ? <BreadcrumbsLoader type="main" /> : <BreadcrumbsLoader type="side" />}
+								<div className="absolute -top-10 left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
+									{mainQuest ? (
+										<BreadcrumbsLoader type="main" />
+									) : (
+										<BreadcrumbsLoader type="side" />
+									)}
 								</div>
 							</div>
 
@@ -30,8 +34,8 @@ export function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
 								<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
 									<Skeleton className="h-6 w-1/3 pb-2 sm:h-7 md:h-9 lg:h-12" />
 									<div className="flex w-fit items-center justify-center gap-4">
-										<Skeleton className="badge-primary-gradient dark:dark-badge-primary-gradient h-6 w-24" />
-										<Skeleton className="badge-primary-gradient dark:dark-badge-primary-gradient h-6 w-24" />
+										<Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
+										<Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
 									</div>
 								</div>
 								<div className="flex items-center justify-between">
@@ -47,7 +51,7 @@ export function QuestPageLoader({ mainQuest }: IQuestPageLoader) {
 											<Skeleton className="h-5 w-4" />
 											min read
 										</div>
-										{ mainQuest && (
+										{mainQuest && (
 											<div className="flex items-center gap-1 text-muted-foreground">
 												<Hourglass className="size-4" />
 												<span>Est. completion:</span>

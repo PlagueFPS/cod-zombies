@@ -23,7 +23,7 @@ interface IPrevOrNextCardLoader {
 
 function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoader) {
 	return (
-		<div className="group hover:-translate-y-2 w-full max-w-sm overflow-hidden rounded-lg border transition-all hover:border-primary xl:max-w-full">
+		<div className="group w-full max-w-sm overflow-hidden rounded-lg border transition-all hover:-translate-y-2 hover:border-primary xl:max-w-full">
 			<article
 				className={cn(
 					"relative flex h-full flex-col items-center overflow-hidden p-2 xl:h-48 xl:flex-row dark:shadow-none",
@@ -33,8 +33,8 @@ function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoader) {
 				<div
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
-					<Skeleton className="badge-medium-gradient dark:dark-badge-medium-gradient h-6 w-24" />
-					<Skeleton className="badge-primary-gradient dark:dark-badge-primary-gradient h-6 w-24" />
+					<Skeleton className="h-6 w-24 badge-medium-gradient dark:dark-badge-medium-gradient" />
+					<Skeleton className="h-6 w-24 badge-primary-gradient dark:dark-badge-primary-gradient" />
 				</div>
 				<div className="relative z-20 flex h-full w-full max-w-sm items-center justify-center overflow-hidden rounded-lg">
 					<ImageLoader className="h-full w-full border" />

@@ -1,0 +1,48 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "unicorn", "oxc", "react", "react-perf", "nextjs", "vitest"],
+	"rules": {
+		"nextjs/no-img-element": "warn",
+		"react/self-closing-comp": ["warn", { "component": true, "html": true }],
+		"react/jsx-key": "warn",
+		"react/exhaustive-deps": "warn",
+		"react/no-children-prop": "error",
+		"react/rules-of-hooks": "error",
+		"no-unused-vars": [
+			"warn",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_",
+				"ignoreRestSiblings": true
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": ["**/*.test.ts", "**/*.test.tsx"],
+			"rules": {
+				"jest/no-conditional-expect": "off"
+			}
+		}
+	],
+	"settings": {
+		"react": {
+			"version": "19.2"
+		},
+		"next": {
+			"rootDir": ["."]
+		}
+	},
+	"env": {
+		"builtin": true
+	},
+	"ignorePatterns": [
+		".repos",
+		"**/last-modified.json",
+		"node_modules",
+		".next",
+		"dist",
+		"out",
+		"coverage"
+	]
+}

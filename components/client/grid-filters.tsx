@@ -61,7 +61,13 @@ interface Group {
 	items: FilterOption[]
 }
 
-type QuestFiltersProps = (MainQuestFilters | SideQuestFilters | RelicFilters | MapsFilters | BestiaryFilters) & {
+type QuestFiltersProps = (
+	| MainQuestFilters
+	| SideQuestFilters
+	| RelicFilters
+	| MapsFilters
+	| BestiaryFilters
+) & {
 	placeholder: string
 }
 
@@ -77,8 +83,16 @@ function getFilterItems(props: QuestFiltersProps): Group[] {
 	switch (props.type) {
 		case "main":
 			return [
-				{ label: "Difficulty", paramKey: "difficulty", items: toFilterOptions(props.difficulties, "difficulty") },
-				{ label: "Completion Time", paramKey: "time", items: toFilterOptions(props.timeRanges, "time") },
+				{
+					label: "Difficulty",
+					paramKey: "difficulty",
+					items: toFilterOptions(props.difficulties, "difficulty"),
+				},
+				{
+					label: "Completion Time",
+					paramKey: "time",
+					items: toFilterOptions(props.timeRanges, "time"),
+				},
 				{ label: "Game", paramKey: "game", items: toFilterOptions(props.games, "game") },
 			]
 		case "side":
@@ -92,13 +106,15 @@ function getFilterItems(props: QuestFiltersProps): Group[] {
 				{ label: "Map", paramKey: "map", items: toFilterOptions(props.maps, "map") },
 			]
 		case "map":
-			return [
-				{ label: "Game", paramKey: "game", items: toFilterOptions(props.games, "game") },
-			]
+			return [{ label: "Game", paramKey: "game", items: toFilterOptions(props.games, "game") }]
 		case "zombie":
 			return [
 				{ label: "Type", paramKey: "type", items: toFilterOptions(props.types, "type") },
-				{ label: "Weakness", paramKey: "weakness", items: toFilterOptions(props.weaknesses, "weakness") },
+				{
+					label: "Weakness",
+					paramKey: "weakness",
+					items: toFilterOptions(props.weaknesses, "weakness"),
+				},
 				{ label: "Game", paramKey: "game", items: toFilterOptions(props.games, "game") },
 				{ label: "Map", paramKey: "map", items: toFilterOptions(props.maps, "map") },
 			]
@@ -108,8 +124,16 @@ function getFilterItems(props: QuestFiltersProps): Group[] {
 }
 
 export function GridFilters(props: QuestFiltersProps) {
-	const { gameParams, mapParams, difficultyParams, timeParams, typeParams, weaknessParams, createParams, updateURLParams } =
-		useFilterParams()
+	const {
+		gameParams,
+		mapParams,
+		difficultyParams,
+		timeParams,
+		typeParams,
+		weaknessParams,
+		createParams,
+		updateURLParams,
+	} = useFilterParams()
 	const anchor = useComboboxAnchor()
 	const filterItems = getFilterItems(props)
 

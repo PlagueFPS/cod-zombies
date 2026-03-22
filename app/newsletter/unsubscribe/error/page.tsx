@@ -31,7 +31,7 @@ const unsubscribeErrorUI = Effect.fn("UnsubscribeErrorPage")(function* (
 			<div className="mb-4 flex justify-center">
 				<AlertCircle className="h-16 w-16 text-red-500" />
 			</div>
-			<h1 className="mb-4 font-bold text-2xl">Unsubscribe Failed</h1>
+			<h1 className="mb-4 text-2xl font-bold">Unsubscribe Failed</h1>
 			<p className="mb-6 text-muted-foreground">{errorMessage}</p>
 			<div className="space-y-4">
 				<Button

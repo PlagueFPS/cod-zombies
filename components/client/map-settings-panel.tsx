@@ -136,7 +136,7 @@ export default function MapSettingsPanel() {
 										</Tooltip>
 									)}
 								</Label>
-								<span className="text-muted-foreground text-sm">
+								<span className="text-sm text-muted-foreground">
 									{newSettings.markers.iconSize}px
 								</span>
 							</div>
@@ -179,7 +179,7 @@ export default function MapSettingsPanel() {
 										</Tooltip>
 									)}
 								</Label>
-								<span className="text-muted-foreground text-sm">
+								<span className="text-sm text-muted-foreground">
 									{Math.floor(newSettings.markers.opacity * 100)}%
 								</span>
 							</div>
@@ -226,7 +226,7 @@ export default function MapSettingsPanel() {
 										</Tooltip>
 									)}
 								</Label>
-								<p className="text-muted-foreground text-sm">
+								<p className="text-sm text-muted-foreground">
 									Use solid colors instead of gradient backgrounds.
 								</p>
 							</div>
@@ -266,7 +266,7 @@ export default function MapSettingsPanel() {
 										</Tooltip>
 									)}
 								</Label>
-								<p className="text-muted-foreground text-sm">
+								<p className="text-sm text-muted-foreground">
 									Turn off popup entrance and exit animations.
 								</p>
 							</div>
@@ -313,7 +313,7 @@ export default function MapSettingsPanel() {
 										</Tooltip>
 									)}
 								</Label>
-								<p className="text-muted-foreground text-sm">
+								<p className="text-sm text-muted-foreground">
 									Turn off zoom animation when zooming in or out on the map.
 								</p>
 							</div>
@@ -356,7 +356,7 @@ export default function MapSettingsPanel() {
 										</Tooltip>
 									)}
 								</Label>
-								<p className="text-muted-foreground text-sm">
+								<p className="text-sm text-muted-foreground">
 									Turn off flying animation when clicking on a marker on the map.
 								</p>
 							</div>
@@ -380,8 +380,8 @@ export default function MapSettingsPanel() {
 				<Separator />
 				{/* Preview Section */}
 				<div className="space-y-2">
-					<h3 className="font-medium text-sm">Preview</h3>
-					<div className="rounded-lg border-2 border-muted-foreground/25 border-dashed bg-muted/50 p-4">
+					<h3 className="text-sm font-medium">Preview</h3>
+					<div className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 p-4">
 						<div className="flex items-center gap-3">
 							<div
 								className="flex items-center justify-center rounded-full bg-primary text-primary-foreground"
@@ -410,7 +410,7 @@ export default function MapSettingsPanel() {
 				</div>
 				<DialogFooter className="flex-row justify-between">
 					{!isMobile ? (
-						<div className="mr-auto flex items-center justify-center gap-1 text-muted-foreground text-sm">
+						<div className="mr-auto flex items-center justify-center gap-1 text-sm text-muted-foreground">
 							<span>Keyboard Shortcut:</span>
 							<Shortcut shortcuts="?" size="sm" />
 						</div>

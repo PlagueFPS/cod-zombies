@@ -77,7 +77,7 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
 			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full bg-opacity-25" />
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={ammoMod.image}
 					alt={`${ammoMod.title} Image`}
@@ -88,37 +88,45 @@ const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: Gam
 				/>
 			</div>
 			<div className="relative z-10 -mt-3">
-				<div className="px-4 text-center font-bold text-foreground text-lg">{ammoMod.title}</div>
+				<div className="px-4 text-center text-lg font-bold text-foreground">{ammoMod.title}</div>
 				<div className="mt-2 pb-4">
-					<p className="text-center text-foreground text-sm">{ammoMod.description}</p>
+					<p className="text-center text-sm text-foreground">{ammoMod.description}</p>
 				</div>
 				{Arr.isArrayNonEmpty(ammoModAugments) ? (
 					<>
 						<Separator />
 						<div className="my-4 flex flex-col items-center justify-center">
 							<div className="flex w-full flex-col gap-3">
-								<h4 className="text-start font-semibold text-major-augment text-sm">
+								<h4 className="text-start text-sm font-semibold text-major-augment">
 									MAJOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{Arr.filterMap(ammoModAugments, augment => augment.type === "Major" ? Result.succeed(
-										<div key={augment.id} className="shrink-0">
-											<AugmentTooltip augment={augment} />
-										</div>,
-										) : Result.failVoid)}
+									{Arr.filterMap(ammoModAugments, augment =>
+										augment.type === "Major"
+											? Result.succeed(
+													<div key={augment.id} className="shrink-0">
+														<AugmentTooltip augment={augment} />
+													</div>,
+												)
+											: Result.failVoid,
+									)}
 								</div>
 							</div>
 							<Separator className="my-4" />
 							<div className="flex w-full flex-col gap-3">
-								<h4 className="text-start font-semibold text-sm text-tooltip-foreground tracking-wide">
+								<h4 className="text-start text-sm font-semibold tracking-wide text-tooltip-foreground">
 									MINOR AUGMENTS
 								</h4>
 								<div className="flex flex-wrap gap-3">
-									{Arr.filterMap(ammoModAugments, augment => augment.type === "Minor" ? Result.succeed(
-										<div key={augment.id} className="shrink-0">
-											<AugmentTooltip augment={augment} />
-										</div>,
-									) : Result.failVoid)}
+									{Arr.filterMap(ammoModAugments, augment =>
+										augment.type === "Minor"
+											? Result.succeed(
+													<div key={augment.id} className="shrink-0">
+														<AugmentTooltip augment={augment} />
+													</div>,
+												)
+											: Result.failVoid,
+									)}
 								</div>
 							</div>
 						</div>

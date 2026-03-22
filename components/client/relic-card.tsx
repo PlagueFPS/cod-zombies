@@ -1,5 +1,5 @@
-import type { Route } from "next"
 import type { Relic } from "@/data/relics"
+import type { Route } from "next"
 import { Option } from "effect"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
@@ -67,7 +67,7 @@ export function RelicCard({ relic, relicIndex }: RelicCardProps) {
 						{ "opacity-75 dark:opacity-50": disabled },
 					)}
 				>
-					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
+					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end-safe gap-1">
 						{stateBadge}
 						<TypeBadge type={relic.type} />
 						<EstimatedTimeBadge timeRange={relic.estimatedTimeMins} />
@@ -104,7 +104,7 @@ export function RelicCard({ relic, relicIndex }: RelicCardProps) {
 								{relic.title}
 							</CardTitle>
 							<Separator className="opacity-50" />
-							<CardDescription className="text-foreground/85 leading-relaxed">
+							<CardDescription className="leading-relaxed text-foreground/85">
 								{relic.description}
 							</CardDescription>
 						</div>

@@ -2,58 +2,62 @@
     and allow for table horizontal scrolling as intended.
 */
 .body * {
-  max-width: 90vw;
+	max-width: 90vw;
 }
 
 .body h2 {
-  position: relative;
+	position: relative;
 }
 
 .body h3,
 .body h4,
 .body h5,
 .body h6 {
-  position: relative;
+	position: relative;
 }
 .body p {
-  margin: 1rem 0;
-  letter-spacing: 0.025em;
-  color: color-mix(in oklab, var(--color-foreground) 90%, transparent);
+	margin: 1rem 0;
+	letter-spacing: 0.025em;
+	color: color-mix(in oklab, var(--color-foreground) 90%, transparent);
 }
 
-.body b, .body strong {
-  font-weight: 800;
+.body b,
+.body strong {
+	font-weight: 800;
 }
 
 .body blockquote p {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-style: italic;
-  color: var(--color-blockquote-foreground);
+	margin-top: 0;
+	margin-bottom: 0;
+	font-style: italic;
+	color: var(--color-blockquote-foreground);
 }
 
 .body blockquote button {
-  font-style: italic;
+	font-style: italic;
 }
 
-.body ul ul, .body ol ol {
-  margin-top: 0.5rem;
-  list-style-type: circle;
+.body ul ul,
+.body ol ol {
+	margin-top: 0.5rem;
+	list-style-type: circle;
 }
 
-.body ul li, .body ol li {
-  margin: 1rem 2rem;
-
+.body ul li,
+.body ol li {
+	margin: 1rem 2rem;
 }
 
-.body ul li::marker, .body ol li::marker {
-  font-weight: 800;
+.body ul li::marker,
+.body ol li::marker {
+	font-weight: 800;
 }
 
-.body ul li p, .body ol p {
-  margin: 0;
+.body ul li p,
+.body ol p {
+	margin: 0;
 }
 
 .body table p {
-  margin: 0.25rem 0;
+	margin: 0.25rem 0;
 }

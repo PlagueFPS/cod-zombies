@@ -39,8 +39,8 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 					<div className="relative flex flex-col">
 						<div className="mt-4 flex flex-col items-center justify-center">
 							<div className="mb-2 flex w-full items-center justify-between">
-								<span className="text-muted-foreground text-sm">Guide progress</span>
-								<span className="font-medium text-xs">{progress}%</span>
+								<span className="text-sm text-muted-foreground">Guide progress</span>
+								<span className="text-xs font-medium">{progress}%</span>
 							</div>
 							<Progress value={progress} className="h-1 w-full" />
 						</div>
@@ -54,7 +54,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 									}
 									className="w-full justify-between hover:dark:bg-input/30"
 								>
-									<h3 className="font-medium text-muted-foreground text-sm">CURRENT SECTION</h3>
+									<h3 className="text-sm font-medium text-muted-foreground">CURRENT SECTION</h3>
 									{isExpanded ? (
 										<ChevronUp className="size-4" />
 									) : (
@@ -85,15 +85,12 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 						</div>
 						<ScrollArea
 							scrollFade
-							className={cn(
-								"grid max-h-[50vh] grid-rows-[1fr] gap-1 transition-all duration-300",
-								{
-									"animate-toc-expand grid-rows-[0fr] pb-0": !isExpanded,
-								},
-							)}
+							className={cn("grid max-h-[50vh] grid-rows-[1fr] gap-1 transition-all duration-300", {
+								"animate-toc-expand grid-rows-[0fr] pb-0": !isExpanded,
+							})}
 						>
 							<ul
-								className={cn("flex flex-col gap-3 py-4 font-semibold text-foreground/90 text-sm", {
+								className={cn("flex flex-col gap-3 py-4 text-sm font-semibold text-foreground/90", {
 									"border-none": !isExpanded,
 								})}
 							>

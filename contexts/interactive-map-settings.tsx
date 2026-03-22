@@ -50,10 +50,12 @@ const DEFAULT_SETTINGS = {
 export type TMapSettings = typeof DEFAULT_SETTINGS
 /** Union type representing all nested setting paths */
 export type TSettingPath = {
-	[K in keyof TMapSettings]: TMapSettings[K] extends object ? {
-		[P in keyof TMapSettings[K]]: `${K & string}.${P & string}`
-		}[keyof TMapSettings[K]] : never
-	}[keyof TMapSettings]
+	[K in keyof TMapSettings]: TMapSettings[K] extends object
+		? {
+				[P in keyof TMapSettings[K]]: `${K & string}.${P & string}`
+			}[keyof TMapSettings[K]]
+		: never
+}[keyof TMapSettings]
 
 interface IMapSettingsContext {
 	/** Default settings */

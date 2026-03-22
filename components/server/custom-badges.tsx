@@ -57,7 +57,7 @@ export const EstimatedTimeBadge = ({
 	timeRange,
 }: CustomBadgeProps & { timeRange: TimeRange }) => (
 	<Badge
-		className={cn("badge-primary-gradient dark:dark-badge-primary-gradient gap-0.5", className)}
+		className={cn("gap-0.5 badge-primary-gradient dark:dark-badge-primary-gradient", className)}
 	>
 		<ClockIcon className="size-3.5" />
 		{formatEstimatedTimeMidpoint(timeRange)}

@@ -49,8 +49,8 @@ export function ShareButton({ title, url, ...props }: ShareButtonProps) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<Tooltip>
-				<TooltipTrigger 
-					render={<Button variant="ghost" size="icon" {...props} />} 
+				<TooltipTrigger
+					render={<Button variant="ghost" size="icon" {...props} />}
 					onClick={() => setOpen(true)}
 					aria-label="open share modal. Keyboard shortcut: S"
 				>

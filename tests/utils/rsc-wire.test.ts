@@ -1,10 +1,10 @@
-import { describe, expect, test } from "vitest"
 import type { InteractiveMap } from "@/data/interactive-map"
 import type { MapEntry } from "@/data/maps"
 import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
 import { Option } from "effect"
+import { describe, expect, test } from "vitest"
 import {
 	decodeInteractiveMap,
 	decodeMap,

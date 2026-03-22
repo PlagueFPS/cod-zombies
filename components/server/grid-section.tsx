@@ -12,15 +12,26 @@ interface MapSectionProps {
 	mobileTitleSize?: "sm" | "md" | "lg"
 }
 
-export function GridSection({ title, children, className, viewAllHref, mobileTitleSize = "lg" }: MapSectionProps) {
+export function GridSection({
+	title,
+	children,
+	className,
+	viewAllHref,
+	mobileTitleSize = "lg",
+}: MapSectionProps) {
 	return (
 		<section className={cn("flex w-full flex-col justify-center gap-8", className)}>
 			<div className="flex flex-wrap items-center justify-between gap-4">
-				<h2 className={cn("dark:dark-text-gradient font-extrabold text-3xl text-gradient tracking-tight lg:text-6xl", {
-					"text-xl": mobileTitleSize === "sm",
-					"text-2xl": mobileTitleSize === "md",
-					"text-3xl": mobileTitleSize === "lg",
-				})}>
+				<h2
+					className={cn(
+						"text-gradient text-3xl font-extrabold tracking-tight lg:text-6xl dark:dark-text-gradient",
+						{
+							"text-xl": mobileTitleSize === "sm",
+							"text-2xl": mobileTitleSize === "md",
+							"text-3xl": mobileTitleSize === "lg",
+						},
+					)}
+				>
 					{title}
 				</h2>
 				{viewAllHref ? (

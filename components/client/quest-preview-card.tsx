@@ -1,5 +1,5 @@
-import type { Route } from "next"
 import type { SideQuest } from "@/data/side-quests"
+import type { Route } from "next"
 import { Match, Option } from "effect"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
@@ -131,7 +131,7 @@ export function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 						{ "opacity-75 dark:opacity-50": disabled },
 					)}
 				>
-					<div className="justify-end-safe absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center gap-1">
+					<div className="absolute top-2 right-2 z-20 flex w-fit flex-wrap items-center justify-end-safe gap-1">
 						{stateBadge}
 						{renderSpecificBadge()}
 						<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">

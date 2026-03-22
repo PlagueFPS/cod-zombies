@@ -12,7 +12,7 @@ interface IBreadcrumbsLoader {
 
 export function BreadcrumbsLoader({ type, className }: IBreadcrumbsLoader) {
 	const { game, map, id } = useParams()
-	
+
 	const getLinks = (): Link<string>[] => {
 		switch (type) {
 			case "main":

@@ -1,6 +1,6 @@
+import { Option } from "effect"
 import { describe, expect, test } from "vitest"
 import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
-import { Option } from "effect"
 
 type Sample = {
 	readonly id: string
@@ -17,7 +17,9 @@ describe("data/registry-helpers", () => {
 		}
 		const entry = Option.some(base)
 		expect(resolveGameVariantOption(entry, undefined)).toEqual(entry)
-		expect(resolveGameVariantOption(entry, "black-ops-6")).toEqual(Option.some({ ...base, title: "BO6" }))
+		expect(resolveGameVariantOption(entry, "black-ops-6")).toEqual(
+			Option.some({ ...base, title: "BO6" }),
+		)
 		expect(resolveGameVariantOption(Option.none(), "black-ops-6")).toEqual(Option.none())
 	})
 
