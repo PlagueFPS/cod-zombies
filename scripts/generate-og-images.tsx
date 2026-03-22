@@ -53,18 +53,18 @@ const transformImage = Effect.fn(function* (imagePath: MapsImagePath | ZombiesIm
 	const imageBuffer = yield* fs.readFile(path.join(process.cwd(), "public", imagePath))
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 100 }).toBuffer(),
-		catch: (cause): ImageGenerationError => new ImageGenerationError({ cause }),
+		catch: (cause) => new ImageGenerationError({ cause }),
 	})
 })
 
 const optimizeImageResponse = Effect.fn(function* (imageResponse: ImageResponse) {
 	const imageBuffer = yield* Effect.tryPromise({
 		try: () => imageResponse.arrayBuffer(),
-		catch: (cause): ImageGenerationError => new ImageGenerationError({ cause }),
+		catch: (cause) => new ImageGenerationError({ cause }),
 	})
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 80 }).toBuffer(),
-		catch: (cause): ImageGenerationError => new ImageGenerationError({ cause }),
+		catch: (cause) => new ImageGenerationError({ cause }),
 	})
 })
 
@@ -591,11 +591,7 @@ const writeOgFile = Effect.fn("writeOgFile")(function* (
 	const path = yield* Path.Path
 	const dir = path.join(outputBase, contentDir)
 	const outPath = path.join(dir, `${fileBaseName}.jpg`)
-	yield* Effect.filterOrElse(
-		fs.exists(dir),
-		exists => exists,
-		() => fs.makeDirectory(dir, { recursive: true }),
-	)
+	yield* fs.makeDirectory(dir, { recursive: true })
 	yield* fs.writeFile(outPath, bytes)
 	yield* Effect.log(`Wrote ${outPath}`)
 })
@@ -621,7 +617,8 @@ const zombieFlag = Flag.optional(Flag.string("zombie")).pipe(
 	),
 )
 
-const outputDirFlag = Flag.optional(Flag.path("output-dir", { pathType: "directory" })).pipe(
+const outputDirFlag = Flag.directory("output-dir").pipe(
+	Flag.withDefault(DEFAULT_OUTPUT_BASE),
 	Flag.withAlias("o"),
 	Flag.withDescription(
 		`Base output directory (default: ${DEFAULT_OUTPUT_BASE}). Images go to <dir>/<content-type>/<slug>.jpg`,
@@ -636,13 +633,10 @@ const generateOgCommand = Command.make(
 		zombie: zombieFlag,
 		outputDir: outputDirFlag,
 	},
-	({ map: mapOpt, quest: questOpt, zombie: zombieOpt, outputDir: outputDirOpt }) =>
+	({ map: mapOpt, quest: questOpt, zombie: zombieOpt, outputDir }) =>
 		Effect.gen(function* () {
 			const path = yield* Path.Path
-			const outputBase = Option.match(outputDirOpt, {
-				onNone: () => path.join(process.cwd(), DEFAULT_OUTPUT_BASE),
-				onSome: dir => path.resolve(dir),
-			})
+			const outputBase = path.resolve(outputDir)
 
 			if (Option.isSome(questOpt) && Option.isSome(zombieOpt)) {
 				return yield* new OgCliError({
@@ -651,72 +645,74 @@ const generateOgCommand = Command.make(
 			}
 
 			if (Option.isSome(questOpt)) {
-				const q = questOpt.value
-				if (q === ALL_SENTINEL) {
-					if (Option.isNone(mapOpt)) {
-						return yield* new OgCliError({
-							message: `--quest ${ALL_SENTINEL} requires --map (-m) to select which map's side quests to render.`,
-						})
-					}
-					const mapKey = mapOpt.value as MapKey
-					yield* getMapByKey(mapKey)
-					const quests = getSideQuests().filter(quest => quest.map === mapKey)
-					if (!quests.length) {
-						return yield* new OgCliError({ message: `No side quests found for map ${mapKey}` })
-					}
-					yield* Effect.forEach(
-						quests,
-						quest =>
-							Effect.gen(function* () {
-								const ogImage = yield* generateSideQuestImage(quest)
-								yield* writeOgFile(outputBase, "side-quests", quest.id, new Uint8Array(ogImage))
-							}),
-						{ concurrency: "unbounded" },
-					)
+				const quest = questOpt.value
+
+				if (quest !== ALL_SENTINEL) {
+					const questEntry = yield* getSideQuestByKey(quest as SideQuestKey)
+					const ogImage = yield* generateSideQuestImage(questEntry)
+					yield* writeOgFile(outputBase, "side-quests", questEntry.id, new Uint8Array(ogImage))
 					return
 				}
 
-				const questEntry = yield* getSideQuestByKey(q as SideQuestKey)
-				const ogImage = yield* generateSideQuestImage(questEntry)
-				yield* writeOgFile(outputBase, "side-quests", questEntry.id, new Uint8Array(ogImage))
+				if (Option.isNone(mapOpt)) {
+					return yield* new OgCliError({
+						message: `--quest ${ALL_SENTINEL} requires --map (-m) to select which map's side quests to render.`,
+					})
+				}
+
+				const quests = getSideQuests().filter(quest => quest.map === mapOpt.value as MapKey)
+				if (!quests.length) {
+					return yield* new OgCliError({ message: `No side quests found for map ${mapOpt.value}` })
+				}
+
+				yield* Effect.forEach(
+					quests,
+					q =>
+						Effect.gen(function* () {
+							const ogImage = yield* generateSideQuestImage(q)
+							yield* writeOgFile(outputBase, "side-quests", q.id, new Uint8Array(ogImage))
+						}),
+					{ concurrency: 2 },
+				)
+
 				return
 			}
 
 			if (Option.isSome(zombieOpt)) {
-				const z = zombieOpt.value
-				if (z === ALL_SENTINEL) {
-					if (Option.isNone(mapOpt)) {
-						return yield* new OgCliError({
-							message: `--zombie ${ALL_SENTINEL} requires --map (-m) to select which map's zombies to render.`,
-						})
-					}
-					const mapKey = mapOpt.value as MapKey
-					yield* getMapByKey(mapKey)
-					const zombies = getZombies().filter(zombie => zombie.maps.includes(mapKey))
-					if (!zombies.length) {
-						return yield* new OgCliError({ message: `No zombies found for map ${mapKey}` })
-					}
-					yield* Effect.forEach(
-						zombies,
-						zombie =>
-							Effect.gen(function* () {
-								const ogImage = yield* generateZombieImage(zombie)
-								yield* writeOgFile(outputBase, "zombies", zombie.id, new Uint8Array(ogImage))
-							}),
-						{ concurrency: "unbounded" },
-					)
+				const zombie = zombieOpt.value
+
+				if (zombie !== ALL_SENTINEL) {
+					const zombieEntry = yield* getZombieByKey(zombie as ZombieKey)
+					const ogImage = yield* generateZombieImage(zombieEntry)
+					yield* writeOgFile(outputBase, "zombies", zombieEntry.id, new Uint8Array(ogImage))
 					return
 				}
 
-				const zombieEntry = yield* getZombieByKey(z as ZombieKey)
-				const ogImage = yield* generateZombieImage(zombieEntry)
-				yield* writeOgFile(outputBase, "zombies", zombieEntry.id, new Uint8Array(ogImage))
+				if (Option.isNone(mapOpt)) {
+					return yield* new OgCliError({
+						message: `--zombie ${ALL_SENTINEL} requires --map (-m) to select which map's zombies to render.`,
+					})
+				}
+
+				const zombies = getZombies().filter(zombie => zombie.maps.includes(mapOpt.value as MapKey))
+				if (!zombies.length) {
+					return yield* new OgCliError({ message: `No zombies found for map ${mapOpt.value}` })
+				}
+
+				yield* Effect.forEach(
+					zombies,
+					z =>
+						Effect.gen(function* () {
+							const ogImage = yield* generateZombieImage(z)
+							yield* writeOgFile(outputBase, "zombies", z.id, new Uint8Array(ogImage))
+						}),
+					{ concurrency: 2 },
+				)
 				return
 			}
 
 			if (Option.isSome(mapOpt)) {
-				const mapKey = mapOpt.value as MapKey
-				const map = yield* getMapByKey(mapKey)
+				const map = yield* getMapByKey(mapOpt.value as MapKey)
 				const ogImage = yield* generateMainQuestImage(map)
 				yield* writeOgFile(outputBase, "main-quests", map.id, new Uint8Array(ogImage))
 				return
@@ -726,12 +722,7 @@ const generateOgCommand = Command.make(
 				message:
 					"Specify --map (-m) for a main-quest image, --quest (-q) for a side quest, or --zombie (-z) for a zombie image.",
 			})
-		}).pipe(
-			Effect.catchTag("OgCliError", e =>
-				Effect.logError(e.message).pipe(Effect.andThen(Effect.fail(e))),
-			),
-			Effect.withLogSpan("generate_og_images"),
-		),
+		}),
 )
 
 Command.run(generateOgCommand, {
