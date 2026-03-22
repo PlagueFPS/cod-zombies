@@ -1,5 +1,4 @@
 "use client"
-
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
@@ -7,12 +6,8 @@ import { formatRelativeTimeAgo } from "@/utils/last-updated-format"
 
 const MS_HOUR = 3_600_000
 
-const triggerClassName = (className?: string) => cn(
-	"inline-flex cursor-help items-baseline gap-0 rounded-sm border-0 bg-transparent p-0 text-left font-inherit text-muted-foreground text-sm hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-	className,
-)
-
 export interface LastUpdatedDisplayProps {
+	/** Last modified epoch ms timestamp from `getLastModified`. */
 	lastModified: number
 	/** Preformatted calendar date from `getLastModified` (tooltip / title). */
 	lastModifiedFormatted: string
@@ -30,15 +25,12 @@ export function LastUpdatedDisplay({
 	const [relative, setRelative] = useState<string | null>(null)
 
 	const absoluteDate = lastModifiedFormatted.trim()
-	const iso = Number.isFinite(lastModified)
-		? new Date(lastModified).toISOString()
-		: undefined
+	const iso = new Date(lastModified).toISOString()
 
 	useEffect(() => {
+		const locale = navigator.language
 		const tick = () => {
-			setRelative(
-				formatRelativeTimeAgo(lastModified, Date.now(), undefined, absoluteDate),
-			)
+			setRelative(formatRelativeTimeAgo(lastModified, Date.now(), locale, absoluteDate))
 		}
 		tick()
 
@@ -47,35 +39,31 @@ export function LastUpdatedDisplay({
 			return
 		}
 
-		const id = window.setInterval(tick, 60_000)
+		const stopAt = lastModified + MS_HOUR
+		const id = window.setInterval(() => {
+			tick()
+			if (Date.now() >= stopAt) {
+				window.clearInterval(id)
+			}
+		}, 60_000)
+
 		return () => window.clearInterval(id)
 	}, [lastModified, absoluteDate])
 
-	const titleAndTip = absoluteDate || undefined
-
-	const body = (
-		<span className="whitespace-nowrap">
-			{label}:{" "}
-			{iso ? (
-				<time dateTime={iso} className="tabular-nums">
-					{relative ?? "—"}
-				</time>
-			) : (
-				<span>—</span>
-			)}
-		</span>
-	)
-
-	if (!absoluteDate) {
-		return <span className={triggerClassName(className)}>{body}</span>
-	}
-
 	return (
 		<Tooltip>
-			<TooltipTrigger className={triggerClassName(className)} title={titleAndTip}>
-				<span className="contents">
-					{body}
-					<span className="sr-only">{`. ${absoluteDate}`}</span>
+			<TooltipTrigger
+				className={cn(
+					"inline-flex cursor-help items-baseline gap-0 rounded-sm border-0 bg-transparent p-0 text-left font-inherit text-muted-foreground text-sm hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+					className,
+				)}
+				aria-label={absoluteDate}
+			>
+				<span className="flex items-center justify-center gap-1 whitespace-nowrap">
+					{label}:
+					<time dateTime={iso} className="tabular-nums">
+						{relative ?? absoluteDate}
+					</time>
 				</span>
 			</TooltipTrigger>
 			<TooltipContent side="bottom" className="max-w-xs">

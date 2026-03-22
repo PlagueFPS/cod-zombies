@@ -1,13 +1,22 @@
 /** Past deltas under this many seconds are shown as "1 minute ago" (no seconds). */
 const MINUTE_FLOOR_SECONDS = 120
 const MS_DAY = 86_400_000
-const MS_MONTH = (365 * MS_DAY) / 12
+const MS_WEEK = 7 * MS_DAY
+const MS_MONTH = MS_DAY * 31
+const WEEKS_PER_MEAN_MONTH = MS_MONTH / MS_WEEK
 
-const RELATIVE_DIVISIONS: { amount: number; unit: Intl.RelativeTimeFormatUnit }[] = [
+interface RelativeDivision {
+	/** Maximum amount of time in the given unit. */
+	amount: number
+	/** Unit of time. */
+	unit: Intl.RelativeTimeFormatUnit
+}
+
+const RELATIVE_DIVISIONS: RelativeDivision[] = [
 	{ amount: 60, unit: "minute" },
 	{ amount: 24, unit: "hour" },
 	{ amount: 7, unit: "day" },
-	{ amount: 4.34524, unit: "week" },
+	{ amount: WEEKS_PER_MEAN_MONTH, unit: "week" },
 ]
 
 /**

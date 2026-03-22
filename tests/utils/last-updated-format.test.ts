@@ -21,23 +21,43 @@ describe("formatRelativeTimeAgo", () => {
 	})
 
 	test("formats hours ago", () => {
-		const past = now - 7 * 3_600_000
-		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/7 hours ago/)
+		const past = now - 1 * 3_600_000
+		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/1 hour ago/)
+	})
+
+	test("formats plural hours", () => {
+		const past = now - 3 * 3_600_000
+		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/3 hours ago/)
 	})
 
 	test("formats days ago", () => {
-		const past = now - 2 * 86_400_000
-		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/2 days ago/)
+		const past = now - 1 * 86_400_000
+		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/1 day ago/)
+	})
+
+	test("formats plural days", () => {
+		const past = now - 3 * 86_400_000
+		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/3 days ago/)
 	})
 
 	test("formats weeks ago", () => {
-		const past = now - 14 * 86_400_000
-		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/2 weeks ago/)
+		const past = now - 7 * 86_400_000
+		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/1 week ago/)
+	})
+
+	test("formats plural weeks", () => {
+		const past = now - 3 * 7 * 86_400_000
+		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/3 weeks ago/)
 	})
 
 	test("formats months ago", () => {
-		const past = now - 35 * 86_400_000
+		const past = now - 31 * 86_400_000
 		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/1 month ago/)
+	})
+
+	test("formats plural months", () => {
+		const past = now - 2 * 31 * 86_400_000
+		expect(formatRelativeTimeAgo(past, now, locale, fallback)).toMatch(/2 months ago/)
 	})
 
 	test("formats years ago", () => {
