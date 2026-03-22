@@ -74,7 +74,7 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
 	return (
 		<div className="relative flex w-full flex-col rounded-md px-4 py-2">
 			<div className="relative flex items-center justify-center">
-				<div className="bg-opacity-25 absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={perk.image}
 					alt={`${perk.title} Image`}

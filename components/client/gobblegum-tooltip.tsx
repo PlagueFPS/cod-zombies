@@ -114,7 +114,7 @@ const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
 				{gobblegum.type}
 			</RarityBadge>
 			<div className="relative flex items-center justify-center">
-				<div className="bg-opacity-25 absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={gobblegum.image}
 					alt={`${gobblegum.title} Image`}

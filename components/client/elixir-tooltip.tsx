@@ -57,7 +57,7 @@ const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
 		>
 			<ElixirRarityBadge rarity={elixir.rarity} className="absolute top-4 left-4" />
 			<div className="relative flex items-center justify-center">
-				<div className="bg-opacity-25 absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
 				<IconImage
 					featuredImage={elixir.image}
 					alt={`${elixir.title} Image`}
