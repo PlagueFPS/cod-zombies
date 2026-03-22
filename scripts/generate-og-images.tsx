@@ -53,18 +53,18 @@ const transformImage = Effect.fn(function* (imagePath: MapsImagePath | ZombiesIm
 	const imageBuffer = yield* fs.readFile(path.join(process.cwd(), "public", imagePath))
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 100 }).toBuffer(),
-		catch: cause => new ImageGenerationError({ cause }),
+		catch: (cause): ImageGenerationError => new ImageGenerationError({ cause }),
 	})
 })
 
 const optimizeImageResponse = Effect.fn(function* (imageResponse: ImageResponse) {
 	const imageBuffer = yield* Effect.tryPromise({
 		try: () => imageResponse.arrayBuffer(),
-		catch: cause => new ImageGenerationError({ cause }),
+		catch: (cause): ImageGenerationError => new ImageGenerationError({ cause }),
 	})
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 80 }).toBuffer(),
-		catch: cause => new ImageGenerationError({ cause }),
+		catch: (cause): ImageGenerationError => new ImageGenerationError({ cause }),
 	})
 })
 
@@ -262,15 +262,7 @@ export const generateSideQuestImage = Effect.fn("generateSideQuestImage")(functi
 	const fonts = yield* getFonts()
 	const timeToRead = calculateTimeToRead(fileContent)
 	const { lastModifiedFormatted } = yield* getLastModified(contentPath)
-	const map = yield* Option.match(getMapByKey(sideQuest.map), {
-		onNone: () =>
-			Effect.fail(
-				new ImageGenerationError({
-					cause: new Error(`Map not found for side quest map key: ${sideQuest.map}`),
-				}),
-			),
-		onSome: Effect.succeed,
-	})
+	const map = yield* getMapByKey(sideQuest.map)
 	const game = yield* getGameByKey(map.game)
 	const mapImage = yield* transformImage(map.image)
 
@@ -420,17 +412,8 @@ export const generateSideQuestImage = Effect.fn("generateSideQuestImage")(functi
 
 export const generateZombieImage = Effect.fn("generateZombieImage")(function* (zombie: Zombie) {
 	const fonts = yield* getFonts()
-	const firstAppearedIn = yield* Option.match(
-		Arr.head(zombie.maps).pipe(Option.flatMap(mapKey => getMapByKey(mapKey))),
-		{
-			onNone: () =>
-				Effect.fail(
-					new ImageGenerationError({
-						cause: new Error(`No map found for zombie ${zombie.id}`),
-					}),
-				),
-			onSome: Effect.succeed,
-		},
+	const firstAppearedIn = yield* Arr.head(zombie.maps).pipe(
+		Option.flatMap(mapKey => getMapByKey(mapKey)),
 	)
 	const zombieImage = yield* transformImage(zombie.image)
 
@@ -662,33 +645,24 @@ const generateOgCommand = Command.make(
 			})
 
 			if (Option.isSome(questOpt) && Option.isSome(zombieOpt)) {
-				return yield* Effect.fail(
-					new OgCliError({
-						message: "Pass only one of --quest (-q) or --zombie (-z), not both.",
-					}),
-				)
+				return yield* new OgCliError({
+					message: "Pass only one of --quest (-q) or --zombie (-z), not both.",
+				})
 			}
 
 			if (Option.isSome(questOpt)) {
 				const q = questOpt.value
 				if (q === ALL_SENTINEL) {
 					if (Option.isNone(mapOpt)) {
-						return yield* Effect.fail(
-							new OgCliError({
-								message: `--quest ${ALL_SENTINEL} requires --map (-m) to select which map's side quests to render.`,
-							}),
-						)
+						return yield* new OgCliError({
+							message: `--quest ${ALL_SENTINEL} requires --map (-m) to select which map's side quests to render.`,
+						})
 					}
 					const mapKey = mapOpt.value as MapKey
-					const mapEntry = getMapByKey(mapKey)
-					if (Option.isNone(mapEntry)) {
-						return yield* Effect.fail(new OgCliError({ message: `Unknown map: ${mapKey}` }))
-					}
+					yield* getMapByKey(mapKey)
 					const quests = getSideQuests().filter(quest => quest.map === mapKey)
 					if (!quests.length) {
-						return yield* Effect.fail(
-							new OgCliError({ message: `No side quests found for map ${mapKey}` }),
-						)
+						return yield* new OgCliError({ message: `No side quests found for map ${mapKey}` })
 					}
 					yield* Effect.forEach(
 						quests,
@@ -702,12 +676,9 @@ const generateOgCommand = Command.make(
 					return
 				}
 
-				const questEntry = getSideQuestByKey(q as SideQuestKey)
-				if (Option.isNone(questEntry)) {
-					return yield* Effect.fail(new OgCliError({ message: `Unknown side quest: ${q}` }))
-				}
-				const ogImage = yield* generateSideQuestImage(questEntry.value)
-				yield* writeOgFile(outputBase, "side-quests", questEntry.value.id, new Uint8Array(ogImage))
+				const questEntry = yield* getSideQuestByKey(q as SideQuestKey)
+				const ogImage = yield* generateSideQuestImage(questEntry)
+				yield* writeOgFile(outputBase, "side-quests", questEntry.id, new Uint8Array(ogImage))
 				return
 			}
 
@@ -715,22 +686,15 @@ const generateOgCommand = Command.make(
 				const z = zombieOpt.value
 				if (z === ALL_SENTINEL) {
 					if (Option.isNone(mapOpt)) {
-						return yield* Effect.fail(
-							new OgCliError({
-								message: `--zombie ${ALL_SENTINEL} requires --map (-m) to select which map's zombies to render.`,
-							}),
-						)
+						return yield* new OgCliError({
+							message: `--zombie ${ALL_SENTINEL} requires --map (-m) to select which map's zombies to render.`,
+						})
 					}
 					const mapKey = mapOpt.value as MapKey
-					const mapEntry = getMapByKey(mapKey)
-					if (Option.isNone(mapEntry)) {
-						return yield* Effect.fail(new OgCliError({ message: `Unknown map: ${mapKey}` }))
-					}
+					yield* getMapByKey(mapKey)
 					const zombies = getZombies().filter(zombie => zombie.maps.includes(mapKey))
 					if (!zombies.length) {
-						return yield* Effect.fail(
-							new OgCliError({ message: `No zombies found for map ${mapKey}` }),
-						)
+						return yield* new OgCliError({ message: `No zombies found for map ${mapKey}` })
 					}
 					yield* Effect.forEach(
 						zombies,
@@ -744,38 +708,24 @@ const generateOgCommand = Command.make(
 					return
 				}
 
-				const zombieEntry = getZombieByKey(z as ZombieKey)
-				if (Option.isNone(zombieEntry)) {
-					return yield* Effect.fail(new OgCliError({ message: `Unknown zombie: ${z}` }))
-				}
-				const ogImage = yield* generateZombieImage(zombieEntry.value)
-				yield* writeOgFile(outputBase, "zombies", zombieEntry.value.id, new Uint8Array(ogImage))
+				const zombieEntry = yield* getZombieByKey(z as ZombieKey)
+				const ogImage = yield* generateZombieImage(zombieEntry)
+				yield* writeOgFile(outputBase, "zombies", zombieEntry.id, new Uint8Array(ogImage))
 				return
 			}
 
 			if (Option.isSome(mapOpt)) {
 				const mapKey = mapOpt.value as MapKey
-				const mapEntry = getMapByKey(mapKey)
-				if (Option.isNone(mapEntry)) {
-					return yield* Effect.fail(new OgCliError({ message: `Unknown map: ${mapKey}` }))
-				}
-				const map = mapEntry.value
-				if (Option.isNone(map.mainQuest)) {
-					return yield* Effect.fail(
-						new OgCliError({ message: `Map ${mapKey} has no main quest content.` }),
-					)
-				}
+				const map = yield* getMapByKey(mapKey)
 				const ogImage = yield* generateMainQuestImage(map)
 				yield* writeOgFile(outputBase, "main-quests", map.id, new Uint8Array(ogImage))
 				return
 			}
 
-			return yield* Effect.fail(
-				new OgCliError({
-					message:
-						"Specify --map (-m) for a main-quest image, --quest (-q) for a side quest, or --zombie (-z) for a zombie image.",
-				}),
-			)
+			return yield* new OgCliError({
+				message:
+					"Specify --map (-m) for a main-quest image, --quest (-q) for a side quest, or --zombie (-z) for a zombie image.",
+			})
 		}).pipe(
 			Effect.catchTag("OgCliError", e =>
 				Effect.logError(e.message).pipe(Effect.andThen(Effect.fail(e))),
