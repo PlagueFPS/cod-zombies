@@ -57,7 +57,7 @@ export const generateMetadata = async ({
 			description,
 			url: `/main-quests/${quest.value.game}/${quest.value.id}`,
 			images: {
-				url: `${getServerUrl()}/opengraph-images/main-quests/og-${quest.value.id}.jpg`,
+				url: `${getServerUrl()}/opengraph-images/main-quests/opengraph-${quest.value.id}.jpg`,
 				width: 1200,
 				height: 630,
 			},
