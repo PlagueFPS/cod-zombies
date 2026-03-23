@@ -6,6 +6,8 @@ import AugmentTooltip from "@/components/client/augment-tooltip"
 import PerkTooltip from "@/components/client/perk-tooltip"
 import GobbleGumTooltip from "@/components/client/gobblegum-tooltip"
 import FieldUpgradeTooltip from "@/components/client/field-upgrade-tooltip"
+import { RichTable, RichBodyRow } from "@/components/server/rich-table"
+import { TableCell } from "@/components/ui/table"
 
 ## Requirements
 
@@ -14,7 +16,43 @@ import FieldUpgradeTooltip from "@/components/client/field-upgrade-tooltip"
 - Playing on **Paradox Junction**
 - Must be on **Round 60** or above for the final step
 - <FieldUpgradeTooltip fieldUpgradeKey="mister-peeks" game="black-ops-7" />
+- Do **NOT** have the <AugmentTooltip augmentKey="peeks-favor" game="black-ops-7" /> augment equipped
 - Do **NOT** have the [Seed](/relics/black-ops-7/seed) relic equipped
+
+## Recommended Augments
+<RichTable
+  headerCells={["Perk", "Major", "Minor", "Extra Slot"]}
+  bodyRows={[
+  <RichBodyRow alternate>
+    <TableCell>
+    	<PerkTooltip perkKey="juggernog" game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+    	<AugmentTooltip augmentKey="iron-core" game="black-ops-7" />
+		</TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="durable-plates" game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="hardened-plates" game="black-ops-7" />
+		</TableCell>
+	</RichBodyRow>,
+		<RichBodyRow>
+    <TableCell>
+    	<PerkTooltip perkKey="mule-kick" game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+    	<AugmentTooltip augmentKey="free-throw" />
+		</TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="fully-equipped" />
+    </TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="plate-hunter" />
+		</TableCell>
+  </RichBodyRow>,
+  ]}
+/>
 
 ## How to Unlock
 On any round, and on any version of the map, spin the **Mystery Box** until you get a **Mister Peeks**, then activate your
@@ -38,9 +76,13 @@ If done correctly, you'll hear **Mister Peeks** laugh and the relic trial portal
 
 <RichImage image="/content/paradox-junction/paradox-junction-mangler-helmet-relic-trial-portal.webp" caption="Relic Trial Portal" />
 
-> **Relic Trial:** All armor plates are removed and max health is reduced by 50. This will mean you are a **Two-Hit Down**.
+> **Relic Trial:** All armor plates are removed and max health is reduced by 50. This will mean you are a **Two-Hit Down**, unless you are running
+<AugmentTooltip augmentKey="iron-core" game="black-ops-7" /> for <PerkTooltip perkKey="juggernog" game="black-ops-7" />.
 
 ## Video Guides
 
-### Guide by ZoneX
+### Guide By Doughnuts
+<YoutubeEmbed videoLink="https://youtu.be/F7av8XFhTq4?si=kOdKuPuRgfLlPmiC" />
+
+### Guide By ZoneX
 <YoutubeEmbed videoLink="https://youtu.be/8lp36HXOOKk?si=kKGv5SVC8hz0EIHO" />
