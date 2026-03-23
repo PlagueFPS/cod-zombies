@@ -717,7 +717,7 @@ const generateOgCommand = Command.make(
 							const ogImage = yield* generateZombieImage(z)
 							yield* writeOgFile(outputBase, "zombies", z.id, new Uint8Array(ogImage))
 						}),
-					{ concurrency: 2 },
+					{ concurrency: 8 },
 				)
 				return
 			}
@@ -761,7 +761,7 @@ const generateOgCommand = Command.make(
 							const ogImage = yield* generateSideQuestImage(q)
 							yield* writeOgFile(outputBase, "side-quests", q.id, new Uint8Array(ogImage))
 						}),
-					{ concurrency: 2 },
+					{ concurrency: 8 },
 				)
 				return
 			}
@@ -787,7 +787,7 @@ const generateOgCommand = Command.make(
 							const ogImage = yield* generateMainQuestImage(m)
 							yield* writeOgFile(outputBase, "main-quests", m.id, new Uint8Array(ogImage))
 						}),
-					{ concurrency: 2 },
+					{ concurrency: 8 },
 				)
 				return
 			}
