@@ -53,18 +53,18 @@ const transformImage = Effect.fn(function* (imagePath: MapsImagePath | ZombiesIm
 	const imageBuffer = yield* fs.readFile(path.join(process.cwd(), "public", imagePath))
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 100 }).toBuffer(),
-		catch: (cause) => new ImageGenerationError({ cause }),
+		catch: cause => new ImageGenerationError({ cause }),
 	})
 })
 
 const optimizeImageResponse = Effect.fn(function* (imageResponse: ImageResponse) {
 	const imageBuffer = yield* Effect.tryPromise({
 		try: () => imageResponse.arrayBuffer(),
-		catch: (cause) => new ImageGenerationError({ cause }),
+		catch: cause => new ImageGenerationError({ cause }),
 	})
 	return yield* Effect.tryPromise({
 		try: () => sharp(imageBuffer).jpeg({ mozjpeg: true, quality: 80 }).toBuffer(),
-		catch: (cause) => new ImageGenerationError({ cause }),
+		catch: cause => new ImageGenerationError({ cause }),
 	})
 })
 
@@ -660,7 +660,7 @@ const generateOgCommand = Command.make(
 					})
 				}
 
-				const quests = getSideQuests().filter(quest => quest.map === mapOpt.value as MapKey)
+				const quests = getSideQuests().filter(quest => quest.map === (mapOpt.value as MapKey))
 				if (!quests.length) {
 					return yield* new OgCliError({ message: `No side quests found for map ${mapOpt.value}` })
 				}
