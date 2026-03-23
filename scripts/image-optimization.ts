@@ -1,5 +1,5 @@
 import { BunRuntime, BunServices } from "@effect/platform-bun"
-import { Clock, Duration, Effect, FileSystem, HashSet, Path, Schema, SynchronizedRef } from "effect"
+import { Clock, Duration, Effect, FileSystem, HashSet, Path, Schema, Ref } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp from "sharp"
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
@@ -131,7 +131,7 @@ const optimizeCommand = Command.make(
 			const fs = yield* FileSystem.FileSystem
 			const path = yield* Path.Path
 			const newAssets = yield* fs.readDirectory(source)
-			const numRef = yield* SynchronizedRef.make(0)
+			const numRef = yield* Ref.make(0)
 
 			yield* Effect.filterOrElse(
 				fs.exists(targetDir),
@@ -188,8 +188,8 @@ const optimizeCommand = Command.make(
 							yield* Effect.log(`Skipped transformation for ${fileName}`)
 						}
 
-						yield* SynchronizedRef.update(numRef, n => n + 1)
-						const currentAsset = yield* SynchronizedRef.get(numRef)
+						yield* Ref.update(numRef, n => n + 1)
+						const currentAsset = yield* Ref.get(numRef)
 
 						yield* fs.writeFile(path.join(targetDir, fileName), imageBuffer)
 						yield* fs.copyFile(path.join(source, asset), path.join(DEFAULT_COPY_DIR, asset))
@@ -199,7 +199,7 @@ const optimizeCommand = Command.make(
 				{ concurrency: 2 },
 			)
 
-			const writtenAmount = yield* SynchronizedRef.get(numRef)
+			const writtenAmount = yield* Ref.get(numRef)
 			const endTime = yield* Clock.currentTimeMillis.pipe(
 				Effect.map(endTime => endTime - startTime),
 			)
