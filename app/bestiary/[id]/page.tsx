@@ -68,7 +68,7 @@ export const generateMetadata = async ({
 			description,
 			url: `/bestiary/${zombie.value.id}`,
 			images: {
-				url: `${getServerUrl()}/opengraph-images/zombies/${zombie.value.id}.jpg`,
+				url: `${getServerUrl()}/opengraph-images/zombies/opengraph-${zombie.value.id}.jpg`,
 				width: 1200,
 				height: 630,
 			},

@@ -14,7 +14,7 @@ import {
 } from "@/data/side-quests"
 import { getZombieByKey, getZombies, type Zombie, type ZombieKey } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { calculateTimeToRead, getLastModified } from "@/utils/server-functions"
+import { calculateTimeToRead } from "@/utils/server-functions"
 
 const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
 
@@ -83,7 +83,6 @@ export const generateMainQuestImage = Effect.fnUntraced(
 		const contentPath = path.join(process.cwd(), `${mainQuestPath}.mdx`)
 		const fileContent = yield* fs.readFileString(contentPath)
 		const fonts = yield* getFonts()
-		const { lastModifiedFormatted } = yield* getLastModified(contentPath)
 		const mapImage = yield* transformImage(map.image)
 		const timeToRead = calculateTimeToRead(fileContent)
 		const game = yield* getGameByKey(map.game)
@@ -154,7 +153,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 				<div
 					style={{
 						position: "absolute",
-						bottom: "14rem",
+						bottom: "13rem",
 						left: "4rem",
 						display: "flex",
 						alignItems: "center",
@@ -230,7 +229,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{lastModifiedFormatted}</span>
+					<span>{map.releaseDate.toLocaleDateString("en-US", DATE_OPTIONS)}</span>
 					<span>&bull;</span>
 					<span>{timeToRead} min read</span>
 				</div>
@@ -269,7 +268,6 @@ export const generateSideQuestImage = Effect.fnUntraced(
 		const fileContent = yield* fs.readFileString(contentPath)
 		const fonts = yield* getFonts()
 		const timeToRead = calculateTimeToRead(fileContent)
-		const { lastModifiedFormatted } = yield* getLastModified(contentPath)
 		const map = yield* getMapByKey(sideQuest.map)
 		const game = yield* getGameByKey(map.game)
 		const mapImage = yield* transformImage(map.image)
@@ -315,7 +313,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 				<div
 					style={{
 						position: "absolute",
-						bottom: "14rem",
+						bottom: "13rem",
 						left: "4rem",
 						display: "flex",
 						alignItems: "center",
@@ -389,7 +387,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{lastModifiedFormatted}</span>
+					<span>{map.releaseDate.toLocaleDateString("en-US", DATE_OPTIONS)}</span>
 					<span>&bull;</span>
 					<span>{timeToRead} min read</span>
 				</div>
@@ -495,7 +493,7 @@ export const generateZombieImage = Effect.fnUntraced(
 				<div
 					style={{
 						position: "absolute",
-						bottom: "14rem",
+						bottom: "13rem",
 						left: "4rem",
 						display: "flex",
 						alignItems: "center",
@@ -595,23 +593,20 @@ export const generateZombieImage = Effect.fnUntraced(
 	self => Effect.withLogSpan(self, "generateZombieImage"),
 )
 
-const writeOgFile = Effect.fn("writeOgFile")(
-	function* (
-		outputBase: string,
-		contentDir: "main-quests" | "side-quests" | "zombies",
-		fileBaseName: string,
-		bytes: Uint8Array,
-	) {
-		const fs = yield* FileSystem.FileSystem
-		const path = yield* Path.Path
-		const dir = path.join(outputBase, contentDir)
-		const outPath = path.join(dir, `opengraph-${fileBaseName}.jpg`)
-		yield* fs.makeDirectory(dir, { recursive: true })
-		yield* fs.writeFile(outPath, bytes)
-		yield* Effect.log(`Wrote ${outPath}`)
-	},
-	self => Effect.withLogSpan(self, "writeOgFile"),
-)
+const writeOgFile = Effect.fnUntraced(function* (
+	outputBase: string,
+	contentDir: "main-quests" | "side-quests" | "zombies",
+	fileBaseName: string,
+	bytes: Uint8Array,
+) {
+	const fs = yield* FileSystem.FileSystem
+	const path = yield* Path.Path
+	const dir = path.join(outputBase, contentDir)
+	const outPath = path.join(dir, `opengraph-${fileBaseName}.jpg`)
+	yield* fs.makeDirectory(dir, { recursive: true })
+	yield* fs.writeFile(outPath, bytes)
+	yield* Effect.log(`Wrote ${outPath}`)
+})
 
 const mapSlugFlag = Flag.optional(Flag.string("map")).pipe(
 	Flag.withAlias("m"),
@@ -813,4 +808,8 @@ const generateOgCommand = Command.make(
 
 Command.run(generateOgCommand, {
 	version: "1.0.0",
-}).pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+}).pipe(
+	Effect.withLogSpan("generate_og_images"),
+	Effect.provide(BunServices.layer),
+	BunRuntime.runMain,
+)
