@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Effect } from "effect"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
+import PrivacyPolicy from "@/content/legal/privacy-policy.mdx"
 import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
@@ -34,9 +35,6 @@ export default async function PrivacyPolicyPage() {
 
 const buildPrivacyPolicyPage = Effect.fn("buildPrivacyPolicyPage")(function* () {
 	const mdxComponents = yield* Effect.sync(() => useMDXComponents())
-	const { default: MDXContent } = yield* Effect.promise(
-		() => import("@/content/legal/privacy-policy.mdx"),
-	)
 	const { lastModified, lastModifiedFormatted } = yield* getLastModified("legal/privacy-policy.mdx")
 
 	return (
@@ -60,7 +58,7 @@ const buildPrivacyPolicyPage = Effect.fn("buildPrivacyPolicyPage")(function* () 
 							/>
 						</div>
 						<div className={cn("relative mx-auto max-w-[80ch] px-4", richStyles.body)}>
-							<MDXContent components={mdxComponents} />
+							<PrivacyPolicy components={mdxComponents} />
 						</div>
 					</section>
 				</div>
