@@ -13,7 +13,7 @@ export default function RelicNotFound() {
 	const items: Link<string>[] = [
 		{ href: `/relics`, title: "Relics" },
 		{
-			href: `/relics?game=${game.valueOrUndefined}`,
+			href: `/relics`,
 			title: Option.match(game, {
 				onNone: () => "Game Not Found",
 				onSome: game => capitalize(game),

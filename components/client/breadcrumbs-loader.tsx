@@ -82,7 +82,13 @@ export function BreadcrumbsLoader({ type, className }: IBreadcrumbsLoader) {
 			case "zombie":
 				return [
 					{ title: `Bestiary`, href: `/bestiary` },
-					{ title: capitalize(String(id)), href: `/bestiary/${id.valueOrUndefined}` as Route },
+					{
+						title: Option.match(id, {
+							onNone: () => "Zombie Not Found",
+							onSome: id => capitalize(id),
+						}),
+						href: `/bestiary/${id.valueOrUndefined}` as Route,
+					},
 				]
 			default:
 				return []
