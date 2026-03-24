@@ -4,6 +4,7 @@ import PerkTooltip from "@/components/client/perk-tooltip"
 import { RichTable, RichBodyRow } from "@/components/server/rich-table"
 import { TableCell } from "@/components/ui/table"
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import YoutubeEmbed from "@/components/server/youtube-embed"
 
 ## Time Travel Will Tell
@@ -129,10 +130,12 @@ that you have to turn 4 times to trigger four gas leaks in the underground of th
 
 Now you must lure a <ZombieTooltip zombieKey="napalm-zombie" /> to the four gas leaks to ignite them. The four gas leak locations are listed below:
 
-<RichImage image="/content/shangri-la/shangri-la-first-gas-leak.webp" caption='First Gas Leak - just to the right of the gas valve' alt='First Gas Leak'  />
-<RichImage image="/content/shangri-la/shangri-la-second-gas-leak.webp" caption='Second Gas Leak - just by the geyser leading to spawn' alt='Second Gas Leak'  />
-<RichImage image="/content/shangri-la/shangri-la-third-gas-leak.webp" caption='Third Gas Leak - just to the left of the M16 (Black Ops 1)/KN-44 (Black Ops 3) wall buy' alt='Third Gas Leak'  />
-<RichImage image="/content/shangri-la/shangri-la-final-gas-leak.webp" caption='Final Gas Leak - above the stairs right of the M16 (Black Ops 1)/KN-44 (Black Ops 3) wall buy' alt='Final Gas Leak'  />
+<CustomCarousel>
+  <RichImage image="/content/shangri-la/shangri-la-first-gas-leak.webp" caption='First Gas Leak - just to the right of the gas valve' alt='First Gas Leak'  />
+  <RichImage image="/content/shangri-la/shangri-la-second-gas-leak.webp" caption='Second Gas Leak - just by the geyser leading to spawn' alt='Second Gas Leak'  />
+  <RichImage image="/content/shangri-la/shangri-la-third-gas-leak.webp" caption='Third Gas Leak - just to the left of the M16 (Black Ops 1)/KN-44 (Black Ops 3) wall buy' alt='Third Gas Leak'  />
+  <RichImage image="/content/shangri-la/shangri-la-final-gas-leak.webp" caption='Final Gas Leak - above the stairs right of the M16 (Black Ops 1)/KN-44 (Black Ops 3) wall buy' alt='Final Gas Leak'  />
+</CustomCarousel>
 
 > Do not get too close to the <ZombieTooltip zombieKey="napalm-zombie" /> when you find one. Getting too close to the <ZombieTooltip zombieKey="napalm-zombie" /> will cause
 the zombie to explode and you will have to wait a couple of rounds for another one to spawn.
@@ -162,18 +165,20 @@ with that says "Do not hold (insert interact button)". If done successfully, the
 ## Panels Step
 After triggering an eclipse, 12 panels will appear on the walls around the map that you need to knife to activate them. The locations of all 12 panels are as follows:
 
-<RichImage image="/content/shangri-la/shangri-la-panel-near-pap.webp" caption='In the spawn room, left of the Pack-a-Punch staircase'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-facing-mud-room.webp" caption='In the spawn room, on a wall facing the passage to the Mud Room'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-in-passage-to-mud-room.webp" caption='Near the spawn room, in the pass to the Mud Room'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-in-passage-to-minecart.webp" caption='Near the spawn room, in the passage to the minecart room'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-facing-passage-to-minecart.webp" caption='In the spawn room, on a wall faving the passage to the minecart room'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-facing-passage-to-spawn.webp" caption='In the minecart room, facing passage to spawn'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-next-to-gong-by-minecart.webp" caption='In the minecart room, next to a gong by the minecart entrance'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-by-power.webp" caption='In the power room, left of the left power switch'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-stakeout-room-leading-to-power.webp" caption='In the stakeout room, leading to the power room'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-stakeout-room-leading-to-waterfall.webp" caption='In the stakeout room, leading to the waterfall'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-in-mud-room-on-the-right-when-heading-to-wooden-bridge.webp" caption='In the mud room, on the right when heading toward the wooden bridge'  />
-<RichImage image="/content/shangri-la/shangri-la-panel-in-mud-room-right-when-heading-to-waterslide.webp" caption='In the mud room, on the right when heading toward the waterslide'  />
+<CustomCarousel>
+  <RichImage image="/content/shangri-la/shangri-la-panel-near-pap.webp" caption='In the spawn room, left of the Pack-a-Punch staircase'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-facing-mud-room.webp" caption='In the spawn room, on a wall facing the passage to the Mud Room'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-in-passage-to-mud-room.webp" caption='Near the spawn room, in the pass to the Mud Room'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-in-passage-to-minecart.webp" caption='Near the spawn room, in the passage to the minecart room'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-facing-passage-to-minecart.webp" caption='In the spawn room, on a wall faving the passage to the minecart room'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-facing-passage-to-spawn.webp" caption='In the minecart room, facing passage to spawn'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-next-to-gong-by-minecart.webp" caption='In the minecart room, next to a gong by the minecart entrance'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-by-power.webp" caption='In the power room, left of the left power switch'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-stakeout-room-leading-to-power.webp" caption='In the stakeout room, leading to the power room'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-stakeout-room-leading-to-waterfall.webp" caption='In the stakeout room, leading to the waterfall'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-in-mud-room-on-the-right-when-heading-to-wooden-bridge.webp" caption='In the mud room, on the right when heading toward the wooden bridge'  />
+  <RichImage image="/content/shangri-la/shangri-la-panel-in-mud-room-right-when-heading-to-waterslide.webp" caption='In the mud room, on the right when heading toward the waterslide'  />
+</CustomCarousel>
 
 Once all 12 panels have been knifed and activated, head over to the minecart room, and just outside the map by the minecart will be a snare trap that you have
 to destroy using an explosive. If done successfully, the eclipse should end.
@@ -184,10 +189,12 @@ to destroy using an explosive. If done successfully, the eclipse should end.
 After triggering an eclipse, a radio will appear on a crate near the minecart that will give you the code "**16, 1, 3, 4**". Head to the mud room, in this room,
 there are four wheels you can turn, one in each corner of the room where you will have to enter this code. If done successfully, the eclipse should end. The code is as follows:
 
-<RichImage image="/content/shangri-la/shangri-la-close-left-wheel.webp" caption='On the close left when entering from spawn, turn the wheel to the four dots'  />
-<RichImage image="/content/shangri-la/shangri-la-close-right-wheel.webp" caption='On the close right when entering from spawn, turn the wheel to the single dot'  />
-<RichImage image="/content/shangri-la/shangri-la-far-left-wheel.webp" caption='On the far left when entering from spawn, turn the wheel to the three dots'  />
-<RichImage image="/content/shangri-la/shangri-la-far-right-wheel.webp" caption='On the far right when entering from spawn, turn the wheel to the "CI-" symbol'  />
+<CustomCarousel>
+  <RichImage image="/content/shangri-la/shangri-la-close-left-wheel.webp" caption='On the close left when entering from spawn, turn the wheel to the four dots'  />
+  <RichImage image="/content/shangri-la/shangri-la-close-right-wheel.webp" caption='On the close right when entering from spawn, turn the wheel to the single dot'  />
+  <RichImage image="/content/shangri-la/shangri-la-far-left-wheel.webp" caption='On the far left when entering from spawn, turn the wheel to the three dots'  />
+  <RichImage image="/content/shangri-la/shangri-la-far-right-wheel.webp" caption='On the far right when entering from spawn, turn the wheel to the "CI-" symbol'  />
+</CustomCarousel>
 
 > This step is timed so you must be quick, if your eclipse ends before you have the chance to enter the code, simply trigger another eclipse and try again.
 
@@ -197,14 +204,16 @@ and the crystal on the pedestal above the mud room will not be glowing red, or y
 
 You need to find four out of the eight gongs that have a positive sound and knife only those gongs in no particular order. The eight gong locations are as follows:
 
-<RichImage image="/content/shangri-la/shangri-la-gong-left-of-mpl.webp" caption='In the minecart room, left of the MPL (Black Ops 1)/Pharo (Black Ops 3) wall buy'  />
-<RichImage image="/content/shangri-la/shangri-la-gong-front-of-tunnel-entrance.webp" caption='In the minecart room, in front of the tunnel entrance'  />
-<RichImage image="/content/shangri-la/shangri-la-gong-left-of-minecart-entrance.webp" caption='In the minecart room, left of the minecart entrance'  />
-<RichImage image="/content/shangri-la/shangri-la-gong-left-of-the-passage-to-minecart-room.webp" caption='In the minecart room, left of the passage to the minecart room'  />
-<RichImage image="/content/shangri-la/shangri-la-gong-mud-room-left-when-entering-spawn.webp" caption='In the mud room, left when entering from spawn'  />
-<RichImage image="/content/shangri-la/shangri-la-gong-mud-room-right-when-leaving-toward-bridge.webp" caption='In the mud room, right when leaving towards the bridge'  />
-<RichImage image="/content/shangri-la/shangri-la-gong-mud-room-next-to-window.webp" caption='In the mud room, next to the window by the bridge'  />
-<RichImage image="/content/shangri-la/shangri-la-gong-right-after-bridge.webp" caption='In the mud room, right after the wooden bridge'  />
+<CustomCarousel>
+  <RichImage image="/content/shangri-la/shangri-la-gong-left-of-mpl.webp" caption='In the minecart room, left of the MPL (Black Ops 1)/Pharo (Black Ops 3) wall buy'  />
+  <RichImage image="/content/shangri-la/shangri-la-gong-front-of-tunnel-entrance.webp" caption='In the minecart room, in front of the tunnel entrance'  />
+  <RichImage image="/content/shangri-la/shangri-la-gong-left-of-minecart-entrance.webp" caption='In the minecart room, left of the minecart entrance'  />
+  <RichImage image="/content/shangri-la/shangri-la-gong-left-of-the-passage-to-minecart-room.webp" caption='In the minecart room, left of the passage to the minecart room'  />
+  <RichImage image="/content/shangri-la/shangri-la-gong-mud-room-left-when-entering-spawn.webp" caption='In the mud room, left when entering from spawn'  />
+  <RichImage image="/content/shangri-la/shangri-la-gong-mud-room-right-when-leaving-toward-bridge.webp" caption='In the mud room, right when leaving towards the bridge'  />
+  <RichImage image="/content/shangri-la/shangri-la-gong-mud-room-next-to-window.webp" caption='In the mud room, next to the window by the bridge'  />
+  <RichImage image="/content/shangri-la/shangri-la-gong-right-after-bridge.webp" caption='In the mud room, right after the wooden bridge'  />
+</CustomCarousel>
 
 Once done, the crystals should be glowing yellow with a [Treyarch](https://treyarch.com/) symbol rotating around them. Afterward, you must use **The Fractalizer**
 (Pack-a-Punched 31-79 JGb215) shoot to any of the crystals while another player is standing under the crystal in the spawn room to catch some dynamite that will

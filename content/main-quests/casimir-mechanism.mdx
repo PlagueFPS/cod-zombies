@@ -4,6 +4,7 @@ import { TableCell } from "@/components/ui/table"
 import PerkTooltip from "@/components/client/perk-tooltip"
 import ZombieTooltip from "@/components/client/zombie-tooltip"
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import YoutubeEmbed from "@/components/server/youtube-embed"
 
 ## Casimir Mechanism
@@ -86,10 +87,12 @@ This step can only be completed during a <ZombieTooltip zombieKey="space-monkey"
 rounds only when the power is turned on and at least one player has purchased a perk. Once the monkey round begins, four buttons will appear out of the walls near a
 select few perk machines:
 
-<RichImage image="/content/ascension/ascension-juggernog-switch.webp" caption="Juggernog - opposite of the perk machine" alt="Juggernog Switch" />
-<RichImage image="/content/ascension/ascension-speed-cola-switch.webp" caption="Speed Cola - wall directly ahead of the staircase" alt="Speed Cola Switch" />
-<RichImage image="/content/ascension/ascension-stamin-up-switch.webp" caption="Stamin-Up - left of the perk machine" alt="Stamin-Up Switch" />
-<RichImage image="/content/ascension/ascension-widows-wine-switch.webp" caption="Widow's Wine/PhD Flopper - left of the perk machine" alt="Widow's Wine Switch" />
+<CustomCarousel>
+  <RichImage image="/content/ascension/ascension-juggernog-switch.webp" caption="Juggernog - opposite of the perk machine" alt="Juggernog Switch" />
+  <RichImage image="/content/ascension/ascension-speed-cola-switch.webp" caption="Speed Cola - wall directly ahead of the staircase" alt="Speed Cola Switch" />
+  <RichImage image="/content/ascension/ascension-stamin-up-switch.webp" caption="Stamin-Up - left of the perk machine" alt="Stamin-Up Switch" />
+  <RichImage image="/content/ascension/ascension-widows-wine-switch.webp" caption="Widow's Wine/PhD Flopper - left of the perk machine" alt="Widow's Wine Switch" />
+</CustomCarousel>
 
 Each of the four players must be at one of these buttons and press them simultaneously. If done incorrectly, all players will hear a buzzing sound. If done correctly,
 all players should hear a beeping sound, as well as a message, and the pod should now have two lights active, signifying the completion of Step 2.

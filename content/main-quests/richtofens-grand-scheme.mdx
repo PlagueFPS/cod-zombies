@@ -1,6 +1,7 @@
 import PerkTooltip from "@/components/client/perk-tooltip"
 import GobblegumTooltip from "@/components/client/gobblegum-tooltip"
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import { RichTable, RichBodyRow } from "@/components/server/rich-table"
 import { TableCell } from "@/components/ui/table"
 import YoutubeEmbed from "@/components/server/youtube-embed"
@@ -93,9 +94,11 @@ near the Bowie knife, will be four dim buttons lined up next to each other.
 Hack one of the buttons for 500 points using the Hacker. Afterward, you will have **60 seconds** to search for four white-panel boxes with a glowing green
 light on them and hack all four. There are a total of eight white-panel boxes. Below are the locations of all eight:
 
-<RichImage image="/content/moon/moon-white-panel-boxes-first-floor.webp" caption="Three on the first floor"  />
-<RichImage image="/content/moon/moon-white-panel-boxes-second-floor.webp" caption="Two on the second floor"  />
-<RichImage image="/content/moon/moon-white-panel-boxes-third-floor.webp" caption="Three on the third floor"  />
+<CustomCarousel>
+  <RichImage image="/content/moon/moon-white-panel-boxes-first-floor.webp" caption="Three on the first floor"  />
+  <RichImage image="/content/moon/moon-white-panel-boxes-second-floor.webp" caption="Two on the second floor"  />
+  <RichImage image="/content/moon/moon-white-panel-boxes-third-floor.webp" caption="Three on the third floor"  />
+</CustomCarousel>
 
 Once all four white-panel boxes have been hacked, return to the wall with the four dim buttons. You must interact with all four of the buttons on the wall in quick succession
 (can be done solo or with your group). If done successfully, all the buttons will be glowing.

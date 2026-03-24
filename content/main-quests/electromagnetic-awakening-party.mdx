@@ -2,6 +2,7 @@ import YoutubeEmbed from '@/components/server/youtube-embed'
 import PerkTooltip from '@/components/client/perk-tooltip'
 import ZombieTooltip from '@/components/client/zombie-tooltip'
 import RichImage from '@/components/client/rich-image'
+import CustomCarousel from '@/components/client/custom-carousel'
 import { RichTable, RichBodyRow } from '@/components/server/rich-table'
 import { TableCell } from '@/components/ui/table'
 import AmmoModTooltip from '@/components/client/ammo-mod-tooltip'
@@ -227,9 +228,11 @@ to reveal the code you need a zombie affected by the <AmmoModTooltip ammoModKey=
 
 Once you have <AmmoModTooltip ammoModKey="brain-rot" /> or have activated <ElixirTooltip elixirKey='ctrl-z' />, you can have the affected zombie knock down the paintings. The painting's locations are:
 
-<RichImage image='/content/alpha-omega/alpha-omega-lounge-painting.webp' caption='Lounge - on the wall next to the exit stairs' />
-<RichImage image='/content/alpha-omega/alpha-omega-green-house-painting.webp' caption='Green House - at the top of the stairs' />
-<RichImage image='/content/alpha-omega/alpha-omega-beds-painting.webp' caption='Beds - opposite the Pack-a-Punch' />
+<CustomCarousel>
+  <RichImage image='/content/alpha-omega/alpha-omega-lounge-painting.webp' caption='Lounge - on the wall next to the exit stairs' />
+  <RichImage image='/content/alpha-omega/alpha-omega-green-house-painting.webp' caption='Green House - at the top of the stairs' />
+  <RichImage image='/content/alpha-omega/alpha-omega-beds-painting.webp' caption='Beds - opposite the Pack-a-Punch' />
+</CustomCarousel>
 
 Once you have all three codes, head back to **Operations** and input the three codes into **Rushmore** in any order to complete this step.
 
@@ -238,21 +241,27 @@ Once you have all three codes, head back to **Operations** and input the three c
 
 The first part can be found in the **Transfusion Facility**:
 
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-transfusion-facility-first-spawn.webp' caption='In a locker to the right of the entrance from Center Street' />
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-transfusion-facility-second-spawn.webp' caption='Leaning against the medical chair' />
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-transfusion-facility-final-spawn.webp' caption='Outside on a stack of drywall' />
+<CustomCarousel>
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-transfusion-facility-first-spawn.webp' caption='In a locker to the right of the entrance from Center Street' />
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-transfusion-facility-second-spawn.webp' caption='Leaning against the medical chair' />
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-transfusion-facility-final-spawn.webp' caption='Outside on a stack of drywall' />
+</CustomCarousel>
 
 The second part can be found in the **Green House**:
 
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-green-house-first-spawn.webp' caption='In the downstairs right corner when entering from Cul-De-Sac' />
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-green-house-second-spawn.webp' caption='In the kitchen below the broken wall' />
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-green-house-final-spawn.webp' caption='Upstairs on the balcony' />
+<CustomCarousel>
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-green-house-first-spawn.webp' caption='In the downstairs right corner when entering from Cul-De-Sac' />
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-green-house-second-spawn.webp' caption='In the kitchen below the broken wall' />
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-green-house-final-spawn.webp' caption='Upstairs on the balcony' />
+</CustomCarousel>
 
 The final part can be found in the **Generators** area:
 
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-generators-first-spawn.webp' caption='Near some barrels to the left when entering from the Beds area' />
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-generators-second-spawn.webp' caption='Against the wall opposite the entrance from the Beds area' />
-<RichImage image='/content/alpha-omega/alpha-omega-telepad-generators-final-spawn.webp' caption='Behind a rail opposite the Tonic Perk Machine' />
+<CustomCarousel>
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-generators-first-spawn.webp' caption='Near some barrels to the left when entering from the Beds area' />
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-generators-second-spawn.webp' caption='Against the wall opposite the entrance from the Beds area' />
+  <RichImage image='/content/alpha-omega/alpha-omega-telepad-generators-final-spawn.webp' caption='Behind a rail opposite the Tonic Perk Machine' />
+</CustomCarousel>
 
 Once you have all three parts you can build the **Telepad** in the **APD Control** or the **Green House Upstairs**, but it is recommended to build it in the **APD Control** room.
 
@@ -260,12 +269,14 @@ Once you have all three parts you can build the **Telepad** in the **APD Control
 Interact with **Rushmore** and the power on the map will begin to shut down. You must restore the power by flipping six power boxes in the **Bunker** to their correct positions.
 The location of the six power boxes and the position they need to be in are:
 
-<RichImage image='/content/alpha-omega/alpha-omega-storage-power-box.webp' caption='Storage - Flipped Down' />
-<RichImage image='/content/alpha-omega/alpha-omega-solitary-power-box.webp' caption='Solitary - Flipped Down' />
-<RichImage image='/content/alpha-omega/alpha-omega-lounge-power-box.webp' caption='Lounge - Flipped Down' />
-<RichImage image='/content/alpha-omega/alpha-omega-generators-power-box.webp' caption='Generators - Flipped Up' />
-<RichImage image='/content/alpha-omega/alpha-omega-diner-power-box.webp' caption='Diner - Flipped Up' />
-<RichImage image='/content/alpha-omega/alpha-omega-beds-power-box.webp' caption='Beds - Flipped Up' />
+<CustomCarousel>
+  <RichImage image='/content/alpha-omega/alpha-omega-storage-power-box.webp' caption='Storage - Flipped Down' />
+  <RichImage image='/content/alpha-omega/alpha-omega-solitary-power-box.webp' caption='Solitary - Flipped Down' />
+  <RichImage image='/content/alpha-omega/alpha-omega-lounge-power-box.webp' caption='Lounge - Flipped Down' />
+  <RichImage image='/content/alpha-omega/alpha-omega-generators-power-box.webp' caption='Generators - Flipped Up' />
+  <RichImage image='/content/alpha-omega/alpha-omega-diner-power-box.webp' caption='Diner - Flipped Up' />
+  <RichImage image='/content/alpha-omega/alpha-omega-beds-power-box.webp' caption='Beds - Flipped Up' />
+</CustomCarousel>
 
 > If a power box is already in the correct position, you can just ignore it and move onto the next one.
 
@@ -282,12 +293,14 @@ one of which will have a blue spark coming out of its head. You must interact wi
 Once the lockdown is completed, it will drop a robot part that you must pick up. You must repeat this for the other two <ZombieTooltip zombieKey="adam-unit" /> and pick up the parts they drop after their lockdowns.
 The six locations of these <ZombieTooltip zombieKey="adam-unit" /> are:
 
-<RichImage image='/content/alpha-omega/alpha-omega-sparking-adam-unit.webp' caption='Yellow House - in the backyard' />
-<RichImage image='/content/alpha-omega/alpha-omega-adamn-behind-the-green-house.webp' caption='Green House - in the backyard' />
-<RichImage image='/content/alpha-omega/alpha-omega-prisoner-holding-adam-unit.webp' caption='Prisoner Holding - right of the Escargot wall buy' />
-<RichImage image='/content/alpha-omega/alpha-omega-transfusion-facility-adam-unit.webp' caption='Transfusion Facility - in the backyard near the Mystery Box location' />
-<RichImage image='/content/alpha-omega/alpha-omega-diner-adam-unit.webp' caption='Diner - near the bar' />
-<RichImage image='/content/alpha-omega/alpha-omega-lounge-adam-unit.webp' caption='Lounge - near T.E.D.D.' />
+<CustomCarousel>
+  <RichImage image='/content/alpha-omega/alpha-omega-sparking-adam-unit.webp' caption='Yellow House - in the backyard' />
+  <RichImage image='/content/alpha-omega/alpha-omega-adamn-behind-the-green-house.webp' caption='Green House - in the backyard' />
+  <RichImage image='/content/alpha-omega/alpha-omega-prisoner-holding-adam-unit.webp' caption='Prisoner Holding - right of the Escargot wall buy' />
+  <RichImage image='/content/alpha-omega/alpha-omega-transfusion-facility-adam-unit.webp' caption='Transfusion Facility - in the backyard near the Mystery Box location' />
+  <RichImage image='/content/alpha-omega/alpha-omega-diner-adam-unit.webp' caption='Diner - near the bar' />
+  <RichImage image='/content/alpha-omega/alpha-omega-lounge-adam-unit.webp' caption='Lounge - near T.E.D.D.' />
+</CustomCarousel>
 
 > Failing a lockdown only resets that specific lockdown, and you can interact with the <ZombieTooltip zombieKey="adam-unit" /> again to retry the lockdown. If you are running low on ammo, there can be a
 **Max Ammo** in the **Yellow House Backyard Shed**, so you can check it and open the shed to grab the power up if you need it.
@@ -300,9 +313,11 @@ giving you a free <ElixirTooltip elixirKey='undead-man-walking' /> for five minu
 
 You must now find and escort an **Elemental Orb** back to the **APD Interrogation** room. This orb will spawn in one of three locations:
 
-<RichImage image='/content/alpha-omega/alpha-omega-yellow-house-elemental-orb.webp' caption='Yellow House Upstairs' />
-<RichImage image='/content/alpha-omega/alpha-omega-green-house-elemental-orb.webp' caption='Green House Downstairs' />
-<RichImage image='/content/alpha-omega/alpha-omega-beds-elemental-orb.webp' caption='Beds' />
+<CustomCarousel>
+  <RichImage image='/content/alpha-omega/alpha-omega-yellow-house-elemental-orb.webp' caption='Yellow House Upstairs' />
+  <RichImage image='/content/alpha-omega/alpha-omega-green-house-elemental-orb.webp' caption='Green House Downstairs' />
+  <RichImage image='/content/alpha-omega/alpha-omega-beds-elemental-orb.webp' caption='Beds' />
+</CustomCarousel>
 
 Make sure you stay relatively close to this orb when escorting it as getting too far from the orb will cause it to despawn forcing you to go another round to escort it again, without the
 <ElixirTooltip elixirKey='undead-man-walking' /> bonus unless you are running that mega elixir.
