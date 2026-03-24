@@ -20,32 +20,11 @@ export const decodeLastModifiedData = Schema.decodeUnknownEffect(
 	Schema.fromJsonString(LastModifiedDataSchema),
 )
 
-const QuestParamsSchema = Schema.Struct({
-	game: Schema.OptionFromUndefinedOr(Schema.String),
-})
-
-const MainQuestParamsSchema = Schema.Struct({
-	...QuestParamsSchema.fields,
-	map: Schema.OptionFromUndefinedOr(Schema.String),
-})
-
-const SideQuestParamsSchema = Schema.Struct({
-	...QuestParamsSchema.fields,
-	map: Schema.OptionFromUndefinedOr(Schema.String),
-	id: Schema.OptionFromUndefinedOr(Schema.String),
-})
-
-const ZombieParamsSchema = Schema.Struct({
-	id: Schema.OptionFromUndefinedOr(Schema.String),
-})
-
-const RelicParamsSchema = Schema.Struct({
-	id: Schema.OptionFromUndefinedOr(Schema.String),
-	game: Schema.OptionFromUndefinedOr(Schema.String),
-})
-
-const ErrorPageSearchParamsSchema = Schema.Struct({
-	message: Schema.OptionFromUndefinedOr(Schema.String),
+const ParamsSchema = Schema.Struct({
+	id: Schema.OptionFromOptionalNullOr(Schema.String),
+	game: Schema.OptionFromOptionalNullOr(Schema.String),
+	map: Schema.OptionFromOptionalNullOr(Schema.String),
+	message: Schema.OptionFromOptionalNullOr(Schema.String),
 })
 
 const emailGroup = Schema.makeFilterGroup(
@@ -125,11 +104,7 @@ export const StandardFeedbackFormSchema = Schema.toStandardSchemaV1(FeedbackForm
 export const StandardContactFormSchema = Schema.toStandardSchemaV1(ContactFormSchema)
 export const StandardNewsletterFormSchema = Schema.toStandardSchemaV1(NewsletterFormSchema)
 export const decodeReckoningCode = Schema.decodeUnknownExit(ReckoningCodeSchema)
-export const decodeMainQuestParams = Schema.decodeUnknownSync(MainQuestParamsSchema)
-export const decodeSideQuestParams = Schema.decodeUnknownSync(SideQuestParamsSchema)
-export const decodeZombieParams = Schema.decodeUnknownSync(ZombieParamsSchema)
-export const decodeRelicParams = Schema.decodeUnknownSync(RelicParamsSchema)
-export const decodeErrorPageSearchParams = Schema.decodeUnknownEffect(ErrorPageSearchParamsSchema)
+export const decodeParams = Schema.decodeUnknownSync(ParamsSchema)
 export const decodeTerminusCode = Schema.decodeUnknownExit(TerminusCodeSchema)
 export const decodeRichLinkNode = Schema.decodeUnknownExit(RichLinkNodeSchema)
 export const validateFeedbackForm = Schema.decodeExit(StandardFeedbackFormSchema)

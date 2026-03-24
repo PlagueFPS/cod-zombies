@@ -5,25 +5,28 @@ import { Option } from "effect"
 import { useParams } from "next/navigation"
 import NotFoundContent from "@/components/server/not-found-content"
 import { capitalize } from "@/utils/shared-functions"
-import { decodeRelicParams } from "@/utils/validation-schemas"
+import { decodeParams } from "@/utils/validation-schemas"
 
 export default function RelicNotFound() {
 	const params = useParams()
-	const { id, game } = decodeRelicParams(params)
+	const { id, game } = decodeParams(params)
 	const items: Link<string>[] = [
 		{ href: `/relics`, title: "Relics" },
 		{
-			href: "/relics",
-			title: Option.isSome(game) ? capitalize(game.value) : "Game Not Found",
+			href: `/relics?game=${game.valueOrUndefined}`,
+			title: Option.match(game, {
+				onNone: () => "Game Not Found",
+				onSome: game => capitalize(game),
+			}),
 		},
 		{
-			href:
-				Option.isSome(id) && Option.isSome(game)
-					? (`/relics/${game.value}/${id.value}` as Route)
-					: "/relics",
-			title: Option.isSome(id) ? capitalize(id.value) : "Relic Not Found",
+			href: `/relics/${game.valueOrUndefined}/${id.valueOrUndefined}` as Route,
+			title: Option.match(id, {
+				onNone: () => "Relic Not Found",
+				onSome: id => capitalize(id),
+			}),
 		},
 	]
 
-	return <NotFoundContent items={items} resource="Relic" param={Option.getOrUndefined(id)} />
+	return <NotFoundContent items={items} resource="Relic" param={id.valueOrUndefined} />
 }

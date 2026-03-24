@@ -13,28 +13,31 @@
 			{
 				"argsIgnorePattern": "^_",
 				"varsIgnorePattern": "^_",
-				"ignoreRestSiblings": true
-			}
-		]
+				"ignoreRestSiblings": true,
+			},
+		],
 	},
 	"overrides": [
 		{
 			"files": ["**/*.test.ts", "**/*.test.tsx"],
 			"rules": {
-				"jest/no-conditional-expect": "off"
-			}
-		}
+				"jest/no-conditional-expect": "off",
+			},
+		},
 	],
 	"settings": {
 		"react": {
-			"version": "19.2"
+			"version": "19.2",
 		},
 		"next": {
-			"rootDir": ["."]
-		}
+			"rootDir": ["."],
+		},
+	},
+	"options": {
+		"typeAware": true,
 	},
 	"env": {
-		"builtin": true
+		"builtin": true,
 	},
 	"ignorePatterns": [
 		".repos",
@@ -43,6 +46,6 @@
 		".next",
 		"dist",
 		"out",
-		"coverage"
-	]
+		"coverage",
+	],
 }

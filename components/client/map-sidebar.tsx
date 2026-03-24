@@ -39,6 +39,7 @@ import { Switch } from "@/components/ui/switch"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import { capitalize } from "@/utils/shared-functions"
+import { decodeParams } from "@/utils/validation-schemas"
 
 interface IMapSidebar {
 	maps: EncodedInteractiveMap[]
@@ -56,7 +57,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 		convertIncludeToExclude,
 		updateURLParams,
 	} = useMapSearchParams()
-	const { id } = useParams()
+	const params = useParams()
 	const router = useRouter()
 	const mapMarkers = useMemo(
 		() =>
@@ -65,7 +66,11 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 				: (mapLayers.at(0)?.markers ?? []),
 		[layerParam, mapLayers],
 	)
-	const currentMap = capitalize(String(id))
+
+	// Throwing here is acceptable to narrow the type since this component is only rendered
+	// on the /maps/[id] page the id being present
+	const id = decodeParams(params).id.pipe(Option.getOrThrow)
+	const currentMap = capitalize(id)
 
 	useEffect(() => {
 		convertIncludeToExclude(mapMarkers)

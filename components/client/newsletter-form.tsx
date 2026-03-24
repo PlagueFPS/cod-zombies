@@ -52,13 +52,13 @@ export default function NewsletterForm() {
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		form.handleSubmit()
+		void form.handleSubmit()
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
 			e.preventDefault()
-			form.handleSubmit()
+			void form.handleSubmit()
 		}
 	}
 

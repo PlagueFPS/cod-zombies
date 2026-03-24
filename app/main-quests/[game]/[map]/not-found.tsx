@@ -5,27 +5,31 @@ import { Option } from "effect"
 import { useParams } from "next/navigation"
 import NotFoundContent from "@/components/server/not-found-content"
 import { capitalize } from "@/utils/shared-functions"
-import { decodeMainQuestParams } from "@/utils/validation-schemas"
+import { decodeParams } from "@/utils/validation-schemas"
 
 export default function MainQuestNotFound() {
 	const params = useParams()
-	const { game, map } = decodeMainQuestParams(params)
+	const { game, map } = decodeParams(params)
 	const items: Link<string>[] = [
 		{
-			href: Option.isSome(game) ? `/main-quests?game=${game.value}` : "/main-quests",
-			title: Option.getOrNull(game) ?? "Game Not Found",
+			href: `/main-quests`,
+			title: "Main Quests",
 		},
 		{
-			href:
-				Option.isSome(game) && Option.isSome(map)
-					? (`/main-quests/${game.value}/${map.value}` as Route)
-					: "/main-quests",
-			title: Option.isSome(map) ? capitalize(map.value) : "Map Not Found",
+			href: `/main-quests?game=${game.valueOrUndefined}`,
+			title: Option.match(game, {
+				onNone: () => "Game Not Found",
+				onSome: game => capitalize(game),
+			}),
+		},
+		{
+			href: `/main-quests/${game.valueOrUndefined}/${map.valueOrUndefined}` as Route,
+			title: Option.match(map, {
+				onNone: () => "Map Not Found",
+				onSome: map => capitalize(map),
+			}),
 		},
 	]
-	let resource = "Map"
 
-	if (Option.getOrNull(game) === "side-quests") resource = "Side Quest"
-
-	return <NotFoundContent items={items} resource={resource} param={Option.getOrUndefined(map)} />
+	return <NotFoundContent items={items} resource="Main Quest" param={map.valueOrUndefined} />
 }
