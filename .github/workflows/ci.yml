@@ -11,6 +11,18 @@ jobs:
     name: Format, Lint, Typecheck, Test, Build
     runs-on: ubuntu-latest
 
+    env:
+      HASH_SALT: ci-build-dummy-salt
+      LINEAR_API_KEY: lin_api_ci_dummy
+      LINEAR_DEFAULT_ASSIGNEE_ID: ci-linear-assignee-dummy
+      LINEAR_USER_FEEDBACK_LABEL: 00000000-0000-4000-8000-000000000001
+      LINEAR_WORKSPACE: ci-workspace
+      RESEND_API_KEY: re_ci_dummy
+      RESEND_AUDIENCE_ID: ci-resend-audience-dummy
+      VERCEL_ENV: production
+      VERCEL_PROJECT_PRODUCTION_URL: cod-zombies.vercel.app
+      VERCEL_URL: ci-preview.example.com
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
