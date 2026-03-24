@@ -2,6 +2,7 @@ import PerkTooltip from '@/components/client/perk-tooltip'
 import { RichTable, RichBodyRow } from '@/components/server/rich-table'
 import { TableCell } from '@/components/ui/table'
 import RichImage from '@/components/client/rich-image'
+import CustomCarousel from '@/components/client/custom-carousel'
 import ZombieTooltip from '@/components/client/zombie-tooltip'
 import AmmoModTooltip from '@/components/client/ammo-mod-tooltip'
 import YoutubeEmbed from '@/components/server/youtube-embed'
@@ -185,10 +186,12 @@ one of the four towers, indicating where the item is located.
 
 Go into this tower and collect the item. The item only has one spawn location per tower:
 
-<RichImage image="/content/ix/ix-danu-head-spawn.webp" caption="Danu Tower: Arboretum"  />
-<RichImage image="/content/ix/ix-ra-head-spawn.webp" caption="Ra Tower: Burial Chamber"  />
-<RichImage image="/content/ix/ix-zeus-head-spawn.webp" caption="Zeus Tower: Bath House"  />
-<RichImage image="/content/ix/ix-odin-head-spawn.webp" caption="Odin Tower: Cauldron"  />
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-danu-head-spawn.webp" caption="Danu Tower: Arboretum"  />
+  <RichImage image="/content/ix/ix-ra-head-spawn.webp" caption="Ra Tower: Burial Chamber"  />
+  <RichImage image="/content/ix/ix-zeus-head-spawn.webp" caption="Zeus Tower: Bath House"  />
+  <RichImage image="/content/ix/ix-odin-head-spawn.webp" caption="Odin Tower: Cauldron"  />
+</CustomCarousel>
 
 After collecting the item, you must build the **Acid Trap** which requires three parts two of which are located inside the Temple and are in the same spots every game:
 
@@ -220,15 +223,17 @@ Mystery Box to poison it, guaranteeing your next box spin to be the **Death of O
 Around the map are four bull symbols you must ignite using the [Brazen Bull's](#building-the-brazen-bull) primary fire, after igniting a symbol a <ZombieTooltip zombieKey='destroyer' />
 or <ZombieTooltip zombieKey='marauder' /> will spawn that you must kill to have its soul absorbed by Ra. There are nine total locations where a bull symbol can spawn:
 
-<RichImage image="/content/ix/ix-temple-bull-symbol.webp" caption='Temple Symbol'  />
-<RichImage image="/content/ix/ix-the-pit-bull-symbol.webp" caption='The Pit Symbol'  />
-<RichImage image="/content/ix/ix-odin-zeus-entrance-bull-symbol.webp" caption='Odin-Zeus Temple Entrance Symbol'  />
-<RichImage image="/content/ix/ix-flooded-crypt-bull-symbol.webp" caption='Flooded Crypt Symbol'  />
-<RichImage image="/content/ix/ix-ra-tower-bull-symbol.webp" caption='Ra Tower: Burial Chamber Symbol'  />
-<RichImage image="/content/ix/ix-arena-bull-symbol.webp" caption='Arena Symbol'  />
-<RichImage image="/content/ix/ix-danu-tunnel-bull-symbol.webp" caption='Danu Tunnel Symbol'  />
-<RichImage image="/content/ix/ix-draw-bridge-bull-symbol.webp" caption='Draw Bridge Symbol'  />
-<RichImage image="/content/ix/ix-danu-altar-room-bull-symbol.webp" caption='Danu Altar Room Symbol'  />
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-temple-bull-symbol.webp" caption='Temple Symbol'  />
+  <RichImage image="/content/ix/ix-the-pit-bull-symbol.webp" caption='The Pit Symbol'  />
+  <RichImage image="/content/ix/ix-odin-zeus-entrance-bull-symbol.webp" caption='Odin-Zeus Temple Entrance Symbol'  />
+  <RichImage image="/content/ix/ix-flooded-crypt-bull-symbol.webp" caption='Flooded Crypt Symbol'  />
+  <RichImage image="/content/ix/ix-ra-tower-bull-symbol.webp" caption='Ra Tower: Burial Chamber Symbol'  />
+  <RichImage image="/content/ix/ix-arena-bull-symbol.webp" caption='Arena Symbol'  />
+  <RichImage image="/content/ix/ix-danu-tunnel-bull-symbol.webp" caption='Danu Tunnel Symbol'  />
+  <RichImage image="/content/ix/ix-draw-bridge-bull-symbol.webp" caption='Draw Bridge Symbol'  />
+  <RichImage image="/content/ix/ix-danu-altar-room-bull-symbol.webp" caption='Danu Altar Room Symbol'  />
+</CustomCarousel>
 
 Once all four **Gladiators** have been killed, head to the **Ra Altar Room** and interact with the obelisk with a symbol on it. A white flash will occur, and the obelisk will begin
 showing four symbols you must remember in the order they appear. These symbols correspond to a special enemy type on the map that you must kill in the order shown on the obelisk.
@@ -250,21 +255,27 @@ The **Brazen Bull** requires three parts to be built and each part has three loc
 
 The first part is the **Bull**, which can be found in the **Ra Altar Room**:
 
-<RichImage image="/content/ix/ix-shield-bull-first-spawn.webp" caption='Right of the gong'  />
-<RichImage image="/content/ix/ix-shield-bull-second-spawn.webp" caption='Next to the wall buy, lying on a pillar'  />
-<RichImage image="/content/ix/ix-shield-bull-final-spawn.webp" caption='Between two pillars near the perk statue'  />
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-shield-bull-first-spawn.webp" caption='Right of the gong'  />
+  <RichImage image="/content/ix/ix-shield-bull-second-spawn.webp" caption='Next to the wall buy, lying on a pillar'  />
+  <RichImage image="/content/ix/ix-shield-bull-final-spawn.webp" caption='Between two pillars near the perk statue'  />
+</CustomCarousel>
 
 The second part is the **Spear**, which can be found in the **Zeus Tower**:
 
-<RichImage image="/content/ix/ix-shield-spear-first-spawn.webp" caption='Zeus Altar Room - next to the statues feet left of the window near the Perk Statue'  />
-<RichImage image="/content/ix/ix-shield-spear-second-spawn.webp" caption='Zeus Tower: Entrance - next to the ascending stairs, in the hand of the statue'  />
-<RichImage image="/content/ix/ix-shield-spear-final-spawn.webp" caption='Zeus Tower: Bath House - on the shelf'  />
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-shield-spear-first-spawn.webp" caption='Zeus Altar Room - next to the statues feet left of the window near the Perk Statue'  />
+  <RichImage image="/content/ix/ix-shield-spear-second-spawn.webp" caption='Zeus Tower: Entrance - next to the ascending stairs, in the hand of the statue'  />
+  <RichImage image="/content/ix/ix-shield-spear-final-spawn.webp" caption='Zeus Tower: Bath House - on the shelf'  />
+</CustomCarousel>
 
 The third part is the **Plat**, which can be found in the **Odin Tower**:
 
-<RichImage image="/content/ix/ix-shield-plat-first-spawn.webp" caption='Odin Altar Room - next to a barrel of spears'  />
-<RichImage image="/content/ix/ix-shield-plat-second-spawn.webp" caption='Odin Tower: Entrance - on the shield rack in the bottom left corner'  />
-<RichImage image="/content/ix/ix-shield-plat-final-spawn.webp" caption='Odin Tower: Cauldron - against a wooden pillar'  />
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-shield-plat-first-spawn.webp" caption='Odin Altar Room - next to a barrel of spears'  />
+  <RichImage image="/content/ix/ix-shield-plat-second-spawn.webp" caption='Odin Tower: Entrance - on the shield rack in the bottom left corner'  />
+  <RichImage image="/content/ix/ix-shield-plat-final-spawn.webp" caption='Odin Tower: Cauldron - against a wooden pillar'  />
+</CustomCarousel>
 
 Once all three parts have been collected, head to **The Pit** and build the **Brazen Bull** on the workbench there.
 
@@ -272,10 +283,12 @@ Once all three parts have been collected, head to **The Pit** and build the **Br
 Head to the Arena, and when ready, interact with the **Challenge Pedestal** to be teleported underground. You must find four metal rods and shoot them until they disappear.
 These rods are located:
 
-<RichImage image="/content/ix/ix-danu-tunnel-rod.webp" caption='Danu Tunnel Rod'  />
-<RichImage image="/content/ix/ix-odin-tunnel-rod.webp" caption='Odin Tunnel Rod'  />
-<RichImage image="/content/ix/ix-the-cursed-room-rod.webp" caption='The Cursed Room Rod'  />
-<RichImage image="/content/ix/ix-collapsed-tunnel-rod.webp" caption='Collapsed Tunnel Rod'  />
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-danu-tunnel-rod.webp" caption='Danu Tunnel Rod'  />
+  <RichImage image="/content/ix/ix-odin-tunnel-rod.webp" caption='Odin Tunnel Rod'  />
+  <RichImage image="/content/ix/ix-the-cursed-room-rod.webp" caption='The Cursed Room Rod'  />
+  <RichImage image="/content/ix/ix-collapsed-tunnel-rod.webp" caption='Collapsed Tunnel Rod'  />
+</CustomCarousel>
 
 > The easiest way to complete this is by using the **Brazen Bull's** primary fire, or by using the **Hellion Salvo**.
 

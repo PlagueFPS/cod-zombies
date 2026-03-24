@@ -1,4 +1,5 @@
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import YoutubeEmbed from "@/components/server/youtube-embed"
 import ZombieTooltip from "@/components/client/zombie-tooltip"
 
@@ -46,9 +47,11 @@ Interact with the <ZombieTooltip zombieKey="vermin" /> on the tray to pick it ba
 <ZombieTooltip zombieKey="vermin" /> in any of the three microwaves found inside the mansion to cook for about 10-15 seconds, 
 the microwave locations are listed below:
 
-<RichImage image="/content/shattered-veil/shattered-veil-first-microwave.webp" caption="West Hallways - outside of the Director's Quarters"  />
-<RichImage image="/content/shattered-veil/shattered-veil-second-microwave.webp" caption="West Hallways - left of the door leading to the Overlook"  />
-<RichImage image="/content/shattered-veil/shattered-veil-final-microwave.webp" caption="Overlook - left of the door leading to the West Hallways"  />
+<CustomCarousel>
+  <RichImage image="/content/shattered-veil/shattered-veil-first-microwave.webp" caption="West Hallways - outside of the Director's Quarters"  />
+  <RichImage image="/content/shattered-veil/shattered-veil-second-microwave.webp" caption="West Hallways - left of the door leading to the Overlook"  />
+  <RichImage image="/content/shattered-veil/shattered-veil-final-microwave.webp" caption="Overlook - left of the door leading to the West Hallways"  />
+</CustomCarousel>
 
 Once the <ZombieTooltip zombieKey="vermin" /> is placed inside the microwave, wait for the smoke emitting from the microwave 
 to turn red indicating you pick the <ZombieTooltip zombieKey="vermin" /> back up by interacting with the microwave.

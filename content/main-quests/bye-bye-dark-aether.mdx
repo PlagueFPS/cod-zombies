@@ -3,6 +3,7 @@ import FieldUpgradeTooltip from "@/components/client/field-upgrade-tooltip"
 import ZombieTooltip from "@/components/client/zombie-tooltip"
 import YoutubeEmbed from "@/components/server/youtube-embed"
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import { TableCell } from "@/components/ui/table"
 import { RichTable, RichBodyRow } from "@/components/server/rich-table"
 import GobbleGumTooltip from "@/components/client/gobblegum-tooltip"
@@ -173,9 +174,11 @@ containing the workbench for building the **Jet Gun**.
 Using the **Jet Gun**, you must suck up three parts around the map for the **L.T.G.** to assemble it. These three parts can be obtained in any order and are found in the same 
 three locations every game:
 
-<RichImage image="/content/liberty-falls/liberty-falls-ltg-first-part.webp" caption="Olly's Comics - in the broken ceiling" />
-<RichImage image="/content/liberty-falls/liberty-falls-ltg-second-part.webp" caption="Washington Ave. - second floor window of the Buzz's Cuts building" />
-<RichImage image="/content/liberty-falls/liberty-falls-ltg-final-part.webp" caption='Dark Aether - floating above the second floor balcony on the left side' />
+<CustomCarousel>
+  <RichImage image="/content/liberty-falls/liberty-falls-ltg-first-part.webp" caption="Olly's Comics - in the broken ceiling" />
+  <RichImage image="/content/liberty-falls/liberty-falls-ltg-second-part.webp" caption="Washington Ave. - second floor window of the Buzz's Cuts building" />
+  <RichImage image="/content/liberty-falls/liberty-falls-ltg-final-part.webp" caption='Dark Aether - floating above the second floor balcony on the left side' />
+</CustomCarousel>
 
 Once all three parts have been obtained, head to **The Alamo** and assemble the **L.T.G.** on the workbench in the corner to complete this step.
 
@@ -223,9 +226,11 @@ After placing the first **Aether Canister** into the **S.D.G.**, a **Strauss Cou
 
 Using this **Strauss Counter**, read the energy levels of three forms of **Dark Aether Energy** around the map, each with a projector nearby. The locations of these projectors are:
 
-<RichImage image="/content/liberty-falls/liberty-falls-first-projector.webp" caption="Groundskeeper's Yard" />
-<RichImage image="/content/liberty-falls/liberty-falls-second-projector.webp" caption="Hilltop Stairs" />
-<RichImage image="/content/liberty-falls/liberty-falls-final-projector.webp" caption='Yummy Freeze Rooftop - only accessible from The Alamo dropdown' />
+<CustomCarousel>
+  <RichImage image="/content/liberty-falls/liberty-falls-first-projector.webp" caption="Groundskeeper's Yard" />
+  <RichImage image="/content/liberty-falls/liberty-falls-second-projector.webp" caption="Hilltop Stairs" />
+  <RichImage image="/content/liberty-falls/liberty-falls-final-projector.webp" caption='Yummy Freeze Rooftop - only accessible from The Alamo dropdown' />
+</CustomCarousel>
 
 When near a projector, the color on your **Strauss Counter** will show either **Red** (High), **Yellow** (Medium), or **Green** (Low); you must set the corresponding projector 
 to the opposite of the color/frequency shown by interacting with the projector changing the color of its light as shown below.

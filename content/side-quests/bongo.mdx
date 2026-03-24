@@ -1,4 +1,5 @@
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import ZombieTooltip from "@/components/client/zombie-tooltip"
 import PerkTooltip from "@/components/client/perk-tooltip"
 import AugmentTooltip from "@/components/client/augment-tooltip"
@@ -7,10 +8,12 @@ import AugmentTooltip from "@/components/client/augment-tooltip"
 There is a friendly <ZombieTooltip zombieKey="ravager" /> named **Bongo** that can appear in one of the window barriers on the map, whom you have to feed a **Shiny Trinket** three times, which is obtained by killing
 <ZombieTooltip zombieKey="oscar" />. Some of the locations **Bongo** can appear in are:
 
-<RichImage image="/content/astra-malorum/astra-malorum-bongo-first-spawn.webp" caption="The Luminarium - in the window barrier immediately to the right when entering from the Crash Site" />
-<RichImage image="/content/astra-malorum/astra-malorum-bongo-second-spawn.webp" caption="Museum Infinitum - in the window barrier left of the Crafting Table" />
-<RichImage image="/content/astra-malorum/astra-malorum-bongo-third-spawn.webp" caption="Archive of Orbis - in the window barrier right of the Stamin-Up machine" />
-<RichImage image="/content/astra-malorum/astra-malorum-bongo-fourth-spawn.webp" caption="The Luminarium - in the window barrier left of the exit towards the Crash Site" />
+<CustomCarousel>
+  <RichImage image="/content/astra-malorum/astra-malorum-bongo-first-spawn.webp" caption="The Luminarium - in the window barrier immediately to the right when entering from the Crash Site" />
+  <RichImage image="/content/astra-malorum/astra-malorum-bongo-second-spawn.webp" caption="Museum Infinitum - in the window barrier left of the Crafting Table" />
+  <RichImage image="/content/astra-malorum/astra-malorum-bongo-third-spawn.webp" caption="Archive of Orbis - in the window barrier right of the Stamin-Up machine" />
+  <RichImage image="/content/astra-malorum/astra-malorum-bongo-fourth-spawn.webp" caption="The Luminarium - in the window barrier left of the exit towards the Crash Site" />
+</CustomCarousel>
 
 > You can know for sure if **Bongo** is in a window barrier by looking at your mini-map and seeing a white dot in the location.
 

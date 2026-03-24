@@ -6,6 +6,7 @@ import ZombieTooltip from "@/components/client/zombie-tooltip"
 import { RichTable, RichBodyRow } from "@/components/server/rich-table"
 import { TableCell } from "@/components/ui/table"
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import YoutubeEmbed from "@/components/server/youtube-embed"
 import GobbleGumTooltip from "@/components/client/gobblegum-tooltip"
 import AugmentTooltip from "@/components/client/augment-tooltip"
@@ -178,9 +179,11 @@ Once the lockdown is completed, you can interact with the structure to pick up t
 You must freeze three **Dark Aether Lanterns**, each one in a different area of the map, all within 10 seconds. This can easily be done by first shooting the lanterns with a
 bullet weapon so that they are in an ideal location for you to quickly shoot them when running between rooms, as seen in the images below. Only one lantern per area will be active.
 
-<RichImage image='/content/the-tomb/the-tomb-temple-lantern.webp' caption='Subterranean Temple Lantern Ideal Location' />
-<RichImage image='/content/the-tomb/the-tomb-ossuary-lantern.webp' caption='Ossuary Lantern Ideal Location' />
-<RichImage image='/content/the-tomb/the-tomb-catacombs-lantern.webp' caption='Neolithic Catacombs Lantern Ideal Location' />
+<CustomCarousel>
+  <RichImage image='/content/the-tomb/the-tomb-temple-lantern.webp' caption='Subterranean Temple Lantern Ideal Location' />
+  <RichImage image='/content/the-tomb/the-tomb-ossuary-lantern.webp' caption='Ossuary Lantern Ideal Location' />
+  <RichImage image='/content/the-tomb/the-tomb-catacombs-lantern.webp' caption='Neolithic Catacombs Lantern Ideal Location' />
+</CustomCarousel>
 
 > You can also start from the **Dark Aether Lantern** in the **Tombs**, then the **Shrine of the Hierophants**, and finally the **Subterranean Temple**. It does not matter which path
 you take, as long you freeze three lanterns, each in a different location within 10 seconds. You can find all possible locations on our [Interactive Map](/maps/the-tomb?include=aether-lantern).

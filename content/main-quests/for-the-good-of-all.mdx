@@ -2,6 +2,7 @@ import GobblegumTooltip from "@/components/client/gobblegum-tooltip"
 import { RichTable, RichBodyRow } from "@/components/server/rich-table"
 import { TableCell } from "@/components/ui/table"
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import ZombieTooltip from "@/components/client/zombie-tooltip"
 import YoutubeEmbed from "@/components/server/youtube-embed"
 
@@ -140,12 +141,14 @@ this **Audio Reel** in the audio player in Kino Der Toten on the right side of t
 You must shoot six rocks scattered around the outside of the map with any **Pack-a-Punched** weapon except the **Apothicon Servant**, causing a bone of a skeleton to begin floating.
 You must collect this bone by shooting it with the **Pack-a-Punched Apothicon Servant**. The locations of the six rocks are:
 
-<RichImage image='/content/revelations/revelations-verruckt-bone.webp' caption='Verruckt - left of the corruption engine near the waterfall' />
-<RichImage image='/content/revelations/revelations-origins-bone.webp' caption='Origins - next to the Giant footprint, outside the map' />
-<RichImage image='/content/revelations/revelations-der-eisendrache-bone.webp' caption='Der Eisendrache - on wall run track' />
-<RichImage image='/content/revelations/revelations-nacht-bone.webp' caption='Nacht Der Untoten - above the Der Eisendrache portal' />
-<RichImage image='/content/revelations/revelations-shangri-la-bone.webp' caption='Shangri-La - above the Stamin-Up machine' />
-<RichImage image='/content/revelations/revelations-spawn-bone.webp' caption='Spawn - inside the Church' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-verruckt-bone.webp' caption='Verruckt - left of the corruption engine near the waterfall' />
+  <RichImage image='/content/revelations/revelations-origins-bone.webp' caption='Origins - next to the Giant footprint, outside the map' />
+  <RichImage image='/content/revelations/revelations-der-eisendrache-bone.webp' caption='Der Eisendrache - on wall run track' />
+  <RichImage image='/content/revelations/revelations-nacht-bone.webp' caption='Nacht Der Untoten - above the Der Eisendrache portal' />
+  <RichImage image='/content/revelations/revelations-shangri-la-bone.webp' caption='Shangri-La - above the Stamin-Up machine' />
+  <RichImage image='/content/revelations/revelations-spawn-bone.webp' caption='Spawn - inside the Church' />
+</CustomCarousel>
 
 > Some of these rocks are difficult to see with regular weapons, a **Sniper Rifle** or weapon with a zoomed sight can be helpful to see and shoot some of these rocks.
 
@@ -161,21 +164,27 @@ to absorb her body and spawn the final **Audio Reel** where her body was lying t
 
 The first part is the **Keeper Skull**, which can be found in the Verruckt area of the map:
 
-<RichImage image='/content/revelations/revelations-keeper-skull-first-spawn.webp' caption='On a set of shelves directly to the right of Speed Cola' />
-<RichImage image='/content/revelations/revelations-keeper-skull-second-spawn.webp' caption='In a wheelchair atop of the staircase, right of the corruption engine' />
-<RichImage image='/content/revelations/revelations-keeper-skull-final-spawn.webp' caption='In a wheelchair adjacent from the Wunderfizz machine, near the jump pad' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-keeper-skull-first-spawn.webp' caption='On a set of shelves directly to the right of Speed Cola' />
+  <RichImage image='/content/revelations/revelations-keeper-skull-second-spawn.webp' caption='In a wheelchair atop of the staircase, right of the corruption engine' />
+  <RichImage image='/content/revelations/revelations-keeper-skull-final-spawn.webp' caption='In a wheelchair adjacent from the Wunderfizz machine, near the jump pad' />
+</CustomCarousel>
 
 The second part is the **Crystal**, which can be found in the Der Eisendrache/Kino der Toten areas of the map:
 
-<RichImage image='/content/revelations/revelations-crystal-first-spawn.webp' caption='In the Primis statue room, on top of a barrel' />
-<RichImage image='/content/revelations/revelations-crystal-second-spawn.webp' caption='On the floor, left of the debris near the Anti-Gravity pyramid' />
-<RichImage image='/content/revelations/revelations-crystal-final-spawn.webp' caption='On a small table near the Jump Pad' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-crystal-first-spawn.webp' caption='In the Primis statue room, on top of a barrel' />
+  <RichImage image='/content/revelations/revelations-crystal-second-spawn.webp' caption='On the floor, left of the debris near the Anti-Gravity pyramid' />
+  <RichImage image='/content/revelations/revelations-crystal-final-spawn.webp' caption='On a small table near the Jump Pad' />
+</CustomCarousel>
 
 The final part is the **Keeper Flag**, which can be found in the Origins/MotD areas of the map:
 
-<RichImage image='/content/revelations/revelations-keeper-flag-first-spawn.webp' caption='On top of the sandbags, right of the VMP wall buy' />
-<RichImage image='/content/revelations/revelations-keeper-flag-second-spawn.webp' caption='On top of the Excavation Site, in a corner' />
-<RichImage image='/content/revelations/revelations-keeper-flag-final-spawn.webp' caption='In the Cafeteria, right of the Mule Kick machine' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-keeper-flag-first-spawn.webp' caption='On top of the sandbags, right of the VMP wall buy' />
+  <RichImage image='/content/revelations/revelations-keeper-flag-second-spawn.webp' caption='On top of the Excavation Site, in a corner' />
+  <RichImage image='/content/revelations/revelations-keeper-flag-final-spawn.webp' caption='In the Cafeteria, right of the Mule Kick machine' />
+</CustomCarousel>
 
 Once all three parts have been collected, head to any summoning altar (Der Eisendrache, Kino Der Toten, Verruckt, or Origins) to build the **Keeper Protector** who you can
 now summon for 5000 points.
@@ -186,11 +195,13 @@ now summon for 5000 points.
 There are five small floating Element 115 rocks that you must shoot with the **Apothicon Servant**, teleporting these rocks to the Pack-a-Punch machine inside the giant
 Apothicon allowing you to Pack-a-Punch the weapon. The location of these five rocks are:
 
-<RichImage image='/content/revelations/revelations-spawn-apothicon-rock.webp' caption='Spawn - above the Jump Pad leading to Shangri-La' />
-<RichImage image='/content/revelations/revelations-verruckt-apothicon-rock.webp' caption='Verruckt - above the Jump Pad leading to Mob of the Dead' />
-<RichImage image='/content/revelations/revelations-verruckt-second-apothicon-rock.webp' caption='Nacht Der Untoten - Above where the giant Apothicon gets trapped' />
-<RichImage image='/content/revelations/revelations-der-eisendrache-apothicon-rock.webp' caption='Der Eisendrache - above the Shangri-La/Der Eisendrache area' />
-<RichImage image='/content/revelations/revelations-motd-apothicon-rock.webp' caption='Mob of the Dead - above the Origins/MotD area' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-spawn-apothicon-rock.webp' caption='Spawn - above the Jump Pad leading to Shangri-La' />
+  <RichImage image='/content/revelations/revelations-verruckt-apothicon-rock.webp' caption='Verruckt - above the Jump Pad leading to Mob of the Dead' />
+  <RichImage image='/content/revelations/revelations-verruckt-second-apothicon-rock.webp' caption='Nacht Der Untoten - Above where the giant Apothicon gets trapped' />
+  <RichImage image='/content/revelations/revelations-der-eisendrache-apothicon-rock.webp' caption='Der Eisendrache - above the Shangri-La/Der Eisendrache area' />
+  <RichImage image='/content/revelations/revelations-motd-apothicon-rock.webp' caption='Mob of the Dead - above the Origins/MotD area' />
+</CustomCarousel>
 
 > The description of the rock locations is just a generalization for a better understanding on where they are located in the sky. These rocks can be hard to see and
 can be seen and shot from many different locations, so it's best to just keep track of how many you have shot and use the list as a rough reference of where they are located.
@@ -225,31 +236,39 @@ but, once found within one of the listed areas that area does not need to be rec
 
 ### Shangri-La/Spawn Egg Locations
 
-<RichImage image='/content/revelations/revelations-shangri-la-egg-first-spawn.webp' caption='Shangri-La - in the fire pit at the base of the staircase' />
-<RichImage image='/content/revelations/revelations-shangri-la-egg-second-spawn.webp' caption='Shangri-La - on the floor near the window left of the Stamin-Up machine' />
-<RichImage image='/content/revelations/revelations-shangri-la-egg-third-spawn.webp' caption='Spawn - leaning on the trash can left of the stairs leading to the Shangri-La jump pad' />
-<RichImage image='/content/revelations/revelations-shangri-la-egg-final-spawn.webp' caption='Spawn - on a barrel next to the jump pad leading to Origins' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-shangri-la-egg-first-spawn.webp' caption='Shangri-La - in the fire pit at the base of the staircase' />
+  <RichImage image='/content/revelations/revelations-shangri-la-egg-second-spawn.webp' caption='Shangri-La - on the floor near the window left of the Stamin-Up machine' />
+  <RichImage image='/content/revelations/revelations-shangri-la-egg-third-spawn.webp' caption='Spawn - leaning on the trash can left of the stairs leading to the Shangri-La jump pad' />
+  <RichImage image='/content/revelations/revelations-shangri-la-egg-final-spawn.webp' caption='Spawn - on a barrel next to the jump pad leading to Origins' />
+</CustomCarousel>
 
 ### Kino Der Toten/Der Eisendrache Egg Locations
 
-<RichImage image='/content/revelations/revelations-kino-egg-first-spawn.webp' caption='Kino Der Toten - on the floor in the path leading to the Bowie Knife' />
-<RichImage image='/content/revelations/revelations-kino-egg-second-spawn.webp' caption='Kino Der Toten - on the corner of the higher balcony right of the stage' />
-<RichImage image='/content/revelations/revelations-kino-egg-third-spawn.webp' caption='Kino Der Toten - in a bucket on the ground right of the Wunderfizz machine' />
-<RichImage image='/content/revelations/revelations-kino-egg-final-spawn.webp' caption='Der Eisendrache - inside the Primis statue room, at the feet of the statues' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-kino-egg-first-spawn.webp' caption='Kino Der Toten - on the floor in the path leading to the Bowie Knife' />
+  <RichImage image='/content/revelations/revelations-kino-egg-second-spawn.webp' caption='Kino Der Toten - on the corner of the higher balcony right of the stage' />
+  <RichImage image='/content/revelations/revelations-kino-egg-third-spawn.webp' caption='Kino Der Toten - in a bucket on the ground right of the Wunderfizz machine' />
+  <RichImage image='/content/revelations/revelations-kino-egg-final-spawn.webp' caption='Der Eisendrache - inside the Primis statue room, at the feet of the statues' />
+</CustomCarousel>
 
 ### Verruckt Egg Locations
 
-<RichImage image='/content/revelations/revelations-verruckt-egg-first-spawn.webp' caption='On the left side of the path leading into the building' />
-<RichImage image='/content/revelations/revelations-verruckt-egg-second-spawn.webp' caption='Right of the blue lit pile of debris near the top of the Speed Cola staircase' />
-<RichImage image='/content/revelations/revelations-verruckt-egg-third-spawn.webp' caption='Inside the Zetsubou No Shima room on the floor between two large green test tubes' />
-<RichImage image='/content/revelations/revelations-verruckt-egg-final-spawn.webp' caption='Near the Wunderfizz machine, next to the two small chairs in a corner' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-verruckt-egg-first-spawn.webp' caption='On the left side of the path leading into the building' />
+  <RichImage image='/content/revelations/revelations-verruckt-egg-second-spawn.webp' caption='Right of the blue lit pile of debris near the top of the Speed Cola staircase' />
+  <RichImage image='/content/revelations/revelations-verruckt-egg-third-spawn.webp' caption='Inside the Zetsubou No Shima room on the floor between two large green test tubes' />
+  <RichImage image='/content/revelations/revelations-verruckt-egg-final-spawn.webp' caption='Near the Wunderfizz machine, next to the two small chairs in a corner' />
+</CustomCarousel>
 
 ### Mob of the Dead/Origins Egg Locations
 
-<RichImage image='/content/revelations/revelations-motd-egg-first-spawn.webp' caption='Mob of the Dead - just before the Corruption Engine near some cells' />
-<RichImage image='/content/revelations/revelations-motd-egg-second-spawn.webp' caption='Mob of the Dead - Near the KN-44 Wall Buy' />
-<RichImage image='/content/revelations/revelations-motd-egg-third-spawn.webp' caption='Origins - left of the Wunderfizz machine' />
-<RichImage image='/content/revelations/revelations-motd-egg-final-spawn.webp' caption='Origins - left of the Vesper wall buy next to a pile of rocks' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-motd-egg-first-spawn.webp' caption='Mob of the Dead - just before the Corruption Engine near some cells' />
+  <RichImage image='/content/revelations/revelations-motd-egg-second-spawn.webp' caption='Mob of the Dead - Near the KN-44 Wall Buy' />
+  <RichImage image='/content/revelations/revelations-motd-egg-third-spawn.webp' caption='Origins - left of the Wunderfizz machine' />
+  <RichImage image='/content/revelations/revelations-motd-egg-final-spawn.webp' caption='Origins - left of the Vesper wall buy next to a pile of rocks' />
+</CustomCarousel>
 
 Once you have found an egg, bring it inside the giant **Apothicon** and place it within one of the four abscesses located in the stomach acid pool of the Apothicon.
 The egg can then be filled with zombie souls, **10 souls** are needed to hatch the egg into a **Gateworm** that can only be picked up by the player who placed the egg.
@@ -266,27 +285,35 @@ can only hold one **Gateworm** at a time.
 
 ### Spawn Rune Locations
 
-<RichImage image='/content/revelations/revelations-spawn-rune-first-spawn.webp' caption='Near the jump pad leading to Origins' />
-<RichImage image='/content/revelations/revelations-spawn-rune-second-spawn.webp' caption='Left of the Quick Revive machine' />
-<RichImage image='/content/revelations/revelations-spawn-rune-final-spawn.webp' caption='Near the jump pad leading to Shangri-La' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-spawn-rune-first-spawn.webp' caption='Near the jump pad leading to Origins' />
+  <RichImage image='/content/revelations/revelations-spawn-rune-second-spawn.webp' caption='Left of the Quick Revive machine' />
+  <RichImage image='/content/revelations/revelations-spawn-rune-final-spawn.webp' caption='Near the jump pad leading to Shangri-La' />
+</CustomCarousel>
 
 ### Shangri-La/Der Eisendrache Rune Locations
-d
-<RichImage image='/content/revelations/revelations-shangri-la-rune-first-spawn.webp' caption='Shangri-La - On the panel in front of the Stamin-Up machine' />
-<RichImage image='/content/revelations/revelations-shangri-la-rune-second-spawn.webp' caption='Der Eisendrache - In front of the three Primis statues in the Primis Statue Room' />
-<RichImage image='/content/revelations/revelations-shangri-la-rune-final-spawn.webp' caption='Der Eisendrache - on the Anti-Gravity pressure plate' />
+
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-shangri-la-rune-first-spawn.webp' caption='Shangri-La - On the panel in front of the Stamin-Up machine' />
+  <RichImage image='/content/revelations/revelations-shangri-la-rune-second-spawn.webp' caption='Der Eisendrache - In front of the three Primis statues in the Primis Statue Room' />
+  <RichImage image='/content/revelations/revelations-shangri-la-rune-final-spawn.webp' caption='Der Eisendrache - on the Anti-Gravity pressure plate' />
+</CustomCarousel>
 
 ### Verruckt Rune Locations
 
-<RichImage image='/content/revelations/revelations-verruckt-rune-first-spawn.webp' caption='In front of the metal fencing in the Power Room' />
-<RichImage image='/content/revelations/revelations-verruckt-rune-second-spawn.webp' caption='Right of the two test tubes in the Zetsubou No Shima room' />
-<RichImage image='/content/revelations/revelations-verruckt-rune-final-spawn.webp' caption='On the footpath leading to the Kino Der Toten Jump Pad' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-verruckt-rune-first-spawn.webp' caption='In front of the metal fencing in the Power Room' />
+  <RichImage image='/content/revelations/revelations-verruckt-rune-second-spawn.webp' caption='Right of the two test tubes in the Zetsubou No Shima room' />
+  <RichImage image='/content/revelations/revelations-verruckt-rune-final-spawn.webp' caption='On the footpath leading to the Kino Der Toten Jump Pad' />
+</CustomCarousel>
 
 ### Mob of the Dead/Origins Rune Locations
 
-<RichImage image='/content/revelations/revelations-motd-rune-first-spawn.webp' caption='Mob of the Dead - left of the Cafeteria entrance, in front of the fallen bulletin board' />
-<RichImage image='/content/revelations/revelations-motd-rune-second-spawn.webp' caption='Origins - near the Generator 3 door entrance to the MotD area' />
-<RichImage image='/content/revelations/revelations-motd-rune-final-spawn.webp' caption='Mob of the Dead - Across from the KN-44 Wall Buy underneath a lamp' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-motd-rune-first-spawn.webp' caption='Mob of the Dead - left of the Cafeteria entrance, in front of the fallen bulletin board' />
+  <RichImage image='/content/revelations/revelations-motd-rune-second-spawn.webp' caption='Origins - near the Generator 3 door entrance to the MotD area' />
+  <RichImage image='/content/revelations/revelations-motd-rune-final-spawn.webp' caption='Mob of the Dead - Across from the KN-44 Wall Buy underneath a lamp' />
+</CustomCarousel>
 
 Once a **Rune of Creation** has been picked up, head back to the **Apothicon** and retrieve another **Gateworm**. You must repeat this process until all four
 **Runes of Creation** have been collected. Once all **Runes of Creation** have been collected, you should prepare for the next step involving a lot of <ZombieTooltip zombieKey='margwa' />
@@ -321,10 +348,12 @@ Once the correct order has been inputted, a **Max Ammo** will spawn where the sy
 Two <ZombieTooltip zombieKey='margwa' /> enemies will then spawn, and there will be four waves of two <ZombieTooltip zombieKey='margwa' /> (<ZombieTooltip zombieKey='margwa' /> count
 is increased by one each wave in co-op) with each wave bringing a randomized terrain shift to the boss arena:
 
-<RichImage image='/content/revelations/revelations-fire-terrain.webp' caption='Fire Terrain - flame walls and magma pools around the arena spawning Fire Margwas' />
-<RichImage image='/content/revelations/revelations-lava-terrain.webp' caption='Lava Terrain - the entire floor is lava with white circles for safe spots spawning Normal Margwas' />
-<RichImage image='/content/revelations/revelations-lightning-terrain.webp' caption='Lightning Terrain - electrified walls blocking off paths spawning Normal Margwas' />
-<RichImage image='/content/revelations/revelations-void-terrain.webp' caption='Void Terrain - void tornados around the edges of the arena spawning Void Margwas' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-fire-terrain.webp' caption='Fire Terrain - flame walls and magma pools around the arena spawning Fire Margwas' />
+  <RichImage image='/content/revelations/revelations-lava-terrain.webp' caption='Lava Terrain - the entire floor is lava with white circles for safe spots spawning Normal Margwas' />
+  <RichImage image='/content/revelations/revelations-lightning-terrain.webp' caption='Lightning Terrain - electrified walls blocking off paths spawning Normal Margwas' />
+  <RichImage image='/content/revelations/revelations-void-terrain.webp' caption='Void Terrain - void tornados around the edges of the arena spawning Void Margwas' />
+</CustomCarousel>
 
 > If you are quick enough to kill a <ZombieTooltip zombieKey='margwa' /> before they fully spawn in it will immediately complete the wave so you won't have to kill the others.
 This is best done with the **Thundergun**.
@@ -345,13 +374,15 @@ If it does despawn, picking up a Death Machine power-up or going down will cause
 
 The relics that need to be collected with the **Summoning Key** can be collected in any order and are as follows:
 
-<RichImage image='/content/revelations/revelations-shangri-la-relic.webp' caption='Shangri-La - The Focusing Crystal left of the temple entrance' />
-<RichImage image='/content/revelations/revelations-verruckt-relic.webp' caption='Verruckt - The mounted MG42 atop the fountain right of the Corruption Engine' />
-<RichImage image='/content/revelations/revelations-motd-relic.webp' caption='Mob of the Dead - The poster in one of the cells' />
-<RichImage image='/content/revelations/revelations-nacht-relic.webp' caption='Nacht Der Untoten - The red barrel outside the window left of the spawn portal' />
-<RichImage image='/content/revelations/revelations-origins-relic.webp' caption='Origins - The tombstone on one the scaffolding left of the Wunderfizz machine' />
-<RichImage image='/content/revelations/revelations-der-eisendrache-relic.webp' caption='Der Eisendrache - The clock above the Undercroft' />
-<RichImage image='/content/revelations/revelations-kino-relic.webp' caption='Kino Der Toten - The radio in the chandelier' />
+<CustomCarousel>
+  <RichImage image='/content/revelations/revelations-shangri-la-relic.webp' caption='Shangri-La - The Focusing Crystal left of the temple entrance' />
+  <RichImage image='/content/revelations/revelations-verruckt-relic.webp' caption='Verruckt - The mounted MG42 atop the fountain right of the Corruption Engine' />
+  <RichImage image='/content/revelations/revelations-motd-relic.webp' caption='Mob of the Dead - The poster in one of the cells' />
+  <RichImage image='/content/revelations/revelations-nacht-relic.webp' caption='Nacht Der Untoten - The red barrel outside the window left of the spawn portal' />
+  <RichImage image='/content/revelations/revelations-origins-relic.webp' caption='Origins - The tombstone on one of the scaffolding platforms left of the Wunderfizz machine' />
+  <RichImage image='/content/revelations/revelations-der-eisendrache-relic.webp' caption='Der Eisendrache - The clock above the Undercroft' />
+  <RichImage image='/content/revelations/revelations-kino-relic.webp' caption='Kino Der Toten - The radio in the chandelier' />
+</CustomCarousel>
 
 If all relics were collected successfully, the **Summoning Key** will not return to the player indicating the completion of this step. At this point,
 you should prepare for the final boss fight.

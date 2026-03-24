@@ -1,4 +1,5 @@
 import RichImage from "@/components/client/rich-image"
+import CustomCarousel from "@/components/client/custom-carousel"
 import { RichTable, RichBodyRow } from "@/components/server/rich-table"
 import { TableCell } from "@/components/ui/table"
 import YoutubeEmbed from "@/components/server/youtube-embed"
@@ -381,9 +382,11 @@ the portal to spawn in the next item.
 
 Head to the **Study**. You must pick up a Bell that can spawn in one of three locations within this room:
 
-<RichImage image='/content/shattered-veil/shattered-veil-bell-first-location.webp' caption='In the glass cabinet left of the Swat 5.56 wall buy' />
-<RichImage image='/content/shattered-veil/shattered-veil-bell-second-location.webp' caption='In the glass cabinet right of the Swat 5.56 wall buy' />
-<RichImage image='/content/shattered-veil/shattered-veil-bell-final-location.webp' caption='On the floor next to a display case opposite the first spawn' />
+<CustomCarousel>
+  <RichImage image='/content/shattered-veil/shattered-veil-bell-first-location.webp' caption='In the glass cabinet left of the Swat 5.56 wall buy' />
+  <RichImage image='/content/shattered-veil/shattered-veil-bell-second-location.webp' caption='In the glass cabinet right of the Swat 5.56 wall buy' />
+  <RichImage image='/content/shattered-veil/shattered-veil-bell-final-location.webp' caption='On the floor next to a display case opposite the first spawn' />
+</CustomCarousel>
 
 Once you have the **Bell**, head to the bar in the **Overlook** and place it down next to the "Please ring the bell for service" sign. You'll then need to obtain
 <AmmoModTooltip ammoModKey="brain-rot" game="black-ops-6" /> on your weapon and charm a zombie next to this bell and interact with the bell to ring it.

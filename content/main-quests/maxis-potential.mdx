@@ -3,6 +3,7 @@ import PerkTooltip from '@/components/client/perk-tooltip'
 import ZombieTooltip from '@/components/client/zombie-tooltip'
 import YoutubeEmbed from '@/components/server/youtube-embed'
 import RichImage from '@/components/client/rich-image'
+import CustomCarousel from '@/components/client/custom-carousel'
 import { TableCell } from '@/components/ui/table'
 import { RichTable, RichBodyRow } from '@/components/server/rich-table'
 
@@ -52,9 +53,11 @@ Head to the Atrium and interact with **Ravenov** to begin the main quest. Once a
 
 Once you have the **ID Badge**, you must use it to open three lockers around the map and collect the serum inside each locker. The locations of the three lockers are:
 
-<RichImage image="/content/firebase-z/firebase-z-equipment-storage-locker.webp" caption='Equipment Storage' />
-<RichImage image="/content/firebase-z/firebase-z-colonels-office-locker.webp" caption='Colonels Office' />
-<RichImage image="/content/firebase-z/firebase-z-engineering-locker.webp" caption='Engineering' />
+<CustomCarousel>
+  <RichImage image="/content/firebase-z/firebase-z-equipment-storage-locker.webp" caption='Equipment Storage' />
+  <RichImage image="/content/firebase-z/firebase-z-colonels-office-locker.webp" caption='Colonels Office' />
+  <RichImage image="/content/firebase-z/firebase-z-engineering-locker.webp" caption='Engineering' />
+</CustomCarousel>
 
 Once you have all three serums, head to the **Field Hospital**, where you can place the serums inside a **Chemical Mixer**, spawning in some <ZombieTooltip zombieKey='hellhound' />.
 Wait for the device to finish, then interact with it twice to pick up the **Agent Delivery System**.
