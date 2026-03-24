@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Effect } from "effect"
 import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
+// @ts-ignore: this is a valid import, tsc module resolution fails at compile time, but gives no errors in editor
 import PrivacyPolicy from "@/content/legal/privacy-policy.mdx"
 import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
