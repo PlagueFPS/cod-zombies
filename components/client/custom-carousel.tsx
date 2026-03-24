@@ -33,6 +33,9 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		}
 
 		api.on("select", onSelect)
+		return () => {
+			api.off("select", onSelect)
+		}
 	}, [api])
 
 	return (
