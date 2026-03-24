@@ -77,7 +77,7 @@ export default function InteractiveMap({ mapConfig }: IInteractiveMap) {
 			}
 		}
 
-		loadImageDimensions()
+		void loadImageDimensions()
 	}, [currentLayer])
 
 	if (Option.isNone(currentLayer)) return null

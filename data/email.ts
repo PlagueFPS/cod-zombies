@@ -32,7 +32,7 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: 
 	if (Option.isSome(contact))
 		return yield* new ContactExistsError({
 			message: "That email is already subscribed!",
-			cause: new Error(`Contact already subscribed: ${contact.value}`),
+			cause: new Error(`Contact already subscribed: ${contact.value.id}`),
 		})
 
 	const ttl = yield* Duration.fromInput("1 day")

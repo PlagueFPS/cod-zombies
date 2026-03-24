@@ -3,7 +3,7 @@ import { Effect, Option } from "effect"
 import { AlertCircle } from "lucide-react"
 import { CustomLink } from "@/components/client/custom-link"
 import { Button } from "@/components/ui/button"
-import { decodeErrorPageSearchParams } from "@/utils/validation-schemas"
+import { decodeParams } from "@/utils/validation-schemas"
 
 export const metadata: Metadata = {
 	title: "Subscribe Failed",
@@ -19,13 +19,12 @@ const subscribeErrorUI = Effect.fn("SubscribeErrorPage")(function* (
 	searchParams: PageProps<"/newsletter/subscribe/error">["searchParams"],
 ) {
 	const params = yield* Effect.promise(() => searchParams)
-	const { message } = yield* decodeErrorPageSearchParams(params).pipe(
-		Effect.catch(() => Effect.succeed({ message: Option.none() })),
-	)
-
-	const errorMessage = Option.isSome(message)
-		? message.value
-		: "An error occurred during the subscribe process. You can try again using the newsletter form at the bottom of the page."
+	const { message } = decodeParams(params)
+	const errorMessage = Option.match(message, {
+		onNone: () =>
+			"An error occurred during the subscribe process. You can try again using the newsletter form at the bottom of the page.",
+		onSome: message => message,
+	})
 
 	return (
 		<div className="mx-auto max-w-md px-4 py-12 text-center">

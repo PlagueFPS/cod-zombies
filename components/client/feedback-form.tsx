@@ -81,7 +81,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		form.handleSubmit()
+		void form.handleSubmit()
 	}
 
 	const handleOpenChange = (open: boolean) => {
@@ -94,7 +94,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter") {
 			e.preventDefault()
-			form.handleSubmit()
+			void form.handleSubmit()
 		}
 	}
 

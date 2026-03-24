@@ -67,7 +67,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		form.handleSubmit()
+		void form.handleSubmit()
 	}
 
 	const handleOpenChange = (open: boolean) => {
@@ -80,7 +80,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
 			e.preventDefault()
-			form.handleSubmit()
+			void form.handleSubmit()
 		}
 	}
 
