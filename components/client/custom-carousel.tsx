@@ -61,8 +61,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 						<button
 							key={i}
 							type="button"
-							role="tab"
-							aria-selected={i === currentIndex}
+							aria-current={i === currentIndex}
 							aria-label={`Slide ${i + 1} of ${count}`}
 							className={cn(
 								"h-1.5 w-1.5 shrink-0 rounded-full transition-[background-color,transform] duration-200",
