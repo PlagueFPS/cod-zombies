@@ -1,4 +1,4 @@
-import * as BunPath from "@effect/platform-bun/BunPath"
+import * as NodePath from "@effect/platform-node/NodePath"
 import { expect, it, layer } from "@effect/vitest"
 import { Effect, FileSystem, Layer, Redacted } from "effect"
 import { afterEach, beforeEach, describe, vi } from "vitest"
@@ -33,7 +33,7 @@ const MockFileSystemLayer = Layer.mergeAll(
 	FileSystem.layerNoop({
 		readFileString: () => Effect.succeed(MOCK_LAST_MODIFIED_JSON),
 	}),
-	BunPath.layer,
+	NodePath.layer,
 )
 
 describe("getServerUrl", () => {

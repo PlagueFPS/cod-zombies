@@ -1,4 +1,4 @@
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { NodeRuntime, NodeServices } from "@effect/platform-node"
 import { Clock, Duration, Effect, FileSystem, HashSet, Path, Schema, Ref } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp from "sharp"
@@ -116,7 +116,7 @@ const transformResizeAndOptimize = Effect.fn("transformResizeAndOptimize")(funct
 
 type TransformResult = Effect.Success<ReturnType<typeof transformMap>>
 
-const optimizeCommand = Command.make(
+export const optimizeCommand = Command.make(
 	"optimize",
 	{
 		dir: dirOption,
@@ -213,6 +213,10 @@ const optimizeCommand = Command.make(
 		}).pipe(Effect.withLogSpan("optimize_assets")),
 )
 
-Command.run(optimizeCommand, {
+export const runImageOptimizationProgram = Command.run(optimizeCommand, {
 	version: "1.0.0",
-}).pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+}).pipe(Effect.provide(NodeServices.layer))
+
+if (import.meta.main) {
+	NodeRuntime.runMain(runImageOptimizationProgram)
+}

@@ -1,5 +1,5 @@
 import type { MapsImagePath, ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { NodeRuntime, NodeServices } from "@effect/platform-node"
 import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import { ImageResponse } from "next/og"
@@ -649,7 +649,7 @@ const outputDirFlag = Flag.directory("output-dir").pipe(
 	),
 )
 
-const generateOgCommand = Command.make(
+export const generateOgCommand = Command.make(
 	"generate-og-images",
 	{
 		mapFlag: mapSlugFlag,
@@ -806,10 +806,10 @@ const generateOgCommand = Command.make(
 		}),
 )
 
-Command.run(generateOgCommand, {
+export const runGenerateOgImagesProgram = Command.run(generateOgCommand, {
 	version: "1.0.0",
-}).pipe(
-	Effect.withLogSpan("generate_og_images"),
-	Effect.provide(BunServices.layer),
-	BunRuntime.runMain,
-)
+}).pipe(Effect.withLogSpan("generate_og_images"), Effect.provide(NodeServices.layer))
+
+if (import.meta.main) {
+	NodeRuntime.runMain(runGenerateOgImagesProgram)
+}

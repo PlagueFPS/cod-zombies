@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { NodeRuntime, NodeServices } from "@effect/platform-node"
 import {
 	DateTime,
 	Effect,
@@ -63,7 +63,7 @@ const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 	}
 })
 
-const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
+export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	output: string,
 	allFiles: MutableHashSet.MutableHashSet<string>,
 	repoRoot: string,
@@ -113,7 +113,7 @@ const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	return result
 })
 
-const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: string) {
+export const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: string) {
 	const path = yield* Path.Path
 	const fs = yield* FileSystem.FileSystem
 	const files = MutableHashSet.empty<string>()
@@ -160,7 +160,7 @@ const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: strin
 	return files
 })
 
-const generateLastModified = Effect.gen(function* () {
+export const generateLastModified = Effect.gen(function* () {
 	const path = yield* Path.Path
 	const fs = yield* FileSystem.FileSystem
 	const contentDir = path.join(process.cwd(), "content")
@@ -195,6 +195,10 @@ const generateLastModified = Effect.gen(function* () {
 	const encodedData = yield* encodeLastModifiedData(lastModifiedData)
 	yield* fs.writeFileString(outputPath, encodedData)
 	yield* Effect.log(`Data written to: ${outputPath}`)
-}).pipe(Effect.withLogSpan("generate_last_modified"), Effect.provide(BunServices.layer))
+}).pipe(Effect.withLogSpan("generate_last_modified"), Effect.provide(NodeServices.layer))
 
-BunRuntime.runMain(generateLastModified)
+export const runGenerateLastModifiedProgram = generateLastModified
+
+if (import.meta.main) {
+	NodeRuntime.runMain(runGenerateLastModifiedProgram)
+}

@@ -1,5 +1,5 @@
 import type { PlatformError } from "effect/PlatformError"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { NodeRuntime, NodeServices } from "@effect/platform-node"
 import { Clock, Effect, FileSystem, HashSet, Path, Predicate, SynchronizedRef } from "effect"
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 import { toPascalCase } from "@/utils/shared-functions"
@@ -120,7 +120,7 @@ function headerComment(publicDir: string, duration: string | number) {
  */\n\n`
 }
 
-const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
+export const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const cwd = process.cwd()
@@ -199,4 +199,10 @@ const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
 	yield* Effect.log(`- / (root): ${rootWebPaths.length} image(s) -> type RootImagePath`)
 })
 
-generateImagePaths().pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+export const runGenerateImagePathsProgram = generateImagePaths().pipe(
+	Effect.provide(NodeServices.layer),
+)
+
+if (import.meta.main) {
+	NodeRuntime.runMain(runGenerateImagePathsProgram)
+}

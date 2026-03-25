@@ -1,5 +1,5 @@
 import type { PlatformError } from "effect/PlatformError"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { NodeRuntime, NodeServices } from "@effect/platform-node"
 import { Clock, Effect, FileSystem, HashSet, Path, Predicate } from "effect"
 import { toPascalCase } from "@/utils/shared-functions"
 
@@ -95,7 +95,7 @@ function headerComment(contentDir: string, duration: string | number) {
  */\n\n`
 }
 
-const generateContentPaths = Effect.fn("generateContentPaths")(function* () {
+export const generateContentPaths = Effect.fn("generateContentPaths")(function* () {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const cwd = process.cwd()
@@ -164,4 +164,10 @@ const generateContentPaths = Effect.fn("generateContentPaths")(function* () {
 	)
 })
 
-generateContentPaths().pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+export const runGenerateContentPathsProgram = generateContentPaths().pipe(
+	Effect.provide(NodeServices.layer),
+)
+
+if (import.meta.main) {
+	NodeRuntime.runMain(runGenerateContentPathsProgram)
+}
