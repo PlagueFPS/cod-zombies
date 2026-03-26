@@ -32,20 +32,23 @@ const sourceOption = Flag.directory("source-dir").pipe(
 
 const mapOption = Flag.boolean("map").pipe(
 	Flag.withAlias("m"),
-	Flag.withDescription(
-		"Resize image to 2048px width with optimization.",
-	),
+	Flag.withDescription("Resize image to 2048px width with optimization."),
 )
 
 const noResizeOption = Flag.boolean("no-resize").pipe(
 	Flag.withDescription(
-		"Only optimize, do not resize (for images ≤1920px or when resize is undesired).",
+		"Only optimize, do not resize (default for images ≤1920px or when resize is undesired).",
 	),
 )
 
 const previewOption = Flag.boolean("preview").pipe(
 	Flag.withAlias("p"),
 	Flag.withDescription("Resize to 640x360 then optimize with max effort and quality."),
+)
+
+const iconOption = Flag.boolean("icon").pipe(
+	Flag.withAlias("i"),
+	Flag.withDescription("Resize to 128x128 then optimize with max effort and quality."),
 )
 
 const transformMap = Effect.fnUntraced(function* (
@@ -120,6 +123,22 @@ const transformResizeAndOptimize = Effect.fnUntraced(function* (
 	return { buffer, fileName: `${baseFileName}.webp` }
 })
 
+const transformIcon = Effect.fnUntraced(function* (
+	image: sharp.Sharp,
+	baseFileName: string,
+	asset: string,
+) {
+	const buffer = yield* Effect.tryPromise({
+		try: () => image.resize(128, 128).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+		catch: cause =>
+			new ImageOptimizationError({
+				message: `Failed to transform icon image: ${asset}`,
+				cause,
+			}),
+	})
+	return { buffer, fileName: `${baseFileName}.webp` }
+})
+
 type TransformResult = Effect.Success<ReturnType<typeof transformMap>>
 
 const optimizeCommand = Command.make(
@@ -130,8 +149,9 @@ const optimizeCommand = Command.make(
 		map: mapOption,
 		noResize: noResizeOption,
 		preview: previewOption,
+		icon: iconOption,
 	},
-	({ dir: targetDir, source, map, noResize, preview }) =>
+	({ dir: targetDir, source, map, noResize, preview, icon }) =>
 		Effect.gen(function* () {
 			const startTime = yield* Clock.currentTimeMillis
 			const fs = yield* FileSystem.FileSystem
@@ -181,6 +201,8 @@ const optimizeCommand = Command.make(
 								result = yield* transformMap(metadata, image, fileName, asset)
 							} else if (preview) {
 								result = yield* transformPreview(image, fileName, asset)
+							} else if (icon) {
+								result = yield* transformIcon(image, fileName, asset)
 							} else if (noResize || metadata.width <= 1920) {
 								result = yield* transformOptimizeOnly(image, fileName, asset)
 							} else {

@@ -3,8 +3,8 @@
  * Run 'generate:image:paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-26T01:45:48.801Z
- * generated in: 41ms
+ * generated at: 2026-03-26T06:20:39.197Z
+ * generated in: 36ms
  */
 
 
@@ -285,6 +285,7 @@ export type IconsImagePath =
   '/icons/objectives/fish.webp' |
   '/icons/objectives/janus-crate.webp' |
   '/icons/objectives/loot-bin.webp' |
+  '/icons/objectives/loot-cyst.webp' |
   '/icons/objectives/overgrown-hoard-husk.webp' |
   '/icons/objectives/plant-spray.webp' |
   '/icons/objectives/vacuum-seal-device.webp' |
@@ -389,6 +390,7 @@ export type PerksImagePath =
   '/perks/melee-macchiato.webp' |
   '/perks/mule-kick-cold-war.webp' |
   '/perks/mule-kick.webp' |
+  '/perks/mystery-perk.webp' |
   '/perks/phd-flopper-bo1.webp' |
   '/perks/phd-flopper.webp' |
   '/perks/phd-slider.webp' |

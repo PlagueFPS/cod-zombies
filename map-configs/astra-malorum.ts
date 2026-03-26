@@ -91,11 +91,7 @@ export const config: MapConfig = {
 					locations: [{ x: 0.588, y: 0.574 }],
 				},
 				{
-					id: "aether-crystal",
-					title: "Aether Crystal",
-					category: "objectives",
-					description: "Dark Aether Crystal that can be destroyed for a variety of loot.",
-					icon: Option.some("/icons/objectives/aether-crystal.webp"),
+					...sharedMarkers["aether-crystal"],
 					locations: [
 						{ x: 0.49, y: 0.719 },
 						{ x: 0.485, y: 0.617 },

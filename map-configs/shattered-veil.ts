@@ -293,12 +293,7 @@ export const config: MapConfig = {
 					],
 				},
 				{
-					id: "aether-crystal",
-					category: "objectives",
-					title: "Aether Crystal",
-					description:
-						"Each crystal drops salvage. The crystal emitting a thick essence contains an empty canister used for one of the Ray Gun MKII upgrades.",
-					icon: Option.some("/icons/objectives/aether-crystal.webp"),
+					...sharedMarkers["aether-crystal"],
 					locations: [
 						{ x: 0.24, y: 0.511 },
 						{ x: 0.531, y: 0.373 },

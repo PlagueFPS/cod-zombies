@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
 	experimental: {
 		serverComponentsHmrCache: true,
 		mdxRs: true,
+		browserDebugInfoInTerminal: true
 	},
 	// Without this, builds will fail with an OOM (out of memory) failure due to excessive memory usage.
 	outputFileTracingExcludes: {
@@ -14,7 +15,6 @@ const nextConfig: NextConfig = {
 	reactCompiler: true,
 	typedRoutes: true,
 	logging: {
-		browserToTerminal: true,
 		fetches: {
 			hmrRefreshes: true,
 			fullUrl: true,
@@ -24,7 +24,6 @@ const nextConfig: NextConfig = {
 		formats: ["image/webp"],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920],
 		qualities: [75],
-		maximumResponseBody: 2_000_000, // 2MB
 	},
 	async redirects() {
 		return [

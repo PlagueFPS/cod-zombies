@@ -1,4 +1,6 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
+import { perks, sharedMarkers, weapons } from "./markers"
 
 export const config: MapConfig = {
 	layers: [
@@ -6,7 +8,384 @@ export const config: MapConfig = {
 			id: "main",
 			title: "Main",
 			image: "/layers/paradox-junction/paradox-junction-main-layer.webp",
-			markers: [],
-		}
+			markers: [
+				{
+					id: "cul-de-sac",
+					title: "Cul-de-Sac",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.243, y: 0.387 },
+						{ x: 0.759, y: 0.387 },
+					],
+				},
+				{
+					id: "trinity-ave",
+					title: "Trinity Ave.",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.238, y: 0.576 },
+						{ x: 0.762, y: 0.576 },
+					],
+				},
+				{
+					id: "green-house",
+					title: "Green House",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.163, y: 0.359 },
+						{ x: 0.68, y: 0.359 },
+					],
+				},
+				{
+					id: "green-house-backyard",
+					title: "Green House Backyard",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.086, y: 0.346 },
+						{ x: 0.61, y: 0.346 },
+					],
+				},
+				{
+					id: "green-house-garage",
+					title: "Green House Garage",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.148, y: 0.39 },
+						{ x: 0.667, y: 0.39 },
+					],
+				},
+				{
+					id: "yellow-house",
+					title: "Yellow House",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.331, y: 0.383 },
+						{ x: 0.845, y: 0.382 },
+					],
+				},
+				{
+					id: "yellow-house-backyard",
+					title: "Yellow House Backyard",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.403, y: 0.357 },
+						{ x: 0.917, y: 0.357 },
+					],
+				},
+				{
+					id: "yellow-house-garage",
+					title: "Yellow House Garage",
+					description: "",
+					category: "general",
+					type: "label",
+					icon: Option.none(),
+					locations: [
+						{ x: 0.33, y: 0.348 },
+						{ x: 0.844, y: 0.348 },
+					],
+				},
+				{
+					id: "loot-cyst",
+					title: "Loot Cyst",
+					description: "Glowing, biological growths that provide loot when feed enough souls.",
+					category: "objectives",
+					icon: Option.some("/icons/objectives/loot-cyst.webp"),
+					locations: [
+						{ x: 0.276, y: 0.314 },
+						{ x: 0.204, y: 0.305 },
+						{ x: 0.156, y: 0.331 },
+						{ x: 0.31, y: 0.364 },
+						{ x: 0.151, y: 0.408 },
+						{ x: 0.068, y: 0.337 },
+						{ x: 0.357, y: 0.396 },
+						{ x: 0.372, y: 0.312 },
+						{ x: 0.194, y: 0.537 },
+						{ x: 0.31, y: 0.505 },
+						{ x: 0.305, y: 0.622 },
+						{ x: 0.182, y: 0.637 },
+					],
+				},
+				{
+					...sharedMarkers["aether-crystal"],
+					locations: [
+						{ x: 0.702, y: 0.314 },
+						{ x: 0.641, y: 0.542 },
+						{ x: 0.782, y: 0.457 },
+						{ x: 0.823, y: 0.428 },
+						{ x: 0.56, y: 0.335 },
+						{ x: 0.815, y: 0.305 },
+						{ x: 0.683, y: 0.648 },
+						{ x: 0.798, y: 0.649 },
+					],
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
+					locations: [
+						{ x: 0.262, y: 0.409 },
+						{ x: 0.066, y: 0.324 },
+						{ x: 0.415, y: 0.4 },
+						{ x: 0.276, y: 0.549 },
+						{ x: 0.779, y: 0.409 },
+						{ x: 0.589, y: 0.324 },
+						{ x: 0.934, y: 0.399 },
+						{ x: 0.793, y: 0.546 },
+					],
+				},
+				{
+					...sharedMarkers["armor-wall-buy"],
+					locations: [
+						{ x: 0.134, y: 0.402 },
+						{ x: 0.367, y: 0.313 },
+						{ x: 0.654, y: 0.402 },
+						{ x: 0.881, y: 0.313 },
+					],
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [
+						{ title: "The Search Begins", x: 0.311, y: 0.379 },
+						{ title: "Run Aground", x: 0.174, y: 0.379 },
+						{ title: "Dead Air", x: 0.121, y: 0.361 },
+						{ title: "Head Cannon", x: 0.74, y: 0.623 },
+						{ title: "Live Air", x: 0.908, y: 0.348 },
+						{ title: "Makin' It Right", x: 0.258, y: 0.611 },
+						{ title: "Before Times", x: 0.356, y: 0.305 },
+						{
+							title: "Storm Coming",
+							description: "Only appears after collecting the 'Before Times' audio log.",
+							x: 0.566,
+							y: 0.37,
+						},
+						{
+							title: "Trickery",
+							description: "Only appears after collecting the 'Storm Coming' audio log.",
+							x: 0.223,
+							y: 0.506,
+						},
+						{
+							title: "Aftermath",
+							description: "Only appears after collecting the 'Trickery' audio log.",
+							x: 0.731,
+							y: 0.35,
+						},
+					],
+				},
+				{
+					...sharedMarkers["door-buy"],
+					locations: [
+						{ x: 0.312, y: 0.354 },
+						{ x: 0.313, y: 0.319 },
+						{ x: 0.318, y: 0.417 },
+						{ x: 0.344, y: 0.336 },
+						{ x: 0.362, y: 0.385 },
+						{ x: 0.243, y: 0.372 },
+						{ x: 0.257, y: 0.366 },
+						{ x: 0.244, y: 0.349 },
+						{ x: 0.189, y: 0.369 },
+						{ x: 0.162, y: 0.388 },
+						{ x: 0.136, y: 0.391 },
+						{ x: 0.15, y: 0.419 },
+						{ x: 0.168, y: 0.327 },
+						{ x: 0.136, y: 0.336 },
+						{ x: 0.135, y: 0.366 },
+						{ x: 0.761, y: 0.372 },
+						{ x: 0.775, y: 0.366 },
+						{ x: 0.76, y: 0.342 },
+						{ x: 0.818, y: 0.396 },
+						{ x: 0.834, y: 0.416 },
+						{ x: 0.829, y: 0.354 },
+						{ x: 0.828, y: 0.319 },
+						{ x: 0.858, y: 0.335 },
+						{ x: 0.876, y: 0.382 },
+						{ x: 0.707, y: 0.367 },
+						{ x: 0.68, y: 0.387 },
+						{ x: 0.67, y: 0.418 },
+						{ x: 0.654, y: 0.39 },
+						{ x: 0.69, y: 0.328 },
+						{ x: 0.655, y: 0.335 },
+						{ x: 0.654, y: 0.366 },
+					],
+				},
+				{
+					...sharedMarkers["gobblegum-machine"],
+					locations: [
+						{ x: 0.193, y: 0.426 },
+						{ x: 0.717, y: 0.427 },
+					],
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [
+						{ x: 0.224, y: 0.413 },
+						{ x: 0.087, y: 0.389 },
+						{ x: 0.42, y: 0.321 },
+						{ x: 0.241, y: 0.547 },
+						{ x: 0.742, y: 0.413 },
+						{ x: 0.607, y: 0.389 },
+						{ x: 0.934, y: 0.321 },
+						{ x: 0.762, y: 0.547 },
+					],
+				},
+				{
+					...sharedMarkers["pack-a-punch"],
+					locations: [
+						{ x: 0.242, y: 0.678 },
+						{ x: 0.762, y: 0.671 },
+					],
+				},
+				{
+					...sharedMarkers["power-door"],
+					locations: [
+						{ x: 0.225, y: 0.468 },
+						{ x: 0.743, y: 0.468 },
+					],
+				},
+				{
+					...sharedMarkers["rampage-inducer"],
+					locations: [{ x: 0.25, y: 0.46 }],
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [
+						{ x: 0.276, y: 0.435 },
+						{ x: 0.782, y: 0.435 },
+					],
+				},
+				{
+					...sharedMarkers.document,
+					locations: [
+						{ title: "Paper Hearts", x: 0.16, y: 0.348 },
+						{ title: "Wanted Man", x: 0.793, y: 0.49 },
+						{ title: "Helpful Information", x: 0.848, y: 0.368 },
+					],
+				},
+				{
+					...sharedMarkers.exfil,
+					icon: Option.some("/icons/equipment/exfil-bo7.webp"),
+					locations: [
+						{ x: 0.195, y: 0.514 },
+						{ x: 0.713, y: 0.514 },
+					],
+				},
+				{
+					...sharedMarkers.portal,
+					title: "Temporal Conduit",
+					description: "Travel through time",
+					locations: [
+						{ x: 0.263, y: 0.335 },
+						{ x: 0.783, y: 0.335 },
+					],
+				},
+				{
+					...sharedMarkers.trap,
+					title: "Electro-Shock Defenses",
+					locations: [
+						{ x: 0.15, y: 0.365 },
+						{ x: 0.325, y: 0.359 },
+						{ x: 0.665, y: 0.365 },
+						{ x: 0.84, y: 0.359 },
+					],
+				},
+				{
+					...sharedMarkers.workbench,
+					locations: [
+						{ x: 0.252, y: 0.375 },
+						{ x: 0.769, y: 0.374 },
+					],
+				},
+				{
+					...perks["quick-revive"],
+					locations: [{ x: 0.224, y: 0.389 }],
+				},
+				{
+					...perks["der-wunderfizz"],
+					locations: [{ x: 0.12, y: 0.569 }],
+				},
+				{
+					...perks["random-perk"],
+					locations: [
+						{ x: 0.144, y: 0.368 },
+						{ x: 0.05, y: 0.366 },
+						{ x: 0.331, y: 0.373 },
+						{ x: 0.741, y: 0.388 },
+						{ x: 0.681, y: 0.351 },
+						{ x: 0.58, y: 0.306 },
+						{ x: 0.833, y: 0.367 },
+						{ x: 0.972, y: 0.389 },
+						{ x: 0.64, y: 0.564 },
+					],
+				},
+				{
+					...weapons["velox-5.7"],
+					locations: [{ x: 0.21, y: 0.441 }],
+				},
+				{
+					...weapons["razor-9mm"],
+					locations: [{ x: 0.059, y: 0.305 }],
+				},
+				{
+					...weapons["m10-breacher"],
+					locations: [{ x: 0.43, y: 0.369 }],
+				},
+				{
+					...weapons.m8a1,
+					locations: [{ x: 0.326, y: 0.529 }],
+				},
+				{
+					...weapons["vs-recon"],
+					locations: [{ x: 0.164, y: 0.549 }],
+				},
+				{
+					...weapons["mxr-17"],
+					locations: [{ x: 0.221, y: 0.647 }],
+				},
+				{
+					...weapons["coda-9"],
+					locations: [{ x: 728, y: 0.44 }],
+				},
+				{
+					...weapons["echo-12"],
+					locations: [{ x: 0.943, y: 0.364 }],
+				},
+				{
+					...weapons["dravec-45"],
+					locations: [{ x: 0.571, y: 0.366 }],
+				},
+				{
+					...weapons["xr3-ion"],
+					locations: [{ x: 0.842, y: 0.525 }],
+				},
+				{
+					...weapons["mk-78"],
+					locations: [{ x: 0.684, y: 0.545 }],
+				},
+				{
+					...weapons["carbon-57"],
+					locations: [{ x: 0.738, y: 0.646 }],
+				},
+			],
+		},
 	],
 }

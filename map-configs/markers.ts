@@ -1,5 +1,5 @@
 import type { IconsImagePath, PerksImagePath } from "@/types/generated/image-paths.gen"
-import type { EncodedMapMarker } from "@/utils/rsc-wire";
+import type { EncodedMapMarker } from "@/utils/rsc-wire"
 import { Option } from "effect"
 
 export interface MapMarker {
@@ -80,6 +80,7 @@ export const MARKER_TYPES = [
 	"janus-crate",
 	"vacuum-seal-device",
 	"loot-bin",
+	"aether-crystal",
 ] as const
 
 /** Handlers for mapping markers ids or types to their category */
@@ -94,6 +95,13 @@ export const categoryHandlers = {
 
 /** All static markers that appear on multiple maps/layers */
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+	"aether-crystal": {
+		id: "aether-crystal",
+		category: "objectives",
+		title: "Aether Crystal",
+		description: "Dark Aether Crystal that can be destroyed for a variety of loot.",
+		icon: Option.some("/icons/objectives/aether-crystal.webp"),
+	},
 	"loot-bin": {
 		id: "loot-bin",
 		title: "Loot Bin",
@@ -255,6 +263,14 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 
 /** All perks appearing on any of the maps */
 export const perks = {
+	"random-perk": {
+		id: "random-perk",
+		title: "Random Perk Location",
+		description: "A random perk machine will spawn here.",
+		icon: Option.some("/perks/mystery-perk.webp"),
+		type: "perk",
+		category: "upgrades",
+	},
 	"mule-kick": {
 		id: "mule-kick",
 		title: "Mule Kick",
@@ -371,6 +387,30 @@ export const perks = {
 
 /** All weapons appearing as wall-buys on any of the maps */
 export const weapons = {
+	"mxr-17": {
+		id: "mxr-17",
+		title: "MXR-17",
+		description: "Purchase a MXR-17 Marksman Rifle off the wall.",
+		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
+		type: "weapon-wall-buy",
+		category: "equipment",
+	},
+	"velox-5.7": {
+		id: "velox-5.7",
+		title: "Velox 5.7",
+		description: "Purchase a Velox 5.7 Marksman Rifle off the wall.",
+		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
+		type: "weapon-wall-buy",
+		category: "equipment",
+	},
+	"razor-9mm": {
+		id: "razor-9mm",
+		title: "Razor 9mm",
+		description: "Purchase a Razor 9mm Pistol off the wall.",
+		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
+		type: "weapon-wall-buy",
+		category: "equipment",
+	},
 	"dm-10": {
 		id: "dm-10",
 		title: "DM-10",
