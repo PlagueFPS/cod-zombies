@@ -1,4 +1,4 @@
-import "./globals.css"
+import "@/app/globals.css"
 import type { Metadata, Viewport } from "next"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { Geist, Geist_Mono } from "next/font/google"

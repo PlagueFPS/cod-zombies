@@ -3,8 +3,8 @@
  * Run 'generate:image:paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-22T14:48:24.376Z
- * generated in: 39ms
+ * generated at: 2026-03-26T06:20:39.197Z
+ * generated in: 36ms
  */
 
 /** Union of images located directly in `/public (root)` */
@@ -281,6 +281,7 @@ export type IconsImagePath =
 	| "/icons/objectives/fish.webp"
 	| "/icons/objectives/janus-crate.webp"
 	| "/icons/objectives/loot-bin.webp"
+	| "/icons/objectives/loot-cyst.webp"
 	| "/icons/objectives/overgrown-hoard-husk.webp"
 	| "/icons/objectives/plant-spray.webp"
 	| "/icons/objectives/vacuum-seal-device.webp"
@@ -304,6 +305,7 @@ export type LayersImagePath =
 	| "/layers/astra-malorum/astra-malorum-mars-layer.webp"
 	| "/layers/citadelle-des-morts/citadelle-des-morts-layer.webp"
 	| "/layers/liberty-falls/liberty-falls-layer.webp"
+	| "/layers/paradox-junction/paradox-junction-main-layer.webp"
 	| "/layers/reckoning/t1-executive-suites.webp"
 	| "/layers/reckoning/t1-mutant-research-lab.webp"
 	| "/layers/reckoning/t1-project-janus-reception.webp"
@@ -384,6 +386,7 @@ export type PerksImagePath =
 	| "/perks/melee-macchiato.webp"
 	| "/perks/mule-kick-cold-war.webp"
 	| "/perks/mule-kick.webp"
+	| "/perks/mystery-perk.webp"
 	| "/perks/phd-flopper-bo1.webp"
 	| "/perks/phd-flopper.webp"
 	| "/perks/phd-slider.webp"

@@ -1,7 +1,5 @@
 "use client"
-import type { MapConfigLayer } from "@/data/interactive-map"
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
-import type { EncodedInteractiveMap } from "@/utils/rsc-wire"
 import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import Image from "next/image"
@@ -38,16 +36,21 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
+import {
+	decodeMapConfigLayer,
+	type EncodedInteractiveMap,
+	type EncodedMapConfigLayer,
+} from "@/utils/rsc-wire"
 import { capitalize } from "@/utils/shared-functions"
 import { decodeParams } from "@/utils/validation-schemas"
 
 interface IMapSidebar {
 	maps: EncodedInteractiveMap[]
 	groups: Record<MarkerCategory, Set<string>>
-	mapLayers: MapConfigLayer[]
+	mapLayers: EncodedMapConfigLayer[]
 }
 
-export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
+export default function MapSidebar({ groups, maps, mapLayers: encodedMapLayer }: IMapSidebar) {
 	const {
 		clearParam,
 		toggleExcludeParam,
@@ -59,6 +62,7 @@ export default function MapSidebar({ groups, maps, mapLayers }: IMapSidebar) {
 	} = useMapSearchParams()
 	const params = useParams()
 	const router = useRouter()
+	const mapLayers = encodedMapLayer.map(decodeMapConfigLayer)
 	const mapMarkers = useMemo(
 		() =>
 			Option.isSome(layerParam)
@@ -496,7 +500,7 @@ function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 				return (
 					<Image
 						unoptimized
-						src={mapMarker.icon || `/icons/${category}/${mapMarker.id}.webp`}
+						src={Option.getOrElse(mapMarker.icon, () => `/icons/${category}/${mapMarker.id}.webp`)}
 						height={128}
 						width={128}
 						alt={`${mapMarker.id} Image`}
@@ -509,7 +513,7 @@ function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 	return (
 		<Image
 			unoptimized
-			src={mapMarker.icon || `/icons/${category}/${mapMarker.id}.webp`}
+			src={Option.getOrElse(mapMarker.icon, () => `/icons/${category}/${mapMarker.id}.webp`)}
 			height={128}
 			width={128}
 			alt={`${mapMarker.id} Image`}

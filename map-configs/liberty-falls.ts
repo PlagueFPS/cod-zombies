@@ -1,4 +1,5 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
@@ -14,7 +15,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.858, y: 0.61 }],
 				},
 				{
@@ -23,7 +24,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.789, y: 0.617 }],
 				},
 				{
@@ -32,7 +33,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.723, y: 0.545 }],
 				},
 				{
@@ -41,7 +42,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.653, y: 0.631 }],
 				},
 				{
@@ -50,7 +51,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.616, y: 0.683 }],
 				},
 				{
@@ -59,7 +60,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.52, y: 0.727 }],
 				},
 				{
@@ -68,7 +69,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.527, y: 0.61 }],
 				},
 				{
@@ -77,7 +78,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.387, y: 0.636 }],
 				},
 				{
@@ -86,7 +87,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.331, y: 0.585 }],
 				},
 				{
@@ -95,7 +96,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.259, y: 0.626 }],
 				},
 				{
@@ -104,7 +105,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.17, y: 0.604 }],
 				},
 				{
@@ -113,7 +114,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.219, y: 0.516 }],
 				},
 				{
@@ -122,7 +123,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.716, y: 0.442 }],
 				},
 				{
@@ -131,7 +132,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.731, y: 0.354 }],
 				},
 				{
@@ -140,7 +141,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.628, y: 0.371 }],
 				},
 				{
@@ -149,7 +150,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.617, y: 0.444 }],
 				},
 				{
@@ -158,7 +159,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.551, y: 0.401 }],
 				},
 				{
@@ -167,7 +168,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.565, y: 0.485 }],
 				},
 				{
@@ -176,7 +177,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.495, y: 0.457 }],
 				},
 				{
@@ -185,7 +186,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.455, y: 0.516 }],
 				},
 				{
@@ -194,7 +195,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.377, y: 0.496 }],
 				},
 				{
@@ -203,7 +204,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.351, y: 0.42 }],
 				},
 				{

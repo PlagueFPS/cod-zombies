@@ -1,4 +1,5 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
@@ -14,7 +15,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Town Square",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.5, y: 0.729 }],
 				},
 				{
@@ -23,7 +24,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Tavern",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.45, y: 0.645 }],
 				},
 				{
@@ -32,7 +33,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Tavern Cellar",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.494, y: 0.643 }],
 				},
 				{
@@ -41,7 +42,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Nature Path",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.35, y: 0.64 }],
 				},
 				{
@@ -50,7 +51,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Hilltop",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.365, y: 0.56 }],
 				},
 				{
@@ -59,7 +60,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Village Ascent",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.65, y: 0.635 }],
 				},
 				{
@@ -68,7 +69,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Upper Village",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.65, y: 0.54 }],
 				},
 				{
@@ -77,7 +78,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Courtyard",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.502, y: 0.438 }],
 				},
 				{
@@ -86,7 +87,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Hillside Ramparts",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.4, y: 0.458 }],
 				},
 				{
@@ -95,7 +96,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Village Ramparts",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.6, y: 0.458 }],
 				},
 				{
@@ -104,7 +105,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Entrance Hall",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.5, y: 0.295 }],
 				},
 				{
@@ -113,7 +114,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Dining Hall",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.56, y: 0.148 }],
 				},
 				{
@@ -122,7 +123,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Alchemical Lab",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.485, y: 0.146 }],
 				},
 				{
@@ -131,7 +132,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Sitting Rooms",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.412, y: 0.192 }],
 				},
 				{
@@ -140,7 +141,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Undercroft",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.694, y: 0.287 }],
 				},
 				{
@@ -149,7 +150,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Dungeon",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.885, y: 0.271 }],
 				},
 				{
@@ -158,7 +159,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Oubilette Room",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.789, y: 0.336 }],
 				},
 				{

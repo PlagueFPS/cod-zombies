@@ -1,4 +1,5 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
@@ -14,7 +15,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Dig Site",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.168, y: 0.514 }],
 				},
 				{
@@ -23,7 +24,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Roman Mausoleum",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.303, y: 0.492 }],
 				},
 				{
@@ -32,7 +33,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Tombs",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.305, y: 0.413 }],
 				},
 				{
@@ -41,7 +42,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Shrine of the Hierophants",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.488, y: 0.37 }],
 				},
 				{
@@ -50,7 +51,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Neolithic Catacombs",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.325, y: 0.63 }],
 				},
 				{
@@ -59,7 +60,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Ossurary",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.493, y: 0.604 }],
 				},
 				{
@@ -68,7 +69,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Subterranean Temple",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.636, y: 0.5 }],
 				},
 				{
@@ -77,7 +78,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Deep Excavation",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.813, y: 0.5 }],
 				},
 				{
@@ -86,7 +87,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Dark Aether Nexus",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.772, y: 0.776 }],
 				},
 				{
@@ -95,7 +96,7 @@ export const config: MapConfig = {
 					title: "Dark Aether Lantern",
 					description:
 						"Creates a pool of fire underneath the lantern when shot, damaging zombies and players. Freezing three in quick succession is required for the Ice Staff upgrade quest.",
-					icon: "/icons/objectives/aether-lantern.webp",
+					icon: Option.some("/icons/objectives/aether-lantern.webp"),
 					locations: [
 						{ x: 0.246, y: 0.412 },
 						{ x: 0.318, y: 0.431 },
@@ -127,7 +128,7 @@ export const config: MapConfig = {
 					title: "Dig Spot",
 					description:
 						"Use a shovel to potentially get salvage, equipment, and other items. Digging with Death Perception allows you to get Ancient Gems for the Free Raygun side quest.",
-					icon: "/icons/objectives/dig-site.webp",
+					icon: Option.some("/icons/objectives/dig-site.webp"),
 					locations: [
 						{ x: 0.127, y: 0.502 },
 						{ x: 0.32, y: 0.625 },

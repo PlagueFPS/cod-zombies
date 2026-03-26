@@ -1,4 +1,5 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
@@ -14,7 +15,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Garden Pond",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.212, y: 0.607 }],
 				},
 				{
@@ -23,7 +24,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Lower Terrace",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.287, y: 0.54 }],
 				},
 				{
@@ -32,7 +33,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Upper Terrace",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.373, y: 0.56 }],
 				},
 				{
@@ -41,7 +42,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Shem's Henge",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.342, y: 0.617 }],
 				},
 				{
@@ -50,7 +51,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Conservatory",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.263, y: 0.477 }],
 				},
 				{
@@ -59,7 +60,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Motor Court",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.463, y: 0.514 }],
 				},
 				{
@@ -68,7 +69,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Grand Foyer",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.471, y: 0.396 }],
 				},
 				{
@@ -77,7 +78,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Overlook",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.472, y: 0.351 }],
 				},
 				{
@@ -86,7 +87,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "East Foyer",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.541, y: 0.373 }],
 				},
 				{
@@ -95,7 +96,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Library",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.59, y: 0.32 }],
 				},
 				{
@@ -104,7 +105,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Study",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.573, y: 0.264 }],
 				},
 				{
@@ -113,7 +114,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "East Balcony",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.554, y: 0.233 }],
 				},
 				{
@@ -122,7 +123,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Rear Patio",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.481, y: 0.199 }],
 				},
 				{
@@ -131,7 +132,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Kitchen",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.505, y: 0.245 }],
 				},
 				{
@@ -140,7 +141,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Banquet Hall",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.472, y: 0.272 }],
 				},
 				{
@@ -149,7 +150,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "West Balcony",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.398, y: 0.23 }],
 				},
 				{
@@ -158,7 +159,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Bottlery",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.428, y: 0.25 }],
 				},
 				{
@@ -167,7 +168,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Director's Quarters",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.4, y: 0.302 }],
 				},
 				{
@@ -176,7 +177,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Nursery",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.391, y: 0.383 }],
 				},
 				{
@@ -185,7 +186,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "South West Balcony",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.357, y: 0.389 }],
 				},
 				{
@@ -194,7 +195,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "West Hallways",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.419, y: 0.328 }],
 				},
 				{
@@ -203,7 +204,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Mainframe Chamber",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.81, y: 0.404 }],
 				},
 				{
@@ -212,7 +213,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Security Overlook",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.81, y: 0.459 }],
 				},
 				{
@@ -221,7 +222,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Service Tunnel",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.71, y: 0.515 }],
 				},
 				{
@@ -230,7 +231,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Supply Depot",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.704, y: 0.597 }],
 				},
 				{
@@ -239,7 +240,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Armory",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.671, y: 0.597 }],
 				},
 				{
@@ -248,7 +249,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Serpent Mound",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.641, y: 0.414 }],
 				},
 				{
@@ -257,7 +258,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Distillery",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.245, y: 0.344 }],
 				},
 				{
@@ -266,7 +267,7 @@ export const config: MapConfig = {
 					category: "general",
 					title: "Ravine",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.559, y: 0.657 }],
 				},
 				{
@@ -274,7 +275,7 @@ export const config: MapConfig = {
 					category: "objectives",
 					title: "Aether Plant Spawn",
 					description: "Destroy this plant with fire damage to obtain a Plant Seed.",
-					icon: "/icons/objectives/aether-plant.webp",
+					icon: Option.some("/icons/objectives/aether-plant.webp"),
 					locations: [
 						{ x: 0.201, y: 0.597 },
 						{ x: 0.2, y: 0.566 },
@@ -292,12 +293,7 @@ export const config: MapConfig = {
 					],
 				},
 				{
-					id: "aether-crystal",
-					category: "objectives",
-					title: "Aether Crystal",
-					description:
-						"Each crystal drops salvage. The crystal emitting a thick essence contains an empty canister used for one of the Ray Gun MKII upgrades.",
-					icon: "/icons/objectives/aether-crystal.webp",
+					...sharedMarkers["aether-crystal"],
 					locations: [
 						{ x: 0.24, y: 0.511 },
 						{ x: 0.531, y: 0.373 },

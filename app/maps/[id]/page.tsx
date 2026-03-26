@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils"
 import { categoryHandlers, type MarkerCategory } from "@/map-configs/markers"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { encodeInteractiveMap } from "@/utils/rsc-wire"
+import { encodeInteractiveMap, encodeMapConfig } from "@/utils/rsc-wire"
 import { getServerUrl } from "@/utils/server-functions"
 
 export const generateStaticParams = () => getInteractiveMaps().map(map => ({ id: map.id }))
@@ -79,7 +79,9 @@ const buildInteractiveMapPage = Effect.fn("buildInteractiveMapPage")(function* (
 		return yield* Effect.sync(() => notFound())
 	}
 
-	const config = yield* getInteractiveMapConfig(metadata.value.id as InteractiveMapKey)
+	const config = yield* getInteractiveMapConfig(metadata.value.id as InteractiveMapKey).pipe(
+		Effect.map(encodeMapConfig),
+	)
 	const state = cookieStore.get("sidebar_state")?.value
 	const defaultOpen = state === undefined ? true : state === "true"
 	const initialGroups: Record<MarkerCategory, Set<string>> = {

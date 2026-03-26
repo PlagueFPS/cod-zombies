@@ -1,4 +1,5 @@
 import type { MapMarker } from "@/map-configs/markers"
+import { Option } from "effect"
 import { DivIcon, type LatLng } from "leaflet"
 import { useEffect, useRef, useState } from "react"
 import { Marker as LeafletMarker, useMap } from "react-leaflet"
@@ -47,9 +48,13 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 				iconRef.current.id = id
 				iconRef.current.className = "custom-marker flex items-center justify-center"
 				const widthAndHeight = getWidthAndHeight()
+				const iconSrc = Option.getOrElse(
+					marker.icon,
+					() => `/icons/${marker.category}/${marker.id}.webp`,
+				)
 				iconRef.current.innerHTML = `
 					<img
-						src="${marker.icon}"
+						src="${iconSrc}"
 						alt="${marker.title}"
 						width="${widthAndHeight}"
 						height="${widthAndHeight}"

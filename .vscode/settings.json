@@ -4,5 +4,8 @@
 	"editor.defaultFormatter": "oxc.oxc-vscode",
 	"editor.codeActionsOnSave": {
 		"source.fixAll": "explicit"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "oxc.oxc-vscode"
 	}
 }
