@@ -33,7 +33,7 @@ const sourceOption = Flag.directory("source-dir").pipe(
 const mapOption = Flag.boolean("map").pipe(
 	Flag.withAlias("m"),
 	Flag.withDescription(
-		"Resize image to 2048px width without optimization (keeps original format).",
+		"Resize image to 2048px width with optimization.",
 	),
 )
 
@@ -48,14 +48,20 @@ const previewOption = Flag.boolean("preview").pipe(
 	Flag.withDescription("Resize to 640x360 then optimize with max effort and quality."),
 )
 
-const transformMap = Effect.fn("transformMap")(function* (
+const transformMap = Effect.fnUntraced(function* (
+	metadata: sharp.Metadata,
 	image: sharp.Sharp,
 	baseFileName: string,
 	asset: string,
 ) {
+	let resizeOption: sharp.ResizeOptions = { width: 2048 }
+	if (metadata.width < 2048) {
+		resizeOption = { width: 2048, height: 2048, fit: "contain" }
+	}
+
 	const buffer = yield* Effect.tryPromise({
 		try: () =>
-			image.resize({ width: 2048 }).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+			image.resize(resizeOption).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
 		catch: cause =>
 			new ImageOptimizationError({
 				message: `Failed to transform map image: ${asset}`,
@@ -65,7 +71,7 @@ const transformMap = Effect.fn("transformMap")(function* (
 	return { buffer, fileName: `${baseFileName}.webp` }
 })
 
-const transformPreview = Effect.fn("transformPreview")(function* (
+const transformPreview = Effect.fnUntraced(function* (
 	image: sharp.Sharp,
 	baseFileName: string,
 	asset: string,
@@ -81,7 +87,7 @@ const transformPreview = Effect.fn("transformPreview")(function* (
 	return { buffer, fileName: `${baseFileName}.webp` }
 })
 
-const transformOptimizeOnly = Effect.fn("transformOptimizeOnly")(function* (
+const transformOptimizeOnly = Effect.fnUntraced(function* (
 	image: sharp.Sharp,
 	baseFileName: string,
 	asset: string,
@@ -97,7 +103,7 @@ const transformOptimizeOnly = Effect.fn("transformOptimizeOnly")(function* (
 	return { buffer, fileName: `${baseFileName}.webp` }
 })
 
-const transformResizeAndOptimize = Effect.fn("transformResizeAndOptimize")(function* (
+const transformResizeAndOptimize = Effect.fnUntraced(function* (
 	image: sharp.Sharp,
 	baseFileName: string,
 	asset: string,
@@ -172,7 +178,7 @@ const optimizeCommand = Command.make(
 							let result: TransformResult
 
 							if (map) {
-								result = yield* transformMap(image, fileName, asset)
+								result = yield* transformMap(metadata, image, fileName, asset)
 							} else if (preview) {
 								result = yield* transformPreview(image, fileName, asset)
 							} else if (noResize || metadata.width <= 1920) {
