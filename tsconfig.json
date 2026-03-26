@@ -19,26 +19,26 @@
 		"incremental": true,
 		"plugins": [
 			{
-				"name": "next"
+				"name": "next",
 			},
 			{
 				"name": "@effect/language-service",
-				"refactors": true
-			}
+				"refactors": true,
+			},
 		],
 		"paths": {
-			"@/*": ["./*"]
-		}
+			"@/*": ["./*"],
+		},
 	},
 	"include": [
-		"declarations.d.ts",
 		"next-env.d.ts",
+		"declarations.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
 		"**/*.mdx",
 		".next/types/**/*.ts",
 		".next\\dev/types/**/*.ts",
-		".next/dev/types/**/*.ts"
+		".next/dev/types/**/*.ts",
 	],
-	"exclude": ["node_modules", ".repos"]
+	"exclude": ["node_modules", ".repos"],
 }
