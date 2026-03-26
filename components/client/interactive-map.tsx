@@ -274,11 +274,11 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 			<div className="absolute top-4 left-4 mb-1 flex w-full items-center gap-2">
 				<MarkerBadge category={marker.category}>{capitalize(marker.category)}</MarkerBadge>
 			</div>
-			{marker.icon && (
+			{Option.isSome(marker.icon) && (
 				<div className="flex w-full items-center justify-center">
 					<NextImage
 						unoptimized
-						src={marker.icon}
+						src={marker.icon.value}
 						alt={marker.title}
 						width={128}
 						height={128}

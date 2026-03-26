@@ -1,4 +1,5 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
@@ -14,7 +15,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.55, y: 0.5 }],
 				},
 				{
@@ -130,7 +131,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.503, y: 0.48 }],
 				},
 				{
@@ -139,7 +140,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.234, y: 0.501 }],
 				},
 				{
@@ -148,7 +149,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.296, y: 0.316 }],
 				},
 				{
@@ -241,7 +242,7 @@ export const config: MapConfig = {
 					id: "t1-quantum-computing-core",
 					title: "T1 Quantum Computing Core",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					category: "general",
 					type: "label",
 					locations: [{ x: 0.504, y: 0.5 }],
@@ -250,7 +251,7 @@ export const config: MapConfig = {
 					id: "t1-quantum-computing-lab",
 					title: "T1 Quantum Computing Lab",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					category: "general",
 					type: "label",
 					locations: [{ x: 0.27, y: 0.482 }],
@@ -259,7 +260,7 @@ export const config: MapConfig = {
 					id: "aetheric-flora",
 					title: "Aetheric Flora",
 					description: "Aetheric Flora used to charge the Cyst for the Gorgofex.",
-					icon: "/icons/objectives/aetheric-flora.webp",
+					icon: Option.some("/icons/objectives/aetheric-flora.webp"),
 					category: "objectives",
 					locations: [
 						{ x: 0.402, y: 0.722 },
@@ -364,7 +365,7 @@ export const config: MapConfig = {
 					id: "t1-executive-suite",
 					title: "T1 Executive Suite",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					category: "general",
 					type: "label",
 					locations: [{ x: 0.503, y: 0.507 }],
@@ -373,7 +374,7 @@ export const config: MapConfig = {
 					id: "t1-directors-office",
 					title: "T1 Director's Office",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					category: "general",
 					type: "label",
 					locations: [{ x: 0.708, y: 0.324 }],
@@ -496,7 +497,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.493, y: 0.411 }],
 				},
 				{
@@ -593,7 +594,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.492, y: 0.492 }],
 				},
 				{
@@ -680,7 +681,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.56, y: 0.493 }],
 				},
 				{
@@ -715,7 +716,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.48, y: 0.502 }],
 				},
 				{
@@ -775,7 +776,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.509, y: 0.253 }],
 				},
 				{
@@ -802,7 +803,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.498, y: 0.325 }],
 				},
 				{
@@ -833,7 +834,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.519, y: 0.451 }],
 				},
 				{

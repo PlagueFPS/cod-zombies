@@ -1,4 +1,5 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
@@ -14,7 +15,7 @@ export const config: MapConfig = {
 					description: "",
 					type: "label",
 					category: "general",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.538, y: 0.429 }],
 				},
 				{
@@ -23,7 +24,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.526, y: 0.445 }],
 				},
 				{
@@ -32,7 +33,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.498, y: 0.462 }],
 				},
 				{
@@ -41,7 +42,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.47, y: 0.465 }],
 				},
 				{
@@ -50,7 +51,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.498, y: 0.483 }],
 				},
 				{
@@ -59,7 +60,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.531, y: 0.481 }],
 				},
 				{
@@ -68,7 +69,7 @@ export const config: MapConfig = {
 					title: "Armory",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.539, y: 0.463 }],
 				},
 				{
@@ -77,7 +78,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.554, y: 0.518 }],
 				},
 				{
@@ -86,7 +87,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.545, y: 0.558 }],
 				},
 				{
@@ -95,7 +96,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.505, y: 0.553 }],
 				},
 				{
@@ -104,7 +105,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.477, y: 0.557 }],
 				},
 				{
@@ -113,7 +114,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.471, y: 0.519 }],
 				},
 				{
@@ -122,7 +123,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.435, y: 0.554 }],
 				},
 				{
@@ -131,7 +132,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.47, y: 0.604 }],
 				},
 				{
@@ -140,7 +141,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [
 						{ x: 0.435, y: 0.612 },
 						{ x: 0.807, y: 0.909 },
@@ -152,7 +153,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [
 						{ x: 0.542, y: 0.619 },
 						{ x: 0.903, y: 0.919 },
@@ -164,7 +165,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.46, y: 0.766 }],
 				},
 				{
@@ -173,7 +174,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.758, y: 0.479 }],
 				},
 				{
@@ -182,7 +183,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.335, y: 0.304 }],
 				},
 				{
@@ -191,7 +192,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.252, y: 0.641 }],
 				},
 				{
@@ -200,7 +201,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.228, y: 0.585 }],
 				},
 				{
@@ -209,7 +210,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.868, y: 0.911 }],
 				},
 				{
@@ -218,7 +219,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.815, y: 0.843 }],
 				},
 				{
@@ -227,7 +228,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.896, y: 0.843 }],
 				},
 				{
@@ -236,7 +237,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.863, y: 0.77 }],
 				},
 				{
@@ -245,7 +246,7 @@ export const config: MapConfig = {
 					description: "",
 					category: "general",
 					type: "label",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.493, y: 0.347 }],
 				},
 				{
@@ -253,7 +254,7 @@ export const config: MapConfig = {
 					title: "Aetherium Maturation Pod",
 					category: "objectives",
 					description: "Activate and defend the A.M.P. to restore power to the area.",
-					icon: "/icons/objectives/aetherium-maturation-pod.webp",
+					icon: Option.some("/icons/objectives/aetherium-maturation-pod.webp"),
 					locations: [
 						{ x: 0.49, y: 0.47 },
 						{ x: 0.498, y: 0.552 },
@@ -266,7 +267,7 @@ export const config: MapConfig = {
 					category: "objectives",
 					description:
 						"Possible Location. Opening this chest will reward you with loot and potentially a Ray Gun, Perks, Aetherium Crystals, and Aether Tools. Open all chests on the map for a guaranteed Free Perk.",
-					icon: "/icons/objectives/chest.webp",
+					icon: Option.some("/icons/objectives/chest.webp"),
 					locations: [
 						{ x: 0.897, y: 0.767 },
 						{ x: 0.816, y: 0.778 },
@@ -289,7 +290,7 @@ export const config: MapConfig = {
 					category: "objectives",
 					description:
 						"Possible Location. Killing these fish with an explosive will reward you with one loot item per fish. Killing a total of 50 fish will reward you with a Perkaholic.",
-					icon: "/icons/objectives/fish.webp",
+					icon: Option.some("/icons/objectives/fish.webp"),
 					locations: [
 						// Bio Lab
 						{ x: 0.816, y: 0.763 },
@@ -326,7 +327,7 @@ export const config: MapConfig = {
 					title: "Dig Spot",
 					description:
 						"Use a shovel to potentially get salvage, equipment, perks, and other items.",
-					icon: "/icons/objectives/dig-site.webp",
+					icon: Option.some("/icons/objectives/dig-site.webp"),
 					locations: [
 						{ x: 0.819, y: 0.826 },
 						{ x: 0.834, y: 0.833 },
@@ -514,7 +515,7 @@ export const config: MapConfig = {
 					...sharedMarkers["vehicle-spawn"],
 					title: "Boat Spawn",
 					description: "Spawns in a boat vehicle.",
-					icon: "/icons/transportation/boat.webp",
+					icon: Option.some("/icons/transportation/boat.webp"),
 					locations: [
 						{ x: 0.877, y: 0.933 },
 						{ x: 0.489, y: 0.743 },

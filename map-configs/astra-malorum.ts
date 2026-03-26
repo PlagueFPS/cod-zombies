@@ -1,4 +1,5 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { Option } from "effect"
 import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
@@ -14,7 +15,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.504, y: 0.709 }],
 				},
 				{
@@ -23,7 +24,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.39, y: 0.508 }],
 				},
 				{
@@ -32,7 +33,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.515, y: 0.6 }],
 				},
 				{
@@ -41,7 +42,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.68, y: 0.498 }],
 				},
 				{
@@ -50,7 +51,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.662, y: 0.357 }],
 				},
 				{
@@ -59,7 +60,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.457, y: 0.313 }],
 				},
 				{
@@ -68,7 +69,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.581, y: 0.284 }],
 				},
 				{
@@ -77,7 +78,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.531, y: 0.447 }],
 				},
 				{
@@ -86,7 +87,7 @@ export const config: MapConfig = {
 					type: "label",
 					category: "general",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					locations: [{ x: 0.588, y: 0.574 }],
 				},
 				{
@@ -94,7 +95,7 @@ export const config: MapConfig = {
 					title: "Aether Crystal",
 					category: "objectives",
 					description: "Dark Aether Crystal that can be destroyed for a variety of loot.",
-					icon: "/icons/objectives/aether-crystal.webp",
+					icon: Option.some("/icons/objectives/aether-crystal.webp"),
 					locations: [
 						{ x: 0.49, y: 0.719 },
 						{ x: 0.485, y: 0.617 },
@@ -112,7 +113,7 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers["ammo-cache"],
-					icon: "/icons/equipment/ammo-cache-bo7.webp",
+					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
 					locations: [
 						{ x: 0.516, y: 0.678 },
 						{ x: 0.521, y: 0.559 },
@@ -171,7 +172,7 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers.exfil,
-					icon: "/icons/equipment/exfil-bo7.webp",
+					icon: Option.some("/icons/equipment/exfil-bo7.webp"),
 					locations: [
 						{ x: 0.496, y: 0.424 },
 						{ x: 0.628, y: 0.297 },
@@ -344,13 +345,13 @@ export const config: MapConfig = {
 					title: "Mars",
 					type: "label",
 					description: "",
-					icon: null,
+					icon: Option.none(),
 					category: "general",
 					locations: [{ x: 0.5, y: 0.5 }],
 				},
 				{
 					...sharedMarkers["ammo-cache"],
-					icon: "/icons/equipment/ammo-cache-bo7.webp",
+					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
 					locations: [{ x: 0.531, y: 0.399 }],
 				},
 				{
