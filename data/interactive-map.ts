@@ -103,7 +103,7 @@ const interactiveMapHashMap = HashMap.make(
 		image: "/previews/paradox-junction-preview.webp",
 		game: "black-ops-7",
 		description:
-			"Explore Paradox Junction in Black Ops 7 Zombies. Find all locations for all weapons, intel, and more with our interactive map.",
+			"Explore Paradox Junction in Black Ops 7 Zombies. Find all locations for Loot Cysts, Aether Crystals, Perks, Weapons, intel, and more with our interactive map.",
 	}),
 	makeMapEntry("astra-malorum", {
 		title: "Astra Malorum",
