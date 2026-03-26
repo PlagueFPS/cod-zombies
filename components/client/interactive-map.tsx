@@ -1,4 +1,5 @@
 "use client"
+// @ts-ignore: TSGO fails to resolve css imports at comptime (no IDE errors)
 import "leaflet/dist/leaflet.css"
 import type { MapConfig } from "@/data/interactive-map"
 import type { Location, MapMarker } from "@/map-configs/markers"
