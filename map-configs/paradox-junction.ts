@@ -108,7 +108,7 @@ export const config: MapConfig = {
 				{
 					id: "loot-cyst",
 					title: "Loot Cyst",
-					description: "Glowing, biological growths that provide loot when feed enough souls.",
+					description: "Glowing, biological growths that provide loot when fed enough souls.",
 					category: "objectives",
 					icon: Option.some("/icons/objectives/loot-cyst.webp"),
 					locations: [
