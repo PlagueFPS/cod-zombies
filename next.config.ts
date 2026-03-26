@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
 	experimental: {
 		serverComponentsHmrCache: true,
 		mdxRs: true,
-		browserDebugInfoInTerminal: true
+		browserDebugInfoInTerminal: true,
 	},
 	// Without this, builds will fail with an OOM (out of memory) failure due to excessive memory usage.
 	outputFileTracingExcludes: {

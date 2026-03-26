@@ -48,7 +48,10 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 				iconRef.current.id = id
 				iconRef.current.className = "custom-marker flex items-center justify-center"
 				const widthAndHeight = getWidthAndHeight()
-				const iconSrc = Option.getOrElse(marker.icon, () => `/icons/${marker.category}/${marker.id}.webp`)
+				const iconSrc = Option.getOrElse(
+					marker.icon,
+					() => `/icons/${marker.category}/${marker.id}.webp`,
+				)
 				iconRef.current.innerHTML = `
 					<img
 						src="${iconSrc}"

@@ -3,7 +3,7 @@ import type { MapEntry } from "@/data/maps"
 import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
-import type { MapMarker } from "@/map-configs/markers";
+import type { MapMarker } from "@/map-configs/markers"
 import { Option } from "effect"
 
 export type EncodedMapEntry = Omit<
@@ -17,7 +17,7 @@ export type EncodedInteractiveMap = EncodedFields<InteractiveMap, "state">
 export type EncodedMapMarker = EncodedFields<MapMarker, "icon">
 export interface EncodedMapConfigLayer extends Omit<MapConfigLayer, "markers"> {
 	markers: EncodedMapMarker[]
-} 
+}
 export interface EncodedMapConfig extends Omit<MapConfig, "layers"> {
 	layers: EncodedMapConfigLayer[]
 }
