@@ -1,6 +1,6 @@
 import type { MapConfig } from "@/data/interactive-map"
 import { Option } from "effect"
-import { perks, sharedMarkers, weapons } from "./markers"
+import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 
 export const config: MapConfig = {
 	layers: [
@@ -363,7 +363,7 @@ export const config: MapConfig = {
 				},
 				{
 					...weapons["coda-9"],
-					locations: [{ x: 728, y: 0.44 }],
+					locations: [{ x: 0.728, y: 0.44 }],
 				},
 				{
 					...weapons["echo-12"],
