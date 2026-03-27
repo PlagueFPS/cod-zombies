@@ -268,4 +268,10 @@ const weaponBuildHashMap = HashMap.make(
 		attachments: Option.none(),
 		buildCode: Option.some("S10-JUJZG-U6S28-31"),
 	}),
+	makeWeaponBuild("mxr-17", {
+		title: "MXR-17",
+		image: "/weapons/mxr-17.webp",
+		attachments: Option.none(),
+		buildCode: Option.some("A03-B18BA-KKD63-1"),
+	}),
 )

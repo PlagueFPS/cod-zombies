@@ -3,8 +3,8 @@
  * Run 'generate:image:paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-26T06:20:39.197Z
- * generated in: 36ms
+ * generated at: 2026-03-27T05:05:27.507Z
+ * generated in: 42ms
  */
 
 /** Union of images located directly in `/public (root)` */
@@ -457,6 +457,7 @@ export type WeaponsImagePath =
 	| "/weapons/m10-breacher.webp"
 	| "/weapons/m34-novaline.webp"
 	| "/weapons/maelstrom.webp"
+	| "/weapons/mxr-17.webp"
 
 /** Union of images in `/zombies` */
 
