@@ -41,9 +41,7 @@ const emailGroup = Schema.makeFilterGroup(
 	},
 )
 
-const RequiredEmailSchema = Schema.NonEmptyString.pipe(Schema.check(emailGroup)).annotate({
-	message: "Email is required.",
-})
+const RequiredEmailSchema = Schema.String.pipe(Schema.check(emailGroup))
 const OptionalEmailSchema = Schema.optional(
 	Schema.Union([Schema.Literal(""), Schema.Undefined, RequiredEmailSchema]),
 )
