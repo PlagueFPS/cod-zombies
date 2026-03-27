@@ -51,7 +51,7 @@ export default function NewsletterForm() {
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 			e.preventDefault()
 			void form.handleSubmit()
 		}
@@ -89,8 +89,8 @@ export default function NewsletterForm() {
 													type="submit"
 													form="newsletter-form"
 													variant="default"
-													disabled={isPending || isInvalid}
-													aria-disabled={isPending || isInvalid}
+													disabled={isPending}
+													aria-disabled={isPending}
 												>
 													{isPending ? (
 														<>

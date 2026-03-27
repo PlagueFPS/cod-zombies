@@ -47,7 +47,7 @@ export default function UnsubscribeForm() {
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 			e.preventDefault()
 			void form.handleSubmit()
 		}

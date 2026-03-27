@@ -74,7 +74,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 			e.preventDefault()
 			void form.handleSubmit()
 		}
@@ -202,13 +202,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 						</Button>
 						<Tooltip>
 							<TooltipTrigger
-								render={
-									<Button
-										form="contact-form"
-										type="submit"
-										disabled={isPending || !form.state.isValid}
-									/>
-								}
+								render={<Button form="contact-form" type="submit" disabled={isPending} />}
 							>
 								{isPending ? (
 									<div className="flex items-center gap-2">
