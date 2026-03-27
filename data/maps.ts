@@ -767,4 +767,16 @@ const mapHashMap = HashMap.make(
 			reason: "Time varies significantly based on player knowledge of the steps.",
 		}),
 	}),
+	makeMap("totenreich", {
+		title: "Totenreich",
+		releaseDate: new Date("April 30, 2026 12:00 AM"),
+		description:
+			"A remote Norwegian fishing town trapped in time after Group 935 experiments warped the entire island into the Dark Aether.",
+		image: "/maps/totenreich-preview.webp",
+		game: "black-ops-7",
+		mainQuest: Option.some("content/main-quests/totenreich"),
+		difficulty: Option.none(),
+		state: Option.some("Coming Soon"),
+		estimatedTimeMins: Option.none(),
+	}),
 )

@@ -2090,4 +2090,64 @@ const augmentHashMap = HashMap.make(
 		image: "/augments/bo7/fast-pitcher-minor-augment-bo7.webp",
 		variants: Option.none(),
 	}),
+	makeAugment("fireball", {
+		title: "Fireball!",
+		description: "While Wild Fire is active, fire balls will launch along with your attacks.",
+		type: "Major",
+		image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("firestorm", {
+		title: "Firestorm",
+		description: "On activation, deploy a fire tornado that pulls in and immolates enemies.",
+		type: "Major",
+		image: "/augments/bo7/afterimage-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("free-radical", {
+		title: "Free Radical",
+		description:
+			"While Wild Fire is active, the effects of the attack occasionally drop pools of fire on the ground.",
+		type: "Major",
+		image: "/augments/bo7/group-shroud-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("flashover", {
+		title: "Flashover",
+		description:
+			"Starting with the initial activation, every third Wild Fire pulse deals significantly more damage in a larger radius.",
+		type: "Major",
+		image: "/augments/bo7/firebomb-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("oxidizer", {
+		title: "Oxidizer",
+		description: "Increase Wild Fire's duration.",
+		type: "Minor",
+		image: "/augments/bo7/extension-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	// `Backdraft` augment already exists for Napalm Burst
+	// so this one needs a prefix to avoid conflicts
+	makeAugment("wild-fire-backdraft", {
+		title: "Backdraft",
+		description: "On activation, nearby zombies are knocked down, and larger enemies are stunned.",
+		type: "Minor",
+		image: "/augments/bo7/refresh-mint-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("molten-core", {
+		title: "Molten Core",
+		description: "Enemies are dealt more damage the closer they get to you.",
+		type: "Minor",
+		image: "/augments/bo7/contact-burn-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("heat-surge", {
+		title: "Heat Surge",
+		description: "While Wild Fire is active, your movement speed is increased even further.",
+		type: "Minor",
+		image: "/augments/bo7/footwork-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
 )

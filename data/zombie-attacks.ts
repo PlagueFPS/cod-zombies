@@ -620,4 +620,24 @@ const zombieAttacksHashMap = HashMap.make(
 		description:
 			"Spawns a fire tornado that moves around the area, dealing damage to players in its path.",
 	}),
+	makeZombieAttack("trident-stab", {
+		title: "Trident Stab",
+		range: "Short",
+		description: "Stabs adversaries who venture too close, dealing critical damage.",
+	}),
+	makeZombieAttack("trident-throw", {
+		title: "Trident Throw",
+		range: "Long",
+		description: "Throws its trident at more distant foes, dealing damage to the player it hits.",
+	}),
+	makeZombieAttack("claw-slam", {
+		title: "Claw Slam",
+		range: "Short",
+		description: "Slams its giant claw, dealing critical damage to nearby players.",
+	}),
+	makeZombieAttack("claw-block", {
+		title: "Claw Block",
+		range: "Short",
+		description: "Summons a shield using its giant claw to block incoming attacks.",
+	}),
 )

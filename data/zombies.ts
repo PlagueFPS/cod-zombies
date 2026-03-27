@@ -1089,6 +1089,7 @@ const zombiesHashMap = HashMap.make(
 			"ashes-of-the-damned",
 			"astra-malorum",
 			"paradox-junction",
+			"totenreich",
 		],
 		type: "Normal",
 		speed: "Medium",
@@ -1121,6 +1122,7 @@ const zombiesHashMap = HashMap.make(
 			"ashes-of-the-damned",
 			"astra-malorum",
 			"paradox-junction",
+			"totenreich",
 		],
 		type: "Normal",
 		speed: "Medium",
@@ -1473,7 +1475,7 @@ const zombiesHashMap = HashMap.make(
 		description:
 			"Shock Mimics are a special enemy often disguising themselves as useful items, then break out when approached to attack players.",
 		games: ["black-ops-6", "black-ops-7"],
-		maps: ["the-tomb", "ashes-of-the-damned", "astra-malorum", "paradox-junction"],
+		maps: ["the-tomb", "ashes-of-the-damned", "astra-malorum", "paradox-junction", "totenreich"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["mouth"],
@@ -1755,5 +1757,42 @@ const zombiesHashMap = HashMap.make(
 		spawnBehavior:
 			"The Dark Heart is the final boss of the Paradox Junction main quest and will spawn during the final encounter.",
 		combatStrategy: "content/zombies/the-dark-heart",
+	}),
+	// makeZombie("frost-zombie", {
+	// 	title: "Frost Zombie",
+	// 	state: Option.some("Coming Soon"),
+	// 	releaseDate: new Date("April 30, 2026 12:00 AM"),
+	// 	Need an actual image of the Frost Zombie to release this
+	// 	image: "/zombies/frost-zombie.webp",
+	// 	description:
+	// 		"Frost Zombies are lurking enemies emerging from the mists during special rounds to attack in droves.",
+	// 	games: ["black-ops-7"],
+	// 	maps: ["totenreich"],
+	// 	type: "Special",
+	// 	speed: "Medium",
+	// 	weakPoints: ["head"],
+	// 	elementalWeakness: ["napalm-burst"],
+	// 	attacks: ["melee-swing"],
+	// 	spawnBehavior:
+	// 		"Frozen Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies in the later rounds.",
+	// 	combatStrategy: "content/zombies/frost-zombie",
+	// }),
+	makeZombie("necropincer", {
+		title: "Necropincer",
+		state: Option.some("Coming Soon"),
+		releaseDate: new Date("April 30, 2026 1:00 AM"),
+		image: "/zombies/necropincer.webp",
+		description:
+			"A doomed undead Viking warrior spirit that rises from the cold seas to aid in the protection of Eidskallen.",
+		games: ["black-ops-7"],
+		maps: ["totenreich"],
+		type: "Elite",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["trident-stab", "trident-throw", "claw-slam", "claw-block"],
+		spawnBehavior:
+			"The Necropincer will first spawn on Round 16, then every 3-5 rounds after that with the chance for multiple to spawn on those rounds.",
+		combatStrategy: "content/zombies/necropincer",
 	}),
 )

@@ -251,4 +251,21 @@ const fieldUpgradeHashMap = HashMap.make(
 		]),
 		variants: Option.none(),
 	}),
+	makeFieldUpgrade("wild-fire", {
+		title: "Wild Fire",
+		description:
+			"Imbue yourself with fire, increasing your speed and burning all enemies that get too close.",
+		image: "/field-upgrades/wild-fire.webp",
+		augments: makeAugmentTuple([
+			"fireball",
+			"firestorm",
+			"free-radical",
+			"flashover",
+			"oxidizer",
+			"wild-fire-backdraft",
+			"molten-core",
+			"heat-surge",
+		]),
+		variants: Option.none(),
+	}),
 )
