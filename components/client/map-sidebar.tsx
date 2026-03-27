@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useEffect, useMemo } from "react"
 import { LayerSwitcher } from "@/components/client/layer-switcher"
 import { ShareButton } from "@/components/client/share-button"
-import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"
+import { NewBadge } from "@/components/server/custom-badges"
 import { Socials } from "@/components/server/socials"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
@@ -37,6 +37,7 @@ import { Switch } from "@/components/ui/switch"
 import { useMapSearchParams } from "@/hooks/use-map-search-params"
 import { cn } from "@/lib/utils"
 import {
+	decodeInteractiveMap,
 	decodeMapConfigLayer,
 	type EncodedInteractiveMap,
 	type EncodedMapConfigLayer,
@@ -50,7 +51,11 @@ interface IMapSidebar {
 	mapLayers: EncodedMapConfigLayer[]
 }
 
-export default function MapSidebar({ groups, maps, mapLayers: encodedMapLayer }: IMapSidebar) {
+export default function MapSidebar({
+	groups,
+	maps: encodedMaps,
+	mapLayers: encodedMapLayer,
+}: IMapSidebar) {
 	const {
 		clearParam,
 		toggleExcludeParam,
@@ -62,6 +67,7 @@ export default function MapSidebar({ groups, maps, mapLayers: encodedMapLayer }:
 	} = useMapSearchParams()
 	const params = useParams()
 	const router = useRouter()
+	const maps = encodedMaps.map(decodeInteractiveMap)
 	const mapLayers = encodedMapLayer.map(decodeMapConfigLayer)
 	const mapMarkers = useMemo(
 		() =>
@@ -157,28 +163,31 @@ export default function MapSidebar({ groups, maps, mapLayers: encodedMapLayer }:
 							<SelectContent className="z-900">
 								<SelectGroup>
 									<SelectLabel>Available Maps</SelectLabel>
-									{maps.map(map => (
-										<SelectItem
-											key={map.id}
-											className={cn({
-												"pointer-events-none": map.id === id || map.state === "Coming Soon",
-											})}
-											value={map.id}
-										>
-											<span
+									{maps
+										.filter(map => map.state.valueOrUndefined !== "Coming Soon")
+										.map(map => (
+											<SelectItem
+												key={map.id}
 												className={cn({
-													"text-muted-foreground": map.id === id || map.state === "Coming Soon",
+													"pointer-events-none":
+														map.id === id || map.state.valueOrUndefined === "Coming Soon",
 												})}
+												value={map.id}
 											>
-												{map.title}
-											</span>
-											{Option.match(Option.fromNullOr(map.state), {
-												onNone: () => null,
-												onSome: state =>
-													state === "Coming Soon" ? <ComingSoonBadge /> : <NewBadge />,
-											})}
-										</SelectItem>
-									))}
+												<span
+													className={cn({
+														"text-muted-foreground":
+															map.id === id || map.state.valueOrUndefined === "Coming Soon",
+													})}
+												>
+													{map.title}
+												</span>
+												{Option.match(map.state, {
+													onNone: () => null,
+													onSome: state => (state === "New" ? <NewBadge /> : null),
+												})}
+											</SelectItem>
+										))}
 								</SelectGroup>
 							</SelectContent>
 						</Select>
