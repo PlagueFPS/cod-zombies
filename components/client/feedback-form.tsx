@@ -39,7 +39,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 		},
 		validators: {
 			// @ts-expect-error - optional email in schema vs required in form defaultValues
-			onChange: StandardFeedbackFormSchema,
+			onBlur: StandardFeedbackFormSchema,
 		},
 		onSubmit: ({ value }) => {
 			const normalized = { ...value, email: value.email?.trim() || undefined }

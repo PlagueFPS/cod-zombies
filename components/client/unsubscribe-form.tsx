@@ -17,31 +17,26 @@ export default function UnsubscribeForm() {
 			email: "",
 		},
 		validators: {
-			onChangeAsync: StandardNewsletterFormSchema,
-			onChangeAsyncDebounceMs: 200,
+			onBlur: StandardNewsletterFormSchema,
 		},
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
 				const result = await unsubscribeFromNewsletter("", value)
 				if (result.success) {
-					return startTransition(() => {
-						toast.success("Confirmation email sent!", {
-							description: result.message,
-							duration: 5000,
-							position: "bottom-right",
-						})
-						form.reset()
+					toast.success("Confirmation email sent!", {
+						description: result.message,
+						duration: 5000,
+						position: "bottom-right",
 					})
-				}
-
-				startTransition(() => {
+					form.reset()
+				} else {
 					toast.error("Failed to send confirmation email!", {
 						description: result.message,
 						duration: 5000,
 						position: "bottom-right",
 					})
 					form.reset()
-				})
+				}
 			})
 		},
 	})
@@ -52,7 +47,7 @@ export default function UnsubscribeForm() {
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 			e.preventDefault()
 			void form.handleSubmit()
 		}

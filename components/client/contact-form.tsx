@@ -35,30 +35,26 @@ export default function ContactForm({ className }: ContactFormProps) {
 			message: "",
 		},
 		validators: {
-			onChange: StandardContactFormSchema,
+			onBlur: StandardContactFormSchema,
 		},
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
 				const result = await submitContactForm(undefined, value)
 				if (result.success) {
-					return startTransition(() => {
-						toast.success("Contact form submitted!", {
-							description: result.message,
-							duration: 5000,
-							position: "bottom-right",
-						})
-						form.reset()
-						setOpen(false)
+					toast.success("Contact form submitted!", {
+						description: result.message,
+						duration: 5000,
+						position: "bottom-right",
 					})
-				}
-
-				startTransition(() => {
+					form.reset()
+					setOpen(false)
+				} else {
 					toast.error("Failed to submit contact form!", {
 						description: result.message,
 						duration: 5000,
 						position: "bottom-right",
 					})
-				})
+				}
 			})
 		},
 	})
@@ -78,7 +74,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 			e.preventDefault()
 			void form.handleSubmit()
 		}
@@ -206,13 +202,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 						</Button>
 						<Tooltip>
 							<TooltipTrigger
-								render={
-									<Button
-										form="contact-form"
-										type="submit"
-										disabled={isPending || !form.state.isValid}
-									/>
-								}
+								render={<Button form="contact-form" type="submit" disabled={isPending} />}
 							>
 								{isPending ? (
 									<div className="flex items-center gap-2">

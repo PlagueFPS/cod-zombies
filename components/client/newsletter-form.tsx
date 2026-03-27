@@ -20,32 +20,27 @@ export default function NewsletterForm() {
 			email: "",
 		},
 		validators: {
-			onChangeAsync: StandardNewsletterFormSchema,
-			onChangeAsyncDebounceMs: 200,
+			onBlur: StandardNewsletterFormSchema,
 		},
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
 				const result = await subscribeToNewsletter("", value)
 
 				if (result.success) {
-					return startTransition(() => {
-						toast.success("Confirmation email sent!", {
-							description: result.message,
-							duration: 5000,
-							position: "bottom-center",
-						})
-
-						form.reset()
+					toast.success("Confirmation email sent!", {
+						description: result.message,
+						duration: 5000,
+						position: "bottom-center",
 					})
-				}
 
-				startTransition(() => {
+					form.reset()
+				} else {
 					toast.error("Failed to subscribe to newsletter", {
 						description: result.message,
 						duration: 5000,
 						position: "bottom-center",
 					})
-				})
+				}
 			})
 		},
 	})
@@ -56,7 +51,7 @@ export default function NewsletterForm() {
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && form.state.isValid) {
+		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
 			e.preventDefault()
 			void form.handleSubmit()
 		}
@@ -94,8 +89,8 @@ export default function NewsletterForm() {
 													type="submit"
 													form="newsletter-form"
 													variant="default"
-													disabled={isPending || isInvalid}
-													aria-disabled={isPending || isInvalid}
+													disabled={isPending}
+													aria-disabled={isPending}
 												>
 													{isPending ? (
 														<>
