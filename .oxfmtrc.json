@@ -17,6 +17,7 @@
 		"**/*.md",
 		".zed",
 		".repos",
+		"**/opengraph-manifest.json",
 		"**/last-modified.json",
 		"node_modules",
 		".next"

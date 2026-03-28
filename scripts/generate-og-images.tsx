@@ -29,6 +29,15 @@ class OgCliError extends Schema.TaggedErrorClass<OgCliError>()("OgCliError", {
 	message: Schema.String,
 }) {}
 
+class OpengraphManifest extends Schema.Class<OpengraphManifest>("OpengraphManifest")({
+	"main-quests": Schema.Record(Schema.String, Schema.Int),
+	"side-quests": Schema.Record(Schema.String, Schema.Int),
+	zombies: Schema.Record(Schema.String, Schema.Int),
+}) {}
+
+const decodeOpengraphManifest = Schema.decodeEffect(Schema.fromJsonString(OpengraphManifest))
+const encodeOpengraphManifest = Schema.encodeEffect(Schema.fromJsonString(OpengraphManifest))
+
 const size = { width: 1200, height: 630 }
 
 const getFonts = Effect.fnUntraced(
@@ -602,9 +611,33 @@ const writeOgFile = Effect.fnUntraced(function* (
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const dir = path.join(outputBase, contentDir)
-	const outPath = path.join(dir, `opengraph-${fileBaseName}.jpg`)
+	const manifestPath = path.join(process.cwd(), "data", "opengraph-manifest.json")
+
+	const manifest = yield* fs
+		.readFileString(manifestPath)
+		.pipe(Effect.flatMap(decodeOpengraphManifest))
+	const version = Option.match(Option.fromUndefinedOr(manifest[contentDir][fileBaseName]), {
+		onNone: () => 1,
+		onSome: previousVersion => previousVersion + 1,
+	})
+
+	const outPath = path.join(dir, `opengraph-${fileBaseName}-v${version}.jpg`)
 	yield* fs.makeDirectory(dir, { recursive: true })
 	yield* fs.writeFile(outPath, bytes)
+
+	const updatedManifest = new OpengraphManifest(
+		{
+			// oxlint-disable-next-line no-misused-spread, we're constructing a new instance of the manifest
+			...manifest,
+			[contentDir]: {
+				...manifest[contentDir],
+				[fileBaseName]: version,
+			},
+		},
+		{ disableValidation: true },
+	)
+
+	yield* fs.writeFileString(manifestPath, yield* encodeOpengraphManifest(updatedManifest))
 	yield* Effect.log(`Wrote ${outPath}`)
 })
 
