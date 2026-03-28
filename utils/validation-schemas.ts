@@ -25,6 +25,7 @@ const ParamsSchema = Schema.Struct({
 	game: Schema.OptionFromOptionalNullOr(Schema.String),
 	map: Schema.OptionFromOptionalNullOr(Schema.String),
 	message: Schema.OptionFromOptionalNullOr(Schema.String),
+	layer: Schema.OptionFromOptionalNullOr(Schema.String),
 })
 
 const emailGroup = Schema.makeFilterGroup(

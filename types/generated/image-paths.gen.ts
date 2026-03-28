@@ -3,8 +3,8 @@
  * Run 'generate:image:paths' to regenerate.
  *
  * public directory scanned: public
- * generated at: 2026-03-27T05:05:27.507Z
- * generated in: 42ms
+ * generated at: 2026-03-28T19:48:27.782Z
+ * generated in: 41ms
  */
 
 /** Union of images located directly in `/public (root)` */
@@ -305,7 +305,9 @@ export type LayersImagePath =
 	| "/layers/astra-malorum/astra-malorum-mars-layer.webp"
 	| "/layers/citadelle-des-morts/citadelle-des-morts-layer.webp"
 	| "/layers/liberty-falls/liberty-falls-layer.webp"
-	| "/layers/paradox-junction/paradox-junction-main-layer.webp"
+	| "/layers/paradox-junction/paradox-junction-boss-arena-layer.webp"
+	| "/layers/paradox-junction/paradox-junction-destroyed-layer.webp"
+	| "/layers/paradox-junction/paradox-junction-normal-layer.webp"
 	| "/layers/reckoning/t1-executive-suites.webp"
 	| "/layers/reckoning/t1-mutant-research-lab.webp"
 	| "/layers/reckoning/t1-project-janus-reception.webp"
@@ -354,7 +356,7 @@ export type MapsImagePath =
 	| "/maps/moon.webp"
 	| "/maps/nacht-der-untoten.webp"
 	| "/maps/origins.webp"
-	| "/maps/paradox-junction-preview.webp"
+	| "/maps/paradox-junction.webp"
 	| "/maps/reckoning.webp"
 	| "/maps/revelations.webp"
 	| "/maps/shadows-of-evil.webp"
