@@ -1174,15 +1174,15 @@ const zombiesHashMap = HashMap.make(
 		image: "/zombies/mimic.webp",
 		description:
 			"The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attacking them.",
-		games: ["black-ops-cold-war"],
-		maps: ["firebase-z", "mauer-der-toten", "forsaken"],
+		games: ["black-ops-cold-war", "black-ops-7"],
+		maps: ["firebase-z", "mauer-der-toten", "forsaken", "paradox-junction"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["mouth"],
-		elementalWeakness: [],
+		elementalWeakness: ["brain-rot"],
 		attacks: ["melee-swing", "tentacle-grab"],
 		spawnBehavior:
-			"Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic.",
+			"Mimics can spawn with normal zombies during the middle and later rounds, or as a piece of loot on the ground that, when approached transforms into a Mimic. In Paradox Junction, a Mimic is one of the HVT enemies in the Purple Cyst side quest.",
 		combatStrategy: "content/zombies/mimic",
 	}),
 	makeZombie("orda", {
