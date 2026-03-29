@@ -651,7 +651,7 @@ export const writeOgFile = Effect.fnUntraced(function* (
 
 	yield* Effect.filterOrElse(
 		fs.exists(oldPath),
-		exists => exists,
+		exists => !exists,
 		() => fs.remove(oldPath),
 	)
 })
