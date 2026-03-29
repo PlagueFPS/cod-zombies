@@ -1,5 +1,6 @@
 import type { PlatformError } from "effect/PlatformError"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { runMain } from "@effect/platform-bun/BunRuntime"
+import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { Clock, Effect, FileSystem, HashSet, Path, Predicate } from "effect"
 import { toPascalCase } from "@/utils/shared-functions"
 
@@ -95,10 +96,12 @@ function headerComment(contentDir: string, duration: string | number) {
  */\n\n`
 }
 
-const generateContentPaths = Effect.fn("generateContentPaths")(function* () {
+/** @param cwd - Workspace root (must contain `content/` when run). */
+export const generateContentPaths = Effect.fn("generateContentPaths")(function* (
+	cwd: string = process.cwd(),
+) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const cwd = process.cwd()
 	const contentDir = path.join(cwd, "content")
 	const outFile = path.join(cwd, "types", "generated", "content-paths.gen.ts")
 
@@ -164,4 +167,6 @@ const generateContentPaths = Effect.fn("generateContentPaths")(function* () {
 	)
 })
 
-generateContentPaths().pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+if (import.meta.main) {
+	generateContentPaths(process.cwd()).pipe(Effect.provide(BunServicesLayer), runMain)
+}

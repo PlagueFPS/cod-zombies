@@ -1,5 +1,6 @@
 import { execSync } from "node:child_process"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { runMain } from "@effect/platform-bun/BunRuntime"
+import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import {
 	DateTime,
 	Effect,
@@ -19,14 +20,17 @@ import {
 	type LastModifiedData,
 } from "@/utils/validation-schemas"
 
-class DuplicateFilenameError extends Schema.TaggedErrorClass<DuplicateFilenameError>()(
+export class DuplicateFilenameError extends Schema.TaggedErrorClass<DuplicateFilenameError>()(
 	"DuplicateFilenameError",
 	{
 		message: Schema.String,
 	},
 ) {}
 
-const populateFilePaths = (allFiles: MutableHashSet.MutableHashSet<string>, repoRoot: string) => {
+export const populateFilePaths = (
+	allFiles: MutableHashSet.MutableHashSet<string>,
+	repoRoot: string,
+) => {
 	const filePaths = MutableHashSet.empty<string>()
 	for (const filePath of allFiles) {
 		const normalizedPath = filePath.replace(/\\/g, "/")
@@ -63,7 +67,7 @@ const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 	}
 })
 
-const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
+export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	output: string,
 	allFiles: MutableHashSet.MutableHashSet<string>,
 	repoRoot: string,
@@ -113,7 +117,7 @@ const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	return result
 })
 
-const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: string) {
+export const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: string) {
 	const path = yield* Path.Path
 	const fs = yield* FileSystem.FileSystem
 	const files = MutableHashSet.empty<string>()
@@ -129,7 +133,7 @@ const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: strin
 				const mdxFiles = subFiles.filter(file => file.endsWith(".mdx"))
 
 				for (const file of mdxFiles) {
-					const fullPath = path.join(process.cwd(), `./content/${subDir}/${file}`)
+					const fullPath = path.join(dir, subDir, file)
 					MutableHashSet.add(files, fullPath)
 
 					// Track relative paths to detect duplicates
@@ -160,41 +164,45 @@ const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir: strin
 	return files
 })
 
-const generateLastModified = Effect.gen(function* () {
-	const path = yield* Path.Path
-	const fs = yield* FileSystem.FileSystem
-	const contentDir = path.join(process.cwd(), "content")
-	const outputPath = path.join(process.cwd(), `data/last-modified.json`)
+/** @param cwd - Workspace root (must contain `content/` and `data/` when run). */
+export const generateLastModified = (cwd: string = process.cwd()) =>
+	Effect.gen(function* () {
+		const path = yield* Path.Path
+		const fs = yield* FileSystem.FileSystem
+		const contentDir = path.join(cwd, "content")
+		const outputPath = path.join(cwd, `data/last-modified.json`)
 
-	const allFiles = yield* getAllContentFiles(contentDir)
+		const allFiles = yield* getAllContentFiles(contentDir)
 
-	const gitOutput = yield* Effect.try({
-		try: () => {
-			// Use --name-status to show renames (R lines), --diff-filter=AMR for added/modified/renamed
-			const result = execSync(
-				`git log --all --name-status --format="%ct" --diff-filter=AMR -- "${contentDir}"`,
-				{
-					encoding: "utf-8",
-					stdio: ["ignore", "pipe", "ignore"],
-					maxBuffer: 10 * 1024 * 1024,
-				},
-			)
-			return result || ""
-		},
-		catch: () => "",
-	})
+		const gitOutput = yield* Effect.try({
+			try: () => {
+				// Use --name-status to show renames (R lines), --diff-filter=AMR for added/modified/renamed
+				const result = execSync(
+					`git log --all --name-status --format="%ct" --diff-filter=AMR -- "${contentDir}"`,
+					{
+						encoding: "utf-8",
+						stdio: ["ignore", "pipe", "ignore"],
+						maxBuffer: 10 * 1024 * 1024,
+					},
+				)
+				return result || ""
+			},
+			catch: () => "",
+		})
 
-	const fileMetadata = yield* parseGitBatchOutput(gitOutput, allFiles, process.cwd())
-	const lastModifiedData: LastModifiedData = {
-		version: "1.0",
-		generated: new Date().toISOString(),
-		files: fileMetadata,
-	}
+		const fileMetadata = yield* parseGitBatchOutput(gitOutput, allFiles, cwd)
+		const lastModifiedData: LastModifiedData = {
+			version: "1.0",
+			generated: new Date().toISOString(),
+			files: fileMetadata,
+		}
 
-	yield* Effect.log(`Generated last modified dates for ${Object.keys(fileMetadata).length} files`)
-	const encodedData = yield* encodeLastModifiedData(lastModifiedData)
-	yield* fs.writeFileString(outputPath, encodedData)
-	yield* Effect.log(`Data written to: ${outputPath}`)
-}).pipe(Effect.withLogSpan("generate_last_modified"), Effect.provide(BunServices.layer))
+		yield* Effect.log(`Generated last modified dates for ${Object.keys(fileMetadata).length} files`)
+		const encodedData = yield* encodeLastModifiedData(lastModifiedData)
+		yield* fs.writeFileString(outputPath, encodedData)
+		yield* Effect.log(`Data written to: ${outputPath}`)
+	}).pipe(Effect.withLogSpan("generate_last_modified"), Effect.provide(BunServicesLayer))
 
-BunRuntime.runMain(generateLastModified)
+if (import.meta.main) {
+	runMain(generateLastModified(process.cwd()))
+}
