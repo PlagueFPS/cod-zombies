@@ -28,6 +28,7 @@ import {
 	calculateTimeToRead,
 	extractHeadingsFromMDX,
 	getLastModified,
+	getOpengraphImageUrl,
 	getServerUrl,
 } from "@/utils/server-functions"
 import { capitalize } from "@/utils/shared-functions"
@@ -49,36 +50,47 @@ export const generateStaticParams = () => {
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/side-quests/[game]/[map]/[id]">): Promise<Metadata> => {
-	const { game, map, id } = await params
-	const quest = getSideQuestByKey(id as SideQuestKey)
-	if (Option.isNone(quest)) return notFound()
+	return await Effect.gen(function* () {
+		const { game, map, id } = yield* Effect.promise(() => params)
+		const quest = yield* getSideQuestByKey(id as SideQuestKey)
+		const opengraphImageUrl = yield* getOpengraphImageUrl("side-quests", quest.id)
+		if (Option.isNone(opengraphImageUrl)) return yield* Effect.sync(() => notFound())
 
-	const title = `${quest.value.title} Side Quest`
-	const description = `Learn how to complete the ${quest.value.title} side quest/easter egg on ${capitalize(map)} with our detailed step-by-step walkthrough!`
+		const title = `${quest.title} Side Quest`
+		const description = `Learn how to complete the ${quest.title} side quest/easter egg on ${capitalize(map)} with our detailed step-by-step walkthrough!`
 
-	return {
-		title,
-		description,
-		openGraph: {
-			...GLOBAL_OG_PROPS.openGraph,
+		return {
 			title,
 			description,
-			url: `/side-quests/${game}/${map}/${id}`,
-			images: {
-				url: `${getServerUrl()}/opengraph-images/side-quests/opengraph-${id}.jpg`,
-				width: 1200,
-				height: 630,
+			openGraph: {
+				...GLOBAL_OG_PROPS.openGraph,
+				title,
+				description,
+				url: `/side-quests/${game}/${map}/${id}`,
+				images: {
+					url: opengraphImageUrl.value,
+					width: 1200,
+					height: 630,
+				},
 			},
-		},
-		twitter: {
-			title,
-			description,
-			card: "summary_large_image",
-		},
-		alternates: {
-			canonical: `${getServerUrl()}/side-quests/${game}/${map}/${id}`,
-		},
-	}
+			twitter: {
+				title,
+				description,
+				card: "summary_large_image",
+			},
+			alternates: {
+				canonical: `${getServerUrl()}/side-quests/${game}/${map}/${id}`,
+			},
+		}
+	}).pipe(
+		Effect.withLogSpan("SideQuestPage.generateMetadata"),
+		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			NoSuchElementError: () => Effect.sync(() => notFound()),
+		}),
+		Effect.orDie,
+		PageRuntime.runPromise,
+	)
 }
 
 export default async function SideQuestPage({

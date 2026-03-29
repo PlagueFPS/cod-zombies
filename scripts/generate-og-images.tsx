@@ -15,6 +15,12 @@ import {
 import { getZombieByKey, getZombies, type Zombie, type ZombieKey } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { calculateTimeToRead } from "@/utils/server-functions"
+import {
+	decodeOpengraphManifest,
+	encodeOpengraphManifest,
+	OpengraphManifest,
+	type OpengraphKind,
+} from "@/utils/validation-schemas"
 
 const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
 
@@ -28,15 +34,6 @@ class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>
 class OgCliError extends Schema.TaggedErrorClass<OgCliError>()("OgCliError", {
 	message: Schema.String,
 }) {}
-
-class OpengraphManifest extends Schema.Class<OpengraphManifest>("OpengraphManifest")({
-	"main-quests": Schema.Record(Schema.String, Schema.Int),
-	"side-quests": Schema.Record(Schema.String, Schema.Int),
-	zombies: Schema.Record(Schema.String, Schema.Int),
-}) {}
-
-const decodeOpengraphManifest = Schema.decodeEffect(Schema.fromJsonString(OpengraphManifest))
-const encodeOpengraphManifest = Schema.encodeEffect(Schema.fromJsonString(OpengraphManifest))
 
 const size = { width: 1200, height: 630 }
 
@@ -604,7 +601,7 @@ export const generateZombieImage = Effect.fnUntraced(
 
 const writeOgFile = Effect.fnUntraced(function* (
 	outputBase: string,
-	contentDir: "main-quests" | "side-quests" | "zombies",
+	contentDir: OpengraphKind,
 	fileBaseName: string,
 	bytes: Uint8Array,
 ) {

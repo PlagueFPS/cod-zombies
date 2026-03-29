@@ -28,6 +28,7 @@ import {
 	calculateTimeToRead,
 	extractHeadingsFromMDX,
 	getLastModified,
+	getOpengraphImageUrl,
 	getServerUrl,
 } from "@/utils/server-functions"
 import richStyles from "@/app/rich-text.module.css"
@@ -41,40 +42,51 @@ export const generateStaticParams = () =>
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/main-quests/[game]/[map]">): Promise<Metadata> => {
-	const { map } = await params
-	const quest = getMapByKey(map as MapKey)
-	if (Option.isNone(quest) || Option.isNone(quest.value.mainQuest)) return notFound()
+	return await Effect.gen(function* () {
+		const { map } = yield* Effect.promise(() => params)
+		const quest = yield* getMapByKey(map as MapKey)
+		const title = `${quest.title} Main Quest`
+		const description = `Learn how to complete the main quest/easter egg for the ${quest.title} zombies map with our detailed step-by-step walkthrough!`
+		const opengraphImageUrl = yield* getOpengraphImageUrl("main-quests", quest.id)
+		if (Option.isNone(opengraphImageUrl)) return yield* Effect.sync(() => notFound())
 
-	const title = `${quest.value.title} Main Quest`
-	const description = `Learn how to complete the main quest/easter egg for the ${quest.value.title} zombies map with our detailed step-by-step walkthrough!`
-
-	return {
-		title,
-		description,
-		openGraph: {
-			...GLOBAL_OG_PROPS.openGraph,
+		return {
 			title,
 			description,
-			url: `/main-quests/${quest.value.game}/${quest.value.id}`,
-			images: {
-				url: `${getServerUrl()}/opengraph-images/main-quests/opengraph-${quest.value.id}.jpg`,
-				width: 1200,
-				height: 630,
+			openGraph: {
+				...GLOBAL_OG_PROPS.openGraph,
+				title,
+				description,
+				url: `/main-quests/${quest.game}/${quest.id}`,
+				images: {
+					url: opengraphImageUrl.value,
+					width: 1200,
+					height: 630,
+				},
 			},
-		},
-		twitter: {
-			title,
-			description,
-			card: "summary_large_image",
-		},
-		alternates: {
-			canonical: `${getServerUrl()}/main-quests/${quest.value.game}/${quest.value.id}`,
-		},
-	}
+			twitter: {
+				title,
+				description,
+				card: "summary_large_image",
+			},
+			alternates: {
+				canonical: `${getServerUrl()}/main-quests/${quest.game}/${quest.id}`,
+			},
+		}
+	}).pipe(
+		Effect.withLogSpan("MainQuestPage.generateMetadata"),
+		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			NoSuchElementError: () => Effect.sync(() => notFound()),
+		}),
+		Effect.orDie,
+		PageRuntime.runPromise,
+	)
 }
 
 export default async function MainQuestPage({ params }: PageProps<"/main-quests/[game]/[map]">) {
 	return await mainQuestPageUI(params).pipe(
+		Effect.withLogSpan("MainQuestPage"),
 		Effect.tapCause(cause => Effect.logError(cause)),
 		Effect.catchTags({
 			NoSuchElementError: () => Effect.sync(() => notFound()),

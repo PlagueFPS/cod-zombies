@@ -1,5 +1,13 @@
 import { Schema } from "effect"
 
+export class OpengraphManifest extends Schema.Class<OpengraphManifest>("OpengraphManifest")({
+	"main-quests": Schema.Record(Schema.String, Schema.Int),
+	"side-quests": Schema.Record(Schema.String, Schema.Int),
+	zombies: Schema.Record(Schema.String, Schema.Int),
+}) {}
+
+export type OpengraphKind = keyof typeof OpengraphManifest.Encoded
+
 const FileMetadataSchema = Schema.Struct({
 	lastModified: Schema.Int.annotate({ description: "Epoch timestamp of the last modification" }),
 	lastModifiedFormatted: Schema.String.annotate({
@@ -107,3 +115,5 @@ export const decodeParams = Schema.decodeUnknownSync(ParamsSchema)
 export const decodeTerminusCode = Schema.decodeUnknownExit(TerminusCodeSchema)
 export const decodeRichLinkNode = Schema.decodeUnknownExit(RichLinkNodeSchema)
 export const validateFeedbackForm = Schema.decodeExit(StandardFeedbackFormSchema)
+export const decodeOpengraphManifest = Schema.decodeEffect(Schema.fromJsonString(OpengraphManifest))
+export const encodeOpengraphManifest = Schema.encodeEffect(Schema.fromJsonString(OpengraphManifest))
