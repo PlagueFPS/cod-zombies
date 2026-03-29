@@ -1,10 +1,11 @@
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { runMain } from "@effect/platform-bun/BunRuntime"
+import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { Clock, Duration, Effect, FileSystem, HashSet, Path, Schema, Ref } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp from "sharp"
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 
-class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
+export class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
 	"ImageOptimizationError",
 	{
 		message: Schema.String,
@@ -141,7 +142,104 @@ const transformIcon = Effect.fnUntraced(function* (
 
 type TransformResult = Effect.Success<ReturnType<typeof transformMap>>
 
-const optimizeCommand = Command.make(
+export type OptimizeCliOptions = {
+	readonly dir: string
+	readonly source: string
+	readonly map: boolean
+	readonly noResize: boolean
+	readonly preview: boolean
+	readonly icon: boolean
+}
+
+export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
+	Effect.gen(function* () {
+		const { dir: targetDir, source, map, noResize, preview, icon } = args
+		const startTime = yield* Clock.currentTimeMillis
+		const fs = yield* FileSystem.FileSystem
+		const path = yield* Path.Path
+		const newAssets = yield* fs.readDirectory(source)
+		const numRef = yield* Ref.make(0)
+
+		yield* Effect.filterOrElse(
+			fs.exists(targetDir),
+			exists => exists,
+			() => fs.makeDirectory(targetDir),
+		)
+
+		yield* Effect.filterOrElse(
+			fs.exists(DEFAULT_COPY_DIR),
+			exists => exists,
+			() => fs.makeDirectory(DEFAULT_COPY_DIR),
+		)
+
+		yield* Effect.forEach(
+			newAssets,
+			asset =>
+				Effect.gen(function* () {
+					const extension = path.extname(asset)
+					if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, extension)) return
+
+					const imagePath = path.join(source, asset)
+					let fileName = path.basename(asset, extension)
+					let imageBuffer = yield* fs.readFile(imagePath)
+
+					if (extension !== ".webp" || imageBuffer.byteLength > 10_000) {
+						yield* Effect.log("Reading metadata...")
+						const image = sharp(imageBuffer)
+						const metadata = yield* Effect.tryPromise({
+							try: () => image.metadata(),
+							catch: cause =>
+								new ImageOptimizationError({
+									message: `Failed to read image metadata: ${asset}`,
+									cause,
+								}),
+						})
+
+						yield* Effect.log(`Transforming image: ${asset}`)
+						let result: TransformResult
+
+						if (map) {
+							result = yield* transformMap(metadata, image, fileName, asset)
+						} else if (preview) {
+							result = yield* transformPreview(image, fileName, asset)
+						} else if (icon) {
+							result = yield* transformIcon(image, fileName, asset)
+						} else if (noResize || metadata.width <= 1920) {
+							result = yield* transformOptimizeOnly(image, fileName, asset)
+						} else {
+							result = yield* transformResizeAndOptimize(image, fileName, asset)
+						}
+
+						imageBuffer = result.buffer
+						fileName = result.fileName
+					} else {
+						fileName = asset
+						yield* Effect.log(`Skipped transformation for ${fileName}`)
+					}
+
+					yield* Ref.update(numRef, n => n + 1)
+					const currentAsset = yield* Ref.get(numRef)
+
+					yield* fs.writeFile(path.join(targetDir, fileName), imageBuffer)
+					yield* fs.copyFile(path.join(source, asset), path.join(DEFAULT_COPY_DIR, asset))
+					yield* fs.remove(path.join(source, asset))
+					yield* Effect.log(`Transformed: ${fileName}; ${currentAsset}/${newAssets.length}`)
+				}).pipe(Effect.withLogSpan("transform_asset")),
+			{ concurrency: 2 },
+		)
+
+		const writtenAmount = yield* Ref.get(numRef)
+		const endTime = yield* Clock.currentTimeMillis.pipe(Effect.map(endTime => endTime - startTime))
+		const totalTime =
+			endTime > 1000
+				? `${Duration.millis(endTime).pipe(Duration.toMinutes).toFixed(2)}m`
+				: `${Duration.millis(endTime).pipe(Duration.toSeconds).toFixed(2)}s`
+		yield* Effect.log(
+			`Successfully optimized ${writtenAmount}/${newAssets.length} images in ${totalTime}!`,
+		)
+	}).pipe(Effect.withLogSpan("optimize_assets"))
+
+export const optimizeCommand = Command.make(
 	"optimize",
 	{
 		dir: dirOption,
@@ -151,96 +249,11 @@ const optimizeCommand = Command.make(
 		preview: previewOption,
 		icon: iconOption,
 	},
-	({ dir: targetDir, source, map, noResize, preview, icon }) =>
-		Effect.gen(function* () {
-			const startTime = yield* Clock.currentTimeMillis
-			const fs = yield* FileSystem.FileSystem
-			const path = yield* Path.Path
-			const newAssets = yield* fs.readDirectory(source)
-			const numRef = yield* Ref.make(0)
-
-			yield* Effect.filterOrElse(
-				fs.exists(targetDir),
-				exists => exists,
-				() => fs.makeDirectory(targetDir),
-			)
-
-			yield* Effect.filterOrElse(
-				fs.exists(DEFAULT_COPY_DIR),
-				exists => exists,
-				() => fs.makeDirectory(DEFAULT_COPY_DIR),
-			)
-
-			yield* Effect.forEach(
-				newAssets,
-				asset =>
-					Effect.gen(function* () {
-						const extension = path.extname(asset)
-						if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, extension)) return
-
-						const imagePath = path.join(source, asset)
-						let fileName = path.basename(asset, extension)
-						let imageBuffer = yield* fs.readFile(imagePath)
-
-						if (extension !== ".webp" || imageBuffer.byteLength > 10_000) {
-							yield* Effect.log("Reading metadata...")
-							const image = sharp(imageBuffer)
-							const metadata = yield* Effect.tryPromise({
-								try: () => image.metadata(),
-								catch: cause =>
-									new ImageOptimizationError({
-										message: `Failed to read image metadata: ${asset}`,
-										cause,
-									}),
-							})
-
-							yield* Effect.log(`Transforming image: ${asset}`)
-							let result: TransformResult
-
-							if (map) {
-								result = yield* transformMap(metadata, image, fileName, asset)
-							} else if (preview) {
-								result = yield* transformPreview(image, fileName, asset)
-							} else if (icon) {
-								result = yield* transformIcon(image, fileName, asset)
-							} else if (noResize || metadata.width <= 1920) {
-								result = yield* transformOptimizeOnly(image, fileName, asset)
-							} else {
-								result = yield* transformResizeAndOptimize(image, fileName, asset)
-							}
-
-							imageBuffer = result.buffer
-							fileName = result.fileName
-						} else {
-							fileName = asset
-							yield* Effect.log(`Skipped transformation for ${fileName}`)
-						}
-
-						yield* Ref.update(numRef, n => n + 1)
-						const currentAsset = yield* Ref.get(numRef)
-
-						yield* fs.writeFile(path.join(targetDir, fileName), imageBuffer)
-						yield* fs.copyFile(path.join(source, asset), path.join(DEFAULT_COPY_DIR, asset))
-						yield* fs.remove(path.join(source, asset))
-						yield* Effect.log(`Transformed: ${fileName}; ${currentAsset}/${newAssets.length}`)
-					}).pipe(Effect.withLogSpan("transform_asset")),
-				{ concurrency: 2 },
-			)
-
-			const writtenAmount = yield* Ref.get(numRef)
-			const endTime = yield* Clock.currentTimeMillis.pipe(
-				Effect.map(endTime => endTime - startTime),
-			)
-			const totalTime =
-				endTime > 1000
-					? `${Duration.millis(endTime).pipe(Duration.toMinutes).toFixed(2)}m`
-					: `${Duration.millis(endTime).pipe(Duration.toSeconds).toFixed(2)}s`
-			yield* Effect.log(
-				`Successfully optimized ${writtenAmount}/${newAssets.length} images in ${totalTime}!`,
-			)
-		}).pipe(Effect.withLogSpan("optimize_assets")),
+	(args: OptimizeCliOptions) => optimizeAssetsEffect(args),
 )
 
-Command.run(optimizeCommand, {
-	version: "1.0.0",
-}).pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+if (import.meta.main) {
+	Command.run(optimizeCommand, {
+		version: "1.0.0",
+	}).pipe(Effect.provide(BunServicesLayer), runMain)
+}

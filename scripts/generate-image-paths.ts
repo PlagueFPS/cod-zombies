@@ -1,5 +1,6 @@
 import type { PlatformError } from "effect/PlatformError"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
+import { runMain } from "@effect/platform-bun/BunRuntime"
+import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { Clock, Effect, FileSystem, HashSet, Path, Predicate, SynchronizedRef } from "effect"
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 import { toPascalCase } from "@/utils/shared-functions"
@@ -120,10 +121,12 @@ function headerComment(publicDir: string, duration: string | number) {
  */\n\n`
 }
 
-const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
+/** @param cwd - Workspace root (must contain `public/` when run). */
+export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
+	cwd: string = process.cwd(),
+) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const cwd = process.cwd()
 	const publicDir = path.join(cwd, "public")
 	const outFile = path.join(cwd, "types", "generated", "image-paths.gen.ts")
 	const exists = yield* fs.exists(publicDir)
@@ -199,4 +202,6 @@ const generateImagePaths = Effect.fn("generateImagePaths")(function* () {
 	yield* Effect.log(`- / (root): ${rootWebPaths.length} image(s) -> type RootImagePath`)
 })
 
-generateImagePaths().pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
+if (import.meta.main) {
+	generateImagePaths(process.cwd()).pipe(Effect.provide(BunServicesLayer), runMain)
+}

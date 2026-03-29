@@ -1,6 +1,7 @@
 import type { MapsImagePath, ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { BunRuntime, BunServices } from "@effect/platform-bun"
-import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema } from "effect"
+import { runMain } from "@effect/platform-bun/BunRuntime"
+import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
+import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema, Semaphore } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import { ImageResponse } from "next/og"
 import sharp from "sharp"
@@ -24,18 +25,24 @@ import {
 
 const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
 
-class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>()(
+/** When set (e.g. in tests), overrides the manifest path so CLI runs do not mutate repo `data/`. */
+const manifestPathFromEnv = () =>
+	process.env.OG_TEST_MANIFEST_PATH?.length ? process.env.OG_TEST_MANIFEST_PATH : undefined
+
+export class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>()(
 	"ImageGenerationError",
 	{
 		cause: Schema.Unknown,
 	},
 ) {}
 
-class OgCliError extends Schema.TaggedErrorClass<OgCliError>()("OgCliError", {
+export class OgCliError extends Schema.TaggedErrorClass<OgCliError>()("OgCliError", {
 	message: Schema.String,
 }) {}
 
-const size = { width: 1200, height: 630 }
+/** OG canvas size (matches `ImageResponse` / sharp output). */
+export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const
+const size = OG_IMAGE_SIZE
 
 const getFonts = Effect.fnUntraced(
 	function* () {
@@ -599,16 +606,20 @@ export const generateZombieImage = Effect.fnUntraced(
 	self => Effect.withLogSpan(self, "generateZombieImage"),
 )
 
-const writeOgFile = Effect.fnUntraced(function* (
+export const writeOgFile = Effect.fnUntraced(function* (
 	outputBase: string,
 	contentDir: OpengraphKind,
 	fileBaseName: string,
 	bytes: Uint8Array,
+	options?: { manifestPath?: string },
 ) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const dir = path.join(outputBase, contentDir)
-	const manifestPath = path.join(process.cwd(), "data", "opengraph-manifest.json")
+	const manifestPath =
+		options?.manifestPath ??
+		manifestPathFromEnv() ??
+		path.join(process.cwd(), "data", "opengraph-manifest.json")
 
 	const manifest = yield* fs
 		.readFileString(manifestPath)
@@ -618,6 +629,7 @@ const writeOgFile = Effect.fnUntraced(function* (
 		onSome: previousVersion => previousVersion + 1,
 	})
 
+	const oldPath = path.join(dir, `opengraph-${fileBaseName}-v${version - 1}.jpg`)
 	const outPath = path.join(dir, `opengraph-${fileBaseName}-v${version}.jpg`)
 	yield* fs.makeDirectory(dir, { recursive: true })
 	yield* fs.writeFile(outPath, bytes)
@@ -636,6 +648,12 @@ const writeOgFile = Effect.fnUntraced(function* (
 
 	yield* fs.writeFileString(manifestPath, yield* encodeOpengraphManifest(updatedManifest))
 	yield* Effect.log(`Wrote ${outPath}`)
+
+	yield* Effect.filterOrElse(
+		fs.exists(oldPath),
+		exists => !exists,
+		() => fs.remove(oldPath),
+	)
 })
 
 const mapSlugFlag = Flag.optional(Flag.string("map")).pipe(
@@ -679,7 +697,7 @@ const outputDirFlag = Flag.directory("output-dir").pipe(
 	),
 )
 
-const generateOgCommand = Command.make(
+export const generateOgCommand = Command.make(
 	"generate-og-images",
 	{
 		mapFlag: mapSlugFlag,
@@ -694,6 +712,7 @@ const generateOgCommand = Command.make(
 		Effect.gen(function* () {
 			const path = yield* Path.Path
 			const outputBase = path.resolve(outputDirFlag)
+			const manifestLock = yield* Semaphore.make(1)
 
 			const zombieFamily = zombiesFlag || Option.isSome(zombieFlag)
 			const questFamily = questsFlag || Option.isSome(questFlag)
@@ -745,7 +764,9 @@ const generateOgCommand = Command.make(
 					z =>
 						Effect.gen(function* () {
 							const ogImage = yield* generateZombieImage(z)
-							yield* writeOgFile(outputBase, "zombies", z.id, new Uint8Array(ogImage))
+							yield* manifestLock.withPermits(1)(
+								writeOgFile(outputBase, "zombies", z.id, new Uint8Array(ogImage)),
+							)
 						}),
 					{ concurrency: 8 },
 				)
@@ -789,7 +810,9 @@ const generateOgCommand = Command.make(
 					q =>
 						Effect.gen(function* () {
 							const ogImage = yield* generateSideQuestImage(q)
-							yield* writeOgFile(outputBase, "side-quests", q.id, new Uint8Array(ogImage))
+							yield* manifestLock.withPermits(1)(
+								writeOgFile(outputBase, "side-quests", q.id, new Uint8Array(ogImage)),
+							)
 						}),
 					{ concurrency: 8 },
 				)
@@ -810,12 +833,15 @@ const generateOgCommand = Command.make(
 						message: "No maps with main quests found in the catalog.",
 					})
 				}
+
 				yield* Effect.forEach(
 					maps,
 					m =>
 						Effect.gen(function* () {
 							const ogImage = yield* generateMainQuestImage(m)
-							yield* writeOgFile(outputBase, "main-quests", m.id, new Uint8Array(ogImage))
+							yield* manifestLock.withPermits(1)(
+								writeOgFile(outputBase, "main-quests", m.id, new Uint8Array(ogImage)),
+							)
 						}),
 					{ concurrency: 8 },
 				)
@@ -836,10 +862,8 @@ const generateOgCommand = Command.make(
 		}),
 )
 
-Command.run(generateOgCommand, {
-	version: "1.0.0",
-}).pipe(
-	Effect.withLogSpan("generate_og_images"),
-	Effect.provide(BunServices.layer),
-	BunRuntime.runMain,
-)
+if (import.meta.main) {
+	Command.run(generateOgCommand, {
+		version: "1.0.0",
+	}).pipe(Effect.withLogSpan("generate_og_images"), Effect.provide(BunServicesLayer), runMain)
+}
