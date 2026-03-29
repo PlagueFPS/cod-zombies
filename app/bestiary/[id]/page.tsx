@@ -40,7 +40,7 @@ import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { getLastModified, getServerUrl } from "@/utils/server-functions"
+import { getLastModified, getOpengraphImageUrl, getServerUrl } from "@/utils/server-functions"
 
 export const generateStaticParams = () => {
 	const zombies = getZombies()
@@ -52,36 +52,49 @@ export const generateStaticParams = () => {
 export const generateMetadata = async ({
 	params,
 }: PageProps<"/bestiary/[id]">): Promise<Metadata> => {
-	const { id } = await params
-	const zombie = getZombieByKey(id as ZombieKey)
-	if (Option.isNone(zombie) || Option.getOrNull(zombie.value.state) === "Coming Soon") {
-		return notFound()
-	}
-	const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.value.title}" ${zombie.value.type} Zombie.`
+	return await Effect.gen(function* () {
+		const { id } = yield* Effect.promise(() => params)
+		const zombie = yield* getZombieByKey(id as ZombieKey)
+		if (Option.getOrNull(zombie.state) === "Coming Soon") {
+			return yield* Effect.sync(() => notFound())
+		}
 
-	return {
-		title: zombie.value.title,
-		description,
-		openGraph: {
-			...GLOBAL_OG_PROPS.openGraph,
-			title: zombie.value.title,
+		const opengraphImageUrl = yield* getOpengraphImageUrl("zombies", zombie.id)
+		if (Option.isNone(opengraphImageUrl)) return yield* Effect.sync(() => notFound())
+		const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.title}" ${zombie.type} Zombie.`
+
+		return {
+			title: zombie.title,
 			description,
-			url: `/bestiary/${zombie.value.id}`,
-			images: {
-				url: `${getServerUrl()}/opengraph-images/zombies/opengraph-${zombie.value.id}.jpg`,
-				width: 1200,
-				height: 630,
+			openGraph: {
+				...GLOBAL_OG_PROPS.openGraph,
+				title: zombie.title,
+				description,
+				url: `/bestiary/${zombie.id}`,
+				images: {
+					url: opengraphImageUrl.value,
+					width: 1200,
+					height: 630,
+				},
 			},
-		},
-		twitter: {
-			title: zombie.value.title,
-			description,
-			card: "summary_large_image",
-		},
-		alternates: {
-			canonical: `${getServerUrl()}/bestiary/${zombie.value.id}`,
-		},
-	}
+			twitter: {
+				title: zombie.title,
+				description,
+				card: "summary_large_image",
+			},
+			alternates: {
+				canonical: `${getServerUrl()}/bestiary/${zombie.id}`,
+			},
+		}
+	}).pipe(
+		Effect.withLogSpan("ZombiePage.generateMetadata"),
+		Effect.tapCause(cause => Effect.logError(cause)),
+		Effect.catchTags({
+			NoSuchElementError: () => Effect.sync(() => notFound()),
+		}),
+		Effect.orDie,
+		PageRuntime.runPromise,
+	)
 }
 
 export default async function ZombiePage({ params }: PageProps<"/bestiary/[id]">) {

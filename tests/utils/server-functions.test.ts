@@ -1,9 +1,9 @@
 import * as BunPath from "@effect/platform-bun/BunPath"
 import { expect, it, layer } from "@effect/vitest"
-import { Effect, FileSystem, Layer, Redacted } from "effect"
+import { Effect, FileSystem, Layer, Option, Redacted } from "effect"
 import { afterEach, beforeEach, describe, vi } from "vitest"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { getLastModified } from "@/utils/server-functions"
+import { getLastModified, getOpengraphImageUrl } from "@/utils/server-functions"
 
 vi.mock("@/env", () => ({
 	env: {
@@ -32,6 +32,19 @@ const MOCK_LAST_MODIFIED_JSON = JSON.stringify({
 const MockFileSystemLayer = Layer.mergeAll(
 	FileSystem.layerNoop({
 		readFileString: () => Effect.succeed(MOCK_LAST_MODIFIED_JSON),
+	}),
+	BunPath.layer,
+)
+
+const MOCK_OPENGRAPH_MANIFEST_JSON = JSON.stringify({
+	"main-quests": { "paradox-junction": 2 },
+	"side-quests": { "free-perk": 1 },
+	zombies: { zombie: 1 },
+})
+
+const OpengraphManifestFileSystemLayer = Layer.mergeAll(
+	FileSystem.layerNoop({
+		readFileString: () => Effect.succeed(MOCK_OPENGRAPH_MANIFEST_JSON),
 	}),
 	BunPath.layer,
 )
@@ -145,6 +158,41 @@ layer(MockFileSystemLayer)("getLastModified", it => {
 			expect(result2).toStrictEqual(expected)
 			expect(result3).toStrictEqual(expected)
 			expect(result4).toStrictEqual(expected)
+		}),
+	)
+})
+
+layer(OpengraphManifestFileSystemLayer)("getOpengraphImageUrl", it => {
+	it.effect("should return `Some` with a versioned URL when the id exists in the manifest", () =>
+		Effect.gen(function* () {
+			const result = yield* getOpengraphImageUrl("main-quests", "paradox-junction")
+			expect(result).toEqual(
+				Option.some(
+					"http://localhost:3000/opengraph-images/main-quests/opengraph-paradox-junction-v2.jpg",
+				),
+			)
+		}),
+	)
+
+	it.effect("should build URLs for side-quests and zombies kinds", () =>
+		Effect.gen(function* () {
+			const sideQuests = yield* getOpengraphImageUrl("side-quests", "free-perk")
+			const zombies = yield* getOpengraphImageUrl("zombies", "zombie")
+			expect(sideQuests).toEqual(
+				Option.some(
+					"http://localhost:3000/opengraph-images/side-quests/opengraph-free-perk-v1.jpg",
+				),
+			)
+			expect(zombies).toEqual(
+				Option.some("http://localhost:3000/opengraph-images/zombies/opengraph-zombie-v1.jpg"),
+			)
+		}),
+	)
+
+	it.effect("should return `None` when the id is missing from the manifest", () =>
+		Effect.gen(function* () {
+			const result = yield* getOpengraphImageUrl("main-quests", "no-such-map")
+			expect(result).toEqual(Option.none())
 		}),
 	)
 })

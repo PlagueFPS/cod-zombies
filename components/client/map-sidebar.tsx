@@ -151,6 +151,10 @@ export default function MapSidebar({
 		return mapMarkers.some(m => m.type === marker || m.id === marker)
 	}
 
+	const isGroupInLayer = (category: MarkerCategory) => {
+		return mapMarkers.some(marker => marker.category === category)
+	}
+
 	return (
 		<Sidebar side="left" collapsible="offcanvas" className="mt-16">
 			<SidebarHeader className="border-b bg-background">
@@ -302,7 +306,7 @@ export default function MapSidebar({
 					</Collapsible>
 				)}
 
-				{groups.upgrades.size > 0 && (
+				{groups.upgrades.size > 0 && isGroupInLayer("upgrades") && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel
@@ -343,7 +347,7 @@ export default function MapSidebar({
 					</Collapsible>
 				)}
 
-				{groups.objectives.size > 0 && (
+				{groups.objectives.size > 0 && isGroupInLayer("objectives") && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel
@@ -384,7 +388,7 @@ export default function MapSidebar({
 					</Collapsible>
 				)}
 
-				{groups.transportation.size > 0 && (
+				{groups.transportation.size > 0 && isGroupInLayer("transportation") && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel
@@ -425,7 +429,7 @@ export default function MapSidebar({
 					</Collapsible>
 				)}
 
-				{groups.intel.size > 0 && (
+				{groups.intel.size > 0 && isGroupInLayer("intel") && (
 					<Collapsible defaultOpen className="group/collapsible">
 						<SidebarGroup>
 							<SidebarGroupLabel

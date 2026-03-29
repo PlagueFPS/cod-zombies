@@ -15,6 +15,12 @@ import {
 import { getZombieByKey, getZombies, type Zombie, type ZombieKey } from "@/data/zombies"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { calculateTimeToRead } from "@/utils/server-functions"
+import {
+	decodeOpengraphManifest,
+	encodeOpengraphManifest,
+	OpengraphManifest,
+	type OpengraphKind,
+} from "@/utils/validation-schemas"
 
 const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
 
@@ -595,16 +601,40 @@ export const generateZombieImage = Effect.fnUntraced(
 
 const writeOgFile = Effect.fnUntraced(function* (
 	outputBase: string,
-	contentDir: "main-quests" | "side-quests" | "zombies",
+	contentDir: OpengraphKind,
 	fileBaseName: string,
 	bytes: Uint8Array,
 ) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const dir = path.join(outputBase, contentDir)
-	const outPath = path.join(dir, `opengraph-${fileBaseName}.jpg`)
+	const manifestPath = path.join(process.cwd(), "data", "opengraph-manifest.json")
+
+	const manifest = yield* fs
+		.readFileString(manifestPath)
+		.pipe(Effect.flatMap(decodeOpengraphManifest))
+	const version = Option.match(Option.fromUndefinedOr(manifest[contentDir][fileBaseName]), {
+		onNone: () => 1,
+		onSome: previousVersion => previousVersion + 1,
+	})
+
+	const outPath = path.join(dir, `opengraph-${fileBaseName}-v${version}.jpg`)
 	yield* fs.makeDirectory(dir, { recursive: true })
 	yield* fs.writeFile(outPath, bytes)
+
+	const updatedManifest = new OpengraphManifest(
+		{
+			// oxlint-disable-next-line no-misused-spread, we're constructing a new instance of the manifest
+			...manifest,
+			[contentDir]: {
+				...manifest[contentDir],
+				[fileBaseName]: version,
+			},
+		},
+		{ disableValidation: true },
+	)
+
+	yield* fs.writeFileString(manifestPath, yield* encodeOpengraphManifest(updatedManifest))
 	yield* Effect.log(`Wrote ${outPath}`)
 })
 

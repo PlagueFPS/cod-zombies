@@ -756,7 +756,7 @@ const mapHashMap = HashMap.make(
 		releaseDate: new Date("March 11, 2026 12:00 AM"),
 		description:
 			"Killing time was never this much fun! Play gruesome games with the creepy Twins, destroy the Dark Heart and escape the warden's temporal prison!",
-		image: "/maps/paradox-junction-preview.webp",
+		image: "/maps/paradox-junction.webp",
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/paradox-junction"),
 		difficulty: Option.some("Medium"),

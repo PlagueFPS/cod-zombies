@@ -14,7 +14,11 @@ import {
 import { env } from "@/env"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { slugify } from "@/utils/shared-functions"
-import { decodeLastModifiedData } from "@/utils/validation-schemas"
+import {
+	decodeLastModifiedData,
+	decodeOpengraphManifest,
+	type OpengraphKind,
+} from "@/utils/validation-schemas"
 
 class TokenExpirationError extends Schema.TaggedErrorClass<TokenExpirationError>()(
 	"TokenExpirationError",
@@ -53,6 +57,23 @@ export const getServerUrl = () => {
 			return `http://localhost:3000`
 	}
 }
+
+export const getOpengraphImageUrl = Effect.fnUntraced(function* (kind: OpengraphKind, id: string) {
+	const fs = yield* FileSystem.FileSystem
+	const path = yield* Path.Path
+	const manifestPath = path.join(process.cwd(), "data/opengraph-manifest.json")
+	const version = yield* fs.readFileString(manifestPath).pipe(
+		Effect.flatMap(decodeOpengraphManifest),
+		Effect.map(manifest => manifest[kind][id]),
+	)
+
+	if (!version) {
+		yield* Effect.logWarning(`Missing opengraph image version for ${kind}: ${id}`)
+		return Option.none()
+	}
+
+	return Option.some(`${getServerUrl()}/opengraph-images/${kind}/opengraph-${id}-v${version}.jpg`)
+})
 
 /**
  * Gets the last updated date of a file.
