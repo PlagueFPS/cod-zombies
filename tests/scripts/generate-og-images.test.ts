@@ -28,7 +28,7 @@ import {
 	writeOgFile,
 } from "@/scripts/generate-og-images"
 import { decodeOpengraphManifest } from "@/utils/validation-schemas"
-import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "./exit-helpers"
+import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "../helpers"
 
 const testLayer = BunServicesLayer
 

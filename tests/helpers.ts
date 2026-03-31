@@ -1,6 +1,12 @@
 import { Cause, Exit, Option } from "effect"
 import { expect } from "vitest"
 
+export function assertSortedDescByDate(dates: readonly Date[]) {
+	for (let i = 0; i < dates.length - 1; i++) {
+		expect(dates[i]!.getTime()).toBeGreaterThanOrEqual(dates[i + 1]!.getTime())
+	}
+}
+
 export function expectExitFailure<A, E>(exit: Exit.Exit<A, E>): Cause.Cause<E> {
 	expect(Exit.isFailure(exit)).toBe(true)
 	if (Exit.isFailure(exit)) {

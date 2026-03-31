@@ -69,8 +69,7 @@ export const getInteractiveMapByKey = (key: InteractiveMapKey) =>
 	HashMap.get(interactiveMapHashMap, key)
 
 /**
- * Gets a list of all interactive maps in the registry
- * @returns An array of the existing interactive map metadata
+ * Gets a list of all interactive maps in the registry sorted by release date descending
  */
 export const getInteractiveMaps = () =>
 	HashMap.toValues(interactiveMapHashMap).sort((a, b) => {
@@ -78,11 +77,6 @@ export const getInteractiveMaps = () =>
 		const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
 		return sortReleaseDate(mapB.releaseDate, mapA.releaseDate)
 	})
-
-/**
- * Gets the total number of interactive maps in the registry. This is useful for initial loading states
- */
-export const getTotalMaps = () => HashMap.size(interactiveMapHashMap)
 
 const makeMapEntry = <T extends string>(
 	identifier: T,

@@ -7,7 +7,7 @@ import { Effect, Layer } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { ImageOptimizationError, optimizeAssetsEffect } from "@/scripts/image-optimization"
-import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "./exit-helpers"
+import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "../helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 

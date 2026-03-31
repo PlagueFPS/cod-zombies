@@ -1,7 +1,7 @@
 import type { GameKey } from "./games"
 import type { AugmentsImagePath } from "@/types/generated/image-paths.gen"
 import { HashMap, Option } from "effect"
-import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption } from "@/data/registry-helpers"
 
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
 
@@ -44,12 +44,6 @@ export type AugmentType = Augment["type"]
  */
 export const getAugmentByKey = (key: AugmentKey, game?: GameKey): Option.Option<Augment> =>
 	resolveGameVariantOption(HashMap.get(augmentHashMap, key), game)
-
-/** Gets all augments.
- * @param game The game to get the augment variants for.
- */
-export const getAugments = (game?: GameKey): Augment[] =>
-	mapWithGameVariant(HashMap.toValues(augmentHashMap), game)
 
 /** Type helper to ensure type-safe AugmentTuple creation */
 export const makeAugmentTuple = (t: AugmentTuple) => Option.some(t)
