@@ -2,7 +2,7 @@ import type { GameKey } from "@/data/games"
 import type { PerksImagePath } from "@/types/generated/image-paths.gen"
 import { HashMap, Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption } from "@/data/registry-helpers"
 
 type PerkVariant = Omit<Partial<Perk>, "_tag" | "id" | "title" | "variants">
 
@@ -35,12 +35,6 @@ export type PerkKey = HashMap.HashMap.Key<typeof perkHashMap>
  */
 export const getPerkByKey = (key: PerkKey, game?: GameKey): Option.Option<Perk> =>
 	resolveGameVariantOption(HashMap.get(perkHashMap, key), game)
-
-/** Gets all perks.
- * @param game The game to get the perk variants for.
- */
-export const getPerks = (game?: GameKey): Perk[] =>
-	mapWithGameVariant(HashMap.toValues(perkHashMap), game)
 
 const makePerk = <T extends string>(identifier: T, perk: Omit<Perk, "_tag" | "id">): [T, Perk] => [
 	identifier,

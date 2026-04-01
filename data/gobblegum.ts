@@ -1,7 +1,7 @@
 import type { GameKey } from "@/data/games"
 import type { GobblegumsImagePath } from "@/types/generated/image-paths.gen"
 import { HashMap, Option } from "effect"
-import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption } from "@/data/registry-helpers"
 
 /** Union of all Gobblegum keys */
 export type GobblegumKey = HashMap.HashMap.Key<typeof gobblegumHashMap>
@@ -52,13 +52,6 @@ export interface Gobblegum {
  */
 export const getGobblegumByKey = (key: GobblegumKey, game?: GameKey): Option.Option<Gobblegum> =>
 	resolveGameVariantOption(HashMap.get(gobblegumHashMap, key), game)
-
-/**
- * Gets all gobblegums.
- * @param game The game to get the gobblegum variants for.
- */
-export const getGobblegums = (game?: GameKey): Gobblegum[] =>
-	mapWithGameVariant(HashMap.toValues(gobblegumHashMap), game)
 
 const makeGobblegum = <T extends string>(
 	identifier: T,
