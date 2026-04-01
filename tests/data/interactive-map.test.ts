@@ -7,7 +7,7 @@ import {
 	type InteractiveMapKey,
 } from "@/data/interactive-map"
 import { getMapByKey, type MapKey } from "@/data/maps"
-import { assertSortedDescByDate } from "../helpers"
+import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getInteractiveMaps", () => {
 	test("sorted by release date descending", () => {

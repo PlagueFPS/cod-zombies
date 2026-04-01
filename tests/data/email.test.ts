@@ -13,7 +13,7 @@ import {
 	expectCauseTaggedError,
 	expectExitFailure,
 	expectExitSuccess,
-} from "../helpers"
+} from "@/tests/helpers"
 
 const TestEmailLayer = Email.layerTest
 

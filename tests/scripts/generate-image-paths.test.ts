@@ -6,7 +6,7 @@ import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
 import { Effect, Exit, Layer } from "effect"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { generateImagePaths } from "@/scripts/generate-image-paths"
-import { expectCauseHasString, expectExitFailure, expectExitSuccess } from "../helpers"
+import { expectCauseHasString, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 
