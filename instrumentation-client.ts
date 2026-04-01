@@ -30,5 +30,13 @@ initBotId({
 			path: "/maps",
 			method: "POST",
 		},
+		{
+			path: "/relics",
+			method: "POST",
+		},
+		{
+			path: "/relics/*",
+			method: "POST",
+		},
 	],
 })
