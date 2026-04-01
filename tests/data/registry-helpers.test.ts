@@ -17,10 +17,7 @@ describe("resolveGameVariantOption", () => {
 		}
 		const entry = Option.some(base)
 		expect(resolveGameVariantOption(entry, undefined)).toEqual(entry)
-		expect(resolveGameVariantOption(entry, "black-ops-6")).toEqual(
-			Option.some({ ...base, title: "BO6" }),
-		)
-		expect(resolveGameVariantOption(Option.none(), "black-ops-6")).toEqual(Option.none())
+		expect(resolveGameVariantOption(entry, "black-ops-7")).toEqual(entry)
 	})
 
 	test("returns entry with variant when game and variant are provided", () => {

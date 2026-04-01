@@ -1,34 +1,19 @@
-import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Effect, Redacted } from "effect"
-import { Command } from "effect/unstable/cli"
-
-vi.mock("@/env", () => ({
-	env: {
-		RESEND_API_KEY: Redacted.make("test-key"),
-		RESEND_AUDIENCE_ID: Redacted.make("test-audience"),
-		HASH_SALT: Redacted.make("test-salt"),
-		LINEAR_API_KEY: Redacted.make("test-linear-key"),
-		LINEAR_WORKSPACE: Redacted.make("test-workspace"),
-		LINEAR_USER_FEEDBACK_LABEL: Redacted.make("00000000-0000-4000-8000-000000000000"),
-		LINEAR_DEFAULT_ASSIGNEE_ID: Redacted.make("test-assignee"),
-		VERCEL_ENV: Redacted.make("development"),
-		VERCEL_URL: Redacted.make("localhost:3000"),
-		VERCEL_PROJECT_PRODUCTION_URL: Redacted.make("example.com"),
-	},
-}))
 import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
+import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
+import { Effect } from "effect"
+import { Command } from "effect/unstable/cli"
 import sharp from "sharp"
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import {
 	generateOgCommand,
 	OG_IMAGE_SIZE,
 	OgCliError,
 	writeOgFile,
 } from "@/scripts/generate-og-images"
+import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 import { decodeOpengraphManifest } from "@/utils/validation-schemas"
-import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "../helpers"
 
 const testLayer = BunServicesLayer
 

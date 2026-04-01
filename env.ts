@@ -9,7 +9,7 @@ export const env = createEnv({
 		LINEAR_API_KEY: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
 		LINEAR_WORKSPACE: Schema.toStandardSchemaV1(Schema.RedactedFromValue(Schema.NonEmptyString)),
 		LINEAR_USER_FEEDBACK_LABEL: Schema.toStandardSchemaV1(
-			Schema.RedactedFromValue(Schema.NonEmptyString.pipe(Schema.check(Schema.isUUID()))),
+			Schema.RedactedFromValue(Schema.NonEmptyString),
 		),
 		LINEAR_DEFAULT_ASSIGNEE_ID: Schema.toStandardSchemaV1(
 			Schema.RedactedFromValue(Schema.NonEmptyString),

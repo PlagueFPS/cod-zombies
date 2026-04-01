@@ -8,7 +8,7 @@ import {
 	parseGitBatchOutput,
 	populateFilePaths,
 } from "@/scripts/generate-last-modified"
-import { expectExitFailure, expectExitSuccess } from "../helpers"
+import { expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 

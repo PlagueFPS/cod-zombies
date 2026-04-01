@@ -1,4 +1,4 @@
-import { Option } from "effect"
+import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import { getAdjacentMaps, getMaps, getMapsWithMainQuest, type MapKey } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
@@ -34,5 +34,19 @@ describe("getAdjacentMaps", () => {
 		if (idx > 0) {
 			expect(next.pipe(Option.map(n => n.id))).toEqual(Option.some(maps[idx - 1]!.id))
 		}
+	})
+
+	test("prev is Some and Next is None when the first map is provided", () => {
+		const first = Arr.head(getMapsWithMainQuest()).pipe(Option.getOrThrow)
+		const { prev, next } = getAdjacentMaps(first.id as MapKey)
+		expect(Option.isSome(prev)).toBe(true)
+		expect(Option.isNone(next)).toBe(true)
+	})
+
+	test("prev is None and Next is Some when the last map is provided", () => {
+		const last = Arr.last(getMapsWithMainQuest()).pipe(Option.getOrThrow)
+		const { prev, next } = getAdjacentMaps(last.id as MapKey)
+		expect(Option.isNone(prev)).toBe(true)
+		expect(Option.isSome(next)).toBe(true)
 	})
 })

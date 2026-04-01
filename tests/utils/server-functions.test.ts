@@ -5,19 +5,6 @@ import { afterEach, beforeEach, describe, vi } from "vitest"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { getLastModified, getOpengraphImageUrl } from "@/utils/server-functions"
 
-vi.mock("@/env", () => ({
-	env: {
-		RESEND_API_KEY: Redacted.make("test-key"),
-		RESEND_AUDIENCE_ID: Redacted.make("test-audience"),
-		HASH_SALT: Redacted.make("test-salt"),
-		LINEAR_API_KEY: Redacted.make("test-linear-key"),
-		LINEAR_DEFAULT_ASSIGNEE_ID: Redacted.make("test-assignee"),
-		VERCEL_ENV: Redacted.make("development"),
-		VERCEL_URL: Redacted.make("localhost:3000"),
-		VERCEL_PROJECT_PRODUCTION_URL: Redacted.make("example.com"),
-	},
-}))
-
 const MOCK_LAST_MODIFIED_JSON = JSON.stringify({
 	version: "1.0",
 	generated: "2025-10-31T12:00:00.000Z",

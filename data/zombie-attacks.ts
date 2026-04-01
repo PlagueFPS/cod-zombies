@@ -21,11 +21,6 @@ export type ZombieAttackKey = HashMap.HashMap.Key<typeof zombieAttacksHashMap>
  */
 export const getZombieAttackByKey = (key: ZombieAttackKey) => HashMap.get(zombieAttacksHashMap, key)
 
-/**
- * Gets all zombie attacks.
- */
-export const getZombieAttacks = () => HashMap.toValues(zombieAttacksHashMap)
-
 const makeZombieAttack = <T extends string>(
 	identifier: T,
 	attack: Omit<ZombieAttack, "_tag" | "id">,
