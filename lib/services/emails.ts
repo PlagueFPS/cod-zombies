@@ -1,4 +1,4 @@
-import { Effect, Layer, Option, Redacted, Schema, ServiceMap } from "effect"
+import { Effect, Layer, MutableHashMap, Option, Redacted, Schema, ServiceMap } from "effect"
 import {
 	type CreateBroadcastOptions,
 	type CreateBroadcastRequestOptions,
@@ -101,42 +101,63 @@ export class Email extends ServiceMap.Service<Email>()("lib/services/emails", {
 	static layerTest = Layer.effect(
 		this,
 		Effect.sync(() => {
+			const contacts: MutableHashMap.MutableHashMap<string, GetContactResponseSuccess> =
+				MutableHashMap.make([
+					"default@test.com",
+					{
+						id: crypto.randomUUID(),
+						email: "default@test.com",
+						created_at: new Date().toISOString(),
+						properties: {},
+						object: "contact",
+						first_name: null,
+						last_name: null,
+						unsubscribed: false,
+					} satisfies GetContactResponseSuccess,
+				])
+
 			const getContact: (
 				email: string,
 			) => Effect.Effect<Option.Option<GetContactResponseSuccess>, ResendError, never> = email =>
-				Effect.succeed(
-					Option.some({
-						id: "123",
-						email,
-						created_at: new Date().toISOString(),
-						first_name: null,
-						last_name: null,
-						object: "contact",
-						properties: {},
-						unsubscribed: false,
-					}),
-				)
+				Effect.succeed(MutableHashMap.get(contacts, email))
 
 			const createContact: (
 				email: string,
-			) => Effect.Effect<CreateContactResponseSuccess, ResendError, never> = email =>
-				Effect.succeed({
-					id: "123",
-					email,
-					created_at: new Date().toISOString(),
-					object: "contact",
-				})
+			) => Effect.Effect<CreateContactResponseSuccess, ResendError, never> = Effect.fnUntraced(
+				function* (email) {
+					MutableHashMap.set(contacts, email, {
+						id: crypto.randomUUID(),
+						email,
+						created_at: new Date().toISOString(),
+						object: "contact",
+						properties: {},
+						first_name: null,
+						last_name: null,
+						unsubscribed: false,
+					})
+
+					const contact = MutableHashMap.get(contacts, email)
+					if (Option.isNone(contact)) {
+						return yield* new ResendError({
+							message: "Contact not found",
+							cause: "Should never happen",
+						})
+					}
+
+					return { id: contact.value.id, object: "contact" }
+				},
+			)
 
 			const removeContact: (
 				email: string,
 			) => Effect.Effect<RemoveContactsResponseSuccess, ResendError, never> = email =>
-				Effect.succeed({
-					id: "123",
-					email,
-					created_at: new Date().toISOString(),
-					contact: "123",
-					deleted: true,
-					object: "contact",
+				Effect.sync(() => {
+					MutableHashMap.remove(contacts, email)
+					return {
+						contact: email,
+						deleted: true,
+						object: "contact",
+					}
 				})
 
 			const sendEmail: (

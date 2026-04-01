@@ -18,11 +18,6 @@ export type WeakPointKey = HashMap.HashMap.Key<typeof weakPointsHashMap>
  */
 export const getWeakPointByKey = (key: WeakPointKey) => HashMap.get(weakPointsHashMap, key)
 
-/**
- * Gets all weak points.
- */
-export const getWeakPoints = () => HashMap.toValues(weakPointsHashMap)
-
 const makeWeakPoint = <T extends string>(
 	identifier: T,
 	weakPoint: Omit<WeakPoint, "_tag" | "id">,
