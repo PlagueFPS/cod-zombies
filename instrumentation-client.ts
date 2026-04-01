@@ -32,11 +32,11 @@ initBotId({
 		},
 		{
 			path: "/relics",
-			method: "POST"
+			method: "POST",
 		},
 		{
 			path: "/relics/*",
-			method: "POST"
-		}
+			method: "POST",
+		},
 	],
 })
