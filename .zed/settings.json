@@ -3,13 +3,20 @@
 // For a full list of overridable settings, and general information on folder-specific settings,
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
-	"lsp": {
-		"mdx-analyzer": {
-			"initialization_options": {
-				"typescript": {
-					"enabled": true
-				}
-			}
-		}
-	}
+  "lsp": {
+    "mdx-analyzer": {
+      "initialization_options": {
+        "typescript": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "formatter": [
+    {
+      "language_server": {
+        "name": "oxfmt"
+      }
+    }
+  ]
 }

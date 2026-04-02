@@ -40,9 +40,8 @@ export class OgCliError extends Schema.TaggedErrorClass<OgCliError>()("OgCliErro
 	message: Schema.String,
 }) {}
 
-/** OG canvas size (matches `ImageResponse` / sharp output). */
+/** OG canvas OG_IMAGE_SIZE (matches `ImageResponse` / sharp output). */
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const
-const size = OG_IMAGE_SIZE
 
 const getFonts = Effect.fnUntraced(
 	function* () {
@@ -264,7 +263,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 							},
 						]
 					: undefined,
-				...size,
+				...OG_IMAGE_SIZE,
 			},
 		)
 
@@ -422,7 +421,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 							},
 						]
 					: undefined,
-				...size,
+				...OG_IMAGE_SIZE,
 			},
 		)
 
@@ -597,7 +596,7 @@ export const generateZombieImage = Effect.fnUntraced(
 							},
 						]
 					: undefined,
-				...size,
+				...OG_IMAGE_SIZE,
 			},
 		)
 
