@@ -760,7 +760,7 @@ const mapHashMap = HashMap.make(
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/paradox-junction"),
 		difficulty: Option.some("Medium"),
-		state: Option.some("New"),
+		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
 			max: 120,

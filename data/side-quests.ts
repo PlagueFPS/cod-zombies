@@ -1520,7 +1520,7 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/zarya-rocket",
 	}),
 	makeQuest("come-back-down", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Come Back Down",
 		description:
 			"Learn how to activate the music easter egg song 'Come Back Down' by Kevin Sherwood.",
@@ -1528,7 +1528,7 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/come-back-down",
 	}),
 	makeQuest("hidden-power-ups-paradox-junction", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Hidden Power-Ups",
 		description:
 			"Discover all hidden power up locations in Paradox Junction to collect when you need them",
@@ -1536,7 +1536,7 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/hidden-power-ups-paradox-junction",
 	}),
 	makeQuest("115-clock-tower", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "115 Clock Tower",
 		description:
 			"Learn how to obtain a Mystery Perk, Aetherium Crystal, Aether Tool, Scorestreak and more by completing this nostalgic callback.",
@@ -1544,14 +1544,14 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/115-clock-tower",
 	}),
 	makeQuest("golf-minigame", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Golf Minigame",
 		description: "Learn how to obtain three free Power-Ups by completing a short golf minigame.",
 		map: "paradox-junction",
 		content: "content/side-quests/golf-minigame",
 	}),
 	makeQuest("lost-key", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Lost Key",
 		description:
 			"Learn how to obtain a free Aether Tool along with some other rewards, by finding the lost key.",
@@ -1559,7 +1559,7 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/lost-key",
 	}),
 	makeQuest("bunker-free-perk", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Bunker Free Perk",
 		description:
 			"Learn how to obtain a Mystery Perk, along with some other rewards by opening the Nuketown bunker.",
@@ -1567,7 +1567,7 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/bunker-free-perk",
 	}),
 	makeQuest("mannequin-free-perk", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Mannequin Free Perk",
 		description:
 			"Learn how to obtain a free Random Perk by melting all 12 mannequins in the Normal version of the map.",
@@ -1575,7 +1575,7 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/mannequin-free-perk",
 	}),
 	makeQuest("haunted-mannequin", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Haunted Mannequin",
 		description:
 			"Learn how to obtain a Mystery Perk, Aetherium Crystal, Aether Tool, Scorestreak and more by completing this creepy quest.",
@@ -1583,7 +1583,7 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/haunted-mannequin",
 	}),
 	makeQuest("masked-mannequin", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Masked Mannequin",
 		description:
 			"Learn how to obtain multiple Aetherium Crystals, Aether Tools, and Perks by reforming a masked mannequin.",
@@ -1591,14 +1591,14 @@ const sideQuestHashMap = HashMap.make(
 		content: "content/side-quests/masked-mannequin",
 	}),
 	makeQuest("tv-jumpscare", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "TV Jumpscare",
 		description: "Scare your friends with this not so obvious jumpscare.",
 		map: "paradox-junction",
 		content: "content/side-quests/tv-jumpscare",
 	}),
 	makeQuest("purple-cyst", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Purple Cyst",
 		description: "Learn how to feed this mysterious purple cyst that yields powerful rewards.",
 		map: "paradox-junction",
