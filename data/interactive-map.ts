@@ -93,7 +93,7 @@ const makeMapEntry = <T extends string>(
 const interactiveMapHashMap = HashMap.make(
 	makeMapEntry("paradox-junction", {
 		title: "Paradox Junction",
-		state: Option.some("New"),
+		state: Option.none(),
 		image: "/previews/paradox-junction-preview.webp",
 		game: "black-ops-7",
 		description:

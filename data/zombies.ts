@@ -1722,7 +1722,7 @@ const zombiesHashMap = HashMap.make(
 	}),
 	makeZombie("rad-hound", {
 		title: "Rad-Hound",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: new Date("March 11, 2026 1:00 AM"),
 		image: "/zombies/rad-hound.webp",
 		description:
@@ -1740,7 +1740,7 @@ const zombiesHashMap = HashMap.make(
 	}),
 	makeZombie("the-dark-heart", {
 		title: "The Dark Heart",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: new Date("March 11, 2026 2:00 AM"),
 		image: "/zombies/the-dark-heart.webp",
 		description:
