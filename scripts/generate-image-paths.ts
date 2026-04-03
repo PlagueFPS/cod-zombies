@@ -109,18 +109,6 @@ function generateTypeForDir(typeName: string, imagePaths: string[]) {
 	return `export type ${typeName} =\n  ${literals.join(" |\n  ")};\n`
 }
 
-function headerComment(publicDir: string, duration: string | number) {
-	const now = new Date().toISOString()
-	return `/**
- * THIS FILE IS AUTO-GENERATED.
- * Run 'generate:image:paths' to regenerate.
- *
- * public directory scanned: ${publicDir}
- * generated at: ${now}
- * generated in: ${duration}ms
- */\n\n`
-}
-
 /** @param cwd - Workspace root (must contain `public/` when run). */
 export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 	cwd: string = process.cwd(),
@@ -161,7 +149,10 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 	)
 
 	const lines: string[] = []
-	lines.push(headerComment(path.relative(cwd, publicDir), durationMs))
+	lines.push(`/**
+ * THIS FILE IS AUTO-GENERATED.
+ * Run 'generate:image:paths' to regenerate.
+ */\n`)
 	// root images type
 	lines.push("/** Union of images located directly in `/public (root)` */\n")
 	lines.push(generateTypeForDir("RootImagePath", rootWebPaths))

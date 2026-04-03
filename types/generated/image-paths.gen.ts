@@ -1,10 +1,6 @@
 /**
  * THIS FILE IS AUTO-GENERATED.
  * Run 'generate:image:paths' to regenerate.
- *
- * public directory scanned: public
- * generated at: 2026-04-03T09:30:59.413Z
- * generated in: 47ms
  */
 
 /** Union of images located directly in `/public (root)` */
