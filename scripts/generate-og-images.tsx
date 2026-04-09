@@ -642,7 +642,7 @@ export const writeOgFile = Effect.fnUntraced(function* (
 				[fileBaseName]: version,
 			},
 		},
-		{ disableValidation: true },
+		{ disableChecks: true },
 	)
 
 	yield* fs.writeFileString(manifestPath, yield* encodeOpengraphManifest(updatedManifest))

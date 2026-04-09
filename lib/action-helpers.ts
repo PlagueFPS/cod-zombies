@@ -2,9 +2,9 @@ import "server-only"
 import { checkBotId } from "botid/server"
 import { Exit, Schema } from "effect"
 
-type ActionFunction<S extends Schema.Top, T> = (data: S["Type"]) => Promise<T>
+type ActionFunction<S extends Schema.Decoder<S["Type"], never>, T> = (data: S["Type"]) => Promise<T>
 
-export const createAction = <S extends Schema.Top & { readonly DecodingServices: never }, T>(
+export const createAction = <S extends Schema.Decoder<S["Type"], never>, T>(
 	schema: S,
 	action: ActionFunction<S, T>,
 ) => {
