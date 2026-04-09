@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 	description:
 		"Interactive maps for Call of Duty: Zombies showcasing locations of weapons, perks, objectives, and more to help guide your experience.",
 	openGraph: {
-		...GLOBAL_OG_PROPS.openGraph,
+		...GLOBAL_OG_PROPS,
 		title: "Interactive Maps",
 		description:
 			"Interactive maps for Call of Duty: Zombies showcasing locations of weapons, perks, objectives, and more to help guide your experience.",

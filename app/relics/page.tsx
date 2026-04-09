@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 	title: "Cursed Relics",
 	description: "Learn how to unlock the most desired relics in Black Ops 7's Cursed mode.",
 	openGraph: {
-		...GLOBAL_OG_PROPS.openGraph,
+		...GLOBAL_OG_PROPS,
 		title: "Cursed Relics",
 		description: "Learn how to unlock the most desired relics in Black Ops 7's Cursed mode.",
 		url: "/relics",

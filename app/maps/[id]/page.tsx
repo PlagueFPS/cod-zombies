@@ -34,7 +34,7 @@ export const generateMetadata = async ({ params }: PageProps<"/maps/[id]">): Pro
 		title,
 		description: map.value.description,
 		openGraph: {
-			...GLOBAL_OG_PROPS.openGraph,
+			...GLOBAL_OG_PROPS,
 			title,
 			description: map.value.description,
 			url: `/maps/${map.value.id}`,

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 	description:
 		"Learn about how we collect, use, and protect your personal information. Our privacy policy outlines our commitment to safeguarding your data and privacy rights.",
 	openGraph: {
-		...GLOBAL_OG_PROPS.openGraph,
+		...GLOBAL_OG_PROPS,
 		title: "Privacy Policy",
 		description:
 			"Learn about how we collect, use, and protect your personal information. Our privacy policy outlines our commitment to safeguarding your data and privacy rights.",

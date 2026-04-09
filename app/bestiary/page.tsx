@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 	description:
 		"Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies.",
 	openGraph: {
-		...GLOBAL_OG_PROPS.openGraph,
+		...GLOBAL_OG_PROPS,
 		title: "Bestiary",
 		description:
 			"Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies.",

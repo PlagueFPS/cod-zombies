@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 	},
 	category: "gaming",
 	openGraph: {
-		...GLOBAL_OG_PROPS.openGraph,
+		...GLOBAL_OG_PROPS,
 		title: {
 			template: `%s - ${SITE_TITLE}`,
 			default: SITE_TITLE,
