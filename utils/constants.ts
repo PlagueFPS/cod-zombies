@@ -19,11 +19,9 @@ export const CARD_LIMIT = 12
 /** Limit for the amount of preview cards shown per section on the home page */
 export const HOME_PREVIEW_LIMIT = 3
 /** Default Open Graph properties for the website */
-export const GLOBAL_OG_PROPS: Partial<Metadata> = {
-	openGraph: {
-		siteName: SITE_TITLE,
-		locale: "en_US",
-		type: "website",
-		emails: ["contact@codzombiesguides.com"],
-	},
+export const GLOBAL_OG_PROPS: Metadata["openGraph"] = {
+	siteName: SITE_TITLE,
+	locale: "en_US",
+	type: "website",
+	emails: ["contact@codzombiesguides.com"],
 }

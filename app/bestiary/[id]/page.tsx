@@ -67,7 +67,7 @@ export const generateMetadata = async ({
 			title: zombie.title,
 			description,
 			openGraph: {
-				...GLOBAL_OG_PROPS.openGraph,
+				...GLOBAL_OG_PROPS,
 				title: zombie.title,
 				description,
 				url: `/bestiary/${zombie.id}`,

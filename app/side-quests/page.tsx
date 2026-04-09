@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 	description:
 		"Learn how to complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",
 	openGraph: {
-		...GLOBAL_OG_PROPS.openGraph,
+		...GLOBAL_OG_PROPS,
 		title: "Side Quests",
 		description:
 			"Learn how to complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides.",

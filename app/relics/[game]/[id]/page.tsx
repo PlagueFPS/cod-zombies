@@ -55,7 +55,7 @@ export const generateMetadata = async ({
 		title,
 		description,
 		openGraph: {
-			...GLOBAL_OG_PROPS.openGraph,
+			...GLOBAL_OG_PROPS,
 			title,
 			description,
 			url: `/relics/${game}/${id}`,
