@@ -36,21 +36,24 @@ describe("generateContentPaths", () => {
 
 	test("sorts subdirectories and path literals deterministically", async () => {
 		const root = mkdtempSync(join(tmpdir(), "codz-content-"))
-		mkdirSync(join(root, "content", "zebra"), { recursive: true })
-		mkdirSync(join(root, "content", "alpha"), { recursive: true })
+		mkdirSync(join(root, "src", "content", "zebra"), { recursive: true })
+		mkdirSync(join(root, "src", "content", "alpha"), { recursive: true })
 		// Intentionally unsorted creation order; output must sort
-		writeFileSync(join(root, "content", "zebra", "z.mdx"), "# Z")
-		writeFileSync(join(root, "content", "alpha", "b.mdx"), "# B")
-		writeFileSync(join(root, "content", "alpha", "a.mdx"), "# A")
+		writeFileSync(join(root, "src", "content", "zebra", "z.mdx"), "# Z")
+		writeFileSync(join(root, "src", "content", "alpha", "b.mdx"), "# B")
+		writeFileSync(join(root, "src", "content", "alpha", "a.mdx"), "# A")
 
-		mkdirSync(join(root, "types", "generated"), { recursive: true })
+		mkdirSync(join(root, "src", "types", "generated"), { recursive: true })
 		process.chdir(root)
 
 		const program = generateContentPaths(root).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 
-		const out = readFileSync(join(root, "types", "generated", "content-paths.gen.ts"), "utf-8")
+		const out = readFileSync(
+			join(root, "src", "types", "generated", "content-paths.gen.ts"),
+			"utf-8",
+		)
 
 		const alphaBlock = out.indexOf("export type AlphaPaths")
 		const zebraBlock = out.indexOf("export type ZebraPaths")
@@ -73,15 +76,18 @@ describe("generateContentPaths", () => {
 
 	test("empty mdx subtree yields never type for that directory", async () => {
 		const root = mkdtempSync(join(tmpdir(), "codz-content-"))
-		mkdirSync(join(root, "content", "emptydir"), { recursive: true })
-		mkdirSync(join(root, "types", "generated"), { recursive: true })
+		mkdirSync(join(root, "src", "content", "emptydir"), { recursive: true })
+		mkdirSync(join(root, "src", "types", "generated"), { recursive: true })
 		process.chdir(root)
 
 		const program = generateContentPaths(root).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 
-		const out = readFileSync(join(root, "types", "generated", "content-paths.gen.ts"), "utf-8")
+		const out = readFileSync(
+			join(root, "src", "types", "generated", "content-paths.gen.ts"),
+			"utf-8",
+		)
 		expect(out).toContain("export type EmptydirPaths = never;")
 
 		process.chdir(prevCwd)

@@ -64,14 +64,14 @@ describe("generateImagePaths", () => {
 			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
 		)
 
-		mkdirSync(join(root, "types", "generated"), { recursive: true })
+		mkdirSync(join(root, "src", "types", "generated"), { recursive: true })
 		process.chdir(root)
 
 		const program = generateImagePaths(root).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 
-		const out = readFileSync(join(root, "types", "generated", "image-paths.gen.ts"), "utf-8")
+		const out = readFileSync(join(root, "src", "types", "generated", "image-paths.gen.ts"), "utf-8")
 
 		expect(out).toContain("export type RootImagePath =")
 		const rootA = out.indexOf("'/alpha.png'")
@@ -97,14 +97,14 @@ describe("generateImagePaths", () => {
 			join(root, "public", "maps", "it's-a-trap.png"),
 			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
 		)
-		mkdirSync(join(root, "types", "generated"), { recursive: true })
+		mkdirSync(join(root, "src", "types", "generated"), { recursive: true })
 		process.chdir(root)
 
 		const program = generateImagePaths(root).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 
-		const out = readFileSync(join(root, "types", "generated", "image-paths.gen.ts"), "utf-8")
+		const out = readFileSync(join(root, "src", "types", "generated", "image-paths.gen.ts"), "utf-8")
 		expect(out).toContain("\\'")
 
 		process.chdir(prevCwd)

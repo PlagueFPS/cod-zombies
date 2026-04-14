@@ -1,0 +1,356 @@
+import YoutubeEmbed from "@/components/youtube-embed"
+import RichImage from "@/components/rich-image"
+import CustomCarousel from "@/components/custom-carousel"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import GobblegumTooltip from "@/components/gobblegum-tooltip"
+import PerkTooltip from "@/components/perk-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import { MarkdownLink } from "@/components/markdown-link"
+
+## Seeds of Doubt
+The main quest for **Zetsubou No Shima** is called **Seeds of Doubt**. Our Primis crew's goal in this quest is to "save" **Ultimis Takeo Masaki** and harvest
+his soul using the **Summoning Key**.
+
+## Requirements
+This main quest can be done with any number of players. You will need multiple items to complete this quest fully:
+
+- <GobblegumTooltip gobblegumKey="anywhere-but-here" />
+- <MarkdownLink hash="obtaining-the-skull-of-nan-sapwe" text="Skull of Nan Sapwe" />
+- <MarkdownLink hash="building-the-kt-4" text="KT-4" /> (along with its upgraded version, the <MarkdownLink hash="building-the-masamune-upgraded-kt-4" text="Masamune" />)
+- <MarkdownLink hash="building-the-gas-mask" text="Gas Mask" />
+- <MarkdownLink hash="building-the-zombie-shield" text="Zombie Shield" />
+- All <MarkdownLink hash="trials-of-the-ancients" text="Trials of the Ancients" /> completed by each player in the game
+- One or more Buckets
+- Two or more Seeds
+
+## Recommended Gobblegums
+
+<RichTable
+  headerCells={["Classic Gobblegums", "Mega Gobblegums"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="anywhere-but-here" />
+      </TableCell>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="anywhere-but-here" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="in-plain-sight" />
+      </TableCell>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="perkaholic" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="alchemical-antithesis" />
+      </TableCell>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="reign-drops" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="stock-option" />
+      </TableCell>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="round-robbin" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="arsenal-accelerator" />
+      </TableCell>
+      <TableCell>
+        <GobblegumTooltip gobblegumKey="shopping-free" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> The <GobblegumTooltip gobblegumKey="anywhere-but-here" /> Gobblegum is shown under Mega Gobblegums because it is required for this main quest, if you do not equip it within your
+Gobblegum Pack you will not be able to complete this quest and will be forced to restart.
+
+## Step 1: Revealing the Elevator Machinery
+Head to the purple water area in the **Living Quarters** (aka body bag room), using the <MarkdownLink hash="obtaining-the-skull-of-nan-sapwe" text="Skull of Nan Sapwe" /> you must mesmerize the half poster on
+the wall left of the purple water, revealing the other half of the poster.
+
+<RichImage image="/content/zetsubou-no-shima/zns-elevator-poster.webp" caption="Purple Water Poster"  />
+
+Once completed, head back up near the entrance of the bunker. Right of the entrance if you were leaving the bunker is a wall left of the yellow danger sign that you must
+mesmerize using the <MarkdownLink hash="obtaining-the-skull-of-nan-sapwe" text="Skull of Nan Sapwe" /> revealing a room with a broken generator that is missing three cogs.
+
+<RichImage image="/content/zetsubou-no-shima/zns-elevator-wall.webp" caption="Elevator Wall"  />
+
+### Obtaining the Skull of Nan Sapwe
+You must cleanse four bloody skulls found on the <MarkdownLink hash="trials-of-the-ancients" text="Trials of the Ancients" /> altar. Each skull is marked with a symbol indicating which pedestal it must be placed on to begin
+the cleansing ritual. These pedestals are spread out across the map and are located:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-spawn-pedestal.webp" caption="Spawn - next to the large central rock"  />
+  <RichImage image="/content/zetsubou-no-shima/zns-propellar-pedestal.webp" caption="Propellar Trap - straight ahead from the entrance door"  />
+  <RichImage image="/content/zetsubou-no-shima/zns-docks-pedestal.webp" caption="Docks - left of the main power switch"  />
+  <RichImage image="/content/zetsubou-no-shima/zns-bunker-pedestal.webp" caption="Bunker - bottom floor near the KT-4 buildable table"  />
+</CustomCarousel>
+
+> The symbols that appear on each pedestal are different each game, however, it will always be the same four
+
+Placing a skull on the matching pedestal will start a ritual where you must defend the skull from zombies with a green mist around them until completed. Once completed or failed,
+all remaining zombies will be killed. If successful, you must pick up the skull and return it to the altar. You must repeat this for all four skulls.
+
+<RichImage image="/content/zetsubou-no-shima/zns-trial-of-the-ancients.webp" caption='Trial of the Ancients'  />
+
+> If you fail, the skull will be returned to the altar where you picked it up for you to retrieve and try again. The first cleansing ritual has only zombies,
+the 2nd and 4th have <ZombieTooltip zombieKey="spider" /> spawns, and the 3rd and 4th have a chance to spawn a <ZombieTooltip zombieKey="thrasher" />.
+
+Once all four skulls have been cleansed and returned to the altar, a new area will be opened in front of the altar, accessible via a staircase. In the middle of the area is
+the **Skull of Nan Sapwe**, you must complete a ritual by attempting to pick up the skull, spawning <ZombieTooltip zombieKey="keepers" /> that you must kill to charge the skull
+and end the ritual. If successful, you can now pick up the **Skull of Nan Sapwe**.
+
+<RichImage image="/content/zetsubou-no-shima/zns-skull-staircase.webp" caption='Staircase to the Skull of Nan Sapwe'  />
+<RichImage image="/content/zetsubou-no-shima/zns-skull-of-nan-sapwe.webp" caption='Skull of Nan Sapwe'  />
+
+## Step 2: Collecting the Cogs
+> Three cogs must be found and collected to fix the elevator machinery that the Skull of Nan Sapwe revealed, these cogs can be collected in any order
+
+### Cog 1
+After revealing the elevator machinery, any player in the game must use the <GobblegumTooltip gobblegumKey="anywhere-but-here" /> Gobblegum. This will teleport the player to a
+secret area above Lab A, on the ground of this area will be the cog you must pick up.
+
+<RichImage image="/content/zetsubou-no-shima/zns-cog-1.webp" caption='Cog 1'  />
+
+### Cog 2
+This cog requires you to plant a seed, then water the plant with Blue Water found behind Lab A, and shoot it with the <MarkdownLink hash="building-the-kt-4" text="KT-4" /> or
+<MarkdownLink hash="building-the-masamune-upgraded-kt-4" text="Masamune" /> once every round for three rounds. Once the plant is fully grown, open the pod to have a chance to obtain a flak shell for the
+Flak 88 cannon at the anti-aircraft platform.
+
+<RichImage image="/content/zetsubou-no-shima/zns-blue-water.webp" caption='Blue Water'  />
+<RichImage image="/content/zetsubou-no-shima/zns-flak-shell.webp" caption='Flak Shell'  />
+
+> You only have a chance of getting this shell if you water the plant with Blue Water only and shoot it with the KT-4 once every round for three rounds, due to this it is recommened
+to plant three seeds at once and water and shoot all three seeds every round for three rounds to increase your odds of getting this flak shell
+
+Once you have acquired the flak shell, load it into the Flak 88 cannon at the **Anti-Aircraft Platform** by interacting with the back of the cannon, if successful you will hear a sound effect.
+
+<RichImage image="/content/zetsubou-no-shima/zns-flak-cannon.webp" caption='Flak Cannon'  />
+
+Once loaded, you must wait for a cargo plane to fly over the map which happens about every two minutes. Once you see the plane, you must hold interact near the back of the
+cannon to fire the cannon destroying the plane.
+
+> Do not rush the shot, if you think you don't have a clear shot wait until the plane comes around again. If you miss with the cannon, you will need to repeat the plant step
+until you obtain another flak shell to try again.
+
+After destroying the plane, the cog will fall from the sky leaving a smoke trail to where it lands. This cog can land in one of three locations emitting smoke:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-cog-2-bunker-location.webp" caption='Outside of the Bunker in front of the Bowie Knife wall buy'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-cog-2-lab-a-location.webp" caption='Lab A - near the back staircase leading up the zipline'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-cog-2-lab-b-location.webp" caption='Lab B - near the meteorite close to the green water pool'  />
+</CustomCarousel>
+
+### Cog 3
+This cog requires that all players in the game have completed their <MarkdownLink hash="trials-of-the-ancients" text="Trials of the Ancients" />. Once all challenges are completed, lightning will strike the
+platform periodically, with the <MarkdownLink hash="building-the-zombie-shield" text="Zombie Shield" /> equipped you must walk onto the platform to be struck by lightning.
+
+<RichImage image="/content/zetsubou-no-shima/zns-cog-3-shield.webp" caption='Electrified Zombie Shield'  />
+
+If successful, the <MarkdownLink hash="building-the-zombie-shield" text="Zombie Shield" /> will now be electrified. Head to the zipline between Lab A and the Docks, and melee the control panel for the
+zipline with the electrified shield. You must use the zipline with your shield out and when you are directly over the small dock melee to drop off the zipline onto the dock where
+you will find the cog.
+
+<RichImage image="/content/zetsubou-no-shima/zns-cog-3.webp" caption='Cog 3'  />
+
+> This can be completed easily and safely if use the zipline from the Docks up towards Lab A as you can immediately melee after getting on the zipline to land on the small
+dock and avoid the potential of falling to your death.
+
+### Building the KT-4
+> The KT-4 requires three items to build which are obtained for doing various things around the map, these can be done at any point during the game.
+
+The first part is a **Yellow Vial** found on a scientist zombie that randomly spawns around Lab B once the main power switch is turned on in the Bunker.
+
+<RichImage image="/content/zetsubou-no-shima/zns-kt4-vial.webp" caption='Yellow Vial'  />
+
+The second part is the **Spider Venom** obtained by luring a <ZombieTooltip zombieKey="spider" /> in a cage at Lab A that can be lowered after the power is restored.
+Once a <ZombieTooltip zombieKey="spider" /> is lured inside, raise the cage which will have a syringe injected into the <ZombieTooltip zombieKey="spider" /> extracting its venom
+into a vial for you to collect.
+
+<RichImage image="/content/zetsubou-no-shima/zns-kt4-venom.webp" caption='Spider Venom'  />
+
+The final part is the **Plant** found in the deepest part of the flooded section of the Bunker right of the <PerkTooltip perkKey="mule-kick" /> perk machine. You can shoot spores
+underwater to help you breathe when acquiring this plant.
+
+<RichImage image="/content/zetsubou-no-shima/zns-kt4-plant.webp" caption='KT-4 Plant'  />
+
+> You can shoot spores underwater to help you breathe when acquiring this plant.
+
+Once all three parts have been collected, head to the KT-4 buildable table in the Bunker, and interact with it to begin mixing the ingredients allowing you to pick up the
+KT-4 wonder weapon. You can now start upgrading the KT-4.
+
+<RichImage image="/content/zetsubou-no-shima/zns-kt4-table.webp" caption='KT-4 Buildable Table'  />
+
+> Multiple players in the game can acquire the KT-4 after it has been built from the Mystery Box.
+
+### Trials of the Ancients
+The Trials of the Ancients can be found on the right-hand side of the map when leaving spawn. These trials are challenges that every player in the game must complete to
+progress the main quest.
+
+<RichImage image="/content/zetsubou-no-shima/zns-trial-of-the-ancients.webp" caption='Trials of the Ancients'  />
+
+There are sixteen different challenges, each player will be given three challenges that they must complete. These challenges can be any of the following:
+
+- Eat a fruit grown by a plant
+- Kill eight spiders with spores
+- Kill three zombies as they are mutating
+- Get thirty kills with the Propeller Trap
+- Shoot the heads off of five mutated zombies
+- Obtain a power-up from a plant
+- Kill fifteen zombies attracted to a plant
+- Kill twenty zombies while underwater
+- Kill ten spore-infected zombies with headshots
+- Kill a Thrasher before it becomes enraged
+- Get twenty kills with the Fan Trap
+- Water the same plant three times
+- Water five plants
+- Shoot five spores
+- Use a spore to regain air underwater
+- Destroy five webs with explosives
+
+Upon completing a challenge you will be rewarded, the top trial gives you an extra perk slot, the middle trial gives you either a Dingo, SVG-100, or 205 Brecci, and
+the bottom trial gives you a Max Ammo.
+
+### Building the Zombie Shield
+> The Zombie Shield requires three parts to build and can be acquired at any point of the game.
+
+The first part is the **Handles**, which can be found below Lab A:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-handles-first-spawn.webp" caption='Hanging on a pilla near the Kuda wall buy'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-handles-second-spawn.webp" caption='Hanging on a pillar near the main staircase'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-handles-final-spawn.webp" caption='Hanging on a pillar closest to the back staircase'  />
+</CustomCarousel>
+
+The second part is the **Shield Frame**, which can be found outside of Lab B:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-frame-first-spawn.webp" caption='Hanging on a tree near the Tripmines wall buy'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-frame-second-spawn.webp" caption='Hanging on a tree on a hill facing the lab'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-frame-final-spawn.webp" caption='Hanging on a tree on the right side of the path leading to the Trial of the Ancients'  />
+</CustomCarousel>
+
+The final part is the **Face Screen**, which can be found at the Anti-Aircraft Platform:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-screen-first-spawn.webp" caption='By the window near the Seed Planter'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-screen-second-spawn.webp" caption='Near the window in the machine gun nest'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-zombie-shield-screen-final-spawn.webp" caption='Upper level on a pile of rubble'  />
+</CustomCarousel>
+
+Once all three parts have been collected, head to any workbench to build the **Zombie Shield**.
+## Step 3: Activating the Elevator
+Once all three cogs have been collected, head to the generator room revealed by the **Skull of Nan Sapwe**. Interact with the generator to place the three cogs
+repairing the elevator and making it functional.
+
+<RichImage image="/content/zetsubou-no-shima/zns-activating-the-elevator.webp" caption='Fully repaired Elevator'  />
+
+> At this point, you are able to enter the boss fight, however, the <MarkdownLink hash="building-the-masamune-upgraded-kt-4" text="Masamune" /> and the <MarkdownLink hash="building-the-gas-mask" text="Gas Mask" /> are required to
+survive and defeat the boss. If you already have these items you can skip to the <MarkdownLink hash="step-4-thrasher-boss-fight" text="Boss Fight Section" />
+
+### Building the Masamune (Upgraded KT-4)
+> The **Masamune** requires three parts, you must first have the KT-4 to obtain these parts.
+
+The first part is a **Liquid Divinium Vial** found in Lab B. You must use an electrified shield to shock the control panel of the cage within Lab B, similar to the Cog 3 Step.
+This will open the cage allowing you to enter.
+
+<RichImage image="/content/zetsubou-no-shima/zns-masamune-vial-control-panel.webp" caption='Control Panel'  />
+
+Upon entering the cage, it will lower into an area with a couple of skeletons, one of which is holding the **Liquid Divinium Vial** you must pick up.
+
+<RichImage image="/content/zetsubou-no-shima/zns-masamune-vial.webp" caption='Liquid Divinium Vial'  />
+
+> In Co-Op, another player must electrify the control panel again to lower the player in the cage, then interact with the console once more after the vial is collected
+to raise the player. In solo, the cage will lower on it's own and raise again after some time.
+
+The second part is obtained from defeating the <ZombieTooltip zombieKey="giant-spider" /> located in the cave covered by webs behind the Blue Water pool near Lab A.
+
+<RichImage image="/content/zetsubou-no-shima/zns-spider-cave.webp" caption='Giant Spider Cave'  />
+
+Shoot the webs with the **KT-4** to clear them and enter the cave. After defeating the <ZombieTooltip zombieKey="giant-spider" />, interact with the mouth of the spider to collect its fang.
+
+<RichImage image="/content/zetsubou-no-shima/zns-masamune-spider-tooth.webp" caption='Masamune Spider Tooth'  />
+
+The final part is a **Plant** that can only be grown after building the **KT-4**. You must grow this plant in a special **Seed Planter** hidden behind a wall to the right of the KT-4
+plant part. You must mesmerize this wall with the **Skull of Nan Sapwe** after revealing the elevator machinery.
+
+<RichImage image="/content/zetsubou-no-shima/zns-kt4-plant.webp" caption='Wall the right of the KT-4 plant part'  />
+
+Once the **Seed Planter** is revealed, you can plant a seed. This seed must be watered once every round for three rounds with **Rainbow Water** which is found within the
+Sewer Pipe Fast Travel on the right side.
+
+<RichImage image="/content/zetsubou-no-shima/zns-sewer-pipe-fast-travel.webp" caption='Sewer Pipe Fast Travel'  />
+
+> The best way to collect this water is to take the Sewer Pipe Fast Travel from the Bunker to Lab B and spam interact as you pass through.
+
+Once all three parts have been collected, head to the **Masamune** buildable table to the right of the **KT-4** buildable table and interact with it to build the **Masamune** wonder weapon.
+
+### Building the Gas Mask
+> The Gas Mask requires three parts to build and can be acquired at any point of the game.
+
+The first part is the **Mask Strap** which can be found near the Propeller Trap near Lab A:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-strap-first-spawn.webp" caption='On a metal rebar on the back entrance of the crashed plane'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-strap-second-spawn.webp" caption='On a metal rebar on the front entrance of the crashed plane'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-strap-final-spawn.webp" caption='On a rock left of the Mystery box location'  />
+</CustomCarousel>
+
+The second part is the **Mask Cover** which can be found near the Green Water pool behind Lab B:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-cover-first-spawn.webp" caption='On a wooden crate right of the water pool'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-cover-second-spawn.webp" caption='On a wooden crate right of the wheelbarrow next to the giant meteorite'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-cover-final-spawn.webp" caption='On a wooden crate next to the perk machine on the iron catwalk'  />
+</CustomCarousel>
+
+The final part is the **Breathing Tube** which can be found around the cleansing pedestal area near the Docks:
+
+<CustomCarousel>
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-tube-first-spawn.webp" caption='On a wooden crate next to the pedestal'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-tube-second-spawn.webp" caption='On a wooden crate next to the zipilne endpoint'  />
+  <RichImage image="/content/zetsubou-no-shima/zns-gas-mask-tube-final-spawn.webp" caption='On a rock left of the VMP wall buy'  />
+</CustomCarousel>
+
+Once all three parts have been collected head to any workbench to build the **Gas Mask**.
+
+## Step 4: Thrasher Boss Fight
+All players must enter the elevator when ready to enter the boss fight. Interact with the elevator, lowering you below the Bunker where the player with the **Masamune** must shoot
+the weak points in the vines in the path to the boss room.
+
+<RichImage image="/content/zetsubou-no-shima/zns-boss-room-path.webp" caption='Weak Points blocking path to boss room'  />
+
+Once in the boss arena, a <ZombieTooltip zombieKey="giant-thrasher" /> can be found held captive. To start the fight, the player with the **Masamune** must shoot the weak point
+on one of the Thrasher's arms. There are four total weak points, each being time-gated and cannot be sped up.
+
+<RichImage image="/content/zetsubou-no-shima/zns-boss-fight.webp" caption='Boss Arena'  />
+
+After shooting a weak point, you must survive an onslaught of zombies, <ZombieTooltip zombieKey="spider" />, and <ZombieTooltip zombieKey="thrasher" /> with the occasional
+ground slam from the boss in the center of the room until another weak point becomes visible. When it does, the player with the Masamune must shoot it. Repeat this until the thrasher is killed.
+
+<RichImage image="/content/zetsubou-no-shima/zns-ending.webp" caption='Ending Cutscene'  />
+
+Congratulations! You have beaten the **Zetsubou No Shima** main quest: **Seeds of Doubt**.
+## Video Guides
+### Solo Guide by NoahJ456
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=VvBjugmjlIM" />
+### Co-op Guide by MrRoflWaffles
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=xOD8HHWMrKU" />
+
+## Credits
+Some images used were sourced from the following community members:
+- [MrRoflWaffles](https://www.youtube.com/@MrRoflWaffles)
+- [Raggedy Man](https://steamcommunity.com/id/Logan1701)
+- [FreeMetal](https://steamcommunity.com/id/FreeMetal)
+- [ZombieJay115](https://www.youtube.com/@ZombieJay115)

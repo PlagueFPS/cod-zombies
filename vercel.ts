@@ -1,6 +1,6 @@
 import type { VercelConfig } from "@vercel/config/v1"
 
 export const config: VercelConfig = {
-	framework: "nextjs",
+	framework: "tanstack-start",
 	installCommand: "bun install",
 }

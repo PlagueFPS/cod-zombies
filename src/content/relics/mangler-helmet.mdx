@@ -1,0 +1,89 @@
+import RichImage from "@/components/rich-image"
+import YoutubeEmbed from "@/components/youtube-embed"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import AmmoModTooltip from "@/components/ammo-mod-tooltip"
+import AugmentTooltip from "@/components/augment-tooltip"
+import PerkTooltip from "@/components/perk-tooltip"
+import GobbleGumTooltip from "@/components/gobblegum-tooltip"
+import FieldUpgradeTooltip from "@/components/field-upgrade-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import { MarkdownLink } from "@/components/markdown-link"
+
+## Requirements
+
+- Must have beaten the <MarkdownLink to="/main-quests/$gameId/$mapId" params={{ gameId: "black-ops-7", mapId: "paradox-junction" }} text={"Paradox Junction Main Quest"} />
+- Playing on **Tier II** or above of **Cursed**
+- Playing on **Paradox Junction**
+- Must be on **Round 60** or above for the final step
+- <FieldUpgradeTooltip fieldUpgradeKey="mister-peeks" game="black-ops-7" />
+- Do **NOT** have the <AugmentTooltip augmentKey="peeks-favor" game="black-ops-7" /> augment equipped
+- Do **NOT** have the <MarkdownLink to="/relics/$gameId/$relicId" params={{ gameId: "black-ops-7", relicId: "seed" }} text={"Seed"} /> relic equipped
+
+## Recommended Augments
+<RichTable
+  headerCells={["Perk", "Major", "Minor", "Extra Slot"]}
+  bodyRows={[
+  <RichBodyRow alternate>
+    <TableCell>
+    	<PerkTooltip perkKey="juggernog" game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+    	<AugmentTooltip augmentKey="iron-core" game="black-ops-7" />
+		</TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="durable-plates" game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="hardened-plates" game="black-ops-7" />
+		</TableCell>
+	</RichBodyRow>,
+		<RichBodyRow>
+    <TableCell>
+    	<PerkTooltip perkKey="mule-kick" game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+    	<AugmentTooltip augmentKey="free-throw" />
+		</TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="fully-equipped" />
+    </TableCell>
+    <TableCell>
+   		<AugmentTooltip augmentKey="plate-hunter" />
+		</TableCell>
+  </RichBodyRow>,
+  ]}
+/>
+
+## How to Unlock
+On any round, and on any version of the map, spin the **Mystery Box** until you get a **Mister Peeks**, then activate your
+<FieldUpgradeTooltip fieldUpgradeKey="mister-peeks" game="black-ops-7" /> field upgrade in front of the box, and he will grab himself out of the box for you to interact with and
+pick up.
+
+<RichImage image="/content/paradox-junction/paradox-junction-mangler-helmet-mister-peeks.webp" caption="Mister Peeks out of the box" />
+
+Once you've done that, do it again, but this time in the alternate version of nuketown from when you did it the first time. Once you have both **Mister Peeks**, place them on the
+mailbox in front of the **Yellow House**, one in the **Normal** version, and one in the **Destroyed** version of the map.
+
+<RichImage image="/content/paradox-junction/paradox-junction-mangler-helmet-mailbox.webp" caption="Mister Peeks on the mailbox" />
+
+Once that is done, you'll need to reach **Round 60**. Once reached, the mailbox in the **Normal** version of the map will open, containing an **Ultra** rarity un-papped knife,
+which once picked up, will spawn a **HVT** <ZombieTooltip zombieKey="shock-mimic" /> that you need to kill with that knife. You are allowed to **Pack-a-Punch** the knife to make
+it easier.
+
+<RichImage image="/content/paradox-junction/paradox-junction-mangler-helmet-knife.webp" caption="Knife inside the mailbox" />
+
+If done correctly, you'll hear **Mister Peeks** laugh and the relic trial portal will be available on the front of the **Green House** in the **Destroyed** version of the map.
+
+<RichImage image="/content/paradox-junction/paradox-junction-mangler-helmet-relic-trial-portal.webp" caption="Relic Trial Portal" />
+
+> **Relic Trial:** All armor plates are removed and max health is reduced by 50. This will mean you are a **Two-Hit Down**, unless you are running
+<AugmentTooltip augmentKey="iron-core" game="black-ops-7" /> for <PerkTooltip perkKey="juggernog" game="black-ops-7" />.
+
+## Video Guides
+
+### Guide By Doughnuts
+<YoutubeEmbed videoLink="https://youtu.be/F7av8XFhTq4?si=kOdKuPuRgfLlPmiC" />
+
+### Guide By ZoneX
+<YoutubeEmbed videoLink="https://youtu.be/8lp36HXOOKk?si=kKGv5SVC8hz0EIHO" />

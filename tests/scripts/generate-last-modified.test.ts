@@ -15,7 +15,7 @@ const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 describe("populateFilePaths", () => {
 	test("normalizes Windows separators and strips content prefix", () => {
 		const all = MutableHashSet.empty<string>()
-		MutableHashSet.add(all, "C:\\repo\\content\\maps\\a.mdx")
+		MutableHashSet.add(all, "C:\\repo\\src\\content\\maps\\a.mdx")
 		const out = populateFilePaths(all, "C:/repo")
 		expect(Array.from(out).sort()).toEqual(["maps/a.mdx"])
 	})
@@ -24,9 +24,9 @@ describe("populateFilePaths", () => {
 describe("parseGitBatchOutput", () => {
 	test("parses timestamp and A line and assigns metadata", async () => {
 		const all = MutableHashSet.empty<string>()
-		MutableHashSet.add(all, "/repo/content/maps/foo.mdx")
+		MutableHashSet.add(all, "/repo/src/content/maps/foo.mdx")
 		const git = `1700000000
-A\tcontent/maps/foo.mdx
+A\tsrc/content/maps/foo.mdx
 `
 		const program = parseGitBatchOutput(git, all, "/repo").pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
@@ -36,9 +36,9 @@ A\tcontent/maps/foo.mdx
 
 	test("parses R rename lines using the new path", async () => {
 		const all = MutableHashSet.empty<string>()
-		MutableHashSet.add(all, "/repo/content/maps/new.mdx")
+		MutableHashSet.add(all, "/repo/src/content/maps/new.mdx")
 		const git = `1600000000
-R100\tcontent/maps/old.mdx\tcontent/maps/new.mdx
+R100\tsrc/content/maps/old.mdx\tsrc/content/maps/new.mdx
 `
 		const program = parseGitBatchOutput(git, all, "/repo").pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
@@ -51,7 +51,7 @@ R100\tcontent/maps/old.mdx\tcontent/maps/new.mdx
 		const fixed = new Date("2025-03-15T10:00:00.000Z")
 		vi.setSystemTime(fixed)
 		const all = MutableHashSet.empty<string>()
-		MutableHashSet.add(all, "/repo/content/maps/orphan.mdx")
+		MutableHashSet.add(all, "/repo/src/content/maps/orphan.mdx")
 		const program = parseGitBatchOutput("", all, "/repo").pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		const result = expectExitSuccess(exit)
@@ -64,7 +64,7 @@ R100\tcontent/maps/old.mdx\tcontent/maps/new.mdx
 		const fixed = new Date("2024-06-01T12:00:00.000Z")
 		vi.setSystemTime(fixed)
 		const all = MutableHashSet.empty<string>()
-		MutableHashSet.add(all, "/repo/content/x.mdx")
+		MutableHashSet.add(all, "/repo/src/content/x.mdx")
 		const git = `1700000000
 R100\tshort
 `

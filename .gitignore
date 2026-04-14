@@ -10,11 +10,6 @@
 /coverage
 /test-results
 
-# next.js
-/.next/
-/out/
-/.output/
-
 # production
 /build
 
@@ -39,4 +34,11 @@ oldassets
 
 # typescript
 *.tsbuildinfo
+
+#nextjs
+.next
 next-env.d.ts
+
+#tanstack
+.tanstack
+.output

@@ -1,0 +1,121 @@
+import {
+	Body,
+	Button,
+	Container,
+	Head,
+	Heading,
+	Hr,
+	Html,
+	Img,
+	Link,
+	Preview,
+	Section,
+	Tailwind,
+	Text,
+} from "@react-email/components"
+import { DATE_OPTIONS } from "@/utils/constants"
+import { getServerUrl } from "@/utils/shared-functions"
+
+export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscribeUrl: string }) {
+	const today = new Date()
+	const currentYear = new Date(today).getFullYear()
+	const oneMonthFromNow = new Date(today)
+
+	const currentMonth = oneMonthFromNow.getMonth()
+	oneMonthFromNow.setMonth(currentMonth + 1)
+
+	const formattedDate = oneMonthFromNow.toLocaleDateString("en-US", DATE_OPTIONS)
+	const serverUrl = getServerUrl()
+
+	return (
+		<Html>
+			<Head />
+			<Preview>Important update to our Privacy Policy</Preview>
+			<Tailwind>
+				<Body className="bg-[#f6f9fc] py-[40px] font-sans">
+					<Container className="mx-auto max-w-[600px] rounded-[8px] bg-white p-[20px]">
+						<Section className="mb-[32px] text-center">
+							<Img
+								src={`${serverUrl}/logo.webp`}
+								alt={`Site Logo`}
+								width="120"
+								height="50"
+								className="mx-auto h-auto w-[120px] rounded-[8px] object-cover"
+							/>
+							<Text className="m-0 text-[20px] font-bold text-gray-800">
+								Call of Duty: <span className="text-orange-500">Zombies Guides</span>
+							</Text>
+						</Section>
+
+						<Hr className="mx-0 my-[24px] border-solid border-[#e6ebf1]" />
+
+						<Section>
+							<Heading className="mx-0 my-[24px] text-center text-[24px] font-bold text-[#333]">
+								Privacy Policy Update
+							</Heading>
+
+							<Text className="mb-[16px] text-[16px] leading-[24px] text-[#333]">Hello,</Text>
+
+							<Text className="mb-[16px] text-[16px] leading-[24px] text-[#333]">
+								We&apos;re writing to inform you about important changes to our Privacy Policy.
+								These updates will take effect on <strong>{formattedDate}</strong>.
+							</Text>
+
+							<Text className="mb-[24px] text-[16px] leading-[24px] text-[#333]">
+								We&apos;ve updated our Privacy Policy to provide more transparency about how we
+								collect, use, and protect your personal information. These changes reflect our
+								ongoing commitment to safeguarding your privacy and ensuring compliance with
+								evolving privacy regulations.
+							</Text>
+
+							<Text className="mb-[24px] text-[16px] leading-[24px] text-[#333]">
+								We encourage you to review the complete Privacy Policy.{" "}
+								<strong>
+									By continuing to use our services after {formattedDate}, you acknowledge these
+									updates.
+								</strong>
+							</Text>
+
+							<Section className="mb-[32px] text-center">
+								<Button
+									className="box-border rounded-[4px] bg-orange-600 px-[20px] py-[12px] text-center font-medium text-white no-underline"
+									href={`${serverUrl}/privacy-policy`}
+								>
+									Review Privacy Policy
+								</Button>
+							</Section>
+
+							<Text className="mb-[32px] text-[16px] leading-[24px] text-[#333]">
+								If you have any questions about our Privacy Policy, please contact our team at
+								contact@codzombiesguides.com. We value your trust and are committed to protecting
+								your privacy.
+							</Text>
+
+							<Text className="text-[16px] leading-[24px] text-[#333]">Best regards,</Text>
+
+							<Text className="mb-[32px] text-[16px] leading-[24px] text-[#333]">
+								The Call of Duty: Zombies Guides Team
+							</Text>
+						</Section>
+
+						<Hr className="mx-0 my-[24px] border-solid border-[#e6ebf1]" />
+
+						<Section className="text-center">
+							<Text className="m-0 text-[14px] text-gray-500 italic">
+								© {currentYear} Call of Duty: Zombies Guides. All rights reserved. You&apos;re
+								receiving this email because you opted-in via our website. You may{" "}
+								<Link href={unsubscribeUrl}>unsubscribe</Link> at any point you choose.
+							</Text>
+
+							<Text className="mt-[12px] text-[14px] leading-[20px] text-gray-500">
+								<Link href={`${serverUrl}/privacy-policy`} className="text-[#8898aa] underline">
+									Privacy Policy
+								</Link>
+							</Text>
+						</Section>
+					</Container>
+				</Body>
+			</Tailwind>
+		</Html>
+	)
+}

@@ -1,0 +1,610 @@
+import RichImage from '@/components/rich-image'
+import CustomCarousel from '@/components/custom-carousel'
+import { RichTable, RichBodyRow } from '@/components/rich-table'
+import { TableCell } from '@/components/ui/table'
+import PerkTooltip from '@/components/perk-tooltip'
+import ZombieTooltip from '@/components/zombie-tooltip'
+import YoutubeEmbed from '@/components/youtube-embed'
+import ElixirTooltip from '@/components/elixir-tooltip'
+import { MarkdownLink } from "@/components/markdown-link"
+
+## Greek Tragedy
+The main quest for **Ancient Evil** is **Greek Tragedy**. Our Chaos crew's goal in this quest is to defeat the demigod <ZombieTooltip zombieKey="perseus" /> and free **Alistair Rhodes**.
+
+> You must be playing on **Normal** difficulty or higher to do this main quest.
+
+## Requirements
+This quest can be completed with any number of players. You will need to obtain the following items to complete this quest fully:
+
+- <MarkdownLink hash="building-the-apollos-will" text="Apollo's Will" />
+- <MarkdownLink hash="obtaining-the-redeemed-hand-of-charon" text="Redeemed Hand of Charon" />
+- <MarkdownLink hash="obtaining-the-redeemed-hand-of-ouranos" text="Redeemed Hand of Ouranos" />
+- <MarkdownLink hash="obtaining-the-redeemed-hand-of-hemera" text="Redeemed Hand of Hemera" />
+- <MarkdownLink hash="obtaining-the-fallen-hand-of-gaia" text="Fallen Hand of Gaia" />
+- <MarkdownLink hash="building-the-pegasus-strike" text="Pegasus Strike" />
+- Hellion Salvo (found in the Mystery Box)
+- Homunculus (found in the Mystery Box)
+
+> While **Homunculus** and **Hellion Salvo** are not truly required for this main quest, it is recommended to acquire them out of the Mystery Box as they will make this main quest much more
+enjoyable and achievable, especially for the boss fight.
+
+## Recommended Class Setups
+
+<RichTable
+  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        Scepter of Ra
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="timeslip" />
+        <PerkTooltip perkKey="winters-wail" />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        Chakrams of Vengeance
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="timeslip" />
+        <PerkTooltip perkKey="winters-wail" />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> <PerkTooltip perkKey="winters-wail" /> should be put into the Modifier slot. If you choose to use the **Scepter of Ra** there is an exploit that can be used to easily kill the
+<ZombieTooltip zombieKey='gegenees' /> elite, <ZombieTooltip zombieKey='pegasus' />, and <ZombieTooltip zombieKey='perseus' /> during the boss fight. This exploit involves pressing the buttons
+to shoot and melee with the **Scepter** at the same time do attack very quickly.
+
+## Recommended Elixirs
+
+<RichTable
+ headerCells={["Classic Elixirs", "Mega Elixirs"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <ElixirTooltip elixirKey="anywhere-but-here" />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey="perkaholic" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <ElixirTooltip elixirKey="equip-mint" />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey="refresh-mint" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <ElixirTooltip elixirKey="temporal-gift" />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey="alchemical-antithesis" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <ElixirTooltip elixirKey="arsenal-accelerator" />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey="reign-drops" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+## Step 1: Ignite the Beacons
+
+### Activating the Sentinel Artifact
+Head to the **Amphitheater** and interact with the **Sentinel Artifact** to activate it. This will cause <ZombieTooltip zombieKey='perseus' /> the boss of this map to appear and summon three
+<ZombieTooltip zombieKey='skeleton' /> zombies known as **Spartoi**, who, when killed via a body shot, will resurrect after some time, so you must kill them via a headshot.
+
+<RichImage image='/content/ancient-evil/ancient-evil-sentinel-artifact.webp' caption='Sentinel Artifact' />
+
+After killing the three **Spartoi**, normal zombies will begin to spawn. You must survive against them until <ZombieTooltip zombieKey='pegasus' /> arrives to save you from the onslaught,
+unleashing lightning strikes on the zombies and turning on the power for the map.
+
+<RichImage image='/content/ancient-evil/ancient-evil-power-on.webp' caption='Pegasus Lightning Strike' />
+
+### Unlocking Pack-a-Punch
+You must find a **Golden Bridle** used to ride <ZombieTooltip zombieKey='pegasus' /> to the **Underworld** where **Pack-a-Punch** is located. The **Golden Bridle** can spawn in one of two locations:
+
+<RichImage image='/content/ancient-evil/ancient-evil-golden-bridle-first-spawn.webp' caption='Intersection of Treasuries - on a pedestal' />
+<RichImage image='/content/ancient-evil/ancient-evil-golden-bridle-second-spawn.webp' caption='Stoa of the Athenians - on a pedestal' />
+
+> After grabbing this **Golden Bridle** a <ZombieTooltip zombieKey='gegenees' /> will spawn that you can kill using the **Scepter of Ra** exploit or the **Chakrams of Vengeance** and pick up the
+shield part for the <MarkdownLink hash="building-the-apollos-will" text="Apollo's Will" />. In the future, another effective way to kill the <ZombieTooltip zombieKey='gegenees' /> is by shooting it's head with the
+<MarkdownLink hash="building-the-apollos-will" text="Apollo's Will" />.
+
+Once you have the **Golden Bridle**, head to the **Spartan Monument** where the **Zeus Perk Statue** is located and you will be able to stand inside a blue circle prompting you to "ride Pegasus",
+and interact with this circle to be taken to the **Underworld**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-ride-pegasus.webp' caption='Ride Pegasus Circle' />
+
+Once in the **Underworld** make your way to **Cliff Ruins** and **Python Pass** and free the eagles by breaking open the cages with your **Special Weapon**. The cage in **Python Pass** will be suspended
+in the air via a chain that you can shoot with your weapon before using your **Special Weapon**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-python-pass-bird-cage.webp' caption='Python Pass Eagle Cage' />
+
+Once freed, a <ZombieTooltip zombieKey='gegenees' /> will spawn and the eagles will be circling around the **Center of the World** area in the **Underworld**. Head to this area to begin a
+lockdown where you must survive against an onslaught of **Spartoi** and zombies. Once completed, **Pack-a-Punch** will be available and a teleporter will spawn that can take you back to
+the **Overworld**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-center-of-the-world-teleporter.webp' caption='Center of the World Teleporter' />
+
+> Before leaving the **Underworld**, it is recommended to build the <MarkdownLink hash="building-the-pegasus-strike" text="Pegasus Strike" /> since all three parts are located in this **Underworld** and is required
+for a later part of the main quest.
+
+### Igniting the Beacons
+Once all the prerequisites are done, the actual step involves completing trials until you turn the **Eternal Flame** in the **Temple of Apollo** blue. The amount of trials you need to do varies
+depending on both the number of players in your game and the rarity at which the trials are claimed.
+
+<RichImage image='/content/ancient-evil/ancient-evil-eternal-flame.webp' caption='Blue Eternal Flame' />
+
+To complete this step the fastest here is what you need to do based on the amount of players in your game. Solo, turn in a **Epic** and **Legendary** trial to light the flame. Duo, turn in three
+**Epic** trials to light the flame. Trio, turn in four **Epic** trials and a **Legendary** to light the flame. Full Squad, turn in six **Epic** trials.
+
+> While you are working on these trials you should be obtaining the <MarkdownLink hash="obtaining-the-redeemed-hand-of-charon" text="Redeemed Hand of Charon" />, <MarkdownLink hash="obtaining-the-redeemed-hand-of-gaia" text="Redeemed Hand of Gaia" />,
+<MarkdownLink hash="obtaining-the-redeemed-hand-of-hemera" text="Redeemed Hand of Hemera" />, and <MarkdownLink hash="obtaining-the-redeemed-hand-of-ouranos" text="Redeemed Hand of Ouranos" /> in that order as they will be needed for upcoming steps.
+
+Once you have completed enough trials, the **Eternal Flame** will be lit and you can melee it with the <MarkdownLink hash="building-the-apollos-will" text="Apollo's Will" /> to light the spear on fire. Afterward, you need
+to melee three oil spills around the map to ignite them with the **Eternal Flame** completing this step:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-upper-road-oil.webp' caption='Upper Road' />
+  <RichImage image='/content/ancient-evil/ancient-evil-intersection-of-treasuries-oil.webp' caption='Intersection of Treasuries' />
+  <RichImage image='/content/ancient-evil/ancient-evil-spartan-monument-oil.webp' caption='Spartan Monument' />
+</CustomCarousel>
+
+> While the spear is lit with the **Eternal Flame** it will drain your shield health periodically so be aware of your shields health and repair it if needed.
+
+### Building the Apollo's Will
+> There are three parts required to build the **Apollo's Will**, two of which have three spawn locations each.
+
+The first part is the **Handles**, which can be found in the **Upper Road** part of the map:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-shield-handles-first-spawn.webp' caption='On the right side column at the base of the bridge' />
+  <RichImage image='/content/ancient-evil/ancient-evil-shield-handles-second-spawn.webp' caption='On a rock across the bridge' />
+  <RichImage image='/content/ancient-evil/ancient-evil-shield-handles-final-spawn.webp' caption='On a rock by the river below the bridge' />
+</CustomCarousel>
+
+The second part is the **Spear**, which can be found in **Stoa of the Athenians** or **Intersection of Treasuries**:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-shield-spear-first-spawn.webp' caption='Stoa of the Athenians - leaning against a white column near the two red pillars' />
+  <RichImage image='/content/ancient-evil/ancient-evil-shield-spear-second-spawn.webp' caption='Intersection of Treasuries - sticking out some stones on the left side of the path after entering from the Stoa of Anthenians' />
+  <RichImage image='/content/ancient-evil/ancient-evil-shield-spear-final-spawn.webp' caption='Intersection of Treasuries - on the base of the statue opposite the Auger DMR wall buy' />
+</CustomCarousel>
+
+The final part is the **Body**, which can be obtained by killing a <ZombieTooltip zombieKey='gegenees' /> after picking up the **Golden Bridle** when **Unlocking Pack-a-Punch**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-shield-body.webp' caption='Shield Body' />
+
+Once all three parts have been collected you can build the **Apollo's Will** shield at the workbench in the **Marketplace**.
+
+## Step 2: Look the Dead in the Eye
+Head to the **Spartan Monument**, using the <MarkdownLink hash="obtaining-the-redeemed-hand-of-charon" text="Redeemed Hand of Charon" /> shoot a charged shot at the ground in front of the **Zeus Perk Statue**
+where the blue <ZombieTooltip zombieKey='pegasus' /> circle used to be. Stand in the charged shot, look at the statues around you, and shoot an uncharged shot at the one with glowing blue eyes,
+repeat this for a total of four statues to complete this step.
+
+<RichImage image='/content/ancient-evil/ancient-evil-look-the-dead-in-the-eye.webp' caption='Blue-Eyed statue' />
+
+### Dormant Hand Locations
+There are 20 different locations where a **Dormant Hand** can spawn, of which only four will contain a **Dormant Hand** (one for each redeemed hand). You can find where a **Dormant Hand** is
+located guaranteed by walking near the oracle in the spawn room who will give you a quote hinting at the location.
+
+> Make sure you have subtitles enabled in the game settings so you can read the quote easily instead of having to try and hear it over the natural game sound.
+
+Below are the 20 different locations and the quote that corresponds to that location:
+
+> You must melee these spots to reveal the **Dormant Hand**.
+
+#### "Where the Serpent Snared the Eagle"
+
+<RichImage image='/content/ancient-evil/ancient-evil-where-the-serpent-snared-the-eagle-dormant-hand.webp' caption='Cliff Ruins - On the ground to the left of the Eagle cage' />
+
+#### "Where the Mighty Titan Points"
+
+<RichImage image='/content/ancient-evil/ancient-evil-where-the-mighty-titan-points-dormant-hand.webp' caption='Python Pass - On the ground to the left of the Titan wall buy' />
+
+#### "Where the Arrow Splits the Road"
+
+<RichImage image='/content/ancient-evil/ancient-evil-where-the-arrow-splits-the-road-dormant-hand.webp' caption='On the ground right of the Giant Arrow between the Intersection of Treasuries and Spartan Monument' />
+
+#### "Where Sorrow Flows Beneath"
+
+<RichImage image='/content/ancient-evil/ancient-evil-where-sorrow-flows-beneath-dormant-hand.webp' caption='River of Sorrow - Down the stairs and left when entering the Underworld' />
+
+#### "Wheel of water"
+
+<RichImage image='/content/ancient-evil/ancient-evil-wheel-of-water-dormant-hand.webp' caption='Cliff Ruins - On the ground left of the blue forge' />
+
+#### "Top of the Center of the World"
+
+<RichImage image='/content/ancient-evil/ancient-evil-top-of-the-center-of-the-world-dormant-hand.webp' caption='Center of the World - on the ground left of the Fast Travel portal to the Overworld' />
+
+#### "The Steps of Flesh and bone"
+
+<RichImage image='/content/ancient-evil/ancient-evil-the-steps-of-flesh-and-bone-dormant-hand.webp' caption='Python Pass - On the ground underneath the flaming bowl left of the Charon shrine' />
+
+#### "The Shrine of Wind and sky"
+
+<RichImage image='/content/ancient-evil/ancient-evil-the-shrine-of-wind-and-sky-dormant-hand.webp' caption='Center of the World - on the ground left of the Ouranos shrine' />
+
+#### "The Shieldbearer's fountain"
+
+<RichImage image='/content/ancient-evil/ancient-evil-the-shieldbearers-fountain-dormant-hand.webp' caption='Stoa of the Athenians - On the fountain ledge near the gong' />
+
+#### "Sorrow Washes Over"
+
+<RichImage image='/content/ancient-evil/ancient-evil-sorrow-washes-over-dormant-hand.webp' caption='River of Sorrow - on the ground left of the Odin Perk Statue' />
+
+#### "Near the Workbench of Hephaestus"
+
+<RichImage image='/content/ancient-evil/ancient-evil-near-the-workbench-of-hephaestus-dormant-hand.webp' caption='Cliff Ruins - on the table right of the blue forge' />
+
+#### "Near the Purple blossoms"
+
+<RichImage image='/content/ancient-evil/ancient-evil-near-the-purple-blossoms-dormant-hand.webp' caption='Intersection of Treasuries - on the ground near a patch of purple flowers' />
+
+#### "Golden taurus"
+
+<RichImage image='/content/ancient-evil/ancient-evil-golden-taurus-dormant-hand.webp' caption='Spartan Monument - below the giant bull statue' />
+
+#### "General's column"
+
+<RichImage image='/content/ancient-evil/ancient-evil-generals-column-dormant-hand.webp' caption='Spartan Monument - at the base of the column when heading down to the Spartan Monument' />
+
+#### "Fallen Statesman"
+
+<RichImage image='/content/ancient-evil/ancient-evil-fallen-statesman-dormant-hand.webp' caption='Spartan Monument - by the fallen statues opposite the Mystery Box location' />
+
+#### "Chaos of venom"
+
+<RichImage image='/content/ancient-evil/ancient-evil-chaos-of-venom-dormant-hand.webp' caption='Python Pass - on the red crystal to the right of the trap bowl' />
+
+#### "Chaos of the Treasuries"
+
+<RichImage image='/content/ancient-evil/ancient-evil-chaos-of-treasuries-dormant-hand.webp' caption='Intersection of Treasuries - on the red crystal upon entering the Intersection of Treasuries' />
+
+#### "Broken bridge"
+
+<RichImage image='/content/ancient-evil/ancient-evil-broken-bridge-dormant-hand.webp' caption='Cliff Ruins - on the right side of the broken bridge leading to the Center of the World' />
+
+#### "Beneath the Watchful Gaze of Zeus"
+
+<RichImage image='/content/ancient-evil/ancient-evil-beneath-the-watchful-gaze-of-zeus-dormant-hand.webp' caption='Spartan Monument - on the ground to the right of the Zeus Perk Statue' />
+
+#### "Barque of Gold"
+
+<RichImage image='/content/ancient-evil/ancient-evil-barque-of-gold-dormant-hand.webp' caption='Stoa of the Athenians - on a crate next to a boat filled with gold' />
+
+Once you have found a **Dormant Hand** you can begin working on any of the four redeemed hands: <MarkdownLink hash="obtaining-the-redeemed-hand-of-charon" text="Redeemed Hand of Charon" />,
+<MarkdownLink hash="obtaining-the-redeemed-hand-of-gaia" text="Redeemed Hand of Gaia" />, <MarkdownLink hash="obtaining-the-redeemed-hand-of-hemera" text="Redeemed Hand of Hemera" />, and <MarkdownLink hash="obtaining-the-redeemed-hand-of-ouranos" text="Redeemed Hand of Ouranos" />.
+You will need to find a new **Dormant Hand** for each redeemed hand.
+
+> Importantly, you can only work on one hand at a time so if you already have a redeemed hand, you need to place it down at it's respective shrine to work on a different hand.
+
+### Obtaining the Redeemed Hand of Charon
+> Before obtaining a **Hand** you must have a **Dormant Hand**.
+
+Head to the **Python Pass** in the **Underworld** and place the hand inside the **Charon Shrine**. This will being a lockdown that you must complete to be given the **Fallen Hand of Charon**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-charon-shrine.webp' caption='Charon Shrine' />
+
+Once you have the fallen hand, head to the **River of Sorrow** and get kills with the fallen hand while standing in the river in front of the **Odin Perk Statue**. Once you have gotten enough
+kills you will be able to "drinks from the River of Sorrow" by pressing you interact button.
+
+<RichImage image='/content/ancient-evil/ancient-evil-drink-from-river-of-sorrow.webp' caption='River of Sorrow' />
+
+> Before drinking from the river, you should get down to a few zombies as drinking from the river will disable your health regeneration until you complete the step.
+
+After drinking from the river, you will be able to see a bunch of coins around the map. There are two types of coins "Charon's Obol" and "False Obol", you must collect three of **Charon's Obols**
+and bring them back to **Charon's Shrine** to summon a portal to "Prove Yourself to Charon".
+
+<RichImage image='/content/ancient-evil/ancient-evil-charon-portal.webp' caption='Charon Portal' />
+
+Interact with the portal to begin a lockdown where you are granted the **Redeemed Hand of Charon** with infinite ammo and must kill everything around you to prove yourself to Charon.
+Once you have proven yourself you will be teleported back to the shrine with the **Redeemed Hand of Charon** obtained.
+
+## Step 3: Align the Citizens
+You must destroy three walls around the map using any weapon to reveal three rotating cogs. You must throw a spear from the **Apollo's Will** at the smaller moving cog, when it is next to the
+larger still cog causing both the cogs to rotate in sync. The three wall locations are:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-spartan-monument-wall.webp' caption='Spartan Monument - immediate right when going down the staris from the Stoa of the Athenians' />
+  <RichImage image='/content/ancient-evil/ancient-evil-intersection-of-treasuries-wall.webp' caption='Intersection of Treasuries - right of the Welling wall buy' />
+  <RichImage image='/content/ancient-evil/ancient-evil-intersection-of-treasuries-second-wall.webp' caption='Intersection of Treasuries - left of the Auger DMR wall buy' />
+</CustomCarousel>
+
+Once all three cogs have been put in sync, head to the **Stoa of the Athenians** area where you will see three rotating statues. You must throw a spear at the big cog in the opening of the building
+behind the white crystal only when all three statues are about to face the white crystal, completing this step.
+
+<RichImage image='/content/ancient-evil/ancient-evil-align-the-citizens.webp' caption='Final Cog' />
+
+> You can use the female statue holding the roses as a signal to throw the spear when she is facing to the right as in the above image. If you run out of spears to throw and you have
+<PerkTooltip perkKey="victorious-tortoise" /> active, you can get the **Eternal Flame** on your shield to break it to avoid killing the zombie with <PerkTooltip perkKey="victorious-tortoise" />.
+
+## Step 4: Scepter and Sundial
+### Danu Symbols
+Head to the **Offering of the Attalids**, using the <MarkdownLink hash="obtaining-the-fallen-hand-of-gaia" text="Fallen Hand of Gaia" /> you must shoot a symbol with branches on it located outside the map to the
+left of the **Danu Perk Statue**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-first-danu-symbol.webp' caption='Danu Symbol' />
+
+After shooting that symbol, two more symbols will spawn, one to the left of the **Danu Perk Statue** and the other above on the second floor. You must shoot them both at the same time,
+to achieve this place your crosshair like the image below and shoot with the hand. If only one projectile comes out of the hand shoot a follow-up shot and it should split into two projectiles.
+
+<RichImage image='/content/ancient-evil/ancient-evil-second-danu-symbol.webp' caption='First Set of Danu Symbols' />
+
+> If for some reason it doesn't work and you only hit one of the symbols, you will fail the step and need to start over from the first symbol.
+
+Once those two symbols have been hit, three more symbols will spawn to the right of the **Danu Perk Statue**, one on the front of the building, one on the second floor of the building,
+and one on the small building in front of the **Danu Perk Statue** building. Again, you must shoot all three at the same time by placing your crosshair as in the image below, shooting
+an immediate follow-up shot if only one projectile comes out.
+
+<RichImage image='/content/ancient-evil/ancient-evil-final-danu-symbol.webp' caption='Second Set of Danu Symbols' />
+
+Once those three symbols have been hit, a <ZombieTooltip zombieKey='gegenees' /> will spawn which you should not kill just yet. Lead the <ZombieTooltip zombieKey='gegenees' /> to the
+**Intersection of Treasuries** near the **Golden Bridle** spawn pedestal, where there will be an item stuck inside the red crystal behind the pedestal.
+
+<RichImage image='/content/ancient-evil/ancient-evil-item-stuck-in-crystal.webp' caption='Item Stuck in Crystal' />
+
+You must free this item by baiting the <ZombieTooltip zombieKey='gegenees' /> to do its shield blast attack by shooting its weak points and/or its shield. If you are standing close to the crystal
+when this attack goes off it should knock the item down for you to pick up and can now kill the <ZombieTooltip zombieKey='gegenees' /> and pick up the **Golden Pole** he will drop when he dies.
+
+<RichImage image='/content/ancient-evil/ancient-evil-golden-pole.webp' caption='Golden Pole' />
+
+> You use any <ZombieTooltip zombieKey='gegenees' /> to free the item. The next two parts of this step can be done in any order and is completely personal preference on which part you want to do first.
+
+#### Obtaining the Fallen Hand of Gaia
+> Before obtaining a **Hand** you must have a **Dormant Hand**.
+
+Head to the **Spartan Monument** area and interact with the **Gaia Shrine** to begin a lockdown. This lockdown will spawn a barrier around the circle you are standing on and you must survive while
+within this barrier. Once the lockdown is complete you can turn around and pick up the **Fallen Hand of Gaia**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-gaia-shrine.webp' caption='Gaia Shrine' />
+
+### Sundial Part
+Head to the **Offering of the Attalids** and place the **Golden Pole** dropped by the <ZombieTooltip zombieKey='gegenees' /> in the **Sundial** on the ground revealing a yellow line. Afterward, you must kill
+an <ZombieTooltip zombieKey='lightning-catalyst' /> zombie on the **Sundial** to activate it.
+
+<RichImage image='/content/ancient-evil/ancient-evil-activated-sundial.webp' caption='Activated Sundial' />
+
+Activating the **Sundial** will reveal a rotating dial containing a blue symbol while the rest are orange. The goal is to interact with the **Sundial** when the blue symbol is on the slot with the yellow line.
+This must be done with three dials, with each dial rotating faster each time.
+
+<RichImage image='/content/ancient-evil/ancient-evil-sundial-blue-symbol.webp' caption='Blue Symbol Dial' />
+
+> You must kill an <ZombieTooltip zombieKey='lightning-catalyst' /> zombie after each completed dial to open the next dial. If you fail you will see a white flash and will need to restart the **Sundial** part.
+
+The simplest way to complete this is to count how many slots in the direction that the dials are rotating are in between the open slot and the yellow line slot and once the blue symbol has rotated out of the
+open slot count each rotation until you hit that number and interact with the dial.
+
+> For example, if the dials are rotating clockwise and the number of slots between the yellow line and open dial when rotating clockwise is three, once I see the blue symbol in the open slot every rotation
+after that I will count until I reach the number three and once I do immediately interact with the **Sundial**.
+
+Once you have correctly aligned the three symbols with the yellow line the **Golden Rod** will sink into the **Sundial** completing this step.
+
+<RichImage image='/content/ancient-evil/ancient-evil-completed-sundial.webp' caption='Completed Sundial' />
+
+### Scepter Part (Defending Ra)
+Head to the **Gymnasium Bathhouse** and place the item you freed from the crystal before the Sundial Part in the right hand of the **Ra Perk Statue**. After doing this Ra will raise his left hand and you
+must place the **Redeemed Hand of Hemera** in that hand.
+
+<RichImage image='/content/ancient-evil/ancient-evil-ra-raising-left-hand.webp' caption='Ra Raising Left Hand' />
+
+Once you have placed the **Redeemed Hand of Hemera** in Ra's hand, he will start firing a beam into the wall and you must defend him for a full minute while normal, **Spartoi**, and
+<ZombieTooltip zombieKey='blightfather' /> zombies, spawn to try and block the beam.
+
+<RichImage image='/content/ancient-evil/ancient-evil-ra-beam.webp' caption='Ra Beam' />
+
+> It is highly recommended that you obtain the **Hellion Salvo** and **Homunculus** from the Mystery Box as this will make this step very easy. **Homunculus** being the more important item as a single
+**Homunculus** will last for 20 seconds and you are given two of them, then you can use **Equip Mint** to replenish them and have the zombies distracted for the entire minute, only using the **Hellion Salvo**
+for the <ZombieTooltip zombieKey='blightfather' />.
+
+Once the lockdown is completed, a hole will be made in the wall **Ra** was beaming and inside you will find the **Scepter of Ra** (the actual one). Pick up the **Scepter** and return it to the
+**Ra Perk Statue** where he will then fire a beam at the pond completing this step.
+
+<RichImage image='/content/ancient-evil/ancient-evil-scepter-of-ra.webp' caption='Scepter of Ra' />
+
+### Obtaining the Redeemed Hand of Hemera
+> Before obtaining a **Hand** you must have a **Dormant Hand**.
+
+Head to the **Monument of Craterus** area and interact with the **Hemera Shrine** to begin a lockdown. Just like the **Fallen Hand of Gaia** you must survive within the barrier around the circle until
+the lockdown is over and can claim the **Fallen Hand of Hemera** once completed.
+
+<RichImage image='/content/ancient-evil/ancient-evil-hemera-shrine.webp' caption='Hemera Shrine' />
+
+Once you have the **Fallen Hand of Hemera** you must find three mirrors around the map, adjust them to face the playable area of the map, and then shoot them with the **Fallen Hand**.
+The locations of these three mirrors are:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-upper-road-mirror.webp' caption='Upper Road - on the brick archway outside the map to the side of the bridge' />
+  <RichImage image='/content/ancient-evil/ancient-evil-temple-terrace-mirror.webp' caption="Temple Terrace - on the left-most column of Apollo's Temple" />
+  <RichImage image='/content/ancient-evil/ancient-evil-gymnasium-bathhouse-mirror.webp' caption='Gymnasium Bathhouse - outside the map on a column left of one of the trap activation bowls' />
+</CustomCarousel>
+
+After shooting a mirror with the hand, if it is positioned correctly will cause the shot of the hand to land inside a bowl that you must melee with your Fallen Hand to carry that shot. You now
+have around 15 seconds to return that shot to the **Hemera Shrine** and melee the shrine to place the shot.
+
+<RichImage image='/content/ancient-evil/ancient-evil-hemera-bowl.webp' caption='Hemera Shot Bowl' />
+
+> If you fail to place the shot into the shrine within the timeframe you will need to re-do the mirrors for only the shot that you failed to carry in time.
+
+Once all three shots have been placed into the shrine a portal will spawn asking you to "Prove Yourself to Hemera". Interact with the portal and you will be given the **Redeemed Hand of Hemera**
+with unlimited ammo and must survive against the onslaught to prove yourself, claiming the **Redeemed Hand of Hemera**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-hemera-portal.webp' caption='Hemera Portal' />
+
+## Step 5: Hit Your Marks
+All players must head to the **Amphitheater**, once in the theater pull out your Hand wonder weapon and you'll find a colored circle matching the color of your **Hand**. Stand on that circle,
+you will get a white flash and another colored circle will spawn.
+
+> In co-op, there will be multiple colored circles on the ground, players must stand only in the circle that matches their **Hands** color when it is glowing.
+
+Stand in that new colored circle and kill all the zombies emitting the same color as your **Hand**, using charged shots for the ground-level zombies, and uncharged shots for the zombies in the stands.
+Repeat this two more times until you get a gray screen where you must stand on the initial circle to begin the next phase of circles.
+
+<RichImage image='/content/ancient-evil/ancient-evil-hit-your-marks.webp' caption='Hit Your Marks' />
+
+> They are three total phases, each phase increasing the amount of circles up to 5 before a phase is completed. In co-op, it is possible for a hand to be excluded during a phase.
+
+Once all phases are done, you will get a white flash, a **Max Ammo**, and a lot of points for completing this step.
+
+## Step 6: Cleanse the Center
+Head to the **River of Sorrow** in the **Underworld** and near the **Spitfire** wall buy will be a door containing many symbols. You must shoot six of these symbols in the specific order in the image below,
+afterwards, if you are playing as **Shaw** or **Bruno** you can interact with the door to see a mini-cutscene.
+
+<RichImage image='/content/ancient-evil/ancient-evil-door-order.webp' caption='Door Order' />
+
+> In co-op, if any of the players in the game are playing as **Shaw** or **Bruno** they must interact with this door to proceed with the step. If no one in the game is playing as **Shaw** or **Bruno**,
+you can continue on with the step without seeing the cutscene.
+
+Now head to the top of the white stairs in the **River of Sorrow** to find a blue circle on the ground. You must place your **Pegasus Strike** on this blue circle causing <ZombieTooltip zombieKey='pegasus' />
+to fly down and raise a **Ballista** out of the ground beneath the stairs.
+
+<RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike.webp' caption='Pegasus Strike Circle' />
+
+You must turn the Ballista using the charged shot of the **Redeemed Hand of Ouranos**. If done correctly, the **Ballista** will cock back ready to fire an arrow at the **Python**. Once the **Ballista** is ready,
+make sure you have a fresh shield and head to Apollo's Temple and melee the **Eternal Flame** with your shield out to ignite the spear.
+
+Afterward, with your shield out the entire time, run to the teleporter in the **Stoa of the Athenians** to take you next to the **Acid Trap** in the **Underworld**. Finally, activate the **Acid Trap**,
+run through it with your shield out to turn the **Eternal Flame** green, and melee the **Ballista's Arrow** to fire the arrow at the **Python** completing this step.
+
+<RichImage image='/content/ancient-evil/ancient-evil-cleanse-the-center.webp' caption='Cleanse the Center' />
+
+### Building the Pegasus Strike
+> The **Pegasus Strike** requires three parts each of which have three spawn locations, but all three parts are located in the **Underworld**.
+
+The first part is the **Prongs**, which can be found in the **River of Sorrow**:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-prong-first-spawn.webp' caption='On a rock in front of the left-side stairs' />
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-prong-second-spawn.webp' caption='On a rock to the right of the Spitfire wall buy' />
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-prong-final-spawn.webp' caption='In a flaming bowl to the right of the Odin Perk Statue' />
+</CustomCarousel>
+
+The second part is the **Hammer**, which can be found in the **Python Pass**:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-hammer-first-spawn.webp' caption='Leaning against the bone in front of the Charon Shrine' />
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-hammer-second-spawn.webp' caption='Leaning against a wall opposite the previous location' />
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-hammer-final-spawn.webp' caption='Leaning against a rock near the hanging eagle cage just before the Titan wall buy' />
+</CustomCarousel>
+
+The final part is the **Anvil**, which can be found in the **Cliff Ruins**:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-anvil-first-spawn.webp' caption='At the base of a broken column opposite the Mystery Box location' />
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-anvil-second-spawn.webp' caption='On a rock when entering the forge room' />
+  <RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike-anvil-final-spawn.webp' caption='On a rock opposite the eagle cage' />
+</CustomCarousel>
+
+Once all three parts have been collected, you can build the **Pegasus Strike** in the forge room in the **Cliff Ruins**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-pegasus-strike.webp' caption='Pegasus Strike Workbench' />
+
+### Obtaining the Redeemed Hand of Ouranos
+> Before obtaining a **Hand** you must have a **Dormant Hand**.
+
+Head to the **Center of the World** and interact with the **Ouranos Shrine** to begin a lockdown. After completing the lockdown, pick up the **Fallen Hand of Ouranos** from the shrine.
+
+<RichImage image='/content/ancient-evil/ancient-evil-ouranos-shrine.webp' caption='Ouranos Shrine' />
+
+Once you have the **Fallen Hand of Ouranos**, you must locate three giant arrows in the **Underworld** and shoot a normal zombie in front of these arrows to launch the zombie's body into the arrow,
+releasing a floating feather that you must shoot twice with the **Fallen Hand of Ouranos** to get it back to the shrine.
+
+<RichImage image='/content/ancient-evil/ancient-evil-floating-feather.webp' caption='Floating Feather' />
+
+> The floating feather that comes out of the arrow near the **Ouranos Shrine** only needs to be shot once since it is the closest to the shrine.
+
+The locations of the three giant arrows are:
+
+<CustomCarousel>
+  <RichImage image='/content/ancient-evil/ancient-evil-python-pass-arrow.webp' caption='Python Pass' />
+  <RichImage image='/content/ancient-evil/ancient-evil-cliff-ruins-arrow.webp' caption='Cliff Ruins' />
+  <RichImage image='/content/ancient-evil/ancient-evil-center-of-the-world-arrow.webp' caption='Center of the World' />
+</CustomCarousel>
+
+After all three feathers have been returned to the shrine, a portal will spawn prompting you to "Prove Yourself to Ouranos". Interact with this portal to be given the **Redeemed Hand of Ouranos**
+with unlimited ammo while you survive against an onslaught to prove yourself. Once proven, you will be teleported back with the **Redeemed Hand of Ouranos**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-ouranos-portal.webp' caption='Ouranos Portal' />
+
+## Step 7: Boss Fight
+Before entering the boss fight, be sure to swap out your **Pegasus Strike** with **Homunculus** from the Mystery Box as the **Pegasus Strike** will not work during the boss fight. Additionally,
+it is recommended to bring the **Hellion Salvo** as this will make the first part of this boss fight insanely easy.
+
+When ready, head to the **Center of the World** and interact with the portal to be transported into the boss arena. This boss fight has two phases, in **Phase 1** you will be fighting against
+<ZombieTooltip zombieKey='pegasus' />, and in **Phase 2** you will be fighting against <ZombieTooltip zombieKey='perseus' />.
+
+<RichImage image='/content/ancient-evil/ancient-evil-boss-arena-entrance.webp' caption='Boss Arena Entrance' />
+
+### Phase 1
+<ZombieTooltip zombieKey='pegasus' /> will briefly fly over the arena and then disappear, spawning a <ZombieTooltip zombieKey='gegenees' /> you must kill for him to re-appear. You must shoot down
+<ZombieTooltip zombieKey='pegasus' /> with any weapon to cause it to fall to the ground, and when it falls, you must damage it with your **Special Weapon**. Sometimes in this phase,
+<ZombieTooltip zombieKey='perseus' /> will throw flaming spears on the arena which you can stand in to quickly charge your **Special Weapon**.
+
+<RichImage image='/content/ancient-evil/ancient-evil-downed-pegasus.webp' caption='Downed Pegasus' />
+
+> In co-op, you must visit all three islands and kill a <ZombieTooltip zombieKey='gegenees' /> on each island for <ZombieTooltip zombieKey='pegasus' /> to re-appear. The **Hellion Salvo** is ideal
+for knocking <ZombieTooltip zombieKey='pegasus' /> down and the **Scepter of Ra** exploit is ideal for damaging it once it is knocked down.
+
+After around **10 seconds**, <ZombieTooltip zombieKey='pegasus' /> will begin to recover and when he flies back up will damage everyone on the island. At this point, everyone needs to get off the
+island and a **Max Ammo** and **Carpenter** will spawn on the other two islands. Repeat this cycle of knocking <ZombieTooltip zombieKey='pegasus' /> down, damaging it, and getting off the island until
+enough damage has been dealt to move on to **Phase 2**.
+
+> You will know when **Phase 2** is starting when <ZombieTooltip zombieKey='perseus' /> lets down his shield and says some quotes about <ZombieTooltip zombieKey='pegasus' />.
+
+### Phase 2
+<ZombieTooltip zombieKey='perseus' /> will now be the one you are fighting and will throw flaming spears on to the arena which you can use to charge your **Special Weapon**. After a while, he will teleport
+to the island and you must do a lot of damage to him until he kneels and turns orange.
+
+<RichImage image='/content/ancient-evil/ancient-evil-boss-phase-2.webp' caption='Kneeling Perseus' />
+
+> If you don't do enough damage to <ZombieTooltip zombieKey='perseus' /> when he teleports to the island he will go back to the mountain and unleash an attack that does a lot of damage if it hits you.
+
+When he kneels, damage him as much as possible with either the **Hellion Salvo** or the **Special Weapon**, since unlike <ZombieTooltip zombieKey='pegasus' />, he can be damaged from all sources,
+and once he is damaged enough he will return to the mountain. You must repeat this twice until he is defeated, completing this boss fight.
+
+<RichImage image='/content/ancient-evil/ancient-evil-ending.webp' caption='Ending Cutscene' />
+
+Congratulations! You have beaten the **Ancient Evil** main quest: **Greek Tragedy**
+
+## Video Guides
+
+### Solo Guide by Joltz
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=yViYfkm5fZk" />
+
+### Co-op Guide by MrRoflWaffles
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=e8yMyhhudlk" />
+
+## Credits
+Some images used were sourced from the following community members:
+- [CodeNamePizza](https://www.youtube.com/@CodeNamePizza)
+- [Joltz](https://www.youtube.com/@Joltz)
+- [FastGuidesGlitch](https://www.youtube.com/@FastGuidesGlitch)
+- [MrRoflWaffles](https://www.youtube.com/@MrRoflWaffles)

@@ -1,0 +1,378 @@
+import PerkTooltip from '@/components/perk-tooltip'
+import { RichTable, RichBodyRow } from '@/components/rich-table'
+import { TableCell } from '@/components/ui/table'
+import RichImage from '@/components/rich-image'
+import CustomCarousel from '@/components/custom-carousel'
+import ZombieTooltip from '@/components/zombie-tooltip'
+import AmmoModTooltip from '@/components/ammo-mod-tooltip'
+import YoutubeEmbed from '@/components/youtube-embed'
+import ElixirTooltip from '@/components/elixir-tooltip'
+import { MarkdownLink } from "@/components/markdown-link"
+
+## Venerated Warrior
+The main quest for **IX** is called **Venerated Warrior**. The main goal of this quest for our Chaos story crew is to summon and defeat the Venerated Warrior.
+
+> You must be playing on **Normal** difficulty or higher to do this main quest.
+
+## Requirements
+This main quest can be done with any number of players, but it requires a few items to fully complete this quest:
+
+- <MarkdownLink hash="obtaining-the-death-of-orion" text="Death of Orion" /> (can also be found in the Mystery Box)
+- Hellion Salvo
+- Homunculus
+
+> While the **Hellion Salvo** and **Homunculus** are not truly required to complete this main quest, I have included them as a requirement because of how
+powerful both of these items are, and they will make your time doing this main quest much more enjoyable and achievable.
+
+## Recommended Class Setups
+
+<RichTable
+  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        Viper and Dragon
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="death-perception" />
+        <PerkTooltip perkKey="winters-wail" />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        Hammer of Valhalla
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="stamin-up" game='black-ops-4' />
+        <PerkTooltip perkKey="winters-wail" />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> <PerkTooltip perkKey="winters-wail" /> should be in the Modifier slot for the best use of the perk. Feel free to change that if you want to use a different Modifier instead.
+
+## Recommended Elixirs
+
+<RichTable
+  headerCells={["Classic Elixirs", "Mega Elixirs"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <ElixirTooltip elixirKey='anywhere-but-here' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='perkaholic' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+      	<ElixirTooltip elixirKey='equip-mint' />
+      </TableCell>
+      <TableCell>
+      	<ElixirTooltip elixirKey='shields-up' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+      	<ElixirTooltip elixirKey='temporal-gift' />
+      </TableCell>
+      <TableCell>
+      	<ElixirTooltip elixirKey='reign-drops' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+      	<ElixirTooltip elixirKey='stock-option' />
+      </TableCell>
+      <TableCell>
+      	<ElixirTooltip elixirKey='free-fire' />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+## Step 1: Blood Must Flow
+When you spawn on the map, knife one of the ropes of one of the four flags around the arena to start your trials. Complete three of these trials to obtain a **Pack-a-Punched Strife**,
+which will help you open **Pack-a-Punch** and give you the **Acid Pot** part that will be used later in the main quest.
+
+<RichImage image="/content/ix/ix-trial-flag.webp" caption="Trial Flag"  />
+
+Once you have your **Pack-a-Punched Strife** head to each of the four towers and summon their champions by interacting with a gong on the top floor of each tower,
+after killing a champion, collect their head by walking over it, and once you have all four heads, make your way to the Temple below the map and place the heads on
+the stakes to unlock **Pack-a-Punch**.
+
+<RichImage image="/content/ix/ix-opening-pack-a-punch.webp" caption='Pack-a-Punch Ritual'  />
+
+> While you are doing this you can simultaneously work on building the <MarkdownLink hash="building-the-brazen-bull" text="Brazen Bull" /> which is the shield for this map.
+
+## Step 2: Purge the Blight
+### Powder
+Head to the **Temple**, you must find a skull with a blue symbol on its forehead hidden within the walls of skulls around the Temple. Once you find this skull,
+activate your **Special Weapon** to pop the skull out of place allowing you to collect this skull. There are eight locations for this skull which are shown in the image below:
+
+<RichImage image="/content/ix/ix-skull-locations.webp" caption="Skull Locations"  />
+<RichImage image="/content/ix/ix-blue-skull-symbol.webp" caption="Blue Skull Symbol"  />
+
+Once you have the skull, head to the **Flooded Crypt** and place the skull in the grinder. Once inside, shoot the grinder with a charged shot of the
+<MarkdownLink hash="obtaining-the-death-of-orion" text="Death of Orion" /> to grind the skull. When the electricity fades away, shoot another charged shot, then repeat one more time for a total of
+three charged shots to fully grind the skull into a powder you must collect from the grinder.
+
+<RichImage image="/content/ix/ix-grinder.webp" caption="Skull Grinder"  />
+
+> If you have **Pack-a-Punched** the <MarkdownLink hash="obtaining-the-death-of-orion" text="Death of Orion" /> into the **Serket's Kiss**, then you will only need two charged shots to fully grind the skull.
+
+### Wood
+Head to the **Arena** and wait for a <ZombieTooltip zombieKey='destroyer' /> to spawn. Once spawned, bait the <ZombieTooltip zombieKey='destroyer' /> to throw an axe at one of the
+two wooden piers, knocking a piece of wood off of it that you must collect.
+
+<RichImage image="/content/ix/ix-wood.webp" caption="Wood Piece"  />
+
+Once collected, bring the piece of wood to the **Odin Tower: Cauldron** and place it in one of the holders to start burning the wood. You must wait two full rounds for the
+wood to fully burn allowing you to re-collect the piece of wood from the **Cauldron**.
+
+<RichImage image="/content/ix/ix-burnt-wood.webp" caption="Burnt Wood"  />
+
+### Poop
+Head to the **Arena** and obtain bad Crowd Affinity (red thumbs down) by running through the fire, shooting the crowd, or throwing grenades at the crowd (Wraith Fires do not work).
+Afterward, the crowd will throw a pile of poop into the Arena you must collect.
+
+<RichImage image="/content/ix/ix-poop.webp" caption="Poop"  />
+
+Once you have all three items, head to the **Zeus Tower: Bath House**, place the items into the bowl on the side of the bathhouse, and wait for another two full non-special rounds.
+Afterward, the fertilizer should be smoking green, indicating that it is ready for use.
+
+<RichImage image="/content/ix/ix-fertilizer.webp" caption="Fertilizer"  />
+
+Head to the **Danu Tower: Arboretum**, place the fertilizer on the skeleton on the ground between the two trees in the middle of the room, and wait another two full non-special rounds.
+Afterward, the fertilizer should be smoking green, indicating that it is ready for use, and you must acquire the <AmmoModTooltip ammoModKey='fire-bomb' /> ammo mod by re-packing your weapon
+to get this effect and kill a zombie using this effect when it is standing over the fertilizer.
+
+<RichImage image="/content/ix/ix-danu-fertilizer.webp" caption="Danu Fertilizer"  />
+
+Once that has been done, all players in the game must stand on the fertilizer for around 15 seconds until they receive a white flash and are transported into a dark alternate version
+of the **Danu Tower**. You must destroy three red orbs inside this alternate version, one on each tower floor. The **Hellion Salvo** is recommended here with the
+<ElixirTooltip elixirKey='stock-option' /> elixir to take care of these orbs easily, you can also throw **Homunculus** to distract the zombies while you damage the orbs.
+
+<RichImage image="/content/ix/ix-red-orb.webp" caption="Red Orb"  />
+
+Once completed, you will receive another white flash and will be transported back into the normal version of the **Danu Tower**, completing this step.
+
+### Obtaining the Death of Orion
+Head to the **Danu-Ra Temple Entrance**, look into the window between the two tower entrances, and shoot the flaming bowl with any weapon, knocking the bowl over and spawning an
+item on the map you must collect.
+
+<RichImage image="/content/ix/ix-flaming-bowl.webp" caption="Flaming Bowl"  />
+
+Head to the **Stone Bridge** connecting the Danu and Ra towers, while on this bridge, look out towards the **Arena**, and below the bridge will be a flaming arrow pointing at
+one of the four towers, indicating where the item is located.
+
+<RichImage image="/content/ix/ix-flaming-arrow.webp" caption="Flaming Arrow"  />
+
+Go into this tower and collect the item. The item only has one spawn location per tower:
+
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-danu-head-spawn.webp" caption="Danu Tower: Arboretum"  />
+  <RichImage image="/content/ix/ix-ra-head-spawn.webp" caption="Ra Tower: Burial Chamber"  />
+  <RichImage image="/content/ix/ix-zeus-head-spawn.webp" caption="Zeus Tower: Bath House"  />
+  <RichImage image="/content/ix/ix-odin-head-spawn.webp" caption="Odin Tower: Cauldron"  />
+</CustomCarousel>
+
+After collecting the item, you must build the **Acid Trap** which requires three parts two of which are located inside the Temple and are in the same spots every game:
+
+<RichImage image="/content/ix/ix-acid-trap-cog.webp" caption='Acid Trap Cog'  />
+<RichImage image="/content/ix/ix-acid-trap-chains.webp" caption='Acid Trap Chains'  />
+
+The final part is obtained from completing three of the trial challenges, which you should have already done, and can be collected from the Challenge Pedestal in the middle of the Arena.
+
+<RichImage image="/content/ix/ix-acid-trap-pot.webp" caption='Acid Trap Pot'  />
+
+Once you have all three parts head to the entrance of either Danu or Ra's tower and build the **Acid Trap** on the skull on the side of the entrance. Afterward, interact with
+the metal grate in front of the **Acid Trap** to place down the item you collected from one of the three towers, and activate the **Acid Trap**.
+
+<RichImage image="/content/ix/ix-acid-trap-build.webp" caption='Acid Trap Build'  />
+
+Once the trap has ended, a key will be revealed on the metal grate you must collect. You will then have to keep good **Crowd Affinity** (green thumbs up) for an entire round,
+which can obtained by performing well inside the Arena, completing trials, and not getting hit by the fire or zombies. If successful, when you end the round you will hear
+"A gift from Serket" and the crowd will throw a golden cup into the Arena you must collect.
+
+<RichImage image="/content/ix/ix-golden-cup.webp" caption='Golden Cup'  />
+
+Head to the **Danu Tower: Arboretum** and knife the hole in the tree to place the key, then interact with the ground below the key placing the golden cup and extracting poison
+from the tree. You must wait for another full round for this cup to be filled, afterward, you must collect the cup head to the Mystery Box, and interact with the corner of the
+Mystery Box to poison it, guaranteeing your next box spin to be the **Death of Orion** wonder weapon.
+
+<RichImage image="/content/ix/ix-poison-mystery-box.webp" caption='Poison Mystery Box'  />
+
+## Step 3: Answer the Dawn
+Around the map are four bull symbols you must ignite using the <MarkdownLink hash="building-the-brazen-bull" text="Brazen Bull's" /> primary fire, after igniting a symbol a <ZombieTooltip zombieKey='destroyer' />
+or <ZombieTooltip zombieKey='marauder' /> will spawn that you must kill to have its soul absorbed by Ra. There are nine total locations where a bull symbol can spawn:
+
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-temple-bull-symbol.webp" caption='Temple Symbol'  />
+  <RichImage image="/content/ix/ix-the-pit-bull-symbol.webp" caption='The Pit Symbol'  />
+  <RichImage image="/content/ix/ix-odin-zeus-entrance-bull-symbol.webp" caption='Odin-Zeus Temple Entrance Symbol'  />
+  <RichImage image="/content/ix/ix-flooded-crypt-bull-symbol.webp" caption='Flooded Crypt Symbol'  />
+  <RichImage image="/content/ix/ix-ra-tower-bull-symbol.webp" caption='Ra Tower: Burial Chamber Symbol'  />
+  <RichImage image="/content/ix/ix-arena-bull-symbol.webp" caption='Arena Symbol'  />
+  <RichImage image="/content/ix/ix-danu-tunnel-bull-symbol.webp" caption='Danu Tunnel Symbol'  />
+  <RichImage image="/content/ix/ix-draw-bridge-bull-symbol.webp" caption='Draw Bridge Symbol'  />
+  <RichImage image="/content/ix/ix-danu-altar-room-bull-symbol.webp" caption='Danu Altar Room Symbol'  />
+</CustomCarousel>
+
+Once all four **Gladiators** have been killed, head to the **Ra Altar Room** and interact with the obelisk with a symbol on it. A white flash will occur, and the obelisk will begin
+showing four symbols you must remember in the order they appear. These symbols correspond to a special enemy type on the map that you must kill in the order shown on the obelisk.
+Use the image below to help identify which special zombies you need to kill.
+
+<RichImage image="/content/ix/ix-zombie-symbols.webp" caption='Special Zombie Symbols'  />
+
+> **Gladiator** = <ZombieTooltip zombieKey='destroyer' /> and **Brawler** = <ZombieTooltip zombieKey='marauder' /> in the image above. At the time the community did not know the
+official names of these enemy types. Both enemy types are technically **Gladiators** as that is there rank.
+
+Once completed, a white flash will occur, and you must do this one more time with a new set of symbols to complete this step. The recommended way to complete this step is to wait a
+few seconds to let the enemies spawn in, activate your **Special Weapon**, and clear out any normal zombies, then use your **Special Weapon's** melee ability to target the specific special enemies.
+
+> This step cannot be done on **Special Rounds**. If you kill a special enemy out of order, you must flip round to try again. Also, <ZombieTooltip zombieKey='fire-catalyst' /> must be killed
+by a player, if they explode on their own that will fail the step.
+
+### Building the Brazen Bull
+The **Brazen Bull** requires three parts to be built and each part has three locations it can spawn.
+
+The first part is the **Bull**, which can be found in the **Ra Altar Room**:
+
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-shield-bull-first-spawn.webp" caption='Right of the gong'  />
+  <RichImage image="/content/ix/ix-shield-bull-second-spawn.webp" caption='Next to the wall buy, lying on a pillar'  />
+  <RichImage image="/content/ix/ix-shield-bull-final-spawn.webp" caption='Between two pillars near the perk statue'  />
+</CustomCarousel>
+
+The second part is the **Spear**, which can be found in the **Zeus Tower**:
+
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-shield-spear-first-spawn.webp" caption='Zeus Altar Room - next to the statues feet left of the window near the Perk Statue'  />
+  <RichImage image="/content/ix/ix-shield-spear-second-spawn.webp" caption='Zeus Tower: Entrance - next to the ascending stairs, in the hand of the statue'  />
+  <RichImage image="/content/ix/ix-shield-spear-final-spawn.webp" caption='Zeus Tower: Bath House - on the shelf'  />
+</CustomCarousel>
+
+The third part is the **Plat**, which can be found in the **Odin Tower**:
+
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-shield-plat-first-spawn.webp" caption='Odin Altar Room - next to a barrel of spears'  />
+  <RichImage image="/content/ix/ix-shield-plat-second-spawn.webp" caption='Odin Tower: Entrance - on the shield rack in the bottom left corner'  />
+  <RichImage image="/content/ix/ix-shield-plat-final-spawn.webp" caption='Odin Tower: Cauldron - against a wooden pillar'  />
+</CustomCarousel>
+
+Once all three parts have been collected, head to **The Pit** and build the **Brazen Bull** on the workbench there.
+
+## Step 4: Summon the Storm
+Head to the Arena, and when ready, interact with the **Challenge Pedestal** to be teleported underground. You must find four metal rods and shoot them until they disappear.
+These rods are located:
+
+<CustomCarousel>
+  <RichImage image="/content/ix/ix-danu-tunnel-rod.webp" caption='Danu Tunnel Rod'  />
+  <RichImage image="/content/ix/ix-odin-tunnel-rod.webp" caption='Odin Tunnel Rod'  />
+  <RichImage image="/content/ix/ix-the-cursed-room-rod.webp" caption='The Cursed Room Rod'  />
+  <RichImage image="/content/ix/ix-collapsed-tunnel-rod.webp" caption='Collapsed Tunnel Rod'  />
+</CustomCarousel>
+
+> The easiest way to complete this is by using the **Brazen Bull's** primary fire, or by using the **Hellion Salvo**.
+
+Once completed, re-pack one of your weapons until you get the <AmmoModTooltip ammoModKey='kill-o-watt' /> ammo mod, then head back up to the **Arena** where you will find four
+electrical circles in the four corners of the **Arena**. You must shock enemies using <AmmoModTooltip ammoModKey='kill-o-watt' /> and kill them while they are stunned inside one of the
+circles to transfer the electricity into the metal rods until fully charged.
+
+> The easiest way to complete this is by killing **Gladiators** within these circles, as only two of them are required to completely fill a single rod.
+
+Once completed, there will be four blue orbs in the bowls near the **Challenge Podium**. When ready, all players in the game must interact with an orb causing a white flash and
+repeatedly spawning **Gladiators**, <ZombieTooltip zombieKey='tiger' />, and eventually a <ZombieTooltip zombieKey='blightfather' />. You must kill all enemies that spawn and only when
+all are killed will you receive a white flash, completing this step.
+
+> During this, killing any enemy will completely refill your **Special Weapon**. This means as long as you are killing things with your **Special Weapon** you can have it out for
+the entire duration of this step.
+
+## Step 5: Channel the Flood
+You must shoot three sets of three symbols around the underground of the map, and each set of symbols needs to be shot with one single shot of the **Serket's Kiss**
+(pack-a-punched Death of Orion). Use the images and descriptions below to help you line up these trick shots:
+
+<RichImage image="/content/ix/ix-first-trickshot.webp" caption='Danu Tunnel'  />
+
+> Stand right at the entrance of the **Danu Tunnel** when entering from the **Flooded Crypt**, then jump and shoot the symbol.
+
+<RichImage image="/content/ix/ix-second-trickshot.webp" caption='The Pit'  />
+
+> Stand right in front in front of the skull of the **Blade Trap**, look through the hole in the wall, and shoot the cricle on the right side of the symbol.
+
+<RichImage image="/content/ix/ix-final-trickshot.webp" caption='The Crypts'  />
+
+> Hug the right side of the window and shoot just to the left of the symbol.
+
+> If hit successfully, the symbols will stay lit up. If you struggle to hit these symbols keep trying and adjust your aim ever so slightly until you hit the right spot.
+
+Once all three sets of symbols have been successfully hit, head to **The Pit** and have all players in the game stand on the pressure plate just behind the metal grate just to the
+left of the **Brazen Bull** workbench for about **10 Seconds** until you see a white flash. This starts a three-phase lockdown, where you must survive against zombies and special zombies.
+
+> If you have <PerkTooltip perkKey='victorious-tortoise' />, you can abuse the shield during this lockdown since you are right next to the **Brazen Bull** workbench and can buy
+a new shield anytime your shield breaks, allowing for an easy time during this lockdown.
+
+Once all phases are done, interact with the metal grate to pick a key, and a white flash will occur, indicating the completion of this step.
+
+## Step 6: Fury and Wrath
+> Prepare for the final boss fight, fully pack-a-punch your weapons, get all your perks, the **Hellion Salvo** and **Homunculus** out of the box if you haven't already, and
+get a fresh shield before going into the boss fight.
+
+Head to the **Arena** and there will be a portal opposite of where you spawn. All players in the game must interact with this portal to be teleported into the boss arena for a
+three-phase boss fight.
+
+<RichImage image="/content/ix/ix-boss-arena-portal.webp" caption='Boss Arena Portal'  />
+
+### Phase 1
+You must survive against a ton of **Gladiators** and <ZombieTooltip zombieKey='tiger' /> zombies. The **Hellion Salvo** and **Serket's Kiss** are good for taking care of these enemies,
+and **Max Ammos** will spawn during this boss fight, so you don't have to worry about being conservative.
+
+### Phase 2
+After killing **Gladiators** and <ZombieTooltip zombieKey='tiger' /> zombies for a while, a giant elephant named **Fury** storms into the boss arena. Throw a **Homunculus** to distract
+the zombies, activate your <ElixirTooltip elixirKey='stock-option' /> elixir, and rain fire on the critical points of the Elephant to break off its armor plating.
+
+<RichImage image="/content/ix/ix-boss-phase-2.webp" caption='Phase 2'  />
+
+Once the armor plating is destroyed, throw another **Homunculus** and rain fire on the forehead of the Elephant to do massive damage to the Elephant until it is defeated.
+During this state, the Elephant does have an attack that can instantly kill you if you aren't aware of it. If you see the Elephant charging up, pull out your shield and stay
+on the move to avoid this attack, and if you happen to get hit <PerkTooltip perkKey='dying-wish' /> or <PerkTooltip perkKey='victorious-tortoise' /> with the shield out will save you.
+
+<RichImage image="/content/ix/ix-boss-phase-2-1.webp" caption='Phase 2 without Armor'  />
+
+### Phase 3
+After defeating the **Fury**, another elephant named **Wrath** will come storming into the arena. This elephant is no different than the **Fury**, so just repeat what you did for
+Phase 2 until the **Wrath** is defeated, completing this boss fight and the main quest.
+
+<RichImage image="/content/ix/ix-ending.webp" caption='Ending Cutscene'  />
+
+Congratulations! You have beaten the **IX** main quest: **Venerated Warrior**.
+## Video Guides
+### Solo Guide by Joltz
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=8-zysFeYrfU" />
+
+### Co-op Guide by MrRoflWaffles
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=9B8dywCCi4o" />
+
+## Credits
+Some images were sourced from the following community members:
+- [CodeNamePizza](https://www.youtube.com/@CodeNamePizza)
+- [Kalinine](https://www.reddit.com/user/Kalinine/)
+- [Joltz](https://www.youtube.com/@Joltz)

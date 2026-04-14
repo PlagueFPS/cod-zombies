@@ -1,0 +1,49 @@
+import type { TFeedbackForm } from "@/utils/validation-schemas"
+import { LinearClient } from "@linear/sdk"
+import { Context, Effect, Layer, Option, Redacted, Schema } from "effect"
+import { env } from "@/env"
+
+class CreateIssueError extends Schema.TaggedErrorClass<CreateIssueError>()("CreateIssueError", {
+	cause: Schema.Unknown,
+}) {}
+
+export class IssueTracker extends Context.Service<IssueTracker>()("lib/services/issue-tracker", {
+	make: Effect.sync(() => {
+		const linear = new LinearClient({ apiKey: Redacted.value(env.LINEAR_API_KEY) })
+
+		const createIssue = Effect.fn("IssueTracker.createIssue")(function* (data: TFeedbackForm) {
+			const team = yield* Effect.tryPromise({
+				try: () => linear.team(Redacted.value(env.LINEAR_WORKSPACE)),
+				catch: cause => new CreateIssueError({ cause }),
+			})
+
+			const description = Option.match(Option.fromNullishOr(data.email), {
+				onNone: () => `Feedback: ${data.feedback}`,
+				onSome: email => `Feedback: ${data.feedback}\nContact Email: ${email}`,
+			})
+
+			const { success, issueId } = yield* Effect.tryPromise({
+				try: () =>
+					linear.createIssue({
+						teamId: team.id,
+						title: data.title ?? "Website Feedback",
+						description,
+						labelIds: [Redacted.value(env.LINEAR_USER_FEEDBACK_LABEL)],
+						assigneeId: Redacted.value(env.LINEAR_DEFAULT_ASSIGNEE_ID),
+					}),
+				catch: cause => new CreateIssueError({ cause }),
+			})
+
+			if (!success || !issueId)
+				return yield* new CreateIssueError({
+					cause: "The create issue operation failed for an unknown reason.",
+				})
+
+			return success
+		})
+
+		return { createIssue } as const
+	}),
+}) {
+	static layer = Layer.effect(this, this.make)
+}

@@ -50,7 +50,7 @@ const previewOption = Flag.boolean("preview").pipe(
 const iconOption = Flag.boolean("icon").pipe(
 	Flag.withAlias("i"),
 	Flag.withDescription(
-		"Resize to 256w (maintains aspect ratio) then optimize with max effort and quality.",
+		"Resize to 128w (maintains aspect ratio) then optimize with max effort and quality.",
 	),
 )
 
@@ -127,7 +127,7 @@ const transformResizeAndOptimize = Effect.fnUntraced(function* (
 		try: () =>
 			image
 				.rotate()
-				.resize({ width: 1920, withoutEnlargement: true })
+				.resize({ width: 1920 })
 				.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY })
 				.toBuffer(),
 		catch: cause =>
@@ -148,7 +148,7 @@ const transformIcon = Effect.fnUntraced(function* (
 		try: () =>
 			image
 				.rotate()
-				.resize({ width: 256, withoutEnlargement: true })
+				.resize({ width: 128, withoutEnlargement: true })
 				.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY })
 				.toBuffer(),
 		catch: cause =>

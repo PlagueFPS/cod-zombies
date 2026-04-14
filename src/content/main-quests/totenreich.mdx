@@ -1,0 +1,443 @@
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-image"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import WeaponBuildTooltip from "@/components/weapon-build-tooltip"
+import FieldUpgradeTooltip from "@/components/field-upgrade-tooltip"
+import GobbleGumTooltip from "@/components/gobblegum-tooltip"
+import PerkTooltip from "@/components/perk-tooltip"
+import AugmentTooltip from "@/components/augment-tooltip"
+import CustomCarousel from "@/components/custom-carousel"
+import YouTubeEmbed from "@/components/youtube-embed"
+import MarkdownLink from "@/components/markdown-link"
+
+## Main Quest
+This main quest has our crew follow the **Twins** to the "Cold Place" they talked about only to have their entire mission be flipped upside-down.
+
+## Requirements
+- Unlock Pack-a-Punch via on-screen objectives
+- **Disciple Injection**
+- **ARC-XD**
+
+## Recommended Loadouts
+<RichTable
+  headerCells={["Start Weapon", "Field Upgrade", "Lethal", "Tactical"]}
+  bodyRows={[
+	  <RichBodyRow alternate>
+	    <TableCell>
+	    	<WeaponBuildTooltip weaponBuildKey="1911" />
+	    </TableCell>
+	    <TableCell>
+	    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+	    </TableCell>
+	    <TableCell>
+	    	Molotov
+	    </TableCell>
+	    <TableCell>
+	  		Decoy
+	    </TableCell>
+		</RichBodyRow>,
+	  <RichBodyRow>
+	    <TableCell>
+	    	<WeaponBuildTooltip weaponBuildKey="xr-3-ion" />
+	    </TableCell>
+	    <TableCell>
+	    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+	    </TableCell>
+	    <TableCell>
+	    	Molotov
+	    </TableCell>
+	    <TableCell>
+	  		Decoy
+	    </TableCell>
+			</RichBodyRow>,
+	  <RichBodyRow alternate>
+		  <TableCell>
+		   	<WeaponBuildTooltip weaponBuildKey="voyak-kt-3" />
+		  </TableCell>
+		  <TableCell>
+		   	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+		  </TableCell>
+		  <TableCell>
+		   	Molotov
+		  </TableCell>
+		  <TableCell>
+				Decoy
+		  </TableCell>
+		</RichBodyRow>,
+		<RichBodyRow>
+    <TableCell>
+    	<WeaponBuildTooltip weaponBuildKey="mxr-17" />
+    </TableCell>
+    <TableCell>
+    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+    	Molotov
+    </TableCell>
+    <TableCell>
+  		Decoy
+    </TableCell>
+  </RichBodyRow>,
+  ]}
+/>
+
+> The **1911**, though terrible for boss damage in the boss fight, is fantastic for literally everything else, and is what I would spawn in with every time and just hit the box
+for a boss damage weapon (**Ray Gun MKII** is really good), or buy the **MXR-17** off the wall.
+
+## Recommended GobbleGums
+<RichTable
+  headerCells={["Solo GobbleGums", "Co-op GobbleGums"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shields-up' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shields-up' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='power-keg' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='power-keg' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='kill-joy' game="black-ops-6" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='near-death-experience' game="black-ops-6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='aftertaste' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='phoenix-up' game="black-ops-6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='reign-drops' game="black-ops-7" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='reign-drops' game="black-ops-7" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+## Step 1: Obtain the Jotunn Star
+> There are three parts needed to obtain the **Jotunn Star**. <MarkdownLink hash="the-lantern" text="The Lantern" /> part cannot be obtained until you have obtained the
+<MarkdownLink hash="chilly-chunks" text="Chilly Chunks" />.
+
+### Chain Links
+Head to the **Dry Dock** and inside the **Titan Crane** room will be a glowing button on the wall that you can press to lower the crane. Once lowered, simply wall jump
+off the board towards the front of the ship, and spam interact to grab the **Chain Links** off the front of the boat.
+
+<RichImage image="/content/totenreich/totenreich-crane-button.webp" caption="Crane Button" />
+<RichImage image="/content/totenreich/totenreich-chain-links.webp" caption="Chain Links" />
+
+### Chilly Chunks
+Head to the **Storm Bridge** where you'll find a box of canned food behind the truck next to <PerkTooltip perkKey="deadshot-daiquiri" game="black-ops-7" /> that you can interact with
+to pick up the **Chilly Chunks**.
+
+<RichImage image="/content/totenreich/totenreich-chilly-chunks.webp" caption="Chilly Chunks" />
+
+### The Lantern
+Head to the **Skallen Market** and in the middle of the market you'll find an empty table you can place the **Chilly Chunks** down on. This will cause an **HVT**
+<ZombieTooltip zombieKey="zursa" /> to spawn during the next **Special** round, which once killed will drop **The Lantern** part for you to pick up.
+
+<RichImage image="/content/totenreich/totenreich-market-table.webp" caption="Skallen Market Table" />
+<RichImage image="/content/totenreich/totenreich-the-lantern.webp" caption="The Lantern" />
+
+> This can only happen after the very first **Special** round.
+
+### Restore Astrid
+Head to the **Burial Grounds** and place the **Chain Links** in the hole, left of the door, then hold interact to begin repairing the door, opening it once fully repaired.
+Inside you'll find a table that you can interact with to place down **The Lantern** to begin the ritual.
+
+<RichImage image="/content/totenreich/totenreich-repair-door.webp" caption="Repairing the Door" />
+<RichImage image="/content/totenreich/totenreich-burial-grounds-table.webp" caption="Table inside the Burial Grounds" />
+
+There will be four symbols, one on each side of the table, and a bunch of symbols rotating on the walls of the **Burial Grounds**. You'll need to interact with the symbol on the wall
+that matches the one on the side of the table in the following order:
+
+0. Symbol on the Left of the table
+0. Symbol on the Right of the table
+0. Symbol on the Back of the table
+0. Symbol on the Front of the table
+
+> This order assumes you are facing the table from the bottom of the staircase.
+
+If done correctly, **Astrid** will spawn and begin moving around the map. You must follow her to the lighthouse making two stops along the way to refill her energy level by killing
+<ZombieTooltip zombieKey="frost-zombie" /> enemies.
+
+<RichImage image="/content/totenreich/totenreich-astrid.webp" caption="Refilling Astrid's energy level" />
+
+After the second energy refill, **Astrid** will spawn in some floating rocks that will lead you to the lighthouse, forcing you to do some parkour and wall jumps to complete the
+course. At the end, you'll look up and interact with the lighthouse hatch to enter the top of the lighthouse where you can interact with the **Jotunn Star** to obtain it.
+
+<RichImage image="/content/totenreich/totenreich-jotunn-star.webp" caption="Jotunn Star" />
+
+## Step 2: Obtain the Wunderbarrage Controller
+Head to the **Lighthouse** second floor and interact with the **Crowbar** on the shelf near the window to pick it up. You'll now need to open one of four wooden boxes which will contain the
+**Flak Round**, by just walking up to each of them and interacting with them until you find the one that drops the round. The four spawns for these wooden boxes are below:
+
+<RichImage image="/content/totenreich/totenreich-crowbar.webp" caption="Crowbar" />
+
+<CustomCarousel>
+	<RichImage image="/content/totenreich/totenreich-core-foundry-wooden-box.webp" caption="Core Foundry - in the corner next to the VS-Recon wall buy" />
+	<RichImage image="/content/totenreich/totenreich-dry-dock-wooden-box.webp" caption="Dry Dock - behind the boat in the bottom right corner" />
+	<RichImage image="/content/totenreich/totenreich-war-factory-wooden-box.webp" caption="War Factory - in the corner just before heading into the admin room" />
+	<RichImage image="/content/totenreich/totenreich-fjord-road-wooden-box.webp" caption="Fjord Road - at the end of the road" />
+</CustomCarousel>
+
+<RichImage image="/content/totenreich/totenreich-flak-gun-round.webp" caption="Flak Gun Round" />
+
+> If you open a box not containing the **Flak Round**, you will either be gassed or electrocuted, that's nothing to worry about.
+
+Once you have the **Flak Round**, head to the **Beacon Island** and place the round inside the **Flak Gun** facing toward spawn, and melee the gun with the
+**Jotunn Star** to fire it.
+
+<RichImage image="/content/totenreich/totenreich-flak-gun.webp" caption="Flak Gun facing spawn" />
+
+Afterward, head to the spawn and interact with the knocked down object to begin searching it, and once fully searched a **Transmitter** will drop out of it
+which you can interact with to pick up. Once you have the **Transmitter**, bring it inside of **Tyr's Head** and place it in the shocking box, on the second level platform.
+
+<RichImage image="/content/totenreich/totenreich-transmitter.webp" caption="Transmitter" />
+<RichImage image="/content/totenreich/totenreich-transmitter-placement.webp" caption="Transmitter Placement" />
+
+Before leaving the head, there are two white lights above the center console, one on the left, and one on the right. Both of these lights are going to flash a certain number of times for two
+sequences. Make note of how many times each light flashed for each sequence (four total numbers).
+
+<RichImage image="/content/totenreich/totenreich-flashing-lights.webp" caption="Flashing Lights" />
+
+> You'll know a sequence is done when the light pauses for a second. So if the left light flashed four times, paused, then flashed five times, the left light's numbers are 4 and 5.
+> If you were unable to get these numbers before leaving the head, no worries, flip the round and go back into the head to get them again.
+
+Once you have your numbers for each light, head to the **Core Foundry** and melt the ice on the ascender rope by throwing a **Molotov** at it or using the **Jotunn Star**,
+and take the ascender up and interact with the console to enter the first number for each light, left light number on the left dial and right light number on the right dial.
+
+<RichImage image="/content/totenreich/totenreich-dials.webp" caption="Console Dials" />
+
+> Using the same example as before, the left light flashed four times before pausing, so I'm going to set the left dial to four, and then set the right dial to the number of times the right light flashed before
+pausing.
+
+If done correctly, you'll get a success cue and the robot will launch a **Wunderbarrage** down onto the map or into the tower behind you.
+If it didn't hit the tower behind you, interact with the console again to enter the second two numbers. Otherwise, you don't need to enter the second set of numbers.
+
+> If you didn't do it correctly, the console will be inactive for 60 seconds before coming online again for you to try again.
+
+After the strike hits the tower, the **Wunderbarrage Controller** will now be available in the room to the right of the ascender for you to pick up.
+
+<RichImage image="/content/totenreich/totenreich-wunderbarrage-controller.webp" caption="Wunderbarrage Controller" />
+
+## Step 3: Obtain the Atomkraft Core
+> These three **Uranium Canisters** can be obtained in any order
+
+### Ravager Uranium
+Before you can proceed, you're going to need a **Fishing Rod**, there are four guaranteed spawns which you can find below:
+
+<CustomCarousel>
+	<RichImage image="/content/totenreich/totenreich-dry-dock-fishing-rod.webp" caption="Dry Dock - left of the door leading to Core Foundry by Speed Cola" />
+	<RichImage image="/content/totenreich/totenreich-storm-bridge-fishing-rod.webp" caption="Storm Bridge - right of the blue car" />
+	<RichImage image="/content/totenreich/totenreich-fishery-island-fishing-rod.webp" caption="Fishery Island - in a yellow barrel" />
+	<RichImage image="/content/totenreich/totenreich-beacon-island-fishing-rod.webp" caption="Beacon Island - lying against a rusted barrel" />
+</CustomCarousel>
+
+Once you have a **Fishing Rod**, you're going to need to look at all the <MarkdownLink to="/maps/$mapId" params={{ mapId: "totenreich" }} search={{ include: "fishing-spot" }} />
+on the map until you find the one that has a green glowing fish jumping out of the water. Once found, that's where you'll need to fish successfully.
+
+<RichImage image="/content/totenreich/totenreich-green-fish.webp" caption="Green Glowing Fish" />
+
+> The way to fish properly is to place your rod on the red holder by interacting with it, then wait for your rod to glow blue and then interact with your rod to
+successfully reel in a reward.
+
+If done correctly, an **HVT Irradiated** <ZombieTooltip zombieKey="ravager" /> will spawn briefly before disappearing. Flip the round, then you'll need to run around the map and listen
+for a pack of <ZombieTooltip zombieKey="ravager" /> zombies, one of which will be the same **HVT Irradiated** <ZombieTooltip zombieKey="ravager" /> that you'll need to kill, dropping your first
+**Uranium**.
+
+<RichImage image="/content/totenreich/totenreich-ravager-uranium.webp" caption="Ravager Uranium" />
+
+> If you're on **Standard**, you can open your Tac-Map and see and ping the **HVT** marker to track the <ZombieTooltip zombieKey="ravager" /> as it moves around.
+
+### Jail Cell Uranium
+Before you proceed, you're going to need an **ARC-XD** scorestreak. If you don't already have one, there is a guaranteed spawn for one on the boxes in the
+**Eidskallen Square**.
+
+<RichImage image="/content/totenreich/totenreich-free-arc-xd.webp" caption="Free ARC-XD scorestreak" />
+
+Head to the **Core Foundry** and melee/shoot the small vent open in the North-East corner of the room. Place down the **ARC-XD** and follow the path
+across the water and into the lab where you'll need to detonate the **ARC-XD** next to any of the barrels to blow open the door.
+
+<RichImage image="/content/totenreich/totenreich-arc-xd-vent.webp" caption="ARC-XD vent" />
+<RichImage image="/content/totenreich/totenreich-garage-barrels.webp" caption="Garage Barrels" />
+
+> If you fail this step, you can buy another **ARC-XD** scorestreak, or you could fish for one as they are common rewards from fishing.
+
+Head to the **Pack-a-Punch** machine, where now you'll be able to access the **Group 935 Genetic Lab**, and if you look through the window on the left-hand side upon entering
+you'll find numbers on the walls from 1-5, two of which will have a radioactive symbol underneath. Map those numbers to their corresponding letters in the alphabet as follows:
+
+- 1 = A
+- 2 = B
+- 3 = C
+- 4 = D
+- 5 = E
+
+<RichImage image="/content/totenreich/totenreich-radioactive-symbols.webp" caption="Radioactive Symbols" />
+
+Afterward, look around the lab for the two jars labeled with the two letters you have in your game, pick them up, and place them onto the machine just to the left of the window barrier
+to retrieve a purple serum, which you can interact with to pick up.
+
+<RichImage image="/content/totenreich/totenreich-purple-serum.webp" caption="Purple Serum"/>
+
+Place the serum on the claw on the table in the lab to melt it down into a **Necrospike**, then interact with the jail cell containing the **Uranium Canister** to
+begin lockpicking the cell with the **Necrospike**, which once completed will allow you to pick up the second **Uranium Canister**.
+
+<RichImage image="/content/totenreich/totenreich-jail-cell-uranium.webp" caption="Jail Cell Uranium" />
+
+### Glocke Drop Uranium
+Obtaining this **Uranium** is extremely straightforward. Horde up a bunch of zombies, call in the **Glocke Drop** and kill all the zombies the **Glocke Drop** lifts up
+into the air until eventually the **Uranium** is dropped.
+
+<RichImage image="/content/totenreich/totenreich-glocke-drop-uranium.webp" caption="Glocke Drop Uranium" />
+
+> **Glocke Drops** are a common reward from fishing if you do not have one, or do not want to spend salvage to get one.
+
+### Reveal the Atomkraft Core
+Head to the **Dry Dock** and call in the **Wunderbarrage** on the big wooden wall to reveal the **Machine Workshop** with a claw machine
+which you can interact with to play the mini-game. Simply to place the lights in spots that supply power without overloading the machine.
+If done correctly, the **Atomkraft Core** will drop out of the bottom of the machine for you to pick up.
+
+<RichImage image="/content/totenreich/totenreich-wooden-wall.webp" caption="Wooden Wall" />
+<RichImage image="/content/totenreich/totenreich-atomkraft-core.webp" caption="Atomkraft Core" />
+
+> If you fail this, you'll need to flip the round to try again.
+
+## Step 4: Charge the Atomkraft Core
+Once you have the **Atomkraft Core**, place it on the wooden pallet right of the <PerkTooltip perkKey="quick-revive" game="black-ops-7" /> machine in
+**Eidskallen Landing**, then head into the **Lief's Boat Repair** shack behind <PerkTooltip perkKey="quick-revive" game="black-ops-7" /> and interact
+with the generator to start a lockdown, where you must protect the core.
+
+<RichImage image="/content/totenreich/totenreich-wooden-pallet.webp" caption="Wooden Pallet" />
+<RichImage image="/content/totenreich/totenreich-generator.webp" caption="Generator" />
+
+> You cannot run when carrying the **Atomkraft Core**, and crouching or taking a zipline will drop the core.
+
+The generator will shut down throughout the lockdown a couple of times, forcing you to run back into the shack to interact with it again to restart it.
+Once it is charged, take the **Atomkraft Core** to the **Storm Bridge** and place it on the barrel to complete this step and start a mini-cutscene.
+
+<RichImage image="/content/totenreich/totenreich-barrel.webp" caption="Barrel on the Storm Bridge" />
+
+> When taking the **Atomkraft Core** back to the **Storm Bridge**, you will take slight damage from the core, which you can heal through, and
+> ice pillars will be summoned occasionally from the ground to try and block you. You can quickly destroy these with the **Jotunn Star**.
+
+## Step 5: Obtain the Sunstone
+After the cutscene, head down the left-side of the bridge towards **Tyr's Foot** to find and pick up
+**Dravakar Shard**.
+
+<RichImage image="/content/totenreich/totenreich-dravakar-shard.webp" caption="Dravakar Shard" />
+
+Head to the **Blodheim Hall** and place the shard in the bonfire, then ignite the bonfire using the ranged attack of the
+**Jotunn Star**. Once lit, use a **Disciple Injection** (there is a free one in the **Eidskallen Stave Church**)
+to throw zombies into the fire to fully ignite it.
+
+<RichImage image="/content/totenreich/totenreich-bonfire.webp" caption="Bonfire" />
+
+Once fully lit, a lockdown will begin spawning an **HVT** <ZombieTooltip zombieKey="necropincer" /> that once killed will
+complete the lockdown, and drop the **Sunstone** that you can interact with to pick up.
+
+<RichImage image="/content/totenreich/totenreich-sunstone.webp" caption="Sunstone" />
+
+## Step 6: Correct the Compass
+Head to the **Eidskallen Stave Church** and place the **Sunstone** on the altar. Afterward, hit the **Sunstone** with a ranged attack
+from the **Jotunn Star** to spawn a beam of light revealing a giant **Nordic Compass** in the sky.
+
+<RichImage image="/content/totenreich/totenreich-sunstone-altar.webp" caption="Sunstone Altar" />
+<RichImage image="/content/totenreich/totenreich-compass.webp" caption="Nordic Compass" />
+
+You must take note of each of the symbols that only the arrows are pointing at, not the trident-like shapes. There are only three arrows:
+
+- One with a single line = First Symbol
+- One with two lines = Second Symbol
+- One with three lines (or close to it) = Final Symbol
+
+> In the image above, my first symbol is being blocked by the fire, my second symbol is the "N" shape, with my final symbol being the "O" shape.
+
+This is the order in which you need to note the symbols and ultimately the order in which you need to light the floating rocks around the map,
+which will have a symbol above them using the ranged attack of the **Jotunn Star**.
+
+<RichImage image="/content/totenreich/totenreich-floating-rock.webp" caption="Floating Rocks with Symbols" />
+
+If you've lit the three correct rocks, you'll notice the compass will only have a single arrow on it pointing towards the robot.
+
+> At this point, you are done with the steps and need to begin preparing for the boss fight.
+> Ensure you have all perks, max weapon rarity and PaP tier, Tier III Armor, and **Stim Shots** (highly recommended for this boss fight) or **Kazimirs**.
+
+## Step 7: Defeat Dravakar
+When ready, head into the head of **Tyr** and interact with the button on the center console to be sent into the boss fight.
+
+<RichImage image="/content/totenreich/totenreich-center-console.webp" caption="Center Console" />
+
+
+### Phase 1
+During this phase, <ZombieTooltip zombieKey="dravakar" /> and **Tyr** will be fighting each other and you will need to take advantage of brief moments of vulnerability appearing
+as **Red Glowing Spots** on <ZombieTooltip zombieKey="dravakar" /> during his battle to deal damage to him, knocking him down if enough damage is dealt.
+
+<RichImage image="/content/totenreich/totenreich-phase-1.webp" caption="Phase 1" />
+
+> If you fail to do enough damage, <ZombieTooltip zombieKey="dravakar" /> will launch some counter-attacks at you which you'll need to be careful of.
+> During this entire phase, the zombies will be super-sprinters making it challenging to deal damage safely, unless you have the <AugmentTooltip augmentKey="guns-up" /> augment.
+
+Repeat until you enter the immune phase, where you'll need to throw any projectile into the mouth of the <ZombieTooltip zombieKey="gjallarfrost" /> or hit it with the
+ranged attack of the **Jotunn Star** to disable it, allowing you to deal damage to it with any weapon. Do this until it shatters, breaking out of this phase and dropping you some
+ammo and armor.
+
+<RichImage image="/content/totenreich/totenreich-phase-1-complete.webp" caption="Phase 1 Complete" />
+
+> During these transition phases, zombies will be dropping **Frag Grenades** like crazy for you to use against the <ZombieTooltip zombieKey="gjallarfrost" />.
+
+### Phase 2
+During this phase, no zombies will spawn and it'll just be you vs <ZombieTooltip zombieKey="dravakar" />, but he has some devastating attacks. Firstly, he can completely freeze off
+2/3 of the arena, forcing you onto one side of the arena. Secondly, he has an ice rock barrage attack that you'll need to hug a wall to avoid taking damage from.
+
+<RichImage image="/content/totenreich/totenreich-phase-2-attacks.webp" caption="Dravakar Attacks" />
+
+In between these attacks, you're going to want to peek out and deal damage to the exposed red glowing spots when you have the chance as this will be
+the only way for you to deal damage to the boss, so you'll need to chip away at him as often as you can.
+
+<RichImage image="/content/totenreich/totenreich-phase-2.webp" caption="Phase 2" />
+
+Repeat until you enter the immune phase, where it will be the same as the **Phase 1** immune phase except there can be up to three <ZombieTooltip zombieKey="gjallarfrost" />
+enemies, depending on how little damage you dealt to the boss during this phase.
+
+### Phase 3
+During this phase, <ZombieTooltip zombieKey="dravakar" /> will lock you into the front of the arena, leaving you with no cover at all, forcing you to move out of the way to avoid his
+ice rock barrage attack. He has one variation of this attack that covers the entire arena, and in that case you must go prone to avoid taking too much damage from
+these rocks.
+
+<RichImage image="/content/totenreich/totenreich-phase-3.webp" caption="Phase 3" />
+
+> All of his **Ice Rock Barrage** attacks are spawned in a specific rune shape and are easy to avoid once you know what each shape does. The main two you need to worry about
+> are the **Arrow** shapes, as those are homing, and the **H** shape, which scatters rocks at random; those rocks move slower.
+
+Always make sure you're dealing damage to <ZombieTooltip zombieKey="dravakar" /> as you are avoiding his attacks, especially when going prone, and once his health is basically fully depleted
+he will stop taking damage and the robot **Tyr** will deal the final blow, completing this main quest, and triggering the end cutscene.
+
+<RichImage image="/content/totenreich/totenreich-ending.webp" caption="Ending Cutscene" />
+
+Congratulations! You've completed the **Totenreich** main quest.
+
+## Video Guides
+
+### Guide By Doughnuts
+<YouTubeEmbed videoLink="https://youtu.be/ZiQ_iHLC0d8?si=O3rH2eCOMvkmhB3n" />
+
+### Guide By MrRoflWaffles
+<YouTubeEmbed videoLink="https://youtu.be/t4nfWhaLiDs?si=xTttt81GcLi0EFgk" />

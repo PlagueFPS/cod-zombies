@@ -116,7 +116,7 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const publicDir = path.join(cwd, "public")
-	const outFile = path.join(cwd, "types", "generated", "image-paths.gen.ts")
+	const outFile = path.join(cwd, "src/types", "generated", "image-paths.gen.ts")
 	const exists = yield* fs.exists(publicDir)
 	if (!exists) return yield* Effect.fail(`Public directory does not exist: ${publicDir}`)
 

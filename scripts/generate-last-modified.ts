@@ -35,11 +35,17 @@ export const populateFilePaths = (
 	for (const filePath of allFiles) {
 		const normalizedPath = filePath.replace(/\\/g, "/")
 		const repoRootNormalized = repoRoot.replace(/\\/g, "/")
-		const relativePath = normalizedPath.replace(`${repoRootNormalized}/content/`, "")
+		const relativePath = normalizedPath.replace(`${repoRootNormalized}/src/content/`, "")
 		MutableHashSet.add(filePaths, relativePath)
 	}
 	return filePaths
 }
+
+const normalizeContentPath = (path: string) =>
+	path
+		.replace(/\\/g, "/")
+		.replace(/^src\/content\//, "")
+		.replace(/^content\//, "")
 
 const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 	path: string,
@@ -73,7 +79,7 @@ export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	repoRoot: string,
 ) {
 	const lines = output.trim().split("\n")
-	const currentDate = yield* DateTime.make(new Date())
+	const currentDate = yield* DateTime.make(new Date()).pipe(Effect.fromOption)
 	const currentTimestamp = yield* Ref.make("")
 	const gitHistory = MutableHashSet.empty<string>()
 	const filePaths = populateFilePaths(allFiles, repoRoot)
@@ -93,13 +99,12 @@ export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 			const parts = line.split("\t")
 			if (parts.length < 3 || !parts[2]) continue
 
-			const newPath = parts[2].replace(/\\/g, "/").replace("content/", "")
+			const newPath = normalizeContentPath(parts[2])
 			yield* storeFileMetadata(newPath, currentTimestamp, filePaths, gitHistory, result)
 		}
 
 		if (line.startsWith("A\t") || line.startsWith("M\t")) {
-			const gitPath = line.substring(2).trim().replace(/\\/g, "/")
-			const relativePath = gitPath.replace("content/", "")
+			const relativePath = normalizeContentPath(line.substring(2).trim())
 			yield* storeFileMetadata(relativePath, currentTimestamp, filePaths, gitHistory, result)
 		}
 	}
@@ -164,13 +169,13 @@ export const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir
 	return files
 })
 
-/** @param cwd - Workspace root (must contain `content/` and `data/` when run). */
+/** @param cwd - Workspace root (must contain `src/content/` and `src/data/` when run). */
 export const generateLastModified = (cwd: string = process.cwd()) =>
 	Effect.gen(function* () {
 		const path = yield* Path.Path
 		const fs = yield* FileSystem.FileSystem
-		const contentDir = path.join(cwd, "content")
-		const outputPath = path.join(cwd, `data/last-modified.json`)
+		const contentDir = path.join(cwd, "src/content")
+		const outputPath = path.join(cwd, `src/data/last-modified.json`)
 
 		const allFiles = yield* getAllContentFiles(contentDir)
 

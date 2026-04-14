@@ -1,0 +1,772 @@
+import ZombieTooltip from '@/components/zombie-tooltip'
+import PerkTooltip from '@/components/perk-tooltip'
+import RichImage from '@/components/rich-image'
+import CustomCarousel from '@/components/custom-carousel'
+import { RichTable, RichBodyRow } from '@/components/rich-table'
+import { TableCell } from '@/components/ui/table'
+import YoutubeEmbed from '@/components/youtube-embed'
+import ElixirTooltip from '@/components/elixir-tooltip'
+import { MarkdownLink } from "@/components/markdown-link"
+
+## Trial By Ordeal
+The main quest for **Dead of the Night** is called **Trial By Ordeal**. The goal for our **Chaos** story crew is to defeat the Evil Within.
+
+> You must be playing on **Normal** difficulty or higher to do this main quest.
+
+## Requirements
+This quest can be completed with any number of players. You'll need to acquire the following items to complete this quest fully:
+
+- <MarkdownLink hash="obtaining-the-alistairs-annihilator" text="Alistair's Annihilator" />
+- <MarkdownLink hash="obtaining-the-silver-bullets" text="Sliver Bullets" />
+- <MarkdownLink hash="building-the-ballistic-shield" text="Ballistic Shield" />
+- Homunculus (found in the Mystery Box)
+
+> While the **Homunculus** is not truly required at any point of this main quest, we recommend getting them out of the **Mystery Box** as they make the entire quest much more enjoyable and achieveable.
+
+## Recommended Class Setups
+
+<RichTable
+  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        Chakrams of Vengeance
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="winters-wail" />
+        <PerkTooltip perkKey="stamin-up" game='black-ops-4' />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        Chakrams of Vengeance
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="quick-revive" game='black-ops-4' />
+        <PerkTooltip perkKey="stamin-up" game='black-ops-4' />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        Hammer of Valhalla
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="winters-wail" />
+        <PerkTooltip perkKey="stamin-up" game='black-ops-4' />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> <PerkTooltip perkKey="winters-wail" /> or <PerkTooltip perkKey="stamin-up" game='black-ops-4' /> should be put into the **Modifier** slot depending on which class setup you choose.
+
+## Recommended Elixirs
+
+<RichTable
+  headerCells={["Classic Elixirs", "Mega Elixirs"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <ElixirTooltip elixirKey='anywhere-but-here' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='in-plain-sight' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+      	<ElixirTooltip elixirKey='equip-mint' />
+      </TableCell>
+      <TableCell>
+       	<ElixirTooltip elixirKey='perkaholic' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+       	<ElixirTooltip elixirKey='temporal-gift' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='free-fire' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <ElixirTooltip elixirKey='stock-option' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='alchemical-antithesis' />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+## Step 1: Activate the Sentinel Artifact
+Head to the opposite side of the **Main Hall**, and at the top of the **Grand Staircase** will be the **Sentinel Artifact** which you must interact with to activate and dispel the
+**Prima Materia** blocking some doorways/entrances.
+
+<RichImage image="/content/dead-of-the-night/dotn-sentinel-artifact.webp" caption='Sentinel Artifact'  />
+
+> While you are making your way to the **Sentinel Artifact**, this is a good time to pick up the <MarkdownLink hash="building-the-ballistic-shield" text="Ballistic Shield" /> parts along the way to build this as soon as possible.
+
+### Building the Ballistic Shield
+> There are three parts required to build the **Ballistic Shield**, each having three spawn .
+
+The first part is the **Body**, which can be found in one of the three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-shield-body-first-spawn.webp" caption='Grand Staircase - on a pillar just to the right of the Sentinel Artifact'  />
+  <RichImage image="/content/dead-of-the-night/dotn-shield-body-second-spawn.webp" caption='East Balcony - against the railing left of the Saug 9mm wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-shield-body-final-spawn.webp" caption='West Balcony - against the far wall right of the RK7-Garrison wall buy'  />
+</CustomCarousel>
+
+The second part is the **Frame**, which can be found in one of the three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-shield-frame-first-spawn.webp" caption='Library - on a bench right of the Trench Gun wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-shield-frame-second-spawn.webp" caption='Library - on a broken bookshelf left of the Trench Gun wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-shield-frame-final-spawn.webp" caption='Study - on a table left of the stairs when going up from the Library'  />
+</CustomCarousel>
+
+The final part is the **Handles**, which can be found in one of the three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-shield-handles-first-spawn.webp" caption='Dining Room - on the ground left of the Double Doors'  />
+  <RichImage image="/content/dead-of-the-night/dotn-shield-handles-second-spawn.webp" caption='Dining Room - on the countertop in the hallway outside of the main dining area'  />
+  <RichImage image="/content/dead-of-the-night/dotn-shield-handles-final-spawn.webp" caption='East Hallway - on a chair next to the Dining Room'  />
+</CustomCarousel>
+
+Once all three parts have been collected, you can build the **Ballistic Shield** on the **Workbench** inside the **Smoking Room**.
+
+## Step 2: Unlock Pack a Punch
+You must obtain three **Tuning Forks** by completing three challenges, each of which rewards you with a **Tuning Fork** to dispel the **Prima Materia** blocking the entrance into the forest where
+**Pack-a-Punch** is located. To begin these challenges, you must find three glowing crystals, each hidden inside a vase in a location on the map. The three locations for these crystals are:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-purple-crystal.webp" caption='Master Bedroom/Trophy Room/Bedroom Hallway - Purple Crystal'  />
+  <RichImage image="/content/dead-of-the-night/dotn-blue-crystal.webp" caption='Wine Cellar - Blue Crystal'  />
+  <RichImage image="/content/dead-of-the-night/dotn-green-crystal.webp" caption='Library/Study - Green Crystal'  />
+</CustomCarousel>
+
+> There are multiple vases in each location identical to the ones shown above, the above images show the crystal emitting a colored smoke out of a vase indicating you have found the right vase.
+
+Once you have found the crystal's vase, melee/shoot it to reveal the crystal and you must now begin killing zombies near the crystal to charge it with souls. Once filled, interact with the
+crystal to "Gaze into the Stone" revealing one of six possible items each corresponding to a certain challenge:
+
+- Grandfather Clock (<MarkdownLink hash="clock-challenge" text="Clock Challenge" />)
+- Noose/Rope (<MarkdownLink hash="escort-challenge" text="Escort Challenge" />)
+- Doll (<MarkdownLink hash="escort-challenge" text="Escort Challenge" />)
+- Painting (<MarkdownLink hash="escort-challenge" text="Escort Challenge" />)
+- Scroll (<MarkdownLink hash="escort-challenge" text="Escort Challenge" />)
+- Perk Statue (<MarkdownLink hash="nosferatu-challenge" text="Nosferatu Challenge" />)
+
+### Clock Challenge
+You must find one of three **Grandfather Clocks** based on the image you were shown when gazing into the stone. The three different **Grandfather Clocks** and their locations are:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-main-hall-grandfather-clock.webp" caption='Main Hall - Grandfather Clock with a long glass window'  />
+  <RichImage image="/content/dead-of-the-night/dotn-dining-room-grandfather-clock.webp" caption='Dining Room - Grandfather Clock with three glass circles'  />
+  <RichImage image="/content/dead-of-the-night/dotn-billiards-grandfather-clock.webp" caption='Billiards Room - Small grandfather clock'  />
+</CustomCarousel>
+
+Once you have found the **Grandfather Clock** shown to you when you gazed into the stone, interact with it to spawn a blue circle on the ground that you must remain in until all the
+**Roman Numeral** symbols around the blue circle have disappeared.
+
+<RichImage image="/content/dead-of-the-night/dotn-clock-challenge-blue-circle.webp" caption='Blue Circle'  />
+
+Once completed, a **Tuning Fork** will be released from inside the clock which you can interact with to pick up.
+
+<RichImage image="/content/dead-of-the-night/dotn-clock-challenge.webp" caption='Clock Challenge Tuning Fork'  />
+
+### Escort Challenge
+You must find the item that was not a **Grandfather Clock** or **Perk Statue** shown to you when gazing into the stone, you can find the locations of each item here: <MarkdownLink hash="noose-rope" text={"Noose/Rope"} />,
+<MarkdownLink hash="doll" text="Doll" />, <MarkdownLink hash="painting" text="Painting" />, <MarkdownLink hash="scroll" text="Scroll" />. Once you find the item, interact with it to spawn a ghost you must follow. Follow the ghost until it stops, then interact with it again
+to reveal the **Tuning Fork** you must interact with to pick up.
+
+<RichImage image="/content/dead-of-the-night/dotn-escort-challenge.webp" caption='Escort Challenge Tuning Fork'  />
+
+#### Painting
+There are four different **Paintings** you could have seen, each in a different location:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-tea-room-painting.webp" caption='Tea Room - sad maid painting'  />
+  <RichImage image="/content/dead-of-the-night/dotn-smoking-room-painting.webp" caption='Smoking Room - woman with an old man'  />
+  <RichImage image="/content/dead-of-the-night/dotn-music-room-painting.webp" caption='Music Room - woman with arms down'  />
+  <RichImage image="/content/dead-of-the-night/dotn-east-gallery-painting.webp" caption='East Gallery - frightened woman'  />
+</CustomCarousel>
+
+#### Noose/Rope
+
+<RichImage image="/content/dead-of-the-night/dotn-noose.webp" caption='Wine Cellar - on a chair'  />
+
+#### Scroll
+
+<RichImage image="/content/dead-of-the-night/dotn-scroll.webp" caption='Study - above the Library on a bookshelf'  />
+
+#### Doll
+
+<RichImage image="/content/dead-of-the-night/dotn-doll.webp" caption='Entrance Hall - on a table left of the Danu Perk Statue'  />
+
+### Nosferatu Challenge
+You must find the **Perk Statue** that was shown to you when gazing into the stone, this **Perk Statue** will either be in the **Cemetery/Mausoleum**, **Gardens** or **Wine Cellar**.
+Once found, walk up to it and survive against an onslaught of <ZombieTooltip zombieKey='nosferatu' />, the final of which will drop the **Tuning Fork**.
+
+<RichImage image="/content/dead-of-the-night/dotn-nosferatu-challenge.webp" caption='Nosferatu Challenge Tuning Fork'  />
+
+Once you have all three **Tuning Forks** you can dispel the **Prima Materia** blocking the entrance to the **Forest** containing **Pack-a-Punch** near the **Forest Terrace**.
+However, before doing that you should obtain the <MarkdownLink hash="obtaining-the-silver-bullets" text="Silver Bullets" /> as this will make killing the <ZombieTooltip zombieKey='werewolf' /> inside this
+forest much easier and will drop an item required for obtaining the <MarkdownLink hash="obtaining-the-alistairs-annihilator" text="Alistair's Annihilator" />.
+
+### Obtaining the Silver Bullets
+> The first part of crafting the **Silver Bullets** is melting down three silver objects around the map each having three spawn locations.
+
+The first silver object is the **Candelabra** which can be found in one of three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-silver-candelabra-first-spawn.webp" caption='Entrance Hall - on a table left of the entrance'  />
+  <RichImage image="/content/dead-of-the-night/dotn-silver-candelbra-second-spawn.webp" caption='Main Hall - on a ledge right of the fireplace near the Mozu wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-silver-candelbra-final-spawn.webp" caption='Billiards Room - on the floor behind the chairs right of the fireplace'  />
+</CustomCarousel>
+
+The second silver object is the **Trophy** which can be found in one of three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-silver-trophy-first-spawn.webp" caption='Dining Room - on the main table'  />
+  <RichImage image="/content/dead-of-the-night/dotn-silver-trophy-second-spawn.webp" caption='Dining Room - on the small table in the hallway'  />
+  <RichImage image="/content/dead-of-the-night/dotn-silver-trophy-final-spawn.webp" caption='West Hallway - on the floor near a small table'  />
+</CustomCarousel>
+
+The final silver object is the **Plate** which can be found in one of three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-silver-plate-first-spawn.webp" caption='Wine Cellar - on the middle ledge of the non-candlelit wine rack'  />
+  <RichImage image="/content/dead-of-the-night/dotn-silver-plate-second-spawn.webp" caption='Wine Cellar - on the wall underneath the candle right of the candlelit wine rack'  />
+  <RichImage image="/content/dead-of-the-night/dotn-silver-plate-final-spawn.webp" caption='Wine Cellar - on the table with the rope on the chair directly in front of the previous location'  />
+</CustomCarousel>
+
+Once you have collected all the silver objects, you can now melt the objects on the **Workbench** inside the **Wine Cellar**, creating melted silver which you can pick up.
+
+<RichImage image="/content/dead-of-the-night/dotn-silver-workbench.webp" caption='Wine Cellar Workbench'  />
+
+The second part of crafting the **Silver Bullets** is finding three items each with three spawn locations to infuse with the melted silver. The first item is
+**Charcoal** which can be found in one of three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-charcoal-first-spawn.webp" caption='Main Hall - in front of the fireplace left of the Mozu wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-charcoal-second-spawn.webp" caption='Master Bedroom - in front of the fireplace left of the bed'  />
+  <RichImage image="/content/dead-of-the-night/dotn-charcoal-final-spawn.webp" caption='Billiards Room - in front of the fireplace'  />
+</CustomCarousel>
+
+The second item is the **Bat Poop**, which can be found in one of three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-bat-poop-first-spawn.webp" caption='Mausoleum - on the ground near the tree right of the SDM wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-bat-poop-second-spawn.webp" caption='Cemetery - bottom of the left stairs leading up to the Mausoleum'  />
+  <RichImage image="/content/dead-of-the-night/dotn-bat-poop-final-spawn.webp" caption='Cemetery - in the corner near the entrance closest to the mansion'  />
+</CustomCarousel>
+
+The final item is the **Sulfur** which can be found in one of three locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-sulfur-first-spawn.webp" caption='Greenhouse Laboratory - on the table right of the entrance'  />
+  <RichImage image="/content/dead-of-the-night/dotn-sulfur-second-spawn.webp" caption='Greenhouse Laboratory - on the table left of the entrance'  />
+  <RichImage image="/content/dead-of-the-night/dotn-sulfur-final-spawn.webp" caption='Greenhouse Laboratory - on the table at the back of the lab'  />
+</CustomCarousel>
+
+Once you have collected all three items you can head to the **Library** and use the **Workbench** in that room to craft the Silver Bullets which are free to equip for the first time only.
+
+<RichImage image="/content/dead-of-the-night/dotn-bullets-workbench.webp" caption='Library Workbench'  />
+
+> It is recommended to use this free first time use of the **Silver Bullets** on your best weapon, ideally a fully-kitted **Spitfire** which can be found just above the **Library** in the **Study**,
+or on a Mystery Box weapon like the **Hellion Salvo** or the **Hades**.
+
+## Step 3: Complete the Three Questlines
+> Before proceeding onto the three questlines, you should obtain the <MarkdownLink hash="obtaining-the-alistairs-annihilator" text="Alistair's Annihilator" /> as it's required for the <MarkdownLink hash="knight-questline" text="Knight" /> and
+<MarkdownLink hash="effigy-questline" text="Effigy" /> Questlines and is a great weapon to have for the <MarkdownLink hash="telescope-questline" text="Telescope" /> Questline. You should also build the <MarkdownLink hash="building-the-fire-traps" text="Fire Trap" /> as this
+is required for the <MarkdownLink hash="knight-questline" text="Knight" /> Questline.
+
+You must gaze into the same crystals used for **Unlocking Pack-a-Punch** and can see three different images, each of which corresponds to a certain questline that you must complete.
+You don't need to remember any of these images, you just need to gaze into all three crystals to activate the three questlines.
+
+> The order in which you complete these questlines does not matter, but you will not be able to start a questline unless you have gazed into the corresponding crystal so be sure to gaze into all
+three before continuing on with the main quest.
+
+### Telescope Questline
+Head to the **Mausoleum**, all players in the game must shoot the rod above the **Mausoleum** using **Silver Bullets** at the same time, doing so will cause a light to shine toward the crystal
+above the **Atlas** head in the **Main Hall**, and the rod will disappear.
+
+<RichImage image="/content/dead-of-the-night/dotn-mausoleum-rod.webp" caption='Mausoleum Rod'  />
+
+Afterward, head to the **North Atrium Bridge**, where you must rotate three wheels on a panel controlling the rings above **Atlas**' head to line up all three beams, destroying his head.
+You'll know if a beam is in the correct alignment if it grows bigger and brighter.
+
+<RichImage image="/content/dead-of-the-night/dotn-wheel-control-panel.webp" caption='Wheel Control Panel'  />
+
+This can be done easily by following the steps below:
+
+- Turn the left wheel until the blue beam starts glowing
+- Turn the right wheel until the green beam starts glowing
+- Turn the middle wheel until the red beam starts glowing
+- Finally, turn the left wheel until blue and green beams start glowing together
+
+> Hold the interact button to turn the wheels. If the above strategy didn't work for you the first time, repeat it from the beginning until it does.
+
+Once completed, you must find three **Zodiac Symbols** around the map and find scratch mark patterns within the same room. There can be up to three scratch mark patterns and you must count the
+lines on each pattern and assign the sum of all marks to the **Zodiac Symbol** within the same room. Below is an image of all **Zodiac Symbols** for easy reference:
+
+<RichImage image="/content/dead-of-the-night/dotn-zodiac-symbols.webp" caption='Zodiac Symbols'  />
+
+> As an example to help understand this step, if you find the **Aries Zodiac Symbol** and in that same area you find three scratch mark patterns, the first having three marks,
+the second having five marks, and the third have four marks. You would add **3 + 5 + 4 = 12** and you would write down or remember **Aries = 12**.
+
+#### Dining Room Symbol & Marks
+The location of the **Zodiac Symbol**:
+
+<RichImage image="/content/dead-of-the-night/dotn-dining-room-zodiac-symbol.webp" caption='Against the right pillar of the Double Doors'  />
+
+The locations of the **Scratch Marks**:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-dining-room-first-scratch-mark.webp" caption='On the back red wall'  />
+  <RichImage image="/content/dead-of-the-night/dotn-dining-room-second-scratch-mark.webp" caption='On the dining table'  />
+  <RichImage image="/content/dead-of-the-night/dotn-dining-room-final-scratch-mark.webp" caption='On the roof of the hallway'  />
+</CustomCarousel>
+
+#### Trophy/Master Bedroom Symbol & Marks
+The location of the **Zodiac Symbol**:
+
+<RichImage image="/content/dead-of-the-night/dotn-trophy-room-zodiac-symbol.webp" caption='Trophy Room - on the bottom of the wall left of the window opposite the fireplace'  />
+
+The locations of the **Scratch Marks**:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-trophy-room-first-scratch-mark.webp" caption='Trophy Room - on the left side of the fireplace'  />
+  <RichImage image="/content/dead-of-the-night/dotn-trophy-room-second-scratch-mark.webp" caption='Master Bedroom - on the nightstand left of the bed'  />
+  <RichImage image="/content/dead-of-the-night/dotn-trophy-room-final-scratch-mark.webp" caption='Master Bedroom - on the left-hand wall above the tub when looking through the window'  />
+</CustomCarousel>
+
+#### Main Hall/North Atrium Symbol & Marks
+The location of the **Zodiac Symbol**:
+
+<RichImage image="/content/dead-of-the-night/dotn-main-hall-zodiac-symbol.webp" caption='Main Hall - behind the lamp right of the stairs leading up to the West Gallery'  />
+
+The locations of the **Scratch Marks**:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-main-hall-first-scratch-mark.webp" caption='Main Hall - above the fireplace right of the Mozu'  />
+  <RichImage image="/content/dead-of-the-night/dotn-main-hall-second-scratch-mark.webp" caption='North Atrium - on the left wall when entering from the Forest Terrace near the ceiling'  />
+  <RichImage image="/content/dead-of-the-night/dotn-main-hall-final-scratch-mark.webp" caption='Main Hall - behind the statue on the right side of the Grand Staircase'  />
+</CustomCarousel>
+
+#### Wine Cellar Symbol & Marks
+The location of the **Zodiac Symbol**:
+
+<RichImage image="/content/dead-of-the-night/dotn-wine-cellar-zodiac-symbol.webp" caption='On the bottom right section of the Wine Rack in front of the MX9 wall buy'  />
+
+The locations of the **Scratch Marks**:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-wine-cellar-first-scratch-mark.webp" caption='On top of one of the barrels near the window barrier right of the Workbench'  />
+  <RichImage image="/content/dead-of-the-night/dotn-wine-cellar-second-scratch-mark.webp" caption='On the cabinet door of the non-candlelit wine rack opposite the Workbench'  />
+  <RichImage image="/content/dead-of-the-night/dotn-wine-cellar-final-scratch-mark.webp" caption='On one of the big barrels left of the stairs leading up to the West Hallway'  />
+</CustomCarousel>
+
+#### Entrance Hall Symbol & Marks
+The location of the **Zodiac Symbol**:
+
+<RichImage image="/content/dead-of-the-night/dotn-entrance-hall-zodiac-symbol.webp" caption='Underneath the table left of the Perk Statue'  />
+
+The locations of the **Scratch Marks**:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-entrance-hall-first-scratch-mark.webp" caption='On the shield of the statue right of the Perk Statue'  />
+  <RichImage image="/content/dead-of-the-night/dotn-entrance-hall-second-scratch-mark.webp" caption='On the left side of the double-pillar structure on the right side of the room when facing the Perk Statue'  />
+  <RichImage image="/content/dead-of-the-night/dotn-entrance-hall-final-scratch-mark.webp" caption='On the wall right of the painting directly left when entering the room'  />
+</CustomCarousel>
+
+#### Billiards Room Symbol & Marks
+The location of the **Zodiac Symbol**:
+
+<RichImage image="/content/dead-of-the-night/dotn-billiards-room-zodiac-symbol.webp" caption='Underneath the chess table near the pool table'  />
+
+The locations of the **Scratch Marks**:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-billiards-room-first-scratch-mark.webp" caption='Above the top left corner of the cabinet left of the Grandfather Clock'  />
+  <RichImage image="/content/dead-of-the-night/dotn-billiards-room-second-scratch-mark.webp" caption='On the wall left of a wooden bookshelf'  />
+  <RichImage image="/content/dead-of-the-night/dotn-billiards-room-final-scratch-mark.webp" caption='On the floor under the table directly right when entering from the Smoking Room'  />
+</CustomCarousel>
+
+#### Library Symbol & Marks
+The location of the **Zodiac Symbol**:
+
+<RichImage image="/content/dead-of-the-night/dotn-library-zodiac-symbol.webp" caption='Inside the broken cabinet left of the Wonder Weapon safe'  />
+
+The locations of the **Scratch Marks**:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-library-first-scratch-mark.webp" caption='Next to the skeleton foot just behind the workbench'  />
+  <RichImage image="/content/dead-of-the-night/dotn-library-second-scratch-mark.webp" caption='On the top right corner of the window barrier left of the Zodiac Symbol cabinet'  />
+  <RichImage image="/content/dead-of-the-night/dotn-library-final-scratch-mark.webp" caption='On the side of the crate in front of the Zodiac Symbol cabinet'  />
+</CustomCarousel>
+
+> The **Zodiac Symbols** and **Scratch Marks** are engraved into the objects they appear on so look carefully as they can be hard to see sometimes. Remember that only three of the above locations
+will have a **Zodiac Symbol** and **Scratch Marks**.
+
+Once you have found the three **Zodiac Symbols** and the number of **Scratch Marks** associated with them, head to the telescope inside the **Greenhouse Laboratory**. There will be a wheel with
+all the **Zodiac Symbols**, and you need to input the three symbols you found in the order of least to most **Scratch Marks**.
+
+<RichImage image="/content/dead-of-the-night/dotn-zodiac-wheel.webp" caption='Zodiac Symbol Wheel'  />
+
+> Hold the interact button to turn the wheel and melee the wheel to input that symbol. If you fail, you will need to flip the round and look for three new symbols and scratch marks and try again.
+
+If done successfully, with your shield out, you can hold the interact button on the gold wheel just before the **Zodiac Symbol** wheel until it stops spinning. Afterward, use the shield to bash the wheel,
+breaking it and preventing it from turning back.
+
+<RichImage image="/content/dead-of-the-night/dotn-gold-wheel.webp" caption='Gold Wheel'  />
+
+Once that is done activate the trap downstairs and all players in the game must run through the trap with their shields out to electrify it. Once electrified, all players must shield bash the telescope
+at the same time firing a beam from the telescope revealing a full moon.
+
+<RichImage image="/content/dead-of-the-night/dotn-telescope-beam.webp" caption='Telescope Beam'  />
+
+Head back downstairs and beneath the telescope will be a big stone slab that you must interact with for around five seconds. Doing so will begin a lockdown where you must survive against zombies,
+<ZombieTooltip zombieKey='nosferatu' /> zombies, and <ZombieTooltip zombieKey='werewolf' /> zombies.
+
+<RichImage image="/content/dead-of-the-night/dotn-telescope-stone-slab.webp" caption='Telescope Stone Slab'  />
+
+> Killing three <ZombieTooltip zombieKey='werewolf' /> zombies will complete the lockdown. During this lockdown, if you are killing <ZombieTooltip zombieKey='nosferatu' /> zombies with the charged
+shot of the <MarkdownLink hash="upgrading-to-the-chaos-theory" text="Chaos Theory" /> they will drop **Bile** which is a material that you will need to upgrade into the <MarkdownLink hash="obtaining-the-alistairs-annihilator" text="Alistair's Annihilator" />
+for the other two questlines.
+
+Once completed, you can interact with the big stone slab to pick it up and will be rewarded with a **Max Ammo**, and have now completed the Telescope Questline.
+
+### Effigy Questline
+Head to the **Cemetery**, as you walk through the **Cemetery/Cemetery Path/Mausoleum**, certain trees will begin shedding their leaves. Five trees in total will have their leaves shed,
+and you must shoot each of these bald trees with any explosive weapon (the wonder weapon is ideal), dropping a branch on the ground that you must interact with to pick up.
+
+<RichImage image="/content/dead-of-the-night/dotn-bald-tree.webp" caption='Bald Tree'  />
+
+> The trees may have already shed their leaves by the time you are doing this step if you have walked passed this area after gazing into the crystals. The bald trees are all located around the
+**Cemetry/Cemetery Path/Mausoleum** and are easily identified.
+
+Once you have collected the five branches, they can be found together in the **Cemetery**. You must search the tombstones in the **Cemetery** for one that has the date of death **1912**.
+The player in the game who is playing as the character on the tombstone must interact with the tombstone.
+
+<RichImage image="/content/dead-of-the-night/dotn-effigy-tombstone.webp" caption='1912 Death Date Tombstone'  />
+
+> When solo, you can just look for the tombstone that has the year **1912** and interact with it, no need to worry about the face. However, on co-op you must do this and it will be a
+random player each game, if that player is not the one with the <MarkdownLink hash="obtaining-the-alistairs-annihilator" text="Alistair's Annihilator" /> then you will need to coordinate with the player that does for this step.
+
+After interacting with the tombstone, the player with the <MarkdownLink hash="obtaining-the-alistairs-annihilator" text="Alistair's Annihilator" /> needs to shoot the ground in front of the branches with a charged shot
+until you get the fire variant charged shot on the ground. Afterward, you can interact with the branches to form an **Effigy** and interact with the **Effigy** to enter an afterlife-like mode.
+
+<RichImage image="/content/dead-of-the-night/dotn-effigy.webp" caption='Effigy'  />
+
+You will then need to find a ghost around the map and escort it back to the **Cemetery** similar to the <MarkdownLink hash="escort-challenge" text="Escort Challenge" /> to unlock pack-a-punch within five minutes.
+This ghost can spawn anywhere inside the estate, but is most commonly found around the edges of these locations:
+
+- Dining Room
+- Master Bedroom
+- Entrance Hall
+- Wine Cellar
+
+> If you can't find the ghost in the above locations, run across the edges of every room in the estate until you find the ghost.
+
+Once you find the ghost, escort it to the **Cemetery** where it will burst into flames and drop a big stone slab. Interact with this slab for around five seconds to start a lockdown where you
+must survive against zombies, <ZombieTooltip zombieKey='nosferatu' /> zombies, and <ZombieTooltip zombieKey='werewolf' /> zombies.
+
+<RichImage image="/content/dead-of-the-night/dotn-effigy-stone-slab.webp" caption='Effigy Stone Slab'  />
+
+Once completed, you can interact with the stone slab to pick it up and will be rewarded with a **Max Ammo Power-Up**, and have completed the **Effigy Questline**.
+### Knight Questline
+Head to the **Library**, turn on the <MarkdownLink hash="building-the-fire-traps" text="Fire Trap" />, and shoot the flames with <MarkdownLink hash="obtaining-the-alistairs-annihilator" text="Alistair's Annihilator" /> until the flames are blue.
+Once blue, pull out your shield and run through the flames to ignite your shield. You now need to melee four fireplaces within **45 seconds** to turn them blue. This needs to be done for three sets
+of four fireplaces, each set rewarding you with a **Gem**.
+
+<RichImage image="/content/dead-of-the-night/dotn-blue-flames.webp" caption='Blue Flames'  />
+
+> Only a set needs to be done within **45 seconds**, all three sets do not need to be done within the 45 second window. The order of the sets do not matter, however the order of
+the fireplaces to melee within those sets do matter.
+
+#### Library Fireplace Set Order
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-smoking-room-fireplace.webp" caption='Smoking Room'  />
+  <RichImage image="/content/dead-of-the-night/dotn-library-right-fireplace.webp" caption='Library - right of the fire trap'  />
+  <RichImage image="/content/dead-of-the-night/dotn-library-left-fireplace.webp" caption='Library - left of the fire trap'  />
+  <RichImage image="/content/dead-of-the-night/dotn-billiards-room-fireplace.webp" caption='Billiards Room'  />
+</CustomCarousel>
+
+Once you have completed this set pick up the **Gem** from the **Billiards Room Fireplace**.
+
+#### Main Hall Fireplace Set Order
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-main-hall-right-fireplace.webp" caption='Main Hall - right of the Mozu wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-east-gallery-fireplace.webp" caption='East Gallery'  />
+  <RichImage image="/content/dead-of-the-night/dotn-main-hall-left-fireplace.webp" caption='Main Hall - opposite the Mozu wall buy'  />
+  <RichImage image="/content/dead-of-the-night/dotn-west-gallery-fireplace.webp" caption='West Gallery'  />
+</CustomCarousel>
+
+Once you have completed this set pick up the **Gem** from the **West Gallery Fireplace**.
+
+#### Master Bedroom Fireplace Order
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-trophy-room-fireplace.webp" caption='Trophy Room'  />
+  <RichImage image="/content/dead-of-the-night/dotn-master-bedroom-fireplace.webp" caption='Master Bedroom'  />
+  <RichImage image="/content/dead-of-the-night/dotn-music-room-fireplace.webp" caption='Music Room'  />
+  <RichImage image="/content/dead-of-the-night/dotn-dining-room-fireplace.webp" caption='Dining Room'  />
+</CustomCarousel>
+
+Once you have completed this set pick up the **Gem** from the **Dining Room Fireplace**.
+
+> If you have trouble with this fireplace order when starting from the **Library**, find another **Fire Gate Energy Core** and place it inside the **Fire Gate Trap** inside the **Bedroom Hallway**.
+
+Once you have all three gems you need to place them inside three knight statues around the map. When you place a gem inside a knight statue, the statue will dissolve and the gem will begin to follow you.
+Your goal is to have all three gems following you at the same time and lead them to the **Forest**.
+
+> These gems will only follow you if you are close to them, if you run to far from them they will stop following you and you will need to find them again and guide them.
+This can be easily avoided by only walking when guiding the gems as the walk speed will never be too fast for the gems.
+
+The locations of the three knights you need to place the gems into are:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-main-hall-knight-statue.webp" caption='Main Hall'  />
+  <RichImage image="/content/dead-of-the-night/dotn-gardens-knight-statue.webp" caption='Gardens'  />
+  <RichImage image="/content/dead-of-the-night/dotn-cemetery-knight-statue.webp" caption='Cemetery'  />
+</CustomCarousel>
+
+The order in which you interact with these knights does not matter, but once all three gems are following you, guide them to the **Forest**, where you must guide the gems over their corresponding
+symbols on the ground. The symbols that correspond to a gem will be the same color.
+
+<RichImage image="/content/dead-of-the-night/dotn-colored-gem-symbol.webp" caption='Colored Gem Symbol'  />
+
+Once the gems have been embedded into their symbols they will summon ghost knights that act as soul boxes where you must kill zombies near them to fill it. Each knight must be filled twice,
+moving closer to **Pack-a-Punch** each time they are filled. Once all three knights are in front of **Pack-a-Punch** they will form a triangle and a <ZombieTooltip zombieKey='werewolf' /> will spawn.
+You must kill this <ZombieTooltip zombieKey='werewolf' /> within this triangle, spawning a big stone slab.
+
+<RichImage image="/content/dead-of-the-night/dotn-ghost-knight-triangle.webp" caption='Ghost Knight Triangle'  />
+
+Interact with the stone slab for around **5 seconds** to begin a lockdown where you must survive against zombies, **Catalyst Zombies**, and <ZombieTooltip zombieKey='werewolf' /> zombies.
+The <ZombieTooltip zombieKey='werewolf' /> zombies won't spawn until you have killed enough **Catalyst Zombies** and killing the <ZombieTooltip zombieKey='werewolf' /> zombies will complete the lockdown.
+
+<RichImage image="/content/dead-of-the-night/dotn-knight-stone-slab.webp" caption='Knight Stone Slab'  />
+
+Once completed, you can interact with the stone slab to pick it up and will be rewarded with a **Max Ammo Power-Up**, and have completed the **Knight Questline**.
+
+### Building the Fire Traps
+You must find a **Fire Gate Energy Core** and install it into any of the **Fire Gate Traps**. This energy core can spawn in fourteen different locations around the map:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-wine-cellar-spawn.webp" caption='Wine Cellar - on a barrel right of the workbench'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-gardens-first-spawn.webp" caption='Gardens - on the bench to the right of the Gazebo structure'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-gardens-second-spawn.webp" caption='Gardens - on the bench directly left when entering from the Greenhouse Terrace'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-main-hall-spawn.webp" caption='Main Hall - on a lede in front of the huge vase left of the East Hallway entrance'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-mausoleum-first-spawn.webp" caption='Mausoleum - on the half wall'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-mausoleum-second-spawn.webp" caption='Mausoleum - on the right side steps leading into the mausoleum'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-cemetery-spawn.webp" caption='Cemetery - on the bottom ledge of a tomb near the girl and boy statues'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-cemetery-path-spawn.webp" caption='Cemetery Path - on the bench directly right when entering from the Study'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-dining-room-spawn.webp" caption='Dining Room - on the bench right of the double doors'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-smoking-room-spawn.webp" caption='Smoking Room - on the couch left of the Workbench'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-trophy-room-spawn.webp" caption='Trophy Room - on a desk opposite the fireplace'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-greenhouse-laboratory-first-spawn.webp" caption='Greenhouse Laboratory - on the ground opposite the Chaos Theory workbench'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-greenhouse-laboratory-second-spawn.webp" caption='Greenhouse Laboratory - on the ground next to the Chaos Theory workbench'  />
+  <RichImage image="/content/dead-of-the-night/dotn-fire-gate-music-room-spawn.webp" caption='Music Room - on an overturned piano bench'  />
+</CustomCarousel>
+
+Once you have found the **Fire Gate Energy Core**, head to the Library and interact with the trap control panel to place the energy core into the control panel, powering the **Fire Trap**.
+
+> It is recommended to place the first **Fire Gate Energy Core** you find inside the **Library** as this will come in handy for the **Knight Questline**.
+
+### Obtaining the Alistair's Annihilator
+You must first obtain and upgrade the **Alistair's Folley** wonder weapon, which can be obtained by locating four colored symbols (red, green, yellow, blue) around the map each with four spawn locations.
+
+#### Obtaining the Alistair's Folley
+The **Red** symbol can be found in one of the four locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-red-symbol-first-spawn.webp" caption='East Gallery - on the left wall near the Strife leading towars the Grand Staircase'  />
+  <RichImage image="/content/dead-of-the-night/dotn-red-symbol-second-spawn.webp" caption='Master Bedroom - on the wall right of the fireplace'  />
+  <RichImage image="/content/dead-of-the-night/dotn-red-symbol-third-spawn.webp" caption='Dining Room - above the painting opposite the sofa'  />
+  <RichImage image="/content/dead-of-the-night/dotn-red-symbol-final-spawn.webp" caption='Wine Cellar - on a barrel when looking through a window right of the MX9 wall buy'  />
+</CustomCarousel>
+
+The **Green** symbol can be found in one of the four locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-green-symbol-first-spawn.webp" caption='Greenhouse Terrace - outside the map on a wall when looking through the big gate'  />
+  <RichImage image="/content/dead-of-the-night/dotn-green-symbol-second-spawn.webp" caption='Gardens - on the wall inside of the Gazebo'  />
+  <RichImage image="/content/dead-of-the-night/dotn-green-symbol-third-spawn.webp" caption='Gardens - outside the map on a building left of the Perk Statue location'  />
+  <RichImage image="/content/dead-of-the-night/dotn-green-symbol-final-spawn.webp" caption='Gardens - outside the map on a wall right of the Perk Statue location'  />
+</CustomCarousel>
+
+The **Yellow** symbol can be found in one of the four locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-yellow-symbol-first-spawn.webp" caption='Forrest Terrace - on the estate wall left of the Bowie Knife'  />
+  <RichImage image="/content/dead-of-the-night/dotn-yellow-symbol-second-spawn.webp" caption='Forest Terrace - outside the map on a wall when looking though the left gate'  />
+  <RichImage image="/content/dead-of-the-night/dotn-yellow-symbol-third-spawn.webp" caption='Forest Terrace - outside the map on a wall when looking though the right gate'  />
+  <RichImage image="/content/dead-of-the-night/dotn-yellow-symbol-final-spawn.webp" caption='Forest Terrace - on the estate wall right of the GKS wall buy'  />
+</CustomCarousel>
+
+The **Blue** symbol can be found in one of the four locations:
+
+<CustomCarousel>
+  <RichImage image="/content/dead-of-the-night/dotn-blue-symbol-first-spawn.webp" caption='Cemetery - outside the map on a tombstone when looking to the right mid-way up the stairs toward the Mausoleum'  />
+  <RichImage image="/content/dead-of-the-night/dotn-blue-symbol-second-spawn.webp" caption='Mausoleum - outside the map on the front of a tomb just to the left of the previous location'  />
+  <RichImage image="/content/dead-of-the-night/dotn-blue-symbol-third-spawn.webp" caption='Mausoleum - on the bottom of the Lion Statue'  />
+  <RichImage image="/content/dead-of-the-night/dotn-blue-symbol-final-spawn.webp" caption='Cemetery - on a tombstone near the Stake Knife workbench'  />
+</CustomCarousel>
+
+Once you know all four symbols, head to the **Library** where you must enter the correct symbols in the safe on the wall containing the **Alistair's Folley**. Once entered,
+you can interact with the top of the safe to enter the code and claim your wonder weapon.
+
+<RichImage image="/content/dead-of-the-night/dotn-alistairs-folley-safe.webp" caption="Alistair's Folley Safe"  />
+
+#### Upgrading to the Chaos Theory
+Head to the **Library** and use your **Ballistic Shield** to shield bash the bookshelf to the right of the **Workbench** to reveal the part needed for the upgrade.
+
+<RichImage image="/content/dead-of-the-night/dotn-chaos-theory-bookshelf.webp" caption="Chaos Theory Bookshelf"  />
+
+Once acquired, head to the **Greenhouse Laboratory** and place the **Chaos Material** you obtained from the <ZombieTooltip zombieKey='werewolf' /> after **Unlocking Pack-a-Punch** inside the machine
+in the middle of the lab, after around **20 seconds**, it will be transformed into a **Prima Materia** you can pick up on the left side of the machine.
+
+<RichImage image="/content/dead-of-the-night/dotn-lab-machine.webp" caption="Lab Machine"  />
+
+> If you do not have the **Chaos Material**, you must kill a <ZombieTooltip zombieKey='werewolf' /> with a weapon using **Silver Bullets** to get it to drop.
+
+Once you have the two parts needed, head to the **Workbench** at the back right of the **Greenhouse Laboratory** to craft the **Chaos Theory** wonder weapon.
+
+<RichImage image="/content/dead-of-the-night/dotn-chaos-theory.webp" caption='Chaos Theory'  />
+
+#### Upgrading to the Alistair's Annihilator
+You must kill three <ZombieTooltip zombieKey='nosferatu' /> zombies with the charged shot of the **Chaos Theory**, each <ZombieTooltip zombieKey='nosferatu' /> killed by the shot will drop **Bile**.
+You must collect three of these **Bile** materials and bring them to a glowing red tomb inside the **Cemetery**.
+
+<RichImage image="/content/dead-of-the-night/dotn-bile.webp" caption="Bile"  />
+
+Interact with the tomb to summon a <ZombieTooltip zombieKey='nosferatu' /> zombie that you must kill with the **Chaos Theory**. Killing this <ZombieTooltip zombieKey='nosferatu' /> will drop a
+**Nosferatu Chaos Material** that you must pick up. This is the first of three materials needed for the upgrade.
+
+<RichImage image="/content/dead-of-the-night/dotn-nosferatu-tomb.webp" caption="Nosferatu Tomb"  />
+
+> You can easily kill this <ZombieTooltip zombieKey='nosferatu' /> by shooting charged shots in front of the tomb after summoning it since this is where it jumps onto the map.
+
+Inside the **Cemetery** along the railings of the stairs to the **Mausoleum**, there will be lanterns that are lit up, most are lit up yellow but one is going to be lit up with a slightly orange tint.
+You must find the orange lantern and shoot it with the **Chaos Theory**, doing so will cause the lantern to go dark and you must repeat this for three more lanterns.
+
+<RichImage image="/content/dead-of-the-night/dotn-lanterns-with-orange-tint-on-the-right-lantern.webp" caption='Difference in Lantern light (right is the orange tint lantern)'  />
+
+> After shooting the final lantern, you can shoot the cloud of smoke above the lantern to quickly kill the **Bat** before it begins to fly away. If it does fly away, you can shoot it out the air
+or with some **Silver Bullets** to get it to fly lower to the ground so you can more easily hit it with the wonder weapon.
+
+Once the fourth and final lantern has been shot a **Bat** will spawn out of it that you must kill with the **Chaos Theory**. Killing this **Bat** will drop a **Bat Chaos Material** that you must pick up.
+This is the second of the three materials needed for the upgrade.
+
+<RichImage image="/content/dead-of-the-night/dotn-bat-chaos-material.webp" caption="Bat Chaos Material"  />
+
+> If fail this step by shooting the wrong lantern, you will either need to wait around 2 minutes or a few rounds for the lanterns to be lit again. Very rarely, the game completely bugs out and
+you need to restart the game. Needless to say, make sure you shoot the right lantern.
+
+Finally, head to the **Forest** where you will need to shoot zombies with the charged shot of the **Chaos Theory** while they are over one of the three mushroom dig sites. If the charged
+shot was the yellow/brain rot variant then the zombie will begin to dig on the dig site and you have a chance to receive the final part.
+
+<RichImage image="/content/dead-of-the-night/dotn-mushroom-dig-site.webp" caption="Mushroom Dig Site"  />
+
+> If you did not get the part then you must repeat the same thing on the other dig sites until you get the part. There are only three dig sites and you are guaranteed to get the part on the
+final one if you haven't before.
+
+Once all three parts have been collected, head to the **Greenhouse Laboratory** and craft the **Prima Materia** using the machine below the telescope and pick it up on the other side.
+You can only craft one **Prima Materia** at a time, so you need to input the parts one by one until you have all the **Prima Materia**.
+
+<RichImage image="/content/dead-of-the-night/dotn-lab-machine.webp" caption="Lab Machine"  />
+
+Once you have all three **Prima Materia**, head to the **Workbench** at the back left of the **Greenhouse Laboratory** to build **Alistair's Annihilator** wonder weapon.
+
+<RichImage image="/content/dead-of-the-night/dotn-alistairs-annihilator.webp" caption="Alistair's Annihilator"  />
+
+## Step 4: Werewolf Boss Fight
+> Prepare heavily for this boss fight, fully **Pack-a-Punch** your weapons, get the **Homunculus** out of the box and the **Hellion Salvo** if you don't have a fully kitted Spitfire or Hades,
+make sure you have **Silver Bullets** equipped on all your weapons that aren't the wonder weapon, and get all your perks.
+
+When ready, all players must hold the interact button on the stone slab door inside the Forest to enter the boss arena to begin the three-phase boss fight.
+
+<RichImage image="/content/dead-of-the-night/dotn-boss-arena-entrance.webp" caption="Boss Arena Entrance"  />
+
+### Phase 1
+For this phase, a large green glowing square will appear on the ground. You must rotate the statues located in the corners of the arena to all be pointing toward this green square,
+if done correctly the statue's beam will change from white to green.
+
+<RichImage image="/content/dead-of-the-night/dotn-boss-phase-1.webp" caption='Green Square'  />
+
+> During this phase, the <ZombieTooltip zombieKey='shadow-werewolf' /> is invisible and will attack you by charging at you. This charge attack should be avoided as it can do upwards of
+175 dmg if it hits you head on. You can spot the <ZombieTooltip zombieKey='shadow-werewolf' /> while it is doing this charge attack via a trail of smoke in the air.
+
+Once all statues are pointing at the green square, throw a **Homunculus** and bait the <ZombieTooltip zombieKey='shadow-werewolf' /> into the green square by standing in the circle and getting the
+<ZombieTooltip zombieKey='shadow-werewolf' /> to charge at you. Stay in the circle while it charges you and once the <ZombieTooltip zombieKey='shadow-werewolf' /> enters the green square it will be
+stunned for you to attack it.
+
+<RichImage image="/content/dead-of-the-night/dotn-stunned-boss.webp" caption='Stunned Boss'  />
+
+Once stunned, rain fire on the <ZombieTooltip zombieKey='shadow-werewolf' /> with your **Silver Bullet** weapon (ideally the **Hellion Salvo** or fully-kitted **Spitfire/Hades**) and if you do enough damage
+to the <ZombieTooltip zombieKey='shadow-werewolf' /> you will have completed Phase 1. If you don't do enough damage to the <ZombieTooltip zombieKey='shadow-werewolf' /> you'll need to repeat the process until you do.
+
+> You will know if you have done enough damage to the <ZombieTooltip zombieKey='shadow-werewolf' /> if he groans in pain and you receive a **Max Ammo** and **Carpenter**. If the
+<ZombieTooltip zombieKey='shadow-werewolf' /> just disappears and the statues rotate, then you have not done enough damage and must repeat the process. You should also pick up those drops
+immediately as the next phase will not last long.
+
+### Phase 2
+For this phase, you must survive against zombies, Catalyst Zombies, <ZombieTooltip zombieKey='nosferatu' /> zombies, and <ZombieTooltip zombieKey='werewolf' /> zombies until no more enemies are
+spawning, and another **Max Ammo** and **Carpenter** spawn which you should again grab immediately.
+
+> Take advantage of the charged shots of the **Alistair's Annihilator** as it is one of the best wonder weapons in the game and can easily protect you against all enemies during this phase.
+### Phase 3
+For this phase, you must do the same thing as **Phase 1**, except the green square will also be invisible. To find the green square, you must rotate a statue until the white beam turns green,
+this will reveal the green square for all to see.  Once the green square is revealed, this phase is identical to **Phase 1** from this point on, except the
+<ZombieTooltip zombieKey='shadow-werewolf' /> has more health than before.
+
+> When the <ZombieTooltip zombieKey='shadow-werewolf' /> is stunned inside the green square, activate your <ElixirTooltip elixirKey='stock-option' /> or
+<ElixirTooltip elixirKey='free-fire' /> elixir and unload on the <ZombieTooltip zombieKey='shadow-werewolf' /> with your **Silver Bullet** weapon until it is defeated.
+
+<RichImage image="/content/dead-of-the-night/dotn-ending.webp" caption='Ending Cutscene'  />
+
+Congratulations! You have beaten the **Dead of the Night** main quest: **Trial By Ordeal**.
+
+## Video Guides
+
+### Solo Guide by Joltz
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=ra3pJMuDUpg" />
+
+### Co-op Guide by MrRoflWaffles
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=C5s5zwOWpls" />
+
+## Credits
+Some images used were sourced from the following community members:
+- [FreeMetal](https://steamcommunity.com/id/FreeMetal)
+- [CodeNamePizza](https://www.youtube.com/@CodeNamePizza)
+- [FastGuidesGlitch](https://www.youtube.com/@FastGuidesGlitch)

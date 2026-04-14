@@ -6,7 +6,7 @@ import {
 	sendContactEmail,
 	subscribeEmail,
 	unsubscribeEmail,
-} from "@/data/email"
+} from "@/data/email.server"
 import { Email } from "@/lib/services/emails"
 import {
 	expectCauseHasString,

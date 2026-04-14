@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"types": ["bun", "node", "leaflet", "react", "react-dom", "mdx"],
+		"types": ["node", "bun", "leaflet", "mdx", "react", "react-dom"],
 		"target": "es2022",
 		"lib": ["dom", "dom.iterable", "es2022"],
 		"allowJs": true,
@@ -20,26 +20,14 @@
 		"incremental": true,
 		"plugins": [
 			{
-				"name": "next"
-			},
-			{
 				"name": "@effect/language-service",
 				"refactors": true
 			}
 		],
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": ["./src/*", "./*"]
 		}
 	},
-	"include": [
-		"next-env.d.ts",
-		"declarations.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		"**/*.mdx",
-		".next/types/**/*.ts",
-		".next\\dev/types/**/*.ts",
-		".next/dev/types/**/*.ts"
-	],
+	"include": ["src/mdx.d.ts", "**/*.ts", "**/*.tsx", "**/*.mdx"],
 	"exclude": ["node_modules", ".repos"]
 }
