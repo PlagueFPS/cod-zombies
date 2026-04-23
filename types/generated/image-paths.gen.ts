@@ -192,6 +192,7 @@ export type FieldUpgradesImagePath =
 	| "/field-upgrades/ring-of-fire.webp"
 	| "/field-upgrades/tesla-storm.webp"
 	| "/field-upgrades/toxic-growth.webp"
+	| "/field-upgrades/wild-fire.webp"
 
 /** Union of images in `/games` */
 
@@ -363,6 +364,7 @@ export type MapsImagePath =
 	| "/maps/terminus.webp"
 	| "/maps/the-giant.webp"
 	| "/maps/the-tomb.webp"
+	| "/maps/totenreich-preview.webp"
 	| "/maps/tranzit.webp"
 	| "/maps/verruckt.webp"
 	| "/maps/voyage-of-despair.webp"
@@ -417,6 +419,7 @@ export type PreviewsImagePath =
 	| "/previews/shattered-veil-preview.webp"
 	| "/previews/terminus-preview.webp"
 	| "/previews/the-tomb-preview.webp"
+	| "/previews/totenreich-preview-v1.webp"
 
 /** Union of images in `/relics` */
 
@@ -503,6 +506,7 @@ export type ZombiesImagePath =
 	| "/zombies/mimic.webp"
 	| "/zombies/napalm-zombie.webp"
 	| "/zombies/nathan.webp"
+	| "/zombies/necropincer.webp"
 	| "/zombies/nikolai-mech.webp"
 	| "/zombies/nosferatu.webp"
 	| "/zombies/nova-6-bomber.webp"

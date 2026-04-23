@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-03-21T07:03:42.430Z
- * generated in: 29ms
+ * generated at: 2026-04-23T20:59:28.619Z
+ * generated in: 31ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -47,6 +47,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/the-tomb"
 	| "content/main-quests/time-travel-will-tell"
 	| "content/main-quests/tin-man-heart"
+	| "content/main-quests/totenreich"
 	| "content/main-quests/tower-of-babble"
 	| "content/main-quests/trial-by-ordeal"
 	| "content/main-quests/venerated-warrior"
@@ -311,6 +312,7 @@ export type ZombiesPaths =
 	| "content/zombies/elder-disciple"
 	| "content/zombies/eye-of-malice"
 	| "content/zombies/fire-catalyst"
+	| "content/zombies/frost-zombie"
 	| "content/zombies/fury"
 	| "content/zombies/fury-and-wrath"
 	| "content/zombies/gegenees"
@@ -335,6 +337,7 @@ export type ZombiesPaths =
 	| "content/zombies/mimic"
 	| "content/zombies/napalm-zombie"
 	| "content/zombies/nathan"
+	| "content/zombies/necropincer"
 	| "content/zombies/nikolai-mech"
 	| "content/zombies/nosferatu"
 	| "content/zombies/nova-6-bomber"

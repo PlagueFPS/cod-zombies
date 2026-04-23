@@ -91,6 +91,14 @@ const makeMapEntry = <T extends string>(
 ]
 
 const interactiveMapHashMap = HashMap.make(
+	makeMapEntry("totenreich", {
+		title: "Totenreich",
+		state: Option.some("Coming Soon"),
+		image: "/previews/totenreich-preview-v1.webp",
+		game: "black-ops-7",
+		description:
+			"Explore Totenreich in Black Ops 7 Zombies. Find all locations for Perks, Weapons, intel, and more with our interactive map.",
+	}),
 	makeMapEntry("paradox-junction", {
 		title: "Paradox Junction",
 		state: Option.none(),
