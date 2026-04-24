@@ -1,5 +1,6 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
+import { formatForDisplay, useHotkeys } from "@tanstack/react-hotkeys"
 import { CircleAlert, Loader2, Mail, Send } from "lucide-react"
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
@@ -17,7 +18,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { submitContactForm } from "@/data/actions"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { StandardContactFormSchema } from "@/utils/validation-schemas"
 
@@ -59,7 +59,10 @@ export default function ContactForm({ className }: ContactFormProps) {
 		},
 	})
 
-	useShortcut("c", () => handleOpenChange(!open))
+	useHotkeys([
+		{ hotkey: "C", callback: () => handleOpenChange(!open) },
+		{ hotkey: "Mod+Enter", callback: () => form.handleSubmit(), options: { enabled: open } },
+	])
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -71,13 +74,6 @@ export default function ContactForm({ className }: ContactFormProps) {
 			form.reset()
 		}
 		setOpen(open)
-	}
-
-	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-			e.preventDefault()
-			void form.handleSubmit()
-		}
 	}
 
 	return (
@@ -93,7 +89,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 				</TooltipTrigger>
 				<TooltipContent side="top" sideOffset={6} className="z-999">
 					<div className="flex items-center gap-1">
-						<Shortcut shortcuts="C" size="sm" variant="ghost" />
+						<Shortcut shortcut="C" size="sm" variant="ghost" />
 						<span>to open contact form</span>
 					</div>
 				</TooltipContent>
@@ -123,7 +119,6 @@ export default function ContactForm({ className }: ContactFormProps) {
 												value={field.state.value}
 												onChange={e => field.handleChange(e.target.value)}
 												onBlur={field.handleBlur}
-												onKeyDown={handleKeyDown}
 												aria-invalid={isInvalid}
 											/>
 											<FieldDescription>Name you want to be addressed by.</FieldDescription>
@@ -152,7 +147,6 @@ export default function ContactForm({ className }: ContactFormProps) {
 												value={field.state.value}
 												onChange={e => field.handleChange(e.target.value)}
 												onBlur={field.handleBlur}
-												onKeyDown={handleKeyDown}
 												aria-invalid={isInvalid}
 											/>
 											<FieldDescription>Email you want to be contacted at.</FieldDescription>
@@ -180,7 +174,6 @@ export default function ContactForm({ className }: ContactFormProps) {
 												value={field.state.value}
 												onChange={e => field.handleChange(e.target.value)}
 												onBlur={field.handleBlur}
-												onKeyDown={handleKeyDown}
 												aria-invalid={isInvalid}
 											/>
 											<FieldDescription>Message you want to send.</FieldDescription>
@@ -218,7 +211,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 							</TooltipTrigger>
 							<TooltipContent side="bottom" sideOffset={6} className="z-999">
 								<div className="flex items-center gap-1">
-									<Shortcut shortcuts={["Ctrl", "↩"]} size="sm" />
+									<Shortcut shortcut={formatForDisplay("Mod+Enter")} size="sm" />
 									<span>to submit contact form</span>
 								</div>
 							</TooltipContent>

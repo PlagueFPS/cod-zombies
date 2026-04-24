@@ -1,5 +1,5 @@
-import "@/app/globals.css"
 import type { Metadata, Viewport } from "next"
+import "@/app/globals.css"
 import { GoogleAnalytics } from "@next/third-parties/google"
 import { Geist, Geist_Mono } from "next/font/google"
 import Script from "next/script"
@@ -8,7 +8,7 @@ import ReactScanWrapper from "@/components/client/react-scan-wrapper"
 import { Footer } from "@/components/server/footer"
 import { Header } from "@/components/server/header"
 import { Toaster } from "@/components/ui/sonner"
-import { KeyboardShortcutsProvider } from "@/contexts/keyboard-shortcuts"
+import { HotkeysProvider } from "@/contexts/hotkeys-provider"
 import { ThemeProvider } from "@/contexts/theme-provider"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
 import { getServerUrl } from "@/utils/server-functions"
@@ -74,7 +74,7 @@ export default function RootLayout({ children }: LayoutProps) {
 			<body
 				className={`${geist.className} ${geist.variable} ${geistMono.variable} flex min-h-dvh flex-col [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-400 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-700 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-600 [&::-webkit-scrollbar-track]:bg-transparent`}
 			>
-				<KeyboardShortcutsProvider>
+				<HotkeysProvider>
 					<ThemeProvider
 						attribute="class"
 						defaultTheme="system"
@@ -92,7 +92,7 @@ export default function RootLayout({ children }: LayoutProps) {
 						crossOrigin="anonymous"
 						src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2572200153117332"
 					/>
-				</KeyboardShortcutsProvider>
+				</HotkeysProvider>
 			</body>
 		</html>
 	)

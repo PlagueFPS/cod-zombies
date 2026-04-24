@@ -1,7 +1,5 @@
 import { Search } from "lucide-react"
-import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
-import { IS_MAC_OS } from "@/utils/constants"
 
 export function SearchBarLoader() {
 	return (
@@ -14,8 +12,7 @@ export function SearchBarLoader() {
 				className="relative hidden w-64 animate-pulse gap-x-2 rounded-sm text-xs text-muted-foreground sm:flex"
 			>
 				<Search className="size-5" />
-				<span className="text-sm">Search Maps</span>
-				<Shortcut shortcuts={IS_MAC_OS ? ["⌘", "K"] : ["Ctrl", "K"]} size="sm" />
+				<span className="text-sm">Search</span>
 			</Button>
 			<Button
 				type="button"

@@ -1,4 +1,5 @@
 "use client"
+import { useHotkey } from "@tanstack/react-hotkeys"
 import { Copy, Share2 } from "lucide-react"
 import { useState } from "react"
 import {
@@ -10,10 +11,10 @@ import {
 	LinkedinShareButton,
 	RedditIcon,
 	RedditShareButton,
-	TwitterShareButton,
 	WhatsappIcon,
 	WhatsappShareButton,
 	XIcon,
+	XShareButton,
 } from "react-share"
 import { toast } from "sonner"
 import { Shortcut } from "@/components/client/shortcut"
@@ -28,7 +29,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 
 interface ShareButtonProps extends React.ComponentProps<"button"> {
 	title: string
@@ -44,7 +44,7 @@ export function ShareButton({ title, url, ...props }: ShareButtonProps) {
 		setOpen(false)
 	}
 
-	useShortcut("s", () => setOpen(prev => !prev))
+	useHotkey("S", () => setOpen(prev => !prev))
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
@@ -57,7 +57,7 @@ export function ShareButton({ title, url, ...props }: ShareButtonProps) {
 					<Share2 className="size-4" />
 				</TooltipTrigger>
 				<TooltipContent sideOffset={5} className="z-999 flex items-center justify-center gap-1">
-					<Shortcut shortcuts="S" size="sm" variant="ghost" />
+					<Shortcut shortcut="S" size="sm" variant="ghost" />
 					<span>Share</span>
 				</TooltipContent>
 			</Tooltip>
@@ -70,9 +70,9 @@ export function ShareButton({ title, url, ...props }: ShareButtonProps) {
 				</DialogHeader>
 				<div className="grid w-full grid-cols-3 items-center gap-y-4">
 					<div className="flex flex-col items-center justify-center gap-2 text-xs">
-						<TwitterShareButton url={url} title={title}>
+						<XShareButton url={url} title={title}>
 							<XIcon size={40} round />
-						</TwitterShareButton>
+						</XShareButton>
 						<span>X</span>
 					</div>
 					<div className="flex flex-col items-center justify-center gap-2 text-xs">

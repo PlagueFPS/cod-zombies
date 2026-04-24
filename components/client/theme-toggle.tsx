@@ -1,10 +1,10 @@
 "use client"
+import { useHotkey } from "@tanstack/react-hotkeys"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 
 interface ThemeToggleProps {
@@ -27,7 +27,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
 		})
 	}
 
-	useShortcut("t", () => handleThemeToggle())
+	useHotkey("T", () => handleThemeToggle())
 
 	return (
 		<div className="flex w-fit p-0.5">
@@ -45,7 +45,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
 					)}
 				</TooltipTrigger>
 				<TooltipContent sideOffset={5} className="flex items-center justify-center gap-2">
-					<Shortcut shortcuts="T" size="sm" variant="outline" />
+					<Shortcut shortcut="T" size="sm" variant="outline" />
 					<span>Toggle Theme</span>
 				</TooltipContent>
 			</Tooltip>

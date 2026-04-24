@@ -1,8 +1,5 @@
 import type { Metadata } from "next"
 
-// navigator.platform is deprecated and should be replaced with navigator.userAgentData.platform once stable
-export const IS_MAC_OS =
-	typeof window !== "undefined" && window.navigator.platform.startsWith("Mac")
 /** Whether the current environment is development */
 export const IN_DEVELOPMENT = process.env.NODE_ENV === "development"
 export const SITE_TITLE = "Call of Duty: Zombies Guides"

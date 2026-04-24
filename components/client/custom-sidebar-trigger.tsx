@@ -1,4 +1,5 @@
 "use client"
+import { formatForDisplay } from "@tanstack/react-hotkeys"
 import { PanelLeftOpenIcon } from "lucide-react"
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
@@ -33,7 +34,7 @@ export function CustomSideBarTrigger({ className }: ICustomSidebarTrigger) {
 		>
 			<PanelLeftOpenIcon className="size-5 transition-all" />
 			<span className="sr-only">Toggle Sidebar</span>
-			{!isMobile && <Shortcut shortcuts={["Ctrl", "B"]} size="sm" variant="ghost" />}
+			{!isMobile && <Shortcut shortcut={formatForDisplay("Mod+B")} size="sm" variant="ghost" />}
 		</Button>
 	)
 }

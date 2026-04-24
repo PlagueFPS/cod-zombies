@@ -1,7 +1,9 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
-import { useTransition } from "react"
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { useRef, useTransition } from "react"
 import { toast } from "sonner"
+import { Shortcut } from "@/components/client/shortcut"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import {
 	InputGroup,
@@ -10,11 +12,13 @@ import {
 	InputGroupInput,
 } from "@/components/ui/input-group"
 import { Spinner } from "@/components/ui/spinner"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { subscribeToNewsletter } from "@/data/actions"
 import { StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 
 export default function NewsletterForm() {
 	const [isPending, startTransition] = useTransition()
+	const inputRef = useRef<HTMLInputElement>(null)
 	const form = useForm({
 		defaultValues: {
 			email: "",
@@ -45,16 +49,11 @@ export default function NewsletterForm() {
 		},
 	})
 
+	useHotkey("Mod+Enter", () => form.handleSubmit(), { target: inputRef })
+
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		void form.handleSubmit()
-	}
-
-	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-			e.preventDefault()
-			void form.handleSubmit()
-		}
 	}
 
 	return (
@@ -75,32 +74,44 @@ export default function NewsletterForm() {
 												required
 												type="email"
 												placeholder="you@example.com"
+												ref={inputRef}
 												id={field.name}
 												name={field.name}
 												value={field.state.value}
 												onBlur={field.handleBlur}
 												onChange={e => field.handleChange(e.target.value)}
 												aria-invalid={isInvalid}
-												onKeyDown={handleKeyDown}
 												className="rounded-sm pr-28"
 											/>
 											<InputGroupAddon align="inline-end">
-												<InputGroupButton
-													type="submit"
-													form="newsletter-form"
-													variant="default"
-													disabled={isPending}
-													aria-disabled={isPending}
-												>
-													{isPending ? (
-														<>
-															<Spinner />
-															Subscribing
-														</>
-													) : (
-														"Subscribe"
-													)}
-												</InputGroupButton>
+												<Tooltip>
+													<TooltipTrigger
+														render={
+															<InputGroupButton
+																type="submit"
+																form="newsletter-form"
+																variant="default"
+																disabled={isPending}
+																aria-disabled={isPending}
+															/>
+														}
+													>
+														{isPending ? (
+															<>
+																<Spinner />
+																Subscribing
+															</>
+														) : (
+															"Subscribe"
+														)}
+													</TooltipTrigger>
+													<TooltipContent side="top" sideOffset={6}>
+														<div className="flex items-center gap-1">
+															<Shortcut shortcut={formatForDisplay("Mod+Enter")} size="sm" />
+															<span>to subscribe</span>
+														</div>
+													</TooltipContent>
+												</Tooltip>
 											</InputGroupAddon>
 										</InputGroup>
 										{isInvalid && <FieldError errors={field.state.meta.errors} />}
