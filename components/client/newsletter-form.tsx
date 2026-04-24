@@ -1,6 +1,6 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
-import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { useHotkey } from "@tanstack/react-hotkeys"
 import { useRef, useTransition } from "react"
 import { toast } from "sonner"
 import { Shortcut } from "@/components/client/shortcut"
@@ -107,7 +107,7 @@ export default function NewsletterForm() {
 													</TooltipTrigger>
 													<TooltipContent side="top" sideOffset={6}>
 														<div className="flex items-center gap-1">
-															<Shortcut shortcut={formatForDisplay("Mod+Enter")} size="sm" />
+															<Shortcut shortcut="Mod+Enter" size="sm" />
 															<span>to subscribe</span>
 														</div>
 													</TooltipContent>

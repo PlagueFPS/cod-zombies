@@ -1,5 +1,5 @@
 "use client"
-import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { useHotkey } from "@tanstack/react-hotkeys"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
@@ -64,7 +64,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 									sideOffset={5}
 									className="z-999 flex items-center justify-center gap-2"
 								>
-									<Shortcut shortcut={formatForDisplay("Alt+C")} size="sm" variant="ghost" />
+									<Shortcut shortcut="Alt+C" size="sm" variant="ghost" />
 									<span>Toggle Expanded</span>
 								</TooltipContent>
 							</Tooltip>

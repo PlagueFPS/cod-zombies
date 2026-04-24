@@ -1,5 +1,5 @@
 "use client"
-import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { useHotkey } from "@tanstack/react-hotkeys"
 import { Shortcut } from "@/components/client/shortcut"
 import { Button, type ButtonProps } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -43,7 +43,7 @@ export function BackToTopButton({
 			</TooltipTrigger>
 			<TooltipContent side="bottom" sideOffset={6}>
 				<div className="flex items-center gap-1">
-					<Shortcut shortcut={formatForDisplay("Alt+T")} size="sm" variant="ghost" />
+					<Shortcut shortcut="Alt+T" size="sm" variant="ghost" />
 					<span>to scroll to top</span>
 				</div>
 			</TooltipContent>

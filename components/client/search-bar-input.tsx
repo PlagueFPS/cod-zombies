@@ -1,6 +1,6 @@
 "use client"
 import type { Route } from "next"
-import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { useHotkey } from "@tanstack/react-hotkeys"
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
@@ -75,7 +75,7 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 			>
 				<Search className="size-5" />
 				<span className="mr-auto text-sm">Search</span>
-				<Shortcut shortcut={formatForDisplay("Mod+K")} size="sm" />
+				<Shortcut shortcut="Mod+K" size="sm" />
 			</CommandDialogTrigger>
 			<CommandDialogPopup>
 				<Command items={searchItems}>
@@ -126,7 +126,7 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
-							<Shortcut shortcut="Esc" size="sm" variant="outline" />
+							<Shortcut shortcut="Escape" size="sm" variant="outline" />
 							<span>Close</span>
 						</div>
 					</CommandFooter>

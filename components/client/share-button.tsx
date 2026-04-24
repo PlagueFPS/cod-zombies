@@ -44,7 +44,7 @@ export function ShareButton({ title, url, ...props }: ShareButtonProps) {
 		setOpen(false)
 	}
 
-	useHotkey("S", () => setOpen(prev => !prev))
+	useHotkey("S", () => setOpen(prev => !prev), { requireReset: true })
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>

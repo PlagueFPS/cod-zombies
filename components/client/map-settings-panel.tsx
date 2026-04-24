@@ -1,4 +1,4 @@
-import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { useHotkey } from "@tanstack/react-hotkeys"
 import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { Shortcut } from "@/components/client/shortcut"
@@ -86,7 +86,7 @@ export default function MapSettingsPanel() {
 					sideOffset={5}
 					className="z-999 flex items-center justify-center gap-2"
 				>
-					<Shortcut shortcut={formatForDisplay("Mod+/")} size="sm" variant="ghost" />
+					<Shortcut shortcut="Mod+/" size="sm" variant="ghost" />
 					<span>Map Settings</span>
 				</TooltipContent>
 			</Tooltip>
@@ -412,7 +412,7 @@ export default function MapSettingsPanel() {
 					{!isMobile ? (
 						<div className="mr-auto flex items-center justify-center gap-1 text-sm text-muted-foreground">
 							<span>Shortcut:</span>
-							<Shortcut shortcut={formatForDisplay("Mod+/")} size="sm" />
+							<Shortcut shortcut="Mod+/" size="sm" />
 						</div>
 					) : null}
 					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>

@@ -1,4 +1,5 @@
 import type React from "react"
+import { formatForDisplay, type RegisterableHotkey } from "@tanstack/react-hotkeys"
 import { cva } from "class-variance-authority"
 import { Children } from "react"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
@@ -11,10 +12,12 @@ interface ShortcutWithChildren {
 	variant?: "default" | "outline" | "ghost"
 	size?: "sm" | "md" | "lg"
 	shortcut?: never
+	useSymbols?: never
 }
 
 interface ShortcutWithShortcuts {
-	shortcut: string
+	shortcut: RegisterableHotkey
+	useSymbols?: boolean
 	children?: never
 	className?: string
 	variant?: "default" | "outline" | "ghost"
@@ -49,6 +52,7 @@ const shortcutVariants = cva(
 
 export function Shortcut({
 	shortcut,
+	useSymbols = true,
 	children,
 	className,
 	variant = "default",
@@ -59,7 +63,7 @@ export function Shortcut({
 	return (
 		<KbdGroup>
 			{shortcut ? (
-				<Kbd className={kbdClassName}>{shortcut}</Kbd>
+				<Kbd className={kbdClassName}>{formatForDisplay(shortcut, { useSymbols })}</Kbd>
 			) : (
 				Children.toArray(children).map((child, index) => {
 					const key = `shortcut-${index + 1}`
