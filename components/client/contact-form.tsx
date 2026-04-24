@@ -1,6 +1,6 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
-import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { formatForDisplay, useHotkeys } from "@tanstack/react-hotkeys"
 import { CircleAlert, Loader2, Mail, Send } from "lucide-react"
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
@@ -59,8 +59,10 @@ export default function ContactForm({ className }: ContactFormProps) {
 		},
 	})
 
-	useHotkey("C", () => handleOpenChange(!open))
-	useHotkey("Mod+Enter", () => form.handleSubmit(), { enabled: open })
+	useHotkeys([
+		{ hotkey: "C", callback: () => handleOpenChange(!open) },
+		{ hotkey: "Mod+Enter", callback: () => form.handleSubmit(), options: { enabled: open } },
+	])
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
