@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import "@/app/globals.css"
 import { GoogleAnalytics } from "@next/third-parties/google"
-// import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools"
 import { Geist, Geist_Mono } from "next/font/google"
 import Script from "next/script"
 import { HashLinkHandler } from "@/components/client/custom-link"
@@ -9,7 +8,6 @@ import ReactScanWrapper from "@/components/client/react-scan-wrapper"
 import { Footer } from "@/components/server/footer"
 import { Header } from "@/components/server/header"
 import { Toaster } from "@/components/ui/sonner"
-// import { TanStackDevtools } from "@tanstack/react-devtools"
 import { HotkeysProvider } from "@/contexts/keyboard-shortcuts"
 import { ThemeProvider } from "@/contexts/theme-provider"
 import { GLOBAL_OG_PROPS, IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
@@ -94,7 +92,6 @@ export default function RootLayout({ children }: LayoutProps) {
 						crossOrigin="anonymous"
 						src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2572200153117332"
 					/>
-					{/*<TanStackDevtools config={{ position: "top-left" }} plugins={[hotkeysDevtoolsPlugin()]} />*/}
 				</HotkeysProvider>
 			</body>
 		</html>
