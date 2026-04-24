@@ -1,6 +1,6 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
-import { formatForDisplay, useHotkeys } from "@tanstack/react-hotkeys"
+import { useHotkeys } from "@tanstack/react-hotkeys"
 import { CircleAlert, Loader2, Mail, Send } from "lucide-react"
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
@@ -61,7 +61,11 @@ export default function ContactForm({ className }: ContactFormProps) {
 
 	useHotkeys([
 		{ hotkey: "C", callback: () => handleOpenChange(!open) },
-		{ hotkey: "Mod+Enter", callback: () => form.handleSubmit(), options: { enabled: open } },
+		{
+			hotkey: "Mod+Enter",
+			callback: () => form.handleSubmit(),
+			options: { enabled: open, conflictBehavior: "allow" },
+		},
 	])
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -211,7 +215,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 							</TooltipTrigger>
 							<TooltipContent side="bottom" sideOffset={6} className="z-999">
 								<div className="flex items-center gap-1">
-									<Shortcut shortcut={formatForDisplay("Mod+Enter")} size="sm" />
+									<Shortcut shortcut="Mod+Enter" size="sm" />
 									<span>to submit contact form</span>
 								</div>
 							</TooltipContent>

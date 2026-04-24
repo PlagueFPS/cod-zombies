@@ -27,7 +27,7 @@ export default function ThemeToggle({ className }: ThemeToggleProps) {
 		})
 	}
 
-	useHotkey("T", () => handleThemeToggle())
+	useHotkey("T", () => handleThemeToggle(), { requireReset: true })
 
 	return (
 		<div className="flex w-fit p-0.5">

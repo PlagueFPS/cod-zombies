@@ -1,6 +1,6 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
-import { formatForDisplay, useHotkeys } from "@tanstack/react-hotkeys"
+import { useHotkeys } from "@tanstack/react-hotkeys"
 import { Cause, Exit } from "effect"
 import { CircleAlert, MessageCircleHeart, Send } from "lucide-react"
 import { useState, useTransition } from "react"
@@ -79,7 +79,11 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 
 	useHotkeys([
 		{ hotkey: "F", callback: () => handleOpenChange(!open) },
-		{ hotkey: "Mod+Enter", callback: () => form.handleSubmit(), options: { enabled: open } },
+		{
+			hotkey: "Mod+Enter",
+			callback: () => form.handleSubmit(),
+			options: { enabled: open, conflictBehavior: "allow" },
+		},
 	])
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -196,7 +200,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 								</TooltipTrigger>
 								<TooltipContent side="bottom" sideOffset={6}>
 									<div className="flex items-center gap-1">
-										<Shortcut shortcut={formatForDisplay("Mod+Enter")} size="sm" />
+										<Shortcut shortcut="Mod+Enter" size="sm" />
 										<span>to submit feedback</span>
 									</div>
 								</TooltipContent>

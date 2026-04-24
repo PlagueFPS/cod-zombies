@@ -89,7 +89,7 @@ function SidebarProvider({
 	}, [isMobile, setOpen, setOpenMobile])
 
 	// Adds a keyboard shortcut to toggle the sidebar.
-	useHotkey("Mod+S", () => toggleSidebar())
+	useHotkey("Mod+B", () => toggleSidebar())
 
 	// We add a state so that we can do data-state="expanded" or "collapsed".
 	// This makes it easier to style the sidebar with Tailwind classes.
