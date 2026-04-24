@@ -1,4 +1,5 @@
 "use client"
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
@@ -9,11 +10,9 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTableOfContents } from "@/hooks/use-table-of-contents"
 import { cn } from "@/lib/utils"
-import { IS_MAC_OS } from "@/utils/constants"
 
 export interface Heading {
 	type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
@@ -30,7 +29,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 	const [isExpanded, setIsExpanded] = useState(headings.length > 4)
 	const isMobile = useIsMobile(1280)
 
-	useShortcut("alt+c", () => setIsExpanded(!isExpanded))
+	useHotkey("Alt+C", () => setIsExpanded(!isExpanded))
 
 	return (
 		<>
@@ -65,11 +64,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 									sideOffset={5}
 									className="z-999 flex items-center justify-center gap-2"
 								>
-									<Shortcut
-										shortcuts={IS_MAC_OS ? ["Option", "C"] : ["Alt", "C"]}
-										size="sm"
-										variant="ghost"
-									/>
+									<Shortcut shortcut={formatForDisplay("Alt+C")} size="sm" variant="ghost" />
 									<span>Toggle Expanded</span>
 								</TooltipContent>
 							</Tooltip>

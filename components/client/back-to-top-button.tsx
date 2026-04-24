@@ -1,9 +1,8 @@
 "use client"
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
 import { Shortcut } from "@/components/client/shortcut"
 import { Button, type ButtonProps } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
-import { IS_MAC_OS } from "@/utils/constants"
 
 interface BackToTopButtonProps extends React.ComponentProps<"button"> {
 	mobile?: boolean
@@ -35,7 +34,7 @@ export function BackToTopButton({
 		requestAnimationFrame(animateScroll)
 	}
 
-	useShortcut("alt+t", scrollToTop)
+	useHotkey("Alt+T", () => scrollToTop())
 
 	return (
 		<Tooltip>
@@ -44,11 +43,7 @@ export function BackToTopButton({
 			</TooltipTrigger>
 			<TooltipContent side="bottom" sideOffset={6}>
 				<div className="flex items-center gap-1">
-					<Shortcut
-						shortcuts={IS_MAC_OS ? ["Option", "T"] : ["Alt", "T"]}
-						size="sm"
-						variant="ghost"
-					/>
+					<Shortcut shortcut={formatForDisplay("Alt+T")} size="sm" variant="ghost" />
 					<span>to scroll to top</span>
 				</div>
 			</TooltipContent>

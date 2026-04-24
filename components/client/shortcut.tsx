@@ -1,6 +1,5 @@
 import type React from "react"
 import { cva } from "class-variance-authority"
-import { Array as Arr } from "effect"
 import { Children } from "react"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
 import { cn } from "@/lib/utils"
@@ -11,12 +10,11 @@ interface ShortcutWithChildren {
 	className?: string
 	variant?: "default" | "outline" | "ghost"
 	size?: "sm" | "md" | "lg"
-	shortcuts?: never
+	shortcut?: never
 }
 
 interface ShortcutWithShortcuts {
-	/** String shortcut(s) to display as keybindings. */
-	shortcuts: string | string[]
+	shortcut: string
 	children?: never
 	className?: string
 	variant?: "default" | "outline" | "ghost"
@@ -50,7 +48,7 @@ const shortcutVariants = cva(
 )
 
 export function Shortcut({
-	shortcuts,
+	shortcut,
 	children,
 	className,
 	variant = "default",
@@ -60,20 +58,18 @@ export function Shortcut({
 
 	return (
 		<KbdGroup>
-			{shortcuts
-				? Arr.ensure(shortcuts).map((shortcut, index) => (
-						<Kbd key={`${shortcut}-${index + 1}`} className={kbdClassName}>
-							{shortcut}
+			{shortcut ? (
+				<Kbd className={kbdClassName}>{shortcut}</Kbd>
+			) : (
+				Children.toArray(children).map((child, index) => {
+					const key = `shortcut-${index + 1}`
+					return (
+						<Kbd key={key} className={kbdClassName}>
+							{child}
 						</Kbd>
-					))
-				: Children.toArray(children).map((child, index) => {
-						const key = `shortcut-${index + 1}`
-						return (
-							<Kbd key={key} className={kbdClassName}>
-								{child}
-							</Kbd>
-						)
-					})}
+					)
+				})
+			)}
 		</KbdGroup>
 	)
 }

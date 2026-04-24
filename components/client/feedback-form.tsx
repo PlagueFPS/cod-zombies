@@ -1,5 +1,6 @@
 "use client"
 import { useForm } from "@tanstack/react-form"
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
 import { Cause, Exit } from "effect"
 import { CircleAlert, MessageCircleHeart, Send } from "lucide-react"
 import { useState, useTransition } from "react"
@@ -20,7 +21,6 @@ import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { submitFeedbackForm } from "@/data/actions"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
 import { StandardFeedbackFormSchema, validateFeedbackForm } from "@/utils/validation-schemas"
 
@@ -77,7 +77,8 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 		},
 	})
 
-	useShortcut("f", () => setOpen(true))
+	useHotkey("F", () => handleOpenChange(!open))
+	useHotkey("Mod+Enter", () => form.handleSubmit(), { enabled: open })
 
 	const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -91,13 +92,6 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 		setOpen(open)
 	}
 
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter") {
-			e.preventDefault()
-			void form.handleSubmit()
-		}
-	}
-
 	return (
 		<div className="flex items-center justify-center">
 			<Dialog open={open} onOpenChange={handleOpenChange}>
@@ -108,7 +102,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 				>
 					<MessageCircleHeart className="size-5" />
 					Feedback
-					<Shortcut shortcuts="F" size="sm" className="hidden lg:inline-flex" />
+					<Shortcut shortcut="F" size="sm" className="hidden lg:inline-flex" />
 				</DialogTrigger>
 				<DialogContent className="rounded-lg">
 					<DialogHeader>
@@ -134,7 +128,6 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 													value={field.state.value}
 													onChange={e => field.handleChange(e.target.value)}
 													onBlur={field.handleBlur}
-													onKeyDown={handleKeyDown}
 													aria-invalid={isInvalid}
 												/>
 												<FieldDescription>
@@ -161,7 +154,6 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 													placeholder="What can we improve?"
 													className="min-h-24"
 													value={field.state.value}
-													onKeyDown={handleKeyDown}
 													onChange={e => field.handleChange(e.target.value)}
 													onBlur={field.handleBlur}
 												/>
@@ -202,7 +194,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 								</TooltipTrigger>
 								<TooltipContent side="bottom" sideOffset={6}>
 									<div className="flex items-center gap-1">
-										<Shortcut shortcuts={["Ctrl", "↩"]} size="sm" />
+										<Shortcut shortcut={formatForDisplay("Mod+Enter")} size="sm" />
 										<span>to submit feedback</span>
 									</div>
 								</TooltipContent>

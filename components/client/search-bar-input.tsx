@@ -1,5 +1,6 @@
 "use client"
 import type { Route } from "next"
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
@@ -32,9 +33,7 @@ import {
 	CommandPanel,
 	CommandSeparator,
 } from "@/components/ui/command"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { cn } from "@/lib/utils"
-import { IS_MAC_OS } from "@/utils/constants"
 
 const SEARCH_ICONS = {
 	BookText: BookTextIcon,
@@ -60,9 +59,8 @@ interface SearchInputProps {
 export function SearchBarInput({ searchItems }: SearchInputProps) {
 	const router = useRouter()
 	const [open, setOpen] = useState(false)
-	const shortcut = IS_MAC_OS ? "meta+k" : "ctrl+k"
 
-	useShortcut(shortcut, () => setOpen(prev => !prev), { ignoreInputs: false })
+	useHotkey("Mod+K", () => setOpen(prev => !prev))
 
 	const onClickHandler = <T extends string>(url: Route<T>) => {
 		setOpen(false)
@@ -77,7 +75,7 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 			>
 				<Search className="size-5" />
 				<span className="mr-auto text-sm">Search</span>
-				<Shortcut shortcuts={IS_MAC_OS ? ["⌘", "K"] : ["Ctrl", "K"]} size="sm" />
+				<Shortcut shortcut={formatForDisplay("Mod+K")} size="sm" />
 			</CommandDialogTrigger>
 			<CommandDialogPopup>
 				<Command items={searchItems}>
@@ -128,7 +126,7 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
-							<Shortcut shortcuts="Esc" size="sm" variant="outline" />
+							<Shortcut shortcut="Esc" size="sm" variant="outline" />
 							<span>Close</span>
 						</div>
 					</CommandFooter>

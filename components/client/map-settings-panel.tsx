@@ -1,3 +1,4 @@
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
 import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { Shortcut } from "@/components/client/shortcut"
@@ -17,7 +18,6 @@ import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { type TSettingPath, useMapSettings } from "@/contexts/interactive-map-settings"
-import { useShortcut } from "@/hooks/use-keyboard-shortcuts"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
@@ -36,7 +36,7 @@ export default function MapSettingsPanel() {
 		setOpen(open)
 	}
 
-	useShortcut("shift+?", () => handleOpenChange(!open))
+	useHotkey("Mod+/", () => handleOpenChange(!open))
 
 	const hasSettingChanged = (settingPath: TSettingPath) => {
 		const [parentKey, subKey] = settingPath.split(".")
@@ -86,7 +86,7 @@ export default function MapSettingsPanel() {
 					sideOffset={5}
 					className="z-999 flex items-center justify-center gap-2"
 				>
-					<Shortcut shortcuts="?" size="sm" variant="ghost" />
+					<Shortcut shortcut={formatForDisplay("Mod+/")} size="sm" variant="ghost" />
 					<span>Map Settings</span>
 				</TooltipContent>
 			</Tooltip>
@@ -411,8 +411,8 @@ export default function MapSettingsPanel() {
 				<DialogFooter className="flex-row justify-between">
 					{!isMobile ? (
 						<div className="mr-auto flex items-center justify-center gap-1 text-sm text-muted-foreground">
-							<span>Keyboard Shortcut:</span>
-							<Shortcut shortcuts="?" size="sm" />
+							<span>Shortcut:</span>
+							<Shortcut shortcut={formatForDisplay("Mod+/")} size="sm" />
 						</div>
 					) : null}
 					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
