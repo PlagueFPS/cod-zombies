@@ -1,6 +1,4 @@
-import { formatForDisplay } from "@tanstack/react-hotkeys"
 import { Search } from "lucide-react"
-import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 
 export function SearchBarLoader() {
@@ -14,8 +12,7 @@ export function SearchBarLoader() {
 				className="relative hidden w-64 animate-pulse gap-x-2 rounded-sm text-xs text-muted-foreground sm:flex"
 			>
 				<Search className="size-5" />
-				<span className="text-sm">Search Maps</span>
-				<Shortcut shortcut={formatForDisplay("Mod+K")} size="sm" />
+				<span className="text-sm">Search</span>
 			</Button>
 			<Button
 				type="button"

@@ -33,7 +33,7 @@
 		"@react-email/components": "1.0.10",
 		"@t3-oss/env-nextjs": "0.13.10",
 		"@tanstack/react-form": "^1.28.6",
-		"@tanstack/react-hotkeys": "^0.9.1",
+		"@tanstack/react-hotkeys": "0.9.1",
 		"@vercel/config": "^0.0.40",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"botid": "^1.5.11",
