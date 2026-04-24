@@ -1,7 +1,7 @@
+import { formatForDisplay } from "@tanstack/react-hotkeys"
 import { Search } from "lucide-react"
 import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
-import { IS_MAC_OS } from "@/utils/constants"
 
 export function SearchBarLoader() {
 	return (
@@ -15,7 +15,7 @@ export function SearchBarLoader() {
 			>
 				<Search className="size-5" />
 				<span className="text-sm">Search Maps</span>
-				<Shortcut shortcuts={IS_MAC_OS ? ["⌘", "K"] : ["Ctrl", "K"]} size="sm" />
+				<Shortcut shortcut={formatForDisplay("Mod+K")} size="sm" />
 			</Button>
 			<Button
 				type="button"
