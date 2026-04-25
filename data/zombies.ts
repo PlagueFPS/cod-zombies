@@ -1773,7 +1773,7 @@ const zombiesHashMap = HashMap.make(
 		elementalWeakness: ["napalm-burst"],
 		attacks: ["melee-swing"],
 		spawnBehavior:
-			"Frozen Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies in the later rounds.",
+			"Frost Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies in the later rounds.",
 		combatStrategy: "content/zombies/frost-zombie",
 	}),
 	makeZombie("necropincer", {
