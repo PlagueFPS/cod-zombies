@@ -1758,25 +1758,24 @@ const zombiesHashMap = HashMap.make(
 			"The Dark Heart is the final boss of the Paradox Junction main quest and will spawn during the final encounter.",
 		combatStrategy: "content/zombies/the-dark-heart",
 	}),
-	// makeZombie("frost-zombie", {
-	// 	title: "Frost Zombie",
-	// 	state: Option.some("Coming Soon"),
-	// 	releaseDate: new Date("April 30, 2026 12:00 AM"),
-	// 	Need an actual image of the Frost Zombie to release this
-	// 	image: "/zombies/frost-zombie.webp",
-	// 	description:
-	// 		"Frost Zombies are lurking enemies emerging from the mists during special rounds to attack in droves.",
-	// 	games: ["black-ops-7"],
-	// 	maps: ["totenreich"],
-	// 	type: "Special",
-	// 	speed: "Medium",
-	// 	weakPoints: ["head"],
-	// 	elementalWeakness: ["napalm-burst"],
-	// 	attacks: ["melee-swing"],
-	// 	spawnBehavior:
-	// 		"Frozen Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies in the later rounds.",
-	// 	combatStrategy: "content/zombies/frost-zombie",
-	// }),
+	makeZombie("frost-zombie", {
+		title: "Frost Zombie",
+		state: Option.some("Coming Soon"),
+		releaseDate: new Date("April 30, 2026 12:00 AM"),
+		image: "/zombies/frost-zombie.webp",
+		description:
+			"Frost Zombies are lurking enemies emerging from the mists during special rounds to attack in droves.",
+		games: ["black-ops-7"],
+		maps: ["totenreich"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: ["napalm-burst"],
+		attacks: ["melee-swing"],
+		spawnBehavior:
+			"Frozen Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies in the later rounds.",
+		combatStrategy: "content/zombies/frost-zombie",
+	}),
 	makeZombie("necropincer", {
 		title: "Necropincer",
 		state: Option.some("Coming Soon"),
