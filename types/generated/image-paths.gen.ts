@@ -482,6 +482,7 @@ export type ZombiesImagePath =
 	| "/zombies/elder-disciple.webp"
 	| "/zombies/eye-of-malice.webp"
 	| "/zombies/fire-catalyst.webp"
+	| "/zombies/frost-zombie.webp"
 	| "/zombies/fury-and-wrath.webp"
 	| "/zombies/fury.webp"
 	| "/zombies/gegenees.webp"

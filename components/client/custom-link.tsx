@@ -6,6 +6,9 @@ import { useEffect } from "react"
 
 interface ICustomLink<T extends string> extends LinkProps<T> {
 	href: Route<T>
+	children?: React.ReactNode
+	className?: string
+	tabIndex?: number
 }
 
 export function CustomLink<T extends string>({ children, href, ...props }: ICustomLink<T>) {
