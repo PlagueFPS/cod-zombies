@@ -1653,7 +1653,7 @@ const zombiesHashMap = HashMap.make(
 		description:
 			"An apex predator twisted by the Dark Aether, driven by madness and aggression with parasitic infestations that make it an Elite level threat.",
 		games: ["black-ops-7"],
-		maps: ["ashes-of-the-damned"],
+		maps: ["ashes-of-the-damned", "totenreich"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["red-glowing-spots", "bee-nests"],
@@ -1760,7 +1760,7 @@ const zombiesHashMap = HashMap.make(
 	}),
 	makeZombie("frost-zombie", {
 		title: "Frost Zombie",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		releaseDate: new Date("April 30, 2026 12:00 AM"),
 		image: "/zombies/frost-zombie.webp",
 		description:
@@ -1773,25 +1773,25 @@ const zombiesHashMap = HashMap.make(
 		elementalWeakness: ["napalm-burst"],
 		attacks: ["melee-swing"],
 		spawnBehavior:
-			"Frost Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies in the later rounds.",
+			"Frost Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies from Round 8 onwards.",
 		combatStrategy: "content/zombies/frost-zombie",
 	}),
 	makeZombie("necropincer", {
 		title: "Necropincer",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		releaseDate: new Date("April 30, 2026 1:00 AM"),
 		image: "/zombies/necropincer.webp",
 		description:
 			"A doomed undead Viking warrior spirit that rises from the cold seas to aid in the protection of Eidskallen.",
 		games: ["black-ops-7"],
 		maps: ["totenreich"],
-		type: "Elite",
-		speed: "Medium",
+		type: "Special",
+		speed: "Fast",
 		weakPoints: ["head"],
-		elementalWeakness: [],
+		elementalWeakness: ["dead-wire"],
 		attacks: ["trident-stab", "trident-throw", "claw-slam", "claw-block"],
 		spawnBehavior:
-			"The Necropincer will first spawn on Round 16, then every 3-5 rounds after that with the chance for multiple to spawn on those rounds.",
+			"The Necropincer will first spawn on Round 12, and will continue to spawn in with normal zombies from that point on.",
 		combatStrategy: "content/zombies/necropincer",
 	}),
 )
