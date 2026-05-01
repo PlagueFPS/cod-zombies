@@ -771,12 +771,15 @@ const mapHashMap = HashMap.make(
 		title: "Totenreich",
 		releaseDate: new Date("April 30, 2026 12:00 AM"),
 		description:
-			"A remote Norwegian fishing town trapped in time after Group 935 experiments warped the entire island into the Dark Aether.",
+			"In the frozen birth place of nuclear fire, a Group 935 research base hides sinister secrets. Awaken the steel colossus, ignite the flame of vengeance, and free the giant Shadowsmith from the Warden's icy grip!",
 		image: "/maps/totenreich-preview.webp",
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/totenreich"),
-		difficulty: Option.none(),
-		state: Option.some("Coming Soon"),
-		estimatedTimeMins: Option.none(),
+		difficulty: Option.some("Medium"),
+		state: Option.some("New"),
+		estimatedTimeMins: Option.some({
+			min: 60,
+			max: 120,
+		}),
 	}),
 )
