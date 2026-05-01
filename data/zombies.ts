@@ -1794,4 +1794,22 @@ const zombiesHashMap = HashMap.make(
 			"The Necropincer will first spawn on Round 12, and will continue to spawn in with normal zombies from that point on.",
 		combatStrategy: "content/zombies/necropincer",
 	}),
+	makeZombie("dravakar", {
+		title: "Dravakar",
+		state: Option.some("New"),
+		releaseDate: new Date("April 30, 2026 2:00 AM"),
+		image: "/zombies/dravakar.webp",
+		description:
+			"A doomed undead Viking warrior spirit that rises from the cold seas to aid in the protection of Eidskallen.",
+		games: ["black-ops-7"],
+		maps: ["totenreich"],
+		type: "Boss",
+		speed: "Slow",
+		weakPoints: ["red-glowing-spots"],
+		elementalWeakness: [],
+		attacks: [],
+		spawnBehavior:
+			"Dravakar is the final boss of the Totenreich main quest and will spawn during the final encounter.",
+		combatStrategy: "content/zombies/dravakar",
+	}),
 )
