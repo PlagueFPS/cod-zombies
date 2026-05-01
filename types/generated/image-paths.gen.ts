@@ -364,7 +364,7 @@ export type MapsImagePath =
 	| "/maps/terminus.webp"
 	| "/maps/the-giant.webp"
 	| "/maps/the-tomb.webp"
-	| "/maps/totenreich-preview.webp"
+	| "/maps/totenreich.webp"
 	| "/maps/tranzit.webp"
 	| "/maps/verruckt.webp"
 	| "/maps/voyage-of-despair.webp"
