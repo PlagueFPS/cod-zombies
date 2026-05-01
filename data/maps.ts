@@ -775,8 +775,11 @@ const mapHashMap = HashMap.make(
 		image: "/maps/totenreich-preview.webp",
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/totenreich"),
-		difficulty: Option.none(),
-		state: Option.some("Coming Soon"),
-		estimatedTimeMins: Option.none(),
+		difficulty: Option.some("Medium"),
+		state: Option.some("New"),
+		estimatedTimeMins: Option.some({
+			min: 45,
+			max: 120,
+		}),
 	}),
 )
