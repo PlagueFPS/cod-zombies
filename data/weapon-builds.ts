@@ -1,6 +1,5 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
 import { HashMap, Option } from "effect"
-import { make } from "effect/unstable/http/HttpClient"
 
 export interface Attachment {
 	/** Unique identifier for the attachment */
