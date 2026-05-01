@@ -1800,7 +1800,7 @@ const zombiesHashMap = HashMap.make(
 		releaseDate: new Date("April 30, 2026 2:00 AM"),
 		image: "/zombies/dravakar.webp",
 		description:
-			"The big brother of Veytharion and Caltheris, Dravakar is an ice giant Shadowsmith force to rule over Eidskallen at the behest of The Warden.",
+			"The big brother of Veytharion and Caltheris, Dravakar is an ice giant Shadowsmith forced to rule over Eidskallen at the behest of The Warden.",
 		games: ["black-ops-7"],
 		maps: ["totenreich"],
 		type: "Boss",
