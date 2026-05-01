@@ -446,6 +446,7 @@ export type RelicsImagePath =
 /** Union of images in `/weapons` */
 
 export type WeaponsImagePath =
+	| "/weapons/1911.webp"
 	| "/weapons/abr-a1.webp"
 	| "/weapons/ak-27.webp"
 	| "/weapons/akita.webp"
@@ -459,6 +460,7 @@ export type WeaponsImagePath =
 	| "/weapons/m34-novaline.webp"
 	| "/weapons/maelstrom.webp"
 	| "/weapons/mxr-17.webp"
+	| "/weapons/voyak-kt-3.webp"
 
 /** Union of images in `/zombies` */
 

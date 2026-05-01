@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-04-23T20:59:28.619Z
- * generated in: 31ms
+ * generated at: 2026-05-01T17:57:09.609Z
+ * generated in: 30ms
  */
 
 /** Union of content paths in `content/legal` */

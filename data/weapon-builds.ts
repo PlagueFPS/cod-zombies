@@ -1,5 +1,6 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
 import { HashMap, Option } from "effect"
+import { make } from "effect/unstable/http/HttpClient"
 
 export interface Attachment {
 	/** Unique identifier for the attachment */
@@ -273,5 +274,17 @@ const weaponBuildHashMap = HashMap.make(
 		image: "/weapons/mxr-17.webp",
 		attachments: Option.none(),
 		buildCode: Option.some("A03-B18BA-KKD63-1"),
+	}),
+	makeWeaponBuild("1911", {
+		title: "1911",
+		image: "/weapons/1911.webp",
+		attachments: Option.none(),
+		buildCode: Option.some("P07-AA94E-1D6UU-11"),
+	}),
+	makeWeaponBuild("voyak-kt-3", {
+		title: "Voyak KT-3",
+		image: "/weapons/voyak-kt-3.webp",
+		attachments: Option.none(),
+		buildCode: Option.some("A09-2JD73-CS1JZ-4N11"),
 	}),
 )
