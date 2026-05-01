@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-01T17:57:09.609Z
- * generated in: 30ms
+ * generated at: 2026-05-01T20:41:27.057Z
+ * generated in: 29ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -309,6 +309,7 @@ export type ZombiesPaths =
 	| "content/zombies/disciple"
 	| "content/zombies/doppelghast"
 	| "content/zombies/dragon"
+	| "content/zombies/dravakar"
 	| "content/zombies/elder-disciple"
 	| "content/zombies/eye-of-malice"
 	| "content/zombies/fire-catalyst"

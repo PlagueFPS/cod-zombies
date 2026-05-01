@@ -1669,7 +1669,7 @@ const zombiesHashMap = HashMap.make(
 		releaseDate: new Date("November 14, 2025 02:00 AM"),
 		image: "/zombies/veytharion.webp",
 		description:
-			"An tormented shadowsmith controlled by the Warden, tasked with containing our crew and the Dark Aether in Ashes of the Damned.",
+			"A tormented shadowsmith controlled by the Warden, tasked with containing our crew and the Dark Aether in Ashes of the Damned.",
 		games: ["black-ops-7"],
 		maps: ["ashes-of-the-damned"],
 		type: "Boss",
@@ -1793,5 +1793,23 @@ const zombiesHashMap = HashMap.make(
 		spawnBehavior:
 			"The Necropincer will first spawn on Round 12, and will continue to spawn in with normal zombies from that point on.",
 		combatStrategy: "content/zombies/necropincer",
+	}),
+	makeZombie("dravakar", {
+		title: "Dravakar",
+		state: Option.some("New"),
+		releaseDate: new Date("April 30, 2026 2:00 AM"),
+		image: "/zombies/dravakar.webp",
+		description:
+			"The big brother of Veytharion and Caltheris, Dravakar is an ice giant Shadowsmith forced to rule over Eidskallen at the behest of The Warden.",
+		games: ["black-ops-7"],
+		maps: ["totenreich"],
+		type: "Boss",
+		speed: "Slow",
+		weakPoints: ["red-glowing-spots"],
+		elementalWeakness: [],
+		attacks: ["ice-rock-barrage", "frozen-dawn"],
+		spawnBehavior:
+			"Dravakar is the final boss of the Totenreich main quest and will spawn during the final encounter.",
+		combatStrategy: "content/zombies/dravakar",
 	}),
 )

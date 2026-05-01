@@ -481,6 +481,7 @@ export type ZombiesImagePath =
 	| "/zombies/disciple.webp"
 	| "/zombies/doppelghast.webp"
 	| "/zombies/dragon.webp"
+	| "/zombies/dravakar.webp"
 	| "/zombies/elder-disciple.webp"
 	| "/zombies/eye-of-malice.webp"
 	| "/zombies/fire-catalyst.webp"
