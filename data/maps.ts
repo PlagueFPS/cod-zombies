@@ -772,7 +772,7 @@ const mapHashMap = HashMap.make(
 		releaseDate: new Date("April 30, 2026 12:00 AM"),
 		description:
 			"In the frozen birth place of nuclear fire, a Group 935 research base hides sinister secrets. Awaken the steel colossus, ignite the flame of vengeance, and free the giant Shadowsmith from the Warden's icy grip!",
-		image: "/maps/totenreich-preview.webp",
+		image: "/maps/totenreich.webp",
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/totenreich"),
 		difficulty: Option.some("Medium"),
