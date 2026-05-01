@@ -640,4 +640,16 @@ const zombieAttacksHashMap = HashMap.make(
 		range: "Short",
 		description: "Summons a shield using its giant claw to block incoming attacks.",
 	}),
+	makeZombieAttack("ice-rock-barrage", {
+		title: "Ice Rock Barrage",
+		range: "Long",
+		description:
+			"Throws a barrage of ice rocks at players, dealing AoE damage, and severe damage if directly impacted.",
+	}),
+	makeZombieAttack("frozen-dawn", {
+		title: "Frozen Dawn",
+		range: "Long",
+		description:
+			"Summons a frozen dawn that denies a large portion of the arena, slowing and dealing damage to players within.",
+	}),
 )
