@@ -322,6 +322,8 @@ export type LayersImagePath =
 	| "/layers/shattered-veil/shattered-veil-layer.webp"
 	| "/layers/terminus/terminus-layer.webp"
 	| "/layers/the-tomb/the-tomb-layer.webp"
+	| "/layers/totenreich/totenreich-boss-fight-arena-layer.webp"
+	| "/layers/totenreich/totenreich-eidskallen-layer.webp"
 
 /** Union of images in `/maps` */
 
