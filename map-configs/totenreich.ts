@@ -1,5 +1,6 @@
 import type { MapConfig } from "@/data/interactive-map"
 import { Option } from "effect"
+import { sharedMarkers } from "./markers"
 
 export const config: MapConfig = {
 	layers: [
@@ -162,6 +163,15 @@ export const config: MapConfig = {
 					locations: [{ x: 0.437, y: 0.423 }],
 				},
 				{
+					id: "liefs-boat-repair",
+					title: "Lief's Boat Repair",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: Option.none(),
+					locations: [{ x: 0.575, y: 0.778 }],
+				},
+				{
 					id: "fishing-spot",
 					title: "Fishing Spot",
 					icon: Option.some("/icons/objectives/fish.webp"),
@@ -181,6 +191,58 @@ export const config: MapConfig = {
 						{ x: 0.508, y: 0.426 },
 						{ x: 0.565, y: 0.329 },
 					],
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
+					locations: [
+						{ x: 0.612, y: 0.797 },
+						{ x: 0.442, y: 0.772 },
+						{ x: 0.583, y: 0.558 },
+						{ x: 0.592, y: 0.394 },
+						{ x: 0.472, y: 0.464 },
+						{ x: 0.249, y: 0.482 },
+						{ x: 0.369, y: 0.308 },
+						{ x: 0.729, y: 0.661 },
+					],
+				},
+				{
+					...sharedMarkers["armor-wall-buy"],
+					locations: [
+						{ x: 0.587, y: 0.61 },
+						{ x: 0.354, y: 0.559 },
+					],
+				},
+				{
+					...sharedMarkers.arsenal,
+					icon: Option.some("/icons/upgrades/arsenal.webp"),
+					locations: [
+						{ x: 0.49, y: 0.63 },
+						{ x: 0.763, y: 0.626 },
+						{ x: 0.196, y: 0.482 },
+					],
+				},
+				{
+					...sharedMarkers["audio-log"],
+					// TODO: add locations for audio logs
+					locations: [],
+				},
+				{
+					...sharedMarkers.document,
+					// TODO: add locations for documents
+					locations: [],
+				},
+				{
+					...sharedMarkers["crafting-table"],
+					locations: [
+						{ x: 0.329, y: 0.703 },
+						{ x: 0.786, y: 0.681 },
+						{ x: 0.635, y: 0.329 },
+					],
+				},
+				{
+					...sharedMarkers["door-buy"],
+					locations: [],
 				},
 			],
 		},
