@@ -3,8 +3,13 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
+<<<<<<< HEAD
  * generated at: 2026-05-02T20:29:07.687Z
  * generated in: 36ms
+=======
+ * generated at: 2026-05-02T03:59:09.484Z
+ * generated in: 31ms
+>>>>>>> 910a9917 (feat: add Agarthan Device relic guide)
  */
 
 /** Union of content paths in `content/legal` */
@@ -55,6 +60,7 @@ export type MainQuestsPaths =
 /** Union of content paths in `content/relics` */
 
 export type RelicsPaths =
+	| "content/relics/agarthan-device"
 	| "content/relics/blood-vials"
 	| "content/relics/bus"
 	| "content/relics/civil-protector-head"

@@ -354,4 +354,19 @@ const relicHashMap = HashMap.make(
 		},
 		content: "content/relics/mangler-helmet",
 	}),
+	makeRelic("agarthan-device", {
+		title: "Agarthan Device",
+		state: Option.some("New"),
+		type: "Wicked",
+		image: "/relics/agarthan-device-relic.webp",
+		description: "Each round, a different type of zombie will spawn",
+		map: "totenreich",
+		discoveredDate: new Date("May 1, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 15,
+			max: 30,
+			reason: "Time varies slightly based on RNG and round progression speed.",
+		},
+		content: "content/relics/agarthan-device",
+	}),
 )
