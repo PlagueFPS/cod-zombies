@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-01T20:41:27.057Z
- * generated in: 29ms
+ * generated at: 2026-05-02T00:32:35.203Z
+ * generated in: 37ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -119,6 +119,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/dead-flowers"
 	| "content/side-quests/destroy-something-beautiful"
 	| "content/side-quests/dig"
+	| "content/side-quests/domineering"
 	| "content/side-quests/doppelganger-jump-scare"
 	| "content/side-quests/dragon-shield-upgrade"
 	| "content/side-quests/dragon-strike-upgrade"
@@ -158,6 +159,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/free-wunderwaffe-dg2"
 	| "content/side-quests/friendy-thrasher"
 	| "content/side-quests/george-romero-glasses"
+	| "content/side-quests/gnome"
 	| "content/side-quests/golden-armor"
 	| "content/side-quests/golden-bucket"
 	| "content/side-quests/golden-spork"
@@ -217,6 +219,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/mummy-jumpscare"
 	| "content/side-quests/mystery"
 	| "content/side-quests/nikolais-demons"
+	| "content/side-quests/no-one-there"
 	| "content/side-quests/noire-mode-filter"
 	| "content/side-quests/nos-fideles"
 	| "content/side-quests/original-pareidolia"
