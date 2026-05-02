@@ -1604,4 +1604,28 @@ const sideQuestHashMap = HashMap.make(
 		map: "paradox-junction",
 		content: "content/side-quests/purple-cyst",
 	}),
+	makeQuest("no-one-there", {
+		state: Option.some("New"),
+		title: "No One There",
+		description:
+			"Learn how to activate the music easter egg song 'No One There' by Kevin Sherwood.",
+		map: "totenreich",
+		content: "content/side-quests/no-one-there",
+	}),
+	makeQuest("gnome", {
+		state: Option.some("New"),
+		title: "Gnome",
+		description:
+			"Find out how to obtain the ability to become a Gnome granting you invincibility while still being able to kill zombies.",
+		map: "totenreich",
+		content: "content/side-quests/gnome",
+	}),
+	makeQuest("domineering", {
+		state: Option.some("New"),
+		title: "Domineering",
+		description:
+			'Discover the truth behind Richtofen\'s past and how he achieved his "Proudest Moment" which single-handedly won the war for Nazi Germany.',
+		map: "totenreich",
+		content: "content/side-quests/domineering",
+	}),
 )
