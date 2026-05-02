@@ -1628,4 +1628,12 @@ const sideQuestHashMap = HashMap.make(
 		map: "totenreich",
 		content: "content/side-quests/domineering",
 	}),
+	makeQuest("fishy-fish-bot", {
+		state: Option.some("New"),
+		title: "Fishy Fish Bot",
+		description:
+			'Learn how to unlock this secret "Fishy Fish Bot" trap that makes use of an old friend.',
+		map: "totenreich",
+		content: "content/side-quests/fishy-fish-bot",
+	}),
 )

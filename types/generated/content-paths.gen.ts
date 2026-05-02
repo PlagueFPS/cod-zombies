@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-02T00:32:35.203Z
- * generated in: 37ms
+ * generated at: 2026-05-02T20:29:07.687Z
+ * generated in: 36ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -131,6 +131,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/fire-and-trap-immunity"
 	| "content/side-quests/fireplace-protector"
 	| "content/side-quests/fish-free-perk"
+	| "content/side-quests/fishy-fish-bot"
 	| "content/side-quests/floating-bodies"
 	| "content/side-quests/fog-rolling-in"
 	| "content/side-quests/free-1000-points"
