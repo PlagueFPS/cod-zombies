@@ -1,6 +1,6 @@
 import type { MapConfig } from "@/data/interactive-map"
 import { Option } from "effect"
-import { sharedMarkers } from "./markers"
+import { perks, sharedMarkers, weapons } from "./markers"
 
 export const config: MapConfig = {
 	layers: [
@@ -79,7 +79,16 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [{ x: 0.432, y: 0.289 }],
+					locations: [{ x: 0.442, y: 0.294 }],
+				},
+				{
+					id: "tyrs-shoulder",
+					title: "Tyr's Shoulder",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: Option.none(),
+					locations: [{ x: 0.581, y: 0.28 }],
 				},
 				{
 					id: "eidskallen-stave-church",
@@ -145,6 +154,15 @@ export const config: MapConfig = {
 					locations: [{ x: 0.778, y: 0.685 }],
 				},
 				{
+					id: "lighthouse",
+					title: "Lighthouse",
+					type: "label",
+					category: "general",
+					description: "",
+					icon: Option.none(),
+					locations: [{ x: 0.804, y: 0.735 }],
+				},
+				{
 					id: "tyrs-head",
 					title: "Tyr's Head",
 					type: "label",
@@ -198,6 +216,7 @@ export const config: MapConfig = {
 					locations: [
 						{ x: 0.612, y: 0.797 },
 						{ x: 0.442, y: 0.772 },
+						{ x: 0.414, y: 0.582 },
 						{ x: 0.583, y: 0.558 },
 						{ x: 0.592, y: 0.394 },
 						{ x: 0.472, y: 0.464 },
@@ -211,6 +230,8 @@ export const config: MapConfig = {
 					locations: [
 						{ x: 0.587, y: 0.61 },
 						{ x: 0.354, y: 0.559 },
+						{ x: 0.771, y: 0.759 },
+						{ x: 0.44, y: 0.282 },
 					],
 				},
 				{
@@ -242,7 +263,212 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers["door-buy"],
-					locations: [],
+					locations: [
+						{ x: 0.509, y: 0.755 },
+						{ x: 0.542, y: 0.706 },
+						{ x: 0.314, y: 0.659 },
+						{ x: 0.282, y: 0.602 },
+						{ x: 0.385, y: 0.548 },
+						{ x: 0.401, y: 0.47 },
+						{ x: 0.474, y: 0.489 },
+						{ x: 0.52, y: 0.388 },
+						{ x: 0.361, y: 0.397 },
+						{ x: 0.227, y: 0.495 },
+						{ x: 0.23, y: 0.43 },
+						{ x: 0.232, y: 0.39 },
+						{ x: 0.268, y: 0.346 },
+						{ x: 0.494, y: 0.554 },
+						{ x: 0.657, y: 0.573 },
+						{ x: 0.603, y: 0.553 },
+						{ x: 0.644, y: 0.532 },
+						{ x: 0.651, y: 0.37 },
+						{ x: 0.628, y: 0.347 },
+						{ x: 0.674, y: 0.346 },
+						{ x: 0.605, y: 0.333 },
+						{ x: 0.764, y: 0.658 },
+						{ x: 0.754, y: 0.727 },
+					],
+				},
+				{
+					...sharedMarkers.exfil,
+					icon: Option.some("/icons/equipment/exfil-bo7.webp"),
+					// TODO: add more locations for exfil
+					locations: [
+						{ x: 0.543, y: 0.606 },
+						{ x: 0.512, y: 0.79 },
+						{ x: 0.472, y: 0.455 },
+					],
+				},
+				{
+					...sharedMarkers["fast-travel"],
+					title: "Zipline",
+					locations: [
+						{ x: 0.612, y: 0.817, description: "Travel to Beacon Island" },
+						{ x: 0.692, y: 0.763, description: "Travel to Eidskallen Landing" },
+						{ x: 0.636, y: 0.64, description: "Travel to Beacon Island" },
+						{ x: 0.729, y: 0.654, description: "Travel to Eidskallen Square" },
+						{ x: 0.494, y: 0.553, description: "Travel to Fishery Island" },
+						{ x: 0.474, y: 0.487, description: "Travel to Eidskallen Square" },
+						{ x: 0.385, y: 0.547, description: "Travel to Fishery Island" },
+						{ x: 0.401, y: 0.468, description: "Travel to Dry Dock" },
+						{ x: 0.52, y: 0.387, description: "Travel to Skallen Market" },
+						{ x: 0.582, y: 0.395, description: "Travel to Fishery Island" },
+						{ x: 0.36, y: 0.396, description: "Travel to Core Foundry" },
+						{ x: 0.3, y: 0.445, description: "Travel to Fishery Island" },
+						{ x: 0.261, y: 0.283, description: "Enter Tyr's Head" },
+						{ x: 0.563, y: 0.248, description: "Enter Tyr's Head" },
+					],
+				},
+				{
+					...sharedMarkers["gobblegum-machine"],
+					locations: [
+						{ x: 0.516, y: 0.726 },
+						{ x: 0.76, y: 0.716 },
+						{ x: 0.654, y: 0.523 },
+						{ x: 0.271, y: 0.673 },
+						{ x: 0.556, y: 0.294 },
+						{ x: 0.702, y: 0.395 },
+						{ x: 0.376, y: 0.437 },
+						{ x: 0.231, y: 0.453 },
+					],
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					locations: [
+						{ x: 0.517, y: 0.859 },
+						{ x: 0.468, y: 0.733 },
+						{ x: 0.347, y: 0.651 },
+						{ x: 0.665, y: 0.591 },
+						{ x: 0.809, y: 0.671 },
+						{ x: 0.7, y: 0.326 },
+						{ x: 0.404, y: 0.372 },
+						{ x: 0.248, y: 0.444 },
+					],
+				},
+				{
+					...sharedMarkers["pack-a-punch"],
+					locations: [{ x: 0.426, y: 0.386 }],
+				},
+				{
+					...sharedMarkers["power-door"],
+					locations: [
+						{ x: 0.612, y: 0.818 },
+						{ x: 0.691, y: 0.764 },
+						{ x: 0.637, y: 0.64 },
+						{ x: 0.728, y: 0.654 },
+						{ x: 0.621, y: 0.488 },
+						{ x: 0.54, y: 0.267 },
+						{ x: 0.303, y: 0.304 },
+						{ x: 0.277, y: 0.536 },
+					],
+				},
+				{
+					...sharedMarkers["rampage-inducer"],
+					locations: [{ x: 0.579, y: 0.841 }],
+				},
+				{
+					...sharedMarkers.trap,
+					title: "Flammenfalle",
+					description: "Emit a heat-infused buff zone.",
+					locations: [
+						{ x: 0.423, y: 0.734 },
+						{ x: 0.619, y: 0.598 },
+						{ x: 0.827, y: 0.702 },
+						{ x: 0.686, y: 0.357 },
+						{ x: 0.259, y: 0.385 },
+					],
+				},
+				{
+					...perks["deadshot-daiquiri"],
+					locations: [{ x: 0.41, y: 0.301 }],
+				},
+				{
+					...perks["der-wunderfizz"],
+					locations: [{ x: 0.772, y: 0.674 }],
+				},
+				{
+					...perks["double-tap"],
+					locations: [{ x: 0.257, y: 0.354 }],
+				},
+				{
+					...perks.juggernog,
+					locations: [{ x: 0.479, y: 0.396 }],
+				},
+				{
+					...perks["melee-macchiato"],
+					locations: [{ x: 0.413, y: 0.677 }],
+				},
+				{
+					...perks["mule-kick"],
+					locations: [{ x: 0.653, y: 0.427 }],
+				},
+				{
+					...perks["phd-flopper"],
+					locations: [{ x: 0.392, y: 0.574 }],
+				},
+				{
+					...perks["quick-revive"],
+					locations: [{ x: 0.568, y: 0.799 }],
+				},
+				{
+					...perks["speed-cola"],
+					locations: [{ x: 0.291, y: 0.633 }],
+				},
+				{
+					...perks["stamin-up"],
+					locations: [{ x: 0.602, y: 0.669 }],
+				},
+				{
+					...perks["vulture-aid"],
+					locations: [{ x: 0.72, y: 0.553 }],
+				},
+				{
+					...weapons["coda-9"],
+					locations: [{ x: 0.545, y: 0.851 }],
+				},
+				{
+					...weapons["echo-12"],
+					locations: [{ x: 0.529, y: 0.758 }],
+				},
+				{
+					...weapons["mxr-17"],
+					locations: [{ x: 0.398, y: 0.442 }],
+				},
+				{
+					...weapons["peacekeeper-mk1"],
+					locations: [{ x: 0.63, y: 0.413 }],
+				},
+				{
+					...weapons["shadow-sk"],
+					locations: [{ x: 0.605, y: 0.272 }],
+				},
+				{
+					...weapons["vs-recon"],
+					locations: [{ x: 0.251, y: 0.451 }],
+				},
+				{
+					...weapons["x9-maverick"],
+					locations: [{ x: 0.297, y: 0.629 }],
+				},
+				{
+					...weapons.xm325,
+					locations: [{ x: 0.733, y: 0.687 }],
+				},
+				{
+					...weapons.m8a1,
+					locations: [{ x: 0.672, y: 0.337 }],
+				},
+				{
+					...weapons["m10-breacher"],
+					locations: [{ x: 0.653, y: 0.533 }],
+				},
+				{
+					...weapons["rk-9"],
+					locations: [{ x: 0.391, y: 0.635 }],
+				},
+				{
+					...weapons["mpc-25"],
+					locations: [{ x: 0.537, y: 0.64 }],
 				},
 			],
 		},
@@ -250,7 +476,32 @@ export const config: MapConfig = {
 			id: "boss-fight-arena",
 			title: "Boss Fight Arena",
 			image: "/layers/totenreich/totenreich-boss-fight-arena-layer.webp",
-			markers: [],
+			markers: [
+				{
+					id: "dravakars-fall",
+					title: "Dravakars Fall",
+					description: "",
+					icon: Option.none(),
+					type: "label",
+					category: "general",
+					locations: [{ x: 0.5, y: 0.5 }],
+				},
+				{
+					...sharedMarkers.trap,
+					title: "Flammenfalle",
+					description: "Emit a heat-infused buff zone.",
+					locations: [
+						{ x: 0.439, y: 0.519 },
+						{ x: 0.398, y: 0.208 },
+						{ x: 0.406, y: 0.792 },
+					],
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
+					locations: [{ x: 0.503, y: 0.483 }],
+				},
+			],
 		},
 	],
 }
