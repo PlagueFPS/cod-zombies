@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-02T20:29:07.687Z
- * generated in: 36ms
+ * generated at: 2026-05-03T03:46:17.824Z
+ * generated in: 28ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -55,6 +55,7 @@ export type MainQuestsPaths =
 /** Union of content paths in `content/relics` */
 
 export type RelicsPaths =
+	| "content/relics/agarthan-device"
 	| "content/relics/blood-vials"
 	| "content/relics/bus"
 	| "content/relics/civil-protector-head"
