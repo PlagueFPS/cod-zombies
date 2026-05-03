@@ -59,6 +59,7 @@ export type RelicsPaths =
 	| "content/relics/blood-vials"
 	| "content/relics/bus"
 	| "content/relics/civil-protector-head"
+	| "content/relics/dancing-arnie"
 	| "content/relics/dragon"
 	| "content/relics/dragon-wings"
 	| "content/relics/focusing-stone"

@@ -49,7 +49,9 @@ const previewOption = Flag.boolean("preview").pipe(
 
 const iconOption = Flag.boolean("icon").pipe(
 	Flag.withAlias("i"),
-	Flag.withDescription("Resize to 128x128 then optimize with max effort and quality."),
+	Flag.withDescription(
+		"Resize to 128w (maintains aspect ratio) then optimize with max effort and quality.",
+	),
 )
 
 const transformMap = Effect.fnUntraced(function* (
@@ -130,7 +132,7 @@ const transformIcon = Effect.fnUntraced(function* (
 	asset: string,
 ) {
 	const buffer = yield* Effect.tryPromise({
-		try: () => image.resize(128, 128).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+		try: () => image.resize(128).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
 		catch: cause =>
 			new ImageOptimizationError({
 				message: `Failed to transform icon image: ${asset}`,

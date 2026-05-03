@@ -369,4 +369,19 @@ const relicHashMap = HashMap.make(
 		},
 		content: "content/relics/agarthan-device",
 	}),
+	makeRelic("dancing-arnie", {
+		title: "Dancing Arnie",
+		state: Option.some("New"),
+		type: "Sinister",
+		image: "/relics/dancing-arnie-relic.webp",
+		description: "All Perk-a-Cola machines have been cursed and now give out random Perk-a-Colas.",
+		map: "totenreich",
+		discoveredDate: new Date("May 2, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 45,
+			max: 120,
+			reason: "Time varies significantly based on party size.",
+		},
+		content: "content/relics/dancing-arnie",
+	}),
 )
