@@ -358,7 +358,7 @@ const relicHashMap = HashMap.make(
 		title: "Agarthan Device",
 		state: Option.some("New"),
 		type: "Wicked",
-		image: "/relics/agarthan-device-relic.webp",
+		image: "/relics/agarthan-device-relic-v1.webp",
 		description: "Each round, a different type of zombie will spawn",
 		map: "totenreich",
 		discoveredDate: new Date("May 1, 2026 12:00 AM"),

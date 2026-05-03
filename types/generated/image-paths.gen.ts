@@ -424,7 +424,7 @@ export type PreviewsImagePath =
 /** Union of images in `/relics` */
 
 export type RelicsImagePath =
-	| "/relics/agarthan-device-relic.webp"
+	| "/relics/agarthan-device-relic-v1.webp"
 	| "/relics/blood-vials-relic.webp"
 	| "/relics/bus-relic.webp"
 	| "/relics/civil-protector-head-relic.webp"
