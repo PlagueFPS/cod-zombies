@@ -50,7 +50,7 @@ const previewOption = Flag.boolean("preview").pipe(
 const iconOption = Flag.boolean("icon").pipe(
 	Flag.withAlias("i"),
 	Flag.withDescription(
-		"Resize to 128w (maintains aspect ratio) then optimize with max effort and quality.",
+		"Resize to 256w (maintains aspect ratio) then optimize with max effort and quality.",
 	),
 )
 
@@ -60,14 +60,18 @@ const transformMap = Effect.fnUntraced(function* (
 	baseFileName: string,
 	asset: string,
 ) {
-	let resizeOption: sharp.ResizeOptions = { width: 2048 }
+	let resizeOption: sharp.ResizeOptions = { width: 2048, withoutEnlargement: true }
 	if (metadata.width < 2048) {
 		resizeOption = { width: 2048, height: 2048, fit: "contain" }
 	}
 
 	const buffer = yield* Effect.tryPromise({
 		try: () =>
-			image.resize(resizeOption).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+			image
+				.rotate()
+				.resize(resizeOption)
+				.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY })
+				.toBuffer(),
 		catch: cause =>
 			new ImageOptimizationError({
 				message: `Failed to transform map image: ${asset}`,
@@ -83,7 +87,12 @@ const transformPreview = Effect.fnUntraced(function* (
 	asset: string,
 ) {
 	const buffer = yield* Effect.tryPromise({
-		try: () => image.resize(640, 360).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+		try: () =>
+			image
+				.rotate()
+				.resize(640, 360, { withoutEnlargement: true })
+				.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY })
+				.toBuffer(),
 		catch: cause =>
 			new ImageOptimizationError({
 				message: `Failed to transform preview image: ${asset}`,
@@ -99,7 +108,7 @@ const transformOptimizeOnly = Effect.fnUntraced(function* (
 	asset: string,
 ) {
 	const buffer = yield* Effect.tryPromise({
-		try: () => image.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+		try: () => image.rotate().webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
 		catch: cause =>
 			new ImageOptimizationError({
 				message: `Failed to transform optimize only image: ${asset}`,
@@ -116,7 +125,11 @@ const transformResizeAndOptimize = Effect.fnUntraced(function* (
 ) {
 	const buffer = yield* Effect.tryPromise({
 		try: () =>
-			image.resize({ width: 1920 }).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+			image
+				.rotate()
+				.resize({ width: 1920, withoutEnlargement: true })
+				.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY })
+				.toBuffer(),
 		catch: cause =>
 			new ImageOptimizationError({
 				message: `Failed to transform resize and optimize image: ${asset}`,
@@ -132,7 +145,12 @@ const transformIcon = Effect.fnUntraced(function* (
 	asset: string,
 ) {
 	const buffer = yield* Effect.tryPromise({
-		try: () => image.resize(128).webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+		try: () =>
+			image
+				.rotate()
+				.resize({ width: 256, withoutEnlargement: true })
+				.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY })
+				.toBuffer(),
 		catch: cause =>
 			new ImageOptimizationError({
 				message: `Failed to transform icon image: ${asset}`,

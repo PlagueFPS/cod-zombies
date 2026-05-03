@@ -387,10 +387,26 @@ export const perks = {
 
 /** All weapons appearing as wall-buys on any of the maps */
 export const weapons = {
+	"rk-9": {
+		id: "rk-9",
+		title: "RK-9",
+		description: "Purchase a RK-9 SMG off the wall.",
+		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
+		type: "weapon-wall-buy",
+		category: "equipment",
+	},
+	"mpc-25": {
+		id: "mpc-25",
+		title: "MPC-25",
+		description: "Purchase a MPC-25 SMG off the wall.",
+		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
+		type: "weapon-wall-buy",
+		category: "equipment",
+	},
 	"mxr-17": {
 		id: "mxr-17",
 		title: "MXR-17",
-		description: "Purchase a MXR-17 Marksman Rifle off the wall.",
+		description: "Purchase a MXR-17 Assault Rifle off the wall.",
 		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
 		type: "weapon-wall-buy",
 		category: "equipment",
@@ -398,7 +414,7 @@ export const weapons = {
 	"velox-5.7": {
 		id: "velox-5.7",
 		title: "Velox 5.7",
-		description: "Purchase a Velox 5.7 Marksman Rifle off the wall.",
+		description: "Purchase a Velox 5.7 Pistol off the wall.",
 		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
 		type: "weapon-wall-buy",
 		category: "equipment",
@@ -406,7 +422,7 @@ export const weapons = {
 	"razor-9mm": {
 		id: "razor-9mm",
 		title: "Razor 9mm",
-		description: "Purchase a Razor 9mm Pistol off the wall.",
+		description: "Purchase a Razor 9mm SMG off the wall.",
 		icon: Option.some("/icons/equipment/weapon-wall-buy.webp"),
 		type: "weapon-wall-buy",
 		category: "equipment",
