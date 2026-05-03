@@ -93,7 +93,7 @@ describe("optimizeAssetsEffect", () => {
 		expect(meta.height).toBe(360)
 	})
 
-	test("icon flag resizes to 128x128", async () => {
+	test("icon flag resizes to 256x256", async () => {
 		await writePng(join(root, "newassets", "ic.png"), 400, 400)
 		const program = optimizeAssetsEffect({
 			dir: "./out",
@@ -106,8 +106,8 @@ describe("optimizeAssetsEffect", () => {
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const meta = await sharp(readFileSync(join(root, "out", "ic.webp"))).metadata()
-		expect(meta.width).toBe(128)
-		expect(meta.height).toBe(128)
+		expect(meta.width).toBe(256)
+		expect(meta.height).toBe(256)
 	})
 
 	test("wide image without flags uses resize-and-optimize branch", async () => {
