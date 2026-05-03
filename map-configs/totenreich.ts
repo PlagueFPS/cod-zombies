@@ -236,7 +236,6 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers.arsenal,
-					icon: Option.some("/icons/upgrades/arsenal.webp"),
 					locations: [
 						{ x: 0.49, y: 0.63 },
 						{ x: 0.763, y: 0.626 },
@@ -245,13 +244,71 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers["audio-log"],
-					// TODO: add locations for audio logs
-					locations: [],
+					locations: [
+						{ title: "Buidling Blocks", x: 0.594, y: 0.786 },
+						{
+							title: "The Serpent's Head",
+							x: 0.485,
+							y: 0.588,
+						},
+						{
+							title: "Talk",
+							x: 0.193,
+							y: 0.503,
+						},
+						{
+							title: "He Left Us",
+							x: 0.311,
+							y: 0.407,
+						},
+						{
+							title: "Limitations",
+							x: 0.398,
+							y: 0.409,
+							description: "You must use an ARC-XD to open up the Group 935 Genetic Lab.",
+						},
+						{
+							title: "The Chair Incident",
+							x: 0.544,
+							y: 0.799,
+						},
+					],
 				},
 				{
 					...sharedMarkers.document,
-					// TODO: add locations for documents
-					locations: [],
+					locations: [
+						{ title: "Saboteur", x: 0.331, y: 0.646 },
+						{
+							title: "Little Fishes",
+							x: 0.609,
+							y: 0.417,
+						},
+						{ title: "Beneath the Boards", x: 0.417, y: 0.388 },
+						{
+							title: "Radio Operator",
+							x: 0.816,
+							y: 0.721,
+							description:
+								"Second floor near the Crowbar spawn. This is only accessible after obtaining the Jotunn Star.",
+						},
+						{
+							title: "Tyr's Bell",
+							x: 0.817,
+							y: 0.737,
+							description: "Only obtainable right before picking up the Jotunn Star.",
+						},
+						{
+							title: "Rezoning",
+							x: 0.598,
+							y: 0.516,
+						},
+						{
+							title: "Priorities",
+							x: 0.201,
+							y: 0.428,
+							description: "Throw an explosive into the air duct above the stairs to obtain.",
+						},
+					],
 				},
 				{
 					...sharedMarkers["crafting-table"],
@@ -292,11 +349,12 @@ export const config: MapConfig = {
 				{
 					...sharedMarkers.exfil,
 					icon: Option.some("/icons/equipment/exfil-bo7.webp"),
-					// TODO: add more locations for exfil
 					locations: [
 						{ x: 0.543, y: 0.606 },
 						{ x: 0.512, y: 0.79 },
 						{ x: 0.472, y: 0.455 },
+						{ x: 0.807, y: 0.631 },
+						{ x: 0.22, y: 0.522 },
 					],
 				},
 				{
@@ -336,7 +394,6 @@ export const config: MapConfig = {
 					...sharedMarkers["mystery-box"],
 					locations: [
 						{ x: 0.517, y: 0.859 },
-						{ x: 0.468, y: 0.733 },
 						{ x: 0.347, y: 0.651 },
 						{ x: 0.665, y: 0.591 },
 						{ x: 0.809, y: 0.671 },
