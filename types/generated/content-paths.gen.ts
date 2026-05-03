@@ -3,13 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
-<<<<<<< HEAD
- * generated at: 2026-05-02T20:29:07.687Z
- * generated in: 36ms
-=======
- * generated at: 2026-05-02T03:59:09.484Z
- * generated in: 31ms
->>>>>>> 910a9917 (feat: add Agarthan Device relic guide)
+ * generated at: 2026-05-03T03:46:17.824Z
+ * generated in: 28ms
  */
 
 /** Union of content paths in `content/legal` */

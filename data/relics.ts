@@ -364,8 +364,8 @@ const relicHashMap = HashMap.make(
 		discoveredDate: new Date("May 1, 2026 12:00 AM"),
 		estimatedTimeMins: {
 			min: 15,
-			max: 30,
-			reason: "Time varies slightly based on RNG and round progression speed.",
+			max: 240,
+			reason: "Time varies significantly based on RNG and round progression speed.",
 		},
 		content: "content/relics/agarthan-device",
 	}),
