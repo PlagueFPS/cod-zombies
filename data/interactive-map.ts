@@ -97,7 +97,7 @@ const interactiveMapHashMap = HashMap.make(
 		image: "/previews/totenreich-preview-v1.webp",
 		game: "black-ops-7",
 		description:
-			"Explore Totenreich in Black Ops 7 Zombies. Find all locations for Perks, Weapons, intel, and more with our interactive map.",
+			"Explore Totenreich in Black Ops 7 Zombies. Find all locations for Fishing Spots, Perks, Weapons, intel, and more with our interactive map.",
 	}),
 	makeMapEntry("paradox-junction", {
 		title: "Paradox Junction",
