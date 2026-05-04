@@ -52,8 +52,8 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 						<CarouselItem className={cn(className)}>{children}</CarouselItem>
 					)}
 				</CarouselContent>
-				<CarouselPrevious variant="secondary" />
-				<CarouselNext variant="secondary" />
+				<CarouselPrevious variant="secondary" className="hidden sm:flex" />
+				<CarouselNext variant="secondary" className="hidden sm:flex" />
 			</Carousel>
 			{count > 1 ? (
 				<div className="flex justify-center gap-1.5" role="tablist" aria-label="Carousel slides">
