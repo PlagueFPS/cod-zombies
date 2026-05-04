@@ -384,4 +384,19 @@ const relicHashMap = HashMap.make(
 		},
 		content: "content/relics/dancing-arnie",
 	}),
+	makeRelic("music-box", {
+		title: "Music Box",
+		state: Option.some("New"),
+		type: "Wicked",
+		image: "/relics/music-box-relic.webp",
+		description: "Headshots only.",
+		map: "totenreich",
+		discoveredDate: new Date("May 3, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 90,
+			max: 240,
+			reason: "Time varies significantly based on party size and round progression speed.",
+		},
+		content: "content/relics/music-box",
+	}),
 )
