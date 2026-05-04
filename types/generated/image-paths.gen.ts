@@ -466,6 +466,7 @@ export type WeaponsImagePath =
 	| "/weapons/maelstrom.webp"
 	| "/weapons/mxr-17.webp"
 	| "/weapons/voyak-kt-3.webp"
+	| "/weapons/xr-3-ion.webp"
 
 /** Union of images in `/zombies` */
 
