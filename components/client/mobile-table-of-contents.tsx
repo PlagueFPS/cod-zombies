@@ -41,7 +41,7 @@ export function MobileTableOfContents({
 						/>
 					</div>
 				</CollapsibleTrigger>
-				<CollapsibleContent className="flex flex-col justify-center gap-4">
+				<CollapsibleContent className="flex min-h-svh flex-col gap-4">
 					<RemoveScroll>
 						<ScrollArea
 							className={cn(

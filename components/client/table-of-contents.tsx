@@ -22,9 +22,10 @@ export interface Heading {
 
 interface TableOfContentsProps {
 	headings: Heading[]
+	className?: string
 }
 
-export function TableOfContents({ headings }: TableOfContentsProps) {
+export function TableOfContents({ headings, className }: TableOfContentsProps) {
 	const { activeHeading, currentHeading, progress } = useTableOfContents(headings, "body")
 	const [isExpanded, setIsExpanded] = useState(headings.length > 4)
 	const isMobile = useIsMobile(1280)
@@ -34,7 +35,12 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 	return (
 		<>
 			{!isMobile ? (
-				<aside className="sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 bg-transparent px-6 xl:block">
+				<aside
+					className={cn(
+						"sticky top-20 z-40 ml-4 hidden h-fit w-85 shrink-0 bg-transparent px-6 xl:block",
+						className,
+					)}
+				>
 					<div className="relative flex flex-col">
 						<div className="mt-4 flex flex-col items-center justify-center">
 							<div className="mb-2 flex w-full items-center justify-between">

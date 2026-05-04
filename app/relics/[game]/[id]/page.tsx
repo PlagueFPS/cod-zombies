@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
+import { TableOfContents } from "@/components/client/table-of-contents"
 import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
 import { RichBlockquote } from "@/components/server/rich-blockquote"
@@ -25,7 +26,12 @@ import { PageRuntime } from "@/lib/layers"
 import { cn } from "@/lib/utils"
 import { useMDXComponents } from "@/mdx-components"
 import { GLOBAL_OG_PROPS } from "@/utils/constants"
-import { calculateTimeToRead, getLastModified, getServerUrl } from "@/utils/server-functions"
+import {
+	calculateTimeToRead,
+	extractHeadingsFromMDX,
+	getLastModified,
+	getServerUrl,
+} from "@/utils/server-functions"
 import richStyles from "@/app/rich-text.module.css"
 
 export const generateStaticParams = () => {
@@ -102,12 +108,13 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 	const { prev, next } = getAdjacentRelics(relic.id as RelicKey)
 	const { lastModified, lastModifiedFormatted } = yield* getLastModified(contentPath)
 
-	const { content, stateBadge, timeToRead } = yield* Option.match(relic.state, {
+	const { content, stateBadge, headings, timeToRead } = yield* Option.match(relic.state, {
 		onNone: () =>
 			Effect.gen(function* () {
 				return {
 					content: yield* Effect.promise(() => import(`@/${relic.content}.mdx`)),
 					stateBadge: null,
+					headings: extractHeadingsFromMDX(fileContent),
 					timeToRead: calculateTimeToRead(fileContent),
 				}
 			}),
@@ -119,6 +126,7 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 						? null
 						: yield* Effect.promise(() => import(`@/${relic.content}.mdx`)),
 					stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,
+					headings: extractHeadingsFromMDX(fileContent),
 					timeToRead: isComingSoon ? 1 : calculateTimeToRead(fileContent),
 				}
 			}),
@@ -127,88 +135,91 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 	const MDXContent: MDXContent | null = content?.default ?? null
 
 	return (
-		<section className="container mx-auto -mt-6 max-w-4xl px-4 sm:-mt-10 md:py-12">
-			<Breadcrumbs
-				links={[
-					{ title: "Relics", href: "/relics" },
-					{
-						title: relic.title,
-						href: `/relics/${game}/${relic.id}`,
-					},
-				]}
-				className="mb-14"
-			/>
-			<article className="space-y-8">
-				<header className="space-y-6 border-b pb-8 text-center">
-					<div className="relative mx-auto size-64 overflow-hidden rounded-lg bg-muted dark:bg-accent/30">
-						<FeaturedImage
-							featuredImage={relic.image}
-							alt={relic.title}
-							width={256}
-							height={256}
-							sizes="256px"
-							className="object-cover"
-							priority
-						/>
-					</div>
-
-					<div className="space-y-4">
-						<h2 className="text-4xl font-bold tracking-tight text-balance md:text-5xl">
-							{relic.title}
-						</h2>
-						<div className="flex flex-wrap items-center justify-center gap-3">
-							{stateBadge}
-							<TypeBadge type={relic.type} />
-							<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
-								{map.title}
-							</Badge>
+		<section className="mx-auto -mt-10 md:py-12 xl:mt-0">
+			<div className="flex flex-col xl:flex-row-reverse">
+				<TableOfContents headings={headings} className="m-0" />
+				<article className="mx-auto max-w-4xl space-y-8">
+					<header className="relative mt-16 space-y-6 border-b pb-8 text-center xl:mt-8">
+						<div className="mx-auto size-64 rounded-lg bg-muted dark:bg-accent/30">
+							<FeaturedImage
+								featuredImage={relic.image}
+								alt={relic.title}
+								width={256}
+								height={256}
+								sizes="256px"
+								className="object-cover"
+								priority
+							/>
 						</div>
-
-						<div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-sm text-muted-foreground">
-							<span className="flex items-center gap-1">
-								<Calendar className="size-4" />
-								<LastUpdatedDisplay
-									lastModified={lastModified}
-									lastModifiedFormatted={lastModifiedFormatted}
-								/>
-							</span>
-							<span className="inline">&bull;</span>
-							<span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
-								<Clock className="size-4" />
-								<span>{timeToRead} min read</span>
-							</span>
-							<span className="hidden md:inline">&bull;</span>
-							<CompletionTimeDisplay timeRange={relic.estimatedTimeMins} />
+						<div className="absolute -top-10 left-0 flex w-full justify-center pl-4 xl:pl-0">
+							<Breadcrumbs
+								links={[
+									{ title: "Relics", href: "/relics" },
+									{
+										title: relic.title,
+										href: `/relics/${game}/${relic.id}`,
+									},
+								]}
+							/>
 						</div>
-					</div>
-				</header>
+						<div className="space-y-4">
+							<h2 className="text-4xl font-bold tracking-tight text-balance md:text-5xl">
+								{relic.title}
+							</h2>
+							<div className="flex flex-wrap items-center justify-center gap-3">
+								{stateBadge}
+								<TypeBadge type={relic.type} />
+								<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
+									{map.title}
+								</Badge>
+							</div>
 
-				{!MDXContent ? (
-					<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
-						<p className="text-xl font-bold">
-							This guide is currently being written and will take some time before being ready.
-						</p>
-						<p className="text-foreground/90">
-							Check back soon or subscribe to our newsletter at the bottom of this page to be
-							notified when this guide is ready!
-						</p>
+							<div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-sm text-muted-foreground">
+								<span className="flex items-center gap-1">
+									<Calendar className="size-4" />
+									<LastUpdatedDisplay
+										lastModified={lastModified}
+										lastModifiedFormatted={lastModifiedFormatted}
+									/>
+								</span>
+								<span className="inline">&bull;</span>
+								<span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+									<Clock className="size-4" />
+									<span>{timeToRead} min read</span>
+								</span>
+								<span className="hidden md:inline">&bull;</span>
+								<CompletionTimeDisplay timeRange={relic.estimatedTimeMins} />
+							</div>
+						</div>
+					</header>
+
+					{!MDXContent ? (
+						<div className="relative mx-auto my-20 max-w-[80ch] space-y-2 px-4 text-center">
+							<p className="text-xl font-bold">
+								This guide is currently being written and will take some time before being ready.
+							</p>
+							<p className="text-foreground/90">
+								Check back soon or subscribe to our newsletter at the bottom of this page to be
+								notified when this guide is ready!
+							</p>
+						</div>
+					) : (
+						<div
+							id="body"
+							className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
+						>
+							<RichBlockquote>
+								<b>Effect:</b> {relic.description}
+							</RichBlockquote>
+							<MDXContent components={mdxComponents} />
+						</div>
+					)}
+					<div className="mt-8 flex w-full items-center justify-evenly gap-4">
+						{Option.isSome(prev) && <PrevOrNextRelicCard relic={prev.value} prev />}
+						{Option.isSome(next) && <PrevOrNextRelicCard relic={next.value} />}
 					</div>
-				) : (
-					<div
-						id="body"
-						className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
-					>
-						<RichBlockquote>
-							<b>Effect:</b> {relic.description}
-						</RichBlockquote>
-						<MDXContent components={mdxComponents} />
-					</div>
-				)}
-				<div className="mt-8 flex w-full items-center justify-evenly gap-4">
-					{Option.isSome(prev) && <PrevOrNextRelicCard relic={prev.value} prev />}
-					{Option.isSome(next) && <PrevOrNextRelicCard relic={next.value} />}
-				</div>
-			</article>
+				</article>
+			</div>
 		</section>
 	)
 })
