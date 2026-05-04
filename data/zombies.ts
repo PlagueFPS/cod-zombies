@@ -1511,14 +1511,21 @@ const zombiesHashMap = HashMap.make(
 		description:
 			"Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
 		games: ["black-ops-6", "black-ops-7"],
-		maps: ["shattered-veil", "reckoning", "astra-malorum", "paradox-junction"],
+		maps: [
+			"shattered-veil",
+			"reckoning",
+			"ashes-of-the-damned",
+			"astra-malorum",
+			"paradox-junction",
+			"totenreich",
+		],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["melee-swing", "acid-explosion"],
 		spawnBehavior:
-			"Toxic Zombies spawn during the special round on Shattered Veil, while also periodically spawning outside of these rounds and during specific main quest steps. On Reckoning, Toxic Zombies will only spawn out of the test tubes during one of the main quest steps.",
+			'Toxic Zombies spawn during the special round on Shattered Veil, while also periodically spawning outside of these rounds and during specific main quest steps. On Reckoning, Toxic Zombies will only spawn out of the test tubes during one of the main quest steps. Can also spawn on all BO7 maps via the "Dancing Arnie" relic.',
 		combatStrategy: "content/zombies/toxic-zombies",
 	}),
 	makeZombie("elder-disciple", {
@@ -1766,14 +1773,14 @@ const zombiesHashMap = HashMap.make(
 		description:
 			"Frost Zombies are lurking enemies emerging from the mists during special rounds to attack in droves.",
 		games: ["black-ops-7"],
-		maps: ["totenreich"],
+		maps: ["totenreich", "ashes-of-the-damned", "astra-malorum", "paradox-junction"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: ["napalm-burst"],
 		attacks: ["melee-swing"],
 		spawnBehavior:
-			"Frost Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies from Round 8 onwards.",
+			'Frost Zombies spawn during the special rounds on Totenreich, while also spawning in with normal zombies from Round 8 onwards. Can also spawn on all BO7 maps via the "Dancing Arnie" relic.',
 		combatStrategy: "content/zombies/frost-zombie",
 	}),
 	makeZombie("necropincer", {
