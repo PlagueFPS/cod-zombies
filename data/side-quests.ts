@@ -1636,13 +1636,13 @@ const sideQuestHashMap = HashMap.make(
 		map: "totenreich",
 		content: "content/side-quests/fishy-fish-bot",
 	}),
-	makeQuest("golden-tides-helm", {
+	makeQuest("golden-tide-helm", {
 		state: Option.some("New"),
-		title: "Golden Tides Helm",
+		title: "Golden Tide Helm",
 		description:
-			'Find out how to obtain the "Golden Tides Helm" granting you increased rewards from fishing.',
+			'Find out how to obtain the "Golden Tide Helm" granting you increased rewards from fishing.',
 		map: "totenreich",
-		content: "content/side-quests/golden-tides-helm",
+		content: "content/side-quests/golden-tide-helm",
 	}),
 	makeQuest("icebane-helm", {
 		state: Option.some("New"),

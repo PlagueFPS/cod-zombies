@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-05T04:07:22.852Z
- * generated in: 30ms
+ * generated at: 2026-05-05T06:29:17.567Z
+ * generated in: 34ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -167,7 +167,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/golden-armor"
 	| "content/side-quests/golden-bucket"
 	| "content/side-quests/golden-spork"
-	| "content/side-quests/golden-tides-helm"
+	| "content/side-quests/golden-tide-helm"
 	| "content/side-quests/golden-trash-bin"
 	| "content/side-quests/golf-minigame"
 	| "content/side-quests/gramophone-free-perks"
