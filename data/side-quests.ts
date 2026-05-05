@@ -1612,13 +1612,13 @@ const sideQuestHashMap = HashMap.make(
 		map: "totenreich",
 		content: "content/side-quests/no-one-there",
 	}),
-	makeQuest("gnome", {
+	makeQuest("kneehigh-helm", {
 		state: Option.some("New"),
-		title: "Gnome",
+		title: "Kneehigh Helm",
 		description:
-			"Find out how to obtain the ability to become a Gnome granting you invincibility while still being able to kill zombies.",
+			'Find out how to obtain the "Kneehigh Helm" allowing you to become a Gnome granting you invincibility while still being able to kill zombies.',
 		map: "totenreich",
-		content: "content/side-quests/gnome",
+		content: "content/side-quests/kneehigh-helm",
 	}),
 	makeQuest("domineering", {
 		state: Option.some("New"),
