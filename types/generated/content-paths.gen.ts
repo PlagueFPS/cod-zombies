@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-04T16:23:47.660Z
- * generated in: 31ms
+ * generated at: 2026-05-05T03:40:14.152Z
+ * generated in: 32ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -163,7 +163,6 @@ export type SideQuestsPaths =
 	| "content/side-quests/free-wunderwaffe-dg2"
 	| "content/side-quests/friendy-thrasher"
 	| "content/side-quests/george-romero-glasses"
-	| "content/side-quests/gnome"
 	| "content/side-quests/golden-armor"
 	| "content/side-quests/golden-bucket"
 	| "content/side-quests/golden-spork"
@@ -192,6 +191,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/jump-scare"
 	| "content/side-quests/jump-scare-reckoning"
 	| "content/side-quests/jumpscare-free-perk"
+	| "content/side-quests/kneehigh-helm"
 	| "content/side-quests/knight-guardian"
 	| "content/side-quests/lantern-wisp"
 	| "content/side-quests/lighthouse-jumpscare"

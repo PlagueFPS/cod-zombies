@@ -29,6 +29,11 @@ const nextConfig: NextConfig = {
 	async redirects() {
 		return [
 			{
+				source: "/side-quests/black-ops-7/totenreich/gnome",
+				destination: "/side-quests/black-ops-7/totenreich/kneehigh-helm",
+				permanent: true,
+			},
+			{
 				source: "/side-quests/black-ops-6/reckoning/c-a-s-t-e-r-turret-upgrade",
 				destination: "/side-quests/black-ops-6/reckoning/caster-turret-upgrade",
 				permanent: true,
