@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-05T03:40:14.152Z
- * generated in: 32ms
+ * generated at: 2026-05-05T04:07:22.852Z
+ * generated in: 30ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -112,6 +112,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/chalk-quotes"
 	| "content/side-quests/chicken-bucket-hat"
 	| "content/side-quests/coffin-dance"
+	| "content/side-quests/cointoss-helm"
 	| "content/side-quests/cold-hard-cash"
 	| "content/side-quests/come-back-down"
 	| "content/side-quests/cooking-fish"
@@ -166,6 +167,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/golden-armor"
 	| "content/side-quests/golden-bucket"
 	| "content/side-quests/golden-spork"
+	| "content/side-quests/golden-tides-helm"
 	| "content/side-quests/golden-trash-bin"
 	| "content/side-quests/golf-minigame"
 	| "content/side-quests/gramophone-free-perks"
@@ -187,6 +189,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/hidden-power-ups-terminus"
 	| "content/side-quests/hidden-power-ups-the-tomb"
 	| "content/side-quests/i-am-the-well"
+	| "content/side-quests/icebane-helm"
 	| "content/side-quests/island-spores"
 	| "content/side-quests/jump-scare"
 	| "content/side-quests/jump-scare-reckoning"

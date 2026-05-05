@@ -1636,4 +1636,28 @@ const sideQuestHashMap = HashMap.make(
 		map: "totenreich",
 		content: "content/side-quests/fishy-fish-bot",
 	}),
+	makeQuest("golden-tides-helm", {
+		state: Option.some("New"),
+		title: "Golden Tides Helm",
+		description:
+			'Find out how to obtain the "Golden Tides Helm" granting you increased rewards from fishing.',
+		map: "totenreich",
+		content: "content/side-quests/golden-tides-helm",
+	}),
+	makeQuest("icebane-helm", {
+		state: Option.some("New"),
+		title: "Icebane Helm",
+		description:
+			'Find out how to obtain the "Icebane Helm" granting you cold immunity, and a frosty slide.',
+		map: "totenreich",
+		content: "content/side-quests/icebane-helm",
+	}),
+	makeQuest("cointoss-helm", {
+		state: Option.some("New"),
+		title: "Cointoss Helm",
+		description:
+			'Find out how to obtain the "Cointoss Helm" granting you increased Power-Up drops.',
+		map: "totenreich",
+		content: "content/side-quests/cointoss-helm",
+	}),
 )
