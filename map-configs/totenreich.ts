@@ -444,7 +444,8 @@ export const config: MapConfig = {
 				{
 					...sharedMarkers.trap,
 					title: "Flammenfalle",
-					description: "Emit a heat-infused buff zone.",
+					description:
+						"Emit a heat-infused buff zone by interacting with the trap or Roast foes with a Blast of Flames by interacting with the switch.",
 					locations: [
 						{ x: 0.423, y: 0.734 },
 						{ x: 0.619, y: 0.598 },
