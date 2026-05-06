@@ -652,4 +652,10 @@ const zombieAttacksHashMap = HashMap.make(
 		description:
 			"Summons a frozen dawn that denies a large portion of the arena, slowing and dealing damage to players within.",
 	}),
+	makeZombieAttack("ice-pillars", {
+		title: "Ice Pillars",
+		range: "Medium",
+		description:
+			"Summons a series of ice pillars that deal damage to players within their range, and launching them into the air.",
+	}),
 )

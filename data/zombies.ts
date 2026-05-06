@@ -1819,4 +1819,22 @@ const zombiesHashMap = HashMap.make(
 			"Dravakar is the final boss of the Totenreich main quest and will spawn during the final encounter.",
 		combatStrategy: "content/zombies/dravakar",
 	}),
+	makeZombie("gjallarfrost", {
+		title: "Gjallarfrost",
+		state: Option.some("New"),
+		releaseDate: new Date("April 30, 2026 3:00 AM"),
+		image: "/zombies/gjallarfrost.webp",
+		description:
+			"An icy golem-like figure summoned by Dravakar serving as an extension of the Shadowsmith.",
+		games: ["black-ops-7"],
+		maps: ["totenreich"],
+		type: "Boss",
+		speed: "Slow",
+		weakPoints: ["mouth"],
+		elementalWeakness: [],
+		attacks: ["ice-rock-barrage", "frozen-dawn"],
+		spawnBehavior:
+			"The Gjallarfrost is summoned by Dravakar during this final encounter of the main quest, during the transition phases.",
+		combatStrategy: "content/zombies/gjallarfrost",
+	}),
 )
