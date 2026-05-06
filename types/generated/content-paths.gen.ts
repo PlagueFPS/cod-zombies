@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-06T02:44:08.392Z
- * generated in: 32ms
+ * generated at: 2026-05-06T20:42:15.657Z
+ * generated in: 34ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -73,6 +73,7 @@ export type RelicsPaths =
 	| "content/relics/samanthas-drawing"
 	| "content/relics/seed"
 	| "content/relics/spider-fang"
+	| "content/relics/stuffed-elephant"
 	| "content/relics/summoning-key"
 	| "content/relics/teddy-bear"
 	| "content/relics/vril-sphere"

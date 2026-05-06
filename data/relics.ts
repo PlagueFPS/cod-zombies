@@ -399,4 +399,19 @@ const relicHashMap = HashMap.make(
 		},
 		content: "content/relics/music-box",
 	}),
+	makeRelic("stuffed-elephant", {
+		title: "Stuffed Elephant",
+		state: Option.some("New"),
+		type: "Sinister",
+		image: "/relics/stuffed-elephant-relic.webp",
+		description: "Increased Health Regen Delay.",
+		map: "totenreich",
+		discoveredDate: new Date("May 6, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 45,
+			max: 120,
+			reason: "Time varies significantly based on party size and round progression speed.",
+		},
+		content: "content/relics/stuffed-elephant",
+	}),
 )
