@@ -499,6 +499,7 @@ export type ZombiesImagePath =
 	| "/zombies/ghost.webp"
 	| "/zombies/giant-spider.webp"
 	| "/zombies/giant-thrasher.webp"
+	| "/zombies/gjallarfrost.webp"
 	| "/zombies/heavy-zombie.webp"
 	| "/zombies/hellhound.webp"
 	| "/zombies/insanity-elementals.webp"
