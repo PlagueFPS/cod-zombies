@@ -175,7 +175,7 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 					<section className="grid grid-cols-1 gap-6 md:grid-cols-3">
 						{/* Image and Stats */}
 						<div className="relative flex flex-col items-center">
-							<div className="absolute inset-0 mx-auto hidden w-full opacity-35 blur-3xl dark:block">
+							<div className="pointer-events-none absolute inset-0 mx-auto hidden w-full opacity-35 blur-3xl dark:block">
 								<FeaturedImage
 									featuredImage={zombie.image}
 									width={422}
