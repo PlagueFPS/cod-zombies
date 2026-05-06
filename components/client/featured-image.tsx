@@ -8,6 +8,7 @@ import ImageLoader from "../server/image-loader"
 
 interface FeaturedImageProps extends ImageProps {
 	description?: string
+	containerClassName?: string
 }
 
 export function FeaturedImage({
@@ -20,13 +21,19 @@ export function FeaturedImage({
 	sizes,
 	width,
 	height,
+	containerClassName,
 }: FeaturedImageProps) {
 	const { imageLoaded, imageErrored, setImageLoaded, setImageErrored } = useImageState()
 
 	if (!featuredImage) return null
 
 	return (
-		<figure className="relative m-0 flex h-full w-full flex-col items-center justify-center">
+		<figure
+			className={cn(
+				"relative m-0 flex h-full w-full flex-col items-center justify-center",
+				containerClassName,
+			)}
+		>
 			{!imageLoaded && !imageErrored ? <ImageLoader className="border" /> : null}
 			{!imageErrored ? (
 				<Image
