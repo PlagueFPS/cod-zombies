@@ -1660,4 +1660,12 @@ const sideQuestHashMap = HashMap.make(
 		map: "totenreich",
 		content: "content/side-quests/cointoss-helm",
 	}),
+	makeQuest("hidden-power-ups-totenreich", {
+		state: Option.some("New"),
+		title: "Hidden Power-Ups",
+		description:
+			"Discover the location of every hidden Power-Up drop in Totenreich, in case you need them.",
+		map: "totenreich",
+		content: "content/side-quests/hidden-power-ups-totenreich",
+	}),
 )
