@@ -1370,15 +1370,22 @@ const zombiesHashMap = HashMap.make(
 		image: "/zombies/amalgam.webp",
 		description:
 			"The Amalgam is an elite enemy originating from the map Terminus in Black Ops 6, appearing as a multi-armed and multi-legged mutation of the original zombie.",
-		games: ["black-ops-6"],
-		maps: ["terminus", "citadelle-des-morts", "the-tomb", "shattered-veil", "reckoning"],
+		games: ["black-ops-6", "black-ops-7"],
+		maps: [
+			"terminus",
+			"citadelle-des-morts",
+			"the-tomb",
+			"shattered-veil",
+			"reckoning",
+			"totenreich",
+		],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["glowing-heads"],
 		elementalWeakness: ["dead-wire", "shadow-rift"],
 		attacks: ["melee-swing", "tongue-grab"],
 		spawnBehavior:
-			"On Terminus, Citadelle Des Morts, and The Tomb, the Amalgam will first spawn on Round 16. On Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning, Amalgams can spawn from Doppelghast, which may evolve into Amalgams if left alive for too long. They will also spawn in specific main quest steps in all of these maps.",
+			'On Terminus, Citadelle Des Morts, and The Tomb, the Amalgam will first spawn on Round 16. On Citadelle Des Morts, The Tomb, Shattered Veil, and Reckoning, Amalgams can spawn from Doppelghast, which may evolve into Amalgams if left alive for too long. They will also spawn in specific main quest steps in all of these maps. In BO7, the Amalgam spawns as an HVT during the "Stuffed Elephant" relic',
 		combatStrategy: "content/zombies/amalgam",
 	}),
 	makeZombie("nathan", {
