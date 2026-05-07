@@ -444,6 +444,7 @@ export type RelicsImagePath =
 	| "/relics/samanthas-drawing-relic.webp"
 	| "/relics/seed-relic.webp"
 	| "/relics/spider-fang-relic.webp"
+	| "/relics/stuffed-elephant-relic.webp"
 	| "/relics/summoning-key-relic-v2.webp"
 	| "/relics/teddy-bear-relic.webp"
 	| "/relics/vril-sphere-relic.webp"
