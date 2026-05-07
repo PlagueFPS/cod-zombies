@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-07T10:22:27.545Z
- * generated in: 32ms
+ * generated at: 2026-05-07T10:53:02.109Z
+ * generated in: 31ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -250,6 +250,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/rat-king"
 	| "content/side-quests/raven-free-perk"
 	| "content/side-quests/remember-us"
+	| "content/side-quests/richtofen-jumpscare"
 	| "content/side-quests/ronald-raygun"
 	| "content/side-quests/round-100-boss-fight"
 	| "content/side-quests/sam-trap-unlock"

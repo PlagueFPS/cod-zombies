@@ -1668,4 +1668,11 @@ const sideQuestHashMap = HashMap.make(
 		map: "totenreich",
 		content: "content/side-quests/hidden-power-ups-totenreich",
 	}),
+	makeQuest("richtofen-jumpscare", {
+		state: Option.some("New"),
+		title: "Richtofen's Jumpscare",
+		description: "Learn how to trigger the hidden jumpscare within the Richtofen Side Quest.",
+		map: "totenreich",
+		content: "content/side-quests/richtofen-jumpscare",
+	}),
 )
