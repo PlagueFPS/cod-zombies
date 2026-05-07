@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-06T20:42:15.657Z
- * generated in: 34ms
+ * generated at: 2026-05-07T10:22:27.545Z
+ * generated in: 32ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -189,6 +189,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/hidden-power-ups-shattered-veil"
 	| "content/side-quests/hidden-power-ups-terminus"
 	| "content/side-quests/hidden-power-ups-the-tomb"
+	| "content/side-quests/hidden-power-ups-totenreich"
 	| "content/side-quests/i-am-the-well"
 	| "content/side-quests/icebane-helm"
 	| "content/side-quests/island-spores"
