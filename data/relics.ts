@@ -414,4 +414,19 @@ const relicHashMap = HashMap.make(
 		},
 		content: "content/relics/stuffed-elephant",
 	}),
+	makeRelic("power-switch", {
+		title: "Power Switch",
+		state: Option.some("New"),
+		type: "Grim",
+		image: "/relics/power-switch-relic.webp",
+		description: "Tactical and lethal equipment randomizes each round.",
+		map: "totenreich",
+		discoveredDate: new Date("May 9, 2026 12:00 AM"),
+		estimatedTimeMins: {
+			min: 15,
+			max: 30,
+			reason: "Time varies slightly based on how quickly you open up the map.",
+		},
+		content: "content/relics/power-switch",
+	}),
 )
