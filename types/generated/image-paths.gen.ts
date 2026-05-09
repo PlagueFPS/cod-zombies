@@ -440,6 +440,7 @@ export type RelicsImagePath =
 	| "/relics/mangler-helmet-relic-v1.webp"
 	| "/relics/matroyshka-dolls-relic.webp"
 	| "/relics/music-box-relic.webp"
+	| "/relics/power-switch-relic.webp"
 	| "/relics/rocket-relic-v1.webp"
 	| "/relics/samanthas-drawing-relic.webp"
 	| "/relics/seed-relic.webp"

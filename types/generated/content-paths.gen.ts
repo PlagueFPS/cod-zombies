@@ -3,7 +3,7 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-07T10:53:02.109Z
+ * generated at: 2026-05-09T07:32:05.098Z
  * generated in: 31ms
  */
 
@@ -69,6 +69,7 @@ export type RelicsPaths =
 	| "content/relics/mangler-helmet"
 	| "content/relics/matroyshka-dolls"
 	| "content/relics/music-box"
+	| "content/relics/power-switch"
 	| "content/relics/rocket"
 	| "content/relics/samanthas-drawing"
 	| "content/relics/seed"
