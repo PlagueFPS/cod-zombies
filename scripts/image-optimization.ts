@@ -250,10 +250,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 
 		const writtenAmount = yield* Ref.get(numRef)
 		const endTime = yield* Clock.currentTimeMillis.pipe(Effect.map(endTime => endTime - startTime))
-		const totalTime =
-			endTime > 1000
-				? `${Duration.millis(endTime).pipe(Duration.toMinutes).toFixed(2)}m`
-				: `${Duration.millis(endTime).pipe(Duration.toSeconds).toFixed(2)}s`
+		const totalTime = Duration.format(Duration.millis(endTime))
 		yield* Effect.log(
 			`Successfully optimized ${writtenAmount}/${newAssets.length} images in ${totalTime}!`,
 		)
