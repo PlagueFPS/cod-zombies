@@ -5,7 +5,11 @@ import { GridPagination } from "@/components/client/grid-pagination"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { EmptyGrid } from "@/components/server/empty-grid"
 import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
-import { getMapByKey, MAIN_QUEST_TIME_RANGE_FILTERS, compareMapReleaseDescending } from "@/data/maps"
+import {
+	getMapByKey,
+	MAIN_QUEST_TIME_RANGE_FILTERS,
+	compareMapReleaseDescending,
+} from "@/data/maps"
 import { compareSideQuestDescending } from "@/data/side-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { CARD_LIMIT } from "@/utils/constants"
