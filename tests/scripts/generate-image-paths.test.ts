@@ -30,6 +30,7 @@ describe("generateImagePaths", () => {
 		const cause = expectExitFailure(exit)
 		expectCauseHasString(cause, "Public directory does not exist")
 		expect(Exit.isFailure(exit)).toBe(true)
+		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
 
@@ -85,6 +86,7 @@ describe("generateImagePaths", () => {
 		expect(out).not.toContain("ContentImagePath")
 		expect(out).not.toContain("OpengraphImagesImagePath")
 
+		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
 
@@ -105,6 +107,7 @@ describe("generateImagePaths", () => {
 		const out = readFileSync(join(root, "types", "generated", "image-paths.gen.ts"), "utf-8")
 		expect(out).toContain("\\'")
 
+		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
 })
