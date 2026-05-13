@@ -30,6 +30,7 @@ describe("generateContentPaths", () => {
 		const cause = expectExitFailure(exit)
 		expectCauseHasString(cause, "Content directory does not exist")
 		expect(Exit.isFailure(exit)).toBe(true)
+		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
 
@@ -66,6 +67,7 @@ describe("generateContentPaths", () => {
 		const unionIdx = out.indexOf("export type ContentPaths =")
 		expect(out.slice(unionIdx)).toMatch(/AlphaPaths\s*\|\s*ZebraPaths/)
 
+		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
 
@@ -82,6 +84,7 @@ describe("generateContentPaths", () => {
 		const out = readFileSync(join(root, "types", "generated", "content-paths.gen.ts"), "utf-8")
 		expect(out).toContain("export type EmptydirPaths = never;")
 
+		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
 })
