@@ -3,8 +3,8 @@ import type { GameKey } from "@/data/games"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
-import { Array as Arr, HashMap, Option } from "effect"
-import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
+import { Array as Arr, Option } from "effect"
+import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** Union of all main quest difficulties */
 export type MainQuestDifficulty = "Easy" | "Medium" | "Hard"
@@ -16,8 +16,11 @@ export interface MapEntry {
 	readonly id: string
 	/** The title of the map */
 	readonly title: string
-	/** The release date of the map */
-	readonly releaseDate: Date
+	/**
+	 * Release calendar day as an ISO 8601 date-only string (`YYYY-MM-DD`).
+	 * Same-day ordering for descending sorts uses {@link MAPS} insertion order (later entries first).
+	 */
+	readonly releaseDate: string
 	/** The description of the map */
 	readonly description: string
 	/** The image of the map */
@@ -35,27 +38,34 @@ export interface MapEntry {
 }
 
 /** Union type of all map keys */
-export type MapKey = HashMap.HashMap.Key<typeof mapHashMap>
+export type MapKey = Parameters<(typeof MAPS)["get"]>[0]
 
 /**
- * Gets all maps sorted by release date in descending order by release date
+ * Newest-first: {@link sortDates}, then higher {@link MAPS} insertion index when calendar days tie.
  */
-export const getMaps = (): MapEntry[] =>
-	HashMap.toValues(mapHashMap).sort((a, b) => sortReleaseDate(b.releaseDate, a.releaseDate))
+export function compareMapReleaseDescending(
+	a: Pick<MapEntry, "id" | "releaseDate">,
+	b: Pick<MapEntry, "id" | "releaseDate">,
+): number {
+	const byDate = sortDates(b.releaseDate, a.releaseDate)
+	if (byDate !== 0) return byDate
 
-/** Gets all maps with a main quest in descending order by release date */
-export const getMapsWithMainQuest = (): MapEntry[] =>
-	Arr.filter(getMaps(), map => Option.isSome(map.mainQuest))
+	return (
+		MAP_INSERATION_INDEX_BY_ID.get(b.id as MapKey)! -
+		MAP_INSERATION_INDEX_BY_ID.get(a.id as MapKey)!
+	)
+}
 
-/**
- * Gets a map by its key.
- * @param key The key of the map.
- */
-export const getMapByKey = (key: MapKey) => HashMap.get(mapHashMap, key)
+/** @returns A shallow copy of all maps, descending by {@link compareMapReleaseDescending}. */
+export const getMaps = () => Array.from(MAPS.values()).sort(compareMapReleaseDescending)
 
-/**
- * Gets the previous and next maps by their key.
- */
+/** @returns Maps that have a main quest, same order as {@link getMaps}. */
+export const getMapsWithMainQuest = () => Arr.filter(getMaps(), map => Option.isSome(map.mainQuest))
+
+/** @returns The map with the given key */
+export const getMapByKey = (key: MapKey) => Option.fromUndefinedOr(MAPS.get(key))
+
+/** @returns The adjacent maps of the map with the given key */
 export const getAdjacentMaps = (key: MapKey) => {
 	return getAdjacentItems(getMapsWithMainQuest(), key)
 }
@@ -101,10 +111,10 @@ const makeMap = <T extends string>(
 	},
 ]
 
-const mapHashMap = HashMap.make(
+const MAPS = new Map([
 	makeMap("nacht-der-untoten", {
 		title: "Nacht der Untoten",
-		releaseDate: new Date("November 11, 2008 07:00 AM"),
+		releaseDate: "2008-11-11",
 		description:
 			"You drove them deep into the heart of the Reich. You thought they were dead. You were wrong.",
 		image: "/maps/nacht-der-untoten.webp",
@@ -116,7 +126,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("verruckt", {
 		title: "Verrückt",
-		releaseDate: new Date("March 19, 2009 08:00 AM"),
+		releaseDate: "2009-03-19",
 		description:
 			"Welcome to Wittenau Sanitorium, a German asylum with dark corridors, terrifying undead enemies, and even darker secrets.",
 		image: "/maps/verruckt.webp",
@@ -128,7 +138,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("shi-no-numa", {
 		title: "Shi No Numa",
-		releaseDate: new Date("June 10, 2009 08:00 AM"),
+		releaseDate: "2009-06-10",
 		description:
 			'A "swamp of death" located in Japanese territory, surrounded by a sweltering jungle, hellhounds, and endless armies of the undead.',
 		image: "/maps/shi-no-numa.webp",
@@ -140,7 +150,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("der-riese", {
 		title: "Der Riese",
-		releaseDate: new Date("August 05, 2009 08:00 AM"),
+		releaseDate: "2009-08-05",
 		description:
 			"The Giant is rising. Face the might of the Nazi Zombies in their heartland. This is where it all began. This is where the master plan took shape. Is this where it all ends?",
 		image: "/maps/der-riese.webp",
@@ -152,7 +162,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("kino-der-toten", {
 		title: "Kino der Toten",
-		releaseDate: new Date("November 09, 2010 07:00 AM"),
+		releaseDate: "2010-11-09",
 		description:
 			"Battle the undead in this theatrical installment of 'Zombies'. New twists and clues could uncover the final plan. It's show time!",
 		image: "/maps/kino-der-toten.webp",
@@ -164,7 +174,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("five", {
 		title: '"Five"',
-		releaseDate: new Date("November 09, 2010 08:00 AM"),
+		releaseDate: "2010-11-09",
 		description:
 			'The Pentagon is under attack! Washington is going to DEFCON 1 in this installment of "Zombies".',
 		image: "/maps/five.webp",
@@ -176,7 +186,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("ascension", {
 		title: "Ascension",
-		releaseDate: new Date("February 01, 2011 07:00 AM"),
+		releaseDate: "2011-02-01",
 		description:
 			"The risen dead have overtaken a Soviet cosmodrome and all Hell has broken loose. The countdown to the zombie apocalypse has begun.",
 		image: "/maps/ascension.webp",
@@ -193,7 +203,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("call-of-the-dead", {
 		title: "Call of the Dead",
-		releaseDate: new Date("March 17, 2011 08:00 AM"),
+		releaseDate: "2011-03-17",
 		description:
 			"A shipwrecked crew of fearless explorers is hopelessly stranded in an abandoned Siberian outpost. Their dream of discovering the true origins of the mysterious Element 115 unravels into a Hellish nightmare.",
 		image: "/maps/call-of-the-dead.webp",
@@ -210,7 +220,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("shangri-la", {
 		title: "Shangri-La",
-		releaseDate: new Date("June 28, 2011 08:00 AM"),
+		releaseDate: "2011-06-28",
 		description:
 			"A legendary shrine lost in an exotic jungle, where the undead lurk within a treacherous labyrinth of underground caverns, deadly traps, and dark secrets.",
 		image: "/maps/shangri-la.webp",
@@ -227,7 +237,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("moon", {
 		title: "Moon",
-		releaseDate: new Date("August 23, 2011 08:00 AM"),
+		releaseDate: "2011-08-23",
 		description:
 			'"I believe that this nation should commit itself to achieving the goal, before this decade is out, of landing a man on the moon and returning him safely to the Earth." (JKF, 1961)',
 		image: "/maps/moon.webp",
@@ -244,7 +254,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("tranzit", {
 		title: "Tranzit",
-		releaseDate: new Date("November 12, 2012 07:00 AM"),
+		releaseDate: "2012-11-12",
 		description:
 			"Continue the fight against the undead and search for clues to the truth of what lies ahead...",
 		image: "/maps/tranzit.webp",
@@ -261,7 +271,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("die-rise", {
 		title: "Die Rise",
-		releaseDate: new Date("January 29, 2013 07:00 AM"),
+		releaseDate: "2013-01-29",
 		description:
 			"Watch your step! Fight for survival atop the towers of doom, where dizzying heights and relentless undead make a deadly combination.",
 		image: "/maps/die-rise.webp",
@@ -278,7 +288,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("mob-of-the-dead", {
 		title: "Mob of the Dead",
-		releaseDate: new Date("April 16, 2013 08:00 AM"),
+		releaseDate: "2013-04-16",
 		description:
 			"Battle the undead as you attempt to break free from the physical and metaphorical incarceration of Alcatraz Prison.",
 		image: "/maps/mob-of-the-dead.webp",
@@ -294,7 +304,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("buried", {
 		title: "Buried",
-		releaseDate: new Date("July 02, 2013 08:00 AM"),
+		releaseDate: "2013-07-02",
 		description:
 			"Are you afraid of dark, tight spaces? Confront your deepest fears as you battle the undead in an underground obstacle course of mental challenges. You are now... 'Buried'.",
 		image: "/maps/buried.webp",
@@ -311,7 +321,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("origins", {
 		title: "Origins",
-		releaseDate: new Date("August 27, 2013 08:00 AM"),
+		releaseDate: "2013-08-27",
 		description:
 			"Witness the origins of Group 935, as an ancient evil is unleashed upon the battlefields of World War I.",
 		image: "/maps/origins.webp",
@@ -328,7 +338,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("shadows-of-evil", {
 		title: "Shadows of Evil",
-		releaseDate: new Date("November 06, 2015 07:00 AM"),
+		releaseDate: "2015-11-06",
 		description:
 			"Take to the streets of Morg City to combat the undead. Embrace the curse to uncover its mysteries.",
 		image: "/maps/shadows-of-evil.webp",
@@ -344,7 +354,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("the-giant", {
 		title: "The Giant",
-		releaseDate: new Date("November 06, 2015 08:00 AM"),
+		releaseDate: "2015-11-06",
 		description:
 			"Re-awaken The Giant. Return to the secret facility where it all began, and strike at the heart of the zombie scourge.",
 		image: "/maps/the-giant.webp",
@@ -360,7 +370,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("der-eisendrache", {
 		title: "Der Eisendrache",
-		releaseDate: new Date("February 02, 2016 07:00 AM"),
+		releaseDate: "2016-02-02",
 		description:
 			"Bound together by a fragile alliance, our heroes pursue the scattered remnants of Group 935 to their mountain top fortress in the Austrian Alps...",
 		image: "/maps/der-eisendrache.webp",
@@ -377,7 +387,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("zetsubou-no-shima", {
 		title: "Zetsubou No Shima",
-		releaseDate: new Date("April 19, 2016 08:00 AM"),
+		releaseDate: "2016-04-19",
 		description:
 			"On a remote island in the Pacific, a mysterious facility hides the secrets behind Division 9's sinister experiments...",
 		image: "/maps/zetsubou-no-shima.webp",
@@ -393,7 +403,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("gorod-krovi", {
 		title: "Gorod Krovi",
-		releaseDate: new Date("June 12, 2016 08:00 AM"),
+		releaseDate: "2016-06-12",
 		description:
 			"As their journey nears its end, our heroes must battle ancient beasts in the war-torn ruins of Stalingrad...",
 		image: "/maps/gorod-krovi.webp",
@@ -410,7 +420,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("revelations", {
 		title: "Revelations",
-		releaseDate: new Date("September 06, 2016 08:00 AM"),
+		releaseDate: "2016-09-06",
 		description:
 			"The time has come to join Doctor Monty in The House, where an ancient evil threatens the survival of our heroes' immortal souls...",
 		image: "/maps/revelations.webp",
@@ -427,7 +437,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
-		releaseDate: new Date("October 11, 2018 12:00 AM"),
+		releaseDate: "2018-10-11",
 		description:
 			"Four intrepid adventurers board the RMS Titanic to pull off a daring heist involving a mysterious artifact. Little do Scarlett Rhodes, Diego Necalli, Bruno Delacroix, and Stanton Shaw suspect that a giant iceberg will be the least of their problems…",
 		image: "/maps/voyage-of-despair.webp",
@@ -444,7 +454,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("ix", {
 		title: "IX",
-		releaseDate: new Date("October 11, 2018 01:00 AM"),
+		releaseDate: "2018-10-11",
 		description:
 			"Transported across the Millennia, Scarlett, Diego, Bruno and Shaw find themselves caught up in a sinister ritual, where they are thrust into brutal gladiatorial combat against waves of unnatural enemies that stand between them and the High Priest of Chaos.",
 		image: "/maps/ix.webp",
@@ -460,7 +470,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("blood-of-the-dead", {
 		title: "Blood of the Dead",
-		releaseDate: new Date("October 11, 2018 02:00 AM"),
+		releaseDate: "2018-10-11",
 		description:
 			"In their mission to 'secure a better tomorrow', Richtofen, Dempsey, Takeo and Nikolai journey to a secret laboratory beneath the iconic Alcatraz, where they realize that the future they sought to secure is now in serious jeopardy.",
 		image: "/maps/blood-of-the-dead.webp",
@@ -477,7 +487,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("classified", {
 		title: "Classified",
-		releaseDate: new Date("October 11, 2018 03:00 AM"),
+		releaseDate: "2018-10-11",
 		description: "Mankind must put an end to war – or war will put an end to mankind. (JFK, 1961)",
 		image: "/maps/classified.webp",
 		game: "black-ops-4",
@@ -493,7 +503,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("dead-of-the-night", {
 		title: "Dead of the Night",
-		releaseDate: new Date("December 11, 2018 12:00 AM"),
+		releaseDate: "2018-12-11",
 		description:
 			"When a party at an English mansion turns into an undead bloodbath, a phony psychic, stage-show cowboy, retired general, and bedeviled butler must fight for their lives.",
 		image: "/maps/dead-of-the-night.webp",
@@ -510,7 +520,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("ancient-evil", {
 		title: "Ancient Evil",
-		releaseDate: new Date("March 26, 2019 12:00 AM"),
+		releaseDate: "2019-03-26",
 		description:
 			"In the hidden heart of ancient Delphi, Scarlett, Diego, Bruno, and Shaw must rescue the fabled Oracle. But who is the Undead Warlord standing in their way?",
 		image: "/maps/ancient-evil.webp",
@@ -527,7 +537,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("alpha-omega", {
 		title: "Alpha Omega",
-		releaseDate: new Date("July 09, 2019 12:00 AM"),
+		releaseDate: "2019-07-09",
 		description:
 			"Here at Broken Arrow, it is our Mission to Prepare for Humanity's Future and Open New Worlds.",
 		image: "/maps/alpha-omega.webp",
@@ -544,7 +554,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("tag-der-toten", {
 		title: "Tag der Toten",
-		releaseDate: new Date("September 23, 2019 12:00 AM"),
+		releaseDate: "2019-09-23",
 		description: "The Paradox Must Be Resolved.",
 		image: "/maps/tag-der-toten.webp",
 		game: "black-ops-4",
@@ -560,7 +570,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("die-maschine", {
 		title: "Die Maschine",
-		releaseDate: new Date("November 13, 2020 12:00 AM"),
+		releaseDate: "2020-11-13",
 		description:
 			"Dimensional gateways opening around the globe. An undead horde threatening all of humanity. A new Cold War threat emerging from the shadows. Investigate the abandoned Nazi facility at the heart of it all.",
 		image: "/maps/die-maschine.webp",
@@ -576,7 +586,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("firebase-z", {
 		title: "Firebase Z",
-		releaseDate: new Date("February 04, 2021 12:00 AM"),
+		releaseDate: "2021-02-04",
 		description:
 			"A captured agent in the heart of the darkness. A treacherous scientist on the brink of a breakthrough. An unlikely ally out for revenge. Infiltrate Omega's Vietnam base and expose the secrets within.",
 		image: "/maps/firebase-z.webp",
@@ -592,7 +602,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("mauer-der-toten", {
 		title: "Mauer der Toten",
-		releaseDate: new Date("July 15, 2021 12:00 AM"),
+		releaseDate: "2021-07-15",
 		description:
 			"A city divided between East and West. A fragile alliance with a familiar adversary. An old enemy rising from the shadows. Who will prevail when worlds collide?",
 		image: "/maps/mauer-der-toten.webp",
@@ -608,7 +618,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("forsaken", {
 		title: "Forsaken",
-		releaseDate: new Date("October 07, 2021 12:00 AM"),
+		releaseDate: "2021-10-07",
 		description:
 			"A secluded facility harboring a secretive operation. A colonel determined to achieve his mission no matter the cost. Infiltrate the Soviet complex and extract the lost soul who could lead to Requiem's salvation – or Omega's supremacy. This is the only way.",
 		image: "/maps/forsaken.webp",
@@ -624,7 +634,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("liberty-falls", {
 		title: "Liberty Falls",
-		releaseDate: new Date("October 25, 2024 12:00 AM"),
+		releaseDate: "2024-10-25",
 		description:
 			"A small town in West Virginia is caught up in the grip of a mysterious outbreak. Assess the situation, contain the threat, and find the lost scientist who may hold the key to salvation.",
 		image: "/maps/liberty-falls.webp",
@@ -640,7 +650,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("terminus", {
 		title: "Terminus",
-		releaseDate: new Date("October 25, 2024 01:00 AM"),
+		releaseDate: "2024-10-25",
 		description:
 			"A jailbreak on a secluded island pits unlikely partners against the undead. Unlock the laboratory's secrets, recruit a strangely familiar ally, and avenge the gruesome crimes against nature.",
 		image: "/maps/terminus.webp",
@@ -656,7 +666,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("citadelle-des-morts", {
 		title: "Citadelle des Morts",
-		releaseDate: new Date("December 05, 2024 12:00 AM"),
+		releaseDate: "2024-12-05",
 		description:
 			"A criminal hideout in an ancient castle is overrun by the undead. Find the captive demonologist, seek the Amulet, and defeat its Immortal Guardian.",
 		image: "/maps/citadelle-des-morts.webp",
@@ -672,7 +682,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("the-tomb", {
 		title: "The Tomb",
-		releaseDate: new Date("January 28, 2025 12:00 AM"),
+		releaseDate: "2025-01-28",
 		description:
 			"Cursed catacombs guard a gate to a world of darkness. Follow in the footsteps of a doomed explorer. Pass the Trials of the Damned. Claim the fabled Sentinel Artifact.",
 		image: "/maps/the-tomb.webp",
@@ -688,7 +698,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("shattered-veil", {
 		title: "Shattered Veil",
-		releaseDate: new Date("April 02, 2025 12:00 AM"),
+		releaseDate: "2025-04-02",
 		description:
 			"A mansion with a diabolical past, caught in an Appalachian apocalypse. Free its captive souls. Come face to face with a synthetic mind. Confront a tyrant.",
 		image: "/maps/shattered-veil.webp",
@@ -704,7 +714,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("reckoning", {
 		title: "Reckoning",
-		releaseDate: new Date("August 07, 2025 12:00 AM"),
+		releaseDate: "2025-08-07",
 		description:
 			"Project Janus HQ teeters on the verge of collapse. Stabilize the Aether Reactors. Unleash the Sentinel Artifact. Complete the mission that began on Terminus.",
 		image: "/maps/reckoning.webp",
@@ -720,7 +730,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("ashes-of-the-damned", {
 		title: "Ashes of the Damned",
-		releaseDate: new Date("November 14, 2025 7:00 AM"),
+		releaseDate: "2025-11-14",
 		description:
 			"A new world, a new enemy and some strangely familiar allies. Uncover the secrets of the Dark Aether's most dangerous corner and face the primordial power of its ancient guardian.",
 		image: "/maps/ashes-of-the-damned.webp",
@@ -736,7 +746,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("astra-malorum", {
 		title: "Astra Malorum",
-		releaseDate: new Date("December 4, 2025 12:00 AM"),
+		releaseDate: "2025-12-04",
 		description:
 			"In the cold depths of space, a century-old observatory guards a gateway to a dead world. Awaken the astronomer, defeat the mechanical guard, and liberate the celestial Shadowsmith!",
 		image: "/maps/astra-malorum.webp",
@@ -753,7 +763,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("paradox-junction", {
 		title: "Paradox Junction",
-		releaseDate: new Date("March 11, 2026 12:00 AM"),
+		releaseDate: "2026-03-11",
 		description:
 			"Killing time was never this much fun! Play gruesome games with the creepy Twins, destroy the Dark Heart and escape the warden's temporal prison!",
 		image: "/maps/paradox-junction.webp",
@@ -769,7 +779,7 @@ const mapHashMap = HashMap.make(
 	}),
 	makeMap("totenreich", {
 		title: "Totenreich",
-		releaseDate: new Date("April 30, 2026 12:00 AM"),
+		releaseDate: "2026-04-30",
 		description:
 			"In the frozen birth place of nuclear fire, a Group 935 research base hides sinister secrets. Awaken the steel colossus, ignite the flame of vengeance, and free the giant Shadowsmith from the Warden's icy grip!",
 		image: "/maps/totenreich.webp",
@@ -782,4 +792,6 @@ const mapHashMap = HashMap.make(
 			max: 120,
 		}),
 	}),
-)
+])
+
+const MAP_INSERATION_INDEX_BY_ID = new Map<MapKey, number>([...MAPS.keys()].map((id, i) => [id, i]))

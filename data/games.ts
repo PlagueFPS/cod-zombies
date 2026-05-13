@@ -1,6 +1,6 @@
 import type { GamesImagePath } from "@/types/generated/image-paths.gen"
 import { HashMap } from "effect"
-import { sortReleaseDate } from "@/utils/shared-functions"
+import { sortDates } from "@/utils/shared-functions"
 
 export interface Game {
 	/** The internal tag to discriminate against for type-narrowing */
@@ -22,7 +22,7 @@ export type GameKey = HashMap.HashMap.Key<typeof gameHashMap>
  * @returns An array of all games.
  */
 export const getGames = (): Game[] =>
-	HashMap.toValues(gameHashMap).sort((a, b) => sortReleaseDate(b.releaseDate, a.releaseDate))
+	HashMap.toValues(gameHashMap).sort((a, b) => sortDates(b.releaseDate, a.releaseDate))
 
 /** Gets a game by its key.
  * @param key The key of the game.

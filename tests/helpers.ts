@@ -1,9 +1,11 @@
 import { Cause, Exit, Option } from "effect"
 import { expect } from "vitest"
+import { sortDates } from "@/utils/shared-functions"
 
-export function assertSortedDescByDate(dates: readonly Date[]) {
+/** Descending by chronological instant (`Date` or ISO date/datetime string). */
+export function assertSortedDescByDate(dates: readonly (Date | string)[]) {
 	for (let i = 0; i < dates.length - 1; i++) {
-		expect(dates[i]!.getTime()).toBeGreaterThanOrEqual(dates[i + 1]!.getTime())
+		expect(sortDates(dates[i]!, dates[i + 1]!)).toBeGreaterThanOrEqual(0)
 	}
 }
 

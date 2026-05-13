@@ -3,8 +3,7 @@ import type { MapMarker } from "@/map-configs/markers"
 import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect, HashMap, Option, Schema } from "effect"
-import { getMapByKey, type MapKey } from "@/data/maps"
-import { sortReleaseDate } from "@/utils/shared-functions"
+import { getMapByKey, compareMapReleaseDescending, type MapKey } from "@/data/maps"
 
 class ConfigNotFoundError extends Schema.TaggedErrorClass<ConfigNotFoundError>()(
 	"ConfigNotFoundError",
@@ -75,7 +74,7 @@ export const getInteractiveMaps = () =>
 	HashMap.toValues(interactiveMapHashMap).sort((a, b) => {
 		const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
 		const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
-		return sortReleaseDate(mapB.releaseDate, mapA.releaseDate)
+		return compareMapReleaseDescending(mapA, mapB)
 	})
 
 const makeMapEntry = <T extends string>(

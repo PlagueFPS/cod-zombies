@@ -23,6 +23,13 @@ import {
 	type OpengraphKind,
 } from "@/utils/validation-schemas"
 
+/** ISO `YYYY-MM-DD` calendar day → long date in en-US; UTC avoids shifting the printed day by local TZ. */
+function formatMapReleaseDay(isoDateOnly: string): string {
+	return new Intl.DateTimeFormat("en-US", { ...DATE_OPTIONS, timeZone: "UTC" }).format(
+		new Date(`${isoDateOnly}T00:00:00Z`),
+	)
+}
+
 const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
 
 /** When set (e.g. in tests), overrides the manifest path so CLI runs do not mutate repo `data/`. */
@@ -241,7 +248,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{map.releaseDate.toLocaleDateString("en-US", DATE_OPTIONS)}</span>
+					<span>{formatMapReleaseDay(map.releaseDate)}</span>
 					<span>&bull;</span>
 					<span>{timeToRead} min read</span>
 				</div>
@@ -399,7 +406,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{map.releaseDate.toLocaleDateString("en-US", DATE_OPTIONS)}</span>
+					<span>{formatMapReleaseDay(map.releaseDate)}</span>
 					<span>&bull;</span>
 					<span>{timeToRead} min read</span>
 				</div>
@@ -576,7 +583,7 @@ export const generateZombieImage = Effect.fnUntraced(
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{zombie.releaseDate.toLocaleDateString("en-US", DATE_OPTIONS)}</span>
+					<span>{formatMapReleaseDay(zombie.releaseDate)}</span>
 				</div>
 			</div>,
 			{

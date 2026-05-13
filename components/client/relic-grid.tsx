@@ -10,7 +10,7 @@ import { decodeRelic, type EncodedRelic } from "@/utils/rsc-wire"
 import {
 	calculateSkip,
 	sortEstimatedTime,
-	sortReleaseDate,
+	sortDates,
 	sortRelicTypes,
 } from "@/utils/shared-functions"
 
@@ -36,7 +36,7 @@ export function RelicGrid({ relics }: RelicGridProps) {
 
 	switch (validSortParam) {
 		case "discovered-asc":
-			sortedRelics.sort((a, b) => sortReleaseDate(a.discoveredDate, b.discoveredDate))
+			sortedRelics.sort((a, b) => sortDates(a.discoveredDate, b.discoveredDate))
 			break
 		case "type-asc":
 			sortedRelics.sort((a, b) => sortRelicTypes(a.type, b.type))
@@ -51,7 +51,7 @@ export function RelicGrid({ relics }: RelicGridProps) {
 			sortedRelics.sort((a, b) => sortEstimatedTime(b.estimatedTimeMins, a.estimatedTimeMins))
 			break
 		default:
-			sortedRelics.sort((a, b) => sortReleaseDate(b.discoveredDate, a.discoveredDate))
+			sortedRelics.sort((a, b) => sortDates(b.discoveredDate, a.discoveredDate))
 			break
 	}
 

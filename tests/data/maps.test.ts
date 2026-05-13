@@ -7,6 +7,12 @@ describe("getMaps", () => {
 	test("sorted by release date descending", () => {
 		assertSortedDescByDate(getMaps().map(m => m.releaseDate))
 	})
+
+	test("same calendar day: later MAPS entries appear first (e.g. BO4 launch)", () => {
+		const maps = getMaps()
+		const indexOf = (id: string) => maps.findIndex(m => m.id === id)
+		expect(indexOf("classified")).toBeLessThan(indexOf("voyage-of-despair"))
+	})
 })
 
 describe("getMapsWithMainQuest", () => {

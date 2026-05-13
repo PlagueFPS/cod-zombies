@@ -1,9 +1,9 @@
 import type { SortOption } from "@/components/client/grid-sort"
 import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
-import { HashMap, Option } from "effect"
-import { getMapByKey, type MapKey } from "@/data/maps"
-import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
+import { Option } from "effect"
+import { getMapByKey, compareMapReleaseDescending, type MapKey } from "@/data/maps"
+import { getAdjacentItems } from "@/utils/shared-functions"
 
 export interface SideQuest {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -23,26 +23,33 @@ export interface SideQuest {
 }
 
 /** Union type of all side quests */
-export type SideQuestKey = HashMap.HashMap.Key<typeof sideQuestHashMap>
+export type SideQuestKey = Parameters<(typeof SIDE_QUESTS)["get"]>[0]
 
 /**
- * Get a SideQuest by key
- * @param key The key of the side quest
+ * Newest-first: host map {@link compareMapReleaseDescending}, then higher {@link SIDE_QUESTS} insertion index when maps tie.
+ */
+export function compareSideQuestDescending(
+	a: Pick<SideQuest, "id" | "map">,
+	b: Pick<SideQuest, "id" | "map">,
+): number {
+	const mapA = getMapByKey(a.map).pipe(Option.getOrThrow)
+	const mapB = getMapByKey(b.map).pipe(Option.getOrThrow)
+	const byMap = compareMapReleaseDescending(mapA, mapB)
+	if (byMap !== 0) return byMap
+	return (
+		SIDE_QUEST_INSERTION_INDEX_BY_ID.get(b.id as SideQuestKey)! -
+		SIDE_QUEST_INSERTION_INDEX_BY_ID.get(a.id as SideQuestKey)!
+	)
+}
+
+/** @returns Side quests sorted like by {@link compareMapReleaseDescending} on the host map, then {@link SIDE_QUESTS} insertion order when host maps tie. */
+export const getSideQuests = (): SideQuest[] =>
+	[...SIDE_QUESTS.values()].sort(compareSideQuestDescending)
+
+/**
  * @returns The side quest with the given key
  */
-export const getSideQuestByKey = (key: SideQuestKey) => HashMap.get(sideQuestHashMap, key)
-
-/**
- * Get all SideQuests sorted by release date in descending order
- */
-export const getSideQuests = (): SideQuest[] =>
-	HashMap.toValues(sideQuestHashMap)
-		.reverse()
-		.sort((a, b) => {
-			const mapA = getMapByKey(a.map).pipe(Option.getOrThrow)
-			const mapB = getMapByKey(b.map).pipe(Option.getOrThrow)
-			return sortReleaseDate(mapB.releaseDate, mapA.releaseDate)
-		})
+export const getSideQuestByKey = (key: SideQuestKey) => Option.fromUndefinedOr(SIDE_QUESTS.get(key))
 
 /**
  * Get the previous and next side quests by their key
@@ -72,7 +79,7 @@ const makeQuest = <T extends string>(
 	},
 ]
 
-const sideQuestHashMap = HashMap.make(
+const SIDE_QUESTS = new Map([
 	makeQuest("free-500-points", {
 		state: Option.none(),
 		title: "Free 500 Points",
@@ -1675,4 +1682,8 @@ const sideQuestHashMap = HashMap.make(
 		map: "totenreich",
 		content: "content/side-quests/richtofen-jumpscare",
 	}),
+])
+
+const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
+	[...SIDE_QUESTS.keys()].map((id, i) => [id, i]),
 )

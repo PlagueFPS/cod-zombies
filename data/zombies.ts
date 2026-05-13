@@ -5,17 +5,17 @@ import type { ZombieAttackKey } from "@/data/zombie-attacks"
 import type { ContentState } from "@/types/data"
 import type { ZombiesPaths } from "@/types/generated/content-paths.gen"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap, Option } from "effect"
+import { Option } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
-import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
+import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** Union type of all zombie types */
 export type ZombieType = "Normal" | "Special" | "Elite" | "Boss"
 /** Union type of all zombie speeds */
 export type ZombieSpeed = "Slow" | "Medium" | "Fast"
 /** Union type of all zombies */
-export type ZombieKey = HashMap.HashMap.Key<typeof zombiesHashMap>
+export type ZombieKey = Parameters<(typeof ZOMBIES)["get"]>[0]
 export interface Zombie {
 	/** Internal tag to discriminate against for type-narrowing */
 	readonly _tag: "Zombie"
@@ -27,8 +27,11 @@ export interface Zombie {
 	readonly description: string
 	/** State of the zombie */
 	readonly state: Option.Option<ContentState>
-	/** Release date of the zombie */
-	readonly releaseDate: Date
+	/**
+	 * Release calendar day as an ISO 8601 date-only string (`YYYY-MM-DD`).
+	 * Same calendar day: higher {@link ZOMBIES} insertion index sorts first when descending.
+	 */
+	readonly releaseDate: string
 	/** Image of the zombie */
 	readonly image: ZombiesImagePath
 	/** Games the zombie is available in */
@@ -51,14 +54,31 @@ export interface Zombie {
 	readonly combatStrategy: ZombiesPaths
 }
 
-/** Gets all zombies sorted by release date in descending order */
-export const getZombies = (): Zombie[] =>
-	HashMap.toValues(zombiesHashMap).sort((a, b) => sortReleaseDate(b.releaseDate, a.releaseDate))
+/**
+ * Newest-first: {@link sortDates}, then higher {@link ZOMBIES} insertion index when calendar days tie.
+ */
+export function compareZombieReleaseDescending(
+	a: Pick<Zombie, "id" | "releaseDate">,
+	b: Pick<Zombie, "id" | "releaseDate">,
+): number {
+	const byDate = sortDates(b.releaseDate, a.releaseDate)
+	if (byDate !== 0) return byDate
 
-/** Gets a zombie by its key */
-export const getZombieByKey = (key: ZombieKey) => HashMap.get(zombiesHashMap, key)
+	// Use inseration index as a tiebreaker (higher index = later insertion = newer Zombie)
+	return (
+		ZOMBIE_INSERATION_INDEX_BY_ID.get(b.id as ZombieKey)! -
+		ZOMBIE_INSERATION_INDEX_BY_ID.get(a.id as ZombieKey)!
+	)
+}
 
-/** Gets the previous and next zombies
+/** @returns An array of all zombies sorted by release date in descending order */
+export const getZombies = (): Zombie[] => [...ZOMBIES.values()].sort(compareZombieReleaseDescending)
+
+/** @returns The zombie with the given key */
+export const getZombieByKey = (key: ZombieKey) => Option.fromUndefinedOr(ZOMBIES.get(key))
+
+/**
+ * @returns The previous and next zombies based on the current
  * @param current The key of the current zombie
  */
 export const getAdjacentZombies = (current: ZombieKey) => {
@@ -90,13 +110,13 @@ const makeZombie = <T extends string>(
 	},
 ]
 
-const zombiesHashMap = HashMap.make(
+const ZOMBIES = new Map([
 	makeZombie("zombie", {
 		title: "Zombie",
 		state: Option.none(),
 		description:
 			"The first and most common enemy type. Varying in speeds, zombies provide the most basic threat on their own but will quickly become a challenge in hordes.",
-		releaseDate: new Date("November 11, 2008 12:00 AM"),
+		releaseDate: "2008-11-11",
 		image: "/zombies/base-zombie.webp",
 		type: "Normal",
 		speed: "Medium",
@@ -118,7 +138,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("hellhound", {
 		title: "Hellhound",
 		state: Option.none(),
-		releaseDate: new Date("June 10, 2010 12:00 AM"),
+		releaseDate: "2010-06-10",
 		description:
 			"Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
 		image: "/zombies/hellhound.webp",
@@ -156,7 +176,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("nova-6-crawler", {
 		title: "Nova-6 Crawler",
 		state: Option.none(),
-		releaseDate: new Date("November 09, 2010 12:00 AM"),
+		releaseDate: "2010-11-09",
 		description:
 			"These creepy crawlers are slow-moving zombies that emit green nova gas from their bodies as they crawl on all fours towards their target, releasing the gas when killed.",
 		image: "/zombies/nova-6-crawler.webp",
@@ -174,7 +194,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("pentagon-thief", {
 		title: "Pentagon Thief",
 		state: Option.none(),
-		releaseDate: new Date("November 09, 2010 12:30 AM"),
+		releaseDate: "2010-11-09",
 		image: "/zombies/pentagon-thief.webp",
 		description:
 			"The Pentagon Thief is a special enemy appearing in the map 'Five', periodically trying to steal the player's weapons forcing them to reacquire the weapon if successful.",
@@ -192,7 +212,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("space-monkey", {
 		title: "Space Monkey",
 		state: Option.none(),
-		releaseDate: new Date("February 01, 2011 12:00 AM"),
+		releaseDate: "2011-02-01",
 		image: "/zombies/space-monkey.webp",
 		description:
 			"Space Monkeys are a special enemy appearing on the map Ascension, attempting to steal the player's perks by attacking the perk machines.",
@@ -210,7 +230,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("george-a-romero", {
 		title: "George A. Romero",
 		state: Option.none(),
-		releaseDate: new Date("May 03, 2011 12:00 AM"),
+		releaseDate: "2011-05-03",
 		image: "/zombies/george-a-romero.webp",
 		description:
 			"George A. Romero is a special zombie, and the main antagonist featured in the map Call of the Dead. Roaming the map and constantly following the player.",
@@ -228,7 +248,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("jungle-monkey", {
 		title: "Jungle Monkey",
 		state: Option.none(),
-		releaseDate: new Date("June 12, 2011 12:00 AM"),
+		releaseDate: "2011-06-12",
 		image: "/zombies/jungle-monkey.webp",
 		description:
 			"The Jungle Monkey is a special enemy appearing on the map Shangri-La, unlike the Space Monkey, the Jungle Monkey prefers to go after Power-Up drops.",
@@ -246,7 +266,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("shrieker-zombie", {
 		title: "Shrieker Zombie",
 		state: Option.none(),
-		releaseDate: new Date("June 12, 2011 01:00 AM"),
+		releaseDate: "2011-06-12",
 		image: "/zombies/shrieker-zombie.webp",
 		description:
 			"Shrieker Zombies are a special enemy appearing on the map Shangri-La. These zombies appear with pale white skin, glowing white eyes, and can move very quickly.",
@@ -264,7 +284,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("napalm-zombie", {
 		title: "Napalm Zombie",
 		state: Option.none(),
-		releaseDate: new Date("June 12, 2011 02:00 AM"),
+		releaseDate: "2011-06-12",
 		image: "/zombies/napalm-zombie.webp",
 		description:
 			"Napalm Zombies are a special enemy appearing on the map Shangri-La. These zombies look like a burnt zombie with a flaming aura surrounding them.",
@@ -282,7 +302,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("astronaut-zombie", {
 		title: "Astronaut Zombie",
 		state: Option.none(),
-		releaseDate: new Date("August 23, 2011 12:00 AM"),
+		releaseDate: "2011-08-23",
 		image: "/zombies/astronaut-zombie.webp",
 		description:
 			"The Astronaut is a special enemy appearing on the map Moon, often taking the name of someone on your friends list or if solo a predetermined name instead.",
@@ -300,7 +320,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("denizen", {
 		title: "Denizen",
 		state: Option.none(),
-		releaseDate: new Date("November 12, 2012 12:00 AM"),
+		releaseDate: "2012-11-12",
 		image: "/zombies/denizen.webp",
 		description:
 			"The Denizen is a special enemy appearing on the map Tranzit, lurking within the fog of the map waiting for unsuspecting players to jump onto.",
@@ -318,7 +338,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("avogadro", {
 		title: "Avogadro",
 		state: Option.none(),
-		releaseDate: new Date("November 12, 2012 01:00 AM"),
+		releaseDate: "2012-11-12",
 		image: "/zombies/avogadro.webp",
 		description:
 			"The Avogadro is a boss zombie appearing on the maps Tranzit & Alpha Omega, also known as Cornelius Pernell the leader of Broken Arrow.",
@@ -336,7 +356,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("jumping-jack", {
 		title: "Jumping Jack",
 		state: Option.none(),
-		releaseDate: new Date("January 29, 2013 12:00 AM"),
+		releaseDate: "2013-01-29",
 		image: "/zombies/jumping-jack.webp",
 		description:
 			"Jumping Jacks are special enemies appearing on the map Die Rise. Similar in appearance to the Nova-6 Crawler, however, these zombies behave much differently.",
@@ -354,7 +374,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("brutus", {
 		title: "Brutus",
 		state: Option.none(),
-		releaseDate: new Date("April 16, 2013 12:00 AM"),
+		releaseDate: "2013-04-16",
 		image: "/zombies/brutus.webp",
 		description:
 			"Brutus is the boss zombie appearing on the maps Mob of the Dead and Blood of the Dead. Also known as the Warden of Alcatraz, tormenting the souls of the damned.",
@@ -372,7 +392,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("ghost", {
 		title: "Ghost",
 		state: Option.none(),
-		releaseDate: new Date("July 13, 2013 12:00 AM"),
+		releaseDate: "2013-07-13",
 		image: "/zombies/ghost.webp",
 		description:
 			"The Ghost also known as The Witch is a special enemy appearing in the map Buried. These enemies can only be found within the Mansion of the map.",
@@ -390,7 +410,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("crusader-zombie", {
 		title: "Crusader Zombie",
 		state: Option.none(),
-		releaseDate: new Date("August 27, 2013 12:00 AM"),
+		releaseDate: "2013-08-27",
 		image: "/zombies/crusader-zombie.webp",
 		description:
 			"Crusader Zombies are a special enemy type on Origins, originating from the various Crusader Knights that fought in The Great War against the Apothicons alongside the Keepers.",
@@ -408,7 +428,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("panzersoldat", {
 		title: "Panzersoldat",
 		state: Option.none(),
-		releaseDate: new Date("August 27, 2013 01:00 AM"),
+		releaseDate: "2013-08-27",
 		image: "/zombies/panzersoldat.webp",
 		description:
 			"The Panzersoldat is an elite enemy appearing on the maps Origins, Der Eisendrache, and Revelations, wearing an armored suit equipped with a flamethrower.",
@@ -426,7 +446,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("keepers", {
 		title: "Keepers",
 		state: Option.none(),
-		releaseDate: new Date("November 06, 2015 12:00 AM"),
+		releaseDate: "2015-11-06",
 		image: "/zombies/keeper.webp",
 		description:
 			"Keepers are a special enemy appearing on almost all maps in Black Ops 3 and play a crucial part in the events that happen within the Aether Storyline.",
@@ -444,7 +464,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("insanity-elementals", {
 		title: "Insanity Elementals",
 		state: Option.none(),
-		releaseDate: new Date("November 06, 2015 01:00 AM"),
+		releaseDate: "2015-11-06",
 		image: "/zombies/insanity-elementals.webp",
 		description:
 			"Insanity Elementals, commonly referred to as Meatballs are special enemies appearing on the map Shadows of Evil, dropping from the sky and rolling into the fight.",
@@ -462,7 +482,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("parasite", {
 		title: "Parasite",
 		state: Option.none(),
-		releaseDate: new Date("November 06, 2015 02:00 AM"),
+		releaseDate: "2015-11-06",
 		image: "/zombies/parasite.webp",
 		description:
 			"Parasites are a special enemy appearing on multiple maps throughout zombies. These zombies are the first flying enemy to appear in the franchise.",
@@ -487,7 +507,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("margwa", {
 		title: "Margwa",
 		state: Option.none(),
-		releaseDate: new Date("November 06, 2015 03:00 AM"),
+		releaseDate: "2015-11-06",
 		image: "/zombies/margwa.webp",
 		description:
 			"Margwas are an elite enemy appearing on the maps Shadows of Evil and Revelations. These three-headed beasts are intimidating threats that can be hard to deal with.",
@@ -505,7 +525,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("skeleton", {
 		title: "Skeleton",
 		state: Option.none(),
-		releaseDate: new Date("February 02, 2016 12:00 AM"),
+		releaseDate: "2016-02-02",
 		image: "/zombies/skeleton.webp",
 		description:
 			"Skeletons are a variant of the normal zombie also known as Spartoi in Ancient Evil. These enemies bring a cool new look to the normal zombie.",
@@ -523,7 +543,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("the-corrupted-keeper", {
 		title: "The Corrupted Keeper",
 		state: Option.none(),
-		releaseDate: new Date("February 02, 2016 01:00 AM"),
+		releaseDate: "2016-02-02",
 		image: "/zombies/the-corrupted-keeper.webp",
 		description:
 			"The Corruputed Keeper is the final boss of the My Brother's Keeper main quest in Der Eisendrache, the first boss fight in the zombies franchise.",
@@ -541,7 +561,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("spider", {
 		title: "Spider",
 		state: Option.none(),
-		releaseDate: new Date("April 19, 2016 12:00 AM"),
+		releaseDate: "2016-04-19",
 		image: "/zombies/spider.webp",
 		description:
 			"Spiders are a special enemy originating from Zetsubou No Shima. These enemies have the appearance of a Black Widow, but with some interesting enhancements.",
@@ -559,7 +579,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("thrasher", {
 		title: "Thrasher",
 		state: Option.none(),
-		releaseDate: new Date("April 19, 2016 01:00 AM"),
+		releaseDate: "2016-04-19",
 		description:
 			"Thrashers are an elite enemy originating from the map Zetsubou No Shima. These brutes are mutated zombies from spores completely transforming their appearance.",
 		image: "/zombies/thrasher.webp",
@@ -577,7 +597,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("giant-spider", {
 		title: "Giant Spider",
 		state: Option.none(),
-		releaseDate: new Date("April 19, 2016 02:00 AM"),
+		releaseDate: "2016-04-19",
 		image: "/zombies/giant-spider.webp",
 		description:
 			"The Giant Spider is the first boss you face in Zetsubou No Shima to obtain the Spider's tooth to build the Masamune wonder weapon.",
@@ -595,7 +615,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("giant-thrasher", {
 		title: "Giant Thrasher",
 		state: Option.none(),
-		releaseDate: new Date("April 19, 2016 03:00 AM"),
+		releaseDate: "2016-04-19",
 		image: "/zombies/giant-thrasher.webp",
 		description:
 			"The Giant Thrasher is the final boss for the Seeds of Doubt main quest in Zetsubou No Shima, appearing more unique than other Thrashers on the map.",
@@ -613,7 +633,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("valkyrie-drone", {
 		title: "Valkyrie Drone",
 		state: Option.none(),
-		releaseDate: new Date("July 12, 2016 12:00 AM"),
+		releaseDate: "2016-07-12",
 		image: "/zombies/valkyrie-drone.webp",
 		description:
 			"Valkyrie Drones are a special enemy type originating from the map Gorod Krovi. These enemies appear as flying drones with three tentacle-like arms and a red eye.",
@@ -631,7 +651,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("mangler", {
 		title: "Mangler",
 		state: Option.none(),
-		releaseDate: new Date("July 12, 2016 01:00 AM"),
+		releaseDate: "2016-07-12",
 		image: "/zombies/mangler.webp",
 		description:
 			"Manglers are a special type of enemy originating from the map Gorod Krovi. These enemies appear as armored russian super-soldiers armed with an arm cannon.",
@@ -658,7 +678,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("dragon", {
 		title: "Dragon",
 		state: Option.none(),
-		releaseDate: new Date("July 12, 2016 02:00 AM"),
+		releaseDate: "2016-07-12",
 		image: "/zombies/dragon.webp",
 		description:
 			"The Dragon is the first boss appearing on the map Gorod Krovi. This enemy appears as main dragon seen throughout the map breathing fire down on the battlefield.",
@@ -676,7 +696,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("nikolai-mech", {
 		title: "Nikolai Mech",
 		state: Option.none(),
-		releaseDate: new Date("July 12, 2016 03:00 AM"),
+		releaseDate: "2016-07-12",
 		image: "/zombies/nikolai-mech.webp",
 		description:
 			"The Nikolai Mech is the final boss enemy in the map Gorod Krovi. The mech hosts Ultimis Nikolai inside who is the controller of the mech while being drunk.",
@@ -694,7 +714,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("fury", {
 		title: "Fury",
 		state: Option.none(),
-		releaseDate: new Date("October 06, 2016 12:00 AM"),
+		releaseDate: "2016-10-06",
 		image: "/zombies/fury.webp",
 		description:
 			"Furies are a special enemy originating from the map Revelations in Black Ops 3. These enemies are unique in appearance while having similar behavior to the Insanity Elementals.",
@@ -712,7 +732,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 12:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/fire-catalyst.webp",
 		description:
 			"Fire Catalysts are one of the four variants of catalyst zombies, originating from the map Voyage of Despair, and appearing similar to the Napalm Zombie from Shangri-La.",
@@ -730,7 +750,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("poison-catalyst", {
 		title: "Poison Catalyst",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 01:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/poison-catalyst.webp",
 		description:
 			"Poison Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on toxic area denial.",
@@ -748,7 +768,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("water-catalyst", {
 		title: "Water Catalyst",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 02:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/water-catalyst.webp",
 		description:
 			"Water Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with a focus on buffing other zombies.",
@@ -766,7 +786,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("lightning-catalyst", {
 		title: "Lightning Catalyst",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 03:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/lightning-catalyst.webp",
 		description:
 			"Lightning Catalysts are one of four variants of Catalyst zombies, originating from the map Voyage of Despair with similarities to the Shrieker Zombie.",
@@ -784,7 +804,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("stoker", {
 		title: "Stoker",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 04:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/stoker.webp",
 		description:
 			"The Stoker is an elite enemy originating on the map Voyage of Despair in Black Ops 4, wielding a shovel and appearing as a fiery zombie spawned from hell.",
@@ -801,7 +821,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("blightfather", {
 		title: "Blightfather",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 05:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/blightfather.webp",
 		description:
 			"The Blightfather is an elite enemy originating from the map Voyage of Despair, appearing as a tall and mutated arachnid similar with long legs.",
@@ -819,7 +839,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("eye-of-malice", {
 		title: "Eye of Malice",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 06:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/eye-of-malice.webp",
 		description:
 			"The Eye of Malice and Despair is the final boss of the map Voyage of Despair's Abandon Ship main quest, also known as the Sky-Eye.",
@@ -837,7 +857,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("tiger", {
 		title: "Tiger",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 07:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/tiger.webp",
 		description:
 			"The Tiger is a special enemy originating from the map IX in Black Ops 4, similar to Hellhounds however having slightly higher health.",
@@ -855,7 +875,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("destroyer", {
 		title: "Destroyer",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 08:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/destroyer.webp",
 		description:
 			"The Destroyer is a special enemy originating from the map IX in Black Ops 4, wielding dual-axes while wearing heavy armor that must be destroyed.",
@@ -873,7 +893,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("marauder", {
 		title: "Marauder",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 09:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/marauder.webp",
 		description:
 			"The Marauder is a special enemy originating from the map IX in Black Ops 4 wielding metallic claws with little to no armor.",
@@ -891,7 +911,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("fury-and-wrath", {
 		title: "Fury & Wrath",
 		state: Option.none(),
-		releaseDate: new Date("October 12, 2018 10:00 AM"),
+		releaseDate: "2018-10-12",
 		image: "/zombies/fury-and-wrath.webp",
 		description:
 			"Fury and Wrath are the final bosses in the map IX's main quest Venerated Warrior, appearing as two war elephants with heavy armor.",
@@ -909,7 +929,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("nosferatu", {
 		title: "Nosferatu",
 		state: Option.none(),
-		releaseDate: new Date("December 11, 2018 12:00 AM"),
+		releaseDate: "2018-12-11",
 		image: "/zombies/nosferatu.webp",
 		description:
 			"The Nosferatu is a special enemy orignating from the map Dead of the Night in Black Ops 4, appearing as a vampire like zombie.",
@@ -927,7 +947,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("werewolf", {
 		title: "Werewolf",
 		state: Option.none(),
-		releaseDate: new Date("December 11, 2018 01:00 AM"),
+		releaseDate: "2018-12-11",
 		image: "/zombies/werewolf.webp",
 		description:
 			"The Werewolf is an elite enemy originating from the map Dead of the Night in Black Ops 4, these enemies are fierce, agile, and strong posing a true threat.",
@@ -945,7 +965,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("shadow-werewolf", {
 		title: "Shadow Werewolf",
 		state: Option.none(),
-		releaseDate: new Date("December 11, 2018 02:00 AM"),
+		releaseDate: "2018-12-11",
 		image: "/zombies/shadow-werewolf.webp",
 		description:
 			"The Shadow Werewolf is the final boss of the map Dead of the Nights main quest Trial by Ordeal, appearing as a bigger, stronger, and faster Werewolf.",
@@ -963,7 +983,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("gegenees", {
 		title: "Gegenees",
 		state: Option.none(),
-		releaseDate: new Date("March 26, 2019 12:00 AM"),
+		releaseDate: "2019-03-26",
 		image: "/zombies/gegenees.webp",
 		description:
 			"The Gegenees is an elite enemy originating on the map Ancient Evil in Black Ops 4, appearing a six-armed giant wielding a spear, sword, and shield.",
@@ -981,7 +1001,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("pegasus", {
 		title: "Pegasus",
 		state: Option.none(),
-		releaseDate: new Date("March 26, 2019 01:00 AM"),
+		releaseDate: "2019-03-26",
 		image: "/zombies/pegasus.webp",
 		description:
 			"Pegasus is the first boss faced in the map Ancient Evil's main quest Greek Tragedy, appearing as the mythical steed of Perseus in all its glory.",
@@ -999,7 +1019,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("perseus", {
 		title: "Perseus",
 		state: Option.none(),
-		releaseDate: new Date("March 26, 2019 02:00 AM"),
+		releaseDate: "2019-03-26",
 		image: "/zombies/perseus.webp",
 		description:
 			"Perseus is the final boss in the map Ancient Evil's main quest Greek Tragedy, also known as the Zombie Warlord and the son of Zeus.",
@@ -1016,7 +1036,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("adam-unit", {
 		title: "A.D.A.M. Unit",
 		state: Option.none(),
-		releaseDate: new Date("July 09, 2019 12:00 AM"),
+		releaseDate: "2019-07-09",
 		image: "/zombies/adam-unit.webp",
 		description:
 			"The A.D.A.M. Unit is a unique variant of the standard zombie originating on the map Alpha Omega in Black Ops 4, being tankier, faster, and robotic.",
@@ -1034,7 +1054,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("nova-6-bomber", {
 		title: "Nova-6 Bomber",
 		state: Option.none(),
-		releaseDate: new Date("July 09, 2019 01:00 AM"),
+		releaseDate: "2019-07-09",
 		image: "/zombies/nova-6-bomber.webp",
 		description:
 			"The Nova-6 Bomber is a special unique variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, glowing yellow with spikes on its back.",
@@ -1052,7 +1072,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("jolting-jack", {
 		title: "Jolting Jack",
 		state: Option.none(),
-		releaseDate: new Date("July 09, 2019 02:00 AM"),
+		releaseDate: "2019-07-09",
 		image: "/zombies/jolting-jack.webp",
 		description:
 			"The Jolting Jack is a special variant of the Nova-6 Crawler originating on the map Alpha Omega in Black Ops 4, having a blue aura of electricity around them.",
@@ -1070,7 +1090,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("armored-zombie", {
 		title: "Armored Zombie",
 		state: Option.none(),
-		releaseDate: new Date("November 13, 2020 12:00 AM"),
+		releaseDate: "2020-11-13",
 		image: "/zombies/armored-zombie.webp",
 		description:
 			"The Armored Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, having light armor on compared to standard zombies.",
@@ -1103,7 +1123,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("heavy-zombie", {
 		title: "Heavy Zombie",
 		state: Option.none(),
-		releaseDate: new Date("November 13, 2020 01:00 AM"),
+		releaseDate: "2020-11-13",
 		image: "/zombies/heavy-zombie.webp",
 		description:
 			"The Heavy Zombie is a variant of the standard zombie originating on the map Die Maschine in Black Ops: Cold War, wearing heavy armor compared to other zombies.",
@@ -1136,7 +1156,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("plaguehound", {
 		title: "Plaguehound",
 		state: Option.none(),
-		releaseDate: new Date("November 13, 2020 02:00 AM"),
+		releaseDate: "2020-11-13",
 		image: "/zombies/plaguehound.webp",
 		description:
 			"The Plaguehound is a variant of the Hellhound originating on the map Die Maschine in Black Ops: Cold War, being heavily mutated with Nova 6 Gas compared to hellhounds.",
@@ -1154,7 +1174,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("megaton", {
 		title: "Megaton",
 		state: Option.none(),
-		releaseDate: new Date("November 13, 2020 03:00 AM"),
+		releaseDate: "2020-11-13",
 		image: "/zombies/megaton.webp",
 		description:
 			"The Megaton is the first elite enemy appearing in Black Ops: Cold War originating from the map Die Maschine, appearing as a radioactive mutated juggernaut of a zombie.",
@@ -1172,7 +1192,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("mimic", {
 		title: "Mimic",
 		state: Option.none(),
-		releaseDate: new Date("February 04, 2021 12:00 AM"),
+		releaseDate: "2021-02-04",
 		image: "/zombies/mimic.webp",
 		description:
 			"The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attacking them.",
@@ -1190,7 +1210,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("orda", {
 		title: "Orda",
 		state: Option.none(),
-		releaseDate: new Date("February 04, 2021 01:00 AM"),
+		releaseDate: "2021-02-04",
 		image: "/zombies/orda.webp",
 		description:
 			"Orda is a boss type zombie originating on Firebase Z in Black Ops: Cold War, appearing as an elder god from the Dark Aether.",
@@ -1208,7 +1228,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("tormentors", {
 		title: "Tormentors",
 		state: Option.none(),
-		releaseDate: new Date("July 15, 2021 12:00 AM"),
+		releaseDate: "2021-07-15",
 		image: "/zombies/tormentor.webp",
 		description:
 			"Tormentors are a special enemy type originating on the map Mauer Der Toten in Black Ops: Cold War, appearing a red crystalized zombie.",
@@ -1226,7 +1246,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("disciple", {
 		title: "Disciple",
 		state: Option.none(),
-		releaseDate: new Date("July 15, 2021 01:00 AM"),
+		releaseDate: "2021-07-15",
 		image: "/zombies/disciple.webp",
 		description:
 			"Disciples are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing as summoners from the Dark Aether. ",
@@ -1244,7 +1264,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("tempest", {
 		title: "Tempest",
 		state: Option.none(),
-		releaseDate: new Date("July 15, 2021 02:00 AM"),
+		releaseDate: "2021-07-15",
 		image: "/zombies/tempest.webp",
 		description:
 			"Tempest are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing a smaller purple variant of the Avogadro.",
@@ -1262,7 +1282,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("krasny-soldat", {
 		title: "Krasny Soldat",
 		state: Option.none(),
-		releaseDate: new Date("July 15, 2021 03:00 AM"),
+		releaseDate: "2021-07-15",
 		image: "/zombies/krasny-soldat.webp",
 		description:
 			"The Krasny Soldat is an elite variant of the Panzersoldat originating on the map Mauer Der Toten in Black Ops Cold War, adopting a red color scheme for the Omega Group.",
@@ -1280,7 +1300,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("valentina", {
 		title: "Valentina",
 		state: Option.none(),
-		releaseDate: new Date("July 15, 2021 04:00 AM"),
+		releaseDate: "2021-07-15",
 		image: "/zombies/valentina.webp",
 		description:
 			"Valentina is the final boss in the map Mauer Der Toten in Black Ops Cold War, appearing similar to the Tormentors in appearance however without being turned.",
@@ -1298,7 +1318,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("abomination", {
 		title: "Abomination",
 		state: Option.none(),
-		releaseDate: new Date("October 07, 2021 12:00 AM"),
+		releaseDate: "2021-10-07",
 		image: "/zombies/abomination.webp",
 		description:
 			"The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold war, appearing a three-headed mutated zombie similar to the Margwa.",
@@ -1316,7 +1336,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("the-forsaken", {
 		title: "The Forsaken",
 		state: Option.none(),
-		releaseDate: new Date("October 07, 2021 01:00 AM"),
+		releaseDate: "2021-10-07",
 		image: "/zombies/the-forsaken.webp",
 		description:
 			"The Forsaken is the final boss of the map Forsaken in Black Ops Cold War, appearing as one of the elder gods of the Dark Aether.",
@@ -1341,7 +1361,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("vermin", {
 		title: "Vermin",
 		state: Option.none(),
-		releaseDate: new Date("October 25, 2024 12:00 AM"),
+		releaseDate: "2024-10-25",
 		image: "/zombies/vermin.webp",
 		description:
 			"Vermin are large, spider-like ravenous scuttlers with a central thorax that seems to take the form of a screaming human head. Originating on the map Liberty Falls and Terminus in Black Ops 6.",
@@ -1366,7 +1386,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("amalgam", {
 		title: "Amalgam",
 		state: Option.none(),
-		releaseDate: new Date("October 25, 2024 01:00 AM"),
+		releaseDate: "2024-10-25",
 		image: "/zombies/amalgam.webp",
 		description:
 			"The Amalgam is an elite enemy originating from the map Terminus in Black Ops 6, appearing as a multi-armed and multi-legged mutation of the original zombie.",
@@ -1391,7 +1411,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("nathan", {
 		title: "Nathan",
 		state: Option.none(),
-		releaseDate: new Date("October 25, 2024 02:00 AM"),
+		releaseDate: "2024-10-25",
 		image: "/zombies/nathan.webp",
 		description:
 			"Nathan Aguinaldo is a mini-boss originating on the map Terminus in Black Ops 6, serving as Maya's younger brother who was experimented on by Dr. Modi for Project Janus.",
@@ -1409,7 +1429,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("patient-13", {
 		title: "Patient 13",
 		state: Option.none(),
-		releaseDate: new Date("October 25, 2024 03:00 AM"),
+		releaseDate: "2024-10-25",
 		image: "/zombies/patient-13.webp",
 		description:
 			"Patient 13 is the final boss on the map Terminus in Black Ops 6, appearing as a giant mutated kraken like creature who was another experiment of Dr. Modi known as Owen Guthrie.",
@@ -1434,7 +1454,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("doppelghast", {
 		title: "Doppelghast",
 		state: Option.none(),
-		releaseDate: new Date("December 05, 2024 12:00 AM"),
+		releaseDate: "2024-12-05",
 		image: "/zombies/doppelghast.webp",
 		description:
 			"Doppelghasts are violent and display erratic and unsettling movement, as if each head is independently fighting for control of its body. Originating from the map Citadelle Des Morts in Black Ops 6.",
@@ -1459,7 +1479,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("the-guardian", {
 		title: "The Guardian",
 		state: Option.none(),
-		releaseDate: new Date("December 05, 2024 01:00 AM"),
+		releaseDate: "2024-12-05",
 		image: "/zombies/the-guardian.webp",
 		description:
 			"The Guardian is a colossal stone golem that served as the guardian of the Obscurus Altilium also known as the Amulet. Originating from the map Citadelle Des Morts in Black Ops 6.",
@@ -1477,7 +1497,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("shock-mimic", {
 		title: "Shock Mimic",
 		state: Option.none(),
-		releaseDate: new Date("January 28, 2025 12:00 AM"),
+		releaseDate: "2025-01-28",
 		image: "/zombies/shock-mimic.webp",
 		description:
 			"Shock Mimics are a special enemy often disguising themselves as useful items, then break out when approached to attack players.",
@@ -1495,7 +1515,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("sentinel-artifact", {
 		title: "Sentinel Artifact",
 		state: Option.none(),
-		releaseDate: new Date("January 28, 2025 1:00 AM"),
+		releaseDate: "2025-01-28",
 		image: "/zombies/sentinel-artifact.webp",
 		description:
 			"The Sentinel Artifact is a powerful relic with a history spanning eons, originating from the Chaos Story in Voyage of Desiar, and appearing as a boss in Black Ops 6 Zombies.",
@@ -1513,7 +1533,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("toxic-zombies", {
 		title: "Toxic Zombies",
 		state: Option.none(),
-		releaseDate: new Date("April 02, 2025 12:00 AM"),
+		releaseDate: "2025-04-02",
 		image: "/zombies/toxic-zombie.webp",
 		description:
 			"Toxic Zombies are glowing ghouls identifiable by their greenish hue and skeletal exterior intent on sprinting toward their prey before exploding. Originating on the map Shattered Veil in Black Ops 6.",
@@ -1538,7 +1558,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("elder-disciple", {
 		title: "Elder Disciple",
 		state: Option.none(),
-		releaseDate: new Date("April 02, 2025 01:00 AM"),
+		releaseDate: "2025-04-02",
 		image: "/zombies/elder-disciple.webp",
 		description:
 			"Elder Disciples are strange, floating apparitions gaining strength as they empower the zombies around them while summoning more undead to join the battle.",
@@ -1556,7 +1576,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("z-rex", {
 		title: "Z-Rex",
 		state: Option.none(),
-		releaseDate: new Date("April 02, 2025 02:00 AM"),
+		releaseDate: "2025-04-02",
 		image: "/zombies/z-rex.webp",
 		description:
 			"The Z-Rex is a massive reanimated dinosaur revived by residual temporal energy, originating on Shattered Veil in Black Ops 6.",
@@ -1574,7 +1594,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("kommando-klaus", {
 		title: "Kommando Klaus",
 		state: Option.none(),
-		releaseDate: new Date("August 07, 2025 12:00 AM"),
+		releaseDate: "2025-08-07",
 		image: "/zombies/kommando-klaus.webp",
 		description:
 			"These periodic robot battalions known as Kommando Klaus, equipped with rocket boots, home in on perceived intruders with deadly self-destruct sequences engaged.",
@@ -1592,7 +1612,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("uber-klaus", {
 		title: "Uber Klaus",
 		state: Option.none(),
-		releaseDate: new Date("August 07, 2025 01:00 AM"),
+		releaseDate: "2025-08-07",
 		image: "/zombies/uber-klaus.webp",
 		description:
 			"A murderous automaton encased in a toughened, bulky exoskeleton that maintains a cocky attitude, lethal efficiency, and super strength, all directed at newly programmed threats.",
@@ -1610,7 +1630,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("sam", {
 		title: "S.A.M.",
 		state: Option.none(),
-		releaseDate: new Date("August 07, 2025 02:00 AM"),
+		releaseDate: "2025-08-07",
 		image: "/zombies/sam.webp",
 		description:
 			"An Artificial Intelligence based on a snapshot of Samantha Maxis, obsessed with the idea of using Maxis' body to become Human.",
@@ -1627,7 +1647,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("uber-richtofen", {
 		title: "Uber Richtofen",
 		state: Option.none(),
-		releaseDate: new Date("August 07, 2025 03:00 AM"),
+		releaseDate: "2025-08-07",
 		image: "/zombies/uber-richtofen.webp",
 		description:
 			'Appearing initially encased in a toughened, bulky exoskeleton, "The Director" will stop at nothing to save his family.',
@@ -1644,7 +1664,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("ravager", {
 		title: "Ravager",
 		state: Option.none(),
-		releaseDate: new Date("November 14, 2025 12:00 AM"),
+		releaseDate: "2025-11-14",
 		image: "/zombies/ravager.webp",
 		description:
 			"A tortured minion of an unknown evil, prowling the Dark Aether on all fours, usually in packs, lurking in the shadows until the moment it can strike.",
@@ -1662,7 +1682,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("zursa", {
 		title: "Zursa",
 		state: Option.none(),
-		releaseDate: new Date("November 14, 2025 01:00 AM"),
+		releaseDate: "2025-11-14",
 		image: "/zombies/zursa.webp",
 		description:
 			"An apex predator twisted by the Dark Aether, driven by madness and aggression with parasitic infestations that make it an Elite level threat.",
@@ -1680,7 +1700,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("veytharion", {
 		title: "Veytharion",
 		state: Option.none(),
-		releaseDate: new Date("November 14, 2025 02:00 AM"),
+		releaseDate: "2025-11-14",
 		image: "/zombies/veytharion.webp",
 		description:
 			"A tormented shadowsmith controlled by the Warden, tasked with containing our crew and the Dark Aether in Ashes of the Damned.",
@@ -1698,7 +1718,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("oscar", {
 		title: "O.S.C.A.R.",
 		state: Option.none(),
-		releaseDate: new Date("December 4, 2025 12:00 AM"),
+		releaseDate: "2025-12-04",
 		image: "/zombies/oscar.webp",
 		description:
 			"The Observation System and Carnifex Adjudicator Robot (O.S.C.A.R.) is a stalking menace persistent in assessing and neutralizing threats.",
@@ -1721,7 +1741,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("caltheris", {
 		title: "Caltheris",
 		state: Option.none(),
-		releaseDate: new Date("December 4, 2025 1:00 AM"),
+		releaseDate: "2025-12-04",
 		image: "/zombies/caltheris.webp",
 		description:
 			"An imprisoned shadowsmith by the Warden, sister of Veytharion, forced against her will to serve the Warden's will.",
@@ -1739,7 +1759,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("rad-hound", {
 		title: "Rad-Hound",
 		state: Option.none(),
-		releaseDate: new Date("March 11, 2026 1:00 AM"),
+		releaseDate: "2026-03-11",
 		image: "/zombies/rad-hound.webp",
 		description:
 			"Bulging with irradiated innards, these foul minions of The Warden can be quelled with quick thinking and rapid firing, but they leave behind a dangerous radioactive explosion on death.",
@@ -1757,7 +1777,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("the-dark-heart", {
 		title: "The Dark Heart",
 		state: Option.none(),
-		releaseDate: new Date("March 11, 2026 2:00 AM"),
+		releaseDate: "2026-03-11",
 		image: "/zombies/the-dark-heart.webp",
 		description:
 			"The Dark Heart is the core of the Warden's temporal prison, serving as the barrier between reality and purgatory.",
@@ -1775,7 +1795,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("frost-zombie", {
 		title: "Frost Zombie",
 		state: Option.some("New"),
-		releaseDate: new Date("April 30, 2026 12:00 AM"),
+		releaseDate: "2026-04-30",
 		image: "/zombies/frost-zombie.webp",
 		description:
 			"Frost Zombies are lurking enemies emerging from the mists during special rounds to attack in droves.",
@@ -1793,7 +1813,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("necropincer", {
 		title: "Necropincer",
 		state: Option.some("New"),
-		releaseDate: new Date("April 30, 2026 1:00 AM"),
+		releaseDate: "2026-04-30",
 		image: "/zombies/necropincer.webp",
 		description:
 			"A doomed undead Viking warrior spirit that rises from the cold seas to aid in the protection of Eidskallen.",
@@ -1811,7 +1831,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("dravakar", {
 		title: "Dravakar",
 		state: Option.some("New"),
-		releaseDate: new Date("April 30, 2026 2:00 AM"),
+		releaseDate: "2026-04-30",
 		image: "/zombies/dravakar.webp",
 		description:
 			"The big brother of Veytharion and Caltheris, Dravakar is an ice giant Shadowsmith forced to rule over Eidskallen at the behest of The Warden.",
@@ -1829,7 +1849,7 @@ const zombiesHashMap = HashMap.make(
 	makeZombie("gjallarfrost", {
 		title: "Gjallarfrost",
 		state: Option.some("New"),
-		releaseDate: new Date("April 30, 2026 3:00 AM"),
+		releaseDate: "2026-04-30",
 		image: "/zombies/gjallarfrost.webp",
 		description:
 			"An icy golem-like figure summoned by Dravakar serving as an extension of the Shadowsmith.",
@@ -1844,4 +1864,8 @@ const zombiesHashMap = HashMap.make(
 			"The Gjallarfrost is summoned by Dravakar during this final encounter of the main quest, during the transition phases.",
 		combatStrategy: "content/zombies/gjallarfrost",
 	}),
+])
+
+const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<ZombieKey, number>(
+	[...ZOMBIES.keys()].map((id, i) => [id, i]),
 )

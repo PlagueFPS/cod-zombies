@@ -5,7 +5,12 @@ import { GridPagination } from "@/components/client/grid-pagination"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { EmptyGrid } from "@/components/server/empty-grid"
 import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
-import { getMapByKey, MAIN_QUEST_TIME_RANGE_FILTERS } from "@/data/maps"
+import {
+	getMapByKey,
+	MAIN_QUEST_TIME_RANGE_FILTERS,
+	compareMapReleaseDescending,
+} from "@/data/maps"
+import { compareSideQuestDescending } from "@/data/side-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { CARD_LIMIT } from "@/utils/constants"
 import {
@@ -22,7 +27,6 @@ import {
 	getEstimatedTimeMidpoint,
 	sortDifficulties,
 	sortEstimatedTime,
-	sortReleaseDate,
 } from "@/utils/shared-functions"
 
 interface IQuestGrid {
@@ -97,15 +101,11 @@ export function QuestGrid({ quests }: IQuestGrid) {
 		case "oldest":
 			sortedQuests.sort((a, b) => {
 				if (isMapQuest(a) && isMapQuest(b)) {
-					return sortReleaseDate(a.releaseDate, b.releaseDate)
+					return compareMapReleaseDescending(b, a)
 				}
 
 				if (isSideQuest(a) && isSideQuest(b)) {
-					const mapA = getMapByKey(a.map)
-					const mapB = getMapByKey(b.map)
-					return compareByOptionalSome(mapA, mapB, (a, b) =>
-						sortReleaseDate(a.releaseDate, b.releaseDate),
-					)
+					return compareSideQuestDescending(b, a)
 				}
 
 				return 0
@@ -146,15 +146,11 @@ export function QuestGrid({ quests }: IQuestGrid) {
 		default: // latest
 			sortedQuests.sort((a, b) => {
 				if (isMapQuest(a) && isMapQuest(b)) {
-					return sortReleaseDate(b.releaseDate, a.releaseDate)
+					return compareMapReleaseDescending(a, b)
 				}
 
 				if (isSideQuest(a) && isSideQuest(b)) {
-					const mapA = getMapByKey(a.map)
-					const mapB = getMapByKey(b.map)
-					return compareByOptionalSome(mapA, mapB, (a, b) =>
-						sortReleaseDate(b.releaseDate, a.releaseDate),
-					)
+					return compareSideQuestDescending(a, b)
 				}
 
 				return 0
