@@ -6,6 +6,7 @@ import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { EmptyGrid } from "@/components/server/empty-grid"
 import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
 import { getMapByKey, MAIN_QUEST_TIME_RANGE_FILTERS, compareMapReleaseDescending } from "@/data/maps"
+import { compareSideQuestDescending } from "@/data/side-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { CARD_LIMIT } from "@/utils/constants"
 import {
@@ -100,11 +101,7 @@ export function QuestGrid({ quests }: IQuestGrid) {
 				}
 
 				if (isSideQuest(a) && isSideQuest(b)) {
-					const mapA = getMapByKey(a.map)
-					const mapB = getMapByKey(b.map)
-					return compareByOptionalSome(mapA, mapB, (ma, mb) =>
-						compareMapReleaseDescending(mb, ma),
-					)
+					return compareSideQuestDescending(b, a)
 				}
 
 				return 0
@@ -149,11 +146,7 @@ export function QuestGrid({ quests }: IQuestGrid) {
 				}
 
 				if (isSideQuest(a) && isSideQuest(b)) {
-					const mapA = getMapByKey(a.map)
-					const mapB = getMapByKey(b.map)
-					return compareByOptionalSome(mapA, mapB, (ma, mb) =>
-						compareMapReleaseDescending(ma, mb),
-					)
+					return compareSideQuestDescending(a, b)
 				}
 
 				return 0
