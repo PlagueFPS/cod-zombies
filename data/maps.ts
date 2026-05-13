@@ -50,7 +50,6 @@ export function compareMapReleaseDescending(
 	const byDate = sortDates(b.releaseDate, a.releaseDate)
 	if (byDate !== 0) return byDate
 
-	// Use inseration index as a tiebreaker (higher index = later insertion = newer map)
 	return (
 		MAP_INSERATION_INDEX_BY_ID.get(b.id as MapKey)! -
 		MAP_INSERATION_INDEX_BY_ID.get(a.id as MapKey)!
