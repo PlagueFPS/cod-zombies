@@ -4,7 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Option } from "effect"
-import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
+import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** Union of all main quest difficulties */
 export type MainQuestDifficulty = "Easy" | "Medium" | "Hard"
@@ -41,13 +41,13 @@ export interface MapEntry {
 export type MapKey = Parameters<(typeof MAPS)["get"]>[0]
 
 /**
- * Newest-first: {@link sortReleaseDate}, then higher {@link MAPS} insertion index when calendar days tie.
+ * Newest-first: {@link sortDates}, then higher {@link MAPS} insertion index when calendar days tie.
  */
 export function compareMapReleaseDescending(
 	a: Pick<MapEntry, "id" | "releaseDate">,
 	b: Pick<MapEntry, "id" | "releaseDate">,
 ): number {
-	const byDate = sortReleaseDate(b.releaseDate, a.releaseDate)
+	const byDate = sortDates(b.releaseDate, a.releaseDate)
 	if (byDate !== 0) return byDate
 
 	// Use inseration index as a tiebreaker (higher index = later insertion = newer map)

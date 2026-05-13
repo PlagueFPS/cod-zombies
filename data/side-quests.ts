@@ -42,7 +42,7 @@ export function compareSideQuestDescending(
 	)
 }
 
-/** @returns Side quests sorted like {@link getMaps}: {@link compareMapReleaseDescending} on the host map, then {@link SIDE_QUESTS} insertion order when host maps tie. */
+/** @returns Side quests sorted like by {@link compareMapReleaseDescending} on the host map, then {@link SIDE_QUESTS} insertion order when host maps tie. */
 export const getSideQuests = (): SideQuest[] =>
 	[...SIDE_QUESTS.values()].sort(compareSideQuestDescending)
 

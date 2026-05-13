@@ -3,13 +3,13 @@ import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap, Option } from "effect"
-import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
+import { Option } from "effect"
+import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** The three types of relics */
 export type RelicType = "Grim" | "Sinister" | "Wicked"
 /** The unique identifier for each relic */
-export type RelicKey = HashMap.HashMap.Key<typeof relicHashMap>
+export type RelicKey = Parameters<(typeof RELICS)["get"]>[0]
 
 export interface Relic {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -28,8 +28,11 @@ export interface Relic {
 	readonly description: string
 	/** The map where the relic can be obtained */
 	readonly map: MapKey
-	/** The date when the relic was discovered */
-	readonly discoveredDate: Date
+	/**
+	 * Discovery calendar day as an ISO 8601 date-only string (`YYYY-MM-DD`).
+	 * Same calendar day: higher {@link RELICS} insertion index sorts first when descending.
+	 */
+	readonly discoveredDate: string
 	/** The estimated min/max time to unlock */
 	readonly estimatedTimeMins: TimeRange
 	/** The content of the relic */
@@ -37,15 +40,31 @@ export interface Relic {
 }
 
 /**
+ * Newest-first: {@link sortDates}, then higher {@link RELICS} insertion index when calendar days tie.
+ */
+export function compareRelicReleaseDescending(
+	a: Pick<Relic, "id" | "discoveredDate">,
+	b: Pick<Relic, "id" | "discoveredDate">,
+): number {
+	const byDate = sortDates(b.discoveredDate, a.discoveredDate)
+	if (byDate !== 0) return byDate
+
+	// Use inseration index as a tiebreaker (higher index = later insertion = newer Relic)
+	return (
+		RELIC_INSERATION_INDEX_BY_ID.get(b.id as RelicKey)! -
+		RELIC_INSERATION_INDEX_BY_ID.get(a.id as RelicKey)!
+	)
+}
+
+/**
  * Gets all relics sorted by discovered date in descending order
  */
-export const getRelics = () =>
-	HashMap.toValues(relicHashMap).sort((a, b) => sortReleaseDate(b.discoveredDate, a.discoveredDate))
+export const getRelics = () => [...RELICS.values()].sort(compareRelicReleaseDescending)
 
 /**
  * Gets a specific relic by its key
  */
-export const getRelicByKey = (key: RelicKey) => HashMap.get(relicHashMap, key)
+export const getRelicByKey = (key: RelicKey) => Option.fromUndefinedOr(RELICS.get(key))
 
 /**
  * Gets the adjacent relics of a given relic.
@@ -80,7 +99,7 @@ const makeRelic = <T extends string>(
 	},
 ]
 
-const relicHashMap = HashMap.make(
+const RELICS = new Map([
 	makeRelic("lawyers-pen", {
 		title: "Lawyer's Pen",
 		state: Option.none(),
@@ -88,7 +107,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/lawyers-pen-relic.webp",
 		description: "Mimic props have infiltrated the map.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 16, 2025 12:00 AM"),
+		discoveredDate: "2025-11-16",
 		estimatedTimeMins: {
 			min: 15,
 			max: 30,
@@ -103,7 +122,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/dragon-wings-relic.webp",
 		description: "Normal Power-Up spawns are disabled.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 16, 2025 1:00 AM"),
+		discoveredDate: "2025-11-16",
 		estimatedTimeMins: {
 			min: 15,
 			max: 30,
@@ -118,7 +137,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/teddy-bear-relic.webp",
 		description: "Round start delay is cut down by 75%.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 19, 2025 12:00 AM"),
+		discoveredDate: "2025-11-19",
 		estimatedTimeMins: {
 			min: 25,
 			max: 45,
@@ -133,7 +152,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/vril-sphere-relic.webp",
 		description: "Players can only carry 4 Perk-a-Colas.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 19, 2025 1:00 AM"),
+		discoveredDate: "2025-11-19",
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
@@ -149,7 +168,7 @@ const relicHashMap = HashMap.make(
 		description:
 			"Every weapon the player has will swap each round, but retain the Pack-a-Punch and rarity level.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("January 14, 2026 12:00 AM"),
+		discoveredDate: "2026-01-14",
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
@@ -164,7 +183,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/focusing-stone-relic.webp",
 		description: "No Self-Revive kits.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 19, 2025 2:00 AM"),
+		discoveredDate: "2025-11-19",
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
@@ -179,7 +198,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/bus-relic.webp",
 		description: "Enemy health regenerates.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 21, 2025 12:00 AM"),
+		discoveredDate: "2025-11-21",
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
@@ -194,7 +213,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/dragon-relic.webp",
 		description: "All Ammo Crates are disabled.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 21, 2025 1:00 AM"),
+		discoveredDate: "2025-11-21",
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
@@ -210,7 +229,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/blood-vials-relic.webp",
 		description: "All Augments are turned off.",
 		map: "ashes-of-the-damned",
-		discoveredDate: new Date("November 20, 2025 12:00 AM"),
+		discoveredDate: "2025-11-20",
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
@@ -225,7 +244,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/gong-relic.webp",
 		description: "Field Upgrade starts charged, but can only be charged by Full Power.",
 		map: "astra-malorum",
-		discoveredDate: new Date("January 25, 2026 12:00 AM"),
+		discoveredDate: "2026-01-25",
 		estimatedTimeMins: {
 			min: 25,
 			max: 60,
@@ -240,7 +259,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/seed-relic.webp",
 		description: "Mystery Box is disabled.",
 		map: "astra-malorum",
-		discoveredDate: new Date("December 7, 2025 12:00 AM"),
+		discoveredDate: "2025-12-07",
 		estimatedTimeMins: {
 			min: 25,
 			max: 60,
@@ -255,7 +274,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/spider-fang-relic.webp",
 		description: "Perk costs at machines never decrease.",
 		map: "astra-malorum",
-		discoveredDate: new Date("December 11, 2025 12:00 AM"),
+		discoveredDate: "2025-12-11",
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
@@ -270,7 +289,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/matroyshka-dolls-relic.webp",
 		description: "Salvage drop rate halved.",
 		map: "astra-malorum",
-		discoveredDate: new Date("January 30, 2026 12:00 AM"),
+		discoveredDate: "2026-01-30",
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
@@ -285,7 +304,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/golden-spork-relic.webp",
 		description: "Enemies deal double damage.",
 		map: "astra-malorum",
-		discoveredDate: new Date("January 30, 2026 1:00 AM"),
+		discoveredDate: "2026-01-30",
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
@@ -301,7 +320,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/civil-protector-head-relic.webp",
 		description: "Every 100 kills, you lose a perk.",
 		map: "astra-malorum",
-		discoveredDate: new Date("December 11, 2025 1:00 AM"),
+		discoveredDate: "2025-12-11",
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
@@ -316,7 +335,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/rocket-relic-v1.webp",
 		description: "No Score Streaks.",
 		map: "paradox-junction",
-		discoveredDate: new Date("March 13, 2026 12:00 AM"),
+		discoveredDate: "2026-03-13",
 		estimatedTimeMins: {
 			min: 20,
 			max: 40,
@@ -331,7 +350,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/summoning-key-relic-v2.webp",
 		description: "Zombies explode on death, dealing damage to nearby players.",
 		map: "paradox-junction",
-		discoveredDate: new Date("March 15, 2026 12:00 AM"),
+		discoveredDate: "2026-03-15",
 		estimatedTimeMins: {
 			min: 60,
 			max: 120,
@@ -346,7 +365,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/mangler-helmet-relic-v1.webp",
 		description: "No Arsenal.",
 		map: "paradox-junction",
-		discoveredDate: new Date("March 17, 2026 12:00 AM"),
+		discoveredDate: "2026-03-17",
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
@@ -361,7 +380,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/agarthan-device-relic-v1.webp",
 		description: "Each round, a different type of zombie will spawn",
 		map: "totenreich",
-		discoveredDate: new Date("May 1, 2026 12:00 AM"),
+		discoveredDate: "2026-05-01",
 		estimatedTimeMins: {
 			min: 15,
 			max: 240,
@@ -376,7 +395,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/dancing-arnie-relic.webp",
 		description: "All Perk-a-Cola machines have been cursed and now give out random Perk-a-Colas.",
 		map: "totenreich",
-		discoveredDate: new Date("May 2, 2026 12:00 AM"),
+		discoveredDate: "2026-05-02",
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
@@ -391,7 +410,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/music-box-relic.webp",
 		description: "Headshots only.",
 		map: "totenreich",
-		discoveredDate: new Date("May 3, 2026 12:00 AM"),
+		discoveredDate: "2026-05-03",
 		estimatedTimeMins: {
 			min: 90,
 			max: 240,
@@ -406,7 +425,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/stuffed-elephant-relic.webp",
 		description: "Increased Health Regen Delay.",
 		map: "totenreich",
-		discoveredDate: new Date("May 6, 2026 12:00 AM"),
+		discoveredDate: "2026-05-06",
 		estimatedTimeMins: {
 			min: 45,
 			max: 120,
@@ -421,7 +440,7 @@ const relicHashMap = HashMap.make(
 		image: "/relics/power-switch-relic.webp",
 		description: "Tactical and lethal equipment randomizes each round.",
 		map: "totenreich",
-		discoveredDate: new Date("May 9, 2026 12:00 AM"),
+		discoveredDate: "2026-05-09",
 		estimatedTimeMins: {
 			min: 15,
 			max: 30,
@@ -429,4 +448,8 @@ const relicHashMap = HashMap.make(
 		},
 		content: "content/relics/power-switch",
 	}),
+])
+
+const RELIC_INSERATION_INDEX_BY_ID = new Map<RelicKey, number>(
+	[...RELICS.keys()].map((id, i) => [id, i]),
 )

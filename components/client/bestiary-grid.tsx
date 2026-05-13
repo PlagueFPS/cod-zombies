@@ -10,7 +10,7 @@ import { CARD_LIMIT } from "@/utils/constants"
 import { decodeZombie, type EncodedZombie } from "@/utils/rsc-wire"
 import {
 	calculateSkip,
-	sortReleaseDate,
+	sortDates,
 	sortZombieSpeeds,
 	sortZombieTypes,
 } from "@/utils/shared-functions"
@@ -51,7 +51,7 @@ export function BestiaryGrid({ zombies }: IBestiaryGrid) {
 
 	switch (validSortParam) {
 		case "oldest":
-			sortedZombies.sort((a, b) => sortReleaseDate(a.releaseDate, b.releaseDate))
+			sortedZombies.sort((a, b) => sortDates(a.releaseDate, b.releaseDate))
 			break
 		case "type-asc":
 			sortedZombies.sort((a, b) => sortZombieTypes(a.type, b.type))
@@ -66,7 +66,7 @@ export function BestiaryGrid({ zombies }: IBestiaryGrid) {
 			sortedZombies.sort((a, b) => sortZombieSpeeds(b.speed, a.speed))
 			break
 		default:
-			sortedZombies.sort((a, b) => sortReleaseDate(b.releaseDate, a.releaseDate))
+			sortedZombies.sort((a, b) => sortDates(b.releaseDate, a.releaseDate))
 			break
 	}
 

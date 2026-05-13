@@ -583,7 +583,7 @@ export const generateZombieImage = Effect.fnUntraced(
 						fontSize: "1.25rem",
 					}}
 				>
-					<span>{zombie.releaseDate.toLocaleDateString("en-US", DATE_OPTIONS)}</span>
+					<span>{formatMapReleaseDay(zombie.releaseDate)}</span>
 				</div>
 			</div>,
 			{

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest"
-import { capitalize, getYouTubeVideoId, slugify, sortReleaseDate } from "@/utils/shared-functions"
+import { capitalize, getYouTubeVideoId, slugify, sortDates } from "@/utils/shared-functions"
 
 describe("slugify", () => {
 	test("should convert basic text to slug", () => {
@@ -67,14 +67,14 @@ describe("getYoutubeVideoId", () => {
 	})
 })
 
-describe("sortReleaseDate", () => {
+describe("sortDates", () => {
 	test("should return a negative number if first date is older than second", () => {
-		expect(sortReleaseDate("2020-01-01", "2020-01-02")).toBeLessThan(0)
+		expect(sortDates("2020-01-01", "2020-01-02")).toBeLessThan(0)
 	})
 	test("should return a positive number if first date is newer than second", () => {
-		expect(sortReleaseDate("2020-01-02", "2020-01-01")).toBeGreaterThan(0)
+		expect(sortDates("2020-01-02", "2020-01-01")).toBeGreaterThan(0)
 	})
 	test("should return 0 if dates are equal", () => {
-		expect(sortReleaseDate("2020-01-01", "2020-01-01")).toBe(0)
+		expect(sortDates("2020-01-01", "2020-01-01")).toBe(0)
 	})
 })

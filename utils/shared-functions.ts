@@ -111,12 +111,12 @@ export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty)
 }
 
 /**
- * Sorts release dates in ascending order.
- * @param a - The first release date.
- * @param b - The second release date.
+ * Sorts dates in ascending order.
+ * @param a - The first date.
+ * @param b - The second date.
  * @returns A positive number if `a` is older than `b`, a negative number for the inverse, or 0 if they are equal
  */
-export const sortReleaseDate = (a: string | Date, b: string | Date) => {
+export const sortDates = (a: string | Date, b: string | Date) => {
 	const dateA = new Date(a)
 	const dateB = new Date(b)
 	return dateA.getTime() - dateB.getTime()

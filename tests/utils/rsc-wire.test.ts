@@ -53,7 +53,7 @@ const sampleRelic: Relic = {
 	image: "/relics/blood-vials-relic.webp",
 	description: "Relic description",
 	map: "nacht-der-untoten",
-	discoveredDate: new Date("2021-06-01"),
+	discoveredDate: "2021-06-01",
 	estimatedTimeMins: { min: 10, max: 20 },
 	content: "content/relics/blood-vials",
 }
@@ -64,7 +64,7 @@ const sampleZombie: Zombie = {
 	title: "Test Zombie",
 	description: "Zombie description",
 	state: Option.some("New"),
-	releaseDate: new Date("2019-03-01"),
+	releaseDate: "2019-03-01",
 	image: "/zombies/abomination.webp",
 	games: ["world-at-war"],
 	maps: ["nacht-der-untoten"],
