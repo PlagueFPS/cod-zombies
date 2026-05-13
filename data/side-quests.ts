@@ -2,8 +2,8 @@ import type { SortOption } from "@/components/client/grid-sort"
 import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
 import { HashMap, Option } from "effect"
-import { getMapByKey, type MapKey } from "@/data/maps"
-import { getAdjacentItems, sortReleaseDate } from "@/utils/shared-functions"
+import { getMapByKey, compareMapReleaseDescending, type MapKey } from "@/data/maps"
+import { getAdjacentItems } from "@/utils/shared-functions"
 
 export interface SideQuest {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -41,7 +41,7 @@ export const getSideQuests = (): SideQuest[] =>
 		.sort((a, b) => {
 			const mapA = getMapByKey(a.map).pipe(Option.getOrThrow)
 			const mapB = getMapByKey(b.map).pipe(Option.getOrThrow)
-			return sortReleaseDate(mapB.releaseDate, mapA.releaseDate)
+			return compareMapReleaseDescending(mapA, mapB)
 		})
 
 /**

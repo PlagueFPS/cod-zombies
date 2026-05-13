@@ -1,6 +1,6 @@
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import { getMapByKey } from "@/data/maps"
+import { compareMapReleaseDescending, getMapByKey } from "@/data/maps"
 import {
 	getAdjacentSideQuests,
 	getSideQuestByKey,
@@ -14,7 +14,7 @@ describe("getSideQuests", () => {
 		for (let i = 0; i < quests.length - 1; i++) {
 			const mapA = getMapByKey(quests[i]!.map).pipe(Option.getOrThrow)
 			const mapB = getMapByKey(quests[i + 1]!.map).pipe(Option.getOrThrow)
-			expect(mapA.releaseDate.getTime()).toBeGreaterThanOrEqual(mapB.releaseDate.getTime())
+			expect(compareMapReleaseDescending(mapA, mapB)).toBeLessThanOrEqual(0)
 		}
 	})
 })

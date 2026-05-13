@@ -24,7 +24,7 @@ const sampleMap: MapEntry = {
 	_tag: "MapEntry",
 	id: "test-map",
 	title: "Test Map",
-	releaseDate: new Date("2020-01-15"),
+	releaseDate: "2020-01-15",
 	description: "A test map",
 	image: "/maps/nacht-der-untoten.webp",
 	game: "world-at-war",
