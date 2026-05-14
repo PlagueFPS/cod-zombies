@@ -96,8 +96,10 @@
 		outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
 	}
 
-	::selection,
-	::-moz-selection {
+	::selection {
+		background-color: var(--color-primary);
+		color: var(--color-primary-foreground);
+	}
 		background-color: var(--color-primary);
 		color: var(--color-primary-foreground);
 	}
