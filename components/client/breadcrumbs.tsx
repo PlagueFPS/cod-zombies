@@ -20,9 +20,32 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
+/** Above this character count on the leaf label, omit the first trail segment on mobile so more fits on one line */
+const LONG_LAST_LABEL_CHARS = 24
+
 export interface Link<T extends string> {
 	href: Route<T>
 	title: string
+}
+
+type TrailPiece<T extends string> = { kind: "link"; link: Link<T> } | { kind: "ellipsis" }
+
+/** When `showEllipsis` is true, callers should pass `links.length >= 3`. */
+export function trailAfterHome<T extends string>(
+	links: Link<T>[],
+	showEllipsis: boolean,
+	collapseAggressive: boolean,
+): TrailPiece<T>[] {
+	if (!showEllipsis) {
+		return links.map(link => ({ kind: "link" as const, link }))
+	}
+
+	const last = links.at(-1)!
+	const head: TrailPiece<T>[] = []
+	if (!collapseAggressive) {
+		head.push({ kind: "link", link: links[0]! })
+	}
+	return [...head, { kind: "ellipsis" as const }, { kind: "link", link: last }]
 }
 
 interface BreadcrumbsProps<T extends string> {
@@ -32,8 +55,18 @@ interface BreadcrumbsProps<T extends string> {
 
 export function Breadcrumbs<T extends string>({ links, className }: BreadcrumbsProps<T>) {
 	const isMobile = useIsMobile(640)
-	const showEllipsis = links.length >= 4 && isMobile
-	const menuLinks = showEllipsis ? links.slice(0, -1) : []
+	const showEllipsis = links.length >= 3 && isMobile
+	const lastLen = links.at(-1)?.title.length ?? 0
+	const collapseAggressive = lastLen >= LONG_LAST_LABEL_CHARS
+
+	const menuLinks =
+		showEllipsis && collapseAggressive
+			? links.slice(0, -1)
+			: showEllipsis
+				? links.slice(1, -1)
+				: []
+
+	const trailPieces = trailAfterHome(links, showEllipsis, collapseAggressive)
 
 	return (
 		<Breadcrumb className={cn("mr-auto", className)}>
@@ -41,50 +74,22 @@ export function Breadcrumbs<T extends string>({ links, className }: BreadcrumbsP
 				<BreadcrumbItem>
 					<BreadcrumbLink render={<NavLink href="/">Home</NavLink>} />
 				</BreadcrumbItem>
-				{links.map((link, index) => {
-					// For the links cut-off by the ellipsis
-					if (showEllipsis && index === 1) {
-						return (
-							<Fragment key="links-ellipsis">
-								<BreadcrumbSeparator>
-									<Slash />
-								</BreadcrumbSeparator>
-								<BreadcrumbItem>
-									<CustomEllipsis menuLinks={menuLinks} />
-								</BreadcrumbItem>
-							</Fragment>
-						)
-					}
-
-					// skip rendering links cut-off by the ellipsis
-					if (showEllipsis && index < links.length - 1) return null
-
-					// For the last item in the array, does not matter if showEllipsis is true/false here
-					if (index === links.length - 1) {
-						return (
-							<Fragment key={`${link.title}-${link.href}`}>
-								<BreadcrumbSeparator>
-									<Slash />
-								</BreadcrumbSeparator>
-								<BreadcrumbItem>
-									<BreadcrumbLink render={<NavLink href={link.href}>{link.title}</NavLink>} />
-								</BreadcrumbItem>
-							</Fragment>
-						)
-					}
-
-					// For all items when showEllipsis is false
-					return (
-						<Fragment key={`${link.title}-${link.href}`}>
-							<BreadcrumbSeparator>
-								<Slash />
-							</BreadcrumbSeparator>
-							<BreadcrumbItem>
-								<BreadcrumbLink render={<NavLink href={link.href}>{link.title}</NavLink>} />
-							</BreadcrumbItem>
-						</Fragment>
-					)
-				})}
+				{trailPieces.map(entry => (
+					<Fragment
+						key={entry.kind === "link" ? `${entry.link.href}-${entry.link.title}` : "trail-ellipsis"}
+					>
+						<BreadcrumbSeparator>
+							<Slash />
+						</BreadcrumbSeparator>
+						<BreadcrumbItem>
+							{entry.kind === "link" ? (
+								<BreadcrumbLink render={<NavLink href={entry.link.href}>{entry.link.title}</NavLink>} />
+							) : (
+								<CustomEllipsis menuLinks={menuLinks} />
+							)}
+						</BreadcrumbItem>
+					</Fragment>
+				))}
 			</BreadcrumbList>
 		</Breadcrumb>
 	)
