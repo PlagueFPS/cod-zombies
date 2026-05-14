@@ -60,7 +60,10 @@ function isDocumentScroller(el: HTMLElement): boolean {
 	return el === document.documentElement || el === document.body
 }
 
-function findOverflowScrollParent(start: EventTarget | null, boundary: HTMLElement): HTMLElement | null {
+function findOverflowScrollParent(
+	start: EventTarget | null,
+	boundary: HTMLElement,
+): HTMLElement | null {
 	let el: Element | null =
 		start instanceof Element ? start : start instanceof Node ? start.parentElement : null
 
