@@ -60,11 +60,7 @@ export function Breadcrumbs<T extends string>({ links, className }: BreadcrumbsP
 	const collapseAggressive = lastLen >= LONG_LAST_LABEL_CHARS
 
 	const menuLinks =
-		showEllipsis && collapseAggressive
-			? links.slice(0, -1)
-			: showEllipsis
-				? links.slice(1, -1)
-				: []
+		showEllipsis && collapseAggressive ? links.slice(0, -1) : showEllipsis ? links.slice(1, -1) : []
 
 	const trailPieces = trailAfterHome(links, showEllipsis, collapseAggressive)
 
@@ -76,14 +72,18 @@ export function Breadcrumbs<T extends string>({ links, className }: BreadcrumbsP
 				</BreadcrumbItem>
 				{trailPieces.map(entry => (
 					<Fragment
-						key={entry.kind === "link" ? `${entry.link.href}-${entry.link.title}` : "trail-ellipsis"}
+						key={
+							entry.kind === "link" ? `${entry.link.href}-${entry.link.title}` : "trail-ellipsis"
+						}
 					>
 						<BreadcrumbSeparator>
 							<Slash />
 						</BreadcrumbSeparator>
 						<BreadcrumbItem>
 							{entry.kind === "link" ? (
-								<BreadcrumbLink render={<NavLink href={entry.link.href}>{entry.link.title}</NavLink>} />
+								<BreadcrumbLink
+									render={<NavLink href={entry.link.href}>{entry.link.title}</NavLink>}
+								/>
 							) : (
 								<CustomEllipsis menuLinks={menuLinks} />
 							)}
