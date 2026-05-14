@@ -3,7 +3,7 @@ import type { Heading } from "@/components/client/table-of-contents"
 import { ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import { RemoveScroll } from "react-remove-scroll"
+import { RemoveScroll } from "@/components/client/remove-scroll"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -42,7 +42,7 @@ export function MobileTableOfContents({
 					</div>
 				</CollapsibleTrigger>
 				<CollapsibleContent className="flex min-h-svh flex-col gap-4">
-					<RemoveScroll>
+					<RemoveScroll enabled={open}>
 						<ScrollArea
 							className={cn(
 								"h-full max-h-[90dvh] min-h-0 overflow-y-auto border-t bg-background px-4 py-4",
