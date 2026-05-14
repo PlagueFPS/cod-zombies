@@ -21,7 +21,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
 /** Above this character count on the leaf label, omit the first trail segment on mobile so more fits on one line */
-const LONG_LAST_LABEL_CHARS = 24
+export const LONG_LAST_LABEL_CHARS = 24
 
 export interface Link<T extends string> {
 	href: Route<T>
@@ -30,7 +30,7 @@ export interface Link<T extends string> {
 
 type TrailPiece<T extends string> = { kind: "link"; link: Link<T> } | { kind: "ellipsis" }
 
-/** When `showEllipsis` is true, callers should pass `links.length >= 3`. */
+/** When `showEllipsis` is true, callers normally pass `links.length >= 3`; otherwise returns an empty trail. */
 export function trailAfterHome<T extends string>(
 	links: Link<T>[],
 	showEllipsis: boolean,
@@ -40,6 +40,12 @@ export function trailAfterHome<T extends string>(
 		return links.map(link => ({ kind: "link" as const, link }))
 	}
 
+	if (showEllipsis && links.length < 3) {
+		console.warn("`trailAfterHome` called with `showEllipsis` but `links` has less than 3 items")
+		return []
+	}
+
+	// SAFETY: From this point onwards, `links` has at least 3 items (checked above)
 	const last = links.at(-1)!
 	const head: TrailPiece<T>[] = []
 	if (!collapseAggressive) {
