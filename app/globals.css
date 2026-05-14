@@ -100,9 +100,6 @@
 		background-color: var(--color-primary);
 		color: var(--color-primary-foreground);
 	}
-		background-color: var(--color-primary);
-		color: var(--color-primary-foreground);
-	}
 
 	body {
 		background-color: var(--color-background);
