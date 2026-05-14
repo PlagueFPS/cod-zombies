@@ -141,10 +141,12 @@ layer(MockFileSystemLayer)("getLastModified", it => {
 			const result2 = yield* getLastModified("./content/test/file.mdx")
 			const result3 = yield* getLastModified("cod-zombies/content/test/file.mdx")
 			const result4 = yield* getLastModified("content/test/file.mdx")
+			const result5 = yield* getLastModified("cod-zombies\\content\\test\\file.mdx")
 			expect(result1).toStrictEqual(expected)
 			expect(result2).toStrictEqual(expected)
 			expect(result3).toStrictEqual(expected)
 			expect(result4).toStrictEqual(expected)
+			expect(result5).toStrictEqual(expected)
 		}),
 	)
 })

@@ -86,7 +86,8 @@ export const getLastModified = Effect.fn("getLastModified")(function* (filePath:
 		.readFileString(dataPath)
 		.pipe(Effect.flatMap(data => decodeLastModifiedData(data)))
 
-	const lastModifiedKey = filePath.replace(/^.*?\/content\//, "").replace(/^content\//, "")
+	const posixPath = filePath.replace(/\\/g, "/")
+	const lastModifiedKey = posixPath.replace(/^.*?\/content\//, "").replace(/^content\//, "")
 	const fileData = files[lastModifiedKey as keyof typeof files]
 	if (!fileData) {
 		yield* Effect.logWarning(`Missing last-modified data for file ${filePath}`)
