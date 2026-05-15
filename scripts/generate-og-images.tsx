@@ -127,6 +127,12 @@ export const generateMainQuestImage = Effect.fnUntraced(
 						backgroundImage: "radial-gradient(circle at top, hsl(0 70% 35.3%), hsl(0 62.8% 30.6%))",
 						border: "1px solid hsl(0 72.2% 50.6%)",
 					})),
+					Match.when("Very Hard", () => ({
+						color: "oklch(80.8% 0.114 19.571)",
+						backgroundImage:
+							"radial-gradient(circle at top, oklch(39.6% 0.141 25.723), oklch(25.8% 0.092 26.042))",
+						border: "1px solid oklch(50.5% 0.213 27.518)",
+					})),
 					Match.exhaustive,
 				),
 		})
