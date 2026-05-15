@@ -1,6 +1,12 @@
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test, vi } from "vitest"
-import { getAdjacentMaps, getMapByKey, getMaps, getMapsWithMainQuest, type MapKey } from "@/data/maps"
+import {
+	getAdjacentMaps,
+	getMapByKey,
+	getMaps,
+	getMapsWithMainQuest,
+	type MapKey,
+} from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getMaps", () => {
