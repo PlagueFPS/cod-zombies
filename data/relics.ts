@@ -4,6 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
+import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** The three types of relics */
@@ -18,7 +19,7 @@ export interface Relic {
 	readonly id: string
 	/** The title of the relic */
 	readonly title: string
-	/** The state of the relic */
+	/** The state of the relic. A stored value of `"New"` is time-limited after `discoveredDate` (see `resolveNewContentState` in `@/utils/content-state`). */
 	readonly state: Option.Option<ContentState>
 	/** The type of the relic */
 	readonly type: RelicType
@@ -37,6 +38,14 @@ export interface Relic {
 	readonly estimatedTimeMins: TimeRange
 	/** The content of the relic */
 	readonly content: RelicsPaths
+}
+
+function withResolvedRelicState(relic: Relic): Relic {
+	const nowMs = Date.now()
+	return {
+		...relic,
+		state: resolveNewContentState(relic.state, relic.discoveredDate, nowMs),
+	}
 }
 
 /**
@@ -59,12 +68,14 @@ export function compareRelicReleaseDescending(
 /**
  * Gets all relics sorted by discovered date in descending order
  */
-export const getRelics = () => [...RELICS.values()].sort(compareRelicReleaseDescending)
+export const getRelics = () =>
+	[...RELICS.values()].map(withResolvedRelicState).sort(compareRelicReleaseDescending)
 
 /**
  * Gets a specific relic by its key
  */
-export const getRelicByKey = (key: RelicKey) => Option.fromUndefinedOr(RELICS.get(key))
+export const getRelicByKey = (key: RelicKey) =>
+	Option.fromUndefinedOr(RELICS.get(key)).pipe(Option.map(withResolvedRelicState))
 
 /**
  * Gets the adjacent relics of a given relic.
