@@ -3,7 +3,7 @@ import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Option, pipe } from "effect"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** The three types of relics */
@@ -18,7 +18,7 @@ export interface Relic {
 	readonly id: string
 	/** The title of the relic */
 	readonly title: string
-	/** The state of the relic */
+	/** The state of the relic. A stored value of `"New"` is only shown for 14 calendar days after `discoveredDate`. */
 	readonly state: Option.Option<ContentState>
 	/** The type of the relic */
 	readonly type: RelicType
@@ -37,6 +37,32 @@ export interface Relic {
 	readonly estimatedTimeMins: TimeRange
 	/** The content of the relic */
 	readonly content: RelicsPaths
+}
+
+const MS_PER_DAY = 86_400_000
+/** Relics with {@link ContentState} `"New"` only show that badge for this many full calendar days after `discoveredDate`. */
+const NEW_RELIC_BADGE_MAX_AGE_DAYS = 14
+
+function calendarDaysSinceDiscover(isoDateOnly: string, nowMs: number): number {
+	const start = Date.parse(`${isoDateOnly}T00:00:00.000Z`)
+	return Math.floor((nowMs - start) / MS_PER_DAY)
+}
+
+function resolveRelicState(relic: Relic, nowMs: number): Option.Option<ContentState> {
+	return Option.match(relic.state, {
+		onNone: () => Option.none(),
+		onSome: state => {
+			if (state === "Coming Soon") return Option.some(state)
+			return calendarDaysSinceDiscover(relic.discoveredDate, nowMs) < NEW_RELIC_BADGE_MAX_AGE_DAYS
+				? Option.some("New")
+				: Option.none()
+		},
+	})
+}
+
+function withResolvedRelicState(relic: Relic): Relic {
+	const nowMs = Date.now()
+	return { ...relic, state: resolveRelicState(relic, nowMs) }
 }
 
 /**
@@ -59,12 +85,14 @@ export function compareRelicReleaseDescending(
 /**
  * Gets all relics sorted by discovered date in descending order
  */
-export const getRelics = () => [...RELICS.values()].sort(compareRelicReleaseDescending)
+export const getRelics = () =>
+	[...RELICS.values()].map(withResolvedRelicState).sort(compareRelicReleaseDescending)
 
 /**
  * Gets a specific relic by its key
  */
-export const getRelicByKey = (key: RelicKey) => Option.fromUndefinedOr(RELICS.get(key))
+export const getRelicByKey = (key: RelicKey) =>
+	pipe(RELICS.get(key), Option.fromUndefinedOr, Option.map(withResolvedRelicState))
 
 /**
  * Gets the adjacent relics of a given relic.
@@ -375,7 +403,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("agarthan-device", {
 		title: "Agarthan Device",
-		state: Option.none(),
+		state: Option.some("New"),
 		type: "Wicked",
 		image: "/relics/agarthan-device-relic-v1.webp",
 		description: "Each round, a different type of zombie will spawn",
@@ -390,7 +418,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("dancing-arnie", {
 		title: "Dancing Arnie",
-		state: Option.none(),
+		state: Option.some("New"),
 		type: "Sinister",
 		image: "/relics/dancing-arnie-relic.webp",
 		description: "All Perk-a-Cola machines have been cursed and now give out random Perk-a-Colas.",
@@ -405,7 +433,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("music-box", {
 		title: "Music Box",
-		state: Option.none(),
+		state: Option.some("New"),
 		type: "Wicked",
 		image: "/relics/music-box-relic.webp",
 		description: "Headshots only.",
@@ -420,7 +448,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("stuffed-elephant", {
 		title: "Stuffed Elephant",
-		state: Option.none(),
+		state: Option.some("New"),
 		type: "Sinister",
 		image: "/relics/stuffed-elephant-relic.webp",
 		description: "Increased Health Regen Delay.",
@@ -435,7 +463,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("power-switch", {
 		title: "Power Switch",
-		state: Option.none(),
+		state: Option.some("New"),
 		type: "Grim",
 		image: "/relics/power-switch-relic.webp",
 		description: "Tactical and lethal equipment randomizes each round.",

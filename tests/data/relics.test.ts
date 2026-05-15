@@ -1,5 +1,5 @@
 import { Option, Array as Arr } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import { getAdjacentRelics, getRelicByKey, getRelics, type RelicKey } from "@/data/relics"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
@@ -19,6 +19,32 @@ describe("getRelicByKey", () => {
 	test("returns Some when the relic exists", () => {
 		const r = getRelicByKey("lawyers-pen").pipe(Option.getOrThrow)
 		expect(r.id).toBe("lawyers-pen")
+	})
+})
+
+describe("relic New badge vs discovery date", () => {
+	test("drops New when the discovery date is 14+ full calendar days in the past", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
+		const agarthan = getRelicByKey("agarthan-device").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(agarthan.state)).toBeNull()
+		vi.useRealTimers()
+	})
+
+	test("keeps New when within 14 days of the discovery date", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
+		const powerSwitch = getRelicByKey("power-switch").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(powerSwitch.state)).toBe("New")
+		vi.useRealTimers()
+	})
+
+	test("keeps New for Agarthan Device one week after discovery", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-08T12:00:00.000Z"))
+		const agarthan = getRelicByKey("agarthan-device").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(agarthan.state)).toBe("New")
+		vi.useRealTimers()
 	})
 })
 
