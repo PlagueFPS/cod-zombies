@@ -1,5 +1,5 @@
 import { Option, Array as Arr } from "effect"
-import { describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vitest"
 import { getAdjacentZombies, getZombieByKey, getZombies, type ZombieKey } from "@/data/zombies"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
@@ -23,12 +23,15 @@ describe("getZombieByKey", () => {
 })
 
 describe("zombie New badge vs release date", () => {
+	afterEach(() => {
+		vi.useRealTimers()
+	})
+
 	test("drops New when release date is 14+ full calendar days in the past", () => {
 		vi.useFakeTimers()
 		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
 		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
 		expect(Option.getOrNull(dravakar.state)).toBeNull()
-		vi.useRealTimers()
 	})
 
 	test("keeps New within 14 days of release date", () => {
@@ -36,7 +39,20 @@ describe("zombie New badge vs release date", () => {
 		vi.setSystemTime(new Date("2026-05-10T12:00:00.000Z"))
 		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
 		expect(Option.getOrNull(dravakar.state)).toBe("New")
-		vi.useRealTimers()
+	})
+
+	test("keeps New through the last instant before the 14th full UTC day after release", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-13T23:59:59.999Z"))
+		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(dravakar.state)).toBe("New")
+	})
+
+	test("drops New at the start of the 14th full UTC day after release", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-14T00:00:00.000Z"))
+		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(dravakar.state)).toBeNull()
 	})
 })
 
