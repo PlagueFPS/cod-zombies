@@ -786,7 +786,7 @@ const MAPS = new Map([
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/totenreich"),
 		difficulty: Option.some("Hard"),
-		state: Option.some("New"),
+		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
 			max: 120,

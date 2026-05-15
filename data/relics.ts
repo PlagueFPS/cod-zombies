@@ -375,7 +375,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("agarthan-device", {
 		title: "Agarthan Device",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/agarthan-device-relic-v1.webp",
 		description: "Each round, a different type of zombie will spawn",
@@ -390,7 +390,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("dancing-arnie", {
 		title: "Dancing Arnie",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/dancing-arnie-relic.webp",
 		description: "All Perk-a-Cola machines have been cursed and now give out random Perk-a-Colas.",
@@ -405,7 +405,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("music-box", {
 		title: "Music Box",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/music-box-relic.webp",
 		description: "Headshots only.",
@@ -420,7 +420,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("stuffed-elephant", {
 		title: "Stuffed Elephant",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/stuffed-elephant-relic.webp",
 		description: "Increased Health Regen Delay.",
@@ -435,7 +435,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("power-switch", {
 		title: "Power Switch",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/power-switch-relic.webp",
 		description: "Tactical and lethal equipment randomizes each round.",
