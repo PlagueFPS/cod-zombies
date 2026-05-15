@@ -163,7 +163,11 @@ const buildZombiePage = Effect.fn("buildZombiePage")(function* (
 							lastModifiedFormatted={lastModifiedFormatted}
 							className="text-xs text-foreground/60 sm:text-sm"
 						/>
-						<ShareButton title={zombie.title} url={`${getServerUrl()}/bestiary/${zombie.id}`} />
+						<span className="inline text-muted-foreground">&bull;</span>
+						<ShareButton
+							url={`${getServerUrl()}/bestiary/${zombie.id}`}
+							className="text-foreground/60"
+						/>
 					</div>
 				</div>
 				<CardHeader>
