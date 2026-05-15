@@ -19,13 +19,22 @@ export function ShareButton({ url, withText = true, ...props }: ShareButtonProps
 	const [isCopied, setIsCopied] = useState(false)
 
 	const handleCopy = async () => {
-		await navigator.clipboard.writeText(url)
-		toast.success("URL copied to clipboard!", {
-			position: "top-right",
-			duration: 2000,
-			closeButton: false,
-		})
-		setIsCopied(true)
+		try {
+			await navigator.clipboard.writeText(url)
+			toast.success("URL copied to clipboard!", {
+				position: "top-right",
+				duration: 2000,
+				closeButton: false,
+			})
+			setIsCopied(true)
+		} catch (e) {
+			console.error(e)
+			toast.error("Failed to copy URL to clipboard.", {
+				position: "top-right",
+				duration: 2000,
+				closeButton: false,
+			})
+		}
 	}
 
 	useHotkey("Mod+Shift+C", () => handleCopy(), { requireReset: true, conflictBehavior: "replace" })
