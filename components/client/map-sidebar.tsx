@@ -475,7 +475,7 @@ export default function MapSidebar({
 					<SidebarMenuItem>
 						<Socials className="justify-evenly">
 							<Separator orientation="vertical" className="min-h-5" />
-							<ShareButton title={`${currentMap} interactive map`} url={createShareableURL()} />
+							<ShareButton url={createShareableURL()} withText={false} />
 						</Socials>
 					</SidebarMenuItem>
 				</SidebarMenu>

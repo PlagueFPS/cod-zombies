@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/client/breadcrumbs"
 import { CustomLink } from "@/components/client/custom-link"
 import { FeaturedImage } from "@/components/client/featured-image"
 import { LastUpdatedDisplay } from "@/components/client/last-updated-display"
+import { ShareButton } from "@/components/client/share-button"
 import { TableOfContents } from "@/components/client/table-of-contents"
 import { CompletionTimeDisplay } from "@/components/server/completion-time-display"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/server/custom-badges"
@@ -189,6 +190,8 @@ const buildRelicPage = Effect.fn("buildRelicPage")(function* (
 								</span>
 								<span className="hidden md:inline">&bull;</span>
 								<CompletionTimeDisplay timeRange={relic.estimatedTimeMins} />
+								<span className="inline">&bull;</span>
+								<ShareButton url={`${getServerUrl()}/relics/${game}/${id}`} className="w-fit" />
 							</div>
 						</div>
 					</header>

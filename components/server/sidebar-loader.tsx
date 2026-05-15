@@ -19,7 +19,7 @@ export default function SidebarLoader() {
 			<div className="sticky bottom-0 border-t px-2 py-4">
 				<Socials className="justify-evenly">
 					<Separator orientation="vertical" className="min-h-5" />
-					<ShareButton url="" title="Loading..." />
+					<ShareButton url="" withText={false} />
 				</Socials>
 			</div>
 		</div>

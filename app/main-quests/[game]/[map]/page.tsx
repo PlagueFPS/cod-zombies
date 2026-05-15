@@ -198,7 +198,7 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 								</div>
 							</div>
 							<div className="flex items-center justify-between text-sm text-muted-foreground">
-								<div className="flex flex-col-reverse items-start justify-center gap-2 pb-6 md:flex-row md:pb-0">
+								<div className="flex w-full flex-col items-start justify-center gap-2 pb-6 md:flex-row md:items-center md:pb-0">
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
 										<LastUpdatedDisplay
@@ -218,12 +218,11 @@ const mainQuestPageUI = Effect.fn("MainQuestPage")(function* (
 											<CompletionTimeDisplay timeRange={estimatedTimeMins} />
 										),
 									})}
+									<ShareButton
+										url={`${getServerUrl()}/main-quests/${quest.game}/${quest.id}`}
+										className="w-fit text-muted-foreground md:mb-0 md:ml-auto"
+									/>
 								</div>
-								<ShareButton
-									title={quest.title}
-									url={`${getServerUrl()}/main-quests/${quest.game}/${quest.id}`}
-									className="mb-2 ml-auto text-muted-foreground md:mb-0"
-								/>
 							</div>
 						</div>
 						{!MDXContent ? (
