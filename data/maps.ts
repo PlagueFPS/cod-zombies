@@ -7,7 +7,7 @@ import { Array as Arr, Option } from "effect"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** Union of all main quest difficulties */
-export type MainQuestDifficulty = "Easy" | "Medium" | "Hard"
+export type MainQuestDifficulty = "Easy" | "Medium" | "Hard" | "Very Hard"
 
 export interface MapEntry {
 	/** The internal tag to discriminate against for type-narrowing */
@@ -226,7 +226,7 @@ const MAPS = new Map([
 		image: "/maps/shangri-la.webp",
 		game: "black-ops-1",
 		mainQuest: Option.some("content/main-quests/time-travel-will-tell"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 90,
@@ -243,7 +243,7 @@ const MAPS = new Map([
 		image: "/maps/moon.webp",
 		game: "black-ops-1",
 		mainQuest: Option.some("content/main-quests/richtofens-grand-scheme"),
-		difficulty: Option.some("Easy"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
@@ -327,7 +327,7 @@ const MAPS = new Map([
 		image: "/maps/origins.webp",
 		game: "black-ops-2",
 		mainQuest: Option.some("content/main-quests/little-lost-girl"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Very Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 90,
@@ -376,7 +376,7 @@ const MAPS = new Map([
 		image: "/maps/der-eisendrache.webp",
 		game: "black-ops-3",
 		mainQuest: Option.some("content/main-quests/my-brothers-keeper"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
@@ -409,7 +409,7 @@ const MAPS = new Map([
 		image: "/maps/gorod-krovi.webp",
 		game: "black-ops-3",
 		mainQuest: Option.some("content/main-quests/love-and-war"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Very Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 90,
@@ -443,7 +443,7 @@ const MAPS = new Map([
 		image: "/maps/voyage-of-despair.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/abandon-ship"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Very Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 75,
@@ -460,7 +460,7 @@ const MAPS = new Map([
 		image: "/maps/ix.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/venerated-warrior"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
@@ -476,7 +476,7 @@ const MAPS = new Map([
 		image: "/maps/blood-of-the-dead.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/most-escape-alive"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Very Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 105,
@@ -526,7 +526,7 @@ const MAPS = new Map([
 		image: "/maps/ancient-evil.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/greek-tragedy"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
@@ -543,7 +543,7 @@ const MAPS = new Map([
 		image: "/maps/alpha-omega.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/electromagnetic-awakening-party"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
@@ -559,7 +559,7 @@ const MAPS = new Map([
 		image: "/maps/tag-der-toten.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/salvation-lies-above"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 75,
@@ -672,7 +672,7 @@ const MAPS = new Map([
 		image: "/maps/citadelle-des-morts.webp",
 		game: "black-ops-6",
 		mainQuest: Option.some("content/main-quests/citadelles-des-morts"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
@@ -691,8 +691,8 @@ const MAPS = new Map([
 		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
-			min: 45,
-			max: 60,
+			min: 40,
+			max: 90,
 			reason: "Time varies slightly based on player knowledge of the steps.",
 		}),
 	}),
@@ -704,11 +704,11 @@ const MAPS = new Map([
 		image: "/maps/shattered-veil.webp",
 		game: "black-ops-6",
 		mainQuest: Option.some("content/main-quests/shattered-veil"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
-			min: 45,
-			max: 75,
+			min: 60,
+			max: 90,
 			reason: "Time varies slightly based on player knowledge of the steps.",
 		}),
 	}),
@@ -723,8 +723,8 @@ const MAPS = new Map([
 		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
-			min: 45,
-			max: 75,
+			min: 60,
+			max: 90,
 			reason: "Time varies slightly based on player knowledge of the steps and boss fight path.",
 		}),
 	}),
@@ -736,7 +736,7 @@ const MAPS = new Map([
 		image: "/maps/ashes-of-the-damned.webp",
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/dust-to-dust"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 75,
@@ -756,7 +756,7 @@ const MAPS = new Map([
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
-			max: 90,
+			max: 100,
 			reason:
 				"Time varies slightly based on O.S.C.A.R. movement and player knowledge of the steps.",
 		}),
@@ -785,7 +785,7 @@ const MAPS = new Map([
 		image: "/maps/totenreich.webp",
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/totenreich"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.some("New"),
 		estimatedTimeMins: Option.some({
 			min: 60,
