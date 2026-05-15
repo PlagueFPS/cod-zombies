@@ -4,7 +4,6 @@ import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect, HashMap, Option, Schema } from "effect"
 import { getMapByKey, compareMapReleaseDescending, type MapKey } from "@/data/maps"
-import { resolveNewContentState } from "@/utils/content-state"
 
 class ConfigNotFoundError extends Schema.TaggedErrorClass<ConfigNotFoundError>()(
 	"ConfigNotFoundError",
@@ -23,7 +22,7 @@ export interface InteractiveMap {
 	readonly id: string
 	/** The title of the interactive map */
 	readonly title: string
-	/** The state of the interactive map. A stored value of `"New"` is time-limited after the backing map's `releaseDate` (see `resolveNewContentState`). */
+	/** The state of the interactive map */
 	readonly state: Option.Option<ContentState>
 	/** The image of the interactive map */
 	readonly image: PreviewsImagePath
@@ -31,15 +30,6 @@ export interface InteractiveMap {
 	readonly game: GameKey
 	/** The description of the interactive map */
 	readonly description: string
-}
-
-function withResolvedInteractiveMapState(m: InteractiveMap): InteractiveMap {
-	const nowMs = Date.now()
-	const { releaseDate } = getMapByKey(m.id as MapKey).pipe(Option.getOrThrow)
-	return {
-		...m,
-		state: resolveNewContentState(m.state, releaseDate, nowMs),
-	}
 }
 
 export interface MapConfigLayer {
@@ -75,19 +65,17 @@ export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(func
  * Gets an interactive map by its key.
  */
 export const getInteractiveMapByKey = (key: InteractiveMapKey) =>
-	HashMap.get(interactiveMapHashMap, key).pipe(Option.map(withResolvedInteractiveMapState))
+	HashMap.get(interactiveMapHashMap, key)
 
 /**
  * Gets a list of all interactive maps in the registry sorted by release date descending
  */
 export const getInteractiveMaps = () =>
-	HashMap.toValues(interactiveMapHashMap)
-		.map(withResolvedInteractiveMapState)
-		.sort((a, b) => {
-			const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
-			const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
-			return compareMapReleaseDescending(mapA, mapB)
-		})
+	HashMap.toValues(interactiveMapHashMap).sort((a, b) => {
+		const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
+		const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
+		return compareMapReleaseDescending(mapA, mapB)
+	})
 
 const makeMapEntry = <T extends string>(
 	identifier: T,
@@ -104,7 +92,7 @@ const makeMapEntry = <T extends string>(
 const interactiveMapHashMap = HashMap.make(
 	makeMapEntry("totenreich", {
 		title: "Totenreich",
-		state: Option.some("New"),
+		state: Option.none(),
 		image: "/previews/totenreich-preview-v1.webp",
 		game: "black-ops-7",
 		description:

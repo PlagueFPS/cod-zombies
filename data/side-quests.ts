@@ -3,7 +3,6 @@ import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
 import { Option } from "effect"
 import { getMapByKey, compareMapReleaseDescending, type MapKey } from "@/data/maps"
-import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems } from "@/utils/shared-functions"
 
 export interface SideQuest {
@@ -13,7 +12,7 @@ export interface SideQuest {
 	readonly id: string
 	/** The title of the side quest */
 	readonly title: string
-	/** The state of the side quest. A stored value of `"New"` is time-limited after the host map's `releaseDate` (see `resolveNewContentState`). */
+	/** The state of the side quest */
 	readonly state: Option.Option<ContentState>
 	/** The map of the side quest */
 	readonly map: MapKey
@@ -43,24 +42,14 @@ export function compareSideQuestDescending(
 	)
 }
 
-function withResolvedSideQuestState(quest: SideQuest): SideQuest {
-	const nowMs = Date.now()
-	const hostMap = getMapByKey(quest.map).pipe(Option.getOrThrow)
-	return {
-		...quest,
-		state: resolveNewContentState(quest.state, hostMap.releaseDate, nowMs),
-	}
-}
-
 /** @returns Side quests sorted like by {@link compareMapReleaseDescending} on the host map, then {@link SIDE_QUESTS} insertion order when host maps tie. */
 export const getSideQuests = (): SideQuest[] =>
-	[...SIDE_QUESTS.values()].map(withResolvedSideQuestState).sort(compareSideQuestDescending)
+	[...SIDE_QUESTS.values()].sort(compareSideQuestDescending)
 
 /**
  * @returns The side quest with the given key
  */
-export const getSideQuestByKey = (key: SideQuestKey) =>
-	Option.fromUndefinedOr(SIDE_QUESTS.get(key)).pipe(Option.map(withResolvedSideQuestState))
+export const getSideQuestByKey = (key: SideQuestKey) => Option.fromUndefinedOr(SIDE_QUESTS.get(key))
 
 /**
  * Get the previous and next side quests by their key
@@ -1623,7 +1612,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/purple-cyst",
 	}),
 	makeQuest("no-one-there", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "No One There",
 		description:
 			"Learn how to activate the music easter egg song 'No One There' by Kevin Sherwood.",
@@ -1631,7 +1620,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/no-one-there",
 	}),
 	makeQuest("kneehigh-helm", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Kneehigh Helm",
 		description:
 			'Find out how to obtain the "Kneehigh Helm" allowing you to become a Gnome granting you invincibility while still being able to kill zombies.',
@@ -1639,7 +1628,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/kneehigh-helm",
 	}),
 	makeQuest("domineering", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Domineering",
 		description:
 			'Discover the truth behind Richtofen\'s past and how he achieved his "Proudest Moment" which single-handedly won the war for Nazi Germany.',
@@ -1647,7 +1636,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/domineering",
 	}),
 	makeQuest("fishy-fish-bot", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Fishy Fish Bot",
 		description:
 			'Learn how to unlock this secret "Fishy Fish Bot" trap that makes use of an old friend.',
@@ -1655,7 +1644,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/fishy-fish-bot",
 	}),
 	makeQuest("golden-tide-helm", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Golden Tide Helm",
 		description:
 			'Find out how to obtain the "Golden Tide Helm" granting you increased rewards from fishing.',
@@ -1663,7 +1652,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/golden-tide-helm",
 	}),
 	makeQuest("icebane-helm", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Icebane Helm",
 		description:
 			'Find out how to obtain the "Icebane Helm" granting you cold immunity, and a frosty slide.',
@@ -1671,7 +1660,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/icebane-helm",
 	}),
 	makeQuest("cointoss-helm", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Cointoss Helm",
 		description:
 			'Find out how to obtain the "Cointoss Helm" granting you increased Power-Up drops.',
@@ -1679,7 +1668,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/cointoss-helm",
 	}),
 	makeQuest("hidden-power-ups-totenreich", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Hidden Power-Ups",
 		description:
 			"Discover the location of every hidden Power-Up drop in Totenreich, in case you need them.",
@@ -1687,7 +1676,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/hidden-power-ups-totenreich",
 	}),
 	makeQuest("richtofen-jumpscare", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Richtofen's Jumpscare",
 		description: "Learn how to trigger the hidden jumpscare within the Richtofen Side Quest.",
 		map: "totenreich",
