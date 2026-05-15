@@ -1,5 +1,5 @@
 import { Effect, Option } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import {
 	getInteractiveMapByKey,
 	getInteractiveMapConfig,
@@ -29,6 +29,24 @@ describe("getInteractiveMapByKey", () => {
 	test("returns Some when the interactive map exists", () => {
 		const m = getInteractiveMapByKey("paradox-junction").pipe(Option.getOrThrow)
 		expect(m.id).toBe("paradox-junction")
+	})
+})
+
+describe("interactive map New badge vs backing map release date", () => {
+	test("drops New after 14+ days from map release", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
+		const m = getInteractiveMapByKey("totenreich").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(m.state)).toBeNull()
+		vi.useRealTimers()
+	})
+
+	test("keeps New within 14 days of map release", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-10T12:00:00.000Z"))
+		const m = getInteractiveMapByKey("totenreich").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(m.state)).toBe("New")
+		vi.useRealTimers()
 	})
 })
 

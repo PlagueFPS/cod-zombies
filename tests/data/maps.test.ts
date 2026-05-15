@@ -1,6 +1,6 @@
 import { Option, Array as Arr } from "effect"
-import { describe, expect, test } from "vitest"
-import { getAdjacentMaps, getMaps, getMapsWithMainQuest, type MapKey } from "@/data/maps"
+import { describe, expect, test, vi } from "vitest"
+import { getAdjacentMaps, getMapByKey, getMaps, getMapsWithMainQuest, type MapKey } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getMaps", () => {
@@ -12,6 +12,24 @@ describe("getMaps", () => {
 		const maps = getMaps()
 		const indexOf = (id: string) => maps.findIndex(m => m.id === id)
 		expect(indexOf("classified")).toBeLessThan(indexOf("voyage-of-despair"))
+	})
+})
+
+describe("map New badge vs release date", () => {
+	test("drops New when release date is 14+ full calendar days in the past", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
+		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(totenreich.state)).toBeNull()
+		vi.useRealTimers()
+	})
+
+	test("keeps New within 14 days of release date", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-10T12:00:00.000Z"))
+		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(totenreich.state)).toBe("New")
+		vi.useRealTimers()
 	})
 })
 

@@ -8,6 +8,7 @@ import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
+import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** Union type of all zombie types */
@@ -25,7 +26,7 @@ export interface Zombie {
 	readonly title: string
 	/** Description of the zombie */
 	readonly description: string
-	/** State of the zombie */
+	/** State of the zombie. A stored value of `"New"` is time-limited after `releaseDate` (see `resolveNewContentState`). */
 	readonly state: Option.Option<ContentState>
 	/**
 	 * Release calendar day as an ISO 8601 date-only string (`YYYY-MM-DD`).
@@ -71,11 +72,21 @@ export function compareZombieReleaseDescending(
 	)
 }
 
+function withResolvedZombieState(zombie: Zombie): Zombie {
+	const nowMs = Date.now()
+	return {
+		...zombie,
+		state: resolveNewContentState(zombie.state, zombie.releaseDate, nowMs),
+	}
+}
+
 /** @returns An array of all zombies sorted by release date in descending order */
-export const getZombies = (): Zombie[] => [...ZOMBIES.values()].sort(compareZombieReleaseDescending)
+export const getZombies = (): Zombie[] =>
+	[...ZOMBIES.values()].map(withResolvedZombieState).sort(compareZombieReleaseDescending)
 
 /** @returns The zombie with the given key */
-export const getZombieByKey = (key: ZombieKey) => Option.fromUndefinedOr(ZOMBIES.get(key))
+export const getZombieByKey = (key: ZombieKey) =>
+	Option.fromUndefinedOr(ZOMBIES.get(key)).pipe(Option.map(withResolvedZombieState))
 
 /**
  * @returns The previous and next zombies based on the current
@@ -1794,7 +1805,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("frost-zombie", {
 		title: "Frost Zombie",
-		state: Option.none(),
+		state: Option.some("New"),
 		releaseDate: "2026-04-30",
 		image: "/zombies/frost-zombie.webp",
 		description:
@@ -1812,7 +1823,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("necropincer", {
 		title: "Necropincer",
-		state: Option.none(),
+		state: Option.some("New"),
 		releaseDate: "2026-04-30",
 		image: "/zombies/necropincer.webp",
 		description:
@@ -1830,7 +1841,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("dravakar", {
 		title: "Dravakar",
-		state: Option.none(),
+		state: Option.some("New"),
 		releaseDate: "2026-04-30",
 		image: "/zombies/dravakar.webp",
 		description:
@@ -1848,7 +1859,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("gjallarfrost", {
 		title: "Gjallarfrost",
-		state: Option.none(),
+		state: Option.some("New"),
 		releaseDate: "2026-04-30",
 		image: "/zombies/gjallarfrost.webp",
 		description:

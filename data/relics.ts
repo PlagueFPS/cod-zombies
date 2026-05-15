@@ -3,7 +3,8 @@ import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { Option, pipe } from "effect"
+import { Option } from "effect"
+import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** The three types of relics */
@@ -18,7 +19,7 @@ export interface Relic {
 	readonly id: string
 	/** The title of the relic */
 	readonly title: string
-	/** The state of the relic. A stored value of `"New"` is only shown for 14 calendar days after `discoveredDate`. */
+	/** The state of the relic. A stored value of `"New"` is time-limited after `discoveredDate` (see `resolveNewContentState` in `@/utils/content-state`). */
 	readonly state: Option.Option<ContentState>
 	/** The type of the relic */
 	readonly type: RelicType
@@ -39,30 +40,12 @@ export interface Relic {
 	readonly content: RelicsPaths
 }
 
-const MS_PER_DAY = 86_400_000
-/** Relics with {@link ContentState} `"New"` only show that badge for this many full calendar days after `discoveredDate`. */
-const NEW_RELIC_BADGE_MAX_AGE_DAYS = 14
-
-function calendarDaysSinceDiscover(isoDateOnly: string, nowMs: number): number {
-	const start = Date.parse(`${isoDateOnly}T00:00:00.000Z`)
-	return Math.floor((nowMs - start) / MS_PER_DAY)
-}
-
-function resolveRelicState(relic: Relic, nowMs: number): Option.Option<ContentState> {
-	return Option.match(relic.state, {
-		onNone: () => Option.none(),
-		onSome: state => {
-			if (state === "Coming Soon") return Option.some(state)
-			return calendarDaysSinceDiscover(relic.discoveredDate, nowMs) < NEW_RELIC_BADGE_MAX_AGE_DAYS
-				? Option.some("New")
-				: Option.none()
-		},
-	})
-}
-
 function withResolvedRelicState(relic: Relic): Relic {
 	const nowMs = Date.now()
-	return { ...relic, state: resolveRelicState(relic, nowMs) }
+	return {
+		...relic,
+		state: resolveNewContentState(relic.state, relic.discoveredDate, nowMs),
+	}
 }
 
 /**
@@ -92,7 +75,7 @@ export const getRelics = () =>
  * Gets a specific relic by its key
  */
 export const getRelicByKey = (key: RelicKey) =>
-	pipe(RELICS.get(key), Option.fromUndefinedOr, Option.map(withResolvedRelicState))
+	Option.fromUndefinedOr(RELICS.get(key)).pipe(Option.map(withResolvedRelicState))
 
 /**
  * Gets the adjacent relics of a given relic.

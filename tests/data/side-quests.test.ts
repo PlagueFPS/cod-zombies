@@ -1,5 +1,5 @@
 import { Option, Array as Arr } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import {
 	compareSideQuestDescending,
 	getAdjacentSideQuests,
@@ -27,6 +27,24 @@ describe("getSideQuestByKey", () => {
 	test("returns Some when the side quest exists", () => {
 		const s = getSideQuestByKey("115-clock-tower").pipe(Option.getOrThrow)
 		expect(s.id).toBe("115-clock-tower")
+	})
+})
+
+describe("side quest New badge vs host map release date", () => {
+	test("drops New on Totenreich quests after 14+ days from map release", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
+		const quest = getSideQuestByKey("no-one-there").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(quest.state)).toBeNull()
+		vi.useRealTimers()
+	})
+
+	test("keeps New within 14 days of host map release", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(new Date("2026-05-10T12:00:00.000Z"))
+		const quest = getSideQuestByKey("no-one-there").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(quest.state)).toBe("New")
+		vi.useRealTimers()
 	})
 })
 

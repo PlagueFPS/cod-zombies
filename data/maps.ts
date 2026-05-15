@@ -4,6 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Option } from "effect"
+import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** Union of all main quest difficulties */
@@ -31,10 +32,18 @@ export interface MapEntry {
 	readonly mainQuest: Option.Option<MainQuestsPaths>
 	/** The difficulty of the maps main quest */
 	readonly difficulty: Option.Option<MainQuestDifficulty>
-	/** The state of the maps main quest */
+	/** The state of the maps main quest. A stored value of `"New"` is time-limited after `releaseDate` (see `resolveNewContentState`). */
 	readonly state: Option.Option<ContentState>
 	/** The estimated min/max time to completion of the maps main quest */
 	readonly estimatedTimeMins: Option.Option<TimeRange>
+}
+
+function withResolvedMapState(map: MapEntry): MapEntry {
+	const nowMs = Date.now()
+	return {
+		...map,
+		state: resolveNewContentState(map.state, map.releaseDate, nowMs),
+	}
 }
 
 /** Union type of all map keys */
@@ -57,13 +66,15 @@ export function compareMapReleaseDescending(
 }
 
 /** @returns A shallow copy of all maps, descending by {@link compareMapReleaseDescending}. */
-export const getMaps = () => Array.from(MAPS.values()).sort(compareMapReleaseDescending)
+export const getMaps = () =>
+	Array.from(MAPS.values()).map(withResolvedMapState).sort(compareMapReleaseDescending)
 
 /** @returns Maps that have a main quest, same order as {@link getMaps}. */
 export const getMapsWithMainQuest = () => Arr.filter(getMaps(), map => Option.isSome(map.mainQuest))
 
 /** @returns The map with the given key */
-export const getMapByKey = (key: MapKey) => Option.fromUndefinedOr(MAPS.get(key))
+export const getMapByKey = (key: MapKey) =>
+	Option.fromUndefinedOr(MAPS.get(key)).pipe(Option.map(withResolvedMapState))
 
 /** @returns The adjacent maps of the map with the given key */
 export const getAdjacentMaps = (key: MapKey) => {
@@ -786,7 +797,7 @@ const MAPS = new Map([
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/totenreich"),
 		difficulty: Option.some("Hard"),
-		state: Option.none(),
+		state: Option.some("New"),
 		estimatedTimeMins: Option.some({
 			min: 60,
 			max: 120,
