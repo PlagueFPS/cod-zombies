@@ -498,16 +498,16 @@
 	border-color: var(--color-red-600) !important;
 }
 
-@utility badge-elite-gradient {
-	color: var(--color-rose-800) !important;
-	background-image: radial-gradient(circle at top, var(--color-rose-100), var(--color-rose-200));
-	border-color: var(--color-rose-400) !important;
+@utility badge-very-hard-gradient {
+	color: var(--color-red-900) !important;
+	background-image: radial-gradient(circle at top, var(--color-red-200), var(--color-red-300));
+	border-color: var(--color-red-500) !important;
 }
 
-@utility dark-badge-elite-gradient {
-	color: var(--color-rose-200) !important;
-	background-image: radial-gradient(circle at top, var(--color-rose-800), var(--color-rose-900));
-	border-color: var(--color-rose-600) !important;
+@utility dark-badge-very-hard-gradient {
+	color: var(--color-red-300) !important;
+	background-image: radial-gradient(circle at top, var(--color-red-900), var(--color-red-950));
+	border-color: var(--color-red-700) !important;
 }
 
 @utility badge-equipment-gradient {

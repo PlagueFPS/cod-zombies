@@ -45,6 +45,7 @@ export const DifficultyBadge = ({
 				"badge-easy-gradient dark:dark-badge-easy-gradient": difficulty === "Easy",
 				"badge-medium-gradient dark:dark-badge-medium-gradient": difficulty === "Medium",
 				"badge-hard-gradient dark:dark-badge-hard-gradient": difficulty === "Hard",
+				"badge-very-hard-gradient dark:dark-badge-very-hard-gradient": difficulty === "Very Hard",
 			},
 			className,
 		)}
@@ -73,8 +74,8 @@ export const TypeBadge = ({
 				"badge-easy-gradient dark:dark-badge-easy-gradient": type === "Normal" || type === "Grim",
 				"badge-medium-gradient dark:dark-badge-medium-gradient":
 					type === "Special" || type === "Sinister",
-				"badge-elite-gradient dark:dark-badge-elite-gradient": type === "Elite",
-				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Boss" || type === "Wicked",
+				"badge-hard-gradient dark:dark-badge-hard-gradient": type === "Elite" || type === "Wicked",
+				"badge-very-hard-gradient dark:dark-badge-very-hard-gradient": type === "Boss",
 				"badge-major-augment-gradient dark:dark-badge-major-augment-gradient": type === "Major",
 				"badge-primary-gradient dark:dark-badge-primary-gradient": type === "Minor",
 			},

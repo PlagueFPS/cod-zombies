@@ -25,6 +25,7 @@ import {
 	calculateSkip,
 	compareByOptionalSome,
 	getEstimatedTimeMidpoint,
+	slugify,
 	sortDifficulties,
 	sortEstimatedTime,
 } from "@/utils/shared-functions"
@@ -61,7 +62,7 @@ export function QuestGrid({ quests }: IQuestGrid) {
 	if (difficultyParams.length > 0) {
 		filteredQuests = filteredQuests.filter(quest => {
 			if (isMapQuest(quest) && Option.isSome(quest.difficulty)) {
-				return difficultyParams.includes(quest.difficulty.value.toLowerCase())
+				return difficultyParams.includes(slugify(quest.difficulty.value))
 			}
 			return false
 		})

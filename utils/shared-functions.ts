@@ -106,7 +106,7 @@ export const calculateSkip = (page: number, limit: number) => {
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
 export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) => {
-	const difficultyOrder: MainQuestDifficulty[] = ["Easy", "Medium", "Hard"]
+	const difficultyOrder: MainQuestDifficulty[] = ["Easy", "Medium", "Hard", "Very Hard"]
 	return difficultyOrder.indexOf(a) - difficultyOrder.indexOf(b)
 }
 
