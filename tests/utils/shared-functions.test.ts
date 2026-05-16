@@ -1,5 +1,11 @@
 import { describe, expect, test } from "vitest"
-import { capitalize, getYouTubeVideoId, slugify, sortDates } from "@/utils/shared-functions"
+import {
+	capitalize,
+	getYouTubeVideoId,
+	slugify,
+	sortDates,
+	sortDifficulties,
+} from "@/utils/shared-functions"
 
 describe("slugify", () => {
 	test("should convert basic text to slug", () => {
@@ -27,6 +33,10 @@ describe("slugify", () => {
 		expect(slugify("  Hello   World!  ")).toBe("hello-world")
 		expect(slugify("hello-world")).toBe("hello-world") // Already slugified
 		expect(slugify("")).toBe("") // Empty string
+	})
+
+	test("should slugify multi-word main quest difficulties for URL filters", () => {
+		expect(slugify("Very Hard")).toBe("very-hard")
 	})
 })
 
@@ -76,5 +86,17 @@ describe("sortDates", () => {
 	})
 	test("should return 0 if dates are equal", () => {
 		expect(sortDates("2020-01-01", "2020-01-01")).toBe(0)
+	})
+})
+
+describe("sortDifficulties", () => {
+	test("orders Easy through Very Hard ascending", () => {
+		const ordered = ["Very Hard", "Easy", "Hard", "Medium"].sort(sortDifficulties)
+		expect(ordered).toEqual(["Easy", "Medium", "Hard", "Very Hard"])
+	})
+
+	test("ranks Very Hard after Hard", () => {
+		expect(sortDifficulties("Hard", "Very Hard")).toBeLessThan(0)
+		expect(sortDifficulties("Very Hard", "Hard")).toBeGreaterThan(0)
 	})
 })
