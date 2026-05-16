@@ -1,5 +1,5 @@
-import type { MainQuestDifficulty } from "@/data/maps"
 import { describe, expect, test } from "vitest"
+import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
 	capitalize,
 	getYouTubeVideoId,
@@ -88,8 +88,7 @@ describe("sortDates", () => {
 
 describe("sortDifficulties", () => {
 	test("orders Easy through Very Hard ascending", () => {
-		const unsorted: MainQuestDifficulty[] = ["Very Hard", "Easy", "Hard", "Medium"]
-		const ordered = [...unsorted].sort(sortDifficulties)
+		const ordered = [...MAIN_QUEST_DIFFICULTIES].reverse().sort(sortDifficulties)
 		expect(ordered).toEqual(["Easy", "Medium", "Hard", "Very Hard"])
 	})
 
