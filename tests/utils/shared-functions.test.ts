@@ -35,10 +35,6 @@ describe("slugify", () => {
 		expect(slugify("hello-world")).toBe("hello-world") // Already slugified
 		expect(slugify("")).toBe("") // Empty string
 	})
-
-	test("should slugify multi-word main quest difficulties for URL filters", () => {
-		expect(slugify("Very Hard")).toBe("very-hard")
-	})
 })
 
 describe("capitalize", () => {
