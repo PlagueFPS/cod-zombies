@@ -1,3 +1,4 @@
+import type { MainQuestDifficulty } from "@/data/maps"
 import { describe, expect, test } from "vitest"
 import {
 	capitalize,
@@ -91,7 +92,8 @@ describe("sortDates", () => {
 
 describe("sortDifficulties", () => {
 	test("orders Easy through Very Hard ascending", () => {
-		const ordered = ["Very Hard", "Easy", "Hard", "Medium"].sort(sortDifficulties)
+		const unsorted: MainQuestDifficulty[] = ["Very Hard", "Easy", "Hard", "Medium"]
+		const ordered = [...unsorted].sort(sortDifficulties)
 		expect(ordered).toEqual(["Easy", "Medium", "Hard", "Very Hard"])
 	})
 
