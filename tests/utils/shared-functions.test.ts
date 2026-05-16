@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest"
-import { MAIN_QUEST_DIFFICULTIES, type MainQuestDifficulty } from "@/data/maps"
+import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
 	capitalize,
 	getYouTubeVideoId,
