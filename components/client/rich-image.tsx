@@ -22,8 +22,7 @@ interface RichImageProps {
 export default function RichImage({ image, caption, alt }: RichImageProps) {
 	const imageProps: ImageProps = {
 		featuredImage: image,
-		// Force all content images to be rendered at the highest allowed resolution
-		sizes: "1920px",
+		sizes: "(max-width: 828px) 100vw, 1200px",
 	}
 
 	return (
@@ -51,6 +50,7 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 							width={1920}
 							height={1080}
 							alt={alt ?? ""}
+							sizes="(max-width: 1920px) 100vw, 1920px"
 							className="cursor-zoom-out rounded-lg"
 						/>
 					</DialogClose>
