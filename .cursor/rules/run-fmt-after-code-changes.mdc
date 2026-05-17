@@ -1,0 +1,13 @@
+---
+description: Run the project formatter after editing source code
+alwaysApply: true
+---
+
+# Run format after code changes
+
+After modifying source code in this repo (TypeScript, JavaScript, TSX/JSX, or other files covered by the formatter), run the format script from the project root before considering the task done.
+
+- **Command:** `bun run fmt` (defined in `package.json` as the `fmt` script using `oxfmt`)
+- **When:** After edits that touch application or library source, tests, or scripts the formatter applies to—not for docs-only or metadata-only changes unless those files are formatter targets.
+
+If formatting fails, fix the reported issues and run `bun run fmt` again.
