@@ -1,5 +1,6 @@
 import type { SortOption } from "@/components/client/grid-sort"
 import type { GameKey } from "@/data/games"
+import type { MainQuestDifficulty } from "@/data/main-quest-difficulty"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
@@ -7,11 +8,8 @@ import { Array as Arr, Option } from "effect"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
-/** All possible main quest difficulties */
-export const MAIN_QUEST_DIFFICULTIES = ["Easy", "Medium", "Hard", "Very Hard"] as const
-
-/** Union of all main quest difficulties */
-export type MainQuestDifficulty = (typeof MAIN_QUEST_DIFFICULTIES)[number]
+export type { MainQuestDifficulty } from "@/data/main-quest-difficulty"
+export { MAIN_QUEST_DIFFICULTIES } from "@/data/main-quest-difficulty"
 
 export interface MapEntry {
 	/** The internal tag to discriminate against for type-narrowing */
