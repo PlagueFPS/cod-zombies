@@ -1,9 +1,14 @@
 import * as BunPath from "@effect/platform-bun/BunPath"
 import { expect, it, layer } from "@effect/vitest"
-import { Effect, FileSystem, Layer, Option, Redacted } from "effect"
-import { afterEach, beforeEach, describe, vi } from "vitest"
+import { Effect, FileSystem, Layer, Option } from "effect"
+import { describe, vi } from "vitest"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { getLastModified, getOpengraphImageUrl } from "@/utils/server-functions"
+import {
+	getLastModified,
+	getOpengraphImageUrl,
+	getServerUrl,
+	serverUrlFromVercelEnv,
+} from "@/utils/server-functions"
 
 const MOCK_LAST_MODIFIED_JSON = JSON.stringify({
 	version: "1.0",
@@ -36,72 +41,48 @@ const OpengraphManifestFileSystemLayer = Layer.mergeAll(
 	BunPath.layer,
 )
 
-describe("getServerUrl", () => {
-	let originalEnv: NodeJS.ProcessEnv
-
-	beforeEach(() => {
-		// Store original process.env
-		originalEnv = { ...process.env }
-		// Clear the module cache to ensure fresh imports
-		vi.resetModules()
-	})
-
-	afterEach(() => {
-		// Restore original process.env
-		process.env = { ...originalEnv }
-	})
-
+describe("serverUrlFromVercelEnv", () => {
 	const testCases = [
 		{
-			env: {
-				VERCEL_ENV: "development",
-				VERCEL_URL: "localhost:3000",
-				VERCEL_PROJECT_PRODUCTION_URL: "example.com",
+			input: {
+				vercelEnv: "development" as const,
+				vercelUrl: "[REDACTED]",
+				vercelProjectProductionUrl: "example.com",
 			},
-			expected: "http://localhost:3000",
+			expected: "[REDACTED]",
 			desc: "development environment",
 		},
 		{
-			env: {
-				VERCEL_ENV: "preview",
-				VERCEL_URL: "preview.example.com",
-				VERCEL_PROJECT_PRODUCTION_URL: "example.com",
+			input: {
+				vercelEnv: "preview" as const,
+				vercelUrl: "preview.example.com",
+				vercelProjectProductionUrl: "example.com",
 			},
 			expected: "https://preview.example.com",
 			desc: "preview environment",
 		},
 		{
-			env: {
-				VERCEL_ENV: "production",
-				VERCEL_URL: "example.vercel.app",
-				VERCEL_PROJECT_PRODUCTION_URL: "example.com",
+			input: {
+				vercelEnv: "production" as const,
+				vercelUrl: "example.vercel.app",
+				vercelProjectProductionUrl: "example.com",
 			},
 			expected: "https://example.com",
 			desc: "production environment",
 		},
 	]
 
-	for (const { env, expected, desc } of testCases) {
-		it(`should return correct URL for ${desc}`, async ({ expect }) => {
-			// Set environment variables directly
-			process.env.VERCEL_ENV = env.VERCEL_ENV
-			process.env.VERCEL_URL = env.VERCEL_URL
-			process.env.VERCEL_PROJECT_PRODUCTION_URL = env.VERCEL_PROJECT_PRODUCTION_URL
-
-			// Mock the env module to return the expected values
-			vi.doMock("@/env", () => ({
-				env: {
-					VERCEL_ENV: Redacted.make(env.VERCEL_ENV),
-					VERCEL_URL: Redacted.make(env.VERCEL_URL),
-					VERCEL_PROJECT_PRODUCTION_URL: Redacted.make(env.VERCEL_PROJECT_PRODUCTION_URL),
-				},
-			}))
-
-			// Import dynamically after setting up the mock
-			const { getServerUrl } = await import("@/utils/server-functions")
-			expect(getServerUrl()).toBe(expected)
+	for (const { input, expected, desc } of testCases) {
+		it(`should return correct URL for ${desc}`, ({ expect }) => {
+			expect(serverUrlFromVercelEnv(input)).toBe(expected)
 		})
 	}
+})
+
+describe("getServerUrl", () => {
+	it("delegates to seeded env from vitest.setup", ({ expect }) => {
+		expect(getServerUrl()).toBe("[REDACTED]")
+	})
 })
 
 layer(MockFileSystemLayer)("getLastModified", it => {
@@ -155,10 +136,8 @@ layer(OpengraphManifestFileSystemLayer)("getOpengraphImageUrl", it => {
 	it.effect("should return `Some` with a versioned URL when the id exists in the manifest", () =>
 		Effect.gen(function* () {
 			const result = yield* getOpengraphImageUrl("main-quests", "paradox-junction")
-			expect(result).toEqual(
-				Option.some(
-					"http://localhost:3000/opengraph-images/main-quests/opengraph-paradox-junction-v2.jpg",
-				),
+			expect(Option.getOrThrow(result)).toBe(
+				`${getServerUrl()}/opengraph-images/main-quests/opengraph-paradox-junction-v2.jpg`,
 			)
 		}),
 	)
@@ -167,13 +146,11 @@ layer(OpengraphManifestFileSystemLayer)("getOpengraphImageUrl", it => {
 		Effect.gen(function* () {
 			const sideQuests = yield* getOpengraphImageUrl("side-quests", "free-perk")
 			const zombies = yield* getOpengraphImageUrl("zombies", "zombie")
-			expect(sideQuests).toEqual(
-				Option.some(
-					"http://localhost:3000/opengraph-images/side-quests/opengraph-free-perk-v1.jpg",
-				),
+			expect(Option.getOrThrow(sideQuests)).toBe(
+				`${getServerUrl()}/opengraph-images/side-quests/opengraph-free-perk-v1.jpg`,
 			)
-			expect(zombies).toEqual(
-				Option.some("http://localhost:3000/opengraph-images/zombies/opengraph-zombie-v1.jpg"),
+			expect(Option.getOrThrow(zombies)).toBe(
+				`${getServerUrl()}/opengraph-images/zombies/opengraph-zombie-v1.jpg`,
 			)
 		}),
 	)

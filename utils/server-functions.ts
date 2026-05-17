@@ -46,17 +46,38 @@ class TokenVerificationError extends Schema.TaggedErrorClass<TokenVerificationEr
  * Gets the server URL.
  * @returns The server URL.
  */
-export const getServerUrl = () => {
-	const currentEnv = Redacted.value(env.VERCEL_ENV)
-	switch (currentEnv) {
+export type VercelPublicUrlEnv = {
+	vercelEnv: "development" | "preview" | "production"
+	vercelUrl: string
+	vercelProjectProductionUrl: string
+}
+
+/** Pure URL resolution from Vercel-style env (no `@/env` import). */
+export const serverUrlFromVercelEnv = ({
+	vercelEnv,
+	vercelUrl,
+	vercelProjectProductionUrl,
+}: VercelPublicUrlEnv): string => {
+	switch (vercelEnv) {
 		case "preview":
-			return `https://${Redacted.value(env.VERCEL_URL)}`
+			return `https://${vercelUrl}`
 		case "production":
-			return `https://${Redacted.value(env.VERCEL_PROJECT_PRODUCTION_URL)}`
+			return `https://${vercelProjectProductionUrl}`
 		default:
-			return `http://localhost:3000`
+			return `[REDACTED]`
 	}
 }
+
+/**
+ * Gets the server URL.
+ * @returns The server URL.
+ */
+export const getServerUrl = () =>
+	serverUrlFromVercelEnv({
+		vercelEnv: Redacted.value(env.VERCEL_ENV),
+		vercelUrl: Redacted.value(env.VERCEL_URL),
+		vercelProjectProductionUrl: Redacted.value(env.VERCEL_PROJECT_PRODUCTION_URL),
+	})
 
 export const getOpengraphImageUrl = Effect.fnUntraced(function* (kind: OpengraphKind, id: string) {
 	const fs = yield* FileSystem.FileSystem

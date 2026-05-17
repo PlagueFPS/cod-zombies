@@ -1,17 +1,11 @@
-import { Redacted } from "effect"
-import { vi } from "vitest"
-
-vi.mock("@/env", () => ({
-	env: {
-		RESEND_API_KEY: Redacted.make("test-key"),
-		RESEND_AUDIENCE_ID: Redacted.make("test-audience"),
-		HASH_SALT: Redacted.make("test-salt"),
-		LINEAR_API_KEY: Redacted.make("test-linear-key"),
-		LINEAR_WORKSPACE: Redacted.make("test-workspace"),
-		LINEAR_USER_FEEDBACK_LABEL: Redacted.make("test-user-feedback-label"),
-		LINEAR_DEFAULT_ASSIGNEE_ID: Redacted.make("test-assignee"),
-		VERCEL_ENV: Redacted.make("development"),
-		VERCEL_URL: Redacted.make("localhost:3000"),
-		VERCEL_PROJECT_PRODUCTION_URL: Redacted.make("localhost:3000"),
-	},
-}))
+/** Seed env vars so `@/env` validates when tests load modules that import it. */
+process.env.RESEND_API_KEY = "test-key"
+process.env.RESEND_AUDIENCE_ID = "test-audience"
+process.env.HASH_SALT = "test-salt"
+process.env.LINEAR_API_KEY = "test-linear-key"
+process.env.LINEAR_WORKSPACE = "test-workspace"
+process.env.LINEAR_USER_FEEDBACK_LABEL = "test-user-feedback-label"
+process.env.LINEAR_DEFAULT_ASSIGNEE_ID = "test-assignee"
+process.env.VERCEL_ENV = "development"
+process.env.VERCEL_URL = "[REDACTED]"
+process.env.VERCEL_PROJECT_PRODUCTION_URL = "[REDACTED]"
