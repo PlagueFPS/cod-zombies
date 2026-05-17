@@ -82,8 +82,8 @@ export const Route = createFileRoute("/main-quests/")({
 		]
 
 		const sortSpecs: SortSpec<MapEntry>[] = [
-			{ key: "latest", compare: (a, b) => compareMapReleaseDescending(b, a) },
-			{ key: "oldest", compare: (a, b) => compareMapReleaseDescending(a, b) },
+			{ key: "latest", compare: (a, b) => compareMapReleaseDescending(a, b) },
+			{ key: "oldest", compare: (a, b) => compareMapReleaseDescending(b, a) },
 			{
 				key: "difficulty-asc",
 				compare: (a, b) => compareByOptionalSome(a.difficulty, b.difficulty, sortDifficulties),

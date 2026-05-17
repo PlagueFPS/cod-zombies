@@ -159,7 +159,7 @@ function createSyntheticLoadEvent(img: HTMLImageElement): SyntheticEvent<HTMLIma
 	let prevented = false
 	let stopped = false
 	return {
-		// oxlint-disable-next-line: no-misused-spread
+		// oxlint-disable-next-line no-misused-spread
 		...event,
 		nativeEvent: event,
 		currentTarget: img,
@@ -265,7 +265,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 					// If the image has an error before react hydrates, then the error is lost.
 					// The workaround is to wait until the image is mounted which is after hydration,
 					// then we set the src again to trigger the error handler (if there was an error).
-					// oxlint-disable-next-line: no-self-assign
+					// oxlint-disable-next-line no-self-assign
 					img.src = img.src
 				}
 

@@ -1,8 +1,9 @@
 import mdx from "@mdx-js/rollup"
+import babel from "@rolldown/plugin-babel"
 import tailwindcss from "@tailwindcss/vite"
 import { devtools } from "@tanstack/devtools-vite"
 import { tanstackStart } from "@tanstack/react-start/plugin/vite"
-import react from "@vitejs/plugin-react"
+import react, { reactCompilerPreset } from "@vitejs/plugin-react"
 import rsc from "@vitejs/plugin-rsc"
 import { nitro } from "nitro/vite"
 import { defineConfig, type Plugin } from "vite"
@@ -61,6 +62,9 @@ export default defineConfig({
 		}),
 		rsc(),
 		react(),
+		babel({
+			presets: [reactCompilerPreset()],
+		}),
 		tailwindcss(),
 		{
 			enforce: "pre",

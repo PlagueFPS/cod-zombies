@@ -133,7 +133,7 @@ export function QuestPreviewCard({ quest, priority }: IQuestPreviewCard) {
 							alt=""
 							width={272}
 							height={176}
-							sizes="272px"
+							sizes="384px"
 							className="aspect-square scale-150"
 						/>
 					</div>
@@ -144,7 +144,6 @@ export function QuestPreviewCard({ quest, priority }: IQuestPreviewCard) {
 								alt={alt}
 								width={272}
 								height={176}
-								sizes="272px"
 								loading={priority ? "eager" : "lazy"}
 								className="h-44 rounded-md object-cover"
 							/>

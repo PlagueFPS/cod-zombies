@@ -21,7 +21,7 @@ interface RichImageProps {
 export default function RichImage({ image, caption, alt }: RichImageProps) {
 	const imageProps: Pick<FeaturedImageProps, "featuredImage" | "sizes"> = {
 		featuredImage: image,
-		sizes: "(max-width: 828px) 100vw, 1200px",
+		sizes: "1920px",
 	}
 
 	return (
@@ -49,7 +49,6 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 							width={1920}
 							height={1080}
 							alt={alt ?? ""}
-							sizes="(max-width: 1920px) 100vw, 1920px"
 							className="cursor-zoom-out rounded-lg"
 						/>
 					</DialogClose>

@@ -1,14 +1,18 @@
+import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import { getAdjacentRelics, getRelicByKey, getRelics, type Relic, type RelicKey } from "@/data/relics"
-import type { ContentState } from "@/types/data"
+import {
+	getAdjacentRelics,
+	getRelicByKey,
+	getRelics,
+	type Relic,
+	type RelicKey,
+} from "@/data/relics"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 
 /** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real RELICS rows). */
-const relicNewBadgeFixture = (
-	discoveredDate: string,
-): Pick<Relic, "discoveredDate" | "state"> => ({
+const relicNewBadgeFixture = (discoveredDate: string): Pick<Relic, "discoveredDate" | "state"> => ({
 	discoveredDate,
 	state: Option.some("New"),
 })
@@ -16,8 +20,7 @@ const relicNewBadgeFixture = (
 const resolvedRelicDisplayState = (
 	fixture: Pick<Relic, "discoveredDate" | "state">,
 	isoUtcInstant: string,
-) =>
-	resolveNewContentState(fixture.state, fixture.discoveredDate, Date.parse(isoUtcInstant))
+) => resolveNewContentState(fixture.state, fixture.discoveredDate, Date.parse(isoUtcInstant))
 
 describe("getRelics", () => {
 	test("sorted by discovered date descending", () => {
