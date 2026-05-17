@@ -1,8 +1,8 @@
-import type { MainQuestDifficulty } from "@/data/main-quest-difficulty"
-import { MAIN_QUEST_DIFFICULTIES } from "@/data/main-quest-difficulty"
+import type { MainQuestDifficulty } from "@/data/maps"
 import type { RelicType } from "@/data/relics"
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
 import { Option } from "effect"
+import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 
 /**
  * Gets the previous and next items adjacent to the given item ID.
