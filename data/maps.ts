@@ -7,10 +7,9 @@ import { Array as Arr, Option } from "effect"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
-/** All possible main quest difficulties */
+/** All possible main quest difficulties (canonical ascending order for sorting). */
 export const MAIN_QUEST_DIFFICULTIES = ["Easy", "Medium", "Hard", "Very Hard"] as const
 
-/** Union of all main quest difficulties */
 export type MainQuestDifficulty = (typeof MAIN_QUEST_DIFFICULTIES)[number]
 
 export interface MapEntry {

@@ -87,13 +87,17 @@ describe("sortDates", () => {
 })
 
 describe("sortDifficulties", () => {
-	test("orders Easy through Very Hard ascending", () => {
+	test("orders permutations to match MAIN_QUEST_DIFFICULTIES canonical order", () => {
 		const ordered = [...MAIN_QUEST_DIFFICULTIES].reverse().sort(sortDifficulties)
-		expect(ordered).toEqual(["Easy", "Medium", "Hard", "Very Hard"])
+		expect(ordered).toEqual([...MAIN_QUEST_DIFFICULTIES])
 	})
 
-	test("ranks Very Hard after Hard", () => {
-		expect(sortDifficulties("Hard", "Very Hard")).toBeLessThan(0)
-		expect(sortDifficulties("Very Hard", "Hard")).toBeGreaterThan(0)
+	test("each adjacent pair in MAIN_QUEST_DIFFICULTIES sorts ascending", () => {
+		for (let i = 1; i < MAIN_QUEST_DIFFICULTIES.length; i++) {
+			const prev = MAIN_QUEST_DIFFICULTIES[i - 1]!
+			const curr = MAIN_QUEST_DIFFICULTIES[i]!
+			expect(sortDifficulties(prev, curr)).toBeLessThan(0)
+			expect(sortDifficulties(curr, prev)).toBeGreaterThan(0)
+		}
 	})
 })

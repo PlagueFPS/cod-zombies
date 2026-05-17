@@ -2,6 +2,7 @@ import type { MainQuestDifficulty } from "@/data/maps"
 import type { RelicType } from "@/data/relics"
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
 import { Option } from "effect"
+import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 
 /**
  * Gets the previous and next items adjacent to the given item ID.
@@ -105,10 +106,8 @@ export const calculateSkip = (page: number, limit: number) => {
  * @param b - The second difficulty.
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
-export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) => {
-	const difficultyOrder: MainQuestDifficulty[] = ["Easy", "Medium", "Hard", "Very Hard"]
-	return difficultyOrder.indexOf(a) - difficultyOrder.indexOf(b)
-}
+export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) =>
+	MAIN_QUEST_DIFFICULTIES.indexOf(a) - MAIN_QUEST_DIFFICULTIES.indexOf(b)
 
 /**
  * Sorts dates in ascending order.
