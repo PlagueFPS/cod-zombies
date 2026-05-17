@@ -1,6 +1,7 @@
 import { Option, Array as Arr } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import {
+	MAIN_QUEST_DIFFICULTIES,
 	getAdjacentMaps,
 	getMapByKey,
 	getMaps,
@@ -52,6 +53,18 @@ describe("map New badge vs release date", () => {
 		vi.setSystemTime(new Date("2026-05-14T00:00:00.000Z"))
 		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
 		expect(Option.getOrNull(totenreich.state)).toBeNull()
+	})
+})
+
+describe("map main quest difficulties", () => {
+	test("every Some difficulty matches MAIN_QUEST_DIFFICULTIES (typo / drift guard)", () => {
+		const allowed = new Set<string>(MAIN_QUEST_DIFFICULTIES)
+		const invalid = getMaps().flatMap(map =>
+			Option.isSome(map.difficulty) && !allowed.has(map.difficulty.value)
+				? [`${map.id}: ${map.difficulty.value}`]
+				: [],
+		)
+		expect(invalid).toEqual([])
 	})
 })
 
