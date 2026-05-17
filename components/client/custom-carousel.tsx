@@ -16,7 +16,7 @@ import {
 	type CarouselApi,
 } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
-import { Button } from "../ui/button"
+import { Button } from "`@/components/ui/button`"
 
 interface CustomCarouselProps {
 	children: React.ReactNode
@@ -151,14 +151,16 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 	return (
 		<Carousel ref={rootRef} setApi={setApi} className="w-full min-w-0">
 			<CarouselContent className="min-w-0">
-				{Array.isArray(children) ? (
-					children.map((child, index) => (
-						<CarouselItem key={index} className={cn(className)}>
-							{child}
-						</CarouselItem>
-					))
-				) : (
-					<CarouselItem className={cn(className)}>{children}</CarouselItem>
+import {
+	Children,
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+	type CSSProperties,
+} from "react"
+} from "react"
 				)}
 			</CarouselContent>
 			<CarouselPrevious
