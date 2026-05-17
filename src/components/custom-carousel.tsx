@@ -1,6 +1,7 @@
 "use client"
 import { ClientOnly } from "@tanstack/react-router"
 import {
+	Children,
 	useCallback,
 	useEffect,
 	useLayoutEffect,
@@ -8,6 +9,7 @@ import {
 	useState,
 	type CSSProperties,
 } from "react"
+import { Button } from "@/components/ui/button"
 import {
 	Carousel,
 	CarouselContent,
@@ -17,7 +19,6 @@ import {
 	type CarouselApi,
 } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
-import { Button } from "./ui/button"
 
 interface CustomCarouselProps {
 	children: React.ReactNode
@@ -160,15 +161,11 @@ function InternalCarousel({ children, className }: CustomCarouselProps) {
 	return (
 		<Carousel ref={rootRef} setApi={setApi} className="w-full min-w-0">
 			<CarouselContent className="min-w-0">
-				{Array.isArray(children) ? (
-					children.map((child, index) => (
-						<CarouselItem key={index} className={cn(className)}>
-							{child}
-						</CarouselItem>
-					))
-				) : (
-					<CarouselItem className={cn(className)}>{children}</CarouselItem>
-				)}
+				{Children.toArray(children).map((child, index) => (
+					<CarouselItem key={index} className={cn(className)}>
+						{child}
+					</CarouselItem>
+				))}
 			</CarouselContent>
 			<CarouselPrevious
 				variant="secondary"
