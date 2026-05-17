@@ -1,6 +1,13 @@
 "use client"
 import { ClientOnly } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
+import {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+	type CSSProperties,
+} from "react"
 import {
 	Carousel,
 	CarouselContent,
@@ -25,10 +32,114 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 	)
 }
 
+/** Pixels above the `<img>` bottom edge (inside the image area). */
+const INDICATOR_INSET_FROM_IMAGE_BOTTOM_PX = 12
+/** Ignore bbox reads before layout resolves (FeaturedImage fades in; lazy decode). */
+const MIN_IMG_BOX_FOR_LAYOUT_PX = 4
+
+const INDICATORS_FALLBACK_STYLE: CSSProperties = {
+	left: "50%",
+	bottom: "5rem",
+	transform: "translateX(-50%)",
+}
+
+/** First carousel slide DOM node (Embla `slideNodes()` or first `[data-slot="carousel-item"]`). */
+function firstSlideEl(root: HTMLElement, api: CarouselApi | undefined): HTMLElement | null {
+	const n = api?.slideNodes()[0]
+	if (n instanceof HTMLElement) return n
+	const q = root.querySelector('[data-slot="carousel-item"]')
+	return q instanceof HTMLElement ? q : null
+}
+
+function firstSlideImg(
+	root: HTMLElement,
+	api: CarouselApi | undefined,
+): HTMLImageElement | undefined {
+	return firstSlideEl(root, api)?.querySelector("img") ?? undefined
+}
+
 function InternalCarousel({ children, className }: CustomCarouselProps) {
+	const rootRef = useRef<HTMLDivElement>(null)
+	const dotsPositionLockedRef = useRef(false)
+	/**
+	 * This ref avoids listing `api` on `tryLockDotsPosition` deps so its identity
+	 * stays stable while reads still see the live API.
+	 */
+	const apiRef = useRef<CarouselApi | undefined>(undefined)
+
 	const [api, setApi] = useState<CarouselApi>()
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [count, setCount] = useState(0)
+	const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>(INDICATORS_FALLBACK_STYLE)
+
+	apiRef.current = api
+
+	const tryLockDotsPosition = useCallback(() => {
+		if (dotsPositionLockedRef.current) return
+
+		const root = rootRef.current
+		if (!root || count <= 1) return
+
+		const img = firstSlideImg(root, apiRef.current)
+
+		if (img == null) {
+			dotsPositionLockedRef.current = true
+			setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
+			return
+		}
+
+		const rootRect = root.getBoundingClientRect()
+		const imgRect = img.getBoundingClientRect()
+
+		if (imgRect.height < MIN_IMG_BOX_FOR_LAYOUT_PX || imgRect.width < MIN_IMG_BOX_FOR_LAYOUT_PX) {
+			if (img.complete) {
+				dotsPositionLockedRef.current = true
+				setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
+			}
+			return
+		}
+
+		dotsPositionLockedRef.current = true
+		setIndicatorStyle({
+			left: "50%",
+			bottom: rootRect.bottom - imgRect.bottom + INDICATOR_INSET_FROM_IMAGE_BOTTOM_PX,
+			transform: "translateX(-50%)",
+		})
+	}, [count])
+
+	useLayoutEffect(() => {
+		if (count <= 1) return
+		tryLockDotsPosition()
+	}, [count, tryLockDotsPosition])
+
+	useEffect(() => {
+		if (count <= 1 || dotsPositionLockedRef.current) return
+
+		const root = rootRef.current
+		if (!root) return
+
+		const img = firstSlideImg(root, apiRef.current)
+		if (!img) {
+			tryLockDotsPosition()
+			return
+		}
+
+		const onReady = () => tryLockDotsPosition()
+
+		img.addEventListener("load", onReady, { once: true })
+
+		let decodeCancelled = false
+		void (img.decode?.() ?? Promise.resolve())
+			.catch(() => {})
+			.then(() => {
+				if (!decodeCancelled && img.isConnected) tryLockDotsPosition()
+			})
+
+		return () => {
+			decodeCancelled = true
+			img.removeEventListener("load", onReady)
+		}
+	}, [api, count, tryLockDotsPosition])
 
 	useEffect(() => {
 		if (!api) return
@@ -47,8 +158,8 @@ function InternalCarousel({ children, className }: CustomCarouselProps) {
 	}, [api])
 
 	return (
-		<Carousel setApi={setApi}>
-			<CarouselContent>
+		<Carousel ref={rootRef} setApi={setApi} className="w-full min-w-0">
+			<CarouselContent className="min-w-0">
 				{Array.isArray(children) ? (
 					children.map((child, index) => (
 						<CarouselItem key={index} className={cn(className)}>
@@ -67,7 +178,8 @@ function InternalCarousel({ children, className }: CustomCarouselProps) {
 			<CarouselNext variant="secondary" size="icon" className="absolute right-5 flex md:right-4" />
 			{count > 1 ? (
 				<div
-					className="pointer-events-auto absolute right-4 bottom-20 left-0 z-10 mx-auto inline-flex w-fit items-center justify-center gap-1 rounded-full border border-input/30 bg-black/65 px-2 py-1.5 shadow-lg backdrop-blur-md supports-[backdrop-filter]:bg-black/45 md:bottom-15 dark:border-input"
+					style={indicatorStyle}
+					className="pointer-events-auto absolute z-10 inline-flex w-fit items-center justify-center gap-1 rounded-full border border-input/30 bg-black/65 px-2 py-1.5 shadow-lg backdrop-blur-md supports-[backdrop-filter]:bg-black/45 dark:border-input"
 					role="tablist"
 					aria-label="Carousel slides"
 				>
