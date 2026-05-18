@@ -48,15 +48,6 @@ export const getAdjacentItems = <T extends { id: string }>(items: T[], itemId: s
 }
 
 /**
- * Checks if the user is on a Mac OS device. This function will always return false on the server.
- * @returns True if the user is on a Mac OS device, false otherwise.
- */
-export const isMacOs = () => {
-	if (typeof window === "undefined") return false
-	return window.navigator.platform.toLowerCase().includes("mac")
-}
-
-/**
  * Capitalizes the first letter of each word in a string, replacing hyphens and underscores with spaces.
  * @param text - The input string to be capitalized.
  * @example

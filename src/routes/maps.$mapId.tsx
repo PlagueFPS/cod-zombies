@@ -11,6 +11,7 @@ import MapSidebar from "@/components/map-sidebar"
 import NotFoundContent from "@/components/not-found-content"
 import SidebarLoader from "@/components/sidebar-loader"
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { MapSettingsProvider } from "@/contexts/interactive-map-settings"
 import {
 	getInteractiveMapByKey,
 	getInteractiveMapConfig,
@@ -133,13 +134,15 @@ function InteractiveMapPage() {
 	}, [])
 
 	return (
-		<SidebarProvider defaultOpen={sidebarState}>
-			<MapSidebar groups={groups} maps={maps} mapLayers={config.layers} />
-			<div className="-mt-10 h-svh w-svw">
-				<CustomSideBarTrigger className={cn({ "top-18": config.layers.length === 1 })} />
-				<InteractiveMap currentLayer={currentLayer} />
-			</div>
-		</SidebarProvider>
+		<MapSettingsProvider>
+			<SidebarProvider defaultOpen={sidebarState}>
+				<MapSidebar groups={groups} maps={maps} mapLayers={config.layers} />
+				<div className="-mt-10 h-svh w-svw">
+					<CustomSideBarTrigger className={cn({ "top-18": config.layers.length === 1 })} />
+					<InteractiveMap currentLayer={currentLayer} />
+				</div>
+			</SidebarProvider>
+		</MapSettingsProvider>
 	)
 }
 
