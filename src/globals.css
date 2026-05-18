@@ -120,12 +120,6 @@
 		transition-duration: 150ms;
 	}
 
-	.no-scroll {
-		position: fixed;
-		inset: 0;
-		overflow: hidden;
-	}
-
 	.leaflet-container,
 	.leaflet-container * {
 		font-family: var(--font-geist) !important;

@@ -3,12 +3,12 @@ import { createFileRoute, notFound } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getCookie, setResponseHeader } from "@tanstack/react-start/server"
 import { Effect, Option, Array as Arr } from "effect"
-import { useEffect } from "react"
 import { CustomSideBarTrigger } from "@/components/custom-sidebar-trigger"
 import { InteractiveMap } from "@/components/interactive-map"
 import InteractiveMapLoader from "@/components/interactive-map-loader"
 import MapSidebar from "@/components/map-sidebar"
 import NotFoundContent from "@/components/not-found-content"
+import { RemoveScroll } from "@/components/remove-scroll"
 import SidebarLoader from "@/components/sidebar-loader"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { MapSettingsProvider } from "@/contexts/interactive-map-settings"
@@ -123,23 +123,15 @@ export const Route = createFileRoute("/maps/$mapId")({
 function InteractiveMapPage() {
 	const { config, currentLayer, groups, maps, sidebarState } = Route.useLoaderData()
 
-	// Prevent scrolling the document while on this page
-	// to keep scrolling only on the map canvas and prevent weird
-	// UI states since the footer is still rendered from the RootLayout
-	useEffect(() => {
-		document.body.classList.add("no-scroll")
-		return () => {
-			document.body.classList.remove("no-scroll")
-		}
-	}, [])
-
 	return (
 		<MapSettingsProvider>
 			<SidebarProvider defaultOpen={sidebarState}>
 				<MapSidebar groups={groups} maps={maps} mapLayers={config.layers} />
 				<div className="-mt-10 h-svh w-svw">
 					<CustomSideBarTrigger className={cn({ "top-18": config.layers.length === 1 })} />
-					<InteractiveMap currentLayer={currentLayer} />
+					<RemoveScroll>
+						<InteractiveMap currentLayer={currentLayer} />
+					</RemoveScroll>
 				</div>
 			</SidebarProvider>
 		</MapSettingsProvider>
