@@ -18,6 +18,7 @@ import {
 	type CarouselApi,
 } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
+import { firstSlideImg } from "@/utils/carousel-first-slide"
 
 interface CustomCarouselProps {
 	children: React.ReactNode
@@ -33,21 +34,6 @@ const INDICATORS_FALLBACK_STYLE: CSSProperties = {
 	left: "50%",
 	bottom: "5rem",
 	transform: "translateX(-50%)",
-}
-
-/** First carousel slide DOM node (Embla `slideNodes()` or first `[data-slot="carousel-item"]`). */
-function firstSlideEl(root: HTMLElement, api: CarouselApi | undefined): HTMLElement | null {
-	const n = api?.slideNodes()[0]
-	if (n instanceof HTMLElement) return n
-	const q = root.querySelector('[data-slot="carousel-item"]')
-	return q instanceof HTMLElement ? q : null
-}
-
-function firstSlideImg(
-	root: HTMLElement,
-	api: CarouselApi | undefined,
-): HTMLImageElement | undefined {
-	return firstSlideEl(root, api)?.querySelector("img") ?? undefined
 }
 
 export default function CustomCarousel({ children, className }: CustomCarouselProps) {
