@@ -108,10 +108,6 @@ export function decodeMapConfigLayer(encoded: EncodedMapConfigLayer): MapConfigL
 	return { ...encoded, markers: encoded.markers.map(decodeMapMarker) }
 }
 
-export function decodeMapConfig(encoded: EncodedMapConfig): MapConfig {
-	return { ...encoded, layers: encoded.layers.map(decodeMapConfigLayer) }
-}
-
 export const isSideQuest = <M extends { _tag: "MapEntry" }, S extends { _tag: "SideQuest" }>(
 	quest: M | S,
 ): quest is S => quest._tag === "SideQuest"

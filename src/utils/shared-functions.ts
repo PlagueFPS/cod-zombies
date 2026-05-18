@@ -98,16 +98,6 @@ export const getYouTubeVideoId = (url: string) => {
 }
 
 /**
- * Calculates the number of items to skip based on the current page and limit.
- * @param page - The current page number.
- * @param limit - The maximum number of items per page.
- * @returns The number of items to skip.
- */
-export const calculateSkip = (page: number, limit: number) => {
-	return page <= 1 ? 0 : limit * page - limit
-}
-
-/**
  * Sorts difficulties in ascending order.
  * @param a - The first difficulty.
  * @param b - The second difficulty.

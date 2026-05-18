@@ -32,12 +32,6 @@ export interface Location {
 /** Union of every type of marker currently supported */
 export type MarkerType = (typeof MARKER_TYPES)[number]
 
-/** Union of every type of perk currently supported */
-export type Perks = keyof typeof perks
-
-/** Union of every type of weapon currently supported */
-export type Weapons = keyof typeof weapons
-
 /** Union of every type of marker category currently supported */
 export type MarkerCategory =
 	| "general"

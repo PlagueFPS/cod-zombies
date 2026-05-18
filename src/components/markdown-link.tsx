@@ -16,5 +16,3 @@ export function MarkdownLink({ text, ...props }: MarkdownLinkProps) {
 		</CustomLink>
 	)
 }
-
-export default MarkdownLink

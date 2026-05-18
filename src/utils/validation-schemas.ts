@@ -97,14 +97,6 @@ const InteractiveMapSearchParamsSchema = Schema.Struct({
 	layer: Schema.optionalKey(Schema.String),
 })
 
-const ParamsSchema = Schema.Struct({
-	id: Schema.OptionFromOptionalNullOr(Schema.String),
-	game: Schema.OptionFromOptionalNullOr(Schema.String),
-	map: Schema.OptionFromOptionalNullOr(Schema.String),
-	message: Schema.OptionFromOptionalNullOr(Schema.String),
-	layer: Schema.OptionFromOptionalNullOr(Schema.String),
-})
-
 const emailGroup = Schema.makeFilterGroup(
 	[
 		Schema.isMaxLength(256, { message: "Email must be shorter than 256 characters." }),
@@ -153,29 +145,11 @@ const TerminusCodeSchema = Schema.Struct({
 	z: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
 })
 
-const RichLinkNodeSchema = Schema.Struct({
-	text: Schema.NonEmptyString,
-})
-
-const isValidReckoningLetter = Schema.makeFilterGroup([
-	Schema.isPattern(/^[A-Za-z]$/).annotate({
-		message: "Only letters A-Z are allowed.",
-	}),
-	Schema.isMaxLength(1),
-])
-
-const ReckoningCodeSchema = Schema.Struct({
-	letter1: Schema.String.pipe(Schema.check(isValidReckoningLetter)),
-	letter2: Schema.String.pipe(Schema.check(isValidReckoningLetter)),
-})
-
 const ErrorPageSchema = Schema.Struct({
 	message: Schema.String,
 })
 
 export type TFeedbackForm = typeof FeedbackFormSchema.Type
-export type TContactForm = typeof ContactFormSchema.Type
-export type TNewsletterForm = typeof NewsletterFormSchema.Type
 export type FileMetadata = typeof FileMetadataSchema.Type
 export type LastModifiedData = typeof LastModifiedDataSchema.Type
 export type TTerminusCode = typeof TerminusCodeSchema.Encoded
@@ -206,17 +180,11 @@ export const decodeBestiarySearchParams = Schema.decodeUnknownExit(BestiarySearc
 export const decodeInteractiveMapSearchParams = Schema.decodeUnknownExit(
 	InteractiveMapSearchParamsSchema,
 )
-export const decodeReckoningCode = Schema.decodeUnknownExit(ReckoningCodeSchema)
-export const decodeParams = Schema.decodeUnknownSync(ParamsSchema)
 export const decodeTerminusCode = Schema.decodeUnknownExit(TerminusCodeSchema)
-export const decodeRichLinkNode = Schema.decodeUnknownExit(RichLinkNodeSchema)
 export const validateFeedbackForm = Schema.decodeExit(StandardFeedbackFormSchema)
 export const decodeOpengraphManifest = Schema.decodeEffect(Schema.fromJsonString(OpengraphManifest))
 export const encodeOpengraphManifest = Schema.encodeEffect(Schema.fromJsonString(OpengraphManifest))
 export const encodeLastModifiedData = Schema.encodeEffect(
-	Schema.fromJsonString(LastModifiedDataSchema),
-)
-export const decodeLastModifiedData = Schema.decodeUnknownEffect(
 	Schema.fromJsonString(LastModifiedDataSchema),
 )
 export const decodeMapConfigModule = Schema.decodeUnknownEffect(MapConfigModuleSchema)

@@ -35,8 +35,6 @@ export type AugmentTuple = [
 	AugmentKey?,
 	AugmentKey?,
 ]
-/**Union of all Augment types */
-export type AugmentType = Augment["type"]
 
 /** Gets an augment by its key.
  * @param key The key of the augment.

@@ -17,16 +17,6 @@ interface CustomBadgeProps {
 	children?: React.ReactNode
 }
 
-export const DraftBadge = ({ className }: CustomBadgeProps) => (
-	<Badge className={cn("badge-draft-gradient dark:dark-badge-draft-gradient", className)}>
-		Draft
-	</Badge>
-)
-export const ChangedBadge = ({ className }: CustomBadgeProps) => (
-	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>
-		Changed
-	</Badge>
-)
 export const NewBadge = ({ className }: CustomBadgeProps) => (
 	<Badge className={cn("badge-new-gradient dark:dark-badge-new-gradient", className)}>New</Badge>
 )
