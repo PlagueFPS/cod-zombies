@@ -2,14 +2,9 @@
  * DOM helpers for {@link CustomCarousel} indicator anchoring.
  * Prefers Embla's first slide node, then falls back to the first `[data-slot="carousel-item"]`.
  */
-export type SlideNodesApi = {
-	slideNodes(): readonly unknown[]
-}
+import type { CarouselApi } from "@/components/ui/carousel"
 
-export function firstSlideEl(
-	root: HTMLElement,
-	api: SlideNodesApi | undefined,
-): HTMLElement | null {
+export function firstSlideEl(root: HTMLElement, api: CarouselApi | undefined): HTMLElement | null {
 	const n = api?.slideNodes()[0]
 	if (n instanceof HTMLElement) return n
 	const q = root.querySelector('[data-slot="carousel-item"]')
@@ -18,7 +13,7 @@ export function firstSlideEl(
 
 export function firstSlideImg(
 	root: HTMLElement,
-	api: SlideNodesApi | undefined,
+	api: CarouselApi | undefined,
 ): HTMLImageElement | undefined {
 	const el = firstSlideEl(root, api)
 	const img = el?.querySelector("img")

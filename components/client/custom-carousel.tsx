@@ -17,8 +17,8 @@ import {
 	CarouselNext,
 	type CarouselApi,
 } from "@/components/ui/carousel"
+import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
 import { cn } from "@/lib/utils"
-import { firstSlideImg } from "@/utils/carousel-first-slide"
 
 interface CustomCarouselProps {
 	children: React.ReactNode

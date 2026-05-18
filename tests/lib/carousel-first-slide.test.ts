@@ -1,14 +1,15 @@
 // @vitest-environment happy-dom
 
+import type { CarouselApi } from "@/components/ui/carousel"
 import { describe, expect, test } from "vitest"
-import { firstSlideEl, firstSlideImg } from "@/utils/carousel-first-slide"
+import { firstSlideEl, firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
 
 describe("firstSlideEl", () => {
 	test("prefers first slideNodes entry when it is an HTMLElement", () => {
 		const preferred = document.createElement("div")
 		const root = document.createElement("div")
 		const api = { slideNodes: () => [preferred] }
-		expect(firstSlideEl(root, api)).toBe(preferred)
+		expect(firstSlideEl(root, api as unknown as CarouselApi)).toBe(preferred)
 	})
 
 	test("falls back to first [data-slot=carousel-item] when slideNodes first node is not an element", () => {
@@ -17,7 +18,7 @@ describe("firstSlideEl", () => {
 		slide.setAttribute("data-slot", "carousel-item")
 		root.appendChild(slide)
 		const api = { slideNodes: () => [document.createTextNode("x")] }
-		expect(firstSlideEl(root, api)).toBe(slide)
+		expect(firstSlideEl(root, api as unknown as CarouselApi)).toBe(slide)
 	})
 
 	test("falls back when api is undefined", () => {
@@ -31,7 +32,7 @@ describe("firstSlideEl", () => {
 	test("returns null when Embla has no usable node and DOM has no carousel item", () => {
 		const root = document.createElement("div")
 		const api = { slideNodes: () => [null] }
-		expect(firstSlideEl(root, api)).toBeNull()
+		expect(firstSlideEl(root, api as unknown as CarouselApi)).toBeNull()
 	})
 })
 
