@@ -29,6 +29,11 @@ const nextConfig: NextConfig = {
 	async redirects() {
 		return [
 			{
+				source: "/side-quests/black-ops-3/revelations/permanent-pack-a-pack",
+				destination: "/side-quests/black-ops-3/revelations/permanent-pack-a-punch",
+				permanent: true,
+			},
+			{
 				source: "/side-quests/black-ops-7/totenreich/gnome",
 				destination: "/side-quests/black-ops-7/totenreich/kneehigh-helm",
 				permanent: true,

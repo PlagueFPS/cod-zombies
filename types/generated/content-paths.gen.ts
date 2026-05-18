@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-09T07:32:05.098Z
- * generated in: 31ms
+ * generated at: 2026-05-18T22:36:48.308Z
+ * generated in: 35ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -240,7 +240,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/pareidolia-remix"
 	| "content/side-quests/perkaholic"
 	| "content/side-quests/permanent-double-points"
-	| "content/side-quests/permanent-pack-a-pack"
+	| "content/side-quests/permanent-pack-a-punch"
 	| "content/side-quests/plunger-melee-weapon"
 	| "content/side-quests/points-challenge"
 	| "content/side-quests/pool-table"
