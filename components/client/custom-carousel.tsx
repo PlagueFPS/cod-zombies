@@ -17,6 +17,10 @@ import {
 	CarouselNext,
 	type CarouselApi,
 } from "@/components/ui/carousel"
+import {
+	CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX,
+	carouselIndicatorBottomPx,
+} from "@/lib/embla-carousel/carousel-indicator-position"
 import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
 import { cn } from "@/lib/utils"
 
@@ -24,11 +28,6 @@ interface CustomCarouselProps {
 	children: React.ReactNode
 	className?: string
 }
-
-/** Pixels above the `<img>` bottom edge (inside the image area). */
-const INDICATOR_INSET_FROM_IMAGE_BOTTOM_PX = 12
-/** Ignore bbox reads before layout resolves (FeaturedImage fades in; lazy decode). */
-const MIN_IMG_BOX_FOR_LAYOUT_PX = 4
 
 const INDICATORS_FALLBACK_STYLE: CSSProperties = {
 	left: "50%",
@@ -69,7 +68,10 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		const rootRect = root.getBoundingClientRect()
 		const imgRect = img.getBoundingClientRect()
 
-		if (imgRect.height < MIN_IMG_BOX_FOR_LAYOUT_PX || imgRect.width < MIN_IMG_BOX_FOR_LAYOUT_PX) {
+		if (
+			imgRect.height < CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX ||
+			imgRect.width < CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX
+		) {
 			if (img.complete) {
 				dotsPositionLockedRef.current = true
 				setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
@@ -80,7 +82,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		dotsPositionLockedRef.current = true
 		setIndicatorStyle({
 			left: "50%",
-			bottom: rootRect.bottom - imgRect.bottom + INDICATOR_INSET_FROM_IMAGE_BOTTOM_PX,
+			bottom: carouselIndicatorBottomPx(rootRect, imgRect),
 			transform: "translateX(-50%)",
 		})
 	}, [count])
