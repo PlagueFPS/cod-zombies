@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useRef, type ReactNode } from "react"
-import { lockDocumentScroll, unlockDocumentScroll } from "@/lib/scroll-lock/document-lock"
+import { lockDocumentScroll, unlockDocumentScroll } from "@/utils/scroll-lock/document-lock"
 import {
 	gestureAllowsScroll,
 	resolveGestureScrollParent,
-} from "@/lib/scroll-lock/gesture-scroll"
+} from "@/utils/scroll-lock/gesture-scroll"
 
 interface RemoveScrollProps {
 	children: ReactNode

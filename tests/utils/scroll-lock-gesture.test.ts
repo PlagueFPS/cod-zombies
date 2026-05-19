@@ -9,7 +9,7 @@ import {
 	overflowAllowsScroll,
 	resolveGestureScrollParent,
 	type ScrollAxesFn,
-} from "@/lib/scroll-lock/gesture-scroll"
+} from "@/utils/scroll-lock/gesture-scroll"
 
 function scrollableBox(contentHeight: number, clientHeight: number, scrollTop = 0) {
 	const el = document.createElement("div")

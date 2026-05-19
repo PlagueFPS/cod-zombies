@@ -5,7 +5,7 @@ import {
 	lockDocumentScroll,
 	resetDocumentScrollLockForTests,
 	unlockDocumentScroll,
-} from "@/lib/scroll-lock/document-lock"
+} from "@/utils/scroll-lock/document-lock"
 
 describe("document scroll lock ref counting", () => {
 	afterEach(() => {
