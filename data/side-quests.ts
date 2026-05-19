@@ -341,12 +341,12 @@ const SIDE_QUESTS = new Map([
 		map: "revelations",
 		content: "content/side-quests/all-zombie-songs",
 	}),
-	makeQuest("permanent-pack-a-pack", {
+	makeQuest("permanent-pack-a-punch", {
 		state: Option.none(),
-		title: "Permanent Pack-a-Pack",
+		title: "Permanent Pack-a-Punch",
 		description: `Discover this game-changing upgrade that makes all wall and box weapons instantly Pack-a-Punched for the rest of the game, and unlocks Takeo's Katana.`,
 		map: "revelations",
-		content: "content/side-quests/permanent-pack-a-pack",
+		content: "content/side-quests/permanent-pack-a-punch",
 	}),
 	makeQuest("free-perk-wall-run", {
 		state: Option.none(),

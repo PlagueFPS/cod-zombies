@@ -23,6 +23,8 @@ describe("slugify", () => {
 		expect(slugify("Hello!!! World??? (Test) S.A.M. + A.D.A.M. Unit")).toBe(
 			"hello-world-test-sam-adam-unit",
 		)
+		expect(slugify("Noose/Rope")).toBe("noose-rope")
+		expect(slugify("Wunderwaffe DG-Scharfschütze")).toBe("wunderwaffe-dg-scharfschutze")
 
 		// Markdown headings
 		expect(slugify("## Heading")).toBe("heading")

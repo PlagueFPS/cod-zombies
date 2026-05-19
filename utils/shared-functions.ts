@@ -58,19 +58,23 @@ export const capitalize = (text: string) => {
 }
 
 /**
- * Converts a string to a URL-friendly slug, replacing spaces, slashes, and commas with hyphens, and '&' with 'and'.
+ * Converts a string to a URL-friendly slug, replacing spaces, slashes, and underscores with hyphens,
+ * stripping accents to ASCII, and replacing '&' with 'and'.
  * @param text - The input string to be slugified.
  * @example
  * slugify("Hello World") // "hello-world"
  * slugify("Tom & Jerry") // "tom-and-jerry"
+ * slugify("Wunderwaffe DG-Scharfschütze") // "wunderwaffe-dg-scharfschutze"
  */
 export const slugify = (text: string) => {
 	return text
 		.toLowerCase()
 		.trim()
+		.normalize("NFD")
+		.replace(/\p{M}/gu, "") // Strip accents (e.g. ü -> u)
 		.replace(/&/g, "and") // Replace ampersands with "and" first
-		.replace(/[^\w\s-]/g, "") // Remove all non-word characters except spaces and hyphens
-		.replace(/[\s_]+/g, "-") // Replace spaces and underscores with a single hyphen
+		.replace(/[\s_/]+/g, "-") // Replace spaces, slashes, and underscores with a single hyphen
+		.replace(/[^\w-]/g, "") // Remove non-alphanumeric characters except hyphens
 		.replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
 		.replace(/^-+|-+$/g, "") // Remove leading/trailing hyphens
 }
