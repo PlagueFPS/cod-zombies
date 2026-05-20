@@ -4,6 +4,7 @@ import {
 	capitalize,
 	getYouTubeVideoId,
 	slugify,
+	getEstimatedTimeMidpoint,
 	sortDates,
 	sortDifficulties,
 } from "@/utils/shared-functions"
@@ -73,6 +74,13 @@ describe("getYoutubeVideoId", () => {
 		expect(getYouTubeVideoId("https://youtu.be/dQw4w9WgXcQ?si=yG8VkeG8544HZlg-")).toBe(
 			"dQw4w9WgXcQ",
 		)
+	})
+})
+
+describe("getEstimatedTimeMidpoint", () => {
+	test("returns the arithmetic mean of min and max minutes", () => {
+		expect(getEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe(45)
+		expect(getEstimatedTimeMidpoint({ min: 120, max: 180 })).toBe(150)
 	})
 })
 
