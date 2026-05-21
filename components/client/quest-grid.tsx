@@ -7,8 +7,8 @@ import { EmptyGrid } from "@/components/server/empty-grid"
 import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
 import {
 	getMapByKey,
-	MAIN_QUEST_TIME_RANGE_FILTERS,
 	compareMapReleaseDescending,
+	mainQuestMidpointMatchesAnyTimeSlug,
 } from "@/data/maps"
 import { compareSideQuestDescending } from "@/data/side-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
@@ -83,15 +83,7 @@ export function QuestGrid({ quests }: IQuestGrid) {
 			if (isSideQuest(quest) || Option.isNone(quest.estimatedTimeMins)) return false
 
 			const midpoint = getEstimatedTimeMidpoint(quest.estimatedTimeMins.value)
-			return timeParams.some(slug => {
-				const range = MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === slug)
-				if (!range) return false
-				// Last range "120-plus" is inclusive on both ends; others: minMins <= midpoint < maxMins
-				if (range.slug === "120-plus") {
-					return midpoint >= range.minMins && midpoint <= range.maxMins
-				}
-				return midpoint >= range.minMins && midpoint < range.maxMins
-			})
+			return mainQuestMidpointMatchesAnyTimeSlug(midpoint, timeParams)
 		})
 	}
 

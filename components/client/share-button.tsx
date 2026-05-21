@@ -7,6 +7,7 @@ import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { copyTextToClipboard } from "@/utils/shared-functions"
 
 interface ShareButtonProps extends React.ComponentProps<"button"> {
 	/** The URL to copy to the clipboard */
@@ -19,22 +20,21 @@ export function ShareButton({ url, withText = true, ...props }: ShareButtonProps
 	const [isCopied, setIsCopied] = useState(false)
 
 	const handleCopy = async () => {
-		try {
-			await navigator.clipboard.writeText(url)
+		const copied = await copyTextToClipboard(url)
+		if (copied) {
 			toast.success("URL copied to clipboard!", {
 				position: "top-right",
 				duration: 2000,
 				closeButton: false,
 			})
 			setIsCopied(true)
-		} catch (e) {
-			console.error(e)
-			toast.error("Failed to copy URL to clipboard.", {
-				position: "top-right",
-				duration: 2000,
-				closeButton: false,
-			})
+			return
 		}
+		toast.error("Failed to copy URL to clipboard.", {
+			position: "top-right",
+			duration: 2000,
+			closeButton: false,
+		})
 	}
 
 	useHotkey("Mod+Shift+C", () => handleCopy(), { requireReset: true, conflictBehavior: "replace" })

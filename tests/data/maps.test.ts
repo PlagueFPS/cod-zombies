@@ -1,6 +1,7 @@
 import { Option, Array as Arr } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import {
+	compareMapReleaseDescending,
 	getAdjacentMaps,
 	getMapByKey,
 	getMaps,
@@ -8,6 +9,26 @@ import {
 	type MapKey,
 } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
+
+describe("compareMapReleaseDescending", () => {
+	test("orders by release date descending when dates differ", () => {
+		expect(
+			compareMapReleaseDescending(
+				{ id: "nacht-der-untoten", releaseDate: "2008-11-11" },
+				{ id: "totenreich", releaseDate: "2026-04-30" },
+			),
+		).toBeGreaterThan(0)
+	})
+
+	test("same calendar day: later MAPS insertion index sorts first", () => {
+		expect(
+			compareMapReleaseDescending(
+				{ id: "classified", releaseDate: "2018-10-12" },
+				{ id: "voyage-of-despair", releaseDate: "2018-10-12" },
+			),
+		).toBeLessThan(0)
+	})
+})
 
 describe("getMaps", () => {
 	test("sorted by release date descending", () => {

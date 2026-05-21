@@ -17,11 +17,11 @@ import {
 	CarouselNext,
 	type CarouselApi,
 } from "@/components/ui/carousel"
+import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
 import {
 	CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX,
 	carouselIndicatorBottomPx,
 } from "@/lib/embla-carousel/carousel-indicator-position"
-import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
 import { cn } from "@/lib/utils"
 
 interface CustomCarouselProps {
