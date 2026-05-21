@@ -6,8 +6,10 @@ import {
 	getMapByKey,
 	getMaps,
 	getMapsWithMainQuest,
+	MAIN_QUEST_DIFFICULTIES,
 	type MapKey,
 } from "@/data/maps"
+import { slugify } from "@/utils/shared-functions"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("compareMapReleaseDescending", () => {
@@ -73,6 +75,26 @@ describe("map New badge vs release date", () => {
 		vi.setSystemTime(new Date("2026-05-14T00:00:00.000Z"))
 		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
 		expect(Option.getOrNull(totenreich.state)).toBeNull()
+	})
+})
+
+describe("main quest data integrity", () => {
+	test("difficulty values are canonical and slugify to filter param values", () => {
+		const allowed = new Set<string>(MAIN_QUEST_DIFFICULTIES)
+
+		for (const map of getMapsWithMainQuest()) {
+			if (Option.isNone(map.difficulty)) continue
+			expect(allowed.has(map.difficulty.value)).toBe(true)
+			expect(slugify(map.difficulty.value)).toBe(map.difficulty.value.toLowerCase().replace(/\s+/g, "-"))
+		}
+	})
+
+	test("estimated completion ranges have min <= max", () => {
+		for (const map of getMapsWithMainQuest()) {
+			if (Option.isNone(map.estimatedTimeMins)) continue
+			const { min, max } = map.estimatedTimeMins.value
+			expect(min).toBeLessThanOrEqual(max)
+		}
 	})
 })
 
