@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react"
 import { lockDocumentScroll, unlockDocumentScroll } from "@/utils/scroll-lock/document-lock"
-import {
-	gestureAllowsScroll,
-	resolveGestureScrollParent,
-} from "@/utils/scroll-lock/gesture-scroll"
+import { gestureAllowsScroll, resolveGestureScrollParent } from "@/utils/scroll-lock/gesture-scroll"
 
 interface RemoveScrollProps {
 	children: ReactNode
