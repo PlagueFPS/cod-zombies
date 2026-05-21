@@ -7,7 +7,7 @@ import { Shortcut } from "@/components/client/shortcut"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { copyTextToClipboard } from "@/utils/copy-to-clipboard"
+import { copyTextToClipboard } from "@/utils/shared-functions"
 
 interface ShareButtonProps extends React.ComponentProps<"button"> {
 	/** The URL to copy to the clipboard */
