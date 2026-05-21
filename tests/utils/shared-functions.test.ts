@@ -1,13 +1,17 @@
+import { Option } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
 	capitalize,
+	compareByOptionalSome,
+	copyTextToClipboard,
+	formatEstimatedTimeMidpoint,
+	formatEstimatedTimeRange,
+	getEstimatedTimeMidpoint,
 	getYouTubeVideoId,
 	slugify,
-	getEstimatedTimeMidpoint,
 	sortDates,
 	sortDifficulties,
-	copyTextToClipboard,
 } from "@/utils/shared-functions"
 
 describe("slugify", () => {
@@ -38,6 +42,13 @@ describe("slugify", () => {
 		expect(slugify("  Hello   World!  ")).toBe("hello-world")
 		expect(slugify("hello-world")).toBe("hello-world") // Already slugified
 		expect(slugify("")).toBe("") // Empty string
+	})
+
+	test("slugifies each main quest difficulty label for URL filter params", () => {
+		expect(slugify("Very Hard")).toBe("very-hard")
+		for (const difficulty of MAIN_QUEST_DIFFICULTIES) {
+			expect(slugify(difficulty)).toBe(difficulty.toLowerCase().replace(/\s+/g, "-"))
+		}
 	})
 })
 
@@ -110,6 +121,43 @@ describe("sortDifficulties", () => {
 			expect(sortDifficulties(prev, curr)).toBeLessThan(0)
 			expect(sortDifficulties(curr, prev)).toBeGreaterThan(0)
 		}
+	})
+})
+
+describe("formatEstimatedTimeRange", () => {
+	test("single value when min equals max", () => {
+		expect(formatEstimatedTimeRange({ min: 45, max: 45 })).toBe("45m")
+		expect(formatEstimatedTimeRange({ min: 60, max: 60 })).toBe("1h")
+	})
+
+	test("range with hour and minute parts", () => {
+		expect(formatEstimatedTimeRange({ min: 30, max: 90 })).toBe("30m-1h 30m")
+		expect(formatEstimatedTimeRange({ min: 120, max: 180 })).toBe("2h-3h")
+	})
+})
+
+describe("formatEstimatedTimeMidpoint", () => {
+	test("formats midpoint using same rules as range display", () => {
+		expect(formatEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe("45m")
+		expect(formatEstimatedTimeMidpoint({ min: 60, max: 120 })).toBe("1h 30m")
+	})
+})
+
+describe("compareByOptionalSome", () => {
+	const compare = (a: number, b: number) => a - b
+
+	test("compares values when both are Some", () => {
+		expect(compareByOptionalSome(Option.some(1), Option.some(3), compare)).toBeLessThan(0)
+		expect(compareByOptionalSome(Option.some(5), Option.some(2), compare)).toBeGreaterThan(0)
+	})
+
+	test("Some sorts before None", () => {
+		expect(compareByOptionalSome(Option.some(1), Option.none(), compare)).toBe(-1)
+		expect(compareByOptionalSome(Option.none(), Option.some(1), compare)).toBe(1)
+	})
+
+	test("returns 0 when both are None", () => {
+		expect(compareByOptionalSome(Option.none(), Option.none(), compare)).toBe(0)
 	})
 })
 
