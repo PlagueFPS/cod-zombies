@@ -2,16 +2,19 @@ import { Option } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
+	calculateSkip,
 	capitalize,
 	compareByOptionalSome,
 	copyTextToClipboard,
 	formatEstimatedTimeMidpoint,
 	formatEstimatedTimeRange,
+	getAdjacentItems,
 	getEstimatedTimeMidpoint,
 	getYouTubeVideoId,
 	slugify,
 	sortDates,
 	sortDifficulties,
+	sortEstimatedTime,
 } from "@/utils/shared-functions"
 
 describe("slugify", () => {
@@ -93,6 +96,67 @@ describe("getEstimatedTimeMidpoint", () => {
 	test("returns the arithmetic mean of min and max minutes", () => {
 		expect(getEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe(45)
 		expect(getEstimatedTimeMidpoint({ min: 120, max: 180 })).toBe(150)
+	})
+})
+
+describe("sortEstimatedTime", () => {
+	test("orders ranges by midpoint ascending", () => {
+		const short = { min: 30, max: 60 }
+		const long = { min: 120, max: 180 }
+		expect(sortEstimatedTime(short, long)).toBeLessThan(0)
+		expect(sortEstimatedTime(long, short)).toBeGreaterThan(0)
+	})
+
+	test("returns 0 when midpoints are equal", () => {
+		expect(sortEstimatedTime({ min: 40, max: 80 }, { min: 50, max: 70 })).toBe(0)
+	})
+})
+
+describe("calculateSkip", () => {
+	test("first page skips zero items", () => {
+		expect(calculateSkip(1, 12)).toBe(0)
+		expect(calculateSkip(0, 12)).toBe(0)
+	})
+
+	test("page 2 skips one page of items", () => {
+		expect(calculateSkip(2, 12)).toBe(12)
+	})
+
+	test("page 3 skips two pages of items", () => {
+		expect(calculateSkip(3, 12)).toBe(24)
+	})
+})
+
+describe("getAdjacentItems", () => {
+	const items = [
+		{ id: "newest" },
+		{ id: "middle" },
+		{ id: "oldest" },
+	] as const
+
+	test("returns none when id is missing", () => {
+		expect(getAdjacentItems([...items], "missing")).toEqual({
+			prev: Option.none(),
+			next: Option.none(),
+		})
+	})
+
+	test("newest item has prev toward older entry and no next", () => {
+		const { prev, next } = getAdjacentItems([...items], "newest")
+		expect(prev).toEqual(Option.some({ id: "middle" }))
+		expect(next).toEqual(Option.none())
+	})
+
+	test("oldest item has next toward newer entry and no prev", () => {
+		const { prev, next } = getAdjacentItems([...items], "oldest")
+		expect(prev).toEqual(Option.none())
+		expect(next).toEqual(Option.some({ id: "middle" }))
+	})
+
+	test("middle item has both neighbors in descending order", () => {
+		const { prev, next } = getAdjacentItems([...items], "middle")
+		expect(prev).toEqual(Option.some({ id: "oldest" }))
+		expect(next).toEqual(Option.some({ id: "newest" }))
 	})
 })
 
