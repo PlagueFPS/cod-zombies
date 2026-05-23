@@ -18,10 +18,7 @@ import {
 	type CarouselApi,
 } from "@/components/ui/carousel"
 import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
-import {
-	CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX,
-	carouselIndicatorBottomPx,
-} from "@/lib/embla-carousel/carousel-indicator-position"
+import { resolveCarouselIndicatorLayout } from "@/lib/embla-carousel/carousel-indicator-layout"
 import { cn } from "@/lib/utils"
 
 interface CustomCarouselProps {
@@ -58,33 +55,22 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		if (!root || count <= 1) return
 
 		const img = firstSlideImg(root, apiRef.current)
-
-		if (img == null) {
-			dotsPositionLockedRef.current = true
-			setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
-			return
-		}
-
 		const rootRect = root.getBoundingClientRect()
-		const imgRect = img.getBoundingClientRect()
+		const imgRect = img?.getBoundingClientRect() ?? { bottom: 0, width: 0, height: 0 }
+		const layout = resolveCarouselIndicatorLayout(img, rootRect, imgRect)
 
-		if (
-			imgRect.height < CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX ||
-			imgRect.width < CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX
-		) {
-			if (img.complete) {
-				dotsPositionLockedRef.current = true
-				setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
-			}
-			return
-		}
+		if (layout.type === "defer") return
 
 		dotsPositionLockedRef.current = true
-		setIndicatorStyle({
-			left: "50%",
-			bottom: carouselIndicatorBottomPx(rootRect, imgRect),
-			transform: "translateX(-50%)",
-		})
+		setIndicatorStyle(
+			layout.type === "fallback"
+				? INDICATORS_FALLBACK_STYLE
+				: {
+						left: "50%",
+						bottom: layout.bottomPx,
+						transform: "translateX(-50%)",
+					},
+		)
 	}, [count])
 
 	useLayoutEffect(() => {

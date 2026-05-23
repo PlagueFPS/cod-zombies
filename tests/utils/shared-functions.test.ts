@@ -7,11 +7,13 @@ import {
 	copyTextToClipboard,
 	formatEstimatedTimeMidpoint,
 	formatEstimatedTimeRange,
+	calculateSkip,
 	getEstimatedTimeMidpoint,
 	getYouTubeVideoId,
 	slugify,
 	sortDates,
 	sortDifficulties,
+	sortEstimatedTime,
 } from "@/utils/shared-functions"
 
 describe("slugify", () => {
@@ -93,6 +95,35 @@ describe("getEstimatedTimeMidpoint", () => {
 	test("returns the arithmetic mean of min and max minutes", () => {
 		expect(getEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe(45)
 		expect(getEstimatedTimeMidpoint({ min: 120, max: 180 })).toBe(150)
+	})
+})
+
+describe("sortEstimatedTime", () => {
+	test("orders ranges by midpoint ascending", () => {
+		const short = { min: 30, max: 45 }
+		const long = { min: 120, max: 180 }
+		expect(sortEstimatedTime(short, long)).toBeLessThan(0)
+		expect(sortEstimatedTime(long, short)).toBeGreaterThan(0)
+	})
+
+	test("returns 0 when midpoints are equal", () => {
+		expect(sortEstimatedTime({ min: 60, max: 120 }, { min: 90, max: 90 })).toBe(0)
+	})
+})
+
+describe("calculateSkip", () => {
+	test("first page skips zero items", () => {
+		expect(calculateSkip(1, 12)).toBe(0)
+	})
+
+	test("later pages skip (page - 1) * limit items", () => {
+		expect(calculateSkip(2, 12)).toBe(12)
+		expect(calculateSkip(3, 8)).toBe(16)
+	})
+
+	test("non-positive page numbers behave like page 1", () => {
+		expect(calculateSkip(0, 12)).toBe(0)
+		expect(calculateSkip(-1, 12)).toBe(0)
 	})
 })
 
