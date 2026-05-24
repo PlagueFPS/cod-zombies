@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator"
 import { getMapByKey } from "@/data/maps"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { shouldPreloadPreviewCardImage } from "@/utils/shared-functions"
 
 interface RelicCardProps {
 	relic: Omit<Relic, "content">
@@ -23,7 +24,7 @@ interface RelicCardProps {
 
 export function RelicCard({ relic, relicIndex }: RelicCardProps) {
 	const isMobile = useIsMobile()
-	const preload = isMobile ? relicIndex === 0 : relicIndex <= 3
+	const preload = shouldPreloadPreviewCardImage(isMobile, relicIndex)
 	const map = getMapByKey(relic.map)
 	const { href, disabled, stateBadge, tabIndex } = Option.match(relic.state, {
 		onNone: () => {

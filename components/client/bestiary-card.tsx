@@ -9,6 +9,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { getMapByKey } from "@/data/maps"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { shouldPreloadPreviewCardImage } from "@/utils/shared-functions"
 
 interface IBestiaryCard {
 	zombie: Omit<Zombie, "combatStrategy">
@@ -17,7 +18,7 @@ interface IBestiaryCard {
 
 export function BestiaryCard({ zombie, zombieIndex }: IBestiaryCard) {
 	const isMobile = useIsMobile()
-	const priority = isMobile ? zombieIndex === 0 : zombieIndex <= 3
+	const priority = shouldPreloadPreviewCardImage(isMobile, zombieIndex)
 	const alt = `${zombie.title} Image`
 	const map = Arr.head(zombie.maps).pipe(Option.flatMap(map => getMapByKey(map)))
 	const { href, tabIndex, stateBadge, applyClasses } = Option.match(zombie.state, {

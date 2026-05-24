@@ -14,8 +14,8 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { getGameByKey } from "@/data/games"
 import { getMapByKey, type MapEntry } from "@/data/maps"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { shouldPreloadQuestPreviewImage } from "@/lib/quest-preview/image-priority"
 import { cn } from "@/lib/utils"
+import { shouldPreloadPreviewCardImage } from "@/utils/shared-functions"
 import { isMapQuest, isSideQuest } from "@/utils/rsc-wire"
 
 interface IQuestPreviewCard {
@@ -25,7 +25,7 @@ interface IQuestPreviewCard {
 
 export function QuestPreviewCard({ quest, questIndex }: IQuestPreviewCard) {
 	const isMobile = useIsMobile()
-	const priority = shouldPreloadQuestPreviewImage(isMobile, questIndex)
+	const priority = shouldPreloadPreviewCardImage(isMobile, questIndex)
 	const { title, description, alt, href, map, game, image } = Match.value(quest).pipe(
 		Match.when(isMapQuest, quest => ({
 			title: quest.title,

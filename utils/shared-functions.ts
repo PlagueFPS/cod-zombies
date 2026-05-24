@@ -136,6 +136,14 @@ export const sortDates = (a: string | Date, b: string | Date) => {
 }
 
 /**
+ * Whether a grid preview card image should use Next.js `priority` (LCP preload).
+ * Mobile: only the first card; desktop: the first four cards in the grid.
+ */
+export function shouldPreloadPreviewCardImage(isMobile: boolean, cardIndex: number): boolean {
+	return isMobile ? cardIndex === 0 : cardIndex <= 3
+}
+
+/**
  * Returns the midpoint of an estimated time range (min/max in minutes) for sorting.
  * @param range - The time range with min and max in minutes.
  * @returns The midpoint in minutes.

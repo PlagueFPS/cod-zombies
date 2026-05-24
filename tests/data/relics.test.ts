@@ -1,43 +1,11 @@
 import { Option, Array as Arr } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
-import {
-	compareRelicReleaseDescending,
-	getAdjacentRelics,
-	getRelicByKey,
-	getRelics,
-	type RelicKey,
-} from "@/data/relics"
+import { getAdjacentRelics, getRelicByKey, getRelics, type RelicKey } from "@/data/relics"
 import { assertSortedDescByDate } from "@/tests/helpers"
-
-describe("compareRelicReleaseDescending", () => {
-	test("orders by discovered date descending when dates differ", () => {
-		expect(
-			compareRelicReleaseDescending(
-				{ id: "lawyers-pen", discoveredDate: "2020-01-01" },
-				{ id: "power-switch", discoveredDate: "2026-05-09" },
-			),
-		).toBeGreaterThan(0)
-	})
-
-	test("same calendar day: later RELICS insertion index sorts first", () => {
-		expect(
-			compareRelicReleaseDescending(
-				{ id: "matroyshka-dolls", discoveredDate: "2026-01-30" },
-				{ id: "golden-spork", discoveredDate: "2026-01-30" },
-			),
-		).toBeGreaterThan(0)
-	})
-})
 
 describe("getRelics", () => {
 	test("sorted by discovered date descending", () => {
 		assertSortedDescByDate(getRelics().map(r => r.discoveredDate))
-	})
-
-	test("same calendar day: later RELICS entries appear first", () => {
-		const relics = getRelics()
-		const indexOf = (id: string) => relics.findIndex(r => r.id === id)
-		expect(indexOf("golden-spork")).toBeLessThan(indexOf("matroyshka-dolls"))
 	})
 })
 

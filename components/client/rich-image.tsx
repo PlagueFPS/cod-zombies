@@ -1,9 +1,6 @@
 import type { ImagePaths } from "@/types/generated/image-paths.gen"
+import type { ImageProps } from "@/types/images"
 import { FeaturedImage } from "@/components/client/featured-image"
-import {
-	buildRichImageInlineProps,
-	RICH_IMAGE_LIGHTBOX_SIZES,
-} from "@/lib/rich-image/responsive-sizes"
 import {
 	Dialog,
 	DialogClose,
@@ -22,8 +19,15 @@ interface RichImageProps {
 	alt?: string
 }
 
+const richImageInlineProps = (image: ImagePaths): ImageProps => ({
+	featuredImage: image,
+	sizes: "(max-width: 828px) 100vw, 1200px",
+})
+
+const richImageLightboxSizes = "(max-width: 1920px) 100vw, 1920px"
+
 export default function RichImage({ image, caption, alt }: RichImageProps) {
-	const imageProps = buildRichImageInlineProps(image)
+	const imageProps = richImageInlineProps(image)
 
 	return (
 		<div className="relative mt-8 w-full">
@@ -50,7 +54,7 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 							width={1920}
 							height={1080}
 							alt={alt ?? ""}
-							sizes={RICH_IMAGE_LIGHTBOX_SIZES}
+							sizes={richImageLightboxSizes}
 							className="cursor-zoom-out rounded-lg"
 						/>
 					</DialogClose>

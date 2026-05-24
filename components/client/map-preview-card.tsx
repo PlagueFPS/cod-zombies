@@ -5,7 +5,9 @@ import { FeaturedImage } from "@/components/client/featured-image"
 import { ComingSoonBadge, NewBadge } from "@/components/server/custom-badges"
 import { Badge } from "@/components/ui/badge"
 import { getGameByKey } from "@/data/games"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { shouldPreloadPreviewCardImage } from "@/utils/shared-functions"
 
 interface IMapPreviewCard {
 	map: InteractiveMap
@@ -13,6 +15,8 @@ interface IMapPreviewCard {
 }
 
 export function MapPreviewCard({ map, index }: IMapPreviewCard) {
+	const isMobile = useIsMobile()
+	const priority = shouldPreloadPreviewCardImage(isMobile, index)
 	const game = getGameByKey(map.game)
 	const { disabled, tabIndex, stateBadge } = Option.match(map.state, {
 		onNone: () => ({
@@ -44,7 +48,7 @@ export function MapPreviewCard({ map, index }: IMapPreviewCard) {
 				<div className="flex w-full items-center justify-center overflow-hidden rounded-md shadow-xl group-focus-visible:outline-2 group-focus-visible:outline-primary dark:shadow-none">
 					<FeaturedImage
 						featuredImage={map.image}
-						priority={index === 0}
+						priority={priority}
 						sizes="420px"
 						width={418}
 						height={300}
