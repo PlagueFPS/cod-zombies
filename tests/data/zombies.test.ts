@@ -1,11 +1,43 @@
 import { Option, Array as Arr } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
-import { getAdjacentZombies, getZombieByKey, getZombies, type ZombieKey } from "@/data/zombies"
+import {
+	compareZombieReleaseDescending,
+	getAdjacentZombies,
+	getZombieByKey,
+	getZombies,
+	type ZombieKey,
+} from "@/data/zombies"
 import { assertSortedDescByDate } from "@/tests/helpers"
+
+describe("compareZombieReleaseDescending", () => {
+	test("orders by release date descending when dates differ", () => {
+		expect(
+			compareZombieReleaseDescending(
+				{ id: "zombie", releaseDate: "2008-11-11" },
+				{ id: "dravakar", releaseDate: "2026-04-30" },
+			),
+		).toBeGreaterThan(0)
+	})
+
+	test("same calendar day: later ZOMBIES insertion index sorts first", () => {
+		expect(
+			compareZombieReleaseDescending(
+				{ id: "fire-catalyst", releaseDate: "2018-10-12" },
+				{ id: "poison-catalyst", releaseDate: "2018-10-12" },
+			),
+		).toBeGreaterThan(0)
+	})
+})
 
 describe("getZombies", () => {
 	test("sorted by release date descending", () => {
 		assertSortedDescByDate(getZombies().map(z => z.releaseDate))
+	})
+
+	test("same calendar day: later ZOMBIES entries appear first (e.g. BO4 catalyst launch)", () => {
+		const zombies = getZombies()
+		const indexOf = (id: string) => zombies.findIndex(z => z.id === id)
+		expect(indexOf("poison-catalyst")).toBeLessThan(indexOf("fire-catalyst"))
 	})
 })
 
