@@ -15,6 +15,10 @@ import {
 	sortDates,
 	sortDifficulties,
 	sortEstimatedTime,
+	sortRelicTypes,
+	sortZombieSpeeds,
+	sortZombieTypes,
+	toPascalCase,
 } from "@/utils/shared-functions"
 
 describe("slugify", () => {
@@ -222,6 +226,39 @@ describe("compareByOptionalSome", () => {
 
 	test("returns 0 when both are None", () => {
 		expect(compareByOptionalSome(Option.none(), Option.none(), compare)).toBe(0)
+	})
+})
+
+describe("toPascalCase", () => {
+	test("converts space, underscore, and hyphen separators", () => {
+		expect(toPascalCase("hello world")).toBe("HelloWorld")
+		expect(toPascalCase("hello_world")).toBe("HelloWorld")
+		expect(toPascalCase("hello-world")).toBe("HelloWorld")
+	})
+
+	test("normalizes screaming snake case for generated type names", () => {
+		expect(toPascalCase("MAIN_QUESTS")).toBe("MainQuests")
+	})
+})
+
+describe("sortZombieTypes", () => {
+	test("orders types Normal → Special → Elite → Boss", () => {
+		expect(sortZombieTypes("Normal", "Boss")).toBeLessThan(0)
+		expect(sortZombieTypes("Boss", "Normal")).toBeGreaterThan(0)
+	})
+})
+
+describe("sortRelicTypes", () => {
+	test("orders types Grim → Sinister → Wicked", () => {
+		expect(sortRelicTypes("Grim", "Wicked")).toBeLessThan(0)
+		expect(sortRelicTypes("Wicked", "Grim")).toBeGreaterThan(0)
+	})
+})
+
+describe("sortZombieSpeeds", () => {
+	test("orders speeds Slow → Medium → Fast", () => {
+		expect(sortZombieSpeeds("Slow", "Fast")).toBeLessThan(0)
+		expect(sortZombieSpeeds("Fast", "Slow")).toBeGreaterThan(0)
 	})
 })
 

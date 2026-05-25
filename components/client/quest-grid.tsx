@@ -5,11 +5,11 @@ import { GridPagination } from "@/components/client/grid-pagination"
 import { QuestPreviewCard } from "@/components/client/quest-preview-card"
 import { EmptyGrid } from "@/components/server/empty-grid"
 import { GridPaginationLoader } from "@/components/server/grid-pagination-loader"
+import { getMapByKey, compareMapReleaseDescending } from "@/data/maps"
 import {
-	getMapByKey,
-	compareMapReleaseDescending,
-	mainQuestMidpointMatchesAnyTimeSlug,
-} from "@/data/maps"
+	mainQuestMatchesDifficultySlugs,
+	mainQuestMatchesTimeSlugs,
+} from "@/lib/quest-grid/filters"
 import { compareSideQuestDescending } from "@/data/side-quests"
 import { useFilterParams } from "@/hooks/use-filter-params"
 import { CARD_LIMIT } from "@/utils/constants"
@@ -24,8 +24,6 @@ import {
 import {
 	calculateSkip,
 	compareByOptionalSome,
-	getEstimatedTimeMidpoint,
-	slugify,
 	sortDifficulties,
 	sortEstimatedTime,
 } from "@/utils/shared-functions"
@@ -60,12 +58,9 @@ export function QuestGrid({ quests }: IQuestGrid) {
 	}
 
 	if (difficultyParams.length > 0) {
-		filteredQuests = filteredQuests.filter(quest => {
-			if (isMapQuest(quest) && Option.isSome(quest.difficulty)) {
-				return difficultyParams.includes(slugify(quest.difficulty.value))
-			}
-			return false
-		})
+		filteredQuests = filteredQuests.filter(
+			quest => isMapQuest(quest) && mainQuestMatchesDifficultySlugs(quest.difficulty, difficultyParams),
+		)
 	}
 
 	if (mapParams.length > 0) {
@@ -79,12 +74,9 @@ export function QuestGrid({ quests }: IQuestGrid) {
 	}
 
 	if (timeParams.length > 0) {
-		filteredQuests = filteredQuests.filter(quest => {
-			if (isSideQuest(quest) || Option.isNone(quest.estimatedTimeMins)) return false
-
-			const midpoint = getEstimatedTimeMidpoint(quest.estimatedTimeMins.value)
-			return mainQuestMidpointMatchesAnyTimeSlug(midpoint, timeParams)
-		})
+		filteredQuests = filteredQuests.filter(
+			quest => isMapQuest(quest) && mainQuestMatchesTimeSlugs(quest.estimatedTimeMins, timeParams),
+		)
 	}
 
 	const validSortParam = sortParam || "latest"
