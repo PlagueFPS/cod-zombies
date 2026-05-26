@@ -5,7 +5,12 @@ import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Option } from "effect"
 import { resolveNewContentState } from "@/utils/content-state"
-import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
+import {
+	getAdjacentItems,
+	getEstimatedTimeMidpoint,
+	slugify,
+	sortDates,
+} from "@/utils/shared-functions"
 
 /** All possible main quest difficulties (canonical ascending order for sorting). */
 export const MAIN_QUEST_DIFFICULTIES = ["Easy", "Medium", "Hard", "Very Hard"] as const
@@ -139,6 +144,27 @@ export function mainQuestMidpointMatchesAnyTimeSlug(
 		if (!range) return false
 		return mainQuestMidpointMatchesTimeRange(midpoint, range)
 	})
+}
+
+/** Whether a main quest's difficulty slug matches any active difficulty filter param. */
+export function mainQuestMatchesDifficultySlugs(
+	difficulty: Option.Option<MainQuestDifficulty>,
+	slugs: readonly string[],
+): boolean {
+	if (slugs.length === 0) return true
+	if (Option.isNone(difficulty)) return false
+	return slugs.includes(slugify(difficulty.value))
+}
+
+/** Whether a main quest's estimated-time midpoint falls in any active time filter bucket. */
+export function mainQuestMatchesTimeSlugs(
+	estimatedTimeMins: Option.Option<TimeRange>,
+	slugs: readonly string[],
+): boolean {
+	if (slugs.length === 0) return true
+	if (Option.isNone(estimatedTimeMins)) return false
+	const midpoint = getEstimatedTimeMidpoint(estimatedTimeMins.value)
+	return mainQuestMidpointMatchesAnyTimeSlug(midpoint, slugs)
 }
 
 const makeMap = <T extends string>(

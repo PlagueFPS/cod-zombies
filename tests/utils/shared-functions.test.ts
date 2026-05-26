@@ -132,11 +132,7 @@ describe("calculateSkip", () => {
 })
 
 describe("getAdjacentItems", () => {
-	const items = [
-		{ id: "newest" },
-		{ id: "middle" },
-		{ id: "oldest" },
-	] as const
+	const items = [{ id: "newest" }, { id: "middle" }, { id: "oldest" }] as const
 
 	test("returns none when id is missing", () => {
 		expect(getAdjacentItems([...items], "missing")).toEqual({

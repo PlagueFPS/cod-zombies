@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest"
-import { CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX } from "@/lib/embla-carousel/carousel-indicator-position"
 import { resolveCarouselIndicatorLayout } from "@/lib/embla-carousel/carousel-indicator-layout"
+import { CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX } from "@/lib/embla-carousel/carousel-indicator-position"
 
 describe("resolveCarouselIndicatorLayout", () => {
 	test("uses fallback when the slide has no image", () => {
