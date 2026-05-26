@@ -234,6 +234,16 @@ describe("toPascalCase", () => {
 
 	test("normalizes screaming snake case for generated type names", () => {
 		expect(toPascalCase("MAIN_QUESTS")).toBe("MainQuests")
+	test("joins words from spaces, hyphens, and underscores", () => {
+		expect(toPascalCase("hello world")).toBe("HelloWorld")
+		expect(toPascalCase("hello-world")).toBe("HelloWorld")
+		expect(toPascalCase("hello_world")).toBe("HelloWorld")
+	})
+
+	test("normalizes casing and ignores empty segments", () => {
+		expect(toPascalCase("HELLO_WORLD")).toBe("HelloWorld")
+		expect(toPascalCase("main-quests")).toBe("MainQuests")
+		expect(toPascalCase("--side__quests--")).toBe("SideQuests")
 	})
 })
 
@@ -241,6 +251,18 @@ describe("sortZombieTypes", () => {
 	test("orders types Normal → Special → Elite → Boss", () => {
 		expect(sortZombieTypes("Normal", "Boss")).toBeLessThan(0)
 		expect(sortZombieTypes("Boss", "Normal")).toBeGreaterThan(0)
+	const order = ["Normal", "Special", "Elite", "Boss"] as const
+
+	test("orders permutations to canonical type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieTypes)).toEqual([...order])
+	})
+
+	test("each adjacent pair sorts ascending", () => {
+		for (let i = 1; i < order.length; i++) {
+			expect(sortZombieTypes(order[i - 1]!, order[i]!)).toBeLessThan(0)
+			expect(sortZombieTypes(order[i]!, order[i - 1]!)).toBeGreaterThan(0)
+		}
 	})
 })
 
@@ -248,6 +270,11 @@ describe("sortRelicTypes", () => {
 	test("orders types Grim → Sinister → Wicked", () => {
 		expect(sortRelicTypes("Grim", "Wicked")).toBeLessThan(0)
 		expect(sortRelicTypes("Wicked", "Grim")).toBeGreaterThan(0)
+	const order = ["Grim", "Sinister", "Wicked"] as const
+
+	test("orders permutations to canonical relic type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortRelicTypes)).toEqual([...order])
 	})
 })
 
@@ -255,6 +282,11 @@ describe("sortZombieSpeeds", () => {
 	test("orders speeds Slow → Medium → Fast", () => {
 		expect(sortZombieSpeeds("Slow", "Fast")).toBeLessThan(0)
 		expect(sortZombieSpeeds("Fast", "Slow")).toBeGreaterThan(0)
+	const order = ["Slow", "Medium", "Fast"] as const
+
+	test("orders permutations to canonical speed order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieSpeeds)).toEqual([...order])
 	})
 })
 
