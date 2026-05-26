@@ -203,6 +203,47 @@ describe("calculateTimeToRead", () => {
 	})
 })
 
+describe("extractHeadingsFromMDX", () => {
+	it("extracts h2–h4 headings with slug ids matching slugify", async ({ expect }) => {
+		const { extractHeadingsFromMDX } = await import("@/utils/server-functions")
+		const content = [
+			"# Ignored h1",
+			"## First Step",
+			"### Sub Step",
+			"#### Detail",
+			"Not a heading",
+		].join("\n")
+
+		expect(extractHeadingsFromMDX(content)).toEqual([
+			{ type: "h2", text: "First Step", id: "first-step" },
+			{ type: "h3", text: "Sub Step", id: "sub-step" },
+			{ type: "h4", text: "Detail", id: "detail" },
+		])
+	})
+
+	it("strips markdown from heading text before slugifying", async ({ expect }) => {
+		const { extractHeadingsFromMDX } = await import("@/utils/server-functions")
+		const content = "## Tom & Jerry's **Quest**"
+		expect(extractHeadingsFromMDX(content)).toEqual([
+			{ type: "h2", text: "Tom & Jerry's Quest", id: "tom-and-jerrys-quest" },
+		])
+	})
+
+	it("ignores h1 and h5+ lines; only h2–h4 contribute anchors", async ({ expect }) => {
+		const { extractHeadingsFromMDX } = await import("@/utils/server-functions")
+		const content = [
+			"# Top level",
+			"## Included",
+			"##### Too deep",
+			"#### Also included",
+		].join("\n")
+		expect(extractHeadingsFromMDX(content)).toEqual([
+			{ type: "h2", text: "Included", id: "included" },
+			{ type: "h4", text: "Also included", id: "also-included" },
+		])
+	})
+})
+
 describe("stripMarkdown", () => {
 	it("should remove markdown formatting", async ({ expect }) => {
 		const { stripMarkdown } = await import("@/utils/server-functions")

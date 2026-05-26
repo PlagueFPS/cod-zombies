@@ -15,6 +15,10 @@ import {
 	sortDates,
 	sortDifficulties,
 	sortEstimatedTime,
+	sortRelicTypes,
+	sortZombieSpeeds,
+	sortZombieTypes,
+	toPascalCase,
 } from "@/utils/shared-functions"
 
 describe("slugify", () => {
@@ -222,6 +226,54 @@ describe("compareByOptionalSome", () => {
 
 	test("returns 0 when both are None", () => {
 		expect(compareByOptionalSome(Option.none(), Option.none(), compare)).toBe(0)
+	})
+})
+
+describe("toPascalCase", () => {
+	test("joins words from spaces, hyphens, and underscores", () => {
+		expect(toPascalCase("hello world")).toBe("HelloWorld")
+		expect(toPascalCase("hello-world")).toBe("HelloWorld")
+		expect(toPascalCase("hello_world")).toBe("HelloWorld")
+	})
+
+	test("normalizes casing and ignores empty segments", () => {
+		expect(toPascalCase("HELLO_WORLD")).toBe("HelloWorld")
+		expect(toPascalCase("main-quests")).toBe("MainQuests")
+		expect(toPascalCase("--side__quests--")).toBe("SideQuests")
+	})
+})
+
+describe("sortZombieTypes", () => {
+	const order = ["Normal", "Special", "Elite", "Boss"] as const
+
+	test("orders permutations to canonical type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieTypes)).toEqual([...order])
+	})
+
+	test("each adjacent pair sorts ascending", () => {
+		for (let i = 1; i < order.length; i++) {
+			expect(sortZombieTypes(order[i - 1]!, order[i]!)).toBeLessThan(0)
+			expect(sortZombieTypes(order[i]!, order[i - 1]!)).toBeGreaterThan(0)
+		}
+	})
+})
+
+describe("sortRelicTypes", () => {
+	const order = ["Grim", "Sinister", "Wicked"] as const
+
+	test("orders permutations to canonical relic type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortRelicTypes)).toEqual([...order])
+	})
+})
+
+describe("sortZombieSpeeds", () => {
+	const order = ["Slow", "Medium", "Fast"] as const
+
+	test("orders permutations to canonical speed order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieSpeeds)).toEqual([...order])
 	})
 })
 
