@@ -108,21 +108,13 @@ describe("resolveFragment", () => {
 	})
 
 	test("resolves hash on explicit pathname", () => {
-		expect(resolveFragment("/main-quests/black-ops-6/reckoning", "step-one", index)).toBe(
-			true,
-		)
-		expect(resolveFragment("/main-quests/black-ops-6/reckoning", "missing", index)).toBe(
-			false,
-		)
+		expect(resolveFragment("/main-quests/black-ops-6/reckoning", "step-one", index)).toBe(true)
+		expect(resolveFragment("/main-quests/black-ops-6/reckoning", "missing", index)).toBe(false)
 	})
 
 	test("resolves same-page hash against source content routes", () => {
-		expect(
-			resolveFragment("", "boss-fight", index, "content/main-quests/reckoning"),
-		).toBe(true)
-		expect(
-			resolveFragment("", "not-on-page", index, "content/main-quests/reckoning"),
-		).toBe(false)
+		expect(resolveFragment("", "boss-fight", index, "content/main-quests/reckoning")).toBe(true)
+		expect(resolveFragment("", "not-on-page", index, "content/main-quests/reckoning")).toBe(false)
 	})
 
 	test("maps main-quest shortcut paths when resolving target headings", () => {
