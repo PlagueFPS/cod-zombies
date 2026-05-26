@@ -9,8 +9,8 @@ import {
 	MAIN_QUEST_DIFFICULTIES,
 	type MapKey,
 } from "@/data/maps"
-import { slugify } from "@/utils/shared-functions"
 import { assertSortedDescByDate } from "@/tests/helpers"
+import { slugify } from "@/utils/shared-functions"
 
 describe("compareMapReleaseDescending", () => {
 	test("orders by release date descending when dates differ", () => {
@@ -85,7 +85,9 @@ describe("main quest data integrity", () => {
 		for (const map of getMapsWithMainQuest()) {
 			if (Option.isNone(map.difficulty)) continue
 			expect(allowed.has(map.difficulty.value)).toBe(true)
-			expect(slugify(map.difficulty.value)).toBe(map.difficulty.value.toLowerCase().replace(/\s+/g, "-"))
+			expect(slugify(map.difficulty.value)).toBe(
+				map.difficulty.value.toLowerCase().replace(/\s+/g, "-"),
+			)
 		}
 	})
 

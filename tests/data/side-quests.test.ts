@@ -8,6 +8,17 @@ import {
 	type SideQuestKey,
 } from "@/data/side-quests"
 
+describe("compareSideQuestDescending", () => {
+	test("same host map: later SIDE_QUESTS insertion index sorts first", () => {
+		expect(
+			compareSideQuestDescending(
+				{ id: "dead-again", map: "der-eisendrache" },
+				{ id: "brm-wall-buy", map: "der-eisendrache" },
+			),
+		).toBeGreaterThan(0)
+	})
+})
+
 describe("getSideQuests", () => {
 	test("sorted by map release date descending", () => {
 		const quests = getSideQuests()

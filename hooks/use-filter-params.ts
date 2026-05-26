@@ -1,6 +1,7 @@
 "use client"
 import { useSearchParams } from "next/navigation"
 import { CARD_LIMIT } from "@/utils/constants"
+import { resolveValidGridPage } from "@/utils/grid-pagination"
 
 /** Union type of all filter parameter keys */
 export type ParamKey = "game" | "difficulty" | "time" | "map" | "type" | "weakness"
@@ -119,18 +120,12 @@ export function useFilterParams(): FilterParamsResult {
 	}
 
 	const validatePageParam = (totalItems: number) => {
-		const totalPages = Math.ceil(totalItems / CARD_LIMIT)
+		const validPage = resolveValidGridPage(page, totalItems, CARD_LIMIT)
 
-		if ((page > totalPages && totalPages > 0) || page < 1) {
-			const validPage = page < 1 ? 1 : totalPages > 0 ? totalPages : 1
-
-			if (validPage !== page) {
-				updatePage(validPage)
-			}
-			return validPage
+		if (validPage !== page) {
+			updatePage(validPage)
 		}
-
-		return page
+		return validPage
 	}
 
 	const clearAllFilters = () => {
