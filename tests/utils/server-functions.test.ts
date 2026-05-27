@@ -231,12 +231,9 @@ describe("extractHeadingsFromMDX", () => {
 
 	it("ignores h1 and h5+ lines; only h2–h4 contribute anchors", async ({ expect }) => {
 		const { extractHeadingsFromMDX } = await import("@/utils/server-functions")
-		const content = [
-			"# Top level",
-			"## Included",
-			"##### Too deep",
-			"#### Also included",
-		].join("\n")
+		const content = ["# Top level", "## Included", "##### Too deep", "#### Also included"].join(
+			"\n",
+		)
 		expect(extractHeadingsFromMDX(content)).toEqual([
 			{ type: "h2", text: "Included", id: "included" },
 			{ type: "h4", text: "Also included", id: "also-included" },
