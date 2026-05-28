@@ -119,6 +119,15 @@ describe("findOverflowScrollParent", () => {
 		const getAxes: ScrollAxesFn = () => ({ vy: false, hx: false })
 		expect(findOverflowScrollParent(child, boundary, getAxes)).toBeNull()
 	})
+
+	test("returns null when the event target is outside the boundary subtree", () => {
+		const boundary = document.createElement("div")
+		const outside = document.createElement("div")
+		const child = document.createElement("span")
+		outside.appendChild(child)
+		const getAxes: ScrollAxesFn = () => ({ vy: true, hx: false })
+		expect(findOverflowScrollParent(child, boundary, getAxes)).toBeNull()
+	})
 })
 
 describe("resolveGestureScrollParent", () => {

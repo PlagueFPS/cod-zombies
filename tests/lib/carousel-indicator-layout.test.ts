@@ -14,6 +14,17 @@ describe("resolveCarouselIndicatorLayout", () => {
 		).toEqual({ kind: "fallback" })
 	})
 
+	test("uses fallback when an image is expected but layout box is not available yet", () => {
+		expect(
+			resolveCarouselIndicatorLayout({
+				hasImage: true,
+				imageBox: null,
+				imageComplete: false,
+				rootBottom: 500,
+			}),
+		).toEqual({ kind: "fallback" })
+	})
+
 	test("waits when the image bbox is too small and loading is incomplete", () => {
 		expect(
 			resolveCarouselIndicatorLayout({
