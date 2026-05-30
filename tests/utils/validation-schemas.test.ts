@@ -1,10 +1,15 @@
-import { Option } from "effect"
+import { Effect, Option } from "effect"
+import { Schema } from "effect"
 import { describe, expect, test } from "vitest"
 import { expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 import {
+	decodeLastModifiedData,
 	decodeParams,
 	decodeReckoningCode,
+	decodeRichLinkNode,
 	decodeTerminusCode,
+	StandardContactFormSchema,
+	StandardNewsletterFormSchema,
 	validateFeedbackForm,
 } from "@/utils/validation-schemas"
 
@@ -83,5 +88,62 @@ describe("validateFeedbackForm", () => {
 				email: "not-an-email",
 			}),
 		)
+	})
+})
+
+describe("decodeRichLinkNode", () => {
+	test("accepts non-empty link text", () => {
+		const values = expectExitSuccess(decodeRichLinkNode({ text: "Main quest guide" }))
+		expect(values.text).toBe("Main quest guide")
+	})
+
+	test("rejects empty text", () => {
+		expectExitFailure(decodeRichLinkNode({ text: "" }))
+	})
+})
+
+describe("decodeLastModifiedData", () => {
+	test("decodes versioned file metadata JSON", async () => {
+		const json = JSON.stringify({
+			version: "1",
+			generated: "2026-05-30T00:00:00.000Z",
+			files: {
+				"maps/foo.mdx": {
+					lastModified: 1_700_000_000_000,
+					lastModifiedFormatted: "Nov 14, 2023",
+				},
+			},
+		})
+		const decoded = await Effect.runPromise(decodeLastModifiedData(json))
+		expect(decoded.version).toBe("1")
+		expect(decoded.files["maps/foo.mdx"]?.lastModified).toBe(1_700_000_000_000)
+	})
+})
+
+const decodeNewsletter = Schema.decodeExit(StandardNewsletterFormSchema)
+const decodeContact = Schema.decodeExit(StandardContactFormSchema)
+
+describe("newsletter and contact form schemas", () => {
+	test("newsletter accepts a valid email", () => {
+		expectExitSuccess(decodeNewsletter({ email: "player@example.com" }))
+	})
+
+	test("newsletter rejects invalid email", () => {
+		expectExitFailure(decodeNewsletter({ email: "not-valid" }))
+	})
+
+	test("contact form accepts name, email, and message", () => {
+		expectExitSuccess(
+			decodeContact({
+				name: "Alex",
+				email: "alex@example.com",
+				message: "Love the guides!",
+			}),
+		)
+	})
+
+	test("contact form rejects empty name or message", () => {
+		expectExitFailure(decodeContact({ name: "", email: "alex@example.com", message: "Hi" }))
+		expectExitFailure(decodeContact({ name: "Alex", email: "alex@example.com", message: "" }))
 	})
 })
