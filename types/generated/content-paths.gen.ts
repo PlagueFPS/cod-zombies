@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-05-18T22:36:48.308Z
- * generated in: 35ms
+ * generated at: 2026-06-23T14:25:14.878Z
+ * generated in: 28ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -27,6 +27,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/for-the-good-of-all"
 	| "content/main-quests/greek-tragedy"
 	| "content/main-quests/high-maintenance"
+	| "content/main-quests/kowakujo"
 	| "content/main-quests/little-lost-girl"
 	| "content/main-quests/love-and-war"
 	| "content/main-quests/maxis-potential"
@@ -358,6 +359,7 @@ export type ZombiesPaths =
 	| "content/zombies/nosferatu"
 	| "content/zombies/nova-6-bomber"
 	| "content/zombies/nova-6-crawler"
+	| "content/zombies/oni"
 	| "content/zombies/orda"
 	| "content/zombies/oscar"
 	| "content/zombies/panzersoldat"
@@ -371,6 +373,7 @@ export type ZombiesPaths =
 	| "content/zombies/rad-hound"
 	| "content/zombies/ravager"
 	| "content/zombies/sam"
+	| "content/zombies/scorched-zombie"
 	| "content/zombies/sentinel-artifact"
 	| "content/zombies/shadow-werewolf"
 	| "content/zombies/shock-mimic"

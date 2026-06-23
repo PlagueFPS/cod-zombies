@@ -152,7 +152,7 @@ const ZOMBIES = new Map([
 		releaseDate: "2010-06-10",
 		description:
 			"Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
-		image: "/zombies/hellhound.webp",
+		image: "/zombies/hellhound-v1.webp",
 		type: "Special",
 		speed: "Fast",
 		spawnBehavior:
@@ -164,6 +164,7 @@ const ZOMBIES = new Map([
 			"black-ops-3",
 			"black-ops-4",
 			"black-ops-cold-war",
+			"black-ops-7",
 		],
 		maps: [
 			"shi-no-numa",
@@ -178,6 +179,7 @@ const ZOMBIES = new Map([
 			"classified",
 			"tag-der-toten",
 			"firebase-z",
+			"kowakujo",
 		],
 		elementalWeakness: [],
 		weakPoints: ["head"],
@@ -1874,6 +1876,41 @@ const ZOMBIES = new Map([
 		spawnBehavior:
 			"The Gjallarfrost is summoned by Dravakar during this final encounter of the main quest, during the transition phases.",
 		combatStrategy: "content/zombies/gjallarfrost",
+	}),
+	makeZombie("scorched-zombie", {
+		title: "Scorched Zombie",
+		state: Option.some("Coming Soon"),
+		releaseDate: "2026-06-25",
+		image: "/zombies/scorched-zombie.webp",
+		description:
+			"A fiery enemy seeking to immolate their targets, scorched by the molten lava erupting from the surrounding volcanoes.",
+		games: ["black-ops-7"],
+		maps: ["kowakujo"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: ["cryo-freeze"],
+		attacks: ["melee-swing"],
+		spawnBehavior:
+			"The Scorched Zombie can spawn from normal zombies being burned by the map's lava.",
+		combatStrategy: "content/zombies/scorched-zombie",
+	}),
+	makeZombie("oni", {
+		title: "Oni",
+		state: Option.some("Coming Soon"),
+		releaseDate: "2026-06-25",
+		image: "/zombies/oni.webp",
+		description:
+			"A yōkai embodying wrath and malice, this demon's glowing gaze is like no other and must be challenged.",
+		games: ["black-ops-7"],
+		maps: ["kowakujo"],
+		type: "Elite",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "electrical-bolts"],
+		spawnBehavior: "The Oni will first appear on Round 16, then every 3-4 rounds thereafter.",
+		combatStrategy: "content/zombies/oni",
 	}),
 ])
 
