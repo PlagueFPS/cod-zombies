@@ -864,7 +864,7 @@ const MAPS = new Map([
 		title: "Kowakujō",
 		releaseDate: "2026-06-25",
 		description:
-			"The fractured slopes of a volcanic landscape where a crumbling castle harbors a smoldering mystery.",
+			"On the fractured slopes of a volcanic landscape, a castle harbors a smoldering mystery. Face the Dragon's undead army, investigate the Shogun's fate, and expose the curse that blackened Takeo's soul.",
 		image: "/maps/kowakujo-preview.webp",
 		game: "black-ops-7",
 		state: Option.some("Coming Soon"),
