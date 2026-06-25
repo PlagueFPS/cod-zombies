@@ -1879,7 +1879,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("scorched-zombie", {
 		title: "Scorched Zombie",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		releaseDate: "2026-06-25",
 		image: "/zombies/scorched-zombie.webp",
 		description:
@@ -1897,19 +1897,20 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("oni", {
 		title: "Oni",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		releaseDate: "2026-06-25",
 		image: "/zombies/oni.webp",
 		description:
 			"A yōkai embodying wrath and malice, this demon's glowing gaze is like no other and must be challenged.",
 		games: ["black-ops-7"],
 		maps: ["kowakujo"],
-		type: "Elite",
+		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
-		elementalWeakness: [],
+		elementalWeakness: ["shadow-rift"],
 		attacks: ["melee-swing", "electrical-bolts"],
-		spawnBehavior: "The Oni will first appear on Round 16, then every 3-4 rounds thereafter.",
+		spawnBehavior:
+			"The Oni will first appear during the Pack-a-Punch quest, and will periodically spawn in with zombies throughout the rounds.",
 		combatStrategy: "content/zombies/oni",
 	}),
 ])
