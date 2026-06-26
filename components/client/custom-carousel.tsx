@@ -137,12 +137,8 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 					</CarouselItem>
 				))}
 			</CarouselContent>
-			<CarouselPrevious
-				variant="secondary"
-				size="icon"
-				className="absolute left-2 flex md:left-4"
-			/>
-			<CarouselNext variant="secondary" size="icon" className="absolute right-5 flex md:right-4" />
+			<CarouselPrevious variant="default" size="icon" className="absolute left-2 flex md:left-4" />
+			<CarouselNext variant="default" size="icon" className="absolute right-5 flex md:right-4" />
 			{count > 1 ? (
 				<div
 					style={indicatorStyle}
