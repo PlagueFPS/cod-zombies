@@ -1700,7 +1700,7 @@ const ZOMBIES = new Map([
 		description:
 			"An apex predator twisted by the Dark Aether, driven by madness and aggression with parasitic infestations that make it an Elite level threat.",
 		games: ["black-ops-7"],
-		maps: ["ashes-of-the-damned", "totenreich"],
+		maps: ["ashes-of-the-damned", "totenreich", "kowakujo"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["red-glowing-spots", "bee-nests"],
