@@ -3,7 +3,7 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-06-23T14:25:14.878Z
+ * generated at: 2026-06-26T20:20:04.887Z
  * generated in: 28ms
  */
 
@@ -280,6 +280,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/stormbound"
 	| "content/side-quests/target-practice"
 	| "content/side-quests/the-gift"
+	| "content/side-quests/the-reunion"
 	| "content/side-quests/the-vault"
 	| "content/side-quests/this-jazz-is-classified"
 	| "content/side-quests/tombstone-perkaholic"
