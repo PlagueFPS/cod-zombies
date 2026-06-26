@@ -1685,7 +1685,8 @@ const SIDE_QUESTS = new Map([
 	makeQuest("the-reunion", {
 		state: Option.some("New"),
 		title: "The Reunion",
-		description: "Takeo side quest",
+		description:
+			"Confront Takeo's past in this cinematic story-driven experience revealing hidden mysterious about this character.",
 		map: "kowakujo",
 		content: "content/side-quests/the-reunion",
 	}),
