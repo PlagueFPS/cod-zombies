@@ -1690,6 +1690,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/the-reunion",
 	}),
+	makeQuest("maneka-mecha", {
+		state: Option.some("New"),
+		title: "Maneka Mecha",
+		description:
+			"Rebuild and destroy a familiar enemy and gain access to one of the most powerful innovations of human engineering.",
+		map: "kowakujo",
+		content: "content/side-quests/maneka-mecha",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(

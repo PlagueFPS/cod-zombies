@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-06-26T20:20:04.887Z
- * generated in: 28ms
+ * generated at: 2026-06-26T22:20:30.687Z
+ * generated in: 35ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -210,6 +210,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/mad-hatter"
 	| "content/side-quests/magic"
 	| "content/side-quests/magmagat-upgrade"
+	| "content/side-quests/maneka-mecha"
 	| "content/side-quests/mannequin-free-perk"
 	| "content/side-quests/margwa-mask"
 	| "content/side-quests/marine-sp-upgrade"
