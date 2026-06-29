@@ -871,7 +871,7 @@ const MAPS = new Map([
 		mainQuest: Option.some("content/main-quests/kowakujo"),
 		difficulty: Option.some("Medium"),
 		estimatedTimeMins: Option.some({
-			min: 45,
+			min: 60,
 			max: 120,
 		}),
 	}),
