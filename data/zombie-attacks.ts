@@ -658,4 +658,10 @@ const zombieAttacksHashMap = HashMap.make(
 		description:
 			"Summons a series of ice pillars that deal damage to players within their range, and launching them into the air.",
 	}),
+	makeZombieAttack("fire-beam", {
+		title: "Fire Beam",
+		range: "Long",
+		description:
+			"Charges a powerful fire beam that destroys a narrow path, with a delayed explosion along the entire path when the attack is done.",
+	}),
 )

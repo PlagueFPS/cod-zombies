@@ -526,6 +526,7 @@ export type ZombiesImagePath =
 	| "/zombies/nosferatu.webp"
 	| "/zombies/nova-6-bomber.webp"
 	| "/zombies/nova-6-crawler.webp"
+	| "/zombies/nyxara.webp"
 	| "/zombies/oni.webp"
 	| "/zombies/orda.webp"
 	| "/zombies/oscar.webp"
