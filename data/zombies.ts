@@ -1913,6 +1913,24 @@ const ZOMBIES = new Map([
 			"The Oni will first appear during the Pack-a-Punch quest, and will periodically spawn in with zombies throughout the rounds.",
 		combatStrategy: "content/zombies/oni",
 	}),
+	makeZombie("nxyara", {
+		title: "Nxyara",
+		state: Option.some("New"),
+		releaseDate: "2026-06-25",
+		image: "/zombies/nyxara.webp",
+		description:
+			'Known as "The Warp", Nxyara is a powerful Shadowsmith enslaved by The Warden to protect the World Seed and rule over Kowakujō.',
+		games: ["black-ops-7"],
+		maps: ["kowakujo"],
+		type: "Boss",
+		speed: "Fast",
+		weakPoints: ["eyes", "red-glowing-spots"],
+		elementalWeakness: [],
+		attacks: ["fireball", "dragon-fire", "fire-tornadoes", "fire-beam"],
+		spawnBehavior:
+			"Nxyara appears throughout the map, but can only be fought in the final encounter of the Main Quest.",
+		combatStrategy: "content/zombies/nyxara",
+	}),
 ])
 
 const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<ZombieKey, number>(

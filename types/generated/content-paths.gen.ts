@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-06-26T22:20:30.687Z
- * generated in: 35ms
+ * generated at: 2026-06-29T08:11:58.715Z
+ * generated in: 28ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -361,6 +361,7 @@ export type ZombiesPaths =
 	| "content/zombies/nosferatu"
 	| "content/zombies/nova-6-bomber"
 	| "content/zombies/nova-6-crawler"
+	| "content/zombies/nyxara"
 	| "content/zombies/oni"
 	| "content/zombies/orda"
 	| "content/zombies/oscar"
