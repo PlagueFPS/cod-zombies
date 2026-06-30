@@ -438,6 +438,7 @@ export type RelicsImagePath =
 	| "/relics/focusing-stone-relic.webp"
 	| "/relics/golden-spork-relic.webp"
 	| "/relics/gong-relic.webp"
+	| "/relics/gramaphone-relic.webp"
 	| "/relics/lawyers-pen-relic.webp"
 	| "/relics/mangler-helmet-relic-v1.webp"
 	| "/relics/matroyshka-dolls-relic.webp"
