@@ -459,6 +459,21 @@ const RELICS = new Map([
 		},
 		content: "content/relics/power-switch",
 	}),
+	makeRelic("gramaphone", {
+		title: "Gramaphone",
+		state: Option.some("New"),
+		type: "Grim",
+		image: "/relics/agarthan-device-relic-v1.webp",
+		description: "Bullets deal increased damage but each shot consumes 2 bullets.",
+		map: "kowakujo",
+		discoveredDate: "2026-06-29",
+		estimatedTimeMins: {
+			min: 15,
+			max: 30,
+			reason: "Time varies slightly based on how quickly you open up the map.",
+		},
+		content: "content/relics/gramaphone",
+	}),
 ])
 
 const RELIC_INSERATION_INDEX_BY_ID = new Map<RelicKey, number>(
