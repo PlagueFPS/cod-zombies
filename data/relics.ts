@@ -463,7 +463,7 @@ const RELICS = new Map([
 		title: "Gramaphone",
 		state: Option.some("New"),
 		type: "Grim",
-		image: "/relics/agarthan-device-relic-v1.webp",
+		image: "/relics/gramaphone-relic.webp",
 		description: "Bullets deal increased damage but each shot consumes 2 bullets.",
 		map: "kowakujo",
 		discoveredDate: "2026-06-29",
