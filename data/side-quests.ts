@@ -1730,6 +1730,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/evencry",
 	}),
+	makeQuest("horse-race", {
+		state: Option.some("New"),
+		title: "Horse Race",
+		description:
+			"Race against the clock to earn powerful rewards, including a secret reward if you're really fast.",
+		map: "kowakujo",
+		content: "content/side-quests/horse-race",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
