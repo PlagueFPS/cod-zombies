@@ -1754,6 +1754,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/hidden-power-ups-kowakujo",
 	}),
+	makeQuest("par-course", {
+		state: Option.some("New"),
+		title: "Par Course",
+		description:
+			"Complete this fiery parkour course on the map to receive a familiar weapon in a familiar way of the past.",
+		map: "kowakujo",
+		content: "content/side-quests/par-course",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(

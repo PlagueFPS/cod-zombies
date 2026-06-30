@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-07-03T04:36:49.788Z
- * generated in: 35ms
+ * generated at: 2026-07-03T12:48:42.516Z
+ * generated in: 39ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -249,6 +249,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/paintings"
 	| "content/side-quests/panzer-claw-helmet"
 	| "content/side-quests/paper-jumpscare"
+	| "content/side-quests/par-course"
 	| "content/side-quests/parachuting-challenge"
 	| "content/side-quests/pareidolia-remix"
 	| "content/side-quests/path-of-sorrows"
