@@ -1698,6 +1698,22 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/maneka-mecha",
 	}),
+	makeQuest("maneka-mecha", {
+		state: Option.some("New"),
+		title: "Maneka Mecha",
+		description:
+			"Rebuild and destroy a familiar enemy and gain access to one of the most powerful innovations of human engineering.",
+		map: "kowakujo",
+		content: "content/side-quests/maneka-mecha",
+	}),
+	makeQuest("path-of-sorrows", {
+		state: Option.some("New"),
+		title: "Path of Sorrows",
+		description:
+			"Learn how to obtain Takeo Masaki's legendary katana by perfectly solving his father's murder.",
+		map: "kowakujo",
+		content: "content/side-quests/path-of-sorrows",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
