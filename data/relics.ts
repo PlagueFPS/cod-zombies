@@ -474,6 +474,21 @@ const RELICS = new Map([
 		},
 		content: "content/relics/gramaphone",
 	}),
+	makeRelic("film-reel", {
+		title: "Film Reel",
+		state: Option.some("New"),
+		type: "Sinister",
+		image: "/relics/agarthan-device-relic-v1.webp",
+		description: "Player can only carry one Pack-a-Punch weapon.",
+		map: "kowakujo",
+		discoveredDate: "2026-06-29",
+		estimatedTimeMins: {
+			min: 20,
+			max: 35,
+			reason: "Time varies slightly based on how quickly you pack-a-punch your weapon.",
+		},
+		content: "content/relics/film-reel",
+	}),
 ])
 
 const RELIC_INSERATION_INDEX_BY_ID = new Map<RelicKey, number>(
