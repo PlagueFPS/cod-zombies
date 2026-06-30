@@ -435,6 +435,7 @@ export type RelicsImagePath =
 	| "/relics/dancing-arnie-relic.webp"
 	| "/relics/dragon-relic.webp"
 	| "/relics/dragon-wings-relic.webp"
+	| "/relics/film-reel-relic.webp"
 	| "/relics/focusing-stone-relic.webp"
 	| "/relics/golden-spork-relic.webp"
 	| "/relics/gong-relic.webp"

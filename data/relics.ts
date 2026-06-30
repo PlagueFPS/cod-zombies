@@ -478,7 +478,7 @@ const RELICS = new Map([
 		title: "Film Reel",
 		state: Option.some("New"),
 		type: "Sinister",
-		image: "/relics/agarthan-device-relic-v1.webp",
+		image: "/relics/film-reel-relic.webp",
 		description: "Player can only carry one Pack-a-Punch weapon.",
 		map: "kowakujo",
 		discoveredDate: "2026-06-29",
