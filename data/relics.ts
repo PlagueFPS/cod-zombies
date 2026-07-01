@@ -489,6 +489,21 @@ const RELICS = new Map([
 		},
 		content: "content/relics/film-reel",
 	}),
+	makeRelic("mannequin-turret", {
+		title: "Mannequin Turret",
+		state: Option.some("New"),
+		type: "Wicked",
+		image: "/relics/mannequin-turret-relic.webp",
+		description: "No starting Armor. Only armor available is gold armor from the wall buy.",
+		map: "kowakujo",
+		discoveredDate: "2026-06-30",
+		estimatedTimeMins: {
+			min: 60,
+			max: 120,
+			reason: "Time varies slightly based on how quickly you can get to Round 60.",
+		},
+		content: "content/relics/mannequin-turret",
+	}),
 	makeRelic("dragon-egg", {
 		title: "Dragon Egg",
 		state: Option.some("New"),
