@@ -433,6 +433,7 @@ export type RelicsImagePath =
 	| "/relics/bus-relic.webp"
 	| "/relics/civil-protector-head-relic.webp"
 	| "/relics/dancing-arnie-relic.webp"
+	| "/relics/dragon-egg-relic.webp"
 	| "/relics/dragon-relic.webp"
 	| "/relics/dragon-wings-relic.webp"
 	| "/relics/film-reel-relic.webp"

@@ -483,11 +483,26 @@ const RELICS = new Map([
 		map: "kowakujo",
 		discoveredDate: "2026-06-29",
 		estimatedTimeMins: {
-			min: 20,
-			max: 35,
+			min: 30,
+			max: 45,
 			reason: "Time varies slightly based on how quickly you pack-a-punch your weapon.",
 		},
 		content: "content/relics/film-reel",
+	}),
+	makeRelic("dragon-egg", {
+		title: "Dragon Egg",
+		state: Option.some("New"),
+		type: "Wicked",
+		image: "/relics/dragon-egg-relic.webp",
+		description: "Elites and Special zombies in normal round spawning will now be randomized.",
+		map: "kowakujo",
+		discoveredDate: "2026-06-30",
+		estimatedTimeMins: {
+			min: 60,
+			max: 150,
+			reason: "Time varies slightly based on how quickly you can complete the main quest.",
+		},
+		content: "content/relics/dragon-egg",
 	}),
 ])
 
