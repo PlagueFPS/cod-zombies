@@ -443,6 +443,7 @@ export type RelicsImagePath =
 	| "/relics/gramaphone-relic.webp"
 	| "/relics/lawyers-pen-relic.webp"
 	| "/relics/mangler-helmet-relic-v1.webp"
+	| "/relics/mannequin-turret-relic.webp"
 	| "/relics/matroyshka-dolls-relic.webp"
 	| "/relics/music-box-relic.webp"
 	| "/relics/power-switch-relic.webp"
