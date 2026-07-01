@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-06-30T13:08:48.943Z
- * generated in: 33ms
+ * generated at: 2026-07-01T13:58:44.411Z
+ * generated in: 29ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -62,6 +62,7 @@ export type RelicsPaths =
 	| "content/relics/civil-protector-head"
 	| "content/relics/dancing-arnie"
 	| "content/relics/dragon"
+	| "content/relics/dragon-egg"
 	| "content/relics/dragon-wings"
 	| "content/relics/film-reel"
 	| "content/relics/focusing-stone"
