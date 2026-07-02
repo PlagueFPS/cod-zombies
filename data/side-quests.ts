@@ -1714,6 +1714,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/path-of-sorrows",
 	}),
+	makeQuest("neko-cafe", {
+		state: Option.some("New"),
+		title: "Neko Cafe",
+		description:
+			"Find and gather all the stray cats in the castle to open your very own Neko Cafe and obtain some useful rewards.",
+		map: "kowakujo",
+		content: "content/side-quests/neko-cafe",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(

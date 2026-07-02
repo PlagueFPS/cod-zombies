@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-07-01T20:30:21.293Z
- * generated in: 31ms
+ * generated at: 2026-07-02T12:41:06.193Z
+ * generated in: 36ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -234,6 +234,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/monster-hand"
 	| "content/side-quests/mummy-jumpscare"
 	| "content/side-quests/mystery"
+	| "content/side-quests/neko-cafe"
 	| "content/side-quests/nikolais-demons"
 	| "content/side-quests/no-one-there"
 	| "content/side-quests/noire-mode-filter"
