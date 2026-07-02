@@ -1722,6 +1722,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/maneki-bomb",
 	}),
+	makeQuest("evencry", {
+		state: Option.some("New"),
+		title: "Evencry",
+		description:
+			'Discover how to activate the hidden music easter egg song "Evencry" by Kevin Sherwood.',
+		map: "kowakujo",
+		content: "content/side-quests/evencry",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
