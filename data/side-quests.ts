@@ -1698,14 +1698,6 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/maneka-mecha",
 	}),
-	makeQuest("maneka-mecha", {
-		state: Option.some("New"),
-		title: "Maneka Mecha",
-		description:
-			"Rebuild and destroy a familiar enemy and gain access to one of the most powerful innovations of human engineering.",
-		map: "kowakujo",
-		content: "content/side-quests/maneka-mecha",
-	}),
 	makeQuest("path-of-sorrows", {
 		state: Option.some("New"),
 		title: "Path of Sorrows",
@@ -1721,6 +1713,14 @@ const SIDE_QUESTS = new Map([
 			"Find and gather all the stray cats in the castle to open your very own Neko Cafe and obtain some useful rewards.",
 		map: "kowakujo",
 		content: "content/side-quests/neko-cafe",
+	}),
+	makeQuest("maneki-bomb", {
+		state: Option.some("New"),
+		title: "Maneki-Bomb",
+		description:
+			"Learn how to upgraded the map specific tactical to increase its effectiveness and usability.",
+		map: "kowakujo",
+		content: "content/side-quests/maneki-bomb",
 	}),
 ])
 
