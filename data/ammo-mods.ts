@@ -274,4 +274,21 @@ const ammoModHashMap = HashMap.make(
 			},
 		}),
 	}),
+	makeAmmoMod("fire-works", {
+		title: "Fire Works",
+		description:
+			"Each bullet that hits a Normal or Special Enemy has a chance to launch fireworks that target enemies.",
+		image: "/ammo-mods/fire-works.webp",
+		augments: makeAugmentTuple([
+			"big-game-fire-works",
+			"starburst",
+			"weeping-willow",
+			"fire-wheel",
+			"starlight",
+			"big-bang",
+			"high-yield",
+			"short-fuse",
+		]),
+		variants: Option.none(),
+	}),
 )
