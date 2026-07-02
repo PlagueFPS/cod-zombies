@@ -454,6 +454,7 @@ export type RelicsImagePath =
 	| "/relics/stuffed-elephant-relic.webp"
 	| "/relics/summoning-key-relic-v2.webp"
 	| "/relics/teddy-bear-relic.webp"
+	| "/relics/valkyrie-helmet-relic.webp"
 	| "/relics/vril-sphere-relic.webp"
 
 /** Union of images in `/weapons` */

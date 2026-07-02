@@ -519,6 +519,21 @@ const RELICS = new Map([
 		},
 		content: "content/relics/dragon-egg",
 	}),
+	makeRelic("valkyrie-helmet", {
+		title: "Valkyrie Helmet",
+		state: Option.some("New"),
+		type: "Sinister",
+		image: "/relics/valkyrie-helmet-relic.webp",
+		description: "Areas you stay in start to spawn electric fields that damage you.",
+		map: "kowakujo",
+		discoveredDate: "2026-07-01",
+		estimatedTimeMins: {
+			min: 60,
+			max: 150,
+			reason: "Time varies slightly based on how quickly you can complete the main quest.",
+		},
+		content: "content/relics/valkyrie-helmet",
+	}),
 ])
 
 const RELIC_INSERATION_INDEX_BY_ID = new Map<RelicKey, number>(
