@@ -1650,13 +1650,6 @@ const augmentHashMap = HashMap.make(
 		image: "/augments/bo7/mocha-maul-major-augment-bo7.webp",
 		variants: Option.none(),
 	}),
-	makeAugment("big-game-fire-works", {
-		title: "Big Game",
-		description: "Fire Works can activate on Elite Enemies, creating a bigger lightshow.",
-		type: "Major",
-		image: "/augments/big-game-major-augment.webp",
-		variants: Option.none(),
-	}),
 	makeAugment("caustic-fumes", {
 		title: "Caustic Fumes",
 		description: "Charmed enemies deal Toxic damage to nearby enemies.",
