@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-07-03T04:08:49.426Z
- * generated in: 40ms
+ * generated at: 2026-07-03T04:36:49.788Z
+ * generated in: 35ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -193,6 +193,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/hidden-power-ups-aotd"
 	| "content/side-quests/hidden-power-ups-astra-malorum"
 	| "content/side-quests/hidden-power-ups-citadelle-des-morts"
+	| "content/side-quests/hidden-power-ups-kowakujo"
 	| "content/side-quests/hidden-power-ups-paradox-junction"
 	| "content/side-quests/hidden-power-ups-reckoning"
 	| "content/side-quests/hidden-power-ups-shattered-veil"
