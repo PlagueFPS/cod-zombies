@@ -1738,6 +1738,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/horse-race",
 	}),
+	makeQuest("ghostly-rifleman-upgrade", {
+		state: Option.some("New"),
+		title: "Ghostly Rifleman Upgrade",
+		description:
+			"Learn how to upgrade the Ghostly Rifleman traps up to four total times to make them incredibly effective and useful.",
+		map: "kowakujo",
+		content: "content/side-quests/ghostly-rifleman-upgrade",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(

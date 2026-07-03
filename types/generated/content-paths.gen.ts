@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-07-03T01:04:43.838Z
- * generated in: 26ms
+ * generated at: 2026-07-03T04:08:49.426Z
+ * generated in: 40ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -173,6 +173,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/free-wunderwaffe-dg2"
 	| "content/side-quests/friendy-thrasher"
 	| "content/side-quests/george-romero-glasses"
+	| "content/side-quests/ghostly-rifleman-upgrade"
 	| "content/side-quests/golden-armor"
 	| "content/side-quests/golden-bucket"
 	| "content/side-quests/golden-spork"
