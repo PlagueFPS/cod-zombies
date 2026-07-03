@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: content
- * generated at: 2026-07-02T16:58:56.750Z
- * generated in: 30ms
+ * generated at: 2026-07-03T00:57:08.715Z
+ * generated in: 44ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -139,6 +139,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/drowning"
 	| "content/side-quests/elemental-shield-upgrade"
 	| "content/side-quests/elevator-jumpscare"
+	| "content/side-quests/evencry"
 	| "content/side-quests/falling-to-pieces"
 	| "content/side-quests/fire-and-trap-immunity"
 	| "content/side-quests/fireplace-protector"
