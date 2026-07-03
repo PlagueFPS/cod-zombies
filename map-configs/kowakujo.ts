@@ -1,6 +1,6 @@
 import type { MapConfig } from "@/data/interactive-map"
+import { perks, sharedMarkers, weapons } from "@/map-configs/markers"
 import { Option } from "effect"
-import { perks, sharedMarkers, weapons } from "`@/map-configs/markers`"
 
 export const config: MapConfig = {
 	layers: [
