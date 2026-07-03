@@ -534,6 +534,21 @@ const RELICS = new Map([
 		},
 		content: "content/relics/valkyrie-helmet",
 	}),
+	makeRelic("druid-stone", {
+		title: "Druid Stone",
+		state: Option.some("New"),
+		type: "Grim",
+		image: "/relics/druid-stone-relic.webp",
+		description: "No bleed out bar self-revives instantly revives you",
+		map: "kowakujo",
+		discoveredDate: "2026-07-03",
+		estimatedTimeMins: {
+			min: 15,
+			max: 30,
+			reason: "Time varies slightly based on how quickly you can get to Round 20.",
+		},
+		content: "content/relics/druid-stone",
+	}),
 ])
 
 const RELIC_INSERATION_INDEX_BY_ID = new Map<RelicKey, number>(

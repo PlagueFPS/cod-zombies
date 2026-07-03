@@ -439,6 +439,7 @@ export type RelicsImagePath =
 	| "/relics/dragon-egg-relic.webp"
 	| "/relics/dragon-relic.webp"
 	| "/relics/dragon-wings-relic.webp"
+	| "/relics/druid-stone-relic.webp"
 	| "/relics/film-reel-relic.webp"
 	| "/relics/focusing-stone-relic.webp"
 	| "/relics/golden-spork-relic.webp"
