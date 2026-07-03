@@ -303,6 +303,7 @@ export type LayersImagePath =
 	| "/layers/astra-malorum/astra-malorum-layer.webp"
 	| "/layers/astra-malorum/astra-malorum-mars-layer.webp"
 	| "/layers/citadelle-des-morts/citadelle-des-morts-layer.webp"
+	| "/layers/kowakujo/kowakujo-main-map.webp"
 	| "/layers/liberty-falls/liberty-falls-layer.webp"
 	| "/layers/paradox-junction/paradox-junction-boss-arena-layer.webp"
 	| "/layers/paradox-junction/paradox-junction-destroyed-layer.webp"
