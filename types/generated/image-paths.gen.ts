@@ -351,7 +351,7 @@ export type MapsImagePath =
 	| "/maps/gorod-krovi.webp"
 	| "/maps/ix.webp"
 	| "/maps/kino-der-toten.webp"
-	| "/maps/kowakujo-preview.webp"
+	| "/maps/kowakujo.webp"
 	| "/maps/liberty-falls.webp"
 	| "/maps/mauer-der-toten.webp"
 	| "/maps/mob-of-the-dead.webp"

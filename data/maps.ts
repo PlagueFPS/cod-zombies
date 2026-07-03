@@ -865,14 +865,14 @@ const MAPS = new Map([
 		releaseDate: "2026-06-25",
 		description:
 			"On the fractured slopes of a volcanic landscape, a castle harbors a smoldering mystery. Face the Dragon's undead army, investigate the Shogun's fate, and expose the curse that blackened Takeo's soul.",
-		image: "/maps/kowakujo-preview.webp",
+		image: "/maps/kowakujo.webp",
 		game: "black-ops-7",
 		state: Option.some("New"),
 		mainQuest: Option.some("content/main-quests/kowakujo"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		estimatedTimeMins: Option.some({
 			min: 60,
-			max: 120,
+			max: 150,
 		}),
 	}),
 ])
