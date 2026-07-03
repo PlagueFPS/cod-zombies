@@ -92,7 +92,7 @@ const makeMapEntry = <T extends string>(
 const interactiveMapHashMap = HashMap.make(
 	makeMapEntry("kowakujo", {
 		title: "Kowakujō",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		image: "/previews/kowakujo-preview.webp",
 		game: "black-ops-7",
 		description:
