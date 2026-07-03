@@ -1746,6 +1746,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/ghostly-rifleman-upgrade",
 	}),
+	makeQuest("hidden-power-ups-kowakujo", {
+		state: Option.some("New"),
+		title: "Hidden Power-Ups",
+		description:
+			"Discover the location of every hidden Power-Up drop in Kowakujō, in case you need them.",
+		map: "kowakujo",
+		content: "content/side-quests/hidden-power-ups-kowakujo",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
