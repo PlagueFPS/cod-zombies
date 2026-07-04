@@ -14,9 +14,13 @@ import {
 	Text,
 } from "@react-email/components"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { getServerUrl } from "@/utils/shared-functions"
-
-export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscribeUrl: string }) {
+export default function PrivacyPolicyUpdateEmail({
+	unsubscribeUrl,
+	serverUrl,
+}: {
+	unsubscribeUrl: string
+	serverUrl: string
+}) {
 	const today = new Date()
 	const currentYear = new Date(today).getFullYear()
 	const oneMonthFromNow = new Date(today)
@@ -25,7 +29,6 @@ export default function PrivacyPolicyUpdateEmail({ unsubscribeUrl }: { unsubscri
 	oneMonthFromNow.setMonth(currentMonth + 1)
 
 	const formattedDate = oneMonthFromNow.toLocaleDateString("en-US", DATE_OPTIONS)
-	const serverUrl = getServerUrl()
 
 	return (
 		<Html>

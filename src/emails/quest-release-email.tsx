@@ -12,13 +12,13 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { getServerUrl } from "@/utils/shared-functions"
 export interface IQuestRelease {
 	type: "Main" | "Side"
 	title: string
 	description: string
 	redirectUrl: string
 	unsubscribeUrl: string
+	serverUrl: string
 }
 
 export default function QuestReleaseEmail({
@@ -27,9 +27,9 @@ export default function QuestReleaseEmail({
 	description,
 	redirectUrl,
 	unsubscribeUrl,
+	serverUrl,
 }: IQuestRelease) {
 	const currentYear = new Date().getFullYear()
-	const serverUrl = getServerUrl()
 
 	const getGuideCoverage = () => {
 		const defaultCoverage = [

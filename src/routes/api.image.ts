@@ -2,7 +2,7 @@ import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient"
 import { createFileRoute } from "@tanstack/react-router"
 import { Effect, Schema } from "effect"
 import * as HttpClient from "effect/unstable/http/HttpClient"
-import { env } from "@/env"
+import { IN_DEVELOPMENT } from "@/utils/constants"
 import { decodeImageParams } from "@/utils/validation-schemas"
 
 class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/api/image")({
 			GET: async ({ request }) => {
 				// This is a dev-only route for local runtime image optimization
 				// To maintain consistency with production behavior
-				if (env.VITE_VERCEL_ENV !== "development") {
+				if (!IN_DEVELOPMENT) {
 					return new Response(null, { status: 403 })
 				}
 

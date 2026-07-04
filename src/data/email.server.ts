@@ -3,7 +3,7 @@ import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"
 import { generateToken } from "@/utils/functions.server"
-import { getServerUrl } from "@/utils/shared-functions"
+import { getServerUrl } from "@/utils/request.server"
 
 interface EmailProps {
 	name: string

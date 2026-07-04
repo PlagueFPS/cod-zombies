@@ -2,23 +2,7 @@ import type { RelicType } from "@/data/relics"
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
 import { Option } from "effect"
 import { MAIN_QUEST_DIFFICULTIES, type MainQuestDifficulty } from "@/data/maps"
-import { env } from "@/env"
 import { SITE_TITLE } from "@/utils/constants"
-
-/**
- * Resolves the current server base URL from environment.
- */
-export const getServerUrl = () => {
-	const currentEnv = env.VITE_VERCEL_ENV
-	switch (currentEnv) {
-		case "preview":
-			return `https://${env.VITE_VERCEL_URL}`
-		case "production":
-			return `https://${env.VITE_VERCEL_PROJECT_PRODUCTION_URL}`
-		default:
-			return `http://localhost:3000`
-	}
-}
 
 /**
  * Gets the previous and next items adjacent to the given item ID.

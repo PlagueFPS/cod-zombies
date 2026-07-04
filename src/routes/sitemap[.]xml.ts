@@ -7,7 +7,7 @@ import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 import { getLastModified } from "@/utils/functions.server"
-import { getServerUrl } from "@/utils/shared-functions"
+import { getServerUrl } from "@/utils/request.server"
 
 export const Route = createFileRoute("/sitemap.xml")({
 	server: {

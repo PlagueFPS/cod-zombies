@@ -13,10 +13,6 @@ const testEnv = {
 	E2E_MOCK_EMAIL: "success",
 	RESEND_API_KEY: "playwright-resend-api-key",
 	RESEND_AUDIENCE_ID: "playwright-resend-audience-id",
-	VITE_VERCEL_DEPLOYMENT_ID: "playwright",
-	VITE_VERCEL_ENV: "development",
-	VITE_VERCEL_PROJECT_PRODUCTION_URL: `${host}:${port}`,
-	VITE_VERCEL_URL: `${host}:${port}`,
 }
 
 export default defineConfig({
@@ -31,7 +27,7 @@ export default defineConfig({
 		trace: "on-first-retry",
 	},
 	webServer: {
-		command: `VITE_VERCEL_URL=${host}:${port} VITE_VERCEL_PROJECT_PRODUCTION_URL=${host}:${port} VITE_VERCEL_ENV=development bun run dev -- --host ${host} --port ${port}`,
+		command: `bun run dev -- --host ${host} --port ${port}`,
 		env: testEnv,
 		reuseExistingServer: !process.env.CI,
 		timeout: 120_000,

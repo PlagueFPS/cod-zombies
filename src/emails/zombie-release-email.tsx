@@ -15,7 +15,6 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
-import { getServerUrl } from "@/utils/shared-functions"
 
 export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
 	type: Zombie["type"]
@@ -27,9 +26,9 @@ export default function ZombieReleaseEmail({
 	description,
 	redirectUrl,
 	unsubscribeUrl,
+	serverUrl,
 }: IZombieRelease) {
 	const currentYear = new Date().getFullYear()
-	const serverUrl = getServerUrl()
 
 	return (
 		<Html>

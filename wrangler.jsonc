@@ -1,7 +1,18 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
-  "compatibility_date": "2026-07-04",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "tanstack-start-app",
+	"compatibility_date": "2026-07-04",
+	"compatibility_flags": ["nodejs_compat"],
+	"main": "@tanstack/react-start/server-entry",
+	"secrets": {
+		"required": [
+			"RESEND_API_KEY",
+			"RESEND_AUDIENCE_ID",
+			"HASH_SALT",
+			"LINEAR_API_KEY",
+			"LINEAR_WORKSPACE",
+			"LINEAR_USER_FEEDBACK_LABEL",
+			"LINEAR_DEFAULT_ASSIGNEE_ID",
+		],
+	},
 }

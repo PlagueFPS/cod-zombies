@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { getServerUrl } from "@/utils/shared-functions"
+import { getServerUrl } from "@/utils/request.server"
 
 export const Route = createFileRoute("/robots.txt")({
 	server: {

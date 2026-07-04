@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, test, vi } from "vitest"
+import { describe, expect, test } from "vitest"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
 	capitalize,
@@ -7,69 +7,6 @@ import {
 	sortDates,
 	sortDifficulties,
 } from "@/utils/shared-functions"
-
-describe("getServerUrl", () => {
-	let originalEnv: NodeJS.ProcessEnv
-
-	beforeEach(() => {
-		originalEnv = { ...process.env }
-		vi.resetModules()
-	})
-
-	afterEach(() => {
-		process.env = { ...originalEnv }
-	})
-
-	const testCases = [
-		{
-			env: {
-				VITE_VERCEL_ENV: "development",
-				VITE_VERCEL_URL: "localhost:3000",
-				VITE_VERCEL_PROJECT_PRODUCTION_URL: "example.com",
-			},
-			expected: "http://localhost:3000",
-			desc: "development environment",
-		},
-		{
-			env: {
-				VITE_VERCEL_ENV: "preview",
-				VITE_VERCEL_URL: "preview.example.com",
-				VITE_VERCEL_PROJECT_PRODUCTION_URL: "example.com",
-			},
-			expected: "https://preview.example.com",
-			desc: "preview environment",
-		},
-		{
-			env: {
-				VITE_VERCEL_ENV: "production",
-				VITE_VERCEL_URL: "example.vercel.app",
-				VITE_VERCEL_PROJECT_PRODUCTION_URL: "example.com",
-			},
-			expected: "https://example.com",
-			desc: "production environment",
-		},
-	]
-
-	for (const { env, expected, desc } of testCases) {
-		it(`should return correct URL for ${desc}`, async () => {
-			process.env.VITE_VERCEL_ENV = env.VITE_VERCEL_ENV
-			process.env.VITE_VERCEL_URL = env.VITE_VERCEL_URL
-			process.env.VITE_VERCEL_PROJECT_PRODUCTION_URL = env.VITE_VERCEL_PROJECT_PRODUCTION_URL
-
-			vi.doMock("@/env", () => ({
-				env: {
-					VITE_VERCEL_ENV: env.VITE_VERCEL_ENV,
-					VITE_VERCEL_URL: env.VITE_VERCEL_URL,
-					VITE_VERCEL_PROJECT_PRODUCTION_URL: env.VITE_VERCEL_PROJECT_PRODUCTION_URL,
-				},
-			}))
-
-			const { getServerUrl } = await import("@/utils/shared-functions")
-			const result = getServerUrl()
-			expect(result).toBe(expected)
-		})
-	}
-})
 
 describe("slugify", () => {
 	test("should convert basic text to slug", () => {

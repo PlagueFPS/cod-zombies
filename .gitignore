@@ -31,6 +31,7 @@ oldassets
 
 #cloudflare
 worker-configuration.d.ts
+.dev.vars
 
 # typescript
 *.tsbuildinfo

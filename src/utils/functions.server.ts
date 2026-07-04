@@ -5,7 +5,7 @@ import { Clock, Duration, Effect, Number as Num, Option, Schema } from "effect"
 import { files } from "@/data/last-modified.json" with { type: "json" }
 import manifest from "@/data/opengraph-manifest.json" with { type: "json" }
 import { DATE_OPTIONS } from "@/utils/constants"
-import { getServerUrl } from "@/utils/shared-functions"
+import { getServerUrl } from "@/utils/request.server"
 
 class TokenExpirationError extends Schema.TaggedErrorClass<TokenExpirationError>()(
 	"TokenExpirationError",

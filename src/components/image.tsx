@@ -10,7 +10,6 @@ import {
 	type SyntheticEvent,
 } from "react"
 import ReactDOM from "react-dom"
-import { env } from "@/env"
 import { useMergeRef } from "@/hooks/use-merge-ref"
 
 export interface ImageProps extends Omit<
@@ -192,11 +191,7 @@ function buildOptimizedUrl(
 	params.set("w", String(Math.max(1, Math.round(width))))
 	params.set("q", String(Math.min(100, Math.max(1, Math.round(quality)))))
 
-	if (env.VITE_VERCEL_ENV === "development") {
-		return `/api/image?${params.toString()}`
-	}
-
-	return `/_vercel/image?${params.toString()}`
+	return `/api/image?${params.toString()}`
 }
 
 function handleLoading(
