@@ -29,15 +29,11 @@ newassets
 oldassets
 /.repos/
 
-# vercel
-.vercel
+#cloudflare
+worker-configuration.d.ts
 
 # typescript
 *.tsbuildinfo
-
-#nextjs
-.next
-next-env.d.ts
 
 #tanstack
 .tanstack
