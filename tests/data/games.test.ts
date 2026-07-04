@@ -5,7 +5,9 @@ import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getGames", () => {
 	test("sorted by release date descending", () => {
-		assertSortedDescByDate(getGames().map(g => g.releaseDate))
+		const dates = getGames().map(g => g.releaseDate)
+		expect(dates.length).toBeGreaterThan(1)
+		assertSortedDescByDate(dates)
 	})
 })
 

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest"
-import { generateImgAttrs } from "@/components/image"
+import { generateImgAttrs } from "@/lib/generate-img-attrs"
 
 vi.mock("@/types/generated/image-variants.gen", () => ({
 	VARIANT_WIDTHS: {

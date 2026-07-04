@@ -1,5 +1,6 @@
 import { Exit, Schema } from "effect"
 import { describe, expect, test } from "vitest"
+import { expectExitSuccess } from "@/tests/helpers"
 import {
 	ContactFormSchema,
 	FeedbackFormSchema,
@@ -58,12 +59,10 @@ describe("search param validation schemas", () => {
 			map: ["terminus", "reckoning"],
 		})
 
-		expect(Exit.isSuccess(bestiary)).toBe(true)
-		if (Exit.isSuccess(bestiary)) {
-			expect(bestiary.value.game).toEqual(["black-ops-6"])
-			expect(bestiary.value.map).toEqual(["terminus", "reckoning"])
-			expect(bestiary.value.type).toEqual([])
-		}
+		const bestiaryValue = expectExitSuccess(bestiary)
+		expect(bestiaryValue.game).toEqual(["black-ops-6"])
+		expect(bestiaryValue.map).toEqual(["terminus", "reckoning"])
+		expect(bestiaryValue.type).toEqual([])
 	})
 
 	test("rejects invalid pages while accepting known search shape", () => {
@@ -88,13 +87,11 @@ describe("search param validation schemas", () => {
 			layer: "boss-fight-arena",
 		})
 
-		expect(Exit.isSuccess(search)).toBe(true)
-		if (Exit.isSuccess(search)) {
-			expect(search.value).toEqual({
-				include: ["perk"],
-				exclude: ["label"],
-				layer: "boss-fight-arena",
-			})
-		}
+		const searchValue = expectExitSuccess(search)
+		expect(searchValue).toEqual({
+			include: ["perk"],
+			exclude: ["label"],
+			layer: "boss-fight-arena",
+		})
 	})
 })

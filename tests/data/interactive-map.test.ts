@@ -11,11 +11,11 @@ import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getInteractiveMaps", () => {
 	test("sorted by release date descending", () => {
-		assertSortedDescByDate(
-			getInteractiveMaps().map(
-				m => getMapByKey(m.id as MapKey).pipe(Option.getOrThrow).releaseDate,
-			),
+		const dates = getInteractiveMaps().map(
+			m => getMapByKey(m.id as MapKey).pipe(Option.getOrThrow).releaseDate,
 		)
+		expect(dates.length).toBeGreaterThan(1)
+		assertSortedDescByDate(dates)
 	})
 })
 

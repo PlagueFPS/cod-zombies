@@ -1,4 +1,3 @@
-import type { PlatformError } from "effect/PlatformError"
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { Clock, Effect, FileSystem, HashSet, Path, Predicate, SynchronizedRef } from "effect"
@@ -7,17 +6,10 @@ import {
 	VARIANT_WIDTHS_LIST,
 	variantWebPath,
 	type VariantWidth,
-} from "@/scripts/image-optimization-utils"
-import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
+} from "@/lib/image-variant-paths"
+import { walkImageFiles } from "@/scripts/image-file-walk"
+import { EXCLUDED_FROM_IMAGE_PATH_TYPES } from "@/scripts/image-variant-policy"
 import { toPascalCase } from "@/utils/shared-functions"
-
-// Exclude these top-level directories entirely from ImagePaths
-const EXCLUDED_DIRS = HashSet.make("content", "opengraph-images")
-
-const formatPath = Effect.fn("formatPath")(function* (dir: string, file: string) {
-	const path = yield* Path.Path
-	return path.relative(dir, file).split(path.sep).join("/")
-})
 
 const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDir: string) {
 	const fs = yield* FileSystem.FileSystem
@@ -38,98 +30,19 @@ const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDi
 		Effect.map(files =>
 			files
 				.filter(file => Predicate.isNotNull(file))
-				.filter(file => !HashSet.has(EXCLUDED_DIRS, file)),
+				.filter(file => !HashSet.has(EXCLUDED_FROM_IMAGE_PATH_TYPES, file)),
 		),
 	)
 })
 
-const collectImageFiles = Effect.fn("collectImageFiles")(function* (
-	publicDir: string,
-	dir: string,
-	options?: { includeVariants?: boolean },
-) {
-	const fs = yield* FileSystem.FileSystem
-	const path = yield* Path.Path
-	const includeVariants = options?.includeVariants ?? false
-	const results: string[] = []
-
-	const walk = (current: string): Effect.Effect<void, PlatformError, Path.Path> =>
-		Effect.gen(function* () {
-			const files = yield* fs.readDirectory(current)
-			yield* Effect.forEach(
-				files,
-				file =>
-					Effect.gen(function* () {
-						if (file.startsWith(".")) return
-
-						const full = path.join(current, file)
-						const stat = yield* fs.stat(full)
-
-						if (stat.type === "Directory") yield* walk(full)
-						else if (stat.type === "File") {
-							const ext = path.extname(file).toLowerCase()
-							if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
-								const relative = yield* formatPath(publicDir, full)
-								const webPath = `/${relative}`
-								if (!includeVariants && isVariantImagePath(webPath)) return
-								results.push(webPath)
-							}
-						}
-					}),
-				{ concurrency: "unbounded" },
-			)
-		})
-
-	yield* walk(dir)
-	return results
-})
-
-const collectRootImages = Effect.fn("collectRootImages")(function* (
-	publicDir: string,
-	options?: { includeVariants?: boolean },
-) {
-	const fs = yield* FileSystem.FileSystem
-	const path = yield* Path.Path
-	const includeVariants = options?.includeVariants ?? false
-	const files = yield* fs.readDirectory(publicDir)
-	const results: string[] = []
-
-	yield* Effect.forEach(
-		files,
-		file =>
-			Effect.gen(function* () {
-				const filePath = path.join(publicDir, file)
-				const stat = yield* fs.stat(filePath)
-				if (stat.type !== "File") return
-				if (file.startsWith(".")) return
-
-				const ext = path.extname(file).toLowerCase()
-				if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
-					const relative = yield* formatPath(publicDir, filePath)
-					const webPath = `/${relative}`
-					if (!includeVariants && isVariantImagePath(webPath)) return
-					results.push(webPath)
-				}
-			}),
-		{ concurrency: "unbounded" },
-	)
-
-	return results
-})
-
-function filterBaseImagePaths(imagePaths: string[]): string[] {
-	return imagePaths.filter(path => !isVariantImagePath(path))
-}
-
 function buildVariantWidthsMap(
-	allImagePaths: string[],
+	basePaths: readonly string[],
 	existingPaths: ReadonlySet<string>,
 ): Record<string, readonly VariantWidth[]> {
+	// Filesystem discovery: which variant widths exist on disk (not encode-time policy).
 	const variantMap: Record<string, VariantWidth[]> = {}
 
-	for (const basePath of allImagePaths) {
-		if (isVariantImagePath(basePath)) continue
-
+	for (const basePath of basePaths) {
 		const widths: VariantWidth[] = []
 		for (const width of VARIANT_WIDTHS_LIST) {
 			if (existingPaths.has(variantWebPath(basePath, width))) {
@@ -167,6 +80,10 @@ function generateVariantWidthsObject(variantMap: Record<string, readonly Variant
 	return `export const VARIANT_WIDTHS = {\n${lines.join("\n")}\n} as const satisfies Record<string, readonly number[]>\n`
 }
 
+function isRootWebPath(webPath: string): boolean {
+	return !webPath.slice(1).includes("/")
+}
+
 /** @param cwd - Workspace root (must contain `public/` when run). */
 export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 	cwd: string = process.cwd(),
@@ -181,8 +98,13 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 
 	const startTime = yield* Clock.currentTimeMillis
 
-	const rootImagesAbs = filterBaseImagePaths(yield* collectRootImages(publicDir))
-	const rootWebPaths = rootImagesAbs.sort()
+	const allWebPaths = yield* walkImageFiles(publicDir, {
+		format: "web",
+		includeVariants: true,
+	})
+	const existingPaths = new Set(allWebPaths)
+	const basePaths = allWebPaths.filter(webPath => !isVariantImagePath(webPath))
+	const rootWebPaths = basePaths.filter(isRootWebPath).sort()
 
 	const topDirs = yield* listTopLevelDirs(publicDir)
 	const totalImages = yield* SynchronizedRef.make(0)
@@ -190,9 +112,8 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 		topDirs,
 		dir =>
 			Effect.gen(function* () {
-				const fullDir = path.join(publicDir, dir)
-				const images = filterBaseImagePaths(yield* collectImageFiles(publicDir, fullDir))
-				const webPaths = images.sort()
+				const prefix = `/${dir}/`
+				const webPaths = basePaths.filter(webPath => webPath.startsWith(prefix)).sort()
 				yield* SynchronizedRef.update(totalImages, n => n + webPaths.length)
 				return {
 					dir,
@@ -203,22 +124,6 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 		{ concurrency: "unbounded" },
 	).pipe(Effect.map(results => results.sort((a, b) => a.dir.localeCompare(b.dir))))
 
-	const allPublicImages = [
-		...(yield* collectRootImages(publicDir, { includeVariants: true })),
-		...(yield* Effect.forEach(
-			yield* fs.readDirectory(publicDir),
-			file =>
-				Effect.gen(function* () {
-					const filePath = path.join(publicDir, file)
-					const stat = yield* fs.stat(filePath)
-					if (stat.type !== "Directory") return [] as string[]
-					return yield* collectImageFiles(publicDir, filePath, { includeVariants: true })
-				}),
-			{ concurrency: "unbounded" },
-		).pipe(Effect.map(nested => nested.flat()))),
-	]
-	const existingPaths = new Set(allPublicImages)
-	const basePaths = filterBaseImagePaths(allPublicImages)
 	const variantMap = buildVariantWidthsMap(basePaths, existingPaths)
 
 	const durationMs = yield* Clock.currentTimeMillis.pipe(

@@ -1,4 +1,4 @@
-import { Effect } from "effect"
+import { Effect, Exit } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	requestSubscribe,
@@ -33,6 +33,7 @@ describe("requestSubscribe", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ContactExistsError")
 		expectCauseHasString(cause, "That email is already subscribed!")
@@ -55,6 +56,7 @@ describe("requestUnsubscribe", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ContactNotFoundError")
 		expectCauseHasString(cause, "That email is not currently subscribed!")

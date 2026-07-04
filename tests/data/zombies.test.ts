@@ -5,7 +5,9 @@ import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getZombies", () => {
 	test("sorted by release date descending", () => {
-		assertSortedDescByDate(getZombies().map(z => z.releaseDate))
+		const dates = getZombies().map(z => z.releaseDate)
+		expect(dates.length).toBeGreaterThan(1)
+		assertSortedDescByDate(dates)
 	})
 })
 
@@ -63,12 +65,11 @@ describe("getAdjacentZombies", () => {
 		const { prev, next } = getAdjacentZombies(z1.id as ZombieKey)
 		const idx = zombies.findIndex(z => z.id === z1.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
-		if (idx < zombies.length - 1) {
-			expect(prev.pipe(Option.map(n => n.id))).toEqual(Option.some(zombies[idx + 1]!.id))
-		}
-		if (idx > 0) {
-			expect(next.pipe(Option.map(p => p.id))).toEqual(Option.some(zombies[idx - 1]!.id))
-		}
+		const expectedPrev =
+			idx < zombies.length - 1 ? Option.some(zombies[idx + 1]!.id) : Option.none<string>()
+		const expectedNext = idx > 0 ? Option.some(zombies[idx - 1]!.id) : Option.none<string>()
+		expect(prev.pipe(Option.map(n => n.id))).toEqual(expectedPrev)
+		expect(next.pipe(Option.map(p => p.id))).toEqual(expectedNext)
 	})
 
 	test("prev is Some and Next is None when the first zombie is provided", () => {

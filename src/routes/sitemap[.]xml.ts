@@ -24,8 +24,8 @@ export const Route = createFileRoute("/sitemap.xml")({
 					const mainQuestsMap = yield* Effect.forEach(
 						maps,
 						map =>
-							Effect.gen(function* () {
-								const mainQuestPath = yield* map.mainQuest
+							Effect.sync(() => {
+								const mainQuestPath = Option.getOrThrow(map.mainQuest)
 								const { lastModified } = getLastModified(mainQuestPath)
 								return {
 									url: `${serverUrl}/main-quests/${map.game}/${map.id}`,
@@ -38,9 +38,9 @@ export const Route = createFileRoute("/sitemap.xml")({
 					const sideQuestsMap = yield* Effect.forEach(
 						sideQuests,
 						quest =>
-							Effect.gen(function* () {
+							Effect.sync(() => {
 								const { lastModified } = getLastModified(quest.content)
-								const map = yield* getMapByKey(quest.map)
+								const map = Option.getOrThrow(getMapByKey(quest.map))
 								return {
 									url: `${serverUrl}/side-quests/${map.game}/${map.id}/${quest.id}`,
 									lastModified: new Date(lastModified),
@@ -60,9 +60,9 @@ export const Route = createFileRoute("/sitemap.xml")({
 					const relicsMap = yield* Effect.forEach(
 						relics,
 						relic =>
-							Effect.gen(function* () {
+							Effect.sync(() => {
 								const { lastModified } = getLastModified(relic.content)
-								const map = yield* getMapByKey(relic.map)
+								const map = Option.getOrThrow(getMapByKey(relic.map))
 								return {
 									url: `${serverUrl}/relics/${map.game}/${relic.id}`,
 									lastModified: new Date(lastModified),
@@ -87,17 +87,21 @@ export const Route = createFileRoute("/sitemap.xml")({
 								)
 							: undefined
 
-					const mostRecentMainQuest = yield* Arr.head(maps).pipe(
+					const mostRecentMainQuest = Arr.head(maps).pipe(
 						Option.map(quest => getLastModified(`content/main-quests/${quest.id}` as ContentPaths)),
+						Option.getOrThrow,
 					)
-					const mostRecentSideQuest = yield* Arr.head(sideQuests).pipe(
+					const mostRecentSideQuest = Arr.head(sideQuests).pipe(
 						Option.map(quest => getLastModified(`content/side-quests/${quest.id}` as ContentPaths)),
+						Option.getOrThrow,
 					)
-					const mostRecentZombie = yield* Arr.head(zombies).pipe(
+					const mostRecentZombie = Arr.head(zombies).pipe(
 						Option.map(zombie => getLastModified(`content/zombies/${zombie.id}` as ContentPaths)),
+						Option.getOrThrow,
 					)
-					const mostRecentRelic = yield* Arr.head(relics).pipe(
+					const mostRecentRelic = Arr.head(relics).pipe(
 						Option.map(relic => getLastModified(`content/relics/${relic.id}` as ContentPaths)),
+						Option.getOrThrow,
 					)
 
 					const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

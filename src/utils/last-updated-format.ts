@@ -26,7 +26,7 @@ const RELATIVE_DIVISIONS: RelativeDivision[] = [
 export function formatRelativeTimeAgo(
 	pastMs: number,
 	nowMs: number,
-	locale: string | undefined = undefined,
+	locale?: string,
 	absoluteFallback = "",
 ): string {
 	if (!Number.isFinite(pastMs) || !Number.isFinite(nowMs)) {

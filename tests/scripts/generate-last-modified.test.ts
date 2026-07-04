@@ -94,10 +94,8 @@ describe("getAllContentFiles", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const errOpt = Cause.findErrorOption(cause)
 		expect(Option.isSome(errOpt)).toBe(true)
-		if (Option.isSome(errOpt)) {
-			const e = errOpt.value as DuplicateFilenameError
-			expect(e._tag).toBe("DuplicateFilenameError")
-			expect(e.message).toContain("Duplicate file paths")
-		}
+		const err = Option.getOrThrow(errOpt) as DuplicateFilenameError
+		expect(err._tag).toBe("DuplicateFilenameError")
+		expect(err.message).toContain("Duplicate file paths")
 	})
 })

@@ -24,7 +24,9 @@ const resolvedRelicDisplayState = (
 
 describe("getRelics", () => {
 	test("sorted by discovered date descending", () => {
-		assertSortedDescByDate(getRelics().map(r => r.discoveredDate))
+		const dates = getRelics().map(r => r.discoveredDate)
+		expect(dates.length).toBeGreaterThan(1)
+		assertSortedDescByDate(dates)
 	})
 })
 
@@ -102,12 +104,11 @@ describe("getAdjacentRelics", () => {
 		const { prev, next } = getAdjacentRelics(r1.id as RelicKey)
 		const idx = relics.findIndex(r => r.id === r1.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
-		if (idx < relics.length - 1) {
-			expect(prev.pipe(Option.map(n => n.id))).toEqual(Option.some(relics[idx + 1]!.id))
-		}
-		if (idx > 0) {
-			expect(next.pipe(Option.map(p => p.id))).toEqual(Option.some(relics[idx - 1]!.id))
-		}
+		const expectedPrev =
+			idx < relics.length - 1 ? Option.some(relics[idx + 1]!.id) : Option.none<string>()
+		const expectedNext = idx > 0 ? Option.some(relics[idx - 1]!.id) : Option.none<string>()
+		expect(prev.pipe(Option.map(n => n.id))).toEqual(expectedPrev)
+		expect(next.pipe(Option.map(p => p.id))).toEqual(expectedNext)
 	})
 
 	test("prev is Some and Next is None when the first relic is provided", () => {

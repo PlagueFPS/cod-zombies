@@ -1,17 +1,16 @@
-import type { PlatformError } from "effect/PlatformError"
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Clock, Duration, Effect, FileSystem, HashSet, Path, Schema, Ref } from "effect"
+import { Clock, Duration, Effect, FileSystem, Path, Schema, Ref } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp, { type Sharp } from "sharp"
 import { generateImagePaths } from "@/scripts/generate-image-paths"
+import { walkImageFiles } from "@/scripts/image-file-walk"
 import {
 	getCategoryFromRelativePath,
 	getVariantWidths,
 	shouldGenerateVariants,
 	variantFileName,
-} from "@/scripts/image-optimization-utils"
-import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
+} from "@/scripts/image-variant-policy"
 
 export class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
 	"ImageOptimizationError",
@@ -21,10 +20,18 @@ export class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimiz
 	},
 ) {}
 
-const MAX_EFFORT = 6
-const MAX_QUALITY = 80
 const DEFAULT_SOURCE_DIR = "./newassets"
 const DEFAULT_COPY_DIR = "./oldassets"
+const MAX_EFFORT = 6
+const MAX_QUALITY = 80
+
+export function encodeWebp(image: Sharp, width?: number): Promise<Buffer> {
+	let pipeline = image.rotate()
+	if (width !== undefined) {
+		pipeline = pipeline.resize({ width, withoutEnlargement: true })
+	}
+	return pipeline.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer()
+}
 
 const dirOption = Flag.directory("output-dir").pipe(
 	Flag.withAlias("o"),
@@ -39,71 +46,18 @@ const sourceOption = Flag.directory("source-dir").pipe(
 	),
 )
 
-const encodeBaseWebp = Effect.fnUntraced(function* (image: Sharp, asset: string) {
+const encodeWebpEffect = Effect.fnUntraced(function* (image: Sharp, asset: string, width?: number) {
 	return yield* Effect.tryPromise({
-		try: () => image.rotate().webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer(),
+		try: () => encodeWebp(image, width),
 		catch: cause =>
 			new ImageOptimizationError({
-				message: `Failed to encode base image: ${asset}`,
+				message:
+					width === undefined
+						? `Failed to encode base image: ${asset}`
+						: `Failed to encode ${width}px variant: ${asset}`,
 				cause,
 			}),
 	})
-})
-
-const encodeVariantWebp = Effect.fnUntraced(function* (image: Sharp, width: number, asset: string) {
-	return yield* Effect.tryPromise({
-		try: () =>
-			image
-				.rotate()
-				.resize({ width, withoutEnlargement: true })
-				.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY })
-				.toBuffer(),
-		catch: cause =>
-			new ImageOptimizationError({
-				message: `Failed to encode ${width}px variant: ${asset}`,
-				cause,
-			}),
-	})
-})
-
-const collectImageFiles = Effect.fnUntraced(function* (sourceDir: string) {
-	const fs = yield* FileSystem.FileSystem
-	const path = yield* Path.Path
-	const results: string[] = []
-
-	const walk = (
-		current: string,
-	): Effect.Effect<void, PlatformError, Path.Path | FileSystem.FileSystem> =>
-		Effect.gen(function* () {
-			const files = yield* fs.readDirectory(current)
-			yield* Effect.forEach(
-				files,
-				file =>
-					Effect.gen(function* () {
-						if (file.startsWith(".")) return
-
-						const full = path.join(current, file)
-						const stat = yield* fs.stat(full)
-
-						if (stat.type === "Directory") {
-							yield* walk(full)
-							return
-						}
-
-						if (stat.type === "File") {
-							const ext = path.extname(file).toLowerCase()
-							if (HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) {
-								const relative = path.relative(sourceDir, full).split(path.sep).join("/")
-								results.push(relative)
-							}
-						}
-					}),
-				{ concurrency: "unbounded" },
-			)
-		})
-
-	yield* walk(sourceDir)
-	return results
 })
 
 const ensureDirectory = Effect.fnUntraced(function* (dir: string) {
@@ -120,17 +74,38 @@ export type OptimizeCliOptions = {
 	readonly source: string
 }
 
+export const requireImageWidth = (
+	metadata: Readonly<{ width?: number }>,
+	asset: string,
+): Effect.Effect<number, ImageOptimizationError> => {
+	if (metadata.width === undefined) {
+		return Effect.fail(
+			new ImageOptimizationError({
+				message: `Image has no width metadata: ${asset}`,
+				cause: asset,
+			}),
+		)
+	}
+	return Effect.succeed(metadata.width)
+}
+
 export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 	Effect.gen(function* () {
 		const { dir: targetDir, source } = args
 		const startTime = yield* Clock.currentTimeMillis
 		const fs = yield* FileSystem.FileSystem
 		const path = yield* Path.Path
-		const assets = yield* collectImageFiles(source)
+		const assets = yield* walkImageFiles(source, {
+			format: "relative",
+			includeVariants: false,
+		})
 		const numRef = yield* Ref.make(0)
+		const inPlace = path.resolve(source) === path.resolve(targetDir)
 
 		yield* ensureDirectory(targetDir)
-		yield* ensureDirectory(DEFAULT_COPY_DIR)
+		if (!inPlace) {
+			yield* ensureDirectory(DEFAULT_COPY_DIR)
+		}
 
 		yield* Effect.forEach(
 			assets,
@@ -156,45 +131,37 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 							}),
 					})
 
-					if (metadata.width === undefined) {
-						return yield* Effect.fail(
-							new ImageOptimizationError({
-								message: `Image has no width metadata: ${relativeAsset}`,
-								cause: relativeAsset,
-							}),
-						)
-					}
+					const sourceWidth = yield* requireImageWidth(metadata, relativeAsset)
 
 					yield* Effect.log(`Transforming image: ${relativeAsset}`)
 
-					const baseBuffer = yield* encodeBaseWebp(image, relativeAsset)
+					const baseBuffer = yield* encodeWebpEffect(image, relativeAsset)
 					const baseFileName = `${baseName}.webp`
-					yield* fs.writeFile(
-						path.join(outputDir, baseFileName),
-						new Uint8Array(baseBuffer as Buffer),
-					)
+					yield* fs.writeFile(path.join(outputDir, baseFileName), baseBuffer)
 
 					if (shouldGenerateVariants(category)) {
-						const variantWidths = getVariantWidths(metadata.width)
+						const variantWidths = getVariantWidths(sourceWidth)
 						yield* Effect.forEach(
 							variantWidths,
 							width =>
 								Effect.gen(function* () {
-									const variantBuffer = yield* encodeVariantWebp(image, width, relativeAsset)
+									const variantBuffer = yield* encodeWebpEffect(image, relativeAsset, width)
 									yield* fs.writeFile(
 										path.join(outputDir, variantFileName(baseName, width)),
-										new Uint8Array(variantBuffer as Buffer),
+										variantBuffer,
 									)
 								}),
-							{ concurrency: 1 },
+							{ concurrency: 2 },
 						)
 					}
 
-					const copyDestDir =
-						relativeDir === "." ? DEFAULT_COPY_DIR : path.join(DEFAULT_COPY_DIR, relativeDir)
-					yield* ensureDirectory(copyDestDir)
-					yield* fs.copyFile(sourcePath, path.join(copyDestDir, path.basename(relativeAsset)))
-					yield* fs.remove(sourcePath)
+					if (!inPlace) {
+						const copyDestDir =
+							relativeDir === "." ? DEFAULT_COPY_DIR : path.join(DEFAULT_COPY_DIR, relativeDir)
+						yield* ensureDirectory(copyDestDir)
+						yield* fs.copyFile(sourcePath, path.join(copyDestDir, path.basename(relativeAsset)))
+						yield* fs.remove(sourcePath)
+					}
 
 					yield* Ref.update(numRef, n => n + 1)
 					const currentAsset = yield* Ref.get(numRef)
@@ -221,7 +188,7 @@ export const optimizeCommand = Command.make(
 	},
 	(args: OptimizeCliOptions) =>
 		optimizeAssetsEffect(args).pipe(
-			Effect.flatMap(() =>
+			Effect.tap(() =>
 				Effect.gen(function* () {
 					yield* Effect.log("Regenerating image paths and variant manifest...")
 					yield* generateImagePaths(process.cwd())

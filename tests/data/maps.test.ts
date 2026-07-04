@@ -24,7 +24,9 @@ const resolvedMapDisplayState = (
 
 describe("getMaps", () => {
 	test("sorted by release date descending", () => {
-		assertSortedDescByDate(getMaps().map(m => m.releaseDate))
+		const dates = getMaps().map(m => m.releaseDate)
+		expect(dates.length).toBeGreaterThan(1)
+		assertSortedDescByDate(dates)
 	})
 
 	test("same calendar day: later MAPS entries appear first (e.g. BO4 launch)", () => {
@@ -98,12 +100,11 @@ describe("getAdjacentMaps", () => {
 		const { prev, next } = getAdjacentMaps(mid.id as MapKey)
 		const idx = maps.findIndex(m => m.id === mid.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
-		if (idx < maps.length - 1) {
-			expect(prev.pipe(Option.map(p => p.id))).toEqual(Option.some(maps[idx + 1]!.id))
-		}
-		if (idx > 0) {
-			expect(next.pipe(Option.map(n => n.id))).toEqual(Option.some(maps[idx - 1]!.id))
-		}
+		const expectedPrev =
+			idx < maps.length - 1 ? Option.some(maps[idx + 1]!.id) : Option.none<string>()
+		const expectedNext = idx > 0 ? Option.some(maps[idx - 1]!.id) : Option.none<string>()
+		expect(prev.pipe(Option.map(p => p.id))).toEqual(expectedPrev)
+		expect(next.pipe(Option.map(n => n.id))).toEqual(expectedNext)
 	})
 
 	test("prev is Some and Next is None when the first map is provided", () => {

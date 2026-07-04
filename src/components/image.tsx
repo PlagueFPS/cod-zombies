@@ -11,8 +11,7 @@ import {
 } from "react"
 import ReactDOM from "react-dom"
 import { useMergeRef } from "@/hooks/use-merge-ref"
-import { buildVariantUrl } from "@/scripts/image-optimization-utils"
-import { VARIANT_WIDTHS } from "@/types/generated/image-variants.gen"
+import { generateImgAttrs } from "@/lib/generate-img-attrs"
 
 export interface ImageProps extends Omit<
 	ImgHTMLAttributes<HTMLImageElement>,
@@ -48,13 +47,6 @@ export interface ImageProps extends Omit<
 	/** The source set of the image */
 	srcSet?: string
 	/**
-	 * An integer between `1` and `100` that sets the quality of the optimized image.
-	 * Higher values increase file size and visual fidelity. Lower values reduce
-	 * file size but may affect sharpness.
-	 * @default 75
-	 */
-	quality?: number
-	/**
 	 * Whether to preload the image.
 	 * @default false
 	 */
@@ -81,37 +73,8 @@ type ImgElementWithDataProp = HTMLImageElement & {
 	"data-loaded-src": string | undefined
 }
 
-interface GenImgAttrs {
-	src: string
-	srcSet: string | undefined
-	sizes: string | undefined
-}
-
 /** Dedupe `onLoad` when both the cached/ref path and the native `load` event run. */
 const LOADED_SRC_ATTR = "data-loaded-src"
-
-function getAvailableVariantWidths(src: string): readonly number[] {
-	if (src.startsWith("http://") || src.startsWith("https://")) return []
-	return VARIANT_WIDTHS[src as keyof typeof VARIANT_WIDTHS] ?? []
-}
-
-export function generateImgAttrs(src: string, unoptimized: boolean, sizes?: string): GenImgAttrs {
-	if (unoptimized) return { srcSet: undefined, sizes: undefined, src }
-
-	const available = getAvailableVariantWidths(src)
-	if (available.length === 0) {
-		return { src, srcSet: undefined, sizes }
-	}
-
-	const srcSet = available.map(w => `${buildVariantUrl(src, w)} ${w}w`).join(", ")
-	const largest = available.at(-1)!
-
-	return {
-		sizes,
-		srcSet,
-		src: buildVariantUrl(src, largest),
-	}
-}
 
 function createSyntheticLoadEvent(img: HTMLImageElement): SyntheticEvent<HTMLImageElement> {
 	const event = new Event("load")
@@ -179,7 +142,6 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 			decoding = "async",
 			className,
 			style,
-			quality: _quality,
 			sizes,
 			preload,
 			crossOrigin,
