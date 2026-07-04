@@ -7,11 +7,18 @@ import { Effect, Layer } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { ImageOptimizationError, optimizeAssetsEffect } from "@/scripts/image-optimization"
+import {
+	getCategoryFromRelativePath,
+	getVariantWidths,
+	shouldGenerateVariants,
+	variantFileName,
+	variantWebPath,
+} from "@/scripts/image-optimization-utils"
 import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 
-async function writePng(path: string, width: number, height: number) {
+async function writePng(filePath: string, width: number, height: number) {
 	const buf = await sharp({
 		create: {
 			width,
@@ -22,8 +29,47 @@ async function writePng(path: string, width: number, height: number) {
 	})
 		.png()
 		.toBuffer()
-	writeFileSync(path, buf)
+	writeFileSync(filePath, buf)
 }
+
+function listFilesRecursive(dir: string, base = dir): string[] {
+	const entries = readdirSync(dir, { withFileTypes: true })
+	const files: string[] = []
+	for (const entry of entries) {
+		const full = join(dir, entry.name)
+		if (entry.isDirectory()) {
+			files.push(...listFilesRecursive(full, base))
+		} else {
+			files.push(full.slice(base.length + 1))
+		}
+	}
+	return files
+}
+
+describe("image-optimization-utils", () => {
+	test("getCategoryFromRelativePath returns first segment", () => {
+		expect(getCategoryFromRelativePath("maps/foo.png")).toBe("maps")
+		expect(getCategoryFromRelativePath("content/map/img.png")).toBe("content")
+		expect(getCategoryFromRelativePath("foo.png")).toBeNull()
+	})
+
+	test("shouldGenerateVariants excludes listed categories", () => {
+		expect(shouldGenerateVariants("perks")).toBe(false)
+		expect(shouldGenerateVariants("maps")).toBe(true)
+		expect(shouldGenerateVariants(null)).toBe(true)
+	})
+
+	test("getVariantWidths respects source dimensions", () => {
+		expect(getVariantWidths(2000)).toEqual([384, 1200])
+		expect(getVariantWidths(800)).toEqual([384])
+		expect(getVariantWidths(300)).toEqual([])
+	})
+
+	test("variantFileName and variantWebPath", () => {
+		expect(variantFileName("foo", 384)).toBe("foo-384.webp")
+		expect(variantWebPath("/maps/foo.webp", 1200)).toBe("/maps/foo-1200.webp")
+	})
+})
 
 describe("optimizeAssetsEffect", () => {
 	let prevCwd: string
@@ -42,88 +88,90 @@ describe("optimizeAssetsEffect", () => {
 		rmSync(root, { recursive: true, force: true })
 	})
 
-	test("optimizes small PNG to webp (optimize-only branch)", async () => {
-		await writePng(join(root, "newassets", "small.png"), 100, 100)
+	test("excluded category produces single webp", async () => {
+		mkdirSync(join(root, "newassets", "perks"), { recursive: true })
+		await writePng(join(root, "newassets", "perks", "foo.png"), 400, 400)
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: false,
-			noResize: false,
-			preview: false,
-			icon: false,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
-		const files = readdirSync(join(root, "out"))
-		expect(files).toContain("small.webp")
-		const meta = await sharp(readFileSync(join(root, "out", "small.webp"))).metadata()
-		expect(meta.format).toBe("webp")
+		const files = listFilesRecursive(join(root, "out"))
+		expect(files).toEqual(["perks/foo.webp"])
 	})
 
-	test("map flag produces 2048-wide webp", async () => {
-		await writePng(join(root, "newassets", "map.png"), 3000, 500)
+	test("large variant source produces base and both variants", async () => {
+		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
+		await writePng(join(root, "newassets", "maps", "big.png"), 2000, 800)
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: true,
-			noResize: false,
-			preview: false,
-			icon: false,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
-		const meta = await sharp(readFileSync(join(root, "out", "map.webp"))).metadata()
-		expect(meta.width).toBe(2048)
+		const files = listFilesRecursive(join(root, "out")).sort()
+		expect(files).toEqual(["maps/big-1200.webp", "maps/big-384.webp", "maps/big.webp"])
+		const meta1200 = await sharp(
+			readFileSync(join(root, "out", "maps", "big-1200.webp")),
+		).metadata()
+		expect(meta1200.width).toBe(1200)
 	})
 
-	test("preview flag resizes to 640x360", async () => {
-		await writePng(join(root, "newassets", "pv.png"), 800, 600)
+	test("medium variant source produces base and 384 only", async () => {
+		mkdirSync(join(root, "newassets", "zombies"), { recursive: true })
+		await writePng(join(root, "newassets", "zombies", "med.png"), 800, 600)
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: false,
-			noResize: false,
-			preview: true,
-			icon: false,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
-		const meta = await sharp(readFileSync(join(root, "out", "pv.webp"))).metadata()
-		expect(meta.width).toBe(640)
-		expect(meta.height).toBe(360)
+		const files = listFilesRecursive(join(root, "out")).sort()
+		expect(files).toEqual(["zombies/med-384.webp", "zombies/med.webp"])
 	})
 
-	test("icon flag resizes to 256x256", async () => {
-		await writePng(join(root, "newassets", "ic.png"), 400, 400)
+	test("small variant source produces base only", async () => {
+		mkdirSync(join(root, "newassets", "previews"), { recursive: true })
+		await writePng(join(root, "newassets", "previews", "small.png"), 200, 200)
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: false,
-			noResize: false,
-			preview: false,
-			icon: true,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
-		const meta = await sharp(readFileSync(join(root, "out", "ic.webp"))).metadata()
-		expect(meta.width).toBe(256)
-		expect(meta.height).toBe(256)
+		const files = listFilesRecursive(join(root, "out"))
+		expect(files).toEqual(["previews/small.webp"])
 	})
 
-	test("wide image without flags uses resize-and-optimize branch", async () => {
-		await writePng(join(root, "newassets", "wide.png"), 2000, 800)
+	test("nested content path preserves directory structure", async () => {
+		mkdirSync(join(root, "newassets", "content", "map"), { recursive: true })
+		await writePng(join(root, "newassets", "content", "map", "img.png"), 1500, 900)
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: false,
-			noResize: false,
-			preview: false,
-			icon: false,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
-		const meta = await sharp(readFileSync(join(root, "out", "wide.webp"))).metadata()
-		expect(meta.width).toBe(1920)
+		const files = listFilesRecursive(join(root, "out")).sort()
+		expect(files).toEqual([
+			"content/map/img-1200.webp",
+			"content/map/img-384.webp",
+			"content/map/img.webp",
+		])
+	})
+
+	test("does not upscale small images in variant categories", async () => {
+		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
+		await writePng(join(root, "newassets", "maps", "tiny.png"), 300, 200)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const files = listFilesRecursive(join(root, "out"))
+		expect(files).toEqual(["maps/tiny.webp"])
 	})
 
 	test("skips non-image extensions", async () => {
@@ -131,14 +179,10 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: false,
-			noResize: false,
-			preview: false,
-			icon: false,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
-		expect(readdirSync(join(root, "out"))).toHaveLength(0)
+		expect(listFilesRecursive(join(root, "out"))).toHaveLength(0)
 	})
 
 	test("fails with ImageOptimizationError when image is invalid", async () => {
@@ -146,10 +190,6 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: false,
-			noResize: false,
-			preview: false,
-			icon: false,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		const cause = expectExitFailure(exit)

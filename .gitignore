@@ -39,3 +39,4 @@ worker-configuration.d.ts
 #tanstack
 .tanstack
 .output
+dist

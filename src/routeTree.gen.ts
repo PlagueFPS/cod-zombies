@@ -26,7 +26,6 @@ import { Route as BestiaryIndexRouteImport } from './routes/bestiary.index'
 import { Route as NewsletterUnsubscribeRouteImport } from './routes/newsletter.unsubscribe'
 import { Route as MapsMapIdRouteImport } from './routes/maps.$mapId'
 import { Route as BestiaryZombieIdRouteImport } from './routes/bestiary.$zombieId'
-import { Route as ApiImageRouteImport } from './routes/api.image'
 import { Route as NewsletterUnsubscribeIndexRouteImport } from './routes/newsletter.unsubscribe.index'
 import { Route as RelicsGameIdRelicIdRouteImport } from './routes/relics.$gameId.$relicId'
 import { Route as NewsletterUnsubscribeSuccessRouteImport } from './routes/newsletter.unsubscribe.success'
@@ -123,11 +122,6 @@ const BestiaryZombieIdRoute = BestiaryZombieIdRouteImport.update({
   path: '/$zombieId',
   getParentRoute: () => BestiaryRoute,
 } as any)
-const ApiImageRoute = ApiImageRouteImport.update({
-  id: '/api/image',
-  path: '/api/image',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NewsletterUnsubscribeIndexRoute =
   NewsletterUnsubscribeIndexRouteImport.update({
     id: '/',
@@ -196,7 +190,6 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/side-quests': typeof SideQuestsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/image': typeof ApiImageRoute
   '/bestiary/$zombieId': typeof BestiaryZombieIdRoute
   '/maps/$mapId': typeof MapsMapIdRoute
   '/newsletter/unsubscribe': typeof NewsletterUnsubscribeRouteWithChildren
@@ -221,7 +214,6 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/image': typeof ApiImageRoute
   '/bestiary/$zombieId': typeof BestiaryZombieIdRoute
   '/maps/$mapId': typeof MapsMapIdRoute
   '/bestiary': typeof BestiaryIndexRoute
@@ -251,7 +243,6 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/side-quests': typeof SideQuestsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/image': typeof ApiImageRoute
   '/bestiary/$zombieId': typeof BestiaryZombieIdRoute
   '/maps/$mapId': typeof MapsMapIdRoute
   '/newsletter/unsubscribe': typeof NewsletterUnsubscribeRouteWithChildren
@@ -283,7 +274,6 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/side-quests'
     | '/sitemap.xml'
-    | '/api/image'
     | '/bestiary/$zombieId'
     | '/maps/$mapId'
     | '/newsletter/unsubscribe'
@@ -308,7 +298,6 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/robots.txt'
     | '/sitemap.xml'
-    | '/api/image'
     | '/bestiary/$zombieId'
     | '/maps/$mapId'
     | '/bestiary'
@@ -337,7 +326,6 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/side-quests'
     | '/sitemap.xml'
-    | '/api/image'
     | '/bestiary/$zombieId'
     | '/maps/$mapId'
     | '/newsletter/unsubscribe'
@@ -368,7 +356,6 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SideQuestsRoute: typeof SideQuestsRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  ApiImageRoute: typeof ApiImageRoute
   NewsletterUnsubscribeRoute: typeof NewsletterUnsubscribeRouteWithChildren
   ApiNewsletterSubscribeRoute: typeof ApiNewsletterSubscribeRoute
   ApiNewsletterUnsubscribeRoute: typeof ApiNewsletterUnsubscribeRoute
@@ -496,13 +483,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/bestiary/$zombieId'
       preLoaderRoute: typeof BestiaryZombieIdRouteImport
       parentRoute: typeof BestiaryRoute
-    }
-    '/api/image': {
-      id: '/api/image'
-      path: '/api/image'
-      fullPath: '/api/image'
-      preLoaderRoute: typeof ApiImageRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/newsletter/unsubscribe/': {
       id: '/newsletter/unsubscribe/'
@@ -671,7 +651,6 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SideQuestsRoute: SideQuestsRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  ApiImageRoute: ApiImageRoute,
   NewsletterUnsubscribeRoute: NewsletterUnsubscribeRouteWithChildren,
   ApiNewsletterSubscribeRoute: ApiNewsletterSubscribeRoute,
   ApiNewsletterUnsubscribeRoute: ApiNewsletterUnsubscribeRoute,

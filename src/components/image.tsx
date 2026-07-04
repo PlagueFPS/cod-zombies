@@ -11,6 +11,8 @@ import {
 } from "react"
 import ReactDOM from "react-dom"
 import { useMergeRef } from "@/hooks/use-merge-ref"
+import { buildVariantUrl } from "@/scripts/image-optimization-utils"
+import { VARIANT_WIDTHS } from "@/types/generated/image-variants.gen"
 
 export interface ImageProps extends Omit<
 	ImgHTMLAttributes<HTMLImageElement>,
@@ -79,11 +81,6 @@ type ImgElementWithDataProp = HTMLImageElement & {
 	"data-loaded-src": string | undefined
 }
 
-interface Widths {
-	kind: "x" | "w"
-	widths: readonly number[]
-}
-
 interface GenImgAttrs {
 	src: string
 	srcSet: string | undefined
@@ -92,63 +89,27 @@ interface GenImgAttrs {
 
 /** Dedupe `onLoad` when both the cached/ref path and the native `load` event run. */
 const LOADED_SRC_ATTR = "data-loaded-src"
-const DEVICE_SIZES = [640, 750, 828, 1080, 1200, 1920] as const
-const IMAGE_SIZES = [16, 32, 48, 64, 96, 128, 256, 384] as const
-const DEFAULT_QUALITY = 75
 
-function getWidths(width: number | undefined, sizes: string | undefined): Widths {
-	const allSizes = [...IMAGE_SIZES, ...DEVICE_SIZES]
-
-	if (sizes) {
-		// Find all the "vw" percent sizes used in the sizes prop
-		const viewportWidthRe = /(^|\s)(1?\d?\d)vw/g
-		const percentSizes = []
-		for (let match; (match = viewportWidthRe.exec(sizes)); match) {
-			if (match[2]) {
-				percentSizes.push(parseInt(match[2]))
-			}
-		}
-		if (percentSizes.length) {
-			const smallestRatio = Math.min(...percentSizes) * 0.01
-			return {
-				widths: allSizes.filter(s => s >= DEVICE_SIZES[0] * smallestRatio),
-				kind: "w",
-			}
-		}
-		return { widths: allSizes, kind: "w" }
-	}
-	if (typeof width !== "number") {
-		return { widths: DEVICE_SIZES, kind: "w" }
-	}
-
-	const widths = [
-		...new Set([width, width * 2].map(w => allSizes.find(p => p >= w) || allSizes.at(-1))),
-	].filter(w => w !== undefined)
-
-	return { widths, kind: "x" }
+function getAvailableVariantWidths(src: string): readonly number[] {
+	if (src.startsWith("http://") || src.startsWith("https://")) return []
+	return VARIANT_WIDTHS[src as keyof typeof VARIANT_WIDTHS] ?? []
 }
 
-function generateImgAttrs(
-	src: string,
-	unoptimized: boolean,
-	width?: number,
-	quality?: number,
-	sizes?: string,
-): GenImgAttrs {
+export function generateImgAttrs(src: string, unoptimized: boolean, sizes?: string): GenImgAttrs {
 	if (unoptimized) return { srcSet: undefined, sizes: undefined, src }
 
-	const { widths, kind } = getWidths(width, sizes)
-	// We know the last width is always defined
-	const last = widths.at(-1)!
+	const available = getAvailableVariantWidths(src)
+	if (available.length === 0) {
+		return { src, srcSet: undefined, sizes }
+	}
 
-	const srcSet = widths
-		.map((w, i) => `${buildOptimizedUrl(src, w, quality)} ${kind === "w" ? w : i + 1}${kind}`)
-		.join(", ")
+	const srcSet = available.map(w => `${buildVariantUrl(src, w)} ${w}w`).join(", ")
+	const largest = available.at(-1)!
 
 	return {
-		sizes: !sizes && kind === "w" ? "100vw" : sizes,
+		sizes,
 		srcSet,
-		src: buildOptimizedUrl(src, last, quality),
+		src: buildVariantUrl(src, largest),
 	}
 }
 
@@ -181,19 +142,6 @@ function createSyntheticLoadEvent(img: HTMLImageElement): SyntheticEvent<HTMLIma
 	} as unknown as SyntheticEvent<HTMLImageElement>
 }
 
-function buildOptimizedUrl(
-	sourceUrl: string,
-	width: number,
-	quality: number = DEFAULT_QUALITY,
-): string {
-	const params = new URLSearchParams()
-	params.set("url", sourceUrl)
-	params.set("w", String(Math.max(1, Math.round(width))))
-	params.set("q", String(Math.min(100, Math.max(1, Math.round(quality)))))
-
-	return `/api/image?${params.toString()}`
-}
-
 function handleLoading(
 	img: ImgElementWithDataProp,
 	onLoadRef: RefObject<ReactEventHandler<HTMLImageElement> | undefined>,
@@ -207,17 +155,10 @@ function handleLoading(
 		.catch(() => {})
 		.then(() => {
 			if (!img.parentElement && !img.isConnected) {
-				// Exit early in case of race condition:
-				// - onload() is called
-				// - decode() is called but incomplete
-				// - unmount is called
-				// - decode() completes
 				return
 			}
 
 			if (onLoadRef.current) {
-				// Since we don't have the SyntheticEvent here,
-				// we must create one with the same shape.
 				const event = createSyntheticLoadEvent(img)
 				onLoadRef.current(event)
 			}
@@ -238,7 +179,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 			decoding = "async",
 			className,
 			style,
-			quality,
+			quality: _quality,
 			sizes,
 			preload,
 			crossOrigin,
@@ -257,9 +198,6 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 			(img: ImgElementWithDataProp | null) => {
 				if (!img) return
 				if (onError) {
-					// If the image has an error before react hydrates, then the error is lost.
-					// The workaround is to wait until the image is mounted which is after hydration,
-					// then we set the src again to trigger the error handler (if there was an error).
 					// oxlint-disable-next-line no-self-assign
 					img.src = img.src
 				}
@@ -288,7 +226,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 		}, [onLoad])
 
 		const ref = useMergeRef(forwardedRef, ownRef)
-		const imgAttrs = generateImgAttrs(src, unoptimized, width, quality, sizes)
+		const imgAttrs = generateImgAttrs(src, unoptimized, sizes)
 
 		if (preload) {
 			ReactDOM.preload(imgAttrs.src, {
@@ -304,21 +242,12 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 		return (
 			<img
 				{...props}
-				// It's intended to keep `loading` before `src` because React updates
-				// props in order which causes Safari/Firefox to not lazy load properly.
-				// See https://github.com/facebook/react/issues/25883
 				loading={loading}
 				width={width}
 				height={height}
 				decoding={decoding}
 				className={className}
 				style={style}
-				// It's intended to keep `src` the last attribute because React updates
-				// attributes in order. If we keep `src` as the first one, Safari will
-				// immediately start to fetch `src`, before `sizes` and `srcSet` are even
-				// updated by React. That causes multiple unnecessary requests if `srcSet`
-				// and `sizes` are defined.
-				// This bug cannot be reproduced in Chrome or Firefox.
 				sizes={imgAttrs.sizes}
 				srcSet={imgAttrs.srcSet}
 				src={imgAttrs.src}

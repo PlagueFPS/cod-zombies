@@ -16,20 +16,6 @@ const OpengraphSchema = Schema.Struct({
 	id: Schema.NonEmptyString,
 })
 
-const ImageAPISchema = Schema.Struct({
-	url: Schema.StringFromUriComponent.annotate({
-		description: "The source URL of the image",
-	}),
-	w: Schema.NumberFromString.pipe(Schema.check(Schema.isInt())).annotate({
-		description: "The width of the image",
-	}),
-	q: Schema.NumberFromString.pipe(
-		Schema.check(Schema.isInt(), Schema.isGreaterThan(0), Schema.isLessThanOrEqualTo(100)),
-	).annotate({
-		description: "The quality of the image",
-	}),
-})
-
 const MapConfigModuleSchema = Schema.Struct({
 	config: Schema.Struct({
 		layers: Schema.Struct({}),
@@ -188,4 +174,3 @@ export const encodeLastModifiedData = Schema.encodeEffect(
 	Schema.fromJsonString(LastModifiedDataSchema),
 )
 export const decodeMapConfigModule = Schema.decodeUnknownEffect(MapConfigModuleSchema)
-export const decodeImageParams = Schema.decodeUnknownEffect(ImageAPISchema)
