@@ -24,11 +24,24 @@ const DEFAULT_SOURCE_DIR = "./newassets"
 const DEFAULT_COPY_DIR = "./oldassets"
 const MAX_EFFORT = 6
 const MAX_QUALITY = 80
+const PREVIEW_WIDTH = 640
+const MAP_WIDTH = 2048
 
-export function encodeWebp(image: Sharp, width?: number): Promise<Buffer> {
+export type EncodeWebpOptions = {
+	readonly withoutEnlargement?: boolean
+}
+
+export function encodeWebp(
+	image: Sharp,
+	width?: number,
+	options?: EncodeWebpOptions,
+): Promise<Buffer> {
 	let pipeline = image.rotate()
 	if (width !== undefined) {
-		pipeline = pipeline.resize({ width, withoutEnlargement: true })
+		pipeline = pipeline.resize({
+			width,
+			withoutEnlargement: options?.withoutEnlargement ?? true,
+		})
 	}
 	return pipeline.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer()
 }
@@ -46,9 +59,22 @@ const sourceOption = Flag.directory("source-dir").pipe(
 	),
 )
 
-const encodeWebpEffect = Effect.fnUntraced(function* (image: Sharp, asset: string, width?: number) {
+const previewFlag = Flag.boolean("preview").pipe(
+	Flag.withDescription("Resize images to 640px width with no variants."),
+)
+
+const mapFlag = Flag.boolean("map").pipe(
+	Flag.withDescription("Resize images to 2048px width with no variants, without upscaling."),
+)
+
+const encodeWebpEffect = Effect.fnUntraced(function* (
+	image: Sharp,
+	asset: string,
+	width?: number,
+	options?: EncodeWebpOptions,
+) {
 	return yield* Effect.tryPromise({
-		try: () => encodeWebp(image, width),
+		try: () => encodeWebp(image, width, options),
 		catch: cause =>
 			new ImageOptimizationError({
 				message:
@@ -69,9 +95,19 @@ const ensureDirectory = Effect.fnUntraced(function* (dir: string) {
 	)
 })
 
+export type OptimizeMode = "default" | "preview" | "map"
+
 export type OptimizeCliOptions = {
 	readonly dir: string
 	readonly source: string
+	readonly preview?: boolean
+	readonly map?: boolean
+}
+
+export const getOptimizeMode = (args: OptimizeCliOptions): OptimizeMode => {
+	if (args.preview) return "preview"
+	if (args.map) return "map"
+	return "default"
 }
 
 export const requireImageWidth = (
@@ -91,7 +127,15 @@ export const requireImageWidth = (
 
 export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 	Effect.gen(function* () {
+		if (args.preview && args.map) {
+			return yield* new ImageOptimizationError({
+				message: "Cannot use --preview and --map together.",
+				cause: args,
+			})
+		}
+
 		const { dir: targetDir, source } = args
+		const mode = getOptimizeMode(args)
 		const startTime = yield* Clock.currentTimeMillis
 		const fs = yield* FileSystem.FileSystem
 		const path = yield* Path.Path
@@ -135,11 +179,20 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 
 					yield* Effect.log(`Transforming image: ${relativeAsset}`)
 
-					const baseBuffer = yield* encodeWebpEffect(image, relativeAsset)
 					const baseFileName = `${baseName}.webp`
+					const baseBuffer =
+						mode === "preview"
+							? yield* encodeWebpEffect(image, relativeAsset, PREVIEW_WIDTH, {
+									withoutEnlargement: false,
+								})
+							: mode === "map"
+								? yield* encodeWebpEffect(image, relativeAsset, MAP_WIDTH, {
+										withoutEnlargement: true,
+									})
+								: yield* encodeWebpEffect(image, relativeAsset)
 					yield* fs.writeFile(path.join(outputDir, baseFileName), baseBuffer)
 
-					if (shouldGenerateVariants(category)) {
+					if (mode === "default" && shouldGenerateVariants(category)) {
 						const variantWidths = getVariantWidths(sourceWidth)
 						yield* Effect.forEach(
 							variantWidths,
@@ -185,6 +238,8 @@ export const optimizeCommand = Command.make(
 	{
 		dir: dirOption,
 		source: sourceOption,
+		preview: previewFlag,
+		map: mapFlag,
 	},
 	(args: OptimizeCliOptions) =>
 		optimizeAssetsEffect(args).pipe(

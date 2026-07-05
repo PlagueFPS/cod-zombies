@@ -416,16 +416,16 @@ export type PerksImagePath =
 /** Union of images in `/previews` */
 
 export type PreviewsImagePath =
-  '/previews/ashes-of-the-damned-preview.webp' |
-  '/previews/astra-malorum-preview.webp' |
-  '/previews/citadelle-des-morts-preview.webp' |
-  '/previews/liberty-falls-preview.webp' |
-  '/previews/paradox-junction-preview.webp' |
-  '/previews/reckoning-preview.webp' |
-  '/previews/shattered-veil-preview.webp' |
-  '/previews/terminus-preview.webp' |
-  '/previews/the-tomb-preview.webp' |
-  '/previews/totenreich-preview-v1.webp';
+  '/previews/ashes-of-the-damned-preview-v1.webp' |
+  '/previews/astra-malorum-preview-v1.webp' |
+  '/previews/citadelle-des-morts-preview-v1.webp' |
+  '/previews/liberty-falls-preview-v1.webp' |
+  '/previews/paradox-junction-preview-v1.webp' |
+  '/previews/reckoning-preview-v1.webp' |
+  '/previews/shattered-veil-preview-v1.webp' |
+  '/previews/terminus-preview-v1.webp' |
+  '/previews/the-tomb-preview-v1.webp' |
+  '/previews/totenreich-preview-v2.webp';
 
 /** Union of images in `/relics` */
 

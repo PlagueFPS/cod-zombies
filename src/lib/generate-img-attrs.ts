@@ -22,11 +22,9 @@ export function generateImgAttrs(src: string, unoptimized: boolean, sizes?: stri
 	}
 
 	const srcSet = available.map(w => `${variantWebPath(src, w)} ${w}w`).join(", ")
-	const largest = available.at(-1)!
-
 	return {
 		sizes,
 		srcSet,
-		src: variantWebPath(src, largest),
+		src,
 	}
 }

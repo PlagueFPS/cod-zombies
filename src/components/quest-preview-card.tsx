@@ -144,6 +144,7 @@ export function QuestPreviewCard({ quest, priority }: IQuestPreviewCard) {
 								alt={alt}
 								width={272}
 								height={176}
+								sizes="384px"
 								loading={priority ? "eager" : "lazy"}
 								className="h-44 rounded-md object-cover"
 							/>

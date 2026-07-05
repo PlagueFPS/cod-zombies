@@ -98,7 +98,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("totenreich", {
 		title: "Totenreich",
 		state: Option.none(),
-		image: "/previews/totenreich-preview-v1.webp",
+		image: "/previews/totenreich-preview-v2.webp",
 		game: "black-ops-7",
 		description:
 			"Explore Totenreich in Black Ops 7 Zombies. Find all locations for Fishing Spots, Perks, Weapons, intel, and more with our interactive map.",
@@ -106,7 +106,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("paradox-junction", {
 		title: "Paradox Junction",
 		state: Option.none(),
-		image: "/previews/paradox-junction-preview.webp",
+		image: "/previews/paradox-junction-preview-v1.webp",
 		game: "black-ops-7",
 		description:
 			"Explore Paradox Junction in Black Ops 7 Zombies. Find all locations for Loot Cysts, Aether Crystals, Perks, Weapons, intel, and more with our interactive map.",
@@ -114,7 +114,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("astra-malorum", {
 		title: "Astra Malorum",
 		state: Option.none(),
-		image: "/previews/astra-malorum-preview.webp",
+		image: "/previews/astra-malorum-preview-v1.webp",
 		game: "black-ops-7",
 		description:
 			"Explore Astra Malorum in Black Ops 7 Zombies. Find locations for all Aether Crystals, weapons, intel, and more with our interactive map.",
@@ -122,7 +122,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("ashes-of-the-damned", {
 		title: "Ashes of the Damned",
 		state: Option.none(),
-		image: "/previews/ashes-of-the-damned-preview.webp",
+		image: "/previews/ashes-of-the-damned-preview-v1.webp",
 		game: "black-ops-7",
 		description:
 			"Explore Ashes of the Damned in Black Ops 7 Zombies. Find locations for all Overgrown Hoard Husks, Aether Plants, Plant Sprays, weapons, and more with our interactive map.",
@@ -130,7 +130,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("reckoning", {
 		title: "Reckoning",
 		state: Option.none(),
-		image: "/previews/reckoning-preview.webp",
+		image: "/previews/reckoning-preview-v1.webp",
 		game: "black-ops-6",
 		description:
 			"Find all Janus Crates, Loot Bins, C.A.S.T.E.R. Turrets, Intel, and more with our Reckoning interactive map in Black Ops 6 Zombies.",
@@ -138,7 +138,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("shattered-veil", {
 		title: "Shattered Veil",
 		state: Option.none(),
-		image: "/previews/shattered-veil-preview.webp",
+		image: "/previews/shattered-veil-preview-v1.webp",
 		game: "black-ops-6",
 		description:
 			"Explore Shattered Veil in BO6 Zombies. Find all Janus Crates, Aether Plants, Aether Crystals, Intel, and more with our interactive map.",
@@ -146,7 +146,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("the-tomb", {
 		title: "The Tomb",
 		state: Option.none(),
-		image: "/previews/the-tomb-preview.webp",
+		image: "/previews/the-tomb-preview-v1.webp",
 		game: "black-ops-6",
 		description:
 			"Explore The Tomb in BO6 Zombies. Find all Dark Aether Lanterns, Dig Spots, intel, and more with our interactive map.",
@@ -154,7 +154,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("citadelle-des-morts", {
 		title: "Citadelle des Morts",
 		state: Option.none(),
-		image: "/previews/citadelle-des-morts-preview.webp",
+		image: "/previews/citadelle-des-morts-preview-v1.webp",
 		game: "black-ops-6",
 		description:
 			"Explore Citadelle Des Morts in BO6 Zombies. Find all Points of Power & Oil Traps, Fast Travels, intel, and more with our interactive map.",
@@ -162,7 +162,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("terminus", {
 		title: "Terminus",
 		state: Option.none(),
-		image: "/previews/terminus-preview.webp",
+		image: "/previews/terminus-preview-v1.webp",
 		game: "black-ops-6",
 		description:
 			"Explore Terminus in BO6 Zombies. Find all Boat Spawns, Fishing Spots, Underwater Chests, Dig Spots, intel, and more with our interactive map.",
@@ -170,7 +170,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("liberty-falls", {
 		title: "Liberty Falls",
 		state: Option.none(),
-		image: "/previews/liberty-falls-preview.webp",
+		image: "/previews/liberty-falls-preview-v1.webp",
 		game: "black-ops-6",
 		description:
 			"Explore Liberty Falls in Black Ops 6 Zombies. Find all perks, Pack-a-Punch, Mystery Box, wall buys, intel, and more with our interactive map.",

@@ -236,4 +236,81 @@ describe("optimizeAssetsEffect", () => {
 			"maps/big.webp",
 		])
 	})
+
+	test("preview mode resizes to 640w with no variants", async () => {
+		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
+		await writePng(join(root, "newassets", "maps", "big.png"), 2000, 800)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			preview: true,
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const files = listFilesRecursive(join(root, "out"))
+		expect(files).toEqual(["maps/big.webp"])
+		const meta = await sharp(readFileSync(join(root, "out", "maps", "big.webp"))).metadata()
+		expect(meta.width).toBe(640)
+		expect(meta.format).toBe("webp")
+	})
+
+	test("preview mode upscales small images to 640w", async () => {
+		mkdirSync(join(root, "newassets", "previews"), { recursive: true })
+		await writePng(join(root, "newassets", "previews", "small.png"), 200, 200)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			preview: true,
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const meta = await sharp(readFileSync(join(root, "out", "previews", "small.webp"))).metadata()
+		expect(meta.width).toBe(640)
+	})
+
+	test("map mode resizes to 2048w with no variants", async () => {
+		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
+		await writePng(join(root, "newassets", "maps", "huge.png"), 4000, 1600)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			map: true,
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const files = listFilesRecursive(join(root, "out"))
+		expect(files).toEqual(["maps/huge.webp"])
+		const meta = await sharp(readFileSync(join(root, "out", "maps", "huge.webp"))).metadata()
+		expect(meta.width).toBe(2048)
+		expect(meta.format).toBe("webp")
+	})
+
+	test("map mode does not upscale images narrower than 2048w", async () => {
+		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
+		await writePng(join(root, "newassets", "maps", "med.png"), 1500, 900)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			map: true,
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const meta = await sharp(readFileSync(join(root, "out", "maps", "med.webp"))).metadata()
+		expect(meta.width).toBe(1500)
+	})
+
+	test("fails when preview and map flags are both set", async () => {
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			preview: true,
+			map: true,
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expect(Exit.isFailure(exit)).toBe(true)
+		const cause = expectExitFailure(exit)
+		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
+			e.message.includes("Cannot use --preview and --map together"),
+		)
+	})
 })
