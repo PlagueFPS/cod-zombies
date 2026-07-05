@@ -1,4 +1,4 @@
-import { useHotkey } from "@tanstack/react-hotkeys"
+import { useHotkey, type RegisterableHotkey } from "@tanstack/react-hotkeys"
 import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { Shortcut } from "@/components/shortcut"
@@ -27,6 +27,7 @@ export default function MapSettingsPanel() {
 	const [newSettings, setNewSettings] = useState(settings)
 	const isMobile = useIsMobile(1280)
 	const [activeTab, setActiveTab] = useState("markers")
+	const settingsShortcut: RegisterableHotkey = { key: "/", shift: true }
 
 	const handleOpenChange = (open: boolean, save = false) => {
 		if (save) {
@@ -36,7 +37,7 @@ export default function MapSettingsPanel() {
 		setOpen(open)
 	}
 
-	useHotkey("Mod+/", () => handleOpenChange(!open))
+	useHotkey(settingsShortcut, () => handleOpenChange(!open))
 
 	const hasSettingChanged = (settingPath: TSettingPath) => {
 		const [parentKey, subKey] = settingPath.split(".")
@@ -86,7 +87,7 @@ export default function MapSettingsPanel() {
 					sideOffset={5}
 					className="z-999 flex items-center justify-center gap-2"
 				>
-					<Shortcut shortcut="Mod+/" size="sm" variant="ghost" />
+					<Shortcut shortcut={settingsShortcut} size="sm" variant="ghost" />
 					<span>Map Settings</span>
 				</TooltipContent>
 			</Tooltip>
@@ -412,7 +413,7 @@ export default function MapSettingsPanel() {
 					{!isMobile ? (
 						<div className="mr-auto flex items-center justify-center gap-1 text-sm text-muted-foreground">
 							<span>Keyboard Shortcut:</span>
-							<Shortcut shortcut="Mod+/" size="sm" />
+							<Shortcut shortcut={settingsShortcut} size="sm" />
 						</div>
 					) : null}
 					<Button variant={"destructive"} onClick={() => handleOpenChange(false)}>
