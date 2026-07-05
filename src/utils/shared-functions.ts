@@ -4,6 +4,16 @@ import { Option } from "effect"
 import { MAIN_QUEST_DIFFICULTIES, type MainQuestDifficulty } from "@/data/maps"
 import { SITE_TITLE } from "@/utils/constants"
 
+/** Writes text to the system clipboard; returns false when the API rejects the write. */
+export async function copyTextToClipboard(text: string): Promise<boolean> {
+	try {
+		await navigator.clipboard.writeText(text)
+		return true
+	} catch {
+		return false
+	}
+}
+
 /**
  * Gets the previous and next items adjacent to the given item ID.
  * This function assumes the array is sorted in descending order.

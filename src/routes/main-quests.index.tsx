@@ -17,6 +17,7 @@ import {
 	getMainQuestSortOptions,
 	getMapsWithMainQuest,
 	MAIN_QUEST_TIME_RANGE_FILTERS,
+	mainQuestMidpointMatchesAnyTimeSlug,
 	type MainQuestDifficulty,
 	type MapEntry,
 } from "@/data/maps"
@@ -68,15 +69,10 @@ export const Route = createFileRoute("/main-quests/")({
 			},
 			{
 				values: deps.time,
-				match: (item, timeSlug) => {
+				match: item => {
 					if (Option.isNone(item.estimatedTimeMins)) return false
 					const midpoint = getEstimatedTimeMidpoint(item.estimatedTimeMins.value)
-					const range = MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === timeSlug)
-					if (!range) return false
-					if (range.slug === "120-plus") {
-						return midpoint >= range.minMins && midpoint <= range.maxMins
-					}
-					return midpoint >= range.minMins && midpoint < range.maxMins
+					return mainQuestMidpointMatchesAnyTimeSlug(midpoint, deps.time)
 				},
 			},
 		]

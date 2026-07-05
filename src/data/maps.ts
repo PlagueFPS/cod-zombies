@@ -113,6 +113,35 @@ export const MAIN_QUEST_TIME_RANGE_FILTERS: MainQuestTimeRangeFilter[] = [
 	{ id: "120-plus", slug: "120-plus", title: "2+ hrs", minMins: 120, maxMins: Infinity },
 ]
 
+/** Slug for the open-ended 2+ hour filter (inclusive upper bound). */
+export const MAIN_QUEST_TIME_RANGE_OPEN_END_SLUG = "120-plus" as const
+
+/**
+ * Whether a completion-time midpoint (minutes) falls in a filter bucket.
+ * Non-open ranges use a half-open interval `[minMins, maxMins)`; `120-plus` is inclusive on both ends.
+ */
+export function mainQuestMidpointMatchesTimeRange(
+	midpoint: number,
+	range: Pick<MainQuestTimeRangeFilter, "slug" | "minMins" | "maxMins">,
+): boolean {
+	if (range.slug === MAIN_QUEST_TIME_RANGE_OPEN_END_SLUG) {
+		return midpoint >= range.minMins && midpoint <= range.maxMins
+	}
+	return midpoint >= range.minMins && midpoint < range.maxMins
+}
+
+/** True when the midpoint matches any known time-filter slug (unknown slugs are ignored). */
+export function mainQuestMidpointMatchesAnyTimeSlug(
+	midpoint: number,
+	slugs: readonly string[],
+): boolean {
+	return slugs.some(slug => {
+		const range = MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === slug)
+		if (!range) return false
+		return mainQuestMidpointMatchesTimeRange(midpoint, range)
+	})
+}
+
 const makeMap = <T extends string>(
 	identifier: T,
 	map: Omit<MapEntry, "_tag" | "id">,

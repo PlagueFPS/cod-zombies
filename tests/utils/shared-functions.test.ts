@@ -1,7 +1,9 @@
-import { describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vitest"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
 	capitalize,
+	copyTextToClipboard,
+	getEstimatedTimeMidpoint,
 	getYouTubeVideoId,
 	slugify,
 	sortDates,
@@ -34,6 +36,13 @@ describe("slugify", () => {
 		expect(slugify("  Hello   World!  ")).toBe("hello-world")
 		expect(slugify("hello-world")).toBe("hello-world") // Already slugified
 		expect(slugify("")).toBe("") // Empty string
+	})
+})
+
+describe("getEstimatedTimeMidpoint", () => {
+	test("returns the arithmetic mean of min and max minutes", () => {
+		expect(getEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe(45)
+		expect(getEstimatedTimeMidpoint({ min: 120, max: 180 })).toBe(150)
 	})
 })
 
@@ -99,5 +108,27 @@ describe("sortDifficulties", () => {
 			expect(sortDifficulties(prev, curr)).toBeLessThan(0)
 			expect(sortDifficulties(curr, prev)).toBeGreaterThan(0)
 		}
+	})
+})
+
+describe("copyTextToClipboard", () => {
+	afterEach(() => {
+		vi.restoreAllMocks()
+	})
+
+	test("returns true when clipboard.writeText succeeds", async () => {
+		const writeText = vi.fn<() => Promise<void>>().mockResolvedValue(undefined)
+		vi.stubGlobal("navigator", { clipboard: { writeText } })
+
+		await expect(copyTextToClipboard("https://example.com/guide")).resolves.toBe(true)
+		expect(writeText).toHaveBeenCalledWith("https://example.com/guide")
+	})
+
+	test("returns false when clipboard.writeText rejects", async () => {
+		vi.stubGlobal("navigator", {
+			clipboard: { writeText: vi.fn<() => Promise<void>>().mockRejectedValue(new Error("denied")) },
+		})
+
+		await expect(copyTextToClipboard("https://example.com/guide")).resolves.toBe(false)
 	})
 })
