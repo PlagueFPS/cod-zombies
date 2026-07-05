@@ -546,6 +546,10 @@ export const config: MapConfig = {
 					...weapons["mpc-25"],
 					locations: [{ x: 0.537, y: 0.64 }],
 				},
+				{
+					...weapons["warden-308"],
+					locations: [{ x: 0.292, y: 0.321 }],
+				},
 			],
 		},
 		{
