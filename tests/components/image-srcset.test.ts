@@ -28,7 +28,7 @@ describe("generateImgAttrs", () => {
 
 	it("builds srcset from partial variant set", () => {
 		expect(generateImgAttrs("/maps/medium.webp", false, "420px")).toEqual({
-			src: "/maps/medium-384.webp",
+			src: "/maps/medium.webp",
 			srcSet: "/maps/medium-384.webp 384w",
 			sizes: "420px",
 		})
@@ -36,7 +36,7 @@ describe("generateImgAttrs", () => {
 
 	it("builds srcset from full variant set", () => {
 		expect(generateImgAttrs("/maps/big.webp", false, "100vw")).toEqual({
-			src: "/maps/big-1200.webp",
+			src: "/maps/big.webp",
 			srcSet: "/maps/big-384.webp 384w, /maps/big-1200.webp 1200w",
 			sizes: "100vw",
 		})

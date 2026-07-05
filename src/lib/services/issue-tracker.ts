@@ -1,19 +1,23 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { LinearClient } from "@linear/sdk"
-import { Context, Effect, Layer, Option, Redacted, Schema } from "effect"
-import { env } from "@/env"
+import { Config, Context, Effect, Layer, Option, Redacted, Schema } from "effect"
 
 class CreateIssueError extends Schema.TaggedErrorClass<CreateIssueError>()("CreateIssueError", {
 	cause: Schema.Unknown,
 }) {}
 
 export class IssueTracker extends Context.Service<IssueTracker>()("lib/services/issue-tracker", {
-	make: Effect.sync(() => {
-		const linear = new LinearClient({ apiKey: Redacted.value(env.LINEAR_API_KEY) })
+	make: Effect.gen(function* () {
+		const apiKey = yield* Config.redacted("LINEAR_API_KEY")
+		const workspaceId = yield* Config.redacted("LINEAR_WORKSPACE")
+		const assigneeId = yield* Config.redacted("LINEAR_DEFAULT_ASSIGNEE_ID")
+		const labelId = yield* Config.redacted("LINEAR_USER_FEEDBACK_LABEL")
+
+		const linear = new LinearClient({ apiKey: Redacted.value(apiKey) })
 
 		const createIssue = Effect.fn("IssueTracker.createIssue")(function* (data: TFeedbackForm) {
 			const team = yield* Effect.tryPromise({
-				try: () => linear.team(Redacted.value(env.LINEAR_WORKSPACE)),
+				try: () => linear.team(Redacted.value(workspaceId)),
 				catch: cause => new CreateIssueError({ cause }),
 			})
 
@@ -28,8 +32,8 @@ export class IssueTracker extends Context.Service<IssueTracker>()("lib/services/
 						teamId: team.id,
 						title: data.title ?? "Website Feedback",
 						description,
-						labelIds: [Redacted.value(env.LINEAR_USER_FEEDBACK_LABEL)],
-						assigneeId: Redacted.value(env.LINEAR_DEFAULT_ASSIGNEE_ID),
+						labelIds: [Redacted.value(labelId)],
+						assigneeId: Redacted.value(assigneeId),
 					}),
 				catch: cause => new CreateIssueError({ cause }),
 			})

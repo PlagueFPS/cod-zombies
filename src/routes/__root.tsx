@@ -1,5 +1,4 @@
 import type { QueryClient } from "@tanstack/react-query"
-import "@/env"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import {

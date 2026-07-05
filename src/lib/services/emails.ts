@@ -1,4 +1,4 @@
-import { Context, Effect, Layer, MutableHashMap, Option, Redacted, Schema } from "effect"
+import { Config, Context, Effect, Layer, MutableHashMap, Option, Redacted, Schema } from "effect"
 import {
 	type CreateBroadcastOptions,
 	type CreateBroadcastRequestOptions,
@@ -12,7 +12,6 @@ import {
 	type SendBroadcastOptions,
 	type SendBroadcastResponseSuccess,
 } from "resend"
-import { env } from "@/env"
 
 class ResendError extends Schema.TaggedErrorClass<ResendError>()("ResendError", {
 	message: Schema.String,
@@ -20,8 +19,11 @@ class ResendError extends Schema.TaggedErrorClass<ResendError>()("ResendError", 
 }) {}
 
 export class Email extends Context.Service<Email>()("lib/services/emails", {
-	make: Effect.sync(() => {
-		const resend = new Resend(Redacted.value(env.RESEND_API_KEY))
+	make: Effect.gen(function* () {
+		const apiKey = yield* Config.redacted("RESEND_API_KEY")
+		const audienceId = yield* Config.redacted("RESEND_AUDIENCE_ID")
+
+		const resend = new Resend(Redacted.value(apiKey))
 
 		const getContact = Effect.fn("Email.getContact")(function* (email: string) {
 			const { data, error } = yield* Effect.promise(() => resend.contacts.get({ email }))
@@ -35,7 +37,7 @@ export class Email extends Context.Service<Email>()("lib/services/emails", {
 		const createContact = Effect.fn("Email.createContact")(function* (email: string) {
 			const { data, error } = yield* Effect.promise(() =>
 				resend.contacts.create({
-					segments: [{ id: Redacted.value(env.RESEND_AUDIENCE_ID) }],
+					segments: [{ id: Redacted.value(audienceId) }],
 					email,
 				}),
 			)
