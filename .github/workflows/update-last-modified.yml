@@ -9,7 +9,7 @@ on:
 jobs:
   update-last-modified:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'PlagueFPS' && github.event.pull_request.draft == false
+    if: github.repository_owner == 'PlagueFPS'
     permissions:
       contents: write
 
