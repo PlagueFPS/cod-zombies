@@ -17,8 +17,7 @@ let routeIndex: SiteRouteIndex
 
 beforeAll(async () => {
 	corpus = loadMdxCorpus()
-	const contentByPath = new Map(corpus.map(file => [file.contentPath, file.content]))
-	routeIndex = await buildSiteRouteIndex(contentByPath)
+	routeIndex = await buildSiteRouteIndex()
 })
 
 describe("MDX link integrity", () => {

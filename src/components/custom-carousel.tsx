@@ -1,5 +1,4 @@
 "use client"
-import { ClientOnly } from "@tanstack/react-router"
 import {
 	Children,
 	useCallback,
@@ -19,6 +18,7 @@ import {
 	type CarouselApi,
 } from "@/components/ui/carousel"
 import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
+import { resolveCarouselIndicatorLayout } from "@/lib/embla-carousel/carousel-indicator-layout"
 import { cn } from "@/lib/utils"
 
 interface CustomCarouselProps {
@@ -26,26 +26,13 @@ interface CustomCarouselProps {
 	className?: string
 }
 
-export default function CustomCarousel({ children, className }: CustomCarouselProps) {
-	return (
-		<ClientOnly>
-			<InternalCarousel className={className}>{children}</InternalCarousel>
-		</ClientOnly>
-	)
-}
-
-/** Pixels above the `<img>` bottom edge (inside the image area). */
-const INDICATOR_INSET_FROM_IMAGE_BOTTOM_PX = 12
-/** Ignore bbox reads before layout resolves (FeaturedImage fades in; lazy decode). */
-const MIN_IMG_BOX_FOR_LAYOUT_PX = 4
-
 const INDICATORS_FALLBACK_STYLE: CSSProperties = {
 	left: "50%",
 	bottom: "5rem",
 	transform: "translateX(-50%)",
 }
 
-function InternalCarousel({ children, className }: CustomCarouselProps) {
+export default function CustomCarousel({ children, className }: CustomCarouselProps) {
 	const rootRef = useRef<HTMLDivElement>(null)
 	const dotsPositionLockedRef = useRef(false)
 	/**
@@ -68,28 +55,25 @@ function InternalCarousel({ children, className }: CustomCarouselProps) {
 		if (!root || count <= 1) return
 
 		const img = firstSlideImg(root, apiRef.current)
+		const rootRect = root.getBoundingClientRect()
+		const layout = resolveCarouselIndicatorLayout({
+			hasImage: img != null,
+			imageBox: img?.getBoundingClientRect() ?? null,
+			imageComplete: img?.complete ?? false,
+			rootBottom: rootRect.bottom,
+		})
 
-		if (img == null) {
-			dotsPositionLockedRef.current = true
+		if (layout.kind === "wait") return
+
+		dotsPositionLockedRef.current = true
+		if (layout.kind === "fallback") {
 			setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
 			return
 		}
 
-		const rootRect = root.getBoundingClientRect()
-		const imgRect = img.getBoundingClientRect()
-
-		if (imgRect.height < MIN_IMG_BOX_FOR_LAYOUT_PX || imgRect.width < MIN_IMG_BOX_FOR_LAYOUT_PX) {
-			if (img.complete) {
-				dotsPositionLockedRef.current = true
-				setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
-			}
-			return
-		}
-
-		dotsPositionLockedRef.current = true
 		setIndicatorStyle({
 			left: "50%",
-			bottom: rootRect.bottom - imgRect.bottom + INDICATOR_INSET_FROM_IMAGE_BOTTOM_PX,
+			bottom: layout.bottomPx,
 			transform: "translateX(-50%)",
 		})
 	}, [count])
@@ -153,12 +137,8 @@ function InternalCarousel({ children, className }: CustomCarouselProps) {
 					</CarouselItem>
 				))}
 			</CarouselContent>
-			<CarouselPrevious
-				variant="secondary"
-				size="icon"
-				className="absolute left-2 flex md:left-4"
-			/>
-			<CarouselNext variant="secondary" size="icon" className="absolute right-5 flex md:right-4" />
+			<CarouselPrevious variant="default" size="icon" className="absolute left-2 flex md:left-4" />
+			<CarouselNext variant="default" size="icon" className="absolute right-5 flex md:right-4" />
 			{count > 1 ? (
 				<div
 					style={indicatorStyle}

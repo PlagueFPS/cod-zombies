@@ -10,7 +10,6 @@ import PerkTooltip from "@/components/perk-tooltip"
 import { RichTable, RichBodyRow } from "@/components/rich-table"
 import { TableCell } from "@/components/ui/table"
 import YoutubeEmbed from "@/components/youtube-embed"
-import { MarkdownLink } from "@/components/markdown-link"
 
 ## Main Quest
 This main quest has our crew hunt down another **Shadowsmith** in hopes of restoring more of the souls of our crew members.
@@ -18,7 +17,7 @@ This main quest has our crew hunt down another **Shadowsmith** in hopes of resto
 ## Requirements
 
 - <AmmoModTooltip ammoModKey="cryo-freeze" game="black-ops-7" />
-- <MarkdownLink hash="step-1-obtain-the-lgm-1" text="LGM-1" />
+- [LGM-1](#step-1-obtain-the-lgm-1)
 
 > <PerkTooltip perkKey="juggernog" game="black-ops-7" /> with the <AugmentTooltip augmentKey="turtle-shell" game="black-ops-7" /> augment, and <PerkTooltip perkKey="phd-flopper" game="black-ops-7" />
 with the <AugmentTooltip augmentKey="environmentalist" game="black-ops-7" /> minor augment are **ESSENTIAL** for surviving this boss fight, especially in the final phase.
@@ -180,7 +179,7 @@ Using a weapon with the <AmmoModTooltip ammoModKey="cryo-freeze" game="black-ops
 <RichImage image="/content/astra-malorum/astra-malorum-absolute-zero-fragment.webp" caption="Absolute Zero Fragment" />
 
 > These crystals are fairly obvious to find since they glow bright purple, but if you want to see all possible spawn locations, you can view our
-<MarkdownLink to="/maps/$mapId" params={{ mapId: "astra-malorum" }} search={{ include: ["aether-crystal"] }} text={"interactive map"} />
+[interactive map](/maps/astra-malorum?include=aether-crystal)
 
 ### Activating the Contraptions
 With all the necessary parts, you must now kill <ZombieTooltip zombieKey="oscar" /> three times, once with each contraption. These can be done in any order, and the final contraption
