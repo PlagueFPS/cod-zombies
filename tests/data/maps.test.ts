@@ -6,11 +6,13 @@ import {
 	getAdjacentMaps,
 	getMaps,
 	getMapsWithMainQuest,
+	MAIN_QUEST_DIFFICULTIES,
 	type MapEntry,
 	type MapKey,
 } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
+import { slugify } from "@/utils/shared-functions"
 
 /** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real MAPS rows). */
 const mapNewBadgeFixture = (releaseDate: string): Pick<MapEntry, "releaseDate" | "state"> => ({
@@ -40,6 +42,28 @@ describe("compareMapReleaseDescending", () => {
 				{ id: "voyage-of-despair", releaseDate: "2018-10-12" },
 			),
 		).toBeLessThan(0)
+	})
+})
+
+describe("main quest data integrity", () => {
+	test("difficulty values are canonical and slugify to filter param values", () => {
+		const allowed = new Set<string>(MAIN_QUEST_DIFFICULTIES)
+
+		for (const map of getMapsWithMainQuest()) {
+			if (Option.isNone(map.difficulty)) continue
+			expect(allowed.has(map.difficulty.value)).toBe(true)
+			expect(slugify(map.difficulty.value)).toBe(
+				map.difficulty.value.toLowerCase().replace(/\s+/g, "-"),
+			)
+		}
+	})
+
+	test("estimated completion ranges have min <= max", () => {
+		for (const map of getMapsWithMainQuest()) {
+			if (Option.isNone(map.estimatedTimeMins)) continue
+			const { min, max } = map.estimatedTimeMins.value
+			expect(min).toBeLessThanOrEqual(max)
+		}
 	})
 })
 

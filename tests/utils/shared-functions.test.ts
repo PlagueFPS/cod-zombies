@@ -1,13 +1,23 @@
+import { Option } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
 	capitalize,
+	compareByOptionalSome,
 	copyTextToClipboard,
+	formatEstimatedTimeMidpoint,
+	formatEstimatedTimeRange,
+	getAdjacentItems,
 	getEstimatedTimeMidpoint,
 	getYouTubeVideoId,
 	slugify,
 	sortDates,
 	sortDifficulties,
+	sortEstimatedTime,
+	sortRelicTypes,
+	sortZombieSpeeds,
+	sortZombieTypes,
+	toPascalCase,
 } from "@/utils/shared-functions"
 
 describe("slugify", () => {
@@ -36,6 +46,13 @@ describe("slugify", () => {
 		expect(slugify("  Hello   World!  ")).toBe("hello-world")
 		expect(slugify("hello-world")).toBe("hello-world") // Already slugified
 		expect(slugify("")).toBe("") // Empty string
+	})
+
+	test("slugifies each main quest difficulty label for URL filter params", () => {
+		expect(slugify("Very Hard")).toBe("very-hard")
+		for (const difficulty of MAIN_QUEST_DIFFICULTIES) {
+			expect(slugify(difficulty)).toBe(difficulty.toLowerCase().replace(/\s+/g, "-"))
+		}
 	})
 })
 
@@ -95,6 +112,48 @@ describe("sortDates", () => {
 	})
 })
 
+describe("sortEstimatedTime", () => {
+	test("orders ranges by midpoint ascending", () => {
+		const short = { min: 30, max: 60 }
+		const long = { min: 120, max: 180 }
+		expect(sortEstimatedTime(short, long)).toBeLessThan(0)
+		expect(sortEstimatedTime(long, short)).toBeGreaterThan(0)
+	})
+
+	test("returns 0 when midpoints are equal", () => {
+		expect(sortEstimatedTime({ min: 40, max: 80 }, { min: 50, max: 70 })).toBe(0)
+	})
+})
+
+describe("getAdjacentItems", () => {
+	const items = [{ id: "newest" }, { id: "middle" }, { id: "oldest" }] as const
+
+	test("returns none when id is missing", () => {
+		expect(getAdjacentItems([...items], "missing")).toEqual({
+			prev: Option.none(),
+			next: Option.none(),
+		})
+	})
+
+	test("newest item has prev toward older entry and no next", () => {
+		const { prev, next } = getAdjacentItems([...items], "newest")
+		expect(prev).toEqual(Option.some({ id: "middle" }))
+		expect(next).toEqual(Option.none())
+	})
+
+	test("oldest item has next toward newer entry and no prev", () => {
+		const { prev, next } = getAdjacentItems([...items], "oldest")
+		expect(prev).toEqual(Option.none())
+		expect(next).toEqual(Option.some({ id: "middle" }))
+	})
+
+	test("middle item has both neighbors in descending order", () => {
+		const { prev, next } = getAdjacentItems([...items], "middle")
+		expect(prev).toEqual(Option.some({ id: "oldest" }))
+		expect(next).toEqual(Option.some({ id: "newest" }))
+	})
+})
+
 describe("sortDifficulties", () => {
 	test("orders permutations to match MAIN_QUEST_DIFFICULTIES canonical order", () => {
 		const ordered = [...MAIN_QUEST_DIFFICULTIES].reverse().sort(sortDifficulties)
@@ -108,6 +167,54 @@ describe("sortDifficulties", () => {
 			expect(sortDifficulties(prev, curr)).toBeLessThan(0)
 			expect(sortDifficulties(curr, prev)).toBeGreaterThan(0)
 		}
+	})
+})
+
+describe("toPascalCase", () => {
+	test("joins words from spaces, hyphens, and underscores", () => {
+		expect(toPascalCase("hello world")).toBe("HelloWorld")
+		expect(toPascalCase("hello-world")).toBe("HelloWorld")
+		expect(toPascalCase("hello_world")).toBe("HelloWorld")
+	})
+
+	test("normalizes casing and ignores empty segments", () => {
+		expect(toPascalCase("HELLO_WORLD")).toBe("HelloWorld")
+		expect(toPascalCase("main-quests")).toBe("MainQuests")
+		expect(toPascalCase("--side__quests--")).toBe("SideQuests")
+	})
+})
+
+describe("sortZombieTypes", () => {
+	const order = ["Normal", "Special", "Elite", "Boss"] as const
+
+	test("orders permutations to canonical type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieTypes)).toEqual([...order])
+	})
+
+	test("each adjacent pair sorts ascending", () => {
+		for (let i = 1; i < order.length; i++) {
+			expect(sortZombieTypes(order[i - 1]!, order[i]!)).toBeLessThan(0)
+			expect(sortZombieTypes(order[i]!, order[i - 1]!)).toBeGreaterThan(0)
+		}
+	})
+})
+
+describe("sortRelicTypes", () => {
+	const order = ["Grim", "Sinister", "Wicked"] as const
+
+	test("orders permutations to canonical relic type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortRelicTypes)).toEqual([...order])
+	})
+})
+
+describe("sortZombieSpeeds", () => {
+	const order = ["Slow", "Medium", "Fast"] as const
+
+	test("orders permutations to canonical speed order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieSpeeds)).toEqual([...order])
 	})
 })
 
@@ -130,5 +237,42 @@ describe("copyTextToClipboard", () => {
 		})
 
 		await expect(copyTextToClipboard("https://example.com/guide")).resolves.toBe(false)
+	})
+})
+
+describe("formatEstimatedTimeRange", () => {
+	test("single value when min equals max", () => {
+		expect(formatEstimatedTimeRange({ min: 45, max: 45 })).toBe("45m")
+		expect(formatEstimatedTimeRange({ min: 60, max: 60 })).toBe("1h")
+	})
+
+	test("range with hour and minute parts", () => {
+		expect(formatEstimatedTimeRange({ min: 30, max: 90 })).toBe("30m-1h 30m")
+		expect(formatEstimatedTimeRange({ min: 120, max: 180 })).toBe("2h-3h")
+	})
+})
+
+describe("formatEstimatedTimeMidpoint", () => {
+	test("formats midpoint using same rules as range display", () => {
+		expect(formatEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe("45m")
+		expect(formatEstimatedTimeMidpoint({ min: 60, max: 120 })).toBe("1h 30m")
+	})
+})
+
+describe("compareByOptionalSome", () => {
+	const compare = (a: number, b: number) => a - b
+
+	test("compares values when both are Some", () => {
+		expect(compareByOptionalSome(Option.some(1), Option.some(3), compare)).toBeLessThan(0)
+		expect(compareByOptionalSome(Option.some(5), Option.some(2), compare)).toBeGreaterThan(0)
+	})
+
+	test("Some sorts before None", () => {
+		expect(compareByOptionalSome(Option.some(1), Option.none(), compare)).toBe(-1)
+		expect(compareByOptionalSome(Option.none(), Option.some(1), compare)).toBe(1)
+	})
+
+	test("returns 0 when both are None", () => {
+		expect(compareByOptionalSome(Option.none(), Option.none(), compare)).toBe(0)
 	})
 })
