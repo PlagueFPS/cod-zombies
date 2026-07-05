@@ -22,6 +22,10 @@ vi.mock("@/env", () => ({
 	},
 }))
 
+vi.mock("@/utils/request", () => ({
+	getServerUrl: () => "http://localhost:3000",
+}))
+
 vi.mock("@/utils/request.server", () => ({
 	getServerUrl: () => "http://localhost:3000",
 }))

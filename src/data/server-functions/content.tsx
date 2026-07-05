@@ -46,7 +46,7 @@ export const getContent = createServerFn()
 
 /** Gets the current opengraph image URL version for a given kind and id. */
 export const getOgImgUrl = createServerFn()
-	.inputValidator(StandardOpengraphSchema)
+	.validator(StandardOpengraphSchema)
 	.handler(async ({ data }) => {
 		const url = await getOpengraphImageUrl(data.kind, data.id)
 

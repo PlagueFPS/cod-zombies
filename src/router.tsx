@@ -6,7 +6,7 @@ import { DefaultError } from "@/components/default-error"
 import { DefaultNotFound } from "@/components/default-not-found"
 import { ThemeProvider } from "@/contexts/theme-provider"
 import { routeTree } from "@/routeTree.gen"
-import { getServerUrl } from "@/utils/request.server"
+import { getServerUrl } from "@/utils/request"
 
 /**
  * Removes keys from a search object that would serialize to noise in the URL.

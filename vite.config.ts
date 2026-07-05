@@ -23,26 +23,6 @@ const depsWithBrokenSourcemaps = [
 	"standardwebhooks",
 ]
 
-/**
- * Nitro's dev server skips TanStack Start for non-document-like `Sec-Fetch-Dest`
- * (e.g. `image` from img requests). That prevents `/api/image` from running locally.
- */
-// function stripSecFetchDestForApiImageDev(): Plugin {
-// 	return {
-// 		name: "strip-sec-fetch-dest-api-image-dev",
-// 		enforce: "pre",
-// 		configureServer(server) {
-// 			server.middlewares.use((req, _res, next) => {
-// 				const pathOnly = req.url?.split("?")[0] ?? ""
-// 				if (pathOnly === "/api/image" || pathOnly.startsWith("/api/image/")) {
-// 					delete req.headers["sec-fetch-dest"]
-// 				}
-// 				next()
-// 			})
-// 		},
-// 	}
-// }
-
 export default defineConfig({
 	server: {
 		port: 3000,
@@ -80,7 +60,9 @@ export default defineConfig({
 	},
 	plugins: [
 		devtools(),
-		cloudflare({ viteEnvironment: { name: "ssr" } }),
+		// We use RSCs as child components of the SSR'd page to keep heavy markdown processing off the client
+		// this config allows a single worker to run in both environments properly to resolve a page
+		cloudflare({ viteEnvironment: { name: "ssr", childEnvironments: ["rsc"] } }),
 		tanstackStart({
 			prerender: {
 				enabled: true,

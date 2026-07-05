@@ -45,7 +45,7 @@ export const unsubscribeFromNewsletter = createServerFn({ method: "POST" })
 	})
 
 export const subscribeToNewsletter = createServerFn({ method: "POST" })
-	.inputValidator(StandardNewsletterFormSchema)
+	.validator(StandardNewsletterFormSchema)
 	.handler(async ({ data }) => {
 		const mockedResult = e2eEmailResult(`Confirmation sent to ${data.email}.`)
 		if (mockedResult) return mockedResult
@@ -79,7 +79,7 @@ export const subscribeToNewsletter = createServerFn({ method: "POST" })
 	})
 
 export const submitContactForm = createServerFn({ method: "POST" })
-	.inputValidator(StandardContactFormSchema)
+	.validator(StandardContactFormSchema)
 	.handler(async ({ data }) => {
 		const mockedResult = e2eEmailResult(`Feedback received from ${data.email}.`)
 		if (mockedResult) return mockedResult
