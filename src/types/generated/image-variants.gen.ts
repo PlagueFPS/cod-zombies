@@ -6,6 +6,7 @@
 /** Base path -> available pre-generated widths, sorted ascending. Absent key = no variants (use base src only). */
 
 export const VARIANT_WIDTHS = {
+	"/augments/bo7/big-bang-minor-augment.webp": [384],
 	"/content/alpha-omega/alpha-omega-activated-tv.webp": [384, 1200],
 	"/content/alpha-omega/alpha-omega-adam-unit-free-perk.webp": [384, 1200],
 	"/content/alpha-omega/alpha-omega-adamn-behind-the-green-house.webp": [384, 1200],

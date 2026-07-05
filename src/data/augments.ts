@@ -2148,4 +2148,62 @@ const augmentHashMap = HashMap.make(
 		image: "/augments/bo7/footwork-minor-augment-bo7.webp",
 		variants: Option.none(),
 	}),
+	makeAugment("big-game-fire-works", {
+		title: "Big Game",
+		description: "Fire Works can activate on Elite Enemies, creating a bigger light show.",
+		type: "Major",
+		image: "/augments/bo7/big-game-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("starburst", {
+		title: "Starburst",
+		description:
+			"Fire Works explodes immediately, sending flares through enemies in all directions.",
+		type: "Major",
+		image: "/augments/firebomb-major-augment.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("weeping-willow", {
+		title: "Weeping Willow",
+		description:
+			"Instead of targeting enemies, the flares will land on the ground and explode periodically.",
+		type: "Major",
+		image: "/augments/bo7/petroleum-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("fire-wheel", {
+		title: "Fire Wheel",
+		description: "Create two Fire Wheels that spin around and damage enemies.",
+		type: "Major",
+		image: "/augments/bo7/mask-of-distraction-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("starlight", {
+		title: "Starlight",
+		description: "Fire Works launches more flares.",
+		type: "Minor",
+		image: "/augments/bo7/extra-charge-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("big-bang", {
+		title: "Big Bang",
+		description: "Fire Works flares deal more damage to Special and Elite Enemies.",
+		type: "Minor",
+		image: "/augments/bo7/big-bang-minor-augment.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("high-yield", {
+		title: "High Yield",
+		description: "Increase the area of effect.",
+		type: "Minor",
+		image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("short-fuse", {
+		title: "Short Fuse",
+		description: "Fire Works cooldown is reduced.",
+		type: "Minor",
+		image: "/augments/bo7/haste-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
 )

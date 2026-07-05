@@ -3,7 +3,6 @@ import {
 	buildSiteRouteIndex,
 	extractLinksFromMdx,
 	findUnclosedMarkdownLinks,
-	isInternalHref,
 	loadMdxCorpus,
 	resolveFragment,
 	resolveInternalPath,
@@ -11,6 +10,7 @@ import {
 	type MdxCorpusFile,
 	type SiteRouteIndex,
 } from "@/tests/mdx/mdx-link-validation"
+import { isInternalHref } from "@/utils/shared-functions"
 
 let corpus: MdxCorpusFile[]
 let routeIndex: SiteRouteIndex
@@ -30,7 +30,7 @@ describe("MDX link integrity", () => {
 			}
 		}
 
-		expect(malformed, malformed.join("\n")).toEqual([])
+		expect(malformed, `${malformed.join("\n")}`).toEqual([])
 	})
 
 	test("internal links resolve to site routes and heading anchors", () => {
@@ -53,6 +53,6 @@ describe("MDX link integrity", () => {
 			}
 		}
 
-		expect(failures, failures.join("\n")).toEqual([])
+		expect(failures, `${failures.join("\n")}`).toEqual([])
 	})
 })
