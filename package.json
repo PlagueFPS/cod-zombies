@@ -19,7 +19,7 @@
 		"fmt:check": "oxfmt --check",
 		"clean": "rm -rf .output && rm -rf .tanstack && rm -rf node_modules",
 		"email": "email dev",
-		"scan": "bun run dev && bunx react-scan@latest localhost:3000",
+		"scan": "bunx react-scan@latest localhost:3000",
 		"optimize:images": "bun scripts/image-optimization.ts",
 		"generate:last:modified": "bun scripts/generate-last-modified.ts",
 		"generate:image:paths": "bun scripts/generate-image-paths.ts",

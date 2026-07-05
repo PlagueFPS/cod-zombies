@@ -14,4 +14,8 @@
 			"LINEAR_DEFAULT_ASSIGNEE_ID",
 		],
 	},
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1, // optional. default = 1.
+	},
 }

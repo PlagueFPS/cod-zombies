@@ -27,7 +27,7 @@ yarn-error.log*
 *.local.*
 newassets
 oldassets
-/.repos/
+/.repos
 
 #cloudflare
 worker-configuration.d.ts

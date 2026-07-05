@@ -35,5 +35,13 @@
 	"env": {
 		"builtin": true
 	},
-	"ignorePatterns": [".repos", "**/last-modified.json", "node_modules", "dist", "out", "coverage"]
+	"ignorePatterns": [
+		".repos",
+		"**/last-modified.json",
+		"node_modules",
+		"dist",
+		"out",
+		"coverage",
+		"**/routeTree.gen.ts"
+	]
 }
