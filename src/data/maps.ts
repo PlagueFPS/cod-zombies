@@ -835,6 +835,21 @@ const MAPS = new Map([
 			max: 120,
 		}),
 	}),
+	makeMap("kowakujo", {
+		title: "Kowakujō",
+		releaseDate: "2026-06-25",
+		description:
+			"On the fractured slopes of a volcanic landscape, a castle harbors a smoldering mystery. Face the Dragon's undead army, investigate the Shogun's fate, and expose the curse that blackened Takeo's soul.",
+		image: "/maps/kowakujo.webp",
+		game: "black-ops-7",
+		state: Option.some("New"),
+		mainQuest: Option.some("content/main-quests/kowakujo"),
+		difficulty: Option.some("Hard"),
+		estimatedTimeMins: Option.some({
+			min: 60,
+			max: 150,
+		}),
+	}),
 ])
 
 const MAP_INSERATION_INDEX_BY_ID = new Map<MapKey, number>([...MAPS.keys()].map((id, i) => [id, i]))

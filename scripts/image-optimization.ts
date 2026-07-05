@@ -24,6 +24,7 @@ const DEFAULT_SOURCE_DIR = "./newassets"
 const DEFAULT_COPY_DIR = "./oldassets"
 const MAX_EFFORT = 6
 const MAX_QUALITY = 80
+const DEFAULT_MAX_WIDTH = 1920
 const PREVIEW_WIDTH = 640
 const MAP_WIDTH = 2048
 
@@ -189,7 +190,9 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 								? yield* encodeWebpEffect(image, relativeAsset, MAP_WIDTH, {
 										withoutEnlargement: true,
 									})
-								: yield* encodeWebpEffect(image, relativeAsset)
+								: yield* encodeWebpEffect(image, relativeAsset, DEFAULT_MAX_WIDTH, {
+										withoutEnlargement: true,
+									})
 					yield* fs.writeFile(path.join(outputDir, baseFileName), baseBuffer)
 
 					if (mode === "default" && shouldGenerateVariants(category)) {

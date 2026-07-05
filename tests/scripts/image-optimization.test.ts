@@ -94,6 +94,9 @@ describe("optimizeAssetsEffect", () => {
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out")).sort()
 		expect(files).toEqual(["maps/big-1200.webp", "maps/big-384.webp", "maps/big.webp"])
+		const metaBase = await sharp(readFileSync(join(root, "out", "maps", "big.webp"))).metadata()
+		expect(metaBase.width).toBe(1920)
+		expect(metaBase.format).toBe("webp")
 		const meta1200 = await sharp(
 			readFileSync(join(root, "out", "maps", "big-1200.webp")),
 		).metadata()
@@ -101,6 +104,19 @@ describe("optimizeAssetsEffect", () => {
 		expect(meta1200.format).toBe("webp")
 		const meta384 = await sharp(readFileSync(join(root, "out", "maps", "big-384.webp"))).metadata()
 		expect(meta384.format).toBe("webp")
+	})
+
+	test("default mode caps base image width at 1920px", async () => {
+		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
+		await writePng(join(root, "newassets", "maps", "huge.png"), 4000, 1600)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const meta = await sharp(readFileSync(join(root, "out", "maps", "huge.webp"))).metadata()
+		expect(meta.width).toBe(1920)
 	})
 
 	test("medium variant source produces base and 384 only", async () => {

@@ -152,7 +152,7 @@ const ZOMBIES = new Map([
 		releaseDate: "2010-06-10",
 		description:
 			"Hellhounds are fast flaming zombie dogs that hunt in packs, targeting the first player they see until they are eliminated before switching to another target.",
-		image: "/zombies/hellhound.webp",
+		image: "/zombies/hellhound-v1.webp",
 		type: "Special",
 		speed: "Fast",
 		spawnBehavior:
@@ -164,6 +164,7 @@ const ZOMBIES = new Map([
 			"black-ops-3",
 			"black-ops-4",
 			"black-ops-cold-war",
+			"black-ops-7",
 		],
 		maps: [
 			"shi-no-numa",
@@ -178,8 +179,9 @@ const ZOMBIES = new Map([
 			"classified",
 			"tag-der-toten",
 			"firebase-z",
+			"kowakujo",
 		],
-		elementalWeakness: [],
+		elementalWeakness: ["cryo-freeze"],
 		weakPoints: ["head"],
 		attacks: ["bite", "lunge", "explosion"],
 		combatStrategy: "content/zombies/hellhound",
@@ -1333,8 +1335,8 @@ const ZOMBIES = new Map([
 		image: "/zombies/abomination.webp",
 		description:
 			"The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold War, appearing as a three-headed mutated zombie similar to the Margwa.",
-		games: ["black-ops-cold-war", "black-ops-6"],
-		maps: ["forsaken", "liberty-falls", "shattered-veil"],
+		games: ["black-ops-cold-war", "black-ops-6", "black-ops-7"],
+		maps: ["forsaken", "liberty-falls", "shattered-veil", "kowakujo"],
 		type: "Elite",
 		speed: "Slow",
 		weakPoints: ["glowing-mouths"],
@@ -1698,7 +1700,7 @@ const ZOMBIES = new Map([
 		description:
 			"An apex predator twisted by the Dark Aether, driven by madness and aggression with parasitic infestations that make it an Elite level threat.",
 		games: ["black-ops-7"],
-		maps: ["ashes-of-the-damned"],
+		maps: ["ashes-of-the-damned", "kowakujo"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["red-glowing-spots", "bee-nests"],
@@ -1874,6 +1876,60 @@ const ZOMBIES = new Map([
 		spawnBehavior:
 			"The Gjallarfrost is summoned by Dravakar during this final encounter of the main quest, during the transition phases.",
 		combatStrategy: "content/zombies/gjallarfrost",
+	}),
+	makeZombie("scorched-zombie", {
+		title: "Scorched Zombie",
+		state: Option.some("New"),
+		releaseDate: "2026-06-25",
+		image: "/zombies/scorched-zombie.webp",
+		description:
+			"A fiery enemy seeking to immolate their targets, scorched by the molten lava erupting from the surrounding volcanoes.",
+		games: ["black-ops-7"],
+		maps: ["kowakujo"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: ["cryo-freeze"],
+		attacks: ["melee-swing"],
+		spawnBehavior:
+			"The Scorched Zombie can spawn from normal zombies being burned by the map's lava.",
+		combatStrategy: "content/zombies/scorched-zombie",
+	}),
+	makeZombie("oni", {
+		title: "Oni",
+		state: Option.some("New"),
+		releaseDate: "2026-06-25",
+		image: "/zombies/oni.webp",
+		description:
+			"A yōkai embodying wrath and malice, this demon's glowing gaze is like no other and must be challenged.",
+		games: ["black-ops-7"],
+		maps: ["kowakujo"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: ["shadow-rift"],
+		attacks: ["melee-swing", "electrical-bolts"],
+		spawnBehavior:
+			"The Oni will first appear during the Pack-a-Punch quest, and will periodically spawn in with zombies throughout the rounds.",
+		combatStrategy: "content/zombies/oni",
+	}),
+	makeZombie("nxyara", {
+		title: "Nxyara",
+		state: Option.some("New"),
+		releaseDate: "2026-06-25",
+		image: "/zombies/nyxara.webp",
+		description:
+			'Known as "The Warp", Nxyara is a powerful Shadowsmith enslaved by The Warden to protect the World Seed and rule over Kowakujō.',
+		games: ["black-ops-7"],
+		maps: ["kowakujo"],
+		type: "Boss",
+		speed: "Fast",
+		weakPoints: ["eyes", "red-glowing-spots"],
+		elementalWeakness: [],
+		attacks: ["fireball", "dragon-fire", "fire-tornadoes", "fire-beam"],
+		spawnBehavior:
+			"Nxyara appears throughout the map, but can only be fought in the final encounter of the Main Quest.",
+		combatStrategy: "content/zombies/nxyara",
 	}),
 ])
 

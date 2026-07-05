@@ -95,6 +95,14 @@ const makeMapEntry = <T extends string>(
 ]
 
 const INTERACTIVE_MAPS = new Map([
+	makeMapEntry("kowakujo", {
+		title: "Kowakujō",
+		state: Option.some("New"),
+		image: "/previews/kowakujo-preview.webp",
+		game: "black-ops-7",
+		description:
+			"Explore Kowakujō in Black Ops 7 Zombies. Find all locations for Perks, Weapons, intel, and more with our interactive map.",
+	}),
 	makeMapEntry("totenreich", {
 		title: "Totenreich",
 		state: Option.none(),
