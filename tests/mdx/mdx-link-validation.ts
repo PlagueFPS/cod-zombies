@@ -175,10 +175,6 @@ export function splitHref(href: string): { pathname: string; hash: string } {
 	return { pathname, hash }
 }
 
-export function isInternalHref(href: string): boolean {
-	return href.startsWith("/") || href.startsWith("#")
-}
-
 export function resolveInternalPath(pathname: string, index: SiteRouteIndex): boolean {
 	if (pathname === "") return true
 	const normalized = pathname.replace(/\/+$/, "") || "/"

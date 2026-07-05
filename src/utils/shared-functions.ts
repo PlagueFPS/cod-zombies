@@ -4,6 +4,11 @@ import { Option } from "effect"
 import { MAIN_QUEST_DIFFICULTIES, type MainQuestDifficulty } from "@/data/maps"
 import { SITE_TITLE } from "@/utils/constants"
 
+/** Returns true if the href is an internal link (starts with "/") or a fragment link (starts with "#"). */
+export function isInternalHref(href: string): boolean {
+	return href.startsWith("/") || href.startsWith("#")
+}
+
 /** Writes text to the system clipboard; returns false when the API rejects the write. */
 export async function copyTextToClipboard(text: string): Promise<boolean> {
 	try {

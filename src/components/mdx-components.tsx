@@ -13,7 +13,8 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-import { slugify } from "@/utils/shared-functions"
+import { isInternalHref, slugify } from "@/utils/shared-functions"
+import { CustomLink } from "./custom-link"
 
 export const mdxComponents: MDXComponents = {
 	h1: ({ children, ...props }: ComponentPropsWithoutRef<"h1">) => <h1 {...props}>{children}</h1>,
@@ -33,6 +34,18 @@ export const mdxComponents: MDXComponents = {
 		</Heading4>
 	),
 	a: ({ href, children, ...props }: ComponentPropsWithoutRef<"a">) => {
+		if (href && isInternalHref(href)) {
+			return (
+				<CustomLink
+					href={href}
+					{...props}
+					className="text-primary underline underline-offset-4 hover:no-underline"
+				>
+					{children}
+				</CustomLink>
+			)
+		}
+
 		return (
 			<ExternalLink href={href} {...props} className="inline-flex w-fit items-center">
 				{children}

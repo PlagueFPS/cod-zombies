@@ -1676,6 +1676,86 @@ const SIDE_QUESTS = new Map([
 		map: "totenreich",
 		content: "content/side-quests/richtofen-jumpscare",
 	}),
+	makeQuest("the-reunion", {
+		state: Option.some("New"),
+		title: "The Reunion",
+		description:
+			"Confront Takeo's past in this cinematic story-driven experience revealing hidden mysterious about this character.",
+		map: "kowakujo",
+		content: "content/side-quests/the-reunion",
+	}),
+	makeQuest("maneka-mecha", {
+		state: Option.some("New"),
+		title: "Maneka Mecha",
+		description:
+			"Rebuild and destroy a familiar enemy and gain access to one of the most powerful innovations of human engineering.",
+		map: "kowakujo",
+		content: "content/side-quests/maneka-mecha",
+	}),
+	makeQuest("path-of-sorrows", {
+		state: Option.some("New"),
+		title: "Path of Sorrows",
+		description:
+			"Learn how to obtain Takeo Masaki's legendary katana by perfectly solving his father's murder.",
+		map: "kowakujo",
+		content: "content/side-quests/path-of-sorrows",
+	}),
+	makeQuest("neko-cafe", {
+		state: Option.some("New"),
+		title: "Neko Cafe",
+		description:
+			"Find and gather all the stray cats in the castle to open your very own Neko Cafe and obtain some useful rewards.",
+		map: "kowakujo",
+		content: "content/side-quests/neko-cafe",
+	}),
+	makeQuest("maneki-bomb", {
+		state: Option.some("New"),
+		title: "Maneki-Bomb",
+		description:
+			"Learn how to upgraded the map specific tactical to increase its effectiveness and usability.",
+		map: "kowakujo",
+		content: "content/side-quests/maneki-bomb",
+	}),
+	makeQuest("evencry", {
+		state: Option.some("New"),
+		title: "Evencry",
+		description:
+			'Discover how to activate the hidden music easter egg song "Evencry" by Kevin Sherwood.',
+		map: "kowakujo",
+		content: "content/side-quests/evencry",
+	}),
+	makeQuest("horse-race", {
+		state: Option.some("New"),
+		title: "Horse Race",
+		description:
+			"Race against the clock to earn powerful rewards, including a secret reward if you're really fast.",
+		map: "kowakujo",
+		content: "content/side-quests/horse-race",
+	}),
+	makeQuest("ghostly-rifleman-upgrade", {
+		state: Option.some("New"),
+		title: "Ghostly Rifleman Upgrade",
+		description:
+			"Learn how to upgrade the Ghostly Rifleman traps up to four total times to make them incredibly effective and useful.",
+		map: "kowakujo",
+		content: "content/side-quests/ghostly-rifleman-upgrade",
+	}),
+	makeQuest("hidden-power-ups-kowakujo", {
+		state: Option.some("New"),
+		title: "Hidden Power-Ups",
+		description:
+			"Discover the location of every hidden Power-Up drop in Kowakujō, in case you need them.",
+		map: "kowakujo",
+		content: "content/side-quests/hidden-power-ups-kowakujo",
+	}),
+	makeQuest("par-course", {
+		state: Option.some("New"),
+		title: "Par Course",
+		description:
+			"Complete this fiery parkour course on the map to receive a familiar weapon in a familiar way of the past.",
+		map: "kowakujo",
+		content: "content/side-quests/par-course",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
