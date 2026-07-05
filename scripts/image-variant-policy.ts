@@ -14,7 +14,6 @@ export const NO_VARIANT_CATEGORIES = HashSet.make(
 	"opengraph-images",
 	"perks",
 	"relics",
-	"weapons",
 )
 
 /**
