@@ -6,7 +6,7 @@ import { IssueTracker } from "@/lib/services/issue-tracker"
 import { StandardFeedbackFormSchema } from "@/utils/validation-schemas"
 
 export const submitFeedbackForm = createServerFn({ method: "POST" })
-	.inputValidator(StandardFeedbackFormSchema)
+	.validator(StandardFeedbackFormSchema)
 	.handler(async ({ data }) => {
 		const result: APIResult = await submitFeedback(data).pipe(
 			Effect.retry({

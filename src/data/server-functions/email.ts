@@ -11,7 +11,7 @@ const e2eEmailResult = (message: string): APIResult | null => {
 }
 
 export const unsubscribeFromNewsletter = createServerFn({ method: "POST" })
-	.inputValidator(StandardNewsletterFormSchema)
+	.validator(StandardNewsletterFormSchema)
 	.handler(async ({ data }) => {
 		const mockedResult = e2eEmailResult(`Confirmation sent to ${data.email}.`)
 		if (mockedResult) return mockedResult

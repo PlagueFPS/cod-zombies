@@ -23,7 +23,7 @@ const resolveMdxModule = (contentPath: ContentPaths) => {
 
 /** Gets the MDX content for a given path, along with metadata such as headings and time to read. */
 export const getContent = createServerFn()
-	.inputValidator((data: { filePath: ContentPaths }) => StandardContentSchema.make(data))
+	.validator((data: { filePath: ContentPaths }) => StandardContentSchema.make(data))
 	.handler(async ({ data }) => {
 		const { mdx } = resolveMdxModule(data.filePath as ContentPaths)
 		const { default: Component, headings, timeToRead } = await mdx()
