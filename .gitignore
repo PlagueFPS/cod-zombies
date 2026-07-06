@@ -33,6 +33,7 @@ oldassets
 worker-configuration.d.ts
 .dev.vars
 .wrangler
+/bundled
 
 # typescript
 *.tsbuildinfo

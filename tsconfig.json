@@ -20,8 +20,7 @@
 		"incremental": true,
 		"plugins": [
 			{
-				"name": "@effect/language-service",
-				"refactors": true
+				"name": "@effect/language-service"
 			}
 		],
 		"paths": {

@@ -12,10 +12,10 @@ globalThis.IS_REACT_ACT_ENVIRONMENT = true
 Object.assign(process.env, {
 	RESEND_API_KEY: "test-key",
 	RESEND_AUDIENCE_ID: "test-audience",
-	LINEAR_API_KEY: "test-linear-key",
-	LINEAR_WORKSPACE: "test-workspace",
-	LINEAR_USER_FEEDBACK_LABEL: "test-user-feedback-label",
-	LINEAR_DEFAULT_ASSIGNEE_ID: "test-assignee",
+	GITHUB_TOKEN: "test-github-token",
+	GITHUB_REPO_OWNER: "test-owner",
+	GITHUB_REPO_NAME: "test-repo",
+	GITHUB_USER_FEEDBACK_LABEL: "User Feedback",
 })
 
 vi.mock("@/utils/request", () => ({

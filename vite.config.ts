@@ -15,7 +15,6 @@ import { remarkMdxMeta } from "./src/lib/remark-mdx-meta"
  * `.vite/deps` once at startup.
  */
 const depsWithBrokenSourcemaps = [
-	"cheerio",
 	"domutils",
 	"entities",
 	"htmlparser2",

@@ -1,6 +1,6 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
-import { LinearClient } from "@linear/sdk"
-import { Config, Context, Effect, Layer, Option, Redacted, Schema } from "effect"
+import { Config, Context, Effect, Layer, Schema } from "effect"
+import { FetchHttpClient, HttpClient, HttpClientRequest, HttpBody } from "effect/unstable/http"
 
 class CreateIssueError extends Schema.TaggedErrorClass<CreateIssueError>()("CreateIssueError", {
 	cause: Schema.Unknown,
@@ -8,46 +8,46 @@ class CreateIssueError extends Schema.TaggedErrorClass<CreateIssueError>()("Crea
 
 export class IssueTracker extends Context.Service<IssueTracker>()("lib/services/issue-tracker", {
 	make: Effect.gen(function* () {
-		const apiKey = yield* Config.redacted("LINEAR_API_KEY")
-		const workspaceId = yield* Config.redacted("LINEAR_WORKSPACE")
-		const assigneeId = yield* Config.redacted("LINEAR_DEFAULT_ASSIGNEE_ID")
-		const labelId = yield* Config.redacted("LINEAR_USER_FEEDBACK_LABEL")
+		const token = yield* Config.redacted("GITHUB_TOKEN")
+		const owner = yield* Config.string("GITHUB_REPO_OWNER")
+		const repo = yield* Config.string("GITHUB_REPO_NAME")
+		const feedbackLabel = yield* Config.string("GITHUB_USER_FEEDBACK_LABEL")
 
-		const linear = new LinearClient({ apiKey: Redacted.value(apiKey) })
+		const githubClient = (yield* HttpClient.HttpClient).pipe(
+			HttpClient.mapRequest(request =>
+				request.pipe(
+					HttpClientRequest.prependUrl("https://api.github.com"),
+					HttpClientRequest.bearerToken(token),
+					HttpClientRequest.accept("application/vnd.github+json"),
+					HttpClientRequest.setHeader("User-Agent", "cod-zombies"),
+				),
+			),
+			HttpClient.filterStatusOk,
+		)
 
 		const createIssue = Effect.fn("IssueTracker.createIssue")(function* (data: TFeedbackForm) {
-			const team = yield* Effect.tryPromise({
-				try: () => linear.team(Redacted.value(workspaceId)),
-				catch: cause => new CreateIssueError({ cause }),
-			})
+			// `data.email` is intentionally omitted from the issue body: public GitHub issues must not
+			// expose contact info. The form still collects email for a future custom feedback manager.
 
-			const description = Option.match(Option.fromNullishOr(data.email), {
-				onNone: () => `Feedback: ${data.feedback}`,
-				onSome: email => `Feedback: ${data.feedback}\nContact Email: ${email}`,
-			})
-
-			const { success, issueId } = yield* Effect.tryPromise({
-				try: () =>
-					linear.createIssue({
-						teamId: team.id,
-						title: data.title ?? "Website Feedback",
-						description,
-						labelIds: [Redacted.value(labelId)],
-						assigneeId: Redacted.value(assigneeId),
+			yield* githubClient
+				.post(`/repos/${owner}/${repo}/issues`, {
+					body: HttpBody.jsonUnsafe({
+						title: data.title,
+						body: data.feedback,
+						labels: [feedbackLabel],
 					}),
-				catch: cause => new CreateIssueError({ cause }),
-			})
-
-			if (!success || !issueId)
-				return yield* new CreateIssueError({
-					cause: "The create issue operation failed for an unknown reason.",
 				})
+				.pipe(
+					Effect.flatMap(res => res.text),
+					Effect.asVoid,
+					Effect.mapError(cause => new CreateIssueError({ cause })),
+				)
 
-			return success
+			return true
 		})
 
 		return { createIssue } as const
 	}),
 }) {
-	static layer = Layer.effect(this, this.make)
+	static layer = Layer.provide(Layer.effect(this, this.make), FetchHttpClient.layer)
 }

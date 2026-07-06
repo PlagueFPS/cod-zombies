@@ -5,10 +5,10 @@ const host = "127.0.0.1"
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://${host}:${port}`
 
 const testEnv = {
-	LINEAR_API_KEY: "playwright-linear-api-key",
-	LINEAR_DEFAULT_ASSIGNEE_ID: "playwright-linear-assignee-id",
-	LINEAR_USER_FEEDBACK_LABEL: "playwright-linear-feedback-label",
-	LINEAR_WORKSPACE: "playwright-linear-workspace",
+	GITHUB_TOKEN: "playwright-github-token",
+	GITHUB_REPO_OWNER: "playwright-owner",
+	GITHUB_REPO_NAME: "playwright-repo",
+	GITHUB_USER_FEEDBACK_LABEL: "User Feedback",
 	E2E_MOCK_EMAIL: "success",
 	RESEND_API_KEY: "playwright-resend-api-key",
 	RESEND_AUDIENCE_ID: "playwright-resend-audience-id",
