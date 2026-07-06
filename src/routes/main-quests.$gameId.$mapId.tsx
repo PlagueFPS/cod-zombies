@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -8,6 +8,7 @@ import { ComingSoonBadge, DifficultyBadge, NewBadge } from "@/components/custom-
 import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
 import { LastUpdatedDisplay } from "@/components/last-updated-display"
+import { MdxContent } from "@/components/mdx-content"
 import NotFoundContent from "@/components/not-found-content"
 import { QuestPageLoader } from "@/components/quest-page-loader"
 import { ShareButton } from "@/components/share-button"
@@ -15,7 +16,7 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getGameByKey } from "@/data/games"
 import { getAdjacentMaps, getMapByKey, type MapKey } from "@/data/maps"
-import { contentQueryOptions } from "@/data/queries"
+import { mdxQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { cn } from "@/lib/utils"
 import { type EncodedMapEntry, encodeMap } from "@/utils/rsc-wire"
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "main-quests", id: map.id } }),
-			context.queryClient.prefetchQuery(contentQueryOptions(map.id, map.mainQuest.value)),
+			context.queryClient.prefetchQuery(mdxQueryOptions(map.id, map.mainQuest.value)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -81,9 +82,7 @@ export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 
 function MainQuestGuide() {
 	const { map, game, next, prev, shareUrl } = Route.useLoaderData()
-	const { data } = useQuery(contentQueryOptions(map.id, map.mainQuest))
-
-	if (!data) throw notFound()
+	const { data } = useSuspenseQuery(mdxQueryOptions(map.id, map.mainQuest))
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -173,7 +172,7 @@ function MainQuestGuide() {
 							id="body"
 							className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
 						>
-							{data.Content}
+							<MdxContent Component={data.Component} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 							{prev ? <PrevOrNextMapCard map={prev} prev /> : null}

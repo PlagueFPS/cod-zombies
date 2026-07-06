@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { Array as Arr, Option } from "effect"
 import {
@@ -23,6 +23,7 @@ import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
 import ImageLoader from "@/components/image-loader"
 import { LastUpdatedDisplay } from "@/components/last-updated-display"
+import { MdxContent } from "@/components/mdx-content"
 import NotFoundContent from "@/components/not-found-content"
 import PrevOrNextLoader from "@/components/prev-or-next-card-loader"
 import { ShareButton } from "@/components/share-button"
@@ -33,7 +34,7 @@ import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import { type GameKey, getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
-import { contentQueryOptions } from "@/data/queries"
+import { mdxQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieAttackByKey } from "@/data/zombie-attacks"
@@ -52,7 +53,7 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "zombies", id: zombie.id } }),
-			context.queryClient.prefetchQuery(contentQueryOptions(zombie.id, zombie.combatStrategy)),
+			context.queryClient.prefetchQuery(mdxQueryOptions(zombie.id, zombie.combatStrategy)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -112,9 +113,7 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 
 function ZombieInfo() {
 	const { zombie, mostRecentGame, firstAppearIn, shareUrl, prev, next } = Route.useLoaderData()
-	const { data } = useQuery(contentQueryOptions(zombie.id, zombie.combatStrategy))
-
-	if (!data) throw notFound()
+	const { data } = useSuspenseQuery(mdxQueryOptions(zombie.id, zombie.combatStrategy))
 
 	const speedProgress = () => {
 		switch (zombie.speed) {
@@ -389,7 +388,7 @@ function ZombieInfo() {
 							<h3 className="text-xl font-bold">Combat Strategy</h3>
 						</div>
 						<div className={cn("text-sm text-foreground dark:text-foreground/80", richStyles.body)}>
-							{data.Content}
+							<MdxContent Component={data.Component} />
 						</div>
 					</CardContent>
 				</Card>

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -7,6 +7,7 @@ import { ComingSoonBadge, NewBadge } from "@/components/custom-badges"
 import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
 import { LastUpdatedDisplay } from "@/components/last-updated-display"
+import { MdxContent } from "@/components/mdx-content"
 import NotFoundContent from "@/components/not-found-content"
 import { QuestPageLoader } from "@/components/quest-page-loader"
 import { ShareButton } from "@/components/share-button"
@@ -14,7 +15,7 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
-import { contentQueryOptions } from "@/data/queries"
+import { mdxQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { getAdjacentSideQuests, getSideQuestByKey, type SideQuestKey } from "@/data/side-quests"
 import { cn } from "@/lib/utils"
@@ -31,7 +32,7 @@ export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "side-quests", id: quest.id } }),
-			context.queryClient.prefetchQuery(contentQueryOptions(quest.id, quest.content)),
+			context.queryClient.prefetchQuery(mdxQueryOptions(quest.id, quest.content)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -84,9 +85,7 @@ export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 
 function SideQuestGuide() {
 	const { quest, map, game, next, prev, shareUrl } = Route.useLoaderData()
-	const { data } = useQuery(contentQueryOptions(quest.id, quest.content))
-
-	if (!data) throw notFound()
+	const { data } = useSuspenseQuery(mdxQueryOptions(quest.id, quest.content))
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
@@ -183,7 +182,7 @@ function SideQuestGuide() {
 							id="body"
 							className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
 						>
-							{data.Content}
+							<MdxContent Component={data.Component} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 							{prev ? <PrevOrNextQuestCard quest={prev} prev /> : null}

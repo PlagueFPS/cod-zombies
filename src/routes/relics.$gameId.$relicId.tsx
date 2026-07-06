@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
@@ -9,6 +9,7 @@ import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
 import ImageLoader from "@/components/image-loader"
 import { LastUpdatedDisplay } from "@/components/last-updated-display"
+import { MdxContent } from "@/components/mdx-content"
 import NotFoundContent from "@/components/not-found-content"
 import { RichBlockquote } from "@/components/rich-blockquote"
 import { ShareButton } from "@/components/share-button"
@@ -18,7 +19,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
-import { contentQueryOptions } from "@/data/queries"
+import { mdxQueryOptions } from "@/data/queries"
 import { getAdjacentRelics, getRelicByKey, type RelicKey } from "@/data/relics"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { cn } from "@/lib/utils"
@@ -35,7 +36,7 @@ export const Route = createFileRoute("/relics/$gameId/$relicId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "relics", id: relic.id } }),
-			context.queryClient.prefetchQuery(contentQueryOptions(relic.id, relic.content)),
+			context.queryClient.prefetchQuery(mdxQueryOptions(relic.id, relic.content)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -88,9 +89,7 @@ export const Route = createFileRoute("/relics/$gameId/$relicId")({
 
 function RelicGuide() {
 	const { relic, map, game, prev, next, serverUrl } = Route.useLoaderData()
-	const { data } = useQuery(contentQueryOptions(relic.id, relic.content))
-
-	if (!data) throw notFound()
+	const { data } = useSuspenseQuery(mdxQueryOptions(relic.id, relic.content))
 
 	return (
 		<section className="mx-auto -mt-10 md:py-12 xl:mt-0">
@@ -161,7 +160,7 @@ function RelicGuide() {
 						<RichBlockquote>
 							<b>Effect:</b> {relic.description}
 						</RichBlockquote>
-						{data.Content}
+						<MdxContent Component={data.Component} />
 					</div>
 					<div className="mt-8 flex w-full items-center justify-evenly gap-4">
 						{prev ? <PrevOrNextRelicCard relic={prev} prev /> : null}
