@@ -15,7 +15,7 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
-import { mdxQueryOptions } from "@/data/queries"
+import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { getAdjacentSideQuests, getSideQuestByKey, type SideQuestKey } from "@/data/side-quests"
 import { cn } from "@/lib/utils"
@@ -32,7 +32,8 @@ export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "side-quests", id: quest.id } }),
-			context.queryClient.prefetchQuery(mdxQueryOptions(quest.id, quest.content)),
+			context.queryClient.prefetchQuery(mdxMetaQueryOptions(quest.id, quest.content)),
+			context.queryClient.prefetchQuery(mdxComponentQueryOptions(quest.id, quest.content)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -85,13 +86,14 @@ export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 
 function SideQuestGuide() {
 	const { quest, map, game, next, prev, shareUrl } = Route.useLoaderData()
-	const { data } = useSuspenseQuery(mdxQueryOptions(quest.id, quest.content))
+	const { data: meta } = useSuspenseQuery(mdxMetaQueryOptions(quest.id, quest.content))
+	const { data: component } = useSuspenseQuery(mdxComponentQueryOptions(quest.id, quest.content))
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
 				<div className="flex w-full flex-col xl:flex-row-reverse">
-					<TableOfContents headings={data.headings} />
+					<TableOfContents headings={meta.headings} />
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
@@ -162,14 +164,14 @@ function SideQuestGuide() {
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
 										<LastUpdatedDisplay
-											lastModified={data.lastModified}
-											lastModifiedFormatted={data.lastModifiedFormatted}
+											lastModified={meta.lastModified}
+											lastModifiedFormatted={meta.lastModifiedFormatted}
 										/>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
 									<div className="flex items-center gap-1">
 										<Clock className="size-4" />
-										<span>{data.timeToRead} min read</span>
+										<span>{meta.timeToRead} min read</span>
 									</div>
 									<ShareButton
 										url={shareUrl}
@@ -182,7 +184,7 @@ function SideQuestGuide() {
 							id="body"
 							className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
 						>
-							<MdxContent Component={data.Component} />
+							<MdxContent Component={component.Component} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 							{prev ? <PrevOrNextQuestCard quest={prev} prev /> : null}

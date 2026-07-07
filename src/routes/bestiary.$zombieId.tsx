@@ -34,7 +34,7 @@ import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import { type GameKey, getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
-import { mdxQueryOptions } from "@/data/queries"
+import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieAttackByKey } from "@/data/zombie-attacks"
@@ -53,7 +53,8 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "zombies", id: zombie.id } }),
-			context.queryClient.prefetchQuery(mdxQueryOptions(zombie.id, zombie.combatStrategy)),
+			context.queryClient.prefetchQuery(mdxMetaQueryOptions(zombie.id, zombie.combatStrategy)),
+			context.queryClient.prefetchQuery(mdxComponentQueryOptions(zombie.id, zombie.combatStrategy)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -113,7 +114,10 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 
 function ZombieInfo() {
 	const { zombie, mostRecentGame, firstAppearIn, shareUrl, prev, next } = Route.useLoaderData()
-	const { data } = useSuspenseQuery(mdxQueryOptions(zombie.id, zombie.combatStrategy))
+	const { data: meta } = useSuspenseQuery(mdxMetaQueryOptions(zombie.id, zombie.combatStrategy))
+	const { data: component } = useSuspenseQuery(
+		mdxComponentQueryOptions(zombie.id, zombie.combatStrategy),
+	)
 
 	const speedProgress = () => {
 		switch (zombie.speed) {
@@ -154,8 +158,8 @@ function ZombieInfo() {
 					</div>
 					<div className="flex items-center justify-center gap-2">
 						<LastUpdatedDisplay
-							lastModified={data.lastModified}
-							lastModifiedFormatted={data.lastModifiedFormatted}
+							lastModified={meta.lastModified}
+							lastModifiedFormatted={meta.lastModifiedFormatted}
 							className="text-xs text-foreground/60 sm:text-sm"
 						/>
 						<ShareButton url={shareUrl} className="text-foreground/60" />
@@ -388,7 +392,7 @@ function ZombieInfo() {
 							<h3 className="text-xl font-bold">Combat Strategy</h3>
 						</div>
 						<div className={cn("text-sm text-foreground dark:text-foreground/80", richStyles.body)}>
-							<MdxContent Component={data.Component} />
+							<MdxContent Component={component.Component} />
 						</div>
 					</CardContent>
 				</Card>

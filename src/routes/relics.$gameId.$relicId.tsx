@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
-import { mdxQueryOptions } from "@/data/queries"
+import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getAdjacentRelics, getRelicByKey, type RelicKey } from "@/data/relics"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { cn } from "@/lib/utils"
@@ -36,7 +36,8 @@ export const Route = createFileRoute("/relics/$gameId/$relicId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "relics", id: relic.id } }),
-			context.queryClient.prefetchQuery(mdxQueryOptions(relic.id, relic.content)),
+			context.queryClient.prefetchQuery(mdxMetaQueryOptions(relic.id, relic.content)),
+			context.queryClient.prefetchQuery(mdxComponentQueryOptions(relic.id, relic.content)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -89,12 +90,13 @@ export const Route = createFileRoute("/relics/$gameId/$relicId")({
 
 function RelicGuide() {
 	const { relic, map, game, prev, next, serverUrl } = Route.useLoaderData()
-	const { data } = useSuspenseQuery(mdxQueryOptions(relic.id, relic.content))
+	const { data: meta } = useSuspenseQuery(mdxMetaQueryOptions(relic.id, relic.content))
+	const { data: component } = useSuspenseQuery(mdxComponentQueryOptions(relic.id, relic.content))
 
 	return (
 		<section className="mx-auto -mt-10 md:py-12 xl:mt-0">
 			<div className="flex w-full flex-col xl:flex-row-reverse">
-				<TableOfContents headings={data.headings} className="m-0 -mt-10" />
+				<TableOfContents headings={meta.headings} className="m-0 -mt-10" />
 				<article className="mx-auto max-w-4xl space-y-8">
 					<header className="relative mt-16 space-y-6 border-b pb-8 text-center xl:mt-0">
 						<div className="mx-auto size-64 rounded-lg bg-muted dark:bg-accent/30">
@@ -136,14 +138,14 @@ function RelicGuide() {
 								<span className="flex items-center gap-1">
 									<Calendar className="size-4" />
 									<LastUpdatedDisplay
-										lastModified={data.lastModified}
-										lastModifiedFormatted={data.lastModifiedFormatted}
+										lastModified={meta.lastModified}
+										lastModifiedFormatted={meta.lastModifiedFormatted}
 									/>
 								</span>
 								<span className="inline">&bull;</span>
 								<span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
 									<Clock className="size-4" />
-									<span>{data.timeToRead} min read</span>
+									<span>{meta.timeToRead} min read</span>
 								</span>
 								<span className="hidden md:inline">&bull;</span>
 								<CompletionTimeDisplay timeRange={relic.estimatedTimeMins} />
@@ -160,7 +162,7 @@ function RelicGuide() {
 						<RichBlockquote>
 							<b>Effect:</b> {relic.description}
 						</RichBlockquote>
-						<MdxContent Component={data.Component} />
+						<MdxContent Component={component.Component} />
 					</div>
 					<div className="mt-8 flex w-full items-center justify-evenly gap-4">
 						{prev ? <PrevOrNextRelicCard relic={prev} prev /> : null}

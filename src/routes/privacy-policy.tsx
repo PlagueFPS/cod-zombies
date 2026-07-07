@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs"
 import { LastUpdatedDisplay } from "@/components/last-updated-display"
 import { MdxContent } from "@/components/mdx-content"
 import { Skeleton } from "@/components/ui/skeleton"
-import { mdxQueryOptions } from "@/data/queries"
+import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { cn } from "@/lib/utils"
 import { createSeoTitle } from "@/utils/shared-functions"
 import richStyles from "@/rich-text.module.css"
@@ -13,7 +13,12 @@ const PRIVACY_POLICY_PATH = "content/legal/privacy-policy" as const
 
 export const Route = createFileRoute("/privacy-policy")({
 	loader: async ({ context }) => {
-		await context.queryClient.prefetchQuery(mdxQueryOptions("privacy-policy", PRIVACY_POLICY_PATH))
+		await Promise.all([
+			context.queryClient.prefetchQuery(mdxMetaQueryOptions("privacy-policy", PRIVACY_POLICY_PATH)),
+			context.queryClient.prefetchQuery(
+				mdxComponentQueryOptions("privacy-policy", PRIVACY_POLICY_PATH),
+			),
+		])
 		const title = createSeoTitle("Privacy Policy")
 		const description =
 			"Learn about how we collect, use, and protect your personal information. Our privacy policy outlines our commitment to safeguarding your data and privacy rights."
@@ -59,7 +64,12 @@ export const Route = createFileRoute("/privacy-policy")({
 })
 
 function PrivacyPolicy() {
-	const { data } = useSuspenseQuery(mdxQueryOptions("privacy-policy", PRIVACY_POLICY_PATH))
+	const { data: meta } = useSuspenseQuery(
+		mdxMetaQueryOptions("privacy-policy", PRIVACY_POLICY_PATH),
+	)
+	const { data: component } = useSuspenseQuery(
+		mdxComponentQueryOptions("privacy-policy", PRIVACY_POLICY_PATH),
+	)
 
 	return (
 		<article className="flex w-full justify-center">
@@ -76,13 +86,13 @@ function PrivacyPolicy() {
 								Privacy Policy
 							</h2>
 							<LastUpdatedDisplay
-								lastModified={data.lastModified}
-								lastModifiedFormatted={data.lastModifiedFormatted}
+								lastModified={meta.lastModified}
+								lastModifiedFormatted={meta.lastModifiedFormatted}
 								className="text-sm text-muted-foreground"
 							/>
 						</div>
 						<div className={cn("relative mx-auto max-w-[80ch] px-4", richStyles.body)}>
-							<MdxContent Component={data.Component} />
+							<MdxContent Component={component.Component} />
 						</div>
 					</section>
 				</div>

@@ -16,7 +16,7 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getGameByKey } from "@/data/games"
 import { getAdjacentMaps, getMapByKey, type MapKey } from "@/data/maps"
-import { mdxQueryOptions } from "@/data/queries"
+import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { cn } from "@/lib/utils"
 import { type EncodedMapEntry, encodeMap } from "@/utils/rsc-wire"
@@ -31,7 +31,8 @@ export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 
 		const [opengraphUrl] = await Promise.all([
 			getOgImgUrl({ data: { kind: "main-quests", id: map.id } }),
-			context.queryClient.prefetchQuery(mdxQueryOptions(map.id, map.mainQuest.value)),
+			context.queryClient.prefetchQuery(mdxMetaQueryOptions(map.id, map.mainQuest.value)),
+			context.queryClient.prefetchQuery(mdxComponentQueryOptions(map.id, map.mainQuest.value)),
 		])
 
 		if (!opengraphUrl) throw notFound()
@@ -82,13 +83,14 @@ export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 
 function MainQuestGuide() {
 	const { map, game, next, prev, shareUrl } = Route.useLoaderData()
-	const { data } = useSuspenseQuery(mdxQueryOptions(map.id, map.mainQuest))
+	const { data: meta } = useSuspenseQuery(mdxMetaQueryOptions(map.id, map.mainQuest))
+	const { data: component } = useSuspenseQuery(mdxComponentQueryOptions(map.id, map.mainQuest))
 
 	return (
 		<section className="-mt-10 flex w-full justify-center xl:mt-0">
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
 				<div className="flex w-full flex-col xl:flex-row-reverse">
-					<TableOfContents headings={data.headings} />
+					<TableOfContents headings={meta.headings} />
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
 							<div className="absolute top-4 right-0 left-0 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
@@ -148,14 +150,14 @@ function MainQuestGuide() {
 									<div className="flex items-center gap-1">
 										<Calendar className="size-4" />
 										<LastUpdatedDisplay
-											lastModified={data.lastModified}
-											lastModifiedFormatted={data.lastModifiedFormatted}
+											lastModified={meta.lastModified}
+											lastModifiedFormatted={meta.lastModifiedFormatted}
 										/>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
 									<div className="flex items-center gap-1">
 										<Clock className="size-4" />
-										<span>{data.timeToRead} min read</span>
+										<span>{meta.timeToRead} min read</span>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
 									{map.estimatedTimeMins ? (
@@ -172,7 +174,7 @@ function MainQuestGuide() {
 							id="body"
 							className={cn("relative mx-auto w-full max-w-[80ch] px-4", richStyles.body)}
 						>
-							<MdxContent Component={data.Component} />
+							<MdxContent Component={component.Component} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
 							{prev ? <PrevOrNextMapCard map={prev} prev /> : null}

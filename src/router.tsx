@@ -5,6 +5,7 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 import { DefaultError } from "@/components/default-error"
 import { DefaultNotFound } from "@/components/default-not-found"
 import { ThemeProvider } from "@/contexts/theme-provider"
+import { MDX_COMPONENT_QUERY_KEY } from "@/data/queries"
 import { routeTree } from "@/routeTree.gen"
 import { getServerUrl } from "@/utils/request"
 
@@ -66,6 +67,10 @@ export function getRouter() {
 		router,
 		queryClient,
 		wrapQueryClient: true,
+		dehydrateOptions: {
+			// Dehydrating MDX component queries causes serialization issues since they are functions.
+			shouldDehydrateQuery: query => query.queryKey[0] !== MDX_COMPONENT_QUERY_KEY,
+		},
 	})
 
 	return router
