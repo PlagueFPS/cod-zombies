@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - "content/**/*.mdx"
-    types: [reopened, opened, synchronize, ready_for_review]
+    types: [reopened, opened, synchronize]
 
 jobs:
   update-last-modified:
