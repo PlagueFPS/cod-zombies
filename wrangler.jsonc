@@ -1,0 +1,30 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "cod-zombies",
+	"compatibility_date": "2026-07-04",
+	"compatibility_flags": ["nodejs_compat"],
+	"main": "@tanstack/react-start/server-entry",
+	"vars": {
+		"GITHUB_REPO_OWNER": "PlagueFPS",
+		"GITHUB_REPO_NAME": "cod-zombies",
+		"GITHUB_USER_FEEDBACK_LABEL": "User Feedback",
+	},
+	"secrets": {
+		"required": ["RESEND_API_KEY", "RESEND_AUDIENCE_ID", "GITHUB_TOKEN"],
+	},
+	"observability": {
+		"enabled": false,
+		"head_sampling_rate": 1,
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"persist": true,
+			"invocation_logs": true,
+		},
+		"traces": {
+			"enabled": true,
+			"persist": true,
+			"head_sampling_rate": 1,
+		},
+	},
+}

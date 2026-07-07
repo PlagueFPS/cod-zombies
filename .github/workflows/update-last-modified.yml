@@ -3,13 +3,13 @@ name: Update Last Modified Dates
 on:
   pull_request:
     paths:
-      - "content/**/*.mdx"
-    types: [reopened, opened, synchronize, ready_for_review]
+      - "src/content/**/*.mdx"
+    types: [reopened, opened, synchronize]
 
 jobs:
   update-last-modified:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'PlagueFPS' && github.event.pull_request.draft == false
+    if: github.repository_owner == 'PlagueFPS'
     permissions:
       contents: write
 
@@ -36,7 +36,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet data/last-modified.json; then
+          if git diff --quiet src/data/last-modified.json; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -47,6 +47,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/last-modified.json
+          git add src/data/last-modified.json
           git commit -m "chore: update last modified dates"
           git push

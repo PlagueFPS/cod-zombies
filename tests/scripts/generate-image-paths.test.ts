@@ -64,14 +64,14 @@ describe("generateImagePaths", () => {
 			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
 		)
 
-		mkdirSync(join(root, "types", "generated"), { recursive: true })
+		mkdirSync(join(root, "src", "types", "generated"), { recursive: true })
 		process.chdir(root)
 
 		const program = generateImagePaths(root).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 
-		const out = readFileSync(join(root, "types", "generated", "image-paths.gen.ts"), "utf-8")
+		const out = readFileSync(join(root, "src", "types", "generated", "image-paths.gen.ts"), "utf-8")
 
 		expect(out).toContain("export type RootImagePath =")
 		const rootA = out.indexOf("'/alpha.png'")
@@ -86,6 +86,59 @@ describe("generateImagePaths", () => {
 		expect(out).not.toContain("ContentImagePath")
 		expect(out).not.toContain("OpengraphImagesImagePath")
 
+		const variantsOut = readFileSync(
+			join(root, "src", "types", "generated", "image-variants.gen.ts"),
+			"utf-8",
+		)
+		expect(variantsOut).toContain("export const VARIANT_WIDTHS")
+
+		process.chdir(prevCwd)
+		rmSync(root, { recursive: true, force: true })
+	})
+
+	test("excludes variant suffix files from ImagePaths and builds VARIANT_WIDTHS", async () => {
+		const root = mkdtempSync(join(tmpdir(), "codz-pub-"))
+		mkdirSync(join(root, "public", "maps"), { recursive: true })
+		writeFileSync(
+			join(root, "public", "maps", "big.webp"),
+			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+		)
+		writeFileSync(
+			join(root, "public", "maps", "big-384.webp"),
+			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+		)
+		writeFileSync(
+			join(root, "public", "maps", "big-1200.webp"),
+			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+		)
+		mkdirSync(join(root, "public", "content", "map"), { recursive: true })
+		writeFileSync(
+			join(root, "public", "content", "map", "shot.webp"),
+			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+		)
+		writeFileSync(
+			join(root, "public", "content", "map", "shot-384.webp"),
+			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+		)
+		mkdirSync(join(root, "src", "types", "generated"), { recursive: true })
+		process.chdir(root)
+
+		const program = generateImagePaths(root).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+
+		const out = readFileSync(join(root, "src", "types", "generated", "image-paths.gen.ts"), "utf-8")
+		expect(out).toContain("'/maps/big.webp'")
+		expect(out).not.toContain("big-384.webp")
+		expect(out).not.toContain("big-1200.webp")
+
+		const variantsOut = readFileSync(
+			join(root, "src", "types", "generated", "image-variants.gen.ts"),
+			"utf-8",
+		)
+		expect(variantsOut).toContain("'/maps/big.webp': [384, 1200]")
+		expect(variantsOut).toContain("'/content/map/shot.webp': [384]")
+
 		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
@@ -97,14 +150,14 @@ describe("generateImagePaths", () => {
 			join(root, "public", "maps", "it's-a-trap.png"),
 			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
 		)
-		mkdirSync(join(root, "types", "generated"), { recursive: true })
+		mkdirSync(join(root, "src", "types", "generated"), { recursive: true })
 		process.chdir(root)
 
 		const program = generateImagePaths(root).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 
-		const out = readFileSync(join(root, "types", "generated", "image-paths.gen.ts"), "utf-8")
+		const out = readFileSync(join(root, "src", "types", "generated", "image-paths.gen.ts"), "utf-8")
 		expect(out).toContain("\\'")
 
 		process.chdir(prevCwd)

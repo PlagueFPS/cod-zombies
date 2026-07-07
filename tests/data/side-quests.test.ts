@@ -48,12 +48,11 @@ describe("getAdjacentSideQuests", () => {
 		const { prev, next } = getAdjacentSideQuests(q1.id as SideQuestKey)
 		const idx = quests.findIndex(q => q.id === q1.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
-		if (idx < quests.length - 1) {
-			expect(prev.pipe(Option.map(n => n.id))).toEqual(Option.some(quests[idx + 1]!.id))
-		}
-		if (idx > 0) {
-			expect(next.pipe(Option.map(p => p.id))).toEqual(Option.some(quests[idx - 1]!.id))
-		}
+		const expectedPrev =
+			idx < quests.length - 1 ? Option.some(quests[idx + 1]!.id) : Option.none<string>()
+		const expectedNext = idx > 0 ? Option.some(quests[idx - 1]!.id) : Option.none<string>()
+		expect(prev.pipe(Option.map(n => n.id))).toEqual(expectedPrev)
+		expect(next.pipe(Option.map(p => p.id))).toEqual(expectedNext)
 	})
 
 	test("prev is Some and Next is None when the first side quest is provided", () => {

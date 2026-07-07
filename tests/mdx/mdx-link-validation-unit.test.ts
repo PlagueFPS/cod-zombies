@@ -2,12 +2,12 @@ import { describe, expect, test } from "vitest"
 import {
 	extractLinksFromMdx,
 	findUnclosedMarkdownLinks,
-	isInternalHref,
 	resolveFragment,
 	resolveInternalPath,
 	splitHref,
 	type SiteRouteIndex,
 } from "@/tests/mdx/mdx-link-validation"
+import { isInternalHref } from "@/utils/shared-functions"
 
 describe("splitHref", () => {
 	test("splits pathname, query, and hash", () => {

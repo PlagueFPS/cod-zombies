@@ -1,0 +1,159 @@
+import RichImage from '@/components/rich-image'
+import CustomCarousel from '@/components/custom-carousel'
+import PerkTooltip from '@/components/perk-tooltip'
+import YoutubeEmbed from '@/components/youtube-embed'
+import { RichTable, RichBodyRow } from '@/components/rich-table'
+import { TableCell } from '@/components/ui/table'
+import ElixirTooltip from '@/components/elixir-tooltip'
+
+## Main Quest
+The main quest for **Classified** is to reach **Round 150**. Doing so will unlock a crucial cutscene in the lore of our **Primis** and **Ultimis** crew to prepare for the map next map in
+the **Aether** story.
+
+> You must be playing on **Normal** difficulty or higher to do this main quest.
+
+## Requirements
+This main quest can be done with any number of players, and the main requirement is to make it to survive until **Round 150** to receive the ending cutscene, the strategy we recommend
+also requires the [Shield](#obtaining-the-shield).
+
+## Recommended Class Setups
+
+<RichTable
+  headerCells={["Special Weapon", "Perks", "Start Weapon", "Equipment"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        Ragnarok DG-5
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="winters-wail" />
+        <PerkTooltip perkKey="stone-cold-stronghold" />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        Ragnarok DG-5
+      </TableCell>
+      <TableCell className='flex flex-col gap-1 items-start justify-center'>
+        <PerkTooltip perkKey="dying-wish" />
+        <PerkTooltip perkKey="victorious-tortoise" />
+        <PerkTooltip perkKey="winters-wail" />
+        <PerkTooltip perkKey="timeslip" />
+      </TableCell>
+      <TableCell>
+        Strife
+      </TableCell>
+      <TableCell>
+        Wraith Fire
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> <PerkTooltip perkKey="stone-cold-stronghold" /> or <PerkTooltip perkKey="timeslip" /> should be put into the **Modifier** slot, depending on which setup you choose.
+
+## Recommended Elixirs
+
+<RichTable
+ headerCells={["Classic Elixirs", "Mega Elixirs"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <ElixirTooltip elixirKey='anywhere-but-here' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='licensed-contractor' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <ElixirTooltip elixirKey='equip-mint' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='shields-up' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <ElixirTooltip elixirKey='temporal-gift' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='dead-of-nuclear-winter' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <ElixirTooltip elixirKey='arsenal-accelerator' />
+      </TableCell>
+      <TableCell>
+        <ElixirTooltip elixirKey='power-keg' />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> It is strongly recommened to also either equip the **Minor Reinforced Charm**, **Major Reinforced Charm**, or **Frugal Fetish** talismans. Although this isn't required.
+
+## Obtaining the Shield
+> The **Riot Shield** has three parts, each part having three spawns within a location.
+
+The first shield part is located in the **Central Filing Room**:
+
+<CustomCarousel>
+  <RichImage image='/content/classified/classified-first-part-first-spawn.webp' caption='Lying against the broken double windows' />
+  <RichImage image='/content/classified/classified-first-part-second-spawn.webp' caption='Lying against some filing cabinets near the center of the room' />
+  <RichImage image='/content/classified/classified-first-part-final-spawn.webp' caption='Lying against the wall immediately to the left after entering from spawn' />
+</CustomCarousel>
+
+The second shield part is located in the **War Room**:
+
+<CustomCarousel>
+  <RichImage image='/content/classified/classified-second-part-first-spawn.webp' caption='Lower Level - just behind the Mystery Box location' />
+  <RichImage image='/content/classified/classified-second-part-second-spawn.webp' caption='Lower Level - lying against a metal cage next to the stairs leading to the upper level' />
+  <RichImage image='/content/classified/classified-second-part-final-spawn.webp' caption='Lower Level - in the right hand corner of the room opposite DEFCON 1' />
+</CustomCarousel>
+
+The final shield part is located in the **Labs**:
+
+<CustomCarousel>
+  <RichImage image='/content/classified/classified-final-part-first-spawn.webp' caption='South Laboratories - on the floor left of the power switch' />
+  <RichImage image='/content/classified/classified-final-part-second-spawn.webp' caption='South Laboratories - against the wall just outside of Weapon Testing' />
+  <RichImage image='/content/classified/classified-final-part-final-spawn.webp' caption='North Laboratories - lying against a barrel just before the teleporter' />
+</CustomCarousel>
+
+Once you have collected all three parts build the shield in the **Weapon Testing** room, not in the **Central Filing** room.
+
+## Main Quest Strategy
+The strategy for getting to **Round 150** is simple, camp in the corner of the **Weapon Testing** room near the shield, with your shield out, and kill everything using your shield.
+<PerkTooltip perkKey="victorious-tortoise" /> will keep you alive while you have your shield, and if you ever run out of ammo or your shield is close to breaking repair the shield
+instead of letting it break to save points.
+
+> If your shield does happen to break, <PerkTooltip perkKey="victorious-tortoise" /> will knock all the zombies down giving you time to buy a new shield.
+
+You must also be throwing your **Wraith Fires** and placing your **Ragnarok DG-5s** whenever you have them available, to save ammo and collect points for repairing/buying your shield
+and to help weaken the zombies for you to kill with the shield. Repeat this process until you have reached **Round 150**.
+
+> If you get a **Double Points** or **Instakill** power-up, make sure to activate your <ElixirTooltip elixirKey='temporal-gift' /> elixir to double the duration of the power-up for an easier time.
+
+<RichImage image='/content/classified/classified-ending.webp' caption='Ending Cutscene' />
+
+Congratulations! You have beaten the **Classified** main quest.
+## Video Guides
+
+### Round 150 Guide by Joltz
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=Eolw8uOySA8" />
+
+### Round 150 Guide by MrRoflWaffles
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=5SFBOLpaLXU" />
+
+## Credits
+Some images were sourced from the following community members:
+- [MrRoflWaffles](https://www.youtube.com/@MrRoflWaffles)

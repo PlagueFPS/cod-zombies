@@ -20,4 +20,6 @@ import { cn } from "@/lib/utils";
 import type { Zombie } from "@/types/data";
 ```
 
-The alias maps `@/*` to the project root (`./*`). Prefer it for all internal imports to keep paths stable and readable.
+The alias maps `@/*` to the project src directory (`./src/*`). Prefer it for all internal imports to keep paths stable and readable.
+
+**Exception:** Vite-bundled module indirections must stay **relative** — do not use `@/` in `import.meta.glob(...)` patterns or in dynamic `import(\`../...\`)` strings used for chunk splitting. Those paths are resolved in ways that break builds when aliased; use ordinary `../` (or `./`) for those only.

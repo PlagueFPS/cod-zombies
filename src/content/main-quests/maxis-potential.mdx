@@ -1,0 +1,199 @@
+import FieldUpgradeTooltip from '@/components/field-upgrade-tooltip'
+import PerkTooltip from '@/components/perk-tooltip'
+import ZombieTooltip from '@/components/zombie-tooltip'
+import YoutubeEmbed from '@/components/youtube-embed'
+import RichImage from '@/components/rich-image'
+import CustomCarousel from '@/components/custom-carousel'
+import { TableCell } from '@/components/ui/table'
+import { RichTable, RichBodyRow } from '@/components/rich-table'
+
+## Maxis Potential
+
+The main quest for **Firebase Z** is **Maxis Potential**. The Requiem Strike Force's goal in this quest is to rescue **Samantha Maxis** from the **Dark Aether**.
+
+## Requirements
+
+This main quest can be completed with any number of players but requires you to turn on all three Aether Reactors and obtain the **RAI K-84**.
+
+> I recommend getting the **RAI K-84** from turning in **Legendary Trials** or the **Mystery** Box. This is because it is the quickiest method of obtaining the weapon, since the
+side quest to obtain it requires you to be on **Round 15+**, wasting a lot of rounds where you could be progressing the main quest.
+
+## Recommended Loadouts
+
+<RichTable
+  headerCells={["Start Weapon", "Field Upgrade"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        Hauer
+      </TableCell>
+      <TableCell>
+        <FieldUpgradeTooltip fieldUpgradeKey='ring-of-fire' />
+      </TableCell>
+    </RichBodyRow>,
+        <RichBodyRow>
+      <TableCell>
+        Gallo
+      </TableCell>
+      <TableCell>
+        <FieldUpgradeTooltip fieldUpgradeKey='aether-shroud' />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> <FieldUpgradeTooltip fieldUpgradeKey='ring-of-fire' /> is recommended only for the boss fight to help you do maximum damage to the boss. If you want a safer approach, I recommend taking
+<FieldUpgradeTooltip fieldUpgradeKey='aether-shroud' /> instead. The **Start Weapon** only matters if you will be upgrading the weapon's rarity with salvage throughout the match.
+## Step 1: Extract the Truth
+
+Head to the Atrium and interact with **Ravenov** to begin the main quest. Once all three **Aether Reactors** have been activated, interact with **Ravenov** again, head to
+**Mission Control**, and interact with **Dr. Peck** underneath the stairs. Afterward, interact with **Ravenov** again to receive his **ID Badge**.
+
+<RichImage image="/content/firebase-z/firebase-z-id-badge.webp" caption='Ravenov ID Badge' />
+
+Once you have the **ID Badge**, you must use it to open three lockers around the map and collect the serum inside each locker. The locations of the three lockers are:
+
+<CustomCarousel>
+  <RichImage image="/content/firebase-z/firebase-z-equipment-storage-locker.webp" caption='Equipment Storage' />
+  <RichImage image="/content/firebase-z/firebase-z-colonels-office-locker.webp" caption='Colonels Office' />
+  <RichImage image="/content/firebase-z/firebase-z-engineering-locker.webp" caption='Engineering' />
+</CustomCarousel>
+
+Once you have all three serums, head to the **Field Hospital**, where you can place the serums inside a **Chemical Mixer**, spawning in some <ZombieTooltip zombieKey='hellhound' />.
+Wait for the device to finish, then interact with it twice to pick up the **Agent Delivery System**.
+
+<RichImage image="/content/firebase-z/firebase-z-agent-delivery-system.webp" caption='Agent Delivery System' />
+
+Once you have the **Agent Delivery System**, head to the **OPC** area above **Mission Control** and place the device on top of the **Air Conditioner** to disperse the truth serum into
+**Dr. Peck's** room, allowing you to speak with him again to extract the truth.
+
+<RichImage image="/content/firebase-z/firebase-z-ac-unit.webp" caption='Air Conditioning Unit' />
+
+## Step 2: Gather the Memories
+
+> It is recommended to turn subtitles on for this step, as it can help you indentify if you have the right memories or not quicker. Otherwise, you'd have to wait for the dialouge to
+finish and then wait for **Weaver's** response to that dialouge.
+
+Head to the **Data Center**, interact with the **Memory Transference Station** to unlock it, then pick up one of the four **Essence Traps** to spawn in piles of fake loot around the map
+that you won't be able to interact with.
+
+<RichImage image="/content/firebase-z/firebase-z-essence-trap.webp" caption='Essence Trap' />
+
+> This step is much easier if you save a zombie or two allowing you to focus on the next part. The piles of loot can be anywhere on the map including the spawn area, so make sure to
+check every room. The most common locations however are the **Military Command**, **Peck's Quarters**, and **Motor Pool** areas of the map.
+
+You must walk near these piles of loot until a <ZombieTooltip zombieKey='mimic' /> spawns out of one of them, damage the <ZombieTooltip zombieKey='mimic' /> until it is near death,
+then throw the **Essence Trap** onto the ground, wait for the <ZombieTooltip zombieKey='mimic' /> to get near it, then activate the trap to hopefully capture the it.
+If successful, the trap will glow purple.
+
+<RichImage image="/content/firebase-z/firebase-z-purple-essence-trap.webp" caption='Successful Essence Trap' />
+
+> I say hopefully because this step works exactly like a pokeball if you have ever played/watched pokemon. The lower the health of the enemy the higher chance for it to be captured,
+but it is never guaranteed (no masterballs for this step unfortunately).
+
+Once you have successfully captured a <ZombieTooltip zombieKey='mimic' />, return it to the **Memory Transference Station** inside the **Data Center** to extract its memories triggering
+some dialogue. Once you have successfully extracted a correct memory you must end the round and repeat this two more times. This can only be done once per round, so be sure to always end
+the round once you have successfully extracted a memory.
+
+<RichImage image="/content/firebase-z/firebase-z-correct-memory.webp" caption='Correct Memory (Brahm, Sokolov, or Zhabin)' />
+
+> If you accidentally killed a <ZombieTooltip zombieKey='mimic' /> while trying to get it to low health, you'll need to end the current round to try again. If you captured the correct
+<ZombieTooltip zombieKey='mimic' />, the dialogue should be from either **Sokolov**, **Brahm**, or **Zhabin**, if your subtitles don't show any of these names when the dialogue is playing
+you captured the wrong <ZombieTooltip zombieKey='mimic' />.
+
+## Step 3: Create the Breach
+
+Once all three correct memories have been collected, grab the **Floppy Disk** from the **Memory Transference Station** and insert it into the **Quantum Main Frame** located in the
+**Planning Offices** opening the door to the **OPC**.
+
+<RichImage image="/content/firebase-z/firebase-z-floppy-disk.webp" caption='Floppy Disk' />
+<RichImage image="/content/firebase-z/firebase-z-quantum-main-frame.webp" caption='Quantum Main Frame' />
+
+Enter the **OPC** and wait for the **Dimensional Breach** to spawn in, then head down to **Mission Control** to interact with **Dr. Peck**. Once **Dr. Peck** has closed the shutters on
+his window, wait until **Ravenov** tells you the code and interact with the locker to the left of his room to obtain the **Aethermeter**.
+
+<RichImage image="/content/firebase-z/firebase-z-aethermeter-locker.webp" caption='Aethermeter Locker' />
+
+## Step 4: Collect the Aether Crystals
+
+Head to the **Scorched Defense** area. Within the left building, you will find a **Shovel** that you must interact with to pick up.
+
+<RichImage image="/content/firebase-z/firebase-z-shovel.webp" caption='Shovel' />
+
+Once you have the **Shovel**, there are three spots around the map where you must dig up an **Aether Container** you must interact with to collect, however, each container comes
+with its own challenge before you can collect the container. Below are the locations and challenges for each container:
+
+### Open Lot Container
+
+<RichImage image="/content/firebase-z/firebase-z-open-lot-container.webp" caption='Open Lot Container' />
+
+Once you have dug up this container, it will reveal a bunch of other **Aether Containers** each containing particles. You must find and interact with the **Aether Container** with no
+black particles floating inside of it to collect the **Aether Crystal** inside. The correct container will only contain white particles.
+
+<RichImage image="/content/firebase-z/firebase-z-pure-aether-container.webp" caption='Pure Aether Container' />
+
+> Be sure to look carefully, as some containers will have less black particles than others potentially making you think that a container has none.
+
+Once you have this **Aether Crystal**, interact with the **Aether Reactor** inside of **Mission Control** to place it inside.
+
+### Barracks Container
+
+> The **RAI K-84** is required for this step so be sure to complete **Legendary Trials** or spin the **Mystery Box** to obtain it.
+
+<RichImage image="/content/firebase-z/firebase-z-barracks-container.webp" caption='Barracks Container' />
+
+Once you have dug up this container, it will begin moving around the area and you must shoot the **Alternate Fire** on the **RAI K-84** at the container to freeze it allowing you
+to collect the **Aether Crystal**. Once you have the **Aether Crystal**, interact with the **Aether Reactor** inside of the **Data Center** to place it inside.
+
+<RichImage image="/content/firebase-z/firebase-z-frozen-aether-container.webp" caption='Frozen Aether Container' />
+
+### Jungle Defense Container
+
+<RichImage image="/content/firebase-z/firebase-z-jungle-defense-container.webp" caption='Jungle Defense Container' />
+
+Once you have dug up this container, it will spawn a bubble that you must survive in. You don't need to kill any zombies inside but you can if you need to, and once the lockdown is over,
+collect the **Aether Crystal** and interact with the **Aether Reactor** inside the **Military Command** to place it inside.
+
+<RichImage image="/content/firebase-z/firebase-z-charged-aether-container.webp" caption='Charged Aether Container' />
+
+> Once all three **Aether Reactors** have been supercharged with the crystals, you will be prompted to head to the **OPC** before you can continue to the next step.
+
+## Step 5: Align the Satellites
+
+Head to the **Planning Offices** and interact with the computer screen on the wall to begin a mini-game. Your goal in this mini-game is to move the blue dot over the yellow orb that
+shows a flag with a question mark in the bottom right corner of the screen and press the align button on that orb.
+
+<RichImage image="/content/firebase-z/firebase-z-correct-satellite-dish.webp" caption='Correct Satellite Dish Alignment' />
+
+> You move the blue dot with the **D-Pad** on controller, and for some reason the keybinds on **Mouse and Keyboard** are **Q** for left, **E** for right, **R** for up, and **G** for down.
+This step was definitely designed for controller.
+
+## Step 6: Free Samantha Maxis
+
+Make sure you are prepared for a boss fight before starting this step. The most important thing is to have the **RAI K-84 Pack-a-Punched** at least once as this will be the main damage
+dealer and either **Monkey Bombs** or a **Chopper Gunner** to protect you during the boss fight.
+
+Once the satellites are aligned correctly, head to the **OPC** room where you can interact with the panel on the right side playing a short cutscene of freeing **Samantha Maxis** from the
+**Dark Aether**.
+
+<RichImage image="/content/firebase-z/firebase-z-samantha-freed-cinematic.webp" caption='Samantha Maxis Freed Cinematic' />
+
+Once the cutscene is over, you will be immediately thrown into the boss fight where you must defeat the **Elder God** known as <ZombieTooltip zombieKey='orda' />. This boss fight is simple,
+you just train the zombies around, wait for the <ZombieTooltip zombieKey='orda' /> weak spot to start glowing, rain fire on the weak spot, and repeat until
+<ZombieTooltip zombieKey='orda' /> has been defeated.
+
+> If you are using <FieldUpgradeTooltip fieldUpgradeKey='ring-of-fire' />, throw a **Monkey Bomb** or a **Decoy Grenade** while doing damage and activate the
+<FieldUpgradeTooltip fieldUpgradeKey='ring-of-fire' /> to unleash maximum damage on the boss. There is no time limit and you have the **Pack-a-Punch**, **Armor Station** and **Wunderfizz**
+machines in the area for you to use.
+
+<RichImage image="/content/firebase-z/firebase-z-ending.webp" caption='Ending Cutscene' />
+
+Congratulations! You have beaten the **Firebase Z** main quest: **Maxis Potential**.
+
+## Video Guides
+
+### Solo Guide by CodeNamePizza
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=otHvlOhRd-I" />
+
+### Co-op Guide by NoahJ456
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=HgN6lRcp-rA" />

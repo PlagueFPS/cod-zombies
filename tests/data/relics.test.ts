@@ -1,11 +1,32 @@
+import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
-import { afterEach, describe, expect, test, vi } from "vitest"
-import { getAdjacentRelics, getRelicByKey, getRelics, type RelicKey } from "@/data/relics"
+import { describe, expect, test } from "vitest"
+import {
+	getAdjacentRelics,
+	getRelicByKey,
+	getRelics,
+	type Relic,
+	type RelicKey,
+} from "@/data/relics"
 import { assertSortedDescByDate } from "@/tests/helpers"
+import { resolveNewContentState } from "@/utils/content-state"
+
+/** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real RELICS rows). */
+const relicNewBadgeFixture = (discoveredDate: string): Pick<Relic, "discoveredDate" | "state"> => ({
+	discoveredDate,
+	state: Option.some("New"),
+})
+
+const resolvedRelicDisplayState = (
+	fixture: Pick<Relic, "discoveredDate" | "state">,
+	isoUtcInstant: string,
+) => resolveNewContentState(fixture.state, fixture.discoveredDate, Date.parse(isoUtcInstant))
 
 describe("getRelics", () => {
 	test("sorted by discovered date descending", () => {
-		assertSortedDescByDate(getRelics().map(r => r.discoveredDate))
+		const dates = getRelics().map(r => r.discoveredDate)
+		expect(dates.length).toBeGreaterThan(1)
+		assertSortedDescByDate(dates)
 	})
 })
 
@@ -22,44 +43,57 @@ describe("getRelicByKey", () => {
 	})
 })
 
-describe("relic New badge vs discovery date", () => {
-	afterEach(() => {
-		vi.useRealTimers()
-	})
+describe("relic New badge vs discovery date (fixtures)", () => {
+	const fixtureRecentWindow = relicNewBadgeFixture("2026-05-01")
+	const fixtureYoungerWithinWindow = relicNewBadgeFixture("2026-05-09")
 
 	test("drops New when the discovery date is 14+ full calendar days in the past", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
-		const agarthan = getRelicByKey("agarthan-device").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(agarthan.state)).toBeNull()
+		expect(
+			Option.getOrNull(resolvedRelicDisplayState(fixtureRecentWindow, "2026-05-15T12:00:00.000Z")),
+		).toBeNull()
 	})
 
 	test("keeps New when within 14 days of the discovery date", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
-		const powerSwitch = getRelicByKey("power-switch").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(powerSwitch.state)).toBe("New")
+		expect(
+			Option.getOrNull(
+				resolvedRelicDisplayState(fixtureYoungerWithinWindow, "2026-05-15T12:00:00.000Z"),
+			),
+		).toBe("New")
 	})
 
-	test("keeps New for Agarthan Device one week after discovery", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-08T12:00:00.000Z"))
-		const agarthan = getRelicByKey("agarthan-device").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(agarthan.state)).toBe("New")
+	test("keeps New one week after discovery while still inside the window", () => {
+		expect(
+			Option.getOrNull(resolvedRelicDisplayState(fixtureRecentWindow, "2026-05-08T12:00:00.000Z")),
+		).toBe("New")
 	})
 
-	test("keeps New for Agarthan Device through the last instant before the 14th full UTC day after discovery", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-14T23:59:59.999Z"))
-		const agarthan = getRelicByKey("agarthan-device").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(agarthan.state)).toBe("New")
+	test("keeps New through the last instant before the 14th full UTC day after discovery", () => {
+		expect(
+			Option.getOrNull(resolvedRelicDisplayState(fixtureRecentWindow, "2026-05-14T23:59:59.999Z")),
+		).toBe("New")
 	})
 
-	test("drops New for Agarthan Device at the start of the 14th full UTC day after discovery", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-15T00:00:00.000Z"))
-		const agarthan = getRelicByKey("agarthan-device").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(agarthan.state)).toBeNull()
+	test("drops New at the start of the 14th full UTC day after discovery", () => {
+		expect(
+			Option.getOrNull(resolvedRelicDisplayState(fixtureRecentWindow, "2026-05-15T00:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test("stored None stays None regardless of calendar age", () => {
+		const noBadge: Pick<Relic, "discoveredDate" | "state"> = {
+			...fixtureRecentWindow,
+			state: Option.none<ContentState>(),
+		}
+		expect(
+			Option.getOrNull(resolvedRelicDisplayState(noBadge, "2026-05-08T12:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test('stored Coming Soon is preserved when stored state is Some("Coming Soon")', () => {
+		const comingSoon = { ...fixtureRecentWindow, state: Option.some("Coming Soon" as const) }
+		expect(
+			Option.getOrNull(resolvedRelicDisplayState(comingSoon, "2026-05-15T12:00:00.000Z")),
+		).toBe("Coming Soon")
 	})
 })
 
@@ -70,12 +104,11 @@ describe("getAdjacentRelics", () => {
 		const { prev, next } = getAdjacentRelics(r1.id as RelicKey)
 		const idx = relics.findIndex(r => r.id === r1.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
-		if (idx < relics.length - 1) {
-			expect(prev.pipe(Option.map(n => n.id))).toEqual(Option.some(relics[idx + 1]!.id))
-		}
-		if (idx > 0) {
-			expect(next.pipe(Option.map(p => p.id))).toEqual(Option.some(relics[idx - 1]!.id))
-		}
+		const expectedPrev =
+			idx < relics.length - 1 ? Option.some(relics[idx + 1]!.id) : Option.none<string>()
+		const expectedNext = idx > 0 ? Option.some(relics[idx - 1]!.id) : Option.none<string>()
+		expect(prev.pipe(Option.map(n => n.id))).toEqual(expectedPrev)
+		expect(next.pipe(Option.map(p => p.id))).toEqual(expectedNext)
 	})
 
 	test("prev is Some and Next is None when the first relic is provided", () => {

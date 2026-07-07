@@ -102,8 +102,8 @@ export const generateContentPaths = Effect.fn("generateContentPaths")(function* 
 ) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const contentDir = path.join(cwd, "content")
-	const outFile = path.join(cwd, "types", "generated", "content-paths.gen.ts")
+	const contentDir = path.join(cwd, "src/content")
+	const outFile = path.join(cwd, "src/types", "generated", "content-paths.gen.ts")
 
 	const exists = yield* fs.exists(contentDir)
 	if (!exists) return yield* Effect.fail(`Content directory does not exist: ${contentDir}`)

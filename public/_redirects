@@ -1,0 +1,35 @@
+# Side quest renames
+/side-quests/black-ops-7/totenreich/gnome /side-quests/black-ops-7/totenreich/kneehigh-helm 308
+/side-quests/black-ops-6/reckoning/c-a-s-t-e-r-turret-upgrade /side-quests/black-ops-6/reckoning/caster-turret-upgrade 308
+/side-quests/black-ops-6/shattered-veil/s-a-m-trap-unlock /side-quests/black-ops-6/shattered-veil/sam-trap-unlock 308
+/side-quests/black-ops-3/revelations/permanent-pack-a-pack /side-quests/black-ops-3/revelations/permanent-pack-a-punch 308
+/side-quests/black-ops-6/reckoning/free-1500-points /side-quests/black-ops-6/reckoning/paintings 308
+
+# Bestiary renames
+/bestiary/s-a-m /bestiary/sam 308
+/bestiary/kransy-soldat /bestiary/krasny-soldat 308
+/bestiary/the-corruputed-keeper /bestiary/the-corrupted-keeper 308
+
+# Game index redirects
+/black-ops-1 /main-quests?game=black-ops-1 308
+/black-ops-2 /main-quests?game=black-ops-2 308
+/black-ops-3 /main-quests?game=black-ops-3 308
+/black-ops-4 /main-quests?game=black-ops-4 308
+/black-ops-cold-war /main-quests?game=black-ops-cold-war 308
+/black-ops-6 /main-quests?game=black-ops-6 308
+
+# Side quest game and map redirects
+/side-quests/black-ops-6 /side-quests?game=black-ops-6 308
+/side-quests/black-ops-6/liberty-falls /side-quests?map=liberty-falls 308
+/side-quests/black-ops-6/terminus /side-quests?map=terminus 308
+/side-quests/black-ops-6/citadelle-des-morts /side-quests?map=citadelle-des-morts 308
+/side-quests/black-ops-6/the-tomb /side-quests?map=the-tomb 308
+
+# Game map redirects (dynamic)
+/black-ops-1/:map /main-quests/black-ops-1/:map 308
+/black-ops-2/:map /main-quests/black-ops-2/:map 308
+/black-ops-3/:map /main-quests/black-ops-3/:map 308
+/black-ops-4/:map /main-quests/black-ops-4/:map 308
+/black-ops-cold-war/:map /main-quests/black-ops-cold-war/:map 308
+/black-ops-6/:map /main-quests/black-ops-6/:map 308
+/black-ops-7/:map /main-quests/black-ops-7/:map 308

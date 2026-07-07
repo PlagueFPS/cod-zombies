@@ -10,11 +10,6 @@
 /coverage
 /test-results
 
-# next.js
-/.next/
-/out/
-/.output/
-
 # production
 /build
 
@@ -32,11 +27,18 @@ yarn-error.log*
 *.local.*
 newassets
 oldassets
-/.repos/
+/.repos
 
-# vercel
-.vercel
+#cloudflare
+worker-configuration.d.ts
+.dev.vars
+.wrangler
+/bundled
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+#tanstack
+.tanstack
+.output
+dist

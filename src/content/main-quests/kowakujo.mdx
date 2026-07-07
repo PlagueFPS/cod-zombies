@@ -1,0 +1,589 @@
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-image"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import WeaponBuildTooltip from "@/components/weapon-build-tooltip"
+import FieldUpgradeTooltip from "@/components/field-upgrade-tooltip"
+import GobbleGumTooltip from "@/components/gobblegum-tooltip"
+import PerkTooltip from "@/components/perk-tooltip"
+import AugmentTooltip from "@/components/augment-tooltip"
+import AmmoModTooltip from "@/components/ammo-mod-tooltip"
+import CustomCarousel from "@/components/custom-carousel"
+import KowakujoPuzzleSolver from "@/components/kowakujo-puzzle-solver"
+import YouTubeEmbed from "@/components/youtube-embed"
+
+## Main Quest
+This main quest has our crew travel to the "Place of Fire" to obtain the **World Seed**, solve the murder of **Takeo's Father**, and
+free the shadowsmith **Nxyara** from the Warden's imprisonment.
+
+## Requirements
+- Unlock Pack-a-Punch via on-screen objectives
+- <PerkTooltip perkKey="death-perception" game="black-ops-7" />
+- <PerkTooltip perkKey="phd-flopper" game="black-ops-7" />
+- Decoy Grenades
+
+> If you are solo doing this quest, I would highly recommend running the <AugmentTooltip augmentKey="fully-equipped" /> for <PerkTooltip perkKey="mule-kick" game="black-ops-7" />. As
+you are going to need three **Decoy Grenades** for a later step in this quest.
+
+## Recommended Loadouts
+<RichTable
+  headerCells={["Start Weapon", "Field Upgrade", "Lethal", "Tactical"]}
+  bodyRows={[
+	  <RichBodyRow alternate>
+	    <TableCell>
+	    	<WeaponBuildTooltip weaponBuildKey="1911" />
+	    </TableCell>
+	    <TableCell>
+	    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+	    </TableCell>
+	    <TableCell>
+	    	Molotov
+	    </TableCell>
+	    <TableCell>
+	  		Decoy
+	    </TableCell>
+		</RichBodyRow>,
+	  <RichBodyRow>
+	    <TableCell>
+	    	<WeaponBuildTooltip weaponBuildKey="m34-novaline" />
+	    </TableCell>
+	    <TableCell>
+	    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+	    </TableCell>
+	    <TableCell>
+	    	Molotov
+	    </TableCell>
+	    <TableCell>
+	  		Decoy
+	    </TableCell>
+			</RichBodyRow>,
+	  <RichBodyRow alternate>
+		  <TableCell>
+		   	<WeaponBuildTooltip weaponBuildKey="voyak-kt-3" />
+		  </TableCell>
+		  <TableCell>
+		   	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+		  </TableCell>
+		  <TableCell>
+		   	Molotov
+		  </TableCell>
+		  <TableCell>
+				Decoy
+		  </TableCell>
+		</RichBodyRow>,
+		<RichBodyRow>
+    <TableCell>
+    	<WeaponBuildTooltip weaponBuildKey="mxr-17" />
+    </TableCell>
+    <TableCell>
+    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+    	Molotov
+    </TableCell>
+    <TableCell>
+  		Decoy
+    </TableCell>
+  </RichBodyRow>,
+  ]}
+/>
+
+## Recommended GobbleGums
+<RichTable
+  headerCells={["Solo GobbleGums", "Co-op GobbleGums"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shields-up' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shields-up' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='power-keg' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='power-keg' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='kill-joy' game="black-ops-6" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='near-death-experience' game="black-ops-6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='aftertaste' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='phoenix-up' game="black-ops-6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='reign-drops' game="black-ops-7" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='reign-drops' game="black-ops-7" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+## Step 1: Obtain the Maneki-Neko
+
+### Bell
+There are three possible locations for the **Bell** item:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-bell-staging-area.webp" caption="Staging Area - hanging from the wooden overhead right after entering from the left spawn door" />
+	<RichImage image="/content/kowakujo/kowakujo-bell-stables.webp" caption="Stables - hanging from the wooden overhead of the broken down stable, left of the Arsenal" />
+	<RichImage image="/content/kowakujo/kowakujo-bell-training-area.webp" caption="Training Area - hanging from a broken wooden beam just above the Warden .308 wallbuy" />
+</CustomCarousel>
+
+### Karakuri
+There are three possible locations for the **Karakuri** item:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-karakuri-storage-rooms.webp" caption="Storage Rooms - across from PHD Flopper on the floor" />
+	<RichImage image="/content/kowakujo/kowakujo-karakuri-second-storage-rooms.webp" caption="Storage Rooms - on the table opposite the MK.78 wallbuy" />
+	<RichImage image="/content/kowakujo/kowakujo-karakuri-workshop.webp" caption="Workshop - on the floor next to a shelf, left of the staircase" />
+</CustomCarousel>
+
+### Maneki-Neko
+There are three possible locations for the **Maneki-Neko** item:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-maneki-neko-gatehouse.webp" caption="Gatehouse - on a wooden bucket" />
+	<RichImage image="/content/kowakujo/kowakujo-maneki-neko-kitchens.webp" caption="Kitchens - on a barrel right of the Double Tap machine" />
+	<RichImage image="/content/kowakujo/kowakujo-maneki-neko-second-kitchens.webp" caption="Kitchens - on a barrel inside the building behind the Dragon flag" />
+</CustomCarousel>
+
+Once you have all three parts, head to the **Workshop** to craft the **Maneki-Neko** to the left of the <PerkTooltip perkKey="vulture-aid" game="black-ops-7" />
+machine.
+
+<RichImage image="/content/kowakujo/kowakujo-maneki-neko.webp" caption="Maneki-Neko" />
+
+## Step 2: Obtain the Nekomancer
+Using <PerkTooltip perkKey="phd-flopper" game="black-ops-7" />, head to the **Tenshu Entrance** and trigger a PHD explosion underneath the cat cage in the southwest corner to
+drop the cage, which you can interact with to pick up.
+
+<RichImage image="/content/kowakujo/kowakujo-cat-cage.webp" caption="Cat Cage" />
+
+Once picked up, you can throw the cage into any lava source around the map to fully burn the cage, freeing the cat. Once you have completed the first **Assault Wave**, you'll need
+to kill a zombie in four doorways, one of which will reveal a set of paw prints. Below are the four locations:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-stables-paw-prints.webp" caption="Stables/Staging Area doorway " />
+	<RichImage image="/content/kowakujo/kowakujo-kitchens-paw-prints.webp" caption="Kitchen/Central Courtyard doorway" />
+	<RichImage image="/content/kowakujo/kowakujo-flower-garden-paw-prints.webp" caption="Flower Garden/Kitchen doorway" />
+	<RichImage image="/content/kowakujo/kowakujo-training-area-paw-prints.webp" caption="Training Area/Stables doorway" />
+</CustomCarousel>
+
+Once you have revealed the paw prints, kill another zombie a few meters in the direction the paw prints are facing to reveal another set of prints. Repeat this until you
+reveal a set of prints forming a circle, and throw the **Maneki-Neko** tactical into the center of the prints while there is lava flowing in that area. If done correctly,
+an <ZombieTooltip zombieKey="abomination" /> will spawn which you'll need to kill.
+
+<RichImage image="/content/kowakujo/kowakujo-circle-paw-prints.webp" caption="Circle of paw prints" />
+
+> If the lava is not flowing, simply wait a couple of rounds until the lava starts flowing again and then throw the **Maneki-Neko** tactical into the center of the prints.
+
+Once killed, flip the round and purchase <PerkTooltip perkKey="death-perception" game="black-ops-7" /> and you'll need to find the cat sleeping in one of three locations around the
+map, each of which having floor boards highlighted by <PerkTooltip perkKey="death-perception" game="black-ops-7" />, that you'll need to avoid stepping on, otherwise you'll wake up the cat.
+
+<RichImage image="/content/kowakujo/kowakujo-training-area-cat-sleeping.webp" caption="Floor boards" />
+
+> You also cannot sprint as that will also wake up the cat. If the cat is woken up, you'll need to flip the round and re-locate the sleeping cat to try again.
+
+Here are the three possible locations you can find the sleeping cat:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-kitchens-cat-sleeping.webp" caption="Kitchens - right of the Mystery Box location" />
+	<RichImage image="/content/kowakujo/kowakujo-kitchens-second-cat-sleeping.webp" caption="Kitchens - right of the Double Tap machine" />
+	<RichImage image="/content/kowakujo/kowakujo-training-area-cat-sleeping.webp" caption="Training Area" />
+</CustomCarousel>
+
+Once you have picked up the cat, head to the **Shogun's Sanctum** and place the cat on top of the **World Seed**. The seed will begin pulsing dealing damage to you, and after a few
+pulses it will pause, giving you a window to melee the seed. Repeat this until the cat is dropped, and interact with the cat to obtain the **Nekomancer Wonder Weapon**.
+
+<RichImage image="/content/kowakujo/kowakujo-nekomancer-wonder-weapon.webp" caption="Nekomancer Wonder Weapon" />
+
+## Step 3: Light the Lanterns
+Once you've obtained the **Nekomancer Wonder Weapon**, you are going to have to light 11 different lanterns in a certain amount of time between each other with the
+**Wonder Weapon**. You have about **10 seconds** between each lantern to light the next one, and below is both all the locations and the optimal order to have the easiest time
+lighting these lanterns:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-outer-ward-lantern.webp" caption="Outer Ward" />
+	<RichImage image="/content/kowakujo/kowakujo-flower-garden-lantern.webp" caption="Flower Garden" />
+	<RichImage image="/content/kowakujo/kowakujo-gatehouse-lantern.webp" caption="Gatehouse" />
+	<RichImage image="/content/kowakujo/kowakujo-staging-area-lantern.webp" caption="Staging Area" />
+	<RichImage image="/content/kowakujo/kowakujo-stables-lantern.webp" caption="Stables" />
+	<RichImage image="/content/kowakujo/kowakujo-training-area-lantern.webp" caption="Training Area" />
+	<RichImage image="/content/kowakujo/kowakujo-tea-garden-lantern.webp" caption="Tea Garden" />
+	<RichImage image="/content/kowakujo/kowakujo-central-courtyard-lantern.webp" caption="Central Courtyard - at the base of the tree" />
+	<RichImage image="/content/kowakujo/kowakujo-tenshu-entrance-lantern.webp" caption="Tenshu Entrance" />
+	<RichImage image="/content/kowakujo/kowakujo-second-central-courtyard-lantern.webp" caption="Central Courtyard - right of the door leading to the Kitchens" />
+	<RichImage image="/content/kowakujo/kowakujo-kitchens-lantern.webp" caption="Kitchens" />
+</CustomCarousel>
+
+Once all 11 lanterns are lit, head to the **War Room** and interact with the ghostly dead body on the ground to begin an in-game cutscene completing this step.
+
+## Step 4: Obtain the Fox Mask
+<RichImage image="/content/kowakujo/kowakujo-war-room-body.webp" caption="War Room Body" />
+
+Once that is complete, head to the **Tenshu Rooftops** and take the fast travel to **Grounds**, and while flying through the air approaching the cherry blossom tree, pull right on
+both movement controls (thumbsticks on controller, swipe right and press right on mouse and keyboard), to change the direction you are flying and interact with the **Fox Mask** on the edge of building
+to collect it.
+
+<RichImage image="/content/kowakujo/kowakujo-fox-mask.webp" caption="Fox Mask" />
+
+Once you have obtained the **Fox Mask**, head to the **Storage Rooms** and place the mask on the wall of masks to begin a **Simon Says** like sequence where you must remember the order the
+three masks flashed in. Each flashing mask indicates the type of zombie you need to kill, and the order they flashed is the order in which you must kill them.
+
+<RichImage image="/content/kowakujo/kowakujo-mask-wall.webp" caption="Mask Wall" />
+
+> The "type" of zombie that you need to kill will just be wearing the same mask as the one on the wall. So just kill the zombies wearing the masks in the order in which they flashed.
+
+If done correctly, the souls will go into the wall and you will need to interact with the wall to begin another sequence this time with four masks. After that, you will need to do it
+for a final time with five masks, and once completed a glowing blue mask will appear on the wall, which you can interact with to view another in-game cutscene.
+
+<RichImage image="/content/kowakujo/kowakujo-glowing-mask.webp" caption="Glowing Mask" />
+
+> If at any point you fail to kill the zombies in the correct order, or the zombies despawn, you will need to start the sequence over on the next round.
+
+## Step 5: Reveal the First Suspect
+Head to the **Workshop** and shoot the mask on the shelf, left of the staircase behind the zombie barrier to collect **Takeshi's Pipe** and move the mask to a new location.
+
+<RichImage image="/content/kowakujo/kowakujo-shelf-mask.webp" caption="Mask on the shelf" />
+
+Follow the mask into the **Collapsed Study**, and shoot it off the wooden beam it landed on, dropping another piece of evidence **Takeo's Case**, and again moving the mask to a
+new location.
+
+<RichImage image="/content/kowakujo/kowakujo-collasped-study-mask.webp" caption="Mask in the Collapsed Study" />
+
+Follow the mask into the **Onsen Baths**, where it will be in the very left corner of the window to the left of the <PerkTooltip perkKey="elemental-pop" game="black-ops-7" /> machine.
+Shooting it will drop the final piece of evidence we need **Mitsuhime's Comb**, and the mask will fly into the **World Seed**.
+
+<RichImage image="/content/kowakujo/kowakujo-onsen-baths-mask.webp" caption="Mask in the Onsen Baths" />
+
+Once you have all three pieces, head to the **Meditation Room** and interact with the shelves to place the pieces down and reveal a poster of the first suspect.
+
+<RichImage image="/content/kowakujo/kowakujo-meditation-room-shelves.webp" caption="Meditation Room Shelves" />
+<RichImage image="/content/kowakujo/kowakujo-first-suspect.webp" caption="First Suspect" />
+
+## Step 6: Reveal the Second Suspect
+Look around all the **Mystery Box** locations for a tag on the left or right of the base of the box location. Once you've found which location it is, you'll need to move the box
+to that location or use a fire sale to have it appear there and throw down a **Maneki-Neko** and spin the box to obtain the **Coin Purse**.
+
+<RichImage image="/content/kowakujo/kowakujo-mystery-box-tag.webp" caption="Mystery Box Tag" />
+<RichImage image="/content/kowakujo/kowakujo-coin-purse.webp" caption="Coin Purse" />
+
+Afterwards, head to the **Outer Ward** and near the **Rampage Inducer** will be an ethereal **Coin Purse** which you can interact with to view another in-game cutscene.
+
+<RichImage image="/content/kowakujo/kowakujo-outer-ward-coin-purse.webp" caption="Outer Ward Coin Purse" />
+
+> We will now need to spawn and kill three special named zombies that can be done in any order.
+
+### Gardener
+To begin spawning the **Gardener** we are first going to need to obtain a bucket. There are four total bucket locations around the map:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-onsen-baths-bucket.webp" caption="Onsen Baths" />
+	<RichImage image="/content/kowakujo/kowakujo-tea-garden-bucket.webp" caption="Tea Garden" />
+	<RichImage image="/content/kowakujo/kowakujo-gatehouse-bucket.webp" caption="Gatehouse" />
+	<RichImage image="/content/kowakujo/kowakujo-stables-bucket.webp" caption="Stables" />
+</CustomCarousel>
+
+Once you have a bucket, you'll need to fill it up with water by interacting with any of the two puddles of water on the map, one at the **Tea Garden**, and the other in the **Onsen Baths**.
+
+> Once filled with water, you cannot **Sprint**, **Jump**, or **Take Damage** otherwise you will lose some of the water in the bucket.
+
+<RichImage image="/content/kowakujo/kowakujo-tea-garden-water.webp" caption="Tea Garden Water" />
+<RichImage image="/content/kowakujo/kowakujo-onsen-baths-water.webp" caption="Onsen Baths Water" />
+
+The goal is to walk with the bucket of water to the **Flower Garden** and interact with three plants on the paths, spawning in the **Gardener** zombie. The exact locations of the
+plants can change from game to game, but the model is the same and recognizable as seen below.
+
+<RichImage image="/content/kowakujo/kowakujo-gardener-plant.webp" caption="Gardener Plant" />
+
+Once all three plants have been watered, the **Gardener** zombie will spawn and you'll need to destroy any yellow glowing plant around the **Flower Garden** to be able to damage
+the **Gardener**, which once defeated will drop two items: **Gardening Shears** and **Gardener's Notes**.
+
+<RichImage image="/content/kowakujo/kowakujo-gardener-glowing-plant.webp" caption="Gardener Glowing Plant" />
+<RichImage image="/content/kowakujo/kowakujo-gardener-items.webp" caption="Gardener Items" />
+
+Once you've picked up those items, head to the **Meditation Room** and place those items on the same shelves as before and we can move on to our second zombie.
+
+### Merchant
+Head to the **Kitchens**, and in the Northeast corner you'll find a very small box of fruit that you can melee dropping a fruit on the ground, that you must jump on three times to
+smash it, revealing the **Plum Pit** you can pick up.
+
+<RichImage image="/content/kowakujo/kowakujo-plum-pit-box.webp" caption="Fruit Box" />
+
+Afterwards, head near the **Arsenal** machine and one of the shelves will be another small box of fruit that you can melee, dropping another fruit which this time you'll need to wait
+for a zombie to come and pick up after you've walked away from the **Kitchens** for a short while and returned.
+
+<RichImage image="/content/kowakujo/kowakujo-apple-box.webp" caption="Fruit Box near Arsenal" />
+
+Lead this zombie to the **Staging Area** and kill it in front of the barrier, left of the lit lantern, spawning the **Merchant** zombie which you can immediately kill, dropping
+two more items for you to pick up: **Mercantile Abacus** and **Sales Log**.
+
+<RichImage image="/content/kowakujo/kowakujo-merchant-items.webp" caption="Merchant Items" />
+
+Once you've picked up those items, head to the **Meditation Room** and place those items on the same shelves as before and we can move on to our final zombie.
+
+### Noble
+Head to the **Training Area** and throw a **Decoy Grenade** on each of the three windows at the top of the building, opening them revealing the **Noble** who will be throwing blue
+grenades at you, which you'll need to throw back at the **Noble** to deal damage to it.
+
+<RichImage image="/content/kowakujo/kowakujo-windows.webp" caption="Windows at the top of the building" />
+
+> If you are solo, you'll either need to run the <AugmentTooltip augmentKey="fully-equipped" /> for <PerkTooltip perkKey="mule-kick" game="black-ops-7" /> or very quickly throw the two
+**Decoys** and buy another one from the **Crafting Table** and throw that one, but the timing is close and I would recommended just running the augment.
+
+Once defeated, the **Noble** will drop two items for you to pick up just like the other two named zombies: **Noble's Hat** and **Diary**. Finally, you can head to the
+**Meditation Room** to place those items down and reveal the second suspect poster.
+
+<RichImage image="/content/kowakujo/kowakujo-nobles-items.webp" caption="Noble's Items" />
+<RichImage image="/content/kowakujo/kowakujo-second-suspect.webp" caption="Second Suspect" />
+
+## Step 7: Reveal the Third Suspect
+Head to the **War Room** and interact with the **Poison Compendium** on the shelf left of the staircase.
+
+<RichImage image="/content/kowakujo/kowakujo-poison-compendium.webp" caption="Poison Compendium" />
+
+Afterwards, head to the **Flower Garden** and interact with the very small **Monkshood Flower** to pick it up and place it in the
+flower pot in the **Tenshu Entrance**.
+
+<RichImage image="/content/kowakujo/kowakujo-monkshood-flower.webp" caption="Monkshood Flower" />
+<RichImage image="/content/kowakujo/kowakujo-flower-pot.webp" caption="Flower Pot" />
+
+Once placed, head to the **Training Area** and shoot a charged shot of the **Nekomancer** at the wooden beam in the ceiling to drop the **Empty Pouch** item for you to pick up.
+
+<RichImage image="/content/kowakujo/kowakujo-empty-pouch.webp" caption="Empty Pouch" />
+
+Once you have the pouch, you'll need to wait for the fissure map event to begin where a single area is covered with ash, and you'll need to stand in that area for a short period to
+collect the ash into the pouch. You'll know you're done when the item icon in your inventory changes to a full looking pouch, and the tooltip pops up saying you've acquired
+**Volcanic Ash**.
+
+<RichImage image="/content/kowakujo/kowakujo-fissure-event.webp" caption="Fissure Event" />
+
+Once you have the **Volcanic Ash**, interact with the flower pot to place it into the pot, and then find a **Cherry Blossom** tree to melee, activating the tree to gain the buff
+and once you have that, head to the flower pot and move around in a circle until you spawn a tornado, transferring the buff to the plant and growing the **Monkshood Flower**.
+
+<RichImage image="/content/kowakujo/kowakujo-monkshood-flower-grown.webp" caption="Grown Monkshood Flower" />
+
+Next, head to the **Storage Rooms** and you'll need to complete the scroll puzzle where the goal is to have all scrolls be pushed in instead of out. You can use the solver
+below to easily complete this puzzle, just toggle the squares that represent the scrolls already pushed in, in your game. Once completed, two items will be dropped which you
+must pick up: **Pestle** and **Death Records**.
+
+<RichImage image="/content/kowakujo/kowakujo-storage-rooms-puzzle.webp" caption="Scroll Puzzle" />
+
+<KowakujoPuzzleSolver />
+
+<RichImage image="/content/kowakujo/kowakujo-puzzle-solved.webp" caption="Puzzle Items" />
+
+Afterwards, head to the **Kitchens** and interact with the bowl on the table to place the **Pestle** in, turning it into a soul box where you must kill zombies with **Toxic Damage** like the
+charged shot of the **Nekomancer** or a weapon with the <AmmoModTooltip ammoModKey="brain-rot" game="black-ops-7" /> ammo mod equipped.
+
+<RichImage image="/content/kowakujo/kowakujo-soul-box.webp" caption="Kitchen Soul Box" />
+
+Once full, there will be an ethereal pestle in the bowl which you can interact with to view another in-game cutscene, revealing a **Pufferfish** item in the same room left of the table
+against the wall. After you collected the item, head to the **Meditation Room** and place the items on the same shelf as the other items, revealing the third suspect poster.
+
+<RichImage image="/content/kowakujo/kowakujo-pufferfish.webp" caption="Pufferfish" />
+<RichImage image="/content/kowakujo/kowakujo-third-suspect.webp" caption="Third Suspect" />
+
+## Step 8: Reveal the Fourth Suspect
+Interact with the center of the **Third Suspect** poster to obtain a **Ceramic Shard**, then head to the **War Room** and next to the blood puddle will be another **Ceramic Shard**
+that you must collect, once you have both shards, head to the **Tea Garden** and interact with the workbench to repair the **Sake Cup**.
+
+<RichImage image="/content/kowakujo/kowakujo-war-room-shard.webp" caption="War Room Shard" />
+<RichImage image="/content/kowakujo/kowakujo-sake-cup-workbench.webp" caption="Sake Cup Workbench" />
+
+Once repaired, flip the round and the **Sake Cup** will be glowing blue and you can interact with it to begin another in-game cutscene, which once completed will allow you to
+interact with the **Sake Cup** to collect it.
+
+<RichImage image="/content/kowakujo/kowakujo-sake-cup.webp" caption="Sake Cup" />
+
+After collecting it, head to the **War Room** and place the **Sake Cup** down on the floor next to the table in the section to the right of the staircase leading to **Pack-a-Punch**,
+where you'll need to defend the cup from zombies. Once completed, you can pick up both the cup and a new item: **Horse Statuette**.
+
+<RichImage image="/content/kowakujo/kowakujo-sake-cup-defense.webp" caption="Sake Cup Defense" />
+<RichImage image="/content/kowakujo/kowakujo-horse-statuette.webp" caption="Horse Statuette" />
+
+Next, head to the **Collapsed Study** and place the **Sake Cup** down in the southeast corner and defend it once more from zombies, once completed, you can pick up the cup and
+a new item: **Calligraphy Brush**.
+
+<RichImage image="/content/kowakujo/kowakujo-calligraphy-brush.webp" caption="Calligraphy Brush" />
+
+Finally, head to the **Tea Garden** and place the **Sake Cup** in the northwest corner and a <ZombieTooltip zombieKey="hellhound" /> will grab the cup and run around the map with
+it, and you must kill that <ZombieTooltip zombieKey="hellhound" /> to collect the **Tea Whisk** item.
+
+<RichImage image="/content/kowakujo/kowakujo-tea-whisk.webp" caption="Tea Whisk" />
+
+Once you have collected those items, head to the **Meditation Room** and place the items down on the shelf to reveal the fourth suspect poster.
+
+<RichImage image="/content/kowakujo/kowakujo-fourth-suspect.webp" caption="Fourth Suspect" />
+
+## Step 9: Reveal the Final Suspect
+Head to the **Stables** when the flowing lava has hardened and there will be a small statue in the hardened lava that you'll need to hit with an explosive or **Molotov** to
+get it out of the lava for you to collect the **Netsuke of Brothers**.
+
+<RichImage image="/content/kowakujo/kowakujo-netsuke-of-brothers.webp" caption="Netsuke of Brothers" />
+
+Next, head to the bottom of the **Storage Rooms** where a clock will now be revealed. Interact with the clock and remember the four numbers that the clock hand lands on.
+
+<RichImage image="/content/kowakujo/kowakujo-clock.webp" caption="Clock" />
+
+Once you have your four numbers, there are going to be four areas marked **1-4** via symbols on the map. Below are the symbols in order representing 1, 2, 3, and 4:
+
+<CustomCarousel>
+	<RichImage image="/content/kowakujo/kowakujo-symbol-1.webp" caption="Symbol representing 1" />
+	<RichImage image="/content/kowakujo/kowakujo-symbol-2.webp" caption="Symbol representing 2" />
+	<RichImage image="/content/kowakujo/kowakujo-symbol-3.webp" caption="Symbol representing 3" />
+	<RichImage image="/content/kowakujo/kowakujo-symbol-4.webp" caption="Symbol representing 4" />
+</CustomCarousel>
+
+These areas will be important shortly, but first you'll need to progress to the next round, triggering an assault wave where there will be specific zombies with flags that
+you must kill to progress. Once completed, in the **Staging Area** will be a bunch of different flags each flag containing a certain number of symbols on it, which represent the flags
+number. (1 symbol = 1, 2 symbols = 2, etc.)
+
+<RichImage image="/content/kowakujo/kowakujo-flags.webp" caption="Flags with symbols on them" />
+
+You must now place a flag or multiple flags in the area marked with the symbol representing **1**, that adds up or directly equals your first number you got from the clock. You must
+do this for each area and number you got from the clock. First number goes in the first area, second number in the second area, and so on.
+
+> For example, if your first number was **5**, you would need to either place a single flag with 5 symbols on it, or multiple flags that together their symbols add up to the number **5**, in the area
+> that is marked with the symbol representing the number **1**. Always opt for the single flag option if there is a flag that already equals the number you need to place.
+
+As for where to place the flags in the proper area, there are little flag bamboo stilts that you can place your flag in directly underneath the glowing symbol.
+Each area has up to two stilts, meaning you will never need to place more than two flags in any given area.
+
+<RichImage image="/content/kowakujo/kowakujo-stilts.webp" caption="Flag bamboo stilts" />
+
+Once all flags are placed in their proper locations, head back to the clock and interact with it to reveal the **Crest Medallion** which you can interact with to pick up, and place
+on the shelf in the **Meditation Room** revealing the fifth and final suspect.
+
+<RichImage image="/content/kowakujo/kowakujo-medallion.webp" caption="Crest Medallion" />
+<RichImage image="/content/kowakujo/kowakujo-final-suspect.webp" caption="Final Suspect" />
+
+## Step 10: Solve the Murder
+We'll need to place the item associated with each suspect at the base of the poster. The first poster will always be the **Mitsuhime's Comb**, so grab that item from the shelf and
+place it on the white paper at the base of the first poster.
+
+<RichImage image="/content/kowakujo/kowakujo-first-suspect-item.webp" caption="First Suspect Item" />
+
+### Second Suspect Item
+To know the second item, we'll need to activate one of three **Ghostly Rifleman** traps, either the **Outer Ward**, **Flower Garden**, or **Tenshu Entrance** trap. You must activate
+one of these traps, let them get around 15 kills and look near the trap for a **Ghostly Rifleman** that is not part of the trap to interact with.
+
+<RichImage image="/content/kowakujo/kowakujo-ghostly-rifleman.webp" caption="Ghostly Rifleman out of place" />
+
+Ideally with subtitles on, interact with the **Ghostly Rifleman** and you'll get a quote about what they saw the night of the **Shogun's Murder**. They will either say they saw nothing,
+or they will directly name one of the three special named zombies we spawned in earlier: **Gardener**, **Merchant**, or **Nobleman/Courtier**.
+
+> If the ghost says nothing, you must move on to one of the other two traps, activate it wait for the around 15 kills and look around for another **Ghostly Rifleman** to interact with,
+> and see if they say anything. If they also say nothing, then you know the final trap is the one that will give you the information you need.
+
+Now knowing the name of the second suspect, you must head to the **Meditation Room** and pick up the corresponding item from the shelf and place it on the white paper at the base of the
+poster: **Merchant = Abacus**, **Nobleman/Courtier = Noble's Hat**, and **Gardener = Gardening Shears**.
+
+<RichImage image="/content/kowakujo/kowakujo-second-suspect-item.webp" caption="Second Suspect Item" />
+
+### Third Suspect Item
+For the third suspect item, you'll need to read the **Death Records** to determine what the cause of death was. Below is what item each cause of death corresponds to:
+
+- **Signs of Emesis** = **Pufferfish** or **Plum Pit** (look at the other documents to see which is mentioned)
+- **Noxious Plant** = **Plum Pit**
+- **Evidence of Paralysis** = **Monkshood Flower** or **Pufferfish** (look at the other documents for clues of which it could be)
+
+Pick up that item and place it on the white paper at the base of the poster, then read the **Death Records** again and remember animal representing the time of death, then read the
+**Poison Compendium**, and remember how long it takes for the toxic to take effect. Once you know this, head to the **Zodiac Dial** in the **Meditation Room** and set the hand to the animal
+that represents the number of (time of death - time for toxin to take effect).
+
+<RichImage image="/content/kowakujo/kowakujo-zodiac-dial.webp" caption="Zodiac Dial" />
+
+> For example, if the time of death was "Hour of the Tiger" and the toxin takes 2 hours to take effect, set the hand 2 hours before the time of death. The dial directly mimics a real
+clock so 2 hours behind is 2 slots before the time of death animal.
+
+### Fourth Suspect Item
+For this item, look at the poster and there will be an image behind the person drinking tea and you'll need to grab the matching item and place it on the white paper at the
+base of the poster, you can use the table below to know which item to grab based off the image in the poster:
+
+- **Fish** = **Tea Whisk**
+- **Mountains** = **Horse**
+- **Bird** = **Brush**
+
+<RichImage image="/content/kowakujo/kowakujo-fourth-suspect-item.webp" caption="Fourth Suspect Item" />
+
+### Final Suspect Item
+The final suspect item will always be the **Crest Medallion**, grab it and place it on the white paper at the base of the poster. Once you think you have the correct items placed
+at the base of all the posters, interact with the incense on each side of the poster wall, and if done correctly a glowing orb will spawn.
+
+<RichImage image="/content/kowakujo/kowakujo-glowing-orb.webp" caption="Glowing Orb" />
+
+> If failed, an elite enemy will spawn and you'll need to go onto the next round to try again.
+
+## Step 11: Defeat Nxyara
+> Ensure you are fully geared up with all perks, max **Pack-a-Punch**, equipment, armor, etc. before entering this boss fight. The **Nekomancer** will be your main
+> source of damage, doing 20K crit damage when inside the captured zones.
+
+Head to the **Shogun's Sanctum**, and interact with the **World Seed**, teleporting you to the **Central Courtyard**, where you'll need to defeat an **HVT**
+<ZombieTooltip zombieKey="oni" /> before unlocking the fast travel to the final encounter.
+
+<RichImage image="/content/kowakujo/kowakujo-world-seed.webp" caption="World Seed" />
+
+### Phase 1
+You'll need to capture the flag, granting you a radius of invulnerability from her attacks to freely damage her. Once the radius wears off, eventually an
+<ZombieTooltip zombieKey="oni" /> will spawn with a flag, which you can pick up once killed and take back to the center of the arena to re-capture the zone.
+
+<RichImage image="/content/kowakujo/kowakujo-phase-1-zone.webp" caption="Zone Capture" />
+
+<ZombieTooltip zombieKey="nxyara" /> can be damaged at any point and her **Eyes** are the primary weak point, but these zones are the only way to gain complete
+invulnerability from her attacks, although zombies can still attack you, so be cautious or throw a **Monkey Bomb**/**Kazimir**. Once you've done enough damage to her,
+you will be moved into **Phase 2**.
+
+<RichImage image="/content/kowakujo/kowakujo-phase-1.webp" caption="Phase 1" />
+
+> There will be a **Max Ammo** and **Max Armor** in between each of the phases. Remember to use the **Nekomancer** when inside the captured zones to deal massive damage to
+> <ZombieTooltip zombieKey="nxyara" />.
+
+### Phase 2
+During this phase, a second zone will be available to capture and more <ZombieTooltip zombieKey="oni" /> zombies will be spawning to provide flags for these zones.
+<ZombieTooltip zombieKey="nxyara" /> will have gained a couple of new attacks including breathing fire on an entire area and electrified tornadoes, which you can avoid by
+being in one of the captured zones.
+
+<RichImage image="/content/kowakujo/kowakujo-phase-2-attacks.webp" caption="Phase 2 Attacks" />
+
+During this phase as well, <ZombieTooltip zombieKey="nxyara" /> will have several new weak points on her body to target, but will also be moving around a lot more making her a
+harder target during this phase. As long as you constantly capture the zones to avoid her attacks, you will be able to stay very safe in this fight and can quickly deal
+damage to the boss.
+
+<RichImage image="/content/kowakujo/kowakujo-phase-2.webp" caption="Phase 2" />
+
+### Phase 3
+During this phase, there will now be a third zone to capture and <ZombieTooltip zombieKey="nxyara" /> will now have gained her most deadly attack which are fireballs that can
+down you in one shot if you're not careful. More weak points will also be available to target and she will be flying around the entire arena making it even harder to target her.
+
+<RichImage image="/content/kowakujo/kowakujo-phase-3.webp" caption="Phase 3" />
+
+Once you have done enough damage to <ZombieTooltip zombieKey="nxyara" />, she will be defeated and you will have completed this quest and triggering the end cutscene.
+
+<RichImage image="/content/kowakujo/kowakujo-ending.webp" caption="End Cutscene" />
+
+Congratulations! You've completed the **Kowakujō** main quest.
+
+## Video Guides
+
+### Guide by MrDalekJD
+<YouTubeEmbed videoLink="https://youtu.be/KFSbkgd2pq4?si=4VH_LpV0wdkM_iLd" />
+
+### Guide by MZC
+<YouTubeEmbed videoLink="https://youtu.be/0P69gOUEMyc?si=KGWRaERpZvXnjlWE" />

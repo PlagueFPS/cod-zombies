@@ -82,7 +82,7 @@ const sampleInteractiveMap: InteractiveMap = {
 	id: "paradox-junction",
 	title: "Paradox Junction",
 	state: Option.some("Coming Soon"),
-	image: "/previews/paradox-junction-preview.webp",
+	image: "/previews/paradox-junction-preview-v1.webp",
 	game: "black-ops-7",
 	description: "Interactive map description",
 }

@@ -1,8 +1,7 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "unicorn", "oxc", "react", "react-perf", "nextjs", "vitest"],
+	"plugins": ["typescript", "unicorn", "oxc", "react", "react-perf", "vitest"],
 	"rules": {
-		"nextjs/no-img-element": "warn",
 		"react/self-closing-comp": ["warn", { "component": true, "html": true }],
 		"react/jsx-key": "warn",
 		"react/exhaustive-deps": "warn",
@@ -28,9 +27,6 @@
 	"settings": {
 		"react": {
 			"version": "19.2"
-		},
-		"next": {
-			"rootDir": ["."]
 		}
 	},
 	"options": {
@@ -43,9 +39,9 @@
 		".repos",
 		"**/last-modified.json",
 		"node_modules",
-		".next",
 		"dist",
 		"out",
-		"coverage"
+		"coverage",
+		"**/routeTree.gen.ts"
 	]
 }

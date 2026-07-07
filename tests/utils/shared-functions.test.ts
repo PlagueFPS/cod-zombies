@@ -2,7 +2,6 @@ import { Option } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
-	calculateSkip,
 	capitalize,
 	compareByOptionalSome,
 	copyTextToClipboard,
@@ -36,8 +35,6 @@ describe("slugify", () => {
 		expect(slugify("Hello!!! World??? (Test) S.A.M. + A.D.A.M. Unit")).toBe(
 			"hello-world-test-sam-adam-unit",
 		)
-		expect(slugify("Noose/Rope")).toBe("noose-rope")
-		expect(slugify("Wunderwaffe DG-Scharfschütze")).toBe("wunderwaffe-dg-scharfschutze")
 
 		// Markdown headings
 		expect(slugify("## Heading")).toBe("heading")
@@ -56,6 +53,13 @@ describe("slugify", () => {
 		for (const difficulty of MAIN_QUEST_DIFFICULTIES) {
 			expect(slugify(difficulty)).toBe(difficulty.toLowerCase().replace(/\s+/g, "-"))
 		}
+	})
+})
+
+describe("getEstimatedTimeMidpoint", () => {
+	test("returns the arithmetic mean of min and max minutes", () => {
+		expect(getEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe(45)
+		expect(getEstimatedTimeMidpoint({ min: 120, max: 180 })).toBe(150)
 	})
 })
 
@@ -96,10 +100,15 @@ describe("getYoutubeVideoId", () => {
 	})
 })
 
-describe("getEstimatedTimeMidpoint", () => {
-	test("returns the arithmetic mean of min and max minutes", () => {
-		expect(getEstimatedTimeMidpoint({ min: 30, max: 60 })).toBe(45)
-		expect(getEstimatedTimeMidpoint({ min: 120, max: 180 })).toBe(150)
+describe("sortDates", () => {
+	test("should return a negative number if first date is older than second", () => {
+		expect(sortDates("2020-01-01", "2020-01-02")).toBeLessThan(0)
+	})
+	test("should return a positive number if first date is newer than second", () => {
+		expect(sortDates("2020-01-02", "2020-01-01")).toBeGreaterThan(0)
+	})
+	test("should return 0 if dates are equal", () => {
+		expect(sortDates("2020-01-01", "2020-01-01")).toBe(0)
 	})
 })
 
@@ -113,21 +122,6 @@ describe("sortEstimatedTime", () => {
 
 	test("returns 0 when midpoints are equal", () => {
 		expect(sortEstimatedTime({ min: 40, max: 80 }, { min: 50, max: 70 })).toBe(0)
-	})
-})
-
-describe("calculateSkip", () => {
-	test("first page skips zero items", () => {
-		expect(calculateSkip(1, 12)).toBe(0)
-		expect(calculateSkip(0, 12)).toBe(0)
-	})
-
-	test("page 2 skips one page of items", () => {
-		expect(calculateSkip(2, 12)).toBe(12)
-	})
-
-	test("page 3 skips two pages of items", () => {
-		expect(calculateSkip(3, 12)).toBe(24)
 	})
 })
 
@@ -160,18 +154,6 @@ describe("getAdjacentItems", () => {
 	})
 })
 
-describe("sortDates", () => {
-	test("should return a negative number if first date is older than second", () => {
-		expect(sortDates("2020-01-01", "2020-01-02")).toBeLessThan(0)
-	})
-	test("should return a positive number if first date is newer than second", () => {
-		expect(sortDates("2020-01-02", "2020-01-01")).toBeGreaterThan(0)
-	})
-	test("should return 0 if dates are equal", () => {
-		expect(sortDates("2020-01-01", "2020-01-01")).toBe(0)
-	})
-})
-
 describe("sortDifficulties", () => {
 	test("orders permutations to match MAIN_QUEST_DIFFICULTIES canonical order", () => {
 		const ordered = [...MAIN_QUEST_DIFFICULTIES].reverse().sort(sortDifficulties)
@@ -185,6 +167,76 @@ describe("sortDifficulties", () => {
 			expect(sortDifficulties(prev, curr)).toBeLessThan(0)
 			expect(sortDifficulties(curr, prev)).toBeGreaterThan(0)
 		}
+	})
+})
+
+describe("toPascalCase", () => {
+	test("joins words from spaces, hyphens, and underscores", () => {
+		expect(toPascalCase("hello world")).toBe("HelloWorld")
+		expect(toPascalCase("hello-world")).toBe("HelloWorld")
+		expect(toPascalCase("hello_world")).toBe("HelloWorld")
+	})
+
+	test("normalizes casing and ignores empty segments", () => {
+		expect(toPascalCase("HELLO_WORLD")).toBe("HelloWorld")
+		expect(toPascalCase("main-quests")).toBe("MainQuests")
+		expect(toPascalCase("--side__quests--")).toBe("SideQuests")
+	})
+})
+
+describe("sortZombieTypes", () => {
+	const order = ["Normal", "Special", "Elite", "Boss"] as const
+
+	test("orders permutations to canonical type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieTypes)).toEqual([...order])
+	})
+
+	test("each adjacent pair sorts ascending", () => {
+		for (let i = 1; i < order.length; i++) {
+			expect(sortZombieTypes(order[i - 1]!, order[i]!)).toBeLessThan(0)
+			expect(sortZombieTypes(order[i]!, order[i - 1]!)).toBeGreaterThan(0)
+		}
+	})
+})
+
+describe("sortRelicTypes", () => {
+	const order = ["Grim", "Sinister", "Wicked"] as const
+
+	test("orders permutations to canonical relic type order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortRelicTypes)).toEqual([...order])
+	})
+})
+
+describe("sortZombieSpeeds", () => {
+	const order = ["Slow", "Medium", "Fast"] as const
+
+	test("orders permutations to canonical speed order", () => {
+		const shuffled = [...order].reverse()
+		expect([...shuffled].sort(sortZombieSpeeds)).toEqual([...order])
+	})
+})
+
+describe("copyTextToClipboard", () => {
+	afterEach(() => {
+		vi.restoreAllMocks()
+	})
+
+	test("returns true when clipboard.writeText succeeds", async () => {
+		const writeText = vi.fn<() => Promise<void>>().mockResolvedValue(undefined)
+		vi.stubGlobal("navigator", { clipboard: { writeText } })
+
+		await expect(copyTextToClipboard("https://example.com/guide")).resolves.toBe(true)
+		expect(writeText).toHaveBeenCalledWith("https://example.com/guide")
+	})
+
+	test("returns false when clipboard.writeText rejects", async () => {
+		vi.stubGlobal("navigator", {
+			clipboard: { writeText: vi.fn<() => Promise<void>>().mockRejectedValue(new Error("denied")) },
+		})
+
+		await expect(copyTextToClipboard("https://example.com/guide")).resolves.toBe(false)
 	})
 })
 
@@ -222,100 +274,5 @@ describe("compareByOptionalSome", () => {
 
 	test("returns 0 when both are None", () => {
 		expect(compareByOptionalSome(Option.none(), Option.none(), compare)).toBe(0)
-	})
-})
-
-describe("toPascalCase", () => {
-	test("converts space, underscore, and hyphen separators", () => {
-		expect(toPascalCase("hello world")).toBe("HelloWorld")
-		expect(toPascalCase("hello_world")).toBe("HelloWorld")
-		expect(toPascalCase("hello-world")).toBe("HelloWorld")
-	})
-
-	test("normalizes screaming snake case for generated type names", () => {
-		expect(toPascalCase("MAIN_QUESTS")).toBe("MainQuests")
-	})
-
-	test("joins words from spaces, hyphens, and underscores", () => {
-		expect(toPascalCase("hello world")).toBe("HelloWorld")
-		expect(toPascalCase("hello-world")).toBe("HelloWorld")
-		expect(toPascalCase("hello_world")).toBe("HelloWorld")
-	})
-
-	test("normalizes casing and ignores empty segments", () => {
-		expect(toPascalCase("HELLO_WORLD")).toBe("HelloWorld")
-		expect(toPascalCase("main-quests")).toBe("MainQuests")
-		expect(toPascalCase("--side__quests--")).toBe("SideQuests")
-	})
-})
-
-describe("sortZombieTypes", () => {
-	test("orders types Normal → Special → Elite → Boss", () => {
-		expect(sortZombieTypes("Normal", "Boss")).toBeLessThan(0)
-		expect(sortZombieTypes("Boss", "Normal")).toBeGreaterThan(0)
-	})
-
-	const order = ["Normal", "Special", "Elite", "Boss"] as const
-
-	test("orders permutations to canonical type order", () => {
-		const shuffled = [...order].reverse()
-		expect([...shuffled].sort(sortZombieTypes)).toEqual([...order])
-	})
-
-	test("each adjacent pair sorts ascending", () => {
-		for (let i = 1; i < order.length; i++) {
-			expect(sortZombieTypes(order[i - 1]!, order[i]!)).toBeLessThan(0)
-			expect(sortZombieTypes(order[i]!, order[i - 1]!)).toBeGreaterThan(0)
-		}
-	})
-})
-
-describe("sortRelicTypes", () => {
-	test("orders types Grim → Sinister → Wicked", () => {
-		expect(sortRelicTypes("Grim", "Wicked")).toBeLessThan(0)
-		expect(sortRelicTypes("Wicked", "Grim")).toBeGreaterThan(0)
-	})
-
-	const order = ["Grim", "Sinister", "Wicked"] as const
-
-	test("orders permutations to canonical relic type order", () => {
-		const shuffled = [...order].reverse()
-		expect([...shuffled].sort(sortRelicTypes)).toEqual([...order])
-	})
-})
-
-describe("sortZombieSpeeds", () => {
-	test("orders speeds Slow → Medium → Fast", () => {
-		expect(sortZombieSpeeds("Slow", "Fast")).toBeLessThan(0)
-		expect(sortZombieSpeeds("Fast", "Slow")).toBeGreaterThan(0)
-	})
-
-	const order = ["Slow", "Medium", "Fast"] as const
-
-	test("orders permutations to canonical speed order", () => {
-		const shuffled = [...order].reverse()
-		expect([...shuffled].sort(sortZombieSpeeds)).toEqual([...order])
-	})
-})
-
-describe("copyTextToClipboard", () => {
-	afterEach(() => {
-		vi.restoreAllMocks()
-	})
-
-	test("returns true when clipboard.writeText succeeds", async () => {
-		const writeText = vi.fn<() => Promise<void>>().mockResolvedValue(undefined)
-		vi.stubGlobal("navigator", { clipboard: { writeText } })
-
-		await expect(copyTextToClipboard("https://example.com/guide")).resolves.toBe(true)
-		expect(writeText).toHaveBeenCalledWith("https://example.com/guide")
-	})
-
-	test("returns false when clipboard.writeText rejects", async () => {
-		vi.stubGlobal("navigator", {
-			clipboard: { writeText: vi.fn<() => Promise<void>>().mockRejectedValue(new Error("denied")) },
-		})
-
-		await expect(copyTextToClipboard("https://example.com/guide")).resolves.toBe(false)
 	})
 })

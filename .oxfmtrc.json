@@ -19,8 +19,8 @@
 		".repos",
 		"**/opengraph-manifest.json",
 		"**/last-modified.json",
-		"node_modules",
-		".next"
+		"**/routeTree.gen.ts",
+		"node_modules"
 	],
 	"sortImports": {
 		"groups": [
@@ -35,7 +35,7 @@
 		"newlinesBetween": false
 	},
 	"sortTailwindcss": {
-		"stylesheet": "./app/globals.css",
+		"stylesheet": "./src/globals.css",
 		"functions": ["cn", "clsx", "twMerge"]
 	}
 }

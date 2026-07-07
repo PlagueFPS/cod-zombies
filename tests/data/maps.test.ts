@@ -1,16 +1,29 @@
+import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
-import { afterEach, describe, expect, test, vi } from "vitest"
+import { describe, expect, test } from "vitest"
 import {
 	compareMapReleaseDescending,
 	getAdjacentMaps,
-	getMapByKey,
 	getMaps,
 	getMapsWithMainQuest,
 	MAIN_QUEST_DIFFICULTIES,
+	type MapEntry,
 	type MapKey,
 } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
+import { resolveNewContentState } from "@/utils/content-state"
 import { slugify } from "@/utils/shared-functions"
+
+/** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real MAPS rows). */
+const mapNewBadgeFixture = (releaseDate: string): Pick<MapEntry, "releaseDate" | "state"> => ({
+	releaseDate,
+	state: Option.some("New"),
+})
+
+const resolvedMapDisplayState = (
+	fixture: Pick<MapEntry, "releaseDate" | "state">,
+	isoUtcInstant: string,
+) => resolveNewContentState(fixture.state, fixture.releaseDate, Date.parse(isoUtcInstant))
 
 describe("compareMapReleaseDescending", () => {
 	test("orders by release date descending when dates differ", () => {
@@ -29,52 +42,6 @@ describe("compareMapReleaseDescending", () => {
 				{ id: "voyage-of-despair", releaseDate: "2018-10-12" },
 			),
 		).toBeLessThan(0)
-	})
-})
-
-describe("getMaps", () => {
-	test("sorted by release date descending", () => {
-		assertSortedDescByDate(getMaps().map(m => m.releaseDate))
-	})
-
-	test("same calendar day: later MAPS entries appear first (e.g. BO4 launch)", () => {
-		const maps = getMaps()
-		const indexOf = (id: string) => maps.findIndex(m => m.id === id)
-		expect(indexOf("classified")).toBeLessThan(indexOf("voyage-of-despair"))
-	})
-})
-
-describe("map New badge vs release date", () => {
-	afterEach(() => {
-		vi.useRealTimers()
-	})
-
-	test("drops New when release date is 14+ full calendar days in the past", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
-		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(totenreich.state)).toBeNull()
-	})
-
-	test("keeps New within 14 days of release date", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-10T12:00:00.000Z"))
-		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(totenreich.state)).toBe("New")
-	})
-
-	test("keeps New through the last instant before the 14th full UTC day after release", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-13T23:59:59.999Z"))
-		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(totenreich.state)).toBe("New")
-	})
-
-	test("drops New at the start of the 14th full UTC day after release", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-14T00:00:00.000Z"))
-		const totenreich = getMapByKey("totenreich").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(totenreich.state)).toBeNull()
 	})
 })
 
@@ -100,6 +67,65 @@ describe("main quest data integrity", () => {
 	})
 })
 
+describe("getMaps", () => {
+	test("sorted by release date descending", () => {
+		const dates = getMaps().map(m => m.releaseDate)
+		expect(dates.length).toBeGreaterThan(1)
+		assertSortedDescByDate(dates)
+	})
+
+	test("same calendar day: later MAPS entries appear first (e.g. BO4 launch)", () => {
+		const maps = getMaps()
+		const indexOf = (id: string) => maps.findIndex(m => m.id === id)
+		expect(indexOf("classified")).toBeLessThan(indexOf("voyage-of-despair"))
+	})
+})
+
+describe("map New badge vs release date (fixtures)", () => {
+	const fixture = mapNewBadgeFixture("2026-04-30")
+
+	test("drops New when release date is 14+ full calendar days in the past", () => {
+		expect(
+			Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-15T12:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test("keeps New within 14 days of release date", () => {
+		expect(Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-10T12:00:00.000Z"))).toBe(
+			"New",
+		)
+	})
+
+	test("keeps New through the last instant before the 14th full UTC day after release", () => {
+		expect(Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-13T23:59:59.999Z"))).toBe(
+			"New",
+		)
+	})
+
+	test("drops New at the start of the 14th full UTC day after release", () => {
+		expect(
+			Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-14T00:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test("stored None stays None regardless of calendar age", () => {
+		const noBadge: Pick<MapEntry, "releaseDate" | "state"> = {
+			...fixture,
+			state: Option.none<ContentState>(),
+		}
+		expect(
+			Option.getOrNull(resolvedMapDisplayState(noBadge, "2026-05-10T12:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test('stored Coming Soon is preserved when stored state is Some("Coming Soon")', () => {
+		const comingSoon = { ...fixture, state: Option.some("Coming Soon" as const) }
+		expect(Option.getOrNull(resolvedMapDisplayState(comingSoon, "2026-05-15T12:00:00.000Z"))).toBe(
+			"Coming Soon",
+		)
+	})
+})
+
 describe("getMapsWithMainQuest", () => {
 	test("is subset of getMaps and every entry has a main quest path", () => {
 		const allIds = new Set(getMaps().map(m => m.id))
@@ -119,12 +145,11 @@ describe("getAdjacentMaps", () => {
 		const { prev, next } = getAdjacentMaps(mid.id as MapKey)
 		const idx = maps.findIndex(m => m.id === mid.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
-		if (idx < maps.length - 1) {
-			expect(prev.pipe(Option.map(p => p.id))).toEqual(Option.some(maps[idx + 1]!.id))
-		}
-		if (idx > 0) {
-			expect(next.pipe(Option.map(n => n.id))).toEqual(Option.some(maps[idx - 1]!.id))
-		}
+		const expectedPrev =
+			idx < maps.length - 1 ? Option.some(maps[idx + 1]!.id) : Option.none<string>()
+		const expectedNext = idx > 0 ? Option.some(maps[idx - 1]!.id) : Option.none<string>()
+		expect(prev.pipe(Option.map(p => p.id))).toEqual(expectedPrev)
+		expect(next.pipe(Option.map(n => n.id))).toEqual(expectedNext)
 	})
 
 	test("prev is Some and Next is None when the first map is provided", () => {

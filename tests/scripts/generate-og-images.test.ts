@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSyn
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Effect } from "effect"
+import { Effect, Exit } from "effect"
 import { Command } from "effect/unstable/cli"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
@@ -25,7 +25,7 @@ describe("writeOgFile", () => {
 		const manifestPath = join(tmp, "opengraph-manifest.json")
 		writeFileSync(
 			manifestPath,
-			JSON.stringify({ "main-quests": {}, "side-quests": {}, zombies: {} }),
+			JSON.stringify({ "main-quests": {}, "side-quests": {}, zombies: {}, relics: {} }),
 			"utf-8",
 		)
 		const outBase = join(tmp, "out")
@@ -65,6 +65,7 @@ describe("writeOgFile", () => {
 describe("generateOgCommand CLI (OgCliError)", () => {
 	test("empty argv yields OgCliError", async () => {
 		const exit = await Effect.runPromiseExit(runOg([]).pipe(Effect.provide(testLayer)))
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
 			e.message.includes("Specify exactly one target"),
@@ -75,6 +76,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--maps", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
 			e.message.includes("--maps already generates"),
@@ -85,6 +87,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--zombies", "--zombie", "zombie"]).pipe(Effect.provide(testLayer)),
 		)
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
 			e.message.includes("Use either --zombies or --zombie"),
@@ -95,6 +98,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--zombie", "zombie", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
 			e.message.includes("--map is only valid with --zombies"),
@@ -105,6 +109,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--quests", "--quest", "free-perk"]).pipe(Effect.provide(testLayer)),
 		)
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
 			e.message.includes("Use either --quests or --quest"),
@@ -115,9 +120,32 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--quest", "free-perk", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
+		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
 			e.message.includes("--map is only valid with --quests"),
+		)
+	})
+
+	test("--relics and --relic together yield OgCliError", async () => {
+		const exit = await Effect.runPromiseExit(
+			runOg(["--relics", "--relic", "lawyers-pen"]).pipe(Effect.provide(testLayer)),
+		)
+		expect(Exit.isFailure(exit)).toBe(true)
+		const cause = expectExitFailure(exit)
+		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
+			e.message.includes("Use either --relics or --relic"),
+		)
+	})
+
+	test("--relic with --map yields OgCliError", async () => {
+		const exit = await Effect.runPromiseExit(
+			runOg(["--relic", "lawyers-pen", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
+		)
+		expect(Exit.isFailure(exit)).toBe(true)
+		const cause = expectExitFailure(exit)
+		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
+			e.message.includes("--map is only valid with --relics"),
 		)
 	})
 })
@@ -131,7 +159,7 @@ describe("generateOgCommand success (real assets)", () => {
 		const manifestPath = join(tmpRoot, "opengraph-manifest.json")
 		writeFileSync(
 			manifestPath,
-			JSON.stringify({ "main-quests": {}, "side-quests": {}, zombies: {} }),
+			JSON.stringify({ "main-quests": {}, "side-quests": {}, zombies: {}, relics: {} }),
 			"utf-8",
 		)
 		prevManifest = process.env.OG_TEST_MANIFEST_PATH
@@ -195,6 +223,25 @@ describe("generateOgCommand success (real assets)", () => {
 
 		const dir = join(outDir, "zombies")
 		const jpg = readdirSync(dir).find(f => f.startsWith("opengraph-zombie-v") && f.endsWith(".jpg"))
+		expect(jpg).toBeDefined()
+		const meta = await sharp(readFileSync(join(dir, jpg!))).metadata()
+		expect(meta.format).toBe("jpeg")
+		expect(meta.width).toBe(OG_IMAGE_SIZE.width)
+		expect(meta.height).toBe(OG_IMAGE_SIZE.height)
+	}, 120_000)
+
+	test("--relic lawyers-pen writes JPEG with OG dimensions", async () => {
+		const outDir = join(tmpRoot, "og-rel")
+		mkdirSync(outDir, { recursive: true })
+		const exit = await Effect.runPromiseExit(
+			runOg(["--relic", "lawyers-pen", "-o", outDir]).pipe(Effect.provide(testLayer)),
+		)
+		expectExitSuccess(exit)
+
+		const dir = join(outDir, "relics")
+		const jpg = readdirSync(dir).find(
+			f => f.startsWith("opengraph-lawyers-pen-v") && f.endsWith(".jpg"),
+		)
 		expect(jpg).toBeDefined()
 		const meta = await sharp(readFileSync(join(dir, jpg!))).metadata()
 		expect(meta.format).toBe("jpeg")

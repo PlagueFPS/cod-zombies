@@ -7,9 +7,9 @@ import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
 import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
-import { extractHeadingsFromMDX } from "@/utils/server-functions"
+import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 
-const CONTENT_DIR = join(process.cwd(), "content")
+const CONTENT_DIR = join(process.cwd(), "src/content")
 const MAIN_QUEST_GAME_PATTERN =
 	/^\/(black-ops-1|black-ops-2|black-ops-3|black-ops-4|black-ops-cold-war|black-ops-6|black-ops-7)\/([^/?#]+)$/
 
@@ -19,19 +19,6 @@ const LINK_PATTERNS: readonly { re: RegExp; group: number }[] = [
 ]
 
 const UNCLOSED_MARKDOWN_LINK_RE = /\[[^\]]+\]\([^)\n]+$/gm
-
-/** Literal redirect sources from next.config.ts (dynamic patterns are handled elsewhere). */
-function isLiteralRedirectSource(source: string): boolean {
-	return !source.includes(":") && !source.includes("(")
-}
-
-export async function loadRedirectSources(): Promise<string[]> {
-	const { default: config } = await import("@/next.config")
-	if (!config.redirects) return []
-
-	const redirects = await config.redirects()
-	return redirects.map(entry => entry.source).filter(isLiteralRedirectSource)
-}
 
 export interface MdxLinkRef {
 	readonly href: string
@@ -70,10 +57,11 @@ export function listMdxContentFiles(): string[] {
 
 export function loadMdxCorpus(): MdxCorpusFile[] {
 	return listMdxContentFiles().map(absolutePath => {
-		const label = absolutePath.slice(process.cwd().length + 1)
+		const relativePath = absolutePath.slice(process.cwd().length + 1)
+		const contentPath = relativePath.replace(/^src\/content\//, "content/").replace(/\.mdx$/, "")
 		return {
-			label,
-			contentPath: label.replace(/\.mdx$/, ""),
+			label: relativePath,
+			contentPath,
 			content: readFileSync(absolutePath, "utf8"),
 		}
 	})
@@ -104,9 +92,7 @@ export function findUnclosedMarkdownLinks(content: string): { line: number; exce
 	return issues
 }
 
-export async function buildSiteRouteIndex(
-	contentByPath?: ReadonlyMap<string, string>,
-): Promise<SiteRouteIndex> {
+export async function buildSiteRouteIndex(): Promise<SiteRouteIndex> {
 	const paths = new Set<string>([
 		"/",
 		"/maps",
@@ -121,16 +107,12 @@ export async function buildSiteRouteIndex(
 	const routesByContentPath = new Map<string, string[]>()
 	const headingsByContentPath = new Map<string, Set<string>>()
 
-	const readContent = (contentPath: string) => {
-		const fromCorpus = contentByPath?.get(contentPath)
-		if (fromCorpus != null) return fromCorpus
-		return readFileSync(join(process.cwd(), `${contentPath}.mdx`), "utf8")
-	}
-
-	const registerHeadings = (routePath: string, contentPath: string) => {
+	const registerHeadings = async (routePath: string, contentPath: string) => {
 		let headingIds = headingsByContentPath.get(contentPath)
 		if (!headingIds) {
-			headingIds = new Set(extractHeadingsFromMDX(readContent(contentPath)).map(h => h.id))
+			const absolutePath = join(CONTENT_DIR, contentPath.replace(/^content\//, "") + ".mdx")
+			const { headings } = getMdxDocumentMetaFromSource(readFileSync(absolutePath, "utf8"))
+			headingIds = new Set(headings.map(h => h.id))
 			headingsByContentPath.set(contentPath, headingIds)
 		}
 		headingsByPath.set(routePath, headingIds)
@@ -150,36 +132,32 @@ export async function buildSiteRouteIndex(
 		const shortcutRoute = `/${map.game}/${map.id}`
 		paths.add(mainQuestRoute)
 		paths.add(shortcutRoute)
-		registerHeadings(mainQuestRoute, contentPath)
-		registerHeadings(shortcutRoute, contentPath)
+		await registerHeadings(mainQuestRoute, contentPath)
+		await registerHeadings(shortcutRoute, contentPath)
 	}
 
 	for (const quest of getSideQuests()) {
 		const map = Option.getOrThrow(getMapByKey(quest.map))
 		const route = `/side-quests/${map.game}/${map.id}/${quest.id}`
 		paths.add(route)
-		registerHeadings(route, quest.content)
+		await registerHeadings(route, quest.content)
 	}
 
 	for (const zombie of getZombies()) {
 		const route = `/bestiary/${zombie.id}`
 		paths.add(route)
-		registerHeadings(route, zombie.combatStrategy)
+		await registerHeadings(route, zombie.combatStrategy)
 	}
 
 	for (const relic of getRelics()) {
 		const map = Option.getOrThrow(getMapByKey(relic.map))
 		const route = `/relics/${map.game}/${relic.id}`
 		paths.add(route)
-		registerHeadings(route, relic.content)
+		await registerHeadings(route, relic.content)
 	}
 
 	for (const map of getInteractiveMaps()) {
 		paths.add(`/maps/${map.id}`)
-	}
-
-	for (const source of await loadRedirectSources()) {
-		paths.add(source)
 	}
 
 	return { paths, headingsByPath, routesByContentPath }
@@ -195,10 +173,6 @@ export function splitHref(href: string): { pathname: string; hash: string } {
 	const pathname = queryIndex === -1 ? pathAndQuery : pathAndQuery.slice(0, queryIndex)
 
 	return { pathname, hash }
-}
-
-export function isInternalHref(href: string): boolean {
-	return href.startsWith("/") || href.startsWith("#")
 }
 
 export function resolveInternalPath(pathname: string, index: SiteRouteIndex): boolean {
