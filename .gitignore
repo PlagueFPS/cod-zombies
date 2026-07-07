@@ -33,6 +33,11 @@ yarn-error.log*
 newassets
 oldassets
 /.repos/
+.wrangler
+/bundled
+.dev.vars
+/dist
+worker-configuration.d.ts
 
 # vercel
 .vercel
