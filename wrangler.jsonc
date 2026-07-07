@@ -4,6 +4,7 @@
 	"compatibility_date": "2026-07-04",
 	"compatibility_flags": ["nodejs_compat"],
 	"main": "@tanstack/react-start/server-entry",
+	"preview_urls": true,
 	"vars": {
 		"GITHUB_REPO_OWNER": "PlagueFPS",
 		"GITHUB_REPO_NAME": "cod-zombies",
