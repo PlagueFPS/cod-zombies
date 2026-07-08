@@ -1,6 +1,6 @@
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Clock, Duration, Effect, FileSystem, Path, Schema, Ref } from "effect"
+import { Clock, Duration, Effect, FileSystem, Path, Schema, Ref, Match } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp, { type Sharp } from "sharp"
 import { generateImagePaths } from "@/scripts/generate-image-paths"
@@ -181,18 +181,24 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 					yield* Effect.log(`Transforming image: ${relativeAsset}`)
 
 					const baseFileName = `${baseName}.webp`
-					const baseBuffer =
-						mode === "preview"
-							? yield* encodeWebpEffect(image, relativeAsset, PREVIEW_WIDTH, {
-									withoutEnlargement: false,
-								})
-							: mode === "map"
-								? yield* encodeWebpEffect(image, relativeAsset, MAP_WIDTH, {
-										withoutEnlargement: true,
-									})
-								: yield* encodeWebpEffect(image, relativeAsset, DEFAULT_MAX_WIDTH, {
-										withoutEnlargement: true,
-									})
+					const baseBuffer = yield* Match.value(mode).pipe(
+						Match.when("preview", () =>
+							encodeWebpEffect(image, relativeAsset, PREVIEW_WIDTH, {
+								withoutEnlargement: false,
+							}),
+						),
+						Match.when("map", () =>
+							encodeWebpEffect(image, relativeAsset, MAP_WIDTH, {
+								withoutEnlargement: true,
+							}),
+						),
+						Match.orElse(() =>
+							encodeWebpEffect(image, relativeAsset, DEFAULT_MAX_WIDTH, {
+								withoutEnlargement: true,
+							}),
+						),
+					)
+
 					yield* fs.writeFile(path.join(outputDir, baseFileName), baseBuffer)
 
 					if (mode === "default" && shouldGenerateVariants(category)) {

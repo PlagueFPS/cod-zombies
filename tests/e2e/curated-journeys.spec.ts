@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+import { expectInteractiveMapReady } from "./helpers/ui"
 test.describe("curated listing journeys", () => {
 	test("filters and sorts main quests", async ({ page }) => {
 		await page.goto("/main-quests/?game=%5B%22black-ops-7%22%5D&sort=%22oldest%22")
@@ -29,6 +30,6 @@ test.describe("curated listing journeys", () => {
 
 		await page.getByRole("link", { name: "View Terminus interactive map" }).click()
 		await expect(page).toHaveURL(/\/maps\/terminus/)
-		await expect(page.getByText("Current Map")).toBeVisible()
+		await expectInteractiveMapReady(page)
 	})
 })

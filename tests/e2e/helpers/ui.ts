@@ -1,4 +1,10 @@
-import { type Page } from "@playwright/test"
+import { expect, type Page } from "@playwright/test"
+
+export async function expectInteractiveMapReady(page: Page) {
+	await expect(page.getByRole("button", { name: "Hide All Markers" })).toBeVisible({
+		timeout: 15_000,
+	})
+}
 
 export async function chooseSelectOption(
 	page: Page,
