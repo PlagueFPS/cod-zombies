@@ -20,6 +20,9 @@
 		"incremental": true,
 		"plugins": [
 			{
+				"name": "@effect/tsgo"
+			},
+			{
 				"name": "@effect/language-service"
 			}
 		],
@@ -28,5 +31,6 @@
 		}
 	},
 	"include": ["src/mdx.d.ts", "src/vite-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.mdx"],
-	"exclude": ["node_modules", ".repos"]
+	"exclude": ["node_modules", ".repos"],
+	"$schema": "https://raw.githubusercontent.com/Effect-TS/tsgo/refs/heads/main/schema.json"
 }

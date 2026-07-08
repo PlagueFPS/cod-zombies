@@ -126,9 +126,9 @@ export const ContactFormSchema = Schema.Struct({
 
 const isValidInt = Schema.isBetween({ minimum: 0, maximum: 99 })
 const TerminusCodeSchema = Schema.Struct({
-	x: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
-	y: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
-	z: Schema.NumberFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
+	x: Schema.FiniteFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
+	y: Schema.FiniteFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
+	z: Schema.FiniteFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
 })
 
 const ErrorPageSchema = Schema.Struct({
