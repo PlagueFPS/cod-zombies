@@ -30,7 +30,7 @@ jobs:
         run: bun run lint
 
       - name: Typecheck
-        run: bunx effect-tsgo patch && bun run typecheck
+        run: bun run typecheck
 
       - name: Install Playwright Browsers
         run: bunx playwright install --with-deps chromium
