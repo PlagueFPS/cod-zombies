@@ -25,7 +25,6 @@
 		"generate:image:paths": "bun scripts/generate-image-paths.ts",
 		"generate:content:paths": "bun scripts/generate-content-paths.ts",
 		"generate:og:images": "bun scripts/generate-og-images.tsx",
-		"prepare": "effect-tsgo patch"
 	},
 	"dependencies": {
 		"@base-ui/react": "1.6.0",
