@@ -9,7 +9,9 @@ export const Route = createFileRoute("/robots.txt")({
 				const robots = `
 User-agent: *
 Allow: /
+Allow: /cdn-cgi/image/
 Disallow: /newsletter/**
+Disallow: /cdn-cgi/
 
 Sitemap: ${serverUrl}/sitemap.xml
 				`

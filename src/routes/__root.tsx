@@ -44,9 +44,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			{
 				src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2572200153117332",
 			},
-			{
-				src: "https://www.googletagmanager.com/gtag/js?id=G-2M6PMT6Z3R",
-			},
 		],
 	}),
 	shellComponent: RootLayout,

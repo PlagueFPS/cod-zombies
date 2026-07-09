@@ -97,7 +97,7 @@ const makeMapEntry = <T extends string>(
 const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("kowakujo", {
 		title: "Kowakujō",
-		state: Option.some("New"),
+		state: Option.none(),
 		image: "/previews/kowakujo-preview.webp",
 		game: "black-ops-7",
 		description:
