@@ -1,7 +1,26 @@
+import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
-import { afterEach, describe, expect, test, vi } from "vitest"
-import { getAdjacentZombies, getZombieByKey, getZombies, type ZombieKey } from "@/data/zombies"
+import { describe, expect, test } from "vitest"
+import {
+	getAdjacentZombies,
+	getZombieByKey,
+	getZombies,
+	type Zombie,
+	type ZombieKey,
+} from "@/data/zombies"
 import { assertSortedDescByDate } from "@/tests/helpers"
+import { resolveNewContentState } from "@/utils/content-state"
+
+/** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real ZOMBIES rows). */
+const zombieNewBadgeFixture = (releaseDate: string): Pick<Zombie, "releaseDate" | "state"> => ({
+	releaseDate,
+	state: Option.some("New"),
+})
+
+const resolvedZombieDisplayState = (
+	fixture: Pick<Zombie, "releaseDate" | "state">,
+	isoUtcInstant: string,
+) => resolveNewContentState(fixture.state, fixture.releaseDate, Date.parse(isoUtcInstant))
 
 describe("getZombies", () => {
 	test("sorted by release date descending", () => {
@@ -24,37 +43,48 @@ describe("getZombieByKey", () => {
 	})
 })
 
-describe("zombie New badge vs release date", () => {
-	afterEach(() => {
-		vi.useRealTimers()
-	})
+describe("zombie New badge vs release date (fixtures)", () => {
+	const fixture = zombieNewBadgeFixture("2026-04-30")
 
 	test("drops New when release date is 14+ full calendar days in the past", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-15T12:00:00.000Z"))
-		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(dravakar.state)).toBeNull()
+		expect(
+			Option.getOrNull(resolvedZombieDisplayState(fixture, "2026-05-15T12:00:00.000Z")),
+		).toBeNull()
 	})
 
 	test("keeps New within 14 days of release date", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-10T12:00:00.000Z"))
-		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(dravakar.state)).toBe("New")
+		expect(Option.getOrNull(resolvedZombieDisplayState(fixture, "2026-05-10T12:00:00.000Z"))).toBe(
+			"New",
+		)
 	})
 
 	test("keeps New through the last instant before the 14th full UTC day after release", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-13T23:59:59.999Z"))
-		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(dravakar.state)).toBe("New")
+		expect(Option.getOrNull(resolvedZombieDisplayState(fixture, "2026-05-13T23:59:59.999Z"))).toBe(
+			"New",
+		)
 	})
 
 	test("drops New at the start of the 14th full UTC day after release", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(new Date("2026-05-14T00:00:00.000Z"))
-		const dravakar = getZombieByKey("dravakar").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(dravakar.state)).toBeNull()
+		expect(
+			Option.getOrNull(resolvedZombieDisplayState(fixture, "2026-05-14T00:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test("stored None stays None regardless of calendar age", () => {
+		const noBadge: Pick<Zombie, "releaseDate" | "state"> = {
+			...fixture,
+			state: Option.none<ContentState>(),
+		}
+		expect(
+			Option.getOrNull(resolvedZombieDisplayState(noBadge, "2026-05-10T12:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test('stored Coming Soon is preserved when stored state is Some("Coming Soon")', () => {
+		const comingSoon = { ...fixture, state: Option.some("Coming Soon" as const) }
+		expect(
+			Option.getOrNull(resolvedZombieDisplayState(comingSoon, "2026-05-15T12:00:00.000Z")),
+		).toBe("Coming Soon")
 	})
 })
 

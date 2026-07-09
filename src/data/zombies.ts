@@ -1807,7 +1807,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("frost-zombie", {
 		title: "Frost Zombie",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-04-30",
 		image: "/zombies/frost-zombie.webp",
 		description:
@@ -1825,7 +1825,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("necropincer", {
 		title: "Necropincer",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-04-30",
 		image: "/zombies/necropincer.webp",
 		description:
@@ -1843,7 +1843,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("dravakar", {
 		title: "Dravakar",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-04-30",
 		image: "/zombies/dravakar.webp",
 		description:
@@ -1861,7 +1861,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("gjallarfrost", {
 		title: "Gjallarfrost",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-04-30",
 		image: "/zombies/gjallarfrost.webp",
 		description:
@@ -1879,7 +1879,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("scorched-zombie", {
 		title: "Scorched Zombie",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-06-25",
 		image: "/zombies/scorched-zombie.webp",
 		description:
@@ -1897,7 +1897,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("oni", {
 		title: "Oni",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-06-25",
 		image: "/zombies/oni.webp",
 		description:
@@ -1915,7 +1915,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("nxyara", {
 		title: "Nxyara",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-06-25",
 		image: "/zombies/nyxara.webp",
 		description:

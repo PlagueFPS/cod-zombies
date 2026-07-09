@@ -842,7 +842,7 @@ const MAPS = new Map([
 			"On the fractured slopes of a volcanic landscape, a castle harbors a smoldering mystery. Face the Dragon's undead army, investigate the Shogun's fate, and expose the curse that blackened Takeo's soul.",
 		image: "/maps/kowakujo.webp",
 		game: "black-ops-7",
-		state: Option.some("New"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/kowakujo"),
 		difficulty: Option.some("Hard"),
 		estimatedTimeMins: Option.some({

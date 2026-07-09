@@ -461,7 +461,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("gramophone", {
 		title: "Gramophone",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/gramophone-relic-v1.webp",
 		description: "Bullets deal increased damage but each shot consumes 2 bullets.",
@@ -476,7 +476,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("film-reel", {
 		title: "Film Reel",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/film-reel-relic-v1.webp",
 		description: "Player can only carry one Pack-a-Punch weapon.",
@@ -491,7 +491,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("mannequin-turret", {
 		title: "Mannequin Turret",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/mannequin-turret-relic-v1.webp",
 		description: "No starting Armor. Only armor available is gold armor from the wall buy.",
@@ -506,7 +506,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("dragon-egg", {
 		title: "Dragon Egg",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Wicked",
 		image: "/relics/dragon-egg-relic-v1.webp",
 		description: "Elites and Special zombies in normal round spawning will now be randomized.",
@@ -521,7 +521,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("valkyrie-helmet", {
 		title: "Valkyrie Helmet",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Sinister",
 		image: "/relics/valkyrie-helmet-relic-v1.webp",
 		description: "Areas you stay in start to spawn electric fields that damage you.",
@@ -536,7 +536,7 @@ const RELICS = new Map([
 	}),
 	makeRelic("druid-stone", {
 		title: "Druid Stone",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Grim",
 		image: "/relics/druid-stone-relic.webp",
 		description: "No bleed out bar self-revives instantly revives you",
