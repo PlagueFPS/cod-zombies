@@ -552,8 +552,8 @@ export const config: MapConfig = {
 				},
 				{
 					...weapons["ds20-mirage"],
-					locations: [{ x: 0.227, y: 0.461 }]
-				}
+					locations: [{ x: 0.227, y: 0.461 }],
+				},
 			],
 		},
 		{
