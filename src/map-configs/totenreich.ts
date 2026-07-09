@@ -550,6 +550,10 @@ export const config: MapConfig = {
 					...weapons["warden-308"],
 					locations: [{ x: 0.292, y: 0.321 }],
 				},
+				{
+					...weapons["ds20-mirage"],
+					locations: [{ x: 0.227, y: 0.461 }]
+				}
 			],
 		},
 		{
