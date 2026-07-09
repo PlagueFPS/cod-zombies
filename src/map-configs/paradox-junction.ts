@@ -103,6 +103,13 @@ export const config: MapConfig = {
 					],
 				},
 				{
+					...sharedMarkers["mister-peeks"],
+					locations: [
+						{ x: 0.549, y: 0.384 },
+						{ x: 0.637, y: 0.871 },
+					],
+				},
+				{
 					...sharedMarkers["ammo-cache"],
 					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
 					locations: [
@@ -331,6 +338,13 @@ export const config: MapConfig = {
 					type: "label",
 					icon: Option.none(),
 					locations: [{ x: 0.614, y: 0.433 }],
+				},
+				{
+					...sharedMarkers["mister-peeks"],
+					locations: [
+						{ x: 0.594, y: 0.321 },
+						{ x: 0.408, y: 0.803 },
+					],
 				},
 				{
 					...sharedMarkers["aether-crystal"],

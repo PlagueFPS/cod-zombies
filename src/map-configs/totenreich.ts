@@ -229,6 +229,19 @@ export const config: MapConfig = {
 					],
 				},
 				{
+					...sharedMarkers["mister-peeks"],
+					locations: [
+						{ x: 0.364, y: 0.856 },
+						{ x: 0.539, y: 0.84 },
+						{ x: 0.667, y: 0.639 },
+						{ x: 0.703, y: 0.552 },
+						{ x: 0.641, y: 0.334 },
+						{ x: 0.404, y: 0.39 },
+						{ x: 0.239, y: 0.481 },
+						{ x: 0.267, y: 0.636 },
+					],
+				},
+				{
 					...sharedMarkers["ammo-cache"],
 					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
 					locations: [

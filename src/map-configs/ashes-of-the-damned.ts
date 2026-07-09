@@ -311,6 +311,15 @@ const layerMarkers: MapMarker[] = [
 		locations: [{ x: 0.536, y: 0.875 }],
 	},
 	{
+		...sharedMarkers["mister-peeks"],
+		locations: [
+			{ x: 0.495, y: 0.109 },
+			{ x: 0.611, y: 0.307 },
+			{ x: 0.419, y: 0.887 },
+			{ x: 0.506, y: 0.571 },
+		],
+	},
+	{
 		id: "overgrown-hoard-husk",
 		title: "Overgrown Hoard Husk",
 		category: "objectives",

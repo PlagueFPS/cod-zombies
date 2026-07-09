@@ -91,6 +91,18 @@ export const config: MapConfig = {
 					locations: [{ x: 0.588, y: 0.574 }],
 				},
 				{
+					...sharedMarkers["mister-peeks"],
+					locations: [
+						{ x: 0.5, y: 0.757 },
+						{ x: 0.575, y: 0.627 },
+						{ x: 0.572, y: 0.602 },
+						{ x: 0.465, y: 0.588 },
+						{ x: 0.707, y: 0.47 },
+						{ x: 0.425, y: 0.298 },
+						{ x: 0.582, y: 0.266 },
+					],
+				},
+				{
 					...sharedMarkers["aether-crystal"],
 					locations: [
 						{ x: 0.49, y: 0.719 },
@@ -344,6 +356,10 @@ export const config: MapConfig = {
 					icon: Option.none(),
 					category: "general",
 					locations: [{ x: 0.5, y: 0.5 }],
+				},
+				{
+					...sharedMarkers["mister-peeks"],
+					locations: [{ x: 0.316, y: 0.521 }],
 				},
 				{
 					...sharedMarkers["ammo-cache"],

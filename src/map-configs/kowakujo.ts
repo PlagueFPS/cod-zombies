@@ -163,6 +163,16 @@ export const config: MapConfig = {
 					locations: [{ x: 0.396, y: 0.26 }],
 				},
 				{
+					...sharedMarkers["mister-peeks"],
+					locations: [
+						{ x: 0.289, y: 0.645 },
+						{ x: 0.452, y: 0.805 },
+						{ x: 0.677, y: 0.686 },
+						{ x: 0.666, y: 0.504 },
+						{ x: 0.479, y: 0.48 },
+					],
+				},
+				{
 					...sharedMarkers["ammo-cache"],
 					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
 					locations: [
