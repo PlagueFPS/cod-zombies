@@ -1,4 +1,8 @@
-import type { FieldUpgradesImagePath, IconsImagePath, PerksImagePath } from "@/types/generated/image-paths.gen"
+import type {
+	FieldUpgradesImagePath,
+	IconsImagePath,
+	PerksImagePath,
+} from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
 
 export interface MapMarker {
@@ -93,7 +97,8 @@ export const sharedMarkers: Record<SharedMarkerType, Marker> = {
 		id: "mister-peeks",
 		category: "objectives",
 		title: "Mister Peeks",
-		description: "(Cursed Only) Has a 10% chance to spawn every round for 60 seconds, when shot, grants a Bronze Egg (Tier 1), Silver Egg (Tier 2), or Gold Egg (Tier 3) containing perks, points, salvage, and even Wonder Weapons.",
+		description:
+			"(Cursed Only) Has a 10% chance to spawn every round for 60 seconds, when shot, grants a Bronze Egg (Tier 1), Silver Egg (Tier 2), or Gold Egg (Tier 3) containing perks, points, salvage, and even Wonder Weapons.",
 		icon: Option.some("/field-upgrades/mister-peeks.webp"),
 	},
 	"aether-crystal": {
