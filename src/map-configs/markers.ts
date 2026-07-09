@@ -1,4 +1,8 @@
-import type { IconsImagePath, PerksImagePath } from "@/types/generated/image-paths.gen"
+import type {
+	FieldUpgradesImagePath,
+	IconsImagePath,
+	PerksImagePath,
+} from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
 
 export interface MapMarker {
@@ -13,7 +17,7 @@ export interface MapMarker {
 	/** The category of this marker */
 	category: MarkerCategory
 	/** The icon of this marker */
-	icon: Option.Option<PerksImagePath | IconsImagePath>
+	icon: Option.Option<PerksImagePath | IconsImagePath | FieldUpgradesImagePath>
 	/** The locations of this marker */
 	locations: Location[]
 }
@@ -74,6 +78,7 @@ export const MARKER_TYPES = [
 	"vacuum-seal-device",
 	"loot-bin",
 	"aether-crystal",
+	"mister-peeks",
 ] as const
 
 /** Handlers for mapping markers ids or types to their category */
@@ -88,6 +93,14 @@ export const categoryHandlers = {
 
 /** All static markers that appear on multiple maps/layers */
 export const sharedMarkers: Record<SharedMarkerType, Marker> = {
+	"mister-peeks": {
+		id: "mister-peeks",
+		category: "objectives",
+		title: "Mister Peeks",
+		description:
+			"(Cursed Only) Has a 10% chance to spawn every round for 60 seconds, when shot, grants a Bronze Egg (Tier 1), Silver Egg (Tier 2), or Gold Egg (Tier 3) containing perks, points, salvage, and even Wonder Weapons.",
+		icon: Option.some("/field-upgrades/mister-peeks.webp"),
+	},
 	"aether-crystal": {
 		id: "aether-crystal",
 		category: "objectives",
