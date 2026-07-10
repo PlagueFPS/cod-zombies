@@ -11,6 +11,15 @@ test.describe("curated listing journeys", () => {
 		await expect(page.getByRole("link", { name: /View Guide for/ }).first()).toBeVisible()
 	})
 
+	test("filters main quests from repeated non-json query keys", async ({ page }) => {
+		await page.goto("/main-quests/?game=black-ops-1&game=black-ops-2")
+
+		await expect(page.getByRole("heading", { name: "Main Quests" })).toBeVisible()
+		await expect(page.getByLabel("Black Ops 1")).toBeVisible()
+		await expect(page.getByLabel("Black Ops 2")).toBeVisible()
+		await expect(page.getByRole("link", { name: /View Guide for/ })).toHaveCount(9)
+	})
+
 	test("filters relics through one representative type", async ({ page }) => {
 		await page.goto("/relics/?type=%5B%22grim%22%5D&sort=%22type-asc%22")
 

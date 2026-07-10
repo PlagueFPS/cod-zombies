@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/contexts/theme-provider"
 import { MDX_COMPONENT_QUERY_KEY } from "@/data/queries"
 import { routeTree } from "@/routeTree.gen"
 import { getServerUrl } from "@/utils/request"
+import { parseSearch } from "@/utils/search-params"
 
 /**
  * Removes keys from a search object that would serialize to noise in the URL.
@@ -51,6 +52,7 @@ export function getRouter() {
 		defaultErrorComponent: DefaultError,
 		defaultNotFoundComponent: DefaultNotFound,
 		defaultPreload: "intent",
+		parseSearch,
 		stringifySearch,
 		context: {
 			serverUrl,
