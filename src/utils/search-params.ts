@@ -1,50 +1,38 @@
 import { parseSearchWith } from "@tanstack/react-router"
-import { Schema, SchemaGetter } from "effect"
 
 const jsonParseSearch = parseSearchWith(JSON.parse)
 
-function parseJsonScalarString(value: string): string {
-	try {
-		const parsed: unknown = JSON.parse(value)
-		if (typeof parsed === "string" || typeof parsed === "number" || typeof parsed === "boolean") {
-			return String(parsed)
+function normalizeSearchElement(value: unknown): unknown {
+	if (typeof value === "string") {
+		try {
+			const parsed: unknown = JSON.parse(value)
+			if (typeof parsed === "string" || typeof parsed === "number" || typeof parsed === "boolean") {
+				return String(parsed)
+			}
+		} catch {
+			// Plain string values are valid filter params.
 		}
-	} catch {
-		// Plain string values are valid filter params.
+		return value
 	}
+
+	if (typeof value === "number" || typeof value === "boolean") {
+		return String(value)
+	}
+
 	return value
 }
 
-const SearchParamElementSchema = Schema.Union([
-	Schema.String.pipe(
-		Schema.decode({
-			decode: SchemaGetter.transform(parseJsonScalarString),
-			encode: SchemaGetter.passthrough(),
-		}),
-	),
-	Schema.Number.pipe(
-		Schema.decodeTo(Schema.String, {
-			decode: SchemaGetter.transform(String),
-			encode: SchemaGetter.transform(Number),
-		}),
-	),
-	Schema.Boolean.pipe(
-		Schema.decodeTo(Schema.String, {
-			decode: SchemaGetter.transform(String),
-			encode: SchemaGetter.transform(value => value === "true"),
-		}),
-	),
-	Schema.Unknown,
-])
+function normalizeSearchValue(value: unknown): unknown {
+	if (value === undefined || value === null) {
+		return value
+	}
 
-const SearchParamValueSchema = Schema.Union([
-	Schema.Null,
-	Schema.Undefined,
-	Schema.Array(SearchParamElementSchema),
-	SearchParamElementSchema,
-])
+	if (Array.isArray(value)) {
+		return value.map(element => normalizeSearchElement(element))
+	}
 
-const decodeSearchParamValue = Schema.decodeUnknownSync(SearchParamValueSchema)
+	return normalizeSearchElement(value)
+}
 
 /**
  * Normalizes TanStack Router's parsed query object so multi-value search params
@@ -59,7 +47,7 @@ export function normalizeParsedSearch(search: Record<string, unknown>): Record<s
 	const out: Record<string, unknown> = {}
 
 	for (const key in search) {
-		out[key] = decodeSearchParamValue(search[key])
+		out[key] = normalizeSearchValue(search[key])
 	}
 
 	return out
