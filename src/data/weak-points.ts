@@ -1,4 +1,4 @@
-import { HashMap } from "effect"
+import { Option } from "effect"
 
 export interface WeakPoint {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -10,13 +10,13 @@ export interface WeakPoint {
 }
 
 /** Union type of all weak points */
-export type WeakPointKey = HashMap.HashMap.Key<typeof weakPointsHashMap>
+export type WeakPointKey = Parameters<(typeof WEAK_POINTS)["get"]>[0]
 
 /**
  * Gets a weak point by its key.
  * @param key The key of the weak point.
  */
-export const getWeakPointByKey = (key: WeakPointKey) => HashMap.get(weakPointsHashMap, key)
+export const getWeakPointByKey = (key: WeakPointKey) => Option.fromUndefinedOr(WEAK_POINTS.get(key))
 
 const makeWeakPoint = <T extends string>(
 	identifier: T,
@@ -30,7 +30,7 @@ const makeWeakPoint = <T extends string>(
 	},
 ]
 
-const weakPointsHashMap = HashMap.make(
+const WEAK_POINTS = new Map([
 	makeWeakPoint("head", {
 		title: "Head",
 	}),
@@ -124,4 +124,4 @@ const weakPointsHashMap = HashMap.make(
 	makeWeakPoint("golden-underbelly", {
 		title: "Golden Underbelly",
 	}),
-)
+])

@@ -1,10 +1,10 @@
 import type { GameKey } from "@/data/games"
 import type { GobblegumsImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap, Option } from "effect"
+import { Option } from "effect"
 import { resolveGameVariantOption } from "@/data/registry-helpers"
 
 /** Union of all Gobblegum keys */
-export type GobblegumKey = HashMap.HashMap.Key<typeof gobblegumHashMap>
+export type GobblegumKey = Parameters<(typeof GOBBLEGUMS)["get"]>[0]
 /** Union of all Gobblegum types */
 export type GobblegumType =
 	| "Player-Activated"
@@ -51,7 +51,7 @@ export interface Gobblegum {
  * @param game The game to get the gobblegum variant for.
  */
 export const getGobblegumByKey = (key: GobblegumKey, game?: GameKey): Option.Option<Gobblegum> =>
-	resolveGameVariantOption(HashMap.get(gobblegumHashMap, key), game)
+	resolveGameVariantOption(Option.fromUndefinedOr(GOBBLEGUMS.get(key)), game)
 
 const makeGobblegum = <T extends string>(
 	identifier: T,
@@ -65,7 +65,7 @@ const makeGobblegum = <T extends string>(
 	},
 ]
 
-const gobblegumHashMap = HashMap.make(
+const GOBBLEGUMS = new Map([
 	makeGobblegum("alchemical-antithesis", {
 		title: "Alchemical Antithesis",
 		description:
@@ -413,4 +413,4 @@ const gobblegumHashMap = HashMap.make(
 		image: "/gobblegums/gift-card.webp",
 		variants: Option.none(),
 	}),
-)
+])

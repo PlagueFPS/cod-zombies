@@ -1,6 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { AugmentsImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap, Option } from "effect"
+import { Option } from "effect"
 import { resolveGameVariantOption } from "@/data/registry-helpers"
 
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
@@ -23,7 +23,7 @@ export interface Augment {
 }
 
 /**Union of all keys in the Augment Registry */
-export type AugmentKey = HashMap.HashMap.Key<typeof augmentHashMap>
+export type AugmentKey = Parameters<(typeof AUGMENTS)["get"]>[0]
 /**Tuple to enforce min/max allowed augments */
 export type AugmentTuple = [
 	AugmentKey,
@@ -41,7 +41,7 @@ export type AugmentTuple = [
  * @param game The game to get the augment variant for.
  */
 export const getAugmentByKey = (key: AugmentKey, game?: GameKey): Option.Option<Augment> =>
-	resolveGameVariantOption(HashMap.get(augmentHashMap, key), game)
+	resolveGameVariantOption(Option.fromUndefinedOr(AUGMENTS.get(key)), game)
 
 /** Type helper to ensure type-safe AugmentTuple creation */
 export const makeAugmentTuple = (t: AugmentTuple) => Option.some(t)
@@ -58,7 +58,7 @@ const makeAugment = <T extends string>(
 	},
 ]
 
-const augmentHashMap = HashMap.make(
+const AUGMENTS = new Map([
 	makeAugment("double-jeopardy", {
 		title: "Double Jeopardy",
 		description: "Normal Zombies at low health have a chance to die immediately when shot.",
@@ -2206,4 +2206,4 @@ const augmentHashMap = HashMap.make(
 		image: "/augments/bo7/haste-minor-augment-bo7.webp",
 		variants: Option.none(),
 	}),
-)
+])

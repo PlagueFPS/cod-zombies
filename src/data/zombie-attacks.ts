@@ -1,4 +1,4 @@
-import { HashMap } from "effect"
+import { Option } from "effect"
 
 export interface ZombieAttack {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -14,12 +14,13 @@ export interface ZombieAttack {
 }
 
 /** Union type of all zombie attacks */
-export type ZombieAttackKey = HashMap.HashMap.Key<typeof zombieAttacksHashMap>
+export type ZombieAttackKey = Parameters<(typeof ZOMBIE_ATTACKS)["get"]>[0]
 
 /**
  * Gets a zombie attack by its key.
  */
-export const getZombieAttackByKey = (key: ZombieAttackKey) => HashMap.get(zombieAttacksHashMap, key)
+export const getZombieAttackByKey = (key: ZombieAttackKey) =>
+	Option.fromUndefinedOr(ZOMBIE_ATTACKS.get(key))
 
 const makeZombieAttack = <T extends string>(
 	identifier: T,
@@ -33,7 +34,7 @@ const makeZombieAttack = <T extends string>(
 	},
 ]
 
-const zombieAttacksHashMap = HashMap.make(
+const ZOMBIE_ATTACKS = new Map([
 	makeZombieAttack("melee-swing", {
 		title: "Melee Swing",
 		range: "Short",
@@ -664,4 +665,4 @@ const zombieAttacksHashMap = HashMap.make(
 		description:
 			"Charges a powerful fire beam that destroys a narrow path, with a delayed explosion along the entire path when the attack is done.",
 	}),
-)
+])
