@@ -104,6 +104,7 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 			{ property: "twitter:description", content: loaderData?.description },
 			{ property: "twitter:card", content: "summary_large_image" },
 			{ property: "twitter:image", content: loaderData?.opengraphUrl },
+			{ property: "twitter:url", content: `${loaderData?.serverUrl}/bestiary/${params.zombieId}` },
 		],
 	}),
 	notFoundComponent: ZombieNotFound,

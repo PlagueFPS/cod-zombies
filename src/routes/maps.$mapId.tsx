@@ -109,6 +109,7 @@ export const Route = createFileRoute("/maps/$mapId")({
 			{ property: "twitter:title", content: loaderData?.metadata.title },
 			{ property: "twitter:description", content: loaderData?.metadata.description },
 			{ property: "twitter:card", content: "summary_large_image" },
+			{ property: "twitter:url", content: `${loaderData?.serverUrl}/maps/${params.mapId}.webp` },
 			{
 				property: "twitter:image",
 				content: `${loaderData?.serverUrl}/maps/${params.mapId}.webp`,
