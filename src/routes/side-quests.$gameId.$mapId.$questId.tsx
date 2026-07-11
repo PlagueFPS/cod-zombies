@@ -76,6 +76,11 @@ export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 			{ property: "twitter:title", content: loaderData?.title },
 			{ property: "twitter:description", content: loaderData?.description },
 			{ property: "twitter:image", content: loaderData?.opengraphUrl },
+			{
+				property: "twitter:url",
+				content: `${loaderData?.serverUrl}/side-quests/${params.gameId}/${params.mapId}/${params.questId}`,
+			},
+			{ property: "twitter:card", content: "summary_large_image" },
 		],
 	}),
 	notFoundComponent: SideQuestNotFound,

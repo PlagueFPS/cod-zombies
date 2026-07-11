@@ -80,6 +80,11 @@ export const Route = createFileRoute("/relics/$gameId/$relicId")({
 			{ property: "twitter:title", content: loaderData?.title },
 			{ property: "twitter:description", content: loaderData?.description },
 			{ property: "twitter:image", content: loaderData?.opengraphUrl },
+			{
+				property: "twitter:url",
+				content: `${loaderData?.serverUrl}/relics/${params.gameId}/${params.relicId}`,
+			},
+			{ property: "twitter:card", content: "summary_large_image" },
 		],
 	}),
 	notFoundComponent: RelicNotFound,

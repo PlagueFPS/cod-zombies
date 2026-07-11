@@ -73,6 +73,11 @@ export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 			{ property: "twitter:title", content: loaderData?.title },
 			{ property: "twitter:description", content: loaderData?.description },
 			{ property: "twitter:image", content: loaderData?.opengraphUrl },
+			{
+				property: "twitter:url",
+				content: `${loaderData?.serverUrl}/main-quests/${params.gameId}/${params.mapId}`,
+			},
+			{ property: "twitter:card", content: "summary_large_image" },
 		],
 	}),
 	notFoundComponent: MainQuestNotFound,
