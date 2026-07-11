@@ -1,6 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { AmmoModsImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap, Option } from "effect"
+import { Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
 import { resolveGameVariantOption } from "@/data/registry-helpers"
 
@@ -25,7 +25,7 @@ export interface AmmoMod {
 }
 
 /** Union type of all ammo mod keys */
-export type AmmoModKey = HashMap.HashMap.Key<typeof ammoModHashMap>
+export type AmmoModKey = Parameters<(typeof AMMO_MODS)["get"]>[0]
 
 /**
  * Gets an ammo mod by its key.
@@ -33,7 +33,7 @@ export type AmmoModKey = HashMap.HashMap.Key<typeof ammoModHashMap>
  * @param game The game to get the ammo mod variant for.
  */
 export const getAmmoModByKey = (key: AmmoModKey, game?: GameKey): Option.Option<AmmoMod> =>
-	resolveGameVariantOption(HashMap.get(ammoModHashMap, key), game)
+	resolveGameVariantOption(Option.fromUndefinedOr(AMMO_MODS.get(key)), game)
 
 const makeAmmoMod = <T extends string>(
 	identifier: T,
@@ -47,7 +47,7 @@ const makeAmmoMod = <T extends string>(
 	},
 ]
 
-const ammoModHashMap = HashMap.make(
+const AMMO_MODS = new Map([
 	makeAmmoMod("fire-bomb", {
 		title: "Fire Bomb",
 		description:
@@ -284,4 +284,4 @@ const ammoModHashMap = HashMap.make(
 		]),
 		variants: Option.none(),
 	}),
-)
+])

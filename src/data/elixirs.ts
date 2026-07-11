@@ -1,5 +1,5 @@
 import type { ElixirsImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap } from "effect"
+import { Option } from "effect"
 
 export interface Elixir {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -19,13 +19,13 @@ export interface Elixir {
 /** Union of all Elixir rarities */
 export type ElixirRarity = Elixir["rarity"]
 /** Union of all Elixir keys */
-export type ElixirKey = HashMap.HashMap.Key<typeof elixirHashMap>
+export type ElixirKey = Parameters<(typeof ELIXIRS)["get"]>[0]
 
 /**
  * Gets an Elixir by its key.
  * @param key The key of the Elixir.
  */
-export const getElixirByKey = (key: ElixirKey) => HashMap.get(elixirHashMap, key)
+export const getElixirByKey = (key: ElixirKey) => Option.fromUndefinedOr(ELIXIRS.get(key))
 
 const makeElixir = <T extends string>(
 	identifier: T,
@@ -39,7 +39,7 @@ const makeElixir = <T extends string>(
 	},
 ]
 
-const elixirHashMap = HashMap.make(
+const ELIXIRS = new Map([
 	makeElixir("anywhere-but-here", {
 		title: "Anywhere But Here!",
 		description:
@@ -193,4 +193,4 @@ const elixirHashMap = HashMap.make(
 		rarity: "Epic",
 		image: "/elixirs/refresh-mint-elixir.webp",
 	}),
-)
+])

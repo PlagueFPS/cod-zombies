@@ -1,6 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { FieldUpgradesImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap, Option } from "effect"
+import { Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
 import { resolveGameVariantOption } from "@/data/registry-helpers"
 
@@ -24,7 +24,7 @@ export interface FieldUpgrade {
 }
 
 /** Union type of all field upgrade keys */
-export type FieldUpgradeKey = HashMap.HashMap.Key<typeof fieldUpgradeHashMap>
+export type FieldUpgradeKey = Parameters<(typeof FIELD_UPGRADES)["get"]>[0]
 
 /** Gets a field upgrade by its key.
  * @param key The key of the field upgrade.
@@ -34,7 +34,7 @@ export const getFieldUpgradeByKey = (
 	key: FieldUpgradeKey,
 	game?: GameKey,
 ): Option.Option<FieldUpgrade> =>
-	resolveGameVariantOption(HashMap.get(fieldUpgradeHashMap, key), game)
+	resolveGameVariantOption(Option.fromUndefinedOr(FIELD_UPGRADES.get(key)), game)
 
 const makeFieldUpgrade = <T extends string>(
 	identifier: T,
@@ -48,7 +48,7 @@ const makeFieldUpgrade = <T extends string>(
 	},
 ]
 
-const fieldUpgradeHashMap = HashMap.make(
+const FIELD_UPGRADES = new Map([
 	makeFieldUpgrade("ring-of-fire", {
 		title: "Ring of Fire",
 		description:
@@ -268,4 +268,4 @@ const fieldUpgradeHashMap = HashMap.make(
 		]),
 		variants: Option.none(),
 	}),
-)
+])

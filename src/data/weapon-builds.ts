@@ -1,5 +1,5 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
-import { HashMap, Option } from "effect"
+import { Option } from "effect"
 
 export interface Attachment {
 	/** Unique identifier for the attachment */
@@ -36,14 +36,15 @@ export interface WeaponBuild {
 }
 
 /** Union type of all weapon builds */
-export type WeaponBuildKey = HashMap.HashMap.Key<typeof weaponBuildHashMap>
+export type WeaponBuildKey = Parameters<(typeof WEAPON_BUILDS)["get"]>[0]
 
 /**
  * Gets a weapon build by its key.
  * @param key The key of the weapon build.
  * @returns The weapon build.
  */
-export const getWeaponBuildByKey = (key: WeaponBuildKey) => HashMap.get(weaponBuildHashMap, key)
+export const getWeaponBuildByKey = (key: WeaponBuildKey) =>
+	Option.fromUndefinedOr(WEAPON_BUILDS.get(key))
 
 const makeWeaponBuild = <T extends string>(
 	id: T,
@@ -163,7 +164,7 @@ const attachmentsRegistry = {
 	},
 } satisfies Record<string, Attachment>
 
-const weaponBuildHashMap = HashMap.make(
+const WEAPON_BUILDS = new Map([
 	makeWeaponBuild("maelstrom-reckoning", {
 		title: "Maelstrom",
 		image: "/weapons/maelstrom.webp",
@@ -292,4 +293,4 @@ const weaponBuildHashMap = HashMap.make(
 		attachments: Option.none(),
 		buildCode: Option.some("R03-5XMTQ-U1SU5-1"),
 	}),
-)
+])
