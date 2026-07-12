@@ -57,6 +57,26 @@ describe("parseSearch", () => {
 			sort: "oldest",
 		})
 	})
+
+	test("preserves numeric page params for Schema.Int validation", () => {
+		const parsed = parseSearch("page=2")
+		expect(parsed).toEqual({ page: 2 })
+
+		const validated = expectExitSuccess(decodeMainQuestSearchParams(parsed))
+		expect(validated.page).toBe(2)
+	})
+
+	test("preserves page alongside string-coerced filter arrays", () => {
+		const parsed = parseSearch("game=0&game=1&page=3")
+		expect(parsed).toEqual({
+			game: ["0", "1"],
+			page: 3,
+		})
+
+		const validated = expectExitSuccess(decodeMainQuestSearchParams(parsed))
+		expect(validated.game).toEqual(["0", "1"])
+		expect(validated.page).toBe(3)
+	})
 })
 
 describe("normalizeParsedSearch", () => {
@@ -67,6 +87,18 @@ describe("normalizeParsedSearch", () => {
 			}),
 		).toEqual({
 			game: ["0", "1"],
+		})
+	})
+
+	test("does not stringify scalar page numbers", () => {
+		expect(
+			normalizeParsedSearch({
+				page: 2,
+				game: ["black-ops-1"],
+			}),
+		).toEqual({
+			page: 2,
+			game: ["black-ops-1"],
 		})
 	})
 })
