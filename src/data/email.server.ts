@@ -15,14 +15,14 @@ class ContactExistsError extends Schema.TaggedErrorClass<ContactExistsError>()(
 	"ContactExistsError",
 	{
 		message: Schema.String,
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 class ContactNotFoundError extends Schema.TaggedErrorClass<ContactNotFoundError>()(
 	"ContactNotFoundError",
 	{
 		message: Schema.String,
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 

@@ -16,7 +16,7 @@ export class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimiz
 	"ImageOptimizationError",
 	{
 		message: Schema.String,
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 

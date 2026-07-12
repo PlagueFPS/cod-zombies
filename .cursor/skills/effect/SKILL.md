@@ -74,14 +74,14 @@ When the callback must return an `Effect`, yield the error inside a generator or
 
 ## Defining tagged errors
 
-Use `Schema.TaggedErrorClass` with a `_tag`, `message`, and optional `cause`:
+Use `Schema.TaggedErrorClass` with a `cause` and optional `message` if the error is user-facing:
 
 ```typescript
 export class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
   "ImageOptimizationError",
   {
     message: Schema.String,
-    cause: Schema.Unknown,
+    cause: Schema.Defect(),
   },
 ) {}
 ```
