@@ -3,7 +3,7 @@ import { Config, Context, Effect, Layer, Schema } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpBody } from "effect/unstable/http"
 
 class CreateIssueError extends Schema.TaggedErrorClass<CreateIssueError>()("CreateIssueError", {
-	cause: Schema.Unknown,
+	cause: Schema.Defect(),
 }) {}
 
 export class IssueTracker extends Context.Service<IssueTracker>()("lib/services/issue-tracker", {

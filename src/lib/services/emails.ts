@@ -15,7 +15,7 @@ import {
 
 class ResendError extends Schema.TaggedErrorClass<ResendError>()("ResendError", {
 	message: Schema.String,
-	cause: Schema.Unknown,
+	cause: Schema.Defect(),
 }) {}
 
 export class Email extends Context.Service<Email>()("lib/services/emails", {

@@ -56,7 +56,7 @@ const manifestPathFromEnv = () =>
 export class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>()(
 	"ImageGenerationError",
 	{
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 

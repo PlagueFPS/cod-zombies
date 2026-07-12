@@ -9,7 +9,7 @@ import { decodeMapConfigModule } from "@/utils/validation-schemas"
 class ConfigNotFoundError extends Schema.TaggedErrorClass<ConfigNotFoundError>()(
 	"ConfigNotFoundError",
 	{
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 

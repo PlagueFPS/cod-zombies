@@ -10,21 +10,21 @@ class TokenExpirationError extends Schema.TaggedErrorClass<TokenExpirationError>
 	"TokenExpirationError",
 	{
 		message: Schema.String,
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 class TokenGenerationError extends Schema.TaggedErrorClass<TokenGenerationError>()(
 	"TokenGenerationError",
 	{
 		message: Schema.String,
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 class TokenVerificationError extends Schema.TaggedErrorClass<TokenVerificationError>()(
 	"TokenVerificationError",
 	{
 		message: Schema.String,
-		cause: Schema.Unknown,
+		cause: Schema.Defect(),
 	},
 ) {}
 
