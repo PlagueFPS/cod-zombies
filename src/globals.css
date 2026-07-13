@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@fontsource-variable/geist/wght.css";
-@import "@fontsource-variable/geist-mono/wght.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -232,7 +231,6 @@
 	--color-major-augment-foreground: var(--major-augment-foreground);
 	--color-blockquote-foreground: var(--blockquote-foreground);
 
-	--font-mono: "Geist Mono Variable", monospace;
 	--font-sans: "Geist Variable", sans-serif;
 
 	--radius-lg: var(--radius);

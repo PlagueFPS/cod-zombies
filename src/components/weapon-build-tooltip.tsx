@@ -84,7 +84,7 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }
 						<div className="mb-5">
 							<div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 p-3 backdrop-blur-sm">
 								<span className="font-medium">Build Code:</span>
-								<code className="flex-1 rounded-sm bg-input/30 p-2 font-mono text-sm font-semibold text-primary">
+								<code className="flex-1 rounded-sm bg-input/30 p-2 text-sm font-semibold text-primary">
 									{buildCode}
 								</code>
 								<Button

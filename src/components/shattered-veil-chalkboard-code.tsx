@@ -68,7 +68,7 @@ export default function ShatteredVeilCode() {
 						<div className="border-t pt-4">
 							<p className="mb-2 text-sm text-foreground/90">Your Code:</p>
 							<div className="rounded-lg bg-muted p-4 dark:bg-input/30">
-								<code className="font-mono text-lg font-semibold text-foreground">
+								<code className="text-lg font-semibold text-foreground">
 									{chalkboardCodes[letterGroup][codeWord]}
 								</code>
 							</div>

@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 import { scan } from "react-scan"
-import { IN_DEVELOPMENT } from "@/utils/constants"
 
+/** Loaded only in development via `import.meta.env.DEV` dynamic import from `__root`. */
 export default function ReactScan() {
 	useEffect(() => {
 		scan({
-			enabled: IN_DEVELOPMENT,
+			enabled: true,
 			showFPS: true,
 			showToolbar: true,
 			showNotificationCount: true,
