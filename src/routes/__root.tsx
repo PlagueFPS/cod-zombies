@@ -9,12 +9,15 @@ import {
 	createRootRouteWithContext,
 } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import { lazy, Suspense } from "react"
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
-import ReactScan from "@/components/react-scan"
 import { Toaster } from "@/components/ui/sonner"
 import { IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
 import appCss from "@/globals.css?url"
+
+/** Dev-only: dynamic import so `react-scan` is omitted from production bundles. */
+const ReactScan = import.meta.env.DEV ? lazy(() => import("../components/react-scan")) : null
 
 interface RouterContext {
 	serverUrl: string
@@ -42,7 +45,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 		],
 		scripts: [
 			{
+				async: true,
 				src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2572200153117332",
+				crossOrigin: "anonymous",
 			},
 		],
 	}),
@@ -75,22 +80,28 @@ function RootLayout() {
 				<Footer />
 				<Toaster richColors position="top-center" closeButton />
 				<Scripts />
-				<TanStackDevtools
-					config={{ position: "bottom-left" }}
-					eventBusConfig={{ connectToServerBus: true }}
-					plugins={[
-						{
-							name: "TanStack Router",
-							render: <TanStackRouterDevtoolsPanel />,
-						},
-						{
-							name: "TanStack Query",
-							render: <ReactQueryDevtools />,
-						},
-					]}
-				/>
+				{IN_DEVELOPMENT && (
+					<TanStackDevtools
+						config={{ position: "bottom-left" }}
+						eventBusConfig={{ connectToServerBus: true }}
+						plugins={[
+							{
+								name: "TanStack Router",
+								render: <TanStackRouterDevtoolsPanel />,
+							},
+							{
+								name: "TanStack Query",
+								render: <ReactQueryDevtools />,
+							},
+						]}
+					/>
+				)}
 			</body>
-			{IN_DEVELOPMENT && <ReactScan />}
+			{ReactScan ? (
+				<Suspense fallback={null}>
+					<ReactScan />
+				</Suspense>
+			) : null}
 		</html>
 	)
 }

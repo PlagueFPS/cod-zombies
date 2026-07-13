@@ -28,7 +28,7 @@ interface ShortcutWithShortcuts {
 type ShortcutProps = ShortcutWithChildren | ShortcutWithShortcuts
 
 const shortcutVariants = cva(
-	"inline-flex items-center justify-center font-mono font-medium rounded border transition-colors",
+	"inline-flex items-center justify-center font-medium rounded border transition-colors",
 	{
 		variants: {
 			variant: {

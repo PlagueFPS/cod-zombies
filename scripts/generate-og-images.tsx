@@ -39,6 +39,10 @@ import {
 	type OpengraphKind,
 } from "@/utils/validation-schemas"
 import stylesheet from "@/globals.css?inline"
+import geistMonoCss from "@fontsource-variable/geist-mono/wght.css?inline"
+
+/** App CSS + Geist Mono only for OG renders (Mono is not loaded on the site). */
+const ogStylesheets = [stylesheet, geistMonoCss]
 
 const OPENGRAPH_KINDS = [
 	"main-quests",
@@ -74,6 +78,8 @@ const CARD_SURFACE = "oklch(0.205 0 0)"
 const BORDER = "oklch(1 0 0 / 10%)"
 /** Zombie backdrop color */
 const Z_BG = "oklch(0.145 0 0)"
+/** Loaded only via `ogStylesheets` — not part of the site CSS. */
+const OG_FONT_MONO = "Geist Mono Variable, ui-monospace, monospace"
 
 /** ISO `YYYY-MM-DD` calendar day → long date in en-US; UTC avoids shifting the printed day by local TZ. */
 function formatMapReleaseDay(isoDateOnly: string): string {
@@ -366,7 +372,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				stylesheets: [stylesheet],
+				stylesheets: ogStylesheets,
 				persistentImages: [
 					{ data: mapImage, src: `${map.id}-image` },
 					{ data: siteLogo, src: "site-logo" },
@@ -435,7 +441,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				stylesheets: [stylesheet],
+				stylesheets: ogStylesheets,
 				persistentImages: [
 					{ data: mapImage, src: `${map.id}-image` },
 					{ data: siteLogo, src: "site-logo" },
@@ -520,7 +526,7 @@ export const generateZombieImage = Effect.fnUntraced(
 					tw="text-lg font-bold uppercase tracking-[0.07em] shrink-0"
 					style={{
 						color: MUTED_FG,
-						fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+						fontFamily: OG_FONT_MONO,
 					}}
 				>
 					Attacks
@@ -529,7 +535,7 @@ export const generateZombieImage = Effect.fnUntraced(
 					tw="text-lg font-semibold leading-snug break-words min-w-0"
 					style={{
 						color: typeMetaColor,
-						fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+						fontFamily: OG_FONT_MONO,
 					}}
 				>
 					{attackStr}
@@ -675,7 +681,7 @@ export const generateZombieImage = Effect.fnUntraced(
 							<p
 								tw="text-lg font-semibold uppercase tracking-[0.07em] mt-1 shrink-0 flex flex-row flex-wrap"
 								style={{
-									fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+									fontFamily: OG_FONT_MONO,
 								}}
 							>
 								<span style={{ color: MUTED_FG }}>First appearance · </span>
@@ -711,7 +717,7 @@ export const generateZombieImage = Effect.fnUntraced(
 														tw="text-lg font-bold uppercase tracking-[0.07em] shrink-0"
 														style={{
 															color: MUTED_FG,
-															fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+															fontFamily: OG_FONT_MONO,
 														}}
 													>
 														Weak points
@@ -720,7 +726,7 @@ export const generateZombieImage = Effect.fnUntraced(
 														tw="text-lg font-semibold leading-snug break-words min-w-0"
 														style={{
 															color: typeMetaColor,
-															fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+															fontFamily: OG_FONT_MONO,
 														}}
 													>
 														{weakStr}
@@ -740,7 +746,7 @@ export const generateZombieImage = Effect.fnUntraced(
 														tw="text-lg font-bold uppercase tracking-[0.07em] shrink-0"
 														style={{
 															color: MUTED_FG,
-															fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+															fontFamily: OG_FONT_MONO,
 														}}
 													>
 														Elemental weaknesses
@@ -767,7 +773,7 @@ export const generateZombieImage = Effect.fnUntraced(
 																	tw="text-lg font-semibold leading-snug"
 																	style={{
 																		color: typeMetaColor,
-																		fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+																		fontFamily: OG_FONT_MONO,
 																	}}
 																>
 																	—
@@ -790,7 +796,7 @@ export const generateZombieImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				stylesheets: [stylesheet],
+				stylesheets: ogStylesheets,
 				persistentImages: [
 					{ data: zombieImage, src: `${zombie.id}-portrait` },
 					{ data: siteLogo, src: "site-logo" },
@@ -957,7 +963,7 @@ export const generateRelicImage = Effect.fnUntraced(
 							<p
 								tw="text-lg font-semibold uppercase tracking-[0.07em] mt-1 shrink-0 flex flex-row flex-wrap"
 								style={{
-									fontFamily: "Geist Mono Variable, ui-monospace, monospace",
+									fontFamily: OG_FONT_MONO,
 								}}
 							>
 								<span style={{ color: MUTED_FG }}>Map · </span>
@@ -987,7 +993,7 @@ export const generateRelicImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				stylesheets: [stylesheet],
+				stylesheets: ogStylesheets,
 				persistentImages: [
 					{ data: relicImage, src: `${relic.id}-portrait` },
 					{ data: siteLogo, src: "site-logo" },
