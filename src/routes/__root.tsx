@@ -25,7 +25,8 @@ interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-	head: () => ({
+	loader: ({ context }) => ({ serverUrl: context.serverUrl }),
+	head: ({ loaderData }) => ({
 		meta: [
 			{ charSet: "utf-8" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1.0" },
@@ -38,6 +39,19 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			{ name: "category", content: "gaming" },
 			{ property: "og:title", content: SITE_TITLE },
 			{ property: "og:description", content: SITE_DESCRIPTION },
+			{ property: "og:url", content: loaderData?.serverUrl },
+			{ property: "og:image", content: `${loaderData?.serverUrl}/opengraph-image.png` },
+			{ property: "og:image:height", content: "1200" },
+			{ property: "og:image:width", content: "630" },
+			{ property: "og:image:type", content: "image/png" },
+			{ property: "og:type", content: "website" },
+			{ property: "og:locale", content: "en_US" },
+			{ property: "og:site_name", content: SITE_TITLE },
+			{ property: "og:email", content: "contact@codzombiesguides.com" },
+			{ property: "twitter:title", content: SITE_TITLE },
+			{ property: "twitter:description", content: SITE_DESCRIPTION },
+			{ property: "twitter:card", content: "summary_large_image" },
+			{ property: "twitter:image", content: `${loaderData?.serverUrl}/opengraph-image.png` },
 		],
 		links: [
 			{ rel: "stylesheet", href: appCss },
