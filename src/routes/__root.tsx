@@ -17,7 +17,7 @@ import { IN_DEVELOPMENT, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/constants"
 import appCss from "@/globals.css?url"
 
 /** Dev-only: dynamic import so `react-scan` is omitted from production bundles. */
-const ReactScan = import.meta.env.DEV ? lazy(() => import("@/components/react-scan")) : null
+const ReactScan = import.meta.env.DEV ? lazy(() => import("../components/react-scan")) : null
 
 interface RouterContext {
 	serverUrl: string
