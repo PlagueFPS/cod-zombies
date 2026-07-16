@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import AmmoModTooltip from "@/components/ammo-mod-tooltip"
 import { Breadcrumbs, type Link } from "@/components/breadcrumbs"
+import { CardImageGlow } from "@/components/card-image-glow"
 import { ComingSoonBadge, NewBadge, RangeBadge, TypeBadge } from "@/components/custom-badges"
 import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
@@ -174,17 +175,7 @@ function ZombieInfo() {
 				<CardContent>
 					<section className="grid grid-cols-1 gap-6 md:grid-cols-3">
 						<div className="relative flex flex-col items-center">
-							<div className="pointer-events-none absolute inset-0 mx-auto hidden w-full opacity-35 blur-3xl dark:block">
-								<FeaturedImage
-									featuredImage={zombie.image}
-									alt=""
-									width={422}
-									height={422}
-									sizes="422px"
-									loading="eager"
-									className="mb-4 aspect-square w-full rounded-lg object-cover object-top"
-								/>
-							</div>
+							<CardImageGlow src={zombie.image} className="opacity-35 blur-3xl" />
 							<FeaturedImage
 								featuredImage={zombie.image}
 								alt={`${zombie.title} image`}
@@ -193,6 +184,7 @@ function ZombieInfo() {
 								sizes="422px"
 								preload
 								loading="eager"
+								fetchPriority="high"
 								className="mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none"
 							/>
 							<div className="w-full space-y-3">
@@ -450,16 +442,7 @@ function PrevOrNextZombieCard({ zombie, prev }: PrevOrNextZombieCardProps) {
 						{firstAppearedIn.title}
 					</Badge>
 				</div>
-				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
-					<FeaturedImage
-						featuredImage={zombie.image}
-						alt=""
-						width={384}
-						height={176}
-						sizes="(max-width: 1280px) 320px, 384px"
-						className="scale-110"
-					/>
-				</div>
+				<CardImageGlow src={zombie.image} className="scale-110 opacity-35" />
 				<div className="relative z-20 flex h-full w-full max-w-sm items-center justify-center overflow-hidden rounded-lg">
 					<FeaturedImage
 						featuredImage={zombie.image}
