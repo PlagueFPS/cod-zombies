@@ -1,4 +1,5 @@
 import "leaflet/dist/leaflet.css"
+import "@/styles/leaflet-overrides.css"
 import type { Location, MapMarker } from "@/map-configs/markers"
 import { Option } from "effect"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"

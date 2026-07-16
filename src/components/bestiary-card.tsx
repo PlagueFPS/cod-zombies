@@ -1,6 +1,7 @@
 import type { Zombie } from "@/data/zombies"
 import type { PreviewCard } from "@/types/preview-card"
 import { Array as Arr, Option } from "effect"
+import { CardImageGlow } from "@/components/card-image-glow"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/custom-badges"
 import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
@@ -13,7 +14,7 @@ interface IBestiaryCard extends PreviewCard {
 	zombie: Omit<Zombie, "combatStrategy">
 }
 
-export function BestiaryCard({ zombie, priority }: IBestiaryCard) {
+export function BestiaryCard({ zombie, priority, fetchPriority }: IBestiaryCard) {
 	const alt = `${zombie.title} Image`
 	const map = Arr.head(zombie.maps).pipe(
 		Option.flatMap(map => getMapByKey(map)),
@@ -59,17 +60,7 @@ export function BestiaryCard({ zombie, priority }: IBestiaryCard) {
 							{map.title}
 						</Badge>
 					</div>
-					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
-						<FeaturedImage
-							featuredImage={zombie.image}
-							alt=""
-							width={272}
-							height={176}
-							sizes="272px"
-							loading={priority ? "eager" : "lazy"}
-							className="aspect-square scale-150"
-						/>
-					</div>
+					<CardImageGlow src={zombie.image} className="scale-150" />
 					<CardHeader className="flex flex-col gap-2">
 						<div className="relative size-full overflow-hidden">
 							<FeaturedImage
@@ -78,6 +69,7 @@ export function BestiaryCard({ zombie, priority }: IBestiaryCard) {
 								width={272}
 								height={176}
 								loading={priority ? "eager" : "lazy"}
+								fetchPriority={fetchPriority}
 								sizes="272px"
 								className="h-44 rounded-md object-cover object-top"
 							/>

@@ -19,9 +19,12 @@ export function FeaturedImage({
 	description,
 	className,
 	containerClassName,
+	loading = "lazy",
 	...rest
 }: FeaturedImageProps) {
 	const { imageLoaded, imageErrored, setImageLoaded, setImageErrored } = useImageState()
+	/** Eager images are LCP candidates — avoid opacity-0 / fade which delay paint. */
+	const isLcpCandidate = loading === "eager"
 
 	return (
 		<figure
@@ -30,19 +33,23 @@ export function FeaturedImage({
 				containerClassName,
 			)}
 		>
-			{!imageLoaded && !imageErrored ? <ImageLoader className="border" /> : null}
+			{!isLcpCandidate && !imageLoaded && !imageErrored ? <ImageLoader className="border" /> : null}
 			{!imageErrored ? (
 				<Image
 					{...rest}
+					loading={loading}
 					src={featuredImage}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}
 					className={cn(
-						"flex aspect-video h-full w-full items-center justify-center opacity-0",
+						"flex aspect-video h-full w-full items-center justify-center",
 						className,
-						{
-							"animate-fade-in opacity-100": imageLoaded,
-						},
+						isLcpCandidate
+							? "opacity-100"
+							: {
+									"opacity-0": !imageLoaded,
+									"animate-fade-in opacity-100": imageLoaded,
+								},
 					)}
 				/>
 			) : null}

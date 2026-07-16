@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource-variable/geist/wght.css";
+
+/*
+ * English-first site: ship only the Latin variable face on the critical path.
+ * Other subsets from `@fontsource-variable/geist/wght.css` were unused payload.
+ */
+@font-face {
+	font-family: "Geist Variable";
+	font-style: normal;
+	font-display: swap;
+	font-weight: 100 900;
+	src: url("@fontsource-variable/geist/files/geist-latin-wght-normal.woff2")
+		format("woff2-variations");
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -117,70 +132,6 @@
 		transition-property: all;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 		transition-duration: 150ms;
-	}
-
-	.leaflet-container,
-	.leaflet-container * {
-		font-family: var(--font-geist) !important;
-	}
-	.custom-marker-container {
-		background: transparent !important;
-		border: none !important;
-	}
-
-	.custom-popup .leaflet-popup-content-wrapper {
-		background-color: var(--color-background) !important;
-		border-radius: var(--radius-md);
-		border: 2px solid var(--color-border);
-		width: 24rem !important;
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-	}
-
-	.custom-popup .leaflet-popup-tip {
-		background: var(--color-background) !important;
-		border: 2px solid var(--color-border);
-	}
-
-	.custom-popup .leaflet-popup-close-button {
-		color: var(--color-muted-foreground) !important;
-	}
-
-	.custom-popup.general-popup .leaflet-popup-content-wrapper {
-		background: var(--background-image-gobblegum-rare) !important;
-		background-color: var(--color-background) !important;
-	}
-	.custom-popup.equipment-popup .leaflet-popup-content-wrapper {
-		background: var(--background-image-equipment) !important;
-		background-color: var(--color-background) !important;
-	}
-	.custom-popup.upgrades-popup .leaflet-popup-content-wrapper {
-		background: var(--background-image-gobblegum-immediate) !important;
-		background-color: var(--color-background) !important;
-	}
-	.custom-popup.objectives-popup .leaflet-popup-content-wrapper {
-		background: var(--background-image-objectives) !important;
-		background-color: var(--color-background) !important;
-	}
-	.custom-popup.transportation-popup .leaflet-popup-content-wrapper {
-		background: var(--background-image-gobblegum-time-based) !important;
-		background-color: var(--color-background) !important;
-	}
-	.custom-popup.intel-popup .leaflet-popup-content-wrapper {
-		background: var(--background-image-gobblegum-player-activated) !important;
-		background-color: var(--color-background) !important;
-	}
-
-	.leaflet-div-icon {
-		background-color: transparent !important;
-		border: none !important;
-	}
-
-	.leaflet-pane {
-		z-index: 49 !important;
 	}
 
 	.lty-thumbnail {

@@ -213,6 +213,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 				sizes={imgAttrs.sizes}
 				srcSet={imgAttrs.srcSet}
 				src={imgAttrs.src}
+				fetchPriority={fetchPriority}
 				ref={ref}
 				onLoad={event => {
 					const img = event.currentTarget as ImgElementWithDataProp
