@@ -1,4 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query"
+import geistLatinWoff2 from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import {
@@ -10,6 +11,7 @@ import {
 } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 import { lazy, Suspense } from "react"
+import { AdSenseLoader } from "@/components/adsense-loader"
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
 import { Toaster } from "@/components/ui/sonner"
@@ -54,15 +56,15 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			{ property: "twitter:image", content: `${loaderData?.serverUrl}/opengraph-image.png` },
 		],
 		links: [
-			{ rel: "stylesheet", href: appCss },
-			{ rel: "icon", href: "/logo.png" },
-		],
-		scripts: [
 			{
-				async: true,
-				src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2572200153117332",
+				rel: "preload",
+				href: geistLatinWoff2,
+				as: "font",
+				type: "font/woff2",
 				crossOrigin: "anonymous",
 			},
+			{ rel: "stylesheet", href: appCss },
+			{ rel: "icon", href: "/logo.png" },
 		],
 	}),
 	shellComponent: RootLayout,
@@ -93,6 +95,7 @@ function RootLayout() {
 				</main>
 				<Footer />
 				<Toaster richColors position="top-center" closeButton />
+				<AdSenseLoader />
 				<Scripts />
 				{IN_DEVELOPMENT && (
 					<TanStackDevtools

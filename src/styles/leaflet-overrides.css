@@ -1,0 +1,71 @@
+/* Map-only Leaflet theme overrides — keep out of the global critical CSS. */
+
+.leaflet-container,
+.leaflet-container * {
+	font-family: var(--font-geist) !important;
+}
+
+.custom-marker-container {
+	background: transparent !important;
+	border: none !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+	background-color: var(--color-background) !important;
+	border-radius: var(--radius-md);
+	border: 2px solid var(--color-border);
+	width: 24rem !important;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.custom-popup .leaflet-popup-tip {
+	background: var(--color-background) !important;
+	border: 2px solid var(--color-border);
+}
+
+.custom-popup .leaflet-popup-close-button {
+	color: var(--color-muted-foreground) !important;
+}
+
+.custom-popup.general-popup .leaflet-popup-content-wrapper {
+	background: var(--background-image-gobblegum-rare) !important;
+	background-color: var(--color-background) !important;
+}
+
+.custom-popup.equipment-popup .leaflet-popup-content-wrapper {
+	background: var(--background-image-equipment) !important;
+	background-color: var(--color-background) !important;
+}
+
+.custom-popup.upgrades-popup .leaflet-popup-content-wrapper {
+	background: var(--background-image-gobblegum-immediate) !important;
+	background-color: var(--color-background) !important;
+}
+
+.custom-popup.objectives-popup .leaflet-popup-content-wrapper {
+	background: var(--background-image-objectives) !important;
+	background-color: var(--color-background) !important;
+}
+
+.custom-popup.transportation-popup .leaflet-popup-content-wrapper {
+	background: var(--background-image-gobblegum-time-based) !important;
+	background-color: var(--color-background) !important;
+}
+
+.custom-popup.intel-popup .leaflet-popup-content-wrapper {
+	background: var(--background-image-gobblegum-player-activated) !important;
+	background-color: var(--color-background) !important;
+}
+
+.leaflet-div-icon {
+	background-color: transparent !important;
+	border: none !important;
+}
+
+.leaflet-pane {
+	z-index: 49 !important;
+}

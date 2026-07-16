@@ -16,8 +16,15 @@ interface HomeQuestPreviewGridProps {
 export function HomeQuestPreviewGrid({ quests }: HomeQuestPreviewGridProps) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{quests.map(quest => (
-				<QuestPreviewCard key={quest.id} quest={quest} priority={isMapQuest(quest)} />
+			{quests.map((quest, index) => (
+				<QuestPreviewCard
+					key={quest.id}
+					quest={quest}
+					/* React 19 SSR auto-preloads every `loading="eager"` image ahead of CSS.
+					 * Only the first above-the-fold card should compete on the critical path. */
+					priority={index === 0 && isMapQuest(quest)}
+					fetchPriority={index === 0 && isMapQuest(quest) ? "high" : undefined}
+				/>
 			))}
 		</div>
 	)

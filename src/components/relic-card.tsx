@@ -1,6 +1,7 @@
 import type { Relic } from "@/data/relics"
 import type { PreviewCard } from "@/types/preview-card"
 import { Option } from "effect"
+import { CardImageGlow } from "@/components/card-image-glow"
 import {
 	ComingSoonBadge,
 	EstimatedTimeBadge,
@@ -71,16 +72,7 @@ export function RelicCard({ relic, priority }: RelicCardProps) {
 							{map.title}
 						</Badge>
 					</div>
-					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-3xl dark:flex">
-						<FeaturedImage
-							featuredImage={relic.image}
-							alt=""
-							width={272}
-							height={272}
-							sizes="272px"
-							className="aspect-square scale-150 object-center"
-						/>
-					</div>
+					<CardImageGlow src={relic.image} className="scale-150 blur-3xl" />
 					<CardHeader className="flex flex-col gap-4">
 						<div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg bg-muted/50">
 							<FeaturedImage

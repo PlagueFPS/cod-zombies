@@ -1,7 +1,7 @@
 import { MenuIcon } from "lucide-react"
 import { CustomLink } from "@/components/custom-link"
-import { FeedbackForm } from "@/components/feedback-form"
 import { Image } from "@/components/image"
+import { LazyFeedbackForm } from "@/components/lazy-feedback-form"
 import { Socials } from "@/components/socials"
 import { Button } from "@/components/ui/button"
 import DonateButton from "@/components/ui/donate-button"
@@ -68,7 +68,7 @@ export function MobileNav() {
 				<Separator className="mx-auto mt-auto w-4/5!" />
 				<SheetFooter className="mt-0 mb-4 flex w-full flex-col items-center justify-center gap-4">
 					<div className="flex w-full items-center justify-evenly gap-3">
-						<FeedbackForm />
+						<LazyFeedbackForm />
 						<DonateButton />
 					</div>
 					<Socials className="w-full justify-evenly" />
