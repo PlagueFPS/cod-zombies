@@ -3,6 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router"
 import { Option } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { Breadcrumbs, type Link } from "@/components/breadcrumbs"
+import { CardImageGlow } from "@/components/card-image-glow"
 import { CompletionTimeDisplay } from "@/components/completion-time-display"
 import { ComingSoonBadge, DifficultyBadge, NewBadge } from "@/components/custom-badges"
 import { CustomLink } from "@/components/custom-link"
@@ -98,15 +99,8 @@ function MainQuestGuide() {
 					<TableOfContents headings={meta.headings} />
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
-							<div className="absolute top-4 right-0 left-0 mx-auto hidden w-full max-w-7xl opacity-35 blur-3xl sm:dark:block">
-								<FeaturedImage
-									featuredImage={map.image}
-									alt=""
-									width={1280}
-									height={720}
-									loading="eager"
-									sizes="(max-width: 1280px) 100vw, 1280px"
-								/>
+							<div className="pointer-events-none absolute top-4 right-0 left-0 mx-auto hidden aspect-video w-full max-w-7xl sm:dark:block">
+								<CardImageGlow src={map.image} className="opacity-35 blur-3xl" />
 							</div>
 							<div className="relative mx-auto max-w-7xl">
 								<FeaturedImage
@@ -115,6 +109,8 @@ function MainQuestGuide() {
 									width={1280}
 									height={720}
 									sizes="(max-width: 1280px) 100vw, 1280px"
+									loading="eager"
+									fetchPriority="high"
 									preload
 									className="overflow-hidden xl:rounded-lg"
 								/>
@@ -234,16 +230,7 @@ function PrevOrNextMapCard({ map, prev }: PrevOrNextCard) {
 						{game.title}
 					</Badge>
 				</div>
-				<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-35 blur-2xl dark:flex">
-					<FeaturedImage
-						featuredImage={map.image}
-						alt={alt}
-						width={384}
-						height={176}
-						sizes="(max-width: 1280px) 320px, 384px"
-						className="scale-110"
-					/>
-				</div>
+				<CardImageGlow src={map.image} className="scale-110 opacity-35" />
 				<div className="relative z-20 flex h-full w-full max-w-sm items-center justify-center overflow-hidden rounded-lg">
 					<FeaturedImage
 						featuredImage={map.image}
