@@ -1,7 +1,6 @@
-import ContactForm from "@/components/contact-form"
 import Copyright from "@/components/copyright"
 import { CustomLink } from "@/components/custom-link"
-import { Newsletter } from "@/components/newsletter"
+import { LazyContactForm, LazyNewsletter } from "@/components/lazy-footer-widgets"
 import { Socials } from "@/components/socials"
 import DonateButton from "@/components/ui/donate-button"
 
@@ -13,10 +12,10 @@ export function Footer() {
 					<Copyright />
 					<Socials />
 				</div>
-				<Newsletter />
+				<LazyNewsletter />
 				<div className="order-first flex justify-center space-x-4 md:order-last md:justify-end">
 					<div className="flex items-center gap-4">
-						<ContactForm />
+						<LazyContactForm />
 						<DonateButton />
 					</div>
 				</div>

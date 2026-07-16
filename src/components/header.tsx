@@ -1,6 +1,6 @@
 import { CustomLink } from "@/components/custom-link"
-import { FeedbackForm } from "@/components/feedback-form"
 import { Image } from "@/components/image"
+import { LazyFeedbackForm } from "@/components/lazy-feedback-form"
 import { MobileNav } from "@/components/mobile-nav"
 import { SearchBar } from "@/components/search-bar"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -19,9 +19,11 @@ export function Header() {
 					<Image
 						unoptimized
 						src="/logo.webp"
-						width={128}
-						height={128}
+						width={20}
+						height={20}
 						alt="Call of Duty: Zombies Guides Logo"
+						loading="eager"
+						decoding="async"
 						className="size-5 rounded"
 					/>
 					<div className="text-center text-xl font-extrabold">
@@ -45,7 +47,7 @@ export function Header() {
 				</nav>
 				<div className="flex h-full w-fit items-center justify-center gap-2 self-end">
 					<SearchBar />
-					<FeedbackForm className="hidden lg:flex" />
+					<LazyFeedbackForm className="hidden lg:flex" />
 					<div className="hidden items-center gap-2 lg:inline-flex">
 						<Separator orientation="vertical" className="min-h-6" />
 						<ThemeToggle className="mr-1 xl:mr-0" />

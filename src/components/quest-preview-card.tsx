@@ -1,6 +1,7 @@
 import type { SideQuest } from "@/data/side-quests"
 import type { PreviewCard } from "@/types/preview-card"
 import { Match, Option } from "effect"
+import { CardImageGlow } from "@/components/card-image-glow"
 import {
 	ComingSoonBadge,
 	DifficultyBadge,
@@ -20,7 +21,7 @@ interface IQuestPreviewCard extends PreviewCard {
 	quest: Omit<MapEntry, "mainQuest"> | Omit<SideQuest, "content">
 }
 
-export function QuestPreviewCard({ quest, priority }: IQuestPreviewCard) {
+export function QuestPreviewCard({ quest, priority, fetchPriority }: IQuestPreviewCard) {
 	const { title, description, alt, map, game, image } = Match.value(quest).pipe(
 		Match.when(isMapQuest, quest => ({
 			title: quest.title,
@@ -127,16 +128,7 @@ export function QuestPreviewCard({ quest, priority }: IQuestPreviewCard) {
 							{game.title}
 						</Badge>
 					</div>
-					<div className="absolute inset-0 z-10 hidden h-full w-full items-center opacity-25 blur-2xl dark:flex">
-						<FeaturedImage
-							featuredImage={image}
-							alt=""
-							width={272}
-							height={176}
-							sizes="384px"
-							className="aspect-square scale-150"
-						/>
-					</div>
+					<CardImageGlow src={image} className="scale-150" />
 					<CardHeader className="flex flex-col gap-2">
 						<div className="relative h-full w-full overflow-hidden">
 							<FeaturedImage
@@ -146,6 +138,7 @@ export function QuestPreviewCard({ quest, priority }: IQuestPreviewCard) {
 								height={176}
 								sizes="384px"
 								loading={priority ? "eager" : "lazy"}
+								fetchPriority={fetchPriority}
 								className="h-44 rounded-md object-cover"
 							/>
 						</div>

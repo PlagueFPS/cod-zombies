@@ -1,7 +1,7 @@
 import type { ErrorComponentProps } from "@tanstack/react-router"
 import { useLocation } from "@tanstack/react-router"
 import { useEffect } from "react"
-import { FeedbackForm } from "@/components/feedback-form"
+import { LazyFeedbackForm } from "@/components/lazy-feedback-form"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 
 export function DefaultError({ error, reset }: ErrorComponentProps) {
@@ -21,7 +21,7 @@ export function DefaultError({ error, reset }: ErrorComponentProps) {
 				</ErrorDescription>
 			</div>
 			<div className="flex items-center justify-center gap-4">
-				<FeedbackForm />
+				<LazyFeedbackForm />
 				<ErrorButton onClick={() => reset()} variant="destructive">
 					Try again
 				</ErrorButton>
