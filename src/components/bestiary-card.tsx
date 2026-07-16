@@ -14,7 +14,7 @@ interface IBestiaryCard extends PreviewCard {
 	zombie: Omit<Zombie, "combatStrategy">
 }
 
-export function BestiaryCard({ zombie, priority }: IBestiaryCard) {
+export function BestiaryCard({ zombie, priority, fetchPriority }: IBestiaryCard) {
 	const alt = `${zombie.title} Image`
 	const map = Arr.head(zombie.maps).pipe(
 		Option.flatMap(map => getMapByKey(map)),
@@ -69,6 +69,7 @@ export function BestiaryCard({ zombie, priority }: IBestiaryCard) {
 								width={272}
 								height={176}
 								loading={priority ? "eager" : "lazy"}
+								fetchPriority={fetchPriority}
 								sizes="272px"
 								className="h-44 rounded-md object-cover object-top"
 							/>

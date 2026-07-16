@@ -66,6 +66,7 @@
 	border: none !important;
 }
 
-.leaflet-pane {
-	z-index: 49 !important;
+/* Trap Leaflet's high internal pane z-indexes (200–700) under the site header (z-50). */
+.leaflet-container {
+	z-index: 10;
 }

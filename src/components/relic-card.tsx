@@ -21,7 +21,7 @@ interface RelicCardProps extends PreviewCard {
 	relic: Omit<Relic, "content">
 }
 
-export function RelicCard({ relic, priority }: RelicCardProps) {
+export function RelicCard({ relic, priority, fetchPriority }: RelicCardProps) {
 	// SAFETY: we know both these keys exist since they are directly derived from the
 	// source data.
 	const map = getMapByKey(relic.map).pipe(Option.getOrThrow)
@@ -81,6 +81,7 @@ export function RelicCard({ relic, priority }: RelicCardProps) {
 								width={272}
 								height={272}
 								loading={priority ? "eager" : "lazy"}
+								fetchPriority={fetchPriority}
 								sizes="272px"
 								className="size-40 object-contain transition-transform group-hover:scale-110"
 							/>

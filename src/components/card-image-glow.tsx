@@ -21,7 +21,7 @@ export function CardImageGlow({ src, className }: CardImageGlowProps) {
 				"pointer-events-none absolute inset-0 z-10 hidden h-full w-full bg-cover bg-center opacity-25 blur-2xl dark:block",
 				className,
 			)}
-			style={{ backgroundImage: `url(${glowSrc})` }}
+			style={{ backgroundImage: `url('${glowSrc}')` }}
 		/>
 	)
 }
