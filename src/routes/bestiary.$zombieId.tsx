@@ -176,40 +176,44 @@ function ZombieInfo() {
 					<section className="grid grid-cols-1 gap-6 md:grid-cols-3">
 						<div className="relative flex flex-col items-center">
 							<CardImageGlow src={zombie.image} className="opacity-35 blur-3xl" />
-							<FeaturedImage
-								featuredImage={zombie.image}
-								alt={`${zombie.title} image`}
-								width={422}
-								height={422}
-								sizes="422px"
-								preload
-								loading="eager"
-								fetchPriority="high"
-								className="mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none"
-							/>
-							<div className="w-full space-y-3">
-								<div>
-									<div className="flex flex-wrap items-center justify-between">
-										<div className="flex items-center gap-2">
-											<Eye className="size-5 text-orange-500" />
+							<div className="relative z-20 flex w-full flex-col items-center">
+								<FeaturedImage
+									featuredImage={zombie.image}
+									alt={`${zombie.title} image`}
+									width={422}
+									height={422}
+									sizes="422px"
+									preload
+									loading="eager"
+									fetchPriority="high"
+									className="mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none"
+								/>
+								<div className="w-full space-y-3">
+									<div>
+										<div className="flex flex-wrap items-center justify-between">
+											<div className="flex items-center gap-2">
+												<Eye className="size-5 text-orange-500" />
+												<span className="text-foreground dark:text-foreground/80">
+													First Appeared In
+												</span>
+											</div>
 											<span className="text-foreground dark:text-foreground/80">
-												First Appeared In
+												{firstAppearIn.title}
 											</span>
 										</div>
-										<span className="text-foreground dark:text-foreground/80">
-											{firstAppearIn.title}
-										</span>
 									</div>
-								</div>
-								<div>
-									<div className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<Zap className="size-5 text-yellow-500" />
-											<span className="text-foreground dark:text-foreground/80">Speed</span>
+									<div>
+										<div className="flex items-center justify-between">
+											<div className="flex items-center gap-2">
+												<Zap className="size-5 text-yellow-500" />
+												<span className="text-foreground dark:text-foreground/80">Speed</span>
+											</div>
+											<span className="text-foreground dark:text-foreground/80">
+												{zombie.speed}
+											</span>
 										</div>
-										<span className="text-foreground dark:text-foreground/80">{zombie.speed}</span>
+										<Progress value={speedProgress()} className="mt-1 h-2" />
 									</div>
-									<Progress value={speedProgress()} className="mt-1 h-2" />
 								</div>
 							</div>
 						</div>
