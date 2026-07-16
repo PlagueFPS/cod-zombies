@@ -99,10 +99,9 @@ function MainQuestGuide() {
 					<TableOfContents headings={meta.headings} />
 					<article className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
-							<CardImageGlow
-								src={map.image}
-								className="opacity-35 blur-3xl dark:hidden sm:dark:block"
-							/>
+							<div className="pointer-events-none absolute top-4 right-0 left-0 mx-auto hidden aspect-video w-full max-w-7xl sm:dark:block">
+								<CardImageGlow src={map.image} className="opacity-35 blur-3xl" />
+							</div>
 							<div className="relative mx-auto max-w-7xl">
 								<FeaturedImage
 									featuredImage={map.image}
