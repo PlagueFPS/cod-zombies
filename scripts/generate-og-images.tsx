@@ -88,7 +88,7 @@ function formatMapReleaseDay(isoDateOnly: string): string {
 	)
 }
 
-const clampWords = (text: string, maxChars: number) => {
+const clampText = (text: string, maxChars: number) => {
 	const t = text.trim().replace(/\s+/g, " ")
 	if (t.length <= maxChars) {
 		return t
@@ -283,16 +283,6 @@ const ogPortraitFrameLeftPx =
 	OG_PORTRAIT_COL.padL +
 	(OG_PORTRAIT_COL.w - OG_PORTRAIT_COL.padL - OG_PORTRAIT_COL.padR - OG_PORTRAIT_COL.frame) / 2
 
-const clampText = (text: string, maxChars: number) => {
-	const t = text.trim().replace(/\s+/g, " ")
-	if (t.length <= maxChars) {
-		return t
-	}
-	const slice = t.slice(0, maxChars)
-	const i = slice.lastIndexOf(" ")
-	return `${(i > maxChars * 0.55 ? slice.slice(0, i) : slice).trimEnd()}…`
-}
-
 const OG_AMMO_ICON_PX = 52
 
 const resolveAmmoModForOg = (key: AmmoModKey, game: GameKey | undefined): AmmoMod | null =>
@@ -330,7 +320,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 		const game = yield* getGameByKey(map.game).pipe(Effect.fromOption)
 		const difficulty = yield* map.difficulty.pipe(Effect.fromOption)
 		const dateStr = formatMapReleaseDay(map.releaseDate)
-		const blurb = clampWords(map.description, 200)
+		const blurb = clampText(map.description, 200)
 		const displayTitle = map.title.toLocaleUpperCase("en-US")
 		const titleLen = displayTitle.length
 		const titlePx = titleLen > 24 ? 48 : titleLen > 18 ? 54 : titleLen > 14 ? 62 : 70
@@ -400,7 +390,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 
 		const timeToRead = getMdxDocumentMetaFromSource(fileContent).timeToRead
 		const dateStr = formatMapReleaseDay(map.releaseDate)
-		const blurb = clampWords(sideQuest.description, 200)
+		const blurb = clampText(sideQuest.description, 200)
 		const displayTitle = sideQuest.title.toLocaleUpperCase("en-US")
 		const titleLen = displayTitle.length
 		const titlePx = titleLen > 24 ? 48 : titleLen > 18 ? 54 : titleLen > 14 ? 62 : 70
