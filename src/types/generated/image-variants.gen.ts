@@ -2846,6 +2846,7 @@ export const VARIANT_WIDTHS = {
 	"/content/totenreich/totenreich-hidden-power-ups-max-ammo.webp": [384, 1200],
 	"/content/totenreich/totenreich-hidden-power-ups-max-armor.webp": [384, 1200],
 	"/content/totenreich/totenreich-hidden-power-ups-nuke.webp": [384, 1200],
+	"/content/totenreich/totenreich-hidden-power-ups-random-perk.webp": [384, 1200],
 	"/content/totenreich/totenreich-icebane-helmet.webp": [384, 1200],
 	"/content/totenreich/totenreich-jail-cell-uranium.webp": [384, 1200],
 	"/content/totenreich/totenreich-jotunn-star.webp": [384, 1200],
