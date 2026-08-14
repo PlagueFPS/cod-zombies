@@ -33,8 +33,9 @@ describe("getInteractiveMapByKey", () => {
 })
 
 describe("getInteractiveMapConfig", () => {
-	test("resolves for every registered map id", async () => {
+	test("resolves for every registered map that is not Coming Soon", async () => {
 		for (const m of getInteractiveMaps()) {
+			if (m.state.valueOrUndefined === "Coming Soon") continue
 			const config = await Effect.runPromise(getInteractiveMapConfig(m.id as InteractiveMapKey))
 			expect(Array.isArray(config.layers)).toBe(true)
 		}

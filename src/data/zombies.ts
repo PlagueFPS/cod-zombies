@@ -1931,6 +1931,42 @@ const ZOMBIES = new Map([
 			"Nxyara appears throughout the map, but can only be fought in the final encounter of the Main Quest.",
 		combatStrategy: "content/zombies/nxyara",
 	}),
+	// makeZombie("deathspinner", {
+	// 	title: "Deathspinner",
+	// 	state: Option.some("Coming Soon"),
+	// 	releaseDate: "2026-08-20",
+	// 	image: "/zombies/deathspinner.webp",
+	// 	description:
+	// 		"These deadly archanids move quickly, strike fast, and use numbers to overwhelm the crew.",
+	// 	games: ["black-ops-7"],
+	// 	maps: ["rex-infernus"],
+	// 	type: "Special",
+	// 	speed: "Fast",
+	// 	weakPoints: ["back-sacs", "head"],
+	// 	elementalWeakness: ["cryo-freeze"],
+	// 	attacks: ["bite", "lunge", "web-projectile"],
+	// 	spawnBehavior:
+	// 		"Deathspinners serve as the special round for Rex Infernus, and will also spawn within normal zombies in the later rounds.",
+	// 	combatStrategy: "content/zombies/deathspinner",
+	// }),
+	makeZombie("web-mother", {
+		title: "Web Mother",
+		state: Option.some("Coming Soon"),
+		releaseDate: "2026-08-20",
+		image: "/zombies/web-mother.webp",
+		description:
+			"A much larger and more powerful threat than the Deathspinners, the Web Mother is the true test of your extermination ability.",
+		games: ["black-ops-7"],
+		maps: ["rex-infernus"],
+		type: "Elite",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: ["brain-rot"],
+		attacks: ["lunge", "sonic-screech"],
+		spawnBehavior:
+			"The Web Mother first appears on Round 16 then will appear every 3 rounds after that.",
+		combatStrategy: "content/zombies/web-mother",
+	}),
 ])
 
 const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<ZombieKey, number>(

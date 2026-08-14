@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-07-05T20:03:25.230Z
- * generated in: 28ms
+ * generated at: 2026-08-14T12:21:39.374Z
+ * generated in: 33ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -40,6 +40,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/pop-goes-the-weasel"
 	| "content/main-quests/pyrrhic-victory"
 	| "content/main-quests/reckoning"
+	| "content/main-quests/rex-infernus"
 	| "content/main-quests/richtofens-grand-scheme"
 	| "content/main-quests/salvation-lies-above"
 	| "content/main-quests/seal-the-deal"
@@ -335,6 +336,7 @@ export type ZombiesPaths =
 	| "content/zombies/brutus"
 	| "content/zombies/caltheris"
 	| "content/zombies/crusader-zombie"
+	| "content/zombies/deathspinner"
 	| "content/zombies/denizen"
 	| "content/zombies/destroyer"
 	| "content/zombies/disciple"
@@ -415,6 +417,7 @@ export type ZombiesPaths =
 	| "content/zombies/vermin"
 	| "content/zombies/veytharion"
 	| "content/zombies/water-catalyst"
+	| "content/zombies/web-mother"
 	| "content/zombies/werewolf"
 	| "content/zombies/z-rex"
 	| "content/zombies/zombie"
