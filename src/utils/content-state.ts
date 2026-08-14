@@ -1,6 +1,11 @@
 import type { ContentState } from "@/types/data"
 import { Option } from "effect"
 
+/** True when catalog state is the unpublished `"Coming Soon"` placeholder. */
+export function isComingSoon(state: Option.Option<ContentState>): boolean {
+	return Option.getOrUndefined(state) === "Coming Soon"
+}
+
 /** Stored `"New"` is surfaced only this many full UTC calendar days after the anchor date (`YYYY-MM-DD`). */
 export const NEW_CONTENT_BADGE_MAX_AGE_DAYS = 14
 

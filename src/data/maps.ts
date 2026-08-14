@@ -850,6 +850,18 @@ const MAPS = new Map([
 			max: 150,
 		}),
 	}),
+	makeMap("rex-infernus", {
+		title: "Rex Infernus",
+		releaseDate: "2026-08-20",
+		description:
+			"As reality stands on the cusp of destruction, the crew face their ultimate challenge. Cleanse the Shadowsmith places of power, find the Warden’s inner sanctum, and put an end to his loathsome existence.",
+		image: "/maps/rex-infernus-preview.webp",
+		game: "black-ops-7",
+		state: Option.some("Coming Soon"),
+		mainQuest: Option.some("content/main-quests/rex-infernus"),
+		difficulty: Option.none(),
+		estimatedTimeMins: Option.none(),
+	}),
 ])
 
 const MAP_INSERATION_INDEX_BY_ID = new Map<MapKey, number>([...MAPS.keys()].map((id, i) => [id, i]))

@@ -112,6 +112,7 @@ export function QuestPreviewCard({ quest, priority, fetchPriority }: IQuestPrevi
 				params={questLink?.params}
 				aria-label={`View Guide for ${title}`}
 				aria-disabled={disabled || !questLink}
+				disabled={disabled || !questLink}
 				className="group outline-none"
 				tabIndex={tabIndex}
 			>

@@ -227,6 +227,7 @@ function PrevOrNextQuestCard({ quest, prev }: PrevOrNextCard) {
 			)}
 			tabIndex={isComingSoon ? -1 : 0}
 			aria-disabled={isComingSoon}
+			disabled={isComingSoon}
 		>
 			<article
 				className={cn(

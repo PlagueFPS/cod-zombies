@@ -665,4 +665,9 @@ const ZOMBIE_ATTACKS = new Map([
 		description:
 			"Charges a powerful fire beam that destroys a narrow path, with a delayed explosion along the entire path when the attack is done.",
 	}),
+	makeZombieAttack("cocoon", {
+		title: "Cocoon",
+		range: "Short",
+		description: "Cocoons zombies, transforming them into environmental hazards.",
+	}),
 ])
