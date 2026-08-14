@@ -40,6 +40,7 @@ export function MapPreviewCard({ map, priority }: IMapPreviewCard) {
 				"pointer-events-none opacity-75 dark:opacity-50": disabled,
 			})}
 			aria-disabled={disabled}
+			disabled={disabled}
 			tabIndex={tabIndex}
 		>
 			<div className="flex flex-col items-start justify-center gap-4">

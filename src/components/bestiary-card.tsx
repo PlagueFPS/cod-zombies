@@ -44,6 +44,7 @@ export function BestiaryCard({ zombie, priority, fetchPriority }: IBestiaryCard)
 				params={{ zombieId: zombie.id }}
 				aria-label={`View details for ${zombie.title}`}
 				aria-disabled={applyClasses}
+				disabled={applyClasses}
 				className="group outline-none"
 				tabIndex={tabIndex}
 			>

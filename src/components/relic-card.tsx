@@ -55,6 +55,7 @@ export function RelicCard({ relic, priority, fetchPriority }: RelicCardProps) {
 				params={{ gameId: game.id, relicId: relic.id }}
 				aria-label={`View Guide for the ${relic.title} relic`}
 				aria-disabled={disabled}
+				disabled={disabled}
 				tabIndex={tabIndex}
 				className="group outline-none"
 			>

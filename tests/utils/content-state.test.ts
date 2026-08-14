@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest"
 import {
 	NEW_CONTENT_BADGE_MAX_AGE_DAYS,
 	calendarDaysSinceIsoDate,
+	isComingSoon,
 	resolveNewContentState,
 } from "@/utils/content-state"
 
@@ -46,5 +47,13 @@ describe("resolveNewContentState", () => {
 		const now = Date.parse("2026-01-15T00:00:00.000Z")
 		expect(calendarDaysSinceIsoDate(anchor, now)).toBe(NEW_CONTENT_BADGE_MAX_AGE_DAYS)
 		expect(resolveNewContentState(Option.some("New"), anchor, now)).toEqual(Option.none())
+	})
+})
+
+describe("isComingSoon", () => {
+	test("should be true only for Coming Soon state", () => {
+		expect(isComingSoon(Option.some("Coming Soon"))).toBe(true)
+		expect(isComingSoon(Option.some("New"))).toBe(false)
+		expect(isComingSoon(Option.none())).toBe(false)
 	})
 })

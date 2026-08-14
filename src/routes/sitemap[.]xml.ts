@@ -6,6 +6,7 @@ import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
 import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
+import { isComingSoon } from "@/utils/content-state"
 import { getLastModified } from "@/utils/functions.server"
 import { getServerUrl } from "@/utils/request.server"
 
@@ -14,11 +15,11 @@ export const Route = createFileRoute("/sitemap.xml")({
 		handlers: {
 			GET: async () => {
 				return await Effect.gen(function* () {
-					const interactiveMaps = getInteractiveMaps()
-					const maps = getMapsWithMainQuest()
-					const sideQuests = getSideQuests()
-					const zombies = getZombies()
-					const relics = getRelics()
+					const interactiveMaps = getInteractiveMaps().filter(map => !isComingSoon(map.state))
+					const maps = getMapsWithMainQuest().filter(map => !isComingSoon(map.state))
+					const sideQuests = getSideQuests().filter(quest => !isComingSoon(quest.state))
+					const zombies = getZombies().filter(zombie => !isComingSoon(zombie.state))
+					const relics = getRelics().filter(relic => !isComingSoon(relic.state))
 					const serverUrl = getServerUrl()
 
 					const mainQuestsMap = yield* Effect.forEach(

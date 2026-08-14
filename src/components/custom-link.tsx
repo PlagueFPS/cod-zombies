@@ -4,10 +4,30 @@ import { Link, type LinkProps, type NavigateOptions, useNavigate } from "@tansta
 interface ICustomLink extends LinkProps {
 	className?: string
 	tabIndex?: number
+	"aria-disabled"?: React.AriaAttributes["aria-disabled"]
 }
 
-export function CustomLink({ children, tabIndex, ...linkProps }: ICustomLink) {
+/**
+ * TanStack `Link` omits `href` only when `disabled` is true. The prerender crawler
+ * follows every `<a href>`, so Coming Soon cards must disable the link — `aria-disabled`
+ * and `pointer-events-none` alone still emit a crawlable URL that 404s the build.
+ */
+export function isDisabledCustomLink(
+	disabled: boolean | undefined,
+	ariaDisabled: React.AriaAttributes["aria-disabled"],
+): boolean {
+	return disabled === true || ariaDisabled === true || ariaDisabled === "true"
+}
+
+export function CustomLink({
+	children,
+	tabIndex,
+	disabled,
+	"aria-disabled": ariaDisabled,
+	...linkProps
+}: ICustomLink) {
 	const navigate = useNavigate()
+	const isDisabled = isDisabledCustomLink(disabled, ariaDisabled)
 
 	const navigatePayload: NavigateOptions = {
 		from: linkProps.from,
@@ -30,6 +50,7 @@ export function CustomLink({ children, tabIndex, ...linkProps }: ICustomLink) {
 	const handleNavigation = (
 		e: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>,
 	) => {
+		if (isDisabled) return
 		if (!linkProps.to && !linkProps.href) return
 		const target = linkProps.href ?? linkProps.to
 		if (!target) return
@@ -53,6 +74,8 @@ export function CustomLink({ children, tabIndex, ...linkProps }: ICustomLink) {
 			onKeyDown={handleNavigation}
 			tabIndex={tabIndex}
 			{...linkProps}
+			aria-disabled={ariaDisabled}
+			disabled={isDisabled}
 		>
 			{children}
 		</Link>
