@@ -668,6 +668,6 @@ const ZOMBIE_ATTACKS = new Map([
 	makeZombieAttack("cocoon", {
 		title: "Cocoon",
 		range: "Short",
-		description: "Cocoons zombies transforming them into environmental hazards.",
+		description: "Cocoons zombies, transforming them into environmental hazards.",
 	}),
 ])
