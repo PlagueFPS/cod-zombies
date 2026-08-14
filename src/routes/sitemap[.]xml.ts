@@ -187,7 +187,6 @@ export const Route = createFileRoute("/sitemap.xml")({
 					})
 				}).pipe(
 					Effect.tapCause(cause => Effect.logError(cause)),
-					Effect.die,
 					Effect.runPromise,
 				)
 			},
