@@ -11,14 +11,11 @@ interface EmailProps {
 	message: string
 }
 
-class ContactExistsError extends Schema.TaggedErrorClass<ContactExistsError>()(
-	"ContactExistsError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
-class ContactNotFoundError extends Schema.TaggedErrorClass<ContactNotFoundError>()(
+class ContactExistsError extends Schema.TaggedError<ContactExistsError>()("ContactExistsError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
+class ContactNotFoundError extends Schema.TaggedError<ContactNotFoundError>()(
 	"ContactNotFoundError",
 	{
 		message: Schema.String,

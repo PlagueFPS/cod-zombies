@@ -2,7 +2,7 @@ import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { Config, Context, Effect, Layer, Schema } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpBody } from "effect/unstable/http"
 
-class CreateIssueError extends Schema.TaggedErrorClass<CreateIssueError>()("CreateIssueError", {
+class CreateIssueError extends Schema.TaggedError<CreateIssueError>()("CreateIssueError", {
 	cause: Schema.Defect(),
 }) {}
 

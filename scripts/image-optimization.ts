@@ -1,6 +1,6 @@
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Clock, Duration, Effect, FileSystem, Path, Schema, Ref, Match } from "effect"
+import { Clock, Duration, Effect, FileSystem, Option, Path, Schema, Ref, Match } from "effect"
 import { Command, Flag } from "effect/unstable/cli"
 import sharp, { type Sharp } from "sharp"
 import { generateImagePaths } from "@/scripts/generate-image-paths"
@@ -12,7 +12,7 @@ import {
 	variantFileName,
 } from "@/scripts/image-variant-policy"
 
-export class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
+export class ImageOptimizationError extends Schema.TaggedError<ImageOptimizationError>()(
 	"ImageOptimizationError",
 	{
 		message: Schema.String,
@@ -61,10 +61,12 @@ const sourceOption = Flag.directory("source-dir").pipe(
 )
 
 const previewFlag = Flag.boolean("preview").pipe(
+	Flag.optional,
 	Flag.withDescription("Resize images to 640px width with no variants."),
 )
 
 const mapFlag = Flag.boolean("map").pipe(
+	Flag.optional,
 	Flag.withDescription("Resize images to 2048px width with no variants, without upscaling."),
 )
 
@@ -101,13 +103,13 @@ export type OptimizeMode = "default" | "preview" | "map"
 export type OptimizeCliOptions = {
 	readonly dir: string
 	readonly source: string
-	readonly preview?: boolean
-	readonly map?: boolean
+	readonly preview: Option.Option<boolean>
+	readonly map: Option.Option<boolean>
 }
 
 export const getOptimizeMode = (args: OptimizeCliOptions): OptimizeMode => {
-	if (args.preview) return "preview"
-	if (args.map) return "map"
+	if (Option.contains(args.preview, true)) return "preview"
+	if (Option.contains(args.map, true)) return "map"
 	return "default"
 }
 
@@ -128,7 +130,7 @@ export const requireImageWidth = (
 
 export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 	Effect.gen(function* () {
-		if (args.preview && args.map) {
+		if (Option.contains(args.preview, true) && Option.contains(args.map, true)) {
 			return yield* new ImageOptimizationError({
 				message: "Cannot use --preview and --map together.",
 				cause: args,
