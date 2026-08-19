@@ -6,12 +6,9 @@ import { Effect, Option, Schema } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
 import { decodeMapConfigModule } from "@/utils/validation-schemas"
 
-class ConfigNotFoundError extends Schema.TaggedErrorClass<ConfigNotFoundError>()(
-	"ConfigNotFoundError",
-	{
-		cause: Schema.Defect(),
-	},
-) {}
+class ConfigNotFoundError extends Schema.TaggedError<ConfigNotFoundError>()("ConfigNotFoundError", {
+	cause: Schema.Defect(),
+}) {}
 
 /** Union type of all available interactive map IDs */
 export type InteractiveMapKey = Parameters<(typeof INTERACTIVE_MAPS)["get"]>[0]

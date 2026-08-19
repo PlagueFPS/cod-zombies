@@ -1,6 +1,6 @@
 ---
 name: effect
-description: Guidelines for writing Effect-TS code with Schema.TaggedErrorClass and Effect.gen. Apply when the user requests Effect code changes, when editing files that import from "effect", or when authoring, reviewing, or refactoring Effect.gen, Effect.try, tagged errors, or Effect.fail usage.
+description: Guidelines for writing Effect-TS code with Schema.TaggedError and Effect.gen. Apply when the user requests Effect code changes, when editing files that import from "effect", or when authoring, reviewing, or refactoring Effect.gen, Effect.try, tagged errors, or Effect.fail usage.
 ---
 
 # Effect Code Guidelines
@@ -9,7 +9,7 @@ description: Guidelines for writing Effect-TS code with Schema.TaggedErrorClass 
 
 Never wrap tagged errors in an Effect.fail, tagged errors are directly yieldable.
 
-`Schema.TaggedErrorClass` instances implement Effect's yieldable failure protocol. Yield or return them directly.
+`Schema.TaggedError` instances implement Effect's yieldable failure protocol. Yield or return them directly.
 
 ### Inside `Effect.gen`
 
@@ -74,10 +74,10 @@ When the callback must return an `Effect`, yield the error inside a generator or
 
 ## Defining tagged errors
 
-Use `Schema.TaggedErrorClass` with a `cause` and optional `message` if the error is user-facing:
+Use `Schema.TaggedError` with a `cause` and optional `message` if the error is user-facing:
 
 ```typescript
-export class ImageOptimizationError extends Schema.TaggedErrorClass<ImageOptimizationError>()(
+export class ImageOptimizationError extends Schema.TaggedError<ImageOptimizationError>()(
   "ImageOptimizationError",
   {
     message: Schema.String,
@@ -103,7 +103,7 @@ For domain errors with a `_tag`, always use a tagged error class instead.
 When writing or reviewing Effect code:
 
 - [ ] Tagged errors are yielded directly, never wrapped in `Effect.fail` unless returned from a plain function
-- [ ] Error classes use `Schema.TaggedErrorClass` with a stable `_tag`
+- [ ] Error classes use `Schema.TaggedError` with a stable `_tag`
 - [ ] `Effect.gen` uses `yield*` for fallible operations and tagged failures
 - [ ] `Effect.try` / `Effect.tryPromise` `catch` callbacks produce tagged errors, not raw `Error` throws
 - [ ] Success paths use plain values in function body or `Effect.succeed` where an Effect must be returned; failures use tagged errors or `Effect.fail` for untagged values only

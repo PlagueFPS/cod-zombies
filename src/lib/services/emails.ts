@@ -13,7 +13,7 @@ import {
 	type SendBroadcastResponseSuccess,
 } from "resend"
 
-class ResendError extends Schema.TaggedErrorClass<ResendError>()("ResendError", {
+class ResendError extends Schema.TaggedError<ResendError>()("ResendError", {
 	message: Schema.String,
 	cause: Schema.Defect(),
 }) {}

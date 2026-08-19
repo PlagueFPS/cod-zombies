@@ -20,7 +20,7 @@ import {
 	type LastModifiedData,
 } from "@/utils/validation-schemas"
 
-export class DuplicateFilenameError extends Schema.TaggedErrorClass<DuplicateFilenameError>()(
+export class DuplicateFilenameError extends Schema.TaggedError<DuplicateFilenameError>()(
 	"DuplicateFilenameError",
 	{
 		message: Schema.String,

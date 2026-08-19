@@ -6,21 +6,21 @@ import { getServerUrl } from "@/utils/request.server"
 
 export { getLastModified } from "@/utils/content-meta"
 
-class TokenExpirationError extends Schema.TaggedErrorClass<TokenExpirationError>()(
+class TokenExpirationError extends Schema.TaggedError<TokenExpirationError>()(
 	"TokenExpirationError",
 	{
 		message: Schema.String,
 		cause: Schema.Defect(),
 	},
 ) {}
-class TokenGenerationError extends Schema.TaggedErrorClass<TokenGenerationError>()(
+class TokenGenerationError extends Schema.TaggedError<TokenGenerationError>()(
 	"TokenGenerationError",
 	{
 		message: Schema.String,
 		cause: Schema.Defect(),
 	},
 ) {}
-class TokenVerificationError extends Schema.TaggedErrorClass<TokenVerificationError>()(
+class TokenVerificationError extends Schema.TaggedError<TokenVerificationError>()(
 	"TokenVerificationError",
 	{
 		message: Schema.String,

@@ -11,7 +11,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Exit, Layer } from "effect"
+import { Effect, Exit, Layer, Option } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import {
@@ -22,6 +22,11 @@ import {
 import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
+
+const noModeFlags = {
+	preview: Option.none<boolean>(),
+	map: Option.none<boolean>(),
+} as const
 
 async function writePng(filePath: string, width: number, height: number) {
 	const buf = await sharp({
@@ -74,6 +79,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -89,6 +95,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -112,6 +119,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -125,6 +133,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -138,6 +147,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -151,6 +161,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -168,6 +179,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -180,6 +192,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -191,6 +204,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expect(Exit.isFailure(exit)).toBe(true)
@@ -215,6 +229,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./public",
 			source: "./public",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -241,6 +256,7 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./public",
 			source: "./public",
+			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -259,7 +275,8 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			preview: true,
+			preview: Option.some(true),
+			map: Option.none(),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -276,7 +293,8 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			preview: true,
+			preview: Option.some(true),
+			map: Option.none(),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -290,7 +308,8 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: true,
+			preview: Option.none(),
+			map: Option.some(true),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -307,7 +326,8 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			map: true,
+			preview: Option.none(),
+			map: Option.some(true),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -319,8 +339,8 @@ describe("optimizeAssetsEffect", () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
-			preview: true,
-			map: true,
+			preview: Option.some(true),
+			map: Option.some(true),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expect(Exit.isFailure(exit)).toBe(true)

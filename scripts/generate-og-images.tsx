@@ -57,14 +57,14 @@ const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
 const manifestPathFromEnv = () =>
 	process.env.OG_TEST_MANIFEST_PATH?.length ? process.env.OG_TEST_MANIFEST_PATH : undefined
 
-export class ImageGenerationError extends Schema.TaggedErrorClass<ImageGenerationError>()(
+export class ImageGenerationError extends Schema.TaggedError<ImageGenerationError>()(
 	"ImageGenerationError",
 	{
 		cause: Schema.Defect(),
 	},
 ) {}
 
-export class OgCliError extends Schema.TaggedErrorClass<OgCliError>()("OgCliError", {
+export class OgCliError extends Schema.TaggedError<OgCliError>()("OgCliError", {
 	message: Schema.String,
 }) {}
 
@@ -1090,6 +1090,7 @@ const mapSlugFlag = Flag.optional(Flag.string("map")).pipe(
 )
 
 const mapsFlag = Flag.boolean("maps").pipe(
+	Flag.optional,
 	Flag.withDescription("Generate OG images for every map that has a main quest."),
 )
 
@@ -1099,6 +1100,7 @@ const questFlag = Flag.optional(Flag.string("quest")).pipe(
 )
 
 const questsFlag = Flag.boolean("quests").pipe(
+	Flag.optional,
 	Flag.withDescription(
 		"Generate OG images for all side quests (optional --map / -m limits to that map).",
 	),
@@ -1110,6 +1112,7 @@ const zombieFlag = Flag.optional(Flag.string("zombie")).pipe(
 )
 
 const zombiesFlag = Flag.boolean("zombies").pipe(
+	Flag.optional,
 	Flag.withDescription(
 		"Generate OG images for all zombies (optional --map / -m limits to zombies that were released on that map).",
 	),
@@ -1121,6 +1124,7 @@ const relicFlag = Flag.optional(Flag.string("relic")).pipe(
 )
 
 const relicsFlag = Flag.boolean("relics").pipe(
+	Flag.optional,
 	Flag.withDescription(
 		"Generate OG images for all relics (optional --map / -m limits to relics on that map).",
 	),
@@ -1163,11 +1167,16 @@ export const generateOgCommand = Command.make(
 			const outputBase = path.resolve(outputDirFlag)
 			const manifestLock = yield* Semaphore.make(1)
 
-			const zombieFamily = zombiesFlag || Option.isSome(zombieFlag)
-			const questFamily = questsFlag || Option.isSome(questFlag)
-			const relicFamily = relicsFlag || Option.isSome(relicFlag)
+			const mapsEnabled = Option.contains(mapsFlag, true)
+			const questsEnabled = Option.contains(questsFlag, true)
+			const zombiesEnabled = Option.contains(zombiesFlag, true)
+			const relicsEnabled = Option.contains(relicsFlag, true)
+
+			const zombieFamily = zombiesEnabled || Option.isSome(zombieFlag)
+			const questFamily = questsEnabled || Option.isSome(questFlag)
+			const relicFamily = relicsEnabled || Option.isSome(relicFlag)
 			const mainFamily =
-				mapsFlag || (Option.isSome(mapFlag) && !zombieFamily && !questFamily && !relicFamily)
+				mapsEnabled || (Option.isSome(mapFlag) && !zombieFamily && !questFamily && !relicFamily)
 
 			const modeCount =
 				(zombieFamily ? 1 : 0) +
@@ -1183,7 +1192,7 @@ export const generateOgCommand = Command.make(
 			}
 
 			if (zombieFamily) {
-				if (zombiesFlag && Option.isSome(zombieFlag)) {
+				if (zombiesEnabled && Option.isSome(zombieFlag)) {
 					return yield* new OgCliError({
 						message: "Use either --zombies or --zombie <id>, not both.",
 					})
@@ -1229,7 +1238,7 @@ export const generateOgCommand = Command.make(
 			}
 
 			if (relicFamily) {
-				if (relicsFlag && Option.isSome(relicFlag)) {
+				if (relicsEnabled && Option.isSome(relicFlag)) {
 					return yield* new OgCliError({
 						message: "Use either --relics or --relic <id>, not both.",
 					})
@@ -1279,7 +1288,7 @@ export const generateOgCommand = Command.make(
 			}
 
 			if (questFamily) {
-				if (questsFlag && Option.isSome(questFlag)) {
+				if (questsEnabled && Option.isSome(questFlag)) {
 					return yield* new OgCliError({
 						message: "Use either --quests or --quest <id>, not both.",
 					})
@@ -1326,14 +1335,14 @@ export const generateOgCommand = Command.make(
 				return
 			}
 
-			if (mapsFlag && Option.isSome(mapFlag)) {
+			if (mapsEnabled && Option.isSome(mapFlag)) {
 				return yield* new OgCliError({
 					message:
 						"--maps already generates every main quest; omit --map or use --map <id> alone for one map.",
 				})
 			}
 
-			if (mapsFlag) {
+			if (mapsEnabled) {
 				const maps = getMapsWithMainQuest()
 				if (!maps.length) {
 					return yield* new OgCliError({
