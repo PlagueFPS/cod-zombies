@@ -39,6 +39,15 @@ export default defineConfig({
 		ssr: {
 			optimizeDeps: {
 				include: depsWithBrokenSourcemaps,
+				// TanStack Devtools is Solid-based; Cloudflare's worker conditions
+				// resolve solid-js/web to server.js, which does not export `use`.
+				exclude: [
+					"solid-js",
+					"solid-js/web",
+					"@tanstack/devtools",
+					"@tanstack/devtools-ui",
+					"@tanstack/react-devtools",
+				],
 			},
 		},
 	},
