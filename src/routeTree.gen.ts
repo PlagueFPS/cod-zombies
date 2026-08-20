@@ -9,67 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SideQuestsRouteImport } from './routes/side-quests'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as RelicsRouteImport } from './routes/relics'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as MapsRouteImport } from './routes/maps'
-import { Route as MainQuestsRouteImport } from './routes/main-quests'
-import { Route as BestiaryRouteImport } from './routes/bestiary'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SideQuestsIndexRouteImport } from './routes/side-quests.index'
-import { Route as RelicsIndexRouteImport } from './routes/relics.index'
-import { Route as MapsIndexRouteImport } from './routes/maps.index'
-import { Route as MainQuestsIndexRouteImport } from './routes/main-quests.index'
+import { Route as BestiaryRouteImport } from './routes/bestiary'
+import { Route as MainQuestsRouteImport } from './routes/main-quests'
+import { Route as MapsRouteImport } from './routes/maps'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as RelicsRouteImport } from './routes/relics'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SideQuestsRouteImport } from './routes/side-quests'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as BestiaryIndexRouteImport } from './routes/bestiary.index'
-import { Route as NewsletterUnsubscribeRouteImport } from './routes/newsletter.unsubscribe'
-import { Route as MapsMapIdRouteImport } from './routes/maps.$mapId'
 import { Route as BestiaryZombieIdRouteImport } from './routes/bestiary.$zombieId'
-import { Route as NewsletterUnsubscribeIndexRouteImport } from './routes/newsletter.unsubscribe.index'
-import { Route as RelicsGameIdRelicIdRouteImport } from './routes/relics.$gameId.$relicId'
-import { Route as NewsletterUnsubscribeSuccessRouteImport } from './routes/newsletter.unsubscribe.success'
-import { Route as NewsletterUnsubscribeErrorRouteImport } from './routes/newsletter.unsubscribe.error'
-import { Route as NewsletterSubscribeSuccessRouteImport } from './routes/newsletter.subscribe.success'
-import { Route as NewsletterSubscribeErrorRouteImport } from './routes/newsletter.subscribe.error'
-import { Route as MainQuestsGameIdMapIdRouteImport } from './routes/main-quests.$gameId.$mapId'
-import { Route as ApiNewsletterUnsubscribeRouteImport } from './routes/api.newsletter.unsubscribe'
+import { Route as MainQuestsIndexRouteImport } from './routes/main-quests.index'
+import { Route as MapsIndexRouteImport } from './routes/maps.index'
+import { Route as MapsMapIdRouteImport } from './routes/maps.$mapId'
+import { Route as NewsletterUnsubscribeRouteImport } from './routes/newsletter.unsubscribe'
+import { Route as RelicsIndexRouteImport } from './routes/relics.index'
+import { Route as SideQuestsIndexRouteImport } from './routes/side-quests.index'
 import { Route as ApiNewsletterSubscribeRouteImport } from './routes/api.newsletter.subscribe'
+import { Route as ApiNewsletterUnsubscribeRouteImport } from './routes/api.newsletter.unsubscribe'
+import { Route as MainQuestsGameIdMapIdRouteImport } from './routes/main-quests.$gameId.$mapId'
+import { Route as NewsletterSubscribeErrorRouteImport } from './routes/newsletter.subscribe.error'
+import { Route as NewsletterSubscribeSuccessRouteImport } from './routes/newsletter.subscribe.success'
+import { Route as NewsletterUnsubscribeIndexRouteImport } from './routes/newsletter.unsubscribe.index'
+import { Route as NewsletterUnsubscribeErrorRouteImport } from './routes/newsletter.unsubscribe.error'
+import { Route as NewsletterUnsubscribeSuccessRouteImport } from './routes/newsletter.unsubscribe.success'
+import { Route as RelicsGameIdRelicIdRouteImport } from './routes/relics.$gameId.$relicId'
 import { Route as SideQuestsGameIdMapIdQuestIdRouteImport } from './routes/side-quests.$gameId.$mapId.$questId'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SideQuestsRoute = SideQuestsRouteImport.update({
-  id: '/side-quests',
-  path: '/side-quests',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RelicsRoute = RelicsRouteImport.update({
-  id: '/relics',
-  path: '/relics',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MapsRoute = MapsRouteImport.update({
-  id: '/maps',
-  path: '/maps',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MainQuestsRoute = MainQuestsRouteImport.update({
-  id: '/main-quests',
-  path: '/main-quests',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BestiaryRoute = BestiaryRouteImport.update({
@@ -77,66 +47,113 @@ const BestiaryRoute = BestiaryRouteImport.update({
   path: '/bestiary',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const MainQuestsRoute = MainQuestsRouteImport.update({
+  id: '/main-quests',
+  path: '/main-quests',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SideQuestsIndexRoute = SideQuestsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => SideQuestsRoute,
+const MapsRoute = MapsRouteImport.update({
+  id: '/maps',
+  path: '/maps',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const RelicsIndexRoute = RelicsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => RelicsRoute,
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const MapsIndexRoute = MapsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => MapsRoute,
+const RelicsRoute = RelicsRouteImport.update({
+  id: '/relics',
+  path: '/relics',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const MainQuestsIndexRoute = MainQuestsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => MainQuestsRoute,
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SideQuestsRoute = SideQuestsRouteImport.update({
+  id: '/side-quests',
+  path: '/side-quests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BestiaryIndexRoute = BestiaryIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => BestiaryRoute,
 } as any)
-const NewsletterUnsubscribeRoute = NewsletterUnsubscribeRouteImport.update({
-  id: '/newsletter/unsubscribe',
-  path: '/newsletter/unsubscribe',
-  getParentRoute: () => rootRouteImport,
+const BestiaryZombieIdRoute = BestiaryZombieIdRouteImport.update({
+  id: '/$zombieId',
+  path: '/$zombieId',
+  getParentRoute: () => BestiaryRoute,
+} as any)
+const MainQuestsIndexRoute = MainQuestsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainQuestsRoute,
+} as any)
+const MapsIndexRoute = MapsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MapsRoute,
 } as any)
 const MapsMapIdRoute = MapsMapIdRouteImport.update({
   id: '/$mapId',
   path: '/$mapId',
   getParentRoute: () => MapsRoute,
 } as any)
-const BestiaryZombieIdRoute = BestiaryZombieIdRouteImport.update({
-  id: '/$zombieId',
-  path: '/$zombieId',
-  getParentRoute: () => BestiaryRoute,
+const NewsletterUnsubscribeRoute = NewsletterUnsubscribeRouteImport.update({
+  id: '/newsletter/unsubscribe',
+  path: '/newsletter/unsubscribe',
+  getParentRoute: () => rootRouteImport,
 } as any)
+const RelicsIndexRoute = RelicsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RelicsRoute,
+} as any)
+const SideQuestsIndexRoute = SideQuestsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SideQuestsRoute,
+} as any)
+const ApiNewsletterSubscribeRoute = ApiNewsletterSubscribeRouteImport.update({
+  id: '/api/newsletter/subscribe',
+  path: '/api/newsletter/subscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiNewsletterUnsubscribeRoute =
+  ApiNewsletterUnsubscribeRouteImport.update({
+    id: '/api/newsletter/unsubscribe',
+    path: '/api/newsletter/unsubscribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MainQuestsGameIdMapIdRoute = MainQuestsGameIdMapIdRouteImport.update({
+  id: '/$gameId/$mapId',
+  path: '/$gameId/$mapId',
+  getParentRoute: () => MainQuestsRoute,
+} as any)
+const NewsletterSubscribeErrorRoute =
+  NewsletterSubscribeErrorRouteImport.update({
+    id: '/newsletter/subscribe/error',
+    path: '/newsletter/subscribe/error',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const NewsletterSubscribeSuccessRoute =
+  NewsletterSubscribeSuccessRouteImport.update({
+    id: '/newsletter/subscribe/success',
+    path: '/newsletter/subscribe/success',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const NewsletterUnsubscribeIndexRoute =
   NewsletterUnsubscribeIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => NewsletterUnsubscribeRoute,
-  } as any)
-const RelicsGameIdRelicIdRoute = RelicsGameIdRelicIdRouteImport.update({
-  id: '/$gameId/$relicId',
-  path: '/$gameId/$relicId',
-  getParentRoute: () => RelicsRoute,
-} as any)
-const NewsletterUnsubscribeSuccessRoute =
-  NewsletterUnsubscribeSuccessRouteImport.update({
-    id: '/success',
-    path: '/success',
     getParentRoute: () => NewsletterUnsubscribeRoute,
   } as any)
 const NewsletterUnsubscribeErrorRoute =
@@ -145,33 +162,16 @@ const NewsletterUnsubscribeErrorRoute =
     path: '/error',
     getParentRoute: () => NewsletterUnsubscribeRoute,
   } as any)
-const NewsletterSubscribeSuccessRoute =
-  NewsletterSubscribeSuccessRouteImport.update({
-    id: '/newsletter/subscribe/success',
-    path: '/newsletter/subscribe/success',
-    getParentRoute: () => rootRouteImport,
+const NewsletterUnsubscribeSuccessRoute =
+  NewsletterUnsubscribeSuccessRouteImport.update({
+    id: '/success',
+    path: '/success',
+    getParentRoute: () => NewsletterUnsubscribeRoute,
   } as any)
-const NewsletterSubscribeErrorRoute =
-  NewsletterSubscribeErrorRouteImport.update({
-    id: '/newsletter/subscribe/error',
-    path: '/newsletter/subscribe/error',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const MainQuestsGameIdMapIdRoute = MainQuestsGameIdMapIdRouteImport.update({
-  id: '/$gameId/$mapId',
-  path: '/$gameId/$mapId',
-  getParentRoute: () => MainQuestsRoute,
-} as any)
-const ApiNewsletterUnsubscribeRoute =
-  ApiNewsletterUnsubscribeRouteImport.update({
-    id: '/api/newsletter/unsubscribe',
-    path: '/api/newsletter/unsubscribe',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiNewsletterSubscribeRoute = ApiNewsletterSubscribeRouteImport.update({
-  id: '/api/newsletter/subscribe',
-  path: '/api/newsletter/subscribe',
-  getParentRoute: () => rootRouteImport,
+const RelicsGameIdRelicIdRoute = RelicsGameIdRelicIdRouteImport.update({
+  id: '/$gameId/$relicId',
+  path: '/$gameId/$relicId',
+  getParentRoute: () => RelicsRoute,
 } as any)
 const SideQuestsGameIdMapIdQuestIdRoute =
   SideQuestsGameIdMapIdQuestIdRouteImport.update({
@@ -365,53 +365,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/side-quests': {
-      id: '/side-quests'
-      path: '/side-quests'
-      fullPath: '/side-quests'
-      preLoaderRoute: typeof SideQuestsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/relics': {
-      id: '/relics'
-      path: '/relics'
-      fullPath: '/relics'
-      preLoaderRoute: typeof RelicsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/maps': {
-      id: '/maps'
-      path: '/maps'
-      fullPath: '/maps'
-      preLoaderRoute: typeof MapsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/main-quests': {
-      id: '/main-quests'
-      path: '/main-quests'
-      fullPath: '/main-quests'
-      preLoaderRoute: typeof MainQuestsRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bestiary': {
@@ -421,40 +379,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BestiaryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/main-quests': {
+      id: '/main-quests'
+      path: '/main-quests'
+      fullPath: '/main-quests'
+      preLoaderRoute: typeof MainQuestsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/side-quests/': {
-      id: '/side-quests/'
-      path: '/'
-      fullPath: '/side-quests/'
-      preLoaderRoute: typeof SideQuestsIndexRouteImport
-      parentRoute: typeof SideQuestsRoute
+    '/maps': {
+      id: '/maps'
+      path: '/maps'
+      fullPath: '/maps'
+      preLoaderRoute: typeof MapsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/relics/': {
-      id: '/relics/'
-      path: '/'
-      fullPath: '/relics/'
-      preLoaderRoute: typeof RelicsIndexRouteImport
-      parentRoute: typeof RelicsRoute
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/maps/': {
-      id: '/maps/'
-      path: '/'
-      fullPath: '/maps/'
-      preLoaderRoute: typeof MapsIndexRouteImport
-      parentRoute: typeof MapsRoute
+    '/relics': {
+      id: '/relics'
+      path: '/relics'
+      fullPath: '/relics'
+      preLoaderRoute: typeof RelicsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/main-quests/': {
-      id: '/main-quests/'
-      path: '/'
-      fullPath: '/main-quests/'
-      preLoaderRoute: typeof MainQuestsIndexRouteImport
-      parentRoute: typeof MainQuestsRoute
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/side-quests': {
+      id: '/side-quests'
+      path: '/side-quests'
+      fullPath: '/side-quests'
+      preLoaderRoute: typeof SideQuestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/bestiary/': {
       id: '/bestiary/'
@@ -463,12 +435,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BestiaryIndexRouteImport
       parentRoute: typeof BestiaryRoute
     }
-    '/newsletter/unsubscribe': {
-      id: '/newsletter/unsubscribe'
-      path: '/newsletter/unsubscribe'
-      fullPath: '/newsletter/unsubscribe'
-      preLoaderRoute: typeof NewsletterUnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
+    '/bestiary/$zombieId': {
+      id: '/bestiary/$zombieId'
+      path: '/$zombieId'
+      fullPath: '/bestiary/$zombieId'
+      preLoaderRoute: typeof BestiaryZombieIdRouteImport
+      parentRoute: typeof BestiaryRoute
+    }
+    '/main-quests/': {
+      id: '/main-quests/'
+      path: '/'
+      fullPath: '/main-quests/'
+      preLoaderRoute: typeof MainQuestsIndexRouteImport
+      parentRoute: typeof MainQuestsRoute
+    }
+    '/maps/': {
+      id: '/maps/'
+      path: '/'
+      fullPath: '/maps/'
+      preLoaderRoute: typeof MapsIndexRouteImport
+      parentRoute: typeof MapsRoute
     }
     '/maps/$mapId': {
       id: '/maps/$mapId'
@@ -477,53 +463,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapsMapIdRouteImport
       parentRoute: typeof MapsRoute
     }
-    '/bestiary/$zombieId': {
-      id: '/bestiary/$zombieId'
-      path: '/$zombieId'
-      fullPath: '/bestiary/$zombieId'
-      preLoaderRoute: typeof BestiaryZombieIdRouteImport
-      parentRoute: typeof BestiaryRoute
-    }
-    '/newsletter/unsubscribe/': {
-      id: '/newsletter/unsubscribe/'
-      path: '/'
-      fullPath: '/newsletter/unsubscribe/'
-      preLoaderRoute: typeof NewsletterUnsubscribeIndexRouteImport
-      parentRoute: typeof NewsletterUnsubscribeRoute
-    }
-    '/relics/$gameId/$relicId': {
-      id: '/relics/$gameId/$relicId'
-      path: '/$gameId/$relicId'
-      fullPath: '/relics/$gameId/$relicId'
-      preLoaderRoute: typeof RelicsGameIdRelicIdRouteImport
-      parentRoute: typeof RelicsRoute
-    }
-    '/newsletter/unsubscribe/success': {
-      id: '/newsletter/unsubscribe/success'
-      path: '/success'
-      fullPath: '/newsletter/unsubscribe/success'
-      preLoaderRoute: typeof NewsletterUnsubscribeSuccessRouteImport
-      parentRoute: typeof NewsletterUnsubscribeRoute
-    }
-    '/newsletter/unsubscribe/error': {
-      id: '/newsletter/unsubscribe/error'
-      path: '/error'
-      fullPath: '/newsletter/unsubscribe/error'
-      preLoaderRoute: typeof NewsletterUnsubscribeErrorRouteImport
-      parentRoute: typeof NewsletterUnsubscribeRoute
-    }
-    '/newsletter/subscribe/success': {
-      id: '/newsletter/subscribe/success'
-      path: '/newsletter/subscribe/success'
-      fullPath: '/newsletter/subscribe/success'
-      preLoaderRoute: typeof NewsletterSubscribeSuccessRouteImport
+    '/newsletter/unsubscribe': {
+      id: '/newsletter/unsubscribe'
+      path: '/newsletter/unsubscribe'
+      fullPath: '/newsletter/unsubscribe'
+      preLoaderRoute: typeof NewsletterUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/newsletter/subscribe/error': {
-      id: '/newsletter/subscribe/error'
-      path: '/newsletter/subscribe/error'
-      fullPath: '/newsletter/subscribe/error'
-      preLoaderRoute: typeof NewsletterSubscribeErrorRouteImport
+    '/relics/': {
+      id: '/relics/'
+      path: '/'
+      fullPath: '/relics/'
+      preLoaderRoute: typeof RelicsIndexRouteImport
+      parentRoute: typeof RelicsRoute
+    }
+    '/side-quests/': {
+      id: '/side-quests/'
+      path: '/'
+      fullPath: '/side-quests/'
+      preLoaderRoute: typeof SideQuestsIndexRouteImport
+      parentRoute: typeof SideQuestsRoute
+    }
+    '/api/newsletter/subscribe': {
+      id: '/api/newsletter/subscribe'
+      path: '/api/newsletter/subscribe'
+      fullPath: '/api/newsletter/subscribe'
+      preLoaderRoute: typeof ApiNewsletterSubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/newsletter/unsubscribe': {
+      id: '/api/newsletter/unsubscribe'
+      path: '/api/newsletter/unsubscribe'
+      fullPath: '/api/newsletter/unsubscribe'
+      preLoaderRoute: typeof ApiNewsletterUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/main-quests/$gameId/$mapId': {
@@ -533,19 +505,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainQuestsGameIdMapIdRouteImport
       parentRoute: typeof MainQuestsRoute
     }
-    '/api/newsletter/unsubscribe': {
-      id: '/api/newsletter/unsubscribe'
-      path: '/api/newsletter/unsubscribe'
-      fullPath: '/api/newsletter/unsubscribe'
-      preLoaderRoute: typeof ApiNewsletterUnsubscribeRouteImport
+    '/newsletter/subscribe/error': {
+      id: '/newsletter/subscribe/error'
+      path: '/newsletter/subscribe/error'
+      fullPath: '/newsletter/subscribe/error'
+      preLoaderRoute: typeof NewsletterSubscribeErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/newsletter/subscribe': {
-      id: '/api/newsletter/subscribe'
-      path: '/api/newsletter/subscribe'
-      fullPath: '/api/newsletter/subscribe'
-      preLoaderRoute: typeof ApiNewsletterSubscribeRouteImport
+    '/newsletter/subscribe/success': {
+      id: '/newsletter/subscribe/success'
+      path: '/newsletter/subscribe/success'
+      fullPath: '/newsletter/subscribe/success'
+      preLoaderRoute: typeof NewsletterSubscribeSuccessRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/newsletter/unsubscribe/': {
+      id: '/newsletter/unsubscribe/'
+      path: '/'
+      fullPath: '/newsletter/unsubscribe/'
+      preLoaderRoute: typeof NewsletterUnsubscribeIndexRouteImport
+      parentRoute: typeof NewsletterUnsubscribeRoute
+    }
+    '/newsletter/unsubscribe/error': {
+      id: '/newsletter/unsubscribe/error'
+      path: '/error'
+      fullPath: '/newsletter/unsubscribe/error'
+      preLoaderRoute: typeof NewsletterUnsubscribeErrorRouteImport
+      parentRoute: typeof NewsletterUnsubscribeRoute
+    }
+    '/newsletter/unsubscribe/success': {
+      id: '/newsletter/unsubscribe/success'
+      path: '/success'
+      fullPath: '/newsletter/unsubscribe/success'
+      preLoaderRoute: typeof NewsletterUnsubscribeSuccessRouteImport
+      parentRoute: typeof NewsletterUnsubscribeRoute
+    }
+    '/relics/$gameId/$relicId': {
+      id: '/relics/$gameId/$relicId'
+      path: '/$gameId/$relicId'
+      fullPath: '/relics/$gameId/$relicId'
+      preLoaderRoute: typeof RelicsGameIdRelicIdRouteImport
+      parentRoute: typeof RelicsRoute
     }
     '/side-quests/$gameId/$mapId/$questId': {
       id: '/side-quests/$gameId/$mapId/$questId'

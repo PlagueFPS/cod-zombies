@@ -6,8 +6,10 @@ import {
 	FeedbackFormSchema,
 	NewsletterFormSchema,
 	decodeBestiarySearchParams,
+	decodeErrorPageSearchParams,
 	decodeInteractiveMapSearchParams,
 	decodeMainQuestSearchParams,
+	StandardErrorPageSchema,
 } from "@/utils/validation-schemas"
 
 const decodeNewsletter = Schema.decodeUnknownExit(NewsletterFormSchema)
@@ -78,6 +80,21 @@ describe("search param validation schemas", () => {
 				}),
 			),
 		).toBe(true)
+	})
+
+	test("defaults a missing error-page message for Effect and Standard Schema decode", () => {
+		const decoded = expectExitSuccess(decodeErrorPageSearchParams({}))
+		expect(decoded.message).toBe("Something went wrong. Please try again.")
+
+		const standard = StandardErrorPageSchema["~standard"].validate({})
+		expect(standard).toEqual({
+			value: { message: "Something went wrong. Please try again." },
+		})
+	})
+
+	test("keeps an explicit error-page message", () => {
+		const decoded = expectExitSuccess(decodeErrorPageSearchParams({ message: "Missing Token" }))
+		expect(decoded.message).toBe("Missing Token")
 	})
 
 	test("decodes interactive map include, exclude, and layer search params", () => {
