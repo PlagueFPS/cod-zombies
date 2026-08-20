@@ -1935,7 +1935,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("deathspinner", {
 		title: "Deathspinner",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		releaseDate: "2026-08-20",
 		image: "/zombies/deathspinner.webp",
 		description:
@@ -1953,7 +1953,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("web-mother", {
 		title: "Web Mother",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		releaseDate: "2026-08-20",
 		image: "/zombies/web-mother.webp",
 		description:

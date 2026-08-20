@@ -38,8 +38,8 @@ import {
 	OpengraphManifest,
 	type OpengraphKind,
 } from "@/utils/validation-schemas"
-import stylesheet from "@/globals.css?inline"
-import geistMonoCss from "@fontsource-variable/geist-mono/wght.css?inline"
+import stylesheet from "@/globals.css" with { type: "file" }
+import geistMonoCss from "@fontsource-variable/geist-mono/wght.css" with { type: "file" }
 
 /** App CSS + Geist Mono only for OG renders (Mono is not loaded on the site). */
 const ogStylesheets = [stylesheet, geistMonoCss]
@@ -362,6 +362,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
+				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				stylesheets: ogStylesheets,
 				images: [
 					{ data: mapImage, src: `${map.id}-image` },
@@ -431,6 +432,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
+				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				stylesheets: ogStylesheets,
 				images: [
 					{ data: mapImage, src: `${map.id}-image` },
@@ -786,6 +788,7 @@ export const generateZombieImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
+				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				stylesheets: ogStylesheets,
 				images: [
 					{ data: zombieImage, src: `${zombie.id}-portrait` },
@@ -983,6 +986,7 @@ export const generateRelicImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
+				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				stylesheets: ogStylesheets,
 				images: [
 					{ data: relicImage, src: `${relic.id}-portrait` },
