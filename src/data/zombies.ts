@@ -1945,7 +1945,7 @@ const ZOMBIES = new Map([
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["back-sacs", "head"],
-		elementalWeakness: ["cryo-freeze"],
+		elementalWeakness: ["dead-wire"],
 		attacks: ["bite", "lunge", "web-projectile"],
 		spawnBehavior:
 			"Deathspinners serve as the special round for Rex Infernus, and will also spawn within normal zombies in the later rounds.",
@@ -1963,7 +1963,7 @@ const ZOMBIES = new Map([
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head"],
-		elementalWeakness: ["brain-rot"],
+		elementalWeakness: ["light-mend"],
 		attacks: ["lunge", "sonic-screech", "cocoon"],
 		spawnBehavior:
 			"The Web Mother first appears on Round 16 then will appear every 3 rounds after that.",
