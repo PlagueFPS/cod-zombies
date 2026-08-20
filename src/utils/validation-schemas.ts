@@ -131,8 +131,14 @@ const TerminusCodeSchema = Schema.Struct({
 	z: Schema.FiniteFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
 })
 
+const DEFAULT_ERROR_PAGE_MESSAGE = "Something went wrong. Please try again."
+
 const ErrorPageSchema = Schema.Struct({
-	message: Schema.String,
+	message: Schema.String.pipe(
+		Schema.withDecodingDefaultKey(Effect.succeed(DEFAULT_ERROR_PAGE_MESSAGE), {
+			encodingStrategy: "omit",
+		}),
+	),
 })
 
 export type TFeedbackForm = typeof FeedbackFormSchema.Type
@@ -166,6 +172,7 @@ export const decodeBestiarySearchParams = Schema.decodeUnknownExit(BestiarySearc
 export const decodeInteractiveMapSearchParams = Schema.decodeUnknownExit(
 	InteractiveMapSearchParamsSchema,
 )
+export const decodeErrorPageSearchParams = Schema.decodeUnknownExit(ErrorPageSchema)
 export const decodeTerminusCode = Schema.decodeUnknownExit(TerminusCodeSchema)
 export const validateFeedbackForm = Schema.decodeExit(StandardFeedbackFormSchema)
 export const decodeOpengraphManifest = Schema.decodeEffect(Schema.fromJsonString(OpengraphManifest))
