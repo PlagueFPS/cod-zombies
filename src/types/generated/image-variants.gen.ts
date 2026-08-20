@@ -3197,6 +3197,7 @@ export const VARIANT_WIDTHS = {
 	"/zombies/brutus.webp": [384],
 	"/zombies/caltheris.webp": [384],
 	"/zombies/crusader-zombie.webp": [384],
+	"/zombies/deathspinner.webp": [384],
 	"/zombies/denizen.webp": [384],
 	"/zombies/destroyer.webp": [384, 1200],
 	"/zombies/disciple.webp": [384, 1200],

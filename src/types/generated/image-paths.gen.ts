@@ -501,6 +501,7 @@ export type ZombiesImagePath =
 	| "/zombies/brutus.webp"
 	| "/zombies/caltheris.webp"
 	| "/zombies/crusader-zombie.webp"
+	| "/zombies/deathspinner.webp"
 	| "/zombies/denizen.webp"
 	| "/zombies/destroyer.webp"
 	| "/zombies/disciple.webp"
