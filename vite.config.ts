@@ -1,10 +1,9 @@
 import { cloudflare } from "@cloudflare/vite-plugin"
 import mdx from "@mdx-js/rollup"
-import babel from "@rolldown/plugin-babel"
 import tailwindcss from "@tailwindcss/vite"
 import { devtools } from "@tanstack/devtools-vite"
 import { tanstackStart } from "@tanstack/react-start/plugin/vite"
-import react, { reactCompilerPreset } from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import { remarkMdxMeta } from "./src/lib/remark-mdx-meta"
 
@@ -62,10 +61,7 @@ export default defineConfig({
 				enabled: true,
 			},
 		}),
-		react(),
-		babel({
-			presets: [reactCompilerPreset()],
-		}),
+		react({ compiler: true }),
 		tailwindcss(),
 		{
 			enforce: "pre",
