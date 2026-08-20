@@ -363,7 +363,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				stylesheets: ogStylesheets,
-				persistentImages: [
+				images: [
 					{ data: mapImage, src: `${map.id}-image` },
 					{ data: siteLogo, src: "site-logo" },
 				],
@@ -432,7 +432,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				stylesheets: ogStylesheets,
-				persistentImages: [
+				images: [
 					{ data: mapImage, src: `${map.id}-image` },
 					{ data: siteLogo, src: "site-logo" },
 				],
@@ -787,7 +787,7 @@ export const generateZombieImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				stylesheets: ogStylesheets,
-				persistentImages: [
+				images: [
 					{ data: zombieImage, src: `${zombie.id}-portrait` },
 					{ data: siteLogo, src: "site-logo" },
 					{ data: mapBackdropData, src: mapBackdropSrc },
@@ -984,7 +984,7 @@ export const generateRelicImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				stylesheets: ogStylesheets,
-				persistentImages: [
+				images: [
 					{ data: relicImage, src: `${relic.id}-portrait` },
 					{ data: siteLogo, src: "site-logo" },
 					{ data: mapBackdropData, src: mapBackdropSrc },
