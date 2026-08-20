@@ -6,6 +6,7 @@ import {
 	useLayoutEffect,
 	useRef,
 	useState,
+	useSyncExternalStore,
 	type CSSProperties,
 } from "react"
 import { Button } from "@/components/ui/button"
@@ -35,18 +36,33 @@ const INDICATORS_FALLBACK_STYLE: CSSProperties = {
 export default function CustomCarousel({ children, className }: CustomCarouselProps) {
 	const rootRef = useRef<HTMLDivElement>(null)
 	const dotsPositionLockedRef = useRef(false)
-	/**
-	 * This ref avoids listing `api` on `tryLockDotsPosition` deps so its identity
-	 * stays stable while reads still see the live API.
-	 */
-	const apiRef = useRef<CarouselApi | undefined>(undefined)
 
 	const [api, setApi] = useState<CarouselApi>()
-	const [currentIndex, setCurrentIndex] = useState(0)
-	const [count, setCount] = useState(0)
 	const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>(INDICATORS_FALLBACK_STYLE)
 
-	apiRef.current = api
+	const subscribe = useCallback(
+		(onStoreChange: () => void) => {
+			if (!api) return () => {}
+			api.on("select", onStoreChange)
+			api.on("reInit", onStoreChange)
+			return () => {
+				api.off("select", onStoreChange)
+				api.off("reInit", onStoreChange)
+			}
+		},
+		[api],
+	)
+
+	const count = useSyncExternalStore(
+		subscribe,
+		() => api?.scrollSnapList().length ?? 0,
+		() => 0,
+	)
+	const currentIndex = useSyncExternalStore(
+		subscribe,
+		() => api?.selectedScrollSnap() ?? 0,
+		() => 0,
+	)
 
 	const tryLockDotsPosition = useCallback(() => {
 		if (dotsPositionLockedRef.current) return
@@ -54,7 +70,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		const root = rootRef.current
 		if (!root || count <= 1) return
 
-		const img = firstSlideImg(root, apiRef.current)
+		const img = firstSlideImg(root, api)
 		const rootRect = root.getBoundingClientRect()
 		const layout = resolveCarouselIndicatorLayout({
 			hasImage: img != null,
@@ -76,7 +92,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 			bottom: layout.bottomPx,
 			transform: "translateX(-50%)",
 		})
-	}, [count])
+	}, [api, count])
 
 	useLayoutEffect(() => {
 		if (count <= 1) return
@@ -89,7 +105,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		const root = rootRef.current
 		if (!root) return
 
-		const img = firstSlideImg(root, apiRef.current)
+		const img = firstSlideImg(root, api)
 		if (!img) {
 			tryLockDotsPosition()
 			return
@@ -111,22 +127,6 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 			img.removeEventListener("load", onReady)
 		}
 	}, [api, count, tryLockDotsPosition])
-
-	useEffect(() => {
-		if (!api) return
-
-		setCount(api.scrollSnapList().length)
-		setCurrentIndex(api.selectedScrollSnap())
-
-		const onSelect = () => {
-			setCurrentIndex(api.selectedScrollSnap())
-		}
-
-		api.on("select", onSelect)
-		return () => {
-			api.off("select", onSelect)
-		}
-	}, [api])
 
 	return (
 		<Carousel ref={rootRef} setApi={setApi} className="w-full min-w-0">

@@ -1,4 +1,4 @@
-import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useState } from "react"
+import { type DetailedHTMLProps, type HTMLAttributes } from "react"
 import { cn } from "@/lib/utils"
 
 interface CopyrightProps extends DetailedHTMLProps<
@@ -8,14 +8,8 @@ interface CopyrightProps extends DetailedHTMLProps<
 	className?: string
 }
 
-const getDate = () => new Date().getFullYear()
-
 export default function Copyright({ className }: CopyrightProps) {
-	const [year, setYear] = useState(getDate())
-
-	useEffect(() => {
-		setYear(getDate())
-	}, [])
+	const year = new Date().getFullYear()
 
 	return (
 		<div
