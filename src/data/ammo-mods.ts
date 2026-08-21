@@ -284,4 +284,21 @@ const AMMO_MODS = new Map([
 		]),
 		variants: Option.none(),
 	}),
+	makeAmmoMod("shatter-blast", {
+		title: "Shatter Blast",
+		description:
+			"Each bullet that hits a Normal or Special Enemy has a chance to create an explosion that destroys armor.",
+		image: "/ammo-mods/shatter-blast.webp",
+		augments: makeAugmentTuple([
+			"big-game-shatter-blast",
+			"blast-chain",
+			"blast-repair",
+			"blast-shield",
+			"blast-zone",
+			"blast-boost",
+			"blast-wave",
+			"blast-through",
+		]),
+		variants: Option.none(),
+	}),
 ])

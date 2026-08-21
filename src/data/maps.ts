@@ -855,12 +855,15 @@ const MAPS = new Map([
 		releaseDate: "2026-08-20",
 		description:
 			"As reality stands on the cusp of destruction, the crew face their ultimate challenge. Cleanse the Shadowsmith places of power, find the Warden’s inner sanctum, and put an end to his loathsome existence.",
-		image: "/maps/rex-infernus-preview.webp",
+		image: "/maps/rex-infernus.webp",
 		game: "black-ops-7",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		mainQuest: Option.some("content/main-quests/rex-infernus"),
-		difficulty: Option.none(),
-		estimatedTimeMins: Option.none(),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 60,
+			max: 150,
+		}),
 	}),
 ])
 

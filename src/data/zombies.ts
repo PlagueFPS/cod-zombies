@@ -180,6 +180,7 @@ const ZOMBIES = new Map([
 			"tag-der-toten",
 			"firebase-z",
 			"kowakujo",
+			"rex-infernus",
 		],
 		elementalWeakness: ["cryo-freeze"],
 		weakPoints: ["head"],
@@ -1338,7 +1339,7 @@ const ZOMBIES = new Map([
 		description:
 			"The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold War, appearing as a three-headed mutated zombie similar to the Margwa.",
 		games: ["black-ops-cold-war", "black-ops-6", "black-ops-7"],
-		maps: ["forsaken", "liberty-falls", "shattered-veil", "kowakujo"],
+		maps: ["forsaken", "liberty-falls", "shattered-veil", "kowakujo", "rex-infernus"],
 		type: "Elite",
 		speed: "Slow",
 		weakPoints: ["glowing-mouths"],
@@ -1481,6 +1482,7 @@ const ZOMBIES = new Map([
 			"reckoning",
 			"ashes-of-the-damned",
 			"paradox-junction",
+			"rex-infernus",
 		],
 		type: "Special",
 		speed: "Fast",
@@ -1684,7 +1686,7 @@ const ZOMBIES = new Map([
 		description:
 			"A tortured minion of an unknown evil, prowling the Dark Aether on all fours, usually in packs, lurking in the shadows until the moment it can strike.",
 		games: ["black-ops-7"],
-		maps: ["ashes-of-the-damned", "astra-malorum"],
+		maps: ["ashes-of-the-damned", "astra-malorum", "rex-infernus"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
