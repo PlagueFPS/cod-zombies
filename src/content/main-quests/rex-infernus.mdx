@@ -1,1 +1,494 @@
-TBD
+
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-image"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import WeaponBuildTooltip from "@/components/weapon-build-tooltip"
+import FieldUpgradeTooltip from "@/components/field-upgrade-tooltip"
+import GobbleGumTooltip from "@/components/gobblegum-tooltip"
+import PerkTooltip from "@/components/perk-tooltip"
+import AugmentTooltip from "@/components/augment-tooltip"
+import AmmoModTooltip from "@/components/ammo-mod-tooltip"
+import CustomCarousel from "@/components/custom-carousel"
+import YouTubeEmbed from "@/components/youtube-embed"
+import DravakarPuzzle from "@/components/dravakar-puzzle"
+
+## Main Quest
+This main quest has our crew travel to the **Warden's** domain to finally confront the slaver and put an end to his hold on the **Dark Aether**.
+
+## Requirements
+- Unlock Pack-a-Punch via on-screen objectives
+- Any explosive equipment or weapon
+- <AmmoModTooltip ammoModKey="shatter-blast" game="black-ops-7" />
+- <AmmoModTooltip ammoModKey="shadow-rift" game="black-ops-7" />
+
+## Recommended Loadouts
+<RichTable
+  headerCells={["Start Weapon", "Field Upgrade", "Lethal", "Tactical"]}
+  bodyRows={[
+	  <RichBodyRow alternate>
+	    <TableCell>
+	    	<WeaponBuildTooltip weaponBuildKey="sokol-545" />
+	    </TableCell>
+	    <TableCell>
+	    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+	    </TableCell>
+	    <TableCell>
+	    	Semtex
+	    </TableCell>
+	    <TableCell>
+	  		Decoy
+	    </TableCell>
+		</RichBodyRow>,
+	  <RichBodyRow>
+	    <TableCell>
+	    	<WeaponBuildTooltip weaponBuildKey="m34-novaline" />
+	    </TableCell>
+	    <TableCell>
+	    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+	    </TableCell>
+	    <TableCell>
+	    	Semtex
+	    </TableCell>
+	    <TableCell>
+	  		Decoy
+	    </TableCell>
+			</RichBodyRow>,
+	  <RichBodyRow alternate>
+		  <TableCell>
+		   	<WeaponBuildTooltip weaponBuildKey="voyak-kt-3" />
+		  </TableCell>
+		  <TableCell>
+		   	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+		  </TableCell>
+		  <TableCell>
+	   	Semtex
+		  </TableCell>
+		  <TableCell>
+				Decoy
+		  </TableCell>
+		</RichBodyRow>,
+		<RichBodyRow>
+    <TableCell>
+    	<WeaponBuildTooltip weaponBuildKey="mxr-17" />
+    </TableCell>
+    <TableCell>
+    	<FieldUpgradeTooltip fieldUpgradeKey='frenzied-guard' game="black-ops-7" />
+    </TableCell>
+    <TableCell>
+   	Semtex
+    </TableCell>
+    <TableCell>
+  		Decoy
+    </TableCell>
+  </RichBodyRow>,
+  ]}
+/>
+
+## Recommended GobbleGums
+<RichTable
+  headerCells={["Solo GobbleGums", "Co-op GobbleGums"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shields-up' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='shields-up' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='power-keg' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='power-keg' />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='kill-joy' game="black-ops-6" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='near-death-experience' game="black-ops-6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='aftertaste' />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='phoenix-up' game="black-ops-6" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='reign-drops' game="black-ops-7" />
+      </TableCell>
+      <TableCell>
+        <GobbleGumTooltip gobblegumKey='reign-drops' game="black-ops-7" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+## Step 1: Obtain the Warden's Blight
+Interact with one of the **Void Claw** pedestals to equip the tactical equipment, then head to the **Dravakar's Entrance** and grapple to the second floor above the entrance door.
+Then use an explosive weapon or equipment to blow a hole in the right wall, revealing a **Fracture of Nxyara** that you can pick up.
+
+<RichImage image="/content/rex-infernus/rex-infernus-void-claw-pedestal.webp" caption="Void Claw Pedestal" />
+<RichImage image="/content/rex-infernus/rex-infernus-fracture-of-nxyara.webp" caption="Fracture of Nxyara" />
+
+After obtaining the **Fracture of Nxyara**, head to the **Nxyara Main Chamber** and place the fracture in the pedestal on the wall above the ammo crate.
+
+<RichImage image="/content/rex-infernus/rex-infernus-nxyara-main-chamber-pedestal.webp" caption="Nxyara Main Chamber Pedestal" />
+
+After placing the **Fracture of Nxyara**, head to the **Nexus Forge** and use the **Void Claw** to grapple any purple orb floating around the map into the center area to have it
+start rotating around the fountain.
+
+<RichImage image="/content/rex-infernus/rex-infernus-purple-orb.webp" caption="Purple Orb" />
+
+Once the purple orb is rotating around the fountain, interact with the crank on the fountain like in the original **Pack-a-Punch** quest to **Surge The Nexus**, spawning the **Astral Flame**
+in one of the braziers above the fountain.
+
+<RichImage image="/content/rex-infernus/rex-infernus-astral-flame.webp" caption="Astral Flame" />
+
+Once you have the **Astral Flame**, interact with the brazier to claim it, then run to the **Nxyara Sanctuary** and fire the **Astral Flame** at the eye on the back wall to start bouncing the
+flame around the area from crystal to crystal.
+
+<RichImage image="/content/rex-infernus/rex-infernus-nxyara-sanctuary-eye.webp" caption="Nxyara Sanctuary Eye" />
+
+Once the flame is bouncing around the area, interact with another **Void Claw** pedestal and grapple the crystal to change the direction of the flame so that it hits another crystal. You're
+going to repeat this for 3 crystals until the flame hits the door in the **Nxyara Main Chamber**, revealing the **Nxyara Inner Sanctum** with a purple orb you can interact with.
+
+<RichImage image="/content/rex-infernus/rex-infernus-nxyara-inner-sanctum.webp" caption="Nxyara Inner Sanctum" />
+
+Once interacted with, the floor will collapse, revealing a lower area with a **Vine** that will periodically drain you of life until it is full. Once full, interact with the **Vine** to eat the
+fruit that grew on it, teleporting you to a fracture of the **Warden's** mind.
+
+<RichImage image="/content/rex-infernus/rex-infernus-vine-fruit.webp" caption="Vine Fruit" />
+
+> This fruit cannot spawn before **Round 8**.
+
+Once inside the fracture, there are three parts around the area you'll need to collect for the **Warden's Blight**. Below are their locations:
+
+<CustomCarousel>
+	<RichImage image="/content/rex-infernus/rex-infernus-warden-blight-bow.webp" caption="Bow - next to the body in the cave either on the far right or left of the area" />
+	<RichImage image="/content/rex-infernus/rex-infernus-warden-blight-stock.webp" caption="Stock - next to the body leaning against the rock in the middle of the area" />
+	<RichImage image="/content/rex-infernus/rex-infernus-warden-blight-handles.webp" caption="Handles - in the floorboard of the broken house either on the far left or right of the area" />
+</CustomCarousel>
+
+Once all three parts have been collected, you'll be teleported out of the fracture and back to the **Nxyara Inner Sanctum**. From here, head to the **Dravakar Sanctuary** where you'll find
+some blue text on the wall. Upon approaching or interacting with this text, you'll hear one of four phrases which reveal the order in which you need to interact with three different switches in the room.
+
+<RichImage image="/content/rex-infernus/rex-infernus-dravakar-sanctuary-text.webp" caption="Dravakar Sanctuary Text" />
+
+Depending on the phrase you hear, you'll need to interact with the switches in the area. There are three switches:
+
+<CustomCarousel>
+	<RichImage image="/content/rex-infernus/rex-infernus-dravakar-middle-switch.webp" caption="On the wall, left of the blue text on the wall" />
+	<RichImage image="/content/rex-infernus/rex-infernus-dravakar-northwest-switch.webp" caption="On the northwest wall of the area" />
+	<RichImage image="/content/rex-infernus/rex-infernus-dravakar-southeast-switch.webp" caption="On the southeast wall of the area" />
+</CustomCarousel>
+
+> These switches can be hard to see on the wall as it is very dark and the switches themselves are black.
+
+Choose the phrase that you got in your game from the selection below to reveal the number of times you need to interact with each switch:
+
+<DravakarPuzzle />
+
+Once all the switches have been interacted with, you can confirm your input by interacting with the switch on the center pillar in the **Dravakar Sanctuary**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-dravakar-sanctuary-switch.webp" caption="Confirm Switch on the center pillar" />
+
+If done correctly, the center platform will descend and your screen will flash white, revealing a hole in the ceiling that you can grapple up to using the **Void Claw**.
+Interact with the anvil to assemble the **Warden's Blight** for you to claim.
+
+<RichImage image="/content/rex-infernus/rex-infernus-wardens-blight.webp" caption="Warden's Blight" />
+
+## Step 2: Upgrade the Void Claw
+After obtaining the **Warden's Blight**, head to the **Nexus Forge** and shoot the ball stuck in the broken roof of the spawn **House**, then flip the round to spawn a symbol
+on the house.
+
+<RichImage image="/content/rex-infernus/rex-infernus-basketball.webp" caption="Basketball in the roof of the house" />
+
+After 3 more rounds, a total of four symbols should have appeared on the house and you must remember the order in which they appeared. Then, during an **Exfil** round, shoot the symbols on the house
+in the order they spawned, then activate the **Exfil**, kill the **HVT**, and take the portal to teleport back into the house.
+
+<RichImage image="/content/rex-infernus/rex-infernus-house-symbols.webp" caption="Four symbols on the house" />
+
+> You'll be given a **Pack-a-Punch** crystal when going into the house for your **Warden's Blight**, or **Pack-a-Punch** your
+> **Warden's Blight** before taking the portal, as you'll need the ability to shoot a charged shot.
+
+Once inside the house, head to the **South** window zombie spawn opposite the **Coda-9** wallbuy and shoot a charged shot of the **Warden's Blight** into it, revealing the
+**Eye of the Forge** for you to pick up.
+
+<RichImage image="/content/rex-infernus/rex-infernus-eye-of-the-forge.webp" caption="Eye of the Forge" />
+
+Afterwards, complete the lockdown by killing all the <ZombieTooltip zombieKey="doppelghast" /> and <ZombieTooltip zombieKey="ravager" /> zombies, then interact with any
+**Void Claw Pedestal** to upgrade that specific pedestal to the **Void Talon**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-void-talon.webp" caption="Void Talon" />
+
+## Step 3: Control the Nexus Forge
+After obtaining the **Void Talon**, use it to break open the three seals on the pillars surrounding **Pack-a-Punch**, then head underneath **Pack-a-Punch** and break the seals on the top
+of the surrounding walls to reveal spider-webbed cogs that you can clear with any explosive or the wonder weapon.
+
+<RichImage image="/content/rex-infernus/rex-infernus-pillar-seals.webp" caption="Pillar Seals" />
+<RichImage image="/content/rex-infernus/rex-infernus-wall-seals.webp" caption="Wall Seals" />
+
+Once all the spider webs have been cleared, head back up to **Pack-a-Punch** and turn the crank to **Surge The Nexus**, then head back downstairs and interact with the lever in the floor
+until it locks in place.
+
+<RichImage image="/content/rex-infernus/rex-infernus-lever.webp" caption="Lever" />
+
+Now you have full control over the **Nexus Forge** and can move the pillars above the **Pack-a-Punch** by interacting with the levers on them that you revealed with the **Void Talon**.
+Later on, when cleansing each temple, before you begin, you must always align all the pillars to be at the temple you want to cleanse.
+
+## Step 4: Complete the Veytharion Puzzle
+There are four cubes located around the **Veytharion Sanctuary** that can be easily seen with <PerkTooltip perkKey="death-perception" game="black-ops-7" />, but can be picked up
+regardless. Each cube can represent a different symbol each game, but their locations will always be the same. Below are the locations of the four cubes:
+
+<CustomCarousel>
+	<RichImage image="/content/rex-infernus/rex-infernus-cube-1.webp" caption="Veytharion Sanctuary - on the ground left of the puzzle itself" />
+	<RichImage image="/content/rex-infernus/rex-infernus-cube-2.webp" caption="Veytharion Main Chamber - on top of the stone column left of the GobbleGum machine" />
+	<RichImage image="/content/rex-infernus/rex-infernus-cube-3.webp" caption="Veytharion Sanctuary - on the window spawn ledge opposite the Mule Kick machine" />
+	<RichImage image="/content/rex-infernus/rex-infernus-cube-4.webp" caption="Veytharion Sanctuary - on the ledge above the window left of the Mule Kick machine" />
+</CustomCarousel>
+
+Pick up all these cubes and drop them in front of the puzzle, but don't put them in yet, as there is a very specific sequence in which you need to interact with these cubes to
+complete this puzzle. This puzzle is quite long, but the order is the same every game. Below is the exact sequence you need to follow:
+
+1. Place the **Fire Cube** in the left vertical slot in the wall
+2. Place the **Hand Cube** in the left vertical slot in the wall
+3. Place the **Water Cube** in the left vertical slot in the wall
+4. Place the **Flower Cube** in the left vertical slot in the wall
+5. Interact with the **Fire Cube** to place it in the horizontal slot in the wall
+6. Interact with the **Hand Cube** to place it in the horizontal slot in the wall
+7. Melee/Shoot the glowing circle to transfer the horizontal slot to the right side of the wall
+8. Interact with the **Fire Cube** to place it in the right vertical slot in the wall
+9. Melee/Shoot the glowing circle to transfer the horizontal slot to the left side of the wall
+10. Interact with the **Water Cube** to place it in the horizontal slot in the wall
+11. Melee/Shoot the glowing circle to transfer the horizontal slot to the right side of the wall
+12. Interact with the **Hand Cube** to place it in the right vertical slot in the wall
+13. Interact with the **Water Cube** to place it in the right vertical slot in the wall
+14. Interact with the **Fire Cube** to place it in the horizontal slot in the wall
+15. Interact with the **Hand Cube** to place it in the horizontal slot in the wall
+16. Melee/Shoot the glowing circle to transfer the horizontal slot to the left side of the wall
+17. Interact with the **Hand Cube** to place it in the left vertical slot in the wall
+18. Interact with the **Fire Cube** to place it in the left vertical slot in the wall
+19. Interact with the **Flower Cube** to place it in the horizontal slot in the wall
+20. Interact with the **Hand Cube** to place it in the horizontal slot in the wall
+21. Melee/Shoot the glowing circle to transfer the horizontal slot to the right side of the wall
+22. Interact with the **Flower Cube** to place it in the right vertical slot in the wall
+23. Melee/Shoot the glowing circle to transfer the horizontal slot to the left side of the wall
+24. Interact with the **Fire Cube** to place it in the horizontal slot in the wall
+25. Melee/Shoot the glowing circle to transfer the horizontal slot to the right side of the wall
+26. Interact with the **Hand Cube** to place it in the right vertical slot in the wall
+27. Interact with the **Fire Cube** to place it in the right vertical slot in the wall
+
+> This is a verbose step-by-step list, but the goal is to get all cubes to the right vertical slot without letting the **Fire Cube** touch the **Water Cube** or **Flower Cube**
+> since those elements don't mix.
+
+After all of those steps, the wall should reveal a **Random Perk** power-up and a fountain that will be used for later steps in the quest.
+
+## Step 5: Cleanse the Dravakar Temple
+> Before you begin, make sure to align all the pillars on the **Nexus Forge** to be in front of the **Dravakar Temple**. You'll know if you've done this correctly if the
+> channeled light is entering the mouth of the **Dravakar Head**.
+
+Equip your weapon with the <AmmoModTooltip ammoModKey="shatter-blast" game="black-ops-7" /> ammo mod and head to the **Dravakar Inner Sanctum** where you originally forged the
+**Warden's Blight**. In each corner of the room there is a shield on the wall that you'll need to trigger <AmmoModTooltip ammoModKey="shatter-blast" game="black-ops-7" /> on
+to break open the wall and reveal an item. Do this until you find the **Blacksmith's Hammer**, then pick it up.
+
+<RichImage image="/content/rex-infernus/rex-infernus-blacksmiths-hammer.webp" caption="Blacksmith's Hammer" />
+
+Once you have the **Blacksmith's Hammer**, place it inside the **Brazier** in the **Main Chamber**. Afterwards, obtain the **Astral Flame** from the **Nexus Forge** as done for the
+**Warden's Blight** quest, and shoot the flame into the **Brazier** in the **Dravakar Main Chamber**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-dravakar-main-chamber-brazier.webp" caption="Dravakar Main Chamber Brazier" />
+
+Once completed, a mist will attach to the closest zombie, which you'll need to bring to the **Titan Trap** outside of **Caltheris Passage**, activating the trap
+and killing the zombie. If done correctly, this should trigger a completion sound and deactivate the trap.
+
+<RichImage image="/content/rex-infernus/rex-infernus-white-mist-zombie.webp" caption="White Mist Zombie" />
+
+Afterwards, head back to **Dravakar Main Chamber** and interact with the square plate on the floor to get some quotes. You'll then need to take damage from a zombie for a long duration
+while on the plate to lift the plate, revealing a circular plate that you can raise by shooting a charged shot of the **Warden's Blight** to have it start channeling light.
+
+<RichImage image="/content/rex-infernus/rex-infernus-dravakar-plate.webp" caption="Square Plate" />
+
+> The <AugmentTooltip augmentKey="turtle-shell" game="black-ops-7" /> augment for <PerkTooltip perkKey="juggernog" game="black-ops-7" /> can make taking damage on the plate for
+> 15 seconds a lot easier. You can also use <FieldUpgradeTooltip fieldUpgradeKey="frenzied-guard" game="black-ops-7" /> once you start getting low on health.
+
+Shoot the circular plate to align the light so that it is beaming towards the southeast wall above the **Mystery Box** location. You'll know if it's in the right spot if you kill
+zombies and souls are starting to be collected and cracks are forming in the wall.
+
+<RichImage image="/content/rex-infernus/rex-infernus-dravakar-beam-aligned.webp" caption="Light beam aligned" />
+
+> Aligning this beam can be extremely annoying, especially while getting attacked. Shooting the outside of the plate will have a stronger directional force than shooting near the center of the plate.
+> Use this information to your advantage for more precise alignments.
+
+Once aligned, kill zombies until enough souls are collected and the wall is broken open, revealing a statue that you can shoot to start a lockdown where you must kill all the **Shadow Souls**
+that appear around the area. Once all **Shadow Souls** have been killed, shoot the statue again to end the lockdown.
+
+<RichImage image="/content/rex-infernus/rex-infernus-dravakar-statue.webp" caption="Statue to shoot to start/end lockdown" />
+
+Once completed, use the **Void Claw/Talon** to pull a purple orb underneath the head of the temple in **Dravakar Passage**, then shoot a charged shot of the **Warden's Blight**
+to raise the orb into the head.
+
+<RichImage image="/content/rex-infernus/rex-infernus-dravakar-orb.webp" caption="Raised orb in the head of Dravakar" />
+
+Once the orb is in the head, it needs to be raining. If it's not raining, head to the fountain revealed by the **Veytharion Puzzle** and interact with it; this will trigger rain on the next
+round. Once raining, shoot an **Astral Flame** directly at the orb on the head to strike it with lightning, cleansing the entire **Dravakar Temple**.
+
+## Step 6: Cleanse the Nxyara Temple
+> Before you begin, make sure to align all the pillars on the **Nexus Forge** to be in front of the **Nxyara Temple**. You'll know if you've done this correctly if the
+> channeled light is entering the mouth of the **Nxyara Head**.
+
+Equip your weapon with the <AmmoModTooltip ammoModKey="shadow-rift" game="black-ops-7" /> ammo mod, then interact with the fruit from the **Vine** in **Nxyara Inner Sanctum** to
+head back into the fractured forest, where you'll need to get repeated <AmmoModTooltip ammoModKey="shadow-rift" game="black-ops-7" /> kills until one of the zombies drops the
+scroll for you to pick up.
+
+<RichImage image="/content/rex-infernus/rex-infernus-scroll.webp" caption="Scroll" />
+
+Once you have the scroll, place it in the **Brazier** in the **Nxyara Main Chamber**, then obtain another **Astral Flame** and ignite the **Brazier** with the flame. This will
+again put a white mist on a nearby zombie that you'll need to kill with the **Titan Trap**, this time outside of **Veytharion Passage**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-nxyara-main-chamber-brazier.webp" caption="Nxyara Main Chamber Brazier" />
+
+Once killed, head to the **Nxyara Main Chamber** and interact with the square plate on the ground to get some quotes, then go prone on the plate for 15 seconds to move it and reveal
+another circular plate that you can shoot with the charged shot of the **Warden's Blight** to raise up.
+
+<RichImage image="/content/rex-infernus/rex-infernus-nxyara-square-plate.webp" caption="Square Plate" />
+
+Shoot this plate to align the light so that it is pointing down on the wall near the lava pit, then begin killing zombies to feed it souls, breaking open the wall and revealing
+another statue that you can shoot to begin a lockdown where you'll need to kill more **Shadow Souls**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-nxyara-beam-aligned.webp" caption="Light beam aligned" />
+<RichImage image="/content/rex-infernus/rex-infernus-nxyara-statue.webp" caption="Statue to shoot to start/end lockdown" />
+
+Once completed, use the **Void Claw/Talon** to pull a purple orb underneath the head of the temple in **Nxyara Passage**, and repeat the same steps done for the **Dravakar Temple**.
+
+## Step 7: Cleanse the Caltheris Temple
+> Before you begin, make sure to align all the pillars on the **Nexus Forge** to be in front of the **Caltheris Temple**. You'll know if you've done this correctly if the
+> channeled light is entering the mouth of the **Caltheris Head**.
+
+You'll first need to obtain a **Shimmering Thread**. This thread can be obtained by grappling purple orbs close to you, then interacting with them to get rewards, one of which will be this
+**Shimmering Thread** for you to collect.
+
+<RichImage image="/content/rex-infernus/rex-infernus-shimmering-thread.webp" caption="Shimmering Thread (zombie died off the map in this image sadly)" />
+
+Once you have the **Shimmering Thread**, place it in the **Brazier** in the **Caltheris Main Chamber**, then obtain another **Astral Flame** and ignite the **Brazier**
+with the flame. This will again put a mist on a nearby zombie that you'll need to kill with the **Titan Trap**, this time outside of **Caltheris Passage**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-caltheris-main-chamber-brazier.webp" caption="Caltheris Main Chamber Brazier" />
+
+Once killed, head to the **Caltheris Main Chamber** and interact with the square plate on the ground to get some quotes, then ADS while on the plate for 15 seconds to move it
+and reveal another circular plate that you can shoot with the charged shot of the **Warden's Blight** to raise up.
+
+<RichImage image="/content/rex-infernus/rex-infernus-caltheris-square-plate.webp" caption="Square Plate" />
+
+Shoot this plate to align the light so that it is pointing at the northeast wall, then begin killing zombies to feed it souls, breaking open the wall and revealing
+another statue that you can shoot to begin a lockdown where you'll need to kill more **Shadow Souls**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-caltheris-beam-aligned.webp" caption="Light beam aligned" />
+<RichImage image="/content/rex-infernus/rex-infernus-caltheris-statue.webp" caption="Statue to shoot to start/end lockdown" />
+
+Once completed, use the **Void Claw/Talon** to pull a purple orb underneath the head of the temple in **Caltheris Passage**, then shoot a charged shot of the **Warden's Blight**
+to raise the orb into the head.
+
+<RichImage image="/content/rex-infernus/rex-infernus-caltheris-orb.webp" caption="Raised orb in the head of Caltheris" />
+
+Once the orb is in the head, it needs to be raining. If it's not raining, head to the fountain revealed by the **Veytharion Puzzle** and interact with it; this will trigger rain on the next
+round. Once raining, shoot an **Astral Flame** directly at the orb on the head to strike it with lightning, cleansing the entire **Caltheris Temple**.
+
+## Step 8: Cleanse the Veytharion Temple
+> Before you begin, make sure to align all the pillars on the **Nexus Forge** to be in front of the **Veytharion Temple**. You'll know if you've done this correctly if the
+> channeled light is entering the mouth of the **Veytharion Head**.
+
+You'll first need to obtain the **Woven Sash**. This item can only be obtained when it is raining and has three potential spawn locations, all of which require you to jump off
+the map to obtain. Below are the spawns:
+
+<CustomCarousel>
+	<RichImage image="/content/rex-infernus/rex-infernus-woven-sash-first-spawn.webp" caption="Ruinas Insula - on the ledge behind the Mystery Box off the map" />
+	<RichImage image="/content/rex-infernus/rex-infernus-woven-sash-second-spawn.webp" caption="Spira Insula - at the bottom of the platform when coming from Nxyara Sanctuary off the map" />
+	<RichImage image="/content/rex-infernus/rex-infernus-woven-sash-third-spawn.webp" caption="Aranea Insula - on the northwest ledge off the map" />
+</CustomCarousel>
+
+> If you can't find the **Woven Sash** in any of the locations, go one round without rain then turn the rain back on for the next round and try again.
+
+Once you have the **Woven Sash**, place it in the **Brazier** in the **Veytharion Main Chamber**, then obtain another **Astral Flame** and ignite the **Brazier**
+with the flame. This will again put a mist on a nearby zombie that you'll need to kill with the **Titan Trap**, this time outside of **Veytharion Passage**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-veytharion-main-chamber-brazier.webp" caption="Veytharion Main Chamber Brazier" />
+
+Once killed, head to the **Veytharion Main Chamber** and interact with the square plate on the ground to get some quotes, then jump on the plate for 15 seconds to move it
+and reveal another circular plate that you can shoot with the charged shot of the **Warden's Blight** to raise up.
+
+<RichImage image="/content/rex-infernus/rex-infernus-veytharion-square-plate.webp" caption="Square Plate" />
+
+Shoot this plate to align the light so that it is pointing at the west wall, then begin killing zombies to feed it souls, breaking open the wall and revealing
+another statue that you can shoot to begin a lockdown where you'll need to kill more **Shadow Souls**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-veytharion-beam-aligned.webp" caption="Light beam aligned" />
+
+> This lockdown will spawn an <ZombieTooltip zombieKey="abomination" />
+
+Once completed, use the **Void Claw/Talon** to pull a purple orb underneath the head of the temple in **Veytharion Passage**, then shoot a charged shot of the **Warden's Blight**
+to raise the orb into the head.
+
+<RichImage image="/content/rex-infernus/rex-infernus-veytharion-orb.webp" caption="Raised orb in the head of Veytharion" />
+
+Once the orb is in the head, it needs to be raining. If it's not raining, head to the fountain revealed by the **Veytharion Puzzle** and interact with it; this will trigger rain on the next
+round. Once raining, shoot an **Astral Flame** directly at the orb on the head to strike it with lightning, cleansing the entire **Veytharion Temple**.
+
+## Step 9: Defeat the Warden
+> Ensure you are fully prepared and geared before entering this boss fight, and definitely make sure you have a healthy amount of points (near 50k) to continuously buy ammo, as
+> it can be a problem during this fight, especially if you are not using **GobbleGums**.
+
+Head down to the **Nexus Core** underneath the **Pack-a-Punch**. Each player must stand in one of the four circles and interact to descend into the boss arena.
+
+<RichImage image="/content/rex-infernus/rex-infernus-boss-fight-entrance.webp" caption="Boss fight entrance" />
+
+## Phase 1
+During this phase, you'll need to destroy the floating purple skulls which grant armor to the **Warden**. Once those skulls are destroyed, a new crit spot on the tip of the
+**Warden's Tail** will be available for you to shoot with your ranged bullet weapon to deal massive damage.
+
+<RichImage image="/content/rex-infernus/rex-infernus-phase-1.webp" caption="Phase 1" />
+
+> I highly recommend using the **Warden's Blight** to destroy the skulls and **Shadow Souls** in this fight while saving your bullet weapon ammo for boss damage.
+
+Repeat this until the **Warden** becomes immune. Once immune, you'll need to destroy some **Shadow Souls** which will spawn around the outside of the arena.
+
+## Phase 2
+During this phase, there will now be **Warden Stingers** summoned around the arena, which don't deal much damage but can be annoying and take up play space. The rest of the phase
+is identical to phase 1, where you'll want to destroy the skulls and **Shadow Souls** to reveal the crit spot to deal massive damage to the **Warden**.
+
+<RichImage image="/content/rex-infernus/rex-infernus-phase-2.webp" caption="Phase 2" />
+
+> These **Warden Stingers** should eventually be taken out, as if enough of them are in the play area at once during later stages of the fight, they can combine together to deal a massive
+> wiping attack that will kill everyone.
+
+At some point during this phase, you will be put in jail by the **Warden** with either an **HVT** you'll have to kill, or you will just have to survive for a given amount of time. If you survive,
+you will be given some type of buff for a duration of the fight.
+
+## Phase 3 & 4
+The rest of these phases are not any different mechanically, just more zombies and a more aggressive **Warden**. You'll have to play more carefully and really be on top of the
+**Warden Stingers** to ensure they cannot perform the wipe attack, while continuously focusing on the **Shadow Souls** and purple skulls to get rid of the armor from the **Warden** and
+reveal that massive crit spot.
+
+<RichImage image="/content/rex-infernus/rex-infernus-final-phases.webp" caption="Final Phases" />
+
+Once you have done enough damage to the **Warden** (twice), you will have defeated him, triggering the ending cutscene and completing the **Rex Infernus** main quest.
+
+<RichImage image="/content/rex-infernus/rex-infernus-ending.webp" caption="Ending Cutscene" />
+
+Congratulations! You have completed the **Rex Infernus** main quest.
+
+## Video Guides
+
+### Guide by MrDalekJD
+<YouTubeEmbed videoLink="https://youtu.be/8-94y3NsWtc?si=V7FFNuZBga_Rihag" />
+
+### Guide by ZoneX
+<YouTubeEmbed videoLink="https://youtu.be/p8mN0_BOGFE?si=hmO5FCq_XNnpt6qi" />

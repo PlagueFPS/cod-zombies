@@ -293,4 +293,10 @@ const WEAPON_BUILDS = new Map([
 		attachments: Option.none(),
 		buildCode: Option.some("R03-5XMTQ-U1SU5-1"),
 	}),
+	makeWeaponBuild("sokol-545", {
+		title: "Sokol 545",
+		image: "/weapons/sokol-545.webp",
+		attachments: Option.none(),
+		buildCode: Option.some("L04-2JEWS-ZSMZI-GN11"),
+	}),
 ])
