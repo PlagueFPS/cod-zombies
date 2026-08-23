@@ -862,7 +862,7 @@ const MAPS = new Map([
 		difficulty: Option.some("Hard"),
 		estimatedTimeMins: Option.some({
 			min: 60,
-			max: 150,
+			max: 180,
 		}),
 	}),
 ])
