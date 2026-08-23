@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-14T12:21:39.374Z
- * generated in: 33ms
+ * generated at: 2026-08-23T13:37:39.137Z
+ * generated in: 26ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -416,6 +416,7 @@ export type ZombiesPaths =
 	| "content/zombies/valkyrie-drone"
 	| "content/zombies/vermin"
 	| "content/zombies/veytharion"
+	| "content/zombies/warden"
 	| "content/zombies/water-catalyst"
 	| "content/zombies/web-mother"
 	| "content/zombies/werewolf"
