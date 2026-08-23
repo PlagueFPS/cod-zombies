@@ -670,4 +670,15 @@ const ZOMBIE_ATTACKS = new Map([
 		range: "Short",
 		description: "Cocoons zombies, transforming them into environmental hazards.",
 	}),
+	makeZombieAttack("dash", {
+		title: "Dash",
+		range: "Long",
+		description: "Repeatedly dashes towards the targeted player no matter the distance.",
+	}),
+	makeZombieAttack("saucers", {
+		title: "Saucers",
+		range: "Medium",
+		description:
+			"Summons a red saucer or multiple that track players while raining down projectiles.",
+	}),
 ])

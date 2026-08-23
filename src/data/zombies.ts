@@ -1971,6 +1971,24 @@ const ZOMBIES = new Map([
 			"The Web Mother first appears on Round 16 then will appear every 3 rounds after that.",
 		combatStrategy: "content/zombies/web-mother",
 	}),
+	makeZombie("warden", {
+		title: "Warden",
+		state: Option.some("New"),
+		releaseDate: "2026-08-20",
+		image: "/zombies/the-warden.webp",
+		description:
+			"A former soldier of the Confederacy who later comes into contact with the Dark Aether and is bestowed powers strong enough to rule the realm.",
+		games: ["black-ops-7"],
+		maps: ["rex-infernus"],
+		type: "Boss",
+		speed: "Fast",
+		weakPoints: ["red-glowing-spots"],
+		elementalWeakness: [],
+		attacks: ["dash", "melee-swing", "saucers"],
+		spawnBehavior:
+			"The Warden is the final boss fight of the Rex Infernus main quest and does not make any appearance until the final encounter.",
+		combatStrategy: "content/zombies/warden",
+	}),
 ])
 
 const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<ZombieKey, number>(
