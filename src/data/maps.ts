@@ -859,7 +859,7 @@ const MAPS = new Map([
 		game: "black-ops-7",
 		state: Option.some("New"),
 		mainQuest: Option.some("content/main-quests/rex-infernus"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		estimatedTimeMins: Option.some({
 			min: 60,
 			max: 150,
