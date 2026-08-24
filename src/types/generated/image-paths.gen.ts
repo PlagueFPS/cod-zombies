@@ -370,7 +370,7 @@ export type MapsImagePath =
 	| "/maps/paradox-junction.webp"
 	| "/maps/reckoning.webp"
 	| "/maps/revelations.webp"
-	| "/maps/rex-infernus.webp"
+	| "/maps/rex-infernus-v1.webp"
 	| "/maps/shadows-of-evil.webp"
 	| "/maps/shangri-la.webp"
 	| "/maps/shattered-veil.webp"
