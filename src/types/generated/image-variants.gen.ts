@@ -3217,7 +3217,7 @@ export const VARIANT_WIDTHS = {
 	"/maps/paradox-junction.webp": [384, 1200],
 	"/maps/reckoning.webp": [384, 1200],
 	"/maps/revelations.webp": [384],
-	"/maps/rex-infernus.webp": [384, 1200],
+	"/maps/rex-infernus-v1.webp": [384, 1200],
 	"/maps/shadows-of-evil.webp": [384, 1200],
 	"/maps/shangri-la.webp": [384],
 	"/maps/shattered-veil.webp": [384, 1200],
