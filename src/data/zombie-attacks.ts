@@ -681,4 +681,15 @@ const ZOMBIE_ATTACKS = new Map([
 		description:
 			"Summons a red saucer or multiple that track players while raining down projectiles.",
 	}),
+	makeZombieAttack("shadow-shield", {
+		title: "Shadow Shield",
+		range: "Short",
+		description: "Shields the Warden and the Shadowsmith temples from purification.",
+	}),
+	makeZombieAttack("poison-projectile", {
+		title: "Poison Projectile",
+		range: "Medium",
+		description:
+			"Shoots a poison projectile from the tip of the stinger, inflicting damage over time on hit players.",
+	}),
 ])

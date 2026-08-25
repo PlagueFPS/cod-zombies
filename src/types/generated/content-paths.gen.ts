@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-23T13:37:39.137Z
- * generated in: 26ms
+ * generated at: 2026-08-25T20:47:08.830Z
+ * generated in: 23ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -343,6 +343,7 @@ export type ZombiesPaths =
 	| "content/zombies/doppelghast"
 	| "content/zombies/dragon"
 	| "content/zombies/dravakar"
+	| "content/zombies/dread-skull"
 	| "content/zombies/elder-disciple"
 	| "content/zombies/eye-of-malice"
 	| "content/zombies/fire-catalyst"
@@ -394,6 +395,7 @@ export type ZombiesPaths =
 	| "content/zombies/sam"
 	| "content/zombies/scorched-zombie"
 	| "content/zombies/sentinel-artifact"
+	| "content/zombies/shadow-soul"
 	| "content/zombies/shadow-werewolf"
 	| "content/zombies/shock-mimic"
 	| "content/zombies/shrieker-zombie"
@@ -417,6 +419,7 @@ export type ZombiesPaths =
 	| "content/zombies/vermin"
 	| "content/zombies/veytharion"
 	| "content/zombies/warden"
+	| "content/zombies/wardens-stinger"
 	| "content/zombies/water-catalyst"
 	| "content/zombies/web-mother"
 	| "content/zombies/werewolf"
