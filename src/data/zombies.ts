@@ -1965,7 +1965,7 @@ const ZOMBIES = new Map([
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head"],
-		elementalWeakness: ["light-mend"],
+		elementalWeakness: ["light-mend", "shadow-rift"],
 		attacks: ["lunge", "sonic-screech", "cocoon"],
 		spawnBehavior:
 			"The Web Mother first appears on Round 16 then will appear every 3 rounds after that.",
