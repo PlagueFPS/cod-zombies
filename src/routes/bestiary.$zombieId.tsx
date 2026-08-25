@@ -332,42 +332,48 @@ function ZombieInfo() {
 							<h3 className="text-xl font-bold">Attacks</h3>
 						</div>
 						<div className="space-y-4">
-							{zombie.attacks.map(attackKey => {
-								const attack = getZombieAttackByKey(attackKey)
-								if (Option.isNone(attack)) return null
+							{Arr.isArrayNonEmpty(zombie.attacks) ? (
+								zombie.attacks.map(attackKey => {
+									const attack = getZombieAttackByKey(attackKey)
+									if (Option.isNone(attack)) return null
 
-								return (
-									<div
-										key={attackKey}
-										className={cn("rounded-lg border-2 p-3", {
-											"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
-												attack.value.range === "Short",
-											"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
-												attack.value.range === "Medium",
-											"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
-												attack.value.range === "Long",
-										})}
-									>
-										<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
-											<h4
-												className={cn("font-semibold", {
-													"text-teal-600 dark:text-teal-300": attack.value.range === "Short",
-													"text-yellow-700 dark:text-yellow-200": attack.value.range === "Medium",
-													"text-red-600 dark:text-red-300": attack.value.range === "Long",
-												})}
-											>
-												{attack.value.title}
-											</h4>
-											<div className="flex flex-wrap gap-1">
-												<RangeBadge range={attack.value.range} />
+									return (
+										<div
+											key={attackKey}
+											className={cn("rounded-lg border-2 p-3", {
+												"border-teal-600/30 shadow-teal-600 dark:border-teal-300/30 dark:shadow-teal-300":
+													attack.value.range === "Short",
+												"border-yellow-600/30 shadow-yellow-600 dark:border-yellow-300/30 dark:shadow-yellow-300":
+													attack.value.range === "Medium",
+												"border-red-600/30 shadow-red-600 dark:border-red-300/30 dark:shadow-red-300":
+													attack.value.range === "Long",
+											})}
+										>
+											<div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+												<h4
+													className={cn("font-semibold", {
+														"text-teal-600 dark:text-teal-300": attack.value.range === "Short",
+														"text-yellow-700 dark:text-yellow-200": attack.value.range === "Medium",
+														"text-red-600 dark:text-red-300": attack.value.range === "Long",
+													})}
+												>
+													{attack.value.title}
+												</h4>
+												<div className="flex flex-wrap gap-1">
+													<RangeBadge range={attack.value.range} />
+												</div>
 											</div>
+											<CardDescription className="text-foreground dark:text-foreground/80">
+												{attack.value.description}
+											</CardDescription>
 										</div>
-										<CardDescription className="text-foreground dark:text-foreground/80">
-											{attack.value.description}
-										</CardDescription>
-									</div>
-								)
-							})}
+									)
+								})
+							) : (
+								<CardDescription className="text-foreground dark:text-foreground/80">
+									This enemy has no attacks.
+								</CardDescription>
+							)}
 						</div>
 					</CardContent>
 				</Card>
