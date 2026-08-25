@@ -6,6 +6,9 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import { remarkMdxMeta } from "./src/lib/remark-mdx-meta"
+import { SITE_ORIGIN } from "./src/utils/constants"
+
+const siteOrigin = new URL(SITE_ORIGIN)
 
 /**
  * Published maps reference paths outside the package or omit sources; Vite then
@@ -59,6 +62,12 @@ export default defineConfig({
 		tanstackStart({
 			prerender: {
 				enabled: true,
+				// Vite preview binds 127.0.0.1:0 during prerender; forwarded host
+				// headers keep og:image / canonical URLs on the public origin.
+				headers: {
+					"x-forwarded-host": siteOrigin.host,
+					"x-forwarded-proto": siteOrigin.protocol.replace(":", ""),
+				},
 			},
 		}),
 		react({ compiler: true }),
