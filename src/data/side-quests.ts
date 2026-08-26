@@ -1756,6 +1756,14 @@ const SIDE_QUESTS = new Map([
 		map: "kowakujo",
 		content: "content/side-quests/par-course",
 	}),
+	makeQuest("skull-mask", {
+		state: Option.some("New"),
+		title: "Skull Mask",
+		description:
+			"Learn how to obtain the Skull Mask, providing you with an additional Ammo Mod that summons the Twins for a short duration.",
+		map: "rex-infernus",
+		content: "content/side-quests/skull-mask",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
