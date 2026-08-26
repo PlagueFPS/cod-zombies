@@ -1764,6 +1764,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/skull-mask",
 	}),
+	makeQuest("horned-mask", {
+		state: Option.some("New"),
+		title: "Horned Mask",
+		description:
+			'Learn how to obtain the Horned Mask, providing abilities similar to the Black Ops 4 perk "Stone Cold Stronghold"',
+		map: "rex-infernus",
+		content: "content/side-quests/horned-mask",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
