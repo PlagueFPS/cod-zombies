@@ -2160,6 +2160,8 @@ export const VARIANT_WIDTHS = {
   '/content/rex-infernus/rex-infernus-eye-of-the-forge.webp': [384, 1200],
   '/content/rex-infernus/rex-infernus-final-phases.webp': [384, 1200],
   '/content/rex-infernus/rex-infernus-fracture-of-nxyara.webp': [384, 1200],
+  '/content/rex-infernus/rex-infernus-horned-mask-painting.webp': [384, 1200],
+  '/content/rex-infernus/rex-infernus-horned-mask.webp': [384, 1200],
   '/content/rex-infernus/rex-infernus-house-symbols.webp': [384, 1200],
   '/content/rex-infernus/rex-infernus-lever.webp': [384, 1200],
   '/content/rex-infernus/rex-infernus-nxyara-beam-aligned.webp': [384, 1200],
