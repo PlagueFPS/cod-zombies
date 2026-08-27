@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-26T16:21:05.484Z
- * generated in: 26ms
+ * generated at: 2026-08-27T16:45:14.269Z
+ * generated in: 31ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -318,6 +318,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/vending-machine-reckoning"
 	| "content/side-quests/viking-funeral"
 	| "content/side-quests/war-hero"
+	| "content/side-quests/wardens-hat"
 	| "content/side-quests/whack-a-crab"
 	| "content/side-quests/where-are-we-going-remix"
 	| "content/side-quests/wishing-well"
