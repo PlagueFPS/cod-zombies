@@ -306,6 +306,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/turn-to-ashes"
 	| "content/side-quests/tv-jumpscare"
 	| "content/side-quests/twins"
+	| "content/side-quests/uber-klaus-helmet"
 	| "content/side-quests/underwater-crates"
 	| "content/side-quests/upgraded-lil-arnies"
 	| "content/side-quests/upgraded-monkey-bombs"
