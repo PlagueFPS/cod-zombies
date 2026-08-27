@@ -1780,6 +1780,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/uber-klaus-helmet",
 	}),
+	makeQuest("wardens-hat", {
+		state: Option.some("New"),
+		title: "Warden's Hat",
+		description:
+			"Learn how to obtain the Warden's Hat, granting you complete immunity to all web effects from Deathspinners and the Web Mother.",
+		map: "rex-infernus",
+		content: "content/side-quests/wardens-hat",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(

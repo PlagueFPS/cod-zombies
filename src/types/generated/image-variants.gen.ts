@@ -2284,6 +2284,7 @@ export const VARIANT_WIDTHS = {
 	"/content/rex-infernus/rex-infernus-warden-blight-handles.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-warden-blight-stock.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-wardens-blight.webp": [384, 1200],
+	"/content/rex-infernus/rex-infernus-wardens-hat.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-white-mist-zombie.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-woven-sash-first-spawn.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-woven-sash-second-spawn.webp": [384, 1200],
