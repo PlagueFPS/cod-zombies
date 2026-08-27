@@ -1772,6 +1772,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/horned-mask",
 	}),
+	makeQuest("uber-klaus-helmet", {
+		state: Option.some("New"),
+		title: "Uber Klaus Helmet",
+		description:
+			"Learn how to obtain the Uber Klaus Helmet, extending the duration of all grapples by 30 seconds.",
+		map: "rex-infernus",
+		content: "content/side-quests/uber-klaus-helmet",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
