@@ -2223,6 +2223,8 @@ export const VARIANT_WIDTHS = {
 	"/content/rex-infernus/rex-infernus-caltheris-orb.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-caltheris-square-plate.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-caltheris-statue.webp": [384, 1200],
+	"/content/rex-infernus/rex-infernus-corrupted-weapons-glow.webp": [384, 1200],
+	"/content/rex-infernus/rex-infernus-corrupted-weapons-unstable-weapon.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-cube-1.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-cube-2.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-cube-3.webp": [384, 1200],
