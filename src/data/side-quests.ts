@@ -1796,6 +1796,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/dance-off",
 	}),
+	makeQuest("corrupted-weapons", {
+		state: Option.some("New"),
+		title: "Corrupted Weapons",
+		description:
+			"Learn how to obtain Ultra Rarity Corrupted Olympia or TR2 guaranteed in your game.",
+		map: "rex-infernus",
+		content: "content/side-quests/corrupted-weapons",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
