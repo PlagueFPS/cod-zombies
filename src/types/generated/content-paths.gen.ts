@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-27T16:45:14.269Z
- * generated in: 31ms
+ * generated at: 2026-08-28T17:16:42.355Z
+ * generated in: 22ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -127,6 +127,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/come-back-down"
 	| "content/side-quests/cooking-fish"
 	| "content/side-quests/cursed-talisman"
+	| "content/side-quests/dance-off"
 	| "content/side-quests/dark-aether-bunny"
 	| "content/side-quests/dead-again"
 	| "content/side-quests/dead-ended"

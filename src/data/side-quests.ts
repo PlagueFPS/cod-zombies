@@ -1788,6 +1788,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/wardens-hat",
 	}),
+	makeQuest("dance-off", {
+		state: Option.some("New"),
+		title: "Dance Off",
+		description:
+			"Discover Mister Peeks' dance off and complete the dance challenge to earn potentially valuable rewards.",
+		map: "rex-infernus",
+		content: "content/side-quests/dance-off",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
