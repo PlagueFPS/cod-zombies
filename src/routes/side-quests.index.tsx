@@ -137,6 +137,7 @@ export const Route = createFileRoute("/side-quests/")({
 				property: "twitter:image",
 				content: `${loaderData?.serverUrl}/opengraph-images/opengraph-side-quests.png`,
 			},
+			{ property: "twitter:card", content: "summary_large_image" },
 		],
 		links: [{ rel: "canonical", href: `${loaderData?.serverUrl}/side-quests` }],
 	}),
