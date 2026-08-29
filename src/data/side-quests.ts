@@ -1804,6 +1804,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/corrupted-weapons",
 	}),
+	makeQuest("all-we-are", {
+		state: Option.some("New"),
+		title: "All We Are",
+		description:
+			'Discover the hidden music easter egg song "All We Are" by Kevin Sherwood with vocals by Elena Siegman.',
+		map: "rex-infernus",
+		content: "content/side-quests/all-we-are",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(

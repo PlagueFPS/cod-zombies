@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-28T17:49:00.894Z
- * generated in: 24ms
+ * generated at: 2026-08-29T17:02:40.431Z
+ * generated in: 22ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -99,6 +99,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/aether-blade"
 	| "content/side-quests/aetherella-companion"
 	| "content/side-quests/aetherella-superhero"
+	| "content/side-quests/all-we-are"
 	| "content/side-quests/all-zombie-songs"
 	| "content/side-quests/alone"
 	| "content/side-quests/amoeba"
