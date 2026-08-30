@@ -27,9 +27,12 @@ const MAX_QUALITY = 80
 const DEFAULT_MAX_WIDTH = 1920
 const PREVIEW_WIDTH = 640
 const MAP_WIDTH = 2048
+export const ICON_LARGE_SIZE = 256
+export const ICON_SMALL_SIZE = 128
 
 export type EncodeWebpOptions = {
 	readonly withoutEnlargement?: boolean
+	readonly height?: number
 }
 
 export function encodeWebp(
@@ -41,11 +44,15 @@ export function encodeWebp(
 	if (width !== undefined) {
 		pipeline = pipeline.resize({
 			width,
+			height: options?.height,
 			withoutEnlargement: options?.withoutEnlargement ?? true,
 		})
 	}
 	return pipeline.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer()
 }
+
+export const getIconTargetSize = (sourceWidth: number): number =>
+	sourceWidth >= ICON_LARGE_SIZE ? ICON_LARGE_SIZE : ICON_SMALL_SIZE
 
 const dirOption = Flag.directory("output-dir").pipe(
 	Flag.withAlias("o"),
@@ -68,6 +75,13 @@ const previewFlag = Flag.boolean("preview").pipe(
 const mapFlag = Flag.boolean("map").pipe(
 	Flag.optional,
 	Flag.withDescription("Resize images to 2048px width with no variants, without upscaling."),
+)
+
+const iconFlag = Flag.boolean("icon").pipe(
+	Flag.optional,
+	Flag.withDescription(
+		"Resize images to 256x256 if wider than or equal to 256px, or 128x128 if narrower, with no variants.",
+	),
 )
 
 const encodeWebpEffect = Effect.fnUntraced(function* (
@@ -98,18 +112,20 @@ const ensureDirectory = Effect.fnUntraced(function* (dir: string) {
 	)
 })
 
-export type OptimizeMode = "default" | "preview" | "map"
+export type OptimizeMode = "default" | "preview" | "map" | "icon"
 
 export type OptimizeCliOptions = {
 	readonly dir: string
 	readonly source: string
 	readonly preview: Option.Option<boolean>
 	readonly map: Option.Option<boolean>
+	readonly icon: Option.Option<boolean>
 }
 
 export const getOptimizeMode = (args: OptimizeCliOptions): OptimizeMode => {
 	if (Option.contains(args.preview, true)) return "preview"
 	if (Option.contains(args.map, true)) return "map"
+	if (Option.contains(args.icon, true)) return "icon"
 	return "default"
 }
 
@@ -130,9 +146,19 @@ export const requireImageWidth = (
 
 export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 	Effect.gen(function* () {
-		if (Option.contains(args.preview, true) && Option.contains(args.map, true)) {
+		const enabledExclusiveFlags = (
+			[
+				["--preview", args.preview],
+				["--map", args.map],
+				["--icon", args.icon],
+			] as const
+		)
+			.filter(([, flag]) => Option.contains(flag, true))
+			.map(([name]) => name)
+
+		if (enabledExclusiveFlags.length > 1) {
 			return yield* new ImageOptimizationError({
-				message: "Cannot use --preview and --map together.",
+				message: `Cannot use ${enabledExclusiveFlags.join(" and ")} together.`,
 				cause: args,
 			})
 		}
@@ -194,6 +220,13 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 								withoutEnlargement: true,
 							}),
 						),
+						Match.when("icon", () => {
+							const iconSize = getIconTargetSize(sourceWidth)
+							return encodeWebpEffect(image, relativeAsset, iconSize, {
+								withoutEnlargement: false,
+								height: iconSize,
+							})
+						}),
 						Match.orElse(() =>
 							encodeWebpEffect(image, relativeAsset, DEFAULT_MAX_WIDTH, {
 								withoutEnlargement: true,
@@ -251,6 +284,7 @@ export const optimizeCommand = Command.make(
 		source: sourceOption,
 		preview: previewFlag,
 		map: mapFlag,
+		icon: iconFlag,
 	},
 	(args: OptimizeCliOptions) =>
 		optimizeAssetsEffect(args).pipe(

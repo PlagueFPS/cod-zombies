@@ -28,6 +28,8 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 				}
 
 				switch (marker.id) {
+					case "void-claw-pedestal":
+						return Math.floor(settings.markers.iconSize * 1.75)
 					case "shovel":
 					case "aether-plant-spray":
 						return Math.floor(settings.markers.iconSize * 1.5)

@@ -199,6 +199,52 @@ export const config: MapConfig = {
 					locations: [{ x: 0.171, y: 0.659 }],
 				},
 				{
+					id: "dig-spot",
+					category: "objectives",
+					title: "Dig Spot",
+					description:
+						"Use the Void Claw to dig up dig spots for random rewards including Salvage, Ammo, Equipment, and more. You can also pull in Purple Orbs into the Dig Spots to increase the value of the rewards.",
+					icon: Option.some("/icons/objectives/dig-site.webp"),
+					locations: [
+						{ x: 0.842, y: 0.424 },
+						{ x: 0.828, y: 0.409 },
+						{ x: 0.857, y: 0.392 },
+						{ x: 0.616, y: 0.276 },
+						{ x: 0.651, y: 0.202 },
+						{ x: 0.565, y: 0.179 },
+						{ x: 0.255, y: 0.368 },
+						{ x: 0.207, y: 0.444 },
+						{ x: 0.209, y: 0.418 },
+						{ x: 0.475, y: 0.541 },
+						{ x: 0.626, y: 0.43 },
+					],
+				},
+				{
+					id: "void-claw-pedestal",
+					category: "objectives",
+					title: "Void Claw Pedestal",
+					description:
+						"Void Claw Tactical can be obtained from this location and can also be upgraded to the Void Talon using the Eye of the Forge.",
+					icon: Option.some("/icons/objectives/void-claw-pedestal.webp"),
+					locations: [
+						{ x: 0.576, y: 0.572 },
+						{ x: 0.239, y: 0.598 },
+						{ x: 0.836, y: 0.554 },
+						{ x: 0.825, y: 0.467 },
+						{ x: 0.815, y: 0.396 },
+						{ x: 0.761, y: 0.394 },
+						{ x: 0.778, y: 0.294 },
+						{ x: 0.75, y: 0.234 },
+						{ x: 0.666, y: 0.225 },
+						{ x: 0.427, y: 0.182 },
+						{ x: 0.349, y: 0.277 },
+						{ x: 0.309, y: 0.335 },
+						{ x: 0.259, y: 0.376 },
+						{ x: 0.577, y: 0.435 },
+						{ x: 0.525, y: 0.328 },
+					],
+				},
+				{
 					...sharedMarkers["ammo-cache"],
 					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
 					locations: [
@@ -319,6 +365,61 @@ export const config: MapConfig = {
 					locations: [
 						{ x: 0.679, y: 0.547 },
 						{ x: 0.457, y: 0.422 },
+					],
+				},
+				{
+					...sharedMarkers.document,
+					locations: [
+						{
+							x: 0.61,
+							y: 0.699,
+							title: "Squish",
+							description: "Obtained by jumping on the bed 5 times.",
+						},
+						{
+							x: 0.588,
+							y: 0.718,
+							title: "Blurprint",
+							description: "Obtained by playing the following keys on the piano: 8-6-7-5-6-5-3-5-4",
+						},
+						{
+							x: 0.255,
+							y: 0.381,
+							title: "The First To Fall",
+							description: "Obtained by using the Void Claw to grapple onto the floating rock",
+						},
+						{
+							x: 0.633,
+							y: 0.212,
+							title: "The Others That Followed",
+							description: "Obtained by destroying the webs covering the document",
+						},
+						{
+							x: 0.772,
+							y: 0.385,
+							title: "The Inevitable End",
+							description:
+								"Obtained by using the Void Claw on the ledge above the entrance to Dravakar Sanctuary",
+						},
+						{
+							x: 0.843,
+							y: 0.421,
+							title: "Longterm Goals",
+							description: "Obtained by digging up dig spots.",
+						},
+					],
+				},
+				{
+					...sharedMarkers["audio-log"],
+					locations: [
+						{ x: 0.13, y: 0.59, title: "The Long Game" },
+						{ x: 0.386, y: 0.256, title: "Pecking Order" },
+						{ x: 0.786, y: 0.521, title: "The Mark" },
+						{
+							x: 0.738,
+							y: 0.287,
+							title: "Spa Day",
+						},
 					],
 				},
 				{
