@@ -392,8 +392,8 @@ export const perks = {
 	"widows-wine": {
 		id: "widows-wine",
 		title: "Widow's Wine",
-		description: "Replace lethal equipment with grenades that explode when hit and slow zombies.",
-		icon: Option.some("/perks/widows-wine.webp"),
+		description: "When melee attacks bring your health low, retaliate with an explosion of webs.",
+		icon: Option.some("/perks/widows-wine-bo7.webp"),
 		type: "perk",
 		category: "upgrades",
 	},

@@ -419,6 +419,7 @@ export type PerksImagePath =
 	| "/perks/victorious-tortoise.webp"
 	| "/perks/vulture-aid-bo2.webp"
 	| "/perks/vulture-aid.webp"
+	| "/perks/widows-wine-bo7.webp"
 	| "/perks/widows-wine.webp"
 	| "/perks/winters-wail.webp"
 	| "/perks/wisp-tea.webp"

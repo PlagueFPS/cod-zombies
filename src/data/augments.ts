@@ -2263,4 +2263,63 @@ const AUGMENTS = new Map([
 		image: "/augments/bo7/eod-technician-minor-augment-bo7.webp",
 		variants: Option.none(),
 	}),
+	makeAugment("widows-bite", {
+		title: "Widow's Bite",
+		description:
+			"Widow's Bite melee attacks have a chance to trigger a web explosion for free. Melee kills on cocooned enemies give back health.",
+		type: "Major",
+		image: "/augments/bo7/dr-ram-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("web-spinner", {
+		title: "Web Spinner",
+		description: "A web explosion temporarily adds a slowing field around you.",
+		type: "Major",
+		image: "/augments/bo7/firebomb-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("hatchling", {
+		title: "Hatchling",
+		description: "Web explosions summon a friendly Deathspinner to fight for you.",
+		type: "Major",
+		image: "/augments/bo7/big-game-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("tangled-web", {
+		title: "Tangled Web",
+		description:
+			"All Normal and Special Enemies in the web explosion are cocooned in place, while Elite Enemies are slowed.",
+		type: "Major",
+		image: "/augments/bo7/double-impact-major-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("haste-widows-wine", {
+		title: "Haste",
+		description: "Decrease Widow's Wine's cooldown.",
+		type: "Minor",
+		image: "/augments/bo7/haste-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("the-wide-web", {
+		title: "The Wide Web",
+		description: "Increase the web explosion's effective radius.",
+		type: "Minor",
+		image: "/augments/bo7/backdraft-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("golden-orb-silk", {
+		title: "Golden Orb Silk",
+		description: "Increase the duration of the webbing effect.",
+		type: "Minor",
+		image: "/augments/bo7/extension-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
+	makeAugment("sticky-grenade", {
+		title: "Sticky Grenade",
+		description:
+			"Thrown explosive Lethal Equipment will also cover surviving enemies in spider webs.",
+		type: "Minor",
+		image: "/augments/bo7/stuntman-minor-augment-bo7.webp",
+		variants: Option.none(),
+	}),
 ])

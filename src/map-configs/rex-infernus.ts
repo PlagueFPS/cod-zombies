@@ -235,18 +235,48 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers["crafting-table"],
-					locations: [{ x: 0.838, y: 0.607 }],
+					locations: [
+						{ x: 0.838, y: 0.607 },
+						{ x: 0.419, y: 0.268 },
+						{ x: 0.714, y: 0.311 },
+					],
 				},
 				{
 					...sharedMarkers["door-buy"],
-					// TODO: Add missing locations
-					locations: [],
+					locations: [
+						{ x: 0.58, y: 0.701 },
+						{ x: 0.569, y: 0.704 },
+						{ x: 0.573, y: 0.72 },
+						{ x: 0.596, y: 0.713 },
+						{ x: 0.499, y: 0.559 },
+						{ x: 0.382, y: 0.599 },
+						{ x: 0.218, y: 0.599 },
+						{ x: 0.17, y: 0.553 },
+						{ x: 0.653, y: 0.56 },
+						{ x: 0.748, y: 0.556 },
+						{ x: 0.835, y: 0.485 },
+						{ x: 0.639, y: 0.449 },
+						{ x: 0.672, y: 0.4 },
+						{ x: 0.762, y: 0.309 },
+						{ x: 0.701, y: 0.323 },
+						{ x: 0.797, y: 0.342 },
+						{ x: 0.73, y: 0.277 },
+						{ x: 0.77, y: 0.228 },
+						{ x: 0.52, y: 0.45 },
+						{ x: 0.448, y: 0.377 },
+						{ x: 0.377, y: 0.306 },
+						{ x: 0.327, y: 0.3 },
+						{ x: 0.417, y: 0.21 },
+					],
 				},
 				{
 					...sharedMarkers.exfil,
 					icon: Option.some("/icons/equipment/exfil-bo7.webp"),
-					// TODO: Add missing locations
-					locations: [{ x: 0.646, y: 0.505 }],
+					locations: [
+						{ x: 0.646, y: 0.505 },
+						{ x: 0.849, y: 0.367 },
+						{ x: 0.625, y: 0.169 },
+					],
 				},
 				{
 					...sharedMarkers["gobblegum-machine"],
@@ -263,12 +293,15 @@ export const config: MapConfig = {
 				},
 				{
 					...sharedMarkers["mystery-box"],
-					// TODO: Add missing locations
 					locations: [
+						{ x: 0.509, y: 0.493 },
+						{ x: 0.606, y: 0.287 },
 						{ x: 0.223, y: 0.578 },
 						{ x: 0.884, y: 0.424 },
 						{ x: 0.785, y: 0.584 },
 						{ x: 0.767, y: 0.355 },
+						{ x: 0.32, y: 0.275 },
+						{ x: 0.206, y: 0.385 },
 					],
 				},
 				{
@@ -293,6 +326,10 @@ export const config: MapConfig = {
 					locations: [{ x: 0.61, y: 0.691 }],
 				},
 				{
+					...perks["deadshot-daiquiri"],
+					locations: [{ x: 0.576, y: 0.559 }],
+				},
+				{
 					...perks["stamin-up"],
 					locations: [{ x: 0.419, y: 0.641 }],
 				},
@@ -310,7 +347,6 @@ export const config: MapConfig = {
 				},
 				{
 					...perks["widows-wine"],
-					// TODO: Change image to BO7 icon
 					locations: [{ x: 0.589, y: 0.226 }],
 				},
 				{
@@ -336,6 +372,10 @@ export const config: MapConfig = {
 				{
 					...perks["wisp-tea"],
 					locations: [{ x: 0.752, y: 0.596 }],
+				},
+				{
+					...perks["der-wunderfizz"],
+					locations: [{ x: 0.577, y: 0.457 }],
 				},
 				{
 					...weapons["ak-27"],
