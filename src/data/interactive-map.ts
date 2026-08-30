@@ -94,11 +94,11 @@ const makeMapEntry = <T extends string>(
 const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("rex-infernus", {
 		title: "Rex Infernus",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		image: "/previews/rex-infernus-preview.webp",
 		game: "black-ops-7",
 		description:
-			"Explore Rex Infernus in Black Ops 7 Zombies. Find all locations for Perks, Weapons, intel, and more with our interactive map.",
+			"Explore Rex Infernus in Black Ops 7 Zombies. Find all locations for Dig Spots, Void Claw Pedestals, Perks, Weapons, Intel, and more with our interactive map.",
 	}),
 	makeMapEntry("kowakujo", {
 		title: "Kowakujō",

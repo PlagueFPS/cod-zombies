@@ -389,6 +389,14 @@ export const perks = {
 		type: "perk",
 		category: "upgrades",
 	},
+	"widows-wine": {
+		id: "widows-wine",
+		title: "Widow's Wine",
+		description: "When melee attacks bring your health low, retaliate with an explosion of webs.",
+		icon: Option.some("/perks/widows-wine-bo7.webp"),
+		type: "perk",
+		category: "upgrades",
+	},
 } as const satisfies Record<string, Marker>
 
 /** All weapons appearing as wall-buys on any of the maps */

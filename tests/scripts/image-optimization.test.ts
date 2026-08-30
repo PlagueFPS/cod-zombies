@@ -15,7 +15,10 @@ import { Effect, Exit, Layer, Option } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import {
+	ICON_LARGE_SIZE,
+	ICON_SMALL_SIZE,
 	ImageOptimizationError,
+	getIconTargetSize,
 	optimizeAssetsEffect,
 	requireImageWidth,
 } from "@/scripts/image-optimization"
@@ -26,6 +29,7 @@ const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 const noModeFlags = {
 	preview: Option.none<boolean>(),
 	map: Option.none<boolean>(),
+	icon: Option.none<boolean>(),
 } as const
 
 async function writePng(filePath: string, width: number, height: number) {
@@ -277,6 +281,7 @@ describe("optimizeAssetsEffect", () => {
 			source: "./newassets",
 			preview: Option.some(true),
 			map: Option.none(),
+			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -295,6 +300,7 @@ describe("optimizeAssetsEffect", () => {
 			source: "./newassets",
 			preview: Option.some(true),
 			map: Option.none(),
+			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -310,6 +316,7 @@ describe("optimizeAssetsEffect", () => {
 			source: "./newassets",
 			preview: Option.none(),
 			map: Option.some(true),
+			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -328,6 +335,7 @@ describe("optimizeAssetsEffect", () => {
 			source: "./newassets",
 			preview: Option.none(),
 			map: Option.some(true),
+			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
@@ -341,6 +349,7 @@ describe("optimizeAssetsEffect", () => {
 			source: "./newassets",
 			preview: Option.some(true),
 			map: Option.some(true),
+			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		expect(Exit.isFailure(exit)).toBe(true)
@@ -348,5 +357,94 @@ describe("optimizeAssetsEffect", () => {
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
 			e.message.includes("Cannot use --preview and --map together"),
 		)
+	})
+
+	test("icon mode resizes images wider than 256w to 256x256 with no variants", async () => {
+		mkdirSync(join(root, "newassets", "icons"), { recursive: true })
+		await writePng(join(root, "newassets", "icons", "big.png"), 400, 300)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			preview: Option.none(),
+			map: Option.none(),
+			icon: Option.some(true),
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const files = listFilesRecursive(join(root, "out"))
+		expect(files).toEqual(["icons/big.webp"])
+		const meta = await sharp(readFileSync(join(root, "out", "icons", "big.webp"))).metadata()
+		expect(meta.width).toBe(256)
+		expect(meta.height).toBe(256)
+		expect(meta.format).toBe("webp")
+	})
+
+	test("icon mode resizes images narrower than 256w to 128x128 with no variants", async () => {
+		mkdirSync(join(root, "newassets", "icons"), { recursive: true })
+		await writePng(join(root, "newassets", "icons", "small.png"), 200, 180)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			preview: Option.none(),
+			map: Option.none(),
+			icon: Option.some(true),
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const files = listFilesRecursive(join(root, "out"))
+		expect(files).toEqual(["icons/small.webp"])
+		const meta = await sharp(readFileSync(join(root, "out", "icons", "small.webp"))).metadata()
+		expect(meta.width).toBe(128)
+		expect(meta.height).toBe(128)
+		expect(meta.format).toBe("webp")
+	})
+
+	test("icon mode upscales tiny images to 128x128", async () => {
+		mkdirSync(join(root, "newassets", "icons"), { recursive: true })
+		await writePng(join(root, "newassets", "icons", "tiny.png"), 64, 64)
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			preview: Option.none(),
+			map: Option.none(),
+			icon: Option.some(true),
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		const meta = await sharp(readFileSync(join(root, "out", "icons", "tiny.webp"))).metadata()
+		expect(meta.width).toBe(128)
+		expect(meta.height).toBe(128)
+	})
+
+	test("fails when icon is combined with preview or map", async () => {
+		const program = optimizeAssetsEffect({
+			dir: "./out",
+			source: "./newassets",
+			preview: Option.some(true),
+			map: Option.none(),
+			icon: Option.some(true),
+		}).pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expect(Exit.isFailure(exit)).toBe(true)
+		const cause = expectExitFailure(exit)
+		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
+			e.message.includes("Cannot use --preview and --icon together"),
+		)
+	})
+})
+
+describe("getIconTargetSize", () => {
+	test("returns 256 when source width is greater than 256", () => {
+		expect(getIconTargetSize(257)).toBe(ICON_LARGE_SIZE)
+		expect(getIconTargetSize(400)).toBe(ICON_LARGE_SIZE)
+	})
+
+	test("returns 256 when source width is exactly 256", () => {
+		expect(getIconTargetSize(256)).toBe(ICON_LARGE_SIZE)
+	})
+
+	test("returns 128 when source width is less than 256", () => {
+		expect(getIconTargetSize(255)).toBe(ICON_SMALL_SIZE)
+		expect(getIconTargetSize(64)).toBe(ICON_SMALL_SIZE)
 	})
 })

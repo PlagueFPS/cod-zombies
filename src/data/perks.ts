@@ -149,7 +149,23 @@ const PERKS = new Map([
 		image: "/perks/widows-wine.webp",
 		modifier: Option.none(),
 		augments: Option.none(),
-		variants: Option.none(),
+		variants: Option.some({
+			"black-ops-7": {
+				description:
+					"When melee attacks bring your health low, retaliate with an explosion of webs.",
+				image: "/perks/widows-wine-bo7.webp",
+				augments: makeAugmentTuple([
+					"widows-bite",
+					"web-spinner",
+					"hatchling",
+					"tangled-web",
+					"haste-widows-wine",
+					"the-wide-web",
+					"golden-orb-silk",
+					"sticky-grenade",
+				]),
+			},
+		}),
 	}),
 	makePerk("double-tap", {
 		title: "Double Tap",
