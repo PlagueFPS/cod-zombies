@@ -389,6 +389,14 @@ export const perks = {
 		type: "perk",
 		category: "upgrades",
 	},
+	"widows-wine": {
+		id: "widows-wine",
+		title: "Widow's Wine",
+		description: "Replace lethal equipment with grenades that explode when hit and slow zombies.",
+		icon: Option.some("/perks/widows-wine.webp"),
+		type: "perk",
+		category: "upgrades",
+	},
 } as const satisfies Record<string, Marker>
 
 /** All weapons appearing as wall-buys on any of the maps */

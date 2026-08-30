@@ -16,7 +16,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.581, y: 0.709 }],
 				},
 				{
 					id: "nexus-forge",
@@ -25,16 +25,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
-				},
-				{
-					id: "nexus-core",
-					title: "Nexus Core",
-					type: "label",
-					category: "general",
-					description: "",
-					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.578, y: 0.495 }],
 				},
 				{
 					id: "caltheris-passage",
@@ -43,7 +34,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.675, y: 0.56 }],
 				},
 				{
 					id: "caltheris-entrance",
@@ -52,7 +43,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.774, y: 0.556 }],
 				},
 				{
 					id: "caltheris-main-chamber",
@@ -61,16 +52,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
-				},
-				{
-					id: "caltheris-sanctuary",
-					title: "Caltheris Sanctuary",
-					type: "label",
-					category: "general",
-					description: "",
-					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.837, y: 0.555 }],
 				},
 				{
 					id: "ruina-insula",
@@ -79,7 +61,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.856, y: 0.401 }],
 				},
 				{
 					id: "dravakar-passage",
@@ -88,7 +70,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.648, y: 0.439 }],
 				},
 				{
 					id: "dravakar-entrance",
@@ -97,7 +79,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.684, y: 0.388 }],
 				},
 				{
 					id: "dravakar-main-chamber",
@@ -106,7 +88,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.737, y: 0.338 }],
 				},
 				{
 					id: "dravakar-sanctuary",
@@ -115,7 +97,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.816, y: 0.258 }],
 				},
 				{
 					id: "aranea-insula",
@@ -124,7 +106,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.607, y: 0.225 }],
 				},
 				{
 					id: "veytharion-passage",
@@ -133,7 +115,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.48, y: 0.407 }],
 				},
 				{
 					id: "veytharion-entrance",
@@ -142,7 +124,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.435, y: 0.364 }],
 				},
 				{
 					id: "veytharion-main-chamber",
@@ -151,7 +133,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.393, y: 0.321 }],
 				},
 				{
 					id: "veytharion-sanctuary",
@@ -160,7 +142,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.348, y: 0.278 }],
 				},
 				{
 					id: "spira-insula",
@@ -169,7 +151,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.228, y: 0.407 }],
 				},
 				{
 					id: "nxyara-passage",
@@ -178,7 +160,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.473, y: 0.576 }],
 				},
 				{
 					id: "nxyara-entrance",
@@ -187,7 +169,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.372, y: 0.599 }],
 				},
 				{
 					id: "nxyara-main-chamber",
@@ -196,7 +178,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.276, y: 0.598 }],
 				},
 				{
 					id: "nxyara-sanctuary",
@@ -205,7 +187,7 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
-					locations: [],
+					locations: [{ x: 0.165, y: 0.605 }],
 				},
 				{
 					id: "nxyara-inner-sanctum",
@@ -214,7 +196,222 @@ export const config: MapConfig = {
 					category: "general",
 					description: "",
 					icon: Option.none(),
+					locations: [{ x: 0.171, y: 0.659 }],
+				},
+				{
+					...sharedMarkers["ammo-cache"],
+					icon: Option.some("/icons/equipment/ammo-cache-bo7.webp"),
+					locations: [
+						{ x: 0.636, y: 0.543 },
+						{ x: 0.514, y: 0.499 },
+						{ x: 0.81, y: 0.521 },
+						{ x: 0.846, y: 0.391 },
+						{ x: 0.737, y: 0.385 },
+						{ x: 0.813, y: 0.3 },
+						{ x: 0.587, y: 0.168 },
+						{ x: 0.419, y: 0.308 },
+						{ x: 0.239, y: 0.384 },
+						{ x: 0.273, y: 0.567 },
+						{ x: 0.486, y: 0.554 },
+					],
+				},
+				{
+					...sharedMarkers["armor-wall-buy"],
+					locations: [
+						{ x: 0.82, y: 0.487 },
+						{ x: 0.781, y: 0.218 },
+						{ x: 0.361, y: 0.25 },
+						{ x: 0.205, y: 0.572 },
+					],
+				},
+				{
+					...sharedMarkers.arsenal,
+					locations: [
+						{ x: 0.869, y: 0.602 },
+						{ x: 0.76, y: 0.197 },
+						{ x: 0.386, y: 0.352 },
+						{ x: 0.139, y: 0.617 },
+					],
+				},
+				{
+					...sharedMarkers["crafting-table"],
+					locations: [{ x: 0.838, y: 0.607 }],
+				},
+				{
+					...sharedMarkers["door-buy"],
+					// TODO: Add missing locations
 					locations: [],
+				},
+				{
+					...sharedMarkers.exfil,
+					icon: Option.some("/icons/equipment/exfil-bo7.webp"),
+					// TODO: Add missing locations
+					locations: [{ x: 0.646, y: 0.505 }],
+				},
+				{
+					...sharedMarkers["gobblegum-machine"],
+					locations: [
+						{ x: 0.607, y: 0.723 },
+						{ x: 0.617, y: 0.566 },
+						{ x: 0.81, y: 0.592 },
+						{ x: 0.263, y: 0.63 },
+						{ x: 0.398, y: 0.295 },
+						{ x: 0.627, y: 0.225 },
+						{ x: 0.831, y: 0.315 },
+						{ x: 0.833, y: 0.372 },
+					],
+				},
+				{
+					...sharedMarkers["mystery-box"],
+					// TODO: Add missing locations
+					locations: [
+						{ x: 0.223, y: 0.578 },
+						{ x: 0.884, y: 0.424 },
+						{ x: 0.785, y: 0.584 },
+						{ x: 0.767, y: 0.355 },
+					],
+				},
+				{
+					...sharedMarkers["pack-a-punch"],
+					locations: [{ x: 0.577, y: 0.503 }],
+				},
+				{
+					...sharedMarkers["rampage-inducer"],
+					locations: [{ x: 0.528, y: 0.566 }],
+				},
+				{
+					...sharedMarkers.trap,
+					title: "Titan Trap",
+					description: "Draws in nearby zombies and smashes them to pieces.",
+					locations: [
+						{ x: 0.679, y: 0.547 },
+						{ x: 0.457, y: 0.422 },
+					],
+				},
+				{
+					...perks["quick-revive"],
+					locations: [{ x: 0.61, y: 0.691 }],
+				},
+				{
+					...perks["stamin-up"],
+					locations: [{ x: 0.419, y: 0.641 }],
+				},
+				{
+					...perks["double-tap"],
+					locations: [{ x: 0.223, y: 0.619 }],
+				},
+				{
+					...perks.juggernog,
+					locations: [{ x: 0.233, y: 0.355 }],
+				},
+				{
+					...perks["mule-kick"],
+					locations: [{ x: 0.359, y: 0.208 }],
+				},
+				{
+					...perks["widows-wine"],
+					// TODO: Change image to BO7 icon
+					locations: [{ x: 0.589, y: 0.226 }],
+				},
+				{
+					...perks["vulture-aid"],
+					locations: [{ x: 0.511, y: 0.359 }],
+				},
+				{
+					...perks["death-perception"],
+					locations: [{ x: 0.691, y: 0.308 }],
+				},
+				{
+					...perks["phd-flopper"],
+					locations: [{ x: 0.881, y: 0.377 }],
+				},
+				{
+					...perks["speed-cola"],
+					locations: [{ x: 0.672, y: 0.424 }],
+				},
+				{
+					...perks["elemental-pop"],
+					locations: [{ x: 0.869, y: 0.509 }],
+				},
+				{
+					...perks["wisp-tea"],
+					locations: [{ x: 0.752, y: 0.596 }],
+				},
+				{
+					...weapons["ak-27"],
+					locations: [{ x: 0.766, y: 0.381 }],
+				},
+				{
+					...weapons.akita,
+					locations: [{ x: 0.365, y: 0.331 }],
+				},
+				{
+					...weapons["coda-9"],
+					locations: [{ x: 0.558, y: 0.699 }],
+				},
+				{
+					...weapons["dravec-45"],
+					locations: [{ x: 0.616, y: 0.419 }],
+				},
+				{
+					...weapons["ds20-mirage"],
+					locations: [{ x: 0.243, y: 0.413 }],
+				},
+				{
+					...weapons["echo-12"],
+					locations: [{ x: 0.423, y: 0.555 }],
+				},
+				{
+					...weapons["m10-breacher"],
+					locations: [{ x: 0.752, y: 0.528 }],
+				},
+				{
+					...weapons["m15-mod-0"],
+					locations: [{ x: 0.861, y: 0.384 }],
+				},
+				{
+					...weapons["m34-novaline"],
+					locations: [{ x: 0.766, y: 0.266 }],
+				},
+				{
+					...weapons.m8a1,
+					locations: [{ x: 0.514, y: 0.397 }],
+				},
+				{
+					...weapons["mk-78"],
+					locations: [{ x: 0.64, y: 0.505 }],
+				},
+				{
+					...weapons["peacekeeper-mk1"],
+					locations: [{ x: 0.347, y: 0.556 }],
+				},
+				{
+					...weapons["ryden-45k"],
+					locations: [{ x: 0.512, y: 0.538 }],
+				},
+				{
+					...weapons["shadow-sk"],
+					locations: [{ x: 0.429, y: 0.246 }],
+				},
+				{
+					...weapons["vs-recon"],
+					locations: [{ x: 0.141, y: 0.643 }],
+				},
+				{
+					...weapons["warden-308"],
+					locations: [{ x: 0.598, y: 0.688 }],
+				},
+				{
+					...weapons["x9-maverick"],
+					locations: [{ x: 0.781, y: 0.563 }],
+				},
+				{
+					...weapons.xm325,
+					locations: [{ x: 0.577, y: 0.215 }],
+				},
+				{
+					...weapons["xr3-ion"],
+					locations: [{ x: 0.644, y: 0.252 }],
 				},
 			],
 		},
