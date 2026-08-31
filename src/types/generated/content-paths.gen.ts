@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-31T18:36:55.892Z
- * generated in: 26ms
+ * generated at: 2026-08-31T19:22:26.392Z
+ * generated in: 23ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -202,6 +202,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/hidden-power-ups-kowakujo"
 	| "content/side-quests/hidden-power-ups-paradox-junction"
 	| "content/side-quests/hidden-power-ups-reckoning"
+	| "content/side-quests/hidden-power-ups-rex-infernus"
 	| "content/side-quests/hidden-power-ups-shattered-veil"
 	| "content/side-quests/hidden-power-ups-terminus"
 	| "content/side-quests/hidden-power-ups-the-tomb"

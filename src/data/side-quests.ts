@@ -1828,6 +1828,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/temporal-conduits",
 	}),
+	makeQuest("hidden-power-ups-rex-infernus", {
+		state: Option.some("New"),
+		title: "Hidden Power-Ups",
+		description:
+			"Discover the location of every hidden Power-Up drop in Rex Infernus, in case you need them.",
+		map: "rex-infernus",
+		content: "content/side-quests/hidden-power-ups-rex-infernus",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
