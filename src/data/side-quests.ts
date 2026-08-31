@@ -1812,6 +1812,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/all-we-are",
 	}),
+	makeQuest("dravakar-anvil", {
+		state: Option.some("New"),
+		title: "Dravakar Anvil",
+		description:
+			"Learn how to dismantle your weapons into Aether Tools and Aetherium Crystals that you can use to upgrade other weapons.",
+		map: "rex-infernus",
+		content: "content/side-quests/dravakar-anvil",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(

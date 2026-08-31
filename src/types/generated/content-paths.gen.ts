@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-29T17:02:40.431Z
- * generated in: 22ms
+ * generated at: 2026-08-31T16:56:01.871Z
+ * generated in: 34ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -141,6 +141,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/dragon-shield-upgrade"
 	| "content/side-quests/dragon-strike-upgrade"
 	| "content/side-quests/dragon-sword-song"
+	| "content/side-quests/dravakar-anvil"
 	| "content/side-quests/drowning"
 	| "content/side-quests/elemental-shield-upgrade"
 	| "content/side-quests/elevator-jumpscare"
