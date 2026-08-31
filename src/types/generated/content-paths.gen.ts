@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-31T16:56:01.871Z
- * generated in: 34ms
+ * generated at: 2026-08-31T18:36:55.892Z
+ * generated in: 26ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -301,6 +301,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/statue-free-perk"
 	| "content/side-quests/stormbound"
 	| "content/side-quests/target-practice"
+	| "content/side-quests/temporal-conduits"
 	| "content/side-quests/the-gift"
 	| "content/side-quests/the-reunion"
 	| "content/side-quests/the-vault"

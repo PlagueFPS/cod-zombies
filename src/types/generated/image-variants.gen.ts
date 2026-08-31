@@ -2272,6 +2272,7 @@ export const VARIANT_WIDTHS = {
 	"/content/rex-infernus/rex-infernus-skull-mask-music-box.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-skull-mask-toy-box.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-skull-mask.webp": [384, 1200],
+	"/content/rex-infernus/rex-infernus-temporal-conduit.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-uber-klaus-helmet-fifth-part.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-uber-klaus-helmet-final-part.webp": [384, 1200],
 	"/content/rex-infernus/rex-infernus-uber-klaus-helmet-first-part.webp": [384, 1200],

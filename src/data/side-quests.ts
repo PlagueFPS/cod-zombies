@@ -1820,6 +1820,14 @@ const SIDE_QUESTS = new Map([
 		map: "rex-infernus",
 		content: "content/side-quests/dravakar-anvil",
 	}),
+	makeQuest("temporal-conduits", {
+		state: Option.some("New"),
+		title: "Temporal Conduits",
+		description:
+			"Discover the character specific Temporal Conduits to learn more about the story and earn rewards like Perks, Aether Tools, and more.",
+		map: "rex-infernus",
+		content: "content/side-quests/temporal-conduits",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
