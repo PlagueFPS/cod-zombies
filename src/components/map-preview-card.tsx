@@ -1,12 +1,12 @@
 import type { InteractiveMap } from "@/data/interactive-map"
 import type { PreviewCard } from "@/types/preview-card"
+import { cn } from "cn"
 import { Option } from "effect"
 import { ComingSoonBadge, NewBadge } from "@/components/custom-badges"
 import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
 import { Badge } from "@/components/ui/badge"
 import { getGameByKey } from "@/data/games"
-import { cn } from "@/lib/utils"
 
 interface IMapPreviewCard extends PreviewCard {
 	map: InteractiveMap

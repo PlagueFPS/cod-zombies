@@ -1,7 +1,7 @@
 import type { FileRoutesByTo } from "@/routeTree.gen"
+import { cn } from "cn"
 import { ArrowRightIcon } from "lucide-react"
 import { CustomLink } from "@/components/custom-link"
-import { cn } from "@/lib/utils"
 
 interface MapSectionProps {
 	title: string

@@ -1,5 +1,6 @@
 import type { FileRoutesByFullPath } from "@/routeTree.gen"
 import { useNavigate, useSearch } from "@tanstack/react-router"
+import { cn } from "cn"
 import {
 	Select,
 	SelectContent,
@@ -7,7 +8,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
 
 export interface SortOption {
 	value: string

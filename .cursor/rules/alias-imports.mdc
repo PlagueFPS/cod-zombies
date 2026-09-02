@@ -11,13 +11,17 @@ Use the `@/*` path alias (defined in `tsconfig.json`) instead of relative import
 ```typescript
 // ❌ BAD – relative imports
 import { Button } from "../../components/ui/button";
-import { cn } from "../../lib/utils";
 import type { Zombie } from "../../types/data";
 
 // ✅ GOOD – alias imports
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import type { Zombie } from "@/types/data";
+```
+
+Import `cn` from the `cn` package, not from `@/lib/utils`:
+
+```typescript
+import { cn } from "cn"
 ```
 
 The alias maps `@/*` to the project src directory (`./src/*`). Prefer it for all internal imports to keep paths stable and readable.

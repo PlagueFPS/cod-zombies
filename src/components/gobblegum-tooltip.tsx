@@ -1,5 +1,6 @@
 "use client"
 import type { GameKey } from "@/data/games"
+import { cn } from "cn"
 import { Option } from "effect"
 import { RarityBadge } from "@/components/custom-badges"
 import IconImage from "@/components/icon-image"
@@ -13,7 +14,6 @@ import {
 	getGobblegumByKey,
 } from "@/data/gobblegum"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
 
 interface GobbleGumTooltipProps {
 	gobblegumKey: GobblegumKey

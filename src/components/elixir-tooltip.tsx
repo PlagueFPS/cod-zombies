@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "cn"
 import { Option } from "effect"
 import { ElixirRarityBadge } from "@/components/custom-badges"
 import IconImage from "@/components/icon-image"
@@ -6,7 +7,6 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { type Elixir, type ElixirKey, type ElixirRarity, getElixirByKey } from "@/data/elixirs"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
 
 interface ElixirTooltipProps {
 	elixirKey: ElixirKey

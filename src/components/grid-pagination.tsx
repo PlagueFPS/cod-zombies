@@ -1,9 +1,9 @@
 import type { FileRoutesByFullPath } from "@/routeTree.gen"
 import { useNavigate } from "@tanstack/react-router"
+import { cn } from "cn"
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
-import { cn } from "@/lib/utils"
 
 interface IGridPagination {
 	from: keyof Pick<

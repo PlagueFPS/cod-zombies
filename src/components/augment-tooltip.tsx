@@ -1,6 +1,7 @@
 "use client"
 import type { Augment, AugmentKey } from "@/data/augments"
 import type { GameKey } from "@/data/games"
+import { cn } from "cn"
 import { Option } from "effect"
 import { TypeBadge } from "@/components/custom-badges"
 import IconImage from "@/components/icon-image"
@@ -8,7 +9,6 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { getAugmentByKey } from "@/data/augments"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
 
 interface AugmentTooltipPropsWithKey {
 	augmentKey: AugmentKey

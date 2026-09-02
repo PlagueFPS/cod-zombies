@@ -1,7 +1,7 @@
+import { cn } from "cn"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import ImageLoader from "@/components/image-loader"
 import { Skeleton } from "@/components/ui/skeleton"
-import { cn } from "@/lib/utils"
 
 interface IPrevOrNextLoader {
 	type: "Quest" | "Zombie"

@@ -1,4 +1,5 @@
 import { useHotkey, type RegisterableHotkey } from "@tanstack/react-hotkeys"
+import { cn } from "cn"
 import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { Shortcut } from "@/components/shortcut"
@@ -19,7 +20,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { type TSettingPath, useMapSettings } from "@/contexts/interactive-map-settings"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
 
 export default function MapSettingsPanel() {
 	const [open, setOpen] = useState(false)

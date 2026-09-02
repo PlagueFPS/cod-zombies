@@ -1,5 +1,6 @@
 import type { Zombie } from "@/data/zombies"
 import type { PreviewCard } from "@/types/preview-card"
+import { cn } from "cn"
 import { Array as Arr, Option } from "effect"
 import { CardImageGlow } from "@/components/card-image-glow"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/custom-badges"
@@ -8,7 +9,6 @@ import { FeaturedImage } from "@/components/featured-image"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getMapByKey } from "@/data/maps"
-import { cn } from "@/lib/utils"
 
 interface IBestiaryCard extends PreviewCard {
 	zombie: Omit<Zombie, "combatStrategy">

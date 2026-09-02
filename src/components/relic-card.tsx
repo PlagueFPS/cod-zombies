@@ -1,5 +1,6 @@
 import type { Relic } from "@/data/relics"
 import type { PreviewCard } from "@/types/preview-card"
+import { cn } from "cn"
 import { Option } from "effect"
 import { CardImageGlow } from "@/components/card-image-glow"
 import {
@@ -15,7 +16,6 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Separator } from "@/components/ui/separator"
 import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
-import { cn } from "@/lib/utils"
 
 interface RelicCardProps extends PreviewCard {
 	relic: Omit<Relic, "content">

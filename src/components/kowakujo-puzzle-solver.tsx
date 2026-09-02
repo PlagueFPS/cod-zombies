@@ -1,10 +1,10 @@
 "use client"
 
+import { cn } from "cn"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Toggle } from "@/components/ui/toggle"
-import { cn } from "@/lib/utils"
 import { SCROLL_COUNT, SCROLL_POSITIONS, solveScrollPuzzle } from "@/utils/scroll-puzzle"
 
 const INITIAL_STATE = Array.from({ length: SCROLL_COUNT }, () => false)

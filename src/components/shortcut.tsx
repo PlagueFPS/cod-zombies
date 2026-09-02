@@ -1,9 +1,9 @@
 import type React from "react"
 import { formatForDisplay, type RegisterableHotkey } from "@tanstack/react-hotkeys"
 import { cva } from "class-variance-authority"
+import { cn } from "cn"
 import { Children } from "react"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
-import { cn } from "@/lib/utils"
 
 interface ShortcutWithChildren {
 	/** Custom content (e.g. icons) to show as keybindings; each child is wrapped in a Kbd. */

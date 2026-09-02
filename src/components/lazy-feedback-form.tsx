@@ -1,10 +1,10 @@
 "use client"
 
+import { cn } from "cn"
 import { MessageCircleHeart } from "lucide-react"
 import { lazy, Suspense, type ComponentProps } from "react"
 import { Shortcut } from "@/components/shortcut"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 
 const FeedbackForm = lazy(() =>
 	import("@/components/feedback-form").then(m => ({ default: m.FeedbackForm })),

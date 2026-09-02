@@ -7,9 +7,9 @@ import type { ZombieAttack } from "@/data/zombie-attacks"
 import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
 import type { TimeRange } from "@/types/data"
+import { cn } from "cn"
 import { ClockIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
 import { formatEstimatedTimeMidpoint } from "@/utils/shared-functions"
 
 interface CustomBadgeProps {

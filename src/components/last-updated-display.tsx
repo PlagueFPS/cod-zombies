@@ -1,7 +1,7 @@
 "use client"
+import { cn } from "cn"
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
 import { formatRelativeTimeAgo, MS_HOUR } from "@/utils/last-updated-format"
 
 export interface LastUpdatedDisplayProps {

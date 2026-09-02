@@ -1,5 +1,5 @@
+import { cn } from "cn"
 import { type DetailedHTMLProps, type HTMLAttributes } from "react"
-import { cn } from "@/lib/utils"
 
 interface CopyrightProps extends DetailedHTMLProps<
 	HTMLAttributes<HTMLParagraphElement>,

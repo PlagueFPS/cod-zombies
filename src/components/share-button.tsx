@@ -1,11 +1,11 @@
 import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
+import { cn } from "cn"
 import { CheckIcon, Link2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { Shortcut } from "@/components/shortcut"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
 import { copyTextToClipboard } from "@/utils/shared-functions"
 
 interface ShareButtonProps extends React.ComponentProps<"button"> {

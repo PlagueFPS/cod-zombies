@@ -1,10 +1,10 @@
+import { cn } from "cn"
 import Discord from "@/components/discord-svg"
 import { ExternalLink } from "@/components/external-link"
 import GitHubSVG from "@/components/github-svg"
 import Reddit from "@/components/reddit-svg"
 import { Separator } from "@/components/ui/separator"
 import XSVG from "@/components/x-svg"
-import { cn } from "@/lib/utils"
 
 export function Socials({
 	children,

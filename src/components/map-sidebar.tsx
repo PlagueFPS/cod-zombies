@@ -1,5 +1,6 @@
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import { useParams, useRouter } from "@tanstack/react-router"
+import { cn } from "cn"
 import { Option } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import { useEffect, useMemo } from "react"
@@ -34,7 +35,6 @@ import {
 } from "@/components/ui/sidebar"
 import { Switch } from "@/components/ui/switch"
 import { useMapSearch } from "@/hooks/use-map-search"
-import { cn } from "@/lib/utils"
 import {
 	decodeInteractiveMap,
 	decodeMapConfigLayer,

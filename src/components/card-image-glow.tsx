@@ -1,5 +1,5 @@
+import { cn } from "cn"
 import { variantWebPath } from "@/lib/image-variant-paths"
-import { cn } from "@/lib/utils"
 
 interface CardImageGlowProps {
 	/** Source path used by `Image` / featured cards (e.g. `/maps/foo.webp`) */

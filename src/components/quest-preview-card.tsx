@@ -1,5 +1,6 @@
 import type { SideQuest } from "@/data/side-quests"
 import type { PreviewCard } from "@/types/preview-card"
+import { cn } from "cn"
 import { Match, Option } from "effect"
 import { CardImageGlow } from "@/components/card-image-glow"
 import {
@@ -14,7 +15,6 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getGameByKey } from "@/data/games"
 import { getMapByKey, type MapEntry } from "@/data/maps"
-import { cn } from "@/lib/utils"
 import { isMapQuest, isSideQuest } from "@/utils/rsc-wire"
 
 interface IQuestPreviewCard extends PreviewCard {

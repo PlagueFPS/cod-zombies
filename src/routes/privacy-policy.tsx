@@ -1,11 +1,11 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
+import { cn } from "cn"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import { LastUpdatedDisplay } from "@/components/last-updated-display"
 import { MdxContent } from "@/components/mdx-content"
 import { Skeleton } from "@/components/ui/skeleton"
 import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
-import { cn } from "@/lib/utils"
 import { createSeoTitle } from "@/utils/shared-functions"
 import richStyles from "@/rich-text.module.css"
 
