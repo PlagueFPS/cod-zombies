@@ -1,6 +1,6 @@
+import { cn } from "cn"
 import { Fragment } from "react"
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { cn } from "@/lib/utils"
 
 interface RichTableProps {
 	headerCells: React.ReactNode[]

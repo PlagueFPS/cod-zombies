@@ -1,10 +1,10 @@
 import { useHotkey } from "@tanstack/react-hotkeys"
+import { cn } from "cn"
 import { Moon, Sun } from "lucide-react"
 import { Shortcut } from "@/components/shortcut"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useTheme } from "@/contexts/theme-provider"
-import { cn } from "@/lib/utils"
 
 interface ThemeToggleProps {
 	className?: string

@@ -1,7 +1,7 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react"
+import { cn } from "cn"
 import { CustomLink } from "@/components/custom-link"
 import LinkSVG from "@/components/link-svg"
-import { cn } from "@/lib/utils"
 
 export function Heading2({
 	id,

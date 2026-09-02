@@ -1,6 +1,7 @@
 import type { FileRoutesByTo } from "@/routeTree.gen"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useNavigate } from "@tanstack/react-router"
+import { cn } from "cn"
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
@@ -32,7 +33,6 @@ import {
 	CommandPanel,
 	CommandSeparator,
 } from "@/components/ui/command"
-import { cn } from "@/lib/utils"
 
 const SEARCH_ICONS = {
 	BookText: BookTextIcon,

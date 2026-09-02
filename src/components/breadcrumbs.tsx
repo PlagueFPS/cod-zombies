@@ -1,5 +1,6 @@
 "use client"
 import type { FileRoutesByTo } from "@/routeTree.gen"
+import { cn } from "cn"
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
 import { CustomLink } from "@/components/custom-link"
@@ -18,7 +19,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
 
 export interface Link {
 	href: keyof FileRoutesByTo

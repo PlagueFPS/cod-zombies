@@ -1,7 +1,7 @@
 import type { ImagePaths } from "@/types/generated/image-paths.gen"
+import { cn } from "cn"
 import { Image, type ImageProps } from "@/components/image"
 import { useImageState } from "@/hooks/use-image-state"
-import { cn } from "@/lib/utils"
 
 interface IconImageProps extends Omit<ImageProps, "src"> {
 	featuredImage: ImagePaths

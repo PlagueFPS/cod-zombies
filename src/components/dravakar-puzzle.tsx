@@ -1,5 +1,6 @@
 "use client"
 
+import { cn } from "cn"
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Toggle } from "@/components/ui/toggle"
@@ -8,7 +9,6 @@ import {
 	formatDravakarSwitchSolution,
 	type DravakarPuzzleQuoteId,
 } from "@/data/dravakar-puzzle"
-import { cn } from "@/lib/utils"
 
 export default function DravakarPuzzle() {
 	const [selectedId, setSelectedId] = useState<DravakarPuzzleQuoteId | null>(null)

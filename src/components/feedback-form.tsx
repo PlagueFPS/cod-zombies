@@ -1,6 +1,7 @@
 import { useForm } from "@tanstack/react-form"
 import { useHotkeys } from "@tanstack/react-hotkeys"
 import { useServerFn } from "@tanstack/react-start"
+import { cn } from "cn"
 import { Cause, Exit } from "effect"
 import { CircleAlert, MessageCircleHeart, Send } from "lucide-react"
 import { useState, useTransition } from "react"
@@ -21,7 +22,6 @@ import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { submitFeedbackForm } from "@/data/server-functions/feedback"
-import { cn } from "@/lib/utils"
 import { StandardFeedbackFormSchema, validateFeedbackForm } from "@/utils/validation-schemas"
 
 interface FeedbackFormProps extends React.ComponentProps<"button"> {

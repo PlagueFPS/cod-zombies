@@ -1,5 +1,6 @@
 "use client"
 import type { Zombie, ZombieKey, ZombieType } from "@/data/zombies"
+import { cn } from "cn"
 import { Array as Arr, Option } from "effect"
 import { AlertTriangle, ExternalLinkIcon, Target } from "lucide-react"
 import AmmoModTooltip from "@/components/ammo-mod-tooltip"
@@ -12,7 +13,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieByKey } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { cn } from "@/lib/utils"
 
 export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 	const isMobile = useIsMobile(640)

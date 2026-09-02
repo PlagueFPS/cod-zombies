@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
+import { cn } from "cn"
 import { Array as Arr, Option } from "effect"
 import {
 	AlertTriangle,
@@ -40,7 +41,6 @@ import { getOgImgUrl } from "@/data/server-functions/content"
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieAttackByKey } from "@/data/zombie-attacks"
 import { getAdjacentZombies, getZombieByKey, type ZombieKey } from "@/data/zombies"
-import { cn } from "@/lib/utils"
 import { type EncodedZombie, encodeZombie } from "@/utils/rsc-wire"
 import { capitalize, createSeoTitle } from "@/utils/shared-functions"
 import richStyles from "@/rich-text.module.css"

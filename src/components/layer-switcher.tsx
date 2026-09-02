@@ -1,4 +1,5 @@
 import type { MapConfigLayer } from "@/data/interactive-map"
+import { cn } from "cn"
 import { Array as Arr, Option } from "effect"
 import {
 	Select,
@@ -10,7 +11,6 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { useMapSearch } from "@/hooks/use-map-search"
-import { cn } from "@/lib/utils"
 import { slugify } from "@/utils/shared-functions"
 
 interface LayerSwitcher {

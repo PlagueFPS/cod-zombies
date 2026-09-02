@@ -1,9 +1,9 @@
 "use client"
 import type { ImagePaths } from "@/types/generated/image-paths.gen"
+import { cn } from "cn"
 import { Image, type ImageProps } from "@/components/image"
 import ImageLoader from "@/components/image-loader"
 import { useImageState } from "@/hooks/use-image-state"
-import { cn } from "@/lib/utils"
 
 export interface FeaturedImageProps extends Omit<ImageProps, "src"> {
 	/** The featured image source url */

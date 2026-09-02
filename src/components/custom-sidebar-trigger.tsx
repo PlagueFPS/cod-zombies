@@ -1,8 +1,8 @@
+import { cn } from "cn"
 import { PanelLeftOpenIcon } from "lucide-react"
 import { Shortcut } from "@/components/shortcut"
 import { Button } from "@/components/ui/button"
 import { useSidebar } from "@/components/ui/sidebar"
-import { cn } from "@/lib/utils"
 
 interface ICustomSidebarTrigger {
 	className?: string

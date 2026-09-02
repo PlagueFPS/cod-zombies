@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "cn"
 import { useState } from "react"
 import {
 	Select,
@@ -9,7 +10,6 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { type Location, locations, valveRoutes } from "@/data/gk-values"
-import { cn } from "@/lib/utils"
 import { slugify } from "@/utils/shared-functions"
 
 interface ValveLocation {

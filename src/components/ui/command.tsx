@@ -1,6 +1,7 @@
 "use client"
 import type * as React from "react"
 import { Dialog as CommandDialogPrimitive } from "@base-ui/react/dialog"
+import { cn } from "cn"
 import { SearchIcon } from "lucide-react"
 import {
 	Autocomplete,
@@ -13,7 +14,6 @@ import {
 	AutocompleteList,
 	AutocompleteSeparator,
 } from "@/components/ui/autocomplete"
-import { cn } from "@/lib/utils"
 
 const CommandDialog = CommandDialogPrimitive.Root
 

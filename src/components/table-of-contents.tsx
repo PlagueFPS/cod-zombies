@@ -1,4 +1,5 @@
 import { useHotkey } from "@tanstack/react-hotkeys"
+import { cn } from "cn"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { useState } from "react"
 import { BackToTopButton } from "@/components/back-to-top-button"
@@ -11,7 +12,6 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTableOfContents } from "@/hooks/use-table-of-contents"
-import { cn } from "@/lib/utils"
 
 export interface Heading {
 	type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"

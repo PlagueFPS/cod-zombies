@@ -1,12 +1,12 @@
 import type { Heading } from "@/components/table-of-contents"
 import { useNavigate } from "@tanstack/react-router"
+import { cn } from "cn"
 import { ChevronDown } from "lucide-react"
 import { useState } from "react"
 import { RemoveScroll } from "@/components/remove-scroll"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { cn } from "@/lib/utils"
 
 interface MobileTableOfContentsProps {
 	headings: Heading[]

@@ -2,6 +2,7 @@ import type { Link } from "@/components/breadcrumbs"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getCookie, setResponseHeader } from "@tanstack/react-start/server"
+import { cn } from "cn"
 import { Effect, Option, Array as Arr } from "effect"
 import { CustomSideBarTrigger } from "@/components/custom-sidebar-trigger"
 import { InteractiveMap } from "@/components/interactive-map"
@@ -18,7 +19,6 @@ import {
 	getInteractiveMaps,
 	type InteractiveMapKey,
 } from "@/data/interactive-map"
-import { cn } from "@/lib/utils"
 import { categoryHandlers, type MarkerCategory } from "@/map-configs/markers"
 import { encodeInteractiveMap, encodeMapConfig, encodeMapConfigLayer } from "@/utils/rsc-wire"
 import { capitalize, createSeoTitle } from "@/utils/shared-functions"

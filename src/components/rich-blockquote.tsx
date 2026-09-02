@@ -1,5 +1,5 @@
+import { cn } from "cn"
 import { Info } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 interface BlockquoteProps {
 	children: React.ReactNode

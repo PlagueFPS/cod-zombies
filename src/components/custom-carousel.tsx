@@ -1,4 +1,5 @@
 "use client"
+import { cn } from "cn"
 import {
 	Children,
 	useCallback,
@@ -20,7 +21,6 @@ import {
 } from "@/components/ui/carousel"
 import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
 import { resolveCarouselIndicatorLayout } from "@/lib/embla-carousel/carousel-indicator-layout"
-import { cn } from "@/lib/utils"
 
 interface CustomCarouselProps {
 	children: React.ReactNode
