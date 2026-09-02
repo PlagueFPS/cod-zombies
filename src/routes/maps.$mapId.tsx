@@ -100,7 +100,7 @@ export const Route = createFileRoute("/maps/$mapId")({
 			{ property: "og:description", content: loaderData?.metadata.description },
 			{
 				property: "og:url",
-				content: `${loaderData?.serverUrl}/maps/${params.mapId}.webp`,
+				content: `${loaderData?.serverUrl}/maps/${params.mapId}`,
 			},
 			{ property: "og:image", content: `${loaderData?.serverUrl}${loaderData?.metadata.image}` },
 			{ property: "og:image:width", content: "640" },
@@ -109,10 +109,10 @@ export const Route = createFileRoute("/maps/$mapId")({
 			{ property: "twitter:title", content: loaderData?.metadata.title },
 			{ property: "twitter:description", content: loaderData?.metadata.description },
 			{ property: "twitter:card", content: "summary_large_image" },
-			{ property: "twitter:url", content: `${loaderData?.serverUrl}/maps/${params.mapId}.webp` },
+			{ property: "twitter:url", content: `${loaderData?.serverUrl}/maps/${params.mapId}` },
 			{
 				property: "twitter:image",
-				content: `${loaderData?.serverUrl}/maps/${params.mapId}.webp`,
+				content: `${loaderData?.serverUrl}${loaderData?.metadata.image}`,
 			},
 		],
 	}),
