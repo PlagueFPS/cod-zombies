@@ -7,12 +7,10 @@
 	"preview_urls": true,
 	"cache": { "enabled": true },
 	"vars": {
-		"GITHUB_REPO_OWNER": "PlagueFPS",
-		"GITHUB_REPO_NAME": "cod-zombies",
-		"GITHUB_USER_FEEDBACK_LABEL": "User Feedback",
+		"LINEAR_TEAM_ID": "22b4c02d-1821-46b8-894c-f16e3e66ba9e",
 	},
 	"secrets": {
-		"required": ["RESEND_API_KEY", "RESEND_AUDIENCE_ID", "GITHUB_TOKEN"],
+		"required": ["RESEND_API_KEY", "RESEND_AUDIENCE_ID", "LINEAR_API_KEY"],
 	},
 	"observability": {
 		"enabled": false,
