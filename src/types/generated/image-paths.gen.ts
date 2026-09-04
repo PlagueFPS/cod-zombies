@@ -369,6 +369,7 @@ export type MapsImagePath =
   '/maps/moon.webp' |
   '/maps/nacht-der-untoten.webp' |
   '/maps/origins.webp' |
+  '/maps/outbreak.webp' |
   '/maps/paradox-junction.webp' |
   '/maps/reckoning.webp' |
   '/maps/revelations.webp' |
@@ -538,6 +539,7 @@ export type ZombiesImagePath =
   '/zombies/keeper.webp' |
   '/zombies/kommando-klaus.webp' |
   '/zombies/krasny-soldat.webp' |
+  '/zombies/legion.webp' |
   '/zombies/lightning-catalyst.webp' |
   '/zombies/mangler.webp' |
   '/zombies/marauder.webp' |

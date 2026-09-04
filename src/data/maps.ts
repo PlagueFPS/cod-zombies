@@ -643,6 +643,22 @@ const MAPS = new Map([
 			reason: "Time varies mainly based on slight RNG and player knowledge of the steps.",
 		}),
 	}),
+	makeMap("outbreak", {
+		title: "Outbreak",
+		releaseDate: "2021-04-22",
+		description:
+			"This is Operation Threshold: Requiem's ongoing mission deep behind enemy lines in the world's largest Outbreak Zone. Complete your objectives. Combat the horde. Fight, explore, scavenge, loot, survive. The Aetherium Arms Race is on.",
+		image: "/maps/outbreak.webp",
+		game: "black-ops-cold-war",
+		mainQuest: Option.some("content/main-quests/outbreak"),
+		difficulty: Option.some("Hard"),
+		state: Option.none(),
+		estimatedTimeMins: Option.some({
+			min: 30,
+			max: 90,
+			reason: "Time varies based on which quest you're doing and how much time you take to prep.",
+		}),
+	}),
 	makeMap("mauer-der-toten", {
 		title: "Mauer der Toten",
 		releaseDate: "2021-07-15",

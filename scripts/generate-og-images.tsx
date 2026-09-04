@@ -363,7 +363,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
-				stylesheets: ogStylesheets,
+				css: ogStylesheets,
 				images: [
 					{ data: mapImage, src: `${map.id}-image` },
 					{ data: siteLogo, src: "site-logo" },
