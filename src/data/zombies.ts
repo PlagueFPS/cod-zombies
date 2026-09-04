@@ -1946,7 +1946,7 @@ const ZOMBIES = new Map([
 		maps: ["rex-infernus"],
 		type: "Special",
 		speed: "Fast",
-		weakPoints: ["back-sacs", "head"],
+		weakPoints: ["back-sacs"],
 		elementalWeakness: ["dead-wire"],
 		attacks: ["bite", "lunge", "web-projectile"],
 		spawnBehavior:
