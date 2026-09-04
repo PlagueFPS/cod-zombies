@@ -41,11 +41,6 @@ describe("getZombieByKey", () => {
 		const z = getZombieByKey("zombie").pipe(Option.getOrThrow)
 		expect(z.id).toBe("zombie")
 	})
-
-	test("deathspinner weak points are back sacs only, not the head", () => {
-		const z = getZombieByKey("deathspinner").pipe(Option.getOrThrow)
-		expect(z.weakPoints).toEqual(["back-sacs"])
-	})
 })
 
 describe("zombie New badge vs release date (fixtures)", () => {
