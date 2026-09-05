@@ -72,7 +72,12 @@ export function BestiaryCard({ zombie, priority, fetchPriority }: IBestiaryCard)
 								loading={priority ? "eager" : "lazy"}
 								fetchPriority={fetchPriority}
 								sizes="272px"
-								className="h-44 rounded-md object-cover object-top"
+								className={cn("h-44 rounded-md object-cover object-top", {
+									"object-center":
+										zombie.id === "dread-skull" ||
+										zombie.id === "veytharion" ||
+										zombie.id === "nathan",
+								})}
 							/>
 						</div>
 						<CardTitle className="text-xl group-hover:text-primary-gradient group-focus-visible:text-primary-gradient">

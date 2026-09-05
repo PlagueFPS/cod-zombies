@@ -1975,7 +1975,7 @@ const ZOMBIES = new Map([
 		title: "Dread Skull",
 		state: Option.some("New"),
 		releaseDate: "2026-08-20",
-		image: "/zombies/dread-skull.webp",
+		image: "/zombies/dread-skull-v1.webp",
 		description:
 			"These summoned helpers of the Warden serve as protectors of the Warden's domain and help strengthen the Warden.",
 		games: ["black-ops-7"],
@@ -1984,7 +1984,7 @@ const ZOMBIES = new Map([
 		speed: "Medium",
 		weakPoints: [],
 		elementalWeakness: ["dead-wire"],
-		attacks: [],
+		attacks: ["downed-life-drain"],
 		spawnBehavior:
 			"Dread Skulls only appear during the boss fight of Rex Infernus and strengthen the Warden and prevent his more vulnerable weak point from being exposed.",
 		combatStrategy: "content/zombies/dread-skull",
