@@ -186,7 +186,12 @@ function ZombieInfo() {
 									preload
 									loading="eager"
 									fetchPriority="high"
-									className="mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none"
+									className={cn(
+										"mb-4 aspect-square w-full overflow-hidden rounded-lg object-cover object-top shadow-lg dark:shadow-none",
+										{
+											"object-center": zombie.id === "dread-skull",
+										},
+									)}
 								/>
 								<div className="w-full space-y-3">
 									<div>

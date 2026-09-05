@@ -1,13 +1,7 @@
 import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import {
-	getAdjacentZombies,
-	getZombieByKey,
-	getZombies,
-	type Zombie,
-	type ZombieKey,
-} from "@/data/zombies"
+import { getAdjacentZombies, getZombies, type Zombie, type ZombieKey } from "@/data/zombies"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 
@@ -27,19 +21,6 @@ describe("getZombies", () => {
 		const dates = getZombies().map(z => z.releaseDate)
 		expect(dates.length).toBeGreaterThan(1)
 		assertSortedDescByDate(dates)
-	})
-})
-
-describe("getZombieByKey", () => {
-	test("returns None when the zombie does not exist", () => {
-		// @ts-expect-error invalid key
-		const z = getZombieByKey("invalid-zombie")
-		expect(Option.isNone(z)).toBe(true)
-	})
-
-	test("returns Some when the zombie exists", () => {
-		const z = getZombieByKey("zombie").pipe(Option.getOrThrow)
-		expect(z.id).toBe("zombie")
 	})
 })
 

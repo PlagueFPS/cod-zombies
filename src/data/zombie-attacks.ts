@@ -692,4 +692,10 @@ const ZOMBIE_ATTACKS = new Map([
 		description:
 			"Shoots a poison projectile from the tip of the stinger, inflicting damage over time on hit players.",
 	}),
+	makeZombieAttack("downed-life-drain", {
+		title: "Downed Life Drain",
+		range: "Short",
+		description:
+			"Drains the remaining life from nearby downed players, reducing the time available to revive them.",
+	}),
 ])
