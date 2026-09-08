@@ -433,7 +433,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
-				stylesheets: ogStylesheets,
+				css: ogStylesheets,
 				images: [
 					{ data: mapImage, src: `${map.id}-image` },
 					{ data: siteLogo, src: "site-logo" },
@@ -789,7 +789,7 @@ export const generateZombieImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
-				stylesheets: ogStylesheets,
+				css: ogStylesheets,
 				images: [
 					{ data: zombieImage, src: `${zombie.id}-portrait` },
 					{ data: siteLogo, src: "site-logo" },
@@ -987,7 +987,7 @@ export const generateRelicImage = Effect.fnUntraced(
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
 				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
-				stylesheets: ogStylesheets,
+				css: ogStylesheets,
 				images: [
 					{ data: relicImage, src: `${relic.id}-portrait` },
 					{ data: siteLogo, src: "site-logo" },
