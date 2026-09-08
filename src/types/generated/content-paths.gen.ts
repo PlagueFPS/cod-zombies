@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-08-31T19:22:26.392Z
- * generated in: 23ms
+ * generated at: 2026-09-07T08:09:03.424Z
+ * generated in: 24ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -35,6 +35,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/most-escape-alive"
 	| "content/main-quests/my-brothers-keeper"
 	| "content/main-quests/no-mo-modi"
+	| "content/main-quests/outbreak"
 	| "content/main-quests/paradox-junction"
 	| "content/main-quests/paradoxical-prologue"
 	| "content/main-quests/pop-goes-the-weasel"
@@ -375,6 +376,7 @@ export type ZombiesPaths =
 	| "content/zombies/keepers"
 	| "content/zombies/kommando-klaus"
 	| "content/zombies/krasny-soldat"
+	| "content/zombies/legion"
 	| "content/zombies/lightning-catalyst"
 	| "content/zombies/mangler"
 	| "content/zombies/marauder"

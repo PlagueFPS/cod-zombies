@@ -179,6 +179,7 @@ const ZOMBIES = new Map([
 			"classified",
 			"tag-der-toten",
 			"firebase-z",
+			"outbreak",
 			"kowakujo",
 			"rex-infernus",
 		],
@@ -673,6 +674,7 @@ const ZOMBIES = new Map([
 		maps: [
 			"gorod-krovi",
 			"firebase-z",
+			"outbreak",
 			"mauer-der-toten",
 			"forsaken",
 			"liberty-falls",
@@ -1112,6 +1114,7 @@ const ZOMBIES = new Map([
 		maps: [
 			"die-maschine",
 			"firebase-z",
+			"outbreak",
 			"mauer-der-toten",
 			"forsaken",
 			"liberty-falls",
@@ -1146,6 +1149,7 @@ const ZOMBIES = new Map([
 		maps: [
 			"die-maschine",
 			"firebase-z",
+			"outbreak",
 			"mauer-der-toten",
 			"forsaken",
 			"liberty-falls",
@@ -1177,7 +1181,7 @@ const ZOMBIES = new Map([
 		description:
 			"The Plaguehound is a variant of the Hellhound originating on the map Die Maschine in Black Ops: Cold War, being heavily mutated with Nova 6 Gas compared to hellhounds.",
 		games: ["black-ops-cold-war"],
-		maps: ["die-maschine", "forsaken"],
+		maps: ["die-maschine", "outbreak", "forsaken"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
@@ -1195,7 +1199,7 @@ const ZOMBIES = new Map([
 		description:
 			"The Megaton is the first elite enemy appearing in Black Ops: Cold War originating from the map Die Maschine, appearing as a radioactive mutated juggernaut of a zombie.",
 		games: ["black-ops-cold-war"],
-		maps: ["die-maschine", "mauer-der-toten", "forsaken"],
+		maps: ["die-maschine", "outbreak", "mauer-der-toten", "forsaken"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -1213,7 +1217,7 @@ const ZOMBIES = new Map([
 		description:
 			"The Mimic is a special enemy originating in Black Ops: Cold War, shapeshifting into objects to trick the player before attacking them.",
 		games: ["black-ops-cold-war", "black-ops-7"],
-		maps: ["firebase-z", "mauer-der-toten", "forsaken", "paradox-junction"],
+		maps: ["firebase-z", "outbreak", "mauer-der-toten", "forsaken", "paradox-junction"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["mouth"],
@@ -1231,7 +1235,7 @@ const ZOMBIES = new Map([
 		description:
 			"Orda is a boss type zombie originating on Firebase Z in Black Ops: Cold War, appearing as an elder god from the Dark Aether.",
 		games: ["black-ops-cold-war"],
-		maps: ["firebase-z"],
+		maps: ["firebase-z", "outbreak"],
 		type: "Boss",
 		speed: "Medium",
 		weakPoints: ["mouth"],
@@ -1240,6 +1244,24 @@ const ZOMBIES = new Map([
 		spawnBehavior:
 			"Ordas can spawn during the third Dimensional Tear Assault waves in Firebase Z, and an Orda is also the final boss of the main quest.",
 		combatStrategy: "content/zombies/orda",
+	}),
+	makeZombie("legion", {
+		title: "Legion",
+		state: Option.none(),
+		releaseDate: "2021-04-22",
+		image: "/zombies/legion.webp",
+		description:
+			"Legion is a combination of a multitude of Tempests into a single entity capable of much more than a normal Tempest.",
+		games: ["black-ops-cold-war"],
+		maps: ["outbreak"],
+		type: "Boss",
+		speed: "Medium",
+		weakPoints: ["chest"],
+		elementalWeakness: [],
+		attacks: ["lightning-beam"],
+		spawnBehavior:
+			"Legion is the final boss of the Ravenov Implications Outbreak main quest and only spawns during that final encounter.",
+		combatStrategy: "content/zombies/legion",
 	}),
 	makeZombie("tormentors", {
 		title: "Tormentors",
@@ -1267,7 +1289,7 @@ const ZOMBIES = new Map([
 		description:
 			"Disciples are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing as summoners from the Dark Aether.",
 		games: ["black-ops-cold-war"],
-		maps: ["mauer-der-toten", "forsaken"],
+		maps: ["mauer-der-toten", "outbreak", "forsaken"],
 		type: "Special",
 		speed: "Slow",
 		weakPoints: ["head"],
@@ -1285,7 +1307,7 @@ const ZOMBIES = new Map([
 		description:
 			"Tempests are a special enemy type originating on the map Mauer Der Toten in Black Ops Cold War, appearing as a smaller purple variant of the Avogadro.",
 		games: ["black-ops-cold-war"],
-		maps: ["mauer-der-toten"],
+		maps: ["mauer-der-toten", "outbreak"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -1303,7 +1325,7 @@ const ZOMBIES = new Map([
 		description:
 			"The Krasny Soldat is an elite variant of the Panzersoldat originating on the map Mauer Der Toten in Black Ops Cold War, adopting a red color scheme for the Omega Group.",
 		games: ["black-ops-cold-war"],
-		maps: ["mauer-der-toten"],
+		maps: ["mauer-der-toten", "outbreak"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head", "power-core"],
@@ -1339,7 +1361,7 @@ const ZOMBIES = new Map([
 		description:
 			"The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold War, appearing as a three-headed mutated zombie similar to the Margwa.",
 		games: ["black-ops-cold-war", "black-ops-6", "black-ops-7"],
-		maps: ["forsaken", "liberty-falls", "shattered-veil", "kowakujo", "rex-infernus"],
+		maps: ["forsaken", "outbreak", "liberty-falls", "shattered-veil", "kowakujo", "rex-infernus"],
 		type: "Elite",
 		speed: "Slow",
 		weakPoints: ["glowing-mouths"],
