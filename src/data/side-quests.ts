@@ -2003,7 +2003,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/par-course",
 	}),
 	makeQuest("skull-mask", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-26",
 		title: "Skull Mask",
 		description:
@@ -2012,7 +2012,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/skull-mask",
 	}),
 	makeQuest("horned-mask", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-26",
 		title: "Horned Mask",
 		description:
@@ -2021,7 +2021,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/horned-mask",
 	}),
 	makeQuest("uber-klaus-helmet", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-27",
 		title: "Uber Klaus Helmet",
 		description:
@@ -2030,7 +2030,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/uber-klaus-helmet",
 	}),
 	makeQuest("wardens-hat", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-27",
 		title: "Warden's Hat",
 		description:
@@ -2039,7 +2039,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/wardens-hat",
 	}),
 	makeQuest("dance-off", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-28",
 		title: "Dance Off",
 		description:
@@ -2048,7 +2048,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/dance-off",
 	}),
 	makeQuest("corrupted-weapons", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-28",
 		title: "Corrupted Weapons",
 		description:
@@ -2057,7 +2057,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/corrupted-weapons",
 	}),
 	makeQuest("all-we-are", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-29",
 		title: "All We Are",
 		description:
@@ -2066,7 +2066,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/all-we-are",
 	}),
 	makeQuest("dravakar-anvil", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-31",
 		title: "Dravakar Anvil",
 		description:
@@ -2075,7 +2075,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/dravakar-anvil",
 	}),
 	makeQuest("temporal-conduits", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-31",
 		title: "Temporal Conduits",
 		description:
@@ -2084,7 +2084,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/temporal-conduits",
 	}),
 	makeQuest("hidden-power-ups-rex-infernus", {
-		state: Option.some("New"),
+		state: Option.none(),
 		publishedDate: "2026-08-31",
 		title: "Hidden Power-Ups",
 		description:

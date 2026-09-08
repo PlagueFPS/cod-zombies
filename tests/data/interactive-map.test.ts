@@ -94,18 +94,11 @@ describe("interactive map New badge vs published date (fixtures)", () => {
 })
 
 describe("getInteractiveMapByKey applies publishedDate New window", () => {
-	test("keeps stored New inside the 14-day window", () => {
+	test("stored None stays None even when publishedDate is inside the 14-day window", () => {
 		vi.useFakeTimers()
 		vi.setSystemTime(Date.parse("2026-09-08T12:00:00.000Z"))
 		const map = getInteractiveMapByKey("rex-infernus").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(map.state)).toBe("New")
-		vi.useRealTimers()
-	})
-
-	test("clears stored New after the 14-day window", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(Date.parse("2026-09-14T12:00:00.000Z"))
-		const map = getInteractiveMapByKey("rex-infernus").pipe(Option.getOrThrow)
+		expect(map.publishedDate).toBe("2026-08-30")
 		expect(Option.getOrNull(map.state)).toBeNull()
 		vi.useRealTimers()
 	})

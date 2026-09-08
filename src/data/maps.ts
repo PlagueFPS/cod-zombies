@@ -873,7 +873,7 @@ const MAPS = new Map([
 			"As reality stands on the cusp of destruction, the crew face their ultimate challenge. Cleanse the Shadowsmith places of power, find the Warden’s inner sanctum, and put an end to his loathsome existence.",
 		image: "/maps/rex-infernus-v1.webp",
 		game: "black-ops-7",
-		state: Option.some("New"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/rex-infernus"),
 		difficulty: Option.some("Hard"),
 		estimatedTimeMins: Option.some({

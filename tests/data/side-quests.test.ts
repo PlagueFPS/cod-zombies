@@ -103,18 +103,11 @@ describe("side quest New badge vs published date (fixtures)", () => {
 })
 
 describe("getSideQuestByKey applies publishedDate New window", () => {
-	test("keeps stored New inside the 14-day window", () => {
+	test("stored None stays None even when publishedDate is inside the 14-day window", () => {
 		vi.useFakeTimers()
 		vi.setSystemTime(Date.parse("2026-09-01T12:00:00.000Z"))
 		const quest = getSideQuestByKey("skull-mask").pipe(Option.getOrThrow)
-		expect(Option.getOrNull(quest.state)).toBe("New")
-		vi.useRealTimers()
-	})
-
-	test("clears stored New after the 14-day window", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(Date.parse("2026-09-10T12:00:00.000Z"))
-		const quest = getSideQuestByKey("skull-mask").pipe(Option.getOrThrow)
+		expect(quest.publishedDate).toBe("2026-08-26")
 		expect(Option.getOrNull(quest.state)).toBeNull()
 		vi.useRealTimers()
 	})
