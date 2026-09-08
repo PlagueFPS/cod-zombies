@@ -94,7 +94,7 @@ const makeMapEntry = <T extends string>(
 const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("rex-infernus", {
 		title: "Rex Infernus",
-		state: Option.some("New"),
+		state: Option.none(),
 		image: "/previews/rex-infernus-preview.webp",
 		game: "black-ops-7",
 		description:

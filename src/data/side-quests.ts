@@ -1757,7 +1757,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/par-course",
 	}),
 	makeQuest("skull-mask", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Skull Mask",
 		description:
 			"Learn how to obtain the Skull Mask, providing you with an additional Ammo Mod that summons the Twins for a short duration.",
@@ -1765,7 +1765,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/skull-mask",
 	}),
 	makeQuest("horned-mask", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Horned Mask",
 		description:
 			'Learn how to obtain the Horned Mask, providing abilities similar to the Black Ops 4 perk "Stone Cold Stronghold"',
@@ -1773,7 +1773,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/horned-mask",
 	}),
 	makeQuest("uber-klaus-helmet", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Uber Klaus Helmet",
 		description:
 			"Learn how to obtain the Uber Klaus Helmet, extending the duration of all grapples by 30 seconds.",
@@ -1781,7 +1781,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/uber-klaus-helmet",
 	}),
 	makeQuest("wardens-hat", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Warden's Hat",
 		description:
 			"Learn how to obtain the Warden's Hat, granting you complete immunity to all web effects from Deathspinners and the Web Mother.",
@@ -1789,7 +1789,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/wardens-hat",
 	}),
 	makeQuest("dance-off", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Dance Off",
 		description:
 			"Discover Mister Peeks' dance off and complete the dance challenge to earn potentially valuable rewards.",
@@ -1797,7 +1797,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/dance-off",
 	}),
 	makeQuest("corrupted-weapons", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Corrupted Weapons",
 		description:
 			"Learn how to obtain Ultra Rarity Corrupted Olympia or TR2 guaranteed in your game.",
@@ -1805,7 +1805,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/corrupted-weapons",
 	}),
 	makeQuest("all-we-are", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "All We Are",
 		description:
 			'Discover the hidden music easter egg song "All We Are" by Kevin Sherwood with vocals by Elena Siegman.',
@@ -1813,7 +1813,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/all-we-are",
 	}),
 	makeQuest("dravakar-anvil", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Dravakar Anvil",
 		description:
 			"Learn how to dismantle your weapons into Aether Tools and Aetherium Crystals that you can use to upgrade other weapons.",
@@ -1821,7 +1821,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/dravakar-anvil",
 	}),
 	makeQuest("temporal-conduits", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Temporal Conduits",
 		description:
 			"Discover the character specific Temporal Conduits to learn more about the story and earn rewards like Perks, Aether Tools, and more.",
@@ -1829,7 +1829,7 @@ const SIDE_QUESTS = new Map([
 		content: "content/side-quests/temporal-conduits",
 	}),
 	makeQuest("hidden-power-ups-rex-infernus", {
-		state: Option.some("New"),
+		state: Option.none(),
 		title: "Hidden Power-Ups",
 		description:
 			"Discover the location of every hidden Power-Up drop in Rex Infernus, in case you need them.",

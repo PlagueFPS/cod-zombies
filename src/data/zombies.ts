@@ -1959,7 +1959,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("deathspinner", {
 		title: "Deathspinner",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-08-20",
 		image: "/zombies/deathspinner.webp",
 		description:
@@ -1977,7 +1977,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("shadow-soul", {
 		title: "Shadow Soul",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-08-20",
 		image: "/zombies/shadow-soul.webp",
 		description:
@@ -1995,7 +1995,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("dread-skull", {
 		title: "Dread Skull",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-08-20",
 		image: "/zombies/dread-skull-v1.webp",
 		description:
@@ -2013,7 +2013,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("wardens-stinger", {
 		title: "Warden's Stinger",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-08-20",
 		image: "/zombies/wardens-stinger.webp",
 		description:
@@ -2031,7 +2031,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("web-mother", {
 		title: "Web Mother",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-08-20",
 		image: "/zombies/web-mother.webp",
 		description:
@@ -2049,7 +2049,7 @@ const ZOMBIES = new Map([
 	}),
 	makeZombie("warden", {
 		title: "Warden",
-		state: Option.some("New"),
+		state: Option.none(),
 		releaseDate: "2026-08-20",
 		image: "/zombies/the-warden.webp",
 		description:
