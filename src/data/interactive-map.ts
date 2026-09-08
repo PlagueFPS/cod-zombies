@@ -4,6 +4,7 @@ import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect, Option, Schema } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
+import { resolveNewContentState } from "@/utils/content-state"
 import { decodeMapConfigModule } from "@/utils/validation-schemas"
 
 class ConfigNotFoundError extends Schema.TaggedError<ConfigNotFoundError>()("ConfigNotFoundError", {
@@ -20,8 +21,12 @@ export interface InteractiveMap {
 	readonly id: string
 	/** The title of the interactive map */
 	readonly title: string
-	/** The state of the interactive map */
+	/** The state of the interactive map. A stored value of `"New"` is time-limited after `publishedDate` (see `resolveNewContentState`). */
 	readonly state: Option.Option<ContentState>
+	/**
+	 * Calendar day this interactive map became public on the site as an ISO 8601 date-only string (`YYYY-MM-DD`).
+	 */
+	readonly publishedDate: string
 	/** The image of the interactive map */
 	readonly image: PreviewsImagePath
 	/** The game the interactive map is from */
@@ -63,17 +68,27 @@ export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(func
 	return config as MapConfig
 })
 
+function withResolvedInteractiveMapState(map: InteractiveMap): InteractiveMap {
+	const nowMs = Date.now()
+	return {
+		...map,
+		state: resolveNewContentState(map.state, map.publishedDate, nowMs),
+	}
+}
+
 /**
  * Gets an interactive map by its key.
  */
 export const getInteractiveMapByKey = (key: InteractiveMapKey) =>
-	Option.fromUndefinedOr(INTERACTIVE_MAPS.get(key))
+	Option.fromUndefinedOr(INTERACTIVE_MAPS.get(key)).pipe(
+		Option.map(withResolvedInteractiveMapState),
+	)
 
 /**
  * Gets a list of all interactive maps in the registry sorted by release date descending
  */
 export const getInteractiveMaps = () =>
-	[...INTERACTIVE_MAPS.values()].sort((a, b) => {
+	[...INTERACTIVE_MAPS.values()].map(withResolvedInteractiveMapState).sort((a, b) => {
 		const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
 		const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
 		return compareMapReleaseDescending(mapA, mapB)
@@ -95,6 +110,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("rex-infernus", {
 		title: "Rex Infernus",
 		state: Option.some("New"),
+		publishedDate: "2026-08-30",
 		image: "/previews/rex-infernus-preview.webp",
 		game: "black-ops-7",
 		description:
@@ -103,6 +119,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("kowakujo", {
 		title: "Kowakujō",
 		state: Option.none(),
+		publishedDate: "2026-07-03",
 		image: "/previews/kowakujo-preview.webp",
 		game: "black-ops-7",
 		description:
@@ -111,6 +128,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("totenreich", {
 		title: "Totenreich",
 		state: Option.none(),
+		publishedDate: "2026-05-03",
 		image: "/previews/totenreich-preview-v2.webp",
 		game: "black-ops-7",
 		description:
@@ -119,6 +137,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("paradox-junction", {
 		title: "Paradox Junction",
 		state: Option.none(),
+		publishedDate: "2026-03-26",
 		image: "/previews/paradox-junction-preview-v1.webp",
 		game: "black-ops-7",
 		description:
@@ -127,6 +146,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("astra-malorum", {
 		title: "Astra Malorum",
 		state: Option.none(),
+		publishedDate: "2025-12-08",
 		image: "/previews/astra-malorum-preview-v1.webp",
 		game: "black-ops-7",
 		description:
@@ -135,6 +155,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("ashes-of-the-damned", {
 		title: "Ashes of the Damned",
 		state: Option.none(),
+		publishedDate: "2025-11-27",
 		image: "/previews/ashes-of-the-damned-preview-v1.webp",
 		game: "black-ops-7",
 		description:
@@ -143,6 +164,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("reckoning", {
 		title: "Reckoning",
 		state: Option.none(),
+		publishedDate: "2025-08-20",
 		image: "/previews/reckoning-preview-v1.webp",
 		game: "black-ops-6",
 		description:
@@ -151,6 +173,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("shattered-veil", {
 		title: "Shattered Veil",
 		state: Option.none(),
+		publishedDate: "2025-05-26",
 		image: "/previews/shattered-veil-preview-v1.webp",
 		game: "black-ops-6",
 		description:
@@ -159,6 +182,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("the-tomb", {
 		title: "The Tomb",
 		state: Option.none(),
+		publishedDate: "2025-05-29",
 		image: "/previews/the-tomb-preview-v1.webp",
 		game: "black-ops-6",
 		description:
@@ -167,6 +191,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("citadelle-des-morts", {
 		title: "Citadelle des Morts",
 		state: Option.none(),
+		publishedDate: "2025-05-30",
 		image: "/previews/citadelle-des-morts-preview-v1.webp",
 		game: "black-ops-6",
 		description:
@@ -175,6 +200,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("terminus", {
 		title: "Terminus",
 		state: Option.none(),
+		publishedDate: "2025-05-31",
 		image: "/previews/terminus-preview-v1.webp",
 		game: "black-ops-6",
 		description:
@@ -183,6 +209,7 @@ const INTERACTIVE_MAPS = new Map([
 	makeMapEntry("liberty-falls", {
 		title: "Liberty Falls",
 		state: Option.none(),
+		publishedDate: "2025-05-31",
 		image: "/previews/liberty-falls-preview-v1.webp",
 		game: "black-ops-6",
 		description:

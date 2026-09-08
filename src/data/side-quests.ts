@@ -3,6 +3,7 @@ import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
 import { Option } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
+import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems } from "@/utils/shared-functions"
 
 export interface SideQuest {
@@ -12,8 +13,12 @@ export interface SideQuest {
 	readonly id: string
 	/** The title of the side quest */
 	readonly title: string
-	/** The state of the side quest */
+	/** The state of the side quest. A stored value of `"New"` is time-limited after `publishedDate` (see `resolveNewContentState`). */
 	readonly state: Option.Option<ContentState>
+	/**
+	 * Calendar day this guide became public on the site as an ISO 8601 date-only string (`YYYY-MM-DD`).
+	 */
+	readonly publishedDate: string
 	/** The map of the side quest */
 	readonly map: MapKey
 	/** The description of the side quest */
@@ -41,14 +46,23 @@ export function compareSideQuestDescending(
 	)
 }
 
+function withResolvedSideQuestState(quest: SideQuest): SideQuest {
+	const nowMs = Date.now()
+	return {
+		...quest,
+		state: resolveNewContentState(quest.state, quest.publishedDate, nowMs),
+	}
+}
+
 /** @returns Side quests sorted like by {@link compareMapReleaseDescending} on the host map, then {@link SIDE_QUESTS} insertion order when host maps tie. */
 export const getSideQuests = (): SideQuest[] =>
-	[...SIDE_QUESTS.values()].sort(compareSideQuestDescending)
+	[...SIDE_QUESTS.values()].map(withResolvedSideQuestState).sort(compareSideQuestDescending)
 
 /**
  * @returns The side quest with the given key
  */
-export const getSideQuestByKey = (key: SideQuestKey) => Option.fromUndefinedOr(SIDE_QUESTS.get(key))
+export const getSideQuestByKey = (key: SideQuestKey) =>
+	Option.fromUndefinedOr(SIDE_QUESTS.get(key)).pipe(Option.map(withResolvedSideQuestState))
 
 /** @returns The adjacent side quests for the given quest ID, sorted by {@link compareSideQuestDescending}. */
 export const getAdjacentSideQuests = (questId: SideQuestKey) => {
@@ -76,6 +90,7 @@ const makeQuest = <T extends string>(
 const SIDE_QUESTS = new Map([
 	makeQuest("free-500-points", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free 500 Points",
 		description:
 			"Discover this easy way to get a quick 500 points immediately after opening the first door of the map, refunding your purchase.",
@@ -84,6 +99,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-mega-gobblegum", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Mega Gobblegum",
 		description:
 			"Learn how to acquire a free Mega Gobblegum, enhancing your game. Follow precise steps involving Widow's Wine, and specific statue interactions to claim your reward.",
@@ -92,6 +108,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("upgraded-trip-mines", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Upgraded Trip Mines",
 		description: `Discover the explosive secret of the Trip Mines! Blast zombies at "Holly's Cream Cakes" carts for a doughnut-fueled upgrade.`,
 		map: "shadows-of-evil",
@@ -99,6 +116,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("noire-mode-filter", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Noire Mode Filter",
 		description: `Discover a way to activate a permanent "Noire Mode" for the rest of the game for a new look to the game.`,
 		map: "shadows-of-evil",
@@ -106,6 +124,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("snakeskin-boots-song", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Snakeskin Boots Song",
 		description: `Discover this Music Easter Egg Song "Snakeskin Boots" for Shadows of Evil by Jack Wall feat. Rick Riso with lyrics by Cindy Shapiro`,
 		map: "shadows-of-evil",
@@ -113,6 +132,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("cold-hard-cash", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Cold Hard Cash",
 		description: `Discover this Music Easter Egg Song "Cold Hard Cash" for Shadows of Evil by Jack Wall feat. Antonia Bennet with lyrics by Cindy Shapiro`,
 		map: "shadows-of-evil",
@@ -120,6 +140,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("margwa-mask", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Margwa Mask",
 		description: `Learn how to unlock the Margwa Mask for a wild look and slam protection by shooting 6 Margwa hearts from a moving train.`,
 		map: "shadows-of-evil",
@@ -127,6 +148,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("jump-scare", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Jump Scare",
 		description: `Discover this spooky jumpscare using a Sniper Rifle for a quick scare and laugh.`,
 		map: "shadows-of-evil",
@@ -134,6 +156,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("upgraded-lil-arnies", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Upgraded Lil' Arnies",
 		description: `Learn how to upgrade your Lil' Arnies for a stronger, longer lasting, and cooler looking tactical equipment.`,
 		map: "shadows-of-evil",
@@ -141,6 +164,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("shadowman-round-skip", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Shadowman Round Skip",
 		description: `Discover this way to skip through the early rounds and jump ahead to Round 5, 10, or 15 with extra points to speed up your game.`,
 		map: "shadows-of-evil",
@@ -148,6 +172,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("beauty-of-annihilation-remix", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Beauty of Annihilation Remix",
 		description: `Discover the Remixed version of the original Beauty of Annihilation Music Easter Egg Song by Kevin Sherwood, sang by Elena Siegman`,
 		map: "the-giant",
@@ -155,6 +180,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-perk-machine", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hidden Perk Machine",
 		description: `Learn how to uncover this hidden sixth perk machine on The Giant that can either by Stamin-Up or Deadshot Daiquiri.`,
 		map: "the-giant",
@@ -162,6 +188,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dead-again", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Dead Again",
 		description: `Discover the "Dead Again" Music Easter Egg song for Der Eisendrache written by Kevin Sherwood and vocals by Elena Siegman.`,
 		map: "der-eisendrache",
@@ -169,6 +196,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("brm-wall-buy", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "BRM Wall Buy",
 		description: `Learn how to unlock this hidden wall buy for the BRM Light Machine Gun by utilizing Anti-Gravity and wall running.`,
 		map: "der-eisendrache",
@@ -176,6 +204,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("skeletons-everywhere", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Skeletons Everywhere",
 		description: `Learn how to enable this cool effect that turns all zombies into skeletons, which you can disable at any time if you choose.`,
 		map: "der-eisendrache",
@@ -183,6 +212,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("panzer-claw-helmet", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Panzer Claw Helmet",
 		description: `Learn how to obtain a Panzer Claw Helmet that will grant you full immunity from the Panzer's melee attacks.`,
 		map: "der-eisendrache",
@@ -190,6 +220,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("plunger-melee-weapon", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Plunger Melee Weapon",
 		description: `Learn how to obtain the Plunger Melee Weapon which has a hidden effect allowing you to instantly kill Panzersoldats.`,
 		map: "der-eisendrache",
@@ -197,6 +228,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("second-gondola", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Second Gondola",
 		description: `Learn how to enable the second Gondola at the start of the game to get a valuable reward like Monkey Bombs, Packed Man-O-War, or Packed Haymaker 12.`,
 		map: "der-eisendrache",
@@ -204,6 +236,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-mega-gobblegum-der-eisendrache", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Mega Gobblegum",
 		description: `Learn how to obtain a Free Mega GobbleGum that can help enhance your game while you progress the Main Quest.`,
 		map: "der-eisendrache",
@@ -211,6 +244,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dead-flowers", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Dead Flowers",
 		description: `Discover the hidden Music Easter Egg Song "Dead Flowers" written by Kevin Sherwood with vocals by Malukah.`,
 		map: "zetsubou-no-shima",
@@ -218,6 +252,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("doppelganger-jump-scare", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Doppelganger Jump Scare",
 		description: `Discover this eerie figure that looks like a Doppleganger of one of the four main crew characters, Dempsey, Nikolai, Takeo, or Richtofen.`,
 		map: "zetsubou-no-shima",
@@ -225,6 +260,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-widows-wine", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Widow's Wine",
 		description: `Learn how to obtain the Widow's Wine perk as a nice reward for defeating a formidable foe.`,
 		map: "zetsubou-no-shima",
@@ -232,6 +268,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("friendy-thrasher", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Friendy Thrasher",
 		description: `Learn how to turn a threatening enemy into a friendly asset to help you survive for up to three full rounds.`,
 		map: "zetsubou-no-shima",
@@ -239,6 +276,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("golden-bucket", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Golden Bucket",
 		description: `Learn how to obtain the Golden Bucket for your entire team, granting you an infinite amount of every type of water.`,
 		map: "zetsubou-no-shima",
@@ -246,6 +284,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("spider-bait", {
 		state: Option.none(),
+		publishedDate: "2025-10-13",
 		title: "Spider Bait",
 		description: `Learn how to transform your character into a spider, shooting webs, and gaining invincibility while active.`,
 		map: "zetsubou-no-shima",
@@ -253,6 +292,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dragon-shield-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Dragon Shield Upgrade",
 		description: `Learn how to upgrade the Guard of Fafnir shield into Timat's Maw, increasing its health, damage, range and eye color of the shield to red.`,
 		map: "gorod-krovi",
@@ -260,6 +300,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dragon-strike-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Dragon Strike Upgrade",
 		description: `Learn how to upgrade the Dragon Strike into the Draconite for increased damage, usage, and new visual effects.`,
 		map: "gorod-krovi",
@@ -267,6 +308,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("melee-weapons", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Melee Weapons",
 		description: `Discover this interesting arsenal reward for completing certain rounds in under a specific amount of time.`,
 		map: "gorod-krovi",
@@ -274,6 +316,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("monkey-bombs-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Monkey Bombs Upgrade",
 		description: `Learn how to upgrade the Monkey Bombs for increased effectiveness and a dubstep-remixed sound effect.`,
 		map: "gorod-krovi",
@@ -281,6 +324,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dead-ended", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Dead Ended",
 		description: `Discover this hidden Music Easter Egg song "Dead Ended" by Kevin Sherwood with vocals by Clark S Nova.`,
 		map: "gorod-krovi",
@@ -288,6 +332,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("ace-of-spades", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Ace of Spades",
 		description: `Discover this hidden Music Easter Egg song for the popular song Ace of Spades by Motorhead.`,
 		map: "gorod-krovi",
@@ -295,6 +340,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("samanthas-sorrow", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Samantha's Sorrow",
 		description: `Learn how to activate the hidden Music Easter Egg song "Samantha's Sorrow" by Brian Tuey.`,
 		map: "gorod-krovi",
@@ -302,6 +348,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("helmets-and-wings", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Helmets & Wings",
 		description: `Learn how to obtain the Dragon Wings, Mangler Helmet, and Valkrie Helmet for a worthy upgrade and quality-of-life improvement.`,
 		map: "gorod-krovi",
@@ -309,6 +356,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("melee-weapons-revelations", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Melee Weapons Revelations",
 		description: `Discover this interesting wall buy reward for completing certain rounds in under a specific amount of time.`,
 		map: "revelations",
@@ -316,6 +364,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("lil-arnies-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Lil' Arnies Upgrade",
 		description: `Learn how to obtain the upgraded version of the Lil' Arnie's equipment for increased damage and a new visual look.`,
 		map: "revelations",
@@ -323,6 +372,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("the-gift", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "The Gift",
 		description: `Discover this hidden Music Easter Egg song "The Gift" by Kevin Sherwood with vocals by Elena Siegman.`,
 		map: "revelations",
@@ -330,6 +380,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("all-zombie-songs", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "All Zombie Songs",
 		description: `Discover this hidden Music Easter Egg that plays multiple songs from past maps.`,
 		map: "revelations",
@@ -337,6 +388,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("permanent-pack-a-punch", {
 		state: Option.none(),
+		publishedDate: "2026-07-07",
 		title: "Permanent Pack-a-Punch",
 		description: `Discover this game-changing upgrade that makes all wall and box weapons instantly Pack-a-Punched for the rest of the game, and unlocks Takeo's Katana.`,
 		map: "revelations",
@@ -344,6 +396,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-perk-wall-run", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Perk Wall Run",
 		description: `Learn how to obtain a Free Perk Power-Up, granting everyone in your game with a random perk.`,
 		map: "revelations",
@@ -351,6 +404,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("chalk-quotes", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Chalk Quotes",
 		description: `Learn how to unlock the M1927 wall buy and a way for you to trade weapons with your teammates.`,
 		map: "revelations",
@@ -358,6 +412,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hats-and-masks", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hats & Masks",
 		description: `Learn how to obtain all hats and masks that grant some strong gameplay advantages to help you survive.`,
 		map: "revelations",
@@ -365,6 +420,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("viking-funeral", {
 		state: Option.none(),
+		publishedDate: "2025-10-15",
 		title: "Viking Funeral",
 		description:
 			"Discover how to obtain a free Random Perk Power-Up by giving a fallen viking a proper sendoff.",
@@ -373,6 +429,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mad-hatter", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Mad Hatter",
 		description:
 			"Discover how to activate the song 'Mad Hatter' by Avenged Sevenfold in your game.",
@@ -381,6 +438,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("nos-fideles", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Nos Fideles",
 		description: "Discover how to activate the song 'Nos Fideles' by Jack Wall in your game.",
 		map: "ix",
@@ -388,6 +446,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("brazen-bull-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Brazen Bull Upgrade",
 		description: "Learn how to upgrade the Brazen Bull shield into the Iron Bull.",
 		map: "ix",
@@ -395,6 +454,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("fire-and-trap-immunity", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Fire & Trap Immunity",
 		description:
 			"Learn how to obtain fire immunity and significant damage reduction from the Acid Trap.",
@@ -403,6 +463,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("drowning", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Drowning",
 		description: "Learn how to activate the Music Easter Egg Song 'Drowning' by Kevin Sherwood.",
 		map: "voyage-of-despair",
@@ -410,6 +471,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("special-weapon-fire-sale", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Special Weapon Fire Sale",
 		description:
 			"Discover this way to activate a special fire sale allowing you to change your special weapon in game.",
@@ -418,6 +480,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("bowie-knife-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Bowie Knife Upgrade",
 		description:
 			"Learn how to upgrade your Bowie Knife for a one hit kill past Round 30 with a cooldown.",
@@ -426,6 +489,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("fish-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-10-16",
 		title: "Fish Free Perk",
 		description:
 			"Learn how to obtain a free Random Perk Power-Up by collecting six fish around the map.",
@@ -434,6 +498,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("elemental-shield-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-10-17",
 		title: "Elemental Shield Upgrade",
 		description:
 			"Learn how to upgrade your Ballistic Shield into the Svalinn Guard elemental shield.",
@@ -442,6 +507,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("where-are-we-going-remix", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Where Are We Going Remix",
 		description:
 			"Learn how to activate the remix of the original 'Where Are We Going' music easter egg song by Kevin Sherwood.",
@@ -450,6 +516,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hells-retriever", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Hell's Retriever",
 		description: "Learn how to obtain the Hell's Retriever lethal equipment.",
 		map: "blood-of-the-dead",
@@ -457,6 +524,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-monkey-bombs", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Free Monkey Bombs",
 		description:
 			"Learn how to obtain Free Monkey Bombs by killing enemies with your Special Weapon.",
@@ -465,6 +533,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("upgraded-spectral-shield", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Upgraded Spectral Shield",
 		description: "Learn how to upgrade your Spectral Shield for increased shield charge capacity.",
 		map: "blood-of-the-dead",
@@ -472,6 +541,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-blundergat", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Free Blundergat",
 		description:
 			"Learn how to obtain a Free Blundergat by completing collecting five skulls around the map.",
@@ -480,6 +550,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("magmagat-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Magmagat Upgrade",
 		description:
 			"Learn how to upgrade your Blundergat to the Magmagat variant, greatly enhancing its functionality.",
@@ -488,6 +559,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("golden-spork", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Golden Spork",
 		description: "Learn how to obtain a Golden Spork for an advanced melee weapon.",
 		map: "blood-of-the-dead",
@@ -495,6 +567,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("shockwave", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "Shockwave",
 		description: "Learn how to activate the Music Easter Egg song 'Shockwave' by Kevin Sherwood.",
 		map: "classified",
@@ -502,6 +575,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("this-jazz-is-classified", {
 		state: Option.none(),
+		publishedDate: "2025-10-18",
 		title: "This Jazz Is Classified",
 		description:
 			"Learn how to activate the Music Easter Egg song 'This Jazz Is Classified' by Jack Wall.",
@@ -510,6 +584,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-winters-howl", {
 		state: Option.none(),
+		publishedDate: "2025-10-19",
 		title: "Free Winter's Howl",
 		description: "Learn how to obtain a Free Winters Howl for an advanced melee weapon.",
 		map: "classified",
@@ -517,6 +592,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mystery", {
 		state: Option.none(),
+		publishedDate: "2025-10-19",
 		title: "Mystery",
 		description:
 			"Discover how to activate the hidden Music Easter Egg song 'Mystery' by Kevin Sherwood.",
@@ -525,6 +601,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("secret-doors", {
 		state: Option.none(),
+		publishedDate: "2025-10-19",
 		title: "Secret Doors",
 		description: "Discover how to unlock three secret doors each granting you a nice reward.",
 		map: "dead-of-the-night",
@@ -532,6 +609,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("stake-knife", {
 		state: Option.none(),
+		publishedDate: "2025-10-19",
 		title: "Stake Knife",
 		description: "Learn how to obtain a Stake Knife, increasing your damage against all enemies.",
 		map: "dead-of-the-night",
@@ -539,6 +617,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("savage-impaler", {
 		state: Option.none(),
+		publishedDate: "2025-10-20",
 		title: "Savage Impaler",
 		description:
 			"Learn how to obtain the Savage Impaler weapon, which is like a second Wonder Weapon.",
@@ -547,6 +626,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("stormbound", {
 		state: Option.none(),
+		publishedDate: "2025-10-20",
 		title: "Stormbound",
 		description:
 			"Discover how to activate the music Easter Egg song 'Stormbound' by Kevin Sherwood.",
@@ -555,6 +635,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("i-am-the-well", {
 		state: Option.none(),
+		publishedDate: "2025-10-20",
 		title: "I Am The Well",
 		description:
 			"Discover how to activate the music Easter Egg song 'I Am The Well' by Kevin Sherwood.",
@@ -563,6 +644,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("adam-unit-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-10-20",
 		title: "A.D.A.M. Unit Free Perk",
 		description:
 			"Learn how to obtain a free Random Perk Power-Up by shooting the heads of all A.D.A.M. units.",
@@ -571,6 +653,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("a-light-from-the-shore", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "A Light From The Shore",
 		description:
 			"Discover how to activate the hidden Music Easter Egg song 'A Light From The Shore' by Kevin Sherwood.",
@@ -579,6 +662,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("george-romero-glasses", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "George Romero Glasses",
 		description:
 			"Learn how to obtain a Free 500 Points by interacting with George Romero's glasses.",
@@ -587,6 +671,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("paper-jumpscare", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "Paper Jumpscare",
 		description: "Discover this hidden jumpscare by aiming at a piece of paper on the Forecastle.",
 		map: "tag-der-toten",
@@ -594,6 +679,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("statue-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "Statue Free Perk",
 		description: "Learn how to obtain a free Random Perk Power-Up by collecting four statues.",
 		map: "tag-der-toten",
@@ -601,6 +687,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("heat-pack", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "Heat Pack",
 		description:
 			"Learn how to obtain a Heat Pack allowing you to move and swim faster in water without freezing.",
@@ -609,6 +696,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("lighthouse-jumpscare", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "Lighthouse Jumpscare",
 		description: "Discover this hidden jumpscare by aiming at the top of the lighthouse.",
 		map: "tag-der-toten",
@@ -616,6 +704,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-tundragun", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "Free Tundragun",
 		description: "Learn how to obtain a Free Tundragun by doing a little target practice.",
 		map: "tag-der-toten",
@@ -623,6 +712,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-thundergun", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "Free Thundergun",
 		description: "Learn how to obtain a Free Thundergun by completing all five challenge totems.",
 		map: "tag-der-toten",
@@ -630,6 +720,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("upgraded-snowballs", {
 		state: Option.none(),
+		publishedDate: "2025-10-21",
 		title: "Upgraded Snowballs",
 		description: "Learn how to upgrade your Snowballs for a one-hit kill until Round 35.",
 		map: "tag-der-toten",
@@ -637,6 +728,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("alone", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Alone",
 		description:
 			"Discover how to activate the hidden Music Easter Egg song 'Alone' by Kevin Sherwood.",
@@ -645,6 +737,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("coffin-dance", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Coffin Dance",
 		description: "Learn how to activate this meme reference and receive a free Juggernog perk.",
 		map: "die-maschine",
@@ -652,6 +745,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("satellite-points", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Satellite Points",
 		description: "Learn how to obtain a free 1500 points by messing with some satellites.",
 		map: "die-maschine",
@@ -659,6 +753,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("monster-hand", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Monster Hand",
 		description: "Learn how to obtain a free Legendary Rarity upgrade by feeding a monster.",
 		map: "die-maschine",
@@ -666,6 +761,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("floating-bodies", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Floating Bodies",
 		description:
 			"Learn how to obtain either a free Scorestreak or trigger a jumpscare within the Dark Aether.",
@@ -674,6 +770,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("lost", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Lost",
 		description: "Discover the hidden music easter egg song 'Lost' by Kevin Sherwood.",
 		map: "firebase-z",
@@ -681,6 +778,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dark-aether-bunny", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Dark Aether Bunny",
 		description:
 			"Learn how to obtain a free Juggernog perk along with other rewards by following a Dark Aether Bunny.",
@@ -689,6 +787,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("sergei-head-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Sergei Head Free Perk",
 		description:
 			"Learn how to obtain a free perk along by extracting some information out of the head of Sergei.",
@@ -697,6 +796,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("upgraded-monkey-bombs", {
 		state: Option.none(),
+		publishedDate: "2025-10-23",
 		title: "Upgraded Monkey Bombs",
 		description:
 			"Learn how to upgrade your Monkey Bombs for more damage, a new tune, and have zombies dance to the beat.",
@@ -705,6 +805,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("amoeba", {
 		state: Option.none(),
+		publishedDate: "2025-10-24",
 		title: "Amoeba",
 		description:
 			"Discover how to activate the hidden music easter egg song 'Amoeba' by Adolescents.",
@@ -713,6 +814,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("sharpshooter", {
 		state: Option.none(),
+		publishedDate: "2025-10-24",
 		title: "Sharpshooter",
 		description: "Learn how to obtain a free Aether Tool by completing a sharpshooter challenge.",
 		map: "mauer-der-toten",
@@ -720,6 +822,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("bunny-disco", {
 		state: Option.none(),
+		publishedDate: "2025-10-24",
 		title: "Bunny Disco",
 		description:
 			"Learn how to enter the bunny disco nightclub for a chance at earning the Wonder Weapon.",
@@ -728,6 +831,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("bubby", {
 		state: Option.none(),
+		publishedDate: "2025-10-25",
 		title: "Bubby",
 		description:
 			"Learn how to obtain at least one free perk, activate the music easter egg, and potentially earn the Wonder Weapon.",
@@ -736,6 +840,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-rarity-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-10-25",
 		title: "Free Rarity Upgrade",
 		description:
 			"Learn how to obtain a free rarity upgrade for a Pistol, SMG, or Sniper Rifle weapon.",
@@ -744,6 +849,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("ronald-raygun", {
 		state: Option.none(),
+		publishedDate: "2025-10-25",
 		title: "Ronald Raygun",
 		description: "Learn how to potentially obtain a free Raygun by delivering some pizza.",
 		map: "forsaken",
@@ -751,6 +857,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("arc-xd-race", {
 		state: Option.none(),
+		publishedDate: "2025-10-25",
 		title: "ARC-XD Race",
 		description:
 			"Learn how to play this hidden ARC-XD map race for a chance to earn the Wonder Weapon.",
@@ -759,6 +866,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("tombstone-perkaholic", {
 		state: Option.none(),
+		publishedDate: "2025-10-25",
 		title: "Tombstone Perkaholic",
 		description: "Learn how to earn all perks in the game by manipulating death.",
 		map: "forsaken",
@@ -766,6 +874,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("destroy-something-beautiful", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Destroy Something Beautiful",
 		description: `Discover and listen to the hidden Music Easter Egg song for Liberty Falls "Destroy Something Beautiful" by Kevin Sherwood.`,
 		map: "liberty-falls",
@@ -773,6 +882,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("vending-machine", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Vending Machine",
 		description: `Discover the hidden goodies inside this Vending Machine to test your luck for a chance of getting a Free Perk, Raygun, Pack-a-Punch Upgrade, Scorestreak or Aether Tool.`,
 		map: "liberty-falls",
@@ -780,6 +890,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("raining-zombies", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Raining Zombies",
 		description: `Discover this hidden secret that has zombies raining from the skies dropping loot including, an Aether Tool, Scorestreaks, Points, Salavge, and more!`,
 		map: "liberty-falls",
@@ -787,6 +898,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-deadshot-perk", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Deadshot Perk",
 		description: `Discover this hidden easter egg that tests your aim and quickness with an old wild west challenge rewarding you with a free Deadshot Daiquiri perk as your reward.`,
 		map: "liberty-falls",
@@ -794,6 +906,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mister-peeks-bowling", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Mister Peeks Bowling",
 		description: `It's time to go bowling within Fuller's Liberty Lanes! If you score high enough you can earn yourself a free Raygun, Legendary Weapon, Aether Tool or Pack-a-Punch upgrade.`,
 		map: "liberty-falls",
@@ -801,6 +914,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("aetherella-superhero", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Aetherella Superhero",
 		description: `Transform into a full-sized Aetherella superhero and wreck havoc on zombies of all shapes and sizes with this hidden side quest.`,
 		map: "liberty-falls",
@@ -808,6 +922,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mister-peeks-car", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Mister Peeks Car",
 		description: `Mister Peeks is potentially hiding some valuable items within his car, find the correct car, blow it up with the right equipment, and see if luck is on your side for a chance to get the Ray Gun, Jet Gun, and other weapons.`,
 		map: "liberty-falls",
@@ -815,6 +930,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("the-vault", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "The Vault",
 		description: `The bank vault is holding more than just money, find the three codes and gain access to the vault to see what loot has been hiding inside.`,
 		map: "liberty-falls",
@@ -822,6 +938,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("blood-pool", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Blood Pool",
 		description: `Behind the motel lies a hellish secret, a pool filled with blood. Toss in some explosives, and you might just awaken its hidden treasures. Repeat the ritual three times for a guaranteed Fire Sale. Dare to dive in?`,
 		map: "liberty-falls",
@@ -829,6 +946,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("gravedigging", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Gravedigging",
 		description: `Unearth the past of Liberty Falls to find their graves filled with loot; dig them all up for a chance to get a Free Perk, RayGun, JetGun and more! Curious about where to find a shovel to uncover these hidden treasures?`,
 		map: "liberty-falls",
@@ -836,6 +954,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("pool-table", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Pool Table",
 		description: `Discover this quick and easy way to get 100 points to help jumpstart every game you play.`,
 		map: "liberty-falls",
@@ -843,6 +962,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hidden Power Ups",
 		description: `Discover the location of every hidden Power-Up drop in case you need them.`,
 		map: "liberty-falls",
@@ -850,6 +970,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("candles-fire-trap", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Candles Fire Trap",
 		description: `Discover this hidden fire trap that can help you during the Liberty Falls Main Quest final encounter.`,
 		map: "liberty-falls",
@@ -857,6 +978,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("can-you-hear-me-come-in", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Can You Hear Me? (Come In)",
 		description: `Discover and listen to the hidden Terminus Music Easter Egg song "Can you hear me? (Come in)" by Kevin Sherwood`,
 		map: "terminus",
@@ -864,6 +986,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("basketball-free-points", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Basketball Free Points",
 		description: `Uncover the hidden basketball and try to sink a shot to unlock a rewarding Easter egg that rewards players with thousands of points.`,
 		map: "terminus",
@@ -871,6 +994,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mega-stuffy-pet", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Mega Stuffy Pet",
 		description: `Uncover the secret quest unlocking this stuffy ally that will aid you in combat, reviving you when you go down, knocking down zombies, and providing some companionship.`,
 		map: "terminus",
@@ -878,6 +1002,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("meteor-crash", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Meteor Crash",
 		description: `Take aim at the sky, forcing a meteor containing loot and potentially the RayGun or Beamsmasher to come crashing down at Castle Rock Island.`,
 		map: "terminus",
@@ -885,6 +1010,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("zombie-prisoners", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Zombie Prisoners",
 		description: `All zombies must die, even those imprisoned within the facility. Luckily, these zombies would rather be dead then caged and will reward you with a Free Perk for "freeing" them.`,
 		map: "terminus",
@@ -892,6 +1018,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("boat-race", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Boat Race",
 		description: `Set sail for loot with a boat race mini-game hidden within the map! Compete against friends or the clock as you navigate treacherous waters and sharp turns. Master the course to earn unique rewards and bragging rights.`,
 		map: "terminus",
@@ -899,6 +1026,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("island-spores", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Island Spores",
 		description: `The smaller islands of the map seems to have some growths on them that need to be cleaned up. Complete the job the earn a Free Perk, along with other rewards.`,
 		map: "terminus",
@@ -906,6 +1034,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("underwater-crates", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Underwater Crates",
 		description: `Beneath the waters are hidden loot crates for you to discover containing some nice rewards. Find them all and you will be given a Free Perk for your efforts.`,
 		map: "terminus",
@@ -913,6 +1042,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("cooking-fish", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Cooking Fish",
 		description: `Being stranded on an island means you need to cook your own food. However, this food can be "enhanced" to provide some extraordinary benefits.`,
 		map: "terminus",
@@ -920,6 +1050,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("whack-a-crab", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Whack A Crab",
 		description: `Like Whack-a-Mole but with a crab instead. Try your best in this mini-game to win a Free Perk along with other rewards.`,
 		map: "terminus",
@@ -927,6 +1058,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("cursed-talisman", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Cursed Talisman",
 		description: `Help an old ship captain reclaim what was once his from his former crewmates who betrayed him, rewarding you with legendary weapons. Be patient and you can also claim a Cursed Talisman granting a permanent Double Points for its owner.`,
 		map: "terminus",
@@ -934,6 +1066,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("perkaholic", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Perkaholic",
 		description: `Who needs a Perkaholic GobbleGum when you can earn one for free simply by blowing up fish? Hopefully you don't like fish.`,
 		map: "terminus",
@@ -941,6 +1074,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("pool-table-terminus", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Pool Table",
 		description: `Discover this quick and easy way to get 100 points to help jumpstart every game you play on Terminus.`,
 		map: "terminus",
@@ -948,6 +1082,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("sentinel-artifact-rune", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Sentinel Artifact Rune",
 		description: `Discover this neat side easter egg to fast travel back to spawn from Temple Island.`,
 		map: "terminus",
@@ -955,6 +1090,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("elevator-jumpscare", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Elevator Jumpscare",
 		description: `Learn how to trigger a jumpscare that you can use to scare your friends or teammates.`,
 		map: "terminus",
@@ -962,6 +1098,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-terminus", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hidden Power Ups",
 		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
 		map: "terminus",
@@ -969,6 +1106,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("slave", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Slave",
 		description: `Discover and listen to the Citadelle Des Morts Music Easter Egg song "Slave" by Kevin Sherwood.`,
 		map: "citadelle-des-morts",
@@ -976,6 +1114,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("bartender", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Bartender",
 		description: `Even the undead have the urge to stop for a drink. Become a bartender and quench the thirsty undead for a worthy reward of free points and PHD Flopper.`,
 		map: "citadelle-des-morts",
@@ -983,6 +1122,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mister-peeks-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Mister Peeks Free Perk",
 		description: `Take aim at the mysterious Mister Peeks figure to be granted a free random perk for finding all of his hiding places.`,
 		map: "citadelle-des-morts",
@@ -990,6 +1130,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("rat-king", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Rat King",
 		description: `Take the crown of Rat King for yourself by bringing a treat to the rats of the castle, but first you must gather them. Complete the quest for plenty of loot that may include a free perk or pack-a-punch upgrade.`,
 		map: "citadelle-des-morts",
@@ -997,6 +1138,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("fireplace-protector", {
 		state: Option.none(),
+		publishedDate: "2025-10-06",
 		title: "Fireplace Protector",
 		description: `Race against time to ignite four fireplaces, succeed to gain a fiery ally, fail and you will need to try again the next round.`,
 		map: "citadelle-des-morts",
@@ -1004,6 +1146,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mayas-revenge", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Maya's Revenge",
 		description: `Time for Maya to get her revenge on Franco for the crimes against her brother Nathan that happened on Terminus. Complete the quest for a free legendary GS45 Pistol.`,
 		map: "citadelle-des-morts",
@@ -1011,6 +1154,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dragon-sword-song", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Dragon Sword Song",
 		description: `Ever wanted to listen to the full song that plays when getting the Dragon Sword? Luckily, there is a secret way to activate the song after getting the Dragon Sword to allow everyone in your game to listen to it in full`,
 		map: "citadelle-des-morts",
@@ -1018,6 +1162,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("wishing-well", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Wishing Well",
 		description: `This wishing well has something hiding inside, clear it out to be able to "wish" for things like free points, doubling your points, and sharing your points with your friends.`,
 		map: "citadelle-des-morts",
@@ -1025,6 +1170,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("lockdown-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Lockdown Free Perk",
 		description: `The power of the incantations spreads farther than we realized, use their power on the Symbol Board to start a lockdown, rewarding players with a free perk and plenty of loot if successful.`,
 		map: "citadelle-des-morts",
@@ -1032,6 +1178,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("knight-guardian", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Knight Guardian",
 		description: `Find the hidden chess piece, and activate a cursed chessboard summoning a Knight Guardian to aid you in your battles against the undead.`,
 		map: "citadelle-des-morts",
@@ -1039,6 +1186,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("lion-cannon", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Lion Cannon",
 		description: `Restore the cannon back to its original functionality to gain a new way to traverse the map, and even gain access to a now accessible free power-up every 10 rounds.`,
 		map: "citadelle-des-morts",
@@ -1046,6 +1194,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("raven-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Raven Free Perk",
 		description: `The Raven's Talon isn't the only item this raven is withholding, learn how to get a free perk out of this mysterious bird.`,
 		map: "citadelle-des-morts",
@@ -1053,6 +1202,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("pool-table-citadelle-des-morts", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Pool Table",
 		description: `Discover this small easter egg granting you 100 points that you can repeat to start every game of Citadelle Des Morts.`,
 		map: "citadelle-des-morts",
@@ -1060,6 +1210,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-citadelle-des-morts", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hidden Power Ups",
 		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
 		map: "citadelle-des-morts",
@@ -1067,6 +1218,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dig", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Dig",
 		description: `Discover and listen to The Tomb's Music Easter Egg song "Dig" by Kevin Sherwood.`,
 		map: "the-tomb",
@@ -1074,6 +1226,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-pack-a-punch", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Pack-a-Punch",
 		description: `Discover a way to earn a free Aetherium Crystal offerring a level 1 Pack-a-Punch upgrade to any weapon you are currently holding.`,
 		map: "the-tomb",
@@ -1081,6 +1234,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-aether-tool", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Aether Tool",
 		description: `Discover this way to earn a free Epic or Legendary Aether Tool to upgrade the rarity of your weapon without spending any salvage!`,
 		map: "the-tomb",
@@ -1088,6 +1242,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-ray-gun", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Ray Gun",
 		description: `Discover this quest to earn a Free Ray Gun wonder weapon very early in your game to give you a huge boost during your game!`,
 		map: "the-tomb",
@@ -1095,6 +1250,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-10-06",
 		title: "Free Perk",
 		description: `Discover this ritual which once completed will grant a Random Perk Power-Up to give everyone in your game a free perk!`,
 		map: "the-tomb",
@@ -1102,6 +1258,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-self-revive", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Self Revive",
 		description: `Discover this quest to earn yourself a free Self-Revive Kit and Light Mend ammo mod, strengthen your weapons against Doppleghasts and giving you an extra life!`,
 		map: "the-tomb",
@@ -1109,6 +1266,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-brain-rot", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Brain Rot",
 		description: `Discover this quest to earn yourself a free Brain Rot ammo mod, increasing your damage delt to Shock Mimics!`,
 		map: "the-tomb",
@@ -1116,6 +1274,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("golden-armor", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Golden Armor",
 		description: `Discover this quest to earn Golden Armor Plates for your entire team to purchase for free, allowing you regenerate armor over time!`,
 		map: "the-tomb",
@@ -1123,6 +1282,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("zombie-soldiers", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Zombie Soldiers",
 		description: `Learn how to quickly summon a small army of zombie soldiers to fight for you for a short time.`,
 		map: "the-tomb",
@@ -1130,6 +1290,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-1000-points", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free 1000 Points",
 		description: `Discover this small easter egg to obtain a free 1000 points, and a Full Power Power-Up.`,
 		map: "the-tomb",
@@ -1137,6 +1298,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-the-tomb", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hidden Power Ups",
 		description: `Discover the location of every hidden free Power-Up drop in case you need them.`,
 		map: "the-tomb",
@@ -1144,6 +1306,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mummy-jumpscare", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Mummy Jumpscare",
 		description: `Discover this hidden easter egg that allows you to jumpscare your teammates or yourself if you are solo.`,
 		map: "the-tomb",
@@ -1151,6 +1314,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("aether", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Aether",
 		description: `Learn how to trigger the hidden Music Easter Egg song "Aether" by Brian Tuey.`,
 		map: "the-tomb",
@@ -1158,6 +1322,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-wunderwaffe-dg2", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Wunderwaffe DG-2",
 		description: `Learn how to obtain a free Wunderwaffe DG-2 Wonder Weapon in the Shattered Veil, seemingly restoring the one dropped by Edward Richtofen himself.`,
 		map: "shattered-veil",
@@ -1165,6 +1330,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("sam-trap-unlock", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "S.A.M. Trap Unlock",
 		description: `Learn how to unlock a new trap for the S.A.M. AI in the Mainframe Chamber to use throughout your game for a cost of 2000 points per activation.`,
 		map: "shattered-veil",
@@ -1172,6 +1338,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mister-peeks-bodyguard", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Mister Peeks Bodyguard",
 		description: `Learn how to get a friendly zombie companion for a few rounds to help you in your battle against the undead horde.`,
 		map: "shattered-veil",
@@ -1179,6 +1346,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("falling-to-pieces", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Falling To Pieces",
 		description: `Discover the Music Easter Egg Song "Falling to Pieces" for Shattered Veil, written by Kevin Sherwood with vocals by Malukah!`,
 		map: "shattered-veil",
@@ -1186,6 +1354,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("jumpscare-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Jumpscare Free Perk",
 		description: `Discover this creepy jumpscare in the Shattered Veil that will reward you with a free perk and scorestreak for finding it.`,
 		map: "shattered-veil",
@@ -1193,6 +1362,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("marine-sp-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-10-07",
 		title: "Marine SP Upgrade",
 		description: `Learn how to get a free rarity and pack-a-punch upgrade to your Marine-SP shotgun in every game of the Shattered Veil.`,
 		map: "shattered-veil",
@@ -1200,6 +1370,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("sleepwalking-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Sleepwalking Free Perk",
 		description: `Learn how to get a guaranteed free perk in the Shattered Veil by entering your characters dreams.`,
 		map: "shattered-veil",
@@ -1207,6 +1378,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("115-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "115 Free Perk",
 		description: `Learn how to obtain a free random perk Power-Up with a nice reference to one of the most important elements in our zombies universe.`,
 		map: "shattered-veil",
@@ -1214,6 +1386,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("fog-rolling-in", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Fog Rolling In",
 		description: `Discover this hidden reference to one of the most iconic memes in the zombies community from the Black Ops II days, yeilding great potential rewards.`,
 		map: "shattered-veil",
@@ -1221,6 +1394,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-shattered-veil", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hidden Power Ups",
 		description: `Discover every hidden Power-Up location within Shattered Veil for you to spawn in at any time if you need them.`,
 		map: "shattered-veil",
@@ -1228,6 +1402,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("round-100-boss-fight", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Round 100 Boss Fight",
 		description: `Discover this secret hardcore version of the Z-Rex boss fight that you can attempt after getting to Round 100 and completing the main quest.`,
 		map: "shattered-veil",
@@ -1235,6 +1410,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("remember-us", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Remember Us",
 		description: `Discover the hidden Music Easter Egg Song "Remember Us" by Kevin Sherwood with vocals by Elena Siegman.`,
 		map: "reckoning",
@@ -1242,6 +1418,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("samanthas-peace", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Samantha's Peace",
 		description: `Discover this hidden Music Easter Egg Song "Samantha's Peace" by Brian Tuey.`,
 		map: "reckoning",
@@ -1249,6 +1426,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("chicken-bucket-hat", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Chicken Bucket Hat",
 		description: `Learn how to obtain this greasy cosmetic Chicken Bucket Hat that you can wear through out your game.`,
 		map: "reckoning",
@@ -1256,6 +1434,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("vending-machine-reckoning", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Vending Machine",
 		description: `Discover the hidden loot inside this Vending Machine to test your luck for a chance of getting a Free Perk, Raygun, Pack-a-Punch Upgrade, Scorestreak or Aether Tool.`,
 		map: "reckoning",
@@ -1263,6 +1442,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-self-revive-reckoning", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Self Revive",
 		description: `Learn how to earn a free Self-Revive with a reference to the Element 115.`,
 		map: "reckoning",
@@ -1270,6 +1450,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("paintings", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Paintings",
 		description: `Learn how to obtain a total of 1500 points by completing some interior design inside of the Director's Office.`,
 		map: "reckoning",
@@ -1277,6 +1458,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("parachuting-challenge", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Parachuting Challenge",
 		description: `Learn how to complete this Mister Peeks parachuting challenge to obtain a Free Perk Power-Up in your game.`,
 		map: "reckoning",
@@ -1284,6 +1466,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hardcore-bossfight", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hardcore Bossfight",
 		description: `Discover this secret hardcore version of the Reckoning boss fight that you can attempt after getting to Round 100 and completing the main quest.`,
 		map: "reckoning",
@@ -1291,6 +1474,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("aetherella-companion", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Aetherella Companion",
 		description: `Learn how to enable this dormant Aetherella figurine to become a strong companion helping you kill zombies for a few rounds.`,
 		map: "reckoning",
@@ -1298,6 +1482,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("points-challenge", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Points Challenge",
 		description: `Learn how to obtain a Free Random Perk Power-Up inside of your game while completing one of the Main Quest steps.`,
 		map: "reckoning",
@@ -1305,6 +1490,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("target-practice", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Target Practice",
 		description: `Learn how to obtain a free random Ammo Mod, Aether Tool, and Aetherium Crystal by playing a mini-game within the spawn.`,
 		map: "reckoning",
@@ -1312,6 +1498,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("golden-trash-bin", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Golden Trash Bin",
 		description: `Learn how to unlock the Golden Trash Bin that rewards you with valuable loot upon interaction.`,
 		map: "reckoning",
@@ -1319,6 +1506,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("caster-turret-upgrade", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "C.A.S.T.E.R. Turret Upgrade",
 		description: `Learn how to unlock all upgrades to the C.A.S.T.E.R. Turret traps for increased effectiveness and gained effects.`,
 		map: "reckoning",
@@ -1326,6 +1514,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-reckoning", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Hidden Power Ups",
 		description: `Discover every hidden Power-Up location within Reckoning for you to spawn in at any time if you need them.`,
 		map: "reckoning",
@@ -1333,6 +1522,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("jump-scare-reckoning", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Jump Scare",
 		description: `Discover this hidden jumpscare within Reckoning that will remind you of the loss Richtofen has faced.`,
 		map: "reckoning",
@@ -1340,6 +1530,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-deadshot-daiquiri", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Free Deadshot Daiquiri",
 		description: `Learn how to obtain a free Deadshot Daiquiri perk in a similar way as seen in Liberty Falls.`,
 		map: "reckoning",
@@ -1347,6 +1538,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("aether-blade", {
 		state: Option.none(),
+		publishedDate: "2025-09-21",
 		title: "Aether Blade",
 		description: `Learn how to obtain one of the most powerful lethal equipment in Call of Duty: Zombies in your game.`,
 		map: "reckoning",
@@ -1354,6 +1546,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("arc-xd-race-aotd", {
 		state: Option.none(),
+		publishedDate: "2025-11-30",
 		title: "ARC-XD Race",
 		description: `Discover this hidden ARC-XD Race to race against your teammates or the clock if solo for rewards.`,
 		map: "ashes-of-the-damned",
@@ -1361,6 +1554,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-aotd", {
 		state: Option.none(),
+		publishedDate: "2025-11-30",
 		title: "Hidden Power Ups",
 		description: `Discover all hidden power up locations in Ashes of the Damned to collect when you need them.`,
 		map: "ashes-of-the-damned",
@@ -1368,6 +1562,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-ray-gun-mark-2", {
 		state: Option.none(),
+		publishedDate: "2025-11-30",
 		title: "Free Ray Gun MK II",
 		description: `Learn how to obtain a free Ray Gun MK II, perks, and more by deciphering a hidden code.`,
 		map: "ashes-of-the-damned",
@@ -1375,6 +1570,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("toxic-growth-plant", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Toxic Growth Plant",
 		description: `Learn how to obtain Free Perks, Aetherium Crystals, Aether Tools, and more with the use of Toxic Growth.`,
 		map: "ashes-of-the-damned",
@@ -1382,6 +1578,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mister-peeks-axe-throw", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Mister Peeks Axe Throw",
 		description: `Learn how to obtain some free loot by completing a short axe throwing challenge.`,
 		map: "ashes-of-the-damned",
@@ -1389,6 +1586,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("vending-machine-ashes-of-the-damned", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Vending Machine",
 		description: `Learn how to obtain some free loot by trying your luck at a couple of vending machines.`,
 		map: "ashes-of-the-damned",
@@ -1396,6 +1594,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("free-wisp-tea", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Free Wisp Tea",
 		description: `Learn how to obtain a free Wisp Tea perk by interacting with the Farmhouse TV and finding the lost twins.`,
 		map: "ashes-of-the-damned",
@@ -1403,6 +1602,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mixologist", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Mixologist",
 		description: `Learn how to obtain Juggernog, Quick Revive, Stamin-Up, or Speed Cola by mixing ingredients at the soda fountain.`,
 		map: "ashes-of-the-damned",
@@ -1410,6 +1610,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("zursa-skulls", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Zursa Skulls",
 		description: `Learn how to spawn a Zursa on-demand by shooting skulls with the Necrofluid Gauntlet.`,
 		map: "ashes-of-the-damned",
@@ -1417,6 +1618,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("turn-to-ashes", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Turn to Ashes",
 		description: `Learn how to activate the music easter egg song 'Turn To Ashes' by Kevin Sherwood.`,
 		map: "ashes-of-the-damned",
@@ -1424,6 +1626,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("war-hero", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "War Hero",
 		description: "Discover this Dempsey 'War Hero' dog tag, revealing some truths about his past.",
 		map: "ashes-of-the-damned",
@@ -1431,6 +1634,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("permanent-double-points", {
 		state: Option.none(),
+		publishedDate: "2025-11-20",
 		title: "Permanent Double Points",
 		description: `Learn how to obtain a permanent double points multiplier for your melee kills only.`,
 		map: "ashes-of-the-damned",
@@ -1438,6 +1642,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("gramophone-free-perks", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Gramophone Free Perks",
 		description: `Learn how to obtain three free perks by completing three quick gramophone challenges.`,
 		map: "astra-malorum",
@@ -1445,6 +1650,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("skulls-free-perk", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Skulls Free Perk",
 		description: `Learn how to obtain a free perk by collecting five skulls and completing a memory game.`,
 		map: "astra-malorum",
@@ -1452,6 +1658,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("nikolais-demons", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Nikolai's Demons",
 		description: `Discover some great backstory and a free legendary weapon by facing Nikolai's demons.`,
 		map: "astra-malorum",
@@ -1459,6 +1666,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("magic", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Magic",
 		description: `Discover how to activate the Music Easter Egg song 'Magic' by Avenged Sevenfold.`,
 		map: "astra-malorum",
@@ -1466,6 +1674,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("original-pareidolia", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Original Pareidolia",
 		description: `Discover how to activate the original pareidolia Music Easter Egg song by Kevin Sherwood.`,
 		map: "astra-malorum",
@@ -1473,6 +1682,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("pareidolia-remix", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Pareidolia Remix",
 		description: `Discover how to activate the pareidolia remix Music Easter Egg song by Kevin Sherwood.`,
 		map: "astra-malorum",
@@ -1480,6 +1690,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("bongo", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Bongo",
 		description: `Learn how to befriend a Ravager named Bongo to fight for you in Astra Malorum.`,
 		map: "astra-malorum",
@@ -1487,6 +1698,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("skull-jumpscare", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Skull Jumpscare",
 		description: `Discover this hidden skull jumpscare within the telescope in the Observatory Dome.`,
 		map: "astra-malorum",
@@ -1494,6 +1706,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("twins", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Twins",
 		description: `Learn how to summon the ghost twins to obtain a free Cryo Freeze ammo mod and more loot.`,
 		map: "astra-malorum",
@@ -1501,6 +1714,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-astra-malorum", {
 		state: Option.none(),
+		publishedDate: "2025-12-10",
 		title: "Hidden Power Ups",
 		description: `Discover all hidden power up locations in Astra Malorum to collect when you need them`,
 		map: "astra-malorum",
@@ -1508,6 +1722,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("lantern-wisp", {
 		state: Option.none(),
+		publishedDate: "2025-12-21",
 		title: "Lantern Wisp",
 		description: "Learn how to obtain multiple golden wisps capable of one-shotting zombies.",
 		map: "astra-malorum",
@@ -1515,6 +1730,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("zarya-rocket", {
 		state: Option.none(),
+		publishedDate: "2025-12-21",
 		title: "Zarya Rocket",
 		description: "Discover this hidden reference and music easter egg floating through space.",
 		map: "astra-malorum",
@@ -1522,6 +1738,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("come-back-down", {
 		state: Option.none(),
+		publishedDate: "2026-03-13",
 		title: "Come Back Down",
 		description:
 			"Learn how to activate the music easter egg song 'Come Back Down' by Kevin Sherwood.",
@@ -1530,6 +1747,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-paradox-junction", {
 		state: Option.none(),
+		publishedDate: "2026-03-13",
 		title: "Hidden Power-Ups",
 		description:
 			"Discover all hidden power up locations in Paradox Junction to collect when you need them",
@@ -1538,6 +1756,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("115-clock-tower", {
 		state: Option.none(),
+		publishedDate: "2026-03-13",
 		title: "115 Clock Tower",
 		description:
 			"Learn how to obtain a Mystery Perk, Aetherium Crystal, Aether Tool, Scorestreak and more by completing this nostalgic callback.",
@@ -1546,6 +1765,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("golf-minigame", {
 		state: Option.none(),
+		publishedDate: "2026-03-13",
 		title: "Golf Minigame",
 		description: "Learn how to obtain three free Power-Ups by completing a short golf minigame.",
 		map: "paradox-junction",
@@ -1553,6 +1773,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("lost-key", {
 		state: Option.none(),
+		publishedDate: "2026-03-13",
 		title: "Lost Key",
 		description:
 			"Learn how to obtain a free Aether Tool along with some other rewards, by finding the lost key.",
@@ -1561,6 +1782,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("bunker-free-perk", {
 		state: Option.none(),
+		publishedDate: "2026-03-15",
 		title: "Bunker Free Perk",
 		description:
 			"Learn how to obtain a Mystery Perk, along with some other rewards by opening the Nuketown bunker.",
@@ -1569,6 +1791,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("mannequin-free-perk", {
 		state: Option.none(),
+		publishedDate: "2026-03-16",
 		title: "Mannequin Free Perk",
 		description:
 			"Learn how to obtain a free Random Perk by melting all 12 mannequins in the Normal version of the map.",
@@ -1577,6 +1800,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("haunted-mannequin", {
 		state: Option.none(),
+		publishedDate: "2026-03-16",
 		title: "Haunted Mannequin",
 		description:
 			"Learn how to obtain a Mystery Perk, Aetherium Crystal, Aether Tool, Scorestreak and more by completing this creepy quest.",
@@ -1585,6 +1809,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("masked-mannequin", {
 		state: Option.none(),
+		publishedDate: "2026-03-16",
 		title: "Masked Mannequin",
 		description:
 			"Learn how to obtain multiple Aetherium Crystals, Aether Tools, and Perks by reforming a masked mannequin.",
@@ -1593,6 +1818,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("tv-jumpscare", {
 		state: Option.none(),
+		publishedDate: "2026-03-16",
 		title: "TV Jumpscare",
 		description: "Scare your friends with this not so obvious jumpscare.",
 		map: "paradox-junction",
@@ -1600,6 +1826,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("purple-cyst", {
 		state: Option.none(),
+		publishedDate: "2026-03-16",
 		title: "Purple Cyst",
 		description: "Learn how to feed this mysterious purple cyst that yields powerful rewards.",
 		map: "paradox-junction",
@@ -1607,6 +1834,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("no-one-there", {
 		state: Option.none(),
+		publishedDate: "2026-05-01",
 		title: "No One There",
 		description:
 			"Learn how to activate the music easter egg song 'No One There' by Kevin Sherwood.",
@@ -1615,6 +1843,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("kneehigh-helm", {
 		state: Option.none(),
+		publishedDate: "2026-05-01",
 		title: "Kneehigh Helm",
 		description:
 			'Find out how to obtain the "Kneehigh Helm" allowing you to become a Gnome granting you invincibility while still being able to kill zombies.',
@@ -1623,6 +1852,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("domineering", {
 		state: Option.none(),
+		publishedDate: "2026-05-01",
 		title: "Domineering",
 		description:
 			'Discover the truth behind Richtofen\'s past and how he achieved his "Proudest Moment" which single-handedly won the war for Nazi Germany.',
@@ -1631,6 +1861,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("fishy-fish-bot", {
 		state: Option.none(),
+		publishedDate: "2026-05-02",
 		title: "Fishy Fish Bot",
 		description:
 			'Learn how to unlock this secret "Fishy Fish Bot" trap that makes use of an old friend.',
@@ -1639,6 +1870,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("golden-tide-helm", {
 		state: Option.none(),
+		publishedDate: "2026-05-05",
 		title: "Golden Tide Helm",
 		description:
 			'Find out how to obtain the "Golden Tide Helm" granting you increased rewards from fishing.',
@@ -1647,6 +1879,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("icebane-helm", {
 		state: Option.none(),
+		publishedDate: "2026-05-05",
 		title: "Icebane Helm",
 		description:
 			'Find out how to obtain the "Icebane Helm" granting you cold immunity, and a frosty slide.',
@@ -1655,6 +1888,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("cointoss-helm", {
 		state: Option.none(),
+		publishedDate: "2026-05-05",
 		title: "Cointoss Helm",
 		description:
 			'Find out how to obtain the "Cointoss Helm" granting you increased Power-Up drops.',
@@ -1663,6 +1897,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-totenreich", {
 		state: Option.none(),
+		publishedDate: "2026-05-07",
 		title: "Hidden Power-Ups",
 		description:
 			"Discover the location of every hidden Power-Up drop in Totenreich, in case you need them.",
@@ -1671,6 +1906,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("richtofen-jumpscare", {
 		state: Option.none(),
+		publishedDate: "2026-07-07",
 		title: "Richtofen's Jumpscare",
 		description: "Learn how to trigger the hidden jumpscare within the Richtofen Side Quest.",
 		map: "totenreich",
@@ -1678,6 +1914,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("the-reunion", {
 		state: Option.none(),
+		publishedDate: "2026-06-26",
 		title: "The Reunion",
 		description:
 			"Confront Takeo's past in this cinematic story-driven experience revealing hidden mysterious about this character.",
@@ -1686,6 +1923,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("maneka-mecha", {
 		state: Option.none(),
+		publishedDate: "2026-06-26",
 		title: "Maneka Mecha",
 		description:
 			"Rebuild and destroy a familiar enemy and gain access to one of the most powerful innovations of human engineering.",
@@ -1694,6 +1932,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("path-of-sorrows", {
 		state: Option.none(),
+		publishedDate: "2026-06-30",
 		title: "Path of Sorrows",
 		description:
 			"Learn how to obtain Takeo Masaki's legendary katana by perfectly solving his father's murder.",
@@ -1702,6 +1941,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("neko-cafe", {
 		state: Option.none(),
+		publishedDate: "2026-07-02",
 		title: "Neko Cafe",
 		description:
 			"Find and gather all the stray cats in the castle to open your very own Neko Cafe and obtain some useful rewards.",
@@ -1710,6 +1950,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("maneki-bomb", {
 		state: Option.none(),
+		publishedDate: "2026-07-02",
 		title: "Maneki-Bomb",
 		description:
 			"Learn how to upgraded the map specific tactical to increase its effectiveness and usability.",
@@ -1718,6 +1959,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("evencry", {
 		state: Option.none(),
+		publishedDate: "2026-07-02",
 		title: "Evencry",
 		description:
 			'Discover how to activate the hidden music easter egg song "Evencry" by Kevin Sherwood.',
@@ -1726,6 +1968,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("horse-race", {
 		state: Option.none(),
+		publishedDate: "2026-07-02",
 		title: "Horse Race",
 		description:
 			"Race against the clock to earn powerful rewards, including a secret reward if you're really fast.",
@@ -1734,6 +1977,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("ghostly-rifleman-upgrade", {
 		state: Option.none(),
+		publishedDate: "2026-07-03",
 		title: "Ghostly Rifleman Upgrade",
 		description:
 			"Learn how to upgrade the Ghostly Rifleman traps up to four total times to make them incredibly effective and useful.",
@@ -1742,6 +1986,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-kowakujo", {
 		state: Option.none(),
+		publishedDate: "2026-07-03",
 		title: "Hidden Power-Ups",
 		description:
 			"Discover the location of every hidden Power-Up drop in Kowakujō, in case you need them.",
@@ -1750,6 +1995,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("par-course", {
 		state: Option.none(),
+		publishedDate: "2026-07-03",
 		title: "Par Course",
 		description:
 			"Complete this fiery parkour course on the map to receive a familiar weapon in a familiar way of the past.",
@@ -1758,6 +2004,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("skull-mask", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-26",
 		title: "Skull Mask",
 		description:
 			"Learn how to obtain the Skull Mask, providing you with an additional Ammo Mod that summons the Twins for a short duration.",
@@ -1766,6 +2013,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("horned-mask", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-26",
 		title: "Horned Mask",
 		description:
 			'Learn how to obtain the Horned Mask, providing abilities similar to the Black Ops 4 perk "Stone Cold Stronghold"',
@@ -1774,6 +2022,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("uber-klaus-helmet", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-27",
 		title: "Uber Klaus Helmet",
 		description:
 			"Learn how to obtain the Uber Klaus Helmet, extending the duration of all grapples by 30 seconds.",
@@ -1782,6 +2031,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("wardens-hat", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-27",
 		title: "Warden's Hat",
 		description:
 			"Learn how to obtain the Warden's Hat, granting you complete immunity to all web effects from Deathspinners and the Web Mother.",
@@ -1790,6 +2040,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dance-off", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-28",
 		title: "Dance Off",
 		description:
 			"Discover Mister Peeks' dance off and complete the dance challenge to earn potentially valuable rewards.",
@@ -1798,6 +2049,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("corrupted-weapons", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-28",
 		title: "Corrupted Weapons",
 		description:
 			"Learn how to obtain Ultra Rarity Corrupted Olympia or TR2 guaranteed in your game.",
@@ -1806,6 +2058,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("all-we-are", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-29",
 		title: "All We Are",
 		description:
 			'Discover the hidden music easter egg song "All We Are" by Kevin Sherwood with vocals by Elena Siegman.',
@@ -1814,6 +2067,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("dravakar-anvil", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-31",
 		title: "Dravakar Anvil",
 		description:
 			"Learn how to dismantle your weapons into Aether Tools and Aetherium Crystals that you can use to upgrade other weapons.",
@@ -1822,6 +2076,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("temporal-conduits", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-31",
 		title: "Temporal Conduits",
 		description:
 			"Discover the character specific Temporal Conduits to learn more about the story and earn rewards like Perks, Aether Tools, and more.",
@@ -1830,6 +2085,7 @@ const SIDE_QUESTS = new Map([
 	}),
 	makeQuest("hidden-power-ups-rex-infernus", {
 		state: Option.some("New"),
+		publishedDate: "2026-08-31",
 		title: "Hidden Power-Ups",
 		description:
 			"Discover the location of every hidden Power-Up drop in Rex Infernus, in case you need them.",

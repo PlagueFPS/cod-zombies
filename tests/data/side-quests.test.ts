@@ -1,12 +1,28 @@
+import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import {
 	compareSideQuestDescending,
 	getAdjacentSideQuests,
 	getSideQuestByKey,
 	getSideQuests,
+	type SideQuest,
 	type SideQuestKey,
 } from "@/data/side-quests"
+import { resolveNewContentState } from "@/utils/content-state"
+
+/** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real SIDE_QUESTS rows). */
+const sideQuestNewBadgeFixture = (
+	publishedDate: string,
+): Pick<SideQuest, "publishedDate" | "state"> => ({
+	publishedDate,
+	state: Option.some("New"),
+})
+
+const resolvedSideQuestDisplayState = (
+	fixture: Pick<SideQuest, "publishedDate" | "state">,
+	isoUtcInstant: string,
+) => resolveNewContentState(fixture.state, fixture.publishedDate, Date.parse(isoUtcInstant))
 
 describe("compareSideQuestDescending", () => {
 	test("same host map: later SIDE_QUESTS insertion index sorts first", () => {
@@ -38,6 +54,69 @@ describe("getSideQuestByKey", () => {
 	test("returns Some when the side quest exists", () => {
 		const s = getSideQuestByKey("115-clock-tower").pipe(Option.getOrThrow)
 		expect(s.id).toBe("115-clock-tower")
+	})
+})
+
+describe("side quest New badge vs published date (fixtures)", () => {
+	const fixture = sideQuestNewBadgeFixture("2026-08-26")
+
+	test("drops New when published date is 14+ full calendar days in the past", () => {
+		expect(
+			Option.getOrNull(resolvedSideQuestDisplayState(fixture, "2026-09-10T12:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test("keeps New within 14 days of published date", () => {
+		expect(
+			Option.getOrNull(resolvedSideQuestDisplayState(fixture, "2026-09-05T12:00:00.000Z")),
+		).toBe("New")
+	})
+
+	test("keeps New through the last instant before the 14th full UTC day after publish", () => {
+		expect(
+			Option.getOrNull(resolvedSideQuestDisplayState(fixture, "2026-09-08T23:59:59.999Z")),
+		).toBe("New")
+	})
+
+	test("drops New at the start of the 14th full UTC day after publish", () => {
+		expect(
+			Option.getOrNull(resolvedSideQuestDisplayState(fixture, "2026-09-09T00:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test("stored None stays None regardless of calendar age", () => {
+		const noBadge: Pick<SideQuest, "publishedDate" | "state"> = {
+			...fixture,
+			state: Option.none<ContentState>(),
+		}
+		expect(
+			Option.getOrNull(resolvedSideQuestDisplayState(noBadge, "2026-09-05T12:00:00.000Z")),
+		).toBeNull()
+	})
+
+	test('stored Coming Soon is preserved when stored state is Some("Coming Soon")', () => {
+		const comingSoon = { ...fixture, state: Option.some("Coming Soon" as const) }
+		expect(
+			Option.getOrNull(resolvedSideQuestDisplayState(comingSoon, "2026-09-10T12:00:00.000Z")),
+		).toBe("Coming Soon")
+	})
+})
+
+describe("getSideQuestByKey applies publishedDate New window", () => {
+	test("keeps stored New inside the 14-day window", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(Date.parse("2026-09-01T12:00:00.000Z"))
+		const quest = getSideQuestByKey("skull-mask").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(quest.state)).toBe("New")
+		vi.useRealTimers()
+	})
+
+	test("clears stored New after the 14-day window", () => {
+		vi.useFakeTimers()
+		vi.setSystemTime(Date.parse("2026-09-10T12:00:00.000Z"))
+		const quest = getSideQuestByKey("skull-mask").pipe(Option.getOrThrow)
+		expect(Option.getOrNull(quest.state)).toBeNull()
+		vi.useRealTimers()
 	})
 })
 
