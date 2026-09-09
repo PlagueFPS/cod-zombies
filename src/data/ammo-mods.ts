@@ -2,7 +2,7 @@ import type { GameKey } from "@/data/games"
 import type { AmmoModsImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 type AmmoModVariant = Omit<Partial<AmmoMod>, "_tag" | "id" | "title" | "variants">
 
@@ -47,7 +47,7 @@ const makeAmmoMod = <T extends string>(
 	},
 ]
 
-const AMMO_MODS = new Map([
+const AMMO_MODS = uniqueMap([
 	makeAmmoMod("fire-bomb", {
 		title: "Fire Bomb",
 		description:

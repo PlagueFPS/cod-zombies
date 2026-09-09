@@ -2,7 +2,7 @@ import type { GameKey } from "@/data/games"
 import type { PerksImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 type PerkVariant = Omit<Partial<Perk>, "_tag" | "id" | "title" | "variants">
 
@@ -45,7 +45,7 @@ const makePerk = <T extends string>(identifier: T, perk: Omit<Perk, "_tag" | "id
 	},
 ]
 
-const PERKS = new Map([
+const PERKS = uniqueMap([
 	makePerk("wisp-tea", {
 		title: "Wisp Tea",
 		description: "Summon a companion wisp after killing zombies.",

@@ -1,7 +1,7 @@
 import type { GameKey } from "@/data/games"
 import type { GobblegumsImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
-import { resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 /** Union of all Gobblegum keys */
 export type GobblegumKey = Parameters<(typeof GOBBLEGUMS)["get"]>[0]
@@ -65,7 +65,7 @@ const makeGobblegum = <T extends string>(
 	},
 ]
 
-const GOBBLEGUMS = new Map([
+const GOBBLEGUMS = uniqueMap([
 	makeGobblegum("alchemical-antithesis", {
 		title: "Alchemical Antithesis",
 		description:

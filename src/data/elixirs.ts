@@ -1,5 +1,6 @@
 import type { ElixirsImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
+import { uniqueMap } from "@/data/registry-helpers"
 
 export interface Elixir {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -39,7 +40,7 @@ const makeElixir = <T extends string>(
 	},
 ]
 
-const ELIXIRS = new Map([
+const ELIXIRS = uniqueMap([
 	makeElixir("anywhere-but-here", {
 		title: "Anywhere But Here!",
 		description:

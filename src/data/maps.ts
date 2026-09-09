@@ -4,6 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Option } from "effect"
+import { uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
@@ -154,7 +155,7 @@ const makeMap = <T extends string>(
 	},
 ]
 
-const MAPS = new Map([
+const MAPS = uniqueMap([
 	makeMap("nacht-der-untoten", {
 		title: "Nacht der Untoten",
 		releaseDate: "2008-11-11",

@@ -3,6 +3,7 @@ import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
 import { Option } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
+import { uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems } from "@/utils/shared-functions"
 
@@ -87,7 +88,7 @@ const makeQuest = <T extends string>(
 	},
 ]
 
-const SIDE_QUESTS = new Map([
+const SIDE_QUESTS = uniqueMap([
 	makeQuest("free-500-points", {
 		state: Option.none(),
 		publishedDate: "2025-09-21",
