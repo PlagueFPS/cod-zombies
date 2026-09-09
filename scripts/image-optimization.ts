@@ -1,7 +1,7 @@
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { Clock, Duration, Effect, FileSystem, Option, Path, Schema, Ref, Match } from "effect"
-import { Command, Flag } from "effect/unstable/cli"
+import { Command, Flag, Prompt } from "effect/unstable/cli"
 import sharp, { type Sharp } from "sharp"
 import { generateImagePaths } from "@/scripts/generate-image-paths"
 import { walkImageFiles } from "@/scripts/image-file-walk"
@@ -103,6 +103,14 @@ const encodeWebpEffect = Effect.fnUntraced(function* (
 	})
 })
 
+/**
+ * Silently creates `dir` and any missing parents (`mkdir -p`).
+ *
+ * Used for nested output folders (e.g. `out/maps/`) and the `oldassets` copy tree.
+ * Those paths are processing side effects, not the user-supplied `--output-dir`.
+ *
+ * @param dir - Directory to create if it does not already exist
+ */
 const ensureDirectory = Effect.fnUntraced(function* (dir: string) {
 	const fs = yield* FileSystem.FileSystem
 	yield* Effect.filterOrElse(
@@ -110,6 +118,37 @@ const ensureDirectory = Effect.fnUntraced(function* (dir: string) {
 		exists => exists,
 		() => fs.makeDirectory(dir, { recursive: true }),
 	)
+})
+
+/**
+ * Ensures the user-supplied `--output-dir` exists before optimization starts.
+ *
+ * If the directory is missing, prompts to confirm creation. Declining fails with
+ * {@link ImageOptimizationError} and leaves source files untouched. Nested folders
+ * under this path are created later via `ensureDirectory` without another prompt.
+ *
+ * @param dir - Output directory from `--output-dir`
+ */
+export const ensureOutputDirectory = Effect.fn("ensureOutputDirectory")(function* (dir: string) {
+	const fs = yield* FileSystem.FileSystem
+	if (yield* fs.exists(dir)) return
+
+	const confirmed = yield* Prompt.run(
+		Prompt.confirm({
+			message: `Output directory does not exist: ${dir}. Create it?`,
+			initial: true,
+		}),
+	)
+
+	if (!confirmed) {
+		return yield* new ImageOptimizationError({
+			message: `Output directory does not exist: ${dir}`,
+			cause: dir,
+		})
+	}
+
+	yield* fs.makeDirectory(dir, { recursive: true })
+	yield* Effect.log(`Created output directory: ${dir}`)
 })
 
 export type OptimizeMode = "default" | "preview" | "map" | "icon"
@@ -168,14 +207,15 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 		const startTime = yield* Clock.currentTimeMillis
 		const fs = yield* FileSystem.FileSystem
 		const path = yield* Path.Path
+
+		yield* ensureOutputDirectory(targetDir)
+
 		const assets = yield* walkImageFiles(source, {
 			format: "relative",
 			includeVariants: false,
 		})
 		const numRef = yield* Ref.make(0)
 		const inPlace = path.resolve(source) === path.resolve(targetDir)
-
-		yield* ensureDirectory(targetDir)
 		if (!inPlace) {
 			yield* ensureDirectory(DEFAULT_COPY_DIR)
 		}
