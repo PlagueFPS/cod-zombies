@@ -4,6 +4,7 @@ import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect, Option, Schema } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
+import { uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { decodeMapConfigModule } from "@/utils/validation-schemas"
 
@@ -106,7 +107,7 @@ const makeMapEntry = <T extends string>(
 	},
 ]
 
-const INTERACTIVE_MAPS = new Map([
+const INTERACTIVE_MAPS = uniqueMap([
 	makeMapEntry("rex-infernus", {
 		title: "Rex Infernus",
 		state: Option.none(),

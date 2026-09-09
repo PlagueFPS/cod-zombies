@@ -2,7 +2,7 @@ import type { GameKey } from "@/data/games"
 import type { FieldUpgradesImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 type FieldUpgradeVariant = Omit<Partial<FieldUpgrade>, "_tag" | "id" | "title" | "variants">
 
@@ -48,7 +48,7 @@ const makeFieldUpgrade = <T extends string>(
 	},
 ]
 
-const FIELD_UPGRADES = new Map([
+const FIELD_UPGRADES = uniqueMap([
 	makeFieldUpgrade("ring-of-fire", {
 		title: "Ring of Fire",
 		description:

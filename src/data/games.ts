@@ -1,5 +1,6 @@
 import type { GamesImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
+import { uniqueMap } from "@/data/registry-helpers"
 import { sortDates } from "@/utils/shared-functions"
 
 export interface Game {
@@ -41,7 +42,7 @@ const makeGame = <T extends string>(identifier: T, game: Omit<Game, "_tag" | "id
 	},
 ]
 
-const GAMES = new Map([
+const GAMES = uniqueMap([
 	makeGame("world-at-war", {
 		title: "World at War",
 		releaseDate: "2008-11-11",

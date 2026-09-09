@@ -8,6 +8,7 @@ import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
+import { uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
@@ -121,7 +122,7 @@ const makeZombie = <T extends string>(
 	},
 ]
 
-const ZOMBIES = new Map([
+const ZOMBIES = uniqueMap([
 	makeZombie("zombie", {
 		title: "Zombie",
 		state: Option.none(),

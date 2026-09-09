@@ -1,4 +1,5 @@
 import { Option } from "effect"
+import { uniqueMap } from "@/data/registry-helpers"
 
 export interface WeakPoint {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -30,7 +31,7 @@ const makeWeakPoint = <T extends string>(
 	},
 ]
 
-const WEAK_POINTS = new Map([
+const WEAK_POINTS = uniqueMap([
 	makeWeakPoint("head", {
 		title: "Head",
 	}),

@@ -1,7 +1,7 @@
 import type { GameKey } from "@/data/games"
 import type { AugmentsImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
-import { resolveGameVariantOption } from "@/data/registry-helpers"
+import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
 
@@ -58,7 +58,7 @@ const makeAugment = <T extends string>(
 	},
 ]
 
-const AUGMENTS = new Map([
+const AUGMENTS = uniqueMap([
 	makeAugment("double-jeopardy", {
 		title: "Double Jeopardy",
 		description: "Normal Zombies at low health have a chance to die immediately when shot.",
@@ -1648,13 +1648,6 @@ const AUGMENTS = new Map([
 		image: "/augments/bo7/mocha-maul-major-augment-bo7.webp",
 		variants: Option.none(),
 	}),
-	makeAugment("big-game-fire-works", {
-		title: "Big Game",
-		description: "Fire Works can activate on Elite Enemies, creating a bigger lightshow.",
-		type: "Major",
-		image: "/augments/big-game-major-augment.webp",
-		variants: Option.none(),
-	}),
 	makeAugment("caustic-fumes", {
 		title: "Caustic Fumes",
 		description: "Charmed enemies deal Toxic damage to nearby enemies.",
@@ -2152,8 +2145,12 @@ const AUGMENTS = new Map([
 		title: "Big Game",
 		description: "Fire Works can activate on Elite Enemies, creating a bigger light show.",
 		type: "Major",
-		image: "/augments/bo7/big-game-major-augment-bo7.webp",
-		variants: Option.none(),
+		image: "/augments/big-game-major-augment.webp",
+		variants: Option.some({
+			"black-ops-7": {
+				image: "/augments/bo7/big-game-major-augment-bo7.webp",
+			},
+		}),
 	}),
 	makeAugment("starburst", {
 		title: "Starburst",

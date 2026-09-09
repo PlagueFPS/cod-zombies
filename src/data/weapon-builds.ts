@@ -1,5 +1,6 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
+import { uniqueMap } from "@/data/registry-helpers"
 
 export interface Attachment {
 	/** Unique identifier for the attachment */
@@ -164,7 +165,7 @@ const attachmentsRegistry = {
 	},
 } satisfies Record<string, Attachment>
 
-const WEAPON_BUILDS = new Map([
+const WEAPON_BUILDS = uniqueMap([
 	makeWeaponBuild("maelstrom-reckoning", {
 		title: "Maelstrom",
 		image: "/weapons/maelstrom.webp",

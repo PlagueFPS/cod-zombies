@@ -1,6 +1,6 @@
 import { Option } from "effect"
 import { describe, expect, test } from "vitest"
-import { mapWithGameVariant, resolveGameVariantOption } from "@/data/registry-helpers"
+import { mapWithGameVariant, resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 type Sample = {
 	readonly id: string
@@ -45,5 +45,30 @@ describe("mapWithGameVariant", () => {
 		const out = mapWithGameVariant(items, "black-ops-6")
 		expect(out[0]?.title).toBe("A BO6")
 		expect(mapWithGameVariant(items, undefined)[0]?.title).toBe("A")
+	})
+})
+
+describe("uniqueMap", () => {
+	test("returns a Map with every unique id", () => {
+		const map = uniqueMap([
+			["melee-swing", { title: "Melee Swing" }],
+			["bite", { title: "Bite" }],
+		])
+		expect(map.size).toBe(2)
+		expect(map.get("melee-swing")?.title).toBe("Melee Swing")
+		expect(map.get("bite")?.title).toBe("Bite")
+		// @ts-expect-error invalid key
+		expect(map.get("not-an-attack")).toBeUndefined()
+	})
+
+	test("duplicate ids are a type error; runtime matches Map overwrite", () => {
+		const map = uniqueMap([
+			// @ts-expect-error duplicate registry id
+			["a", 1],
+			["b", 2],
+			// @ts-expect-error duplicate registry id
+			["a", 3],
+		])
+		expect(map.get("a")).toBe(3)
 	})
 })

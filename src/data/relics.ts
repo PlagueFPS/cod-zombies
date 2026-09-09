@@ -4,6 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Option } from "effect"
+import { uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
@@ -110,7 +111,7 @@ const makeRelic = <T extends string>(
 	},
 ]
 
-const RELICS = new Map([
+const RELICS = uniqueMap([
 	makeRelic("lawyers-pen", {
 		title: "Lawyer's Pen",
 		state: Option.none(),

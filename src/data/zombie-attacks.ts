@@ -1,4 +1,5 @@
 import { Option } from "effect"
+import { uniqueMap } from "@/data/registry-helpers"
 
 export interface ZombieAttack {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -34,7 +35,7 @@ const makeZombieAttack = <T extends string>(
 	},
 ]
 
-const ZOMBIE_ATTACKS = new Map([
+const ZOMBIE_ATTACKS = uniqueMap([
 	makeZombieAttack("melee-swing", {
 		title: "Melee Swing",
 		range: "Short",
