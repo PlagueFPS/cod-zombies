@@ -11,20 +11,55 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Exit, Layer, Option } from "effect"
+import { Cause, Effect, Exit, Layer, Option, Queue, Terminal } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import {
 	ICON_LARGE_SIZE,
 	ICON_SMALL_SIZE,
 	ImageOptimizationError,
+	ensureOutputDirectory,
 	getIconTargetSize,
 	optimizeAssetsEffect,
 	requireImageWidth,
 } from "@/scripts/image-optimization"
 import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
-const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
+const unusedTerminalLayer = Layer.succeed(
+	Terminal.Terminal,
+	Terminal.make({
+		columns: Effect.succeed(80),
+		rows: Effect.succeed(24),
+		readInput: Effect.die("Terminal.readInput should not be called"),
+		readLine: Effect.die("Terminal.readLine should not be called"),
+		display: () => Effect.void,
+	}),
+)
+
+const confirmKey = (name: "y" | "n"): Terminal.UserInput => ({
+	input: Option.some(name),
+	key: { name, ctrl: false, meta: false, shift: false },
+})
+
+const terminalWithAnswer = (answer: "y" | "n") =>
+	Layer.effect(
+		Terminal.Terminal,
+		Effect.gen(function* () {
+			const queue = yield* Queue.make<Terminal.UserInput, Cause.Done>()
+			yield* Queue.offer(queue, confirmKey(answer))
+			return Terminal.make({
+				columns: Effect.succeed(80),
+				rows: Effect.succeed(24),
+				readInput: Effect.succeed(queue),
+				readLine: Effect.fail(new Terminal.QuitError({})),
+				display: () => Effect.void,
+			})
+		}),
+	)
+
+const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer, unusedTerminalLayer)
+const promptLayer = (answer: "y" | "n") =>
+	Layer.mergeAll(BunFileSystemLayer, BunPathLayer, terminalWithAnswer(answer))
 
 const noModeFlags = {
 	preview: Option.none<boolean>(),
@@ -416,6 +451,41 @@ describe("optimizeAssetsEffect", () => {
 		expect(meta.height).toBe(128)
 	})
 
+	test("creates missing output directory after confirmation", async () => {
+		mkdirSync(join(root, "newassets", "perks"), { recursive: true })
+		await writePng(join(root, "newassets", "perks", "foo.png"), 400, 400)
+		const missingOut = join(root, "missing-out")
+		expect(existsSync(missingOut)).toBe(false)
+		const program = optimizeAssetsEffect({
+			dir: "./missing-out",
+			source: "./newassets",
+			...noModeFlags,
+		}).pipe(Effect.provide(promptLayer("y")))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		expect(existsSync(missingOut)).toBe(true)
+		expect(listFilesRecursive(missingOut)).toEqual(["perks/foo.webp"])
+	})
+
+	test("fails when missing output directory creation is declined", async () => {
+		mkdirSync(join(root, "newassets", "perks"), { recursive: true })
+		await writePng(join(root, "newassets", "perks", "foo.png"), 400, 400)
+		const missingOut = join(root, "missing-out")
+		const program = optimizeAssetsEffect({
+			dir: "./missing-out",
+			source: "./newassets",
+			...noModeFlags,
+		}).pipe(Effect.provide(promptLayer("n")))
+		const exit = await Effect.runPromiseExit(program)
+		expect(Exit.isFailure(exit)).toBe(true)
+		const cause = expectExitFailure(exit)
+		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
+			e.message.includes("Output directory does not exist"),
+		)
+		expect(existsSync(missingOut)).toBe(false)
+		expect(existsSync(join(root, "newassets", "perks", "foo.png"))).toBe(true)
+	})
+
 	test("fails when icon is combined with preview or map", async () => {
 		const program = optimizeAssetsEffect({
 			dir: "./out",
@@ -430,6 +500,49 @@ describe("optimizeAssetsEffect", () => {
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
 			e.message.includes("Cannot use --preview and --icon together"),
 		)
+	})
+})
+
+describe("ensureOutputDirectory", () => {
+	let prevCwd: string
+	let root: string
+
+	beforeEach(() => {
+		prevCwd = process.cwd()
+		root = mkdtempSync(join(tmpdir(), "codz-opt-dir-"))
+		process.chdir(root)
+	})
+
+	afterEach(() => {
+		process.chdir(prevCwd)
+		rmSync(root, { recursive: true, force: true })
+	})
+
+	test("returns when the output directory already exists", async () => {
+		mkdirSync(join(root, "out"), { recursive: true })
+		const program = ensureOutputDirectory("./out").pipe(Effect.provide(testLayer))
+		const exit = await Effect.runPromiseExit(program)
+		expect(Exit.isSuccess(exit)).toBe(true)
+		expectExitSuccess(exit)
+	})
+
+	test("creates the output directory when the user confirms", async () => {
+		expect(existsSync(join(root, "out"))).toBe(false)
+		const program = ensureOutputDirectory("./out").pipe(Effect.provide(promptLayer("y")))
+		const exit = await Effect.runPromiseExit(program)
+		expectExitSuccess(exit)
+		expect(existsSync(join(root, "out"))).toBe(true)
+	})
+
+	test("fails without creating the directory when the user declines", async () => {
+		const program = ensureOutputDirectory("./out").pipe(Effect.provide(promptLayer("n")))
+		const exit = await Effect.runPromiseExit(program)
+		expect(Exit.isFailure(exit)).toBe(true)
+		const cause = expectExitFailure(exit)
+		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
+			e.message.includes("Output directory does not exist"),
+		)
+		expect(existsSync(join(root, "out"))).toBe(false)
 	})
 })
 
