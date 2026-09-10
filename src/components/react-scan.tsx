@@ -11,5 +11,6 @@ export default function ReactScan() {
 			showNotificationCount: true,
 		})
 	}, [])
+
 	return null
 }

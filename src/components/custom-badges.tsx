@@ -20,11 +20,13 @@ interface CustomBadgeProps {
 export const NewBadge = ({ className }: CustomBadgeProps) => (
 	<Badge className={cn("badge-new-gradient dark:dark-badge-new-gradient", className)}>New</Badge>
 )
+
 export const ComingSoonBadge = ({ className }: CustomBadgeProps) => (
 	<Badge className={cn("badge-changed-gradient dark:dark-badge-changed-gradient", className)}>
 		Coming Soon
 	</Badge>
 )
+
 export const DifficultyBadge = ({
 	className,
 	difficulty,
@@ -43,6 +45,7 @@ export const DifficultyBadge = ({
 		{difficulty}
 	</Badge>
 )
+
 export const EstimatedTimeBadge = ({
 	className,
 	timeRange,
@@ -54,6 +57,7 @@ export const EstimatedTimeBadge = ({
 		{formatEstimatedTimeMidpoint(timeRange)}
 	</Badge>
 )
+
 export const TypeBadge = ({
 	className,
 	type,
@@ -75,6 +79,7 @@ export const TypeBadge = ({
 		{type}
 	</Badge>
 )
+
 export const MarkerBadge = ({
 	className,
 	category,
@@ -96,6 +101,7 @@ export const MarkerBadge = ({
 		{children}
 	</Badge>
 )
+
 export const RarityBadge = ({
 	className,
 	rarity,
@@ -132,6 +138,7 @@ export const RarityBadge = ({
 		</Badge>
 	)
 }
+
 export const RangeBadge = ({
 	className,
 	range,

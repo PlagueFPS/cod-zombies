@@ -6,6 +6,7 @@ import { loadMdxModule } from "@/lib/mdx-modules"
 import { getLastModified } from "@/utils/content-meta"
 
 export const MDX_META_QUERY_KEY = "mdx-meta" as const
+
 export const MDX_COMPONENT_QUERY_KEY = "mdx-component" as const
 
 export interface MdxMetaQueryData {
@@ -25,6 +26,7 @@ export const mdxMetaQueryOptions = (id: string, filePath: ContentPaths) =>
 		queryKey: [MDX_META_QUERY_KEY, id, filePath],
 		queryFn: async (): Promise<MdxMetaQueryData> => {
 			const { headings, timeToRead } = await loadMdxModule(filePath)
+
 			return {
 				headings,
 				timeToRead,
@@ -41,6 +43,7 @@ export const mdxComponentQueryOptions = (id: string, filePath: ContentPaths) =>
 		queryKey: [MDX_COMPONENT_QUERY_KEY, id, filePath],
 		queryFn: async (): Promise<MdxComponentQueryData> => {
 			const { default: Component } = await loadMdxModule(filePath)
+
 			return { Component }
 		},
 		structuralSharing: false,

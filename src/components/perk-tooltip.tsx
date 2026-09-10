@@ -1,4 +1,5 @@
 "use client"
+
 import type { GameKey } from "@/data/games"
 import { Array as Arr, Option, Predicate, Result } from "effect"
 import AugmentTooltip from "@/components/augment-tooltip"
@@ -18,8 +19,10 @@ interface PerkTooltipProps {
 export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
 	const isMobile = useIsMobile(640)
 	const perk = getPerkByKey(perkKey, game)
+
 	if (Option.isNone(perk)) {
 		console.error(`Unable to render tooltip for perk: ${perkKey}`)
+
 		return "[MISSING_PERK]"
 	}
 

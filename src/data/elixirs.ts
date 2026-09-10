@@ -1,5 +1,5 @@
 import type { ElixirsImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { uniqueMap } from "@/data/registry-helpers"
 
 export interface Elixir {
@@ -19,6 +19,7 @@ export interface Elixir {
 
 /** Union of all Elixir rarities */
 export type ElixirRarity = Elixir["rarity"]
+
 /** Union of all Elixir keys */
 export type ElixirKey = Parameters<(typeof ELIXIRS)["get"]>[0]
 
@@ -28,17 +29,12 @@ export type ElixirKey = Parameters<(typeof ELIXIRS)["get"]>[0]
  */
 export const getElixirByKey = (key: ElixirKey) => Option.fromUndefinedOr(ELIXIRS.get(key))
 
+class ElixirRecord extends Data.TaggedClass("Elixir")<Omit<Elixir, "_tag">> {}
+
 const makeElixir = <T extends string>(
 	identifier: T,
 	elixir: Omit<Elixir, "_tag" | "id">,
-): [T, Elixir] => [
-	identifier,
-	{
-		_tag: "Elixir" as const,
-		id: identifier,
-		...elixir,
-	},
-]
+): [T, Elixir] => [identifier, new ElixirRecord({ id: identifier, ...elixir })]
 
 const ELIXIRS = uniqueMap([
 	makeElixir("anywhere-but-here", {

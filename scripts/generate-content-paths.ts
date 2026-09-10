@@ -14,9 +14,11 @@ const formatContentPath = Effect.fn("formatContentPath")(function* (
 	const relative = path.relative(contentDir, filePath)
 	const withSlashes = relative.split(path.sep).join("/")
 	const ext = path.extname(withSlashes).toLowerCase()
+
 	const base = HashSet.has(CONTENT_EXTENSIONS, ext)
 		? withSlashes.slice(0, -ext.length)
 		: withSlashes
+
 	return `content/${base}`
 })
 
@@ -31,7 +33,9 @@ const listContentSubdirs = Effect.fn("listContentSubdirs")(function* (contentDir
 			Effect.gen(function* () {
 				const filePath = path.join(contentDir, file)
 				const stat = yield* fs.stat(filePath)
+
 				if (stat.type === "Directory" && !file.startsWith(".")) return file
+
 				return null
 			}),
 		{ concurrency: "unbounded" },
@@ -62,6 +66,7 @@ const collectContentFiles = Effect.fn("collectContentFiles")(function* (
 							yield* walk(full)
 						} else if (stat.type === "File") {
 							const ext = path.extname(file).toLowerCase()
+
 							if (HashSet.has(CONTENT_EXTENSIONS, ext)) {
 								const contentPath = yield* formatContentPath(contentDir, full)
 								results.push(contentPath)
@@ -73,6 +78,7 @@ const collectContentFiles = Effect.fn("collectContentFiles")(function* (
 		})
 
 	yield* walk(dir)
+
 	return results
 })
 
@@ -80,12 +86,15 @@ function generateTypeForDir(typeName: string, contentPaths: string[]) {
 	if (contentPaths.length === 0) {
 		return `export type ${typeName} = never;\n`
 	}
+
 	const literals = contentPaths.map(p => `"${p.replace(/"/g, '\\"')}"`)
+
 	return `export type ${typeName} =\n  ${literals.join(" |\n  ")};\n`
 }
 
 function headerComment(contentDir: string, duration: string | number) {
 	const now = new Date().toISOString()
+
 	return `/**
  * THIS FILE IS AUTO-GENERATED.
  * Run 'generate:content:paths' to regenerate.
@@ -106,11 +115,13 @@ export const generateContentPaths = Effect.fn("generateContentPaths")(function* 
 	const outFile = path.join(cwd, "src/types", "generated", "content-paths.gen.ts")
 
 	const exists = yield* fs.exists(contentDir)
+
 	if (!exists) return yield* Effect.fail(`Content directory does not exist: ${contentDir}`)
 
 	const startTime = yield* Clock.currentTimeMillis
 
 	const subdirs = yield* listContentSubdirs(contentDir)
+
 	const perDir = yield* Effect.forEach(
 		subdirs,
 		dir =>
@@ -118,6 +129,7 @@ export const generateContentPaths = Effect.fn("generateContentPaths")(function* 
 				const fullDir = path.join(contentDir, dir)
 				const paths = yield* collectContentFiles(contentDir, fullDir)
 				const sortedPaths = paths.sort()
+
 				return {
 					dir,
 					typeName: `${toPascalCase(dir)}Paths`,
@@ -148,6 +160,7 @@ export const generateContentPaths = Effect.fn("generateContentPaths")(function* 
 
 	const outDir = path.dirname(outFile)
 	const outDirExists = yield* fs.exists(outDir)
+
 	if (!outDirExists) {
 		yield* fs.makeDirectory(outDir, { recursive: true })
 	}

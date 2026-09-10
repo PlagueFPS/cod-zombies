@@ -9,10 +9,15 @@ import { SITE_ORIGIN } from "@/utils/constants"
  */
 export const isLoopbackHost = (hostname: string) => {
 	const host = hostname.replace(/^\[|\]$/g, "").toLowerCase()
+
 	if (host === "localhost" || host.endsWith(".localhost")) return true
+
 	if (host === "::1" || host === "0.0.0.0") return true
+
 	if (host.startsWith("127.")) return true
+
 	if (host.startsWith("::ffff:127.")) return true
+
 	return false
 }
 
@@ -26,5 +31,6 @@ export const isLoopbackHost = (hostname: string) => {
  */
 export const resolvePublicOrigin = (requestUrl: URL, replaceLoopback = import.meta.env.PROD) => {
 	if (replaceLoopback && isLoopbackHost(requestUrl.hostname)) return SITE_ORIGIN
+
 	return requestUrl.origin
 }

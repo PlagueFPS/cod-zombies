@@ -21,7 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
 import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
-import { getAdjacentRelics, getRelicByKey, type RelicKey } from "@/data/relics"
+import { getAdjacentRelics, getRelicByKey } from "@/data/relics"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { type EncodedRelic, encodeRelic } from "@/utils/rsc-wire"
 import { capitalize, createSeoTitle } from "@/utils/shared-functions"
@@ -29,9 +29,8 @@ import richStyles from "@/rich-text.module.css"
 
 export const Route = createFileRoute("/relics/$gameId/$relicId")({
 	loader: async ({ params, context }) => {
-		const relic = getRelicByKey(params.relicId as RelicKey).pipe(
-			Option.getOrThrowWith(() => notFound()),
-		)
+		const relic = getRelicByKey(params.relicId).pipe(Option.getOrThrowWith(() => notFound()))
+
 		if (relic.state.valueOrUndefined === "Coming Soon") throw notFound()
 
 		const [opengraphUrl] = await Promise.all([
@@ -44,7 +43,7 @@ export const Route = createFileRoute("/relics/$gameId/$relicId")({
 
 		const map = getMapByKey(relic.map).pipe(Option.getOrThrowWith(() => notFound()))
 		const game = getGameByKey(map.game).pipe(Option.getOrThrowWith(() => notFound()))
-		const { prev, next } = getAdjacentRelics(relic.id as RelicKey)
+		const { prev, next } = getAdjacentRelics(relic.id)
 
 		const title = createSeoTitle(`${relic.title} Relic Guide`)
 		const description = `Learn how to unlock the ${relic.type} ${relic.title} relic with the effect: ${relic.description}`
@@ -218,6 +217,7 @@ function PrevOrNextRelicCard({ relic, prev }: PrevOrNextRelicCardProps) {
 
 function RelicPending() {
 	const params = Route.useParams()
+
 	const links: Link[] = [
 		{ href: "/relics", title: "Relics" },
 		{
@@ -296,6 +296,7 @@ function RelicPending() {
 
 function RelicNotFound() {
 	const params = Route.useParams()
+
 	const items: Link[] = [
 		{ href: "/relics", title: "Relics" },
 		{

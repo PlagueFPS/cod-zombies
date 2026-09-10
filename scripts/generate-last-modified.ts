@@ -32,12 +32,14 @@ export const populateFilePaths = (
 	repoRoot: string,
 ) => {
 	const filePaths = MutableHashSet.empty<string>()
+
 	for (const filePath of allFiles) {
 		const normalizedPath = filePath.replace(/\\/g, "/")
 		const repoRootNormalized = repoRoot.replace(/\\/g, "/")
 		const relativePath = normalizedPath.replace(`${repoRootNormalized}/src/content/`, "")
 		MutableHashSet.add(filePaths, relativePath)
 	}
+
 	return filePaths
 }
 
@@ -59,11 +61,13 @@ const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 	}
 
 	const timestampStr = yield* Ref.get(currentTimestamp)
+
 	if (!timestampStr) return
 
 	const timestamp = Num.parse(timestampStr).pipe(
 		Option.flatMap(t => DateTime.make(new Date(t * 1000))),
 	)
+
 	if (Option.isNone(timestamp)) return
 
 	MutableHashSet.add(gitHistory, path)
@@ -88,6 +92,7 @@ export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i]
+
 		if (!line || !line.trim()) continue
 
 		if (digitPattern.test(line)) {
@@ -97,6 +102,7 @@ export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 
 		if (line.startsWith("R")) {
 			const parts = line.split("\t")
+
 			if (parts.length < 3 || !parts[2]) continue
 
 			const newPath = normalizeContentPath(parts[2])
@@ -143,9 +149,11 @@ export const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir
 
 					// Track relative paths to detect duplicates
 					const relativePath = `${subDir}/${file}`
+
 					const count = MutableHashMap.get(pathCountMap, relativePath).pipe(
 						Option.getOrElse(() => 0),
 					)
+
 					MutableHashMap.set(pathCountMap, relativePath, count + 1)
 				}
 			}),
@@ -154,6 +162,7 @@ export const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir
 
 	// Check for duplicate paths (same path appearing multiple times)
 	const duplicates: string[] = []
+
 	for (const [relativePath, count] of pathCountMap) {
 		if (count > 1) {
 			duplicates.push(`${relativePath} (appears ${count} times)`)
@@ -190,12 +199,14 @@ export const generateLastModified = (cwd: string = process.cwd()) =>
 						maxBuffer: 10 * 1024 * 1024,
 					},
 				)
+
 				return result || ""
 			},
 			catch: () => "",
 		})
 
 		const fileMetadata = yield* parseGitBatchOutput(gitOutput, allFiles, cwd)
+
 		const lastModifiedData: LastModifiedData = {
 			version: "1.0",
 			generated: new Date().toISOString(),

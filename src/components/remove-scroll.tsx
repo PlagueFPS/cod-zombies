@@ -19,6 +19,7 @@ export function RemoveScroll({ children, enabled = true }: RemoveScrollProps) {
 		if (!enabled) return
 
 		const root = rootRef.current
+
 		if (!root) return
 
 		scrollLockRoots.add(root)
@@ -27,6 +28,7 @@ export function RemoveScroll({ children, enabled = true }: RemoveScrollProps) {
 		const onTouchStart = (e: TouchEvent) => {
 			if (e.touches.length !== 1) return
 			const t = e.touches.item(0)
+
 			if (!t) return
 			lastTouchYRef.current = t.clientY
 			lastTouchXRef.current = t.clientX
@@ -35,11 +37,14 @@ export function RemoveScroll({ children, enabled = true }: RemoveScrollProps) {
 		const onTouchMove = (e: TouchEvent) => {
 			if (e.touches.length !== 1) return
 			const touch = e.touches.item(0)
+
 			if (!touch) return
 			const target = e.target
+
 			if (!(target instanceof Node)) return
 
 			const resolved = resolveGestureScrollParent(target, root, scrollLockRoots)
+
 			if (resolved.kind === "pass") return
 
 			const deltaY = touch.clientY - lastTouchYRef.current
@@ -49,21 +54,28 @@ export function RemoveScroll({ children, enabled = true }: RemoveScrollProps) {
 
 			if (resolved.kind === "lock") {
 				e.preventDefault()
+
 				return
 			}
+
 			if (!gestureAllowsScroll(resolved.el, deltaY, deltaX, "touch")) e.preventDefault()
 		}
 
 		const onWheel = (e: WheelEvent) => {
 			const target = e.target
+
 			if (!(target instanceof Node)) return
 
 			const resolved = resolveGestureScrollParent(target, root, scrollLockRoots)
+
 			if (resolved.kind === "pass") return
+
 			if (resolved.kind === "lock") {
 				e.preventDefault()
+
 				return
 			}
+
 			if (!gestureAllowsScroll(resolved.el, e.deltaY, e.deltaX, "wheel")) e.preventDefault()
 		}
 

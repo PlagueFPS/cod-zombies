@@ -90,6 +90,7 @@ describe("generateImagePaths", () => {
 			join(root, "src", "types", "generated", "image-variants.gen.ts"),
 			"utf-8",
 		)
+
 		expect(variantsOut).toContain("export const VARIANT_WIDTHS")
 
 		process.chdir(prevCwd)
@@ -136,6 +137,7 @@ describe("generateImagePaths", () => {
 			join(root, "src", "types", "generated", "image-variants.gen.ts"),
 			"utf-8",
 		)
+
 		expect(variantsOut).toContain("'/maps/big.webp': [384, 1200]")
 		expect(variantsOut).toContain("'/content/map/shot.webp': [384]")
 

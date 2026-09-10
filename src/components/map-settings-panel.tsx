@@ -18,8 +18,64 @@ import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { type TSettingPath, useMapSettings } from "@/contexts/interactive-map-settings"
+import {
+	type TMapSettings,
+	type TSettingPath,
+	useMapSettings,
+} from "@/contexts/interactive-map-settings"
 import { useIsMobile } from "@/hooks/use-mobile"
+
+function settingValue(settings: TMapSettings, path: TSettingPath) {
+	switch (path) {
+		case "markers.iconSize":
+			return settings.markers.iconSize
+		case "markers.opacity":
+			return settings.markers.opacity
+		case "popups.disableGradients":
+			return settings.popups.disableGradients
+		case "popups.disableAnimations":
+			return settings.popups.disableAnimations
+		case "general.disableZoomAnimation":
+			return settings.general.disableZoomAnimation
+		case "general.disableFlyToAnimation":
+			return settings.general.disableFlyToAnimation
+	}
+}
+
+function withResetSetting(settings: TMapSettings, defaults: TMapSettings, path: TSettingPath) {
+	switch (path) {
+		case "markers.iconSize":
+			return { ...settings, markers: { ...settings.markers, iconSize: defaults.markers.iconSize } }
+		case "markers.opacity":
+			return { ...settings, markers: { ...settings.markers, opacity: defaults.markers.opacity } }
+		case "popups.disableGradients":
+			return {
+				...settings,
+				popups: { ...settings.popups, disableGradients: defaults.popups.disableGradients },
+			}
+		case "popups.disableAnimations":
+			return {
+				...settings,
+				popups: { ...settings.popups, disableAnimations: defaults.popups.disableAnimations },
+			}
+		case "general.disableZoomAnimation":
+			return {
+				...settings,
+				general: {
+					...settings.general,
+					disableZoomAnimation: defaults.general.disableZoomAnimation,
+				},
+			}
+		case "general.disableFlyToAnimation":
+			return {
+				...settings,
+				general: {
+					...settings.general,
+					disableFlyToAnimation: defaults.general.disableFlyToAnimation,
+				},
+			}
+	}
+}
 
 export default function MapSettingsPanel() {
 	const [open, setOpen] = useState(false)
@@ -39,38 +95,19 @@ export default function MapSettingsPanel() {
 
 	useHotkey(settingsShortcut, () => handleOpenChange(!open))
 
-	const hasSettingChanged = (settingPath: TSettingPath) => {
-		const [parentKey, subKey] = settingPath.split(".")
-		if (!parentKey || !subKey) return false
-
-		const currentParent = newSettings[parentKey as keyof typeof newSettings]
-		const defaultParent = defaultSettings[parentKey as keyof typeof defaultSettings]
-		const currentSetting = currentParent[subKey as keyof typeof currentParent]
-		const defaultSetting = defaultParent[subKey as keyof typeof defaultParent]
-
-		return currentSetting !== defaultSetting
-	}
+	const hasSettingChanged = (settingPath: TSettingPath) =>
+		settingValue(newSettings, settingPath) !== settingValue(defaultSettings, settingPath)
 
 	const resetSetting = (settingPath: TSettingPath) => {
-		const [parentKey, subKey] = settingPath.split(".")
-		if (!parentKey || !subKey) return
+		if (settingValue(newSettings, settingPath) === settingValue(defaultSettings, settingPath)) {
+			return
+		}
 
-		const newParent = newSettings[parentKey as keyof typeof newSettings]
-		const defaultParent = defaultSettings[parentKey as keyof typeof defaultSettings]
-		if (typeof newParent === "number" || typeof defaultParent === "number") return
-
-		const newSetting = newParent[subKey as keyof typeof newParent]
-		const defaultSetting = defaultParent[subKey as keyof typeof defaultParent]
-		if (newSetting === defaultSetting) return
-
-		setNewSettings(currentSettings => ({
-			...currentSettings,
-			[parentKey]: {
-				...newParent,
-				[subKey]: defaultSetting,
-			},
-		}))
+		setNewSettings(currentSettings =>
+			withResetSetting(currentSettings, defaultSettings, settingPath),
+		)
 	}
+
 	return (
 		<Dialog open={open} onOpenChange={open => handleOpenChange(open)}>
 			<Tooltip>

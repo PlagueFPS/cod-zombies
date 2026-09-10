@@ -24,6 +24,7 @@ export const Route = createFileRoute("/maps/")({
 	loader: ({ deps, context }) => {
 		const serverUrl = context.serverUrl
 		const title = createSeoTitle("Interactive Maps")
+
 		const description =
 			"Interactive maps for Call of Duty: Zombies showcasing locations of weapons, perks, objectives, and more to help guide your experience."
 
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/maps/")({
 
 		const gameFilters = [...new Set(allMaps.map(m => m.game))].map(gameKey => {
 			const { id, title: gameTitle } = getGameByKey(gameKey).pipe(Option.getOrThrow)
+
 			return {
 				value: id,
 				label: gameTitle,
@@ -89,6 +91,7 @@ function Maps() {
 	const groups: FilterGroup[] = [toFilterGroup("Game", data.gameFilters)]
 
 	const filterValue: FilterOption[] = []
+
 	for (const g of groups) {
 		const values = g.items.filter(i => game?.some(g => g === i.value))
 
@@ -97,12 +100,15 @@ function Maps() {
 
 	const onFilterChange = (next: FilterOption[]) => {
 		const selected = new Map<string, string[]>()
+
 		for (const g of groups) {
 			const matched = g.items.filter(i => next.some(n => n.value === i.value)).map(i => i.value)
+
 			if (matched.length > 0) {
 				selected.set(slugify(g.label), matched)
 			}
 		}
+
 		void navigate({
 			search: prev => ({
 				...prev,

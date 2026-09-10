@@ -32,6 +32,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 	const [open, setOpen] = useState(false)
 	const [isPending, startTransition] = useTransition()
 	const sendFeedback = useServerFn(submitFeedbackForm)
+
 	const form = useForm({
 		defaultValues: {
 			title: "Feedback Form Submission",
@@ -57,6 +58,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 				onSuccess: value => {
 					startTransition(async () => {
 						const result = await sendFeedback({ data: value })
+
 						if (result.success) {
 							toast.success("Feedback submitted successfully!", {
 								description: result.message,
@@ -100,6 +102,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 		if (!open) {
 			form.reset()
 		}
+
 		setOpen(open)
 	}
 
@@ -128,6 +131,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 								<form.Field name="email">
 									{field => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
 										return (
 											<Field data-invalid={isInvalid}>
 												<FieldLabel htmlFor={field.name}>Email (optional)</FieldLabel>
@@ -157,6 +161,7 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 								<form.Field name="feedback">
 									{field => {
 										const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
 										return (
 											<Field data-invalid={isInvalid}>
 												<FieldLabel htmlFor={field.name}>Message</FieldLabel>

@@ -3,23 +3,27 @@ import { describe, expect, test } from "vitest"
 import { getMapsWithMainQuest, type MapEntry } from "@/data/maps"
 import { expectExitSuccess } from "@/tests/helpers"
 import { applyFilters, type FilterSpec } from "@/utils/filter-helpers"
-import { normalizeParsedSearch, parseSearch } from "@/utils/search-params"
+import { normalizeParsedSearch, parseSearch, type ParsedSearchParams } from "@/utils/search-params"
 import { decodeMainQuestSearchParams } from "@/utils/validation-schemas"
 
 const baseStringifySearch = stringifySearchWith(JSON.stringify, JSON.parse)
 
-function pruneEmptySearch(search: Record<string, unknown>): Record<string, unknown> {
-	const out: Record<string, unknown> = {}
+function pruneEmptySearch(search: ParsedSearchParams) {
+	const out: ParsedSearchParams = {}
+
 	for (const key in search) {
 		const value = search[key]
+
 		if (value === undefined || value === null) continue
+
 		if (Array.isArray(value) && value.length === 0) continue
 		out[key] = value
 	}
+
 	return out
 }
 
-const stringifySearch = (search: Record<string, unknown>) =>
+const stringifySearch = (search: ParsedSearchParams) =>
 	baseStringifySearch(pruneEmptySearch(search))
 
 describe("parseSearch", () => {

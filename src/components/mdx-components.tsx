@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types"
 import type { ComponentPropsWithoutRef } from "react"
+import { Predicate } from "effect"
 import { ExternalLinkIcon } from "lucide-react"
 import { ExternalLink } from "@/components/external-link"
 import { RichBlockquote } from "@/components/rich-blockquote"
@@ -19,17 +20,17 @@ import { CustomLink } from "./custom-link"
 export const mdxComponents: MDXComponents = {
 	h1: ({ children, ...props }: ComponentPropsWithoutRef<"h1">) => <h1 {...props}>{children}</h1>,
 	h2: ({ children, ...props }: ComponentPropsWithoutRef<"h2">) => (
-		<Heading2 id={slugify(children as string)} {...props}>
+		<Heading2 id={slugify(Predicate.isString(children) ? children : "")} {...props}>
 			{children}
 		</Heading2>
 	),
 	h3: ({ children, ...props }: ComponentPropsWithoutRef<"h3">) => (
-		<Heading3 id={slugify(children as string)} {...props}>
+		<Heading3 id={slugify(Predicate.isString(children) ? children : "")} {...props}>
 			{children}
 		</Heading3>
 	),
 	h4: ({ children, ...props }: ComponentPropsWithoutRef<"h4">) => (
-		<Heading4 id={slugify(children as string)} {...props}>
+		<Heading4 id={slugify(Predicate.isString(children) ? children : "")} {...props}>
 			{children}
 		</Heading4>
 	),

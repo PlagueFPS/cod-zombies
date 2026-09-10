@@ -13,6 +13,7 @@ import { StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 export function UnsubscribeForm() {
 	const [isPending, startTransition] = useTransition()
 	const unsubscribe = useServerFn(unsubscribeFromNewsletter)
+
 	const form = useForm({
 		defaultValues: {
 			email: "",
@@ -23,6 +24,7 @@ export function UnsubscribeForm() {
 		onSubmit: ({ value }) => {
 			startTransition(async () => {
 				const result = await unsubscribe({ data: value })
+
 				if (result.success) {
 					toast.success("Confirmation email sent!", {
 						description: result.message,
@@ -61,6 +63,7 @@ export function UnsubscribeForm() {
 					<form.Field name="email">
 						{field => {
 							const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
 							return (
 								<Field data-invalid={isInvalid}>
 									<FieldLabel htmlFor={field.name} className="sr-only">

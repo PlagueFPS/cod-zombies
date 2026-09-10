@@ -21,6 +21,7 @@ export function resolveCarouselIndicatorLayout(args: {
 	if (!args.hasImage) return { kind: "fallback" }
 
 	const box = args.imageBox
+
 	if (!box) return { kind: "fallback" }
 
 	if (

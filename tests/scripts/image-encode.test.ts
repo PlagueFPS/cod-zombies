@@ -7,6 +7,7 @@ describe("encodeWebp", () => {
 		const image = sharp({
 			create: { width: 100, height: 100, channels: 3, background: { r: 10, g: 20, b: 30 } },
 		})
+
 		const buffer = await encodeWebp(image)
 		const meta = await sharp(buffer).metadata()
 		expect(meta.format).toBe("webp")
@@ -16,6 +17,7 @@ describe("encodeWebp", () => {
 		const image = sharp({
 			create: { width: 800, height: 600, channels: 3, background: { r: 10, g: 20, b: 30 } },
 		})
+
 		const buffer = await encodeWebp(image, 384)
 		const meta = await sharp(buffer).metadata()
 		expect(meta.format).toBe("webp")
@@ -26,6 +28,7 @@ describe("encodeWebp", () => {
 		const image = sharp({
 			create: { width: 400, height: 300, channels: 3, background: { r: 10, g: 20, b: 30 } },
 		})
+
 		const buffer = await encodeWebp(image, 256, { height: 256, withoutEnlargement: false })
 		const meta = await sharp(buffer).metadata()
 		expect(meta.format).toBe("webp")

@@ -11,8 +11,10 @@ type MapSearchState = {
 
 export function uniqueMarkerIds(markers: MapMarker[]): string[] {
 	const seen = new Set<string>()
+
 	for (const marker of markers) {
 		const id = marker.type || marker.id
+
 		if (!seen.has(id)) {
 			seen.add(id)
 		}
@@ -28,6 +30,7 @@ export function computeIsIncluded(
 ): boolean {
 	const inIncludeList = include.length === 0 || include.includes(type)
 	const isExcluded = exclude.includes(type)
+
 	return (include.length === 0 && !isExcluded) || (inIncludeList && !isExcluded)
 }
 
@@ -40,11 +43,7 @@ export function buildShareableMapSearch(
 	const visible = allIds.filter(id => computeIsIncluded(id, include, exclude))
 	const hidden = allIds.filter(id => !computeIsIncluded(id, include, exclude))
 
-	const next: {
-		include?: string[]
-		exclude?: string[]
-		layer?: string
-	} = {}
+	const next: Partial<MapSearchState> = {}
 
 	if (layer !== undefined && layer !== "") {
 		next.layer = layer
@@ -81,6 +80,7 @@ export function useMapSearch() {
 
 	const toggleInclude = (value: string | string[]) => {
 		const valuesToToggle = Arr.ensure(value)
+
 		const newValues = valuesToToggle.some(v => include.includes(v))
 			? include.filter(v => !valuesToToggle.includes(v))
 			: [...include, ...valuesToToggle]
@@ -96,6 +96,7 @@ export function useMapSearch() {
 
 	const toggleExclude = (value: string | string[]) => {
 		const valuesToToggle = Arr.ensure(value)
+
 		const newValues = valuesToToggle.some(v => exclude.includes(v))
 			? exclude.filter(v => !valuesToToggle.includes(v))
 			: [...exclude, ...valuesToToggle]
@@ -148,16 +149,18 @@ export function useMapSearch() {
 
 			const includeArray = include.filter(v => v.length > 0)
 			const excludedIds = new Set<string>()
-			const excludedMarkers = markers
-				.filter(marker => {
-					const id = marker.type || marker.id
-					if (!includeArray.includes(id) && !excludedIds.has(id)) {
-						excludedIds.add(id)
-						return true
-					}
-					return false
-				})
-				.map(marker => marker.type || marker.id)
+
+			const excludedMarkers = markers.flatMap(marker => {
+				const id = marker.type || marker.id
+
+				if (!includeArray.includes(id) && !excludedIds.has(id)) {
+					excludedIds.add(id)
+
+					return [id]
+				}
+
+				return []
+			})
 
 			void navigate({
 				replace: true,

@@ -7,7 +7,6 @@ import {
 	getSideQuestByKey,
 	getSideQuests,
 	type SideQuest,
-	type SideQuestKey,
 } from "@/data/side-quests"
 import { resolveNewContentState } from "@/utils/content-state"
 
@@ -38,6 +37,7 @@ describe("compareSideQuestDescending", () => {
 describe("getSideQuests", () => {
 	test("sorted by map release date descending", () => {
 		const quests = getSideQuests()
+
 		for (let i = 0; i < quests.length - 1; i++) {
 			expect(compareSideQuestDescending(quests[i]!, quests[i + 1]!)).toBeLessThanOrEqual(0)
 		}
@@ -46,7 +46,6 @@ describe("getSideQuests", () => {
 
 describe("getSideQuestByKey", () => {
 	test("returns None when the side quest does not exist", () => {
-		// @ts-expect-error invalid key
 		const s = getSideQuestByKey("invalid-side-quest")
 		expect(Option.isNone(s)).toBe(true)
 	})
@@ -89,6 +88,7 @@ describe("side quest New badge vs published date (fixtures)", () => {
 			...fixture,
 			state: Option.none<ContentState>(),
 		}
+
 		expect(
 			Option.getOrNull(resolvedSideQuestDisplayState(noBadge, "2026-09-05T12:00:00.000Z")),
 		).toBeNull()
@@ -117,11 +117,13 @@ describe("getAdjacentSideQuests", () => {
 	test("matches getSideQuests order", () => {
 		const quests = getSideQuests()
 		const q1 = quests[Math.floor(quests.length / 2)]!
-		const { prev, next } = getAdjacentSideQuests(q1.id as SideQuestKey)
+		const { prev, next } = getAdjacentSideQuests(q1.id)
 		const idx = quests.findIndex(q => q.id === q1.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
+
 		const expectedPrev =
 			idx < quests.length - 1 ? Option.some(quests[idx + 1]!.id) : Option.none<string>()
+
 		const expectedNext = idx > 0 ? Option.some(quests[idx - 1]!.id) : Option.none<string>()
 		expect(prev.pipe(Option.map(n => n.id))).toEqual(expectedPrev)
 		expect(next.pipe(Option.map(p => p.id))).toEqual(expectedNext)
@@ -129,14 +131,14 @@ describe("getAdjacentSideQuests", () => {
 
 	test("prev is Some and Next is None when the first side quest is provided", () => {
 		const first = Arr.head(getSideQuests()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentSideQuests(first.id as SideQuestKey)
+		const { prev, next } = getAdjacentSideQuests(first.id)
 		expect(Option.isSome(prev)).toBe(true)
 		expect(Option.isNone(next)).toBe(true)
 	})
 
 	test("prev is None and Next is Some when the last side quest is provided", () => {
 		const last = Arr.last(getSideQuests()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentSideQuests(last.id as SideQuestKey)
+		const { prev, next } = getAdjacentSideQuests(last.id)
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})

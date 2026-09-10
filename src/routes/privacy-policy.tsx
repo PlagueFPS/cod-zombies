@@ -20,6 +20,7 @@ export const Route = createFileRoute("/privacy-policy")({
 			),
 		])
 		const title = createSeoTitle("Privacy Policy")
+
 		const description =
 			"Learn about how we collect, use, and protect your personal information. Our privacy policy outlines our commitment to safeguarding your data and privacy rights."
 
@@ -67,6 +68,7 @@ function PrivacyPolicy() {
 	const { data: meta } = useSuspenseQuery(
 		mdxMetaQueryOptions("privacy-policy", PRIVACY_POLICY_PATH),
 	)
+
 	const { data: component } = useSuspenseQuery(
 		mdxComponentQueryOptions("privacy-policy", PRIVACY_POLICY_PATH),
 	)

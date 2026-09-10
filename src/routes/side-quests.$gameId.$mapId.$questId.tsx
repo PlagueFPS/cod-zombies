@@ -19,16 +19,15 @@ import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
 import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
-import { getAdjacentSideQuests, getSideQuestByKey, type SideQuestKey } from "@/data/side-quests"
+import { getAdjacentSideQuests, getSideQuestByKey } from "@/data/side-quests"
 import { type EncodedSideQuest, encodeSideQuest } from "@/utils/rsc-wire"
 import { capitalize, createSeoTitle } from "@/utils/shared-functions"
 import richStyles from "@/rich-text.module.css"
 
 export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 	loader: async ({ params, context }) => {
-		const quest = getSideQuestByKey(params.questId as SideQuestKey).pipe(
-			Option.getOrThrowWith(() => notFound()),
-		)
+		const quest = getSideQuestByKey(params.questId).pipe(Option.getOrThrowWith(() => notFound()))
+
 		if (quest.state.valueOrUndefined === "Coming Soon") throw notFound()
 
 		const [opengraphUrl] = await Promise.all([
@@ -41,7 +40,7 @@ export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 
 		const map = getMapByKey(quest.map).pipe(Option.getOrThrowWith(() => notFound()))
 		const game = getGameByKey(map.game).pipe(Option.getOrThrowWith(() => notFound()))
-		const { prev, next } = getAdjacentSideQuests(quest.id as SideQuestKey)
+		const { prev, next } = getAdjacentSideQuests(quest.id)
 
 		const title = createSeoTitle(`${quest.title} Side Quest`)
 		const description = `Learn how to complete the ${quest.title} side quest/easter egg on ${map.title} with our detailed step-by-step walkthrough!`
@@ -300,6 +299,7 @@ function PrevOrNextQuestCard({ quest, prev }: PrevOrNextCard) {
 
 function SideQuestPending() {
 	const params = Route.useParams()
+
 	const links: Link[] = [
 		{ href: "/side-quests", title: "Side Quests" },
 		{
@@ -324,6 +324,7 @@ function SideQuestPending() {
 
 function SideQuestNotFound() {
 	const params = Route.useParams()
+
 	const items: Link[] = [
 		{ href: "/side-quests", title: "Side Quests" },
 		{

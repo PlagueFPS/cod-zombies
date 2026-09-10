@@ -1,4 +1,4 @@
-import { Cause, Exit, Option } from "effect"
+import { Cause, Exit, Option, Predicate } from "effect"
 import { expect } from "vitest"
 
 export function assertSortedDescByDate(dates: readonly (string | Date)[]) {
@@ -11,17 +11,21 @@ export function assertSortedDescByDate(dates: readonly (string | Date)[]) {
 
 export function expectExitFailure<A, E>(exit: Exit.Exit<A, E>): Cause.Cause<E> {
 	expect(Exit.isFailure(exit)).toBe(true)
+
 	if (Exit.isFailure(exit)) {
 		return exit.cause
 	}
+
 	expect.fail("expected Exit failure")
 }
 
 export function expectExitSuccess<A, E>(exit: Exit.Exit<A, E>): A {
 	expect(Exit.isSuccess(exit)).toBe(true)
+
 	if (Exit.isSuccess(exit)) {
 		return exit.value
 	}
+
 	expect.fail("expected Exit success")
 }
 
@@ -36,12 +40,21 @@ export function expectCauseTaggedError<E extends { _tag: string }>(
 	predicate?: (e: E) => boolean,
 ): E {
 	const opt = Cause.findErrorOption(cause)
+
 	const err = Option.getOrElse(opt, () => {
 		expect.fail(`expected tagged error in cause: ${Cause.pretty(cause)}`)
 	})
-	expect((err as E)._tag).toBe(tag)
-	if (predicate && !predicate(err as E)) {
+
+	if (!Predicate.isTagged(tag)(err)) {
+		expect.fail(`expected tagged error in cause: ${Cause.pretty(cause)}`)
+	}
+
+	// SAFETY: `tag` identifies the expected tagged error; callers supply the matching error type.
+	const tagged = err as E
+
+	if (predicate && !predicate(tagged)) {
 		expect.fail(`predicate failed for ${tag}: ${JSON.stringify(err)}`)
 	}
-	return err as E
+
+	return tagged
 }

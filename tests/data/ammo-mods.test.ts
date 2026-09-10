@@ -14,7 +14,6 @@ describe("getAmmoModByKey", () => {
 	})
 
 	test("returns None when the ammo mod does not exist", () => {
-		// @ts-expect-error invalid key
 		const m = getAmmoModByKey("invalid-ammo-mod", "black-ops-6")
 		expect(Option.isNone(m)).toBe(true)
 	})

@@ -1,4 +1,5 @@
 "use client"
+
 import { cn } from "cn"
 import { useState } from "react"
 import {
@@ -25,14 +26,15 @@ const getCurrentLocations = (firstValue: string, secondValue: string) => {
 		for (const key in valveRoutes) {
 			if (searchString === key) {
 				const route = valveRoutes[key]
+
 				if (!route) continue
 
-				Object.entries(route).forEach(([location, value]) => {
+				for (const location of locations) {
 					currentLocations.push({
-						name: location as Location,
-						value: value,
+						name: location,
+						value: route[location],
 					})
-				})
+				}
 			}
 		}
 
@@ -47,6 +49,7 @@ export default function GKValve() {
 		firstValue: "",
 		secondValue: "",
 	})
+
 	const currentLocations = getCurrentLocations(values.firstValue, values.secondValue)
 
 	const handleGreenValueChange = (value: string | null) => {
@@ -70,6 +73,7 @@ export default function GKValve() {
 						<SelectGroup>
 							{locations.map(location => {
 								if (location === values.secondValue) return null
+
 								return (
 									<SelectItem key={`green-valve-${slugify(location)}`} value={location}>
 										{location}
@@ -87,6 +91,7 @@ export default function GKValve() {
 						<SelectGroup>
 							{locations.map(location => {
 								if (location === values.firstValue) return null
+
 								return (
 									<SelectItem key={`pink-valve-${slugify(location)}`} value={location}>
 										{location}

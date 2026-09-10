@@ -1,6 +1,6 @@
 import type { GamesImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
-import { uniqueMap } from "@/data/registry-helpers"
+import { Data } from "effect"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { sortDates } from "@/utils/shared-functions"
 
 export interface Game {
@@ -31,15 +31,13 @@ export const getGames = (): Game[] =>
  * @param key The key of the game.
  * @returns The game.
  */
-export const getGameByKey = (key: GameKey) => Option.fromUndefinedOr(GAMES.get(key))
+export const getGameByKey = (key: string) => registryGet(GAMES, key)
+
+class GameRecord extends Data.TaggedClass("Game")<Omit<Game, "_tag">> {}
 
 const makeGame = <T extends string>(identifier: T, game: Omit<Game, "_tag" | "id">): [T, Game] => [
 	identifier,
-	{
-		_tag: "Game" as const,
-		id: identifier,
-		...game,
-	},
+	new GameRecord({ id: identifier, ...game }),
 ]
 
 const GAMES = uniqueMap([

@@ -36,6 +36,7 @@ const LastModifiedDataSchema = Schema.Struct({
 })
 
 const PageParamSchema = Schema.Int.pipe(Schema.check(Schema.isGreaterThan(0)), Schema.optionalKey)
+
 const MultiValueParamSchema = Schema.ArrayEnsure(Schema.String).pipe(
 	Schema.withDecodingDefaultKey(Effect.succeed([]), {
 		encodingStrategy: "omit",
@@ -98,6 +99,7 @@ const emailGroup = Schema.makeFilterGroup(
 )
 
 const RequiredEmailSchema = Schema.String.pipe(Schema.check(emailGroup))
+
 const OptionalEmailSchema = Schema.optional(
 	Schema.Union([Schema.Literal(""), Schema.Undefined, RequiredEmailSchema]),
 )
@@ -125,6 +127,7 @@ export const ContactFormSchema = Schema.Struct({
 })
 
 const isValidInt = Schema.isBetween({ minimum: 0, maximum: 99 })
+
 const TerminusCodeSchema = Schema.Struct({
 	x: Schema.FiniteFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
 	y: Schema.FiniteFromString.pipe(Schema.check(Schema.isInt(), isValidInt)),
@@ -142,42 +145,67 @@ const ErrorPageSchema = Schema.Struct({
 })
 
 export type TFeedbackForm = typeof FeedbackFormSchema.Type
+
 export type FileMetadata = typeof FileMetadataSchema.Type
+
 export type LastModifiedData = typeof LastModifiedDataSchema.Type
+
 export type TTerminusCode = typeof TerminusCodeSchema.Encoded
+
 export type OpengraphKind = keyof typeof OpengraphManifest.Encoded
 
 export const StandardFeedbackFormSchema = Schema.toStandardSchemaV1(FeedbackFormSchema)
+
 export const StandardContactFormSchema = Schema.toStandardSchemaV1(ContactFormSchema)
+
 export const StandardNewsletterFormSchema = Schema.toStandardSchemaV1(NewsletterFormSchema)
+
 export const StandardErrorPageSchema = Schema.toStandardSchemaV1(ErrorPageSchema)
+
 export const StandardMainQuestSearchParamsSchema = Schema.toStandardSchemaV1(
 	MainQuestSearchParamsSchema,
 )
+
 export const StandardSideQuestSearchParamsSchema = Schema.toStandardSchemaV1(
 	SideQuestSearchParamsSchema,
 )
+
 export const StandardBestiarySearchParamsSchema = Schema.toStandardSchemaV1(
 	BestiarySearchParamsSchema,
 )
+
 export const StandardRelicSearchParamsSchema = Schema.toStandardSchemaV1(RelicSearchParamsSchema)
+
 export const StandardMapsSearchParamsSchema = Schema.toStandardSchemaV1(MapsSearchParamsSchema)
+
 export const StandardInteractiveMapSearchParamsSchema = Schema.toStandardSchemaV1(
 	InteractiveMapSearchParamsSchema,
 )
+
 export const StandardContentSchema = Schema.toStandardSchemaV1(ContentSchema)
+
 export const StandardOpengraphSchema = Schema.toStandardSchemaV1(OpengraphSchema)
+
 export const decodeMainQuestSearchParams = Schema.decodeUnknownExit(MainQuestSearchParamsSchema)
+
 export const decodeBestiarySearchParams = Schema.decodeUnknownExit(BestiarySearchParamsSchema)
+
 export const decodeInteractiveMapSearchParams = Schema.decodeUnknownExit(
 	InteractiveMapSearchParamsSchema,
 )
+
 export const decodeErrorPageSearchParams = Schema.decodeUnknownExit(ErrorPageSchema)
+
 export const decodeTerminusCode = Schema.decodeUnknownExit(TerminusCodeSchema)
+
 export const validateFeedbackForm = Schema.decodeExit(StandardFeedbackFormSchema)
+
 export const decodeOpengraphManifest = Schema.decodeEffect(Schema.fromJsonString(OpengraphManifest))
+
 export const encodeOpengraphManifest = Schema.encodeEffect(Schema.fromJsonString(OpengraphManifest))
+
 export const encodeLastModifiedData = Schema.encodeEffect(
 	Schema.fromJsonString(LastModifiedDataSchema),
 )
+
 export const decodeMapConfigModule = Schema.decodeUnknownEffect(MapConfigModuleSchema)

@@ -20,6 +20,7 @@ function scrollableBox(contentHeight: number, clientHeight: number, scrollTop = 
 	Object.defineProperty(el, "clientWidth", { value: 100, configurable: true })
 	Object.defineProperty(el, "scrollLeft", { value: 0, configurable: true })
 	el.style.overflowY = "auto"
+
 	return el
 }
 

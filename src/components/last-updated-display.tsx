@@ -1,4 +1,5 @@
 "use client"
+
 import { cn } from "cn"
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -27,19 +28,24 @@ export function LastUpdatedDisplay({
 
 	useEffect(() => {
 		const locale = navigator.language
+
 		const tick = () => {
 			setRelative(formatRelativeTimeAgo(lastModified, Date.now(), locale, absoluteDate))
 		}
+
 		tick()
 
 		const ageMs = Date.now() - lastModified
+
 		if (ageMs < 0 || ageMs >= MS_HOUR) {
 			return
 		}
 
 		const stopAt = lastModified + MS_HOUR
+
 		const id = window.setInterval(() => {
 			tick()
+
 			if (Date.now() >= stopAt) {
 				window.clearInterval(id)
 			}

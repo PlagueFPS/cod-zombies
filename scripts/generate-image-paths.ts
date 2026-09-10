@@ -22,7 +22,9 @@ const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDi
 			Effect.gen(function* () {
 				const filePath = path.join(publicDir, file)
 				const stat = yield* fs.stat(filePath)
+
 				if (stat.type === "Directory") return file
+
 				return null
 			}),
 		{ concurrency: "unbounded" },
@@ -35,15 +37,13 @@ const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDi
 	)
 })
 
-function buildVariantWidthsMap(
-	basePaths: readonly string[],
-	existingPaths: ReadonlySet<string>,
-): Record<string, readonly VariantWidth[]> {
+function buildVariantWidthsMap(basePaths: readonly string[], existingPaths: ReadonlySet<string>) {
 	// Filesystem discovery: which variant widths exist on disk (not encode-time policy).
 	const variantMap: Record<string, VariantWidth[]> = {}
 
 	for (const basePath of basePaths) {
 		const widths: VariantWidth[] = []
+
 		for (const width of VARIANT_WIDTHS_LIST) {
 			if (existingPaths.has(variantWebPath(basePath, width))) {
 				widths.push(width)
@@ -62,18 +62,22 @@ function generateTypeForDir(typeName: string, imagePaths: string[]) {
 	if (imagePaths.length === 0) {
 		return `export type ${typeName} = never;\n`
 	}
+
 	const literals = imagePaths.map(p => `'${p.replace(/'/g, "\\'")}'`)
+
 	return `export type ${typeName} =\n  ${literals.join(" |\n  ")};\n`
 }
 
 function generateVariantWidthsObject(variantMap: Record<string, readonly VariantWidth[]>) {
 	const entries = Object.entries(variantMap).sort(([a], [b]) => a.localeCompare(b))
+
 	if (entries.length === 0) {
 		return "export const VARIANT_WIDTHS = {} as const satisfies Record<string, readonly number[]>\n"
 	}
 
 	const lines = entries.map(([basePath, widths]) => {
 		const widthList = widths.join(", ")
+
 		return `  '${basePath.replace(/'/g, "\\'")}': [${widthList}],`
 	})
 
@@ -94,6 +98,7 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 	const outFile = path.join(cwd, "src/types", "generated", "image-paths.gen.ts")
 	const variantsOutFile = path.join(cwd, "src/types", "generated", "image-variants.gen.ts")
 	const exists = yield* fs.exists(publicDir)
+
 	if (!exists) return yield* Effect.fail(`Public directory does not exist: ${publicDir}`)
 
 	const startTime = yield* Clock.currentTimeMillis
@@ -102,12 +107,14 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 		format: "web",
 		includeVariants: true,
 	})
+
 	const existingPaths = new Set(allWebPaths)
 	const basePaths = allWebPaths.filter(webPath => !isVariantImagePath(webPath))
 	const rootWebPaths = basePaths.filter(isRootWebPath).sort()
 
 	const topDirs = yield* listTopLevelDirs(publicDir)
 	const totalImages = yield* SynchronizedRef.make(0)
+
 	const perDir = yield* Effect.forEach(
 		topDirs,
 		dir =>
@@ -115,6 +122,7 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 				const prefix = `/${dir}/`
 				const webPaths = basePaths.filter(webPath => webPath.startsWith(prefix)).sort()
 				yield* SynchronizedRef.update(totalImages, n => n + webPaths.length)
+
 				return {
 					dir,
 					typeName: `${toPascalCase(dir)}ImagePath`,
@@ -162,6 +170,7 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 
 	const outDir = path.dirname(outFile)
 	const outDirExists = yield* fs.exists(outDir)
+
 	if (!outDirExists) {
 		yield* fs.makeDirectory(outDir, { recursive: true })
 	}

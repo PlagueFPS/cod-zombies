@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import { useCallback, useRef, type Ref } from "react"
 
 /**
@@ -16,12 +17,14 @@ export function useMergeRef<TElement>(refA: Ref<TElement>, refB: Ref<TElement>):
 		(current: TElement | null) => {
 			if (current === null) {
 				const cleanupFnA = cleanupA.current
+
 				if (cleanupFnA) {
 					cleanupA.current = null
 					cleanupFnA()
 				}
 
 				const cleanupFnB = cleanupB.current
+
 				if (cleanupFnB) {
 					cleanupB.current = null
 					cleanupFnB()
@@ -30,6 +33,7 @@ export function useMergeRef<TElement>(refA: Ref<TElement>, refB: Ref<TElement>):
 				if (refA) {
 					cleanupA.current = applyRef(refA, current)
 				}
+
 				if (refB) {
 					cleanupB.current = applyRef(refB, current)
 				}
@@ -40,17 +44,19 @@ export function useMergeRef<TElement>(refA: Ref<TElement>, refB: Ref<TElement>):
 }
 
 function applyRef<TElement>(refA: NonNullable<Ref<TElement>>, current: TElement) {
-	if (typeof refA === "function") {
-		const cleanup = refA(current)
-		if (typeof cleanup === "function") {
-			return cleanup
-		} else {
-			return () => refA(null)
-		}
-	} else {
+	if (!Predicate.isFunction(refA)) {
 		refA.current = current
+
 		return () => {
 			refA.current = null
 		}
 	}
+
+	const cleanup = refA(current)
+
+	if (Predicate.isFunction(cleanup)) {
+		return cleanup
+	}
+
+	return () => refA(null)
 }

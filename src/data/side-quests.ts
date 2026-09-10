@@ -1,9 +1,9 @@
 import type { SortOption } from "@/components/grid-sort"
 import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
-import { uniqueMap } from "@/data/registry-helpers"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems } from "@/utils/shared-functions"
 
@@ -30,6 +30,7 @@ export interface SideQuest {
 
 /** Union type of all side quests */
 export type SideQuestKey = Parameters<typeof SIDE_QUESTS.get>[0]
+
 /**
  * Newest-first: host map {@link compareMapReleaseDescending}, then higher {@link SIDE_QUESTS} insertion index when maps tie.
  */
@@ -40,15 +41,15 @@ export function compareSideQuestDescending(
 	const mapA = getMapByKey(a.map).pipe(Option.getOrThrow)
 	const mapB = getMapByKey(b.map).pipe(Option.getOrThrow)
 	const byMap = compareMapReleaseDescending(mapA, mapB)
+
 	if (byMap !== 0) return byMap
-	return (
-		SIDE_QUEST_INSERTION_INDEX_BY_ID.get(b.id as SideQuestKey)! -
-		SIDE_QUEST_INSERTION_INDEX_BY_ID.get(a.id as SideQuestKey)!
-	)
+
+	return SIDE_QUEST_INSERTION_INDEX_BY_ID.get(b.id)! - SIDE_QUEST_INSERTION_INDEX_BY_ID.get(a.id)!
 }
 
 function withResolvedSideQuestState(quest: SideQuest): SideQuest {
 	const nowMs = Date.now()
+
 	return {
 		...quest,
 		state: resolveNewContentState(quest.state, quest.publishedDate, nowMs),
@@ -62,11 +63,11 @@ export const getSideQuests = (): SideQuest[] =>
 /**
  * @returns The side quest with the given key
  */
-export const getSideQuestByKey = (key: SideQuestKey) =>
-	Option.fromUndefinedOr(SIDE_QUESTS.get(key)).pipe(Option.map(withResolvedSideQuestState))
+export const getSideQuestByKey = (key: string) =>
+	registryGet(SIDE_QUESTS, key).pipe(Option.map(withResolvedSideQuestState))
 
 /** @returns The adjacent side quests for the given quest ID, sorted by {@link compareSideQuestDescending}. */
-export const getAdjacentSideQuests = (questId: SideQuestKey) => {
+export const getAdjacentSideQuests = (questId: string) => {
 	return getAdjacentItems(getSideQuests(), questId)
 }
 
@@ -76,17 +77,12 @@ export const getSideQuestSortOptions = (): SortOption[] => [
 	{ value: "oldest", label: "Oldest" },
 ]
 
+class SideQuestRecord extends Data.TaggedClass("SideQuest")<Omit<SideQuest, "_tag">> {}
+
 const makeQuest = <T extends string>(
 	identifier: T,
 	quest: Omit<SideQuest, "_tag" | "id">,
-): [T, SideQuest] => [
-	identifier,
-	{
-		_tag: "SideQuest" as const,
-		id: identifier,
-		...quest,
-	},
-]
+): [T, SideQuest] => [identifier, new SideQuestRecord({ id: identifier, ...quest })]
 
 const SIDE_QUESTS = uniqueMap([
 	makeQuest("free-500-points", {
@@ -2095,6 +2091,6 @@ const SIDE_QUESTS = uniqueMap([
 	}),
 ])
 
-const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<SideQuestKey, number>(
+const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<string, number>(
 	[...SIDE_QUESTS.keys()].map((id, i) => [id, i]),
 )

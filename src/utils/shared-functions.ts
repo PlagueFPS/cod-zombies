@@ -13,6 +13,7 @@ export function isInternalHref(href: string): boolean {
 export async function copyTextToClipboard(text: string): Promise<boolean> {
 	try {
 		await navigator.clipboard.writeText(text)
+
 		return true
 	} catch {
 		return false
@@ -27,9 +28,11 @@ export async function copyTextToClipboard(text: string): Promise<boolean> {
  */
 export const getAdjacentItems = <T extends { id: string }>(items: T[], itemId: string) => {
 	const index = items.findIndex(item => item.id === itemId)
+
 	if (index === -1) {
 		return { prev: Option.none(), next: Option.none() }
 	}
+
 	const prevItem = items.at(index + 1)
 	const nextItem = items.at(index - 1)
 	let prev: Option.Option<T> = Option.none()
@@ -92,7 +95,9 @@ export const slugify = (text: string) => {
 export const getYouTubeVideoId = (url: string) => {
 	const regex =
 		/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+
 	const match = url.match(regex)
+
 	return match ? match[1] : null
 }
 
@@ -115,6 +120,7 @@ export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty)
 export const sortDates = (a: string | Date, b: string | Date) => {
 	const dateA = new Date(a)
 	const dateB = new Date(b)
+
 	return dateA.getTime() - dateB.getTime()
 }
 
@@ -139,9 +145,11 @@ export const sortEstimatedTime = (
 
 const formatMinutesForDisplay = (m: number) => {
 	const mins = Math.round(m)
+
 	if (mins < 60) return `${mins}m`
 	const hours = Math.floor(mins / 60)
 	const remainder = mins % 60
+
 	return remainder === 0 ? `${hours}h` : `${hours}h ${remainder}m`
 }
 
@@ -171,6 +179,7 @@ export const formatEstimatedTimeMidpoint = (range: { min: number; max: number })
  */
 export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
 	const typeOrder: ZombieType[] = ["Normal", "Special", "Elite", "Boss"]
+
 	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
 }
 
@@ -182,6 +191,7 @@ export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
  */
 export const sortRelicTypes = (a: RelicType, b: RelicType) => {
 	const typeOrder: RelicType[] = ["Grim", "Sinister", "Wicked"]
+
 	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
 }
 
@@ -193,6 +203,7 @@ export const sortRelicTypes = (a: RelicType, b: RelicType) => {
  */
 export const sortZombieSpeeds = (a: ZombieSpeed, b: ZombieSpeed) => {
 	const speedOrder: ZombieSpeed[] = ["Slow", "Medium", "Fast"]
+
 	return speedOrder.indexOf(a) - speedOrder.indexOf(b)
 }
 
@@ -211,8 +222,11 @@ export const compareByOptionalSome = <T>(
 	if (Option.isSome(a) && Option.isSome(b)) {
 		return compareFn(a.value, b.value)
 	}
+
 	if (Option.isSome(a)) return -1
+
 	if (Option.isSome(b)) return 1
+
 	return 0
 }
 

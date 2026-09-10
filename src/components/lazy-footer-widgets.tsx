@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 const NewsletterForm = lazy(() =>
 	import("@/components/newsletter-form").then(m => ({ default: m.NewsletterForm })),
 )
+
 const ContactForm = lazy(() => import("@/components/contact-form"))
 
 function NewsletterFallback() {

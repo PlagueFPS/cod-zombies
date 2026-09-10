@@ -1,4 +1,5 @@
 "use client"
+
 import type { Zombie, ZombieKey, ZombieType } from "@/data/zombies"
 import { cn } from "cn"
 import { Array as Arr, Option } from "effect"
@@ -17,8 +18,10 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
 	const isMobile = useIsMobile(640)
 	const zombie = getZombieByKey(zombieKey)
+
 	if (Option.isNone(zombie)) {
 		console.error(`Unable to render tooltip for zombie: ${zombieKey}`)
+
 		return "[MISSING_ZOMBIE]"
 	}
 
@@ -113,6 +116,7 @@ const ZombieTooltipContent = ({ zombie }: { zombie: Zombie }) => {
 							) : (
 								zombie.weakPoints.map(weakpointKey => {
 									const weakpoint = getWeakPointByKey(weakpointKey)
+
 									return Option.match(weakpoint, {
 										onNone: () => null,
 										onSome: weakpoint => (

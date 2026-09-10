@@ -13,6 +13,7 @@ export function CustomSideBarTrigger({ className }: ICustomSidebarTrigger) {
 
 	const closedState = () => {
 		if (isMobile) return !openMobile
+
 		return !open
 	}
 

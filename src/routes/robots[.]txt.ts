@@ -6,6 +6,7 @@ export const Route = createFileRoute("/robots.txt")({
 		handlers: {
 			GET: async () => {
 				const serverUrl = getServerUrl()
+
 				const robots = `
 User-agent: *
 Allow: /
@@ -15,6 +16,7 @@ Disallow: /cdn-cgi/
 
 Sitemap: ${serverUrl}/sitemap.xml
 				`
+
 				return new Response(robots, {
 					headers: {
 						"Content-Type": "text/plain",

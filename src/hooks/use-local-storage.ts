@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 type SetValue<T> = (value: T | ((value: T) => T)) => void
+
 type LocalStorageResult<T> = [T, SetValue<T>, () => void]
 /**
  * Provides a way to store and retrieve values from the browser's local storage.
@@ -22,9 +23,11 @@ export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageRe
 
 		try {
 			const item = window.localStorage.getItem(key)
+
 			return item ? JSON.parse(item) : initialValue
 		} catch (error) {
 			console.warn(`Error reading localStorage key "${key}":`, error)
+
 			return initialValue
 		}
 	}
@@ -55,6 +58,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageRe
 			if (typeof window !== "undefined") {
 				window.localStorage.removeItem(key)
 			}
+
 			setStoredValue(initialValue)
 		} catch (error) {
 			console.warn(`Error deleting localStorage key "${key}":`, error)

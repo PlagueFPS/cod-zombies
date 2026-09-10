@@ -1,4 +1,5 @@
 export const VARIANT_WIDTHS_LIST = [384, 1200] as const
+
 export type VariantWidth = (typeof VARIANT_WIDTHS_LIST)[number]
 
 const VARIANT_SUFFIX_RE = new RegExp(`-(${VARIANT_WIDTHS_LIST.join("|")})\\.webp$`, "i")
@@ -13,6 +14,8 @@ export function isVariantImagePath(path: string): boolean {
 
 export function variantWebPath(baseWebPath: string, width: VariantWidth): string {
 	const dot = baseWebPath.lastIndexOf(".")
+
 	if (dot === -1) return `${baseWebPath}-${width}`
+
 	return `${baseWebPath.slice(0, dot)}-${width}${baseWebPath.slice(dot)}`
 }

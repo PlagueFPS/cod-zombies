@@ -1,4 +1,5 @@
 "use client"
+
 import type { GameKey } from "@/data/games"
 import { Array as Arr, Option, Predicate, Result } from "effect"
 import AugmentTooltip from "@/components/augment-tooltip"
@@ -22,8 +23,10 @@ interface FieldUpgradeTooltipProps {
 export default function FieldUpgradeTooltip({ fieldUpgradeKey, game }: FieldUpgradeTooltipProps) {
 	const isMobile = useIsMobile(640)
 	const fieldUpgrade = getFieldUpgradeByKey(fieldUpgradeKey, game)
+
 	if (Option.isNone(fieldUpgrade)) {
 		console.error(`Unable to render tooltip for field upgrade: ${fieldUpgradeKey}`)
+
 		return "[MISSING_FIELD_UPGRADE]"
 	}
 

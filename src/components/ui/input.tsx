@@ -1,7 +1,9 @@
 "use client"
+
 import type * as React from "react"
 import { Input as InputPrimitive } from "@base-ui/react/input"
 import { cn } from "cn"
+import { Predicate } from "effect"
 
 type InputProps = Omit<InputPrimitive.Props & React.RefAttributes<HTMLInputElement>, "size"> & {
 	size?: "sm" | "default" | "lg" | number
@@ -43,14 +45,14 @@ function Input({
 				<input
 					className={inputClassName}
 					data-slot="input"
-					size={typeof size === "number" ? size : undefined}
+					size={Predicate.isNumber(size) ? size : undefined}
 					{...props}
 				/>
 			) : (
 				<InputPrimitive
 					className={inputClassName}
 					data-slot="input"
-					size={typeof size === "number" ? size : undefined}
+					size={Predicate.isNumber(size) ? size : undefined}
 					{...props}
 				/>
 			)}

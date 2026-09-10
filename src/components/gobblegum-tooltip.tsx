@@ -1,4 +1,5 @@
 "use client"
+
 import type { GameKey } from "@/data/games"
 import { cn } from "cn"
 import { Option } from "effect"
@@ -23,8 +24,10 @@ interface GobbleGumTooltipProps {
 export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumTooltipProps) {
 	const isMobile = useIsMobile(640)
 	const gobblegum = getGobblegumByKey(gobblegumKey, game)
+
 	if (Option.isNone(gobblegum)) {
 		console.error(`Unable to render tooltip for gobblegum: ${gobblegumKey}`)
+
 		return "[MISSING_GOBBLEGUM]"
 	}
 
@@ -171,6 +174,7 @@ const getTextClasses = (rarity: GobblegumRarity, type: GobblegumType) =>
 				rarity === "Rare",
 		},
 	)
+
 const getContentClasses = (rarity: GobblegumRarity, type: GobblegumType) =>
 	cn(
 		{

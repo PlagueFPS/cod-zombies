@@ -9,7 +9,6 @@ describe("getAugmentByKey", () => {
 	})
 
 	test("returns None when the augment does not exist", () => {
-		// @ts-expect-error invalid key
 		const a = getAugmentByKey("invalid-augment", "black-ops-7")
 		expect(Option.isNone(a)).toBe(true)
 	})

@@ -8,8 +8,14 @@ import { getRelics } from "@/data/relics"
 import { getSideQuests } from "@/data/side-quests"
 import { getZombies } from "@/data/zombies"
 
+function toFileRoute(path: string): keyof FileRoutesByTo {
+	// SAFETY: search entries are built from registry ids that match generated TanStack routes.
+	return path as keyof FileRoutesByTo
+}
+
 export function SearchBar() {
 	const maps = getMaps()
+
 	const availableMaps = getInteractiveMaps().flatMap(map =>
 		Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [],
 	)
@@ -20,6 +26,7 @@ export function SearchBar() {
 		const game = getGameByKey(q.game)
 
 		if (Option.isNone(game)) return []
+
 		if (q.state.valueOrUndefined === "Coming Soon") return []
 
 		return [
@@ -34,13 +41,16 @@ export function SearchBar() {
 	const games = getGames().map(g => ({ id: g.id, title: g.title }))
 
 	const mapSlugs = new Set<string>()
+
 	const sideQuests = getSideQuests().flatMap(q => {
 		if (q.state.valueOrUndefined === "Coming Soon") return []
 
 		const map = getMapByKey(q.map)
+
 		if (Option.isNone(map)) return []
 
 		const game = getGameByKey(map.value.game)
+
 		if (Option.isNone(game)) return []
 
 		mapSlugs.add(map.value.id)
@@ -56,16 +66,20 @@ export function SearchBar() {
 	})
 
 	const relicMapSlugs = new Set<string>()
+
 	const relics = getRelics().flatMap(r => {
 		if (Option.getOrNull(r.state) === "Coming Soon") return []
 
 		const map = getMapByKey(r.map)
+
 		if (Option.isNone(map)) return []
 
 		const game = getGameByKey(map.value.game)
+
 		if (Option.isNone(game)) return []
 
 		relicMapSlugs.add(map.value.id)
+
 		return [
 			{
 				id: r.id,
@@ -82,12 +96,15 @@ export function SearchBar() {
 
 	const questMaps: typeof maps = []
 	const relicMaps: typeof maps = []
+
 	for (const m of maps) {
 		if (mapSlugs.has(m.id)) questMaps.push(m)
+
 		if (relicMapSlugs.has(m.id)) relicMaps.push(m)
 	}
 
 	const mainQuestsByGame = new Map<string, typeof mainQuests>()
+
 	for (const q of mainQuests) {
 		const list = mainQuestsByGame.get(q.game.id) ?? []
 		list.push(q)
@@ -95,6 +112,7 @@ export function SearchBar() {
 	}
 
 	const sideQuestsByMap = new Map<string, typeof sideQuests>()
+
 	for (const q of sideQuests) {
 		const list = sideQuestsByMap.get(q.map.id) ?? []
 		list.push(q)
@@ -102,6 +120,7 @@ export function SearchBar() {
 	}
 
 	const relicsByMap = new Map<string, typeof relics>()
+
 	for (const r of relics) {
 		const list = relicsByMap.get(r.map.id) ?? []
 		list.push(r)
@@ -113,7 +132,7 @@ export function SearchBar() {
 			value: `${game.title} Main Quests`,
 			icon: "BookText" as const,
 			items: (mainQuestsByGame.get(game.id) ?? []).map(q => ({
-				value: `/main-quests/${q.game.id}/${q.id}` as keyof FileRoutesByTo,
+				value: toFileRoute(`/main-quests/${q.game.id}/${q.id}`),
 				label: q.title,
 			})),
 		}))
@@ -124,7 +143,7 @@ export function SearchBar() {
 			value: `${map.title} Side Quests`,
 			icon: "Book" as const,
 			items: (sideQuestsByMap.get(map.id) ?? []).map(q => ({
-				value: `/side-quests/${q.game.id}/${q.map.id}/${q.id}` as keyof FileRoutesByTo,
+				value: toFileRoute(`/side-quests/${q.game.id}/${q.map.id}/${q.id}`),
 				label: q.title,
 			})),
 		}))
@@ -135,7 +154,7 @@ export function SearchBar() {
 			value: `${map.title} Relics`,
 			icon: "Component" as const,
 			items: (relicsByMap.get(map.id) ?? []).map(r => ({
-				value: `/relics/${r.game.id}/${r.id}` as keyof FileRoutesByTo,
+				value: toFileRoute(`/relics/${r.game.id}/${r.id}`),
 				label: r.title,
 			})),
 		}))
@@ -145,7 +164,7 @@ export function SearchBar() {
 		value: "Zombies",
 		icon: "Brain" as const,
 		items: zombies.map(zombie => ({
-			value: `/bestiary/${zombie.id}` as keyof FileRoutesByTo,
+			value: toFileRoute(`/bestiary/${zombie.id}`),
 			label: zombie.title,
 		})),
 	}
@@ -154,7 +173,7 @@ export function SearchBar() {
 		value: "Interactive Maps",
 		icon: "Map" as const,
 		items: availableMaps.map(map => ({
-			value: `/maps/${map.id}` as keyof FileRoutesByTo,
+			value: toFileRoute(`/maps/${map.id}`),
 			label: `${map.title} Interactive Map`,
 		})),
 	}

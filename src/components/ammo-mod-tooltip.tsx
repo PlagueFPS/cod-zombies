@@ -1,25 +1,27 @@
 "use client"
-import type { GameKey } from "@/data/games"
+
 import { Array as Arr, Option, Predicate, Result } from "effect"
 import AugmentTooltip from "@/components/augment-tooltip"
 import IconImage from "@/components/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
-import { type AmmoMod, type AmmoModKey, getAmmoModByKey } from "@/data/ammo-mods"
+import { type AmmoMod, getAmmoModByKey } from "@/data/ammo-mods"
 import { type Augment, getAugmentByKey } from "@/data/augments"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AmmoModTooltipProps {
-	ammoModKey: AmmoModKey
-	game?: GameKey
+	ammoModKey: string
+	game?: string
 }
 
 export default function AmmoModTooltip({ ammoModKey, game }: AmmoModTooltipProps) {
 	const isMobile = useIsMobile(640)
 	const ammoMod = getAmmoModByKey(ammoModKey, game)
+
 	if (Option.isNone(ammoMod)) {
 		console.error(`Unable to render tooltip for ammo mod: ${ammoModKey}`)
+
 		return "[MISSING_AMMO_MOD]"
 	}
 
@@ -63,7 +65,7 @@ const AmmoModTrigger = ({ ammoMod }: { ammoMod: AmmoMod }) => (
 	</span>
 )
 
-const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: GameKey }) => {
+const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: string }) => {
 	const ammoModAugments: Augment[] = Option.match(ammoMod.augments, {
 		onNone: () => [],
 		onSome: tuple =>

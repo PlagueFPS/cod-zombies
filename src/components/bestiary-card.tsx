@@ -16,11 +16,13 @@ interface IBestiaryCard extends PreviewCard {
 
 export function BestiaryCard({ zombie, priority, fetchPriority }: IBestiaryCard) {
 	const alt = `${zombie.title} Image`
+
 	const map = Arr.head(zombie.maps).pipe(
 		Option.flatMap(map => getMapByKey(map)),
 		// SAFETY: zombie.maps is guaranteed to have at least one map
 		Option.getOrThrow,
 	)
+
 	const { tabIndex, stateBadge, applyClasses } = Option.match(zombie.state, {
 		onNone: () => ({
 			tabIndex: 0,
@@ -29,6 +31,7 @@ export function BestiaryCard({ zombie, priority, fetchPriority }: IBestiaryCard)
 		}),
 		onSome: state => {
 			const isComingSoon = state === "Coming Soon"
+
 			return {
 				tabIndex: isComingSoon ? -1 : 0,
 				stateBadge: isComingSoon ? <ComingSoonBadge /> : <NewBadge />,

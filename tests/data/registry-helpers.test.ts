@@ -15,6 +15,7 @@ describe("resolveGameVariantOption", () => {
 			title: "Base",
 			variants: Option.some({ "black-ops-6": { title: "BO6" } }),
 		}
+
 		const entry = Option.some(base)
 		expect(resolveGameVariantOption(entry, undefined)).toEqual(entry)
 		expect(resolveGameVariantOption(entry, "black-ops-7")).toEqual(entry)
@@ -26,6 +27,7 @@ describe("resolveGameVariantOption", () => {
 			title: "Base",
 			variants: Option.some({ "black-ops-6": { title: "BO6" } }),
 		}
+
 		const entry = Option.some(base)
 		expect(resolveGameVariantOption(entry, "black-ops-6")).toEqual(
 			Option.some({ ...base, title: "BO6" }),
@@ -42,6 +44,7 @@ describe("mapWithGameVariant", () => {
 				variants: Option.some({ "black-ops-6": { title: "A BO6" } }),
 			},
 		]
+
 		const out = mapWithGameVariant(items, "black-ops-6")
 		expect(out[0]?.title).toBe("A BO6")
 		expect(mapWithGameVariant(items, undefined)[0]?.title).toBe("A")
@@ -54,6 +57,7 @@ describe("uniqueMap", () => {
 			["melee-swing", { title: "Melee Swing" }],
 			["bite", { title: "Bite" }],
 		])
+
 		expect(map.size).toBe(2)
 		expect(map.get("melee-swing")?.title).toBe("Melee Swing")
 		expect(map.get("bite")?.title).toBe("Bite")
@@ -69,6 +73,7 @@ describe("uniqueMap", () => {
 			// @ts-expect-error duplicate registry id
 			["a", 3],
 		])
+
 		expect(map.get("a")).toBe(3)
 	})
 })

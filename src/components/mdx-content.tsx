@@ -8,5 +8,6 @@ export interface MdxContentProps {
 
 export function MdxContent({ Component, components }: MdxContentProps) {
 	const merged = mergeMdxComponents(components)
+
 	return <Component components={merged} />
 }

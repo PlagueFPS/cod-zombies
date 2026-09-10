@@ -1,4 +1,3 @@
-import type { ContentPaths } from "@/types/generated/content-paths.gen"
 import { createFileRoute } from "@tanstack/react-router"
 import { Effect, Array as Arr, Option } from "effect"
 import { getInteractiveMaps } from "@/data/interactive-map"
@@ -28,6 +27,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 							Effect.sync(() => {
 								const mainQuestPath = Option.getOrThrow(map.mainQuest)
 								const { lastModified } = getLastModified(mainQuestPath)
+
 								return {
 									url: `${serverUrl}/main-quests/${map.game}/${map.id}`,
 									lastModified: new Date(lastModified),
@@ -42,6 +42,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 							Effect.sync(() => {
 								const { lastModified } = getLastModified(quest.content)
 								const map = Option.getOrThrow(getMapByKey(quest.map))
+
 								return {
 									url: `${serverUrl}/side-quests/${map.game}/${map.id}/${quest.id}`,
 									lastModified: new Date(lastModified),
@@ -52,6 +53,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 
 					const zombiesMap = zombies.map(z => {
 						const { lastModified } = getLastModified(z.combatStrategy)
+
 						return {
 							url: `${serverUrl}/bestiary/${z.id}`,
 							lastModified: new Date(lastModified),
@@ -64,6 +66,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 							Effect.sync(() => {
 								const { lastModified } = getLastModified(relic.content)
 								const map = Option.getOrThrow(getMapByKey(relic.map))
+
 								return {
 									url: `${serverUrl}/relics/${map.game}/${relic.id}`,
 									lastModified: new Date(lastModified),
@@ -80,6 +83,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 					].filter((entry): entry is NonNullable<typeof entry> => entry != null)
 
 					const first = firstEntries[0]
+
 					const mostRecentLastModified =
 						first != null
 							? firstEntries.reduce(
@@ -89,19 +93,22 @@ export const Route = createFileRoute("/sitemap.xml")({
 							: undefined
 
 					const mostRecentMainQuest = Arr.head(maps).pipe(
-						Option.map(quest => getLastModified(`content/main-quests/${quest.id}` as ContentPaths)),
+						Option.map(quest => getLastModified(`content/main-quests/${quest.id}`)),
 						Option.getOrThrow,
 					)
+
 					const mostRecentSideQuest = Arr.head(sideQuests).pipe(
-						Option.map(quest => getLastModified(`content/side-quests/${quest.id}` as ContentPaths)),
+						Option.map(quest => getLastModified(`content/side-quests/${quest.id}`)),
 						Option.getOrThrow,
 					)
+
 					const mostRecentZombie = Arr.head(zombies).pipe(
-						Option.map(zombie => getLastModified(`content/zombies/${zombie.id}` as ContentPaths)),
+						Option.map(zombie => getLastModified(`content/zombies/${zombie.id}`)),
 						Option.getOrThrow,
 					)
+
 					const mostRecentRelic = Arr.head(relics).pipe(
-						Option.map(relic => getLastModified(`content/relics/${relic.id}` as ContentPaths)),
+						Option.map(relic => getLastModified(`content/relics/${relic.id}`)),
 						Option.getOrThrow,
 					)
 

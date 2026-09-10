@@ -13,7 +13,7 @@ test.describe("forms", () => {
 
 		await expect(emailInput).toBeFocused()
 		await expect
-			.poll(() => emailInput.evaluate(input => (input as HTMLInputElement).validationMessage))
+			.poll(() => emailInput.evaluate((input: HTMLInputElement) => input.validationMessage))
 			.toContain("email")
 	})
 

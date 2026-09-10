@@ -1,4 +1,5 @@
 "use client"
+
 import { Cause, Exit } from "effect"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -12,6 +13,7 @@ export default function TerminusCode() {
 
 	const solveEquations = (values: TTerminusCode) => {
 		const validValues = decodeTerminusCode(values)
+
 		return Exit.match(validValues, {
 			onFailure: cause => {
 				console.error(Cause.pretty(cause))
@@ -19,6 +21,7 @@ export default function TerminusCode() {
 					"Invalid Values. Only positive, single digit, or double digit numbers are allowed.",
 					{ position: "bottom-center" },
 				)
+
 				return null
 			},
 			onSuccess: ({ x, y, z }) => {
@@ -40,7 +43,7 @@ export default function TerminusCode() {
 		<Card className="mx-auto flex w-sm flex-col items-center justify-center border-2 bg-transparent pt-4 shadow-lg dark:shadow-none">
 			<CardContent>
 				<div className="grid grid-cols-3 gap-4">
-					{["x", "y", "z"].map(letter => (
+					{(["x", "y", "z"] as const).map(letter => (
 						<div key={letter} className="flex flex-col items-center">
 							<Label htmlFor={letter} className="mb-1 text-sm capitalize">
 								{letter}
@@ -49,7 +52,7 @@ export default function TerminusCode() {
 								type="text"
 								id={letter}
 								name={letter}
-								value={values[letter as keyof typeof values]}
+								value={values[letter]}
 								onChange={handleInputChange}
 								placeholder="00"
 								className="w-11 text-center text-lg"

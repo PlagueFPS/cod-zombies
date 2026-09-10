@@ -2,6 +2,7 @@ import { createContext, useContext } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
 const STORAGE_KEY = "map-settings"
+
 const CURRENT_VERSION = 1
 
 const DEFAULT_SETTINGS = {
@@ -47,6 +48,7 @@ const DEFAULT_SETTINGS = {
 
 /** Type representing the default settings structure */
 export type TMapSettings = typeof DEFAULT_SETTINGS
+
 /** Union type representing all nested setting paths */
 export type TSettingPath = {
 	[K in keyof TMapSettings]: TMapSettings[K] extends object
@@ -93,6 +95,7 @@ const migrateSettings = (savedSettings: Partial<TMapSettings>) => {
 
 export function MapSettingsProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useLocalStorage<TMapSettings>(STORAGE_KEY, DEFAULT_SETTINGS)
+
 	const migratedSettings =
 		settings._version !== CURRENT_VERSION ? migrateSettings(settings) : settings
 
@@ -125,6 +128,7 @@ export function MapSettingsProvider({ children }: { children: React.ReactNode })
 
 export const useMapSettings = () => {
 	const context = useContext(MapSettingsContext)
+
 	if (!context) {
 		throw new Error("useMapSettings must be used within a MapSettingsProvider")
 	}

@@ -1,4 +1,5 @@
 "use client"
+
 import type { Augment, AugmentKey } from "@/data/augments"
 import type { GameKey } from "@/data/games"
 import { cn } from "cn"
@@ -26,12 +27,14 @@ type AugmentTooltipProps = (AugmentTooltipPropsWithKey | AugmentTooltipPropsWith
 
 export default function AugmentTooltip(props: AugmentTooltipProps) {
 	const isMobile = useIsMobile(640)
+
 	const augment = props.augmentKey
 		? getAugmentByKey(props.augmentKey, props.game)
 		: Option.some(props.augment)
 
 	if (Option.isNone(augment)) {
 		console.error(`Unable to render tooltip for augment: ${props.augmentKey ?? props.augment.id}`)
+
 		return "[MISSING_AUGMENT]"
 	}
 

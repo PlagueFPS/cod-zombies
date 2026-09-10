@@ -1,7 +1,7 @@
 import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import { getAdjacentZombies, getZombies, type Zombie, type ZombieKey } from "@/data/zombies"
+import { getAdjacentZombies, getZombies, type Zombie } from "@/data/zombies"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 
@@ -56,6 +56,7 @@ describe("zombie New badge vs release date (fixtures)", () => {
 			...fixture,
 			state: Option.none<ContentState>(),
 		}
+
 		expect(
 			Option.getOrNull(resolvedZombieDisplayState(noBadge, "2026-05-10T12:00:00.000Z")),
 		).toBeNull()
@@ -73,11 +74,13 @@ describe("getAdjacentZombies", () => {
 	test("matches getZombies order", () => {
 		const zombies = getZombies()
 		const z1 = zombies[Math.floor(zombies.length / 2)]!
-		const { prev, next } = getAdjacentZombies(z1.id as ZombieKey)
+		const { prev, next } = getAdjacentZombies(z1.id)
 		const idx = zombies.findIndex(z => z.id === z1.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
+
 		const expectedPrev =
 			idx < zombies.length - 1 ? Option.some(zombies[idx + 1]!.id) : Option.none<string>()
+
 		const expectedNext = idx > 0 ? Option.some(zombies[idx - 1]!.id) : Option.none<string>()
 		expect(prev.pipe(Option.map(n => n.id))).toEqual(expectedPrev)
 		expect(next.pipe(Option.map(p => p.id))).toEqual(expectedNext)
@@ -85,14 +88,14 @@ describe("getAdjacentZombies", () => {
 
 	test("prev is Some and Next is None when the first zombie is provided", () => {
 		const first = Arr.head(getZombies()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentZombies(first.id as ZombieKey)
+		const { prev, next } = getAdjacentZombies(first.id)
 		expect(Option.isSome(prev)).toBe(true)
 		expect(Option.isNone(next)).toBe(true)
 	})
 
 	test("prev is None and Next is Some when the last zombie is provided", () => {
 		const last = Arr.last(getZombies()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentZombies(last.id as ZombieKey)
+		const { prev, next } = getAdjacentZombies(last.id)
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})

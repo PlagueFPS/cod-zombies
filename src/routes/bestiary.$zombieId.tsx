@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { cn } from "cn"
-import { Array as Arr, Option } from "effect"
+import { Array as Arr, Match, Option } from "effect"
 import {
 	AlertTriangle,
 	BookOpen,
@@ -34,22 +34,21 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
-import { type GameKey, getGameByKey } from "@/data/games"
+import { getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
 import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieAttackByKey } from "@/data/zombie-attacks"
-import { getAdjacentZombies, getZombieByKey, type ZombieKey } from "@/data/zombies"
+import { getAdjacentZombies, getZombieByKey } from "@/data/zombies"
 import { type EncodedZombie, encodeZombie } from "@/utils/rsc-wire"
 import { capitalize, createSeoTitle } from "@/utils/shared-functions"
 import richStyles from "@/rich-text.module.css"
 
 export const Route = createFileRoute("/bestiary/$zombieId")({
 	loader: async ({ params, context }) => {
-		const zombie = getZombieByKey(params.zombieId as ZombieKey).pipe(
-			Option.getOrThrowWith(() => notFound()),
-		)
+		const zombie = getZombieByKey(params.zombieId).pipe(Option.getOrThrowWith(() => notFound()))
+
 		if (zombie.state.valueOrUndefined === "Coming Soon") throw notFound()
 
 		const [opengraphUrl] = await Promise.all([
@@ -64,11 +63,13 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 			Option.flatMap(game => getGameByKey(game)),
 			Option.getOrThrowWith(() => notFound()),
 		)
+
 		const firstAppearIn = Arr.head(zombie.maps).pipe(
 			Option.flatMap(map => getMapByKey(map)),
 			Option.getOrThrowWith(() => notFound()),
 		)
-		const { prev, next } = getAdjacentZombies(zombie.id as ZombieKey)
+
+		const { prev, next } = getAdjacentZombies(zombie.id)
 
 		const title = createSeoTitle(zombie.title)
 		const description = `Learn elemental weaknesses, spawn behavior, attacks, and more about the "${zombie.title}" ${zombie.type} Zombie.`
@@ -117,6 +118,7 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 function ZombieInfo() {
 	const { zombie, mostRecentGame, firstAppearIn, shareUrl, prev, next } = Route.useLoaderData()
 	const { data: meta } = useSuspenseQuery(mdxMetaQueryOptions(zombie.id, zombie.combatStrategy))
+
 	const { data: component } = useSuspenseQuery(
 		mdxComponentQueryOptions(zombie.id, zombie.combatStrategy),
 	)
@@ -151,11 +153,11 @@ function ZombieInfo() {
 			<Card className="mb-6 overflow-hidden border-2 bg-background pt-0">
 				<div className="flex items-center justify-between bg-accent px-2 py-2 sm:px-4 dark:bg-accent/50">
 					<div className="flex w-fit items-center justify-center gap-2">
-						{zombie.state === "Coming Soon" ? (
-							<ComingSoonBadge />
-						) : zombie.state === "New" ? (
-							<NewBadge />
-						) : null}
+						{Match.value(zombie.state).pipe(
+							Match.when("Coming Soon", () => <ComingSoonBadge />),
+							Match.when("New", () => <NewBadge />),
+							Match.orElse(() => null),
+						)}
 						<TypeBadge type={zombie.type} />
 					</div>
 					<div className="flex items-center justify-center gap-2">
@@ -238,6 +240,7 @@ function ZombieInfo() {
 								<div className="flex flex-wrap items-center gap-2">
 									{zombie.maps.slice(0, 16).map(mapKey => {
 										const map = getMapByKey(mapKey)
+
 										if (Option.isNone(map)) return null
 
 										return (
@@ -264,6 +267,7 @@ function ZombieInfo() {
 								<div className="flex flex-wrap items-center gap-2">
 									{zombie.games.map(gameKey => {
 										const game = getGameByKey(gameKey)
+
 										if (Option.isNone(game)) return null
 
 										return (
@@ -286,6 +290,7 @@ function ZombieInfo() {
 									{Arr.isArrayNonEmpty(zombie.weakPoints) ? (
 										zombie.weakPoints.map(weakPointKey => {
 											const weakPoint = getWeakPointByKey(weakPointKey)
+
 											if (Option.isNone(weakPoint)) return null
 
 											return (
@@ -315,7 +320,7 @@ function ZombieInfo() {
 											<AmmoModTooltip
 												key={weakness}
 												ammoModKey={weakness}
-												game={mostRecentGame.id as GameKey}
+												game={mostRecentGame.id}
 											/>
 										))
 									) : (
@@ -340,6 +345,7 @@ function ZombieInfo() {
 							{Arr.isArrayNonEmpty(zombie.attacks) ? (
 								zombie.attacks.map(attackKey => {
 									const attack = getZombieAttackByKey(attackKey)
+
 									if (Option.isNone(attack)) return null
 
 									return (
@@ -422,11 +428,13 @@ interface PrevOrNextZombieCardProps {
 
 function PrevOrNextZombieCard({ zombie, prev }: PrevOrNextZombieCardProps) {
 	const alt = `${zombie.title} image`
+
 	// SAFETY: If we have a zombie, we have at least one map that zombie appears in
 	const firstAppearedIn = Arr.head(zombie.maps).pipe(
 		Option.flatMap(map => getMapByKey(map)),
 		Option.getOrThrow,
 	)
+
 	const isComingSoon = zombie.state === "Coming Soon"
 
 	return (
@@ -509,6 +517,7 @@ function PrevOrNextZombieCard({ zombie, prev }: PrevOrNextZombieCardProps) {
 
 function ZombiePending() {
 	const params = Route.useParams()
+
 	const links: Link[] = [
 		{ href: "/bestiary", title: "Bestiary" },
 		{ href: `/bestiary/$zombieId`, title: params.zombieId, params: { zombieId: params.zombieId } },
@@ -677,6 +686,7 @@ function ZombiePending() {
 
 function ZombieNotFound() {
 	const params = Route.useParams()
+
 	const items: Link[] = [
 		{ href: "/bestiary", title: "Bestiary" },
 		{

@@ -26,6 +26,7 @@ export function RelicCard({ relic, priority, fetchPriority }: RelicCardProps) {
 	// source data.
 	const map = getMapByKey(relic.map).pipe(Option.getOrThrow)
 	const game = getGameByKey(map.game).pipe(Option.getOrThrow)
+
 	const { disabled, stateBadge, tabIndex } = Option.match(relic.state, {
 		onNone: () => {
 			return {
@@ -36,6 +37,7 @@ export function RelicCard({ relic, priority, fetchPriority }: RelicCardProps) {
 		},
 		onSome: state => {
 			const isComingSoon = state === "Coming Soon"
+
 			return {
 				disabled: isComingSoon,
 				tabIndex: isComingSoon ? -1 : 0,

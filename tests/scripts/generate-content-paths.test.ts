@@ -88,6 +88,7 @@ describe("generateContentPaths", () => {
 			join(root, "src", "types", "generated", "content-paths.gen.ts"),
 			"utf-8",
 		)
+
 		expect(out).toContain("export type EmptydirPaths = never;")
 
 		process.chdir(prevCwd)

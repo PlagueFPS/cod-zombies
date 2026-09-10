@@ -55,6 +55,7 @@ export function GridPagination({ from, page, totalCount, pageSize }: IGridPagina
 
 			// Calculate middle pages based on current page
 			let middlePages: number[] = []
+
 			if (currentPage <= 3) {
 				// Near start - show 2,3,4
 				middlePages = [2, 3, 4]

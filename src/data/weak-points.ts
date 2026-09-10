@@ -1,5 +1,5 @@
-import { Option } from "effect"
-import { uniqueMap } from "@/data/registry-helpers"
+import { Data } from "effect"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface WeakPoint {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -17,19 +17,14 @@ export type WeakPointKey = Parameters<(typeof WEAK_POINTS)["get"]>[0]
  * Gets a weak point by its key.
  * @param key The key of the weak point.
  */
-export const getWeakPointByKey = (key: WeakPointKey) => Option.fromUndefinedOr(WEAK_POINTS.get(key))
+export const getWeakPointByKey = (key: string) => registryGet(WEAK_POINTS, key)
+
+class WeakPointRecord extends Data.TaggedClass("WeakPoint")<Omit<WeakPoint, "_tag">> {}
 
 const makeWeakPoint = <T extends string>(
 	identifier: T,
 	weakPoint: Omit<WeakPoint, "_tag" | "id">,
-): [T, WeakPoint] => [
-	identifier,
-	{
-		_tag: "WeakPoint",
-		id: identifier,
-		...weakPoint,
-	},
-]
+): [T, WeakPoint] => [identifier, new WeakPointRecord({ id: identifier, ...weakPoint })]
 
 const WEAK_POINTS = uniqueMap([
 	makeWeakPoint("head", {

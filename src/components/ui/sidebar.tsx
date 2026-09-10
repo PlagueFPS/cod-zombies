@@ -1,9 +1,11 @@
 "use client"
+
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
+import { Predicate } from "effect"
 import { PanelLeftIcon } from "lucide-react"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
@@ -21,9 +23,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useIsMobile } from "@/hooks/use-mobile"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
+
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+
 const SIDEBAR_WIDTH = "18rem"
+
 const SIDEBAR_WIDTH_MOBILE = "18rem"
+
 const SIDEBAR_WIDTH_ICON = "3rem"
 
 type SidebarContextProps = {
@@ -40,6 +46,7 @@ const SidebarContext = React.createContext<SidebarContextProps | null>(null)
 
 function useSidebar() {
 	const context = React.useContext(SidebarContext)
+
 	if (!context) {
 		throw new Error("useSidebar must be used within a SidebarProvider.")
 	}
@@ -67,9 +74,11 @@ function SidebarProvider({
 	// We use openProp and setOpenProp for control from outside the component.
 	const [_open, _setOpen] = React.useState(defaultOpen)
 	const open = openProp ?? _open
+
 	const setOpen = React.useCallback(
 		(value: boolean | ((value: boolean) => boolean)) => {
-			const openState = typeof value === "function" ? value(open) : value
+			const openState = Predicate.isFunction(value) ? value(open) : value
+
 			if (setOpenProp) {
 				setOpenProp(openState)
 			} else {
@@ -112,6 +121,7 @@ function SidebarProvider({
 			<div
 				data-slot="sidebar-wrapper"
 				style={
+					// SAFETY: CSS custom properties are valid inline style keys omitted from React.CSSProperties.
 					{
 						"--sidebar-width": SIDEBAR_WIDTH,
 						"--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
@@ -170,6 +180,7 @@ function Sidebar({
 					data-mobile="true"
 					className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
 					style={
+						// SAFETY: CSS custom properties are valid inline style keys omitted from React.CSSProperties.
 						{
 							"--sidebar-width": SIDEBAR_WIDTH_MOBILE,
 						} as React.CSSProperties
@@ -478,6 +489,7 @@ function SidebarMenuButton({
 		tooltip?: string | React.ComponentProps<typeof TooltipContent>
 	} & VariantProps<typeof sidebarMenuButtonVariants>) {
 	const { isMobile, state } = useSidebar()
+
 	const comp = useRender({
 		defaultTagName: "button",
 		props: mergeProps<"button">(
@@ -499,7 +511,7 @@ function SidebarMenuButton({
 		return comp
 	}
 
-	if (typeof tooltip === "string") {
+	if (Predicate.isString(tooltip)) {
 		tooltip = {
 			children: tooltip,
 		}
@@ -586,6 +598,7 @@ function SidebarMenuSkeleton({
 				className="h-4 max-w-(--skeleton-width) flex-1"
 				data-sidebar="menu-skeleton-text"
 				style={
+					// SAFETY: CSS custom properties are valid inline style keys omitted from React.CSSProperties.
 					{
 						"--skeleton-width": width,
 					} as React.CSSProperties

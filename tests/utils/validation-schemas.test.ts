@@ -13,7 +13,9 @@ import {
 } from "@/utils/validation-schemas"
 
 const decodeNewsletter = Schema.decodeUnknownExit(NewsletterFormSchema)
+
 const decodeContact = Schema.decodeUnknownExit(ContactFormSchema)
+
 const decodeFeedback = Schema.decodeUnknownExit(FeedbackFormSchema)
 
 describe("form validation schemas", () => {

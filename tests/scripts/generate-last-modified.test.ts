@@ -1,6 +1,6 @@
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Cause, Effect, Exit, FileSystem, Layer, MutableHashSet, Option } from "effect"
+import { Effect, FileSystem, Layer, MutableHashSet } from "effect"
 import { describe, expect, test, vi } from "vitest"
 import {
 	DuplicateFilenameError,
@@ -8,7 +8,7 @@ import {
 	parseGitBatchOutput,
 	populateFilePaths,
 } from "@/scripts/generate-last-modified"
-import { expectExitFailure, expectExitSuccess } from "@/tests/helpers"
+import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 
@@ -25,9 +25,11 @@ describe("parseGitBatchOutput", () => {
 	test("parses timestamp and A line and assigns metadata", async () => {
 		const all = MutableHashSet.empty<string>()
 		MutableHashSet.add(all, "/repo/src/content/maps/foo.mdx")
+
 		const git = `1700000000
 A\tsrc/content/maps/foo.mdx
 `
+
 		const program = parseGitBatchOutput(git, all, "/repo").pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		const result = expectExitSuccess(exit)
@@ -37,9 +39,11 @@ A\tsrc/content/maps/foo.mdx
 	test("parses R rename lines using the new path", async () => {
 		const all = MutableHashSet.empty<string>()
 		MutableHashSet.add(all, "/repo/src/content/maps/new.mdx")
+
 		const git = `1600000000
 R100\tsrc/content/maps/old.mdx\tsrc/content/maps/new.mdx
 `
+
 		const program = parseGitBatchOutput(git, all, "/repo").pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		const result = expectExitSuccess(exit)
@@ -65,9 +69,11 @@ R100\tsrc/content/maps/old.mdx\tsrc/content/maps/new.mdx
 		vi.setSystemTime(fixed)
 		const all = MutableHashSet.empty<string>()
 		MutableHashSet.add(all, "/repo/src/content/x.mdx")
+
 		const git = `1700000000
 R100\tshort
 `
+
 		const program = parseGitBatchOutput(git, all, "/repo").pipe(Effect.provide(testLayer))
 		const exit = await Effect.runPromiseExit(program)
 		const result = expectExitSuccess(exit)
@@ -81,21 +87,22 @@ describe("getAllContentFiles", () => {
 		const mockFs = FileSystem.layerNoop({
 			readDirectory: p => {
 				const n = p.replace(/\\/g, "/")
+
 				if (n.endsWith("/content")) return Effect.succeed(["dup"])
+
 				if (n.endsWith("/content/dup")) return Effect.succeed(["a.mdx", "a.mdx"])
+
 				return Effect.succeed([])
 			},
 		})
+
 		const program = getAllContentFiles("/tmp/workspace/content").pipe(
 			Effect.provide(Layer.mergeAll(mockFs, BunPathLayer)),
 		)
+
 		const exit = await Effect.runPromiseExit(program)
 		const cause = expectExitFailure(exit)
-		expect(Exit.isFailure(exit)).toBe(true)
-		const errOpt = Cause.findErrorOption(cause)
-		expect(Option.isSome(errOpt)).toBe(true)
-		const err = Option.getOrThrow(errOpt) as DuplicateFilenameError
-		expect(err._tag).toBe("DuplicateFilenameError")
+		const err = expectCauseTaggedError<DuplicateFilenameError>(cause, "DuplicateFilenameError")
 		expect(err.message).toContain("Duplicate file paths")
 	})
 })

@@ -15,6 +15,7 @@ export function useIsMobile(mobileBreakpoint: number = 768) {
 		(onChange: () => void) => {
 			const mql = window.matchMedia(`(max-width: ${mobileBreakpoint - 1}px)`)
 			mql.addEventListener("change", onChange)
+
 			return () => mql.removeEventListener("change", onChange)
 		},
 		[mobileBreakpoint],

@@ -3,13 +3,14 @@ import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
-import { uniqueMap } from "@/data/registry-helpers"
+import { Data, Option } from "effect"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** The three types of relics */
 export type RelicType = "Grim" | "Sinister" | "Wicked"
+
 /** The unique identifier for each relic */
 export type RelicKey = Parameters<typeof RELICS.get>[0]
 
@@ -49,17 +50,16 @@ export function compareRelicReleaseDescending(
 	b: Pick<Relic, "id" | "discoveredDate">,
 ): number {
 	const byDate = sortDates(b.discoveredDate, a.discoveredDate)
+
 	if (byDate !== 0) return byDate
 
 	// Use inseration index as a tiebreaker (higher index = later insertion = newer Relic)
-	return (
-		RELIC_INSERATION_INDEX_BY_ID.get(b.id as RelicKey)! -
-		RELIC_INSERATION_INDEX_BY_ID.get(a.id as RelicKey)!
-	)
+	return RELIC_INSERATION_INDEX_BY_ID.get(b.id)! - RELIC_INSERATION_INDEX_BY_ID.get(a.id)!
 }
 
 function withResolvedRelicState(relic: Relic): Relic {
 	const nowMs = Date.now()
+
 	return {
 		...relic,
 		state: resolveNewContentState(relic.state, relic.discoveredDate, nowMs),
@@ -75,14 +75,14 @@ export const getRelics = () =>
 /**
  * @returns A specific relic by its key
  */
-export const getRelicByKey = (key: RelicKey) =>
-	Option.fromUndefinedOr(RELICS.get(key)).pipe(Option.map(withResolvedRelicState))
+export const getRelicByKey = (key: string) =>
+	registryGet(RELICS, key).pipe(Option.map(withResolvedRelicState))
 
 /**
  * Gets the adjacent relics of a given relic.
  * @param current The current relic key.
  */
-export const getAdjacentRelics = (current: RelicKey) => {
+export const getAdjacentRelics = (current: string) => {
 	return getAdjacentItems(getRelics(), current)
 }
 
@@ -99,17 +99,12 @@ export const getRelicSortOptions = (): SortOption[] => [
 	{ value: "time-desc", label: "Unlock Time: Longest to Shortest" },
 ]
 
+class RelicRecord extends Data.TaggedClass("Relic")<Omit<Relic, "_tag">> {}
+
 const makeRelic = <T extends string>(
 	identifier: T,
 	relic: Omit<Relic, "_tag" | "id">,
-): [T, Relic] => [
-	identifier,
-	{
-		_tag: "Relic" as const,
-		id: identifier,
-		...relic,
-	},
-]
+): [T, Relic] => [identifier, new RelicRecord({ id: identifier, ...relic })]
 
 const RELICS = uniqueMap([
 	makeRelic("lawyers-pen", {
@@ -552,6 +547,6 @@ const RELICS = uniqueMap([
 	}),
 ])
 
-const RELIC_INSERATION_INDEX_BY_ID = new Map<RelicKey, number>(
+const RELIC_INSERATION_INDEX_BY_ID = new Map<string, number>(
 	[...RELICS.keys()].map((id, i) => [id, i]),
 )

@@ -5,19 +5,22 @@ import type { ZombieAttackKey } from "@/data/zombie-attacks"
 import type { ContentState } from "@/types/data"
 import type { ZombiesPaths } from "@/types/generated/content-paths.gen"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
-import { uniqueMap } from "@/data/registry-helpers"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** Union type of all zombie types */
 export type ZombieType = "Normal" | "Special" | "Elite" | "Boss"
+
 /** Union type of all zombie speeds */
 export type ZombieSpeed = "Slow" | "Medium" | "Fast"
+
 /** Union type of all zombies */
 export type ZombieKey = Parameters<typeof ZOMBIES.get>[0]
+
 export interface Zombie {
 	/** Internal tag to discriminate against for type-narrowing */
 	readonly _tag: "Zombie"
@@ -64,17 +67,16 @@ export function compareZombieReleaseDescending(
 	b: Pick<Zombie, "id" | "releaseDate">,
 ): number {
 	const byDate = sortDates(b.releaseDate, a.releaseDate)
+
 	if (byDate !== 0) return byDate
 
 	// Use inseration index as a tiebreaker (higher index = later insertion = newer Zombie)
-	return (
-		ZOMBIE_INSERATION_INDEX_BY_ID.get(b.id as ZombieKey)! -
-		ZOMBIE_INSERATION_INDEX_BY_ID.get(a.id as ZombieKey)!
-	)
+	return ZOMBIE_INSERATION_INDEX_BY_ID.get(b.id)! - ZOMBIE_INSERATION_INDEX_BY_ID.get(a.id)!
 }
 
 function withResolvedZombieState(zombie: Zombie): Zombie {
 	const nowMs = Date.now()
+
 	return {
 		...zombie,
 		state: resolveNewContentState(zombie.state, zombie.releaseDate, nowMs),
@@ -86,14 +88,14 @@ export const getZombies = (): Zombie[] =>
 	[...ZOMBIES.values()].map(withResolvedZombieState).sort(compareZombieReleaseDescending)
 
 /** @returns The zombie with the given key */
-export const getZombieByKey = (key: ZombieKey) =>
-	Option.fromUndefinedOr(ZOMBIES.get(key)).pipe(Option.map(withResolvedZombieState))
+export const getZombieByKey = (key: string) =>
+	registryGet(ZOMBIES, key).pipe(Option.map(withResolvedZombieState))
 
 /**
  * @returns The previous and next zombies based on the current
  * @param current The key of the current zombie
  */
-export const getAdjacentZombies = (current: ZombieKey) => {
+export const getAdjacentZombies = (current: string) => {
 	return getAdjacentItems(getZombies(), current)
 }
 
@@ -110,17 +112,12 @@ export const getZombieSortOptions = (): SortOption[] => [
 	{ value: "speed-desc", label: "Speed: Fastest to Slowest" },
 ]
 
+class ZombieRecord extends Data.TaggedClass("Zombie")<Omit<Zombie, "_tag">> {}
+
 const makeZombie = <T extends string>(
 	identifier: T,
 	zombie: Omit<Zombie, "_tag" | "id">,
-): [T, Zombie] => [
-	identifier,
-	{
-		_tag: "Zombie" as const,
-		id: identifier,
-		...zombie,
-	},
-]
+): [T, Zombie] => [identifier, new ZombieRecord({ id: identifier, ...zombie })]
 
 const ZOMBIES = uniqueMap([
 	makeZombie("zombie", {
@@ -135,10 +132,11 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"Zombies spawn at the start of and throughout each round. Special situations like boss fights or main quest interactions may alter the spawns of zombies, changing them or completely removing them temporarily.",
 		// base zombie is in all games, reversed since its desc order by default
+		// SAFETY: catalog ids are GameKey; Array.map widens them to string[].
 		games: getGames()
 			.reverse()
 			.map(game => game.id) as GameKey[],
-		// base zombie is in all maps, reversed since its desc order by default
+		// SAFETY: catalog ids are MapKey; Array.map widens them to string[].
 		maps: getMaps()
 			.reverse()
 			.map(map => map.id) as MapKey[],
@@ -2068,6 +2066,6 @@ const ZOMBIES = uniqueMap([
 	}),
 ])
 
-const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<ZombieKey, number>(
+const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<string, number>(
 	[...ZOMBIES.keys()].map((id, i) => [id, i]),
 )

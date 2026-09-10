@@ -1,5 +1,5 @@
-import { Option } from "effect"
-import { uniqueMap } from "@/data/registry-helpers"
+import { Data } from "effect"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface ZombieAttack {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -20,20 +20,14 @@ export type ZombieAttackKey = Parameters<(typeof ZOMBIE_ATTACKS)["get"]>[0]
 /**
  * Gets a zombie attack by its key.
  */
-export const getZombieAttackByKey = (key: ZombieAttackKey) =>
-	Option.fromUndefinedOr(ZOMBIE_ATTACKS.get(key))
+export const getZombieAttackByKey = (key: string) => registryGet(ZOMBIE_ATTACKS, key)
+
+class ZombieAttackRecord extends Data.TaggedClass("ZombieAttack")<Omit<ZombieAttack, "_tag">> {}
 
 const makeZombieAttack = <T extends string>(
 	identifier: T,
 	attack: Omit<ZombieAttack, "_tag" | "id">,
-): [T, ZombieAttack] => [
-	identifier,
-	{
-		_tag: "ZombieAttack",
-		id: identifier,
-		...attack,
-	},
-]
+): [T, ZombieAttack] => [identifier, new ZombieAttackRecord({ id: identifier, ...attack })]
 
 const ZOMBIE_ATTACKS = uniqueMap([
 	makeZombieAttack("melee-swing", {

@@ -1,5 +1,5 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
-import { Effect, Exit, Layer } from "effect"
+import { Effect, Exit, Layer, Predicate, Schema } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
 import { describe, expect, test } from "vitest"
 import { IssueTracker } from "@/lib/services/issue-tracker"
@@ -104,19 +104,25 @@ interface CapturedCall {
 	init?: RequestInit
 }
 
-interface LinearIssueCreateBody {
-	query: string
-	variables: {
-		input: {
-			title: string
-			description: string
-			teamId: string
-			labelIds: string[]
-		}
-	}
+const LinearIssueCreateBody = Schema.Struct({
+	query: Schema.String,
+	variables: Schema.Struct({
+		input: Schema.Struct({
+			title: Schema.String,
+			description: Schema.String,
+			teamId: Schema.String,
+			labelIds: Schema.Array(Schema.String),
+		}),
+	}),
+})
+
+interface LinearHttpBody {
+	data?: { issueCreate?: { success: boolean } | null } | null
+	errors?: readonly { message: string }[]
+	message?: string
 }
 
-function jsonResponse(body: unknown, status = 200) {
+function jsonResponse(body: LinearHttpBody, status = 200) {
 	return new Response(JSON.stringify(body), {
 		status,
 		headers: { "Content-Type": "application/json" },
@@ -125,19 +131,23 @@ function jsonResponse(body: unknown, status = 200) {
 
 function createFetchStub(response: Response) {
 	const calls: CapturedCall[] = []
-	const fetch = Object.assign(
+
+	const fetch: typeof globalThis.fetch = Object.assign(
 		async (input: RequestInfo | URL, init?: RequestInit) => {
 			calls.push({ url: requestUrl(input), init })
+
 			return response.clone()
 		},
 		{ preconnect: () => undefined },
-	) as typeof globalThis.fetch
+	)
+
 	return { fetch, calls }
 }
 
 function runCreateIssue(data: TFeedbackForm, fetch: typeof globalThis.fetch) {
 	return Effect.gen(function* () {
 		const tracker = yield* IssueTracker
+
 		return yield* tracker.createIssue(data)
 	}).pipe(
 		Effect.provide(IssueTracker.layer),
@@ -147,12 +157,14 @@ function runCreateIssue(data: TFeedbackForm, fetch: typeof globalThis.fetch) {
 }
 
 function requestUrl(input: RequestInfo | URL) {
-	if (typeof input === "string") {
+	if (Predicate.isString(input)) {
 		return input
 	}
+
 	if (input instanceof URL) {
 		return input.href
 	}
+
 	return input.url
 }
 
@@ -161,7 +173,7 @@ function parseCapturedRequest(call: CapturedCall) {
 		url: call.url,
 		method: call.init?.method,
 		headers: new Headers(call.init?.headers),
-		body: decodeJsonBody(call.init?.body) as LinearIssueCreateBody,
+		body: decodeJsonBody(call.init?.body),
 	}
 }
 
@@ -169,14 +181,22 @@ function decodeJsonBody(body: BodyInit | null | undefined) {
 	if (body == null) {
 		throw new Error("expected fetch body")
 	}
-	if (typeof body === "string") {
-		return JSON.parse(body)
+
+	if (Predicate.isString(body)) {
+		return Schema.decodeUnknownSync(LinearIssueCreateBody)(JSON.parse(body))
 	}
+
 	if (body instanceof Uint8Array) {
-		return JSON.parse(new TextDecoder().decode(body))
+		return Schema.decodeUnknownSync(LinearIssueCreateBody)(
+			JSON.parse(new TextDecoder().decode(body)),
+		)
 	}
+
 	if (body instanceof ArrayBuffer) {
-		return JSON.parse(new TextDecoder().decode(new Uint8Array(body)))
+		return Schema.decodeUnknownSync(LinearIssueCreateBody)(
+			JSON.parse(new TextDecoder().decode(new Uint8Array(body))),
+		)
 	}
+
 	throw new Error(`unexpected fetch body type: ${Object.prototype.toString.call(body)}`)
 }

@@ -1,4 +1,5 @@
 "use client"
+
 import { ClientOnly } from "@tanstack/react-router"
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css"
 import LiteYoutubeEmbed from "react-lite-youtube-embed"

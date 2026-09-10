@@ -46,6 +46,7 @@ export type MarkerCategory =
 	| "intel"
 
 type Marker = Omit<MapMarker, "locations">
+
 type SharedMarkerType = Exclude<MarkerType, "perk" | "weapon-wall-buy" | "label">
 
 /**

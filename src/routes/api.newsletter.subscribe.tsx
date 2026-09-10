@@ -11,6 +11,7 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 				return await Effect.gen(function* () {
 					const url = new URL(request.url)
 					const token = url.searchParams.get("token")
+
 					if (!token)
 						return Response.redirect(
 							new URL(
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 					const email = yield* verifyToken(decodedToken)
 
 					yield* subscribeEmail(email)
+
 					return Response.redirect(new URL(`/newsletter/subscribe/success`, request.url))
 				}).pipe(
 					Effect.withLogSpan("newsletter_subscribe_get_handler"),
@@ -30,6 +32,7 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 					Effect.catchTags({
 						TokenExpirationError: () => {
 							const message = "The subscribe token used has expired. Please request a new one."
+
 							return Effect.succeed(
 								Response.redirect(
 									new URL(
@@ -41,6 +44,7 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 						},
 						TokenVerificationError: () => {
 							const message = "The subscribe token used is invalid. Please request a new one."
+
 							return Effect.succeed(
 								Response.redirect(
 									new URL(
@@ -53,6 +57,7 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 						ResendError: () => {
 							const message =
 								"We were unable to subscribe your email to our newsletter due to a technical issue on our end. Please try again or request a new subscribe token. We're sorry for the inconvenience!"
+
 							return Effect.succeed(
 								Response.redirect(
 									new URL(

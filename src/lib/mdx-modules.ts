@@ -12,6 +12,8 @@ const mdxModules = import.meta.glob<{
 export function loadMdxModule(contentPath: ContentPaths) {
 	const key = `/src/content/${contentPath.replace(/^content\//, "")}.mdx`
 	const load = mdxModules[key]
+
 	if (!load) throw new Error(`Missing MDX module for ${contentPath}`)
+
 	return load()
 }

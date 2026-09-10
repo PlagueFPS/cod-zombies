@@ -36,6 +36,7 @@ export default function NotFoundContent({ resource, items, pathname, param }: IN
 
 const NotFoundButtons = ({ items }: Omit<INotFoundContent, "param" | "resource">) => {
 	const newItems = items ? items.slice(0, -1) : []
+
 	return (
 		<div className="flex w-fit flex-col items-center justify-between gap-8 sm:flex-row">
 			{newItems.length > 0 ? (

@@ -1,4 +1,5 @@
 "use client"
+
 import { cn } from "cn"
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
@@ -6,8 +7,11 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 
 type CarouselApi = UseEmblaCarouselType[1]
+
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
+
 type CarouselOptions = UseCarouselParameters[0]
+
 type CarouselPlugin = UseCarouselParameters[1]
 
 type CarouselProps = {
@@ -58,8 +62,10 @@ function Carousel({
 	const subscribe = React.useCallback(
 		(onStoreChange: () => void) => {
 			if (!api) return () => {}
+
 			api.on("reInit", onStoreChange)
 			api.on("select", onStoreChange)
+
 			return () => {
 				api.off("select", onStoreChange)
 				api.off("reInit", onStoreChange)
@@ -73,6 +79,7 @@ function Carousel({
 		() => api?.canScrollPrev() ?? false,
 		() => false,
 	)
+
 	const canScrollNext = React.useSyncExternalStore(
 		subscribe,
 		() => api?.canScrollNext() ?? false,

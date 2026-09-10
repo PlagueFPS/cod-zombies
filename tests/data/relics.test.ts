@@ -1,13 +1,7 @@
 import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import {
-	getAdjacentRelics,
-	getRelicByKey,
-	getRelics,
-	type Relic,
-	type RelicKey,
-} from "@/data/relics"
+import { getAdjacentRelics, getRelicByKey, getRelics, type Relic } from "@/data/relics"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 
@@ -32,7 +26,6 @@ describe("getRelics", () => {
 
 describe("getRelicByKey", () => {
 	test("returns None when the relic does not exist", () => {
-		// @ts-expect-error invalid key
 		const r = getRelicByKey("invalid-relic")
 		expect(Option.isNone(r)).toBe(true)
 	})
@@ -84,6 +77,7 @@ describe("relic New badge vs discovery date (fixtures)", () => {
 			...fixtureRecentWindow,
 			state: Option.none<ContentState>(),
 		}
+
 		expect(
 			Option.getOrNull(resolvedRelicDisplayState(noBadge, "2026-05-08T12:00:00.000Z")),
 		).toBeNull()
@@ -101,11 +95,13 @@ describe("getAdjacentRelics", () => {
 	test("matches getRelics order", () => {
 		const relics = getRelics()
 		const r1 = relics[Math.floor(relics.length / 2)]!
-		const { prev, next } = getAdjacentRelics(r1.id as RelicKey)
+		const { prev, next } = getAdjacentRelics(r1.id)
 		const idx = relics.findIndex(r => r.id === r1.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
+
 		const expectedPrev =
 			idx < relics.length - 1 ? Option.some(relics[idx + 1]!.id) : Option.none<string>()
+
 		const expectedNext = idx > 0 ? Option.some(relics[idx - 1]!.id) : Option.none<string>()
 		expect(prev.pipe(Option.map(n => n.id))).toEqual(expectedPrev)
 		expect(next.pipe(Option.map(p => p.id))).toEqual(expectedNext)
@@ -113,14 +109,14 @@ describe("getAdjacentRelics", () => {
 
 	test("prev is Some and Next is None when the first relic is provided", () => {
 		const first = Arr.head(getRelics()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentRelics(first.id as RelicKey)
+		const { prev, next } = getAdjacentRelics(first.id)
 		expect(Option.isSome(prev)).toBe(true)
 		expect(Option.isNone(next)).toBe(true)
 	})
 
 	test("prev is None and Next is Some when the last relic is provided", () => {
 		const last = Arr.last(getRelics()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentRelics(last.id as RelicKey)
+		const { prev, next } = getAdjacentRelics(last.id)
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})

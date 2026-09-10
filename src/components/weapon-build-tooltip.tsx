@@ -1,4 +1,5 @@
 "use client"
+
 import { Option } from "effect"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
@@ -14,8 +15,10 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export default function WeaponBuildTooltip({ weaponBuildKey }: { weaponBuildKey: WeaponBuildKey }) {
 	const isMobile = useIsMobile(640)
 	const weaponBuild = getWeaponBuildByKey(weaponBuildKey)
+
 	if (Option.isNone(weaponBuild)) {
 		console.error(`Unable to render tooltip for weapon build: ${weaponBuildKey}`)
+
 		return "[MISSING_WEAPON_BUILD]"
 	}
 

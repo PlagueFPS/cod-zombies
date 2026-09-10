@@ -6,9 +6,8 @@ import {
 	getInteractiveMapConfig,
 	getInteractiveMaps,
 	type InteractiveMap,
-	type InteractiveMapKey,
 } from "@/data/interactive-map"
-import { getMapByKey, type MapKey } from "@/data/maps"
+import { getMapByKey } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 
@@ -28,8 +27,9 @@ const resolvedInteractiveMapDisplayState = (
 describe("getInteractiveMaps", () => {
 	test("sorted by release date descending", () => {
 		const dates = getInteractiveMaps().map(
-			m => getMapByKey(m.id as MapKey).pipe(Option.getOrThrow).releaseDate,
+			m => getMapByKey(m.id).pipe(Option.getOrThrow).releaseDate,
 		)
+
 		expect(dates.length).toBeGreaterThan(1)
 		assertSortedDescByDate(dates)
 	})
@@ -37,7 +37,6 @@ describe("getInteractiveMaps", () => {
 
 describe("getInteractiveMapByKey", () => {
 	test("returns None when the interactive map does not exist", () => {
-		// @ts-expect-error invalid key
 		const m = getInteractiveMapByKey("invalid-interactive-map")
 		expect(Option.isNone(m)).toBe(true)
 	})
@@ -80,6 +79,7 @@ describe("interactive map New badge vs published date (fixtures)", () => {
 			...fixture,
 			state: Option.none<ContentState>(),
 		}
+
 		expect(
 			Option.getOrNull(resolvedInteractiveMapDisplayState(noBadge, "2026-09-08T12:00:00.000Z")),
 		).toBeNull()
@@ -108,7 +108,7 @@ describe("getInteractiveMapConfig", () => {
 	test("resolves for every registered map that is not Coming Soon", async () => {
 		for (const m of getInteractiveMaps()) {
 			if (m.state.valueOrUndefined === "Coming Soon") continue
-			const config = await Effect.runPromise(getInteractiveMapConfig(m.id as InteractiveMapKey))
+			const config = await Effect.runPromise(getInteractiveMapConfig(m.id))
 			expect(Array.isArray(config.layers)).toBe(true)
 		}
 	})
