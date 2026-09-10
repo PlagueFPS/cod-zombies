@@ -20,7 +20,19 @@
 		"**/opengraph-manifest.json",
 		"**/last-modified.json",
 		"**/routeTree.gen.ts",
-		"node_modules"
+		"node_modules",
+		".agent/**",
+		".agents/**",
+		".claude/**",
+		".codex/**",
+		".continue/**",
+		".cursor/**",
+		".gemini/**",
+		".opencode/**",
+		".pi/**",
+		".roo/**",
+		".windsurf/**",
+		"tools/oxlint/anti-slop/**"
 	],
 	"sortImports": {
 		"groups": [
