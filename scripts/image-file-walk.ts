@@ -17,6 +17,7 @@ const formatImagePath = (
 	path: Path.Path,
 ): string => {
 	const relative = path.relative(rootDir, absolutePath).split(path.sep).join("/")
+
 	return format === "web" ? `/${relative}` : relative
 }
 
@@ -44,15 +45,18 @@ export const walkImageFiles = Effect.fn("walkImageFiles")(function* (
 
 						if (stat.type === "Directory") {
 							yield* walk(full)
+
 							return
 						}
 
 						if (stat.type !== "File") return
 
 						const ext = path.extname(file).toLowerCase()
+
 						if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) return
 
 						const formatted = formatImagePath(rootDir, full, options.format, path)
+
 						if (!options.includeVariants && isVariantImagePath(toWebImagePath(formatted))) {
 							return
 						}
@@ -64,5 +68,6 @@ export const walkImageFiles = Effect.fn("walkImageFiles")(function* (
 		})
 
 	yield* walk(rootDir)
+
 	return results
 })

@@ -139,6 +139,7 @@ export class Email extends Context.Service<Email>()("lib/services/emails", {
 					})
 
 					const contact = MutableHashMap.get(contacts, email)
+
 					if (Option.isNone(contact)) {
 						return yield* new ResendError({
 							message: "Contact not found",
@@ -155,6 +156,7 @@ export class Email extends Context.Service<Email>()("lib/services/emails", {
 			) => Effect.Effect<RemoveContactsResponseSuccess, ResendError, never> = email =>
 				Effect.sync(() => {
 					MutableHashMap.remove(contacts, email)
+
 					return {
 						contact: email,
 						deleted: true,

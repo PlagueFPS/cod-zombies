@@ -20,6 +20,7 @@ export function ShareButton({ url, withText = true, ...props }: ShareButtonProps
 
 	const handleCopy = async () => {
 		const copied = await copyTextToClipboard(url)
+
 		if (copied) {
 			toast.success("URL copied to clipboard!", {
 				position: "top-right",
@@ -27,8 +28,10 @@ export function ShareButton({ url, withText = true, ...props }: ShareButtonProps
 				closeButton: false,
 			})
 			setIsCopied(true)
+
 			return
 		}
+
 		toast.error("Failed to copy URL to clipboard.", {
 			position: "top-right",
 			duration: 2000,

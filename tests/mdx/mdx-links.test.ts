@@ -13,6 +13,7 @@ import {
 import { isInternalHref } from "@/utils/shared-functions"
 
 let corpus: MdxCorpusFile[]
+
 let routeIndex: SiteRouteIndex
 
 beforeAll(async () => {

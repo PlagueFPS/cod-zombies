@@ -3,10 +3,12 @@ import { expect, type APIRequestContext } from "@playwright/test"
 export function getMetaContent(html: string, selector: { property?: string; name?: string }) {
 	const attrName = selector.property ? "property" : "name"
 	const attrValue = selector.property ?? selector.name
+
 	const pattern = new RegExp(
 		`<meta\\s+[^>]*${attrName}=["']${escapeRegExp(attrValue!)}["'][^>]*content=["']([^"']+)["'][^>]*>`,
 		"i",
 	)
+
 	const reversedPattern = new RegExp(
 		`<meta\\s+[^>]*content=["']([^"']+)["'][^>]*${attrName}=["']${escapeRegExp(attrValue!)}["'][^>]*>`,
 		"i",

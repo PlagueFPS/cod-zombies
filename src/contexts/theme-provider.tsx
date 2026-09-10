@@ -16,14 +16,19 @@ type ThemeProviderState = {
 
 function resolvedFromTheme(theme: Theme): "light" | "dark" {
 	if (theme === "dark") return "dark"
+
 	if (theme === "light") return "light"
+
 	if (typeof window === "undefined") return "light"
+
 	return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
 }
 
 function ssrResolvedPlaceholder(defaultTheme: Theme): "light" | "dark" {
 	if (defaultTheme === "dark") return "dark"
+
 	if (defaultTheme === "light") return "light"
+
 	return "light"
 }
 
@@ -31,7 +36,14 @@ function applyThemeToDocument(theme: Theme) {
 	const isDark =
 		theme === "dark" ||
 		(theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+
 	document.documentElement.classList.toggle("dark", isDark)
+}
+
+function parseStoredTheme(value: string | null, fallback: Theme): Theme {
+	if (value === "dark" || value === "light" || value === "system") return value
+
+	return fallback
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState | null>(null)
@@ -42,6 +54,7 @@ export function ThemeProvider({
 	storageKey = "theme",
 }: ThemeProviderProps) {
 	const [theme, setThemeState] = useState<Theme>(defaultTheme)
+
 	const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">(() =>
 		ssrResolvedPlaceholder(defaultTheme),
 	)
@@ -56,9 +69,10 @@ export function ThemeProvider({
 
 		if (isFirstLayout.current) {
 			isFirstLayout.current = false
-			const stored = (localStorage.getItem(storageKey) as Theme) || defaultTheme
+			const stored = parseStoredTheme(localStorage.getItem(storageKey), defaultTheme)
 			setThemeState(stored)
 			sync(stored)
+
 			return
 		}
 
@@ -69,6 +83,7 @@ export function ThemeProvider({
 		if (typeof window !== "undefined") {
 			localStorage.setItem(storageKey, next)
 		}
+
 		setThemeState(next)
 	}
 

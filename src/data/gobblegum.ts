@@ -5,6 +5,7 @@ import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 /** Union of all Gobblegum keys */
 export type GobblegumKey = Parameters<(typeof GOBBLEGUMS)["get"]>[0]
+
 /** Union of all Gobblegum types */
 export type GobblegumType =
 	| "Player-Activated"
@@ -13,6 +14,7 @@ export type GobblegumType =
 	| "Round-Based"
 	| "Instant"
 	| "Conditional"
+
 /** Union of all Gobblegum rarities */
 export type GobblegumRarity =
 	| "Classic"

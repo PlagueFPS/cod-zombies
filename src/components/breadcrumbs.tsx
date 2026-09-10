@@ -1,5 +1,7 @@
 "use client"
+
 import type { FileRoutesByTo } from "@/routeTree.gen"
+import type { LinkProps } from "@tanstack/react-router"
 import { cn } from "cn"
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
@@ -23,8 +25,8 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export interface Link {
 	href: keyof FileRoutesByTo
 	title: string
-	search?: Record<string, unknown>
-	params?: Record<string, string | undefined>
+	search?: LinkProps["search"]
+	params?: LinkProps["params"]
 }
 
 interface BreadcrumbsProps {
@@ -49,15 +51,18 @@ export function trailAfterHome(
 
 	if (showEllipsis && links.length < 3) {
 		console.warn("`trailAfterHome` called with `showEllipsis` but `links` has less than 3 items")
+
 		return []
 	}
 
 	// SAFETY: From this point onwards, `links` has at least 3 items (checked above)
 	const last = links.at(-1)!
 	const head: TrailPiece[] = []
+
 	if (!collapseAggressive) {
 		head.push({ kind: "link", link: links[0]! })
 	}
+
 	return [...head, { kind: "ellipsis" as const }, { kind: "link", link: last }]
 }
 

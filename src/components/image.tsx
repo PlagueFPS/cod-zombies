@@ -1,4 +1,5 @@
 "use client"
+
 import {
 	forwardRef,
 	useCallback,
@@ -81,12 +82,19 @@ function createSyntheticLoadEvent(img: HTMLImageElement): SyntheticEvent<HTMLIma
 	Object.defineProperty(event, "target", { writable: false, value: img })
 	let prevented = false
 	let stopped = false
+
+	// SAFETY: this object implements the SyntheticEvent methods `onLoad` handlers use.
 	return {
-		// oxlint-disable-next-line no-misused-spread
-		...event,
 		nativeEvent: event,
 		currentTarget: img,
 		target: img,
+		bubbles: event.bubbles,
+		cancelable: event.cancelable,
+		defaultPrevented: event.defaultPrevented,
+		eventPhase: event.eventPhase,
+		isTrusted: event.isTrusted,
+		timeStamp: event.timeStamp,
+		type: event.type,
 		isDefaultPrevented() {
 			return prevented
 		},
@@ -102,7 +110,7 @@ function createSyntheticLoadEvent(img: HTMLImageElement): SyntheticEvent<HTMLIma
 			event.stopPropagation()
 		},
 		persist() {},
-	} as unknown as SyntheticEvent<HTMLImageElement>
+	} as SyntheticEvent<HTMLImageElement>
 }
 
 function handleLoading(
@@ -110,6 +118,7 @@ function handleLoading(
 	onLoadRef: RefObject<ReactEventHandler<HTMLImageElement> | undefined>,
 ) {
 	const src = img?.src
+
 	if (!img || img[LOADED_SRC_ATTR] === src) return
 
 	img[LOADED_SRC_ATTR] = src
@@ -156,9 +165,11 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 		forwardedRef,
 	) => {
 		const onLoadRef = useRef(onLoad)
+
 		const ownRef = useCallback(
 			(img: ImgElementWithDataProp | null) => {
 				if (!img) return
+
 				if (onError) {
 					// oxlint-disable-next-line no-self-assign
 					img.src = img.src
@@ -216,6 +227,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 				fetchPriority={fetchPriority}
 				ref={ref}
 				onLoad={event => {
+					// SAFETY: img `onLoad` currentTarget is the image element that may carry the loaded-src flag.
 					const img = event.currentTarget as ImgElementWithDataProp
 					handleLoading(img, onLoadRef)
 				}}

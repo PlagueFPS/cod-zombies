@@ -1,4 +1,5 @@
 "use client"
+
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete"
 import { cn } from "cn"
 import { ChevronsUpDownIcon, XIcon } from "lucide-react"
@@ -21,7 +22,7 @@ function AutocompleteInput({
 	size?: "sm" | "default" | "lg" | number
 	ref?: React.Ref<HTMLInputElement>
 }) {
-	const sizeValue = (size ?? "default") as "sm" | "default" | "lg" | number
+	const sizeValue = size ?? "default"
 
 	return (
 		<div className="relative w-full text-foreground not-has-[>*.w-full]:w-fit has-disabled:opacity-64">

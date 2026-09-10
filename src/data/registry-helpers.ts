@@ -2,7 +2,7 @@ import type { GameKey } from "@/data/games"
 import { Option } from "effect"
 
 /** A `[id, value]` pair used to build a registry `Map`. */
-type RegistryEntry = readonly [string, unknown]
+type RegistryEntry = readonly [string, {}]
 
 /** Tuple of ids from a registry entry list, preserving order. */
 type RegistryIds<Entries extends readonly RegistryEntry[]> = {
@@ -47,34 +47,51 @@ type UniqueRegistryEntries<Entries extends readonly RegistryEntry[]> =
 export function uniqueMap<const Entries extends readonly RegistryEntry[]>(
 	entries: UniqueRegistryEntries<Entries>,
 ): Map<Entries[number][0], Entries[number][1]> {
-	return new Map(entries as unknown as Iterable<readonly [Entries[number][0], Entries[number][1]]>)
+	// SAFETY: UniqueRegistryEntries is `Entries` when ids are unique; duplicate ids fail at the call site.
+	return new Map(entries as Iterable<readonly [Entries[number][0], Entries[number][1]]>)
 }
 
-/** Minimal shape for entities with optional per-game partial overlays in `variants`. */
-type WithGameVariantMap = {
-	readonly variants: Option.Option<Partial<Record<GameKey, object>>>
+/** Looks up a string key in a registry whose keys are a narrower string union. */
+export function registryGet<K extends string, V>(registry: ReadonlyMap<K, V>, key: string) {
+	// SAFETY: `K` extends `string`; Map.get is a membership lookup and missing keys are `Option.none`.
+	return Option.fromUndefinedOr(registry.get(key as K))
+}
+
+/** Entities with optional per-game partial overlays in `variants`. */
+type WithGameVariantMap<T> = {
+	readonly variants: Option.Option<Partial<Record<GameKey, Partial<Omit<T, "variants">>>>>
 }
 
 /**
  * If `entry` is present and `game` is set, merges `entry.value.variants[game]` when defined.
  * Otherwise returns `entry` unchanged (including when variants are missing or none for that game).
  */
-export const resolveGameVariantOption = <T extends WithGameVariantMap>(
+export const resolveGameVariantOption = <T extends WithGameVariantMap<T>>(
 	entry: Option.Option<T>,
-	game?: GameKey,
+	game?: string,
 ): Option.Option<T> => {
 	if (Option.isNone(entry)) return entry
+
 	if (!game || Option.isNone(entry.value.variants)) return entry
-	const variant = entry.value.variants.value[game]
+	// SAFETY: variant maps are keyed by GameKey; a non-member string is a missing overlay.
+	const variant = entry.value.variants.value[game as GameKey]
+
 	if (!variant) return entry
-	return Option.some({ ...entry.value, ...variant } as T)
+
+	return Option.some({ ...entry.value, ...variant })
 }
 
 /** Applies the same merge as {@link resolveGameVariantOption} to each item. */
-export const mapWithGameVariant = <T extends WithGameVariantMap>(items: T[], game?: GameKey): T[] =>
+export const mapWithGameVariant = <T extends WithGameVariantMap<T>>(
+	items: T[],
+	game?: string,
+): T[] =>
 	items.map(item => {
 		if (!game || Option.isNone(item.variants)) return item
-		const variant = item.variants.value[game]
+		// SAFETY: variant maps are keyed by GameKey; a non-member string is a missing overlay.
+		const variant = item.variants.value[game as GameKey]
+
 		if (!variant) return item
-		return { ...item, ...variant } as T
+
+		return { ...item, ...variant }
 	})

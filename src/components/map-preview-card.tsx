@@ -15,6 +15,7 @@ interface IMapPreviewCard extends PreviewCard {
 export function MapPreviewCard({ map, priority }: IMapPreviewCard) {
 	// SAFETY: map.game is guaranteed to be a valid game key
 	const game = getGameByKey(map.game).pipe(Option.getOrThrow)
+
 	const { disabled, tabIndex, stateBadge } = Option.match(map.state, {
 		onNone: () => ({
 			disabled: false,
@@ -23,6 +24,7 @@ export function MapPreviewCard({ map, priority }: IMapPreviewCard) {
 		}),
 		onSome: state => {
 			const isComingSoon = state === "Coming Soon"
+
 			return {
 				disabled: isComingSoon,
 				tabIndex: isComingSoon ? -1 : 0,

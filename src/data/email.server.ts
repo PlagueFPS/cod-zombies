@@ -15,6 +15,7 @@ class ContactExistsError extends Schema.TaggedError<ContactExistsError>()("Conta
 	message: Schema.String,
 	cause: Schema.Defect(),
 }) {}
+
 class ContactNotFoundError extends Schema.TaggedError<ContactNotFoundError>()(
 	"ContactNotFoundError",
 	{
@@ -27,6 +28,7 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: 
 	const emails = yield* Email
 
 	const contact = yield* emails.getContact(email)
+
 	if (Option.isSome(contact))
 		return yield* new ContactExistsError({
 			message: "That email is already subscribed!",
@@ -44,6 +46,7 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: 
 		subject: "Confirm Your Subscribe Request",
 		react: SubscribeEmail({ subscribeUrl, serverUrl }),
 	})
+
 	return { success: true, message: "Check your inbox to complete your subscribe request." }
 })
 
@@ -51,6 +54,7 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (ema
 	const emails = yield* Email
 
 	const contact = yield* emails.getContact(email)
+
 	if (Option.isNone(contact))
 		return yield* new ContactNotFoundError({
 			message: "That email is not currently subscribed!",
@@ -74,11 +78,13 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (ema
 
 export const subscribeEmail = Effect.fn("subscribeEmail")(function* (email: string) {
 	const emails = yield* Email
+
 	return yield* emails.createContact(email)
 })
 
 export const unsubscribeEmail = Effect.fn("unsubscribeEmail")(function* (email: string) {
 	const emails = yield* Email
+
 	return yield* emails.removeContact(email)
 })
 
@@ -92,6 +98,7 @@ export const sendContactEmail = Effect.fn("sendContactEmail")(function* (props: 
 		subject: "Contact Form Submission",
 		text: props.message,
 	})
+
 	return {
 		success: true,
 		message: "Thank you for contacting us! We will get back to you as soon as possible.",

@@ -19,7 +19,6 @@ describe("getGameByKey", () => {
 	})
 
 	test("returns None when the game does not exist", () => {
-		// @ts-expect-error invalid key
 		const game = getGameByKey("invalid-game")
 		expect(Option.isNone(game)).toBe(true)
 	})

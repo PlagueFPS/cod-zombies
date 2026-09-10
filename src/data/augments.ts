@@ -1,7 +1,7 @@
 import type { GameKey } from "@/data/games"
 import type { AugmentsImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
-import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
+import { Data, Option } from "effect"
+import { resolveGameVariantOption, uniqueMap, registryGet } from "@/data/registry-helpers"
 
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
 
@@ -24,6 +24,7 @@ export interface Augment {
 
 /**Union of all keys in the Augment Registry */
 export type AugmentKey = Parameters<(typeof AUGMENTS)["get"]>[0]
+
 /**Tuple to enforce min/max allowed augments */
 export type AugmentTuple = [
 	AugmentKey,
@@ -40,23 +41,18 @@ export type AugmentTuple = [
  * @param key The key of the augment.
  * @param game The game to get the augment variant for.
  */
-export const getAugmentByKey = (key: AugmentKey, game?: GameKey): Option.Option<Augment> =>
-	resolveGameVariantOption(Option.fromUndefinedOr(AUGMENTS.get(key)), game)
+export const getAugmentByKey = (key: string, game?: string): Option.Option<Augment> =>
+	resolveGameVariantOption(registryGet(AUGMENTS, key), game)
 
 /** Type helper to ensure type-safe AugmentTuple creation */
 export const makeAugmentTuple = (t: AugmentTuple) => Option.some(t)
 
+class AugmentRecord extends Data.TaggedClass("Augment")<Omit<Augment, "_tag">> {}
+
 const makeAugment = <T extends string>(
 	identifier: T,
 	augment: Omit<Augment, "_tag" | "id">,
-): [T, Augment] => [
-	identifier,
-	{
-		_tag: "Augment",
-		id: identifier,
-		...augment,
-	},
-]
+): [T, Augment] => [identifier, new AugmentRecord({ id: identifier, ...augment })]
 
 const AUGMENTS = uniqueMap([
 	makeAugment("double-jeopardy", {

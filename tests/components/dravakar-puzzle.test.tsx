@@ -32,6 +32,7 @@ describe("DravakarPuzzle", () => {
 		const quoteButton = [...container.querySelectorAll("button")].find(button =>
 			button.textContent?.includes("I remember the runner that travels to stars"),
 		)
+
 		expect(quoteButton).toBeDefined()
 
 		await act(async () => {

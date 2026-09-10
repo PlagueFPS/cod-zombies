@@ -66,6 +66,7 @@ export function QuestPreviewCard({ quest, priority, fetchPriority }: IQuestPrevi
 		}),
 		onSome: state => {
 			const isComingSoon = state === "Coming Soon"
+
 			return {
 				disabled: isComingSoon,
 				tabIndex: isComingSoon ? -1 : 0,

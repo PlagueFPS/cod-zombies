@@ -1,8 +1,8 @@
 import type { GameKey } from "@/data/games"
 import type { AmmoModsImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
+import { resolveGameVariantOption, uniqueMap, registryGet } from "@/data/registry-helpers"
 
 type AmmoModVariant = Omit<Partial<AmmoMod>, "_tag" | "id" | "title" | "variants">
 
@@ -32,20 +32,15 @@ export type AmmoModKey = Parameters<(typeof AMMO_MODS)["get"]>[0]
  * @param key The key of the ammo mod.
  * @param game The game to get the ammo mod variant for.
  */
-export const getAmmoModByKey = (key: AmmoModKey, game?: GameKey): Option.Option<AmmoMod> =>
-	resolveGameVariantOption(Option.fromUndefinedOr(AMMO_MODS.get(key)), game)
+export const getAmmoModByKey = (key: string, game?: string): Option.Option<AmmoMod> =>
+	resolveGameVariantOption(registryGet(AMMO_MODS, key), game)
+
+class AmmoModRecord extends Data.TaggedClass("AmmoMod")<Omit<AmmoMod, "_tag">> {}
 
 const makeAmmoMod = <T extends string>(
 	identifier: T,
 	ammoMod: Omit<AmmoMod, "_tag" | "id">,
-): [T, AmmoMod] => [
-	identifier,
-	{
-		_tag: "AmmoMod",
-		id: identifier,
-		...ammoMod,
-	},
-]
+): [T, AmmoMod] => [identifier, new AmmoModRecord({ id: identifier, ...ammoMod })]
 
 const AMMO_MODS = uniqueMap([
 	makeAmmoMod("fire-bomb", {

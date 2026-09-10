@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/contexts/theme-provider"
 import { MDX_COMPONENT_QUERY_KEY } from "@/data/queries"
 import { routeTree } from "@/routeTree.gen"
 import { getServerUrl } from "@/utils/request"
-import { parseSearch } from "@/utils/search-params"
+import { parseSearch, type ParsedSearchParams } from "@/utils/search-params"
 
 /**
  * Removes keys from a search object that would serialize to noise in the URL.
@@ -26,19 +26,24 @@ import { parseSearch } from "@/utils/search-params"
  * "omit" behavior globally, for every route, in one place — so call sites
  * can spread `prev` freely without leaking empty-array defaults to the URL.
  */
-function pruneEmptySearch(search: Record<string, unknown>): Record<string, unknown> {
-	const out: Record<string, unknown> = {}
+function pruneEmptySearch(search: ParsedSearchParams) {
+	const out: ParsedSearchParams = {}
+
 	for (const key in search) {
 		const value = search[key]
+
 		if (value === undefined || value === null) continue
+
 		if (Array.isArray(value) && value.length === 0) continue
 		out[key] = value
 	}
+
 	return out
 }
 
 const baseStringifySearch = stringifySearchWith(JSON.stringify, JSON.parse)
-const stringifySearch = (search: Record<string, unknown>) =>
+
+const stringifySearch = (search: ParsedSearchParams) =>
 	baseStringifySearch(pruneEmptySearch(search))
 
 export function getRouter() {

@@ -3,7 +3,7 @@ import type { MapEntry } from "@/data/maps"
 import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	decodeInteractiveMap,
@@ -20,8 +20,19 @@ import {
 	isSideQuest,
 } from "@/utils/rsc-wire"
 
-const sampleMap: MapEntry = {
-	_tag: "MapEntry",
+class MapEntryRecord extends Data.TaggedClass("MapEntry")<Omit<MapEntry, "_tag">> {}
+
+class SideQuestRecord extends Data.TaggedClass("SideQuest")<Omit<SideQuest, "_tag">> {}
+
+class RelicRecord extends Data.TaggedClass("Relic")<Omit<Relic, "_tag">> {}
+
+class ZombieRecord extends Data.TaggedClass("Zombie")<Omit<Zombie, "_tag">> {}
+
+class InteractiveMapRecord extends Data.TaggedClass("InteractiveMap")<
+	Omit<InteractiveMap, "_tag">
+> {}
+
+const sampleMapFields: Omit<MapEntry, "_tag"> = {
 	id: "test-map",
 	title: "Test Map",
 	releaseDate: "2020-01-15",
@@ -34,8 +45,9 @@ const sampleMap: MapEntry = {
 	estimatedTimeMins: Option.some({ min: 30, max: 60, reason: "estimate" }),
 }
 
-const sampleSideQuest: SideQuest = {
-	_tag: "SideQuest",
+const sampleMap = new MapEntryRecord(sampleMapFields)
+
+const sampleSideQuest = new SideQuestRecord({
 	id: "test-quest",
 	title: "Test Quest",
 	state: Option.some("Coming Soon"),
@@ -43,10 +55,9 @@ const sampleSideQuest: SideQuest = {
 	map: "nacht-der-untoten",
 	description: "Side quest description",
 	content: "content/side-quests/115-clock-tower",
-}
+})
 
-const sampleRelic: Relic = {
-	_tag: "Relic",
+const sampleRelic = new RelicRecord({
 	id: "test-relic",
 	title: "Test Relic",
 	state: Option.none(),
@@ -57,10 +68,9 @@ const sampleRelic: Relic = {
 	discoveredDate: "2021-06-01",
 	estimatedTimeMins: { min: 10, max: 20 },
 	content: "content/relics/blood-vials",
-}
+})
 
-const sampleZombie: Zombie = {
-	_tag: "Zombie",
+const sampleZombie = new ZombieRecord({
 	id: "test-zombie",
 	title: "Test Zombie",
 	description: "Zombie description",
@@ -76,10 +86,9 @@ const sampleZombie: Zombie = {
 	attacks: [],
 	spawnBehavior: "waves",
 	combatStrategy: "content/zombies/abomination",
-}
+})
 
-const sampleInteractiveMap: InteractiveMap = {
-	_tag: "InteractiveMap",
+const sampleInteractiveMapFields: Omit<InteractiveMap, "_tag"> = {
 	id: "paradox-junction",
 	title: "Paradox Junction",
 	state: Option.some("Coming Soon"),
@@ -88,6 +97,8 @@ const sampleInteractiveMap: InteractiveMap = {
 	game: "black-ops-7",
 	description: "Interactive map description",
 }
+
+const sampleInteractiveMap = new InteractiveMapRecord(sampleInteractiveMapFields)
 
 describe("encodeMap / decodeMap", () => {
 	test("round-trips all fields except mainQuest", () => {
@@ -104,13 +115,14 @@ describe("encodeMap / decodeMap", () => {
 	})
 
 	test("encodes absent Options as null", () => {
-		const map: MapEntry = {
-			...sampleMap,
+		const map = new MapEntryRecord({
+			...sampleMapFields,
 			mainQuest: Option.none(),
 			difficulty: Option.none(),
 			state: Option.none(),
 			estimatedTimeMins: Option.none(),
-		}
+		})
+
 		const encoded = encodeMap(map)
 		expect(encoded.difficulty).toBeNull()
 		expect(encoded.state).toBeNull()
@@ -167,7 +179,7 @@ describe("encodeInteractiveMap / decodeInteractiveMap", () => {
 	})
 
 	test("encodes state to null when none", () => {
-		const map: InteractiveMap = { ...sampleInteractiveMap, state: Option.none() }
+		const map = new InteractiveMapRecord({ ...sampleInteractiveMapFields, state: Option.none() })
 		const encoded = encodeInteractiveMap(map)
 		expect(encoded.state).toBeNull()
 		expect(decodeInteractiveMap(encoded)).toEqual(map)

@@ -23,6 +23,7 @@ describe("requestSubscribe", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+
 		const result = expectExitSuccess(exit)
 		expect(result.success).toBe(true)
 		expect(result.message).toBe("Check your inbox to complete your subscribe request.")
@@ -33,6 +34,7 @@ describe("requestSubscribe", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ContactExistsError")
@@ -46,6 +48,7 @@ describe("requestUnsubscribe", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+
 		const result = expectExitSuccess(exit)
 		expect(result.success).toBe(true)
 		expect(result.message).toBe("Check your inbox to complete your unsubscribe request.")
@@ -56,6 +59,7 @@ describe("requestUnsubscribe", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ContactNotFoundError")
@@ -69,6 +73,7 @@ describe("subscribeEmail", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+
 		const result = expectExitSuccess(exit)
 		expect(result.id).toBeDefined()
 	})
@@ -80,6 +85,7 @@ describe("unsubscribeEmail", () => {
 			Effect.provide(TestEmailLayer),
 			Effect.runPromiseExit,
 		)
+
 		const result = expectExitSuccess(exit)
 		expect(result.contact).toBe("default@test.com")
 		expect(result.deleted).toBe(true)
@@ -93,6 +99,7 @@ describe("sendContactEmail", () => {
 			email: "john.doe@example.com",
 			message: "Hello, world!",
 		}).pipe(Effect.provide(TestEmailLayer), Effect.runPromiseExit)
+
 		const result = expectExitSuccess(exit)
 		expect(result.success).toBe(true)
 		expect(result.message).toBe(

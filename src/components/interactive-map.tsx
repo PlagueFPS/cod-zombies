@@ -37,9 +37,11 @@ interface InteractiveMapProps {
 export function InteractiveMap({ currentLayer }: InteractiveMapProps) {
 	const { include, exclude, isIncluded } = useMapSearch()
 	const { settings } = useMapSettings()
+
 	const [imageDimensions, setImageDimensions] = useState<Option.Option<ImageDimensions>>(
 		Option.none(),
 	)
+
 	const layer = useMemo(() => decodeMapConfigLayer(currentLayer), [currentLayer])
 
 	useEffect(() => {
@@ -53,19 +55,23 @@ export function InteractiveMap({ currentLayer }: InteractiveMapProps) {
 				}),
 			)
 		}
+
 		img.onerror = () => {
 			console.error(`Failed to load map:`, layer.image)
 		}
+
 		img.src = layer.image
 	}, [layer.image])
 
 	const shouldRenderMarker = (marker: MapMarker) => {
 		if (include.length === 0 && exclude.length === 0) return true
+
 		return isIncluded(marker.type || marker.id)
 	}
 
 	const convertToLeafletCoords = ({ x, y }: Location): LatLng => {
 		if (Option.isNone(imageDimensions)) return new LatLng(0, 0)
+
 		return new LatLng(
 			imageDimensions.value.height - y * imageDimensions.value.height,
 			x * imageDimensions.value.width,

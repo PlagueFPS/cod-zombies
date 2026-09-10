@@ -10,6 +10,7 @@ import { getZombies } from "@/data/zombies"
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 
 const CONTENT_DIR = join(process.cwd(), "src/content")
+
 const MAIN_QUEST_GAME_PATTERN =
 	/^\/(black-ops-1|black-ops-2|black-ops-3|black-ops-4|black-ops-cold-war|black-ops-6|black-ops-7)\/([^/?#]+)$/
 
@@ -43,15 +44,19 @@ export function listMdxContentFiles(): string[] {
 	if (cachedMdxFiles) return cachedMdxFiles
 
 	const files: string[] = []
+
 	const walk = (dir: string) => {
 		for (const entry of readdirSync(dir, { withFileTypes: true })) {
 			const path = join(dir, entry.name)
+
 			if (entry.isDirectory()) walk(path)
 			else if (entry.name.endsWith(".mdx")) files.push(path)
 		}
 	}
+
 	walk(CONTENT_DIR)
 	cachedMdxFiles = files.sort()
+
 	return cachedMdxFiles
 }
 
@@ -59,6 +64,7 @@ export function loadMdxCorpus(): MdxCorpusFile[] {
 	return listMdxContentFiles().map(absolutePath => {
 		const relativePath = absolutePath.slice(process.cwd().length + 1)
 		const contentPath = relativePath.replace(/^src\/content\//, "content/").replace(/\.mdx$/, "")
+
 		return {
 			label: relativePath,
 			contentPath,
@@ -74,6 +80,7 @@ export function extractLinksFromMdx(content: string): MdxLinkRef[] {
 		for (const match of content.matchAll(re)) {
 			const href = match[group]
 			const index = match.index
+
 			if (!href || index == null) continue
 			links.push({ href, line: lineNumberAt(content, index) })
 		}
@@ -84,11 +91,14 @@ export function extractLinksFromMdx(content: string): MdxLinkRef[] {
 
 export function findUnclosedMarkdownLinks(content: string): { line: number; excerpt: string }[] {
 	const issues: { line: number; excerpt: string }[] = []
+
 	for (const match of content.matchAll(UNCLOSED_MARKDOWN_LINK_RE)) {
 		const index = match.index
+
 		if (index == null) continue
 		issues.push({ line: lineNumberAt(content, index), excerpt: match[0].trim() })
 	}
+
 	return issues
 }
 
@@ -109,14 +119,17 @@ export async function buildSiteRouteIndex(): Promise<SiteRouteIndex> {
 
 	const registerHeadings = async (routePath: string, contentPath: string) => {
 		let headingIds = headingsByContentPath.get(contentPath)
+
 		if (!headingIds) {
 			const absolutePath = join(CONTENT_DIR, contentPath.replace(/^content\//, "") + ".mdx")
 			const { headings } = getMdxDocumentMetaFromSource(readFileSync(absolutePath, "utf8"))
 			headingIds = new Set(headings.map(h => h.id))
 			headingsByContentPath.set(contentPath, headingIds)
 		}
+
 		headingsByPath.set(routePath, headingIds)
 		const routes = routesByContentPath.get(contentPath) ?? []
+
 		if (!routes.includes(routePath)) routes.push(routePath)
 		routesByContentPath.set(contentPath, routes)
 	}
@@ -163,7 +176,12 @@ export async function buildSiteRouteIndex(): Promise<SiteRouteIndex> {
 	return { paths, headingsByPath, routesByContentPath }
 }
 
-export function splitHref(href: string): { pathname: string; hash: string } {
+interface HrefParts {
+	pathname: string
+	hash: string
+}
+
+export function splitHref(href: string): HrefParts {
 	if (href.startsWith("#")) return { pathname: "", hash: href.slice(1) }
 
 	const hashIndex = href.indexOf("#")
@@ -178,7 +196,9 @@ export function splitHref(href: string): { pathname: string; hash: string } {
 export function resolveInternalPath(pathname: string, index: SiteRouteIndex): boolean {
 	if (pathname === "") return true
 	const normalized = pathname.replace(/\/+$/, "") || "/"
+
 	if (index.paths.has(normalized)) return true
+
 	return MAIN_QUEST_GAME_PATTERN.test(normalized)
 }
 
@@ -193,12 +213,14 @@ export function resolveFragment(
 	if (pathname === "") {
 		if (!sourceContentPath) return true
 		const sourceRoutes = index.routesByContentPath.get(sourceContentPath) ?? []
+
 		return sourceRoutes.some(route => index.headingsByPath.get(route)?.has(hash))
 	}
 
 	const targetPath = MAIN_QUEST_GAME_PATTERN.test(pathname)
 		? pathname.replace(MAIN_QUEST_GAME_PATTERN, "/main-quests/$1/$2")
 		: pathname
+
 	return index.headingsByPath.get(targetPath)?.has(hash) ?? false
 }
 

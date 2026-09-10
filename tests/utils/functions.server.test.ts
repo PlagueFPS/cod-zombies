@@ -1,4 +1,3 @@
-import type { ContentPaths } from "@/types/generated/content-paths.gen"
 import { Option } from "effect"
 import { describe, expect, it, vi } from "vitest"
 import { DATE_OPTIONS } from "@/utils/constants"
@@ -11,7 +10,7 @@ describe("getLastModified", () => {
 	})
 
 	it("should normalize paths to posix-style", () => {
-		const result = getLastModified("content\\main-quests\\paradox-junction" as ContentPaths)
+		const result = getLastModified("content\\main-quests\\paradox-junction")
 		expect(result).toBeDefined()
 	})
 
@@ -19,7 +18,7 @@ describe("getLastModified", () => {
 		const mockDate = new Date("2025-03-15T10:00:00.000Z")
 		vi.useFakeTimers()
 		vi.setSystemTime(mockDate)
-		const result = getLastModified("content/main-quests/not-in-data" as ContentPaths)
+		const result = getLastModified("content/main-quests/not-in-data")
 		expect(result).toStrictEqual({
 			lastModified: mockDate.getTime(),
 			lastModifiedFormatted: mockDate.toLocaleDateString(undefined, DATE_OPTIONS),
@@ -33,8 +32,9 @@ describe("getLastModified", () => {
 			"./content/main-quests/paradox-junction",
 			"cod-zombies/content/main-quests/paradox-junction",
 		] as const
+
 		for (const p of paths) {
-			expect(getLastModified(p as ContentPaths)).toBeDefined()
+			expect(getLastModified(p)).toBeDefined()
 		}
 	})
 })

@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest"
 import { LONG_LAST_LABEL_CHARS, trailAfterHome, type Link } from "@/components/breadcrumbs"
 
 function L(href: string, title: string): Link {
+	// SAFETY: breadcrumb tests use path strings as `Link.href`; trail helpers only read `title`/`href` structurally.
 	return { href: href as keyof FileRoutesByTo, title }
 }
 
@@ -35,6 +36,7 @@ describe("trailAfterHome", () => {
 			L("/side-quests/bo6", "BO6"),
 			L("/side-quests/bo6/street", "Street"),
 		]
+
 		const trail = trailAfterHome(links, true, false)
 		expect(trail).toEqual([
 			{ kind: "link", link: links[0] },
@@ -61,6 +63,7 @@ describe("trailAfterHome", () => {
 			L("/relics/bo6", "BO6"),
 			L("/relics/bo6/dead-wire", "Super Long Relic Name Here"),
 		]
+
 		const trail = trailAfterHome(links, true, true)
 		expect(trail).toEqual([{ kind: "ellipsis" }, { kind: "link", link: links[2] }])
 		expect(ellipsisCount(trail)).toBe(1)
@@ -73,6 +76,7 @@ describe("trailAfterHome", () => {
 			L("/m/a/b", "B"),
 			L("/m/a/b/c", "VeryLongFinalSegmentTitle"),
 		]
+
 		const trail = trailAfterHome(links, true, true)
 		expect(trail).toEqual([{ kind: "ellipsis" }, { kind: "link", link: links[3] }])
 		expect(ellipsisCount(trail)).toBe(1)

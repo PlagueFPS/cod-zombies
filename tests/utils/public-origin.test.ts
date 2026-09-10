@@ -30,6 +30,7 @@ describe("resolvePublicOrigin", () => {
 		const prerenderUrl = new URL(
 			"http://127.0.0.1:35889/opengraph-images/main-quests/opengraph-rex-infernus-v3.jpg",
 		)
+
 		expect(resolvePublicOrigin(prerenderUrl, true)).toBe(SITE_ORIGIN)
 	})
 

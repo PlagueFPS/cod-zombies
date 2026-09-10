@@ -1,4 +1,5 @@
 "use client"
+
 import { Link, type LinkProps, type NavigateOptions, useNavigate } from "@tanstack/react-router"
 
 interface ICustomLink extends LinkProps {
@@ -51,10 +52,13 @@ export function CustomLink({
 		e: React.MouseEvent<HTMLAnchorElement> | React.KeyboardEvent<HTMLAnchorElement>,
 	) => {
 		if (isDisabled) return
+
 		if (!linkProps.to && !linkProps.href) return
 		const target = linkProps.href ?? linkProps.to
+
 		if (!target) return
 		const url = new URL(target, window.location.href)
+
 		if (
 			url.origin === window.location.origin &&
 			!e.altKey &&

@@ -39,6 +39,17 @@ import {
 } from "@/utils/shared-functions"
 import { StandardMainQuestSearchParamsSchema } from "@/utils/validation-schemas"
 
+const DIFFICULTY_SLUGS = ["easy", "medium", "hard"] as const
+
+const TIME_SLUGS = ["under-30", "30-60", "60-120", "120-plus"] as const
+
+function matchingSlugs<S extends string>(values: string[] | undefined, allowed: readonly S[]) {
+	if (!values) return undefined
+	const matched = values.filter((value): value is S => allowed.some(slug => slug === value))
+
+	return matched.length > 0 ? matched : undefined
+}
+
 export const Route = createFileRoute("/main-quests/")({
 	validateSearch: StandardMainQuestSearchParamsSchema,
 	loaderDeps: ({ search }) => ({
@@ -51,6 +62,7 @@ export const Route = createFileRoute("/main-quests/")({
 	loader: ({ deps, context }) => {
 		const serverUrl = context.serverUrl
 		const title = createSeoTitle("Main Quests")
+
 		const description =
 			"Learn how to complete all main quests/easter eggs in COD Zombies with our detailed step-by-step guides."
 
@@ -72,6 +84,7 @@ export const Route = createFileRoute("/main-quests/")({
 				match: item => {
 					if (Option.isNone(item.estimatedTimeMins)) return false
 					const midpoint = getEstimatedTimeMidpoint(item.estimatedTimeMins.value)
+
 					return mainQuestMidpointMatchesAnyTimeSlug(midpoint, deps.time)
 				},
 			},
@@ -185,6 +198,7 @@ function MainQuests() {
 	]
 
 	const filterValue: FilterOption[] = []
+
 	for (const g of groups) {
 		const values = g.items.filter(
 			i =>
@@ -212,13 +226,8 @@ function MainQuests() {
 				...prev,
 				page: undefined, // reset page on filter change
 				game: selected.get("game"),
-				difficulty: selected.get("difficulty") as "easy" | "medium" | "hard" | undefined,
-				time: selected.get("completion-time") as
-					| "under-30"
-					| "30-60"
-					| "60-120"
-					| "120-plus"
-					| undefined,
+				difficulty: matchingSlugs(selected.get("difficulty"), DIFFICULTY_SLUGS),
+				time: matchingSlugs(selected.get("completion-time"), TIME_SLUGS),
 			}),
 			replace: true,
 		})

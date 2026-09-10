@@ -50,6 +50,7 @@ describe("slugify", () => {
 
 	test("slugifies each main quest difficulty label for URL filter params", () => {
 		expect(slugify("Very Hard")).toBe("very-hard")
+
 		for (const difficulty of MAIN_QUEST_DIFFICULTIES) {
 			expect(slugify(difficulty)).toBe(difficulty.toLowerCase().replace(/\s+/g, "-"))
 		}

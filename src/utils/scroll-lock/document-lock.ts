@@ -1,9 +1,12 @@
 let docLockCount = 0
+
 let savedHtmlOverflow = ""
+
 let savedHtmlPaddingRight = ""
 
 export function lockDocumentScroll(): void {
 	docLockCount++
+
 	if (docLockCount !== 1) return
 
 	const html = document.documentElement
@@ -12,11 +15,13 @@ export function lockDocumentScroll(): void {
 
 	const gap = Math.max(0, window.innerWidth - html.clientWidth)
 	html.style.overflow = "hidden"
+
 	if (gap > 0) html.style.paddingRight = `${gap}px`
 }
 
 export function unlockDocumentScroll(): void {
 	docLockCount = Math.max(0, docLockCount - 1)
+
 	if (docLockCount !== 0) return
 
 	const html = document.documentElement

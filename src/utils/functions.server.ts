@@ -13,6 +13,7 @@ class TokenExpirationError extends Schema.TaggedError<TokenExpirationError>()(
 		cause: Schema.Defect(),
 	},
 ) {}
+
 class TokenGenerationError extends Schema.TaggedError<TokenGenerationError>()(
 	"TokenGenerationError",
 	{
@@ -20,6 +21,7 @@ class TokenGenerationError extends Schema.TaggedError<TokenGenerationError>()(
 		cause: Schema.Defect(),
 	},
 ) {}
+
 class TokenVerificationError extends Schema.TaggedError<TokenVerificationError>()(
 	"TokenVerificationError",
 	{
@@ -28,17 +30,24 @@ class TokenVerificationError extends Schema.TaggedError<TokenVerificationError>(
 	},
 ) {}
 
-export const getOpengraphImageUrl = async (kind: OpengraphKind, id: string) => {
-	const contentType = manifest[kind]
-	const version: number = contentType[id as keyof typeof contentType]
+type OpengraphVersionTable = { readonly [id: string]: number }
 
-	if (!version) {
+export const getOpengraphImageUrl = async (kind: OpengraphKind, id: string) => {
+	// SAFETY: each kind is an id-to-integer version table; missing ids are undefined.
+	const versions = manifest[kind] as OpengraphVersionTable
+	const version = versions[id]
+
+	if (version === undefined) {
 		console.warn(`Missing opengraph image version for ${kind}: ${id}`)
+
 		return Option.none()
 	}
 
 	const serverUrl = getServerUrl()
-	return Option.some(`${serverUrl}/opengraph-images/${kind}/opengraph-${id}-v${version}.jpg`)
+
+	return Option.some(
+		`${serverUrl}/opengraph-images/${kind}/opengraph-${id}-v${String(version)}.jpg`,
+	)
 }
 
 /**
@@ -52,9 +61,11 @@ export const generateToken = Effect.fn("generateToken")(function* (
 	expiresIn: Duration.Duration,
 ) {
 	const salt = randomBytes(16).toString("hex")
+
 	const expiresInMs = yield* Clock.currentTimeMillis.pipe(
 		Effect.map(now => now + Duration.toMillis(expiresIn)),
 	)
+
 	const payload = `${value}:${salt}:${expiresInMs}`
 	const hash = createHash("sha256").update(payload).digest("hex")
 
@@ -67,6 +78,7 @@ export const generateToken = Effect.fn("generateToken")(function* (
 			}),
 	})
 })
+
 /**
  * Verifies a securely generated token.
  * @param token - the secure token to verify.
@@ -77,6 +89,7 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 		try: () => Buffer.from(token, "base64url").toString(),
 		catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
 	})
+
 	const [value, salt, expiresInStr, originalHash] = buffer.split(":")
 
 	if (!value || !salt || !expiresInStr || !originalHash) {

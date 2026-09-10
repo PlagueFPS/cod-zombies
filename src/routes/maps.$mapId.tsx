@@ -17,7 +17,6 @@ import {
 	getInteractiveMapByKey,
 	getInteractiveMapConfig,
 	getInteractiveMaps,
-	type InteractiveMapKey,
 } from "@/data/interactive-map"
 import { categoryHandlers, type MarkerCategory } from "@/map-configs/markers"
 import { encodeInteractiveMap, encodeMapConfig, encodeMapConfigLayer } from "@/utils/rsc-wire"
@@ -44,13 +43,14 @@ export const Route = createFileRoute("/maps/$mapId")({
 		layer: search.layer,
 	}),
 	loader: async ({ params, deps, context }) => {
-		const metadata = getInteractiveMapByKey(params.mapId as InteractiveMapKey).pipe(
+		const metadata = getInteractiveMapByKey(params.mapId).pipe(
 			Option.getOrThrowWith(() => notFound()),
 		)
+
 		if (metadata.state.valueOrUndefined === "Coming Soon") throw notFound()
 
 		const [config, { sidebarState }] = await Promise.all([
-			getInteractiveMapConfig(metadata.id as InteractiveMapKey).pipe(Effect.runPromise),
+			getInteractiveMapConfig(metadata.id).pipe(Effect.runPromise),
 			getSidebarState(),
 		])
 
@@ -150,6 +150,7 @@ function InteractiveMapPending() {
 
 function InteractiveMapNotFound() {
 	const params = Route.useParams()
+
 	const items: Link[] = [
 		{ href: "/maps", title: "Maps" },
 		{

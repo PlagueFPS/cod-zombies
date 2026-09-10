@@ -4,7 +4,6 @@ import { getZombieAttackByKey } from "@/data/zombie-attacks"
 
 describe("getZombieAttackByKey", () => {
 	test("returns None when the zombie attack does not exist", () => {
-		// @ts-expect-error invalid key
 		const zombieAttack = getZombieAttackByKey("invalid-zombie-attack")
 		expect(Option.isNone(zombieAttack)).toBe(true)
 	})

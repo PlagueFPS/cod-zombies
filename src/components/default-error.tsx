@@ -8,7 +8,7 @@ export function DefaultError({ error, reset }: ErrorComponentProps) {
 	const location = useLocation()
 
 	useEffect(() => {
-		console.error(error.message)
+		console.error(error)
 	}, [error])
 
 	return (

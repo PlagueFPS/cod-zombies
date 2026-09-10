@@ -14,6 +14,7 @@ import {
 	Text,
 } from "@react-email/components"
 import { DATE_OPTIONS } from "@/utils/constants"
+
 export default function PrivacyPolicyUpdateEmail({
 	unsubscribeUrl,
 	serverUrl,

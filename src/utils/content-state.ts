@@ -13,6 +13,7 @@ const MS_PER_DAY = 86_400_000
 
 export function calendarDaysSinceIsoDate(isoDateOnly: string, nowMs: number): number {
 	const start = Date.parse(`${isoDateOnly}T00:00:00.000Z`)
+
 	return Math.floor((nowMs - start) / MS_PER_DAY)
 }
 
@@ -29,6 +30,7 @@ export function resolveNewContentState(
 		onNone: () => Option.none(),
 		onSome: s => {
 			if (s === "Coming Soon") return Option.some(s)
+
 			return calendarDaysSinceIsoDate(anchorIsoDate, nowMs) < NEW_CONTENT_BADGE_MAX_AGE_DAYS
 				? Option.some("New")
 				: Option.none()

@@ -15,6 +15,7 @@ interface IQuestGrid {
 
 export function QuestGrid({ quests }: IQuestGrid) {
 	const isMobile = useIsMobile()
+
 	const decodeQuest = (quest: EncodedMapEntry | EncodedSideQuest) => {
 		return isMapQuest(quest) ? decodeMap(quest) : decodeSideQuest(quest)
 	}

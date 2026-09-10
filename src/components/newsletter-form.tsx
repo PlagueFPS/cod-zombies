@@ -20,6 +20,7 @@ export function NewsletterForm() {
 	const [isPending, startTransition] = useTransition()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const subscribe = useServerFn(subscribeToNewsletter)
+
 	const form = useForm({
 		defaultValues: {
 			email: "",
@@ -65,6 +66,7 @@ export function NewsletterForm() {
 						<form.Field name="email">
 							{field => {
 								const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
 								return (
 									<Field data-invalid={isInvalid}>
 										<FieldLabel htmlFor={field.name} className="sr-only">

@@ -1,4 +1,5 @@
 "use client"
+
 import { cn } from "cn"
 import {
 	Children,
@@ -43,8 +44,10 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 	const subscribe = useCallback(
 		(onStoreChange: () => void) => {
 			if (!api) return () => {}
+
 			api.on("select", onStoreChange)
 			api.on("reInit", onStoreChange)
+
 			return () => {
 				api.off("select", onStoreChange)
 				api.off("reInit", onStoreChange)
@@ -58,6 +61,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		() => api?.scrollSnapList().length ?? 0,
 		() => 0,
 	)
+
 	const currentIndex = useSyncExternalStore(
 		subscribe,
 		() => api?.selectedScrollSnap() ?? 0,
@@ -68,10 +72,12 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		if (dotsPositionLockedRef.current) return
 
 		const root = rootRef.current
+
 		if (!root || count <= 1) return
 
 		const img = firstSlideImg(root, api)
 		const rootRect = root.getBoundingClientRect()
+
 		const layout = resolveCarouselIndicatorLayout({
 			hasImage: img != null,
 			imageBox: img?.getBoundingClientRect() ?? null,
@@ -82,8 +88,10 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		if (layout.kind === "wait") return
 
 		dotsPositionLockedRef.current = true
+
 		if (layout.kind === "fallback") {
 			setIndicatorStyle(INDICATORS_FALLBACK_STYLE)
+
 			return
 		}
 
@@ -103,11 +111,14 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		if (count <= 1 || dotsPositionLockedRef.current) return
 
 		const root = rootRef.current
+
 		if (!root) return
 
 		const img = firstSlideImg(root, api)
+
 		if (!img) {
 			tryLockDotsPosition()
+
 			return
 		}
 

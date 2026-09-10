@@ -68,6 +68,7 @@ export function Shortcut({
 			) : (
 				Children.toArray(children).map((child, index) => {
 					const key = `shortcut-${index + 1}`
+
 					return (
 						<Kbd key={key} className={kbdClassName}>
 							{child}

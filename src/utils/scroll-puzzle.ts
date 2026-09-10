@@ -69,7 +69,9 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 			{ length: SCROLL_COUNT },
 			(_, pressIndex) => KOWAKUJO_SCROLL_TOGGLE_MATRIX[pressIndex]?.[affectedIndex] ?? false,
 		)
+
 		equation.push(requiredToggles[affectedIndex] ?? false)
+
 		return equation
 	})
 
@@ -78,6 +80,7 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 
 	for (let col = 0; col < SCROLL_COUNT && pivotRow < SCROLL_COUNT; col++) {
 		let swapRow = -1
+
 		for (let row = pivotRow; row < SCROLL_COUNT; row++) {
 			if (augmented[row]?.[col]) {
 				swapRow = row
@@ -90,17 +93,20 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 		if (swapRow !== pivotRow) {
 			const currentRow = augmented[pivotRow]
 			const swapTarget = augmented[swapRow]
+
 			if (!currentRow || !swapTarget) continue
 			augmented[pivotRow] = swapTarget
 			augmented[swapRow] = currentRow
 		}
 
 		const pivot = augmented[pivotRow]
+
 		if (!pivot) continue
 
 		for (let row = 0; row < SCROLL_COUNT; row++) {
 			if (row === pivotRow || !augmented[row]?.[col]) continue
 			const target = augmented[row]!
+
 			for (let xorCol = col; xorCol < SCROLL_COUNT + 1; xorCol++) {
 				target[xorCol] = target[xorCol] !== pivot[xorCol]
 			}
@@ -114,10 +120,12 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 		const inconsistent =
 			augmented[row]?.slice(0, SCROLL_COUNT).every(value => !value) &&
 			augmented[row]?.[SCROLL_COUNT]
+
 		if (inconsistent) return null
 	}
 
 	const isPivotColumn = Array.from({ length: SCROLL_COUNT }, () => false)
+
 	for (const col of pivotColumns) {
 		isPivotColumn[col] = true
 	}
@@ -127,13 +135,16 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 	)
 
 	const pivotColumnByRow = new Map<number, number>()
+
 	for (let row = 0; row < pivotColumns.length; row++) {
 		const col = pivotColumns[row]
+
 		if (col !== undefined) pivotColumnByRow.set(row, col)
 	}
 
 	const assignFromAugmented = (assignment: boolean[], freeValues: readonly boolean[]): void => {
 		assignment.fill(false)
+
 		for (const [freeIndex, col] of freeColumns.entries()) {
 			assignment[col] = freeValues[freeIndex] ?? false
 		}
@@ -141,12 +152,15 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 		for (let row = pivotColumns.length - 1; row >= 0; row--) {
 			const pivotCol = pivotColumnByRow.get(row)
 			const equation = augmented[row]
+
 			if (pivotCol === undefined || !equation) continue
 
 			let value = equation[SCROLL_COUNT] ?? false
+
 			for (let col = pivotCol + 1; col < SCROLL_COUNT; col++) {
 				if (equation[col] && assignment[col]) value = !value
 			}
+
 			assignment[pivotCol] = value
 		}
 	}
@@ -160,9 +174,11 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 			{ length: freeColumns.length },
 			(_, index) => ((mask >> index) & 1) === 1,
 		)
+
 		assignFromAugmented(candidate, freeValues)
 
 		const pressCount = candidate.filter(Boolean).length
+
 		if (pressCount < bestPressCount) {
 			bestPressCount = pressCount
 			bestPresses = [...candidate]
@@ -177,6 +193,7 @@ function hasSolvableParity(requiredToggles: readonly boolean[]): boolean {
 		(acc, index) => acc ^ Number(requiredToggles[index]),
 		0,
 	)
+
 	return parity === 0
 }
 
@@ -204,11 +221,13 @@ export function solveScrollPuzzle(
 	}
 
 	const requiredToggles = getRequiredToggles(current, goal)
+
 	if (!hasSolvableParity(requiredToggles)) {
 		return null
 	}
 
 	const minimumPresses = findMinimumWeightPresses(requiredToggles)
+
 	if (!minimumPresses) {
 		return null
 	}
@@ -221,11 +240,13 @@ export function applyScrollPresses(
 	presses: readonly number[],
 ): boolean[] {
 	const pressVector = Array.from({ length: SCROLL_COUNT }, () => false)
+
 	for (const index of presses) {
 		if (index < 0 || index >= SCROLL_COUNT) continue
 		pressVector[index] = !pressVector[index]
 	}
 
 	const toggled = computePressEffect(pressVector)
+
 	return state.map((isIn, index) => isIn !== toggled[index])
 }

@@ -36,6 +36,7 @@ export const Route = createFileRoute("/side-quests/")({
 	loader: ({ deps, context }) => {
 		const serverUrl = context.serverUrl
 		const title = createSeoTitle("Side Quests")
+
 		const description =
 			"Learn how to complete hidden Side Quests/Easter Eggs in COD Zombies with our detailed step-by-step guides."
 
@@ -48,6 +49,7 @@ export const Route = createFileRoute("/side-quests/")({
 				values: deps.game,
 				match: (item, gameId) => {
 					const map = getMapByKey(item.map)
+
 					return Option.isSome(map) && map.value.game === gameId
 				},
 			},
@@ -55,6 +57,7 @@ export const Route = createFileRoute("/side-quests/")({
 				values: deps.map,
 				match: (item, mapId) => {
 					const map = getMapByKey(item.map)
+
 					return Option.isSome(map) && map.value.id === mapId
 				},
 			},
@@ -66,6 +69,7 @@ export const Route = createFileRoute("/side-quests/")({
 				compare: (a, b) => {
 					const mapA = getMapByKey(a.map)
 					const mapB = getMapByKey(b.map)
+
 					return compareByOptionalSome(mapA, mapB, (ma, mb) =>
 						sortDates(mb.releaseDate, ma.releaseDate),
 					)
@@ -76,6 +80,7 @@ export const Route = createFileRoute("/side-quests/")({
 				compare: (a, b) => {
 					const mapA = getMapByKey(a.map)
 					const mapB = getMapByKey(b.map)
+
 					return compareByOptionalSome(mapA, mapB, (ma, mb) =>
 						sortDates(ma.releaseDate, mb.releaseDate),
 					)
@@ -88,6 +93,7 @@ export const Route = createFileRoute("/side-quests/")({
 		const pageResult = paginate(sorted, deps.page)
 
 		const questMaps = new Set<string>(allQuests.map(q => q.map))
+
 		const questGames = new Set<string>(
 			allQuests
 				.map(q => getMapByKey(q.map).valueOrUndefined?.game)
@@ -96,11 +102,13 @@ export const Route = createFileRoute("/side-quests/")({
 
 		const mapFilters = maps.flatMap(map => {
 			if (!questMaps.has(map.id)) return []
+
 			return [{ value: map.id, label: map.title }]
 		})
 
 		const gameFilters = games.flatMap(game => {
 			if (!questGames.has(game.id)) return []
+
 			return [{ value: game.id, label: game.title }]
 		})
 
@@ -156,6 +164,7 @@ function SideQuests() {
 	]
 
 	const filterValue: FilterOption[] = []
+
 	for (const g of groups) {
 		const values = g.items.filter(
 			i => map?.some(d => d === i.value) || game?.some(g => g === i.value),
@@ -166,12 +175,15 @@ function SideQuests() {
 
 	const onFilterChange = (next: FilterOption[]) => {
 		const selected = new Map<string, string[]>()
+
 		for (const g of groups) {
 			const matched = g.items.filter(i => next.some(n => n.value === i.value)).map(i => i.value)
+
 			if (matched.length > 0) {
 				selected.set(slugify(g.label), matched)
 			}
 		}
+
 		void navigate({
 			search: prev => ({
 				...prev,

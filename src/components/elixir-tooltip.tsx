@@ -1,4 +1,5 @@
 "use client"
+
 import { cn } from "cn"
 import { Option } from "effect"
 import { ElixirRarityBadge } from "@/components/custom-badges"
@@ -15,8 +16,10 @@ interface ElixirTooltipProps {
 export default function ElixirTooltip({ elixirKey }: ElixirTooltipProps) {
 	const isMobile = useIsMobile(640)
 	const elixir = getElixirByKey(elixirKey)
+
 	if (Option.isNone(elixir)) {
 		console.error(`Unable to render tooltip for elixir: ${elixirKey}`)
+
 		return "[MISSING_ELIXIR]"
 	}
 

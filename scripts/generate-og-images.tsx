@@ -11,24 +11,12 @@ import {
 	getMapsWithMainQuest,
 	type MainQuestDifficulty,
 	type MapEntry,
-	type MapKey,
 } from "@/data/maps"
-import { getRelicByKey, getRelics, type Relic, type RelicKey, type RelicType } from "@/data/relics"
-import {
-	getSideQuestByKey,
-	getSideQuests,
-	type SideQuest,
-	type SideQuestKey,
-} from "@/data/side-quests"
+import { getRelicByKey, getRelics, type Relic, type RelicType } from "@/data/relics"
+import { getSideQuestByKey, getSideQuests, type SideQuest } from "@/data/side-quests"
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieAttackByKey } from "@/data/zombie-attacks"
-import {
-	getZombieByKey,
-	getZombies,
-	type Zombie,
-	type ZombieKey,
-	type ZombieType,
-} from "@/data/zombies"
+import { getZombieByKey, getZombies, type Zombie, type ZombieType } from "@/data/zombies"
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { formatEstimatedTimeRange } from "@/utils/shared-functions"
@@ -69,15 +57,22 @@ export class OgCliError extends Schema.TaggedError<OgCliError>()("OgCliError", {
 }) {}
 
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const
+
 /** `.dark --primary` in `globals.css` */
 const PRIMARY = "oklch(0.705 0.213 47.604)"
+
 const FG = "oklch(0.955 0 0)"
+
 /** `.dark --muted-foreground` — used for meta labels in CLI OG (oklch for accuracy vs rgba). */
 const MUTED_FG = "oklch(0.708 0 0)"
+
 const CARD_SURFACE = "oklch(0.205 0 0)"
+
 const BORDER = "oklch(1 0 0 / 10%)"
+
 /** Zombie backdrop color */
 const Z_BG = "oklch(0.145 0 0)"
+
 /** Loaded only via `ogStylesheets` — not part of the site CSS. */
 const OG_FONT_MONO = "Geist Mono Variable, ui-monospace, monospace"
 
@@ -90,11 +85,14 @@ function formatMapReleaseDay(isoDateOnly: string): string {
 
 const clampText = (text: string, maxChars: number) => {
 	const t = text.trim().replace(/\s+/g, " ")
+
 	if (t.length <= maxChars) {
 		return t
 	}
+
 	const slice = t.slice(0, maxChars)
 	const i = slice.lastIndexOf(" ")
+
 	return `${(i > maxChars * 0.5 ? slice.slice(0, i) : slice).trimEnd()}…`
 }
 
@@ -277,8 +275,11 @@ const RELIC_OG_BACKDROP_OVERLAY =
 	"linear-gradient(165deg, oklch(0.145 0 0 / 0.71) 0%, oklch(0.145 0 0 / 0.75) 45%, oklch(0.145 0 0 / 0.73) 100%)"
 
 const OG_PORTRAIT_COL = { w: 380, padL: 40, padR: 28, frame: 300 } as const
+
 const OG_TYPE_OVERLAY_TOP_PX = 36
+
 const OG_LOGO_ROW_H_PX = 44
+
 const ogPortraitFrameLeftPx =
 	OG_PORTRAIT_COL.padL +
 	(OG_PORTRAIT_COL.w - OG_PORTRAIT_COL.padL - OG_PORTRAIT_COL.padR - OG_PORTRAIT_COL.frame) / 2
@@ -313,10 +314,12 @@ export const generateMainQuestImage = Effect.fnUntraced(
 		const siteLogo = yield* fs.readFile(path.join(process.cwd(), "public", "/logo.webp"))
 
 		const timeToRead = getMdxDocumentMetaFromSource(fileContent).timeToRead
+
 		const estTime = map.estimatedTimeMins.pipe(
 			Option.map(r => formatEstimatedTimeRange(r)),
 			Option.getOrThrow,
 		)
+
 		const game = yield* getGameByKey(map.game).pipe(Effect.fromOption)
 		const difficulty = yield* map.difficulty.pipe(Effect.fromOption)
 		const dateStr = formatMapReleaseDay(map.releaseDate)
@@ -467,12 +470,15 @@ export const generateZombieImage = Effect.fnUntraced(
 		const hasWeakPoints = zombie.weakPoints.length > 0
 
 		const hasElemental = zombie.elementalWeakness.length > 0
+
 		const elementalModsOrdered = hasElemental
 			? zombie.elementalWeakness
 					.map(k => resolveAmmoModForOg(k, debutGameKey))
 					.filter(m => m !== null)
 			: []
+
 		const ammoPersistentImages: Array<{ data: Uint8Array; src: string }> = []
+
 		if (hasElemental) {
 			yield* Effect.forEach(
 				elementalModsOrdered,
@@ -491,6 +497,7 @@ export const generateZombieImage = Effect.fnUntraced(
 				Option.map(a => a.title),
 				Option.getOrElse(() => key),
 			)
+
 		const attackLabels = zombie.attacks.map(attackTitle)
 		const attackStr = attackLabels.length ? attackLabels.join(" · ") : "—"
 		const attacksOnlyStat = !hasWeakPoints && !hasElemental
@@ -500,6 +507,7 @@ export const generateZombieImage = Effect.fnUntraced(
 		const siteLogo = yield* fs.readFile(path.join(process.cwd(), "public", "logo.webp"))
 
 		const mapBackdropSrc = `${debutMap.id}-map-backdrop`
+
 		const mapBackdropData = yield* fs.readFile(
 			path.join(process.cwd(), "public", debutMap.image.replace(/^\/+/, "")),
 		)
@@ -816,6 +824,7 @@ export const generateRelicImage = Effect.fnUntraced(
 		const siteLogo = yield* fs.readFile(path.join(process.cwd(), "public", "logo.webp"))
 
 		const mapBackdropSrc = `${map.id}-map-backdrop`
+
 		const mapBackdropData = yield* fs.readFile(
 			path.join(process.cwd(), "public", map.image.replace(/^\/+/, "")),
 		)
@@ -1017,6 +1026,7 @@ const updateManifest = Effect.fnUntraced(function* (
 		zombies: { ...manifest.zombies },
 		relics: { ...manifest.relics },
 	}
+
 	merged[contentDir] = { ...merged[contentDir], [fileBaseName]: version }
 
 	const pruned: Record<OpengraphKind, Record<string, number>> = {
@@ -1025,11 +1035,13 @@ const updateManifest = Effect.fnUntraced(function* (
 		zombies: {},
 		relics: {},
 	}
+
 	const removedManifestKeys: Array<{ kind: OpengraphKind; slug: string }> = []
 
 	for (const kind of OPENGRAPH_KINDS) {
 		for (const [slug, fileVersion] of Object.entries(merged[kind])) {
 			const ogPath = path.join(outputBase, kind, `opengraph-${slug}-v${fileVersion}.jpg`)
+
 			if (yield* fs.exists(ogPath)) {
 				pruned[kind][slug] = fileVersion
 			} else {
@@ -1059,6 +1071,7 @@ export const writeOgFile = Effect.fnUntraced(function* (
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
 	const dir = path.join(outputBase, contentDir)
+
 	const manifestPath =
 		options?.manifestPath ??
 		manifestPathFromEnv() ??
@@ -1067,6 +1080,7 @@ export const writeOgFile = Effect.fnUntraced(function* (
 	const manifest = yield* fs
 		.readFileString(manifestPath)
 		.pipe(Effect.flatMap(decodeOpengraphManifest))
+
 	const version = Option.match(Option.fromUndefinedOr(manifest[contentDir][fileBaseName]), {
 		onNone: () => 1,
 		onSome: previousVersion => previousVersion + 1,
@@ -1179,6 +1193,7 @@ export const generateOgCommand = Command.make(
 			const zombieFamily = zombiesEnabled || Option.isSome(zombieFlag)
 			const questFamily = questsEnabled || Option.isSome(questFlag)
 			const relicFamily = relicsEnabled || Option.isSome(relicFlag)
+
 			const mainFamily =
 				mapsEnabled || (Option.isSome(mapFlag) && !zombieFamily && !questFamily && !relicFamily)
 
@@ -1201,6 +1216,7 @@ export const generateOgCommand = Command.make(
 						message: "Use either --zombies or --zombie <id>, not both.",
 					})
 				}
+
 				if (Option.isSome(zombieFlag) && Option.isSome(mapFlag)) {
 					return yield* new OgCliError({
 						message: "--map is only valid with --zombies (batch), not with --zombie <id>.",
@@ -1208,11 +1224,11 @@ export const generateOgCommand = Command.make(
 				}
 
 				if (Option.isSome(zombieFlag)) {
-					const zombie = yield* getZombieByKey(zombieFlag.value as ZombieKey).pipe(
-						Effect.fromOption,
-					)
+					const zombie = yield* getZombieByKey(zombieFlag.value).pipe(Effect.fromOption)
+
 					const ogImage = yield* generateZombieImage(zombie)
 					yield* writeOgFile(outputBase, "zombies", zombie.id, ogImage)
+
 					return
 				}
 
@@ -1220,6 +1236,7 @@ export const generateOgCommand = Command.make(
 					onNone: () => getZombies(),
 					onSome: mapKey => getZombies().filter(z => Arr.head(z.maps).valueOrUndefined === mapKey),
 				})
+
 				if (!zombies.length) {
 					return yield* new OgCliError({
 						message: Option.match(mapFlag, {
@@ -1238,6 +1255,7 @@ export const generateOgCommand = Command.make(
 						}),
 					{ concurrency: 8 },
 				)
+
 				return
 			}
 
@@ -1247,6 +1265,7 @@ export const generateOgCommand = Command.make(
 						message: "Use either --relics or --relic <id>, not both.",
 					})
 				}
+
 				if (Option.isSome(relicFlag) && Option.isSome(mapFlag)) {
 					return yield* new OgCliError({
 						message: "--map is only valid with --relics (batch), not with --relic <id>.",
@@ -1254,20 +1273,23 @@ export const generateOgCommand = Command.make(
 				}
 
 				if (Option.isSome(relicFlag)) {
-					const relic = yield* getRelicByKey(relicFlag.value as RelicKey).pipe(Effect.fromOption)
+					const relic = yield* getRelicByKey(relicFlag.value).pipe(Effect.fromOption)
+
 					if (Option.getOrUndefined(relic.state) === "Coming Soon") {
 						return yield* new OgCliError({
 							message: `Relic "${relicFlag.value}" is not available (Coming Soon).`,
 						})
 					}
+
 					const ogImage = yield* generateRelicImage(relic)
 					yield* writeOgFile(outputBase, "relics", relic.id, ogImage)
+
 					return
 				}
 
 				const relics = Option.match(mapFlag, {
 					onNone: () => getRelics(),
-					onSome: mapKey => getRelics().filter(r => r.map === (mapKey as MapKey)),
+					onSome: mapKey => getRelics().filter(r => r.map === mapKey),
 				}).filter(r => Option.getOrUndefined(r.state) !== "Coming Soon")
 
 				if (!relics.length) {
@@ -1288,6 +1310,7 @@ export const generateOgCommand = Command.make(
 						}),
 					{ concurrency: 8 },
 				)
+
 				return
 			}
 
@@ -1297,6 +1320,7 @@ export const generateOgCommand = Command.make(
 						message: "Use either --quests or --quest <id>, not both.",
 					})
 				}
+
 				if (Option.isSome(questFlag) && Option.isSome(mapFlag)) {
 					return yield* new OgCliError({
 						message: "--map is only valid with --quests (batch), not with --quest <id>.",
@@ -1304,18 +1328,19 @@ export const generateOgCommand = Command.make(
 				}
 
 				if (Option.isSome(questFlag)) {
-					const questEntry = yield* getSideQuestByKey(questFlag.value as SideQuestKey).pipe(
-						Effect.fromOption,
-					)
+					const questEntry = yield* getSideQuestByKey(questFlag.value).pipe(Effect.fromOption)
+
 					const ogImage = yield* generateSideQuestImage(questEntry)
 					yield* writeOgFile(outputBase, "side-quests", questEntry.id, ogImage)
+
 					return
 				}
 
 				const quests = Option.match(mapFlag, {
 					onNone: () => getSideQuests(),
-					onSome: mapKey => getSideQuests().filter(q => q.map === (mapKey as MapKey)),
+					onSome: mapKey => getSideQuests().filter(q => q.map === mapKey),
 				})
+
 				if (!quests.length) {
 					return yield* new OgCliError({
 						message: Option.match(mapFlag, {
@@ -1336,6 +1361,7 @@ export const generateOgCommand = Command.make(
 						}),
 					{ concurrency: 8 },
 				)
+
 				return
 			}
 
@@ -1348,6 +1374,7 @@ export const generateOgCommand = Command.make(
 
 			if (mapsEnabled) {
 				const maps = getMapsWithMainQuest()
+
 				if (!maps.length) {
 					return yield* new OgCliError({
 						message: "No maps with main quests found in the catalog.",
@@ -1365,13 +1392,15 @@ export const generateOgCommand = Command.make(
 						}),
 					{ concurrency: 8 },
 				)
+
 				return
 			}
 
 			if (Option.isSome(mapFlag)) {
-				const map = yield* getMapByKey(mapFlag.value as MapKey).pipe(Effect.fromOption)
+				const map = yield* getMapByKey(mapFlag.value).pipe(Effect.fromOption)
 				const ogImage = yield* generateMainQuestImage(map)
 				yield* writeOgFile(outputBase, "main-quests", map.id, ogImage)
+
 				return
 			}
 

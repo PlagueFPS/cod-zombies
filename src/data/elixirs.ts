@@ -19,6 +19,7 @@ export interface Elixir {
 
 /** Union of all Elixir rarities */
 export type ElixirRarity = Elixir["rarity"]
+
 /** Union of all Elixir keys */
 export type ElixirKey = Parameters<(typeof ELIXIRS)["get"]>[0]
 

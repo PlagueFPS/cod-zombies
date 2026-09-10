@@ -1,4 +1,3 @@
-import type { AmmoModKey } from "@/data/ammo-mods"
 import { createFileRoute } from "@tanstack/react-router"
 import { Option, Predicate } from "effect"
 import { BestiaryGrid } from "@/components/bestiary-grid"
@@ -13,8 +12,8 @@ import { GridPagination } from "@/components/grid-pagination"
 import { GridSection } from "@/components/grid-section"
 import { GridSort } from "@/components/grid-sort"
 import { getAmmoModByKey } from "@/data/ammo-mods"
-import { type GameKey, getGames } from "@/data/games"
-import { getMaps, type MapKey } from "@/data/maps"
+import { getGames } from "@/data/games"
+import { getMaps } from "@/data/maps"
 import { getZombieSortOptions, getZombies, type Zombie } from "@/data/zombies"
 import {
 	applyFilters,
@@ -46,18 +45,22 @@ export const Route = createFileRoute("/bestiary/")({
 	loader: ({ deps, context }) => {
 		const serverUrl = context.serverUrl
 		const title = createSeoTitle("Bestiary")
+
 		const description =
 			"Discover the weaknesses, behavior, and strategies for defeating all enemy types in Call of Duty: Zombies."
 
 		const allZombies = getZombies()
+
 		const games = getGames().map(game => ({
 			value: game.id,
 			label: game.title,
 		}))
+
 		const maps = getMaps().map(map => ({
 			value: map.id,
 			label: map.title,
 		}))
+
 		const typeFilters = Array.from(
 			new Set(allZombies.map(zombie => zombie.type).sort(sortZombieTypes)),
 		).map(type => ({
@@ -82,11 +85,11 @@ export const Route = createFileRoute("/bestiary/")({
 		const filterSpecs: FilterSpec<Zombie>[] = [
 			{
 				values: deps.game,
-				match: (z, id) => z.id === "zombie" || z.games.includes(id as GameKey),
+				match: (z, id) => z.id === "zombie" || z.games.some(game => game === id),
 			},
 			{
 				values: deps.map,
-				match: (z, id) => z.id === "zombie" || z.maps.includes(id as MapKey),
+				match: (z, id) => z.id === "zombie" || z.maps.some(map => map === id),
 			},
 			{
 				values: deps.type,
@@ -94,7 +97,7 @@ export const Route = createFileRoute("/bestiary/")({
 			},
 			{
 				values: deps.weakness,
-				match: (z, slug) => z.elementalWeakness.includes(slug as AmmoModKey),
+				match: (z, slug) => z.elementalWeakness.some(weakness => weakness === slug),
 			},
 		]
 
@@ -171,6 +174,7 @@ function Bestiary() {
 	]
 
 	const filterValue: FilterOption[] = []
+
 	for (const g of groups) {
 		const values = g.items.filter(
 			i =>
@@ -185,12 +189,15 @@ function Bestiary() {
 
 	const onFilterChange = (next: FilterOption[]) => {
 		const selected = new Map<string, string[]>()
+
 		for (const g of groups) {
 			const matched = g.items.filter(i => next.some(n => n.value === i.value)).map(i => i.value)
+
 			if (matched.length > 0) {
 				selected.set(slugify(g.label), matched)
 			}
 		}
+
 		void navigate({
 			search: prev => ({
 				...prev,

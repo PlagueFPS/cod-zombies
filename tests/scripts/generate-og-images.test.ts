@@ -34,6 +34,7 @@ describe("writeOgFile", () => {
 		const p1 = writeOgFile(outBase, "main-quests", "slug-x", bytes, { manifestPath }).pipe(
 			Effect.provide(testLayer),
 		)
+
 		const e1 = await Effect.runPromiseExit(p1)
 		expectExitSuccess(e1)
 
@@ -44,11 +45,13 @@ describe("writeOgFile", () => {
 		let manifest = await Effect.runPromise(
 			decodeOpengraphManifest(readFileSync(manifestPath, "utf-8")),
 		)
+
 		expect(manifest["main-quests"]["slug-x"]).toBe(1)
 
 		const p2 = writeOgFile(outBase, "main-quests", "slug-x", bytes, { manifestPath }).pipe(
 			Effect.provide(testLayer),
 		)
+
 		const e2 = await Effect.runPromiseExit(p2)
 		expectExitSuccess(e2)
 
@@ -76,6 +79,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--maps", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
@@ -87,6 +91,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--zombies", "--zombie", "zombie"]).pipe(Effect.provide(testLayer)),
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
@@ -98,6 +103,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--zombie", "zombie", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
@@ -109,6 +115,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--quests", "--quest", "free-perk"]).pipe(Effect.provide(testLayer)),
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
@@ -120,6 +127,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--quest", "free-perk", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
@@ -131,6 +139,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--relics", "--relic", "lawyers-pen"]).pipe(Effect.provide(testLayer)),
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
@@ -142,6 +151,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		const exit = await Effect.runPromiseExit(
 			runOg(["--relic", "lawyers-pen", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
+
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
@@ -172,21 +182,26 @@ describe("generateOgCommand success (real assets)", () => {
 		} else {
 			process.env.OG_TEST_MANIFEST_PATH = prevManifest
 		}
+
 		rmSync(tmpRoot, { recursive: true, force: true })
 	})
 
 	test("--map die-maschine writes JPEG with OG dimensions", async () => {
 		const outDir = join(tmpRoot, "og-out")
 		mkdirSync(outDir, { recursive: true })
+
 		const exit = await Effect.runPromiseExit(
 			runOg(["--map", "die-maschine", "-o", outDir]).pipe(Effect.provide(testLayer)),
 		)
+
 		expectExitSuccess(exit)
 
 		const dir = join(outDir, "main-quests")
+
 		const jpg = readdirSync(dir).find(
 			f => f.startsWith("opengraph-die-maschine-v") && f.endsWith(".jpg"),
 		)
+
 		expect(jpg).toBeDefined()
 		const meta = await sharp(readFileSync(join(dir, jpg!))).metadata()
 		expect(meta.format).toBe("jpeg")
@@ -197,15 +212,19 @@ describe("generateOgCommand success (real assets)", () => {
 	test("--quest free-perk writes JPEG with OG dimensions", async () => {
 		const outDir = join(tmpRoot, "og-q")
 		mkdirSync(outDir, { recursive: true })
+
 		const exit = await Effect.runPromiseExit(
 			runOg(["--quest", "free-perk", "-o", outDir]).pipe(Effect.provide(testLayer)),
 		)
+
 		expectExitSuccess(exit)
 
 		const dir = join(outDir, "side-quests")
+
 		const jpg = readdirSync(dir).find(
 			f => f.startsWith("opengraph-free-perk-v") && f.endsWith(".jpg"),
 		)
+
 		expect(jpg).toBeDefined()
 		const meta = await sharp(readFileSync(join(dir, jpg!))).metadata()
 		expect(meta.format).toBe("jpeg")
@@ -216,9 +235,11 @@ describe("generateOgCommand success (real assets)", () => {
 	test("--zombie zombie writes JPEG with OG dimensions", async () => {
 		const outDir = join(tmpRoot, "og-z")
 		mkdirSync(outDir, { recursive: true })
+
 		const exit = await Effect.runPromiseExit(
 			runOg(["--zombie", "zombie", "-o", outDir]).pipe(Effect.provide(testLayer)),
 		)
+
 		expectExitSuccess(exit)
 
 		const dir = join(outDir, "zombies")
@@ -233,15 +254,19 @@ describe("generateOgCommand success (real assets)", () => {
 	test("--relic lawyers-pen writes JPEG with OG dimensions", async () => {
 		const outDir = join(tmpRoot, "og-rel")
 		mkdirSync(outDir, { recursive: true })
+
 		const exit = await Effect.runPromiseExit(
 			runOg(["--relic", "lawyers-pen", "-o", outDir]).pipe(Effect.provide(testLayer)),
 		)
+
 		expectExitSuccess(exit)
 
 		const dir = join(outDir, "relics")
+
 		const jpg = readdirSync(dir).find(
 			f => f.startsWith("opengraph-lawyers-pen-v") && f.endsWith(".jpg"),
 		)
+
 		expect(jpg).toBeDefined()
 		const meta = await sharp(readFileSync(join(dir, jpg!))).metadata()
 		expect(meta.format).toBe("jpeg")

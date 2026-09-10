@@ -10,15 +10,15 @@ import {
 type Item = {
 	id: string
 	color: string
-	shape: string
+	figure: string
 	score: number
 }
 
 const items: Item[] = [
-	{ id: "red-circle-low", color: "red", shape: "circle", score: 1 },
-	{ id: "red-square-mid", color: "red", shape: "square", score: 2 },
-	{ id: "blue-circle-high", color: "blue", shape: "circle", score: 3 },
-	{ id: "green-square-top", color: "green", shape: "square", score: 4 },
+	{ id: "red-circle-low", color: "red", figure: "circle", score: 1 },
+	{ id: "red-square-mid", color: "red", figure: "square", score: 2 },
+	{ id: "blue-circle-high", color: "blue", figure: "circle", score: 3 },
+	{ id: "green-square-top", color: "green", figure: "square", score: 4 },
 ]
 
 describe("applyFilters", () => {
@@ -30,7 +30,7 @@ describe("applyFilters", () => {
 			},
 			{
 				values: ["circle"],
-				match: (item, value) => item.shape === value,
+				match: (item, value) => item.figure === value,
 			},
 		]
 
@@ -43,7 +43,7 @@ describe("applyFilters", () => {
 	test("ignores empty and undefined filter values", () => {
 		const specs: FilterSpec<Item>[] = [
 			{ values: [], match: (item, value) => item.color === value },
-			{ values: undefined, match: (item, value) => item.shape === value },
+			{ values: undefined, match: (item, value) => item.figure === value },
 		]
 
 		expect(applyFilters(items, specs)).toEqual(items)

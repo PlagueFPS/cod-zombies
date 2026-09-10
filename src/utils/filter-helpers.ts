@@ -12,11 +12,13 @@ function shouldApply(values: readonly string[] | undefined): values is readonly 
  */
 export function applyFilters<T>(items: readonly T[], specs: ReadonlyArray<FilterSpec<T>>): T[] {
 	let result = [...items]
+
 	for (const spec of specs) {
 		if (!shouldApply(spec.values)) continue
 		const vals = spec.values
 		result = result.filter(item => vals.some(val => spec.match(item, val)))
 	}
+
 	return result
 }
 
@@ -33,10 +35,13 @@ export function applySort<T>(
 ): T[] {
 	const resolvedKey =
 		sortKey !== undefined && specs.some(s => s.key === sortKey) ? sortKey : defaultKey
+
 	const spec = specs.find(s => s.key === resolvedKey)
+
 	if (!spec) return [...items]
 	const out = [...items]
 	out.sort(spec.compare)
+
 	return out
 }
 
@@ -60,6 +65,7 @@ export function paginate<T>(
 	const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
 	const safePage = Math.min(Math.max(page, 1), totalPages)
 	const skip = safePage <= 1 ? 0 : pageSize * safePage - pageSize
+
 	return {
 		items: items.slice(skip, skip + pageSize),
 		page: safePage,

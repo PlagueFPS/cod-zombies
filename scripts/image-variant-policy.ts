@@ -24,11 +24,13 @@ export const EXCLUDED_FROM_IMAGE_PATH_TYPES = HashSet.make("content", "opengraph
 
 export function getCategoryFromRelativePath(relativePath: string): string | null {
 	const segment = relativePath.split("/")[0]
+
 	return segment && !segment.includes(".") ? segment : null
 }
 
 export function shouldGenerateVariants(category: string | null): boolean {
 	if (category === null) return true
+
 	return !HashSet.has(NO_VARIANT_CATEGORIES, category)
 }
 

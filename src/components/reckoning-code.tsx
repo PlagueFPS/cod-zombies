@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Toggle } from "@/components/ui/toggle"
@@ -12,6 +13,7 @@ const getLetters = () => {
 			letters.add(letter)
 		})
 	})
+
 	return [...letters].sort()
 }
 
@@ -23,6 +25,7 @@ const getElementCode = (letters: string[]): string | null => {
 	// Check for single letter element
 	if (letters.length === 1) {
 		const element = periodicTable.find(el => el.initials.toLowerCase() === letters[0])
+
 		return element ? element.number.toString().padStart(3, "0") : null
 	}
 
@@ -56,9 +59,11 @@ export default function ReckoningCode() {
 			const firstLetters = new Set<string>()
 			periodicTable.forEach(element => {
 				if (element.initials[0]) firstLetters.add(element.initials[0].toLowerCase())
+
 				// Also add second letters for elements with two letters
 				if (element.initials[1]) firstLetters.add(element.initials[1].toLowerCase())
 			})
+
 			return firstLetters
 		}
 
@@ -69,9 +74,11 @@ export default function ReckoningCode() {
 			// Allow any letter that can form a valid element when combined
 			periodicTable.forEach(element => {
 				const initials = element.initials.toLowerCase()
+
 				if (selectedLetter && initials.includes(selectedLetter)) {
 					// Add the other letter in the element's initials
 					const otherLetter = initials[0] === selectedLetter ? initials[1] : initials[0]
+
 					if (otherLetter) validLetters.add(otherLetter)
 				}
 			})
@@ -85,11 +92,13 @@ export default function ReckoningCode() {
 	const handleLetterClick = (letter: string) => {
 		// If clicking an already selected letter, remove it
 		const letterIndex = selectedLetters.indexOf(letter)
+
 		if (letterIndex !== -1) {
 			const newSelection = [...selectedLetters]
 			newSelection.splice(letterIndex, 1)
 			setSelectedLetters(newSelection)
 			setCode(getElementCode(newSelection) || "")
+
 			return
 		}
 
@@ -97,6 +106,7 @@ export default function ReckoningCode() {
 		if (selectedLetters.length >= 2) return
 
 		const availableLetters = getAvailableLetters()
+
 		if (availableLetters.has(letter)) {
 			const newSelection = [...selectedLetters, letter]
 			setSelectedLetters(newSelection)
@@ -106,9 +116,11 @@ export default function ReckoningCode() {
 
 	const isLetterDisabled = (letter: string) => {
 		if (selectedLetters.length === 0) return false
+
 		if (selectedLetters.includes(letter)) return false // Allow clicking selected letters to unselect them
 
 		const availableLetters = getAvailableLetters()
+
 		return !availableLetters.has(letter)
 	}
 

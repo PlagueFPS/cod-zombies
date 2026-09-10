@@ -89,6 +89,7 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 										<CommandCollection>
 											{(item: SearchItem["items"][number]) => {
 												const Icon = group.icon ? SEARCH_ICONS[group.icon] : null
+
 												return (
 													<CommandItem
 														key={item.value}

@@ -1,9 +1,14 @@
 /** Past deltas under this many seconds are shown as "1 minute ago" (no seconds). */
 const MINUTE_FLOOR_SECONDS = 120
+
 export const MS_HOUR = 3_600_000
+
 export const MS_DAY = MS_HOUR * 24
+
 export const MS_WEEK = 7 * MS_DAY
+
 export const MS_MONTH = MS_DAY * 31
+
 export const WEEKS_PER_MEAN_MONTH = MS_MONTH / MS_WEEK
 
 interface RelativeDivision {
@@ -51,9 +56,11 @@ export function formatRelativeTimeAgo(
 	if (monthsElapsed >= 24) {
 		return rtf.format(-Math.floor(monthsElapsed / 12), "year")
 	}
+
 	if (monthsElapsed >= 12) {
 		return rtf.format(-1, "year")
 	}
+
 	if (monthsElapsed >= 1) {
 		return rtf.format(-Math.max(1, Math.floor(monthsElapsed)), "month")
 	}
@@ -64,6 +71,7 @@ export function formatRelativeTimeAgo(
 		if (Math.abs(duration) < amount) {
 			return rtf.format(Math.round(duration), unit)
 		}
+
 		duration /= amount
 	}
 

@@ -4,7 +4,6 @@ import { getWeakPointByKey } from "@/data/weak-points"
 
 describe("getWeakPointByKey", () => {
 	test("returns None when the weak point does not exist", () => {
-		// @ts-expect-error invalid key
 		const weakPoint = getWeakPointByKey("invalid-weak-point")
 		expect(Option.isNone(weakPoint)).toBe(true)
 	})

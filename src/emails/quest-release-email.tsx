@@ -12,6 +12,7 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
+
 export interface IQuestRelease {
 	type: "Main" | "Side"
 	title: string
@@ -37,6 +38,7 @@ export default function QuestReleaseEmail({
 			"Detailed explanations for each step with images",
 			"Tips to circumvent common pain points",
 		]
+
 		switch (type) {
 			case "Main":
 				return [

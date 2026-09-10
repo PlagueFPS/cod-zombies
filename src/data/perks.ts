@@ -24,6 +24,7 @@ export interface Perk {
 	/** The game variants of the perk */
 	readonly variants: Option.Option<Partial<Record<GameKey, PerkVariant>>>
 }
+
 /**Union of all perk keys */
 export type PerkKey = Parameters<(typeof PERKS)["get"]>[0]
 

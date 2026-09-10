@@ -19,6 +19,7 @@ interface LayerSwitcher {
 
 export function LayerSwitcher({ mapLayers }: LayerSwitcher) {
 	const { layer, updateLayer } = useMapSearch()
+
 	const currentLayer = !layer
 		? Arr.head(mapLayers)
 		: Arr.findFirst(mapLayers, l => l.id === layer).pipe(

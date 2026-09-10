@@ -29,6 +29,15 @@ import {
 } from "@/utils/shared-functions"
 import { StandardRelicSearchParamsSchema } from "@/utils/validation-schemas"
 
+const RELIC_TYPE_SLUGS = ["grim", "sinister", "wicked"] as const
+
+function matchingSlugs<S extends string>(values: string[] | undefined, allowed: readonly S[]) {
+	if (!values) return undefined
+	const matched = values.filter((value): value is S => allowed.some(slug => slug === value))
+
+	return matched.length > 0 ? matched : undefined
+}
+
 export const Route = createFileRoute("/relics/")({
 	validateSearch: StandardRelicSearchParamsSchema,
 	loaderDeps: ({ search }) => ({
@@ -45,12 +54,15 @@ export const Route = createFileRoute("/relics/")({
 		const maps = getMaps()
 		const allRelics = getRelics()
 		const relicMaps = new Set<string>(allRelics.map(r => r.map))
+
 		const typeFilters = [...new Set(allRelics.map(r => r.type))].map(type => ({
 			value: slugify(type),
 			label: type,
 		}))
+
 		const mapFilters = maps.flatMap(m => {
 			if (!relicMaps.has(m.id)) return []
+
 			return [{ value: m.id, label: m.title }]
 		})
 
@@ -141,6 +153,7 @@ function Relics() {
 	]
 
 	const filterValue: FilterOption[] = []
+
 	for (const g of groups) {
 		const values = g.items.filter(
 			i => map?.some(d => d === i.value) || type?.some(t => t === i.value),
@@ -151,18 +164,21 @@ function Relics() {
 
 	const onFilterChange = (next: FilterOption[]) => {
 		const selected = new Map<string, string[]>()
+
 		for (const g of groups) {
 			const matched = g.items.filter(i => next.some(n => n.value === i.value)).map(i => i.value)
+
 			if (matched.length > 0) {
 				selected.set(slugify(g.label), matched)
 			}
 		}
+
 		void navigate({
 			search: prev => ({
 				...prev,
 				page: undefined,
 				map: selected.get("map"),
-				type: selected.get("type") as "grim" | "sinister" | "wicked" | undefined,
+				type: matchingSlugs(selected.get("type"), RELIC_TYPE_SLUGS),
 			}),
 			replace: true,
 		})

@@ -4,29 +4,38 @@ import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
 import type { MapMarker } from "@/map-configs/markers"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 
 export type EncodedMapEntry = Omit<
 	EncodedFields<MapEntry, "difficulty" | "state" | "estimatedTimeMins">,
 	"mainQuest"
 >
+
 export type EncodedSideQuest = Omit<EncodedFields<SideQuest, "state">, "content">
+
 export type EncodedRelic = Omit<EncodedFields<Relic, "state">, "content">
+
 export type EncodedZombie = Omit<EncodedFields<Zombie, "state">, "combatStrategy">
+
 export type EncodedInteractiveMap = EncodedFields<InteractiveMap, "state">
+
 export type EncodedMapMarker = EncodedFields<MapMarker, "icon">
+
 export interface EncodedMapConfigLayer extends Omit<MapConfigLayer, "markers"> {
 	markers: EncodedMapMarker[]
 }
+
 export interface EncodedMapConfig extends Omit<MapConfig, "layers"> {
 	layers: EncodedMapConfigLayer[]
 }
+
 export type EncodedFields<T, K extends keyof T> = Omit<T, K> & {
 	[P in K]: T[P] extends Option.Option<infer A> ? A | null : never
 }
 
 export function encodeMap(map: MapEntry): EncodedMapEntry {
 	const { mainQuest, difficulty, state, estimatedTimeMins, ...rest } = map
+
 	return {
 		...rest,
 		difficulty: Option.getOrNull(difficulty),
@@ -37,16 +46,19 @@ export function encodeMap(map: MapEntry): EncodedMapEntry {
 
 export function encodeSideQuest(quest: SideQuest): EncodedSideQuest {
 	const { content, state, ...rest } = quest
+
 	return { ...rest, state: Option.getOrNull(state) }
 }
 
 export function encodeRelic(relic: Relic): EncodedRelic {
 	const { content, state, ...rest } = relic
+
 	return { ...rest, state: Option.getOrNull(state) }
 }
 
 export function encodeZombie(zombie: Zombie): EncodedZombie {
 	const { combatStrategy, state, ...rest } = zombie
+
 	return { ...rest, state: Option.getOrNull(state) }
 }
 
@@ -110,7 +122,8 @@ export function decodeMapConfigLayer(encoded: EncodedMapConfigLayer): MapConfigL
 
 export const isSideQuest = <M extends { _tag: "MapEntry" }, S extends { _tag: "SideQuest" }>(
 	quest: M | S,
-): quest is S => quest._tag === "SideQuest"
+): quest is S => Predicate.isTagged("SideQuest")(quest)
+
 export const isMapQuest = <M extends { _tag: "MapEntry" }, S extends { _tag: "SideQuest" }>(
 	quest: M | S,
-): quest is M => quest._tag === "MapEntry"
+): quest is M => Predicate.isTagged("MapEntry")(quest)

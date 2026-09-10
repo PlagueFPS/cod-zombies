@@ -47,6 +47,7 @@ const terminalWithAnswer = (answer: "y" | "n") =>
 		Effect.gen(function* () {
 			const queue = yield* Queue.make<Terminal.UserInput, Cause.Done>()
 			yield* Queue.offer(queue, confirmKey(answer))
+
 			return Terminal.make({
 				columns: Effect.succeed(80),
 				rows: Effect.succeed(24),
@@ -58,6 +59,7 @@ const terminalWithAnswer = (answer: "y" | "n") =>
 	)
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer, unusedTerminalLayer)
+
 const promptLayer = (answer: "y" | "n") =>
 	Layer.mergeAll(BunFileSystemLayer, BunPathLayer, terminalWithAnswer(answer))
 
@@ -78,20 +80,24 @@ async function writePng(filePath: string, width: number, height: number) {
 	})
 		.png()
 		.toBuffer()
+
 	writeFileSync(filePath, buf)
 }
 
 function listFilesRecursive(dir: string, base = dir): string[] {
 	const entries = readdirSync(dir, { withFileTypes: true })
 	const files: string[] = []
+
 	for (const entry of entries) {
 		const full = join(dir, entry.name)
+
 		if (entry.isDirectory()) {
 			files.push(...listFilesRecursive(full, base))
 		} else {
 			files.push(full.slice(base.length + 1))
 		}
 	}
+
 	return files
 }
 
@@ -115,11 +121,13 @@ describe("optimizeAssetsEffect", () => {
 	test("excluded category produces single webp", async () => {
 		mkdirSync(join(root, "newassets", "perks"), { recursive: true })
 		await writePng(join(root, "newassets", "perks", "foo.png"), 400, 400)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out"))
@@ -131,11 +139,13 @@ describe("optimizeAssetsEffect", () => {
 	test("large variant source produces base and both variants as webp", async () => {
 		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
 		await writePng(join(root, "newassets", "maps", "big.png"), 2000, 800)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out")).sort()
@@ -143,9 +153,11 @@ describe("optimizeAssetsEffect", () => {
 		const metaBase = await sharp(readFileSync(join(root, "out", "maps", "big.webp"))).metadata()
 		expect(metaBase.width).toBe(1920)
 		expect(metaBase.format).toBe("webp")
+
 		const meta1200 = await sharp(
 			readFileSync(join(root, "out", "maps", "big-1200.webp")),
 		).metadata()
+
 		expect(meta1200.width).toBe(1200)
 		expect(meta1200.format).toBe("webp")
 		const meta384 = await sharp(readFileSync(join(root, "out", "maps", "big-384.webp"))).metadata()
@@ -155,11 +167,13 @@ describe("optimizeAssetsEffect", () => {
 	test("default mode caps base image width at 1920px", async () => {
 		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
 		await writePng(join(root, "newassets", "maps", "huge.png"), 4000, 1600)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const meta = await sharp(readFileSync(join(root, "out", "maps", "huge.webp"))).metadata()
@@ -169,11 +183,13 @@ describe("optimizeAssetsEffect", () => {
 	test("medium variant source produces base and 384 only", async () => {
 		mkdirSync(join(root, "newassets", "zombies"), { recursive: true })
 		await writePng(join(root, "newassets", "zombies", "med.png"), 800, 600)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out")).sort()
@@ -183,11 +199,13 @@ describe("optimizeAssetsEffect", () => {
 	test("small variant source produces base only", async () => {
 		mkdirSync(join(root, "newassets", "previews"), { recursive: true })
 		await writePng(join(root, "newassets", "previews", "small.png"), 200, 200)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out"))
@@ -197,11 +215,13 @@ describe("optimizeAssetsEffect", () => {
 	test("nested content path preserves directory structure", async () => {
 		mkdirSync(join(root, "newassets", "content", "map"), { recursive: true })
 		await writePng(join(root, "newassets", "content", "map", "img.png"), 1500, 900)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out")).sort()
@@ -215,11 +235,13 @@ describe("optimizeAssetsEffect", () => {
 	test("does not upscale small images in variant categories", async () => {
 		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
 		await writePng(join(root, "newassets", "maps", "tiny.png"), 300, 200)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out"))
@@ -228,11 +250,13 @@ describe("optimizeAssetsEffect", () => {
 
 	test("skips non-image extensions", async () => {
 		writeFileSync(join(root, "newassets", "readme.txt"), "nope")
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		expect(listFilesRecursive(join(root, "out"))).toHaveLength(0)
@@ -240,11 +264,13 @@ describe("optimizeAssetsEffect", () => {
 
 	test("fails with ImageOptimizationError when image is invalid", async () => {
 		writeFileSync(join(root, "newassets", "bad.png"), Buffer.from("not a png"))
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
@@ -265,11 +291,13 @@ describe("optimizeAssetsEffect", () => {
 	test("keeps source file when source and output directories are the same", async () => {
 		mkdirSync(join(root, "public", "maps"), { recursive: true })
 		await writePng(join(root, "public", "maps", "big.png"), 2000, 800)
+
 		const program = optimizeAssetsEffect({
 			dir: "./public",
 			source: "./public",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "public")).sort()
@@ -285,11 +313,13 @@ describe("optimizeAssetsEffect", () => {
 	test("does not reprocess existing variant files in place", async () => {
 		mkdirSync(join(root, "public", "maps"), { recursive: true })
 		await writePng(join(root, "public", "maps", "big.png"), 2000, 800)
+
 		const buf384 = await sharp({
 			create: { width: 384, height: 200, channels: 3, background: { r: 0, g: 0, b: 0 } },
 		})
 			.webp()
 			.toBuffer()
+
 		writeFileSync(join(root, "public", "maps", "big-384.webp"), buf384)
 
 		const program = optimizeAssetsEffect({
@@ -297,6 +327,7 @@ describe("optimizeAssetsEffect", () => {
 			source: "./public",
 			...noModeFlags,
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 
@@ -311,6 +342,7 @@ describe("optimizeAssetsEffect", () => {
 	test("preview mode resizes to 640w with no variants", async () => {
 		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
 		await writePng(join(root, "newassets", "maps", "big.png"), 2000, 800)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
@@ -318,6 +350,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.none(),
 			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out"))
@@ -330,6 +363,7 @@ describe("optimizeAssetsEffect", () => {
 	test("preview mode upscales small images to 640w", async () => {
 		mkdirSync(join(root, "newassets", "previews"), { recursive: true })
 		await writePng(join(root, "newassets", "previews", "small.png"), 200, 200)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
@@ -337,6 +371,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.none(),
 			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const meta = await sharp(readFileSync(join(root, "out", "previews", "small.webp"))).metadata()
@@ -346,6 +381,7 @@ describe("optimizeAssetsEffect", () => {
 	test("map mode resizes to 2048w with no variants", async () => {
 		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
 		await writePng(join(root, "newassets", "maps", "huge.png"), 4000, 1600)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
@@ -353,6 +389,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.some(true),
 			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out"))
@@ -365,6 +402,7 @@ describe("optimizeAssetsEffect", () => {
 	test("map mode does not upscale images narrower than 2048w", async () => {
 		mkdirSync(join(root, "newassets", "maps"), { recursive: true })
 		await writePng(join(root, "newassets", "maps", "med.png"), 1500, 900)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
@@ -372,6 +410,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.some(true),
 			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const meta = await sharp(readFileSync(join(root, "out", "maps", "med.webp"))).metadata()
@@ -386,6 +425,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.some(true),
 			icon: Option.none(),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
@@ -397,6 +437,7 @@ describe("optimizeAssetsEffect", () => {
 	test("icon mode resizes images wider than 256w to 256x256 with no variants", async () => {
 		mkdirSync(join(root, "newassets", "icons"), { recursive: true })
 		await writePng(join(root, "newassets", "icons", "big.png"), 400, 300)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
@@ -404,6 +445,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.none(),
 			icon: Option.some(true),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out"))
@@ -417,6 +459,7 @@ describe("optimizeAssetsEffect", () => {
 	test("icon mode resizes images narrower than 256w to 128x128 with no variants", async () => {
 		mkdirSync(join(root, "newassets", "icons"), { recursive: true })
 		await writePng(join(root, "newassets", "icons", "small.png"), 200, 180)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
@@ -424,6 +467,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.none(),
 			icon: Option.some(true),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out"))
@@ -437,6 +481,7 @@ describe("optimizeAssetsEffect", () => {
 	test("icon mode upscales tiny images to 128x128", async () => {
 		mkdirSync(join(root, "newassets", "icons"), { recursive: true })
 		await writePng(join(root, "newassets", "icons", "tiny.png"), 64, 64)
+
 		const program = optimizeAssetsEffect({
 			dir: "./out",
 			source: "./newassets",
@@ -444,6 +489,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.none(),
 			icon: Option.some(true),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const meta = await sharp(readFileSync(join(root, "out", "icons", "tiny.webp"))).metadata()
@@ -456,11 +502,13 @@ describe("optimizeAssetsEffect", () => {
 		await writePng(join(root, "newassets", "perks", "foo.png"), 400, 400)
 		const missingOut = join(root, "missing-out")
 		expect(existsSync(missingOut)).toBe(false)
+
 		const program = optimizeAssetsEffect({
 			dir: "./missing-out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(promptLayer("y")))
+
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		expect(existsSync(missingOut)).toBe(true)
@@ -471,11 +519,13 @@ describe("optimizeAssetsEffect", () => {
 		mkdirSync(join(root, "newassets", "perks"), { recursive: true })
 		await writePng(join(root, "newassets", "perks", "foo.png"), 400, 400)
 		const missingOut = join(root, "missing-out")
+
 		const program = optimizeAssetsEffect({
 			dir: "./missing-out",
 			source: "./newassets",
 			...noModeFlags,
 		}).pipe(Effect.provide(promptLayer("n")))
+
 		const exit = await Effect.runPromiseExit(program)
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
@@ -494,6 +544,7 @@ describe("optimizeAssetsEffect", () => {
 			map: Option.none(),
 			icon: Option.some(true),
 		}).pipe(Effect.provide(testLayer))
+
 		const exit = await Effect.runPromiseExit(program)
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)

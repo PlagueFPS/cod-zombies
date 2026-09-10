@@ -8,7 +8,6 @@ import {
 	getMapsWithMainQuest,
 	MAIN_QUEST_DIFFICULTIES,
 	type MapEntry,
-	type MapKey,
 } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
@@ -113,6 +112,7 @@ describe("map New badge vs release date (fixtures)", () => {
 			...fixture,
 			state: Option.none<ContentState>(),
 		}
+
 		expect(
 			Option.getOrNull(resolvedMapDisplayState(noBadge, "2026-05-10T12:00:00.000Z")),
 		).toBeNull()
@@ -131,6 +131,7 @@ describe("getMapsWithMainQuest", () => {
 		const allIds = new Set(getMaps().map(m => m.id))
 		const withMq = getMapsWithMainQuest()
 		expect(withMq.length).toBeGreaterThan(0)
+
 		for (const m of withMq) {
 			expect(allIds.has(m.id)).toBe(true)
 			expect(Option.isSome(m.mainQuest)).toBe(true)
@@ -142,11 +143,13 @@ describe("getAdjacentMaps", () => {
 	test("matches ordering of getMapsWithMainQuest", () => {
 		const maps = getMapsWithMainQuest()
 		const mid = maps[Math.floor(maps.length / 2)]!
-		const { prev, next } = getAdjacentMaps(mid.id as MapKey)
+		const { prev, next } = getAdjacentMaps(mid.id)
 		const idx = maps.findIndex(m => m.id === mid.id)
 		expect(idx).toBeGreaterThanOrEqual(0)
+
 		const expectedPrev =
 			idx < maps.length - 1 ? Option.some(maps[idx + 1]!.id) : Option.none<string>()
+
 		const expectedNext = idx > 0 ? Option.some(maps[idx - 1]!.id) : Option.none<string>()
 		expect(prev.pipe(Option.map(p => p.id))).toEqual(expectedPrev)
 		expect(next.pipe(Option.map(n => n.id))).toEqual(expectedNext)
@@ -154,14 +157,14 @@ describe("getAdjacentMaps", () => {
 
 	test("prev is Some and Next is None when the first map is provided", () => {
 		const first = Arr.head(getMapsWithMainQuest()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentMaps(first.id as MapKey)
+		const { prev, next } = getAdjacentMaps(first.id)
 		expect(Option.isSome(prev)).toBe(true)
 		expect(Option.isNone(next)).toBe(true)
 	})
 
 	test("prev is None and Next is Some when the last map is provided", () => {
 		const last = Arr.last(getMapsWithMainQuest()).pipe(Option.getOrThrow)
-		const { prev, next } = getAdjacentMaps(last.id as MapKey)
+		const { prev, next } = getAdjacentMaps(last.id)
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})

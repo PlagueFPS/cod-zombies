@@ -11,6 +11,7 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 				return await Effect.gen(function* () {
 					const url = new URL(request.url)
 					const token = url.searchParams.get("token")
+
 					if (!token)
 						return Response.redirect(
 							new URL(
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 					const email = yield* verifyToken(decodedToken)
 
 					yield* unsubscribeEmail(email)
+
 					return Response.redirect(new URL(`/newsletter/unsubscribe/success`, request.url))
 				}).pipe(
 					Effect.withLogSpan("unsubscribe_get_handler"),
@@ -30,6 +32,7 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 					Effect.catchTags({
 						TokenExpirationError: () => {
 							const message = "The unsubscribe token used has expired. Please request a new one."
+
 							return Effect.succeed(
 								Response.redirect(
 									new URL(
@@ -41,6 +44,7 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 						},
 						TokenVerificationError: () => {
 							const message = "The unsubscribe token used is invalid. Please request a new one."
+
 							return Effect.succeed(
 								Response.redirect(
 									new URL(
@@ -53,6 +57,7 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 						ResendError: () => {
 							const message =
 								"We were unable to unsubscribe your email from our newsletter due to a technical issue on our end. Please try again or request a new unsubscribe token. We're sorry for the inconvenience!"
+
 							return Effect.succeed(
 								Response.redirect(
 									new URL(

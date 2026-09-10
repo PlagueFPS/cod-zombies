@@ -4,7 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Option } from "effect"
-import { uniqueMap } from "@/data/registry-helpers"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
@@ -53,16 +53,15 @@ export function compareMapReleaseDescending(
 	b: Pick<MapEntry, "id" | "releaseDate">,
 ): number {
 	const byDate = sortDates(b.releaseDate, a.releaseDate)
+
 	if (byDate !== 0) return byDate
 
-	return (
-		MAP_INSERATION_INDEX_BY_ID.get(b.id as MapKey)! -
-		MAP_INSERATION_INDEX_BY_ID.get(a.id as MapKey)!
-	)
+	return MAP_INSERATION_INDEX_BY_ID.get(b.id)! - MAP_INSERATION_INDEX_BY_ID.get(a.id)!
 }
 
 function withResolvedMapState(map: MapEntry): MapEntry {
 	const nowMs = Date.now()
+
 	return {
 		...map,
 		state: resolveNewContentState(map.state, map.releaseDate, nowMs),
@@ -77,11 +76,11 @@ export const getMaps = () =>
 export const getMapsWithMainQuest = () => Arr.filter(getMaps(), map => Option.isSome(map.mainQuest))
 
 /** @returns The map with the given key */
-export const getMapByKey = (key: MapKey) =>
-	Option.fromUndefinedOr(MAPS.get(key)).pipe(Option.map(withResolvedMapState))
+export const getMapByKey = (key: string) =>
+	registryGet(MAPS, key).pipe(Option.map(withResolvedMapState))
 
 /** @returns The adjacent maps of the map with the given key */
-export const getAdjacentMaps = (key: MapKey) => {
+export const getAdjacentMaps = (key: string) => {
 	return getAdjacentItems(getMapsWithMainQuest(), key)
 }
 
@@ -128,6 +127,7 @@ export function mainQuestMidpointMatchesTimeRange(
 	if (range.slug === MAIN_QUEST_TIME_RANGE_OPEN_END_SLUG) {
 		return midpoint >= range.minMins && midpoint <= range.maxMins
 	}
+
 	return midpoint >= range.minMins && midpoint < range.maxMins
 }
 
@@ -138,7 +138,9 @@ export function mainQuestMidpointMatchesAnyTimeSlug(
 ): boolean {
 	return slugs.some(slug => {
 		const range = MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === slug)
+
 		if (!range) return false
+
 		return mainQuestMidpointMatchesTimeRange(midpoint, range)
 	})
 }
@@ -884,4 +886,4 @@ const MAPS = uniqueMap([
 	}),
 ])
 
-const MAP_INSERATION_INDEX_BY_ID = new Map<MapKey, number>([...MAPS.keys()].map((id, i) => [id, i]))
+const MAP_INSERATION_INDEX_BY_ID = new Map<string, number>([...MAPS.keys()].map((id, i) => [id, i]))

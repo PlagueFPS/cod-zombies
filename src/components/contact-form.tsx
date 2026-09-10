@@ -29,6 +29,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 	const [open, setOpen] = useState(false)
 	const [isPending, startTransition] = useTransition()
 	const sendContactForm = useServerFn(submitContactForm)
+
 	const form = useForm({
 		defaultValues: {
 			email: "",
@@ -79,6 +80,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 		if (!open) {
 			form.reset()
 		}
+
 		setOpen(open)
 	}
 
@@ -113,6 +115,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 							<form.Field name="name">
 								{field => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
 									return (
 										<Field data-invalid={isInvalid}>
 											<FieldLabel htmlFor={field.name}>Name</FieldLabel>
@@ -141,6 +144,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 							<form.Field name="email">
 								{field => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
 									return (
 										<Field data-invalid={isInvalid}>
 											<FieldLabel htmlFor={field.name}>Email</FieldLabel>
@@ -169,6 +173,7 @@ export default function ContactForm({ className }: ContactFormProps) {
 							<form.Field name="message">
 								{field => {
 									const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
 									return (
 										<Field data-invalid={isInvalid}>
 											<FieldLabel htmlFor={field.name}>Message</FieldLabel>

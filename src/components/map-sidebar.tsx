@@ -57,6 +57,7 @@ export default function MapSidebar({
 }: IMapSidebar) {
 	const params = useParams({ from: "/maps/$mapId" })
 	const router = useRouter()
+
 	const {
 		layer,
 		isIncluded,
@@ -66,10 +67,13 @@ export default function MapSidebar({
 		convertIncludeToExclude,
 		buildShareableSearch,
 	} = useMapSearch()
+
 	const maps = encodedMaps.map(decodeInteractiveMap)
 	const mapLayers = encodedMapLayer.map(decodeMapConfigLayer)
+
 	const mapMarkers = useMemo(() => {
 		if (!layer) return mapLayers.at(0)?.markers ?? []
+
 		return mapLayers.find(l => l.id === layer)?.markers ?? []
 	}, [layer, mapLayers])
 
@@ -88,11 +92,13 @@ export default function MapSidebar({
 		if (typeof window === "undefined") return ""
 
 		const search = buildShareableSearch(mapMarkers)
+
 		const { href } = router.buildLocation({
 			to: "/maps/$mapId",
 			params: { mapId: params.mapId },
 			search,
 		})
+
 		return `${window.location.origin}${href}`
 	}
 
@@ -196,17 +202,12 @@ export default function MapSidebar({
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu className="gap-1">
-										{[...groups.general].filter(existsInLayer).map(marker => (
-											<MarkerSidebarMenuItem
-												key={marker}
-												marker={marker}
-												mapMarkers={mapMarkers}
-												category="general"
-												isIncluded={isIncluded}
-												toggleExclude={toggleExclude}
-												countLocationsInLayer={countLocationsInLayer}
-											/>
-										))}
+										{markerGroupItems(groups.general, "general", existsInLayer, {
+											mapMarkers,
+											isIncluded,
+											toggleExclude,
+											countLocationsInLayer,
+										})}
 									</SidebarMenu>
 								</SidebarGroupContent>
 							</CollapsibleContent>
@@ -227,17 +228,12 @@ export default function MapSidebar({
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu className="gap-1">
-										{[...groups.equipment].filter(existsInLayer).map(marker => (
-											<MarkerSidebarMenuItem
-												key={marker}
-												marker={marker}
-												mapMarkers={mapMarkers}
-												category="equipment"
-												isIncluded={isIncluded}
-												toggleExclude={toggleExclude}
-												countLocationsInLayer={countLocationsInLayer}
-											/>
-										))}
+										{markerGroupItems(groups.equipment, "equipment", existsInLayer, {
+											mapMarkers,
+											isIncluded,
+											toggleExclude,
+											countLocationsInLayer,
+										})}
 									</SidebarMenu>
 								</SidebarGroupContent>
 							</CollapsibleContent>
@@ -258,17 +254,12 @@ export default function MapSidebar({
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu className="gap-1">
-										{[...groups.upgrades].filter(existsInLayer).map(marker => (
-											<MarkerSidebarMenuItem
-												key={marker}
-												marker={marker}
-												mapMarkers={mapMarkers}
-												category="upgrades"
-												isIncluded={isIncluded}
-												toggleExclude={toggleExclude}
-												countLocationsInLayer={countLocationsInLayer}
-											/>
-										))}
+										{markerGroupItems(groups.upgrades, "upgrades", existsInLayer, {
+											mapMarkers,
+											isIncluded,
+											toggleExclude,
+											countLocationsInLayer,
+										})}
 									</SidebarMenu>
 								</SidebarGroupContent>
 							</CollapsibleContent>
@@ -289,17 +280,12 @@ export default function MapSidebar({
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu className="gap-1">
-										{[...groups.objectives].filter(existsInLayer).map(marker => (
-											<MarkerSidebarMenuItem
-												key={marker}
-												marker={marker}
-												mapMarkers={mapMarkers}
-												category="objectives"
-												isIncluded={isIncluded}
-												toggleExclude={toggleExclude}
-												countLocationsInLayer={countLocationsInLayer}
-											/>
-										))}
+										{markerGroupItems(groups.objectives, "objectives", existsInLayer, {
+											mapMarkers,
+											isIncluded,
+											toggleExclude,
+											countLocationsInLayer,
+										})}
 									</SidebarMenu>
 								</SidebarGroupContent>
 							</CollapsibleContent>
@@ -320,17 +306,12 @@ export default function MapSidebar({
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu className="gap-1">
-										{[...groups.transportation].filter(existsInLayer).map(marker => (
-											<MarkerSidebarMenuItem
-												key={marker}
-												marker={marker}
-												mapMarkers={mapMarkers}
-												category="transportation"
-												isIncluded={isIncluded}
-												toggleExclude={toggleExclude}
-												countLocationsInLayer={countLocationsInLayer}
-											/>
-										))}
+										{markerGroupItems(groups.transportation, "transportation", existsInLayer, {
+											mapMarkers,
+											isIncluded,
+											toggleExclude,
+											countLocationsInLayer,
+										})}
 									</SidebarMenu>
 								</SidebarGroupContent>
 							</CollapsibleContent>
@@ -351,17 +332,12 @@ export default function MapSidebar({
 							<CollapsibleContent>
 								<SidebarGroupContent>
 									<SidebarMenu className="gap-1">
-										{[...groups.intel].filter(existsInLayer).map(marker => (
-											<MarkerSidebarMenuItem
-												key={marker}
-												marker={marker}
-												mapMarkers={mapMarkers}
-												category="intel"
-												isIncluded={isIncluded}
-												toggleExclude={toggleExclude}
-												countLocationsInLayer={countLocationsInLayer}
-											/>
-										))}
+										{markerGroupItems(groups.intel, "intel", existsInLayer, {
+											mapMarkers,
+											isIncluded,
+											toggleExclude,
+											countLocationsInLayer,
+										})}
 									</SidebarMenu>
 								</SidebarGroupContent>
 							</CollapsibleContent>
@@ -390,6 +366,19 @@ interface IMarkerSidebarMenuItem {
 	isIncluded: (marker: string) => boolean
 	toggleExclude: (marker: string) => void
 	countLocationsInLayer: (marker: string) => number
+}
+
+function markerGroupItems(
+	markers: Set<string>,
+	category: MarkerCategory,
+	existsInLayer: (marker: string) => boolean,
+	itemProps: Omit<IMarkerSidebarMenuItem, "marker" | "category">,
+) {
+	return [...markers].flatMap(marker =>
+		existsInLayer(marker)
+			? [<MarkerSidebarMenuItem key={marker} marker={marker} category={category} {...itemProps} />]
+			: [],
+	)
 }
 
 function MarkerSidebarMenuItem({
@@ -430,6 +419,7 @@ interface IMarkerFilterIcon {
 
 function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 	const mapMarker = mapMarkers.find(m => m.type === marker || m.id === marker)
+
 	if (!mapMarker) return null
 
 	if (mapMarker.type) {

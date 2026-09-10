@@ -3,8 +3,8 @@ import type { MapMarker } from "@/map-configs/markers"
 import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import { Effect, Option, Schema } from "effect"
-import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
-import { uniqueMap } from "@/data/registry-helpers"
+import { compareMapReleaseDescending, getMapByKey } from "@/data/maps"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { decodeMapConfigModule } from "@/utils/validation-schemas"
 
@@ -56,7 +56,7 @@ export interface MapConfig {
  * Gets the interactive map configuration for a given map key.
  */
 export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(function* (
-	key: InteractiveMapKey,
+	key: string,
 ) {
 	const config = yield* Effect.tryPromise({
 		try: () => import(`../map-configs/${key}.ts`),
@@ -66,11 +66,13 @@ export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(func
 		Effect.map(module => module.config),
 	)
 
+	// SAFETY: map-config modules export `MapConfig`; the schema only checks that `config` exists.
 	return config as MapConfig
 })
 
 function withResolvedInteractiveMapState(map: InteractiveMap): InteractiveMap {
 	const nowMs = Date.now()
+
 	return {
 		...map,
 		state: resolveNewContentState(map.state, map.publishedDate, nowMs),
@@ -80,18 +82,17 @@ function withResolvedInteractiveMapState(map: InteractiveMap): InteractiveMap {
 /**
  * Gets an interactive map by its key.
  */
-export const getInteractiveMapByKey = (key: InteractiveMapKey) =>
-	Option.fromUndefinedOr(INTERACTIVE_MAPS.get(key)).pipe(
-		Option.map(withResolvedInteractiveMapState),
-	)
+export const getInteractiveMapByKey = (key: string) =>
+	registryGet(INTERACTIVE_MAPS, key).pipe(Option.map(withResolvedInteractiveMapState))
 
 /**
  * Gets a list of all interactive maps in the registry sorted by release date descending
  */
 export const getInteractiveMaps = () =>
 	[...INTERACTIVE_MAPS.values()].map(withResolvedInteractiveMapState).sort((a, b) => {
-		const mapA = getMapByKey(a.id as MapKey).pipe(Option.getOrThrow)
-		const mapB = getMapByKey(b.id as MapKey).pipe(Option.getOrThrow)
+		const mapA = getMapByKey(a.id).pipe(Option.getOrThrow)
+		const mapB = getMapByKey(b.id).pipe(Option.getOrThrow)
+
 		return compareMapReleaseDescending(mapA, mapB)
 	})
 

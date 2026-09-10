@@ -53,6 +53,7 @@ export function formatDravakarSwitchInteractions(
 ): DravakarSwitchInteraction[] {
 	return DRAVAKAR_SWITCHES.flatMap(switchName => {
 		const count = presses[switchName]
+
 		if (!count) return []
 
 		return [{ switch: switchName, label: DRAVAKAR_SWITCH_LABELS[switchName], count }]

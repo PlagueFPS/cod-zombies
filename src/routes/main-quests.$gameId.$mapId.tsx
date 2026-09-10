@@ -17,7 +17,7 @@ import { ShareButton } from "@/components/share-button"
 import { TableOfContents } from "@/components/table-of-contents"
 import { Badge } from "@/components/ui/badge"
 import { getGameByKey } from "@/data/games"
-import { getAdjacentMaps, getMapByKey, type MapKey } from "@/data/maps"
+import { getAdjacentMaps, getMapByKey } from "@/data/maps"
 import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { type EncodedMapEntry, encodeMap } from "@/utils/rsc-wire"
@@ -26,8 +26,10 @@ import richStyles from "@/rich-text.module.css"
 
 export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 	loader: async ({ params, context }) => {
-		const map = getMapByKey(params.mapId as MapKey).pipe(Option.getOrThrowWith(() => notFound()))
+		const map = getMapByKey(params.mapId).pipe(Option.getOrThrowWith(() => notFound()))
+
 		if (map.state.valueOrUndefined === "Coming Soon") throw notFound()
+
 		if (Option.isNone(map.mainQuest)) throw notFound()
 
 		const [opengraphUrl] = await Promise.all([
@@ -39,7 +41,7 @@ export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 		if (!opengraphUrl) throw notFound()
 
 		const game = getGameByKey(map.game).pipe(Option.getOrThrowWith(() => notFound()))
-		const { prev, next } = getAdjacentMaps(map.id as MapKey)
+		const { prev, next } = getAdjacentMaps(map.id)
 
 		const title = createSeoTitle(`${map.title} Main Quest`)
 		const description = `Learn how to complete the main quest/easter egg for the ${map.title} zombies map with our detailed step-by-step walkthrough!`
@@ -282,6 +284,7 @@ function PrevOrNextMapCard({ map, prev }: PrevOrNextCard) {
 
 function MainQuestPending() {
 	const params = Route.useParams()
+
 	const links: Link[] = [
 		{ href: "/main-quests", title: "Main Quests" },
 		{ href: "/main-quests", title: capitalize(params.gameId), search: { game: params.gameId } },
@@ -297,6 +300,7 @@ function MainQuestPending() {
 
 function MainQuestNotFound() {
 	const params = Route.useParams()
+
 	const items: Link[] = [
 		{ href: "/main-quests", title: "Main Quests" },
 		{ href: "/main-quests", title: capitalize(params.gameId), search: { game: params.gameId } },

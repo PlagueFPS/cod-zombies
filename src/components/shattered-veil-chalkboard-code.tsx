@@ -1,24 +1,21 @@
 "use client"
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { type ChalkboardLetters, type Code, chalkboardCodes } from "@/data/shattered-veil-codes"
+import {
+	type ChalkboardLetters,
+	type Code,
+	chalkboardCodes,
+	codeWords,
+} from "@/data/shattered-veil-codes"
 
-const getAllCodes = () => {
-	const codeWords: Code[] = []
-
-	// We can use any property for this loop since they all have the same four possible code words
-	for (const code in chalkboardCodes.E) {
-		codeWords.push(code as Code)
-	}
-
-	return codeWords
-}
+const getAllCodes = (): Code[] => [...codeWords]
 
 export default function ShatteredVeilCode() {
 	const [letterGroup, setLetterGroup] = useState<ChalkboardLetters>()
 	const [codeWord, setCodeWord] = useState<Code>()
-	const allLetterGroups = Object.keys(chalkboardCodes) as ChalkboardLetters[]
+	const allLetterGroups: ChalkboardLetters[] = ["E", "BCDEF", "OSTUHJLD", "AIOUY"]
 	const allCodeWords = getAllCodes()
 
 	return (

@@ -21,13 +21,21 @@ export class ImageOptimizationError extends Schema.TaggedError<ImageOptimization
 ) {}
 
 const DEFAULT_SOURCE_DIR = "./newassets"
+
 const DEFAULT_COPY_DIR = "./oldassets"
+
 const MAX_EFFORT = 6
+
 const MAX_QUALITY = 80
+
 const DEFAULT_MAX_WIDTH = 1920
+
 const PREVIEW_WIDTH = 640
+
 const MAP_WIDTH = 2048
+
 export const ICON_LARGE_SIZE = 256
+
 export const ICON_SMALL_SIZE = 128
 
 export type EncodeWebpOptions = {
@@ -41,6 +49,7 @@ export function encodeWebp(
 	options?: EncodeWebpOptions,
 ): Promise<Buffer> {
 	let pipeline = image.rotate()
+
 	if (width !== undefined) {
 		pipeline = pipeline.resize({
 			width,
@@ -48,6 +57,7 @@ export function encodeWebp(
 			withoutEnlargement: options?.withoutEnlargement ?? true,
 		})
 	}
+
 	return pipeline.webp({ effort: MAX_EFFORT, quality: MAX_QUALITY }).toBuffer()
 }
 
@@ -131,6 +141,7 @@ const ensureDirectory = Effect.fnUntraced(function* (dir: string) {
  */
 export const ensureOutputDirectory = Effect.fn("ensureOutputDirectory")(function* (dir: string) {
 	const fs = yield* FileSystem.FileSystem
+
 	if (yield* fs.exists(dir)) return
 
 	const confirmed = yield* Prompt.run(
@@ -163,8 +174,11 @@ export type OptimizeCliOptions = {
 
 export const getOptimizeMode = (args: OptimizeCliOptions): OptimizeMode => {
 	if (Option.contains(args.preview, true)) return "preview"
+
 	if (Option.contains(args.map, true)) return "map"
+
 	if (Option.contains(args.icon, true)) return "icon"
+
 	return "default"
 }
 
@@ -180,6 +194,7 @@ export const requireImageWidth = (
 			}),
 		)
 	}
+
 	return Effect.succeed(metadata.width)
 }
 
@@ -191,9 +206,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 				["--map", args.map],
 				["--icon", args.icon],
 			] as const
-		)
-			.filter(([, flag]) => Option.contains(flag, true))
-			.map(([name]) => name)
+		).flatMap(([name, flag]) => (Option.contains(flag, true) ? [name] : []))
 
 		if (enabledExclusiveFlags.length > 1) {
 			return yield* new ImageOptimizationError({
@@ -214,8 +227,10 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 			format: "relative",
 			includeVariants: false,
 		})
+
 		const numRef = yield* Ref.make(0)
 		const inPlace = path.resolve(source) === path.resolve(targetDir)
+
 		if (!inPlace) {
 			yield* ensureDirectory(DEFAULT_COPY_DIR)
 		}
@@ -235,6 +250,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 
 					const imageBuffer = yield* fs.readFile(sourcePath)
 					const image = sharp(imageBuffer)
+
 					const metadata = yield* Effect.tryPromise({
 						try: () => image.metadata(),
 						catch: cause =>
@@ -249,6 +265,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 					yield* Effect.log(`Transforming image: ${relativeAsset}`)
 
 					const baseFileName = `${baseName}.webp`
+
 					const baseBuffer = yield* Match.value(mode).pipe(
 						Match.when("preview", () =>
 							encodeWebpEffect(image, relativeAsset, PREVIEW_WIDTH, {
@@ -262,6 +279,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 						),
 						Match.when("icon", () => {
 							const iconSize = getIconTargetSize(sourceWidth)
+
 							return encodeWebpEffect(image, relativeAsset, iconSize, {
 								withoutEnlargement: false,
 								height: iconSize,
@@ -295,6 +313,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 					if (!inPlace) {
 						const copyDestDir =
 							relativeDir === "." ? DEFAULT_COPY_DIR : path.join(DEFAULT_COPY_DIR, relativeDir)
+
 						yield* ensureDirectory(copyDestDir)
 						yield* fs.copyFile(sourcePath, path.join(copyDestDir, path.basename(relativeAsset)))
 						yield* fs.remove(sourcePath)

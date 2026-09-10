@@ -1,4 +1,5 @@
 "use client"
+
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 import * as React from "react"
@@ -51,9 +52,10 @@ function InputGroupAddon({
 			data-align={align}
 			className={cn(inputGroupAddonVariants({ align }), className)}
 			onClick={e => {
-				if ((e.target as HTMLElement).closest("button")) {
+				if (e.target instanceof HTMLElement && e.target.closest("button")) {
 					return
 				}
+
 				e.currentTarget.parentElement?.querySelector("input")?.focus()
 			}}
 			{...props}

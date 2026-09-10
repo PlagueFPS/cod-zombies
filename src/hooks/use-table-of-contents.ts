@@ -1,5 +1,6 @@
 import type { Heading } from "@/components/table-of-contents"
 import { useEffect, useRef, useState } from "react"
+
 /**
  * @param `headings` - array of headings to observe
  * @param `articleId` - id of the parent wrapper of the headings
@@ -31,6 +32,7 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 		}
 
 		window.addEventListener("scroll", handleScroll)
+
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
 
@@ -52,6 +54,7 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 
 		headings.forEach(heading => {
 			const element = document.getElementById(heading.id)
+
 			if (element) {
 				observer.observe(element)
 			}
