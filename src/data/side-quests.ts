@@ -3,7 +3,7 @@ import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
 import { Data, Option } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
-import { registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems } from "@/utils/shared-functions"
 
@@ -63,7 +63,7 @@ export const getSideQuests = (): SideQuest[] =>
 /**
  * @returns The side quest with the given key
  */
-export const getSideQuestByKey = (key: string) =>
+export const getSideQuestByKey = (key: RegistryKeyInput<SideQuestKey>) =>
 	registryGet(SIDE_QUESTS, key).pipe(Option.map(withResolvedSideQuestState))
 
 /** @returns The adjacent side quests for the given quest ID, sorted by {@link compareSideQuestDescending}. */

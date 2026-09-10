@@ -1,5 +1,6 @@
 "use client"
 
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { Option } from "effect"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
@@ -12,7 +13,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { getWeaponBuildByKey, type WeaponBuild, type WeaponBuildKey } from "@/data/weapon-builds"
 import { useIsMobile } from "@/hooks/use-mobile"
 
-export default function WeaponBuildTooltip({ weaponBuildKey }: { weaponBuildKey: WeaponBuildKey }) {
+export default function WeaponBuildTooltip({
+	weaponBuildKey,
+}: {
+	weaponBuildKey: RegistryKeyInput<WeaponBuildKey>
+}) {
 	const isMobile = useIsMobile(640)
 	const weaponBuild = getWeaponBuildByKey(weaponBuildKey)
 

@@ -1,18 +1,20 @@
 "use client"
 
+import type { GameKey } from "@/data/games"
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { Array as Arr, Option, Predicate, Result } from "effect"
 import AugmentTooltip from "@/components/augment-tooltip"
 import IconImage from "@/components/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
-import { type AmmoMod, getAmmoModByKey } from "@/data/ammo-mods"
+import { type AmmoMod, type AmmoModKey, getAmmoModByKey } from "@/data/ammo-mods"
 import { type Augment, getAugmentByKey } from "@/data/augments"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AmmoModTooltipProps {
-	ammoModKey: string
-	game?: string
+	ammoModKey: RegistryKeyInput<AmmoModKey>
+	game?: RegistryKeyInput<GameKey>
 }
 
 export default function AmmoModTooltip({ ammoModKey, game }: AmmoModTooltipProps) {
@@ -65,7 +67,13 @@ const AmmoModTrigger = ({ ammoMod }: { ammoMod: AmmoMod }) => (
 	</span>
 )
 
-const AmmoModTooltipContent = ({ ammoMod, game }: { ammoMod: AmmoMod; game?: string }) => {
+const AmmoModTooltipContent = ({
+	ammoMod,
+	game,
+}: {
+	ammoMod: AmmoMod
+	game?: RegistryKeyInput<GameKey>
+}) => {
 	const ammoModAugments: Augment[] = Option.match(ammoMod.augments, {
 		onNone: () => [],
 		onSome: tuple =>

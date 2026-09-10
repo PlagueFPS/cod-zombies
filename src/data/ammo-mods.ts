@@ -2,7 +2,12 @@ import type { GameKey } from "@/data/games"
 import type { AmmoModsImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { resolveGameVariantOption, uniqueMap, registryGet } from "@/data/registry-helpers"
+import {
+	type RegistryKeyInput,
+	registryGet,
+	resolveGameVariantOption,
+	uniqueMap,
+} from "@/data/registry-helpers"
 
 type AmmoModVariant = Omit<Partial<AmmoMod>, "_tag" | "id" | "title" | "variants">
 
@@ -32,8 +37,10 @@ export type AmmoModKey = Parameters<(typeof AMMO_MODS)["get"]>[0]
  * @param key The key of the ammo mod.
  * @param game The game to get the ammo mod variant for.
  */
-export const getAmmoModByKey = (key: string, game?: string): Option.Option<AmmoMod> =>
-	resolveGameVariantOption(registryGet(AMMO_MODS, key), game)
+export const getAmmoModByKey = (
+	key: RegistryKeyInput<AmmoModKey>,
+	game?: RegistryKeyInput<GameKey>,
+): Option.Option<AmmoMod> => resolveGameVariantOption(registryGet(AMMO_MODS, key), game)
 
 class AmmoModRecord extends Data.TaggedClass("AmmoMod")<Omit<AmmoMod, "_tag">> {}
 

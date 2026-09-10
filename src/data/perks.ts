@@ -2,7 +2,12 @@ import type { GameKey } from "@/data/games"
 import type { PerksImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
+import {
+	type RegistryKeyInput,
+	registryGet,
+	resolveGameVariantOption,
+	uniqueMap,
+} from "@/data/registry-helpers"
 
 type PerkVariant = Omit<Partial<Perk>, "_tag" | "id" | "title" | "variants">
 
@@ -34,8 +39,10 @@ export type PerkKey = Parameters<(typeof PERKS)["get"]>[0]
  * @param game The game to get the perk variant for.
  * @returns The perk.
  */
-export const getPerkByKey = (key: PerkKey, game?: GameKey): Option.Option<Perk> =>
-	resolveGameVariantOption(Option.fromUndefinedOr(PERKS.get(key)), game)
+export const getPerkByKey = (
+	key: RegistryKeyInput<PerkKey>,
+	game?: RegistryKeyInput<GameKey>,
+): Option.Option<Perk> => resolveGameVariantOption(registryGet(PERKS, key), game)
 
 class PerkRecord extends Data.TaggedClass("Perk")<Omit<Perk, "_tag">> {}
 

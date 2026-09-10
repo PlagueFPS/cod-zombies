@@ -4,7 +4,6 @@ import { getWeaponBuildByKey } from "@/data/weapon-builds"
 
 describe("getWeaponBuildByKey", () => {
 	test("returns None when the weapon build does not exist", () => {
-		// @ts-expect-error invalid key
 		const weaponBuild = getWeaponBuildByKey("invalid-weapon-build")
 		expect(Option.isNone(weaponBuild)).toBe(true)
 	})

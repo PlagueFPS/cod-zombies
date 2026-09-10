@@ -1,5 +1,6 @@
 "use client"
 
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import type { Zombie, ZombieKey, ZombieType } from "@/data/zombies"
 import { cn } from "cn"
 import { Array as Arr, Option } from "effect"
@@ -15,7 +16,7 @@ import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieByKey } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 
-export default function ZombieTooltip({ zombieKey }: { zombieKey: ZombieKey }) {
+export default function ZombieTooltip({ zombieKey }: { zombieKey: RegistryKeyInput<ZombieKey> }) {
 	const isMobile = useIsMobile(640)
 	const zombie = getZombieByKey(zombieKey)
 

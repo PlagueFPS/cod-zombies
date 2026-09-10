@@ -1,6 +1,6 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
-import { uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface Attachment {
 	/** Unique identifier for the attachment */
@@ -44,8 +44,8 @@ export type WeaponBuildKey = Parameters<(typeof WEAPON_BUILDS)["get"]>[0]
  * @param key The key of the weapon build.
  * @returns The weapon build.
  */
-export const getWeaponBuildByKey = (key: WeaponBuildKey) =>
-	Option.fromUndefinedOr(WEAPON_BUILDS.get(key))
+export const getWeaponBuildByKey = (key: RegistryKeyInput<WeaponBuildKey>) =>
+	registryGet(WEAPON_BUILDS, key)
 
 class WeaponBuildRecord extends Data.TaggedClass("WeaponBuild")<Omit<WeaponBuild, "_tag">> {}
 

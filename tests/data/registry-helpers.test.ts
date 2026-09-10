@@ -1,6 +1,12 @@
 import { Option } from "effect"
 import { describe, expect, test } from "vitest"
-import { mapWithGameVariant, resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
+import {
+	mapWithGameVariant,
+	type RegistryKeyInput,
+	registryGet,
+	resolveGameVariantOption,
+	uniqueMap,
+} from "@/data/registry-helpers"
 
 type Sample = {
 	readonly id: string
@@ -77,3 +83,37 @@ describe("uniqueMap", () => {
 		expect(map.get("a")).toBe(3)
 	})
 })
+
+describe("RegistryKeyInput", () => {
+	test("does not collapse to string", () => {
+		type Input = RegistryKeyInput<"alpha" | "beta">
+
+		type CollapsedToString = Equals<Input, string>
+
+		const collapsedToString: CollapsedToString = false
+
+		expect(collapsedToString).toBe(false)
+	})
+
+	test("accepts known keys and arbitrary strings", () => {
+		const known: RegistryKeyInput<"alpha" | "beta"> = "alpha"
+		const unknown: RegistryKeyInput<"alpha" | "beta"> = "not-a-key"
+		const fromString: string = "dynamic"
+		const fromVariable: RegistryKeyInput<"alpha" | "beta"> = fromString
+
+		expect(known).toBe("alpha")
+		expect(unknown).toBe("not-a-key")
+		expect(fromVariable).toBe("dynamic")
+	})
+
+	test("lets registryGet look up a string that is not a known key", () => {
+		const map = uniqueMap([["melee-swing", { title: "Melee Swing" }]])
+		const key: string = "not-an-attack"
+
+		expect(Option.isNone(registryGet(map, key))).toBe(true)
+	})
+})
+
+// Helpers
+type Equals<A, B> =
+	(<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2 ? true : false

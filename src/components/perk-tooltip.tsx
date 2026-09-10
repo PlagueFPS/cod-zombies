@@ -1,6 +1,7 @@
 "use client"
 
 import type { GameKey } from "@/data/games"
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { Array as Arr, Option, Predicate, Result } from "effect"
 import AugmentTooltip from "@/components/augment-tooltip"
 import IconImage from "@/components/icon-image"
@@ -12,8 +13,8 @@ import { getPerkByKey, type Perk, type PerkKey } from "@/data/perks"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface PerkTooltipProps {
-	perkKey: PerkKey
-	game?: GameKey
+	perkKey: RegistryKeyInput<PerkKey>
+	game?: RegistryKeyInput<GameKey>
 }
 
 export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
@@ -63,7 +64,7 @@ const PerkTrigger = ({ perk }: { perk: Perk }) => (
 	</span>
 )
 
-const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: GameKey }) => {
+const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: RegistryKeyInput<GameKey> }) => {
 	const perkAugments: Augment[] = Option.match(perk.augments, {
 		onNone: () => [],
 		onSome: tuple =>

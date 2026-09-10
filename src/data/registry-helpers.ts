@@ -1,6 +1,13 @@
 import type { GameKey } from "@/data/games"
 import { Option } from "effect"
 
+/**
+ * Catalog id that IntelliSense still suggests as `K`, while remaining
+ * assignable from any `string` (route params, MDX attributes, missing keys).
+ * `K | string` would collapse to `string` and drop autocomplete.
+ */
+export type RegistryKeyInput<K extends string> = K | (string & {})
+
 /** A `[id, value]` pair used to build a registry `Map`. */
 type RegistryEntry = readonly [string, {}]
 
@@ -52,7 +59,10 @@ export function uniqueMap<const Entries extends readonly RegistryEntry[]>(
 }
 
 /** Looks up a string key in a registry whose keys are a narrower string union. */
-export function registryGet<K extends string, V>(registry: ReadonlyMap<K, V>, key: string) {
+export function registryGet<K extends string, V>(
+	registry: ReadonlyMap<K, V>,
+	key: RegistryKeyInput<K>,
+) {
 	// SAFETY: `K` extends `string`; Map.get is a membership lookup and missing keys are `Option.none`.
 	return Option.fromUndefinedOr(registry.get(key as K))
 }
@@ -68,7 +78,7 @@ type WithGameVariantMap<T> = {
  */
 export const resolveGameVariantOption = <T extends WithGameVariantMap<T>>(
 	entry: Option.Option<T>,
-	game?: string,
+	game?: RegistryKeyInput<GameKey>,
 ): Option.Option<T> => {
 	if (Option.isNone(entry)) return entry
 
@@ -84,7 +94,7 @@ export const resolveGameVariantOption = <T extends WithGameVariantMap<T>>(
 /** Applies the same merge as {@link resolveGameVariantOption} to each item. */
 export const mapWithGameVariant = <T extends WithGameVariantMap<T>>(
 	items: T[],
-	game?: string,
+	game?: RegistryKeyInput<GameKey>,
 ): T[] =>
 	items.map(item => {
 		if (!game || Option.isNone(item.variants)) return item

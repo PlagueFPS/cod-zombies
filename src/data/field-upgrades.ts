@@ -2,7 +2,12 @@ import type { GameKey } from "@/data/games"
 import type { FieldUpgradesImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
-import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
+import {
+	type RegistryKeyInput,
+	registryGet,
+	resolveGameVariantOption,
+	uniqueMap,
+} from "@/data/registry-helpers"
 
 type FieldUpgradeVariant = Omit<Partial<FieldUpgrade>, "_tag" | "id" | "title" | "variants">
 
@@ -31,10 +36,9 @@ export type FieldUpgradeKey = Parameters<(typeof FIELD_UPGRADES)["get"]>[0]
  * @param game The game to get the field upgrade variant for.
  */
 export const getFieldUpgradeByKey = (
-	key: FieldUpgradeKey,
-	game?: GameKey,
-): Option.Option<FieldUpgrade> =>
-	resolveGameVariantOption(Option.fromUndefinedOr(FIELD_UPGRADES.get(key)), game)
+	key: RegistryKeyInput<FieldUpgradeKey>,
+	game?: RegistryKeyInput<GameKey>,
+): Option.Option<FieldUpgrade> => resolveGameVariantOption(registryGet(FIELD_UPGRADES, key), game)
 
 class FieldUpgradeRecord extends Data.TaggedClass("FieldUpgrade")<Omit<FieldUpgrade, "_tag">> {}
 

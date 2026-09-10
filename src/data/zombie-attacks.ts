@@ -1,5 +1,5 @@
 import { Data } from "effect"
-import { registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface ZombieAttack {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -20,7 +20,8 @@ export type ZombieAttackKey = Parameters<(typeof ZOMBIE_ATTACKS)["get"]>[0]
 /**
  * Gets a zombie attack by its key.
  */
-export const getZombieAttackByKey = (key: string) => registryGet(ZOMBIE_ATTACKS, key)
+export const getZombieAttackByKey = (key: RegistryKeyInput<ZombieAttackKey>) =>
+	registryGet(ZOMBIE_ATTACKS, key)
 
 class ZombieAttackRecord extends Data.TaggedClass("ZombieAttack")<Omit<ZombieAttack, "_tag">> {}
 
