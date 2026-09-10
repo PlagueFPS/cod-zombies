@@ -4,7 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
-import { registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
@@ -75,7 +75,7 @@ export const getRelics = () =>
 /**
  * @returns A specific relic by its key
  */
-export const getRelicByKey = (key: string) =>
+export const getRelicByKey = (key: RegistryKeyInput<RelicKey>) =>
 	registryGet(RELICS, key).pipe(Option.map(withResolvedRelicState))
 
 /**

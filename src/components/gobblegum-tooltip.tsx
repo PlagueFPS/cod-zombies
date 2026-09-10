@@ -1,6 +1,7 @@
 "use client"
 
 import type { GameKey } from "@/data/games"
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { cn } from "cn"
 import { Option } from "effect"
 import { RarityBadge } from "@/components/custom-badges"
@@ -17,8 +18,8 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface GobbleGumTooltipProps {
-	gobblegumKey: GobblegumKey
-	game?: GameKey
+	gobblegumKey: RegistryKeyInput<GobblegumKey>
+	game?: RegistryKeyInput<GameKey>
 }
 
 export default function GobbleGumTooltip({ gobblegumKey, game }: GobbleGumTooltipProps) {

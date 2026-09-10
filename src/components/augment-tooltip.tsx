@@ -2,6 +2,7 @@
 
 import type { Augment, AugmentKey } from "@/data/augments"
 import type { GameKey } from "@/data/games"
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { cn } from "cn"
 import { Option } from "effect"
 import { TypeBadge } from "@/components/custom-badges"
@@ -12,7 +13,7 @@ import { getAugmentByKey } from "@/data/augments"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AugmentTooltipPropsWithKey {
-	augmentKey: AugmentKey
+	augmentKey: RegistryKeyInput<AugmentKey>
 	augment?: never
 }
 
@@ -22,15 +23,16 @@ interface AugmentTooltipPropsWithAugment {
 }
 
 type AugmentTooltipProps = (AugmentTooltipPropsWithKey | AugmentTooltipPropsWithAugment) & {
-	game?: GameKey
+	game?: RegistryKeyInput<GameKey>
 }
 
 export default function AugmentTooltip(props: AugmentTooltipProps) {
 	const isMobile = useIsMobile(640)
 
-	const augment = props.augmentKey
-		? getAugmentByKey(props.augmentKey, props.game)
-		: Option.some(props.augment)
+	const augment =
+		props.augmentKey !== undefined
+			? getAugmentByKey(props.augmentKey, props.game)
+			: Option.some(props.augment)
 
 	if (Option.isNone(augment)) {
 		console.error(`Unable to render tooltip for augment: ${props.augmentKey ?? props.augment.id}`)

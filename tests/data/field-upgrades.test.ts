@@ -16,7 +16,6 @@ describe("getFieldUpgradeByKey", () => {
 	})
 
 	test("returns None when the field upgrade does not exist", () => {
-		// @ts-expect-error invalid key
 		const fu = getFieldUpgradeByKey("invalid-field-upgrade")
 		expect(Option.isNone(fu)).toBe(true)
 	})

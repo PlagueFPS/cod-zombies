@@ -1,6 +1,6 @@
 import type { ElixirsImagePath } from "@/types/generated/image-paths.gen"
-import { Data, Option } from "effect"
-import { uniqueMap } from "@/data/registry-helpers"
+import { Data } from "effect"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface Elixir {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -27,7 +27,7 @@ export type ElixirKey = Parameters<(typeof ELIXIRS)["get"]>[0]
  * Gets an Elixir by its key.
  * @param key The key of the Elixir.
  */
-export const getElixirByKey = (key: ElixirKey) => Option.fromUndefinedOr(ELIXIRS.get(key))
+export const getElixirByKey = (key: RegistryKeyInput<ElixirKey>) => registryGet(ELIXIRS, key)
 
 class ElixirRecord extends Data.TaggedClass("Elixir")<Omit<Elixir, "_tag">> {}
 

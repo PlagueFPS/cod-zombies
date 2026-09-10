@@ -1,7 +1,12 @@
 import type { GameKey } from "@/data/games"
 import type { AugmentsImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
-import { resolveGameVariantOption, uniqueMap, registryGet } from "@/data/registry-helpers"
+import {
+	type RegistryKeyInput,
+	registryGet,
+	resolveGameVariantOption,
+	uniqueMap,
+} from "@/data/registry-helpers"
 
 type AugmentVariant = Omit<Partial<Augment>, "id" | "variants">
 
@@ -41,8 +46,10 @@ export type AugmentTuple = [
  * @param key The key of the augment.
  * @param game The game to get the augment variant for.
  */
-export const getAugmentByKey = (key: string, game?: string): Option.Option<Augment> =>
-	resolveGameVariantOption(registryGet(AUGMENTS, key), game)
+export const getAugmentByKey = (
+	key: RegistryKeyInput<AugmentKey>,
+	game?: RegistryKeyInput<GameKey>,
+): Option.Option<Augment> => resolveGameVariantOption(registryGet(AUGMENTS, key), game)
 
 /** Type helper to ensure type-safe AugmentTuple creation */
 export const makeAugmentTuple = (t: AugmentTuple) => Option.some(t)

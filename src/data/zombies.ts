@@ -8,7 +8,7 @@ import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
-import { registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
@@ -88,7 +88,7 @@ export const getZombies = (): Zombie[] =>
 	[...ZOMBIES.values()].map(withResolvedZombieState).sort(compareZombieReleaseDescending)
 
 /** @returns The zombie with the given key */
-export const getZombieByKey = (key: string) =>
+export const getZombieByKey = (key: RegistryKeyInput<ZombieKey>) =>
 	registryGet(ZOMBIES, key).pipe(Option.map(withResolvedZombieState))
 
 /**

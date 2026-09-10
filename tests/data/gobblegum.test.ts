@@ -11,7 +11,6 @@ describe("getGobblegumByKey", () => {
 	})
 
 	test("returns None when the gobblegum does not exist", () => {
-		// @ts-expect-error invalid key
 		const g = getGobblegumByKey("invalid-gobblegum", "black-ops-6")
 		expect(Option.isNone(g)).toBe(true)
 	})

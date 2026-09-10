@@ -1,5 +1,5 @@
 import { Data } from "effect"
-import { registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface WeakPoint {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -17,7 +17,8 @@ export type WeakPointKey = Parameters<(typeof WEAK_POINTS)["get"]>[0]
  * Gets a weak point by its key.
  * @param key The key of the weak point.
  */
-export const getWeakPointByKey = (key: string) => registryGet(WEAK_POINTS, key)
+export const getWeakPointByKey = (key: RegistryKeyInput<WeakPointKey>) =>
+	registryGet(WEAK_POINTS, key)
 
 class WeakPointRecord extends Data.TaggedClass("WeakPoint")<Omit<WeakPoint, "_tag">> {}
 

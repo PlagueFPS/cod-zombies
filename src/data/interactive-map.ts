@@ -4,7 +4,7 @@ import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Effect, Option, Schema } from "effect"
 import { compareMapReleaseDescending, getMapByKey } from "@/data/maps"
-import { registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { decodeMapConfigModule } from "@/utils/validation-schemas"
 
@@ -56,7 +56,7 @@ export interface MapConfig {
  * Gets the interactive map configuration for a given map key.
  */
 export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(function* (
-	key: string,
+	key: RegistryKeyInput<InteractiveMapKey>,
 ) {
 	const config = yield* Effect.tryPromise({
 		try: () => import(`../map-configs/${key}.ts`),
@@ -82,7 +82,7 @@ function withResolvedInteractiveMapState(map: InteractiveMap): InteractiveMap {
 /**
  * Gets an interactive map by its key.
  */
-export const getInteractiveMapByKey = (key: string) =>
+export const getInteractiveMapByKey = (key: RegistryKeyInput<InteractiveMapKey>) =>
 	registryGet(INTERACTIVE_MAPS, key).pipe(Option.map(withResolvedInteractiveMapState))
 
 /**

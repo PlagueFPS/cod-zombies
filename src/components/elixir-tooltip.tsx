@@ -1,5 +1,6 @@
 "use client"
 
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { cn } from "cn"
 import { Option } from "effect"
 import { ElixirRarityBadge } from "@/components/custom-badges"
@@ -10,7 +11,7 @@ import { type Elixir, type ElixirKey, type ElixirRarity, getElixirByKey } from "
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface ElixirTooltipProps {
-	elixirKey: ElixirKey
+	elixirKey: RegistryKeyInput<ElixirKey>
 }
 
 export default function ElixirTooltip({ elixirKey }: ElixirTooltipProps) {

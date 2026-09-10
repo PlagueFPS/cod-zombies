@@ -20,7 +20,6 @@ describe("getPerkByKey", () => {
 	})
 
 	test("returns None when the perk does not exist", () => {
-		// @ts-expect-error invalid key
 		const p = getPerkByKey("invalid-perk", "black-ops-cold-war")
 		expect(Option.isNone(p)).toBe(true)
 	})

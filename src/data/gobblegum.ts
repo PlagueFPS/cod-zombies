@@ -1,7 +1,12 @@
 import type { GameKey } from "@/data/games"
 import type { GobblegumsImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
-import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
+import {
+	type RegistryKeyInput,
+	registryGet,
+	resolveGameVariantOption,
+	uniqueMap,
+} from "@/data/registry-helpers"
 
 /** Union of all Gobblegum keys */
 export type GobblegumKey = Parameters<(typeof GOBBLEGUMS)["get"]>[0]
@@ -52,8 +57,10 @@ export interface Gobblegum {
  * @param key The key of the gobblegum.
  * @param game The game to get the gobblegum variant for.
  */
-export const getGobblegumByKey = (key: GobblegumKey, game?: GameKey): Option.Option<Gobblegum> =>
-	resolveGameVariantOption(Option.fromUndefinedOr(GOBBLEGUMS.get(key)), game)
+export const getGobblegumByKey = (
+	key: RegistryKeyInput<GobblegumKey>,
+	game?: RegistryKeyInput<GameKey>,
+): Option.Option<Gobblegum> => resolveGameVariantOption(registryGet(GOBBLEGUMS, key), game)
 
 class GobblegumRecord extends Data.TaggedClass("Gobblegum")<Omit<Gobblegum, "_tag">> {}
 

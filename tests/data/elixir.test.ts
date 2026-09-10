@@ -4,7 +4,6 @@ import { getElixirByKey } from "@/data/elixirs"
 
 describe("getElixirByKey", () => {
 	test("returns None when the elixir does not exist", () => {
-		// @ts-expect-error invalid key
 		const elixir = getElixirByKey("invalid-elixir")
 		expect(Option.isNone(elixir)).toBe(true)
 	})

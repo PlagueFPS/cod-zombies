@@ -1,6 +1,7 @@
 "use client"
 
 import type { GameKey } from "@/data/games"
+import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { Array as Arr, Option, Predicate, Result } from "effect"
 import AugmentTooltip from "@/components/augment-tooltip"
 import IconImage from "@/components/icon-image"
@@ -16,8 +17,8 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface FieldUpgradeTooltipProps {
-	fieldUpgradeKey: FieldUpgradeKey
-	game?: GameKey
+	fieldUpgradeKey: RegistryKeyInput<FieldUpgradeKey>
+	game?: RegistryKeyInput<GameKey>
 }
 
 export default function FieldUpgradeTooltip({ fieldUpgradeKey, game }: FieldUpgradeTooltipProps) {
@@ -79,7 +80,7 @@ const FieldUpgradeTooltipContent = ({
 	game,
 }: {
 	fieldUpgrade: FieldUpgrade
-	game: GameKey | undefined
+	game?: RegistryKeyInput<GameKey>
 }) => {
 	const fieldUpgradeAugments = Option.match(fieldUpgrade.augments, {
 		onNone: () => [],

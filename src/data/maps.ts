@@ -4,7 +4,7 @@ import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Data, Option } from "effect"
-import { registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
@@ -76,7 +76,7 @@ export const getMaps = () =>
 export const getMapsWithMainQuest = () => Arr.filter(getMaps(), map => Option.isSome(map.mainQuest))
 
 /** @returns The map with the given key */
-export const getMapByKey = (key: string) =>
+export const getMapByKey = (key: RegistryKeyInput<MapKey>) =>
 	registryGet(MAPS, key).pipe(Option.map(withResolvedMapState))
 
 /** @returns The adjacent maps of the map with the given key */
