@@ -17,6 +17,7 @@ const SRC_DIR = join(process.cwd(), "src")
 const TOOLTIP_COMPONENTS = [
 	"PerkTooltip",
 	"GobbleGumTooltip",
+	"GobblegumTooltip",
 	"ZombieTooltip",
 	"AmmoModTooltip",
 	"AugmentTooltip",

@@ -46,6 +46,19 @@ describe("extractCatalogKeyRefs", () => {
 
 		expect(extractCatalogKeyRefs(content)).toEqual([])
 	})
+
+	test("collects keys from GobblegumTooltip import aliases", () => {
+		const content = '<GobblegumTooltip gobblegumKey="in-plain-sight" />'
+
+		expect(extractCatalogKeyRefs(content)).toEqual([
+			{
+				component: "GobblegumTooltip",
+				prop: "gobblegumKey",
+				value: "in-plain-sight",
+				line: 1,
+			},
+		])
+	})
 })
 
 describe("invalidCatalogKeyMessages", () => {
