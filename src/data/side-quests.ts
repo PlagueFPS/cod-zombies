@@ -1,7 +1,7 @@
 import type { SortOption } from "@/components/grid-sort"
 import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
 import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
@@ -77,17 +77,12 @@ export const getSideQuestSortOptions = (): SortOption[] => [
 	{ value: "oldest", label: "Oldest" },
 ]
 
+class SideQuestRecord extends Data.TaggedClass("SideQuest")<Omit<SideQuest, "_tag">> {}
+
 const makeQuest = <T extends string>(
 	identifier: T,
 	quest: Omit<SideQuest, "_tag" | "id">,
-): [T, SideQuest] => [
-	identifier,
-	{
-		_tag: "SideQuest" as const,
-		id: identifier,
-		...quest,
-	},
-]
+): [T, SideQuest] => [identifier, new SideQuestRecord({ id: identifier, ...quest })]
 
 const SIDE_QUESTS = uniqueMap([
 	makeQuest("free-500-points", {

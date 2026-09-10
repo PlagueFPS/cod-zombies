@@ -1,6 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { FieldUpgradesImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
 import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
@@ -36,17 +36,12 @@ export const getFieldUpgradeByKey = (
 ): Option.Option<FieldUpgrade> =>
 	resolveGameVariantOption(Option.fromUndefinedOr(FIELD_UPGRADES.get(key)), game)
 
+class FieldUpgradeRecord extends Data.TaggedClass("FieldUpgrade")<Omit<FieldUpgrade, "_tag">> {}
+
 const makeFieldUpgrade = <T extends string>(
 	identifier: T,
 	fieldUpgrade: Omit<FieldUpgrade, "_tag" | "id">,
-): [T, FieldUpgrade] => [
-	identifier,
-	{
-		_tag: "FieldUpgrade" as const,
-		id: identifier,
-		...fieldUpgrade,
-	},
-]
+): [T, FieldUpgrade] => [identifier, new FieldUpgradeRecord({ id: identifier, ...fieldUpgrade })]
 
 const FIELD_UPGRADES = uniqueMap([
 	makeFieldUpgrade("ring-of-fire", {

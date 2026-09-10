@@ -3,7 +3,7 @@ import type { GameKey } from "@/data/games"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
-import { Array as Arr, Option } from "effect"
+import { Array as Arr, Data, Option } from "effect"
 import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
@@ -145,17 +145,12 @@ export function mainQuestMidpointMatchesAnyTimeSlug(
 	})
 }
 
+class MapEntryRecord extends Data.TaggedClass("MapEntry")<Omit<MapEntry, "_tag">> {}
+
 const makeMap = <T extends string>(
 	identifier: T,
 	map: Omit<MapEntry, "_tag" | "id">,
-): [T, MapEntry] => [
-	identifier,
-	{
-		_tag: "MapEntry" as const,
-		id: identifier,
-		...map,
-	},
-]
+): [T, MapEntry] => [identifier, new MapEntryRecord({ id: identifier, ...map })]
 
 const MAPS = uniqueMap([
 	makeMap("nacht-der-untoten", {

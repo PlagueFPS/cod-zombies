@@ -5,7 +5,7 @@ import type { ZombieAttackKey } from "@/data/zombie-attacks"
 import type { ContentState } from "@/types/data"
 import type { ZombiesPaths } from "@/types/generated/content-paths.gen"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
 import { registryGet, uniqueMap } from "@/data/registry-helpers"
@@ -112,17 +112,12 @@ export const getZombieSortOptions = (): SortOption[] => [
 	{ value: "speed-desc", label: "Speed: Fastest to Slowest" },
 ]
 
+class ZombieRecord extends Data.TaggedClass("Zombie")<Omit<Zombie, "_tag">> {}
+
 const makeZombie = <T extends string>(
 	identifier: T,
 	zombie: Omit<Zombie, "_tag" | "id">,
-): [T, Zombie] => [
-	identifier,
-	{
-		_tag: "Zombie" as const,
-		id: identifier,
-		...zombie,
-	},
-]
+): [T, Zombie] => [identifier, new ZombieRecord({ id: identifier, ...zombie })]
 
 const ZOMBIES = uniqueMap([
 	makeZombie("zombie", {

@@ -2,7 +2,7 @@ import type { GameKey } from "@/data/games"
 import type { MapMarker } from "@/map-configs/markers"
 import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
-import { Effect, Option, Schema } from "effect"
+import { Data, Effect, Option, Schema } from "effect"
 import { compareMapReleaseDescending, getMapByKey } from "@/data/maps"
 import { registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
@@ -96,17 +96,14 @@ export const getInteractiveMaps = () =>
 		return compareMapReleaseDescending(mapA, mapB)
 	})
 
+class InteractiveMapRecord extends Data.TaggedClass("InteractiveMap")<
+	Omit<InteractiveMap, "_tag">
+> {}
+
 const makeMapEntry = <T extends string>(
 	identifier: T,
 	map: Omit<InteractiveMap, "_tag" | "id">,
-): [T, InteractiveMap] => [
-	identifier,
-	{
-		_tag: "InteractiveMap" as const,
-		id: identifier,
-		...map,
-	},
-]
+): [T, InteractiveMap] => [identifier, new InteractiveMapRecord({ id: identifier, ...map })]
 
 const INTERACTIVE_MAPS = uniqueMap([
 	makeMapEntry("rex-infernus", {

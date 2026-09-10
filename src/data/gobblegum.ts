@@ -1,6 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { GobblegumsImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 /** Union of all Gobblegum keys */
@@ -55,17 +55,12 @@ export interface Gobblegum {
 export const getGobblegumByKey = (key: GobblegumKey, game?: GameKey): Option.Option<Gobblegum> =>
 	resolveGameVariantOption(Option.fromUndefinedOr(GOBBLEGUMS.get(key)), game)
 
+class GobblegumRecord extends Data.TaggedClass("Gobblegum")<Omit<Gobblegum, "_tag">> {}
+
 const makeGobblegum = <T extends string>(
 	identifier: T,
 	gobblegum: Omit<Gobblegum, "_tag" | "id">,
-): [T, Gobblegum] => [
-	identifier,
-	{
-		_tag: "Gobblegum" as const,
-		id: identifier,
-		...gobblegum,
-	},
-]
+): [T, Gobblegum] => [identifier, new GobblegumRecord({ id: identifier, ...gobblegum })]
 
 const GOBBLEGUMS = uniqueMap([
 	makeGobblegum("alchemical-antithesis", {

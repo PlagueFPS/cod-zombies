@@ -1,5 +1,5 @@
 import type { WeaponsImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { uniqueMap } from "@/data/registry-helpers"
 
 export interface Attachment {
@@ -47,17 +47,12 @@ export type WeaponBuildKey = Parameters<(typeof WEAPON_BUILDS)["get"]>[0]
 export const getWeaponBuildByKey = (key: WeaponBuildKey) =>
 	Option.fromUndefinedOr(WEAPON_BUILDS.get(key))
 
+class WeaponBuildRecord extends Data.TaggedClass("WeaponBuild")<Omit<WeaponBuild, "_tag">> {}
+
 const makeWeaponBuild = <T extends string>(
 	id: T,
 	weaponBuild: Omit<WeaponBuild, "_tag" | "id">,
-): [T, WeaponBuild] => [
-	id,
-	{
-		_tag: "WeaponBuild" as const,
-		id,
-		...weaponBuild,
-	},
-]
+): [T, WeaponBuild] => [id, new WeaponBuildRecord({ id, ...weaponBuild })]
 
 /**
  * @deprecated New weapon builds should define build codes instead of attachments.

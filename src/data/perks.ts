@@ -1,6 +1,6 @@
 import type { GameKey } from "@/data/games"
 import type { PerksImagePath } from "@/types/generated/image-paths.gen"
-import { Option } from "effect"
+import { Data, Option } from "effect"
 import { type AugmentTuple, makeAugmentTuple } from "@/data/augments"
 import { resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
@@ -37,13 +37,11 @@ export type PerkKey = Parameters<(typeof PERKS)["get"]>[0]
 export const getPerkByKey = (key: PerkKey, game?: GameKey): Option.Option<Perk> =>
 	resolveGameVariantOption(Option.fromUndefinedOr(PERKS.get(key)), game)
 
+class PerkRecord extends Data.TaggedClass("Perk")<Omit<Perk, "_tag">> {}
+
 const makePerk = <T extends string>(identifier: T, perk: Omit<Perk, "_tag" | "id">): [T, Perk] => [
 	identifier,
-	{
-		_tag: "Perk" as const,
-		id: identifier,
-		...perk,
-	},
+	new PerkRecord({ id: identifier, ...perk }),
 ]
 
 const PERKS = uniqueMap([
