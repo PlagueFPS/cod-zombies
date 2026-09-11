@@ -476,6 +476,22 @@ const MAPS = uniqueMap([
 				"Time varies significantly based on box luck, use of Gobblegums, and player knowledge of steps.",
 		}),
 	}),
+	makeMap("zombies-in-spaceland", {
+		title: "Zombies in Spaceland",
+		releaseDate: "2016-11-04",
+		description: "The fun ends when the screams begin",
+		image: "/maps/zombies-in-spaceland.webp",
+		game: "infinite-warfare",
+		mainQuest: Option.some("content/main-quests/sooooul-key"),
+		difficulty: Option.some("Medium"),
+		state: Option.none(),
+		estimatedTimeMins: Option.some({
+			min: 40,
+			max: 90,
+			reason:
+				"Time varies significantly based on Seti-Com defend locations, whether a defend fails, and player knowledge of the steps.",
+		}),
+	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
 		releaseDate: "2018-10-11",

@@ -7,7 +7,6 @@ export const NO_VARIANT_CATEGORIES = HashSet.make(
 	"augments",
 	"elixirs",
 	"field-upgrades",
-	"games",
 	"gobblegums",
 	"icons",
 	"layers",
