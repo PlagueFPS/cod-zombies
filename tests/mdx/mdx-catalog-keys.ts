@@ -4,6 +4,7 @@ import { Option } from "effect"
 import { getAmmoModByKey } from "@/data/ammo-mods"
 import { getAugmentByKey } from "@/data/augments"
 import { getElixirByKey } from "@/data/elixirs"
+import { getFateAndFortuneCardByKey } from "@/data/fate-and-fortune-cards"
 import { getFieldUpgradeByKey } from "@/data/field-upgrades"
 import { getGameByKey } from "@/data/games"
 import { getGobblegumByKey } from "@/data/gobblegum"
@@ -22,6 +23,7 @@ const TOOLTIP_COMPONENTS = [
 	"AmmoModTooltip",
 	"AugmentTooltip",
 	"ElixirTooltip",
+	"FateAndFortuneCardTooltip",
 	"FieldUpgradeTooltip",
 	"WeaponBuildTooltip",
 ] as const
@@ -33,6 +35,7 @@ const CATALOG_KEY_PROPS = [
 	"ammoModKey",
 	"augmentKey",
 	"elixirKey",
+	"cardKey",
 	"fieldUpgradeKey",
 	"weaponBuildKey",
 	"game",
@@ -152,6 +155,8 @@ function catalogKeyExists(prop: CatalogKeyProp, key: string): boolean {
 			return Option.isSome(getAugmentByKey(key))
 		case "elixirKey":
 			return Option.isSome(getElixirByKey(key))
+		case "cardKey":
+			return Option.isSome(getFateAndFortuneCardByKey(key))
 		case "fieldUpgradeKey":
 			return Option.isSome(getFieldUpgradeByKey(key))
 		case "weaponBuildKey":

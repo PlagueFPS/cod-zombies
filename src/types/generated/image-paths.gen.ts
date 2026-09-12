@@ -191,6 +191,18 @@ export type ElixirsImagePath =
   '/elixirs/undead-man-walking-elixir.webp' |
   '/elixirs/wall-to-wall-clearance-elixir.webp';
 
+/** Union of images in `/fate-and-fortune-cards` */
+
+export type FateAndFortuneCardsImagePath =
+  '/fate-and-fortune-cards/all-the-ammos.webp' |
+  '/fate-and-fortune-cards/best-for-last.webp' |
+  '/fate-and-fortune-cards/explosive-touch.webp' |
+  '/fate-and-fortune-cards/five-second-muscle.webp' |
+  '/fate-and-fortune-cards/nade-party.webp' |
+  '/fate-and-fortune-cards/perk-insured.webp' |
+  '/fate-and-fortune-cards/raining-bullets.webp' |
+  '/fate-and-fortune-cards/scoped-dollars.webp';
+
 /** Union of images in `/field-upgrades` */
 
 export type FieldUpgradesImagePath =
@@ -593,4 +605,4 @@ export type ZombiesImagePath =
   '/zombies/zursa.webp';
 
 /** Union of all generated image path types */
-export type ImagePaths = RootImagePath | AmmoModsImagePath | AugmentsImagePath | ElixirsImagePath | FieldUpgradesImagePath | GobblegumsImagePath | IconsImagePath | LayersImagePath | MapsImagePath | PerksImagePath | PreviewsImagePath | RelicsImagePath | WeaponsImagePath | ZombiesImagePath;
+export type ImagePaths = RootImagePath | AmmoModsImagePath | AugmentsImagePath | ElixirsImagePath | FateAndFortuneCardsImagePath | FieldUpgradesImagePath | GobblegumsImagePath | IconsImagePath | LayersImagePath | MapsImagePath | PerksImagePath | PreviewsImagePath | RelicsImagePath | WeaponsImagePath | ZombiesImagePath;

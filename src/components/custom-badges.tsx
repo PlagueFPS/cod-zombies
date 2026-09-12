@@ -1,5 +1,9 @@
 import type { Augment } from "@/data/augments"
 import type { ElixirRarity } from "@/data/elixirs"
+import type {
+	FateAndFortuneCardRarity,
+	FateAndFortuneCardType,
+} from "@/data/fate-and-fortune-cards"
 import type { GobblegumRarity, GobblegumType } from "@/data/gobblegum"
 import type { MainQuestDifficulty } from "@/data/maps"
 import type { RelicType } from "@/data/relics"
@@ -165,6 +169,42 @@ export const ElixirRarityBadge = ({
 		className={cn(
 			{
 				"badge-new-gradient dark:dark-badge-new-gradient": rarity === "Classic",
+				"badge-equipment-gradient dark:dark-badge-equipment-gradient": rarity === "Common",
+				"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
+				"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Legendary",
+				"badge-primary-gradient dark:dark-badge-primary-gradient": rarity === "Epic",
+			},
+			className,
+		)}
+	>
+		{rarity}
+	</Badge>
+)
+
+export const FateAndFortuneTypeBadge = ({
+	className,
+	type,
+}: CustomBadgeProps & { type: FateAndFortuneCardType }) => (
+	<Badge
+		className={cn(
+			{
+				"badge-new-gradient dark:dark-badge-new-gradient": type === "Fate",
+				"badge-primary-gradient dark:dark-badge-primary-gradient": type === "Fortune",
+			},
+			className,
+		)}
+	>
+		{type}
+	</Badge>
+)
+
+export const FateAndFortuneRarityBadge = ({
+	className,
+	rarity,
+}: CustomBadgeProps & { rarity: FateAndFortuneCardRarity }) => (
+	<Badge
+		className={cn(
+			{
 				"badge-equipment-gradient dark:dark-badge-equipment-gradient": rarity === "Common",
 				"badge-changed-gradient dark:dark-badge-changed-gradient": rarity === "Rare",
 				"badge-draft-gradient dark:dark-badge-draft-gradient": rarity === "Legendary",

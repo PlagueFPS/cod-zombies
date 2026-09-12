@@ -2,6 +2,9 @@ import RichImage from "@/components/rich-image"
 import CustomCarousel from "@/components/custom-carousel"
 import YoutubeEmbed from "@/components/youtube-embed"
 import PerkTooltip from "@/components/perk-tooltip"
+import FateAndFortuneCardTooltip from "@/components/fate-and-fortune-card-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
 
 ## Sooooul Key
 The main quest for **Zombies in Spaceland** is called **Sooooul Key**. During this quest, the Actors crew must recover a piece of the **Soul Key** from
@@ -14,6 +17,48 @@ need to purchase <PerkTooltip perkKey="bombstoppers" /> so you don't down yourse
 
 > While not required, a **Weapon of Rock** (**Dischord**, **Face Melter**, **Head Cutter**, or **Shredder**) will be very useful throughout this quest
 > Build one while you work through the earlier steps, all of them will be explained in this guide, however the **Shredder** is recommended.
+
+## Recommended Fate & Fortune Cards
+
+<RichTable
+  headerCells={["Fate", "Fortune"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="five-second-muscle" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="perk-insured" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="best-for-last" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="raining-bullets" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="nade-party" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="explosive-touch" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="scoped-dollars" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="all-the-ammos" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> These **Fate and Fortune Cards** are just a recommendation and not required to complete this main quest, only to make things quicker and/or easier throughout the quest.
 
 ## Step 1: Unlock Pack-a-Punch
 There is a power switch in each of the four themed areas of the park. **Cosmic Way** does not have one, after power is on in an area, activate the portal control panel next to
@@ -36,8 +81,8 @@ that area's teleporter and walk through the portal. Below is an image of all swi
 	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-astrocade-portal.webp" caption="Astrocade" />
 </CustomCarousel>
 
-Once all four portals have been used, the **Projection Room** behind spawn opens. That room is **Pack-a-Punch**. Enter it at least once, even if you cannot afford
-to pack a weapon yet. While you are inside, interact with the four UFO discs in the room. You will need those discs later when the UFO comes down.
+Once all four portals have been used, the **Projection Room** behind spawn opens. That room is **Pack-a-Punch**, enter it at least once, even if you cannot afford
+to pack a weapon yet.
 
 ## Step 2: Build the Seti-Com
 Find the three **Seti-Com** parts around the park. Each part has three possible spawns per game.

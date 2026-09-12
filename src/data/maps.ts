@@ -477,7 +477,7 @@ const MAPS = uniqueMap([
 		}),
 	}),
 	makeMap("zombies-in-spaceland", {
-		title: "Zombies in Spaceland",
+		title: "Zombies In Spaceland",
 		releaseDate: "2016-11-04",
 		description: "The fun ends when the screams begin",
 		image: "/maps/zombies-in-spaceland.webp",

@@ -6,6 +6,7 @@ export const NO_VARIANT_CATEGORIES = HashSet.make(
 	"ammo-mods",
 	"augments",
 	"elixirs",
+	"fate-and-fortune-cards",
 	"field-upgrades",
 	"gobblegums",
 	"icons",
