@@ -2,6 +2,7 @@ import RichImage from "@/components/rich-image"
 import CustomCarousel from "@/components/custom-carousel"
 import YoutubeEmbed from "@/components/youtube-embed"
 import PerkTooltip from "@/components/perk-tooltip"
+import ZombieTooltip from "@/components/zombie-tooltip"
 import FateAndFortuneCardTooltip from "@/components/fate-and-fortune-card-tooltip"
 import { RichTable, RichBodyRow } from "@/components/rich-table"
 import { TableCell } from "@/components/ui/table"
@@ -61,24 +62,25 @@ need to purchase <PerkTooltip perkKey="bombstoppers" /> so you don't down yourse
 > These **Fate and Fortune Cards** are just a recommendation and not required to complete this main quest, only to make things quicker and/or easier throughout the quest.
 
 ## Step 1: Unlock Pack-a-Punch
-There is a power switch in each of the four themed areas of the park. **Cosmic Way** does not have one, after power is on in an area, activate the portal control panel next to
-that area's teleporter and walk through the portal. Below is an image of all switch and portal locations:
+There is a power switch in each of the five themed areas of the park. After power is on in an area, activate the portal control panel next to
+that area's teleporter and walk through the portal, **Cosmic Way** does not have a portal you need to activate. Below is an image of all switch and portal locations:
 
 ### Power Switches
 <CustomCarousel>
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-polar-peak-power-switch.webp" caption="Polar Peak" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-kepler-system-power-switch.webp" caption="Kepler System" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-journey-into-space-power-switch.webp" caption="Journey into Space" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-astrocade-power-switch.webp" caption="Astrocade" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-cosmic-way-power-switch.webp" caption="Spawn - right of the Lost and Found in a small room" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-polar-peak-power-switch.webp" caption="Polar Peak - opposite the Quickies perk, next to the Magic Wheel" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-kepler-system-power-switch.webp" caption="Kepler System - on the side of the Moonlight Cafe" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-journey-into-space-power-switch.webp" caption="Journey into Space - hallway between Rover Rampage and the Star Mission trap" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-astrocade-power-switch.webp" caption="Astrocade - next to the portal on the bottom floor" />
 </CustomCarousel>
 
 ### Portals
 
 <CustomCarousel>
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-polar-peak-portal.webp" caption="Polar Peak" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-kepler-system-portal.webp" caption="Kepler System" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-journey-into-space-portal.webp" caption="Journey into Space" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-astrocade-portal.webp" caption="Astrocade" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-polar-peak-portal.webp" caption="Polar Peak - in the Gift Shop" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-kepler-system-portal.webp" caption="Kepler System - at the bottom of the stairs from Moonlight Cafe" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-journey-into-space-portal.webp" caption="Journey into Space - behind the Cosmic Tunes booth" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-astrocade-portal.webp" caption="Astrocade - next to the Power Switch" />
 </CustomCarousel>
 
 Once all four portals have been used, the **Projection Room** behind spawn opens. That room is **Pack-a-Punch**, enter it at least once, even if you cannot afford
@@ -99,7 +101,7 @@ Find the three **Seti-Com** parts around the park. Each part has three possible 
 
 <CustomCarousel>
 	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-umbrella-slides.webp" caption="On a bench to the right of the slides, next to the bridge leading to Polar Peak" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-umbrella-polar-peak-gift-shop.webp" caption="On a counter to the right of the stairs from the Polar Peak gift shop toward that area's power switch" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-umbrella-polar-peak.webp" caption="On a counter to the right of the stairs from the Polar Peak gift shop toward that area's power switch" />
 	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-umbrella-star-mission.webp" caption="To the right of the Star Mission trap switch closest to Tuff 'Nuff in Journey into Space" />
 </CustomCarousel>
 
@@ -111,7 +113,7 @@ Find the three **Seti-Com** parts around the park. Each part has three possible 
 	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-calculator-astrocade.webp" caption="In the Astrocade, on a trash bin on the second floor between two arcade machines" />
 </CustomCarousel>
 
-Once you have all three parts, take them to **David Hasselhoff**. He can be at one of three **Cosmic Tunes** DJ booths:
+Once you have all three parts, take them to **David Hasselhoff** and he will assemble the **Seti-Com**. He can be at one of three **Cosmic Tunes** DJ booths:
 
 <CustomCarousel>
 	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-hasselhoff-journey-into-space.webp" caption="Journey into Space, down the alley behind the cinema" />
@@ -119,72 +121,81 @@ Once you have all three parts, take them to **David Hasselhoff**. He can be at o
 	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-hasselhoff-polar-peak.webp" caption="Polar Peak, near Bang Bangs" />
 </CustomCarousel>
 
-Hand him the parts and he will assemble the **Seti-Com**.
-
-<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com.webp" caption="Seti-Com" />
+> Once the **UFO** starts changing colors and making sounds, that means you can pick up the **Seti-Com**. You must have gone through the **Pack-a-Punch** portal at least once at this point.
 
 ## Step 3: Defend the Seti-Com
 Take the finished **Seti-Com** to three defend sites. There are seven possible sites, only one site is active at a time, and you can only complete one defend per round.
 When you are near the correct site, the screen will shake. The seven possible locations are:
 
 <CustomCarousel>
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-racin-stripes.webp" caption="Directly in front of Racin' Stripes in the underground area" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-polar-peak-entrance.webp" caption="In front of the main entrance to Polar Peak" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-polar-peak-gift-shop.webp" caption="In the center of the Polar Peak gift shop" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-fountains.webp" caption="Between the purple and orange fountains in the fountain area" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-alligator-head.webp" caption="To the right of the fountain if you are heading from the Chromosphere toward the alligator head" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-journey-into-space.webp" caption="On the path leading into the left side of Journey into Space" />
-	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-bumper-cars.webp" caption="To the left of the bumper cars exit that leads down the curved path toward a Magic Wheel" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-journey-into-space-1.webp" caption="Journey Into Space - on the red blood stains near the Escape Velocity trap" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-journey-into-space-2.webp" caption="Journey Into Space - outside Rover Rampage near the Magic Wheel" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-underground.webp" caption="Underground - in front of the Racin' Stripes perk" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-kepler-system.webp" caption="Kepler System - opposite the Bombstoppers perk in a corner" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-polar-peak-1.webp" caption="Polar Peak - in front of the main entrance from Cosmic Way" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-polar-peak-2.webp" caption="Polar Peak - in the Gift Shop" />
+	<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-seti-com-defend-polar-peak-3.webp" caption="Polar Peak - in the Spaceship Splash area" />
 </CustomCarousel>
 
 Place the **Seti-Com** and keep zombies off it until the timer finishes. The first defend lasts **60 seconds**, the second lasts **90 seconds**, and the third
 lasts **120 seconds**. A successful defend drops a **Max Ammo**.
 
-> If the device is destroyed, return to **David Hasselhoff** for another **Seti-Com** and retry that site. A **Brute** will also spawn after a failed defend.
+> If the device is destroyed, return to **David Hasselhoff** for another **Seti-Com** and retry that site. A <ZombieTooltip zombieKey="brute" /> will also spawn after a failed
+> defend.
 
 After all three defends, return the **Seti-Com** to **David Hasselhoff**. You must then wait about two rounds before he is ready for the next step.
 
-## Step 4: Place the Speakers
+## Step 4: Defeat the Alien
 After those two rounds, go back to **David Hasselhoff** and collect a speaker. Place a speaker on each of the four golden circles around the main teleporter
 in **Cosmic Way**.
 
-> Interacting with the speakers is the point of no return for this step. Finish building a **Weapon of Rock**, pack your guns, and grab perks before you start.
+<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-speakers.webp" caption="Speaker" />
 
-In solo, interact with one speaker to begin. In co-op, every player must interact with a speaker at the same time. The UFO stuck in **Polar Peak** will break
+> Interacting with the speakers is the point of no return for this step. Finish building a **Weapon of Rock**, pack your guns, and grab perks before you start.
+> In solo, interact with one speaker to begin. In co-op, every player must interact with a speaker at the same time. The UFO stuck in **Polar Peak** will break
 free and hover above the teleporter.
 
-## Step 5: Complete the UFO Simon Says
-Each speaker is a different color. Watch the underside of the UFO as it flashes a four-color sequence, then interact with the speakers in that same order
-once they glow white.
+### Simon Says
+Interact with one of the speakers to begin. Each speaker is a different color. Watch the underside of the UFO as it flashes a four-color sequence, then interact with the
+speakers in that same order once they glow white.
+
+<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-simon-says.webp" caption="Simon Says" />
 
 Do this correctly three times. A successful sequence makes the UFO flash, and the next zombie you kill drops a **Max Ammo**. If you hit the speakers too late
-or in the wrong order, **Willard Wyler** laughs and a **Brute** spawns.
+or in the wrong order, **Willard Wyler** laughs and a <ZombieTooltip zombieKey="brute" /> spawns.
 
-> If you are unsure of the order, wait out the sequence instead of guessing. A missed attempt is better than a wrong one.
+> If you are unsure of the order, wait out the sequence instead of guessing. A missed attempt is better than a wrong one. In Co-op, you'll need more than one person to
+> activate the speakers as the timer is too short to do solo in Co-op.
 
-## Step 6: Defeat the Aliens
-After the third successful sequence, clowns spawn around the teleporter. Clear them, then one alien per player appears in front of the portal.
+### Alien
+After the third successful sequence, <ZombieTooltip zombieKey="clown-zombie" /> spawn around the teleporter. Clear them, then one alien per player appears in front of the portal.
 
-Shoot each alien's neck collar to track its health. The collar starts **green**, turns **yellow** at about half health, then **red** when it is almost down.
+<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-clowns.webp" caption="Clown Wave" />
+
+Shoot each <ZombieTooltip zombieKey="alien" /> neck collar to track its health. The collar starts **green**, turns **yellow** at about half health, then **red** when it is almost down.
 When an alien crouches to recover, melee the backpack on its back to knock off an **Alien Fuse**. If you miss the melee window, the alien fully heals and you
 have to break it down again.
 
-You need two fuses from the active alien(s). After the second fuse drops, finish the aliens by shooting them down a final time. Each kill awards a nuke and
-**1000 XP**. Pick up both **Alien Fuses** and place them in **Pack-a-Punch**. That unlocks double **Pack-a-Punch** for regular weapons and lets you pack the
-four **Weapons of Rock**.
+<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-alien.webp" caption="Alien" />
+
+You need two fuses from the active <ZombieTooltip zombieKey="alien" />. After the second fuse drops, finish the <ZombieTooltip zombieKey="alien" /> by shooting them down a final
+time. Each kill awards a **Nuke**, **Max-Ammo**, and **1000 XP**. Pick up both **Alien Fuses** in front of the PaP portal and place them in **Pack-a-Punch**. That unlocks double
+**Pack-a-Punch** for regular weapons and lets you pack the four **Weapons of Rock**.
+
+<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-alien-fuses.webp" caption="Alien Fuses" />
 
 > Place the fuses only when everyone has perks and a packed **Weapon of Rock**. After the fuses go in, the UFO starts shooting lightning at anyone near the
 junction.
 
-## Step 7: Shoot Down the UFO
-With a **Pack-a-Punched Weapon of Rock**, go to the **Welcome to Spaceland** sign just outside spawn. Five blue lights sit on the circular sign. Shoot them
-until they turn orange or yellow. The last light must be shot while the UFO is directly above the main teleporter.
+### Shoot Down the UFO
+With a **Pack-a-Punched Weapon of Rock**, go to the **Welcome to Spaceland** sign just outside spawn. Five blue lights sit on the circular sign that you must shoot
+until they turn orange or yellow. The last light must be shot while the UFO is directly above the main teleporter. A beam will fire from the sign into the UFO, if the timing is
+right, the UFO will be destroyed and drop the **Soul Key** in front of the **Pack-a-Punch** portal. Pick it up to finish the quest.
 
-A beam will fire from the sign into the UFO. If the timing is right, the UFO is destroyed and drops a piece of the **Soul Key** in front of the **Pack-a-Punch**
-portal. Pick it up to finish the quest.
+<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-ufo-beam.webp" caption="UFO Beam" />
+<RichImage image="/content/zombies-in-spaceland/zombies-in-spaceland-soul-key.webp" caption="Soul Key" />
 
-Congratulations! You have beaten the **Zombies in Spaceland** main quest: **Sooooul Key**. Completing this quest also unlocks **David Hasselhoff** as a playable
-character in future **Zombies in Spaceland** games.
+Congratulations! You have beaten the **Zombies in Spaceland** main quest: **Sooooul Key**.
 
 ## Video Guides
 
