@@ -744,6 +744,42 @@ const ZOMBIES = uniqueMap([
 			"Furies spawn on the second special round, then every special round after that. They will also spawn during the first, second, and final Corruption Engine overrides that the player activates.",
 		combatStrategy: "content/zombies/fury",
 	}),
+	makeZombie("clown-zombie", {
+		title: "Clown Zombie",
+		state: Option.none(),
+		releaseDate: "2016-11-04",
+		image: "/zombies/clown-zombie.webp",
+		description:
+			"Clown Zombies are a faster, more terrifying variant of the normal zombie bringing an explosive thrill to the 1980s amusement park.",
+		games: ["infinite-warfare"],
+		maps: ["zombies-in-spaceland"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["explosion"],
+		spawnBehavior:
+			"Clown Zombies serve as the special round appearing every 5-6 rounds, but will also spawn in with normal zombies past Round 20.",
+		combatStrategy: "content/zombies/clown-zombie",
+	}),
+	makeZombie("brute", {
+		title: "Brute",
+		state: Option.none(),
+		releaseDate: "2016-11-04",
+		image: "/zombies/brute.webp",
+		description:
+			"Brutes are the massive park mascots designed to terrify all vistors of the 1980s amusement park.",
+		games: ["infinite-warfare"],
+		maps: ["zombies-in-spaceland"],
+		type: "Elite",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "eye-beam"],
+		spawnBehavior:
+			"Brutes spawn for the first time between Round 9 and 11, then every 3-5 rounds after that first brute is killed.",
+		combatStrategy: "content/zombies/brute",
+	}),
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",
 		state: Option.none(),
