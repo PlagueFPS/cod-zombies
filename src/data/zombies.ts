@@ -780,6 +780,24 @@ const ZOMBIES = uniqueMap([
 			"Brutes spawn for the first time between Round 9 and 11, then every 3-5 rounds after that first brute is killed.",
 		combatStrategy: "content/zombies/brute",
 	}),
+	makeZombie("alien", {
+		title: "Alien",
+		state: Option.none(),
+		releaseDate: "2016-11-04",
+		image: "/zombies/alien.webp",
+		description:
+			"The Alien is an extraterrestrial being that crashed into the 1980s amusement park from unknown origins.",
+		games: ["infinite-warfare"],
+		maps: ["zombies-in-spaceland"],
+		type: "Boss",
+		speed: "Slow",
+		weakPoints: ["collar"],
+		elementalWeakness: [],
+		attacks: ["ray-gun", "knockback"],
+		spawnBehavior:
+			"The Alien only spawns during the final encounter of the Sooooul Key main quest, with multiple Aliens spawning depending on the amount of players in the match.",
+		combatStrategy: "content/zombies/alien",
+	}),
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",
 		state: Option.none(),
