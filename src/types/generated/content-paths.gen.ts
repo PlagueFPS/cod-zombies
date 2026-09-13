@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-09-13T18:52:39.278Z
- * generated in: 27ms
+ * generated at: 2026-09-13T18:54:10.984Z
+ * generated in: 24ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -348,6 +348,7 @@ export type ZombiesPaths =
 	| "content/zombies/brute"
 	| "content/zombies/brutus"
 	| "content/zombies/caltheris"
+	| "content/zombies/clown-zombie"
 	| "content/zombies/crusader-zombie"
 	| "content/zombies/deathspinner"
 	| "content/zombies/denizen"
