@@ -596,4 +596,28 @@ const PERKS = uniqueMap([
 			},
 		}),
 	}),
+	makePerk("bombstoppers", {
+		title: "Bombstoppers",
+		description: "Explosions won't get you down!",
+		image: "/perks/bombstoppers.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
+	makePerk("mule-munchies", {
+		title: "Mule Munchies",
+		description: "Sometimes you need a third hand!",
+		image: "/perks/mule-munchies.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
+	makePerk("racin-stripes", {
+		title: "Racin' Stripes",
+		description: "Run so far away!",
+		image: "/perks/racin-stripes.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
 ])

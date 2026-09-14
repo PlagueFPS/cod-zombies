@@ -694,4 +694,15 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Drains the remaining life from nearby downed players, reducing the time available to revive them.",
 	}),
+	makeZombieAttack("ray-gun", {
+		title: "Ray Gun",
+		range: "Long",
+		description:
+			"Shoots a ray gun that deals damage to players, and if it hits the ground stunning the player with a mini shockwave.",
+	}),
+	makeZombieAttack("knockback", {
+		title: "Knockback",
+		range: "Short",
+		description: "Knocks back players that get to close to it.",
+	}),
 ])

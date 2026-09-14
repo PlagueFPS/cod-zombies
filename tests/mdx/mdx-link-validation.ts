@@ -12,7 +12,7 @@ import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 const CONTENT_DIR = join(process.cwd(), "src/content")
 
 const MAIN_QUEST_GAME_PATTERN =
-	/^\/(black-ops-1|black-ops-2|black-ops-3|black-ops-4|black-ops-cold-war|black-ops-6|black-ops-7)\/([^/?#]+)$/
+	/^\/(black-ops-1|black-ops-2|black-ops-3|infinite-warfare|black-ops-4|black-ops-cold-war|black-ops-6|black-ops-7)\/([^/?#]+)$/
 
 const LINK_PATTERNS: readonly { re: RegExp; group: number }[] = [
 	{ re: /\[([^\]]*)\]\(([^)]+)\)/g, group: 2 },

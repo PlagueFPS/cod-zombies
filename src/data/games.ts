@@ -1,4 +1,3 @@
-import type { GamesImagePath } from "@/types/generated/image-paths.gen"
 import { Data } from "effect"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { sortDates } from "@/utils/shared-functions"
@@ -14,8 +13,6 @@ export interface Game {
 	 * Release calendar day as an ISO 8601 date-only string (`YYYY-MM-DD`).
 	 */
 	readonly releaseDate: string
-	/** The image of the game */
-	readonly image: GamesImagePath
 }
 
 /** Union type of all game keys */
@@ -44,41 +41,37 @@ const GAMES = uniqueMap([
 	makeGame("world-at-war", {
 		title: "World at War",
 		releaseDate: "2008-11-11",
-		image: "/games/world-at-war_logo.webp",
 	}),
 	makeGame("black-ops-1", {
 		title: "Black Ops 1",
 		releaseDate: "2010-11-09",
-		image: "/games/black-ops-1_logo.webp",
 	}),
 	makeGame("black-ops-2", {
 		title: "Black Ops 2",
 		releaseDate: "2012-11-12",
-		image: "/games/black-ops-2_logo.webp",
 	}),
 	makeGame("black-ops-3", {
 		title: "Black Ops 3",
 		releaseDate: "2015-11-06",
-		image: "/games/black-ops-3_logo.webp",
+	}),
+	makeGame("infinite-warfare", {
+		title: "Infinite Warfare",
+		releaseDate: "2016-11-04",
 	}),
 	makeGame("black-ops-4", {
 		title: "Black Ops 4",
 		releaseDate: "2018-10-11",
-		image: "/games/black-ops-4_logo.webp",
 	}),
 	makeGame("black-ops-cold-war", {
 		title: "Black Ops Cold War",
 		releaseDate: "2020-11-13",
-		image: "/games/black-ops-cold-war_logo.webp",
 	}),
 	makeGame("black-ops-6", {
 		title: "Black Ops 6",
 		releaseDate: "2024-10-25",
-		image: "/games/black-ops-6_logo.webp",
 	}),
 	makeGame("black-ops-7", {
 		title: "Black Ops 7",
 		releaseDate: "2025-11-14",
-		image: "/games/black-ops-7_logo.webp",
 	}),
 ])

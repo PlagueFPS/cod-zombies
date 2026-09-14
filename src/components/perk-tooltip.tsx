@@ -49,7 +49,7 @@ export default function PerkTooltip({ perkKey, game }: PerkTooltipProps) {
 }
 
 const PerkTrigger = ({ perk }: { perk: Perk }) => (
-	<span className="inline-flex items-baseline justify-center gap-1">
+	<span className="inline-flex items-baseline justify-center gap-0.5">
 		<IconImage
 			featuredImage={perk.image}
 			alt={`${perk.title} Image`}
