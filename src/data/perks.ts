@@ -612,4 +612,12 @@ const PERKS = uniqueMap([
 		augments: Option.none(),
 		variants: Option.none(),
 	}),
+	makePerk("racin-stripes", {
+		title: "Racin' Stripes",
+		description: "Run so far away!",
+		image: "/perks/racin-stripes.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
 ])
