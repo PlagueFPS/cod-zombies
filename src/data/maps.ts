@@ -498,10 +498,13 @@ const MAPS = uniqueMap([
 		description: "Back from the grave and ready to RAVE!",
 		image: "/maps/rave-in-the-redwoods.webp",
 		game: "infinite-warfare",
-		state: Option.some("Coming Soon"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/locksmith"),
-		difficulty: Option.none(),
-		estimatedTimeMins: Option.none(),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 45,
+			max: 120,
+		}),
 	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",

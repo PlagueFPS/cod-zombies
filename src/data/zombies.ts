@@ -544,7 +544,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Skeletons are a variant of the normal zombie also known as Spartoi in Ancient Evil. These enemies bring a cool new look to the normal zombie.",
 		games: ["black-ops-3", "black-ops-4"],
-		maps: ["der-eisendrache", "ancient-evil"],
+		maps: ["der-eisendrache", "rave-in-the-redwoods", "ancient-evil"],
 		type: "Normal",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -797,6 +797,42 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"The Alien only spawns during the final encounter of the Sooooul Key main quest, with multiple Aliens spawning depending on the amount of players in the match.",
 		combatStrategy: "content/zombies/alien",
+	}),
+	makeZombie("sasquatch", {
+		title: "Sasquatch",
+		state: Option.none(),
+		releaseDate: "2017-01-31",
+		image: "/zombies/sasquatch.webp",
+		description:
+			"Sasquatches are a special enemy originating from the map Rave in the Redwoods, hunting in packs as the map's special round.",
+		games: ["infinite-warfare"],
+		maps: ["rave-in-the-redwoods"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "rock-throw"],
+		spawnBehavior:
+			"Sasquatches appear as their own special round every 4-5 rounds. They do not spawn in with regular zombies on normal rounds.",
+		combatStrategy: "content/zombies/sasquatch",
+	}),
+	makeZombie("slasher", {
+		title: "Slasher",
+		state: Option.none(),
+		releaseDate: "2017-01-31",
+		image: "/zombies/slasher.webp",
+		description:
+			"The Slasher is an elite enemy originating from the map Rave in the Redwoods, a chainsaw-wielding maniac that stalks players during Rave Mode.",
+		games: ["infinite-warfare"],
+		maps: ["rave-in-the-redwoods"],
+		type: "Elite",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["buzzsaw"],
+		spawnBehavior:
+			"The Slasher spawns near players when entering Rave Mode from Round 10 onward. A killable Slasher also spawns during the Locksmith main quest photo rituals after inspecting the completed picture.",
+		combatStrategy: "content/zombies/slasher",
 	}),
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",

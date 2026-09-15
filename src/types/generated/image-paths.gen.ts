@@ -423,6 +423,7 @@ export type PerksImagePath =
   '/perks/timeslip.webp' |
   '/perks/tombstone-cold-war.webp' |
   '/perks/tombstone.webp' |
+  '/perks/tuff-nuff.webp' |
   '/perks/victorious-tortoise.webp' |
   '/perks/vulture-aid-bo2.webp' |
   '/perks/vulture-aid.webp' |
@@ -576,6 +577,7 @@ export type ZombiesImagePath =
   '/zombies/rad-hound.webp' |
   '/zombies/ravager.webp' |
   '/zombies/sam.webp' |
+  '/zombies/sasquatch.webp' |
   '/zombies/scorched-zombie.webp' |
   '/zombies/sentinel-artifact.webp' |
   '/zombies/shadow-soul.webp' |
@@ -583,6 +585,7 @@ export type ZombiesImagePath =
   '/zombies/shock-mimic.webp' |
   '/zombies/shrieker-zombie.webp' |
   '/zombies/skeleton.webp' |
+  '/zombies/slasher.webp' |
   '/zombies/space-monkey.webp' |
   '/zombies/spider.webp' |
   '/zombies/stoker.webp' |
