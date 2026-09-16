@@ -377,6 +377,7 @@ export type MapsImagePath =
   '/maps/rex-infernus-v1.webp' |
   '/maps/shadows-of-evil.webp' |
   '/maps/shangri-la.webp' |
+  '/maps/shaolin-shuffle.webp' |
   '/maps/shattered-veil.webp' |
   '/maps/shi-no-numa.webp' |
   '/maps/tag-der-toten.webp' |
@@ -414,7 +415,9 @@ export type PerksImagePath =
   '/perks/phd-slider.webp' |
   '/perks/quick-revive-cold-war.webp' |
   '/perks/quick-revive.webp' |
+  '/perks/quickies.webp' |
   '/perks/racin-stripes.webp' |
+  '/perks/slappy-taffy.webp' |
   '/perks/speed-cola-bo3.webp' |
   '/perks/speed-cola.webp' |
   '/perks/stamin-up-cold-war.webp' |

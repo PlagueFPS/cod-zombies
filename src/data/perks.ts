@@ -628,4 +628,20 @@ const PERKS = uniqueMap([
 		augments: Option.none(),
 		variants: Option.none(),
 	}),
+	makePerk("quickies", {
+		title: "Quickies",
+		description: "Reload in a flash! (Increased your reload speed)",
+		image: "/perks/quickies.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
+	makePerk("slappy-taffy", {
+		title: "Slappy Taffy",
+		description: "Punch 'em in the face! (Increases your melee damage)",
+		image: "/perks/slappy-taffy.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
 ])
