@@ -498,6 +498,22 @@ const MAPS = uniqueMap([
 		description: "Back from the grave and ready to RAVE!",
 		image: "/maps/rave-in-the-redwoods.webp",
 		game: "infinite-warfare",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/locksmith"),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 30,
+			max: 90,
+			reason:
+				"Time varies significantly based on if you have Director's cut and knowledge of the steps.",
+		}),
+	}),
+	makeMap("shaolin-shuffle", {
+		title: "Shaolin Shuffle",
+		releaseDate: "2017-04-18",
+		description: "...She's the cat with the kung fu claws!",
+		image: "/maps/shaolin-shuffle.webp",
+		game: "infinite-warfare",
 		state: Option.some("Coming Soon"),
 		mainQuest: Option.some("content/main-quests/locksmith"),
 		difficulty: Option.none(),

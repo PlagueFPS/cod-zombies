@@ -705,4 +705,10 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Short",
 		description: "Knocks back players that get to close to it.",
 	}),
+	makeZombieAttack("buzzsaw", {
+		title: "Buzzsaw",
+		range: "Short",
+		description:
+			"Swings a buzzing chainsaw at players within melee range, dealing enough damage to down a player in a single hit even with Tuff 'Nuff.",
+	}),
 ])
