@@ -515,7 +515,7 @@ const MAPS = uniqueMap([
 		image: "/maps/shaolin-shuffle.webp",
 		game: "infinite-warfare",
 		state: Option.some("Coming Soon"),
-		mainQuest: Option.some("content/main-quests/locksmith"),
+		mainQuest: Option.some("content/main-quests/pest-control"),
 		difficulty: Option.none(),
 		estimatedTimeMins: Option.none(),
 	}),

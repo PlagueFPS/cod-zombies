@@ -543,7 +543,7 @@ const ZOMBIES = uniqueMap([
 		image: "/zombies/skeleton.webp",
 		description:
 			"Skeletons are a variant of the normal zombie also known as Spartoi in Ancient Evil. These enemies bring a cool new look to the normal zombie.",
-		games: ["black-ops-3", "black-ops-4"],
+		games: ["black-ops-3", "infinite-warfare", "black-ops-4"],
 		maps: ["der-eisendrache", "rave-in-the-redwoods", "ancient-evil"],
 		type: "Normal",
 		speed: "Medium",
