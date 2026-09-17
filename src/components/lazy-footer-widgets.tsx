@@ -1,5 +1,3 @@
-"use client"
-
 import { lazy, Suspense } from "react"
 import { CustomLink } from "@/components/custom-link"
 import { Skeleton } from "@/components/ui/skeleton"

@@ -1,5 +1,3 @@
-"use client"
-
 import type { FileRoutesByTo } from "@/routeTree.gen"
 import type { LinkProps } from "@tanstack/react-router"
 import { cn } from "cn"

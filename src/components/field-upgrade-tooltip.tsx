@@ -1,5 +1,3 @@
-"use client"
-
 import type { GameKey } from "@/data/games"
 import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { Array as Arr, Option, Predicate, Result } from "effect"

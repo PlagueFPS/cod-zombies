@@ -1,5 +1,3 @@
-"use client"
-
 import { cn } from "cn"
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"

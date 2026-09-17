@@ -5,7 +5,7 @@ import { LazyFeedbackForm } from "@/components/lazy-feedback-form"
 import { ErrorButton, ErrorDescription, ErrorTitle } from "@/components/ui/error"
 
 export function DefaultError({ error, reset }: ErrorComponentProps) {
-	const location = useLocation()
+	const pathname = useLocation({ select: location => location.pathname })
 
 	useEffect(() => {
 		console.error(error)
@@ -16,8 +16,8 @@ export function DefaultError({ error, reset }: ErrorComponentProps) {
 			<div className="mx-auto flex flex-col items-center justify-center gap-4">
 				<ErrorTitle>Oh no! Something went wrong!</ErrorTitle>
 				<ErrorDescription className="text-center">
-					An error occured while viewing {location.pathname}, if you continue to experience this
-					error please use our feedback form to report the issue
+					An error occured while viewing {pathname}, if you continue to experience this error please
+					use our feedback form to report the issue
 				</ErrorDescription>
 			</div>
 			<div className="flex items-center justify-center gap-4">

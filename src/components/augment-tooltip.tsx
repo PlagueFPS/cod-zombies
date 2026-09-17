@@ -1,5 +1,3 @@
-"use client"
-
 import type { Augment, AugmentKey } from "@/data/augments"
 import type { GameKey } from "@/data/games"
 import type { RegistryKeyInput } from "@/data/registry-helpers"

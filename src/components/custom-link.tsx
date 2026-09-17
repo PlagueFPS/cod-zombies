@@ -1,5 +1,3 @@
-"use client"
-
 import { Link, type LinkProps, type NavigateOptions, useNavigate } from "@tanstack/react-router"
 
 interface ICustomLink extends LinkProps {
