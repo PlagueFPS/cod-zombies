@@ -1,5 +1,3 @@
-"use client"
-
 import type { RegistryKeyInput } from "@/data/registry-helpers"
 import type { Zombie, ZombieKey, ZombieType } from "@/data/zombies"
 import { cn } from "cn"

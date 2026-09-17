@@ -1,5 +1,3 @@
-"use client"
-
 import { cn } from "cn"
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"

@@ -1,5 +1,3 @@
-"use client"
-
 import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { Option } from "effect"
 import { Check, Copy } from "lucide-react"

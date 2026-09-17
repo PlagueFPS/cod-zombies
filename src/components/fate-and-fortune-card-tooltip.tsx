@@ -1,5 +1,3 @@
-"use client"
-
 import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { cn } from "cn"
 import { Option } from "effect"

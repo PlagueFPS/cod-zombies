@@ -1,5 +1,3 @@
-"use client"
-
 import { cn } from "cn"
 import { MessageCircleHeart } from "lucide-react"
 import { lazy, Suspense, type ComponentProps } from "react"

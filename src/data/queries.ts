@@ -33,7 +33,6 @@ export const mdxMetaQueryOptions = (id: string, filePath: ContentPaths) =>
 				...getLastModified(filePath),
 			}
 		},
-		structuralSharing: false,
 		staleTime: Infinity,
 	})
 
@@ -46,6 +45,5 @@ export const mdxComponentQueryOptions = (id: string, filePath: ContentPaths) =>
 
 			return { Component }
 		},
-		structuralSharing: false,
 		staleTime: Infinity,
 	})

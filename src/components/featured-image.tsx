@@ -1,5 +1,3 @@
-"use client"
-
 import type { ImagePaths } from "@/types/generated/image-paths.gen"
 import { cn } from "cn"
 import { Image, type ImageProps } from "@/components/image"
