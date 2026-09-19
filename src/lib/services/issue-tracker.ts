@@ -41,8 +41,8 @@ class CreateIssueError extends Schema.TaggedError<CreateIssueError>()("CreateIss
 
 export class IssueTracker extends Context.Service<IssueTracker>()("lib/services/issue-tracker", {
 	make: Effect.gen(function* () {
-		const apiKey = yield* Config.redacted("LINEAR_API_KEY")
-		const teamId = yield* Config.nonEmptyString("LINEAR_TEAM_ID")
+		const apiKey = yield* Config.Redacted("LINEAR_API_KEY")
+		const teamId = yield* Config.NonEmptyString("LINEAR_TEAM_ID")
 
 		const linearClient = (yield* HttpClient.HttpClient).pipe(
 			HttpClient.mapRequest(request =>

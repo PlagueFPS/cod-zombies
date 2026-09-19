@@ -64,12 +64,12 @@ export function encodeWebp(
 export const getIconTargetSize = (sourceWidth: number): number =>
 	sourceWidth >= ICON_LARGE_SIZE ? ICON_LARGE_SIZE : ICON_SMALL_SIZE
 
-const dirOption = Flag.directory("output-dir").pipe(
+const dirOption = Flag.Directory("output-dir").pipe(
 	Flag.withAlias("o"),
 	Flag.withDescription("Output directory where optimized images will be stored. (required)"),
 )
 
-const sourceOption = Flag.directory("source-dir").pipe(
+const sourceOption = Flag.Directory("source-dir").pipe(
 	Flag.withDefault(DEFAULT_SOURCE_DIR),
 	Flag.withAlias("s"),
 	Flag.withDescription(
@@ -77,17 +77,17 @@ const sourceOption = Flag.directory("source-dir").pipe(
 	),
 )
 
-const previewFlag = Flag.boolean("preview").pipe(
+const previewFlag = Flag.Boolean("preview").pipe(
 	Flag.optional,
 	Flag.withDescription("Resize images to 640px width with no variants."),
 )
 
-const mapFlag = Flag.boolean("map").pipe(
+const mapFlag = Flag.Boolean("map").pipe(
 	Flag.optional,
 	Flag.withDescription("Resize images to 2048px width with no variants, without upscaling."),
 )
 
-const iconFlag = Flag.boolean("icon").pipe(
+const iconFlag = Flag.Boolean("icon").pipe(
 	Flag.optional,
 	Flag.withDescription(
 		"Resize images to 256x256 if wider than or equal to 256px, or 128x128 if narrower, with no variants.",
@@ -145,7 +145,7 @@ export const ensureOutputDirectory = Effect.fn("ensureOutputDirectory")(function
 	if (yield* fs.exists(dir)) return
 
 	const confirmed = yield* Prompt.run(
-		Prompt.confirm({
+		Prompt.Confirm({
 			message: `Output directory does not exist: ${dir}. Create it?`,
 			initial: true,
 		}),
