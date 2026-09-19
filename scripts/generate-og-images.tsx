@@ -1100,55 +1100,55 @@ export const writeOgFile = Effect.fnUntraced(function* (
 	)
 })
 
-const mapSlugFlag = Flag.optional(Flag.string("map")).pipe(
+const mapSlugFlag = Flag.optional(Flag.String("map")).pipe(
 	Flag.withAlias("m"),
 	Flag.withDescription(
 		"Map slug: one main-quest OG image when used alone, or filter for --zombies / --quests / --relics (batch only).",
 	),
 )
 
-const mapsFlag = Flag.boolean("maps").pipe(
+const mapsFlag = Flag.Boolean("maps").pipe(
 	Flag.optional,
 	Flag.withDescription("Generate OG images for every map that has a main quest."),
 )
 
-const questFlag = Flag.optional(Flag.string("quest")).pipe(
+const questFlag = Flag.optional(Flag.String("quest")).pipe(
 	Flag.withAlias("q"),
 	Flag.withDescription("Side quest slug for one OG image."),
 )
 
-const questsFlag = Flag.boolean("quests").pipe(
+const questsFlag = Flag.Boolean("quests").pipe(
 	Flag.optional,
 	Flag.withDescription(
 		"Generate OG images for all side quests (optional --map / -m limits to that map).",
 	),
 )
 
-const zombieFlag = Flag.optional(Flag.string("zombie")).pipe(
+const zombieFlag = Flag.optional(Flag.String("zombie")).pipe(
 	Flag.withAlias("z"),
 	Flag.withDescription("Zombie slug for one OG image."),
 )
 
-const zombiesFlag = Flag.boolean("zombies").pipe(
+const zombiesFlag = Flag.Boolean("zombies").pipe(
 	Flag.optional,
 	Flag.withDescription(
 		"Generate OG images for all zombies (optional --map / -m limits to zombies that were released on that map).",
 	),
 )
 
-const relicFlag = Flag.optional(Flag.string("relic")).pipe(
+const relicFlag = Flag.optional(Flag.String("relic")).pipe(
 	Flag.withAlias("r"),
 	Flag.withDescription("Relic slug for one OG image."),
 )
 
-const relicsFlag = Flag.boolean("relics").pipe(
+const relicsFlag = Flag.Boolean("relics").pipe(
 	Flag.optional,
 	Flag.withDescription(
 		"Generate OG images for all relics (optional --map / -m limits to relics on that map).",
 	),
 )
 
-const outputDirFlag = Flag.directory("output-dir").pipe(
+const outputDirFlag = Flag.Directory("output-dir").pipe(
 	Flag.withDefault(DEFAULT_OUTPUT_BASE),
 	Flag.withAlias("o"),
 	Flag.withDescription(

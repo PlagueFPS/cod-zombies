@@ -20,8 +20,8 @@ class ResendError extends Schema.TaggedError<ResendError>()("ResendError", {
 
 export class Email extends Context.Service<Email>()("lib/services/emails", {
 	make: Effect.gen(function* () {
-		const apiKey = yield* Config.redacted("RESEND_API_KEY")
-		const audienceId = yield* Config.redacted("RESEND_AUDIENCE_ID")
+		const apiKey = yield* Config.Redacted("RESEND_API_KEY")
+		const audienceId = yield* Config.Redacted("RESEND_AUDIENCE_ID")
 
 		const resend = new Resend(Redacted.value(apiKey))
 
