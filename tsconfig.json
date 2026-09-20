@@ -1,4 +1,5 @@
 {
+	"$schema": "./node_modules/@effect/tsgo/schema.json",
 	"compilerOptions": {
 		"types": ["node", "bun", "leaflet", "mdx", "react", "react-dom"],
 		"target": "es2022",
@@ -20,7 +21,8 @@
 		"incremental": true,
 		"plugins": [
 			{
-				"name": "@effect/language-service"
+				"name": "@effect/language-service",
+				"ignoreEffectWarningsInTscExitCode": true
 			}
 		],
 		"paths": {

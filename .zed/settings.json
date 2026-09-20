@@ -5,10 +5,10 @@
 {
 	"languages": {
     "TypeScript": {
-      "language_servers": ["tsgo", "!vtsls", "!typescript-language-server", "..."],
+      "language_servers": ["effect-tsgo", "!vtsls", "!typescript-language-server", "..."],
     },
     "TSX": {
-      "language_servers": ["tsgo", "!vtsls", "!typescript-language-server", "..."],
+      "language_servers": ["effect-tsgo", "!vtsls", "!typescript-language-server", "..."],
     },
   },
   "lsp": {
