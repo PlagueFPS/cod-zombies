@@ -1,5 +1,5 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
-import { Effect, Exit, Layer, Predicate, Schema } from "effect"
+import { Effect, Exit, Predicate, Schema } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
 import { describe, expect, test } from "vitest"
 import { IssueTracker } from "@/lib/services/issue-tracker"
@@ -151,7 +151,7 @@ function runCreateIssue(data: TFeedbackForm, fetch: typeof globalThis.fetch) {
 		return yield* tracker.createIssue(data)
 	}).pipe(
 		Effect.provide(IssueTracker.layer),
-		Effect.provide(Layer.succeed(FetchHttpClient.Fetch, fetch)),
+		Effect.provideService(FetchHttpClient.Fetch, fetch),
 		Effect.runPromiseExit,
 	)
 }

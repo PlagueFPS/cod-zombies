@@ -21,8 +21,7 @@
 		"incremental": true,
 		"plugins": [
 			{
-				"name": "@effect/language-service",
-				"ignoreEffectWarningsInTscExitCode": true
+				"name": "@effect/language-service"
 			}
 		],
 		"paths": {

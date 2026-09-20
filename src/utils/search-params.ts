@@ -3,7 +3,7 @@ import { Exit, Predicate, Schema } from "effect"
 
 const jsonParseSearch = parseSearchWith(JSON.parse)
 
-const SearchScalarSchema = Schema.Union([Schema.String, Schema.Number, Schema.Boolean])
+const SearchScalarSchema = Schema.Union([Schema.String, Schema.Finite, Schema.Boolean])
 
 export type SearchParamScalar = typeof SearchScalarSchema.Type
 
