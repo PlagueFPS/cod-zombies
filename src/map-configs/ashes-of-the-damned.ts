@@ -311,6 +311,19 @@ const layerMarkers: MapMarker[] = [
 		locations: [{ x: 0.536, y: 0.875 }],
 	},
 	{
+		...sharedMarkers["aether-crystal"],
+		description:
+			"Crystal part location for obtaining the Mister Peeks Mayhem relic (Super Easter Egg).",
+		locations: [
+			{ x: 0.455, y: 0.239 },
+			{ x: 0.433, y: 0.212 },
+			{ x: 0.42, y: 0.222 },
+			{ x: 0.444, y: 0.167 },
+			{ x: 0.422, y: 0.141 },
+			{ x: 0.418, y: 0.13 },
+		],
+	},
+	{
 		...sharedMarkers["mister-peeks"],
 		locations: [
 			{ x: 0.495, y: 0.109 },

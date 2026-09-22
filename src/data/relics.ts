@@ -9,7 +9,7 @@ import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 
 /** The three types of relics */
-export type RelicType = "Grim" | "Sinister" | "Wicked"
+export type RelicType = "Grim" | "Sinister" | "Wicked" | "Special"
 
 /** The unique identifier for each relic */
 export type RelicKey = Parameters<typeof RELICS.get>[0]
@@ -544,6 +544,20 @@ const RELICS = uniqueMap([
 			reason: "Time varies slightly based on how quickly you can get to Round 20.",
 		},
 		content: "content/relics/druid-stone",
+	}),
+	makeRelic("mister-peeks-mayhem", {
+		title: "Mister Peeks Mayhem",
+		state: Option.some("New"),
+		type: "Special",
+		image: "/relics/mister-peeks-mayhem.webp",
+		description: "All Cursed Tier rewards active and mayhem is increased",
+		map: "rex-infernus",
+		discoveredDate: "2026-09-18",
+		estimatedTimeMins: {
+			min: 60,
+			max: 120,
+		},
+		content: "content/relics/mister-peeks-mayhem",
 	}),
 ])
 

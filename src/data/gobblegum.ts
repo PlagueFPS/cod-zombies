@@ -417,4 +417,12 @@ const GOBBLEGUMS = uniqueMap([
 		image: "/gobblegums/gift-card.webp",
 		variants: Option.none(),
 	}),
+	makeGobblegum("temporal-gift", {
+		title: "Temporal Gift",
+		description: "The next time-based Power-Up you activate lasts longer.",
+		type: "Conditional",
+		rarity: "Rare",
+		image: "/gobblegums/temporal-gift.webp",
+		variants: Option.none(),
+	}),
 ])
