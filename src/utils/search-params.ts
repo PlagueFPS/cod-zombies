@@ -16,17 +16,40 @@ export type SearchParamValue =
 export type ParsedSearchParams = { [key: string]: SearchParamValue }
 
 /**
- * Coerces a multi-value filter element to a string.
+ * String form shared by a single query value and a repeated-key value.
  *
- * `qss` (via `parseSearchWith`) turns numeric-looking values into numbers/booleans,
- * which breaks `Schema.ArrayEnsure(Schema.String)`. Applied only to array elements —
- * scalar numbers like `page` must stay numbers for `Schema.Int`.
+ * `qss` JSON-parses `1e2` as the number 100 on a scalar and leaves the string
+ * `"1e2"` on a repeated key. Decoding JSON numbers, booleans, and null here
+ * makes both encodings the same string. Plain strings stay as written.
  */
+function stringifyFilterScalar(value: SearchParamScalar): string {
+	const asString = Schema.decodeUnknownExit(Schema.String)(value)
+
+	if (Exit.isFailure(asString)) return String(value)
+
+	try {
+		const parsed = JSON.parse(asString.value)
+		const decoded = Schema.decodeUnknownExit(SearchScalarSchema)(parsed)
+
+		const decodedString = Schema.decodeUnknownExit(Schema.String)(
+			Exit.isSuccess(decoded) ? decoded.value : value,
+		)
+
+		if (Exit.isSuccess(decoded) && Exit.isFailure(decodedString)) {
+			return String(decoded.value)
+		}
+	} catch {
+		// Not a JSON scalar. Keep the original filter string.
+	}
+
+	return asString.value
+}
+
 function normalizeArrayElement(value: SearchParamValue): SearchParamScalar | undefined {
 	const asScalar = Schema.decodeUnknownExit(SearchScalarSchema)(value)
 
 	if (Exit.isSuccess(asScalar)) {
-		return String(asScalar.value)
+		return stringifyFilterScalar(asScalar.value)
 	}
 
 	if (!Predicate.isString(value)) {
@@ -46,9 +69,13 @@ function normalizeArrayElement(value: SearchParamValue): SearchParamScalar | und
 	return value
 }
 
-function normalizeSearchValue(value: SearchParamValue): SearchParamValue {
-	if (value === undefined || value === null) {
-		return value
+function normalizeSearchValue(key: string, value: SearchParamValue): SearchParamValue {
+	if (value === undefined) return value
+
+	// `page` must stay numeric for Schema.Int. Other nulls follow the repeated-key
+	// path, which stringifies JSON null to "null".
+	if (value === null) {
+		return key === "page" ? value : "null"
 	}
 
 	if (Array.isArray(value)) {
@@ -57,6 +84,12 @@ function normalizeSearchValue(value: SearchParamValue): SearchParamValue {
 
 			return normalized === undefined ? [] : [normalized]
 		})
+	}
+
+	const asScalar = Schema.decodeUnknownExit(SearchScalarSchema)(value)
+
+	if (key !== "page" && Exit.isSuccess(asScalar)) {
+		return stringifyFilterScalar(asScalar.value)
 	}
 
 	return value
@@ -82,14 +115,15 @@ function isSearchParamValue(value: unknown): value is SearchParamValue {
  * - Repeated keys: `?game=a&game=b`
  * - Single values: `?game=a`
  *
- * Scalar numbers/booleans are left as-is so params like `page` (Schema.Int) still
- * validate. Only array elements are string-coerced for filter schemas.
+ * `page` stays a number so `Schema.Int` still validates. Every other scalar is
+ * stringified so a single filter token decodes like its repeated-key form.
+ * Array elements are always strings.
  */
 export function normalizeParsedSearch(search: ParsedSearchParams) {
 	const out: ParsedSearchParams = {}
 
 	for (const key in search) {
-		out[key] = normalizeSearchValue(search[key])
+		out[key] = normalizeSearchValue(key, search[key])
 	}
 
 	return out

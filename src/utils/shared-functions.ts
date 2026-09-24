@@ -158,10 +158,13 @@ const formatMinutesForDisplay = (m: number) => {
  * @param range - The time range with min and max in minutes.
  * @returns A formatted string for the time range.
  */
-export const formatEstimatedTimeRange = (range: { min: number; max: number }) =>
-	range.min === range.max
-		? formatMinutesForDisplay(range.min)
-		: `${formatMinutesForDisplay(range.min)}-${formatMinutesForDisplay(range.max)}`
+export const formatEstimatedTimeRange = (range: { min: number; max: number }) => {
+	const minLabel = formatMinutesForDisplay(range.min)
+	const maxLabel = formatMinutesForDisplay(range.max)
+
+	// 59.5 and 59.6 are different inputs but both round to "1h".
+	return minLabel === maxLabel ? minLabel : `${minLabel}-${maxLabel}`
+}
 
 /**
  * Formats the midpoint of a time range for display, e.g. "45m", "1h", "1h 20m".
