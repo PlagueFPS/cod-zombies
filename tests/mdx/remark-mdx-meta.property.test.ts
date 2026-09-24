@@ -16,15 +16,15 @@ describe("remark-mdx-meta slugify properties", () => {
 				const meta = getMdxDocumentMetaFromSource(`## ${text}\n\nSome words to read.`)
 				const heading = meta.headings[0]
 
-				if (slugify(text) === "") {
-					expect(heading).toBeUndefined()
+				// "_" and "---" still produce a heading; slugify strips them to "".
+				if (!heading) {
+					expect(text.trim()).toBe("")
 
 					return
 				}
 
-				expect(heading).toBeDefined()
-				expect(heading?.id).toBe(slugify(text))
-				expect(heading?.id).toBe(slugify(heading?.text ?? ""))
+				expect(heading.id).toBe(slugify(text))
+				expect(heading.id).toBe(slugify(heading.text))
 			}),
 		)
 	})
