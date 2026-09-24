@@ -8,6 +8,11 @@
 	"vars": {
 		"LINEAR_TEAM_ID": "22b4c02d-1821-46b8-894c-f16e3e66ba9e",
 	},
+	"previews": {
+		"vars": {
+			"LINEAR_TEAM_ID": "22b4c02d-1821-46b8-894c-f16e3e66ba9e",
+		},
+	},
 	"secrets": {
 		"required": ["RESEND_API_KEY", "RESEND_AUDIENCE_ID", "LINEAR_API_KEY"],
 	},
