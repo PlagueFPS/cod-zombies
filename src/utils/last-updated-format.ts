@@ -69,7 +69,16 @@ export function formatRelativeTimeAgo(
 
 	for (const { amount, unit } of RELATIVE_DIVISIONS) {
 		if (Math.abs(duration) < amount) {
-			return rtf.format(Math.round(duration), unit)
+			const rounded = Math.round(duration)
+
+			// Rounding can land on the next unit (59.6 minutes → 60). Carry
+			// instead of formatting "60 minutes" / "24 hours" / "7 days".
+			if (Math.abs(rounded) >= amount) {
+				duration = rounded / amount
+				continue
+			}
+
+			return rtf.format(rounded, unit)
 		}
 
 		duration /= amount
