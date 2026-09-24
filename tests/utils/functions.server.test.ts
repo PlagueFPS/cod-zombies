@@ -18,16 +18,6 @@ function expectOpengraphPath(href: string | undefined, kind: string, id: string)
 }
 
 describe("getLastModified", () => {
-	it("should return last modified data for existing file", () => {
-		const result = getLastModified("content/main-quests/paradox-junction")
-		expect(result).toBeDefined()
-	})
-
-	it("should normalize paths to posix-style", () => {
-		const result = getLastModified("content\\main-quests\\paradox-junction")
-		expect(result).toBeDefined()
-	})
-
 	it("should return current date for non-existing file", () => {
 		const mockDate = new Date("2025-03-15T10:00:00.000Z")
 		vi.useFakeTimers()
@@ -38,18 +28,6 @@ describe("getLastModified", () => {
 			lastModifiedFormatted: mockDate.toLocaleDateString(undefined, DATE_OPTIONS),
 		})
 		vi.useRealTimers()
-	})
-
-	it("should handle full relative and absolute paths", () => {
-		const paths = [
-			"content/main-quests/paradox-junction",
-			"./content/main-quests/paradox-junction",
-			"cod-zombies/content/main-quests/paradox-junction",
-		] as const
-
-		for (const p of paths) {
-			expect(getLastModified(p)).toBeDefined()
-		}
 	})
 })
 

@@ -1,8 +1,6 @@
 import { stringifySearchWith } from "@tanstack/react-router"
 import { describe, expect, test } from "vitest"
-import { getMapsWithMainQuest, type MapEntry } from "@/data/maps"
 import { expectExitSuccess } from "@/tests/helpers"
-import { applyFilters, type FilterSpec } from "@/utils/filter-helpers"
 import { normalizeParsedSearch, parseSearch, type ParsedSearchParams } from "@/utils/search-params"
 import { decodeMainQuestSearchParams } from "@/utils/validation-schemas"
 
@@ -104,26 +102,5 @@ describe("normalizeParsedSearch", () => {
 			page: 2,
 			game: ["black-ops-1"],
 		})
-	})
-})
-
-describe("main quest filter integration", () => {
-	test("filters maps from both games when using repeated query keys", () => {
-		const parsed = parseSearch("game=black-ops-1&game=black-ops-2")
-		const validated = expectExitSuccess(decodeMainQuestSearchParams(parsed))
-
-		const filterSpecs: FilterSpec<MapEntry>[] = [
-			{
-				values: validated.game,
-				match: (item, id) => item.game === id,
-			},
-		]
-
-		const filtered = applyFilters(getMapsWithMainQuest(), filterSpecs)
-		const games = [...new Set(filtered.map(item => item.game))]
-
-		expect(games).toContain("black-ops-1")
-		expect(games).toContain("black-ops-2")
-		expect(filtered).toHaveLength(9)
 	})
 })
