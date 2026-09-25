@@ -1450,7 +1450,15 @@ const ZOMBIES = uniqueMap([
 		description:
 			"The Abomination is an elite type of enemy originating on the map Forsaken in Black Ops Cold War, appearing as a three-headed mutated zombie similar to the Margwa.",
 		games: ["black-ops-cold-war", "black-ops-6", "black-ops-7"],
-		maps: ["forsaken", "outbreak", "liberty-falls", "shattered-veil", "kowakujo", "rex-infernus"],
+		maps: [
+			"forsaken",
+			"outbreak",
+			"liberty-falls",
+			"shattered-veil",
+			"ashes-of-the-damned",
+			"kowakujo",
+			"rex-infernus",
+		],
 		type: "Elite",
 		speed: "Slow",
 		weakPoints: ["glowing-mouths"],
@@ -1611,15 +1619,15 @@ const ZOMBIES = uniqueMap([
 		image: "/zombies/the-guardian.webp",
 		description:
 			"The Guardian is a colossal stone golem that served as the guardian of the Obscurus Altilium also known as the Amulet. Originating from the map Citadelle Des Morts in Black Ops 6.",
-		games: ["black-ops-6"],
-		maps: ["citadelle-des-morts"],
+		games: ["black-ops-6", "black-ops-7"],
+		maps: ["citadelle-des-morts", "ashes-of-the-damned"],
 		type: "Boss",
 		speed: "Slow",
 		weakPoints: ["chest", "shoulders", "forearms", "calves"],
 		elementalWeakness: [],
 		attacks: ["lava-balls", "ground-stomp", "hammer-slam", "leaping-hammer"],
 		spawnBehavior:
-			"The Guardian spawns once you use the Guardian Key on the statue in the Town Square.",
+			"The Guardian spawns once you use the Guardian Key on the statue in the Town Square. In Black Ops 7, the Guardian appears during the Boss Rush encounter of the Super Easter Egg.",
 		combatStrategy: "content/zombies/the-guardian",
 	}),
 	makeZombie("shock-mimic", {
@@ -1708,15 +1716,15 @@ const ZOMBIES = uniqueMap([
 		image: "/zombies/z-rex.webp",
 		description:
 			"The Z-Rex is a massive reanimated dinosaur revived by residual temporal energy, originating on Shattered Veil in Black Ops 6.",
-		games: ["black-ops-6"],
-		maps: ["shattered-veil"],
+		games: ["black-ops-6", "black-ops-7"],
+		maps: ["shattered-veil", "ashes-of-the-damned"],
 		type: "Boss",
 		speed: "Fast",
 		weakPoints: ["eyes", "mouth", "attached-zombies"],
 		elementalWeakness: [],
 		attacks: ["bite", "tail-slam", "dino-leap"],
 		spawnBehavior:
-			"The Dinosaur spawns after activating the final encounter by giving the Sentinel Artifact to S.A.M.",
+			"The Dinosaur spawns after activating the final encounter by giving the Sentinel Artifact to S.A.M. In Black Ops 7, the Z-Rex appears during the Boss Rush encounter of the Super Easter Egg.",
 		combatStrategy: "content/zombies/z-rex",
 	}),
 	makeZombie("kommando-klaus", {
@@ -1874,14 +1882,14 @@ const ZOMBIES = uniqueMap([
 		description:
 			"An imprisoned shadowsmith by the Warden, sister of Veytharion, forced against her will to serve the Warden's will.",
 		games: ["black-ops-7"],
-		maps: ["astra-malorum"],
+		maps: ["astra-malorum", "ashes-of-the-damned"],
 		type: "Boss",
 		speed: "Fast",
 		weakPoints: ["blue-glowing-spots"],
 		elementalWeakness: [],
 		attacks: ["orbital-laser", "meteor-shower", "toxic-gas-cloud", "ground-slam", "rock-throw"],
 		spawnBehavior:
-			"Caltheris is the final boss of the Astra Malorum main quest and will spawn during the final encounter.",
+			"Caltheris is the final boss of the Astra Malorum main quest and will spawn during the final encounter. She also appears as one of the encounter in the Super Easter Egg boss rush.",
 		combatStrategy: "content/zombies/caltheris",
 	}),
 	makeZombie("rad-hound", {

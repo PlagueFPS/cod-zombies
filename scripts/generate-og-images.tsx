@@ -263,11 +263,12 @@ const ZOMBIE_TYPE_OG_COLOR: Record<ZombieType, string> = {
 	Boss: "oklch(88.5% 0.062 18.334)",
 }
 
-/** Aligns with `TypeBadge` + `dark-*-badge-*-gradient` (Grim=easy, Sinister=medium, Wicked=hard). */
+/** Aligns with `TypeBadge` + `dark-*-badge-*-gradient` (Grim=easy, Sinister/Special=medium, Wicked=hard). */
 const RELIC_TYPE_OG_COLOR: Record<RelicType, string> = {
 	Grim: "oklch(91% 0.096 180.426)",
 	Sinister: "oklch(94.5% 0.129 101.54)",
 	Wicked: "oklch(88.5% 0.062 18.334)",
+	Special: "oklch(94.5% 0.129 101.54)",
 }
 
 /** Relic OG route backdrop overlay — softer than zombie OG gradient. */
