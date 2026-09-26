@@ -1,7 +1,8 @@
 import { layer as BunCryptoLayer } from "@effect/platform-bun/BunCrypto"
 import { Effect, Exit, Schema } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
-import { sendContentBroadcast, type ContentBroadcastInput } from "@/scripts/send-content-broadcast"
+import { ContentBroadcastInput, sendContentBroadcast } from "@/scripts/send-content-broadcast"
+import { expectCauseHasString, expectExitFailure } from "@/tests/helpers"
 import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
 import { opengraphImageUrl } from "@/utils/opengraph-image-url"
 
@@ -151,12 +152,18 @@ describe("sendContentBroadcast", () => {
 	})
 
 	test("rejects an empty bullet list", async () => {
-		await expect(
-			runBroadcast({
+		const exit = await Effect.runPromiseExit(
+			Schema.decodeUnknownEffect(ContentBroadcastInput)({
 				kind: "policy",
 				bullets: [],
 			}),
-		).rejects.toThrow(/bullet point/)
+		)
+
+		expect(Exit.isFailure(exit)).toBe(true)
+
+		const cause = expectExitFailure(exit)
+
+		expectCauseHasString(cause, '["bullets"]')
 	})
 
 	test("send flag posts a broadcast payload and does not use a live audience by default", async () => {
