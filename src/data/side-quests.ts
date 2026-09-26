@@ -1733,6 +1733,14 @@ const SIDE_QUESTS = uniqueMap([
 		map: "astra-malorum",
 		content: "content/side-quests/zarya-rocket",
 	}),
+	makeQuest("time-warp", {
+		state: Option.none(),
+		publishedDate: "2026-09-26",
+		title: "Time Warp",
+		description: "Learn how to slow down time in your game for a minute.",
+		map: "astra-malorum",
+		content: "content/side-quests/time-warp",
+	}),
 	makeQuest("come-back-down", {
 		state: Option.none(),
 		publishedDate: "2026-03-13",

@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-09-22T10:39:14.236Z
- * generated in: 28ms
+ * generated at: 2026-09-26T12:07:52.293Z
+ * generated in: 35ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -312,6 +312,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/the-reunion"
 	| "content/side-quests/the-vault"
 	| "content/side-quests/this-jazz-is-classified"
+	| "content/side-quests/time-warp"
 	| "content/side-quests/tombstone-perkaholic"
 	| "content/side-quests/toxic-growth-plant"
 	| "content/side-quests/turn-to-ashes"
