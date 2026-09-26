@@ -47,32 +47,24 @@ describe("buildShareableMapSearch properties", () => {
 					const visible = allIds.filter(id => computeIsIncluded(id, includeList, excludeList))
 					const hidden = allIds.filter(id => !computeIsIncluded(id, includeList, excludeList))
 					const showsNothing = allIds.length > 0 && visible.length === 0
+					const listsOmitted = allIds.length === 0 || visible.length === 0 || hidden.length === 0
+					const includeIsShorter = visible.length < hidden.length
+					const expectedInclude = !listsOmitted && includeIsShorter ? visible : undefined
+					const expectedExclude = !listsOmitted && !includeIsShorter ? hidden : undefined
+					const expectedLayer = layer !== undefined && layer !== "" ? layer : undefined
+
+					expect(shared.include).toEqual(expectedInclude)
+					expect(shared.exclude).toEqual(expectedExclude)
+					expect(shared.layer).toBe(expectedLayer)
 
 					// Hiding every marker intentionally drops both lists (same URL as show-all).
 					// Inclusion still round-trips for show-all and for every partial subset.
-					if (!showsNothing) {
-						for (const id of allIds) {
-							expect(computeIsIncluded(id, sharedInclude, sharedExclude)).toBe(
-								computeIsIncluded(id, includeList, excludeList),
-							)
-						}
-					}
+					const idsToCompare = showsNothing ? [] : allIds
 
-					if (allIds.length === 0 || visible.length === 0 || hidden.length === 0) {
-						expect(shared.include).toBeUndefined()
-						expect(shared.exclude).toBeUndefined()
-					} else if (visible.length < hidden.length) {
-						expect(shared.include).toEqual(visible)
-						expect(shared.exclude).toBeUndefined()
-					} else {
-						expect(shared.include).toBeUndefined()
-						expect(shared.exclude).toEqual(hidden)
-					}
-
-					if (layer !== undefined && layer !== "") {
-						expect(shared.layer).toBe(layer)
-					} else {
-						expect(shared.layer).toBeUndefined()
+					for (const id of idsToCompare) {
+						expect(computeIsIncluded(id, sharedInclude, sharedExclude)).toBe(
+							computeIsIncluded(id, includeList, excludeList),
+						)
 					}
 				},
 			),

@@ -114,15 +114,17 @@ describe("parseGitBatchOutput properties", () => {
 					expect(result[path]?.lastModified).toBe(timestamp * 1000)
 				}
 
-				for (const line of lines) {
-					if (line.kind === "noise") {
-						expect(result[line.path]).toBeUndefined()
-						continue
-					}
+				for (const line of lines.filter(
+					(line): line is Extract<GitLine, { kind: "noise" }> => line.kind === "noise",
+				)) {
+					expect(result[line.path]).toBeUndefined()
+				}
 
-					if (line.kind === "rename" && line.from !== line.to && !firstSeen.has(line.from)) {
-						expect(result[line.from]?.lastModified).not.toBe(line.timestamp * 1000)
-					}
+				for (const line of lines.filter(
+					(line): line is Extract<GitLine, { kind: "rename" }> =>
+						line.kind === "rename" && line.from !== line.to && !firstSeen.has(line.from),
+				)) {
+					expect(result[line.from]?.lastModified).not.toBe(line.timestamp * 1000)
 				}
 			}),
 			{ numRuns: 40 },
