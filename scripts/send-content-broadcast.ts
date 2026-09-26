@@ -8,7 +8,7 @@
  * Quest, relic, and policy need bullets for this release. Quest, relic, and zombie also take `id`,
  * the same slug the site uses for that entry's Open Graph image:
  *   { kind: "quest", type, id: "reckoning", title, description, redirectUrl, bullets: ["..."] }
- *   { kind: "relic", type, id: "lawyers-pen", title, description, map, discoveredDate, estimatedTimeMins, redirectUrl, bullets: ["..."] }
+ *   { kind: "relic", type, id: "lawyers-pen", title, description, redirectUrl, bullets: ["..."] }
  *   { kind: "policy", bullets: ["What changed in the policy"] }
  * Zombie uses the template's fixed breakdown list. Do not pass bullets:
  *   { kind: "zombie", type, id: "avogadro", title, description, redirectUrl }
@@ -17,7 +17,6 @@
  *   bun scripts/send-content-broadcast.ts --send
  */
 import type { RelicType } from "@/data/relics"
-import type { TimeRange } from "@/types/data"
 import type { ReactElement } from "react"
 import { BunServices, BunRuntime } from "@effect/platform-bun"
 import { render } from "@react-email/components"
@@ -96,9 +95,6 @@ export interface RelicBroadcastInput {
 	id: string
 	title: string
 	description: string
-	map: string
-	discoveredDate: string
-	estimatedTimeMins: TimeRange
 	redirectUrl: string
 	bullets: readonly string[]
 }
@@ -244,9 +240,6 @@ const renderBroadcast = Effect.fn("renderBroadcast")(function* (broadcast: Conte
 						id: broadcast.id,
 						title: broadcast.title,
 						description: broadcast.description,
-						map: broadcast.map,
-						discoveredDate: broadcast.discoveredDate,
-						estimatedTimeMins: broadcast.estimatedTimeMins,
 						redirectUrl: guideUrl(broadcast.redirectUrl),
 						unsubscribeUrl,
 						serverUrl,
@@ -429,7 +422,7 @@ if (import.meta.main) {
 
 	// Replace this argument, then run the command in the file comment.
 	// Relic example:
-	// { kind: "relic", type: "Grim", id: "lawyers-pen", title: "Lawyer's Pen", description: "Mimic props have infiltrated the map.", map: "Ashes of the Damned", discoveredDate: "2025-11-16", estimatedTimeMins: { min: 15, max: 30, reason: "Time varies slightly based on party size and gobblegum use." }, redirectUrl: "/relics/black-ops-7/lawyers-pen", bullets: ["Where to light the three red candles"] }
+	// { kind: "relic", type: "Grim", id: "lawyers-pen", title: "Lawyer's Pen", description: "Mimic props have infiltrated the map.", redirectUrl: "/relics/black-ops-7/lawyers-pen", bullets: ["Where to light the three red candles"] }
 	// Policy example:
 	// { kind: "policy", bullets: ["How long confirmation tokens are kept"] }
 	// Zombie example (no bullets; id is the bestiary slug):
