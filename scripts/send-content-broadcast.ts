@@ -29,12 +29,10 @@ import PrivacyPolicyUpdateEmail, {
 import QuestReleaseEmail, {
 	questReleasePreview,
 	questReleaseSubject,
-	type IQuestRelease,
 } from "@/emails/quest-release-email"
 import ZombieReleaseEmail, {
 	zombieReleasePreview,
 	zombieReleaseSubject,
-	type IZombieRelease,
 } from "@/emails/zombie-release-email"
 import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
 
@@ -92,34 +90,47 @@ export class BroadcastDeliveryError extends Schema.TaggedError<BroadcastDelivery
 	},
 ) {}
 
-export interface QuestBroadcastInput {
-	kind: "quest"
-	type: IQuestRelease["type"]
-	id: IQuestRelease["id"]
-	title: string
-	description: string
-	redirectUrl: string
-	bullets: readonly string[]
-}
+const BroadcastBulletPoints = Schema.NonEmptyArray(Schema.NonEmptyString)
 
-export interface ZombieBroadcastInput {
-	kind: "zombie"
-	type: IZombieRelease["type"]
-	id: IZombieRelease["id"]
-	title: string
-	description: string
-	redirectUrl: string
-}
+export const QuestBroadcastInput = Schema.Struct({
+	kind: Schema.Literal("quest"),
+	type: Schema.Literals(["Main", "Side"]),
+	id: Schema.NonEmptyString,
+	title: Schema.NonEmptyString,
+	description: Schema.NonEmptyString,
+	redirectUrl: Schema.NonEmptyString,
+	bullets: BroadcastBulletPoints,
+})
 
-export interface PolicyBroadcastInput {
-	kind: "policy"
-	bullets: readonly string[]
-}
+export type QuestBroadcastInput = typeof QuestBroadcastInput.Type
 
-export type ContentBroadcastInput =
-	| QuestBroadcastInput
-	| ZombieBroadcastInput
-	| PolicyBroadcastInput
+export const ZombieBroadcastInput = Schema.Struct({
+	kind: Schema.Literal("zombie"),
+	type: Schema.Literals(["Normal", "Special", "Elite", "Boss"]),
+	id: Schema.NonEmptyString,
+	title: Schema.NonEmptyString,
+	description: Schema.NonEmptyString,
+	redirectUrl: Schema.NonEmptyString,
+})
+
+export type ZombieBroadcastInput = typeof ZombieBroadcastInput.Type
+
+export const PolicyBroadcastInput = Schema.Struct({
+	kind: Schema.Literal("policy"),
+	bullets: BroadcastBulletPoints,
+})
+
+export type PolicyBroadcastInput = typeof PolicyBroadcastInput.Type
+
+export const ContentBroadcastInput = Schema.Union([
+	QuestBroadcastInput,
+	ZombieBroadcastInput,
+	PolicyBroadcastInput,
+])
+
+export type ContentBroadcastInput = typeof ContentBroadcastInput.Type
+
+const decodeContentBroadcast = Schema.decodeUnknownEffect(ContentBroadcastInput)
 
 export interface BroadcastDryRun {
 	mode: "dry-run"
@@ -147,66 +158,6 @@ interface RenderedBroadcast {
 	text: string
 	react: ReactElement
 }
-
-function requireText(value: string, label: string) {
-	if (value.trim().length === 0) {
-		return Effect.fail(
-			new BroadcastInputError({
-				message: `${label} is required.`,
-				cause: value,
-			}),
-		)
-	}
-
-	return Effect.void
-}
-
-function requireBullets(bullets: readonly string[]) {
-	if (bullets.length === 0 || bullets.some(bullet => bullet.trim().length === 0)) {
-		return Effect.fail(
-			new BroadcastInputError({
-				message: "Add at least one non-empty bullet point for this quest or policy update.",
-				cause: bullets,
-			}),
-		)
-	}
-
-	return Effect.void
-}
-
-const validateBroadcast = Effect.fn("validateBroadcast")(function* (
-	broadcast: ContentBroadcastInput,
-) {
-	switch (broadcast.kind) {
-		case "quest":
-			yield* requireText(broadcast.id, "Quest id")
-			yield* requireText(broadcast.title, "Quest title")
-			yield* requireText(broadcast.description, "Quest description")
-			yield* requireText(broadcast.redirectUrl, "Quest redirectUrl")
-			yield* requireBullets(broadcast.bullets)
-
-			return
-		case "policy":
-			yield* requireBullets(broadcast.bullets)
-
-			return
-		case "zombie":
-			yield* requireText(broadcast.id, "Zombie id")
-			yield* requireText(broadcast.title, "Zombie title")
-			yield* requireText(broadcast.description, "Zombie description")
-			yield* requireText(broadcast.redirectUrl, "Zombie redirectUrl")
-
-			return
-		default: {
-			const exhaustive: never = broadcast
-
-			return yield* new BroadcastInputError({
-				message: `Unexpected broadcast kind: ${JSON.stringify(exhaustive)}`,
-				cause: exhaustive,
-			})
-		}
-	}
-})
 
 function guideUrl(redirectUrl: string): string {
 	if (redirectUrl.startsWith("https://") || redirectUrl.startsWith("http://")) return redirectUrl
@@ -386,8 +337,17 @@ export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* 
 	broadcast: ContentBroadcastInput,
 	options?: { readonly send?: boolean },
 ) {
-	yield* validateBroadcast(broadcast)
-	const rendered = yield* renderBroadcast(broadcast)
+	const input = yield* decodeContentBroadcast(broadcast).pipe(
+		Effect.mapError(
+			cause =>
+				new BroadcastInputError({
+					message: cause.message,
+					cause,
+				}),
+		),
+	)
+
+	const rendered = yield* renderBroadcast(input)
 
 	const audienceId = presentValue(
 		yield* Config.option(Config.String("RESEND_AUDIENCE_ID")),
@@ -422,7 +382,7 @@ export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* 
 		})
 	}
 
-	const idempotencyKey = yield* contentIdempotencyKey(broadcast, rendered.subject)
+	const idempotencyKey = yield* contentIdempotencyKey(input, rendered.subject)
 	const resend = new Resend(Redacted.value(apiKey.value))
 
 	const { data, error } = yield* Effect.tryPromise({
@@ -512,7 +472,7 @@ if (import.meta.main) {
 				"Where to find the Sentinel Artifact",
 				"Recommended loadouts for the boss fight",
 			],
-		},
+		} satisfies QuestBroadcastInput,
 		{ send },
 	).pipe(
 		Effect.tap(result => Effect.sync(() => printResult(result))),
