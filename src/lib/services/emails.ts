@@ -9,7 +9,6 @@ import {
 	type GetContactResponseSuccess,
 	type RemoveContactsResponseSuccess,
 	Resend,
-	type SendBroadcastOptions,
 	type SendBroadcastResponseSuccess,
 } from "resend"
 
@@ -77,24 +76,12 @@ export class Email extends Context.Service<Email>()("lib/services/emails", {
 			return data
 		})
 
-		const sendBroadcast = Effect.fn("Email.sendBroadcast")(function* (
-			id: string,
-			payload?: SendBroadcastOptions,
-		) {
-			const { data, error } = yield* Effect.promise(() => resend.broadcasts.send(id, payload))
-
-			if (error) return yield* new ResendError({ message: error.message, cause: error })
-
-			return data
-		})
-
 		return {
 			getContact,
 			createContact,
 			removeContact,
 			sendEmail,
 			createBroadcast,
-			sendBroadcast,
 		} as const
 	}),
 }) {
@@ -176,13 +163,7 @@ export class Email extends Context.Service<Email>()("lib/services/emails", {
 			) => Effect.Effect<CreateBroadcastResponseSuccess, ResendError, never> = () =>
 				Effect.succeed({ id: "123" })
 
-			const sendBroadcast: (
-				id: string,
-				payload?: SendBroadcastOptions,
-			) => Effect.Effect<SendBroadcastResponseSuccess, ResendError, never> = id =>
-				Effect.succeed({ id })
-
-			return { getContact, createContact, removeContact, sendEmail, createBroadcast, sendBroadcast }
+			return { getContact, createContact, removeContact, sendEmail, createBroadcast }
 		}),
 	)
 }

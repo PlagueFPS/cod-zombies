@@ -16,12 +16,10 @@
  *   bun scripts/send-content-broadcast.ts --send
  */
 import type { ReactElement } from "react"
-import { runMain } from "@effect/platform-bun/BunRuntime"
-import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
+import { BunServices, BunRuntime } from "@effect/platform-bun"
 import { render } from "@react-email/components"
-import { Config, Effect, Encoding, Option, Redacted, Schema } from "effect"
+import { Config, Effect, Encoding, Layer, Schema } from "effect"
 import { Crypto } from "effect/Crypto"
-import { Resend } from "resend"
 import PrivacyPolicyUpdateEmail, {
 	policyUpdatePreview,
 	policyUpdateSubject,
@@ -34,6 +32,7 @@ import ZombieReleaseEmail, {
 	zombieReleasePreview,
 	zombieReleaseSubject,
 } from "@/emails/zombie-release-email"
+import { Email } from "@/lib/services/emails"
 import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
 
 const RESEND_UNSUBSCRIBE_URL = "{{{RESEND_UNSUBSCRIBE_URL}}}"
@@ -66,14 +65,6 @@ export class BroadcastRenderError extends Schema.TaggedError<BroadcastRenderErro
 	},
 ) {}
 
-export class BroadcastConfigError extends Schema.TaggedError<BroadcastConfigError>()(
-	"BroadcastConfigError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
-
 export class BroadcastHashError extends Schema.TaggedError<BroadcastHashError>()(
 	"BroadcastHashError",
 	{
@@ -82,55 +73,34 @@ export class BroadcastHashError extends Schema.TaggedError<BroadcastHashError>()
 	},
 ) {}
 
-export class BroadcastDeliveryError extends Schema.TaggedError<BroadcastDeliveryError>()(
-	"BroadcastDeliveryError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+export interface QuestBroadcastInput {
+	kind: "quest"
+	type: "Main" | "Side"
+	id: string
+	title: string
+	description: string
+	redirectUrl: string
+	bullets: readonly string[]
+}
 
-const BroadcastBulletPoints = Schema.NonEmptyArray(Schema.NonEmptyString)
+export interface ZombieBroadcastInput {
+	kind: "zombie"
+	type: "Normal" | "Special" | "Elite" | "Boss"
+	id: string
+	title: string
+	description: string
+	redirectUrl: string
+}
 
-export const QuestBroadcastInput = Schema.Struct({
-	kind: Schema.Literal("quest"),
-	type: Schema.Literals(["Main", "Side"]),
-	id: Schema.NonEmptyString,
-	title: Schema.NonEmptyString,
-	description: Schema.NonEmptyString,
-	redirectUrl: Schema.NonEmptyString,
-	bullets: BroadcastBulletPoints,
-})
+export interface PolicyBroadcastInput {
+	kind: "policy"
+	bullets: readonly string[]
+}
 
-export type QuestBroadcastInput = typeof QuestBroadcastInput.Type
-
-export const ZombieBroadcastInput = Schema.Struct({
-	kind: Schema.Literal("zombie"),
-	type: Schema.Literals(["Normal", "Special", "Elite", "Boss"]),
-	id: Schema.NonEmptyString,
-	title: Schema.NonEmptyString,
-	description: Schema.NonEmptyString,
-	redirectUrl: Schema.NonEmptyString,
-})
-
-export type ZombieBroadcastInput = typeof ZombieBroadcastInput.Type
-
-export const PolicyBroadcastInput = Schema.Struct({
-	kind: Schema.Literal("policy"),
-	bullets: BroadcastBulletPoints,
-})
-
-export type PolicyBroadcastInput = typeof PolicyBroadcastInput.Type
-
-export const ContentBroadcastInput = Schema.Union([
-	QuestBroadcastInput,
-	ZombieBroadcastInput,
-	PolicyBroadcastInput,
-])
-
-export type ContentBroadcastInput = typeof ContentBroadcastInput.Type
-
-const decodeContentBroadcast = Schema.decodeUnknownEffect(ContentBroadcastInput)
+export type ContentBroadcastInput =
+	| QuestBroadcastInput
+	| ZombieBroadcastInput
+	| PolicyBroadcastInput
 
 export interface BroadcastDryRun {
 	mode: "dry-run"
@@ -324,36 +294,12 @@ const contentIdempotencyKey = Effect.fn("contentIdempotencyKey")(function* (
 	return `content-broadcast/${broadcast.kind}/${fingerprint}`
 })
 
-function presentValue<A>(
-	value: Option.Option<A>,
-	isBlank: (value: A) => boolean,
-): Option.Option<A> {
-	if (Option.isNone(value) || isBlank(value.value)) return Option.none()
-
-	return value
-}
-
 export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* (
 	broadcast: ContentBroadcastInput,
 	options?: { readonly send?: boolean },
 ) {
-	const input = yield* decodeContentBroadcast(broadcast).pipe(
-		Effect.mapError(
-			cause =>
-				new BroadcastInputError({
-					message: cause.message,
-					cause,
-				}),
-		),
-	)
-
-	const rendered = yield* renderBroadcast(input)
-
-	const audienceId = presentValue(
-		yield* Config.option(Config.String("RESEND_AUDIENCE_ID")),
-		id => id.trim().length === 0,
-	)
-
+	const rendered = yield* renderBroadcast(broadcast)
+	const audienceId = yield* Config.NonEmptyString("RESEND_AUDIENCE_ID")
 	const send = options?.send === true
 
 	if (!send) {
@@ -363,57 +309,30 @@ export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* 
 			replyTo: BROADCAST_REPLY_TO,
 			subject: rendered.subject,
 			previewText: rendered.previewText,
-			segmentId: Option.getOrElse(audienceId, () => "(RESEND_AUDIENCE_ID is not set)"),
+			segmentId: audienceId,
 			name: rendered.name,
 			html: rendered.html,
 			text: rendered.text,
 		} satisfies BroadcastDryRun
 	}
 
-	const apiKey = presentValue(
-		yield* Config.option(Config.Redacted("RESEND_API_KEY")),
-		key => Redacted.value(key).trim().length === 0,
+	const emails = yield* Email
+	const idempotencyKey = yield* contentIdempotencyKey(broadcast, rendered.subject)
+
+	const data = yield* emails.createBroadcast(
+		{
+			name: rendered.name,
+			from: NEWSLETTER_FROM_ADDRESS,
+			replyTo: BROADCAST_REPLY_TO,
+			subject: rendered.subject,
+			previewText: rendered.previewText,
+			segmentId: audienceId,
+			react: rendered.react,
+			text: rendered.text,
+			send: true,
+		},
+		{ headers: { "Idempotency-Key": idempotencyKey } },
 	)
-
-	if (Option.isNone(apiKey) || Option.isNone(audienceId)) {
-		return yield* new BroadcastConfigError({
-			message: "Set RESEND_API_KEY and RESEND_AUDIENCE_ID before sending a broadcast.",
-			cause: { hasApiKey: Option.isSome(apiKey), hasAudience: Option.isSome(audienceId) },
-		})
-	}
-
-	const idempotencyKey = yield* contentIdempotencyKey(input, rendered.subject)
-	const resend = new Resend(Redacted.value(apiKey.value))
-
-	const { data, error } = yield* Effect.tryPromise({
-		try: () =>
-			resend.broadcasts.create(
-				{
-					name: rendered.name,
-					from: NEWSLETTER_FROM_ADDRESS,
-					replyTo: BROADCAST_REPLY_TO,
-					subject: rendered.subject,
-					previewText: rendered.previewText,
-					segmentId: audienceId.value,
-					react: rendered.react,
-					text: rendered.text,
-					send: true,
-				},
-				{ headers: { "Idempotency-Key": idempotencyKey } },
-			),
-		catch: cause =>
-			new BroadcastDeliveryError({
-				message: "Resend broadcast request failed.",
-				cause,
-			}),
-	})
-
-	if (error || !data) {
-		return yield* new BroadcastDeliveryError({
-			message: error?.message ?? "Resend did not return a broadcast id.",
-			cause: error ?? "Resend did not return a broadcast id.",
-		})
-	}
 
 	return { mode: "sent" as const, id: data.id, subject: rendered.subject } satisfies BroadcastSent
 })
@@ -472,11 +391,11 @@ if (import.meta.main) {
 				"Where to find the Sentinel Artifact",
 				"Recommended loadouts for the boss fight",
 			],
-		} satisfies QuestBroadcastInput,
+		},
 		{ send },
 	).pipe(
 		Effect.tap(result => Effect.sync(() => printResult(result))),
-		Effect.provide(BunServicesLayer),
-		runMain,
+		Effect.provide(Layer.mergeAll(BunServices.layer, Email.layer)),
+		BunRuntime.runMain,
 	)
 }

@@ -1,5 +1,4 @@
-import { runMain } from "@effect/platform-bun/BunRuntime"
-import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
+import { BunServices, BunRuntime } from "@effect/platform-bun"
 import { Clock, Duration, Effect, FileSystem, Option, Path, Schema, Ref, Match } from "effect"
 import { Command, Flag, Prompt } from "effect/unstable/cli"
 import sharp, { type Sharp } from "sharp"
@@ -359,5 +358,5 @@ export const optimizeCommand = Command.make(
 if (import.meta.main) {
 	Command.run(optimizeCommand, {
 		version: "1.0.0",
-	}).pipe(Effect.provide(BunServicesLayer), runMain)
+	}).pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
 }
