@@ -1,9 +1,48 @@
 ---
 name: effect
-description: Guidelines for writing Effect-TS code with Schema.TaggedError and Effect.gen. Apply when the user requests Effect code changes, when editing files that import from "effect", or when authoring, reviewing, or refactoring Effect.gen, Effect.try, tagged errors, or Effect.fail usage.
+description: Guidelines for writing Effect-TS code. Apply when the user requests Effect code changes, when editing files that import from "effect", or when authoring, reviewing, or refactoring Effect.gen, Effect.try, Effect.fn, Effect.fnUntraced, tagged errors, or Effect.fail usage.
 ---
 
 # Effect Code Guidelines
+
+## Creating Effectful functions
+Prefer using `Effect.fnUntraced` over `Effect.gen` for untraced construction, and use `Effect.fn` for traced construction when observability is important and squeezing out the 
+most performance isn't neccessary.
+
+```typescript
+// ❌ BAD
+const foo = (input: string) = Effect.gen(function*() {
+	const myService = yield* Service
+	const result = yield* myService.doWork(input)
+	return result
+})
+
+// ✅ GOOD
+const foo = Effect.fnUntraced(function*(input: string) {
+	const myService = yield* Service
+	const result = yield* myService.doWork(input)
+	return result
+})
+
+// OR - when tracing is requested/needed
+const foo = Effect.fn("foo")(function*(input: string){
+	const myService = yield* Service
+	const result = yield* myService.doWork(input)
+	return result
+})
+```
+
+### When `Effect.gen` is appropriate
+Use `Effect.gen` for service constructors that do not require any parameters.
+
+```typescript
+class MyService extends Context.Service<MyService>()("UniqueServiceKey") {
+	make: Effect.gen(function*() {
+		// Default implementation
+	}),
+}
+```
+
 
 ## Tagged errors
 
@@ -34,27 +73,33 @@ if (args.preview && args.map) {
 ```
 
 ### Returning `Effect` from plain functions
-
-Since errors aren't Effect themselves, you must wrap them in Effect.fail to be part of the returned Effect's error channel from a plain function.
+Avoid returning Effectful values from plain functions. Instead write the function itself as an Effect to make it clear what it returns.
 
 ```typescript
 // ❌ BAD
-if (metadata.width === undefined) {
-  return new ImageOptimizationError({
-    message: `Image has no width metadata: ${asset}`,
-    cause: asset,
-  })
+function requireText(value: string, label: string) {
+  if (value.trim().length === 0) {
+    return Effect.fail(
+      new BroadcastInputError({
+        message: `${label} is required.`,
+        cause: value,
+      }),
+    )
+  }
+  return Effect.succeed(value)
 }
 
 // ✅ GOOD
-if (metadata.width === undefined) {
-  return Effect.fail(
-    new ImageOptimizationError({
-      message: `Image has no width metadata: ${asset}`,
-      cause: asset,
-    }),
-  )
-}
+const requireText = Effect.fnUntraced(function*(value: string, label: string) {
+  if (value.trim().length === 0) {
+    return yield* new BroadcastInputError({
+      message: `${label} is required.`,
+      cause: value,
+    })
+  }
+
+  return value
+})
 ```
 
 ### In `catch` callbacks
@@ -96,7 +141,43 @@ Use `Effect.fail` only for **non-tagged** failure values (strings, defects, or a
 if (!exists) return yield* Effect.fail(`Public directory does not exist: ${publicDir}`)
 ```
 
-For domain errors with a `_tag`, always use a tagged error class instead.
+For domain errors with a `_tag`, always use a tagged error schema instead.
+
+## Validation
+Never manually validate input/output from unknown sources without using `Schema`. Use `Schema.Struct` or other APIs to define the data model you expect and 
+validate against that model using the built-in APIs.
+
+```typescript
+// ❌ BAD
+interface Input {
+	value: string
+	label: string
+}
+
+function someFunction(input: Input) {
+	if (input.value.trim().length === 0) {
+		return Effect.fail("Expected input value to exist.")
+	}
+}
+
+// ✅ GOOD
+const InputSchema = Schema.Struct({
+	value: Schema.NonEmptyString,
+	label: Schema.NonEmptyString
+})
+type Input = InputSchema.Type
+
+const someFunction = Effect.fnUntraced(function*(input: Input) {
+	const validInput = yield* Schema.decodeUnknownEffect(InputSchema)(input)
+})
+
+// OR - create a reusable validator function if it's used in multiple places
+const validateInput = Schema.decodeUnknownEffect(InputSchema)
+
+const someFunction = Effect.fnUntraced(function*(input: Input) {
+	const validInput = yield* validateInput(input)
+})
+```
 
 ## Review checklist
 
