@@ -1,4 +1,4 @@
-import { Button, Heading, Img, Section, Text } from "@react-email/components"
+import { Button, Heading, Section, Text } from "@react-email/components"
 import { EmailBulletList, EmailShell } from "./_components/email-shell"
 import { emailButtonClassName } from "./_components/email-theme"
 
@@ -7,11 +7,6 @@ interface INewFeatureEmail {
 }
 
 const siteOrigin = "https://codzombiesguides.com"
-
-const reckoningPreviewSrc =
-	process.env.NODE_ENV === "production"
-		? `${siteOrigin}/previews/reckoning-map-preview.jpg`
-		: "/static/reckoning-map-preview.jpg"
 
 const reckoningFeatures = [
 	"Locations - View locations for all Perks, Mystery Boxes, Wall Buys, Intel, and more!",
@@ -37,18 +32,6 @@ function NewFeatureEmail({ unsubscribeUrl }: INewFeatureEmail) {
 				<strong className="text-brand-accent">Reckoning Interactive Map</strong> for Call of Duty:
 				Zombies!
 			</Text>
-			<Section className="mb-6">
-				<Img
-					src={reckoningPreviewSrc}
-					alt="Top-down Reckoning map with orange markers labeled T1 Spawn, Dark Entity Containment, Mutant Research Lab, Quantum Computing Lab, and Director's Office"
-					width={560}
-					height={315}
-					className="h-auto w-full rounded-[10px]"
-				/>
-				<Text className="text-brand-muted m-0 mt-2 text-center text-sm leading-5">
-					A visual preview of the Reckoning interactive map
-				</Text>
-			</Section>
 			<EmailBulletList heading="Key Features:" items={reckoningFeatures} />
 			<Section className="mb-8 text-center">
 				<Button className={emailButtonClassName} href={`${siteOrigin}/maps/reckoning`}>

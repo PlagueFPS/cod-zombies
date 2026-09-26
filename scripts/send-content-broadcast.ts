@@ -5,11 +5,12 @@
  * Dry run is the default. It prints the rendered email and the broadcast payload
  * and does not contact the audience.
  *
- * Quest and policy need bullets for this release:
- *   { kind: "quest", type, title, description, redirectUrl, bullets: ["..."] }
+ * Quest and policy need bullets for this release. Quest and zombie also take `id`,
+ * the same slug the site uses for that entry's Open Graph image:
+ *   { kind: "quest", type, id: "reckoning", title, description, redirectUrl, bullets: ["..."] }
  *   { kind: "policy", bullets: ["What changed in the policy"] }
  * Zombie uses the template's fixed breakdown list. Do not pass bullets:
- *   { kind: "zombie", type, title, description, redirectUrl }
+ *   { kind: "zombie", type, id: "avogadro", title, description, redirectUrl }
  *
  * Send only when you mean it:
  *   bun scripts/send-content-broadcast.ts --send
@@ -41,6 +42,7 @@ const BROADCAST_REPLY_TO = "contact@codzombiesguides.com"
 export interface QuestBroadcastInput {
 	kind: "quest"
 	type: IQuestRelease["type"]
+	id: IQuestRelease["id"]
 	title: string
 	description: string
 	redirectUrl: string
@@ -50,6 +52,7 @@ export interface QuestBroadcastInput {
 export interface ZombieBroadcastInput {
 	kind: "zombie"
 	type: IZombieRelease["type"]
+	id: IZombieRelease["id"]
 	title: string
 	description: string
 	redirectUrl: string
@@ -107,6 +110,7 @@ function assertBullets(bullets: readonly string[]): void {
 function validateBroadcast(broadcast: ContentBroadcastInput): void {
 	switch (broadcast.kind) {
 		case "quest":
+			assertPresent(broadcast.id, "Quest id")
 			assertPresent(broadcast.title, "Quest title")
 			assertPresent(broadcast.description, "Quest description")
 			assertPresent(broadcast.redirectUrl, "Quest redirectUrl")
@@ -118,6 +122,7 @@ function validateBroadcast(broadcast: ContentBroadcastInput): void {
 
 			return
 		case "zombie":
+			assertPresent(broadcast.id, "Zombie id")
 			assertPresent(broadcast.title, "Zombie title")
 			assertPresent(broadcast.description, "Zombie description")
 			assertPresent(broadcast.redirectUrl, "Zombie redirectUrl")
@@ -148,6 +153,7 @@ async function renderBroadcast(broadcast: ContentBroadcastInput): Promise<Render
 
 			const react = QuestReleaseEmail({
 				type: broadcast.type,
+				id: broadcast.id,
 				title: broadcast.title,
 				description: broadcast.description,
 				redirectUrl: guideUrl(broadcast.redirectUrl),
@@ -171,6 +177,7 @@ async function renderBroadcast(broadcast: ContentBroadcastInput): Promise<Render
 
 			const react = ZombieReleaseEmail({
 				type: broadcast.type,
+				id: broadcast.id,
 				title: broadcast.title,
 				description: broadcast.description,
 				redirectUrl: guideUrl(broadcast.redirectUrl),
@@ -317,12 +324,13 @@ if (import.meta.main) {
 	// Replace this argument, then run the command in the file comment.
 	// Policy example:
 	// { kind: "policy", bullets: ["How long confirmation tokens are kept"] }
-	// Zombie example (no bullets):
-	// { kind: "zombie", type: "Boss", title: "Avogadro", description: "...", redirectUrl: "/bestiary/avogadro" }
+	// Zombie example (no bullets; id is the bestiary slug):
+	// { kind: "zombie", type: "Boss", id: "avogadro", title: "Avogadro", description: "...", redirectUrl: "/bestiary/avogadro" }
 	const result = await sendContentBroadcast(
 		{
 			kind: "quest",
 			type: "Main",
+			id: "reckoning",
 			title: "Reckoning",
 			description:
 				"Project Janus HQ teeters on the verge of collapse. Stabilize the Aether Reactors. Unleash the Sentinel Artifact. Complete the mission that began on Terminus.",
