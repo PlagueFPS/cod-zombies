@@ -168,11 +168,11 @@ const InputSchema = Schema.Struct({
 type Input = InputSchema.Type
 
 const someFunction = Effect.fnUntraced(function*(input: Input) {
-	const validInput = yield* Schema.decodeUnknown(InputSchema)(input)
+	const validInput = yield* Schema.decodeUnknownEffect(InputSchema)(input)
 })
 
 // OR - create a reusable validator function if it's used in multiple places
-const validateInput = Schema.decodeUnknown(InputSchema)
+const validateInput = Schema.decodeUnknownEffect(InputSchema)
 
 const someFunction = Effect.fnUntraced(function*(input: Input) {
 	const validInput = yield* validateInput(input)
