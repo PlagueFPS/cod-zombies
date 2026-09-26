@@ -86,11 +86,14 @@ describe("formatRelativeTimeAgo properties", () => {
 
 				expect(olderTime.seconds).toBeGreaterThanOrEqual(youngerTime.seconds)
 
-				for (const { count, unit } of [youngerTime, olderTime]) {
-					if (unit === "minute" || unit === "hour" || unit === "day") {
-						expect(count).toBeGreaterThan(0)
-						expect(count).toBeLessThan(UNIT_LIMIT[unit])
-					}
+				const boundedReadings = [youngerTime, olderTime].filter(
+					(reading): reading is RelativeReading & { readonly unit: keyof typeof UNIT_LIMIT } =>
+						reading.unit === "minute" || reading.unit === "hour" || reading.unit === "day",
+				)
+
+				for (const { count, unit } of boundedReadings) {
+					expect(count).toBeGreaterThan(0)
+					expect(count).toBeLessThan(UNIT_LIMIT[unit])
 				}
 			}),
 		)

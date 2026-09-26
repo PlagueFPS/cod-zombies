@@ -14,21 +14,23 @@ describe("paginate properties", () => {
 					const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
 					const concatenated: number[] = []
 
-					for (let page = 1; page <= totalPages; page++) {
+					for (let page = 1; page < totalPages; page++) {
 						const result = paginate(items, page, pageSize)
 						expect(result.totalCount).toBe(totalCount)
 						expect(result.totalPages).toBe(totalPages)
 						expect(result.page).toBe(page)
 						expect(result.pageSize).toBe(pageSize)
-
-						if (page < totalPages) {
-							expect(result.items).toHaveLength(pageSize)
-						} else {
-							expect(result.items.length).toBeLessThanOrEqual(pageSize)
-						}
-
+						expect(result.items).toHaveLength(pageSize)
 						concatenated.push(...result.items)
 					}
+
+					const lastPage = paginate(items, totalPages, pageSize)
+					expect(lastPage.totalCount).toBe(totalCount)
+					expect(lastPage.totalPages).toBe(totalPages)
+					expect(lastPage.page).toBe(totalPages)
+					expect(lastPage.pageSize).toBe(pageSize)
+					expect(lastPage.items.length).toBeLessThanOrEqual(pageSize)
+					concatenated.push(...lastPage.items)
 
 					expect(concatenated).toEqual(items)
 
