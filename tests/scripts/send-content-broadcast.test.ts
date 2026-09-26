@@ -1,7 +1,8 @@
 import { Exit, Schema } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import { sendContentBroadcast, type ContentBroadcastInput } from "@/scripts/send-content-broadcast"
-import { NEWSLETTER_FROM_ADDRESS } from "@/utils/constants"
+import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
+import { opengraphImageUrl } from "@/utils/opengraph-image-url"
 
 type ZombieInput = Extract<ContentBroadcastInput, { kind: "zombie" }>
 
@@ -12,6 +13,7 @@ type PolicyInput = Extract<ContentBroadcastInput, { kind: "policy" }>
 const questBroadcast = {
 	kind: "quest",
 	type: "Main",
+	id: "reckoning",
 	title: "Reckoning",
 	description: "Stabilize the Aether Reactors.",
 	redirectUrl: "/main-quests/black-ops-6/reckoning",
@@ -21,6 +23,7 @@ const questBroadcast = {
 const zombieBroadcast = {
 	kind: "zombie",
 	type: "Boss",
+	id: "avogadro",
 	title: "Avogadro",
 	description: "A boss zombie on Tranzit and Alpha Omega.",
 	redirectUrl: "/bestiary/avogadro",
@@ -83,6 +86,13 @@ describe("sendContentBroadcast", () => {
 		expect(result.html).toContain("RESEND_UNSUBSCRIBE_URL")
 		expect(result.text).toContain("How to stabilize the Aether Reactors")
 		expect(result.html).toContain("https://codzombiesguides.com/main-quests/black-ops-6/reckoning")
+		const questImageUrl = opengraphImageUrl(SITE_ORIGIN, "main-quests", "reckoning")
+		expect(questImageUrl).toBeDefined()
+
+		if (questImageUrl === undefined) return
+
+		expect(result.html).toContain(questImageUrl)
+		expect(result.html).toContain("Preview card for the Reckoning main quest guide")
 	})
 
 	test("dry run keeps the zombie breakdown list fixed", async () => {
@@ -100,6 +110,14 @@ describe("sendContentBroadcast", () => {
 		expect(result.html).toContain("How to defeat them effectively")
 		expect(result.html).not.toContain("How to stabilize the Aether Reactors")
 		expect(result.subject).toBe('New Boss Zombie Release: "Avogadro"')
+		const zombieImageUrl = opengraphImageUrl(SITE_ORIGIN, "zombies", "avogadro")
+		expect(zombieImageUrl).toBeDefined()
+
+		if (zombieImageUrl === undefined) return
+
+		expect(result.html).toContain(zombieImageUrl)
+		expect(result.html).toContain("Preview card for the Avogadro Boss zombie")
+		expect(result.html).not.toContain("opengraph-reckoning")
 	})
 
 	test("dry run renders policy bullets", async () => {
@@ -113,6 +131,16 @@ describe("sendContentBroadcast", () => {
 		expect(result.html).toContain("How long confirmation tokens are kept")
 		expect(result.html).toContain("Changes in this update")
 		expect(result.text).toContain("How long confirmation tokens are kept")
+		expect(result.html).not.toContain("opengraph-images")
+	})
+
+	test("rejects a quest id that has no opengraph image", async () => {
+		await expect(
+			sendContentBroadcast({
+				...questBroadcast,
+				id: "no-such-map",
+			}),
+		).rejects.toThrow(/Missing opengraph image for main-quests: no-such-map/)
 	})
 
 	test("rejects an empty bullet list", async () => {

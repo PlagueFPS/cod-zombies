@@ -91,6 +91,25 @@ export function EmailShell({
 	)
 }
 
+interface EmailPreviewImageProps {
+	src: string
+	alt: string
+}
+
+export function EmailPreviewImage({ src, alt }: EmailPreviewImageProps) {
+	return (
+		<Section className="mb-6">
+			<Img
+				src={src}
+				alt={alt}
+				width={560}
+				height={294}
+				className="mx-auto h-auto w-full rounded-[10px]"
+			/>
+		</Section>
+	)
+}
+
 interface EmailCalloutProps {
 	title: string
 	description: string

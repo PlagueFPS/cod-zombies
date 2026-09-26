@@ -1,11 +1,23 @@
-import type { IQuestRelease } from "./quest-release-email"
 import type { Zombie } from "@/data/zombies"
 import { Button, Heading, Section } from "@react-email/components"
-import { EmailBulletList, EmailCallout, EmailShell } from "./_components/email-shell"
+import { requireOpengraphImageUrl } from "../utils/opengraph-image-url"
+import {
+	EmailBulletList,
+	EmailCallout,
+	EmailPreviewImage,
+	EmailShell,
+} from "./_components/email-shell"
 import { emailButtonClassName } from "./_components/email-theme"
 
-export interface IZombieRelease extends Omit<IQuestRelease, "type" | "bullets"> {
+export interface IZombieRelease {
 	type: Zombie["type"]
+	/** Bestiary slug. Same id the site uses for the zombie Open Graph image. */
+	id: string
+	title: string
+	description: string
+	redirectUrl: string
+	unsubscribeUrl: string
+	serverUrl: string
 }
 
 const zombieBreakdownBullets = [
@@ -25,6 +37,7 @@ export const zombieReleasePreview =
 
 function ZombieReleaseEmail({
 	type,
+	id,
 	title,
 	description,
 	redirectUrl,
@@ -32,6 +45,7 @@ function ZombieReleaseEmail({
 	serverUrl,
 }: IZombieRelease) {
 	const subject = zombieReleaseSubject(type, title)
+	const imageUrl = requireOpengraphImageUrl(serverUrl, "zombies", id)
 
 	return (
 		<EmailShell
@@ -43,6 +57,7 @@ function ZombieReleaseEmail({
 			<Heading as="h1" className="text-brand-ink mx-0 mt-0 mb-6 text-center text-2xl font-bold">
 				New {type} Zombie Release
 			</Heading>
+			<EmailPreviewImage src={imageUrl} alt={`Preview card for the ${title} ${type} zombie`} />
 			<EmailCallout title={title} description={description} />
 			<EmailBulletList
 				heading="What you can expect from this breakdown:"
@@ -60,6 +75,7 @@ function ZombieReleaseEmail({
 export default Object.assign(ZombieReleaseEmail, {
 	PreviewProps: {
 		type: "Boss",
+		id: "avogadro",
 		title: "Avogadro",
 		description:
 			"The Avogadro is a boss zombie appearing on the maps Tranzit & Alpha Omega, also known as Cornelius Pernell the leader of Broken Arrow.",
