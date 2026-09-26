@@ -1,120 +1,86 @@
 import type { Zombie } from "@/data/zombies"
-import type { IQuestRelease } from "@/emails/quest-release-email"
+import { Button, Heading, Section } from "@react-email/components"
+import { requireOpengraphImageUrl } from "../utils/opengraph-image-url"
 import {
-	Body,
-	Button,
-	Container,
-	Head,
-	Heading,
-	Hr,
-	Html,
-	Img,
-	Link,
-	Preview,
-	Section,
-	Tailwind,
-	Text,
-} from "@react-email/components"
+	EmailBulletList,
+	EmailCallout,
+	EmailPreviewImage,
+	EmailShell,
+} from "./_components/email-shell"
+import { emailButtonClassName } from "./_components/email-theme"
 
-export interface IZombieRelease extends Omit<IQuestRelease, "type"> {
+export interface IZombieRelease {
 	type: Zombie["type"]
+	/** Bestiary slug. Same id the site uses for the zombie Open Graph image. */
+	id: string
+	title: string
+	description: string
+	redirectUrl: string
+	unsubscribeUrl: string
+	serverUrl: string
 }
 
-export default function ZombieReleaseEmail({
+const zombieBreakdownBullets = [
+	"How fast they move and how to counteract it",
+	"What elements they are weak against",
+	"Detailed descriptions of their attacks",
+	"When and how they spawn",
+	"How to defeat them effectively",
+] as const
+
+export function zombieReleaseSubject(type: IZombieRelease["type"], title: string): string {
+	return `New ${type} Zombie Release: "${title}"`
+}
+
+export const zombieReleasePreview =
+	"We've just published a new zombie breakdown you might be interested in"
+
+function ZombieReleaseEmail({
 	type,
+	id,
 	title,
 	description,
 	redirectUrl,
 	unsubscribeUrl,
 	serverUrl,
 }: IZombieRelease) {
-	const currentYear = new Date().getFullYear()
+	const subject = zombieReleaseSubject(type, title)
+	const imageUrl = requireOpengraphImageUrl(serverUrl, "zombies", id)
 
 	return (
-		<Html>
-			<Tailwind>
-				<Head>
-					<title>
-						New {type} Zombie Release: &quot;{title}&quot;
-					</title>
-					<Preview>
-						We&apos;ve just published a new zombie breakdown you might be interested in
-					</Preview>
-				</Head>
-				<Body className="bg-gray-100 py-[40px] font-sans">
-					<Container className="mx-auto max-w-[600px] rounded-[8px] bg-white p-[20px]">
-						{/* Logo and Site Name */}
-						<Section className="mb-[24px] text-center">
-							<Img
-								src={`${serverUrl}/logo.webp`}
-								alt="Site Logo"
-								width="120"
-								height="50"
-								className="mx-auto mb-[12px] h-auto w-[120px] rounded-[10px] object-cover"
-							/>
-							<Text className="m-0 text-[20px] font-bold text-gray-800">
-								Call of Duty: <span className="text-orange-500">Zombies Guides</span>
-							</Text>
-						</Section>
-
-						<Hr className="my-[24px] border-solid border-orange-200" />
-
-						<Section className="mb-[24px] rounded-[8px] border-l-[4px] border-solid border-orange-500 bg-orange-50 p-[16px]">
-							<Heading className="mt-0 mb-[8px] text-[20px] font-bold text-gray-800">
-								{title}
-							</Heading>
-							<Text className="m-0 text-[16px] text-gray-600">{description}</Text>
-						</Section>
-
-						<Section className="mb-[24px] rounded-[8px] bg-gray-100 p-[16px]">
-							<Text className="mb-[16px] text-[16px] font-semibold text-gray-600">
-								What you can expect from this breakdown:
-							</Text>
-
-							<ul className="mb-[24px] list-disc pl-[24px] font-medium">
-								<li className="mb-[8px] text-[16px] text-gray-600">
-									How fast they move and how to counteract it
-								</li>
-								<li className="mb-[8px] text-[16px] text-gray-600">
-									What elements they are weak against
-								</li>
-								<li className="mb-[8px] text-[16px] text-gray-600">
-									Detailed descriptions of their attacks
-								</li>
-								<li className="mb-[8px] text-[16px] text-gray-600">When and how they spawn</li>
-								<li className="mb-[8px] text-[16px] text-gray-600">
-									How to defeat them effectively
-								</li>
-							</ul>
-						</Section>
-
-						<Section className="mb-[32px] text-center">
-							<Button
-								className="box-border rounded-[4px] bg-orange-500 px-[24px] py-[12px] text-center font-bold text-white no-underline"
-								href={redirectUrl}
-							>
-								View the Full Breakdown
-							</Button>
-						</Section>
-
-						<Hr className="my-[24px] border-solid border-gray-200" />
-
-						<Section className="text-center">
-							<Text className="m-0 text-[14px] text-gray-500 italic">
-								© {currentYear} Call of Duty: Zombies Guides. All rights reserved. You&apos;re
-								receiving this email because you opted-in via our website. You may{" "}
-								<Link href={unsubscribeUrl}>unsubscribe</Link> at any point you choose.
-							</Text>
-
-							<Text className="mt-[12px] text-[14px] leading-[20px] text-gray-500">
-								<Link href={`${serverUrl}/privacy-policy`} className="text-[#8898aa] underline">
-									Privacy Policy
-								</Link>
-							</Text>
-						</Section>
-					</Container>
-				</Body>
-			</Tailwind>
-		</Html>
+		<EmailShell
+			title={subject}
+			preview={zombieReleasePreview}
+			serverUrl={serverUrl}
+			unsubscribeUrl={unsubscribeUrl}
+		>
+			<Heading as="h1" className="text-brand-ink mx-0 mt-0 mb-6 text-center text-2xl font-bold">
+				New {type} Zombie Release
+			</Heading>
+			<EmailPreviewImage src={imageUrl} alt={`Preview card for the ${title} ${type} zombie`} />
+			<EmailCallout title={title} description={description} />
+			<EmailBulletList
+				heading="What you can expect from this breakdown:"
+				items={zombieBreakdownBullets}
+			/>
+			<Section className="mb-8 text-center">
+				<Button className={emailButtonClassName} href={redirectUrl}>
+					View the Full Breakdown
+				</Button>
+			</Section>
+		</EmailShell>
 	)
 }
+
+export default Object.assign(ZombieReleaseEmail, {
+	PreviewProps: {
+		type: "Boss",
+		id: "avogadro",
+		title: "Avogadro",
+		description:
+			"The Avogadro is a boss zombie appearing on the maps Tranzit & Alpha Omega, also known as Cornelius Pernell the leader of Broken Arrow.",
+		redirectUrl: "https://codzombiesguides.com/bestiary/avogadro",
+		unsubscribeUrl: "https://codzombiesguides.com/newsletter/unsubscribe",
+		serverUrl: "https://codzombiesguides.com",
+	} satisfies IZombieRelease,
+})

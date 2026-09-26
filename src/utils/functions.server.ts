@@ -1,7 +1,7 @@
 import type { OpengraphKind } from "@/utils/validation-schemas"
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
 import { Clock, Duration, Effect, Number as Num, Option, Schema } from "effect"
-import manifest from "@/data/opengraph-manifest.json" with { type: "json" }
+import { opengraphImagePath } from "@/utils/opengraph-image-url"
 import { getServerUrl } from "@/utils/request.server"
 
 export { getLastModified } from "@/utils/content-meta"
@@ -30,24 +30,16 @@ class TokenVerificationError extends Schema.TaggedError<TokenVerificationError>(
 	},
 ) {}
 
-type OpengraphVersionTable = { readonly [id: string]: number }
-
 export const getOpengraphImageUrl = async (kind: OpengraphKind, id: string) => {
-	// SAFETY: each kind is an id-to-integer version table; missing ids are undefined.
-	const versions = manifest[kind] as OpengraphVersionTable
-	const version = versions[id]
+	const path = opengraphImagePath(kind, id)
 
-	if (version === undefined) {
+	if (path === undefined) {
 		console.warn(`Missing opengraph image version for ${kind}: ${id}`)
 
 		return Option.none()
 	}
 
-	const serverUrl = getServerUrl()
-
-	return Option.some(
-		`${serverUrl}/opengraph-images/${kind}/opengraph-${id}-v${String(version)}.jpg`,
-	)
+	return Option.some(`${getServerUrl()}${path}`)
 }
 
 /**

@@ -9,6 +9,9 @@ export const SITE_DESCRIPTION =
 /** Canonical public origin for absolute URLs (Open Graph, sitemap, emails). */
 export const SITE_ORIGIN = "https://codzombiesguides.com"
 
+/** From address for newsletter confirmation mail and content broadcasts. */
+export const NEWSLETTER_FROM_ADDRESS = "COD Zombies Guides <support@codzombiesguides.com>"
+
 /** Default date options for the date formatting function */
 export const DATE_OPTIONS: Intl.DateTimeFormatOptions = {
 	year: "numeric",
