@@ -5,9 +5,10 @@
  * Dry run is the default. It prints the rendered email and the broadcast payload
  * and does not contact the audience.
  *
- * Quest and policy need bullets for this release. Quest and zombie also take `id`,
+ * Quest, relic, and policy need bullets for this release. Quest, relic, and zombie also take `id`,
  * the same slug the site uses for that entry's Open Graph image:
  *   { kind: "quest", type, id: "reckoning", title, description, redirectUrl, bullets: ["..."] }
+ *   { kind: "relic", type, id: "lawyers-pen", title, description, map, discoveredDate, estimatedTimeMins, redirectUrl, bullets: ["..."] }
  *   { kind: "policy", bullets: ["What changed in the policy"] }
  * Zombie uses the template's fixed breakdown list. Do not pass bullets:
  *   { kind: "zombie", type, id: "avogadro", title, description, redirectUrl }
@@ -15,6 +16,8 @@
  * Send only when you mean it:
  *   bun scripts/send-content-broadcast.ts --send
  */
+import type { RelicType } from "@/data/relics"
+import type { TimeRange } from "@/types/data"
 import type { ReactElement } from "react"
 import { BunServices, BunRuntime } from "@effect/platform-bun"
 import { render } from "@react-email/components"
@@ -28,6 +31,10 @@ import QuestReleaseEmail, {
 	questReleasePreview,
 	questReleaseSubject,
 } from "@/emails/quest-release-email"
+import RelicReleaseEmail, {
+	relicReleasePreview,
+	relicReleaseSubject,
+} from "@/emails/relic-release-email"
 import ZombieReleaseEmail, {
 	zombieReleasePreview,
 	zombieReleaseSubject,
@@ -83,6 +90,19 @@ export interface QuestBroadcastInput {
 	bullets: readonly string[]
 }
 
+export interface RelicBroadcastInput {
+	kind: "relic"
+	type: RelicType
+	id: string
+	title: string
+	description: string
+	map: string
+	discoveredDate: string
+	estimatedTimeMins: TimeRange
+	redirectUrl: string
+	bullets: readonly string[]
+}
+
 export interface ZombieBroadcastInput {
 	kind: "zombie"
 	type: "Normal" | "Special" | "Elite" | "Boss"
@@ -99,6 +119,7 @@ export interface PolicyBroadcastInput {
 
 export type ContentBroadcastInput =
 	| QuestBroadcastInput
+	| RelicBroadcastInput
 	| ZombieBroadcastInput
 	| PolicyBroadcastInput
 
@@ -198,6 +219,40 @@ const renderBroadcast = Effect.fn("renderBroadcast")(function* (broadcast: Conte
 						bullets: broadcast.bullets,
 					}),
 				catch: cause => emailBuildError(cause, "Failed to build the quest email."),
+			})
+
+			const rendered = yield* renderEmail(react)
+
+			return {
+				name: subject,
+				subject,
+				previewText,
+				react,
+				html: rendered.html,
+				text: rendered.text,
+			} satisfies RenderedBroadcast
+		}
+
+		case "relic": {
+			const subject = relicReleaseSubject(broadcast.type, broadcast.title)
+			const previewText = relicReleasePreview(broadcast.type, broadcast.title)
+
+			const react = yield* Effect.try({
+				try: () =>
+					RelicReleaseEmail({
+						type: broadcast.type,
+						id: broadcast.id,
+						title: broadcast.title,
+						description: broadcast.description,
+						map: broadcast.map,
+						discoveredDate: broadcast.discoveredDate,
+						estimatedTimeMins: broadcast.estimatedTimeMins,
+						redirectUrl: guideUrl(broadcast.redirectUrl),
+						unsubscribeUrl,
+						serverUrl,
+						bullets: broadcast.bullets,
+					}),
+				catch: cause => emailBuildError(cause, "Failed to build the relic email."),
 			})
 
 			const rendered = yield* renderEmail(react)
@@ -373,6 +428,8 @@ if (import.meta.main) {
 	const send = process.argv.includes("--send")
 
 	// Replace this argument, then run the command in the file comment.
+	// Relic example:
+	// { kind: "relic", type: "Grim", id: "lawyers-pen", title: "Lawyer's Pen", description: "Mimic props have infiltrated the map.", map: "Ashes of the Damned", discoveredDate: "2025-11-16", estimatedTimeMins: { min: 15, max: 30, reason: "Time varies slightly based on party size and gobblegum use." }, redirectUrl: "/relics/black-ops-7/lawyers-pen", bullets: ["Where to light the three red candles"] }
 	// Policy example:
 	// { kind: "policy", bullets: ["How long confirmation tokens are kept"] }
 	// Zombie example (no bullets; id is the bestiary slug):
