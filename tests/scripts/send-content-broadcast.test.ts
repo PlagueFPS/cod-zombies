@@ -1,4 +1,5 @@
-import { Exit, Schema } from "effect"
+import { layer as BunCryptoLayer } from "@effect/platform-bun/BunCrypto"
+import { Effect, Exit, Schema } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import { sendContentBroadcast, type ContentBroadcastInput } from "@/scripts/send-content-broadcast"
 import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
@@ -43,6 +44,12 @@ const BroadcastRequestBody = Schema.Struct({
 	text: Schema.String,
 })
 
+function runBroadcast(broadcast: ContentBroadcastInput, options?: { readonly send?: boolean }) {
+	return Effect.runPromise(
+		sendContentBroadcast(broadcast, options).pipe(Effect.provide(BunCryptoLayer)),
+	)
+}
+
 function requestUrl(input: RequestInfo | URL): string {
 	if (input instanceof URL) return input.href
 
@@ -70,7 +77,7 @@ describe("sendContentBroadcast", () => {
 		const fetchMock = vi.fn<() => void>()
 		vi.stubGlobal("fetch", fetchMock)
 
-		const result = await sendContentBroadcast(questBroadcast)
+		const result = await runBroadcast(questBroadcast)
 
 		expect(fetchMock).not.toHaveBeenCalled()
 		expect(result.mode).toBe("dry-run")
@@ -99,7 +106,7 @@ describe("sendContentBroadcast", () => {
 		const fetchMock = vi.fn<() => void>()
 		vi.stubGlobal("fetch", fetchMock)
 
-		const result = await sendContentBroadcast(zombieBroadcast)
+		const result = await runBroadcast(zombieBroadcast)
 
 		expect(fetchMock).not.toHaveBeenCalled()
 		expect(result.mode).toBe("dry-run")
@@ -121,7 +128,7 @@ describe("sendContentBroadcast", () => {
 	})
 
 	test("dry run renders policy bullets", async () => {
-		const result = await sendContentBroadcast(policyBroadcast)
+		const result = await runBroadcast(policyBroadcast)
 
 		expect(result.mode).toBe("dry-run")
 
@@ -136,7 +143,7 @@ describe("sendContentBroadcast", () => {
 
 	test("rejects a quest id that has no opengraph image", async () => {
 		await expect(
-			sendContentBroadcast({
+			runBroadcast({
 				...questBroadcast,
 				id: "no-such-map",
 			}),
@@ -145,7 +152,7 @@ describe("sendContentBroadcast", () => {
 
 	test("rejects an empty bullet list", async () => {
 		await expect(
-			sendContentBroadcast({
+			runBroadcast({
 				kind: "policy",
 				bullets: [],
 			}),
@@ -164,7 +171,7 @@ describe("sendContentBroadcast", () => {
 
 		vi.stubGlobal("fetch", fetchMock)
 
-		const result = await sendContentBroadcast(questBroadcast, { send: true })
+		const result = await runBroadcast(questBroadcast, { send: true })
 
 		expect(result).toEqual({
 			mode: "sent",

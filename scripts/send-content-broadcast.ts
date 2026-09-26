@@ -16,8 +16,11 @@
  *   bun scripts/send-content-broadcast.ts --send
  */
 import type { ReactElement } from "react"
-import { createHash } from "node:crypto"
+import { runMain } from "@effect/platform-bun/BunRuntime"
+import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { render } from "@react-email/components"
+import { Config, Effect, Encoding, Option, Redacted, Schema } from "effect"
+import { Crypto } from "effect/Crypto"
 import { Resend } from "resend"
 import PrivacyPolicyUpdateEmail, {
 	policyUpdatePreview,
@@ -38,6 +41,56 @@ import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
 const RESEND_UNSUBSCRIBE_URL = "{{{RESEND_UNSUBSCRIBE_URL}}}"
 
 const BROADCAST_REPLY_TO = "contact@codzombiesguides.com"
+
+const textEncoder = new TextEncoder()
+
+export class BroadcastInputError extends Schema.TaggedError<BroadcastInputError>()(
+	"BroadcastInputError",
+	{
+		message: Schema.String,
+		cause: Schema.Defect(),
+	},
+) {}
+
+export class MissingOpengraphImageError extends Schema.TaggedError<MissingOpengraphImageError>()(
+	"MissingOpengraphImageError",
+	{
+		message: Schema.String,
+		cause: Schema.Defect(),
+	},
+) {}
+
+export class BroadcastRenderError extends Schema.TaggedError<BroadcastRenderError>()(
+	"BroadcastRenderError",
+	{
+		message: Schema.String,
+		cause: Schema.Defect(),
+	},
+) {}
+
+export class BroadcastConfigError extends Schema.TaggedError<BroadcastConfigError>()(
+	"BroadcastConfigError",
+	{
+		message: Schema.String,
+		cause: Schema.Defect(),
+	},
+) {}
+
+export class BroadcastHashError extends Schema.TaggedError<BroadcastHashError>()(
+	"BroadcastHashError",
+	{
+		message: Schema.String,
+		cause: Schema.Defect(),
+	},
+) {}
+
+export class BroadcastDeliveryError extends Schema.TaggedError<BroadcastDeliveryError>()(
+	"BroadcastDeliveryError",
+	{
+		message: Schema.String,
+		cause: Schema.Defect(),
+	},
+) {}
 
 export interface QuestBroadcastInput {
 	kind: "quest"
@@ -95,45 +148,65 @@ interface RenderedBroadcast {
 	react: ReactElement
 }
 
-function assertPresent(value: string, label: string): void {
+function requireText(value: string, label: string) {
 	if (value.trim().length === 0) {
-		throw new Error(`${label} is required.`)
+		return Effect.fail(
+			new BroadcastInputError({
+				message: `${label} is required.`,
+				cause: value,
+			}),
+		)
 	}
+
+	return Effect.void
 }
 
-function assertBullets(bullets: readonly string[]): void {
+function requireBullets(bullets: readonly string[]) {
 	if (bullets.length === 0 || bullets.some(bullet => bullet.trim().length === 0)) {
-		throw new Error("Add at least one non-empty bullet point for this quest or policy update.")
+		return Effect.fail(
+			new BroadcastInputError({
+				message: "Add at least one non-empty bullet point for this quest or policy update.",
+				cause: bullets,
+			}),
+		)
 	}
+
+	return Effect.void
 }
 
-function validateBroadcast(broadcast: ContentBroadcastInput): void {
+const validateBroadcast = Effect.fn("validateBroadcast")(function* (
+	broadcast: ContentBroadcastInput,
+) {
 	switch (broadcast.kind) {
 		case "quest":
-			assertPresent(broadcast.id, "Quest id")
-			assertPresent(broadcast.title, "Quest title")
-			assertPresent(broadcast.description, "Quest description")
-			assertPresent(broadcast.redirectUrl, "Quest redirectUrl")
-			assertBullets(broadcast.bullets)
+			yield* requireText(broadcast.id, "Quest id")
+			yield* requireText(broadcast.title, "Quest title")
+			yield* requireText(broadcast.description, "Quest description")
+			yield* requireText(broadcast.redirectUrl, "Quest redirectUrl")
+			yield* requireBullets(broadcast.bullets)
 
 			return
 		case "policy":
-			assertBullets(broadcast.bullets)
+			yield* requireBullets(broadcast.bullets)
 
 			return
 		case "zombie":
-			assertPresent(broadcast.id, "Zombie id")
-			assertPresent(broadcast.title, "Zombie title")
-			assertPresent(broadcast.description, "Zombie description")
-			assertPresent(broadcast.redirectUrl, "Zombie redirectUrl")
+			yield* requireText(broadcast.id, "Zombie id")
+			yield* requireText(broadcast.title, "Zombie title")
+			yield* requireText(broadcast.description, "Zombie description")
+			yield* requireText(broadcast.redirectUrl, "Zombie redirectUrl")
 
 			return
 		default: {
 			const exhaustive: never = broadcast
-			throw new Error(`Unexpected broadcast kind: ${JSON.stringify(exhaustive)}`)
+
+			return yield* new BroadcastInputError({
+				message: `Unexpected broadcast kind: ${JSON.stringify(exhaustive)}`,
+				cause: exhaustive,
+			})
 		}
 	}
-}
+})
 
 function guideUrl(redirectUrl: string): string {
 	if (redirectUrl.startsWith("https://") || redirectUrl.startsWith("http://")) return redirectUrl
@@ -142,7 +215,47 @@ function guideUrl(redirectUrl: string): string {
 	return `${SITE_ORIGIN}${path}`
 }
 
-async function renderBroadcast(broadcast: ContentBroadcastInput): Promise<RenderedBroadcast> {
+function emailBuildError(
+	cause: unknown,
+	fallback: string,
+): MissingOpengraphImageError | BroadcastRenderError {
+	if (cause instanceof Error && cause.message.startsWith("Missing opengraph image")) {
+		return new MissingOpengraphImageError({ message: cause.message, cause })
+	}
+
+	return new BroadcastRenderError({ message: fallback, cause })
+}
+
+const renderEmail = Effect.fn("renderEmail")(function* (react: ReactElement) {
+	const html = yield* Effect.tryPromise({
+		try: () => render(react),
+		catch: cause =>
+			new BroadcastRenderError({
+				message: "Failed to render the broadcast email.",
+				cause,
+			}),
+	})
+
+	const text = yield* Effect.tryPromise({
+		try: () => render(react, { plainText: true }),
+		catch: cause =>
+			new BroadcastRenderError({
+				message: "Failed to render the broadcast email as text.",
+				cause,
+			}),
+	})
+
+	if (!html.includes("RESEND_UNSUBSCRIBE_URL")) {
+		return yield* new BroadcastRenderError({
+			message: "Broadcast HTML is missing the Resend unsubscribe URL.",
+			cause: html,
+		})
+	}
+
+	return { html, text }
+})
+
+const renderBroadcast = Effect.fn("renderBroadcast")(function* (broadcast: ContentBroadcastInput) {
 	const serverUrl = SITE_ORIGIN
 	const unsubscribeUrl = RESEND_UNSUBSCRIBE_URL
 
@@ -151,48 +264,60 @@ async function renderBroadcast(broadcast: ContentBroadcastInput): Promise<Render
 			const subject = questReleaseSubject(broadcast.type, broadcast.title)
 			const previewText = questReleasePreview(broadcast.type, broadcast.title)
 
-			const react = QuestReleaseEmail({
-				type: broadcast.type,
-				id: broadcast.id,
-				title: broadcast.title,
-				description: broadcast.description,
-				redirectUrl: guideUrl(broadcast.redirectUrl),
-				unsubscribeUrl,
-				serverUrl,
-				bullets: broadcast.bullets,
+			const react = yield* Effect.try({
+				try: () =>
+					QuestReleaseEmail({
+						type: broadcast.type,
+						id: broadcast.id,
+						title: broadcast.title,
+						description: broadcast.description,
+						redirectUrl: guideUrl(broadcast.redirectUrl),
+						unsubscribeUrl,
+						serverUrl,
+						bullets: broadcast.bullets,
+					}),
+				catch: cause => emailBuildError(cause, "Failed to build the quest email."),
 			})
+
+			const rendered = yield* renderEmail(react)
 
 			return {
 				name: subject,
 				subject,
 				previewText,
 				react,
-				html: await render(react),
-				text: await render(react, { plainText: true }),
-			}
+				html: rendered.html,
+				text: rendered.text,
+			} satisfies RenderedBroadcast
 		}
 
 		case "zombie": {
 			const subject = zombieReleaseSubject(broadcast.type, broadcast.title)
 
-			const react = ZombieReleaseEmail({
-				type: broadcast.type,
-				id: broadcast.id,
-				title: broadcast.title,
-				description: broadcast.description,
-				redirectUrl: guideUrl(broadcast.redirectUrl),
-				unsubscribeUrl,
-				serverUrl,
+			const react = yield* Effect.try({
+				try: () =>
+					ZombieReleaseEmail({
+						type: broadcast.type,
+						id: broadcast.id,
+						title: broadcast.title,
+						description: broadcast.description,
+						redirectUrl: guideUrl(broadcast.redirectUrl),
+						unsubscribeUrl,
+						serverUrl,
+					}),
+				catch: cause => emailBuildError(cause, "Failed to build the zombie email."),
 			})
+
+			const rendered = yield* renderEmail(react)
 
 			return {
 				name: subject,
 				subject,
 				previewText: zombieReleasePreview,
 				react,
-				html: await render(react),
-				text: await render(react, { plainText: true }),
-			}
+				html: rendered.html,
+				text: rendered.text,
+			} satisfies RenderedBroadcast
 		}
 
 		case "policy": {
@@ -202,89 +327,136 @@ async function renderBroadcast(broadcast: ContentBroadcastInput): Promise<Render
 				bullets: broadcast.bullets,
 			})
 
+			const rendered = yield* renderEmail(react)
+
 			return {
 				name: policyUpdateSubject,
 				subject: policyUpdateSubject,
 				previewText: policyUpdatePreview,
 				react,
-				html: await render(react),
-				text: await render(react, { plainText: true }),
-			}
+				html: rendered.html,
+				text: rendered.text,
+			} satisfies RenderedBroadcast
 		}
 
 		default: {
 			const exhaustive: never = broadcast
-			throw new Error(`Unexpected broadcast kind: ${JSON.stringify(exhaustive)}`)
+
+			return yield* new BroadcastInputError({
+				message: `Unexpected broadcast kind: ${JSON.stringify(exhaustive)}`,
+				cause: exhaustive,
+			})
 		}
 	}
-}
+})
 
-function contentIdempotencyKey(broadcast: ContentBroadcastInput, subject: string): string {
-	const fingerprint = createHash("sha256")
-		.update(JSON.stringify({ broadcast, subject }))
-		.digest("hex")
-		.slice(0, 32)
+const contentIdempotencyKey = Effect.fn("contentIdempotencyKey")(function* (
+	broadcast: ContentBroadcastInput,
+	subject: string,
+) {
+	const crypto = yield* Crypto
+
+	const digest = yield* crypto
+		.digest("SHA-256", textEncoder.encode(JSON.stringify({ broadcast, subject })))
+		.pipe(
+			Effect.mapError(
+				cause =>
+					new BroadcastHashError({
+						message: "Failed to hash the broadcast for an idempotency key.",
+						cause,
+					}),
+			),
+		)
+
+	const fingerprint = Encoding.encodeHex(digest).slice(0, 32)
 
 	return `content-broadcast/${broadcast.kind}/${fingerprint}`
+})
+
+function presentValue<A>(
+	value: Option.Option<A>,
+	isBlank: (value: A) => boolean,
+): Option.Option<A> {
+	if (Option.isNone(value) || isBlank(value.value)) return Option.none()
+
+	return value
 }
 
-export async function sendContentBroadcast(
+export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* (
 	broadcast: ContentBroadcastInput,
-	options?: { send?: boolean },
-): Promise<BroadcastDryRun | BroadcastSent> {
-	validateBroadcast(broadcast)
-	const rendered = await renderBroadcast(broadcast)
+	options?: { readonly send?: boolean },
+) {
+	yield* validateBroadcast(broadcast)
+	const rendered = yield* renderBroadcast(broadcast)
 
-	if (!rendered.html.includes("RESEND_UNSUBSCRIBE_URL")) {
-		throw new Error("Broadcast HTML is missing the Resend unsubscribe URL.")
-	}
+	const audienceId = presentValue(
+		yield* Config.option(Config.String("RESEND_AUDIENCE_ID")),
+		id => id.trim().length === 0,
+	)
 
-	const segmentId = process.env.RESEND_AUDIENCE_ID ?? ""
 	const send = options?.send === true
 
 	if (!send) {
 		return {
-			mode: "dry-run",
+			mode: "dry-run" as const,
 			from: NEWSLETTER_FROM_ADDRESS,
 			replyTo: BROADCAST_REPLY_TO,
 			subject: rendered.subject,
 			previewText: rendered.previewText,
-			segmentId: segmentId.length > 0 ? segmentId : "(RESEND_AUDIENCE_ID is not set)",
+			segmentId: Option.getOrElse(audienceId, () => "(RESEND_AUDIENCE_ID is not set)"),
 			name: rendered.name,
 			html: rendered.html,
 			text: rendered.text,
-		}
+		} satisfies BroadcastDryRun
 	}
 
-	const apiKey = process.env.RESEND_API_KEY
-
-	if (!apiKey || segmentId.length === 0) {
-		throw new Error("Set RESEND_API_KEY and RESEND_AUDIENCE_ID before sending a broadcast.")
-	}
-
-	const resend = new Resend(apiKey)
-
-	const { data, error } = await resend.broadcasts.create(
-		{
-			name: rendered.name,
-			from: NEWSLETTER_FROM_ADDRESS,
-			replyTo: BROADCAST_REPLY_TO,
-			subject: rendered.subject,
-			previewText: rendered.previewText,
-			segmentId,
-			react: rendered.react,
-			text: rendered.text,
-			send: true,
-		},
-		{ headers: { "Idempotency-Key": contentIdempotencyKey(broadcast, rendered.subject) } },
+	const apiKey = presentValue(
+		yield* Config.option(Config.Redacted("RESEND_API_KEY")),
+		key => Redacted.value(key).trim().length === 0,
 	)
 
-	if (error || !data) {
-		throw new Error(error?.message ?? "Resend did not return a broadcast id.")
+	if (Option.isNone(apiKey) || Option.isNone(audienceId)) {
+		return yield* new BroadcastConfigError({
+			message: "Set RESEND_API_KEY and RESEND_AUDIENCE_ID before sending a broadcast.",
+			cause: { hasApiKey: Option.isSome(apiKey), hasAudience: Option.isSome(audienceId) },
+		})
 	}
 
-	return { mode: "sent", id: data.id, subject: rendered.subject }
-}
+	const idempotencyKey = yield* contentIdempotencyKey(broadcast, rendered.subject)
+	const resend = new Resend(Redacted.value(apiKey.value))
+
+	const { data, error } = yield* Effect.tryPromise({
+		try: () =>
+			resend.broadcasts.create(
+				{
+					name: rendered.name,
+					from: NEWSLETTER_FROM_ADDRESS,
+					replyTo: BROADCAST_REPLY_TO,
+					subject: rendered.subject,
+					previewText: rendered.previewText,
+					segmentId: audienceId.value,
+					react: rendered.react,
+					text: rendered.text,
+					send: true,
+				},
+				{ headers: { "Idempotency-Key": idempotencyKey } },
+			),
+		catch: cause =>
+			new BroadcastDeliveryError({
+				message: "Resend broadcast request failed.",
+				cause,
+			}),
+	})
+
+	if (error || !data) {
+		return yield* new BroadcastDeliveryError({
+			message: error?.message ?? "Resend did not return a broadcast id.",
+			cause: error ?? "Resend did not return a broadcast id.",
+		})
+	}
+
+	return { mode: "sent" as const, id: data.id, subject: rendered.subject } satisfies BroadcastSent
+})
 
 function printResult(result: BroadcastDryRun | BroadcastSent): void {
 	switch (result.mode) {
@@ -326,7 +498,7 @@ if (import.meta.main) {
 	// { kind: "policy", bullets: ["How long confirmation tokens are kept"] }
 	// Zombie example (no bullets; id is the bestiary slug):
 	// { kind: "zombie", type: "Boss", id: "avogadro", title: "Avogadro", description: "...", redirectUrl: "/bestiary/avogadro" }
-	const result = await sendContentBroadcast(
+	sendContentBroadcast(
 		{
 			kind: "quest",
 			type: "Main",
@@ -342,7 +514,9 @@ if (import.meta.main) {
 			],
 		},
 		{ send },
+	).pipe(
+		Effect.tap(result => Effect.sync(() => printResult(result))),
+		Effect.provide(BunServicesLayer),
+		runMain,
 	)
-
-	printResult(result)
 }
