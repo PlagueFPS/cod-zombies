@@ -32,9 +32,6 @@ export function zombieReleaseSubject(type: IZombieRelease["type"], title: string
 	return `New ${type} Zombie Release: "${title}"`
 }
 
-export const zombieReleasePreview =
-	"We've just published a new zombie breakdown you might be interested in"
-
 function ZombieReleaseEmail({
 	type,
 	id,
@@ -50,7 +47,7 @@ function ZombieReleaseEmail({
 	return (
 		<EmailShell
 			title={subject}
-			preview={zombieReleasePreview}
+			preview={description}
 			serverUrl={serverUrl}
 			unsubscribeUrl={unsubscribeUrl}
 		>
@@ -79,8 +76,8 @@ export default Object.assign(ZombieReleaseEmail, {
 		title: "Avogadro",
 		description:
 			"The Avogadro is a boss zombie appearing on the maps Tranzit & Alpha Omega, also known as Cornelius Pernell the leader of Broken Arrow.",
-		redirectUrl: "https://codzombiesguides.com/bestiary/avogadro",
-		unsubscribeUrl: "https://codzombiesguides.com/newsletter/unsubscribe",
-		serverUrl: "https://codzombiesguides.com",
+		redirectUrl: "https://www.codzombiesguides.com/bestiary/avogadro",
+		unsubscribeUrl: "https://www.codzombiesguides.com/newsletter/unsubscribe",
+		serverUrl: "https://www.codzombiesguides.com",
 	} satisfies IZombieRelease,
 })

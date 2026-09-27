@@ -20,24 +20,14 @@ import type { RelicType } from "@/data/relics"
 import type { ReactElement } from "react"
 import { BunServices, BunRuntime } from "@effect/platform-bun"
 import { render } from "@react-email/components"
-import { Config, Effect, Encoding, Layer, Schema } from "effect"
-import { Crypto } from "effect/Crypto"
+import { Config, ConfigProvider, Effect, Encoding, Layer, Schema, Crypto, Redacted } from "effect"
 import PrivacyPolicyUpdateEmail, {
 	policyUpdatePreview,
 	policyUpdateSubject,
 } from "@/emails/policy-update-email"
-import QuestReleaseEmail, {
-	questReleasePreview,
-	questReleaseSubject,
-} from "@/emails/quest-release-email"
-import RelicReleaseEmail, {
-	relicReleasePreview,
-	relicReleaseSubject,
-} from "@/emails/relic-release-email"
-import ZombieReleaseEmail, {
-	zombieReleasePreview,
-	zombieReleaseSubject,
-} from "@/emails/zombie-release-email"
+import QuestReleaseEmail, { questReleaseSubject } from "@/emails/quest-release-email"
+import RelicReleaseEmail, { relicReleaseSubject } from "@/emails/relic-release-email"
+import ZombieReleaseEmail, { zombieReleaseSubject } from "@/emails/zombie-release-email"
 import { Email } from "@/lib/services/emails"
 import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
 
@@ -46,6 +36,18 @@ const RESEND_UNSUBSCRIBE_URL = "{{{RESEND_UNSUBSCRIBE_URL}}}"
 const BROADCAST_REPLY_TO = "contact@codzombiesguides.com"
 
 const textEncoder = new TextEncoder()
+
+const DevVarsConfig = ConfigProvider.layerAdd(
+	ConfigProvider.fromDotEnv({ path: ".dev.vars" }).pipe(
+		Effect.catchReason("PlatformError", "NotFound", () =>
+			Effect.succeed(ConfigProvider.fromUnknown({})),
+		),
+	),
+)
+
+const BroadcastLive = Layer.mergeAll(Email.layer, BunServices.layer).pipe(
+	Layer.provideMerge(Layer.provide(DevVarsConfig, BunServices.layer)),
+)
 
 export class BroadcastInputError extends Schema.TaggedError<BroadcastInputError>()(
 	"BroadcastInputError",
@@ -200,7 +202,7 @@ const renderBroadcast = Effect.fn("renderBroadcast")(function* (broadcast: Conte
 	switch (broadcast.kind) {
 		case "quest": {
 			const subject = questReleaseSubject(broadcast.type, broadcast.title)
-			const previewText = questReleasePreview(broadcast.type, broadcast.title)
+			const previewText = broadcast.description
 
 			const react = yield* Effect.try({
 				try: () =>
@@ -231,7 +233,7 @@ const renderBroadcast = Effect.fn("renderBroadcast")(function* (broadcast: Conte
 
 		case "relic": {
 			const subject = relicReleaseSubject(broadcast.type, broadcast.title)
-			const previewText = relicReleasePreview(broadcast.type, broadcast.title)
+			const previewText = broadcast.description
 
 			const react = yield* Effect.try({
 				try: () =>
@@ -282,7 +284,7 @@ const renderBroadcast = Effect.fn("renderBroadcast")(function* (broadcast: Conte
 			return {
 				name: subject,
 				subject,
-				previewText: zombieReleasePreview,
+				previewText: broadcast.description,
 				react,
 				html: rendered.html,
 				text: rendered.text,
@@ -323,7 +325,7 @@ const contentIdempotencyKey = Effect.fn("contentIdempotencyKey")(function* (
 	broadcast: ContentBroadcastInput,
 	subject: string,
 ) {
-	const crypto = yield* Crypto
+	const crypto = yield* Crypto.Crypto
 
 	const digest = yield* crypto
 		.digest("SHA-256", textEncoder.encode(JSON.stringify({ broadcast, subject })))
@@ -347,7 +349,7 @@ export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* 
 	options?: { readonly send?: boolean },
 ) {
 	const rendered = yield* renderBroadcast(broadcast)
-	const audienceId = yield* Config.NonEmptyString("RESEND_AUDIENCE_ID")
+	const audienceId = yield* Config.Redacted("RESEND_AUDIENCE_ID")
 	const send = options?.send === true
 
 	if (!send) {
@@ -357,7 +359,7 @@ export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* 
 			replyTo: BROADCAST_REPLY_TO,
 			subject: rendered.subject,
 			previewText: rendered.previewText,
-			segmentId: audienceId,
+			segmentId: Redacted.value(audienceId),
 			name: rendered.name,
 			html: rendered.html,
 			text: rendered.text,
@@ -374,7 +376,7 @@ export const sendContentBroadcast = Effect.fn("sendContentBroadcast")(function* 
 			replyTo: BROADCAST_REPLY_TO,
 			subject: rendered.subject,
 			previewText: rendered.previewText,
-			segmentId: audienceId,
+			segmentId: Redacted.value(audienceId),
 			react: rendered.react,
 			text: rendered.text,
 			send: true,
@@ -399,9 +401,6 @@ function printResult(result: BroadcastDryRun | BroadcastSent): void {
 			console.log("")
 			console.log("--- Plain text ---")
 			console.log(result.text)
-			console.log("--- HTML ---")
-			console.log(result.html)
-			console.log("")
 			console.log("Pass --send to deliver this broadcast.")
 
 			return
@@ -429,23 +428,23 @@ if (import.meta.main) {
 	// { kind: "zombie", type: "Boss", id: "avogadro", title: "Avogadro", description: "...", redirectUrl: "/bestiary/avogadro" }
 	sendContentBroadcast(
 		{
-			kind: "quest",
-			type: "Main",
-			id: "reckoning",
-			title: "Reckoning",
-			description:
-				"Project Janus HQ teeters on the verge of collapse. Stabilize the Aether Reactors. Unleash the Sentinel Artifact. Complete the mission that began on Terminus.",
-			redirectUrl: "/main-quests/black-ops-6/reckoning",
+			kind: "relic",
+			type: "Special",
+			id: "mister-peeks-mayhem",
+			title: "Mister Peeks Mayhem",
+			description: "All Cursed Tier rewards active and mayhem is increased.",
+			redirectUrl: "/relics/black-ops-7/mister-peeks-mayhem",
 			bullets: [
-				"How to stabilize the Aether Reactors",
-				"Where to find the Sentinel Artifact",
-				"Recommended loadouts for the boss fight",
+				"How to complete the Super Easter Egg",
+				"Detailed walkthrough of all steps on all maps",
+				"Any requirements for specific maps.",
+				"Tips and strategies for completing The Play Date encounter with the twins.",
 			],
 		},
 		{ send },
 	).pipe(
 		Effect.tap(result => Effect.sync(() => printResult(result))),
-		Effect.provide(Layer.mergeAll(BunServices.layer, Email.layer)),
+		Effect.provide(BroadcastLive),
 		BunRuntime.runMain,
 	)
 }

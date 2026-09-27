@@ -26,10 +26,6 @@ export function relicReleaseSubject(type: IRelicRelease["type"], title: string):
 	return `New ${type} Relic Guide: "${title}"`
 }
 
-export function relicReleasePreview(type: IRelicRelease["type"], title: string): string {
-	return `New ${type} relic guide: ${title}`
-}
-
 function RelicReleaseEmail({
 	type,
 	id,
@@ -46,7 +42,7 @@ function RelicReleaseEmail({
 	return (
 		<EmailShell
 			title={subject}
-			preview={relicReleasePreview(type, title)}
+			preview={description}
 			serverUrl={serverUrl}
 			unsubscribeUrl={unsubscribeUrl}
 		>
@@ -71,9 +67,9 @@ export default Object.assign(RelicReleaseEmail, {
 		id: "lawyers-pen",
 		title: "Lawyer's Pen",
 		description: "Mimic props have infiltrated the map.",
-		redirectUrl: "https://codzombiesguides.com/relics/black-ops-7/lawyers-pen",
-		unsubscribeUrl: "https://codzombiesguides.com/newsletter/unsubscribe",
-		serverUrl: "https://codzombiesguides.com",
+		redirectUrl: "https://www.codzombiesguides.com/relics/black-ops-7/lawyers-pen",
+		unsubscribeUrl: "https://www.codzombiesguides.com/newsletter/unsubscribe",
+		serverUrl: "https://www.codzombiesguides.com",
 		bullets: [
 			"Requirements, including the main quest, Cursed, and round 20",
 			"Where to light the three red candles",

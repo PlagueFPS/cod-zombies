@@ -45,9 +45,9 @@ describe("resolvePublicOrigin", () => {
 	})
 
 	test("does not strip https from the canonical origin", () => {
-		expect(SITE_ORIGIN).toBe("https://codzombiesguides.com")
+		expect(SITE_ORIGIN).toBe("https://www.codzombiesguides.com")
 		expect(resolvePublicOrigin(new URL("http://localhost:4173/"), true)).toBe(
-			"https://codzombiesguides.com",
+			"https://www.codzombiesguides.com",
 		)
 	})
 })

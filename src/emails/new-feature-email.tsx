@@ -6,7 +6,7 @@ interface INewFeatureEmail {
 	unsubscribeUrl: string
 }
 
-const siteOrigin = "https://codzombiesguides.com"
+const siteOrigin = "https://www.codzombiesguides.com"
 
 const reckoningFeatures = [
 	"Locations - View locations for all Perks, Mystery Boxes, Wall Buys, Intel, and more!",
@@ -44,6 +44,6 @@ function NewFeatureEmail({ unsubscribeUrl }: INewFeatureEmail) {
 
 export default Object.assign(NewFeatureEmail, {
 	PreviewProps: {
-		unsubscribeUrl: "https://codzombiesguides.com/newsletter/unsubscribe",
+		unsubscribeUrl: "https://www.codzombiesguides.com/newsletter/unsubscribe",
 	} satisfies INewFeatureEmail,
 })

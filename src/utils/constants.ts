@@ -7,7 +7,7 @@ export const SITE_DESCRIPTION =
 	"Detailed Main/Side Quest and Cursed Relic step-by-step guides, Interactive Maps, a complete Bestiary, and more."
 
 /** Canonical public origin for absolute URLs (Open Graph, sitemap, emails). */
-export const SITE_ORIGIN = "https://codzombiesguides.com"
+export const SITE_ORIGIN = "https://www.codzombiesguides.com"
 
 /** From address for newsletter confirmation mail and content broadcasts. */
 export const NEWSLETTER_FROM_ADDRESS = "COD Zombies Guides <support@codzombiesguides.com>"

@@ -73,8 +73,8 @@ function PrivacyPolicyUpdateEmail({ unsubscribeUrl, serverUrl, bullets }: IPolic
 
 export default Object.assign(PrivacyPolicyUpdateEmail, {
 	PreviewProps: {
-		unsubscribeUrl: "https://codzombiesguides.com/newsletter/unsubscribe",
-		serverUrl: "https://codzombiesguides.com",
+		unsubscribeUrl: "https://www.codzombiesguides.com/newsletter/unsubscribe",
+		serverUrl: "https://www.codzombiesguides.com",
 		bullets: [
 			"How the newsletter form describes the information it collects",
 			"How long confirmation tokens are kept",

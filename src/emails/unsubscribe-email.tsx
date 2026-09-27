@@ -54,7 +54,8 @@ function UnsubscribeEmail({ unsubscribeUrl, serverUrl }: IUnsubscribeEmail) {
 
 export default Object.assign(UnsubscribeEmail, {
 	PreviewProps: {
-		unsubscribeUrl: "https://codzombiesguides.com/api/newsletter/unsubscribe?token=preview-token",
-		serverUrl: "https://codzombiesguides.com",
+		unsubscribeUrl:
+			"https://www.codzombiesguides.com/api/newsletter/unsubscribe?token=preview-token",
+		serverUrl: "https://www.codzombiesguides.com",
 	} satisfies IUnsubscribeEmail,
 })

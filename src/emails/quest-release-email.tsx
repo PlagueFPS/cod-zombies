@@ -43,10 +43,6 @@ export function questReleaseSubject(type: IQuestRelease["type"], title: string):
 	return `New ${type} Quest Guide: "${title}"`
 }
 
-export function questReleasePreview(type: IQuestRelease["type"], title: string): string {
-	return `New ${type} quest guide: ${title}`
-}
-
 function QuestReleaseEmail({
 	type,
 	id,
@@ -64,7 +60,7 @@ function QuestReleaseEmail({
 	return (
 		<EmailShell
 			title={subject}
-			preview={questReleasePreview(type, title)}
+			preview={description}
 			serverUrl={serverUrl}
 			unsubscribeUrl={unsubscribeUrl}
 		>
@@ -93,9 +89,9 @@ export default Object.assign(QuestReleaseEmail, {
 		title: "Reckoning",
 		description:
 			"Project Janus HQ teeters on the verge of collapse. Stabilize the Aether Reactors. Unleash the Sentinel Artifact. Complete the mission that began on Terminus.",
-		redirectUrl: "https://codzombiesguides.com/main-quests/black-ops-6/reckoning",
-		unsubscribeUrl: "https://codzombiesguides.com/newsletter/unsubscribe",
-		serverUrl: "https://codzombiesguides.com",
+		redirectUrl: "https://www.codzombiesguides.com/main-quests/black-ops-6/reckoning",
+		unsubscribeUrl: "https://www.codzombiesguides.com/newsletter/unsubscribe",
+		serverUrl: "https://www.codzombiesguides.com",
 		bullets: [
 			"How to stabilize the Aether Reactors",
 			"Where to find the Sentinel Artifact",

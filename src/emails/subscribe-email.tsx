@@ -49,7 +49,7 @@ function SubscribeEmail({ subscribeUrl, serverUrl }: ISubscribeEmail) {
 
 export default Object.assign(SubscribeEmail, {
 	PreviewProps: {
-		subscribeUrl: "https://codzombiesguides.com/api/newsletter/subscribe?token=preview-token",
-		serverUrl: "https://codzombiesguides.com",
+		subscribeUrl: "https://www.codzombiesguides.com/api/newsletter/subscribe?token=preview-token",
+		serverUrl: "https://www.codzombiesguides.com",
 	} satisfies ISubscribeEmail,
 })
