@@ -2,6 +2,7 @@ import { Duration, Effect, Option, Schema } from "effect"
 import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"
+import { NEWSLETTER_FROM_ADDRESS } from "@/utils/constants"
 import { generateToken } from "@/utils/functions.server"
 import { getServerUrl } from "@/utils/request.server"
 
@@ -41,7 +42,7 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: 
 	const subscribeUrl = `${serverUrl}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
 	yield* emails.sendEmail({
-		from: "COD Zombies Guides <support@codzombiesguides.com>",
+		from: NEWSLETTER_FROM_ADDRESS,
 		to: email,
 		subject: "Confirm Your Subscribe Request",
 		react: SubscribeEmail({ subscribeUrl, serverUrl }),
@@ -67,7 +68,7 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (ema
 	const unsubscribeUrl = `${serverUrl}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
 
 	yield* emails.sendEmail({
-		from: "COD Zombies Guides <support@codzombiesguides.com>",
+		from: NEWSLETTER_FROM_ADDRESS,
 		to: email,
 		subject: "Confirm Your Unsubscribe Request",
 		react: UnsubscribeEmail({ unsubscribeUrl, serverUrl }),
