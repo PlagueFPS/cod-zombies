@@ -644,4 +644,12 @@ const PERKS = uniqueMap([
 		augments: Option.none(),
 		variants: Option.none(),
 	}),
+	makePerk("bang-bangs", {
+		title: "Bang Bangs",
+		description: "Double your bullets, double your fun! (Increases your fire rate and damage)",
+		image: "/perks/bang-bangs.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
 ])
