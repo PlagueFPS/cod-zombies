@@ -514,10 +514,15 @@ const MAPS = uniqueMap([
 		description: "...She's the cat with the kung fu claws!",
 		image: "/maps/shaolin-shuffle.webp",
 		game: "infinite-warfare",
-		state: Option.some("Coming Soon"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/pest-control"),
-		difficulty: Option.none(),
-		estimatedTimeMins: Option.none(),
+		difficulty: Option.some("Hard"),
+		estimatedTimeMins: Option.some({
+			min: 45,
+			max: 105,
+			reason:
+				"Time varies significantly based on if you have Director's Cut, symbol and cipher luck, and knowledge of the steps.",
+		}),
 	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
