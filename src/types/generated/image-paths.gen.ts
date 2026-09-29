@@ -429,6 +429,7 @@ export type PerksImagePath =
   '/perks/tombstone-cold-war.webp' |
   '/perks/tombstone.webp' |
   '/perks/tuff-nuff.webp' |
+  '/perks/up-n-atoms.webp' |
   '/perks/victorious-tortoise.webp' |
   '/perks/vulture-aid-bo2.webp' |
   '/perks/vulture-aid.webp' |
