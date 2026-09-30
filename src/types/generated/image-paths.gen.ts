@@ -566,6 +566,7 @@ export type ZombiesImagePath =
   '/zombies/nathan.webp' |
   '/zombies/necropincer.webp' |
   '/zombies/nikolai-mech.webp' |
+  '/zombies/ninja-zombie.webp' |
   '/zombies/nosferatu.webp' |
   '/zombies/nova-6-bomber.webp' |
   '/zombies/nova-6-crawler.webp' |
@@ -582,6 +583,7 @@ export type ZombiesImagePath =
   '/zombies/plaguehound.webp' |
   '/zombies/poison-catalyst.webp' |
   '/zombies/rad-hound.webp' |
+  '/zombies/rat-king.webp' |
   '/zombies/ravager.webp' |
   '/zombies/sam.webp' |
   '/zombies/sasquatch.webp' |
@@ -591,6 +593,7 @@ export type ZombiesImagePath =
   '/zombies/shadow-werewolf.webp' |
   '/zombies/shock-mimic.webp' |
   '/zombies/shrieker-zombie.webp' |
+  '/zombies/skating-diva.webp' |
   '/zombies/skeleton.webp' |
   '/zombies/slasher.webp' |
   '/zombies/space-monkey.webp' |

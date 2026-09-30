@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-09-26T12:07:52.293Z
- * generated in: 35ms
+ * generated at: 2026-09-30T16:57:28.497Z
+ * generated in: 18ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -395,6 +395,7 @@ export type ZombiesPaths =
 	| "content/zombies/nathan"
 	| "content/zombies/necropincer"
 	| "content/zombies/nikolai-mech"
+	| "content/zombies/ninja-zombie"
 	| "content/zombies/nosferatu"
 	| "content/zombies/nova-6-bomber"
 	| "content/zombies/nova-6-crawler"
@@ -411,6 +412,7 @@ export type ZombiesPaths =
 	| "content/zombies/plaguehound"
 	| "content/zombies/poison-catalyst"
 	| "content/zombies/rad-hound"
+	| "content/zombies/rat-king"
 	| "content/zombies/ravager"
 	| "content/zombies/sam"
 	| "content/zombies/sasquatch"
@@ -420,6 +422,7 @@ export type ZombiesPaths =
 	| "content/zombies/shadow-werewolf"
 	| "content/zombies/shock-mimic"
 	| "content/zombies/shrieker-zombie"
+	| "content/zombies/skating-diva"
 	| "content/zombies/skeleton"
 	| "content/zombies/slasher"
 	| "content/zombies/space-monkey"

@@ -711,4 +711,24 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Swings a buzzing chainsaw at players within melee range, dealing enough damage to down a player in a single hit even with Tuff 'Nuff.",
 	}),
+	makeZombieAttack("shield-throw", {
+		title: "Shield Throw",
+		range: "Medium",
+		description: "Throws a shield at the targeted player.",
+	}),
+	makeZombieAttack("staff-swing", {
+		title: "Staff Swing",
+		range: "Short",
+		description: "Swings a staff to deal damage to the player in close range.",
+	}),
+	makeZombieAttack("ninja-summon", {
+		title: "Ninja Summon",
+		range: "Medium",
+		description: "Summons masked ninja zombies that attack nearby players.",
+	}),
+	makeZombieAttack("smoke-teleport", {
+		title: "Smoke Teleport",
+		range: "Medium",
+		description: "Vanishes in a cloud of smoke and reappears beside the targeted player.",
+	}),
 ])
