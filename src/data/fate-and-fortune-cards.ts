@@ -155,4 +155,10 @@ const FATE_AND_FORTUNE_CARDS = uniqueMap([
 		rarity: "Legendary",
 		image: "/fate-and-fortune-cards/evade.webp",
 	}),
+	makeFortuneCard("ego-trip", {
+		title: "Ego Trip",
+		description: "Increases the damage of headshots. Duration: 60 seconds",
+		rarity: "Common",
+		image: "/fate-and-fortune-cards/ego-trip.webp",
+	}),
 ])

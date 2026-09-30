@@ -544,14 +544,14 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Skeletons are a variant of the normal zombie also known as Spartoi in Ancient Evil. These enemies bring a cool new look to the normal zombie.",
 		games: ["black-ops-3", "infinite-warfare", "black-ops-4"],
-		maps: ["der-eisendrache", "rave-in-the-redwoods", "ancient-evil"],
+		maps: ["der-eisendrache", "rave-in-the-redwoods", "the-beast-from-beyond", "ancient-evil"],
 		type: "Normal",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["melee-swing"],
 		spawnBehavior:
-			"In Der Eisendrache, Skeletons spawn as the dominant enemy in the My Brother's Keeper main quest boss fight. In Ancient Evil, these skeletons are known as Spartoi and spawn once you activate the Sentinel Artifact. These Spartoi will not be killed if the final blow is not a headshot; they will instead crumble to the ground and reconstruct up to two times before actually dying.",
+			"In Der Eisendrache, Skeletons spawn as the dominant enemy in the My Brother's Keeper main quest boss fight. In Ancient Evil, these skeletons are known as Spartoi and spawn once you activate the Sentinel Artifact. These Spartoi will not be killed if the final blow is not a headshot; they will instead crumble to the ground and reconstruct up to two times before actually dying. On The Beast from Beyond, Skeletons replace normal zombies during the Mephistopheles boss fight.",
 		combatStrategy: "content/zombies/skeleton",
 	}),
 	makeZombie("the-corrupted-keeper", {
@@ -752,14 +752,14 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Clown Zombies are a faster, more terrifying variant of the normal zombie bringing an explosive thrill to the 1980s amusement park.",
 		games: ["infinite-warfare"],
-		maps: ["zombies-in-spaceland"],
+		maps: ["zombies-in-spaceland", "the-beast-from-beyond"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["explosion"],
 		spawnBehavior:
-			"Clown Zombies serve as the special round appearing every 5-6 rounds, but will also spawn in with normal zombies past Round 20.",
+			"On Zombies in Spaceland, Clown Zombies are the special round every 5-6 rounds, and they also mix in with normal zombies past round 20. On The Beast from Beyond they appear on special rounds and mixed into normal rounds starting at round 20.",
 		combatStrategy: "content/zombies/clown-zombie",
 	}),
 	makeZombie("brute", {
@@ -824,14 +824,14 @@ const ZOMBIES = uniqueMap([
 		description:
 			"The Slasher is an elite enemy originating from the map Rave in the Redwoods, a chainsaw-wielding maniac that stalks players during Rave Mode.",
 		games: ["infinite-warfare"],
-		maps: ["rave-in-the-redwoods"],
+		maps: ["rave-in-the-redwoods", "the-beast-from-beyond"],
 		type: "Elite",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["buzzsaw"],
 		spawnBehavior:
-			"The Slasher spawns near players when entering Rave Mode from Round 10 onward. A killable Slasher also spawns during the Locksmith main quest photo rituals after inspecting the completed picture.",
+			"On Rave in the Redwoods, the Slasher spawns near players when entering Rave Mode from round 10 onward. A killable Slasher also spawns during the Locksmith main quest photo rituals after inspecting the completed picture. On The Beast from Beyond, he appears from round 22 and then about every 5 or 6 rounds, and each kill drops a power-up.",
 		combatStrategy: "content/zombies/slasher",
 	}),
 	makeZombie("skating-diva", {
@@ -860,14 +860,14 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Ninja Zombies are a special enemy originating from the map Shaolin Shuffle, martial artists that vanish in smoke and strike from close range.",
 		games: ["infinite-warfare"],
-		maps: ["shaolin-shuffle"],
+		maps: ["shaolin-shuffle", "the-beast-from-beyond"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["powerful-melee", "smoke-teleport"],
 		spawnBehavior:
-			"Ninja Zombies start mixing in with normal zombies around round 21, usually from normal zombie spawns. They also spawn during the Pest Control main quest at the rat-cage circle, the rooftop cipher, and the Rat King fight. If they are damaged without being killed, or if the player sprints away, they disappear and reappear nearby.",
+			"Ninja Zombies start mixing in with normal zombies around round 21 on Shaolin Shuffle and on The Beast from Beyond, usually from normal zombie spawns. On Shaolin Shuffle they also spawn during the Pest Control main quest at the rat-cage circle, the rooftop cipher, and the Rat King fight. If they are damaged without being killed, or if the player sprints away, they disappear and reappear nearby.",
 		combatStrategy: "content/zombies/ninja-zombie",
 	}),
 	makeZombie("rat-king", {
@@ -941,6 +941,78 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"Crog-Zilla is in the bay for the whole match and weapons cannot damage it. It only fights during the Soul-Less main quest, after the bomb is teleported to the beach. Outside that fight it launches eggs that hatch into Crogs, and it also sends Crog Brutes after the players.",
 		combatStrategy: "content/zombies/crog-zilla",
+	}),
+	makeZombie("scout", {
+		title: "Scout",
+		state: Option.none(),
+		releaseDate: "2017-09-12",
+		image: "/zombies/scout.webp",
+		description:
+			"Scouts are a special enemy originating from the map The Beast from Beyond, the small orange cryptids that leap at players in packs.",
+		games: ["infinite-warfare"],
+		maps: ["the-beast-from-beyond"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["leaping-strike"],
+		spawnBehavior:
+			"Scouts are the only enemies until N31L's head is installed, and they stop spawning as the round enemy on the next round after that. At least three spawn each time a Pack-a-Punch bridge piece is picked up. After round 10 they can appear as a special round, and the last one drops a Max Ammo. They also spawn during The End? boss fight.",
+		combatStrategy: "content/zombies/scout",
+	}),
+	makeZombie("phantom", {
+		title: "Phantom",
+		state: Option.none(),
+		releaseDate: "2017-09-12",
+		image: "/zombies/phantom.webp",
+		description:
+			"Phantoms are an elite enemy originating from the map The Beast from Beyond, blue cryptids that close the distance and vanish before they strike.",
+		games: ["infinite-warfare"],
+		maps: ["the-beast-from-beyond"],
+		type: "Elite",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["smoke-teleport", "phantom-strike"],
+		spawnBehavior:
+			"The first Phantom spawns the first time you leave the Pack-a-Punch projector room, or on round 10 if you have not taken that trip. Killing it drops a power-up, and the first kill also drops a floppy disk for The End?. More Phantoms spawn through the match and during the boss fight.",
+		combatStrategy: "content/zombies/phantom",
+	}),
+	makeZombie("rhino", {
+		title: "Rhino",
+		state: Option.none(),
+		releaseDate: "2017-09-12",
+		image: "/zombies/rhino.webp",
+		description:
+			"Rhinos are an elite enemy originating from the map The Beast from Beyond, armored cryptids that charge for a down even while they are already hurt.",
+		games: ["infinite-warfare"],
+		maps: ["the-beast-from-beyond"],
+		type: "Elite",
+		speed: "Medium",
+		weakPoints: ["eyes", "mouth"],
+		elementalWeakness: [],
+		attacks: ["charge"],
+		spawnBehavior:
+			"Rhinos spawn during The End?. The laser opens four containers at the start, one Rhino each, and more come out of the portals with the later swarms until the countdown terminal is used.",
+		combatStrategy: "content/zombies/rhino",
+	}),
+	makeZombie("mammoth", {
+		title: "Mammoth",
+		state: Option.none(),
+		releaseDate: "2017-09-12",
+		image: "/zombies/mammoth.webp",
+		description:
+			"Mammoths are the boss of The Beast from Beyond, two blue Rhinos that guard the last piece of the Soul Key and leave blue fire when they are shot.",
+		games: ["infinite-warfare"],
+		maps: ["the-beast-from-beyond"],
+		type: "Boss",
+		speed: "Medium",
+		weakPoints: ["mouth", "head"],
+		elementalWeakness: [],
+		attacks: ["charge", "blue-flame"],
+		spawnBehavior:
+			"Two Mammoths spawn at the end of The End?, after the countdown terminal is used and the laser opens their crate. Killing both plays the ending cutscene.",
+		combatStrategy: "content/zombies/mammoth",
 	}),
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",
