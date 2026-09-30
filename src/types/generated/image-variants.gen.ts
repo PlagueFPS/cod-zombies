@@ -3329,6 +3329,7 @@ export const VARIANT_WIDTHS = {
   '/maps/ascension.webp': [384],
   '/maps/ashes-of-the-damned.webp': [384, 1200],
   '/maps/astra-malorum.webp': [384, 1200],
+  '/maps/attack-of-the-radioactive-thing.webp': [384, 1200],
   '/maps/blood-of-the-dead.webp': [384, 1200],
   '/maps/buried.webp': [384, 1200],
   '/maps/call-of-the-dead.webp': [384],

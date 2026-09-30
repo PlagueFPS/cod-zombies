@@ -3,7 +3,7 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-09-30T16:57:28.497Z
+ * generated at: 2026-09-30T17:24:31.676Z
  * generated in: 18ms
  */
 
@@ -50,6 +50,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/seeds-of-doubt"
 	| "content/main-quests/shattered-veil"
 	| "content/main-quests/sooooul-key"
+	| "content/main-quests/soul-less"
 	| "content/main-quests/the-tomb"
 	| "content/main-quests/time-travel-will-tell"
 	| "content/main-quests/tin-man-heart"

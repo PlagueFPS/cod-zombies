@@ -524,6 +524,18 @@ const MAPS = uniqueMap([
 				"Time varies significantly based on if you have Director's Cut, symbol and cipher luck, and knowledge of the steps.",
 		}),
 	}),
+	makeMap("attack-of-the-radioactive-thing", {
+		title: "Attack of the Radioactive Thing",
+		releaseDate: "2017-07-06",
+		description:
+			"A 1950s creature feature at Sonova Beach, where nuclear testing left the shore to the Crogs and something enormous in the bay.",
+		image: "/maps/attack-of-the-radioactive-thing.webp",
+		game: "infinite-warfare",
+		state: Option.some("Coming Soon"),
+		mainQuest: Option.some("content/main-quests/soul-less"),
+		difficulty: Option.none(),
+		estimatedTimeMins: Option.none(),
+	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
 		releaseDate: "2018-10-11",

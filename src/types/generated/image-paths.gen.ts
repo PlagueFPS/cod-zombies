@@ -347,6 +347,7 @@ export type MapsImagePath =
   '/maps/ascension.webp' |
   '/maps/ashes-of-the-damned.webp' |
   '/maps/astra-malorum.webp' |
+  '/maps/attack-of-the-radioactive-thing.webp' |
   '/maps/blood-of-the-dead.webp' |
   '/maps/buried.webp' |
   '/maps/call-of-the-dead.webp' |
