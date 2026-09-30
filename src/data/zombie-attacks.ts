@@ -731,4 +731,55 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Medium",
 		description: "Vanishes in a cloud of smoke and reappears beside the targeted player.",
 	}),
+	makeZombieAttack("stunning-lunge", {
+		title: "Stunning Lunge",
+		range: "Medium",
+		description:
+			"Lunges at the targeted player and deals heavy damage on hit. A missed lunge leaves it stunned briefly.",
+	}),
+	makeZombieAttack("acid-puddle", {
+		title: "Acid Puddle",
+		range: "Short",
+		description: "Leaves a puddle of acid on death that damages players standing in it.",
+	}),
+	makeZombieAttack("claw-charge", {
+		title: "Claw Charge",
+		range: "Long",
+		description:
+			"Puts both claws forward and charges, hitting the targeted player twice. It cannot move or attack for a moment after the charge.",
+	}),
+	makeZombieAttack("esca-flash", {
+		title: "Esca Flash",
+		range: "Medium",
+		description:
+			"Emits a bright flash from its esca that blinds and deafens players looking at it. It stays still while the flash is active.",
+	}),
+	makeZombieAttack("burrow", {
+		title: "Burrow",
+		range: "Medium",
+		description:
+			"Burrows underground, leaving its esca above the ground and beeping. It then leaps out near a player and deals splash damage.",
+	}),
+	makeZombieAttack("laser-beam", {
+		title: "Laser Beam",
+		range: "Long",
+		description:
+			"Fires a laser beam from the light on its head, dealing heavy damage while a player is caught in the beam.",
+	}),
+	makeZombieAttack("shockwave-slam", {
+		title: "Shockwave Slam",
+		range: "Long",
+		description:
+			"Slams the ground and sends a shockwave along a path, instantly downing players caught in it.",
+	}),
+	makeZombieAttack("acid-spray", {
+		title: "Acid Spray",
+		range: "Long",
+		description: "Spits acid across the ground, damaging players who stand in it.",
+	}),
+	makeZombieAttack("crog-summon", {
+		title: "Crog Summon",
+		range: "Long",
+		description: "Launches eggs that hatch into Crogs where they land.",
+	}),
 ])

@@ -531,8 +531,25 @@ const MAPS = uniqueMap([
 			"A 1950s creature feature at Sonova Beach, where nuclear testing left the shore to the Crogs and something enormous in the bay.",
 		image: "/maps/attack-of-the-radioactive-thing.webp",
 		game: "infinite-warfare",
-		state: Option.some("Coming Soon"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/soul-less"),
+		difficulty: Option.some("Very Hard"),
+		estimatedTimeMins: Option.some({
+			min: 60,
+			max: 150,
+			reason:
+				"Time varies significantly based on if you have Director's Cut, chemical-step math, battery drops, and knowledge of the steps.",
+		}),
+	}),
+	makeMap("the-beast-from-beyond", {
+		title: "The Beast from Beyond",
+		releaseDate: "2017-09-12",
+		description:
+			"The last of Willard Wyler's films, set in a desolate military station on a distant ice planet, where the Actors crew must claim the final piece of the Soul Key.",
+		image: "/maps/the-beast-from-beyond.webp",
+		game: "infinite-warfare",
+		state: Option.some("Coming Soon"),
+		mainQuest: Option.some("content/main-quests/the-end"),
 		difficulty: Option.none(),
 		estimatedTimeMins: Option.none(),
 	}),

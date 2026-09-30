@@ -1,1 +1,342 @@
-TBD
+import YoutubeEmbed from "@/components/youtube-embed"
+import PerkTooltip from "@/components/perk-tooltip"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import FateAndFortuneCardTooltip from "@/components/fate-and-fortune-card-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-image"
+import CustomCarousel from "@/components/custom-carousel"
+
+## Soul-Less
+The main quest for **Attack of the Radioactive Thing** is called **Soul-Less**. During this quest, the Actors crew must recover the fourth piece of the
+**Soul Key** from **Willard Wyler's** 1950s **Sonova Beach** by building a nuclear bomb, loading it with the right compound, and destroying
+<ZombieTooltip zombieKey="crog-zilla" />.
+
+## Requirements
+This main quest can be completed solo or in co-op.
+
+> <PerkTooltip perkKey="tuff-nuff" />, <PerkTooltip perkKey="quickies" />, <PerkTooltip perkKey="bang-bangs" />, <PerkTooltip perkKey="racin-stripes" />, and
+> <PerkTooltip perkKey="up-n-atoms" /> are the perks worth having before the boss. <PerkTooltip perkKey="bombstoppers" /> is worth buying if you are using explosives.
+
+## Recommended Fate & Fortune Cards
+
+<RichTable
+  headerCells={["Fate", "Fortune"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="five-second-muscle" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="perk-insured" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="best-for-last" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="raining-bullets" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="nade-party" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="explosive-touch" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="scoped-dollars" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="all-the-ammos" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> These **Fate and Fortune Cards** are just a recommendation and not required to complete this main quest, only to make things quicker and/or easier throughout the quest.
+> <FateAndFortuneCardTooltip cardKey="perk-insured" /> keeps your perks if you are revived before you bleed out. <FateAndFortuneCardTooltip cardKey="nade-party" /> keeps grenades coming during the acid phase, and the round does not advance while the boss fight is running.
+
+## Step 1: Turn On Power
+There is one power switch, and it starts in the sand. On the beach, facing <ZombieTooltip zombieKey="crog-zilla" />, pick the switch off the arm sticking out of the ground.
+Carry it to the power station near <PerkTooltip perkKey="blue-bolts" /> and place it on the empty switch.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-power-switch.webp" caption="Power Switch" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-empty-switch.webp" caption="Empty Switch" />
+
+## Step 2: Open the Pack-a-Punch Portal
+After power is on, open the safe in the **Skull Hop** shop just outside spawn and take **Elvira's** spellbook. Bring it to her on the couch in the TV station, she gives you an
+empty green vial.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-safe.webp" caption="Spellbook in the Safe" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-elvira.webp" caption="Elvira on the couch" />
+
+The **Cleaver** is on the dead shark in the corner of the **Beachside Market**. Kill zombies with it until the vial in the tab menu is full (all black), then give it back to
+**Elvira**. Walk her to the portal outside the station, near <PerkTooltip perkKey="bang-bangs" />, and let her open it.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-cleaver.webp" caption="Cleaver on the dead shark" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-portal-opening.webp" caption="Elvira opening the Pack-a-Punch portal" />
+
+## Step 3: Build the Seismic Wave Generator
+You can find the **Blueprint** to build this device right outside the **Skull Hop** building.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-blueprint.webp" caption="Blueprint to build the Seismic Wave Generator" />
+
+Once you have the **Blueprint**, you need to find the other three parts to actually build the device. Below are the three part locations as they are set spawns every game:
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-generator-part-1.webp" caption="Near the Port-a-Potties" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-generator-part-2.webp" caption="On the bench outside the building" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-generator-part-3.webp" caption="Outside the building on one of the corners" />
+</CustomCarousel>
+
+Once you have all the parts, you can build the **Seismic Wave Generator** inside the building in the room where the **Skull Hop** machine is.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-seismic-wave-generator.webp" caption="Seismic Wave Generator" />
+
+## Step 4: Grab the Zombie Parts
+
+### First Arm
+Take the **Seismic Wave Generator** over to the arm on the beach and place it on top of the arm, raising it out of the ground for you to collect.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-arm-1.webp" caption="First Zombie Arm" />
+
+### Second Arm
+You can find the second arm in the fire located in the **RV Camp**.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-arm-2.webp" caption="Second Zombie Arm" />
+
+### First Leg
+You can find the first leg in the tree outside the **TV Station** on the path that leads to the <PerkTooltip perkKey="racin-stripes" /> perk. You'll need to throw a grenade or use an
+explosive to knock it out of the tree.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-leg-1.webp" caption="First Zombie Leg" />
+
+### Second Leg
+You can find the second leg on round **5** or higher, by meleeing a green mist zombie with the **Cleaver** you picked up earlier to chop it's leg off.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-green-mist-zombie.webp" caption="Green Mist Zombie" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-leg-2.webp" caption="Second Zombie Leg" />
+
+### Torso
+Before you can get the torso, you'll need to pick up the **Crowbar** from the maintenance closet where <PerkTooltip perkKey="bombstoppers" /> is located. Then, you'll need
+to repair the **Freeze Trap** in the **Beachside Market Freezer** by first collecting the repair box.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-repair-box.webp" caption="Repair Box Location" />
+
+Once you have the box, bring it to the trap in the **Beachside Market Freezer** and use it to repair the trap. Once repaired, activate the trap and melee the frozen body of
+meat to get the zombie torso.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-freeze-trap.webp" caption="Freeze Trap" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-torso.webp" caption="Zombie Torso" />
+
+### Head
+You can find the head by going through the **Pack-a-Punch** portal and hitting the stoplight button in the projector room. Then exit the portal to find the head on a plate inside
+the **RV** for you to collect.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-stoplight-button.webp" caption="Stoplight Button" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-head.webp" caption="Zombie Head" />
+
+## Step 5: Collect the Chemical Station & Bomb Parts
+There are three parts you'll need to collect for the **Chemical Station** and three for the **Bomb** as well. We'll place these parts down during a later step of the quest.
+
+### Chemical Station
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station-part-1.webp" caption="Beachside Market - on the couch on the left side of the building" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station-part-2.webp" caption="RV Camp - on one of the picnic tables" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station-part-3.webp" caption="RV Camp - on the table along the path between the RV camp and the beach" />
+</CustomCarousel>
+
+### Bomb
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-part-1.webp" caption="Beach - under the wooden bridge" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-part-2.webp" caption="On the road between the beach and TV Station under a red car" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-part-3.webp" caption="Between TV Station and the Racin' Stripes perk, behind a chain link fence" />
+</CustomCarousel>
+
+## Step 6: Collect the Mirrors
+There are three mirrors to collect, two of which require you to have the **Crowbar**, and the other is revealed after moving **Elvira** off the couch.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-mirror-1.webp" caption="Beachside Market - hit the mirror off the car outside" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-mirror-2.webp" caption="RV Camp - hit the mirror in the bathroom to break it" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-mirror-3.webp" caption="On the couch after Elvira gets up" />
+</CustomCarousel>
+
+> Remember to pick up the mirrors/mirror pieces after breaking it off the car and in the bathroom
+
+## Step 7: Obtain the Bomb Code
+> You must of obtained the **Crowbar** before you can complete this step.
+
+This code is used later on in the quest, and can be found inside the locked safe in the back of the **Beachside Market**. Before you can open it, you'll need to complete a short
+series of steps. The first is to grab the secondary code underneath the desk near the safe.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-desk-code.webp" caption="Desk Code" />
+
+Once you have the code, there are four pressure gauges that cycle from **0-9** around the map. You must hit these gauges with the **Crowbar** when they are over one of the numbers in
+your code. So if your code was **4712** you would set each valve to one of those numbers. Below are the locations of the valves:
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-first-valve.webp" caption="In the motel room across from the Crowbar closet, behind bombstoppers" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-second-valve.webp" caption="On the side of the building near quickies" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-third-valve.webp" caption="Behind the gas station" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-fourth-valve.webp" caption="On the far side of the power building, opposite the switch and Blue Bolts" />
+</CustomCarousel>
+
+Once all four gauges have been set correctly, the safe in the market will open and you can grab the bomb code inside.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-code.webp" caption="Bomb Code" />
+
+## Step 8: Obtain the Garage Key
+Take all the zombie parts to the spawn and place them on the gurney, then you need to place all three mirrors you picked up earlier around the room in any order as shown below.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-zombie-gurney.webp" caption="Zombie Gurney" />
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-first-mirror-placement.webp" caption="First Mirror Placement" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-second-mirror-placement.webp" caption="Second Mirror Placement" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-third-mirror-placement.webp" caption="Third Mirror Placement" />
+</CustomCarousel>
+
+Once everything is placed, pick up the punchcard on the table in the same room you picked up **Elvira's** spellbook. Place the punchcard in the machine across from the gurney to
+be able to use the machine.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-punchcard.webp" caption="Punchcard" />
+
+Once the punchcard is inserted, you'll need to find the right code by looking at the **Film Reels** in the back of **Elvira's** room on the bottom right of the shelf.
+You read these numbers from left-to-right, with the reel on the ground being third in the order.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-film-reels.webp" caption="Film Reels" />
+
+Once you have the right code, you need to input that code into the machine by left-clicking (PC) or interacting (Console) on the machine when the dot representing the number you
+want to input is highlighted. These dots follow the **0-9** numbering, so the first dot is **0**, and not **1**.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-machine.webp" caption="Punchcard Machine" />
+
+> Again, the first dot is **0** and the last dot is **9**. The flashing happens quickly, so watch it carefully to get the rhythm.
+
+Once you've inputed the code, interact with the machine again to reassemble the zombie body. You'll then need to input the same code again, but in reverse. Once that is done,
+interact with the machine again to send another beam, this time destroying the zombie body and dropping the **Garage Key** for you to pick up.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-garage-key.webp" caption="Garage Key" />
+
+## Step 10: Set the Color
+The chalkboards only show the right diamond numbers in one color. Find that color before you mix anything, and leave the map on it.
+
+### Φ Number
+The color changer is in the TV station, across from **Elvira**. Four **Φ** symbols are spread around the map. Each one reads **Φ =** a number, or **Φ ≠** a number, depending on the color.
+
+- Under the concrete bridge on the beach
+- On the gas station door in front of the **Beachside Market**
+- Above the couch in the market back office
+- On the fridge in the RV from the projector stoplight
+
+Set the map to red, green, and blue, and check every symbol in each color. A symbol that shows **≠** in any color is the wrong one. The symbol that keeps **Φ =** the same style of reading in all three colors is your **Φ** number. Write that number down. You subtract it from every reaction.
+
+### Board Color
+The **M** number is in the motel office by the pool, above the couch that has a radio on it. Multiply **Φ** by **M**.
+
+The TV next to **Elvira's** couch compares that product to a number for each color. Set the color changer to the color whose comparison is true, and stay on that color while you read the boards.
+
+> One worked example from a published game: **Φ** was **4**, **M** was **15**, and **4 × 15 = 60**. On that TV, **60** was less than **61**, so the board color was red. Your numbers will be different.
+
+## Step 11: Name the Compound
+From about round **8**, zombies wearing backpacks can drop a battery. There are two tape recorders, and only one of them names the compound for this game. The other is a chemistry lecture. If you power the lecture, get another battery and use the other recorder.
+
+- On the couch in the motel office, the same room as the **M** number
+- In the corner of the power area near **Blue Bolts**
+
+Listen until the recording names one of these five compounds:
+
+- **3,4 Di-Nitroxy-Methyl-Propane**
+- **1,3,5 Tera-Nitra-Phenol**
+- **3-Methyl 2,4 Di-Nitrobenzene**
+- **Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine**
+- **2,4 Propane 3,5 Tetra-Nitrite**
+
+## Step 12: Mix the Compound
+Chalkboards with chemical diamonds are in the spawn hallway, on the beach, in the RV camp, outside the TV station, behind the market, and inside the garage. Read them in the color from [Step 10](#step-10-set-the-color). The boards list more chemicals than your recipe uses. You only need the diamonds for the ingredients in the reaction you are mixing.
+
+For each ingredient, add the top number of its diamond to the left number. Add those totals together for every ingredient in the reaction, then subtract your **Φ** number. No reaction takes more than four ingredients. Put them on the chemical station, enter the result on the keypad above it, and start the reaction.
+
+A correct mix appears on the right side of the garage and becomes an ingredient for the next line. A wrong mix explodes and leaves you at **1 HP**. Run the lines in order. When you have the compound the radio named, add it to the bomb. That is the only compound that lets you start the teleport.
+
+> Example, with made-up diamond numbers, for **Dinitro** (**Methylbenzene** + **Baking Soda** + **Vinegar** + **Detergent**). If those top and left pairs are **4** and **6**, **3** and **3**, **2** and **9**, and **6** and **8**, the sum is **41**. If **Φ** is **4**, you enter **37**.
+
+### 3,4 Di-Nitroxy-Methyl-Propane
+1. **Vodka** + **Pennies** = **Acetaldehyde**
+2. **Racing Fuel** + **Quarters** = **Formaldehyde**
+3. **Formaldehyde** + **Acetaldehyde** + **Detergent** = **Aldehyde Sludge**
+4. **Aldehyde Sludge** + **Nail Polish Remover** = **3,4 Di-Nitroxy-Methyl-Propane**
+
+### 1,3,5 Tera-Nitra-Phenol
+1. **Motor Oil** + **Insect Repellent** + **Wheel Cleaner** = **Phenol**
+2. **Phenol** + **Drain Opener** = **Phenolsulfonic Acid**
+3. **Phenolsulfonic Acid** + **Detergent** = **1,3,5 Tera-Nitra-Phenol**
+
+### 3-Methyl 2,4 Di-Nitrobenzene
+1. **Drain Opener** + **Paint** + **Detergent** = **Methylbenzene**
+2. **Methylbenzene** + **Baking Soda** + **Vinegar** + **Detergent** = **Dinitro**
+3. **Dinitro** + **Racing Fuel** = **3-Methyl 2,4 Di-Nitrobenzene**
+
+### Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine
+1. **Racing Fuel** + **Quarters** = **Formaldehyde**
+2. **Formaldehyde** + **Glass Cleaner** = **Hexamine**
+3. **Hexamine** + **Vinegar** + **Plant Food** + **Detergent** = **Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine**
+
+### 2,4 Propane 3,5 Tetra-Nitrite
+1. **Fat** + **Vodka** = **Glycerol**
+2. **Detergent** + **Drain Opener** + **Ice** = **Mixed Acid Solution**
+3. **Glycerol** + **Mixed Acid Solution** = **Nitrated Glycerol Solution**
+4. **Nitrated Glycerol Solution** + **Baking Soda** = **2,4 Propane 3,5 Tetra-Nitrite**
+
+### Ingredient Locations
+- **Vodka**: shelf in the market, immediately right of the Fate and Fortune dispenser
+- **Baking Soda**: middle aisle of the market, a gray box lying down
+- **Detergent**: shelf in the market on the side closest to the Fate and Fortune machine
+- **Wheel Cleaner**: shelf in the market
+- **Glass Cleaner**: enter the market from the garage side, look slightly right, on the small white shelf at the end of the last aisle
+- **Vinegar**: on the table to the left as you enter the back of the market from the spawn side
+- **Paint**: on the ground immediately left of <PerkTooltip perkKey="racin-stripes" />, in front of the brick wall
+- **Plant Food**: on the ground left of the outside door by <PerkTooltip perkKey="quickies" />, under a poster
+- **Nail Polish Remover**: on a table by the pool in the motel
+- **Insect Repellent**: on a table in the middle hallway of spawn
+- **Motor Oil**: on the garage floor, left side of the distillery
+- **Racing Fuel**: on the ground to the right of the garage door
+- **Drain Opener**: first stall of the RV camp bathroom. The bottle is the item some notes call **Drain Cleaner**
+- **Pennies**: **Crowbar** the cash register in the market
+- **Quarters**: **Crowbar** the pay phones next to the garage
+- **Ice**: **Crowbar** the ice machine in the market
+- **Fat**: **Cleaver** the leftmost hanging piece of meat in the market freezer
+
+## Step 13: Defeat the Radioactive Thing
+Finish your setup before you interact with the bomb. You need the bomb code memorized, perks, and a way to survive fireballs, acid, and <ZombieTooltip zombieKey="crog" />s. In co-op, every player has to reach the bomb cart during the laser phase and every player has to enter the code.
+
+### Phase 1: Escort
+Interact with the bomb in the garage to start the teleport. The bomb moves down the beach only while you stand near it. <ZombieTooltip zombieKey="crog-zilla" /> throws fireballs the whole way, so leave the bomb to dodge and come back to keep it moving. At the shore the bomb launches into <ZombieTooltip zombieKey="crog-zilla" /> and the next phase starts.
+
+### Phase 2: Death Rays
+**Death Ray** cannons are set up on the beach, including one on the bridge. The chest only glows while <ZombieTooltip zombieKey="crog-zilla" /> is attacking. Charge a cannon at that glow. The hitbox is tight, so start the charge slightly above the glow as the attack animation begins. About **3 to 4** hits end the phase.
+
+### Phase 3: Acid
+Interact with the bomb cart on the shore. <ZombieTooltip zombieKey="crog-zilla" /> covers the beach in acid and spits waves of <ZombieTooltip zombieKey="crog" /> pods. Fall back under the bridge and survive until the beach is covered and the last pod wave has spawned. The next phase starts on its own.
+
+### Phase 4: Lasers and the Bomb Code
+This phase is timed. A laser field fills the beach. Get through it and interact with the bomb cart. In co-op, every player has to interact. You are teleported inside <ZombieTooltip zombieKey="crog-zilla" />.
+
+The keypad works like the punch-card machine. Dots left to right are **0** through **9**, the light moves faster, and a liquid effect covers the screen. Enter the four-digit bomb code from the market safe. In co-op, every player has to enter it correctly.
+
+If anyone misses the code, you are spit back out and you have to survive the acid again. That second acid wait is shorter. Enter the code again from the cart.
+
+When every player enters the code, the ending cutscene plays and **Andre** takes the **Soul Key** piece from <ZombieTooltip zombieKey="crog-zilla" />. That completes the quest.
+
+Congratulations! You have beaten the **Attack of the Radioactive Thing** main quest: **Soul-Less**.
+
+## Video Guides
+
+### Guide by CodeNamePizza
+<YoutubeEmbed videoLink="https://www.youtube.com/watch?v=xMSKE2JF180" />
