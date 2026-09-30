@@ -514,8 +514,25 @@ const MAPS = uniqueMap([
 		description: "...She's the cat with the kung fu claws!",
 		image: "/maps/shaolin-shuffle.webp",
 		game: "infinite-warfare",
-		state: Option.some("Coming Soon"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/pest-control"),
+		difficulty: Option.some("Hard"),
+		estimatedTimeMins: Option.some({
+			min: 45,
+			max: 105,
+			reason:
+				"Time varies significantly based on if you have Director's Cut, symbol and cipher luck, and knowledge of the steps.",
+		}),
+	}),
+	makeMap("attack-of-the-radioactive-thing", {
+		title: "Attack of the Radioactive Thing",
+		releaseDate: "2017-07-06",
+		description:
+			"A 1950s creature feature at Sonova Beach, where nuclear testing left the shore to the Crogs and something enormous in the bay.",
+		image: "/maps/attack-of-the-radioactive-thing.webp",
+		game: "infinite-warfare",
+		state: Option.some("Coming Soon"),
+		mainQuest: Option.some("content/main-quests/soul-less"),
 		difficulty: Option.none(),
 		estimatedTimeMins: Option.none(),
 	}),
