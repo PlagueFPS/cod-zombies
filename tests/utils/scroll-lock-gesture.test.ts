@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 
-import { describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test } from "vitest"
 import {
 	consumeHorizontalDelta,
 	consumeVerticalDelta,
@@ -132,6 +132,13 @@ describe("findOverflowScrollParent", () => {
 })
 
 describe("resolveGestureScrollParent", () => {
+	const attached: HTMLElement[] = []
+
+	afterEach(() => {
+		for (const el of attached) el.remove()
+		attached.length = 0
+	})
+
 	test("locks gestures inside the root when there is no inner scroll parent", () => {
 		const root = document.createElement("div")
 		const target = document.createElement("p")
@@ -155,6 +162,7 @@ describe("resolveGestureScrollParent", () => {
 		const external = document.createElement("div")
 		const target = document.createElement("span")
 		document.body.appendChild(external)
+		attached.push(external)
 		external.appendChild(target)
 
 		const getAxes: ScrollAxesFn = el =>
@@ -162,6 +170,5 @@ describe("resolveGestureScrollParent", () => {
 
 		const resolved = resolveGestureScrollParent(target, root, new Set(), getAxes)
 		expect(resolved).toEqual({ kind: "scroll", el: external })
-		external.remove()
 	})
 })

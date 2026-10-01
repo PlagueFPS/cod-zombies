@@ -221,7 +221,7 @@ describe("sortZombieSpeeds", () => {
 
 describe("copyTextToClipboard", () => {
 	afterEach(() => {
-		vi.restoreAllMocks()
+		vi.unstubAllGlobals()
 	})
 
 	test("returns true when clipboard.writeText succeeds", async () => {

@@ -1,7 +1,7 @@
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
 import { Effect, FileSystem, Layer, MutableHashSet } from "effect"
-import { describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vitest"
 import {
 	DuplicateFilenameError,
 	getAllContentFiles,
@@ -22,6 +22,10 @@ describe("populateFilePaths", () => {
 })
 
 describe("parseGitBatchOutput", () => {
+	afterEach(() => {
+		vi.useRealTimers()
+	})
+
 	test("parses timestamp and A line and assigns metadata", async () => {
 		const all = MutableHashSet.empty<string>()
 		MutableHashSet.add(all, "/repo/src/content/maps/foo.mdx")
@@ -60,7 +64,6 @@ R100\tsrc/content/maps/old.mdx\tsrc/content/maps/new.mdx
 		const exit = await Effect.runPromiseExit(program)
 		const result = expectExitSuccess(exit)
 		expect(result["maps/orphan.mdx"]?.lastModified).toBe(fixed.getTime())
-		vi.useRealTimers()
 	})
 
 	test("skips R lines with fewer than three tab parts; missing files use current date", async () => {
@@ -78,7 +81,6 @@ R100\tshort
 		const exit = await Effect.runPromiseExit(program)
 		const result = expectExitSuccess(exit)
 		expect(result["x.mdx"]?.lastModified).toBe(fixed.getTime())
-		vi.useRealTimers()
 	})
 })
 

@@ -1,6 +1,6 @@
 import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
-import { describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vitest"
 import {
 	compareSideQuestDescending,
 	getAdjacentSideQuests,
@@ -103,13 +103,16 @@ describe("side quest New badge vs published date (fixtures)", () => {
 })
 
 describe("getSideQuestByKey applies publishedDate New window", () => {
+	afterEach(() => {
+		vi.useRealTimers()
+	})
+
 	test("stored None stays None even when publishedDate is inside the 14-day window", () => {
 		vi.useFakeTimers()
 		vi.setSystemTime(Date.parse("2026-09-01T12:00:00.000Z"))
 		const quest = getSideQuestByKey("skull-mask").pipe(Option.getOrThrow)
 		expect(quest.publishedDate).toBe("2026-08-26")
 		expect(Option.getOrNull(quest.state)).toBeNull()
-		vi.useRealTimers()
 	})
 })
 
