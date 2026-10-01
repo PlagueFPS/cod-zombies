@@ -48,11 +48,6 @@ export default defineConfig({
 		"anti-slop-effect/no-service-constructor-imports": "error",
 		"anti-slop-effect/prefer-effect-match": "error",
 	},
-	overrides: [
-		{
-			files: ["**/*.test.ts", "**/*.test.tsx"],
-		},
-	],
 	settings: {
 		react: {
 			version: "19.3",
