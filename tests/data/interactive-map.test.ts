@@ -1,6 +1,6 @@
 import type { ContentState } from "@/types/data"
 import { Effect, Option } from "effect"
-import { describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vitest"
 import {
 	getInteractiveMapByKey,
 	getInteractiveMapConfig,
@@ -94,13 +94,16 @@ describe("interactive map New badge vs published date (fixtures)", () => {
 })
 
 describe("getInteractiveMapByKey applies publishedDate New window", () => {
+	afterEach(() => {
+		vi.useRealTimers()
+	})
+
 	test("stored None stays None even when publishedDate is inside the 14-day window", () => {
 		vi.useFakeTimers()
 		vi.setSystemTime(Date.parse("2026-09-08T12:00:00.000Z"))
 		const map = getInteractiveMapByKey("rex-infernus").pipe(Option.getOrThrow)
 		expect(map.publishedDate).toBe("2026-08-30")
 		expect(Option.getOrNull(map.state)).toBeNull()
-		vi.useRealTimers()
 	})
 })
 

@@ -1,5 +1,5 @@
 import { Option } from "effect"
-import { describe, expect, it, vi } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import { withStartRequest } from "@/tests/with-start-request"
 import { DATE_OPTIONS, SITE_ORIGIN } from "@/utils/constants"
 import { getLastModified, getOpengraphImageUrl } from "@/utils/functions.server"
@@ -18,6 +18,10 @@ function expectOpengraphPath(href: string | undefined, kind: string, id: string)
 }
 
 describe("getLastModified", () => {
+	afterEach(() => {
+		vi.useRealTimers()
+	})
+
 	it("should return current date for non-existing file", () => {
 		const mockDate = new Date("2025-03-15T10:00:00.000Z")
 		vi.useFakeTimers()
@@ -27,7 +31,6 @@ describe("getLastModified", () => {
 			lastModified: mockDate.getTime(),
 			lastModifiedFormatted: mockDate.toLocaleDateString(undefined, DATE_OPTIONS),
 		})
-		vi.useRealTimers()
 	})
 })
 

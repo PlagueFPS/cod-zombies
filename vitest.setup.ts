@@ -1,3 +1,5 @@
+import { afterEach, vi } from "vitest"
+
 declare global {
 	// React: opt-in for `act()` in custom test runners (Vitest + happy-dom/jsdom).
 	// oxlint-disable-next-line no-var
@@ -12,4 +14,12 @@ Object.assign(process.env, {
 	RESEND_AUDIENCE_ID: "test-audience",
 	LINEAR_API_KEY: "test-linear-api-key",
 	LINEAR_TEAM_ID: "test-linear-team-id",
+})
+
+// `isolate: false` reuses the worker, so timers, globals, and the DOM survive the file.
+afterEach(() => {
+	vi.useRealTimers()
+	vi.unstubAllGlobals()
+
+	if (typeof document !== "undefined") document.body.replaceChildren()
 })

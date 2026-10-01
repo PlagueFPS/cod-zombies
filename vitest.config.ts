@@ -5,6 +5,7 @@ export default defineConfig({
 	test: {
 		exclude: ["tests/e2e/**"],
 		globals: true,
+		isolate: false,
 		include: ["tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
 		setupFiles: ["./vitest.setup.ts"],
 	},
