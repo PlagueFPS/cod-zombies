@@ -19,6 +19,7 @@ const policyDateOptions: Intl.DateTimeFormatOptions = {
 }
 
 function PrivacyPolicyUpdateEmail({ unsubscribeUrl, serverUrl, bullets }: IPolicyUpdateEmail) {
+	// oxlint-disable-next-line react/purity
 	const today = new Date()
 	const oneMonthFromNow = new Date(today)
 	oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1)

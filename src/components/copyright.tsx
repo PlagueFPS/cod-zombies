@@ -1,5 +1,5 @@
 import { cn } from "cn"
-import { type DetailedHTMLProps, type HTMLAttributes } from "react"
+import { useState, type DetailedHTMLProps, type HTMLAttributes } from "react"
 
 interface CopyrightProps extends DetailedHTMLProps<
 	HTMLAttributes<HTMLParagraphElement>,
@@ -9,7 +9,7 @@ interface CopyrightProps extends DetailedHTMLProps<
 }
 
 export default function Copyright({ className }: CopyrightProps) {
-	const year = new Date().getFullYear()
+	const [year] = useState(() => new Date().getFullYear())
 
 	return (
 		<div

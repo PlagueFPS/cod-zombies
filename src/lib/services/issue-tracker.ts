@@ -6,7 +6,7 @@ import {
 	HttpClient,
 	HttpClientRequest,
 	HttpClientResponse,
-} from "effect/unstable/http"
+} from "effect/http"
 
 /** Linear "User Feedback" label UUID. */
 const USER_FEEDBACK_LABEL_ID = "c5154d91-ffed-4d2d-afe8-1e4777a3a908"

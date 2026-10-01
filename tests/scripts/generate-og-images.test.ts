@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { Effect, Exit } from "effect"
-import { Command } from "effect/unstable/cli"
+import { Command } from "effect/cli"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import {

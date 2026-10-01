@@ -32,6 +32,7 @@ export function EmailShell({
 	children,
 	unsubscribeUrl,
 }: EmailShellProps) {
+	// oxlint-disable-next-line react/purity
 	const year = new Date().getFullYear()
 
 	return (
