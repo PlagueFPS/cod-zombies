@@ -1,6 +1,6 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { Effect, Exit, Predicate, Schema } from "effect"
-import { FetchHttpClient } from "effect/unstable/http"
+import { FetchHttpClient } from "effect/http"
 import { describe, expect, test } from "vitest"
 import { IssueTracker } from "@/lib/services/issue-tracker"
 import {

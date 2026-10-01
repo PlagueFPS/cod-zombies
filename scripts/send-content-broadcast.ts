@@ -20,7 +20,8 @@ import type { RelicType } from "@/data/relics"
 import type { ReactElement } from "react"
 import { BunServices, BunRuntime } from "@effect/platform-bun"
 import { render } from "@react-email/components"
-import { Config, ConfigProvider, Effect, Encoding, Layer, Schema, Crypto, Redacted } from "effect"
+import { Config, ConfigProvider, Effect, Layer, Schema, Crypto, Redacted } from "effect"
+import { Hex } from "effect/encoding"
 import PrivacyPolicyUpdateEmail, {
 	policyUpdatePreview,
 	policyUpdateSubject,
@@ -339,7 +340,7 @@ const contentIdempotencyKey = Effect.fn("contentIdempotencyKey")(function* (
 			),
 		)
 
-	const fingerprint = Encoding.encodeHex(digest).slice(0, 32)
+	const fingerprint = Hex.encode(digest).slice(0, 32)
 
 	return `content-broadcast/${broadcast.kind}/${fingerprint}`
 })

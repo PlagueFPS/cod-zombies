@@ -1,6 +1,6 @@
 import { BunServices, BunRuntime } from "@effect/platform-bun"
 import { Clock, Duration, Effect, FileSystem, Option, Path, Schema, Ref, Match } from "effect"
-import { Command, Flag, Prompt } from "effect/unstable/cli"
+import { Command, Flag, Prompt } from "effect/cli"
 import sharp, { type Sharp } from "sharp"
 import { generateImagePaths } from "@/scripts/generate-image-paths"
 import { walkImageFiles } from "@/scripts/image-file-walk"

@@ -1,4 +1,4 @@
 [install]
-# Only install package versions published at least 12 hours ago
-minimumReleaseAge = 43000
+# Only install package versions published at least 8 hours ago
+minimumReleaseAge = 28800
 exact = true
