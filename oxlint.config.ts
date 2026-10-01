@@ -1,15 +1,16 @@
-{
-	"$schema": "./node_modules/@effect/tsgo/oxlint-schema.json",
-	"plugins": ["typescript", "unicorn", "oxc", "react", "react-perf", "vitest"],
-	"jsPlugins": [
-		{ "name": "anti-slop", "specifier": "./tools/oxlint/anti-slop/index.ts" },
+import { defineConfig } from "oxlint"
+
+export default defineConfig({
+	plugins: ["typescript", "unicorn", "oxc", "react", "react-perf", "vitest"],
+	jsPlugins: [
+		{ name: "anti-slop", specifier: "./tools/oxlint/anti-slop/index.ts" },
 		{
-			"name": "anti-slop-effect",
-			"specifier": "./tools/oxlint/anti-slop/effect/index.ts"
-		}
+			name: "anti-slop-effect",
+			specifier: "./tools/oxlint/anti-slop/effect/index.ts",
+		},
 	],
-	"rules": {
-		"react/self-closing-comp": ["warn", { "component": true, "html": true }],
+	rules: {
+		"react/self-closing-comp": ["warn", { component: true, html: true }],
 		"react/jsx-key": "warn",
 		"react/exhaustive-deps": "warn",
 		"react/no-children-prop": "error",
@@ -17,10 +18,10 @@
 		"no-unused-vars": [
 			"warn",
 			{
-				"argsIgnorePattern": "^_",
-				"varsIgnorePattern": "^_",
-				"ignoreRestSiblings": true
-			}
+				argsIgnorePattern: "^_",
+				varsIgnorePattern: "^_",
+				ignoreRestSiblings: true,
+			},
 		],
 		"oxc/no-accumulating-spread": "error",
 		"anti-slop/no-array-filter-map": "error",
@@ -45,28 +46,25 @@
 		"anti-slop-effect/no-manual-tag-comparison": "error",
 		"anti-slop-effect/no-manual-tagged-construction": "error",
 		"anti-slop-effect/no-service-constructor-imports": "error",
-		"anti-slop-effect/prefer-effect-match": "error"
+		"anti-slop-effect/prefer-effect-match": "error",
 	},
-	"overrides": [
+	overrides: [
 		{
-			"files": ["**/*.test.ts", "**/*.test.tsx"],
-			"rules": {
-				"jest/no-conditional-expect": "off"
-			}
-		}
+			files: ["**/*.test.ts", "**/*.test.tsx"],
+		},
 	],
-	"settings": {
-		"react": {
-			"version": "19.2"
-		}
+	settings: {
+		react: {
+			version: "19.3",
+		},
 	},
-	"options": {
-		"typeAware": true
+	options: {
+		typeAware: true,
 	},
-	"env": {
-		"builtin": true
+	env: {
+		builtin: true,
 	},
-	"ignorePatterns": [
+	ignorePatterns: [
 		".repos",
 		"**/last-modified.json",
 		"node_modules",
@@ -84,7 +82,6 @@
 		".opencode/**",
 		".pi/**",
 		".roo/**",
-		".windsurf/**",
-		"tools/oxlint/anti-slop/**"
-	]
-}
+		"tools/oxlint/anti-slop/**",
+	],
+})
