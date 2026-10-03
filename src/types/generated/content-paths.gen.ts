@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-02T00:36:39.012Z
- * generated in: 20ms
+ * generated at: 2026-10-03T01:04:57.268Z
+ * generated in: 19ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -391,6 +391,7 @@ export type ZombiesPaths =
 	| "content/zombies/krasny-soldat"
 	| "content/zombies/legion"
 	| "content/zombies/lightning-catalyst"
+	| "content/zombies/mammoth"
 	| "content/zombies/mangler"
 	| "content/zombies/marauder"
 	| "content/zombies/margwa"
@@ -414,14 +415,17 @@ export type ZombiesPaths =
 	| "content/zombies/pegasus"
 	| "content/zombies/pentagon-thief"
 	| "content/zombies/perseus"
+	| "content/zombies/phantom"
 	| "content/zombies/plaguehound"
 	| "content/zombies/poison-catalyst"
 	| "content/zombies/rad-hound"
 	| "content/zombies/rat-king"
 	| "content/zombies/ravager"
+	| "content/zombies/rhino"
 	| "content/zombies/sam"
 	| "content/zombies/sasquatch"
 	| "content/zombies/scorched-zombie"
+	| "content/zombies/scout"
 	| "content/zombies/sentinel-artifact"
 	| "content/zombies/shadow-soul"
 	| "content/zombies/shadow-werewolf"

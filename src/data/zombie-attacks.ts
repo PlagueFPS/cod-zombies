@@ -782,4 +782,22 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description: "Launches eggs that hatch into Crogs where they land.",
 	}),
+	makeZombieAttack("leaping-strike", {
+		title: "Leaping Strike",
+		range: "Medium",
+		description:
+			"Leaps at the player from a distance and hits for the same damage as a normal zombie.",
+	}),
+	makeZombieAttack("phantom-strike", {
+		title: "Phantom Strike",
+		range: "Short",
+		description:
+			"Closes in at high speed and keeps striking. Three hits down a player who has Tuff 'Nuff.",
+	}),
+	makeZombieAttack("blue-flame", {
+		title: "Blue Flame",
+		range: "Short",
+		description:
+			"Leaves blue fire on the ground when damaged. The fire stays until the Mammoth dies and deals heavy damage over a short time.",
+	}),
 ])
