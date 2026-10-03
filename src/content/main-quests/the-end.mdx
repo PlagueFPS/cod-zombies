@@ -1,1 +1,166 @@
-TBD
+import PerkTooltip from "@/components/perk-tooltip"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import FateAndFortuneCardTooltip from "@/components/fate-and-fortune-card-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+
+## The End?
+The main quest for **The Beast from Beyond** is called **The End?**. During this quest, the Actors crew must recover the fifth and final piece of the **Soul Key** from **Willard Wyler's** ice-planet facility by restoring **N31L**, hacking him, and surviving the Cryptid swarm.
+
+## Requirements
+This main quest can be completed solo or in co-op. You need the **Entangler** for several steps, and you need the bridge to **Pack-a-Punch** repaired before the escort. Pack at least one bullet weapon before the boss. The <ZombieTooltip zombieKey="mammoth" />s at the end are bullet sponges, so a high-damage packed gun matters more than it does in the setup.
+
+> <PerkTooltip perkKey="tuff-nuff" />, <PerkTooltip perkKey="quickies" />, <PerkTooltip perkKey="bang-bangs" />, <PerkTooltip perkKey="racin-stripes" />, and
+> <PerkTooltip perkKey="up-n-atoms" /> are the perks worth having before the boss. <PerkTooltip perkKey="bombstoppers" /> is worth buying if you are using explosives. A <ZombieTooltip zombieKey="rhino" /> charge and a <ZombieTooltip zombieKey="mammoth" /> charge still red-screen you with <PerkTooltip perkKey="tuff-nuff" />, and a <ZombieTooltip zombieKey="phantom" /> downs you in three hits.
+
+## Recommended Fate & Fortune Cards
+
+<RichTable
+  headerCells={["Fate", "Fortune"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="five-second-muscle" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="perk-insured" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="best-for-last" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="raining-bullets" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="nade-party" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="explosive-touch" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="scoped-dollars" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="all-the-ammos" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> These **Fate and Fortune Cards** are just a recommendation and not required to complete this main quest, only to make things quicker and/or easier throughout the quest.
+> <FateAndFortuneCardTooltip cardKey="perk-insured" /> keeps your perks if you are revived before you bleed out. <FateAndFortuneCardTooltip cardKey="raining-bullets" /> and <FateAndFortuneCardTooltip cardKey="all-the-ammos" /> matter in the <ZombieTooltip zombieKey="mammoth" /> phase, which spends a lot of bullets.
+
+## Step 1: Install N31L
+There is no power switch. Until **N31L's** head is in the Staging terminal, <ZombieTooltip zombieKey="scout" />s attack instead of zombies.
+
+In the **Ops Center**, drop into the hole in the middle of the room. Land on the green ledge. The rebar at the bottom of the hole kills you. Follow the cave past <PerkTooltip perkKey="tuff-nuff" /> onto the catwalk above **Water Treatment**. **N31L's** head is on the floor at the window at the end of that catwalk.
+
+Bring the head back to **Staging** and put it in the terminal by the door. Power comes back, zombies replace the cryptid rounds on the next round, and the **Cargo Bay** portal to the theater can be opened.
+
+## Step 2: Repair the Pack-a-Punch Bridge
+The projector room is across a broken bridge in the **Exterior**. You need all three scrap pieces, and power has to be on. Picking up a piece spawns three <ZombieTooltip zombieKey="scout" />s.
+
+- **Medical Bay**, to the right of <PerkTooltip perkKey="blue-bolts" />
+- **Cargo Bay**, on the lowest level, left of the stairs, between the stairs and a container
+- **Theater** street, on the burning car to the right of the portal
+
+The theater piece needs the **Cargo Bay** portal. On the upper catwalk, press the button on the wall. A turret blows open the portal on the far side of the room. That button only works after **N31L** is installed. Cross the portal, go out to the street, and take the piece off the car.
+
+Place all three pieces on the broken bridge, then use the portal. You get about **30 seconds** in the projector room before you are sent back, and the portal then stays down for about a minute. The first time you are sent back, a <ZombieTooltip zombieKey="phantom" /> spawns, or three <ZombieTooltip zombieKey="scout" />s. If it is the <ZombieTooltip zombieKey="phantom" />, kill it in **Staging**, next to **N31L**. It drops a floppy disk where it dies, and that disk is easy to lose if it falls through the floor.
+
+## Step 3: Get the Entangler
+The **Entangler** is the weapon from the first two **Skull Breaker** skulls. Later skulls are not part of this quest. You only need these two.
+
+### First Skull
+One power box spawns. Blow it open with an explosive, then shoot the skull inside.
+
+- **Water Treatment**, above the stairs to the **Medical Bay**
+- **Ops Center**, above <PerkTooltip perkKey="bombstoppers" />
+- **Cargo Bay**, above the stairs beside the **P-LAW** wall buy
+
+### Second Skull
+Four red **X** marks are on the **Cargo Bay** floor. Every player stands on a different **X**.
+
+- Upper catwalk, near the **P-LAW** wall buy
+- Main floor, at the bottom of the **P-LAW** stairs
+- Main floor, under the catwalk that leads to the theater portal
+- Main floor, near the **X-Eon** wall buy
+
+Each **X** turns into a green circle. Stay inside it. Stepping out fails the step until the next round. Zombies spawn in the **Cargo Bay** while a skull rises in the center. When the skull finishes rising, it teleports somewhere in the room. Jump through it before it disappears. The **Entangler** then spawns in the center of the room. Pick it up. It has its own weapon slot, and it is a grabber, not a gun you should rely on for kills.
+
+## Step 4: Collect the Floppy Disks
+**N31L** needs four floppy disks. Each one has a symbol, you can only hold one at a time, and the symbol shows above your points while you are holding it. You can collect them in any order.
+
+### Vent Disk
+In the **Hallway** by the **Proteus**, under the stairs, a fenced red room has a floor vent that smokes. Grab the disk off the floor in front of that vent with the **Entangler** and shoot it into the vent while the smoke is up. Miss, and the disk is back on the floor. It comes out of one of these vents and stays there:
+
+- **Staging**, left of the **Magic Wheel**
+- **Mess Hall**, left of the freezer, around the corner
+- **Hallway**, right of the **Cargo Bay** door
+- **Hallway**, across from that door
+- **Hallway**, right of the fence where you launched the disk
+- **Hallway**, at the top of the stairs
+- **Hallway**, by the door to the **Ops Center**
+
+### Forcefield Disk
+Grab the astronaut helmet in the **Hallway** between the **Exterior** and the **Cargo Bay**. If you miss the shot, another helmet is in that hallway or in **Staging**. Carry it to the **Medical Bay** forcefield and shoot it through the field at the lit monitor above the microscope. The field drops. The disk is on the table to the left of that monitor.
+
+### Phantom Disk
+This is the disk from the first <ZombieTooltip zombieKey="phantom" /> you kill. One spawns the first time you leave the projector room. If you never take that trip, the first <ZombieTooltip zombieKey="phantom" /> of the match is the one that spawns on round **10**. Kill it in **Staging** so the disk drops next to **N31L**. The disk stays where the body died, and it can clip under the floor.
+
+### Portal Disk
+The last disk is in the snow at the base of a pillar, to the left of the **Pack-a-Punch** portal. Pick it up once the bridge is repaired. It does not need the **Entangler**.
+
+## Step 5: Enter the Disks
+Insert the four disks into **N31L's** terminal from left to right. The order is one of the symbol sheets hidden around the facility. Read each sheet in the direction given here, skip any symbol that is not on one of your four disks, and use the first sheet whose remaining symbols match your disks.
+
+- **Staging**, up a ladder, a paper on the floor. Read it left to right.
+- Near <PerkTooltip perkKey="up-n-atoms" />. Read it top to bottom.
+- **Mess Hall**, papers on a table. Read them left to right.
+- **Ops Center** computer room that leads outside, by the red buttons. Read them top to bottom.
+
+The first matching symbol is slot one. A wrong order spawns cryptids, sends the disks back, and changes their symbols. The right order makes **N31L** slam doors and turn traps on. Those doors can kill you. Until you pick him up, you can open them for free.
+
+## Step 6: Hack N31L
+In the theater hallway behind the **Brute** cutout, grab the red button on the wall with the **Entangler**. The button is beside the lampshade at the edge of the map. If you drop it, it goes back on that wall. Shoot the button into **The Beast from Beyond** poster in the arcade, by the concessions.
+
+Go back to the **Medical Bay** forcefield room, go prone at the desk where the floppy disk was, and press the button under the desk. A panel of handles opens by the dead cryptid in the next room.
+
+Write down every handle that is horizontal. Flip only those handles. Other handles spin while you do this, so do not chase them. If any handle is still horizontal when you finish the pass, write those down and flip only that new set. Repeat until every handle is vertical. **N31L** is hacked when the happy face is up.
+
+## Step 7: Escort N31L to the Projector
+Open the route to the projector room before you pick him up. When the happy face is showing, grab his head with the **Entangler** and carry it to the computer to the right of the projector.
+
+While you are carrying him, the doors slam shut and zombies keep spawning. He opens a door he is looking at, so turn in front of a closed door until it opens. Dropping him in the wrong place nukes the zombies and can end the round. Put the head in the computer. Do not interact with him again until the boss setup is done. That interact starts the fight.
+
+## Step 8: Cryptid Boss Fight
+Interacting with **N31L** in the computer sends you to a closed cargo bay. A yellow box in one of the open crates refills the weapon you are holding. Use it between waves. A laser opens the arena as the fight goes on. When the third <ZombieTooltip zombieKey="rhino" /> container opens, that container leaves a way into the back of the room. Sentry guns, the ammo box, and a few perk machines come online as more of the room unlocks. The laser cannot shoot through cover.
+
+### Rhinos
+The laser opens four containers. Each one releases a <ZombieTooltip zombieKey="rhino" />. They have a lot of health, and the charge downs you without <PerkTooltip perkKey="tuff-nuff" />. Kill them as they come out. After the fourth, you get a short rest.
+
+### Portal Swarms
+Portals turn on in sections. The first wave is <ZombieTooltip zombieKey="scout" />s. Clearing it opens more of the room, and <ZombieTooltip zombieKey="phantom" />s join the next wave. After that, every portal turns on and <ZombieTooltip zombieKey="rhino" />s mix in. The laser starts firing at you as well as at the crates.
+
+Three monitors around the arena light up. Interact with all three quickly to shut the portals off. Take too long and a monitor turns back on with the portals next to it. Clear whatever cryptids are left, then use the ammo box.
+
+### Countdown
+The laser keeps firing until it opens a crate with another terminal. That terminal counts down from **99**. Survive the <ZombieTooltip zombieKey="scout" />s, <ZombieTooltip zombieKey="phantom" />s, and <ZombieTooltip zombieKey="rhino" />s until the count finishes. The screen garbles and the terminal sparks. Interact with it to wipe the cryptids in the room.
+
+### Mammoths
+The lights drop, and the laser opens one more crate. Two <ZombieTooltip zombieKey="mammoth" />s come out. They charge like <ZombieTooltip zombieKey="rhino" />s, and damaging them leaves blue fire on the ground. That fire stays until the <ZombieTooltip zombieKey="mammoth" /> dies and will down you if you stand in it, so do not dump shots in a doorway you still need. A few <ZombieTooltip zombieKey="scout" />s still come out of the portals during this phase. Kill both <ZombieTooltip zombieKey="mammoth" />s.
+
+The ending cutscene plays, and **Poindexter** takes the last **Soul Key** piece off the dead <ZombieTooltip zombieKey="mammoth" />. You are sent back to the theater. That completes the quest.
+
+Congratulations! You have beaten **The Beast from Beyond** main quest: **The End?**.
+
+> **Mephistopheles** is a separate fight. He only shows up if this quest is finished with **Director's Cut** active and the **Talisman Mask** quest already done. This guide stops at the **Soul Key**.
+
+## Credits
+Steps were checked against the [Call of Duty Wiki pages for the map and The End?](https://callofduty.fandom.com/wiki/The_End%3F) and [ZombieSlayaMr's Steam guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2998590075).

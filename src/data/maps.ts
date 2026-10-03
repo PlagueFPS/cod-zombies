@@ -548,10 +548,15 @@ const MAPS = uniqueMap([
 			"The last of Willard Wyler's films, set in a desolate military station on a distant ice planet, where the Actors crew must claim the final piece of the Soul Key.",
 		image: "/maps/the-beast-from-beyond.webp",
 		game: "infinite-warfare",
-		state: Option.some("Coming Soon"),
+		state: Option.some("New"),
 		mainQuest: Option.some("content/main-quests/the-end"),
-		difficulty: Option.none(),
-		estimatedTimeMins: Option.none(),
+		difficulty: Option.some("Very Hard"),
+		estimatedTimeMins: Option.some({
+			min: 45,
+			max: 120,
+			reason:
+				"Time varies significantly based on if you have Director's Cut, the Cryptid boss fight, and knowledge of the steps.",
+		}),
 	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
