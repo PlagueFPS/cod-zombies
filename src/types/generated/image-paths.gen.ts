@@ -207,6 +207,7 @@ export type FateAndFortuneCardsImagePath =
 	| "/fate-and-fortune-cards/perk-insured.webp"
 	| "/fate-and-fortune-cards/raining-bullets.webp"
 	| "/fate-and-fortune-cards/scoped-dollars.webp"
+	| "/fate-and-fortune-cards/shop-class.webp"
 
 /** Union of images in `/field-upgrades` */
 

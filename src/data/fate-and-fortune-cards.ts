@@ -102,6 +102,11 @@ const FATE_AND_FORTUNE_CARDS = uniqueMap([
 		description: "Regenerate health faster. Duration: 15 seconds.",
 		image: "/fate-and-fortune-cards/mana-up.webp",
 	}),
+	makeFateCard("shop-class", {
+		title: "Shop Class",
+		description: "Spawn a Carpenter power up nearby. Duration: Until used.",
+		image: "/fate-and-fortune-cards/shop-class.webp",
+	}),
 	makeFortuneCard("perk-insured", {
 		title: "Perk Insured",
 		description: "Keep your perks when you are revived before bleeding out. Duration: 1 revive.",
