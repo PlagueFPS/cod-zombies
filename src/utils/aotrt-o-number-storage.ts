@@ -10,35 +10,27 @@ const CHANGE_EVENT = "aotrt-o-number-change"
 export function readAotrtONumber(): ONumber | null {
 	if (typeof window === "undefined") return null
 
-	try {
-		const raw = window.sessionStorage.getItem(AOTRT_O_NUMBER_STORAGE_KEY)
+	const raw = window.sessionStorage.getItem(AOTRT_O_NUMBER_STORAGE_KEY)
 
-		if (raw === null) return null
+	if (raw === null) return null
 
-		return decodeAotrtONumberString(raw).pipe(
-			Exit.match({
-				onSuccess: value => value,
-				onFailure: () => null,
-			}),
-		)
-	} catch {
-		return null
-	}
+	return decodeAotrtONumberString(raw).pipe(
+		Exit.match({
+			onSuccess: value => value,
+			onFailure: () => null,
+		}),
+	)
 }
 
 /** Save the O number and notify other tools on this page. */
 export function writeAotrtONumber(oNumber: ONumber) {
 	if (typeof window === "undefined") return
 
-	try {
-		const current = readAotrtONumber()
-		window.sessionStorage.setItem(AOTRT_O_NUMBER_STORAGE_KEY, String(oNumber))
+	const current = readAotrtONumber()
+	window.sessionStorage.setItem(AOTRT_O_NUMBER_STORAGE_KEY, String(oNumber))
 
-		if (current !== oNumber) {
-			window.dispatchEvent(new Event(CHANGE_EVENT))
-		}
-	} catch {
-		return
+	if (current !== oNumber) {
+		window.dispatchEvent(new Event(CHANGE_EVENT))
 	}
 }
 
