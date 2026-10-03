@@ -196,12 +196,18 @@ export type ElixirsImagePath =
 export type FateAndFortuneCardsImagePath =
 	| "/fate-and-fortune-cards/all-the-ammos.webp"
 	| "/fate-and-fortune-cards/best-for-last.webp"
+	| "/fate-and-fortune-cards/coupon-clipper.webp"
+	| "/fate-and-fortune-cards/evade.webp"
 	| "/fate-and-fortune-cards/explosive-touch.webp"
 	| "/fate-and-fortune-cards/five-second-muscle.webp"
+	| "/fate-and-fortune-cards/head-reloaded.webp"
+	| "/fate-and-fortune-cards/hide-n-seek.webp"
+	| "/fate-and-fortune-cards/mana-up.webp"
 	| "/fate-and-fortune-cards/nade-party.webp"
 	| "/fate-and-fortune-cards/perk-insured.webp"
 	| "/fate-and-fortune-cards/raining-bullets.webp"
 	| "/fate-and-fortune-cards/scoped-dollars.webp"
+	| "/fate-and-fortune-cards/shop-class.webp"
 
 /** Union of images in `/field-upgrades` */
 
@@ -384,6 +390,7 @@ export type MapsImagePath =
 	| "/maps/shi-no-numa.webp"
 	| "/maps/tag-der-toten.webp"
 	| "/maps/terminus.webp"
+	| "/maps/the-beast-from-beyond.webp"
 	| "/maps/the-giant.webp"
 	| "/maps/the-tomb.webp"
 	| "/maps/totenreich.webp"
@@ -397,6 +404,7 @@ export type MapsImagePath =
 
 export type PerksImagePath =
 	| "/perks/bang-bangs.webp"
+	| "/perks/blue-bolts.webp"
 	| "/perks/bombstoppers.webp"
 	| "/perks/deadshot-daiquiri-cold-war.webp"
 	| "/perks/deadshot-daiquiri.webp"
@@ -526,6 +534,9 @@ export type ZombiesImagePath =
 	| "/zombies/brutus.webp"
 	| "/zombies/caltheris.webp"
 	| "/zombies/clown-zombie.webp"
+	| "/zombies/crog-brute.webp"
+	| "/zombies/crog-zilla.webp"
+	| "/zombies/crog.webp"
 	| "/zombies/crusader-zombie.webp"
 	| "/zombies/deathspinner.webp"
 	| "/zombies/denizen.webp"

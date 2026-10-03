@@ -1,1 +1,488 @@
-TBD
+import AotrtNumberTool from "@/components/aotrt-number-tool"
+import AotrtChemicalTool from "@/components/aotrt-chemical-tool"
+import YoutubeEmbed from "@/components/youtube-embed"
+import PerkTooltip from "@/components/perk-tooltip"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import FateAndFortuneCardTooltip from "@/components/fate-and-fortune-card-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-image"
+import CustomCarousel from "@/components/custom-carousel"
+
+## Soul-Less
+The main quest for **Attack of the Radioactive Thing** is called **Soul-Less**. During this quest, the Actors crew must recover the fourth piece of the
+**Soul Key** from **Willard Wyler's** 1950s **Sonova Beach** by building a nuclear bomb, loading it with the right compound, and destroying
+<ZombieTooltip zombieKey="crog-zilla" />.
+
+## Requirements
+This main quest can be completed solo or in co-op.
+
+> <PerkTooltip perkKey="tuff-nuff" />, <PerkTooltip perkKey="quickies" />, <PerkTooltip perkKey="bang-bangs" />, <PerkTooltip perkKey="racin-stripes" />, and
+> <PerkTooltip perkKey="up-n-atoms" /> are the perks worth having before the boss. <PerkTooltip perkKey="bombstoppers" /> is worth buying if you are using explosives.
+
+## Recommended Fate & Fortune Cards
+
+<RichTable
+  headerCells={["Fate", "Fortune"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="mana-up" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="coupon-clipper" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="nade-party" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="head-reloaded" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="scoped-dollars" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="hide-n-seek" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="shop-class" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="evade" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> These **Fate and Fortune Cards** are just a recommendation and not required to complete this main quest, only to make things quicker and/or easier throughout the quest.
+> <FateAndFortuneCardTooltip cardKey="coupon-clipper" /> makes the next purchase free. <FateAndFortuneCardTooltip cardKey="hide-n-seek" /> hides you from zombies, and <FateAndFortuneCardTooltip cardKey="evade" /> adds a dodge for the beach fight.
+> <FateAndFortuneCardTooltip cardKey="nade-party" /> keeps grenades coming through the boss, because the round does not advance during that fight. <FateAndFortuneCardTooltip cardKey="scoped-dollars" /> pays extra for sniper kills, and <FateAndFortuneCardTooltip cardKey="shop-class" /> drops a Carpenter for the garage-key code.
+
+## Step 1: Turn On Power
+There is one power switch, and it starts in the sand. On the beach, facing <ZombieTooltip zombieKey="crog-zilla" />, pick the switch off the arm sticking out of the ground.
+Carry it to the power station near <PerkTooltip perkKey="blue-bolts" /> and place it on the empty switch.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-power-switch.webp" caption="Power Switch" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-empty-switch.webp" caption="Empty Switch" />
+
+## Step 2: Open the Pack-a-Punch Portal
+After power is on, open the safe in the **Skull Hop** shop just outside spawn and take **Elvira's** spellbook. Bring it to her on the couch in the TV station, she gives you an
+empty green vial.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-safe.webp" caption="Spellbook in the Safe" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-elvira.webp" caption="Elvira on the couch" />
+
+The **Cleaver** is on the dead shark in the corner of the **Beachside Market**. Kill zombies with it until the vial in the tab menu is full (all black), then give it back to
+**Elvira**. Walk her to the portal outside the station, near <PerkTooltip perkKey="bang-bangs" />, and let her open it.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-cleaver.webp" caption="Cleaver on the dead shark" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-portal-opening.webp" caption="Elvira opening the Pack-a-Punch portal" />
+
+## Step 3: Build the Seismic Wave Generator
+You can find the **Blueprint** to build this device right outside the **Skull Hop** building.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-blueprint.webp" caption="Blueprint to build the Seismic Wave Generator" />
+
+Once you have the **Blueprint**, you need to find the other three parts to actually build the device. Below are the three part locations as they are set spawns every game:
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-generator-part-1.webp" caption="Near the Port-a-Potties" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-generator-part-2.webp" caption="On the bench outside the building" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-generator-part-3.webp" caption="Outside the building on one of the corners" />
+</CustomCarousel>
+
+Once you have all the parts, you can build the **Seismic Wave Generator** inside the building in the room where the **Skull Hop** machine is.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-seismic-wave-generator.webp" caption="Seismic Wave Generator" />
+
+## Step 4: Grab the Zombie Parts
+
+### First Arm
+Take the **Seismic Wave Generator** over to the arm on the beach and place it on top of the arm, raising it out of the ground for you to collect.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-arm-1.webp" caption="First Zombie Arm" />
+
+### Second Arm
+You can find the second arm in the fire located in the **RV Camp**.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-arm-2.webp" caption="Second Zombie Arm" />
+
+### First Leg
+You can find the first leg in the tree outside the **TV Station** on the path that leads to the <PerkTooltip perkKey="racin-stripes" /> perk. You'll need to throw a grenade or use an
+explosive to knock it out of the tree.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-leg-1.webp" caption="First Zombie Leg" />
+
+### Second Leg
+You can find the second leg on round **5** or higher, by meleeing a green mist zombie with the **Cleaver** you picked up earlier to chop it's leg off.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-green-mist-zombie.webp" caption="Green Mist Zombie" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-leg-2.webp" caption="Second Zombie Leg" />
+
+### Torso
+Before you can get the torso, you'll need to pick up the **Crowbar** from the maintenance closet where <PerkTooltip perkKey="bombstoppers" /> is located. Then, you'll need
+to repair the **Freeze Trap** in the **Beachside Market Freezer** by first collecting the repair box.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-repair-box.webp" caption="Repair Box Location" />
+
+Once you have the box, bring it to the trap in the **Beachside Market Freezer** and use it to repair the trap. Once repaired, activate the trap and melee the frozen body of
+meat to get the zombie torso.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-freeze-trap.webp" caption="Freeze Trap" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-torso.webp" caption="Zombie Torso" />
+
+### Head
+You can find the head by going through the **Pack-a-Punch** portal and hitting the stoplight button in the projector room. Then exit the portal to find the head on a plate inside
+the **RV** for you to collect.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-stoplight-button.webp" caption="Stoplight Button" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-head.webp" caption="Zombie Head" />
+
+## Step 5: Collect the Chemical Station & Bomb Parts
+There are three parts you'll need to collect for the **Chemical Station** and three for the **Bomb** as well. We'll place these parts down during a later step of the quest.
+
+### Chemical Station
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station-part-1.webp" caption="Beachside Market - on the couch on the left side of the building" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station-part-2.webp" caption="RV Camp - on one of the picnic tables" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station-part-3.webp" caption="RV Camp - on the table along the path between the RV camp and the beach" />
+</CustomCarousel>
+
+### Bomb
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-part-1.webp" caption="Beach - under the wooden bridge" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-part-2.webp" caption="On the road between the beach and TV Station under a red car" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-part-3.webp" caption="Between TV Station and the Racin' Stripes perk, behind a chain link fence" />
+</CustomCarousel>
+
+## Step 6: Collect the Mirrors
+There are three mirrors to collect, two of which require you to have the **Crowbar**, and the other is revealed after moving **Elvira** off the couch.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-mirror-1.webp" caption="Beachside Market - hit the mirror off the car outside" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-mirror-2.webp" caption="RV Camp - hit the mirror in the bathroom to break it" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-mirror-3.webp" caption="On the couch after Elvira gets up" />
+</CustomCarousel>
+
+> Remember to pick up the mirrors/mirror pieces after breaking it off the car and in the bathroom
+
+## Step 7: Obtain the Bomb Code
+> You must of obtained the **Crowbar** before you can complete this step.
+
+This code is used later on in the quest, and can be found inside the locked safe in the back of the **Beachside Market**. Before you can open it, you'll need to complete a short
+series of steps. The first is to grab the secondary code underneath the desk near the safe.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-desk-code.webp" caption="Desk Code" />
+
+Once you have the code, there are four pressure gauges that cycle from **0-9** around the map. You must hit these gauges with the **Crowbar** when they are over one of the numbers in
+your code. So if your code was **4712** you would set each valve to one of those numbers. Below are the locations of the valves:
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-first-valve.webp" caption="In the motel room across from the Crowbar closet, behind bombstoppers" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-second-valve.webp" caption="On the side of the building near quickies" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-third-valve.webp" caption="Behind the gas station" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-fourth-valve.webp" caption="On the far side of the power building, opposite the switch and Blue Bolts" />
+</CustomCarousel>
+
+Once all four gauges have been set correctly, the safe in the market will open and you can grab the bomb code inside.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-bomb-code.webp" caption="Bomb Code" />
+
+## Step 8: Obtain the Garage Key
+Take all the zombie parts to the spawn and place them on the gurney, then you need to place all three mirrors you picked up earlier around the room in any order as shown below.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-zombie-gurney.webp" caption="Zombie Gurney" />
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-first-mirror-placement.webp" caption="First Mirror Placement" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-second-mirror-placement.webp" caption="Second Mirror Placement" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-third-mirror-placement.webp" caption="Third Mirror Placement" />
+</CustomCarousel>
+
+Once everything is placed, pick up the punchcard on the table in the same room you picked up **Elvira's** spellbook. Place the punchcard in the machine across from the gurney to
+be able to use the machine.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-punchcard.webp" caption="Punchcard" />
+
+Once the punchcard is inserted, you'll need to find the right code by looking at the **Film Reels** in the back of **Elvira's** room on the bottom right of the shelf.
+You read these numbers from left-to-right, with the reel on the ground being third in the order.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-film-reels.webp" caption="Film Reels" />
+
+Once you have the right code, you need to input that code into the machine by left-clicking (PC) or interacting (Console) on the machine when the dot representing the number you
+want to input is highlighted. These dots follow the **0-9** numbering, so the first dot is **0**, and not **1**.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-machine.webp" caption="Punchcard Machine" />
+
+> Again, the first dot is **0** and the last dot is **9**. The flashing happens quickly, so watch it carefully to get the rhythm.
+
+Once you've inputed the code, interact with the machine again to reassemble the zombie body. You'll then need to input the same code again, but in reverse. Once that is done,
+interact with the machine again to send another beam, this time destroying the zombie body and dropping the **Garage Key** for you to pick up.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-garage-key.webp" caption="Garage Key" />
+
+## Step 9: Chemical Step
+Take the **Garage Key** to the garage opposite the **Beachside Market** and open it with the key. Inside will be a **Chem Board**, the **Bomb**, and the **Chem Station**, you
+can place the parts for the bomb and chem station on them now that you should have collected earlier in the quest.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-garage.webp" caption="Garage" />
+
+### Obtain the O number & TV Color
+Before you can obtain the **O** number, you need to find the **M** number. You can find the **M** number in the little room by the pool in the motel area, and make sure to
+remember what this number is.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-m-number.webp" caption="M number" />
+
+Next head to **Elvira's** room and next to her will be a **TV** with three colors and numbers/number ranges next to each color. Use the tool below to input your **M** number
+and the top number on the **TV** next to the less than symbol (61 in the screenshot). It returns your **O** number and which of those three colors to use.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-tv.webp" caption="TV" />
+<AotrtNumberTool />
+
+### Name the Compound
+Change the color of the game to the color returned by the tool above by switching it in the back of **Elvira's** room. Then while the game is in that color, look at the chemical
+board right outside of **Elvira's** room, and you only need to look at the **Acetaldehyde** compound and remember the **Top**, and **Left** numbers in the diamond. These numbers
+will be used during the [Mixing the Chemical](#mixing-the-chemical) section.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-board.webp" caption="Chemical Board" />
+
+> **Note**: in this above screenshot, the compound is being looked at in **FULL COLOR**, this means those numbers are not relevant and the screenshot is just to show the location
+> of the chemical board. You must view this board in your own color that you got from the tool in order to get accurate readings.
+
+Once you have those two numbers, switch the game back into **Full Color**, and you need to obtain a battery which will be in a backpack drop just like grenades. These do not start
+spawning until round **7** or later.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-battery.webp" caption="Battery" />
+
+Once you have the battery, you need to insert it into one of the two radios found on the map. There is a 50/50 chance you choose the right radio to get the name of the compound, so
+just insert it into one of them, and if you don't hear one of the below four quotes, get another battery and insert it into the other radio. Below are the four quotes and the radio
+locations:
+
+<RichTable
+  headerCells={["Quote", "Chemical"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        The most recent state of events have convinced me that
+      </TableCell>
+      <TableCell>
+        <strong>3,4 Di-Nitroxy-Methyl-Propane</strong>
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        I think I have the solution to defeat the radioactive thing
+      </TableCell>
+      <TableCell>
+        <strong>Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine</strong>
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        I've devised the perfect solution to our mutated giant crab problem
+      </TableCell>
+      <TableCell>
+        <strong>1,3,5 Tera-Nitra-Phenol</strong>
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        Given the circumstances...best bang for the buck
+      </TableCell>
+      <TableCell>
+        <strong>3-Methyl 2,4 Di-Nitrobenzene</strong>
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-radio-1.webp" caption="Same room as the M number by the pool" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-radio-2.webp" caption="In the corner by the Port-a-Pottie where Blue Bolts can be found" />
+
+> **Important**: it is recommended that you turn down the volume of everything but **Voice** to be able to hear the quote clearly as you must remember this compound.
+
+### Mixing the Chemical
+Now that you know which chemical compound you need to make, you need to grab all the neccessary ingredients to make it. Skip to the section for your chemical compound to find all
+the ingredient locations and a tool to help you mix the compound properly, all of this will be done in the garage chemical station.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station.webp" caption="Chemical Station" />
+
+> There are three to four steps to making every compound, each step is completed by mixing certain chemicals and inserting a number into the chemical station. Each section has a
+> tool that will tell you the number you need to insert for all steps based on your chemical board numbers you saw earlier in your **TV Color**.
+
+#### 1,3,5-Tera-Nitra-Phenol
+The first step to making this compound is to grab **Insect Repellent**, **Wheel Cleaner**, and **Motor Oil** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-insect-repellent.webp" caption="Insect Repellent - spawn middle hallway on a table" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-wheel-cleaner.webp" caption="Wheel Cleaner - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-motor-oil.webp" caption="Motor Oil - on the garage floor" />
+</CustomCarousel>
+
+<AotrtChemicalTool chemical="1,3,5-Tera-Nitra-Phenol" />
+
+After the reaction, that will craft the **Phenol** part of the compound. Next, you'll need to grab some **Drain Opener**, and place that on the chemical station, then grab
+the **Phenol** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 2** seen on the above tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-drain-opener.webp" caption="Drain Opener - in the campsite bathroom first stall" />
+
+After the reaction, that will craft the **Phenolsulfonic Acid** compound. Next, you'll need to grab some **Detergent**, and place that on the chemical station, then grab
+the **Phenolsulfonic Acid** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 3** seen on the above tool, and start the
+reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+
+After the reaction, that will complete the reaction and craft the **1,3,5-Tera-NItra-Phenol** chemical compound on the bench, and you can start preparing for the boss fight.
+
+#### 3,4-Di-Nitroxy-Methyl-Propane
+The first step to making this compound is to grab **Quarters**, and **Racing Fuel** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-quarters.webp" caption="Quarters - use a Crowbar on the payphone next to the Garage" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-racing-fuel.webp" caption="Racing Fuel - on the ground outside of the Garage" />
+
+<AotrtChemicalTool chemical="3,4-Di-Nitroxy-Methyl-Propane" />
+
+After the reaction, that will craft the **Formaldehyde** part of the compound. Next, you'll need to grab some **Vodka** and **Pennies**, place that on the chemical
+station, insert the number for **Step 2** seen on the above tool, and start the reaction..
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-vodka.webp" caption="Vodka - on a shelf in the Market right of the Fortune Teller" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-pennies.webp" caption="Pennies - use the Crowbar on the cash register in the Supermarket" />
+
+After the reaction, that will craft the **Acetaldehyde** compound. Next, you'll need to grab some **Detergent**, and place that on the chemical station, then grab
+the **Acetaldehyde** and **Formaldehyde** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 3** seen on the above
+tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+
+After the reaction, that will craft the **Aldehyde Sludge** compound. Next, you'll need to grab some **Nail Polish Remover**, and place that on the chemical station, then
+grab the **Aldehyde Sludge** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 4** seen on the above tool, and start the
+reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-nail-polish-remover.webp" caption="Nail Polish Remover - in the little room by the motel pool" />
+
+After the reaction, that will complete the reaction and craft the **3,4-Di-Nitroxy-Methyl-Propane** chemical compound on the bench, and you can start preparing for the
+boss fight.
+
+#### Octahydro-2,5-Nitro-3,4,7-Parazokine
+The first step to making this compound is to grab **Quarters**, and **Racing Fuel** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-quarters.webp" caption="Quarters - use a Crowbar on the payphone next to the Garage" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-racing-fuel.webp" caption="Racing Fuel - on the ground outside of the Garage" />
+
+<AotrtChemicalTool chemical="Octahydro-2,5-Nitro-3,4,7-Parazokine" />
+
+After the reaction, that will craft the **Formaldehyde** part of the compound. Next, you'll need to grab some **Glass Cleaner**, and place that on the chemical
+station, then grab the **Formaldehyde** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 2** seen on the above
+tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-glass-cleaner.webp" caption="Glass Cleaner - on a shelf in the store" />
+
+After the reaction, that will craft the **Hexamine** part of the compound. Next, you'll need to grab some **Vinegar**, **Plant Food**, and **Detergent**, and place that on
+the chemical station, then grab the **Hexamine** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 2** seen on the
+above tool, and start the reaction.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-vinegar.webp" caption="Vinegar - on a table in the Market" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-plant-food.webp" caption="Plant Food - near quickies outside on the ground" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+</CustomCarousel>
+
+After the reaction, that will complete the reaction and craft the **Octahydro-2,5-Nitro-3,4,7-Parazokine** chemical compound on the bench, and you can start preparing for
+the boss fight.
+
+#### 3-Methyl-2,4-Dinitro Benzene
+The first step to making this compound is to grab **Paint**, **Detergent**, and **Drain Opener** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-paint.webp" caption="Paint - left of the Racin' Stripes perk on the ground" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-drain-opener.webp" caption="Drain Opener - in the campsite bathroom first stall" />
+</CustomCarousel>
+
+<AotrtChemicalTool chemical="3-Methyl-2,4-Dinitro Benzene" />
+
+After the reaction, that will craft the **Methylbenzene** part of the compound. Next, you'll need to grab some more **Detergent** (same location), **Baking Soda**, and
+**Vinegar**, and place that on the chemical station, then grab the **Methylbenzene** you just made from the bench on the right, place it on the chemical station, insert
+the number for **Step 2** seen on the above tool, and start the reaction.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-baking-soda.webp" caption="Baking Soda - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-vinegar.webp" caption="Vinegar - on a table in the Market" />
+</CustomCarousel>
+
+After the reaction, that will craft the **Dinitro** compound. Next, you'll need to grab some **Racing Fuel**, and place that on the chemical station, then grab
+the **Dinitro** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 3** seen on the above tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-racing-fuel.webp" caption="Racing Fuel - on the ground outside of the Garage" />
+
+After the reaction, that will complete the reaction and craft the **3-Methyl-2,4-Dinitro Benzene** chemical compound on the bench, and you can start preparing for the boss
+fight.
+
+## Step 10: Defeat the Radioactive Thing
+> Before entering the boss fight, make sure you remember the **Bomb Code** that you grabbed from the safe in the **Beachside Market** since you'll need it for one of the phases and
+> you cannot access the tab menu while you are inputing this code.
+
+Once you are setup, grab the **Chemical** you made in the previous step and put it into the **Bomb** in the **Garage**. If it was the right chemical, you should be able to start
+the teleportation process once all players agree.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-teleportation-process.webp" caption="Teleportation Process" />
+
+### Phase 1: Escort
+The bomb moves down the beach only while you stand near it. <ZombieTooltip zombieKey="crog-zilla" /> throws fireballs the whole way, so leave the bomb to dodge and come back to
+keep it moving. At the shore the bomb launches into <ZombieTooltip zombieKey="crog-zilla" /> and the next phase starts immediately.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-phase-1.webp" caption="Phase 1" />
+
+### Phase 2: Death Rays
+**Death Ray** cannons are set up on the beach, including one on the bridge. The chest only glows while <ZombieTooltip zombieKey="crog-zilla" /> is attacking, and you'll need to charge a
+cannon at that glow. The hitbox is tight, so start the charge slightly above the glow as the attack animation begins. Once you've hit him 3-4 times, the phase will end.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-phase-2.webp" caption="Phase 2" />
+
+### Phase 3: Acid
+Interact with the bomb cart on the shore. <ZombieTooltip zombieKey="crog-zilla" /> covers the beach in acid and spits waves of <ZombieTooltip zombieKey="crog" /> pods. Fall back u
+nder the bridge and survive until the beach is covered and the last pod wave has spawned. The next phase will immediately start after the beach is covered.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-phase-3.webp" caption="Phase 3" />
+
+### Phase 4: Lasers and the Bomb Code
+This phase is timed. A laser field fills the beach and you must get through it and interact with the bomb cart. In co-op, every player has to interact and you'll be teleported inside
+<ZombieTooltip zombieKey="crog-zilla" />.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-phase-4-lasers.webp" caption="Laser Field" />
+
+Once inside you'll need to input the bomb code you got from the safe. The keypad works like the punch-card machine, dots left to right are **0** through **9**, the light moves
+faster, and a liquid effect covers the screen. Enter the four-digit bomb code from the market safe, and in co-op, every player has to enter it correctly.
+
+> If anyone misses the code, you are spit back out and you have to survive **Phase 3** again.
+
+When every player enters the code, the ending cutscene plays and **Andre** takes the **Soul Key** piece from <ZombieTooltip zombieKey="crog-zilla" />, completing the quest.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-ending.webp" caption="Ending Cutscene" />
+
+Congratulations! You have beaten the **Attack of the Radioactive Thing** main quest: **Soul-Less**.
+
+## Video Guides
+
+### Guide by Joltz
+<YoutubeEmbed videoLink="https://youtu.be/zemlG7hyw30?si=_b-ILF9WWU7xWP_5" />
+
+## Credits
+Some images were sourced from the following community members:
+- [Joltz](https://www.youtube.com/@JoltzYT)
+- [ZombieSlayaMr](https://steamcommunity.com/id/ZombieSlayaMr)
