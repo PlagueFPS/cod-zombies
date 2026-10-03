@@ -45,6 +45,11 @@ const AotrtONumberInputSchema = Schema.Struct({
 
 export const decodeAotrtONumberInput = Schema.decodeUnknownExit(AotrtONumberInputSchema)
 
+const ONumberFromString = Schema.FiniteFromString.pipe(Schema.decodeTo(Schema.Literals(O_NUMBERS)))
+
+/** Accept a remembered O number. Only the values the number tool can produce are valid. */
+export const decodeAotrtONumberString = Schema.decodeUnknownExit(ONumberFromString)
+
 /**
  * Divide the top TV number by M, round to the nearest whole number, then pick
  * the closest chemical O value. `m` must be a positive finite number.

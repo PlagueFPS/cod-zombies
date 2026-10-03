@@ -4,6 +4,7 @@ import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { afterEach, describe, expect, test } from "vitest"
 import AotrtNumberTool from "@/components/aotrt-number-tool"
+import { AOTRT_O_NUMBER_STORAGE_KEY } from "@/utils/aotrt-o-number-storage"
 
 describe("AotrtNumberTool", () => {
 	let container: HTMLDivElement | undefined
@@ -16,6 +17,7 @@ describe("AotrtNumberTool", () => {
 		root = undefined
 		container?.remove()
 		container = undefined
+		sessionStorage.removeItem(AOTRT_O_NUMBER_STORAGE_KEY)
 	})
 
 	test("shows the O number for the entered M and top TV number", async () => {
@@ -39,6 +41,7 @@ describe("AotrtNumberTool", () => {
 
 		expect(container.textContent).toContain("O number = 9")
 		expect(container.textContent).toContain("TV Color = Middle")
+		expect(sessionStorage.getItem(AOTRT_O_NUMBER_STORAGE_KEY)).toBe("9")
 	})
 
 	test("shows the top TV color when O times M is below the top number", async () => {

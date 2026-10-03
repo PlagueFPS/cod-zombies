@@ -1,4 +1,5 @@
 import AotrtNumberTool from "@/components/aotrt-number-tool"
+import AotrtChemicalTool from "@/components/aotrt-chemical-tool"
 import YoutubeEmbed from "@/components/youtube-embed"
 import PerkTooltip from "@/components/perk-tooltip"
 import ZombieTooltip from "@/components/zombie-tooltip"
@@ -231,7 +232,7 @@ can place the parts for the bomb and chem station on them now that you should ha
 
 <RichImage image="/content/attack-of-the-radioactive-thing/aotrt-garage.webp" caption="Garage" />
 
-### Obtain the O number
+### Obtain the O number & TV Color
 Before you can obtain the **O** number, you need to find the **M** number. You can find the **M** number in the little room by the pool in the motel area, and make sure to
 remember what this number is.
 
@@ -243,77 +244,197 @@ and the top number on the **TV** next to the less than symbol (61 in the screens
 <RichImage image="/content/attack-of-the-radioactive-thing/aotrt-tv.webp" caption="TV" />
 <AotrtNumberTool />
 
-## Step 11: Name the Compound
-From about round **8**, zombies wearing backpacks can drop a battery. There are two tape recorders, and only one of them names the compound for this game. The other is a chemistry lecture. If you power the lecture, get another battery and use the other recorder.
+### Name the Compound
+Change the color of the game to the color returned by the tool above by switching it in the back of **Elvira's** room. Then while the game is in that color, look at the chemical
+board right outside of **Elvira's** room, and you only need to look at the **Acetaldehyde** compound and remember the **Top**, and **Left** numbers in the diamond. These numbers
+will be used during the [Mixing the Chemical](#mixing-the-chemical) section.
 
-- On the couch in the motel office, the same room as the **M** number
-- In the corner of the power area near **Blue Bolts**
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-board.webp" caption="Chemical Board" />
 
-Listen until the recording names one of these five compounds:
+> **Note**: in this above screenshot, the compound is being looked at in **FULL COLOR**, this means those numbers are not relevant and the screenshot is just to show the location
+> of the chemical board. You must view this board in your own color that you got from the tool in order to get accurate readings.
 
-- **3,4 Di-Nitroxy-Methyl-Propane**
-- **1,3,5 Tera-Nitra-Phenol**
-- **3-Methyl 2,4 Di-Nitrobenzene**
-- **Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine**
-- **2,4 Propane 3,5 Tetra-Nitrite**
+Once you have those two numbers, switch the game back into **Full Color**, and you need to obtain a battery which will be in a backpack drop just like grenades. These do not start
+spawning until round **7** or later.
 
-## Step 12: Mix the Compound
-Chalkboards with chemical diamonds are in the spawn hallway, on the beach, in the RV camp, outside the TV station, behind the market, and inside the garage. Read them in the color from [Step 10](#step-10-set-the-color). The boards list more chemicals than your recipe uses. You only need the diamonds for the ingredients in the reaction you are mixing.
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-battery.webp" caption="Battery" />
 
-For each ingredient, add the top number of its diamond to the left number. Add those totals together for every ingredient in the reaction, then subtract your **Φ** number. No reaction takes more than four ingredients. Put them on the chemical station, enter the result on the keypad above it, and start the reaction.
+Once you have the battery, you need to insert it into one of the two radios found on the map. There is a 50/50 chance you choose the right radio to get the name of the compound, so
+just insert it into one of them, and if you don't hear one of the below four quotes, get another battery and insert it into the other radio. Below are the four quotes and the radio
+locations:
 
-A correct mix appears on the right side of the garage and becomes an ingredient for the next line. A wrong mix explodes and leaves you at **1 HP**. Run the lines in order. When you have the compound the radio named, add it to the bomb. That is the only compound that lets you start the teleport.
+<RichTable
+  headerCells={["Quote", "Chemical"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        The most recent state of events have convinced me that
+      </TableCell>
+      <TableCell>
+        <strong>3,4 Di-Nitroxy-Methyl-Propane</strong>
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        I think I have the solution to defeat the radioactive thing
+      </TableCell>
+      <TableCell>
+        <strong>Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine</strong>
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        I've devised the perfect solution to our mutated giant crab problem
+      </TableCell>
+      <TableCell>
+        <strong>1,3,5 Tera-Nitra-Phenol</strong>
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        Given the circumstances...best bang for the buck
+      </TableCell>
+      <TableCell>
+        <strong>3-Methyl 2,4 Di-Nitrobenzene</strong>
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
 
-> Example, with made-up diamond numbers, for **Dinitro** (**Methylbenzene** + **Baking Soda** + **Vinegar** + **Detergent**). If those top and left pairs are **4** and **6**, **3** and **3**, **2** and **9**, and **6** and **8**, the sum is **41**. If **Φ** is **4**, you enter **37**.
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-radio-1.webp" caption="Same room as the M number by the pool" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-radio-2.webp" caption="In the corner by the Port-a-Pottie where Blue Bolts can be found" />
 
-### 3,4 Di-Nitroxy-Methyl-Propane
-1. **Vodka** + **Pennies** = **Acetaldehyde**
-2. **Racing Fuel** + **Quarters** = **Formaldehyde**
-3. **Formaldehyde** + **Acetaldehyde** + **Detergent** = **Aldehyde Sludge**
-4. **Aldehyde Sludge** + **Nail Polish Remover** = **3,4 Di-Nitroxy-Methyl-Propane**
+> **Important**: it is recommended that you turn down the volume of everything but **Voice** to be able to hear the quote clearly as you must remember this compound.
 
-### 1,3,5 Tera-Nitra-Phenol
-1. **Motor Oil** + **Insect Repellent** + **Wheel Cleaner** = **Phenol**
-2. **Phenol** + **Drain Opener** = **Phenolsulfonic Acid**
-3. **Phenolsulfonic Acid** + **Detergent** = **1,3,5 Tera-Nitra-Phenol**
+### Mixing the Chemical
+Now that you know which chemical compound you need to make, you need to grab all the neccessary ingredients to make it. Skip to the section for your chemical compound to find all
+the ingredient locations and a tool to help you mix the compound properly, all of this will be done in the garage chemical station.
 
-### 3-Methyl 2,4 Di-Nitrobenzene
-1. **Drain Opener** + **Paint** + **Detergent** = **Methylbenzene**
-2. **Methylbenzene** + **Baking Soda** + **Vinegar** + **Detergent** = **Dinitro**
-3. **Dinitro** + **Racing Fuel** = **3-Methyl 2,4 Di-Nitrobenzene**
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-chemical-station.webp" caption="Chemical Station" />
 
-### Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine
-1. **Racing Fuel** + **Quarters** = **Formaldehyde**
-2. **Formaldehyde** + **Glass Cleaner** = **Hexamine**
-3. **Hexamine** + **Vinegar** + **Plant Food** + **Detergent** = **Octa-Hydro 2,5 Nitro 3,4,7 Para-Zokine**
+> There are three to four steps to making every compound, each step is completed by mixing certain chemicals and inserting a number into the chemical station. Each section has a
+> tool that will tell you the number you need to insert for all steps based on your chemical board numbers you saw earlier in your **TV Color**.
 
-### 2,4 Propane 3,5 Tetra-Nitrite
-1. **Fat** + **Vodka** = **Glycerol**
-2. **Detergent** + **Drain Opener** + **Ice** = **Mixed Acid Solution**
-3. **Glycerol** + **Mixed Acid Solution** = **Nitrated Glycerol Solution**
-4. **Nitrated Glycerol Solution** + **Baking Soda** = **2,4 Propane 3,5 Tetra-Nitrite**
+#### 1,3,5-Tera-Nitra-Phenol
+The first step to making this compound is to grab **Insect Repellent**, **Wheel Cleaner**, and **Motor Oil** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
 
-### Ingredient Locations
-- **Vodka**: shelf in the market, immediately right of the Fate and Fortune dispenser
-- **Baking Soda**: middle aisle of the market, a gray box lying down
-- **Detergent**: shelf in the market on the side closest to the Fate and Fortune machine
-- **Wheel Cleaner**: shelf in the market
-- **Glass Cleaner**: enter the market from the garage side, look slightly right, on the small white shelf at the end of the last aisle
-- **Vinegar**: on the table to the left as you enter the back of the market from the spawn side
-- **Paint**: on the ground immediately left of <PerkTooltip perkKey="racin-stripes" />, in front of the brick wall
-- **Plant Food**: on the ground left of the outside door by <PerkTooltip perkKey="quickies" />, under a poster
-- **Nail Polish Remover**: on a table by the pool in the motel
-- **Insect Repellent**: on a table in the middle hallway of spawn
-- **Motor Oil**: on the garage floor, left side of the distillery
-- **Racing Fuel**: on the ground to the right of the garage door
-- **Drain Opener**: first stall of the RV camp bathroom. The bottle is the item some notes call **Drain Cleaner**
-- **Pennies**: **Crowbar** the cash register in the market
-- **Quarters**: **Crowbar** the pay phones next to the garage
-- **Ice**: **Crowbar** the ice machine in the market
-- **Fat**: **Cleaver** the leftmost hanging piece of meat in the market freezer
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-insect-repellent.webp" caption="Insect Repellent - spawn middle hallway on a table" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-wheel-cleaner.webp" caption="Wheel Cleaner - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-motor-oil.webp" caption="Motor Oil - on the garage floor" />
+</CustomCarousel>
 
-## Step 13: Defeat the Radioactive Thing
-Finish your setup before you interact with the bomb. You need the bomb code memorized, perks, and a way to survive fireballs, acid, and <ZombieTooltip zombieKey="crog" />s. In co-op, every player has to reach the bomb cart during the laser phase and every player has to enter the code.
+<AotrtChemicalTool chemical="1,3,5-Tera-Nitra-Phenol" />
+
+After the reaction, that will craft the **Phenol** part of the compound. Next, you'll need to grab some **Drain Opener**, and place that on the chemical station, then grab
+the **Phenol** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 2** seen on the above tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-drain-opener.webp" caption="Drain Opener - in the campsite bathroom first stall" />
+
+After the reaction, that will craft the **Phenolsulfonic Acid** compound. Next, you'll need to grab some **Detergent**, and place that on the chemical station, then grab
+the **Phenolsulfonic Acid** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 3** seen on the above tool, and start the
+reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+
+After the reaction, that will complete the reaction and craft the **1,3,5-Tera-NItra-Phenol** chemical compound on the bench, and you can start preparing for the boss fight.
+
+#### 3,4-Di-Nitroxy-Methyl-Propane
+The first step to making this compound is to grab **Quarters**, and **Racing Fuel** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-quarters.webp" caption="Quarters - use a Crowbar on the payphone next to the Garage" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-racing-fuel.webp" caption="Racing Fuel - on the ground outside of the Garage" />
+
+<AotrtChemicalTool chemical="3,4-Di-Nitroxy-Methyl-Propane" />
+
+After the reaction, that will craft the **Formaldehyde** part of the compound. Next, you'll need to grab some **Vodka** and **Pennies**, place that on the chemical
+station, insert the number for **Step 2** seen on the above tool, and start the reaction..
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-vodka.webp" caption="Vodka - on a shelf in the Market right of the Fortune Teller" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-pennies.webp" caption="Pennies - use the Crowbar on the cash register in the Supermarket" />
+
+After the reaction, that will craft the **Acetaldehyde** compound. Next, you'll need to grab some **Detergent**, and place that on the chemical station, then grab
+the **Acetaldehyde** and **Formaldehyde** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 3** seen on the above
+tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+
+After the reaction, that will craft the **Aldehyde Sludge** compound. Next, you'll need to grab some **Nail Polish Remover**, and place that on the chemical station, then
+grab the **Aldehyde Sludge** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 4** seen on the above tool, and start the
+reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-nail-polish-remover.webp" caption="Nail Polish Remover - in the little room by the motel pool" />
+
+After the reaction, that will complete the reaction and craft the **3,4-Di-Nitroxy-Methyl-Propane** chemical compound on the bench, and you can start preparing for the
+boss fight.
+
+#### Octahydro-2,5-Nitro-3,4,7-Parazokine
+The first step to making this compound is to grab **Quarters**, and **Racing Fuel** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-quarters.webp" caption="Quarters - use a Crowbar on the payphone next to the Garage" />
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-racing-fuel.webp" caption="Racing Fuel - on the ground outside of the Garage" />
+
+<AotrtChemicalTool chemical="Octahydro-2,5-Nitro-3,4,7-Parazokine" />
+
+After the reaction, that will craft the **Formaldehyde** part of the compound. Next, you'll need to grab some **Glass Cleaner**, and place that on the chemical
+station, then grab the **Formaldehyde** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 2** seen on the above
+tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-glass-cleaner.webp" caption="Glass Cleaner - on a shelf in the store" />
+
+After the reaction, that will craft the **Hexamine** part of the compound. Next, you'll need to grab some **Vinegar**, **Plant Food**, and **Detergent**, and place that on
+the chemical station, then grab the **Hexamine** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 2** seen on the
+above tool, and start the reaction.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-vinegar.webp" caption="Vinegar - on a table in the Market" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-plant-food.webp" caption="Plant Food - near quickies outside on the ground" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+</CustomCarousel>
+
+After the reaction, that will complete the reaction and craft the **Octahydro-2,5-Nitro-3,4,7-Parazokine** chemical compound on the bench, and you can start preparing for
+the boss fight.
+
+#### 3-Methyl-2,4-Dinitro Benzene
+The first step to making this compound is to grab **Paint**, **Detergent**, and **Drain Opener** then place them on the chemical station in the garage. Then use the
+tool below to enter the **Top** and **Left** numbers you got from the **Acetaldehyde** diamond earlier to get the numbers you need to input into the chemical station for each step,
+and start the reaction.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-paint.webp" caption="Paint - left of the Racin' Stripes perk on the ground" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-drain-opener.webp" caption="Drain Opener - in the campsite bathroom first stall" />
+</CustomCarousel>
+
+<AotrtChemicalTool chemical="3-Methyl-2,4-Dinitro Benzene" />
+
+After the reaction, that will craft the **Methylbenzene** part of the compound. Next, you'll need to grab some more **Detergent** (same location), **Baking Soda**, and
+**Vinegar**, and place that on the chemical station, then grab the **Methylbenzene** you just made from the bench on the right, place it on the chemical station, insert
+the number for **Step 2** seen on the above tool, and start the reaction.
+
+<CustomCarousel>
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-detergent.webp" caption="Detergent - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-baking-soda.webp" caption="Baking Soda - on a shelf in the Grocery Store" />
+	<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-vinegar.webp" caption="Vinegar - on a table in the Market" />
+</CustomCarousel>
+
+After the reaction, that will craft the **Dinitro** compound. Next, you'll need to grab some **Racing Fuel**, and place that on the chemical station, then grab
+the **Dinitro** you just made from the bench on the right, place it on the chemical station, insert the number for **Step 3** seen on the above tool, and start the reaction.
+
+<RichImage image="/content/attack-of-the-radioactive-thing/aotrt-racing-fuel.webp" caption="Racing Fuel - on the ground outside of the Garage" />
+
+After the reaction, that will complete the reaction and craft the **3-Methyl-2,4-Dinitro Benzene** chemical compound on the bench, and you can start preparing for the boss
+fight.
+
+## Step 10: Defeat the Radioactive Thing
+Finish your setup before you interact with the bomb. You need the bomb code memorized, perks, and a way to survive fireballs, acid, and <ZombieTooltip zombieKey="crog" />s.
+In co-op, every player has to reach the bomb cart during the laser phase and every player has to enter the code.
 
 ### Phase 1: Escort
 Interact with the bomb in the garage to start the teleport. The bomb moves down the beach only while you stand near it. <ZombieTooltip zombieKey="crog-zilla" /> throws fireballs the whole way, so leave the bomb to dodge and come back to keep it moving. At the shore the bomb launches into <ZombieTooltip zombieKey="crog-zilla" /> and the next phase starts.

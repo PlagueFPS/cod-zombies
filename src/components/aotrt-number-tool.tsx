@@ -1,6 +1,6 @@
 import { Exit, Match } from "effect"
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect, useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -8,15 +8,25 @@ import {
 	solveAotrtONumber,
 	type AotrtTvColorRow,
 } from "@/utils/aotrt-o-number"
+import { writeAotrtONumber } from "@/utils/aotrt-o-number-storage"
 
 export default function AotrtNumberTool() {
 	const [values, setValues] = useState({ m: "", topTvNumber: "" })
-	const solved = decodeAotrtONumberInput(values).pipe(Exit.match({
-		onSuccess: value => solveAotrtONumber(value.m, value.topTvNumber),
-		onFailure: () => null,
-	}))
+
+	const solved = decodeAotrtONumberInput(values).pipe(
+		Exit.match({
+			onSuccess: value => solveAotrtONumber(value.m, value.topTvNumber),
+			onFailure: () => null,
+		}),
+	)
 
 	const hasBothValues = values.m !== "" && values.topTvNumber !== ""
+	const oNumber = solved?.oNumber
+
+	useEffect(() => {
+		if (oNumber === undefined) return
+		writeAotrtONumber(oNumber)
+	}, [oNumber])
 
 	return (
 		<Card className="mx-auto w-full max-w-md bg-transparent shadow-lg dark:shadow-none">
@@ -75,9 +85,10 @@ export default function AotrtNumberTool() {
 	)
 }
 
-const tvColorLabel = (row: AotrtTvColorRow) => Match.value(row).pipe(
-	Match.when("top", () => "Top"),
-	Match.when("middle", () => "Middle"),
-	Match.when("bottom", () => "Bottom"),
-	Match.exhaustive
-)
+const tvColorLabel = (row: AotrtTvColorRow) =>
+	Match.value(row).pipe(
+		Match.when("top", () => "Top"),
+		Match.when("middle", () => "Middle"),
+		Match.when("bottom", () => "Bottom"),
+		Match.exhaustive,
+	)

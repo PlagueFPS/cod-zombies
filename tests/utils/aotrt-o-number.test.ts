@@ -5,6 +5,7 @@ import { expectExitSuccess } from "@/tests/helpers"
 import {
 	classifyAotrtTvColor,
 	decodeAotrtONumberInput,
+	decodeAotrtONumberString,
 	O_NUMBERS,
 	solveAotrtONumber,
 } from "@/utils/aotrt-o-number"
@@ -135,6 +136,20 @@ describe("decodeAotrtONumberInput", () => {
 
 		for (const input of rejected) {
 			expect(Exit.isFailure(decodeAotrtONumberInput(input))).toBe(true)
+		}
+	})
+})
+
+describe("decodeAotrtONumberString", () => {
+	test("accepts every O number the number tool can produce", () => {
+		for (const oNumber of O_NUMBERS) {
+			expect(expectExitSuccess(decodeAotrtONumberString(String(oNumber)))).toBe(oNumber)
+		}
+	})
+
+	test("rejects numbers outside that set", () => {
+		for (const input of ["", "1", "3", "7", "4.5", "-4"]) {
+			expect(Exit.isFailure(decodeAotrtONumberString(input))).toBe(true)
 		}
 	})
 })
