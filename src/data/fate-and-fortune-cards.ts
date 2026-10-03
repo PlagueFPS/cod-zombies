@@ -97,6 +97,11 @@ const FATE_AND_FORTUNE_CARDS = uniqueMap([
 		description: "$300 bonus for each kill with a sniper. Duration: 10 bonuses rewarded on kill.",
 		image: "/fate-and-fortune-cards/scoped-dollars.webp",
 	}),
+	makeFateCard("mana-up", {
+		title: "Mana Up",
+		description: "Regenerate health faster. Duration: 15 seconds.",
+		image: "/fate-and-fortune-cards/mana-up.webp",
+	}),
 	makeFortuneCard("perk-insured", {
 		title: "Perk Insured",
 		description: "Keep your perks when you are revived before bleeding out. Duration: 1 revive.",
@@ -120,5 +125,29 @@ const FATE_AND_FORTUNE_CARDS = uniqueMap([
 		description: "Spawn a Max Ammo power up nearby. Duration: Until used.",
 		rarity: "Epic",
 		image: "/fate-and-fortune-cards/all-the-ammos.webp",
+	}),
+	makeFortuneCard("coupon-clipper", {
+		title: "Coupon Clipper",
+		description: "The next purchase you make will cost you $0. Duration: Until used.",
+		rarity: "Rare",
+		image: "/fate-and-fortune-cards/coupon-clipper.webp",
+	}),
+	makeFortuneCard("head-reloaded", {
+		title: "Head Reloaded",
+		description: "Instantly reload held weapon after each headshot kill. Duration: 1 wave.",
+		rarity: "Common",
+		image: "/fate-and-fortune-cards/head-reloaded.webp",
+	}),
+	makeFortuneCard("hide-n-seek", {
+		title: "Hide n' Seek",
+		description: "Zombies cannot find you or your team for 20 seconds. Duration: 20 seconds.",
+		rarity: "Common",
+		image: "/fate-and-fortune-cards/hide-n-seek.webp",
+	}),
+	makeFortuneCard("evade", {
+		title: "Evade",
+		description: "Allows the player to dodge. Duration: 2 waves.",
+		rarity: "Legendary",
+		image: "/fate-and-fortune-cards/evade.webp",
 	}),
 ])

@@ -29,16 +29,21 @@ describe("getFateAndFortuneCardByKey", () => {
 describe("getFateAndFortuneCards", () => {
 	test("returns every registered card", () => {
 		const cards = getFateAndFortuneCards()
-		expect(cards).toHaveLength(8)
+		expect(cards).toHaveLength(13)
 		expect(cards.map(card => card.id)).toEqual([
 			"five-second-muscle",
 			"best-for-last",
 			"nade-party",
 			"scoped-dollars",
+			"mana-up",
 			"perk-insured",
 			"raining-bullets",
 			"explosive-touch",
 			"all-the-ammos",
+			"coupon-clipper",
+			"head-reloaded",
+			"hide-n-seek",
+			"evade",
 		])
 	})
 })

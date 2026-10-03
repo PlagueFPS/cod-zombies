@@ -196,8 +196,13 @@ export type ElixirsImagePath =
 export type FateAndFortuneCardsImagePath =
 	| "/fate-and-fortune-cards/all-the-ammos.webp"
 	| "/fate-and-fortune-cards/best-for-last.webp"
+	| "/fate-and-fortune-cards/coupon-clipper.webp"
+	| "/fate-and-fortune-cards/evade.webp"
 	| "/fate-and-fortune-cards/explosive-touch.webp"
 	| "/fate-and-fortune-cards/five-second-muscle.webp"
+	| "/fate-and-fortune-cards/head-reloaded.webp"
+	| "/fate-and-fortune-cards/hide-n-seek.webp"
+	| "/fate-and-fortune-cards/mana-up.webp"
 	| "/fate-and-fortune-cards/nade-party.webp"
 	| "/fate-and-fortune-cards/perk-insured.webp"
 	| "/fate-and-fortune-cards/raining-bullets.webp"
