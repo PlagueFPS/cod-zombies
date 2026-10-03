@@ -661,4 +661,12 @@ const PERKS = uniqueMap([
 		augments: Option.none(),
 		variants: Option.none(),
 	}),
+	makePerk("blue-bolts", {
+		title: "Blue Bolts",
+		description: "Shock 'em all when you reload! (Reloading electrocutes nearby zombies)",
+		image: "/perks/blue-bolts.webp",
+		modifier: Option.none(),
+		augments: Option.none(),
+		variants: Option.none(),
+	}),
 ])

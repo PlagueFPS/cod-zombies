@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-09-30T17:24:31.676Z
- * generated in: 18ms
+ * generated at: 2026-10-02T00:36:39.012Z
+ * generated in: 20ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -51,6 +51,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/shattered-veil"
 	| "content/main-quests/sooooul-key"
 	| "content/main-quests/soul-less"
+	| "content/main-quests/the-end"
 	| "content/main-quests/the-tomb"
 	| "content/main-quests/time-travel-will-tell"
 	| "content/main-quests/tin-man-heart"
@@ -355,6 +356,9 @@ export type ZombiesPaths =
 	| "content/zombies/brutus"
 	| "content/zombies/caltheris"
 	| "content/zombies/clown-zombie"
+	| "content/zombies/crog"
+	| "content/zombies/crog-brute"
+	| "content/zombies/crog-zilla"
 	| "content/zombies/crusader-zombie"
 	| "content/zombies/deathspinner"
 	| "content/zombies/denizen"
