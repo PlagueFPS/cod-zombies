@@ -1,6 +1,6 @@
 ---
 name: effect
-description: Guidelines for writing Effect-TS code. Apply when the user requests Effect code changes, when editing files that import from "effect", or when authoring, reviewing, or refactoring Effect.gen, Effect.try, Effect.fn, Effect.fnUntraced, tagged errors, or Effect.fail usage.
+description: Guidelines for writing Effect-TS code. Apply when editing or reviewing Effect code.
 ---
 
 # Effect Code Guidelines
@@ -179,12 +179,28 @@ const someFunction = Effect.fnUntraced(function*(input: Input) {
 })
 ```
 
-## Review checklist
+## Pattern Matching
+Use `Match` from `Effect` for chained literal ternaries over the same value, most utilities like `Exit` and `Option` also expose a `.match()` method as well.
 
-When writing or reviewing Effect code:
+```typescript
+// ❌ BAD
+	const solved = Exit.isSuccess(decoded)
+		? {
+				m: decoded.value.m,
+				topTvNumber: decoded.value.topTvNumber,
+				result: solveAotrtONumber(decoded.value.m, decoded.value.topTvNumber),
+			}
+		: null
+```
 
-- [ ] Tagged errors are yielded directly, never wrapped in `Effect.fail` unless returned from a plain function
-- [ ] Error classes use `Schema.TaggedError` with a stable `_tag`
-- [ ] `Effect.gen` uses `yield*` for fallible operations and tagged failures
-- [ ] `Effect.try` / `Effect.tryPromise` `catch` callbacks produce tagged errors, not raw `Error` throws
-- [ ] Success paths use plain values in function body or `Effect.succeed` where an Effect must be returned; failures use tagged errors or `Effect.fail` for untagged values only
+```typescript
+// ✅ GOOD
+const solved = Exit.match(decoded, {
+	onSuccess: value => ({
+		m: value.m,
+		topTvNumber: value.topTvNumber,
+		result: solveAotrtONumber(value.m, value.topTvNumber),
+	}),
+	onFailure: () => null,
+})
+```
