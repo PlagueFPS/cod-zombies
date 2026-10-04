@@ -496,12 +496,31 @@ async function goHome(page: Page) {
 	await page.getByRole("heading", { name: /Unlock the Secrets of/ }).waitFor()
 }
 
+/** Server HTML accepts the click, but the list opens only after React attaches. */
+async function waitForHydratedCombobox(page: Page, placeholder: string) {
+	await page.waitForFunction(name => {
+		const inputs = document.querySelectorAll("input[role='combobox']")
+		for (const input of inputs) {
+			if (!(input instanceof HTMLInputElement)) continue
+			if (input.placeholder !== name && input.getAttribute("aria-label") !== name) continue
+			return Object.keys(input).some(key => key.startsWith("__react"))
+		}
+		return false
+	}, placeholder)
+}
+
 async function chooseFilter(page: Page, placeholder: string, optionName: string) {
-	await page.getByRole("combobox", { name: placeholder }).click()
-	await page
-		.locator('[data-slot="combobox-item"]')
-		.getByText(optionName, { exact: true })
-		.click()
+	await waitForHydratedCombobox(page, placeholder)
+	const box = page.getByRole("combobox", { name: placeholder })
+	const item = page.locator('[data-slot="combobox-item"]').getByText(optionName, { exact: true })
+	await box.click()
+	try {
+		await item.waitFor({ state: "visible", timeout: 2_000 })
+	} catch {
+		await box.click()
+		await item.waitFor({ state: "visible" })
+	}
+	await item.click()
 	await page.keyboard.press("Escape")
 }
 
@@ -551,7 +570,7 @@ async function driveMainQuests(page: Page, dir: string) {
 	await shot(page, dir, "04-search-totenreich.png")
 	logStep(dir, `url=${page.url()}`)
 
-	logStep(dir, "filter-and-open-guide")
+	logStep(dir, "entry=filter-and-open-guide")
 	await clickLink(page, "Go to Main Quests page")
 	await page.getByRole("heading", { name: "Main Quests", exact: true }).waitFor()
 	await chooseFilter(page, "Filter: Game, Difficulty, Completion Time", "Black Ops 7")
@@ -574,15 +593,23 @@ async function driveMainQuests(page: Page, dir: string) {
 }
 
 async function driveSideQuests(page: Page, dir: string) {
+	logStep(dir, "entry=header-nav")
 	await clickLink(page, "Go to Side Quests page")
 	await page.getByRole("heading", { name: "Side Quests", exact: true }).waitFor()
 	await shot(page, dir, "01-listing.png")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=filter")
 	await chooseFilter(page, "Filter: Game or Map", "Black Ops 3")
 	await page.getByLabel("Black Ops 3").waitFor()
 	await page.waitForURL(/game=.*black-ops-3/)
+	logStep(dir, "entry=sort-oldest")
+	await chooseSelect(page, "Latest", "Oldest")
+	await page.waitForURL(/sort=.*oldest/)
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=open-guide")
 	await clickLink(page, "View Guide for Free 500 Points")
 	await page.waitForURL(/\/side-quests\/black-ops-3\/shadows-of-evil\/free-500-points/)
-	await page.getByRole("heading", { name: "Free 500 Points", exact: true }).waitFor()
+	await page.getByRole("heading", { name: "Free 500 Points", exact: true }).first().waitFor()
 	await shot(page, dir, "02-guide.png")
 	await snapshot(page, dir, "02-guide.aria.txt")
 	logStep(dir, `url=${page.url()}`)
@@ -590,12 +617,17 @@ async function driveSideQuests(page: Page, dir: string) {
 }
 
 async function driveRelics(page: Page, dir: string) {
+	logStep(dir, "entry=header-nav")
 	await clickLink(page, "Go to Relics page")
-	await page.getByRole("heading", { name: "Relics", exact: true }).waitFor()
+	await page.getByRole("heading", { name: "Cursed Relics", exact: true }).waitFor()
 	await shot(page, dir, "01-listing.png")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=filter-type")
 	await chooseFilter(page, "Filter: Map, Type", "Grim")
 	await page.getByLabel("Grim").waitFor()
 	await page.waitForURL(/type=.*grim/)
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=open-guide")
 	await clickLink(page, "View Guide for the Lawyer's Pen relic")
 	await page.waitForURL(/\/relics\/black-ops-7\/lawyers-pen/)
 	await page.getByRole("heading", { name: "Lawyer's Pen", exact: true }).waitFor()
@@ -606,36 +638,52 @@ async function driveRelics(page: Page, dir: string) {
 }
 
 async function driveBestiary(page: Page, dir: string) {
+	logStep(dir, "entry=header-nav")
 	await clickLink(page, "Go to Bestiary page")
 	await page.getByRole("heading", { name: "Bestiary", exact: true }).waitFor()
 	await shot(page, dir, "01-listing.png")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=filter-boss")
 	await chooseFilter(page, "Filter: Type, Game, Map, or Weakness", "Boss")
 	await page.getByLabel("Boss").waitFor()
 	await page.waitForURL(/type=.*boss/)
+	logStep(dir, "entry=sort-oldest")
+	await chooseSelect(page, "Latest", "Oldest")
+	await page.waitForURL(/sort=.*oldest/)
+	await shot(page, dir, "02-filtered.png")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=open-detail")
 	await clickLink(page, "View details for Avogadro")
 	await page.waitForURL(/\/bestiary\/avogadro/)
 	await page.getByText("Avogadro", { exact: true }).first().waitFor()
-	await shot(page, dir, "02-detail.png")
-	await snapshot(page, dir, "02-detail.aria.txt")
+	await shot(page, dir, "03-detail.png")
+	await snapshot(page, dir, "03-detail.aria.txt")
 	logStep(dir, `url=${page.url()}`)
 	logStep(dir, "result=bestiary-ok")
 }
 
 async function driveMaps(page: Page, dir: string) {
+	logStep(dir, "entry=header-nav")
 	await clickLink(page, "Go to Maps page")
 	await page.getByRole("heading", { name: "Interactive Maps", exact: true }).waitFor()
 	await shot(page, dir, "01-listing.png")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=filter-game")
 	await chooseFilter(page, "Filter: Game", "Black Ops 6")
 	await page.getByLabel("Black Ops 6").waitFor()
 	await page.waitForURL(/game=.*black-ops-6/)
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=open-terminus")
 	await clickLink(page, "View Terminus interactive map")
 	await page.waitForURL(/\/maps\/terminus/)
 	await page.getByRole("button", { name: "Hide All Markers" }).waitFor()
 	await shot(page, dir, "02-terminus.png")
+	logStep(dir, "entry=toggle-markers")
 	await page.getByRole("button", { name: "Hide All Markers" }).click()
 	await page.waitForURL(/exclude=/)
 	await page.getByRole("button", { name: "Show All Markers" }).click()
 	await page.waitForURL(url => !url.toString().includes("exclude="))
+	logStep(dir, "entry=switch-layer")
 	await page.goto(`${new URL(page.url()).origin}/maps/totenreich`, { waitUntil: "domcontentloaded" })
 	await page.getByRole("button", { name: "Hide All Markers" }).waitFor()
 	await chooseSelect(page, "Eidskallen", "Boss Fight Arena")

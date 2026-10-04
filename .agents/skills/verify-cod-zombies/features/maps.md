@@ -37,5 +37,5 @@ Preconditions:
 - Map pages set `ssr: "data-only"`. Wait for `Hide All Markers` (up to 20 seconds). The first paint is not the map.
 - `Hide All Markers` and `Show All Markers` are the accessible names. The visible button text is `None` and `All`.
 - The layer trigger shows the current layer name. On Totenreich the default used here is `Eidskallen`. A different map does not have that option.
-- `Coming Soon` maps are omitted from the listing and from search.
+- Search leaves out `Coming Soon` maps. The listing does not; a Coming Soon interactive map would render as a disabled card. The current catalog has none.
 - Marker visibility is URL state, not an account preference. A new browser context starts with every marker shown.
