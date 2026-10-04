@@ -368,7 +368,7 @@ const MAPS = uniqueMap([
 		image: "/maps/origins.webp",
 		game: "black-ops-2",
 		mainQuest: Option.some("content/main-quests/little-lost-girl"),
-		difficulty: Option.some("Very Hard"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 90,
@@ -417,7 +417,7 @@ const MAPS = uniqueMap([
 		image: "/maps/der-eisendrache.webp",
 		game: "black-ops-3",
 		mainQuest: Option.some("content/main-quests/my-brothers-keeper"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
@@ -500,7 +500,7 @@ const MAPS = uniqueMap([
 		game: "infinite-warfare",
 		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/locksmith"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Easy"),
 		estimatedTimeMins: Option.some({
 			min: 30,
 			max: 90,
@@ -533,7 +533,7 @@ const MAPS = uniqueMap([
 		game: "infinite-warfare",
 		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/soul-less"),
-		difficulty: Option.some("Very Hard"),
+		difficulty: Option.some("Hard"),
 		estimatedTimeMins: Option.some({
 			min: 60,
 			max: 150,
@@ -578,7 +578,7 @@ const MAPS = uniqueMap([
 		image: "/maps/ix.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/venerated-warrior"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
@@ -627,7 +627,7 @@ const MAPS = uniqueMap([
 		image: "/maps/dead-of-the-night.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/trial-by-ordeal"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
@@ -644,7 +644,7 @@ const MAPS = uniqueMap([
 		image: "/maps/ancient-evil.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/greek-tragedy"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
@@ -661,7 +661,7 @@ const MAPS = uniqueMap([
 		image: "/maps/alpha-omega.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/electromagnetic-awakening-party"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
@@ -677,7 +677,7 @@ const MAPS = uniqueMap([
 		image: "/maps/tag-der-toten.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/salvation-lies-above"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 75,
@@ -854,7 +854,7 @@ const MAPS = uniqueMap([
 		image: "/maps/reckoning.webp",
 		game: "black-ops-6",
 		mainQuest: Option.some("content/main-quests/reckoning"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
@@ -919,7 +919,7 @@ const MAPS = uniqueMap([
 		image: "/maps/totenreich.webp",
 		game: "black-ops-7",
 		mainQuest: Option.some("content/main-quests/totenreich"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 60,
