@@ -47,7 +47,7 @@ Run doctor before every drive, and again whenever a page looks stale or the port
 
 ## Drive
 
-Harness: `codz-verify drive <feature>` opens headless Google Chrome (`channel: "chrome"`, sandbox off) at a 1280×900 viewport against this run's `baseUrl`. It uses accessible names from the app. Listing filters use the combobox whose name is the placeholder (`Filter: …`) and `[data-slot="combobox-item"]`. Sort menus and map layer menus use `data-slot="select-trigger"` and `data-slot="select-item"`, the same handles as `tests/e2e/helpers/ui.ts`.
+Harness: `codz-verify drive <feature>` opens headless Google Chrome (`channel: "chrome"`, sandbox off) at a 1280×900 viewport against this run's `baseUrl`. It uses accessible names from the app. Listing filters use the combobox whose name is the placeholder (`Filter: …`) and `[data-slot="combobox-item"]`. The drive waits until that input is hydrated before the click: the server-rendered control accepts focus, and the list opens only after React attaches. Sort menus and map layer menus use `data-slot="select-trigger"` and `data-slot="select-item"`, the same handles as `tests/e2e/helpers/ui.ts`.
 
 ```bash
 .agents/skills/verify-cod-zombies/scripts/codz-verify drive main-quests

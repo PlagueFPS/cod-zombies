@@ -42,7 +42,7 @@ Preconditions:
 - Several `View All` links exist on the home page. The outer home `section` contains every one of them. Click the `View All` that is a sibling of the `Main Quests` heading, not a link inside an ancestor section.
 - `Totenreich` search has one exact option for the main quest. `Totenreich Interactive Map` is a different option and opens `/maps/totenreich`.
 - Filter values are JSON in the query string. Match the slug with a substring, not `game=black-ops-7` alone.
-- Filter suggestions are `[data-slot="combobox-item"]`. They are not `role="option"` (search results are). Click the combobox whose name is the placeholder, including the `Filter: ` prefix.
+- Filter suggestions are `[data-slot="combobox-item"]`. They are not `role="option"` (search results are). Click the combobox whose name is the placeholder, including the `Filter: ` prefix. The drive waits until that input is hydrated; a click on the server-rendered input focuses it and does not open the list.
 - The sort trigger's visible label is the current value (`Latest` on a fresh listing). After a previous sort, the trigger text changes.
 - Guides whose map state is `Coming Soon` are omitted from search and return not-found on a direct URL.
 - Dev mode draws React Scan outlines and a toolbar over the page. The drive removes that chrome before screenshots. A picture full of component labels is a failed capture, not a successful guide view.
