@@ -21,7 +21,7 @@ Side quest guides list secrets and rewards outside the main story, filter them b
 Preconditions:
 
 - Doctor reports `healthy=yes` for this `VERIFY_RUN_ID`.
-- Run `.cursor/skills/verify-cod-zombies/scripts/codz-verify drive side-quests`. The command performs the bullets below in order from the home page at 1280×900.
+- Run `.agents/skills/verify-cod-zombies/scripts/codz-verify drive side-quests`. The command performs the bullets below in order from the home page at 1280×900.
 
 - **Header nav.** The command runs `page.getByRole("link", { name: "Go to Side Quests page" }).click()`. The heading `Side Quests` is visible. Screenshot `01-listing.png`.
 - **Filter.** Click the combobox named `Filter: Game or Map`, then `[data-slot="combobox-item"]` with exact text `Black Ops 3`. A chip named `Black Ops 3` is visible and the URL matches `game=.*black-ops-3`.

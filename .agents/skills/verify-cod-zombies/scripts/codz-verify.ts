@@ -2,10 +2,10 @@
 /**
  * Launch, check, drive, and stop a disposable Call of Duty: Zombies Guides dev server.
  *
- *   .cursor/skills/verify-cod-zombies/scripts/codz-verify launch
- *   .cursor/skills/verify-cod-zombies/scripts/codz-verify doctor
- *   .cursor/skills/verify-cod-zombies/scripts/codz-verify drive main-quests
- *   .cursor/skills/verify-cod-zombies/scripts/codz-verify cleanup
+ *   .agents/skills/verify-cod-zombies/scripts/codz-verify launch
+ *   .agents/skills/verify-cod-zombies/scripts/codz-verify doctor
+ *   .agents/skills/verify-cod-zombies/scripts/codz-verify drive main-quests
+ *   .agents/skills/verify-cod-zombies/scripts/codz-verify cleanup
  */
 import { execFileSync, spawn, type ChildProcess } from "node:child_process"
 import { createServer } from "node:net"

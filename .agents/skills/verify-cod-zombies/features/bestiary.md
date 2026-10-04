@@ -21,7 +21,7 @@ The bestiary lists zombie types, filters them by type, game, map, or weakness, a
 Preconditions:
 
 - Doctor reports `healthy=yes` for this `VERIFY_RUN_ID`.
-- Run `.cursor/skills/verify-cod-zombies/scripts/codz-verify drive bestiary`. The command performs the bullets below in order from the home page at 1280×900.
+- Run `.agents/skills/verify-cod-zombies/scripts/codz-verify drive bestiary`. The command performs the bullets below in order from the home page at 1280×900.
 
 - **Header nav.** The command runs `page.getByRole("link", { name: "Go to Bestiary page" }).click()`. The heading `Bestiary` is visible. Screenshot `01-listing.png`.
 - **Boss filter.** Click the combobox named `Filter: Type, Game, Map, or Weakness`, then `[data-slot="combobox-item"]` with exact text `Boss`. A chip named `Boss` is visible and the URL matches `type=.*boss`.

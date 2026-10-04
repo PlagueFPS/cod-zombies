@@ -25,7 +25,7 @@ Preconditions:
 
 - Doctor reports `healthy=yes` for this `VERIFY_RUN_ID`.
 - Viewport for the desktop steps is 1280×900. The mobile step resizes to 390×844 and restores 1280×900.
-- Run `.cursor/skills/verify-cod-zombies/scripts/codz-verify drive main-quests`. The command performs the bullets below in order.
+- Run `.agents/skills/verify-cod-zombies/scripts/codz-verify drive main-quests`. The command performs the bullets below in order.
 
 - **Header nav.** From home, choose Main Quests. The command runs `page.getByRole("link", { name: "Go to Main Quests page" }).click()`. The heading `Main Quests` is visible. Screenshot `02-main-quests-nav.png`.
 - **Home View All.** Return with `page.getByRole("link", { name: "Go to Home Page" }).first().click()`, then click `View All` on the parent of the heading `Main Quests` (`getByRole("heading", { name: "Main Quests", exact: true }).locator("..").getByRole("link", { name: "View All" })`). The heading `Main Quests` is visible again.

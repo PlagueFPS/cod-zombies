@@ -24,7 +24,7 @@ Interactive maps list published maps, filter them by game, and open a map where 
 Preconditions:
 
 - Doctor reports `healthy=yes` for this `VERIFY_RUN_ID`.
-- Run `.cursor/skills/verify-cod-zombies/scripts/codz-verify drive maps`. The command performs the bullets below in order from the home page at 1280×900.
+- Run `.agents/skills/verify-cod-zombies/scripts/codz-verify drive maps`. The command performs the bullets below in order from the home page at 1280×900.
 
 - **Header nav.** The command runs `page.getByRole("link", { name: "Go to Maps page" }).click()`. The heading `Interactive Maps` is visible. Screenshot `01-listing.png`.
 - **Game filter.** Click the combobox named `Filter: Game`, then `[data-slot="combobox-item"]` with exact text `Black Ops 6`. A chip named `Black Ops 6` is visible and the URL matches `game=.*black-ops-6`.

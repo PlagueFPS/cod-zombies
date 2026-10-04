@@ -4,8 +4,8 @@ This directory is the maintained source for verifying the user-facing website. R
 
 ## Baseline preconditions
 
-- Launch with `.cursor/skills/verify-cod-zombies/scripts/codz-verify launch` and require `ready=yes`.
-- Run `.cursor/skills/verify-cod-zombies/scripts/codz-verify doctor` and require `healthy=yes` for that `runId`.
+- Launch with `.agents/skills/verify-cod-zombies/scripts/codz-verify launch` and require `ready=yes`.
+- Run `.agents/skills/verify-cod-zombies/scripts/codz-verify doctor` and require `healthy=yes` for that `runId`.
 - Keep `VERIFY_RUN_ID` set to the printed run id for every later command.
 - The site has no account and no writable content store. Do not seed data.
 - Never drive a Vite process this verification run did not start. One checkout supports one dev server.

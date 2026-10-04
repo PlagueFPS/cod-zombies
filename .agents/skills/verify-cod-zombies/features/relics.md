@@ -21,7 +21,7 @@ Cursed relic guides list relics, filter them by map and type, and open one relic
 Preconditions:
 
 - Doctor reports `healthy=yes` for this `VERIFY_RUN_ID`.
-- Run `.cursor/skills/verify-cod-zombies/scripts/codz-verify drive relics`. The command performs the bullets below in order from the home page at 1280×900.
+- Run `.agents/skills/verify-cod-zombies/scripts/codz-verify drive relics`. The command performs the bullets below in order from the home page at 1280×900.
 
 - **Header nav.** The command runs `page.getByRole("link", { name: "Go to Relics page" }).click()`. The heading `Relics` is visible. Screenshot `01-listing.png`.
 - **Type filter.** Click the combobox named `Filter: Map, Type`, then `[data-slot="combobox-item"]` with exact text `Grim`. A chip named `Grim` is visible and the URL matches `type=.*grim`.

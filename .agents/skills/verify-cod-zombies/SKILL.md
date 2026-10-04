@@ -20,7 +20,7 @@ Content is compiled into the repo. There is no database to seed and no login.
 From the repo root:
 
 ```bash
-.cursor/skills/verify-cod-zombies/scripts/codz-verify launch
+.agents/skills/verify-cod-zombies/scripts/codz-verify launch
 ```
 
 That starts `bun run dev -- --host 127.0.0.1 --port <free port in 4180-4279>` with the same dummy Linear and Resend env as `playwright.config.ts`, plus `E2E_MOCK_EMAIL=success`. It writes `/tmp/codz-verify/<runId>/meta.json` and `/tmp/codz-verify/latest`.
@@ -34,7 +34,7 @@ One checkout can run one Vite dev server. Launch refuses when another verificati
 ## Doctor
 
 ```bash
-.cursor/skills/verify-cod-zombies/scripts/codz-verify doctor
+.agents/skills/verify-cod-zombies/scripts/codz-verify doctor
 ```
 
 Read-only. It passes only when all of these are true:
@@ -50,11 +50,11 @@ Run doctor before every drive, and again whenever a page looks stale or the port
 Harness: `codz-verify drive <feature>` opens headless Google Chrome (`channel: "chrome"`, sandbox off) at a 1280×900 viewport against this run's `baseUrl`. It uses accessible names from the app. Listing filters use the combobox whose name is the placeholder (`Filter: …`) and `[data-slot="combobox-item"]`. Sort menus and map layer menus use `data-slot="select-trigger"` and `data-slot="select-item"`, the same handles as `tests/e2e/helpers/ui.ts`.
 
 ```bash
-.cursor/skills/verify-cod-zombies/scripts/codz-verify drive main-quests
-.cursor/skills/verify-cod-zombies/scripts/codz-verify drive side-quests
-.cursor/skills/verify-cod-zombies/scripts/codz-verify drive relics
-.cursor/skills/verify-cod-zombies/scripts/codz-verify drive bestiary
-.cursor/skills/verify-cod-zombies/scripts/codz-verify drive maps
+.agents/skills/verify-cod-zombies/scripts/codz-verify drive main-quests
+.agents/skills/verify-cod-zombies/scripts/codz-verify drive side-quests
+.agents/skills/verify-cod-zombies/scripts/codz-verify drive relics
+.agents/skills/verify-cod-zombies/scripts/codz-verify drive bestiary
+.agents/skills/verify-cod-zombies/scripts/codz-verify drive maps
 ```
 
 Read [features/README.md](features/README.md) first. A drive of one feature does not cover the other feature files.
@@ -81,7 +81,7 @@ Standards:
 ## Cleanup
 
 ```bash
-.cursor/skills/verify-cod-zombies/scripts/codz-verify cleanup
+.agents/skills/verify-cod-zombies/scripts/codz-verify cleanup
 ```
 
 Sends `SIGTERM` to the process group recorded for this run (or every live run when `VERIFY_RUN_ID` is unset) and deletes `/tmp/codz-verify/<runId>`. It does not delete `/opt/cursor/artifacts/verify-cod-zombies`. Confirm the screenshots and `steps.log` are still there after cleanup.
@@ -90,13 +90,13 @@ Do not kill processes by name. If the pid is already gone, cleanup only removes 
 
 ## Helpers
 
-Both files live in `.cursor/skills/verify-cod-zombies/scripts/`. Invoke the bash wrapper so `bun` is on `PATH`:
+Both files live in `.agents/skills/verify-cod-zombies/scripts/`. Invoke the bash wrapper so `bun` is on `PATH`:
 
 ```bash
-.cursor/skills/verify-cod-zombies/scripts/codz-verify launch
-.cursor/skills/verify-cod-zombies/scripts/codz-verify doctor
-.cursor/skills/verify-cod-zombies/scripts/codz-verify drive main-quests
-.cursor/skills/verify-cod-zombies/scripts/codz-verify cleanup
+.agents/skills/verify-cod-zombies/scripts/codz-verify launch
+.agents/skills/verify-cod-zombies/scripts/codz-verify doctor
+.agents/skills/verify-cod-zombies/scripts/codz-verify drive main-quests
+.agents/skills/verify-cod-zombies/scripts/codz-verify cleanup
 ```
 
 `codz-verify.ts` is the implementation. Arguments are `launch`, `doctor`, `drive <feature>`, and `cleanup`.
