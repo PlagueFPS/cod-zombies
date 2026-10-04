@@ -417,7 +417,7 @@ const MAPS = uniqueMap([
 		image: "/maps/der-eisendrache.webp",
 		game: "black-ops-3",
 		mainQuest: Option.some("content/main-quests/my-brothers-keeper"),
-		difficulty: Option.some("Hard"),
+		difficulty: Option.some("Medium"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
@@ -610,7 +610,7 @@ const MAPS = uniqueMap([
 		image: "/maps/classified.webp",
 		game: "black-ops-4",
 		mainQuest: Option.some("content/main-quests/classified"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 600,
@@ -726,7 +726,7 @@ const MAPS = uniqueMap([
 		image: "/maps/outbreak.webp",
 		game: "black-ops-cold-war",
 		mainQuest: Option.some("content/main-quests/outbreak"),
-		difficulty: Option.some("Very Hard"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 30,
@@ -854,7 +854,7 @@ const MAPS = uniqueMap([
 		image: "/maps/reckoning.webp",
 		game: "black-ops-6",
 		mainQuest: Option.some("content/main-quests/reckoning"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Hard"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 45,
