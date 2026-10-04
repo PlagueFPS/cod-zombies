@@ -14,6 +14,7 @@ bun run test        # bun test
 - Do not skip these steps for "small" edits — run them unless the user explicitly says not to
 - If `lint` reports issues, fix them (use `bun run lint:fix` when appropriate) and re-run `lint`
 - If `fmt` reformats files, include those changes in the result
+- If `bun run fmt` fails, fix the reported issues and run it again
 - If `test` fails, fix the regression or explain why it is unrelated only when clearly pre-existing and the user did not ask for a fix
 
 ### When to skip
@@ -23,3 +24,11 @@ bun run test        # bun test
 - Docs-only changes with no TypeScript/test impact (still run checks if TS or tests were touched)
 
 Report a brief summary of pass/fail for each command when done.
+
+## Package manager
+
+Use `bun` instead of `npm`, and `bunx` instead of `npx`.
+
+## Imports
+
+Use the `@/*` alias from `tsconfig.json` for imports inside the repo. The alias points at `./src/*`. Import `cn` from the `cn` package. In `import.meta.glob` and in dynamic `import()`, use `./` or `../`. Vite resolves those strings itself. An `@/` path in them breaks the build.
