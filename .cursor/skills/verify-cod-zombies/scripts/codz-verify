@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Disposable launcher for Call of Duty: Zombies Guides verification.
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+export PATH="${HOME}/.bun/bin:${PATH}"
+cd "${ROOT}"
+exec bun "${ROOT}/.cursor/skills/verify-cod-zombies/scripts/codz-verify.ts" "$@"
