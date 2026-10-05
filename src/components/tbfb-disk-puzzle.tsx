@@ -59,6 +59,7 @@ export default function TbfbDiskPuzzle() {
 									className={cn(
 										"flex size-16 items-center justify-center rounded-xl bg-white text-black ring-2 ring-transparent transition outline-none focus-visible:ring-ring sm:size-20",
 										isSelected && "ring-amber-400",
+										isLocked && "opacity-40",
 									)}
 								>
 									<symbol.Icon className="size-12 sm:size-14" />
@@ -93,8 +94,7 @@ export default function TbfbDiskPuzzle() {
 								</p>
 								<ul className="space-y-3">
 									{matches.map(match => (
-										<li key={match.path} className="space-y-2">
-											<p className="text-center text-base font-medium">Path {match.path}</p>
+										<li key={match.path}>
 											<div className="flex items-center justify-center gap-2">
 												{match.order.map(symbolId => {
 													const symbol = getTbfbDiskSymbol(symbolId)

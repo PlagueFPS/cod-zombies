@@ -27,7 +27,7 @@ describe("TbfbDiskPuzzle", () => {
 			root?.render(<TbfbDiskPuzzle />)
 		})
 
-		expect(container.textContent).not.toContain("Path 2")
+		expect(container.textContent).not.toContain("Path")
 
 		for (const label of ["Three slashes", "Wings and diamond", "Eagle", "Lambda"]) {
 			const button = [...container.querySelectorAll("button")].find(
@@ -39,9 +39,8 @@ describe("TbfbDiskPuzzle", () => {
 			})
 		}
 
-		expect(container.textContent).toContain("Path 2")
 		expect(container.textContent).toContain("Insert the disks from left to right.")
-		expect(container.textContent).not.toContain("Path 3")
+		expect(container.textContent).not.toContain("Path")
 		expect(
 			[...container.querySelectorAll("[aria-pressed=true]")].map(button =>
 				button.getAttribute("aria-label"),
@@ -73,6 +72,7 @@ describe("TbfbDiskPuzzle", () => {
 		)
 
 		expect(chevron?.getAttribute("aria-disabled")).toBe("true")
+		expect(chevron?.className).toContain("opacity-40")
 
 		await act(async () => {
 			chevron?.click()
@@ -83,8 +83,7 @@ describe("TbfbDiskPuzzle", () => {
 				button.getAttribute("aria-label"),
 			),
 		).toEqual(["Slanted N", "Skewed plus", "Eagle", "Lambda"])
-		expect(container.textContent).toContain("Path 2")
 		expect(container.textContent).toContain("Insert the disks from left to right.")
-		expect(container.textContent).not.toContain("Path 3")
+		expect(container.textContent).not.toContain("Path")
 	})
 })
