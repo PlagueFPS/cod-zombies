@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-03T01:04:57.268Z
- * generated in: 19ms
+ * generated at: 2026-10-05T22:36:54.372Z
+ * generated in: 21ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -115,6 +115,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/bartender"
 	| "content/side-quests/basketball-free-points"
 	| "content/side-quests/beauty-of-annihilation-remix"
+	| "content/side-quests/better-box"
 	| "content/side-quests/blood-pool"
 	| "content/side-quests/boat-race"
 	| "content/side-quests/bongo"
