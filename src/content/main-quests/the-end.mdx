@@ -1,1 +1,285 @@
-TBD
+import PerkTooltip from "@/components/perk-tooltip"
+import ZombieTooltip from "@/components/zombie-tooltip"
+import FateAndFortuneCardTooltip from "@/components/fate-and-fortune-card-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import RichImage from "@/components/rich-image"
+import CustomCarousel from "@/components/custom-carousel"
+import TbfbDiskPuzzle from "@/components/tbfb-disk-puzzle"
+
+## The End?
+The main quest for **The Beast from Beyond** is called **The End?**. During this quest, the Actors crew must recover the fifth and final piece of the **Soul Key** from
+**Willard Wyler's** ice-planet facility by restoring **N31L**, hacking him, and surviving the Cryptid swarm.
+
+## Requirements
+This main quest can be completed solo or in co-op. You need the **Entangler** for several steps, and you need the bridge to **Pack-a-Punch** repaired before the escort. Pack at
+least one bullet weapon before the boss. The <ZombieTooltip zombieKey="mammoth" />s at the end are bullet sponges, so a high-damage packed gun matters more than it does in the
+setup.
+
+> <PerkTooltip perkKey="tuff-nuff" />, <PerkTooltip perkKey="quickies" />, <PerkTooltip perkKey="bang-bangs" />, <PerkTooltip perkKey="racin-stripes" />, and
+> <PerkTooltip perkKey="up-n-atoms" /> are the perks worth having before the boss. <PerkTooltip perkKey="bombstoppers" /> is worth buying if you are using explosives.
+
+## Recommended Fate & Fortune Cards
+
+<RichTable
+  headerCells={["Fate", "Fortune"]}
+  bodyRows={[
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="five-second-muscle" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="perk-insured" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="best-for-last" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="raining-bullets" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow alternate>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="nade-party" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="explosive-touch" />
+      </TableCell>
+    </RichBodyRow>,
+    <RichBodyRow>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="scoped-dollars" />
+      </TableCell>
+      <TableCell>
+        <FateAndFortuneCardTooltip cardKey="all-the-ammos" />
+      </TableCell>
+    </RichBodyRow>,
+  ]}
+/>
+
+> These **Fate and Fortune Cards** are just a recommendation and not required to complete this main quest, only to make things quicker and/or easier throughout the quest.
+> <FateAndFortuneCardTooltip cardKey="perk-insured" /> keeps your perks if you are revived before you bleed out. <FateAndFortuneCardTooltip cardKey="raining-bullets" /> and
+> <FateAndFortuneCardTooltip cardKey="all-the-ammos" /> matter in the <ZombieTooltip zombieKey="mammoth" /> phase, which spends a lot of bullets.
+
+## Step 1: Install N31L
+> There is no power switch. Until **N31L's** head is in the Staging terminal, <ZombieTooltip zombieKey="scout" />s attack instead of zombies.
+
+In the **Ops Center**, drop into the hole in the middle of the room. Follow the cave past <PerkTooltip perkKey="tuff-nuff" /> onto the catwalk above **Water Treatment**, and
+**N31L's** head is on the floor at the window at the end of that catwalk.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-ops-center-hole.webp" caption="Ops Center Hole" />
+<RichImage image="/content/the-beast-from-beyond/tbfb-n31l-head.webp" caption="N31L's Head" />
+
+Bring the head back to **Staging** and put it in the terminal by the door. Power comes back, zombies replace the cryptid rounds on the next round, and the **Cargo Bay** portal to
+the theater can be opened.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-terminal.webp" caption="Terminal" />
+
+## Step 2: Repair the Pack-a-Punch Bridge
+The projector room is across a broken bridge in the **Exterior**. You need all three scrap pieces, and power has to be on. Picking up a piece spawns three
+<ZombieTooltip zombieKey="scout" />s. Below are the locations for all three pieces:
+
+<CustomCarousel>
+	<RichImage image="/content/the-beast-from-beyond/tbfb-scrap-piece-1.webp" caption="Medical Bay - right of the Blue Bolts perk" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-scrap-piece-2.webp" caption="Cargo Bay - left of the stairs" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-scrap-piece-3.webp" caption="Theater - on the burning car to the right of the portal" />
+</CustomCarousel>
+
+The theater piece needs the **Cargo Bay** portal. On the upper catwalk, press the button on the wall, and a turret blows open the portal on the far side of the room. That button only
+works after **N31L** is installed. Cross the portal, go out to the street, and take the piece off the car.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-turret-button.webp" caption="Turret button" />
+<RichImage image="/content/the-beast-from-beyond/tbfb-turret-laser.webp" caption="Turret Laser" />
+
+Place all three pieces on the broken bridge, then use the portal. You get about **30 seconds** in the projector room before you are sent back, and the portal then stays down for
+about a minute. The first time you are sent back, a <ZombieTooltip zombieKey="phantom" /> spawns, or three <ZombieTooltip zombieKey="scout" />s. If it is the
+<ZombieTooltip zombieKey="phantom" />, kill it in **Staging**, next to **N31L**. It drops a floppy disk where it dies, and that disk is easy to lose if it falls through the floor.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-pack-a-punch.webp" caption="Pack-a-Punch portal" />
+
+## Step 3: Get the Entangler
+The **Entangler** is the weapon from the first two **Skull Breaker** skulls. Later skulls are not part of this quest, you only need these two.
+
+### First Skull
+You'll need to find a box in one of three locations, blow it open with an explosive, then shoot the skull inside.
+
+<CustomCarousel>
+	<RichImage image="/content/the-beast-from-beyond/tbfb-first-box-location.webp" caption="Water Treatment - above the stairs to the Medical Bay" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-second-box-location.webp" caption="Ops Center - above the Bombstoppers perk" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-third-box-location.webp" caption="Cargo Bay - above the stairs beside the P-LAW wall buy" />
+</CustomCarousel>
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-first-skull.webp" caption="Skull Revealed" />
+
+### Second Skull
+Four red **X** marks are on the **Cargo Bay** floor. Every player must stand on a different **X**, turning it one into a green circle you must stay inside and defend it. During this time,
+the skull will begin rising in the center of the room.
+
+<CustomCarousel>
+	<RichImage image="/content/the-beast-from-beyond/tbfb-first-x-mark.webp" caption="Upper catwalk - near the P-LAW wall buy" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-second-x-mark.webp" caption="Main floor - at the bottom of the P-LAW stairs" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-third-x-mark.webp" caption="Main floor - under the catwalk that leads to the theater portal" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-fourth-x-mark.webp" caption="Main floor - near the X-Eon wall buy" />
+</CustomCarousel>
+
+When the skull finishes rising, it teleports somewhere in the room. Jump through it before it disappears, and the **Entangler** then spawns in the center of the room for you to
+pick up.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-second-skull.webp" caption="Second Skull" />
+<RichImage image="/content/the-beast-from-beyond/tbfb-entangler.webp" caption="The Entangler" />
+
+## Step 4: Collect the Floppy Disks
+**N31L** needs four floppy disks, each one has a symbol, you can only hold one at a time, and the symbol shows above your points while you are holding it. You can collect these in
+any order.
+
+### Vent Disk
+In the **Hallway** by the **Proteus**, under the stairs, a fenced red room has a floor vent that smokes. Grab the disk off the floor in front of that vent with the **Entangler**
+and shoot it into the vent while the smoke is up. Miss, and the disk is back on the floor.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk.webp" caption="Vent Disk" />
+
+After shooting it into the vent, the disk can appear in any of the following locations for you to pick up:
+
+<CustomCarousel>
+	<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk-location-1.webp" caption="" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk-location-2.webp" caption="" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk-location-3.webp" caption="" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk-location-4.webp" caption="" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk-location-5.webp" caption="" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk-location-6.webp" caption="" />
+	<RichImage image="/content/the-beast-from-beyond/tbfb-vent-disk-location-7.webp" caption="" />
+</CustomCarousel>
+
+### Forcefield Disk
+Grab the astronaut helmet in the **Hallway** between the **Exterior** and the **Cargo Bay** using **The Entangler**. If you miss the shot, another helmet is in that hallway or
+in **Staging**. Carry it to the **Medical Bay** forcefield and shoot it through the field at the lit monitor above the microscope.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-space-helmet.webp" caption="Space Helmet" />
+<RichImage image="/content/the-beast-from-beyond/tbfb-medical-bay-forcefield.webp" caption="Medical Bay Forcefield" />
+
+The disk is on the table in the room you just gained access to by taking down the forcefield.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-forcefield-disk.webp" caption="Forcefield Disk" />
+
+### Phantom Disk
+This is the disk from the first <ZombieTooltip zombieKey="phantom" /> you kill. One spawns the first time you leave the projector room. If you never take that trip, the first
+<ZombieTooltip zombieKey="phantom" /> of the match is the one that spawns on round **10**. Kill it in **Staging** so the disk drops next to **N31L**. The disk stays where the
+body died, and it can clip under the floor.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-phantom-disk.webp" caption="Phantom Disk" />
+
+### Portal Disk
+The last disk is in the snow at the base of a pillar, to the left of the **Pack-a-Punch** portal. Pick it up once the bridge is repaired.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-portal-disk.webp" caption="Portal Disk" />
+
+## Step 5: Enter the Disks
+Insert the four disks into **N31L's** terminal from left to right. Use the tool below to determine the order you need to insert the disks into **N31L's** terminal, just click
+on the four symbols your disks show in your game.
+
+<TbfbDiskPuzzle />
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-n31l-terminal.webp" caption="N31L Terminal" />
+
+> A wrong order spawns cryptids, sends the disks back, and changes their symbols.
+
+The right order makes **N31L** slam doors and turn traps on. Those doors can kill you so you'll need to be careful.
+
+## Step 6: Hack N31L
+In the theater hallway behind the **Brute** cutout, grab the red button on the wall with the **Entangler**. The button is beside the lampshade at the edge of the map. If you drop
+it, it goes back on that wall. Shoot the button into **The Beast from Beyond** poster in the arcade, by the concessions.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-poster-button.webp" caption="Red Button" />
+<RichImage image="/content/the-beast-from-beyond/tbfb-poster.webp" caption="Poster" />
+
+Go back to the **Medical Bay** forcefield room, go prone at the desk where the floppy disk was, and press the button under the desk. A panel of handles opens by the dead cryptid
+in the next room.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-desk-button.webp" caption="Button under the desk" />
+
+Take a picture of the board's initial state to take note of all the horizontal handles, and flip only those handles. Other handles spin while you do this, which you should just ignore.
+If any handle is still horizontal when you finish the pass, write those down and flip only that new set. Repeat until every handle is vertical. **N31L** is hacked when the happy
+face is up.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-puzzle-board.webp" caption="Puzzle Board" />
+
+## Step 7: Escort N31L to the Projector
+Open the doors to the projector room before you pick him up. When the happy face is showing, grab his head with the **Entangler** and carry it to the computer to the right of the
+projector.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-n31l-installed.webp" caption="N31L Installed" />
+
+> Dropping him in the wrong place nukes the zombies and can end the round. Zombies can open doors when they get close if you forget to open one while carrying him.
+> You should not **FULLY PREPARE** for the boss fight before continuing.
+
+## Step 8: Cryptid Boss Fight
+> It's recommended to have the **Kendall 44** double packed for this fight, as well as the **EBR-800 "Bomber"** Epic variant double packed if you have it, the **FHR** or the
+> **Mauler**. This combined with the <FateAndFortuneCardTooltip cardKey="ego-trip" /> fortune card will destory the <ZombieTooltip zombieKey="mammoth" /> phase.
+
+Interacting with **N31L** in the computer sends you to a closed cargo bay to begin the boss fight.
+
+### Phase 1
+The laser opens four containers, each one releases a <ZombieTooltip zombieKey="rhino" />. They have a lot of health, and the charge downs you without
+<PerkTooltip perkKey="tuff-nuff" />. Kill them as they come out, and after the fourth, you'll get a short rest.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-phase-1.webp" caption="Phase 1" />
+
+### Phase 2
+The first wave is <ZombieTooltip zombieKey="scout" />s. Clearing it opens more of the room, and <ZombieTooltip zombieKey="phantom" />s join the next wave. After that, every
+portal turns on and <ZombieTooltip zombieKey="rhino" />s mix in. The laser starts firing at you as well as at the crates.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-phase-2.webp" caption="Phase 2" />
+
+### Phase 3
+Three monitors around the arena light up. Interact with all three quickly to shut the portals off. During this, the laser will also start firing randomly around the room.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-phase-3.webp" caption="Phase 3" />
+
+### Phase 4
+The laser keeps firing until it opens a crate with another terminal. That terminal counts down from **99**, and you'll need to survive the <ZombieTooltip zombieKey="scout" />s,
+<ZombieTooltip zombieKey="phantom" />s, and <ZombieTooltip zombieKey="rhino" />s until the count finishes. Interact with it to wipe the cryptids in the room once the count hits zero.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-phase-4.webp" caption="Phase 4" />
+
+### Phase 5
+The lights drop, and the laser opens one more crate. Two <ZombieTooltip zombieKey="mammoth" />s come out. They charge like <ZombieTooltip zombieKey="rhino" />s, and damaging them
+leaves blue fire on the ground. That fire stays until the <ZombieTooltip zombieKey="mammoth" /> dies and will down you if you stand in it. You'll need to train them in an area as
+you slowly kill them.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-mammoths.webp" caption="Mammoths" />
+
+> If you have the **EBR-800** bomber variant, you can activate the <FateAndFortuneCardTooltip cardKey="ego-trip" /> and aim at the head of the <ZombieTooltip zombieKey="mammoth" />
+> and spray into it, quickly killing it.
+
+The ending cutscene plays, and **Poindexter** takes the last **Soul Key** piece off the dead <ZombieTooltip zombieKey="mammoth" />, completing the quest.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-ending.webp" caption="Ending" />
+
+Congratulations! You have beaten **The Beast from Beyond** main quest: **The End?**.
+
+> **Mephistopheles** is a separate fight. He only shows up if this quest is finished with **Director's Cut** active and the **Talisman Mask** quest already done. This guide stops
+> at the **Soul Key**.
+
+## Unlocking Director's Cut
+Once you have completed the main quest on every single map, you can go into the any map's projector room and interact with the **Soul Jar** to obtain the full
+**Soul Key** and unlock **Director's Cut**.
+
+<RichImage image="/content/the-beast-from-beyond/tbfb-unlocking-directors-cut.webp" caption="Soul Jar" />
+
+**Director's Cut** gives you the following rewards when activated in a map:
+
+- Spawn with $25,000 points instead of 500
+- Grants every perk available on the map permanently
+- Every weapon from the magic wheel is Pack-a-Punched (level one)
+- Wonder Weapons are in the magic wheel without being needed to be built
+- Double Pack-a-Punch is available from the start without needing to insert alien fuses
+- Fate and Fortune Cards recharge much faster
+- Gives you access to complete the Super Easter Egg (beating all main quests again w/ director's cut active) and fight **Mephistopheles**
+- Playable Willard Wyler character
+- Director's Cut weapon camo
+
+## Credits
+Some images were sourced from the following community members:
+- [ZombieSlayaMr](https://steamcommunity.com/id/ZombieSlayaMr)
