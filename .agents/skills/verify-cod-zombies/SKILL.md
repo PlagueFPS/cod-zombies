@@ -11,7 +11,7 @@ Other surfaces, not driven by this skill:
 
 - Newsletter subscribe and unsubscribe forms (`/` and `/newsletter/unsubscribe/`). Launch sets `E2E_MOCK_EMAIL=success`, so those forms return a fake success and do not call Resend. A cleared email field is not proof that mail was sent.
 - React Email preview via `bun run email` (port chosen by the `email` CLI, separate from the site).
-- Content broadcast scripts (`bun run content:broadcast:test` and `content:broadcast:send`). The send script delivers real email. Do not run it for verification.
+- Newsletter broadcasts (`bun run send:broadcast -- content|feature|policy`). Adding `--send` delivers real email. Do not run it with `--send` for verification.
 
 Content is compiled into the repo. There is no database to seed and no login.
 

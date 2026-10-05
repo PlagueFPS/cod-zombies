@@ -26,8 +26,7 @@
 		"generate:image:paths": "bun scripts/generate-image-paths.ts",
 		"generate:content:paths": "bun scripts/generate-content-paths.ts",
 		"generate:og:images": "bun scripts/generate-og-images.tsx",
-		"content:broadcast:test": "bun scripts/send-content-broadcast.ts",
-		"content:broadcast:send": "bun scripts/send-content-broadcast.ts --send"
+		"send:broadcast": "bun scripts/send-broadcast.ts"
 	},
 	"dependencies": {
 		"@base-ui/react": "1.8.0",
