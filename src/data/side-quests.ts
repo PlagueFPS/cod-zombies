@@ -2007,6 +2007,15 @@ const SIDE_QUESTS = uniqueMap([
 		map: "kowakujo",
 		content: "content/side-quests/par-course",
 	}),
+	makeQuest("better-box", {
+		state: Option.none(),
+		publishedDate: "2026-10-05",
+		title: "Better Box",
+		description:
+			"Learn how to increase your mystery box RNG with the ability to even get the wonder weapon before building it.",
+		map: "kowakujo",
+		content: "content/side-quests/better-box",
+	}),
 	makeQuest("skull-mask", {
 		state: Option.none(),
 		publishedDate: "2026-08-26",
