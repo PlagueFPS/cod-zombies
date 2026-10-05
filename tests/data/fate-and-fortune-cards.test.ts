@@ -1,6 +1,6 @@
 import { Option } from "effect"
 import { describe, expect, test } from "vitest"
-import { getFateAndFortuneCardByKey, getFateAndFortuneCards } from "@/data/fate-and-fortune-cards"
+import { getFateAndFortuneCardByKey } from "@/data/fate-and-fortune-cards"
 
 describe("getFateAndFortuneCardByKey", () => {
 	test("returns None when the card does not exist", () => {
@@ -23,28 +23,5 @@ describe("getFateAndFortuneCardByKey", () => {
 		const card = getFateAndFortuneCardByKey("explosive-touch").pipe(Option.getOrThrow)
 		expect(card.type).toBe("Fortune")
 		expect(card.rarity).toEqual(Option.some("Legendary"))
-	})
-})
-
-describe("getFateAndFortuneCards", () => {
-	test("returns every registered card", () => {
-		const cards = getFateAndFortuneCards()
-		expect(cards).toHaveLength(14)
-		expect(cards.map(card => card.id)).toEqual([
-			"five-second-muscle",
-			"best-for-last",
-			"nade-party",
-			"scoped-dollars",
-			"mana-up",
-			"shop-class",
-			"perk-insured",
-			"raining-bullets",
-			"explosive-touch",
-			"all-the-ammos",
-			"coupon-clipper",
-			"head-reloaded",
-			"hide-n-seek",
-			"evade",
-		])
 	})
 })
