@@ -7,6 +7,11 @@ interface INewFeatureEmail {
 	unsubscribeUrl: string
 }
 
+export const featureUpdateSubject = "New Main Quest Guides: Infinite Warfare"
+
+export const featureUpdatePreview =
+	"Main quest guides for every Infinite Warfare map are now available."
+
 const siteOrigin = "https://www.codzombiesguides.com"
 
 const infiniteWarfareMainQuests = [
@@ -40,8 +45,8 @@ const infiniteWarfareMainQuests = [
 function NewFeatureEmail({ unsubscribeUrl }: INewFeatureEmail) {
 	return (
 		<EmailShell
-			title="New Main Quest Guides: Infinite Warfare"
-			preview="Main quest guides for every Infinite Warfare map are now available."
+			title={featureUpdateSubject}
+			preview={featureUpdatePreview}
 			serverUrl={siteOrigin}
 			unsubscribeUrl={unsubscribeUrl}
 		>
