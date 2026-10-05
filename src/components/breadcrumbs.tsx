@@ -106,6 +106,7 @@ export function Breadcrumbs({ links, className }: BreadcrumbsProps) {
 									render={
 										<CustomLink
 											to={entry.link.href}
+											search={entry.link.search}
 											activeOptions={{ exact: true, includeSearch: false }}
 											activeProps={{ className: "text-primary" }}
 										>
