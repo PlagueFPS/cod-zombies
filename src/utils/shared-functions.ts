@@ -1,7 +1,7 @@
-import type { RelicType } from "@/data/relics"
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
 import { Option } from "effect"
 import { MAIN_QUEST_DIFFICULTIES, type MainQuestDifficulty } from "@/data/maps"
+import { RELIC_TYPES, type RelicType } from "@/data/relics"
 import { SITE_TITLE } from "@/utils/constants"
 
 /** Returns true if the href is an internal link (starts with "/") or a fragment link (starts with "#"). */
@@ -193,9 +193,7 @@ export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
 export const sortRelicTypes = (a: RelicType, b: RelicType) => {
-	const typeOrder: RelicType[] = ["Grim", "Sinister", "Wicked"]
-
-	return typeOrder.indexOf(a) - typeOrder.indexOf(b)
+	return RELIC_TYPES.indexOf(a) - RELIC_TYPES.indexOf(b)
 }
 
 /**
