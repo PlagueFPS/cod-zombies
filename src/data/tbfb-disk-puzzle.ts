@@ -67,35 +67,22 @@ export type TbfbDiskPathMatch = {
 
 const DISK_SELECTION_SIZE = 4
 
+/** Insertion order is the picked symbols in the order they appear on the path. */
 export function solveTbfbDiskPuzzle(
 	selected: readonly TbfbDiskSymbolId[],
 ): readonly TbfbDiskPathMatch[] {
 	if (selected.length !== DISK_SELECTION_SIZE) return []
 
-	const selectedSymbols = new Set(selected)
+	const picked = new Set(selected)
 
-	if (selectedSymbols.size !== DISK_SELECTION_SIZE) return []
+	if (picked.size !== DISK_SELECTION_SIZE) return []
 
 	return TBFB_DISK_PATHS.flatMap(path => {
-		const pathSymbols: readonly TbfbDiskSymbolId[] = path.symbols
+		const order = path.symbols.filter(symbol => picked.has(symbol))
 
-		const indexes = pathSymbols.flatMap((symbol, index) =>
-			selectedSymbols.has(symbol) ? [index] : [],
-		)
+		if (order.length !== DISK_SELECTION_SIZE) return []
 
-		if (indexes.length !== DISK_SELECTION_SIZE) return []
-
-		const first = indexes[0] ?? 0
-		const last = indexes[indexes.length - 1] ?? 0
-
-		if (last - first + 1 !== DISK_SELECTION_SIZE) return []
-
-		return [
-			{
-				path: path.id,
-				order: pathSymbols.slice(first, last + 1),
-			},
-		]
+		return [{ path: path.id, order: [...order] }]
 	})
 }
 

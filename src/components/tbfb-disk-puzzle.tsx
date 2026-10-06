@@ -6,14 +6,21 @@ import {
 	getTbfbDiskSymbol,
 	solveTbfbDiskPuzzle,
 	TBFB_DISK_SYMBOLS,
+	type TbfbDiskPathMatch,
 	type TbfbDiskSymbolId,
 } from "@/data/tbfb-disk-puzzle"
 
 const DISK_SELECTION_SIZE = 4
 
+const NO_MATCH_MESSAGE =
+	"Double-check the symbols on your disks. No path contains all four of them."
+
+const SEVERAL_ORDERS_MESSAGE =
+	"These symbols match more than one order. A symbol may have been misread."
+
 export default function TbfbDiskPuzzle() {
 	const [selected, setSelected] = useState<TbfbDiskSymbolId[]>([])
-	const matches = solveTbfbDiskPuzzle(selected)
+	const orders = distinctInsertionOrders(solveTbfbDiskPuzzle(selected))
 	const selectionIsFull = selected.length === DISK_SELECTION_SIZE
 
 	const toggleSymbol = (symbolId: TbfbDiskSymbolId) => {
@@ -83,20 +90,20 @@ export default function TbfbDiskPuzzle() {
 
 				{selectionIsFull ? (
 					<div className="space-y-3 rounded-sm bg-input p-3 dark:bg-input/20">
-						{matches.length === 0 ? (
-							<p className="text-center text-sm">No path contains all four of these symbols.</p>
+						{orders.length === 0 ? (
+							<p className="text-center text-sm">{NO_MATCH_MESSAGE}</p>
 						) : (
 							<>
 								<p className="text-center text-sm">
-									{matches.length === 1
+									{orders.length === 1
 										? "Insert the disks from left to right."
-										: "These symbols fit more than one path. Try the next order if that one is wrong."}
+										: SEVERAL_ORDERS_MESSAGE}
 								</p>
 								<ul className="space-y-3">
-									{matches.map(match => (
-										<li key={match.path}>
+									{orders.map(order => (
+										<li key={order.join(":")}>
 											<div className="flex items-center justify-center gap-2">
-												{match.order.map(symbolId => {
+												{order.map(symbolId => {
 													const symbol = getTbfbDiskSymbol(symbolId)
 
 													return (
@@ -121,4 +128,24 @@ export default function TbfbDiskPuzzle() {
 			</CardContent>
 		</Card>
 	)
+}
+
+function distinctInsertionOrders(
+	matches: readonly TbfbDiskPathMatch[],
+): readonly (readonly TbfbDiskSymbolId[])[] {
+	const orders: TbfbDiskSymbolId[][] = []
+
+	for (const match of matches) {
+		const listed = orders.some(
+			order =>
+				order.length === match.order.length &&
+				order.every((symbolId, index) => symbolId === match.order[index]),
+		)
+
+		if (listed) continue
+
+		orders.push([...match.order])
+	}
+
+	return orders
 }
