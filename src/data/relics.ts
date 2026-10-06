@@ -6,10 +6,29 @@ import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
 import { Data, Option } from "effect"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
-import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
+import { getAdjacentItems, slugify, sortDates } from "@/utils/shared-functions"
 
-/** The three types of relics */
-export type RelicType = "Grim" | "Sinister" | "Wicked" | "Special"
+/** Relic types in ascending sort order. */
+export const RELIC_TYPES = ["Grim", "Sinister", "Wicked", "Special"] as const
+
+/** Union of all relic types */
+export type RelicType = (typeof RELIC_TYPES)[number]
+
+/** URL slug for a relic type. Same value the listing combobox writes into `type`. */
+export const relicTypeSlug = (type: RelicType) => slugify(type)
+
+/**
+ * Type values the relics combobox may write into `?type=`.
+ * Unknown slugs are dropped. An empty selection is omitted.
+ */
+export function relicTypeSearchParam(values: readonly string[] | undefined) {
+	if (!values) return undefined
+
+	const allowed = new Set<string>(RELIC_TYPES.map(relicTypeSlug))
+	const matched = values.filter(value => allowed.has(value))
+
+	return matched.length > 0 ? matched : undefined
+}
 
 /** The unique identifier for each relic */
 export type RelicKey = Parameters<typeof RELICS.get>[0]

@@ -202,7 +202,7 @@ describe("sortZombieTypes", () => {
 })
 
 describe("sortRelicTypes", () => {
-	const order = ["Grim", "Sinister", "Wicked"] as const
+	const order = ["Grim", "Sinister", "Wicked", "Special"] as const
 
 	test("orders permutations to canonical relic type order", () => {
 		const shuffled = [...order].reverse()

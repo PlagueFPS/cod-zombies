@@ -616,23 +616,58 @@ async function driveSideQuests(page: Page, dir: string) {
 	logStep(dir, "result=side-quests-ok")
 }
 
+function typeSearchValues(url: URL): string[] | null {
+	const raw = url.searchParams.get("type")
+	if (raw == null) return null
+
+	try {
+		const parsed: unknown = JSON.parse(raw)
+		if (!Array.isArray(parsed) || !parsed.every(item => typeof item === "string")) return null
+
+		return parsed
+	} catch {
+		return null
+	}
+}
+
+function typeSearchIncludes(url: URL, expected: readonly string[]) {
+	const values = typeSearchValues(url)
+	if (!values || values.length !== expected.length) return false
+
+	return expected.every(value => values.includes(value))
+}
+
 async function driveRelics(page: Page, dir: string) {
 	logStep(dir, "entry=header-nav")
 	await clickLink(page, "Go to Relics page")
 	await page.getByRole("heading", { name: "Cursed Relics", exact: true }).waitFor()
 	await shot(page, dir, "01-listing.png")
 	logStep(dir, `url=${page.url()}`)
-	logStep(dir, "entry=filter-type")
+	logStep(dir, "entry=filter-special")
+	await chooseFilter(page, "Filter: Map, Type", "Special")
+	await page.getByLabel("Special").waitFor()
+	await page.waitForURL(url => typeSearchIncludes(url, ["special"]))
+	await page.getByRole("link", { name: "View Guide for the Mister Peeks Mayhem relic" }).waitFor()
+	await shot(page, dir, "02-special.png")
+	await snapshot(page, dir, "02-special.aria.txt")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=filter-special-and-grim")
 	await chooseFilter(page, "Filter: Map, Type", "Grim")
 	await page.getByLabel("Grim").waitFor()
-	await page.waitForURL(/type=.*grim/)
+	await page.waitForURL(url => typeSearchIncludes(url, ["grim", "special"]))
+	await shot(page, dir, "03-combined.png")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=filter-type")
+	await chooseFilter(page, "Filter: Map, Type", "Special")
+	await page.getByLabel("Grim").waitFor()
+	await page.waitForURL(url => typeSearchIncludes(url, ["grim"]))
 	logStep(dir, `url=${page.url()}`)
 	logStep(dir, "entry=open-guide")
 	await clickLink(page, "View Guide for the Lawyer's Pen relic")
 	await page.waitForURL(/\/relics\/black-ops-7\/lawyers-pen/)
 	await page.getByRole("heading", { name: "Lawyer's Pen", exact: true }).waitFor()
-	await shot(page, dir, "02-guide.png")
-	await snapshot(page, dir, "02-guide.aria.txt")
+	await shot(page, dir, "04-guide.png")
+	await snapshot(page, dir, "04-guide.aria.txt")
 	logStep(dir, `url=${page.url()}`)
 	logStep(dir, "result=relics-ok")
 }

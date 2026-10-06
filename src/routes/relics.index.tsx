@@ -11,7 +11,13 @@ import { GridSection } from "@/components/grid-section"
 import { GridSort } from "@/components/grid-sort"
 import { RelicGrid } from "@/components/relic-grid"
 import { getMaps } from "@/data/maps"
-import { getRelics, getRelicSortOptions, type Relic } from "@/data/relics"
+import {
+	getRelics,
+	getRelicSortOptions,
+	relicTypeSearchParam,
+	relicTypeSlug,
+	type Relic,
+} from "@/data/relics"
 import {
 	applyFilters,
 	applySort,
@@ -28,15 +34,6 @@ import {
 	sortRelicTypes,
 } from "@/utils/shared-functions"
 import { StandardRelicSearchParamsSchema } from "@/utils/validation-schemas"
-
-const RELIC_TYPE_SLUGS = ["grim", "sinister", "wicked"] as const
-
-function matchingSlugs<S extends string>(values: string[] | undefined, allowed: readonly S[]) {
-	if (!values) return undefined
-	const matched = values.filter((value): value is S => allowed.some(slug => slug === value))
-
-	return matched.length > 0 ? matched : undefined
-}
 
 export const Route = createFileRoute("/relics/")({
 	validateSearch: StandardRelicSearchParamsSchema,
@@ -56,7 +53,7 @@ export const Route = createFileRoute("/relics/")({
 		const relicMaps = new Set<string>(allRelics.map(r => r.map))
 
 		const typeFilters = [...new Set(allRelics.map(r => r.type))].map(type => ({
-			value: slugify(type),
+			value: relicTypeSlug(type),
 			label: type,
 		}))
 
@@ -73,7 +70,7 @@ export const Route = createFileRoute("/relics/")({
 			},
 			{
 				values: deps.type,
-				match: (item, slug) => item.type.toLowerCase() === slug,
+				match: (item, slug) => relicTypeSlug(item.type) === slug,
 			},
 		]
 
@@ -178,7 +175,7 @@ function Relics() {
 				...prev,
 				page: undefined,
 				map: selected.get("map"),
-				type: matchingSlugs(selected.get("type"), RELIC_TYPE_SLUGS),
+				type: relicTypeSearchParam(selected.get("type")),
 			}),
 			replace: true,
 		})

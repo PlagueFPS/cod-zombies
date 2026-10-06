@@ -1,9 +1,18 @@
 import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import { getAdjacentRelics, getRelicByKey, getRelics, type Relic } from "@/data/relics"
+import {
+	getAdjacentRelics,
+	getRelicByKey,
+	getRelics,
+	RELIC_TYPES,
+	relicTypeSearchParam,
+	relicTypeSlug,
+	type Relic,
+} from "@/data/relics"
 import { assertSortedDescByDate } from "@/tests/helpers"
 import { resolveNewContentState } from "@/utils/content-state"
+import { applyFilters, type FilterSpec } from "@/utils/filter-helpers"
 
 /** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real RELICS rows). */
 const relicNewBadgeFixture = (discoveredDate: string): Pick<Relic, "discoveredDate" | "state"> => ({
@@ -119,5 +128,55 @@ describe("getAdjacentRelics", () => {
 		const { prev, next } = getAdjacentRelics(last.id)
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
+	})
+})
+
+describe("relic type filter", () => {
+	const relicTypeFilter = (slugs: readonly string[] | undefined): FilterSpec<Relic> => ({
+		values: relicTypeSearchParam(slugs),
+		match: (item, slug) => relicTypeSlug(item.type) === slug,
+	})
+
+	test("keeps special when the combobox selection is written to the type param", () => {
+		expect(relicTypeSearchParam(["special"])).toEqual(["special"])
+	})
+
+	test("keeps grim, sinister, and wicked, including a combination with special", () => {
+		expect(relicTypeSearchParam(["grim"])).toEqual(["grim"])
+		expect(relicTypeSearchParam(["sinister"])).toEqual(["sinister"])
+		expect(relicTypeSearchParam(["wicked"])).toEqual(["wicked"])
+		expect(relicTypeSearchParam(["grim", "sinister", "wicked"])).toEqual([
+			"grim",
+			"sinister",
+			"wicked",
+		])
+		expect(relicTypeSearchParam(["grim", "special"])).toEqual(["grim", "special"])
+	})
+
+	test("drops unknown slugs and omits an empty selection", () => {
+		expect(relicTypeSearchParam(["not-a-type"])).toBeUndefined()
+		expect(relicTypeSearchParam(["special", "not-a-type"])).toEqual(["special"])
+		expect(relicTypeSearchParam([])).toBeUndefined()
+		expect(relicTypeSearchParam(undefined)).toBeUndefined()
+	})
+
+	test("accepts a slug for every relic type", () => {
+		for (const type of RELIC_TYPES) {
+			const slug = relicTypeSlug(type)
+			expect(relicTypeSearchParam([slug])).toEqual([slug])
+		}
+	})
+
+	test("special lists Mister Peeks Mayhem", () => {
+		const filtered = applyFilters(getRelics(), [relicTypeFilter(["special"])])
+		expect(filtered.map(relic => relic.title)).toEqual(["Mister Peeks Mayhem"])
+	})
+
+	test("grim stays on grim relics when combined with special", () => {
+		const filtered = applyFilters(getRelics(), [relicTypeFilter(["grim", "special"])])
+		const types = [...new Set(filtered.map(relic => relic.type))]
+		expect(types.sort()).toEqual(["Grim", "Special"])
+		expect(filtered.some(relic => relic.title === "Mister Peeks Mayhem")).toBe(true)
+		expect(filtered.some(relic => relic.title === "Lawyer's Pen")).toBe(true)
 	})
 })
