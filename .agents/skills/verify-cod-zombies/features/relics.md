@@ -14,7 +14,7 @@ Cursed relic guides list relics, filter them by map and type, and open one relic
 - On the home page, choose `View All` in the Cursed Relics section. The listing heading is also `Cursed Relics`. The breadcrumb link says `Relics`.
 - Below the `lg` breakpoint, choose `Toggle Nav`, then `Relics`.
 - Choose `Search` and pick a relic under a `<map> Relics` group.
-- Open `/relics/` or a shared filter URL such as `/relics/?type=["grim"]`.
+- Open `/relics` or a shared filter URL such as `/relics?type=["grim"]`.
 
 ## Driving it with codz-verify
 
