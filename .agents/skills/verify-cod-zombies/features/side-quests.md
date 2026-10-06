@@ -15,7 +15,7 @@ Side quest guides list secrets and rewards outside the main story, filter them b
 - On the home page, choose `View All` in the Side Quests section.
 - Below the `lg` breakpoint, choose `Toggle Nav`, then `Side Quests`.
 - Choose `Search`, type a side-quest title, and choose it under a `<map> Side Quests` group.
-- Open `/side-quests/` or a shared filter URL.
+- Open `/side-quests` or a shared filter URL such as `/side-quests?game=["black-ops-3"]&sort=oldest`.
 
 ## Driving it with codz-verify
 
@@ -33,7 +33,7 @@ Preconditions:
 
 - Home and mobile entry points are real and are not part of `drive side-quests`. Driving only the header does not verify them.
 - `Free 500 Points` is the Shadows of Evil quest. Other maps can reuse similar reward names; assert the full URL. The guide MDX also has an `h2` with that title, so `getByRole("heading", { name: "Free 500 Points", exact: true })` matches two nodes.
-- Default sort is Latest, which lists newer Black Ops 3 maps first. Shadows of Evil is the oldest of those maps, so the drive switches to Oldest before opening the guide. Do not open a different Black Ops 3 quest on page 1 and call this entry verified.
+- Default sort is Latest, which lists newer Black Ops 3 maps first. Shadows of Evil and The Giant share the earliest Black Ops 3 release date, so Oldest is what puts Free 500 Points on page 1 (alongside The Giant's quests). Do not open a different Black Ops 3 quest on page 1 and call this entry verified.
 - The filter placeholder is `Filter: Game or Map`. A substring match on `Filter: Game` can hit the wrong field on another page.
 - The filter click waits until the combobox input is hydrated. A click on the server-rendered input does not open the list.
 - `Coming Soon` side quests are left out of search.

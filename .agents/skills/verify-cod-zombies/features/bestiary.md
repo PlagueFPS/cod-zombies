@@ -15,7 +15,7 @@ The bestiary lists zombie types, filters them by type, game, map, or weakness, a
 - On the home page, choose `View All` in the Bestiary section.
 - Below the `lg` breakpoint, choose `Toggle Nav`, then `Bestiary`.
 - Choose `Search` and pick an entry under the `Zombies` group.
-- Open `/bestiary/` or a shared filter URL such as `/bestiary/?type=["boss"]&sort="oldest"`.
+- Open `/bestiary` or a shared filter URL such as `/bestiary?type=["boss"]&sort=oldest`.
 
 ## Driving it with codz-verify
 
