@@ -127,4 +127,7 @@ const WEAK_POINTS = uniqueMap([
 	makeWeakPoint("green-splatter", {
 		title: "Green Splatter",
 	}),
+	makeWeakPoint("bomb", {
+		title: "Bomb",
+	}),
 ])

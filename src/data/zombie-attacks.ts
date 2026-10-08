@@ -800,4 +800,14 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Leaves blue fire on the ground when damaged. The fire stays until the Mammoth dies and deals heavy damage over a short time.",
 	}),
+	makeZombieAttack("carried-bomb", {
+		title: "Carried Bomb",
+		range: "Short",
+		description: "Carries a bomb. Shooting the bomb makes it explode.",
+	}),
+	makeZombieAttack("forward-charge", {
+		title: "Forward Charge",
+		range: "Long",
+		description: "Charges straight ahead.",
+	}),
 ])
