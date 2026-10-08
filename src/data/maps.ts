@@ -557,6 +557,23 @@ const MAPS = uniqueMap([
 				"Time varies significantly based on if you have Director's Cut, the Cryptid boss fight, and knowledge of the steps.",
 		}),
 	}),
+	makeMap("the-final-reich", {
+		title: "The Final Reich",
+		releaseDate: "2017-11-03",
+		description:
+			"The Bavarian village of Mittelburg, where a bunker and salt mine hide the hilt of Barbarossa's sword.",
+		image: "/maps/the-final-reich.webp",
+		game: "wwii",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/fireworks"),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 40,
+			max: 105,
+			reason:
+				"Fireworks takes about 40–55 minutes solo. Dark Reunion takes about 90–105 minutes solo. Time varies with co-op, special-enemy spawns, and knowledge of the steps.",
+		}),
+	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
 		releaseDate: "2018-10-11",
