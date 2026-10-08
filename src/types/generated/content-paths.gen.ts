@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-05T22:36:54.372Z
- * generated in: 21ms
+ * generated at: 2026-10-08T18:52:53.886Z
+ * generated in: 17ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -24,6 +24,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/dust-to-dust"
 	| "content/main-quests/electromagnetic-awakening-party"
 	| "content/main-quests/ensemble-cast"
+	| "content/main-quests/fireworks"
 	| "content/main-quests/for-the-good-of-all"
 	| "content/main-quests/greek-tragedy"
 	| "content/main-quests/high-maintenance"
@@ -353,6 +354,8 @@ export type ZombiesPaths =
 	| "content/zombies/astronaut-zombie"
 	| "content/zombies/avogadro"
 	| "content/zombies/blightfather"
+	| "content/zombies/bomber"
+	| "content/zombies/brenner"
 	| "content/zombies/brute"
 	| "content/zombies/brutus"
 	| "content/zombies/caltheris"
@@ -410,12 +413,14 @@ export type ZombiesPaths =
 	| "content/zombies/oni"
 	| "content/zombies/orda"
 	| "content/zombies/oscar"
+	| "content/zombies/panzermorder"
 	| "content/zombies/panzersoldat"
 	| "content/zombies/parasite"
 	| "content/zombies/patient-13"
 	| "content/zombies/pegasus"
 	| "content/zombies/pentagon-thief"
 	| "content/zombies/perseus"
+	| "content/zombies/pest"
 	| "content/zombies/phantom"
 	| "content/zombies/plaguehound"
 	| "content/zombies/poison-catalyst"
@@ -458,6 +463,7 @@ export type ZombiesPaths =
 	| "content/zombies/water-catalyst"
 	| "content/zombies/web-mother"
 	| "content/zombies/werewolf"
+	| "content/zombies/wustling"
 	| "content/zombies/z-rex"
 	| "content/zombies/zombie"
 	| "content/zombies/zursa"
