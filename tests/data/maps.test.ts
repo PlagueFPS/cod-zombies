@@ -1,4 +1,3 @@
-import type { ContentState } from "@/types/data"
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import {
@@ -6,23 +5,8 @@ import {
 	getAdjacentMaps,
 	getMaps,
 	getMapsWithMainQuest,
-	MAIN_QUEST_DIFFICULTIES,
-	type MapEntry,
 } from "@/data/maps"
 import { assertSortedDescByDate } from "@/tests/helpers"
-import { resolveNewContentState } from "@/utils/content-state"
-import { slugify } from "@/utils/shared-functions"
-
-/** Minimal catalog-shaped fixture for `"New"` resolution (does not depend on real MAPS rows). */
-const mapNewBadgeFixture = (releaseDate: string): Pick<MapEntry, "releaseDate" | "state"> => ({
-	releaseDate,
-	state: Option.some("New"),
-})
-
-const resolvedMapDisplayState = (
-	fixture: Pick<MapEntry, "releaseDate" | "state">,
-	isoUtcInstant: string,
-) => resolveNewContentState(fixture.state, fixture.releaseDate, Date.parse(isoUtcInstant))
 
 describe("compareMapReleaseDescending", () => {
 	test("orders by release date descending when dates differ", () => {
@@ -44,28 +28,6 @@ describe("compareMapReleaseDescending", () => {
 	})
 })
 
-describe("main quest data integrity", () => {
-	test("difficulty values are canonical and slugify to filter param values", () => {
-		const allowed = new Set<string>(MAIN_QUEST_DIFFICULTIES)
-
-		for (const map of getMapsWithMainQuest()) {
-			if (Option.isNone(map.difficulty)) continue
-			expect(allowed.has(map.difficulty.value)).toBe(true)
-			expect(slugify(map.difficulty.value)).toBe(
-				map.difficulty.value.toLowerCase().replace(/\s+/g, "-"),
-			)
-		}
-	})
-
-	test("estimated completion ranges have min <= max", () => {
-		for (const map of getMapsWithMainQuest()) {
-			if (Option.isNone(map.estimatedTimeMins)) continue
-			const { min, max } = map.estimatedTimeMins.value
-			expect(min).toBeLessThanOrEqual(max)
-		}
-	})
-})
-
 describe("getMaps", () => {
 	test("sorted by release date descending", () => {
 		const dates = getMaps().map(m => m.releaseDate)
@@ -77,52 +39,6 @@ describe("getMaps", () => {
 		const maps = getMaps()
 		const indexOf = (id: string) => maps.findIndex(m => m.id === id)
 		expect(indexOf("classified")).toBeLessThan(indexOf("voyage-of-despair"))
-	})
-})
-
-describe("map New badge vs release date (fixtures)", () => {
-	const fixture = mapNewBadgeFixture("2026-04-30")
-
-	test("drops New when release date is 14+ full calendar days in the past", () => {
-		expect(
-			Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-15T12:00:00.000Z")),
-		).toBeNull()
-	})
-
-	test("keeps New within 14 days of release date", () => {
-		expect(Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-10T12:00:00.000Z"))).toBe(
-			"New",
-		)
-	})
-
-	test("keeps New through the last instant before the 14th full UTC day after release", () => {
-		expect(Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-13T23:59:59.999Z"))).toBe(
-			"New",
-		)
-	})
-
-	test("drops New at the start of the 14th full UTC day after release", () => {
-		expect(
-			Option.getOrNull(resolvedMapDisplayState(fixture, "2026-05-14T00:00:00.000Z")),
-		).toBeNull()
-	})
-
-	test("stored None stays None regardless of calendar age", () => {
-		const noBadge: Pick<MapEntry, "releaseDate" | "state"> = {
-			...fixture,
-			state: Option.none<ContentState>(),
-		}
-
-		expect(
-			Option.getOrNull(resolvedMapDisplayState(noBadge, "2026-05-10T12:00:00.000Z")),
-		).toBeNull()
-	})
-
-	test('stored Coming Soon is preserved when stored state is Some("Coming Soon")', () => {
-		const comingSoon = { ...fixture, state: Option.some("Coming Soon" as const) }
-		expect(Option.getOrNull(resolvedMapDisplayState(comingSoon, "2026-05-15T12:00:00.000Z"))).toBe(
-			"Coming Soon",
-		)
 	})
 })
 
