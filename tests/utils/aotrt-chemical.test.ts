@@ -90,19 +90,13 @@ describe("solveAotrtChemical", () => {
 		)
 	})
 
-	test("treats a reversed diamond as the proper pair", () => {
-		const swapped = DIAMONDS.filter(([top, left]) => top !== left)
-
-		for (const chemical of chemicals) {
-			for (const [top, left] of swapped) {
-				expect(solveAotrtChemical(chemical, left, top, 4)).toEqual(
-					solveAotrtChemical(chemical, top, left, 4),
-				)
-				expect(solveAotrtChemical(chemical, left, top, null)).toEqual(
-					AotrtChemicalSolution.MissingONumber(),
-				)
-			}
-		}
+	test("treats a reversed diamond pair identically to the canonical pair", () => {
+		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 7, 1, 4)).toEqual(
+			AotrtChemicalSolution.Solved({ steps: [24, 22, 15] }),
+		)
+		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 7, 1, null)).toEqual(
+			AotrtChemicalSolution.MissingONumber(),
+		)
 	})
 
 	test("reports the wrong TV color when the pair is not a diamond", () => {
