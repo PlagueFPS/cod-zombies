@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-08T18:52:53.886Z
- * generated in: 17ms
+ * generated at: 2026-10-12T07:08:58.090Z
+ * generated in: 26ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -52,6 +52,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/shattered-veil"
 	| "content/main-quests/sooooul-key"
 	| "content/main-quests/soul-less"
+	| "content/main-quests/the-darkest-shore"
 	| "content/main-quests/the-end"
 	| "content/main-quests/the-tomb"
 	| "content/main-quests/time-travel-will-tell"
