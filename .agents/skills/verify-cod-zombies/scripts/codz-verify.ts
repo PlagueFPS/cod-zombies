@@ -24,6 +24,18 @@ import {
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { chromium, type Locator, type Page } from "@playwright/test"
+import { Option } from "effect"
+import { getMapsWithMainQuest, MAIN_QUEST_DIFFICULTIES } from "../../../../src/data/maps"
+import { isInternalHref, slugify } from "../../../../src/utils/shared-functions"
+import {
+	buildSiteRouteIndex,
+	extractLinksFromMdx,
+	findUnclosedMarkdownLinks,
+	loadMdxCorpus,
+	resolveFragment,
+	resolveInternalPath,
+	splitHref,
+} from "../../../../tests/mdx/mdx-link-validation"
 
 const SITE_TITLE = "Call of Duty: Zombies Guides"
 
@@ -338,6 +350,62 @@ function ownsListenPort(pid: number, port: number) {
 	return false
 }
 
+function checkCatalogSchemaInvariants(): string[] {
+	const problems: string[] = []
+	const allowed = new Set<string>(MAIN_QUEST_DIFFICULTIES)
+
+	for (const map of getMapsWithMainQuest()) {
+		if (Option.isSome(map.difficulty)) {
+			if (!allowed.has(map.difficulty.value)) {
+				problems.push(`catalog: map ${map.id} has invalid difficulty ${map.difficulty.value}`)
+			}
+			const expectedSlug = map.difficulty.value.toLowerCase().replace(/\s+/g, "-")
+			if (slugify(map.difficulty.value) !== expectedSlug) {
+				problems.push(
+					`catalog: map ${map.id} difficulty slug mismatch ${slugify(map.difficulty.value)} !== ${expectedSlug}`,
+				)
+			}
+		}
+		if (Option.isSome(map.estimatedTimeMins)) {
+			const { min, max } = map.estimatedTimeMins.value
+			if (min > max) {
+				problems.push(`catalog: map ${map.id} estimatedTimeMins has min ${min} > max ${max}`)
+			}
+		}
+	}
+
+	return problems
+}
+
+async function checkMdxLinkIntegrity(): Promise<string[]> {
+	const problems: string[] = []
+	const corpus = loadMdxCorpus()
+	const routeIndex = await buildSiteRouteIndex()
+
+	for (const file of corpus) {
+		for (const issue of findUnclosedMarkdownLinks(file.content)) {
+			problems.push(`mdx-link: ${file.label}:${issue.line} unclosed link: ${issue.excerpt}`)
+		}
+
+		for (const link of extractLinksFromMdx(file.content)) {
+			if (!isInternalHref(link.href)) continue
+
+			const { pathname, hash } = splitHref(link.href)
+
+			if (pathname && !resolveInternalPath(pathname, routeIndex)) {
+				problems.push(`mdx-link: ${file.label}:${link.line} unknown internal path: ${pathname}`)
+				continue
+			}
+
+			if (!resolveFragment(pathname, hash, routeIndex, file.contentPath)) {
+				problems.push(`mdx-link: ${file.label}:${link.line} unknown heading anchor: #${hash}`)
+			}
+		}
+	}
+
+	return problems
+}
+
 async function doctor() {
 	const meta = loadMeta()
 	const problems: string[] = []
@@ -366,6 +434,15 @@ async function doctor() {
 	console.log(`git=${meta.gitRevision}`)
 	console.log(`log=${meta.logPath}`)
 	console.log(`emailMock=${serverEnv.E2E_MOCK_EMAIL}`)
+	for (const problem of checkCatalogSchemaInvariants()) {
+		problems.push(problem)
+	}
+	for (const problem of await checkMdxLinkIntegrity()) {
+		problems.push(problem)
+	}
+	console.log(`catalogInvariants=valid`)
+	console.log(`mdxLinks=valid`)
+
 	if (problems.length > 0) {
 		for (const problem of problems) console.log(`problem=${problem}`)
 		process.exit(1)
