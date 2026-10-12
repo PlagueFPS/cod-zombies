@@ -560,8 +560,7 @@ const MAPS = uniqueMap([
 	makeMap("the-final-reich", {
 		title: "The Final Reich",
 		releaseDate: "2017-11-03",
-		description:
-			"The Bavarian village of Mittelburg, where a bunker and salt mine hide the hilt of Barbarossa's sword.",
+		description: "The sleepy mining town of Mittelburg, where shadowy horror stirs.",
 		image: "/maps/the-final-reich.webp",
 		game: "wwii",
 		state: Option.none(),
@@ -573,6 +572,18 @@ const MAPS = uniqueMap([
 			reason:
 				"Fireworks takes about 40–55 minutes solo. Dark Reunion takes about 90–105 minutes solo. Time varies with co-op, special-enemy spawns, and knowledge of the steps.",
 		}),
+	}),
+	makeMap("the-darkest-shore", {
+		title: "The Darkest Shore",
+		releaseDate: "2018-01-30",
+		description:
+			"A sea fortress and keystone to the power of the Nazi Kriegsmarine, this mist-shrouded island hides secrets both ancient and terrifying.",
+		image: "/maps/the-darkest-shore.webp",
+		game: "wwii",
+		state: Option.some("Coming Soon"),
+		mainQuest: Option.none(),
+		difficulty: Option.none(),
+		estimatedTimeMins: Option.none(),
 	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",

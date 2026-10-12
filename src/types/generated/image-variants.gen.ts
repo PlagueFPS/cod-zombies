@@ -3763,6 +3763,7 @@ export const VARIANT_WIDTHS = {
 	"/maps/tag-der-toten.webp": [384, 1200],
 	"/maps/terminus.webp": [384, 1200],
 	"/maps/the-beast-from-beyond.webp": [384, 1200],
+	"/maps/the-darkest-shore.webp": [384, 1200],
 	"/maps/the-final-reich.webp": [384, 1200],
 	"/maps/the-giant.webp": [384, 1200],
 	"/maps/the-tomb.webp": [384, 1200],

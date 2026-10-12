@@ -392,6 +392,7 @@ export type MapsImagePath =
 	| "/maps/tag-der-toten.webp"
 	| "/maps/terminus.webp"
 	| "/maps/the-beast-from-beyond.webp"
+	| "/maps/the-darkest-shore.webp"
 	| "/maps/the-final-reich.webp"
 	| "/maps/the-giant.webp"
 	| "/maps/the-tomb.webp"
