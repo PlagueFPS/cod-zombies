@@ -187,9 +187,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 					return new Response(sitemap, {
 						headers: {
 							"Content-Type": "application/xml",
-							// CDN Edge: long-lived; new deploy purges CDN cache
 							"CDN-Cache-Control": "public, max-age=0, s-maxage=31536000",
-							// Browsers: store allowed, but treat as stale immediately → revalidate before use
 							"Cache-Control": "public, max-age=0, must-revalidate",
 						},
 					})

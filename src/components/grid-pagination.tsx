@@ -27,7 +27,6 @@ export function GridPagination({ from, page, totalCount, pageSize }: IGridPagina
 	const renderPaginationItems = () => {
 		const items: React.JSX.Element[] = []
 
-		// Helper function to add page button
 		const addPageButton = (pageNum: number) => (
 			<Button
 				key={pageNum}
@@ -44,35 +43,27 @@ export function GridPagination({ from, page, totalCount, pageSize }: IGridPagina
 			</Button>
 		)
 
-		// If total pages is less than or equal to 5, show all pages
 		if (totalPages <= 5) {
 			for (let i = 1; i <= totalPages; i++) {
 				items.push(addPageButton(i))
 			}
 		} else {
-			// Always show first page
 			items.push(addPageButton(1))
 
-			// Calculate middle pages based on current page
 			let middlePages: number[] = []
 
 			if (currentPage <= 3) {
-				// Near start - show 2,3,4
 				middlePages = [2, 3, 4]
 			} else if (currentPage >= totalPages - 2) {
-				// Near end - show last-3,last-2,last-1
 				middlePages = [totalPages - 3, totalPages - 2, totalPages - 1]
 			} else {
-				// Middle - show currentPage-1, currentPage, currentPage+1
 				middlePages = [currentPage - 1, currentPage, currentPage + 1]
 			}
 
-			// Add middle pages
 			middlePages.forEach(pageNum => {
 				items.push(addPageButton(pageNum))
 			})
 
-			// Always show last page
 			items.push(addPageButton(totalPages))
 		}
 

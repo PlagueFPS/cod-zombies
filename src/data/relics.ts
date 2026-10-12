@@ -72,7 +72,6 @@ export function compareRelicReleaseDescending(
 
 	if (byDate !== 0) return byDate
 
-	// Use inseration index as a tiebreaker (higher index = later insertion = newer Relic)
 	return RELIC_INSERATION_INDEX_BY_ID.get(b.id)! - RELIC_INSERATION_INDEX_BY_ID.get(a.id)!
 }
 

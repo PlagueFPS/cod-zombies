@@ -71,8 +71,6 @@ export function formatRelativeTimeAgo(
 		if (Math.abs(duration) < amount) {
 			const rounded = Math.round(duration)
 
-			// Rounding can land on the next unit (59.6 minutes → 60). Carry
-			// instead of formatting "60 minutes" / "24 hours" / "7 days".
 			if (Math.abs(rounded) >= amount) {
 				duration = rounded / amount
 				continue

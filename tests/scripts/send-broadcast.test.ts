@@ -25,7 +25,6 @@ const runBroadcast = Command.runWith(broadcastCli, { version: "1.0.0" })
 
 describe("resolveContentBroadcast", () => {
 	test("should build a relic broadcast from the catalog slug", async () => {
-		// Arrange
 		const program = resolveContentBroadcast({
 			kind: "relic",
 			id: "mister-peeks-mayhem",
@@ -34,10 +33,8 @@ describe("resolveContentBroadcast", () => {
 			description: Option.none(),
 		})
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const broadcast = expectExitSuccess(exit)
 		expect(broadcast).toMatchObject({
 			kind: "relic",
@@ -50,7 +47,6 @@ describe("resolveContentBroadcast", () => {
 	})
 
 	test("should build a main quest broadcast from the map slug", async () => {
-		// Arrange
 		const program = resolveContentBroadcast({
 			kind: "main-quest",
 			id: "reckoning",
@@ -59,10 +55,8 @@ describe("resolveContentBroadcast", () => {
 			description: Option.none(),
 		})
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const broadcast = expectExitSuccess(exit)
 		expect(broadcast).toMatchObject({
 			kind: "quest",
@@ -75,7 +69,6 @@ describe("resolveContentBroadcast", () => {
 	})
 
 	test("should reject a relic that is missing --bullet", async () => {
-		// Arrange
 		const program = resolveContentBroadcast({
 			kind: "relic",
 			id: "lawyers-pen",
@@ -84,10 +77,8 @@ describe("resolveContentBroadcast", () => {
 			description: Option.none(),
 		})
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const cause = expectExitFailure(exit)
 		const error = expectCauseTaggedError<BroadcastInputError>(cause, "BroadcastInputError")
 		expect(error).toBeInstanceOf(BroadcastInputError)
@@ -95,7 +86,6 @@ describe("resolveContentBroadcast", () => {
 	})
 
 	test("should reject --bullet on a zombie broadcast", async () => {
-		// Arrange
 		const program = resolveContentBroadcast({
 			kind: "zombie",
 			id: "avogadro",
@@ -104,10 +94,8 @@ describe("resolveContentBroadcast", () => {
 			description: Option.none(),
 		})
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const cause = expectExitFailure(exit)
 		const error = expectCauseTaggedError<BroadcastInputError>(cause, "BroadcastInputError")
 		expect(error).toBeInstanceOf(BroadcastInputError)
@@ -115,7 +103,6 @@ describe("resolveContentBroadcast", () => {
 	})
 
 	test("should reject an unknown relic id", async () => {
-		// Arrange
 		const program = resolveContentBroadcast({
 			kind: "relic",
 			id: "not-a-relic",
@@ -124,10 +111,8 @@ describe("resolveContentBroadcast", () => {
 			description: Option.none(),
 		})
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const cause = expectExitFailure(exit)
 		const error = expectCauseTaggedError<BroadcastInputError>(cause, "BroadcastInputError")
 		expect(error).toBeInstanceOf(BroadcastInputError)
@@ -137,13 +122,10 @@ describe("resolveContentBroadcast", () => {
 
 describe("resolvePolicyBroadcast", () => {
 	test("should trim policy bullets", async () => {
-		// Arrange
 		const program = resolvePolicyBroadcast(["  How long confirmation tokens are kept  "])
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		expect(expectExitSuccess(exit)).toEqual({
 			kind: "policy",
 			bullets: ["How long confirmation tokens are kept"],
@@ -153,16 +135,13 @@ describe("resolvePolicyBroadcast", () => {
 
 describe("sendBroadcast", () => {
 	test("should dry-run a policy broadcast without calling Resend", async () => {
-		// Arrange
 		const program = sendBroadcast(
 			{ kind: "policy", bullets: ["How long confirmation tokens are kept"] },
 			{ send: false },
 		).pipe(Effect.provide(testLayer))
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const result = expectExitSuccess(exit)
 
 		if (result.mode !== "dry-run") {
@@ -175,16 +154,13 @@ describe("sendBroadcast", () => {
 	})
 
 	test("should send a policy broadcast through the email service when send is set", async () => {
-		// Arrange
 		const program = sendBroadcast(
 			{ kind: "policy", bullets: ["How long confirmation tokens are kept"] },
 			{ send: true },
 		).pipe(Effect.provide(testLayer))
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		expect(expectExitSuccess(exit)).toEqual({
 			mode: "sent",
 			id: "123",
@@ -195,22 +171,18 @@ describe("sendBroadcast", () => {
 
 describe("broadcastCli", () => {
 	test("should dry-run a policy subcommand", async () => {
-		// Arrange
 		const program = runBroadcast([
 			"policy",
 			"--bullet",
 			"How long confirmation tokens are kept",
 		]).pipe(Effect.provide(testLayer))
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		expect(Exit.isSuccess(exit)).toBe(true)
 	})
 
 	test("should accept -k, -i, -b, and -s in place of the long flags", async () => {
-		// Arrange
 		const program = runBroadcast([
 			"content",
 			"-k",
@@ -222,10 +194,8 @@ describe("broadcastCli", () => {
 			"-s",
 		]).pipe(Effect.provide(testLayer))
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const cause = expectExitFailure(exit)
 		const error = expectCauseTaggedError<BroadcastInputError>(cause, "BroadcastInputError")
 		expect(error).toBeInstanceOf(BroadcastInputError)
@@ -233,7 +203,6 @@ describe("broadcastCli", () => {
 	})
 
 	test("should accept -t and -d in place of --title and --description", async () => {
-		// Arrange
 		const program = runBroadcast([
 			"content",
 			"-k",
@@ -246,10 +215,8 @@ describe("broadcastCli", () => {
 			" ",
 		]).pipe(Effect.provide(testLayer))
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const cause = expectExitFailure(exit)
 		const error = expectCauseTaggedError<BroadcastInputError>(cause, "BroadcastInputError")
 		expect(error).toBeInstanceOf(BroadcastInputError)
@@ -257,7 +224,6 @@ describe("broadcastCli", () => {
 	})
 
 	test("should accept -d in place of --description", async () => {
-		// Arrange
 		const program = runBroadcast([
 			"content",
 			"-k",
@@ -270,10 +236,8 @@ describe("broadcastCli", () => {
 			" ",
 		]).pipe(Effect.provide(testLayer))
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const cause = expectExitFailure(exit)
 		const error = expectCauseTaggedError<BroadcastInputError>(cause, "BroadcastInputError")
 		expect(error).toBeInstanceOf(BroadcastInputError)
@@ -281,15 +245,12 @@ describe("broadcastCli", () => {
 	})
 
 	test("should fail a content command that omits --bullet", async () => {
-		// Arrange
 		const program = runBroadcast(["content", "--kind", "relic", "--id", "lawyers-pen"]).pipe(
 			Effect.provide(testLayer),
 		)
 
-		// Act
 		const exit = await Effect.runPromiseExit(program)
 
-		// Assert
 		const cause = expectExitFailure(exit)
 		const error = expectCauseTaggedError<BroadcastInputError>(cause, "BroadcastInputError")
 		expect(error).toBeInstanceOf(BroadcastInputError)

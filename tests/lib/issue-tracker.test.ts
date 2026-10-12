@@ -97,8 +97,6 @@ describe("IssueTracker.createIssue", () => {
 	})
 })
 
-// Helpers
-
 interface CapturedCall {
 	url: string
 	init?: RequestInit

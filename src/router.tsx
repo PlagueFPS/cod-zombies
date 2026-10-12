@@ -75,7 +75,6 @@ export function getRouter() {
 		queryClient,
 		wrapQueryClient: true,
 		dehydrateOptions: {
-			// Dehydrating MDX component queries causes serialization issues since they are functions.
 			shouldDehydrateQuery: query => query.queryKey[0] !== MDX_COMPONENT_QUERY_KEY,
 		},
 	})

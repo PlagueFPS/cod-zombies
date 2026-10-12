@@ -12,13 +12,11 @@ interface IQuestPageLoader {
 
 export function QuestPageLoader({ mainQuest, links }: IQuestPageLoader) {
 	return (
-		// Container loaders
 		<div className="-mt-10 flex w-full justify-center xl:mt-0">
 			<div className="mx-auto flex w-svw flex-col items-center justify-start xl:mx-4">
 				<div className="flex w-full flex-col-reverse xl:flex-row">
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="relative mt-16 w-full xl:mt-8">
-							{/* Image and breadcrumb loaders */}
 							<div className="relative z-20 mx-auto h-[calc(50vw)] w-full max-w-7xl xl:h-180">
 								<ImageLoader className="h-full w-full border" />
 								<div className="absolute -top-10 left-0 z-30 flex w-full justify-center pl-4 xl:pl-0">
@@ -26,7 +24,6 @@ export function QuestPageLoader({ mainQuest, links }: IQuestPageLoader) {
 								</div>
 							</div>
 
-							{/* Map content loader */}
 							<div className="relative z-20 mx-auto mt-8 mb-4 flex max-w-7xl flex-col justify-center gap-2 border-b-2 px-4 md:mt-16 md:gap-4 md:px-8 md:pb-6">
 								<div className="flex w-full flex-col-reverse items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
 									<Skeleton className="h-6 w-1/3 pb-2 sm:h-7 md:h-9 lg:h-12" />

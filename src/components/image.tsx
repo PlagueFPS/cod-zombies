@@ -72,7 +72,6 @@ type ImgElementWithDataProp = HTMLImageElement & {
 	"data-loaded-src": string | undefined
 }
 
-/** Dedupe `onLoad` when both the cached/ref path and the native `load` event run. */
 const LOADED_SRC_ATTR = "data-loaded-src"
 
 function createSyntheticLoadEvent(img: HTMLImageElement): SyntheticEvent<HTMLImageElement> {
@@ -169,8 +168,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 				if (!img) return
 
 				if (onError) {
-					// oxlint-disable-next-line no-self-assign
-					img.src = img.src
+					img.src = img.currentSrc || img.src
 				}
 
 				if (process.env.NODE_ENV !== "production") {

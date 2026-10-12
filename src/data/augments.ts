@@ -2121,8 +2121,6 @@ const AUGMENTS = uniqueMap([
 		image: "/augments/bo7/extension-minor-augment-bo7.webp",
 		variants: Option.none(),
 	}),
-	// `Backdraft` augment already exists for Napalm Burst
-	// so this one needs a prefix to avoid conflicts
 	makeAugment("wild-fire-backdraft", {
 		title: "Backdraft",
 		description: "On activation, nearby zombies are knocked down, and larger enemies are stunned.",

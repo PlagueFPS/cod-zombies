@@ -13,8 +13,6 @@ const blankHeadingArb = fc.integer({ min: 1, max: 32 }).map(length => " ".repeat
 
 describe("remark-mdx-meta slugify properties", () => {
 	test("heading ids use the same slugify as shared-functions", () => {
-		// Whitespace-only text never emits a heading. Every other sample does,
-		// including "_" and "---", whose slugify result is "".
 		fc.assert(
 			fc.property(blankHeadingArb, text => {
 				const meta = getMdxDocumentMetaFromSource(`## ${text}\n\nSome words to read.`)

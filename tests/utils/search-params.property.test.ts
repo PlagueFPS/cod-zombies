@@ -40,9 +40,7 @@ function canonicalToken(token: string): string {
 		if (Predicate.isNumber(parsed) && Number.isFinite(parsed)) return String(parsed)
 
 		if (Predicate.isBoolean(parsed) || parsed === null) return String(parsed)
-	} catch {
-		// Plain filter text is already the decoded string.
-	}
+	} catch {}
 
 	return token
 }

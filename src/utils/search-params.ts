@@ -38,9 +38,7 @@ function stringifyFilterScalar(value: SearchParamScalar): string {
 		if (Exit.isSuccess(decoded) && Exit.isFailure(decodedString)) {
 			return String(decoded.value)
 		}
-	} catch {
-		// Not a JSON scalar. Keep the original filter string.
-	}
+	} catch {}
 
 	return asString.value
 }
@@ -62,9 +60,7 @@ function normalizeArrayElement(value: SearchParamValue): SearchParamScalar | und
 		if (Exit.isSuccess(parsed)) {
 			return String(parsed.value)
 		}
-	} catch {
-		// Plain string values are valid filter params.
-	}
+	} catch {}
 
 	return value
 }
@@ -72,8 +68,6 @@ function normalizeArrayElement(value: SearchParamValue): SearchParamScalar | und
 function normalizeSearchValue(key: string, value: SearchParamValue): SearchParamValue {
 	if (value === undefined) return value
 
-	// `page` must stay numeric for Schema.Int. Other nulls follow the repeated-key
-	// path, which stringifies JSON null to "null".
 	if (value === null) {
 		return key === "page" ? value : "null"
 	}

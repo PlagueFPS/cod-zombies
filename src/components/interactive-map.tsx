@@ -87,8 +87,8 @@ export function InteractiveMap({ currentLayer }: InteractiveMapProps) {
 		}
 
 		return new LatLngBounds([
-			[0, 0], // Soutwest Corner
-			[imageDimensions.value.height, imageDimensions.value.width], // Northeast Corner
+			[0, 0],
+			[imageDimensions.value.height, imageDimensions.value.width],
 		])
 	}
 
@@ -116,13 +116,11 @@ export function InteractiveMap({ currentLayer }: InteractiveMapProps) {
 			{Option.isSome(imageDimensions) && (
 				<ImageOverlay key={currentLayer.id} url={currentLayer.image} bounds={getImageBounds()} />
 			)}
-			{/* We do not map through filteredMarkers for rendering to avoid icon flickering */}
 			{Option.isSome(imageDimensions) &&
 				layer.markers.map(marker => {
 					if (!shouldRenderMarker(marker)) return null
 
 					return marker.locations.map(location => (
-						// force re-render when popups settings change to apply them
 						<CustomMarker
 							key={`${generateMarkerKey(currentLayer.id, marker.id, location)}-gradients:${settings.popups.disableGradients}`}
 							id={generateMarkerKey(currentLayer.id, marker.id, location)}
@@ -145,7 +143,7 @@ function MapController({ imageDimensions }: MapController) {
 			if (!IN_DEVELOPMENT || !e.latlng || Option.isNone(imageDimensions)) return
 
 			const x = e.latlng.lng / imageDimensions.value.width
-			const y = 1 - e.latlng.lat / imageDimensions.value.height // Flip y back to normal
+			const y = 1 - e.latlng.lat / imageDimensions.value.height
 			console.log(`Clicked coordinates: x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`)
 		}
 
@@ -227,7 +225,6 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 	const { settings } = useMapSettings()
 
 	const getClassName = () => {
-		// Do not assign gradient classes if disabled
 		if (settings.popups.disableGradients) {
 			return "custom-popup"
 		}

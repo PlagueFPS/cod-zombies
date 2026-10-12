@@ -37,7 +37,6 @@ describe("generateImagePaths", () => {
 	test("sorts root and per-dir image paths; excludes content and opengraph-images", async () => {
 		const root = mkdtempSync(join(tmpdir(), "codz-pub-"))
 		mkdirSync(join(root, "public"), { recursive: true })
-		// Root images (unsorted names)
 		writeFileSync(
 			join(root, "public", "zebra.png"),
 			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
@@ -57,7 +56,6 @@ describe("generateImagePaths", () => {
 			Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
 		)
 
-		// Excluded top-level dirs should not appear as per-dir unions
 		mkdirSync(join(root, "public", "content"), { recursive: true })
 		writeFileSync(
 			join(root, "public", "content", "x.png"),

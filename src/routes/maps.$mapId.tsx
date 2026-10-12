@@ -26,9 +26,7 @@ import { StandardInteractiveMapSearchParamsSchema } from "@/utils/validation-sch
 const getSidebarState = createServerFn().handler(async () => {
 	const sidebarState = getCookie("sidebar_state")
 
-	// Caches the response in the browser for 1 year
 	setResponseHeader("Cache-Control", "private, max-age=31536000")
-	// or until any cookies change (sidebar_state)
 	setResponseHeader("Vary", "Cookie")
 
 	return { sidebarState: sidebarState ? sidebarState === "true" : true }
