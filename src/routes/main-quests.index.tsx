@@ -224,7 +224,7 @@ function MainQuests() {
 		void navigate({
 			search: prev => ({
 				...prev,
-				page: undefined, // reset page on filter change
+				page: undefined,
 				game: selected.get("game"),
 				difficulty: matchingSlugs(selected.get("difficulty"), DIFFICULTY_SLUGS),
 				time: matchingSlugs(selected.get("completion-time"), TIME_SLUGS),

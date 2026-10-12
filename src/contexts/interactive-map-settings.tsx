@@ -18,7 +18,7 @@ const DEFAULT_SETTINGS = {
 		 * The opacity of the marker icons. 0 is fully transparent, 1 is fully opaque.
 		 * @default 1
 		 */
-		opacity: 1, // 100% opacity
+		opacity: 1,
 	},
 	popups: {
 		/**
@@ -76,9 +76,6 @@ const MapSettingsContext = createContext<IMapSettingsContext>({
 	resetSettings: () => {},
 })
 
-// This migration does not handle any changes to existing props (renaming, deletion, data structure changes, etc.)
-// Current version is only meant for adding new props
-// If a more robust migration is needed in the future, this function MUST be changed
 const migrateSettings = (savedSettings: Partial<TMapSettings>) => {
 	if (!savedSettings._version || savedSettings._version >= CURRENT_VERSION) {
 		return savedSettings

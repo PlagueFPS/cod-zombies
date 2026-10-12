@@ -39,12 +39,12 @@ function Input({
 			data-slot="input-control"
 		>
 			{nativeInput ? (
-				// @ts-expect-error: shadcn forwards props that are not supported by native input
 				<input
 					className={inputClassName}
 					data-slot="input"
 					size={Predicate.isNumber(size) ? size : undefined}
 					{...props}
+					style={Predicate.isFunction(props.style) ? undefined : props.style}
 				/>
 			) : (
 				<InputPrimitive

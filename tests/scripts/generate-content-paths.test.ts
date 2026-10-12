@@ -38,7 +38,6 @@ describe("generateContentPaths", () => {
 		const root = mkdtempSync(join(tmpdir(), "codz-content-"))
 		mkdirSync(join(root, "src", "content", "zebra"), { recursive: true })
 		mkdirSync(join(root, "src", "content", "alpha"), { recursive: true })
-		// Intentionally unsorted creation order; output must sort
 		writeFileSync(join(root, "src", "content", "zebra", "z.mdx"), "# Z")
 		writeFileSync(join(root, "src", "content", "alpha", "b.mdx"), "# B")
 		writeFileSync(join(root, "src", "content", "alpha", "a.mdx"), "# A")

@@ -146,7 +146,6 @@ describe("AotrtChemicalTool", () => {
 	})
 })
 
-// Helpers
 async function renderChemical(chemical: AotrtChemical) {
 	container = document.createElement("div")
 	document.body.appendChild(container)

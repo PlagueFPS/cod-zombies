@@ -18,7 +18,6 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 		articleRef.current = document.getElementById(articleId)
 	}, [articleId])
 
-	// Effect for handling the users scroll progress
 	useEffect(() => {
 		const handleScroll = () => {
 			if (!articleRef.current) return
@@ -36,7 +35,6 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
 
-	// Effect for handling detecting the activeHeading
 	useEffect(() => {
 		const handleIntersection = (entries: IntersectionObserverEntry[]) => {
 			entries.forEach(entry => {

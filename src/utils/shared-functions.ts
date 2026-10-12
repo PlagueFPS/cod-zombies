@@ -77,11 +77,11 @@ export const slugify = (text: string) => {
 	return text
 		.toLowerCase()
 		.trim()
-		.replace(/&/g, "and") // Replace ampersands with "and" first
-		.replace(/[^\w\s-]/g, "") // Remove all non-word characters except spaces and hyphens
-		.replace(/[\s_]+/g, "-") // Replace spaces and underscores with a single hyphen
-		.replace(/--+/g, "-") // Replace multiple hyphens with a single hyphen
-		.replace(/^-+|-+$/g, "") // Remove leading/trailing hyphens
+		.replace(/&/g, "and")
+		.replace(/[^\w\s-]/g, "")
+		.replace(/[\s_]+/g, "-")
+		.replace(/--+/g, "-")
+		.replace(/^-+|-+$/g, "")
 }
 
 /**
@@ -162,7 +162,6 @@ export const formatEstimatedTimeRange = (range: { min: number; max: number }) =>
 	const minLabel = formatMinutesForDisplay(range.min)
 	const maxLabel = formatMinutesForDisplay(range.max)
 
-	// 59.5 and 59.6 are different inputs but both round to "1h".
 	return minLabel === maxLabel ? minLabel : `${minLabel}-${maxLabel}`
 }
 

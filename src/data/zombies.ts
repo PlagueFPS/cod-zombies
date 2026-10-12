@@ -70,7 +70,6 @@ export function compareZombieReleaseDescending(
 
 	if (byDate !== 0) return byDate
 
-	// Use inseration index as a tiebreaker (higher index = later insertion = newer Zombie)
 	return ZOMBIE_INSERATION_INDEX_BY_ID.get(b.id)! - ZOMBIE_INSERATION_INDEX_BY_ID.get(a.id)!
 }
 
@@ -131,7 +130,6 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		spawnBehavior:
 			"Zombies spawn at the start of and throughout each round. Special situations like boss fights or main quest interactions may alter the spawns of zombies, changing them or completely removing them temporarily.",
-		// base zombie is in all games, reversed since its desc order by default
 		// SAFETY: catalog ids are GameKey; Array.map widens them to string[].
 		games: getGames()
 			.reverse()

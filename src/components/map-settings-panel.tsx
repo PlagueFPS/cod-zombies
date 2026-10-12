@@ -151,7 +151,6 @@ export default function MapSettingsPanel() {
 						</TabsTrigger>
 					</TabsList>
 
-					{/* Marker Settings Tab */}
 					<TabsContent value="markers" className="mt-4 space-y-4">
 						<div className="space-y-2">
 							<div className="flex items-center justify-between">
@@ -241,7 +240,6 @@ export default function MapSettingsPanel() {
 						</div>
 					</TabsContent>
 
-					{/* Popup Settings Tab */}
 					<TabsContent value="popups" className="mt-4 space-y-4">
 						<div className="flex items-center justify-between">
 							<div className="flex flex-col justify-center">
@@ -325,7 +323,6 @@ export default function MapSettingsPanel() {
 						</div>
 					</TabsContent>
 
-					{/* General Settings Tab */}
 					<TabsContent value="general" className="mt-4 space-y-4">
 						<div className="flex items-center justify-between">
 							<div className="flex flex-col justify-center">
@@ -416,7 +413,6 @@ export default function MapSettingsPanel() {
 					</TabsContent>
 				</Tabs>
 				<Separator />
-				{/* Preview Section */}
 				<div className="space-y-2">
 					<h3 className="text-sm font-medium">Preview</h3>
 					<div className="rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 p-4">

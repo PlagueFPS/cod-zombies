@@ -57,8 +57,6 @@ describe("buildShareableMapSearch properties", () => {
 					expect(shared.exclude).toEqual(expectedExclude)
 					expect(shared.layer).toBe(expectedLayer)
 
-					// Hiding every marker intentionally drops both lists (same URL as show-all).
-					// Inclusion still round-trips for show-all and for every partial subset.
 					const idsToCompare = showsNothing ? [] : allIds
 
 					for (const id of idsToCompare) {

@@ -67,7 +67,6 @@ export const mdxComponents: MDXComponents = {
 		<hr {...props} className="my-2" />
 	),
 
-	// MDX table mappings -> styled UI table
 	table: ({ children, ...props }: ComponentPropsWithoutRef<"table">) => (
 		<div className="my-8 overflow-x-auto rounded-lg border shadow-xl dark:shadow-none">
 			<Table {...props}>{children}</Table>

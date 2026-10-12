@@ -52,7 +52,6 @@ export function FeaturedImage({
 					)}
 				/>
 			) : null}
-			{/* If both image optimization fails, serve static non-optimized fallback */}
 			{imageErrored ? (
 				<Image
 					{...rest}

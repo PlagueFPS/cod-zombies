@@ -12,8 +12,6 @@ export function BackToTopButton({
 	className,
 	...props
 }: BackToTopButtonProps & ButtonProps) {
-	// This function provides a much faster scroll to top similar to the Ctrl+Home behavior
-	// while still providing a "smooth" animation unlike the `window.scrollTo(0, 0)` function
 	const scrollToTop = () => {
 		const start = window.pageYOffset
 		const startTime = performance.now()

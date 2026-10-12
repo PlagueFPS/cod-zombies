@@ -26,7 +26,6 @@ describe("slugify", () => {
 	})
 
 	test("should handle various special characters and formats", () => {
-		// Special characters
 		expect(slugify("What's New? (2023): Everything")).toBe("whats-new-2023-everything")
 		expect(slugify("Tom & Jerry")).toBe("tom-and-jerry")
 		expect(slugify("\"Quote\" and 'single quote'")).toBe("quote-and-single-quote")
@@ -36,7 +35,6 @@ describe("slugify", () => {
 			"hello-world-test-sam-adam-unit",
 		)
 
-		// Markdown headings
 		expect(slugify("## Heading")).toBe("heading")
 		expect(slugify("### Sub Heading")).toBe("sub-heading")
 		expect(slugify("#### Sub Sub Heading")).toBe("sub-sub-heading")
@@ -44,8 +42,8 @@ describe("slugify", () => {
 
 	test("should handle spacing and formatting", () => {
 		expect(slugify("  Hello   World!  ")).toBe("hello-world")
-		expect(slugify("hello-world")).toBe("hello-world") // Already slugified
-		expect(slugify("")).toBe("") // Empty string
+		expect(slugify("hello-world")).toBe("hello-world")
+		expect(slugify("")).toBe("")
 	})
 
 	test("slugifies each main quest difficulty label for URL filter params", () => {
@@ -70,11 +68,8 @@ describe("capitalize", () => {
 	})
 
 	test("should handle multiple words and formats", () => {
-		// Basic multi-word
 		expect(capitalize("hello world")).toBe("Hello World")
-		// Slug format
 		expect(capitalize("hello-world-test-sam-adam-unit")).toBe("Hello World Test Sam Adam Unit")
-		// Underscore format
 		expect(capitalize("hello_world_test_sam_adam_unit")).toBe("Hello World Test Sam Adam Unit")
 	})
 

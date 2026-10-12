@@ -14,9 +14,7 @@ type LocalStorageResult<T> = [T, SetValue<T>, () => void]
  */
 
 export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageResult<T> => {
-	// Get from local storage then parse stored json or return initialValue
 	const readValue = (): T => {
-		// Prevent build error "window is undefined" but keep working
 		if (typeof window === "undefined") {
 			return initialValue
 		}
@@ -32,17 +30,12 @@ export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageRe
 		}
 	}
 
-	// State to store our value
-	// Pass initial state function to useState so logic is only executed once
 	const [storedValue, setStoredValue] = useState<T>(readValue)
 
-	// Return a wrapped version of useState's setter function that persists the new value to localStorage
 	const setValue: SetValue<T> = value => {
 		try {
-			// Allow value to be a function so we have same API as useState
 			const valueToStore = value instanceof Function ? value(storedValue) : value
 
-			// Save to state and local storage
 			setStoredValue(valueToStore)
 
 			if (typeof window !== "undefined") {

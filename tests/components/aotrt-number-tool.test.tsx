@@ -87,7 +87,6 @@ describe("AotrtNumberTool", () => {
 	})
 })
 
-// Helpers
 function asInput(element: Element | null) {
 	if (!(element instanceof HTMLInputElement)) {
 		throw new Error("Expected an input element")

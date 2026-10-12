@@ -24,7 +24,6 @@ export default function ShatteredVeilCode() {
 					<CardDescription>Select one option from each group to generate your code</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-6">
-					{/* Code Words Group */}
 					<div className="space-y-3">
 						<h3 className="text-sm font-semibold text-foreground/90">Code Words</h3>
 						<div className="grid grid-cols-2 gap-2">
@@ -41,7 +40,6 @@ export default function ShatteredVeilCode() {
 						</div>
 					</div>
 
-					{/* Letter Groups */}
 					<div className="space-y-3">
 						<h3 className="text-sm font-semibold text-foreground/90">Letter Groups</h3>
 						<div className="grid grid-cols-2 gap-2">
@@ -58,7 +56,6 @@ export default function ShatteredVeilCode() {
 						</div>
 					</div>
 
-					{/* Generated Code Display */}
 					{letterGroup && codeWord && (
 						<div className="border-t pt-4">
 							<p className="mb-2 text-sm text-foreground/90">Your Code:</p>
@@ -73,53 +70,4 @@ export default function ShatteredVeilCode() {
 			</Card>
 		</div>
 	)
-
-	// return (
-	// 	<Card className="my-8 bg-transparent shadow-lg dark:shadow-none">
-	// 		<CardContent className="flex flex-col items-center justify-center gap-4">
-	// 			<div className="flex items-center justify-center gap-4">
-	// 				<span>Select Code Word:</span>
-	// 				<div className="flex items-center justify-center gap-2">
-	// 					{allCodeWords.map(code => (
-	// 						<Toggle
-	// 							key={code}
-	// 							variant={"outline"}
-	// 							onClick={() => handleCodeWordClick(code)}
-	// 							disabled={isCodeDisabled(code)}
-	// 							aria-label={`Select ${code}`}
-	// 						>
-	// 							{code}
-	// 						</Toggle>
-	// 					))}
-	// 				</div>
-	// 			</div>
-	// 			<div className="flex items-center justify-center gap-4">
-	// 				<span>Select First Letter Group:</span>
-	// 				<div className="flex items-center justify-center gap-2">
-	// 					{allLetterGroups.map(group => (
-	// 						<Toggle
-	// 							key={group}
-	// 							variant={"outline"}
-	// 							disabled={isGroupDisabled(group)}
-	// 							aria-label={`Select ${group}`}
-	// 							onClick={() => handleLetterGroupClick(group)}
-	// 						>
-	// 							{group}
-	// 						</Toggle>
-	// 					))}
-	// 				</div>
-	// 			</div>
-	// 		</CardContent>
-	// 		<CardFooter className="flex items-center justify-center">
-	// 			<div className="flex items-center justify-center text-center text-base">
-	// 				<span>
-	// 					Keypad Code:
-	// 					{letterGroup && codeWord && (
-	// 						<span className="ml-1 font-bold">{chalkboardCodes[letterGroup][codeWord]}</span>
-	// 					)}
-	// 				</span>
-	// 			</div>
-	// 		</CardFooter>
-	// 	</Card>
-	// )
 }
