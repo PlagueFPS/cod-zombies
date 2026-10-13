@@ -1,6 +1,6 @@
 # Bestiary
 
-The bestiary lists zombie types, filters them by type, game, map, or weakness, and opens one zombie's detail page.
+The bestiary lists zombie types, filters them by type, game, map, or weakness, and opens one zombie's detail page. Details include appearances, speed, weaknesses, attacks, spawn behavior, and combat strategy.
 
 ## Sub-features
 
@@ -13,9 +13,12 @@ The bestiary lists zombie types, filters them by type, game, map, or weakness, a
 
 - Choose `Bestiary` in the desktop header.
 - On the home page, choose `View All` in the Bestiary section.
+- Choose a bestiary preview card on home to open details directly.
 - Below the `lg` breakpoint, choose `Toggle Nav`, then `Bestiary`.
 - Choose `Search` and pick an entry under the `Zombies` group.
 - Open `/bestiary` or a shared filter URL such as `/bestiary?type=["boss"]&sort=oldest`.
+- Open a zombie tooltip in a guide and choose `View Zombie Details`.
+- Use a detail page's Bestiary breadcrumb or Previous Zombie or Next Zombie card.
 
 ## Driving it with codz-verify
 
@@ -27,11 +30,13 @@ Preconditions:
 - **Header nav.** The command runs `page.getByRole("link", { name: "Go to Bestiary page" }).click()`. The heading `Bestiary` is visible. Screenshot `01-listing.png`.
 - **Boss filter.** Click the combobox named `Filter: Type, Game, Map, or Weakness`, then `[data-slot="combobox-item"]` with exact text `Boss`. A chip named `Boss` is visible and the URL matches `type=.*boss`. The click waits until the combobox input is hydrated.
 - **Oldest sort.** Open the select whose trigger text is `Latest` via `[data-slot="select-trigger"]` and choose `[data-slot="select-item"]` text `Oldest`. The URL matches `sort=.*oldest`. Screenshot `02-filtered.png`.
-- **Open a detail page.** The command runs `page.getByRole("link", { name: "View details for Avogadro" }).click()`. The URL is `/bestiary/avogadro` and the text `Avogadro` is visible. Screenshot `03-detail.png` and ARIA snapshot `03-detail.aria.txt`.
+- **Open a detail page.** The command runs `page.getByRole("link", { name: "View details for Avogadro" }).click()`. The URL is `/bestiary/avogadro`. The headings `Attacks`, `Spawn Behavior`, and `Combat Strategy`, plus the strategy text `EMP Grenade`, are visible. `Zombie could not be found` is absent. Screenshot `03-detail.png` and ARIA snapshot `03-detail.aria.txt`.
 
 ## Gotchas
 
-- Detail titles are card text, not an H1 named with `getByRole("heading")` alone. Assert the URL and the visible name.
+- Detail titles are card text, not an H1 named with `getByRole("heading")` alone. A not-found page can also print the requested name. Assert populated detail sections and strategy content as well as the URL.
 - Default sort is Latest and the page size is 12. Avogadro is the oldest boss, so that sort places it off the first page. The drive switches to Oldest before the link click. Do not open a newer boss on page 1 and call this entry verified.
 - The base enemy link is `View details for Zombie`, which is a different page (`/bestiary/zombie`).
 - An unknown id such as `/bestiary/not-a-zombie` shows the heading `Zombie could not be found`. That is the not-found state, not a successful detail view.
+- Filters use OR within a group and AND between groups. Filter changes reset the page, while sorting preserves it. The base Zombie matches every game and map filter. Other sorts use type and speed.
+- This drive does not exercise home, mobile, search, tooltips, shared URLs, combined filters, pagination, sharing, weakness details, or adjacent navigation.

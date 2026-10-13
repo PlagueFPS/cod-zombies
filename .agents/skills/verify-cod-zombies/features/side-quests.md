@@ -1,6 +1,6 @@
 # Side quest guides
 
-Side quest guides list secrets and rewards outside the main story, filter them by game or map, and open one quest's steps.
+Side quest guides list secrets and rewards outside the main story, filter them by game or map, and open one quest's steps. Walkthroughs include section navigation, image viewers, contextual tooltips, sharing, and adjacent quests.
 
 ## Sub-features
 
@@ -13,9 +13,12 @@ Side quest guides list secrets and rewards outside the main story, filter them b
 
 - Choose `Side Quests` in the desktop header.
 - On the home page, choose `View All` in the Side Quests section.
+- Choose a side-quest preview card on home to open its guide directly.
 - Below the `lg` breakpoint, choose `Toggle Nav`, then `Side Quests`.
 - Choose `Search`, type a side-quest title, and choose it under a `<map> Side Quests` group.
 - Open `/side-quests` or a shared filter URL such as `/side-quests?game=["black-ops-3"]&sort=oldest`.
+- Use a guide's game or map breadcrumb to open a filtered listing, or a Previous Quest or Next Quest card to open an adjacent guide.
+- Follow a side-quest link in another guide or bestiary strategy.
 
 ## Driving it with codz-verify
 
@@ -32,8 +35,11 @@ Preconditions:
 ## Gotchas
 
 - Home and mobile entry points are real and are not part of `drive side-quests`. Driving only the header does not verify them.
+- Listings show 12 cards per page. Multiple values within one filter group use OR; game and map groups combine with AND. Filters reset the page, while sorting preserves it. Chips can remove individual values; conflicting filters show an empty result.
 - `Free 500 Points` is the Shadows of Evil quest. Other maps can reuse similar reward names; assert the full URL. The guide MDX also has an `h2` with that title, so `getByRole("heading", { name: "Free 500 Points", exact: true })` matches two nodes.
 - Default sort is Latest, which lists newer Black Ops 3 maps first. Shadows of Evil and The Giant share the earliest Black Ops 3 release date, so Oldest is what puts Free 500 Points on page 1 (alongside The Giant's quests). Do not open a different Black Ops 3 quest on page 1 and call this entry verified.
 - The filter placeholder is `Filter: Game or Map`. A substring match on `Filter: Game` can hit the wrong field on another page.
 - The filter click waits until the combobox input is hydrated. A click on the server-rendered input does not open the list.
 - `Coming Soon` side quests are left out of search.
+- The drive opens Free 500 Points and captures its walkthrough. It does not exercise guide sharing, contents, tooltips, adjacent quests, or every entry point. Shared contents and image components have a representative drive in [Main quest guides](./main-quests.md).
+- Better Box at `/side-quests/black-ops-7/kowakujo/better-box` has image carousels and perk details. Its carousels open the `Image carousel` dialog and keep the selected slide on dismissal; Free 500 Points uses standalone images.

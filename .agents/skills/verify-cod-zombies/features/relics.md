@@ -1,6 +1,6 @@
 # Cursed relics
 
-Cursed relic guides list relics, filter them by map and type, and open one relic's unlock steps.
+Cursed relic guides list relics, filter them by map and type, and open one relic's unlock steps. Guides have section navigation, image viewers, contextual tooltips, sharing, and adjacent relics.
 
 ## Sub-features
 
@@ -13,9 +13,12 @@ Cursed relic guides list relics, filter them by map and type, and open one relic
 
 - Choose `Relics` in the desktop header.
 - On the home page, choose `View All` in the Cursed Relics section. The listing heading is also `Cursed Relics`. The breadcrumb link says `Relics`.
+- Choose a relic preview card on home to open its guide directly.
 - Below the `lg` breakpoint, choose `Toggle Nav`, then `Relics`.
 - Choose `Search` and pick a relic under a `<map> Relics` group.
 - Open `/relics` or a shared filter URL such as `/relics?type=["grim"]`.
+- Use a guide's Relics breadcrumb to return to the listing, or the relic title beside a left or right arrow to open an adjacent guide.
+- Follow a relic link in guide content.
 
 ## Driving it with codz-verify
 
@@ -38,3 +41,6 @@ Preconditions:
 - Sort options are discovery date, type, and unlock time (`Newest Discovered` is the default trigger text). This drive does not change sort.
 - The Special type option is the relic type label. Mister Peeks Mayhem is the relic that filter lists.
 - Choosing Special again while Grim is also selected removes only Special. The type param stays a JSON array.
+- Listings show 12 cards per page. Values within a group use OR; map and type groups combine with AND. Filter changes reset the page, while sorting preserves it. Chips can remove values; conflicting filters show an empty result.
+- Home, mobile, search, shared URLs, pagination, sorting, and guide controls are not exercised by this drive. Shared contents and image components have a representative drive in [Main quest guides](./main-quests.md).
+- Mister Peeks Mayhem at `/relics/black-ops-7/mister-peeks-mayhem` uses image carousels with the `Image carousel` dialog. The relic drive checks its listing link; it does not open that guide.

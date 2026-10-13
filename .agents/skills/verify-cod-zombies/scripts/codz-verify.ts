@@ -13,6 +13,7 @@ import {
 	closeSync,
 	existsSync,
 	mkdirSync,
+	mkdtempSync,
 	openSync,
 	readFileSync,
 	readdirSync,
@@ -23,7 +24,7 @@ import {
 } from "node:fs"
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
-import { chromium, type Locator, type Page } from "@playwright/test"
+import { chromium, expect, type Locator, type Page } from "@playwright/test"
 import { Option } from "effect"
 import { getMapsWithMainQuest, MAIN_QUEST_DIFFICULTIES } from "../../../../src/data/maps"
 import { isInternalHref, slugify } from "../../../../src/utils/shared-functions"
@@ -120,7 +121,7 @@ function metaPath(runId: string) {
 function evidenceDir(runId: string) {
 	const override = process.env.VERIFY_EVIDENCE_DIR
 	if (override) return join(override, runId)
-	return join("/opt/cursor/artifacts/verify-cod-zombies", runId)
+	return join("/tmp/codz-verify-evidence", runId)
 }
 
 function gitRevision() {
@@ -411,6 +412,7 @@ async function doctor() {
 	const problems: string[] = []
 	if (!isAlive(meta.pid)) problems.push(`pid ${meta.pid} is not running`)
 	if (meta.repoRoot !== repoRoot) problems.push(`meta repo ${meta.repoRoot} is not ${repoRoot}`)
+	if (gitRevision() !== meta.gitRevision) problems.push("git revision changed since launch")
 	if (isAlive(meta.pid) && !ownsListenPort(meta.pid, meta.port)) {
 		problems.push(`pid ${meta.pid} does not listen on ${meta.baseUrl}`)
 	}
@@ -421,6 +423,7 @@ async function doctor() {
 		const matched = /<title>([^<]*)<\/title>/.exec(html)
 		title = matched?.[1] ?? ""
 		if (!response.ok) problems.push(`GET / returned ${response.status}`)
+		if (!title.includes(SITE_TITLE)) problems.push(`unexpected page title: ${title}`)
 		if (!html.includes(SITE_TITLE)) problems.push(`response body is missing ${SITE_TITLE}`)
 	} catch (error) {
 		const message = error instanceof Error ? error.message : "fetch failed"
@@ -480,12 +483,12 @@ function cleanup() {
 		if (meta) killRun(meta)
 		rmSync(runDir(id), { recursive: true, force: true })
 		console.log(`stopped=${id}`)
+		console.log(`evidenceKept=${evidenceDir(id)}`)
 	}
 	if (existsSync(latestPath)) {
 		const latest = readFileSync(latestPath, "utf8").trim()
 		if (!existsSync(runDir(latest))) rmSync(latestPath, { force: true })
 	}
-	console.log("evidenceKept=/opt/cursor/artifacts/verify-cod-zombies")
 }
 
 function parseFeature(value: string | undefined): Feature {
@@ -503,27 +506,37 @@ function parseFeature(value: string | undefined): Feature {
 
 async function openPage(baseUrl: string) {
 	const browser = await chromium.launch({
-		channel: "chrome",
+		channel: "chromium",
 		chromiumSandbox: false,
 		args: ["--disable-dev-shm-usage"],
 	})
-	const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
-	await context.addInitScript(() => {
-		localStorage.setItem(
-			"react-scan-options",
-			JSON.stringify({ enabled: false, showToolbar: false, showFPS: false }),
-		)
-	})
-	const page = await context.newPage()
-	page.setDefaultTimeout(20_000)
-	page.setDefaultNavigationTimeout(45_000)
-	await page.goto(baseUrl, { waitUntil: "domcontentloaded" })
-	await page.getByRole("heading", { name: /Unlock the Secrets of/ }).waitFor()
-	return { browser, page }
+	try {
+		const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+		await context.addInitScript(() => {
+			localStorage.setItem(
+				"react-scan-options",
+				JSON.stringify({ enabled: false, showToolbar: false, showFPS: false }),
+			)
+		})
+		const page = await context.newPage()
+		page.setDefaultTimeout(20_000)
+		page.setDefaultNavigationTimeout(45_000)
+		await page.goto(baseUrl, { waitUntil: "domcontentloaded" })
+		await page.getByRole("heading", { name: /Unlock the Secrets of/ }).waitFor()
+		await page.waitForFunction(() => {
+			const trigger = document.querySelector('header [data-slot="sheet-trigger"]')
+			return trigger && Object.keys(trigger).some(key => key.startsWith("__react"))
+		})
+		return { browser, page }
+	} catch (error) {
+		await browser.close()
+		throw error
+	}
 }
 
 function featureDir(root: string, feature: Feature) {
 	const dir = join(root, feature)
+	if (existsSync(dir)) return mkdtempSync(join(dir, "attempt-"))
 	mkdirSync(dir, { recursive: true })
 	return dir
 }
@@ -602,7 +615,11 @@ async function chooseFilter(page: Page, placeholder: string, optionName: string)
 }
 
 async function chooseSelect(page: Page, triggerText: string, optionName: string) {
-	await page.locator('[data-slot="select-trigger"]').filter({ hasText: triggerText }).first().click()
+	await page
+		.locator('[data-slot="select-trigger"]')
+		.filter({ hasText: triggerText })
+		.first()
+		.click()
 	await page.locator('[data-slot="select-item"]').filter({ hasText: optionName }).first().click()
 	await page.keyboard.press("Escape")
 }
@@ -635,6 +652,7 @@ async function driveMainQuests(page: Page, dir: string) {
 	await clickLink(page, "Navigate to Main Quests page")
 	await page.getByRole("heading", { name: "Main Quests", exact: true }).waitFor()
 	await shot(page, dir, "03-main-quests-mobile.png")
+	logStep(dir, `url=${page.url()}`)
 	await page.setViewportSize({ width: 1280, height: 900 })
 
 	logStep(dir, "entry=search")
@@ -647,15 +665,29 @@ async function driveMainQuests(page: Page, dir: string) {
 	await shot(page, dir, "04-search-totenreich.png")
 	logStep(dir, `url=${page.url()}`)
 
-	logStep(dir, "entry=filter-and-open-guide")
 	await clickLink(page, "Go to Main Quests page")
 	await page.getByRole("heading", { name: "Main Quests", exact: true }).waitFor()
+	logStep(dir, "entry=pagination")
+	await page.getByRole("button", { name: "Next", exact: true }).click()
+	await page.waitForURL(url => url.searchParams.get("page") === "2")
+	await expect(page.getByRole("button", { name: "Page 2", exact: true })).toHaveAttribute(
+		"aria-current",
+		"page",
+	)
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=filter-and-open-guide")
 	await chooseFilter(page, "Filter: Game, Difficulty, Completion Time", "Black Ops 7")
 	await page.getByLabel("Black Ops 7").waitFor()
 	await page.waitForURL(/game=.*black-ops-7/)
+	await page.waitForURL(url => !url.searchParams.has("page"))
+	await expect(page.getByRole("button", { name: "Page 1", exact: true })).toHaveAttribute(
+		"aria-current",
+		"page",
+	)
 	await chooseSelect(page, "Latest", "Oldest")
 	await page.waitForURL(/sort=.*oldest/)
 	await shot(page, dir, "05-filtered.png")
+	logStep(dir, `url=${page.url()}`)
 	await clickLink(page, "View Guide for Totenreich")
 	await page.waitForURL(/\/main-quests\/black-ops-7\/totenreich/)
 	await page.getByRole("heading", { name: "Totenreich", exact: true }).waitFor()
@@ -663,9 +695,111 @@ async function driveMainQuests(page: Page, dir: string) {
 	await snapshot(page, dir, "06-guide.aria.txt")
 	const title = await page.title()
 	if (!title.includes("Totenreich Main Quest")) {
-		fail(`Guide title was ${title}`)
+		throw new Error(`Guide title was ${title}`)
 	}
 	logStep(dir, `title=${title}`)
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=guide-contents")
+	await page
+		.locator("aside")
+		.getByRole("link", { name: "Step 2: Obtain the Wunderbarrage Controller", exact: true })
+		.click()
+	await page.waitForURL(/#step-2-obtain-the-wunderbarrage-controller$/)
+	await expect(
+		page.getByRole("heading", { name: "Step 2: Obtain the Wunderbarrage Controller", exact: true }),
+	).toBeInViewport()
+	await page.getByRole("button", { name: "Collapse table of contents" }).click()
+	await expect(page.getByRole("button", { name: "Expand table of contents" })).toBeVisible()
+	await page.getByRole("button", { name: "Expand table of contents" }).click()
+	logStep(dir, `url=${page.url()}`)
+
+	logStep(dir, "entry=expanded-carousel")
+	const carousel = page.locator('[data-slot="carousel"]').first()
+	await expect(carousel.getByRole("button", { name: "Next slide" })).toBeEnabled()
+	await carousel.getByRole("button", { name: "Next slide" }).click()
+	await expect(carousel.getByRole("button", { name: "Slide 2 of 4" })).toHaveAttribute(
+		"aria-current",
+		"true",
+	)
+	await shot(page, dir, "07-inline-carousel.png")
+	await carousel
+		.getByRole("button", {
+			name: "Dry Dock - behind the boat in the bottom right corner",
+			exact: true,
+		})
+		.click()
+	const dialog = page.getByRole("dialog", { name: "Image carousel", exact: true })
+	await expect(dialog.getByRole("button", { name: "Slide 2 of 4" })).toHaveAttribute(
+		"aria-current",
+		"true",
+	)
+	await dialog.getByRole("button", { name: "Next slide" }).click()
+	await expect(dialog.getByRole("button", { name: "Slide 3 of 4" })).toHaveAttribute(
+		"aria-current",
+		"true",
+	)
+	await expect(
+		dialog.getByRole("img", {
+			name: "War Factory - in the corner just before heading into the admin room",
+			exact: true,
+		}),
+	).toBeInViewport({ ratio: 0.999 })
+	await shot(page, dir, "08-expanded-carousel.png")
+	await snapshot(page, dir, "08-expanded-carousel.aria.txt")
+	await page.keyboard.press("Escape")
+	await expect(dialog).not.toBeVisible()
+	await expect(carousel.getByRole("button", { name: "Slide 3 of 4" })).toHaveAttribute(
+		"aria-current",
+		"true",
+	)
+	await expect(
+		carousel.getByRole("button", {
+			name: "War Factory - in the corner just before heading into the admin room",
+			exact: true,
+		}),
+	).toBeFocused()
+	logStep(dir, `url=${page.url()}`)
+
+	logStep(dir, "entry=standalone-image")
+	await page.getByRole("button", { name: "Crane Button", exact: true }).click()
+	const imageDialog = page.getByRole("dialog", { name: "Crane Button", exact: true })
+	await expect(imageDialog.locator("img")).toBeVisible()
+	await expect(imageDialog.getByRole("button", { name: "Next slide" })).toHaveCount(0)
+	await shot(page, dir, "09-standalone-image.png")
+	await imageDialog.locator("img").click()
+	await expect(imageDialog).not.toBeVisible()
+	logStep(dir, `url=${page.url()}`)
+
+	logStep(dir, "entry=disk-puzzle-search")
+	await page.getByRole("button", { name: /^Search/ }).click()
+	await page.getByPlaceholder("Search quests, relics, zombies, maps").fill("The Beast from Beyond")
+	await page.getByRole("option", { name: "The Beast from Beyond", exact: true }).click()
+	await page.waitForURL(/\/main-quests\/infinite-warfare\/the-beast-from-beyond/)
+	await page.getByRole("group", { name: "Disk symbols" }).waitFor()
+	const symbols = page.getByRole("group", { name: "Disk symbols" })
+	await symbols.scrollIntoViewIfNeeded()
+	await shot(page, dir, "10-disk-puzzle-before.png")
+	for (const name of ["Skewed plus", "Three slashes", "Wings and diamond", "Lambda"]) {
+		await symbols.getByRole("button", { name, exact: true }).click()
+	}
+	const result = page.getByText("Insert the disks from left to right.", { exact: true })
+	await expect(result).toBeVisible()
+	await expect(result.locator("..").locator("li").first().locator(".sr-only")).toHaveText([
+		"Three slashes",
+		"Wings and diamond",
+		"Lambda",
+		"Skewed plus",
+	])
+	await expect(symbols.getByRole("button", { name: "X", exact: true })).toHaveAttribute(
+		"aria-disabled",
+		"true",
+	)
+	await shot(page, dir, "11-disk-puzzle-order.png")
+	await snapshot(page, dir, "11-disk-puzzle-order.aria.txt")
+	await page.getByRole("button", { name: "Reset", exact: true }).click()
+	await expect(symbols.locator('[aria-pressed="true"]')).toHaveCount(0)
+	await expect(result).not.toBeVisible()
+	logStep(dir, `url=${page.url()}`)
 	logStep(dir, "result=main-quests-ok")
 }
 
@@ -768,6 +902,12 @@ async function driveBestiary(page: Page, dir: string) {
 	await clickLink(page, "View details for Avogadro")
 	await page.waitForURL(/\/bestiary\/avogadro/)
 	await page.getByText("Avogadro", { exact: true }).first().waitFor()
+	await expect(page.getByRole("heading", { name: "Zombie could not be found" })).toHaveCount(0)
+	await expect(page.getByRole("heading", { name: "Attacks", exact: true })).toBeVisible()
+	await expect(page.getByRole("heading", { name: "Spawn Behavior", exact: true })).toBeVisible()
+	await expect(page.getByRole("heading", { name: "Combat Strategy", exact: true })).toBeVisible()
+	await expect(page.getByText("EMP Grenade", { exact: true })).toBeVisible()
+	await page.evaluate(() => window.scrollTo(0, 0))
 	await shot(page, dir, "03-detail.png")
 	await snapshot(page, dir, "03-detail.aria.txt")
 	logStep(dir, `url=${page.url()}`)
@@ -789,20 +929,72 @@ async function driveMaps(page: Page, dir: string) {
 	await clickLink(page, "View Terminus interactive map")
 	await page.waitForURL(/\/maps\/terminus/)
 	await page.getByRole("button", { name: "Hide All Markers" }).waitFor()
+	await page.waitForFunction(() => {
+		const image = document.querySelector(".leaflet-image-layer")
+		return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0
+	})
+	const markers = page.locator(".leaflet-marker-icon")
+	await expect(markers.first()).toBeAttached()
+	const markerCount = await markers.count()
 	await shot(page, dir, "02-terminus.png")
 	logStep(dir, "entry=toggle-markers")
 	await page.getByRole("button", { name: "Hide All Markers" }).click()
 	await page.waitForURL(/exclude=/)
+	await expect(markers).toHaveCount(0)
+	await shot(page, dir, "03-markers-hidden.png")
+	await snapshot(page, dir, "03-markers-hidden.aria.txt")
+	logStep(dir, `url=${page.url()}`)
 	await page.getByRole("button", { name: "Show All Markers" }).click()
 	await page.waitForURL(url => !url.toString().includes("exclude="))
+	await expect(markers).toHaveCount(markerCount)
+	await shot(page, dir, "04-markers-restored.png")
+	logStep(dir, `markers=0->${markerCount}`)
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=current-map-menu")
+	await chooseSelect(page, "Terminus", "Totenreich")
+	await page.waitForURL(/\/maps\/totenreich/)
+	logStep(dir, `url=${page.url()}`)
 	logStep(dir, "entry=switch-layer")
-	await page.goto(`${new URL(page.url()).origin}/maps/totenreich`, { waitUntil: "domcontentloaded" })
 	await page.getByRole("button", { name: "Hide All Markers" }).waitFor()
 	await chooseSelect(page, "Eidskallen", "Boss Fight Arena")
 	await page.waitForURL(/layer=.*boss-fight-arena/)
-	await page.getByText("Current Layer").waitFor()
-	await shot(page, dir, "03-totenreich-layer.png")
-	await snapshot(page, dir, "03-totenreich-layer.aria.txt")
+	await expect(page.locator(".leaflet-image-layer")).toHaveAttribute(
+		"src",
+		/totenreich-boss-fight-arena-layer\.webp$/,
+	)
+	await page.waitForFunction(() => {
+		const image = document.querySelector(".leaflet-image-layer")
+		return image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0
+	})
+	await expect(
+		page.locator('[data-slot="select-trigger"]').filter({ hasText: "Boss Fight Arena" }),
+	).toBeVisible()
+	await shot(page, dir, "05-totenreich-layer.png")
+	await snapshot(page, dir, "05-totenreich-layer.aria.txt")
+	logStep(dir, `url=${page.url()}`)
+	logStep(dir, "entry=map-settings")
+	await page
+		.getByRole("button", { name: "Map Settings. Keyboard Shortcut: ?", exact: true })
+		.click()
+	const settingsDialog = page.getByRole("dialog", { name: "Interactive Map Settings", exact: true })
+	await settingsDialog.getByRole("tab", { name: "General", exact: true }).click()
+	await settingsDialog.getByRole("switch", { name: "Disable Zoom Animation", exact: true }).click()
+	await expect(
+		settingsDialog.getByRole("switch", { name: "Disable Zoom Animation", exact: true }),
+	).toBeChecked()
+	await shot(page, dir, "06-map-settings.png")
+	await snapshot(page, dir, "06-map-settings.aria.txt")
+	await settingsDialog.getByRole("button", { name: "Save", exact: true }).click()
+	await expect(settingsDialog).not.toBeVisible()
+	await page.reload({ waitUntil: "domcontentloaded" })
+	await page
+		.getByRole("button", { name: "Map Settings. Keyboard Shortcut: ?", exact: true })
+		.click()
+	await settingsDialog.getByRole("tab", { name: "General", exact: true }).click()
+	await expect(
+		settingsDialog.getByRole("switch", { name: "Disable Zoom Animation", exact: true }),
+	).toBeChecked()
+	await settingsDialog.getByRole("button", { name: "Cancel", exact: true }).click()
 	logStep(dir, `url=${page.url()}`)
 	logStep(dir, "result=maps-ok")
 }
@@ -813,8 +1005,6 @@ async function drive(feature: Feature) {
 		fail(`Run ${meta.runId} is not healthy. Run doctor before drive.`)
 	}
 	const dir = featureDir(evidenceDir(meta.runId), feature)
-	rmSync(dir, { recursive: true, force: true })
-	mkdirSync(dir, { recursive: true })
 	writeFileSync(join(dir, "steps.log"), "")
 	logStep(dir, `feature=${feature}`)
 	logStep(dir, `baseUrl=${meta.baseUrl}`)
