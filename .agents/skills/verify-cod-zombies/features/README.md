@@ -18,6 +18,8 @@ This directory is the maintained source for verifying the user-facing website. R
 - Run the browser only through `codz-verify drive <feature>`.
 - Restore nothing after a drive. Filters live in the URL of that browser session, which the command closes.
 - Do not remove proof artifacts during cleanup.
+- Repeat drives keep earlier proof and print a new `attempt-*` evidence path.
+- Guide image, contents, and disk-tool checks run with `main-quests`. Other guide drives prove their own listing and detail path.
 
 ## Proof and skip reporting
 
@@ -38,8 +40,8 @@ Each feature file starts with an H1 title and one paragraph describing the user-
 
 ## Features
 
-- [Main quest guides](./main-quests.md) covers header, home, mobile, and search entry, then game filter, sort, and opening the Totenreich guide.
+- [Main quest guides](./main-quests.md) covers header, home, mobile, and search entry, pagination and filter reset, Totenreich contents and image viewers, and the Beast from Beyond disk tool.
 - [Side quest guides](./side-quests.md) covers the side-quest listing, a Black Ops 3 filter, Oldest sort, and the Free 500 Points guide.
 - [Cursed relics](./relics.md) covers the relic listing (heading `Cursed Relics`), Special and Grim type filters, and the Lawyer's Pen guide.
-- [Bestiary](./bestiary.md) covers the bestiary listing, a Boss filter, Oldest sort, and the Avogadro detail page.
-- [Interactive maps](./maps.md) covers the map listing, a Black Ops 6 filter, Terminus marker toggles, and the Totenreich layer switch.
+- [Bestiary](./bestiary.md) covers the bestiary listing, a Boss filter, Oldest sort, and populated Avogadro details and combat strategy.
+- [Interactive maps](./maps.md) covers the map listing, a Black Ops 6 filter, rendered Terminus marker toggles, the Current Map menu, the Totenreich layer image, and saved settings after reload.

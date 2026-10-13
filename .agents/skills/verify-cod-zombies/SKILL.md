@@ -17,6 +17,8 @@ Content is compiled into the repo. There is no database to seed and no login.
 
 ## Launch
 
+Install the checkout's dependencies with `bun install --frozen-lockfile`. Install the browser and its Linux libraries with `bunx playwright install --with-deps chromium`. The library installation can require sudo.
+
 From the repo root:
 
 ```bash
@@ -42,12 +44,13 @@ Read-only. It passes only when all of these are true:
 - `meta.json` exists for this run and `pid` is alive
 - that process tree owns the listen socket for `baseUrl`
 - `GET /` is HTTP 200, the title contains `Call of Duty: Zombies Guides`, and `git` is the revision recorded at launch
+- main-quest difficulty and time-range invariants hold, and internal MDX links resolve to routes and heading anchors
 
 Run doctor before every drive, and again whenever a page looks stale or the port is unexpected. Exit code 1 means do not drive.
 
 ## Drive
 
-Harness: `codz-verify drive <feature>` opens headless Google Chrome (`channel: "chrome"`, sandbox off) at a 1280×900 viewport against this run's `baseUrl`. It uses accessible names from the app. Listing filters use the combobox whose name is the placeholder (`Filter: …`) and `[data-slot="combobox-item"]`. The drive waits until that input is hydrated before the click: the server-rendered control accepts focus, and the list opens only after React attaches. Sort menus and map layer menus use `data-slot="select-trigger"` and `data-slot="select-item"`, the same handles as `tests/e2e/helpers/ui.ts`.
+Harness: `codz-verify drive <feature>` opens Playwright's headless Chromium (`channel: "chromium"`, sandbox off) at a 1280×900 viewport against this run's `baseUrl`. It waits for header hydration before navigation. Listing filters use the combobox whose name is the placeholder (`Filter: …`) and `[data-slot="combobox-item"]`. The drive waits until that input is hydrated before the click. Sort menus and map layer menus use `data-slot="select-trigger"` and `data-slot="select-item"`, the same handles as `tests/e2e/helpers/ui.ts`.
 
 ```bash
 .agents/skills/verify-cod-zombies/scripts/codz-verify drive main-quests
@@ -59,11 +62,13 @@ Harness: `codz-verify drive <feature>` opens headless Google Chrome (`channel: "
 
 Read [features/README.md](features/README.md) first. A drive of one feature does not cover the other feature files.
 
+The main-quest drive also proves pagination, table-of-contents navigation, expanded carousel selection, standalone image expansion, and the Beast from Beyond disk tool. Shared guide controls use the same components on side quests and relics. The map drive checks loaded images and rendered markers, then saves a setting and checks it after reload. These recipes sample each feature; they do not exercise every filter, guide, tooltip, or entry point.
+
 Desktop header links (`Go to Main Quests page`, and the same pattern for Side Quests, Relics, Bestiary, and Maps) are hidden below the `lg` breakpoint. The mobile path is the `Toggle Nav` button, then `Navigate to <title> page`. The search control's accessible name is `Search Ctrl+K`, so match it with `/^Search/`.
 
 ## Evidence
 
-Proof goes to `/opt/cursor/artifacts/verify-cod-zombies/<runId>/<feature>/`. Override the parent with `VERIFY_EVIDENCE_DIR` (the run id is still appended).
+Proof goes to `/tmp/codz-verify-evidence/<runId>/<feature>/`. Override the parent with `VERIFY_EVIDENCE_DIR`. The run id is still appended. A repeat drive writes a new `attempt-*` subdirectory beneath the feature directory and keeps earlier proof. Use the printed `evidence=` path for that attempt.
 
 Each drive writes `steps.log` (action, then resulting URL or title) plus PNG screenshots and Playwright ARIA snapshots. The header logo alt text is `Call of Duty: Zombies Guides Logo`; a shot that does not show the header is not identity proof.
 
@@ -84,7 +89,7 @@ Standards:
 .agents/skills/verify-cod-zombies/scripts/codz-verify cleanup
 ```
 
-Sends `SIGTERM` to the process group recorded for this run (or every live run when `VERIFY_RUN_ID` is unset) and deletes `/tmp/codz-verify/<runId>`. It does not delete `/opt/cursor/artifacts/verify-cod-zombies`. Confirm the screenshots and `steps.log` are still there after cleanup.
+Sends `SIGTERM` to the process group recorded for this run, or every live run when `VERIFY_RUN_ID` is unset, and deletes `/tmp/codz-verify/<runId>`. It prints `evidenceKept=` for each run and keeps that directory, including any `VERIFY_EVIDENCE_DIR` override. Confirm the screenshots and `steps.log` are still there after cleanup.
 
 Do not kill processes by name. If the pid is already gone, cleanup only removes that run's state directory.
 
