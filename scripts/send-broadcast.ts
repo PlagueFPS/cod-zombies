@@ -45,7 +45,7 @@ import PrivacyPolicyUpdateEmail, {
 import QuestReleaseEmail, { questReleaseSubject } from "@/emails/quest-release-email"
 import RelicReleaseEmail, { relicReleaseSubject } from "@/emails/relic-release-email"
 import ZombieReleaseEmail, { zombieReleaseSubject } from "@/emails/zombie-release-email"
-import { Email } from "@/lib/services/emails"
+import { Email, emailLayer } from "@/lib/services/emails"
 import { NEWSLETTER_FROM_ADDRESS, SITE_ORIGIN } from "@/utils/constants"
 
 const RESEND_UNSUBSCRIBE_URL = "{{{RESEND_UNSUBSCRIBE_URL}}}"
@@ -64,7 +64,7 @@ const DevVarsConfig = ConfigProvider.layerAdd(
 	),
 )
 
-const BroadcastLive = Layer.mergeAll(Email.layer, BunServices.layer).pipe(
+const broadcastLayer = Layer.mergeAll(emailLayer, BunServices.layer).pipe(
 	Layer.provideMerge(Layer.provide(DevVarsConfig, BunServices.layer)),
 )
 
@@ -741,7 +741,7 @@ export const broadcastCli = sendBroadcastCommand.pipe(
 
 if (import.meta.main) {
 	Command.run(broadcastCli, { version: "1.0.0" }).pipe(
-		Effect.provide(BroadcastLive),
+		Effect.provide(broadcastLayer),
 		BunRuntime.runMain,
 	)
 }

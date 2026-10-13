@@ -2,7 +2,7 @@ import type { APIResult } from "@/types/data"
 import { createServerFn } from "@tanstack/react-start"
 import { Effect, Predicate, Schedule } from "effect"
 import { submitFeedback } from "@/data/feedback.server"
-import { IssueTracker } from "@/lib/services/issue-tracker"
+import { issueTrackerLayer } from "@/lib/services/issue-tracker"
 import { StandardFeedbackFormSchema } from "@/utils/validation-schemas"
 
 export const submitFeedbackForm = createServerFn({ method: "POST" })
@@ -29,7 +29,7 @@ export const submitFeedbackForm = createServerFn({ method: "POST" })
 					}),
 			}),
 			Effect.satisfiesErrorType<never>(),
-			Effect.provide(IssueTracker.layer),
+			Effect.provide(issueTrackerLayer),
 			Effect.runPromise,
 		)
 

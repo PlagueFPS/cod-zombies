@@ -1,4 +1,4 @@
 import { ManagedRuntime } from "effect"
-import { Email } from "@/lib/services/emails"
+import { emailLayer } from "@/lib/services/emails"
 
-export const APIRuntime = ManagedRuntime.make(Email.layer)
+export const APIRuntime = ManagedRuntime.make(emailLayer)
