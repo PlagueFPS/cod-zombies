@@ -12,6 +12,10 @@ import {
 } from "@/scripts/send-broadcast"
 import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
+const emailLayerTest = Layer.mock(Email, {
+	createBroadcast: () => Effect.succeed({ id: "123" }),
+})
+
 const testConfig = ConfigProvider.layer(
 	ConfigProvider.fromUnknown({
 		RESEND_AUDIENCE_ID: "aud_test",
@@ -19,7 +23,7 @@ const testConfig = ConfigProvider.layer(
 	}),
 )
 
-const testLayer = Layer.mergeAll(Email.layerTest, BunServicesLayer, testConfig)
+const testLayer = Layer.mergeAll(emailLayerTest, BunServicesLayer, testConfig)
 
 const runBroadcast = Command.runWith(broadcastCli, { version: "1.0.0" })
 

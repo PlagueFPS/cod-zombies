@@ -1,8 +1,12 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { Effect, Exit, Predicate, Schema } from "effect"
-import { FetchHttpClient } from "effect/http"
+import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http"
 import { describe, expect, test } from "vitest"
-import { IssueTracker } from "@/lib/services/issue-tracker"
+import {
+	IssueTracker,
+	issueTrackerLayer,
+	issueTrackerLayerNoDeps,
+} from "@/lib/services/issue-tracker"
 import {
 	expectCauseHasString,
 	expectCauseTaggedError,
@@ -23,6 +27,37 @@ const feedbackWithEmail: TFeedbackForm = {
 }
 
 describe("IssueTracker.createIssue", () => {
+	test("uses the supplied HTTP client when local dependencies are not provided", async () => {
+		const requests: string[] = []
+
+		const client = HttpClient.make(request => {
+			requests.push(request.url)
+
+			return Effect.succeed(
+				HttpClientResponse.fromWeb(
+					request,
+					jsonResponse({ data: { issueCreate: { success: true } } }),
+				),
+			)
+		})
+
+		const { fetch } = createFetchStub(jsonResponse({ data: { issueCreate: { success: false } } }))
+
+		const exit = await Effect.gen(function* () {
+			const tracker = yield* IssueTracker
+
+			return yield* tracker.createIssue(feedbackWithoutEmail)
+		}).pipe(
+			Effect.provide(issueTrackerLayerNoDeps),
+			Effect.provideService(HttpClient.HttpClient, client),
+			Effect.provideService(FetchHttpClient.Fetch, fetch),
+			Effect.runPromiseExit,
+		)
+
+		expect(expectExitSuccess(exit)).toBe(true)
+		expect(requests).toEqual(["https://api.linear.app/graphql"])
+	})
+
 	test("posts a Linear issueCreate mutation with title, team, and label", async () => {
 		const { fetch, calls } = createFetchStub(
 			jsonResponse({ data: { issueCreate: { success: true } } }),
@@ -148,7 +183,7 @@ function runCreateIssue(data: TFeedbackForm, fetch: typeof globalThis.fetch) {
 
 		return yield* tracker.createIssue(data)
 	}).pipe(
-		Effect.provide(IssueTracker.layer),
+		Effect.provide(issueTrackerLayer),
 		Effect.provideService(FetchHttpClient.Fetch, fetch),
 		Effect.runPromiseExit,
 	)
