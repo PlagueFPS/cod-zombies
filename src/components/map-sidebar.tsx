@@ -130,23 +130,20 @@ export default function MapSidebar({
 								<SelectContent className="z-900">
 									<SelectGroup>
 										<SelectLabel>Available Maps</SelectLabel>
-										{maps
-											.filter(map => map.state.valueOrUndefined !== "Coming Soon")
-											.map(map => (
+										{maps.flatMap(map => {
+											if (map.state.valueOrUndefined === "Coming Soon") return []
+
+											return [
 												<SelectItem
 													key={map.id}
 													className={cn({
-														"pointer-events-none":
-															map.id === params.mapId ||
-															map.state.valueOrUndefined === "Coming Soon",
+														"pointer-events-none": map.id === params.mapId,
 													})}
 													value={map.id}
 												>
 													<span
 														className={cn({
-															"text-muted-foreground":
-																map.id === params.mapId ||
-																map.state.valueOrUndefined === "Coming Soon",
+															"text-muted-foreground": map.id === params.mapId,
 														})}
 													>
 														{map.title}
@@ -155,8 +152,9 @@ export default function MapSidebar({
 														onNone: () => null,
 														onSome: state => (state === "New" ? <NewBadge /> : null),
 													})}
-												</SelectItem>
-											))}
+												</SelectItem>,
+											]
+										})}
 									</SelectGroup>
 								</SelectContent>
 							</Select>
@@ -429,7 +427,6 @@ function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 			case "perk":
 				return (
 					<Image
-						unoptimized
 						src="/perks/juggernog-bo6.webp"
 						height={128}
 						width={128}
@@ -440,7 +437,6 @@ function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 			default:
 				return (
 					<Image
-						unoptimized
 						src={Option.getOrElse(mapMarker.icon, () => `/icons/${category}/${mapMarker.id}.webp`)}
 						height={128}
 						width={128}
@@ -453,7 +449,6 @@ function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 
 	return (
 		<Image
-			unoptimized
 			src={Option.getOrElse(mapMarker.icon, () => `/icons/${category}/${mapMarker.id}.webp`)}
 			height={128}
 			width={128}

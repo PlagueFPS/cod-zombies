@@ -2,6 +2,11 @@ export const VARIANT_WIDTHS_LIST = [384, 1200] as const
 
 export type VariantWidth = (typeof VARIANT_WIDTHS_LIST)[number]
 
+export type ImageVariantMetadata = {
+	readonly sourceWidth: number
+	readonly widths: readonly VariantWidth[]
+}
+
 const VARIANT_SUFFIX_RE = new RegExp(`-(${VARIANT_WIDTHS_LIST.join("|")})\\.webp$`, "i")
 
 export function toWebImagePath(path: string): string {

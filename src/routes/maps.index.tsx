@@ -102,7 +102,9 @@ function Maps() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const matched = g.items.filter(i => next.some(n => n.value === i.value)).map(i => i.value)
+			const matched = g.items.flatMap(item =>
+				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			)
 
 			if (matched.length > 0) {
 				selected.set(slugify(g.label), matched)

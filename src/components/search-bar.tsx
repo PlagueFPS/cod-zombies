@@ -127,38 +127,56 @@ export function SearchBar() {
 		relicsByMap.set(r.map.id, list)
 	}
 
-	const searchMainQuests = games
-		.map(game => ({
-			value: `${game.title} Main Quests`,
-			icon: "BookText" as const,
-			items: (mainQuestsByGame.get(game.id) ?? []).map(q => ({
-				value: toFileRoute(`/main-quests/${q.game.id}/${q.id}`),
-				label: q.title,
-			})),
-		}))
-		.filter(group => group.items.length > 0)
+	const searchMainQuests = games.flatMap(game => {
+		const quests = mainQuestsByGame.get(game.id) ?? []
 
-	const searchSideQuests = questMaps
-		.map(map => ({
-			value: `${map.title} Side Quests`,
-			icon: "Book" as const,
-			items: (sideQuestsByMap.get(map.id) ?? []).map(q => ({
-				value: toFileRoute(`/side-quests/${q.game.id}/${q.map.id}/${q.id}`),
-				label: q.title,
-			})),
-		}))
-		.filter(group => group.items.length > 0)
+		if (quests.length === 0) return []
 
-	const searchRelics = relicMaps
-		.map(map => ({
-			value: `${map.title} Relics`,
-			icon: "Component" as const,
-			items: (relicsByMap.get(map.id) ?? []).map(r => ({
-				value: toFileRoute(`/relics/${r.game.id}/${r.id}`),
-				label: r.title,
-			})),
-		}))
-		.filter(group => group.items.length > 0)
+		return [
+			{
+				value: `${game.title} Main Quests`,
+				icon: "BookText" as const,
+				items: quests.map(q => ({
+					value: toFileRoute(`/main-quests/${q.game.id}/${q.id}`),
+					label: q.title,
+				})),
+			},
+		]
+	})
+
+	const searchSideQuests = questMaps.flatMap(map => {
+		const quests = sideQuestsByMap.get(map.id) ?? []
+
+		if (quests.length === 0) return []
+
+		return [
+			{
+				value: `${map.title} Side Quests`,
+				icon: "Book" as const,
+				items: quests.map(q => ({
+					value: toFileRoute(`/side-quests/${q.game.id}/${q.map.id}/${q.id}`),
+					label: q.title,
+				})),
+			},
+		]
+	})
+
+	const searchRelics = relicMaps.flatMap(map => {
+		const mapRelics = relicsByMap.get(map.id) ?? []
+
+		if (mapRelics.length === 0) return []
+
+		return [
+			{
+				value: `${map.title} Relics`,
+				icon: "Component" as const,
+				items: mapRelics.map(r => ({
+					value: toFileRoute(`/relics/${r.game.id}/${r.id}`),
+					label: r.title,
+				})),
+			},
+		]
+	})
 
 	const searchZombies = {
 		value: "Zombies",

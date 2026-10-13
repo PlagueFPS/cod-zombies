@@ -212,7 +212,7 @@ describe("optimizeAssetsEffect", () => {
 		expect(files).toEqual(["previews/small.webp"])
 	})
 
-	test("nested content path preserves directory structure", async () => {
+	test("nested content path preserves directory structure and only generates a 1200px variant", async () => {
 		mkdirSync(join(root, "newassets", "content", "map"), { recursive: true })
 		await writePng(join(root, "newassets", "content", "map", "img.png"), 1500, 900)
 
@@ -225,12 +225,53 @@ describe("optimizeAssetsEffect", () => {
 		const exit = await Effect.runPromiseExit(program)
 		expectExitSuccess(exit)
 		const files = listFilesRecursive(join(root, "out")).sort()
-		expect(files).toEqual([
+		expect(files).toEqual(["content/map/img-1200.webp", "content/map/img.webp"])
+
+		const meta = await sharp(
+			readFileSync(join(root, "out", "content", "map", "img-1200.webp")),
+		).metadata()
+
+		expect(meta.width).toBe(1200)
+	})
+
+	test("flat source written into public/content only generates a 1200px variant", async () => {
+		mkdirSync(join(root, "public", "content", "map"), { recursive: true })
+		await writePng(join(root, "newassets", "img.png"), 1500, 900)
+
+		const exit = await Effect.runPromiseExit(
+			optimizeAssetsEffect({
+				dir: "./public/content/map",
+				source: "./newassets",
+				...noModeFlags,
+			}).pipe(Effect.provide(testLayer)),
+		)
+
+		expectExitSuccess(exit)
+		expect(listFilesRecursive(join(root, "public")).sort()).toEqual([
 			"content/map/img-1200.webp",
-			"content/map/img-384.webp",
 			"content/map/img.webp",
 		])
 	})
+
+	test.each([800, 1200])(
+		"content at %ipx produces only the base when optimized in place",
+		async width => {
+			const contentDir = join(root, "public", "content", "map")
+			mkdirSync(contentDir, { recursive: true })
+			await writePng(join(contentDir, "img.png"), width, 600)
+
+			const exit = await Effect.runPromiseExit(
+				optimizeAssetsEffect({
+					dir: contentDir,
+					source: contentDir,
+					...noModeFlags,
+				}).pipe(Effect.provide(testLayer)),
+			)
+
+			expectExitSuccess(exit)
+			expect(listFilesRecursive(contentDir).sort()).toEqual(["img.png", "img.webp"])
+		},
+	)
 
 	test("does not upscale small images in variant categories", async () => {
 		mkdirSync(join(root, "newassets", "maps"), { recursive: true })

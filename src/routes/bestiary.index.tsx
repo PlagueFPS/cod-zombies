@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option, Predicate } from "effect"
+import { Option } from "effect"
 import { BestiaryGrid } from "@/components/bestiary-grid"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
@@ -70,17 +70,17 @@ export const Route = createFileRoute("/bestiary/")({
 
 		const weaknessFilters = Array.from(
 			new Set(allZombies.flatMap(zombie => zombie.elementalWeakness)),
-		)
-			.map(weakness => {
-				return Option.match(getAmmoModByKey(weakness), {
-					onSome: ammoMod => ({
+		).flatMap(weakness => {
+			return Option.match(getAmmoModByKey(weakness), {
+				onSome: ammoMod => [
+					{
 						value: weakness,
 						label: ammoMod.title,
-					}),
-					onNone: () => null,
-				})
+					},
+				],
+				onNone: () => [],
 			})
-			.filter(Predicate.isNotNull)
+		})
 
 		const filterSpecs: FilterSpec<Zombie>[] = [
 			{
@@ -191,7 +191,9 @@ function Bestiary() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const matched = g.items.filter(i => next.some(n => n.value === i.value)).map(i => i.value)
+			const matched = g.items.flatMap(item =>
+				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			)
 
 			if (matched.length > 0) {
 				selected.set(slugify(g.label), matched)

@@ -253,7 +253,6 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 			{Option.isSome(marker.icon) && (
 				<div className="flex w-full items-center justify-center">
 					<CustomImage
-						unoptimized
 						src={marker.icon.value}
 						alt={marker.title}
 						width={128}

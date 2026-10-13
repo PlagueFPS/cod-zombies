@@ -220,6 +220,10 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 		const fs = yield* FileSystem.FileSystem
 		const path = yield* Path.Path
 
+		const outputCategory = getCategoryFromRelativePath(
+			path.relative(path.resolve("public"), path.resolve(targetDir)),
+		)
+
 		yield* ensureOutputDirectory(targetDir)
 
 		const assets = yield* walkImageFiles(source, {
@@ -241,7 +245,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 					const extension = path.extname(relativeAsset)
 					const relativeDir = path.dirname(relativeAsset)
 					const baseName = path.basename(relativeAsset, extension)
-					const category = getCategoryFromRelativePath(relativeAsset)
+					const category = outputCategory ?? getCategoryFromRelativePath(relativeAsset)
 					const sourcePath = path.join(source, relativeAsset)
 					const outputDir = relativeDir === "." ? targetDir : path.join(targetDir, relativeDir)
 
@@ -294,7 +298,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 					yield* fs.writeFile(path.join(outputDir, baseFileName), baseBuffer)
 
 					if (mode === "default" && shouldGenerateVariants(category)) {
-						const variantWidths = getVariantWidths(sourceWidth)
+						const variantWidths = getVariantWidths({ sourceWidth, category })
 						yield* Effect.forEach(
 							variantWidths,
 							width =>

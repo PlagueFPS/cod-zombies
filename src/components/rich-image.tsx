@@ -8,6 +8,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog"
+import { getImageVariants } from "@/lib/generate-img-attrs"
+import { variantWebPath } from "@/lib/image-variant-paths"
 
 export interface RichImageProps {
 	/** The image to display */
@@ -23,6 +25,13 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 		featuredImage: image,
 		sizes: "(max-width: 828px) 100vw, 1200px",
 	}
+
+	const expandedSources: FeaturedImageProps["sources"] = [
+		...(getImageVariants(image)?.widths.includes(1200)
+			? [{ media: "(max-width: 1200px)", srcSet: variantWebPath(image, 1200) }]
+			: []),
+		{ srcSet: image },
+	]
 
 	return (
 		<div className="relative mt-8 w-full">
@@ -49,7 +58,7 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 							width={1920}
 							height={1080}
 							alt={alt ?? ""}
-							sizes="(max-width: 1920px) 100vw, 1920px"
+							sources={expandedSources}
 							className="cursor-zoom-out rounded-lg"
 						/>
 					</DialogClose>

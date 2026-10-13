@@ -17,7 +17,6 @@ export function Header() {
 					className="mr-auto flex items-center justify-center gap-2"
 				>
 					<Image
-						unoptimized
 						src="/logo.webp"
 						width={20}
 						height={20}
