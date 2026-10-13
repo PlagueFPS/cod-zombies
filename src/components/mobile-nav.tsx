@@ -32,7 +32,6 @@ export function MobileNav() {
 							className="flex flex-col items-center justify-center gap-2"
 						>
 							<Image
-								unoptimized
 								src="/logo.webp"
 								height={128}
 								width={128}

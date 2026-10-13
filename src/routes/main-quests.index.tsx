@@ -126,12 +126,9 @@ export const Route = createFileRoute("/main-quests/")({
 			}
 		}
 
-		const gameFilters = games
-			.filter(g => questGames.has(g.id))
-			.map(g => ({
-				value: g.id,
-				label: g.title,
-			}))
+		const gameFilters = games.flatMap(game =>
+			questGames.has(game.id) ? [{ value: game.id, label: game.title }] : [],
+		)
 
 		const difficultyFilters = Array.from(questDifficulties)
 			.sort(sortDifficulties)
@@ -214,7 +211,9 @@ function MainQuests() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const value = g.items.filter(i => next.some(n => n.value === i.value)).map(i => i.value)
+			const value = g.items.flatMap(item =>
+				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			)
 
 			if (value.length > 0) {
 				selected.set(slugify(g.label), value)

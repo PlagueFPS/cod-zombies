@@ -244,8 +244,7 @@ export const toPascalCase = (s: string) =>
 	s
 		.toLowerCase()
 		.split(/[^0-9a-zA-Z]+/)
-		.filter(part => part.length > 0)
-		.map(part => part[0]?.toUpperCase() + part.slice(1))
+		.flatMap(part => (part.length > 0 ? [part[0]?.toUpperCase() + part.slice(1)] : []))
 		.join("")
 
 export const createSeoTitle = (title: string) => {

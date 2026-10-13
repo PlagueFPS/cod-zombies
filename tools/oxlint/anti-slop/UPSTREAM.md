@@ -13,7 +13,9 @@ Effect rules are enabled because this repository declares a direct `effect` depe
 
 ## Intentional deviations
 
-Vendored plugin source is unchanged. Application `tsconfig.json` excludes `tools/oxlint/anti-slop` and `.agents` so project typecheck does not compile the plugin (`.ts` import extensions and `noUncheckedIndexedAccess` differ from this repository's compiler options).
+`rules/no-array-filter-map.ts` rejects adjacent filter/map chains on property and unknown receivers instead of requiring local array evidence. `shared/array-method.ts` recognizes explicit lazy iterator producers and local iterator bindings so iterator pipelines remain allowed. This fixes missed chains on imported metadata properties such as `variants.widths`. Preserve these changes during vendor updates.
+
+Application `tsconfig.json` excludes `tools/oxlint/anti-slop` and `.agents` so project typecheck does not compile the plugin (`.ts` import extensions and `noUncheckedIndexedAccess` differ from this repository's compiler options).
 
 ## Known limitations
 

@@ -19,6 +19,7 @@ export function FeaturedImage({
 	className,
 	containerClassName,
 	loading = "lazy",
+	sources,
 	...rest
 }: FeaturedImageProps) {
 	const { imageLoaded, imageErrored, setImageLoaded, setImageErrored } = useImageState()
@@ -37,6 +38,7 @@ export function FeaturedImage({
 				<Image
 					{...rest}
 					loading={loading}
+					sources={sources}
 					src={featuredImage}
 					onLoad={() => setImageLoaded(true)}
 					onError={() => setImageErrored(true)}
@@ -55,7 +57,6 @@ export function FeaturedImage({
 			{imageErrored ? (
 				<Image
 					{...rest}
-					unoptimized
 					src="/article-img-placeholder.jpg"
 					alt=""
 					className={cn("flex aspect-video h-auto w-full items-center justify-center", className)}

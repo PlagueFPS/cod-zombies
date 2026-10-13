@@ -473,9 +473,11 @@ export const generateZombieImage = Effect.fnUntraced(
 		const hasElemental = zombie.elementalWeakness.length > 0
 
 		const elementalModsOrdered = hasElemental
-			? zombie.elementalWeakness
-					.map(k => resolveAmmoModForOg(k, debutGameKey))
-					.filter(m => m !== null)
+			? zombie.elementalWeakness.flatMap(key => {
+					const mod = resolveAmmoModForOg(key, debutGameKey)
+
+					return mod === null ? [] : [mod]
+				})
 			: []
 
 		const ammoPersistentImages: Array<{ data: Uint8Array; src: string }> = []

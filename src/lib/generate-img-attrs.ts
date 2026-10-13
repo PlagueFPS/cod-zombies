@@ -1,5 +1,5 @@
-import { variantWebPath, type VariantWidth } from "@/lib/image-variant-paths"
-import { VARIANT_WIDTHS } from "@/types/generated/image-variants.gen"
+import { variantWebPath, type ImageVariantMetadata } from "@/lib/image-variant-paths"
+import { IMAGE_VARIANTS } from "@/types/generated/image-variants.gen"
 
 export interface GenImgAttrs {
 	src: string
@@ -7,38 +7,39 @@ export interface GenImgAttrs {
 	sizes: string | undefined
 }
 
-export type VariantWidthTable = {
-	readonly [src: string]: readonly VariantWidth[] | undefined
+export type ImageVariantTable = {
+	readonly [src: string]: ImageVariantMetadata | undefined
 }
 
-function getAvailableVariantWidths(
+export function getImageVariants(
 	src: string,
-	variantWidths: VariantWidthTable,
-): readonly VariantWidth[] {
-	if (src.startsWith("http://") || src.startsWith("https://")) return []
+	imageVariants: ImageVariantTable = IMAGE_VARIANTS,
+): ImageVariantMetadata | undefined {
+	if (src.startsWith("http://") || src.startsWith("https://")) return undefined
 
-	return variantWidths[src] ?? []
+	return imageVariants[src]
 }
 
 export function generateImgAttrs(
 	src: string,
-	unoptimized: boolean,
 	sizes?: string,
-	variantWidths: VariantWidthTable = VARIANT_WIDTHS,
+	imageVariants: ImageVariantTable = IMAGE_VARIANTS,
 ): GenImgAttrs {
-	if (unoptimized) return { srcSet: undefined, sizes: undefined, src }
+	const variants = getImageVariants(src, imageVariants)
 
-	const available = getAvailableVariantWidths(src, variantWidths)
-
-	if (available.length === 0) {
+	if (!variants || variants.widths.length === 0) {
 		return { src, srcSet: undefined, sizes }
 	}
 
-	const srcSet = available.map(w => `${variantWebPath(src, w)} ${w}w`).join(", ")
+	const candidates = variants.widths.flatMap(width =>
+		width === variants.sourceWidth ? [] : [`${variantWebPath(src, width)} ${width}w`],
+	)
+
+	candidates.push(`${src} ${variants.sourceWidth}w`)
 
 	return {
 		sizes,
-		srcSet,
+		srcSet: candidates.join(", "),
 		src,
 	}
 }

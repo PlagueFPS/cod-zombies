@@ -39,6 +39,8 @@ export interface ImageProps extends Omit<
 	 * @default "100vw"
 	 */
 	sizes?: string
+	/** Alternate sources selected by the browser's media queries. */
+	sources?: readonly { media?: string; srcSet: string }[]
 	/** The callback function to call when the image is loaded */
 	onLoad?: ReactEventHandler<HTMLImageElement>
 	/** The callback function to call when the image fails to load */
@@ -50,11 +52,6 @@ export interface ImageProps extends Omit<
 	 * @default false
 	 */
 	preload?: boolean
-	/**
-	 * Whether to use the unoptimized source image
-	 * @default false
-	 */
-	unoptimized?: boolean
 	/**
 	 * Controls when the image should start loading.
 	 * @default "lazy"
@@ -149,11 +146,11 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 			className,
 			style,
 			sizes,
+			sources,
 			preload,
 			crossOrigin,
 			referrerPolicy,
 			fetchPriority,
-			unoptimized = false,
 			onLoad,
 			onError,
 			loading = "lazy",
@@ -168,7 +165,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 				if (!img) return
 
 				if (onError) {
-					img.src = img.currentSrc || img.src
+					img.src = src
 				}
 
 				if (process.env.NODE_ENV !== "production") {
@@ -195,7 +192,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 		}, [onLoad])
 
 		const ref = useMergeRef(forwardedRef, ownRef)
-		const imgAttrs = generateImgAttrs(src, unoptimized, sizes)
+		const imgAttrs = generateImgAttrs(src, sizes)
 
 		if (preload) {
 			ReactDOM.preload(imgAttrs.src, {
@@ -208,7 +205,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 			})
 		}
 
-		return (
+		const image = (
 			<img
 				{...props}
 				loading={loading}
@@ -229,6 +226,17 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 				}}
 				onError={onError}
 			/>
+		)
+
+		return sources ? (
+			<picture className="contents">
+				{sources.map(source => (
+					<source key={source.media ?? source.srcSet} {...source} />
+				))}
+				{image}
+			</picture>
+		) : (
+			image
 		)
 	},
 )

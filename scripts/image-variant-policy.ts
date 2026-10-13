@@ -18,7 +18,7 @@ export const NO_VARIANT_CATEGORIES = HashSet.make(
 
 /**
  * Top-level `public/` dirs omitted from `image-paths.gen.ts` union types.
- * `content` still gets variants and `VARIANT_WIDTHS` entries — paths are typed via `content-paths.gen.ts`.
+ * `content` still gets variants and `IMAGE_VARIANTS` entries — paths are typed via `content-paths.gen.ts`.
  */
 export const EXCLUDED_FROM_IMAGE_PATH_TYPES = HashSet.make("content", "opengraph-images")
 
@@ -34,8 +34,16 @@ export function shouldGenerateVariants(category: string | null): boolean {
 	return !HashSet.has(NO_VARIANT_CATEGORIES, category)
 }
 
-export function getVariantWidths(sourceWidth: number): readonly VariantWidth[] {
-	return VARIANT_WIDTHS_LIST.filter(width => sourceWidth > width)
+export function getVariantWidths({
+	sourceWidth,
+	category,
+}: {
+	sourceWidth: number
+	category: string | null
+}): readonly VariantWidth[] {
+	return VARIANT_WIDTHS_LIST.filter(
+		width => sourceWidth > width && (category !== "content" || width !== 384),
+	)
 }
 
 export function variantFileName(baseName: string, width: VariantWidth): string {

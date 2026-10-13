@@ -1,15 +1,33 @@
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Clock, Effect, FileSystem, HashSet, Path, Predicate, SynchronizedRef } from "effect"
+import {
+	Clock,
+	Effect,
+	FileSystem,
+	HashSet,
+	Path,
+	Predicate,
+	Schema,
+	SynchronizedRef,
+} from "effect"
+import sharp from "sharp"
 import {
 	isVariantImagePath,
 	VARIANT_WIDTHS_LIST,
 	variantWebPath,
-	type VariantWidth,
+	type ImageVariantMetadata,
 } from "@/lib/image-variant-paths"
 import { walkImageFiles } from "@/scripts/image-file-walk"
 import { EXCLUDED_FROM_IMAGE_PATH_TYPES } from "@/scripts/image-variant-policy"
 import { toPascalCase } from "@/utils/shared-functions"
+
+export class ImageMetadataError extends Schema.TaggedError<ImageMetadataError>()(
+	"ImageMetadataError",
+	{
+		message: Schema.String,
+		cause: Schema.Defect(),
+	},
+) {}
 
 const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDir: string) {
 	const fs = yield* FileSystem.FileSystem
@@ -37,26 +55,42 @@ const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDi
 	)
 })
 
-function buildVariantWidthsMap(basePaths: readonly string[], existingPaths: ReadonlySet<string>) {
-	// Filesystem discovery: which variant widths exist on disk (not encode-time policy).
-	const variantMap: Record<string, VariantWidth[]> = {}
+const buildImageVariants = Effect.fnUntraced(function* (
+	basePaths: readonly string[],
+	existingPaths: ReadonlySet<string>,
+	publicDir: string,
+) {
+	const path = yield* Path.Path
 
-	for (const basePath of basePaths) {
-		const widths: VariantWidth[] = []
+	const entries = yield* Effect.forEach(
+		basePaths,
+		basePath =>
+			Effect.gen(function* () {
+				const widths = VARIANT_WIDTHS_LIST.filter(width =>
+					existingPaths.has(variantWebPath(basePath, width)),
+				)
 
-		for (const width of VARIANT_WIDTHS_LIST) {
-			if (existingPaths.has(variantWebPath(basePath, width))) {
-				widths.push(width)
-			}
-		}
+				if (widths.length === 0) return null
 
-		if (widths.length > 0) {
-			variantMap[basePath] = widths
-		}
-	}
+				const metadata = yield* Effect.tryPromise({
+					try: () => sharp(path.join(publicDir, basePath.slice(1))).metadata(),
+					catch: cause =>
+						new ImageMetadataError({
+							message: `Failed to read base image dimensions: ${basePath}`,
+							cause,
+						}),
+				})
 
-	return variantMap
-}
+				return [basePath, { sourceWidth: metadata.autoOrient.width, widths }] satisfies [
+					string,
+					ImageVariantMetadata,
+				]
+			}),
+		{ concurrency: 16 },
+	)
+
+	return Object.fromEntries(entries.filter(Predicate.isNotNull))
+})
 
 function generateTypeForDir(typeName: string, imagePaths: string[]) {
 	if (imagePaths.length === 0) {
@@ -68,20 +102,20 @@ function generateTypeForDir(typeName: string, imagePaths: string[]) {
 	return `export type ${typeName} =\n  ${literals.join(" |\n  ")};\n`
 }
 
-function generateVariantWidthsObject(variantMap: Record<string, readonly VariantWidth[]>) {
+function generateImageVariantsObject(variantMap: Record<string, ImageVariantMetadata>) {
 	const entries = Object.entries(variantMap).sort(([a], [b]) => a.localeCompare(b))
 
 	if (entries.length === 0) {
-		return "export const VARIANT_WIDTHS = {} as const satisfies Record<string, readonly number[]>\n"
+		return "export const IMAGE_VARIANTS = {} as const satisfies Record<string, ImageVariantMetadata>\n"
 	}
 
-	const lines = entries.map(([basePath, widths]) => {
+	const lines = entries.map(([basePath, { sourceWidth, widths }]) => {
 		const widthList = widths.join(", ")
 
-		return `  '${basePath.replace(/'/g, "\\'")}': [${widthList}],`
+		return `  '${basePath.replace(/'/g, "\\'")}': { sourceWidth: ${sourceWidth}, widths: [${widthList}] },`
 	})
 
-	return `export const VARIANT_WIDTHS = {\n${lines.join("\n")}\n} as const satisfies Record<string, readonly number[]>\n`
+	return `export const IMAGE_VARIANTS = {\n${lines.join("\n")}\n} as const satisfies Record<string, ImageVariantMetadata>\n`
 }
 
 function isRootWebPath(webPath: string): boolean {
@@ -132,7 +166,7 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 		{ concurrency: "unbounded" },
 	).pipe(Effect.map(results => results.sort((a, b) => a.dir.localeCompare(b.dir))))
 
-	const variantMap = buildVariantWidthsMap(basePaths, existingPaths)
+	const variantMap = yield* buildImageVariants(basePaths, existingPaths, publicDir)
 
 	const durationMs = yield* Clock.currentTimeMillis.pipe(
 		Effect.map(now => (now - startTime).toFixed(0)),
@@ -163,10 +197,11 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
  * THIS FILE IS AUTO-GENERATED.
  * Run 'generate:image:paths' to regenerate.
  */\n`)
+	variantLines.push("import type { ImageVariantMetadata } from '@/lib/image-variant-paths'\n")
 	variantLines.push(
-		"/** Base path -> available pre-generated widths, sorted ascending. Absent key = no variants (use base src only). */\n",
+		"/** Base image widths and available variants. Absent key = no variants (use base src only). */\n",
 	)
-	variantLines.push(generateVariantWidthsObject(variantMap))
+	variantLines.push(generateImageVariantsObject(variantMap))
 
 	const outDir = path.dirname(outFile)
 	const outDirExists = yield* fs.exists(outDir)

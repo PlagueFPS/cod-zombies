@@ -92,3 +92,64 @@ export function isKnownArrayExpression(
   }
   return false;
 }
+
+function isIteratorAnnotation(type: ESTree.TSType): boolean {
+  if (type.type === "TSParenthesizedType") return isIteratorAnnotation(type.typeAnnotation);
+  return (
+    type.type === "TSTypeReference" && type.typeName.type === "Identifier" &&
+    ["Iterator", "IteratorObject", "IterableIterator", "Generator"].includes(type.typeName.name)
+  );
+}
+
+/** Recognize explicit iterator producers and local iterator bindings. */
+export function isKnownIteratorExpression(
+  sourceCode: SourceCode,
+  node: ESTree.Node,
+  visited = new Set<Variable>(),
+): boolean {
+  node = unwrapArrayExpression(node);
+  if (node.type === "CallExpression") {
+    const method = arrayMethodTarget(node.callee);
+    if (method !== null) {
+      if (["values", "entries", "keys"].includes(method.name)) return true;
+      const receiver = unwrapArrayExpression(method.object);
+      if (
+        method.name === "from" && receiver.type === "Identifier" && receiver.name === "Iterator" &&
+        (resolveArrayBinding(sourceCode, receiver)?.defs.length ?? 0) === 0
+      ) return true;
+      if (["map", "filter", "flatMap", "take", "drop"].includes(method.name)) {
+        return isKnownIteratorExpression(sourceCode, method.object, visited);
+      }
+    }
+    const callable = resolveArrayBinding(sourceCode, node.callee);
+    return callable?.defs.some(definition => {
+      if (definition.type === "FunctionName" && definition.node.type === "FunctionDeclaration") {
+        return definition.node.generator;
+      }
+      if (definition.type === "Variable" && definition.node.type === "VariableDeclarator") {
+        const initializer = definition.node.init;
+        return initializer?.type === "FunctionExpression" && initializer.generator;
+      }
+      return false;
+    }) ?? false;
+  }
+  if (node.type !== "Identifier") return false;
+  const variable = resolveArrayBinding(sourceCode, node);
+  if (variable === null || visited.has(variable)) return false;
+  visited.add(variable);
+  if (variable.references.some(reference => reference.isWrite() && !reference.init)) return false;
+  for (const identifier of variable.identifiers) {
+    const annotation = identifier.typeAnnotation?.typeAnnotation;
+    if (annotation !== undefined) return isIteratorAnnotation(annotation);
+  }
+  for (const definition of variable.defs) {
+    if (
+      definition.type === "Variable" && definition.node.type === "VariableDeclarator" &&
+      definition.node.id.type === "Identifier" && definition.node.init !== null &&
+      definition.node.parent.type === "VariableDeclaration" && definition.node.parent.kind === "const"
+    ) {
+      return isKnownIteratorExpression(sourceCode, definition.node.init, visited);
+    }
+  }
+  return false;
+}

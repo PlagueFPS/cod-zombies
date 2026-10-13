@@ -38,9 +38,15 @@ describe("image-variant-policy", () => {
 	})
 
 	test("getVariantWidths respects source dimensions", () => {
-		expect(getVariantWidths(2000)).toEqual([384, 1200])
-		expect(getVariantWidths(800)).toEqual([384])
-		expect(getVariantWidths(300)).toEqual([])
+		expect(getVariantWidths({ sourceWidth: 2000, category: "maps" })).toEqual([384, 1200])
+		expect(getVariantWidths({ sourceWidth: 800, category: "zombies" })).toEqual([384])
+		expect(getVariantWidths({ sourceWidth: 300, category: null })).toEqual([])
+	})
+
+	test("content only gets 1200px variants without upscaling", () => {
+		expect(getVariantWidths({ sourceWidth: 2000, category: "content" })).toEqual([1200])
+		expect(getVariantWidths({ sourceWidth: 1200, category: "content" })).toEqual([])
+		expect(getVariantWidths({ sourceWidth: 800, category: "content" })).toEqual([])
 	})
 
 	test("variantFileName", () => {
