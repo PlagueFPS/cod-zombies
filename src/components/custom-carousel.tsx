@@ -1,3 +1,4 @@
+import type { RichImageProps } from "@/components/rich-image"
 import { cn } from "cn"
 import {
 	Children,
@@ -8,7 +9,10 @@ import {
 	useState,
 	useSyncExternalStore,
 	type CSSProperties,
+	type ReactElement,
+	type RefObject,
 } from "react"
+import { CarouselImage, ExpandedCarouselImage } from "@/components/carousel-image"
 import { Button } from "@/components/ui/button"
 import {
 	Carousel,
@@ -18,11 +22,13 @@ import {
 	CarouselNext,
 	type CarouselApi,
 } from "@/components/ui/carousel"
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
+import { CarouselProvider } from "@/contexts/carousel-provider"
 import { firstSlideImg } from "@/lib/embla-carousel/carousel-first-slide"
 import { resolveCarouselIndicatorLayout } from "@/lib/embla-carousel/carousel-indicator-layout"
 
 interface CustomCarouselProps {
-	children: React.ReactNode
+	children: ReactElement<RichImageProps> | readonly ReactElement<RichImageProps>[]
 	className?: string
 }
 
@@ -32,13 +38,7 @@ const INDICATORS_FALLBACK_STYLE: CSSProperties = {
 	transform: "translateX(-50%)",
 }
 
-export default function CustomCarousel({ children, className }: CustomCarouselProps) {
-	const rootRef = useRef<HTMLDivElement>(null)
-	const dotsPositionLockedRef = useRef(false)
-
-	const [api, setApi] = useState<CarouselApi>()
-	const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>(INDICATORS_FALLBACK_STYLE)
-
+function useCarouselSelection(api: CarouselApi) {
 	const subscribe = useCallback(
 		(onStoreChange: () => void) => {
 			if (!api) return () => {}
@@ -65,6 +65,109 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		() => api?.selectedScrollSnap() ?? 0,
 		() => 0,
 	)
+
+	return { count, currentIndex }
+}
+
+function CarouselSlides({
+	api,
+	style,
+	className,
+}: {
+	api: CarouselApi
+	style?: CSSProperties
+	className?: string
+}) {
+	const { count, currentIndex } = useCarouselSelection(api)
+
+	if (count <= 1) return null
+
+	return (
+		<div
+			style={style}
+			className={cn(
+				"pointer-events-auto z-10 inline-flex w-fit items-center justify-center gap-1 rounded-full border border-input/30 bg-black/65 px-2 py-1.5 shadow-lg backdrop-blur-md supports-[backdrop-filter]:bg-black/45 dark:border-input",
+				className,
+			)}
+			role="tablist"
+			aria-label="Carousel slides"
+		>
+			{Array.from({ length: count }, (_, index) => (
+				<Button
+					key={index}
+					size="icon-xs"
+					aria-current={index === currentIndex}
+					aria-label={`Slide ${index + 1} of ${count}`}
+					className={cn(
+						"h-2 w-2 shrink-0 rounded-full transition-[background-color,transform] duration-200 md:h-2.5 md:w-2.5",
+						index === currentIndex ? "scale-110 bg-primary" : "bg-white/55 hover:bg-white/75",
+					)}
+					onClick={() => api?.scrollTo(index)}
+				/>
+			))}
+		</div>
+	)
+}
+
+function ExpandedCarousel({
+	children,
+	startIndex,
+	onSelect,
+	rootRef,
+}: Pick<CustomCarouselProps, "children"> & {
+	startIndex: number
+	onSelect: (index: number) => void
+	rootRef: RefObject<HTMLDivElement | null>
+}) {
+	const [api, setApi] = useState<CarouselApi>()
+	const { count } = useCarouselSelection(api)
+
+	useEffect(() => {
+		if (!api) return
+
+		const syncSelection = () => onSelect(api.selectedScrollSnap())
+		api.on("select", syncSelection)
+
+		return () => {
+			api.off("select", syncSelection)
+		}
+	}, [api, onSelect])
+
+	return (
+		<Carousel
+			ref={rootRef}
+			tabIndex={-1}
+			setApi={setApi}
+			opts={{ startIndex }}
+			className="w-full min-w-0 outline-none"
+		>
+			<CarouselContent className="ml-0 touch-pan-y touch-pinch-zoom">
+				{Children.map(children, (child, index) => (
+					<CarouselItem key={index} className="pl-0">
+						<ExpandedCarouselImage {...child.props} />
+					</CarouselItem>
+				))}
+			</CarouselContent>
+			{count > 1 ? (
+				<div className="contents" onClick={event => event.stopPropagation()}>
+					<CarouselPrevious variant="default" size="icon" className="left-2 md:left-4" />
+					<CarouselNext variant="default" size="icon" className="right-2 md:right-4" />
+					<CarouselSlides api={api} className="mx-auto mt-3 flex" />
+				</div>
+			) : null}
+		</Carousel>
+	)
+}
+
+export default function CustomCarousel({ children, className }: CustomCarouselProps) {
+	const rootRef = useRef<HTMLDivElement>(null)
+	const expandedRootRef = useRef<HTMLDivElement>(null)
+	const dotsPositionLockedRef = useRef(false)
+
+	const [api, setApi] = useState<CarouselApi>()
+	const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+	const [indicatorStyle, setIndicatorStyle] = useState<CSSProperties>(INDICATORS_FALLBACK_STYLE)
+	const { count } = useCarouselSelection(api)
 
 	const tryLockDotsPosition = useCallback(() => {
 		if (dotsPositionLockedRef.current) return
@@ -138,40 +241,62 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 	}, [api, count, tryLockDotsPosition])
 
 	return (
-		<Carousel ref={rootRef} setApi={setApi} className="w-full min-w-0">
-			<CarouselContent className="min-w-0">
-				{Children.toArray(children).map((child, index) => (
-					<CarouselItem key={index} className={cn(className)}>
-						{child}
-					</CarouselItem>
-				))}
-			</CarouselContent>
-			<CarouselPrevious variant="default" size="icon" className="absolute left-2 flex md:left-4" />
-			<CarouselNext variant="default" size="icon" className="absolute right-5 flex md:right-4" />
-			{count > 1 ? (
-				<div
-					style={indicatorStyle}
-					className="pointer-events-auto absolute z-10 inline-flex w-fit items-center justify-center gap-1 rounded-full border border-input/30 bg-black/65 px-2 py-1.5 shadow-lg backdrop-blur-md supports-[backdrop-filter]:bg-black/45 dark:border-input"
-					role="tablist"
-					aria-label="Carousel slides"
+		<CarouselProvider value={{ expand: setExpandedIndex }}>
+			<Dialog
+				open={expandedIndex !== null}
+				onOpenChange={open => {
+					if (!open) setExpandedIndex(null)
+				}}
+			>
+				<Carousel ref={rootRef} setApi={setApi} className="w-full min-w-0">
+					<CarouselContent className="min-w-0">
+						{Children.map(children, (child, index) => (
+							<CarouselItem key={index} className={cn(className)}>
+								<CarouselImage {...child.props} index={index} />
+							</CarouselItem>
+						))}
+					</CarouselContent>
+					<CarouselPrevious
+						variant="default"
+						size="icon"
+						className="absolute left-2 flex md:left-4"
+					/>
+					<CarouselNext
+						variant="default"
+						size="icon"
+						className="absolute right-5 flex md:right-4"
+					/>
+					<CarouselSlides api={api} style={indicatorStyle} className="absolute" />
+				</Carousel>
+				<DialogContent
+					className="cursor-zoom-out border-none bg-transparent p-0 ring-0 sm:max-w-[90vw]"
+					showCloseButton={false}
+					initialFocus={expandedRootRef}
+					onClick={() => setExpandedIndex(null)}
+					finalFocus={() =>
+						api
+							?.slideNodes()
+							[api.selectedScrollSnap()]?.querySelector<HTMLButtonElement>(
+								"[data-slot='dialog-trigger']",
+							) ?? null
+					}
 				>
-					{Array.from({ length: count }, (_, i) => (
-						<Button
-							key={i}
-							size="icon-xs"
-							aria-current={i === currentIndex}
-							aria-label={`Slide ${i + 1} of ${count}`}
-							className={cn(
-								"h-2 w-2 shrink-0 rounded-full transition-[background-color,transform] duration-200 md:h-2.5 md:w-2.5",
-								i === currentIndex
-									? "scale-110 bg-primary"
-									: "bg-muted-foreground/35 hover:bg-muted-foreground/55",
-							)}
-							onClick={() => api?.scrollTo(i)}
-						/>
-					))}
-				</div>
-			) : null}
-		</Carousel>
+					<DialogTitle className="sr-only">Image carousel</DialogTitle>
+					<DialogDescription className="sr-only">
+						Swipe or use the arrow keys and navigation buttons to browse the images. Click the image
+						or outside the viewer to close it.
+					</DialogDescription>
+					{expandedIndex !== null ? (
+						<ExpandedCarousel
+							startIndex={expandedIndex}
+							rootRef={expandedRootRef}
+							onSelect={index => api?.scrollTo(index, true)}
+						>
+							{children}
+						</ExpandedCarousel>
+					) : null}
+				</DialogContent>
+			</Dialog>
+		</CarouselProvider>
 	)
 }

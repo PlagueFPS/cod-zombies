@@ -11,7 +11,7 @@ import {
 import { getImageVariants } from "@/lib/generate-img-attrs"
 import { variantWebPath } from "@/lib/image-variant-paths"
 
-interface RichImageProps {
+export interface RichImageProps {
 	/** The image to display */
 	image: ImagePaths
 	/** The caption to display */
