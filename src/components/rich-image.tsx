@@ -9,7 +9,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog"
 
-interface RichImageProps {
+export interface RichImageProps {
 	/** The image to display */
 	image: ImagePaths
 	/** The caption to display */
