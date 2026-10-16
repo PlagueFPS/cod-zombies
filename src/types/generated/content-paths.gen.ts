@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-16T09:03:27.443Z
- * generated in: 25ms
+ * generated at: 2026-10-16T10:46:52.650Z
+ * generated in: 22ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -147,6 +147,7 @@ export type SideQuestsPaths =
 	| "content/side-quests/dead-flowers"
 	| "content/side-quests/destroy-something-beautiful"
 	| "content/side-quests/dig"
+	| "content/side-quests/dominance-of-dravakar"
 	| "content/side-quests/domineering"
 	| "content/side-quests/doppelganger-jump-scare"
 	| "content/side-quests/dragon-shield-upgrade"

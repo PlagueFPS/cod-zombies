@@ -2106,6 +2106,14 @@ const SIDE_QUESTS = uniqueMap([
 		map: "rex-infernus",
 		content: "content/side-quests/hidden-power-ups-rex-infernus",
 	}),
+	makeQuest("dominance-of-dravakar", {
+		state: Option.some("New"),
+		publishedDate: "2026-10-15",
+		title: "Dominance of Dravakar",
+		description: "Learn how to obtain the Necrofluid Gauntlet on Rex Infernus.",
+		map: "rex-infernus",
+		content: "content/side-quests/dominance-of-dravakar",
+	}),
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<string, number>(
