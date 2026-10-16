@@ -499,6 +499,7 @@ export type RelicsImagePath =
 	| "/relics/teddy-bear-relic.webp"
 	| "/relics/valkyrie-helmet-relic-v1.webp"
 	| "/relics/vril-sphere-relic.webp"
+	| "/relics/wrestling-belt.webp"
 
 /** Union of images in `/weapons` */
 

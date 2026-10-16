@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-12T07:08:58.090Z
- * generated in: 26ms
+ * generated at: 2026-10-16T09:03:27.443Z
+ * generated in: 25ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -95,6 +95,7 @@ export type RelicsPaths =
 	| "content/relics/teddy-bear"
 	| "content/relics/valkyrie-helmet"
 	| "content/relics/vril-sphere"
+	| "content/relics/wrestling-belt"
 
 /** Union of content paths in `content/side-quests` */
 

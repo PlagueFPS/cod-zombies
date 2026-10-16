@@ -8868,6 +8868,14 @@ export const IMAGE_VARIANTS = {
 	},
 	"/content/totenreich/totenreich-wooden-pallet.webp": { sourceWidth: 1917, widths: [1200] },
 	"/content/totenreich/totenreich-wooden-wall.webp": { sourceWidth: 1917, widths: [1200] },
+	"/content/totenreich/totenreich-wrestling-belt-magazine.webp": {
+		sourceWidth: 1919,
+		widths: [1200],
+	},
+	"/content/totenreich/totenreich-wrestling-belt-relic-trial-portal.webp": {
+		sourceWidth: 1919,
+		widths: [1200],
+	},
 	"/content/totenreich/totenreich-wunderbarrage-controller.webp": {
 		sourceWidth: 1917,
 		widths: [1200],
