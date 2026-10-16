@@ -473,6 +473,21 @@ const RELICS = uniqueMap([
 		},
 		content: "content/relics/power-switch",
 	}),
+	makeRelic("wrestling-belt", {
+		title: "Wrestling Belt",
+		state: Option.some("New"),
+		type: "Grim",
+		image: "/relics/wrestling-belt.webp",
+		description: "Weapon Wallbuys randomize each round.",
+		map: "totenreich",
+		discoveredDate: "2026-10-15",
+		estimatedTimeMins: {
+			min: 30,
+			max: 60,
+			reason: "Time varies slightly based on how quickly you obtain the required weapons.",
+		},
+		content: "content/relics/wrestling-belt",
+	}),
 	makeRelic("gramophone", {
 		title: "Gramophone",
 		state: Option.none(),
@@ -565,7 +580,7 @@ const RELICS = uniqueMap([
 	}),
 	makeRelic("mister-peeks-mayhem", {
 		title: "Mister Peeks Mayhem",
-		state: Option.some("New"),
+		state: Option.none(),
 		type: "Special",
 		image: "/relics/mister-peeks-mayhem.webp",
 		description: "All Cursed Tier rewards active and mayhem is increased",
