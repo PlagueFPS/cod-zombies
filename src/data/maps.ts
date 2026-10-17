@@ -580,10 +580,15 @@ const MAPS = uniqueMap([
 			"A sea fortress and keystone to the power of the Nazi Kriegsmarine, this mist-shrouded island hides secrets both ancient and terrifying.",
 		image: "/maps/the-darkest-shore.webp",
 		game: "wwii",
-		state: Option.some("Coming Soon"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/the-darkest-shore"),
-		difficulty: Option.none(),
-		estimatedTimeMins: Option.none(),
+		difficulty: Option.some("Very Hard"),
+		estimatedTimeMins: Option.some({
+			min: 70,
+			max: 90,
+			reason:
+				"Solo runs take about 70–90 minutes. Time varies with player count, ritual retries, and knowledge of the steps.",
+		}),
 	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
