@@ -580,6 +580,8 @@ export type ZombiesImagePath =
 	| "/zombies/marauder.webp"
 	| "/zombies/margwa.webp"
 	| "/zombies/megaton.webp"
+	| "/zombies/meistermeuchler.webp"
+	| "/zombies/meuchler.webp"
 	| "/zombies/mimic.webp"
 	| "/zombies/napalm-zombie.webp"
 	| "/zombies/nathan.webp"

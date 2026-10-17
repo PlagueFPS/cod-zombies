@@ -1018,16 +1018,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/pest.webp",
 		description:
-			"Pests are a special enemy on The Final Reich. A burning Pest crawls out of each well opening when the Pilot Light is fired.",
+			"Pests are a special enemy on The Final Reich and The Darkest Shore. A burning Pest crawls out of each well opening when the Pilot Light is fired.",
 		games: ["wwii"],
-		maps: ["the-final-reich"],
+		maps: ["the-final-reich", "the-darkest-shore"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["bite", "lunge"],
 		spawnBehavior:
-			"One burning Pest crawls out of each well opening when the Pilot Light fires, after the gas valves are open.",
+			"One burning Pest crawls out of each well opening when the Pilot Light fires, after the gas valves are open. On The Darkest Shore, a charged Pest spine starts the spine ritual, and the Ancient Room lockdown spawns an anointed Pest plus extra Pests.",
 		combatStrategy: "content/zombies/pest",
 	}),
 	makeZombie("bomber", {
@@ -1036,15 +1036,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/bomber.webp",
 		description:
-			"Bombers are a special enemy on The Final Reich. They carry a bomb, and shooting that bomb makes it explode.",
+			"Bombers are a special enemy on The Final Reich and The Darkest Shore. They carry a bomb, and shooting that bomb makes it explode.",
 		games: ["wwii"],
-		maps: ["the-final-reich"],
+		maps: ["the-final-reich", "the-darkest-shore"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["bomb"],
 		elementalWeakness: [],
 		attacks: ["carried-bomb"],
-		spawnBehavior: "Four Bombers wait in the Salt Mine tunnels down to the Emperor's Chamber.",
+		spawnBehavior:
+			"Four Bombers wait in the Salt Mine tunnels down to the Emperor's Chamber. On The Darkest Shore, Bombers stand on the minecart tracks on the first trip each round.",
 		combatStrategy: "content/zombies/bomber",
 	}),
 	makeZombie("wustling", {
@@ -1053,15 +1054,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/wustling.webp",
 		description:
-			"Wüstlings are an elite enemy on The Final Reich. One may wake from a storage tube, and they charge, including into a metal door.",
+			"Wüstlings are an elite enemy on The Final Reich and The Darkest Shore. One may wake from a storage tube, and they charge, including into a metal door.",
 		games: ["wwii"],
-		maps: ["the-final-reich"],
+		maps: ["the-final-reich", "the-darkest-shore"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["forward-charge", "melee-swing", "ground-slam"],
-		spawnBehavior: "A Wüstling may wake from a storage tube during the Laboratory escort.",
+		spawnBehavior:
+			"A Wüstling may wake from a storage tube during the Laboratory escort. On The Darkest Shore, a charged Wüstling spine starts the perk ritual, and the Ancient Room lockdown spawns an anointed Wüstling plus extra Wüstlings.",
 		combatStrategy: "content/zombies/wustling",
 	}),
 	makeZombie("brenner", {
@@ -1070,16 +1072,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/brenner.webp",
 		description:
-			"Brenners are an elite enemy on The Final Reich. Killing one drops a head used in the Fireworks main quest.",
+			"Brenners are an elite enemy on The Final Reich and The Darkest Shore. Killing one drops a head used in the Fireworks main quest.",
 		games: ["wwii"],
-		maps: ["the-final-reich"],
+		maps: ["the-final-reich", "the-darkest-shore"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["flamethrower", "melee-swing"],
 		spawnBehavior:
-			"A Brenner spawns on the Weapon Assembly Station in the Command Room when the Tesla Gun parts are placed.",
+			"A Brenner spawns on the Weapon Assembly Station in the Command Room when the Tesla Gun parts are placed. On The Darkest Shore, one spawns when the Corpse Gate opens the Freezer, and another spawns in the U-Boat Pens during the boss.",
 		combatStrategy: "content/zombies/brenner",
 	}),
 	makeZombie("panzermorder", {
@@ -1099,6 +1101,42 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"The Panzermörder spawns in the boss arena about 7 seconds after the hilt is taken.",
 		combatStrategy: "content/zombies/panzermorder",
+	}),
+	makeZombie("meuchler", {
+		title: "Meuchler",
+		state: Option.none(),
+		releaseDate: "2018-01-30",
+		image: "/zombies/meuchler.webp",
+		description:
+			"Meuchlers are an elite enemy on The Darkest Shore. They spawn in the fog after the first fog, flank players, and swing for most of a player's health.",
+		games: ["wwii"],
+		maps: ["the-darkest-shore"],
+		type: "Elite",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["heavy-swing"],
+		spawnBehavior:
+			"Meuchlers spawn in every fog after the first, and they leave when that fog lifts. The Ancient Room can also push them in, and the quest lockdown spawns one anointed Meuchler.",
+		combatStrategy: "content/zombies/meuchler",
+	}),
+	makeZombie("meistermeuchler", {
+		title: "Meistermeuchler",
+		state: Option.none(),
+		releaseDate: "2018-01-30",
+		image: "/zombies/meistermeuchler.webp",
+		description:
+			"Meistermeuchlers are the bosses of The Darkest Shore. Four of them copy Frontline, Camouflage, Shellshock, and saw-blade attacks.",
+		games: ["wwii"],
+		maps: ["the-darkest-shore"],
+		type: "Boss",
+		speed: "Fast",
+		weakPoints: [],
+		elementalWeakness: [],
+		attacks: ["electric-armour", "camouflage-blind", "shellshock-stun", "bouncing-saw-blades"],
+		spawnBehavior:
+			"Four Meistermeuchlers spawn after the Pommel is thrown at the radio. Phase 1 is one at a time on the Beach, phase 2 is two in the U-Boat Pens, phase 3 is up to four in the upper bunkers, and phase 4 is all four on the Beach.",
+		combatStrategy: "content/zombies/meistermeuchler",
 	}),
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",

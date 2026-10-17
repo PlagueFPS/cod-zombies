@@ -9825,6 +9825,8 @@ export const IMAGE_VARIANTS = {
 	"/zombies/marauder.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/margwa.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/megaton.webp": { sourceWidth: 1024, widths: [384] },
+	"/zombies/meistermeuchler.webp": { sourceWidth: 1920, widths: [384, 1200] },
+	"/zombies/meuchler.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/mimic.webp": { sourceWidth: 1491, widths: [384, 1200] },
 	"/zombies/napalm-zombie.webp": { sourceWidth: 738, widths: [384] },
 	"/zombies/nathan.webp": { sourceWidth: 594, widths: [384] },
