@@ -810,4 +810,32 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description: "Charges straight ahead.",
 	}),
+	makeZombieAttack("heavy-swing", {
+		title: "Heavy Swing",
+		range: "Short",
+		description: "Swings for about 75–85% of the player's maximum health.",
+	}),
+	makeZombieAttack("electric-armour", {
+		title: "Electric Armour",
+		range: "Short",
+		description:
+			"The purple Meistermeuchler puts electric armour on nearby zombies, like Frontline.",
+	}),
+	makeZombieAttack("camouflage-blind", {
+		title: "Camouflage Blind",
+		range: "Medium",
+		description:
+			"The green Meistermeuchler blinds players. The screen flash does not mean the phase is over.",
+	}),
+	makeZombieAttack("shellshock-stun", {
+		title: "Shellshock Stun",
+		range: "Medium",
+		description:
+			"The red Meistermeuchler stuns players on a timer. It does not stun because they got close.",
+	}),
+	makeZombieAttack("bouncing-saw-blades", {
+		title: "Bouncing Saw Blades",
+		range: "Long",
+		description: "The yellow Meistermeuchler fires saw blades that bounce.",
+	}),
 ])
