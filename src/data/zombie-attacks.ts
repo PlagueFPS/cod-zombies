@@ -838,4 +838,16 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description: "The yellow Meistermeuchler fires saw blades that bounce.",
 	}),
+	makeZombieAttack("sizzler-pulse", {
+		title: "Sizzler Pulse",
+		range: "Medium",
+		description:
+			"Pulses its chest engine and turns nearby zombies into Gekocht. It can be damaged during the pulse.",
+	}),
+	makeZombieAttack("red-gas-cloud", {
+		title: "Red Gas Cloud",
+		range: "Short",
+		description:
+			"Releases a red gas cloud that lasts 25 seconds and hurts players within about 120 units.",
+	}),
 ])

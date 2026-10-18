@@ -15,8 +15,6 @@
 		"typecheck": "tsc --noEmit",
 		"typegen": "wrangler types",
 		"lint": "oxlint",
-		"fmt": "oxfmt",
-		"fmt:check": "oxfmt --check",
 		"prepare": "effect-tsgo patch --typescript --no-oxlint",
 		"clean": "rm -rf .output && rm -rf .tanstack && rm -rf node_modules",
 		"email": "email dev --dir src/emails",
@@ -56,7 +54,7 @@
 		"@cloudflare/vite-plugin": "1.62.3",
 		"@effect/language-service": "0.87.3",
 		"@effect/platform-bun": "4.0.5",
-		"@effect/tsgo": "0.47.2",
+		"@effect/tsgo": "0.56.0",
 		"@effect/vitest": "4.0.5",
 		"@fontsource-variable/geist": "5.3.0",
 		"@fontsource-variable/geist-mono": "5.3.0",
@@ -70,7 +68,7 @@
 		"@tanstack/react-router-devtools": "1.167.2",
 		"@tanstack/react-router-ssr-query": "1.167.3",
 		"@types/babel__core": "7.20.5",
-		"@types/bun": "1.4.2",
+		"@types/bun": "1.4.4",
 		"@types/leaflet": "1.9.22",
 		"@types/mdx": "2.0.14",
 		"@types/node": "26.6.3",
@@ -80,8 +78,8 @@
 		"happy-dom": "20.14.5",
 		"oxc-transform-react": "0.152.0",
 		"oxfmt": "0.71.0",
-		"oxlint": "1.86.0",
-		"oxlint-tsgolint": "7.0.2003",
+		"oxlint": "1.89.0",
+		"oxlint-tsgolint": "7.0.2004",
 		"react-email": "6.11.0",
 		"react-scan": "0.5.7",
 		"sharp": "0.35.5",
@@ -96,6 +94,5 @@
 	},
 	"engines": {
 		"node": ">=22.12.0"
-	},
-	"packageManager": "bun@1.4.2"
+	}
 }

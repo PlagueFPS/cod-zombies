@@ -8693,6 +8693,198 @@ export const IMAGE_VARIANTS = {
 		widths: [1200],
 	},
 	"/content/the-giant/the-giant-well-teddy-bear.webp": { sourceWidth: 1845, widths: [1200] },
+	"/content/the-shadowed-throne/the-shadowed-throne-ammo.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-battery-spawn-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-battery-spawn-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-battery-spawn-3.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-cabaret-gas-panel.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-cash-register.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-city-map.webp": {
+		sourceWidth: 1205,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-dancers-dagger.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-destroyed-building-anchor.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-10.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-3.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-4.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-5.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-6.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-7.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-8.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-doll-location-9.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-film-reel.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-flare-box.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-frequency-chart.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-generator.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-golden-scale-bowl.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-magnifying-glass.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-morse-code.webp": {
+		sourceWidth: 1294,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-museum-anchor.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-nazi-axe-frequency-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-nazi-axe-frequency-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-nazi-axe-frequency-3.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-nazi-axe-frequency-4.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-nazi-axe-frequency-5.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-nazi-axe-frequency-6.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-nazi-axe.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-painting.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-picture.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-plaza-anchor.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-plaza-gas-panel.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-projector.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-radio-code.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-radio.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-safe.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-scale.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-smugglers-bat.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-stuffed-rabbit.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-wall-map.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-wooden-door.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-shadowed-throne/the-shadowed-throne-wunderbuss.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
 	"/content/the-tomb/the-tomb-aether-amalgam-statue.webp": { sourceWidth: 1879, widths: [1200] },
 	"/content/the-tomb/the-tomb-aether-doppleghast-statue.webp": {
 		sourceWidth: 1889,
@@ -10076,6 +10268,7 @@ export const IMAGE_VARIANTS = {
 	"/zombies/frost-zombie.webp": { sourceWidth: 507, widths: [384] },
 	"/zombies/fury.webp": { sourceWidth: 1020, widths: [384] },
 	"/zombies/gegenees.webp": { sourceWidth: 3288, widths: [384, 1200] },
+	"/zombies/gekocht.webp": { sourceWidth: 522, widths: [384] },
 	"/zombies/george-a-romero.webp": { sourceWidth: 606, widths: [384] },
 	"/zombies/ghost.webp": { sourceWidth: 628, widths: [384] },
 	"/zombies/giant-spider.webp": { sourceWidth: 1009, widths: [384] },
@@ -10135,6 +10328,7 @@ export const IMAGE_VARIANTS = {
 	"/zombies/slasher.webp": { sourceWidth: 1080, widths: [384] },
 	"/zombies/space-monkey.webp": { sourceWidth: 1200, widths: [384] },
 	"/zombies/spider.webp": { sourceWidth: 1920, widths: [384, 1200] },
+	"/zombies/stadtjager.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/stoker.webp": { sourceWidth: 705, widths: [384] },
 	"/zombies/tempest.webp": { sourceWidth: 395, widths: [384] },
 	"/zombies/the-corrupted-keeper.webp": { sourceWidth: 446, widths: [384] },

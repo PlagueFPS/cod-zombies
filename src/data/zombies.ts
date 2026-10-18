@@ -1018,16 +1018,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/pest.webp",
 		description:
-			"Pests are a special enemy on The Final Reich and The Darkest Shore. A burning Pest crawls out of each well opening when the Pilot Light is fired.",
+			"Pests are a special enemy on The Final Reich, The Darkest Shore, and The Shadowed Throne. A burning Pest crawls out of each well opening when the Pilot Light is fired.",
 		games: ["wwii"],
-		maps: ["the-final-reich", "the-darkest-shore"],
+		maps: ["the-final-reich", "the-darkest-shore", "the-shadowed-throne"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["bite", "lunge"],
 		spawnBehavior:
-			"One burning Pest crawls out of each well opening when the Pilot Light fires, after the gas valves are open. On The Darkest Shore, a charged Pest spine starts the spine ritual, and the Ancient Room lockdown spawns an anointed Pest plus extra Pests.",
+			"One burning Pest crawls out of each well opening when the Pilot Light fires, after the gas valves are open. On The Darkest Shore, a charged Pest spine starts the spine ritual, and the Ancient Room lockdown spawns an anointed Pest plus extra Pests. On The Shadowed Throne, the refuge door needs 9 Pest kills near the relic slots.",
 		combatStrategy: "content/zombies/pest",
 	}),
 	makeZombie("bomber", {
@@ -1054,16 +1054,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/wustling.webp",
 		description:
-			"Wüstlings are an elite enemy on The Final Reich and The Darkest Shore. One may wake from a storage tube, and they charge, including into a metal door.",
+			"Wüstlings are an elite enemy on The Final Reich, The Darkest Shore, and The Shadowed Throne. One may wake from a storage tube, and they charge, including into a metal door.",
 		games: ["wwii"],
-		maps: ["the-final-reich", "the-darkest-shore"],
+		maps: ["the-final-reich", "the-darkest-shore", "the-shadowed-throne"],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["forward-charge", "melee-swing", "ground-slam"],
 		spawnBehavior:
-			"A Wüstling may wake from a storage tube during the Laboratory escort. On The Darkest Shore, a charged Wüstling spine starts the perk ritual, and the Ancient Room lockdown spawns an anointed Wüstling plus extra Wüstlings.",
+			"A Wüstling may wake from a storage tube during the Laboratory escort. On The Darkest Shore, a charged Wüstling spine starts the perk ritual, and the Ancient Room lockdown spawns an anointed Wüstling plus extra Wüstlings. On The Shadowed Throne, one breaks out of the Smuggler's door when the bat is paid for with a gun that is not Pack-a-Punched.",
 		combatStrategy: "content/zombies/wustling",
 	}),
 	makeZombie("brenner", {
@@ -1137,6 +1137,42 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"Four Meistermeuchlers spawn after the Pommel is thrown at the radio. Phase 1 is one at a time on the Beach, phase 2 is two in the U-Boat Pens, phase 3 is up to four in the upper bunkers, and phase 4 is all four on the Beach.",
 		combatStrategy: "content/zombies/meistermeuchler",
+	}),
+	makeZombie("gekocht", {
+		title: "Gekocht",
+		state: Option.none(),
+		releaseDate: "2018-04-10",
+		image: "/zombies/gekocht.webp",
+		description:
+			"Gekocht, also called Sizzlers, are a special enemy on The Shadowed Throne. A Geistbolt turns an undamaged zombie into one.",
+		games: ["wwii"],
+		maps: ["the-shadowed-throne"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head", "geistbolt"],
+		elementalWeakness: [],
+		attacks: ["melee-swing"],
+		spawnBehavior:
+			"Up to two can be active. After the flare, Straub's Zeppelin fires Geistbolts into undamaged zombies. The Stadtjäger's engine pulse does the same. Melee-kill one for the Wunderbuss Geistbolt.",
+		combatStrategy: "content/zombies/gekocht",
+	}),
+	makeZombie("stadtjager", {
+		title: "Stadtjäger",
+		state: Option.none(),
+		releaseDate: "2018-04-10",
+		image: "/zombies/stadtjager.webp",
+		description:
+			"The Stadtjäger is the boss of The Shadowed Throne. It has several heads, a chest engine, a saw on its left arm, and a Geistkraft cannon on its right arm. It only takes damage during phase windows.",
+		games: ["wwii"],
+		maps: ["the-shadowed-throne"],
+		type: "Boss",
+		speed: "Medium",
+		weakPoints: ["chest-engine"],
+		elementalWeakness: [],
+		attacks: ["forward-charge", "sizzler-pulse", "red-gas-cloud"],
+		spawnBehavior:
+			"It spawns when a player walks back toward the drop pod after Straub is defeated. Health is 32,000 times the player multiplier: 1× solo, 1.75× for 2 players, 2× for 3, and 2.5× for 4. Phase 2 starts at 60% health and phase 3 at 30%. Damage cannot skip a phase threshold.",
+		combatStrategy: "content/zombies/stadtjager",
 	}),
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",
