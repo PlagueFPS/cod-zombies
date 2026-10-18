@@ -11,11 +11,11 @@ Call of Duty: Zombies Guides is a website dedicated to providing the most up-to-
 
 ## What We Provide
 
-* [**Main Quest Guides**](https://www.codzombiesguides.com): Step-by-step guides for every main quest in the game, including detailed information on how to complete each step and strategies for defeating each boss.
-* [**Side Quest Guides**](https://www.codzombiesguides.com/side-quests): Detailed guides for every side quest in the game, including information on how to trigger each quest and the rewards for completing them.
-* [**Interactive Maps**](https://www.codzombiesguides.com/maps): Customizable interactive maps for every map in the game, including information on item spawns, map-specific mechanics, and more.
-* [**Bestiary**](https://www.codzombiesguides.com/bestiary): A comprehensive bestiary for every type of zombie in the game, including information on their strengths, weaknesses, spawn behavior, and attack patterns.
-* [**Cursed Relics**](https://www.codzombiesguides.com/relics): Detailed guides on all the currently found Cursed Relics, including information on how to obtain them, their effects, and tips on how to make getting them much easier.
+- [**Main Quest Guides**](https://www.codzombiesguides.com): Step-by-step guides for every main quest in the game, including detailed information on how to complete each step and strategies for defeating each boss.
+- [**Side Quest Guides**](https://www.codzombiesguides.com/side-quests): Detailed guides for every side quest in the game, including information on how to trigger each quest and the rewards for completing them.
+- [**Interactive Maps**](https://www.codzombiesguides.com/maps): Customizable interactive maps for every map in the game, including information on item spawns, map-specific mechanics, and more.
+- [**Bestiary**](https://www.codzombiesguides.com/bestiary): A comprehensive bestiary for every type of zombie in the game, including information on their strengths, weaknesses, spawn behavior, and attack patterns.
+- [**Cursed Relics**](https://www.codzombiesguides.com/relics): Detailed guides on all the currently found Cursed Relics, including information on how to obtain them, their effects, and tips on how to make getting them much easier.
 
 ## Who This Website Is For
 
@@ -27,4 +27,5 @@ This website was created because while there are plenty of video guides that can
 Therefore, this website exists as a consistent and reliable resource for players to access the most up-to-date information on their favorite quests, maps, and zombies.
 
 ## Supporting This Project
+
 If you find this website helpful, please consider supporting it by [donating](https://ko-fi.com/codzombiesguides). Any amount is appreciated and will help keep the website running and updated.

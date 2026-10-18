@@ -366,7 +366,6 @@ export const generateMainQuestImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				css: ogStylesheets,
 				images: [
 					{ data: mapImage, src: `${map.id}-image` },
@@ -436,7 +435,6 @@ export const generateSideQuestImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				css: ogStylesheets,
 				images: [
 					{ data: mapImage, src: `${map.id}-image` },
@@ -799,7 +797,6 @@ export const generateZombieImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				css: ogStylesheets,
 				images: [
 					{ data: zombieImage, src: `${zombie.id}-portrait` },
@@ -998,7 +995,6 @@ export const generateRelicImage = Effect.fnUntraced(
 			{
 				format: "jpeg",
 				...OG_IMAGE_SIZE,
-				// @ts-expect-error - stylesheets are not typed correctly with the { type: "file" } annotation but produce the valid output
 				css: ogStylesheets,
 				images: [
 					{ data: relicImage, src: `${relic.id}-portrait` },
