@@ -581,7 +581,7 @@ const MAPS = uniqueMap([
 		image: "/maps/the-darkest-shore.webp",
 		game: "wwii",
 		state: Option.none(),
-		mainQuest: Option.some("content/main-quests/the-darkest-shore"),
+		mainQuest: Option.some("content/main-quests/making-history"),
 		difficulty: Option.some("Very Hard"),
 		estimatedTimeMins: Option.some({
 			min: 70,

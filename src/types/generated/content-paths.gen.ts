@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-17T10:19:50.202Z
- * generated in: 20ms
+ * generated at: 2026-10-18T00:15:52.448Z
+ * generated in: 24ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -32,6 +32,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/little-lost-girl"
 	| "content/main-quests/locksmith"
 	| "content/main-quests/love-and-war"
+	| "content/main-quests/making-history"
 	| "content/main-quests/maxis-potential"
 	| "content/main-quests/mined-games"
 	| "content/main-quests/most-escape-alive"
@@ -52,7 +53,6 @@ export type MainQuestsPaths =
 	| "content/main-quests/shattered-veil"
 	| "content/main-quests/sooooul-key"
 	| "content/main-quests/soul-less"
-	| "content/main-quests/the-darkest-shore"
 	| "content/main-quests/the-end"
 	| "content/main-quests/the-tomb"
 	| "content/main-quests/time-travel-will-tell"
