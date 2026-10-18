@@ -590,6 +590,17 @@ const MAPS = uniqueMap([
 				"Solo runs take about 70–90 minutes. Time varies with player count, ritual retries, and knowledge of the steps.",
 		}),
 	}),
+	makeMap("the-shadowed-throne", {
+		title: "The Shadowed Throne",
+		releaseDate: "2018-04-10",
+		description: "Berlin is burning, and the power of the final Reich has been laid bare.",
+		image: "/maps/the-shadowed-throne.webp",
+		game: "wwii",
+		state: Option.some("Coming Soon"),
+		mainQuest: Option.some("content/main-quests/stadtjager-down"),
+		difficulty: Option.none(),
+		estimatedTimeMins: Option.none(),
+	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
 		releaseDate: "2018-10-11",

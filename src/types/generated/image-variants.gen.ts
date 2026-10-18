@@ -10020,6 +10020,7 @@ export const IMAGE_VARIANTS = {
 	"/maps/the-darkest-shore.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/maps/the-final-reich.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/maps/the-giant.webp": { sourceWidth: 1920, widths: [384, 1200] },
+	"/maps/the-shadowed-throne.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/maps/the-tomb.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/maps/totenreich.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/maps/tranzit.webp": { sourceWidth: 1920, widths: [384, 1200] },

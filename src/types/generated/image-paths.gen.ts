@@ -395,6 +395,7 @@ export type MapsImagePath =
 	| "/maps/the-darkest-shore.webp"
 	| "/maps/the-final-reich.webp"
 	| "/maps/the-giant.webp"
+	| "/maps/the-shadowed-throne.webp"
 	| "/maps/the-tomb.webp"
 	| "/maps/totenreich.webp"
 	| "/maps/tranzit.webp"
