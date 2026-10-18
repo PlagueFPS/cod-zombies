@@ -8158,6 +8158,273 @@ export const IMAGE_VARIANTS = {
 		widths: [1200],
 	},
 	"/content/the-beast-from-beyond/tbfb-vent-disk.webp": { sourceWidth: 1920, widths: [1200] },
+	"/content/the-darkest-shore/the-darkest-shore-aa-gun.webp": { sourceWidth: 1920, widths: [1200] },
+	"/content/the-darkest-shore/the-darkest-shore-aiming-guide.webp": {
+		sourceWidth: 1324,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-barbarossas-pommel.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-cannon-left-panel.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-cannon-middle-button.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-cannon-right-panel.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-ceiling-hooks.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-1-coil.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-1-pest.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-1-player.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-2-coil.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-2-pest.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-2-player.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-3-coil.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-3-pest.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-3-player.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-4-coil.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-4-pest.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-4-player.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-5-coil.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-5-pest.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-charge-5-player.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-cracked-wall.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-ending.webp": { sourceWidth: 1919, widths: [1200] },
+	"/content/the-darkest-shore/the-darkest-shore-faustblitz.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-freezer-machine.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-fuse-box-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-fuse-box-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-fuse-box-3.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-fuse-box-4.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-fuse-box-5.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-fuse-box-6.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-fuse-box-7.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-gas-valves.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-hanging-corpse.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-headless-corpse.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-kugelblitz.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-laufenblitz.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-lebenblitz.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-meuchler-spawn-location-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-meuchler-spawn-location-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-meuchler-spawn-location-3.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-meuchler-spawn-location-4.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-meuchler-spawn-location-5.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-meuchler-spawn-location-6.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-monk-head-machine.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-monk-head.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-power-switch-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-power-switch-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-radio-part-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-radio-part-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-radio-table.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-ripsaw.webp": { sourceWidth: 1920, widths: [1200] },
+	"/content/the-darkest-shore/the-darkest-shore-saw-blade-handle-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-saw-blade-handle-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-saw-blade-handle-3.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-saw-blade.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-son-1-rock.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-son-1-statue.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-son-2-statue.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-1.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-2.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-3.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-4.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-5.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-6.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-7.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-8.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
+	"/content/the-darkest-shore/the-darkest-shore-third-son-rock-9.webp": {
+		sourceWidth: 1920,
+		widths: [1200],
+	},
 	"/content/the-final-reich/the-final-reich-bloodraven-painting.webp": {
 		sourceWidth: 1920,
 		widths: [1200],
@@ -9825,6 +10092,8 @@ export const IMAGE_VARIANTS = {
 	"/zombies/marauder.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/margwa.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/megaton.webp": { sourceWidth: 1024, widths: [384] },
+	"/zombies/meistermeuchler.webp": { sourceWidth: 1920, widths: [384, 1200] },
+	"/zombies/meuchler.webp": { sourceWidth: 576, widths: [384, 1200] },
 	"/zombies/mimic.webp": { sourceWidth: 1491, widths: [384, 1200] },
 	"/zombies/napalm-zombie.webp": { sourceWidth: 738, widths: [384] },
 	"/zombies/nathan.webp": { sourceWidth: 594, widths: [384] },
