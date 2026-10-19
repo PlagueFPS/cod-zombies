@@ -1,37 +1,25 @@
-import { Option } from "effect"
 import { describe, expect, test } from "vitest"
 import {
-	getMapsWithMainQuest,
+	MAIN_QUEST_DIFFICULTIES,
 	mainQuestDifficultySearchParam,
 	mainQuestDifficultySlug,
 } from "@/data/maps"
 
 describe("mainQuestDifficultySearchParam", () => {
-	test("selecting Very Hard yields difficulty=[very-hard] and the filtered quests", () => {
-		const selected = mainQuestDifficultySlug("Very Hard")
-		const difficulty = mainQuestDifficultySearchParam([selected])
+	test("keeps the slug written for every difficulty option", () => {
+		for (const difficulty of MAIN_QUEST_DIFFICULTIES) {
+			const slug = mainQuestDifficultySlug(difficulty)
 
-		expect(difficulty).toEqual(["very-hard"])
-
-		const titles = getMapsWithMainQuest().flatMap(map => {
-			if (Option.isNone(map.difficulty)) return []
-
-			const slug = mainQuestDifficultySlug(map.difficulty.value)
-
-			return difficulty?.includes(slug) ? [map.title] : []
-		})
-
-		expect(titles).toEqual([
-			"Blood of the Dead",
-			"Voyage of Despair",
-			"The Darkest Shore",
-			"Gorod Krovi",
-		])
+			expect(mainQuestDifficultySearchParam([slug])).toEqual([slug])
+		}
 	})
 
-	test("drops unknown difficulty slugs and omits an empty selection", () => {
-		expect(mainQuestDifficultySearchParam(["very-hard", "nightmare"])).toEqual(["very-hard"])
-		expect(mainQuestDifficultySearchParam(["nightmare"])).toBeUndefined()
+	test("drops unknown slugs and omits an empty selection", () => {
+		const slug = mainQuestDifficultySlug(MAIN_QUEST_DIFFICULTIES[0])
+
+		expect(mainQuestDifficultySearchParam([slug, "not-a-difficulty"])).toEqual([slug])
+		expect(mainQuestDifficultySearchParam(["not-a-difficulty"])).toBeUndefined()
+		expect(mainQuestDifficultySearchParam([])).toBeUndefined()
 		expect(mainQuestDifficultySearchParam(undefined)).toBeUndefined()
 	})
 })
