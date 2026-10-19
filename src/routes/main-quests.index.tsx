@@ -17,6 +17,8 @@ import {
 	getMainQuestSortOptions,
 	getMapsWithMainQuest,
 	MAIN_QUEST_TIME_RANGE_FILTERS,
+	mainQuestDifficultySearchParam,
+	mainQuestDifficultySlug,
 	mainQuestMidpointMatchesAnyTimeSlug,
 	type MainQuestDifficulty,
 	type MapEntry,
@@ -39,9 +41,7 @@ import {
 } from "@/utils/shared-functions"
 import { StandardMainQuestSearchParamsSchema } from "@/utils/validation-schemas"
 
-const DIFFICULTY_SLUGS = ["easy", "medium", "hard"] as const
-
-const TIME_SLUGS = ["under-30", "30-60", "60-120", "120-plus"] as const
+const TIME_SLUGS = MAIN_QUEST_TIME_RANGE_FILTERS.map(range => range.id)
 
 function matchingSlugs<S extends string>(values: string[] | undefined, allowed: readonly S[]) {
 	if (!values) return undefined
@@ -77,7 +77,7 @@ export const Route = createFileRoute("/main-quests/")({
 			{
 				values: deps.difficulty,
 				match: (item, slug) =>
-					Option.isSome(item.difficulty) && slugify(item.difficulty.value) === slug,
+					Option.isSome(item.difficulty) && mainQuestDifficultySlug(item.difficulty.value) === slug,
 			},
 			{
 				values: deps.time,
@@ -133,7 +133,7 @@ export const Route = createFileRoute("/main-quests/")({
 		const difficultyFilters = Array.from(questDifficulties)
 			.sort(sortDifficulties)
 			.map(difficulty => ({
-				value: slugify(difficulty),
+				value: mainQuestDifficultySlug(difficulty),
 				label: difficulty,
 			}))
 
@@ -225,7 +225,7 @@ function MainQuests() {
 				...prev,
 				page: undefined,
 				game: selected.get("game"),
-				difficulty: matchingSlugs(selected.get("difficulty"), DIFFICULTY_SLUGS),
+				difficulty: mainQuestDifficultySearchParam(selected.get("difficulty")),
 				time: matchingSlugs(selected.get("completion-time"), TIME_SLUGS),
 			}),
 			replace: true,
