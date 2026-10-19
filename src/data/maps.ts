@@ -6,13 +6,29 @@ import type { MapsImagePath } from "@/types/generated/image-paths.gen"
 import { Array as Arr, Data, Option } from "effect"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
-import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
+import { getAdjacentItems, slugify, sortDates } from "@/utils/shared-functions"
 
 /** All possible main quest difficulties */
 export const MAIN_QUEST_DIFFICULTIES = ["Easy", "Medium", "Hard", "Very Hard"] as const
 
 /** Union of all main quest difficulties */
 export type MainQuestDifficulty = (typeof MAIN_QUEST_DIFFICULTIES)[number]
+
+/** URL slug for a main quest difficulty. Same value the listing combobox writes into `difficulty`. */
+export const mainQuestDifficultySlug = (difficulty: MainQuestDifficulty) => slugify(difficulty)
+
+/**
+ * Difficulty values the main-quest combobox may write into `?difficulty=`.
+ * Unknown slugs are dropped. An empty selection is omitted.
+ */
+export function mainQuestDifficultySearchParam(values: readonly string[] | undefined) {
+	if (!values) return undefined
+
+	const allowed = new Set<string>(MAIN_QUEST_DIFFICULTIES.map(mainQuestDifficultySlug))
+	const matched = values.filter(value => allowed.has(value))
+
+	return matched.length > 0 ? matched : undefined
+}
 
 export interface MapEntry {
 	/** The internal tag to discriminate against for type-narrowing */
