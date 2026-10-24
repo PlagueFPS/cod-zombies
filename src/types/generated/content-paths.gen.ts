@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-18T01:54:49.847Z
- * generated in: 22ms
+ * generated at: 2026-10-18T02:29:29.746Z
+ * generated in: 21ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -383,6 +383,7 @@ export type ZombiesPaths =
 	| "content/zombies/fury"
 	| "content/zombies/fury-and-wrath"
 	| "content/zombies/gegenees"
+	| "content/zombies/gekocht"
 	| "content/zombies/george-a-romero"
 	| "content/zombies/ghost"
 	| "content/zombies/giant-spider"
@@ -448,6 +449,7 @@ export type ZombiesPaths =
 	| "content/zombies/slasher"
 	| "content/zombies/space-monkey"
 	| "content/zombies/spider"
+	| "content/zombies/stadtjager"
 	| "content/zombies/stoker"
 	| "content/zombies/tempest"
 	| "content/zombies/the-corrupted-keeper"
