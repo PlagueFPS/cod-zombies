@@ -612,6 +612,23 @@ const MAPS = uniqueMap([
 		description: "Berlin is burning, and the power of the final Reich has been laid bare.",
 		image: "/maps/the-shadowed-throne.webp",
 		game: "wwii",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/stadtjager-down"),
+		difficulty: Option.some("Hard"),
+		estimatedTimeMins: Option.some({
+			min: 60,
+			max: 75,
+			reason:
+				"Solo runs take about 60–75 minutes. Time varies with player count, safe and statue retries, and knowledge of the steps.",
+		}),
+	}),
+	makeMap("the-tortured-path", {
+		title: "The Tortured Path",
+		releaseDate: "2018-06-26",
+		description:
+			"Help the Bureau extract the pieces of Barbarossa's Sword out of enemy territory and into the hands of our agents.",
+		image: "/maps/the-tortured-path.webp",
+		game: "wwii",
 		state: Option.some("Coming Soon"),
 		mainQuest: Option.some("content/main-quests/stadtjager-down"),
 		difficulty: Option.none(),

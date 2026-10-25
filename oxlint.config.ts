@@ -1,7 +1,15 @@
+import {
+	effectNative,
+	recommended,
+	antipattern,
+	correctness,
+	style,
+} from "@effect/tsgo/oxlint-presets"
 import { defineConfig } from "oxlint"
 
 export default defineConfig({
 	plugins: ["typescript", "unicorn", "oxc", "react", "react-perf", "vitest"],
+	extends: [recommended, effectNative, antipattern, correctness, style],
 	jsPlugins: [
 		{ name: "anti-slop", specifier: "./tools/oxlint/anti-slop/index.ts" },
 		{
@@ -47,6 +55,7 @@ export default defineConfig({
 		"anti-slop-effect/no-manual-tagged-construction": "error",
 		"anti-slop-effect/no-service-constructor-imports": "error",
 		"anti-slop-effect/prefer-effect-match": "error",
+		"effecttsgo/unstable-api-usage": "off",
 	},
 	settings: {
 		react: {

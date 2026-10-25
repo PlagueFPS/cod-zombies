@@ -14,8 +14,6 @@ export default defineConfig({
 	bracketSpacing: true,
 	endOfLine: "lf",
 	ignorePatterns: [
-		"**/*.mdx",
-		"**/*.md",
 		".zed",
 		".repos",
 		"**/opengraph-manifest.json",

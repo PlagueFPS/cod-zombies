@@ -1,4 +1,15 @@
 [install]
 # Only install package versions published at least 8 hours ago
 minimumReleaseAge = 28800
+# Exempt these trusted packages from the age gate
+minimumReleaseAgeExcludes = [
+	"@effect/tsgo",
+	"@effect/tsgo-darwin-arm64",
+	"@effect/tsgo-darwin-x64",
+	"@effect/tsgo-linux-arm",
+	"@effect/tsgo-linux-arm64",
+	"@effect/tsgo-linux-x64",
+	"@effect/tsgo-win32-arm64",
+	"@effect/tsgo-win32-x64",
+]
 exact = true
