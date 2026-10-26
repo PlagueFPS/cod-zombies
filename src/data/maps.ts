@@ -630,10 +630,15 @@ const MAPS = uniqueMap([
 			"Help the Bureau extract the pieces of Barbarossa's Sword out of enemy territory and into the hands of our agents.",
 		image: "/maps/the-tortured-path.webp",
 		game: "wwii",
-		state: Option.some("Coming Soon"),
-		mainQuest: Option.some("content/main-quests/stadtjager-down"),
-		difficulty: Option.none(),
-		estimatedTimeMins: Option.none(),
+		state: Option.some("New"),
+		mainQuest: Option.some("content/main-quests/i-have-the-power"),
+		difficulty: Option.some("Very Hard"),
+		estimatedTimeMins: Option.some({
+			min: 80,
+			max: 95,
+			reason:
+				"Solo runs take about 80–95 minutes. Time varies with player count, objective waves, and knowledge of the steps.",
+		}),
 	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",

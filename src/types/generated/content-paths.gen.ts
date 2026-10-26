@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-10-18T02:29:29.746Z
- * generated in: 21ms
+ * generated at: 2026-10-26T17:55:24.333Z
+ * generated in: 20ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -28,6 +28,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/for-the-good-of-all"
 	| "content/main-quests/greek-tragedy"
 	| "content/main-quests/high-maintenance"
+	| "content/main-quests/i-have-the-power"
 	| "content/main-quests/kowakujo"
 	| "content/main-quests/little-lost-girl"
 	| "content/main-quests/locksmith"
@@ -389,6 +390,7 @@ export type ZombiesPaths =
 	| "content/zombies/giant-spider"
 	| "content/zombies/giant-thrasher"
 	| "content/zombies/gjallarfrost"
+	| "content/zombies/guardian"
 	| "content/zombies/heavy-zombie"
 	| "content/zombies/hellhound"
 	| "content/zombies/insanity-elementals"
@@ -432,6 +434,7 @@ export type ZombiesPaths =
 	| "content/zombies/plaguehound"
 	| "content/zombies/poison-catalyst"
 	| "content/zombies/rad-hound"
+	| "content/zombies/raketenbrenner"
 	| "content/zombies/rat-king"
 	| "content/zombies/ravager"
 	| "content/zombies/rhino"
