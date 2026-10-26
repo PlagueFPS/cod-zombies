@@ -15,6 +15,7 @@
 		"typecheck": "tsrs --noEmit",
 		"typegen": "wrangler types",
 		"lint": "oxlint",
+		"format": "bun fmt",
 		"prepare": "effect-tsgo patch --tsrs --oxlint",
 		"clean": "rm -rf .output && rm -rf .tanstack && rm -rf node_modules",
 		"email": "email dev --dir src/emails",
