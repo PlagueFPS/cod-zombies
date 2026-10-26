@@ -1,6 +1,6 @@
 import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 import { FateAndFortuneRarityBadge, FateAndFortuneTypeBadge } from "@/components/custom-badges"
 import IconImage from "@/components/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -63,7 +63,7 @@ const FateAndFortuneCardTooltipContent = ({ card }: { card: FateAndFortuneCard }
 				"bg-gobblegum-legendary": rarity === "Epic",
 			})}
 		>
-			{rarity ? (
+			{Predicate.isNotNullish(rarity) && Predicate.isTruthy(rarity) ? (
 				<FateAndFortuneRarityBadge rarity={rarity} className="absolute top-4 left-4" />
 			) : (
 				<FateAndFortuneTypeBadge type={card.type} className="absolute top-4 left-4" />

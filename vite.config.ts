@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite"
 import { devtools } from "@tanstack/devtools-vite"
 import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import react from "@vitejs/plugin-react"
+import { String as Str } from "effect"
 import { defineConfig } from "vite"
 import { remarkMdxMeta } from "./src/lib/remark-mdx-meta"
 import { SITE_ORIGIN } from "./src/utils/constants"
@@ -66,7 +67,7 @@ export default defineConfig({
 				// headers keep og:image / canonical URLs on the public origin.
 				headers: {
 					"x-forwarded-host": siteOrigin.host,
-					"x-forwarded-proto": siteOrigin.protocol.replace(":", ""),
+					"x-forwarded-proto": Str.replace(":", "")(siteOrigin.protocol),
 				},
 			},
 		}),

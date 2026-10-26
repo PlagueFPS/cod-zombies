@@ -3,7 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getCookie, setResponseHeader } from "@tanstack/react-start/server"
 import { cn } from "cn"
-import { Effect, Option, Array as Arr } from "effect"
+import { Effect, Option, Array as Arr, Predicate } from "effect"
 import { CustomSideBarTrigger } from "@/components/custom-sidebar-trigger"
 import { InteractiveMap } from "@/components/interactive-map"
 import InteractiveMapLoader from "@/components/interactive-map-loader"
@@ -29,7 +29,12 @@ const getSidebarState = createServerFn().handler(async () => {
 	setResponseHeader("Cache-Control", "private, max-age=31536000")
 	setResponseHeader("Vary", "Cookie")
 
-	return { sidebarState: sidebarState ? sidebarState === "true" : true }
+	return {
+		sidebarState:
+			Predicate.isNotNullish(sidebarState) && Predicate.isTruthy(sidebarState)
+				? sidebarState === "true"
+				: true,
+	}
 })
 
 export const Route = createFileRoute("/maps/$mapId")({
@@ -61,20 +66,21 @@ export const Route = createFileRoute("/maps/$mapId")({
 			upgrades: new Set(),
 		}
 
-		const groups = config.layers.reduce((acc, layer) => {
-			layer.markers.forEach(marker => {
+		const groups = Arr.reduce(config.layers, initialGroups, (acc, layer) => {
+			Arr.forEach(layer.markers, marker => {
 				acc[marker.category].add(categoryHandlers[marker.category](marker))
 			})
 
 			return acc
-		}, initialGroups)
+		})
 
 		const currentLayer = Option.match(Option.fromNullishOr(deps.layer), {
 			onNone: () => Arr.head(config.layers),
 			onSome: layerId => Arr.findFirst(config.layers, layer => layer.id === layerId),
 		}).pipe(Option.map(encodeMapConfigLayer), Option.getOrNull)
 
-		if (!currentLayer) throw notFound()
+		if (!(Predicate.isNotNullish(currentLayer) && Predicate.isTruthy(currentLayer)))
+			throw notFound()
 
 		return {
 			metadata: {
@@ -86,7 +92,7 @@ export const Route = createFileRoute("/maps/$mapId")({
 			config: encodeMapConfig(config),
 			currentLayer,
 			groups,
-			maps: getInteractiveMaps().map(encodeInteractiveMap),
+			maps: Arr.map(getInteractiveMaps(), encodeInteractiveMap),
 			sidebarState,
 		}
 	},

@@ -1,3 +1,5 @@
+import { Array as Arr, Predicate } from "effect"
+
 export const DRAVAKAR_SWITCHES = ["left", "middle", "right"] as const
 
 export type DravakarSwitch = (typeof DRAVAKAR_SWITCHES)[number]
@@ -51,17 +53,21 @@ export type DravakarSwitchInteraction = {
 export function formatDravakarSwitchInteractions(
 	presses: DravakarSwitchPresses,
 ): DravakarSwitchInteraction[] {
-	return DRAVAKAR_SWITCHES.flatMap(switchName => {
+	return Arr.flatMap(DRAVAKAR_SWITCHES, switchName => {
 		const count = presses[switchName]
 
-		if (!count) return []
+		if (!(Predicate.isNotNullish(count) && Predicate.isTruthy(count))) return []
 
 		return [{ switch: switchName, label: DRAVAKAR_SWITCH_LABELS[switchName], count }]
 	})
 }
 
 export function formatDravakarSwitchSolution(presses: DravakarSwitchPresses): string {
-	return formatDravakarSwitchInteractions(presses)
-		.map(interaction => `${interaction.label} ${interaction.count}x`)
-		.join(", ")
+	return Arr.join(
+		Arr.map(
+			formatDravakarSwitchInteractions(presses),
+			interaction => `${interaction.label} ${interaction.count}x`,
+		),
+		", ",
+	)
 }

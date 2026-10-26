@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option } from "effect"
+import { Option, Array as Arr } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -92,23 +92,23 @@ export const Route = createFileRoute("/side-quests/")({
 		const sorted = applySort(filtered, deps.sort, sortSpecs, "latest")
 		const pageResult = paginate(sorted, deps.page)
 
-		const questMaps = new Set<string>(allQuests.map(q => q.map))
+		const questMaps = new Set<string>(Arr.map(allQuests, q => q.map))
 
 		const questGames = new Set<string>(
-			allQuests.flatMap(quest => {
+			Arr.flatMap(allQuests, quest => {
 				const game = getMapByKey(quest.map).valueOrUndefined?.game
 
 				return game === undefined ? [] : [game]
 			}),
 		)
 
-		const mapFilters = maps.flatMap(map => {
+		const mapFilters = Arr.flatMap(maps, map => {
 			if (!questMaps.has(map.id)) return []
 
 			return [{ value: map.id, label: map.title }]
 		})
 
-		const gameFilters = games.flatMap(game => {
+		const gameFilters = Arr.flatMap(games, game => {
 			if (!questGames.has(game.id)) return []
 
 			return [{ value: game.id, label: game.title }]
@@ -118,7 +118,7 @@ export const Route = createFileRoute("/side-quests/")({
 			serverUrl,
 			title,
 			description,
-			quests: pageResult.items.map(encodeSideQuest),
+			quests: Arr.map(pageResult.items, encodeSideQuest),
 			totalCount: pageResult.totalCount,
 			pageSize: pageResult.pageSize,
 			sortOptions: getSideQuestSortOptions(),
@@ -168,8 +168,11 @@ function SideQuests() {
 	const filterValue: FilterOption[] = []
 
 	for (const g of groups) {
-		const values = g.items.filter(
-			i => map?.some(d => d === i.value) || game?.some(g => g === i.value),
+		const values = Arr.filter(
+			g.items,
+			i =>
+				(map != null && Arr.some(map, d => d === i.value)) ||
+				(game != null && Arr.some(game, g => g === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)
@@ -179,8 +182,8 @@ function SideQuests() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const matched = g.items.flatMap(item =>
-				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			const matched = Arr.flatMap(g.items, item =>
+				Arr.some(next, selected => selected.value === item.value) ? [item.value] : [],
 			)
 
 			if (matched.length > 0) {

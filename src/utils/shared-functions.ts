@@ -1,12 +1,13 @@
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
-import { Option } from "effect"
+import { Option, Array as Arr, String as Str, Predicate } from "effect"
 import { MAIN_QUEST_DIFFICULTIES, type MainQuestDifficulty } from "@/data/maps"
 import { RELIC_TYPES, type RelicType } from "@/data/relics"
 import { SITE_TITLE } from "@/utils/constants"
-
+import { dateFrom } from "@/utils/system-time"
 /** Returns true if the href is an internal link (starts with "/") or a fragment link (starts with "#"). */
+
 export function isInternalHref(href: string): boolean {
-	return href.startsWith("/") || href.startsWith("#")
+	return Str.startsWith("/")(href) || Str.startsWith("#")(href)
 }
 
 /** Writes text to the system clipboard; returns false when the API rejects the write. */
@@ -27,7 +28,10 @@ export async function copyTextToClipboard(text: string): Promise<boolean> {
  * @param itemId - The ID of the item in the array to find adjacent items for.
  */
 export const getAdjacentItems = <T extends { id: string }>(items: T[], itemId: string) => {
-	const index = items.findIndex(item => item.id === itemId)
+	const index = Option.getOrElse(
+		Arr.findFirstIndex(items, item => item.id === itemId),
+		() => -1,
+	)
 
 	if (index === -1) {
 		return { prev: Option.none(), next: Option.none() }
@@ -38,11 +42,15 @@ export const getAdjacentItems = <T extends { id: string }>(items: T[], itemId: s
 	let prev: Option.Option<T> = Option.none()
 	let next: Option.Option<T> = Option.none()
 
-	if (index < items.length - 1 && prevItem) {
+	if (
+		index < items.length - 1 &&
+		Predicate.isNotNullish(prevItem) &&
+		Predicate.isTruthy(prevItem)
+	) {
 		prev = Option.some(prevItem)
 	}
 
-	if (index > 0 && nextItem) {
+	if (index > 0 && Predicate.isNotNullish(nextItem) && Predicate.isTruthy(nextItem)) {
 		next = Option.some(nextItem)
 	}
 
@@ -57,14 +65,14 @@ export const getAdjacentItems = <T extends { id: string }>(items: T[], itemId: s
  * capitalize("hello_world") // "Hello World"
  * capitalize("tom-and-jerry") // "Tom & Jerry"
  */
-export const capitalize = (text: string) => {
-	return text
-		.replace(/[-_]/g, " ")
-		.replace(/\band\b/g, "&")
-		.split(" ")
-		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
-		.join(" ")
-}
+export const capitalize = (text: string) =>
+	Arr.join(
+		Arr.map(
+			Str.split(Str.replace(/\band\b/g, "&")(Str.replace(/[-_]/g, " ")(text)), " "),
+			word => Str.toUpperCase(Option.getOrElse(Str.charAt(0)(word), () => "")) + Str.slice(1)(word),
+		),
+		" ",
+	)
 
 /**
  * Converts a string to a URL-friendly slug, replacing spaces, slashes, and commas with hyphens, and '&' with 'and'.
@@ -73,16 +81,21 @@ export const capitalize = (text: string) => {
  * slugify("Hello World") // "hello-world"
  * slugify("Tom & Jerry") // "tom-and-jerry"
  */
-export const slugify = (text: string) => {
-	return text
-		.toLowerCase()
-		.trim()
-		.replace(/&/g, "and")
-		.replace(/[^\w\s-]/g, "")
-		.replace(/[\s_]+/g, "-")
-		.replace(/--+/g, "-")
-		.replace(/^-+|-+$/g, "")
-}
+export const slugify = (text: string) =>
+	Str.replace(
+		/^-+|-+$/g,
+		"",
+	)(
+		Str.replace(
+			/--+/g,
+			"-",
+		)(
+			Str.replace(
+				/[\s_]+/g,
+				"-",
+			)(Str.replace(/[^\w\s-]/g, "")(Str.replace(/&/g, "and")(Str.trim(Str.toLowerCase(text))))),
+		),
+	)
 
 /**
  * Extracts the YouTube video ID from a given URL.
@@ -96,9 +109,9 @@ export const getYouTubeVideoId = (url: string) => {
 	const regex =
 		/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
 
-	const match = url.match(regex)
+	const match = Option.getOrNull(Str.match(regex)(url))
 
-	return match ? match[1] : null
+	return Predicate.isNotNullish(match) && Predicate.isTruthy(match) ? match[1] : null
 }
 
 /**
@@ -107,9 +120,8 @@ export const getYouTubeVideoId = (url: string) => {
  * @param b - The second difficulty.
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
-export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) => {
-	return MAIN_QUEST_DIFFICULTIES.indexOf(a) - MAIN_QUEST_DIFFICULTIES.indexOf(b)
-}
+export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty) =>
+	MAIN_QUEST_DIFFICULTIES.indexOf(a) - MAIN_QUEST_DIFFICULTIES.indexOf(b)
 
 /**
  * Sorts dates in ascending order.
@@ -118,8 +130,8 @@ export const sortDifficulties = (a: MainQuestDifficulty, b: MainQuestDifficulty)
  * @returns A positive number if `a` is older than `b`, a negative number for the inverse, or 0 if they are equal
  */
 export const sortDates = (a: string | Date, b: string | Date) => {
-	const dateA = new Date(a)
-	const dateB = new Date(b)
+	const dateA = dateFrom(a)
+	const dateB = dateFrom(b)
 
 	return dateA.getTime() - dateB.getTime()
 }
@@ -191,9 +203,8 @@ export const sortZombieTypes = (a: ZombieType, b: ZombieType) => {
  * @param b - The second relic type.
  * @returns A negative number if a should come before b, a positive number if a should come after b, or 0 if they are equal.
  */
-export const sortRelicTypes = (a: RelicType, b: RelicType) => {
-	return RELIC_TYPES.indexOf(a) - RELIC_TYPES.indexOf(b)
-}
+export const sortRelicTypes = (a: RelicType, b: RelicType) =>
+	RELIC_TYPES.indexOf(a) - RELIC_TYPES.indexOf(b)
 
 /**
  * Sorts zombie speeds in ascending order.
@@ -241,12 +252,13 @@ export const compareByOptionalSome = <T>(
  * toPascalCase("HELLO_WORLD") // "HelloWorld"
  */
 export const toPascalCase = (s: string) =>
-	s
-		.toLowerCase()
-		.split(/[^0-9a-zA-Z]+/)
-		.flatMap(part => (part.length > 0 ? [part[0]?.toUpperCase() + part.slice(1)] : []))
-		.join("")
+	Arr.join(
+		Arr.flatMap(Str.split(Str.toLowerCase(s), /[^0-9a-zA-Z]+/), part =>
+			part.length > 0
+				? [(part[0] == null ? undefined : Str.toUpperCase(part[0])) + Str.slice(1)(part)]
+				: [],
+		),
+		"",
+	)
 
-export const createSeoTitle = (title: string) => {
-	return `${title} - ${SITE_TITLE}`
-}
+export const createSeoTitle = (title: string) => `${title} - ${SITE_TITLE}`

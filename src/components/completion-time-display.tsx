@@ -1,4 +1,5 @@
 import type { TimeRange } from "@/types/data"
+import { Predicate } from "effect"
 import { Hourglass } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { formatEstimatedTimeRange } from "@/utils/shared-functions"
@@ -8,7 +9,7 @@ interface EstCompletionTimeProps {
 }
 
 export function CompletionTimeDisplay({ timeRange }: EstCompletionTimeProps) {
-	if (timeRange.reason) {
+	if (Predicate.isNotNullish(timeRange.reason) && Predicate.isTruthy(timeRange.reason)) {
 		return (
 			<Tooltip>
 				<TooltipTrigger className="flex cursor-help items-center gap-1 rounded-sm text-left text-sm text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">

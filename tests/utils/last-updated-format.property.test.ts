@@ -1,3 +1,4 @@
+import { Array as Arr, Predicate } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { formatRelativeTimeAgo, MS_DAY } from "@/utils/last-updated-format"
@@ -39,7 +40,7 @@ interface RelativeReading {
 }
 
 function isRelativeUnit(value: string): value is RelativeUnit {
-	return RELATIVE_UNITS.some(unit => unit === value)
+	return Arr.some(RELATIVE_UNITS, unit => unit === value)
 }
 
 const ageMsArb = fc.oneof(
@@ -61,7 +62,11 @@ function readRelative(label: string): RelativeReading {
 	const countText = match?.[1]
 	const unitText = match?.[2]
 
-	if (!countText || !unitText || !isRelativeUnit(unitText)) {
+	if (
+		!(Predicate.isNotNullish(countText) && Predicate.isTruthy(countText)) ||
+		!(Predicate.isNotNullish(unitText) && Predicate.isTruthy(unitText)) ||
+		!isRelativeUnit(unitText)
+	) {
 		throw new Error(`unparsed relative time: ${label}`)
 	}
 
@@ -86,7 +91,8 @@ describe("formatRelativeTimeAgo properties", () => {
 
 				expect(olderTime.seconds).toBeGreaterThanOrEqual(youngerTime.seconds)
 
-				const boundedReadings = [youngerTime, olderTime].filter(
+				const boundedReadings = Arr.filter(
+					[youngerTime, olderTime],
 					(reading): reading is RelativeReading & { readonly unit: keyof typeof UNIT_LIMIT } =>
 						reading.unit === "minute" || reading.unit === "hour" || reading.unit === "day",
 				)

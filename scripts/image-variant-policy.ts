@@ -1,7 +1,7 @@
-import { HashSet } from "effect"
+import { HashSet, Array as Arr, String as Str, Predicate } from "effect"
 import { VARIANT_WIDTHS_LIST, type VariantWidth } from "@/lib/image-variant-paths"
-
 /** Top-level `public/` dirs that skip responsive width variants during optimization. */
+
 export const NO_VARIANT_CATEGORIES = HashSet.make(
 	"ammo-mods",
 	"augments",
@@ -23,9 +23,13 @@ export const NO_VARIANT_CATEGORIES = HashSet.make(
 export const EXCLUDED_FROM_IMAGE_PATH_TYPES = HashSet.make("content", "opengraph-images")
 
 export function getCategoryFromRelativePath(relativePath: string): string | null {
-	const segment = relativePath.split("/")[0]
+	const segment = Str.split(relativePath, "/")[0]
 
-	return segment && !segment.includes(".") ? segment : null
+	return Predicate.isNotNullish(segment) &&
+		Predicate.isTruthy(segment) &&
+		!Str.includes(".")(segment)
+		? segment
+		: null
 }
 
 export function shouldGenerateVariants(category: string | null): boolean {
@@ -41,7 +45,8 @@ export function getVariantWidths({
 	sourceWidth: number
 	category: string | null
 }): readonly VariantWidth[] {
-	return VARIANT_WIDTHS_LIST.filter(
+	return Arr.filter(
+		VARIANT_WIDTHS_LIST,
 		width => sourceWidth > width && (category !== "content" || width !== 384),
 	)
 }

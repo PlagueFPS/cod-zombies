@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,7 +21,7 @@ import {
 const INITIAL_DIRECTIONS: StatueDirection[] = [2, 2, 2, 2]
 
 function isWallId(value: unknown): value is WallId {
-	return WALL_IDS.some(id => id === value)
+	return Arr.some(WALL_IDS, id => id === value)
 }
 
 function solutionCopy(result: StatueSolveResult) {
@@ -48,7 +49,7 @@ export default function ShadowedThroneStatueSolver() {
 	const visibleDirections = directions.slice(0, statueCount)
 	const result = hasInput ? solveStatueWall(visibleDirections, wallId) : null
 	const summary = result === null ? null : solutionCopy(result)
-	const facingFront = visibleDirections.every(direction => direction === TARGET_DIRECTION)
+	const facingFront = Arr.every(visibleDirections, direction => direction === TARGET_DIRECTION)
 
 	const selectWall = (nextWall: WallId) => {
 		setWallId(nextWall)
@@ -57,7 +58,7 @@ export default function ShadowedThroneStatueSolver() {
 
 	const cycleStatue = (index: number) => {
 		setDirections(current =>
-			current.map((direction, statueIndex) =>
+			Arr.map(current, (direction, statueIndex) =>
 				statueIndex === index ? cycleFacing(direction) : direction,
 			),
 		)
@@ -91,7 +92,7 @@ export default function ShadowedThroneStatueSolver() {
 					className="w-full"
 				>
 					<TabsList aria-label="Wall" className="grid w-full grid-cols-4">
-						{WALL_IDS.map(id => (
+						{Arr.map(WALL_IDS, id => (
 							<TabsTrigger key={id} value={id}>
 								Wall {id}
 							</TabsTrigger>
@@ -100,7 +101,7 @@ export default function ShadowedThroneStatueSolver() {
 				</Tabs>
 
 				<div className="flex justify-center gap-2" role="group" aria-label="Statues">
-					{visibleDirections.map((direction, index) => {
+					{Arr.map(visibleDirections, (direction, index) => {
 						const label = STATUE_LABELS[index]
 						const name = DIRECTION_NAMES[direction]
 
@@ -145,7 +146,7 @@ export default function ShadowedThroneStatueSolver() {
 						<p className="mt-1 text-center text-sm">{summary}</p>
 					) : result.status === "solved" ? (
 						<ul className="mt-1 list-none pl-0">
-							{result.turns.map(turn => (
+							{Arr.map(result.turns, turn => (
 								<li key={turn.statue} className="text-center text-sm">
 									Turn statue {turn.statue} {turn.times}×
 								</li>

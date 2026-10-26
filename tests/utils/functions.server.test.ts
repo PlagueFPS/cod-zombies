@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { getLastModified } from "@/utils/functions.server"
+import { dateFrom } from "@/utils/system-time"
 
 describe("getLastModified", () => {
 	afterEach(() => {
@@ -8,7 +9,7 @@ describe("getLastModified", () => {
 	})
 
 	it("should return current date for non-existing file", () => {
-		const mockDate = new Date("2025-03-15T10:00:00.000Z")
+		const mockDate = dateFrom("2025-03-15T10:00:00.000Z")
 		vi.useFakeTimers()
 		vi.setSystemTime(mockDate)
 		const result = getLastModified("content/main-quests/not-in-data")

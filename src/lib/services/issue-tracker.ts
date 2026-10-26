@@ -1,9 +1,12 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect"
+import { Config, Context, Effect, Layer, Redacted, Schema, Predicate } from "effect"
 import { GraphQL, GraphQLClient, GraphQLGroup, GraphQLProtocol } from "effect/graphql"
 import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/http"
 
-export class CreateIssueError extends Schema.TaggedError<CreateIssueError>()("CreateIssueError", {
+export class CreateIssueError extends Schema.TaggedError<
+	CreateIssueError,
+	{ readonly brand: unique symbol }
+>()("CreateIssueError", {
 	cause: Schema.Defect(),
 }) {}
 
@@ -12,7 +15,7 @@ export interface IssueTrackerService {
 }
 
 export class IssueTracker extends Context.Service<IssueTracker, IssueTrackerService>()(
-	"lib/services/issue-tracker",
+	"cod-zombies/lib/services/issue-tracker/IssueTracker",
 ) {}
 
 /** Linear "User Feedback" label UUID. */
@@ -69,13 +72,16 @@ const makeIssueTracker = Effect.gen(function* () {
 	}).pipe(Layer.provide(Layer.succeed(HttpClient.HttpClient, linearHttpClient)))
 
 	const client = yield* GraphQLClient.make(IssueTrackerGraphQLGroup).pipe(
+		// The protocol layer is an internal dependency of this service constructor.
+		// oxlint-disable-next-line effecttsgo/strict-effect-provide
 		Effect.provide(protocolLayer),
 	)
 
 	const createIssue = Effect.fn("IssueTracker.createIssue")(function* (data: TFeedbackForm) {
-		const description = data.email
-			? `${data.feedback}\n\n---\nContact: ${data.email}`
-			: data.feedback
+		const description =
+			Predicate.isNotNullish(data.email) && Predicate.isTruthy(data.email)
+				? `${data.feedback}\n\n---\nContact: ${data.email}`
+				: data.feedback
 
 		const response = yield* client
 			.IssueCreate({
@@ -86,10 +92,10 @@ const makeIssueTracker = Effect.gen(function* () {
 					labelIds: [USER_FEEDBACK_LABEL_ID],
 				},
 			})
-			.pipe(Effect.mapError(cause => new CreateIssueError({ cause })))
+			.pipe(Effect.mapError(cause => CreateIssueError.make({ cause })))
 
 		if (response.issueCreate?.success !== true) {
-			return yield* new CreateIssueError({
+			return yield* CreateIssueError.make({
 				cause: "Linear issueCreate returned unsuccessful",
 			})
 		}

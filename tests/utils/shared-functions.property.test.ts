@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import {
@@ -56,7 +57,7 @@ describe("formatEstimatedTimeRange properties", () => {
 					expect(/^\d+m$/.test(label)).toBe(Math.round(minutes) < 60)
 				}
 
-				for (const minutes of [min, max].filter(value => Math.round(value) >= 60)) {
+				for (const minutes of Arr.filter([min, max], value => Math.round(value) >= 60)) {
 					expect(Math.round(minutes) % 60).toBeLessThan(60)
 				}
 

@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,7 +28,7 @@ export default function ShatteredVeilCode() {
 					<div className="space-y-3">
 						<h3 className="text-sm font-semibold text-foreground/90">Code Words</h3>
 						<div className="grid grid-cols-2 gap-2">
-							{allCodeWords.map(word => (
+							{Arr.map(allCodeWords, word => (
 								<Button
 									key={word}
 									variant={codeWord === word ? "default" : "outline"}
@@ -43,7 +44,7 @@ export default function ShatteredVeilCode() {
 					<div className="space-y-3">
 						<h3 className="text-sm font-semibold text-foreground/90">Letter Groups</h3>
 						<div className="grid grid-cols-2 gap-2">
-							{allLetterGroups.map(group => (
+							{Arr.map(allLetterGroups, group => (
 								<Button
 									key={group}
 									variant={letterGroup === group ? "default" : "outline"}

@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
+import { Array as Arr, Predicate } from "effect"
 import { useMemo } from "react"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -141,7 +142,7 @@ function FieldSeparator({
 	return (
 		<div
 			data-slot="field-separator"
-			data-content={!!children}
+			data-content={!!(Predicate.isNotNullish(children) && Predicate.isTruthy(children))}
 			className={cn(
 				"relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2",
 				className,
@@ -170,15 +171,15 @@ function FieldError({
 	errors?: Array<{ message?: string } | undefined>
 }) {
 	const content = useMemo(() => {
-		if (children) {
+		if (Predicate.isNotNullish(children) && Predicate.isTruthy(children)) {
 			return children
 		}
 
-		if (!errors?.length) {
+		if (!(Predicate.isNotNullish(errors?.length) && Predicate.isTruthy(errors?.length))) {
 			return null
 		}
 
-		const uniqueErrors = [...new Map(errors.map(error => [error?.message, error])).values()]
+		const uniqueErrors = [...new Map(Arr.map(errors, error => [error?.message, error])).values()]
 
 		if (uniqueErrors?.length == 1) {
 			return uniqueErrors[0]?.message
@@ -186,12 +187,15 @@ function FieldError({
 
 		return (
 			<ul className="ml-4 flex list-disc flex-col gap-1">
-				{uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
+				{Arr.map(
+					uniqueErrors,
+					(error, index) => error?.message && <li key={index}>{error.message}</li>,
+				)}
 			</ul>
 		)
 	}, [children, errors])
 
-	if (!content) {
+	if (!(Predicate.isNotNullish(content) && Predicate.isTruthy(content))) {
 		return null
 	}
 

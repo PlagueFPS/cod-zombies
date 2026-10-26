@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSyn
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Effect, Exit } from "effect"
+import { Effect, Exit, String as Str, Array as Arr, Option } from "effect"
 import { Command } from "effect/cli"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
@@ -39,7 +39,7 @@ describe("writeOgFile", () => {
 		expectExitSuccess(e1)
 
 		const mainDir = join(outBase, "main-quests")
-		const files1 = readdirSync(mainDir).filter(f => f.startsWith("opengraph-slug-x-v"))
+		const files1 = Arr.filter(readdirSync(mainDir), f => Str.startsWith("opengraph-slug-x-v")(f))
 		expect(files1).toContain("opengraph-slug-x-v1.jpg")
 
 		let manifest = await Effect.runPromise(
@@ -55,7 +55,7 @@ describe("writeOgFile", () => {
 		const e2 = await Effect.runPromiseExit(p2)
 		expectExitSuccess(e2)
 
-		const files2 = readdirSync(mainDir).filter(f => f.startsWith("opengraph-slug-x-v"))
+		const files2 = Arr.filter(readdirSync(mainDir), f => Str.startsWith("opengraph-slug-x-v")(f))
 		expect(files2).toContain("opengraph-slug-x-v2.jpg")
 
 		manifest = await Effect.runPromise(decodeOpengraphManifest(readFileSync(manifestPath, "utf-8")))
@@ -71,7 +71,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("Specify exactly one target"),
+			Str.includes("Specify exactly one target")(e.message),
 		)
 	})
 
@@ -83,7 +83,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("--maps already generates"),
+			Str.includes("--maps already generates")(e.message),
 		)
 	})
 
@@ -95,7 +95,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("Use either --zombies or --zombie"),
+			Str.includes("Use either --zombies or --zombie")(e.message),
 		)
 	})
 
@@ -107,7 +107,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("--map is only valid with --zombies"),
+			Str.includes("--map is only valid with --zombies")(e.message),
 		)
 	})
 
@@ -119,7 +119,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("Use either --quests or --quest"),
+			Str.includes("Use either --quests or --quest")(e.message),
 		)
 	})
 
@@ -131,7 +131,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("--map is only valid with --quests"),
+			Str.includes("--map is only valid with --quests")(e.message),
 		)
 	})
 
@@ -143,7 +143,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("Use either --relics or --relic"),
+			Str.includes("Use either --relics or --relic")(e.message),
 		)
 	})
 
@@ -155,7 +155,7 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			e.message.includes("--map is only valid with --relics"),
+			Str.includes("--map is only valid with --relics")(e.message),
 		)
 	})
 })
@@ -198,8 +198,11 @@ describe("generateOgCommand success (real assets)", () => {
 
 		const dir = join(outDir, "main-quests")
 
-		const jpg = readdirSync(dir).find(
-			f => f.startsWith("opengraph-die-maschine-v") && f.endsWith(".jpg"),
+		const jpg = Option.getOrUndefined(
+			Arr.findFirst(
+				readdirSync(dir),
+				f => Str.startsWith("opengraph-die-maschine-v")(f) && Str.endsWith(".jpg")(f),
+			),
 		)
 
 		expect(jpg).toBeDefined()
@@ -221,8 +224,11 @@ describe("generateOgCommand success (real assets)", () => {
 
 		const dir = join(outDir, "side-quests")
 
-		const jpg = readdirSync(dir).find(
-			f => f.startsWith("opengraph-free-perk-v") && f.endsWith(".jpg"),
+		const jpg = Option.getOrUndefined(
+			Arr.findFirst(
+				readdirSync(dir),
+				f => Str.startsWith("opengraph-free-perk-v")(f) && Str.endsWith(".jpg")(f),
+			),
 		)
 
 		expect(jpg).toBeDefined()
@@ -243,7 +249,14 @@ describe("generateOgCommand success (real assets)", () => {
 		expectExitSuccess(exit)
 
 		const dir = join(outDir, "zombies")
-		const jpg = readdirSync(dir).find(f => f.startsWith("opengraph-zombie-v") && f.endsWith(".jpg"))
+
+		const jpg = Option.getOrUndefined(
+			Arr.findFirst(
+				readdirSync(dir),
+				f => Str.startsWith("opengraph-zombie-v")(f) && Str.endsWith(".jpg")(f),
+			),
+		)
+
 		expect(jpg).toBeDefined()
 		const meta = await sharp(readFileSync(join(dir, jpg!))).metadata()
 		expect(meta.format).toBe("jpeg")
@@ -263,8 +276,11 @@ describe("generateOgCommand success (real assets)", () => {
 
 		const dir = join(outDir, "relics")
 
-		const jpg = readdirSync(dir).find(
-			f => f.startsWith("opengraph-lawyers-pen-v") && f.endsWith(".jpg"),
+		const jpg = Option.getOrUndefined(
+			Arr.findFirst(
+				readdirSync(dir),
+				f => Str.startsWith("opengraph-lawyers-pen-v")(f) && Str.endsWith(".jpg")(f),
+			),
 		)
 
 		expect(jpg).toBeDefined()

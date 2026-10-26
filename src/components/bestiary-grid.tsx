@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { BestiaryCard } from "@/components/bestiary-card"
 import { EmptyGrid } from "@/components/empty-grid"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -13,7 +14,7 @@ export function BestiaryGrid({ zombies }: IBestiaryGrid) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 			{zombies.length > 0 ? (
-				zombies.map((zombie, index) => (
+				Arr.map(zombies, (zombie, index) => (
 					<BestiaryCard
 						key={zombie.id}
 						zombie={decodeZombie(zombie)}

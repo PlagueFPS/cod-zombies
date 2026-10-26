@@ -1,5 +1,6 @@
 import type { RichImageProps } from "@/components/rich-image"
 import { cn } from "cn"
+import { Predicate } from "effect"
 import {
 	Children,
 	useCallback,
@@ -41,7 +42,7 @@ const INDICATORS_FALLBACK_STYLE: CSSProperties = {
 function useCarouselSelection(api: CarouselApi) {
 	const subscribe = useCallback(
 		(onStoreChange: () => void) => {
-			if (!api) return () => {}
+			if (!(Predicate.isNotNullish(api) && Predicate.isTruthy(api))) return () => {}
 
 			api.on("select", onStoreChange)
 			api.on("reInit", onStoreChange)
@@ -123,7 +124,7 @@ function ExpandedCarousel({
 	const { count } = useCarouselSelection(api)
 
 	useEffect(() => {
-		if (!api) return
+		if (!(Predicate.isNotNullish(api) && Predicate.isTruthy(api))) return
 
 		const syncSelection = () => onSelect(api.selectedScrollSnap())
 		api.on("select", syncSelection)
@@ -174,7 +175,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 
 		const root = rootRef.current
 
-		if (!root || count <= 1) return
+		if (!(Predicate.isNotNullish(root) && Predicate.isTruthy(root)) || count <= 1) return
 
 		const img = firstSlideImg(root, api)
 		const rootRect = root.getBoundingClientRect()
@@ -213,11 +214,11 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 
 		const root = rootRef.current
 
-		if (!root) return
+		if (!(Predicate.isNotNullish(root) && Predicate.isTruthy(root))) return
 
 		const img = firstSlideImg(root, api)
 
-		if (!img) {
+		if (!(Predicate.isNotNullish(img) && Predicate.isTruthy(img))) {
 			tryLockDotsPosition()
 
 			return

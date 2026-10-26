@@ -1,5 +1,5 @@
 import type { FileRoutesByTo } from "@/routeTree.gen"
-import { Option } from "effect"
+import { Option, Array as Arr } from "effect"
 import { SearchBarInput } from "@/components/search-bar-input"
 import { getGameByKey, getGames } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
@@ -16,11 +16,11 @@ function toFileRoute(path: string): keyof FileRoutesByTo {
 export function SearchBar() {
 	const maps = getMaps()
 
-	const availableMaps = getInteractiveMaps().flatMap(map =>
+	const availableMaps = Arr.flatMap(getInteractiveMaps(), map =>
 		Option.getOrNull(map.state) !== "Coming Soon" ? [{ id: map.id, title: map.title }] : [],
 	)
 
-	const mainQuests = maps.flatMap(q => {
+	const mainQuests = Arr.flatMap(maps, q => {
 		if (Option.isNone(q.mainQuest)) return []
 
 		const game = getGameByKey(q.game)
@@ -38,11 +38,11 @@ export function SearchBar() {
 		]
 	})
 
-	const games = getGames().map(g => ({ id: g.id, title: g.title }))
+	const games = Arr.map(getGames(), g => ({ id: g.id, title: g.title }))
 
 	const mapSlugs = new Set<string>()
 
-	const sideQuests = getSideQuests().flatMap(q => {
+	const sideQuests = Arr.flatMap(getSideQuests(), q => {
 		if (q.state.valueOrUndefined === "Coming Soon") return []
 
 		const map = getMapByKey(q.map)
@@ -67,7 +67,7 @@ export function SearchBar() {
 
 	const relicMapSlugs = new Set<string>()
 
-	const relics = getRelics().flatMap(r => {
+	const relics = Arr.flatMap(getRelics(), r => {
 		if (Option.getOrNull(r.state) === "Coming Soon") return []
 
 		const map = getMapByKey(r.map)
@@ -90,7 +90,7 @@ export function SearchBar() {
 		]
 	})
 
-	const zombies = getZombies().flatMap(z =>
+	const zombies = Arr.flatMap(getZombies(), z =>
 		Option.getOrNull(z.state) !== "Coming Soon" ? [{ id: z.id, title: z.title }] : [],
 	)
 
@@ -127,7 +127,7 @@ export function SearchBar() {
 		relicsByMap.set(r.map.id, list)
 	}
 
-	const searchMainQuests = games.flatMap(game => {
+	const searchMainQuests = Arr.flatMap(games, game => {
 		const quests = mainQuestsByGame.get(game.id) ?? []
 
 		if (quests.length === 0) return []
@@ -136,7 +136,7 @@ export function SearchBar() {
 			{
 				value: `${game.title} Main Quests`,
 				icon: "BookText" as const,
-				items: quests.map(q => ({
+				items: Arr.map(quests, q => ({
 					value: toFileRoute(`/main-quests/${q.game.id}/${q.id}`),
 					label: q.title,
 				})),
@@ -144,7 +144,7 @@ export function SearchBar() {
 		]
 	})
 
-	const searchSideQuests = questMaps.flatMap(map => {
+	const searchSideQuests = Arr.flatMap(questMaps, map => {
 		const quests = sideQuestsByMap.get(map.id) ?? []
 
 		if (quests.length === 0) return []
@@ -153,7 +153,7 @@ export function SearchBar() {
 			{
 				value: `${map.title} Side Quests`,
 				icon: "Book" as const,
-				items: quests.map(q => ({
+				items: Arr.map(quests, q => ({
 					value: toFileRoute(`/side-quests/${q.game.id}/${q.map.id}/${q.id}`),
 					label: q.title,
 				})),
@@ -161,7 +161,7 @@ export function SearchBar() {
 		]
 	})
 
-	const searchRelics = relicMaps.flatMap(map => {
+	const searchRelics = Arr.flatMap(relicMaps, map => {
 		const mapRelics = relicsByMap.get(map.id) ?? []
 
 		if (mapRelics.length === 0) return []
@@ -170,7 +170,7 @@ export function SearchBar() {
 			{
 				value: `${map.title} Relics`,
 				icon: "Component" as const,
-				items: mapRelics.map(r => ({
+				items: Arr.map(mapRelics, r => ({
 					value: toFileRoute(`/relics/${r.game.id}/${r.id}`),
 					label: r.title,
 				})),
@@ -181,7 +181,7 @@ export function SearchBar() {
 	const searchZombies = {
 		value: "Zombies",
 		icon: "Brain" as const,
-		items: zombies.map(zombie => ({
+		items: Arr.map(zombies, zombie => ({
 			value: toFileRoute(`/bestiary/${zombie.id}`),
 			label: zombie.title,
 		})),
@@ -190,7 +190,7 @@ export function SearchBar() {
 	const searchMaps = {
 		value: "Interactive Maps",
 		icon: "Map" as const,
-		items: availableMaps.map(map => ({
+		items: Arr.map(availableMaps, map => ({
 			value: toFileRoute(`/maps/${map.id}`),
 			label: `${map.title} Interactive Map`,
 		})),

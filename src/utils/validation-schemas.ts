@@ -1,6 +1,9 @@
 import { Effect, Schema } from "effect"
 
-export class OpengraphManifest extends Schema.Class<OpengraphManifest>("OpengraphManifest")({
+export class OpengraphManifest extends Schema.Class<
+	OpengraphManifest,
+	{ readonly brand: unique symbol }
+>("OpengraphManifest")({
 	"main-quests": Schema.Record(Schema.String, Schema.Int),
 	"side-quests": Schema.Record(Schema.String, Schema.Int),
 	zombies: Schema.Record(Schema.String, Schema.Int),

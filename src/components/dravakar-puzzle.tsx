@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Array as Arr, Option, Predicate } from "effect"
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Toggle } from "@/components/ui/toggle"
@@ -10,8 +11,15 @@ import {
 
 export default function DravakarPuzzle() {
 	const [selectedId, setSelectedId] = useState<DravakarPuzzleQuoteId | null>(null)
-	const selectedQuote = DRAVAKAR_PUZZLE_QUOTES.find(quote => quote.id === selectedId)
-	const solution = selectedQuote ? formatDravakarSwitchSolution(selectedQuote.presses) : null
+
+	const selectedQuote = Option.getOrUndefined(
+		Arr.findFirst(DRAVAKAR_PUZZLE_QUOTES, quote => quote.id === selectedId),
+	)
+
+	const solution =
+		Predicate.isNotNullish(selectedQuote) && Predicate.isTruthy(selectedQuote)
+			? formatDravakarSwitchSolution(selectedQuote.presses)
+			: null
 
 	return (
 		<Card className="mx-auto w-full max-w-2xl bg-transparent shadow-lg dark:shadow-none">
@@ -23,7 +31,7 @@ export default function DravakarPuzzle() {
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="grid gap-2" role="group" aria-label="Phrases you can hear">
-					{DRAVAKAR_PUZZLE_QUOTES.map(quote => {
+					{Arr.map(DRAVAKAR_PUZZLE_QUOTES, quote => {
 						const isSelected = selectedId === quote.id
 
 						return (
@@ -44,7 +52,7 @@ export default function DravakarPuzzle() {
 					})}
 				</div>
 
-				{solution ? (
+				{Predicate.isNotNullish(solution) && Predicate.isTruthy(solution) ? (
 					<p className="rounded-sm bg-input p-2 text-center text-base dark:bg-input/20">
 						<span className="font-medium">Solution:</span> {solution}
 					</p>

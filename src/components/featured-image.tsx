@@ -1,5 +1,6 @@
 import type { ImagePaths } from "@/types/generated/image-paths.gen"
 import { cn } from "cn"
+import { Predicate } from "effect"
 import { Image, type ImageProps } from "@/components/image"
 import ImageLoader from "@/components/image-loader"
 import { useImageState } from "@/hooks/use-image-state"
@@ -62,7 +63,7 @@ export function FeaturedImage({
 					className={cn("flex aspect-video h-auto w-full items-center justify-center", className)}
 				/>
 			) : null}
-			{description ? (
+			{Predicate.isNotNullish(description) && Predicate.isTruthy(description) ? (
 				<figcaption className="mt-2 mb-4 flex w-auto items-center justify-center px-4 font-medium italic xl:px-8">
 					{description}
 				</figcaption>

@@ -1,3 +1,4 @@
+import { Array as Arr, Record as Rec } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	applyScrollPresses,
@@ -62,10 +63,10 @@ describe("solveScrollPuzzle", () => {
 			8: [5, 7, 8],
 		} as const
 
-		for (const [scroll, affected] of Object.entries(expectations)) {
+		for (const [scroll, affected] of Rec.toEntries(expectations)) {
 			const row = KOWAKUJO_SCROLL_TOGGLE_MATRIX[Number(scroll)]
 			expect(row).toBeDefined()
-			const actual = row!.flatMap((isAffected, index) => (isAffected ? [index] : []))
+			const actual = Arr.flatMap(row!, (isAffected, index) => (isAffected ? [index] : []))
 			expect(actual).toEqual(affected)
 		}
 	})
@@ -106,12 +107,12 @@ describe("solveScrollPuzzle", () => {
 
 				const solved = applyScrollPresses(
 					state,
-					presses.flatMap((shouldPress, index) => (shouldPress ? [index] : [])),
+					Arr.flatMap(presses, (shouldPress, index) => (shouldPress ? [index] : [])),
 				)
 
-				if (!solved.every((isIn, index) => isIn === allIn[index])) continue
+				if (!Arr.every(solved, (isIn, index) => isIn === allIn[index])) continue
 
-				const pressCount = presses.filter(Boolean).length
+				const pressCount = Arr.filter(presses, Boolean).length
 
 				if (pressCount < minimumPressCount) minimumPressCount = pressCount
 			}

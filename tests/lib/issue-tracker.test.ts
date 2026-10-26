@@ -216,16 +216,19 @@ function decodeJsonBody(body: BodyInit | null | undefined) {
 	}
 
 	if (Predicate.isString(body)) {
+		// oxlint-disable-next-line effecttsgo/schema-sync -- captured request bodies are decoded synchronously in the test
 		return Schema.decodeUnknownSync(LinearIssueCreateBody)(JSON.parse(body))
 	}
 
 	if (body instanceof Uint8Array) {
+		// oxlint-disable-next-line effecttsgo/schema-sync -- captured request bodies are decoded synchronously in the test
 		return Schema.decodeUnknownSync(LinearIssueCreateBody)(
 			JSON.parse(new TextDecoder().decode(body)),
 		)
 	}
 
 	if (body instanceof ArrayBuffer) {
+		// oxlint-disable-next-line effecttsgo/schema-sync -- captured request bodies are decoded synchronously in the test
 		return Schema.decodeUnknownSync(LinearIssueCreateBody)(
 			JSON.parse(new TextDecoder().decode(new Uint8Array(body))),
 		)

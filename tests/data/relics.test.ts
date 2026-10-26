@@ -5,7 +5,7 @@ import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getRelics", () => {
 	test("sorted by discovered date descending", () => {
-		const dates = getRelics().map(r => r.discoveredDate)
+		const dates = Arr.map(getRelics(), r => r.discoveredDate)
 		expect(dates.length).toBeGreaterThan(1)
 		assertSortedDescByDate(dates)
 	})
@@ -28,7 +28,12 @@ describe("getAdjacentRelics", () => {
 		const relics = getRelics()
 		const r1 = relics[Math.floor(relics.length / 2)]!
 		const { prev, next } = getAdjacentRelics(r1.id)
-		const idx = relics.findIndex(r => r.id === r1.id)
+
+		const idx = Option.getOrElse(
+			Arr.findFirstIndex(relics, r => r.id === r1.id),
+			() => -1,
+		)
+
 		expect(idx).toBeGreaterThanOrEqual(0)
 
 		const expectedPrev =

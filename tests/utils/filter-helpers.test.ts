@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	applyFilters,
@@ -34,7 +35,7 @@ describe("applyFilters", () => {
 			},
 		]
 
-		expect(applyFilters(items, specs).map(item => item.id)).toEqual([
+		expect(Arr.map(applyFilters(items, specs), item => item.id)).toEqual([
 			"red-circle-low",
 			"blue-circle-high",
 		])
@@ -59,13 +60,13 @@ describe("applySort", () => {
 	test("uses the requested sort without mutating input", () => {
 		const result = applySort(items, "score-desc", specs, "score-asc")
 
-		expect(result.map(item => item.id)).toEqual([
+		expect(Arr.map(result, item => item.id)).toEqual([
 			"green-square-top",
 			"blue-circle-high",
 			"red-square-mid",
 			"red-circle-low",
 		])
-		expect(items.map(item => item.id)).toEqual([
+		expect(Arr.map(items, item => item.id)).toEqual([
 			"red-circle-low",
 			"red-square-mid",
 			"blue-circle-high",
@@ -74,7 +75,7 @@ describe("applySort", () => {
 	})
 
 	test("falls back to the default sort for unknown sort keys", () => {
-		expect(applySort(items, "unknown", specs, "score-asc").map(item => item.id)).toEqual([
+		expect(Arr.map(applySort(items, "unknown", specs, "score-asc"), item => item.id)).toEqual([
 			"red-circle-low",
 			"red-square-mid",
 			"blue-circle-high",

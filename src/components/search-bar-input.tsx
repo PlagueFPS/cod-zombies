@@ -2,6 +2,7 @@ import type { FileRoutesByTo } from "@/routeTree.gen"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useNavigate } from "@tanstack/react-router"
 import { cn } from "cn"
+import { Predicate } from "effect"
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
@@ -88,7 +89,10 @@ export function SearchBarInput({ searchItems }: SearchInputProps) {
 										<CommandGroupLabel>{group.value}</CommandGroupLabel>
 										<CommandCollection>
 											{(item: SearchItem["items"][number]) => {
-												const Icon = group.icon ? SEARCH_ICONS[group.icon] : null
+												const Icon =
+													Predicate.isNotNullish(group.icon) && Predicate.isTruthy(group.icon)
+														? SEARCH_ICONS[group.icon]
+														: null
 
 												return (
 													<CommandItem

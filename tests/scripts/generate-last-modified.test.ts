@@ -1,6 +1,6 @@
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, FileSystem, Layer, MutableHashSet } from "effect"
+import { Effect, FileSystem, Layer, MutableHashSet, String as Str } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import {
 	DuplicateFilenameError,
@@ -9,6 +9,7 @@ import {
 	populateFilePaths,
 } from "@/scripts/generate-last-modified"
 import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
+import { dateFrom } from "@/utils/system-time"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 
@@ -56,7 +57,7 @@ R100\tsrc/content/maps/old.mdx\tsrc/content/maps/new.mdx
 
 	test("uses current date for files missing from git history", async () => {
 		vi.useFakeTimers()
-		const fixed = new Date("2025-03-15T10:00:00.000Z")
+		const fixed = dateFrom("2025-03-15T10:00:00.000Z")
 		vi.setSystemTime(fixed)
 		const all = MutableHashSet.empty<string>()
 		MutableHashSet.add(all, "/repo/src/content/maps/orphan.mdx")
@@ -68,7 +69,7 @@ R100\tsrc/content/maps/old.mdx\tsrc/content/maps/new.mdx
 
 	test("skips R lines with fewer than three tab parts; missing files use current date", async () => {
 		vi.useFakeTimers()
-		const fixed = new Date("2024-06-01T12:00:00.000Z")
+		const fixed = dateFrom("2024-06-01T12:00:00.000Z")
 		vi.setSystemTime(fixed)
 		const all = MutableHashSet.empty<string>()
 		MutableHashSet.add(all, "/repo/src/content/x.mdx")
@@ -88,11 +89,11 @@ describe("getAllContentFiles", () => {
 	test("fails with DuplicateFilenameError when duplicate relative paths are reported", async () => {
 		const mockFs = FileSystem.layerNoop({
 			readDirectory: p => {
-				const n = p.replace(/\\/g, "/")
+				const n = Str.replace(/\\/g, "/")(p)
 
-				if (n.endsWith("/content")) return Effect.succeed(["dup"])
+				if (Str.endsWith("/content")(n)) return Effect.succeed(["dup"])
 
-				if (n.endsWith("/content/dup")) return Effect.succeed(["a.mdx", "a.mdx"])
+				if (Str.endsWith("/content/dup")(n)) return Effect.succeed(["a.mdx", "a.mdx"])
 
 				return Effect.succeed([])
 			},

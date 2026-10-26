@@ -1,4 +1,4 @@
-import { Match } from "effect"
+import { Match, String as Str } from "effect"
 import { BookIcon, BrainIcon, MapIcon, StoneIcon } from "lucide-react"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 
@@ -25,7 +25,7 @@ export function EmptyGrid({ type, title, description, className }: EmptyGridProp
 				<EmptyTitle>{title || `No ${type}s Found`}</EmptyTitle>
 				<EmptyDescription>
 					{description ||
-						`No ${type.toLowerCase()}s match the selected filters. Reset the filters or select different filters.`}
+						`No ${Str.toLowerCase(type)}s match the selected filters. Reset the filters or select different filters.`}
 				</EmptyDescription>
 			</EmptyHeader>
 		</Empty>

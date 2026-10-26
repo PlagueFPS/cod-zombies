@@ -1,5 +1,5 @@
 import { parseSearchWith } from "@tanstack/react-router"
-import { Exit, Predicate, Schema } from "effect"
+import { Exit, Predicate, Schema, Array as Arr, Record as Rec } from "effect"
 
 const jsonParseSearch = parseSearchWith(JSON.parse)
 
@@ -43,6 +43,10 @@ function stringifyFilterScalar(value: SearchParamScalar): string {
 	return asString.value
 }
 
+function isScalarArray(value: SearchParamValue): value is ReadonlyArray<SearchParamScalar> {
+	return Arr.isArray(value)
+}
+
 function normalizeArrayElement(value: SearchParamValue): SearchParamScalar | undefined {
 	const asScalar = Schema.decodeUnknownExit(SearchScalarSchema)(value)
 
@@ -72,15 +76,15 @@ function normalizeSearchValue(key: string, value: SearchParamValue): SearchParam
 		return key === "page" ? value : "null"
 	}
 
-	if (Array.isArray(value)) {
-		return value.flatMap(element => {
+	if (isScalarArray(value)) {
+		return Arr.flatMap(value, element => {
 			const normalized = normalizeArrayElement(element)
 
 			return normalized === undefined ? [] : [normalized]
 		})
 	}
 
-	const asScalar = Schema.decodeUnknownExit(SearchScalarSchema)(value)
+	const asScalar = Schema.decodeExit(SearchScalarSchema)(value)
 
 	if (key !== "page" && Exit.isSuccess(asScalar)) {
 		return stringifyFilterScalar(asScalar.value)
@@ -95,8 +99,8 @@ function isSearchParamValue(value: unknown): value is SearchParamValue {
 	if (Exit.isSuccess(Schema.decodeUnknownExit(SearchScalarSchema)(value))) return true
 
 	return (
-		Array.isArray(value) &&
-		value.every(item => Exit.isSuccess(Schema.decodeUnknownExit(SearchScalarSchema)(item)))
+		Arr.isArray(value) &&
+		Arr.every(value, item => Exit.isSuccess(Schema.decodeUnknownExit(SearchScalarSchema)(item)))
 	)
 }
 
@@ -127,7 +131,7 @@ export function parseSearch(searchStr: string) {
 	const raw = jsonParseSearch(searchStr)
 	const parsed: ParsedSearchParams = {}
 
-	for (const [key, value] of Object.entries(raw)) {
+	for (const [key, value] of Rec.toEntries(raw)) {
 		parsed[key] = isSearchParamValue(value) ? value : undefined
 	}
 

@@ -1,6 +1,7 @@
 import type { FileRoutesByTo } from "@/routeTree.gen"
 import type { LinkProps } from "@tanstack/react-router"
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { Slash } from "lucide-react"
 import { Fragment } from "react"
 import { CustomLink } from "@/components/custom-link"
@@ -44,7 +45,7 @@ export function trailAfterHome(
 	collapseAggressive: boolean,
 ): TrailPiece[] {
 	if (!showEllipsis) {
-		return links.map(link => ({ kind: "link" as const, link }))
+		return Arr.map(links, link => ({ kind: "link" as const, link }))
 	}
 
 	if (showEllipsis && links.length < 3) {
@@ -91,7 +92,7 @@ export function Breadcrumbs({ links, className }: BreadcrumbsProps) {
 						}
 					/>
 				</BreadcrumbItem>
-				{trailPieces.map(entry => (
+				{Arr.map(trailPieces, entry => (
 					<Fragment
 						key={
 							entry.kind === "link" ? `${entry.link.href}-${entry.link.title}` : "trail-ellipsis"
@@ -125,31 +126,29 @@ export function Breadcrumbs({ links, className }: BreadcrumbsProps) {
 	)
 }
 
-const CustomEllipsis = ({ menuLinks }: { menuLinks: Link[] }) => {
-	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger className="flex items-center gap-1">
-				<BreadcrumbEllipsis className="size-4" />
-				<span className="sr-only">Toggle menu</span>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent align="start">
-				{menuLinks.map(link => (
-					<DropdownMenuItem
-						key={`${link.href}-${link.title}`}
-						render={
-							<CustomLink
-								to={link.href}
-								params={link.params}
-								search={link.search}
-								activeOptions={{ exact: true, includeHash: true }}
-								activeProps={{ className: "text-primary" }}
-							>
-								{link.title}
-							</CustomLink>
-						}
-					/>
-				))}
-			</DropdownMenuContent>
-		</DropdownMenu>
-	)
-}
+const CustomEllipsis = ({ menuLinks }: { menuLinks: Link[] }) => (
+	<DropdownMenu>
+		<DropdownMenuTrigger className="flex items-center gap-1">
+			<BreadcrumbEllipsis className="size-4" />
+			<span className="sr-only">Toggle menu</span>
+		</DropdownMenuTrigger>
+		<DropdownMenuContent align="start">
+			{Arr.map(menuLinks, link => (
+				<DropdownMenuItem
+					key={`${link.href}-${link.title}`}
+					render={
+						<CustomLink
+							to={link.href}
+							params={link.params}
+							search={link.search}
+							activeOptions={{ exact: true, includeHash: true }}
+							activeProps={{ className: "text-primary" }}
+						>
+							{link.title}
+						</CustomLink>
+					}
+				/>
+			))}
+		</DropdownMenuContent>
+	</DropdownMenu>
+)

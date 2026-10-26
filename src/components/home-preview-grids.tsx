@@ -3,6 +3,7 @@ import type { MapEntry } from "@/data/maps"
 import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
+import { Array as Arr } from "effect"
 import { BestiaryCard } from "@/components/bestiary-card"
 import { MapPreviewCard } from "@/components/map-preview-card"
 import { QuestPreviewCard } from "@/components/quest-preview-card"
@@ -16,7 +17,7 @@ interface HomeQuestPreviewGridProps {
 export function HomeQuestPreviewGrid({ quests }: HomeQuestPreviewGridProps) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{quests.map((quest, index) => (
+			{Arr.map(quests, (quest, index) => (
 				<QuestPreviewCard
 					key={quest.id}
 					quest={quest}
@@ -37,7 +38,7 @@ interface HomeRelicsPreviewGridProps {
 export function HomeRelicsPreviewGrid({ relics }: HomeRelicsPreviewGridProps) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{relics.map(relic => (
+			{Arr.map(relics, relic => (
 				<RelicCard key={relic.id} relic={relic} />
 			))}
 		</div>
@@ -51,7 +52,7 @@ interface HomeBestiaryPreviewGridProps {
 export function HomeBestiaryPreviewGrid({ zombies }: HomeBestiaryPreviewGridProps) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{zombies.map(zombie => (
+			{Arr.map(zombies, zombie => (
 				<BestiaryCard key={zombie.id} zombie={zombie} />
 			))}
 		</div>
@@ -65,7 +66,7 @@ interface HomeMapsPreviewGridProps {
 export function HomeMapsPreviewGrid({ maps }: HomeMapsPreviewGridProps) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
-			{maps.map(map => (
+			{Arr.map(maps, map => (
 				<MapPreviewCard key={map.id} map={map} />
 			))}
 		</div>

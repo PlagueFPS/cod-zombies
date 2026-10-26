@@ -1,3 +1,4 @@
+import { Array as Arr, String as Str, Predicate } from "effect"
 import { variantWebPath, type ImageVariantMetadata } from "@/lib/image-variant-paths"
 import { IMAGE_VARIANTS } from "@/types/generated/image-variants.gen"
 
@@ -15,7 +16,7 @@ export function getImageVariants(
 	src: string,
 	imageVariants: ImageVariantTable = IMAGE_VARIANTS,
 ): ImageVariantMetadata | undefined {
-	if (src.startsWith("http://") || src.startsWith("https://")) return undefined
+	if (Str.startsWith("http://")(src) || Str.startsWith("https://")(src)) return undefined
 
 	return imageVariants[src]
 }
@@ -27,11 +28,14 @@ export function generateImgAttrs(
 ): GenImgAttrs {
 	const variants = getImageVariants(src, imageVariants)
 
-	if (!variants || variants.widths.length === 0) {
+	if (
+		!(Predicate.isNotNullish(variants) && Predicate.isTruthy(variants)) ||
+		variants.widths.length === 0
+	) {
 		return { src, srcSet: undefined, sizes }
 	}
 
-	const candidates = variants.widths.flatMap(width =>
+	const candidates = Arr.flatMap(variants.widths, width =>
 		width === variants.sourceWidth ? [] : [`${variantWebPath(src, width)} ${width}w`],
 	)
 
@@ -39,7 +43,7 @@ export function generateImgAttrs(
 
 	return {
 		sizes,
-		srcSet: candidates.join(", "),
+		srcSet: Arr.join(candidates, ", "),
 		src,
 	}
 }

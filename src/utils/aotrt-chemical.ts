@@ -1,5 +1,5 @@
 import type { ONumber } from "@/utils/aotrt-o-number"
-import { Data, Schema } from "effect"
+import { Data, Schema, Array as Arr } from "effect"
 
 export type AotrtChemical =
 	| "1,3,5-Tera-Nitra-Phenol"
@@ -22,7 +22,7 @@ type DiamondKey = "8,1" | "1,7" | "3,9" | "6,6" | "8,4" | "4,5"
 const diamondKey = (top: number, left: number) => `${top},${left}`
 
 const DIAMOND_KEYS: ReadonlySet<string> = new Set(
-	DIAMONDS.map(([top, left]) => diamondKey(top, left)),
+	Arr.map(DIAMONDS, ([top, left]) => diamondKey(top, left)),
 )
 
 /**
@@ -110,6 +110,6 @@ export function solveAotrtChemical(
 	}
 
 	return Solved({
-		steps: CHEMICAL_STEPS[chemical][key].map(step => step - oNumber),
+		steps: Arr.map(CHEMICAL_STEPS[chemical][key], step => step - oNumber),
 	})
 }

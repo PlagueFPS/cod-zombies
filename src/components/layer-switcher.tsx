@@ -1,6 +1,6 @@
 import type { MapConfigLayer } from "@/data/interactive-map"
 import { cn } from "cn"
-import { Array as Arr, Option } from "effect"
+import { Array as Arr, Option, Predicate } from "effect"
 import {
 	Select,
 	SelectContent,
@@ -20,7 +20,7 @@ interface LayerSwitcher {
 export function LayerSwitcher({ mapLayers }: LayerSwitcher) {
 	const { layer, updateLayer } = useMapSearch()
 
-	const currentLayer = !layer
+	const currentLayer = !(Predicate.isNotNullish(layer) && Predicate.isTruthy(layer))
 		? Arr.head(mapLayers)
 		: Arr.findFirst(mapLayers, l => l.id === layer).pipe(
 				Option.match({
@@ -32,7 +32,7 @@ export function LayerSwitcher({ mapLayers }: LayerSwitcher) {
 	if (Option.isNone(currentLayer)) return null
 
 	const handleValueChange = (title: string | null) => {
-		if (!title) return
+		if (!(Predicate.isNotNullish(title) && Predicate.isTruthy(title))) return
 		updateLayer(slugify(title))
 	}
 
@@ -44,7 +44,7 @@ export function LayerSwitcher({ mapLayers }: LayerSwitcher) {
 			<SelectContent>
 				<SelectGroup>
 					<SelectLabel>Map Layers</SelectLabel>
-					{mapLayers.map(layer => (
+					{Arr.map(mapLayers, layer => (
 						<SelectItem
 							key={layer.id}
 							value={layer.title}

@@ -1,7 +1,7 @@
 import type { SideQuest } from "@/data/side-quests"
 import type { PreviewCard } from "@/types/preview-card"
 import { cn } from "cn"
-import { Match, Option } from "effect"
+import { Match, Option, Predicate } from "effect"
 import { CardImageGlow } from "@/components/card-image-glow"
 import {
 	ComingSoonBadge,
@@ -112,8 +112,10 @@ export function QuestPreviewCard({ quest, priority, fetchPriority }: IQuestPrevi
 				to={questLink?.to}
 				params={questLink?.params}
 				aria-label={`View Guide for ${title}`}
-				aria-disabled={disabled || !questLink}
-				disabled={disabled || !questLink}
+				aria-disabled={
+					disabled || !(Predicate.isNotNullish(questLink) && Predicate.isTruthy(questLink))
+				}
+				disabled={disabled || !(Predicate.isNotNullish(questLink) && Predicate.isTruthy(questLink))}
 				className="group outline-none"
 				tabIndex={tabIndex}
 			>
@@ -139,7 +141,11 @@ export function QuestPreviewCard({ quest, priority, fetchPriority }: IQuestPrevi
 								width={272}
 								height={176}
 								sizes="384px"
-								loading={priority ? "eager" : "lazy"}
+								loading={
+									Predicate.isNotNullish(priority) && Predicate.isTruthy(priority)
+										? "eager"
+										: "lazy"
+								}
 								fetchPriority={fetchPriority}
 								className="h-44 rounded-md object-cover"
 							/>

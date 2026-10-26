@@ -1,5 +1,6 @@
 import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys"
 import { cn } from "cn"
+import { Effect, Fiber } from "effect"
 import { CheckIcon, Link2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -42,15 +43,15 @@ export function ShareButton({ url, withText = true, ...props }: ShareButtonProps
 	useHotkey("Mod+Shift+C", () => handleCopy(), { requireReset: true, conflictBehavior: "replace" })
 
 	useEffect(() => {
-		let timer: ReturnType<typeof setTimeout> | undefined
+		if (!isCopied) return
 
-		if (isCopied) {
-			timer = setTimeout(() => {
-				setIsCopied(false)
-			}, 3000)
+		const fiber = Effect.runFork(
+			Effect.sleep("3 seconds").pipe(Effect.andThen(Effect.sync(() => setIsCopied(false)))),
+		)
+
+		return () => {
+			Effect.runSync(Fiber.interrupt(fiber))
 		}
-
-		return () => clearTimeout(timer)
 	}, [isCopied])
 
 	return (

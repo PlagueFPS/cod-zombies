@@ -1,6 +1,7 @@
 import type { FileRoutesByFullPath } from "@/routeTree.gen"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { cn } from "cn"
+import { Array as Arr, Option, Predicate } from "effect"
 import {
 	Select,
 	SelectContent,
@@ -29,10 +30,17 @@ interface GridSortProps {
 export function GridSort({ from, options, triggerClass, contentClass }: GridSortProps) {
 	const { sort } = useSearch({ from })
 	const navigate = useNavigate({ from })
-	const validSortValue = options.find(option => sort === option.value) ?? options.at(0)
+
+	const validSortValue = Option.match(
+		Arr.findFirst(options, option => sort === option.value),
+		{
+			onSome: option => option,
+			onNone: () => options.at(0),
+		},
+	)
 
 	const onValueChange = (value: SortOption | null) => {
-		if (!value?.value) return
+		if (!(Predicate.isNotNullish(value?.value) && Predicate.isTruthy(value?.value))) return
 		void navigate({
 			search: prev => ({ ...prev, sort: value.value }),
 		})
@@ -48,7 +56,7 @@ export function GridSort({ from, options, triggerClass, contentClass }: GridSort
 				<SelectValue placeholder="Sort by" />
 			</SelectTrigger>
 			<SelectContent className={cn(contentClass)}>
-				{options.map(option => (
+				{Arr.map(options, option => (
 					<SelectItem key={option.value} value={option}>
 						{option.label}
 					</SelectItem>

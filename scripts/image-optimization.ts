@@ -1,5 +1,16 @@
 import { BunServices, BunRuntime } from "@effect/platform-bun"
-import { Clock, Duration, Effect, FileSystem, Option, Path, Schema, Ref, Match } from "effect"
+import {
+	Clock,
+	Duration,
+	Effect,
+	FileSystem,
+	Option,
+	Path,
+	Schema,
+	Ref,
+	Match,
+	Array as Arr,
+} from "effect"
 import { Command, Flag, Prompt } from "effect/cli"
 import sharp, { type Sharp } from "sharp"
 import { generateImagePaths } from "@/scripts/generate-image-paths"
@@ -11,13 +22,13 @@ import {
 	variantFileName,
 } from "@/scripts/image-variant-policy"
 
-export class ImageOptimizationError extends Schema.TaggedError<ImageOptimizationError>()(
-	"ImageOptimizationError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+export class ImageOptimizationError extends Schema.TaggedError<
+	ImageOptimizationError,
+	{ readonly brand: unique symbol }
+>()("ImageOptimizationError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
 const DEFAULT_SOURCE_DIR = "./newassets"
 
@@ -102,7 +113,7 @@ const encodeWebpEffect = Effect.fnUntraced(function* (
 	return yield* Effect.tryPromise({
 		try: () => encodeWebp(image, width, options),
 		catch: cause =>
-			new ImageOptimizationError({
+			ImageOptimizationError.make({
 				message:
 					width === undefined
 						? `Failed to encode base image: ${asset}`
@@ -151,7 +162,7 @@ export const ensureOutputDirectory = Effect.fn("ensureOutputDirectory")(function
 	)
 
 	if (!confirmed) {
-		return yield* new ImageOptimizationError({
+		return yield* ImageOptimizationError.make({
 			message: `Output directory does not exist: ${dir}`,
 			cause: dir,
 		})
@@ -187,7 +198,7 @@ export const requireImageWidth = (
 ): Effect.Effect<number, ImageOptimizationError> => {
 	if (metadata.width === undefined) {
 		return Effect.fail(
-			new ImageOptimizationError({
+			ImageOptimizationError.make({
 				message: `Image has no width metadata: ${asset}`,
 				cause: asset,
 			}),
@@ -199,17 +210,18 @@ export const requireImageWidth = (
 
 export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 	Effect.gen(function* () {
-		const enabledExclusiveFlags = (
+		const enabledExclusiveFlags = Arr.flatMap(
 			[
 				["--preview", args.preview],
 				["--map", args.map],
 				["--icon", args.icon],
-			] as const
-		).flatMap(([name, flag]) => (Option.contains(flag, true) ? [name] : []))
+			] as const,
+			([name, flag]) => (Option.contains(flag, true) ? [name] : []),
+		)
 
 		if (enabledExclusiveFlags.length > 1) {
-			return yield* new ImageOptimizationError({
-				message: `Cannot use ${enabledExclusiveFlags.join(" and ")} together.`,
+			return yield* ImageOptimizationError.make({
+				message: `Cannot use ${Arr.join(enabledExclusiveFlags, " and ")} together.`,
 				cause: args,
 			})
 		}
@@ -257,7 +269,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 					const metadata = yield* Effect.tryPromise({
 						try: () => image.metadata(),
 						catch: cause =>
-							new ImageOptimizationError({
+							ImageOptimizationError.make({
 								message: `Failed to read image metadata: ${relativeAsset}`,
 								cause,
 							}),

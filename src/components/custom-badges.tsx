@@ -12,6 +12,7 @@ import type { Zombie } from "@/data/zombies"
 import type { MarkerCategory } from "@/map-configs/markers"
 import type { TimeRange } from "@/types/data"
 import { cn } from "cn"
+import { String as Str } from "effect"
 import { ClockIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { formatEstimatedTimeMidpoint } from "@/utils/shared-functions"
@@ -112,9 +113,7 @@ export const RarityBadge = ({
 	type,
 	children,
 }: CustomBadgeProps & { rarity: GobblegumRarity; type: GobblegumType }) => {
-	const shouldUseType = () => {
-		return rarity.includes("Mega") || rarity === "Classic"
-	}
+	const shouldUseType = () => Str.includes("Mega")(rarity) || rarity === "Classic"
 
 	return (
 		<Badge

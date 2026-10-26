@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { MenuIcon } from "lucide-react"
 import { CustomLink } from "@/components/custom-link"
 import { Image } from "@/components/image"
@@ -47,7 +48,7 @@ export function MobileNav() {
 					<Separator className="mx-auto mt-4 w-4/5!" />
 				</SheetHeader>
 				<nav className="flex w-full flex-col items-center justify-center gap-2 px-6">
-					{NAV_ROUTES.map(route => (
+					{Arr.map(NAV_ROUTES, route => (
 						<SheetClose key={route.id} className="w-full">
 							<Item>
 								<CustomLink

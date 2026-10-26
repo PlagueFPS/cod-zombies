@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,12 +12,12 @@ export default function KowakujoPuzzleSolver() {
 	const [scrolls, setScrolls] = useState(INITIAL_STATE)
 
 	const solution = solveScrollPuzzle(scrolls)
-	const hasAnyScrollIn = scrolls.some(Boolean)
-	const isSolved = scrolls.every(Boolean)
+	const hasAnyScrollIn = Arr.some(scrolls, Boolean)
+	const isSolved = Arr.every(scrolls, Boolean)
 
 	const toggleScroll = (index: number, pressed: boolean) => {
 		setScrolls(current =>
-			current.map((isIn, scrollIndex) => (scrollIndex === index ? pressed : isIn)),
+			Arr.map(current, (isIn, scrollIndex) => (scrollIndex === index ? pressed : isIn)),
 		)
 	}
 
@@ -34,7 +35,7 @@ export default function KowakujoPuzzleSolver() {
 				<div className="flex items-start gap-4 sm:gap-6">
 					<div className="space-y-3">
 						<div className="grid w-fit grid-cols-3 gap-2">
-							{scrolls.map((isIn, index) => (
+							{Arr.map(scrolls, (isIn, index) => (
 								<Toggle
 									key={SCROLL_POSITIONS[index]}
 									variant="outline"
@@ -78,7 +79,7 @@ export default function KowakujoPuzzleSolver() {
 								</p>
 							) : solution !== null ? (
 								<ul className="mt-1 list-none pl-0">
-									{solution.map(index => (
+									{Arr.map(solution, index => (
 										<li key={index} className="text-center">
 											{SCROLL_POSITIONS[index]}
 										</li>

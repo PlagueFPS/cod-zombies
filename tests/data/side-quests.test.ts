@@ -59,7 +59,12 @@ describe("getAdjacentSideQuests", () => {
 		const quests = getSideQuests()
 		const q1 = quests[Math.floor(quests.length / 2)]!
 		const { prev, next } = getAdjacentSideQuests(q1.id)
-		const idx = quests.findIndex(q => q.id === q1.id)
+
+		const idx = Option.getOrElse(
+			Arr.findFirstIndex(quests, q => q.id === q1.id),
+			() => -1,
+		)
+
 		expect(idx).toBeGreaterThanOrEqual(0)
 
 		const expectedPrev =

@@ -1,10 +1,11 @@
 import { Cause, Exit, Option, Predicate } from "effect"
 import { expect } from "vitest"
+import { dateFrom } from "@/utils/system-time"
 
 export function assertSortedDescByDate(dates: readonly (string | Date)[]) {
 	for (let i = 0; i < dates.length - 1; i++) {
-		const a = new Date(dates[i]!).getTime()
-		const b = new Date(dates[i + 1]!).getTime()
+		const a = dateFrom(dates[i]!).getTime()
+		const b = dateFrom(dates[i + 1]!).getTime()
 		expect(a).toBeGreaterThanOrEqual(b)
 	}
 }
@@ -52,7 +53,7 @@ export function expectCauseTaggedError<E extends { _tag: string }>(
 	// SAFETY: `tag` identifies the expected tagged error; callers supply the matching error type.
 	const tagged = err as E
 
-	if (predicate && !predicate(tagged)) {
+	if (Predicate.isNotNullish(predicate) && Predicate.isTruthy(predicate) && !predicate(tagged)) {
 		expect.fail(`predicate failed for ${tag}: ${JSON.stringify(err)}`)
 	}
 

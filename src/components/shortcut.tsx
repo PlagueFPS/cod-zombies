@@ -2,6 +2,7 @@ import type React from "react"
 import { formatForDisplay, type RegisterableHotkey } from "@tanstack/react-hotkeys"
 import { cva } from "class-variance-authority"
 import { cn } from "cn"
+import { Array as Arr, Predicate } from "effect"
 import { Children } from "react"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
 
@@ -63,10 +64,10 @@ export function Shortcut({
 
 	return (
 		<KbdGroup>
-			{shortcut ? (
+			{Predicate.isNotNullish(shortcut) && Predicate.isTruthy(shortcut) ? (
 				<Kbd className={kbdClassName}>{formatForDisplay(shortcut, { useSymbols })}</Kbd>
 			) : (
-				Children.toArray(children).map((child, index) => {
+				Arr.map(Children.toArray(children), (child, index) => {
 					const key = `shortcut-${index + 1}`
 
 					return (

@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { EmptyGrid } from "@/components/empty-grid"
 import { RelicCard } from "@/components/relic-card"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -13,7 +14,7 @@ export function RelicGrid({ relics }: RelicGridProps) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 			{relics.length > 0 ? (
-				relics.map((relic, index) => (
+				Arr.map(relics, (relic, index) => (
 					<RelicCard
 						key={relic.id}
 						relic={decodeRelic(relic)}

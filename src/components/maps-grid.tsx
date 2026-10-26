@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { EmptyGrid } from "@/components/empty-grid"
 import { MapPreviewCard } from "@/components/map-preview-card"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -13,7 +14,7 @@ export function MapsGrid({ maps }: IMapsGrid) {
 	return (
 		<div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-2 lg:grid-cols-3">
 			{maps.length > 0 ? (
-				maps.map((map, index) => (
+				Arr.map(maps, (map, index) => (
 					<MapPreviewCard
 						key={map.id}
 						map={decodeInteractiveMap(map)}

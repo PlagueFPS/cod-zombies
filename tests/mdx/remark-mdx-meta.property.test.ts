@@ -1,15 +1,16 @@
+import { String as Str } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 import { slugify } from "@/utils/shared-functions"
 
 const headingChar = fc.constantFrom(
-	..."abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -_&".split(""),
+	...Str.split("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -_&", ""),
 )
 
 const headingTextArb = fc.string({ unit: headingChar, minLength: 1, maxLength: 32 })
 
-const blankHeadingArb = fc.integer({ min: 1, max: 32 }).map(length => " ".repeat(length))
+const blankHeadingArb = fc.integer({ min: 1, max: 32 }).map(length => Str.repeat(length)(" "))
 
 describe("remark-mdx-meta slugify properties", () => {
 	test("heading ids use the same slugify as shared-functions", () => {
@@ -17,14 +18,14 @@ describe("remark-mdx-meta slugify properties", () => {
 			fc.property(blankHeadingArb, text => {
 				const meta = getMdxDocumentMetaFromSource(`## ${text}\n\nSome words to read.`)
 
-				expect(text.trim()).toBe("")
+				expect(Str.trim(text)).toBe("")
 				expect(meta.headings[0]).toBeUndefined()
 			}),
 		)
 
 		fc.assert(
 			fc.property(
-				headingTextArb.filter(text => text.trim() !== ""),
+				headingTextArb.filter(text => Str.trim(text) !== ""),
 				text => {
 					const meta = getMdxDocumentMetaFromSource(`## ${text}\n\nSome words to read.`)
 					const heading = meta.headings[0]

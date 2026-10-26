@@ -6,9 +6,10 @@ import {
 	MS_MONTH,
 	MS_WEEK,
 } from "@/utils/last-updated-format"
+import { dateFrom } from "@/utils/system-time"
 
 describe("formatRelativeTimeAgo", () => {
-	const now = new Date(2026, 2, 15, 12, 0, 0).getTime()
+	const now = dateFrom("2026-03-15T12:00:00.000Z").getTime()
 	const locale = "en-US"
 	const fallback = "March 1, 2026"
 

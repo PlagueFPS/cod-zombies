@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
-import { Option } from "effect"
+import { Option, Array as Arr, String as Str, Predicate } from "effect"
 import { getGames } from "@/data/games"
 import { getInteractiveMaps } from "@/data/interactive-map"
 import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
@@ -41,7 +41,8 @@ export interface SiteRouteIndex {
 let cachedMdxFiles: string[] | undefined
 
 export function listMdxContentFiles(): string[] {
-	if (cachedMdxFiles) return cachedMdxFiles
+	if (Predicate.isNotNullish(cachedMdxFiles) && Predicate.isTruthy(cachedMdxFiles))
+		return cachedMdxFiles
 
 	const files: string[] = []
 
@@ -50,7 +51,7 @@ export function listMdxContentFiles(): string[] {
 			const path = join(dir, entry.name)
 
 			if (entry.isDirectory()) walk(path)
-			else if (entry.name.endsWith(".mdx")) files.push(path)
+			else if (Str.endsWith(".mdx")(entry.name)) files.push(path)
 		}
 	}
 
@@ -61,9 +62,13 @@ export function listMdxContentFiles(): string[] {
 }
 
 export function loadMdxCorpus(): MdxCorpusFile[] {
-	return listMdxContentFiles().map(absolutePath => {
-		const relativePath = absolutePath.slice(process.cwd().length + 1)
-		const contentPath = relativePath.replace(/^src\/content\//, "content/").replace(/\.mdx$/, "")
+	return Arr.map(listMdxContentFiles(), absolutePath => {
+		const relativePath = Str.slice(process.cwd().length + 1)(absolutePath)
+
+		const contentPath = Str.replace(
+			/\.mdx$/,
+			"",
+		)(Str.replace(/^src\/content\//, "content/")(relativePath))
 
 		return {
 			label: relativePath,
@@ -77,11 +82,11 @@ export function extractLinksFromMdx(content: string): MdxLinkRef[] {
 	const links: MdxLinkRef[] = []
 
 	for (const { re, group } of LINK_PATTERNS) {
-		for (const match of content.matchAll(re)) {
+		for (const match of Str.matchAll(re)(content)) {
 			const href = match[group]
 			const index = match.index
 
-			if (!href || index == null) continue
+			if (!(Predicate.isNotNullish(href) && Predicate.isTruthy(href)) || index == null) continue
 			links.push({ href, line: lineNumberAt(content, index) })
 		}
 	}
@@ -92,11 +97,11 @@ export function extractLinksFromMdx(content: string): MdxLinkRef[] {
 export function findUnclosedMarkdownLinks(content: string): { line: number; excerpt: string }[] {
 	const issues: { line: number; excerpt: string }[] = []
 
-	for (const match of content.matchAll(UNCLOSED_MARKDOWN_LINK_RE)) {
+	for (const match of Str.matchAll(UNCLOSED_MARKDOWN_LINK_RE)(content)) {
 		const index = match.index
 
 		if (index == null) continue
-		issues.push({ line: lineNumberAt(content, index), excerpt: match[0].trim() })
+		issues.push({ line: lineNumberAt(content, index), excerpt: Str.trim(match[0]) })
 	}
 
 	return issues
@@ -120,10 +125,10 @@ export async function buildSiteRouteIndex(): Promise<SiteRouteIndex> {
 	const registerHeadings = async (routePath: string, contentPath: string) => {
 		let headingIds = headingsByContentPath.get(contentPath)
 
-		if (!headingIds) {
-			const absolutePath = join(CONTENT_DIR, contentPath.replace(/^content\//, "") + ".mdx")
+		if (Predicate.isNullish(headingIds)) {
+			const absolutePath = join(CONTENT_DIR, Str.replace(/^content\//, "")(contentPath) + ".mdx")
 			const { headings } = getMdxDocumentMetaFromSource(readFileSync(absolutePath, "utf8"))
-			headingIds = new Set(headings.map(h => h.id))
+			headingIds = new Set(Arr.map(headings, h => h.id))
 			headingsByContentPath.set(contentPath, headingIds)
 		}
 
@@ -182,20 +187,20 @@ interface HrefParts {
 }
 
 export function splitHref(href: string): HrefParts {
-	if (href.startsWith("#")) return { pathname: "", hash: href.slice(1) }
+	if (Str.startsWith("#")(href)) return { pathname: "", hash: Str.slice(1)(href) }
 
-	const hashIndex = href.indexOf("#")
-	const pathAndQuery = hashIndex === -1 ? href : href.slice(0, hashIndex)
-	const hash = hashIndex === -1 ? "" : href.slice(hashIndex + 1)
-	const queryIndex = pathAndQuery.indexOf("?")
-	const pathname = queryIndex === -1 ? pathAndQuery : pathAndQuery.slice(0, queryIndex)
+	const hashIndex = Option.getOrElse(Str.indexOf("#")(href), () => -1)
+	const pathAndQuery = hashIndex === -1 ? href : Str.slice(0, hashIndex)(href)
+	const hash = hashIndex === -1 ? "" : Str.slice(hashIndex + 1)(href)
+	const queryIndex = Option.getOrElse(Str.indexOf("?")(pathAndQuery), () => -1)
+	const pathname = queryIndex === -1 ? pathAndQuery : Str.slice(0, queryIndex)(pathAndQuery)
 
 	return { pathname, hash }
 }
 
 export function resolveInternalPath(pathname: string, index: SiteRouteIndex): boolean {
 	if (pathname === "") return true
-	const normalized = pathname.replace(/\/+$/, "") || "/"
+	const normalized = Str.replace(/\/+$/, "")(pathname) || "/"
 
 	if (index.paths.has(normalized)) return true
 
@@ -208,22 +213,22 @@ export function resolveFragment(
 	index: SiteRouteIndex,
 	sourceContentPath?: string,
 ): boolean {
-	if (!hash) return true
+	if (!(Predicate.isNotNullish(hash) && Predicate.isTruthy(hash))) return true
 
 	if (pathname === "") {
-		if (!sourceContentPath) return true
+		if (Predicate.isNullish(sourceContentPath)) return true
 		const sourceRoutes = index.routesByContentPath.get(sourceContentPath) ?? []
 
-		return sourceRoutes.some(route => index.headingsByPath.get(route)?.has(hash))
+		return Arr.some(sourceRoutes, route => index.headingsByPath.get(route)?.has(hash) === true)
 	}
 
 	const targetPath = MAIN_QUEST_GAME_PATTERN.test(pathname)
-		? pathname.replace(MAIN_QUEST_GAME_PATTERN, "/main-quests/$1/$2")
+		? Str.replace(MAIN_QUEST_GAME_PATTERN, "/main-quests/$1/$2")(pathname)
 		: pathname
 
 	return index.headingsByPath.get(targetPath)?.has(hash) ?? false
 }
 
 function lineNumberAt(content: string, index: number): number {
-	return content.slice(0, index).split("\n").length
+	return Str.split(Str.slice(0, index)(content), "\n").length
 }

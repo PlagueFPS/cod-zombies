@@ -19,7 +19,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
 			else setTheme("light")
 		}
 
-		if (!document.startViewTransition) {
+		if (!("startViewTransition" in document)) {
 			return flip()
 		}
 

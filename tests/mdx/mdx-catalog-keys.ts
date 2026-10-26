@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
-import { Option } from "effect"
+import { Option, Array as Arr, String as Str, Predicate } from "effect"
 import { getAmmoModByKey } from "@/data/ammo-mods"
 import { getAugmentByKey } from "@/data/augments"
 import { getElixirByKey } from "@/data/elixirs"
@@ -55,31 +55,41 @@ export interface TooltipSourceFile {
 	readonly content: string
 }
 
-const TAG_RE = new RegExp(`<(${TOOLTIP_COMPONENTS.join("|")})\\b([\\s\\S]*?)(?:/>|>)`, "g")
+const TAG_RE = new RegExp(`<(${Arr.join(TOOLTIP_COMPONENTS, "|")})\\b([\\s\\S]*?)(?:/>|>)`, "g")
 
 const ATTR_RE = new RegExp(
-	`\\b(${CATALOG_KEY_PROPS.join("|")})\\s*=\\s*(?:["']([^"']+)["']|\\{\\s*["']([^"']+)["']\\s*\\})`,
+	`\\b(${Arr.join(CATALOG_KEY_PROPS, "|")})\\s*=\\s*(?:["']([^"']+)["']|\\{\\s*["']([^"']+)["']\\s*\\})`,
 	"g",
 )
 
 export function extractCatalogKeyRefs(content: string): CatalogKeyRef[] {
 	const refs: CatalogKeyRef[] = []
 
-	for (const tagMatch of content.matchAll(TAG_RE)) {
+	for (const tagMatch of Str.matchAll(TAG_RE)(content)) {
 		const component = tagMatch[1]
 		const attrs = tagMatch[2]
 		const tagIndex = tagMatch.index
 
-		if (!component || attrs == null || tagIndex == null) continue
+		if (
+			!(Predicate.isNotNullish(component) && Predicate.isTruthy(component)) ||
+			attrs == null ||
+			tagIndex == null
+		)
+			continue
 
 		const attrsOffset = tagIndex + 1 + component.length
 
-		for (const attrMatch of attrs.matchAll(new RegExp(ATTR_RE.source, "g"))) {
+		for (const attrMatch of Str.matchAll(new RegExp(ATTR_RE.source, "g"))(attrs)) {
 			const prop = attrMatch[1]
 			const value = attrMatch[2] ?? attrMatch[3]
 			const attrIndex = attrMatch.index
 
-			if (!isCatalogKeyProp(prop) || !value || attrIndex == null) continue
+			if (
+				!isCatalogKeyProp(prop) ||
+				!(Predicate.isNotNullish(value) && Predicate.isTruthy(value)) ||
+				attrIndex == null
+			)
+				continue
 
 			refs.push({
 				component,
@@ -110,12 +120,12 @@ export function invalidCatalogKeyMessages(label: string, content: string): strin
 }
 
 export function loadMdxTooltipSources(): TooltipSourceFile[] {
-	return loadMdxCorpus().map(file => ({ label: file.label, content: file.content }))
+	return Arr.map(loadMdxCorpus(), file => ({ label: file.label, content: file.content }))
 }
 
 export function loadTsxTooltipSources(): TooltipSourceFile[] {
-	return listTsxSourceFiles().map(absolutePath => ({
-		label: absolutePath.slice(process.cwd().length + 1),
+	return Arr.map(listTsxSourceFiles(), absolutePath => ({
+		label: Str.slice(process.cwd().length + 1)(absolutePath),
 		content: readFileSync(absolutePath, "utf8"),
 	}))
 }
@@ -128,7 +138,7 @@ function listTsxSourceFiles(): string[] {
 			const path = join(dir, entry.name)
 
 			if (entry.isDirectory()) walk(path)
-			else if (entry.name.endsWith(".tsx")) files.push(path)
+			else if (Str.endsWith(".tsx")(entry.name)) files.push(path)
 		}
 	}
 
@@ -138,7 +148,7 @@ function listTsxSourceFiles(): string[] {
 }
 
 function isCatalogKeyProp(value: string | undefined): value is CatalogKeyProp {
-	return CATALOG_KEY_PROPS.some(prop => prop === value)
+	return Arr.some(CATALOG_KEY_PROPS, prop => prop === value)
 }
 
 function catalogKeyExists(prop: CatalogKeyProp, key: string): boolean {
@@ -167,5 +177,5 @@ function catalogKeyExists(prop: CatalogKeyProp, key: string): boolean {
 }
 
 function lineNumberAt(content: string, index: number): number {
-	return content.slice(0, index).split("\n").length
+	return Str.split(Str.slice(0, index)(content), "\n").length
 }

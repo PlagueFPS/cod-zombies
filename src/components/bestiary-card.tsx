@@ -1,7 +1,7 @@
 import type { Zombie } from "@/data/zombies"
 import type { PreviewCard } from "@/types/preview-card"
 import { cn } from "cn"
-import { Array as Arr, Option } from "effect"
+import { Array as Arr, Option, Predicate } from "effect"
 import { CardImageGlow } from "@/components/card-image-glow"
 import { ComingSoonBadge, NewBadge, TypeBadge } from "@/components/custom-badges"
 import { CustomLink } from "@/components/custom-link"
@@ -72,7 +72,11 @@ export function BestiaryCard({ zombie, priority, fetchPriority }: IBestiaryCard)
 								alt={alt}
 								width={272}
 								height={176}
-								loading={priority ? "eager" : "lazy"}
+								loading={
+									Predicate.isNotNullish(priority) && Predicate.isTruthy(priority)
+										? "eager"
+										: "lazy"
+								}
 								fetchPriority={fetchPriority}
 								sizes="272px"
 								className={cn("h-44 rounded-md object-cover object-top", {

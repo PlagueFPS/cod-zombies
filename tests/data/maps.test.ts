@@ -30,21 +30,27 @@ describe("compareMapReleaseDescending", () => {
 
 describe("getMaps", () => {
 	test("sorted by release date descending", () => {
-		const dates = getMaps().map(m => m.releaseDate)
+		const dates = Arr.map(getMaps(), m => m.releaseDate)
 		expect(dates.length).toBeGreaterThan(1)
 		assertSortedDescByDate(dates)
 	})
 
 	test("same calendar day: later MAPS entries appear first (e.g. BO4 launch)", () => {
 		const maps = getMaps()
-		const indexOf = (id: string) => maps.findIndex(m => m.id === id)
+
+		const indexOf = (id: string) =>
+			Option.getOrElse(
+				Arr.findFirstIndex(maps, m => m.id === id),
+				() => -1,
+			)
+
 		expect(indexOf("classified")).toBeLessThan(indexOf("voyage-of-despair"))
 	})
 })
 
 describe("getMapsWithMainQuest", () => {
 	test("is subset of getMaps and every entry has a main quest path", () => {
-		const allIds = new Set(getMaps().map(m => m.id))
+		const allIds = new Set(Arr.map(getMaps(), m => m.id))
 		const withMq = getMapsWithMainQuest()
 		expect(withMq.length).toBeGreaterThan(0)
 
@@ -60,7 +66,12 @@ describe("getAdjacentMaps", () => {
 		const maps = getMapsWithMainQuest()
 		const mid = maps[Math.floor(maps.length / 2)]!
 		const { prev, next } = getAdjacentMaps(mid.id)
-		const idx = maps.findIndex(m => m.id === mid.id)
+
+		const idx = Option.getOrElse(
+			Arr.findFirstIndex(maps, m => m.id === mid.id),
+			() => -1,
+		)
+
 		expect(idx).toBeGreaterThanOrEqual(0)
 
 		const expectedPrev =

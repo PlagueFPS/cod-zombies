@@ -1,5 +1,6 @@
 import { useHotkey, type RegisterableHotkey } from "@tanstack/react-hotkeys"
 import { cn } from "cn"
+import { Array as Arr, Predicate } from "effect"
 import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { Shortcut } from "@/components/shortcut"
@@ -188,7 +189,12 @@ export default function MapSettingsPanel() {
 										...prev,
 										markers: {
 											...prev.markers,
-											iconSize: Array.isArray(value) ? value[0] : (value ?? prev.markers.iconSize),
+											iconSize:
+												Arr.isArray(value) && Predicate.isNumber(value[0])
+													? value[0]
+													: Predicate.isNumber(value)
+														? value
+														: prev.markers.iconSize,
 										},
 									}))
 								}
@@ -231,7 +237,12 @@ export default function MapSettingsPanel() {
 										...prev,
 										markers: {
 											...prev.markers,
-											opacity: Array.isArray(value) ? value[0] : (value ?? prev.markers.opacity),
+											opacity:
+												Arr.isArray(value) && Predicate.isNumber(value[0])
+													? value[0]
+													: Predicate.isNumber(value)
+														? value
+														: prev.markers.opacity,
 										},
 									}))
 								}

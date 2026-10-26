@@ -46,32 +46,43 @@ export default function ElixirTooltip({ elixirKey }: ElixirTooltipProps) {
 	)
 }
 
-const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
-	return (
-		<div
-			className={cn("relative flex w-full flex-col rounded-lg px-4 py-2", {
-				"bg-gobblegum-time-based": elixir.rarity === "Classic",
-				"bg-equipment": elixir.rarity === "Common",
-				"bg-gobblegum-rare": elixir.rarity === "Rare",
-				"bg-gobblegum-epic": elixir.rarity === "Legendary",
-				"bg-gobblegum-legendary": elixir.rarity === "Epic",
-			})}
-		>
-			<ElixirRarityBadge rarity={elixir.rarity} className="absolute top-4 left-4" />
-			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
-				<IconImage
-					featuredImage={elixir.image}
-					alt={`${elixir.title} Image`}
-					width={96}
-					height={96}
-					sizes="96px"
-					className="relative z-10 h-24 w-auto p-2"
-				/>
+const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => (
+	<div
+		className={cn("relative flex w-full flex-col rounded-lg px-4 py-2", {
+			"bg-gobblegum-time-based": elixir.rarity === "Classic",
+			"bg-equipment": elixir.rarity === "Common",
+			"bg-gobblegum-rare": elixir.rarity === "Rare",
+			"bg-gobblegum-epic": elixir.rarity === "Legendary",
+			"bg-gobblegum-legendary": elixir.rarity === "Epic",
+		})}
+	>
+		<ElixirRarityBadge rarity={elixir.rarity} className="absolute top-4 left-4" />
+		<div className="relative flex items-center justify-center">
+			<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
+			<IconImage
+				featuredImage={elixir.image}
+				alt={`${elixir.title} Image`}
+				width={96}
+				height={96}
+				sizes="96px"
+				className="relative z-10 h-24 w-auto p-2"
+			/>
+		</div>
+		<div className="relative z-10 -mt-3">
+			<div
+				className={cn("px-4 text-center text-lg font-bold text-orange-700 dark:text-orange-200", {
+					"text-green-600 dark:text-green-300": elixir.rarity === "Classic",
+					"text-gray-600 dark:text-gray-300": elixir.rarity === "Common",
+					"text-blue-600 dark:text-blue-300": elixir.rarity === "Rare",
+					"text-purple-600 dark:text-purple-300": elixir.rarity === "Legendary",
+					"text-orange-600 dark:text-orange-300": elixir.rarity === "Epic",
+				})}
+			>
+				{elixir.title}
 			</div>
-			<div className="relative z-10 -mt-3">
+			<div className="mt-6 pb-8">
 				<div
-					className={cn("px-4 text-center text-lg font-bold text-orange-700 dark:text-orange-200", {
+					className={cn("text-center text-sm text-orange-800 dark:text-orange-200", {
 						"text-green-600 dark:text-green-300": elixir.rarity === "Classic",
 						"text-gray-600 dark:text-gray-300": elixir.rarity === "Common",
 						"text-blue-600 dark:text-blue-300": elixir.rarity === "Rare",
@@ -79,25 +90,12 @@ const ElixirTooltipContent = ({ elixir }: { elixir: Elixir }) => {
 						"text-orange-600 dark:text-orange-300": elixir.rarity === "Epic",
 					})}
 				>
-					{elixir.title}
-				</div>
-				<div className="mt-6 pb-8">
-					<div
-						className={cn("text-center text-sm text-orange-800 dark:text-orange-200", {
-							"text-green-600 dark:text-green-300": elixir.rarity === "Classic",
-							"text-gray-600 dark:text-gray-300": elixir.rarity === "Common",
-							"text-blue-600 dark:text-blue-300": elixir.rarity === "Rare",
-							"text-purple-600 dark:text-purple-300": elixir.rarity === "Legendary",
-							"text-orange-600 dark:text-orange-300": elixir.rarity === "Epic",
-						})}
-					>
-						{elixir.description}
-					</div>
+					{elixir.description}
 				</div>
 			</div>
 		</div>
-	)
-}
+	</div>
+)
 
 const ElixirTrigger = ({ elixir }: { elixir: Elixir }) => (
 	<span className="group relative inline-flex cursor-default items-baseline justify-center align-baseline">

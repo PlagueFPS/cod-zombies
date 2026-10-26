@@ -1,3 +1,4 @@
+import { Array as Arr, Option, Predicate } from "effect"
 import ChevronSymbol from "@/components/floppy-symbols/chevron"
 import ChevronBarSymbol from "@/components/floppy-symbols/chevron-bar"
 import CornerBracketsSymbol from "@/components/floppy-symbols/corner-brackets"
@@ -77,8 +78,8 @@ export function solveTbfbDiskPuzzle(
 
 	if (picked.size !== DISK_SELECTION_SIZE) return []
 
-	return TBFB_DISK_PATHS.flatMap(path => {
-		const order = path.symbols.filter(symbol => picked.has(symbol))
+	return Arr.flatMap(TBFB_DISK_PATHS, path => {
+		const order = Arr.filter(path.symbols, symbol => picked.has(symbol))
 
 		if (order.length !== DISK_SELECTION_SIZE) return []
 
@@ -87,9 +88,9 @@ export function solveTbfbDiskPuzzle(
 }
 
 export function getTbfbDiskSymbol(id: TbfbDiskSymbolId): TbfbDiskSymbol {
-	const symbol = TBFB_DISK_SYMBOLS.find(entry => entry.id === id)
+	const symbol = Option.getOrUndefined(Arr.findFirst(TBFB_DISK_SYMBOLS, entry => entry.id === id))
 
-	if (!symbol) {
+	if (!(Predicate.isNotNullish(symbol) && Predicate.isTruthy(symbol))) {
 		throw new Error(`Unknown disk symbol: ${id}`)
 	}
 

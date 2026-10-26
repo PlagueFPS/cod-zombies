@@ -1,3 +1,4 @@
+import { String as Str } from "effect"
 import { SITE_ORIGIN } from "@/utils/constants"
 
 /**
@@ -8,15 +9,15 @@ import { SITE_ORIGIN } from "@/utils/constants"
  * show a loopback image URL in production.
  */
 export const isLoopbackHost = (hostname: string) => {
-	const host = hostname.replace(/^\[|\]$/g, "").toLowerCase()
+	const host = Str.toLowerCase(Str.replace(/^\[|\]$/g, "")(hostname))
 
-	if (host === "localhost" || host.endsWith(".localhost")) return true
+	if (host === "localhost" || Str.endsWith(".localhost")(host)) return true
 
 	if (host === "::1" || host === "0.0.0.0") return true
 
-	if (host.startsWith("127.")) return true
+	if (Str.startsWith("127.")(host)) return true
 
-	if (host.startsWith("::ffff:127.")) return true
+	if (Str.startsWith("::ffff:127.")(host)) return true
 
 	return false
 }

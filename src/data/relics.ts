@@ -3,12 +3,13 @@ import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { Data, Option } from "effect"
+import { Data, Option, Array as Arr, Predicate } from "effect"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, slugify, sortDates } from "@/utils/shared-functions"
-
+import { nowMillis } from "@/utils/system-time"
 /** Relic types in ascending sort order. */
+
 export const RELIC_TYPES = ["Grim", "Sinister", "Wicked", "Special"] as const
 
 /** Union of all relic types */
@@ -22,10 +23,10 @@ export const relicTypeSlug = (type: RelicType) => slugify(type)
  * Unknown slugs are dropped. An empty selection is omitted.
  */
 export function relicTypeSearchParam(values: readonly string[] | undefined) {
-	if (!values) return undefined
+	if (!(Predicate.isNotNullish(values) && Predicate.isTruthy(values))) return undefined
 
-	const allowed = new Set<string>(RELIC_TYPES.map(relicTypeSlug))
-	const matched = values.filter(value => allowed.has(value))
+	const allowed = new Set<string>(Arr.map(RELIC_TYPES, relicTypeSlug))
+	const matched = Arr.filter(values, value => allowed.has(value))
 
 	return matched.length > 0 ? matched : undefined
 }
@@ -76,7 +77,7 @@ export function compareRelicReleaseDescending(
 }
 
 function withResolvedRelicState(relic: Relic): Relic {
-	const nowMs = Date.now()
+	const nowMs = nowMillis()
 
 	return {
 		...relic,
@@ -88,7 +89,7 @@ function withResolvedRelicState(relic: Relic): Relic {
  * @returns All relics sorted by discovered date in descending order
  */
 export const getRelics = () =>
-	[...RELICS.values()].map(withResolvedRelicState).sort(compareRelicReleaseDescending)
+	Arr.map([...RELICS.values()], withResolvedRelicState).sort(compareRelicReleaseDescending)
 
 /**
  * @returns A specific relic by its key
@@ -100,9 +101,7 @@ export const getRelicByKey = (key: RegistryKeyInput<RelicKey>) =>
  * Gets the adjacent relics of a given relic.
  * @param current The current relic key.
  */
-export const getAdjacentRelics = (current: string) => {
-	return getAdjacentItems(getRelics(), current)
-}
+export const getAdjacentRelics = (current: string) => getAdjacentItems(getRelics(), current)
 
 /**
  * Gets the sort options for relics.
@@ -595,5 +594,5 @@ const RELICS = uniqueMap([
 ])
 
 const RELIC_INSERATION_INDEX_BY_ID = new Map<string, number>(
-	[...RELICS.keys()].map((id, i) => [id, i]),
+	Arr.map([...RELICS.keys()], (id, i) => [id, i]),
 )

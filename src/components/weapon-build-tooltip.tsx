@@ -1,5 +1,5 @@
 import type { RegistryKeyInput } from "@/data/registry-helpers"
-import { Option } from "effect"
+import { Option, Array as Arr } from "effect"
 import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -121,7 +121,7 @@ const WeaponBuildTooltipContent = ({ weaponBuild }: { weaponBuild: WeaponBuild }
 								<div className="h-px flex-1 bg-linear-to-r from-transparent via-primary/60 to-transparent" />
 							</div>
 							<div className="space-y-2.5">
-								{attachments.map(attachment => (
+								{Arr.map(attachments, attachment => (
 									<div
 										key={attachment.id}
 										className="flex items-center justify-between rounded-md px-2 py-1.5 transition-colors hover:bg-muted/20"

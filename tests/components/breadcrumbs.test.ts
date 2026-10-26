@@ -1,4 +1,5 @@
 import type { FileRoutesByTo } from "@/routeTree.gen"
+import { Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import { trailAfterHome, type Link } from "@/components/breadcrumbs"
 
@@ -8,7 +9,7 @@ function L(href: string, title: string): Link {
 }
 
 function ellipsisCount(pieces: ReturnType<typeof trailAfterHome>) {
-	return pieces.filter(p => p.kind === "ellipsis").length
+	return Arr.filter(pieces, p => p.kind === "ellipsis").length
 }
 
 describe("trailAfterHome", () => {

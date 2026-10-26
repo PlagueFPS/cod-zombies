@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { beforeAll, describe, expect, test } from "vitest"
 import {
 	extractCatalogKeyRefs,
@@ -9,11 +10,14 @@ import {
 
 describe("extractCatalogKeyRefs", () => {
 	test("collects quoted tooltip keys with line numbers", () => {
-		const content = [
-			"Intro.",
-			'<PerkTooltip perkKey="juggernog" game="black-ops-6" />',
-			'<ZombieTooltip zombieKey="mimic" />',
-		].join("\n")
+		const content = Arr.join(
+			[
+				"Intro.",
+				'<PerkTooltip perkKey="juggernog" game="black-ops-6" />',
+				'<ZombieTooltip zombieKey="mimic" />',
+			],
+			"\n",
+		)
 
 		expect(extractCatalogKeyRefs(content)).toEqual([
 			{ component: "PerkTooltip", prop: "perkKey", value: "juggernog", line: 2 },
@@ -23,12 +27,10 @@ describe("extractCatalogKeyRefs", () => {
 	})
 
 	test("collects keys from multiline tags and JSX string literals", () => {
-		const content = [
-			"<AmmoModTooltip",
-			'  ammoModKey={"shatter-blast"}',
-			"  game={'black-ops-7'}",
-			"/>",
-		].join("\n")
+		const content = Arr.join(
+			["<AmmoModTooltip", '  ammoModKey={"shatter-blast"}', "  game={'black-ops-7'}", "/>"],
+			"\n",
+		)
 
 		expect(extractCatalogKeyRefs(content)).toEqual([
 			{

@@ -1,3 +1,4 @@
+import { Array as Arr, String as Str, Option, Predicate } from "effect"
 import { useState } from "react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Toggle } from "@/components/ui/toggle"
@@ -5,9 +6,9 @@ import { periodicTable } from "@/data/reckoning-elements"
 
 const getLetters = () => {
 	const letters = new Set<string>()
-	periodicTable.forEach(element => {
-		const initialLetters = element.initials.toLowerCase().split("")
-		initialLetters.forEach(letter => {
+	Arr.forEach(periodicTable, element => {
+		const initialLetters = Str.split(Str.toLowerCase(element.initials), "")
+		Arr.forEach(initialLetters, letter => {
 			letters.add(letter)
 		})
 	})
@@ -21,22 +22,30 @@ const getElementCode = (letters: string[]): string | null => {
 	if (letters.length === 0) return null
 
 	if (letters.length === 1) {
-		const element = periodicTable.find(el => el.initials.toLowerCase() === letters[0])
+		const element = Option.getOrUndefined(
+			Arr.findFirst(periodicTable, el => Str.toLowerCase(el.initials) === letters[0]),
+		)
 
-		return element ? element.number.toString().padStart(3, "0") : null
+		return Predicate.isNotNullish(element) && Predicate.isTruthy(element)
+			? Str.padStart(3, "0")(element.number.toString())
+			: null
 	}
 
 	if (letters.length === 2) {
 		const [first, second] = letters
 
-		const element1 = periodicTable.find(el => el.initials.toLowerCase() === `${first}${second}`)
+		const element1 = Option.getOrUndefined(
+			Arr.findFirst(periodicTable, el => Str.toLowerCase(el.initials) === `${first}${second}`),
+		)
 
-		const element2 = periodicTable.find(el => el.initials.toLowerCase() === `${second}${first}`)
+		const element2 = Option.getOrUndefined(
+			Arr.findFirst(periodicTable, el => Str.toLowerCase(el.initials) === `${second}${first}`),
+		)
 
-		return element1
-			? element1.number.toString().padStart(3, "0")
-			: element2
-				? element2.number.toString().padStart(3, "0")
+		return Predicate.isNotNullish(element1) && Predicate.isTruthy(element1)
+			? Str.padStart(3, "0")(element1.number.toString())
+			: Predicate.isNotNullish(element2) && Predicate.isTruthy(element2)
+				? Str.padStart(3, "0")(element2.number.toString())
 				: null
 	}
 
@@ -50,10 +59,12 @@ export default function ReckoningCode() {
 	const getAvailableLetters = () => {
 		if (selectedLetters.length === 0) {
 			const firstLetters = new Set<string>()
-			periodicTable.forEach(element => {
-				if (element.initials[0]) firstLetters.add(element.initials[0].toLowerCase())
+			Arr.forEach(periodicTable, element => {
+				if (Predicate.isNotNullish(element.initials[0]) && Predicate.isTruthy(element.initials[0]))
+					firstLetters.add(Str.toLowerCase(element.initials[0]))
 
-				if (element.initials[1]) firstLetters.add(element.initials[1].toLowerCase())
+				if (Predicate.isNotNullish(element.initials[1]) && Predicate.isTruthy(element.initials[1]))
+					firstLetters.add(Str.toLowerCase(element.initials[1]))
 			})
 
 			return firstLetters
@@ -63,13 +74,18 @@ export default function ReckoningCode() {
 			const selectedLetter = selectedLetters[0]
 			const validLetters = new Set<string>()
 
-			periodicTable.forEach(element => {
-				const initials = element.initials.toLowerCase()
+			Arr.forEach(periodicTable, element => {
+				const initials = Str.toLowerCase(element.initials)
 
-				if (selectedLetter && initials.includes(selectedLetter)) {
+				if (
+					Predicate.isNotNullish(selectedLetter) &&
+					Predicate.isTruthy(selectedLetter) &&
+					Str.includes(selectedLetter)(initials)
+				) {
 					const otherLetter = initials[0] === selectedLetter ? initials[1] : initials[0]
 
-					if (otherLetter) validLetters.add(otherLetter)
+					if (Predicate.isNotNullish(otherLetter) && Predicate.isTruthy(otherLetter))
+						validLetters.add(otherLetter)
 				}
 			})
 
@@ -116,7 +132,7 @@ export default function ReckoningCode() {
 		<Card className="mx-auto flex w-full flex-col items-center justify-center bg-transparent shadow-lg dark:shadow-none">
 			<CardContent className="flex items-center justify-center">
 				<div className="grid grid-cols-6 place-content-center gap-4 sm:grid-cols-8">
-					{LETTERS.map(letter => (
+					{Arr.map(LETTERS, letter => (
 						<Toggle
 							key={letter}
 							variant={"outline"}

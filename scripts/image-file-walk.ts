@@ -1,5 +1,5 @@
 import type { PlatformError } from "effect/PlatformError"
-import { Effect, FileSystem, HashSet, Path } from "effect"
+import { Effect, FileSystem, HashSet, Path, String as Str, Array as Arr } from "effect"
 import { isVariantImagePath, toWebImagePath } from "@/lib/image-variant-paths"
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 
@@ -16,7 +16,7 @@ const formatImagePath = (
 	format: ImagePathFormat,
 	path: Path.Path,
 ): string => {
-	const relative = path.relative(rootDir, absolutePath).split(path.sep).join("/")
+	const relative = Arr.join(Str.split(path.relative(rootDir, absolutePath), path.sep), "/")
 
 	return format === "web" ? `/${relative}` : relative
 }
@@ -38,7 +38,7 @@ export const walkImageFiles = Effect.fn("walkImageFiles")(function* (
 				files,
 				file =>
 					Effect.gen(function* () {
-						if (file.startsWith(".")) return
+						if (Str.startsWith(".")(file)) return
 
 						const full = path.join(current, file)
 						const stat = yield* fs.stat(full)
@@ -51,7 +51,7 @@ export const walkImageFiles = Effect.fn("walkImageFiles")(function* (
 
 						if (stat.type !== "File") return
 
-						const ext = path.extname(file).toLowerCase()
+						const ext = Str.toLowerCase(path.extname(file))
 
 						if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) return
 

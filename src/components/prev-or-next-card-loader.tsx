@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Predicate } from "effect"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import ImageLoader from "@/components/image-loader"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -49,11 +50,11 @@ function PrevOrNextCardLoader({ prev, type }: IPrevOrNextCardLoader) {
 							"mt-auto flex items-center pb-4 transition-all group-hover:text-primary",
 							{
 								"xl:-ml-2": prev,
-								"xl:-mr-2": !prev,
+								"xl:-mr-2": !(Predicate.isNotNullish(prev) && Predicate.isTruthy(prev)),
 							},
 						)}
 					>
-						{prev ? (
+						{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
 							<>
 								<ChevronLeft />
 								<span>Previous {type}</span>

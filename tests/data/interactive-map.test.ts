@@ -1,4 +1,4 @@
-import { Effect, Option } from "effect"
+import { Effect, Option, Array as Arr } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import {
 	getInteractiveMapByKey,
@@ -10,7 +10,8 @@ import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getInteractiveMaps", () => {
 	test("sorted by release date descending", () => {
-		const dates = getInteractiveMaps().map(
+		const dates = Arr.map(
+			getInteractiveMaps(),
 			m => getMapByKey(m.id).pipe(Option.getOrThrow).releaseDate,
 		)
 
@@ -50,7 +51,7 @@ describe("getInteractiveMapConfig", () => {
 		for (const m of getInteractiveMaps()) {
 			if (m.state.valueOrUndefined === "Coming Soon") continue
 			const config = await Effect.runPromise(getInteractiveMapConfig(m.id))
-			expect(Array.isArray(config.layers)).toBe(true)
+			expect(Arr.isArray(config.layers)).toBe(true)
 		}
 	})
 })

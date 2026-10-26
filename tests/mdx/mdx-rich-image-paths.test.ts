@@ -1,6 +1,7 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
+import { Array as Arr, Predicate } from "effect"
 import { afterEach, describe, expect, test } from "vitest"
 import {
 	extractRichImageRefs,
@@ -11,11 +12,14 @@ import {
 
 describe("extractRichImageRefs", () => {
 	test("collects quoted image paths with line numbers", () => {
-		const content = [
-			"Intro.",
-			'<RichImage image="/content/map/shot.webp" caption="On the table" />',
-			"<RichImage image='/content/map/other.webp' caption='Shelf' />",
-		].join("\n")
+		const content = Arr.join(
+			[
+				"Intro.",
+				'<RichImage image="/content/map/shot.webp" caption="On the table" />',
+				"<RichImage image='/content/map/other.webp' caption='Shelf' />",
+			],
+			"\n",
+		)
 
 		expect(extractRichImageRefs(content)).toEqual([
 			{ image: "/content/map/shot.webp", line: 2 },
@@ -24,12 +28,10 @@ describe("extractRichImageRefs", () => {
 	})
 
 	test("collects image paths from multiline tags and JSX string literals", () => {
-		const content = [
-			"<RichImage",
-			'  image={"/content/map/coin.webp"}',
-			'  caption="Under the stairs"',
-			"/>",
-		].join("\n")
+		const content = Arr.join(
+			["<RichImage", '  image={"/content/map/coin.webp"}', '  caption="Under the stairs"', "/>"],
+			"\n",
+		)
 
 		expect(extractRichImageRefs(content)).toEqual([{ image: "/content/map/coin.webp", line: 1 }])
 	})
@@ -51,7 +53,8 @@ describe("missingRichImageMessages", () => {
 	let publicDir: string | undefined
 
 	afterEach(() => {
-		if (publicDir) rmSync(publicDir, { recursive: true, force: true })
+		if (Predicate.isNotNullish(publicDir) && Predicate.isTruthy(publicDir))
+			rmSync(publicDir, { recursive: true, force: true })
 		publicDir = undefined
 	})
 
@@ -65,11 +68,14 @@ describe("missingRichImageMessages", () => {
 	test("reports images that are not files in public", () => {
 		publicDir = mkdtempSync(join(tmpdir(), "codz-rich-image-"))
 
-		const content = [
-			'<RichImage image="/content/map/missing.webp" caption="Missing" />',
-			'<RichImage image="../package.json" caption="Escapes public" />',
-			'<RichImage caption="No source" />',
-		].join("\n")
+		const content = Arr.join(
+			[
+				'<RichImage image="/content/map/missing.webp" caption="Missing" />',
+				'<RichImage image="../package.json" caption="Escapes public" />',
+				'<RichImage caption="No source" />',
+			],
+			"\n",
+		)
 
 		expect(missingRichImageMessages("src/content/example.mdx", content, publicDir)).toEqual([
 			'src/content/example.mdx:1 <RichImage image="/content/map/missing.webp" /> does not exist in public/',

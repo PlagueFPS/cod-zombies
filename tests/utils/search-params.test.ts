@@ -1,4 +1,5 @@
 import { stringifySearchWith } from "@tanstack/react-router"
+import { Array as Arr, String as Str } from "effect"
 import { describe, expect, test } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
 import { normalizeParsedSearch, parseSearch, type ParsedSearchParams } from "@/utils/search-params"
@@ -14,7 +15,7 @@ function pruneEmptySearch(search: ParsedSearchParams) {
 
 		if (value === undefined || value === null) continue
 
-		if (Array.isArray(value) && value.length === 0) continue
+		if (Arr.isArray(value) && value.length === 0) continue
 		out[key] = value
 	}
 
@@ -52,7 +53,7 @@ describe("parseSearch", () => {
 	test("round-trips repeated keys through stringifySearch", () => {
 		const parsed = parseSearch("game=black-ops-1&game=black-ops-2&sort=oldest")
 		const searchStr = stringifySearch(parsed)
-		const reparsed = parseSearch(searchStr.replace(/^\?/, ""))
+		const reparsed = parseSearch(Str.replace(/^\?/, "")(searchStr))
 
 		expect(reparsed).toEqual({
 			game: ["black-ops-1", "black-ops-2"],

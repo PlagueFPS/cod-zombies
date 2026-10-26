@@ -15,6 +15,8 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components"
+import { Array as Arr, Predicate } from "effect"
+import { nowDate } from "@/utils/system-time"
 import { emailLinkClassName, emailTailwindConfig } from "./email-theme"
 
 interface EmailShellProps {
@@ -33,7 +35,7 @@ export function EmailShell({
 	unsubscribeUrl,
 }: EmailShellProps) {
 	// oxlint-disable-next-line react/purity
-	const year = new Date().getFullYear()
+	const year = nowDate().getFullYear()
 
 	return (
 		<Html lang="en" dir="ltr">
@@ -65,7 +67,7 @@ export function EmailShell({
 						<Hr className="border-brand-line my-6 border-t border-none border-solid" />
 						{children}
 						<Section className="border-brand-line mt-8 border-t border-none border-solid pt-6 text-center">
-							{unsubscribeUrl ? (
+							{Predicate.isNotNullish(unsubscribeUrl) && Predicate.isTruthy(unsubscribeUrl) ? (
 								<Text className="text-brand-muted m-0 text-sm leading-5">
 									© {year} Call of Duty: Zombies Guides. All rights reserved. You&apos;re receiving
 									this email because you opted-in via our website. You may{" "}
@@ -146,7 +148,7 @@ export function EmailBulletList({ heading, items }: EmailBulletListProps) {
 				{heading}
 			</Heading>
 			<ul className="m-0 list-disc pl-6">
-				{items.map((item, index) => (
+				{Arr.map(items, (item, index) => (
 					<li key={`${index}-${item}`} className="text-brand-body mb-2 text-base leading-6">
 						{item}
 					</li>

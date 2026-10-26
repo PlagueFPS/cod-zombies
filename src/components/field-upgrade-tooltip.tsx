@@ -83,11 +83,14 @@ const FieldUpgradeTooltipContent = ({
 	const fieldUpgradeAugments = Option.match(fieldUpgrade.augments, {
 		onNone: () => [],
 		onSome: tuple =>
-			Arr.filterMap(tuple, augmentKey =>
-				Predicate.isNotUndefined(augmentKey)
-					? Result.succeed(getAugmentByKey(augmentKey, game).valueOrUndefined)
-					: Result.failVoid,
-			).filter(Predicate.isNotUndefined),
+			Arr.filter(
+				Arr.filterMap(tuple, augmentKey =>
+					Predicate.isNotUndefined(augmentKey)
+						? Result.succeed(getAugmentByKey(augmentKey, game).valueOrUndefined)
+						: Result.failVoid,
+				),
+				Predicate.isNotUndefined,
+			),
 	})
 
 	return (

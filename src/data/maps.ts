@@ -3,12 +3,13 @@ import type { GameKey } from "@/data/games"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
-import { Array as Arr, Data, Option } from "effect"
+import { Array as Arr, Data, Option, Predicate } from "effect"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, slugify, sortDates } from "@/utils/shared-functions"
-
+import { nowMillis } from "@/utils/system-time"
 /** All possible main quest difficulties */
+
 export const MAIN_QUEST_DIFFICULTIES = ["Easy", "Medium", "Hard", "Very Hard"] as const
 
 /** Union of all main quest difficulties */
@@ -22,10 +23,10 @@ export const mainQuestDifficultySlug = (difficulty: MainQuestDifficulty) => slug
  * Unknown slugs are dropped. An empty selection is omitted.
  */
 export function mainQuestDifficultySearchParam(values: readonly string[] | undefined) {
-	if (!values) return undefined
+	if (!(Predicate.isNotNullish(values) && Predicate.isTruthy(values))) return undefined
 
-	const allowed = new Set<string>(MAIN_QUEST_DIFFICULTIES.map(mainQuestDifficultySlug))
-	const matched = values.filter(value => allowed.has(value))
+	const allowed = new Set<string>(Arr.map(MAIN_QUEST_DIFFICULTIES, mainQuestDifficultySlug))
+	const matched = Arr.filter(values, value => allowed.has(value))
 
 	return matched.length > 0 ? matched : undefined
 }
@@ -76,7 +77,7 @@ export function compareMapReleaseDescending(
 }
 
 function withResolvedMapState(map: MapEntry): MapEntry {
-	const nowMs = Date.now()
+	const nowMs = nowMillis()
 
 	return {
 		...map,
@@ -86,7 +87,7 @@ function withResolvedMapState(map: MapEntry): MapEntry {
 
 /** @returns A shallow copy of all maps, descending by {@link compareMapReleaseDescending}. */
 export const getMaps = () =>
-	[...MAPS.values()].map(withResolvedMapState).sort(compareMapReleaseDescending)
+	Arr.map([...MAPS.values()], withResolvedMapState).sort(compareMapReleaseDescending)
 
 /** @returns Maps that have a main quest, same order as {@link getMaps}. */
 export const getMapsWithMainQuest = () => Arr.filter(getMaps(), map => Option.isSome(map.mainQuest))
@@ -96,9 +97,7 @@ export const getMapByKey = (key: RegistryKeyInput<MapKey>) =>
 	registryGet(MAPS, key).pipe(Option.map(withResolvedMapState))
 
 /** @returns The adjacent maps of the map with the given key */
-export const getAdjacentMaps = (key: string) => {
-	return getAdjacentItems(getMapsWithMainQuest(), key)
-}
+export const getAdjacentMaps = (key: string) => getAdjacentItems(getMapsWithMainQuest(), key)
 
 /**
  * Gets the sort options for main quests.
@@ -152,10 +151,12 @@ export function mainQuestMidpointMatchesAnyTimeSlug(
 	midpoint: number,
 	slugs: readonly string[],
 ): boolean {
-	return slugs.some(slug => {
-		const range = MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === slug)
+	return Arr.some(slugs, slug => {
+		const range = Option.getOrUndefined(
+			Arr.findFirst(MAIN_QUEST_TIME_RANGE_FILTERS, r => r.slug === slug),
+		)
 
-		if (!range) return false
+		if (!(Predicate.isNotNullish(range) && Predicate.isTruthy(range))) return false
 
 		return mainQuestMidpointMatchesTimeRange(midpoint, range)
 	})
@@ -1039,4 +1040,6 @@ const MAPS = uniqueMap([
 	}),
 ])
 
-const MAP_INSERATION_INDEX_BY_ID = new Map<string, number>([...MAPS.keys()].map((id, i) => [id, i]))
+const MAP_INSERATION_INDEX_BY_ID = new Map<string, number>(
+	Arr.map([...MAPS.keys()], (id, i) => [id, i]),
+)

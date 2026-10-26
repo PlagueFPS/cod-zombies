@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	extractLinksFromMdx,
@@ -43,12 +44,15 @@ describe("isInternalHref", () => {
 
 describe("extractLinksFromMdx", () => {
 	test("collects markdown and videoLink hrefs with line numbers", () => {
-		const content = [
-			"Intro paragraph.",
-			"",
-			"See [Quest step](/main-quests/black-ops-6/reckoning#step-one).",
-			'<Video videoLink="/videos/foo" />',
-		].join("\n")
+		const content = Arr.join(
+			[
+				"Intro paragraph.",
+				"",
+				"See [Quest step](/main-quests/black-ops-6/reckoning#step-one).",
+				'<Video videoLink="/videos/foo" />',
+			],
+			"\n",
+		)
 
 		expect(extractLinksFromMdx(content)).toEqual([
 			{ href: "/main-quests/black-ops-6/reckoning#step-one", line: 3 },

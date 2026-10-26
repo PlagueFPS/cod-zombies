@@ -1,4 +1,4 @@
-import { Exit } from "effect"
+import { Exit, Array as Arr } from "effect"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -143,7 +143,7 @@ function chemicalToolStatus(
 		),
 		Solved: ({ steps }) => (
 			<>
-				{steps.map((step, index) => (
+				{Arr.map(steps, (step, index) => (
 					<p key={`step-${index + 1}`} className="text-base">
 						Step {index + 1} = <span className="font-bold">{step}</span>
 					</p>

@@ -11,7 +11,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Cause, Effect, Exit, Layer, Option, Queue, Terminal } from "effect"
+import { Cause, Effect, Exit, Layer, Option, Queue, Terminal, String as Str } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import {
@@ -52,7 +52,7 @@ const terminalWithAnswer = (answer: "y" | "n") =>
 				columns: Effect.succeed(80),
 				rows: Effect.succeed(24),
 				readInput: Effect.succeed(queue),
-				readLine: Effect.fail(new Terminal.QuitError({})),
+				readLine: Effect.fail(Terminal.QuitError.make({})),
 				display: () => Effect.void,
 			})
 		}),
@@ -94,7 +94,7 @@ function listFilesRecursive(dir: string, base = dir): string[] {
 		if (entry.isDirectory()) {
 			files.push(...listFilesRecursive(full, base))
 		} else {
-			files.push(full.slice(base.length + 1))
+			files.push(Str.slice(base.length + 1)(full))
 		}
 	}
 
@@ -316,7 +316,7 @@ describe("optimizeAssetsEffect", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
-			e.message.includes("Failed to read image metadata"),
+			Str.includes("Failed to read image metadata")(e.message),
 		)
 	})
 
@@ -325,7 +325,7 @@ describe("optimizeAssetsEffect", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
-			e.message.includes("no width metadata"),
+			Str.includes("no width metadata")(e.message),
 		)
 	})
 
@@ -471,7 +471,7 @@ describe("optimizeAssetsEffect", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
-			e.message.includes("Cannot use --preview and --map together"),
+			Str.includes("Cannot use --preview and --map together")(e.message),
 		)
 	})
 
@@ -571,7 +571,7 @@ describe("optimizeAssetsEffect", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
-			e.message.includes("Output directory does not exist"),
+			Str.includes("Output directory does not exist")(e.message),
 		)
 		expect(existsSync(missingOut)).toBe(false)
 		expect(existsSync(join(root, "newassets", "perks", "foo.png"))).toBe(true)
@@ -590,7 +590,7 @@ describe("optimizeAssetsEffect", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
-			e.message.includes("Cannot use --preview and --icon together"),
+			Str.includes("Cannot use --preview and --icon together")(e.message),
 		)
 	})
 })
@@ -632,7 +632,7 @@ describe("ensureOutputDirectory", () => {
 		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "ImageOptimizationError", (e: ImageOptimizationError) =>
-			e.message.includes("Output directory does not exist"),
+			Str.includes("Output directory does not exist")(e.message),
 		)
 		expect(existsSync(join(root, "out"))).toBe(false)
 	})

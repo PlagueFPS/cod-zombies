@@ -1,6 +1,6 @@
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Layer, MutableHashSet } from "effect"
+import { Effect, Layer, MutableHashSet, Array as Arr, String as Str, Record as Rec } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { parseGitBatchOutput } from "@/scripts/generate-last-modified"
@@ -8,7 +8,7 @@ import { expectExitSuccess } from "@/tests/helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 
-const letter = fc.constantFrom(..."abcdefghij".split(""))
+const letter = fc.constantFrom(...Str.split("abcdefghij", ""))
 
 const relPathArb = fc
 	.tuple(
@@ -100,7 +100,7 @@ describe("parseGitBatchOutput properties", () => {
 					}
 				}
 
-				const git = `${lines.map(renderLine).join("\n")}\n`
+				const git = `${Arr.join(Arr.map(lines, renderLine), "\n")}\n`
 
 				const exit = await Effect.runPromiseExit(
 					parseGitBatchOutput(git, all, "/repo").pipe(Effect.provide(testLayer)),
@@ -108,19 +108,21 @@ describe("parseGitBatchOutput properties", () => {
 
 				const result = expectExitSuccess(exit)
 
-				expect(Object.keys(result).sort()).toEqual([...paths].sort())
+				expect(Rec.keys(result).sort()).toEqual([...paths].sort())
 
 				for (const [path, timestamp] of firstSeen) {
 					expect(result[path]?.lastModified).toBe(timestamp * 1000)
 				}
 
-				for (const line of lines.filter(
+				for (const line of Arr.filter(
+					lines,
 					(line): line is Extract<GitLine, { kind: "noise" }> => line.kind === "noise",
 				)) {
 					expect(result[line.path]).toBeUndefined()
 				}
 
-				for (const line of lines.filter(
+				for (const line of Arr.filter(
+					lines,
 					(line): line is Extract<GitLine, { kind: "rename" }> =>
 						line.kind === "rename" && line.from !== line.to && !firstSeen.has(line.from),
 				)) {

@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { CustomLink } from "@/components/custom-link"
 import { Image } from "@/components/image"
 import { LazyFeedbackForm } from "@/components/lazy-feedback-form"
@@ -31,7 +32,7 @@ export function Header() {
 					</div>
 				</CustomLink>
 				<nav className="mx-auto hidden h-full w-fit items-center justify-center gap-8 text-foreground/80 lg:flex">
-					{NAV_ROUTES.map(route => (
+					{Arr.map(NAV_ROUTES, route => (
 						<CustomLink
 							key={route.id}
 							to={route.href}

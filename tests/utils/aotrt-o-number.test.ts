@@ -1,4 +1,4 @@
-import { Exit } from "effect"
+import { Exit, Array as Arr } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
@@ -71,7 +71,8 @@ describe("solveAotrtONumber", () => {
 						expect(distance).toBeLessThanOrEqual(Math.abs(candidate - result.rounded))
 					}
 
-					const tied = O_NUMBERS.filter(
+					const tied = Arr.filter(
+						O_NUMBERS,
 						candidate => Math.abs(candidate - result.rounded) === distance,
 					)
 

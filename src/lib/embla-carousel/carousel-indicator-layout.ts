@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import {
 	CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX,
 	carouselIndicatorBottomPx,
@@ -22,7 +23,7 @@ export function resolveCarouselIndicatorLayout(args: {
 
 	const box = args.imageBox
 
-	if (!box) return { kind: "fallback" }
+	if (!(Predicate.isNotNullish(box) && Predicate.isTruthy(box))) return { kind: "fallback" }
 
 	if (
 		box.height < CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX ||

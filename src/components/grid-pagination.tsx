@@ -1,6 +1,7 @@
 import type { FileRoutesByFullPath } from "@/routeTree.gen"
 import { useNavigate } from "@tanstack/react-router"
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
@@ -60,7 +61,7 @@ export function GridPagination({ from, page, totalCount, pageSize }: IGridPagina
 				middlePages = [currentPage - 1, currentPage, currentPage + 1]
 			}
 
-			middlePages.forEach(pageNum => {
+			Arr.forEach(middlePages, pageNum => {
 				items.push(addPageButton(pageNum))
 			})
 

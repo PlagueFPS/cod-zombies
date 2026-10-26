@@ -8,17 +8,18 @@ import { getZombies } from "@/data/zombies"
 import { isComingSoon } from "@/utils/content-state"
 import { getLastModified } from "@/utils/functions.server"
 import { getServerUrl } from "@/utils/request.server"
+import { dateFrom } from "@/utils/system-time"
 
 export const Route = createFileRoute("/sitemap.xml")({
 	server: {
 		handlers: {
-			GET: async () => {
-				return await Effect.gen(function* () {
-					const interactiveMaps = getInteractiveMaps().filter(map => !isComingSoon(map.state))
-					const maps = getMapsWithMainQuest().filter(map => !isComingSoon(map.state))
-					const sideQuests = getSideQuests().filter(quest => !isComingSoon(quest.state))
-					const zombies = getZombies().filter(zombie => !isComingSoon(zombie.state))
-					const relics = getRelics().filter(relic => !isComingSoon(relic.state))
+			GET: async () =>
+				await Effect.gen(function* () {
+					const interactiveMaps = Arr.filter(getInteractiveMaps(), map => !isComingSoon(map.state))
+					const maps = Arr.filter(getMapsWithMainQuest(), map => !isComingSoon(map.state))
+					const sideQuests = Arr.filter(getSideQuests(), quest => !isComingSoon(quest.state))
+					const zombies = Arr.filter(getZombies(), zombie => !isComingSoon(zombie.state))
+					const relics = Arr.filter(getRelics(), relic => !isComingSoon(relic.state))
 					const serverUrl = getServerUrl()
 
 					const mainQuestsMap = yield* Effect.forEach(
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 
 								return {
 									url: `${serverUrl}/main-quests/${map.game}/${map.id}`,
-									lastModified: new Date(lastModified),
+									lastModified: dateFrom(lastModified),
 								}
 							}),
 						{ concurrency: "unbounded" },
@@ -45,18 +46,18 @@ export const Route = createFileRoute("/sitemap.xml")({
 
 								return {
 									url: `${serverUrl}/side-quests/${map.game}/${map.id}/${quest.id}`,
-									lastModified: new Date(lastModified),
+									lastModified: dateFrom(lastModified),
 								}
 							}),
 						{ concurrency: "unbounded" },
 					)
 
-					const zombiesMap = zombies.map(z => {
+					const zombiesMap = Arr.map(zombies, z => {
 						const { lastModified } = getLastModified(z.combatStrategy)
 
 						return {
 							url: `${serverUrl}/bestiary/${z.id}`,
-							lastModified: new Date(lastModified),
+							lastModified: dateFrom(lastModified),
 						}
 					})
 
@@ -69,26 +70,23 @@ export const Route = createFileRoute("/sitemap.xml")({
 
 								return {
 									url: `${serverUrl}/relics/${map.game}/${relic.id}`,
-									lastModified: new Date(lastModified),
+									lastModified: dateFrom(lastModified),
 								}
 							}),
 						{ concurrency: "unbounded" },
 					)
 
-					const firstEntries = [
-						mainQuestsMap[0],
-						sideQuestsMap[0],
-						zombiesMap[0],
-						relicsMap[0],
-					].filter((entry): entry is NonNullable<typeof entry> => entry != null)
+					const firstEntries = Arr.filter(
+						[mainQuestsMap[0], sideQuestsMap[0], zombiesMap[0], relicsMap[0]],
+						(entry): entry is NonNullable<typeof entry> => entry != null,
+					)
 
 					const first = firstEntries[0]
 
 					const mostRecentLastModified =
 						first != null
-							? firstEntries.reduce(
-									(latest, entry) => (entry.lastModified > latest ? entry.lastModified : latest),
-									first.lastModified,
+							? Arr.reduce(firstEntries, first.lastModified, (latest, entry) =>
+									entry.lastModified > latest ? entry.lastModified : latest,
 								)
 							: undefined
 
@@ -120,68 +118,78 @@ export const Route = createFileRoute("/sitemap.xml")({
   </url>
   <url>
     <loc>${serverUrl}/main-quests</loc>
-    <lastmod>${new Date(mostRecentMainQuest.lastModified).toUTCString()}</lastmod>
+    <lastmod>${dateFrom(mostRecentMainQuest.lastModified).toUTCString()}</lastmod>
   </url>
-  ${mainQuestsMap
-		.map(
+  ${Arr.join(
+		Arr.map(
+			mainQuestsMap,
 			entry => `
   <url>
     <loc>${entry.url}</loc>
     <lastmod>${entry.lastModified.toUTCString()}</lastmod>
   </url>`,
-		)
-		.join("")}
+		),
+		"",
+	)}
   <url>
     <loc>${serverUrl}/side-quests</loc>
-    <lastmod>${new Date(mostRecentSideQuest.lastModified).toUTCString()}</lastmod>
+    <lastmod>${dateFrom(mostRecentSideQuest.lastModified).toUTCString()}</lastmod>
   </url>
-  ${sideQuestsMap
-		.map(
+  ${Arr.join(
+		Arr.map(
+			sideQuestsMap,
 			entry => `
   <url>
     <loc>${entry.url}</loc>
     <lastmod>${entry.lastModified.toUTCString()}</lastmod>
   </url>`,
-		)
-		.join("")}
+		),
+		"",
+	)}
   <url>
     <loc>${serverUrl}/bestiary</loc>
-    <lastmod>${new Date(mostRecentZombie.lastModified).toUTCString()}</lastmod>
+    <lastmod>${dateFrom(mostRecentZombie.lastModified).toUTCString()}</lastmod>
   </url>
-  ${zombiesMap
-		.map(
+  ${Arr.join(
+		Arr.map(
+			zombiesMap,
 			entry => `
   <url>
     <loc>${entry.url}</loc>
     <lastmod>${entry.lastModified.toUTCString()}</lastmod>
   </url>`,
-		)
-		.join("")}
+		),
+		"",
+	)}
   <url>
     <loc>${serverUrl}/maps</loc>
     <changefreq>monthly</changefreq>
   </url>
-  ${interactiveMaps
-		.map(
+  ${Arr.join(
+		Arr.map(
+			interactiveMaps,
 			entry => `
   <url>
     <loc>${serverUrl}/maps/${entry.id}</loc>
   </url>`,
-		)
-		.join("")}
+		),
+		"",
+	)}
   <url>
     <loc>${serverUrl}/relics</loc>
-    <lastmod>${new Date(mostRecentRelic.lastModified).toUTCString()}</lastmod>
+    <lastmod>${dateFrom(mostRecentRelic.lastModified).toUTCString()}</lastmod>
   </url>
-  ${relicsMap
-		.map(
+  ${Arr.join(
+		Arr.map(
+			relicsMap,
 			entry => `
   <url>
     <loc>${entry.url}</loc>
     <lastmod>${entry.lastModified.toUTCString()}</lastmod>
   </url>`,
-		)
-		.join("")}
+		),
+		"",
+	)}
 </urlset>`
 
 					return new Response(sitemap, {
@@ -194,8 +202,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 				}).pipe(
 					Effect.tapCause(cause => Effect.logError(cause)),
 					Effect.runPromise,
-				)
-			},
+				),
 		},
 	},
 })

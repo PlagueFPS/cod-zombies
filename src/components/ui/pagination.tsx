@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Predicate } from "effect"
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
@@ -37,13 +38,17 @@ type PaginationLinkProps = {
 function PaginationLink({ className, isActive, size = "icon", ...props }: PaginationLinkProps) {
 	return (
 		<Button
-			variant={isActive ? "outline" : "ghost"}
+			variant={
+				Predicate.isNotNullish(isActive) && Predicate.isTruthy(isActive) ? "outline" : "ghost"
+			}
 			size={size}
 			className={cn(className)}
 			nativeButton={false}
 			render={
 				<a
-					aria-current={isActive ? "page" : undefined}
+					aria-current={
+						Predicate.isNotNullish(isActive) && Predicate.isTruthy(isActive) ? "page" : undefined
+					}
 					data-slot="pagination-link"
 					data-active={isActive}
 					{...props}

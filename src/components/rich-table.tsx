@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { Fragment } from "react"
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
@@ -13,7 +14,7 @@ export function RichTable({ headerCells, bodyRows }: RichTableProps) {
 			<Table>
 				<TableHeader className="rounded-t-xl dark:border-orange-700">
 					<TableRow>
-						{headerCells.map((cell, index) => (
+						{Arr.map(headerCells, (cell, index) => (
 							<TableHead
 								key={`table-header-${index + 1}`}
 								className="text-orange-900 dark:text-orange-400"
@@ -24,7 +25,7 @@ export function RichTable({ headerCells, bodyRows }: RichTableProps) {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{bodyRows.map((row, index) => (
+					{Arr.map(bodyRows, (row, index) => (
 						<Fragment key={`table-body-row-${index + 1}`}>{row}</Fragment>
 					))}
 				</TableBody>

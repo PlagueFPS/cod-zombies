@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { Breadcrumbs, type Link } from "@/components/breadcrumbs"
 import { CardImageGlow } from "@/components/card-image-glow"
@@ -38,7 +38,8 @@ export const Route = createFileRoute("/main-quests/$gameId/$mapId")({
 			context.queryClient.prefetchQuery(mdxComponentQueryOptions(map.id, map.mainQuest.value)),
 		])
 
-		if (!opengraphUrl) throw notFound()
+		if (!(Predicate.isNotNullish(opengraphUrl) && Predicate.isTruthy(opengraphUrl)))
+			throw notFound()
 
 		const game = getGameByKey(map.game).pipe(Option.getOrThrowWith(() => notFound()))
 		const { prev, next } = getAdjacentMaps(map.id)
@@ -142,7 +143,9 @@ function MainQuestGuide() {
 								</h2>
 								<div className="flex w-fit items-center justify-center gap-4">
 									{map.state === "New" ? <NewBadge /> : null}
-									{map.difficulty ? <DifficultyBadge difficulty={map.difficulty} /> : null}
+									{Predicate.isNotNullish(map.difficulty) && Predicate.isTruthy(map.difficulty) ? (
+										<DifficultyBadge difficulty={map.difficulty} />
+									) : null}
 									<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 										{game.title}
 									</Badge>
@@ -163,7 +166,8 @@ function MainQuestGuide() {
 										<span>{meta.timeToRead} min read</span>
 									</div>
 									<span className="hidden md:inline">&bull;</span>
-									{map.estimatedTimeMins ? (
+									{Predicate.isNotNullish(map.estimatedTimeMins) &&
+									Predicate.isTruthy(map.estimatedTimeMins) ? (
 										<CompletionTimeDisplay timeRange={map.estimatedTimeMins} />
 									) : null}
 									<ShareButton
@@ -180,8 +184,12 @@ function MainQuestGuide() {
 							<MdxContent Component={component.Component} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{prev ? <PrevOrNextMapCard map={prev} prev /> : null}
-							{next ? <PrevOrNextMapCard map={next} /> : null}
+							{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
+								<PrevOrNextMapCard map={prev} prev />
+							) : null}
+							{Predicate.isNotNullish(next) && Predicate.isTruthy(next) ? (
+								<PrevOrNextMapCard map={next} />
+							) : null}
 						</div>
 					</article>
 				</div>
@@ -227,7 +235,9 @@ function PrevOrNextMapCard({ map, prev }: PrevOrNextCard) {
 					className={cn("absolute top-2 right-2 z-50 flex w-fit items-center justify-center gap-1")}
 				>
 					{isComingSoon ? <ComingSoonBadge /> : map.state === "New" ? <NewBadge /> : null}
-					{map.difficulty ? <DifficultyBadge difficulty={map.difficulty} /> : null}
+					{Predicate.isNotNullish(map.difficulty) && Predicate.isTruthy(map.difficulty) ? (
+						<DifficultyBadge difficulty={map.difficulty} />
+					) : null}
 					<Badge className="badge-primary-gradient dark:dark-badge-primary-gradient">
 						{game.title}
 					</Badge>
@@ -260,11 +270,11 @@ function PrevOrNextMapCard({ map, prev }: PrevOrNextCard) {
 							"mt-auto flex items-center pb-2 transition-colors group-hover:text-primary group-focus-visible:text-primary",
 							{
 								"xl:-ml-2": prev,
-								"xl:-mr-2": !prev,
+								"xl:-mr-2": !(Predicate.isNotNullish(prev) && Predicate.isTruthy(prev)),
 							},
 						)}
 					>
-						{prev ? (
+						{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
 							<>
 								<ChevronLeft />
 								<span>Previous Map</span>

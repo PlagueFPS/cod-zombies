@@ -1,11 +1,11 @@
 import type { GameKey } from "@/data/games"
-import { Option } from "effect"
-
+import { Option, Array as Arr, Predicate } from "effect"
 /**
  * Catalog id that IntelliSense still suggests as `K`, while remaining
  * assignable from any `string` (route params, MDX attributes, missing keys).
  * `K | string` would collapse to `string` and drop autocomplete.
  */
+
 export type RegistryKeyInput<K extends string> = K | (string & {})
 
 /** A `[id, value]` pair used to build a registry `Map`. */
@@ -82,11 +82,15 @@ export const resolveGameVariantOption = <T extends WithGameVariantMap<T>>(
 ): Option.Option<T> => {
 	if (Option.isNone(entry)) return entry
 
-	if (!game || Option.isNone(entry.value.variants)) return entry
+	if (
+		!(Predicate.isNotNullish(game) && Predicate.isTruthy(game)) ||
+		Option.isNone(entry.value.variants)
+	)
+		return entry
 	// SAFETY: variant maps are keyed by GameKey; a non-member string is a missing overlay.
 	const variant = entry.value.variants.value[game as GameKey]
 
-	if (!variant) return entry
+	if (!(Predicate.isNotNullish(variant) && Predicate.isTruthy(variant))) return entry
 
 	return Option.some({ ...entry.value, ...variant })
 }
@@ -96,12 +100,13 @@ export const mapWithGameVariant = <T extends WithGameVariantMap<T>>(
 	items: T[],
 	game?: RegistryKeyInput<GameKey>,
 ): T[] =>
-	items.map(item => {
-		if (!game || Option.isNone(item.variants)) return item
+	Arr.map(items, item => {
+		if (!(Predicate.isNotNullish(game) && Predicate.isTruthy(game)) || Option.isNone(item.variants))
+			return item
 		// SAFETY: variant maps are keyed by GameKey; a non-member string is a missing overlay.
 		const variant = item.variants.value[game as GameKey]
 
-		if (!variant) return item
+		if (!(Predicate.isNotNullish(variant) && Predicate.isTruthy(variant))) return item
 
 		return { ...item, ...variant }
 	})

@@ -2,6 +2,7 @@ import { HotkeysProvider } from "@tanstack/react-hotkeys"
 import { QueryClient } from "@tanstack/react-query"
 import { createRouter, stringifySearchWith } from "@tanstack/react-router"
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
+import { Array as Arr, Predicate } from "effect"
 import { DefaultError } from "@/components/default-error"
 import { DefaultNotFound } from "@/components/default-not-found"
 import { ThemeProvider } from "@/contexts/theme-provider"
@@ -32,9 +33,9 @@ function pruneEmptySearch(search: ParsedSearchParams) {
 	for (const key in search) {
 		const value = search[key]
 
-		if (value === undefined || value === null) continue
+		if (Predicate.isNullish(value)) continue
 
-		if (Array.isArray(value) && value.length === 0) continue
+		if (Arr.isArray(value) && Arr.isArrayEmpty(value)) continue
 		out[key] = value
 	}
 

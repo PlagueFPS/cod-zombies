@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
+import { Predicate } from "effect"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -50,7 +51,11 @@ function InputGroupAddon({
 			data-align={align}
 			className={cn(inputGroupAddonVariants({ align }), className)}
 			onClick={e => {
-				if (e.target instanceof Element && e.target.closest("button")) {
+				if (
+					e.target instanceof Element &&
+					Predicate.isNotNullish(e.target.closest("button")) &&
+					Predicate.isTruthy(e.target.closest("button"))
+				) {
 					return
 				}
 

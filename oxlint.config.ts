@@ -56,7 +56,62 @@ export default defineConfig({
 		"anti-slop-effect/no-service-constructor-imports": "error",
 		"anti-slop-effect/prefer-effect-match": "error",
 		"effecttsgo/unstable-api-usage": "off",
+		"effecttsgo/experimental-api-usage": "off",
+		// TanStack routes, server functions, React handlers, and Vitest/Playwright must return Promises.
+		"effecttsgo/async-function": "off",
+		// These helpers are called directly. Function.dual changes one-argument calls when a later parameter is optional.
+		"effecttsgo/missing-pipeable-signature": "off",
 	},
+	overrides: [
+		{
+			files: ["tests/**/*.{ts,tsx}", "scripts/**/*.{ts,tsx}"],
+			rules: {
+				// Tests and CLI scripts are program entry points.
+				"effecttsgo/strict-effect-provide": "off",
+				// Node test and script I/O stays on node:fs, node:path, and node:child_process.
+				"effecttsgo/node-builtin-import": "off",
+			},
+		},
+		{
+			files: ["src/components/**/*.tsx"],
+			rules: {
+				// React components log with the global console and use Math.random for skeleton width.
+				"effecttsgo/global-console": "off",
+				"effecttsgo/global-random": "off",
+			},
+		},
+		{
+			files: ["src/hooks/**/*.{ts,tsx}"],
+			rules: {
+				"effecttsgo/global-console": "off",
+			},
+		},
+		{
+			files: ["src/utils/content-meta.ts"],
+			rules: {
+				"effecttsgo/global-console": "off",
+			},
+		},
+		{
+			files: [
+				"playwright.config.ts",
+				"vitest.setup.ts",
+				"tests/**/*.{ts,tsx}",
+				"scripts/generate-og-images.tsx",
+				"src/components/**/*.{ts,tsx}",
+				"src/contexts/**/*.{ts,tsx}",
+				"src/data/**/*.{ts,tsx}",
+				"src/emails/**/*.{ts,tsx}",
+				"src/hooks/**/*.{ts,tsx}",
+				"src/routes/**/*.{ts,tsx}",
+				"src/utils/**/*.{ts,tsx}",
+			],
+			rules: {
+				// Frontend, Playwright, and tests read process.env directly. Effect services keep Config.
+				"effecttsgo/process-env": "off",
+			},
+		},
+	],
 	settings: {
 		react: {
 			version: "19.3",

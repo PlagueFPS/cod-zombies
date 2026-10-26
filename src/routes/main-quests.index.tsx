@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option } from "effect"
+import { Option, Array as Arr, Predicate } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -41,11 +41,14 @@ import {
 } from "@/utils/shared-functions"
 import { StandardMainQuestSearchParamsSchema } from "@/utils/validation-schemas"
 
-const TIME_SLUGS = MAIN_QUEST_TIME_RANGE_FILTERS.map(range => range.id)
+const TIME_SLUGS = Arr.map(MAIN_QUEST_TIME_RANGE_FILTERS, range => range.id)
 
 function matchingSlugs<S extends string>(values: string[] | undefined, allowed: readonly S[]) {
-	if (!values) return undefined
-	const matched = values.filter((value): value is S => allowed.some(slug => slug === value))
+	if (!(Predicate.isNotNullish(values) && Predicate.isTruthy(values))) return undefined
+
+	const matched = Arr.filter(values, (value): value is S =>
+		Arr.some(allowed, slug => slug === value),
+	)
 
 	return matched.length > 0 ? matched : undefined
 }
@@ -117,7 +120,7 @@ export const Route = createFileRoute("/main-quests/")({
 		const sorted = applySort(filtered, deps.sort, sortSpecs, "latest")
 		const pageResult = paginate(sorted, deps.page)
 
-		const questGames = new Set<string>(allMainQuests.map(q => q.game))
+		const questGames = new Set<string>(Arr.map(allMainQuests, q => q.game))
 		const questDifficulties = new Set<MainQuestDifficulty>()
 
 		for (const quest of allMainQuests) {
@@ -126,18 +129,19 @@ export const Route = createFileRoute("/main-quests/")({
 			}
 		}
 
-		const gameFilters = games.flatMap(game =>
+		const gameFilters = Arr.flatMap(games, game =>
 			questGames.has(game.id) ? [{ value: game.id, label: game.title }] : [],
 		)
 
-		const difficultyFilters = Array.from(questDifficulties)
-			.sort(sortDifficulties)
-			.map(difficulty => ({
+		const difficultyFilters = Arr.map(
+			Array.from(questDifficulties).sort(sortDifficulties),
+			difficulty => ({
 				value: mainQuestDifficultySlug(difficulty),
 				label: difficulty,
-			}))
+			}),
+		)
 
-		const timeFilters = MAIN_QUEST_TIME_RANGE_FILTERS.map(range => ({
+		const timeFilters = Arr.map(MAIN_QUEST_TIME_RANGE_FILTERS, range => ({
 			value: range.id,
 			label: range.title,
 		}))
@@ -146,7 +150,7 @@ export const Route = createFileRoute("/main-quests/")({
 			serverUrl,
 			title,
 			description,
-			mainQuests: pageResult.items.map(encodeMap),
+			mainQuests: Arr.map(pageResult.items, encodeMap),
 			totalCount: pageResult.totalCount,
 			pageSize: pageResult.pageSize,
 			sortOptions: getMainQuestSortOptions(),
@@ -197,11 +201,12 @@ function MainQuests() {
 	const filterValue: FilterOption[] = []
 
 	for (const g of groups) {
-		const values = g.items.filter(
+		const values = Arr.filter(
+			g.items,
 			i =>
-				difficulty?.some(d => d === i.value) ||
-				game?.some(g => g === i.value) ||
-				time?.some(t => t === i.value),
+				(difficulty != null && Arr.some(difficulty, d => d === i.value)) ||
+				(game != null && Arr.some(game, g => g === i.value)) ||
+				(time != null && Arr.some(time, t => t === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)
@@ -211,8 +216,8 @@ function MainQuests() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const value = g.items.flatMap(item =>
-				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			const value = Arr.flatMap(g.items, item =>
+				Arr.some(next, selected => selected.value === item.value) ? [item.value] : [],
 			)
 
 			if (value.length > 0) {

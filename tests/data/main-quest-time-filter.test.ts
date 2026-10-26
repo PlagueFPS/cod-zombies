@@ -1,3 +1,4 @@
+import { Array as Arr, Option } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	MAIN_QUEST_TIME_RANGE_FILTERS,
@@ -6,7 +7,8 @@ import {
 	mainQuestMidpointMatchesTimeRange,
 } from "@/data/maps"
 
-const rangeBySlug = (slug: string) => MAIN_QUEST_TIME_RANGE_FILTERS.find(r => r.slug === slug)!
+const rangeBySlug = (slug: string) =>
+	Option.getOrUndefined(Arr.findFirst(MAIN_QUEST_TIME_RANGE_FILTERS, r => r.slug === slug))!
 
 describe("mainQuestMidpointMatchesTimeRange", () => {
 	test("under-30: inclusive min, exclusive max", () => {

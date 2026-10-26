@@ -1,11 +1,11 @@
-import { Option } from "effect"
+import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import { getGameByKey, getGames } from "@/data/games"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getGames", () => {
 	test("sorted by release date descending", () => {
-		const dates = getGames().map(g => g.releaseDate)
+		const dates = Arr.map(getGames(), g => g.releaseDate)
 		expect(dates.length).toBeGreaterThan(1)
 		assertSortedDescByDate(dates)
 	})

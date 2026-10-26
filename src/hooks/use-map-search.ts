@@ -40,8 +40,8 @@ export function buildShareableMapSearch(
 ): Partial<MapSearchState> {
 	const allIds = uniqueMarkerIds(markers)
 
-	const visible = allIds.filter(id => computeIsIncluded(id, include, exclude))
-	const hidden = allIds.filter(id => !computeIsIncluded(id, include, exclude))
+	const visible = Arr.filter(allIds, id => computeIsIncluded(id, include, exclude))
+	const hidden = Arr.filter(allIds, id => !computeIsIncluded(id, include, exclude))
 
 	const next: Partial<MapSearchState> = {}
 
@@ -81,8 +81,8 @@ export function useMapSearch() {
 	const toggleInclude = (value: string | string[]) => {
 		const valuesToToggle = Arr.ensure(value)
 
-		const newValues = valuesToToggle.some(v => include.includes(v))
-			? include.filter(v => !valuesToToggle.includes(v))
+		const newValues = Arr.some(valuesToToggle, v => include.includes(v))
+			? Arr.filter(include, v => !valuesToToggle.includes(v))
 			: [...include, ...valuesToToggle]
 
 		void navigate({
@@ -97,8 +97,8 @@ export function useMapSearch() {
 	const toggleExclude = (value: string | string[]) => {
 		const valuesToToggle = Arr.ensure(value)
 
-		const newValues = valuesToToggle.some(v => exclude.includes(v))
-			? exclude.filter(v => !valuesToToggle.includes(v))
+		const newValues = Arr.some(valuesToToggle, v => exclude.includes(v))
+			? Arr.filter(exclude, v => !valuesToToggle.includes(v))
 			: [...exclude, ...valuesToToggle]
 
 		void navigate({
@@ -147,10 +147,10 @@ export function useMapSearch() {
 		(markers: MapMarker[]) => {
 			if (include.length === 0) return
 
-			const includeArray = include.filter(v => v.length > 0)
+			const includeArray = Arr.filter(include, v => v.length > 0)
 			const excludedIds = new Set<string>()
 
-			const excludedMarkers = markers.flatMap(marker => {
+			const excludedMarkers = Arr.flatMap(markers, marker => {
 				const id = marker.type || marker.id
 
 				if (!includeArray.includes(id) && !excludedIds.has(id)) {

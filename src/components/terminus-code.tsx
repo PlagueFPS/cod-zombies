@@ -1,4 +1,4 @@
-import { Cause, Exit } from "effect"
+import { Cause, Exit, Array as Arr, Record as Rec } from "effect"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Card, CardContent } from "@/components/ui/card"
@@ -41,7 +41,7 @@ export default function TerminusCode() {
 		<Card className="mx-auto flex w-sm flex-col items-center justify-center border-2 bg-transparent pt-4 shadow-lg dark:shadow-none">
 			<CardContent>
 				<div className="grid grid-cols-3 gap-4">
-					{(["x", "y", "z"] as const).map(letter => (
+					{Arr.map(["x", "y", "z"] as const, letter => (
 						<div key={letter} className="flex flex-col items-center">
 							<Label htmlFor={letter} className="mb-1 text-sm capitalize">
 								{letter}
@@ -60,7 +60,7 @@ export default function TerminusCode() {
 					))}
 				</div>
 				<div className="mt-4 text-center text-base">
-					{Object.values(values).every(Boolean) ? (
+					{Arr.every(Rec.values(values), Boolean) ? (
 						<>
 							<span>Your Code:</span>
 							<span className="ml-1 font-bold">{solveEquations(values)}</span>

@@ -29,6 +29,8 @@ export const submitFeedbackForm = createServerFn({ method: "POST" })
 					}),
 			}),
 			Effect.satisfiesErrorType<never>(),
+			// Server function boundary. The issue tracker layer is provided once per request.
+			// oxlint-disable-next-line effecttsgo/strict-effect-provide
 			Effect.provide(issueTrackerLayer),
 			Effect.runPromise,
 		)

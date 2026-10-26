@@ -1,5 +1,6 @@
 /** @vitest-environment happy-dom */
 
+import { String as Str, Array as Arr, Option } from "effect"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { afterEach, describe, expect, test } from "vitest"
@@ -29,8 +30,13 @@ describe("DravakarPuzzle", () => {
 
 		expect(container.textContent).not.toContain("Solution")
 
-		const quoteButton = [...container.querySelectorAll("button")].find(button =>
-			button.textContent?.includes("I remember the runner that travels to stars"),
+		const quoteButton = Option.getOrUndefined(
+			Arr.findFirst(
+				[...container.querySelectorAll("button")],
+				button =>
+					button.textContent != null &&
+					Str.includes("I remember the runner that travels to stars")(button.textContent),
+			),
 		)
 
 		expect(quoteButton).toBeDefined()
