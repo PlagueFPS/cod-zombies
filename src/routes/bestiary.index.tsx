@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option } from "effect"
+import { Option, Array as Arr, String as Str } from "effect"
 import { BestiaryGrid } from "@/components/bestiary-grid"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
@@ -51,53 +51,54 @@ export const Route = createFileRoute("/bestiary/")({
 
 		const allZombies = getZombies()
 
-		const games = getGames().map(game => ({
+		const games = Arr.map(getGames(), game => ({
 			value: game.id,
 			label: game.title,
 		}))
 
-		const maps = getMaps().map(map => ({
+		const maps = Arr.map(getMaps(), map => ({
 			value: map.id,
 			label: map.title,
 		}))
 
-		const typeFilters = Array.from(
-			new Set(allZombies.map(zombie => zombie.type).sort(sortZombieTypes)),
-		).map(type => ({
-			value: slugify(type),
-			label: type,
-		}))
+		const typeFilters = Arr.map(
+			Array.from(new Set(Arr.map(allZombies, zombie => zombie.type).sort(sortZombieTypes))),
+			type => ({
+				value: slugify(type),
+				label: type,
+			}),
+		)
 
-		const weaknessFilters = Array.from(
-			new Set(allZombies.flatMap(zombie => zombie.elementalWeakness)),
-		).flatMap(weakness => {
-			return Option.match(getAmmoModByKey(weakness), {
-				onSome: ammoMod => [
-					{
-						value: weakness,
-						label: ammoMod.title,
-					},
-				],
-				onNone: () => [],
-			})
-		})
+		const weaknessFilters = Arr.flatMap(
+			Array.from(new Set(Arr.flatMap(allZombies, zombie => zombie.elementalWeakness))),
+			weakness =>
+				Option.match(getAmmoModByKey(weakness), {
+					onSome: ammoMod => [
+						{
+							value: weakness,
+							label: ammoMod.title,
+						},
+					],
+					onNone: () => [],
+				}),
+		)
 
 		const filterSpecs: FilterSpec<Zombie>[] = [
 			{
 				values: deps.game,
-				match: (z, id) => z.id === "zombie" || z.games.some(game => game === id),
+				match: (z, id) => z.id === "zombie" || Arr.some(z.games, game => game === id),
 			},
 			{
 				values: deps.map,
-				match: (z, id) => z.id === "zombie" || z.maps.some(map => map === id),
+				match: (z, id) => z.id === "zombie" || Arr.some(z.maps, map => map === id),
 			},
 			{
 				values: deps.type,
-				match: (z, slug) => z.type.toLowerCase() === slug,
+				match: (z, slug) => Str.toLowerCase(z.type) === slug,
 			},
 			{
 				values: deps.weakness,
-				match: (z, slug) => z.elementalWeakness.some(weakness => weakness === slug),
+				match: (z, slug) => Arr.some(z.elementalWeakness, weakness => weakness === slug),
 			},
 		]
 
@@ -124,7 +125,7 @@ export const Route = createFileRoute("/bestiary/")({
 			serverUrl,
 			title,
 			description,
-			zombies: pageResult.items.map(encodeZombie),
+			zombies: Arr.map(pageResult.items, encodeZombie),
 			totalCount: pageResult.totalCount,
 			pageSize: pageResult.pageSize,
 			sortOptions: getZombieSortOptions(),
@@ -176,12 +177,13 @@ function Bestiary() {
 	const filterValue: FilterOption[] = []
 
 	for (const g of groups) {
-		const values = g.items.filter(
+		const values = Arr.filter(
+			g.items,
 			i =>
-				type?.some(t => t === i.value) ||
-				weakness?.some(w => w === i.value) ||
-				map?.some(d => d === i.value) ||
-				game?.some(g => g === i.value),
+				(type != null && Arr.some(type, t => t === i.value)) ||
+				(weakness != null && Arr.some(weakness, w => w === i.value)) ||
+				(map != null && Arr.some(map, d => d === i.value)) ||
+				(game != null && Arr.some(game, g => g === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)
@@ -191,8 +193,8 @@ function Bestiary() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const matched = g.items.flatMap(item =>
-				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			const matched = Arr.flatMap(g.items, item =>
+				Arr.some(next, selected => selected.value === item.value) ? [item.value] : [],
 			)
 
 			if (matched.length > 0) {

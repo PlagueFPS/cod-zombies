@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Array as Arr, Predicate } from "effect"
 import { useState } from "react"
 import {
 	Select,
@@ -17,7 +18,12 @@ interface ValveLocation {
 }
 
 const getCurrentLocations = (firstValue: string, secondValue: string) => {
-	if (firstValue && secondValue) {
+	if (
+		Predicate.isNotNullish(firstValue) &&
+		Predicate.isTruthy(firstValue) &&
+		Predicate.isNotNullish(secondValue) &&
+		Predicate.isTruthy(secondValue)
+	) {
 		const searchString = `${firstValue} to ${secondValue}`
 		const currentLocations: ValveLocation[] = []
 
@@ -25,7 +31,7 @@ const getCurrentLocations = (firstValue: string, secondValue: string) => {
 			if (searchString === key) {
 				const route = valveRoutes[key]
 
-				if (!route) continue
+				if (!(Predicate.isNotNullish(route) && Predicate.isTruthy(route))) continue
 
 				for (const location of locations) {
 					currentLocations.push({
@@ -51,12 +57,12 @@ export default function GKValve() {
 	const currentLocations = getCurrentLocations(values.firstValue, values.secondValue)
 
 	const handleGreenValueChange = (value: string | null) => {
-		if (!value) return
+		if (!(Predicate.isNotNullish(value) && Predicate.isTruthy(value))) return
 		setValues(prevState => ({ ...prevState, firstValue: value }))
 	}
 
 	const handlePinkValueChange = (value: string | null) => {
-		if (!value) return
+		if (!(Predicate.isNotNullish(value) && Predicate.isTruthy(value))) return
 		setValues(prevState => ({ ...prevState, secondValue: value }))
 	}
 
@@ -69,7 +75,7 @@ export default function GKValve() {
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
-							{locations.map(location => {
+							{Arr.map(locations, location => {
 								if (location === values.secondValue) return null
 
 								return (
@@ -87,7 +93,7 @@ export default function GKValve() {
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
-							{locations.map(location => {
+							{Arr.map(locations, location => {
 								if (location === values.firstValue) return null
 
 								return (
@@ -105,9 +111,9 @@ export default function GKValve() {
 					"block animate-fade-in": currentLocations.length > 0,
 				})}
 			>
-				{currentLocations.map(location => (
+				{Arr.map(currentLocations, location => (
 					<li key={`valve-${slugify(location.name)}`} className="list-disc">
-						{location.value ? (
+						{Predicate.isNotNullish(location.value) && Predicate.isTruthy(location.value) ? (
 							<>
 								Set{" "}
 								<strong

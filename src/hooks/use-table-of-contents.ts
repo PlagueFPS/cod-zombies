@@ -1,6 +1,6 @@
 import type { Heading } from "@/components/table-of-contents"
+import { Array as Arr, Option, Predicate } from "effect"
 import { useEffect, useRef, useState } from "react"
-
 /**
  * @param `headings` - array of headings to observe
  * @param `articleId` - id of the parent wrapper of the headings
@@ -8,11 +8,15 @@ import { useEffect, useRef, useState } from "react"
  * @returns `currentHeading` - the full heading object of the active heading
  * @returns `progress` - the users current progress on the page
  */
+
 export const useTableOfContents = (headings: Heading[], articleId: string) => {
 	const [activeHeading, setActiveHeading] = useState("")
 	const [progress, setProgress] = useState(0)
 	const articleRef = useRef<HTMLElement | null>(null)
-	const currentHeading = headings.find(heading => heading.id === activeHeading)
+
+	const currentHeading = Option.getOrUndefined(
+		Arr.findFirst(headings, heading => heading.id === activeHeading),
+	)
 
 	useEffect(() => {
 		articleRef.current = document.getElementById(articleId)
@@ -20,7 +24,8 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			if (!articleRef.current) return
+			if (!(Predicate.isNotNullish(articleRef.current) && Predicate.isTruthy(articleRef.current)))
+				return
 
 			const totalHeight = articleRef.current.scrollHeight - window.innerHeight
 			const scrollPosition = window.scrollY
@@ -37,7 +42,7 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 
 	useEffect(() => {
 		const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-			entries.forEach(entry => {
+			Arr.forEach(entries, entry => {
 				if (entry.isIntersecting) {
 					setActiveHeading(entry.target.id)
 				}
@@ -50,10 +55,10 @@ export const useTableOfContents = (headings: Heading[], articleId: string) => {
 			threshold: 0.75,
 		})
 
-		headings.forEach(heading => {
+		Arr.forEach(headings, heading => {
 			const element = document.getElementById(heading.id)
 
-			if (element) {
+			if (Predicate.isNotNullish(element) && Predicate.isTruthy(element)) {
 				observer.observe(element)
 			}
 		})

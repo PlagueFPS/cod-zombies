@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Exit, Layer } from "effect"
+import { Effect, Exit, Layer, String as Str, Option } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { generateImagePaths, ImageMetadataError } from "@/scripts/generate-image-paths"
@@ -78,13 +78,13 @@ describe("generateImagePaths", () => {
 		const out = readFileSync(join(root, "src", "types", "generated", "image-paths.gen.ts"), "utf-8")
 
 		expect(out).toContain("export type RootImagePath =")
-		const rootA = out.indexOf("'/alpha.png'")
-		const rootZ = out.indexOf("'/zebra.png'")
+		const rootA = Option.getOrElse(Str.indexOf("'/alpha.png'")(out), () => -1)
+		const rootZ = Option.getOrElse(Str.indexOf("'/zebra.png'")(out), () => -1)
 		expect(rootA).toBeLessThan(rootZ)
 
 		expect(out).toContain("export type MapsImagePath =")
-		const mapsA = out.indexOf("'/maps/a.png'")
-		const mapsB = out.indexOf("'/maps/b.png'")
+		const mapsA = Option.getOrElse(Str.indexOf("'/maps/a.png'")(out), () => -1)
+		const mapsB = Option.getOrElse(Str.indexOf("'/maps/b.png'")(out), () => -1)
 		expect(mapsA).toBeLessThan(mapsB)
 
 		expect(out).not.toContain("ContentImagePath")
@@ -203,7 +203,7 @@ describe("generateImagePaths", () => {
 
 			const cause = expectExitFailure(exit)
 			expectCauseTaggedError(cause, "ImageMetadataError", (error: ImageMetadataError) =>
-				error.message.includes("/maps/bad.webp"),
+				Str.includes("/maps/bad.webp")(error.message),
 			)
 			expect(readFileSync(join(outDir, "image-variants.gen.ts"), "utf-8")).toBe("existing manifest")
 		} finally {

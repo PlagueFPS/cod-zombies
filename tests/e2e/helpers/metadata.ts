@@ -1,7 +1,12 @@
 import { expect, type APIRequestContext } from "@playwright/test"
+import { String as Str, Predicate } from "effect"
 
 export function getMetaContent(html: string, selector: { property?: string; name?: string }) {
-	const attrName = selector.property ? "property" : "name"
+	const attrName =
+		Predicate.isNotNullish(selector.property) && Predicate.isTruthy(selector.property)
+			? "property"
+			: "name"
+
 	const attrValue = selector.property ?? selector.name
 
 	const pattern = new RegExp(
@@ -25,5 +30,5 @@ export async function expectImageUrlResponds(request: APIRequestContext, url: st
 }
 
 function escapeRegExp(value: string) {
-	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+	return Str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")(value)
 }

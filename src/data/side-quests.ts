@@ -1,11 +1,12 @@
 import type { SortOption } from "@/components/grid-sort"
 import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
-import { Data, Option } from "effect"
+import { Data, Option, Array as Arr } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems } from "@/utils/shared-functions"
+import { nowMillis } from "@/utils/system-time"
 
 export interface SideQuest {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -48,7 +49,7 @@ export function compareSideQuestDescending(
 }
 
 function withResolvedSideQuestState(quest: SideQuest): SideQuest {
-	const nowMs = Date.now()
+	const nowMs = nowMillis()
 
 	return {
 		...quest,
@@ -58,7 +59,7 @@ function withResolvedSideQuestState(quest: SideQuest): SideQuest {
 
 /** @returns Side quests sorted like by {@link compareMapReleaseDescending} on the host map, then {@link SIDE_QUESTS} insertion order when host maps tie. */
 export const getSideQuests = (): SideQuest[] =>
-	[...SIDE_QUESTS.values()].map(withResolvedSideQuestState).sort(compareSideQuestDescending)
+	Arr.map([...SIDE_QUESTS.values()], withResolvedSideQuestState).sort(compareSideQuestDescending)
 
 /**
  * @returns The side quest with the given key
@@ -67,9 +68,7 @@ export const getSideQuestByKey = (key: RegistryKeyInput<SideQuestKey>) =>
 	registryGet(SIDE_QUESTS, key).pipe(Option.map(withResolvedSideQuestState))
 
 /** @returns The adjacent side quests for the given quest ID, sorted by {@link compareSideQuestDescending}. */
-export const getAdjacentSideQuests = (questId: string) => {
-	return getAdjacentItems(getSideQuests(), questId)
-}
+export const getAdjacentSideQuests = (questId: string) => getAdjacentItems(getSideQuests(), questId)
 
 /** @returns The sort options for side quests. */
 export const getSideQuestSortOptions = (): SortOption[] => [
@@ -2117,5 +2116,5 @@ const SIDE_QUESTS = uniqueMap([
 ])
 
 const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<string, number>(
-	[...SIDE_QUESTS.keys()].map((id, i) => [id, i]),
+	Arr.map([...SIDE_QUESTS.keys()], (id, i) => [id, i]),
 )

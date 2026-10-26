@@ -1,5 +1,6 @@
 import { Slider as SliderPrimitive } from "@base-ui/react/slider"
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import * as React from "react"
 
 function Slider({
@@ -11,7 +12,7 @@ function Slider({
 	...props
 }: SliderPrimitive.Root.Props) {
 	const _values = React.useMemo(
-		() => (Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max]),
+		() => (Arr.isArray(value) ? value : Arr.isArray(defaultValue) ? defaultValue : [min, max]),
 		[value, defaultValue, min, max],
 	)
 

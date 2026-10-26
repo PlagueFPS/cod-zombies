@@ -12,31 +12,46 @@ import {
 	Path,
 	Ref,
 	Schema,
+	Array as Arr,
+	String as Str,
+	Record as Rec,
+	Predicate,
+	pipe,
 } from "effect"
 import { DATE_OPTIONS } from "@/utils/constants"
+import { dateFrom, nowDate } from "@/utils/system-time"
 import {
 	encodeLastModifiedData,
 	type FileMetadata,
 	type LastModifiedData,
 } from "@/utils/validation-schemas"
 
-export class DuplicateFilenameError extends Schema.TaggedError<DuplicateFilenameError>()(
-	"DuplicateFilenameError",
-	{
-		message: Schema.String,
-	},
-) {}
+export class DuplicateFilenameError extends Schema.TaggedError<
+	DuplicateFilenameError,
+	{ readonly brand: unique symbol }
+>()("DuplicateFilenameError", {
+	message: Schema.String,
+}) {}
+
+const toPosixPath = Str.replace(/\\/g, "/")
+
+const stripSrcContentPrefix = Str.replace(/^src\/content\//, "")
+
+const stripContentPrefix = Str.replace(/^content\//, "")
 
 export const populateFilePaths = (
 	allFiles: MutableHashSet.MutableHashSet<string>,
 	repoRoot: string,
 ) => {
 	const filePaths = MutableHashSet.empty<string>()
+	const repoRootNormalized = toPosixPath(repoRoot)
 
 	for (const filePath of allFiles) {
-		const normalizedPath = filePath.replace(/\\/g, "/")
-		const repoRootNormalized = repoRoot.replace(/\\/g, "/")
-		const relativePath = normalizedPath.replace(`${repoRootNormalized}/src/content/`, "")
+		const relativePath = Str.replace(
+			`${repoRootNormalized}/src/content/`,
+			"",
+		)(toPosixPath(filePath))
+
 		MutableHashSet.add(filePaths, relativePath)
 	}
 
@@ -44,10 +59,7 @@ export const populateFilePaths = (
 }
 
 const normalizeContentPath = (path: string) =>
-	path
-		.replace(/\\/g, "/")
-		.replace(/^src\/content\//, "")
-		.replace(/^content\//, "")
+	pipe(path, toPosixPath, stripSrcContentPrefix, stripContentPrefix)
 
 const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 	path: string,
@@ -62,10 +74,10 @@ const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 
 	const timestampStr = yield* Ref.get(currentTimestamp)
 
-	if (!timestampStr) return
+	if (!(Predicate.isNotNullish(timestampStr) && Predicate.isTruthy(timestampStr))) return
 
 	const timestamp = Num.parse(timestampStr).pipe(
-		Option.flatMap(t => DateTime.make(new Date(t * 1000))),
+		Option.flatMap(t => DateTime.make(dateFrom(t * 1000))),
 	)
 
 	if (Option.isNone(timestamp)) return
@@ -82,8 +94,8 @@ export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	allFiles: MutableHashSet.MutableHashSet<string>,
 	repoRoot: string,
 ) {
-	const lines = output.trim().split("\n")
-	const currentDate = yield* DateTime.make(new Date()).pipe(Effect.fromOption)
+	const lines = Str.split(Str.trim(output), "\n")
+	const currentDate = yield* DateTime.make(nowDate()).pipe(Effect.fromOption)
 	const currentTimestamp = yield* Ref.make("")
 	const gitHistory = MutableHashSet.empty<string>()
 	const filePaths = populateFilePaths(allFiles, repoRoot)
@@ -93,24 +105,29 @@ export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i]
 
-		if (!line || !line.trim()) continue
+		if (
+			!(Predicate.isNotNullish(line) && Predicate.isTruthy(line)) ||
+			!(Predicate.isNotNullish(Str.trim(line)) && Predicate.isTruthy(Str.trim(line)))
+		)
+			continue
 
 		if (digitPattern.test(line)) {
 			yield* Ref.update(currentTimestamp, () => line)
 			continue
 		}
 
-		if (line.startsWith("R")) {
-			const parts = line.split("\t")
+		if (Str.startsWith("R")(line)) {
+			const parts = Str.split(line, "\t")
 
-			if (parts.length < 3 || !parts[2]) continue
+			if (parts.length < 3 || !(Predicate.isNotNullish(parts[2]) && Predicate.isTruthy(parts[2])))
+				continue
 
 			const newPath = normalizeContentPath(parts[2])
 			yield* storeFileMetadata(newPath, currentTimestamp, filePaths, gitHistory, result)
 		}
 
-		if (line.startsWith("A\t") || line.startsWith("M\t")) {
-			const relativePath = normalizeContentPath(line.substring(2).trim())
+		if (Str.startsWith("A\t")(line) || Str.startsWith("M\t")(line)) {
+			const relativePath = normalizeContentPath(Str.trim(Str.substring(2)(line)))
 			yield* storeFileMetadata(relativePath, currentTimestamp, filePaths, gitHistory, result)
 		}
 	}
@@ -141,7 +158,7 @@ export const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir
 			Effect.gen(function* () {
 				const subDirPath = path.join(dir, subDir)
 				const subFiles = yield* fs.readDirectory(subDirPath)
-				const mdxFiles = subFiles.filter(file => file.endsWith(".mdx"))
+				const mdxFiles = Arr.filter(subFiles, file => Str.endsWith(".mdx")(file))
 
 				for (const file of mdxFiles) {
 					const fullPath = path.join(dir, subDir, file)
@@ -170,8 +187,8 @@ export const getAllContentFiles = Effect.fn("getAllContentFiles")(function* (dir
 	}
 
 	if (duplicates.length > 0) {
-		return yield* new DuplicateFilenameError({
-			message: `Duplicate file paths detected:\n${duplicates.join("\n")}`,
+		return yield* DuplicateFilenameError.make({
+			message: `Duplicate file paths detected:\n${Arr.join(duplicates, "\n")}`,
 		})
 	}
 
@@ -209,11 +226,11 @@ export const generateLastModified = (cwd: string = process.cwd()) =>
 
 		const lastModifiedData: LastModifiedData = {
 			version: "1.0",
-			generated: new Date().toISOString(),
+			generated: nowDate().toISOString(),
 			files: fileMetadata,
 		}
 
-		yield* Effect.log(`Generated last modified dates for ${Object.keys(fileMetadata).length} files`)
+		yield* Effect.log(`Generated last modified dates for ${Rec.keys(fileMetadata).length} files`)
 		const encodedData = yield* encodeLastModifiedData(lastModifiedData)
 		yield* fs.writeFileString(outputPath, encodedData)
 		yield* Effect.log(`Data written to: ${outputPath}`)

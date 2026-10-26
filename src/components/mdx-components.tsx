@@ -35,7 +35,7 @@ export const mdxComponents: MDXComponents = {
 		</Heading4>
 	),
 	a: ({ href, children, ...props }: ComponentPropsWithoutRef<"a">) => {
-		if (href && isInternalHref(href)) {
+		if (Predicate.isNotNullish(href) && Predicate.isTruthy(href) && isInternalHref(href)) {
 			return (
 				<CustomLink
 					href={href}

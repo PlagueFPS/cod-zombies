@@ -1,4 +1,5 @@
 import { Heading, Img, Link, Section, Text } from "@react-email/components"
+import { Array as Arr } from "effect"
 import { requireOpengraphImageUrl } from "../utils/opengraph-image-url"
 import { EmailShell } from "./_components/email-shell"
 import { emailLinkClassName } from "./_components/email-theme"
@@ -57,7 +58,7 @@ function NewFeatureEmail({ unsubscribeUrl }: INewFeatureEmail) {
 				Main quest guides for <strong className="text-brand-accent">Infinite Warfare</strong> are
 				now on the site. Each walkthrough covers the Soul Key steps for that map.
 			</Text>
-			{infiniteWarfareMainQuests.map(quest => {
+			{Arr.map(infiniteWarfareMainQuests, quest => {
 				const href = `${siteOrigin}/main-quests/infinite-warfare/${quest.mapId}`
 				const label = `${quest.questTitle} for ${quest.mapTitle}`
 				const imageUrl = requireOpengraphImageUrl(siteOrigin, "main-quests", quest.mapId)

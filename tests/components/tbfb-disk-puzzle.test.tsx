@@ -1,5 +1,6 @@
 /** @vitest-environment happy-dom */
 
+import { Array as Arr, Option } from "effect"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { afterEach, describe, expect, test } from "vitest"
@@ -116,8 +117,11 @@ describe("TbfbDiskPuzzle", () => {
 	}
 
 	function buttonByLabel(label: string) {
-		return [...(container?.querySelectorAll("button") ?? [])].find(
-			entry => entry.getAttribute("aria-label") === label,
+		return Option.getOrUndefined(
+			Arr.findFirst(
+				[...(container?.querySelectorAll("button") ?? [])],
+				entry => entry.getAttribute("aria-label") === label,
+			),
 		)
 	}
 
@@ -130,14 +134,14 @@ describe("TbfbDiskPuzzle", () => {
 	}
 
 	function selectedLabels() {
-		return [...(container?.querySelectorAll("[aria-pressed=true]") ?? [])].map(button =>
+		return Arr.map([...(container?.querySelectorAll("[aria-pressed=true]") ?? [])], button =>
 			button.getAttribute("aria-label"),
 		)
 	}
 
 	function orderLabels() {
-		return [...(container?.querySelectorAll("ul li") ?? [])].map(item =>
-			[...item.querySelectorAll(".sr-only")].map(node => node.textContent),
+		return Arr.map([...(container?.querySelectorAll("ul li") ?? [])], item =>
+			Arr.map([...item.querySelectorAll(".sr-only")], node => node.textContent),
 		)
 	}
 })

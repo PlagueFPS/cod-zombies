@@ -1,4 +1,5 @@
 import { Link, type LinkProps, type NavigateOptions, useNavigate } from "@tanstack/react-router"
+import { Predicate } from "effect"
 
 interface ICustomLink extends LinkProps {
 	className?: string
@@ -51,10 +52,14 @@ export function CustomLink({
 	) => {
 		if (isDisabled) return
 
-		if (!linkProps.to && !linkProps.href) return
+		if (
+			!(Predicate.isNotNullish(linkProps.to) && Predicate.isTruthy(linkProps.to)) &&
+			!(Predicate.isNotNullish(linkProps.href) && Predicate.isTruthy(linkProps.href))
+		)
+			return
 		const target = linkProps.href ?? linkProps.to
 
-		if (!target) return
+		if (!(Predicate.isNotNullish(target) && Predicate.isTruthy(target))) return
 		const url = new URL(target, window.location.href)
 
 		if (

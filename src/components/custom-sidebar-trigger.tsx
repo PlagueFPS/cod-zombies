@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Predicate } from "effect"
 import { PanelLeftOpenIcon } from "lucide-react"
 import { Shortcut } from "@/components/shortcut"
 import { Button } from "@/components/ui/button"
@@ -12,9 +13,10 @@ export function CustomSideBarTrigger({ className }: ICustomSidebarTrigger) {
 	const { toggleSidebar, isMobile, openMobile, open } = useSidebar()
 
 	const closedState = () => {
-		if (isMobile) return !openMobile
+		if (Predicate.isNotNullish(isMobile) && Predicate.isTruthy(isMobile))
+			return !(Predicate.isNotNullish(openMobile) && Predicate.isTruthy(openMobile))
 
-		return !open
+		return !(Predicate.isNotNullish(open) && Predicate.isTruthy(open))
 	}
 
 	return (
@@ -33,7 +35,9 @@ export function CustomSideBarTrigger({ className }: ICustomSidebarTrigger) {
 		>
 			<PanelLeftOpenIcon className="size-5 transition-all" />
 			<span className="sr-only">Toggle Sidebar</span>
-			{!isMobile && <Shortcut shortcut="Mod+B" size="sm" variant="ghost" />}
+			{!(Predicate.isNotNullish(isMobile) && Predicate.isTruthy(isMobile)) && (
+				<Shortcut shortcut="Mod+B" size="sm" variant="ghost" />
+			)}
 		</Button>
 	)
 }

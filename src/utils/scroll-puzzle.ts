@@ -1,4 +1,6 @@
+import { Array as Arr, Predicate } from "effect"
 /** Scroll positions in the 3x3 grid, row-major from top-left. */
+
 export const SCROLL_POSITIONS = [
 	"Top Left",
 	"Top Middle",
@@ -39,11 +41,16 @@ function computePressEffect(presses: readonly boolean[]): boolean[] {
 	const effect = Array.from({ length: SCROLL_COUNT }, () => false)
 
 	for (let scroll = 0; scroll < SCROLL_COUNT; scroll++) {
-		if (!presses[scroll]) continue
+		if (!(Predicate.isNotNullish(presses[scroll]) && Predicate.isTruthy(presses[scroll]))) continue
 
 		for (let affected = 0; affected < SCROLL_COUNT; affected++) {
-			if (KOWAKUJO_SCROLL_TOGGLE_MATRIX[scroll]?.[affected]) {
-				effect[affected] = !effect[affected]
+			if (
+				Predicate.isNotNullish(KOWAKUJO_SCROLL_TOGGLE_MATRIX[scroll]?.[affected]) &&
+				Predicate.isTruthy(KOWAKUJO_SCROLL_TOGGLE_MATRIX[scroll]?.[affected])
+			) {
+				effect[affected] = !(
+					Predicate.isNotNullish(effect[affected]) && Predicate.isTruthy(effect[affected])
+				)
 			}
 		}
 	}
@@ -55,7 +62,7 @@ function getRequiredToggles(
 	current: readonly boolean[],
 	goal: readonly boolean[] = ALL_SCROLLS_IN,
 ): boolean[] {
-	return current.map((isIn, index) => isIn !== goal[index])
+	return Arr.map(current, (isIn, index) => isIn !== goal[index])
 }
 
 /**
@@ -82,7 +89,10 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 		let swapRow = -1
 
 		for (let row = pivotRow; row < SCROLL_COUNT; row++) {
-			if (augmented[row]?.[col]) {
+			if (
+				Predicate.isNotNullish(augmented[row]?.[col]) &&
+				Predicate.isTruthy(augmented[row]?.[col])
+			) {
 				swapRow = row
 				break
 			}
@@ -94,17 +104,27 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 			const currentRow = augmented[pivotRow]
 			const swapTarget = augmented[swapRow]
 
-			if (!currentRow || !swapTarget) continue
+			if (
+				!(Predicate.isNotNullish(currentRow) && Predicate.isTruthy(currentRow)) ||
+				!(Predicate.isNotNullish(swapTarget) && Predicate.isTruthy(swapTarget))
+			)
+				continue
 			augmented[pivotRow] = swapTarget
 			augmented[swapRow] = currentRow
 		}
 
 		const pivot = augmented[pivotRow]
 
-		if (!pivot) continue
+		if (!(Predicate.isNotNullish(pivot) && Predicate.isTruthy(pivot))) continue
 
 		for (let row = 0; row < SCROLL_COUNT; row++) {
-			if (row === pivotRow || !augmented[row]?.[col]) continue
+			if (
+				row === pivotRow ||
+				!(
+					Predicate.isNotNullish(augmented[row]?.[col]) && Predicate.isTruthy(augmented[row]?.[col])
+				)
+			)
+				continue
 			const target = augmented[row]!
 
 			for (let xorCol = col; xorCol < SCROLL_COUNT + 1; xorCol++) {
@@ -117,11 +137,15 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 	}
 
 	for (let row = pivotRow; row < SCROLL_COUNT; row++) {
-		const inconsistent =
-			augmented[row]?.slice(0, SCROLL_COUNT).every(value => !value) &&
-			augmented[row]?.[SCROLL_COUNT]
+		const rowCells = augmented[row]
 
-		if (inconsistent) return null
+		const inconsistent =
+			Predicate.isNotNullish(rowCells) &&
+			Predicate.isTruthy(rowCells) &&
+			Arr.every(rowCells.slice(0, SCROLL_COUNT), value => !value) &&
+			rowCells[SCROLL_COUNT]
+
+		if (Predicate.isNotNullish(inconsistent) && Predicate.isTruthy(inconsistent)) return null
 	}
 
 	const isPivotColumn = Array.from({ length: SCROLL_COUNT }, () => false)
@@ -130,8 +154,9 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 		isPivotColumn[col] = true
 	}
 
-	const freeColumns = Array.from({ length: SCROLL_COUNT }, (_, col) => col).filter(
-		col => !isPivotColumn[col],
+	const freeColumns = Arr.filter(
+		Array.from({ length: SCROLL_COUNT }, (_, col) => col),
+		col => !(Predicate.isNotNullish(isPivotColumn[col]) && Predicate.isTruthy(isPivotColumn[col])),
 	)
 
 	const pivotColumnByRow = new Map<number, number>()
@@ -153,12 +178,22 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 			const pivotCol = pivotColumnByRow.get(row)
 			const equation = augmented[row]
 
-			if (pivotCol === undefined || !equation) continue
+			if (
+				pivotCol === undefined ||
+				!(Predicate.isNotNullish(equation) && Predicate.isTruthy(equation))
+			)
+				continue
 
 			let value = equation[SCROLL_COUNT] ?? false
 
 			for (let col = pivotCol + 1; col < SCROLL_COUNT; col++) {
-				if (equation[col] && assignment[col]) value = !value
+				if (
+					Predicate.isNotNullish(equation[col]) &&
+					Predicate.isTruthy(equation[col]) &&
+					Predicate.isNotNullish(assignment[col]) &&
+					Predicate.isTruthy(assignment[col])
+				)
+					value = !value
 			}
 
 			assignment[pivotCol] = value
@@ -177,7 +212,7 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 
 		assignFromAugmented(candidate, freeValues)
 
-		const pressCount = candidate.filter(Boolean).length
+		const pressCount = Arr.filter(candidate, Boolean).length
 
 		if (pressCount < bestPressCount) {
 			bestPressCount = pressCount
@@ -189,9 +224,10 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 }
 
 function hasSolvableParity(requiredToggles: readonly boolean[]): boolean {
-	const parity = SOLVABILITY_PARITY_INDICES.reduce(
-		(acc, index) => acc ^ Number(requiredToggles[index]),
+	const parity = Arr.reduce(
+		SOLVABILITY_PARITY_INDICES,
 		0,
+		(acc, index) => acc ^ Number(requiredToggles[index]),
 	)
 
 	return parity === 0
@@ -228,11 +264,13 @@ export function solveScrollPuzzle(
 
 	const minimumPresses = findMinimumWeightPresses(requiredToggles)
 
-	if (!minimumPresses) {
+	if (!(Predicate.isNotNullish(minimumPresses) && Predicate.isTruthy(minimumPresses))) {
 		return null
 	}
 
-	return minimumPresses.flatMap((shouldPress, index) => (shouldPress ? [index] : []))
+	return Arr.flatMap(minimumPresses, (shouldPress, index) =>
+		Predicate.isNotNullish(shouldPress) && Predicate.isTruthy(shouldPress) ? [index] : [],
+	)
 }
 
 export function applyScrollPresses(
@@ -243,10 +281,12 @@ export function applyScrollPresses(
 
 	for (const index of presses) {
 		if (index < 0 || index >= SCROLL_COUNT) continue
-		pressVector[index] = !pressVector[index]
+		pressVector[index] = !(
+			Predicate.isNotNullish(pressVector[index]) && Predicate.isTruthy(pressVector[index])
+		)
 	}
 
 	const toggled = computePressEffect(pressVector)
 
-	return state.map((isIn, index) => isIn !== toggled[index])
+	return Arr.map(state, (isIn, index) => isIn !== toggled[index])
 }

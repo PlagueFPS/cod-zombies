@@ -1,3 +1,4 @@
+import { Array as Arr, Predicate } from "effect"
 import {
 	forwardRef,
 	useCallback,
@@ -113,18 +114,22 @@ function handleLoading(
 ) {
 	const src = img?.src
 
-	if (!img || img[LOADED_SRC_ATTR] === src) return
+	if (!(Predicate.isNotNullish(img) && Predicate.isTruthy(img)) || img[LOADED_SRC_ATTR] === src)
+		return
 
 	img[LOADED_SRC_ATTR] = src
 	const p = "decode" in img ? img.decode() : Promise.resolve()
 	void p
 		.catch(() => {})
 		.then(() => {
-			if (!img.parentElement && !img.isConnected) {
+			if (
+				!(Predicate.isNotNullish(img.parentElement) && Predicate.isTruthy(img.parentElement)) &&
+				!img.isConnected
+			) {
 				return
 			}
 
-			if (onLoadRef.current) {
+			if (Predicate.isNotNullish(onLoadRef.current) && Predicate.isTruthy(onLoadRef.current)) {
 				const event = createSyntheticLoadEvent(img)
 				onLoadRef.current(event)
 			}
@@ -162,14 +167,14 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 
 		const ownRef = useCallback(
 			(img: ImgElementWithDataProp | null) => {
-				if (!img) return
+				if (!(Predicate.isNotNullish(img) && Predicate.isTruthy(img))) return
 
-				if (onError) {
+				if (Predicate.isNotNullish(onError) && Predicate.isTruthy(onError)) {
 					img.src = src
 				}
 
 				if (process.env.NODE_ENV !== "production") {
-					if (!src) {
+					if (!(Predicate.isNotNullish(src) && Predicate.isTruthy(src))) {
 						console.error(`Image is missing required "src" property:`, img)
 					}
 
@@ -194,7 +199,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 		const ref = useMergeRef(forwardedRef, ownRef)
 		const imgAttrs = generateImgAttrs(src, sizes)
 
-		if (preload) {
+		if (Predicate.isNotNullish(preload) && Predicate.isTruthy(preload)) {
 			ReactDOM.preload(imgAttrs.src, {
 				as: "image",
 				imageSrcSet: imgAttrs.srcSet,
@@ -228,9 +233,9 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 			/>
 		)
 
-		return sources ? (
+		return Predicate.isNotNullish(sources) && Predicate.isTruthy(sources) ? (
 			<picture className="contents">
-				{sources.map(source => (
+				{Arr.map(sources, source => (
 					<source key={source.media ?? source.srcSet} {...source} />
 				))}
 				{image}

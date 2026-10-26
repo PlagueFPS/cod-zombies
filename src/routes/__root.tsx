@@ -10,6 +10,7 @@ import {
 	createRootRouteWithContext,
 } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import { Predicate } from "effect"
 import { lazy, Suspense } from "react"
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
@@ -120,7 +121,7 @@ function RootLayout() {
 					/>
 				)}
 			</body>
-			{ReactScan ? (
+			{Predicate.isNotNullish(ReactScan) && Predicate.isTruthy(ReactScan) ? (
 				<Suspense fallback={null}>
 					<ReactScan />
 				</Suspense>

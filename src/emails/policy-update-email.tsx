@@ -1,4 +1,5 @@
 import { Button, Heading, Link, Section, Text } from "@react-email/components"
+import { dateFrom, nowDate } from "@/utils/system-time"
 import { EmailBulletList, EmailShell } from "./_components/email-shell"
 import { emailButtonClassName, emailLinkClassName } from "./_components/email-theme"
 
@@ -20,8 +21,8 @@ const policyDateOptions: Intl.DateTimeFormatOptions = {
 
 function PrivacyPolicyUpdateEmail({ unsubscribeUrl, serverUrl, bullets }: IPolicyUpdateEmail) {
 	// oxlint-disable-next-line react/purity
-	const today = new Date()
-	const oneMonthFromNow = new Date(today)
+	const today = nowDate()
+	const oneMonthFromNow = dateFrom(today)
 	oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1)
 	const formattedDate = oneMonthFromNow.toLocaleDateString("en-US", policyDateOptions)
 

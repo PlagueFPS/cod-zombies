@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { Fragment } from "react"
 import {
 	Combobox,
@@ -55,7 +56,7 @@ export function GridFilters({ groups, value, onValueChange, placeholder }: GridF
 				<ComboboxValue>
 					{(values: FilterOption[]) => (
 						<Fragment>
-							{values.map(v => (
+							{Arr.map(values, v => (
 								<ComboboxChip key={v.value} aria-label={v.label}>
 									{v.label}
 								</ComboboxChip>

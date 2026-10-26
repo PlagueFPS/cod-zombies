@@ -12,18 +12,21 @@ interface EmailProps {
 	message: string
 }
 
-class ContactExistsError extends Schema.TaggedError<ContactExistsError>()("ContactExistsError", {
+class ContactExistsError extends Schema.TaggedError<
+	ContactExistsError,
+	{ readonly brand: unique symbol }
+>()("ContactExistsError", {
 	message: Schema.String,
 	cause: Schema.Defect(),
 }) {}
 
-class ContactNotFoundError extends Schema.TaggedError<ContactNotFoundError>()(
-	"ContactNotFoundError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+class ContactNotFoundError extends Schema.TaggedError<
+	ContactNotFoundError,
+	{ readonly brand: unique symbol }
+>()("ContactNotFoundError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
 export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: string) {
 	const emails = yield* Email
@@ -31,7 +34,7 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: 
 	const contact = yield* emails.getContact(email)
 
 	if (Option.isSome(contact))
-		return yield* new ContactExistsError({
+		return yield* ContactExistsError.make({
 			message: "That email is already subscribed!",
 			cause: new Error(`Contact already subscribed: ${contact.value.id}`),
 		})
@@ -57,7 +60,7 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (ema
 	const contact = yield* emails.getContact(email)
 
 	if (Option.isNone(contact))
-		return yield* new ContactNotFoundError({
+		return yield* ContactNotFoundError.make({
 			message: "That email is not currently subscribed!",
 			cause: new Error(`Contact not found for email: ${email}`),
 		})

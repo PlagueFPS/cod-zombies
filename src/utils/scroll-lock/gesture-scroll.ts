@@ -1,3 +1,5 @@
+import { Predicate } from "effect"
+
 export function overflowAllowsScroll(overflow: string): boolean {
 	return overflow === "auto" || overflow === "scroll" || overflow === "overlay"
 }
@@ -27,7 +29,7 @@ export function findOverflowScrollParent(
 	let el: Element | null =
 		start instanceof Element ? start : start instanceof Node ? start.parentElement : null
 
-	while (el) {
+	while (Predicate.isNotNullish(el) && Predicate.isTruthy(el)) {
 		if (!(el instanceof HTMLElement)) break
 
 		if (!boundary.contains(el)) return null
@@ -95,7 +97,7 @@ function nodeInsideAnyScrollLockRoot(
 	node: Node | null,
 	scrollLockRoots: ReadonlySet<HTMLElement>,
 ): boolean {
-	if (!node) return false
+	if (!(Predicate.isNotNullish(node) && Predicate.isTruthy(node))) return false
 
 	for (const r of scrollLockRoots) {
 		if (r.contains(node)) return true
@@ -114,14 +116,20 @@ export function resolveGestureScrollParent(
 		if (nodeInsideAnyScrollLockRoot(target, scrollLockRoots)) return { kind: "pass" }
 		const external = findOverflowScrollParent(target, document.documentElement, getAxes)
 
-		if (external && !isDocumentScroller(external)) return { kind: "scroll", el: external }
+		if (
+			Predicate.isNotNullish(external) &&
+			Predicate.isTruthy(external) &&
+			!isDocumentScroller(external)
+		)
+			return { kind: "scroll", el: external }
 
 		return { kind: "lock" }
 	}
 
 	const scrollParent = findOverflowScrollParent(target, root, getAxes)
 
-	if (!scrollParent) return { kind: "lock" }
+	if (!(Predicate.isNotNullish(scrollParent) && Predicate.isTruthy(scrollParent)))
+		return { kind: "lock" }
 
 	return { kind: "scroll", el: scrollParent }
 }

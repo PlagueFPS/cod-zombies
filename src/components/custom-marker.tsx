@@ -1,5 +1,5 @@
 import type { MapMarker } from "@/map-configs/markers"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 import { DivIcon, type LatLng } from "leaflet"
 import { useEffect, useRef, useState } from "react"
 import { Marker as LeafletMarker, useMap } from "react-leaflet"
@@ -19,7 +19,7 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 	const iconRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
-		if (!iconRef.current) {
+		if (!(Predicate.isNotNullish(iconRef.current) && Predicate.isTruthy(iconRef.current))) {
 			iconRef.current = document.createElement("div")
 
 			const getWidthAndHeight = () => {

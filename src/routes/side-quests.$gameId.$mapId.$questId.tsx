@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { Breadcrumbs, type Link } from "@/components/breadcrumbs"
 import { CardImageGlow } from "@/components/card-image-glow"
@@ -36,7 +36,8 @@ export const Route = createFileRoute("/side-quests/$gameId/$mapId/$questId")({
 			context.queryClient.prefetchQuery(mdxComponentQueryOptions(quest.id, quest.content)),
 		])
 
-		if (!opengraphUrl) throw notFound()
+		if (!(Predicate.isNotNullish(opengraphUrl) && Predicate.isTruthy(opengraphUrl)))
+			throw notFound()
 
 		const map = getMapByKey(quest.map).pipe(Option.getOrThrowWith(() => notFound()))
 		const game = getGameByKey(map.game).pipe(Option.getOrThrowWith(() => notFound()))
@@ -187,8 +188,12 @@ function SideQuestGuide() {
 							<MdxContent Component={component.Component} />
 						</div>
 						<div className="mt-8 flex w-full flex-col items-center justify-center gap-4 xl:flex-row">
-							{prev ? <PrevOrNextQuestCard quest={prev} prev /> : null}
-							{next ? <PrevOrNextQuestCard quest={next} /> : null}
+							{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
+								<PrevOrNextQuestCard quest={prev} prev />
+							) : null}
+							{Predicate.isNotNullish(next) && Predicate.isTruthy(next) ? (
+								<PrevOrNextQuestCard quest={next} />
+							) : null}
 						</div>
 					</article>
 				</div>
@@ -275,11 +280,11 @@ function PrevOrNextQuestCard({ quest, prev }: PrevOrNextCard) {
 							"mt-auto flex items-center pb-2 transition-colors group-hover:text-primary group-focus-visible:text-primary",
 							{
 								"xl:-ml-2": prev,
-								"xl:-mr-2": !prev,
+								"xl:-mr-2": !(Predicate.isNotNullish(prev) && Predicate.isTruthy(prev)),
 							},
 						)}
 					>
-						{prev ? (
+						{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
 							<>
 								<ChevronLeft />
 								<span>Previous Quest</span>

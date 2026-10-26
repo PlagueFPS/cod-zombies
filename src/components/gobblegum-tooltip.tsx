@@ -87,68 +87,58 @@ const GobblegumTrigger = ({ gobblegum }: { gobblegum: Gobblegum }) => (
 	</span>
 )
 
-const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => {
-	return (
-		<div
-			className={cn("relative flex w-full flex-col rounded-lg px-4 py-2", {
-				"bg-gobblegum-time-based": gobblegum.type === "Time-Based",
-				"bg-gobblegum-round-based": gobblegum.type === "Round-Based",
-				"bg-gobblegum-immediate": gobblegum.type === "Immediate",
-				"bg-gobblegum-player-activated": gobblegum.type === "Player-Activated",
-				"bg-gobblegum-ultra": gobblegum.rarity === "Ultra",
-				"bg-gobblegum-legendary": gobblegum.rarity === "Legendary",
-				"bg-gobblegum-epic": gobblegum.rarity === "Epic",
-				"bg-gobblegum-rare": gobblegum.rarity === "Rare",
-			})}
-		>
-			<RarityBadge
-				rarity={gobblegum.rarity}
-				type={gobblegum.type}
-				className="absolute top-4 left-4"
+const GobbleGumTooltipContent = ({ gobblegum }: { gobblegum: Gobblegum }) => (
+	<div
+		className={cn("relative flex w-full flex-col rounded-lg px-4 py-2", {
+			"bg-gobblegum-time-based": gobblegum.type === "Time-Based",
+			"bg-gobblegum-round-based": gobblegum.type === "Round-Based",
+			"bg-gobblegum-immediate": gobblegum.type === "Immediate",
+			"bg-gobblegum-player-activated": gobblegum.type === "Player-Activated",
+			"bg-gobblegum-ultra": gobblegum.rarity === "Ultra",
+			"bg-gobblegum-legendary": gobblegum.rarity === "Legendary",
+			"bg-gobblegum-epic": gobblegum.rarity === "Epic",
+			"bg-gobblegum-rare": gobblegum.rarity === "Rare",
+		})}
+	>
+		<RarityBadge rarity={gobblegum.rarity} type={gobblegum.type} className="absolute top-4 left-4">
+			{gobblegum.rarity}
+		</RarityBadge>
+		<RarityBadge rarity={gobblegum.rarity} type={gobblegum.type} className="absolute top-4 right-4">
+			{gobblegum.type}
+		</RarityBadge>
+		<div className="relative flex items-center justify-center">
+			<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
+			<IconImage
+				featuredImage={gobblegum.image}
+				alt={`${gobblegum.title} Image`}
+				width={80}
+				height={80}
+				sizes="64px"
+				className="relative z-10 h-20 w-auto p-2"
+			/>
+		</div>
+		<div className="relative z-10 -mt-3">
+			<div
+				className={cn(
+					"px-4 text-center text-lg font-bold text-orange-700 dark:text-orange-200",
+					getTextClasses(gobblegum.rarity, gobblegum.type),
+				)}
 			>
-				{gobblegum.rarity}
-			</RarityBadge>
-			<RarityBadge
-				rarity={gobblegum.rarity}
-				type={gobblegum.type}
-				className="absolute top-4 right-4"
-			>
-				{gobblegum.type}
-			</RarityBadge>
-			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
-				<IconImage
-					featuredImage={gobblegum.image}
-					alt={`${gobblegum.title} Image`}
-					width={80}
-					height={80}
-					sizes="64px"
-					className="relative z-10 h-20 w-auto p-2"
-				/>
+				{gobblegum.title}
 			</div>
-			<div className="relative z-10 -mt-3">
+			<div className="mt-6 pb-8">
 				<div
 					className={cn(
-						"px-4 text-center text-lg font-bold text-orange-700 dark:text-orange-200",
+						"text-center text-sm text-orange-800 dark:text-orange-200",
 						getTextClasses(gobblegum.rarity, gobblegum.type),
 					)}
 				>
-					{gobblegum.title}
-				</div>
-				<div className="mt-6 pb-8">
-					<div
-						className={cn(
-							"text-center text-sm text-orange-800 dark:text-orange-200",
-							getTextClasses(gobblegum.rarity, gobblegum.type),
-						)}
-					>
-						{gobblegum.description}
-					</div>
+					{gobblegum.description}
 				</div>
 			</div>
 		</div>
-	)
-}
+	</div>
+)
 
 const getTextClasses = (rarity: GobblegumRarity, type: GobblegumType) =>
 	cn(

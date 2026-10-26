@@ -1,7 +1,9 @@
 import { cn } from "cn"
+import { String as Str } from "effect"
 import { useEffect, useState } from "react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { formatRelativeTimeAgo, MS_HOUR } from "@/utils/last-updated-format"
+import { dateFrom, nowMillis } from "@/utils/system-time"
 
 export interface LastUpdatedDisplayProps {
 	/** Last modified epoch ms timestamp from `getLastModified`. */
@@ -21,19 +23,19 @@ export function LastUpdatedDisplay({
 }: LastUpdatedDisplayProps) {
 	const [relative, setRelative] = useState<string | null>(null)
 
-	const absoluteDate = lastModifiedFormatted.trim()
-	const iso = new Date(lastModified).toISOString()
+	const absoluteDate = Str.trim(lastModifiedFormatted)
+	const iso = dateFrom(lastModified).toISOString()
 
 	useEffect(() => {
 		const locale = navigator.language
 
 		const tick = () => {
-			setRelative(formatRelativeTimeAgo(lastModified, Date.now(), locale, absoluteDate))
+			setRelative(formatRelativeTimeAgo(lastModified, nowMillis(), locale, absoluteDate))
 		}
 
 		tick()
 
-		const ageMs = Date.now() - lastModified
+		const ageMs = nowMillis() - lastModified
 
 		if (ageMs < 0 || ageMs >= MS_HOUR) {
 			return
@@ -44,7 +46,7 @@ export function LastUpdatedDisplay({
 		const id = window.setInterval(() => {
 			tick()
 
-			if (Date.now() >= stopAt) {
+			if (nowMillis() >= stopAt) {
 				window.clearInterval(id)
 			}
 		}, 60_000)

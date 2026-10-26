@@ -1,7 +1,7 @@
 import type { Relic } from "@/data/relics"
 import type { PreviewCard } from "@/types/preview-card"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 import { CardImageGlow } from "@/components/card-image-glow"
 import {
 	ComingSoonBadge,
@@ -28,13 +28,11 @@ export function RelicCard({ relic, priority, fetchPriority }: RelicCardProps) {
 	const game = getGameByKey(map.game).pipe(Option.getOrThrow)
 
 	const { disabled, stateBadge, tabIndex } = Option.match(relic.state, {
-		onNone: () => {
-			return {
-				disabled: false,
-				tabIndex: 0,
-				stateBadge: null,
-			}
-		},
+		onNone: () => ({
+			disabled: false,
+			tabIndex: 0,
+			stateBadge: null,
+		}),
 		onSome: state => {
 			const isComingSoon = state === "Coming Soon"
 
@@ -83,7 +81,11 @@ export function RelicCard({ relic, priority, fetchPriority }: RelicCardProps) {
 								alt={relic.title}
 								width={272}
 								height={272}
-								loading={priority ? "eager" : "lazy"}
+								loading={
+									Predicate.isNotNullish(priority) && Predicate.isTruthy(priority)
+										? "eager"
+										: "lazy"
+								}
 								fetchPriority={fetchPriority}
 								sizes="272px"
 								className="size-40 object-contain transition-transform group-hover:scale-110"

@@ -1,11 +1,11 @@
 import type { MapMarker } from "@/map-configs/markers"
-import { Option } from "effect"
+import { Option, Array as Arr, String as Str } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { buildShareableMapSearch, computeIsIncluded, uniqueMarkerIds } from "@/hooks/use-map-search"
 
 const idArb = fc.string({
-	unit: fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz".split("")),
+	unit: fc.constantFrom(...Str.split("abcdefghijklmnopqrstuvwxyz", "")),
 	minLength: 1,
 	maxLength: 6,
 })
@@ -36,7 +36,7 @@ describe("buildShareableMapSearch properties", () => {
 					}),
 				),
 				({ ids, include, exclude, extraInclude, extraExclude, layer }) => {
-					const markers = ids.map(marker)
+					const markers = Arr.map(ids, marker)
 					const includeList = [...include, ...extraInclude]
 					const excludeList = [...exclude, ...extraExclude]
 					const original = { include: includeList, exclude: excludeList, layer }
@@ -44,8 +44,8 @@ describe("buildShareableMapSearch properties", () => {
 					const sharedInclude = shared.include ?? []
 					const sharedExclude = shared.exclude ?? []
 					const allIds = uniqueMarkerIds(markers)
-					const visible = allIds.filter(id => computeIsIncluded(id, includeList, excludeList))
-					const hidden = allIds.filter(id => !computeIsIncluded(id, includeList, excludeList))
+					const visible = Arr.filter(allIds, id => computeIsIncluded(id, includeList, excludeList))
+					const hidden = Arr.filter(allIds, id => !computeIsIncluded(id, includeList, excludeList))
 					const showsNothing = allIds.length > 0 && visible.length === 0
 					const listsOmitted = allIds.length === 0 || visible.length === 0 || hidden.length === 0
 					const includeIsShorter = visible.length < hidden.length

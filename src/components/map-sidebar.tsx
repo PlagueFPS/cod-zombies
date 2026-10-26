@@ -1,7 +1,7 @@
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import { useParams, useRouter } from "@tanstack/react-router"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Array as Arr, Predicate } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { NewBadge } from "@/components/custom-badges"
@@ -68,13 +68,14 @@ export default function MapSidebar({
 		buildShareableSearch,
 	} = useMapSearch()
 
-	const maps = encodedMaps.map(decodeInteractiveMap)
-	const mapLayers = encodedMapLayer.map(decodeMapConfigLayer)
+	const maps = Arr.map(encodedMaps, decodeInteractiveMap)
+	const mapLayers = Arr.map(encodedMapLayer, decodeMapConfigLayer)
 
 	const mapMarkers = useMemo(() => {
-		if (!layer) return mapLayers.at(0)?.markers ?? []
+		if (!(Predicate.isNotNullish(layer) && Predicate.isTruthy(layer)))
+			return mapLayers.at(0)?.markers ?? []
 
-		return mapLayers.find(l => l.id === layer)?.markers ?? []
+		return Option.getOrUndefined(Arr.findFirst(mapLayers, l => l.id === layer))?.markers ?? []
 	}, [layer, mapLayers])
 
 	const currentMap = capitalize(params.mapId)
@@ -84,7 +85,7 @@ export default function MapSidebar({
 	}, [convertIncludeToExclude, mapMarkers])
 
 	const handleClick = (map: string | null) => {
-		if (!map) return
+		if (!(Predicate.isNotNullish(map) && Predicate.isTruthy(map))) return
 		void router.navigate({ to: "/maps/$mapId", params: { mapId: map } })
 	}
 
@@ -102,19 +103,18 @@ export default function MapSidebar({
 		return `${window.location.origin}${href}`
 	}
 
-	const existsInLayer = (marker: string) => {
-		return mapMarkers.some(m => m.type === marker || m.id === marker)
-	}
+	const existsInLayer = (marker: string) =>
+		Arr.some(mapMarkers, m => m.type === marker || m.id === marker)
 
-	const isGroupInLayer = (category: MarkerCategory) => {
-		return mapMarkers.some(marker => marker.category === category)
-	}
+	const isGroupInLayer = (category: MarkerCategory) =>
+		Arr.some(mapMarkers, marker => marker.category === category)
 
-	const countLocationsInLayer = (markerKey: string) => {
-		return mapMarkers
-			.filter(m => m.type === markerKey || m.id === markerKey)
-			.reduce((sum, m) => sum + m.locations.length, 0)
-	}
+	const countLocationsInLayer = (markerKey: string) =>
+		Arr.reduce(
+			Arr.filter(mapMarkers, m => m.type === markerKey || m.id === markerKey),
+			0,
+			(sum, m) => sum + m.locations.length,
+		)
 
 	return (
 		<Sidebar side="left" collapsible="offcanvas" className="mt-16">
@@ -130,7 +130,7 @@ export default function MapSidebar({
 								<SelectContent className="z-900">
 									<SelectGroup>
 										<SelectLabel>Available Maps</SelectLabel>
-										{maps.flatMap(map => {
+										{Arr.flatMap(maps, map => {
 											if (map.state.valueOrUndefined === "Coming Soon") return []
 
 											return [
@@ -372,7 +372,7 @@ function markerGroupItems(
 	existsInLayer: (marker: string) => boolean,
 	itemProps: Omit<IMarkerSidebarMenuItem, "marker" | "category">,
 ) {
-	return [...markers].flatMap(marker =>
+	return Arr.flatMap([...markers], marker =>
 		existsInLayer(marker)
 			? [<MarkerSidebarMenuItem key={marker} marker={marker} category={category} {...itemProps} />]
 			: [],
@@ -416,11 +416,13 @@ interface IMarkerFilterIcon {
 }
 
 function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
-	const mapMarker = mapMarkers.find(m => m.type === marker || m.id === marker)
+	const mapMarker = Option.getOrUndefined(
+		Arr.findFirst(mapMarkers, m => m.type === marker || m.id === marker),
+	)
 
-	if (!mapMarker) return null
+	if (!(Predicate.isNotNullish(mapMarker) && Predicate.isTruthy(mapMarker))) return null
 
-	if (mapMarker.type) {
+	if (Predicate.isNotNullish(mapMarker.type) && Predicate.isTruthy(mapMarker.type)) {
 		switch (mapMarker.type) {
 			case "label":
 				return <MapPin className="size-8 p-1 text-blue-500 dark:text-blue-400" />

@@ -5,12 +5,13 @@ import type { ZombieAttackKey } from "@/data/zombie-attacks"
 import type { ContentState } from "@/types/data"
 import type { ZombiesPaths } from "@/types/generated/content-paths.gen"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { Data, Option } from "effect"
+import { Data, Option, Array as Arr } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
+import { nowMillis } from "@/utils/system-time"
 
 /** Union type of all zombie types */
 export type ZombieType = "Normal" | "Special" | "Elite" | "Boss"
@@ -74,7 +75,7 @@ export function compareZombieReleaseDescending(
 }
 
 function withResolvedZombieState(zombie: Zombie): Zombie {
-	const nowMs = Date.now()
+	const nowMs = nowMillis()
 
 	return {
 		...zombie,
@@ -84,7 +85,7 @@ function withResolvedZombieState(zombie: Zombie): Zombie {
 
 /** @returns An array of all zombies sorted by release date in descending order */
 export const getZombies = (): Zombie[] =>
-	[...ZOMBIES.values()].map(withResolvedZombieState).sort(compareZombieReleaseDescending)
+	Arr.map([...ZOMBIES.values()], withResolvedZombieState).sort(compareZombieReleaseDescending)
 
 /** @returns The zombie with the given key */
 export const getZombieByKey = (key: RegistryKeyInput<ZombieKey>) =>
@@ -94,9 +95,7 @@ export const getZombieByKey = (key: RegistryKeyInput<ZombieKey>) =>
  * @returns The previous and next zombies based on the current
  * @param current The key of the current zombie
  */
-export const getAdjacentZombies = (current: string) => {
-	return getAdjacentItems(getZombies(), current)
-}
+export const getAdjacentZombies = (current: string) => getAdjacentItems(getZombies(), current)
 
 /**
  * Gets the sort options for zombies.
@@ -131,13 +130,9 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"Zombies spawn at the start of and throughout each round. Special situations like boss fights or main quest interactions may alter the spawns of zombies, changing them or completely removing them temporarily.",
 		// SAFETY: catalog ids are GameKey; Array.map widens them to string[].
-		games: getGames()
-			.reverse()
-			.map(game => game.id) as GameKey[],
+		games: Arr.map(getGames().reverse(), game => game.id) as GameKey[],
 		// SAFETY: catalog ids are MapKey; Array.map widens them to string[].
-		maps: getMaps()
-			.reverse()
-			.map(map => map.id) as MapKey[],
+		maps: Arr.map(getMaps().reverse(), map => map.id) as MapKey[],
 		elementalWeakness: [],
 		weakPoints: ["head"],
 		attacks: ["melee-swing"],
@@ -2505,5 +2500,5 @@ const ZOMBIES = uniqueMap([
 ])
 
 const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<string, number>(
-	[...ZOMBIES.keys()].map((id, i) => [id, i]),
+	Arr.map([...ZOMBIES.keys()], (id, i) => [id, i]),
 )

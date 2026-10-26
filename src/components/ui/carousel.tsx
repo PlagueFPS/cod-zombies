@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Predicate } from "effect"
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import * as React from "react"
@@ -33,7 +34,7 @@ const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 function useCarousel() {
 	const context = React.useContext(CarouselContext)
 
-	if (!context) {
+	if (Predicate.isNullish(context)) {
 		throw new Error("useCarousel must be used within a <Carousel />")
 	}
 
@@ -59,7 +60,7 @@ function Carousel({
 
 	const subscribe = React.useCallback(
 		(onStoreChange: () => void) => {
-			if (!api) return () => {}
+			if (!(Predicate.isNotNullish(api) && Predicate.isTruthy(api))) return () => {}
 
 			api.on("reInit", onStoreChange)
 			api.on("select", onStoreChange)
@@ -106,7 +107,11 @@ function Carousel({
 	)
 
 	React.useEffect(() => {
-		if (!api || !setApi) return
+		if (
+			!(Predicate.isNotNullish(api) && Predicate.isTruthy(api)) ||
+			!(Predicate.isNotNullish(setApi) && Predicate.isTruthy(setApi))
+		)
+			return
 		setApi(api)
 	}, [api, setApi])
 
@@ -188,7 +193,7 @@ function CarouselPrevious({
 					: "-top-12 left-1/2 -translate-x-1/2 rotate-90",
 				className,
 			)}
-			disabled={!canScrollPrev}
+			disabled={!(Predicate.isNotNullish(canScrollPrev) && Predicate.isTruthy(canScrollPrev))}
 			onClick={scrollPrev}
 			{...props}
 		>
@@ -218,7 +223,7 @@ function CarouselNext({
 					: "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
 				className,
 			)}
-			disabled={!canScrollNext}
+			disabled={!(Predicate.isNotNullish(canScrollNext) && Predicate.isTruthy(canScrollNext))}
 			onClick={scrollNext}
 			{...props}
 		>

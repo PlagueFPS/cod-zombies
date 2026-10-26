@@ -4,7 +4,7 @@ import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
 import type { MapMarker } from "@/map-configs/markers"
-import { Option, Predicate } from "effect"
+import { Option, Predicate, Array as Arr } from "effect"
 
 export type EncodedMapEntry = Omit<
 	EncodedFields<MapEntry, "difficulty" | "state" | "estimatedTimeMins">,
@@ -76,14 +76,14 @@ export function encodeMapMarker(marker: MapMarker): EncodedMapMarker {
 export function encodeMapConfigLayer(layer: MapConfigLayer): EncodedMapConfigLayer {
 	return {
 		...layer,
-		markers: layer.markers.map(encodeMapMarker),
+		markers: Arr.map(layer.markers, encodeMapMarker),
 	}
 }
 
 export function encodeMapConfig(config: MapConfig): EncodedMapConfig {
 	return {
 		...config,
-		layers: config.layers.map(encodeMapConfigLayer),
+		layers: Arr.map(config.layers, encodeMapConfigLayer),
 	}
 }
 
@@ -117,7 +117,7 @@ export function decodeMapMarker(encoded: EncodedMapMarker): MapMarker {
 }
 
 export function decodeMapConfigLayer(encoded: EncodedMapConfigLayer): MapConfigLayer {
-	return { ...encoded, markers: encoded.markers.map(decodeMapMarker) }
+	return { ...encoded, markers: Arr.map(encoded.markers, decodeMapMarker) }
 }
 
 export const isSideQuest = <M extends { _tag: "MapEntry" }, S extends { _tag: "SideQuest" }>(

@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css"
 import "@/styles/leaflet-overrides.css"
 import type { Location, MapMarker } from "@/map-configs/markers"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Array as Arr, Predicate } from "effect"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
@@ -117,10 +117,10 @@ export function InteractiveMap({ currentLayer }: InteractiveMapProps) {
 				<ImageOverlay key={currentLayer.id} url={currentLayer.image} bounds={getImageBounds()} />
 			)}
 			{Option.isSome(imageDimensions) &&
-				layer.markers.map(marker => {
+				Arr.map(layer.markers, marker => {
 					if (!shouldRenderMarker(marker)) return null
 
-					return marker.locations.map(location => (
+					return Arr.map(marker.locations, location => (
 						<CustomMarker
 							key={`${generateMarkerKey(currentLayer.id, marker.id, location)}-gradients:${settings.popups.disableGradients}`}
 							id={generateMarkerKey(currentLayer.id, marker.id, location)}
@@ -140,7 +140,12 @@ function MapController({ imageDimensions }: MapController) {
 
 	const logClickCoordinates =
 		(imageDimensions: Option.Option<ImageDimensions>) => (e: LeafletMouseEvent) => {
-			if (!IN_DEVELOPMENT || !e.latlng || Option.isNone(imageDimensions)) return
+			if (
+				!IN_DEVELOPMENT ||
+				!(Predicate.isNotNullish(e.latlng) && Predicate.isTruthy(e.latlng)) ||
+				Option.isNone(imageDimensions)
+			)
+				return
 
 			const x = e.latlng.lng / imageDimensions.value.width
 			const y = 1 - e.latlng.lat / imageDimensions.value.height

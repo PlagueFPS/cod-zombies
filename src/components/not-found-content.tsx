@@ -1,4 +1,5 @@
 import type { Link } from "@/components/breadcrumbs"
+import { Array as Arr, Predicate } from "effect"
 import { CustomLink } from "@/components/custom-link"
 import { NotFoundBreadcrumbs } from "@/components/not-found-breadcrumbs"
 import { Button } from "@/components/ui/button"
@@ -23,7 +24,11 @@ export default function NotFoundContent({ resource, items, pathname, param }: IN
 					<p className="text-sm md:text-base lg:text-lg">
 						The requested {resource}
 						<span className="mx-1 text-primary-gradient font-bold">
-							{param ? capitalize(param) : pathname ? pathname : null}
+							{Predicate.isNotNullish(param) && Predicate.isTruthy(param)
+								? capitalize(param)
+								: Predicate.isNotNullish(pathname) && Predicate.isTruthy(pathname)
+									? pathname
+									: null}
 						</span>
 						does not exist or could not be found
 					</p>
@@ -35,12 +40,13 @@ export default function NotFoundContent({ resource, items, pathname, param }: IN
 }
 
 const NotFoundButtons = ({ items }: Omit<INotFoundContent, "param" | "resource">) => {
-	const newItems = items ? items.slice(0, -1) : []
+	const newItems =
+		Predicate.isNotNullish(items) && Predicate.isTruthy(items) ? items.slice(0, -1) : []
 
 	return (
 		<div className="flex w-fit flex-col items-center justify-between gap-8 sm:flex-row">
 			{newItems.length > 0 ? (
-				newItems.map(item => (
+				Arr.map(newItems, item => (
 					<Button
 						nativeButton={false}
 						key={`${item.title}-${item.href}`}

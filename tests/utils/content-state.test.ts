@@ -6,6 +6,7 @@ import {
 	isComingSoon,
 	resolveNewContentState,
 } from "@/utils/content-state"
+import { nowMillis } from "@/utils/system-time"
 
 describe("calendarDaysSinceIsoDate", () => {
 	test("returns 0 for timestamps on the anchor UTC calendar day", () => {
@@ -27,7 +28,7 @@ describe("resolveNewContentState", () => {
 	const anchor = "2026-01-01"
 
 	test("preserves none", () => {
-		expect(resolveNewContentState(Option.none(), anchor, Date.now())).toEqual(Option.none())
+		expect(resolveNewContentState(Option.none(), anchor, nowMillis())).toEqual(Option.none())
 	})
 
 	test("always preserves Coming Soon", () => {

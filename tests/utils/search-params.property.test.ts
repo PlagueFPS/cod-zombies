@@ -1,4 +1,4 @@
-import { Predicate } from "effect"
+import { Predicate, Array as Arr, String as Str } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
@@ -11,7 +11,7 @@ import {
 } from "@/utils/search-params"
 import { decodeMainQuestSearchParams } from "@/utils/validation-schemas"
 
-const slugChar = fc.constantFrom(..."abcdefghijklmnopqrstuvwxyz0123456789-".split(""))
+const slugChar = fc.constantFrom(...Str.split("abcdefghijklmnopqrstuvwxyz0123456789-", ""))
 
 const tokenArb = fc.oneof(
 	fc.string({ unit: slugChar, minLength: 1, maxLength: 12 }),
@@ -46,7 +46,10 @@ function canonicalToken(token: string): string {
 }
 
 function repeatedGameQuery(tokens: readonly string[]): string {
-	return tokens.map(token => `game=${encodeURIComponent(token)}`).join("&")
+	return Arr.join(
+		Arr.map(tokens, token => `game=${encodeURIComponent(token)}`),
+		"&",
+	)
 }
 
 describe("parseSearch properties", () => {
@@ -76,7 +79,7 @@ describe("parseSearch properties", () => {
 	test("a list of filter tokens decodes to the same string array from JSON and repeated keys", () => {
 		fc.assert(
 			fc.property(fc.array(tokenArb, { minLength: 1, maxLength: 5 }), tokens => {
-				const expected = tokens.map(canonicalToken)
+				const expected = Arr.map(tokens, canonicalToken)
 
 				const fromRepeated = expectExitSuccess(
 					decodeMainQuestSearchParams(parseSearch(repeatedGameQuery(tokens))),
@@ -90,7 +93,7 @@ describe("parseSearch properties", () => {
 
 				expect(fromRepeated.game).toEqual(expected)
 				expect(fromJson.game).toEqual(fromRepeated.game)
-				expect(fromRepeated.game.every(Predicate.isString)).toBe(true)
+				expect(Arr.every(fromRepeated.game, Predicate.isString)).toBe(true)
 			}),
 		)
 	})

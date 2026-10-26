@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Effect } from "effect"
+import { Effect, Predicate } from "effect"
 import { unsubscribeEmail } from "@/data/email.server"
 import { APIRuntime } from "@/lib/layers"
 import { verifyToken } from "@/utils/functions.server"
@@ -7,12 +7,12 @@ import { verifyToken } from "@/utils/functions.server"
 export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 	server: {
 		handlers: {
-			GET: async ({ request }) => {
-				return await Effect.gen(function* () {
+			GET: async ({ request }) =>
+				await Effect.gen(function* () {
 					const url = new URL(request.url)
 					const token = url.searchParams.get("token")
 
-					if (!token)
+					if (!(Predicate.isNotNullish(token) && Predicate.isTruthy(token)))
 						return Response.redirect(
 							new URL(
 								`/newsletter/unsubscribe/error?message=${encodeURIComponent("Missing Token")}`,
@@ -70,8 +70,7 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 					}),
 					Effect.satisfiesErrorType<never>(),
 					APIRuntime.runPromise,
-				)
-			},
+				),
 		},
 	},
 })

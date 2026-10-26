@@ -1,6 +1,7 @@
 import type { Heading } from "@/components/table-of-contents"
 import { useNavigate } from "@tanstack/react-router"
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { ChevronDown } from "lucide-react"
 import { useState } from "react"
 import { RemoveScroll } from "@/components/remove-scroll"
@@ -56,7 +57,7 @@ export function MobileTableOfContents({
 						>
 							<nav className="flex flex-col gap-4 pb-12">
 								<ul className="flex max-h-full flex-col gap-3 text-sm font-medium text-foreground/90">
-									{headings.map(heading => (
+									{Arr.map(headings, heading => (
 										<li
 											key={`mobile-toc-${heading.id}`}
 											onClick={() => handleHeadingClick(heading.id)}

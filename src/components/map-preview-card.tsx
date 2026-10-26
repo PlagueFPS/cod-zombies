@@ -1,7 +1,7 @@
 import type { InteractiveMap } from "@/data/interactive-map"
 import type { PreviewCard } from "@/types/preview-card"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 import { ComingSoonBadge, NewBadge } from "@/components/custom-badges"
 import { CustomLink } from "@/components/custom-link"
 import { FeaturedImage } from "@/components/featured-image"
@@ -53,7 +53,9 @@ export function MapPreviewCard({ map, priority }: IMapPreviewCard) {
 						sizes="420px"
 						width={418}
 						height={300}
-						loading={priority ? "eager" : "lazy"}
+						loading={
+							Predicate.isNotNullish(priority) && Predicate.isTruthy(priority) ? "eager" : "lazy"
+						}
 						className="transition-transform duration-300 will-change-transform group-focus-visible:scale-105"
 					/>
 				</div>

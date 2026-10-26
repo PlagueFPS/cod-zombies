@@ -52,13 +52,11 @@ export function TableOfContentsLoader() {
 	)
 }
 
-const MobileTableOfContentsLoader = () => {
-	return (
-		<div className="sticky top-16 z-30 w-full border-b bg-background/90 p-3 backdrop-blur-sm supports-backdrop-filter:bg-background/60 xl:hidden">
-			<div className="flex items-center gap-2">
-				<ChevronsRightIcon className="size-5 text-muted-foreground" />
-				<h3 className="font-bold text-muted-foreground">Introduction</h3>
-			</div>
+const MobileTableOfContentsLoader = () => (
+	<div className="sticky top-16 z-30 w-full border-b bg-background/90 p-3 backdrop-blur-sm supports-backdrop-filter:bg-background/60 xl:hidden">
+		<div className="flex items-center gap-2">
+			<ChevronsRightIcon className="size-5 text-muted-foreground" />
+			<h3 className="font-bold text-muted-foreground">Introduction</h3>
 		</div>
-	)
-}
+	</div>
+)

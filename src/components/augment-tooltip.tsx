@@ -86,46 +86,44 @@ const AugmentTrigger = ({ augment }: { augment: Augment }) => (
 	</span>
 )
 
-const AugmentTooltipContent = ({ augment }: { augment: Augment }) => {
-	return (
-		<div
-			className={cn("relative flex w-full flex-col rounded-lg p-2", {
-				"bg-major-augment-radial": augment.type === "Major",
-				"bg-minor-augment-radial": augment.type === "Minor",
-			})}
-		>
-			<div className="relative flex items-center justify-center">
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
-				<IconImage
-					featuredImage={augment.image}
-					alt={`${augment.title} Image`}
-					width={80}
-					height={80}
-					sizes="64px"
-					className="relative z-10 h-20 w-auto p-2"
-				/>
+const AugmentTooltipContent = ({ augment }: { augment: Augment }) => (
+	<div
+		className={cn("relative flex w-full flex-col rounded-lg p-2", {
+			"bg-major-augment-radial": augment.type === "Major",
+			"bg-minor-augment-radial": augment.type === "Minor",
+		})}
+	>
+		<div className="relative flex items-center justify-center">
+			<div className="absolute top-0 right-0 bottom-0 left-0 z-9 mx-auto w-20 rounded-full" />
+			<IconImage
+				featuredImage={augment.image}
+				alt={`${augment.title} Image`}
+				width={80}
+				height={80}
+				sizes="64px"
+				className="relative z-10 h-20 w-auto p-2"
+			/>
+		</div>
+		<TypeBadge type={augment.type} className="absolute top-4 left-4" />
+		<div className="relative z-10 -mt-3">
+			<div
+				className={cn("px-4 text-center text-lg font-bold", {
+					"text-major-augment": augment.type === "Major",
+					"text-tooltip-foreground": augment.type === "Minor",
+				})}
+			>
+				{augment.title}
 			</div>
-			<TypeBadge type={augment.type} className="absolute top-4 left-4" />
-			<div className="relative z-10 -mt-3">
+			<div className="mt-6 pb-8">
 				<div
-					className={cn("px-4 text-center text-lg font-bold", {
-						"text-major-augment": augment.type === "Major",
+					className={cn("text-center text-sm", {
+						"text-major-augment-foreground": augment.type === "Major",
 						"text-tooltip-foreground": augment.type === "Minor",
 					})}
 				>
-					{augment.title}
-				</div>
-				<div className="mt-6 pb-8">
-					<div
-						className={cn("text-center text-sm", {
-							"text-major-augment-foreground": augment.type === "Major",
-							"text-tooltip-foreground": augment.type === "Minor",
-						})}
-					>
-						{augment.description}
-					</div>
+					{augment.description}
 				</div>
 			</div>
 		</div>
-	)
-}
+	</div>
+)

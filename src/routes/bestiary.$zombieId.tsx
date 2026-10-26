@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { cn } from "cn"
-import { Array as Arr, Match, Option } from "effect"
+import { Array as Arr, Match, Option, Predicate } from "effect"
 import {
 	AlertTriangle,
 	BookOpen,
@@ -57,7 +57,8 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 			context.queryClient.prefetchQuery(mdxComponentQueryOptions(zombie.id, zombie.combatStrategy)),
 		])
 
-		if (!opengraphUrl) throw notFound()
+		if (!(Predicate.isNotNullish(opengraphUrl) && Predicate.isTruthy(opengraphUrl)))
+			throw notFound()
 
 		const mostRecentGame = Arr.last(zombie.games).pipe(
 			Option.flatMap(game => getGameByKey(game)),
@@ -238,7 +239,7 @@ function ZombieInfo() {
 									Map Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.maps.slice(0, 16).map(mapKey => {
+									{Arr.map(zombie.maps.slice(0, 16), mapKey => {
 										const map = getMapByKey(mapKey)
 
 										if (Option.isNone(map)) return null
@@ -265,7 +266,7 @@ function ZombieInfo() {
 									Game Appearances
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
-									{zombie.games.map(gameKey => {
+									{Arr.map(zombie.games, gameKey => {
 										const game = getGameByKey(gameKey)
 
 										if (Option.isNone(game)) return null
@@ -288,7 +289,7 @@ function ZombieInfo() {
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
 									{Arr.isArrayNonEmpty(zombie.weakPoints) ? (
-										zombie.weakPoints.map(weakPointKey => {
+										Arr.map(zombie.weakPoints, weakPointKey => {
 											const weakPoint = getWeakPointByKey(weakPointKey)
 
 											if (Option.isNone(weakPoint)) return null
@@ -316,7 +317,7 @@ function ZombieInfo() {
 								</h3>
 								<div className="flex flex-wrap items-center gap-2">
 									{Arr.isArrayNonEmpty(zombie.elementalWeakness) ? (
-										zombie.elementalWeakness.map(weakness => (
+										Arr.map(zombie.elementalWeakness, weakness => (
 											<AmmoModTooltip
 												key={weakness}
 												ammoModKey={weakness}
@@ -343,7 +344,7 @@ function ZombieInfo() {
 						</div>
 						<div className="space-y-4">
 							{Arr.isArrayNonEmpty(zombie.attacks) ? (
-								zombie.attacks.map(attackKey => {
+								Arr.map(zombie.attacks, attackKey => {
 									const attack = getZombieAttackByKey(attackKey)
 
 									if (Option.isNone(attack)) return null
@@ -413,8 +414,12 @@ function ZombieInfo() {
 			</section>
 			<section className="mt-8 flex w-full flex-row items-center justify-center">
 				<div className="mx-auto flex flex-col items-center justify-center gap-8 px-3 lg:flex-row xl:mr-0 xl:ml-auto xl:px-0">
-					{prev ? <PrevOrNextZombieCard zombie={prev} prev /> : null}
-					{next ? <PrevOrNextZombieCard zombie={next} /> : null}
+					{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
+						<PrevOrNextZombieCard zombie={prev} prev />
+					) : null}
+					{Predicate.isNotNullish(next) && Predicate.isTruthy(next) ? (
+						<PrevOrNextZombieCard zombie={next} />
+					) : null}
 				</div>
 			</section>
 		</article>
@@ -493,11 +498,11 @@ function PrevOrNextZombieCard({ zombie, prev }: PrevOrNextZombieCardProps) {
 							"mt-auto flex items-center pb-2 transition-colors group-hover:text-primary group-focus-visible:text-primary",
 							{
 								"xl:-ml-2": prev,
-								"xl:-mr-2": !prev,
+								"xl:-mr-2": !(Predicate.isNotNullish(prev) && Predicate.isTruthy(prev)),
 							},
 						)}
 					>
-						{prev ? (
+						{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
 							<>
 								<ChevronLeft />
 								<span>Previous Zombie</span>

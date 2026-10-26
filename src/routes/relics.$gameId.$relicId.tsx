@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Option, Predicate } from "effect"
 import { Calendar, ChevronLeft, ChevronRight, Clock } from "lucide-react"
 import { Breadcrumbs, type Link } from "@/components/breadcrumbs"
 import { CompletionTimeDisplay } from "@/components/completion-time-display"
@@ -39,7 +39,8 @@ export const Route = createFileRoute("/relics/$gameId/$relicId")({
 			context.queryClient.prefetchQuery(mdxComponentQueryOptions(relic.id, relic.content)),
 		])
 
-		if (!opengraphUrl) throw notFound()
+		if (!(Predicate.isNotNullish(opengraphUrl) && Predicate.isTruthy(opengraphUrl)))
+			throw notFound()
 
 		const map = getMapByKey(relic.map).pipe(Option.getOrThrowWith(() => notFound()))
 		const game = getGameByKey(map.game).pipe(Option.getOrThrowWith(() => notFound()))
@@ -169,8 +170,12 @@ function RelicGuide() {
 						<MdxContent Component={component.Component} />
 					</div>
 					<div className="mt-8 flex w-full items-center justify-evenly gap-4">
-						{prev ? <PrevOrNextRelicCard relic={prev} prev /> : null}
-						{next ? <PrevOrNextRelicCard relic={next} /> : null}
+						{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
+							<PrevOrNextRelicCard relic={prev} prev />
+						) : null}
+						{Predicate.isNotNullish(next) && Predicate.isTruthy(next) ? (
+							<PrevOrNextRelicCard relic={next} />
+						) : null}
 					</div>
 				</article>
 			</div>
@@ -199,7 +204,7 @@ function PrevOrNextRelicCard({ relic, prev }: PrevOrNextRelicCardProps) {
 			className="group w-fit hover:text-primary"
 		>
 			<article className="flex items-center justify-between transition-colors group-focus-visible:text-primary">
-				{prev ? (
+				{Predicate.isNotNullish(prev) && Predicate.isTruthy(prev) ? (
 					<span className="inline-flex items-center justify-center gap-1">
 						<ChevronLeft className="transition-all group-hover:-translate-x-1 group-focus-visible:-translate-x-1" />
 						<span>{relic.title}</span>

@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test"
+import { Predicate } from "effect"
 
 const port = Number(process.env.PLAYWRIGHT_PORT ?? 4173)
 
@@ -17,10 +18,14 @@ const testEnv = {
 export default defineConfig({
 	testDir: "./tests/e2e",
 	fullyParallel: true,
-	forbidOnly: !!process.env.CI,
-	retries: process.env.CI ? 2 : 0,
-	workers: process.env.CI ? 1 : undefined,
-	reporter: process.env.CI ? "github" : "list",
+	forbidOnly: !!(Predicate.isNotNullish(process.env.CI) && Predicate.isTruthy(process.env.CI)),
+	retries: Predicate.isNotNullish(process.env.CI) && Predicate.isTruthy(process.env.CI) ? 2 : 0,
+	workers:
+		Predicate.isNotNullish(process.env.CI) && Predicate.isTruthy(process.env.CI) ? 1 : undefined,
+	reporter:
+		Predicate.isNotNullish(process.env.CI) && Predicate.isTruthy(process.env.CI)
+			? "github"
+			: "list",
 	use: {
 		baseURL,
 		trace: "on-first-retry",
@@ -28,7 +33,9 @@ export default defineConfig({
 	webServer: {
 		command: `bun run dev -- --host ${host} --port ${port}`,
 		env: testEnv,
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: !(
+			Predicate.isNotNullish(process.env.CI) && Predicate.isTruthy(process.env.CI)
+		),
 		timeout: 120_000,
 		url: baseURL,
 	},

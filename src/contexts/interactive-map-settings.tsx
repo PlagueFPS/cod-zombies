@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import { createContext, useContext } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
@@ -77,7 +78,12 @@ const MapSettingsContext = createContext<IMapSettingsContext>({
 })
 
 const migrateSettings = (savedSettings: Partial<TMapSettings>) => {
-	if (!savedSettings._version || savedSettings._version >= CURRENT_VERSION) {
+	if (
+		!(
+			Predicate.isNotNullish(savedSettings._version) && Predicate.isTruthy(savedSettings._version)
+		) ||
+		savedSettings._version >= CURRENT_VERSION
+	) {
 		return savedSettings
 	}
 
@@ -126,7 +132,7 @@ export function MapSettingsProvider({ children }: { children: React.ReactNode })
 export const useMapSettings = () => {
 	const context = useContext(MapSettingsContext)
 
-	if (!context) {
+	if (Predicate.isNullish(context)) {
 		throw new Error("useMapSettings must be used within a MapSettingsProvider")
 	}
 

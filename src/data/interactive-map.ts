@@ -2,13 +2,17 @@ import type { GameKey } from "@/data/games"
 import type { MapMarker } from "@/map-configs/markers"
 import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
-import { Data, Effect, Option, Schema } from "effect"
+import { Data, Effect, Option, Schema, Array as Arr } from "effect"
 import { compareMapReleaseDescending, getMapByKey } from "@/data/maps"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
+import { nowMillis } from "@/utils/system-time"
 import { decodeMapConfigModule } from "@/utils/validation-schemas"
 
-class ConfigNotFoundError extends Schema.TaggedError<ConfigNotFoundError>()("ConfigNotFoundError", {
+class ConfigNotFoundError extends Schema.TaggedError<
+	ConfigNotFoundError,
+	{ readonly brand: unique symbol }
+>()("ConfigNotFoundError", {
 	cause: Schema.Defect(),
 }) {}
 
@@ -60,7 +64,7 @@ export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(func
 ) {
 	const config = yield* Effect.tryPromise({
 		try: () => import(`../map-configs/${key}.ts`),
-		catch: cause => new ConfigNotFoundError({ cause }),
+		catch: cause => ConfigNotFoundError.make({ cause }),
 	}).pipe(
 		Effect.flatMap(module => decodeMapConfigModule(module)),
 		Effect.map(module => module.config),
@@ -71,7 +75,7 @@ export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(func
 })
 
 function withResolvedInteractiveMapState(map: InteractiveMap): InteractiveMap {
-	const nowMs = Date.now()
+	const nowMs = nowMillis()
 
 	return {
 		...map,
@@ -89,7 +93,7 @@ export const getInteractiveMapByKey = (key: RegistryKeyInput<InteractiveMapKey>)
  * Gets a list of all interactive maps in the registry sorted by release date descending
  */
 export const getInteractiveMaps = () =>
-	[...INTERACTIVE_MAPS.values()].map(withResolvedInteractiveMapState).sort((a, b) => {
+	Arr.map([...INTERACTIVE_MAPS.values()], withResolvedInteractiveMapState).sort((a, b) => {
 		const mapA = getMapByKey(a.id).pipe(Option.getOrThrow)
 		const mapB = getMapByKey(b.id).pipe(Option.getOrThrow)
 

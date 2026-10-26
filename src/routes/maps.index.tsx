@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option } from "effect"
+import { Option, Array as Arr } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/maps/")({
 
 		const filtered = applyFilters(allMaps, filterSpecs)
 
-		const gameFilters = [...new Set(allMaps.map(m => m.game))].map(gameKey => {
+		const gameFilters = Arr.map([...new Set(Arr.map(allMaps, m => m.game))], gameKey => {
 			const { id, title: gameTitle } = getGameByKey(gameKey).pipe(Option.getOrThrow)
 
 			return {
@@ -52,7 +52,7 @@ export const Route = createFileRoute("/maps/")({
 			serverUrl,
 			title,
 			description,
-			maps: filtered.map(encodeInteractiveMap),
+			maps: Arr.map(filtered, encodeInteractiveMap),
 			gameFilters,
 		}
 	},
@@ -93,7 +93,7 @@ function Maps() {
 	const filterValue: FilterOption[] = []
 
 	for (const g of groups) {
-		const values = g.items.filter(i => game?.some(g => g === i.value))
+		const values = Arr.filter(g.items, i => game != null && Arr.some(game, g => g === i.value))
 
 		if (values.length > 0) filterValue.push(...values)
 	}
@@ -102,8 +102,8 @@ function Maps() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const matched = g.items.flatMap(item =>
-				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			const matched = Arr.flatMap(g.items, item =>
+				Arr.some(next, selected => selected.value === item.value) ? [item.value] : [],
 			)
 
 			if (matched.length > 0) {

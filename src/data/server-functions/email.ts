@@ -16,7 +16,8 @@ export const unsubscribeFromNewsletter = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const mockedResult = e2eEmailResult(`Confirmation sent to ${data.email}.`)
 
-		if (mockedResult) return mockedResult
+		if (Predicate.isNotNullish(mockedResult) && Predicate.isTruthy(mockedResult))
+			return mockedResult
 
 		const result: APIResult = await requestUnsubscribe(data.email).pipe(
 			Effect.retry({
@@ -51,7 +52,8 @@ export const subscribeToNewsletter = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const mockedResult = e2eEmailResult(`Confirmation sent to ${data.email}.`)
 
-		if (mockedResult) return mockedResult
+		if (Predicate.isNotNullish(mockedResult) && Predicate.isTruthy(mockedResult))
+			return mockedResult
 
 		const result: APIResult = await requestSubscribe(data.email).pipe(
 			Effect.retry({
@@ -86,7 +88,8 @@ export const submitContactForm = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const mockedResult = e2eEmailResult(`Feedback received from ${data.email}.`)
 
-		if (mockedResult) return mockedResult
+		if (Predicate.isNotNullish(mockedResult) && Predicate.isTruthy(mockedResult))
+			return mockedResult
 
 		const result: APIResult = await sendContactEmail(data).pipe(
 			Effect.retry({

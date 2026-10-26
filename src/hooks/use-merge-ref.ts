@@ -1,6 +1,5 @@
 import { Predicate } from "effect"
 import { useCallback, useRef, type Ref } from "react"
-
 /**
  * Returns a single ref callback that assigns the same element instance to two
  * refs: useful when a component must forward a ref to a parent and also keep
@@ -9,6 +8,7 @@ import { useCallback, useRef, type Ref } from "react"
  * Unmounts run stored cleanups: function refs that return a disposer, and
  * object refs that get cleared when the node is released.
  */
+
 export function useMergeRef<TElement>(refA: Ref<TElement>, refB: Ref<TElement>): Ref<TElement> {
 	const cleanupA = useRef<() => void>(null)
 	const cleanupB = useRef<() => void>(null)
@@ -18,23 +18,23 @@ export function useMergeRef<TElement>(refA: Ref<TElement>, refB: Ref<TElement>):
 			if (current === null) {
 				const cleanupFnA = cleanupA.current
 
-				if (cleanupFnA) {
+				if (Predicate.isNotNullish(cleanupFnA) && Predicate.isTruthy(cleanupFnA)) {
 					cleanupA.current = null
 					cleanupFnA()
 				}
 
 				const cleanupFnB = cleanupB.current
 
-				if (cleanupFnB) {
+				if (Predicate.isNotNullish(cleanupFnB) && Predicate.isTruthy(cleanupFnB)) {
 					cleanupB.current = null
 					cleanupFnB()
 				}
 			} else {
-				if (refA) {
+				if (Predicate.isNotNullish(refA) && Predicate.isTruthy(refA)) {
 					cleanupA.current = applyRef(refA, current)
 				}
 
-				if (refB) {
+				if (Predicate.isNotNullish(refB) && Predicate.isTruthy(refB)) {
 					cleanupB.current = applyRef(refB, current)
 				}
 			}

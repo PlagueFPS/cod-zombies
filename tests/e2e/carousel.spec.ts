@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+import { Predicate } from "effect"
 
 const captions = [
 	"Core Foundry - in the corner next to the VS-Recon wall buy",
@@ -198,7 +199,8 @@ test.describe("touch navigation", () => {
 
 		const viewport = await dialog.locator('[data-slot="carousel-content"]').boundingBox()
 
-		if (!viewport) throw new Error("Expanded carousel has no visible viewport")
+		if (!(Predicate.isNotNullish(viewport) && Predicate.isTruthy(viewport)))
+			throw new Error("Expanded carousel has no visible viewport")
 
 		const session = await context.newCDPSession(page)
 		const startX = viewport.x + viewport.width * 0.8

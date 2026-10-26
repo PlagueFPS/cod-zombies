@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	solveStatueWall,
@@ -100,7 +101,7 @@ describe("solveStatueWall", () => {
 
 				const solved = applyTurns(directions, wallId, turns ?? [])
 
-				expect(solved).toEqual(directions.map(() => TARGET_DIRECTION))
+				expect(solved).toEqual(Arr.map(directions, () => TARGET_DIRECTION))
 			}
 		}
 	})
@@ -128,7 +129,8 @@ function facings(count: number): StatueDirection[][] {
 }
 
 function hasUnreachableFacing(directions: readonly StatueDirection[], wallId: WallId) {
-	return directions.some(
+	return Arr.some(
+		directions,
 		(direction, index) => WALL_OFFSETS[wallId][index] === 2 && (direction === 1 || direction === 3),
 	)
 }

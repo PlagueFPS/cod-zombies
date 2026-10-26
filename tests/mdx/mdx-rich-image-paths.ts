@@ -1,5 +1,6 @@
 import { statSync } from "node:fs"
 import { isAbsolute, join, relative } from "node:path"
+import { Array as Arr, String as Str, Predicate } from "effect"
 import { loadMdxCorpus } from "@/tests/mdx/mdx-link-validation"
 
 const PUBLIC_DIR = join(process.cwd(), "public")
@@ -21,7 +22,7 @@ export interface RichImageSourceFile {
 export function extractRichImageRefs(content: string): RichImageRef[] {
 	const refs: RichImageRef[] = []
 
-	for (const tagMatch of content.matchAll(RICH_IMAGE_TAG_RE)) {
+	for (const tagMatch of Str.matchAll(RICH_IMAGE_TAG_RE)(content)) {
 		const attrs = tagMatch[1]
 		const tagIndex = tagMatch.index
 
@@ -47,7 +48,7 @@ export function missingRichImageMessages(
 	const messages: string[] = []
 
 	for (const ref of extractRichImageRefs(content)) {
-		if (!ref.image) {
+		if (!(Predicate.isNotNullish(ref.image) && Predicate.isTruthy(ref.image))) {
 			messages.push(`${label}:${ref.line} <RichImage /> is missing a static image path`)
 			continue
 		}
@@ -63,13 +64,13 @@ export function missingRichImageMessages(
 }
 
 export function loadMdxRichImageSources(): RichImageSourceFile[] {
-	return loadMdxCorpus().map(file => ({ label: file.label, content: file.content }))
+	return Arr.map(loadMdxCorpus(), file => ({ label: file.label, content: file.content }))
 }
 
 export function publicImageFileExists(imagePath: string, publicDir: string = PUBLIC_DIR): boolean {
 	const absolutePath = resolvePublicImage(imagePath, publicDir)
 
-	if (!absolutePath) return false
+	if (!(Predicate.isNotNullish(absolutePath) && Predicate.isTruthy(absolutePath))) return false
 
 	try {
 		return statSync(absolutePath).isFile()
@@ -80,10 +81,10 @@ export function publicImageFileExists(imagePath: string, publicDir: string = PUB
 
 function resolvePublicImage(imagePath: string, publicDir: string): string | undefined {
 	if (
-		!imagePath.startsWith("/") ||
-		imagePath.startsWith("//") ||
-		imagePath.includes("\\") ||
-		imagePath.includes("\0")
+		!Str.startsWith("/")(imagePath) ||
+		Str.startsWith("//")(imagePath) ||
+		Str.includes("\\")(imagePath) ||
+		Str.includes("\0")(imagePath)
 	) {
 		return undefined
 	}
@@ -96,16 +97,17 @@ function resolvePublicImage(imagePath: string, publicDir: string): string | unde
 		return undefined
 	}
 
-	if (!decoded.startsWith("/") || decoded.startsWith("//")) return undefined
+	if (!Str.startsWith("/")(decoded) || Str.startsWith("//")(decoded)) return undefined
 
-	const absolutePath = join(publicDir, decoded.slice(1))
+	const absolutePath = join(publicDir, Str.slice(1)(decoded))
 	const fromPublic = relative(publicDir, absolutePath)
 
-	if (fromPublic === "" || fromPublic.startsWith("..") || isAbsolute(fromPublic)) return undefined
+	if (fromPublic === "" || Str.startsWith("..")(fromPublic) || isAbsolute(fromPublic))
+		return undefined
 
 	return absolutePath
 }
 
 function lineNumberAt(content: string, index: number): number {
-	return content.slice(0, index).split("\n").length
+	return Str.split(Str.slice(0, index)(content), "\n").length
 }

@@ -1,4 +1,4 @@
-import { Exit, Match } from "effect"
+import { Exit, Match, Predicate } from "effect"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -65,7 +65,7 @@ export default function AotrtNumberTool() {
 					</div>
 				</div>
 				<div className="rounded-sm bg-input p-2 text-center dark:bg-input/20" aria-live="polite">
-					{solved ? (
+					{Predicate.isNotNullish(solved) && Predicate.isTruthy(solved) ? (
 						<>
 							<p className="text-base">
 								O number = <span className="font-bold">{solved.oNumber}</span>

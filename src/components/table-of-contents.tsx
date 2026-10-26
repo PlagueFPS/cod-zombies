@@ -1,5 +1,6 @@
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { useState } from "react"
 import { BackToTopButton } from "@/components/back-to-top-button"
@@ -94,7 +95,7 @@ export function TableOfContents({ headings, className }: TableOfContentsProps) {
 									"border-none": !isExpanded,
 								})}
 							>
-								{headings.map(heading => (
+								{Arr.map(headings, heading => (
 									<li
 										key={`desktop-toc-${heading.id}`}
 										className={cn("w-fit pl-1 transition-colors hover:text-primary", {

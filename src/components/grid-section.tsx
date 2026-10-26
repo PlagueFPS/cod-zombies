@@ -1,5 +1,6 @@
 import type { FileRoutesByTo } from "@/routeTree.gen"
 import { cn } from "cn"
+import { Predicate } from "effect"
 import { ArrowRightIcon } from "lucide-react"
 import { CustomLink } from "@/components/custom-link"
 
@@ -34,7 +35,7 @@ export function GridSection({
 				>
 					{title}
 				</h2>
-				{viewAllHref ? (
+				{Predicate.isNotNullish(viewAllHref) && Predicate.isTruthy(viewAllHref) ? (
 					<CustomLink
 						to={viewAllHref}
 						className="group inline-flex items-center gap-1 font-medium text-muted-foreground transition-colors hover:text-primary"

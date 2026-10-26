@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import { useEffect, useRef, type ReactNode } from "react"
 import { lockDocumentScroll, unlockDocumentScroll } from "@/utils/scroll-lock/document-lock"
 import { gestureAllowsScroll, resolveGestureScrollParent } from "@/utils/scroll-lock/gesture-scroll"
@@ -20,7 +21,7 @@ export function RemoveScroll({ children, enabled = true }: RemoveScrollProps) {
 
 		const root = rootRef.current
 
-		if (!root) return
+		if (!(Predicate.isNotNullish(root) && Predicate.isTruthy(root))) return
 
 		scrollLockRoots.add(root)
 		lockDocumentScroll()
@@ -29,7 +30,7 @@ export function RemoveScroll({ children, enabled = true }: RemoveScrollProps) {
 			if (e.touches.length !== 1) return
 			const t = e.touches.item(0)
 
-			if (!t) return
+			if (!(Predicate.isNotNullish(t) && Predicate.isTruthy(t))) return
 			lastTouchYRef.current = t.clientY
 			lastTouchXRef.current = t.clientX
 		}
@@ -38,7 +39,7 @@ export function RemoveScroll({ children, enabled = true }: RemoveScrollProps) {
 			if (e.touches.length !== 1) return
 			const touch = e.touches.item(0)
 
-			if (!touch) return
+			if (!(Predicate.isNotNullish(touch) && Predicate.isTruthy(touch))) return
 			const target = e.target
 
 			if (!(target instanceof Node)) return

@@ -1,7 +1,19 @@
 import type { ReactNode } from "react"
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Array as Arr, Effect, FileSystem, Match, Option, Path, Schema, Semaphore } from "effect"
+import {
+	Array as Arr,
+	Effect,
+	FileSystem,
+	Match,
+	Option,
+	Path,
+	Schema,
+	Semaphore,
+	String as Str,
+	Record as Rec,
+	Predicate,
+} from "effect"
 import { Command, Flag } from "effect/cli"
 import { render } from "takumi-js"
 import { getAmmoModByKey, type AmmoMod, type AmmoModKey } from "@/data/ammo-mods"
@@ -20,6 +32,7 @@ import { getZombieByKey, getZombies, type Zombie, type ZombieType } from "@/data
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { formatEstimatedTimeRange } from "@/utils/shared-functions"
+import { dateFrom } from "@/utils/system-time"
 import {
 	decodeOpengraphManifest,
 	encodeOpengraphManifest,
@@ -28,8 +41,8 @@ import {
 } from "@/utils/validation-schemas"
 import stylesheet from "@/globals.css" with { type: "file" }
 import geistMonoCss from "@fontsource-variable/geist-mono/wght.css" with { type: "file" }
-
 /** App CSS + Geist Mono only for OG renders (Mono is not loaded on the site). */
+
 const ogStylesheets = [stylesheet, geistMonoCss]
 
 const OPENGRAPH_KINDS = [
@@ -42,19 +55,25 @@ const OPENGRAPH_KINDS = [
 const DEFAULT_OUTPUT_BASE = "public/opengraph-images"
 
 /** When set (e.g. in tests), overrides the manifest path so CLI runs do not mutate repo `data/`. */
-const manifestPathFromEnv = () =>
-	process.env.OG_TEST_MANIFEST_PATH?.length ? process.env.OG_TEST_MANIFEST_PATH : undefined
+const manifestPathFromEnv = () => {
+	const path = process.env.OG_TEST_MANIFEST_PATH
 
-export class ImageGenerationError extends Schema.TaggedError<ImageGenerationError>()(
-	"ImageGenerationError",
+	return Predicate.isNotNullish(path?.length) && Predicate.isTruthy(path?.length) ? path : undefined
+}
+
+export class ImageGenerationError extends Schema.TaggedError<
+	ImageGenerationError,
+	{ readonly brand: unique symbol }
+>()("ImageGenerationError", {
+	cause: Schema.Defect(),
+}) {}
+
+export class OgCliError extends Schema.TaggedError<OgCliError, { readonly brand: unique symbol }>()(
+	"OgCliError",
 	{
-		cause: Schema.Defect(),
+		message: Schema.String,
 	},
 ) {}
-
-export class OgCliError extends Schema.TaggedError<OgCliError>()("OgCliError", {
-	message: Schema.String,
-}) {}
 
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const
 
@@ -79,21 +98,21 @@ const OG_FONT_MONO = "Geist Mono Variable, ui-monospace, monospace"
 /** ISO `YYYY-MM-DD` calendar day → long date in en-US; UTC avoids shifting the printed day by local TZ. */
 function formatMapReleaseDay(isoDateOnly: string): string {
 	return new Intl.DateTimeFormat("en-US", { ...DATE_OPTIONS, timeZone: "UTC" }).format(
-		new Date(`${isoDateOnly}T00:00:00Z`),
+		dateFrom(`${isoDateOnly}T00:00:00Z`),
 	)
 }
 
 const clampText = (text: string, maxChars: number) => {
-	const t = text.trim().replace(/\s+/g, " ")
+	const t = Str.replace(/\s+/g, " ")(Str.trim(text))
 
 	if (t.length <= maxChars) {
 		return t
 	}
 
-	const slice = t.slice(0, maxChars)
-	const i = slice.lastIndexOf(" ")
+	const slice = Str.slice(0, maxChars)(t)
+	const i = Option.getOrElse(Str.lastIndexOf(" ")(slice), () => -1)
 
-	return `${(i > maxChars * 0.5 ? slice.slice(0, i) : slice).trimEnd()}…`
+	return `${Str.trimEnd(i > maxChars * 0.5 ? Str.slice(0, i)(slice) : slice)}…`
 }
 
 const difficultyCrumbColor = (difficulty: MainQuestDifficulty) =>
@@ -296,13 +315,13 @@ const renderOg = (
 ) =>
 	Effect.tryPromise({
 		try: () => render(element, options),
-		catch: cause => new ImageGenerationError({ cause }),
+		catch: cause => ImageGenerationError.make({ cause }),
 	}).pipe(Effect.map(data => new Uint8Array(data)))
 
 export const generateMainQuestImage = Effect.fnUntraced(
 	function* (map: MapEntry) {
 		if (map.state.valueOrUndefined === "Coming Soon") {
-			return yield* new ImageGenerationError({ cause: new Error("Map is Coming Soon") })
+			return yield* ImageGenerationError.make({ cause: new Error("Map is Coming Soon") })
 		}
 
 		const fs = yield* FileSystem.FileSystem
@@ -325,7 +344,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 		const difficulty = yield* map.difficulty.pipe(Effect.fromOption)
 		const dateStr = formatMapReleaseDay(map.releaseDate)
 		const blurb = clampText(map.description, 200)
-		const displayTitle = map.title.toLocaleUpperCase("en-US")
+		const displayTitle = Str.toLocaleUpperCase("en-US")(map.title)
 		const titleLen = displayTitle.length
 		const titlePx = titleLen > 24 ? 48 : titleLen > 18 ? 54 : titleLen > 14 ? 62 : 70
 		const titleTracking = titleLen > 22 ? "-0.01em" : "0.002em"
@@ -345,7 +364,9 @@ export const generateMainQuestImage = Effect.fnUntraced(
 
 		const footerMeta = (
 			<>
-				{estTime ? metaColumn("Est. run", estTime) : null}
+				{Predicate.isNotNullish(estTime) && Predicate.isTruthy(estTime)
+					? metaColumn("Est. run", estTime)
+					: null}
 				{timeToRead != null ? metaColumn("Guide read", `${timeToRead} min`) : null}
 				{metaColumn("Map drop", dateStr)}
 			</>
@@ -380,7 +401,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 export const generateSideQuestImage = Effect.fnUntraced(
 	function* (sideQuest: SideQuest) {
 		if (sideQuest.state.valueOrUndefined === "Coming Soon") {
-			return yield* new ImageGenerationError({ cause: new Error("Side Quest is Coming Soon") })
+			return yield* ImageGenerationError.make({ cause: new Error("Side Quest is Coming Soon") })
 		}
 
 		const fs = yield* FileSystem.FileSystem
@@ -395,7 +416,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 		const timeToRead = getMdxDocumentMetaFromSource(fileContent).timeToRead
 		const dateStr = formatMapReleaseDay(map.releaseDate)
 		const blurb = clampText(sideQuest.description, 200)
-		const displayTitle = sideQuest.title.toLocaleUpperCase("en-US")
+		const displayTitle = Str.toLocaleUpperCase("en-US")(sideQuest.title)
 		const titleLen = displayTitle.length
 		const titlePx = titleLen > 24 ? 48 : titleLen > 18 ? 54 : titleLen > 14 ? 62 : 70
 		const titleTracking = titleLen > 22 ? "-0.01em" : "0.002em"
@@ -449,7 +470,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 export const generateZombieImage = Effect.fnUntraced(
 	function* (zombie: Zombie) {
 		if (zombie.state.valueOrUndefined === "Coming Soon") {
-			return yield* new ImageGenerationError({ cause: new Error("Zombie is Coming Soon") })
+			return yield* ImageGenerationError.make({ cause: new Error("Zombie is Coming Soon") })
 		}
 
 		const fs = yield* FileSystem.FileSystem
@@ -465,13 +486,13 @@ export const generateZombieImage = Effect.fnUntraced(
 				Option.getOrElse(() => key),
 			)
 
-		const weakLabels = zombie.weakPoints.map(weakPointTitle)
+		const weakLabels = Arr.map(zombie.weakPoints, weakPointTitle)
 		const hasWeakPoints = zombie.weakPoints.length > 0
 
 		const hasElemental = zombie.elementalWeakness.length > 0
 
 		const elementalModsOrdered = hasElemental
-			? zombie.elementalWeakness.flatMap(key => {
+			? Arr.flatMap(zombie.elementalWeakness, key => {
 					const mod = resolveAmmoModForOg(key, debutGameKey)
 
 					return mod === null ? [] : [mod]
@@ -485,7 +506,12 @@ export const generateZombieImage = Effect.fnUntraced(
 				elementalModsOrdered,
 				mod =>
 					Effect.gen(function* () {
-						const ammoImagePath = path.join(process.cwd(), "public", mod.image.replace(/^\/+/, ""))
+						const ammoImagePath = path.join(
+							process.cwd(),
+							"public",
+							Str.replace(/^\/+/, "")(mod.image),
+						)
+
 						const data = yield* fs.readFile(ammoImagePath)
 						ammoPersistentImages.push({ data, src: mod.id })
 					}),
@@ -499,18 +525,28 @@ export const generateZombieImage = Effect.fnUntraced(
 				Option.getOrElse(() => key),
 			)
 
-		const attackLabels = zombie.attacks.map(attackTitle)
-		const attackStr = attackLabels.length ? attackLabels.join(" · ") : "—"
+		const attackLabels = Arr.map(zombie.attacks, attackTitle)
+
+		const attackStr =
+			Predicate.isNotNullish(attackLabels.length) && Predicate.isTruthy(attackLabels.length)
+				? Arr.join(attackLabels, " · ")
+				: "—"
+
 		const attacksOnlyStat = !hasWeakPoints && !hasElemental
 
-		const zombieImagePath = path.join(process.cwd(), "public", zombie.image.replace(/^\/+/, ""))
+		const zombieImagePath = path.join(
+			process.cwd(),
+			"public",
+			Str.replace(/^\/+/, "")(zombie.image),
+		)
+
 		const zombieImage = yield* fs.readFile(zombieImagePath)
 		const siteLogo = yield* fs.readFile(path.join(process.cwd(), "public", "logo.webp"))
 
 		const mapBackdropSrc = `${debutMap.id}-map-backdrop`
 
 		const mapBackdropData = yield* fs.readFile(
-			path.join(process.cwd(), "public", debutMap.image.replace(/^\/+/, "")),
+			path.join(process.cwd(), "public", Str.replace(/^\/+/, "")(debutMap.image)),
 		)
 
 		const titleLen = zombie.title.length
@@ -518,7 +554,11 @@ export const generateZombieImage = Effect.fnUntraced(
 
 		const debutWhere = debutMap.title
 
-		const weakStr = weakLabels.length ? weakLabels.join(" · ") : "—"
+		const weakStr =
+			Predicate.isNotNullish(weakLabels.length) && Predicate.isTruthy(weakLabels.length)
+				? Arr.join(weakLabels, " · ")
+				: "—"
+
 		const typeMetaColor = ZOMBIE_TYPE_OG_COLOR[zombie.type]
 
 		const attacksOgBlock = (
@@ -756,8 +796,8 @@ export const generateZombieImage = Effect.fnUntraced(
 														tw="flex flex-row flex-wrap items-center min-w-0 shrink-0"
 														style={{ gap: 10 }}
 													>
-														{elementalModsOrdered.map((mod, i) =>
-															mod ? (
+														{Arr.map(elementalModsOrdered, (mod, i) =>
+															Predicate.isNotNullish(mod) && Predicate.isTruthy(mod) ? (
 																<img
 																	key={`${mod.id}-${i}`}
 																	src={mod.id}
@@ -813,20 +853,20 @@ export const generateZombieImage = Effect.fnUntraced(
 export const generateRelicImage = Effect.fnUntraced(
 	function* (relic: Relic) {
 		if (relic.state.valueOrUndefined === "Coming Soon") {
-			return yield* new ImageGenerationError({ cause: new Error("Relic is Coming Soon") })
+			return yield* ImageGenerationError.make({ cause: new Error("Relic is Coming Soon") })
 		}
 
 		const fs = yield* FileSystem.FileSystem
 		const path = yield* Path.Path
 		const map = yield* getMapByKey(relic.map).pipe(Effect.fromOption)
-		const relicImagePath = path.join(process.cwd(), "public", relic.image.replace(/^\/+/, ""))
+		const relicImagePath = path.join(process.cwd(), "public", Str.replace(/^\/+/, "")(relic.image))
 		const relicImage = yield* fs.readFile(relicImagePath)
 		const siteLogo = yield* fs.readFile(path.join(process.cwd(), "public", "logo.webp"))
 
 		const mapBackdropSrc = `${map.id}-map-backdrop`
 
 		const mapBackdropData = yield* fs.readFile(
-			path.join(process.cwd(), "public", map.image.replace(/^\/+/, "")),
+			path.join(process.cwd(), "public", Str.replace(/^\/+/, "")(map.image)),
 		)
 
 		const titleLen = relic.title.length
@@ -834,7 +874,7 @@ export const generateRelicImage = Effect.fnUntraced(
 
 		const mapTitle = map.title
 		const estTime = formatEstimatedTimeRange(relic.estimatedTimeMins)
-		const discoveredStr = new Date(relic.discoveredDate).toLocaleDateString("en-US", DATE_OPTIONS)
+		const discoveredStr = dateFrom(relic.discoveredDate).toLocaleDateString("en-US", DATE_OPTIONS)
 
 		return yield* renderOg(
 			<div
@@ -1038,7 +1078,7 @@ const updateManifest = Effect.fnUntraced(function* (
 	const removedManifestKeys: Array<{ kind: OpengraphKind; slug: string }> = []
 
 	for (const kind of OPENGRAPH_KINDS) {
-		for (const [slug, fileVersion] of Object.entries(merged[kind])) {
+		for (const [slug, fileVersion] of Rec.toEntries(merged[kind])) {
 			const ogPath = path.join(outputBase, kind, `opengraph-${slug}-v${fileVersion}.jpg`)
 
 			if (yield* fs.exists(ogPath)) {
@@ -1050,13 +1090,17 @@ const updateManifest = Effect.fnUntraced(function* (
 	}
 
 	if (removedManifestKeys.length > 0) {
-		const listed = removedManifestKeys.map(({ kind, slug }) => `${kind}/${slug}`).join(", ")
+		const listed = Arr.join(
+			Arr.map(removedManifestKeys, ({ kind, slug }) => `${kind}/${slug}`),
+			", ",
+		)
+
 		yield* Effect.log(
 			`Removed orphaned opengraph manifest keys (image file missing under output directory): ${listed}`,
 		)
 	}
 
-	const updatedManifest = new OpengraphManifest(pruned, { disableChecks: true })
+	const updatedManifest = OpengraphManifest.make(pruned, { disableChecks: true })
 	yield* fs.writeFileString(manifestPath, yield* encodeOpengraphManifest(updatedManifest))
 })
 
@@ -1203,7 +1247,7 @@ export const generateOgCommand = Command.make(
 				(mainFamily ? 1 : 0)
 
 			if (modeCount !== 1) {
-				return yield* new OgCliError({
+				return yield* OgCliError.make({
 					message:
 						"Specify exactly one target: --maps, --map <id>, --quests [--map <id>], --quest <id>, --zombies [--map <id>], --zombie <id>, --relics [--map <id>], or --relic <id>.",
 				})
@@ -1211,13 +1255,13 @@ export const generateOgCommand = Command.make(
 
 			if (zombieFamily) {
 				if (zombiesEnabled && Option.isSome(zombieFlag)) {
-					return yield* new OgCliError({
+					return yield* OgCliError.make({
 						message: "Use either --zombies or --zombie <id>, not both.",
 					})
 				}
 
 				if (Option.isSome(zombieFlag) && Option.isSome(mapFlag)) {
-					return yield* new OgCliError({
+					return yield* OgCliError.make({
 						message: "--map is only valid with --zombies (batch), not with --zombie <id>.",
 					})
 				}
@@ -1233,11 +1277,12 @@ export const generateOgCommand = Command.make(
 
 				const zombies = Option.match(mapFlag, {
 					onNone: () => getZombies(),
-					onSome: mapKey => getZombies().filter(z => Arr.head(z.maps).valueOrUndefined === mapKey),
+					onSome: mapKey =>
+						Arr.filter(getZombies(), z => Arr.head(z.maps).valueOrUndefined === mapKey),
 				})
 
-				if (!zombies.length) {
-					return yield* new OgCliError({
+				if (!(Predicate.isNotNullish(zombies.length) && Predicate.isTruthy(zombies.length))) {
+					return yield* OgCliError.make({
 						message: Option.match(mapFlag, {
 							onNone: () => "No zombies found in the catalog.",
 							onSome: mapKey => `No zombies found for map ${mapKey}`,
@@ -1260,13 +1305,13 @@ export const generateOgCommand = Command.make(
 
 			if (relicFamily) {
 				if (relicsEnabled && Option.isSome(relicFlag)) {
-					return yield* new OgCliError({
+					return yield* OgCliError.make({
 						message: "Use either --relics or --relic <id>, not both.",
 					})
 				}
 
 				if (Option.isSome(relicFlag) && Option.isSome(mapFlag)) {
-					return yield* new OgCliError({
+					return yield* OgCliError.make({
 						message: "--map is only valid with --relics (batch), not with --relic <id>.",
 					})
 				}
@@ -1275,7 +1320,7 @@ export const generateOgCommand = Command.make(
 					const relic = yield* getRelicByKey(relicFlag.value).pipe(Effect.fromOption)
 
 					if (Option.getOrUndefined(relic.state) === "Coming Soon") {
-						return yield* new OgCliError({
+						return yield* OgCliError.make({
 							message: `Relic "${relicFlag.value}" is not available (Coming Soon).`,
 						})
 					}
@@ -1286,13 +1331,16 @@ export const generateOgCommand = Command.make(
 					return
 				}
 
-				const relics = Option.match(mapFlag, {
-					onNone: () => getRelics(),
-					onSome: mapKey => getRelics().filter(r => r.map === mapKey),
-				}).filter(r => Option.getOrUndefined(r.state) !== "Coming Soon")
+				const relics = Arr.filter(
+					Option.match(mapFlag, {
+						onNone: () => getRelics(),
+						onSome: mapKey => Arr.filter(getRelics(), r => r.map === mapKey),
+					}),
+					r => Option.getOrUndefined(r.state) !== "Coming Soon",
+				)
 
-				if (!relics.length) {
-					return yield* new OgCliError({
+				if (!(Predicate.isNotNullish(relics.length) && Predicate.isTruthy(relics.length))) {
+					return yield* OgCliError.make({
 						message: Option.match(mapFlag, {
 							onNone: () => "No published relics found in the catalog.",
 							onSome: mapKey => `No published relics found for map ${mapKey}`,
@@ -1315,13 +1363,13 @@ export const generateOgCommand = Command.make(
 
 			if (questFamily) {
 				if (questsEnabled && Option.isSome(questFlag)) {
-					return yield* new OgCliError({
+					return yield* OgCliError.make({
 						message: "Use either --quests or --quest <id>, not both.",
 					})
 				}
 
 				if (Option.isSome(questFlag) && Option.isSome(mapFlag)) {
-					return yield* new OgCliError({
+					return yield* OgCliError.make({
 						message: "--map is only valid with --quests (batch), not with --quest <id>.",
 					})
 				}
@@ -1337,11 +1385,11 @@ export const generateOgCommand = Command.make(
 
 				const quests = Option.match(mapFlag, {
 					onNone: () => getSideQuests(),
-					onSome: mapKey => getSideQuests().filter(q => q.map === mapKey),
+					onSome: mapKey => Arr.filter(getSideQuests(), q => q.map === mapKey),
 				})
 
-				if (!quests.length) {
-					return yield* new OgCliError({
+				if (!(Predicate.isNotNullish(quests.length) && Predicate.isTruthy(quests.length))) {
+					return yield* OgCliError.make({
 						message: Option.match(mapFlag, {
 							onNone: () => "No side quests found in the catalog.",
 							onSome: mapKey => `No side quests found for map ${mapKey}`,
@@ -1365,7 +1413,7 @@ export const generateOgCommand = Command.make(
 			}
 
 			if (mapsEnabled && Option.isSome(mapFlag)) {
-				return yield* new OgCliError({
+				return yield* OgCliError.make({
 					message:
 						"--maps already generates every main quest; omit --map or use --map <id> alone for one map.",
 				})
@@ -1374,8 +1422,8 @@ export const generateOgCommand = Command.make(
 			if (mapsEnabled) {
 				const maps = getMapsWithMainQuest()
 
-				if (!maps.length) {
-					return yield* new OgCliError({
+				if (!(Predicate.isNotNullish(maps.length) && Predicate.isTruthy(maps.length))) {
+					return yield* OgCliError.make({
 						message: "No maps with main quests found in the catalog.",
 					})
 				}
@@ -1403,7 +1451,7 @@ export const generateOgCommand = Command.make(
 				return
 			}
 
-			return yield* new OgCliError({
+			return yield* OgCliError.make({
 				message:
 					"Specify --maps, --map <id>, --quests [--map <id>], --quest <id>, --zombies [--map <id>], --zombie <id>, --relics [--map <id>], or --relic <id>.",
 			})

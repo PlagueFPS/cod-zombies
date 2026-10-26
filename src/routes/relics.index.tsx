@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { Array as Arr } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -50,14 +51,14 @@ export const Route = createFileRoute("/relics/")({
 
 		const maps = getMaps()
 		const allRelics = getRelics()
-		const relicMaps = new Set<string>(allRelics.map(r => r.map))
+		const relicMaps = new Set<string>(Arr.map(allRelics, r => r.map))
 
-		const typeFilters = [...new Set(allRelics.map(r => r.type))].map(type => ({
+		const typeFilters = Arr.map([...new Set(Arr.map(allRelics, r => r.type))], type => ({
 			value: relicTypeSlug(type),
 			label: type,
 		}))
 
-		const mapFilters = maps.flatMap(m => {
+		const mapFilters = Arr.flatMap(maps, m => {
 			if (!relicMaps.has(m.id)) return []
 
 			return [{ value: m.id, label: m.title }]
@@ -103,7 +104,7 @@ export const Route = createFileRoute("/relics/")({
 			serverUrl,
 			title,
 			description,
-			relics: pageResult.items.map(encodeRelic),
+			relics: Arr.map(pageResult.items, encodeRelic),
 			totalCount: pageResult.totalCount,
 			pageSize: pageResult.pageSize,
 			page: pageResult.page,
@@ -152,8 +153,11 @@ function Relics() {
 	const filterValue: FilterOption[] = []
 
 	for (const g of groups) {
-		const values = g.items.filter(
-			i => map?.some(d => d === i.value) || type?.some(t => t === i.value),
+		const values = Arr.filter(
+			g.items,
+			i =>
+				(map != null && Arr.some(map, d => d === i.value)) ||
+				(type != null && Arr.some(type, t => t === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)
@@ -163,8 +167,8 @@ function Relics() {
 		const selected = new Map<string, string[]>()
 
 		for (const g of groups) {
-			const matched = g.items.flatMap(item =>
-				next.some(selected => selected.value === item.value) ? [item.value] : [],
+			const matched = Arr.flatMap(g.items, item =>
+				Arr.some(next, selected => selected.value === item.value) ? [item.value] : [],
 			)
 
 			if (matched.length > 0) {

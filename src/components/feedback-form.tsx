@@ -2,7 +2,7 @@ import { useForm } from "@tanstack/react-form"
 import { useHotkeys } from "@tanstack/react-hotkeys"
 import { useServerFn } from "@tanstack/react-start"
 import { cn } from "cn"
-import { Cause, Exit } from "effect"
+import { Cause, Exit, Predicate, String as Str } from "effect"
 import { CircleAlert, MessageCircleHeart, Send } from "lucide-react"
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
@@ -44,17 +44,25 @@ export function FeedbackForm({ className, ...props }: FeedbackFormProps) {
 			onBlur: StandardFeedbackFormSchema,
 		},
 		onSubmit: ({ value }) => {
-			const normalized = { ...value, email: value.email?.trim() || undefined }
+			const trimmedEmail = Predicate.isNotNullish(value.email) ? Str.trim(value.email) : undefined
+
+			const normalized = {
+				...value,
+				email:
+					Predicate.isNotNullish(trimmedEmail) && Predicate.isTruthy(trimmedEmail)
+						? trimmedEmail
+						: undefined,
+			}
+
 			const data = validateFeedbackForm(normalized)
 
 			return Exit.match(data, {
-				onFailure: cause => {
-					return toast.error("Invalid feedback form data!", {
+				onFailure: cause =>
+					toast.error("Invalid feedback form data!", {
 						description: Cause.pretty(cause),
 						duration: 5000,
 						position: "bottom-right",
-					})
-				},
+					}),
 				onSuccess: value => {
 					startTransition(async () => {
 						const result = await sendFeedback({ data: value })

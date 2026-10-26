@@ -26,7 +26,12 @@ import {
 	Option,
 	Schema,
 	Crypto,
+	Record as Rec,
 	Redacted,
+	Array as Arr,
+	String as Str,
+	Console,
+	Predicate,
 } from "effect"
 import { Command, Flag } from "effect/cli"
 import { Hex } from "effect/encoding"
@@ -68,37 +73,37 @@ const broadcastLayer = Layer.mergeAll(emailLayer, BunServices.layer).pipe(
 	Layer.provideMerge(Layer.provide(DevVarsConfig, BunServices.layer)),
 )
 
-export class BroadcastInputError extends Schema.TaggedError<BroadcastInputError>()(
-	"BroadcastInputError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+export class BroadcastInputError extends Schema.TaggedError<
+	BroadcastInputError,
+	{ readonly brand: unique symbol }
+>()("BroadcastInputError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
-export class MissingOpengraphImageError extends Schema.TaggedError<MissingOpengraphImageError>()(
-	"MissingOpengraphImageError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+export class MissingOpengraphImageError extends Schema.TaggedError<
+	MissingOpengraphImageError,
+	{ readonly brand: unique symbol }
+>()("MissingOpengraphImageError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
-export class BroadcastRenderError extends Schema.TaggedError<BroadcastRenderError>()(
-	"BroadcastRenderError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+export class BroadcastRenderError extends Schema.TaggedError<
+	BroadcastRenderError,
+	{ readonly brand: unique symbol }
+>()("BroadcastRenderError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
-export class BroadcastHashError extends Schema.TaggedError<BroadcastHashError>()(
-	"BroadcastHashError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+export class BroadcastHashError extends Schema.TaggedError<
+	BroadcastHashError,
+	{ readonly brand: unique symbol }
+>()("BroadcastHashError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
 export interface QuestBroadcastInput {
 	kind: "quest"
@@ -181,8 +186,9 @@ interface RenderedBroadcast {
 }
 
 function guideUrl(redirectUrl: string): string {
-	if (redirectUrl.startsWith("https://") || redirectUrl.startsWith("http://")) return redirectUrl
-	const path = redirectUrl.startsWith("/") ? redirectUrl : `/${redirectUrl}`
+	if (Str.startsWith("https://")(redirectUrl) || Str.startsWith("http://")(redirectUrl))
+		return redirectUrl
+	const path = Str.startsWith("/")(redirectUrl) ? redirectUrl : `/${redirectUrl}`
 
 	return `${SITE_ORIGIN}${path}`
 }
@@ -191,18 +197,18 @@ function emailBuildError(
 	cause: unknown,
 	fallback: string,
 ): MissingOpengraphImageError | BroadcastRenderError {
-	if (cause instanceof Error && cause.message.startsWith("Missing opengraph image")) {
-		return new MissingOpengraphImageError({ message: cause.message, cause })
+	if (cause instanceof Error && Str.startsWith("Missing opengraph image")(cause.message)) {
+		return MissingOpengraphImageError.make({ message: cause.message, cause })
 	}
 
-	return new BroadcastRenderError({ message: fallback, cause })
+	return BroadcastRenderError.make({ message: fallback, cause })
 }
 
 const requireBullets = Effect.fnUntraced(function* (bullets: readonly string[], label: string) {
-	const trimmed = bullets.map(bullet => bullet.trim())
+	const trimmed = Arr.map(bullets, bullet => Str.trim(bullet))
 
-	if (trimmed.length === 0 || trimmed.some(bullet => bullet.length === 0)) {
-		return yield* new BroadcastInputError({
+	if (trimmed.length === 0 || Arr.some(trimmed, bullet => bullet.length === 0)) {
+		return yield* BroadcastInputError.make({
 			message: `${label} needs at least one non-empty --bullet.`,
 			cause: bullets,
 		})
@@ -217,8 +223,8 @@ const textOrFallback = Effect.fnUntraced(function* (
 	flag: "--title" | "--description",
 ) {
 	if (Option.isNone(override)) {
-		if (fallback.trim().length === 0) {
-			return yield* new BroadcastInputError({
+		if (Str.trim(fallback).length === 0) {
+			return yield* BroadcastInputError.make({
 				message: `This entry has no ${flag} text. Pass ${flag}.`,
 				cause: fallback,
 			})
@@ -227,10 +233,10 @@ const textOrFallback = Effect.fnUntraced(function* (
 		return fallback
 	}
 
-	const value = override.value.trim()
+	const value = Str.trim(override.value)
 
 	if (value.length === 0) {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: `${flag} cannot be empty.`,
 			cause: override.value,
 		})
@@ -244,7 +250,7 @@ const refuseComingSoon = Effect.fnUntraced(function* (
 	label: string,
 ) {
 	if (state.valueOrUndefined === "Coming Soon") {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: `${label} is still Coming Soon, so it cannot be broadcast.`,
 			cause: label,
 		})
@@ -255,7 +261,7 @@ const requireMap = Effect.fnUntraced(function* (id: string) {
 	const map = getMapByKey(id)
 
 	if (Option.isNone(map)) {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: `No map with id "${id}".`,
 			cause: id,
 		})
@@ -268,7 +274,7 @@ const resolveMainQuestBroadcast = Effect.fnUntraced(function* (input: ContentCli
 	const map = yield* requireMap(input.id)
 
 	if (Option.isNone(map.mainQuest)) {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: `Map "${input.id}" has no main quest.`,
 			cause: input.id,
 		})
@@ -292,7 +298,7 @@ const resolveSideQuestBroadcast = Effect.fnUntraced(function* (input: ContentCli
 	const quest = getSideQuestByKey(input.id)
 
 	if (Option.isNone(quest)) {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: `No side quest with id "${input.id}".`,
 			cause: input.id,
 		})
@@ -317,7 +323,7 @@ const resolveRelicBroadcast = Effect.fnUntraced(function* (input: ContentCliInpu
 	const relic = getRelicByKey(input.id)
 
 	if (Option.isNone(relic)) {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: `No relic with id "${input.id}".`,
 			cause: input.id,
 		})
@@ -340,7 +346,7 @@ const resolveRelicBroadcast = Effect.fnUntraced(function* (input: ContentCliInpu
 
 const resolveZombieBroadcast = Effect.fnUntraced(function* (input: ContentCliInput) {
 	if (input.bullets.length > 0) {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: "Zombie broadcasts use the template's breakdown list. Do not pass --bullet.",
 			cause: input.bullets,
 		})
@@ -349,7 +355,7 @@ const resolveZombieBroadcast = Effect.fnUntraced(function* (input: ContentCliInp
 	const zombie = getZombieByKey(input.id)
 
 	if (Option.isNone(zombie)) {
-		return yield* new BroadcastInputError({
+		return yield* BroadcastInputError.make({
 			message: `No zombie with id "${input.id}".`,
 			cause: input.id,
 		})
@@ -397,7 +403,7 @@ const renderEmail = Effect.fn("renderEmail")(function* (react: ReactElement) {
 	const html = yield* Effect.tryPromise({
 		try: () => render(react),
 		catch: cause =>
-			new BroadcastRenderError({
+			BroadcastRenderError.make({
 				message: "Failed to render the broadcast email.",
 				cause,
 			}),
@@ -406,14 +412,14 @@ const renderEmail = Effect.fn("renderEmail")(function* (react: ReactElement) {
 	const text = yield* Effect.tryPromise({
 		try: () => render(react, { plainText: true }),
 		catch: cause =>
-			new BroadcastRenderError({
+			BroadcastRenderError.make({
 				message: "Failed to render the broadcast email as text.",
 				cause,
 			}),
 	})
 
-	if (!html.includes("RESEND_UNSUBSCRIBE_URL")) {
-		return yield* new BroadcastRenderError({
+	if (!Str.includes("RESEND_UNSUBSCRIBE_URL")(html)) {
+		return yield* BroadcastRenderError.make({
 			message: "Broadcast HTML is missing the Resend unsubscribe URL.",
 			cause: html,
 		})
@@ -558,20 +564,18 @@ const broadcastIdempotencyKey = Effect.fn("broadcastIdempotencyKey")(function* (
 	text: string,
 ) {
 	const crypto = yield* Crypto.Crypto
+	const payload = textEncoder.encode(canonicalBroadcastJson(broadcast, subject, text))
 
-	const digest = yield* crypto
-		.digest("SHA-256", textEncoder.encode(JSON.stringify({ broadcast, subject, text })))
-		.pipe(
-			Effect.mapError(
-				cause =>
-					new BroadcastHashError({
-						message: "Failed to hash the broadcast for an idempotency key.",
-						cause,
-					}),
-			),
-		)
+	const digest = yield* crypto.digest("SHA-256", payload).pipe(
+		Effect.mapError(cause =>
+			BroadcastHashError.make({
+				message: "Failed to hash the broadcast for an idempotency key.",
+				cause,
+			}),
+		),
+	)
 
-	const fingerprint = Hex.encode(digest).slice(0, 32)
+	const fingerprint = Str.slice(0, 32)(Hex.encode(digest))
 
 	return `broadcast/${broadcast.kind}/${fingerprint}`
 })
@@ -620,38 +624,48 @@ export const sendBroadcast = Effect.fn("sendBroadcast")(function* (
 	return { mode: "sent" as const, id: data.id, subject: rendered.subject } satisfies BroadcastSent
 })
 
-function printDryRun(result: BroadcastDryRun): void {
-	console.log("Dry run. No broadcast was sent.")
-	console.log("")
-	console.log(`From: ${result.from}`)
-	console.log(`Reply-to: ${result.replyTo}`)
-	console.log(`Segment: ${result.segmentId}`)
-	console.log(`Name: ${result.name}`)
-	console.log(`Subject: ${result.subject}`)
-	console.log(`Preview: ${result.previewText}`)
-	console.log("")
-	console.log("--- Plain text ---")
-	console.log(result.text)
-	console.log("Pass --send to deliver this broadcast.")
-}
+/** Sorts object keys so the idempotency digest does not depend on property order. */
+const canonicalBroadcastJson = (broadcast: BroadcastInput, subject: string, text: string) =>
+	// oxlint-disable-next-line effecttsgo/prefer-schema-over-json -- digest is canonical JSON, not a schema codec
+	JSON.stringify({ broadcast, subject, text }, (_key, nested) => {
+		if (!Predicate.isObject(nested)) return nested
 
-function printSent(result: BroadcastSent): void {
-	console.log(`Sent broadcast ${result.id}`)
-	console.log(`Subject: ${result.subject}`)
-}
+		const keys = Rec.keys(nested).sort()
 
-function printResult(result: BroadcastDryRun | BroadcastSent): void {
+		return Rec.fromEntries(Arr.map(keys, key => [key, nested[key]] as const))
+	})
+
+const printDryRun = Effect.fnUntraced(function* (result: BroadcastDryRun) {
+	yield* Console.log("Dry run. No broadcast was sent.")
+	yield* Console.log("")
+	yield* Console.log(`From: ${result.from}`)
+	yield* Console.log(`Reply-to: ${result.replyTo}`)
+	yield* Console.log(`Segment: ${result.segmentId}`)
+	yield* Console.log(`Name: ${result.name}`)
+	yield* Console.log(`Subject: ${result.subject}`)
+	yield* Console.log(`Preview: ${result.previewText}`)
+	yield* Console.log("")
+	yield* Console.log("--- Plain text ---")
+	yield* Console.log(result.text)
+	yield* Console.log("Pass --send to deliver this broadcast.")
+})
+
+const printSent = Effect.fnUntraced(function* (result: BroadcastSent) {
+	yield* Console.log(`Sent broadcast ${result.id}`)
+	yield* Console.log(`Subject: ${result.subject}`)
+})
+
+const printResult = (result: BroadcastDryRun | BroadcastSent) =>
 	Match.value(result).pipe(
 		Match.discriminatorsExhaustive("mode")({
 			"dry-run": printDryRun,
 			sent: printSent,
 		}),
 	)
-}
 
 const deliver = Effect.fn("deliverBroadcast")(function* (broadcast: BroadcastInput, send: boolean) {
 	const result = yield* sendBroadcast(broadcast, { send })
-	yield* Effect.sync(() => printResult(result))
+	yield* printResult(result)
 })
 
 const sendFlag = Flag.Boolean("send").pipe(

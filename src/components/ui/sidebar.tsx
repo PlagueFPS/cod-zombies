@@ -45,7 +45,7 @@ const SidebarContext = React.createContext<SidebarContextProps | null>(null)
 function useSidebar() {
 	const context = React.useContext(SidebarContext)
 
-	if (!context) {
+	if (Predicate.isNullish(context)) {
 		throw new Error("useSidebar must be used within a SidebarProvider.")
 	}
 
@@ -75,7 +75,7 @@ function SidebarProvider({
 		(value: boolean | ((value: boolean) => boolean)) => {
 			const openState = Predicate.isFunction(value) ? value(open) : value
 
-			if (setOpenProp) {
+			if (Predicate.isNotNullish(setOpenProp) && Predicate.isTruthy(setOpenProp)) {
 				setOpenProp(openState)
 			} else {
 				_setOpen(openState)
@@ -86,9 +86,10 @@ function SidebarProvider({
 		[setOpenProp, open],
 	)
 
-	const toggleSidebar = React.useCallback(() => {
-		return isMobile ? setOpenMobile(open => !open) : setOpen(open => !open)
-	}, [isMobile, setOpen, setOpenMobile])
+	const toggleSidebar = React.useCallback(
+		() => (isMobile ? setOpenMobile(open => !open) : setOpen(open => !open)),
+		[isMobile, setOpen, setOpenMobile],
+	)
 
 	useHotkey("Mod+B", () => toggleSidebar())
 
@@ -161,7 +162,7 @@ function Sidebar({
 		)
 	}
 
-	if (isMobile) {
+	if (Predicate.isNotNullish(isMobile) && Predicate.isTruthy(isMobile)) {
 		return (
 			<Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
 				<SheetContent
@@ -487,7 +488,9 @@ function SidebarMenuButton({
 			},
 			props,
 		),
-		render: !tooltip ? render : TooltipTrigger,
+		render: !(Predicate.isNotNullish(tooltip) && Predicate.isTruthy(tooltip))
+			? render
+			: TooltipTrigger,
 		state: {
 			slot: "sidebar-menu-button",
 			sidebar: "menu-button",
@@ -496,7 +499,7 @@ function SidebarMenuButton({
 		},
 	})
 
-	if (!tooltip) {
+	if (!(Predicate.isNotNullish(tooltip) && Predicate.isTruthy(tooltip))) {
 		return comp
 	}
 
@@ -570,9 +573,7 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
 	showIcon?: boolean
 }) {
-	const [width] = React.useState(() => {
-		return `${Math.floor(Math.random() * 40) + 50}%`
-	})
+	const [width] = React.useState(() => `${Math.floor(Math.random() * 40) + 50}%`)
 
 	return (
 		<div

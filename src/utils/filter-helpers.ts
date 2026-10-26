@@ -1,3 +1,5 @@
+import { Array as Arr, Option, Predicate } from "effect"
+
 export type FilterSpec<T> = {
 	values: readonly string[] | undefined
 	match: (item: T, value: string) => boolean
@@ -16,7 +18,7 @@ export function applyFilters<T>(items: readonly T[], specs: ReadonlyArray<Filter
 	for (const spec of specs) {
 		if (!shouldApply(spec.values)) continue
 		const vals = spec.values
-		result = result.filter(item => vals.some(val => spec.match(item, val)))
+		result = Arr.filter(result, item => Arr.some(vals, val => spec.match(item, val)))
 	}
 
 	return result
@@ -34,11 +36,11 @@ export function applySort<T>(
 	defaultKey: string,
 ): T[] {
 	const resolvedKey =
-		sortKey !== undefined && specs.some(s => s.key === sortKey) ? sortKey : defaultKey
+		sortKey !== undefined && Arr.some(specs, s => s.key === sortKey) ? sortKey : defaultKey
 
-	const spec = specs.find(s => s.key === resolvedKey)
+	const spec = Option.getOrUndefined(Arr.findFirst(specs, s => s.key === resolvedKey))
 
-	if (!spec) return [...items]
+	if (!(Predicate.isNotNullish(spec) && Predicate.isTruthy(spec))) return [...items]
 	const out = [...items]
 	out.sort(spec.compare)
 

@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import { useState } from "react"
 
 type SetValue<T> = (value: T | ((value: T) => T)) => void
@@ -22,7 +23,9 @@ export const useLocalStorage = <T>(key: string, initialValue: T): LocalStorageRe
 		try {
 			const item = window.localStorage.getItem(key)
 
-			return item ? JSON.parse(item) : initialValue
+			return Predicate.isNotNullish(item) && Predicate.isTruthy(item)
+				? JSON.parse(item)
+				: initialValue
 		} catch (error) {
 			console.warn(`Error reading localStorage key "${key}":`, error)
 

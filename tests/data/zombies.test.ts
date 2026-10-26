@@ -5,7 +5,7 @@ import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getZombies", () => {
 	test("sorted by release date descending", () => {
-		const dates = getZombies().map(z => z.releaseDate)
+		const dates = Arr.map(getZombies(), z => z.releaseDate)
 		expect(dates.length).toBeGreaterThan(1)
 		assertSortedDescByDate(dates)
 	})
@@ -16,7 +16,12 @@ describe("getAdjacentZombies", () => {
 		const zombies = getZombies()
 		const z1 = zombies[Math.floor(zombies.length / 2)]!
 		const { prev, next } = getAdjacentZombies(z1.id)
-		const idx = zombies.findIndex(z => z.id === z1.id)
+
+		const idx = Option.getOrElse(
+			Arr.findFirstIndex(zombies, z => z.id === z1.id),
+			() => -1,
+		)
+
 		expect(idx).toBeGreaterThanOrEqual(0)
 
 		const expectedPrev =

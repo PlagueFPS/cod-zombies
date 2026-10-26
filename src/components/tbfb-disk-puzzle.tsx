@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Array as Arr } from "effect"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -26,7 +27,7 @@ export default function TbfbDiskPuzzle() {
 	const toggleSymbol = (symbolId: TbfbDiskSymbolId) => {
 		setSelected(current => {
 			if (current.includes(symbolId)) {
-				return current.filter(id => id !== symbolId)
+				return Arr.filter(current, id => id !== symbolId)
 			}
 
 			if (current.length === DISK_SELECTION_SIZE) return current
@@ -47,7 +48,7 @@ export default function TbfbDiskPuzzle() {
 			<CardContent className="space-y-4">
 				<div className="mx-auto w-fit rounded-2xl bg-zinc-900 p-3">
 					<div className="grid grid-cols-4 gap-2" role="group" aria-label="Disk symbols">
-						{TBFB_DISK_SYMBOLS.map(symbol => {
+						{Arr.map(TBFB_DISK_SYMBOLS, symbol => {
 							const isSelected = selected.includes(symbol.id)
 							const isLocked = selectionIsFull && !isSelected
 
@@ -100,10 +101,10 @@ export default function TbfbDiskPuzzle() {
 										: SEVERAL_ORDERS_MESSAGE}
 								</p>
 								<ul className="space-y-3">
-									{orders.map(order => (
-										<li key={order.join(":")}>
+									{Arr.map(orders, order => (
+										<li key={Arr.join(order, ":")}>
 											<div className="flex items-center justify-center gap-2">
-												{order.map(symbolId => {
+												{Arr.map(order, symbolId => {
 													const symbol = getTbfbDiskSymbol(symbolId)
 
 													return (
@@ -136,10 +137,11 @@ function distinctInsertionOrders(
 	const orders: TbfbDiskSymbolId[][] = []
 
 	for (const match of matches) {
-		const listed = orders.some(
+		const listed = Arr.some(
+			orders,
 			order =>
 				order.length === match.order.length &&
-				order.every((symbolId, index) => symbolId === match.order[index]),
+				Arr.every(order, (symbolId, index) => symbolId === match.order[index]),
 		)
 
 		if (listed) continue

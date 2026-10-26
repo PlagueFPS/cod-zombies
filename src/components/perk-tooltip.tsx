@@ -66,11 +66,14 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: RegistryKeyInpu
 	const perkAugments: Augment[] = Option.match(perk.augments, {
 		onNone: () => [],
 		onSome: tuple =>
-			Arr.filterMap(tuple, augmentKey =>
-				Predicate.isNotUndefined(augmentKey)
-					? Result.succeed(getAugmentByKey(augmentKey, game).valueOrUndefined)
-					: Result.failVoid,
-			).filter(Predicate.isNotUndefined),
+			Arr.filter(
+				Arr.filterMap(tuple, augmentKey =>
+					Predicate.isNotUndefined(augmentKey)
+						? Result.succeed(getAugmentByKey(augmentKey, game).valueOrUndefined)
+						: Result.failVoid,
+				),
+				Predicate.isNotUndefined,
+			),
 	})
 
 	return (

@@ -1,4 +1,4 @@
-import { Exit } from "effect"
+import { Exit, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
 import {
@@ -76,7 +76,7 @@ describe("solveAotrtChemical", () => {
 				for (const oNumber of O_NUMBERS) {
 					expect(solveAotrtChemical(chemical, top, left, oNumber)).toEqual(
 						AotrtChemicalSolution.Solved({
-							steps: bases.map(step => step - oNumber),
+							steps: Arr.map(bases, step => step - oNumber),
 						}),
 					)
 				}
@@ -137,10 +137,19 @@ describe("decodeAotrtDiamondInput", () => {
 	})
 })
 
+function readBoardStep(
+	board: { readonly [key: string]: readonly number[] },
+	key: string,
+): readonly number[] | undefined {
+	return board[key]
+}
+
 function boardSteps(chemical: AotrtChemical, top: number, left: number): readonly number[] {
-	for (const [key, steps] of Object.entries(BOARD[chemical])) {
-		if (key === `${top},${left}`) return steps
+	const steps = readBoardStep(BOARD[chemical], `${top},${left}`)
+
+	if (steps === undefined) {
+		throw new Error(`missing board value for ${chemical} ${top},${left}`)
 	}
 
-	throw new Error(`missing board value for ${chemical} ${top},${left}`)
+	return steps
 }

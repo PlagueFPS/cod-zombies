@@ -1,8 +1,18 @@
 import type { PlatformError } from "effect/PlatformError"
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Clock, Effect, FileSystem, HashSet, Path, Predicate } from "effect"
+import {
+	Clock,
+	Effect,
+	FileSystem,
+	HashSet,
+	Path,
+	Predicate,
+	Array as Arr,
+	String as Str,
+} from "effect"
 import { toPascalCase } from "@/utils/shared-functions"
+import { nowDate } from "@/utils/system-time"
 
 const CONTENT_EXTENSIONS = HashSet.make(".mdx")
 
@@ -12,11 +22,11 @@ const formatContentPath = Effect.fn("formatContentPath")(function* (
 ) {
 	const path = yield* Path.Path
 	const relative = path.relative(contentDir, filePath)
-	const withSlashes = relative.split(path.sep).join("/")
-	const ext = path.extname(withSlashes).toLowerCase()
+	const withSlashes = Arr.join(Str.split(relative, path.sep), "/")
+	const ext = Str.toLowerCase(path.extname(withSlashes))
 
 	const base = HashSet.has(CONTENT_EXTENSIONS, ext)
-		? withSlashes.slice(0, -ext.length)
+		? Str.slice(0, -ext.length)(withSlashes)
 		: withSlashes
 
 	return `content/${base}`
@@ -34,12 +44,12 @@ const listContentSubdirs = Effect.fn("listContentSubdirs")(function* (contentDir
 				const filePath = path.join(contentDir, file)
 				const stat = yield* fs.stat(filePath)
 
-				if (stat.type === "Directory" && !file.startsWith(".")) return file
+				if (stat.type === "Directory" && !Str.startsWith(".")(file)) return file
 
 				return null
 			}),
 		{ concurrency: "unbounded" },
-	).pipe(Effect.map(files => files.filter(Predicate.isNotNull)))
+	).pipe(Effect.map(files => Arr.filter(files, Predicate.isNotNull)))
 })
 
 const collectContentFiles = Effect.fn("collectContentFiles")(function* (
@@ -57,7 +67,7 @@ const collectContentFiles = Effect.fn("collectContentFiles")(function* (
 				files,
 				file =>
 					Effect.gen(function* () {
-						if (file.startsWith(".")) return
+						if (Str.startsWith(".")(file)) return
 
 						const full = path.join(current, file)
 						const stat = yield* fs.stat(full)
@@ -65,7 +75,7 @@ const collectContentFiles = Effect.fn("collectContentFiles")(function* (
 						if (stat.type === "Directory") {
 							yield* walk(full)
 						} else if (stat.type === "File") {
-							const ext = path.extname(file).toLowerCase()
+							const ext = Str.toLowerCase(path.extname(file))
 
 							if (HashSet.has(CONTENT_EXTENSIONS, ext)) {
 								const contentPath = yield* formatContentPath(contentDir, full)
@@ -87,13 +97,13 @@ function generateTypeForDir(typeName: string, contentPaths: string[]) {
 		return `export type ${typeName} = never;\n`
 	}
 
-	const literals = contentPaths.map(p => `"${p.replace(/"/g, '\\"')}"`)
+	const literals = Arr.map(contentPaths, p => `"${Str.replace(/"/g, '\\"')(p)}"`)
 
-	return `export type ${typeName} =\n  ${literals.join(" |\n  ")};\n`
+	return `export type ${typeName} =\n  ${Arr.join(literals, " |\n  ")};\n`
 }
 
 function headerComment(contentDir: string, duration: string | number) {
-	const now = new Date().toISOString()
+	const now = nowDate().toISOString()
 
 	return `/**
  * THIS FILE IS AUTO-GENERATED.
@@ -137,7 +147,7 @@ export const generateContentPaths = Effect.fn("generateContentPaths")(function* 
 				}
 			}),
 		{ concurrency: "unbounded" },
-	).pipe(Effect.map(results => results.sort((a, b) => a.dir.localeCompare(b.dir))))
+	).pipe(Effect.map(results => results.sort((a, b) => Str.localeCompare(b.dir)(a.dir))))
 
 	const durationMs = yield* Clock.currentTimeMillis.pipe(
 		Effect.map(now => (now - startTime).toFixed(0)),
@@ -151,12 +161,12 @@ export const generateContentPaths = Effect.fn("generateContentPaths")(function* 
 		lines.push(generateTypeForDir(item.typeName, item.contentPaths))
 	}
 
-	const allTypeNames = perDir.map(g => g.typeName)
+	const allTypeNames = Arr.map(perDir, g => g.typeName)
 	lines.push(
-		`/** Union of all generated content path types */\nexport type ContentPaths = ${allTypeNames.join(" | ")};\n`,
+		`/** Union of all generated content path types */\nexport type ContentPaths = ${Arr.join(allTypeNames, " | ")};\n`,
 	)
 
-	const generated = lines.join("\n")
+	const generated = Arr.join(lines, "\n")
 
 	const outDir = path.dirname(outFile)
 	const outDirExists = yield* fs.exists(outDir)
@@ -168,7 +178,7 @@ export const generateContentPaths = Effect.fn("generateContentPaths")(function* 
 	yield* fs.writeFileString(outFile, generated)
 	yield* Effect.log(`Wrote generated types to: ${outFile}`)
 	yield* Effect.log(
-		`directories_scanned=${subdirs.length}, total_files=${perDir.reduce((acc, d) => acc + d.contentPaths.length, 0)}, duration=${durationMs}ms`,
+		`directories_scanned=${subdirs.length}, total_files=${Arr.reduce(perDir, 0, (acc, d) => acc + d.contentPaths.length)}, duration=${durationMs}ms`,
 	)
 	yield* Effect.forEach(
 		perDir,

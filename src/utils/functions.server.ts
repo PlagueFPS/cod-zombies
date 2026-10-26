@@ -1,39 +1,52 @@
 import type { OpengraphKind } from "@/utils/validation-schemas"
+// Token bytes, SHA-256 digests, and constant-time compares stay on node:crypto.
+// oxlint-disable-next-line effecttsgo/node-builtin-import
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import { Clock, Duration, Effect, Number as Num, Option, Schema } from "effect"
+import {
+	Clock,
+	Duration,
+	Effect,
+	Number as Num,
+	Option,
+	Schema,
+	String as Str,
+	Predicate,
+} from "effect"
 import { opengraphImagePath } from "@/utils/opengraph-image-url"
 import { getServerUrl } from "@/utils/request.server"
+import { dateFrom } from "@/utils/system-time"
 
 export { getLastModified } from "@/utils/content-meta"
 
-class TokenExpirationError extends Schema.TaggedError<TokenExpirationError>()(
-	"TokenExpirationError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+class TokenExpirationError extends Schema.TaggedError<
+	TokenExpirationError,
+	{ readonly brand: unique symbol }
+>()("TokenExpirationError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
-class TokenGenerationError extends Schema.TaggedError<TokenGenerationError>()(
-	"TokenGenerationError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+class TokenGenerationError extends Schema.TaggedError<
+	TokenGenerationError,
+	{ readonly brand: unique symbol }
+>()("TokenGenerationError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
-class TokenVerificationError extends Schema.TaggedError<TokenVerificationError>()(
-	"TokenVerificationError",
-	{
-		message: Schema.String,
-		cause: Schema.Defect(),
-	},
-) {}
+class TokenVerificationError extends Schema.TaggedError<
+	TokenVerificationError,
+	{ readonly brand: unique symbol }
+>()("TokenVerificationError", {
+	message: Schema.String,
+	cause: Schema.Defect(),
+}) {}
 
 export const getOpengraphImageUrl = async (kind: OpengraphKind, id: string) => {
 	const path = opengraphImagePath(kind, id)
 
 	if (path === undefined) {
+		// oxlint-disable-next-line effecttsgo/global-console -- logged from a TanStack server helper, outside an Effect
 		console.warn(`Missing opengraph image version for ${kind}: ${id}`)
 
 		return Option.none()
@@ -64,7 +77,7 @@ export const generateToken = Effect.fn("generateToken")(function* (
 	return yield* Effect.try({
 		try: () => Buffer.from(`${payload}:${hash}`).toString("base64url"),
 		catch: error =>
-			new TokenGenerationError({
+			TokenGenerationError.make({
 				message: "Failed to generate token.",
 				cause: error,
 			}),
@@ -79,13 +92,18 @@ export const generateToken = Effect.fn("generateToken")(function* (
 export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 	const buffer = yield* Effect.try({
 		try: () => Buffer.from(token, "base64url").toString(),
-		catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
+		catch: error => TokenVerificationError.make({ message: "Invalid Token", cause: error }),
 	})
 
-	const [value, salt, expiresInStr, originalHash] = buffer.split(":")
+	const [value, salt, expiresInStr, originalHash] = Str.split(buffer, ":")
 
-	if (!value || !salt || !expiresInStr || !originalHash) {
-		return yield* new TokenVerificationError({
+	if (
+		!(Predicate.isNotNullish(value) && Predicate.isTruthy(value)) ||
+		!(Predicate.isNotNullish(salt) && Predicate.isTruthy(salt)) ||
+		!(Predicate.isNotNullish(expiresInStr) && Predicate.isTruthy(expiresInStr)) ||
+		!(Predicate.isNotNullish(originalHash) && Predicate.isTruthy(originalHash))
+	) {
+		return yield* TokenVerificationError.make({
 			message: "Invalid Token Format",
 			cause: new Error("Token is malformed"),
 		})
@@ -95,15 +113,15 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 	const now = yield* Clock.currentTimeMillis
 
 	if (Option.isNone(expiresIn))
-		return yield* new TokenVerificationError({
+		return yield* TokenVerificationError.make({
 			message: "Invalid Token Format",
 			cause: new Error("Token is malformed"),
 		})
 
 	if (Duration.isGreaterThan(Duration.millis(now), Duration.millis(expiresIn.value))) {
-		return yield* new TokenExpirationError({
+		return yield* TokenExpirationError.make({
 			message: "Token has expired",
-			cause: new Error(`Token expired at ${new Date(expiresIn.value).toISOString()}`),
+			cause: new Error(`Token expired at ${dateFrom(expiresIn.value).toISOString()}`),
 		})
 	}
 
@@ -114,11 +132,11 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 
 	const isTimingSafe = yield* Effect.try({
 		try: () => timingSafeEqual(hashBuffer, originalHashBuffer),
-		catch: error => new TokenVerificationError({ message: "Invalid Token", cause: error }),
+		catch: error => TokenVerificationError.make({ message: "Invalid Token", cause: error }),
 	})
 
 	if (!isTimingSafe) {
-		return yield* new TokenVerificationError({
+		return yield* TokenVerificationError.make({
 			message: "Invalid Token",
 			cause: "Timing comparison failed",
 		})

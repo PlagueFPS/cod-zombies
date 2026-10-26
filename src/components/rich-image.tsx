@@ -1,4 +1,5 @@
 import type { ImagePaths } from "@/types/generated/image-paths.gen"
+import { Predicate } from "effect"
 import { FeaturedImage, type FeaturedImageProps } from "@/components/featured-image"
 import {
 	Dialog,
@@ -27,7 +28,8 @@ export default function RichImage({ image, caption, alt }: RichImageProps) {
 	}
 
 	const expandedSources: FeaturedImageProps["sources"] = [
-		...(getImageVariants(image)?.widths.includes(1200)
+		...(Predicate.isNotNullish(getImageVariants(image)?.widths.includes(1200)) &&
+		Predicate.isTruthy(getImageVariants(image)?.widths.includes(1200))
 			? [{ media: "(max-width: 1200px)", srcSet: variantWebPath(image, 1200) }]
 			: []),
 		{ srcSet: image },

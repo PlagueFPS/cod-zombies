@@ -1,4 +1,4 @@
-import { Option } from "effect"
+import { Option, String as Str } from "effect"
 import { afterEach, describe, expect, test, vi } from "vitest"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
@@ -50,7 +50,7 @@ describe("slugify", () => {
 		expect(slugify("Very Hard")).toBe("very-hard")
 
 		for (const difficulty of MAIN_QUEST_DIFFICULTIES) {
-			expect(slugify(difficulty)).toBe(difficulty.toLowerCase().replace(/\s+/g, "-"))
+			expect(slugify(difficulty)).toBe(Str.replace(/\s+/g, "-")(Str.toLowerCase(difficulty)))
 		}
 	})
 })

@@ -3,33 +3,32 @@ import type { Program } from "estree-jsx"
 import type { Root } from "mdast"
 import type { MdxjsEsm } from "mdast-util-mdxjs-esm"
 import { parse } from "acorn"
-import { Match, Predicate } from "effect"
+import { Match, Predicate, String as Str, Array as Arr, pipe } from "effect"
 import { toString } from "mdast-util-to-string"
 import remarkMdx from "remark-mdx"
 import remarkParse from "remark-parse"
 import { unified } from "unified"
 import { visit, SKIP } from "unist-util-visit"
-
 /** Keep in sync with `slugify` in `@/utils/shared-functions` (used for heading anchor ids).
  * Not imported here: this file is loaded from `vite.config.ts` and cannot depend on modules that use the `@/` alias.
  */
+
 const slugify = (text: string) =>
-	text
-		.toLowerCase()
-		.trim()
-		.replace(/&/g, "and")
-		.replace(/[^\w\s-]/g, "")
-		.replace(/[\s_]+/g, "-")
-		.replace(/--+/g, "-")
-		.replace(/^-+|-+$/g, "")
+	pipe(
+		text,
+		Str.toLowerCase,
+		Str.trim,
+		Str.replace(/&/g, "and"),
+		Str.replace(/[^\w\s-]/g, ""),
+		Str.replace(/[\s_]+/g, "-"),
+		Str.replace(/--+/g, "-"),
+		Str.replace(/^-+|-+$/g, ""),
+	)
 
 const WORDS_PER_MINUTE = 200
 
 const countWords = (value: string) =>
-	value
-		.trim()
-		.split(/\s+/)
-		.filter(word => word.length > 0).length
+	Arr.filter(Str.split(Str.trim(value), /\s+/), word => word.length > 0).length
 
 interface MdxDocumentMeta {
 	headings: Heading[]
@@ -46,9 +45,9 @@ export function collectMdxDocumentMeta(tree: Root): MdxDocumentMeta {
 
 	visit(tree, "heading", node => {
 		if (node.depth < 2 || node.depth > 4) return
-		const text = toString(node, { includeImageAlt: true }).trim()
+		const text = Str.trim(toString(node, { includeImageAlt: true }))
 
-		if (!text) return
+		if (!(Predicate.isNotNullish(text) && Predicate.isTruthy(text))) return
 
 		const type = Match.value(node.depth).pipe(
 			Match.when(2, () => "h2" as const),
