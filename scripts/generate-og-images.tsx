@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import {
+	pipe,
 	Array as Arr,
 	Effect,
 	FileSystem,
@@ -103,7 +104,7 @@ function formatMapReleaseDay(isoDateOnly: string): string {
 }
 
 const clampText = (text: string, maxChars: number) => {
-	const t = Str.replace(/\s+/g, " ")(Str.trim(text))
+	const t = pipe(text, Str.trim, Str.replace(/\s+/g, " "))
 
 	if (t.length <= maxChars) {
 		return t
@@ -346,7 +347,23 @@ export const generateMainQuestImage = Effect.fnUntraced(
 		const blurb = clampText(map.description, 200)
 		const displayTitle = Str.toLocaleUpperCase("en-US")(map.title)
 		const titleLen = displayTitle.length
-		const titlePx = titleLen > 24 ? 48 : titleLen > 18 ? 54 : titleLen > 14 ? 62 : 70
+
+		const titlePx = Match.value(titleLen).pipe(
+			Match.when(
+				length => length > 24,
+				() => 48,
+			),
+			Match.when(
+				length => length > 18,
+				() => 54,
+			),
+			Match.when(
+				length => length > 14,
+				() => 62,
+			),
+			Match.orElse(() => 70),
+		)
+
 		const titleTracking = titleLen > 22 ? "-0.01em" : "0.002em"
 
 		const thirdCrumb = (
@@ -367,7 +384,7 @@ export const generateMainQuestImage = Effect.fnUntraced(
 				{Predicate.isNotNullish(estTime) && Predicate.isTruthy(estTime)
 					? metaColumn("Est. run", estTime)
 					: null}
-				{timeToRead != null ? metaColumn("Guide read", `${timeToRead} min`) : null}
+				{Predicate.isNotNullish(timeToRead) ? metaColumn("Guide read", `${timeToRead} min`) : null}
 				{metaColumn("Map drop", dateStr)}
 			</>
 		)
@@ -418,7 +435,23 @@ export const generateSideQuestImage = Effect.fnUntraced(
 		const blurb = clampText(sideQuest.description, 200)
 		const displayTitle = Str.toLocaleUpperCase("en-US")(sideQuest.title)
 		const titleLen = displayTitle.length
-		const titlePx = titleLen > 24 ? 48 : titleLen > 18 ? 54 : titleLen > 14 ? 62 : 70
+
+		const titlePx = Match.value(titleLen).pipe(
+			Match.when(
+				length => length > 24,
+				() => 48,
+			),
+			Match.when(
+				length => length > 18,
+				() => 54,
+			),
+			Match.when(
+				length => length > 14,
+				() => 62,
+			),
+			Match.orElse(() => 70),
+		)
+
 		const titleTracking = titleLen > 22 ? "-0.01em" : "0.002em"
 
 		const thirdCrumb = (
@@ -436,7 +469,7 @@ export const generateSideQuestImage = Effect.fnUntraced(
 
 		const footerMeta = (
 			<>
-				{timeToRead != null ? metaColumn("Guide read", `${timeToRead} min`) : null}
+				{Predicate.isNotNullish(timeToRead) ? metaColumn("Guide read", `${timeToRead} min`) : null}
 				{metaColumn("Map drop", dateStr)}
 			</>
 		)
@@ -495,7 +528,7 @@ export const generateZombieImage = Effect.fnUntraced(
 			? Arr.flatMap(zombie.elementalWeakness, key => {
 					const mod = resolveAmmoModForOg(key, debutGameKey)
 
-					return mod === null ? [] : [mod]
+					return Predicate.isNull(mod) ? [] : [mod]
 				})
 			: []
 
@@ -550,7 +583,22 @@ export const generateZombieImage = Effect.fnUntraced(
 		)
 
 		const titleLen = zombie.title.length
-		const titlePx = titleLen > 26 ? 40 : titleLen > 20 ? 46 : titleLen > 14 ? 52 : 58
+
+		const titlePx = Match.value(titleLen).pipe(
+			Match.when(
+				length => length > 26,
+				() => 40,
+			),
+			Match.when(
+				length => length > 20,
+				() => 46,
+			),
+			Match.when(
+				length => length > 14,
+				() => 52,
+			),
+			Match.orElse(() => 58),
+		)
 
 		const debutWhere = debutMap.title
 
@@ -870,7 +918,22 @@ export const generateRelicImage = Effect.fnUntraced(
 		)
 
 		const titleLen = relic.title.length
-		const titlePx = titleLen > 26 ? 40 : titleLen > 20 ? 46 : titleLen > 14 ? 52 : 58
+
+		const titlePx = Match.value(titleLen).pipe(
+			Match.when(
+				length => length > 26,
+				() => 40,
+			),
+			Match.when(
+				length => length > 20,
+				() => 46,
+			),
+			Match.when(
+				length => length > 14,
+				() => 52,
+			),
+			Match.orElse(() => 58),
+		)
 
 		const mapTitle = map.title
 		const estTime = formatEstimatedTimeRange(relic.estimatedTimeMins)

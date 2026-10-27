@@ -1,5 +1,5 @@
 import type { MapMarker } from "@/map-configs/markers"
-import { Option, Predicate } from "effect"
+import { Match, Option, Predicate } from "effect"
 import { DivIcon, type LatLng } from "leaflet"
 import { useEffect, useRef, useState } from "react"
 import { Marker as LeafletMarker, useMap } from "react-leaflet"
@@ -27,17 +27,14 @@ export default function CustomMarker({ id, marker, position, children }: CustomM
 					return Math.floor(settings.markers.iconSize * 0.75)
 				}
 
-				switch (marker.id) {
-					case "void-claw-pedestal":
-						return Math.floor(settings.markers.iconSize * 1.75)
-					case "shovel":
-					case "aether-plant-spray":
-						return Math.floor(settings.markers.iconSize * 1.5)
-					case "aether-crystal":
-						return Math.floor(settings.markers.iconSize * 1.25)
-					default:
-						return settings.markers.iconSize
-				}
+				return Match.value(marker.id).pipe(
+					Match.when("void-claw-pedestal", () => Math.floor(settings.markers.iconSize * 1.75)),
+					Match.whenOr("shovel", "aether-plant-spray", () =>
+						Math.floor(settings.markers.iconSize * 1.5),
+					),
+					Match.when("aether-crystal", () => Math.floor(settings.markers.iconSize * 1.25)),
+					Match.orElse(() => settings.markers.iconSize),
+				)
 			}
 
 			if (marker.type === "label") {

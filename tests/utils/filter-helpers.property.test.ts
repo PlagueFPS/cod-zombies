@@ -1,3 +1,4 @@
+import { Match } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { paginate } from "@/utils/filter-helpers"
@@ -37,7 +38,18 @@ describe("paginate properties", () => {
 					const first = paginate(items, 1, pageSize)
 					const last = paginate(items, totalPages, pageSize)
 					const clamped = paginate(items, rawPage, pageSize)
-					const endpoint = rawPage < 1 ? first : rawPage > totalPages ? last : clamped
+
+					const endpoint = Match.value(rawPage).pipe(
+						Match.when(
+							page => page < 1,
+							() => first,
+						),
+						Match.when(
+							page => page > totalPages,
+							() => last,
+						),
+						Match.orElse(() => clamped),
+					)
 
 					expect(clamped.page).toBe(Math.min(Math.max(rawPage, 1), totalPages))
 					expect(clamped.items).toEqual(endpoint.items)

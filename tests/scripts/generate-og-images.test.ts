@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSyn
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Effect, Exit, String as Str, Array as Arr, Option } from "effect"
+import { Predicate, Effect, Exit, String as Str, Array as Arr, Option } from "effect"
 import { Command } from "effect/cli"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
@@ -177,7 +177,7 @@ describe("generateOgCommand success (real assets)", () => {
 	})
 
 	afterEach(() => {
-		if (prevManifest === undefined) {
+		if (Predicate.isUndefined(prevManifest)) {
 			delete process.env.OG_TEST_MANIFEST_PATH
 		} else {
 			process.env.OG_TEST_MANIFEST_PATH = prevManifest

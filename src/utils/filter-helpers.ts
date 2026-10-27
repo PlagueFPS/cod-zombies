@@ -6,7 +6,7 @@ export type FilterSpec<T> = {
 }
 
 function shouldApply(values: readonly string[] | undefined): values is readonly string[] {
-	return values != null && values.length > 0
+	return Predicate.isNotNullish(values) && values.length > 0
 }
 
 /**
@@ -36,7 +36,9 @@ export function applySort<T>(
 	defaultKey: string,
 ): T[] {
 	const resolvedKey =
-		sortKey !== undefined && Arr.some(specs, s => s.key === sortKey) ? sortKey : defaultKey
+		Predicate.isNotUndefined(sortKey) && Arr.some(specs, s => s.key === sortKey)
+			? sortKey
+			: defaultKey
 
 	const spec = Option.getOrUndefined(Arr.findFirst(specs, s => s.key === resolvedKey))
 

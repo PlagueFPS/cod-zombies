@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Array as Arr } from "effect"
+import { Predicate, Array as Arr } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -156,8 +156,8 @@ function Relics() {
 		const values = Arr.filter(
 			g.items,
 			i =>
-				(map != null && Arr.some(map, d => d === i.value)) ||
-				(type != null && Arr.some(type, t => t === i.value)),
+				(Predicate.isNotNullish(map) && Arr.some(map, d => d === i.value)) ||
+				(Predicate.isNotNullish(type) && Arr.some(type, t => t === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)

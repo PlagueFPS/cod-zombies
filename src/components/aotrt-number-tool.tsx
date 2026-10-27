@@ -24,7 +24,7 @@ export default function AotrtNumberTool() {
 	const oNumber = solved?.oNumber
 
 	useEffect(() => {
-		if (oNumber === undefined) return
+		if (Predicate.isUndefined(oNumber)) return
 		writeAotrtONumber(oNumber)
 	}, [oNumber])
 

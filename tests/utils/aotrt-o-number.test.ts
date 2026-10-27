@@ -1,4 +1,4 @@
-import { Exit, Array as Arr } from "effect"
+import { Match, Exit, Array as Arr } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
@@ -80,8 +80,17 @@ describe("solveAotrtONumber", () => {
 
 					const product = result.oNumber * m
 
-					const expectedRow =
-						product < topTvNumber ? "top" : product <= topTvNumber + 2 ? "middle" : "bottom"
+					const expectedRow = Match.value(product).pipe(
+						Match.when(
+							value => value < topTvNumber,
+							() => "top",
+						),
+						Match.when(
+							value => value <= topTvNumber + 2,
+							() => "middle",
+						),
+						Match.orElse(() => "bottom"),
+					)
 
 					expect(result.tvColor.product).toBe(product)
 					expect(result.tvColor.row).toBe(expectedRow)

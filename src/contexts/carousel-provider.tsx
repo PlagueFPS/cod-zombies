@@ -1,3 +1,4 @@
+import { Predicate } from "effect"
 import { createContext, use, type ReactNode } from "react"
 
 type CarouselState = {
@@ -19,7 +20,8 @@ export function CarouselProvider({
 export const useCarousel = () => {
 	const context = use(CarouselContext)
 
-	if (context === undefined) throw new Error("useCarousel must be used within a CarouselProvider")
+	if (Predicate.isUndefined(context))
+		throw new Error("useCarousel must be used within a CarouselProvider")
 
 	return context
 }

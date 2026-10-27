@@ -9,7 +9,7 @@ import type {
 	GetContactResponseSuccess,
 	RemoveContactsResponseSuccess,
 } from "resend"
-import { Config, Context, Effect, Layer, Option, Redacted, Schema } from "effect"
+import { Predicate, Config, Context, Effect, Layer, Option, Redacted, Schema } from "effect"
 
 export class ResendError extends Schema.TaggedError<
 	ResendError,
@@ -53,7 +53,7 @@ const makeEmail = Effect.gen(function* () {
 	const getContact = Effect.fn("Email.getContact")(function* (email: string) {
 		const { data, error } = yield* Effect.promise(() => resend.contacts.get({ email }))
 
-		if (error != null && error.name !== "not_found")
+		if (Predicate.isNotNullish(error) && error.name !== "not_found")
 			return yield* ResendError.make({ message: error.message, cause: error })
 
 		return Option.fromNullOr(data)
@@ -67,7 +67,11 @@ const makeEmail = Effect.gen(function* () {
 			}),
 		)
 
-		if (error != null) return yield* ResendError.make({ message: error.message, cause: error })
+		if (Predicate.isNull(data))
+			return yield* ResendError.make({
+				message: error?.message ?? "Resend returned no data",
+				cause: error,
+			})
 
 		return data
 	})
@@ -75,7 +79,11 @@ const makeEmail = Effect.gen(function* () {
 	const removeContact = Effect.fn("Email.removeContact")(function* (email: string) {
 		const { data, error } = yield* Effect.promise(() => resend.contacts.remove({ email }))
 
-		if (error != null) return yield* ResendError.make({ message: error.message, cause: error })
+		if (Predicate.isNull(data))
+			return yield* ResendError.make({
+				message: error?.message ?? "Resend returned no data",
+				cause: error,
+			})
 
 		return data
 	})
@@ -86,7 +94,11 @@ const makeEmail = Effect.gen(function* () {
 	) {
 		const { data, error } = yield* Effect.promise(() => resend.emails.send(params, options))
 
-		if (error != null) return yield* ResendError.make({ message: error.message, cause: error })
+		if (Predicate.isNull(data))
+			return yield* ResendError.make({
+				message: error?.message ?? "Resend returned no data",
+				cause: error,
+			})
 
 		return data
 	})
@@ -97,7 +109,11 @@ const makeEmail = Effect.gen(function* () {
 	) {
 		const { data, error } = yield* Effect.promise(() => resend.broadcasts.create(params, options))
 
-		if (error != null) return yield* ResendError.make({ message: error.message, cause: error })
+		if (Predicate.isNull(data))
+			return yield* ResendError.make({
+				message: error?.message ?? "Resend returned no data",
+				cause: error,
+			})
 
 		return data
 	})

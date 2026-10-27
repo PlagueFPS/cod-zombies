@@ -204,9 +204,9 @@ function MainQuests() {
 		const values = Arr.filter(
 			g.items,
 			i =>
-				(difficulty != null && Arr.some(difficulty, d => d === i.value)) ||
-				(game != null && Arr.some(game, g => g === i.value)) ||
-				(time != null && Arr.some(time, t => t === i.value)),
+				(Predicate.isNotNullish(difficulty) && Arr.some(difficulty, d => d === i.value)) ||
+				(Predicate.isNotNullish(game) && Arr.some(game, g => g === i.value)) ||
+				(Predicate.isNotNullish(time) && Arr.some(time, t => t === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)

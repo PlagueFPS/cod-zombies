@@ -1,6 +1,14 @@
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Layer, MutableHashSet, Array as Arr, String as Str, Record as Rec } from "effect"
+import {
+	Match,
+	Effect,
+	Layer,
+	MutableHashSet,
+	Array as Arr,
+	String as Str,
+	Record as Rec,
+} from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { parseGitBatchOutput } from "@/scripts/generate-last-modified"
@@ -24,21 +32,15 @@ type GitLine =
 	| { kind: "rename"; from: string; to: string; timestamp: number }
 	| { kind: "noise"; path: string; timestamp: number }
 
-function renderLine(line: GitLine): string {
-	switch (line.kind) {
-		case "touch":
-			return `${line.timestamp}\n${line.op}\tsrc/content/${line.path}`
-		case "rename":
-			return `${line.timestamp}\nR100\tsrc/content/${line.from}\tsrc/content/${line.to}`
-		case "noise":
-			return `${line.timestamp}\nA\tsrc/content/${line.path}`
-		default: {
-			const unreachable: never = line
-
-			return unreachable
-		}
-	}
-}
+const renderLine = Match.type<GitLine>().pipe(
+	Match.when({ kind: "touch" }, line => `${line.timestamp}\n${line.op}\tsrc/content/${line.path}`),
+	Match.when(
+		{ kind: "rename" },
+		line => `${line.timestamp}\nR100\tsrc/content/${line.from}\tsrc/content/${line.to}`,
+	),
+	Match.when({ kind: "noise" }, line => `${line.timestamp}\nA\tsrc/content/${line.path}`),
+	Match.exhaustive,
+)
 
 const scenarioArb = fc.uniqueArray(relPathArb, { minLength: 1, maxLength: 4 }).chain(paths =>
 	fc.record({

@@ -1,7 +1,7 @@
 import type { MapMarker, MarkerCategory } from "@/map-configs/markers"
 import { useParams, useRouter } from "@tanstack/react-router"
 import { cn } from "cn"
-import { Option, Array as Arr, Predicate } from "effect"
+import { Match, Option, Array as Arr, Predicate } from "effect"
 import { ChevronDown, MapPin } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { NewBadge } from "@/components/custom-badges"
@@ -423,30 +423,27 @@ function MarkerFilterIcon({ marker, category, mapMarkers }: IMarkerFilterIcon) {
 	if (!(Predicate.isNotNullish(mapMarker) && Predicate.isTruthy(mapMarker))) return null
 
 	if (Predicate.isNotNullish(mapMarker.type) && Predicate.isTruthy(mapMarker.type)) {
-		switch (mapMarker.type) {
-			case "label":
-				return <MapPin className="size-8 p-1 text-blue-500 dark:text-blue-400" />
-			case "perk":
-				return (
-					<Image
-						src="/perks/juggernog-bo6.webp"
-						height={128}
-						width={128}
-						alt={`Juggernog Image`}
-						className="size-8 p-1"
-					/>
-				)
-			default:
-				return (
-					<Image
-						src={Option.getOrElse(mapMarker.icon, () => `/icons/${category}/${mapMarker.id}.webp`)}
-						height={128}
-						width={128}
-						alt={`${mapMarker.id} Image`}
-						className="size-8"
-					/>
-				)
-		}
+		return Match.value(mapMarker.type).pipe(
+			Match.when("label", () => <MapPin className="size-8 p-1 text-blue-500 dark:text-blue-400" />),
+			Match.when("perk", () => (
+				<Image
+					src="/perks/juggernog-bo6.webp"
+					height={128}
+					width={128}
+					alt={`Juggernog Image`}
+					className="size-8 p-1"
+				/>
+			)),
+			Match.orElse(() => (
+				<Image
+					src={Option.getOrElse(mapMarker.icon, () => `/icons/${category}/${mapMarker.id}.webp`)}
+					height={128}
+					width={128}
+					alt={`${mapMarker.id} Image`}
+					className="size-8"
+				/>
+			)),
+		)
 	}
 
 	return (

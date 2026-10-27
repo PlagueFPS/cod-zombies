@@ -1,4 +1,4 @@
-import { Array as Arr, String as Str, Option } from "effect"
+import { pipe, Array as Arr, String as Str, Option } from "effect"
 
 export const VARIANT_WIDTHS_LIST = [384, 1200] as const
 
@@ -10,7 +10,7 @@ export type ImageVariantMetadata = {
 }
 
 const VARIANT_SUFFIX_RE = new RegExp(
-	`-(${Arr.join(Arr.map(VARIANT_WIDTHS_LIST, String), "|")})\\.webp$`,
+	`-(${pipe(VARIANT_WIDTHS_LIST, Arr.map(String), Arr.join("|"))})\\.webp$`,
 	"i",
 )
 

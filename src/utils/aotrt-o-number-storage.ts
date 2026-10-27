@@ -1,4 +1,4 @@
-import { Exit } from "effect"
+import { Predicate, Exit } from "effect"
 import { decodeAotrtONumberString, type ONumber } from "@/utils/aotrt-o-number"
 
 /** sessionStorage key for the O number calculated by the number tool. */
@@ -12,7 +12,7 @@ export function readAotrtONumber(): ONumber | null {
 
 	const raw = window.sessionStorage.getItem(AOTRT_O_NUMBER_STORAGE_KEY)
 
-	if (raw === null) return null
+	if (Predicate.isNull(raw)) return null
 
 	return decodeAotrtONumberString(raw).pipe(
 		Exit.match({

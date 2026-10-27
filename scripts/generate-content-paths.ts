@@ -2,6 +2,7 @@ import type { PlatformError } from "effect/PlatformError"
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import {
+	Match,
 	Clock,
 	Effect,
 	FileSystem,
@@ -72,16 +73,20 @@ const collectContentFiles = Effect.fn("collectContentFiles")(function* (
 						const full = path.join(current, file)
 						const stat = yield* fs.stat(full)
 
-						if (stat.type === "Directory") {
-							yield* walk(full)
-						} else if (stat.type === "File") {
-							const ext = Str.toLowerCase(path.extname(file))
+						yield* Match.value(stat.type).pipe(
+							Match.when("Directory", () => walk(full)),
+							Match.when("File", () =>
+								Effect.gen(function* () {
+									const ext = Str.toLowerCase(path.extname(file))
 
-							if (HashSet.has(CONTENT_EXTENSIONS, ext)) {
-								const contentPath = yield* formatContentPath(contentDir, full)
-								results.push(contentPath)
-							}
-						}
+									if (HashSet.has(CONTENT_EXTENSIONS, ext)) {
+										const contentPath = yield* formatContentPath(contentDir, full)
+										results.push(contentPath)
+									}
+								}),
+							),
+							Match.orElse(() => Effect.void),
+						)
 					}),
 				{ concurrency: "unbounded" },
 			)

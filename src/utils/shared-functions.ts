@@ -1,5 +1,5 @@
 import type { ZombieSpeed, ZombieType } from "@/data/zombies"
-import { Option, Array as Arr, String as Str, Predicate } from "effect"
+import { pipe, Option, Array as Arr, String as Str, Predicate } from "effect"
 import { MAIN_QUEST_DIFFICULTIES, type MainQuestDifficulty } from "@/data/maps"
 import { RELIC_TYPES, type RelicType } from "@/data/relics"
 import { SITE_TITLE } from "@/utils/constants"
@@ -66,12 +66,21 @@ export const getAdjacentItems = <T extends { id: string }>(items: T[], itemId: s
  * capitalize("tom-and-jerry") // "Tom & Jerry"
  */
 export const capitalize = (text: string) =>
-	Arr.join(
+	pipe(
+		text,
+		Str.replace(/[-_]/g, " "),
+		Str.replace(/\band\b/g, "&"),
+		Str.split(" "),
 		Arr.map(
-			Str.split(Str.replace(/\band\b/g, "&")(Str.replace(/[-_]/g, " ")(text)), " "),
-			word => Str.toUpperCase(Option.getOrElse(Str.charAt(0)(word), () => "")) + Str.slice(1)(word),
+			word =>
+				pipe(
+					word,
+					Str.charAt(0),
+					Option.getOrElse(() => ""),
+					Str.toUpperCase,
+				) + Str.slice(1)(word),
 		),
-		" ",
+		Arr.join(" "),
 	)
 
 /**
@@ -82,19 +91,15 @@ export const capitalize = (text: string) =>
  * slugify("Tom & Jerry") // "tom-and-jerry"
  */
 export const slugify = (text: string) =>
-	Str.replace(
-		/^-+|-+$/g,
-		"",
-	)(
-		Str.replace(
-			/--+/g,
-			"-",
-		)(
-			Str.replace(
-				/[\s_]+/g,
-				"-",
-			)(Str.replace(/[^\w\s-]/g, "")(Str.replace(/&/g, "and")(Str.trim(Str.toLowerCase(text))))),
-		),
+	pipe(
+		text,
+		Str.toLowerCase,
+		Str.trim,
+		Str.replace(/&/g, "and"),
+		Str.replace(/[^\w\s-]/g, ""),
+		Str.replace(/[\s_]+/g, "-"),
+		Str.replace(/--+/g, "-"),
+		Str.replace(/^-+|-+$/g, ""),
 	)
 
 /**
@@ -252,13 +257,14 @@ export const compareByOptionalSome = <T>(
  * toPascalCase("HELLO_WORLD") // "HelloWorld"
  */
 export const toPascalCase = (s: string) =>
-	Arr.join(
-		Arr.flatMap(Str.split(Str.toLowerCase(s), /[^0-9a-zA-Z]+/), part =>
-			part.length > 0
-				? [(part[0] == null ? undefined : Str.toUpperCase(part[0])) + Str.slice(1)(part)]
-				: [],
+	pipe(
+		s,
+		Str.toLowerCase,
+		Str.split(/[^0-9a-zA-Z]+/),
+		Arr.flatMap(part =>
+			part.length > 0 ? [pipe(part, Str.slice(0, 1), Str.toUpperCase) + Str.slice(1)(part)] : [],
 		),
-		"",
+		Arr.join(""),
 	)
 
 export const createSeoTitle = (title: string) => `${title} - ${SITE_TITLE}`

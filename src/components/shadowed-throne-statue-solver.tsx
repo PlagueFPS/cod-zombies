@@ -1,5 +1,5 @@
 import { cn } from "cn"
-import { Array as Arr } from "effect"
+import { Predicate, Array as Arr } from "effect"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -48,7 +48,7 @@ export default function ShadowedThroneStatueSolver() {
 	const statueCount = WALL_OFFSETS[wallId].length
 	const visibleDirections = directions.slice(0, statueCount)
 	const result = hasInput ? solveStatueWall(visibleDirections, wallId) : null
-	const summary = result === null ? null : solutionCopy(result)
+	const summary = Predicate.isNull(result) ? null : solutionCopy(result)
 	const facingFront = Arr.every(visibleDirections, direction => direction === TARGET_DIRECTION)
 
 	const selectWall = (nextWall: WallId) => {
@@ -138,11 +138,11 @@ export default function ShadowedThroneStatueSolver() {
 
 				<div className="rounded-sm bg-input p-2 dark:bg-input/20" aria-live="polite">
 					<p className="text-center text-base font-medium">Solution</p>
-					{result === null ? (
+					{Predicate.isNull(result) ? (
 						<p className="mt-1 text-center text-sm text-muted-foreground">
 							Set the statues to their in-game facings.
 						</p>
-					) : summary !== null ? (
+					) : Predicate.isNotNull(summary) ? (
 						<p className="mt-1 text-center text-sm">{summary}</p>
 					) : result.status === "solved" ? (
 						<ul className="mt-1 list-none pl-0">

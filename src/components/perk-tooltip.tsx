@@ -94,57 +94,61 @@ const PerkTooltipContent = ({ perk, game }: { perk: Perk; game?: RegistryKeyInpu
 				<div className="my-2">
 					<div className="text-center text-sm text-foreground">{perk.description}</div>
 				</div>
-				{Option.isSome(perk.modifier) ? (
-					<blockquote className="mt-6 rounded-lg border border-orange-200 bg-orange-100/20 p-4 shadow-lg dark:border-orange-800 dark:bg-orange-900/20">
-						<div className="flex items-start text-orange-700 dark:text-orange-300">
-							<p className="text-sm text-orange-800 dark:text-orange-200">
-								<span className="mr-1 font-bold text-orange-800 dark:text-orange-400">
-									MODIFIER:
-								</span>
-								{perk.modifier.value}
-							</p>
-						</div>
-					</blockquote>
-				) : Arr.isArrayNonEmpty(perkAugments) ? (
-					<>
-						<Separator />
-						<div className="my-4 flex flex-col items-center justify-center">
-							<div className="flex flex-col gap-3">
-								<h4 className="text-start text-sm font-semibold tracking-wide text-major-augment">
-									MAJOR AUGMENTS
-								</h4>
-								<div className="flex flex-wrap gap-3">
-									{Arr.filterMap(perkAugments, augment =>
-										augment.type === "Major"
-											? Result.succeed(
-													<div key={augment.id} className="shrink-0">
-														<AugmentTooltip augment={augment} />
-													</div>,
-												)
-											: Result.failVoid,
-									)}
-								</div>
+				{Option.match(perk.modifier, {
+					onSome: modifier => (
+						<blockquote className="mt-6 rounded-lg border border-orange-200 bg-orange-100/20 p-4 shadow-lg dark:border-orange-800 dark:bg-orange-900/20">
+							<div className="flex items-start text-orange-700 dark:text-orange-300">
+								<p className="text-sm text-orange-800 dark:text-orange-200">
+									<span className="mr-1 font-bold text-orange-800 dark:text-orange-400">
+										MODIFIER:
+									</span>
+									{modifier}
+								</p>
 							</div>
-							<Separator className="my-4" />
-							<div className="flex w-full flex-col gap-3">
-								<h4 className="text-start text-sm font-semibold tracking-wide text-orange-700 dark:text-orange-300">
-									MINOR AUGMENTS
-								</h4>
-								<div className="flex flex-wrap gap-3">
-									{Arr.filterMap(perkAugments, augment =>
-										augment.type === "Minor"
-											? Result.succeed(
-													<div key={augment.id} className="shrink-0">
-														<AugmentTooltip augment={augment} />
-													</div>,
-												)
-											: Result.failVoid,
-									)}
+						</blockquote>
+					),
+					onNone: () =>
+						Arr.isArrayNonEmpty(perkAugments) ? (
+							<>
+								<Separator />
+								<div className="my-4 flex flex-col items-center justify-center">
+									<div className="flex flex-col gap-3">
+										<h4 className="text-start text-sm font-semibold tracking-wide text-major-augment">
+											MAJOR AUGMENTS
+										</h4>
+										<div className="flex flex-wrap gap-3">
+											{Arr.filterMap(perkAugments, augment =>
+												augment.type === "Major"
+													? Result.succeed(
+															<div key={augment.id} className="shrink-0">
+																<AugmentTooltip augment={augment} />
+															</div>,
+														)
+													: Result.failVoid,
+											)}
+										</div>
+									</div>
+									<Separator className="my-4" />
+									<div className="flex w-full flex-col gap-3">
+										<h4 className="text-start text-sm font-semibold tracking-wide text-orange-700 dark:text-orange-300">
+											MINOR AUGMENTS
+										</h4>
+										<div className="flex flex-wrap gap-3">
+											{Arr.filterMap(perkAugments, augment =>
+												augment.type === "Minor"
+													? Result.succeed(
+															<div key={augment.id} className="shrink-0">
+																<AugmentTooltip augment={augment} />
+															</div>,
+														)
+													: Result.failVoid,
+											)}
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-					</>
-				) : null}
+							</>
+						) : null,
+				})}
 			</div>
 		</div>
 	)
