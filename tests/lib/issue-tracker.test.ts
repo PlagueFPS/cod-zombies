@@ -211,7 +211,7 @@ function parseCapturedRequest(call: CapturedCall) {
 }
 
 function decodeJsonBody(body: BodyInit | null | undefined) {
-	if (body == null) {
+	if (Predicate.isNullish(body)) {
 		throw new Error("expected fetch body")
 	}
 

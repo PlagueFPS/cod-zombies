@@ -28,7 +28,12 @@ const slugify = (text: string) =>
 const WORDS_PER_MINUTE = 200
 
 const countWords = (value: string) =>
-	Arr.filter(Str.split(Str.trim(value), /\s+/), word => word.length > 0).length
+	pipe(
+		value,
+		Str.trim,
+		Str.split(/\s+/),
+		Arr.filter(word => word.length > 0),
+	).length
 
 interface MdxDocumentMeta {
 	headings: Heading[]
@@ -68,7 +73,7 @@ export function collectMdxDocumentMeta(tree: Root): MdxDocumentMeta {
 
 		if (
 			(node.type === "text" || node.type === "inlineCode") &&
-			"value" in node &&
+			Predicate.hasProperty(node, "value") &&
 			Predicate.isString(node.value)
 		) {
 			wordCount += countWords(node.value)

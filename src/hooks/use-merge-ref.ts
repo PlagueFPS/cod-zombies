@@ -15,7 +15,7 @@ export function useMergeRef<TElement>(refA: Ref<TElement>, refB: Ref<TElement>):
 
 	return useCallback(
 		(current: TElement | null) => {
-			if (current === null) {
+			if (Predicate.isNull(current)) {
 				const cleanupFnA = cleanupA.current
 
 				if (Predicate.isNotNullish(cleanupFnA) && Predicate.isTruthy(cleanupFnA)) {

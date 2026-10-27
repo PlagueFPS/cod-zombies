@@ -1,6 +1,6 @@
 import type { MapMarker } from "@/map-configs/markers"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { Array as Arr } from "effect"
+import { Predicate, Array as Arr, String as Str } from "effect"
 import { useCallback } from "react"
 
 type MapSearchState = {
@@ -45,7 +45,7 @@ export function buildShareableMapSearch(
 
 	const next: Partial<MapSearchState> = {}
 
-	if (layer !== undefined && layer !== "") {
+	if (Predicate.isNotUndefined(layer) && !Str.isEmpty(layer)) {
 		next.layer = layer
 	}
 

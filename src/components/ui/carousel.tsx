@@ -1,5 +1,5 @@
 import { cn } from "cn"
-import { Predicate } from "effect"
+import { Match, Predicate } from "effect"
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import * as React from "react"
@@ -95,13 +95,17 @@ function Carousel({
 
 	const handleKeyDown = React.useCallback(
 		(event: React.KeyboardEvent<HTMLDivElement>) => {
-			if (event.key === "ArrowLeft") {
-				event.preventDefault()
-				scrollPrev()
-			} else if (event.key === "ArrowRight") {
-				event.preventDefault()
-				scrollNext()
-			}
+			Match.value(event.key).pipe(
+				Match.when("ArrowLeft", () => {
+					event.preventDefault()
+					scrollPrev()
+				}),
+				Match.when("ArrowRight", () => {
+					event.preventDefault()
+					scrollNext()
+				}),
+				Match.orElse(() => {}),
+			)
 		},
 		[scrollPrev, scrollNext],
 	)

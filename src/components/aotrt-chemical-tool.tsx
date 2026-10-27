@@ -1,4 +1,4 @@
-import { Exit, Array as Arr } from "effect"
+import { Predicate, Exit, Array as Arr } from "effect"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -33,7 +33,7 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 	const hasBothValues = values.top !== "" && values.left !== ""
 
 	useEffect(() => {
-		if (storedONumber !== null || typedONumber === null) return
+		if (Predicate.isNotNull(storedONumber) || Predicate.isNull(typedONumber)) return
 		writeAotrtONumber(typedONumber)
 	}, [storedONumber, typedONumber])
 
@@ -53,9 +53,11 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div
-					className={storedONumber === null ? "grid grid-cols-3 gap-4" : "grid grid-cols-2 gap-4"}
+					className={
+						Predicate.isNull(storedONumber) ? "grid grid-cols-3 gap-4" : "grid grid-cols-2 gap-4"
+					}
 				>
-					{storedONumber === null ? (
+					{Predicate.isNull(storedONumber) ? (
 						<div className="flex flex-col items-center gap-1">
 							<Label htmlFor={`${idPrefix}-o`}>O number</Label>
 							<Input
@@ -119,14 +121,14 @@ function chemicalToolStatus(
 	if (!hasBothValues) {
 		return (
 			<p className="text-sm text-muted-foreground">
-				{oNumber === null
+				{Predicate.isNull(oNumber)
 					? "Enter your O number and the Top and Left diamond numbers"
 					: "Enter the Top and Left numbers from the Acetaldehyde diamond"}
 			</p>
 		)
 	}
 
-	if (solution === null) {
+	if (Predicate.isNull(solution)) {
 		return <p className="text-sm text-muted-foreground">Enter positive whole numbers</p>
 	}
 

@@ -1,4 +1,4 @@
-import { Predicate } from "effect"
+import { Effect, Predicate, Schema } from "effect"
 import { createContext, useContext } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
@@ -47,8 +47,20 @@ const DEFAULT_SETTINGS = {
 	},
 }
 
-/** Type representing the default settings structure */
-export type TMapSettings = typeof DEFAULT_SETTINGS
+const SettingsSchema = Schema.Struct({
+	_version: Schema.Int.pipe(
+		Schema.withDecodingDefaultKey(Effect.succeed(CURRENT_VERSION), { encodingStrategy: "omit" }),
+	),
+	markers: Schema.Struct({ iconSize: Schema.Finite, opacity: Schema.Finite }),
+	popups: Schema.Struct({ disableGradients: Schema.Boolean, disableAnimations: Schema.Boolean }),
+	general: Schema.Struct({
+		disableZoomAnimation: Schema.Boolean,
+		disableFlyToAnimation: Schema.Boolean,
+	}),
+})
+
+/** Type representing validated map settings. */
+export type TMapSettings = typeof SettingsSchema.Type
 
 /** Union type representing all nested setting paths */
 export type TSettingPath = {
@@ -77,36 +89,11 @@ const MapSettingsContext = createContext<IMapSettingsContext>({
 	resetSettings: () => {},
 })
 
-const migrateSettings = (savedSettings: Partial<TMapSettings>) => {
-	if (
-		!(
-			Predicate.isNotNullish(savedSettings._version) && Predicate.isTruthy(savedSettings._version)
-		) ||
-		savedSettings._version >= CURRENT_VERSION
-	) {
-		return savedSettings
-	}
-
-	const migrated = {
-		...DEFAULT_SETTINGS,
-		...savedSettings,
-		_version: CURRENT_VERSION,
-	}
-
-	return migrated
-}
-
 export function MapSettingsProvider({ children }: { children: React.ReactNode }) {
-	const [settings, setSettings] = useLocalStorage<TMapSettings>(STORAGE_KEY, DEFAULT_SETTINGS)
+	const [settings, setSettings] = useLocalStorage(STORAGE_KEY, DEFAULT_SETTINGS, SettingsSchema)
 
-	const migratedSettings =
-		settings._version !== CURRENT_VERSION ? migrateSettings(settings) : settings
-
-	if (settings._version !== migratedSettings._version) {
-		setSettings(prev => ({
-			...prev,
-			...migratedSettings,
-		}))
+	if (settings._version < CURRENT_VERSION) {
+		setSettings(prev => ({ ...prev, _version: CURRENT_VERSION }))
 	}
 
 	const updateSettings = (newSettings: Partial<TMapSettings>) => {

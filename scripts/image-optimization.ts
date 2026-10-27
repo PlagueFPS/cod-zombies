@@ -1,5 +1,6 @@
 import { BunServices, BunRuntime } from "@effect/platform-bun"
 import {
+	Predicate,
 	Clock,
 	Duration,
 	Effect,
@@ -60,7 +61,7 @@ export function encodeWebp(
 ): Promise<Buffer> {
 	let pipeline = image.rotate()
 
-	if (width !== undefined) {
+	if (Predicate.isNotUndefined(width)) {
 		pipeline = pipeline.resize({
 			width,
 			height: options?.height,
@@ -114,10 +115,9 @@ const encodeWebpEffect = Effect.fnUntraced(function* (
 		try: () => encodeWebp(image, width, options),
 		catch: cause =>
 			ImageOptimizationError.make({
-				message:
-					width === undefined
-						? `Failed to encode base image: ${asset}`
-						: `Failed to encode ${width}px variant: ${asset}`,
+				message: Predicate.isUndefined(width)
+					? `Failed to encode base image: ${asset}`
+					: `Failed to encode ${width}px variant: ${asset}`,
 				cause,
 			}),
 	})
@@ -195,18 +195,16 @@ export const getOptimizeMode = (args: OptimizeCliOptions): OptimizeMode => {
 export const requireImageWidth = (
 	metadata: Readonly<{ width?: number }>,
 	asset: string,
-): Effect.Effect<number, ImageOptimizationError> => {
-	if (metadata.width === undefined) {
-		return Effect.fail(
+): Effect.Effect<number, ImageOptimizationError> =>
+	Schema.decodeUnknownEffect(Schema.Struct({ width: Schema.Finite }))(metadata).pipe(
+		Effect.map(value => value.width),
+		Effect.mapError(() =>
 			ImageOptimizationError.make({
 				message: `Image has no width metadata: ${asset}`,
 				cause: asset,
 			}),
-		)
-	}
-
-	return Effect.succeed(metadata.width)
-}
+		),
+	)
 
 export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 	Effect.gen(function* () {

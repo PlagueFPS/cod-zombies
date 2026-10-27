@@ -7,7 +7,6 @@ import {
 	FileSystem,
 	MutableHashMap,
 	MutableHashSet,
-	Number as Num,
 	Option,
 	Path,
 	Ref,
@@ -15,11 +14,10 @@ import {
 	Array as Arr,
 	String as Str,
 	Record as Rec,
-	Predicate,
 	pipe,
 } from "effect"
 import { DATE_OPTIONS } from "@/utils/constants"
-import { dateFrom, nowDate } from "@/utils/system-time"
+import { nowDate } from "@/utils/system-time"
 import {
 	encodeLastModifiedData,
 	type FileMetadata,
@@ -61,9 +59,23 @@ export const populateFilePaths = (
 const normalizeContentPath = (path: string) =>
 	pipe(path, toPosixPath, stripSrcContentPrefix, stripContentPrefix)
 
+const GitTimestampSchema = Schema.String.pipe(
+	Schema.check(Schema.isPattern(/^\d+$/)),
+	Schema.decodeTo(Schema.FiniteFromString.pipe(Schema.check(Schema.isInt()))),
+)
+
+const GitFileLineSchema = Schema.Union([
+	Schema.Tuple([Schema.Literals(["A", "M"]), Schema.NonEmptyString]),
+	Schema.Tuple([
+		Schema.String.pipe(Schema.check(Schema.isPattern(/^R/))),
+		Schema.NonEmptyString,
+		Schema.NonEmptyString,
+	]),
+])
+
 const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 	path: string,
-	currentTimestamp: Ref.Ref<string>,
+	currentTimestamp: Ref.Ref<Option.Option<DateTime.Utc>>,
 	filePaths: MutableHashSet.MutableHashSet<string>,
 	gitHistory: MutableHashSet.MutableHashSet<string>,
 	result: Record<string, FileMetadata>,
@@ -72,13 +84,7 @@ const storeFileMetadata = Effect.fn("storeFileMetadata")(function* (
 		return
 	}
 
-	const timestampStr = yield* Ref.get(currentTimestamp)
-
-	if (!(Predicate.isNotNullish(timestampStr) && Predicate.isTruthy(timestampStr))) return
-
-	const timestamp = Num.parse(timestampStr).pipe(
-		Option.flatMap(t => DateTime.make(dateFrom(t * 1000))),
-	)
+	const timestamp = yield* Ref.get(currentTimestamp)
 
 	if (Option.isNone(timestamp)) return
 
@@ -94,42 +100,42 @@ export const parseGitBatchOutput = Effect.fn("parseGitBatchOutput")(function* (
 	allFiles: MutableHashSet.MutableHashSet<string>,
 	repoRoot: string,
 ) {
-	const lines = Str.split(Str.trim(output), "\n")
+	const lines = pipe(output, Str.trim, Str.split("\n"))
 	const currentDate = yield* DateTime.make(nowDate()).pipe(Effect.fromOption)
-	const currentTimestamp = yield* Ref.make("")
+	const currentTimestamp = yield* Ref.make(Option.none<DateTime.Utc>())
 	const gitHistory = MutableHashSet.empty<string>()
 	const filePaths = populateFilePaths(allFiles, repoRoot)
 	const result: Record<string, FileMetadata> = {}
-	const digitPattern = /^\d+$/
 
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i]
-
-		if (
-			!(Predicate.isNotNullish(line) && Predicate.isTruthy(line)) ||
-			!(Predicate.isNotNullish(Str.trim(line)) && Predicate.isTruthy(Str.trim(line)))
+	for (const line of lines) {
+		const timestamp = yield* Schema.decodeEffect(GitTimestampSchema)(line).pipe(
+			Effect.option,
+			Effect.map(Option.flatMap(seconds => DateTime.make(seconds * 1000))),
 		)
+
+		if (Option.isSome(timestamp)) {
+			yield* Ref.set(currentTimestamp, timestamp)
 			continue
-
-		if (digitPattern.test(line)) {
-			yield* Ref.update(currentTimestamp, () => line)
-			continue
 		}
 
-		if (Str.startsWith("R")(line)) {
-			const parts = Str.split(line, "\t")
+		const record = yield* Schema.decodeUnknownEffect(GitFileLineSchema)(Str.split(line, "\t")).pipe(
+			Effect.option,
+		)
 
-			if (parts.length < 3 || !(Predicate.isNotNullish(parts[2]) && Predicate.isTruthy(parts[2])))
-				continue
+		yield* Option.match(record, {
+			onNone: () => Effect.void,
+			onSome: fields => {
+				const relativePath = fields[2] ?? Str.trim(fields[1])
 
-			const newPath = normalizeContentPath(parts[2])
-			yield* storeFileMetadata(newPath, currentTimestamp, filePaths, gitHistory, result)
-		}
-
-		if (Str.startsWith("A\t")(line) || Str.startsWith("M\t")(line)) {
-			const relativePath = normalizeContentPath(Str.trim(Str.substring(2)(line)))
-			yield* storeFileMetadata(relativePath, currentTimestamp, filePaths, gitHistory, result)
-		}
+				return storeFileMetadata(
+					normalizeContentPath(relativePath),
+					currentTimestamp,
+					filePaths,
+					gitHistory,
+					result,
+				)
+			},
+		})
 	}
 
 	// For files not found in git, use current date

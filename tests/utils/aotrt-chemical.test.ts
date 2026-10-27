@@ -1,4 +1,4 @@
-import { Exit, Array as Arr } from "effect"
+import { Predicate, Exit, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
 import {
@@ -147,7 +147,7 @@ function readBoardStep(
 function boardSteps(chemical: AotrtChemical, top: number, left: number): readonly number[] {
 	const steps = readBoardStep(BOARD[chemical], `${top},${left}`)
 
-	if (steps === undefined) {
+	if (Predicate.isUndefined(steps)) {
 		throw new Error(`missing board value for ${chemical} ${top},${left}`)
 	}
 

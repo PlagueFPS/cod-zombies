@@ -1,6 +1,7 @@
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import {
+	pipe,
 	Clock,
 	Effect,
 	FileSystem,
@@ -115,7 +116,7 @@ function generateImageVariantsObject(variantMap: Record<string, ImageVariantMeta
 	}
 
 	const lines = Arr.map(entries, ([basePath, { sourceWidth, widths }]) => {
-		const widthList = Arr.join(Arr.map(widths, String), ", ")
+		const widthList = pipe(widths, Arr.map(String), Arr.join(", "))
 
 		return `  '${Str.replace(/'/g, "\\'")(basePath)}': { sourceWidth: ${sourceWidth}, widths: [${widthList}] },`
 	})
@@ -124,7 +125,7 @@ function generateImageVariantsObject(variantMap: Record<string, ImageVariantMeta
 }
 
 function isRootWebPath(webPath: string): boolean {
-	return !Str.includes("/")(Str.slice(1)(webPath))
+	return !pipe(webPath, Str.slice(1), Str.includes("/"))
 }
 
 /** @param cwd - Workspace root (must contain `public/` when run). */

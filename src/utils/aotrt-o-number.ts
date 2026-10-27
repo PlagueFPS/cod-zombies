@@ -1,4 +1,4 @@
-import { Schema } from "effect"
+import { Match, Schema } from "effect"
 
 /** Chemical-step O values for Attack of the Radioactive Thing. */
 export const O_NUMBERS = [2, 4, 5, 6, 8, 9, 11, 15] as const
@@ -86,15 +86,18 @@ export function solveAotrtONumber(m: number, topTvNumber: number): AotrtONumberR
 export function classifyAotrtTvColor(product: number, topTvNumber: number): AotrtTvColor {
 	const middleStart = topTvNumber
 	const middleEnd = topTvNumber + TV_MIDDLE_SPAN
-	let row: AotrtTvColorRow
 
-	if (product < topTvNumber) {
-		row = "top"
-	} else if (product <= middleEnd) {
-		row = "middle"
-	} else {
-		row = "bottom"
-	}
+	const row = Match.value(product).pipe(
+		Match.when(
+			value => value < topTvNumber,
+			() => "top" as const,
+		),
+		Match.when(
+			value => value <= middleEnd,
+			() => "middle" as const,
+		),
+		Match.orElse(() => "bottom" as const),
+	)
 
 	return { product, row, middleStart, middleEnd }
 }

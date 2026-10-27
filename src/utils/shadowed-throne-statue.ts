@@ -1,3 +1,5 @@
+import { Predicate } from "effect"
+
 /** Facing encoded 0–3. Front (2) points at the central Barbarossa statue. */
 export const STATUE_DIRECTIONS = [0, 1, 2, 3] as const
 
@@ -53,7 +55,7 @@ const MAX_TURNS_PER_STATUE = 4
 function advance(direction: StatueDirection, offset: number): StatueDirection {
 	const next = STATUE_DIRECTIONS[(direction + offset) % STATUE_DIRECTIONS.length]
 
-	if (next === undefined) return direction
+	if (Predicate.isUndefined(next)) return direction
 
 	return next
 }
@@ -75,7 +77,7 @@ export function turnStatue(
 		const direction = next[statue]
 		const offset = offsets[statue]
 
-		if (direction === undefined || offset === undefined) continue
+		if (Predicate.isUndefined(direction) || Predicate.isUndefined(offset)) continue
 
 		next[statue] = advance(direction, offset)
 	}
@@ -98,7 +100,7 @@ function recordTurn(turns: StatueTurn[], index: number, times: number) {
 
 	const statue = STATUE_LABELS[index]
 
-	if (statue === undefined) return
+	if (Predicate.isUndefined(statue)) return
 
 	turns.push({ statue, times })
 }
@@ -129,10 +131,10 @@ function readPair(
 	const rightOffset = offsets[right]
 
 	if (
-		leftDirection === undefined ||
-		rightDirection === undefined ||
-		leftOffset === undefined ||
-		rightOffset === undefined
+		Predicate.isUndefined(leftDirection) ||
+		Predicate.isUndefined(rightDirection) ||
+		Predicate.isUndefined(leftOffset) ||
+		Predicate.isUndefined(rightOffset)
 	) {
 		return null
 	}
@@ -151,7 +153,7 @@ function alignPair(
 	let turns = 0
 	const initial = readPair(current, offsets, left, right)
 
-	if (initial === null) return null
+	if (Predicate.isNull(initial)) return null
 
 	let leftNeeded = neededRotations(initial.leftDirection, initial.leftOffset)
 	let rightNeeded = neededRotations(initial.rightDirection, initial.rightOffset)
@@ -170,7 +172,7 @@ function alignPair(
 
 		const pair = readPair(current, offsets, left, right)
 
-		if (pair === null) return null
+		if (Predicate.isNull(pair)) return null
 
 		leftOffset = pair.leftOffset
 		rightOffset = pair.rightOffset
@@ -227,13 +229,13 @@ function solveThree(
 	const turns: StatueTurn[] = []
 	const alignedBC = turnWhile([...directions], offsets, 0, current => current[1] !== current[2])
 
-	if (alignedBC === null) return { status: "unsolved" }
+	if (Predicate.isNull(alignedBC)) return { status: "unsolved" }
 
 	recordTurn(turns, 0, alignedBC.turns)
 
 	const alignedA = turnWhile(alignedBC.directions, offsets, 2, current => current[0] !== current[1])
 
-	if (alignedA === null) return { status: "unsolved" }
+	if (Predicate.isNull(alignedA)) return { status: "unsolved" }
 
 	recordTurn(turns, 2, alignedA.turns)
 
@@ -244,7 +246,7 @@ function solveThree(
 		current => current[1] !== TARGET_DIRECTION,
 	)
 
-	if (solved === null) return { status: "unsolved" }
+	if (Predicate.isNull(solved)) return { status: "unsolved" }
 
 	recordTurn(turns, 1, solved.turns)
 
@@ -258,25 +260,25 @@ function solveFour(
 	const turns: StatueTurn[] = []
 	const alignedLeft = alignPair([...directions], offsets, 2, 0, 1)
 
-	if (alignedLeft === null) return { status: "unsolved" }
+	if (Predicate.isNull(alignedLeft)) return { status: "unsolved" }
 
 	recordTurn(turns, 2, alignedLeft.turns)
 
 	const alignedRight = alignPair(alignedLeft.directions, offsets, 1, 2, 3)
 
-	if (alignedRight === null) return { status: "unsolved" }
+	if (Predicate.isNull(alignedRight)) return { status: "unsolved" }
 
 	recordTurn(turns, 1, alignedRight.turns)
 
 	const solvedLeft = solvePair(alignedRight.directions, offsets, 0, 0, 1)
 
-	if (solvedLeft === null) return { status: "unsolved" }
+	if (Predicate.isNull(solvedLeft)) return { status: "unsolved" }
 
 	recordTurn(turns, 0, solvedLeft.turns)
 
 	const solvedRight = solvePair(solvedLeft.directions, offsets, 3, 2, 3)
 
-	if (solvedRight === null) return { status: "unsolved" }
+	if (Predicate.isNull(solvedRight)) return { status: "unsolved" }
 
 	recordTurn(turns, 3, solvedRight.turns)
 
@@ -297,7 +299,11 @@ export function solveStatueWall(
 		const direction = directions[index]
 		const statue = STATUE_LABELS[index]
 
-		if (offset === undefined || direction === undefined || statue === undefined) {
+		if (
+			Predicate.isUndefined(offset) ||
+			Predicate.isUndefined(direction) ||
+			Predicate.isUndefined(statue)
+		) {
 			return { status: "unsolved" }
 		}
 

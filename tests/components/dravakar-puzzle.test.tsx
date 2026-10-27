@@ -1,6 +1,6 @@
 /** @vitest-environment happy-dom */
 
-import { String as Str, Array as Arr, Option } from "effect"
+import { Predicate, String as Str, Array as Arr, Option } from "effect"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { afterEach, describe, expect, test } from "vitest"
@@ -34,7 +34,7 @@ describe("DravakarPuzzle", () => {
 			Arr.findFirst(
 				[...container.querySelectorAll("button")],
 				button =>
-					button.textContent != null &&
+					Predicate.isNotNullish(button.textContent) &&
 					Str.includes("I remember the runner that travels to stars")(button.textContent),
 			),
 		)

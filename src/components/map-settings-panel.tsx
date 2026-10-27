@@ -1,6 +1,6 @@
 import { useHotkey, type RegisterableHotkey } from "@tanstack/react-hotkeys"
 import { cn } from "cn"
-import { Array as Arr, Predicate } from "effect"
+import { Match, Array as Arr, Predicate } from "effect"
 import { CornerUpLeft, MapIcon, MapPin, MessageSquare, SettingsIcon } from "lucide-react"
 import { useState } from "react"
 import { Shortcut } from "@/components/shortcut"
@@ -27,55 +27,51 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile"
 
 function settingValue(settings: TMapSettings, path: TSettingPath) {
-	switch (path) {
-		case "markers.iconSize":
-			return settings.markers.iconSize
-		case "markers.opacity":
-			return settings.markers.opacity
-		case "popups.disableGradients":
-			return settings.popups.disableGradients
-		case "popups.disableAnimations":
-			return settings.popups.disableAnimations
-		case "general.disableZoomAnimation":
-			return settings.general.disableZoomAnimation
-		case "general.disableFlyToAnimation":
-			return settings.general.disableFlyToAnimation
-	}
+	return Match.value(path).pipe(
+		Match.when("markers.iconSize", () => settings.markers.iconSize),
+		Match.when("markers.opacity", () => settings.markers.opacity),
+		Match.when("popups.disableGradients", () => settings.popups.disableGradients),
+		Match.when("popups.disableAnimations", () => settings.popups.disableAnimations),
+		Match.when("general.disableZoomAnimation", () => settings.general.disableZoomAnimation),
+		Match.when("general.disableFlyToAnimation", () => settings.general.disableFlyToAnimation),
+		Match.exhaustive,
+	)
 }
 
 function withResetSetting(settings: TMapSettings, defaults: TMapSettings, path: TSettingPath) {
-	switch (path) {
-		case "markers.iconSize":
-			return { ...settings, markers: { ...settings.markers, iconSize: defaults.markers.iconSize } }
-		case "markers.opacity":
-			return { ...settings, markers: { ...settings.markers, opacity: defaults.markers.opacity } }
-		case "popups.disableGradients":
-			return {
-				...settings,
-				popups: { ...settings.popups, disableGradients: defaults.popups.disableGradients },
-			}
-		case "popups.disableAnimations":
-			return {
-				...settings,
-				popups: { ...settings.popups, disableAnimations: defaults.popups.disableAnimations },
-			}
-		case "general.disableZoomAnimation":
-			return {
-				...settings,
-				general: {
-					...settings.general,
-					disableZoomAnimation: defaults.general.disableZoomAnimation,
-				},
-			}
-		case "general.disableFlyToAnimation":
-			return {
-				...settings,
-				general: {
-					...settings.general,
-					disableFlyToAnimation: defaults.general.disableFlyToAnimation,
-				},
-			}
-	}
+	return Match.value(path).pipe(
+		Match.when("markers.iconSize", () => ({
+			...settings,
+			markers: { ...settings.markers, iconSize: defaults.markers.iconSize },
+		})),
+		Match.when("markers.opacity", () => ({
+			...settings,
+			markers: { ...settings.markers, opacity: defaults.markers.opacity },
+		})),
+		Match.when("popups.disableGradients", () => ({
+			...settings,
+			popups: { ...settings.popups, disableGradients: defaults.popups.disableGradients },
+		})),
+		Match.when("popups.disableAnimations", () => ({
+			...settings,
+			popups: { ...settings.popups, disableAnimations: defaults.popups.disableAnimations },
+		})),
+		Match.when("general.disableZoomAnimation", () => ({
+			...settings,
+			general: {
+				...settings.general,
+				disableZoomAnimation: defaults.general.disableZoomAnimation,
+			},
+		})),
+		Match.when("general.disableFlyToAnimation", () => ({
+			...settings,
+			general: {
+				...settings.general,
+				disableFlyToAnimation: defaults.general.disableFlyToAnimation,
+			},
+		})),
+		Match.exhaustive,
+	)
 }
 
 export default function MapSettingsPanel() {

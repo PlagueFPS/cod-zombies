@@ -1,5 +1,5 @@
 import type { ONumber } from "@/utils/aotrt-o-number"
-import { Data, Schema, Array as Arr } from "effect"
+import { Predicate, Data, Schema, Array as Arr } from "effect"
 
 export type AotrtChemical =
 	| "1,3,5-Tera-Nitra-Phenol"
@@ -101,11 +101,11 @@ export function solveAotrtChemical(
 	const reversed = diamondKey(left, top)
 	const key = isDiamondKey(entered) ? entered : isDiamondKey(reversed) ? reversed : null
 
-	if (key === null) {
+	if (Predicate.isNull(key)) {
 		return WrongTvColor()
 	}
 
-	if (oNumber === null) {
+	if (Predicate.isNull(oNumber)) {
 		return MissingONumber()
 	}
 

@@ -19,12 +19,6 @@ const OpengraphSchema = Schema.Struct({
 	id: Schema.NonEmptyString,
 })
 
-const MapConfigModuleSchema = Schema.Struct({
-	config: Schema.Struct({
-		layers: Schema.Struct({}),
-	}),
-})
-
 const FileMetadataSchema = Schema.Struct({
 	lastModified: Schema.Int.annotate({ description: "Epoch timestamp of the last modification" }),
 	lastModifiedFormatted: Schema.String.annotate({
@@ -210,5 +204,3 @@ export const encodeOpengraphManifest = Schema.encodeEffect(Schema.fromJsonString
 export const encodeLastModifiedData = Schema.encodeEffect(
 	Schema.fromJsonString(LastModifiedDataSchema),
 )
-
-export const decodeMapConfigModule = Schema.decodeUnknownEffect(MapConfigModuleSchema)

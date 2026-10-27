@@ -1,7 +1,9 @@
-import { Predicate } from "effect"
+import { Match, Option, Predicate, Schema } from "effect"
 import { createContext, useContext, useLayoutEffect, useRef, useState } from "react"
 
-type Theme = "dark" | "light" | "system"
+const ThemeSchema = Schema.Literals(["dark", "light", "system"])
+
+type Theme = typeof ThemeSchema.Type
 
 type ThemeProviderProps = {
 	children: React.ReactNode
@@ -15,23 +17,24 @@ type ThemeProviderState = {
 	setTheme: (theme: Theme) => void
 }
 
-function resolvedFromTheme(theme: Theme): "light" | "dark" {
-	if (theme === "dark") return "dark"
+const resolvedFromTheme = Match.type<Theme>().pipe(
+	Match.when("dark", () => "dark" as const),
+	Match.when("light", () => "light" as const),
+	Match.when("system", () => {
+		if (typeof window === "undefined") return "light" as const
 
-	if (theme === "light") return "light"
+		return window.matchMedia("(prefers-color-scheme: dark)").matches
+			? ("dark" as const)
+			: ("light" as const)
+	}),
+	Match.exhaustive,
+)
 
-	if (typeof window === "undefined") return "light"
-
-	return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-}
-
-function ssrResolvedPlaceholder(defaultTheme: Theme): "light" | "dark" {
-	if (defaultTheme === "dark") return "dark"
-
-	if (defaultTheme === "light") return "light"
-
-	return "light"
-}
+const ssrResolvedPlaceholder = Match.type<Theme>().pipe(
+	Match.when("dark", () => "dark" as const),
+	Match.whenOr("light", "system", () => "light" as const),
+	Match.exhaustive,
+)
 
 function applyThemeToDocument(theme: Theme) {
 	const isDark =
@@ -42,9 +45,7 @@ function applyThemeToDocument(theme: Theme) {
 }
 
 function parseStoredTheme(value: string | null, fallback: Theme): Theme {
-	if (value === "dark" || value === "light" || value === "system") return value
-
-	return fallback
+	return Schema.decodeUnknownOption(ThemeSchema)(value).pipe(Option.getOrElse(() => fallback))
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState | null>(null)

@@ -118,7 +118,7 @@ function handleLoading(
 		return
 
 	img[LOADED_SRC_ATTR] = src
-	const p = "decode" in img ? img.decode() : Promise.resolve()
+	const p = Predicate.hasProperty(img, "decode") ? img.decode() : Promise.resolve()
 	void p
 		.catch(() => {})
 		.then(() => {
@@ -178,7 +178,7 @@ export const Image = forwardRef<HTMLImageElement | null, ImageProps>(
 						console.error(`Image is missing required "src" property:`, img)
 					}
 
-					if (img.getAttribute("alt") === null) {
+					if (Predicate.isNull(img.getAttribute("alt"))) {
 						console.error(
 							`Image "${src}" is missing required "alt" property. Please add Alt Text to describe the image for screen readers and search engines.`,
 						)

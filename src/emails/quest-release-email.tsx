@@ -1,4 +1,5 @@
 import { Button, Heading, Section } from "@react-email/components"
+import { Match } from "effect"
 import { requireOpengraphImageUrl } from "../utils/opengraph-image-url"
 import {
 	EmailBulletList,
@@ -26,17 +27,11 @@ interface QuestOpengraph {
 }
 
 function questOpengraph(type: IQuestRelease["type"]): QuestOpengraph {
-	switch (type) {
-		case "Main":
-			return { kind: "main-quests", label: "main" }
-		case "Side":
-			return { kind: "side-quests", label: "side" }
-		default: {
-			const exhaustive: never = type
-
-			return exhaustive
-		}
-	}
+	return Match.value(type).pipe(
+		Match.when("Main", (): QuestOpengraph => ({ kind: "main-quests", label: "main" })),
+		Match.when("Side", (): QuestOpengraph => ({ kind: "side-quests", label: "side" })),
+		Match.exhaustive,
+	)
 }
 
 export function questReleaseSubject(type: IQuestRelease["type"], title: string): string {

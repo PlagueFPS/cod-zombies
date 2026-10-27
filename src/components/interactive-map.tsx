@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css"
 import "@/styles/leaflet-overrides.css"
 import type { Location, MapMarker } from "@/map-configs/markers"
 import { cn } from "cn"
-import { Option, Array as Arr, Predicate } from "effect"
+import { Match, Option, Array as Arr, Predicate } from "effect"
 import { CRS, LatLng, LatLngBounds, type LatLngTuple, type LeafletMouseEvent } from "leaflet"
 import { RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
@@ -95,11 +95,10 @@ export function InteractiveMap({ currentLayer }: InteractiveMapProps) {
 	return (
 		<MapContainer
 			key={`${layer.id}-${settings.popups.disableAnimations}-${settings.general.disableZoomAnimation}`}
-			center={
-				Option.isSome(imageDimensions)
-					? [imageDimensions.value.height / 2, imageDimensions.value.width / 2]
-					: [1024, 1024]
-			}
+			center={Option.match(imageDimensions, {
+				onSome: (dimensions): LatLngTuple => [dimensions.height / 2, dimensions.width / 2],
+				onNone: (): LatLngTuple => [1024, 1024],
+			})}
 			zoom={0}
 			minZoom={-2}
 			maxZoom={3}
@@ -234,20 +233,15 @@ function CustomPopup({ marker, location }: { marker: MapMarker; location: Locati
 			return "custom-popup"
 		}
 
-		switch (marker.category) {
-			case "general":
-				return "custom-popup general-popup"
-			case "equipment":
-				return "custom-popup equipment-popup"
-			case "upgrades":
-				return "custom-popup upgrades-popup"
-			case "objectives":
-				return "custom-popup objectives-popup"
-			case "transportation":
-				return "custom-popup transportation-popup"
-			case "intel":
-				return "custom-popup intel-popup"
-		}
+		return Match.value(marker.category).pipe(
+			Match.when("general", () => "custom-popup general-popup"),
+			Match.when("equipment", () => "custom-popup equipment-popup"),
+			Match.when("upgrades", () => "custom-popup upgrades-popup"),
+			Match.when("objectives", () => "custom-popup objectives-popup"),
+			Match.when("transportation", () => "custom-popup transportation-popup"),
+			Match.when("intel", () => "custom-popup intel-popup"),
+			Match.exhaustive,
+		)
 	}
 
 	return (
