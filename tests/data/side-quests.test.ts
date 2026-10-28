@@ -13,7 +13,7 @@ describe("compareSideQuestDescending", () => {
 			compareSideQuestDescending(
 				{ id: "dead-again", map: "der-eisendrache" },
 				{ id: "brm-wall-buy", map: "der-eisendrache" },
-			),
+			).pipe(Option.getOrThrow),
 		).toBeGreaterThan(0)
 	})
 })
@@ -23,7 +23,9 @@ describe("getSideQuests", () => {
 		const quests = getSideQuests()
 
 		for (let i = 0; i < quests.length - 1; i++) {
-			expect(compareSideQuestDescending(quests[i]!, quests[i + 1]!)).toBeLessThanOrEqual(0)
+			expect(
+				compareSideQuestDescending(quests[i]!, quests[i + 1]!).pipe(Option.getOrThrow),
+			).toBeLessThanOrEqual(0)
 		}
 	})
 })
@@ -88,4 +90,13 @@ describe("getAdjacentSideQuests", () => {
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})
+})
+
+test("compareSideQuestDescending returns None for missing tie-break indexes", () => {
+	expect(
+		compareSideQuestDescending(
+			{ id: "unknown-a", map: "der-eisendrache" },
+			{ id: "unknown-b", map: "der-eisendrache" },
+		),
+	).toEqual(Option.none())
 })

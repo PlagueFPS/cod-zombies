@@ -1,4 +1,4 @@
-import { Array as Arr, Option, Predicate } from "effect"
+import { Array as Arr, Option, Predicate, HashSet, Boolean as Bool } from "effect"
 
 export type FilterSpec<T> = {
 	values: readonly string[] | undefined
@@ -77,4 +77,21 @@ export function paginate<T>(
 		totalCount,
 		pageSize,
 	}
+}
+
+/** Retain allowed filter slugs; omit absent or empty selections. */
+export function filterSearchParam(
+	allowed: HashSet.HashSet<string>,
+	values: Option.Option<readonly string[]>,
+): Option.Option<string[]> {
+	return values.pipe(
+		Option.flatMap(values => {
+			const matched = Arr.filter(values, value => HashSet.has(allowed, value))
+
+			return Bool.match(matched.length > 0, {
+				onTrue: () => Option.some(matched),
+				onFalse: Option.none,
+			})
+		}),
+	)
 }

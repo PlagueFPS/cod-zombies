@@ -1,5 +1,5 @@
 import type { ONumber } from "@/utils/aotrt-o-number"
-import { Predicate, Data, Schema, Array as Arr } from "effect"
+import { Option, Match, Data, Schema, Array as Arr } from "effect"
 
 export type AotrtChemical =
 	| "1,3,5-Tera-Nitra-Phenol"
@@ -7,23 +7,11 @@ export type AotrtChemical =
 	| "Octahydro-2,5-Nitro-3,4,7-Parazokine"
 	| "3-Methyl-2,4-Dinitro Benzene"
 
-/** Top, then Left, for the six Acetaldehyde diamonds. */
-const DIAMONDS = [
-	[8, 1],
-	[1, 7],
-	[3, 9],
-	[6, 6],
-	[8, 4],
-	[4, 5],
-] as const
-
-type DiamondKey = "8,1" | "1,7" | "3,9" | "6,6" | "8,4" | "4,5"
-
 const diamondKey = (top: number, left: number) => `${top},${left}`
 
-const DIAMOND_KEYS: ReadonlySet<string> = new Set(
-	Arr.map(DIAMONDS, ([top, left]) => diamondKey(top, left)),
-)
+const DiamondKeySchema = Schema.Literals(["8,1", "1,7", "3,9", "6,6", "8,4", "4,5"])
+
+type DiamondKey = typeof DiamondKeySchema.Type
 
 /**
  * Chemical-board values for each Acetaldehyde column, before subtracting O.
@@ -83,9 +71,9 @@ const AotrtDiamondInputSchema = Schema.Struct({
 	left: PositiveWholeNumberFromString,
 })
 
-export const decodeAotrtDiamondInput = Schema.decodeUnknownExit(AotrtDiamondInputSchema)
+export const decodeAotrtDiamondInput = Schema.decodeUnknownOption(AotrtDiamondInputSchema)
 
-const isDiamondKey = (key: string): key is DiamondKey => DIAMOND_KEYS.has(key)
+const isDiamondKey = Schema.is(DiamondKeySchema)
 
 /**
  * Look up the chemical-station numbers for one compound and Acetaldehyde diamond.
@@ -95,21 +83,25 @@ export function solveAotrtChemical(
 	chemical: AotrtChemical,
 	top: number,
 	left: number,
-	oNumber: ONumber | null,
+	oNumber: Option.Option<ONumber>,
 ): AotrtChemicalSolution {
 	const entered = diamondKey(top, left)
 	const reversed = diamondKey(left, top)
-	const key = isDiamondKey(entered) ? entered : isDiamondKey(reversed) ? reversed : null
 
-	if (Predicate.isNull(key)) {
+	const key = Match.value(entered).pipe(
+		Match.when(isDiamondKey, value => Option.some(value)),
+		Match.orElse(() => Option.some(reversed).pipe(Option.filter(isDiamondKey))),
+	)
+
+	if (Option.isNone(key)) {
 		return WrongTvColor()
 	}
 
-	if (Predicate.isNull(oNumber)) {
+	if (Option.isNone(oNumber)) {
 		return MissingONumber()
 	}
 
 	return Solved({
-		steps: Arr.map(CHEMICAL_STEPS[chemical][key], step => step - oNumber),
+		steps: Arr.map(CHEMICAL_STEPS[chemical][key.value], step => step - oNumber.value),
 	})
 }

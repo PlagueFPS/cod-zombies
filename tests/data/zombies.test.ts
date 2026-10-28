@@ -1,6 +1,6 @@
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import { getAdjacentZombies, getZombies } from "@/data/zombies"
+import { compareZombieReleaseDescending, getAdjacentZombies, getZombies } from "@/data/zombies"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getZombies", () => {
@@ -45,4 +45,13 @@ describe("getAdjacentZombies", () => {
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})
+})
+
+test("compareZombieReleaseDescending returns None for missing tie-break indexes", () => {
+	expect(
+		compareZombieReleaseDescending(
+			{ id: "unknown-a", releaseDate: "2026-01-01" },
+			{ id: "unknown-b", releaseDate: "2026-01-01" },
+		),
+	).toEqual(Option.none())
 })

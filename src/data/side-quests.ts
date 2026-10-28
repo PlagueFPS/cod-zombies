@@ -1,7 +1,7 @@
 import type { SortOption } from "@/components/grid-sort"
 import type { ContentState } from "@/types/data"
 import type { SideQuestsPaths } from "@/types/generated/content-paths.gen"
-import { Data, Option, Array as Arr } from "effect"
+import { HashMap, Data, Option, Array as Arr } from "effect"
 import { compareMapReleaseDescending, getMapByKey, type MapKey } from "@/data/maps"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
@@ -38,14 +38,23 @@ export type SideQuestKey = Parameters<typeof SIDE_QUESTS.get>[0]
 export function compareSideQuestDescending(
 	a: Pick<SideQuest, "id" | "map">,
 	b: Pick<SideQuest, "id" | "map">,
-): number {
-	const mapA = getMapByKey(a.map).pipe(Option.getOrThrow)
-	const mapB = getMapByKey(b.map).pipe(Option.getOrThrow)
-	const byMap = compareMapReleaseDescending(mapA, mapB)
+): Option.Option<number> {
+	return Option.zipWith(
+		getMapByKey(a.map),
+		getMapByKey(b.map),
+		(mapA, mapB) => [mapA, mapB] as const,
+	).pipe(
+		Option.flatMap(([mapA, mapB]) => compareMapReleaseDescending(mapA, mapB)),
+		Option.flatMap(byMap => {
+			if (byMap !== 0) return Option.some(byMap)
 
-	if (byMap !== 0) return byMap
-
-	return SIDE_QUEST_INSERTION_INDEX_BY_ID.get(b.id)! - SIDE_QUEST_INSERTION_INDEX_BY_ID.get(a.id)!
+			return Option.zipWith(
+				HashMap.get(SIDE_QUEST_INSERTION_INDEX_BY_ID, b.id),
+				HashMap.get(SIDE_QUEST_INSERTION_INDEX_BY_ID, a.id),
+				(b, a) => b - a,
+			)
+		}),
+	)
 }
 
 function withResolvedSideQuestState(quest: SideQuest): SideQuest {
@@ -59,7 +68,9 @@ function withResolvedSideQuestState(quest: SideQuest): SideQuest {
 
 /** @returns Side quests sorted like by {@link compareMapReleaseDescending} on the host map, then {@link SIDE_QUESTS} insertion order when host maps tie. */
 export const getSideQuests = (): SideQuest[] =>
-	Arr.map([...SIDE_QUESTS.values()], withResolvedSideQuestState).sort(compareSideQuestDescending)
+	Arr.map([...SIDE_QUESTS.values()], withResolvedSideQuestState).sort((a, b) =>
+		compareSideQuestDescending(a, b).pipe(Option.getOrElse(() => 0)),
+	)
 
 /**
  * @returns The side quest with the given key
@@ -2115,6 +2126,6 @@ const SIDE_QUESTS = uniqueMap([
 	}),
 ])
 
-const SIDE_QUEST_INSERTION_INDEX_BY_ID = new Map<string, number>(
+const SIDE_QUEST_INSERTION_INDEX_BY_ID = HashMap.fromIterable<string, number>(
 	Arr.map([...SIDE_QUESTS.keys()], (id, i) => [id, i]),
 )

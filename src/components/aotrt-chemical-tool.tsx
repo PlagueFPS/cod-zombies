@@ -1,4 +1,4 @@
-import { Predicate, Exit, Array as Arr } from "effect"
+import { Option, Array as Arr } from "effect"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -22,26 +22,18 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 	const [values, setValues] = useState({ top: "", left: "", oNumber: "" })
 	const storedONumber = useAotrtONumber()
 
-	const typedONumber = decodeAotrtONumberString(values.oNumber).pipe(
-		Exit.match({
-			onSuccess: value => value,
-			onFailure: () => null,
-		}),
-	)
+	const typedONumber = decodeAotrtONumberString(values.oNumber)
 
-	const oNumber = storedONumber ?? typedONumber
+	const oNumber = Option.orElse(storedONumber, () => typedONumber)
 	const hasBothValues = values.top !== "" && values.left !== ""
 
 	useEffect(() => {
-		if (Predicate.isNotNull(storedONumber) || Predicate.isNull(typedONumber)) return
-		writeAotrtONumber(typedONumber)
+		if (Option.isSome(storedONumber) || Option.isNone(typedONumber)) return
+		writeAotrtONumber(typedONumber.value)
 	}, [storedONumber, typedONumber])
 
 	const solution = decodeAotrtDiamondInput({ top: values.top, left: values.left }).pipe(
-		Exit.match({
-			onSuccess: value => solveAotrtChemical(chemical, value.top, value.left, oNumber),
-			onFailure: () => null,
-		}),
+		Option.map(value => solveAotrtChemical(chemical, value.top, value.left, oNumber)),
 	)
 
 	const idPrefix = `aotrt-${slugify(chemical)}`
@@ -53,28 +45,32 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div
-					className={
-						Predicate.isNull(storedONumber) ? "grid grid-cols-3 gap-4" : "grid grid-cols-2 gap-4"
-					}
+					className={Option.match(storedONumber, {
+						onNone: () => "grid grid-cols-3 gap-4",
+						onSome: () => "grid grid-cols-2 gap-4",
+					})}
 				>
-					{Predicate.isNull(storedONumber) ? (
-						<div className="flex flex-col items-center gap-1">
-							<Label htmlFor={`${idPrefix}-o`}>O number</Label>
-							<Input
-								type="text"
-								inputMode="numeric"
-								id={`${idPrefix}-o`}
-								name="oNumber"
-								value={values.oNumber}
-								onValueChange={oNumberInput =>
-									setValues(current => ({ ...current, oNumber: oNumberInput }))
-								}
-								placeholder="4"
-								autoComplete="off"
-								className="text-center text-lg"
-							/>
-						</div>
-					) : null}
+					{Option.match(storedONumber, {
+						onNone: () => (
+							<div className="flex flex-col items-center gap-1">
+								<Label htmlFor={`${idPrefix}-o`}>O number</Label>
+								<Input
+									type="text"
+									inputMode="numeric"
+									id={`${idPrefix}-o`}
+									name="oNumber"
+									value={values.oNumber}
+									onValueChange={oNumberInput =>
+										setValues(current => ({ ...current, oNumber: oNumberInput }))
+									}
+									placeholder="4"
+									autoComplete="off"
+									className="text-center text-lg"
+								/>
+							</div>
+						),
+						onSome: () => null,
+					})}
 					<div className="flex flex-col items-center gap-1">
 						<Label htmlFor={`${idPrefix}-top`}>Top</Label>
 						<Input
@@ -114,25 +110,26 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 
 function chemicalToolStatus(
 	hasBothValues: boolean,
-	oNumber: ONumber | null,
+	oNumber: Option.Option<ONumber>,
 	oInput: string,
-	solution: AotrtChemicalSolution | null,
+	solution: Option.Option<AotrtChemicalSolution>,
 ) {
 	if (!hasBothValues) {
 		return (
 			<p className="text-sm text-muted-foreground">
-				{Predicate.isNull(oNumber)
-					? "Enter your O number and the Top and Left diamond numbers"
-					: "Enter the Top and Left numbers from the Acetaldehyde diamond"}
+				{Option.match(oNumber, {
+					onNone: () => "Enter your O number and the Top and Left diamond numbers",
+					onSome: () => "Enter the Top and Left numbers from the Acetaldehyde diamond",
+				})}
 			</p>
 		)
 	}
 
-	if (Predicate.isNull(solution)) {
+	if (Option.isNone(solution)) {
 		return <p className="text-sm text-muted-foreground">Enter positive whole numbers</p>
 	}
 
-	return AotrtChemicalSolution.$match(solution, {
+	return AotrtChemicalSolution.$match(solution.value, {
 		WrongTvColor: () => (
 			<p className="text-sm text-muted-foreground">
 				Those numbers are not on the Acetaldehyde diamond. View the board in your TV color.

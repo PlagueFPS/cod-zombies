@@ -14,7 +14,7 @@ describe("compareMapReleaseDescending", () => {
 			compareMapReleaseDescending(
 				{ id: "nacht-der-untoten", releaseDate: "2008-11-11" },
 				{ id: "totenreich", releaseDate: "2026-04-30" },
-			),
+			).pipe(Option.getOrThrow),
 		).toBeGreaterThan(0)
 	})
 
@@ -23,7 +23,7 @@ describe("compareMapReleaseDescending", () => {
 			compareMapReleaseDescending(
 				{ id: "classified", releaseDate: "2018-10-12" },
 				{ id: "voyage-of-despair", releaseDate: "2018-10-12" },
-			),
+			).pipe(Option.getOrThrow),
 		).toBeLessThan(0)
 	})
 })
@@ -95,4 +95,13 @@ describe("getAdjacentMaps", () => {
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})
+})
+
+test("compareMapReleaseDescending returns None for missing tie-break indexes", () => {
+	expect(
+		compareMapReleaseDescending(
+			{ id: "unknown-a", releaseDate: "2026-01-01" },
+			{ id: "unknown-b", releaseDate: "2026-01-01" },
+		),
+	).toEqual(Option.none())
 })

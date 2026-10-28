@@ -3,9 +3,10 @@ import type { MapKey } from "@/data/maps"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { RelicsPaths } from "@/types/generated/content-paths.gen"
 import type { RelicsImagePath } from "@/types/generated/image-paths.gen"
-import { Data, Option, Array as Arr, Predicate } from "effect"
+import { HashMap, HashSet, Data, Option, Array as Arr } from "effect"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
+import { filterSearchParam } from "@/utils/filter-helpers"
 import { getAdjacentItems, slugify, sortDates } from "@/utils/shared-functions"
 import { nowMillis } from "@/utils/system-time"
 /** Relic types in ascending sort order. */
@@ -22,14 +23,8 @@ export const relicTypeSlug = (type: RelicType) => slugify(type)
  * Type values the relics combobox may write into `?type=`.
  * Unknown slugs are dropped. An empty selection is omitted.
  */
-export function relicTypeSearchParam(values: readonly string[] | undefined) {
-	if (!(Predicate.isNotNullish(values) && Predicate.isTruthy(values))) return undefined
-
-	const allowed = new Set<string>(Arr.map(RELIC_TYPES, relicTypeSlug))
-	const matched = Arr.filter(values, value => allowed.has(value))
-
-	return matched.length > 0 ? matched : undefined
-}
+export const relicTypeSearchParam = (values: Option.Option<readonly string[]>) =>
+	filterSearchParam(HashSet.fromIterable(Arr.map(RELIC_TYPES, relicTypeSlug)), values)
 
 /** The unique identifier for each relic */
 export type RelicKey = Parameters<typeof RELICS.get>[0]
@@ -68,12 +63,16 @@ export interface Relic {
 export function compareRelicReleaseDescending(
 	a: Pick<Relic, "id" | "discoveredDate">,
 	b: Pick<Relic, "id" | "discoveredDate">,
-): number {
+): Option.Option<number> {
 	const byDate = sortDates(b.discoveredDate, a.discoveredDate)
 
-	if (byDate !== 0) return byDate
+	if (byDate !== 0) return Option.some(byDate)
 
-	return RELIC_INSERATION_INDEX_BY_ID.get(b.id)! - RELIC_INSERATION_INDEX_BY_ID.get(a.id)!
+	return Option.zipWith(
+		HashMap.get(RELIC_INSERATION_INDEX_BY_ID, b.id),
+		HashMap.get(RELIC_INSERATION_INDEX_BY_ID, a.id),
+		(b, a) => b - a,
+	)
 }
 
 function withResolvedRelicState(relic: Relic): Relic {
@@ -89,7 +88,9 @@ function withResolvedRelicState(relic: Relic): Relic {
  * @returns All relics sorted by discovered date in descending order
  */
 export const getRelics = () =>
-	Arr.map([...RELICS.values()], withResolvedRelicState).sort(compareRelicReleaseDescending)
+	Arr.map([...RELICS.values()], withResolvedRelicState).sort((a, b) =>
+		compareRelicReleaseDescending(a, b).pipe(Option.getOrElse(() => 0)),
+	)
 
 /**
  * @returns A specific relic by its key
@@ -593,6 +594,6 @@ const RELICS = uniqueMap([
 	}),
 ])
 
-const RELIC_INSERATION_INDEX_BY_ID = new Map<string, number>(
+const RELIC_INSERATION_INDEX_BY_ID = HashMap.fromIterable<string, number>(
 	Arr.map([...RELICS.keys()], (id, i) => [id, i]),
 )

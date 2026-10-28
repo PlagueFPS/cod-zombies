@@ -1,4 +1,4 @@
-import { Predicate, Exit } from "effect"
+import { Option } from "effect"
 import { decodeAotrtONumberString, type ONumber } from "@/utils/aotrt-o-number"
 
 /** sessionStorage key for the O number calculated by the number tool. */
@@ -7,18 +7,11 @@ export const AOTRT_O_NUMBER_STORAGE_KEY = "aotrt-o-number"
 const CHANGE_EVENT = "aotrt-o-number-change"
 
 /** Read the session O number. Invalid or missing values are treated as unset. */
-export function readAotrtONumber(): ONumber | null {
-	if (typeof window === "undefined") return null
+export function readAotrtONumber(): Option.Option<ONumber> {
+	if (typeof window === "undefined") return Option.none()
 
-	const raw = window.sessionStorage.getItem(AOTRT_O_NUMBER_STORAGE_KEY)
-
-	if (Predicate.isNull(raw)) return null
-
-	return decodeAotrtONumberString(raw).pipe(
-		Exit.match({
-			onSuccess: value => value,
-			onFailure: () => null,
-		}),
+	return Option.fromNullOr(window.sessionStorage.getItem(AOTRT_O_NUMBER_STORAGE_KEY)).pipe(
+		Option.flatMap(decodeAotrtONumberString),
 	)
 }
 
@@ -29,7 +22,7 @@ export function writeAotrtONumber(oNumber: ONumber) {
 	const current = readAotrtONumber()
 	window.sessionStorage.setItem(AOTRT_O_NUMBER_STORAGE_KEY, String(oNumber))
 
-	if (current !== oNumber) {
+	if (!Option.contains(current, oNumber)) {
 		window.dispatchEvent(new Event(CHANGE_EVENT))
 	}
 }

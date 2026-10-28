@@ -1,6 +1,11 @@
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import { getAdjacentRelics, getRelicByKey, getRelics } from "@/data/relics"
+import {
+	compareRelicReleaseDescending,
+	getAdjacentRelics,
+	getRelicByKey,
+	getRelics,
+} from "@/data/relics"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getRelics", () => {
@@ -57,4 +62,13 @@ describe("getAdjacentRelics", () => {
 		expect(Option.isNone(prev)).toBe(true)
 		expect(Option.isSome(next)).toBe(true)
 	})
+})
+
+test("compareRelicReleaseDescending returns None for missing tie-break indexes", () => {
+	expect(
+		compareRelicReleaseDescending(
+			{ id: "unknown-a", discoveredDate: "2026-01-01" },
+			{ id: "unknown-b", discoveredDate: "2026-01-01" },
+		),
+	).toEqual(Option.none())
 })

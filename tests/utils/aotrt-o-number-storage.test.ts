@@ -1,5 +1,6 @@
 /** @vitest-environment happy-dom */
 
+import { Option } from "effect"
 import { afterEach, describe, expect, test } from "vitest"
 import {
 	AOTRT_O_NUMBER_STORAGE_KEY,
@@ -13,16 +14,16 @@ describe("readAotrtONumber", () => {
 		sessionStorage.removeItem(AOTRT_O_NUMBER_STORAGE_KEY)
 	})
 
-	test("returns null when nothing is stored", () => {
-		expect(readAotrtONumber()).toBeNull()
+	test("returns None when nothing is stored", () => {
+		expect(readAotrtONumber()).toEqual(Option.none())
 	})
 
-	test("returns null when the stored value is not an O number", () => {
+	test("returns None when the stored value is not an O number", () => {
 		sessionStorage.setItem(AOTRT_O_NUMBER_STORAGE_KEY, "3")
-		expect(readAotrtONumber()).toBeNull()
+		expect(readAotrtONumber()).toEqual(Option.none())
 
 		sessionStorage.setItem(AOTRT_O_NUMBER_STORAGE_KEY, "nope")
-		expect(readAotrtONumber()).toBeNull()
+		expect(readAotrtONumber()).toEqual(Option.none())
 	})
 })
 
@@ -35,11 +36,11 @@ describe("writeAotrtONumber", () => {
 		writeAotrtONumber(4)
 
 		expect(sessionStorage.getItem(AOTRT_O_NUMBER_STORAGE_KEY)).toBe("4")
-		expect(readAotrtONumber()).toBe(4)
+		expect(readAotrtONumber()).toEqual(Option.some(4))
 	})
 
 	test("notifies subscribers when the stored O number changes", () => {
-		const seen: Array<number | null> = []
+		const seen: Array<Option.Option<number>> = []
 
 		const unsubscribe = subscribeAotrtONumber(() => {
 			seen.push(readAotrtONumber())
@@ -51,6 +52,6 @@ describe("writeAotrtONumber", () => {
 		unsubscribe()
 		writeAotrtONumber(11)
 
-		expect(seen).toEqual([4, 9])
+		expect(seen).toEqual([Option.some(4), Option.some(9)])
 	})
 })

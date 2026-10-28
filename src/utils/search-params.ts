@@ -110,22 +110,15 @@ function normalizeSearchValue(key: string, value: SearchParamValue): SearchParam
  * Array elements are always strings.
  */
 export function normalizeParsedSearch(search: ParsedSearchParams) {
-	const out: ParsedSearchParams = {}
-
-	for (const key in search) {
-		out[key] = normalizeSearchValue(key, search[key])
-	}
-
-	return out
+	return Rec.map(search, (value, key) => normalizeSearchValue(key, value))
 }
 
 export function parseSearch(searchStr: string) {
 	const raw = jsonParseSearch(searchStr)
-	const parsed: ParsedSearchParams = {}
 
-	for (const [key, value] of Rec.toEntries(raw)) {
-		parsed[key] = Schema.decodeOption(SearchParamValueSchema)(value).pipe(Option.getOrUndefined)
-	}
+	const parsed = Rec.map(raw, value =>
+		Schema.decodeOption(SearchParamValueSchema)(value).pipe(Option.getOrUndefined),
+	)
 
 	return normalizeParsedSearch(parsed)
 }

@@ -94,8 +94,14 @@ export const Route = createFileRoute("/main-quests/")({
 		]
 
 		const sortSpecs: SortSpec<MapEntry>[] = [
-			{ key: "latest", compare: (a, b) => compareMapReleaseDescending(a, b) },
-			{ key: "oldest", compare: (a, b) => compareMapReleaseDescending(b, a) },
+			{
+				key: "latest",
+				compare: (a, b) => compareMapReleaseDescending(a, b).pipe(Option.getOrElse(() => 0)),
+			},
+			{
+				key: "oldest",
+				compare: (a, b) => compareMapReleaseDescending(b, a).pipe(Option.getOrElse(() => 0)),
+			},
 			{
 				key: "difficulty-asc",
 				compare: (a, b) => compareByOptionalSome(a.difficulty, b.difficulty, sortDifficulties),
@@ -230,7 +236,9 @@ function MainQuests() {
 				...prev,
 				page: undefined,
 				game: selected.get("game"),
-				difficulty: mainQuestDifficultySearchParam(selected.get("difficulty")),
+				difficulty: mainQuestDifficultySearchParam(
+					Option.fromUndefinedOr(selected.get("difficulty")),
+				).pipe(Option.getOrUndefined),
 				time: matchingSlugs(selected.get("completion-time"), TIME_SLUGS),
 			}),
 			replace: true,
