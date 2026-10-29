@@ -586,6 +586,19 @@ async function goHome(page: Page) {
 	await page.getByRole("heading", { name: /Unlock the Secrets of/ }).waitFor()
 }
 
+/** Server HTML accepts the click, but the handler runs only after React attaches. */
+async function waitForHydratedButton(page: Page, accessibleName: string) {
+	await page.getByRole("button", { name: accessibleName, exact: true }).waitFor()
+	await page.waitForFunction(name => {
+		const buttons = document.querySelectorAll("button")
+		for (const button of buttons) {
+			if (button.getAttribute("aria-label") !== name) continue
+			return Object.keys(button).some(key => key.startsWith("__react"))
+		}
+		return false
+	}, accessibleName)
+}
+
 /** Server HTML accepts the click, but the list opens only after React attaches. */
 async function waitForHydratedCombobox(page: Page, placeholder: string) {
 	await page.waitForFunction(name => {
@@ -668,6 +681,7 @@ async function driveMainQuests(page: Page, dir: string) {
 	await clickLink(page, "Go to Main Quests page")
 	await page.getByRole("heading", { name: "Main Quests", exact: true }).waitFor()
 	logStep(dir, "entry=pagination")
+	await waitForHydratedButton(page, "Next")
 	await page.getByRole("button", { name: "Next", exact: true }).click()
 	await page.waitForURL(url => url.searchParams.get("page") === "2")
 	await expect(page.getByRole("button", { name: "Page 2", exact: true })).toHaveAttribute(
