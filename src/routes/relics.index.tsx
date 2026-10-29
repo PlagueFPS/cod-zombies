@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Predicate, Array as Arr } from "effect"
+import { Option, Predicate, Array as Arr } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -181,7 +181,9 @@ function Relics() {
 				...prev,
 				page: undefined,
 				map: selected.get("map"),
-				type: relicTypeSearchParam(selected.get("type")),
+				type: relicTypeSearchParam(Option.fromUndefinedOr(selected.get("type"))).pipe(
+					Option.getOrUndefined,
+				),
 			}),
 			replace: true,
 		})

@@ -3,9 +3,10 @@ import type { GameKey } from "@/data/games"
 import type { ContentState, TimeRange } from "@/types/data"
 import type { MainQuestsPaths } from "@/types/generated/content-paths.gen"
 import type { MapsImagePath } from "@/types/generated/image-paths.gen"
-import { Array as Arr, Data, Option, Predicate } from "effect"
+import { HashMap, HashSet, Array as Arr, Data, Option, Predicate } from "effect"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
+import { filterSearchParam } from "@/utils/filter-helpers"
 import { getAdjacentItems, slugify, sortDates } from "@/utils/shared-functions"
 import { nowMillis } from "@/utils/system-time"
 /** All possible main quest difficulties */
@@ -22,14 +23,11 @@ export const mainQuestDifficultySlug = (difficulty: MainQuestDifficulty) => slug
  * Difficulty values the main-quest combobox may write into `?difficulty=`.
  * Unknown slugs are dropped. An empty selection is omitted.
  */
-export function mainQuestDifficultySearchParam(values: readonly string[] | undefined) {
-	if (!(Predicate.isNotNullish(values) && Predicate.isTruthy(values))) return undefined
-
-	const allowed = new Set<string>(Arr.map(MAIN_QUEST_DIFFICULTIES, mainQuestDifficultySlug))
-	const matched = Arr.filter(values, value => allowed.has(value))
-
-	return matched.length > 0 ? matched : undefined
-}
+export const mainQuestDifficultySearchParam = (values: Option.Option<readonly string[]>) =>
+	filterSearchParam(
+		HashSet.fromIterable(Arr.map(MAIN_QUEST_DIFFICULTIES, mainQuestDifficultySlug)),
+		values,
+	)
 
 export interface MapEntry {
 	/** The internal tag to discriminate against for type-narrowing */
@@ -68,12 +66,16 @@ export type MapKey = Parameters<(typeof MAPS)["get"]>[0]
 export function compareMapReleaseDescending(
 	a: Pick<MapEntry, "id" | "releaseDate">,
 	b: Pick<MapEntry, "id" | "releaseDate">,
-): number {
+): Option.Option<number> {
 	const byDate = sortDates(b.releaseDate, a.releaseDate)
 
-	if (byDate !== 0) return byDate
+	if (byDate !== 0) return Option.some(byDate)
 
-	return MAP_INSERATION_INDEX_BY_ID.get(b.id)! - MAP_INSERATION_INDEX_BY_ID.get(a.id)!
+	return Option.zipWith(
+		HashMap.get(MAP_INSERATION_INDEX_BY_ID, b.id),
+		HashMap.get(MAP_INSERATION_INDEX_BY_ID, a.id),
+		(b, a) => b - a,
+	)
 }
 
 function withResolvedMapState(map: MapEntry): MapEntry {
@@ -87,7 +89,9 @@ function withResolvedMapState(map: MapEntry): MapEntry {
 
 /** @returns A shallow copy of all maps, descending by {@link compareMapReleaseDescending}. */
 export const getMaps = () =>
-	Arr.map([...MAPS.values()], withResolvedMapState).sort(compareMapReleaseDescending)
+	Arr.map([...MAPS.values()], withResolvedMapState).sort((a, b) =>
+		compareMapReleaseDescending(a, b).pipe(Option.getOrElse(() => 0)),
+	)
 
 /** @returns Maps that have a main quest, same order as {@link getMaps}. */
 export const getMapsWithMainQuest = () => Arr.filter(getMaps(), map => Option.isSome(map.mainQuest))
@@ -1040,6 +1044,6 @@ const MAPS = uniqueMap([
 	}),
 ])
 
-const MAP_INSERATION_INDEX_BY_ID = new Map<string, number>(
+const MAP_INSERATION_INDEX_BY_ID = HashMap.fromIterable<string, number>(
 	Arr.map([...MAPS.keys()], (id, i) => [id, i]),
 )

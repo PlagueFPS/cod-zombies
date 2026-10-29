@@ -1,4 +1,4 @@
-import { Exit, Match, Predicate } from "effect"
+import { Option, Match } from "effect"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -14,18 +14,15 @@ export default function AotrtNumberTool() {
 	const [values, setValues] = useState({ m: "", topTvNumber: "" })
 
 	const solved = decodeAotrtONumberInput(values).pipe(
-		Exit.match({
-			onSuccess: value => solveAotrtONumber(value.m, value.topTvNumber),
-			onFailure: () => null,
-		}),
+		Option.map(value => solveAotrtONumber(value.m, value.topTvNumber)),
 	)
 
 	const hasBothValues = values.m !== "" && values.topTvNumber !== ""
-	const oNumber = solved?.oNumber
+	const oNumber = solved.pipe(Option.map(value => value.oNumber))
 
 	useEffect(() => {
-		if (Predicate.isUndefined(oNumber)) return
-		writeAotrtONumber(oNumber)
+		if (Option.isNone(oNumber)) return
+		writeAotrtONumber(oNumber.value)
 	}, [oNumber])
 
 	return (
@@ -65,20 +62,23 @@ export default function AotrtNumberTool() {
 					</div>
 				</div>
 				<div className="rounded-sm bg-input p-2 text-center dark:bg-input/20" aria-live="polite">
-					{Predicate.isNotNullish(solved) && Predicate.isTruthy(solved) ? (
-						<>
-							<p className="text-base">
-								O number = <span className="font-bold">{solved.oNumber}</span>
+					{Option.match(solved, {
+						onSome: solved => (
+							<>
+								<p className="text-base">
+									O number = <span className="font-bold">{solved.oNumber}</span>
+								</p>
+								<p className="text-base">
+									TV Color = <span className="font-bold">{tvColorLabel(solved.tvColor.row)}</span>
+								</p>
+							</>
+						),
+						onNone: () => (
+							<p className="text-sm text-muted-foreground">
+								{hasBothValues ? "Enter positive whole numbers" : "Enter your M and top TV numbers"}
 							</p>
-							<p className="text-base">
-								TV Color = <span className="font-bold">{tvColorLabel(solved.tvColor.row)}</span>
-							</p>
-						</>
-					) : (
-						<p className="text-sm text-muted-foreground">
-							{hasBothValues ? "Enter positive whole numbers" : "Enter your M and top TV numbers"}
-						</p>
-					)}
+						),
+					})}
 				</div>
 			</CardContent>
 		</Card>

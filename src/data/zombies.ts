@@ -5,7 +5,7 @@ import type { ZombieAttackKey } from "@/data/zombie-attacks"
 import type { ContentState } from "@/types/data"
 import type { ZombiesPaths } from "@/types/generated/content-paths.gen"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
-import { Data, Option, Array as Arr } from "effect"
+import { HashMap, Data, Option, Array as Arr } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
@@ -66,12 +66,16 @@ export interface Zombie {
 export function compareZombieReleaseDescending(
 	a: Pick<Zombie, "id" | "releaseDate">,
 	b: Pick<Zombie, "id" | "releaseDate">,
-): number {
+): Option.Option<number> {
 	const byDate = sortDates(b.releaseDate, a.releaseDate)
 
-	if (byDate !== 0) return byDate
+	if (byDate !== 0) return Option.some(byDate)
 
-	return ZOMBIE_INSERATION_INDEX_BY_ID.get(b.id)! - ZOMBIE_INSERATION_INDEX_BY_ID.get(a.id)!
+	return Option.zipWith(
+		HashMap.get(ZOMBIE_INSERATION_INDEX_BY_ID, b.id),
+		HashMap.get(ZOMBIE_INSERATION_INDEX_BY_ID, a.id),
+		(b, a) => b - a,
+	)
 }
 
 function withResolvedZombieState(zombie: Zombie): Zombie {
@@ -85,7 +89,9 @@ function withResolvedZombieState(zombie: Zombie): Zombie {
 
 /** @returns An array of all zombies sorted by release date in descending order */
 export const getZombies = (): Zombie[] =>
-	Arr.map([...ZOMBIES.values()], withResolvedZombieState).sort(compareZombieReleaseDescending)
+	Arr.map([...ZOMBIES.values()], withResolvedZombieState).sort((a, b) =>
+		compareZombieReleaseDescending(a, b).pipe(Option.getOrElse(() => 0)),
+	)
 
 /** @returns The zombie with the given key */
 export const getZombieByKey = (key: RegistryKeyInput<ZombieKey>) =>
@@ -2499,6 +2505,6 @@ const ZOMBIES = uniqueMap([
 	}),
 ])
 
-const ZOMBIE_INSERATION_INDEX_BY_ID = new Map<string, number>(
+const ZOMBIE_INSERATION_INDEX_BY_ID = HashMap.fromIterable<string, number>(
 	Arr.map([...ZOMBIES.keys()], (id, i) => [id, i]),
 )

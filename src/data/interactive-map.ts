@@ -115,7 +115,7 @@ export const getInteractiveMaps = () =>
 		const mapA = getMapByKey(a.id).pipe(Option.getOrThrow)
 		const mapB = getMapByKey(b.id).pipe(Option.getOrThrow)
 
-		return compareMapReleaseDescending(mapA, mapB)
+		return compareMapReleaseDescending(mapA, mapB).pipe(Option.getOrElse(() => 0))
 	})
 
 class InteractiveMapRecord extends Data.TaggedClass("InteractiveMap")<
