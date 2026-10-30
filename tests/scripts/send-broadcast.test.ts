@@ -1,6 +1,7 @@
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { ConfigProvider, Effect, Exit, Layer, Option } from "effect"
 import { Command } from "effect/cli"
+import { Digest } from "effect/crypto"
 import { describe, expect, test } from "vitest"
 import { Email } from "@/lib/services/emails"
 import {
@@ -23,7 +24,12 @@ const testConfig = ConfigProvider.layer(
 	}),
 )
 
-const testLayer = Layer.mergeAll(emailLayerTest, BunServicesLayer, testConfig)
+const testLayer = Layer.mergeAll(
+	emailLayerTest,
+	BunServicesLayer,
+	testConfig,
+	Digest.layerWebCrypto,
+)
 
 const runBroadcast = Command.runWith(broadcastCli, { version: "1.0.0" })
 
@@ -138,6 +144,26 @@ describe("resolvePolicyBroadcast", () => {
 })
 
 describe("sendBroadcast", () => {
+	test("preserves the canonical SHA-256 idempotency fingerprint", async () => {
+		let key = ""
+
+		const email = Layer.mock(Email, {
+			createBroadcast: (_params, options) => {
+				key = new Headers(options?.headers).get("Idempotency-Key") ?? ""
+
+				return Effect.succeed({ id: "123" })
+			},
+		})
+
+		await Effect.runPromise(
+			sendBroadcast(
+				{ kind: "policy", bullets: ["How long confirmation tokens are kept"] },
+				{ send: true },
+			).pipe(Effect.provide(Layer.mergeAll(email, testConfig, Digest.layerWebCrypto))),
+		)
+		expect(key).toBe("broadcast/policy/8c106a5ccc7b20d3e2ceaf829d6a1a4b")
+	})
+
 	test("should dry-run a policy broadcast without calling Resend", async () => {
 		const program = sendBroadcast(
 			{ kind: "policy", bullets: ["How long confirmation tokens are kept"] },

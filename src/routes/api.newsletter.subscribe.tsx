@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Effect, Predicate } from "effect"
 import { subscribeEmail } from "@/data/email.server"
-import { APIRuntime } from "@/lib/layers"
-import { verifyToken } from "@/utils/functions.server"
+import { NewsletterRuntime } from "@/lib/layers"
+import { NewsletterTokens } from "@/lib/services/newsletter-tokens"
 
 export const Route = createFileRoute("/api/newsletter/subscribe")({
 	server: {
@@ -20,15 +20,15 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 							),
 						)
 
-					const decodedToken = decodeURIComponent(token)
-					const email = yield* verifyToken(decodedToken)
+					const tokens = yield* NewsletterTokens
+					const email = yield* tokens.verifySubscribe(token)
 
 					yield* subscribeEmail(email)
 
 					return Response.redirect(new URL(`/newsletter/subscribe/success`, request.url))
 				}).pipe(
 					Effect.withLogSpan("newsletter_subscribe_get_handler"),
-					Effect.tapCause(cause => Effect.logError(cause)),
+					Effect.tapCause(() => Effect.logError("Newsletter confirmation failed")),
 					Effect.catchTags({
 						TokenExpirationError: () => {
 							const message = "The subscribe token used has expired. Please request a new one."
@@ -69,7 +69,7 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 						},
 					}),
 					Effect.satisfiesErrorType<never>(),
-					APIRuntime.runPromise,
+					NewsletterRuntime.runPromise,
 				),
 		},
 	},

@@ -1,8 +1,10 @@
 import type { APIResult } from "@/types/data"
 import { createServerFn } from "@tanstack/react-start"
 import { Effect, Predicate, Schedule } from "effect"
-import { requestSubscribe, requestUnsubscribe, sendContactEmail } from "@/data/email.server"
+import { sendContactEmail } from "@/data/email.server"
+import { runNewsletterRequest } from "@/data/newsletter.server"
 import { APIRuntime } from "@/lib/layers"
+import { getServerUrl } from "@/utils/request.server"
 import { StandardContactFormSchema, StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 
 const e2eEmailResult = (message: string): APIResult | null => {
@@ -13,75 +15,11 @@ const e2eEmailResult = (message: string): APIResult | null => {
 
 export const unsubscribeFromNewsletter = createServerFn({ method: "POST" })
 	.validator(StandardNewsletterFormSchema)
-	.handler(async ({ data }) => {
-		const mockedResult = e2eEmailResult(`Confirmation sent to ${data.email}.`)
-
-		if (Predicate.isNotNullish(mockedResult) && Predicate.isTruthy(mockedResult))
-			return mockedResult
-
-		const result: APIResult = await requestUnsubscribe(data.email).pipe(
-			Effect.retry({
-				while: Predicate.isTagged("ResendError"),
-				times: 3,
-				schedule: Schedule.fixed("200 millis"),
-			}),
-			Effect.timeout("10 seconds"),
-			Effect.tapCause(cause => Effect.logError(cause)),
-			Effect.catchTags({
-				ContactNotFoundError: error =>
-					Effect.succeed({
-						success: false,
-						message: error.message,
-					}),
-			}),
-			Effect.catch(_error =>
-				Effect.succeed({
-					success: false,
-					message:
-						"Unsubscribe request failed due to a technical issue on our end. Please try again.",
-				}),
-			),
-			APIRuntime.runPromise,
-		)
-
-		return result
-	})
+	.handler(({ data }) => runNewsletterRequest("unsubscribe", data.email, getServerUrl()))
 
 export const subscribeToNewsletter = createServerFn({ method: "POST" })
 	.validator(StandardNewsletterFormSchema)
-	.handler(async ({ data }) => {
-		const mockedResult = e2eEmailResult(`Confirmation sent to ${data.email}.`)
-
-		if (Predicate.isNotNullish(mockedResult) && Predicate.isTruthy(mockedResult))
-			return mockedResult
-
-		const result: APIResult = await requestSubscribe(data.email).pipe(
-			Effect.retry({
-				while: Predicate.isTagged("ResendError"),
-				times: 3,
-				schedule: Schedule.fixed("200 millis"),
-			}),
-			Effect.timeout("10 seconds"),
-			Effect.tapCause(cause => Effect.logError(cause)),
-			Effect.catchTags({
-				ContactExistsError: error =>
-					Effect.succeed({
-						success: false,
-						message: error.message,
-					}),
-			}),
-			Effect.catch(_error =>
-				Effect.succeed({
-					success: false,
-					message:
-						"Subscribe request failed due to a technical issue on our end. Please try again.",
-				}),
-			),
-			APIRuntime.runPromise,
-		)
-
-		return result
-	})
+	.handler(({ data }) => runNewsletterRequest("subscribe", data.email, getServerUrl()))
 
 export const submitContactForm = createServerFn({ method: "POST" })
 	.validator(StandardContactFormSchema)

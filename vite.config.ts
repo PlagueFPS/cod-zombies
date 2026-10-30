@@ -24,7 +24,7 @@ const depsWithBrokenSourcemaps = [
 	"standardwebhooks",
 ]
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
 	server: {
 		port: 3000,
 	},
@@ -59,7 +59,13 @@ export default defineConfig({
 	},
 	plugins: [
 		devtools(),
-		cloudflare({ viteEnvironment: { name: "ssr" } }),
+		cloudflare({
+			viteEnvironment: { name: "ssr" },
+			config:
+				command === "serve" && process.env.E2E_MOCK_EMAIL === "success"
+					? config => ({ ...config, vars: { ...config.vars, E2E_MOCK_EMAIL: "success" } })
+					: undefined,
+		}),
 		tanstackStart({
 			prerender: {
 				enabled: true,
@@ -81,4 +87,4 @@ export default defineConfig({
 			}),
 		},
 	],
-})
+}))

@@ -1,10 +1,10 @@
-import { Duration, Effect, Option, Schema } from "effect"
+import { Effect, Option, Predicate, Schedule } from "effect"
 import SubscribeEmail from "@/emails/subscribe-email"
 import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"
+import { NewsletterTokens } from "@/lib/services/newsletter-tokens"
 import { NEWSLETTER_FROM_ADDRESS } from "@/utils/constants"
-import { generateToken } from "@/utils/functions.server"
-import { getServerUrl } from "@/utils/request.server"
+import { NEWSLETTER_ACKNOWLEDGEMENT } from "@/utils/newsletter"
 
 interface EmailProps {
 	name: string
@@ -12,36 +12,17 @@ interface EmailProps {
 	message: string
 }
 
-class ContactExistsError extends Schema.TaggedError<
-	ContactExistsError,
-	{ readonly brand: unique symbol }
->()("ContactExistsError", {
-	message: Schema.String,
-	cause: Schema.Defect(),
-}) {}
-
-class ContactNotFoundError extends Schema.TaggedError<
-	ContactNotFoundError,
-	{ readonly brand: unique symbol }
->()("ContactNotFoundError", {
-	message: Schema.String,
-	cause: Schema.Defect(),
-}) {}
-
-export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: string) {
+export const requestSubscribe = Effect.fn("requestSubscribe")(function* (
+	email: string,
+	serverUrl: string,
+) {
 	const emails = yield* Email
 
 	const contact = yield* emails.getContact(email)
 
-	if (Option.isSome(contact))
-		return yield* ContactExistsError.make({
-			message: "That email is already subscribed!",
-			cause: new Error(`Contact already subscribed: ${contact.value.id}`),
-		})
-
-	const ttl = yield* Duration.fromInput("1 day").pipe(Effect.fromOption)
-	const token = yield* generateToken(email, ttl)
-	const serverUrl = getServerUrl()
+	if (Option.isSome(contact)) return NEWSLETTER_ACKNOWLEDGEMENT
+	const tokens = yield* NewsletterTokens
+	const token = yield* tokens.issueSubscribe(email)
 	const subscribeUrl = `${serverUrl}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
 
 	yield* emails.sendEmail({
@@ -51,23 +32,20 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (email: 
 		react: SubscribeEmail({ subscribeUrl, serverUrl }),
 	})
 
-	return { success: true, message: "Check your inbox to complete your subscribe request." }
+	return NEWSLETTER_ACKNOWLEDGEMENT
 })
 
-export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (email: string) {
+export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (
+	email: string,
+	serverUrl: string,
+) {
 	const emails = yield* Email
 
 	const contact = yield* emails.getContact(email)
 
-	if (Option.isNone(contact))
-		return yield* ContactNotFoundError.make({
-			message: "That email is not currently subscribed!",
-			cause: new Error(`Contact not found for email: ${email}`),
-		})
-
-	const ttl = yield* Duration.fromInput("1 day").pipe(Effect.fromOption)
-	const token = yield* generateToken(email, ttl)
-	const serverUrl = getServerUrl()
+	if (Option.isNone(contact)) return NEWSLETTER_ACKNOWLEDGEMENT
+	const tokens = yield* NewsletterTokens
+	const token = yield* tokens.issueUnsubscribe(email)
 	const unsubscribeUrl = `${serverUrl}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
 
 	yield* emails.sendEmail({
@@ -77,7 +55,7 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (ema
 		react: UnsubscribeEmail({ unsubscribeUrl, serverUrl }),
 	})
 
-	return { success: true, message: "Check your inbox to complete your unsubscribe request." }
+	return NEWSLETTER_ACKNOWLEDGEMENT
 })
 
 export const subscribeEmail = Effect.fn("subscribeEmail")(function* (email: string) {
@@ -108,3 +86,22 @@ export const sendContactEmail = Effect.fn("sendContactEmail")(function* (props: 
 		message: "Thank you for contacting us! We will get back to you as soon as possible.",
 	}
 })
+
+export const newsletterRequest = (
+	action: "subscribe" | "unsubscribe",
+	email: string,
+	serverUrl: string,
+) =>
+	(action === "subscribe"
+		? requestSubscribe(email, serverUrl)
+		: requestUnsubscribe(email, serverUrl)
+	).pipe(
+		Effect.retry({
+			while: Predicate.isTagged("ResendError"),
+			times: 3,
+			schedule: Schedule.fixed("200 millis"),
+		}),
+		Effect.timeout("10 seconds"),
+		Effect.catchCause(() => Effect.logError("Newsletter request failed")),
+		Effect.as(NEWSLETTER_ACKNOWLEDGEMENT),
+	)
