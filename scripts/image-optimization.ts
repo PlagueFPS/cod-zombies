@@ -338,7 +338,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 						`Transformed: ${relativeDir === "." ? baseFileName : `${relativeDir}/${baseFileName}`}; ${currentAsset}/${assets.length}`,
 					)
 				}).pipe(Effect.withLogSpan("transform_asset")),
-			{ concurrency: 2 },
+			{ concurrency: 12 },
 		)
 
 		const writtenAmount = yield* Ref.get(numRef)
@@ -370,6 +370,8 @@ export const optimizeCommand = Command.make(
 )
 
 if (import.meta.main) {
+	sharp.concurrency(1)
+
 	Command.run(optimizeCommand, {
 		version: "1.0.0",
 	}).pipe(Effect.provide(BunServices.layer), BunRuntime.runMain)
