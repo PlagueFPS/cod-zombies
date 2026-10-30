@@ -1,8 +1,6 @@
-import type { PlatformError } from "effect/PlatformError"
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import {
-	Match,
 	Clock,
 	Effect,
 	FileSystem,
@@ -59,42 +57,13 @@ const collectContentFiles = Effect.fn("collectContentFiles")(function* (
 ) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const results: string[] = []
+	const matches = yield* fs.glob("**/*.[mM][dD][xX]", { root: dir })
 
-	const walk = (current: string): Effect.Effect<void, PlatformError, Path.Path> =>
-		Effect.gen(function* () {
-			const files = yield* fs.readDirectory(current)
-			yield* Effect.forEach(
-				files,
-				file =>
-					Effect.gen(function* () {
-						if (Str.startsWith(".")(file)) return
+	const files = yield* Effect.filter(matches, file =>
+		fs.stat(path.join(dir, file)).pipe(Effect.map(stat => stat.type === "File")),
+	)
 
-						const full = path.join(current, file)
-						const stat = yield* fs.stat(full)
-
-						yield* Match.value(stat.type).pipe(
-							Match.when("Directory", () => walk(full)),
-							Match.when("File", () =>
-								Effect.gen(function* () {
-									const ext = Str.toLowerCase(path.extname(file))
-
-									if (HashSet.has(CONTENT_EXTENSIONS, ext)) {
-										const contentPath = yield* formatContentPath(contentDir, full)
-										results.push(contentPath)
-									}
-								}),
-							),
-							Match.orElse(() => Effect.void),
-						)
-					}),
-				{ concurrency: "unbounded" },
-			)
-		})
-
-	yield* walk(dir)
-
-	return results
+	return yield* Effect.forEach(files, file => formatContentPath(contentDir, path.join(dir, file)))
 })
 
 function generateTypeForDir(typeName: string, contentPaths: string[]) {
