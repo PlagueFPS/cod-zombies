@@ -634,7 +634,7 @@ const MAPS = uniqueMap([
 			"Help the Bureau extract the pieces of Barbarossa's Sword out of enemy territory and into the hands of our agents.",
 		image: "/maps/the-tortured-path.webp",
 		game: "wwii",
-		state: Option.some("New"),
+		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/i-have-the-power"),
 		difficulty: Option.some("Very Hard"),
 		estimatedTimeMins: Option.some({
