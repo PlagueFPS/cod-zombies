@@ -28,6 +28,7 @@ import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/
 const unusedTerminalLayer = Layer.succeed(
 	Terminal.Terminal,
 	Terminal.make({
+		size: Queue.make<Terminal.Size, Cause.Done>(),
 		columns: Effect.succeed(80),
 		rows: Effect.succeed(24),
 		readInput: Effect.die("Terminal.readInput should not be called"),
@@ -49,6 +50,7 @@ const terminalWithAnswer = (answer: "y" | "n") =>
 			yield* Queue.offer(queue, confirmKey(answer))
 
 			return Terminal.make({
+				size: Queue.make<Terminal.Size, Cause.Done>(),
 				columns: Effect.succeed(80),
 				rows: Effect.succeed(24),
 				readInput: Effect.succeed(queue),

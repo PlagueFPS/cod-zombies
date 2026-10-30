@@ -26,7 +26,7 @@ export function UnsubscribeForm() {
 				const result = await unsubscribe({ data: value })
 
 				if (result.success) {
-					toast.success("Confirmation email sent!", {
+					toast.success("We've received your request", {
 						description: result.message,
 						duration: 5000,
 						position: "bottom-right",
