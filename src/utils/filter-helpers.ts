@@ -1,4 +1,4 @@
-import { Array as Arr, Option, Predicate } from "effect"
+import { Array as Arr, Option, Predicate, HashSet, Boolean as Bool } from "effect"
 
 export type FilterSpec<T> = {
 	values: readonly string[] | undefined
@@ -6,7 +6,7 @@ export type FilterSpec<T> = {
 }
 
 function shouldApply(values: readonly string[] | undefined): values is readonly string[] {
-	return values != null && values.length > 0
+	return Predicate.isNotNullish(values) && values.length > 0
 }
 
 /**
@@ -36,7 +36,9 @@ export function applySort<T>(
 	defaultKey: string,
 ): T[] {
 	const resolvedKey =
-		sortKey !== undefined && Arr.some(specs, s => s.key === sortKey) ? sortKey : defaultKey
+		Predicate.isNotUndefined(sortKey) && Arr.some(specs, s => s.key === sortKey)
+			? sortKey
+			: defaultKey
 
 	const spec = Option.getOrUndefined(Arr.findFirst(specs, s => s.key === resolvedKey))
 
@@ -75,4 +77,21 @@ export function paginate<T>(
 		totalCount,
 		pageSize,
 	}
+}
+
+/** Retain allowed filter slugs; omit absent or empty selections. */
+export function filterSearchParam(
+	allowed: HashSet.HashSet<string>,
+	values: Option.Option<readonly string[]>,
+): Option.Option<string[]> {
+	return values.pipe(
+		Option.flatMap(values => {
+			const matched = Arr.filter(values, value => HashSet.has(allowed, value))
+
+			return Bool.match(matched.length > 0, {
+				onTrue: () => Option.some(matched),
+				onFalse: Option.none,
+			})
+		}),
+	)
 }

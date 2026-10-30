@@ -39,7 +39,7 @@ function canonicalToken(token: string): string {
 
 		if (Predicate.isNumber(parsed) && Number.isFinite(parsed)) return String(parsed)
 
-		if (Predicate.isBoolean(parsed) || parsed === null) return String(parsed)
+		if (Predicate.isBoolean(parsed) || Predicate.isNull(parsed)) return String(parsed)
 	} catch {}
 
 	return token

@@ -1,5 +1,5 @@
 import { parseSearchWith } from "@tanstack/react-router"
-import { Exit, Predicate, Schema, Array as Arr, Record as Rec } from "effect"
+import { Option, Exit, Predicate, Schema, Array as Arr, Record as Rec } from "effect"
 
 const jsonParseSearch = parseSearchWith(JSON.parse)
 
@@ -7,11 +7,14 @@ const SearchScalarSchema = Schema.Union([Schema.String, Schema.Finite, Schema.Bo
 
 export type SearchParamScalar = typeof SearchScalarSchema.Type
 
-export type SearchParamValue =
-	| SearchParamScalar
-	| ReadonlyArray<SearchParamScalar>
-	| null
-	| undefined
+const SearchParamValueSchema = Schema.Union([
+	SearchScalarSchema,
+	Schema.Array(SearchScalarSchema),
+	Schema.Null,
+	Schema.Undefined,
+])
+
+export type SearchParamValue = typeof SearchParamValueSchema.Type
 
 export type ParsedSearchParams = { [key: string]: SearchParamValue }
 
@@ -32,7 +35,7 @@ function stringifyFilterScalar(value: SearchParamScalar): string {
 		const decoded = Schema.decodeUnknownExit(SearchScalarSchema)(parsed)
 
 		const decodedString = Schema.decodeUnknownExit(Schema.String)(
-			Exit.isSuccess(decoded) ? decoded.value : value,
+			Exit.match(decoded, { onSuccess: decodedValue => decodedValue, onFailure: () => value }),
 		)
 
 		if (Exit.isSuccess(decoded) && Exit.isFailure(decodedString)) {
@@ -70,9 +73,9 @@ function normalizeArrayElement(value: SearchParamValue): SearchParamScalar | und
 }
 
 function normalizeSearchValue(key: string, value: SearchParamValue): SearchParamValue {
-	if (value === undefined) return value
+	if (Predicate.isUndefined(value)) return value
 
-	if (value === null) {
+	if (Predicate.isNull(value)) {
 		return key === "page" ? value : "null"
 	}
 
@@ -80,7 +83,7 @@ function normalizeSearchValue(key: string, value: SearchParamValue): SearchParam
 		return Arr.flatMap(value, element => {
 			const normalized = normalizeArrayElement(element)
 
-			return normalized === undefined ? [] : [normalized]
+			return Predicate.isUndefined(normalized) ? [] : [normalized]
 		})
 	}
 
@@ -91,17 +94,6 @@ function normalizeSearchValue(key: string, value: SearchParamValue): SearchParam
 	}
 
 	return value
-}
-
-function isSearchParamValue(value: unknown): value is SearchParamValue {
-	if (value === undefined || value === null) return true
-
-	if (Exit.isSuccess(Schema.decodeUnknownExit(SearchScalarSchema)(value))) return true
-
-	return (
-		Arr.isArray(value) &&
-		Arr.every(value, item => Exit.isSuccess(Schema.decodeUnknownExit(SearchScalarSchema)(item)))
-	)
 }
 
 /**
@@ -118,22 +110,15 @@ function isSearchParamValue(value: unknown): value is SearchParamValue {
  * Array elements are always strings.
  */
 export function normalizeParsedSearch(search: ParsedSearchParams) {
-	const out: ParsedSearchParams = {}
-
-	for (const key in search) {
-		out[key] = normalizeSearchValue(key, search[key])
-	}
-
-	return out
+	return Rec.map(search, (value, key) => normalizeSearchValue(key, value))
 }
 
 export function parseSearch(searchStr: string) {
 	const raw = jsonParseSearch(searchStr)
-	const parsed: ParsedSearchParams = {}
 
-	for (const [key, value] of Rec.toEntries(raw)) {
-		parsed[key] = isSearchParamValue(value) ? value : undefined
-	}
+	const parsed = Rec.map(raw, value =>
+		Schema.decodeOption(SearchParamValueSchema)(value).pipe(Option.getOrUndefined),
+	)
 
 	return normalizeParsedSearch(parsed)
 }

@@ -50,7 +50,7 @@ Run doctor before every drive, and again whenever a page looks stale or the port
 
 ## Drive
 
-Harness: `codz-verify drive <feature>` opens Playwright's headless Chromium (`channel: "chromium"`, sandbox off) at a 1280×900 viewport against this run's `baseUrl`. It waits for header hydration before navigation. Listing filters use the combobox whose name is the placeholder (`Filter: …`) and `[data-slot="combobox-item"]`. The drive waits until that input is hydrated before the click. Sort menus and map layer menus use `data-slot="select-trigger"` and `data-slot="select-item"`, the same handles as `tests/e2e/helpers/ui.ts`.
+Harness: `codz-verify drive <feature>` opens Playwright's headless Chromium (`channel: "chromium"`, sandbox off) at a 1280×900 viewport against this run's `baseUrl`. It waits for header hydration before navigation. Listing filters use the combobox whose name is the placeholder (`Filter: …`) and `[data-slot="combobox-item"]`. The drive waits until that input is hydrated before the click. The main-quest page control waits the same way: the `Next` button is in the server HTML, and the drive clicks it only after React has attached. Sort menus and map layer menus use `data-slot="select-trigger"` and `data-slot="select-item"`, the same handles as `tests/e2e/helpers/ui.ts`.
 
 ```bash
 .agents/skills/verify-cod-zombies/scripts/codz-verify drive main-quests

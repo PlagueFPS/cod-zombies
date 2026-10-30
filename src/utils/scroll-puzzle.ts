@@ -164,7 +164,7 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 	for (let row = 0; row < pivotColumns.length; row++) {
 		const col = pivotColumns[row]
 
-		if (col !== undefined) pivotColumnByRow.set(row, col)
+		if (Predicate.isNotUndefined(col)) pivotColumnByRow.set(row, col)
 	}
 
 	const assignFromAugmented = (assignment: boolean[], freeValues: readonly boolean[]): void => {
@@ -179,7 +179,7 @@ function findMinimumWeightPresses(requiredToggles: readonly boolean[]): boolean[
 			const equation = augmented[row]
 
 			if (
-				pivotCol === undefined ||
+				Predicate.isUndefined(pivotCol) ||
 				!(Predicate.isNotNullish(equation) && Predicate.isTruthy(equation))
 			)
 				continue

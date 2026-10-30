@@ -1,5 +1,6 @@
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { cn } from "cn"
+import { Predicate } from "effect"
 import { Moon, Sun } from "lucide-react"
 import { Shortcut } from "@/components/shortcut"
 import { Button } from "@/components/ui/button"
@@ -19,7 +20,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
 			else setTheme("light")
 		}
 
-		if (!("startViewTransition" in document)) {
+		if (!Predicate.hasProperty(document, "startViewTransition")) {
 			return flip()
 		}
 

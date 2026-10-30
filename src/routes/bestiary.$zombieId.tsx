@@ -124,18 +124,13 @@ function ZombieInfo() {
 		mdxComponentQueryOptions(zombie.id, zombie.combatStrategy),
 	)
 
-	const speedProgress = () => {
-		switch (zombie.speed) {
-			case "Slow":
-				return 33
-			case "Medium":
-				return 66
-			case "Fast":
-				return 100
-			default:
-				return 0
-		}
-	}
+	const speedProgress = () =>
+		Match.value(zombie.speed).pipe(
+			Match.when("Slow", () => 33),
+			Match.when("Medium", () => 66),
+			Match.when("Fast", () => 100),
+			Match.orElse(() => 0),
+		)
 
 	return (
 		<article className="relative container mx-auto px-3 py-4 sm:px-4 sm:py-6">

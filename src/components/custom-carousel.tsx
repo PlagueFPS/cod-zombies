@@ -181,7 +181,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 		const rootRect = root.getBoundingClientRect()
 
 		const layout = resolveCarouselIndicatorLayout({
-			hasImage: img != null,
+			hasImage: Predicate.isNotNullish(img),
 			imageBox: img?.getBoundingClientRect() ?? null,
 			imageComplete: img?.complete ?? false,
 			rootBottom: rootRect.bottom,
@@ -244,7 +244,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 	return (
 		<CarouselProvider value={{ expand: setExpandedIndex }}>
 			<Dialog
-				open={expandedIndex !== null}
+				open={Predicate.isNotNull(expandedIndex)}
 				onOpenChange={open => {
 					if (!open) setExpandedIndex(null)
 				}}
@@ -287,7 +287,7 @@ export default function CustomCarousel({ children, className }: CustomCarouselPr
 						Swipe or use the arrow keys and navigation buttons to browse the images. Click the image
 						or outside the viewer to close it.
 					</DialogDescription>
-					{expandedIndex !== null ? (
+					{Predicate.isNotNull(expandedIndex) ? (
 						<ExpandedCarousel
 							startIndex={expandedIndex}
 							rootRef={expandedRootRef}

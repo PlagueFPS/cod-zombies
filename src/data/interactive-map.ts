@@ -2,12 +2,28 @@ import type { GameKey } from "@/data/games"
 import type { MapMarker } from "@/map-configs/markers"
 import type { ContentState } from "@/types/data"
 import type { LayersImagePath, PreviewsImagePath } from "@/types/generated/image-paths.gen"
-import { Data, Effect, Option, Schema, Array as Arr } from "effect"
+import { Data, Effect, Option, Record as Rec, Schema, Array as Arr } from "effect"
 import { compareMapReleaseDescending, getMapByKey } from "@/data/maps"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { nowMillis } from "@/utils/system-time"
-import { decodeMapConfigModule } from "@/utils/validation-schemas"
+
+const mapConfigModules = new Map<string, () => Promise<{ config: MapConfig }>>(
+	Rec.toEntries({
+		"ashes-of-the-damned": () => import("../map-configs/ashes-of-the-damned"),
+		"astra-malorum": () => import("../map-configs/astra-malorum"),
+		"citadelle-des-morts": () => import("../map-configs/citadelle-des-morts"),
+		kowakujo: () => import("../map-configs/kowakujo"),
+		"liberty-falls": () => import("../map-configs/liberty-falls"),
+		"paradox-junction": () => import("../map-configs/paradox-junction"),
+		reckoning: () => import("../map-configs/reckoning"),
+		"rex-infernus": () => import("../map-configs/rex-infernus"),
+		"shattered-veil": () => import("../map-configs/shattered-veil"),
+		terminus: () => import("../map-configs/terminus"),
+		"the-tomb": () => import("../map-configs/the-tomb"),
+		totenreich: () => import("../map-configs/totenreich"),
+	} satisfies Record<InteractiveMapKey, () => Promise<{ config: MapConfig }>>),
+)
 
 class ConfigNotFoundError extends Schema.TaggedError<
 	ConfigNotFoundError,
@@ -62,16 +78,18 @@ export interface MapConfig {
 export const getInteractiveMapConfig = Effect.fn("getInteractiveMapConfig")(function* (
 	key: RegistryKeyInput<InteractiveMapKey>,
 ) {
-	const config = yield* Effect.tryPromise({
-		try: () => import(`../map-configs/${key}.ts`),
-		catch: cause => ConfigNotFoundError.make({ cause }),
-	}).pipe(
-		Effect.flatMap(module => decodeMapConfigModule(module)),
-		Effect.map(module => module.config),
-	)
+	const load = Option.fromUndefinedOr(mapConfigModules.get(key))
 
-	// SAFETY: map-config modules export `MapConfig`; the schema only checks that `config` exists.
-	return config as MapConfig
+	if (Option.isNone(load)) {
+		return yield* ConfigNotFoundError.make({ cause: `Missing map config: ${key}` })
+	}
+
+	const { config } = yield* Effect.tryPromise({
+		try: load.value,
+		catch: cause => ConfigNotFoundError.make({ cause }),
+	})
+
+	return config
 })
 
 function withResolvedInteractiveMapState(map: InteractiveMap): InteractiveMap {
@@ -97,7 +115,7 @@ export const getInteractiveMaps = () =>
 		const mapA = getMapByKey(a.id).pipe(Option.getOrThrow)
 		const mapB = getMapByKey(b.id).pipe(Option.getOrThrow)
 
-		return compareMapReleaseDescending(mapA, mapB)
+		return compareMapReleaseDescending(mapA, mapB).pipe(Option.getOrElse(() => 0))
 	})
 
 class InteractiveMapRecord extends Data.TaggedClass("InteractiveMap")<

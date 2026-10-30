@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option, Array as Arr } from "effect"
+import { Predicate, Option, Array as Arr } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -93,7 +93,10 @@ function Maps() {
 	const filterValue: FilterOption[] = []
 
 	for (const g of groups) {
-		const values = Arr.filter(g.items, i => game != null && Arr.some(game, g => g === i.value))
+		const values = Arr.filter(
+			g.items,
+			i => Predicate.isNotNullish(game) && Arr.some(game, g => g === i.value),
+		)
 
 		if (values.length > 0) filterValue.push(...values)
 	}

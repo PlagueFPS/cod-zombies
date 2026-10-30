@@ -1,6 +1,7 @@
 import { runMain } from "@effect/platform-bun/BunRuntime"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import {
+	pipe,
 	Clock,
 	Effect,
 	FileSystem,
@@ -62,7 +63,7 @@ const listTopLevelDirs = Effect.fn("listTopLevelDirsEffect")(function* (publicDi
 
 const buildImageVariants = Effect.fnUntraced(function* (
 	basePaths: readonly string[],
-	existingPaths: ReadonlySet<string>,
+	existingPaths: HashSet.HashSet<string>,
 	publicDir: string,
 ) {
 	const path = yield* Path.Path
@@ -72,7 +73,7 @@ const buildImageVariants = Effect.fnUntraced(function* (
 		basePath =>
 			Effect.gen(function* () {
 				const widths = Arr.filter(VARIANT_WIDTHS_LIST, width =>
-					existingPaths.has(variantWebPath(basePath, width)),
+					HashSet.has(existingPaths, variantWebPath(basePath, width)),
 				)
 
 				if (widths.length === 0) return null
@@ -115,7 +116,7 @@ function generateImageVariantsObject(variantMap: Record<string, ImageVariantMeta
 	}
 
 	const lines = Arr.map(entries, ([basePath, { sourceWidth, widths }]) => {
-		const widthList = Arr.join(Arr.map(widths, String), ", ")
+		const widthList = pipe(widths, Arr.map(String), Arr.join(", "))
 
 		return `  '${Str.replace(/'/g, "\\'")(basePath)}': { sourceWidth: ${sourceWidth}, widths: [${widthList}] },`
 	})
@@ -124,7 +125,7 @@ function generateImageVariantsObject(variantMap: Record<string, ImageVariantMeta
 }
 
 function isRootWebPath(webPath: string): boolean {
-	return !Str.includes("/")(Str.slice(1)(webPath))
+	return !pipe(webPath, Str.slice(1), Str.includes("/"))
 }
 
 /** @param cwd - Workspace root (must contain `public/` when run). */
@@ -147,7 +148,7 @@ export const generateImagePaths = Effect.fn("generateImagePaths")(function* (
 		includeVariants: true,
 	})
 
-	const existingPaths = new Set(allWebPaths)
+	const existingPaths = HashSet.fromIterable(allWebPaths)
 	const basePaths = Arr.filter(allWebPaths, webPath => !isVariantImagePath(webPath))
 	const rootWebPaths = Arr.filter(basePaths, isRootWebPath).sort()
 

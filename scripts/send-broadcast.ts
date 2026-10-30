@@ -204,17 +204,17 @@ function emailBuildError(
 	return BroadcastRenderError.make({ message: fallback, cause })
 }
 
+const BulletSchema = Schema.Array(Schema.NonEmptyString).pipe(Schema.check(Schema.isMinLength(1)))
+
 const requireBullets = Effect.fnUntraced(function* (bullets: readonly string[], label: string) {
-	const trimmed = Arr.map(bullets, bullet => Str.trim(bullet))
-
-	if (trimmed.length === 0 || Arr.some(trimmed, bullet => bullet.length === 0)) {
-		return yield* BroadcastInputError.make({
-			message: `${label} needs at least one non-empty --bullet.`,
-			cause: bullets,
-		})
-	}
-
-	return trimmed
+	return yield* Schema.decodeEffect(BulletSchema)(Arr.map(bullets, Str.trim)).pipe(
+		Effect.mapError(() =>
+			BroadcastInputError.make({
+				message: `${label} needs at least one non-empty --bullet.`,
+				cause: bullets,
+			}),
+		),
+	)
 })
 
 const textOrFallback = Effect.fnUntraced(function* (
@@ -222,27 +222,27 @@ const textOrFallback = Effect.fnUntraced(function* (
 	fallback: string,
 	flag: "--title" | "--description",
 ) {
-	if (Option.isNone(override)) {
-		if (Str.trim(fallback).length === 0) {
-			return yield* BroadcastInputError.make({
-				message: `This entry has no ${flag} text. Pass ${flag}.`,
-				cause: fallback,
-			})
-		}
-
-		return fallback
-	}
-
-	const value = Str.trim(override.value)
-
-	if (value.length === 0) {
-		return yield* BroadcastInputError.make({
-			message: `${flag} cannot be empty.`,
-			cause: override.value,
-		})
-	}
-
-	return value
+	return yield* Option.match(override, {
+		onNone: () =>
+			Schema.decodeEffect(Schema.NonEmptyString)(Str.trim(fallback)).pipe(
+				Effect.as(fallback),
+				Effect.mapError(() =>
+					BroadcastInputError.make({
+						message: `This entry has no ${flag} text. Pass ${flag}.`,
+						cause: fallback,
+					}),
+				),
+			),
+		onSome: value =>
+			Schema.decodeEffect(Schema.NonEmptyString)(Str.trim(value)).pipe(
+				Effect.mapError(() =>
+					BroadcastInputError.make({
+						message: `${flag} cannot be empty.`,
+						cause: value,
+					}),
+				),
+			),
+	})
 })
 
 const refuseComingSoon = Effect.fnUntraced(function* (

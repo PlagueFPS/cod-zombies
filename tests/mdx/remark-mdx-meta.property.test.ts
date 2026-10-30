@@ -1,4 +1,4 @@
-import { String as Str } from "effect"
+import { Predicate, String as Str } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
@@ -32,7 +32,7 @@ describe("remark-mdx-meta slugify properties", () => {
 
 					expect(heading).toBeDefined()
 
-					if (heading === undefined) {
+					if (Predicate.isUndefined(heading)) {
 						throw new Error("expected a heading for non-blank text")
 					}
 

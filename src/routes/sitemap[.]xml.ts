@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Effect, Array as Arr, Option } from "effect"
+import { Predicate, Effect, Array as Arr, Option } from "effect"
 import { getInteractiveMaps } from "@/data/interactive-map"
 import { getMapByKey, getMapsWithMainQuest } from "@/data/maps"
 import { getRelics } from "@/data/relics"
@@ -78,17 +78,16 @@ export const Route = createFileRoute("/sitemap.xml")({
 
 					const firstEntries = Arr.filter(
 						[mainQuestsMap[0], sideQuestsMap[0], zombiesMap[0], relicsMap[0]],
-						(entry): entry is NonNullable<typeof entry> => entry != null,
+						Predicate.isNotNullish,
 					)
 
 					const first = firstEntries[0]
 
-					const mostRecentLastModified =
-						first != null
-							? Arr.reduce(firstEntries, first.lastModified, (latest, entry) =>
-									entry.lastModified > latest ? entry.lastModified : latest,
-								)
-							: undefined
+					const mostRecentLastModified = Predicate.isNotNullish(first)
+						? Arr.reduce(firstEntries, first.lastModified, (latest, entry) =>
+								entry.lastModified > latest ? entry.lastModified : latest,
+							)
+						: undefined
 
 					const mostRecentMainQuest = Arr.head(maps).pipe(
 						Option.map(quest => getLastModified(`content/main-quests/${quest.id}`)),

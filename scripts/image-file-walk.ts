@@ -1,5 +1,5 @@
 import type { PlatformError } from "effect/PlatformError"
-import { Effect, FileSystem, HashSet, Path, String as Str, Array as Arr } from "effect"
+import { Match, Effect, FileSystem, HashSet, Path, String as Str, Array as Arr } from "effect"
 import { isVariantImagePath, toWebImagePath } from "@/lib/image-variant-paths"
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 
@@ -43,25 +43,22 @@ export const walkImageFiles = Effect.fn("walkImageFiles")(function* (
 						const full = path.join(current, file)
 						const stat = yield* fs.stat(full)
 
-						if (stat.type === "Directory") {
-							yield* walk(full)
+						yield* Match.value(stat.type).pipe(
+							Match.when("Directory", () => walk(full)),
+							Match.when("File", () =>
+								Effect.sync(() => {
+									const ext = Str.toLowerCase(path.extname(file))
 
-							return
-						}
+									if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) return
+									const formatted = formatImagePath(rootDir, full, options.format, path)
 
-						if (stat.type !== "File") return
-
-						const ext = Str.toLowerCase(path.extname(file))
-
-						if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) return
-
-						const formatted = formatImagePath(rootDir, full, options.format, path)
-
-						if (!options.includeVariants && isVariantImagePath(toWebImagePath(formatted))) {
-							return
-						}
-
-						results.push(formatted)
+									if (!options.includeVariants && isVariantImagePath(toWebImagePath(formatted)))
+										return
+									results.push(formatted)
+								}),
+							),
+							Match.orElse(() => Effect.void),
+						)
 					}),
 				{ concurrency: "unbounded" },
 			)

@@ -1,4 +1,4 @@
-import { Array as Arr, Option, Predicate } from "effect"
+import { HashSet, Array as Arr, Option, Predicate } from "effect"
 import ChevronSymbol from "@/components/floppy-symbols/chevron"
 import ChevronBarSymbol from "@/components/floppy-symbols/chevron-bar"
 import CornerBracketsSymbol from "@/components/floppy-symbols/corner-brackets"
@@ -74,12 +74,12 @@ export function solveTbfbDiskPuzzle(
 ): readonly TbfbDiskPathMatch[] {
 	if (selected.length !== DISK_SELECTION_SIZE) return []
 
-	const picked = new Set(selected)
+	const picked = HashSet.fromIterable(selected)
 
-	if (picked.size !== DISK_SELECTION_SIZE) return []
+	if (HashSet.size(picked) !== DISK_SELECTION_SIZE) return []
 
 	return Arr.flatMap(TBFB_DISK_PATHS, path => {
-		const order = Arr.filter(path.symbols, symbol => picked.has(symbol))
+		const order = Arr.filter(path.symbols, symbol => HashSet.has(picked, symbol))
 
 		if (order.length !== DISK_SELECTION_SIZE) return []
 

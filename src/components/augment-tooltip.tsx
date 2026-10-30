@@ -2,7 +2,7 @@ import type { Augment, AugmentKey } from "@/data/augments"
 import type { GameKey } from "@/data/games"
 import type { RegistryKeyInput } from "@/data/registry-helpers"
 import { cn } from "cn"
-import { Option } from "effect"
+import { Predicate, Option } from "effect"
 import { TypeBadge } from "@/components/custom-badges"
 import IconImage from "@/components/icon-image"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
@@ -27,13 +27,12 @@ type AugmentTooltipProps = (AugmentTooltipPropsWithKey | AugmentTooltipPropsWith
 export default function AugmentTooltip(props: AugmentTooltipProps) {
 	const isMobile = useIsMobile(640)
 
-	const augment =
-		props.augmentKey !== undefined
-			? getAugmentByKey(props.augmentKey, props.game)
-			: Option.some(props.augment)
+	const augment = Predicate.isNotUndefined(props.augmentKey)
+		? getAugmentByKey(props.augmentKey, props.game)
+		: Option.fromUndefinedOr(props.augment)
 
 	if (Option.isNone(augment)) {
-		console.error(`Unable to render tooltip for augment: ${props.augmentKey ?? props.augment.id}`)
+		console.error(`Unable to render tooltip for augment: ${props.augmentKey ?? props.augment?.id}`)
 
 		return "[MISSING_AUGMENT]"
 	}

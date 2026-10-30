@@ -1,5 +1,5 @@
 import { cn } from "cn"
-import { Array as Arr } from "effect"
+import { Predicate, Array as Arr } from "effect"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -77,7 +77,7 @@ export default function KowakujoPuzzleSolver() {
 								<p className="mt-1 text-sm">
 									All scrolls are already pushed in. No presses needed.
 								</p>
-							) : solution !== null ? (
+							) : Predicate.isNotNull(solution) ? (
 								<ul className="mt-1 list-none pl-0">
 									{Arr.map(solution, index => (
 										<li key={index} className="text-center">

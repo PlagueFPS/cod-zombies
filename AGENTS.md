@@ -5,7 +5,7 @@ Run in this order after any code change (see `package.json` scripts):
 ```bash
 bun run typecheck   # tsc --noEmit
 bun run lint        # oxlint (warnings are expected; 0 errors = pass)
-bun run fmt         # oxfmt (auto-formats in place)
+bun run format      # oxfmt (auto-formats in place)
 bun run test        # bun test
 ```
 
@@ -13,8 +13,8 @@ bun run test        # bun test
 
 - Do not skip these steps for "small" edits — run them unless the user explicitly says not to
 - If `lint` reports issues, fix them (use `bun run lint:fix` when appropriate) and re-run `lint`
-- If `fmt` reformats files, include those changes in the result
-- If `bun run fmt` fails, fix the reported issues and run it again
+- If `format` changes files, include those changes in the result
+- If `bun run format` fails, fix the reported issues and run it again
 - If `test` fails, fix the regression or explain why it is unrelated only when clearly pre-existing and the user did not ask for a fix
 
 ### When to skip

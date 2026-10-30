@@ -26,13 +26,13 @@ export function extractRichImageRefs(content: string): RichImageRef[] {
 		const attrs = tagMatch[1]
 		const tagIndex = tagMatch.index
 
-		if (attrs == null || tagIndex == null) continue
+		if (Predicate.isNullish(attrs) || Predicate.isNullish(tagIndex)) continue
 
 		const imageMatch = STATIC_IMAGE_RE.exec(attrs)
 		const image = imageMatch?.[2] ?? imageMatch?.[4]
 
 		refs.push({
-			image: image === undefined || image.length === 0 ? undefined : image,
+			image: Predicate.isUndefined(image) || image.length === 0 ? undefined : image,
 			line: lineNumberAt(content, tagIndex),
 		})
 	}

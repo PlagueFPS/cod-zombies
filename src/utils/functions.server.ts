@@ -2,16 +2,7 @@ import type { OpengraphKind } from "@/utils/validation-schemas"
 // Token bytes, SHA-256 digests, and constant-time compares stay on node:crypto.
 // oxlint-disable-next-line effecttsgo/node-builtin-import
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto"
-import {
-	Clock,
-	Duration,
-	Effect,
-	Number as Num,
-	Option,
-	Schema,
-	String as Str,
-	Predicate,
-} from "effect"
+import { Clock, Duration, Effect, Option, Schema, String as Str } from "effect"
 import { opengraphImagePath } from "@/utils/opengraph-image-url"
 import { getServerUrl } from "@/utils/request.server"
 import { dateFrom } from "@/utils/system-time"
@@ -45,14 +36,14 @@ class TokenVerificationError extends Schema.TaggedError<
 export const getOpengraphImageUrl = async (kind: OpengraphKind, id: string) => {
 	const path = opengraphImagePath(kind, id)
 
-	if (path === undefined) {
+	if (Option.isNone(path)) {
 		// oxlint-disable-next-line effecttsgo/global-console -- logged from a TanStack server helper, outside an Effect
 		console.warn(`Missing opengraph image version for ${kind}: ${id}`)
 
 		return Option.none()
 	}
 
-	return Option.some(`${getServerUrl()}${path}`)
+	return Option.some(`${getServerUrl()}${path.value}`)
 }
 
 /**
@@ -84,6 +75,13 @@ export const generateToken = Effect.fn("generateToken")(function* (
 	})
 })
 
+const TokenPayloadSchema = Schema.Tuple([
+	Schema.NonEmptyString,
+	Schema.NonEmptyString,
+	Schema.FiniteFromString.pipe(Schema.check(Schema.isInt(), Schema.isGreaterThanOrEqualTo(0))),
+	Schema.NonEmptyString,
+])
+
 /**
  * Verifies a securely generated token.
  * @param token - the secure token to verify.
@@ -95,37 +93,24 @@ export const verifyToken = Effect.fn("verifyToken")(function* (token: string) {
 		catch: error => TokenVerificationError.make({ message: "Invalid Token", cause: error }),
 	})
 
-	const [value, salt, expiresInStr, originalHash] = Str.split(buffer, ":")
+	const [value, salt, expiresIn, originalHash] = yield* Schema.decodeUnknownEffect(
+		TokenPayloadSchema,
+	)(Str.split(buffer, ":")).pipe(
+		Effect.mapError(cause =>
+			TokenVerificationError.make({ message: "Invalid Token Format", cause }),
+		),
+	)
 
-	if (
-		!(Predicate.isNotNullish(value) && Predicate.isTruthy(value)) ||
-		!(Predicate.isNotNullish(salt) && Predicate.isTruthy(salt)) ||
-		!(Predicate.isNotNullish(expiresInStr) && Predicate.isTruthy(expiresInStr)) ||
-		!(Predicate.isNotNullish(originalHash) && Predicate.isTruthy(originalHash))
-	) {
-		return yield* TokenVerificationError.make({
-			message: "Invalid Token Format",
-			cause: new Error("Token is malformed"),
-		})
-	}
-
-	const expiresIn = Num.parse(expiresInStr)
 	const now = yield* Clock.currentTimeMillis
 
-	if (Option.isNone(expiresIn))
-		return yield* TokenVerificationError.make({
-			message: "Invalid Token Format",
-			cause: new Error("Token is malformed"),
-		})
-
-	if (Duration.isGreaterThan(Duration.millis(now), Duration.millis(expiresIn.value))) {
+	if (Duration.isGreaterThan(Duration.millis(now), Duration.millis(expiresIn))) {
 		return yield* TokenExpirationError.make({
 			message: "Token has expired",
-			cause: new Error(`Token expired at ${dateFrom(expiresIn.value).toISOString()}`),
+			cause: new Error(`Token expired at ${dateFrom(expiresIn).toISOString()}`),
 		})
 	}
 
-	const payload = `${value}:${salt}:${expiresIn.value}`
+	const payload = `${value}:${salt}:${expiresIn}`
 	const hash = createHash("sha256").update(payload).digest("hex")
 	const hashBuffer = Buffer.from(hash, "hex")
 	const originalHashBuffer = Buffer.from(originalHash, "hex")

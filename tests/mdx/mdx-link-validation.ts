@@ -86,7 +86,8 @@ export function extractLinksFromMdx(content: string): MdxLinkRef[] {
 			const href = match[group]
 			const index = match.index
 
-			if (!(Predicate.isNotNullish(href) && Predicate.isTruthy(href)) || index == null) continue
+			if (!(Predicate.isNotNullish(href) && Predicate.isTruthy(href)) || Predicate.isNullish(index))
+				continue
 			links.push({ href, line: lineNumberAt(content, index) })
 		}
 	}
@@ -100,7 +101,7 @@ export function findUnclosedMarkdownLinks(content: string): { line: number; exce
 	for (const match of Str.matchAll(UNCLOSED_MARKDOWN_LINK_RE)(content)) {
 		const index = match.index
 
-		if (index == null) continue
+		if (Predicate.isNullish(index)) continue
 		issues.push({ line: lineNumberAt(content, index), excerpt: Str.trim(match[0]) })
 	}
 

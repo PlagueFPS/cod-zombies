@@ -68,7 +68,8 @@ export function CustomLink({
 			!e.shiftKey &&
 			!e.ctrlKey &&
 			!e.metaKey &&
-			(("button" in e && e.button === 0) || ("key" in e && e.key === "Enter"))
+			((Predicate.hasProperty(e, "button") && e.button === 0) ||
+				(Predicate.hasProperty(e, "key") && e.key === "Enter"))
 		) {
 			e.preventDefault()
 			void navigate(navigatePayload)

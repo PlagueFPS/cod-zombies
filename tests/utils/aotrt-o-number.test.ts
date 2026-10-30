@@ -1,7 +1,6 @@
-import { Exit, Array as Arr } from "effect"
+import { Option, Match, Array as Arr } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
-import { expectExitSuccess } from "@/tests/helpers"
 import {
 	classifyAotrtTvColor,
 	decodeAotrtONumberInput,
@@ -80,8 +79,17 @@ describe("solveAotrtONumber", () => {
 
 					const product = result.oNumber * m
 
-					const expectedRow =
-						product < topTvNumber ? "top" : product <= topTvNumber + 2 ? "middle" : "bottom"
+					const expectedRow = Match.value(product).pipe(
+						Match.when(
+							value => value < topTvNumber,
+							() => "top",
+						),
+						Match.when(
+							value => value <= topTvNumber + 2,
+							() => "middle",
+						),
+						Match.orElse(() => "bottom"),
+					)
 
 					expect(result.tvColor.product).toBe(product)
 					expect(result.tvColor.row).toBe(expectedRow)
@@ -122,7 +130,7 @@ describe("decodeAotrtONumberInput", () => {
 	test("accepts positive whole numbers", () => {
 		const decoded = decodeAotrtONumberInput({ m: "7", topTvNumber: "61" })
 
-		expect(expectExitSuccess(decoded)).toEqual({ m: 7, topTvNumber: 61 })
+		expect(Option.getOrThrow(decoded)).toEqual({ m: 7, topTvNumber: 61 })
 	})
 
 	test("rejects blank, zero, decimal, and negative input", () => {
@@ -136,7 +144,7 @@ describe("decodeAotrtONumberInput", () => {
 		]
 
 		for (const input of rejected) {
-			expect(Exit.isFailure(decodeAotrtONumberInput(input))).toBe(true)
+			expect(Option.isNone(decodeAotrtONumberInput(input))).toBe(true)
 		}
 	})
 })
@@ -144,13 +152,13 @@ describe("decodeAotrtONumberInput", () => {
 describe("decodeAotrtONumberString", () => {
 	test("accepts every O number the number tool can produce", () => {
 		for (const oNumber of O_NUMBERS) {
-			expect(expectExitSuccess(decodeAotrtONumberString(String(oNumber)))).toBe(oNumber)
+			expect(Option.getOrThrow(decodeAotrtONumberString(String(oNumber)))).toBe(oNumber)
 		}
 	})
 
 	test("rejects numbers outside that set", () => {
 		for (const input of ["", "1", "3", "7", "4.5", "-4"]) {
-			expect(Exit.isFailure(decodeAotrtONumberString(input))).toBe(true)
+			expect(Option.isNone(decodeAotrtONumberString(input))).toBe(true)
 		}
 	})
 })

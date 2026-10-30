@@ -2,7 +2,8 @@
 
 import type { AotrtChemical } from "@/utils/aotrt-chemical"
 import { act } from "react"
-import { createRoot, type Root } from "react-dom/client"
+import { createRoot, hydrateRoot, type Root } from "react-dom/client"
+import { renderToString } from "react-dom/server"
 import { afterEach, describe, expect, test } from "vitest"
 import AotrtChemicalTool from "@/components/aotrt-chemical-tool"
 import AotrtNumberTool from "@/components/aotrt-number-tool"
@@ -22,6 +23,25 @@ describe("AotrtChemicalTool", () => {
 		container?.remove()
 		container = undefined
 		sessionStorage.removeItem(AOTRT_O_NUMBER_STORAGE_KEY)
+	})
+
+	test("hydrates the server fallback and then reads the saved O number", async () => {
+		sessionStorage.setItem(AOTRT_O_NUMBER_STORAGE_KEY, "4")
+		container = document.createElement("div")
+		document.body.append(container)
+		const tool = <AotrtChemicalTool chemical="1,3,5-Tera-Nitra-Phenol" />
+		container.innerHTML = renderToString(tool)
+		expect(container.querySelector('input[name="oNumber"]')).not.toBeNull()
+		const hydrationErrors: unknown[] = []
+
+		await act(async () => {
+			root = hydrateRoot(container!, tool, {
+				onRecoverableError: error => hydrationErrors.push(error),
+			})
+		})
+
+		expect(hydrationErrors).toEqual([])
+		expect(container.querySelector('input[name="oNumber"]')).toBeNull()
 	})
 
 	test("subtracts the saved O number from the 1,7 phenol column", async () => {

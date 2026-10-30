@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option, Array as Arr, String as Str } from "effect"
+import { Predicate, Option, Array as Arr, String as Str } from "effect"
 import { BestiaryGrid } from "@/components/bestiary-grid"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
@@ -180,10 +180,10 @@ function Bestiary() {
 		const values = Arr.filter(
 			g.items,
 			i =>
-				(type != null && Arr.some(type, t => t === i.value)) ||
-				(weakness != null && Arr.some(weakness, w => w === i.value)) ||
-				(map != null && Arr.some(map, d => d === i.value)) ||
-				(game != null && Arr.some(game, g => g === i.value)),
+				(Predicate.isNotNullish(type) && Arr.some(type, t => t === i.value)) ||
+				(Predicate.isNotNullish(weakness) && Arr.some(weakness, w => w === i.value)) ||
+				(Predicate.isNotNullish(map) && Arr.some(map, d => d === i.value)) ||
+				(Predicate.isNotNullish(game) && Arr.some(game, g => g === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)

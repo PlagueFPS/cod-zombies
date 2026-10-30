@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
-import { Option, Array as Arr, String as Str, Predicate } from "effect"
+import { Match, Schema, Option, Array as Arr, String as Str, Predicate } from "effect"
 import { getAmmoModByKey } from "@/data/ammo-mods"
 import { getAugmentByKey } from "@/data/augments"
 import { getElixirByKey } from "@/data/elixirs"
@@ -72,8 +72,8 @@ export function extractCatalogKeyRefs(content: string): CatalogKeyRef[] {
 
 		if (
 			!(Predicate.isNotNullish(component) && Predicate.isTruthy(component)) ||
-			attrs == null ||
-			tagIndex == null
+			Predicate.isNullish(attrs) ||
+			Predicate.isNullish(tagIndex)
 		)
 			continue
 
@@ -87,7 +87,7 @@ export function extractCatalogKeyRefs(content: string): CatalogKeyRef[] {
 			if (
 				!isCatalogKeyProp(prop) ||
 				!(Predicate.isNotNullish(value) && Predicate.isTruthy(value)) ||
-				attrIndex == null
+				Predicate.isNullish(attrIndex)
 			)
 				continue
 
@@ -148,32 +148,23 @@ function listTsxSourceFiles(): string[] {
 }
 
 function isCatalogKeyProp(value: string | undefined): value is CatalogKeyProp {
-	return Arr.some(CATALOG_KEY_PROPS, prop => prop === value)
+	return Schema.is(Schema.Literals(CATALOG_KEY_PROPS))(value)
 }
 
 function catalogKeyExists(prop: CatalogKeyProp, key: string): boolean {
-	switch (prop) {
-		case "perkKey":
-			return Option.isSome(getPerkByKey(key))
-		case "gobblegumKey":
-			return Option.isSome(getGobblegumByKey(key))
-		case "zombieKey":
-			return Option.isSome(getZombieByKey(key))
-		case "ammoModKey":
-			return Option.isSome(getAmmoModByKey(key))
-		case "augmentKey":
-			return Option.isSome(getAugmentByKey(key))
-		case "elixirKey":
-			return Option.isSome(getElixirByKey(key))
-		case "cardKey":
-			return Option.isSome(getFateAndFortuneCardByKey(key))
-		case "fieldUpgradeKey":
-			return Option.isSome(getFieldUpgradeByKey(key))
-		case "weaponBuildKey":
-			return Option.isSome(getWeaponBuildByKey(key))
-		case "game":
-			return Option.isSome(getGameByKey(key))
-	}
+	return Match.value(prop).pipe(
+		Match.when("perkKey", () => Option.isSome(getPerkByKey(key))),
+		Match.when("gobblegumKey", () => Option.isSome(getGobblegumByKey(key))),
+		Match.when("zombieKey", () => Option.isSome(getZombieByKey(key))),
+		Match.when("ammoModKey", () => Option.isSome(getAmmoModByKey(key))),
+		Match.when("augmentKey", () => Option.isSome(getAugmentByKey(key))),
+		Match.when("elixirKey", () => Option.isSome(getElixirByKey(key))),
+		Match.when("cardKey", () => Option.isSome(getFateAndFortuneCardByKey(key))),
+		Match.when("fieldUpgradeKey", () => Option.isSome(getFieldUpgradeByKey(key))),
+		Match.when("weaponBuildKey", () => Option.isSome(getWeaponBuildByKey(key))),
+		Match.when("game", () => Option.isSome(getGameByKey(key))),
+		Match.exhaustive,
+	)
 }
 
 function lineNumberAt(content: string, index: number): number {

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Option, Array as Arr } from "effect"
+import { Predicate, Option, Array as Arr } from "effect"
 import { Breadcrumbs } from "@/components/breadcrumbs"
 import {
 	GridFilters,
@@ -98,7 +98,7 @@ export const Route = createFileRoute("/side-quests/")({
 			Arr.flatMap(allQuests, quest => {
 				const game = getMapByKey(quest.map).valueOrUndefined?.game
 
-				return game === undefined ? [] : [game]
+				return Predicate.isUndefined(game) ? [] : [game]
 			}),
 		)
 
@@ -171,8 +171,8 @@ function SideQuests() {
 		const values = Arr.filter(
 			g.items,
 			i =>
-				(map != null && Arr.some(map, d => d === i.value)) ||
-				(game != null && Arr.some(game, g => g === i.value)),
+				(Predicate.isNotNullish(map) && Arr.some(map, d => d === i.value)) ||
+				(Predicate.isNotNullish(game) && Arr.some(game, g => g === i.value)),
 		)
 
 		if (values.length > 0) filterValue.push(...values)

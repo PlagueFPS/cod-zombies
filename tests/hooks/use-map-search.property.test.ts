@@ -1,5 +1,5 @@
 import type { MapMarker } from "@/map-configs/markers"
-import { Option, Array as Arr, String as Str } from "effect"
+import { Predicate, Option, Array as Arr, String as Str } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { buildShareableMapSearch, computeIsIncluded, uniqueMarkerIds } from "@/hooks/use-map-search"
@@ -51,7 +51,7 @@ describe("buildShareableMapSearch properties", () => {
 					const includeIsShorter = visible.length < hidden.length
 					const expectedInclude = !listsOmitted && includeIsShorter ? visible : undefined
 					const expectedExclude = !listsOmitted && !includeIsShorter ? hidden : undefined
-					const expectedLayer = layer !== undefined && layer !== "" ? layer : undefined
+					const expectedLayer = Predicate.isNotUndefined(layer) && layer !== "" ? layer : undefined
 
 					expect(shared.include).toEqual(expectedInclude)
 					expect(shared.exclude).toEqual(expectedExclude)

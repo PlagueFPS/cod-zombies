@@ -33,7 +33,7 @@ export function getCategoryFromRelativePath(relativePath: string): string | null
 }
 
 export function shouldGenerateVariants(category: string | null): boolean {
-	if (category === null) return true
+	if (Predicate.isNull(category)) return true
 
 	return !HashSet.has(NO_VARIANT_CATEGORIES, category)
 }

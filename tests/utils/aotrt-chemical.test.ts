@@ -1,6 +1,5 @@
-import { Exit, Array as Arr } from "effect"
+import { Option, Predicate, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
-import { expectExitSuccess } from "@/tests/helpers"
 import {
 	AotrtChemicalSolution,
 	decodeAotrtDiamondInput,
@@ -63,7 +62,7 @@ const chemicals: ReadonlyArray<AotrtChemical> = [
 
 describe("solveAotrtChemical", () => {
 	test("subtracts the O number from the 1,7 column of 1,3,5-Tera-Nitra-Phenol", () => {
-		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 1, 7, 4)).toEqual(
+		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 1, 7, Option.some(4))).toEqual(
 			AotrtChemicalSolution.Solved({ steps: [24, 22, 15] }),
 		)
 	})
@@ -74,7 +73,7 @@ describe("solveAotrtChemical", () => {
 				const bases = boardSteps(chemical, top, left)
 
 				for (const oNumber of O_NUMBERS) {
-					expect(solveAotrtChemical(chemical, top, left, oNumber)).toEqual(
+					expect(solveAotrtChemical(chemical, top, left, Option.some(oNumber))).toEqual(
 						AotrtChemicalSolution.Solved({
 							steps: Arr.map(bases, step => step - oNumber),
 						}),
@@ -85,37 +84,37 @@ describe("solveAotrtChemical", () => {
 	})
 
 	test("asks for the O number before printing steps for a valid diamond", () => {
-		expect(solveAotrtChemical("3,4-Di-Nitroxy-Methyl-Propane", 8, 1, null)).toEqual(
+		expect(solveAotrtChemical("3,4-Di-Nitroxy-Methyl-Propane", 8, 1, Option.none())).toEqual(
 			AotrtChemicalSolution.MissingONumber(),
 		)
 	})
 
 	test("treats a reversed diamond pair identically to the canonical pair", () => {
-		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 7, 1, 4)).toEqual(
+		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 7, 1, Option.some(4))).toEqual(
 			AotrtChemicalSolution.Solved({ steps: [24, 22, 15] }),
 		)
-		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 7, 1, null)).toEqual(
+		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 7, 1, Option.none())).toEqual(
 			AotrtChemicalSolution.MissingONumber(),
 		)
 	})
 
 	test("reports the wrong TV color when the pair is not a diamond", () => {
-		expect(solveAotrtChemical("Octahydro-2,5-Nitro-3,4,7-Parazokine", 2, 2, 4)).toEqual(
-			AotrtChemicalSolution.WrongTvColor(),
-		)
-		expect(solveAotrtChemical("Octahydro-2,5-Nitro-3,4,7-Parazokine", 8, 7, null)).toEqual(
+		expect(
+			solveAotrtChemical("Octahydro-2,5-Nitro-3,4,7-Parazokine", 2, 2, Option.some(4)),
+		).toEqual(AotrtChemicalSolution.WrongTvColor())
+		expect(solveAotrtChemical("Octahydro-2,5-Nitro-3,4,7-Parazokine", 8, 7, Option.none())).toEqual(
 			AotrtChemicalSolution.WrongTvColor(),
 		)
 	})
 
 	test("keeps 6,6 as a valid diamond", () => {
-		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 6, 6, 2)._tag).toBe("Solved")
+		expect(solveAotrtChemical("1,3,5-Tera-Nitra-Phenol", 6, 6, Option.some(2))._tag).toBe("Solved")
 	})
 })
 
 describe("decodeAotrtDiamondInput", () => {
 	test("accepts positive whole numbers", () => {
-		expect(expectExitSuccess(decodeAotrtDiamondInput({ top: "1", left: "7" }))).toEqual({
+		expect(Option.getOrThrow(decodeAotrtDiamondInput({ top: "1", left: "7" }))).toEqual({
 			top: 1,
 			left: 7,
 		})
@@ -132,7 +131,7 @@ describe("decodeAotrtDiamondInput", () => {
 		]
 
 		for (const input of rejected) {
-			expect(Exit.isFailure(decodeAotrtDiamondInput(input))).toBe(true)
+			expect(Option.isNone(decodeAotrtDiamondInput(input))).toBe(true)
 		}
 	})
 })
@@ -147,7 +146,7 @@ function readBoardStep(
 function boardSteps(chemical: AotrtChemical, top: number, left: number): readonly number[] {
 	const steps = readBoardStep(BOARD[chemical], `${top},${left}`)
 
-	if (steps === undefined) {
+	if (Predicate.isUndefined(steps)) {
 		throw new Error(`missing board value for ${chemical} ${top},${left}`)
 	}
 
