@@ -1,5 +1,5 @@
 import type { APIResult } from "@/types/data"
-import { createServerFn } from "@tanstack/react-start"
+import { createServerFn, createServerOnlyFn } from "@tanstack/react-start"
 import { Effect, Layer, Predicate, Schedule } from "effect"
 import {
 	newsletterAcknowledgements,
@@ -17,20 +17,22 @@ const e2eEmailResult = (message: string): APIResult | null => {
 	return { success: true, message }
 }
 
-export const runNewsletterRequest = async (
-	action: "subscribe" | "unsubscribe",
-	email: string,
-	serverUrl: string,
-): Promise<APIResult> => {
-	if (process.env.E2E_MOCK_EMAIL === "success") return newsletterAcknowledgements[action]
+export const runNewsletterRequest = createServerOnlyFn(
+	async (
+		action: "subscribe" | "unsubscribe",
+		email: string,
+		serverUrl: string,
+	): Promise<APIResult> => {
+		if (process.env.E2E_MOCK_EMAIL === "success") return newsletterAcknowledgements[action]
 
-	return await newsletterRequest(action, email, serverUrl).pipe(
-		Effect.provide(Layer.merge(emailLayer, newsletterTokensLayer)),
-		Effect.catchCause(cause => Effect.logError("Newsletter request failed", cause)),
-		Effect.as(newsletterAcknowledgements[action]),
-		Effect.runPromise,
-	)
-}
+		return await newsletterRequest(action, email, serverUrl).pipe(
+			Effect.provide(Layer.merge(emailLayer, newsletterTokensLayer)),
+			Effect.catchCause(cause => Effect.logError("Newsletter request failed", cause)),
+			Effect.as(newsletterAcknowledgements[action]),
+			Effect.runPromise,
+		)
+	},
+)
 
 export const unsubscribeFromNewsletter = createServerFn({ method: "POST" })
 	.validator(StandardNewsletterFormSchema)
