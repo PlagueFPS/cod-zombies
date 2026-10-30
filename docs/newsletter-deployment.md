@@ -8,4 +8,4 @@ Run `bun run typegen -- --include-runtime=false` to regenerate the gitignored Wo
 
 Existing newsletter confirmation links become invalid with this release. Ask users with old links to submit another request. New links expire after one day. Rotating the secret invalidates every outstanding link.
 
-Missing or invalid signing configuration prevents token issuance and verification. Newsletter request forms still acknowledge valid submissions with the same generic response. Check internal logs for `Newsletter request failed` when investigating delivery failures. Contact submissions use a separate runtime and do not require this secret.
+Missing or invalid signing configuration prevents token issuance and verification. Newsletter request forms still acknowledge valid submissions with the same generic response. Check internal logs for `Newsletter request failed` when investigating delivery failures. Layers are provided per request at server boundaries. Contact submissions use only the email layer and do not require this secret.

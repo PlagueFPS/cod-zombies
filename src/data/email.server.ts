@@ -4,7 +4,18 @@ import UnsubscribeEmail from "@/emails/unsubscribe-email"
 import { Email } from "@/lib/services/emails"
 import { NewsletterTokens } from "@/lib/services/newsletter-tokens"
 import { NEWSLETTER_FROM_ADDRESS } from "@/utils/constants"
-import { NEWSLETTER_ACKNOWLEDGEMENT } from "@/utils/newsletter"
+
+export const newsletterAcknowledgements = {
+	subscribe: {
+		success: true,
+		message:
+			"If this email isn't already subscribed a verification link will be sent to your inbox.",
+	},
+	unsubscribe: {
+		success: true,
+		message: "If this email is already subscribed a verification link will be sent to your inbox.",
+	},
+} as const
 
 interface EmailProps {
 	name: string
@@ -20,7 +31,7 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (
 
 	const contact = yield* emails.getContact(email)
 
-	if (Option.isSome(contact)) return NEWSLETTER_ACKNOWLEDGEMENT
+	if (Option.isSome(contact)) return
 	const tokens = yield* NewsletterTokens
 	const token = yield* tokens.issueSubscribe(email)
 	const subscribeUrl = `${serverUrl}/api/newsletter/subscribe?token=${encodeURIComponent(token)}`
@@ -31,8 +42,6 @@ export const requestSubscribe = Effect.fn("requestSubscribe")(function* (
 		subject: "Confirm Your Subscribe Request",
 		react: SubscribeEmail({ subscribeUrl, serverUrl }),
 	})
-
-	return NEWSLETTER_ACKNOWLEDGEMENT
 })
 
 export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (
@@ -43,7 +52,7 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (
 
 	const contact = yield* emails.getContact(email)
 
-	if (Option.isNone(contact)) return NEWSLETTER_ACKNOWLEDGEMENT
+	if (Option.isNone(contact)) return
 	const tokens = yield* NewsletterTokens
 	const token = yield* tokens.issueUnsubscribe(email)
 	const unsubscribeUrl = `${serverUrl}/api/newsletter/unsubscribe?token=${encodeURIComponent(token)}`
@@ -54,8 +63,6 @@ export const requestUnsubscribe = Effect.fn("requestUnsubscribe")(function* (
 		subject: "Confirm Your Unsubscribe Request",
 		react: UnsubscribeEmail({ unsubscribeUrl, serverUrl }),
 	})
-
-	return NEWSLETTER_ACKNOWLEDGEMENT
 })
 
 export const subscribeEmail = Effect.fn("subscribeEmail")(function* (email: string) {
@@ -102,6 +109,6 @@ export const newsletterRequest = (
 			schedule: Schedule.fixed("200 millis"),
 		}),
 		Effect.timeout("10 seconds"),
-		Effect.catchCause(() => Effect.logError("Newsletter request failed")),
-		Effect.as(NEWSLETTER_ACKNOWLEDGEMENT),
+		Effect.catchCause(cause => Effect.logError("Newsletter request failed", cause)),
+		Effect.as(newsletterAcknowledgements[action]),
 	)

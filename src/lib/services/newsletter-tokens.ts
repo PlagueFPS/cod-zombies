@@ -46,14 +46,13 @@ const encode = Base64Url.encode
 
 const invalid = () => TokenVerificationError.make({ message: "Invalid token" })
 
-const decode = (encoded: string) =>
-	Effect.gen(function* () {
-		const bytes = yield* Effect.fromResult(Base64Url.decode(encoded)).pipe(Effect.mapError(invalid))
+const decode = Effect.fnUntraced(function* (encoded: string) {
+	const bytes = yield* Effect.fromResult(Base64Url.decode(encoded)).pipe(Effect.mapError(invalid))
 
-		if (encode(bytes) !== encoded) return yield* invalid()
+	if (encode(bytes) !== encoded) return yield* invalid()
 
-		return bytes
-	})
+	return bytes
+})
 
 const make = Effect.gen(function* () {
 	const secret = yield* Config.Redacted("NEWSLETTER_TOKEN_SECRET")
@@ -75,8 +74,8 @@ const make = Effect.gen(function* () {
 	const mac = yield* Mac.Mac
 	const random = yield* SecureRandom.SecureRandom
 
-	const issue = (action: Action, email: string) =>
-		Effect.gen(function* () {
+	const issue = Effect.fnUntraced(
+		function* (action: Action, email: string) {
 			const now = yield* Clock.currentTimeMillis
 			const nonce = encode(yield* random.randomBytes(16))
 
@@ -91,41 +90,40 @@ const make = Effect.gen(function* () {
 			const signature = yield* mac.sign(key, encoder.encode(payload))
 
 			return `${payload}.${encode(signature)}`
-		}).pipe(
-			Effect.mapError(() => TokenGenerationError.make({ message: "Failed to generate token" })),
+		},
+		Effect.mapError(() => TokenGenerationError.make({ message: "Failed to generate token" })),
+	)
+
+	const verify = Effect.fnUntraced(function* (action: Action, token: string) {
+		const envelope = yield* Schema.decodeUnknownEffect(Envelope)(token).pipe(
+			Effect.mapError(invalid),
 		)
 
-	const verify = (action: Action, token: string) =>
-		Effect.gen(function* () {
-			const envelope = yield* Schema.decodeUnknownEffect(Envelope)(token).pipe(
-				Effect.mapError(invalid),
-			)
+		const [, encoded = "", signature = ""] = envelope.split(".")
+		const bytes = yield* decode(encoded)
+		const tag = yield* decode(signature)
 
-			const [, encoded = "", signature = ""] = envelope.split(".")
-			const bytes = yield* decode(encoded)
-			const tag = yield* decode(signature)
+		const valid = yield* mac
+			.verify(key, tag, encoder.encode(`v1.${encoded}`))
+			.pipe(Effect.mapError(invalid))
 
-			const valid = yield* mac
-				.verify(key, tag, encoder.encode(`v1.${encoded}`))
-				.pipe(Effect.mapError(invalid))
+		if (!valid) return yield* invalid()
 
-			if (!valid) return yield* invalid()
-
-			const json = yield* Effect.try({
-				try: () => JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)),
-				catch: invalid,
-			})
-
-			const claims = yield* Schema.decodeUnknownEffect(Claims)(json).pipe(Effect.mapError(invalid))
-
-			if (claims.action !== action) return yield* invalid()
-			const now = yield* Clock.currentTimeMillis
-
-			if (now >= claims.expiresAt)
-				return yield* TokenExpirationError.make({ message: "Token has expired" })
-
-			return claims.email
+		const json = yield* Effect.try({
+			try: () => JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)),
+			catch: invalid,
 		})
+
+		const claims = yield* Schema.decodeUnknownEffect(Claims)(json).pipe(Effect.mapError(invalid))
+
+		if (claims.action !== action) return yield* invalid()
+		const now = yield* Clock.currentTimeMillis
+
+		if (now >= claims.expiresAt)
+			return yield* TokenExpirationError.make({ message: "Token has expired" })
+
+		return claims.email
+	})
 
 	return {
 		issueSubscribe: (email: string) => issue("subscribe", email),
