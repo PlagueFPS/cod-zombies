@@ -136,4 +136,7 @@ const WEAK_POINTS = uniqueMap([
 	makeWeakPoint("chest-engine", {
 		title: "Chest Engine",
 	}),
+	makeWeakPoint("hands", {
+		title: "Hands",
+	}),
 ])

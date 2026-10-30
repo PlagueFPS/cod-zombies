@@ -850,4 +850,21 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Releases a red gas cloud that lasts 25 seconds and hurts players within about 120 units.",
 	}),
+	makeZombieAttack("energy-shield", {
+		title: "Energy Shield",
+		range: "Short",
+		description:
+			"A shield blocks damage until an airstrike drops it and staggers the Raketenbrenner.",
+	}),
+	makeZombieAttack("player-pull", {
+		title: "Player Pull",
+		range: "Medium",
+		description: "Pulls players toward it.",
+	}),
+	makeZombieAttack("statue-drain", {
+		title: "Statue Drain",
+		range: "Medium",
+		description:
+			"Runs to the sacrifice chamber and heals by draining the face statues. Bullets do nothing while it drains.",
+	}),
 ])

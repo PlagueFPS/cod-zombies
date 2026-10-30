@@ -1,0 +1,293 @@
+import ZombieTooltip from "@/components/zombie-tooltip"
+import { RichTable, RichBodyRow } from "@/components/rich-table"
+import { TableCell } from "@/components/ui/table"
+import YouTubeEmbed from "@/components/youtube-embed"
+
+## I Have the Power
+
+The main quest for **The Tortured Path** is called **I Have the Power**. The map is three chapters played in order. Recover the **Hilt** in **Into the Storm**, the **Pommel** in **Across the Depths**, then reforge the **Sword of Barbarossa** in **Beneath the Ice**.
+
+Each chapter ends with a wave-10 boss: the <ZombieTooltip zombieKey="raketenbrenner" />, the <ZombieTooltip zombieKey="stadtjager" />, then the <ZombieTooltip zombieKey="guardian" />. Wave 11 is the extraction. Finish a chapter to unlock the next one.
+
+> Several steps only move when a round ends. If you fall behind, there may not be enough waves left. A failed objective wave ends the chapter.
+
+## Requirements
+
+You can complete this quest solo or with up to four players. Solo is possible. Waves **3**, **6**, and **9** are timed objective waves, and failing one fails the chapter. Wave **10** is the boss. Every boss fight has a **5-minute** timer. **Pack-a-Punch** opens after the battery that comes online on wave 7.
+
+**Across the Depths** needs **9,000 Jolts** for three Überschnalle batteries, **3,000** each. Save them before the Red Herring starts.
+
+## Step 1: Body parts and the rope
+
+Collect the body parts and the rope before the rods, then hang the body. The rope shot and the <ZombieTooltip zombieKey="wustling" /> arm can happen early, in parallel.
+
+On wave 1, shoot the rope hanging in the tree left of the battery behind the windmill. Any damage drops it into the river. There is one rope.
+
+Find **1 head, 1 torso, 2 arms, and 2 legs**. Each part is at a random spot from its own list. Stand close, look at it, and hold interact.
+
+**Head**
+
+- Fencepost left of the windmill battery.
+- Cabinet by the blown-open wall in the SMG house.
+- Pot in the intact house's kitchen sink.
+- Back of the truck by Lebenblitz.
+- Shelf in the broken house.
+
+**Torso**
+
+- Overturned cart in front of the windmill.
+- Wheelbarrow behind the broken house.
+- Crate left of the sniper box.
+- Window above Pack-a-Punch.
+- Living-room fireplace in the intact house.
+
+**Arms**
+
+- Under the cellar stairs.
+- Plant box in front of the broken house.
+- Canned-goods crate behind the windmill.
+- Holding a basket in the intact house.
+- Fence by the radio table in front of the windmill.
+- Right of Laufenblitz in the windmill.
+- Debris right of the broken-house fireplace.
+- In the broken-house fireplace.
+- On the log pile behind the broken house.
+- SMG-house fireplace.
+
+**Legs**
+
+- Under the sheet left of Pack-a-Punch in the windmill.
+- Hanging from the broken-house ceiling by the front door.
+- Fencepost right of the windmill battery.
+- Cellar wine rack.
+- Two hanging plant pots at the broken house, front and back.
+- Blue truck, driver side.
+- Ground by the fence left of Kugelblitz.
+- Hole in the wall left of Schildblitz.
+- Floor right of Schildblitz.
+
+On the next wave, hold interact on the branch in the river left of Kugelblitz. It rises. Take the rope. Progress is kept if you let go. The branch stays unusable until the round you shot the rope in has ended.
+
+## Step 2: Rods and the Wüstling arm
+
+A drop pod crashes near the dead cow by Lebenblitz **5 seconds** into the wave after the round in which you have both the body parts and the rope. Wave 3 is the usual case. Pick up the lightning rods: one near the cow, and one at the front of the truck.
+
+You also need the arm club from a <ZombieTooltip zombieKey="wustling" />. This can be done from about 10 seconds into the match. You need **two Wüstlings alive at once**. Line them up so the back one's charge runs into the front one, within about 64 units of the charging one's path. The front one drops its arm club about 1.25 seconds later. Wave 5 is usually the first time two spawn together. If a second one never spawns, the chapter cannot be finished.
+
+## Step 3: Call the lightning
+
+Jam the club into the windmill gears when the longest, most intact blade points straight down. Parts only load while it is jammed within 5 degrees of that angle. If the angle is wrong, pull the club out and try again.
+
+You need the rope before anything loads. Each interaction loads whatever you are carrying. The step finishes once all 6 body parts and every rod are on that blade.
+
+Pull the club out, then jam it again when the body blade is at **12 o'clock**. The lightning only checks **when a round ends**. The windmill has to be jammed, stopped, with the body blade at the top as the round ends. The strike comes 5 seconds later. If it misses, it checks again at the next round's end.
+
+## Step 4: Charge the escort and take the Hilt
+
+Lightning hits the corpse between rounds and it falls in front of the windmill. During the next wave, get kills within about **256** units to charge it. It starts at **100** health. Charging stops when that round ends.
+
+<RichTable
+	headerCells={["Kill", "Charge"]}
+	bodyRows={[
+		<RichBodyRow alternate>
+			<TableCell>Zombie</TableCell>
+			<TableCell>+6</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow>
+			<TableCell>
+				<ZombieTooltip zombieKey="bomber" /> or <ZombieTooltip zombieKey="gekocht" />
+			</TableCell>
+			<TableCell>+12</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow alternate>
+			<TableCell>
+				<ZombieTooltip zombieKey="wustling" />
+			</TableCell>
+			<TableCell>+30</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow>
+			<TableCell>
+				<ZombieTooltip zombieKey="meuchler" />
+			</TableCell>
+			<TableCell>+100</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow alternate>
+			<TableCell>
+				<ZombieTooltip zombieKey="raketenbrenner" />
+			</TableCell>
+			<TableCell>+200</TableCell>
+		</RichBodyRow>,
+	]}
+/>
+
+**3 seconds** into the next wave, the zombie gets up with that health and walks through the windmill into the broken house, then crawls into the debris by the fireplace. Partway along he becomes invulnerable and zombies ignore him, so the early stretch is the dangerous part. If he dies before then, restart the chapter. <ZombieTooltip zombieKey="wustling" /> charges and <ZombieTooltip zombieKey="bomber" /> blasts still hit him before that point, including through **Frontline** or **Jack-in-the-Boxes**.
+
+After that round ends he waits 14 seconds, or 24 seconds around an objective wave, loses his protection, and comes out carrying a battery. Get **30 kills** within about 256 units until the battery glows green. If he dies after it is green, the battery drops. If he dies before it is green, the battery explodes and the quest is over. He dies on his own when he reaches the end of his path.
+
+Put the battery into the generator left of the wine-cellar door. The door opens and the **Hilt** is inside.
+
+## Step 5: Kill the Raketenbrenner
+
+On wave 10, the <ZombieTooltip zombieKey="raketenbrenner" /> spawns. The shield is a separate object, so normal fire does nothing while it is up. Lure it into a red airstrike circle and stand near the lighter edge. The strike drops the shield and staggers it. Burst it, then repeat with the next circle. You have **5 minutes**. After it dies, hold the extraction point on wave 11.
+
+## Step 6: Battery vision and the fish
+
+In **Across the Depths**, on wave 1, melee the Überschnalle battery on a box in the back-left corner of the **Barracks** (the Pack-a-Punch room). One melee hit breaks it. Your view widens, the screen edges spark, and zombies flicker.
+
+**Every player** has to walk to within about **140** units of the broken battery. There is no button. If the rest of the team does not join within **60 seconds**, that player's vision lapses and they have to go back. The step finishes at the end of the round once everyone is in.
+
+While the vision is up, shoot every floppy fish. Any damage pops one. They are only visible in vision. Listen for flopping. Each fish counts once, and there is no one-round limit. Re-enter vision at the battery if it fades. Check these spots:
+
+- Med Bay bed.
+- Pack-a-Punch room lockers.
+- Trash can in the Barracks.
+- Right of the Barracks stairs to the Cafeteria.
+- Cafeteria buffet.
+- Cabinet between the Cafeteria and the Barracks.
+- Corner of the red-floor room.
+- Duct right of the Projector Room screen.
+- Crate right of the shotgun box in the Projector Room.
+
+## Step 7: Charge the Red Herring
+
+When the round ends after the last fish, a glowing **Red Herring** appears and leads you to a charging station. It only moves on when a player is within about **300** units.
+
+At each station, a temporary **3,000 Jolt** battery wallbuy appears at a random outdoor spot that has not been used yet:
+
+- Under your spawn boat.
+- In the metal tub by the starter box.
+- Floating over the side left of Schildblitz.
+- In the metal tub on the lower deck.
+- Under a boat right of the SMG box.
+- Left of Lebenblitz.
+
+Place the battery and get kills within about **180** units. The first station takes **15** kills, the second **20**, and the third **25**. You cannot shoot while carrying a battery. Switching weapons drops it, and you can pick it back up.
+
+There are three stations: the red-floor room, then the Barracks, then the bottom of the Cafeteria stairs.
+
+The apparition starts on the next non-objective wave after the last station. If that wave would be **9 or later**, it never starts and the **Pommel** is lost. Fill the third station **while wave 8, or an earlier wave, is still running**. Finishing during wave 7 or 8 still works if you waited for Pack-a-Punch.
+
+## Step 8: Cross the islands and take the Pommel
+
+Filling the third station teleports everyone to floating islands. The current wave stays open until you return. Each island starts once **all players** are on it, plays a Straub scene, then spawns enemies:
+
+- **The Final Reich:** a <ZombieTooltip zombieKey="wustling" /> plus 15 zombies.
+- **The Darkest Shore:** a <ZombieTooltip zombieKey="meuchler" /> plus 20 zombies.
+- **The Shadowed Throne:** a <ZombieTooltip zombieKey="gekocht" /> plus 25 zombies.
+
+The zombie counts go up with more players, as much as double. If you fall, you are teleported to the current island's start and downed when you land.
+
+On the last platform the herring hides in a bucket and the buckets shuffle. Shoot the right one once they stop.
+
+<RichTable
+	headerCells={["Round", "Buckets", "Shuffles"]}
+	bodyRows={[
+		<RichBodyRow alternate>
+			<TableCell>1</TableCell>
+			<TableCell>3</TableCell>
+			<TableCell>8</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow>
+			<TableCell>2</TableCell>
+			<TableCell>5</TableCell>
+			<TableCell>12</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow alternate>
+			<TableCell>3</TableCell>
+			<TableCell>8</TableCell>
+			<TableCell>16, and faster</TableCell>
+		</RichBodyRow>,
+	]}
+/>
+
+A wrong pick spawns <ZombieTooltip zombieKey="meuchler" />s or <ZombieTooltip zombieKey="wustling" />s, one type chosen at random: 1 on the first miss, 2 on the second, and so on. Kill them and that same round repeats.
+
+You return to the ship. The **Pommel** is in a case on the table by Pack-a-Punch. Every player can take one. It goes into your tactical slot.
+
+## Step 9: Kill the Stadtjäger
+
+On wave 10, a weaker <ZombieTooltip zombieKey="stadtjager" /> spawns. It fires sticky grenades from its arm cannon. It is vulnerable after that volley, and it can also be damaged while charging. Pack-a-Punched high-damage guns work well.
+
+Stay off its landing spot. Standing there downs you, strips all 3 Geistschild points, and drops you to the room below. You have **5 minutes**. After it dies, hold the wave-11 extraction.
+
+## Step 10: Rune code 1 and the Hilt
+
+In **Beneath the Ice**, melee the **Forge Room** battery **3 times** until it breaks. After that it is usable every other round: it charges the round it breaks, is usable the next round, recharges the round after, and so on. Breaking it on wave 1 makes the even waves the vision waves. Each use gives **60 seconds** of rune vision, and you cannot use it again while you are already in vision.
+
+The wall has 24 runes. Each match picks **3** sequences from **13** fixed ones, with no repeats. Each sequence is 3 to 7 runes long. The wall ignores presses until the battery is broken, and the codes have to be entered in order. A code is only visible in vision. Codes 2 and 3 only appear after their special rune has been mounted.
+
+In vision, find the glowing sequence. Check these spots:
+
+- **Forge Room:** under the face statue left of the battery, and above the LMG box.
+- **Left side:** above the Forge doorway, behind the scaffold at the top-right of the Laufenblitz stairs, on a rock at the top-left of those stairs, above Pack-a-Punch battery 1 in the Schnellblitz room, and on the ceiling just up from the Schnellblitz room.
+- **Rune Room:** right of the AR box by a head, and on the left wall at the top of the stairs from Schildblitz.
+- **Right side:** halfway up the Schildblitz stairs, behind Schildblitz, on the ceiling of the Forge doorway, and above the SMG box.
+- **Spawn:** left of the stairs to the Forge.
+
+Press the runes in order on the rune wall at the top of the map. A correct code makes the wall crackle, and a quake hits. The wall stores up to 7 presses, and the **8th press clears your input**. Keep pressing until it resets, then start over. The code stays the same for the match.
+
+At the end of the round in which you solve a code, a supply crate drops from the Rune Room ceiling with that code's piece. Code 1 is the **Hilt**. Pick it up and put it in its glowing bowl at the Forge. A drop that would fire during the Guardian fight is skipped, and pieces cannot be placed during that fight.
+
+## Step 11: Flares, rune 2, and the Pommel
+
+The flare box drops **6 seconds** after the Hilt is placed, on the stairs between spawn and the Forge. Flares replace your tactical, and you carry 2 at a time. A flare lights any bowl within about **24** units of where it lands.
+
+Every altar-torch bowl has to be lit before the first ones burn out: **120 seconds** solo, **60 seconds** with 2 players, and **30 seconds** with 3 or 4 players. Light the **4 bowls under the face statues** in the Forge Room, and the **2 pots on either side of the rune wall**, before the timer ends.
+
+Then light the bowl on the ground near **Laufenblitz**, by the supply-drop spot. If you light that one before the others are done, it goes out after 5 seconds. A wall left of Laufenblitz opens. Take **rune 2** and interact with the rune wall to mount it. Find and enter **code 2**. Older runes stay lit, so skip the ones you already used.
+
+A crate brings the **Pommel** at the end of the round you solve code 2. Put it in its Forge bowl.
+
+## Step 12: Pads, the Blade, and the Sword
+
+The sacrificial pads switch on after the Pommel is placed. The number of active pads equals the number of players. Solo uses the south pad. Two players use west and east. Three use south, west, and east. Four use all four.
+
+Each player stands on one pad and gets kills. A kill counts toward your pad only while **you** are standing on it. Once your pad is done, your kills go to the nearest teammate's pad within about **150** units. If anyone steps off before their pad locks, every pad resets. There is no progress bar. Each pad plays a lock sound when it is done.
+
+<RichTable
+	headerCells={["Players", "Kills per pad"]}
+	bodyRows={[
+		<RichBodyRow alternate>
+			<TableCell>1 or 2</TableCell>
+			<TableCell>30</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow>
+			<TableCell>3</TableCell>
+			<TableCell>20</TableCell>
+		</RichBodyRow>,
+		<RichBodyRow alternate>
+			<TableCell>4</TableCell>
+			<TableCell>15</TableCell>
+		</RichBodyRow>,
+	]}
+/>
+
+The face statues pour blood, and **rune 3** drops into the Forge blood pool. Mount it, then find and enter **code 3**.
+
+A crate brings the **Blade** at the end of the round you solve code 3. Put it in its bowl, then interact with the Forge. The assembly takes about **17 seconds**. The **Sword of Barbarossa** is forged, and **I Have the Power** pops when it is assembled. Every player can then take a Sword from the altar.
+
+Escaping each chapter in order, with that chapter's quest finished, makes the Sword available to pick up in later runs.
+
+## Step 13: Kill the Guardian
+
+On wave 10, the <ZombieTooltip zombieKey="guardian" /> spawns. It can pull players toward it. While it is attacking, your damage is cut to **0.6×** solo, **0.5×** with 2 players, or **0.4×** with 3–4 players. Hand hits are **1.25×** on top of that. Pack-a-Punched **P-38** shots and explosive damage are cut another 25%.
+
+Base health is **175,000** times **1 / 1.75 / 2.5 / 2.75** for 1–4 players, before the mode's global multiplier. When your damage would push it past **75%**, then **50%**, then **25%** health, it runs to a drain point in the central sacrifice chamber and heals by draining the face statues. Bullets do nothing while it is draining.
+
+Shoot the glowing statues. Each one takes **3,000 / 6,000 / 9,000 / 12,000** damage for 1–4 players. You have about **10 seconds**, plus **2 seconds** for each statue you break. It starts with **1** statue for 1–2 players, or **2** for 3–4 players, and lights one more below 50% health and again below 25%. That is up to 3 statues for 1–2 players and 4 for 3–4. Split targets in co-op.
+
+Break them all and it is knocked down for **4 seconds**, or **8 seconds** below 25% health, and it takes **1.5×** damage, up to 25% of its max health for that knockdown. Then it enrages for 20 seconds. Unload on it. A Hurricane Tesla or an explosive upgraded pistol works well. If the drain finishes, it heals **25%** of its max health and pulls everyone in. Drains wait 15–20 seconds, and that wait is shorter below 25% health.
+
+Each Sword hit deals a guaranteed share of its max health: **1%** before the co-op damage cut (0.4–0.6% after it), capped at **1.5%**, and at least **2%** while it is knocked down. Repeat the statue cycle until it dies. You have **5 minutes**. Hold the wave-11 extraction for the ending cutscene.
+
+Congratulations! You have beaten **The Tortured Path** main quest: **I Have the Power**.
+
+## Video Guides
+
+### Guide by MrDalekJD
+
+<YouTubeEmbed videoLink="https://youtu.be/s4YTCGR5cQI" />
+
+### Solo guide by SchleyerZ
+
+<YouTubeEmbed videoLink="https://youtu.be/nw7m5hwpbyM" />
