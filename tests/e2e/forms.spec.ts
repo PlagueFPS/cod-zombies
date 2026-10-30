@@ -51,10 +51,10 @@ test.describe("forms", () => {
 		await form.getByPlaceholder("you@example.com").fill("reader@example.com")
 		await form.getByRole("button", { name: "Subscribe" }).click()
 
-		await expect(page.getByText("Request received", { exact: true })).toBeVisible()
+		await expect(page.getByText("We've received your request", { exact: true })).toBeVisible()
 		await expect(
 			page.getByText(
-				"If this request applies to your subscription, you will receive an email with the next steps.",
+				"If this email isn't already subscribed a verification link will be sent to your inbox.",
 				{ exact: true },
 			),
 		).toBeVisible()
@@ -74,10 +74,10 @@ test.describe("forms", () => {
 			.toBe(true)
 		await form.getByPlaceholder("you@example.com").fill("reader@example.com")
 		await form.getByRole("button", { name: "Send Unsubscribe Link" }).click()
-		await expect(page.getByText("Request received", { exact: true })).toBeVisible()
+		await expect(page.getByText("We've received your request", { exact: true })).toBeVisible()
 		await expect(
 			page.getByText(
-				"If this request applies to your subscription, you will receive an email with the next steps.",
+				"If this email is already subscribed a verification link will be sent to your inbox.",
 				{ exact: true },
 			),
 		).toBeVisible()

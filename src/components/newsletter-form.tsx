@@ -33,7 +33,7 @@ export function NewsletterForm() {
 				const result = await subscribe({ data: value })
 
 				if (result.success) {
-					toast.success("Request received", {
+					toast.success("We've received your request", {
 						description: result.message,
 						duration: 5000,
 						position: "bottom-center",

@@ -3,10 +3,17 @@ import { describe, expect, test, vi } from "vitest"
 import { newsletterRequest } from "@/data/email.server"
 import { ResendError, Email } from "@/lib/services/emails"
 import { NewsletterTokens } from "@/lib/services/newsletter-tokens"
-import { NEWSLETTER_ACKNOWLEDGEMENT } from "@/utils/newsletter"
 
 describe("newsletter eligibility", () => {
 	for (const action of ["subscribe", "unsubscribe"] as const) {
+		const acknowledgement = {
+			success: true,
+			message:
+				action === "subscribe"
+					? "If this email isn't already subscribed a verification link will be sent to your inbox."
+					: "If this email is already subscribed a verification link will be sent to your inbox.",
+		}
+
 		test.each([true, false])(
 			`${action} acknowledges membership %s and dispatches only when eligible`,
 			async exists => {
@@ -42,7 +49,7 @@ describe("newsletter eligibility", () => {
 					await Effect.runPromise(
 						request("reader@example.com", "https://example.com").pipe(Effect.provide(layer)),
 					),
-				).toEqual(NEWSLETTER_ACKNOWLEDGEMENT)
+				).toEqual(acknowledgement)
 				expect(send).toHaveBeenCalledTimes(
 					action === "subscribe" ? Number(!exists) : Number(exists),
 				)
@@ -53,6 +60,14 @@ describe("newsletter eligibility", () => {
 
 describe("newsletter failure acknowledgement", () => {
 	for (const action of ["subscribe", "unsubscribe"] as const) {
+		const acknowledgement = {
+			success: true,
+			message:
+				action === "subscribe"
+					? "If this email isn't already subscribed a verification link will be sent to your inbox."
+					: "If this email is already subscribed a verification link will be sent to your inbox.",
+		}
+
 		for (const failure of ["lookup", "send", "timeout"] as const) {
 			test(`${action} returns generic success after ${failure} failure`, async () => {
 				let attempts = 0
@@ -102,7 +117,7 @@ describe("newsletter failure acknowledgement", () => {
 					),
 				)
 
-				expect(result).toEqual(NEWSLETTER_ACKNOWLEDGEMENT)
+				expect(result).toEqual(acknowledgement)
 				expect(attempts).toBe(failure === "timeout" ? 0 : 4)
 			}, 15_000)
 		}

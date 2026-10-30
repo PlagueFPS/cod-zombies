@@ -1,9 +1,13 @@
 import type { APIResult } from "@/types/data"
 import { createServerFn } from "@tanstack/react-start"
-import { Effect, Predicate, Schedule } from "effect"
-import { sendContactEmail } from "@/data/email.server"
-import { runNewsletterRequest } from "@/data/newsletter.server"
-import { APIRuntime } from "@/lib/layers"
+import { Effect, Layer, Predicate, Schedule } from "effect"
+import {
+	newsletterAcknowledgements,
+	newsletterRequest,
+	sendContactEmail,
+} from "@/data/email.server"
+import { emailLayer } from "@/lib/services/emails"
+import { newsletterTokensLayer } from "@/lib/services/newsletter-tokens"
 import { getServerUrl } from "@/utils/request.server"
 import { StandardContactFormSchema, StandardNewsletterFormSchema } from "@/utils/validation-schemas"
 
@@ -11,6 +15,21 @@ const e2eEmailResult = (message: string): APIResult | null => {
 	if (process.env.E2E_MOCK_EMAIL !== "success") return null
 
 	return { success: true, message }
+}
+
+export const runNewsletterRequest = async (
+	action: "subscribe" | "unsubscribe",
+	email: string,
+	serverUrl: string,
+): Promise<APIResult> => {
+	if (process.env.E2E_MOCK_EMAIL === "success") return newsletterAcknowledgements[action]
+
+	return await newsletterRequest(action, email, serverUrl).pipe(
+		Effect.provide(Layer.merge(emailLayer, newsletterTokensLayer)),
+		Effect.catchCause(cause => Effect.logError("Newsletter request failed", cause)),
+		Effect.as(newsletterAcknowledgements[action]),
+		Effect.runPromise,
+	)
 }
 
 export const unsubscribeFromNewsletter = createServerFn({ method: "POST" })
@@ -51,7 +70,8 @@ export const submitContactForm = createServerFn({ method: "POST" })
 						"Contact form submission failed due to a technical issue on our end. Please try again.",
 				}),
 			),
-			APIRuntime.runPromise,
+			Effect.provide(emailLayer),
+			Effect.runPromise,
 		)
 
 		return result
