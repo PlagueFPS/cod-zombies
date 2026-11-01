@@ -644,6 +644,18 @@ const MAPS = uniqueMap([
 				"Solo runs take about 80–95 minutes. Time varies with player count, objective waves, and knowledge of the steps.",
 		}),
 	}),
+	makeMap("the-frozen-dawn", {
+		title: "The Frozen Dawn",
+		releaseDate: "2018-06-26",
+		description:
+			"Thule awakens, and the deathly throne once again casts a shadow over the kingdoms of men.",
+		image: "/maps/the-frozen-dawn.webp",
+		game: "wwii",
+		state: Option.some("Coming Soon"),
+		mainQuest: Option.some("content/main-quests/kingfall"),
+		difficulty: Option.none(),
+		estimatedTimeMins: Option.none(),
+	}),
 	makeMap("voyage-of-despair", {
 		title: "Voyage of Despair",
 		releaseDate: "2018-10-11",
