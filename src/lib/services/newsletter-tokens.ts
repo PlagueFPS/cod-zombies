@@ -1,4 +1,4 @@
-import { Clock, Config, Context, Effect, Layer, Redacted, Schema } from "effect"
+import { Clock, Config, Context, Effect, Layer, Redacted, Schema, String as Str } from "effect"
 import { Mac, SecureRandom } from "effect/crypto"
 import { Base64Url, Hex } from "effect/encoding"
 import { NewsletterFormSchema } from "@/utils/validation-schemas"
@@ -26,6 +26,8 @@ const Claims = Schema.Struct({
 		Schema.check(Schema.isBetweenLength(22, 22), Schema.isPattern(/^[A-Za-z0-9_-]{22}$/)),
 	),
 })
+
+const ClaimsJson = Schema.fromJsonString(Claims)
 
 type Action = typeof Claims.Type.action
 
@@ -57,7 +59,7 @@ const decode = Effect.fnUntraced(function* (encoded: string) {
 const make = Effect.gen(function* () {
 	const secret = yield* Config.Redacted("NEWSLETTER_TOKEN_SECRET")
 
-	const hex = yield* Schema.decodeUnknownEffect(Secret)(Redacted.value(secret)).pipe(
+	const hex = yield* Schema.decodeEffect(Secret)(Redacted.value(secret)).pipe(
 		Effect.mapError(() =>
 			TokenGenerationError.make({ message: "NEWSLETTER_TOKEN_SECRET must be 64 hex characters" }),
 		),
@@ -79,14 +81,15 @@ const make = Effect.gen(function* () {
 			const now = yield* Clock.currentTimeMillis
 			const nonce = encode(yield* random.randomBytes(16))
 
-			const claims = yield* Schema.decodeUnknownEffect(Claims)({
+			const claims = yield* Schema.decodeEffect(Claims)({
 				email,
 				action,
 				expiresAt: now + 86_400_000,
 				nonce,
 			})
 
-			const payload = `v1.${encode(encoder.encode(JSON.stringify(claims)))}`
+			const json = yield* Schema.encodeEffect(ClaimsJson)(claims)
+			const payload = `v1.${encode(encoder.encode(json))}`
 			const signature = yield* mac.sign(key, encoder.encode(payload))
 
 			return `${payload}.${encode(signature)}`
@@ -95,11 +98,9 @@ const make = Effect.gen(function* () {
 	)
 
 	const verify = Effect.fnUntraced(function* (action: Action, token: string) {
-		const envelope = yield* Schema.decodeUnknownEffect(Envelope)(token).pipe(
-			Effect.mapError(invalid),
-		)
+		const envelope = yield* Schema.decodeEffect(Envelope)(token).pipe(Effect.mapError(invalid))
 
-		const [, encoded = "", signature = ""] = envelope.split(".")
+		const [, encoded = "", signature = ""] = Str.split(".")(envelope)
 		const bytes = yield* decode(encoded)
 		const tag = yield* decode(signature)
 
@@ -110,11 +111,11 @@ const make = Effect.gen(function* () {
 		if (!valid) return yield* invalid()
 
 		const json = yield* Effect.try({
-			try: () => JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)),
+			try: () => new TextDecoder("utf-8", { fatal: true }).decode(bytes),
 			catch: invalid,
 		})
 
-		const claims = yield* Schema.decodeUnknownEffect(Claims)(json).pipe(Effect.mapError(invalid))
+		const claims = yield* Schema.decodeEffect(ClaimsJson)(json).pipe(Effect.mapError(invalid))
 
 		if (claims.action !== action) return yield* invalid()
 		const now = yield* Clock.currentTimeMillis

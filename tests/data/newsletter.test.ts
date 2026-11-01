@@ -17,7 +17,7 @@ describe("newsletter eligibility", () => {
 		test.each([true, false])(
 			`${action} acknowledges membership %s and dispatches only when eligible`,
 			async exists => {
-				const send = vi.fn(() => Effect.succeed({ id: "email-id" }))
+				const send = vi.fn<Email["Service"]["sendEmail"]>(() => Effect.succeed({ id: "email-id" }))
 
 				const layer = Layer.merge(
 					Layer.mock(Email, {
@@ -77,7 +77,7 @@ describe("newsletter failure acknowledgement", () => {
 						attempts++
 
 						return Effect.fail(
-							new ResendError({ message: "private provider detail", cause: "private cause" }),
+							ResendError.make({ message: "private provider detail", cause: "private cause" }),
 						)
 					})
 

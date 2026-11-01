@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test"
-import { Predicate } from "effect"
+import { Predicate, String as Str } from "effect"
 
 const port = Number(process.env.PLAYWRIGHT_PORT ?? 4173)
 
@@ -8,7 +8,7 @@ const host = "127.0.0.1"
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://${host}:${port}`
 
 const testEnv = {
-	NEWSLETTER_TOKEN_SECRET: "01".repeat(32),
+	NEWSLETTER_TOKEN_SECRET: Str.repeat(32)("01"),
 	LINEAR_API_KEY: "playwright-linear-api-key",
 	LINEAR_TEAM_ID: "playwright-linear-team-id",
 	E2E_MOCK_EMAIL: "success",
