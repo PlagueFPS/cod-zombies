@@ -1172,7 +1172,7 @@ const ZOMBIES = uniqueMap([
 		elementalWeakness: [],
 		attacks: ["forward-charge", "sizzler-pulse", "red-gas-cloud"],
 		spawnBehavior:
-			"It spawns when a player walks back toward the drop pod after Straub is defeated. Health is 32,000 times the player multiplier: 1× solo, 1.75× for 2 players, 2× for 3, and 2.5× for 4. Phase 2 starts at 60% health and phase 3 at 30%. Damage cannot skip a phase threshold. On The Tortured Path it spawns on wave 10 of Across the Depths, fires sticky grenades from its arm cannon, and can be damaged after that volley and while it charges.",
+			"On The Shadowed Throne, the Stadtjäger spawns when a player walks back toward the drop pod after Straub is defeated. On The Tortured Path, a weaker variant spawns on Wave 10 of Across the Depths.",
 		combatStrategy: "content/zombies/stadtjager",
 	}),
 	makeZombie("raketenbrenner", {
@@ -1189,8 +1189,7 @@ const ZOMBIES = uniqueMap([
 		weakPoints: ["body"],
 		elementalWeakness: [],
 		attacks: ["energy-shield"],
-		spawnBehavior:
-			"It spawns on wave 10 of Into the Storm. The shield is a separate object, so shoot it only after an airstrike drops the shield and staggers it. The fight has a 5-minute timer.",
+		spawnBehavior: "The Raketenbrenner spawns on Wave 10 of Into the Storm in The Tortured Path.",
 		combatStrategy: "content/zombies/raketenbrenner",
 	}),
 	makeZombie("guardian", {
@@ -1208,7 +1207,7 @@ const ZOMBIES = uniqueMap([
 		elementalWeakness: [],
 		attacks: ["player-pull", "statue-drain", "melee-swing"],
 		spawnBehavior:
-			"It spawns on wave 10 of Beneath the Ice. Base health is 175,000 times 1 / 1.75 / 2.5 / 2.75 for 1–4 players, before the mode's global multiplier. It tries to heal at 75%, 50%, and 25% health. The fight has a 5-minute timer.",
+			"The Guardian spawns in the central sacrifice chamber on Wave 10 of Beneath the Ice in The Tortured Path.",
 		combatStrategy: "content/zombies/guardian",
 	}),
 	makeZombie("fire-catalyst", {
