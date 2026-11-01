@@ -1037,16 +1037,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/bomber.webp",
 		description:
-			"Bombers are a special enemy on The Final Reich, The Darkest Shore, and The Tortured Path. They carry a bomb, and shooting that bomb makes it explode.",
+			"Bombers are a special enemy on The Final Reich, The Darkest Shore, The Tortured Path, and The Frozen Dawn. They carry a bomb, and shooting that bomb makes it explode.",
 		games: ["wwii"],
-		maps: ["the-final-reich", "the-darkest-shore", "the-tortured-path"],
+		maps: ["the-final-reich", "the-darkest-shore", "the-tortured-path", "the-frozen-dawn"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["bomb"],
 		elementalWeakness: [],
 		attacks: ["carried-bomb"],
 		spawnBehavior:
-			"Four Bombers wait in the Salt Mine tunnels down to the Emperor's Chamber. On The Darkest Shore, Bombers stand on the minecart tracks on the first trip each round. On The Tortured Path, Bombers spawn during Into the Storm.",
+			"Four Bombers wait in the Salt Mine tunnels down to the Emperor's Chamber. On The Darkest Shore, Bombers stand on the minecart tracks on the first trip each round. On The Tortured Path, Bombers spawn during Into the Storm. On The Frozen Dawn, one has to explode on the leaning metal door in the Crash Site to free the radio and speaker.",
 		combatStrategy: "content/zombies/bomber",
 	}),
 	makeZombie("wustling", {
@@ -1055,16 +1055,22 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2017-11-03",
 		image: "/zombies/wustling.webp",
 		description:
-			"Wüstlings are an elite enemy on The Final Reich, The Darkest Shore, The Shadowed Throne, and The Tortured Path. One may wake from a storage tube, and they charge, including into a metal door.",
+			"Wüstlings are an elite enemy on The Final Reich, The Darkest Shore, The Shadowed Throne, The Tortured Path, and The Frozen Dawn. One may wake from a storage tube, and they charge, including into a metal door.",
 		games: ["wwii"],
-		maps: ["the-final-reich", "the-darkest-shore", "the-shadowed-throne", "the-tortured-path"],
+		maps: [
+			"the-final-reich",
+			"the-darkest-shore",
+			"the-shadowed-throne",
+			"the-tortured-path",
+			"the-frozen-dawn",
+		],
 		type: "Elite",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["forward-charge", "melee-swing", "ground-slam"],
 		spawnBehavior:
-			"A Wüstling may wake from a storage tube during the Laboratory escort. On The Darkest Shore, a charged Wüstling spine starts the perk ritual, and the Ancient Room lockdown spawns an anointed Wüstling plus extra Wüstlings. On The Shadowed Throne, one breaks out of the Smuggler's door when the bat is paid for with a gun that is not Pack-a-Punched. On The Tortured Path, two have to be alive at once so one charge knocks the arm club off the other.",
+			"A Wüstling may wake from a storage tube during the Laboratory escort. On The Darkest Shore, a charged Wüstling spine starts the perk ritual, and the Ancient Room lockdown spawns an anointed Wüstling plus extra Wüstlings. On The Shadowed Throne, one breaks out of the Smuggler's door when the bat is paid for with a gun that is not Pack-a-Punched. On The Tortured Path, two have to be alive at once so one charge knocks the arm club off the other. On The Frozen Dawn, one rises from the Blood Altar pool with the Thulian Shield on its back, and three spawn in the Deathraven trial.",
 		combatStrategy: "content/zombies/wustling",
 	}),
 	makeZombie("brenner", {
@@ -1209,6 +1215,49 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"The Guardian spawns in the central sacrifice chamber on Wave 10 of Beneath the Ice in The Tortured Path.",
 		combatStrategy: "content/zombies/guardian",
+	}),
+	makeZombie("corpse-eater", {
+		title: "Corpse Eater",
+		state: Option.none(),
+		releaseDate: "2018-08-28",
+		image: "/zombies/corpse-eater.webp",
+		description:
+			"Corpse Eaters are a special enemy on The Frozen Dawn. They eat other zombies instead of chasing players, and a fully charged one glows red.",
+		games: ["wwii"],
+		maps: ["the-frozen-dawn"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["corpse-feast"],
+		spawnBehavior:
+			"Two uncharged Corpse Eaters spawn on every return from Pack-a-Punch. One is marked at a time while the Thulian Scythe is held. The Deathraven trial spawns two empowered Corpse Eaters, and more spawn in Phase 4 of the God-King fight.",
+		combatStrategy: "content/zombies/corpse-eater",
+	}),
+	makeZombie("god-king", {
+		title: "God-King",
+		state: Option.none(),
+		releaseDate: "2018-08-28",
+		image: "/zombies/god-king.webp",
+		description:
+			"The God-King is the boss of The Frozen Dawn, the ancient Thulian ruler woken in the throne room at the end of Kingfall.",
+		games: ["wwii"],
+		maps: ["the-frozen-dawn"],
+		type: "Boss",
+		speed: "Medium",
+		weakPoints: [],
+		elementalWeakness: [],
+		attacks: [
+			"geistkraft-bolts",
+			"geist-bombs",
+			"light-of-the-sun",
+			"blood-consume",
+			"purple-zombie-shields",
+			"throne-fire-wall",
+		],
+		spawnBehavior:
+			"The God-King wakes after the four upgraded Raven weapons are placed in the Ice Caves and the crew enters the throne-room transport. Vivian Harris stabs him with the Sword of Barbarossa in the opening cutscene.",
+		combatStrategy: "content/zombies/god-king",
 	}),
 	makeZombie("fire-catalyst", {
 		title: "Fire Catalyst",
