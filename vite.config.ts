@@ -62,6 +62,7 @@ export default defineConfig(({ command }) => ({
 		cloudflare({
 			viteEnvironment: { name: "ssr" },
 			config:
+				// oxlint-disable-next-line effecttsgo/process-env -- Vite reads the Playwright flag before the Effect runtime starts.
 				command === "serve" && process.env.E2E_MOCK_EMAIL === "success"
 					? config => ({ ...config, vars: { ...config.vars, E2E_MOCK_EMAIL: "success" } })
 					: undefined,

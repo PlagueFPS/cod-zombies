@@ -1,10 +1,10 @@
-import { ConfigProvider, Effect, Exit, Layer } from "effect"
+import { ConfigProvider, Effect, Exit, Layer, String as Str, Schema } from "effect"
 import { TestClock } from "effect/testing"
 import { describe, expect, test } from "vitest"
 import { newsletterTokensLayer, NewsletterTokens } from "@/lib/services/newsletter-tokens"
 import { expectCauseTaggedError, expectExitFailure } from "@/tests/helpers"
 
-const configured = (secret = "01".repeat(32)) =>
+const configured = (secret = Str.repeat(32)("01")) =>
 	newsletterTokensLayer.pipe(
 		Layer.provide(
 			ConfigProvider.layer(ConfigProvider.fromUnknown({ NEWSLETTER_TOKEN_SECRET: secret })),
@@ -40,7 +40,7 @@ describe("newsletter tokens with real WebCrypto", () => {
 		)
 		expect(
 			Exit.isFailure(
-				await Effect.runPromiseExit(verify.pipe(Effect.provide(configured("02".repeat(32))))),
+				await Effect.runPromiseExit(verify.pipe(Effect.provide(configured(Str.repeat(32)("02"))))),
 			),
 		).toBe(true)
 	})
@@ -49,30 +49,32 @@ describe("newsletter tokens with real WebCrypto", () => {
 			Effect.gen(function* () {
 				const tokens = yield* NewsletterTokens
 				const token = yield* tokens.issueSubscribe("reader@example.com")
-				const [version, claims, tag] = token.split(".")
+				const [version, claims, tag] = Str.split(".")(token)
 
 				const forged = Buffer.from(
-					JSON.stringify({
+					yield* Schema.encodeEffect(Schema.fromJsonString(Schema.Unknown))({
 						email: "attacker@example.com",
 						action: "subscribe",
 						expiresAt: 0,
-						nonce: "a".repeat(22),
+						nonce: Str.repeat(22)("a"),
 					}),
 				).toString("base64url")
 
 				for (const invalid of [
 					"",
-					"a".repeat(3000),
+					Str.repeat(3000)("a"),
 					"legacy:unsigned:token",
 					Buffer.from("reader@example.com:salt:9999999999999:hash").toString("base64url"),
 					`v2.${claims}.${tag}`,
 					`${version}.${forged}.${tag}`,
 					`${token}=`,
-					`v1.${claims}.${"A".repeat(43)}`,
+					`v1.${claims}.${Str.repeat(43)("A")}`,
 					`v1.${claims}+.${tag}`,
 				]) {
 					const exit = yield* Effect.exit(tokens.verifySubscribe(invalid))
-					expectCauseTaggedError(expectExitFailure(exit), "TokenVerificationError")
+					expect(
+						expectCauseTaggedError(expectExitFailure(exit), "TokenVerificationError"),
+					).toMatchObject({ message: "Invalid token" })
 				}
 			}).pipe(Effect.provide(configured())),
 		)
@@ -88,15 +90,18 @@ describe("newsletter tokens with real WebCrypto", () => {
 				yield* TestClock.setTime(86_400_000)
 				const expired = yield* Effect.exit(tokens.verifySubscribe(token))
 				expectCauseTaggedError(expectExitFailure(expired), "TokenExpirationError")
-			}).pipe(Effect.provide(configured()), Effect.provide(TestClock.layer())),
+			}).pipe(Effect.provide(Layer.merge(configured(), TestClock.layer()))),
 		)
 	})
-	test.each(["", "a".repeat(63), "a".repeat(65), "g".repeat(64), "a".repeat(64) + "\n"])(
-		"fails closed with invalid secret %s",
-		async secret => {
-			expect(
-				Exit.isFailure(await Effect.runPromiseExit(issue.pipe(Effect.provide(configured(secret))))),
-			).toBe(true)
-		},
-	)
+	test.each([
+		"",
+		Str.repeat(63)("a"),
+		Str.repeat(65)("a"),
+		Str.repeat(64)("g"),
+		Str.repeat(64)("a") + "\n",
+	])("fails closed with invalid secret %s", async secret => {
+		expect(
+			Exit.isFailure(await Effect.runPromiseExit(issue.pipe(Effect.provide(configured(secret))))),
+		).toBe(true)
+	})
 })

@@ -18,6 +18,7 @@ test.describe("forms", () => {
 			.poll(
 				() =>
 					form.evaluate(element =>
+						// oxlint-disable-next-line effecttsgo/prefer-effect-record, effecttsgo/prefer-effect-array, effecttsgo/prefer-effect-string -- Playwright serializes this callback into the browser without module imports.
 						Object.keys(element).some(key => key.startsWith("__reactProps$")),
 					),
 				{ timeout: 20_000 },
@@ -43,6 +44,7 @@ test.describe("forms", () => {
 			.poll(
 				() =>
 					form.evaluate(element =>
+						// oxlint-disable-next-line effecttsgo/prefer-effect-record, effecttsgo/prefer-effect-array, effecttsgo/prefer-effect-string -- Playwright serializes this callback into the browser without module imports.
 						Object.keys(element).some(key => key.startsWith("__reactProps$")),
 					),
 				{ timeout: 20_000 },
@@ -67,6 +69,7 @@ test.describe("forms", () => {
 			.poll(
 				() =>
 					form.evaluate(element =>
+						// oxlint-disable-next-line effecttsgo/prefer-effect-record, effecttsgo/prefer-effect-array, effecttsgo/prefer-effect-string -- Playwright serializes this callback into the browser without module imports.
 						Object.keys(element).some(key => key.startsWith("__reactProps$")),
 					),
 				{ timeout: 20_000 },

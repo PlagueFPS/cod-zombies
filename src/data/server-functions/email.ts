@@ -26,6 +26,7 @@ export const runNewsletterRequest = createServerOnlyFn(
 		if (process.env.E2E_MOCK_EMAIL === "success") return newsletterAcknowledgements[action]
 
 		return await newsletterRequest(action, email, serverUrl).pipe(
+			// oxlint-disable-next-line effecttsgo/strict-effect-provide -- Server entry point provides all services before running the request.
 			Effect.provide(Layer.merge(emailLayer, newsletterTokensLayer)),
 			Effect.catchCause(cause => Effect.logError("Newsletter request failed", cause)),
 			Effect.as(newsletterAcknowledgements[action]),
@@ -72,6 +73,7 @@ export const submitContactForm = createServerFn({ method: "POST" })
 						"Contact form submission failed due to a technical issue on our end. Please try again.",
 				}),
 			),
+			// oxlint-disable-next-line effecttsgo/strict-effect-provide -- Server entry point provides all services before running the request.
 			Effect.provide(emailLayer),
 			Effect.runPromise,
 		)
