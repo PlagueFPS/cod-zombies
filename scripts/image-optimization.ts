@@ -2,7 +2,6 @@ import { BunServices, BunRuntime } from "@effect/platform-bun"
 import {
 	Predicate,
 	Clock,
-	Duration,
 	Effect,
 	FileSystem,
 	Option,
@@ -343,7 +342,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 
 		const writtenAmount = yield* Ref.get(numRef)
 		const endTime = yield* Clock.currentTimeMillis.pipe(Effect.map(endTime => endTime - startTime))
-		const totalTime = Duration.format(Duration.millis(endTime))
+		const totalTime = `${(endTime / 1000).toFixed(2)}s`
 		yield* Effect.log(
 			`Successfully optimized ${writtenAmount}/${assets.length} images in ${totalTime}!`,
 		)
