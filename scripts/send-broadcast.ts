@@ -25,7 +25,6 @@ import {
 	Match,
 	Option,
 	Schema,
-	Crypto,
 	Record as Rec,
 	Redacted,
 	Array as Arr,
@@ -34,7 +33,7 @@ import {
 	Predicate,
 } from "effect"
 import { Command, Flag } from "effect/cli"
-import { Hex } from "effect/encoding"
+import { Digest } from "effect/crypto"
 import { getMapByKey } from "@/data/maps"
 import { getRelicByKey } from "@/data/relics"
 import { getSideQuestByKey } from "@/data/side-quests"
@@ -69,7 +68,7 @@ const DevVarsConfig = ConfigProvider.layerAdd(
 	),
 )
 
-const broadcastLayer = Layer.mergeAll(emailLayer, BunServices.layer).pipe(
+const broadcastLayer = Layer.mergeAll(emailLayer, BunServices.layer, Digest.layerWebCrypto).pipe(
 	Layer.provideMerge(Layer.provide(DevVarsConfig, BunServices.layer)),
 )
 
@@ -93,14 +92,6 @@ export class BroadcastRenderError extends Schema.TaggedError<
 	BroadcastRenderError,
 	{ readonly brand: unique symbol }
 >()("BroadcastRenderError", {
-	message: Schema.String,
-	cause: Schema.Defect(),
-}) {}
-
-export class BroadcastHashError extends Schema.TaggedError<
-	BroadcastHashError,
-	{ readonly brand: unique symbol }
->()("BroadcastHashError", {
 	message: Schema.String,
 	cause: Schema.Defect(),
 }) {}
@@ -563,19 +554,11 @@ const broadcastIdempotencyKey = Effect.fn("broadcastIdempotencyKey")(function* (
 	subject: string,
 	text: string,
 ) {
-	const crypto = yield* Crypto.Crypto
 	const payload = textEncoder.encode(canonicalBroadcastJson(broadcast, subject, text))
 
-	const digest = yield* crypto.digest("SHA-256", payload).pipe(
-		Effect.mapError(cause =>
-			BroadcastHashError.make({
-				message: "Failed to hash the broadcast for an idempotency key.",
-				cause,
-			}),
-		),
-	)
-
-	const fingerprint = Str.slice(0, 32)(Hex.encode(digest))
+	const service = yield* Digest.Digest
+	const digest = yield* service.digestHex(Digest.sha256, payload)
+	const fingerprint = Str.slice(0, 32)(digest)
 
 	return `broadcast/${broadcast.kind}/${fingerprint}`
 })

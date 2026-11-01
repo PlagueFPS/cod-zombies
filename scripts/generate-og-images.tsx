@@ -116,14 +116,14 @@ const clampText = (text: string, maxChars: number) => {
 	return `${Str.trimEnd(i > maxChars * 0.5 ? Str.slice(0, i)(slice) : slice)}…`
 }
 
-const difficultyCrumbColor = (difficulty: MainQuestDifficulty) =>
-	Match.value(difficulty).pipe(
-		Match.when("Easy", () => "oklch(91% 0.096 180.426)"),
-		Match.when("Medium", () => "oklch(94.5% 0.129 101.54)"),
-		Match.when("Hard", () => "oklch(88.5% 0.062 18.334)"),
-		Match.when("Very Hard", () => "oklch(80.8% 0.114 19.571)"),
-		Match.exhaustive,
-	)
+const difficultyCrumbColor = Match.type<MainQuestDifficulty>().pipe(
+	Match.literalsExhaustive({
+		Easy: () => "oklch(91% 0.096 180.426)",
+		Medium: () => "oklch(94.5% 0.129 101.54)",
+		Hard: () => "oklch(88.5% 0.062 18.334)",
+		"Very Hard": () => "oklch(80.8% 0.114 19.571)",
+	}),
+)
 
 /** Gradient under the title + blurb; always brand orange. */
 const TITLE_BLURB_SEPARATOR_GRADIENT = `linear-gradient(90deg, ${PRIMARY} 0%, rgba(255,255,255,0.12) 55%, transparent 100%)`

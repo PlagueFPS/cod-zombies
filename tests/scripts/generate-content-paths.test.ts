@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
@@ -71,6 +71,72 @@ describe("generateContentPaths", () => {
 
 		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
+	})
+
+	test("discovers uppercase and nested MDX while excluding hidden names, root files and linked directories", async () => {
+		const root = mkdtempSync(join(tmpdir(), "codz-content-"))
+		const content = join(root, "src/content")
+
+		try {
+			for (const dir of [
+				"zebra",
+				"alpha/nested",
+				"empty",
+				".hidden",
+				"alpha/.hidden",
+				"alpha/directory.mdx",
+			]) {
+				mkdirSync(join(content, dir), { recursive: true })
+			}
+
+			for (const file of [
+				"root.mdx",
+				"alpha/z.MDX",
+				"alpha/a.mDx",
+				"alpha/nested/deep.mdx",
+				"zebra/b.mdx",
+				".hidden/secret.mdx",
+				"alpha/.hidden/secret.mdx",
+				"alpha/.secret.mdx",
+				"alpha/notes.txt",
+			]) {
+				writeFileSync(join(content, file), "fixture")
+			}
+
+			mkdirSync(join(root, "external"))
+			writeFileSync(join(root, "external/outside.mdx"), "fixture")
+			symlinkSync(join(root, "external"), join(content, "alpha/linked-directory"), "dir")
+			symlinkSync(
+				join(root, "external/outside.mdx"),
+				join(content, "alpha/linked-file.MDX"),
+				"file",
+			)
+			await Effect.runPromise(generateContentPaths(root).pipe(Effect.provide(testLayer)))
+			const out = readFileSync(join(root, "src/types/generated/content-paths.gen.ts"), "utf-8")
+			expect(out.replace(/\/\*\*[\s\S]*?\*\//g, "").trim()).toBe(
+				[
+					"export type AlphaPaths =",
+					'  "content/alpha/a" |',
+					'  "content/alpha/linked-file" |',
+					'  "content/alpha/nested/deep" |',
+					'  "content/alpha/z";',
+					"",
+					"",
+					"",
+					"export type EmptyPaths = never;",
+					"",
+					"",
+					"",
+					"export type ZebraPaths =",
+					'  "content/zebra/b";',
+					"",
+					"",
+					"export type ContentPaths = AlphaPaths | EmptyPaths | ZebraPaths;",
+				].join("\n"),
+			)
+		} finally {
+			rmSync(root, { recursive: true, force: true })
+		}
 	})
 
 	test("empty mdx subtree yields never type for that directory", async () => {

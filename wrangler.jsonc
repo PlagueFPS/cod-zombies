@@ -14,7 +14,12 @@
 		},
 	},
 	"secrets": {
-		"required": ["RESEND_API_KEY", "RESEND_AUDIENCE_ID", "LINEAR_API_KEY"],
+		"required": [
+			"RESEND_API_KEY",
+			"RESEND_AUDIENCE_ID",
+			"LINEAR_API_KEY",
+			"NEWSLETTER_TOKEN_SECRET",
+		],
 	},
 	"observability": {
 		"enabled": false,

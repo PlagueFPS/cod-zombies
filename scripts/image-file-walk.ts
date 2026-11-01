@@ -1,5 +1,4 @@
-import type { PlatformError } from "effect/PlatformError"
-import { Match, Effect, FileSystem, HashSet, Path, String as Str, Array as Arr } from "effect"
+import { Effect, FileSystem, HashSet, Path, String as Str, Array as Arr } from "effect"
 import { isVariantImagePath, toWebImagePath } from "@/lib/image-variant-paths"
 import { SUPPORTED_IMAGE_FORMATS } from "@/scripts/utils"
 
@@ -10,61 +9,24 @@ export type WalkImageFilesOptions = {
 	readonly includeVariants: boolean
 }
 
-const formatImagePath = (
-	rootDir: string,
-	absolutePath: string,
-	format: ImagePathFormat,
-	path: Path.Path,
-): string => {
-	const relative = Arr.join(Str.split(path.relative(rootDir, absolutePath), path.sep), "/")
-
-	return format === "web" ? `/${relative}` : relative
-}
-
 export const walkImageFiles = Effect.fn("walkImageFiles")(function* (
 	rootDir: string,
 	options: WalkImageFilesOptions,
 ) {
 	const fs = yield* FileSystem.FileSystem
 	const path = yield* Path.Path
-	const results: string[] = []
+	const matches = yield* fs.glob("**/*", { root: rootDir })
 
-	const walk = (
-		current: string,
-	): Effect.Effect<void, PlatformError, Path.Path | FileSystem.FileSystem> =>
-		Effect.gen(function* () {
-			const files = yield* fs.readDirectory(current)
-			yield* Effect.forEach(
-				files,
-				file =>
-					Effect.gen(function* () {
-						if (Str.startsWith(".")(file)) return
+	const images = Arr.filter(matches, file =>
+		HashSet.has(SUPPORTED_IMAGE_FORMATS, Str.toLowerCase(path.extname(file))),
+	)
 
-						const full = path.join(current, file)
-						const stat = yield* fs.stat(full)
+	const files = yield* Effect.filter(images, file =>
+		fs.stat(path.join(rootDir, file)).pipe(Effect.map(stat => stat.type === "File")),
+	)
 
-						yield* Match.value(stat.type).pipe(
-							Match.when("Directory", () => walk(full)),
-							Match.when("File", () =>
-								Effect.sync(() => {
-									const ext = Str.toLowerCase(path.extname(file))
-
-									if (!HashSet.has(SUPPORTED_IMAGE_FORMATS, ext)) return
-									const formatted = formatImagePath(rootDir, full, options.format, path)
-
-									if (!options.includeVariants && isVariantImagePath(toWebImagePath(formatted)))
-										return
-									results.push(formatted)
-								}),
-							),
-							Match.orElse(() => Effect.void),
-						)
-					}),
-				{ concurrency: "unbounded" },
-			)
-		})
-
-	yield* walk(rootDir)
-
-	return results
+	return Arr.map(
+		Arr.filter(files, file => options.includeVariants || !isVariantImagePath(toWebImagePath(file))),
+		file => (options.format === "web" ? `/${file}` : file),
+	)
 })

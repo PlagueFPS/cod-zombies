@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { Effect, Predicate } from "effect"
+import { Effect, Layer, Predicate } from "effect"
 import { unsubscribeEmail } from "@/data/email.server"
-import { APIRuntime } from "@/lib/layers"
-import { verifyToken } from "@/utils/functions.server"
+import { emailLayer } from "@/lib/services/emails"
+import { NewsletterTokens, newsletterTokensLayer } from "@/lib/services/newsletter-tokens"
 
 export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 	server: {
@@ -20,8 +20,8 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 							),
 						)
 
-					const decodedToken = decodeURIComponent(token)
-					const email = yield* verifyToken(decodedToken)
+					const tokens = yield* NewsletterTokens
+					const email = yield* tokens.verifyUnsubscribe(token)
 
 					yield* unsubscribeEmail(email)
 
@@ -69,7 +69,8 @@ export const Route = createFileRoute("/api/newsletter/unsubscribe")({
 						},
 					}),
 					Effect.satisfiesErrorType<never>(),
-					APIRuntime.runPromise,
+					Effect.provide(Layer.merge(emailLayer, newsletterTokensLayer)),
+					Effect.runPromise,
 				),
 		},
 	},

@@ -8,6 +8,7 @@ const host = "127.0.0.1"
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://${host}:${port}`
 
 const testEnv = {
+	NEWSLETTER_TOKEN_SECRET: "01".repeat(32),
 	LINEAR_API_KEY: "playwright-linear-api-key",
 	LINEAR_TEAM_ID: "playwright-linear-team-id",
 	E2E_MOCK_EMAIL: "success",
