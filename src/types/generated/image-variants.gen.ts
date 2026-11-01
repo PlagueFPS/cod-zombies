@@ -10541,7 +10541,7 @@ export const IMAGE_VARIANTS = {
 	"/zombies/plaguehound.webp": { sourceWidth: 2469, widths: [384, 1200] },
 	"/zombies/poison-catalyst.webp": { sourceWidth: 481, widths: [384] },
 	"/zombies/rad-hound.webp": { sourceWidth: 535, widths: [384] },
-	"/zombies/raketenbrenner.webp": { sourceWidth: 640, widths: [384] },
+	"/zombies/raketenbrenner.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/rat-king.webp": { sourceWidth: 683, widths: [384] },
 	"/zombies/ravager.webp": { sourceWidth: 1352, widths: [384, 1200] },
 	"/zombies/sam.webp": { sourceWidth: 923, widths: [384] },
