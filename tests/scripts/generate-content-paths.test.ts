@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Exit, Layer, String as Str, Option } from "effect"
+import { Effect, Exit, Layer, String as Str, Option, Array as Arr } from "effect"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { generateContentPaths } from "@/scripts/generate-content-paths"
 import { expectCauseHasString, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
@@ -113,26 +113,29 @@ describe("generateContentPaths", () => {
 			)
 			await Effect.runPromise(generateContentPaths(root).pipe(Effect.provide(testLayer)))
 			const out = readFileSync(join(root, "src/types/generated/content-paths.gen.ts"), "utf-8")
-			expect(out.replace(/\/\*\*[\s\S]*?\*\//g, "").trim()).toBe(
-				[
-					"export type AlphaPaths =",
-					'  "content/alpha/a" |',
-					'  "content/alpha/linked-file" |',
-					'  "content/alpha/nested/deep" |',
-					'  "content/alpha/z";',
-					"",
-					"",
-					"",
-					"export type EmptyPaths = never;",
-					"",
-					"",
-					"",
-					"export type ZebraPaths =",
-					'  "content/zebra/b";',
-					"",
-					"",
-					"export type ContentPaths = AlphaPaths | EmptyPaths | ZebraPaths;",
-				].join("\n"),
+			expect(Str.trim(Str.replace(/\/\*\*[\s\S]*?\*\//g, "")(out))).toBe(
+				Arr.join(
+					[
+						"export type AlphaPaths =",
+						'  "content/alpha/a" |',
+						'  "content/alpha/linked-file" |',
+						'  "content/alpha/nested/deep" |',
+						'  "content/alpha/z";',
+						"",
+						"",
+						"",
+						"export type EmptyPaths = never;",
+						"",
+						"",
+						"",
+						"export type ZebraPaths =",
+						'  "content/zebra/b";',
+						"",
+						"",
+						"export type ContentPaths = AlphaPaths | EmptyPaths | ZebraPaths;",
+					],
+					"\n",
+				),
 			)
 		} finally {
 			rmSync(root, { recursive: true, force: true })

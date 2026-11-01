@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Effect } from "effect"
+import { Effect, Array as Arr } from "effect"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { walkImageFiles } from "@/scripts/image-file-walk"
 
@@ -53,15 +53,18 @@ describe("walkImageFiles", () => {
 					),
 				)
 
-				const expected = [
-					"art.avif",
-					"cover.JPG",
-					"linked-file.PNG",
-					"nested/deep/image.PNG",
-					"nested/original.WeBp",
-					"nested/photo.JpEg",
-					...(includeVariants ? ["cover-384.webp", "nested/photo-1200.WEBP"] : []),
-				].map(file => (format === "web" ? `/${file}` : file))
+				const expected = Arr.map(
+					[
+						"art.avif",
+						"cover.JPG",
+						"linked-file.PNG",
+						"nested/deep/image.PNG",
+						"nested/original.WeBp",
+						"nested/photo.JpEg",
+						...(includeVariants ? ["cover-384.webp", "nested/photo-1200.WEBP"] : []),
+					],
+					file => (format === "web" ? `/${file}` : file),
+				)
 
 				expect(paths.sort()).toEqual(expected.sort())
 			})

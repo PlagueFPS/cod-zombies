@@ -2,7 +2,7 @@ import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { ConfigProvider, Effect, Exit, Layer, Option } from "effect"
 import { Command } from "effect/cli"
 import { Digest } from "effect/crypto"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import { Email } from "@/lib/services/emails"
 import {
 	broadcastCli,
@@ -145,6 +145,9 @@ describe("resolvePolicyBroadcast", () => {
 
 describe("sendBroadcast", () => {
 	test("preserves the canonical SHA-256 idempotency fingerprint", async () => {
+		vi.useFakeTimers({ toFake: ["Date"] })
+		// oxlint-disable-next-line effecttsgo/global-date -- Local noon keeps the email fixture on October 30 in every test timezone.
+		vi.setSystemTime(new Date(2026, 9, 30, 12))
 		let key = ""
 
 		const email = Layer.mock(Email, {

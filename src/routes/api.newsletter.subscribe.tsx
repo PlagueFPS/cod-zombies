@@ -69,6 +69,7 @@ export const Route = createFileRoute("/api/newsletter/subscribe")({
 						},
 					}),
 					Effect.satisfiesErrorType<never>(),
+					// oxlint-disable-next-line effecttsgo/strict-effect-provide -- Server entry point provides all services before running the request.
 					Effect.provide(Layer.merge(emailLayer, newsletterTokensLayer)),
 					Effect.runPromise,
 				),
