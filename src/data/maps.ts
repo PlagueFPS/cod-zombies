@@ -634,8 +634,25 @@ const MAPS = uniqueMap([
 			"Help the Bureau extract the pieces of Barbarossa's Sword out of enemy territory and into the hands of our agents.",
 		image: "/maps/the-tortured-path.webp",
 		game: "wwii",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/i-have-the-power"),
+		difficulty: Option.some("Very Hard"),
+		estimatedTimeMins: Option.some({
+			min: 80,
+			max: 95,
+			reason:
+				"Solo runs take about 80–95 minutes. Time varies with player count, objective waves, and knowledge of the steps.",
+		}),
+	}),
+	makeMap("the-frozen-dawn", {
+		title: "The Frozen Dawn",
+		releaseDate: "2018-06-26",
+		description:
+			"Thule awakens, and the deathly throne once again casts a shadow over the kingdoms of men.",
+		image: "/maps/the-frozen-dawn.webp",
+		game: "wwii",
 		state: Option.some("Coming Soon"),
-		mainQuest: Option.some("content/main-quests/stadtjager-down"),
+		mainQuest: Option.some("content/main-quests/kingfall"),
 		difficulty: Option.none(),
 		estimatedTimeMins: Option.none(),
 	}),
