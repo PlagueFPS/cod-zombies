@@ -1231,7 +1231,7 @@ const ZOMBIES = uniqueMap([
 		elementalWeakness: [],
 		attacks: ["corpse-feast"],
 		spawnBehavior:
-			"Two uncharged Corpse Eaters spawn on every return from Pack-a-Punch. One is marked at a time while the Thulian Scythe is held. The Deathraven trial spawns two empowered Corpse Eaters, and more spawn in Phase 4 of the God-King fight.",
+			"Corpse Eaters periodically spawn alongside regular zombies once Thule is opened, and two uncharged Corpse Eaters spawn on every return from Pack-a-Punch. The Deathraven Trial also spawns two empowered Corpse Eaters, and more spawn in Phase 4 of the God-King fight.",
 		combatStrategy: "content/zombies/corpse-eater",
 	}),
 	makeZombie("god-king", {
@@ -1256,7 +1256,7 @@ const ZOMBIES = uniqueMap([
 			"throne-fire-wall",
 		],
 		spawnBehavior:
-			"The God-King wakes after the four upgraded Raven weapons are placed in the Ice Caves and the crew enters the throne-room transport. Vivian Harris stabs him with the Sword of Barbarossa in the opening cutscene.",
+			"The God-King spawns in the throne room after all four upgraded Raven Weapons are placed in the Ice Caves and the crew enters the boss Thulian Transport.",
 		combatStrategy: "content/zombies/god-king",
 	}),
 	makeZombie("fire-catalyst", {
