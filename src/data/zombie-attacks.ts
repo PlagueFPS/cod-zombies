@@ -867,4 +867,44 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Runs to the sacrifice chamber and heals by draining the face statues. Bullets do nothing while it drains.",
 	}),
+	makeZombieAttack("corpse-feast", {
+		title: "Corpse Feast",
+		range: "Short",
+		description:
+			"Eats other zombies instead of chasing players. After about 3–4 it glows red and is fully charged.",
+	}),
+	makeZombieAttack("geistkraft-bolts", {
+		title: "Geistkraft Bolts",
+		range: "Long",
+		description: "Launches Geistkraft bolts across the arena during the God-King fight.",
+	}),
+	makeZombieAttack("geist-bombs", {
+		title: "Geist Bombs",
+		range: "Medium",
+		description: "Lobs explosive geist bombs at players during the God-King fight.",
+	}),
+	makeZombieAttack("light-of-the-sun", {
+		title: "Light of the Sun",
+		range: "Long",
+		description:
+			"Charges an arena wipe. Hide behind an ice pillar, or block it with the Roar of Sang'ket.",
+	}),
+	makeZombieAttack("blood-consume", {
+		title: "Blood Consume",
+		range: "Long",
+		description:
+			"Flies to the center, pulls players in, and slowly drains them until the pressure plates are shot out.",
+	}),
+	makeZombieAttack("purple-zombie-shields", {
+		title: "Purple Zombie Shields",
+		range: "Medium",
+		description:
+			"Puts purple shields on zombies in the arena. Throw the Fist of Tal'rek to break a shield.",
+	}),
+	makeZombieAttack("throne-fire-wall", {
+		title: "Throne Fire Wall",
+		range: "Long",
+		description:
+			"Sends a fire wall from the throne that downs players instantly. The Talon of Lu'roth stops it.",
+	}),
 ])
