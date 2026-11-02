@@ -225,7 +225,6 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 
 		const { dir: targetDir, source } = args
 		const mode = getOptimizeMode(args)
-		const startTime = yield* Clock.currentTimeMillis
 		const fs = yield* FileSystem.FileSystem
 		const path = yield* Path.Path
 
@@ -247,6 +246,7 @@ export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>
 			yield* ensureDirectory(DEFAULT_COPY_DIR)
 		}
 
+		const startTime = yield* Clock.currentTimeMillis
 		yield* Effect.forEach(
 			assets,
 			relativeAsset =>
