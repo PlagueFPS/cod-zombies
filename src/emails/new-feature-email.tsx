@@ -1,45 +1,44 @@
 import { Heading, Img, Link, Section, Text } from "@react-email/components"
 import { Array as Arr } from "effect"
-import { requireOpengraphImageUrl } from "../utils/opengraph-image-url"
-import { EmailShell } from "./_components/email-shell"
-import { emailLinkClassName } from "./_components/email-theme"
+import { EmailShell } from "@/emails/_components/email-shell"
+import { emailLinkClassName } from "@/emails/_components/email-theme"
+import { requireOpengraphImageUrl } from "@/utils/opengraph-image-url"
 
 interface INewFeatureEmail {
 	unsubscribeUrl: string
 }
 
-export const featureUpdateSubject = "New Main Quest Guides: Infinite Warfare"
+export const featureUpdateSubject = "New Main Quest Guides: WWII"
 
-export const featureUpdatePreview =
-	"Main quest guides for every Infinite Warfare map are now available."
+export const featureUpdatePreview = "Main quest guides for every WWII map are now available."
 
 const siteOrigin = "https://www.codzombiesguides.com"
 
-const infiniteWarfareMainQuests = [
+const wwiiMainQuests = [
 	{
-		mapId: "zombies-in-spaceland",
-		mapTitle: "Zombies in Spaceland",
-		questTitle: "Sooooul Key",
+		mapId: "the-final-reich",
+		mapTitle: "The Final Reich",
+		questTitle: "Fireworks & Dark Reunion",
 	},
 	{
-		mapId: "rave-in-the-redwoods",
-		mapTitle: "Rave in the Redwoods",
-		questTitle: "Locksmith",
+		mapId: "the-darkest-shore",
+		mapTitle: "The Darkest Shore",
+		questTitle: "Making History",
 	},
 	{
-		mapId: "shaolin-shuffle",
-		mapTitle: "Shaolin Shuffle",
-		questTitle: "Pest Control",
+		mapId: "the-shadowed-throne",
+		mapTitle: "The Shadowed Throne",
+		questTitle: "Stadtjäger Down",
 	},
 	{
-		mapId: "attack-of-the-radioactive-thing",
-		mapTitle: "Attack of the Radioactive Thing",
-		questTitle: "Soul-Less",
+		mapId: "the-tortured-path",
+		mapTitle: "The Tortured Path",
+		questTitle: "I Have the Power",
 	},
 	{
-		mapId: "the-beast-from-beyond",
-		mapTitle: "The Beast from Beyond",
-		questTitle: "The End?",
+		mapId: "the-frozen-dawn",
+		mapTitle: "The Frozen Dawn",
+		questTitle: "Kingfall",
 	},
 ] as const
 
@@ -52,14 +51,15 @@ function NewFeatureEmail({ unsubscribeUrl }: INewFeatureEmail) {
 			unsubscribeUrl={unsubscribeUrl}
 		>
 			<Heading as="h1" className="text-brand-ink mx-0 mt-0 mb-6 text-center text-2xl font-bold">
-				Infinite Warfare Main Quests Are Now Available
+				WWII Main Quests Are Now Available
 			</Heading>
 			<Text className="text-brand-body mb-6 text-base leading-6">
-				Main quest guides for <strong className="text-brand-accent">Infinite Warfare</strong> are
-				now on the site. Each walkthrough covers the Soul Key steps for that map.
+				Main quest guides for <strong className="text-brand-accent">WWII</strong> are now on the
+				site. Follow each quest from setup to the final boss, including both Fireworks and Dark
+				Reunion on The Final Reich.
 			</Text>
-			{Arr.map(infiniteWarfareMainQuests, quest => {
-				const href = `${siteOrigin}/main-quests/infinite-warfare/${quest.mapId}`
+			{Arr.map(wwiiMainQuests, quest => {
+				const href = `${siteOrigin}/main-quests/wwii/${quest.mapId}`
 				const label = `${quest.questTitle} for ${quest.mapTitle}`
 				const imageUrl = requireOpengraphImageUrl(siteOrigin, "main-quests", quest.mapId)
 
