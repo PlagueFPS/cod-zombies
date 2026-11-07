@@ -1,4 +1,4 @@
-import { Predicate, Array as Arr, String as Str } from "effect"
+import { Predicate, Array as Arr, String as Str, Schema, Result } from "effect"
 import * as fc from "fast-check"
 import { describe, expect, test } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
@@ -35,7 +35,9 @@ const valueArb: fc.Arbitrary<SearchParamValue> = fc.oneof(
 /** String both query encodings must decode to. qss JSON-parses numeric scalars. */
 function canonicalToken(token: string): string {
 	try {
-		const parsed = JSON.parse(token)
+		const parsed = Result.getOrThrow(
+			Schema.decodeResult(Schema.fromJsonString(Schema.Unknown))(token),
+		)
 
 		if (Predicate.isNumber(parsed) && Number.isFinite(parsed)) return String(parsed)
 
@@ -87,7 +89,9 @@ describe("parseSearch properties", () => {
 
 				const fromJson = expectExitSuccess(
 					decodeMainQuestSearchParams(
-						parseSearch(`game=${encodeURIComponent(JSON.stringify(tokens))}`),
+						parseSearch(
+							`game=${encodeURIComponent(Result.getOrThrow(Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))(tokens)))}`,
+						),
 					),
 				)
 

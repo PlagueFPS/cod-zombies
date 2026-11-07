@@ -2,10 +2,7 @@ import { expect, test } from "@playwright/test"
 
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() =>
-		localStorage.setItem(
-			"react-scan-options",
-			JSON.stringify({ enabled: false, showToolbar: false }),
-		),
+		localStorage.setItem("react-scan-options", '{"enabled":false,"showToolbar":false}'),
 	)
 })
 

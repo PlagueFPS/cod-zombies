@@ -10,10 +10,7 @@ const captions = [
 
 test.beforeEach(async ({ page }) => {
 	await page.addInitScript(() => {
-		localStorage.setItem(
-			"react-scan-options",
-			JSON.stringify({ enabled: false, showToolbar: false }),
-		)
+		localStorage.setItem("react-scan-options", '{"enabled":false,"showToolbar":false}')
 	})
 	await page.goto("/main-quests/black-ops-7/totenreich", { waitUntil: "domcontentloaded" })
 	await expect(page.getByRole("heading", { name: "Totenreich", exact: true })).toBeVisible({
