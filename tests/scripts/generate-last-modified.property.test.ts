@@ -1,31 +1,29 @@
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
+import { it } from "@effect/vitest"
 import {
+	Arbitrary,
+	Schema,
 	Match,
 	Effect,
 	Layer,
 	MutableHashSet,
 	Array as Arr,
-	String as Str,
 	Record as Rec,
 } from "effect"
-import * as fc from "fast-check"
-import { describe, expect, test } from "vitest"
+import { describe, expect } from "vitest"
 import { parseGitBatchOutput } from "@/scripts/generate-last-modified"
 import { expectExitSuccess } from "@/tests/helpers"
 
 const testLayer = Layer.mergeAll(BunFileSystemLayer, BunPathLayer)
 
-const letter = fc.constantFrom(...Str.split("abcdefghij", ""))
+const RelPath = Schema.String.check(Schema.isPattern(/^[a-j]{1,5}\/[a-j]{1,5}\.mdx$/))
 
-const relPathArb = fc
-	.tuple(
-		fc.string({ unit: letter, minLength: 1, maxLength: 5 }),
-		fc.string({ unit: letter, minLength: 1, maxLength: 5 }),
-	)
-	.map(([dir, file]) => `${dir}/${file}.mdx`)
+const relPathArb = Arbitrary.schema(RelPath)
 
-const timestampArb = fc.integer({ min: 1_400_000_000, max: 1_700_000_000 })
+const timestampArb = Arbitrary.schema(
+	Schema.Int.check(Schema.isBetween({ minimum: 1_400_000_000, maximum: 1_700_000_000 })),
+)
 
 type GitLine =
 	| { kind: "touch"; path: string; timestamp: number; op: "A" | "M" }
@@ -42,47 +40,53 @@ const renderLine = Match.type<GitLine>().pipe(
 	Match.exhaustive,
 )
 
-const scenarioArb = fc.uniqueArray(relPathArb, { minLength: 1, maxLength: 4 }).chain(paths =>
-	fc.record({
-		paths: fc.constant(paths),
-		lines: fc.array(
-			fc.oneof(
-				{
-					weight: 3,
-					arbitrary: fc.record({
-						kind: fc.constant("touch" as const),
-						path: fc.constantFrom(...paths),
-						timestamp: timestampArb,
-						op: fc.constantFrom("A" as const, "M" as const),
-					}),
-				},
-				{
-					weight: 2,
-					arbitrary: fc.record({
-						kind: fc.constant("rename" as const),
-						from: fc.constantFrom(...paths),
-						to: fc.constantFrom(...paths),
-						timestamp: timestampArb,
-					}),
-				},
-				{
-					weight: 1,
-					arbitrary: fc.record({
-						kind: fc.constant("noise" as const),
-						path: relPathArb.filter(path => !paths.includes(path)),
-						timestamp: timestampArb,
-					}),
-				},
+const Paths = Schema.UniqueArray(RelPath).check(Schema.isMinLength(1), Schema.isMaxLength(4))
+
+const scenarioArb = Arbitrary.schema(Paths).pipe(
+	Arbitrary.flatMap(paths => {
+		const path = Arbitrary.schema(Schema.Literals(paths))
+
+		const touch = Arbitrary.all({
+			kind: Arbitrary.Constant("touch"),
+			path,
+			timestamp: timestampArb,
+			op: Arbitrary.schema(Schema.Literals(["A", "M"])),
+		})
+
+		const rename = Arbitrary.all({
+			kind: Arbitrary.Constant("rename"),
+			from: path,
+			to: path,
+			timestamp: timestampArb,
+		})
+
+		const noise = Arbitrary.all({
+			kind: Arbitrary.Constant("noise"),
+			path: relPathArb.pipe(Arbitrary.filter(path => !paths.includes(path))),
+			timestamp: timestampArb,
+		})
+
+		const line = Arbitrary.schema(
+			Schema.Int.check(Schema.isBetween({ minimum: 0, maximum: 5 })),
+		).pipe(
+			Arbitrary.flatMap((index): Arbitrary.Arbitrary<GitLine> =>
+				index < 3 ? touch : index < 5 ? rename : noise,
 			),
-			{ minLength: 1, maxLength: 8 },
-		),
+		)
+
+		return Arbitrary.all({
+			paths: Arbitrary.Constant(paths),
+			lines: Arbitrary.array(line, { minLength: 1, maxLength: 8 }),
+		})
 	}),
 )
 
 describe("parseGitBatchOutput properties", () => {
-	test("keeps the first timestamp, ignores unknown paths, and records rename targets", async () => {
-		await fc.assert(
-			fc.asyncProperty(scenarioArb, async ({ paths, lines }) => {
+	it.effect.prop(
+		"keeps the first timestamp, ignores unknown paths, and records rename targets",
+		[scenarioArb],
+		([{ paths, lines }]) =>
+			Effect.gen(function* () {
 				const pathSet = new Set(paths)
 				const all = MutableHashSet.empty<string>()
 
@@ -104,7 +108,7 @@ describe("parseGitBatchOutput properties", () => {
 
 				const git = `${Arr.join(Arr.map(lines, renderLine), "\n")}\n`
 
-				const exit = await Effect.runPromiseExit(
+				const exit = yield* Effect.exit(
 					parseGitBatchOutput(git, all, "/repo").pipe(Effect.provide(testLayer)),
 				)
 
@@ -131,7 +135,6 @@ describe("parseGitBatchOutput properties", () => {
 					expect(result[line.from]?.lastModified).not.toBe(line.timestamp * 1000)
 				}
 			}),
-			{ numRuns: 40 },
-		)
-	})
+		{ arbitrary: { runs: 40 } },
+	)
 })

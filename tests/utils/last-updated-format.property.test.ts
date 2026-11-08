@@ -1,6 +1,6 @@
-import { Array as Arr, Predicate } from "effect"
-import * as fc from "fast-check"
-import { describe, expect, test } from "vitest"
+import { it } from "@effect/vitest"
+import { Arbitrary, Schema, Array as Arr, Predicate } from "effect"
+import { describe, expect } from "vitest"
 import { formatRelativeTimeAgo, MS_DAY } from "@/utils/last-updated-format"
 
 const MINUTE_FLOOR_MS = 120_000
@@ -43,16 +43,14 @@ function isRelativeUnit(value: string): value is RelativeUnit {
 	return Arr.some(RELATIVE_UNITS, unit => unit === value)
 }
 
-const ageMsArb = fc.oneof(
-	fc.constant(MINUTE_FLOOR_MS),
-	fc.constant(59.6 * 60 * 1000),
-	fc.constant(23.6 * 3_600_000),
-	fc.constant(6.6 * MS_DAY),
-	fc.double({
-		min: MINUTE_FLOOR_MS,
-		max: 800 * MS_DAY,
-		noNaN: true,
-	}),
+const ageMsArb = Arbitrary.schema(
+	Schema.Union([
+		Schema.Literal(MINUTE_FLOOR_MS),
+		Schema.Literal(59.6 * 60 * 1000),
+		Schema.Literal(23.6 * 3_600_000),
+		Schema.Literal(6.6 * MS_DAY),
+		Schema.Finite.check(Schema.isBetween({ minimum: MINUTE_FLOOR_MS, maximum: 800 * MS_DAY })),
+	]),
 )
 
 function readRelative(label: string): RelativeReading {
@@ -78,30 +76,30 @@ function readRelative(label: string): RelativeReading {
 describe("formatRelativeTimeAgo properties", () => {
 	const now = Date.parse("2026-03-15T12:00:00.000Z")
 
-	test("rounded unit counts stay inside the unit and do not move backward as age grows", () => {
-		fc.assert(
-			fc.property(ageMsArb, ageMsArb, (earlierAge, laterAge) => {
-				const [younger, older] =
-					earlierAge <= laterAge ? [earlierAge, laterAge] : [laterAge, earlierAge]
+	it.prop(
+		"rounded unit counts stay inside the unit and do not move backward as age grows",
+		[ageMsArb, ageMsArb],
+		([earlierAge, laterAge]) => {
+			const [younger, older] =
+				earlierAge <= laterAge ? [earlierAge, laterAge] : [laterAge, earlierAge]
 
-				const youngerLabel = formatRelativeTimeAgo(now - younger, now, "en-US", "FALLBACK")
-				const olderLabel = formatRelativeTimeAgo(now - older, now, "en-US", "FALLBACK")
-				const youngerTime = readRelative(youngerLabel)
-				const olderTime = readRelative(olderLabel)
+			const youngerLabel = formatRelativeTimeAgo(now - younger, now, "en-US", "FALLBACK")
+			const olderLabel = formatRelativeTimeAgo(now - older, now, "en-US", "FALLBACK")
+			const youngerTime = readRelative(youngerLabel)
+			const olderTime = readRelative(olderLabel)
 
-				expect(olderTime.seconds).toBeGreaterThanOrEqual(youngerTime.seconds)
+			expect(olderTime.seconds).toBeGreaterThanOrEqual(youngerTime.seconds)
 
-				const boundedReadings = Arr.filter(
-					[youngerTime, olderTime],
-					(reading): reading is RelativeReading & { readonly unit: keyof typeof UNIT_LIMIT } =>
-						reading.unit === "minute" || reading.unit === "hour" || reading.unit === "day",
-				)
+			const boundedReadings = Arr.filter(
+				[youngerTime, olderTime],
+				(reading): reading is RelativeReading & { readonly unit: keyof typeof UNIT_LIMIT } =>
+					reading.unit === "minute" || reading.unit === "hour" || reading.unit === "day",
+			)
 
-				for (const { count, unit } of boundedReadings) {
-					expect(count).toBeGreaterThan(0)
-					expect(count).toBeLessThan(UNIT_LIMIT[unit])
-				}
-			}),
-		)
-	})
+			for (const { count, unit } of boundedReadings) {
+				expect(count).toBeGreaterThan(0)
+				expect(count).toBeLessThan(UNIT_LIMIT[unit])
+			}
+		},
+	)
 })
