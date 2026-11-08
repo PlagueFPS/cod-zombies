@@ -1,5 +1,5 @@
-import { Option, Match, Array as Arr } from "effect"
-import * as fc from "fast-check"
+import { it } from "@effect/vitest"
+import { Arbitrary, Schema, Option, Match, Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	classifyAotrtTvColor,
@@ -54,51 +54,50 @@ describe("solveAotrtONumber", () => {
 		}
 	})
 
-	test("always returns an O value no farther than any other candidate", () => {
-		fc.assert(
-			fc.property(
-				fc.integer({ min: 1, max: 99 }),
-				fc.integer({ min: 1, max: 999 }),
-				(m, topTvNumber) => {
-					const result = solveAotrtONumber(m, topTvNumber)
-					const distance = Math.abs(result.oNumber - result.rounded)
+	it.prop(
+		"always returns an O value no farther than any other candidate",
+		[
+			Arbitrary.schema(Schema.Int.check(Schema.isBetween({ minimum: 1, maximum: 99 }))),
+			Arbitrary.schema(Schema.Int.check(Schema.isBetween({ minimum: 1, maximum: 999 }))),
+		],
+		([m, topTvNumber]) => {
+			const result = solveAotrtONumber(m, topTvNumber)
+			const distance = Math.abs(result.oNumber - result.rounded)
 
-					expect(result.rounded).toBe(Math.round(topTvNumber / m))
-					expect(O_NUMBERS).toContain(result.oNumber)
+			expect(result.rounded).toBe(Math.round(topTvNumber / m))
+			expect(O_NUMBERS).toContain(result.oNumber)
 
-					for (const candidate of O_NUMBERS) {
-						expect(distance).toBeLessThanOrEqual(Math.abs(candidate - result.rounded))
-					}
+			for (const candidate of O_NUMBERS) {
+				expect(distance).toBeLessThanOrEqual(Math.abs(candidate - result.rounded))
+			}
 
-					const tied = Arr.filter(
-						O_NUMBERS,
-						candidate => Math.abs(candidate - result.rounded) === distance,
-					)
+			const tied = Arr.filter(
+				O_NUMBERS,
+				candidate => Math.abs(candidate - result.rounded) === distance,
+			)
 
-					expect(result.oNumber).toBe(Math.min(...tied))
+			expect(result.oNumber).toBe(Math.min(...tied))
 
-					const product = result.oNumber * m
+			const product = result.oNumber * m
 
-					const expectedRow = Match.value(product).pipe(
-						Match.when(
-							value => value < topTvNumber,
-							() => "top",
-						),
-						Match.when(
-							value => value <= topTvNumber + 2,
-							() => "middle",
-						),
-						Match.orElse(() => "bottom"),
-					)
+			const expectedRow = Match.value(product).pipe(
+				Match.when(
+					value => value < topTvNumber,
+					() => "top",
+				),
+				Match.when(
+					value => value <= topTvNumber + 2,
+					() => "middle",
+				),
+				Match.orElse(() => "bottom"),
+			)
 
-					expect(result.tvColor.product).toBe(product)
-					expect(result.tvColor.row).toBe(expectedRow)
-					expect(result.tvColor.middleStart).toBe(topTvNumber)
-					expect(result.tvColor.middleEnd).toBe(topTvNumber + 2)
-				},
-			),
-		)
-	})
+			expect(result.tvColor.product).toBe(product)
+			expect(result.tvColor.row).toBe(expectedRow)
+			expect(result.tvColor.middleStart).toBe(topTvNumber)
+			expect(result.tvColor.middleEnd).toBe(topTvNumber + 2)
+		},
+	)
 })
 
 describe("classifyAotrtTvColor", () => {

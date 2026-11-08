@@ -12,6 +12,10 @@ export default defineConfig({
 		},
 	],
 	rules: {
+		"vitest/no-standalone-expect": [
+			"warn",
+			{ additionalTestBlockFunctions: ["it.prop", "it.effect.prop"] },
+		],
 		"react/self-closing-comp": ["warn", { component: true, html: true }],
 		"react/jsx-key": "warn",
 		"react/exhaustive-deps": "warn",
