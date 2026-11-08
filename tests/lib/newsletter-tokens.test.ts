@@ -24,11 +24,16 @@ describe("newsletter tokens with real WebCrypto", () => {
 				const tokens = yield* NewsletterTokens
 				const subscribe = yield* tokens.issueSubscribe("reader@example.com")
 				const unsubscribe = yield* tokens.issueUnsubscribe("reader@example.com")
-				expect(yield* tokens.issueSubscribe("reader@example.com")).not.toBe(subscribe)
-				expect(yield* tokens.verifySubscribe(subscribe)).toBe("reader@example.com")
-				expect(yield* tokens.verifyUnsubscribe(unsubscribe)).toBe("reader@example.com")
-				expect(Exit.isFailure(yield* Effect.exit(tokens.verifySubscribe(unsubscribe)))).toBe(true)
-				expect(Exit.isFailure(yield* Effect.exit(tokens.verifyUnsubscribe(subscribe)))).toBe(true)
+				const anotherSubscribe = yield* tokens.issueSubscribe("reader@example.com")
+				expect(anotherSubscribe).not.toBe(subscribe)
+				const subscribedEmail = yield* tokens.verifySubscribe(subscribe)
+				expect(subscribedEmail).toBe("reader@example.com")
+				const unsubscribedEmail = yield* tokens.verifyUnsubscribe(unsubscribe)
+				expect(unsubscribedEmail).toBe("reader@example.com")
+				const wrongSubscribe = yield* Effect.exit(tokens.verifySubscribe(unsubscribe))
+				expect(Exit.isFailure(wrongSubscribe)).toBe(true)
+				const wrongUnsubscribe = yield* Effect.exit(tokens.verifyUnsubscribe(subscribe))
+				expect(Exit.isFailure(wrongUnsubscribe)).toBe(true)
 			}).pipe(Effect.provide(configured())),
 		)
 	})
@@ -51,14 +56,14 @@ describe("newsletter tokens with real WebCrypto", () => {
 				const token = yield* tokens.issueSubscribe("reader@example.com")
 				const [version, claims, tag] = Str.split(".")(token)
 
-				const forged = Buffer.from(
-					yield* Schema.encodeEffect(Schema.fromJsonString(Schema.Unknown))({
-						email: "attacker@example.com",
-						action: "subscribe",
-						expiresAt: 0,
-						nonce: Str.repeat(22)("a"),
-					}),
-				).toString("base64url")
+				const forgedClaims = yield* Schema.encodeEffect(Schema.fromJsonString(Schema.Unknown))({
+					email: "attacker@example.com",
+					action: "subscribe",
+					expiresAt: 0,
+					nonce: Str.repeat(22)("a"),
+				})
+
+				const forged = Buffer.from(forgedClaims).toString("base64url")
 
 				for (const invalid of [
 					"",
@@ -86,7 +91,8 @@ describe("newsletter tokens with real WebCrypto", () => {
 				const tokens = yield* NewsletterTokens
 				const token = yield* tokens.issueSubscribe("reader@example.com")
 				yield* TestClock.setTime(86_399_999)
-				expect(yield* tokens.verifySubscribe(token)).toBe("reader@example.com")
+				const verifiedEmail = yield* tokens.verifySubscribe(token)
+				expect(verifiedEmail).toBe("reader@example.com")
 				yield* TestClock.setTime(86_400_000)
 				const expired = yield* Effect.exit(tokens.verifySubscribe(token))
 				expectCauseTaggedError(expectExitFailure(expired), "TokenExpirationError")

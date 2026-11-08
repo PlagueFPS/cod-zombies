@@ -79,7 +79,8 @@ const make = Effect.gen(function* () {
 	const issue = Effect.fnUntraced(
 		function* (action: Action, email: string) {
 			const now = yield* Clock.currentTimeMillis
-			const nonce = encode(yield* random.randomBytes(16))
+			const nonceBytes = yield* random.randomBytes(16)
+			const nonce = encode(nonceBytes)
 
 			const claims = yield* Schema.decodeEffect(Claims)({
 				email,

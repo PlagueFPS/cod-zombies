@@ -100,7 +100,7 @@ describe("getAllContentFiles", () => {
 		})
 
 		const program = getAllContentFiles("/tmp/workspace/content").pipe(
-			Effect.provide(Layer.mergeAll(mockFs, BunPathLayer)),
+			Effect.provide([mockFs, BunPathLayer]),
 		)
 
 		const exit = await Effect.runPromiseExit(program)

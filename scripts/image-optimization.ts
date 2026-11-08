@@ -196,13 +196,14 @@ export const requireImageWidth = (
 	asset: string,
 ): Effect.Effect<number, ImageOptimizationError> =>
 	Schema.decodeUnknownEffect(Schema.Struct({ width: Schema.Finite }))(metadata).pipe(
-		Effect.map(value => value.width),
-		Effect.mapError(() =>
-			ImageOptimizationError.make({
-				message: `Image has no width metadata: ${asset}`,
-				cause: asset,
-			}),
-		),
+		Effect.mapBoth({
+			onSuccess: value => value.width,
+			onFailure: () =>
+				ImageOptimizationError.make({
+					message: `Image has no width metadata: ${asset}`,
+					cause: asset,
+				}),
+		}),
 	)
 
 export const optimizeAssetsEffect = (args: OptimizeCliOptions) =>

@@ -41,7 +41,10 @@ export const useLocalStorage = <T>(
 				setStoredValue(valueToStore)
 
 				if (typeof window !== "undefined") {
-					window.localStorage.setItem(key, JSON.stringify(valueToStore))
+					window.localStorage.setItem(
+						key,
+						Schema.encodeSync(Schema.fromJsonString(Schema.Unknown))(valueToStore),
+					)
 				}
 			},
 			catch: error => console.warn(`Error setting localStorage key "${key}":`, error),

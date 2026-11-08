@@ -1,5 +1,5 @@
 import { it } from "@effect/vitest"
-import { Arbitrary, Schema, Predicate, Array as Arr } from "effect"
+import { Arbitrary, Schema, Predicate, Result, Array as Arr } from "effect"
 import { describe, expect } from "vitest"
 import { expectExitSuccess } from "@/tests/helpers"
 import { normalizeParsedSearch, parseSearch, type ParsedSearchParams } from "@/utils/search-params"
@@ -29,7 +29,9 @@ const Value = Schema.Union([
 /** String both query encodings must decode to. qss JSON-parses numeric scalars. */
 function canonicalToken(token: string): string {
 	try {
-		const parsed = JSON.parse(token)
+		const parsed = Result.getOrThrow(
+			Schema.decodeResult(Schema.fromJsonString(Schema.Unknown))(token),
+		)
 
 		if (Predicate.isNumber(parsed) && Number.isFinite(parsed)) return String(parsed)
 
@@ -83,7 +85,9 @@ describe("parseSearch properties", () => {
 
 			const fromJson = expectExitSuccess(
 				decodeMainQuestSearchParams(
-					parseSearch(`game=${encodeURIComponent(JSON.stringify(tokens))}`),
+					parseSearch(
+						`game=${encodeURIComponent(Result.getOrThrow(Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))(tokens)))}`,
+					),
 				),
 			)
 

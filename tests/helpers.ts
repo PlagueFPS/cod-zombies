@@ -1,4 +1,4 @@
-import { Cause, Exit, Option, Predicate } from "effect"
+import { Cause, Exit, Option, Predicate, Schema, Result } from "effect"
 import { expect } from "vitest"
 import { dateFrom } from "@/utils/system-time"
 
@@ -54,7 +54,9 @@ export function expectCauseTaggedError<E extends { _tag: string }>(
 	const tagged = err as E
 
 	if (Predicate.isNotNullish(predicate) && Predicate.isTruthy(predicate) && !predicate(tagged)) {
-		expect.fail(`predicate failed for ${tag}: ${JSON.stringify(err)}`)
+		expect.fail(
+			`predicate failed for ${tag}: ${Result.getOrThrow(Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))(err))}`,
+		)
 	}
 
 	return tagged

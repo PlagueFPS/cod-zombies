@@ -1164,7 +1164,8 @@ const updateManifest = Effect.fnUntraced(function* (
 	}
 
 	const updatedManifest = OpengraphManifest.make(pruned, { disableChecks: true })
-	yield* fs.writeFileString(manifestPath, yield* encodeOpengraphManifest(updatedManifest))
+	const manifestJson = yield* encodeOpengraphManifest(updatedManifest)
+	yield* fs.writeFileString(manifestPath, manifestJson)
 })
 
 export const writeOgFile = Effect.fnUntraced(function* (
