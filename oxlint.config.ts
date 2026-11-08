@@ -1,15 +1,9 @@
-import {
-	effectNative,
-	recommended,
-	antipattern,
-	correctness,
-	style,
-} from "@effect/tsgo/oxlint-presets"
+import { effectNative, recommended, style } from "@effect/tsgo/oxlint-presets"
 import { defineConfig } from "oxlint"
 
 export default defineConfig({
 	plugins: ["typescript", "unicorn", "oxc", "react", "react-perf", "vitest"],
-	extends: [recommended, effectNative, antipattern, correctness, style],
+	extends: [recommended, effectNative, style],
 	jsPlugins: [
 		{ name: "anti-slop", specifier: "./tools/oxlint/anti-slop/index.ts" },
 		{
@@ -64,10 +58,19 @@ export default defineConfig({
 	},
 	overrides: [
 		{
+			files: [
+				"src/hooks/use-local-storage.ts",
+				"src/lib/remark-mdx-meta.ts",
+				"src/utils/search-params.ts",
+			],
+			rules: {
+				// React, remark, and router parsing callbacks must return synchronously.
+				"effecttsgo/schema-sync": "off",
+			},
+		},
+		{
 			files: ["tests/**/*.{ts,tsx}", "scripts/**/*.{ts,tsx}"],
 			rules: {
-				// Tests and CLI scripts are program entry points.
-				"effecttsgo/strict-effect-provide": "off",
 				// Node test and script I/O stays on node:fs, node:path, and node:child_process.
 				"effecttsgo/node-builtin-import": "off",
 			},

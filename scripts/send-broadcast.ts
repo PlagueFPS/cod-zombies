@@ -554,7 +554,8 @@ const broadcastIdempotencyKey = Effect.fn("broadcastIdempotencyKey")(function* (
 	subject: string,
 	text: string,
 ) {
-	const payload = textEncoder.encode(canonicalBroadcastJson(broadcast, subject, text))
+	const json = yield* canonicalBroadcastJson(broadcast, subject, text)
+	const payload = textEncoder.encode(json)
 
 	const service = yield* Digest.Digest
 	const digest = yield* service.digestHex(Digest.sha256, payload)
@@ -609,14 +610,17 @@ export const sendBroadcast = Effect.fn("sendBroadcast")(function* (
 
 /** Sorts object keys so the idempotency digest does not depend on property order. */
 const canonicalBroadcastJson = (broadcast: BroadcastInput, subject: string, text: string) =>
-	// oxlint-disable-next-line effecttsgo/prefer-schema-over-json -- digest is canonical JSON, not a schema codec
-	JSON.stringify({ broadcast, subject, text }, (_key, nested) => {
-		if (!Predicate.isObject(nested)) return nested
+	Schema.encodeEffect(
+		Schema.fromJsonString(Schema.Unknown, {
+			replacer: (_key, nested) => {
+				if (!Predicate.isObject(nested)) return nested
 
-		const keys = Rec.keys(nested).sort()
+				const keys = Rec.keys(nested).sort()
 
-		return Rec.fromEntries(Arr.map(keys, key => [key, nested[key]] as const))
-	})
+				return Rec.fromEntries(Arr.map(keys, key => [key, nested[key]] as const))
+			},
+		}),
+	)({ broadcast, subject, text })
 
 const printDryRun = Effect.fnUntraced(function* (result: BroadcastDryRun) {
 	yield* Console.log("Dry run. No broadcast was sent.")
