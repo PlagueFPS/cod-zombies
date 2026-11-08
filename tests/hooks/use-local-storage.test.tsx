@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { Schema } from "effect"
+import { Schema, Result } from "effect"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { afterEach, describe, expect, test } from "vitest"
@@ -33,7 +33,10 @@ describe("useLocalStorage", () => {
 	)
 
 	test("loads validated data and persists functional updates", async () => {
-		localStorage.setItem("preference", JSON.stringify({ size: 48 }))
+		localStorage.setItem(
+			"preference",
+			Result.getOrThrow(Schema.encodeResult(Schema.fromJsonString(PreferenceSchema))({ size: 48 })),
+		)
 		const container = document.createElement("div")
 		document.body.appendChild(container)
 		root = createRoot(container)
@@ -44,7 +47,13 @@ describe("useLocalStorage", () => {
 		await act(async () => container.querySelector("button")?.click())
 
 		expect(container.textContent).toBe("49")
-		expect(JSON.parse(localStorage.getItem("preference") ?? "null")).toEqual({ size: 49 })
+		expect(
+			Result.getOrThrow(
+				Schema.decodeResult(Schema.fromJsonString(PreferenceSchema))(
+					localStorage.getItem("preference") ?? "null",
+				),
+			),
+		).toEqual({ size: 49 })
 	})
 })
 

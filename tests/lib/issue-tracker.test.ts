@@ -1,5 +1,5 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
-import { Effect, Exit, Predicate, Schema } from "effect"
+import { Effect, Exit, Predicate, Schema, Result } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http"
 import { describe, expect, test } from "vitest"
 import {
@@ -156,10 +156,13 @@ interface LinearHttpBody {
 }
 
 function jsonResponse(body: LinearHttpBody, status = 200) {
-	return new Response(JSON.stringify(body), {
-		status,
-		headers: { "Content-Type": "application/json" },
-	})
+	return new Response(
+		Result.getOrThrow(Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))(body)),
+		{
+			status,
+			headers: { "Content-Type": "application/json" },
+		},
+	)
 }
 
 function createFetchStub(response: Response) {
@@ -215,23 +218,18 @@ function decodeJsonBody(body: BodyInit | null | undefined) {
 		throw new Error("expected fetch body")
 	}
 
+	const decode = Schema.decodeResult(Schema.fromJsonString(LinearIssueCreateBody))
+
 	if (Predicate.isString(body)) {
-		// oxlint-disable-next-line effecttsgo/schema-sync -- captured request bodies are decoded synchronously in the test
-		return Schema.decodeUnknownSync(LinearIssueCreateBody)(JSON.parse(body))
+		return Result.getOrThrow(decode(body))
 	}
 
 	if (body instanceof Uint8Array) {
-		// oxlint-disable-next-line effecttsgo/schema-sync -- captured request bodies are decoded synchronously in the test
-		return Schema.decodeUnknownSync(LinearIssueCreateBody)(
-			JSON.parse(new TextDecoder().decode(body)),
-		)
+		return Result.getOrThrow(decode(new TextDecoder().decode(body)))
 	}
 
 	if (body instanceof ArrayBuffer) {
-		// oxlint-disable-next-line effecttsgo/schema-sync -- captured request bodies are decoded synchronously in the test
-		return Schema.decodeUnknownSync(LinearIssueCreateBody)(
-			JSON.parse(new TextDecoder().decode(new Uint8Array(body))),
-		)
+		return Result.getOrThrow(decode(new TextDecoder().decode(new Uint8Array(body))))
 	}
 
 	throw new Error(`unexpected fetch body type: ${Object.prototype.toString.call(body)}`)

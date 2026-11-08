@@ -162,7 +162,7 @@ describe("sendBroadcast", () => {
 			sendBroadcast(
 				{ kind: "policy", bullets: ["How long confirmation tokens are kept"] },
 				{ send: true },
-			).pipe(Effect.provide(Layer.mergeAll(email, testConfig, Digest.layerWebCrypto))),
+			).pipe(Effect.provide([email, testConfig, Digest.layerWebCrypto])),
 		)
 		expect(key).toBe("broadcast/policy/8c106a5ccc7b20d3e2ceaf829d6a1a4b")
 	})

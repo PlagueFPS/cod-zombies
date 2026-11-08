@@ -1,4 +1,4 @@
-import { Match, Option } from "effect"
+import { Match, Option, Array as Arr } from "effect"
 import { describe, expect, it } from "vitest"
 import {
 	PILLAR_IDS,
@@ -39,7 +39,9 @@ describe("Frozen Dawn pillars", () => {
 							}
 						}
 
-						expect(actual, `Starting facings: ${initial.join(",")}`).toEqual([0, 0, 0, 0])
+						expect(actual, `Starting facings: ${Arr.join(Arr.map(initial, String), ",")}`).toEqual([
+							0, 0, 0, 0,
+						])
 					}
 	})
 })

@@ -2,7 +2,16 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSyn
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import { Predicate, Effect, Exit, String as Str, Array as Arr, Option } from "effect"
+import {
+	Predicate,
+	Effect,
+	Exit,
+	String as Str,
+	Array as Arr,
+	Option,
+	Schema,
+	Result,
+} from "effect"
 import { Command } from "effect/cli"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
@@ -25,7 +34,14 @@ describe("writeOgFile", () => {
 		const manifestPath = join(tmp, "opengraph-manifest.json")
 		writeFileSync(
 			manifestPath,
-			JSON.stringify({ "main-quests": {}, "side-quests": {}, zombies: {}, relics: {} }),
+			Result.getOrThrow(
+				Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))({
+					"main-quests": {},
+					"side-quests": {},
+					zombies: {},
+					relics: {},
+				}),
+			),
 			"utf-8",
 		)
 		const outBase = join(tmp, "out")
@@ -169,7 +185,14 @@ describe("generateOgCommand success (real assets)", () => {
 		const manifestPath = join(tmpRoot, "opengraph-manifest.json")
 		writeFileSync(
 			manifestPath,
-			JSON.stringify({ "main-quests": {}, "side-quests": {}, zombies: {}, relics: {} }),
+			Result.getOrThrow(
+				Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))({
+					"main-quests": {},
+					"side-quests": {},
+					zombies: {},
+					relics: {},
+				}),
+			),
 			"utf-8",
 		)
 		prevManifest = process.env.OG_TEST_MANIFEST_PATH

@@ -1,4 +1,5 @@
 /** @vitest-environment happy-dom */
+import { Schema, Result } from "effect"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
 import { afterEach, describe, expect, test } from "vitest"
@@ -16,7 +17,10 @@ describe("MapSettingsProvider", () => {
 	test.each([null, [], { _version: 1 }, { _version: 1, markers: { iconSize: "large" } }])(
 		"uses complete defaults for malformed stored settings: %j",
 		async stored => {
-			localStorage.setItem("map-settings", JSON.stringify(stored))
+			localStorage.setItem(
+				"map-settings",
+				Result.getOrThrow(Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))(stored)),
+			)
 			const container = document.createElement("div")
 			document.body.appendChild(container)
 			root = createRoot(container)
@@ -36,12 +40,14 @@ describe("MapSettingsProvider", () => {
 	test("migrates validated older settings while preserving preferences", async () => {
 		localStorage.setItem(
 			"map-settings",
-			JSON.stringify({
-				_version: 0,
-				markers: { iconSize: 48, opacity: 0.5 },
-				popups: { disableGradients: false, disableAnimations: false },
-				general: { disableZoomAnimation: true, disableFlyToAnimation: false },
-			}),
+			Result.getOrThrow(
+				Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))({
+					_version: 0,
+					markers: { iconSize: 48, opacity: 0.5 },
+					popups: { disableGradients: false, disableAnimations: false },
+					general: { disableZoomAnimation: true, disableFlyToAnimation: false },
+				}),
+			),
 		)
 		const container = document.createElement("div")
 		document.body.appendChild(container)
@@ -56,6 +62,11 @@ describe("MapSettingsProvider", () => {
 		)
 
 		expect(container.textContent).toBe("1:48:true")
+		expect(
+			Schema.decodeResult(Schema.fromJsonString(Schema.Struct({ _version: Schema.Int })))(
+				localStorage.getItem("map-settings") ?? "null",
+			).pipe(Result.getOrThrow)._version,
+		).toBe(1)
 	})
 })
 
