@@ -25,7 +25,6 @@ import {
 	Match,
 	Option,
 	Schema,
-	Result,
 	Record as Rec,
 	Redacted,
 	Array as Arr,
@@ -555,7 +554,8 @@ const broadcastIdempotencyKey = Effect.fn("broadcastIdempotencyKey")(function* (
 	subject: string,
 	text: string,
 ) {
-	const payload = textEncoder.encode(canonicalBroadcastJson(broadcast, subject, text))
+	const json = yield* canonicalBroadcastJson(broadcast, subject, text)
+	const payload = textEncoder.encode(json)
 
 	const service = yield* Digest.Digest
 	const digest = yield* service.digestHex(Digest.sha256, payload)
@@ -610,7 +610,7 @@ export const sendBroadcast = Effect.fn("sendBroadcast")(function* (
 
 /** Sorts object keys so the idempotency digest does not depend on property order. */
 const canonicalBroadcastJson = (broadcast: BroadcastInput, subject: string, text: string) =>
-	Schema.encodeResult(
+	Schema.encodeEffect(
 		Schema.fromJsonString(Schema.Unknown, {
 			replacer: (_key, nested) => {
 				if (!Predicate.isObject(nested)) return nested
@@ -620,7 +620,7 @@ const canonicalBroadcastJson = (broadcast: BroadcastInput, subject: string, text
 				return Rec.fromEntries(Arr.map(keys, key => [key, nested[key]] as const))
 			},
 		}),
-	)({ broadcast, subject, text }).pipe(Result.getOrThrow)
+	)({ broadcast, subject, text })
 
 const printDryRun = Effect.fnUntraced(function* (result: BroadcastDryRun) {
 	yield* Console.log("Dry run. No broadcast was sent.")

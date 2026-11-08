@@ -58,6 +58,17 @@ export default defineConfig({
 	},
 	overrides: [
 		{
+			files: [
+				"src/hooks/use-local-storage.ts",
+				"src/lib/remark-mdx-meta.ts",
+				"src/utils/search-params.ts",
+			],
+			rules: {
+				// React, remark, and router parsing callbacks must return synchronously.
+				"effecttsgo/schema-sync": "off",
+			},
+		},
+		{
 			files: ["tests/**/*.{ts,tsx}", "scripts/**/*.{ts,tsx}"],
 			rules: {
 				// Node test and script I/O stays on node:fs, node:path, and node:child_process.

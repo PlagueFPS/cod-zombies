@@ -83,6 +83,15 @@ describe("parseSearch", () => {
 })
 
 describe("normalizeParsedSearch", () => {
+	test.each([
+		["1e2", "100"],
+		["true", "true"],
+		['"true"', '"true"'],
+		["{invalid", "{invalid"],
+	])("preserves filter token normalization for %s", (token, expected) => {
+		expect(normalizeParsedSearch({ game: [token] })).toEqual({ game: [expected] })
+	})
+
 	test("normalizes repeated keys that were coerced to numbers", () => {
 		expect(
 			normalizeParsedSearch({

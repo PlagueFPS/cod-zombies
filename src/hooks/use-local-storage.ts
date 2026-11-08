@@ -43,9 +43,7 @@ export const useLocalStorage = <T>(
 				if (typeof window !== "undefined") {
 					window.localStorage.setItem(
 						key,
-						Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))(valueToStore).pipe(
-							Result.getOrThrow,
-						),
+						Schema.encodeSync(Schema.fromJsonString(Schema.Unknown))(valueToStore),
 					)
 				}
 			},

@@ -3,7 +3,7 @@ import type { Program } from "estree-jsx"
 import type { Root } from "mdast"
 import type { MdxjsEsm } from "mdast-util-mdxjs-esm"
 import { parse } from "acorn"
-import { Match, Predicate, Result, Schema, String as Str, Array as Arr, pipe } from "effect"
+import { Match, Predicate, Schema, String as Str, Array as Arr, pipe } from "effect"
 import { toString } from "mdast-util-to-string"
 import remarkMdx from "remark-mdx"
 import remarkParse from "remark-parse"
@@ -97,7 +97,7 @@ function getLeadingEsmIndexAfter(tree: Root): number {
 }
 
 function buildMdxEsmNode(headings: Heading[], timeToRead: number): MdxjsEsm {
-	const value = `export const headings = ${Schema.encodeResult(Schema.fromJsonString(Schema.Unknown))(headings).pipe(Result.getOrThrow)};\nexport const timeToRead = ${timeToRead};\n`
+	const value = `export const headings = ${Schema.encodeSync(Schema.fromJsonString(Schema.Unknown))(headings)};\nexport const timeToRead = ${timeToRead};\n`
 	// SAFETY: acorn `sourceType: "module"` yields an ESTree Program for this generated ESM string.
 	const estree = parse(value, { ecmaVersion: "latest", sourceType: "module" }) as Program
 

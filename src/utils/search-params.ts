@@ -1,8 +1,8 @@
 import { parseSearchWith } from "@tanstack/react-router"
-import { Option, Exit, Result, Predicate, Schema, Array as Arr, Record as Rec } from "effect"
+import { Option, Exit, Predicate, Schema, Array as Arr, Record as Rec } from "effect"
 
 const jsonParseSearch = parseSearchWith(value =>
-	Schema.decodeResult(Schema.fromJsonString(Schema.Unknown))(value).pipe(Result.getOrThrow),
+	Schema.decodeSync(Schema.fromJsonString(Schema.Unknown))(value),
 )
 
 const SearchScalarSchema = Schema.Union([Schema.String, Schema.Finite, Schema.Boolean])
@@ -34,11 +34,7 @@ function stringifyFilterScalar(value: SearchParamScalar): string {
 
 	const decoded = Schema.decodeExit(Schema.fromJsonString(SearchScalarSchema))(asString.value)
 
-	const decodedString = Schema.decodeUnknownExit(Schema.String)(
-		Exit.match(decoded, { onSuccess: decodedValue => decodedValue, onFailure: () => value }),
-	)
-
-	if (Exit.isSuccess(decoded) && Exit.isFailure(decodedString)) {
+	if (Exit.isSuccess(decoded) && !Predicate.isString(decoded.value)) {
 		return String(decoded.value)
 	}
 
@@ -62,11 +58,10 @@ function normalizeArrayElement(value: SearchParamValue): SearchParamScalar | und
 
 	const parsed = Schema.decodeExit(Schema.fromJsonString(SearchScalarSchema))(value)
 
-	if (Exit.isSuccess(parsed)) {
-		return String(parsed.value)
-	}
-
-	return value
+	return Exit.match(parsed, {
+		onSuccess: parsedValue => String(parsedValue),
+		onFailure: () => value,
+	})
 }
 
 function normalizeSearchValue(key: string, value: SearchParamValue): SearchParamValue {
