@@ -907,4 +907,10 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Sends a fire wall from the throne that downs players instantly. The Talon of Lu'roth stops it.",
 	}),
+	makeZombieAttack("infection", {
+		title: "Infection",
+		range: "Short",
+		description:
+			"A hit infects the player. The timer is 60 seconds, or 75 seconds with Exo tactical armor active. A later zombie hit removes 3 seconds, or 5 seconds when that hit deals more than 50 damage. Other damage drains the timer faster.",
+	}),
 ])

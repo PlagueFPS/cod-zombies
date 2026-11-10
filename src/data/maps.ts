@@ -398,6 +398,23 @@ const MAPS = uniqueMap([
 				"Time varies significantly based on the game (BO2/BO3), player knowledge of steps, and slight RNG.",
 		}),
 	}),
+	makeMap("outbreak-aw", {
+		title: "Outbreak",
+		releaseDate: "2015-01-27",
+		description:
+			"Atlas's new pet broke out of the lab and infested an entire compound. Fight with up to 4 players to survive against endless waves of mutant zombies.",
+		image: "/maps/outbreak-aw.webp",
+		game: "advanced-warfare",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/outbreak-aw"),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 20,
+			max: 50,
+			reason:
+				"Solo guides put the quest around 20–30 minutes. A fuller run is about 30–50 minutes. Time varies with player count, Host rounds, and knowledge of the steps.",
+		}),
+	}),
 	makeMap("shadows-of-evil", {
 		title: "Shadows of Evil",
 		releaseDate: "2015-11-06",
