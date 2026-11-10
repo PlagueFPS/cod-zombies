@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-01T20:09:15.572Z
- * generated in: 30ms
+ * generated at: 2026-11-10T02:52:08.183Z
+ * generated in: 37ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -41,6 +41,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/my-brothers-keeper"
 	| "content/main-quests/no-mo-modi"
 	| "content/main-quests/outbreak"
+	| "content/main-quests/outbreak-aw"
 	| "content/main-quests/paradox-junction"
 	| "content/main-quests/paradoxical-prologue"
 	| "content/main-quests/pest-control"
@@ -396,6 +397,7 @@ export type ZombiesPaths =
 	| "content/zombies/guardian"
 	| "content/zombies/heavy-zombie"
 	| "content/zombies/hellhound"
+	| "content/zombies/host-zombie"
 	| "content/zombies/insanity-elementals"
 	| "content/zombies/jolting-jack"
 	| "content/zombies/jumping-jack"
