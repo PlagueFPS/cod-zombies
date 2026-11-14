@@ -907,4 +907,10 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Sends a fire wall from the throne that downs players instantly. The Talon of Lu'roth stops it.",
 	}),
+	makeZombieAttack("blink", {
+		title: "Blink",
+		range: "Medium",
+		description:
+			"While moving, blinks forward along its path. The gap is 0.5 to 3.2 seconds, scaled by move speed, and the jump stays between 50 and 450 units ahead.",
+	}),
 ])

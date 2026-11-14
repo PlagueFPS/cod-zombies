@@ -50,6 +50,10 @@ const GAMES = uniqueMap([
 		title: "Black Ops 2",
 		releaseDate: "2012-11-12",
 	}),
+	makeGame("advanced-warfare", {
+		title: "Advanced Warfare",
+		releaseDate: "2014-11-04",
+	}),
 	makeGame("black-ops-3", {
 		title: "Black Ops 3",
 		releaseDate: "2015-11-06",

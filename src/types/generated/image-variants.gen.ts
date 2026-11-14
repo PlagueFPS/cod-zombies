@@ -10773,6 +10773,7 @@ export const IMAGE_VARIANTS = {
 	"/zombies/spider.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/stadtjager.webp": { sourceWidth: 1920, widths: [384, 1200] },
 	"/zombies/stoker.webp": { sourceWidth: 705, widths: [384] },
+	"/zombies/teleport-zombie.webp": { sourceWidth: 433, widths: [384] },
 	"/zombies/tempest.webp": { sourceWidth: 395, widths: [384] },
 	"/zombies/the-corrupted-keeper.webp": { sourceWidth: 446, widths: [384] },
 	"/zombies/the-dark-heart.webp": { sourceWidth: 398, widths: [384] },

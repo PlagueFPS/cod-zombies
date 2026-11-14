@@ -398,6 +398,23 @@ const MAPS = uniqueMap([
 				"Time varies significantly based on the game (BO2/BO3), player knowledge of steps, and slight RNG.",
 		}),
 	}),
+	makeMap("carrier", {
+		title: "Carrier",
+		releaseDate: "2015-06-02",
+		description:
+			"The source of the contagion has infected Atlas's prized super-carrier. Fight with up to 4 players to survive against the endless waves of mutant zombies.",
+		image: "/maps/carrier.webp",
+		game: "advanced-warfare",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/flotsam-and-jetsam"),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 60,
+			max: 80,
+			reason:
+				"Solo guides put the quest around 60–80 minutes. Time varies with Plinko, fishing for the shovel, and teleport-mutator spawns.",
+		}),
+	}),
 	makeMap("shadows-of-evil", {
 		title: "Shadows of Evil",
 		releaseDate: "2015-11-06",
