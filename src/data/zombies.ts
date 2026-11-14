@@ -456,6 +456,42 @@ const ZOMBIES = uniqueMap([
 			"In Origins, the Panzersoldat will always spawn in on Round 8 as long as the door to No Man's Land has been opened. Otherwise, it will spawn on the next round after that door has been opened, and then every 3-5 rounds after that. In Der Eisendrache, the Panzersoldat will spawn on Round 12 and every 5-6 rounds after that. During the Main Quest, a Panzersoldat will always spawn in after returning to the present time, and multiple will spawn during the final boss fight. In Revelations, the Panzersoldat will be between rounds 18-21, and is also present during the final boss fight.",
 		combatStrategy: "content/zombies/panzersoldat",
 	}),
+	makeZombie("teleport-zombie", {
+		title: "Teleport Zombie",
+		state: Option.none(),
+		releaseDate: "2015-06-02",
+		image: "/zombies/teleport-zombie.webp",
+		description:
+			"Teleport Zombies are zombies carrying the teleport mutator on Carrier. A blue exo marks them, and they blink forward along their path.",
+		games: ["advanced-warfare"],
+		maps: ["carrier"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "blink"],
+		spawnBehavior:
+			"The teleport mutator joins normal rounds at wave 6. Solo adds a wave offset of 2, so they show up about wave 8. They spawn inside those rounds rather than on a round of their own.",
+		combatStrategy: "content/zombies/teleport-zombie",
+	}),
+	makeZombie("security-dog", {
+		title: "Security Dog",
+		state: Option.none(),
+		releaseDate: "2015-06-02",
+		image: "/zombies/security-dog.webp",
+		description:
+			"Security Dogs are the zombified security dogs on Carrier. They bite for 45 damage, and a dog with the teleport mutator has blue eyes and blinks.",
+		games: ["advanced-warfare"],
+		maps: ["carrier"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["bite", "blink"],
+		spawnBehavior:
+			"Security Dogs spawn on dog rounds. The first special round is dogs. An-G announces the round, and the last dog drops a Full Reload. A round spawns 6 dogs per player, or 8 per player once the special-round counter is past 3. Health starts at 400 and climbs through 900 and 1300 to 1600 as that counter rises.",
+		combatStrategy: "content/zombies/security-dog",
+	}),
 	makeZombie("keepers", {
 		title: "Keepers",
 		state: Option.none(),

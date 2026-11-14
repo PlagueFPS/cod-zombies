@@ -1,0 +1,97 @@
+import ZombieTooltip from "@/components/zombie-tooltip"
+import YouTubeEmbed from "@/components/youtube-embed"
+
+## Flotsam & Jetsam
+
+The main quest for **Carrier** is **Flotsam & Jetsam**. You power a hidden room behind **Chompy**, build a fishing pole from the **Weapon Disposal Machine**, put four data tablets in the vault door, and plant **C4** to sink the ship. Oz is only a voice. Lilith, Decker, Kahn, and Lennox do the work.
+
+> This quest works solo or with up to four players. After the Chompy room, fishing and tablet 1 start together. The tablets then unlock in order: **Plinko**, the obstacle course, the teleporter and island, then the shark locker. There is no co-op-only step.
+
+## Requirements
+
+- **Teleport Grenades** from the Armory wall buy, for the Chompy room and for Plinko
+- A **Contact** or **Frag** grenade for each Plinko drop
+- Unique weapons for the disposal arm
+- **100** credits per fishing cast, and **1000** for a cage ride
+
+> Solo, the obstacle course timer is **120 seconds**. With two or more players it is **240 seconds**. Teleport zombies join the mutator table at wave **6**, and solo adds a wave offset of **2**, so they show up about wave **8**.
+
+## Step 1: Power the Room Behind Chompy
+
+Activate **Chompy**, the zomboni trap, on the **Cargo Deck**. When its wall opens, throw or shoot a **Teleport Grenade** into the small room behind it. You land inside. Hit the power switch. You have **5 seconds**, then you are sent back to an open zone. Only one player can be in the room at a time.
+
+This turns on the **Weapon Disposal Machine**. The arm does nothing until this step is done.
+
+## Step 2: Build the Fishing Pole
+
+Hand weapons to the disposal arm in the **Armory**. You need more than one primary weapon. Your current weapon is taken. Only unique base weapons count, so a second copy of a gun you already fed does nothing. Every second new weapon gives the next item that is not finished and that nobody is holding, in this order: **rum bottle**, **reel**, **line**, **hook**, then **C4**. Any other turn pays **200** credits. The arm retreats for **5 seconds** after it takes **1000** player damage.
+
+> There is one inventory slot. A new item replaces whatever non-tablet item you hold, and the old one is gone. A held tablet is never replaced. Place the reel, then the line, then the hook on the pole on the **Gun Deck** before you take the next part. The line overwrites an unplaced reel.
+
+The rum bottle is launched onto the floor and can be reused. Being drunk lasts **60 seconds**. Move speed drops to **0.75**, extended sprint, dodge, and lightweight turn off, and the screen tilts. You need that to see the lasers in step 4.
+
+Fishing costs **100** per cast once the hook is on the pole. The **shovel** for step 5 is a **12%** catch, so keep casting until you have it. **C4** can drop as soon as the hook is on the pole. It only works on the vault after all four tablets are in, and taking it early fills the inventory slot.
+
+Solo needs **8** unique weapons for the rum bottle and the three pole parts, and **10** if you also take the C4.
+
+You can fish while you work on Plinko. Tablet 2 stays locked until tablet 1 is in the vault.
+
+## Step 3: Win Tablet 1 at Plinko
+
+Shoot a **Teleport Grenade** into the **Grenade Disposal Machine**. The chute moves off its default spot, and the quest icon cycles every **3 seconds** through **Frag**, **Explosive Drone**, **Distraction Drone**, and **Nano Swarm**. Throw a **Contact** or **Frag** grenade in while the icon shows the type you need. That grenade becomes the shown type. Each normal token costs **300**.
+
+**Nano Swarm**, **Distraction Drone**, and **Explosive Drone** socket into pegs and change the ball's path. Three rows of lights go from red to green. All three have to light before the tablet appears. The paths that light each row are map data, so the script does not prove the order. Every community source uses the same sequences:
+
+- **Row 1:** Distraction Drone, then Frag (some write-ups also accept Nano Swarm for that second drop)
+- **Row 2:** Explosive Drone, Distraction Drone, Explosive Drone, Frag
+- **Row 3:** Explosive Drone, Nano Swarm, Explosive Drone, Distraction Drone, Explosive Drone, Frag
+
+The tablet pops out the right side. Take it to the vault door on the **Gun Deck** and insert it. The first use of the door only plays Oz. Each tablet goes in on its own.
+
+## Step 4: Cross the Laser Obstacle Course
+
+Open the doors on the route. Guides put it as **Cargo Deck**, then **Lift**, then **Moon Pool**, then **Hangar**.
+
+Drink from the rum bottle, then press the keypad outside the **Cargo Deck**, between the **Bio Lab** and **Cargo**. The button starts the run only when every living player is in the zone the script calls `biomed`. If anyone is outside that zone, nothing happens. The on-screen name of that zone is not in the script.
+
+You have **120 seconds** solo, or **240 seconds** with two or more players. Teleporters turn off for the run, and a drunk player's intoxication is extended to the timer. Cross the laser field to the **Hangar** teleporter. The tablet is on the floor there. Only drunk players can see the field.
+
+> Touching a laser fails the run. Using a **Teleport Grenade** during it also fails the run. Press the keypad to retry.
+
+## Step 5: Repair the Teleporter and Dig Up the Tablet
+
+Have the **shovel** from the fishing pole before you go to the island.
+
+Kill a <ZombieTooltip zombieKey="teleport-zombie" /> or a <ZombieTooltip zombieKey="security-dog" /> that is carrying the same teleport mutator. The kill drops a telefrag part when the enemy was inside a zone, the kill was not a suicide or a trap, and fewer than **5** parts are already on the ground. A part lasts **15 seconds**, then flashes for **8 seconds**. You cannot pick one up while you hold a pole part, a tablet, the eye, or another part.
+
+Carry each part to the broken teleporter in the **Bio Lab** and install it. You need exactly **20**.
+
+Once the teleporter is repaired, a trip costs **100**, then **500**, then **1000** within the same round. The price resets when the round ends. You get **25 seconds** on the island, then a **30 second** cooldown. Falling in the water sends you back early. Dig on sand within **32** units of the chest while you hold the shovel. The chest spot is random. The chest gives the tablet and **2000** points to every player. Insert the tablet at the vault.
+
+## Step 6: Take the Eye from the Shark
+
+Use **Captain DJ's** locker in the **Hangar**. It has an eye scanner.
+
+After that locker use, every treasure-drone spawn also spawns a second drone carrying a **switch**. Treasure drones first spawn on wave **3** or **4**, then every **3** or **4** waves. Shoot that drone down and pick up the switch. If the drone explodes, the switch is lost until the next treasure drone.
+
+Put the switch on the electrical box in the **Moon Pool**.
+
+Get **5** kills on the grates inside the chum volume, each within **10 seconds** of the last. Chum lasts **30 seconds**, and a shark comes. The chum and the cage do not check for a fish.
+
+Pay **1000** credits for the cage and jump on within **4 seconds**. If the shark is circling, it attacks, and you take the eye in that window. If it is not circling, wait **30 seconds** and ride again. Bring the eye to the locker. The locker gives you tablet 4. Insert it at the vault.
+
+## Step 7: Plant the C4
+
+Keep feeding new weapons to the arm until it gives the **C4**. Use it on the vault door. The door accepts the C4 only after all four tablets are in.
+
+Inserting the third tablet turns on the experimental upgrade station. It takes a weapon from level **20** to **25** and costs **2500**.
+
+The match ends on the outro. **Flotsam & Jetsam** ("Sink the boat in Carrier", **50G** / Silver) is awarded only to players who were in the match in round 1. Those same players record the Carrier trophy for the case on **Descent**. A player who joined after round 1 gets neither.
+
+Congratulations! You have completed the **Carrier** main quest: **Flotsam & Jetsam**!
+
+## Video Guides
+
+### Guide by NoahJ456
+
+<YouTubeEmbed videoLink="https://www.youtube.com/watch?v=eO990cFe5rY" />
