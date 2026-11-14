@@ -919,4 +919,10 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Triggered when hitting a player or when a player attempts to boost away, disabling their Exoskeleton for 5 seconds and blurring vision.",
 	}),
+	makeZombieAttack("blink", {
+		title: "Blink",
+		range: "Medium",
+		description:
+			"While moving, blinks forward along its path. The gap is 0.5 to 3.2 seconds, scaled by move speed, and the jump stays between 50 and 450 units ahead.",
+	}),
 ])

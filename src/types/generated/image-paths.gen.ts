@@ -358,6 +358,7 @@ export type MapsImagePath =
   '/maps/blood-of-the-dead.webp' |
   '/maps/buried.webp' |
   '/maps/call-of-the-dead.webp' |
+  '/maps/carrier.webp' |
   '/maps/citadelle-des-morts.webp' |
   '/maps/classified.webp' |
   '/maps/dead-of-the-night.webp' |
@@ -627,6 +628,7 @@ export type ZombiesImagePath =
   '/zombies/sasquatch.webp' |
   '/zombies/scorched-zombie.webp' |
   '/zombies/scout.webp' |
+  '/zombies/security-dog.webp' |
   '/zombies/security-dogs.webp' |
   '/zombies/sentinel-artifact.webp' |
   '/zombies/shadow-soul.webp' |
@@ -640,6 +642,7 @@ export type ZombiesImagePath =
   '/zombies/spider.webp' |
   '/zombies/stadtjager.webp' |
   '/zombies/stoker.webp' |
+  '/zombies/teleport-zombie.webp' |
   '/zombies/tempest.webp' |
   '/zombies/the-corrupted-keeper.webp' |
   '/zombies/the-dark-heart.webp' |

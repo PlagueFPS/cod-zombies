@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-15T11:16:15.699Z
- * generated in: 41ms
+ * generated at: 2026-11-15T11:42:10.772Z
+ * generated in: 33ms
  */
 
 
@@ -27,6 +27,7 @@ export type MainQuestsPaths =
   "content/main-quests/electromagnetic-awakening-party" |
   "content/main-quests/ensemble-cast" |
   "content/main-quests/fireworks" |
+  "content/main-quests/flotsam-and-jetsam" |
   "content/main-quests/for-the-good-of-all" |
   "content/main-quests/greek-tragedy" |
   "content/main-quests/high-maintenance" |
@@ -452,6 +453,7 @@ export type ZombiesPaths =
   "content/zombies/sasquatch" |
   "content/zombies/scorched-zombie" |
   "content/zombies/scout" |
+  "content/zombies/security-dog" |
   "content/zombies/security-dogs" |
   "content/zombies/sentinel-artifact" |
   "content/zombies/shadow-soul" |
@@ -465,6 +467,7 @@ export type ZombiesPaths =
   "content/zombies/spider" |
   "content/zombies/stadtjager" |
   "content/zombies/stoker" |
+  "content/zombies/teleport-zombie" |
   "content/zombies/tempest" |
   "content/zombies/the-corrupted-keeper" |
   "content/zombies/the-dark-heart" |
