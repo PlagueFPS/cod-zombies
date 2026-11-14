@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-01T20:09:15.572Z
- * generated in: 30ms
+ * generated at: 2026-11-14T02:49:47.480Z
+ * generated in: 29ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -36,6 +36,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/love-and-war"
 	| "content/main-quests/making-history"
 	| "content/main-quests/maxis-potential"
+	| "content/main-quests/meat-is-murder"
 	| "content/main-quests/mined-games"
 	| "content/main-quests/most-escape-alive"
 	| "content/main-quests/my-brothers-keeper"
@@ -393,9 +394,11 @@ export type ZombiesPaths =
 	| "content/zombies/giant-thrasher"
 	| "content/zombies/gjallarfrost"
 	| "content/zombies/god-king"
+	| "content/zombies/goliath"
 	| "content/zombies/guardian"
 	| "content/zombies/heavy-zombie"
 	| "content/zombies/hellhound"
+	| "content/zombies/host-zombie"
 	| "content/zombies/insanity-elementals"
 	| "content/zombies/jolting-jack"
 	| "content/zombies/jumping-jack"
