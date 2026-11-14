@@ -456,6 +456,42 @@ const ZOMBIES = uniqueMap([
 			"In Origins, the Panzersoldat will always spawn in on Round 8 as long as the door to No Man's Land has been opened. Otherwise, it will spawn on the next round after that door has been opened, and then every 3-5 rounds after that. In Der Eisendrache, the Panzersoldat will spawn on Round 12 and every 5-6 rounds after that. During the Main Quest, a Panzersoldat will always spawn in after returning to the present time, and multiple will spawn during the final boss fight. In Revelations, the Panzersoldat will be between rounds 18-21, and is also present during the final boss fight.",
 		combatStrategy: "content/zombies/panzersoldat",
 	}),
+	makeZombie("host-zombie", {
+		title: "Host",
+		state: Option.none(),
+		releaseDate: "2015-03-31",
+		image: "/zombies/host-zombie.webp",
+		description:
+			"Hosts are the infected special on Infection. A Host's hit starts the infection timer instead of a normal down, and a co-op player who fails to cure the burger infection becomes one.",
+		games: ["advanced-warfare"],
+		maps: ["infection"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["infection"],
+		spawnBehavior:
+			"Wave 8 is a Host round. Later Host rounds are wave 14 and then every 10 waves. Every fifth spawn in the round is a regular zombie. The round ends with an ammo pickup. A co-op player whose burger infection expires also spawns a Host with four times the health.",
+		combatStrategy: "content/zombies/host-zombie",
+	}),
+	makeZombie("goliath", {
+		title: "Goliath",
+		state: Option.none(),
+		releaseDate: "2015-03-31",
+		image: "/zombies/goliath.webp",
+		description:
+			"The Goliath is the armored special on Infection, a soldier swollen into a mech suit with a riot shield and an improvised weapon.",
+		games: ["advanced-warfare"],
+		maps: ["infection"],
+		type: "Elite",
+		speed: "Fast",
+		weakPoints: [],
+		elementalWeakness: [],
+		attacks: ["goliath-melee", "goliath-lunge", "goliath-spin", "emp-stomp", "goliath-rockets"],
+		spawnBehavior:
+			"Wave 10 is a Goliath round. Later Goliath rounds are wave 19 and then every 10 waves. The round spawns about 75% of the usual number of enemies. The first is the Goliath, and the rest are regular zombies. Killing it on that round drops a nuke or an ammo pickup, alternating.",
+		combatStrategy: "content/zombies/goliath",
+	}),
 	makeZombie("keepers", {
 		title: "Keepers",
 		state: Option.none(),

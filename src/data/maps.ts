@@ -398,6 +398,23 @@ const MAPS = uniqueMap([
 				"Time varies significantly based on the game (BO2/BO3), player knowledge of steps, and slight RNG.",
 		}),
 	}),
+	makeMap("infection", {
+		title: "Infection",
+		releaseDate: "2015-03-31",
+		description:
+			"A suburban Atlas outbreak around Burger Town, where a cursed burger brings the mascot Bubby back online.",
+		image: "/maps/infection.webp",
+		game: "advanced-warfare",
+		mainQuest: Option.some("content/main-quests/meat-is-murder"),
+		difficulty: Option.some("Medium"),
+		state: Option.none(),
+		estimatedTimeMins: Option.some({
+			min: 30,
+			max: 55,
+			reason:
+				"Solo runs take about 30–45 minutes. Full estimates run 30–55 minutes. Time varies with the 3D Printer, meat and valve spawns, and knowledge of the steps.",
+		}),
+	}),
 	makeMap("shadows-of-evil", {
 		title: "Shadows of Evil",
 		releaseDate: "2015-11-06",

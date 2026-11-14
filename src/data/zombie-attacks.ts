@@ -907,4 +907,40 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Sends a fire wall from the throne that downs players instantly. The Talon of Lu'roth stops it.",
 	}),
+	makeZombieAttack("infection", {
+		title: "Infection",
+		range: "Short",
+		description:
+			"A hit from a Host starts a 60 second infection timer, or 75 seconds with Exo tactical armor active, instead of a normal down.",
+	}),
+	makeZombieAttack("goliath-melee", {
+		title: "Improvised Melee",
+		range: "Short",
+		description:
+			"Swings a parking meter, stop sign, or axle, or bashes with the riot shield, for 90 damage inside about 120 units.",
+	}),
+	makeZombieAttack("goliath-lunge", {
+		title: "Lunge",
+		range: "Medium",
+		description:
+			"Lunges from up to about 250 units. It has to move about 100 units from that spot before it can lunge again.",
+	}),
+	makeZombieAttack("goliath-spin", {
+		title: "Spin",
+		range: "Short",
+		description:
+			"Spins if you are still near where it last lunged. The cooldown is about 5 seconds solo and 15 seconds in co-op.",
+	}),
+	makeZombieAttack("emp-stomp", {
+		title: "EMP Stomp",
+		range: "Medium",
+		description:
+			"After taking 2000 damage and waiting 15 seconds, it stomps when you are within about 500 units and shuts down Exos in that radius.",
+	}),
+	makeZombieAttack("goliath-rockets", {
+		title: "Homing Rockets",
+		range: "Long",
+		description:
+			"Fires homing rockets once you are outside melee reach. A rocket EMPs Exos within about 150 units when it detonates.",
+	}),
 ])
